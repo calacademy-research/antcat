@@ -1,7 +1,7 @@
 # coding: UTF-8
 class ReferencesController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index, :download]
-  skip_before_filter :authenticate_user!, :if => :preview?
+  before_filter :authenticate_user!, except: [:index, :download]
+  skip_before_filter :authenticate_user!, if: :preview?
 
   def index
     searching = params[:q].present?
@@ -27,7 +27,7 @@ EOS
         @references = Reference.do_search params
       }
       format.endnote_import  {
-        references = Reference.do_search params.merge :format => :endnote_import
+        references = Reference.do_search params.merge format: :endnote_import
         render text: Exporters::Endnote::Formatter.format(references)
       }
     end
@@ -90,7 +90,7 @@ EOS
     if @reference.any_references? or not @reference.destroy
       json = {success: false, message: "This reference can't be deleted, as there are other references to it."}.to_json
     else
-      json = {:success => true}
+      json = {success: true}
     end
     render json: json
   end

@@ -23,19 +23,19 @@ describe Reference, slow:true do
 
       describe "Authors" do
         it "should return an empty array if nothing is found for the author names" do
-          Reference.perform_search(:authors => [FactoryGirl.create(:author)]).should be_empty
+          Reference.perform_search(authors: [FactoryGirl.create(:author)]).should be_empty
         end
         it "should find the reference for a given author_name if it exists" do
           bolton = FactoryGirl.create :author_name
-          reference = FactoryGirl.create :book_reference, :author_names => [bolton]
-          FactoryGirl.create :book_reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Fisher')]
-          results = Reference.perform_search(:authors => [bolton.author])
+          reference = FactoryGirl.create :book_reference, author_names: [bolton]
+          FactoryGirl.create :book_reference, author_names: [FactoryGirl.create(:author_name, name: 'Fisher')]
+          results = Reference.perform_search(authors: [bolton.author])
           results.should == [reference]
         end
         it "should find the references for all aliases of a given author_name" do
           bolton = FactoryGirl.create :author
-          bolton_barry = FactoryGirl.create :author_name, :author => bolton, :name => 'Bolton, Barry'
-          bolton_b = FactoryGirl.create :author_name, :author => bolton, :name => 'Bolton, B.'
+          bolton_barry = FactoryGirl.create :author_name, author: bolton, name: 'Bolton, Barry'
+          bolton_b = FactoryGirl.create :author_name, author: bolton, name: 'Bolton, B.'
           bolton_barry_reference = FactoryGirl.create :book_reference, :author_names => [bolton_barry], :title => '1', :pagination => '1'
           bolton_b_reference = FactoryGirl.create :book_reference, :author_names => [bolton_b], :title => '2', :pagination => '2'
           Reference.perform_search(:authors => [bolton]).map(&:id).should =~
@@ -327,34 +327,34 @@ describe Reference, slow:true do
     describe "Searching for an ID" do
       it "should ignore everything else in the string if an id is provided" do
         Reference.should_receive(:perform_search).with :id => 12345
-        Reference.do_search :q =>  '12345 1972 Bolton'
+        Reference.do_search q: '12345 1972 Bolton'
       end
     end
 
     describe "Searching for text and/or years" do
       it "should extract the starting and ending years" do
         Reference.should_receive(:perform_search).with :fulltext => '', :start_year => 1992, :end_year => 1993, :page => 1, filter: :no_missing_references
-        Reference.do_search :q => '1992-1993'
+        Reference.do_search q: '1992-1993'
       end
 
       it "extract the starting year" do
         Reference.should_receive(:perform_search).with :fulltext => '', :start_year => 1992, :page => 1, filter: :no_missing_references
-        Reference.do_search :q => '1992'
+        Reference.do_search q: '1992'
       end
 
       it "should convert the query string" do
         Reference.should_receive(:perform_search).with :fulltext => 'andre', :page => 1, filter: :no_missing_references
-        Reference.do_search :q => 'André'
+        Reference.do_search q: 'André'
       end
 
       it "should distinguish between years and citation years" do
         Reference.should_receive(:perform_search).with :fulltext => '1970a', :start_year => 1970, :page => 1, filter: :no_missing_references
-        Reference.do_search :q => '1970a 1970'
+        Reference.do_search q: '1970a 1970'
       end
 
       it "should not strip the year from the string" do
         string = '1990'
-        Reference.do_search :q => string
+        Reference.do_search q: string
         string.should == '1990'
       end
 
@@ -362,19 +362,19 @@ describe Reference, slow:true do
 
     describe "Pagination on or off for different search types" do
       it "should not paginate EndNote format" do
-        Reference.should_receive(:perform_search).with :fulltext => '', filter: :no_missing_references
-        Reference.do_search :q => '', :format => :endnote_import
+        Reference.should_receive(:perform_search).with fulltext: '', filter: :no_missing_references
+        Reference.do_search q: '', format: :endnote_import
       end
       it "should paginate other formats" do
-        Reference.should_receive(:perform_search).with :fulltext => '', :page => 1, filter: :no_missing_references
-        Reference.do_search :q => ''
+        Reference.should_receive(:perform_search).with fulltext: '', page: 1, filter: :no_missing_references
+        Reference.do_search q: ''
       end
     end
 
     describe "Filtering unknown reference types" do
       it "should return only unknown reference types if a ? is passed as the search term" do
         Reference.should_receive(:perform_search).with :fulltext => 'monroe', :filter => :unknown_references_only, :page => 1
-        Reference.do_search :q => '? Monroe'
+        Reference.do_search q: '? Monroe'
       end
     end
 
