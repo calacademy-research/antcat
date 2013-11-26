@@ -45,7 +45,11 @@ class Reference < ActiveRecord::Base
           without :type, 'MissingReference'
         end
 
-        paginate page: page if page
+        if page
+          paginate page: page
+        else
+          paginate page: 1, per_page: 9999999
+        end
 
         order_by :author_names_string
         order_by :citation_year
