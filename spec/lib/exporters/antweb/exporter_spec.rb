@@ -48,44 +48,6 @@ describe Exporters::Antweb::Exporter do
       @exporter.export_taxon(acanthognathus).should == ['incertae_sedis', nil, 'Acanothognathus', nil, 'Fisher, 2013', nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
     end
 
-    # Waiting to hear from Brian
-    #describe "Invalid/unidentifiable/unresolved_homonyms" do
-      #it "should not export invalid taxa" do
-        #tribe = create_tribe subfamily: @ponerinae
-        #valid_genus = create_genus subfamily: @ponerinae, tribe: tribe
-        #invalid_genus = create_genus subfamily: @ponerinae, tribe: tribe, status: 'synonym'
-        #unidentifiable_genus = create_genus subfamily: @ponerinae, tribe: tribe, status: 'unidentifiable'
-        #@exporter.export_taxon(valid_genus).should =~ [@ponerinae.name.to_s, tribe.name.to_s, valid_genus.name.to_s, nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
-        #@exporter.export_taxon(unidentifiable_genus).should == [@ponerinae.name.to_s, tribe.name.to_s, unidentifiable_genus.name.to_s, nil, nil, nil, 'TRUE', 'TRUE', nil, nil, 'FALSE', 'history']
-        #@exporter.export_taxon(invalid_genus).should == nil
-      #end
-
-      #it "should export unidentifiable and unresolved junior homonyms" do
-        #valid_genus = create_genus
-        #unidentifiable_genus = create_genus status: 'unidentifiable'
-        #unresolved_homonym_genus = create_genus unresolved_homonym: true
-        #@exporter.export_taxon(valid_genus).should_not be_nil
-        #@exporter.export_taxon(unidentifiable_genus).should_not be_nil
-        #@exporter.export_taxon(unresolved_homonym_genus).should_not be_nil
-      #end
-
-      #it "should not export unidentifiable and unresolved junior homonyms if there is a taxon with the same name that is not unidentifiable or an unresolved junior homonym" do
-        #valid = create_genus 'Atta'
-        #unidentifiable = create_genus 'Atta', status: 'unidentifiable'
-        #unresolved_homonym = create_genus 'Atta', unresolved_homonym: true
-        ##@exporter.export_taxon(valid).should_not be_nil
-        #@exporter.export_taxon(unidentifiable).should be_nil
-        ##@exporter.export_taxon(unresolved_homonym).should be_nil
-      #end
-
-      #it "choose the unidentifiable one if one is unidentifiable and the other is an unresolved_homonym" do
-        #unidentifiable = create_genus 'Atta', status: 'unidentifiable'
-        #unresolved_homonym = create_genus 'Atta', unresolved_homonym: true
-        #@exporter.export_taxon(unidentifiable).should_not be_nil
-        #@exporter.export_taxon(unresolved_homonym).should be_nil
-      #end
-    #end
-
     describe "Exporting species" do
       it "should export one correctly" do
         atta = create_genus 'Atta', tribe: @attini
@@ -148,6 +110,20 @@ describe Exporters::Antweb::Exporter do
       genus.update_attribute :type_name, species.name
 
       @exporter.export_taxon(genus)[4].should == 'Bolton, 2010'
+    end
+  end
+
+  describe "Sending all taxa - not just valid" do
+    it "should export a junior synonym" do
+      taxon = create_genus status: 'original combination'
+      results = @exporter.export_taxon(taxon)
+      results.should_not be_nil
+      results[6].should == 'original combination'
+    end
+    it "should still not export a Tribe" do
+      taxon = create_tribe
+      results = @exporter.export_taxon(taxon)
+      results.should be_nil
     end
   end
 

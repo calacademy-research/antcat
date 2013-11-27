@@ -6,7 +6,7 @@ class Exporters::Antweb::Exporter
 
   def export directory
     File.open("#{directory}/bolton.txt", 'w') do |file|
-      file.puts "subfamily\ttribe\tgenus\tspecies\tauthor date\tcountry\tvalid\tavailable\tcurrent valid name\toriginal combination\tfossil\ttaxonomic history"
+      file.puts "subfamily\ttribe\tgenus\tspecies\tauthor date\tcountry\tstatus\tavailable\tcurrent valid name\toriginal combination\tfossil\ttaxonomic history"
       Taxon.all.each do |taxon|
         row = export_taxon taxon
         file.puts row.join("\t") if row
@@ -21,7 +21,7 @@ class Exporters::Antweb::Exporter
     return unless self.class.exportable? taxon
 
     attributes = {
-      valid?:       !taxon.invalid?,
+      status:       taxon.status,
       available?:   !taxon.invalid?,
       fossil?:      taxon.fossil,
       history:      Exporters::Antweb::Formatter.new(taxon).format,
@@ -52,19 +52,7 @@ class Exporters::Antweb::Exporter
   end
 
   def self.exportable? taxon
-    return if taxon.invalid? || taxon.kind_of?(Subgenus) || taxon.kind_of?(Tribe)
-    homonyms = Taxon.where "name_cache = ? AND status = 'valid'", taxon.name_cache
-    return true if homonyms.size == 1
-    selection = homonyms.select do |homonym|
-      not homonym.unidentifiable? and not homonym.unresolved_homonym
-    end
-    return selection.first == taxon if selection.size == 1
-    raise if selection.size > 1
-    selection = homonyms.select do |homonym|
-      homonym.unidentifiable?
-    end
-    return selection.first == taxon if selection.size == 1
-    raise
+    not (taxon.kind_of?(Subgenus) || taxon.kind_of?(Tribe))
   end
 
   private
@@ -84,7 +72,7 @@ class Exporters::Antweb::Exporter
      values[:species],
      values[:author_date],
      nil,
-     boolean_to_antweb(values[:valid?]),
+     values[:status],
      boolean_to_antweb(values[:available?]),
      nil,
      nil,
