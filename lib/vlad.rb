@@ -63,6 +63,20 @@ class Vlad
     end
   end
 
+  class TaxaWithDeletedProtonyms < Problem
+    def self.query
+      Taxon.
+        where('protonym_id IS NOT NULL').
+        joins('LEFT OUTER JOIN protonyms ON protonym_id = protonyms.id').
+        where('protonyms.id IS NULL')
+    end
+    def self.display
+      display_results_section query do |taxon|
+        taxon.name.name
+      end
+    end
+  end
+
   class OrphanProtonyms < Problem
     def self.query
       Protonym.includes(:taxon).where('taxa.id IS NULL')

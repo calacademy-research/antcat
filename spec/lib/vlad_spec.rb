@@ -100,6 +100,14 @@ describe Vlad do
     -> {Vlad::TaxaWithoutProtonyms.display}.should_not raise_error
   end
 
+  it "should show taxa with deleted protonyms" do
+    taxon = create_genus
+    taxon.protonym.destroy
+    results = Vlad::TaxaWithDeletedProtonyms.query
+    results.should == [taxon]
+    -> {Vlad::TaxaWithDeletedProtonyms.display}.should_not raise_error
+  end
+
   it "should show orphan protonyms" do
     genus = create_genus
     orphan_protonym = FactoryGirl.create :protonym
