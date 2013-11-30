@@ -7,12 +7,16 @@ class Exporters::Antweb::Exporter
   def export directory
     File.open("#{directory}/bolton.txt", 'w') do |file|
       file.puts "antcat_id\tsubfamily\ttribe\tgenus\tspecies\tauthor date\tauthors\tyear\tcountry\tstatus\tavailable\tcurrent valid name\toriginal combination\tfossil\ttaxonomic history"
-      Taxon.all.each do |taxon|
+      get_taxa.each do |taxon|
         row = export_taxon taxon
         file.puts row.join("\t") if row
       end
     end
     Progress.show_results
+  end
+
+  def get_taxa
+    Taxon.joins protonym: [{authorship: :reference}]
   end
 
   def export_taxon taxon
