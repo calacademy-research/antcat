@@ -17,7 +17,7 @@ describe Exporters::Antweb::Exporter do
     it "should export a subfamily" do
       create_genus subfamily: @ponerinae, tribe: nil
       @ponerinae.stub(:authorship_string).and_return('Bolton, 2011')
-      @exporter.export_taxon(@ponerinae).should == [@ponerinae.id, 'Ponerinae', nil, nil, nil, 'Bolton, 2011', nil, 'valid', 'TRUE', 'Ponerinae', nil, 'FALSE', 'history']
+      @exporter.export_taxon(@ponerinae).should == [@ponerinae.id, 'Ponerinae', nil, nil, nil, 'Bolton, 2011', nil, 'valid', 'TRUE', 'Ponerinae', 'FALSE', 'FALSE', 'history']
     end
 
     it "should export fossil taxa" do
@@ -25,27 +25,27 @@ describe Exporters::Antweb::Exporter do
       fossil = create_genus 'Atta', subfamily: @ponerinae, tribe: nil, fossil: true
       @ponerinae.stub(:authorship_string).and_return 'Bolton, 2011'
       fossil.stub(:authorship_string).and_return 'Fisher, 2013'
-      @exporter.export_taxon(@ponerinae).should == [@ponerinae.id, 'Ponerinae', nil, nil, nil, 'Bolton, 2011', nil, 'valid', 'TRUE', 'Ponerinae', nil, 'FALSE', 'history']
-      @exporter.export_taxon(fossil).should == [fossil.id, 'Ponerinae', nil, 'Atta', nil, 'Fisher, 2013', nil, 'valid', 'TRUE', 'Atta', nil, 'TRUE', 'history']
+      @exporter.export_taxon(@ponerinae).should == [@ponerinae.id, 'Ponerinae', nil, nil, nil, 'Bolton, 2011', nil, 'valid', 'TRUE', 'Ponerinae', 'FALSE', 'FALSE', 'history']
+      @exporter.export_taxon(fossil).should == [fossil.id, 'Ponerinae', nil, 'Atta', nil, 'Fisher, 2013', nil, 'valid', 'TRUE', 'Atta', 'FALSE', 'TRUE', 'history']
     end
 
     it "should export a genus" do
       dacetini = create_tribe 'Dacetini', subfamily: @ponerinae
       acanthognathus = create_genus 'Acanothognathus', subfamily: @ponerinae, tribe: dacetini
       acanthognathus.stub(:authorship_string).and_return 'Bolton, 2011'
-      @exporter.export_taxon(acanthognathus).should == [acanthognathus.id, 'Ponerinae', 'Dacetini', 'Acanothognathus', nil, 'Bolton, 2011', nil, 'valid', 'TRUE', 'Acanothognathus', nil, 'FALSE', 'history']
+      @exporter.export_taxon(acanthognathus).should == [acanthognathus.id, 'Ponerinae', 'Dacetini', 'Acanothognathus', nil, 'Bolton, 2011', nil, 'valid', 'TRUE', 'Acanothognathus', 'FALSE', 'FALSE', 'history']
     end
 
     it "should export a genus without a tribe" do
       acanthognathus = create_genus 'Acanothognathus', subfamily: @ponerinae, tribe: nil
       acanthognathus.stub(:authorship_string).and_return 'Bolton, 2011'
-      @exporter.export_taxon(acanthognathus).should == [acanthognathus.id, 'Ponerinae', nil, 'Acanothognathus', nil, 'Bolton, 2011', nil, 'valid', 'TRUE', 'Acanothognathus', nil, 'FALSE', 'history']
+      @exporter.export_taxon(acanthognathus).should == [acanthognathus.id, 'Ponerinae', nil, 'Acanothognathus', nil, 'Bolton, 2011', nil, 'valid', 'TRUE', 'Acanothognathus', 'FALSE', 'FALSE', 'history']
     end
 
     it "should export a genus without a subfamily as being in 'incertae_sedis'" do
       acanthognathus = create_genus 'Acanothognathus', tribe: nil, subfamily: nil
       acanthognathus.stub(:authorship_string).and_return 'Fisher, 2013'
-      @exporter.export_taxon(acanthognathus).should == [acanthognathus.id, 'incertae_sedis', nil, 'Acanothognathus', nil, 'Fisher, 2013', nil, 'valid', 'TRUE', 'Acanothognathus', nil, 'FALSE', 'history']
+      @exporter.export_taxon(acanthognathus).should == [acanthognathus.id, 'incertae_sedis', nil, 'Acanothognathus', nil, 'Fisher, 2013', nil, 'valid', 'TRUE', 'Acanothognathus', 'FALSE', 'FALSE', 'history']
     end
 
     describe "Exporting species" do
@@ -53,19 +53,19 @@ describe Exporters::Antweb::Exporter do
         atta = create_genus 'Atta', tribe: @attini
         species = create_species 'Atta robustus', genus: atta
         species.stub(:authorship_string).and_return 'Bolton, 2011'
-        @exporter.export_taxon(species).should == [species.id, 'Ponerinae', 'Attini', 'Atta', 'robustus', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus', nil, 'FALSE', 'history']
+        @exporter.export_taxon(species).should == [species.id, 'Ponerinae', 'Attini', 'Atta', 'robustus', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus', 'FALSE', 'FALSE', 'history']
       end
       it "should export a species without a tribe" do
         atta = create_genus 'Atta', subfamily: @ponerinae, tribe: nil
         species = create_species 'Atta robustus', genus: atta
         species.stub(:authorship_string).and_return 'Bolton, 2011'
-        @exporter.export_taxon(species).should == [species.id, 'Ponerinae', nil, 'Atta', 'robustus', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus', nil, 'FALSE', 'history']
+        @exporter.export_taxon(species).should == [species.id, 'Ponerinae', nil, 'Atta', 'robustus', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus', 'FALSE', 'FALSE', 'history']
       end
       it "should export a species without a subfamily as being in the 'incertae sedis' subfamily" do
         atta = create_genus 'Atta', subfamily: nil, tribe: nil
         species = create_species 'Atta robustus', genus: atta
         species.stub(:authorship_string).and_return 'Bolton, 2011'
-        @exporter.export_taxon(species).should == [species.id, 'incertae_sedis', nil, 'Atta', 'robustus', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus', nil, 'FALSE', 'history']
+        @exporter.export_taxon(species).should == [species.id, 'incertae_sedis', nil, 'Atta', 'robustus', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus', 'FALSE', 'FALSE', 'history']
       end
     end
 
@@ -75,21 +75,21 @@ describe Exporters::Antweb::Exporter do
         species = create_species 'Atta robustus', subfamily: @ponerinae, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', subfamily: @ponerinae, genus: atta, species: species
         subspecies.stub(:authorship_string).and_return 'Bolton, 2011'
-        @exporter.export_taxon(subspecies).should == [subspecies.id, 'Ponerinae', 'Attini', 'Atta', 'robustus emeryii', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus emeryii', nil, 'FALSE', 'history']
+        @exporter.export_taxon(subspecies).should == [subspecies.id, 'Ponerinae', 'Attini', 'Atta', 'robustus emeryii', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus emeryii', 'FALSE', 'FALSE', 'history']
       end
       it "should export a subspecies without a tribe" do
         atta = create_genus 'Atta', subfamily: @ponerinae, tribe: nil
         species = create_species 'Atta robustus', subfamily: @ponerinae, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', genus: atta, species: species
         subspecies.stub(:authorship_string).and_return 'Bolton, 2011'
-        @exporter.export_taxon(subspecies).should == [subspecies.id, 'Ponerinae', nil, 'Atta', 'robustus emeryii', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus emeryii', nil, 'FALSE', 'history']
+        @exporter.export_taxon(subspecies).should == [subspecies.id, 'Ponerinae', nil, 'Atta', 'robustus emeryii', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus emeryii', 'FALSE', 'FALSE', 'history']
       end
       it "should export a subspecies without a subfamily as being in the 'incertae sedis' subfamily" do
         atta = create_genus 'Atta', subfamily: nil, tribe: nil
         species = create_species 'Atta robustus', subfamily: nil, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', subfamily: nil, genus: atta, species: species
         subspecies.stub(:authorship_string).and_return 'Bolton, 2011'
-        @exporter.export_taxon(subspecies).should == [subspecies.id, 'incertae_sedis', nil, 'Atta', 'robustus emeryii', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus emeryii', nil, 'FALSE', 'history']
+        @exporter.export_taxon(subspecies).should == [subspecies.id, 'incertae_sedis', nil, 'Atta', 'robustus emeryii', 'Bolton, 2011', nil, 'valid', 'TRUE', 'Atta robustus emeryii', 'FALSE', 'FALSE', 'history']
       end
 
     end
@@ -128,4 +128,14 @@ describe Exporters::Antweb::Exporter do
     end
   end
 
+  describe "Sending 'original combination' so that AntWeb knows when to use parentheses around authorship" do
+    it "should send TRUE or FALSE" do
+      taxon = create_genus status: 'original combination'
+      @exporter.export_taxon(taxon)[10].should == 'TRUE'
+    end
+    it "should send TRUE or FALSE" do
+      taxon = create_genus
+      @exporter.export_taxon(taxon)[10].should == 'FALSE'
+    end
+  end
 end
