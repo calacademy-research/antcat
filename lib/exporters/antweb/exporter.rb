@@ -26,6 +26,8 @@ class Exporters::Antweb::Exporter
       fossil?:      taxon.fossil,
       history:      Exporters::Antweb::Formatter.new(taxon).format,
       author_date:  taxon.authorship_string,
+      current_valid_name:
+                    (taxon.current_valid_taxon ? taxon.current_valid_taxon.name.name : taxon.name.name),
     }
 
     case taxon
@@ -74,7 +76,7 @@ class Exporters::Antweb::Exporter
      nil,
      values[:status],
      boolean_to_antweb(values[:available?]),
-     nil,
+     values[:current_valid_name],
      nil,
      boolean_to_antweb(values[:fossil?]),
      values[:history]]
