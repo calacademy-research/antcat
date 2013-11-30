@@ -127,10 +127,15 @@ describe Exporters::Antweb::Exporter do
       results.should_not be_nil
       results[6].should == 'original combination'
     end
-    it "should still not export a Tribe" do
+    it "should export a Tribe" do
       taxon = create_tribe
       results = @exporter.export_taxon(taxon)
-      results.should be_nil
+      results.should_not be_nil
+    end
+    it "should export a Subgenus" do
+      taxon = create_subgenus
+      results = @exporter.export_taxon(taxon)
+      results.should_not be_nil
     end
   end
 
