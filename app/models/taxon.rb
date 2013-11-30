@@ -228,6 +228,14 @@ class Taxon < ActiveRecord::Base
     string
   end
 
+  def author_last_names_string
+    protonym.author_last_names_string
+  end
+
+  def year
+    protonym.year
+  end
+
   def recombination?
     false
   end

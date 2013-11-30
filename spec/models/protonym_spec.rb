@@ -30,6 +30,19 @@ describe Protonym do
     end
   end
 
+  describe "Last names string" do
+    it "should handle it if there is no citation" do
+      protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
+      protonym.authorship_string.should be_nil
+    end
+    it "should delegate to the citation" do
+      citation = FactoryGirl.build_stubbed :citation
+      protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
+      citation.should_receive(:author_last_names_string).and_return 'Bolton'
+      protonym.author_last_names_string.should == 'Bolton'
+    end
+  end
+
   describe "Cascading delete" do
     it "should delete the citation when the protonym is deleted" do
       protonym = FactoryGirl.create :protonym

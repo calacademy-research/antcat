@@ -6,7 +6,7 @@ class Exporters::Antweb::Exporter
 
   def export directory
     File.open("#{directory}/bolton.txt", 'w') do |file|
-      file.puts "antcat_id\tsubfamily\ttribe\tgenus\tspecies\tauthor date\tauthor\tyear\tcountry\tstatus\tavailable\tcurrent valid name\toriginal combination\tfossil\ttaxonomic history"
+      file.puts "antcat_id\tsubfamily\ttribe\tgenus\tspecies\tauthor date\tauthors\tyear\tcountry\tstatus\tavailable\tcurrent valid name\toriginal combination\tfossil\ttaxonomic history"
       Taxon.all.each do |taxon|
         row = export_taxon taxon
         file.puts row.join("\t") if row
@@ -26,7 +26,10 @@ class Exporters::Antweb::Exporter
       history:              Exporters::Antweb::Formatter.new(taxon).format,
       author_date:          taxon.authorship_string,
       current_valid_name:   (taxon.current_valid_taxon ? taxon.current_valid_taxon.name.name : taxon.name.name),
-      original_combination?:taxon.original_combination?
+      original_combination?:taxon.original_combination?,
+      authors:              taxon.author_last_names_string,
+      year:                 taxon.year && taxon.year.to_s,
+
     }
 
     case taxon
@@ -75,7 +78,8 @@ class Exporters::Antweb::Exporter
      values[:genus],
      values[:species],
      values[:author_date],
-     nil,
+     values[:authors],
+     values[:year],
      values[:status],
      boolean_to_antweb(values[:available?]),
      values[:current_valid_name],

@@ -105,4 +105,12 @@ describe Citation do
     end
   end
 
+  describe "Authors' last names string" do
+    it "should show the authors' last names" do
+      reference = reference_factory author_name: 'Bolton', citation_year: '2001'
+      citation = FactoryGirl.build_stubbed :citation, reference: reference
+      citation.author_last_names_string.should == 'Bolton'
+    end
+  end
+
 end

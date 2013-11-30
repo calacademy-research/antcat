@@ -12,6 +12,14 @@ class Protonym < ActiveRecord::Base
     authorship and authorship.authorship_string
   end
 
+  def author_last_names_string
+    authorship and authorship.author_last_names_string
+  end
+
+  def year
+    authorship and authorship.year
+  end
+
   def self.destroy_orphans
     orphans = Protonym.includes(:taxon).where('taxa.id IS NULL')
     orphans.each do |orphan|

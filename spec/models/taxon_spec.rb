@@ -187,6 +187,20 @@ describe Taxon do
   end
 
   describe "Other attributes" do
+    describe "Author last names string" do
+      it "should delegate to the protonym" do
+        genus = create_genus
+        genus.protonym.should_receive(:author_last_names_string).and_return 'Bolton'
+        genus.author_last_names_string.should == 'Bolton'
+      end
+      it "should handle it if there simply isn't a protonym authorship" do
+        species = create_species 'Atta minor maxus'
+        protonym_name = create_subspecies_name 'Eciton minor maxus'
+        species.protonym.should_receive(:author_last_names_string).and_return nil
+        species.author_last_names_string.should be_nil
+      end
+    end
+
     describe "Authorship string" do
       it "should delegate to the protonym" do
         genus = create_genus
@@ -214,6 +228,7 @@ describe Taxon do
         species.authorship_string.should be_nil
       end
     end
+
   end
 
   describe "Recombination" do

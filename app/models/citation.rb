@@ -17,6 +17,14 @@ class Citation < ActiveRecord::Base
     reference and "#{author_names_string}, #{reference.year}"
   end
 
+  def author_last_names_string
+    reference and "#{author_names_string}"
+  end
+
+  def year
+    reference and reference.year
+  end
+
   def author_names_string
     names = reference.author_names.map &:last_name
     case
