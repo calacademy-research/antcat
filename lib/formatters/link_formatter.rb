@@ -32,17 +32,22 @@ module Formatters::LinkFormatter
 
   def link_to_antweb taxon
     return if taxon.kind_of? Family
-    return unless Exporters::Antweb::Exporter.exportable? taxon
     url = %{http://www.antweb.org/description.do?}
     url << case taxon
     when Species
       %{name=#{taxon.name.epithet.to_s.downcase}&genus=#{taxon.genus.name.to_s.downcase}&rank=species}
     when Subspecies
       %{name=#{taxon.name.epithets.to_s.downcase}&genus=#{taxon.genus.name.to_s.downcase}&rank=species}
+    when Subgenus
+      %{name=#{taxon.name.to_s.downcase}&rank=subgenus}
     when Genus
       %{name=#{taxon.name.to_s.downcase}&rank=genus}
+    when Tribe
+      %{name=#{taxon.name.to_s.downcase}&rank=tribe}
     when Subfamily
       %{name=#{taxon.name.to_s.downcase}&rank=subfamily}
+    else
+      raise "Don't know how to link #{taxon} to AntWeb"
     end
     url << %{&project=worldants}
     link_to_external_site 'AntWeb', url.html_safe

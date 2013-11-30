@@ -70,9 +70,9 @@ describe Formatters::CatalogTaxonFormatter do
         species = create_subspecies 'Atta major nigrans', species: species, genus: genus, subfamily: subfamily
         @formatter.new(species).link_to_other_site.should == %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?name=major nigrans&genus=atta&rank=species&project=worldants" target="_blank">AntWeb</a>}
       end
-      it "should not link to an invalid taxon" do
+      it "should link to an invalid taxon" do
         subfamily = create_subfamily 'Dolichoderinae', status: 'synonym'
-        @formatter.new(subfamily).link_to_other_site.should be_nil
+        @formatter.new(subfamily).link_to_other_site.should_not be_nil
       end
     end
 

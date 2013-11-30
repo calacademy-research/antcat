@@ -48,4 +48,14 @@ describe Formatters::LinkFormatter do
     end
   end
 
+  describe "Creating a link from a site to AntWeb" do
+    it "should handle tribes" do
+      tribe = create_tribe 'Attini'
+      @formatter.link_to_antweb(tribe).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?name=attini&rank=tribe&project=worldants\" target=\"_blank\">AntWeb</a>"
+    end
+    it "should handle subgenera" do
+      subgenus = create_subgenus 'Atta (Batta)'
+      @formatter.link_to_antweb(subgenus).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?name=atta (batta)&rank=subgenus&project=worldants\" target=\"_blank\">AntWeb</a>"
+    end
+  end
 end
