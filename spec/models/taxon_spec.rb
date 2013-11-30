@@ -201,6 +201,14 @@ describe Taxon do
       end
     end
 
+    describe "Year" do
+      it "should delegate to the protonym" do
+        genus = create_genus
+        genus.protonym.should_receive(:year).and_return '2001'
+        genus.year.should == '2001'
+      end
+    end
+
     describe "Authorship string" do
       it "should delegate to the protonym" do
         genus = create_genus

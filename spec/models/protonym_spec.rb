@@ -43,6 +43,19 @@ describe Protonym do
     end
   end
 
+  describe "Year" do
+    it "should handle it if there is no citation" do
+      protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
+      protonym.year.should be_nil
+    end
+    it "should delegate to the citation" do
+      citation = FactoryGirl.build_stubbed :citation
+      protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
+      citation.should_receive(:year).and_return '2010'
+      protonym.year.should == '2010'
+    end
+  end
+
   describe "Cascading delete" do
     it "should delete the citation when the protonym is deleted" do
       protonym = FactoryGirl.create :protonym

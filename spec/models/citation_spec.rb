@@ -113,4 +113,12 @@ describe Citation do
     end
   end
 
+  describe "Year" do
+    it "should show the year" do
+      reference = reference_factory author_name: 'Bolton', citation_year: '2001'
+      citation = FactoryGirl.build_stubbed :citation, reference: reference
+      citation.year.should == '2001'
+    end
+  end
+
 end
