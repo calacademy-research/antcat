@@ -6,7 +6,7 @@ class Exporters::Antweb::Exporter
 
   def export directory
     File.open("#{directory}/bolton.txt", 'w') do |file|
-      file.puts "subfamily\ttribe\tgenus\tspecies\tauthor date\tcountry\tstatus\tavailable\tcurrent valid name\toriginal combination\tfossil\ttaxonomic history"
+      file.puts "antcat_id\tsubfamily\ttribe\tgenus\tspecies\tauthor date\tcountry\tstatus\tavailable\tcurrent valid name\toriginal combination\tfossil\ttaxonomic history"
       Taxon.all.each do |taxon|
         row = export_taxon taxon
         file.puts row.join("\t") if row
@@ -19,13 +19,13 @@ class Exporters::Antweb::Exporter
     Progress.tally_and_show_progress 100
 
     attributes = {
-      status:       taxon.status,
-      available?:   !taxon.invalid?,
-      fossil?:      taxon.fossil,
-      history:      Exporters::Antweb::Formatter.new(taxon).format,
-      author_date:  taxon.authorship_string,
-      current_valid_name:
-                    (taxon.current_valid_taxon ? taxon.current_valid_taxon.name.name : taxon.name.name),
+      antcat_id:          taxon.id,
+      status:             taxon.status,
+      available?:         !taxon.invalid?,
+      fossil?:            taxon.fossil,
+      history:            Exporters::Antweb::Formatter.new(taxon).format,
+      author_date:        taxon.authorship_string,
+      current_valid_name: (taxon.current_valid_taxon ? taxon.current_valid_taxon.name.name : taxon.name.name),
     }
 
     case taxon
@@ -68,7 +68,8 @@ class Exporters::Antweb::Exporter
   end
 
   def convert_to_antweb_array values
-    [values[:subfamily],
+    [values[:antcat_id],
+     values[:subfamily],
      values[:tribe],
      values[:genus],
      values[:species],
