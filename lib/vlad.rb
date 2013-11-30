@@ -83,7 +83,7 @@ class Vlad
     end
     def self.display
       display_results_section query do |protonym|
-        protonym
+        protonym.name.name
       end
     end
   end
