@@ -4,7 +4,7 @@ production:
     port: 80
     path: <%=
       require 'milieu'
-      $Milieu.preview? ? '/solr/86db0cc797f' : '/solr/da3c57802d4'
+      $Milieu.preview? ? '/solr/86db0cc797f' : '/solr/ea8fcb74b3b'
     %>
     log_level: WARNING
 
