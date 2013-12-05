@@ -99,9 +99,12 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       labels << "unresolved junior homonym"
     elsif @taxon.nomen_nudum?
       labels << "<i>nomen nudum</i>"
+    elsif @taxon.synonym?
+      label = 'junior synonym'
+      label << senior_synonym_list
+      labels << label
     elsif @taxon.invalid?
       label = Status[@taxon].to_s.dup
-      label << senior_synonym_list
       labels << label
     else
       labels << 'valid'
