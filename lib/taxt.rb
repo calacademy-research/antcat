@@ -246,7 +246,7 @@ module Taxt
   end
 
   def self.cleanup show_progress = false
-    count = 0
+    count = @replaced_count = 0
     taxt_fields.each {|table, field| count += table.count}
     Progress.new_init show_progress: show_progress, total_count: count, show_errors: true
     taxt_fields.each do |klass, fields|
@@ -260,6 +260,7 @@ module Taxt
       end
     end
     Progress.show_results
+    Progress.puts "Replaced #{@replaced_count} {nam}s with {tax}"
   end
 
   def self.cleanup_field taxt
@@ -270,6 +271,7 @@ module Taxt
           Progress.error "Taxt: found multiple valid targets among #{taxa.map(&:name).map(&:to_s).join(', ')}"
           match
         else
+          @replaced_count += 1
           "{tax #{taxa.first.id}}"
         end
       else
