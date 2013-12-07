@@ -18,6 +18,7 @@ class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
     @initialize_fields_section()
     @initialize_parent_section()
+    @initialize_current_valid_taxon_section()
     @initialize_history_section()
     @initialize_junior_and_senior_synonyms_section()
     @initialize_references_section()
@@ -49,6 +50,9 @@ class AntCat.TaxonForm extends AntCat.Form
 
   initialize_parent_section: =>
     new AntCat.ParentSection()
+
+  initialize_current_valid_name_section: =>
+    new AntCat.CurrentValidNameSection()
 
   initialize_homonym_replaced_by_section: =>
     @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by_row'

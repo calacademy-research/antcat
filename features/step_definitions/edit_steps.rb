@@ -68,6 +68,14 @@ Then /^I should not see the parent name field/ do
   page.should_not have_css "#parent_row"
 end
 
+### current valid taxon field
+When /I click the current valid taxon field/ do
+  find('#current_valid_taxon .display_button').click
+end
+When /^I set the current valid taxon to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
+end
+
 # status
 Then /the status should be "([^"]*)"/ do |status|
   page.should have_css "select#taxon_status option[selected=selected][value=#{status}]"
