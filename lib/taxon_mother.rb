@@ -83,16 +83,16 @@ class TaxonMother
     raise
   end
 
-  def update_current_valid_taxon attributes
-    replacement_id = attributes[:id]
-    replacement = replacement_id.present? ? Taxon.find_by_name_id(replacement_id) : nil
-    @taxon.current_valid_taxon = replacement
-  end
-
   def update_homonym_replaced_by attributes
     replacement_id = attributes[:id]
     replacement = replacement_id.present? ? Taxon.find_by_name_id(replacement_id) : nil
     @taxon.homonym_replaced_by = replacement
+  end
+
+  def update_current_valid_taxon attributes
+    replacement_id = attributes[:id]
+    replacement = replacement_id.present? ? Taxon.find_by_name_id(replacement_id) : nil
+    @taxon.current_valid_taxon = replacement
   end
 
   def update_protonym attributes

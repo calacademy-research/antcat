@@ -51,6 +51,7 @@ describe TaxonMother do
         incertae_sedis_in:   '',
         fossil:              '0',
         nomen_nudum:         '0',
+        current_valid_taxon_name_attributes: {id: ''},
         unresolved_homonym:  '0',
         ichnotaxon:          '0',
         hong:                '0',
@@ -178,6 +179,19 @@ describe TaxonMother do
       taxon.reload
 
       taxon.homonym_replaced_by.should == replacement_homonym
+    end
+
+    it "should set current valid taxon" do
+      taxon = @mother.create_taxon Rank[:species], create_genus
+      params = @species_params.deep_dup
+      current_valid_taxon = create_genus
+      params[:current_valid_taxon_name_attributes][:id] = current_valid_taxon.name.id
+
+      @mother.save_taxon taxon, params
+
+      taxon.reload
+
+      taxon.current_valid_taxon.should == current_valid_taxon
     end
 
     describe "Creating a Change" do

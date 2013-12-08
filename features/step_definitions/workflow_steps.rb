@@ -88,6 +88,7 @@ When /^I add the genus "Atta"$/ do
     ichnotaxon:          '0',
     hong:                '0',
     headline_notes_taxt: '',
+    current_valid_taxon_name_attributes: {id: ''},
     homonym_replaced_by_name_attributes: {id: ''},
     protonym_attributes: {
       name_attributes:  {id: ''},

@@ -387,7 +387,9 @@ describe Species do
 
       data[:fossil] = true
       homonym_species = create_species 'Eciton major'
+      current_valid_taxon_species = create_species 'Etta major'
       data[:homonym_replaced_by] = homonym_species
+      data[:current_valid_taxon] = current_valid_taxon_species
       FactoryGirl.create :article_reference, bolton_key_cache: 'Fisher 2005'
       data[:protonym][:authorship].first[:pages] = '23'
 
