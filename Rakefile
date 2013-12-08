@@ -14,7 +14,6 @@ unless Rails.env.production?
   RSpec::Core::RakeTask.new(:all_specs)
   Cucumber::Rake::Task.new :current_features do |t|
     t.cucumber_opts = "--tags ~@dormant"
-    t.fork = false
   end
   Cucumber::Rake::Task.new(:all_features)
 
