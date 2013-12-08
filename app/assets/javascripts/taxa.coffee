@@ -22,6 +22,7 @@ class AntCat.TaxonForm extends AntCat.Form
     @initialize_history_section()
     @initialize_junior_and_senior_synonyms_section()
     @initialize_references_section()
+    @initialize_current_valid_taxon_section()
     @initialize_homonym_replaced_by_section()
     @initialize_task_buttons()
     @initialize_events()
@@ -60,6 +61,10 @@ class AntCat.TaxonForm extends AntCat.Form
     @status_selector.change => @hide_or_show_homonym_replaced_by()
     new AntCat.HomonymReplacedBySection $('#homonym_replaced_by_name_field'), parent_form: @
     @hide_or_show_homonym_replaced_by()
+
+  initialize_current_valid_taxon_section: =>
+    @current_valid_taxon_name_row = $ 'tr#current_valid_taxon_row'
+    new AntCat.CurrentValidTaxonSection $('#current_valid_taxon_name_field'), parent_form: @
 
   initialize_task_buttons: =>
     @element.find('#add_taxon').click => @add_taxon(); false

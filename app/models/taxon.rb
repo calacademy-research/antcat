@@ -201,8 +201,13 @@ class Taxon < ActiveRecord::Base
   end
 
   ###############################################
-  # other associations
+  # current_valid_taxon
   belongs_to  :current_valid_taxon, class_name: 'Taxon'
+  def current_valid_taxon? taxon; current_valid_taxon == taxon end
+  attr_accessor :current_valid_taxon_name
+
+  ###############################################
+  # other associations
   has_many    :history_items, class_name: 'TaxonHistoryItem', order: :position, dependent: :destroy
   has_many    :reference_sections, order: :position, dependent: :destroy
 

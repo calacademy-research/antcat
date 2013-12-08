@@ -69,10 +69,17 @@ Then /^I should not see the parent name field/ do
 end
 
 ### current valid taxon field
-When /I click the current valid taxon field/ do
-  find('#current_valid_taxon .display_button').click
+Then /^I should (not )?see the current valid taxon field$/ do |should_not|
+  selector = should_not ? :should_not : :should
+  find("#current_valid_taxon_row").send(selector, be_visible)
 end
-When /^I set the current valid taxon to "([^"]*)"$/ do |name|
+When /the current valid taxon name should be "([^"]*)"$/ do |name|
+  page.find('#current_valid_taxon_name_field div.display').text.should == name
+end
+When /I click the current valid taxon name field/ do
+  find('#current_valid_taxon_name_field .display_button').click
+end
+When /^I set the current valid taxon name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
 

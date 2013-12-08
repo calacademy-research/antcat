@@ -213,3 +213,16 @@ Feature: Editing a taxon
     And I select "" from "taxon_biogeographic_region"
     And I save my changes
     Then I should not see "Malagasy"
+
+  Scenario: Changing current valid taxon
+    Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
+    When I go to the edit page for "Eciton minor"
+    When I log in
+    And I go to the edit page for "Atta major"
+    And I click the current valid taxon name field
+    And I set the current valid taxon name to "Eciton minor"
+    And I press "OK"
+    And I save my changes
+    When I press "Edit"
+    Then the current valid taxon name should be "Eciton minor"
+    #And I should see "synonym of Eciton minor (current valid taxon)"
