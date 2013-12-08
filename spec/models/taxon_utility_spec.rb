@@ -57,4 +57,36 @@ describe Taxon do
     end
   end
 
+  describe "Setting current valid taxon to the senior synonym" do
+    it "should not worry if the field is already populated" do
+      senior = create_genus
+      current_valid_taxon = create_genus
+      taxon = create_synonym senior, current_valid_taxon: current_valid_taxon
+      taxon.update_current_valid_taxon
+      taxon.current_valid_taxon.should == current_valid_taxon
+    end
+    it "should find the latest senior synonym" do
+      senior = create_genus
+      taxon = create_synonym senior
+      taxon.update_current_valid_taxon
+      taxon.current_valid_taxon.should == senior
+    end
+    it "should find the latest senior synonym that's valid" do
+      senior = create_genus
+      invalid_senior = create_genus status: 'homonym'
+      taxon = create_synonym invalid_senior
+      Synonym.create! senior_synonym: senior, junior_synonym: taxon
+      taxon.update_current_valid_taxon
+      taxon.current_valid_taxon.should == senior
+    end
+    it "should handle when none are valid, in preparation for a Vlad run" do
+      invalid_senior = create_genus status: 'homonym'
+      another_invalid_senior = create_genus status: 'homonym'
+      taxon = create_synonym invalid_senior
+      Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: taxon
+      taxon.update_current_valid_taxon
+      taxon.current_valid_taxon.should be_nil
+    end
+  end
+
 end
