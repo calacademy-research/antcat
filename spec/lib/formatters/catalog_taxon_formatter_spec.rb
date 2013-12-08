@@ -127,14 +127,31 @@ describe Formatters::CatalogTaxonFormatter do
       result.should == %{junior synonym of <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
       result.should be_html_safe
     end
-    it "should show all synonyms" do
-      senior_synonym = create_genus 'Atta'
-      other_senior_synonym = create_genus 'Eciton'
-      taxon = create_synonym senior_synonym
-      Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
-      result = @formatter.new(taxon).status
-      result.should == %{junior synonym of <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>, <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+
+    describe "Using current valid taxon" do
+      it "should handle a null current valid taxon" do
+        senior_synonym = create_genus 'Atta'
+        other_senior_synonym = create_genus 'Eciton'
+        taxon = create_synonym senior_synonym, current_valid_taxon: other_senior_synonym
+        Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
+        result = @formatter.new(taxon).status
+        result.should == %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+      end
+      it "should handle a null current valid taxon with no synonyms" do
+        taxon = create_genus status: 'synonym'
+        result = @formatter.new(taxon).status
+        result.should == %{junior synonym}
+      end
+      it "should handle a current valid taxon that's one of two 'senior synonyms'" do
+        senior_synonym = create_genus 'Atta'
+        other_senior_synonym = create_genus 'Eciton'
+        taxon = create_synonym senior_synonym, current_valid_taxon: other_senior_synonym
+        Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
+        result = @formatter.new(taxon).status
+        result.should == %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+      end
     end
+
     it "should not freak out if the senior synonym hasn't been set yet" do
       taxon = create_genus status: 'synonym'
       @formatter.new(taxon).status.should == 'junior synonym'

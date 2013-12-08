@@ -101,7 +101,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       labels << "<i>nomen nudum</i>"
     elsif @taxon.synonym?
       label = 'junior synonym'
-      label << senior_synonym_list
+      label << format_senior_synonym
       labels << label
     elsif @taxon.invalid?
       label = Status[@taxon].to_s.dup
@@ -125,9 +125,13 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     end
   end
 
-  def senior_synonym_list
+  def format_senior_synonym
     return '' unless @taxon.senior_synonyms.count > 0
-    ' of ' << @taxon.senior_synonyms.map {|e| self.class.link_to_taxon(e)}.join(', ')
+    if @taxon.current_valid_taxon
+      ' of current valid taxon ' << self.class.link_to_taxon(@taxon.current_valid_taxon)
+    else
+      ' of ' << self.class.link_to_taxon(@taxon.senior_synonyms.last)
+    end
   end
 
   #########
