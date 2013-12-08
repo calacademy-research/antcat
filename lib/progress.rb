@@ -88,7 +88,7 @@ class Progress
     "#{count} (#{percent(count, total)}) #{label}"
   end
 
-  def self.show_count count, total, label
+  def self.show_count count, total, label = ''
     puts count count, total, label
   end
 
