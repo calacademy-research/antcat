@@ -11,7 +11,7 @@
 
     = render 'parent_section', taxon: taxon, form: form if taxon.kind_of? SpeciesGroupTaxon unless taxon.new_record?
 
-    = render 'current_valid_taxon_section', taxon: taxon, form: form unless taxon.new_record?
+    = render 'current_valid_taxon_section', taxon: taxon, form: form
 
     %tr.flags_row
       %td
