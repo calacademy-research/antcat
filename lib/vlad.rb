@@ -77,23 +77,6 @@ class Vlad
     end
   end
 
-  class MultipleSeniorSynonyms < Problem
-    def self.query
-      synonyms_with_multiple_seniors = Synonym.select(:junior_synonym_id).group(:junior_synonym_id).having("count(*) > 1")
-      results = {}
-      synonyms_with_multiple_seniors.each do |synonym|
-        junior_synonym = Taxon.find synonym.junior_synonym_id
-        results[junior_synonym.id] = junior_synonym.senior_synonyms
-      end
-      results
-    end
-    def self.display
-      display_results_section query do |key, value|
-        "#{Taxon.find(key).name_cache}: #{value.map(&:name_cache).join(', ')}"
-      end
-    end
-  end
-
   class OrphanProtonyms < Problem
     def self.query
       Protonym.includes(:taxon).where('taxa.id IS NULL')
@@ -332,6 +315,17 @@ class Vlad
         Progress.puts "  #{result.second.to_s.rjust(7)} #{result.first}"
       end
       Progress.puts
+    end
+  end
+
+  class SynonymsWithoutCurrentValidTaxon < Problem
+    def self.query
+      Taxon.where(status: 'synonym').all.select do |synonym|
+        synonym.current_valid_taxon.nil?
+      end
+    end
+    def self.display
+      display_result_count query.size
     end
   end
 

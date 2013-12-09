@@ -126,33 +126,6 @@ describe Vlad do
     results.map(&:junior_synonym_id).should =~ [junior.id]
   end
 
-  describe "Multiple senior synonyms" do
-    it "should not show taxa without multiple senior synonyms" do
-      senior = create_genus
-      junior = create_genus
-      synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
-      results = Vlad::MultipleSeniorSynonyms.query
-      results.should be_empty
-    end
-    it "should show taxa with multiple senior synonyms" do
-      senior = create_genus
-      another_senior = create_genus
-      junior = create_genus
-      synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
-      another_synonym = Synonym.create! senior_synonym: another_senior, junior_synonym: junior
-      results = Vlad::MultipleSeniorSynonyms.query
-      results.should have(1).item
-      results[junior.id].should =~ [senior, another_senior]
-    end
-    it "should not crash when displaying" do
-      senior = create_genus
-      another_senior = create_genus
-      junior = create_genus
-      synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
-      another_synonym = Synonym.create! senior_synonym: another_senior, junior_synonym: junior
-      Vlad::MultipleSeniorSynonyms.display
-    end
-  end
 
   describe "Duplicate checking" do
     it "should show duplicate valid names" do
@@ -204,6 +177,19 @@ describe Vlad do
       results[:locations][:ip_128_146_250_117].should == 3
       results[:locations][:other].should == 4
 
+    end
+  end
+
+  describe "Finding synonyms without current valid taxon" do
+    it "should return just the synonyms and just those w/o current valid taxon" do
+      taxon = create_species
+      senior_synonym = create_species
+      junior_synonym = create_synonym senior_synonym
+      another_senior_synonym = create_species
+      another_junior_synonym = create_synonym another_senior_synonym, current_valid_taxon: taxon
+      results = Vlad::SynonymsWithoutCurrentValidTaxon.query
+      results.should have(1).item
+      results.first.should == junior_synonym
     end
   end
 
