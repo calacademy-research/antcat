@@ -315,18 +315,17 @@ class Taxon < ActiveRecord::Base
   def update_current_valid_taxon
     return if current_valid_taxon.present?
     return unless synonym? and senior_synonyms.count > 0
-    current_valid_taxon = find_most_recent_valid_senior_synonym_for self
+    current_valid_taxon = self.class.find_most_recent_valid_senior_synonym_for self
     update_attributes! current_valid_taxon: current_valid_taxon
   end
 
-  def find_most_recent_valid_senior_synonym_for taxon
+  def self.find_most_recent_valid_senior_synonym_for taxon
     (taxon.senior_synonyms.count - 1).downto 0 do |index|
-      senior_synonym = senior_synonyms[index]
+      senior_synonym = taxon.senior_synonyms[index]
       if !senior_synonym.invalid?
         return senior_synonym
       else
-        current_valid_taxon = find_most_recent_valid_senior_synonym_for senior_synonym
-        return current_valid_taxon if current_valid_taxon
+        return find_most_recent_valid_senior_synonym_for senior_synonym
       end
     end
     nil
