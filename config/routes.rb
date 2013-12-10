@@ -23,9 +23,9 @@ AntCat::Application.routes.draw do
   match     'catalog/hide_subgenera' => 'catalog#hide_subgenera', as: :catalog, via: :get
   match     'catalog/(:id)'          => 'catalog#show',           as: :catalog, via: :get
 
-  resources :bolton_references
+  resources :bolton_references, only: [:index, :update]
   match     '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
-  resources :journals
+  resources :journals, only: [:index, :show, :new, :create, :edit, :update]
   resources :publishers, only: [:index]
 
   resources :references, only: [:index, :update, :create, :destroy] do
@@ -61,8 +61,8 @@ AntCat::Application.routes.draw do
   get 'name_fields/find'
   match 'name_fields/:type/:id' => 'name_fields#show', via: :get
 
-  resource :reference_field, only: :show
-  resource :reference_popup, only: :show
+  resource :reference_field, only: [:show]
+  resource :reference_popup, only: [:show]
 
   match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test'
   match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test'
