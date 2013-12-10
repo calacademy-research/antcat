@@ -15,7 +15,7 @@
           %td#name_field
             = render 'name_fields/panel', name_string: taxon.name.try(:name),
                                           default_name_string: default_name_string && "#{default_name_string} "
-          - if @taxon.name.kind_of? GenusGroupName
+          - if taxon.name.kind_of? GenusGroupName
             %td#gender_field
               = name_form.label :gender
               = name_form.select :gender, ['masculine', 'feminine', 'neuter']
