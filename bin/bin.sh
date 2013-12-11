@@ -1,3 +1,7 @@
+# edit & source this file
+alias pant='vim ~/antcat/bin/bin.sh'
+alias sant='source ~/antcat/bin/bin.sh'
+
 default_database="antcat_development"
 
 # execute a SQL statement
@@ -46,6 +50,29 @@ function find_where {
 alias dump_local_db='mysqldump antcat_development -u root > /tmp/dump.sql && head /tmp/dump.sql'
 
 # Application master: ec2-184-72-234-231.compute-1.amazonaws.com
+
+production_server='ec2-75-101-238-13.compute-1.amazonaws.com'
+production_password='7AdbiWigyX'
+preview_server='ec2-23-21-238-9.compute-1.amazonaws.com'
+preview_password='ret63V5ApP'
+
+function copy_production_db_to_preview {
+  file_name="/tmp/antcat_production.sql"
+
+  echo "Dumping production database..."
+  ssh deploy@$production_server "mysqldump antcat -udeploy -p$production_password > $file_name"
+
+  echo "Copying to local..."
+  scp deploy@$production_server:$file_name /tmp
+
+  echo "Copying to preview..."
+  scp $file_name deploy@$preview_server:/tmp
+
+  echo 'Importing into preview database...'
+  ssh deploy@$preview_server "mysql antcat -udeploy -p$preview_password < $file_name"
+
+  echo 'Done.'
+}
 
 function copy_local_db_to_production {
   file_name="local_antcat_development.sql"
