@@ -8,7 +8,6 @@ require 'cucumber/rspec/doubles'
 Spork.prefork do
   ENV["RAILS_ENV"] ||= "test"
   require_relative '../../config/environment'
-  require_relative '../../spec/support/sunspot'
 
   require 'cucumber/rails'
 
@@ -27,11 +26,6 @@ Spork.prefork do
 end
 
 Spork.each_run{FactoryGirl.reload}
-
-Sunspot.session = Sunspot.session.original_session if ENV['DRB'] != 'true'
-at_exit do
-  Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session) if ENV['DRB'] != 'true'
-end
 
 include Warden::Test::Helpers
 Warden.test_mode!

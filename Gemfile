@@ -23,7 +23,6 @@ gem 'rack'
 gem 'rails',            '~> 3'
 gem 'rake'
 gem 'sass'
-gem 'sunspot_rails'
 gem 'paperclip'
 gem 'will_paginate'
 gem 'workflow'
@@ -37,7 +36,6 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'spork'
-  gem 'sunspot_solr'
   gem 'thin'
 end
 
