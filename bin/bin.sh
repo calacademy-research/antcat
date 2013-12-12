@@ -213,3 +213,7 @@ function menu {
 
 # to restart an application, run this as root on production server
 # /engineyard/bin/app_<appname> restart
+
+function show_long_activities {
+  grep [0-9][0-9][0-9][0-9][0-9]ms ~/antcat/log/development.log -A5 -B20
+}
