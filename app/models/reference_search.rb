@@ -3,14 +3,53 @@ class Reference < ActiveRecord::Base
   class BoltonReferenceNotMatched < StandardError; end
   class BoltonReferenceNotFound < StandardError; end
 
+  searchable do
+    string  :type
+    integer :year
+    text    :author_names_string
+    text    :citation_year
+    text    :title
+    text    :journal_name do journal.name if journal end
+    text    :publisher_name do publisher.name if publisher end
+    text    :citation
+    text    :cite_code
+    text    :editor_notes
+    text    :public_notes
+    text    :taxonomic_notes
+    string  :citation_year
+    string  :author_names_string
+  end
+
   def self.perform_search options = {}
     page = options[:page]
     case
     when options[:fulltext]
-      query = select('`references`.*').
-               where("title LIKE '%#{options[:fulltext]}%'")
-              .order(:author_names_string_cache, :citation_year)
-      query = query.paginate(page: options[:page])
+      start_year, end_year = options[:start_year], options[:end_year]
+      search {
+        keywords options[:fulltext]
+
+        if start_year
+          if end_year
+            with(:year).between(start_year..end_year)
+          else
+            with(:year).equal_to start_year
+          end
+        end
+
+        case options[:filter]
+        when :unknown_references_only
+          with :type, 'UnknownReference'
+        when :nested_references_only
+          with :type, 'NestedReference'
+        when :no_missing_references
+          without :type, 'MissingReference'
+        end
+
+        paginate page: page if page
+
+        order_by :author_names_string
+        order_by :citation_year
+      }.results
 
     when options[:authors]
       authors = options[:authors]
@@ -21,7 +60,7 @@ class Reference < ActiveRecord::Base
         .group('references.id')
         .having("COUNT(`references`.id) = #{authors.length}")
         .order(:author_names_string_cache, :citation_year)
-      query = query.paginate(page: options[:page])
+      query = query.paginate page: page if page
       query
 
     when options[:id]

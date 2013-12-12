@@ -2,6 +2,7 @@
 require 'spec_helper'
 
 describe Reference, slow:true do
+  include EnableSunspot
 
   before do
     Reference.delete_all
@@ -62,12 +63,99 @@ describe Reference, slow:true do
       end
 
       describe 'Fulltext' do
+        describe 'Notes' do
+          it 'should find something in public notes' do
+            matching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'abcdef')
+            unmatching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'fedcba')
+            Reference.perform_search(:fulltext => 'abcdef').should == [matching_reference]
+          end
+          it 'should find something in editor notes' do
+            matching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'abcdef')
+            unmatching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'fedcba')
+            Reference.perform_search(:fulltext => 'abcdef').should == [matching_reference]
+          end
+          it 'should find something in taxonomic notes' do
+            matching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'abcdef')
+            unmatching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'fedcba')
+            Reference.perform_search(:fulltext => 'abcdef').should == [matching_reference]
+          end
+        end
 
-        describe 'Title' do
-          it 'should find something in the title' do
-            matching_reference = reference_factory(:author_name => 'Hölldobler', title: 'My Life with Ants')
-            unmatching_reference = reference_factory(title: 'Your Existence Without Beetles')
-            Reference.perform_search(:fulltext => 'Ants').should == [matching_reference]
+        describe 'Author names' do
+          it 'should at least find Bert!' do
+            reference = reference_factory(:author_name => 'Hölldobler')
+            Reference.perform_search(:fulltext => 'holldobler').should == [reference]
+          end
+          it 'should at least find Bert, even when the diacritic is used in the search term' do
+            reference = reference_factory(:author_name => 'Hölldobler')
+            Reference.perform_search(:fulltext => 'Hölldobler').should == [reference]
+          end
+        end
+
+        describe 'Cite code' do
+          it "should find a cite code that's doesn't look like a current year" do
+            matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'abcdef')
+            unmatching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'fedcba')
+            Reference.perform_search(:fulltext => 'abcdef').should == [matching_reference]
+          end
+          it "should find a cite code that looks like a year, but not a current year" do
+            matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => '1600')
+            Reference.perform_search(:fulltext => '1600').should == [matching_reference]
+          end
+        end
+
+        describe 'Journal name' do
+          it 'should find something in journal name' do
+            journal = FactoryGirl.create :journal, :name => 'Journal'
+            matching_reference = reference_factory(:author_name => 'Hölldobler', :journal => journal)
+            unmatching_reference = reference_factory(:author_name => 'Hölldobler')
+            Reference.perform_search(:fulltext => 'journal').should == [matching_reference]
+          end
+        end
+
+        describe 'Publisher name' do
+          it 'should find something in publisher name' do
+            publisher = FactoryGirl.create :publisher, :name => 'Publisher'
+            matching_reference = reference_factory(:author_name => 'Hölldobler', :publisher => publisher)
+            unmatching_reference = reference_factory(:author_name => 'Hölldobler')
+            Reference.perform_search(:fulltext => 'Publisher').should == [matching_reference]
+          end
+        end
+
+        describe 'Citation (for Unknown references)' do
+          it 'should find something in citation' do
+            matching_reference = reference_factory(:author_name => 'Hölldobler', :citation => 'Citation')
+            unmatching_reference = reference_factory(:author_name => 'Hölldobler')
+            Reference.perform_search(:fulltext => 'Citation').should == [matching_reference]
+          end
+        end
+
+        describe 'Year' do
+          before do
+            reference_factory(:author_name => 'Bolton', :citation_year => '1994')
+            reference_factory(:author_name => 'Bolton', :citation_year => '1995')
+            reference_factory(:author_name => 'Bolton', :citation_year => '1996')
+            reference_factory(:author_name => 'Bolton', :citation_year => '1997')
+            reference_factory(:author_name => 'Bolton', :citation_year => '1998')
+          end
+          it "should return an empty array if nothing is found for year" do
+            Reference.perform_search(:fulltext => '', :start_year => 1992, :end_year => 1993).should be_empty
+          end
+          it "should find entries in between the start year and the end year (inclusive)" do
+            Reference.perform_search(:fulltext => '', :start_year => 1995, :end_year => 1996).map(&:year).should =~ [1995, 1996]
+          end
+          it "should find references in the year of the end range, even if they have extra characters" do
+            reference_factory(:author_name => 'Bolton', :citation_year => '2004.')
+            Reference.perform_search(:fulltext => '', :start_year => '2004').map(&:year).should =~ [2004]
+          end
+        end
+
+        describe "Year and fulltext" do
+          it "should work" do
+            atta2004 = FactoryGirl.create :book_reference, :title => 'Atta', :citation_year => '2004'
+            atta2003 = FactoryGirl.create :book_reference, :title => 'Atta', :citation_year => '2003'
+            formica2004 = FactoryGirl.create :book_reference, :title => 'Formica', :citation_year => '2003'
+            Reference.perform_search(:fulltext => 'atta', :start_year => 2004).should == [atta2004]
           end
         end
       end
@@ -123,6 +211,68 @@ describe Reference, slow:true do
         end
       end
 
+    end
+
+    describe "Filtering" do
+      it "should apply the :unknown_references_only filter that's passed" do
+        known = FactoryGirl.create :article_reference
+        unknown = FactoryGirl.create :unknown_reference
+        Reference.perform_search(:fulltext => '', :filter => :unknown_references_only).should == [unknown]
+      end
+      it "should apply the :no_missing_references filter that's passed" do
+        MissingReference.count.should > 0
+        reference = FactoryGirl.create :article_reference
+        Reference.perform_search(:fulltext => '', :filter => :no_missing_references).should == [reference]
+      end
+      it "should apply the :nested_references_only filter that's passed" do
+        nested = FactoryGirl.create :nested_reference
+        unnested = FactoryGirl.create :unknown_reference
+        Reference.perform_search(:fulltext => '', :filter => :nested_references_only).should == [nested]
+      end
+    end
+
+  end
+
+  describe "Searching with Solr" do
+    it "should return an empty array if nothing is found for author_name" do
+      FactoryGirl.create :reference
+      Reference.search {keywords 'foo'}.results.should be_empty
+    end
+
+    it "should find the reference for a given author_name if it exists" do
+      reference = reference_factory(:author_name => 'Ward')
+      reference_factory(:author_name => 'Fisher')
+      Reference.search {keywords 'Ward'}.results.should == [reference]
+    end
+
+    it "should return an empty array if nothing is found for a given year and author_name" do
+      reference_factory(:author_name => 'Bolton', :citation_year => '2010')
+      reference_factory(:author_name => 'Bolton', :citation_year => '1995')
+      reference_factory(:author_name => 'Fisher', :citation_year => '2011')
+      reference_factory(:author_name => 'Fisher', :citation_year => '1996')
+      Reference.search {
+        with(:year).between(2012..2013)
+        keywords 'Fisher'
+      }.results.should be_empty
+    end
+
+    it "should return the one reference for a given year and author_name" do
+      reference_factory(:author_name => 'Bolton', :citation_year => '2010')
+      reference_factory(:author_name => 'Bolton', :citation_year => '1995')
+      reference_factory(:author_name => 'Fisher', :citation_year => '2011')
+      reference = reference_factory(:author_name => 'Fisher', :citation_year => '1996')
+      Reference.search {
+        with(:year).between(1996..1996)
+        keywords 'Fisher'
+      }.results.should == [reference]
+    end
+
+    it "should search citation year" do
+      with_letter = reference_factory(:author_name => 'Bolton', :citation_year => '2010b')
+      reference_factory(:author_name => 'Bolton', :citation_year => '2010')
+      Reference.search {
+        keywords '2010b'
+      }.results.should == [with_letter]
     end
 
   end

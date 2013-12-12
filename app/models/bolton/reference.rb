@@ -10,6 +10,11 @@ class Bolton::Reference < ActiveRecord::Base
   before_validation :set_year
   before_save :set_key_cache
 
+  searchable do
+    text :original
+    integer :id
+  end
+
   def self.do_search options = {}
     query =
       select('DISTINCT bolton_references.*').
@@ -27,6 +32,16 @@ class Bolton::Reference < ActiveRecord::Base
       query_clauses << 'match_status = "manual"' if options[:match_statuses].include? 'manual'
       query_clauses << 'match_status = "unmatchable"' if options[:match_statuses].include? 'unmatchable'
       query = query.where query_clauses.join(' OR ') unless query_clauses.empty?
+    end
+
+    if options[:q].present?
+      string = ActiveSupport::Inflector.transliterate options[:q].downcase
+      solr_result_ids = search {
+        keywords string
+        order_by :id
+        paginate :per_page => 5_000
+      }.results.map &:id
+      query = query.where('bolton_references.id' => solr_result_ids).paginate(:page => options[:page])
     end
 
     query
