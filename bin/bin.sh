@@ -74,6 +74,27 @@ function copy_production_db_to_preview {
   echo 'Done.'
 }
 
+function copy_production_db_to_local {
+  file_name="/tmp/antcat_production.sql"
+
+  echo "Dumping production database..."
+  ssh deploy@$production_server "mysqldump antcat -udeploy -p$production_password > $file_name"
+
+  echo "Copying to local..."
+  scp deploy@$production_server:$file_name /tmp
+
+  echo "Dropping and recreating local databases..."
+  bundle exec rake db:drop:all db:create:all
+
+  echo Importing into local database...
+  mysql antcat_development -uroot < $file_name
+
+  echo Migrating...
+  bundle exec rake db:migrate db:test:prepare
+
+  echo 'Done.'
+}
+
 function copy_local_db_to_production {
   file_name="local_antcat_development.sql"
   server="ec2-75-101-238-13.compute-1.amazonaws.com"
@@ -92,41 +113,6 @@ function copy_local_db_to_preview {
   mysqldump antcat_development -uroot > /tmp/$file_name
   echo "Copying to preview ($server)"
   scp /tmp/$file_name deploy@$server:/tmp
-  echo Importing into antcat database on preview
-  ssh deploy@$server "mysql antcat -udeploy -pret63V5ApP < /tmp/$file_name"
-}
-
-function copy_production_to_local_db {
-  file_name="antcat_production.sql"
-  server="ec2-75-101-238-13.compute-1.amazonaws.com"
-  local_file_directory="/Users/mwilden/antcat/data/tmp"
-  echo "Dumping production ($server)"
-  ssh deploy@$server "mysqldump antcat -udeploy -p7AdbiWigyX > /tmp/$file_name"
-  echo "Copying to local database"
-  scp deploy@$server:/tmp/$file_name $local_file_directory
-  echo "Dropping and recreating local databases"
-  bundle exec rake db:drop:all db:create:all
-  echo Importing into local database
-  mysql antcat_development -uroot < $local_file_directory/$file_name
-  echo Migrating
-  bundle exec rake db:migrate db:test:prepare
-}
-
-export preview_server 
-function copy_production_to_preview {
-  # get production database
-  file_name="antcat_production.sql"
-  server="ec2-75-101-238-13.compute-1.amazonaws.com"
-  local_file_directory="/Users/mwilden/antcat/data/tmp"
-  echo "Dumping production ($server)"
-  ssh deploy@$server "mysqldump antcat -udeploy -p7AdbiWigyX > /tmp/$file_name"
-
-  # send it to preview
-  echo "Copying to preview database"
-  server="ec2-23-21-238-9.compute-1.amazonaws.com"
-  scp /tmp/$file_name deploy@$server:/tmp
-
-  # import it into preview
   echo Importing into antcat database on preview
   ssh deploy@$server "mysql antcat -udeploy -pret63V5ApP < /tmp/$file_name"
 }
@@ -161,7 +147,6 @@ function export_db {
 }
 
 # getting the production database
-alias get_prod_db=copy_production_to_local_db
 function import_prod_db {
   import_db antcat_production.sql
 }
