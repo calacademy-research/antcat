@@ -28,28 +28,42 @@ describe Exporters::Antweb::Formatter do
       item = genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
       @formatter.new(genus).format.should ==
         %{<div class="antcat_taxon">} +
+
+          # statistics
           %{<div class="statistics">} +
             %{<p class="taxon_statistics">1 species</p>} +
           %{</div>} +
+
+          # headline
           %{<div class="headline">} +
+            # protonym
             %{<b><span class="protonym_name"><i>Atta</i></span></b> } +
+
+            # authorship
             %{<span class="authorship">} +
               %{<a href="http://antcat.org/references?q=#{reference.id}" target="_blank" title="Bolton, B. 2010a. Ants I have known. Psyche 1:2.">Bolton, 2010a</a>} +
               %{: 12} +
             %{</span>} +
             %{ } +
+
+            # type
             %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span> } +
             %{ } +
+
+            # links
             %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>} +
             %{ } +
             %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta" target="_blank">AntWiki</a>} +
           %{</div>} +
+
+          # taxonomic history
           %{<p><b>Taxonomic history</b></p>} +
           %{<div class="history"><div class="history_item item_#{item.id}" data-id="#{item.id}">} +
             %{<table><tr><td class="history_item_body" style="font-size: 13px">} +
               %{Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}" target="_blank"><i>Atta major</i></a> Name: <i>Atta major</i>.} +
             %{</td></tr></table>} +
           %{</div></div>} +
+
         %{</div>}
     end
   end
