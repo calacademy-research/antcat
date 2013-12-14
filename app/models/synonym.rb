@@ -4,6 +4,12 @@ class Synonym < ActiveRecord::Base
   belongs_to :senior_synonym, class_name: 'Taxon' # in the process of fixing up, an incomplete Synonym can be created
   has_paper_trail
 
+  def self.invalid_senior_synonyms
+    Synonym.all.select do |synonymy|
+      synonymy.senior_synonym.invalid?
+    end
+  end
+
   def self.find_or_create junior, senior
     synonyms = Synonym.where junior_synonym_id: junior, senior_synonym_id: senior
     return synonyms.first unless synonyms.empty?

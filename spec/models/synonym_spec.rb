@@ -47,4 +47,42 @@ describe Synonym do
     end
   end
 
+  describe "Finding senior synonyms that aren't valid taxa" do
+    it "should return nothing if there are none such" do
+      results = Synonym.invalid_senior_synonyms
+      results.should == []
+    end
+    it "should return the one invalid synonym" do
+      junior = create_species
+      invalid_senior = create_species status: 'synonym'
+      invalid_synonymy = Synonym.find_or_create junior, invalid_senior
+      valid_senior = create_species
+      valid_synonymy = Synonym.find_or_create junior, valid_senior
+
+      results = Synonym.invalid_senior_synonyms
+      results.should == [invalid_synonymy]
+    end
+
+    it "should return nothing if none invalid" do
+      junior = create_species
+      valid_senior = create_species
+      invalid_synonymy = Synonym.find_or_create junior, valid_senior
+      another_valid_senior = create_species
+      valid_synonymy = Synonym.find_or_create junior, another_valid_senior
+
+      results = Synonym.invalid_senior_synonyms
+      results.should == []
+    end
+    it "should return all if all invalid" do
+      junior = create_species
+      invalid_senior = create_species status: 'synonym'
+      invalid_synonymy = Synonym.find_or_create junior, invalid_senior
+      another_invalid_senior = create_species status: 'synonym'
+      another_invalid_synonymy = Synonym.find_or_create junior, another_invalid_senior
+
+      results = Synonym.invalid_senior_synonyms
+      results.should =~ [invalid_synonymy, another_invalid_synonymy]
+    end
+  end
+
 end
