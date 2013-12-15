@@ -338,7 +338,6 @@ describe Formatters::ReferenceFormatter do
         journal: journal, series_volume_issue: '1:1', pagination: '2'
       expected = 'Forel, A. 1874. Format. Ants 1:1:2.'
       @formatter.format(reference).should == expected
-      @formatter.format(reference).should == expected
     end
   end
 
