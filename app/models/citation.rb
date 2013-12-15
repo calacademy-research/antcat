@@ -17,6 +17,10 @@ class Citation < ActiveRecord::Base
     reference and "#{author_names_string}, #{reference.year}"
   end
 
+  def authorship_html_string
+    reference and Formatters::ReferenceFormatter::format_authorship_html_string(reference)
+  end
+
   def author_last_names_string
     reference and "#{author_names_string}"
   end

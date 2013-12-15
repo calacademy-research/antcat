@@ -237,6 +237,14 @@ describe Taxon do
       end
     end
 
+    describe "Authorship HTML string" do
+      it "should delegate to the protonym" do
+        taxon = create_taxon
+        taxon.protonym.should_receive(:authorship_html_string).and_return 'XYZ'
+        taxon.authorship_html_string.should == %{XYZ}
+      end
+    end
+
   end
 
   describe "Recombination" do

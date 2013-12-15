@@ -233,6 +233,10 @@ class Taxon < ActiveRecord::Base
     string
   end
 
+  def authorship_html_string
+    protonym.authorship_html_string
+  end
+
   def author_last_names_string
     protonym.author_last_names_string
   end

@@ -12,6 +12,10 @@ class Protonym < ActiveRecord::Base
     authorship and authorship.authorship_string
   end
 
+  def authorship_html_string
+    authorship and authorship.authorship_html_string
+  end
+
   def author_last_names_string
     authorship and authorship.author_last_names_string
   end
