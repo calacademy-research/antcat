@@ -3,6 +3,8 @@ class Formatters::ReferenceFormatter
   include ERB::Util
   extend ERB::Util
   include Formatters::Formatter
+  extend ActionView::Context
+  extend Sprockets::Helpers::RailsHelper
 
   def self.format reference
     make_formatter(reference).format
@@ -21,7 +23,13 @@ class Formatters::ReferenceFormatter
   end
 
   def self.format_authorship_html reference
-    content_tag(:span, title: format(reference)) {reference.key.to_s}
+    content = format_authorship reference
+    title = format reference
+    content_tag(:span, title: title) {content}
+  end
+
+  def self.format_authorship reference
+    reference.key.to_s
   end
 
   def self.format_italics string
