@@ -20,6 +20,10 @@ class Formatters::ReferenceFormatter
     make_formatter(reference).format_inline_citation_without_links user, options
   end
 
+  def self.format_authorship_html reference
+    content_tag(:span, title: format(reference)) {reference.key.to_s}
+  end
+
   def self.format_italics string
     return unless string
     raise "Can't call format_italics on an unsafe string" unless string.html_safe?

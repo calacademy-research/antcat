@@ -157,4 +157,21 @@ describe Exporters::Antweb::Exporter do
       @exporter.export_taxon(taxon)[11].should == 'FALSE'
     end
   end
+
+  describe "Sending 'author_date_html' that includes the full reference in the rollover" do
+    it "should do it" do
+      journal = FactoryGirl.create :journal, name: "Neue Denkschriften"
+      author_name = FactoryGirl.create :author_name, name: "Forel, A."
+      reference = FactoryGirl.create(:article_reference, author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse",
+                          journal: journal, series_volume_issue: "26", pagination: "1-452")
+      taxon = create_genus
+      taxon.protonym.authorship.reference = reference
+      taxon.protonym.authorship.save!
+      string = @exporter.export_taxon(taxon)[6]
+      string.should == '<span title="Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.">Forel, A. 1874</span>'
+    end
+  end
+
 end

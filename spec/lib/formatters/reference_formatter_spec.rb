@@ -341,4 +341,16 @@ describe Formatters::ReferenceFormatter do
     end
   end
 
+  describe "Formatting reference into HTML, with rollover" do
+    it "should work" do
+      journal = FactoryGirl.create :journal, name: 'Ants'
+      author_name = FactoryGirl.create :author_name, name: 'Forel, A.'
+      reference = FactoryGirl.create :article_reference,
+        author_names: [author_name], citation_year: '1874', title: 'Format',
+        journal: journal, series_volume_issue: '1:1', pagination: '2'
+      expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2.">Forel, 1874</span>'
+      @formatter.format_authorship_html(reference).should === expected
+    end
+  end
+
 end
