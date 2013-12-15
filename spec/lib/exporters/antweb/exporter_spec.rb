@@ -119,11 +119,6 @@ describe Exporters::Antweb::Exporter do
     end
   end
 
-  describe "Author/date column" do
-    it "should export the author and date of the taxon" do
-    end
-  end
-
   describe "Current valid name" do
     it "should export the current valid name of the taxon" do
       taxon = create_genus
