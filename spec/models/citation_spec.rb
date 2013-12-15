@@ -108,7 +108,7 @@ describe Citation do
   describe "Authorship HTML string" do
     it "should show the author and year" do
       citation = FactoryGirl.build_stubbed :citation
-      Formatters::ReferenceFormatter.should_receive(:format_authorship_html_string).and_return('XYZ')
+      Formatters::ReferenceFormatter.should_receive(:format_authorship_html).and_return('XYZ')
       citation.authorship_html_string.should == 'XYZ'
     end
   end

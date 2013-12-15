@@ -18,7 +18,7 @@ class Citation < ActiveRecord::Base
   end
 
   def authorship_html_string
-    reference and Formatters::ReferenceFormatter::format_authorship_html_string(reference)
+    reference and Formatters::ReferenceFormatter::format_authorship_html(reference)
   end
 
   def author_last_names_string
