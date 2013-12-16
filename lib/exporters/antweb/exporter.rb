@@ -6,7 +6,22 @@ class Exporters::Antweb::Exporter
 
   def export directory
     File.open("#{directory}/bolton.txt", 'w') do |file|
-      file.puts "antcat_id\tsubfamily\ttribe\tgenus\tspecies\tauthor date\tauthors\tyear\tcountry\tstatus\tavailable\tcurrent valid name\toriginal combination\tfossil\ttaxonomic history"
+      file.puts
+        "antcat_id\t"            # [0]
+        "subfamily\t"            # [1]
+        "tribe\t"                # [2]
+        "genus\t"                # [3]
+        "species\t"              # [4]
+        "author date\t"          # [5]
+        "author_date_html\t"     # [6]
+        "authors\t"              # [7]
+        "year\t"                 # [8]
+        "status\t"               # [9]
+        "available\t"            # [10]
+        "current valid name\t"   # [11]
+        "original combination\t" # [12]
+        "fossil\t"               # [13]
+        "taxonomic history"      # [14]
       get_taxa.each do |taxon|
         row = export_taxon taxon
         file.puts row.join("\t") if row
