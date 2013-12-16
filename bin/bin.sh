@@ -56,6 +56,7 @@ production_password='7AdbiWigyX'
 preview_server='ec2-23-21-238-9.compute-1.amazonaws.com'
 preview_password='ret63V5ApP'
 
+##############################################################
 function copy_production_db_to_preview {
   file_name="/tmp/antcat_production.sql"
 
@@ -74,6 +75,7 @@ function copy_production_db_to_preview {
   echo 'Done.'
 }
 
+##############################################################
 function copy_production_db_to_local {
   file_name="/tmp/antcat_production.sql"
 
@@ -94,7 +96,9 @@ function copy_production_db_to_local {
 
   echo 'Done.'
 }
+alias get_prod_db=copy_production_db_to_local
 
+##############################################################
 function copy_local_db_to_production {
   file_name="local_antcat_development.sql"
   server="ec2-75-101-238-13.compute-1.amazonaws.com"
@@ -150,7 +154,6 @@ function export_db {
 function import_prod_db {
   import_db antcat_production.sql
 }
-alias gpdb=get_prod_db
 alias impdb=import_prod_db
 alias ipdb=import_prod_db
 
