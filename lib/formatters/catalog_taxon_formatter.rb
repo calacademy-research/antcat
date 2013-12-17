@@ -128,7 +128,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   def format_senior_synonym
     return '' unless @taxon.senior_synonyms.count > 0
     if @taxon.current_valid_taxon
-      ' of current valid taxon ' << self.class.link_to_taxon(@taxon.current_valid_taxon)
+      ' of current valid name ' << self.class.link_to_taxon(@taxon.current_valid_taxon)
     else
       ' of ' << self.class.link_to_taxon(@taxon.senior_synonyms.last)
     end

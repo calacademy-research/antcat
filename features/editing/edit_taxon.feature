@@ -214,7 +214,7 @@ Feature: Editing a taxon
     And I save my changes
     Then I should not see "Malagasy"
 
-  Scenario: Changing current valid taxon
+  Scenario: Changing current valid name
     Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
     When I go to the edit page for "Eciton minor"
     When I log in
@@ -225,4 +225,4 @@ Feature: Editing a taxon
     And I save my changes
     When I press "Edit"
     Then the current valid taxon name should be "Eciton minor"
-    #And I should see "synonym of Eciton minor (current valid taxon)"
+    And I should see "synonym of Eciton minor (current valid taxon)"
