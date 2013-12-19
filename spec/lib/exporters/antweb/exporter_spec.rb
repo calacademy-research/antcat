@@ -8,6 +8,12 @@ describe Exporters::Antweb::Exporter do
     Exporters::Antweb::Formatter.stub(:new).and_return stub
   end
 
+  describe "The header" do
+    it "should be the same as the code" do
+        @exporter.header.should == "antcat_id\tsubfamily\ttribe\tgenus\tspecies\tauthor date\tauthor_date_html\tauthors\tyear\tstatus\tavailable\tcurrent valid name\twas original combination\tfossil\ttaxonomic history"
+    end
+  end
+
   describe "exporting one taxon" do
     before do
       @ponerinae = create_subfamily 'Ponerinae'
