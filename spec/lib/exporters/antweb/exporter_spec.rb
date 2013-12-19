@@ -154,7 +154,7 @@ describe Exporters::Antweb::Exporter do
     end
   end
 
-  describe "Sending 'original combination' so that AntWeb knows when to use parentheses around authorship" do
+  describe "Sending 'was original combination' so that AntWeb knows when to use parentheses around authorship" do
     it "should send TRUE or FALSE" do
       taxon = create_genus status: 'original combination'
       @exporter.export_taxon(taxon)[12].should == 'TRUE'
@@ -178,6 +178,13 @@ describe Exporters::Antweb::Exporter do
       taxon.protonym.authorship.save!
       string = @exporter.export_taxon(taxon)[6]
       string.should == '<span title="Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.">Forel, 1874</span>'
+    end
+  end
+
+  describe "Original combination" do
+    it "is nil if the taxon is not a recombination" do
+      taxon = create_genus status: 'original combination'
+      taxon.original_combination.should be_nil
     end
   end
 
