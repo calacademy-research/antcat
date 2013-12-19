@@ -225,4 +225,5 @@ Feature: Editing a taxon
     And I save my changes
     When I press "Edit"
     Then the current valid taxon name should be "Eciton minor"
-    And I should see "synonym of Eciton minor (current valid taxon)"
+    When I save my changes
+    Then I should see "synonym of current valid taxon Eciton minor"
