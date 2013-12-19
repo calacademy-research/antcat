@@ -28,7 +28,7 @@ class Exporters::Antweb::Exporter
     "status\t"                  +# [9]
     "available\t"               +# [10]
     "current valid name\t"      +# [11]
-    "original combination"      +# [12]
+    "original combination\t"    +# [12]
     "was original combination\t"+# [13]
     "fossil\t"                  +# [14]
     "taxonomic history"          # [15]
