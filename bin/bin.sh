@@ -99,6 +99,23 @@ function copy_production_db_to_local {
 alias get_prod_db=copy_production_db_to_local
 
 ##############################################################
+function import_production_db_into_local {
+  file_name="/tmp/antcat_production.sql"
+
+  echo "Dropping and recreating local databases..."
+  bundle exec rake db:drop:all db:create:all
+
+  echo Importing into local database...
+  mysql antcat_development -uroot < $file_name
+
+  echo Migrating...
+  bundle exec rake db:migrate db:test:prepare
+
+  echo 'Done.'
+}
+alias imp_prod_db=import_production_db_into_local
+
+##############################################################
 function copy_local_db_to_production {
   file_name="local_antcat_development.sql"
   server="ec2-75-101-238-13.compute-1.amazonaws.com"
