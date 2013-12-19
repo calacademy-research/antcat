@@ -207,6 +207,18 @@ class Taxon < ActiveRecord::Base
   attr_accessor :current_valid_taxon_name
 
   ###############################################
+  # original combination
+  # A status of 'original combination' means that the taxon/name is a placeholder
+  # for the original name of the species under the original genus.
+  # The original_combination? predicate checks that.
+  def original_combination?;  status == 'original combination' end
+
+  # The original_combination accessor returns the taxon with 'original combination'
+  # status whose 'current valid taxon' points to us.
+  def original_combination
+  end
+
+  ###############################################
   # other associations
   has_many    :history_items, class_name: 'TaxonHistoryItem', order: :position, dependent: :destroy
   has_many    :reference_sections, order: :position, dependent: :destroy
@@ -221,7 +233,6 @@ class Taxon < ActiveRecord::Base
   def excluded_from_formicidae?; status == 'excluded from Formicidae' end
   def incertae_sedis_in? rank;incertae_sedis_in == rank end
   def collective_group_name?; status == 'collective group name' end
-  def original_combination?;  status == 'original combination' end
   def unidentifiable?;        status == 'unidentifiable' end
 
   ###############################################

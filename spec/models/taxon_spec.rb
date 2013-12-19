@@ -427,4 +427,9 @@ describe Taxon do
     end
   end
 
+  describe "Original combination" do
+    it "should be nil if there was no recombining" do
+      create_genus.original_combination.should be_nil
+    end
+  end
 end
