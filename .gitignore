@@ -16,3 +16,4 @@ server.yml
 solr/data
 tmp
 tags
+data/output/bolton.txt
