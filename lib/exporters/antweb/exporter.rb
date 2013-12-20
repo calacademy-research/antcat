@@ -51,6 +51,7 @@ class Exporters::Antweb::Exporter
       author_date_html:     taxon.authorship_html_string,
       current_valid_name:   (taxon.current_valid_taxon ? taxon.current_valid_taxon.name.name : taxon.name.name),
       original_combination?:taxon.original_combination?,
+      original_combination: taxon.original_combination.try(:name).try(:name),
       authors:              taxon.author_last_names_string,
       year:                 taxon.year && taxon.year.to_s,
 
@@ -109,6 +110,7 @@ class Exporters::Antweb::Exporter
      boolean_to_antweb(values[:available?]),
      values[:current_valid_name],
      boolean_to_antweb(values[:original_combination?]),
+     values[:original_combination],
      boolean_to_antweb(values[:fossil?]),
      values[:history]]
   end
