@@ -431,5 +431,15 @@ describe Taxon do
     it "should be nil if there was no recombining" do
       create_genus.original_combination.should be_nil
     end
+    it "is the protonym, otherwise" do
+      original_combination = create_species 'Atta major'
+      recombination = create_species 'Eciton major'
+      original_combination.status = 'original combination'
+      original_combination.current_valid_taxon = recombination
+      recombination.protonym.name = original_combination.name
+      original_combination.save!
+      recombination.save!
+      recombination.original_combination.should == original_combination
+    end
   end
 end
