@@ -347,6 +347,16 @@ class Taxon < ActiveRecord::Base
     nil
   end
 
+  def self.biogeographic_region_map
+    {}
+  end
+
+  def replace_biogeographic_region map = Taxon.biogeographic_region_map
+    region = map[biogeographic_region]
+    return unless region
+    update_attributes! biogeographic_region: region
+  end
+
   ###############################################
   def references options = {}
     references = []

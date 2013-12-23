@@ -101,4 +101,17 @@ describe Taxon do
     end
   end
 
+  describe "Replacing biogeographic region" do
+    it "should do nothing if there's no replacement defined" do
+      taxon = create_genus biogeographic_region: 'San Pedro'
+      taxon.replace_biogeographic_region 'Capetown' => 'Africa'
+      taxon.biogeographic_region.should == 'San Pedro'
+    end
+    it "should do the replacement if there's a replacement defined" do
+      taxon = create_genus biogeographic_region: 'San Pedro'
+      taxon.replace_biogeographic_region 'San Pedro' => 'Africa'
+      taxon.biogeographic_region.should == 'Africa'
+    end
+  end
+
 end
