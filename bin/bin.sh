@@ -181,6 +181,15 @@ function import_preview_db {
 
 ## deploying
 function deploy_environment {
+  if [ $# -eq 3 ]; then
+    echo "Running all tests..."
+    rake all
+    if [ $? -ne 0 ]; then
+      echo "Tests failed."
+      return
+    fi
+  fi
+
   echo "Deploying to $1..."
   ey web disable --environment=$1 && \
   git pull --rebase && \
@@ -190,6 +199,7 @@ function deploy_environment {
 }
 alias deploy_production="deploy_environment antcat_production http://antcat.org"
 alias deploy_preview="deploy_environment preview http://preview.antcat.org"
+alias deploy_preview_if_green="deploy_environment preview http://preview.antcat.org 1"
 alias deploy=deploy_production
 
 # deploying
