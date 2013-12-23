@@ -190,7 +190,7 @@ function deploy_environment {
 }
 alias deploy_production="deploy_environment antcat_production http://antcat.org"
 alias deploy_preview="deploy_environment preview http://preview.antcat.org"
-alias deploy="deploy_environment antcat_production"
+alias deploy=deploy_production
 
 # deploying
 alias deploy_preview_with_data="deploy_preview && copy_local_db_to_preview && open http://preview.antcat.org"
