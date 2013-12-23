@@ -179,9 +179,20 @@ function import_preview_db {
   import_db antcat_preview.sql
 }
 
+## deploying
+function deploy_environment {
+  echo "Deploying to $1..."
+  ey web disable --environment=$1 && \
+  git pull --rebase && \
+  git push origin master && \
+  ey deploy --branch master -m --environment=$1 && \
+  open $2
+}
+alias deploy_production="deploy_environment antcat_production http://antcat.org"
+alias deploy_preview="deploy_environment preview http://preview.antcat.org"
+alias deploy="deploy_environment antcat_production"
+
 # deploying
-alias deploy='ey web disable --environment=antcat_production && git pull --rebase && git push origin master && ey deploy --branch master -m --environment=antcat_production && open http://antcat.org'
-alias deploy_preview='ey web disable --environment=preview && git pull --rebase && git push origin master && ey deploy --branch master -m --environment=preview && open http://preview.antcat.org'
 alias deploy_preview_with_data="deploy_preview && copy_local_db_to_preview && open http://preview.antcat.org"
 alias deploy_both="deploy_preview && deploy"
 alias deploy_if_green="bundle exec rake all && deploy"
