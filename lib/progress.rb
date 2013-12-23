@@ -157,6 +157,9 @@ class Progress
   def self.tally_and_show_progress increment = nil
     tally
     show_progress increment
+    additional_message = yield
+    return unless additional_message.blank? or increment.nil? or processed_count % increment == 0
+    puts additional_message
   end
 
   def self.show_results
