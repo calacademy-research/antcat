@@ -47,7 +47,7 @@ function find_where {
 ##############################################################
 # copying databases to and from local, preview, and production
 
-alias dump_local_db='mysqldump antcat_development -u root > /tmp/dump.sql && head /tmp/dump.sql'
+alias dump_local_db='mysqldump antcat_development -u root > /tmp/dump.sql && head /tmp/dump.sql && echo "Dump file: /tmp/dump.sql"'
 
 # Application master: ec2-184-72-234-231.compute-1.amazonaws.com
 
