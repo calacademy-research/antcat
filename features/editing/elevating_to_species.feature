@@ -19,3 +19,13 @@ Feature: Elevating subspecies to species
     When I go to the catalog entry for "Atta"
     And I press "Edit"
     Then I should not see "Elevate to species"
+
+  Scenario: Elevating to species when the species name exists
+    Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
+    And there is a species "Solenopsis subbus"
+    And I am logged in
+    When I go to the catalog entry for "Solenopsis speccus subbus"
+    And I press "Edit"
+    Given I will confirm on the next step
+    And I press "Elevate to species"
+    And I should see "The name of the new species has already been taken."

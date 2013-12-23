@@ -86,6 +86,9 @@ class TaxaController < ApplicationController
   rescue Subspecies::NoSpeciesForSubspeciesError
     @taxon.errors[:base] = "This subspecies doesn't have a species. Use the \"Assign species to subspecies\" button to fix, then you can elevate the subspecies to the species."
     render :edit and return
+  rescue Taxon::TaxonExists
+    @taxon.errors[:base] = "The name of the new species has already been taken. This will require a manual update by Mark. Please email him at mark@mwilden.com."
+    render :edit and return
   end
 
   def delete_taxon
