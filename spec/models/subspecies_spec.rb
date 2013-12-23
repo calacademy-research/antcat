@@ -94,7 +94,7 @@ describe Subspecies do
       Name.count.should == name_count + 1
     end
     it "should find an existing species name, if possible" do
-      species = create_species 'Atta major', genus: @genus
+      species = create_species 'Atta colobopsis', genus: @genus
       subspecies_name = SubspeciesName.create!({
         name:           'Atta major colobopsis',
         name_html:      '<i>Atta major colobopsis</i>',
@@ -103,20 +103,12 @@ describe Subspecies do
         epithets:       'major colobopsis',
         protonym_html:  '<i>Atta major colobopsis</i>',
       })
-      species_name = SpeciesName.create!({
-        name:           'Atta colobopsis',
-        name_html:      '<i>Atta colobopsis</i>',
-        epithet:        'colobopsis',
-        epithet_html:   '<i>colobopsis</i>',
-        epithets:       nil,
-        protonym_html:  '<i>Atta major colobopsis</i>',
-      })
       taxon = create_subspecies name: subspecies_name, genus: @genus, species: species
       taxon.elevate_to_species
       taxon = Species.find taxon.id
-      taxon.name.should == species_name
+      taxon.name.should == species.name
     end
-    it "should crash and burn if the species already exists" do
+    it "should not crash and burn if the species already exists" do
       species = create_species 'Atta major', genus: @genus
       subspecies_name = SubspeciesName.create!({
         name:           'Atta batta major',
@@ -127,7 +119,7 @@ describe Subspecies do
         protonym_html:  '<i>Atta batta major</i>',
       })
       taxon = create_subspecies name: subspecies_name, species: species
-      -> {taxon.elevate_to_species}.should raise_error
+      -> {taxon.elevate_to_species}.should_not raise_error
     end
   end
 

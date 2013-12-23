@@ -22,9 +22,8 @@ class Subspecies < SpeciesGroupTaxon
     raise NoSpeciesForSubspeciesError unless species
 
     new_name_string = species.genus.name.to_s + ' ' + name.epithet
-    raise Taxon::TaxonExists if Species.find_by_name new_name_string
     new_name = SpeciesName.find_by_name new_name_string
-    new_name ||= SpeciesName.new
+    new_name = SpeciesName.new unless new_name
     new_name.update_attributes({
       name:           new_name_string,
       name_html:      italicize(new_name_string),

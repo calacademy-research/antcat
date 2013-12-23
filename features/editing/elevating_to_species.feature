@@ -28,4 +28,4 @@ Feature: Elevating subspecies to species
     And I press "Edit"
     Given I will confirm on the next step
     And I press "Elevate to species"
-    And I should see "The name of the new species has already been taken."
+    Then I should see the catalog entry for "Solenopsis subbus"
