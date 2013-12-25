@@ -16,13 +16,13 @@ class Exporters::Antweb::Exporter
   end
 
   def header
-    "antcat_id\t"               +# [0]
+    "antcat id\t"               +# [0]
     "subfamily\t"               +# [1]
     "tribe\t"                   +# [2]
     "genus\t"                   +# [3]
     "species\t"                 +# [4]
     "author date\t"             +# [5]
-    "author_date_html\t"        +# [6]
+    "author date html\t"        +# [6]
     "authors\t"                 +# [7]
     "year\t"                    +# [8]
     "status\t"                  +# [9]
