@@ -26,6 +26,7 @@ Feature: Editing a history item
     And I edit the history item to "(none)"
     And I save the history item
     And I save my changes
+    And I wait for a bit
     Then I should be on the catalog page for "Formicidae"
 
   # This doesn't work because of inserting a {
