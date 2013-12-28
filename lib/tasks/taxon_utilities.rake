@@ -26,17 +26,18 @@ task :update_current_valid_taxa => :environment do
   Progress.show_count synonyms_without_current_valid_taxon, Progress.processed_count, "synonyms ended up without a current valid taxon"
 end
 
-desc "Assign biogeographic region"
-task assign_biogeographic_regions: :environment do
-  taxa = Taxon.all
+desc "Update biogeographic regions"
+task update_biogeographic_regions: :environment do
+  taxa = Taxon.includes(:protonym)
   replacement_count = unfound_count = 0
   Progress.init true, taxa.count
   for taxon in taxa
-    success = taxon.replace_biogeographic_region
+    success = taxon.update_biogeographic_region_from_locality
     if success then replacement_count += 1 else unfound_count += 1; end
     Progress.tally_and_show_progress 1000 do
       "#{replacement_count} replacements, #{unfound_count} not found"
     end
   end
+  Progress.show_results
   Progress.puts "#{replacement_count} replacements, #{unfound_count} not found"
 end

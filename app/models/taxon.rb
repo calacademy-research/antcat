@@ -364,9 +364,8 @@ class Taxon < ActiveRecord::Base
     @_biogeographic_regions_for_localities
   end
 
-  def replace_biogeographic_region map = self.class.biogeographic_regions_for_localities
-    region = map[biogeographic_region]
-    return unless region
+  def update_biogeographic_region_from_locality map = self.class.biogeographic_regions_for_localities
+    return unless protonym.locality and region = map[protonym.locality.upcase]
     update_attributes! biogeographic_region: region
   end
 
