@@ -98,4 +98,8 @@ class Taxon < ActiveRecord::Base
     Progress.puts @tracking_map.inspect
   end
 
+  def self.clear_biogeographic_regions_for_localities
+    @_biogeographic_regions_for_localities = nil
+  end
+
 end
