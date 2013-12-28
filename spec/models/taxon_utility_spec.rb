@@ -129,11 +129,10 @@ describe Taxon do
   end
 
   describe "Reading Flávia's document to produce locality-to-biogregion mapping" do
-    it "should strip the counts and create a hash" do
-      File.should_receive(:open).and_return "Canada 2\tPalaearctic\nAmerica 3\tNuevo\n"
-      Taxon.biogeographic_regions_for_localities.should ==
-        {'CANADA' => 'Palaearctic', 'AMERICA' => 'Nuevo'}
-    end
+    it "should strip the counts and create a hash and ignore 'none' entries" do
+      File.should_receive(:open).and_return "Canada 2\tnone\nAmerica 3\tNuevo\n"
+      Taxon.biogeographic_regions_for_localities.should == {'AMERICA' => 'Nuevo'}
     end
   end
+
 end
