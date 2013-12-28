@@ -101,15 +101,19 @@ describe Taxon do
     end
   end
 
-  describe "Replacing biogeographic region" do
+  describe "Using location to update biogeographic region" do
     it "should do nothing if there's no replacement defined" do
-      taxon = create_genus biogeographic_region: 'San Pedro'
-      taxon.replace_biogeographic_region 'Capetown' => 'Africa'
-      taxon.biogeographic_region.should == 'San Pedro'
+      protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
+      taxon = create_genus protonym: protonym
+      taxon.update_biogeographic_region_from_locality 'cAPETOWN' => 'Africa'
+      taxon.biogeographic_region.should be_nil
     end
     it "should do the replacement if there's a replacement defined" do
-      taxon = create_genus biogeographic_region: 'San Pedro'
-      taxon.replace_biogeographic_region 'San Pedro' => 'Africa'
+      protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
+      taxon = create_genus protonym: protonym
+      taxon.update_biogeographic_region_from_locality 'SAN PEDRO' => 'Africa'
+      taxon.biogeographic_region.should == 'Africa'
+    end
     it "should be case-insensitive" do
       protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
       taxon = create_genus protonym: protonym
