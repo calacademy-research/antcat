@@ -1,0 +1,514 @@
+Localities	bioregion
+Afghanistan 24	Palearctic
+Albania 4	Palearctic
+Algeria (?) 2	Palearctic
+Algeria 288	Palearctic
+Andorra 2	Palearctic
+Armenia 26	Palearctic
+Austria ? 2	Palearctic
+Austria 46	Palearctic
+Azerbaijan 5	Palearctic
+Balearic Is 1	Palearctic
+Basses Alpes 1	Palearctic
+Belarus 2	Palearctic
+Belgium 8	Palearctic
+Bulgaria 16	Palearctic
+Caucasus 40	Palearctic
+China (name misspelled as <i>noggii</i>) 1	none
+China 468	none
+China/Kashmir? 1	none
+Crete 2	Palearctic
+Croatia 11	Palearctic
+Cyprus 12	Palearctic
+Czechia 4	Palearctic
+Czechoslovakia 24	Palearctic
+Daghestan 1	Palearctic
+Denmark 5	Palearctic
+Egypt ? 1	Palearctic
+Egypt 86	Palearctic
+Egypt? 1	Palearctic
+Europe (not U.S.A.; see Baroni Urbani, 1977d: 91) 2	Palearctic
+Europe (see Baroni Urbani, 1971c: 35 (note) 1	Palearctic
+Europe 20	Palearctic
+Finland 33	Palearctic
+France ? 2	Palearctic
+France (Corsica) 20	Palearctic
+France 232	Palearctic
+Georgia 21	Palearctic
+Georgia, Armenia 1	Palearctic
+Germany 86	Palearctic
+Gibraltar 3	Palearctic
+Great Britain 44	Palearctic
+Greece (Crete) 5	Palearctic
+Greece 101	Palearctic
+Hungary 13	Palearctic
+Iran 22	Palearctic
+Iraq 17	Palearctic
+Ireland 1	Palearctic
+Israel 71	Palearctic
+Israel? 1	Palearctic
+Italy (Sardinia) 15	Palearctic
+Italy (Sicily) 32	Palearctic
+Italy 158	Palearctic
+Japan 279	Palearctic
+Jordan 6	Palearctic
+Karakorum 1	Palearctic
+Kazakhstan 179	Palearctic
+Kazan 2	Palearctic
+Korea 23	Palearctic
+Kuwait 4	Palearctic
+Kyrgyzstan 41	Palearctic
+Latvia 2	Palearctic
+Lebanon (caption to fig. 22 is misspelled <i>adonis</i>) 1	Palearctic
+Lebanon 25	Palearctic
+Malta 5	Palearctic
+Oman 19	Palearctic
+Poland 14	Palearctic
+Portugal 14	Palearctic
+Principe 1	Palearctic
+Spain (Balearic Is.) 1	Palearctic
+Spain (Balearic Is) 2	Palearctic
+Spain 130	Palearctic
+Tunisia 226	Palearctic
+"Barbary" 1	Palearctic
+Libya 20	Palaearctic
+Luxembourg 6	Palaearctic
+Moldova 1	Palaearctic
+Mongolia 18	Palaearctic
+Morocco 183	Palaearctic
+Moroccos 1	Palaearctic
+Muscat 1	Palaearctic
+Netherlands 6	Palaearctic
+North Korea 6	Palaearctic
+North Ossetia 1	Palaearctic
+Norway 3	Palaearctic
+Republic Of Korea 1	Palaearctic
+Romania 4	Palaearctic
+Russia (diagnosis in key) 1	Palaearctic
+Russia (Kunashir I.) 2	Palaearctic
+Russia (North Caucasus) 1	Palaearctic
+Russia & Kazakhstan 1	Palaearctic
+Russia 255	Palaearctic
+South Korea 2	Palaearctic
+Sweden 16	Palaearctic
+Switzerland (in greenhouse) 1	Palaearctic
+Switzerland (locality in error, see Bolton, 1987: 277) 2	Palaearctic
+Switzerland 73	Palaearctic
+Syria (in subgenus <i>Tanaemyrmex</i>) 1	Palaearctic
+Syria 42	Palaearctic
+Tajikistan 13	Palaearctic
+Transcaspia 10	Palaearctic
+Transcaucasia 5	Palaearctic
+Transcaucasus 2	Palaearctic
+Turkey 87	Palaearctic
+Turkmenia 25	Palaearctic
+Turkmenistan 9	Palaearctic
+Ukraine 52	Palaearctic
+Uzbekistan 17	Palaearctic
+Yugoslavia 17	Palaearctic
+"Côte atlantique du Sahara" 1	Palaearctic
+Easter 2	Oceania
+Fiji Is 143	Oceania
+French Polynesia (Marquesas Is) 4	Oceania
+French Polynesia (Mururoa I.) 1	Oceania
+French Polynesia (Society Is) 2	Oceania
+French Polynesia (Tahiti) 2	Oceania
+Guam 4	Oceania
+Hawaii 26	Oceania
+Marianas Is 1	Oceania
+Marshall Is 1	Oceania
+Micronesia (Caroline Is) 3	Oceania
+Micronesia (Pohnpei I.) 4	Oceania
+Micronesia (Ponape I.) 1	Oceania
+Micronesia (Yap I.) 2	Oceania
+Palau (Peleliu I.) 1	Oceania
+Palau 1	Oceania
+Palau Is (Peleliu I.) 1	Oceania
+Palau Is 7	Oceania
+Samoa 35	Oceania
+Tahiti 2	Oceania
+Tahitian Is 2	Oceania
+Tonga 5	Oceania
+Tonga Is 1	Oceania
+Truk 1	Oceania
+Tuvalu 1	Oceania
+Vavao (íles des Amis) [Tonga] 2	Oceania
+Carolina Is 1	Oceania
+"ohne Vaterlandsangabe" 3	none
+Argentina (Eocene) 2	none
+Argentina (ichnospecies) 1	none
+Australia (Lower Cretaceous) 1	none
+Austria (Pliocene) 2	none
+Baltic Amber (Eocene) 170	none
+Baltic Amber 5	none
+Bitterfeld Amber (Eocene) 7	none
+Bitterfeld Amber 2	none
+Burmese Amber (Cretaceous) 5	none
+Caucasus (Miocene) 2	none
+China (Eocene amber) 4	none
+China (Eocene) 28	none
+China (Miocene) (Ichneumonidae) 1	none
+China (Miocene) 49	none
+Croatia (Miocene) 68	none
+Czech Republic (Miocene) 1	none
+Czechoslovakia (Miocene) 2	none
+Czechoslovakia (Tertiary) 2	none
+Danish Amber 1	none
+Denmark (Paleocene-Eocene) 2	none
+Dominian Amber 2	none
+Dominican Amber (Miocene) 87	none
+Dominican Amber 13	none
+Dominican Republic (in copal) 2	none
+Ee 1	none
+France (Cretaceous) 1	none
+France (Mio-pliocene) 4	none
+France (Miocene) 4	none
+France (Oligocene) 32	none
+French Amber (Cretaceous) 2	none
+Germany (Eocene) 29	none
+Germany (Late Pliocene) 2	none
+Germany (Miocene?) 2	none
+Germany (Miocene) 3	none
+Germany (Oligocene) 28	none
+Germany (Saxonian amber, Eocene) 1	none
+Germany (Tertiary) 2	none
+Great Britain (Eocene) 5	none
+Great Britain (Oligocene) 15	none
+Indonesia (Sulawesi) (in copal) 12	none
+Japan (Miocene) 1	none
+Jj 1	none
+Mexican Amber 7	none
+Myanmar (Cretaceous) 2	none
+no locality 3	none
+no locality given 40	none
+Norway (Miocene) 2	none
+NULL 2014	none
+Oise Amber (Eocene) 1	none
+Rovno & Scandinavian Ambers (Eocene) 2	none
+Rovno Amber (Eocene) 6	none
+Rovno Amber 2	none
+Russia (Cretaceous) 21	none
+Russia (Middle Miocene) 1	none
+Russia (Miocene) 9	none
+Russia (Palaeocene?) 2	none
+Russia (Palaeocene) 1	none
+Russia (Paleocene) 4	none
+Scandinavian Amber 1	none
+Sicilian Amber (Miocene) 4	none
+Sicilian Amber (Oligocene) 10	none
+Sicilian Amber 3	none
+Switzerland (Miocene) 41	none
+Ukraine (Rovno Amber) 9	none
+Yugoslavia (Miocene) 2	none
+Uruguay 25	Neotropic
+"Pays des Moîs" 2	Neotropic
+"probably Brazil" 2	Neotropic
+"Rio Paraguay" 1	Neotropic
+"South America ?" (in error; type-locality INDIA, see Bingham, 1903: 21) 2	Neotropic
+"South America" (locality incorrect) 2	Neotropic
+"South America"; locality in error 1	Neotropic
+"Südamerika" 2	Neotropic
+Antigua 1	Neotropic
+Antilles 83	Neotropic
+Antilles Is 3	Neotropic
+Argentina 665	Neotropic
+Bahamas 35	Neotropic
+Barbados 8	Neotropic
+Belize 7	Neotropic
+Bermuda 2	Neotropic
+Bolivia (diagnosis in key) 1	Neotropic
+Bolivia 186	Neotropic
+Brazil (Cretaceous) 1	Neotropic
+Brazil (intercepted in quarantine in Germany) 2	Neotropic
+Brazil (not India) 1	Neotropic
+Brazil (Oligocene) 1	Neotropic
+Brazil (originally misspelled as <i>mesorotalis</i>) 2	Neotropic
+Brazil 1889	Neotropic
+British Virgin Is 1	Neotropic
+Central America 28	Neotropic
+Chile 99	Neotropic
+Colombia 457	Neotropic
+Costa Rica 544	Neotropic
+Cuba 261	Neotropic
+Dominica 5	Neotropic
+Ecuador (Galapagos Is.) 1	Neotropic
+Ecuador (Galapagos Is) 43	Neotropic
+Ecuador 128	Neotropic
+El Salvador 6	Neotropic
+French Guiana 101	Neotropic
+Germany (intercepted in quarantine, from Brazil) 1	Neotropic
+Germany (intercepted in quarantine, from Mexico) 1	Neotropic
+Germany (intercepted in quarantine, from West Indies) 1	Neotropic
+Grenada 5	Neotropic
+Guadeloupe 1	Neotropic
+Guadelupe 2	Neotropic
+Guatemala 152	Neotropic
+Guyana 187	Neotropic
+Haiti 87	Neotropic
+Honduras 82	Neotropic
+Jamaica 44	Neotropic
+Martinique 4	Neotropic
+Netherlands (possible origin in Jamaica) 1	Neotropic
+Netherlands Antilles (Curaçao I.) 2	Neotropic
+Nicaragua 30	Neotropic
+Panama 274	Neotropic
+Paraguay 158	Neotropic
+Peru 218	Neotropic
+Puerto Rica 1	Neotropic
+Puerto Rico 38	Neotropic
+Santo Domingo 2	Neotropic
+South America (no locality given) 4	Neotropic
+South America 30	Neotropic
+Surinam 86	Neotropic
+Trinidad 102	Neotropic
+Venezuela 137	Neotropic
+Virgin Is 3	Neotropic
+West Indies 9	Neotropic
+"America aequinoctiali" 1	Neotropic
+"America meridionali" 11	Neotropic
+"GUINEA" (in error; in text Forel states "probablement du Brésil") 2	Neotropic
+"Pemnes" (Chile ?) 1	Neotropic
+"Santo Domingo" 2	Neotropic
+Dominican Republic 32	Neotropic
+Canada (Cretaceous) 4	Nearctic
+Canada (Eocene) 9	Nearctic
+Canada (Miocene) 4	Nearctic
+Canada 47	Nearctic
+North America 1	Nearctic
+U.S.A. (Cretaceous) 5	Nearctic
+U.S.A. (Eocene) 26	Nearctic
+U.S.A. (locality in error; type-locality possibly Colombia: Mackay & Mackay, 2010: 199) 2	Nearctic
+U.S.A. (Middle Eocene) 1	Nearctic
+U.S.A. (Miocene) 3	Nearctic
+U.S.A. (Oligocene) 39	Nearctic
+U.S.A. 1278	Nearctic
+U.S.A.? 2	Nearctic
+United States 1	Nearctic
+Aldabra 2	Malagasy
+Comoro Is 11	Malagasy
+COMOROS 3	Malagasy
+Madagarcar 1	Malagasy
+Madagascar (Farquhar I.) 2	Malagasy
+Madagascar (genitive ending modified as species is named for a woman, Dawn Mack) 1	Malagasy
+Madagascar (Johanna I.) 2	Malagasy
+Madagascar 625	Malagasy
+Mauritius (former Ile de France) 1	Malagasy
+Mauritius (Rodrigues I.) 3	Malagasy
+Mauritius 28	Malagasy
+MAYOTTE 3	Malagasy
+Reunion 7	Malagasy
+Rodriguez 2	Malagasy
+Seychelles Is 25	Malagasy
+Andaman Is 1	Indomalaya
+Bhutan 16	Indomalaya
+Borneo (Pulo Laut) 1	Indomalaya
+Borneo (Sabah) 1	Indomalaya
+Borneo 534	Indomalaya
+Brunei 4	Indomalaya
+Cambodia 14	Indomalaya
+China (Hong Kong) 16	Indomalaya
+Christmas 6	Indomalaya
+East Malaysia 1	Indomalaya
+India (Andaman Is) 7	Indomalaya
+India (Nicobar Is) 17	Indomalaya
+India (not Australia) 1	Indomalaya
+Indonesia (Anak Krakatau I.) 1	Indomalaya
+Indonesia (Aru I.) 95	Indomalaya
+Indonesia (Bali I.) 1	Indomalaya
+Indonesia (Bali) 1	Indomalaya
+Indonesia (Banggai Archipelago) 1	Indomalaya
+Indonesia (Bangka I.) 1	Indomalaya
+Indonesia (Berhala I.) 2	Indomalaya
+Indonesia (Bintang I.) 1	Indomalaya
+Indonesia (Engano I.) 3	Indomalaya
+Indonesia (Flores I.) 2	Indomalaya
+Indonesia (Goram I.) 4	Indomalaya
+Indonesia (Java) 282	Indomalaya
+Indonesia (Krakatau I.) 3	Indomalaya
+Indonesia (Lingga I.) 1	Indomalaya
+Indonesia (Lombok I.) 6	Indomalaya
+Indonesia (Mentawei I.) 21	Indomalaya
+Indonesia (Nias I.) 2	Indomalaya
+Indonesia (Prince I.) 1	Indomalaya
+Indonesia (Prinsen I.) 7	Indomalaya
+Indonesia (Sebesi I.) 5	Indomalaya
+Indonesia (Simalur I.) 1	Indomalaya
+Indonesia (Sulawesi) 193	Indomalaya
+Indonesia (Sumatra) (locality in error) 1	Indomalaya
+Indonesia (Sumatra) (name misspelled as <i>myrmecordia</i>) 2	Indomalaya
+Indonesia (Sumatra) 342	Indomalaya
+Indonesia (Sumba I.) 3	Indomalaya
+Indonesia (Sumbawa I.) 1	Indomalaya
+Indonesia (Timor I.) 6	Indomalaya
+Indonesia (Timor) 2	Indomalaya
+Indonesia (Verlaten I.) 1	Indomalaya
+Laos 16	Indomalaya
+Malaysia (Sarawak) 2	Indomalaya
+Malaysia 7	Indomalaya
+Myanmar 178	Indomalaya
+Nepal 24	Indomalaya
+Nicobar Is 3	Indomalaya
+Pakistan 12	Indomalaya
+Philippines (Bukidnon) 1	Indomalaya
+Philippines (Camiguin I.) 3	Indomalaya
+Philippines (Cebu I.) 4	Indomalaya
+Philippines (Leyte I.) 3	Indomalaya
+Philippines (Leyte) 1	Indomalaya
+Philippines (Luzon I.) 6	Indomalaya
+Philippines (Luzon) 6	Indomalaya
+Philippines (Mindanao I.) 1	Indomalaya
+Philippines (Mindanao) 4	Indomalaya
+Philippines (Negros I.) 2	Indomalaya
+Philippines (Palawan I.) 6	Indomalaya
+Philippines (Palawan) 1	Indomalaya
+Philippines 238	Indomalaya
+Singapore (not South Africa as originally stated; see Donisthorpe, 1943f: 677) 2	Indomalaya
+Singapore 126	Indomalaya
+South East Asia ("pays de Moïs") 1	Indomalaya
+Sri Lanka 282	Indomalaya
+Taiwan 189	Indomalaya
+Thailand 81	Indomalaya
+Vietnam 128	Indomalaya
+West Malaysia 176	Indomalaya
+"East Indies" 1	Indomalaya
+"GRAND INDES" 2	Indomalaya
+"GRAND-INDES" 2	Indomalaya
+"Grandes Indes" 1	Indomalaya
+"Grandes-Indes" 2	Indomalaya
+"Pays de Mois" (S.E. Asia) 1	Indomalaya
+Indonesia ("Indes orientales") 8	none
+no type-locality given (type-locality AUSTRALIA: Shattuck, 2008c: 4) 1	Australasia
+Australia (Cocos Is) 3	Australasia
+Australia (name misspelled as <i>aerolus</i> in publication) 1	Australasia
+Australia (name misspelled as <i>aerolus</i> in this publication) 1	Australasia
+Australia (not Sierra Leone; see Bolton, 1973b: 352; Kohout, 1988c: 432) 1	Australasia
+Australia (Phillip I.) 1	Australasia
+Australia (Tasmania) 13	Australasia
+Australia 2095	Australasia
+Indonesia (Batjan I.) 69	Australasia
+Indonesia (Bouru I.) 2	Australasia
+Indonesia (Buru I.) 6	Australasia
+Indonesia (Halmahera I.) 14	Australasia
+Indonesia (Irian Jaya) 1	Australasia
+Indonesia (Kai Besar) 1	Australasia
+Indonesia (Key I.) 3	Australasia
+Indonesia (Martabello I.) 4	Australasia
+Indonesia (Misool I.) 16	Australasia
+Indonesia (Moluccas) 1	Australasia
+Indonesia (Morotai I.) 10	Australasia
+Indonesia (Salawaty I.) 2	Australasia
+Indonesia (Salwatty I.) 2	Australasia
+Indonesia (Seram I.) 29	Australasia
+Indonesia (Tanimbar Is) 1	Australasia
+Indonesia (Ternate I.) 12	Australasia
+Indonesia (Waigeo I.) 1	Australasia
+Indonesia (Wammer I.) 4	Australasia
+Indonesia (Weeim I.) 2	Australasia
+New Caledonia (Loyalty Is) 1	Australasia
+New Caledonia 109	Australasia
+New Guinea (Bismarck Archipelago) 50	Australasia
+New Guinea (New Britain I.) 4	Australasia
+New Guinea (New Britain) 3	Australasia
+New Guinea (Papua New Guinea) 1	Australasia
+New Guinea 911	Australasia
+New Zealand 39	Australasia
+Papua New Guinea 2	Australasia
+Solomon Is 138	Australasia
+Tasmania 9	Australasia
+Vanuatu 11	Australasia
+"Neu-Hannover" 1	Australasia
+"Port Praslin" 2	Australasia
+"probablement d'Australie ou de Nouvelle Guinée" 1	Australasia
+"Triton Bay" 2	Australasia
+Indonesia (Ambon I.) 34	Australasia
+"AFRICA" (no locality) 1	none
+"Africa" 2	none
+"Equatorial Africa" 1	Afrotropic
+"L'habitation est inconnue. Je soupçonne qu'elle est d'Afrique." 2	Afrotropic
+"North Africa" 1	Afrotropic
+"Sahara" 1	Afrotropic
+"Tropical Africa" 2	Afrotropic
+"Tropical East Africa" 1	Afrotropic
+"TROPICAL WEST AFRICA" 1	Afrotropic
+"West Africa" 3	Afrotropic
+Africa (not New Guinea as stated; see: Wilson, 1964a: 443) 1	Afrotropic
+Angola 158	Afrotropic
+Annobon 1	Afrotropic
+Azores Is 1	Afrotropic
+Benin 16	Afrotropic
+Botswana (Cretaceous) 5	Afrotropic
+Botswana 26	Afrotropic
+Burkina Faso 1	Afrotropic
+Burundi 12	Afrotropic
+Cameroun 268	Afrotropic
+Cape Verde Is 2	Afrotropic
+Central African Republic 13	Afrotropic
+Chad 9	Afrotropic
+Congo 110	Afrotropic
+Democratic Republic Of Congo (in key) 2	Afrotropic
+Democratic Republic Of Congo 583	Afrotropic
+Djibouti 1	Afrotropic
+East Africa (no locality given, probably KENYA) 2	Afrotropic
+East Africa 4	Afrotropic
+Equatorial Guinea (Annobon I.) 2	Afrotropic
+Equatorial Guinea (Bioko I.) 17	Afrotropic
+Equatorial Guinea 19	Afrotropic
+Ethiopia 164	Afrotropic
+Gabon 94	Afrotropic
+Gambia 6	Afrotropic
+Ghana 149	Afrotropic
+Guinea 125	Afrotropic
+Ivory Coast 79	Afrotropic
+Kenya 202	Afrotropic
+Lesotho 17	Afrotropic
+Liberia 15	Afrotropic
+Madeira 2	Afrotropic
+Malawi 16	Afrotropic
+Mozambique 97	Afrotropic
+Namibia 76	Afrotropic
+Niger 8	Afrotropic
+Nigeria 59	Afrotropic
+North Africa 7	Afrotropic
+Portugal (Cape Verde Is) 1	Afrotropic
+Portugal (Madeira I.) 9	Afrotropic
+Rwanda 19	Afrotropic
+São Tomé & Príncipe (Príncipe I.) 7	Afrotropic
+São Tomé & Príncipe (São Tomé I.) 11	Afrotropic
+São Tomé & Principe 1	Afrotropic
+Saudi Arabia 48	Afrotropic
+Senegal 48	Afrotropic
+Sierra Leone 43	Afrotropic
+Somalia 52	Afrotropic
+South Africa (locality in error) 1	Afrotropic
+South Africa (name misspelled as <i>Syllopsis</i> in publication) 2	Afrotropic
+South Africa (not Albania) 1	Afrotropic
+South Africa (not Cuba as stated; see Mayr, 1893: 195) 2	Afrotropic
+South Africa (not Cuba; see Mayr, 1893: 195) 1	Afrotropic
+South Africa 679	Afrotropic
+Spain (Canary Is) 61	Afrotropic
+St Helena 2	Afrotropic
+Sudan 131	Afrotropic
+Swaziland 2	Afrotropic
+Tanzania 126	Afrotropic
+Togo 8	Afrotropic
+Uganda 62	Afrotropic
+United Arab Emirates 4	Afrotropic
+West Africa 2	Afrotropic
+Yemen 42	Afrotropic
+Zambia 10	Afrotropic
+Zimbabwe 313	Afrotropic
+"Nini" 1	Afrotropic
+"AMERIQUE" 1	none
+Asia (no locality given) 1	none
+Himalaya (India?) 1	none
+India 694	none
+Indonesia 20	none
+Kashmir 1	none
+Kerguelen 1	Antarctic
+Mexico (fig. only) 2	none
+Mexico 579	none
+Mi (w.) 2	none
+Nn (m.) 1	none
+Oo 2	none
+Rapa 1	Oceania
+Tibet 24	none

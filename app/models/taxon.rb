@@ -347,11 +347,24 @@ class Taxon < ActiveRecord::Base
     nil
   end
 
-  def self.biogeographic_region_map
-    {}
+  ###############################################
+  def self.biogeographic_regions_for_localities
+    # open Flávia's file, select all, then copy and paste into a new text document with the indicated name
+
+    return @_biogeographic_regions_for_localities if @_biogeographic_regions_for_localities
+
+    @_biogeographic_regions_for_localities = {}
+    File.open('data/biogeographic_regions_for_localities.txt', 'r').each_line do |line|
+      components = line.split "\t"
+      raise line if components.size != 2
+      locality = components[0].dup.chomp.gsub(/ \d+$/, '')
+      biogeographic_region = components[1].chomp
+      @_biogeographic_regions_for_localities[locality] = biogeographic_region
+    end
+    @_biogeographic_regions_for_localities
   end
 
-  def replace_biogeographic_region map = Taxon.biogeographic_region_map
+  def replace_biogeographic_region map = self.class.biogeographic_regions_for_localities
     region = map[biogeographic_region]
     return unless region
     update_attributes! biogeographic_region: region
