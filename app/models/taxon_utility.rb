@@ -60,19 +60,29 @@ class Taxon < ActiveRecord::Base
       locality = components[0].upcase.chomp.gsub(/ \d+$/, '')
       biogeographic_region = components[1].chomp
       next if biogeographic_region == 'none'
-      @_biogeographic_regions_for_localities[locality] = biogeographic_region
+      @_biogeographic_regions_for_localities[locality] = {biogeographic_region: biogeographic_region, used_count: 0}
     end
     @_biogeographic_regions_for_localities
   end
 
-  def update_biogeographic_region_from_locality map = self.class.biogeographic_regions_for_localities
+  def self.update_tracking_map locality
+    return unless @tracking_map
+    @tracking_map.delete locality
+  end
+
+  def update_biogeographic_region_from_locality map = nil
     return unless protonym.locality
-    return unless region = map[protonym.locality.upcase]
+    locality = protonym.locality.upcase
+    map ||= self.class.biogeographic_regions_for_localities
+    region = map[locality]
+    return unless region
     return if fossil?
-    update_attributes! biogeographic_region: region
+    region[:used_count] += 1
+    update_attributes! biogeographic_region: region[:biogeographic_region]
   end
 
   def self.update_biogeographic_regions_from_localities
+    @tracking_map = self.biogeographic_regions_for_localities.dup
     taxa = Taxon.includes(:protonym)
     replacement_count = unfound_count = 0
     Progress.init true, taxa.count
@@ -85,6 +95,7 @@ class Taxon < ActiveRecord::Base
     end
     Progress.show_results
     Progress.puts "#{replacement_count} replacements, #{unfound_count} not found"
+    Progress.puts @tracking_map.inspect
   end
 
 end

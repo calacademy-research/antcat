@@ -128,6 +128,24 @@ describe Taxon do
     end
   end
 
+  describe "Reporting" do
+    after do
+      Taxon.clear_biogeographic_regions_for_localities
+    end
+    it "should show which localities in Flávia's document weren't used" do
+      File.stub(:open).and_return "Canada 2\tnone\nAmerica 3\tNuevo\n"
+      Taxon.biogeographic_regions_for_localities.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 0}}
+    end
+    it "should not show taxa which were used" do
+      protonym = FactoryGirl.create :protonym, locality: 'America'
+      taxon = create_genus protonym: protonym
+      File.stub(:open).and_return "America 3\tNuevo\n"
+      map = Taxon.biogeographic_regions_for_localities
+      taxon.update_biogeographic_region_from_locality map
+      map.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 1}}
+    end
+  end
+
   describe "Reading Flávia's document to produce locality-to-biogregion mapping" do
     it "should strip the counts and create a hash and ignore 'none' entries" do
       File.should_receive(:open).and_return "Canada 2\tnone\nAmerica 3\tNuevo\n"
