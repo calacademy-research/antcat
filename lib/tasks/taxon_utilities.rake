@@ -28,16 +28,5 @@ end
 
 desc "Update biogeographic regions"
 task update_biogeographic_regions: :environment do
-  taxa = Taxon.includes(:protonym)
-  replacement_count = unfound_count = 0
-  Progress.init true, taxa.count
-  for taxon in taxa
-    success = taxon.update_biogeographic_region_from_locality
-    if success then replacement_count += 1 else unfound_count += 1; end
-    Progress.tally_and_show_progress 1000 do
-      "#{replacement_count} replacements, #{unfound_count} not found"
-    end
-  end
-  Progress.show_results
-  Progress.puts "#{replacement_count} replacements, #{unfound_count} not found"
+  Taxon.update_biogeographic_region_from_locality
 end
