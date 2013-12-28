@@ -28,5 +28,5 @@ end
 
 desc "Update biogeographic regions"
 task update_biogeographic_regions: :environment do
-  Taxon.update_biogeographic_region_from_locality
+  Taxon.update_biogeographic_regions_from_localities
 end
