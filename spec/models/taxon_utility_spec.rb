@@ -114,6 +114,12 @@ describe Taxon do
       taxon.update_biogeographic_region_from_locality 'SAN PEDRO' => 'Africa'
       taxon.biogeographic_region.should == 'Africa'
     end
+    it "should not do the replacement if it's a fossil taxon" do
+      protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
+      taxon = create_genus protonym: protonym, fossil: true
+      taxon.update_biogeographic_region_from_locality 'SAN PEDRO' => 'Africa'
+      taxon.biogeographic_region.should be_nil
+    end
     it "should be case-insensitive" do
       protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
       taxon = create_genus protonym: protonym
