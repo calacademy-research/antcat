@@ -47,11 +47,12 @@ class Taxon < ActiveRecord::Base
   end
 
   ###############################################
+  # to create the map: open Flávia's file, select all,
+  # then copy and paste into a new text file with
+  # the indicated name in the /data directory of
+  # the project
   def self.biogeographic_regions_for_localities
-    # open Flávia's file, select all, then copy and paste into a new text document with the indicated name
-
     return @_biogeographic_regions_for_localities if @_biogeographic_regions_for_localities
-
     @_biogeographic_regions_for_localities = {}
     File.open('data/biogeographic_regions_for_localities.txt', 'r').each_line do |line|
       components = line.split "\t"
