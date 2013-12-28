@@ -110,6 +110,10 @@ describe Taxon do
     it "should do the replacement if there's a replacement defined" do
       taxon = create_genus biogeographic_region: 'San Pedro'
       taxon.replace_biogeographic_region 'San Pedro' => 'Africa'
+    it "should be case-insensitive" do
+      protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
+      taxon = create_genus protonym: protonym
+      taxon.update_biogeographic_region_from_locality 'SAN PEDRO' => 'Africa'
       taxon.biogeographic_region.should == 'Africa'
     end
   end

@@ -357,7 +357,7 @@ class Taxon < ActiveRecord::Base
     File.open('data/biogeographic_regions_for_localities.txt', 'r').each_line do |line|
       components = line.split "\t"
       raise line if components.size != 2
-      locality = components[0].dup.chomp.gsub(/ \d+$/, '')
+      locality = components[0].upcase.chomp.gsub(/ \d+$/, '')
       biogeographic_region = components[1].chomp
       @_biogeographic_regions_for_localities[locality] = biogeographic_region
     end
