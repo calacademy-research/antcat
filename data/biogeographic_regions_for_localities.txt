@@ -1,4 +1,3 @@
-Localities	bioregion
 Afghanistan 24	Palearctic
 Albania 4	Palearctic
 Algeria (?) 2	Palearctic
