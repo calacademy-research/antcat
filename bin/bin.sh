@@ -117,14 +117,18 @@ alias imp_prod_db=import_production_db_into_local
 
 ##############################################################
 function copy_local_db_to_production {
-  file_name="local_antcat_development.sql"
-  server="ec2-75-101-238-13.compute-1.amazonaws.com"
-  echo Dumping $file_name
-  mysqldump antcat_development -uroot > /tmp/$file_name
-  echo "Copying to production ($server)"
-  scp /tmp/$file_name deploy@$server:/tmp
-  echo Importing into antcat database on production
-  ssh deploy@$server "mysql antcat -udeploy -p7AdbiWigyX < /tmp/$file_name"
+  file_name="/tmp/antcat_production.sql"
+
+  echo "Dumping local database..."
+  mysqldump antcat_development -uroot > $file_name
+
+  echo "Copying to production"
+  scp $file_name deploy@$production_server:$file_name
+
+  echo 'Importing into production database...'
+  ssh deploy@$production_server "mysql antcat -udeploy -p$production_password < $file_name"
+
+  echo 'Done.'
 }
 
 function copy_local_db_to_preview {
