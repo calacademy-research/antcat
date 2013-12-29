@@ -90,9 +90,15 @@ class Taxon < ActiveRecord::Base
     end
     Progress.show_results
     Progress.puts "#{replacement_count} replacements, #{unfound_count} not found"
-    Progress.puts @tracking_map.inspect
+    output_results_from_updating_biogeographic_locations map
   end
 
+  def self.output_results_from_updating_biogeographic_locations map
+    map.select do |k,v|
+      v[:used_count].zero?
+    end.sort.each do |k,v|
+      puts "#{k} "
+    end
   end
 
 end
