@@ -52,19 +52,15 @@ class Taxon < ActiveRecord::Base
   # new text file with the indicated name in the /data directory of the project
 
   def self.biogeographic_regions_for_localities
-    return @_biogeographic_regions_for_localities if @_biogeographic_regions_for_localities
-    @_biogeographic_regions_for_localities = {}
+    map = {}
     File.open('data/biogeographic_regions_for_localities.txt', 'r').each_line do |line|
       components = line.split "\t"
       raise line if components.size != 2
       locality = components[0].upcase.chomp.gsub(/ \d+$/, '')
       biogeographic_region = components[1].chomp
       next if biogeographic_region == 'none'
-      @_biogeographic_regions_for_localities[locality] = {biogeographic_region: biogeographic_region, used_count: 0}
+      map[locality] = {biogeographic_region: biogeographic_region, used_count: 0}
     end
-    @_biogeographic_regions_for_localities
-  end
-
     map
   end
 
@@ -83,8 +79,9 @@ class Taxon < ActiveRecord::Base
     taxa = Taxon.includes(:protonym)
     replacement_count = unfound_count = 0
     Progress.init true, taxa.count
+    map = biogeographic_regions_for_localities
     for taxon in taxa
-      success = taxon.update_biogeographic_region_from_locality
+      success = taxon.update_biogeographic_region_from_locality map
       if success then replacement_count += 1 else unfound_count += 1; end
       Progress.tally_and_show_progress 1000 do
         "#{replacement_count} replacements, #{unfound_count} not found"
