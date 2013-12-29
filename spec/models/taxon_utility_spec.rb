@@ -101,65 +101,66 @@ describe Taxon do
     end
   end
 
-  describe "Using location to update biogeographic region" do
-    def make_map pair
-      #{a: :b} -> a: {biogeographic_region: :b, used_count: 0}
-      hash = {}
-      hash[pair.keys.first] = {biogeographic_region: pair.values.first, used_count: 0}
-      hash
+  describe "update_biogeographic_region" do
+    describe "Using location to update biogeographic region" do
+      def make_map pair
+        #{a: :b} -> a: {biogeographic_region: :b, used_count: 0}
+        hash = {}
+        hash[pair.keys.first] = {biogeographic_region: pair.values.first, used_count: 0}
+        hash
+      end
+      it "should do nothing if there's no replacement defined" do
+        protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
+        taxon = create_genus protonym: protonym
+        taxon.update_biogeographic_region_from_locality make_map 'CAPETOWN' => 'Africa'
+        taxon.biogeographic_region.should be_nil
+      end
+      it "should do the replacement if there's a replacement defined" do
+        protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
+        taxon = create_genus protonym: protonym
+        taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'Africa'
+        taxon.biogeographic_region.should == 'Africa'
+      end
+      it "should not do the replacement if it's a fossil taxon" do
+        protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
+        taxon = create_genus protonym: protonym, fossil: true
+        taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'Africa'
+        taxon.biogeographic_region.should be_nil
+      end
+      it "should be case-insensitive" do
+        protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
+        taxon = create_genus protonym: protonym
+        taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'Africa'
+        taxon.biogeographic_region.should == 'Africa'
+      end
+      it "should treat 'none' as nil" do
+        protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
+        taxon = create_genus protonym: protonym
+        taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'none'
+        taxon.biogeographic_region.should be_nil
+      end
     end
-    it "should do nothing if there's no replacement defined" do
-      protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
-      taxon = create_genus protonym: protonym
-      taxon.update_biogeographic_region_from_locality make_map 'CAPETOWN' => 'Africa'
-      taxon.biogeographic_region.should be_nil
+
+    describe "Reporting" do
+      it "should show which localities in Flávia's document weren't used" do
+        File.stub(:open).and_return "America 3\tNuevo\n"
+        Taxon.biogeographic_regions_for_localities.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 0}}
+      end
+      it "should not show taxa which were used" do
+        protonym = FactoryGirl.create :protonym, locality: 'America'
+        taxon = create_genus protonym: protonym
+        File.stub(:open).and_return "America 3\tNuevo\n"
+        map = Taxon.biogeographic_regions_for_localities
+        taxon.update_biogeographic_region_from_locality map
+        map.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 1}}
+      end
     end
-    it "should do the replacement if there's a replacement defined" do
-      protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
-      taxon = create_genus protonym: protonym
-      taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'Africa'
-      taxon.biogeographic_region.should == 'Africa'
-    end
-    it "should not do the replacement if it's a fossil taxon" do
-      protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
-      taxon = create_genus protonym: protonym, fossil: true
-      taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'Africa'
-      taxon.biogeographic_region.should be_nil
-    end
-    it "should be case-insensitive" do
-      protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
-      taxon = create_genus protonym: protonym
-      taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'Africa'
-      taxon.biogeographic_region.should == 'Africa'
-    end
-    it "should treat 'none' as nil" do
-      protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
-      taxon = create_genus protonym: protonym
-      taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'none'
-      taxon.biogeographic_region.should be_nil
+
+    describe "Reading Flávia's document to produce locality-to-biogregion mapping" do
+      it "should strip the counts and create a hash" do
+        File.stub(:open).and_return "America 3\tNuevo\n"
+        Taxon.biogeographic_regions_for_localities.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 0}}
+      end
     end
   end
-
-  describe "Reporting" do
-    it "should show which localities in Flávia's document weren't used" do
-      File.stub(:open).and_return "America 3\tNuevo\n"
-      Taxon.biogeographic_regions_for_localities.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 0}}
-    end
-    it "should not show taxa which were used" do
-      protonym = FactoryGirl.create :protonym, locality: 'America'
-      taxon = create_genus protonym: protonym
-      File.stub(:open).and_return "America 3\tNuevo\n"
-      map = Taxon.biogeographic_regions_for_localities
-      taxon.update_biogeographic_region_from_locality map
-      map.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 1}}
-    end
-  end
-
-  describe "Reading Flávia's document to produce locality-to-biogregion mapping" do
-    it "should strip the counts and create a hash" do
-      File.stub(:open).and_return "America 3\tNuevo\n"
-      Taxon.biogeographic_regions_for_localities.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 0}}
-    end
-  end
-
 end
