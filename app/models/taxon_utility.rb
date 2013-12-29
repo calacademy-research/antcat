@@ -58,7 +58,6 @@ class Taxon < ActiveRecord::Base
       raise line if components.size != 2
       locality = components[0].upcase.chomp.gsub(/ \d+$/, '')
       biogeographic_region = components[1].chomp
-      next if biogeographic_region == 'none'
       map[locality] = {biogeographic_region: biogeographic_region, used_count: 0}
     end
     map
@@ -71,12 +70,14 @@ class Taxon < ActiveRecord::Base
     map ||= self.class.biogeographic_regions_for_localities
     region = map[locality]
     return unless region
+    biogeographic_region = region[:biogeographic_region]
+    biogeographic_region = nil if biogeographic_region == 'none'
     region[:used_count] += 1
-    update_attributes! biogeographic_region: region[:biogeographic_region]
+    update_attributes! biogeographic_region: biogeographic_region
   end
 
   def self.update_biogeographic_regions_from_localities
-    taxa = Taxon.includes(:protonym)
+    taxa = Taxon.includes :protonym
     replacement_count = unfound_count = 0
     Progress.init true, taxa.count
     map = biogeographic_regions_for_localities
