@@ -65,12 +65,12 @@ class Taxon < ActiveRecord::Base
   end
 
   def update_biogeographic_region_from_locality map = nil
+    return if fossil?
     return unless protonym.locality
     locality = protonym.locality.upcase
     map ||= self.class.biogeographic_regions_for_localities
     region = map[locality]
     return unless region
-    return if fossil?
     region[:used_count] += 1
     update_attributes! biogeographic_region: region[:biogeographic_region]
   end
