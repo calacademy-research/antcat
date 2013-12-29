@@ -65,9 +65,7 @@ class Taxon < ActiveRecord::Base
     @_biogeographic_regions_for_localities
   end
 
-  def self.update_tracking_map locality
-    return unless @tracking_map
-    @tracking_map.delete locality
+    map
   end
 
   def update_biogeographic_region_from_locality map = nil
@@ -82,7 +80,6 @@ class Taxon < ActiveRecord::Base
   end
 
   def self.update_biogeographic_regions_from_localities
-    @tracking_map = self.biogeographic_regions_for_localities.dup
     taxa = Taxon.includes(:protonym)
     replacement_count = unfound_count = 0
     Progress.init true, taxa.count
@@ -98,8 +95,6 @@ class Taxon < ActiveRecord::Base
     Progress.puts @tracking_map.inspect
   end
 
-  def self.clear_biogeographic_regions_for_localities
-    @_biogeographic_regions_for_localities = nil
   end
 
 end
