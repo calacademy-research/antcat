@@ -47,10 +47,10 @@ class Taxon < ActiveRecord::Base
   end
 
   ###############################################
-  # to create the map: open Flávia's file, select all,
-  # then copy and paste into a new text file with
-  # the indicated name in the /data directory of
-  # the project
+
+  # to create the map: open Flávia's file, select all, then copy and paste into a
+  # new text file with the indicated name in the /data directory of the project
+
   def self.biogeographic_regions_for_localities
     return @_biogeographic_regions_for_localities if @_biogeographic_regions_for_localities
     @_biogeographic_regions_for_localities = {}
