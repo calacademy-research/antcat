@@ -73,7 +73,8 @@ class Taxon < ActiveRecord::Base
     biogeographic_region = region[:biogeographic_region]
     biogeographic_region = nil if biogeographic_region == 'none'
     region[:used_count] += 1
-    update_attributes! biogeographic_region: biogeographic_region
+    self.biogeographic_region = biogeographic_region
+    save!
   end
 
   def self.update_biogeographic_regions_from_localities
