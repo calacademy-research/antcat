@@ -141,9 +141,6 @@ describe Taxon do
   end
 
   describe "Reporting" do
-    after do
-      Taxon.clear_biogeographic_regions_for_localities
-    end
     it "should show which localities in Flávia's document weren't used" do
       File.stub(:open).and_return "America 3\tNuevo\n"
       Taxon.biogeographic_regions_for_localities.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 0}}
