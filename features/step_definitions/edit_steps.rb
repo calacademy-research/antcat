@@ -159,7 +159,7 @@ When /^I click the history item$/ do
   find('.history_items .history_item div.display').click
 end
 Then /^the history should be "(.*)"$/ do |history|
-  page.find('.history_items .history_item_body:first li div.display').text.should =~ /#{history}\.?/
+  page.find('.history_items .history_item_body:first div.display').text.should =~ /#{history}\.?/
 end
 Then /^the history should be empty$/ do
   page.should_not have_css '.history_items .history_item'
