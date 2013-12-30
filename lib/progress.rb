@@ -158,7 +158,7 @@ class Progress
     tally
     show_progress increment
     additional_message = block_given? ? yield : ''
-    return unless additional_message.blank? or increment.nil? or processed_count % increment == 0
+    return if additional_message.blank?
     puts additional_message
   end
 
