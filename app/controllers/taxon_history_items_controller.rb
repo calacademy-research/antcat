@@ -22,8 +22,18 @@ class TaxonHistoryItemsController < ApplicationController
     render json: json, content_type: 'text/html'
   end
 
-  ###
+  def reorder
+    index = 0
+    while id = params[index.to_s]
+      item = TaxonHistoryItem.find id rescue break
+      item.update_attributes! position: index
+      index += 1
+    end
+    json = {success: true}.to_json
+    render json: json, content_type: 'text/html'
+  end
 
+  ###
   def render_json is_new
     json = {
       isNew: is_new,

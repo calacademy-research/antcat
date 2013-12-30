@@ -36,7 +36,9 @@ AntCat::Application.routes.draw do
     end
   end
 
-  match     '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import
+  match '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import
+
+  match '/taxa/:taxa_id/taxon_history_items/order' => 'taxon_history_items#reorder', via: :put
 
   resources :taxa do
     resources 'taxon_history_items', only: [:update, :create, :destroy]
