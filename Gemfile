@@ -4,6 +4,8 @@ ruby '1.9.3'
 gem 'acts_as_list'
 gem 'aws-sdk'
 gem 'citrus'
+# see https://github.com/cucumber/cucumber-rails/issues/187#issuecomment-4160160
+gem 'cucumber-rails', require: false
 gem 'curb',             require: 'curl'
 gem 'devise'
 gem 'devise_invitable'
@@ -30,8 +32,6 @@ gem 'workflow'
 gem 'xml-simple'
 
 group :development, :test do
-  # see https://github.com/cucumber/cucumber-rails/issues/187#issuecomment-4160160
-  gem 'cucumber-rails', require: false
   gem 'debugger'
   gem 'launchy'
   gem 'rspec'
