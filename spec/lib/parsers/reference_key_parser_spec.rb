@@ -8,7 +8,10 @@ describe Parsers::ReferenceKeyParser do
 
   describe "Parsing a key string into its components" do
     it "should return an author and a year" do
-      @parser.parse('Bolton, 1975').should == {author_last_names: ['Bolton'], nester_last_names: [], year: '1975', year_ordinal: nil}
+      @parser.parse('Bolton, 1975').should == {author_last_names: ['Bolton'], nester_last_names: nil,  year: '1975', year_ordinal: nil}
+    end
+    it "should return two authors" do
+      @parser.parse('Bolton & Fisher, 1975').should == {author_last_names: ['Bolton', 'Fisher'], nester_last_names: nil, year: '1975', year_ordinal: nil}
     end
   end
 
