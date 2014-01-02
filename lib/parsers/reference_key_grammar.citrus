@@ -2,12 +2,40 @@ grammar Parsers::ReferenceKeyGrammar
   include Parsers::CommonGrammar
 
   rule reference_key
-    (author_names ',' s year year_ordinal?) {
+    (reference_key_without_et_al | reference_key_with_et_al|reference_key_without_year)
+  end
+
+  rule reference_key_with_et_al
+    (name_phrase ',' s '<i>et al.</i>' s year? year_ordinal?) {
+      value = {}
+      value[:author_last_names] = [name_phrase.value.to_s]
+      value[:nester_last_names] = nil
+      value[:year] = year
+      value[:year_ordinal] = year_ordinal
+      value
+    }
+  end
+
+  rule reference_key_without_et_al
+    (author_names ',' s year? year_ordinal?) {
       value = {}
       value[:author_last_names] = author_names.value[:names]
       value[:nester_last_names] = nil
       value[:year] = year
       value[:year_ordinal] = year_ordinal
+      value
+    }
+  end
+
+  rule reference_key_without_year
+    # Trailing 's' rule invocation appears to be necessary because
+    # of a bug in Citrus
+    (name_word s) {
+      value = {}
+      value[:author_last_names] = [name_word.value]
+      value[:nester_last_names] = nil
+      value[:year] = nil
+      value[:year_ordinal] = nil
       value
     }
   end
