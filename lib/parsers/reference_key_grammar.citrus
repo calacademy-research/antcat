@@ -10,7 +10,7 @@ grammar Parsers::ReferenceKeyGrammar
   end
 
   rule reference_key_with_et_al
-    (name_phrase ',' s '<i>et al.</i>' s year? year_ordinal?) {
+    (name_phrase ','? s '<i>et al.</i>' s year? year_ordinal?) {
       value = {}
       value[:author_last_names] = [name_phrase.value.to_s]
       value[:nester_last_names] = nil
@@ -21,7 +21,7 @@ grammar Parsers::ReferenceKeyGrammar
   end
 
   rule reference_key_with_two_authors_plus_et_al
-    (name_word ', ' name_word s "<i>et al.</i>" s year? year_ordinal?) {
+    (name_word ','? ' ' name_word s "<i>et al.</i>" s year? year_ordinal?) {
       value = {}
       value = {author_last_names: ['Bolton', 'Fisher']}
       value[:nester_last_names] = nil
@@ -32,7 +32,7 @@ grammar Parsers::ReferenceKeyGrammar
   end
 
   rule reference_key_without_et_al
-    (author_names ',' 'in citation'? s year? year_ordinal?) {
+    (author_names ','? 'in citation'? s year? year_ordinal?) {
       value = {}
       value[:author_last_names] = author_names.value[:names]
       value[:nester_last_names] = nil
