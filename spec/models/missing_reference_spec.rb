@@ -3,6 +3,17 @@ require 'spec_helper'
 
 describe MissingReference do
 
+  describe "Replacing all missing references" do
+    it "should replace a reference" do
+      missing_reference = FactoryGirl.create :missing_reference, citation: 'Bolton 2010'
+      protonym = FactoryGirl.create :protonym, authorship: FactoryGirl.create(:citation, reference: missing_reference)
+      taxon = create_genus protonym: protonym
+      nonmissing_reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Bolton')]
+      MissingReference.replace_all
+      MissingReference.count.should == 0
+      taxon.protonym.authorship.reference.should == nonmissing_reference
+    end
+  end
   describe "Optional year" do
     it "should permit a missing year (unlike other references)" do
       MissingReference.new(title: 'missing', citation: 'Bolton').should be_valid
