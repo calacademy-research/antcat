@@ -25,6 +25,9 @@ describe Parsers::ReferenceKeyParser do
     it "should handle it when the year is missing" do
       @parser.parse('Bolton').should == {author_last_names: ['Bolton'], nester_last_names: nil, year: nil, year_ordinal: nil}
     end
+    it "should handle a 'de' prefix" do
+      @parser.parse('de Andrade, 2001').should == {author_last_names: ['de Andrade'], nester_last_names: nil, year: '2001', year_ordinal: nil}
+    end
   end
 
 end
