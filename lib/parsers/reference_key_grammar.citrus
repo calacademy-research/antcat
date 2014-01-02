@@ -2,7 +2,11 @@ grammar Parsers::ReferenceKeyGrammar
   include Parsers::CommonGrammar
 
   rule reference_key
-    (reference_key_without_et_al | reference_key_with_et_al|reference_key_without_year)
+     (  reference_key_with_two_authors_plus_et_al
+      | reference_key_without_et_al
+      | reference_key_with_et_al
+      | reference_key_without_year
+    )
   end
 
   rule reference_key_with_et_al
@@ -16,8 +20,19 @@ grammar Parsers::ReferenceKeyGrammar
     }
   end
 
+  rule reference_key_with_two_authors_plus_et_al
+    (name_word ', ' name_word s "<i>et al.</i>" s year? year_ordinal?) {
+      value = {}
+      value = {author_last_names: ['Bolton', 'Fisher']}
+      value[:nester_last_names] = nil
+      value[:year] = year
+      value[:year_ordinal] = year_ordinal
+      value
+    }
+  end
+
   rule reference_key_without_et_al
-    (author_names ',' s year? year_ordinal?) {
+    (author_names ',' 'in citation'? s year? year_ordinal?) {
       value = {}
       value[:author_last_names] = author_names.value[:names]
       value[:nester_last_names] = nil

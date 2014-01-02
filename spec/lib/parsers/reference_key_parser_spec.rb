@@ -19,6 +19,9 @@ describe Parsers::ReferenceKeyParser do
     it "should handle et al." do
       @parser.parse('Bolton, <i>et al.</i> 1975').should == {author_last_names: ['Bolton'], nester_last_names: nil, year: '1975', year_ordinal: nil}
     end
+    it "should handle et al. with two names" do
+      @parser.parse('Bolton, Fisher <i>et al.</i> 1975').should == {author_last_names: ['Bolton', 'Fisher'], nester_last_names: nil, year: '1975', year_ordinal: nil}
+    end
     it "should handle three or more items" do
       @parser.parse('Bolton, Fisher & Ward, 1975').should == {author_last_names: ['Bolton', 'Fisher', 'Ward'], nester_last_names: nil, year: '1975', year_ordinal: nil}
     end
