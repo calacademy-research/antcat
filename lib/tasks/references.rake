@@ -23,7 +23,7 @@ namespace :references do
 
   desc 'Replace MissingReferences'
   task replace_missing: :environment do
-    MissingReference.replace_all
+    MissingReference.replace_all true
   end
 end
 
