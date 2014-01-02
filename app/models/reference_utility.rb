@@ -36,4 +36,28 @@ class Reference < ActiveRecord::Base
     NestedReference.where(nested_reference_id: id).update_all(nested_reference_id: reference.id)
   end
 
+  def self.replace_with_batch batch
+    Taxt.taxt_fields.each do |klass, fields|
+      for record in klass.send :all
+        for field in fields
+          next unless record[field]
+          for replacement in batch
+            from = "{ref #{replacement[:replace].id}}"
+            to = "{ref #{replacement[:with].id}}"
+            record[field] = record[field].gsub /#{from}/, to
+          end
+        end
+        record.save!
+      end
+    end
+
+    for replacement in batch
+      for klass in [Citation, Bolton::Match]
+        klass.where(reference_id: replacement[:replace]).update_all(reference_id: replacement[:with])
+      end
+      NestedReference.where(nested_reference_id: replacement[:replace]).update_all(nested_reference_id: replacement[:with])
+    end
+
+  end
+
 end

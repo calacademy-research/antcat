@@ -52,6 +52,14 @@ describe Reference do
       @missing_reference.replace_with @found_reference
       citation.reload.reference.should == @found_reference
     end
-  end
 
+    describe "Batch processing a number of replacements in one pass" do
+      it "should replace references in taxt to the MissingReference to the found reference" do
+        item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
+        Reference.replace_with_batch [{replace: @missing_reference, with: @found_reference}]
+        item.reload.taxt.should == "{ref #{@found_reference.id}}"
+      end
+
+    end
+  end
 end
