@@ -1,6 +1,10 @@
 # coding: UTF-8
 class MissingReference < Reference
 
+  def key
+    MissingReferenceKey.new citation
+  end
+
   def self.import reason, data
     year = data[:year] || data[:in].try(:[], :year)
     reference_key = data[:matched_text].dup
@@ -12,10 +16,6 @@ class MissingReference < Reference
     return missing_reference if missing_reference
 
     create! title: '(missing)', reason_missing: reason, citation: reference_key, citation_year: year
-  end
-
-  def key
-    MissingReferenceKey.new citation
   end
 
 end
