@@ -10,6 +10,9 @@ describe Parsers::ReferenceKeyParser do
     it "should return an author and a year" do
       @parser.parse('Bolton, 1975').should == {author_last_names: ['Bolton'], nester_last_names: nil,  year: '1975', year_ordinal: nil}
     end
+    it "should return a year ordinal" do
+      @parser.parse('Bolton, 1975b').should == {author_last_names: ['Bolton'], nester_last_names: nil,  year: '1975', year_ordinal: 'b'}
+    end
     it "should return two authors" do
       @parser.parse('Bolton & Fisher, 1975').should == {author_last_names: ['Bolton', 'Fisher'], nester_last_names: nil, year: '1975', year_ordinal: nil}
     end
