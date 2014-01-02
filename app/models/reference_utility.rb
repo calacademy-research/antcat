@@ -19,24 +19,21 @@ class Reference < ActiveRecord::Base
   end
 
   def replace_with reference, options = {}
-    Progress.new_init show_progress: options[:show_progress], total_count: 27559
     Taxt.taxt_fields.each do |klass, fields|
       for record in klass.send :all
         for field in fields
           next unless record[field]
           record[field] = record[field].gsub /{ref #{id}}/, "{ref #{reference.id}}"
         end
-        Progress.tally_and_show_progress
         record.save!
       end
-      Progress.show_results
     end
 
     for klass in [Citation, Bolton::Match]
       klass.where(reference_id: id).update_all(reference_id: reference.id)
     end
-    NestedReference.where(nested_reference_id: id).update_all(nested_reference_id: reference.id)
 
+    NestedReference.where(nested_reference_id: id).update_all(nested_reference_id: reference.id)
   end
 
 end
