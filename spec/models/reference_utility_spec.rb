@@ -28,43 +28,4 @@ describe Reference do
       Reference.import_hol_document_urls
     end
   end
-
-  describe "when a MissingReference is found" do
-    before do
-      @found_reference = FactoryGirl.create :article_reference
-      @missing_reference = FactoryGirl.create :missing_reference
-    end
-    it "should replace references in taxt to the MissingReference to the found reference" do
-      item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
-      @missing_reference.replace_with @found_reference
-      item.reload.taxt.should == "{ref #{@found_reference.id}}"
-    end
-    it "should not save records that don't contain the {ref}" do
-      item = TaxonHistoryItem.create! taxt: "Just some taxt"
-      item.reload
-      updated_at = item.updated_at
-      @missing_reference.replace_with @found_reference
-      item.reload
-      item.updated_at.should == updated_at
-    end
-    it "should replace references in citations" do
-      citation = Citation.create! reference: @missing_reference
-      @missing_reference.replace_with @found_reference
-      citation.reload.reference.should == @found_reference
-    end
-
-    describe "Batch processing a number of replacements in one pass" do
-      it "should replace references in taxt to the MissingReference to the found reference" do
-        item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
-        Reference.replace_with_batch [{replace: @missing_reference, with: @found_reference}]
-        item.reload.taxt.should == "{ref #{@found_reference.id}}"
-      end
-      it "should replace references in citations" do
-        citation = Citation.create! reference: @missing_reference
-        Reference.replace_with_batch [{replace: @missing_reference, with: @found_reference}]
-        citation.reload.reference.should == @found_reference
-      end
-
-    end
-  end
 end
