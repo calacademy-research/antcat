@@ -9,8 +9,8 @@ class MissingReference < Reference
     unfound_citations = []
     records_to_destroy = []
     replacements = []
-    Progress.new_init show_progress: show_progress, total_count: MissingReference.count
-    MissingReference.order(:citation).all.each do |reference|
+    Progress.new_init show_progress: show_progress, total_count: count
+    order(:citation).all.each do |reference|
       replacement = reference.find_replacement
       if replacement
         replacements << {replace: reference, with: replacement}
@@ -22,10 +22,10 @@ class MissingReference < Reference
       end
     end
 
-    Reference.replace_with_batch replacements
+    replace_with_batch replacements
 
-    records_to_destroy.each do |reference_id|
-      MissingReference.find(reference_id).destroy
+    for id in records_to_destroy
+      find(id).destroy
     end
 
     unfound_citations
