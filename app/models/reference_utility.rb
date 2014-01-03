@@ -29,7 +29,7 @@ class Reference < ActiveRecord::Base
       end
     end
 
-    self.class.update_fields replace: id, with: reference.id
+    self.class.update_fields [{replace: id, with: reference.id}]
   end
 
   def self.replace_with_batch batch
@@ -47,17 +47,16 @@ class Reference < ActiveRecord::Base
       end
     end
 
-    for replacement in batch
-      update_fields replacement
-    end
-
+    update_fields batch
   end
 
-  def self.update_fields replacement
-    for klass in [Citation, Bolton::Match]
-      klass.where(reference_id: replacement[:replace]).update_all(reference_id: replacement[:with])
+  def self.update_fields batch
+    for replacement in batch
+      for klass in [Citation, Bolton::Match]
+        klass.where(reference_id: replacement[:replace]).update_all(reference_id: replacement[:with])
+      end
+      NestedReference.where(nested_reference_id: replacement[:replace]).update_all(nested_reference_id: replacement[:with])
     end
-    NestedReference.where(nested_reference_id: replacement[:replace]).update_all(nested_reference_id: replacement[:with])
   end
 
 end
