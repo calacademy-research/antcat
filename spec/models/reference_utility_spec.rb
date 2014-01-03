@@ -59,6 +59,11 @@ describe Reference do
         Reference.replace_with_batch [{replace: @missing_reference, with: @found_reference}]
         item.reload.taxt.should == "{ref #{@found_reference.id}}"
       end
+      it "should replace references in citations" do
+        citation = Citation.create! reference: @missing_reference
+        Reference.replace_with_batch [{replace: @missing_reference, with: @found_reference}]
+        citation.reload.reference.should == @found_reference
+      end
 
     end
   end
