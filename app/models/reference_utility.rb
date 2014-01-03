@@ -29,11 +29,7 @@ class Reference < ActiveRecord::Base
       end
     end
 
-    for klass in [Citation, Bolton::Match]
-      klass.where(reference_id: id).update_all(reference_id: reference.id)
-    end
-
-    NestedReference.where(nested_reference_id: id).update_all(nested_reference_id: reference.id)
+    self.class.update_fields replace: id, with: reference.id
   end
 
   def self.replace_with_batch batch
