@@ -230,6 +230,16 @@ alias test_widgets="cuc features/editing/widgets"
 alias test_ref_widgets="cuc features/editing/widgets/reference_popup.feature features/editing/widgets/reference_field.feature"
 alias test_taxon="cuc features/editing/{add,edit}_taxon.feature"
 alias test_quick_taxon="cuc features/editing/workflow.feature features/catalog/catalog.feature features/editing/add_taxon.feature:16"
+alias save_db="mysqldump antcat_development -uroot > /tmp/antcat_development.sql"
+
+function load_db {
+  file_name="/tmp/antcat_development.sql"
+  echo "Loading database from $file_name..."
+  mysql antcat_development -uroot < $file_name
+  echo "Migrating..."
+  bundle exec rake db:migrate db:test:prepare
+  echo "Done"
+}
 
 function menu {
   type cuke
@@ -239,6 +249,8 @@ function menu {
   type test_taxon
   type test_quick_taxon
   type deploy_both_if_green
+  type save_db
+  type load_db
 }
 
 # to restart an application, run this as root on production server
