@@ -36,7 +36,7 @@ describe MissingReference do
         protonym = FactoryGirl.create :protonym, authorship: FactoryGirl.create(:citation, reference: missing_reference)
         taxon = create_genus protonym: protonym
         taxon.protonym.authorship.reference.should == missing_reference
-        nonmissing_reference = FactoryGirl.create :article_reference, key_cache: 'Borowiec, 2010'
+        nonmissing_reference = FactoryGirl.create :article_reference, key_cache_no_commas: 'Borowiec 2010'
 
         MissingReference.replace_all
 
