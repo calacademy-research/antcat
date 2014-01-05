@@ -32,19 +32,41 @@ class Reference < ActiveRecord::Base
     self.class.update_fields [{replace: id, with: reference.id}]
   end
 
-  def self.replace_with_batch batch
+  def self.get_total_records_to_update
+    total = 0
     Taxt.taxt_fields.each do |klass, fields|
+      total += klass.count
+    end
+    total
+  end
+
+  def self.replace_with_batch batch, show_progress = false
+    total_records_to_update = get_total_records_to_update
+    Progress.init show_progress
+    Progress.puts "#{batch.size} replacements to make"
+    return unless batch.present?
+    stop = false
+    Taxt.taxt_fields.each do |klass, fields|
+      Progress.init show_progress, klass.send(:count)
+      Progress.puts "Updating #{klass}..."
+      stop = true if klass == TaxonHistoryItem
       for record in klass.send :all
+        Progress.tally_and_show_progress 300
         for field in fields
           next unless record[field]
           for replacement in batch
             from = "{ref #{replacement[:replace].id}}"
             to = "{ref #{replacement[:with].id}}"
-            record[field] = record[field].gsub /#{from}/, to
+            field_contents = record[field]
+            was_replaced = field_contents.gsub! /#{from}/, to
+            if was_replaced
+              # unknown why this is necessary
+              connection.execute "UPDATE #{klass.table_name} SET #{field} = \"#{field_contents}\" WHERE id = #{record.id}"
+            end
           end
         end
-        record.save!
       end
+      Progress.show_results
     end
 
     update_fields batch
