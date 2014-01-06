@@ -14,7 +14,7 @@ Feature: Merging authors
       | Bolton,B.  | More ants      | 2011 | Psyche 2:2 |
     And the following names exist for another author
       | Fisher, B. |
-    When I go to the Authors page
+    When I go to the Merge Authors page
     Then I should not see "Bolton, B." in the author panel
 
   Scenario: Searching for an author
@@ -49,7 +49,7 @@ Feature: Merging authors
 
   Scenario: Merging
     Given I am logged in
-    When I go to the Authors page
+    When I go to the Merge Authors page
     And I search for "Bolton, B." in the author panel
     And I search for "Fisher, B." in another author panel
     And I merge the authors
@@ -58,7 +58,7 @@ Feature: Merging authors
 
   @preview
   Scenario: Merging, in preview environment
-    When I go to the Authors page
+    When I go to the Merge Authors page
     And I search for "Bolton, B." in the author panel
     And I search for "Fisher, B." in another author panel
     And I merge the authors
