@@ -19,5 +19,5 @@ setup_author_autocomplete = ->
   return if AntCat.testing
   $('#author_name').autocomplete
     autoFocus: true,
-    source: "/merge_authors/all",
+    source: '/authors',
     minLength: 3

@@ -41,11 +41,4 @@ class MergeAuthorsController < ApplicationController
     render :index
   end
 
-  #######
-  def all
-    respond_to do |format|
-      format.json {render :json => AuthorName.search(params[:term]).to_json}
-      format.html
-    end
-  end
 end
