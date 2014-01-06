@@ -1,6 +1,9 @@
 # coding: UTF-8
 AntCat::Application.routes.draw do
 
+  resources :authors
+
+
   root to: 'catalog#show'
 
   resources :changes, only: [:show, :index] do
