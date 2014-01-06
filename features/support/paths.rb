@@ -56,6 +56,9 @@ module NavigationHelpers
     when /^the authors page$/
       authors_path
 
+    when /^the author edit page for "(.*)"$/
+      "/authors/#{Author.find_by_names($1).first.id}/edit"
+
     when /^the edit user page$/
       '/users/edit'
     when /^the forgot password page$/

@@ -15,3 +15,5 @@ Feature: Editing an author and his names
     When I go to the authors page
     Then I should see "Bolton, B.; Bolton,B."
     And I should see "Fisher, B."
+    When I click "edit" in the first row
+    Then I should be on the author edit page for "Bolton, B."
