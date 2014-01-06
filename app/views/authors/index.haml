@@ -1,4 +1,8 @@
 - @title = 'Authors'
 
-- for author in Author.sorted_by_name
+%div= will_paginate @authors
+
+- for author in @authors
   %p= author.names.map(&:name).join('; ')
+
+%div= will_paginate @authors

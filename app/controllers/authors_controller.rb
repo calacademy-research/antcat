@@ -1,11 +1,8 @@
 class AuthorsController < ApplicationController
-  # GET /authors
-  # GET /authors.json
-  def index
-    @authors = Author.all
 
+  def index
     respond_to do |format|
-      format.html # index.html.erb
+      format.html {@authors = Author.sorted_by_name.paginate page: params[:page], per_page: 60}
       format.json { render json: @authors }
     end
   end
