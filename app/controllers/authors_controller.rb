@@ -1,4 +1,6 @@
 class AuthorsController < ApplicationController
+  before_filter :authenticate_user!, except: [:index]
+  skip_before_filter :authenticate_user!, if: :preview?
 
   def index
     respond_to do |format|

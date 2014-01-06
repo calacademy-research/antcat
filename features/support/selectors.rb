@@ -62,6 +62,9 @@ module HtmlSelectorsHelpers
     when /the new_or_homonym name field/
       '#test_new_or_homonym_name_field .display'
 
+    when /the first row of author names/
+      '#authors .author_row:first'
+
     when /"(.+)"/
       $1
 
