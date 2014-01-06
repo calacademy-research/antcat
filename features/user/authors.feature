@@ -1,4 +1,4 @@
-Feature: Editing an author and his names
+Feature: Working with authors and their names
 
   Background:
     Given the following names exist for an author
