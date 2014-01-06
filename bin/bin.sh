@@ -76,7 +76,7 @@ function copy_production_db_to_preview {
 }
 
 ##############################################################
-function copy_production_db_to_local {
+function copy_production_db {
   file_name="/tmp/antcat_production.sql"
 
   echo "Dumping production database..."
@@ -96,10 +96,10 @@ function copy_production_db_to_local {
 
   echo 'Done.'
 }
-alias get_prod_db=copy_production_db_to_local
+alias get_prod_db=copy_production_db
 
 ##############################################################
-function import_production_db_into_local {
+function import_production_db {
   file_name="/tmp/antcat_production.sql"
 
   echo "Dropping and recreating local databases..."
@@ -170,13 +170,6 @@ function export_db {
   echo Migrating
   bundle exec rake db:migrate db:test:prepare
 }
-
-# getting the production database
-function import_prod_db {
-  import_db antcat_production.sql
-}
-alias impdb=import_prod_db
-alias ipdb=import_prod_db
 
 # getting the preview database
 function import_preview_db {
