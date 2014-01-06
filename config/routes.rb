@@ -1,9 +1,6 @@
 # coding: UTF-8
 AntCat::Application.routes.draw do
 
-  resources :authors
-
-
   root to: 'catalog#show'
 
   resources :changes, only: [:show, :index] do
@@ -12,8 +9,8 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :merge_authors, only: [:index, :all, :merge]
-  match     '/merge_authors/all', to: 'merge_authors#all', via: :get
+  resources :authors, only: [:index, :edit, :update]
+  resources :merge_authors, only: [:index, :merge]
   match     '/merge_authors/merge', to: 'merge_authors#merge', via: :post
 
   match     'catalog/index/(:id)'    => 'catalog#show',           as: :catalog, via: :get # for compatibility
