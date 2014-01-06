@@ -3,6 +3,11 @@
 %div= will_paginate @authors
 
 - for author in @authors
-  %p= author.names.map(&:name).join('; ')
+  %table
+    %tr
+      %td
+        %p= author.names.map(&:name).join('; ')
+      %td
+        %a.edit_link edit
 
 %div= will_paginate @authors
