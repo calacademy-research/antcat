@@ -2,12 +2,10 @@
 
 %div= will_paginate @authors
 
-- for author in @authors
-  %table
-    %tr
-      %td
-        %p= author.names.map(&:name).join('; ')
-      %td
-        %a.edit_link edit
+#authors
+  - for author in @authors
+    %span= author.names.map(&:name).join('; ')
+    = link_to 'edit', edit_author_path(author), class: 'edit_link'
+    %br
 
 %div= will_paginate @authors
