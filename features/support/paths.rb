@@ -53,6 +53,9 @@ module NavigationHelpers
     when /^the Merge Authors page$/
       merge_authors_path
 
+    when /^the authors page$/
+      authors_path
+
     when /^the edit user page$/
       '/users/edit'
     when /^the forgot password page$/
