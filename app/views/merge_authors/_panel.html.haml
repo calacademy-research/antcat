@@ -7,7 +7,7 @@
 .author_panel{class: css_classes.join(' ')}
 
   .search
-    = form_tag authors_path, method: :get do
+    = form_tag merge_authors_path, method: :get do
       .left
         - panels.each do |a_panel|
           = hidden_field_tag 'term', panel.term

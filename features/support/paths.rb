@@ -51,7 +51,7 @@ module NavigationHelpers
       journals_path
 
     when /^the Authors page$/
-      authors_path
+      merge_authors_path
 
     when /^the edit user page$/
       '/users/edit'

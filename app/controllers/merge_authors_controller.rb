@@ -1,5 +1,5 @@
 # coding: UTF-8
-class AuthorsController < ApplicationController
+class MergeAuthorsController < ApplicationController
   before_filter :authenticate_user!, only: :merge
   skip_before_filter :authenticate_user!, :if => :preview?
 

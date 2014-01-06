@@ -1,7 +1,7 @@
 @dormant @javascript
-Feature: Editing authors and author names
+Feature: Merging authors
   As an editor of AntCat
-  I want to edit/add/assign authors to names and vice versa
+  I want to merge together author names
   So that they are correct
 
   Background:

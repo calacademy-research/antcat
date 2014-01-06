@@ -3,7 +3,7 @@
 .clear
 
 .merge.panel
-  = form_tag authors_merge_path do
+  = form_tag merge_authors_merge_path do
     - panels.each do |panel|
       = hidden_field_tag 'terms[]', panel.term
     = submit_tag previewize('Merge these authors'), confirm: previewize('Do you want to merge these authors?')

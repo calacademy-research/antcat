@@ -35,7 +35,7 @@ class AntCat.ReferenceForm extends AntCat.NestedForm
       source: (request, result_handler) ->
         search_term = AntCat.ReferenceField.extract_author_search_term(@element.val(), $(@element).getSelection().start)
         if search_term.length >= 3
-          $.getJSON "/authors/all", term: search_term, result_handler
+          $.getJSON "/merge_authors/all", term: search_term, result_handler
         else
           result_handler []
       focus: -> false # don't update the search textbox when the autocomplete item changes

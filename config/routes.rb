@@ -9,9 +9,9 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :authors, only: [:index, :all, :merge]
-  match     '/authors/all', to: 'authors#all', via: :get
-  match     '/authors/merge', to: 'authors#merge', via: :post
+  resources :merge_authors, only: [:index, :all, :merge]
+  match     '/merge_authors/all', to: 'merge_authors#all', via: :get
+  match     '/merge_authors/merge', to: 'merge_authors#merge', via: :post
 
   match     'catalog/index/(:id)'    => 'catalog#show',           as: :catalog, via: :get # for compatibility
   match     'catalog/search'         => 'catalog#search',         as: :catalog, via: :get

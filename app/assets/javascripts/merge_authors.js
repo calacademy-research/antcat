@@ -23,6 +23,6 @@ function setupAuthorAutocomplete() {
   $('.author_panel input[type=text]').autocomplete({
     autoFocus: true,
     minLength: 3,
-    source: "/authors/all"
+    source: "/merge_authors/all"
   });
 }
