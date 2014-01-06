@@ -13,5 +13,5 @@ Feature: Editing an author and his names
 
   Scenario: Seeing all the authors with their names
     When I go to the authors page
-    Then I should see "Bolton, B., Bolton,B."
+    Then I should see "Bolton, B.; Bolton,B."
     And I should see "Fisher, B."
