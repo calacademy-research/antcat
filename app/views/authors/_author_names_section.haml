@@ -1,0 +1,15 @@
+-#Locals: taxon
+
+.history_items_section.section
+  .section_header.ui-widget-header.ui-corner-top
+    .left
+      History
+    .right.history_items_section_buttons
+      %button.submit.ui-priority-primary.small_button Add
+    .clear
+  .history_items.ui-dialog-content.ui-widget-content.ui-corner-bottom
+    %ul#sortable
+      - for history_item in taxon.history_items do
+        = render 'history_items/panel', item: history_item
+  .history_item_template
+    = render 'history_items/panel', item: TaxonHistoryItem.new(taxon_id: taxon.id)
