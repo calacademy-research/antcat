@@ -28,3 +28,12 @@ Feature: Working with authors and their names
   Scenario: Attempting to access edit page without being logged in
     When I go to the author edit page for "Bolton, B."
     Then I should be on the login page
+
+  Scenario: Adding an author name
+    When I go to the author edit page for "Bolton, B."
+    And I click the "Add Author Name" button
+    And I edit the author name to "Abc"
+    And I save the author name
+    And I wait for a bit
+    Then the author name should be "Abc"
+
