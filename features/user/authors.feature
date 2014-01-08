@@ -47,3 +47,5 @@ Feature: Working with authors and their names
     And I click the "Add Author Name" button
     And I edit the author name to "Fisher, B."
     And I save the author name
+    And I follow "Back to Authors"
+    Then I should see "Bolton, B.; Fisher, B."
