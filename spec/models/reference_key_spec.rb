@@ -42,9 +42,9 @@ describe ReferenceKey do
 
   describe "Link" do
     before do
-      latreille = FactoryGirl.create :author_name, name: 'Latreille, P. A.'
+      @latreille = FactoryGirl.create :author_name, name: 'Latreille, P. A.'
       science = FactoryGirl.create :journal, name: 'Science'
-      @reference = FactoryGirl.create :article_reference, author_names: [latreille], citation_year: '1809', title: "*Atta*", journal: science, series_volume_issue: '(1)', pagination: '3'
+      @reference = FactoryGirl.create :article_reference, author_names: [@latreille], citation_year: '1809', title: "*Atta*", journal: science, series_volume_issue: '(1)', pagination: '3'
       @reference.stub(:url).and_return 'example.com'
     end
     it "should create a link to the reference" do
@@ -87,8 +87,7 @@ describe ReferenceKey do
     end
     describe "Handling quotes in the title" do
       it "should escape them" do
-        latreille = FactoryGirl.create :author_name, name: 'Latreille, P. A.'
-        @reference = FactoryGirl.create :unknown_reference, author_names: [latreille], citation_year: '1809', title: '"Atta"'
+        @reference = FactoryGirl.create :unknown_reference, author_names: [@latreille], citation_year: '1809', title: '"Atta"'
         @reference.key.to_link(nil, expansion: false).should ==
           %{<a href="http://antcat.org/references?q=#{@reference.id}" target="_blank" title="Latreille, P. A. 1809. "Atta". New York.">Latreille, 1809</a>}
       end

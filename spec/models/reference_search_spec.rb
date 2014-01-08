@@ -306,7 +306,7 @@ describe Reference, slow:true do
         AuthorName.delete_all
         Author.delete_all
         bolton = FactoryGirl.create :author_name, :name => 'Bolton'
-        fisher = FactoryGirl.create :author_name, :name => 'Bolton'
+        fisher = FactoryGirl.create :author_name, :name => 'Fisher'
         bolton_b = FactoryGirl.create :author_name, :name => 'Bolton, B.', :author => bolton.author
 
         FactoryGirl.create :book_reference, :author_names => [bolton], :citation_year => '2001'

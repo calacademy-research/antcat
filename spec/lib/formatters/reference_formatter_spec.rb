@@ -118,7 +118,7 @@ describe Formatters::ReferenceFormatter do
         :publisher => FactoryGirl.create(:publisher, :name => 'Wiley', :place => FactoryGirl.create(:place, :name => 'New York')),
         :pagination => '32 pp.'
       nested_reference = FactoryGirl.create :nested_reference, :nested_reference => reference,
-        :author_names => [FactoryGirl.create(:author_name, :name => 'Forel, A.')], :title => 'Les fourmis de la Suisse',
+        :author_names => [@author_name], :title => 'Les fourmis de la Suisse',
         :citation_year => '1874', :pages_in => 'Pp. 32-45 in'
       @formatter.format(nested_reference).should ==
         'Forel, A. 1874. Les fourmis de la Suisse. Pp. 32-45 in Mayr, E. 2010. Ants I have known. New York: Wiley, 32 pp.'
@@ -127,7 +127,7 @@ describe Formatters::ReferenceFormatter do
     it "should format a citation_string correctly if the publisher doesn't have a place" do
       publisher = Publisher.create! :name => "Wiley"
       reference = FactoryGirl.create(:book_reference,
-                          :author_names => [FactoryGirl.create(:author_name, :name => 'Forel, A.')],
+                          :author_names => [@author_name],
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :publisher => publisher, :pagination => "22 pp.")
@@ -332,7 +332,7 @@ describe Formatters::ReferenceFormatter do
   describe "A regression where a string should've been duped" do
     it "really should have been duped" do
       journal = FactoryGirl.create :journal, name: 'Ants'
-      author_name = FactoryGirl.create :author_name, name: 'Forel, A.'
+      author_name = @author_name
       reference = FactoryGirl.create :article_reference,
         author_names: [author_name], citation_year: '1874', title: 'Format',
         journal: journal, series_volume_issue: '1:1', pagination: '2'
@@ -344,7 +344,7 @@ describe Formatters::ReferenceFormatter do
   describe "Formatting reference into HTML, with rollover" do
     it "should work" do
       journal = FactoryGirl.create :journal, name: 'Ants'
-      author_name = FactoryGirl.create :author_name, name: 'Forel, A.'
+      author_name = @author_name
       reference = FactoryGirl.create :article_reference,
         author_names: [author_name], citation_year: '1874', title: 'Format',
         journal: journal, series_volume_issue: '1:1', pagination: '2'
