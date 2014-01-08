@@ -4,7 +4,7 @@ Given /^I click "edit" in the first row$/ do
 end
 
 When /^I click the "Add Author Name" button$/ do
-  within '.author_name_section' do
+  within '.author_names_section' do
     click_button 'Add'
   end
 end
