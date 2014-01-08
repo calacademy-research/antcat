@@ -1,15 +1,15 @@
--#Locals: taxon
+-#Locals: author
 
-.history_items_section.section
+.author_names_section.section
   .section_header.ui-widget-header.ui-corner-top
     .left
-      History
-    .right.history_items_section_buttons
+      Author Names
+    .right.author_names_section_buttons
       %button.submit.ui-priority-primary.small_button Add
     .clear
-  .history_items.ui-dialog-content.ui-widget-content.ui-corner-bottom
+  .author_names.ui-dialog-content.ui-widget-content.ui-corner-bottom
     %ul#sortable
-      - for history_item in taxon.history_items do
-        = render 'history_items/panel', item: history_item
-  .history_item_template
-    = render 'history_items/panel', item: TaxonHistoryItem.new(taxon_id: taxon.id)
+      - for author_name in author.names do
+        = render 'author_names/panel', author_name: author_name
+  .author_name_template
+    = render 'author_names/panel', author_name: AuthorName.new(author_id: author.id)
