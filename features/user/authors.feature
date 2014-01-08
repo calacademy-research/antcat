@@ -38,6 +38,14 @@ Feature: Working with authors and their names
     And I follow "Back to Authors"
     Then I should be on the authors page
 
+  Scenario: Going to Merge Authors from Edit Author
+    Given the following names exist for an author
+      | Bolton, B. |
+    And I am logged in
+    When I go to the author edit page for "Bolton, B."
+    And I follow "Merge Authors"
+    Then I should be on the Merge Authors page
+
   @javascript
   Scenario: Adding an author name
     Given the following names exist for an author
