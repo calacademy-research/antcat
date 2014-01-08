@@ -115,7 +115,7 @@ function import_production_db {
 }
 
 ##############################################################
-function copy_local_db_to_production {
+function copy_to_production {
   file_name="/tmp/antcat_production.sql"
 
   echo "Dumping local database..."
@@ -130,15 +130,20 @@ function copy_local_db_to_production {
   echo 'Done.'
 }
 
-function copy_local_db_to_preview {
-  file_name="local_antcat_development.sql"
-  server="ec2-23-21-238-9.compute-1.amazonaws.com"
-  echo Dumping $file_name
-  mysqldump antcat_development -uroot > /tmp/$file_name
-  echo "Copying to preview ($server)"
-  scp /tmp/$file_name deploy@$server:/tmp
-  echo Importing into antcat database on preview
-  ssh deploy@$server "mysql antcat -udeploy -pret63V5ApP < /tmp/$file_name"
+##############################################################
+function copy_to_preview {
+  file_name="/tmp/antcat_production.sql"
+
+  echo "Dumping local database..."
+  mysqldump antcat_development -uroot > $file_name
+
+  echo "Copying to preview"
+  scp $file_name deploy@$preview_server:$file_name
+
+  echo 'Importing into preview database...'
+  ssh deploy@$preview_server "mysql antcat -udeploy -p$preview_password < $file_name"
+
+  echo 'Done.'
 }
 
 function import_db {
