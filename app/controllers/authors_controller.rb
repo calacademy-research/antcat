@@ -9,7 +9,6 @@ class AuthorsController < ApplicationController
     end
   end
 
-  # GET /authors/1/edit
   def edit
     @author = Author.find params[:id]
   end
