@@ -9,7 +9,9 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :authors, only: [:index, :edit, :update]
+  resources :authors, only: [:index, :edit, :update] do
+    resources :author_names, only: [:update, :create, :destroy]
+  end
   resources :merge_authors, only: [:index, :merge]
   match     '/merge_authors/merge', to: 'merge_authors#merge', via: :post
 
