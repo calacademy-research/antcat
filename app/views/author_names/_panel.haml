@@ -1,10 +1,10 @@
--#Locals: item
+-#Locals: author_name
 
-%div{class: "history_item item_#{item.id} antcat_panel", 'data-id' => item.id, 'data-taxon-id' => item.taxon.id}
+%div{class: "author_name item_#{author_name.id} antcat_panel", 'data-id' => author_name.id}
   %table
     %tr
-      %td.history_item_body
+      %td.author_name_body
         %li
-          = render 'history_items/display', item: item
+          = render 'author_names/display', author_name: author_name
         - if user_can_edit?
-          = render 'history_items/edit', item: item
+          = render 'author_names/edit', author: author_name.author, author_name: author_name
