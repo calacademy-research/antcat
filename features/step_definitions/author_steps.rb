@@ -14,11 +14,5 @@ When /^I edit the author name to "([^"]*)"$/ do |name|
 end
 
 When /^I save the author name$/ do
-  within '.author_name_sections .author_name_section:first' do
-    step %{I press "Save"}
-  end
-end
-
-Then /^the author_name should be "(.*)"$/ do |author_name|
-  page.find('.author_names .author_name_body:first div.display').text.should =~ /#{author_name}\.?/
+  page.find('.author_names .author_name_body:visible div.edit', text: 'Save').click
 end
