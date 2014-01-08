@@ -7,8 +7,6 @@
 
 - content_for :page_contents do
 
-  #back_to_authors= link_to 'Back to Authors', authors_path
-
   - url = @author.new_record? ?  '/authors': "/authors/#{@author.id}"
   - method = @author.new_record? ? 'post' : 'put'
   = form_for @author, as: :author, url: url, method: method, html: {class: 'author_form ui-widget'} do |form|
@@ -17,3 +15,6 @@
     .fields_section.section.ui-widget-content.ui-corner-all
     - unless @author.new_record?
       = render 'author_names_section', author: @author
+
+  = make_link_menu link_to('Back to Authors', authors_path),   |
+                   link_to('Merge Authors', merge_authors_path)
