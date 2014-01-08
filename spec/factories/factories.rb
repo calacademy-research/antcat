@@ -1,6 +1,8 @@
 # coding: UTF-8
 def reference_factory attributes = {}
-  author_name = FactoryGirl.create(:author_name, :name => attributes.delete(:author_name))
+  name = attributes.delete :author_name
+  author_name = AuthorName.find_by_name name
+  author_name ||= FactoryGirl.create :author_name, name: name
   reference = FactoryGirl.create(:reference, attributes.merge(:author_names => [author_name]))
   reference
 end
