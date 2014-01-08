@@ -55,13 +55,14 @@ class Reference < ActiveRecord::Base
         for field in fields
           next unless record[field]
           for replacement in batch
-            from = "{ref #{replacement[:replace].id}}"
-            to = "{ref #{replacement[:with].id}}"
+            from = "{ref #{replacement[:replace]}"
+            to = "{ref #{replacement[:with]}}"
             field_contents = record[field]
             was_replaced = field_contents.gsub! /#{from}/, to
             if was_replaced
+              sanitized_contents = ActiveRecord::Base::sanitize field_contents
               # unknown why this is necessary
-              connection.execute "UPDATE #{klass.table_name} SET #{field} = \"#{field_contents}\" WHERE id = #{record.id}"
+              connection.execute %{UPDATE #{klass.table_name} SET #{field} = #{sanitized_contents} WHERE id = #{record.id}}
             end
           end
         end
