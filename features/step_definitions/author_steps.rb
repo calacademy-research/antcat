@@ -14,5 +14,5 @@ When /^I edit the author name to "([^"]*)"$/ do |name|
 end
 
 When /^I save the author name$/ do
-  page.find('.author_names .author_name_body:visible div.edit', text: 'Save').click
+  page.find('.author_names button.submit').click()
 end
