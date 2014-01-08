@@ -57,3 +57,14 @@ Feature: Working with authors and their names
     And I save the author name
     And I follow "Back to Authors"
     Then I should see "Bolton, B.; Fisher, B."
+
+  @javascript
+  Scenario: Entering an existing author name
+    Given the following names exist for an author
+      | Bolton, B. |
+    Given I am logged in
+    When I go to the author edit page for "Bolton, B."
+    And I click the "Add Author Name" button
+    And I edit the author name to "Bolton, B."
+    And I save the author name
+    Then I should see "Name has already been taken"
