@@ -113,7 +113,6 @@ function import_production_db {
 
   echo 'Done.'
 }
-alias imp_prod_db=import_production_db_into_local
 
 ##############################################################
 function copy_local_db_to_production {
