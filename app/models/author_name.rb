@@ -1,10 +1,10 @@
 # coding: UTF-8
 class AuthorName < ActiveRecord::Base
   has_many :reference_author_names
-  has_many :references, :through => :reference_author_names
+  has_many :references, through: :reference_author_names
   belongs_to :author
-  validates_presence_of :author
-  validates_presence_of :name
+  validates :author, :name, presence: true
+  validates :name, uniqueness: true
   has_paper_trail
 
   def last_name

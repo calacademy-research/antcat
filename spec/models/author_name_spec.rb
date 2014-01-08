@@ -38,6 +38,15 @@ describe AuthorName do
     author_name.should be_valid
   end
 
+  it "can't be a duplicate" do
+    author_name = FactoryGirl.create :author_name, name: 'Bolton'
+    author_name.author = FactoryGirl.create :author
+    author_name.save!
+
+    author_name = FactoryGirl.build :author_name, name: 'Bolton'
+    author_name.should_not be_valid
+  end
+
   describe "importing" do
     it "should create and return the authors" do
       AuthorName.import(['Fisher, B.L.', 'Wheeler, W.M.']).map(&:name).should =~
