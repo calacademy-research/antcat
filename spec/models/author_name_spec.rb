@@ -27,6 +27,17 @@ describe AuthorName do
     author_name.should be_valid
   end
 
+  it "can't be blank" do
+    author_name = AuthorName.new
+    author_name.author = FactoryGirl.create :author
+    author_name.name = nil
+    author_name.should_not be_valid
+    author_name.name = ''
+    author_name.should_not be_valid
+    author_name.name = 'Bolton, B.'
+    author_name.should be_valid
+  end
+
   describe "importing" do
     it "should create and return the authors" do
       AuthorName.import(['Fisher, B.L.', 'Wheeler, W.M.']).map(&:name).should =~
