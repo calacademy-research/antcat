@@ -4,6 +4,7 @@ class AuthorName < ActiveRecord::Base
   has_many :references, :through => :reference_author_names
   belongs_to :author
   validates_presence_of :author
+  validates_presence_of :name
   has_paper_trail
 
   def last_name
