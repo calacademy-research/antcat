@@ -17,7 +17,8 @@ class AntCat.Panel
 
     @_form = null
     if @options.click_on_display
-      @element.find('.display').click @edit
+      @element.find('.display').dblclick @edit
+
     if @options.click_on_icon
       $edit_icon = @element.find '.edit_icon'
       $edit_icon.click @edit
