@@ -1,16 +1,16 @@
--#Locals: item
+-#Locals: author, author_name
 
 .edit.ui-widget-content
-  - url = "/taxa/#{item.taxon.id}/taxon_history_items/#{item.id}"
-  - method = item.persisted? ? 'put' : 'post'
+  - url = "/authors/#{author.id}/author_names/#{author_name.id}"
+  - method = author_name.persisted? ? 'put' : 'post'
   .nested_form{'data-action' => url, 'data-method' => method}
-    = render 'shared/errors_for', resource: item
+    = render 'shared/errors_for', resource: author_name
 
-    .taxt_editor
-      = render 'taxt_editors/show', name: 'taxt', value: Taxt.to_editable(item.taxt)
+    .text_editor
+      = text_field_tag :author_name, author_name.name
 
     .buttons
       %button.submit.ui-priority-primary Save
       %button.cancel.ui-priority-secondary Cancel
-      - if item.persisted?
+      - if author_name.persisted?
         %button.delete.ui-priority-secondary Delete
