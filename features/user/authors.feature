@@ -30,6 +30,14 @@ Feature: Working with authors and their names
     When I go to the author edit page for "Bolton, B."
     Then I should be on the login page
 
+  Scenario: Going back to authors page from author page
+    Given the following names exist for an author
+      | Bolton, B. |
+    And I am logged in
+    When I go to the author edit page for "Bolton, B."
+    And I follow "Back to Authors"
+    Then I should be on the authors page
+
   @javascript
   Scenario: Adding an author name
     Given the following names exist for an author
