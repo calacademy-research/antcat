@@ -1,0 +1,12 @@
+- @title = 'Fix Missing References'
+
+- content_for :head do
+  = javascript_include_tag 'missing_references'
+
+- content_for :page_contents do
+  = "#{@citations.count} missing references in protonyms"
+  %ol.citation.selectable
+    - for citation in @citations
+      %li.citation_text= citation
+      %li.replace_with_button
+        %button Replace with

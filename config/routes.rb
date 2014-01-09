@@ -37,6 +37,7 @@ AntCat::Application.routes.draw do
       post 'restart_reviewing'
     end
   end
+  resources :missing_references, only: [:index, :update]
 
   match '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import
 
