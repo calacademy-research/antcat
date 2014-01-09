@@ -16,7 +16,7 @@ class AntCat.HistoryItemsSection
   initialize_panels: =>
     @element.find('.history_item').history_item_panel(click_on_display: false, parent_form: @options.parent_form)
     @element.find('#sortable')
-      .sortable(axis: 'y', update: @update)
+      .sortable(axis: 'y', update: @update, distance: 5)
       .disableSelection()
 
   update: =>
