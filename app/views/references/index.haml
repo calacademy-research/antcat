@@ -10,6 +10,7 @@
       - if user_is_editor?
         - items << link_to('Latest changes', references_path(commit: 'review'))
         - items << link_to('Journals', journals_path)
+        - items << link_to('Fix missing', missing_references_path)
       - items << link_to('Export to EndNote', endnote_import_path(q: params[:q]), confirm: @endnote_export_confirmation_message)
       = make_link_menu items
 
