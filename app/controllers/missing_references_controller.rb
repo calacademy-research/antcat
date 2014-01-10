@@ -9,7 +9,6 @@ class MissingReferencesController < ApplicationController
       .where("references.type = 'MissingReference'")
       .group(:citation)
       .order(:citation)
-      .paginate(page: params[:page], per_page: 40)
   end
 
   def edit
