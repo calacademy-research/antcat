@@ -66,7 +66,7 @@ module HtmlSelectorsHelpers
       '#authors .author_row:first'
 
     when /the first row of missing references/
-      '#missing_references .missing_reference_row:first'
+      '#missing_references .missing_reference:first'
 
     when /"(.+)"/
       $1
