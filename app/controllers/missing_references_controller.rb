@@ -1,22 +1,19 @@
 # coding: UTF-8
 class MissingReferencesController < ApplicationController
-  before_filter :authenticate_editor
+  before_filter :authenticate_editor, except: [:index]
   skip_before_filter :authenticate_editor, if: :preview?
 
   def index
-    @citations = 
-      Protonym.select(:citation).
-        joins(authorship: :reference).
-        where("references.type = 'MissingReference'").
-        order(:citation).
-        group(:citation).
-        all.
-        map(&:citation)
+    @missing_references = Protonym.select(:citation)
+      .joins(authorship: :reference)
+      .where("references.type = 'MissingReference'")
+      .group(:citation)
+      .order(:citation)
+      .paginate(page: params[:page], per_page: 40)
   end
 
-  def update
-    index
-    render :index
+  def edit
+    @missing_reference_citation = params[:id]
   end
 
 end
