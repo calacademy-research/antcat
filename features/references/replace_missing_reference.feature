@@ -14,8 +14,11 @@ Feature: Replace missing references
     Then I should see "Bolton, 1970"
     And I should see "Fisher, 1990"
 
-  #Scenario: Editing a missing reference
-    #When I click "replace" in the first row of missing references
+  Scenario: Replacing a missing reference
+    Given there is a missing reference with citation "Bolton, 1970" in a protonym
+    Given I am logged in
+    When I go to the missing references page
+    When I click "replace" in the first row of missing references
     #Then I should be on the missing reference edit page for "Bolton, 1970"
 
   #Scenario: Attempting to access edit page without being logged in

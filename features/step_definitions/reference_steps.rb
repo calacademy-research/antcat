@@ -282,8 +282,8 @@ Given /^there is a missing reference(?: with citation "(.+)")?( in a protonym)?$
   end
 end
 
-Given /^I click "edit" in the first row of missing references$/ do
-  find('#missing_references a.edit_link:first').click
+Given /^I click "replace" in the first row of missing references$/ do
+  find('#missing_references a.replace_link:first').click
 end
 
 And /^I should not see the missing reference$/ do
