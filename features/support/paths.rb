@@ -9,6 +9,9 @@ module NavigationHelpers
     when /^the changes page$/
       '/changes'
 
+    when /^the missing reference edit page for "([^"]*)"$/
+      "/missing_references/#{$1.gsub(/ /, '%20')}/edit"
+
     when /^the missing references page$/
       '/missing_references'
 

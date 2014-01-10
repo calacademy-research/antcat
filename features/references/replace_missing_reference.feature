@@ -19,7 +19,7 @@ Feature: Replace missing references
     Given I am logged in
     When I go to the missing references page
     When I click "replace" in the first row of missing references
-    #Then I should be on the missing reference edit page for "Bolton, 1970"
+    Then I should be on the missing reference edit page for "Bolton, 1970"
 
   #Scenario: Attempting to access edit page without being logged in
     #Given the following names exist for an author
