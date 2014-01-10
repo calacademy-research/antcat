@@ -274,8 +274,16 @@ Given "there is a reference with ID 50000 for Dolerichoderinae" do
   ActiveRecord::Base.connection.execute sql
 end
 
-Given /^there is a missing reference$/ do
-  FactoryGirl.create :missing_reference, :citation => 'Adventures among Ants'
+Given /^there is a missing reference(?: with citation "(.+)")?( in a protonym)?$/ do |citation, in_protonym|
+  citation ||= 'Adventures among Ants'
+  missing_reference = FactoryGirl.create :missing_reference, citation: citation
+  if in_protonym
+    FactoryGirl.create :protonym, authorship: FactoryGirl.create(:citation, reference: missing_reference)
+  end
+end
+
+Given /^I click "edit" in the first row of missing references$/ do
+  find('#missing_references a.edit_link:first').click
 end
 
 And /^I should not see the missing reference$/ do

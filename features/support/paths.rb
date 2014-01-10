@@ -9,6 +9,9 @@ module NavigationHelpers
     when /^the changes page$/
       '/changes'
 
+    when /^the missing references page$/
+      '/missing_references'
+
     when /^the paper trail page$/
       '/paper_trail'
 
