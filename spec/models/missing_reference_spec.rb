@@ -50,6 +50,21 @@ describe MissingReference do
       end
     end
 
+    describe "Replacing all occurences of a citation with another reference" do
+      it "should replace both missing references with the same citation" do
+        first_reference = FactoryGirl.create :missing_reference, citation: 'Citation'
+        second_reference = FactoryGirl.create :missing_reference, citation: 'Citation'
+        first_citation_occurrence = TaxonHistoryItem.create! taxt: "{ref #{first_reference.id}}"
+        second_citation_occurrence = TaxonHistoryItem.create! taxt: "{ref #{second_reference.id}}"
+        nonmissing_reference = FactoryGirl.create :article_reference
+
+        MissingReference.replace_citation 'Citation', nonmissing_reference
+
+        first_citation_occurrence.reload.taxt.should == "{ref #{nonmissing_reference.id}}"
+        second_citation_occurrence.reload.taxt.should == "{ref #{nonmissing_reference.id}}"
+      end
+    end
+
   end
 
   describe "Optional year" do

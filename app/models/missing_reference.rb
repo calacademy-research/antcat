@@ -24,6 +24,15 @@ class MissingReference < Reference
     return replacements, unfound_citations, records_to_destroy
   end
 
+  def self.replace_citation citation, replacement
+    records_to_replace = MissingReference.where(citation: citation)
+    replacements = records_to_replace.all.inject [] do |replacements, reference|
+      replacements << {replace: reference.id, with: replacement.id}
+    end
+    replace_with_batch replacements
+    destroy_found_missing_references records_to_replace
+  end
+
   def self.replace_all show_progress = false
     replacements, unfound_citations, records_to_destroy = find_replacements show_progress
     replace_with_batch replacements, show_progress
