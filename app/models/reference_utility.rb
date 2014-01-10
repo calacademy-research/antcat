@@ -53,7 +53,7 @@ class Reference < ActiveRecord::Base
         for field in fields
           next unless record[field]
           for replacement in batch
-            from = "{ref #{replacement[:replace]}"
+            from = "{ref #{replacement[:replace]}}"
             to = "{ref #{replacement[:with]}}"
             field_contents = record[field]
             was_replaced = field_contents.gsub! /#{from}/, to
