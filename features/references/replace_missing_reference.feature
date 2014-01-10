@@ -15,7 +15,7 @@ Feature: Replace missing references
     And I should see "Fisher, 1990"
 
   #Scenario: Editing a missing reference
-    #When I click "edit" in the first row of missing references
+    #When I click "replace" in the first row of missing references
     #Then I should be on the missing reference edit page for "Bolton, 1970"
 
   #Scenario: Attempting to access edit page without being logged in

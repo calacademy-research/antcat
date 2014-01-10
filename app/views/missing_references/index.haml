@@ -9,7 +9,7 @@
     .missing_reference_row
       %span= missing_reference.citation
       - if user_can_edit?
-        = link_to 'edit', edit_missing_reference_path(missing_reference.citation), class: 'edit_link'
+        = link_to 'replace', edit_missing_reference_path(missing_reference.citation), class: 'edit_link'
       %br
 
 %br.before_bottom_pagination
