@@ -1,12 +1,16 @@
 - @title = 'Fix Missing References'
 
-- content_for :head do
-  = javascript_include_tag 'missing_references'
+- @title = 'Missing References'
 
-- content_for :page_contents do
-  = "#{@citations.count} missing references in protonyms"
-  %ol.citation.selectable
-    - for citation in @citations
-      %li.citation_text= citation
-      %li.replace_with_button
-        %button Replace with
+%div= will_paginate @missing_references
+
+#missing_references
+  - for missing_reference in @missing_references
+    .missing_reference_row
+      %span= missing_reference.citation
+      - if user_can_edit?
+        = link_to 'edit', edit_missing_reference_path(missing_reference.citation), class: 'edit_link'
+      %br
+
+%br.before_bottom_pagination
+%div= will_paginate @missing_references
