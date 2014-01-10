@@ -13,6 +13,17 @@ class MissingReferencesController < ApplicationController
 
   def edit
     @missing_reference_citation = params[:id]
+    @replacement = nil
+  end
+
+  def update
+    @missing_reference_citation = params[:id]
+    @replacement = Reference.find params[:replacement_id]
+
+    MissingReference.replace_citation @missing_reference_citation, @replacement
+
+    redirect_to missing_references_path
+
   end
 
 end
