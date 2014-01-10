@@ -45,11 +45,9 @@ class Reference < ActiveRecord::Base
     Progress.init show_progress
     Progress.puts "#{batch.size} replacements to make"
     return unless batch.present?
-    stop = false
     Taxt.taxt_fields.each do |klass, fields|
       Progress.init show_progress, klass.send(:count)
       Progress.puts "Updating #{klass}..."
-      stop = true if klass == TaxonHistoryItem
       for record in klass.send :all
         Progress.tally_and_show_progress 300
         for field in fields
