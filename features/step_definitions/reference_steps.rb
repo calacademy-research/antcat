@@ -286,6 +286,10 @@ Given /^I click "replace" in the first row of missing references$/ do
   find('#missing_references a.replace_link:first').click
 end
 
+And /^I click the replacement field$/ do
+  step %{I click "#replacement_id_field .display_button"}
+end
+
 And /^I should not see the missing reference$/ do
   step 'I should not see "Adventures among Ants"'
 end
