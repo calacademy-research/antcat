@@ -20,6 +20,11 @@ class MissingReferencesController < ApplicationController
     @missing_reference_citation = MissingReference.find params[:id] rescue nil
     @replacement = Reference.find params[:replacement_id] rescue nil
 
+    unless @replacement
+      edit
+      render :edit
+      return
+    end
 
     MissingReference.find(@missing_reference_citation).replace_with @replacement
 
