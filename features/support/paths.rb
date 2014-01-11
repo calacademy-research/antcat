@@ -10,7 +10,8 @@ module NavigationHelpers
       '/changes'
 
     when /^the missing reference edit page for "([^"]*)"$/
-      "/missing_references/#{$1.gsub(/ /, '%20')}/edit"
+      reference = MissingReference.find_by_citation $1
+      "/missing_references/#{reference.id}/edit"
 
     when /^the missing references page$/
       '/missing_references'
