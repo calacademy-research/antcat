@@ -45,7 +45,7 @@ describe Reference do
       it "should replace references in taxt to the MissingReference to the found reference" do
         found_reference = FactoryGirl.create :article_reference
         missing_reference = FactoryGirl.create :missing_reference, citation: 'Borowiec, 2010'
-        item = TaxonHistoryItem.create! taxt: "{ref #{missing_reference.id}"
+        item = TaxonHistoryItem.create! taxt: "{ref #{missing_reference.id}}"
         Reference.replace_with_batch [{replace: missing_reference.id, with: found_reference.id}]
         item.reload.taxt.should == "{ref #{found_reference.id}}"
       end
