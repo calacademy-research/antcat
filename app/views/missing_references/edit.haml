@@ -8,8 +8,9 @@
 
 - content_for :page_header do
   #navigation_bar
+    .clear
+    .title.left= @title
     = render 'shared/search', search_results: @search_results, search_results_message: @search_results_message
-  = render 'shared/catalog_title'
 
 - content_for :page_contents do
   = form_tag  "/missing_references/#{@missing_reference_citation.id}", method: :put, class: 'missing_references_form ui-widget' do
@@ -18,12 +19,12 @@
         %table
 
           %tr
-            %td.label.top_aligned= label_tag :taxon, 'Replace'
-            %td= @missing_reference_citation
+            %td.label= label_tag :taxon, 'Replace'
+            %td.value= @missing_reference_citation.citation
 
           %tr
-            %td.label.top_aligned= label_tag :replacement, 'with'
-            %td
+            %td.label= label_tag :replacement, 'with'
+            %td.value
               #replacement_id_field
                 = hidden_field_tag 'replacement_id', @replacement.try(:id)
                 = render 'reference_fields/show', references: nil, reference: nil
