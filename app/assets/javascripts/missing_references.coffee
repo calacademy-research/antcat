@@ -7,6 +7,9 @@ class AntCat.MissingReferencesForm extends AntCat.Form
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
     super
 
+  submit: =>
+    super if confirm 'Do you want to replace this reference? It can take a minute or two.'
+
   cancel: =>
     window.location = '/missing_references'
 
