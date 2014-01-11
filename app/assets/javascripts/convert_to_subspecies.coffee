@@ -13,4 +13,3 @@ class AntCat.ConvertToSubspeciesForm extends AntCat.Form
 
   cancel: =>
     window.location = "/catalog/#{@taxon_id()}"
-
