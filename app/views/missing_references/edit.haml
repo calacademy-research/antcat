@@ -12,7 +12,7 @@
   = render 'shared/catalog_title'
 
 - content_for :page_contents do
-  = form_tag  "/missing_references/#{@missing_reference_citation}", method: :put, class: 'missing_references_form ui-widget' do
+  = form_tag  "/missing_references/#{@missing_reference_citation.id}", method: :put, class: 'missing_references_form ui-widget' do
     .fields_section.section.ui-widget-content.ui-corner-all
       .species_section.section.ui-widget-content.ui-conrner-all
         %table
