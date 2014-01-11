@@ -14,13 +14,25 @@ Feature: Replace missing references
     Then I should see "Bolton, 1970"
     And I should see "Fisher, 1990"
 
+  @javascript
   Scenario: Replacing a missing reference
-    Given there is a missing reference with citation "Bolton, 1970" in a protonym
     Given I am logged in
+    And this reference exists
+      | authors | citation   | title | year |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+    And there is a missing reference with citation "Bolton, 1970" in a protonym
     When I go to the missing references page
+    Then I should see "Bolton, 1970"
     When I click "replace" in the first row of missing references
     Then I should be on the missing reference edit page for "Bolton, 1970"
     When I click the replacement field
+    And I search for the author "Fisher"
+    And I click the first search result
+    And I press "OK"
+    Given I will confirm on the next step
+    When I press "OK"
+    Then I should be on the missing references page
+    And I should not see "Bolton, 1970"
 
   #Scenario: Attempting to access edit page without being logged in
     #Given the following names exist for an author
