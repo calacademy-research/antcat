@@ -1,5 +1,11 @@
 - @title = 'Missing References'
 
+- content_for :page_header do
+  #navigation_bar
+    .clear
+    .title.left= @title
+    = render 'shared/search', search_results: @search_results, search_results_message: @search_results_message
+
 #missing_references
   - for missing_reference in @missing_references
     .missing_reference
