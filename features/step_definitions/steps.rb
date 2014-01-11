@@ -36,7 +36,7 @@ When /I wait for a bit(?: more)?/ do
 end
 
 And /I wait for a while/ do
-  sleep 10
+  sleep 5
 end
 
 Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
