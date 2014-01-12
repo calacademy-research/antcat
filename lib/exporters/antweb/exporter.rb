@@ -42,6 +42,7 @@ class Exporters::Antweb::Exporter
       biogeographic_region: taxon.biogeographic_region,
       locality:             taxon.protonym.locality,
       rank:                 taxon.class.to_s,
+      parent:               taxon.parent,
     }
 
     convert_to_antweb_array taxon.add_antweb_attributes(attributes)
@@ -79,7 +80,8 @@ class Exporters::Antweb::Exporter
     "reference id\t"            +# [18]
     "bioregion\t"               +# [19]
     "country\t"                 +# [20]
-    "current valid rank"         # [21]
+    "current valid rank"       + # [21]
+    "current valid parent"       # [22]
   end
 
   def convert_to_antweb_array values
@@ -105,6 +107,7 @@ class Exporters::Antweb::Exporter
      values[:biogeographic_region],
      values[:locality],
      values[:rank],
+     values[:parent],
     ]
   end
 

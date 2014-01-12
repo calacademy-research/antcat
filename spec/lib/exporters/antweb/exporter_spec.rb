@@ -32,6 +32,7 @@ describe Exporters::Antweb::Exporter do
                                  "bioregion\t" +
                                  "country\t" +
                                  "current valid rank" +
+                                 "current valid parent" +
                                  ""
     end
   end
@@ -251,5 +252,22 @@ describe Exporters::Antweb::Exporter do
       @exporter.export_taxon(create_species)[21].should == 'Species'
       @exporter.export_taxon(create_subspecies)[21].should == 'Subspecies'
     end
+  end
+
+  describe "Current valid parent" do
+    before do
+      @subfamily = create_subfamily
+    end
+
+    it "should handle a taxon's subfamily" do
+      taxon = create_tribe subfamily: @subfamily
+      @exporter.export_taxon(taxon)[22].should == @subfamily
+    end
+
+    it "should handle a taxon's tribe"
+    it "should handle a taxon's genus"
+    it "should handle a taxon's subgenus"
+    it "should handle a taxon's species"
+    it "should handle a synonym"
   end
 end
