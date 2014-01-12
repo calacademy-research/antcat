@@ -41,6 +41,7 @@ class Exporters::Antweb::Exporter
       reference_id:         reference_id,
       biogeographic_region: taxon.biogeographic_region,
       locality:             taxon.protonym.locality,
+      rank:                 taxon.class.to_s,
     }
 
     case taxon
@@ -102,7 +103,8 @@ class Exporters::Antweb::Exporter
     "taxonomic history html\t"  +# [17]
     "reference id\t"            +# [18]
     "bioregion\t"               +# [19]
-    "country"                    # [20]
+    "country\t"                 +# [20]
+    "current valid rank"         # [21]
   end
 
   def convert_to_antweb_array values
@@ -127,6 +129,7 @@ class Exporters::Antweb::Exporter
      values[:reference_id],
      values[:biogeographic_region],
      values[:locality],
+     values[:rank],
     ]
   end
 

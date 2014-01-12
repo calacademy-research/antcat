@@ -30,7 +30,8 @@ describe Exporters::Antweb::Exporter do
                                  "taxonomic history html\t" +
                                  "reference id\t" +
                                  "bioregion\t" +
-                                 "country" +
+                                 "country\t" +
+                                 "current valid rank" +
                                  ""
     end
   end
@@ -242,4 +243,13 @@ describe Exporters::Antweb::Exporter do
     end
   end
 
+  describe "Current valid rank" do
+    it "should send the right value for each class" do
+      @exporter.export_taxon(create_subfamily)[21].should == 'Subfamily'
+      @exporter.export_taxon(create_genus)[21].should == 'Genus'
+      @exporter.export_taxon(create_subgenus)[21].should == 'Subgenus'
+      @exporter.export_taxon(create_species)[21].should == 'Species'
+      @exporter.export_taxon(create_subspecies)[21].should == 'Subspecies'
+    end
+  end
 end
