@@ -10,7 +10,24 @@ describe Exporters::Antweb::Exporter do
 
   describe "The header" do
     it "should be the same as the code" do
-      @exporter.header.should == "antcat id\tsubfamily\ttribe\tgenus\tsubgenus\tspecies\tsubspecies\tauthor date\tauthor date html\tauthors\tyear\tstatus\tavailable\tcurrent valid name\toriginal combination\twas original combination\tfossil\ttaxonomic history html"
+      @exporter.header.should == "antcat id\t" +
+                                 "subfamily\t" +
+                                 "tribe\t" +
+                                 "genus\t" +
+                                 "subgenus\t" +
+                                 "species\t" +
+                                 "subspecies\t" +
+                                 "author date\t" +
+                                 "author date html\t" +
+                                 "authors\t" +
+                                 "year\t" +
+                                 "status\t" +
+                                 "available\t" +
+                                 "current valid name\t" +
+                                 "original combination\t" +
+                                 "was original combination\t" +
+                                 "fossil\t" +
+                                 "taxonomic history html"
     end
   end
 
