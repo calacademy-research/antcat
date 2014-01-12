@@ -329,7 +329,7 @@ def create_species name_or_attributes = 'Atta major', attributes = {}
   create_taxon_object name_or_attributes, :species, :species_name, attributes
 end
 
-def create_subspecies name_or_attributes, attributes = {}
+def create_subspecies name_or_attributes = 'Atta major minor', attributes = {}
   create_taxon_object name_or_attributes, :subspecies, :subspecies_name, attributes
 end
 
