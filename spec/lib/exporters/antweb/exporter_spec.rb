@@ -256,18 +256,31 @@ describe Exporters::Antweb::Exporter do
 
   describe "Current valid parent" do
     before do
-      @subfamily = create_subfamily
+      @subfamily = create_subfamily 'Dolichoderinae'
+      @tribe = create_tribe 'Attini', subfamily: @subfamily
+      @genus = create_genus 'Atta', tribe: @tribe, subfamily: @subfamily
+      @subgenus = create_subgenus genus: @genus, tribe: @tribe, subfamily: @subfamily
+      @species = create_species 'Atta betta', genus: @genus, subfamily: @subfamily
     end
-
     it "should handle a taxon's subfamily" do
       taxon = create_tribe subfamily: @subfamily
-      @exporter.export_taxon(taxon)[22].should == @subfamily
+      @exporter.export_taxon(taxon)[22].should == 'Dolichoderinae'
     end
 
-    it "should handle a taxon's tribe"
-    it "should handle a taxon's genus"
-    it "should handle a taxon's subgenus"
-    it "should handle a taxon's species"
+    it "should skip over tribe and return the subfamily" do
+      taxon = create_genus tribe: @tribe
+      @exporter.export_taxon(taxon)[22].should == 'Dolichoderinae'
+    end
+
+    it "should skip over subgenus and return the genus" do
+      taxon = create_species genus: @genus, subgenus: @subgenus
+      @exporter.export_taxon(taxon)[22].should == 'Atta'
+    end
+
+    it "should handle a taxon's species" do
+      taxon = create_subspecies 'Atta betta cappa', species: @species, genus: @genus, subfamily: @subfamily
+      @exporter.export_taxon(taxon)[22].should == 'Atta betta'
+    end
     it "should handle a synonym"
   end
 end

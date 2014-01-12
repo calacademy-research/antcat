@@ -42,7 +42,7 @@ class Exporters::Antweb::Exporter
       biogeographic_region: taxon.biogeographic_region,
       locality:             taxon.protonym.locality,
       rank:                 taxon.class.to_s,
-      parent:               taxon.parent,
+      parent:               taxon.parent.try(:name).try(:name),
     }
 
     convert_to_antweb_array taxon.add_antweb_attributes(attributes)
