@@ -61,7 +61,7 @@ class Exporters::Antweb::Exporter
     when Subspecies
       subfamily_name = taxon.genus.subfamily && taxon.genus.subfamily.name.to_s || 'incertae_sedis'
       tribe_name = taxon.genus.tribe && taxon.genus.tribe.name.to_s
-      convert_to_antweb_array attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: taxon.genus.name.to_s, species: taxon.name.epithets
+      convert_to_antweb_array attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: taxon.genus.name.to_s, species: taxon.species.name.epithet, subspecies: taxon.name.epithet
     else nil
     end
 
@@ -83,17 +83,18 @@ class Exporters::Antweb::Exporter
     "genus\t"                   +# [3]
     "subgenus\t"                +# [4]
     "species\t"                 +# [5]
-    "author date\t"             +# [6]
-    "author date html\t"        +# [7]
-    "authors\t"                 +# [8]
-    "year\t"                    +# [9]
-    "status\t"                  +# [10]
-    "available\t"               +# [11]
-    "current valid name\t"      +# [12]
-    "original combination\t"    +# [13]
-    "was original combination\t"+# [14]
-    "fossil\t"                  +# [15]
-    "taxonomic history html"     # [16]
+    "subspecies\t"              +# [6]
+    "author date\t"             +# [7]
+    "author date html\t"        +# [8]
+    "authors\t"                 +# [9]
+    "year\t"                    +# [10]
+    "status\t"                  +# [11]
+    "available\t"               +# [12]
+    "current valid name\t"      +# [13]
+    "original combination\t"    +# [14]
+    "was original combination\t"+# [15]
+    "fossil\t"                  +# [16]
+    "taxonomic history html"     # [17]
   end
 
   def convert_to_antweb_array values
@@ -103,6 +104,7 @@ class Exporters::Antweb::Exporter
      values[:genus],
      values[:subgenus],
      values[:species],
+     values[:subspecies],
      values[:author_date],
      values[:author_date_html],
      values[:authors],
