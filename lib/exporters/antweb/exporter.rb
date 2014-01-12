@@ -22,6 +22,9 @@ class Exporters::Antweb::Exporter
   def export_taxon taxon
     Progress.tally_and_show_progress 100
 
+    reference = taxon.protonym.authorship.reference
+    reference_id = reference.kind_of?(MissingReference) ? nil : reference.id
+
     attributes = {
       antcat_id:            taxon.id,
       status:               taxon.status,
@@ -35,7 +38,7 @@ class Exporters::Antweb::Exporter
       original_combination: taxon.original_combination.try(:name).try(:name),
       authors:              taxon.author_last_names_string,
       year:                 taxon.year && taxon.year.to_s,
-
+      reference_id:         reference_id,
     }
 
     case taxon
@@ -94,7 +97,8 @@ class Exporters::Antweb::Exporter
     "original combination\t"    +# [14]
     "was original combination\t"+# [15]
     "fossil\t"                  +# [16]
-    "taxonomic history html"     # [17]
+    "taxonomic history html\t"  +# [17]
+    "reference id"               # [18]
   end
 
   def convert_to_antweb_array values
@@ -115,7 +119,9 @@ class Exporters::Antweb::Exporter
      boolean_to_antweb(values[:original_combination?]),
      values[:original_combination],
      boolean_to_antweb(values[:fossil?]),
-     values[:history]]
+     values[:history],
+     values[:reference_id],
+    ]
   end
 
 end
