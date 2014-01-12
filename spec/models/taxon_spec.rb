@@ -345,6 +345,10 @@ describe Taxon do
         genus.subfamily.should == subfamily
       end
     end
+    it "should give the parent of a family as nil" do
+      family = FactoryGirl.create :family
+      family.parent.should be_nil
+    end
   end
 
   describe "Updating the parent" do

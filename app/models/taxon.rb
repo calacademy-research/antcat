@@ -181,6 +181,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def parent
+    return nil if kind_of? Family
     return Family.first if kind_of? Subfamily
     send Rank[self].parent.read_selector
   end
