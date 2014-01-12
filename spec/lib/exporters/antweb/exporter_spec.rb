@@ -228,4 +228,11 @@ describe Exporters::Antweb::Exporter do
     end
   end
 
+  describe "biogeographic_region" do
+    it "should send the field to AntWeb" do
+      taxon = create_genus biogeographic_region: 'Malaya'
+      @exporter.export_taxon(taxon)[19].should == 'Malaya'
+    end
+  end
+
 end

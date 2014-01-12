@@ -39,6 +39,7 @@ class Exporters::Antweb::Exporter
       authors:              taxon.author_last_names_string,
       year:                 taxon.year && taxon.year.to_s,
       reference_id:         reference_id,
+      biogeographic_region: taxon.biogeographic_region,
     }
 
     case taxon
@@ -98,7 +99,8 @@ class Exporters::Antweb::Exporter
     "was original combination\t"+# [15]
     "fossil\t"                  +# [16]
     "taxonomic history html\t"  +# [17]
-    "reference id"               # [18]
+    "reference id"              +# [18]
+    "bioregion"                  # [19]
   end
 
   def convert_to_antweb_array values
@@ -121,6 +123,7 @@ class Exporters::Antweb::Exporter
      boolean_to_antweb(values[:fossil?]),
      values[:history],
      values[:reference_id],
+     values[:biogeographic_region],
     ]
   end
 
