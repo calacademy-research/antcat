@@ -28,7 +28,10 @@ describe Exporters::Antweb::Exporter do
                                  "was original combination\t" +
                                  "fossil\t" +
                                  "taxonomic history html\t" +
-                                 "reference id"
+                                 "reference id\t" +
+                                 "bioregion\t" +
+                                 "country" +
+                                 ""
     end
   end
 
@@ -228,10 +231,14 @@ describe Exporters::Antweb::Exporter do
     end
   end
 
-  describe "biogeographic_region" do
-    it "should send the field to AntWeb" do
+  describe "Sending other fields to AntWeb" do
+    it "should send the biogeographic region" do
       taxon = create_genus biogeographic_region: 'Malaya'
       @exporter.export_taxon(taxon)[19].should == 'Malaya'
+    end
+    it "should send the locality" do
+      taxon = create_genus protonym: FactoryGirl.create(:protonym, locality: 'Canada')
+      @exporter.export_taxon(taxon)[20].should == 'Canada'
     end
   end
 
