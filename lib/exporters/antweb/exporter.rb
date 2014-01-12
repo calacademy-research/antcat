@@ -15,25 +15,6 @@ class Exporters::Antweb::Exporter
     Progress.show_results
   end
 
-  def header
-    "antcat id\t"               +# [0]
-    "subfamily\t"               +# [1]
-    "tribe\t"                   +# [2]
-    "genus\t"                   +# [3]
-    "species\t"                 +# [4]
-    "author date\t"             +# [5]
-    "author date html\t"        +# [6]
-    "authors\t"                 +# [7]
-    "year\t"                    +# [8]
-    "status\t"                  +# [9]
-    "available\t"               +# [10]
-    "current valid name\t"      +# [11]
-    "original combination\t"    +# [12]
-    "was original combination\t"+# [13]
-    "fossil\t"                  +# [14]
-    "taxonomic history"          # [15]
-  end
-
   def get_taxa
     Taxon.joins protonym: [{authorship: :reference}]
   end
@@ -86,7 +67,6 @@ class Exporters::Antweb::Exporter
 
   end
 
-  private
   def boolean_to_antweb boolean
     case boolean
     when true then 'TRUE'
@@ -94,6 +74,25 @@ class Exporters::Antweb::Exporter
     when nil then nil
     else raise
     end
+  end
+
+  def header
+    "antcat id\t"               +# [0]
+    "subfamily\t"               +# [1]
+    "tribe\t"                   +# [2]
+    "genus\t"                   +# [3]
+    "species\t"                 +# [4]
+    "author date\t"             +# [5]
+    "author date html\t"        +# [6]
+    "authors\t"                 +# [7]
+    "year\t"                    +# [8]
+    "status\t"                  +# [9]
+    "available\t"               +# [10]
+    "current valid name\t"      +# [11]
+    "original combination\t"    +# [12]
+    "was original combination\t"+# [13]
+    "fossil\t"                  +# [14]
+    "taxonomic history html"     # [15]
   end
 
   def convert_to_antweb_array values
