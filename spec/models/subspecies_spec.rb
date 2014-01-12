@@ -50,6 +50,12 @@ describe Subspecies do
     end
   end
 
+  describe "The genus is the parent if there's no species" do
+    genus = create_genus
+    taxon = create_subspecies genus: genus, species: nil
+    taxon.parent.should == genus
+  end
+
   describe "Elevating to species" do
     it "should turn the record into a Species" do
       taxon = create_subspecies 'Atta major colobopsis'

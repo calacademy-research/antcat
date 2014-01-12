@@ -18,6 +18,10 @@ class Subspecies < SpeciesGroupTaxon
   def statistics
   end
 
+  def parent
+    species || genus
+  end
+
   def elevate_to_species
     raise NoSpeciesForSubspeciesError unless species
 
