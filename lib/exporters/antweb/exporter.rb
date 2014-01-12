@@ -25,6 +25,10 @@ class Exporters::Antweb::Exporter
     reference = taxon.protonym.authorship.reference
     reference_id = reference.kind_of?(MissingReference) ? nil : reference.id
 
+    parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon ? taxon.parent.current_valid_taxon : taxon.parent)
+    parent_name = parent_taxon.try(:name).try(:name)
+    parent_name ||= 'Formicidae'
+
     attributes = {
       antcat_id:            taxon.id,
       status:               taxon.status,
@@ -42,7 +46,7 @@ class Exporters::Antweb::Exporter
       biogeographic_region: taxon.biogeographic_region,
       locality:             taxon.protonym.locality,
       rank:                 taxon.class.to_s,
-      parent:               taxon.parent.try(:name).try(:name),
+      parent:               parent_name,
     }
 
     convert_to_antweb_array taxon.add_antweb_attributes(attributes)

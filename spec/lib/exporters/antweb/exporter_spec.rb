@@ -262,6 +262,10 @@ describe Exporters::Antweb::Exporter do
       @subgenus = create_subgenus genus: @genus, tribe: @tribe, subfamily: @subfamily
       @species = create_species 'Atta betta', genus: @genus, subfamily: @subfamily
     end
+    it "should not punt on a subfamily's family" do
+      taxon = create_subfamily
+      @exporter.export_taxon(taxon)[22].should == 'Formicidae'
+    end
     it "should handle a taxon's subfamily" do
       taxon = create_tribe subfamily: @subfamily
       @exporter.export_taxon(taxon)[22].should == 'Dolichoderinae'
@@ -281,6 +285,12 @@ describe Exporters::Antweb::Exporter do
       taxon = create_subspecies 'Atta betta cappa', species: @species, genus: @genus, subfamily: @subfamily
       @exporter.export_taxon(taxon)[22].should == 'Atta betta'
     end
-    it "should handle a synonym"
+    it "should handle a synonym" do
+      senior = create_genus 'Eciton', subfamily: @subfamily
+      junior = create_genus 'Atta', subfamily: @subfamily, current_valid_taxon: senior
+      taxon = create_species genus: junior
+      Synonym.create! senior_synonym: senior, junior_synonym: junior
+      @exporter.export_taxon(taxon)[22].should == 'Eciton'
+    end
   end
 end
