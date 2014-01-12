@@ -52,7 +52,7 @@ class Exporters::Antweb::Exporter
     when Subgenus
       subfamily_name = taxon.subfamily && taxon.subfamily.name.to_s || 'incertae_sedis'
       genus_name = taxon.genus && taxon.genus.name.to_s
-      convert_to_antweb_array attributes.merge subfamily: subfamily_name, genus: genus_name, subgenus: taxon.name.to_s
+      convert_to_antweb_array attributes.merge subfamily: subfamily_name, genus: genus_name, subgenus: taxon.name.epithet.gsub(/[\(\)]/,'')
     when Species
       return unless taxon.genus
       subfamily_name = taxon.genus.subfamily && taxon.genus.subfamily.name.to_s || 'incertae_sedis'

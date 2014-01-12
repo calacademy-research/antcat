@@ -150,18 +150,18 @@ describe Exporters::Antweb::Exporter do
     it "should export a Subgenus" do
       taxon = create_subgenus 'Atta (Boyo)'
       results = @exporter.export_taxon(taxon)
-      results[4].should == 'Atta (Boyo)'
+      results[4].should == 'Boyo'
     end
   end
 
   describe "Sending 'was original combination' so that AntWeb knows when to use parentheses around authorship" do
     it "should send TRUE or FALSE" do
       taxon = create_genus status: 'original combination'
-      @exporter.export_taxon(taxon)[13].should == 'TRUE'
+      @exporter.export_taxon(taxon)[14].should == 'TRUE'
     end
     it "should send TRUE or FALSE" do
       taxon = create_genus
-      @exporter.export_taxon(taxon)[13].should == 'FALSE'
+      @exporter.export_taxon(taxon)[14].should == 'FALSE'
     end
   end
 
