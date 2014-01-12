@@ -76,7 +76,6 @@ class GenusGroupTaxon < Taxon
   end
 
   def parent
-    return Family.first if kind_of? Subfamily
     send Rank[self].parent.read_selector
   end
 
