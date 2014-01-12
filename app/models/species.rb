@@ -34,6 +34,13 @@ class Species < SpeciesGroupTaxon
     Subspecies.find(id).update_attributes name: new_name, species: species
   end
 
+  def add_antweb_attributes attributes
+    return unless genus
+    subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
+    tribe_name = genus.tribe && genus.tribe.name.to_s
+    attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: genus.name.to_s, species: name.epithet
+  end
+
   def self.import_myrmicium_heerii
     parse_result = Importers::Bolton::Catalog::Species::Grammar.parse(
       '*<i>heerii</i>. *<i>Myrmicium heerii</i> Westwood, 1854: 396, pl. 18, fig. 21 (wing) GREAT BRITAIN. Transferred to *Myrmiciidae (Symphyta): Maa, 1949: 17; Rasnitsyn, 1969: 17; to *Pseudosiricidae (Symphyta): Handlirsch, 1906: 577; Abe & Smith, D.R. 1991: 53. Excluded from Formicidae.', root: :species_group_record).value

@@ -20,4 +20,10 @@ class Subgenus < GenusGroupTaxon
   def statistics
   end
 
+  def add_antweb_attributes attributes
+    subfamily_name = subfamily && subfamily.name.to_s || 'incertae_sedis'
+    genus_name = genus && genus.name.to_s
+    attributes.merge subfamily: subfamily_name, genus: genus_name, subgenus: name.epithet.gsub(/[\(\)]/,'')
+  end
+
 end

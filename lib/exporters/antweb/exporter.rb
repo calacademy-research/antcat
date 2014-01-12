@@ -44,32 +44,7 @@ class Exporters::Antweb::Exporter
       rank:                 taxon.class.to_s,
     }
 
-    case taxon
-    when Family
-      convert_to_antweb_array attributes.merge subfamily: 'Formicidae'
-    when Subfamily
-      convert_to_antweb_array attributes.merge subfamily: taxon.name.to_s
-    when Tribe
-      convert_to_antweb_array attributes.merge subfamily: taxon.subfamily.name.to_s, tribe: taxon.name.to_s
-    when Genus
-      subfamily_name = taxon.subfamily && taxon.subfamily.name.to_s || 'incertae_sedis'
-      tribe_name = taxon.tribe && taxon.tribe.name.to_s
-      convert_to_antweb_array attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: taxon.name.to_s
-    when Subgenus
-      subfamily_name = taxon.subfamily && taxon.subfamily.name.to_s || 'incertae_sedis'
-      genus_name = taxon.genus && taxon.genus.name.to_s
-      convert_to_antweb_array attributes.merge subfamily: subfamily_name, genus: genus_name, subgenus: taxon.name.epithet.gsub(/[\(\)]/,'')
-    when Species
-      return unless taxon.genus
-      subfamily_name = taxon.genus.subfamily && taxon.genus.subfamily.name.to_s || 'incertae_sedis'
-      tribe_name = taxon.genus.tribe && taxon.genus.tribe.name.to_s
-      convert_to_antweb_array attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: taxon.genus.name.to_s, species: taxon.name.epithet
-    when Subspecies
-      subfamily_name = taxon.genus.subfamily && taxon.genus.subfamily.name.to_s || 'incertae_sedis'
-      tribe_name = taxon.genus.tribe && taxon.genus.tribe.name.to_s
-      convert_to_antweb_array attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: taxon.genus.name.to_s, species: taxon.species.name.epithet, subspecies: taxon.name.epithet
-    else nil
-    end
+    convert_to_antweb_array taxon.add_antweb_attributes(attributes)
 
   end
 

@@ -22,6 +22,10 @@ class Family < Taxon
     end
   end
 
+  add_antweb_attributes attributes
+    attributes.merge subfamily: 'Formicidae'
+  end
+
   ##########
   def self.import data
     name = Name.import family_name: 'Formicidae'

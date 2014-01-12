@@ -32,6 +32,10 @@ class Subfamily < Taxon
     taxon
   end
 
+  def add_antweb_attributes attributes
+    attributes.merge subfamily: name.to_s
+  end
+
   def self.get_type_key
     :type_genus
   end
