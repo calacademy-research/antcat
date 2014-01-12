@@ -22,7 +22,7 @@ class Family < Taxon
     end
   end
 
-  add_antweb_attributes attributes
+  def add_antweb_attributes attributes
     attributes.merge subfamily: 'Formicidae'
   end
 
