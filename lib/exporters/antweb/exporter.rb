@@ -52,7 +52,7 @@ class Exporters::Antweb::Exporter
     when Subgenus
       subfamily_name = taxon.subfamily && taxon.subfamily.name.to_s || 'incertae_sedis'
       genus_name = taxon.genus && taxon.genus.name.to_s
-      convert_to_antweb_array attributes.merge subfamily: subfamily_name, genus: genus_name, genus: genus_name
+      convert_to_antweb_array attributes.merge subfamily: subfamily_name, genus: genus_name, subgenus: taxon.name.to_s
     when Species
       return unless taxon.genus
       subfamily_name = taxon.genus.subfamily && taxon.genus.subfamily.name.to_s || 'incertae_sedis'
@@ -81,18 +81,19 @@ class Exporters::Antweb::Exporter
     "subfamily\t"               +# [1]
     "tribe\t"                   +# [2]
     "genus\t"                   +# [3]
-    "species\t"                 +# [4]
-    "author date\t"             +# [5]
-    "author date html\t"        +# [6]
-    "authors\t"                 +# [7]
-    "year\t"                    +# [8]
-    "status\t"                  +# [9]
-    "available\t"               +# [10]
-    "current valid name\t"      +# [11]
-    "original combination\t"    +# [12]
-    "was original combination\t"+# [13]
-    "fossil\t"                  +# [14]
-    "taxonomic history html"     # [15]
+    "subgenus\t"                +# [4]
+    "species\t"                 +# [5]
+    "author date\t"             +# [6]
+    "author date html\t"        +# [7]
+    "authors\t"                 +# [8]
+    "year\t"                    +# [9]
+    "status\t"                  +# [10]
+    "available\t"               +# [11]
+    "current valid name\t"      +# [12]
+    "original combination\t"    +# [13]
+    "was original combination\t"+# [14]
+    "fossil\t"                  +# [15]
+    "taxonomic history html"     # [16]
   end
 
   def convert_to_antweb_array values
@@ -100,6 +101,7 @@ class Exporters::Antweb::Exporter
      values[:subfamily],
      values[:tribe],
      values[:genus],
+     values[:subgenus],
      values[:species],
      values[:author_date],
      values[:author_date_html],
