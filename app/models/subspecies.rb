@@ -53,7 +53,8 @@ class Subspecies < SpeciesGroupTaxon
   def add_antweb_attributes attributes
     subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
     tribe_name = genus.tribe && genus.tribe.name.to_s
-    attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: genus.name.to_s, species: species.name.epithet, subspecies: name.epithet
+    species_name = species && species.name.to_s
+    attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: genus.name.to_s, species: species_name, subspecies: name.epithet
   end
 
   ############################

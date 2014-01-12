@@ -292,5 +292,9 @@ describe Exporters::Antweb::Exporter do
       Synonym.create! senior_synonym: senior, junior_synonym: junior
       @exporter.export_taxon(taxon)[22].should == 'Eciton'
     end
+    it "should handle a subspecies without a species" do
+      taxon = create_subspecies 'Atta betta kappa', genus: @genus, species: nil, subfamily: nil
+      @exporter.export_taxon(taxon)[22].should == 'Atta'
+    end
   end
 end

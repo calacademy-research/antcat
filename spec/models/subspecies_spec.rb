@@ -51,9 +51,11 @@ describe Subspecies do
   end
 
   describe "The genus is the parent if there's no species" do
-    genus = create_genus
-    taxon = create_subspecies genus: genus, species: nil
-    taxon.parent.should == genus
+    it "should return the genus" do
+      genus = create_genus
+      taxon = create_subspecies genus: genus, species: nil
+      taxon.parent.should == genus
+    end
   end
 
   describe "Elevating to species" do
