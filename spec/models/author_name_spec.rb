@@ -325,6 +325,13 @@ describe AuthorName do
       reference.reload.formatted_cache.should be_nil
       fisher_reference.reload.formatted_cache.should_not be_nil
     end
+
+    it "should fire on_change when a change occurs" do
+      bolton = FactoryGirl.create :author_name, name: 'Bolton'
+      bolton.should_receive :on_change
+      bolton.name = 'Fisher'
+      bolton.save!
+    end
   end
 
 end
