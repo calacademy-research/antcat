@@ -15,6 +15,19 @@ describe Reference do
       reference = Reference.create! :author_names => @author_names, :title => 'asdf', :citation_year => '2010d'
       reference.authors.first.should == @author_names.first.author
     end
+    describe "Nested references" do
+      it "can have a nested reference" do
+        nester = FactoryGirl.create :reference
+        nestee = FactoryGirl.create :nested_reference, nested_reference: nester
+        nestee.nested_reference.should == nester
+      end
+      it "can have many nestees" do
+        nester = FactoryGirl.create :reference
+        nestee = FactoryGirl.create :nested_reference, nested_reference: nester
+        nester.nestees.should =~ [nestee]
+      end
+    end
+
   end
 
   describe "author_names_string" do

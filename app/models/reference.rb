@@ -18,6 +18,7 @@ class Reference < ActiveRecord::Base
                 :after_add => :refresh_author_names_caches, :after_remove => :refresh_author_names_caches
   belongs_to  :journal
   belongs_to  :publisher
+  def nestees; self.class.where nested_reference_id: id; end
 
   # scopes
   scope :sorted_by_principal_author_last_name, order(:principal_author_last_name_cache)
