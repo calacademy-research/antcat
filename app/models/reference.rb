@@ -137,6 +137,10 @@ class Reference < ActiveRecord::Base
 
   ###############################################
   # caching
+  before_save :invalidate_formatted_reference_cache
+  def invalidate_formatted_reference_cache
+  end
+
   def populate_cache
   end
 
