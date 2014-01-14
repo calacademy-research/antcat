@@ -13,6 +13,7 @@ class ReferenceDocument < ActiveRecord::Base
   belongs_to :reference
   validate :check_url
   before_post_process :transliterate_file_name
+  before_save :invalidate_formatted_reference_cache
 
   def transliterate_file_name
     extension = File.extname(file_file_name).gsub(/^\.+/, '')
@@ -86,6 +87,10 @@ class ReferenceDocument < ActiveRecord::Base
       save!
       self.host = 'antcat.org'
     end
+  end
+
+  def invalidate_formatted_reference_cache
+    reference.formatted_cache = nil if reference
   end
 
 end
