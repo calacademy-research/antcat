@@ -146,6 +146,7 @@ class Reference < ActiveRecord::Base
   end
 
   def populate_cache
+    update_column :formatted_cache, Formatters::ReferenceFormatter.format(self)
   end
 
   ###############################################
