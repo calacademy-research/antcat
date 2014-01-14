@@ -31,7 +31,7 @@ describe Exporters::Antweb::Exporter do
                                  "reference id\t" +
                                  "bioregion\t" +
                                  "country\t" +
-                                 "current valid rank" +
+                                 "current valid rank\t" +
                                  "current valid parent" +
                                  ""
     end

@@ -84,7 +84,7 @@ class Exporters::Antweb::Exporter
     "reference id\t"            +# [18]
     "bioregion\t"               +# [19]
     "country\t"                 +# [20]
-    "current valid rank"        +# [21]
+    "current valid rank\t"      +# [21]
     "current valid parent"       # [22]
   end
 
