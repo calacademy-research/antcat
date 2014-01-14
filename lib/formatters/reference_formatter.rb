@@ -77,6 +77,9 @@ class Formatters::ReferenceFormatter
     string << format_title << ' '
     string << format_citation
     string << " [#{format_date(@reference.date)}]" if @reference.date?
+
+    FormattedReferenceCache.cache @reference, string
+
     string
   end
 
