@@ -5,6 +5,7 @@ class AuthorName < ActiveRecord::Base
   belongs_to :author
   validates :author, :name, presence: true
   validates :name, uniqueness: true
+  before_save :on_change
   has_paper_trail
 
   def last_name
@@ -144,6 +145,14 @@ class AuthorName < ActiveRecord::Base
       end
     end
     synonyms
+  end
+
+  def on_change
+    Reference.
+      joins(:reference_author_names).
+      joins(:author_names).
+      where('reference_author_names.author_name_id = ?', self.id).
+      update_all(formatted_cache: nil)
   end
 
   private
