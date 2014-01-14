@@ -309,15 +309,14 @@ describe AuthorName do
   end
 
   describe "Formatted reference cache" do
-    it "should invalidate the cache when a change occurs" do
-      bolton = FactoryGirl.create :author_name, name: 'Bolton'
-      bolton.should_receive :invalidate_formatted_reference_cache
-      bolton.name = 'Fisher'
-      bolton.save!
-    end
-
-    describe "Invalidating the cache when a name changes" do
-      it "should invalidate all references that use the name" do
+    describe "Invalidating the cache" do
+      it "should invalidate the cache when a change occurs" do
+        bolton = FactoryGirl.create :author_name, name: 'Bolton'
+        bolton.should_receive :invalidate_formatted_reference_cache
+        bolton.name = 'Fisher'
+        bolton.save!
+      end
+      it "should invalidate the cache for all references that use the data" do
         bolton = FactoryGirl.create :author_name, name: 'Bolton'
         fisher = FactoryGirl.create :author_name, name: 'Fisher'
         fisher_reference = FactoryGirl.create :article_reference, author_names: [fisher]
@@ -338,7 +337,6 @@ describe AuthorName do
         bolton_reference2.reload.formatted_cache.should be_nil
         fisher_reference.reload.formatted_cache.should_not be_nil
       end
-
     end
   end
 
