@@ -138,7 +138,6 @@ class Reference < ActiveRecord::Base
   ###############################################
   # caching
   def populate_cache
-    update_attribute :formatted_cache, Formatters::ReferenceFormatter.format(self)
   end
 
   ###############################################
