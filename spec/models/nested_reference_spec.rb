@@ -6,7 +6,7 @@ describe NestedReference do
   describe "validation" do
     before do
       @reference = NestedReference.new :title => 'asdf', :author_names => [FactoryGirl.create(:author_name)], :citation_year => '2010',
-        :nested_reference => FactoryGirl.create(:reference), :pages_in => 'Pp 2 in:'
+        :nester => FactoryGirl.create(:reference), :pages_in => 'Pp 2 in:'
     end
     it "should be valid with the attributes given above" do
       @reference.should be_valid
@@ -37,6 +37,11 @@ describe NestedReference do
       top = FactoryGirl.create :nested_reference, :nested_reference => middle
       middle.nested_reference = top
       middle.should_not be_valid
+    end
+    it "can have a nester" do
+      nester = FactoryGirl.create :reference
+      nestee = FactoryGirl.create :nested_reference, nested_reference: nester
+      nestee.nester.should == nester
     end
   end
 

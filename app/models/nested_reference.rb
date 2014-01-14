@@ -1,6 +1,7 @@
 # coding: UTF-8
 class NestedReference < UnmissingReference
   belongs_to :nested_reference, :class_name => 'Reference'
+  belongs_to :nester, foreign_key: :nested_reference_id, class_name: 'Reference'
 
   validates_presence_of :nested_reference, :pages_in
   validate :validate_nested_reference_exists
