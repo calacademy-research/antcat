@@ -37,7 +37,7 @@ class Subspecies < SpeciesGroupTaxon
       protonym_html:  name.protonym_html,
     })
     update_attributes name: new_name, species: nil
-    Subspecies.connection.execute "UPDATE taxa SET type = 'Species' WHERE id = '#{id}'"
+    update_column :type, 'Species'
   end
 
   def fix_missing_species

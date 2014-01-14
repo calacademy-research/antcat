@@ -62,7 +62,7 @@ EOS
         set_publisher if @reference.kind_of? BookReference
         set_pagination
         # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
-        Reference.connection.execute "UPDATE `references` SET type = '#{@reference.type}' WHERE id = '#{@reference.id}'" unless new
+        @reference.update_column :type, @reference.type unless new
 
         unless @reference.errors.present?
           @reference.update_attributes params[:reference]

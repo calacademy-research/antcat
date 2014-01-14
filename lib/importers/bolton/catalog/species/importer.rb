@@ -146,7 +146,7 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     3.times {|i| spinipes.history_items.first.destroy}
 
     # set type
-    Taxon.connection.execute %{UPDATE taxa SET type = 'Subspecies' WHERE id = '#{spinipes.id}'}
+    spinipes.update_column :type, 'Subspecies'
     spinipes = Taxon.find spinipes.id
 
     # set species

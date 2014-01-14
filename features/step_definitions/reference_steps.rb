@@ -80,8 +80,8 @@ def create_reference type, hash
 end
 
 def set_timestamps reference, hash
-  Reference.connection.execute("UPDATE `references` SET updated_at = '#{hash[:updated_at]}' WHERE id = #{reference.id}") if hash[:updated_at]
-  Reference.connection.execute("UPDATE `references` SET created_at = '#{hash[:created_at]}' WHERE id = #{reference.id}") if hash[:created_at]
+  reference.update_column :updated_at, hash[:updated_at] if hash[:updated_at]
+  reference.update_column :created_at, hash[:created_at] if hash[:created_at]
 end
 
 Given /the following entry nests it/ do |table|
@@ -270,7 +270,7 @@ end
 
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
   reference = FactoryGirl.create :unknown_reference, :title => 'Dolerichoderinae'
-  sql = "UPDATE `references` SET id = 50000 WHERE id = #{reference.id}"
+  reference.update_column :id, 50000
   ActiveRecord::Base.connection.execute sql
 end
 

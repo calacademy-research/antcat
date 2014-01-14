@@ -30,7 +30,7 @@ class Species < SpeciesGroupTaxon
       epithet_html:   name.epithet_html,
       epithets:       species.name.epithet + ' ' + name.epithet,
     })
-    Species.connection.execute "UPDATE taxa SET type = 'Subspecies' WHERE id = '#{id}'"
+    update_column :type, 'Subspecies'
     Subspecies.find(id).update_attributes name: new_name, species: species
   end
 
