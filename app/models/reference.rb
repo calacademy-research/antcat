@@ -139,6 +139,10 @@ class Reference < ActiveRecord::Base
   # caching
   before_save :invalidate_formatted_reference_cache
   def invalidate_formatted_reference_cache
+    self.formatted_cache = nil
+    Reference.where("nested_reference_id = ?", id).each do |nestee|
+      nestee.invalidate_formatted_reference_cache
+    end
   end
 
   def populate_cache
