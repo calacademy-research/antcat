@@ -54,4 +54,26 @@ describe NestedReference do
 
   end
 
+  describe "Formatted reference cache" do
+    describe "Invalidating the cache" do
+      it "When the nester changes, it and the nestee should be invalidated" do
+        nester = FactoryGirl.create :reference
+        nestee = FactoryGirl.create :nested_reference, nested_reference: nester
+        nester.should_receive :invalidate_formatted_reference_cache
+        nestee.should_receive :invalidate_formatted_reference_cache
+        nester.title = 'title'
+        nester.save!
+      end
+      it "should invalidate the cache for the reference that uses the reference document" do
+        nester = FactoryGirl.create :reference
+        nestee = FactoryGirl.create :nested_reference, nested_reference: nester
+        reference = FactoryGirl.create :article_reference
+        reference_document = FactoryGirl.create :reference_document, reference: reference
+        reference.populate_cache
+        reference_document.invalidate_formatted_reference_cache
+        reference.formatted_cache.should be_nil
+      end
+    end
+  end
+
 end
