@@ -75,15 +75,20 @@ class Formatters::ReferenceFormatter
   end
 
   def format
+    string = ReferenceFormatterCache.instance.get @reference
+    return string.html_safe if string
+    string = format!
+    ReferenceFormatterCache.instance.set(@reference, string)
+    string
+  end
+
+  def format!
     string = format_author_names.dup
     string << ' ' unless string.empty?
     string << format_year << '. '
     string << format_title << ' '
     string << format_citation
     string << " [#{format_date(@reference.date)}]" if @reference.date?
-
-    ReferenceFormatterCache.instance.set(@reference, string) if @use_cache
-
     string
   end
 
