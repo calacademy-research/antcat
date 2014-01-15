@@ -19,7 +19,7 @@ class ReferenceFormatterCache
   end
 
   def populate reference
-    value = Formatters::ReferenceFormatter.format reference, false
+    value = Formatters::ReferenceFormatter.format! reference
     set reference, value
     value
   end
