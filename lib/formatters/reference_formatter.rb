@@ -6,12 +6,12 @@ class Formatters::ReferenceFormatter
   extend ActionView::Context
   extend Sprockets::Helpers::RailsHelper
 
-  def self.format reference
-    make_formatter(reference).format
+  def self.format reference, use_cache = true
+    make_formatter(reference, use_cache).format
   end
 
-  def self.make_formatter reference
-    reference.to_class('Formatter', 'Formatters::').new reference
+  def self.make_formatter reference, use_cache = true
+    reference.to_class('Formatter', 'Formatters::').new reference, use_cache
   end
 
   def self.format_inline_citation reference, user = nil, options = {}
@@ -66,8 +66,9 @@ class Formatters::ReferenceFormatter
   end
 
   ##################
-  def initialize reference
+  def initialize reference, use_cache = true
     @reference = reference
+    @use_cache = use_cache
   end
 
   def format
