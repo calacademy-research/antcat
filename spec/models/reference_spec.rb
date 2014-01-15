@@ -368,13 +368,4 @@ describe Reference do
     end
   end
 
-  describe "Populating the cache" do
-    it "should cache the formatted reference" do
-      Formatters::ReferenceFormatter.stub(:format).and_return 'formatted reference'
-      reference = FactoryGirl.create :reference
-      reference.populate_cache
-      reference.reload.formatted_cache.should == 'formatted reference'
-    end
-  end
-
 end
