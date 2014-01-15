@@ -150,20 +150,9 @@ describe ReferenceDocument do
     describe "Invalidating the cache" do
       it "should be asked to invalidate the cache when a change occurs" do
         reference_document = FactoryGirl.create :reference_document
-        reference_document.should_receive :invalidate_formatted_reference_cache
+        ReferenceDocumentObserver.any_instance.should_receive :before_update
         reference_document.url = 'antcat.org'
         reference_document.save!
-      end
-      it "should invalidate the cache for the reference that uses the reference document" do
-        reference = FactoryGirl.create :article_reference
-        reference_document = FactoryGirl.create :reference_document, reference: reference
-        reference.populate_cache
-        reference_document.invalidate_formatted_reference_cache
-        reference.formatted_cache.should be_nil
-      end
-      it "shouldn't croak if there's no reference" do
-        reference_document = FactoryGirl.create :reference_document
-        reference_document.invalidate_formatted_reference_cache
       end
     end
   end
