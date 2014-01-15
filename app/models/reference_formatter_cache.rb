@@ -21,9 +21,7 @@ class ReferenceFormatterCache
   end
 
   def populate reference
-    value = Formatters::ReferenceFormatter.format! reference
-    set reference, value
-    value
+    set reference, Formatters::ReferenceFormatter.format! reference
   end
 
 end
