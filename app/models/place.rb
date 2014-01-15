@@ -10,10 +10,4 @@ class Place < ActiveRecord::Base
     place
   end
 
-  def invalidate_formatted_reference_cache
-    Reference.joins(publisher: [:place]).where('places.id = ?', id).each do |reference|
-      reference.invalidate_formatted_reference_cache
-    end
-  end
-
 end
