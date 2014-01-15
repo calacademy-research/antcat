@@ -359,6 +359,33 @@ describe Formatters::ReferenceFormatter do
       reference.populate_cache
       @formatter.format(reference).should be_html_safe
     end
+
+    describe "format vs. format!" do
+      describe "format" do
+        it "should read from the cache" do
+          reference = FactoryGirl.create :article_reference
+          ReferenceFormatterCache.instance.should_receive(:get).with(reference).and_return 'Cache'
+          ReferenceFormatterCache.instance.should_not_receive(:set)
+          @formatter.format reference
+        end
+        it "should populate and set the cache when it's empty" do
+          reference = FactoryGirl.create :article_reference
+          ReferenceFormatterCache.instance.should_receive(:get).with(reference).and_return nil
+          Formatters::ReferenceFormatter.any_instance.should_receive(:format!).and_return 'Cache'
+          ReferenceFormatterCache.instance.should_receive(:set).with(reference, 'Cache')
+          @formatter.format reference
+        end
+
+      end
+      describe "format!" do
+        it "should not touch the cache" do
+          reference = FactoryGirl.create :article_reference
+          ReferenceFormatterCache.instance.should_not_receive(:get)
+          ReferenceFormatterCache.instance.should_not_receive(:set)
+          @formatter.format! reference
+        end
+      end
+    end
   end
 
 end
