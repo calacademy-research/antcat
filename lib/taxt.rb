@@ -1,3 +1,4 @@
+# coding: UTF-8
 module Taxt
   include Formatters::Formatter
   extend Formatters::Formatter

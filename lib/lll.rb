@@ -1,3 +1,4 @@
+# coding: UTF-8
 # Used in debugging to display an expression and its value. Examples:
 #   x = 1
 #   lll{'x'} #=> x = 1

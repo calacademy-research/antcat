@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 desc "Copy PDFs from CAS to local"
 task copy_pdfs: :environment do
   pdfs = []

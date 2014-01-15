@@ -1,3 +1,4 @@
+# coding: UTF-8
 Rails.application.assets.logger = Logger.new('/dev/null')
 
 Rails::Rack::Logger.class_eval do

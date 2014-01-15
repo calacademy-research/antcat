@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 require 'spork'
 Spork.prefork do
   ENV["RAILS_ENV"] ||= 'test'

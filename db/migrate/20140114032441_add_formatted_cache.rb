@@ -1,3 +1,4 @@
+# coding: UTF-8
 class AddFormattedCache < ActiveRecord::Migration
   def up
     add_column :references, :formatted_cache, :text

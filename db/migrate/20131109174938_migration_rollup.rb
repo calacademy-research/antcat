@@ -1,3 +1,4 @@
+# coding: UTF-8
 class MigrationRollup < ActiveRecord::Migration
   def up
     ActiveRecord::Schema.define(:version => 20140104014629) do

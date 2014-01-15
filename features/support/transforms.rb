@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 class ShouldOrShouldNot
   def initialize(should_or_should_not) @should_or_should_not = should_or_should_not end
   def to_s() @should_or_should_not end

@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 module Formatters::CatalogFormatter
   extend ERB::Util
   extend ActionView::Helpers::TagHelper

@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 Given /^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/ do |invalid, year, author|
   reference = FactoryGirl.create :article_reference, citation_year: year
   if author

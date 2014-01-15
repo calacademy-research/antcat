@@ -1,3 +1,4 @@
+# coding: UTF-8
 module Importers::Bolton::Catalog::TextToTaxt
 
   def self.convert texts, genus_name = nil, species_epithet = nil

@@ -1,5 +1,4 @@
 # coding: UTF-8
-
 # These are methods used either now or at one time by Rake tasks, not
 # by application code, so could well be dead
 
