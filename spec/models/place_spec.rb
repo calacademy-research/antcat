@@ -36,13 +36,4 @@ describe Place do
     end
   end
 
-  describe "Invalidating the formatted reference cache" do
-    it "should be asked to invalidate the cache when a change occurs" do
-      place = FactoryGirl.create :place, name: 'Constantinople'
-      PlaceObserver.any_instance.should_receive :before_update
-      place.name = 'Istanbul'
-      place.save!
-    end
-  end
-
 end

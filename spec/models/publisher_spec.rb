@@ -75,13 +75,4 @@ describe Publisher do
     end
   end
 
-  describe "Invalidating the formatted reference cache" do
-    it "should be asked to invalidate the cache when a change occurs" do
-      publisher = FactoryGirl.create :publisher, name: 'Barnes & Noble'
-      PublisherObserver.any_instance.should_receive :before_update
-      publisher.name = 'Istanbul'
-      publisher.save!
-    end
-  end
-
 end

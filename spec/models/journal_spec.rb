@@ -59,13 +59,4 @@ describe Journal do
     end
   end
 
-  describe "Invalidating the formatted reference cache" do
-    it "should be asked to invalidate the cache when a change occurs" do
-      journal = FactoryGirl.create :journal, name: 'Science'
-      JournalObserver.any_instance.should_receive :before_update
-      journal.name = 'Nature'
-      journal.save!
-    end
-  end
-
 end

@@ -146,15 +146,4 @@ describe ReferenceDocument do
     end
   end
 
-  describe "Formatted reference cache" do
-    describe "Invalidating the cache" do
-      it "should be asked to invalidate the cache when a change occurs" do
-        reference_document = FactoryGirl.create :reference_document
-        ReferenceDocumentObserver.any_instance.should_receive :before_update
-        reference_document.url = 'antcat.org'
-        reference_document.save!
-      end
-    end
-  end
-
 end
