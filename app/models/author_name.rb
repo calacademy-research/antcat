@@ -5,7 +5,6 @@ class AuthorName < ActiveRecord::Base
   belongs_to :author
   validates :author, :name, presence: true
   validates :name, uniqueness: true
-  before_save :invalidate_formatted_reference_cache
   has_paper_trail
 
   def last_name
@@ -145,14 +144,6 @@ class AuthorName < ActiveRecord::Base
       end
     end
     synonyms
-  end
-
-  def invalidate_formatted_reference_cache
-    Reference.
-      joins(:reference_author_names).
-      joins(:author_names).
-      where('reference_author_names.author_name_id = ?', self.id).
-      update_all(formatted_cache: nil)
   end
 
   private
