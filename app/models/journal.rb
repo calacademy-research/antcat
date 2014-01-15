@@ -3,6 +3,7 @@ class Journal < ActiveRecord::Base
   validates_presence_of :name
   scope :list, order(:name)
   has_paper_trail
+  before_update :invalidate_formatted_reference_cache
 
   def self.import name
     return unless name.present?
@@ -19,6 +20,12 @@ class Journal < ActiveRecord::Base
       group('journals.id').
       order('COUNT(*) DESC').
       map(&:name)
+  end
+
+  def invalidate_formatted_reference_cache
+    Reference.joins(:journal).where('journals.id = ?', id).each do |reference|
+      reference.invalidate_formatted_reference_cache
+    end
   end
 
 end
