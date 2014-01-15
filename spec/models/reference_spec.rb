@@ -376,4 +376,5 @@ describe Reference do
       reference.reload.formatted_cache.should == 'formatted reference'
     end
   end
+
 end
