@@ -3,7 +3,6 @@ class Publisher < ActiveRecord::Base
   belongs_to :place
   validates_presence_of :name
   has_paper_trail
-  before_update :invalidate_formatted_reference_cache
 
   def self.import data
     return unless data[:name].present?
@@ -28,12 +27,6 @@ class Publisher < ActiveRecord::Base
     joins('LEFT OUTER JOIN places ON place_id = places.id').
       where("CONCAT(COALESCE(places.name, ''), ':', publishers.name) LIKE ?", search_expression).
       map(&:to_s)
-  end
-
-  def invalidate_formatted_reference_cache
-    Reference.joins(:publisher).where('publishers.id = ?', id).each do |reference|
-      reference.invalidate_formatted_reference_cache
-    end
   end
 
 end
