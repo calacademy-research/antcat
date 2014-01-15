@@ -59,36 +59,13 @@ describe Journal do
     end
   end
 
-  describe "Formatted reference cache" do
-    describe "Invalidating the cache" do
-      it "should be asked to invalidate the cache when a change occurs" do
-        journal = FactoryGirl.create :journal, name: 'Science'
-        journal.should_receive :invalidate_formatted_reference_cache
-        journal.name = 'Nature'
-        journal.save!
-      end
-      it "should invalidate the cache for the references that use the journal" do
-        journal = FactoryGirl.create :journal
-        references = []
-        (0..2).each do |i|
-          if i < 2
-            references[i] = FactoryGirl.create :book_reference, journal: journal
-          else
-            references[i] = FactoryGirl.create :book_reference
-          end
-          references[i].populate_cache
-        end
-
-        references[0].formatted_cache.should_not be_nil
-        references[1].formatted_cache.should_not be_nil
-        references[2].formatted_cache.should_not be_nil
-
-        journal.invalidate_formatted_reference_cache
-
-        references[0].reload.formatted_cache.should be_nil
-        references[1].reload.formatted_cache.should be_nil
-        references[2].reload.formatted_cache.should_not be_nil
-      end
+  describe "Invalidating the formatted reference cache" do
+    it "should be asked to invalidate the cache when a change occurs" do
+      journal = FactoryGirl.create :journal, name: 'Science'
+      JournalObserver.any_instance.should_receive :before_update
+      journal.name = 'Nature'
+      journal.save!
     end
   end
+
 end
