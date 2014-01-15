@@ -15,7 +15,9 @@ class ReferenceFormatterCache
   end
 
   def set reference, value
+    return value if reference.formatted_cache == value
     reference.update_column :formatted_cache, value
+    value
   end
 
   def populate reference
