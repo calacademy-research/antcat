@@ -22,4 +22,5 @@ describe ReferenceDocumentObserver do
     reference_document = FactoryGirl.create :reference_document
     ReferenceDocumentObserver.instance.before_update reference_document
   end
+
 end
