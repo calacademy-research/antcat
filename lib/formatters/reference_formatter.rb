@@ -79,7 +79,7 @@ class Formatters::ReferenceFormatter
     string << format_citation
     string << " [#{format_date(@reference.date)}]" if @reference.date?
 
-    @reference.update_attribute :formatted_cache, string
+    ReferenceFormatterCache.instance.set(@reference, string) if @use_cache
 
     string
   end
