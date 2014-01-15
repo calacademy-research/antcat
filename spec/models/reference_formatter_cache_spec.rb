@@ -9,16 +9,16 @@ describe ReferenceFormatterCache do
   describe "Invalidating" do
     it "should do nothing if there's nothing in the cache" do
       reference = FactoryGirl.create :article_reference
-      ReferenceFormatterCache.instance.get(reference).should be_nil
+      reference.formatted_cache.should be_nil
       ReferenceFormatterCache.instance.invalidate reference
-      ReferenceFormatterCache.instance.get(reference).should be_nil
+      reference.formatted_cache.should be_nil
     end
     it "should set the cache to nil" do
       reference = FactoryGirl.create :article_reference
       ReferenceFormatterCache.instance.populate reference
-      ReferenceFormatterCache.instance.get(reference).should_not be_nil
+      reference.formatted_cache.should_not be_nil
       ReferenceFormatterCache.instance.invalidate reference
-      ReferenceFormatterCache.instance.get(reference).should be_nil
+      reference.formatted_cache.should be_nil
     end
 
   end
@@ -27,11 +27,11 @@ describe ReferenceFormatterCache do
     describe "Populating" do
       it "should call ReferenceFormatter to get the value" do
         reference = FactoryGirl.create :article_reference
-        ReferenceFormatterCache.instance.get(reference).should be_nil
-        value = Formatters::ReferenceFormatter.format reference, false
-        ReferenceFormatterCache.instance.get(reference).should be_nil
+        reference.formatted_cache.should be_nil
+        value = Formatters::ReferenceFormatter.format! reference
+        reference.formatted_cache.should be_nil
         ReferenceFormatterCache.instance.populate reference
-        ReferenceFormatterCache.instance.get(reference).should == value
+        reference.formatted_cache.should == value
       end
     end
     describe "Setting" do
