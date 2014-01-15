@@ -356,7 +356,7 @@ describe Formatters::ReferenceFormatter do
   describe "Using ReferenceFormatterCache" do
     it "should return an html_safe string from the cache" do
       reference = FactoryGirl.create :article_reference
-      reference.populate_cache
+      ReferenceFormatterCache.instance.populate reference
       @formatter.format(reference).should be_html_safe
     end
 

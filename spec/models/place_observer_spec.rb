@@ -20,7 +20,7 @@ describe PlaceObserver do
         else
           references[i] = FactoryGirl.create :book_reference
         end
-        references[i].populate_cache
+        ReferenceFormatterCache.instance.populate references[i]
       end
 
       references[0].formatted_cache.should_not be_nil

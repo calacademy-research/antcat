@@ -136,12 +136,6 @@ class Reference < ActiveRecord::Base
   end
 
   ###############################################
-  # caching
-  def populate_cache
-    update_column :formatted_cache, Formatters::ReferenceFormatter.format(self)
-  end
-
-  ###############################################
   private
   def strip_text_fields
     [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation].each do |field|
