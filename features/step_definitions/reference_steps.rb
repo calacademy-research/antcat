@@ -271,7 +271,6 @@ end
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
   reference = FactoryGirl.create :unknown_reference, :title => 'Dolerichoderinae'
   reference.update_column :id, 50000
-  ActiveRecord::Base.connection.execute sql
 end
 
 Given /^there is a missing reference(?: with citation "(.+)")?( in a protonym)?$/ do |citation, in_protonym|
