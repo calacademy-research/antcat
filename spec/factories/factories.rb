@@ -67,7 +67,7 @@ FactoryGirl.define do
 
   factory :nested_reference do
     author_names              {[FactoryGirl.create(:author_name)]}
-    title                     nil
+    sequence(:title)          {|n| "Nested ants #{n}"}
     sequence(:citation_year)  {|n| "201#{n}d"}
     pages_in                  'In: '
     nested_reference          {FactoryGirl.create :book_reference}
