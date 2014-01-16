@@ -37,9 +37,10 @@ describe ReferenceFormatterCache do
     describe "Setting" do
       it "should call set the cache to the desired value" do
         reference = FactoryGirl.create :article_reference
-        ReferenceFormatterCache.instance.set(reference, 'Cache')
+        ReferenceFormatterCache.instance.set reference, 'Cache'
         ReferenceFormatterCache.instance.get(reference).should == 'Cache'
       end
     end
+
   end
 end
