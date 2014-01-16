@@ -16,7 +16,7 @@ describe Reference do
       reference.authors.first.should == @author_names.first.author
     end
     describe "Nested references" do
-      it "can have a nested reference" do
+      it "can have a nester" do
         nester = FactoryGirl.create :reference
         nestee = FactoryGirl.create :nested_reference, nester: nester
         nestee.nester.should == nester

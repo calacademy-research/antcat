@@ -257,7 +257,7 @@ Feature: Edit reference
     When I follow "edit" in the first reference
     And I fill in "reference_nester_id" with its own ID
     And I save my changes to the first reference
-    Then I should see "Nested reference can't point to itself"
+    Then I should see "Nester can't point to itself"
 
   #Scenario: Edit a nested reference to remove its nestedness, delete the nestee, go back to the first one and set it as nested
     #Given I am logged in
@@ -279,7 +279,7 @@ Feature: Edit reference
     #And I edit "Bolton"
     #And I follow "Nested" in the first reference
     #And I save my changes to the first reference
-    #Then I should see "Nested reference can't be blank"
+    #Then I should see "Nester can't be blank"
 
   Scenario: Cancelling edit after an error
     Given I am logged in

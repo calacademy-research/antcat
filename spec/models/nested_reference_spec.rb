@@ -11,7 +11,7 @@ describe NestedReference do
     it "should be valid with the attributes given above" do
       @reference.should be_valid
     end
-    it "should not be valid without a nested reference" do
+    it "should not be valid without a nester" do
       @reference.nester = nil
       @reference.should_not be_valid
     end

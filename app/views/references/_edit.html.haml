@@ -58,10 +58,10 @@
           %div{:class => 'nested-tab-section', :id => "tabs-nested-#{reference.id}"}
             = label_tag :reference_pages_in, 'Pages in'
             = f.text_field :pages_in, :class => 'pages'
-            = label_tag :reference_nester_id, 'Nested reference ID'
+            = label_tag :nester_id, 'Nester ID'
             = f.text_field :nester_id, :class => 'pages'
             %p.help
-              %span.help= raw "To find, edit or add the nested reference in a new browser window, click #{link_to 'here', references_path(:q => reference.nester_id), :target => '_blank'}"
+              %span.help= raw "To find, edit or add the nester in a new browser window, click #{link_to 'here', references_path(:q => reference.nester_id), :target => '_blank'}"
 
           %div{:class => 'unknown-tab-section', :id => "tabs-unknown-#{reference.id}"}
             = label_tag :reference_citation, 'Citation'
