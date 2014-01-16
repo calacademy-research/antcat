@@ -14,6 +14,7 @@ module AntCat
       :journal_observer,
       :place_observer,
       :publisher_observer,
+      :reference_author_name_observer,
       :reference_document_observer,
       :reference_observer,
     ]
