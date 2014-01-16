@@ -30,26 +30,6 @@ describe MissingReference do
       end
     end
 
-    describe "Replacing all missing references" do
-      it "should replace all missing references" do
-        missing_reference = FactoryGirl.create :missing_reference, citation: 'Borowiec, 2010'
-        protonym = FactoryGirl.create :protonym, authorship: FactoryGirl.create(:citation, reference: missing_reference)
-        taxon = create_genus protonym: protonym
-        taxon.protonym.authorship.reference.should == missing_reference
-        nonmissing_reference = FactoryGirl.create :article_reference, key_cache_no_commas: 'Borowiec 2010'
-
-        MissingReference.replace_all
-
-        MissingReference.count.should == 0
-        taxon.reload.protonym.authorship.reference.should == nonmissing_reference
-      end
-      it "should report the MissingReferences that can't be found" do
-        missing_reference = FactoryGirl.create :missing_reference, citation: 'Borowiec, 2010'
-        MissingReference.replace_all.should == ['Borowiec, 2010']
-        MissingReference.count.should == 1
-      end
-    end
-
     describe "Replacing all occurences of a citation with another reference" do
       it "should replace both missing references with the same citation" do
         first_reference = FactoryGirl.create :missing_reference, citation: 'Citation'
