@@ -43,4 +43,25 @@ describe ReferenceFormatterCache do
     end
 
   end
+
+  describe "Handling a network" do
+    it "should invalidate each member of the network" do
+      nesting_reference = FactoryGirl.create :article_reference
+      ReferenceFormatterCache.instance.populate nesting_reference
+      ReferenceFormatterCache.instance.get(nesting_reference).should_not be_nil
+
+      nested_reference = FactoryGirl.create :nested_reference, nesting_reference: nesting_reference
+      ReferenceFormatterCache.instance.populate nested_reference
+      ReferenceFormatterCache.instance.get(nested_reference).should_not be_nil
+
+      author_name = FactoryGirl.create :author_name
+      reference_author_name = FactoryGirl.create :reference_author_name, reference: nesting_reference, author_name: author_name
+      reference_author_name.position = 4
+      reference_author_name.save!
+
+      ReferenceFormatterCache.instance.get(nesting_reference).should be_nil
+      ReferenceFormatterCache.instance.get(nested_reference).should be_nil
+    end
+  end
+
 end
