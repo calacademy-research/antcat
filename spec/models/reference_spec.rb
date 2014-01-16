@@ -236,11 +236,10 @@ describe Reference do
       ward = FactoryGirl.create :author_name, :name => 'Ward'
       fisher = FactoryGirl.create :author_name, :name => 'Fisher'
       bolton_reference = FactoryGirl.create :article_reference, :author_names => [bolton, ward]
-      first_ward_reference = FactoryGirl.create :article_reference, :author_names => [ward, bolton]
-      second_ward_reference = FactoryGirl.create :article_reference, :author_names => [ward, fisher]
+      ward_reference = FactoryGirl.create :article_reference, :author_names => [ward, bolton]
       fisher_reference = FactoryGirl.create :article_reference, :author_names => [fisher, bolton]
 
-      Reference.sorted_by_principal_author_last_name.map(&:id).should == [bolton_reference.id, fisher_reference.id, first_ward_reference.id, second_ward_reference.id]
+      Reference.sorted_by_principal_author_last_name.map(&:id).should == [bolton_reference.id, fisher_reference.id, ward_reference.id]
     end
   end
 
