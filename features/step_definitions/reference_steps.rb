@@ -89,7 +89,7 @@ Given /the following entry nests it/ do |table|
   @nestee_reference = @reference
   @reference = NestedReference.create! :author_names => [FactoryGirl.create(:author_name, :name => data[:authors])],
     :citation_year => data[:year], :title => data[:title], :pages_in => data[:pages_in],
-    :nested_reference => @nestee_reference
+    nester: @nestee_reference
 end
 
 Given /that the entry has a URL that's on our site( that is public)?/ do |is_public|
@@ -147,10 +147,10 @@ When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
   end
 end
 
-When /in the new edit form I fill in "reference_nested_reference_id" with the ID for "(.*?)"$/ do |title|
+When /in the new edit form I fill in "reference_nester_id" with the ID for "(.*?)"$/ do |title|
   reference = Reference.find_by_title title
   within first("#reference_") do
-    step "I fill in \"reference_nested_reference_id\" with \"#{reference.id}\""
+    step "I fill in \"reference_nester_id\" with \"#{reference.id}\""
   end
 end
 
@@ -203,9 +203,9 @@ Then "I should see the reference's ID beside its label" do
   step "I should see \"ID #{@reference.id}\""
 end
 
-When /I fill in "reference_nested_reference_id" with its own ID$/ do
+When /I fill in "reference_nester_id" with its own ID$/ do
   within first('.reference') do
-    step "I fill in \"reference_nested_reference_id\" with \"#{@reference.id}\""
+    step "I fill in \"reference_nester_id\" with \"#{@reference.id}\""
   end
 end
 

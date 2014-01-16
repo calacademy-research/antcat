@@ -55,10 +55,10 @@
           .tabbable{'data-title' => 'Nested'}
             = label_tag :reference_pages_in, 'Pages in'
             = text_field_tag 'reference[pages_in]', reference.pages_in, :class => 'pages'
-            = label_tag :reference_nested_reference_id, 'Nested reference ID'
-            = text_field_tag 'reference[nested_reference_id]', reference.nested_reference_id, :class => 'pages'
+            = label_tag :reference_nester_id, 'Nested reference ID'
+            = text_field_tag 'reference[nester_id]', reference.nester_id, :class => 'pages'
             %p.help
-              %span.help= raw "To find, edit or add the nested reference in a new browser window, click #{link_to 'here', references_path(:q => reference.nested_reference_id), :target => '_blank'}"
+              %span.help= raw "To find, edit or add the nested reference in a new browser window, click #{link_to 'here', references_path(:q => reference.nester_id), :target => '_blank'}"
 
           .tabbable{'data-title' => 'Other'}
             = label_tag :reference_citation, 'Citation'

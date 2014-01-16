@@ -12,7 +12,7 @@ describe NestedReference do
       @reference.should be_valid
     end
     it "should not be valid without a nested reference" do
-      @reference.nested_reference = nil
+      @reference.nester = nil
       @reference.should_not be_valid
     end
     it "should be valid without a title" do
@@ -24,23 +24,23 @@ describe NestedReference do
       @reference.should_not be_valid
     end
     it "should refer to an existing reference" do
-      @reference.nested_reference_id = 232434
+      @reference.nester_id = 232434
       @reference.should_not be_valid
     end
     it "should not point to itself" do
-      @reference.nested_reference_id = @reference.id
+      @reference.nester_id = @reference.id
       @reference.should_not be_valid
     end
     it "should not point to something that points to itself" do
       inner_most = FactoryGirl.create :book_reference
-      middle = FactoryGirl.create :nested_reference, :nested_reference => inner_most
-      top = FactoryGirl.create :nested_reference, :nested_reference => middle
-      middle.nested_reference = top
+      middle = FactoryGirl.create :nested_reference, :nester => inner_most
+      top = FactoryGirl.create :nested_reference, :nester => middle
+      middle.nester = top
       middle.should_not be_valid
     end
     it "can have a nester" do
       nester = FactoryGirl.create :reference
-      nestee = FactoryGirl.create :nested_reference, nested_reference: nester
+      nestee = FactoryGirl.create :nested_reference, nester: nester
       nestee.nester.should == nester
     end
   end
@@ -48,8 +48,8 @@ describe NestedReference do
   describe "deletion" do
     it "should not be possible to delete a nestee" do
       reference = NestedReference.create! :title => 'asdf', :author_names => [FactoryGirl.create(:author_name)], :citation_year => '2010',
-        :nested_reference => FactoryGirl.create(:reference), :pages_in => 'Pp 2 in:'
-      reference.nested_reference.destroy.should be_false
+        :nester => FactoryGirl.create(:reference), :pages_in => 'Pp 2 in:'
+      reference.nester.destroy.should be_false
     end
 
   end

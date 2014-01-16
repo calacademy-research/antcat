@@ -102,7 +102,7 @@ describe Taxon do
 
       it "should find the taxa for the author's references, even if he's nested inside the reference" do
         nested_in = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Bolton')], year: 2010
-        reference = NestedReference.new title: 'Ants', author_names: [FactoryGirl.create(:author_name, name: 'Fisher')], year: 2011, nested_reference: nested_in, pages_in: 'Pp 2 in:'
+        reference = NestedReference.new title: 'Ants', author_names: [FactoryGirl.create(:author_name, name: 'Fisher')], year: 2011, nester: nested_in, pages_in: 'Pp 2 in:'
         atta = create_genus
         atta.protonym.authorship.update_attributes! reference: reference
         Taxon.advanced_search(rank: 'All', author_name: 'Fisher').map(&:id).should == [atta.id]

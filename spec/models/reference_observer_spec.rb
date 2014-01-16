@@ -10,7 +10,7 @@ describe ReferenceObserver do
           nester = FactoryGirl.create :article_reference
           nester.title = 'title'
           ReferenceFormatterCache.instance.populate nester
-          nestee = FactoryGirl.create :nested_reference, nested_reference: nester
+          nestee = FactoryGirl.create :nested_reference, nester: nester
           ReferenceFormatterCache.instance.populate nestee
           nester.title = 'Title'
           nester.save!
@@ -19,7 +19,7 @@ describe ReferenceObserver do
         end
         it "should invalidate the cache for the reference that uses the reference document" do
           nester = FactoryGirl.create :article_reference
-          nestee = FactoryGirl.create :nested_reference, nested_reference: nester
+          nestee = FactoryGirl.create :nested_reference, nester: nester
           reference = FactoryGirl.create :article_reference
           reference_document = FactoryGirl.create :reference_document, reference: reference
           ReferenceFormatterCache.instance.populate reference

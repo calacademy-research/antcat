@@ -255,7 +255,7 @@ Feature: Edit reference
     When I go to the references page
     Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"
     When I follow "edit" in the first reference
-    And I fill in "reference_nested_reference_id" with its own ID
+    And I fill in "reference_nester_id" with its own ID
     And I save my changes to the first reference
     Then I should see "Nested reference can't point to itself"
 

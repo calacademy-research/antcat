@@ -75,7 +75,7 @@ class Reference < ActiveRecord::Base
       for klass in [Citation, Bolton::Match]
         klass.where(reference_id: replacement[:replace]).update_all(reference_id: replacement[:with])
       end
-      NestedReference.where(nested_reference_id: replacement[:replace]).update_all(nested_reference_id: replacement[:with])
+      NestedReference.where(nester_id: replacement[:replace]).update_all(nester_id: replacement[:with])
     end
   end
 

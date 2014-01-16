@@ -1,4 +1,4 @@
-# coding: UTF-8
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140114032441) do
+ActiveRecord::Schema.define(:version => 20140116032440) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(:version => 20140114032441) do
     t.text     "taxonomic_notes"
     t.text     "title"
     t.text     "citation"
-    t.integer  "nested_reference_id"
+    t.integer  "nester_id"
     t.string   "pages_in"
     t.string   "author_names_suffix"
     t.string   "principal_author_last_name_cache"
@@ -247,7 +247,7 @@ ActiveRecord::Schema.define(:version => 20140114032441) do
   add_index "references", ["bolton_key_cache"], :name => "index_references_on_bolton_citation_key"
   add_index "references", ["created_at"], :name => "references_created_at_idx"
   add_index "references", ["journal_id"], :name => "references_journal_id_idx"
-  add_index "references", ["nested_reference_id"], :name => "references_nested_reference_id_idx"
+  add_index "references", ["nester_id"], :name => "references_nested_reference_id_idx"
   add_index "references", ["publisher_id"], :name => "references_publisher_id_idx"
   add_index "references", ["updated_at"], :name => "references_updated_at_idx"
 

@@ -5,7 +5,7 @@ class ReferenceFormatterCache
   def invalidate reference
     return unless reference.formatted_cache?
     set reference, nil unless reference.new_record?
-    Reference.where("nested_reference_id = ?", reference.id).each do |nestee|
+    Reference.where("nester_id = ?", reference.id).each do |nestee|
       self.class.instance.invalidate nestee
     end
   end

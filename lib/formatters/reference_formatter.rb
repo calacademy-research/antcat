@@ -151,7 +151,7 @@ end
 
 class Formatters::NestedReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.format_italics "#{h @reference.pages_in} #{Formatters::ReferenceFormatter.format(@reference.nested_reference)}".html_safe
+    self.class.format_italics "#{h @reference.pages_in} #{Formatters::ReferenceFormatter.format(@reference.nester)}".html_safe
   end
 end
 

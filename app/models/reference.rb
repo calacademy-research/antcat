@@ -18,7 +18,7 @@ class Reference < ActiveRecord::Base
                 after_add: :refresh_author_names_caches, after_remove: :refresh_author_names_caches
   belongs_to  :journal
   belongs_to  :publisher
-  def nestees; self.class.where nested_reference_id: id; end
+  def nestees; self.class.where nester_id: id; end
 
   # scopes
   scope :sorted_by_principal_author_last_name, order(:principal_author_last_name_cache)
@@ -51,7 +51,7 @@ class Reference < ActiveRecord::Base
 
   # validation
   def check_not_nested
-    nester = NestedReference.find_by_nested_reference_id id
+    nester = NestedReference.find_by_nester_id id
     errors.add :base, "This reference can't be deleted because it's nested in #{nester}" if nester
     nester.nil?
   end
@@ -123,8 +123,8 @@ class Reference < ActiveRecord::Base
         return true if options[:any?]
       end
     end
-    for record in NestedReference.where(nested_reference_id: id).all
-      references << {table: 'references', id: record[:id], field: :nested_reference_id}
+    for record in NestedReference.where(nester_id: id).all
+      references << {table: 'references', id: record[:id], field: :nester_id}
       return true if options[:any?]
     end
     return false if options[:any?]
