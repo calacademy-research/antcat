@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140116032440) do
+ActiveRecord::Schema.define(:version => 20140116210057) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(:version => 20140116032440) do
     t.text     "taxonomic_notes"
     t.text     "title"
     t.text     "citation"
-    t.integer  "nester_id"
+    t.integer  "nesting_reference_id"
     t.string   "pages_in"
     t.string   "author_names_suffix"
     t.string   "principal_author_last_name_cache"
@@ -239,7 +239,6 @@ ActiveRecord::Schema.define(:version => 20140116032440) do
     t.string   "reason_missing"
     t.string   "key_cache"
     t.string   "review_state"
-    t.string   "key_cache_no_commas"
     t.text     "formatted_cache"
   end
 
@@ -247,7 +246,7 @@ ActiveRecord::Schema.define(:version => 20140116032440) do
   add_index "references", ["bolton_key_cache"], :name => "index_references_on_bolton_citation_key"
   add_index "references", ["created_at"], :name => "references_created_at_idx"
   add_index "references", ["journal_id"], :name => "references_journal_id_idx"
-  add_index "references", ["nester_id"], :name => "references_nested_reference_id_idx"
+  add_index "references", ["nesting_reference_id"], :name => "references_nested_reference_id_idx"
   add_index "references", ["publisher_id"], :name => "references_publisher_id_idx"
   add_index "references", ["updated_at"], :name => "references_updated_at_idx"
 

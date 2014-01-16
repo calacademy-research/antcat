@@ -96,9 +96,9 @@ describe Importers::Bolton::Catalog::Updater do
   end
 
   describe "Looking up to see if a taxon already exists" do
-    it "should look in the nester, if can't find the year in nestee" do
+    it "should look in the nesting reference, if can't find the year in nestee" do
       nestee = FactoryGirl.create :reference, year: '2006', author_names: [FactoryGirl.create(:author_name, name: 'Swainson')], pages_in: 'Pp 2 in:', bolton_key_cache: 'Swainson 1840'
-      reference = NestedReference.create! title: 'Ants', citation_year: '1840', author_names: [FactoryGirl.create(:author_name, name: 'Shuckard')], nester: nestee, bolton_key_cache: 'Swainson Shuckard 1840', pages_in: '22'
+      reference = NestedReference.create! title: 'Ants', citation_year: '1840', author_names: [FactoryGirl.create(:author_name, name: 'Shuckard')], nesting_reference: nestee, bolton_key_cache: 'Swainson Shuckard 1840', pages_in: '22'
       authorship = FactoryGirl.create :citation, reference: reference
       protonym = FactoryGirl.create :protonym, authorship: authorship
       genus = create_genus 'Atta', protonym: protonym

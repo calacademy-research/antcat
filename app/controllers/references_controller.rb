@@ -56,7 +56,7 @@ EOS
     begin
       Reference.transaction do
         clear_document_params_if_necessary
-        clear_nester_id unless @reference.kind_of? NestedReference
+        clear_nesting_reference_id unless @reference.kind_of? NestedReference
         parse_author_names_string
         set_journal if @reference.kind_of? ArticleReference
         set_publisher if @reference.kind_of? BookReference
@@ -149,8 +149,8 @@ EOS
     end
   end
 
-  def clear_nester_id
-    params[:reference][:nester_id] = nil
+  def clear_nesting_reference_id
+    params[:reference][:nesting_reference_id] = nil
   end
 
   def clear_document_params_if_necessary

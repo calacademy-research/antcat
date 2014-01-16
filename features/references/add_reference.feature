@@ -92,7 +92,7 @@ Feature: Add reference
     And in the new edit form I fill in "reference_citation_year" with "1981"
     And in the new edit form I follow "Nested"
     And in the new edit form I fill in "reference_pages_in" with "Pp. 32-33 in:"
-    And in the new edit form I fill in "reference_nester_id" with the ID for "Annals of Ants"
+    And in the new edit form I fill in "reference_nesting_reference_id" with the ID for "Annals of Ants"
     And in the new edit form I press the "Save" button
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
 
@@ -136,7 +136,7 @@ Feature: Add reference
     Then I should see a new edit form
     And I should see "Year can't be blank"
     And I should see "Pages in can't be blank"
-    And I should see "Nester can't be blank"
+    And I should see "Nesting reference can't be blank"
 
   Scenario: Adding a reference with authors' role
     When I follow "add" in the first reference
@@ -158,9 +158,9 @@ Feature: Add reference
     And in the new edit form I fill in "reference_citation_year" with "1981"
     And in the new edit form I follow "Nested"
     And in the new edit form I fill in "reference_pages_in" with "Pp. 32-33 in:"
-    And in the new edit form I fill in "reference_nester_id" with "123123"
+    And in the new edit form I fill in "reference_nesting_reference_id" with "123123"
     And in the new edit form I press the "Save" button
-    Then I should see "Nester does not exist"
+    Then I should see "Nesting reference does not exist"
 
   Scenario: Empty author string (with separator)
     When I follow "add" in the first reference

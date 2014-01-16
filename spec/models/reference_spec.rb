@@ -16,15 +16,15 @@ describe Reference do
       reference.authors.first.should == @author_names.first.author
     end
     describe "Nested references" do
-      it "can have a nester" do
-        nester = FactoryGirl.create :reference
-        nestee = FactoryGirl.create :nested_reference, nester: nester
-        nestee.nester.should == nester
+      it "can have a nesting_reference" do
+        nesting_reference = FactoryGirl.create :reference
+        nestee = FactoryGirl.create :nested_reference, nesting_reference: nesting_reference
+        nestee.nesting_reference.should == nesting_reference
       end
       it "can have many nestees" do
-        nester = FactoryGirl.create :reference
-        nestee = FactoryGirl.create :nested_reference, nester: nester
-        nester.nestees.should =~ [nestee]
+        nesting_reference = FactoryGirl.create :reference
+        nestee = FactoryGirl.create :nested_reference, nesting_reference: nesting_reference
+        nesting_reference.nestees.should =~ [nestee]
       end
     end
 
@@ -342,7 +342,7 @@ describe Reference do
       history_item = taxon.history_items.create! taxt: "{ref #{reference.id}}"
       bolton_match = FactoryGirl.create :bolton_match, reference: reference
       reference_section = FactoryGirl.create :reference_section, title_taxt: "{ref #{reference.id}}", subtitle_taxt: "{ref #{reference.id}}", references_taxt: "{ref #{reference.id}}"
-      nested_reference = FactoryGirl.create :nested_reference, nester: reference
+      nested_reference = FactoryGirl.create :nested_reference, nesting_reference: reference
       results = reference.references
       results.should =~ [
         {table: 'taxa',               id: taxon.id,             field: :type_taxt},
@@ -354,7 +354,7 @@ describe Reference do
         {table: 'reference_sections', id: reference_section.id, field: :title_taxt},
         {table: 'reference_sections', id: reference_section.id, field: :subtitle_taxt},
         {table: 'reference_sections', id: reference_section.id, field: :references_taxt},
-        {table: 'references',         id: nested_reference.id,  field: :nester_id},
+        {table: 'references',         id: nested_reference.id,  field: :nesting_reference_id},
         {table: 'taxon_history_items',id: history_item.id,      field: :taxt},
       ]
     end

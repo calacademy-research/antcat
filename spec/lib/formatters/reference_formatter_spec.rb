@@ -117,7 +117,7 @@ describe Formatters::ReferenceFormatter do
         :title => 'Ants I have known',
         :publisher => FactoryGirl.create(:publisher, :name => 'Wiley', :place => FactoryGirl.create(:place, :name => 'New York')),
         :pagination => '32 pp.'
-      nested_reference = FactoryGirl.create :nested_reference, :nester => reference,
+      nested_reference = FactoryGirl.create :nested_reference, :nesting_reference => reference,
         :author_names => [@author_name], :title => 'Les fourmis de la Suisse',
         :citation_year => '1874', :pages_in => 'Pp. 32-45 in'
       @formatter.format(nested_reference).should ==
@@ -180,7 +180,7 @@ describe Formatters::ReferenceFormatter do
 
       it "should escape the citation in a nested reference" do
         nested_reference = FactoryGirl.create :unknown_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => @author_names
-        reference = FactoryGirl.create :nested_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => @author_names, :pages_in => '>', :nester => nested_reference
+        reference = FactoryGirl.create :nested_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => @author_names, :pages_in => '>', :nesting_reference => nested_reference
         @formatter.format(reference).should == 'Ward, P. S. 2010d. Ants are my life. &gt; Ward, P. S. 2010d. Ants are my life. New York.'
       end
 

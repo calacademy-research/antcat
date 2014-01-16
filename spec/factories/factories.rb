@@ -70,7 +70,7 @@ FactoryGirl.define do
     sequence(:title)          {|n| "Nested ants #{n}"}
     sequence(:citation_year)  {|n| "201#{n}d"}
     pages_in                  'In: '
-    nester                    {FactoryGirl.create :book_reference}
+    nesting_reference         {FactoryGirl.create :book_reference}
   end
 
   factory :user do

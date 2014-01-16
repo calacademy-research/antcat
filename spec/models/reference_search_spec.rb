@@ -409,7 +409,7 @@ describe Reference, slow:true do
       other_reference = Reference.find_by_bolton_key data
       reference.should == other_reference
     end
-    it "uses the nester's year and author names" do
+    it "uses the nesting_reference's year and author names" do
       data = {author_names: ['Bolton'], year: '1920', in: {author_names: ['Fisher'], year: '2013'}}
       author_names, year = Reference.get_author_names_and_year data
       author_names.should == ['Fisher']
