@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140116210057) do
+ActiveRecord::Schema.define(:version => 20140117172459) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -240,6 +240,7 @@ ActiveRecord::Schema.define(:version => 20140116210057) do
     t.string   "key_cache"
     t.string   "review_state"
     t.text     "formatted_cache"
+    t.string   "inline_citation_cache"
   end
 
   add_index "references", ["author_names_string_cache", "citation_year"], :name => "references_author_names_string_citation_year_idx", :length => {"author_names_string_cache"=>255, "citation_year"=>nil}

@@ -10,15 +10,19 @@ describe ReferenceFormatterCache do
     it "should do nothing if there's nothing in the cache" do
       reference = FactoryGirl.create :article_reference
       reference.formatted_cache.should be_nil
+      reference.inline_citation_cache.should be_nil
       ReferenceFormatterCache.instance.invalidate reference
       reference.formatted_cache.should be_nil
+      reference.inline_citation_cache.should be_nil
     end
     it "should set the cache to nil" do
       reference = FactoryGirl.create :article_reference
       ReferenceFormatterCache.instance.populate reference
       reference.formatted_cache.should_not be_nil
+      reference.inline_citation_cache.should_not be_nil
       ReferenceFormatterCache.instance.invalidate reference
       reference.formatted_cache.should be_nil
+      reference.inline_citation_cache.should be_nil
     end
 
   end
@@ -28,20 +32,27 @@ describe ReferenceFormatterCache do
       it "should call ReferenceFormatter to get the value" do
         reference = FactoryGirl.create :article_reference
         reference.formatted_cache.should be_nil
-        value = Formatters::ReferenceFormatter.format! reference
-        reference.formatted_cache.should be_nil
-        ReferenceFormatterCache.instance.populate reference
-        reference.formatted_cache.should == value
-      end
-    end
-    describe "Setting" do
-      it "should call set the cache to the desired value" do
-        reference = FactoryGirl.create :article_reference
-        ReferenceFormatterCache.instance.set reference, 'Cache'
-        ReferenceFormatterCache.instance.get(reference).should == 'Cache'
-      end
-    end
+        reference.inline_citation_cache.should be_nil
 
+        user = double
+        formatter = Formatters::ReferenceFormatter.new(reference)
+        formatted_cache_value = Formatters::ReferenceFormatter.format! reference
+        inline_citation_cache_value = formatter.format_inline_citation! user
+
+        reference.formatted_cache.should == formatted_cache_value
+        reference.inline_citation_cache.should be_nil
+        ReferenceFormatterCache.instance.populate reference
+        reference.formatted_cache.should == formatted_cache_value
+        reference.inline_citation_cache.should == inline_citation_cache_value
+      end
+    end
+    describe "Setting/getting" do
+      it "should get and set the right values" do
+        reference = FactoryGirl.create :article_reference
+        ReferenceFormatterCache.instance.set reference, 'Cache', :formatted_cache
+        ReferenceFormatterCache.instance.get(reference, :formatted_cache).should == 'Cache'
+      end
+    end
   end
 
   describe "Handling a network" do

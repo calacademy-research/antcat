@@ -22,6 +22,10 @@ class Formatters::ReferenceFormatter
     make_formatter(reference).format_inline_citation user, options
   end
 
+  def self.format_inline_citation! reference, user = nil, options = {}
+    make_formatter(reference).format_inline_citation! user, options
+  end
+
   def self.format_inline_citation_without_links reference, user = nil, options = {}
     make_formatter(reference).format_inline_citation_without_links user, options
   end
@@ -75,10 +79,10 @@ class Formatters::ReferenceFormatter
   end
 
   def format
-    string = ReferenceFormatterCache.instance.get @reference
+    string = ReferenceFormatterCache.instance.get @reference, :formatted_cache
     return string.html_safe if string
     string = format!
-    ReferenceFormatterCache.instance.set(@reference, string)
+    ReferenceFormatterCache.instance.set @reference, string, :formatted_cache
     string
   end
 
@@ -105,6 +109,19 @@ class Formatters::ReferenceFormatter
   end
 
   def format_inline_citation user, options = {}
+    using_cache = options == {} && user.present?
+    if using_cache
+      string = ReferenceFormatterCache.instance.get @reference, :inline_citation_cache
+      return string.html_safe if string
+    end
+    string = format_inline_citation! user, options
+    if using_cache
+      ReferenceFormatterCache.instance.set @reference, string, :inline_citation_cache
+    end
+    string
+  end
+
+  def format_inline_citation! user, options = {}
     @reference.key.to_link user, options
   end
 

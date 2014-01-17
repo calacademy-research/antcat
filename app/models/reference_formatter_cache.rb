@@ -4,24 +4,29 @@ class ReferenceFormatterCache
 
   def invalidate reference
     return unless reference.formatted_cache?
-    set reference, nil unless reference.new_record?
+    unless reference.new_record?
+      set reference, nil, :formatted_cache
+      set reference, nil, :inline_citation_cache
+    end
     Reference.where("nesting_reference_id = ?", reference.id).each do |nestee|
       self.class.instance.invalidate nestee
     end
   end
 
-  def get reference
-    Reference.find(reference.id).formatted_cache
+  def get reference, field = :formatted_cache
+    Reference.find(reference.id).send field
   end
 
-  def set reference, value
-    return value if reference.formatted_cache == value
-    reference.update_column :formatted_cache, value
+  def set reference, value, field = :formatted_cache
+    return value if reference.send(field) == value
+    reference.update_column field, value
     value
   end
 
   def populate reference
-    set reference, Formatters::ReferenceFormatter.format!(reference)
+    set reference, Formatters::ReferenceFormatter.format!(reference), :formatted_cache
+    user = User.find_by_email 'mark@mwilden.com'
+    set reference, Formatters::ReferenceFormatter.new(reference).format_inline_citation!(user), :inline_citation_cache
   end
 
 end
