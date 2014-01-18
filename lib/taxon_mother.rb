@@ -113,11 +113,10 @@ class TaxonMother
 
   def update_type_name attributes
     # ugly way to handle optional, but possibly pre-built, subobject
-    if @taxon.type_name && @taxon.type_name.new_record? && !attributes
+    if @taxon.type_name && @taxon.type_name.new_record? && (!attributes or attributes[:id] == '')
       @taxon.type_name = nil
       return
     end
-    return unless attributes
     attributes[:type_name_id] = attributes.delete :id
     @taxon.attributes = attributes
   end
