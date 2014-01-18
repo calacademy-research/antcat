@@ -5,7 +5,6 @@ class CatalogController < ApplicationController
   def show
     if @parameters[:id].blank?
       @parameters[:id] = Family.first.id
-      @show_short_taxon = true
     end
     do_search
     setup_taxon_and_index
