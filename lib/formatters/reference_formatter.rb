@@ -109,7 +109,7 @@ class Formatters::ReferenceFormatter
   end
 
   def format_inline_citation user, options = {}
-    using_cache = options == {} && user.present?
+    using_cache = options == {expanded: true} && user.present?
     if using_cache
       string = ReferenceFormatterCache.instance.get @reference, :inline_citation_cache
       return string.html_safe if string
