@@ -21,7 +21,7 @@ Feature: Using the catalog
     Then I should see "Formicidae" in the contents
     And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
-    And I should not see "Subfamily of Formicidae: Dolichoderinae."
+    And I should see "Subfamily of Formicidae: Dolichoderinae."
 
   Scenario: Seeing the family when it's been explicitly requested
     When I go to the catalog page for "Formicidae"
