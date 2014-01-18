@@ -1,6 +1,6 @@
 class AddInlineCitationColumn < ActiveRecord::Migration
   def up
-    add_column :references, :inline_citation_cache, :string
+    add_column :references, :inline_citation_cache, :text
   end
 
   def down
