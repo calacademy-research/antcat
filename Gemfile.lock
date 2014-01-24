@@ -102,7 +102,23 @@ GEM
       actionmailer (>= 3.2.6, < 5)
       devise (~> 3.0.0)
     diff-lcs (1.2.4)
+    engineyard (2.3.2)
+      engineyard-cloud-client (~> 1.0.16)
+      engineyard-serverside-adapter (= 2.2.0)
+      escape (~> 0.0.4)
+      highline (~> 1.6.1)
+      launchy (~> 2.1)
+      net-ssh (~> 2.2)
+      rest-client (~> 1.6.0)
+    engineyard-cloud-client (1.0.16)
+      mime-types (~> 1.16)
+      multi_json (~> 1.6)
+      rest-client (~> 1.6.1)
+    engineyard-serverside-adapter (2.2.0)
+      escape (~> 0.0.4)
+      multi_json (~> 1.6)
     erubis (2.7.0)
+    escape (0.0.4)
     eventmachine (1.0.3)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -137,6 +153,7 @@ GEM
     mini_portile (0.5.0)
     multi_json (1.8.2)
     mysql2 (0.3.11)
+    net-ssh (2.7.0)
     newrelic_rpm (3.6.6.147)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
@@ -192,6 +209,8 @@ GEM
     rake (10.1.0)
     rdoc (3.12.2)
       json (~> 1.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rsolr (1.0.9)
       builder (>= 2.1.2)
     rspec (2.14.1)
@@ -281,6 +300,7 @@ DEPENDENCIES
   devise
   devise_invitable
   diff-lcs
+  engineyard
   ey_config
   factory_girl_rails
   haml

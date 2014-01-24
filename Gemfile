@@ -33,6 +33,7 @@ gem 'xml-simple'
 
 group :development, :test do
   gem 'debugger'
+  gem 'engineyard'
   gem 'launchy'
   gem 'rspec'
   gem 'rspec-rails'
