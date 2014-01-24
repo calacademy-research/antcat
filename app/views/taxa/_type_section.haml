@@ -15,7 +15,7 @@
                 = form.select :biogeographic_region, biogeographic_region_options_for_select(taxon.biogeographic_region)
             %tr
               %td.label.top_aligned= form.label :verbatim_type_locality
-              %td.verbatim_type_locality.top_aligned= form.text_field :verbatim_type_locality
+              %td.verbatim_type_locality.top_aligned= form.text_area :verbatim_type_locality, rows: 2
 
     - else
       %tr
