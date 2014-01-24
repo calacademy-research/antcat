@@ -97,9 +97,10 @@ class Formatters::TaxonFormatter
   def headline_verbatim_type_locality
     string = ''
     return string if @taxon.verbatim_type_locality.blank?
-    string << "Verbatim type locality: "
+    string << '"'
     periodized_string = add_period_if_necessary @taxon.verbatim_type_locality
     string << periodized_string
+    string << '"'
     string
   end
 
