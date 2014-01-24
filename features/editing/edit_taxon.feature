@@ -172,7 +172,7 @@ Feature: Editing a taxon
     And I set the verbatim type locality to "San Pedro"
     And I save my changes
     Then I should be on the catalog page for "Atta major"
-    And I should see "Verbatim type locality: San Pedro"
+    And I should see "San Pedro"
     When I press "Edit"
     Then the verbatim type locality should be "San Pedro"
 
