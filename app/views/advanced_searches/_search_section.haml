@@ -1,46 +1,40 @@
 .search_section
   = form_tag advanced_search_path, method: :get do
+    %table.table_find
+      %tr
+        %td.find
+          Find
+          = select_tag :rank, rank_options_for_select(params[:rank])
+        %td
+          described by
+          = text_field_tag :author_name, params[:author_name]
+        %td
+          in the year
+          = text_field_tag :year, params[:year]
+
     %table
       %tr
-        %td
-          %table.table_find
-            %tr
-              %td.find
-                Find
-                = select_tag :rank, rank_options_for_select(params[:rank])
-              %td
-                described by
-                = text_field_tag :author_name, params[:author_name]
-              %td
-                in the year
-                = text_field_tag :year, params[:year]
+        %td.label where locality contains
+        %td= text_field_tag :locality, params[:locality]
+
+      %tr
+        %td.label where verbatim type locality contains
+        %td= text_field_tag :verbatim_type_locality, params[:verbatim_type_locality]
+
+      %tr
+        %td.label where type specimen reference contains
+        %td= text_field_tag :type_specimen_reference, params[:type_specimen_reference]
+
+      %tr
+        %td.label where biogeographic region is
+        %td= select_tag :biogeographic_region, biogeographic_region_options_for_select(params[:biogeographic_region], 'Any', 'None')
+
+      %tr
+        %td.label= label_tag 'Valid only?'
+        %td= check_box_tag :valid_only
 
       %tr
         %td
-          %table
-            %tr
-              %td.locality
-                where locality contains
-                = text_field_tag :locality, params[:locality]
-
-      %tr
-        %td.verbatim_type_locality
-          where verbatim type locality contains
-          = text_field_tag :verbatim_type_locality, params[:verbatim_type_locality]
-      %tr
-        %td.biogeographic_region
-          where biogeographic region is
-          = select_tag :biogeographic_region, biogeographic_region_options_for_select(params[:biogeographic_region], 'Any', 'None')
-
-      %tr
-        %td.valid_only
-          = label_tag 'Valid only?'
-          = check_box_tag :valid_only
-
-      %tr
         %td
-          %table
-            %tr
-              %td.buttons
-                .go_button= submit_button 'Go'
-                .throbber= image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', class: 'throbber'
+          .go_button= submit_button 'Go'
+          .throbber= image_tag 'ui-anim_basic_16x16.gif', id: 'throbber', class: 'throbber'
