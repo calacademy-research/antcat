@@ -13,7 +13,7 @@ Feature: Searching the catalog
     And I follow "Advanced Search"
     And I fill in "year" with "2010"
     And I press "Go" in the search section
-    Then I should see "No results found"
+    Then I should see "No results"
 
   Scenario: Searching when one result
     Given there is a species described in 2010
@@ -22,7 +22,7 @@ Feature: Searching the catalog
     And I follow "Advanced Search"
     And I fill in "year" with "2010"
     And I press "Go" in the search section
-    Then I should see "1 result found"
+    Then I should see "1 result"
     And I should see the species described in 2010
 
   Scenario: Searching for subfamilies
@@ -32,7 +32,7 @@ Feature: Searching the catalog
     And I select "Subfamilies" from the rank selector
     And I fill in "year" with "2010"
     And I press "Go" in the search section
-    Then I should see "1 result found"
+    Then I should see "1 result"
     And I should see the species described in 2010
 
   Scenario: Searching for an invalid taxon
@@ -42,7 +42,7 @@ Feature: Searching the catalog
     And I fill in "year" with "2010"
     And I check "valid_only"
     And I press "Go" in the search section
-    Then I should see "No results found"
+    Then I should see "No results"
 
   Scenario: Searching for an author's descriptions
     Given there is a species described in 2010 by "Bolton"
@@ -50,7 +50,7 @@ Feature: Searching the catalog
     And I follow "Advanced Search"
     And I fill in "author_name" with "Bolton"
     And I press "Go" in the search section
-    Then I should see "1 result found"
+    Then I should see "1 result"
     And I should see the species described in 2010
 
   Scenario: Finding an original combination
@@ -85,7 +85,7 @@ Feature: Searching the catalog
     And I follow "Advanced Search"
     And I fill in "locality" with "Africa"
     And I press "Go" in the search section
-    Then I should see "1 result found"
+    Then I should see "1 result"
     And I should see "Africa" within ".results_section"
 
   Scenario: Searching for verbatim type locality
@@ -95,8 +95,18 @@ Feature: Searching the catalog
     And I follow "Advanced Search"
     And I fill in "verbatim_type_locality" with "Africa"
     And I press "Go" in the search section
-    Then I should see "1 result found"
+    Then I should see "1 result"
     And I should see "Africa" within ".results_section"
+
+  Scenario: Searching for type specimen reference
+    Given there is a species with type specimen reference "CZN"
+    And there is a species with type specimen reference "IAD"
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I fill in "type_specimen_reference" with "CZN"
+    And I press "Go" in the search section
+    Then I should see "1 result"
+    And I should see "CZN" within ".results_section"
 
   Scenario: Searching for biogeographic_region
     Given there is a species with biogeographic region "Malagasy"
@@ -129,5 +139,5 @@ Feature: Searching the catalog
     And I select "Species" from the rank selector
     And I select "None" from the biogeographic region selector
     And I press "Go" in the search section
-    Then I should see "1 result found"
+    Then I should see "1 result"
     And I should see "Africa" within ".results_section"
