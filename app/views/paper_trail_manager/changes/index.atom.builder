@@ -6,7 +6,7 @@ atom_feed do |feed|
   @versions.each do |version|
     next unless change_show_allowed?(version)
 
-    feed.entry(version, :url => change_url(version)) do |entry|
+    feed.entry(version, url: change_url(changes_for(version).try(:first))) do |entry|
       changes = changes_for(version)
 
       if PaperTrailManager.whodunnit_class && version.whodunnit
