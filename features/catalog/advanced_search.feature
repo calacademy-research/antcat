@@ -128,7 +128,7 @@ Feature: Searching the catalog
     And I select "Any" from the biogeographic region selector
     And I fill in "locality" with "Africa"
     And I press "Go" in the search section
-    Then I should see "1 result found"
+    Then I should see "1 result"
 
   Scenario: Searching for 'None' biogeographic_region
     Given there is a species with biogeographic region "Malagasy"

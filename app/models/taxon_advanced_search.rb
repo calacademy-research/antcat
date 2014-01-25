@@ -8,6 +8,7 @@ class Taxon < ActiveRecord::Base
       params[:author_name].present? ||
       params[:locality].present? ||
       params[:verbatim_type_locality].present? ||
+      params[:type_specimen_reference].present? ||
       params[:year].present? ||
       params[:biogeographic_region].present? ||
       params[:rank].present? && params[:rank] != 'All'
@@ -32,6 +33,9 @@ class Taxon < ActiveRecord::Base
 
     search_term = "%#{params[:verbatim_type_locality]}%"
     query = query.where('verbatim_type_locality LIKE ?', search_term) if params[:verbatim_type_locality].present?
+
+    search_term = "%#{params[:type_specimen_reference]}%"
+    query = query.where('type_specimen_reference LIKE ?', search_term) if params[:type_specimen_reference].present?
 
     search_term = params[:biogeographic_region]
     if search_term == 'None'
