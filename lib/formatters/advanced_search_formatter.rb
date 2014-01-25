@@ -59,8 +59,10 @@ module Formatters::AdvancedSearchFormatter
       string << add_period_if_necessary(taxon.protonym.locality)
     end
     if taxon.verbatim_type_locality.present?
-      string << " Verbatim type locality: " + taxon.verbatim_type_locality
+      string << ' "' + taxon.verbatim_type_locality
       string = add_period_if_necessary string
+      string << '"'
+    end
     if taxon.type_specimen_reference.present?
       string << ' "' + taxon.type_specimen_reference
       string = add_period_if_necessary string
