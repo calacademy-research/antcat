@@ -98,12 +98,12 @@ Feature: Searching the catalog
     Then I should see "1 result"
     And I should see "Africa" within ".results_section"
 
-  Scenario: Searching for type specimen reference
-    Given there is a species with type specimen reference "CZN"
-    And there is a species with type specimen reference "IAD"
+  Scenario: Searching for type specimen repository
+    Given there is a species with type specimen repository "CZN"
+    And there is a species with type specimen repository "IAD"
     When I go to the catalog
     And I follow "Advanced Search"
-    And I fill in "type_specimen_reference" with "CZN"
+    And I fill in "type_specimen_repository" with "CZN"
     And I press "Go" in the search section
     Then I should see "1 result"
     And I should see "CZN" within ".results_section"

@@ -177,20 +177,20 @@ describe Taxon do
       end
     end
 
-    describe "Searching for type specimen reference" do
-      it "should only return taxa with that type specimen reference" do
-        atta = create_species type_specimen_reference: 'IDD'
-        eciton = create_species type_specimen_reference: 'DDI'
-        Taxon.advanced_search(rank: 'All', type_specimen_reference: 'DDI').map(&:id).should == [eciton.id]
+    describe "Searching for type specimen repository" do
+      it "should only return taxa with that type specimen repository" do
+        atta = create_species type_specimen_repository: 'IDD'
+        eciton = create_species type_specimen_repository: 'DDI'
+        Taxon.advanced_search(rank: 'All', type_specimen_repository: 'DDI').map(&:id).should == [eciton.id]
       end
-      it "should return nothing if nothing has that type_specimen_reference" do
+      it "should return nothing if nothing has that type_specimen_repository" do
         atta = create_species
-        Taxon.advanced_search(rank: 'All', type_specimen_reference: 'ISC').map(&:id).should == []
+        Taxon.advanced_search(rank: 'All', type_specimen_repository: 'ISC').map(&:id).should == []
       end
       it "should do substring search" do
-        atta = create_species type_specimen_reference: 'III'
-        eciton = create_species type_specimen_reference: 'ABCD'
-        Taxon.advanced_search(rank: 'All', type_specimen_reference: 'BC').map(&:id).should == [eciton.id]
+        atta = create_species type_specimen_repository: 'III'
+        eciton = create_species type_specimen_repository: 'ABCD'
+        Taxon.advanced_search(rank: 'All', type_specimen_repository: 'BC').map(&:id).should == [eciton.id]
       end
     end
 

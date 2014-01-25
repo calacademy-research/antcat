@@ -63,8 +63,8 @@ module Formatters::AdvancedSearchFormatter
       string = add_period_if_necessary string
       string << '"'
     end
-    if taxon.type_specimen_reference.present?
-      string << ' "' + taxon.type_specimen_reference
+    if taxon.type_specimen_repository.present?
+      string << ' "' + taxon.type_specimen_repository
       string = add_period_if_necessary string
       string << '"'
     end

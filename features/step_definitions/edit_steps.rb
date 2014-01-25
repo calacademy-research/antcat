@@ -57,16 +57,16 @@ Then /^the verbatim type locality should be "([^"]*)"/ do |locality|
   step %{the "taxon_verbatim_type_locality" field should contain "#{locality}"}
 end
 
-# type specimen reference
-Then /I set the type specimen reference to "([^"]*)"/ do |reference|
-  step %{I fill in "taxon_type_specimen_reference" with "#{reference}"}
+# type specimen repository
+Then /I set the type specimen repository to "([^"]*)"/ do |repository|
+  step %{I fill in "taxon_type_specimen_repository" with "#{repository}"}
 end
-Then /^I should (not )?see the type specimen reference$/ do |should_not|
+Then /^I should (not )?see the type specimen repository$/ do |should_not|
   selector = should_not ? :should_not : :should
-  page.send selector, have_css('#taxon_type_specimen_reference')
+  page.send selector, have_css('#taxon_type_specimen_repository')
 end
-Then /^the type specimen reference should be "([^"]*)"/ do |reference|
-  step %{the "taxon_type_specimen_reference" field should contain "#{reference}"}
+Then /^the type specimen repository should be "([^"]*)"/ do |repository|
+  step %{the "taxon_type_specimen_repository" field should contain "#{repository}"}
 end
 
 ### parent field

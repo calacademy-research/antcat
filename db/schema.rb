@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140125174319) do
+ActiveRecord::Schema.define(:version => 20140125230659) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -289,7 +289,7 @@ ActiveRecord::Schema.define(:version => 20140125174319) do
     t.integer  "family_id"
     t.string   "verbatim_type_locality"
     t.string   "biogeographic_region"
-    t.text     "type_specimen_reference"
+    t.text     "type_specimen_repository"
   end
 
   add_index "taxa", ["family_id"], :name => "index_taxa_on_family_id"

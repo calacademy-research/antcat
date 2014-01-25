@@ -49,8 +49,8 @@ end
 Given /^there is a species with verbatim type locality "([^"]+)"$/ do |locality|
   FactoryGirl.create :species, verbatim_type_locality: locality
 end
-Given /^there is a species with type specimen reference "([^"]+)"$/ do |reference|
-  FactoryGirl.create :species, type_specimen_reference: reference
+Given /^there is a species with type specimen repository "([^"]+)"$/ do |repository|
+  FactoryGirl.create :species, type_specimen_repository: repository
 end
 Given /^there is a species with biogeographic region "([^"]+)"$/ do |biogeographic_region|
   FactoryGirl.create :species, biogeographic_region: biogeographic_region

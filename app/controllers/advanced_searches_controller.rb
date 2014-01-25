@@ -51,7 +51,7 @@ class AdvancedSearchesController < ApplicationController
                                   locality: params[:locality],
                                   valid_only: params[:valid_only],
                                   verbatim_type_locality: params[:verbatim_type_locality],
-                                  type_specimen_reference: params[:type_specimen_reference],
+                                  type_specimen_repository: params[:type_specimen_repository],
                                   biogeographic_region: params[:biogeographic_region]
     @taxa_count = @taxa.count
     @filename = "#{params[:author_name]}-#{params[:rank]}-#{params[:year]}-#{params[:locality]}-#{params[:valid_only]}".parameterize + '.txt'

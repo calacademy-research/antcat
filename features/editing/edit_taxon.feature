@@ -184,24 +184,24 @@ Feature: Editing a taxon
     When I go to the edit page for "Atta major"
     Then I should see the verbatim type locality
 
-  Scenario: Changing type specimen reference
+  Scenario: Changing type specimen repository
     Given a species exists with a name of "major" and a genus of "Atta"
     When I log in
     And I go to the edit page for "Atta major"
-    And I set the type specimen reference to "CZN"
+    And I set the type specimen repository to "CZN"
     And I save my changes
     Then I should be on the catalog page for "Atta major"
     And I should see "CZN"
     When I press "Edit"
-    Then the type specimen reference should be "CZN"
+    Then the type specimen repository should be "CZN"
 
   Scenario: Don't see verbatim type locality field for genus-group name
     Given a species exists with a name of "major" and a genus of "Atta"
     And I log in
     When I go to the edit page for "Atta"
-    Then I should not see the type specimen reference
+    Then I should not see the type specimen repository
     When I go to the edit page for "Atta major"
-    Then I should see the type specimen reference
+    Then I should see the type specimen repository
 
   Scenario: Changing biogeographic region
     Given a species exists with a name of "major" and a genus of "Atta"

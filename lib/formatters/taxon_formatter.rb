@@ -52,7 +52,7 @@ class Formatters::TaxonFormatter
     string << headline_biogeographic_region
     string << ' ' unless string.length.zero?
     string << headline_verbatim_type_locality
-    string << headline_type_specimen_reference
+    string << headline_type_specimen_repository
     string
   end
 
@@ -105,10 +105,10 @@ class Formatters::TaxonFormatter
     string
   end
 
-  def headline_type_specimen_reference
+  def headline_type_specimen_repository
     string = ''
-    return string if @taxon.type_specimen_reference.blank?
-    periodized_string = add_period_if_necessary @taxon.type_specimen_reference
+    return string if @taxon.type_specimen_repository.blank?
+    periodized_string = add_period_if_necessary @taxon.type_specimen_repository
     string << periodized_string
     string
   end
