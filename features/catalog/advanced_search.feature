@@ -106,7 +106,7 @@ Feature: Searching the catalog
     And I follow "Advanced Search"
     And I select "Afrotropic" from the biogeographic region selector
     And I press "Go" in the search section
-    Then I should see "2 results found"
+    Then I should see "2 results"
     And I should see "Afrotropic" within ".results_section"
 
   Scenario: Searching for 'Any' biogeographic_region
