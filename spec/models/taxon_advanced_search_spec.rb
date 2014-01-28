@@ -194,6 +194,23 @@ describe Taxon do
       end
     end
 
+    describe "Searching for type specimen code" do
+      it "should only return taxa with that type specimen code" do
+        atta = create_species type_specimen_code: 'IDD'
+        eciton = create_species type_specimen_code: 'DDI'
+        Taxon.advanced_search(rank: 'All', type_specimen_code: 'DDI').map(&:id).should == [eciton.id]
+      end
+      it "should return nothing if nothing has that type_specimen_code" do
+        atta = create_species
+        Taxon.advanced_search(rank: 'All', type_specimen_code: 'ISC').map(&:id).should == []
+      end
+      it "should do substring search" do
+        atta = create_species type_specimen_code: 'III'
+        eciton = create_species type_specimen_code: 'ABCD'
+        Taxon.advanced_search(rank: 'All', type_specimen_code: 'BC').map(&:id).should == [eciton.id]
+      end
+    end
+
     describe "Searching for biogeographic region" do
       it "should only return taxa with that biogeographic_region" do
         atta = create_species biogeographic_region: 'Australasia'

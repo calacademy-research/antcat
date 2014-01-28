@@ -52,6 +52,9 @@ end
 Given /^there is a species with type specimen repository "([^"]+)"$/ do |repository|
   FactoryGirl.create :species, type_specimen_repository: repository
 end
+Given /^there is a species with type specimen code "([^"]+)"$/ do |code|
+  FactoryGirl.create :species, type_specimen_code: code
+end
 Given /^there is a species with biogeographic region "([^"]+)"$/ do |biogeographic_region|
   FactoryGirl.create :species, biogeographic_region: biogeographic_region
 end

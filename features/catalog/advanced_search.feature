@@ -108,6 +108,17 @@ Feature: Searching the catalog
     Then I should see "1 result"
     And I should see "CZN" within ".results_section"
 
+  Scenario: Searching for type specimen code
+    Given there is a species with type specimen code "1234"
+    And there is a species with type specimen code "4321"
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I fill in "type_specimen_code" with "1234"
+    And I press "Go" in the search section
+    And I wait for a while
+    Then I should see "1 result"
+    And I should see "1234" within ".results_section"
+
   Scenario: Searching for biogeographic_region
     Given there is a species with biogeographic region "Malagasy"
     And there is a species with biogeographic region "Afrotropic"

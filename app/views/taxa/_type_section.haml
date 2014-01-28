@@ -8,7 +8,7 @@
     - if taxon.kind_of? SpeciesGroupTaxon
       %tr
         %td{colspan: 999}
-          %table.biogeographic_region_and_verbatim_type_locality_and_type_specimen_repository
+          %table.biogeographic_region_and_verbatim_type_locality_and_type_specimen
             %tr
               %td.label.top_aligned= form.label :biogeographic_region
               %td.biogeographic_region.top_aligned
@@ -19,6 +19,9 @@
             %tr
               %td.label.top_aligned= form.label :type_specimen_repository
               %td.type_specimen_repository.top_aligned= form.text_area :type_specimen_repository, rows: 3
+            %tr
+              %td.label.top_aligned= form.label :type_specimen_code
+              %td.type_specimen_code.top_aligned= form.text_area :type_specimen_code, rows: 2
 
     - else
       %tr

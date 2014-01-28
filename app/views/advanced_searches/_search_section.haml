@@ -26,6 +26,10 @@
         %td= text_field_tag :type_specimen_repository, params[:type_specimen_repository]
 
       %tr
+        %td.label where type specimen code contains
+        %td= text_field_tag :type_specimen_code, params[:type_specimen_code]
+
+      %tr
         %td.label where biogeographic region is
         %td= select_tag :biogeographic_region, biogeographic_region_options_for_select(params[:biogeographic_region], 'Any', 'None')
 

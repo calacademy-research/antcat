@@ -69,6 +69,18 @@ Then /^the type specimen repository should be "([^"]*)"/ do |repository|
   step %{the "taxon_type_specimen_repository" field should contain "#{repository}"}
 end
 
+# type specimen code
+Then /I set the type specimen code to "([^"]*)"/ do |code|
+  step %{I fill in "taxon_type_specimen_code" with "#{code}"}
+end
+Then /^I should (not )?see the type specimen code/ do |should_not|
+  selector = should_not ? :should_not : :should
+  page.send selector, have_css('#taxon_type_specimen_code')
+end
+Then /^the type specimen code should be "([^"]*)"/ do |code|
+  step %{the "taxon_type_specimen_code" field should contain "#{code}"}
+end
+
 ### parent field
 When /I click the parent name field/ do
   find('#parent_name_field .display_button').click

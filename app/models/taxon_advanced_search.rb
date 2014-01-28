@@ -9,6 +9,7 @@ class Taxon < ActiveRecord::Base
       params[:locality].present? ||
       params[:verbatim_type_locality].present? ||
       params[:type_specimen_repository].present? ||
+      params[:type_specimen_code].present? ||
       params[:year].present? ||
       params[:biogeographic_region].present? ||
       params[:rank].present? && params[:rank] != 'All'
@@ -36,6 +37,9 @@ class Taxon < ActiveRecord::Base
 
     search_term = "%#{params[:type_specimen_repository]}%"
     query = query.where('type_specimen_repository LIKE ?', search_term) if params[:type_specimen_repository].present?
+
+    search_term = "%#{params[:type_specimen_code]}%"
+    query = query.where('type_specimen_code LIKE ?', search_term) if params[:type_specimen_code].present?
 
     search_term = params[:biogeographic_region]
     if search_term == 'None'

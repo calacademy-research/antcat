@@ -52,8 +52,9 @@ class Formatters::TaxonFormatter
     string << headline_biogeographic_region
     string << ' ' unless string.length.zero?
     string << headline_verbatim_type_locality
-    string << headline_type_specimen_repository
-    string
+    string << ' ' unless string.length.zero?
+    string << headline_type_specimen
+    string.rstrip.html_safe
   end
 
   def headline_type_name_and_taxt
@@ -105,12 +106,17 @@ class Formatters::TaxonFormatter
     string
   end
 
-  def headline_type_specimen_repository
-    string = ''
-    return string if @taxon.type_specimen_repository.blank?
-    periodized_string = add_period_if_necessary @taxon.type_specimen_repository
-    string << periodized_string
-    string
+  def headline_type_specimen
+    strings = []
+    if @taxon.type_specimen_repository.present?
+      periodized_string = add_period_if_necessary @taxon.type_specimen_repository
+      strings << periodized_string
+    end
+    if @taxon.type_specimen_code.present?
+      periodized_string = add_period_if_necessary @taxon.type_specimen_code
+      strings << periodized_string
+    end
+    strings.join ' '
   end
 
   #########
