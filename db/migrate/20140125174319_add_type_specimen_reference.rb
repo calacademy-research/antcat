@@ -4,6 +4,6 @@ class AddTypeSpecimenReference < ActiveRecord::Migration
   end
 
   def down
-    remove_column :taxa, :type_specimen_reference
+    remove_column :taxa, :type_specimen_repository
   end
 end
