@@ -99,6 +99,28 @@ function copy_production_db {
 alias get_prod_db=copy_production_db
 
 ##############################################################
+function copy_preview_db {
+  file_name="/tmp/antcat_preview"
+
+  echo "Dumping preview database..."
+  ssh deploy@$preview_server "mysqldump antcat -udeploy -p$preview_password > $file_name"
+
+  echo "Copying to local..."
+  scp deploy@$preview_server:$file_name /tmp
+
+  echo "Dropping and recreating local databases..."
+  bundle exec rake db:drop:all db:create:all
+
+  echo Importing into local database...
+  mysql antcat_development -uroot < $file_name
+
+  echo Migrating...
+  bundle exec rake db:migrate && bundle exec rake db:test:prepare
+
+  echo 'Done.'
+}
+
+##############################################################
 function import_production_db {
   file_name="/tmp/antcat_production.sql"
 
@@ -144,40 +166,6 @@ function copy_to_preview {
   ssh deploy@$preview_server "mysql antcat -udeploy -p$preview_password < $file_name"
 
   echo 'Done.'
-}
-
-function import_db {
-  if [ $# -lt 1 ]; then
-    echo 'Usage: import_db <filename>'
-    return
-  fi
-  local_file_directory="/Users/mwilden/antcat/data/tmp"
-  file_name=$local_file_directory/$1
-  echo Importing $file_name
-  echo "Dropping and recreating local databases (ignore 'errors')"
-  bundle exec rake db:drop:all db:create:all
-  echo Importing into local database
-  mysql antcat_development -uroot < $file_name
-  echo Migrating
-  bundle exec rake db:migrate db:test:prepare
-}
-
-function export_db {
-  if [ $# -lt 1 ]; then
-    echo 'Usage: export_db <filename>'
-    return
-  fi
-  local_file_directory="/Users/mwilden/antcat/data/tmp"
-  file_name=$local_file_directory/$1
-  echo Exporting to $file_name
-  mysqldump antcat_development -uroot > $file_name
-  echo Migrating
-  bundle exec rake db:migrate db:test:prepare
-}
-
-# getting the preview database
-function import_preview_db {
-  import_db antcat_preview.sql
 }
 
 ## deploying
