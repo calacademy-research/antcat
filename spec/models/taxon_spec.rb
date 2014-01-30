@@ -446,4 +446,17 @@ describe Taxon do
       recombination.original_combination.should == original_combination
     end
   end
+
+  describe "Type specimen URL" do
+    it "should make sure it has a protocol" do
+      stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
+      taxon = FactoryGirl.create :species
+      taxon.type_specimen_url = 'antcat.org/1.pdf'
+      taxon.save!
+      taxon.reload.type_specimen_url.should == 'http://antcat.org/1.pdf'
+      taxon.save!
+      taxon.reload.type_specimen_url.should == 'http://antcat.org/1.pdf'
+    end
+  end
+
 end

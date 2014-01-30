@@ -264,6 +264,12 @@ class Taxon < ActiveRecord::Base
   end
 
   ###############################################
+  before_validation :add_protocol_to_type_speciment_url
+  def add_protocol_to_type_speciment_url
+    self.type_specimen_url = "http://" + type_specimen_url if type_specimen_url.present? && type_specimen_url !~ %r{^http://}
+  end
+
+  ###############################################
   # statistics
   def get_statistics ranks
     statistics = {}
