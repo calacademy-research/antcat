@@ -203,6 +203,17 @@ Feature: Editing a taxon
     When I go to the edit page for "Atta major"
     Then I should see the type specimen repository
 
+  Scenario: Changing type specimen URL
+    Given a species exists with a name of "major" and a genus of "Atta"
+    When I log in
+    And I go to the edit page for "Atta major"
+    And I set the type specimen URL to "www.example.com"
+    And I save my changes
+    Then I should be on the catalog page for "Atta major"
+    And I should see "www.example.com"
+    When I press "Edit"
+    Then the type specimen URL should be "www.example.com"
+
   Scenario: Changing biogeographic region
     Given a species exists with a name of "major" and a genus of "Atta"
     When I log in

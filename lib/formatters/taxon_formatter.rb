@@ -116,6 +116,9 @@ class Formatters::TaxonFormatter
       periodized_string = add_period_if_necessary @taxon.type_specimen_code
       strings << periodized_string
     end
+    if @taxon.type_specimen_url.present?
+      strings << @taxon.type_specimen_url
+    end
     strings.join ' '
   end
 
