@@ -107,19 +107,22 @@ class Formatters::TaxonFormatter
   end
 
   def headline_type_specimen
-    strings = []
+    string = ''.html_safe
     if @taxon.type_specimen_repository.present?
       periodized_string = add_period_if_necessary @taxon.type_specimen_repository
-      strings << periodized_string
+      string << periodized_string
     end
     if @taxon.type_specimen_code.present?
+      string << ' ' unless string.empty?
       periodized_string = add_period_if_necessary @taxon.type_specimen_code
-      strings << periodized_string
+      string << periodized_string
     end
     if @taxon.type_specimen_url.present?
-      strings << @taxon.type_specimen_url
+      string << ' ' unless string.empty?
+      s = @taxon.type_specimen_url
+      string << link(s, s)
     end
-    strings.join ' '
+    string.html_safe
   end
 
   #########
