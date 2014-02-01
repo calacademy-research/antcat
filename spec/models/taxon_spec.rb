@@ -457,6 +457,14 @@ describe Taxon do
       taxon.save!
       taxon.reload.type_specimen_url.should == 'http://antcat.org/1.pdf'
     end
+    it "should make sure it exists" do
+      stub_request(:any, 'http://antwiki.org/1.pdf').to_return body: 'Hello World!'
+      taxon = FactoryGirl.create :species, type_specimen_url: 'http://antwiki.org/1.pdf'
+      taxon.should be_valid
+      stub_request(:any, 'http://antwiki.org/1.pdf').to_return body: 'Not Found', status: 404
+      taxon.should_not be_valid
+      taxon.errors.full_messages.should =~ ['Type specimen url was not found']
+    end
   end
 
 end
