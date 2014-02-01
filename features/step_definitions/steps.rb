@@ -92,3 +92,11 @@ end
 Then /^the page title should have "([^"]*)" in it$/ do |title|
   page.should have_css('title', text: /#{title}/)
 end
+
+Then /^I should see a link "([^"]*)"$/ do |link|
+  page.should have_css 'a', text: link
+end
+
+Given /that URL "([^"]*)" exists/ do |link|
+ stub_request :any, link
+end
