@@ -197,6 +197,9 @@ end
 Then /^the history should be "(.*)"$/ do |history|
   page.find('.history_items .history_item_body:first div.display').text.should =~ /#{history}\.?/
 end
+Then /^the history item field should be "(.*)"$/ do |history|
+  page.find('.history_items .history_item_body:first div.edit textarea').text.should =~ /#{history}\.?/
+end
 Then /^the history should be empty$/ do
   page.should_not have_css '.history_items .history_item'
 end

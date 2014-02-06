@@ -19,13 +19,15 @@ Feature: Editing a history item
     And I save the history item
     Then I should not see "Taxonomic history"
     Then the history should be "(none)"
+    When I click the history item
+    Then the history item field should be "(none)"
 
   Scenario: Saving the fields after editing history (regression)
     When I go to the edit page for "Formicidae"
     And I click the history item
     And I edit the history item to "(none)"
     And I save the history item
-    And I save my changes
+    When I save my changes
     And I wait for a bit
     Then I should be on the catalog page for "Formicidae"
 
@@ -39,12 +41,16 @@ Feature: Editing a history item
     #And I save my changes
     #Then the history should be "Bolton, 2005."
 
+  # This test isn't accurate, as it reports the wrong contents
+  # of the history item field
   Scenario: Editing a history item, but cancelling
     When I go to the edit page for "Formicidae"
     And I click the history item
     And I edit the history item to "(none)"
     And I cancel the history item's changes
     Then the history should be "Taxonomic history."
+    When I click the history item
+    Then the history item field should be "Taxonomic history"
 
   Scenario: Editing an item so it's blank
     When I go to the edit page for "Formicidae"
