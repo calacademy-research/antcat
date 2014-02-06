@@ -16,17 +16,6 @@ class AntCat.HistoryItemsSection
   initialize_panels: =>
     @element.find('.history_item').history_item_panel(click_on_display: true, parent_form: @options.parent_form)
 
-  update: =>
-    taxon_id = @element.find('#sortable .history_item').data('taxon-id')
-    url = "/taxa/#{taxon_id}/taxon_history_items/order?"
-    @element.find('#sortable .history_item').each (i) ->
-      url += "#{i}=#{$(@).data('id')}&"
-    $.ajax
-      url: url
-      type: 'put'
-      dataType: 'json'
-      error: (xhr) => debugger
-
 #####
 $.fn.history_item_panel = (options = {}) ->
   this.each -> new AntCat.HistoryItemPanel $(this), options
