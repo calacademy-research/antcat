@@ -5,7 +5,7 @@ class Exporters::Antweb::Exporter
   end
 
   def export directory
-    File.open("#{directory}/bolton.txt", 'w') do |file|
+    File.open("#{directory}/antcat.antweb.txt", 'w') do |file|
       file.puts header
       get_taxa.each do |taxon|
         row = export_taxon taxon
