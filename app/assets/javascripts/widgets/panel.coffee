@@ -55,11 +55,8 @@ class AntCat.Panel
   on_form_done: (data) =>
 
   on_form_cancel: =>
-    @restore_panel() unless @was_adding()
+    @restore_panel()
     @hide_form()
-
-  was_adding: =>
-    $(@saved_content).parent().size() is 0
 
   replace_panel: (content) =>
     $content = $(content)
