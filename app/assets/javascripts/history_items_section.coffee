@@ -14,10 +14,7 @@ class AntCat.HistoryItemsSection
     AntCat.HistoryItemPanel.add_history_item @options.parent_form
 
   initialize_panels: =>
-    @element.find('.history_item').history_item_panel(click_on_display: false, parent_form: @options.parent_form)
-    @element.find('#sortable')
-      .sortable(axis: 'y', update: @update, distance: 5)
-      .disableSelection()
+    @element.find('.history_item').history_item_panel(click_on_display: true, parent_form: @options.parent_form)
 
   update: =>
     taxon_id = @element.find('#sortable .history_item').data('taxon-id')

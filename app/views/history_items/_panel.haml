@@ -4,7 +4,6 @@
   %table
     %tr
       %td.history_item_body
-        %li
-          = render 'history_items/display', item: item
+        = render 'history_items/display', item: item
         - if user_can_edit?
           = render 'history_items/edit', item: item
