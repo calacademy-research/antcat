@@ -69,6 +69,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @close()
 
   cancel: =>
+    super
     @clear_current()
     @close()
 
