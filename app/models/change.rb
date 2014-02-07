@@ -5,8 +5,14 @@ class Change < ActiveRecord::Base
   belongs_to :approver, class_name: 'User'
 
   scope :creations, -> {joins(:paper_trail_version).
+                        joins('JOIN taxa on taxa.id = versions.item_id').
                         where('versions.event' => 'create').
-                        order('changes.created_at DESC')}
+                        order('CASE review_state ' +
+                                'WHEN "waiting" THEN changes.created_at * 1000 ' +
+                                'WHEN "approved" THEN changes.approved_at ' +
+                              'END DESC'
+                             )
+                       }
 
   def reify
     # this dodgy code is from paper_trail_manager's changes_helper.rb

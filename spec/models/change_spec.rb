@@ -60,6 +60,20 @@ describe Change do
 
       Change.creations.should == [creation]
     end
+    it "should return creations with unapproved first, then approved in reverse chronological order" do
+      item = create_genus review_state: 'waiting'
+      unapproved_version = FactoryGirl.create :version, event: 'create', item_id: item.id
+      item = create_genus review_state: 'approved'
+      approved_earlier_version = FactoryGirl.create :version, event: 'create', item_id: item.id
+      item = create_genus review_state: 'approved'
+      approved_later_version = FactoryGirl.create :version, event: 'create', item_id: item.id
+
+      unapproved        = Change.create approved_at: nil, paper_trail_version: unapproved_version
+      approved_earlier  = Change.create approved_at: Date.today - 7, paper_trail_version: approved_earlier_version
+      approved_later    = Change.create approved_at: Date.today + 7, paper_trail_version: approved_later_version
+
+      Change.creations.map(&:id).should == [unapproved.id, approved_later.id, approved_earlier.id]
+    end
   end
 
 end
