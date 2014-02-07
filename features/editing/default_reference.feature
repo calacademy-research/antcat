@@ -58,4 +58,3 @@ Feature: Using the default reference
     And I press "Ward, 2010"
     And I press "Cancel"
     Then the authorship field should contain "(none)"
-
