@@ -98,6 +98,7 @@ EOS
   def start_reviewing
     @reference = Reference.find(params[:id])
     @reference.start_reviewing!
+    DefaultReference.set session, @reference
     redirect_to '/references?commit=new'
   end
 
@@ -110,6 +111,7 @@ EOS
   def restart_reviewing
     @reference = Reference.find(params[:id])
     @reference.restart_reviewing!
+    DefaultReference.set session, @reference
     redirect_to '/references?commit=new'
   end
 
