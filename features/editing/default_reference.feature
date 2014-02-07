@@ -50,3 +50,12 @@ Feature: Using the default reference
 
   Scenario: Selecting a reference makes it the default
   # I can't write a scenario that uses session
+
+  Scenario: Cancelling after choosing the default reference
+    Given the default reference is "Ward 2010"
+    When I go to the reference field test page
+    And I click the reference field
+    And I press "Ward, 2010"
+    And I press "Cancel"
+    Then the authorship field should contain "(none)"
+
