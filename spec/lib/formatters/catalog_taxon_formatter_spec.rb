@@ -54,6 +54,11 @@ describe Formatters::CatalogTaxonFormatter do
         @formatter.new(genus).headline_type.should ==
 %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>, by monotypy.</span>}
       end
+      it "should show the type taxon as a link, if the taxon for the name exists" do
+        type = create_species 'Atta major'
+        genus = create_genus 'Atta', type_name: FactoryGirl.create(:species_name, name: 'Atta major')
+        @formatter.new(genus).headline_type_name.should == %Q{<a href="/catalog/#{type.id}"><i>Atta major</i></a>}
+      end
     end
 
     describe "Linking to the other site" do

@@ -76,9 +76,19 @@ class Formatters::TaxonFormatter
   end
 
   def headline_type_name
-    rank = @taxon.type_name.rank
+    type = Taxon.find_by_name @taxon.type_name.to_s
+    return headline_type_name_link(type) if type
+    headline_type_name_no_link @taxon.type_name, @taxon.type_fossil
+  end
+
+  def headline_type_name_link type
+    self.class.link_to_taxon type
+  end
+
+  def headline_type_name_no_link type_name, fossil
+    rank = type_name.rank
     rank = 'genus' if rank == 'subgenus'
-    name = @taxon.type_name.to_html_with_fossil @taxon.type_fossil
+    name = type_name.to_html_with_fossil fossil
     content_tag :span, name, class: "#{rank} taxon"
   end
 
