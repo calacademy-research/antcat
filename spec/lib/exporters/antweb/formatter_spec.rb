@@ -44,7 +44,7 @@ describe Exporters::Antweb::Formatter do
               %{<a href="http://antcat.org/references?q=#{reference.id}" target="_blank" title="Bolton, B. 2010a. Ants I have known. Psyche 1:2.">Bolton, 2010a</a>} +
               %{: 12} +
             %{</span>} +
-            %{ } +
+            %{. } +
 
             # type
             %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span>} +

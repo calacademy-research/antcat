@@ -42,7 +42,7 @@ class Formatters::TaxonFormatter
     string = protonym_name protonym
     string << ' ' << headline_authorship(protonym.authorship)
     string << locality(protonym.locality)
-    string || ''
+    add_period_if_necessary(string || '')
   end
 
   ##########
