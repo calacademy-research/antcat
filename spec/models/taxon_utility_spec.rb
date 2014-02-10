@@ -88,14 +88,11 @@ describe Taxon do
       taxon.current_valid_taxon.should be_nil
     end
     it "should handle when there's a synonym of a synonym" do
-
       senior_synonym = create_genus
       synonym = create_genus status: 'synonym'
       Synonym.create! junior_synonym: synonym, senior_synonym: senior_synonym
-
       synonym_of_synonym = create_genus status: 'synonym'
       Synonym.create! junior_synonym: synonym_of_synonym, senior_synonym: synonym
-
       synonym.update_current_valid_taxon
       synonym.current_valid_taxon.should == senior_synonym
     end
