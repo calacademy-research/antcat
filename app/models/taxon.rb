@@ -206,6 +206,21 @@ class Taxon < ActiveRecord::Base
   # current_valid_taxon
   belongs_to  :current_valid_taxon, class_name: 'Taxon'
   attr_accessor :current_valid_taxon_name
+  def current_valid_taxon_including_synonyms
+    synonym? ? find_most_recent_valid_senior_synonym : current_valid_taxon
+  end
+  def current_valid_taxon_including_synonyms_and_self
+    current_valid_taxon_including_synonyms || self
+  end
+  def find_most_recent_valid_senior_synonym
+    return unless senior_synonyms
+    for senior_synonym in senior_synonyms.order('created_at DESC')
+      return senior_synonym if !senior_synonym.invalid?
+      return nil unless senior_synonym.synonym?
+      return senior_synonym.find_most_recent_valid_senior_synonym
+    end
+    nil
+  end
 
   ###############################################
   # original combination

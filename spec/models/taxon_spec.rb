@@ -472,4 +472,49 @@ describe Taxon do
     end
   end
 
+  describe "Finding the current valid taxon, including synonyms" do
+    it "should return the field contents if there are no synonyms" do
+      current_valid_taxon = create_genus
+      taxon = create_genus current_valid_taxon: current_valid_taxon
+      taxon.current_valid_taxon_including_synonyms.should == current_valid_taxon
+    end
+    it "should return the senior synonym if it exists" do
+      senior = create_genus
+      current_valid_taxon = create_genus
+      taxon = create_synonym senior, current_valid_taxon: current_valid_taxon
+      taxon.current_valid_taxon_including_synonyms.should == senior
+    end
+    it "should find the latest senior synonym that's valid" do
+      valid_senior = create_genus
+      invalid_senior = create_genus status: 'homonym'
+      taxon = create_genus status: 'synonym'
+      Synonym.create! senior_synonym: valid_senior, junior_synonym: taxon
+      Synonym.create! senior_synonym: invalid_senior, junior_synonym: taxon
+      taxon.current_valid_taxon_including_synonyms.should == valid_senior
+    end
+    it "should handle when no senior synonyms are valid" do
+      invalid_senior = create_genus status: 'homonym'
+      another_invalid_senior = create_genus status: 'homonym'
+      taxon = create_synonym invalid_senior
+      Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: taxon
+      taxon.current_valid_taxon_including_synonyms.should be_nil
+    end
+    it "should handle when there's a synonym of a synonym" do
+      senior_synonym_of_senior_synonym = create_genus
+      senior_synonym = create_genus status: 'synonym'
+      Synonym.create! junior_synonym: senior_synonym, senior_synonym: senior_synonym_of_senior_synonym
+
+      taxon = create_genus status: 'synonym'
+      Synonym.create! junior_synonym: taxon, senior_synonym: senior_synonym
+
+      taxon.current_valid_taxon_including_synonyms.should == senior_synonym_of_senior_synonym
+    end
+    describe "Including the taxon itself" do
+      it "should return the taxon itself if no senior synonyms and no current_valid_taxon" do
+        taxon = create_genus
+        taxon.current_valid_taxon_including_synonyms_and_self.should == taxon
+      end
+    end
+  end
+
 end
