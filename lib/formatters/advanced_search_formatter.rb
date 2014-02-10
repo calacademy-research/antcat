@@ -39,7 +39,7 @@ module Formatters::AdvancedSearchFormatter
 
   def format_original_combination_status taxon
     string = 'see '.html_safe
-    string << format_name(taxon.current_valid_taxon)
+    string << format_name(taxon.current_valid_taxon_including_synonyms)
     string
   end
 

@@ -156,6 +156,17 @@ describe Exporters::Antweb::Exporter do
       taxon.update_attributes! current_valid_taxon_id: old.id
       @exporter.export_taxon(taxon)[13].should == old.name.name
     end
+    it "should look at synonyms if there isn't a current_valid_taxon" do
+      genus = create_genus
+      senior_synonym = create_species 'Eciton major', genus: genus
+      junior_synonym = create_species 'Atta major', genus: genus, status: 'synonym'
+      Synonym.create! junior_synonym: junior_synonym, senior_synonym: senior_synonym
+      @exporter.export_taxon(junior_synonym)[13].should == 'Eciton major'
+    end
+    it "should just return the taxon's name if it's valid" do
+      taxon = create_genus 'Atta'
+      @exporter.export_taxon(taxon)[13].should == 'Atta'
+    end
   end
 
   describe "Sending all taxa - not just valid" do

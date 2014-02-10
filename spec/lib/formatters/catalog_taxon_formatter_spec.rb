@@ -129,15 +129,16 @@ describe Formatters::CatalogTaxonFormatter do
       senior_synonym = create_genus 'Atta'
       taxon = create_synonym senior_synonym
       result = @formatter.new(taxon).status
-      result.should == %{junior synonym of <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
+      result.should == %{junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
       result.should be_html_safe
     end
 
     describe "Using current valid taxon" do
       it "should handle a null current valid taxon" do
         senior_synonym = create_genus 'Atta'
+        senior_synonym.update_attribute :created_at, Time.now - 100
         other_senior_synonym = create_genus 'Eciton'
-        taxon = create_synonym senior_synonym, current_valid_taxon: other_senior_synonym
+        taxon = create_synonym senior_synonym
         Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
         result = @formatter.new(taxon).status
         result.should == %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
@@ -149,6 +150,7 @@ describe Formatters::CatalogTaxonFormatter do
       end
       it "should handle a current valid taxon that's one of two 'senior synonyms'" do
         senior_synonym = create_genus 'Atta'
+        senior_synonym.update_attribute :created_at, Time.now - 100
         other_senior_synonym = create_genus 'Eciton'
         taxon = create_synonym senior_synonym, current_valid_taxon: other_senior_synonym
         Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon

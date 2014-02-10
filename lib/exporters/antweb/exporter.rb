@@ -37,7 +37,7 @@ class Exporters::Antweb::Exporter
       history:              Exporters::Antweb::Formatter.new(taxon).format,
       author_date:          taxon.authorship_string,
       author_date_html:     taxon.authorship_html_string,
-      current_valid_name:   (taxon.current_valid_taxon ? taxon.current_valid_taxon.name.name : taxon.name.name),
+      current_valid_name:   taxon.current_valid_taxon_including_synonyms_and_self.name.to_s,
       original_combination?:taxon.original_combination?,
       original_combination: taxon.original_combination.try(:name).try(:name),
       authors:              taxon.author_last_names_string,

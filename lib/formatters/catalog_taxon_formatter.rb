@@ -127,10 +127,9 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
 
   def format_senior_synonym
     return '' unless @taxon.senior_synonyms.count > 0
-    if @taxon.current_valid_taxon
-      ' of current valid taxon ' << self.class.link_to_taxon(@taxon.current_valid_taxon)
-    else
-      ' of ' << self.class.link_to_taxon(@taxon.senior_synonyms.last)
+    current_valid_taxon = @taxon.current_valid_taxon_including_synonyms
+    if current_valid_taxon
+      ' of current valid taxon ' << self.class.link_to_taxon(current_valid_taxon)
     end
   end
 
