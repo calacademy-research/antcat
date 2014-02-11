@@ -65,3 +65,16 @@ Feature: Changing parent genus or species
     And I press "OK"
     When I save my changes
     Then I should be on the catalog page for "Crematogaster menilekii proserpina"
+
+  Scenario: Changing a genus's tribe
+    Given there is a tribe "Attini"
+    And genus "Atta" exists in that tribe
+    And there is a tribe "Ecitoni"
+    When I go to the edit page for "Atta"
+    And I click the tribe name field
+    And I set the tribe name to "Ecitoni"
+    And I press "OK"
+    When I save my changes
+    Then I should be on the catalog page for "Atta"
+    When I follow "show tribes"
+    And "Ecitoni" should be selected in the tribes index

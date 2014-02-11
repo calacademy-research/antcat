@@ -104,6 +104,14 @@ Then /^I should not see the parent name field/ do
   page.should_not have_css "#parent_row"
 end
 
+### tribe name field
+When /I click the tribe name field/ do
+  find('#tribe_name_field .display_button').click
+end
+When /^I set the tribe name to "([^"]*)"$/ do |name|
+  step %{I fill in "name_string" with "#{name}"}
+end
+
 ### current valid taxon field
 Then /^I should (not )?see the current valid taxon field$/ do |should_not|
   selector = should_not ? :should_not : :should
