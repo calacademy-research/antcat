@@ -100,6 +100,14 @@ Feature: Editing a taxon
     And I save my changes
     Then I should see "Fisher 2004. Ants. Psyche 3:3." in the headline
 
+  Scenario: Changing the authorship but cancelling
+    Given there is a genus "Eciton"
+    And I log in
+    When I go to the edit page for "Eciton"
+    And I click the authorship field
+    And I press "Cancel"
+    Then I should be on the edit page for "Eciton"
+
   Scenario: Changing the type name
     Given there is a genus "Atta" with type name "Atta major"
     And there is a species "Atta major"
