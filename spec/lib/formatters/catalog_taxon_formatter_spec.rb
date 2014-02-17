@@ -242,4 +242,12 @@ describe Formatters::CatalogTaxonFormatter do
     end
   end
 
+  describe "Senior synonym list" do
+    it "should return '' if the senior synonym is itself invalid" do
+      invalid_senior = create_genus 'Atta', status: 'synonym'
+      junior = create_genus 'Eciton', status: 'synonym'
+      Synonym.create! junior_synonym: junior, senior_synonym: invalid_senior
+      @formatter.new(junior).format_senior_synonym.should == ''
+    end
+  end
 end

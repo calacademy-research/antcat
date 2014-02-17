@@ -131,6 +131,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     if current_valid_taxon
       ' of current valid taxon ' << self.class.link_to_taxon(current_valid_taxon)
     end
+    ''
   end
 
   #########
