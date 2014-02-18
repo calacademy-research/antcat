@@ -71,8 +71,8 @@ Feature: Changing parent genus or species
     And genus "Atta" exists in that tribe
     And there is a tribe "Ecitoni"
     When I go to the edit page for "Atta"
-    And I click the tribe name field
-    And I set the tribe name to "Ecitoni"
+    And I click the parent name field
+    And I set the parent name to "Ecitoni"
     And I press "OK"
     When I save my changes
     Then I should be on the catalog page for "Atta"
