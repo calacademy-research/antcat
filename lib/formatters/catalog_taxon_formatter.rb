@@ -129,7 +129,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     return '' unless @taxon.senior_synonyms.count > 0
     current_valid_taxon = @taxon.current_valid_taxon_including_synonyms
     if current_valid_taxon
-      ' of current valid taxon ' << self.class.link_to_taxon(current_valid_taxon)
+      return ' of current valid taxon ' << self.class.link_to_taxon(current_valid_taxon)
     end
     ''
   end
