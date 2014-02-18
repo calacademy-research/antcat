@@ -23,20 +23,14 @@ class TaxonMother
   def save_taxon taxon, params
     Taxon.transaction do
       @taxon = taxon
-      name_attributes                     = params.delete :name_attributes
-      parent_name_attributes              = params.delete :parent_name_attributes
-      protonym_attributes                 = params.delete :protonym_attributes
-      current_valid_taxon_name_attributes = params.delete :current_valid_taxon_name_attributes
-      homonym_replaced_by_name_attributes = params.delete :homonym_replaced_by_name_attributes
-      type_name_attributes                = params.delete :type_name_attributes
 
-      update_name                 name_attributes
+      update_name                 params.delete :name_attributes
+      update_parent               params.delete :parent_name_attributes
+      update_current_valid_taxon  params.delete :current_valid_taxon_name_attributes
+      update_homonym_replaced_by  params.delete :homonym_replaced_by_name_attributes
+      update_protonym             params.delete :protonym_attributes
+      update_type_name            params.delete :type_name_attributes
       update_name_status_flags    params
-      update_parent               parent_name_attributes
-      update_current_valid_taxon  current_valid_taxon_name_attributes
-      update_homonym_replaced_by  homonym_replaced_by_name_attributes
-      update_protonym             protonym_attributes
-      update_type_name            type_name_attributes
 
       if @taxon.new_record?
         set_initial_review_state
