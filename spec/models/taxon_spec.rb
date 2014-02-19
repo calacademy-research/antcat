@@ -329,17 +329,6 @@ describe Taxon do
       genus.save!
       genus.reload.subfamily.should == subfamily
     end
-    describe "Tribes, where a child can have multiple parents" do
-      it "should assign to both parents when assigning to one" do
-        subfamily = FactoryGirl.create :subfamily
-        tribe = FactoryGirl.create :tribe, subfamily: subfamily
-        protonym = FactoryGirl.create :protonym
-        genus = Genus.create! name: FactoryGirl.create(:name, name: 'Aneuretus'), protonym: protonym
-        genus.parent = tribe
-        genus.tribe.should == tribe
-        genus.subfamily.should == subfamily
-      end
-    end
     it "should give the parent of a family as nil" do
       family = FactoryGirl.create :family
       family.parent.should be_nil

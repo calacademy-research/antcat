@@ -386,4 +386,16 @@ describe Genus do
       genus.parent.should == tribe
     end
   end
+
+  describe "Updating the parent" do
+    it "should assign to both tribe and subfamily when parent is a tribe" do
+      subfamily = FactoryGirl.create :subfamily
+      tribe = FactoryGirl.create :tribe, subfamily: subfamily
+      protonym = FactoryGirl.create :protonym
+      genus = Genus.create! name: FactoryGirl.create(:name, name: 'Aneuretus'), protonym: protonym
+      genus.parent = tribe
+      genus.tribe.should == tribe
+      genus.subfamily.should == subfamily
+    end
+  end
 end
