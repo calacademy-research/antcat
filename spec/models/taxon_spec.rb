@@ -329,11 +329,6 @@ describe Taxon do
       genus.save!
       genus.reload.subfamily.should == subfamily
     end
-    it "should be able to get the parent id, too" do
-      subfamily = FactoryGirl.create :subfamily
-      genus = FactoryGirl.create :genus, subfamily: subfamily
-      genus.parent.should == subfamily
-    end
     describe "Tribes, where a child can have multiple parents" do
       it "should assign to both parents when assigning to one" do
         subfamily = FactoryGirl.create :subfamily

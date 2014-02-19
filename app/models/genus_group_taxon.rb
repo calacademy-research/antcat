@@ -76,7 +76,7 @@ class GenusGroupTaxon < Taxon
   end
 
   def parent
-    send Rank[self].parent.read_selector
+    tribe || subfamily
   end
 
 end

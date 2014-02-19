@@ -370,4 +370,20 @@ describe Genus do
     end
   end
 
+  describe "Parent" do
+    it "should be nil, if there's no subfamily" do
+      genus = create_genus subfamily: nil, tribe: nil
+      genus.parent.should be_nil
+    end
+    it "should refer to the subfamily, if there is one" do
+      subfamily = create_subfamily
+      genus = create_genus subfamily: subfamily, tribe: nil
+      genus.parent.should == subfamily
+    end
+    it "should refer to the tribe, if there is one" do
+      tribe = create_tribe
+      genus = create_genus subfamily: tribe.subfamily, tribe: tribe
+      genus.parent.should == tribe
+    end
+  end
 end
