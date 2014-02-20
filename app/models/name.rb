@@ -61,11 +61,12 @@ class Name < ActiveRecord::Base
   end
 
   def self.picklist_matching letters_in_name, options = {}
-    join = options[:taxa_only] || options[:species_only] || options[:genera_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+    join = options[:taxa_only] || options[:species_only] || options[:genera_only] || options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
     rank_filter =
       case
       when options[:species_only] then 'AND taxa.type = "Species"'
       when options[:genera_only] then 'AND taxa.type = "Genus"'
+      when options[:subfamilies_or_tribes_only] then 'AND (taxa.type = "Subfamily" OR taxa.type = "Tribe")'
       else ''
       end
 

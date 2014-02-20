@@ -204,6 +204,16 @@ describe Name do
       results.first[:name].should == 'Atta'
     end
 
+    it "should only return names attached to subfamilies or tribes, if that option is sent" do
+      subfamily = create_subfamily 'Attinae'
+      tribe = create_tribe 'Attini'
+      atta = create_genus 'Atta', tribe: tribe, subfamily: subfamily
+      atta_minor = create_species 'Atta major'
+      results = Name.picklist_matching('att', subfamilies_or_tribes_only: true)
+      results.should have(2).items
+      results.map {|e| e[:name]}.should =~ ['Attinae', 'Attini']
+    end
+
   end
 
   describe "Duplicates" do
