@@ -15,6 +15,8 @@ class Name < ActiveRecord::Base
     })
   end
 
+  def change_parent _; end
+
   def quadrinomial?
     name.split(' ').size == 4
   end
