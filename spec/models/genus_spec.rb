@@ -387,7 +387,7 @@ describe Genus do
     end
   end
 
-  describe "Updating the parent" do
+  describe "Assiging the parent" do
     it "should assign to both tribe and subfamily when parent is a tribe" do
       subfamily = FactoryGirl.create :subfamily
       tribe = FactoryGirl.create :tribe, subfamily: subfamily
@@ -395,6 +395,25 @@ describe Genus do
       genus = Genus.create! name: FactoryGirl.create(:name, name: 'Aneuretus'), protonym: protonym
       genus.parent = tribe
       genus.tribe.should == tribe
+      genus.subfamily.should == subfamily
+    end
+  end
+  describe "Updating the parent" do
+    it "should assign to both tribe and subfamily when parent is a tribe" do
+      subfamily = FactoryGirl.create :subfamily
+      tribe = FactoryGirl.create :tribe, subfamily: subfamily
+      protonym = FactoryGirl.create :protonym
+      genus = Genus.create! name: FactoryGirl.create(:name, name: 'Aneuretus'), protonym: protonym
+      genus.update_parent tribe
+      genus.tribe.should == tribe
+      genus.subfamily.should == subfamily
+    end
+    it "should assign the subfamily when the tribe is nil, and set the tribe to nil" do
+      subfamily = FactoryGirl.create :subfamily
+      tribe = FactoryGirl.create :tribe, subfamily: subfamily
+      genus = create_genus tribe: tribe
+      genus.update_parent subfamily
+      genus.tribe.should == nil
       genus.subfamily.should == subfamily
     end
   end
