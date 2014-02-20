@@ -1,5 +1,5 @@
 @javascript
-Feature: Changing parent genus or species
+Feature: Changing parent genus, species, tribe or subfamily
   As an editor of AntCat
   I want to change a taxon's parent
   So that information is kept accurate
@@ -78,6 +78,19 @@ Feature: Changing parent genus or species
     Then I should be on the catalog page for "Atta"
     When I follow "show tribes"
     And "Ecitoni" should be selected in the tribes index
+
+  Scenario: Changing a genus's subfamily
+    Given there is a subfamily "Attininae"
+    And genus "Atta" exists in that subfamily
+    And there is a subfamily "Ecitoninae"
+    When I go to the edit page for "Atta"
+    And I click the parent name field
+    And I set the parent name to "Ecitoninae"
+    And I press "OK"
+    When I save my changes
+    Then I should be on the catalog page for "Atta"
+    And "Ecitoninae" should be selected in the subfamilies index
+
   Scenario: Setting a genus's parent to blank
     Given there is a subfamily "Attininae"
     And genus "Atta" exists in that subfamily
