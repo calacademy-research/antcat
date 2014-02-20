@@ -78,3 +78,13 @@ Feature: Changing parent genus or species
     Then I should be on the catalog page for "Atta"
     When I follow "show tribes"
     And "Ecitoni" should be selected in the tribes index
+  Scenario: Setting a genus's parent to blank
+    Given there is a subfamily "Attininae"
+    And genus "Atta" exists in that subfamily
+    When I go to the edit page for "Atta"
+    And I click the parent name field
+    And I set the parent name to ""
+    And I press "OK"
+    When I save my changes
+    Then I should be on the catalog page for "Atta"
+    And "(no subfamily)" should be selected in the subfamilies index

@@ -1,4 +1,4 @@
 class AntCat.ParentSection
   constructor: ->
-    options = {value_id: 'taxon_parent_name_attributes_id'}
+    options = {value_id: 'taxon_parent_name_attributes_id', allow_blank: true}
     new AntCat.NameField $('#parent_name_field'), options

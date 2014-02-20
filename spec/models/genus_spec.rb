@@ -416,5 +416,13 @@ describe Genus do
       genus.tribe.should == nil
       genus.subfamily.should == subfamily
     end
+    it "should clear both subfamily and tribe when the new parent is nil" do
+      subfamily = FactoryGirl.create :subfamily
+      tribe = FactoryGirl.create :tribe, subfamily: subfamily
+      genus = create_genus tribe: tribe
+      genus.update_parent nil
+      genus.tribe.should == nil
+      genus.subfamily.should == nil
+    end
   end
 end

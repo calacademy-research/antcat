@@ -18,6 +18,9 @@ class Genus < GenusGroupTaxon
     when new_parent.kind_of?(Subfamily)
       self.tribe = nil
       self.subfamily = new_parent
+    when new_parent.nil?
+      self.tribe = nil
+      self.subfamily = nil
     end
   end
 
