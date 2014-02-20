@@ -26,6 +26,7 @@
     = hidden_field_tag 'add_taxon_path', @add_taxon_path
     = hidden_field_tag 'cancel_path', @cancel_path
     = hidden_field_tag 'convert_to_subspecies_path', @convert_to_subspecies_path
+    = hidden_field_tag 'taxon_rank', @taxon.rank
 
     = render 'shared/errors_for', resource: @taxon
 

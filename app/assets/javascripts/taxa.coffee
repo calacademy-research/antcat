@@ -50,7 +50,12 @@ class AntCat.TaxonForm extends AntCat.Form
     new AntCat.ReferencesSection @element.find('.references_section'), parent_form: @
 
   initialize_parent_section: =>
-    new AntCat.ParentSection()
+    options = {}
+    if @taxon_rank() == 'genus'
+      options = {subfamilies_or_tribes_only: true}
+    else if @taxon_rank() == 'species' or @taxon_rank() == 'subspecies'
+      options = {genera_only: true}
+    new AntCat.ParentSection options
 
   initialize_current_valid_name_section: =>
     new AntCat.CurrentValidNameSection()
@@ -79,6 +84,9 @@ class AntCat.TaxonForm extends AntCat.Form
   taxon_id: =>
     match = @form().attr('action').match /\d+/
     match and match[0]
+
+  taxon_rank: =>
+    $('#taxon_rank').val()
 
   hide_or_show_homonym_replaced_by: =>
     if @status_selector.val() == 'homonym'
