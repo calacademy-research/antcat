@@ -51,9 +51,9 @@ class Formatters::TaxonFormatter
     string = ''.html_safe
     string << headline_type_name_and_taxt
     string << headline_biogeographic_region
-    string << ' ' unless string.length.zero?
+    string << ' ' unless string.empty?
     string << headline_verbatim_type_locality
-    string << ' ' unless string.length.zero?
+    string << ' ' unless string.empty?
     string << headline_type_specimen
     string.rstrip.html_safe
   end
@@ -93,9 +93,7 @@ class Formatters::TaxonFormatter
   end
 
   def headline_type_taxt taxt
-    string = detaxt taxt
-    string = '.' unless string.present?
-    string
+    add_period_if_necessary(detaxt taxt)
   end
 
   def headline_biogeographic_region
@@ -144,7 +142,8 @@ class Formatters::TaxonFormatter
   def headline_authorship authorship
     return '' unless authorship
     return '' unless authorship.reference
-    string = link_to_reference(authorship.reference, @user) + ": #{authorship.pages}"
+    string = link_to_reference(authorship.reference, @user)
+    string << ": #{authorship.pages}" if authorship.pages.present?
     string << " (#{authorship.forms})" if authorship.forms.present?
     string << ' ' << detaxt(authorship.notes_taxt) if authorship.notes_taxt
     content_tag :span, string, class: :authorship
