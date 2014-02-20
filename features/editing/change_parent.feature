@@ -101,3 +101,12 @@ Feature: Changing parent genus, species, tribe or subfamily
     When I save my changes
     Then I should be on the catalog page for "Atta"
     And "(no subfamily)" should be selected in the subfamilies index
+
+  Scenario: Setting a genus's parent to a nonexistent name
+    Given there is a subfamily "Attininae"
+    And genus "Atta" exists in that subfamily
+    When I go to the edit page for "Atta"
+    And I click the parent name field
+    And I set the parent name to "Appaloosa"
+    And I press "OK"
+    Then I should see "This must be the name of an existing taxon"
