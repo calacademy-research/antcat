@@ -282,8 +282,13 @@ describe Exporters::Antweb::Exporter do
       @exporter.export_taxon(taxon)[22].should == 'Dolichoderinae'
     end
 
-    it "should skip over tribe and return the subfamily" do
+    it "should not skip over tribe and return the subfamily" do
       taxon = create_genus tribe: @tribe
+      @exporter.export_taxon(taxon)[22].should == 'Attini'
+    end
+
+    it "should return the subfamily only if there's no tribe" do
+      taxon = create_genus subfamily: @subfamily, tribe: nil
       @exporter.export_taxon(taxon)[22].should == 'Dolichoderinae'
     end
 
