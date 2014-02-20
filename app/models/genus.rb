@@ -10,8 +10,15 @@ class Genus < GenusGroupTaxon
   scope :without_tribe, where(tribe_id: nil)
 
   def update_parent new_parent
-    super
-    tribe = new_parent.tribe
+    set_name_caches
+    case
+    when new_parent.kind_of?(Tribe)
+      self.tribe = new_parent
+      self.subfamily = new_parent.subfamily
+    when new_parent.kind_of?(Subfamily)
+      self.tribe = nil
+      self.subfamily = new_parent
+    end
   end
 
   def statistics
