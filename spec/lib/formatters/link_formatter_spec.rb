@@ -49,13 +49,43 @@ describe Formatters::LinkFormatter do
   end
 
   describe "Creating a link from a site to AntWeb" do
+    it "should handle subfamilies" do
+      subfamily = create_subfamily 'Attaichnae'
+      @formatter.link_to_antweb(subfamily).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?rank=subfamily&subfamily=attaichnae&project=worldants\" target=\"_blank\">AntWeb</a>"
+    end
     it "should handle tribes" do
       tribe = create_tribe 'Attini'
-      @formatter.link_to_antweb(tribe).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?name=attini&rank=tribe&project=worldants\" target=\"_blank\">AntWeb</a>"
+      @formatter.link_to_antweb(tribe).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?rank=tribe&tribe=attini&project=worldants\" target=\"_blank\">AntWeb</a>"
+    end
+    it "should handle genera" do
+      genus = create_genus 'Atta'
+      @formatter.link_to_antweb(genus).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?rank=genus&genus=atta&project=worldants\" target=\"_blank\">AntWeb</a>"
     end
     it "should handle subgenera" do
-      subgenus = create_subgenus 'Atta (Batta)'
-      @formatter.link_to_antweb(subgenus).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?name=atta (batta)&rank=subgenus&project=worldants\" target=\"_blank\">AntWeb</a>"
+      genus = create_genus 'Atta'
+      subgenus = create_subgenus 'Atta (Batta)', genus: genus
+      @formatter.link_to_antweb(subgenus).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?rank=subgenus&genus=atta&subgenus=atta (batta)&project=worldants\" target=\"_blank\">AntWeb</a>"
+    end
+    it "should handle species" do
+      genus = create_genus 'Atta'
+      species = create_species 'Atta major', genus: genus
+      @formatter.link_to_antweb(species).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants\" target=\"_blank\">AntWeb</a>"
+    end
+    it "should handle subspecies" do
+      genus = create_genus 'Atta'
+      species = create_species 'Atta major', genus: genus
+      subspecies = create_subspecies 'Atta major minor', species: species, genus: genus
+      @formatter.link_to_antweb(subspecies).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor&project=worldants\" target=\"_blank\">AntWeb</a>"
+    end
+    it "should just return nil for subspecies without species" do
+      subspecies = create_subspecies 'Atta major minor', species: nil
+      @formatter.link_to_antweb(subspecies).should be_nil
+    end
+    it "should handle quadrinomial subspecies" do
+      genus = create_genus 'Atta'
+      species = create_species 'Atta major', genus: genus
+      subspecies = create_subspecies 'Atta major minor rufous', species: species, genus: genus
+      @formatter.link_to_antweb(subspecies).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor rufous&project=worldants\" target=\"_blank\">AntWeb</a>"
     end
   end
 end

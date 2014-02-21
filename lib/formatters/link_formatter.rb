@@ -35,17 +35,21 @@ module Formatters::LinkFormatter
     url = %{http://www.antweb.org/description.do?}
     url << case taxon
     when Species
-      %{name=#{taxon.name.epithet.to_s.downcase}&genus=#{taxon.genus.name.to_s.downcase}&rank=species}
+      %{rank=species&genus=#{taxon.genus.name.to_s.downcase}&species=#{taxon.name.epithet.to_s.downcase}}
     when Subspecies
-      %{name=#{taxon.name.epithets.to_s.downcase}&genus=#{taxon.genus.name.to_s.downcase}&rank=species}
+      return unless taxon.species
+      %{rank=subspecies} + '&' +
+      %{genus=#{taxon.genus.name.to_s.downcase}} + '&' +
+      %{species=#{taxon.species.name.epithet}} + '&' +
+      %{subspecies=#{taxon.name.subspecies_epithets.to_s.downcase}}
     when Subgenus
-      %{name=#{taxon.name.to_s.downcase}&rank=subgenus}
+      %{rank=subgenus&genus=#{taxon.genus.name.to_s.downcase}&subgenus=#{taxon.name.to_s.downcase}}
     when Genus
-      %{name=#{taxon.name.to_s.downcase}&rank=genus}
+      %{rank=genus&genus=#{taxon.name.to_s.downcase}}
     when Tribe
-      %{name=#{taxon.name.to_s.downcase}&rank=tribe}
+      %{rank=tribe&tribe=#{taxon.name.to_s.downcase}}
     when Subfamily
-      %{name=#{taxon.name.to_s.downcase}&rank=subfamily}
+      %{rank=subfamily&subfamily=#{taxon.name.to_s.downcase}}
     else
       raise "Don't know how to link #{taxon} to AntWeb"
     end

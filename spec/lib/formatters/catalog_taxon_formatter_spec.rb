@@ -66,14 +66,14 @@ describe Formatters::CatalogTaxonFormatter do
         subfamily = create_subfamily 'Dolichoderinae'
         genus = create_genus 'Atta', subfamily: subfamily
         species = create_species 'Atta major', genus: genus, subfamily: subfamily
-        @formatter.new(species).link_to_other_site.should == %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?name=major&genus=atta&rank=species&project=worldants" target="_blank">AntWeb</a>}
+        @formatter.new(species).link_to_other_site.should == %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants" target="_blank">AntWeb</a>}
       end
       it "should link to a subspecies" do
         subfamily = create_subfamily 'Dolichoderinae'
         genus = create_genus 'Atta', subfamily: subfamily
         species = create_species 'Atta major', genus: genus, subfamily: subfamily
         species = create_subspecies 'Atta major nigrans', species: species, genus: genus, subfamily: subfamily
-        @formatter.new(species).link_to_other_site.should == %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?name=major nigrans&genus=atta&rank=species&project=worldants" target="_blank">AntWeb</a>}
+        @formatter.new(species).link_to_other_site.should == %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=nigrans&project=worldants" target="_blank">AntWeb</a>}
       end
       it "should link to an invalid taxon" do
         subfamily = create_subfamily 'Dolichoderinae', status: 'synonym'
