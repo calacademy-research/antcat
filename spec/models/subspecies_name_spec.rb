@@ -162,4 +162,13 @@ describe SubspeciesName do
     end
 
   end
+
+  describe "Subspecies epithets" do
+    it "should return the subspecies epithets minus the species epithet" do
+      name = SubspeciesName.new name: 'Acus major minor medium', name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
+        epithet_html: '<i>medium</i>', epithets: 'major minor medium', protonym_html: '<i>Acus major minor medium</i>'
+      name.subspecies_epithets.should == 'minor medium'
+    end
+  end
+
 end
