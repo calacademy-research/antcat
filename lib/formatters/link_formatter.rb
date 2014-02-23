@@ -31,7 +31,7 @@ module Formatters::LinkFormatter
   end
 
   def link_to_antweb taxon
-    return if taxon.kind_of? Family
+    return if [Family, Tribe, Subgenus].include? taxon.class
     url = %{http://www.antweb.org/description.do?}
     url << case taxon
     when Species
@@ -42,12 +42,8 @@ module Formatters::LinkFormatter
       %{genus=#{taxon.genus.name.to_s.downcase}} + '&' +
       %{species=#{taxon.species.name.epithet}} + '&' +
       %{subspecies=#{taxon.name.subspecies_epithets.to_s.downcase}}
-    when Subgenus
-      %{rank=subgenus&genus=#{taxon.genus.name.to_s.downcase}&subgenus=#{taxon.name.to_s.downcase}}
     when Genus
       %{rank=genus&genus=#{taxon.name.to_s.downcase}}
-    when Tribe
-      %{rank=tribe&tribe=#{taxon.name.to_s.downcase}}
     when Subfamily
       %{rank=subfamily&subfamily=#{taxon.name.to_s.downcase}}
     else

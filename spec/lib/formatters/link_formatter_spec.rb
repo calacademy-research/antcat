@@ -53,18 +53,18 @@ describe Formatters::LinkFormatter do
       subfamily = create_subfamily 'Attaichnae'
       @formatter.link_to_antweb(subfamily).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?rank=subfamily&subfamily=attaichnae&project=worldants\" target=\"_blank\">AntWeb</a>"
     end
-    it "should handle tribes" do
+    it "should output nothing for tribes" do
       tribe = create_tribe 'Attini'
-      @formatter.link_to_antweb(tribe).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?rank=tribe&tribe=attini&project=worldants\" target=\"_blank\">AntWeb</a>"
+      @formatter.link_to_antweb(tribe).should be_nil
     end
     it "should handle genera" do
       genus = create_genus 'Atta'
       @formatter.link_to_antweb(genus).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?rank=genus&genus=atta&project=worldants\" target=\"_blank\">AntWeb</a>"
     end
-    it "should handle subgenera" do
+    it "should output nothing for subgenera" do
       genus = create_genus 'Atta'
       subgenus = create_subgenus 'Atta (Batta)', genus: genus
-      @formatter.link_to_antweb(subgenus).should == "<a class=\"link_to_external_site\" href=\"http://www.antweb.org/description.do?rank=subgenus&genus=atta&subgenus=atta (batta)&project=worldants\" target=\"_blank\">AntWeb</a>"
+      @formatter.link_to_antweb(subgenus).should be_nil
     end
     it "should handle species" do
       genus = create_genus 'Atta'
