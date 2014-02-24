@@ -17,4 +17,3 @@ describe Formatters::AdvancedSearchFormatter do
     end
   end
 end
-
