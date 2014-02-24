@@ -12,7 +12,8 @@ class Taxon < ActiveRecord::Base
       params[:type_specimen_code].present? ||
       params[:year].present? ||
       params[:biogeographic_region].present? ||
-      params[:rank].present? && params[:rank] != 'All'
+      params[:rank].present? && params[:rank] != 'All' ||
+      params[:forms].present?
 
     query = joins protonym: [{authorship: :reference}]
     query = query.where type: params[:rank] unless params[:rank] == 'All'
@@ -47,6 +48,9 @@ class Taxon < ActiveRecord::Base
     else
       query = query.where(biogeographic_region: search_term) if search_term.present?
     end
+
+    search_term = "%#{params[:forms]}%"
+    query = query.where('forms LIKE ?', search_term) if params[:forms].present?
 
     query
 

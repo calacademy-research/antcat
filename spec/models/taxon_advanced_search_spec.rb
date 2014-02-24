@@ -232,5 +232,23 @@ describe Taxon do
       end
     end
 
+    describe "Searching for forms" do
+      it "should only return taxa with those forms" do
+        citation = FactoryGirl.create :citation, forms: 'w.q.'
+        protonym = FactoryGirl.create :protonym, authorship: citation
+        atta = create_species protonym: protonym
+
+        citation = FactoryGirl.create :citation, forms: 'q.'
+        protonym = FactoryGirl.create :protonym, authorship: citation
+        eciton = create_species protonym: protonym
+
+        Taxon.advanced_search(rank: 'All', forms: 'w.').map(&:id).should == [atta.id]
+      end
+      it "should return nothing if nothing has those forms" do
+        atta = create_species
+        Taxon.advanced_search(rank: 'All', forms: 'w.').map(&:id).should == []
+      end
+    end
+
   end
 end
