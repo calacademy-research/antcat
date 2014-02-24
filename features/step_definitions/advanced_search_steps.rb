@@ -58,6 +58,11 @@ end
 Given /^there is a species with biogeographic region "([^"]+)"$/ do |biogeographic_region|
   FactoryGirl.create :species, biogeographic_region: biogeographic_region
 end
+Given /^there is a species with forms "([^"]+)"$/ do |forms|
+  citation = FactoryGirl.create :citation, forms: forms
+  protonym = FactoryGirl.create :protonym, authorship: citation
+  FactoryGirl.create :species, protonym: protonym
+end
 Then /^I should see the genus located in "([^"]+)"$/ do |locality|
   step %{I should see "#{locality}"}
 end

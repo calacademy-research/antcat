@@ -152,3 +152,13 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     Then I should see "1 result"
     And I should see "Africa" within ".results_section"
+
+  Scenario: Searching for a form
+    Given there is a species with forms "w.q."
+    And there is a species with forms "q."
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I fill in "forms" with "w."
+    And I press "Go" in the search section
+    Then I should see "1 result"
+    And I should see "w." within ".results_section"

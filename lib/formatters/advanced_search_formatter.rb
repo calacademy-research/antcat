@@ -78,6 +78,12 @@ module Formatters::AdvancedSearchFormatter
     string
   end
 
+  def format_forms taxon
+    return unless taxon.protonym.authorship.forms.present?
+    string = 'Forms: '
+    string << add_period_if_necessary(taxon.protonym.authorship.forms)
+  end
+
   def document_link reference_key, user
     reference_key.document_link user
   end
