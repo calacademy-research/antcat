@@ -40,6 +40,10 @@ class Name < ActiveRecord::Base
     name_class.parse_words(words)
   rescue Exception => e
     raise "No Name subclass wanted the string: #{string}:#{e}"
+
+  def self.parse_words words
+    return unless words.size == 1
+    create! make_import_attributes words[0]
   end
 
   def self.parse_rank string
