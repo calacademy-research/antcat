@@ -1,5 +1,5 @@
 -#Locals: form, possible_homonym, show_elevate_to_species_button, add_taxon_button_text,
--# show_convert_to_subspecies_button, show_delete_taxon_button
+-# show_convert_to_subspecies_button, show_delete_taxon_button, add_tribe_button_text
 
 .buttons_section
   %input{type: :hidden, name: :possible_homonym, id: :possible_homonym, value: possible_homonym ? 'true' : nil}
@@ -11,6 +11,7 @@
   .right_buttons
     %input{type: :hidden, name: :task_button_command, id: :task_button_command}
     = button(previewize(add_taxon_button_text), :add_taxon)               if add_taxon_button_text
+    = button(previewize(add_tribe_button_text), :add_tribe)               if add_tribe_button_text
     = button(previewize('Convert to subspecies'), :convert_to_subspecies) if show_convert_to_subspecies_button
     = button(previewize('Elevate to species'), :elevate_to_species)       if show_elevate_to_species_button
     = button(previewize('Delete'), :delete_taxon)                         if show_delete_taxon_button

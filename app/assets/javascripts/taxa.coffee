@@ -73,6 +73,7 @@ class AntCat.TaxonForm extends AntCat.Form
 
   initialize_task_buttons: =>
     @element.find('#add_taxon').click => @add_taxon(); false
+    @element.find('#add_tribe').click => @add_tribe(); false
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
     @element.find('#delete_taxon').click => @delete_taxon(); false
     @element.find('#convert_to_subspecies').click => @convert_to_subspecies(); false
@@ -118,6 +119,9 @@ class AntCat.TaxonForm extends AntCat.Form
 
   add_taxon: =>
     window.location = $('#add_taxon_path').val()
+
+  add_tribe: =>
+    window.location = $('#add_tribe_path').val()
 
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel

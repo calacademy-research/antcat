@@ -55,6 +55,7 @@ class TaxaController < ApplicationController
       @cancel_path = edit_taxa_path @parent_id
     else
       @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
+      @add_tribe_path = new_taxa_path rank_to_create: Tribe, parent_id: @taxon.id
       @cancel_path = catalog_path @taxon
       @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
     end
@@ -77,6 +78,7 @@ class TaxaController < ApplicationController
     @show_delete_taxon_button = @taxon.nontaxt_references.empty?
     string = Rank[@taxon].child.try :string
     @add_taxon_button_text = "Add #{string}" if string
+    @add_tribe_button_text = "Add tribe" if @taxon.kind_of? Subfamily
   end
 
   #####################

@@ -24,6 +24,7 @@
     = hidden_field_tag 'rank_to_create', @rank_to_create
     = hidden_field_tag 'parent_id', @parent_id
     = hidden_field_tag 'add_taxon_path', @add_taxon_path
+    = hidden_field_tag 'add_tribe_path', @add_tribe_path
     = hidden_field_tag 'cancel_path', @cancel_path
     = hidden_field_tag 'convert_to_subspecies_path', @convert_to_subspecies_path
     = hidden_field_tag 'taxon_rank', @taxon.rank
@@ -39,6 +40,7 @@
                                                       show_elevate_to_species_button:    @show_elevate_to_species_button,    |
                                                       show_convert_to_subspecies_button: @show_convert_to_subspecies_button, |
                                                       add_taxon_button_text:             @add_taxon_button_text,             |
+                                                      add_tribe_button_text:             @add_tribe_button_text,             |
                                                       show_delete_taxon_button:          @show_delete_taxon_button           |
 
     - unless @taxon.new_record?

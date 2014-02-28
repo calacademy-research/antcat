@@ -46,7 +46,7 @@ class Name < ActiveRecord::Base
     # extremely kludgey
     word_count = string.split(' ').count
     return SubspeciesName if word_count >= 3
-    for key in [:subfamily_name, :genus_name, :species_name]
+    for key in [:subfamily_name, :tribe_name, :genus_name, :species_name]
       begin
         result = Importers::Bolton::Catalog::Grammar.parse(string, root: key).value
         if key == :species_name && result.has_key?(:genus_name) && result.has_key?(:species_epithet)
@@ -118,7 +118,7 @@ class Name < ActiveRecord::Base
     Name.find_by_name(attributes[:name]) or create!(attributes)
   end
 
-  def self.make_import_attributes name, data
+  def self.make_import_attributes name, data = nil
     {name: name, name_html: name, epithet: name, epithet_html: name, protonym_html: name}
   end
 

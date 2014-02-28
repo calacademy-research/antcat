@@ -208,3 +208,24 @@ Feature: Adding a taxon
       And I should see "Dorylinae" in the protonym
     When I go to the catalog page for "Formicinae"
       Then I should see "Dorylinae" in the index
+
+  Scenario: Adding a tribe
+    When I go to the catalog page for "Formicinae"
+      And I press "Edit"
+      And I press "Add tribe"
+    Then I should be on the new taxon page
+    When I click the name field
+      And I set the name to "Dorylini"
+      And I press "OK"
+    When I click the protonym name field
+      Then the protonym name field should contain "Dorylini"
+    When I press "OK"
+    And I click the authorship field
+      And I search for the author "Fisher"
+      And I click the first search result
+      And I press "OK"
+    When I save my changes
+      Then I should be on the catalog page for "Dorylini"
+      And I should see "Dorylini" in the protonym
+    When I go to the catalog page for "Formicinae"
+      Then I should see "Dorylini" in the tribes index

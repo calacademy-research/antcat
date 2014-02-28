@@ -65,6 +65,9 @@ describe Name do
     it "should recognize a genus name" do
       Name.parse_rank('Atta').should == GenusName
     end
+    it "should recognize a tribe name" do
+      Name.parse_rank('Attini').should == TribeName
+    end
     it "should recognize a species name" do
       Name.parse_rank('Atta major').should == SpeciesName
     end
