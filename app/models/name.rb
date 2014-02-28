@@ -35,6 +35,11 @@ class Name < ActiveRecord::Base
   end
 
   def self.parse string
+    # explicit loading seems to help Citrus's problem with reloading its grammars
+    # when Rails's class caching is off
+    Citrus.load Rails.root.to_s + '/lib/parsers/common_grammar', force: true unless defined? Parsers::CommonGrammar
+    Citrus.load Rails.root.to_s + '/lib/parsers/author_grammar', force: true unless defined? Parsers::AuthorGrammar
+    Citrus.load Rails.root.to_s + '/lib/importers/bolton/catalog/grammar', force: true unless defined? Importers::Bolton::Catalog::Grammar
     name_class = Name.parse_rank string
     words = string.split ' '
     name_class.parse_words(words)
