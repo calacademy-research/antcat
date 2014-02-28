@@ -40,11 +40,12 @@ class Name < ActiveRecord::Base
     Citrus.load Rails.root.to_s + '/lib/parsers/common_grammar', force: true unless defined? Parsers::CommonGrammar
     Citrus.load Rails.root.to_s + '/lib/parsers/author_grammar', force: true unless defined? Parsers::AuthorGrammar
     Citrus.load Rails.root.to_s + '/lib/importers/bolton/catalog/grammar', force: true unless defined? Importers::Bolton::Catalog::Grammar
+
     name_class = Name.parse_rank string
+    raise "No Name subclass wanted the string: #{string}" unless name_class
     words = string.split ' '
     name_class.parse_words(words)
-  rescue Exception => e
-    raise "No Name subclass wanted the string: #{string}:#{e}"
+  end
 
   def self.parse_words words
     return unless words.size == 1
