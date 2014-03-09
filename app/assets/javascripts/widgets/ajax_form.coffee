@@ -31,7 +31,7 @@ class AntCat.AjaxForm extends AntCat.Form
 
   handle_error: (jq_xhr, text_status, error_thrown) =>
     @stop_throbbing()
-    alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Mark Wilden (mark@mwilden.com) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
+    alert "Oh, shoot. It looks like a bug prevented this item from being saved.\n\nPlease report this situation to Stan Blum (sblum@calacademy.org) and we'll fix it.\n\n#{error_thrown}" unless AntCat.testing
 
   start_throbbing: =>
     @buttons.find(':button, input[type=submit]').disable()

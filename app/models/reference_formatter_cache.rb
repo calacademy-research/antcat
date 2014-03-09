@@ -25,7 +25,7 @@ class ReferenceFormatterCache
 
   def populate reference
     set reference, Formatters::ReferenceFormatter.format!(reference), :formatted_cache
-    user = User.find_by_email 'mark@mwilden.com'
+    user = User.find_by_email 'sblum@calacademy.org'
     set reference, Formatters::ReferenceFormatter.new(reference).format_inline_citation!(user), :inline_citation_cache
   end
 
