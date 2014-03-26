@@ -122,6 +122,11 @@ ActiveRecord::Schema.define(:version => 20140326185844) do
   add_index "forward_refs", ["fixee_id", "fixee_type"], :name => "index_forward_refs_on_fixee_id_and_fixee_type"
   add_index "forward_refs", ["name_id"], :name => "index_forward_refs_on_name_id"
 
+  create_table "hol_comparisons", :force => true do |t|
+    t.string "name"
+    t.string "status"
+  end
+
   create_table "journals", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"

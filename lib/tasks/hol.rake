@@ -6,4 +6,10 @@ namespace :hol do
       Reference.import_hol_document_urls true
     end
   end
+
+  desc "Compare taxa"
+  task compare_with_antcat: :environment do
+    Importers::Hol::Catalog.new.compare_with_antcat
+  end
+
 end
