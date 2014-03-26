@@ -102,4 +102,10 @@ class Taxon < ActiveRecord::Base
     end
   end
 
+  def self.initialize_china_biographic_regions
+    Taxon.includes(:protonym).where('(biogeographic_region IS NULL OR biogeographic_region = "") && protonyms.locality = "China"').each do |taxon|
+      taxon.update_attributes biogeographic_region: 'Palearctic'
+    end
+  end
+
 end
