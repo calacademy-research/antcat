@@ -14,7 +14,6 @@ describe Importers::Hol::Catalog do
       @hol.should_receive(:species_for_genus).with('Atta').and_return ['Atta albans', 'Atta minor', 'Atta major']
       @hol.compare_with_antcat
       results = HolComparison.order(:name).all.to_a
-      lll{%q{results.map(&:name)}}
       results.should have(4).items
       results.map(&:name).should == ['Atta albans', 'Atta major', 'Atta media', 'Atta minor']
       results.map(&:status).should == ['hol', 'hol', 'antcat', 'both']
