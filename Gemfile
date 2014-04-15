@@ -50,6 +50,7 @@ end
 
 group :test do
   gem 'capybara',       '1.1.2'
+  gem 'cucumber-api-steps', require: false
   gem 'database_cleaner'
   gem 'selenium-webdriver'
   gem 'webmock'

@@ -78,4 +78,8 @@ AntCat::Application.routes.draw do
   devise_for :users
   resources :users
 
+  namespace :api, defaults: {format: :json} do
+    resources :taxa
+  end
+
 end

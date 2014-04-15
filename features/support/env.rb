@@ -4,6 +4,7 @@ require 'spork'
 require 'factory_girl'
 require 'cucumber/formatter/progress'
 require 'cucumber/rspec/doubles'
+require 'cucumber/api_steps'
 
 Spork.prefork do
   ENV["RAILS_ENV"] ||= "test"
