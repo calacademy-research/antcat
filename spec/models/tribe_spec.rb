@@ -116,4 +116,35 @@ describe Tribe do
     end
 
   end
+
+  describe "Updating the parent" do
+    it "should assign the subfamily when parent is a tribe" do
+      subfamily = FactoryGirl.create :subfamily
+      new_subfamily = FactoryGirl.create :subfamily
+      tribe = FactoryGirl.create :tribe, subfamily: subfamily
+      tribe.update_parent new_subfamily
+      tribe.subfamily.should == new_subfamily
+    end
+
+    it "should assign the subfamily of its descendants" do
+      subfamily = FactoryGirl.create :subfamily
+      new_subfamily = FactoryGirl.create :subfamily
+      tribe = FactoryGirl.create :tribe, subfamily: subfamily
+      genus = create_genus tribe: tribe
+      species = create_species genus: genus
+      subspecies = create_subspecies species: species, genus: genus
+      # test the initial subfamilies
+      tribe.subfamily.should == subfamily
+      tribe.genera.first.subfamily.should == subfamily
+      tribe.genera.first.species.first.subfamily.should == subfamily
+      tribe.genera.first.subspecies.first.subfamily.should == subfamily
+      # test the updated subfamilies
+      tribe.update_parent new_subfamily
+      tribe.subfamily.should == new_subfamily
+      tribe.genera.first.subfamily.should == new_subfamily
+      tribe.genera.first.species.first.subfamily.should == new_subfamily
+      tribe.genera.first.subspecies.first.subfamily.should == new_subfamily
+    end
+  end
+
 end

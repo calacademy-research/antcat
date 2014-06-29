@@ -1,6 +1,7 @@
 .ackrc
 .rspec
 .sass-cache
+*.DS_Store
 backups/*.tmp
 coverage
 data/pdfs
@@ -14,6 +15,7 @@ s3.yml
 selenium
 server.yml
 solr/data
+sunspot-solr.pid
 tmp
 tags
 data/output/bolton.txt

@@ -39,6 +39,7 @@ class TaxonMother
       else
         @taxon.save!
       end
+      save_taxon_children @taxon
     end
   end
 
@@ -123,4 +124,13 @@ class TaxonMother
     @taxon.build_type_name            unless @taxon.type_name
   end
 
+  private
+
+  def save_taxon_children taxon
+    return if taxon.kind_of?(Subspecies)
+    taxon.children.each do |c|
+      c.save!
+      save_taxon_children c
+    end
+  end
 end

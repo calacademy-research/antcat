@@ -4,6 +4,14 @@ class Tribe < Taxon
   belongs_to :subfamily
   has_many :genera
 
+  def update_parent new_parent
+    set_name_caches
+    if new_parent.kind_of? Subfamily
+      self.subfamily = new_parent
+      update_descendants_subfamilies
+    end
+  end
+
   def self.import data
     taxon, name = find_taxon_to_update data
     transaction do
@@ -59,6 +67,16 @@ class Tribe < Taxon
       string << " #{subfamily.status}" if subfamily.invalid?
     end
     string
+  end
+
+  private
+
+  def update_descendants_subfamilies
+    self.genera.each{ |g|
+      g.subfamily = self.subfamily
+      g.species.each{ |s| s.subfamily = self.subfamily }
+      g.subspecies.each{ |s| s.subfamily = self.subfamily }
+    }
   end
 
 end

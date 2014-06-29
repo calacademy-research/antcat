@@ -1,6 +1,6 @@
 -#Locals: taxon, form
 
-- if (taxon.kind_of?(SpeciesGroupTaxon) || taxon.kind_of?(Genus)) && ! taxon.new_record?
+- if (taxon.kind_of?(SpeciesGroupTaxon) || taxon.kind_of?(Genus) || taxon.kind_of?(Tribe)) && ! taxon.new_record?
   %tr#parent_row
     - form.object.parent_name ||= form.object.parent.try(:name)
     - form.object.parent_name ||= Name.new

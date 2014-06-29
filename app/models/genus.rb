@@ -22,6 +22,7 @@ class Genus < GenusGroupTaxon
       self.tribe = nil
       self.subfamily = nil
     end
+    update_descendants_subfamilies
   end
 
   def statistics
@@ -69,6 +70,13 @@ class Genus < GenusGroupTaxon
       protonym: parse_result[:protonym],
       history: [history],
     )
+  end
+
+  private
+
+  def update_descendants_subfamilies
+    self.species.each{ |s| s.subfamily = self.subfamily }
+    self.subspecies.each{ |s| s.subfamily = self.subfamily }
   end
 
 end

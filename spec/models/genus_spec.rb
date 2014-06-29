@@ -424,5 +424,24 @@ describe Genus do
       genus.tribe.should == nil
       genus.subfamily.should == nil
     end
+
+    it "should assign the subfamily of its descendants" do
+      subfamily = FactoryGirl.create :subfamily
+      tribe = FactoryGirl.create :tribe, subfamily: subfamily
+      new_subfamily = FactoryGirl.create :subfamily
+      new_tribe = FactoryGirl.create :tribe, subfamily: new_subfamily
+      genus = create_genus tribe: tribe
+      species = create_species genus: genus
+      subspecies = create_subspecies species: species, genus: genus
+      # test the initial subfamilies
+      genus.subfamily.should == subfamily
+      genus.species.first.subfamily.should == subfamily
+      genus.subspecies.first.subfamily.should == subfamily
+      # test the updated subfamilies
+      genus.update_parent new_tribe
+      genus.subfamily.should == new_subfamily
+      genus.species.first.subfamily.should == new_subfamily
+      genus.subspecies.first.subfamily.should == new_subfamily
+    end
   end
 end
