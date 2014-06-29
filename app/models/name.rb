@@ -235,8 +235,9 @@ class Name < ActiveRecord::Base
   def references_in_taxt
     references = []
     Taxt.taxt_fields.each do |klass, fields|
-      for record in klass.send :all
-        for field in fields
+      table = klass.arel_table
+      for field in fields
+        for record in klass.where(table[field].matches("%{nam #{id}}%"))
           next unless record[field]
           if record[field] =~ /{nam #{id}}/
             references << {table: klass.table_name, field: field, id: record[:id]}

@@ -286,6 +286,29 @@ describe Name do
     end
   end
 
+  describe "references_in_taxt" do
+    it "return instances that reference this name" do
+      name = Name.create! name: 'Atta'
+      # create an instance for each type of taxt
+      Taxt.taxt_fields.each do |klass, fields|
+        for field in fields
+          FactoryGirl.create klass, field => "{nam #{name.id}}"
+        end
+      end
+      refs = name.references_in_taxt
+      # count the total referencing items
+      refs.length.should ==
+        Taxt.taxt_fields.collect{ |klass, fields| fields.length }.inject(&:+)
+      # count the total referencing items of each type
+      Taxt.taxt_fields.each do |klass, fields|
+        for field in fields
+          refs.select{ |i| i[:table] == klass.table_name }.length.should ==
+            Taxt.taxt_fields.detect{ |k, f| k == klass }[1].length
+        end
+      end
+    end
+  end
+
   describe "Versioning" do
     it "should record an add" do
       with_versioning do
