@@ -217,6 +217,14 @@ describe Name do
       results.map {|e| e[:name]}.should =~ ['Attinae', 'Attini']
     end
 
+    it "should prioritize names already associated with taxa" do
+      atta_name = FactoryGirl.create :name, name: 'Atta'
+      taxon = create_genus 'Atta'
+      results = Name.picklist_matching('Atta')
+      taxon.name_id.should_not == atta_name.id
+      results.first[:id].should == taxon.name_id
+    end
+
   end
 
   describe "Duplicates" do
@@ -415,6 +423,15 @@ describe Name do
       name.at(1).should be_nil
       name.at(2).should be_nil
       name.at(3).should be_nil
+    end
+  end
+
+  describe "find_by_name" do
+    it "should prioritize names already associated with taxa" do
+      atta_name = FactoryGirl.create :name, name: 'Atta'
+      taxon = create_genus 'Atta'
+      taxon.name.should_not == atta_name
+      Name.find_by_name('Atta').should == taxon.name
     end
   end
 

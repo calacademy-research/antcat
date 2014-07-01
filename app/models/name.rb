@@ -83,7 +83,7 @@ class Name < ActiveRecord::Base
     # I do not see why the code beginning with Name.select can't be factored out, but it can't
     search_term = letters_in_name + '%'
     prefix_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("name LIKE '#{search_term}' #{rank_filter}").order(:name)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("name LIKE '#{search_term}' #{rank_filter}").order('taxon_id desc').order(:name)
 
     search_term = letters_in_name.split('').join('%') + '%'
     epithet_matches =
@@ -269,6 +269,11 @@ class Name < ActiveRecord::Base
       end
       names
     end
+  end
+
+  def self.find_by_name string
+    Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false).
+      where(name: string).order('taxa.id desc').order(:name).first
   end
 
 end
