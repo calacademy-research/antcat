@@ -194,6 +194,32 @@ describe TaxonMother do
       taxon.current_valid_taxon.should == current_valid_taxon
     end
 
+    it "should allow name gender to be set when updating a taxon" do
+      taxon = @mother.create_taxon Rank[:genus], create_subfamily
+      params = @genus_params.deep_dup
+      @mother.save_taxon taxon, params
+      taxon.reload
+      taxon.name.gender.should be_nil
+      params = @genus_params.deep_dup
+      params[:name_attributes][:gender] = 'masculine'
+      @mother.save_taxon taxon, params
+      taxon.reload
+      taxon.name.gender.should == 'masculine'
+    end
+
+    it "should allow name gender to be unset when updating a taxon" do
+      taxon = @mother.create_taxon Rank[:genus], create_subfamily
+      params = @genus_params.deep_dup
+      @mother.save_taxon taxon, params
+      taxon.name.update_column(:gender, 'masculine')
+      taxon.name.gender.should == 'masculine'
+      params = @genus_params.deep_dup
+      params[:name_attributes][:gender] = ''
+      @mother.save_taxon taxon, params
+      taxon.reload
+      taxon.name.gender.should be_nil
+    end
+
     describe "Creating a Change" do
       it "should create a Change pointing to the version of Taxon when added" do
         with_versioning do

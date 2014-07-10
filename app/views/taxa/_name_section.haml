@@ -1,7 +1,7 @@
 -#Locals: taxon, gender, parent, form, default_name_string
 
 - default_name_string ||= nil
-- gender ||= 'masculine'
+- gender ||= 'unknown'
 
 %tr.name_row
   = form.fields_for :name do |name_form|
@@ -18,6 +18,6 @@
           - if taxon.name.kind_of? GenusGroupName
             %td#gender_field
               = name_form.label :gender
-              = name_form.select :gender, ['masculine', 'feminine', 'neuter']
+              = name_form.select :gender, [ [ 'unknown', nil ], 'masculine', 'feminine', 'neuter' ]
       .name_description
         = name_description taxon
