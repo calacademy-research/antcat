@@ -296,10 +296,12 @@ function cancelReferenceEdit() {
   else {
     id = $reference.attr('id')
     restoreReference($reference);
-    $reference = $('#' + id)
+    $reference = $('#' + id);
     $('.reference_display', $reference)
       .show()
-      .effect("highlight", {}, 3000)
+      .effect("highlight", {}, 3000);
+    if (AntCat.testing)
+      $('.icon', $reference).show();
   }
 
   return false;
