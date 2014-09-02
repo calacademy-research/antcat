@@ -1,0 +1,14 @@
+-#Locals: taxon
+
+- unless taxon.is_a?(Family) || taxon.is_a?(Subspecies)
+  .children_section.section
+    .section_header.ui-widget-header.ui-corner-top
+      .left
+        Children
+      .clear
+    .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+      - formatter = Formatters::CatalogTaxonFormatter.new taxon, current_user
+      - for child in Taxon.sort_by_status_and_name(taxon.children)
+        = Formatters::CatalogTaxonFormatter.link_to_taxon child
+        = raw "(" + Formatters::CatalogTaxonFormatter.taxon_status(child) + ")"
+        %br

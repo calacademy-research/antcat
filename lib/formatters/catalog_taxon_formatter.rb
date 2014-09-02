@@ -17,7 +17,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   end
 
   def link_to_review_change
-    if @taxon.can_be_reviewed_by? @user
+    if @taxon.can_be_reviewed_by?(@user) && @taxon.last_change
       button 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.last_change.id}"
     end
   end
@@ -47,6 +47,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       content << content_tag(:span, header_name, class: Formatters::CatalogFormatter.css_classes_for_rank(@taxon))
       content << content_tag(:span, " see ", class: 'see')
       content << content_tag(:span, header_name_for_taxon(@taxon.current_valid_taxon))
+      content << link_to_edit_taxon if link_to_edit_taxon
       content
     end
   end
@@ -89,28 +90,32 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   end
 
   def status
+    self.class.taxon_status @taxon
+  end
+
+  def self.taxon_status taxon
     labels = []
-    labels << "<i>incertae sedis</i> in #{Rank[@taxon.incertae_sedis_in].to_s}" if @taxon.incertae_sedis_in
-    if @taxon.homonym? && @taxon.homonym_replaced_by
-      labels << "homonym replaced by #{self.class.link_to_taxon(@taxon.homonym_replaced_by)}"
-    elsif @taxon.unidentifiable?
+    labels << "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in
+    if taxon.homonym? && taxon.homonym_replaced_by
+      labels << "homonym replaced by #{link_to_taxon(taxon.homonym_replaced_by)}"
+    elsif taxon.unidentifiable?
       labels << 'unidentifiable'
-    elsif @taxon.unresolved_homonym?
+    elsif taxon.unresolved_homonym?
       labels << "unresolved junior homonym"
-    elsif @taxon.nomen_nudum?
+    elsif taxon.nomen_nudum?
       labels << "<i>nomen nudum</i>"
-    elsif @taxon.synonym?
+    elsif taxon.synonym?
       label = 'junior synonym'
-      label << format_senior_synonym
+      label << format_senior_synonym(taxon)
       labels << label
-    elsif @taxon.invalid?
-      label = Status[@taxon].to_s.dup
+    elsif taxon.invalid?
+      label = Status[taxon].to_s.dup
       labels << label
     else
       labels << 'valid'
     end
 
-    labels << 'ichnotaxon' if @taxon.ichnotaxon?
+    labels << 'ichnotaxon' if taxon.ichnotaxon?
 
     labels.join(', ').html_safe
   end
@@ -125,11 +130,9 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     end
   end
 
-  def format_senior_synonym
-    return '' unless @taxon.senior_synonyms.count > 0
-    current_valid_taxon = @taxon.current_valid_taxon_including_synonyms
-    if current_valid_taxon
-      return ' of current valid taxon ' << self.class.link_to_taxon(current_valid_taxon)
+  def self.format_senior_synonym taxon
+    if current_valid_taxon = taxon.current_valid_taxon_including_synonyms
+      return ' of current valid taxon ' << link_to_taxon(current_valid_taxon)
     end
     ''
   end

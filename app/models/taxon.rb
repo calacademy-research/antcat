@@ -118,6 +118,18 @@ class Taxon < ActiveRecord::Base
     return find results.first.id
   end
 
+  def self.sort_by_status_and_name(taxa)
+    taxa.sort do |a, b|
+      if a.status == b.status
+        # name ascending
+        a.name.name <=> b.name.name
+      else
+        # status descending
+        b.status <=> a.status
+      end
+    end
+  end
+
   ###############################################
   # synonym
   def synonym?; status == 'synonym' end
@@ -207,7 +219,12 @@ class Taxon < ActiveRecord::Base
   belongs_to  :current_valid_taxon, class_name: 'Taxon'
   attr_accessor :current_valid_taxon_name
   def current_valid_taxon_including_synonyms
-    synonym? ? find_most_recent_valid_senior_synonym : current_valid_taxon
+    if synonym?
+      if senior = find_most_recent_valid_senior_synonym
+        return senior
+      end
+    end
+    current_valid_taxon
   end
   def current_valid_taxon_including_synonyms_and_self
     current_valid_taxon_including_synonyms || self

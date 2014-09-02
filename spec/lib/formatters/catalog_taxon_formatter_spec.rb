@@ -247,7 +247,7 @@ describe Formatters::CatalogTaxonFormatter do
       invalid_senior = create_genus 'Atta', status: 'synonym'
       junior = create_genus 'Eciton', status: 'synonym'
       Synonym.create! junior_synonym: junior, senior_synonym: invalid_senior
-      @formatter.new(junior).format_senior_synonym.should == ''
+      @formatter.format_senior_synonym(junior).should == ''
     end
   end
 end

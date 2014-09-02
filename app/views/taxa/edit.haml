@@ -45,5 +45,6 @@
 
     - unless @taxon.new_record?
       = render 'history_items_section',               taxon: @taxon
+      = render 'children_section',                    taxon: @taxon
       = render 'junior_and_senior_synonyms_section',  taxon: @taxon
       = render 'references_section',                  taxon: @taxon
