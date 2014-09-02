@@ -434,5 +434,60 @@ class Taxon < ActiveRecord::Base
     Name.import data
   end
 
+  def self.inherit_attributes_for_new_combination(new_combination, old_combination, new_combination_parent)
+    if new_combination_parent.is_a? Species
+      new_combination.name = Name.parse([ new_combination_parent.name.genus_epithet,
+        new_combination_parent.name.species_epithet, old_combination.name.epithet ].join(' '))
+    else
+      new_combination.name = Name.parse([ new_combination_parent.name.genus_epithet,
+        old_combination.name.species_epithet ].join(' '))
+    end
+    new_combination.protonym = old_combination.protonym
+    new_combination.verbatim_type_locality = old_combination.verbatim_type_locality
+    new_combination.biogeographic_region = old_combination.biogeographic_region
+    new_combination.type_specimen_repository = old_combination.type_specimen_repository
+    new_combination.type_specimen_code = old_combination.type_specimen_code
+    new_combination.type_specimen_url = old_combination.type_specimen_url
+  end
+
+  def self.attributes_for_new_usage(new_combination, old_combination)
+    {
+      name_attributes: { id: new_combination.name ? new_combination.name.id : old_combination.name.id },
+      status: 'valid',
+      homonym_replaced_by_name_attributes: {
+        id: old_combination.homonym_replaced_by ? old_combination.homonym_replaced_by.name_id : nil },
+      current_valid_taxon_name_attributes: {
+        id: old_combination.current_valid_taxon ? old_combination.current_valid_taxon.name_id : nil },
+      incertae_sedis_in: old_combination.incertae_sedis_in,
+      fossil: old_combination.fossil,
+      nomen_nudum: old_combination.nomen_nudum,
+      unresolved_homonym: old_combination.unresolved_homonym,
+      ichnotaxon: old_combination.ichnotaxon,
+      hong: old_combination.hong,
+      headline_notes_taxt: old_combination.headline_notes_taxt || "",
+      biogeographic_region: old_combination.biogeographic_region,
+      verbatim_type_locality: old_combination.verbatim_type_locality,
+      type_specimen_repository: old_combination.type_specimen_repository,
+      type_specimen_code: old_combination.type_specimen_code,
+      type_specimen_url: old_combination.type_specimen_url,
+      protonym_attributes: {
+        name_attributes: {
+          id: old_combination.protonym.name_id },
+        fossil: old_combination.protonym.fossil,
+        sic: old_combination.protonym.sic,
+        locality: old_combination.protonym.locality,
+        id: old_combination.protonym_id,
+        authorship_attributes: {
+          reference_attributes: {
+            id: old_combination.protonym.authorship.reference_id },
+          pages: old_combination.protonym.authorship.pages,
+          forms: old_combination.protonym.authorship.forms,
+          notes_taxt: old_combination.protonym.authorship.notes_taxt || "",
+          id: old_combination.protonym.authorship_id
+        }
+      }
+    }
+  end
+
   class TaxonExists < StandardError; end
 end

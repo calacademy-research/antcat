@@ -28,6 +28,7 @@
     = hidden_field_tag 'cancel_path', @cancel_path
     = hidden_field_tag 'convert_to_subspecies_path', @convert_to_subspecies_path
     = hidden_field_tag 'taxon_rank', @taxon.rank
+    = hidden_field_tag 'previous_combination_id', @previous_combination ? @previous_combination.id : nil
 
     = render 'shared/errors_for', resource: @taxon
 

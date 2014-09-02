@@ -3,6 +3,8 @@ class AntCat.NameField extends AntCat.Panel
   constructor: ($parent_element, @options = {}) ->
     @options.click_on_display = true
     @value_id = @options.value_id
+    @taxon_rank = $parent_element.closest('form').find('#taxon_rank').val()
+    @is_parent_name = ($parent_element.attr('id') == 'parent_name_field')
     super $parent_element.find('> .antcat_name_field'), @options
     @set_help()
 
@@ -46,6 +48,10 @@ class AntCat.NameField extends AntCat.Panel
     action += "&confirm_add_name=true" if @deciding_whether_to_add_name
     action
 
+  on_form_open: =>
+    @hide_combination_message()
+    super
+
   on_form_success: (data) =>
     @set_value data.id
     @set_submit_button_text 'OK'
@@ -57,6 +63,7 @@ class AntCat.NameField extends AntCat.Panel
     @set_submit_button_text 'OK'
     super
     @deciding_whether_to_add_name = false
+    @show_combination_message()
     @set_help()
 
   on_application_error: (data) =>
@@ -82,7 +89,51 @@ class AntCat.NameField extends AntCat.Panel
 
   set_value: (value) =>
     $value_field = $('#' + @value_id)
+    if (@taxon_rank == 'species' || @taxon_rank == 'subspecies') &&
+       @is_parent_name && parseInt($value_field.val()) != parseInt(value)
+      @create_combination_message(value)
     $value_field.val value
+
+  combination_message_html: =>
+    '<div id="dialog-confirm" title="Do you want a new combination?"><p>
+       <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+       Would you like to create a new combination under this parent?
+     </p></div>'
+
+  create_combination_message: (name_id) =>
+    action = @element.closest('form').attr('action')
+    taxon_id = action.substr(action.lastIndexOf('/') + 1)
+    console.log('showing the message')
+    @element.append($(@combination_message_html()))
+    dialog_box = $( "#dialog-confirm" )
+    dialog_box.dialog({
+      resizable: true,
+      height: 140,
+      width: 520,
+      modal: true,
+      buttons: {
+        "Yes, create new combination": (a) =>
+          window.location.href = '/taxa/new?parent_name_id=' + name_id +
+                                 '&rank_to_create=' + @taxon_rank +
+                                 '&previous_combination_id=' + taxon_id
+        ,
+        Cancel: () =>
+          dialog_box.dialog( "close" )
+      }
+    })
+    @show_combination_message()
+
+  hide_combination_message: =>
+    if message = @element.find('#combination_message')
+      message.hide()
+
+  show_combination_message: =>
+    if message = @element.find('#combination_message')
+      message.show()
+
+  remove_combination_message: =>
+    if message = @element.find('#combination_message')
+      message.remove()
 
   show_error: (message) =>
     $error_messages = @element.find('.error_messages')

@@ -20,7 +20,7 @@ class TaxonMother
     @taxon
   end
 
-  def save_taxon taxon, params
+  def save_taxon taxon, params, previous_combination = nil
     Taxon.transaction do
       @taxon = taxon
 
@@ -38,6 +38,20 @@ class TaxonMother
         save_change
       else
         @taxon.save!
+      end
+      if previous_combination
+        # the taxon that was just saved is a new combination. Update the
+        # previous combination's status, associated it with the new
+        # combination, and transfer all taxon history and synonyms
+        previous_combination.status = 'synonym'
+        previous_combination.current_valid_taxon = @taxon
+        TaxonHistoryItem.where({ taxon_id: previous_combination.id }).
+          update_all({ taxon_id: @taxon.id })
+        Synonym.where({ senior_synonym_id: previous_combination.id }).
+          update_all({ senior_synonym_id: @taxon.id })
+        Synonym.where({ junior_synonym_id: previous_combination.id }).
+          update_all({ junior_synonym_id: @taxon.id })
+        previous_combination.save!
       end
       save_taxon_children @taxon
     end

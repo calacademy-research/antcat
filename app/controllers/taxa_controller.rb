@@ -1,6 +1,7 @@
 # coding: UTF-8
 class TaxaController < ApplicationController
   before_filter :authenticate_editor, :get_params, :create_mother
+  before_filter :redirect_by_parent_name_id, only: :new
   skip_before_filter :authenticate_editor, if: :preview?
 
   helper ReferenceHelper
@@ -36,7 +37,11 @@ class TaxaController < ApplicationController
   ###################
   def get_taxon create_or_update
     if create_or_update == :create
-      @taxon = @mother.create_taxon @rank_to_create, Taxon.find(@parent_id)
+      parent = Taxon.find(@parent_id)
+      @taxon = @mother.create_taxon @rank_to_create, parent
+      if @previous_combination
+        Taxon.inherit_attributes_for_new_combination(@taxon, @previous_combination, parent)
+      end
     else
       @taxon = @mother.load_taxon
       @rank_to_create = Rank[@taxon].child
@@ -44,10 +49,22 @@ class TaxaController < ApplicationController
   end
 
   def save_taxon
-    @mother.save_taxon @taxon, @taxon_params
+    @mother.save_taxon @taxon, @taxon_params, @previous_combination
+    if @previous_combination && @previous_combination.is_a?(Species) && @previous_combination.children.any?
+      create_new_usages_for_subspecies
+    end
     redirect_to catalog_path @taxon
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :edit and return
+  end
+
+  def create_new_usages_for_subspecies
+    @previous_combination.children.select{ |t| t.status == 'valid' }.each do |t|
+      mother = TaxonMother.new
+      new_child = mother.create_taxon(Rank['subspecies'], @taxon)
+      inherit_attributes_for_new_usage(new_child, t, @taxon)
+      mother.save_taxon(new_child, Taxon.attributes_for_new_usage(new_child, t), t)
+    end
   end
 
   def set_paths create_or_update
@@ -62,7 +79,7 @@ class TaxaController < ApplicationController
   end
 
   def set_authorship_reference
-    @taxon.protonym.authorship.reference = DefaultReference.get session
+    @taxon.protonym.authorship.reference ||= DefaultReference.get session
   end
 
   def get_default_name_string
@@ -109,6 +126,7 @@ class TaxaController < ApplicationController
     @id = params[:id]
     @rank_to_create = Rank[params[:rank_to_create]]
     @parent_id = params[:parent_id]
+    @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
     @taxon_params = params[:taxon]
     @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
     @delete_taxon = params[:task_button_command] == 'delete_taxon'
@@ -116,6 +134,14 @@ class TaxaController < ApplicationController
 
   def create_mother
     @mother = TaxonMother.new @id
+  end
+
+  def redirect_by_parent_name_id
+    parent_name_id = params.delete(:parent_name_id)
+    if parent_name_id && parent = Taxon.find_by_name_id(parent_name_id)
+      params[:parent_id] = parent.id
+      redirect_to params
+    end
   end
 
 end
