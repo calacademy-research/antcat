@@ -45,8 +45,10 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     content_tag :div, class: 'header' do
       content = ''.html_safe
       content << content_tag(:span, header_name, class: Formatters::CatalogFormatter.css_classes_for_rank(@taxon))
-      content << content_tag(:span, " see ", class: 'see')
-      content << content_tag(:span, header_name_for_taxon(@taxon.current_valid_taxon))
+      if @taxon.current_valid_taxon
+        content << content_tag(:span, " see ", class: 'see')
+        content << content_tag(:span, header_name_for_taxon(@taxon.current_valid_taxon))
+      end
       content << link_to_edit_taxon if link_to_edit_taxon
       content
     end
