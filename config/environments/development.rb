@@ -9,6 +9,9 @@ AntCat::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
   config.action_mailer.default_url_options = {host: 'antcat.local'}
 
+# This line added to aid debugging; recommended by PLeary
+  config.logger = Logger.new(STDOUT)
+
   config.assets.compress = false
   config.assets.debug = true
 
