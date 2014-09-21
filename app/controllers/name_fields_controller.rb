@@ -21,7 +21,11 @@ class NameFieldsController < NamePickersController
     elsif new_or_homonym
       name = Name.find_by_name name_string
       if name
-        ask_about_homonym name, data
+        if Taxon.find_by_name_id name.id
+          ask_about_homonym name, data
+        else
+          add_name name_string, data
+        end
       else
         add_name name_string, data
       end

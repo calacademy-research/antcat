@@ -45,9 +45,9 @@ Feature: Editing a taxon
     And I click the name field
     And I set the name to "Calyptites"
     And I press "OK"
-    Then I should see "This name is in use by another taxon"
-    And I press "OK"
-    Then I should see "This name is in use by another taxon"
+    Then I should see "This name is in use by another taxon. To create a homonym, click"
+    And I press "Save homonym"
+    Then I should not see "This name is in use by another taxon. To create a homonym, click"
 
   Scenario: Cancelling
     Given there is a genus "Calyptites"

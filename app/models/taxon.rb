@@ -306,7 +306,7 @@ class Taxon < ActiveRecord::Base
     return if type_specimen_url.blank?
     # a URL with spaces is valid, but URI.parse rejects it
     uri = URI.parse type_specimen_url.gsub(/ /, '%20')
-    response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
+    response_code = Net::HTTP.new(uri.host, 80).request_head(uri.request_uri).code.to_i
     errors.add :type_specimen_url, 'was not found' unless (200..399).include? response_code
   rescue SocketError, URI::InvalidURIError, ArgumentError
     errors.add :type_specimen_url, 'is not in a valid format'
