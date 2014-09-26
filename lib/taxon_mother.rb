@@ -43,7 +43,7 @@ class TaxonMother
         # the taxon that was just saved is a new combination. Update the
         # previous combination's status, associated it with the new
         # combination, and transfer all taxon history and synonyms
-        previous_combination.status = 'synonym'
+        previous_combination.status = 'obsolete combination'
         previous_combination.current_valid_taxon = @taxon
         TaxonHistoryItem.where({ taxon_id: previous_combination.id }).
           update_all({ taxon_id: @taxon.id })

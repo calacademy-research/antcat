@@ -62,7 +62,7 @@ class TaxaController < ApplicationController
     @previous_combination.children.select{ |t| t.status == 'valid' }.each do |t|
       mother = TaxonMother.new
       new_child = mother.create_taxon(Rank['subspecies'], @taxon)
-      inherit_attributes_for_new_usage(new_child, t, @taxon)
+      Taxon.inherit_attributes_for_new_combination(new_child, t, @taxon)
       mother.save_taxon(new_child, Taxon.attributes_for_new_usage(new_child, t), t)
     end
   end

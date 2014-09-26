@@ -36,7 +36,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should be on the catalog page for "Eciton major"
     And the name in the header should be "Eciton major"
     When I go to the catalog page for "Atta major"
-    Then I should see "junior synonym of current valid taxon Eciton major"
+    Then I should see "an obsolete combination of Eciton major"
 
   Scenario: Changing a species's genus, duplicating an existing taxon
     Given there is a species "Atta pilosa" with genus "Atta"

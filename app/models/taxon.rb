@@ -268,6 +268,7 @@ class Taxon < ActiveRecord::Base
   def incertae_sedis_in? rank;incertae_sedis_in == rank end
   def collective_group_name?; status == 'collective group name' end
   def unidentifiable?;        status == 'unidentifiable' end
+  def obsolete_combination?;  status == 'obsolete combination' end
 
   ###############################################
   def authorship_string

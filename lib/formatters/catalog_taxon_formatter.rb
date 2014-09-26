@@ -110,6 +110,10 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       label = 'junior synonym'
       label << format_senior_synonym(taxon)
       labels << label
+    elsif taxon.obsolete_combination?
+      label = 'an obsolete combination of '
+      label << format_valid_combination(taxon)
+      labels << label
     elsif taxon.invalid?
       label = Status[taxon].to_s.dup
       labels << label
@@ -135,6 +139,13 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   def self.format_senior_synonym taxon
     if current_valid_taxon = taxon.current_valid_taxon_including_synonyms
       return ' of current valid taxon ' << link_to_taxon(current_valid_taxon)
+    end
+    ''
+  end
+
+  def self.format_valid_combination taxon
+    if current_valid_taxon = taxon.current_valid_taxon_including_synonyms
+      return link_to_taxon(current_valid_taxon)
     end
     ''
   end
