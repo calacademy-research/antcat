@@ -208,6 +208,7 @@ alias enable='ey web enable --environment=antcat_production && open http://antca
 
 # running cucumber scenarios
 alias cuke="cuc features/editing"
+alias cuc="bundle exec cucumber"
 alias cucke=cuke
 alias cukex="cuc features/editing/add_taxon.feature features/editing/edit_taxon.feature"
 alias cuckex=cukex
