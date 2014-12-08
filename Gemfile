@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-ruby '1.9.3'
+ruby '2.1.5'
 #ruby=ruby-1.9.3-p392
 
 gem 'acts_as_list'
@@ -33,7 +33,8 @@ gem 'workflow'
 gem 'xml-simple'
 
 group :development, :test do
-  gem 'debugger'
+#  gem 'debugger'
+  gem 'byebug'
   gem 'engineyard'
   gem 'launchy'
   gem 'rspec'
