@@ -1,4 +1,14 @@
 $ -> new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section .buttons_section'
+#
+#ready = ->
+#  $(document).find('#new_taxon').submit ->
+#    event.preventDefault()
+#    console.log("Hijacked!")
+#    false
+#
+#$(document).ready(ready)
+#$(document).on('page:load', ready)
+
 
 class AntCat.ProtonymField extends AntCat.NameField
   constructor: ($parent_element, @name_field, @options = {}) ->
@@ -26,7 +36,10 @@ class AntCat.TaxonForm extends AntCat.Form
     @initialize_homonym_replaced_by_section()
     @initialize_task_buttons()
     @initialize_events()
+    @initialize_duplicate_handler()
     super
+
+
 
   ###### initialization
   initialize_fields_section: =>
@@ -78,6 +91,12 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.find('#delete_taxon').click => @delete_taxon(); false
     @element.find('#convert_to_subspecies').click => @convert_to_subspecies(); false
 
+
+  initialize_duplicate_handler: =>
+    $(document).find('#new_taxon').submit => @popup_duplicate_window(); false
+
+
+
   initialize_events: =>
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
@@ -99,6 +118,7 @@ class AntCat.TaxonForm extends AntCat.Form
   cancel: => window.location = $('#cancel_path').val()
 
   ###### client functions
+
   replace_junior_and_senior_synonyms_section: (content) =>
     $('.junior_and_senior_synonyms_section').replaceWith content
     @initialize_junior_and_senior_synonyms_section()
@@ -128,3 +148,52 @@ class AntCat.TaxonForm extends AntCat.Form
 
   add_reference_panel: ($panel) =>
     @element.find('.reference_sections').append $panel
+
+  on_form_open: =>
+    @hide_duplicate_message()
+    super
+
+  duplicate_message_html: =>
+    '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations?"><p>
+       <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+       Choose an action:
+     </p></div>'
+
+  popup_duplicate_window: =>
+    event.preventDefault()
+    console.log("Hijacked24!")
+    @create_duplicate_message()
+
+  create_duplicate_message: =>
+    $(document).find('#duplicate_message').append($(@duplicate_message_html()))
+    dialog_box = $( "#dialog-duplicate" )
+    dialog_box.dialog({
+      resizable: true,
+      height: 140,
+      width: 520,
+      modal: true,
+      buttons: {
+        "foo": (a) =>
+          console.log(a)
+        "Yes, create new combination": (a) =>
+          window.location.href = '/taxa/new?parent_name_id=' + name_id +
+            '&rank_to_create=' + @taxon_rank +
+            '&previous_combination_id=' + taxon_id
+        ,
+        Cancel: () =>
+          dialog_box.dialog( "close" )
+      }
+    })
+    @show_duplicate_message()
+
+
+
+  hide_duplicate_message: =>
+    $('.duplicate_message').hide()
+
+
+  show_duplicate_message: =>
+    $('.duplicate_message').show()
+
+
+
