@@ -64,8 +64,10 @@ AntCat::Application.routes.draw do
   get 'name_fields/find'
   match 'name_fields/:type/:id' => 'name_fields#show', via: :get
 
+
   resource :reference_field, only: [:show]
   resource :reference_popup, only: [:show]
+  resource :duplicates, only: [:show,:create]
 
   match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test'
   match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test'

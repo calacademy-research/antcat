@@ -1,4 +1,5 @@
 # coding: UTF-8
+
 class TaxonMother
   # A TaxonMother is responsible for creating/saving
   # an object web of objects, starting with Taxon
@@ -24,13 +25,13 @@ class TaxonMother
     Taxon.transaction do
       @taxon = taxon
 
-      update_name                 params.delete :name_attributes
-      update_parent               params.delete :parent_name_attributes
-      update_current_valid_taxon  params.delete :current_valid_taxon_name_attributes
-      update_homonym_replaced_by  params.delete :homonym_replaced_by_name_attributes
-      update_protonym             params.delete :protonym_attributes
-      update_type_name            params.delete :type_name_attributes
-      update_name_status_flags    params
+      update_name params.delete :name_attributes
+      update_parent params.delete :parent_name_attributes
+      update_current_valid_taxon params.delete :current_valid_taxon_name_attributes
+      update_homonym_replaced_by params.delete :homonym_replaced_by_name_attributes
+      update_protonym params.delete :protonym_attributes
+      update_type_name params.delete :type_name_attributes
+      update_name_status_flags params
 
       if @taxon.new_record?
         set_initial_review_state
@@ -43,18 +44,40 @@ class TaxonMother
         # the taxon that was just saved is a new combination. Update the
         # previous combination's status, associated it with the new
         # combination, and transfer all taxon history and synonyms
-        previous_combination.status = 'obsolete combination'
-        previous_combination.current_valid_taxon = @taxon
-        TaxonHistoryItem.where({ taxon_id: previous_combination.id }).
-          update_all({ taxon_id: @taxon.id })
-        Synonym.where({ senior_synonym_id: previous_combination.id }).
-          update_all({ senior_synonym_id: @taxon.id })
-        Synonym.where({ junior_synonym_id: previous_combination.id }).
-          update_all({ junior_synonym_id: @taxon.id })
-        previous_combination.save!
+
+        if (previous_combination.id != @taxon.protonym.id)
+          # find all taxa that list previous_combination.id as
+          # current_valid_taxon_id. Make a special case for
+          # the original, so we don't muck up its status
+          Taxon.where(current_valid_taxon_id: previous_combination.id).each do |taxon_to_update|
+            update_status=nil
+            if !Status[taxon_to_update] == Status['original combination']
+                update_status=Status['original combination'].to_s
+            end
+            update_elements(taxon,params,taxon_to_update,update_status)
+          end
+          # because the current (and about to be invalidated) combination doesn't have
+          # a self-referential ID set in "current_valid_taxon", we have to call it out here.
+          update_elements(taxon,params,previous_combination,Status['obsolete combination'].to_s)
+
+        end
       end
       save_taxon_children @taxon
     end
+  end
+
+  def update_elements taxon, params, taxon_to_update, new_status=nil
+    if !new_status.nil?
+      taxon_to_update.status = new_status.to_s
+    end
+    taxon_to_update.current_valid_taxon = @taxon
+    TaxonHistoryItem.where({taxon_id: taxon_to_update.id}).
+        update_all({taxon_id: @taxon.id})
+    Synonym.where({senior_synonym_id: taxon_to_update.id}).
+        update_all({senior_synonym_id: @taxon.id})
+    Synonym.where({junior_synonym_id: taxon_to_update.id}).
+        update_all({junior_synonym_id: @taxon.id})
+    taxon_to_update.save!
   end
 
   def save_change
@@ -126,16 +149,19 @@ class TaxonMother
       @taxon.type_name = nil
       return
     end
-    attributes[:type_name_id] = attributes.delete :id
-    @taxon.attributes = attributes
+    # Joe todo- why do we hit this case?
+    if !attributes.nil?
+      attributes[:type_name_id] = attributes.delete :id
+      @taxon.attributes = attributes
+    end
   end
 
   def build_children
-    @taxon.build_name                 unless @taxon.name
-    @taxon.build_protonym             unless @taxon.protonym
-    @taxon.protonym.build_name        unless @taxon.protonym.name
-    @taxon.protonym.build_authorship  unless @taxon.protonym.authorship
-    @taxon.build_type_name            unless @taxon.type_name
+    @taxon.build_name unless @taxon.name
+    @taxon.build_protonym unless @taxon.protonym
+    @taxon.protonym.build_name unless @taxon.protonym.name
+    @taxon.protonym.build_authorship unless @taxon.protonym.authorship
+    @taxon.build_type_name unless @taxon.type_name
   end
 
   private

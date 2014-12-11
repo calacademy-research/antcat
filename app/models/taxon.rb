@@ -44,6 +44,8 @@ class Taxon < ActiveRecord::Base
     joins(:name).readonly(false).where ['epithet = ?', epithet]
   end
 
+  # target_epithet is a string
+  # genus is an object
   def self.find_epithet_in_genus target_epithet, genus
     for epithet in Name.make_epithet_set target_epithet
       results = with_names.where(['genus_id = ? AND epithet = ?', genus.id, epithet])
