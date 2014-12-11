@@ -1,14 +1,4 @@
 $ -> new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section .buttons_section'
-#
-#ready = ->
-#  $(document).find('#new_taxon').submit ->
-#    event.preventDefault()
-#    console.log("Hijacked!")
-#    false
-#
-#$(document).ready(ready)
-#$(document).on('page:load', ready)
-
 
 class AntCat.ProtonymField extends AntCat.NameField
   constructor: ($parent_element, @name_field, @options = {}) ->
@@ -37,6 +27,8 @@ class AntCat.TaxonForm extends AntCat.Form
     @initialize_task_buttons()
     @initialize_events()
     @initialize_duplicate_handler()
+    @original_submit = null
+
     super
 
 
@@ -154,39 +146,60 @@ class AntCat.TaxonForm extends AntCat.Form
     super
 
   duplicate_message_html: =>
-    '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations?"><p>
+    '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations."><p>
        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-       Choose an action:
+           Choose a representation:
+           <div id="duplicate-radio">
+    <input type="radio" id="radio1" name="radio"><label for="radio1">Choice 1</label>
+    <input type="radio" id="radio2" name="radio" checked="checked"><label for="radio2">Choice 2</label>
+    <input type="radio" id="radio3" name="radio"><label for="radio3">Choice 3</label>
+  </div>
      </p></div>'
 
   popup_duplicate_window: =>
     event.preventDefault()
-    console.log("Hijacked24!")
+    # call back here to see if we need to do this. If so, store
+    # the results of the callback
+#    taxon_form = $('#new_taxon')
+#    taxon_form.unbind("submit")
+#    taxon_form.submit()
+
+
+
+
     @create_duplicate_message()
 
+
+  get_radio_value: =>
+    result = null
+    $("#dialog-duplicate :radio").each ->
+      if this.checked == true
+        result = this.id
+    result
+
   create_duplicate_message: =>
-    $(document).find('#duplicate_message').append($(@duplicate_message_html()))
-    dialog_box = $( "#dialog-duplicate" )
+    @duplicate_message = $('#duplicate_message')
+    @duplicate_message.append($(@duplicate_message_html()))
+    dialog_box = $("#dialog-duplicate")
     dialog_box.dialog({
       resizable: true,
       height: 140,
       width: 520,
       modal: true,
+
       buttons: {
         "foo": (a) =>
-          console.log(a)
+          console.log "got a value:" + @get_radio_value()
         "Yes, create new combination": (a) =>
           window.location.href = '/taxa/new?parent_name_id=' + name_id +
             '&rank_to_create=' + @taxon_rank +
             '&previous_combination_id=' + taxon_id
         ,
         Cancel: () =>
-          dialog_box.dialog( "close" )
+          dialog_box.dialog("close")
       }
     })
     @show_duplicate_message()
-
-
 
   hide_duplicate_message: =>
     $('.duplicate_message').hide()
