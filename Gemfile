@@ -47,6 +47,7 @@ end
 group :development do
   gem 'rails-erd'
   gem 'wirble'
+  gem "intellij-coffee-script-debugger", :git => "git://github.com/JetBrains/intellij-coffee-script-debugger.git"
 end
 
 group :test do
