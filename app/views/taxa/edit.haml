@@ -49,3 +49,5 @@
       = render 'children_section',                    taxon: @taxon
       = render 'junior_and_senior_synonyms_section',  taxon: @taxon
       = render 'references_section',                  taxon: @taxon
+
+  %div{:class => "ui-icon ui-icon-alert duplicate-modal", :id => "duplicate_message"}
