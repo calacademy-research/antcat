@@ -85,7 +85,7 @@ class AntCat.TaxonForm extends AntCat.Form
 
 
   initialize_duplicate_handler: =>
-    $(document).find('#new_taxon').submit => @popup_duplicate_window(); false
+    $(document).find('#new_taxon').submit => @check_for_duplicates(); false
 
 
 
@@ -145,26 +145,53 @@ class AntCat.TaxonForm extends AntCat.Form
     @hide_duplicate_message()
     super
 
-  duplicate_message_html: =>
-    '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations."><p>
+
+  duplicate_message_html: (data)=>
+
+    message = '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations."><p>
        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
            Choose a representation:
-           <div id="duplicate-radio class="duplicate-radio">
-    <input type="radio" id="radio1" name="radio"><label for="radio1">Choice 1</label>
-    <input type="radio" id="radio2" name="radio" checked="checked"><label for="radio2">Choice 2</label>
-    <input type="radio" id="radio3" name="radio"><label for="radio3">Choice 3</label>
-  </div>
-     </p></div>'
+           <div id="duplicate-radio class="duplicate-radio">'
 
-  popup_duplicate_window: =>
+    for i in [1..data.length] by 1
+      j = i-1
+      console.log ("Checking: " + j)
+      message = message + '<input type="radio" id="radio'+
+        j +
+        '" name="radio"><label for="radio'+
+        j +
+        '">'+
+        data[j].species.name_html_cache +
+        ": " +
+        data[j].species.authorship_string +
+        '</label>'
+
+    message = message + '<input type="radio" id="radio'+
+      data.length +
+      '" name="radio" checked="checked"><label for="radio'+
+      data.length +
+    '">Create homonym</label>'
+
+    message = message + '</div></p></div>'
+
+
+  check_for_duplicates: =>
     event.preventDefault()
-    # call back here to see if we need to do this. If so, store
-    # the results of the callback
-#    taxon_form = $('#new_taxon')
-#    taxon_form.unbind("submit")
-#    taxon_form.submit()
+    url = "http://localhost:3000/duplicates?parent_id=430108&previous_combination_id=442926&rank_to_create=species"
+    $.ajax
+      url:      url,
+      type:     'get',
+      dataType: 'json',
+      success: (data) =>
+        @got_duplicate_data(data)
+      error:    (xhr) => debugger
 
-    @create_duplicate_message()
+  got_duplicate_data: (data) =>
+    if data.length == 0
+      taxon_form.unbind("submit")
+      taxon_form.submit()
+    else
+      @create_duplicate_message(data)
 
 
   get_radio_value: =>
@@ -174,9 +201,9 @@ class AntCat.TaxonForm extends AntCat.Form
         result = this.id
     result
 
-  create_duplicate_message: =>
+  create_duplicate_message: (data) =>
     @duplicate_message = $('#duplicate_message')
-    @duplicate_message.append($(@duplicate_message_html()))
+    @duplicate_message.append($(@duplicate_message_html(data)))
     dialog_box = $("#dialog-duplicate")
     dialog_box.dialog({
       resizable: true,

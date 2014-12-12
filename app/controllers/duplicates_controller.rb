@@ -17,7 +17,7 @@ class DuplicatesController < TaxaController
       # puts "protonym id : " + option.protonym[:id].to_s
       option[:authorship_string] = option.protonym.authorship_string
     end
-    render json: options.to_json, status: 500
+    render json: options.to_json, status: :ok
   end
 
 
