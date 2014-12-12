@@ -185,7 +185,7 @@ class AntCat.TaxonForm extends AntCat.Form
       "&previous_combination_id="+
       @previous_combination_id +
       "&rank_to_create=species"
-    debugger
+
     $.ajax
       url:      url,
       type:     'get',
@@ -206,7 +206,7 @@ class AntCat.TaxonForm extends AntCat.Form
     result = null
     $("#dialog-duplicate :radio").each ->
       if this.checked == true
-        result = this.id
+        result = parseInt(this.id.replace(/radio/, ""));
     result
 
   create_duplicate_message: (data) =>
@@ -223,9 +223,12 @@ class AntCat.TaxonForm extends AntCat.Form
         "foo": (a) =>
           console.log "got a value:" + @get_radio_value()
         "Yes, create new combination": (a) =>
-          window.location.href = '/taxa/new?parent_name_id=' + name_id +
-            '&rank_to_create=' + @taxon_rank +
-            '&previous_combination_id=' + taxon_id
+          if @get_radio_value() == data.length
+            window.location.href = '/taxa/new?parent_name_id=' + name_id +
+              '&rank_to_create=' + @taxon_rank +
+              '&previous_combination_id=' + taxon_id
+          else
+            console.log ("Do the new thing.")
         ,
         Cancel: () =>
           dialog_box.dialog("close")
