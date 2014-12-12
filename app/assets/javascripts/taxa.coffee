@@ -177,7 +177,15 @@ class AntCat.TaxonForm extends AntCat.Form
 
   check_for_duplicates: =>
     event.preventDefault()
-    url = "http://localhost:3000/duplicates?parent_id=430108&previous_combination_id=442926&rank_to_create=species"
+    @parent_id = $('#parent_id').val()
+    @previous_combination_id = $('#previous_combination_id').val()
+
+    url = "http://localhost:3000/duplicates?parent_id="+
+      @parent_id +
+      "&previous_combination_id="+
+      @previous_combination_id +
+      "&rank_to_create=species"
+    debugger
     $.ajax
       url:      url,
       type:     'get',
