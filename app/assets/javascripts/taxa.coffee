@@ -149,7 +149,7 @@ class AntCat.TaxonForm extends AntCat.Form
     '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations."><p>
        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
            Choose a representation:
-           <div id="duplicate-radio">
+           <div id="duplicate-radio class="duplicate-radio">
     <input type="radio" id="radio1" name="radio"><label for="radio1">Choice 1</label>
     <input type="radio" id="radio2" name="radio" checked="checked"><label for="radio2">Choice 2</label>
     <input type="radio" id="radio3" name="radio"><label for="radio3">Choice 3</label>
@@ -163,9 +163,6 @@ class AntCat.TaxonForm extends AntCat.Form
 #    taxon_form = $('#new_taxon')
 #    taxon_form.unbind("submit")
 #    taxon_form.submit()
-
-
-
 
     @create_duplicate_message()
 
