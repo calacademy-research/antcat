@@ -85,7 +85,8 @@ class AntCat.TaxonForm extends AntCat.Form
 
 
   initialize_duplicate_handler: =>
-    $(document).find('#new_taxon').submit => @check_for_duplicates(); false
+    @new_taxon_form = $(document).find('#new_taxon')
+    @new_taxon_form.submit => @check_for_duplicates(); false
 
 
 
@@ -174,7 +175,8 @@ class AntCat.TaxonForm extends AntCat.Form
 
     message = message + '</div></p></div>'
 
-
+  # doesn't execute the "submit", instead it does synchronus ajax query
+  # against the duplicates controller. The results appear in got_duplicate_data.
   check_for_duplicates: =>
     event.preventDefault()
     @parent_id = $('#parent_id').val()
@@ -194,10 +196,12 @@ class AntCat.TaxonForm extends AntCat.Form
         @got_duplicate_data(data)
       error:    (xhr) => debugger
 
+  # Hit from check_for_duplicates; if there are no duplicates, carry on.
+  # Otherwise, popup dialog box via create_duplicate_message
   got_duplicate_data: (data) =>
     if data.length == 0
-      taxon_form.unbind("submit")
-      taxon_form.submit()
+      @new_taxon_form.unbind("submit")
+      @new_taxon_form.submit()
     else
       @create_duplicate_message(data)
 
@@ -218,19 +222,18 @@ class AntCat.TaxonForm extends AntCat.Form
       height: 140,
       width: 520,
       modal: true,
-
       buttons: {
-        "foo": (a) =>
-          console.log "got a value:" + @get_radio_value()
         "Yes, create new combination": (a) =>
+          @new_taxon_form.unbind("submit")
+
           if @get_radio_value() == data.length
-            window.location.href = '/taxa/new?parent_name_id=' + name_id +
-              '&rank_to_create=' + @taxon_rank +
-              '&previous_combination_id=' + taxon_id
+            @new_taxon_form.submit()
           else
-            console.log ("Do the new thing.")
+            $("#new_taxon").attr("action","/duplicates")
+            @new_taxon_form.submit()
         ,
         Cancel: () =>
+          @stop_throbbing()
           dialog_box.dialog("close")
       }
     })
@@ -242,6 +245,17 @@ class AntCat.TaxonForm extends AntCat.Form
 
   show_duplicate_message: =>
     $('.duplicate_message').show()
+
+  #test case notes:
+
+  # try this for a case where there are no duplicate candidates
+  # try this for a case with more than one duplicate candidate
+  # duplicate candidate, choose one  (for each of the above)
+  # duplicate candidate, make a homonym
+  # For homonym case, check that the references for "b" in a - b -a' case are good.
+  # for reversion case(s), check that the references for "b" are good
+  # for a case where there is one or more duplicatre candidates, hit cancel on dialog box (throbber case!)
+
 
 
 

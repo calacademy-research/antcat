@@ -27,9 +27,16 @@ class DuplicatesController < TaxaController
     render json: options.to_json, status: :ok
   end
 
-  def update
+  # Sort of a misnomer; we go here to create the duplicate case because we're re-writing the action
+  # for the form submit
 
+  def create
+    get_taxon :create
+    set_paths :create
+    #save_taxon
+    render :nothing, status: :ok
   end
+
 
 
 end
