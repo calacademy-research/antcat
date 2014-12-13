@@ -4,7 +4,7 @@
 # species epithet.
 
 class DuplicatesController < TaxaController
-  before_filter :authenticate_editor, :get_params
+  before_filter :authenticate_editor, :get_params, :create_mother
 
   # Takes requires parent_id (target parent)and previous_combination_id
   # returns all matching taxa that could conflict with this naming.
@@ -27,16 +27,43 @@ class DuplicatesController < TaxaController
     render json: options.to_json, status: :ok
   end
 
-  # Sort of a misnomer; we go here to create the duplicate case because we're re-writing the action
-  # for the form submit
+  # Sort of a misnomer; arrive here to create the duplicate (from taxa.coffee)case because we're re-writing the action
+  # for the form submit which USED to go to taxa_controller.create.
 
   def create
-    get_taxon :create
+    setup_taxon
     set_paths :create
-    #save_taxon
-    render :nothing, status: :ok
+    save_original_taxon
   end
 
+  def setup_taxon
+    parent = Taxon.find(@parent_id)
+    if @previous_combination
+      Taxon.inherit_attributes_for_new_combination(@original_combination, @previous_combination, parent)
+    end
 
+  end
 
+  def save_original_taxon
+    @mother.save_taxon @original_combination, @taxon_params, @previous_combination
+    if @previous_combination && @previous_combination.is_a?(Species) && @previous_combination.children.any?
+      create_new_usages_for_subspecies
+    end
+    redirect_to catalog_path @taxon
+  rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
+    render :edit and return
+  end
+
+  def get_params
+    @original_species_id = params[:original_species_id]
+    if !@original_species_id.nil?
+      @original_combination = Taxon.find(@original_species_id)
+    end
+    super
+  end
 end
+
+
+
+
+

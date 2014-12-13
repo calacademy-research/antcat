@@ -126,8 +126,11 @@ class TaxonMother
       @taxon.type_name = nil
       return
     end
-    attributes[:type_name_id] = attributes.delete :id
-    @taxon.attributes = attributes
+    # Joe todo- why do we hit this case?
+    if !attributes.nil?
+      attributes[:type_name_id] = attributes.delete :id
+      @taxon.attributes = attributes
+    end
   end
 
   def build_children

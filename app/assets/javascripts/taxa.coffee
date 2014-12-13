@@ -156,7 +156,6 @@ class AntCat.TaxonForm extends AntCat.Form
 
     for i in [1..data.length] by 1
       j = i-1
-      console.log ("Checking: " + j)
       message = message + '<input type="radio" id="radio'+
         j +
         '" name="radio"><label for="radio'+
@@ -221,6 +220,7 @@ class AntCat.TaxonForm extends AntCat.Form
       resizable: true,
       height: 140,
       width: 520,
+      width: 520,
       modal: true,
       buttons: {
         "Yes, create new combination": (a) =>
@@ -230,6 +230,20 @@ class AntCat.TaxonForm extends AntCat.Form
             @new_taxon_form.submit()
           else
             $("#new_taxon").attr("action","/duplicates")
+            original_species_id = data[@get_radio_value()].species.id
+
+            # Slightly goofy; appending a text field to the form with
+            # "original_species_id" set. Not sure how else to add
+            # parameters to a "post" without redoing the whole form.
+
+            #
+            $("<input type='text' value='" + original_species_id.toString() + "' />")
+              .attr("id", "original_species_id")
+              .attr("name", "original_species_id")
+              .css("visibility", "hidden")
+
+            .appendTo(@new_taxon_form);
+
             @new_taxon_form.submit()
         ,
         Cancel: () =>
