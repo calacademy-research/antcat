@@ -16,7 +16,10 @@ class DuplicatesController < TaxaController
 
     new_parent = Taxon.find(@parent_id)
     options = Taxon.find_epithet_in_genus @previous_combination.name.epithet, new_parent
-
+    if options.nil?
+      render :nothing => true, status: :no_content
+      return
+    end
     options.each do |option|
       # puts "name: " + option.name.name + " " +
       #          "author: " + option.protonym.authorship_string  +

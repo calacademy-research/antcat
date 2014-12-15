@@ -198,7 +198,7 @@ class AntCat.TaxonForm extends AntCat.Form
   # Hit from check_for_duplicates; if there are no duplicates, carry on.
   # Otherwise, popup dialog box via create_duplicate_message
   got_duplicate_data: (data) =>
-    if data.length == 0
+    if data == null
       @new_taxon_form.unbind("submit")
       @new_taxon_form.submit()
     else
@@ -269,6 +269,7 @@ class AntCat.TaxonForm extends AntCat.Form
   # For homonym case, check that the references for "b" in a - b -a' case are good.
   # for reversion case(s), check that the references for "b" are good
   # for a case where there is one or more duplicatre candidates, hit cancel on dialog box (throbber case!)
+  # Standard case(maybe already covered?) where there is no conflict/duplicate
 
 
 
