@@ -270,6 +270,9 @@ class AntCat.TaxonForm extends AntCat.Form
   # for reversion case(s), check that the references for "b" are good
   # for a case where there is one or more duplicatre candidates, hit cancel on dialog box (throbber case!)
   # Standard case(maybe already covered?) where there is no conflict/duplicate
+  # a-b-a' case for both options     (with and without approval)
+  # a-b-c case, check all references
+  # a-b-c + appprove, check all reference
 
 
 
