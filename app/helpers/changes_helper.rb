@@ -62,6 +62,12 @@ module ChangesHelper
     end
   end
 
+  def undo_button taxon
+    if taxon.can_be_edited_by? current_user
+      button 'Undo', 'undo_button', 'data-undo-id' => taxon.last_change.id
+    end
+  end
+
   def approve_button taxon
     if taxon.can_be_approved_by? current_user
       button 'Approve', 'approve_button', 'data-change-id' => taxon.last_change.id

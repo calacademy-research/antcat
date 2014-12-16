@@ -21,4 +21,11 @@ class ChangesController < ApplicationController
     render json: json, content_type: 'text/html'
   end
 
+
+  def undo
+
+    json = {success: true}.to_json
+    render json: json, content_type: 'text/html'
+  end
+
 end
