@@ -23,6 +23,13 @@ class ChangesController < ApplicationController
 
 
   def undo
+    @change = Change.find params[:id]
+    @version = Version.find @change.paper_trail_version_id
+    if @version.reify
+      @version.reify.save!
+    else
+      @version.item.destroy
+    end
 
     json = {success: true}.to_json
     render json: json, content_type: 'text/html'

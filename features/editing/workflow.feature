@@ -66,6 +66,9 @@ Feature: Workflow
     When I follow "Atta"
     Then I should be on the catalog page for "Atta"
 
+
+
+
   Scenario: Approving a change
     When I add the genus "Atta"
     And I go to the catalog page for "Atta"
