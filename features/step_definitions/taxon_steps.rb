@@ -144,6 +144,10 @@ Given /^species "(.*?)" exists in that genus$/ do |name|
   @species = FactoryGirl.create :species, subfamily: @subfamily, genus: @genus, name: FactoryGirl.create(:species_name, name: name)
   @species.history_items.create! taxt: "#{name} history"
 end
+Given /^there is an original species "([^"]*)" with genus "([^"]*)"$/ do |species_name, genus_name|
+  genus = create_genus genus_name
+  create_species species_name, genus: genus, status: Status['original combination'].to_s
+end
 Given /^there is a species "([^"]*)" with genus "([^"]*)"$/ do |species_name, genus_name|
   genus = create_genus genus_name
   create_species species_name, genus: genus

@@ -45,31 +45,36 @@ class TaxonMother
         # previous combination's status, associated it with the new
         # combination, and transfer all taxon history and synonyms
 
-        if (previous_combination.id != @taxon.protonym.id)
-          # find all taxa that list previous_combination.id as
-          # current_valid_taxon_id. Make a special case for
-          # the original, so we don't muck up its status
-          Taxon.where(current_valid_taxon_id: previous_combination.id).each do |taxon_to_update|
-            update_status=nil
-            if !Status[taxon_to_update] == Status['original combination']
-                update_status=Status['original combination'].to_s
-            end
-            update_elements(taxon,params,taxon_to_update,update_status)
-          end
-          # because the current (and about to be invalidated) combination doesn't have
-          # a self-referential ID set in "current_valid_taxon", we have to call it out here.
-          update_elements(taxon,params,previous_combination,Status['obsolete combination'].to_s)
+        # find all taxa that list previous_combination.id as
+        # current_valid_taxon_id and update them
+        Taxon.where(current_valid_taxon_id: previous_combination.id).each do |taxon_to_update|
+          update_elements(taxon, params, taxon_to_update, get_status_string(taxon_to_update))
+        end
 
+        # since the previous doesn't have a pointer to current_valid_taxon, it won't show up
+        # in the above search. If it's the protonym, set it propertly.
+        if (previous_combination.id == @taxon.protonym.id)
+          update_elements(taxon, params, previous_combination, Status['original combination'].to_s)
+        else
+          update_elements(taxon, params, previous_combination, Status['obsolete combination'].to_s)
         end
       end
       save_taxon_children @taxon
     end
   end
 
-  def update_elements taxon, params, taxon_to_update, new_status=nil
-    if !new_status.nil?
-      taxon_to_update.status = new_status.to_s
+  def get_status_string(taxon_to_update)
+    update_status=nil
+    if Status[taxon_to_update] == Status['original combination']
+      update_status=Status['original combination'].to_s
+    else
+      update_status=Status['obsolete combination'].to_s
     end
+    update_status
+  end
+
+  def update_elements taxon, params, taxon_to_update, status_string
+    taxon_to_update.status = status_string
     taxon_to_update.current_valid_taxon = @taxon
     TaxonHistoryItem.where({taxon_id: taxon_to_update.id}).
         update_all({taxon_id: @taxon.id})
