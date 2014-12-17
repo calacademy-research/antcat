@@ -24,7 +24,7 @@ class Milieu
   end
 
   def self.read_server_config_file
-    directory = Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/'
+    directory = Rails.env.production? ? '/data/antcat/config' : Rails.root + 'config'
     file_name = "#{directory}/server.yml"
     YAML.load_file file_name
   end
