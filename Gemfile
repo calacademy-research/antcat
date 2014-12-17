@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-ruby '2.1.5'
+ruby '2.1.2'
 #ruby=ruby-1.9.3-p392
 
 gem 'acts_as_list'
