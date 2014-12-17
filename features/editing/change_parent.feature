@@ -22,9 +22,8 @@ Feature: Changing parent genus, species, tribe or subfamily
     And the name in the header should be "Eciton major"
 
   Scenario: Changing a species's genus by using the helper link
-    Given there is a genus "Atta"
+    Given there is a species "Atta major" with genus "Atta"
     And there is a genus "Eciton"
-    And there is a species "Atta major" with genus "Atta"
     When I go to the edit page for "Atta major"
     And I click the parent name field
     And I set the parent name to "Eciton"
@@ -36,7 +35,39 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should be on the catalog page for "Eciton major"
     And the name in the header should be "Eciton major"
     When I go to the catalog page for "Atta major"
-    Then I should see "an obsolete combination of Eciton major"
+    Then I should see "see Eciton major"
+
+  Scenario: Changing a species's genus twice by using the helper link
+    Given there is an original species "Atta major" with genus "Atta"
+    And there is a genus "Becton"
+    And there is a genus "Chatsworth"
+
+    # Change parent from A -> B
+    When I go to the edit page for "Atta major"
+    And I click the parent name field
+    And I set the parent name to "Becton"
+    And I press "OK"
+    Then I should see "Would you like to create a new combination under this parent?"
+    When I press "Yes, create new combination"
+    When I save my changes
+
+    # Change parent from B -> C
+    When I go to the edit page for "Becton major"
+    And I click the parent name field
+    And I set the parent name to "Chatsworth"
+    And I press "OK"
+    Then I should see "Would you like to create a new combination under this parent?"
+    When I press "Yes, create new combination"
+    Then the name field should contain "Chatsworth major"
+    When I save my changes
+
+    # We are now on the catalog page after doing A -> B -> C
+    Then I should be on the catalog page for "Chatsworth major"
+    And the name in the header should be "Chatsworth major"
+    When I go to the catalog page for "Atta major"
+    Then I should see "see Chatsworth major"
+    When I go to the catalog page for "Becton major"
+    Then I should see "an obsolete combination of Chatsworth major"
 
   Scenario: Changing a species's genus, duplicating an existing taxon
     Given there is a species "Atta pilosa" with genus "Atta"
