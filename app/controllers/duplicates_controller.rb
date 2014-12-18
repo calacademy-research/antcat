@@ -4,7 +4,7 @@
 # species epithet.
 
 class DuplicatesController < TaxaController
-  before_filter :authenticate_editor, :get_params, :create_mother, :cors_set_access_control_headers
+  before_filter :authenticate_editor, :get_params, :create_mother
 
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'

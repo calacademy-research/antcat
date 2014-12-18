@@ -181,7 +181,7 @@ class AntCat.TaxonForm extends AntCat.Form
     @parent_id = $('#parent_id').val()
     @previous_combination_id = $('#previous_combination_id').val()
 
-    url = "http://localhost:3000/duplicates?parent_id="+
+    url = "/duplicates?parent_id="+
       @parent_id +
       "&previous_combination_id="+
       @previous_combination_id +
