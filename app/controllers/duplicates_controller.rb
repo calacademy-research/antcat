@@ -4,7 +4,15 @@
 # species epithet.
 
 class DuplicatesController < TaxaController
-  before_filter :authenticate_editor, :get_params, :create_mother
+  before_filter :authenticate_editor, :get_params, :create_mother, :cors_set_access_control_headers
+
+  def cors_set_access_control_headers
+    headers['Access-Control-Allow-Origin'] = '*'
+    headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
+    headers['Access-Control-Request-Method'] = '*'
+    headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  end
+
 
   # Takes requires parent_id (target parent)and previous_combination_id
   # returns all matching taxa that could conflict with this naming.
