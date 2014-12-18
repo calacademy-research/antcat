@@ -170,7 +170,7 @@ class AntCat.TaxonForm extends AntCat.Form
       data.length +
       '" name="radio" checked="checked"><label for="radio'+
       data.length +
-    '">Create a new species with the same name</label>'
+    '">New species, same name</label>'
 
     message = message + '</div></p></div>'
 
