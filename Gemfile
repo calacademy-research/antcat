@@ -20,10 +20,12 @@ gem 'mysql2'
 gem 'newrelic_rpm'
 gem 'nokogiri'
 gem 'paper_trail'
-gem 'paper_trail_manager'
+#gem 'paper_trail_manager'
+gem 'protected_attributes' #attr_accesssible deprecated in rails 4.
+gem 'rails-observers'  # observers deprecated in rails 4
 gem 'progress_bar'
 gem 'rack'
-gem 'rails',            '~> 3'
+gem 'rails',            '>= 4.1'
 gem 'rake'
 gem 'sass'
 gem 'sunspot_rails'
@@ -35,19 +37,20 @@ gem 'xml-simple'
 group :development, :test do
 #  gem 'debugger'
   gem 'byebug'
-  gem 'engineyard'
+  #gem 'engineyard'
   gem 'launchy'
   gem 'rspec'
   gem 'rspec-rails'
   gem 'spork'
   gem 'sunspot_solr'
   gem 'thin'
+  gem 'web-console', '~> 2.0'
 end
 
 group :development do
   gem 'rails-erd'
   gem 'wirble'
-  gem "intellij-coffee-script-debugger", :git => "git://github.com/JetBrains/intellij-coffee-script-debugger.git"
+ # gem "intellij-coffee-script-debugger", :git => "git://github.com/JetBrains/intellij-coffee-script-debugger.git"
 end
 
 group :test do

@@ -29,8 +29,10 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # name
-  scope :with_names, joins(:name).readonly(false)
-  scope :ordered_by_name, with_names.order('names.name').includes(:name)
+#  scope :active, -> { where(:is_active => true) }
+
+  scope :with_names, -> { joins(:name).readonly(false) }
+  scope :ordered_by_name, ->  { with_names.order('names.name').includes(:name) }
 
   def self.find_by_name name
     where(name_cache: name).first

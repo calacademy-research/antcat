@@ -1,7 +1,7 @@
 # coding: UTF-8
 require 'milieu'
 module ApplicationHelper
-  include Formatters::Formatter
+  #include Formatters::Formatter
   include Formatters::LinkFormatter
   include Formatters::ButtonFormatter
 
@@ -123,11 +123,11 @@ http://antcat.org
 
 end
 
-PaperTrailManager::ChangesHelper
-
-module PaperTrailManager::ChangesHelper
-  def change_item_types
-    item_types = ActiveRecord::Base.connection.select_values('SELECT DISTINCT(item_type) FROM versions ORDER BY item_type')
-    item_types - ['Author', 'ReferenceAuthorName']
-  end
-end
+# PaperTrailManager::ChangesHelper
+#
+# module PaperTrailManager::ChangesHelper
+#   def change_item_types
+#     item_types = ActiveRecord::Base.connection.select_values('SELECT DISTINCT(item_type) FROM versions ORDER BY item_type')
+#     item_types - ['Author', 'ReferenceAuthorName']
+#   end
+# end

@@ -1,3 +1,5 @@
-# coding: UTF-8
-require_relative 'application'
-AntCat::Application.initialize!
+# Load the Rails application.
+require File.expand_path('../application', __FILE__)
+
+# Initialize the Rails application.
+Rails.application.initialize!

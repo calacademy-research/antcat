@@ -13,9 +13,15 @@ class Reference < ActiveRecord::Base
   before_save {|record| clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation}
 
   # associations
-  has_many    :reference_author_names, order: :position
-  has_many    :author_names, through: :reference_author_names, order: :position,
-                after_add: :refresh_author_names_caches, after_remove: :refresh_author_names_caches
+  has_many    :reference_author_names, -> { order :position }
+  has_many :groups, :through => :group_assets
+
+
+  has_many    :author_names,
+              -> { order :position },
+              :through => :reference_author_names,
+              :after_add => :refresh_author_names_caches,
+              :after_remove => :refresh_author_names_caches
   belongs_to  :journal
   belongs_to  :publisher
   def nestees; self.class.where nesting_reference_id: id; end
