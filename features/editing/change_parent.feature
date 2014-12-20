@@ -37,6 +37,19 @@ Feature: Changing parent genus, species, tribe or subfamily
     When I go to the catalog page for "Atta major"
     Then I should see "see Eciton major"
 
+  # Change parent from A -> B -> A
+  Scenario: Creating a secondary junior homonym
+    Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
+    When I go to the edit page for "Beta major"
+    And I click the parent name field
+    And I set the parent name to "Atta"
+    And I press "OK"
+    Then I should see "Would you like to create a new combination under this parent?"
+    When I press "Yes, create new combination"
+    When I save my changes
+    Then I should see "This new combination looks a lot like existing combinations."
+
+
   Scenario: Changing a species's genus twice by using the helper link
     Given there is an original species "Atta major" with genus "Atta"
     And there is a genus "Becton"

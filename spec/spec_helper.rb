@@ -1,5 +1,8 @@
 # coding: UTF-8
+require 'devise'
 require 'spork'
+
+
 Spork.prefork do
   ENV["RAILS_ENV"] ||= 'test'
   require_relative '../config/environment'
@@ -75,4 +78,8 @@ def with_versioning
   ensure
     PaperTrail.enabled = was_enabled
   end
+end
+
+RSpec.configure do |config|
+  config.include Devise::TestHelpers, type: :controller
 end

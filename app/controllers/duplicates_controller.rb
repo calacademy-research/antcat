@@ -7,7 +7,6 @@ class DuplicatesController < TaxaController
   before_filter :authenticate_editor, :get_params, :create_mother
 
 
-
   # Takes requires parent_id (target parent)and previous_combination_id
   # returns all matching taxa that could conflict with this naming.
   def show
@@ -23,16 +22,18 @@ class DuplicatesController < TaxaController
       return
     end
     options.each do |option|
-      # puts "name: " + option.name.name + " " +
-      #          "author: " + option.protonym.authorship_string  +
-      #          " id: " + option[:id].to_s
-      # puts "protonym id : " + option.protonym[:id].to_s
       option[:authorship_string] = option.protonym.authorship_string
+      if (option.protonym.id == @previous_combination.protonym.id)
+        duplicate_type = 'return_to_original'
+      else
+        duplicate_type = 'secondary_junior_homonym'
+      end
+      option['duplicate_type'] = duplicate_type
     end
     render json: options.to_json, status: :ok
   end
 
-  # Sort of a misnomer; arrive here to create the duplicate (from taxa.coffee)case because we're re-writing the action
+  # Sort of a misnomer; arrive here to create the duplicate (from taxa.coffee) case because we're re-writing the action
   # for the form submit which USED to go to taxa_controller.create.
 
   def create
