@@ -156,15 +156,20 @@ class AntCat.TaxonForm extends AntCat.Form
 
     for i in [1..data.length] by 1
       j = i-1
-      message = message + '<input type="radio" id="radio'+
-        j +
-        '" name="radio"><label for="radio'+
-        j +
-        '">'+
-        data[j].species.name_html_cache +
-        ": " +
-        data[j].species.authorship_string +
-        '</label>'
+      if(typeof data[j].species != "undefined")
+        item = data[j].species
+      else if(typeof data[j].subspecies != "undefined")
+        item = data[j].subspecies
+      if(typeof item != undefined)
+        message = message + '<input type="radio" id="radio'+
+          j +
+          '" name="radio"><label for="radio'+
+          j +
+          '">'+
+          item.name_html_cache +
+          ": " +
+          item.authorship_string +
+          '</label>'
 
     message = message + '<input type="radio" id="radio'+
       data.length +
