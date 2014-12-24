@@ -8,6 +8,12 @@ class AntCat.NameField extends AntCat.Panel
     super $parent_element.find('> .antcat_name_field'), @options
     @set_help()
 
+  current_taxon_id: =>
+    $('#current_taxon_id').val()
+
+  current_genus_epithet: =>
+    $('#genus_epithet').val()
+
   create_form: ($element, form_options) =>
     form_options.taxa_only = @options.taxa_only
     form_options.subfamilies_or_tribes_only = @options.subfamilies_or_tribes_only
@@ -40,7 +46,7 @@ class AntCat.NameField extends AntCat.Panel
     @element.find('.help').text text
 
   construct_parameters: =>
-    action  = "?field=true"
+    action = "?field=true"
     action += "&allow_blank=true" if @options.allow_blank
     action += "&require_existing=true" if @options.require_existing
     action += "&new_or_homonym=true" if @options.new_or_homonym
@@ -76,6 +82,8 @@ class AntCat.NameField extends AntCat.Panel
     @set_help()
 
   #------------
+
+
   set_add_name_field: =>
     $confirm_add_name_field = @element.find('#confirm_add_name')
     if @deciding_whether_to_add_name
@@ -89,9 +97,14 @@ class AntCat.NameField extends AntCat.Panel
 
   set_value: (value) =>
     $value_field = $('#' + @value_id)
-    if (@taxon_rank == 'species' || @taxon_rank == 'subspecies') &&
-       @is_parent_name && parseInt($value_field.val()) != parseInt(value)
-      @create_combination_message(value)
+    if (@taxon_rank == 'species' || @taxon_rank == 'subspecies') && @is_parent_name && parseInt($value_field.val()) != parseInt(value)
+      @check_for_duplicates(value)
+      # populates @duplicates variable
+      if(@duplicates == null)
+        @create_combination_message(value)
+      else
+        @create_duplicate_message(@duplicates, value)
+
     $value_field.val value
 
   combination_message_html: =>
@@ -100,12 +113,13 @@ class AntCat.NameField extends AntCat.Panel
        Would you like to create a new combination under this parent?
      </p></div>'
 
+
+
   create_combination_message: (name_id) =>
     action = @element.closest('form').attr('action')
-    taxon_id = action.substr(action.lastIndexOf('/') + 1)
     console.log('showing the message')
     @element.append($(@combination_message_html()))
-    dialog_box = $( "#dialog-confirm" )
+    dialog_box = $("#dialog-confirm")
     dialog_box.dialog({
       resizable: true,
       height: 140,
@@ -114,11 +128,12 @@ class AntCat.NameField extends AntCat.Panel
       buttons: {
         "Yes, create new combination": (a) =>
           window.location.href = '/taxa/new?parent_name_id=' + name_id +
-                                 '&rank_to_create=' + @taxon_rank +
-                                 '&previous_combination_id=' + taxon_id
+            '&rank_to_create=' + @taxon_rank +
+            '&previous_combination_id=' + @current_taxon_id()
         ,
         Cancel: () =>
-          dialog_box.dialog( "close" )
+          $('#parent_name_field .display_button').text(@current_genus_epithet())
+          dialog_box.dialog("close")
       }
     })
     @show_combination_message()
@@ -138,6 +153,149 @@ class AntCat.NameField extends AntCat.Panel
   show_error: (message) =>
     $error_messages = @element.find('.error_messages')
     $error_messages.text message
+
+# -----------------------------------------
+# Duplicates message handling
+# -----------------------------------------
+
+
+  duplicate_message_html: (data)=>
+    message = '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations."><p>
+       <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+           Choose a representation:
+           <div id="duplicate-radio class="duplicate-radio">'
+
+    generate_additional_homonym_option = true
+    # one radio button per duplicate. If we hit a homonym case in here,
+    # we don't need an additonal option for one.
+    "string"
+    for i in [1..data.length] by 1
+      j = i - 1
+      if(typeof data[j].species != "undefined")
+        item = data[j].species
+      else if(typeof data[j].subspecies != "undefined")
+        item = data[j].subspecies
+      else
+        # Unknown data type here, that's bad.
+        # Or quite possibly something to do with genus that I don't
+        # understand.
+        debugger
+
+      message = message + '<input type="radio" id='
+
+      if item['duplicate_type'] == 'secondary_junior_homonym'
+        message = message + 'homonym'
+        generate_additional_homonym_option = false
+      else
+        message = message + j
+
+      message = message + ' name="radio"><label for="radio' +
+        j +
+        '">' +
+        item.name_html_cache +
+        ": " +
+        item.authorship_string
+
+      if item['duplicate_type'] == 'secondary_junior_homonym'
+        message = message + " This would become a secondary junior homonym; name conflict with distinct authorship"
+      else
+        message = message + " return to a previous usage"
+
+      message = message + '</label>'
+
+    if generate_additional_homonym_option
+      message = @append_homonym_button(message,item)
+
+    message = message + '</div></p></div>'
+    message
+
+
+  append_homonym_button: (message,item) =>
+    message = message + '<input type="radio" id="homonym' +
+      '" name="radio" checked="checked"><label for="radio_homonym' +
+      '">Create secondary junior homonym'
+
+    # Covers only species here - how we deal with subspecies is TBD
+    if item.name_html_cache != null
+      message = message + ' of ' + item.name_html_cache + '</label>'
+    message
+
+
+  get_radio_value: =>
+    result = null
+    $("#dialog-duplicate :radio").each ->
+      if this.checked == true
+        result = this.id
+    result
+
+  create_duplicate_message: (data, new_parent_name_id) =>
+    @duplicate_message = $('#duplicate_message')
+    @duplicate_message.append($(@duplicate_message_html(data)))
+    dialog_box = $("#dialog-duplicate")
+    dialog_box.dialog({
+      resizable: true,
+      height: 140,
+      width: 520,
+      width: 520,
+      modal: true,
+      buttons: {
+        "Yes, create new combination": (a) =>
+          # This code is nasty. there's gotta be a better way.
+          if (@get_radio_value() == 'homonym')
+            collision_resolution = @get_radio_value()
+          else
+            data_object = data[@get_radio_value()]
+            if(data_object['species'] != null)
+              collision_resolution = data_object['species'].id
+            else if (data_object['subspecies'] != null)
+              collision_resolution = data_object['subspecies'].id
+          window.location.href = '/taxa/new?parent_name_id=' + new_parent_name_id +
+            '&rank_to_create=' + @taxon_rank +
+            '&previous_combination_id=' + @current_taxon_id() +
+            '&collision_resolution=' + collision_resolution
+        ,
+        Cancel: () =>
+          $('#parent_name_field .display_button').text(@current_genus_epithet())
+          dialog_box.dialog("close")
+      }
+    })
+    @show_duplicate_message()
+
+
+  # does synchronus ajax query
+  # against the duplicates controller. The results appear in this.duplicates
+  check_for_duplicates: (new_parent_name) =>
+    console.log("Joe check for duplicates")
+
+    url = "/duplicates?current_taxon_id=" +
+        @current_taxon_id() +
+        "&new_parent_name_id=" +
+        new_parent_name +
+        "&rank_to_create=species"
+    $.ajax
+      url: url,
+      type: 'get',
+      dataType: 'json',
+      success: (data) =>
+        @got_duplicate_data(data)
+      async: false,
+      error: (xhr) => debugger
+
+  # Hit from check_for_duplicates; if there are no duplicates, carry on.
+  # Otherwise, popup dialog box via create_duplicate_message
+  got_duplicate_data: (data) =>
+    if data == null
+      @duplicates = null
+    else
+      @duplicates = data
+
+  hide_duplicate_message: =>
+    $('.duplicate_message').hide()
+
+
+  show_duplicate_message: =>
+    $('.duplicate_message').show()
+
 
 # -----------------------------------------
 class AntCat.NameFieldForm extends AntCat.NestedForm
@@ -174,11 +332,11 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
     url += '?genera_only=1' if @options.genera_only
     url += '?subfamilies_or_tribes_only=1' if @options.subfamilies_or_tribes_only
     $textbox.autocomplete(autoFocus: true, source: url, minLength: 3)
-      .data('autocomplete')._renderItem = @render_item
+    .data('autocomplete')._renderItem = @render_item
 
   # this is required to display HTML in the list
   render_item: (ul, item) =>
     $("<li>")
-      .data('item.autocomplete', item)
-      .append('<a>' + item.label + '</a>')
-      .appendTo ul
+    .data('item.autocomplete', item)
+    .append('<a>' + item.label + '</a>')
+    .appendTo ul

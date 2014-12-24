@@ -116,7 +116,15 @@ http://antcat.org
       string << (parent ? parent.name.to_html : '(no species)')
     else
       ''
+             end
+    # Todo: Joe test this case
+    if taxon[:unresolved_homonym] == true && taxon.new_record?
+      string = ' secondary junior homonym of ' + string
+    elsif !taxon[:collision_merge_id].nil? && taxon.new_record?
+      target_taxon = Taxon.find_by_id(taxon[:collision_merge_id])
+      string = ' merge back into original ' + target_taxon.name_html_cache
     end
+
     string = 'new ' + string if taxon.new_record?
     string.html_safe
   end

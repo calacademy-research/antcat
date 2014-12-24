@@ -59,6 +59,9 @@ class NameFieldsController < NamePickersController
     render json: data.to_json, content_type: 'text/html'
   end
 
+  # TODO joe - this is probably where we should handle the cases currently done in
+  # a combination of duplicatescontroller and name_field.coffee
+
   def add_name name_string, data
     name = Name.parse name_string
     data[:success] = true
