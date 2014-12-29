@@ -140,19 +140,7 @@ class AntCat.TaxonForm extends AntCat.Form
 
 
 
-  #test case notes:
 
-  # try this for a case where there are no duplicate candidates
-  # try this for a case with more than one duplicate candidate
-  # duplicate candidate, choose one  (for each of the above)
-  # duplicate candidate, make a homonym
-  # For homonym case, check that the references for "b" in a - b -a' case are good.
-  # for reversion case(s), check that the references for "b" are good
-  # for a case where there is one or more duplicatre candidates, hit cancel on dialog box (throbber case!)
-  # Standard case(maybe already covered?) where there is no conflict/duplicate
-  # a-b-a' case for both options     (with and without approval)
-  # a-b-c case, check all references
-  # a-b-c + appprove, check all reference
 
 
 

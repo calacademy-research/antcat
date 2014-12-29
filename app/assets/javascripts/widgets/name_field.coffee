@@ -11,8 +11,8 @@ class AntCat.NameField extends AntCat.Panel
   current_taxon_id: =>
     $('#current_taxon_id').val()
 
-  current_genus_epithet: =>
-    $('#genus_epithet').val()
+  current_reset_epithet: =>
+    $('#reset_epithet').val()
 
   create_form: ($element, form_options) =>
     form_options.taxa_only = @options.taxa_only
@@ -132,7 +132,7 @@ class AntCat.NameField extends AntCat.Panel
             '&previous_combination_id=' + @current_taxon_id()
         ,
         Cancel: () =>
-          $('#parent_name_field .display_button').text(@current_genus_epithet())
+          $('#parent_name_field .display_button').text(@current_reset_epithet())
           dialog_box.dialog("close")
       }
     })
@@ -255,7 +255,7 @@ class AntCat.NameField extends AntCat.Panel
             '&collision_resolution=' + collision_resolution
         ,
         Cancel: () =>
-          $('#parent_name_field .display_button').text(@current_genus_epithet())
+          $('#parent_name_field .display_button').text(@current_reset_epithet())
           dialog_box.dialog("close")
       }
     })

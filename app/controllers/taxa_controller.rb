@@ -43,7 +43,7 @@ class TaxaController < ApplicationController
       @taxon = @mother.create_taxon @rank_to_create, parent
 
       if !@collision_resolution.nil?
-        if @collision_resolution == 'homonym' or  @collision_resolution == ""
+        if @collision_resolution == 'homonym' or @collision_resolution == ""
           @taxon[:unresolved_homonym] = true
           @taxon[:status] = Status['homonym'].to_s
         else
@@ -74,7 +74,7 @@ class TaxaController < ApplicationController
     # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
 
     # TODO: joe check author strings; if they're not the same, we're going to call it the homonym case
-    if @collision_resolution.nil? or @collision_resolution == 'homonym'
+    if @collision_resolution.nil? or @collision_resolution == "" or @collision_resolution == 'homonym'
       @mother.save_taxon @taxon, @taxon_params, @previous_combination
     else
       @original_combination = Taxon.find(@collision_resolution)
@@ -113,6 +113,13 @@ class TaxaController < ApplicationController
       @add_tribe_path = new_taxa_path rank_to_create: Tribe, parent_id: @taxon.id
       @cancel_path = catalog_path @taxon
       @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
+      if (@taxon.is_a? (Family))
+        @reset_epithet = @taxon.name.to_s
+      elsif (@taxon.is_a? (Genus))
+        @reset_epithet = @taxon.name.genus_epithet
+      else
+        @reset_epithet = ""
+      end
     end
   end
 
