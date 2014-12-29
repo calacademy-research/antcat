@@ -115,7 +115,7 @@ class TaxaController < ApplicationController
       @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
       if (@taxon.is_a? (Family))
         @reset_epithet = @taxon.name.to_s
-      elsif (@taxon.is_a? (Genus))
+      elsif (@taxon.is_a? (Species))
         @reset_epithet = @taxon.name.genus_epithet
       else
         @reset_epithet = ""
