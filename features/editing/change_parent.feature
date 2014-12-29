@@ -38,7 +38,19 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "see Eciton major"
 
   # Change parent from A -> B -> A
-  # Joe todo: This case set is incomplete. Currenly defaults to creating the homonym
+  Scenario: Merging back when we have the same protonym
+    Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
+    When I go to the edit page for "Beta major"
+    And I click the parent name field
+    And I set the parent name to "Atta"
+    And I press "OK"
+    Then I should see "This new combination looks a lot like existing combinations"
+    And I should see "Choose a representation"
+    And I should see "Atta major: (Fisher5, 2015) return to a previous usage"
+    And I should see "Create secondary junior homonym of Atta major"
+    When I press "Yes, create new combination"
+    Then I should see "new merge back into original Atta major"
+
   Scenario: Creating a secondary junior homonym
     Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
     When I go to the edit page for "Beta major"
@@ -46,11 +58,27 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I set the parent name to "Atta"
     And I press "OK"
     Then I should see "This new combination looks a lot like existing combinations"
+    And I should see "Choose a representation"
+    And I should see "Atta major: (Fisher5, 2015) return to a previous usage"
+    And I should see "Create secondary junior homonym of Atta major"
+    When I choose "homonym"
     When I press "Yes, create new combination"
-#    When I submit the new species form
-    #When I save my changes
-#    Then I should see an alert box
-#    Then I should see ""
+    Then I should see "new secondary junior homonym of species of Atta"
+
+  Scenario: Merging when we have distinct protonyms
+    Given there is a species "Atta major" with genus "Atta"
+    Given there is a species "Beta major" with genus "Beta"
+    When I go to the edit page for "Beta major"
+    And I click the parent name field
+    And I set the parent name to "Atta"
+    And I press "OK"
+    Then I should see "This new combination looks a lot like existing combinations"
+    And I should see "Choose a representation"
+    And I should not see "Atta major: (Fisher5, 2015) return to a previous usage"
+    And I should see "This would become a secondary junior homonym; name conflict with distinct authorship"
+    When I choose "homonym"
+    When I press "Yes, create new combination"
+    Then I should see "new secondary junior homonym of species of Atta"
 
 
 
@@ -58,8 +86,6 @@ Feature: Changing parent genus, species, tribe or subfamily
 
   # try this for a case where there are no duplicate candidates
   # try this for a case with more than one duplicate candidate
-  # duplicate candidate, choose one  (for each of the above)
-  # duplicate candidate, make a homonym
   # For homonym case, check that the references for "b" in a - b -a' case are good.
   # for reversion case(s), check that the references for "b" are good
   # for a case where there is one or more duplicatre candidates, hit cancel on dialog box (throbber case!)

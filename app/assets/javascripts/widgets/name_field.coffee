@@ -189,6 +189,8 @@ class AntCat.NameField extends AntCat.Panel
       else
         message = message + j
 
+      if(i==1)
+        message = message + ' checked="checked" '
       message = message + ' name="radio"><label for="radio' +
         j +
         '">' +
@@ -203,6 +205,10 @@ class AntCat.NameField extends AntCat.Panel
 
       message = message + '</label>'
 
+
+
+
+
     if generate_additional_homonym_option
       message = @append_homonym_button(message,item)
 
@@ -212,7 +218,7 @@ class AntCat.NameField extends AntCat.Panel
 
   append_homonym_button: (message,item) =>
     message = message + '<input type="radio" id="homonym' +
-      '" name="radio" checked="checked"><label for="radio_homonym' +
+      '" name="radio"><label for="radio_homonym' +
       '">Create secondary junior homonym'
 
     # Covers only species here - how we deal with subspecies is TBD
