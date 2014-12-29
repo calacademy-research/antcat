@@ -1,5 +1,5 @@
 source 'http://rubygems.org'
-ruby '2.1.5'
+ruby '2.1.2'
 
 gem 'acts_as_list'
 gem 'aws-sdk'
