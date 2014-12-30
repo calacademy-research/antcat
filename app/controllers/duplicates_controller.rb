@@ -7,7 +7,6 @@ class DuplicatesController < TaxaController
   before_filter :authenticate_editor, :get_params, :create_mother
 
 
-
   # Takes requires parent_id (target parent)and previous_combination_id
   # returns all matching taxa that could conflict with this naming.
   def show
@@ -15,57 +14,35 @@ class DuplicatesController < TaxaController
       render :nothing => true, status: :no_content
       return
     end
-
-    new_parent = Taxon.find(@parent_id)
-    options = Taxon.find_epithet_in_genus @previous_combination.name.epithet, new_parent
+    current_taxon = Taxon.find(params[:current_taxon_id])
+    new_parent = Taxon.find_by_name_id(params[:new_parent_name_id])
+    options = Taxon.find_epithet_in_genus current_taxon.name.epithet, new_parent
     if options.nil?
       render :nothing => true, status: :no_content
       return
     end
     options.each do |option|
-      # puts "name: " + option.name.name + " " +
-      #          "author: " + option.protonym.authorship_string  +
-      #          " id: " + option[:id].to_s
-      # puts "protonym id : " + option.protonym[:id].to_s
       option[:authorship_string] = option.protonym.authorship_string
+
+      #Todo: joe check page number case?
+
+      # Used to pop up the correct dialog box content in the name_field.coffee widget
+
+      # in the case of "return to original" - give the option of actually returning to
+      # original, creating a secondary junior homonym, or cancel
+
+      # in the case of "secondary junior homonym" - give that option, or cancel.
+      if (option.protonym.id == current_taxon.protonym.id)
+        duplicate_type = 'return_to_original'
+      else
+        duplicate_type = 'secondary_junior_homonym'
+      end
+      option['duplicate_type'] = duplicate_type
     end
     render json: options.to_json, status: :ok
   end
 
-  # Sort of a misnomer; arrive here to create the duplicate (from taxa.coffee)case because we're re-writing the action
-  # for the form submit which USED to go to taxa_controller.create.
 
-  def create
-    setup_taxon
-    set_paths :create
-    save_original_taxon
-  end
-
-  def setup_taxon
-    parent = Taxon.find(@parent_id)
-    if @previous_combination
-      Taxon.inherit_attributes_for_new_combination(@original_combination, @previous_combination, parent)
-    end
-
-  end
-
-  def save_original_taxon
-    @mother.save_taxon @original_combination, @taxon_params, @previous_combination
-    if @previous_combination && @previous_combination.is_a?(Species) && @previous_combination.children.any?
-      create_new_usages_for_subspecies
-    end
-    redirect_to catalog_path @taxon
-  rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
-    render :edit and return
-  end
-
-  def get_params
-    @original_species_id = params[:original_species_id]
-    if !@original_species_id.nil?
-      @original_combination = Taxon.find(@original_species_id)
-    end
-    super
-  end
 end
 
 

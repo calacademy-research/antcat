@@ -148,6 +148,16 @@ Given /^there is an original species "([^"]*)" with genus "([^"]*)"$/ do |specie
   genus = create_genus genus_name
   create_species species_name, genus: genus, status: Status['original combination'].to_s
 end
+
+Given /^there is species "([^"]*)" and another species "([^"]*)" shared between protonym genus "([^"]*)" and later genus "([^"]*)"$/ do
+|protonym_species_name, valid_species_name, protonym_genus_name, valid_genus_name|
+  proto_genus = create_genus protonym_genus_name
+  proto_species = create_species protonym_species_name, genus: proto_genus, status: Status['original combination'].to_s
+  later_genus = create_genus valid_genus_name
+  create_species valid_species_name, genus: later_genus, status: Status['valid'].to_s, protonym_id: proto_species.id
+end
+
+
 Given /^there is a species "([^"]*)" with genus "([^"]*)"$/ do |species_name, genus_name|
   genus = create_genus genus_name
   create_species species_name, genus: genus

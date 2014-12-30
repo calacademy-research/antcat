@@ -26,7 +26,6 @@ class AntCat.TaxonForm extends AntCat.Form
     @initialize_homonym_replaced_by_section()
     @initialize_task_buttons()
     @initialize_events()
-    @initialize_duplicate_handler()
     @original_submit = null
 
     super
@@ -84,12 +83,6 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.find('#convert_to_subspecies').click => @convert_to_subspecies(); false
 
 
-  initialize_duplicate_handler: =>
-    @new_taxon_form = $(document).find('#new_taxon')
-    @new_taxon_form.submit => @check_for_duplicates(); false
-
-
-
   initialize_events: =>
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
@@ -143,136 +136,11 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.find('.reference_sections').append $panel
 
   on_form_open: =>
-    @hide_duplicate_message()
     super
 
 
-  duplicate_message_html: (data)=>
-
-    message = '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations."><p>
-       <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-           Choose a representation:
-           <div id="duplicate-radio class="duplicate-radio">'
-
-    for i in [1..data.length] by 1
-      j = i-1
-      message = message + '<input type="radio" id="radio'+
-        j +
-        '" name="radio"><label for="radio'+
-        j +
-        '">'+
-        data[j].species.name_html_cache +
-        ": " +
-        data[j].species.authorship_string +
-        '</label>'
-
-    message = message + '<input type="radio" id="radio'+
-      data.length +
-      '" name="radio" checked="checked"><label for="radio'+
-      data.length +
-    '">New species, same name</label>'
-
-    message = message + '</div></p></div>'
-
-  # doesn't execute the "submit", instead it does synchronus ajax query
-  # against the duplicates controller. The results appear in got_duplicate_data.
-  check_for_duplicates: =>
-    event.preventDefault()
-    @parent_id = $('#parent_id').val()
-    @previous_combination_id = $('#previous_combination_id').val()
-
-    url = "/duplicates?parent_id="+
-      @parent_id +
-      "&previous_combination_id="+
-      @previous_combination_id +
-      "&rank_to_create=species"
-
-    $.ajax
-      url:      url,
-      type:     'get',
-      dataType: 'json',
-      success: (data) =>
-        @got_duplicate_data(data)
-      error:    (xhr) => debugger
-
-  # Hit from check_for_duplicates; if there are no duplicates, carry on.
-  # Otherwise, popup dialog box via create_duplicate_message
-  got_duplicate_data: (data) =>
-    if data == null
-      @new_taxon_form.unbind("submit")
-      @new_taxon_form.submit()
-    else
-      @create_duplicate_message(data)
 
 
-  get_radio_value: =>
-    result = null
-    $("#dialog-duplicate :radio").each ->
-      if this.checked == true
-        result = parseInt(this.id.replace(/radio/, ""));
-    result
-
-  create_duplicate_message: (data) =>
-    @duplicate_message = $('#duplicate_message')
-    @duplicate_message.append($(@duplicate_message_html(data)))
-    dialog_box = $("#dialog-duplicate")
-    dialog_box.dialog({
-      resizable: true,
-      height: 140,
-      width: 520,
-      width: 520,
-      modal: true,
-      buttons: {
-        "Yes, create new combination": (a) =>
-          @new_taxon_form.unbind("submit")
-
-          if @get_radio_value() == data.length
-            @new_taxon_form.submit()
-          else
-            $("#new_taxon").attr("action","/duplicates")
-            original_species_id = data[@get_radio_value()].species.id
-
-            # Slightly goofy; appending a text field to the form with
-            # "original_species_id" set. Not sure how else to add
-            # parameters to a "post" without redoing the whole form.
-
-            #
-            $("<input type='text' value='" + original_species_id.toString() + "' />")
-              .attr("id", "original_species_id")
-              .attr("name", "original_species_id")
-              .css("visibility", "hidden")
-
-            .appendTo(@new_taxon_form);
-
-            @new_taxon_form.submit()
-        ,
-        Cancel: () =>
-          @stop_throbbing()
-          dialog_box.dialog("close")
-      }
-    })
-    @show_duplicate_message()
-
-  hide_duplicate_message: =>
-    $('.duplicate_message').hide()
-
-
-  show_duplicate_message: =>
-    $('.duplicate_message').show()
-
-  #test case notes:
-
-  # try this for a case where there are no duplicate candidates
-  # try this for a case with more than one duplicate candidate
-  # duplicate candidate, choose one  (for each of the above)
-  # duplicate candidate, make a homonym
-  # For homonym case, check that the references for "b" in a - b -a' case are good.
-  # for reversion case(s), check that the references for "b" are good
-  # for a case where there is one or more duplicatre candidates, hit cancel on dialog box (throbber case!)
-  # Standard case(maybe already covered?) where there is no conflict/duplicate
-  # a-b-a' case for both options     (with and without approval)
-  # a-b-c case, check all references
-  # a-b-c + appprove, check all reference
 
 
 
