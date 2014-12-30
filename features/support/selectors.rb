@@ -41,6 +41,9 @@ module HtmlSelectorsHelpers
     when /the search box/
       "#q"
 
+    when /the duplicate dialog box/
+      ".dialog_duplicate"
+
     when /the catalog search box/
       "#qq"
 

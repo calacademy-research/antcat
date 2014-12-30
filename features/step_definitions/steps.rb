@@ -63,6 +63,13 @@ Then /I should (not )?see "(.*?)" (?:with)?in (.*)$/ do |do_not, contents, locat
   end
 end
 
+Then /The parent name field should have "(.*?)"$/ do |contents|
+  display_button = find('#parent_name_field .display_button')
+  display_button.should have_selector(contents)
+
+end
+
+
 Then /I should see "([^"]*)" italicized/ do |italicized_text|
   page.should have_css('i', text: italicized_text)
 end
@@ -98,5 +105,5 @@ Then /^I should see a link "([^"]*)"$/ do |link|
 end
 
 Given /that URL "([^"]*)" exists/ do |link|
- stub_request :any, link
+  stub_request :any, link
 end

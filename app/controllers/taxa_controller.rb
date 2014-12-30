@@ -38,7 +38,29 @@ class TaxaController < ApplicationController
   def get_taxon create_or_update
     if create_or_update == :create
       parent = Taxon.find(@parent_id)
+      # Radio button case - we got duplicates, and the user picked one
+      # to resolve the problem.
       @taxon = @mother.create_taxon @rank_to_create, parent
+
+      if !@collision_resolution.nil?
+        if @collision_resolution == 'homonym' or @collision_resolution == ""
+          @taxon[:unresolved_homonym] = true
+          @taxon[:status] = Status['homonym'].to_s
+        else
+          @taxon[:collision_merge_id] = @collision_resolution
+          @original_combination = Taxon.find(@collision_resolution)
+          Taxon.inherit_attributes_for_new_combination(@original_combination, @previous_combination, parent)
+        end
+
+      end
+      # if !@collision_resolution.nil?
+      #   @taxon = @mother.create_taxon @rank_to_create, parent
+      # else
+      #   # joe it might be that we just switch parent with collision_resolution_id, and then
+      #   # go ahead and call "create taxon".
+      #   # then, in the secondary homonuym case, we post facto(here) mark it as a secondary.
+      #   @taxon = @mother.create_taxon_collision @rank_to_create, parent, @collision_resolution
+      # end
       if @previous_combination
         Taxon.inherit_attributes_for_new_combination(@taxon, @previous_combination, parent)
       end
@@ -49,7 +71,17 @@ class TaxaController < ApplicationController
   end
 
   def save_taxon
-    @mother.save_taxon @taxon, @taxon_params, @previous_combination
+    # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
+
+    # TODO: joe check author strings; if they're not the same, we're going to call it the homonym case
+    if @collision_resolution.nil? or @collision_resolution == "" or @collision_resolution == 'homonym'
+      @mother.save_taxon @taxon, @taxon_params, @previous_combination
+    else
+      @original_combination = Taxon.find(@collision_resolution)
+      @mother.save_taxon @original_combination, @taxon_params, @previous_combination
+      #@mother.save_taxon_collision @taxon, @taxon_params, @collision_resolution, @previous_combination
+    end
+
     if @previous_combination && @previous_combination.is_a?(Species) && @previous_combination.children.any?
       create_new_usages_for_subspecies
     end
@@ -59,7 +91,7 @@ class TaxaController < ApplicationController
   end
 
   def create_new_usages_for_subspecies
-    @previous_combination.children.select{ |t| t.status == 'valid' }.each do |t|
+    @previous_combination.children.select { |t| t.status == 'valid' }.each do |t|
       mother = TaxonMother.new
       new_child = mother.create_taxon(Rank['subspecies'], @taxon)
       Taxon.inherit_attributes_for_new_combination(new_child, t, @taxon)
@@ -71,10 +103,23 @@ class TaxaController < ApplicationController
     if create_or_update == :create
       @cancel_path = edit_taxa_path @parent_id
     else
-      @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
+      if @collision_resolution.nil?
+
+        @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
+      else
+        @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id, collision_resolution: @collision_resolution
+      end
+
       @add_tribe_path = new_taxa_path rank_to_create: Tribe, parent_id: @taxon.id
       @cancel_path = catalog_path @taxon
       @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
+      if (@taxon.is_a? (Family))
+        @reset_epithet = @taxon.name.to_s
+      elsif (@taxon.is_a? (Species))
+        @reset_epithet = @taxon.name.genus_epithet
+      else
+        @reset_epithet = ""
+      end
     end
   end
 
@@ -113,9 +158,9 @@ class TaxaController < ApplicationController
       @taxon.destroy
     else
       @taxon.errors[:base] =
-        "Other taxa refer to this taxon, so it can't be deleted. " +
-        "Please talk to Stan (sblum@calacademy.org) to determine a solution. " +
-        "The items referring to this taxon are: #{references.to_s}."
+          "Other taxa refer to this taxon, so it can't be deleted. " +
+              "Please talk to Stan (sblum@calacademy.org) to determine a solution. " +
+              "The items referring to this taxon are: #{references.to_s}."
       render :edit and return
     end
     redirect_to catalog_path @taxon.parent
@@ -130,6 +175,7 @@ class TaxaController < ApplicationController
     @taxon_params = params[:taxon]
     @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
     @delete_taxon = params[:task_button_command] == 'delete_taxon'
+    @collision_resolution = params[:collision_resolution]
   end
 
   def create_mother

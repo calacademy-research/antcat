@@ -14,6 +14,28 @@ class TaxonMother
     @taxon
   end
 
+
+  # Placeholder; not currently used. Joe: deleteme?
+  def create_taxon_collision rank, parent, collision_resolution
+
+    logger.debug "create_taxon_collision joe"
+    # collision_resolution_id will either be "homonym" for secondary junior homonym
+    # or it'll be the taxon ID of the parent with which we want to merge.
+    # If the parent-> protonym
+
+    #joe this is fun - replace with contents of "save original taxon" from duplicates_controller
+    #All of the below is wrong; it's what we used to do in duplicates_controller
+
+
+    # save_taxon @original_combination, @taxon_params, @previous_combination
+    # if @previous_combination && @previous_combination.is_a?(Species) && @previous_combination.children.any?
+    #   create_new_usages_for_subspecies
+    # end
+    #
+
+  end
+
+
   def create_taxon rank, parent
     @taxon = rank.string.titlecase.constantize.new
     @taxon.parent = parent
@@ -61,6 +83,13 @@ class TaxonMother
       end
       save_taxon_children @taxon
     end
+  end
+
+  def save_taxon_collision taxon, params, collision_resolution, previous_combination = nil
+    # merge back in to an existing taxon.
+    if !previous_combination.nil? && collision_resolution != 'homonym'
+    end
+
   end
 
   def get_status_string(taxon_to_update)

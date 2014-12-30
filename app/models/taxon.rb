@@ -186,6 +186,7 @@ class Taxon < ActiveRecord::Base
   def homonym_replaced_by? taxon; homonym_replaced_by == taxon end
   attr_accessor :homonym_replaced_by_name
 
+
   ###############################################
   # parent
   attr_accessor :parent_name

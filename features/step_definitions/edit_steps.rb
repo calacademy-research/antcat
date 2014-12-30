@@ -104,6 +104,22 @@ Then /^I should not see the parent name field/ do
   page.should_not have_css "#parent_row"
 end
 
+### save duplicate
+When /^I should see an alert box/ do
+  text = page.driver.browser.switch_to.alert.text
+  a = page.driver.browser.switch_to.alert
+  if a.text == 'something'
+    a.dismiss
+  else
+    a.accept
+  end
+end
+
+When /^I submit the new species form/ do
+  find('#new_taxon').click();
+end
+
+
 ### tribe name field
 When /I click the tribe name field/ do
   find('#tribe_name_field .display_button').click

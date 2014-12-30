@@ -1,11 +1,11 @@
 source 'http://rubygems.org'
 ruby '2.1.2'
-#ruby=ruby-1.9.3-p392
 
 gem 'acts_as_list'
 gem 'aws-sdk'
 gem 'citrus'
 # see https://github.com/cucumber/cucumber-rails/issues/187#issuecomment-4160160
+# shouldn't this be in test only? todo: move this and try it
 gem 'cucumber-rails', require: false
 gem 'curb',             require: 'curl'
 gem 'devise'
@@ -33,7 +33,6 @@ gem 'workflow'
 gem 'xml-simple'
 
 group :development, :test do
-#  gem 'debugger'
   gem 'byebug'
   gem 'engineyard'
   gem 'launchy'
