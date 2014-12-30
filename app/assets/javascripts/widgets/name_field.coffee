@@ -104,8 +104,15 @@ class AntCat.NameField extends AntCat.Panel
         @create_combination_message(value)
       else
         @create_duplicate_message(@duplicates, value)
-
+    @reset_value_id = $value_field.val()
     $value_field.val value
+
+  reset_autocomplete: =>
+    $value_field = $('#' + @value_id)
+    $value_field.val @reset_value_id
+    $('.antcat_form .ui-autocomplete-input')[0].value = null
+    $('#parent_name_field .display_button').text(@current_reset_epithet())
+
 
   combination_message_html: =>
     '<div id="dialog-confirm" title="Do you want a new combination?"><p>
@@ -132,7 +139,8 @@ class AntCat.NameField extends AntCat.Panel
             '&previous_combination_id=' + @current_taxon_id()
         ,
         Cancel: () =>
-          $('#parent_name_field .display_button').text(@current_reset_epithet())
+
+          @reset_autocomplete()
           dialog_box.dialog("close")
       }
     })
@@ -189,7 +197,7 @@ class AntCat.NameField extends AntCat.Panel
       else
         message = message + j
 
-      if(i==1)
+      if(i == 1)
         message = message + ' checked="checked" '
       message = message + ' name="radio"><label for="radio' +
         j +
@@ -210,20 +218,25 @@ class AntCat.NameField extends AntCat.Panel
 
 
     if generate_additional_homonym_option
-      message = @append_homonym_button(message,item)
+      message = @append_homonym_button(message, item)
 
     message = message + '</div></p></div>'
     message
 
 
-  append_homonym_button: (message,item) =>
+  append_homonym_button: (message, item) =>
     message = message + '<input type="radio" id="homonym' +
       '" name="radio"><label for="radio_homonym' +
       '">Create secondary junior homonym'
 
     # Covers only species here - how we deal with subspecies is TBD
     if item.name_html_cache != null
-      message = message + ' of ' + item.name_html_cache + '</label>'
+      message = message +
+        ' of ' +
+        item.name_html_cache +
+        ": " +
+        item.authorship_string +
+        '</label>'
     message
 
 
@@ -240,7 +253,7 @@ class AntCat.NameField extends AntCat.Panel
     dialog_box = $("#dialog-duplicate")
     dialog_box.dialog({
       resizable: true,
-      height: 140,
+      height: 180,
       width: 520,
       width: 520,
       modal: true,
@@ -260,9 +273,13 @@ class AntCat.NameField extends AntCat.Panel
             '&previous_combination_id=' + @current_taxon_id() +
             '&collision_resolution=' + collision_resolution
         ,
-        Cancel: () =>
-          $('#parent_name_field .display_button').text(@current_reset_epithet())
-          dialog_box.dialog("close")
+
+        "Cancel":
+          id: "Cancel-Dialog"
+          text: "Cancel"
+          click: =>
+            @reset_autocomplete()
+            dialog_box.dialog("close")
       }
     })
     @show_duplicate_message()

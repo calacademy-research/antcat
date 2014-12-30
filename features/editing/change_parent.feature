@@ -46,10 +46,33 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "OK"
     Then I should see "This new combination looks a lot like existing combinations"
     And I should see "Choose a representation"
-    And I should see "Atta major: (Fisher5, 2015) return to a previous usage"
+    And I should see "Atta major: (Fisher"
+    And I should see " return to a previous usage"
     And I should see "Create secondary junior homonym of Atta major"
     When I press "Yes, create new combination"
     Then I should see "new merge back into original Atta major"
+
+
+    # not working. Cancel never seems to get hit. Likely a webdriver problem.
+#  Scenario: I cancel out of the homonym conflict box
+#    Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
+#    When I go to the edit page for "Beta major"
+#    And I click the parent name field
+#    And I set the parent name to "Atta"
+#    And I press "OK"
+#    Then I should see "This new combination looks a lot like existing combinations"
+#    And I should see "Choose a representation"
+#    And I should see "Atta major: (Fisher5, 2015) return to a previous usage"
+#    And I should see "Create secondary junior homonym of Atta major"
+#    When I press "Cancel-Dialog"
+#    Then I should not see "Atta"
+#    Broken. "cancel" button is found, but the button press isn't going through.
+
+#    Then The parent name field should have "Beta"
+#    When I click the parent name field
+#    And I set the parent name to "Atta"
+#    Then I should see "This new combination looks a lot like existing combinations"
+
 
   Scenario: Creating a secondary junior homonym
     Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
@@ -59,7 +82,8 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "OK"
     Then I should see "This new combination looks a lot like existing combinations"
     And I should see "Choose a representation"
-    And I should see "Atta major: (Fisher5, 2015) return to a previous usage"
+    And I should see "Atta major: (Fisher"
+    And I should see "return to a previous usage"
     And I should see "Create secondary junior homonym of Atta major"
     When I choose "homonym"
     When I press "Yes, create new combination"
