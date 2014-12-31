@@ -54,6 +54,15 @@ class Taxon < ActiveRecord::Base
     nil
   end
 
+  def self.find_subspecies_in_genus target_subspecies, genus
+    for epithet in Name.make_epithet_set target_subspecies
+#      results = with_names.where(['genus_id = ? AND epithet = ? and type="SubspeciesName"', genus.id, epithet])
+      results = with_names.where(['genus_id = ? AND epithet = ?', genus.id, epithet])
+      return results unless results.empty?
+    end
+    nil
+  end
+
   def self.find_name name, search_type = 'matching'
     name = name.dup.strip
     query = ordered_by_name
