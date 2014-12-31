@@ -112,12 +112,33 @@ Feature: Changing parent genus, species, tribe or subfamily
   # try this for a case with more than one duplicate candidate
   # For homonym case, check that the references for "b" in a - b -a' case are good.
   # for reversion case(s), check that the references for "b" are good
-  # for a case where there is one or more duplicatre candidates, hit cancel on dialog box (throbber case!)
   # Standard case(maybe already covered?) where there is no conflict/duplicate
   # a-b-a' case for both options     (with and without approval)
   # a-b-c case, check all references
   # a-b-c + appprove, check all reference
 
+  Scenario: Detecting a possible secondary homonym when there is a subspecies name conflict
+    Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
+    Given there is a subspecies "Atta betus subbus" which is a subspecies of "Atta betus" in the genus "Atta"
+    And I am logged in
+    When I go to the edit page for "Solenopsis speccus subbus"
+    And I click the parent name field
+    And I set the parent name to "Atta betus"
+    And I press "OK"
+    Then I should see "This new combination looks a lot like existing combinations"
+    And I should see "Atta betus subbus"
+    And I should see "This would become a secondary junior homonym; name conflict with distinct authorship"
+
+  # tagged "work in progress" - I saw this fail once, requires checking.
+#  Scenario: Change a subspecies to a species should error gracefully
+#    Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
+#    Given there is a genus "Atta"
+#    And I am logged in
+#    When I go to the edit page for "Solenopsis speccus subbus"
+#    And I click the parent name field
+#    And I set the parent name to "Atta"
+#    And I press "OK"
+#    Try this manually, see what happens. If all is well, then that's bad - this should be an error case.
 
   Scenario: Changing a species's genus twice by using the helper link
     Given there is an original species "Atta major" with genus "Atta"
