@@ -21,14 +21,25 @@ class Change < ActiveRecord::Base
                        }
 
 
+  def get_user_version
+    Version.find_by_sql("select * from versions,changes, transactions
+        where changes.user_changed_taxon_id = versions.item_id AND
+        transactions.change_id = changes.id  AND
+        transactions.paper_trail_version_id = versions.id AND
+        changes.id = '"+id.to_s+"'").first
+  end
+
   def reify
-    # this dodgy code is from paper_trail_manager's changes_helper.rb
-    #if(change_type==:add)
-    first_version = paper_trail_versions.first
-    current = first_version.next.try :reify
-    previous = first_version.reify rescue nil
+
+    # Pulls only the change attached to the taxon that the user actually edited.
+    # We used this for display. This is done to avoid refactoring all the display code.
+    user_version = get_user_version
+
+
+    current = user_version.next.try :reify
+    previous = user_version.reify rescue nil
     begin
-      first_version.item_type.constantize.find first_version.item_id
+      user_version.item_type.constantize.find user_version.item_id
     rescue ActiveRecord::RecordNotFound
       previous || current
     end
@@ -37,13 +48,10 @@ class Change < ActiveRecord::Base
 
 
   def user
-    first_version = paper_trail_versions.first
-
-    user_id = first_version.whodunnit
+    user_id = get_user_version.whodunnit
     user_id ? User.find(user_id) : nil
   end
 
-  # Joe todo: add chane type string restrictions?
 
 
 end

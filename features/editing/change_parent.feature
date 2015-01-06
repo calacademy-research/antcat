@@ -40,7 +40,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "see Eciton major"
 
   # Change parent from A -> B -> A
-  @no-database-cleaner
 
   Scenario: Merging back when we have the same protonym
     Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
