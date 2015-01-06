@@ -30,6 +30,7 @@ class DuplicatesController < TaxaController
       return
     end
     options.each do |option|
+      # Todo: Joe calls to protonym.authorship_string trigger a save somehow
       option[:authorship_string] = option.protonym.authorship_string
 
       #Todo: joe check page number case?

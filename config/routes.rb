@@ -7,6 +7,7 @@ AntCat::Application.routes.draw do
     member do
       put :approve
       put :undo
+      get :undo_items
     end
   end
 
@@ -69,6 +70,7 @@ AntCat::Application.routes.draw do
   resource :reference_field, only: [:show]
   resource :reference_popup, only: [:show]
   resource :duplicates, only: [:show,:create]
+
 
   match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test'
   match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test'

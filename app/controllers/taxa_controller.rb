@@ -73,13 +73,11 @@ class TaxaController < ApplicationController
   def save_taxon
     # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
 
-    # TODO: joe check author strings; if they're not the same, we're going to call it the homonym case
     if @collision_resolution.nil? or @collision_resolution == "" or @collision_resolution == 'homonym'
       @mother.save_taxon @taxon, @taxon_params, @previous_combination
     else
       @original_combination = Taxon.find(@collision_resolution)
       @mother.save_taxon @original_combination, @taxon_params, @previous_combination
-      #@mother.save_taxon_collision @taxon, @taxon_params, @collision_resolution, @previous_combination
     end
 
     if @previous_combination && @previous_combination.is_a?(Species) && @previous_combination.children.any?

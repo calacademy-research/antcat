@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140326185844) do
+ActiveRecord::Schema.define(:version => 20141231212229) do
 
   create_table "antwiki_valid_taxa", :id => false, :force => true do |t|
     t.string   "name"
@@ -86,15 +86,15 @@ ActiveRecord::Schema.define(:version => 20140326185844) do
   add_index "bolton_references", ["match_id"], :name => "index_bolton_references_on_match_id"
 
   create_table "changes", :force => true do |t|
-    t.integer  "paper_trail_version_id"
-    t.datetime "created_at",             :null => false
-    t.datetime "updated_at",             :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
     t.integer  "approver_id"
     t.datetime "approved_at"
+    t.string   "change_type"
+    t.integer  "user_changed_taxon_id"
   end
 
   add_index "changes", ["approver_id"], :name => "index_changes_on_approver_id"
-  add_index "changes", ["paper_trail_version_id"], :name => "index_changes_on_paper_trail_version_id"
 
   create_table "citations", :force => true do |t|
     t.integer  "reference_id"
@@ -322,6 +322,11 @@ ActiveRecord::Schema.define(:version => 20140326185844) do
   end
 
   add_index "taxon_history_items", ["taxon_id"], :name => "index_taxonomic_history_items_on_taxon_id"
+
+  create_table "transactions", :force => true do |t|
+    t.integer "paper_trail_version_id"
+    t.integer "change_id"
+  end
 
   create_table "updates", :force => true do |t|
     t.string   "class_name"

@@ -15,8 +15,16 @@
           %td.value.name= format_taxon_name taxon.name
 
         %tr
-          %td.label.parent_rank= format_rank Rank[taxon.rank].parent
-          %td.value.parent= format_taxon_name taxon.parent.name
+
+          -#Special case - we ONLY see this if we ever modify family Formicidae
+          -#taxon.name has a special case for family that return nil; I'm scared of breaking the universe
+          -#if I change that behaviour.
+          - if taxon.rank == 'family'
+            %td.label.parent_rank= 'Order'
+            %td.value.parent= 'Hymenoptera'
+          - else
+            %td.label.parent_rank= format_rank Rank[taxon.parent.rank]
+            %td.value.parent= format_taxon_name taxon.parent.name
 
         %tr
           %td.label Status

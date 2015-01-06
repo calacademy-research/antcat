@@ -7,6 +7,7 @@ Feature: Changing parent genus, species, tribe or subfamily
 
   Background:
     Given I am logged in
+    And that version tracking is enabled
 
   Scenario: Changing a species's genus
     Given there is a genus "Atta"
@@ -38,6 +39,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "see Eciton major"
 
   # Change parent from A -> B -> A
+
   Scenario: Merging back when we have the same protonym
     Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
     When I go to the edit page for "Beta major"
@@ -51,6 +53,8 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I should see "Create secondary junior homonym of Atta major"
     When I press "Yes, create new combination"
     Then I should see "new merge back into original Atta major"
+    When I save my changes
+
 
 
     # not working. Cancel never seems to get hit. Likely a webdriver problem.

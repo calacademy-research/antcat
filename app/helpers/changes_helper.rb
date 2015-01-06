@@ -8,8 +8,14 @@ module ChangesHelper
     content_tag :a, label, href: %{/catalog/#{taxon.id}}
   end
 
-  def format_adder_name user
-    "#{format_doer_name user} added".html_safe
+  def format_adder_name change_type, user
+    if change_type == "create"
+      user_verb = "added"
+    else
+      user_verb = "changed"
+    end
+
+    ("#{format_doer_name user} "+ user_verb).html_safe
   end
 
   def format_taxon_name name
@@ -62,9 +68,10 @@ module ChangesHelper
     end
   end
 
-  def undo_button taxon
+  def undo_button taxon, change
+    # bull; this should tag with current change id.
     if taxon.can_be_edited_by? current_user
-      button 'Undo', 'undo_button', 'data-undo-id' => taxon.last_change.id
+      button 'Undo', 'undo_button'  , 'data-undo-id' => change.id, class:  'undo_button_' + change.id.to_s
     end
   end
 
