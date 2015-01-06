@@ -29,8 +29,13 @@ class Taxon < ActiveRecord::Base
     user != added_by && waiting? && $Milieu.user_can_approve_changes?(user)
   end
 
+  # Returns the ID of the most recent change that touches this taxon.
+  # Query that looks at all transactions and picks the latest one that has this
+  # change ID.
   def last_change
-    Change.joins(:paper_trail_version).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').first
+    Change.joins(:paper_trail_versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').first
+
+    #Change.joins(:paper_trail_version).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').first
   end
 
   def last_version

@@ -14,28 +14,6 @@ class TaxonMother
     @taxon
   end
 
-
-  # Placeholder; not currently used. Joe: deleteme?
-  def create_taxon_collision rank, parent, collision_resolution
-
-    logger.debug "create_taxon_collision joe"
-    # collision_resolution_id will either be "homonym" for secondary junior homonym
-    # or it'll be the taxon ID of the parent with which we want to merge.
-    # If the parent-> protonym
-
-    #joe this is fun - replace with contents of "save original taxon" from duplicates_controller
-    #All of the below is wrong; it's what we used to do in duplicates_controller
-
-
-    # save_taxon @original_combination, @taxon_params, @previous_combination
-    # if @previous_combination && @previous_combination.is_a?(Species) && @previous_combination.children.any?
-    #   create_new_usages_for_subspecies
-    # end
-    #
-
-  end
-
-
   def create_taxon rank, parent
     @taxon = rank.string.titlecase.constantize.new
     @taxon.parent = parent
@@ -46,7 +24,6 @@ class TaxonMother
   def save_taxon taxon, params, previous_combination = nil
     Taxon.transaction do
       @taxon = taxon
-
       update_name params.delete :name_attributes
       update_parent params.delete :parent_name_attributes
       update_current_valid_taxon params.delete :current_valid_taxon_name_attributes
@@ -55,13 +32,21 @@ class TaxonMother
       update_type_name params.delete :type_name_attributes
       update_name_status_flags params
 
+      @taxon.review_state = :waiting
+
       if @taxon.new_record?
-        set_initial_review_state
-        @taxon.save!
-        save_change
+        change_type = :new
       else
-        @taxon.save!
+        # we might want to get smarter about this
+        change_type = :update
       end
+      change = save_change change_type
+      change_id = change.id
+      @taxon.save_with_transaction! change.id
+
+
+      # Joe - for each taxon save, we need to have a change_id AND we need to create a new
+      # transaction record
       if previous_combination
         # the taxon that was just saved is a new combination. Update the
         # previous combination's status, associated it with the new
@@ -70,26 +55,31 @@ class TaxonMother
         # find all taxa that list previous_combination.id as
         # current_valid_taxon_id and update them
         Taxon.where(current_valid_taxon_id: previous_combination.id).each do |taxon_to_update|
-          update_elements(taxon, params, taxon_to_update, get_status_string(taxon_to_update))
+          update_elements(taxon, params, taxon_to_update, get_status_string(taxon_to_update), change_id)
         end
 
         # since the previous doesn't have a pointer to current_valid_taxon, it won't show up
         # in the above search. If it's the protonym, set it propertly.
         if (previous_combination.id == @taxon.protonym.id)
-          update_elements(taxon, params, previous_combination, Status['original combination'].to_s)
+          update_elements(taxon, params, previous_combination, Status['original combination'].to_s, change_id)
         else
-          update_elements(taxon, params, previous_combination, Status['obsolete combination'].to_s)
+          update_elements(taxon, params, previous_combination, Status['obsolete combination'].to_s,  change_id)
         end
       end
-      save_taxon_children @taxon
+      save_taxon_children @taxon, change_id
     end
   end
 
-  def save_taxon_collision taxon, params, collision_resolution, previous_combination = nil
-    # merge back in to an existing taxon.
-    if !previous_combination.nil? && collision_resolution != 'homonym'
-    end
-
+  def update_elements taxon, params, taxon_to_update, status_string, change_id
+    taxon_to_update.status = status_string
+    taxon_to_update.current_valid_taxon = @taxon
+    TaxonHistoryItem.where({taxon_id: taxon_to_update.id}).
+        update_all({taxon_id: @taxon.id})
+    Synonym.where({senior_synonym_id: taxon_to_update.id}).
+        update_all({senior_synonym_id: @taxon.id})
+    Synonym.where({junior_synonym_id: taxon_to_update.id}).
+        update_all({junior_synonym_id: @taxon.id})
+    taxon_to_update.save_with_transaction! change_id
   end
 
   def get_status_string(taxon_to_update)
@@ -102,27 +92,14 @@ class TaxonMother
     update_status
   end
 
-  def update_elements taxon, params, taxon_to_update, status_string
-    taxon_to_update.status = status_string
-    taxon_to_update.current_valid_taxon = @taxon
-    TaxonHistoryItem.where({taxon_id: taxon_to_update.id}).
-        update_all({taxon_id: @taxon.id})
-    Synonym.where({senior_synonym_id: taxon_to_update.id}).
-        update_all({senior_synonym_id: @taxon.id})
-    Synonym.where({junior_synonym_id: taxon_to_update.id}).
-        update_all({junior_synonym_id: @taxon.id})
-    taxon_to_update.save!
-  end
-
-  def save_change
+  def save_change change_type
     change = Change.new
-    change.paper_trail_version = @taxon.last_version
+    change.change_type = change_type
     change.save!
+    change
   end
 
-  def set_initial_review_state
-    @taxon.review_state = :waiting
-  end
+
 
   ####################################
   def update_name attributes
@@ -200,11 +177,11 @@ class TaxonMother
 
   private
 
-  def save_taxon_children taxon
+  def save_taxon_children taxon, change_id
     return if taxon.kind_of?(Family) || taxon.kind_of?(Subspecies)
     taxon.children.each do |c|
-      c.save!
-      save_taxon_children c
+      c.save_with_transaction! change_id
+      save_taxon_children c, change_id
     end
   end
 end

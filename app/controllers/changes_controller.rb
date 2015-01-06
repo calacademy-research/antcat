@@ -2,6 +2,7 @@
 class ChangesController < ApplicationController
 
   def index
+
     @changes = Change.creations.paginate page: params[:page]
     respond_to do |format|
       format.atom {render(nothing: true)}
