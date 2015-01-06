@@ -68,9 +68,10 @@ module ChangesHelper
     end
   end
 
-  def undo_button taxon
+  def undo_button taxon, change
+    # bull; this should tag with current change id.
     if taxon.can_be_edited_by? current_user
-      button 'Undo', 'undo_button', 'data-undo-id' => taxon.last_change.id
+      button 'Undo', 'undo_button', 'data-undo-id' => change.id
     end
   end
 

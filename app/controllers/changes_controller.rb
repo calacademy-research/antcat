@@ -2,8 +2,10 @@
 class ChangesController < ApplicationController
 
   def index
+    foo = Change.creations.uniq
+    @changes = Change.creations.uniq.paginate page: params[:page]
 
-    @changes = Change.creations.paginate page: params[:page]
+
     respond_to do |format|
       format.atom { render(nothing: true) }
       format.html
@@ -46,10 +48,10 @@ class ChangesController < ApplicationController
 
   def get_all_change_ids version
     new_version = version.next
+    change_id = find_change_from_version(version).to_i
     if new_version == nil
-      return SortedSet.new()
+      return SortedSet.new([change_id])
     else
-      change_id = find_change_from_version(version).to_i
       return (SortedSet.new([change_id]).merge(get_all_change_ids(new_version)))
     end
   end
@@ -101,4 +103,10 @@ end
 # a-b-c case, undo, ensure we're back to original
 # change something with children. Ensure they're hit. Undo it. Ensure they're moved back. verify with db to ensure this happened.
 # add two changes. Roll back the earlier change, ensure that the warning dialog box comes up
+
+# modify species b
+# a - b - a' case
+# modify species b
+# undo first change to species b
+# see what happens!
 

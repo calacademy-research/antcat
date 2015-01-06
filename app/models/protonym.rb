@@ -8,6 +8,8 @@ class Protonym < ActiveRecord::Base
   accepts_nested_attributes_for :name, :authorship
   has_paper_trail
 
+
+
   def authorship_string
     authorship and authorship.authorship_string
   end

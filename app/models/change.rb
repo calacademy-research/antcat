@@ -7,10 +7,6 @@ class Change < ActiveRecord::Base
   belongs_to :taxon, :foreign_key => :user_changed_taxon_id
 
 
-  # Joe, friday 1/2 - stopped here. Looks like transactions table is being updated
-  #   All this show logic is geared around showing a single taxa, which is no longer
-  # correct. It just needs to show itself - or maybe ALL taxa touched?
-
   scope :creations, -> {joins(:paper_trail_versions).
                         joins('JOIN taxa on taxa.id = versions.item_id').
                         order('CASE review_state ' +

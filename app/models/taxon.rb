@@ -350,6 +350,7 @@ class Taxon < ActiveRecord::Base
 
 ###############################################
   def authorship_string
+    # TODO: Joe - this triggers a save in the Name model for some reason.
     string = protonym.authorship_string
     if string && recombination?
       string = '(' + string + ')'

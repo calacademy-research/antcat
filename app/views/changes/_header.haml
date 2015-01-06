@@ -6,7 +6,7 @@
     %div.name.left= format_adder_name change.change_type, taxon.added_by
     %div.taxon.left= link_to_taxon taxon
     %div.edit_button.left= edit_button taxon
-    %div.undo_button.left= undo_button taxon
+    %div.undo_button.left= undo_button taxon, change
     %div.approve_button.left= approve_button taxon
     %div.time.right= format_time_ago change.created_at
     %div.clear
