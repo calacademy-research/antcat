@@ -95,6 +95,7 @@ class TaxonMother
   def save_change change_type
     change = Change.new
     change.change_type = change_type
+    change.user_changed_taxon_id = @taxon.id
     change.save!
     change
   end

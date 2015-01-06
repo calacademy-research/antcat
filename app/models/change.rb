@@ -4,6 +4,7 @@ class Change < ActiveRecord::Base
   belongs_to :approver, class_name: 'User'
   has_many :transactions
   has_many :paper_trail_versions, :through => :transactions
+  belongs_to :taxon, :foreign_key => :user_changed_taxon_id
 
 
   # Joe, friday 1/2 - stopped here. Looks like transactions table is being updated
@@ -34,10 +35,6 @@ class Change < ActiveRecord::Base
 
   end
 
-  def taxon
-    return unless paper_trail_version
-    Taxon.find paper_trail_version.item_id
-  end
 
   def user
     first_version = paper_trail_versions.first

@@ -25,11 +25,15 @@ class ChangesController < ApplicationController
 
   def undo
     @change = Change.find params[:id]
-    @version = Version.find @change.paper_trail_version_id
-    if @version.reify
-      @version.reify.save!
-    else
-      @version.item.destroy
+    # joe - once you haev the change id, find all transactions. For each transaction,
+    # load a version, and undo the change
+    Transaction.find_all_by_change_id(@change.id).each do |transaction|
+      version = transaction.paper_trail_version
+      if version.reify
+        version.reify.save!
+      else
+        version.item.destroy
+      end
     end
 
     json = {success: true}.to_json

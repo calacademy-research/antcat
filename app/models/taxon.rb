@@ -20,9 +20,7 @@ class Taxon < ActiveRecord::Base
     transaction.save!
   end
 
-  def save
-    raise "Do not use save without the exclam notation"
-  end
+
 
 ###############################################
 # nested attributes

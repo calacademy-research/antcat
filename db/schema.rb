@@ -86,11 +86,12 @@ ActiveRecord::Schema.define(:version => 20141231212229) do
   add_index "bolton_references", ["match_id"], :name => "index_bolton_references_on_match_id"
 
   create_table "changes", :force => true do |t|
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
     t.integer  "approver_id"
     t.datetime "approved_at"
     t.string   "change_type"
+    t.integer  "user_changed_taxon_id"
   end
 
   add_index "changes", ["approver_id"], :name => "index_changes_on_approver_id"
