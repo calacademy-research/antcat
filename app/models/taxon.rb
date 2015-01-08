@@ -25,7 +25,9 @@ class Taxon < ActiveRecord::Base
 ###############################################
 # nested attributes
   belongs_to :name; validates :name, presence: true
-  belongs_to :protonym, dependent: :destroy; validates :protonym, presence: true
+  #belongs_to :protonym, dependent: :destroy; validates :protonym, presence: true
+  belongs_to :protonym; validates :protonym, presence: true
+
   belongs_to :type_name, class_name: 'Name', foreign_key: :type_name_id
   has_many :transactions
   accepts_nested_attributes_for :name, :protonym, :type_name

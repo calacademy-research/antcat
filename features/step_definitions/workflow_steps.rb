@@ -21,6 +21,10 @@ end
 Then /^I should see the name "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.name', value
 end
+Then(/^I should see the genus "(.*?)" in the changes$/) do |value|
+  should_see_in_changes '.parent_rank', 'Genus'
+  page.should have_css '.parent', text: value
+end
 Then /^I should see the subfamily "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.parent_rank', 'Subfamily'
   page.should have_css '.parent', text: value
@@ -120,3 +124,4 @@ end
 Then /I should not see any change history/ do
   page.should_not have_css '.change_history'
 end
+

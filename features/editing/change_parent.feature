@@ -9,7 +9,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     Given I am logged in
     And that version tracking is enabled
 
- # @no-database-cleaner
   Scenario: Changing a species's genus
     Given there is a genus "Atta"
     And there is a genus "Eciton"

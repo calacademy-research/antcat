@@ -26,10 +26,22 @@ class ChangesController < ApplicationController
 
 
   def undo
+    #  Once you have the change id, find all transactions. For each transaction,
+    # load a version, and undo the change
+    # Sort to undo changes most recent to oldest
     change_id = params[:id]
+    change = Change.find(change_id)
     change_id_set = find_future_changes(change_id)
-    change_id_set.each do |undo_this_change_id|
-      undo_change undo_this_change_id
+    versions = []
+    Taxon.transaction do
+      change_id_set.each do |undo_this_change_id|
+        versions.concat( find_all_versions_for_change(undo_this_change_id))
+      end
+      undo_versions versions
+      change.delete
+      change.transactions.each do |transaction|
+        transaction.delete
+      end
     end
     json = {success: true}.to_json
     render json: json, content_type: 'text/html'
@@ -42,7 +54,6 @@ class ChangesController < ApplicationController
   private
   # given a version, retrurn the change record id
   def find_change_from_version version
-    print "Version: " + version.id.to_s
     Transaction.find_by_paper_trail_version_id(version.id).change_id
   end
 
@@ -76,25 +87,33 @@ class ChangesController < ApplicationController
     change_ids.add(change_id.to_i)
   end
 
-  def undo_change change_id
-    change = Change.find change_id
-    Taxon.transaction do
-      #  Once you have the change id, find all transactions. For each transaction,
-      # load a version, and undo the change
-      Transaction.find_all_by_change_id(change.id).each do |transaction|
-        version = transaction.paper_trail_version
-        if version.reify
-          version.reify.save!
-        else
-          version.item.destroy
-        end
-        transaction.delete
-        version.delete
-      end
-      change.delete
+  def find_all_versions_for_change change_id
+    versions=[]
+    Transaction.find_all_by_change_id(change_id).each do |transaction|
+      versions << Version.find(transaction.paper_trail_version)
     end
+    versions
+  end
+
+  def undo_versions versions
+    versions.sort_by &:id
+    versions.reverse!
+    # Some side effect of restoring this created a change record that hosed our world pretty good.
+    Taxon.paper_trail_off
+    versions.each do |version|
+      if version.reify
+        version.reify.save!
+      else
+        version.item.destroy
+      end
+      version.delete
+    end
+    Taxon.paper_trail_on
+
+
   end
 end
+
 
 # test notes:
 # add two changes. Roll back the earlier change, ensure that the later change gets hit.
