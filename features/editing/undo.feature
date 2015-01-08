@@ -8,10 +8,8 @@ Feature: Workflow
   Background:
     Given I am logged in
     And version tracking is enabled
-    And I am logged in
 
-
-
+  @wip
   Scenario: Changing a species's genus twice by using the helper link
     Given there is an original species "Atta major" with genus "Atta"
     And there is a genus "Becton"
@@ -44,7 +42,7 @@ Feature: Workflow
     When I go to the catalog page for "Becton major"
     Then I should see "an obsolete combination of Chatsworth major"
 
-  @no-database-cleaner
+  @wip
   Scenario: Adding a taxon and seeing it on the Changes page, undoing it
     When I go to the catalog page for "Formicinae"
     * I press "Edit"

@@ -8,7 +8,9 @@ When /^the changes are approved$/ do
 end
 Given /^there is a genus "([^"]*)" that's waiting for approval$/ do |name|
   genus = create_genus name, review_state: :waiting
-  FactoryGirl.create :change, paper_trail_version: genus.last_version
+  change = FactoryGirl.build :change, user_changed_taxon_id: genus.id
+  version = FactoryGirl.build :version, item_id: genus.id
+  FactoryGirl.create :transaction, paper_trail_version: version, change: change
 end
 
 ####
@@ -79,29 +81,29 @@ When /^I add the genus "Atta"$/ do
   reference = FactoryGirl.create :article_reference
 
   taxon_params = HashWithIndifferentAccess.new(
-    name_attributes:     {id: ''},
-    status:              'valid',
-    incertae_sedis_in:   '',
-    fossil:              '0',
-    nomen_nudum:         '0',
-    unresolved_homonym:  '0',
-    ichnotaxon:          '0',
-    hong:                '0',
-    headline_notes_taxt: '',
-    current_valid_taxon_name_attributes: {id: ''},
-    homonym_replaced_by_name_attributes: {id: ''},
-    protonym_attributes: {
-      name_attributes:  {id: ''},
-      fossil:           '0',
-      sic:              '0',
-      locality:         '',
-      authorship_attributes: {
-        reference_attributes: {id: reference.id},
-        pages: '',
-        forms: '',
-        notes_taxt: '',
-      },
-    }
+      name_attributes: {id: ''},
+      status: 'valid',
+      incertae_sedis_in: '',
+      fossil: '0',
+      nomen_nudum: '0',
+      unresolved_homonym: '0',
+      ichnotaxon: '0',
+      hong: '0',
+      headline_notes_taxt: '',
+      current_valid_taxon_name_attributes: {id: ''},
+      homonym_replaced_by_name_attributes: {id: ''},
+      protonym_attributes: {
+          name_attributes: {id: ''},
+          fossil: '0',
+          sic: '0',
+          locality: '',
+          authorship_attributes: {
+              reference_attributes: {id: reference.id},
+              pages: '',
+              forms: '',
+              notes_taxt: '',
+          },
+      }
   )
   genus_params = taxon_params.deep_dup
   genus_params[:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Atta').id
@@ -110,7 +112,9 @@ When /^I add the genus "Atta"$/ do
 
   taxon = mother.create_taxon Rank[:genus], create_subfamily
   mother.save_taxon taxon, genus_params
-  taxon.last_change.paper_trail_version.update_attributes whodunnit: @user
+  taxon.last_change.paper_trail_versions.each do |version|
+    version.update_attributes whodunnit: @user
+  end
 end
 
 Then /I should not see any change history/ do

@@ -295,8 +295,13 @@ FactoryGirl.define do
     association :whodunnit, factory: :user
   end
 
-  factory :change do
+  factory :transaction do
     association :paper_trail_version, factory: :version
+    association :change
+  end
+
+  factory :change do
+    change_type     "add"
   end
 
 end

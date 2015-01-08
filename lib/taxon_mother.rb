@@ -43,9 +43,12 @@ class TaxonMother
       change = save_change change_type
       change_id = change.id
       @taxon.save_with_transaction! change.id
+      if(change_type == :new)
+        change.user_changed_taxon_id = @taxon.id
+        change.save
+      end
 
-
-      # Joe - for each taxon save, we need to have a change_id AND we need to create a new
+      # for each taxon save, we need to have a change_id AND we need to create a new
       # transaction record
       if previous_combination
         # the taxon that was just saved is a new combination. Update the

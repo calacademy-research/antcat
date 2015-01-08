@@ -3,8 +3,13 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   include Formatters::ButtonFormatter
   include Formatters::LinkFormatter
 
-  def include_invalid; true end
-  def expand_references?; true end
+  def include_invalid;
+    true
+  end
+
+  def expand_references?;
+    true
+  end
 
   def link_to_other_site
     link_to_antweb @taxon
@@ -70,7 +75,8 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       string << ' '.html_safe
       if taxon.kind_of? Species
         string << header_link(taxon, taxon.name.epithet_html.html_safe)
-      else taxon.kind_of? Subspecies
+      else
+        taxon.kind_of? Subspecies
         species = taxon.species
         if species
           string << header_link(species, species.name.epithet_html.html_safe)
@@ -157,8 +163,12 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     return unless change
     content_tag :span, class: 'change_history' do
       content = ''.html_safe
-
-      content << "Added by #{format_doer_name(@taxon.added_by)} ".html_safe
+      if (change.change_type == 'new')
+        content << "Added by"
+      else
+        content << "Changed by"
+      end
+      content << " #{format_doer_name(@taxon.added_by)} ".html_safe
       content << format_time_ago(change.created_at).html_safe
 
       if @taxon.approved?

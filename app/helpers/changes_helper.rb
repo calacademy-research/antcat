@@ -9,7 +9,7 @@ module ChangesHelper
   end
 
   def format_adder_name change_type, user
-    if change_type == "add"
+    if change_type == "new"
       user_verb = "added"
     else
       user_verb = "changed"
