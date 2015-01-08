@@ -110,3 +110,7 @@ end
 # undo first change to species b
 # see what happens!
 
+# Modify species b
+# ensure that it says "changed" instead of "added" for editing
+
+
