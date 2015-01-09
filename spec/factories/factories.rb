@@ -382,7 +382,7 @@ end
 
 def create_taxon_version_and_change review_state, user = @user, approver = nil
   taxon = FactoryGirl.create :genus, review_state: review_state
-  change = FactoryGirl.build :change, user_changed_taxon_id: taxon.id
+  change = FactoryGirl.build :change, user_changed_taxon_id: taxon.id, change_type: "new"
   version = FactoryGirl.build :version, item_id: taxon.id, whodunnit: user
   FactoryGirl.create :transaction, paper_trail_version: version, change: change
   change.update_attributes! approver: approver, approved_at: Time.now if approver
