@@ -23,7 +23,10 @@ describe Change do
   it "has a user (the editor)" do
     user = FactoryGirl.create :user
     genus = create_genus
+    create_taxon_change(genus,'add',user)
+
     genus.last_version.update_attributes whodunnit: user.id
+
     change = Change.new paper_trail_version: genus.last_version
     change.user.should == user
   end
@@ -68,12 +71,20 @@ describe Change do
       item = create_genus review_state: 'approved'
       approved_later_version = FactoryGirl.create :version, event: 'create', item_id: item.id
 
-      unapproved        = Change.create approved_at: nil, paper_trail_version: unapproved_version
-      approved_earlier  = Change.create approved_at: Date.today - 7, paper_trail_version: approved_earlier_version
-      approved_later    = Change.create approved_at: Date.today + 7, paper_trail_version: approved_later_version
+      unapproved = Change.create approved_at: nil, paper_trail_version: unapproved_version
+      approved_earlier = Change.create approved_at: Date.today - 7, paper_trail_version: approved_earlier_version
+      approved_later = Change.create approved_at: Date.today + 7, paper_trail_version: approved_later_version
 
       Change.creations.map(&:id).should == [unapproved.id, approved_later.id, approved_earlier.id]
     end
+  end
+
+  def create_taxon_change (taxon, event, user)
+    version = Version.create! item_id: taxon.id, event: 'create', item_type: 'Taxon', whodunnit: adder
+    transaction = Transaction.create! paper_trail_version_id: version.id
+    change = Change.create! user_changed_taxon_id: taxon.id
+    transaction.change = change
+    transaction.save
   end
 
 end

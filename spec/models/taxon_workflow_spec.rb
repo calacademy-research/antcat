@@ -109,7 +109,12 @@ describe Taxon do
       end
       it "should return the Change, if any" do
         taxon = create_genus
-        change = Change.create! paper_trail_version: taxon.last_version
+        version = Version.create! item_id: taxon.id, event: 'create', item_type: 'Taxon'
+        transaction = Transaction.create! paper_trail_version_id: version.id
+        change = Change.create! user_changed_taxon_id: taxon.id
+        transaction.change = change
+        transaction.save
+
         taxon.last_change.should == change
       end
     end
@@ -131,17 +136,33 @@ describe Taxon do
       taxon = create_genus
 
       adder = FactoryGirl.create :user
-      taxon.last_version.update_attributes! whodunnit: adder
-      Change.create! paper_trail_version: taxon.last_version
+
+      # Barfed horribly when I tried to do this in a function. Probably a brain-o, but this works.
+      # Anyone refactoring this - get the two below and the one above.
+      version = Version.create! item_id: taxon.id, event: 'create', item_type: 'Taxon', whodunnit: adder
+      transaction = Transaction.create! paper_trail_version_id: version.id
+      change = Change.create! user_changed_taxon_id: taxon.id
+      transaction.change = change
+      transaction.save
 
       editor = FactoryGirl.create :user
       taxon.update_attributes! incertae_sedis_in: 'genus'
+
+
       taxon.last_version.update_attributes! whodunnit: editor
-      Change.create! paper_trail_version: taxon.last_version
+
+      version = Version.create! item_id: taxon.id, event: 'create', item_type: 'Taxon', whodunnit: adder
+      transaction = Transaction.create! paper_trail_version_id: version.id
+      change = Change.create! user_changed_taxon_id: taxon.id
+      transaction.change = change
+      transaction.save
 
       taxon.added_by.should == adder
     end
 
   end
+
+
+
 
 end
