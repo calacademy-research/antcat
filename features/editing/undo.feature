@@ -35,7 +35,10 @@ Feature: Workflow
 
   # This test is long. It may be worth doing all the data setup
   # required to get these preconditions without going through the UI.
-  Scenario: Changing a species's genus twice by using the helper link
+  #  this where we undo the most recent and then there is one,
+  # then the next most recent and there are none, and we're back to baseline.
+
+  Scenario: Changing a species's genus twice by using the helper link, undo twice
     Given there is an original species "Atta major" with genus "Atta"
     And there is a genus "Becton"
     And there is a genus "Chatsworth"
@@ -77,9 +80,58 @@ Feature: Workflow
     * I should see the name "major" in the changes
     And I should not see "Chatsworth"
 
+    When I go to the catalog page for "Becton major"
+    Then I should see "Becton major" in the header
+
+    When I go to the changes page
+    Then I click ".undo_button_1"
+    Then I should see an alert box
+    * I should not see "Becton"
+    * I should not see "major"
+    And I should not see "Chatsworth"
+
+    When I go to the catalog page for "Atta major"
+    Then I should see "Atta major" in the header
+
+
+  Scenario: Changing a species's genus twice by using the helper link, undo oldest, restored to original condition.
+    Given there is an original species "Atta major" with genus "Atta"
+    And there is a genus "Becton"
+    And there is a genus "Chatsworth"
+
+ # Change parent from A -> B
+    When I go to the edit page for "Atta major"
+    And I click the parent name field
+    And I set the parent name to "Becton"
+    And I press "OK"
+    Then I should see "Would you like to create a new combination under this parent?"
+    When I press "Yes, create new combination"
+    When I save my changes
+    And I go to the changes page
+    Then I should see the genus "Becton" in the changes
+    * I should see the name "major" in the changes
+
+ # Change parent from B -> C
+    When I go to the edit page for "Becton major"
+    And I click the parent name field
+    And I set the parent name to "Chatsworth"
+    And I press "OK"
+    Then I should see "Would you like to create a new combination under this parent?"
+    When I press "Yes, create new combination"
+    Then the name field should contain "Chatsworth major"
+    When I save my changes
+
+    When I go to the changes page
+    When I click ".undo_button_1"
+    Then I should see an alert box
+    * I should not see "Becton"
+    * I should not see "major"
+    And I should not see "Chatsworth"
+
+    When I go to the catalog page for "Atta major"
+    Then I should see "Atta major" in the header
 
     # test this where we undo the oldest and then both are gone
-  # test this where we undo the most recent and then there is one, then the next most recent and there are none, and we're back to baseline.
 
 
 
