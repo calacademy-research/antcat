@@ -34,7 +34,6 @@ class Taxon < ActiveRecord::Base
   # change ID.
   def last_change
     Change.joins(:paper_trail_versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').first
-    #Change.joins(:paper_trail_version).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').first
   end
 
   def last_version
