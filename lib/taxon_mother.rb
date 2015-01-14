@@ -21,6 +21,7 @@ class TaxonMother
     @taxon
   end
 
+  # TODO: Document params, and how that works.
   def save_taxon taxon, params, previous_combination = nil
     Taxon.transaction do
       @taxon = taxon
@@ -35,7 +36,7 @@ class TaxonMother
       @taxon.review_state = :waiting
 
       if @taxon.new_record?
-        change_type = :new
+        change_type = :create
       else
         # we might want to get smarter about this
         change_type = :update
@@ -43,7 +44,7 @@ class TaxonMother
       change = save_change change_type
       change_id = change.id
       @taxon.save_with_transaction! change.id
-      if(change_type == :new)
+      if(change_type == :create)
         change.user_changed_taxon_id = @taxon.id
         change.save
       end

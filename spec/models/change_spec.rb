@@ -23,7 +23,7 @@ describe Change do
   it "has a user (the editor)" do
     user = FactoryGirl.create :user
     genus = create_genus
-    create_taxon_change(genus,'add',user)
+    create_taxon_change(genus,'create',user)
 
     genus.last_version.update_attributes whodunnit: user.id
 

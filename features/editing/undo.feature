@@ -14,6 +14,18 @@ Feature: Workflow
     And version tracking is enabled
     And I log in as a catalog editor
 
+  # Add these scenarios
+
+  # test notes:
+# change something with children. Ensure they're hit. Undo it. Ensure they're moved back. verify with db to ensure this happened.
+# add two changes. Roll back the earlier change, ensure that the warning dialog box comes up listing the impact on the later change
+
+# modify species b
+# a - b - a' case
+# modify species b
+# undo first change to species b
+# see what happens!
+
   Scenario: Changing a taxon and seeing it on the Changes page, undoing it
     When I go to the catalog page for "Formicinae"
     * I press "Edit"
@@ -35,6 +47,9 @@ Feature: Workflow
 
   # This test is long. It may be worth doing all the data setup
   # required to get these preconditions without going through the UI.
+  # Note: having this long test may be worthwhile; it caught a bug in
+  # the data model setup that wouldn't have been caught by setting
+  # up the data structures manually.
   #  this where we undo the most recent and then there is one,
   # then the next most recent and there are none, and we're back to baseline.
 

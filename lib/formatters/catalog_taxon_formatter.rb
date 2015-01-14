@@ -163,7 +163,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     return unless change
     content_tag :span, class: 'change_history' do
       content = ''.html_safe
-      if (change.change_type == 'new')
+      if (change.change_type == 'create')
         content << "Added by"
       else
         content << "Changed by"

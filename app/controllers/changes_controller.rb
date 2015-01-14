@@ -47,6 +47,26 @@ class ChangesController < ApplicationController
     render json: json, content_type: 'text/html'
   end
 
+  # reutrn information about all the taxa that would be hit if we were to
+  # hit "undo". Includes current taxon.
+  def undo_items
+    change_id = params[:id]
+    change = Change.find(change_id)
+    change_id_set = find_future_changes(change_id)
+    changes = []
+    change_id_set.each do |cur_change_id|
+      cur_change = Change.find(cur_change_id)
+      cur_taxon = cur_change.taxon
+      cur_transaction = cur_change.transactions.first
+      cur_user = User.find (cur_transaction.paper_trail_version.whodunnit)
+      changes.append(name: cur_taxon.name.to_s,
+                     change_type: cur_change.change_type,
+                     change_timestamp: cur_change.created_at,
+                     user_name: cur_user.name)
+    end
+    render json: changes.to_json, status: :ok
+  end
+
 
   #TODO joe: hook the undo warning dialog to an ajax call that hits
   # find_future_changes and warns that many things will be rolled back.
@@ -115,21 +135,7 @@ class ChangesController < ApplicationController
 end
 
 
-# test notes:
-# add two changes. Roll back the earlier change, ensure that the later change gets hit.
-# change something in a notes field, ensure it shows up as "Change" and then undo it and ensure that it's gone
-#   check database records for above.
-# a-b-c case, undo, ensure we're back to original
-# change something with children. Ensure they're hit. Undo it. Ensure they're moved back. verify with db to ensure this happened.
-# add two changes. Roll back the earlier change, ensure that the warning dialog box comes up
 
-# modify species b
-# a - b - a' case
-# modify species b
-# undo first change to species b
-# see what happens!
 
-# Modify species b
-# ensure that it says "changed" instead of "added" for editing
 
 

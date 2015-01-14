@@ -288,7 +288,7 @@ class AntCat.NameField extends AntCat.Panel
   # does synchronus ajax query
   # against the duplicates controller. The results appear in this.duplicates
   check_for_duplicates: (new_parent_name) =>
-    console.log("Joe check for duplicates")
+    console.log("check for duplicates")
 
     url = "/duplicates?current_taxon_id=" +
         @current_taxon_id() +
