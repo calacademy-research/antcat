@@ -2,7 +2,6 @@
 class ChangesController < ApplicationController
 
   def index
-    foo = Change.creations.uniq
     @changes = Change.creations.uniq.paginate page: params[:page]
 
 
@@ -61,7 +60,7 @@ class ChangesController < ApplicationController
       cur_user = User.find (cur_transaction.paper_trail_version.whodunnit)
       changes.append(name: cur_taxon.name.to_s,
                      change_type: cur_change.change_type,
-                     change_timestamp: cur_change.created_at,
+                     change_timestamp: cur_change.created_at.strftime("%B %d, %Y"),
                      user_name: cur_user.name)
     end
     render json: changes.to_json, status: :ok
@@ -73,13 +72,25 @@ class ChangesController < ApplicationController
 
   private
   # given a version, retrurn the change record id
+  # For non-legacy undo, this should always return a value.
+  # However, older updates don't necessarily have an associated transaction record.
   def find_change_from_version version
-    Transaction.find_by_paper_trail_version_id(version.id).change_id
+    transaction = Transaction.find_by_paper_trail_version_id(version.id)
+    unless transaction.nil?
+      return transaction.change_id
+    else
+      return nil
+    end
+
   end
 
   def get_all_change_ids version
     new_version = version.next
-    change_id = find_change_from_version(version).to_i
+    change_id_str = find_change_from_version(version)
+    if(change_id_str == nil)
+      return SortedSet.new
+    end
+    change_id = change_id_str.to_i
     if new_version == nil
       return SortedSet.new([change_id])
     else
