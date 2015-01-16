@@ -4,16 +4,16 @@ class Taxon < ActiveRecord::Base
   def self.advanced_search params
     params[:biogeographic_region] = '' if params[:biogeographic_region] == 'Any'
 
-    return where('1 = 0') unless
-      params[:author_name].present? ||
-      params[:locality].present? ||
-      params[:verbatim_type_locality].present? ||
-      params[:type_specimen_repository].present? ||
-      params[:type_specimen_code].present? ||
-      params[:year].present? ||
-      params[:biogeographic_region].present? ||
-      params[:rank].present? && params[:rank] != 'All' ||
-      params[:forms].present?
+    return where('1 = 0') unless params[:author_name].present? ||
+        params[:locality].present? ||
+        params[:verbatim_type_locality].present? ||
+        params[:type_specimen_repository].present? ||
+        params[:type_specimen_code].present? ||
+        params[:year].present? ||
+        params[:biogeographic_region].present? ||
+        params[:rank].present? && params[:rank] != 'All' ||
+        params[:genus].present? ||
+        params[:forms].present?
 
     query = joins protonym: [{authorship: :reference}]
     query = query.where type: params[:rank] unless params[:rank] == 'All'
@@ -41,6 +41,13 @@ class Taxon < ActiveRecord::Base
 
     search_term = "%#{params[:type_specimen_code]}%"
     query = query.where('type_specimen_code LIKE ?', search_term) if params[:type_specimen_code].present?
+
+    if params[:genus].present?
+      query = query.joins 'inner JOIN taxa as genera ON genera.id = taxa.genus_id'
+      query = query.joins 'inner JOIN names as genus_names ON  genera.name_id = genus_names.id'
+      search_term = "%#{params[:genus]}%"
+      query = query.where('genus_names.name like ?', search_term)
+    end
 
     search_term = params[:biogeographic_region]
     if search_term == 'None'

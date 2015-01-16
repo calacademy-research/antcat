@@ -29,6 +29,10 @@ class Taxon < ActiveRecord::Base
   belongs_to :protonym; validates :protonym, presence: true
 
   belongs_to :type_name, class_name: 'Name', foreign_key: :type_name_id
+
+  has_many :taxa, class_name: "Taxon", foreign_key: :genus_id
+  belongs_to :genus, class_name: 'Taxon'
+
   has_many :transactions
   accepts_nested_attributes_for :name, :protonym, :type_name
 

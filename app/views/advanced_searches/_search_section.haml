@@ -56,6 +56,14 @@
         %td= text_field_tag :forms, params[:forms]
 
       %tr
+        %td.label
+          where
+          %b genus
+          contains
+        %td= text_field_tag :genus, params[:genus]
+
+
+      %tr
         %td.label= label_tag 'Valid only?'
         %td= check_box_tag :valid_only
 

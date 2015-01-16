@@ -67,9 +67,6 @@ class ChangesController < ApplicationController
   end
 
 
-  #TODO joe: hook the undo warning dialog to an ajax call that hits
-  # find_future_changes and warns that many things will be rolled back.
-
   private
   # given a version, retrurn the change record id
   # For non-legacy undo, this should always return a value.
