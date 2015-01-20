@@ -7,6 +7,7 @@ Feature: Changing parent genus, species, tribe or subfamily
 
   Background:
     Given I am logged in
+    And that version tracking is enabled
 
   Scenario: Changing a species's genus
     Given there is a genus "Atta"
@@ -38,6 +39,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "see Eciton major"
 
   # Change parent from A -> B -> A
+
   Scenario: Merging back when we have the same protonym
     Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
     When I go to the edit page for "Beta major"
@@ -51,6 +53,8 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I should see "Create secondary junior homonym of Atta major"
     When I press "Yes, create new combination"
     Then I should see "new merge back into original Atta major"
+    When I save my changes
+
 
 
     # not working. Cancel never seems to get hit. Likely a webdriver problem.
@@ -112,12 +116,41 @@ Feature: Changing parent genus, species, tribe or subfamily
   # try this for a case with more than one duplicate candidate
   # For homonym case, check that the references for "b" in a - b -a' case are good.
   # for reversion case(s), check that the references for "b" are good
-  # for a case where there is one or more duplicatre candidates, hit cancel on dialog box (throbber case!)
   # Standard case(maybe already covered?) where there is no conflict/duplicate
   # a-b-a' case for both options     (with and without approval)
   # a-b-c case, check all references
   # a-b-c + appprove, check all reference
+  Scenario: Detecting a possible secondary homonym when there is a subspecies name conflict
+    Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
+    Given there is a subspecies "Atta betus subbus" which is a subspecies of "Atta betus" in the genus "Atta"
+    And I am logged in
+    When I go to the edit page for "Solenopsis speccus subbus"
+    And I click the parent name field
+    And I set the parent name to "Atta betus"
+    And I press "OK"
+    Then I should see "This new combination looks a lot like existing combinations"
+    And I should see "Atta betus subbus"
+    And I should see "This would become a secondary junior homonym; name conflict with distinct authorship"
+    Then I choose "secondary_junior_homonym"
+    And I press "Yes, create new combination"
+    Then I should see "new secondary junior homonym of subspecies of Atta betus"
+    When I save my changes
+    Then I should see "Atta betus subbus"
+    And I should see "unresolved junior homonym"
+    And I should see "This taxon has been changed and is awaiting approval"
 
+
+
+  # tagged "work in progress" - I saw this fail once, requires checking.
+#  Scenario: Change a subspecies to a species should error gracefully
+#    Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
+#    Given there is a genus "Atta"
+#    And I am logged in
+#    When I go to the edit page for "Solenopsis speccus subbus"
+#    And I click the parent name field
+#    And I set the parent name to "Atta"
+#    And I press "OK"
+#    Try this manually, see what happens. If all is well, then that's bad - this should be an error case.
 
   Scenario: Changing a species's genus twice by using the helper link
     Given there is an original species "Atta major" with genus "Atta"

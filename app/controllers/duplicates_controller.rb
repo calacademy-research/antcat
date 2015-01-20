@@ -16,12 +16,21 @@ class DuplicatesController < TaxaController
     end
     current_taxon = Taxon.find(params[:current_taxon_id])
     new_parent = Taxon.find_by_name_id(params[:new_parent_name_id])
-    options = Taxon.find_epithet_in_genus current_taxon.name.epithet, new_parent
+    if(current_taxon.rank == Rank['subspecies'].to_s)
+      # searching for genus / subspecies for conflict.
+      options = Taxon.find_subspecies_in_genus current_taxon.name.epithet, new_parent.parent
+    else
+      options = Taxon.find_epithet_in_genus current_taxon.name.epithet, new_parent
+    end
+
+
+
     if options.nil?
       render :nothing => true, status: :no_content
       return
     end
     options.each do |option|
+      # Todo: Joe calls to protonym.authorship_string trigger a save somehow
       option[:authorship_string] = option.protonym.authorship_string
 
       #Todo: joe check page number case?

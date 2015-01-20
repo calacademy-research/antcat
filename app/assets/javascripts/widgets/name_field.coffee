@@ -165,7 +165,35 @@ class AntCat.NameField extends AntCat.Panel
 # -----------------------------------------
 # Duplicates message handling
 # -----------------------------------------
+  make_radio_html: (item,j)=>
+    message = '<input type="radio" id='
 
+    if item['duplicate_type'] == 'secondary_junior_homonym'
+      message = message + 'secondary_junior_homonym'
+      generate_additional_homonym_option = false
+    else
+      message = message + j
+
+    if(j == 0)
+      message = message + ' checked="checked" '
+    message = message + ' name="radio">'
+    message = message + '<label for="radio' +
+      j +
+      '">' +
+      item.name_html_cache +
+      ": " +
+      item.authorship_string
+
+    if item['duplicate_type'] == 'secondary_junior_homonym'
+      message = message + " This would become a secondary junior homonym; name conflict with distinct authorship"
+    else
+      message = message + " return to a previous usage"
+
+    message = message + '</label>'
+    message = message + '</br>'
+
+
+    message
 
   duplicate_message_html: (data)=>
     message = '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations."><p>
@@ -176,7 +204,7 @@ class AntCat.NameField extends AntCat.Panel
     generate_additional_homonym_option = true
     # one radio button per duplicate. If we hit a homonym case in here,
     # we don't need an additonal option for one.
-    "string"
+
     for i in [1..data.length] by 1
       j = i - 1
       if(typeof data[j].species != "undefined")
@@ -188,34 +216,7 @@ class AntCat.NameField extends AntCat.Panel
         # Or quite possibly something to do with genus that I don't
         # understand.
         debugger
-
-      message = message + '<input type="radio" id='
-
-      if item['duplicate_type'] == 'secondary_junior_homonym'
-        message = message + 'homonym'
-        generate_additional_homonym_option = false
-      else
-        message = message + j
-
-      if(i == 1)
-        message = message + ' checked="checked" '
-      message = message + ' name="radio"><label for="radio' +
-        j +
-        '">' +
-        item.name_html_cache +
-        ": " +
-        item.authorship_string
-
-      if item['duplicate_type'] == 'secondary_junior_homonym'
-        message = message + " This would become a secondary junior homonym; name conflict with distinct authorship"
-      else
-        message = message + " return to a previous usage"
-
-      message = message + '</label>'
-
-
-
-
+      message = message + @make_radio_html(item,j)
 
     if generate_additional_homonym_option
       message = @append_homonym_button(message, item)
@@ -253,20 +254,19 @@ class AntCat.NameField extends AntCat.Panel
     dialog_box = $("#dialog-duplicate")
     dialog_box.dialog({
       resizable: true,
-      height: 180,
-      width: 520,
-      width: 520,
+      height: 280,
+      width: 720,
       modal: true,
       buttons: {
         "Yes, create new combination": (a) =>
           # This code is nasty. there's gotta be a better way.
-          if (@get_radio_value() == 'homonym')
-            collision_resolution = @get_radio_value()
+          if (@get_radio_value() == 'homonym' || @get_radio_value() == 'secondary_junior_homonym')
+            collision_resolution = 'homonym'
           else
             data_object = data[@get_radio_value()]
-            if(data_object['species'] != null)
+            if(data_object['species'] != undefined)
               collision_resolution = data_object['species'].id
-            else if (data_object['subspecies'] != null)
+            else if (data_object['subspecies'] != undefined)
               collision_resolution = data_object['subspecies'].id
           window.location.href = '/taxa/new?parent_name_id=' + new_parent_name_id +
             '&rank_to_create=' + @taxon_rank +
@@ -288,8 +288,6 @@ class AntCat.NameField extends AntCat.Panel
   # does synchronus ajax query
   # against the duplicates controller. The results appear in this.duplicates
   check_for_duplicates: (new_parent_name) =>
-    console.log("Joe check for duplicates")
-
     url = "/duplicates?current_taxon_id=" +
         @current_taxon_id() +
         "&new_parent_name_id=" +

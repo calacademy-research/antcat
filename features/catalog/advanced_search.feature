@@ -61,6 +61,15 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     Then I should see "see Betta major"
 
+  Scenario: Finding a genus
+    And there is a species "Atta major" with genus "Atta"
+    And there is a species "Ophthalmopone major" with genus "Ophthalmopone"
+    When I go to the catalog
+    And I follow "Advanced Search"
+    And I fill in "genus" with "Atta"
+    And I press "Go" in the search section
+    Then I should see "Atta major"
+
   Scenario: Finding a junior synonym
     Given there is a species "Atta major" described by "Bolton" which is a junior synonym of "Betta minor"
     When I go to the catalog

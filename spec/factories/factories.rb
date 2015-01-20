@@ -295,8 +295,13 @@ FactoryGirl.define do
     association :whodunnit, factory: :user
   end
 
-  factory :change do
+  factory :transaction do
     association :paper_trail_version, factory: :version
+    association :change
+  end
+
+  factory :change do
+    change_type     "create"
   end
 
 end
@@ -377,8 +382,12 @@ end
 
 def create_taxon_version_and_change review_state, user = @user, approver = nil
   taxon = FactoryGirl.create :genus, review_state: review_state
-  taxon.last_version.update_attributes! whodunnit: user
-  change = Change.create! paper_trail_version: taxon.last_version
+  change = FactoryGirl.build :change, user_changed_taxon_id: taxon.id, change_type: "create"
+  version = FactoryGirl.build :version, item_id: taxon.id, whodunnit: user
+  FactoryGirl.create :transaction, paper_trail_version: version, change: change
   change.update_attributes! approver: approver, approved_at: Time.now if approver
   taxon
+
+
+
 end

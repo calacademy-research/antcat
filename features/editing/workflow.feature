@@ -10,6 +10,7 @@ Feature: Workflow
     And version tracking is enabled
     And I log in as a catalog editor
 
+
   Scenario: Adding a taxon and seeing it on the Changes page
     When I go to the catalog page for "Formicinae"
     * I press "Edit"
@@ -66,6 +67,9 @@ Feature: Workflow
     When I follow "Atta"
     Then I should be on the catalog page for "Atta"
 
+
+
+
   Scenario: Approving a change
     When I add the genus "Atta"
     And I go to the catalog page for "Atta"
@@ -104,7 +108,7 @@ Feature: Workflow
     When I go to the changes page
     Then I should not see an "Approve" button
 
-  Scenario: Editing a taxon - no Change created
+  Scenario: Editing a taxon - modified, not added
     Given there is a family "Formicidae"
     And I log in
     When I go to the edit page for "Formicidae"
@@ -113,7 +117,11 @@ Feature: Workflow
     And I press "OK"
     And I press "Save" within ".buttons_section"
     Then I should see "Wildencidae" in the header
-    And I should not see any change history
+    And I should see "Changed by Mark Wilden"
+    And I should see "This taxon has been changed and is awaiting approval"
+    And I go to the changes page
+    And I should see "Mark Wilden changed Wildencidae"
+
 
   Scenario: People's names linked to their email
     When I add the genus "Atta"
