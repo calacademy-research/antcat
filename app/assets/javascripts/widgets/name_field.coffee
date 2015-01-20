@@ -169,12 +169,12 @@ class AntCat.NameField extends AntCat.Panel
     message = '<input type="radio" id='
 
     if item['duplicate_type'] == 'secondary_junior_homonym'
-      message = message + 'homonym'
+      message = message + 'secondary_junior_homonym'
       generate_additional_homonym_option = false
     else
       message = message + j
 
-    if(i == 1)
+    if(j == 0)
       message = message + ' checked="checked" '
     message = message + ' name="radio">'
     message = message + '<label for="radio' +
@@ -254,19 +254,19 @@ class AntCat.NameField extends AntCat.Panel
     dialog_box = $("#dialog-duplicate")
     dialog_box.dialog({
       resizable: true,
-      height: 180,
+      height: 280,
       width: 720,
       modal: true,
       buttons: {
         "Yes, create new combination": (a) =>
           # This code is nasty. there's gotta be a better way.
-          if (@get_radio_value() == 'homonym')
-            collision_resolution = @get_radio_value()
+          if (@get_radio_value() == 'homonym' || @get_radio_value() == 'secondary_junior_homonym')
+            collision_resolution = 'homonym'
           else
             data_object = data[@get_radio_value()]
-            if(data_object['species'] != null)
+            if(data_object['species'] != undefined)
               collision_resolution = data_object['species'].id
-            else if (data_object['subspecies'] != null)
+            else if (data_object['subspecies'] != undefined)
               collision_resolution = data_object['subspecies'].id
           window.location.href = '/taxa/new?parent_name_id=' + new_parent_name_id +
             '&rank_to_create=' + @taxon_rank +

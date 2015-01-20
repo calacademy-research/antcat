@@ -120,7 +120,6 @@ Feature: Changing parent genus, species, tribe or subfamily
   # a-b-a' case for both options     (with and without approval)
   # a-b-c case, check all references
   # a-b-c + appprove, check all reference
-
   Scenario: Detecting a possible secondary homonym when there is a subspecies name conflict
     Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
     Given there is a subspecies "Atta betus subbus" which is a subspecies of "Atta betus" in the genus "Atta"
@@ -132,6 +131,15 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "This new combination looks a lot like existing combinations"
     And I should see "Atta betus subbus"
     And I should see "This would become a secondary junior homonym; name conflict with distinct authorship"
+    Then I choose "secondary_junior_homonym"
+    And I press "Yes, create new combination"
+    Then I should see "new secondary junior homonym of subspecies of Atta betus"
+    When I save my changes
+    Then I should see "Atta betus subbus"
+    And I should see "unresolved junior homonym"
+    And I should see "This taxon has been changed and is awaiting approval"
+
+
 
   # tagged "work in progress" - I saw this fail once, requires checking.
 #  Scenario: Change a subspecies to a species should error gracefully
