@@ -176,7 +176,8 @@ class AntCat.NameField extends AntCat.Panel
 
     if(i == 1)
       message = message + ' checked="checked" '
-    message = message + ' name="radio"><label for="radio' +
+    message = message + ' name="radio">'
+    message = message + '<label for="radio' +
       j +
       '">' +
       item.name_html_cache +
@@ -189,6 +190,9 @@ class AntCat.NameField extends AntCat.Panel
       message = message + " return to a previous usage"
 
     message = message + '</label>'
+    message = message + '</br>'
+
+
     message
 
   duplicate_message_html: (data)=>
@@ -251,8 +255,7 @@ class AntCat.NameField extends AntCat.Panel
     dialog_box.dialog({
       resizable: true,
       height: 180,
-      width: 520,
-      width: 520,
+      width: 720,
       modal: true,
       buttons: {
         "Yes, create new combination": (a) =>
