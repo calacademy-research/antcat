@@ -18,7 +18,7 @@ class Reference < ActiveRecord::Base
 
 
   has_many    :author_names,
-              -> { order :position },
+              -> { order 'reference_author_names.position' },
               :through => :reference_author_names,
               :after_add => :refresh_author_names_caches,
               :after_remove => :refresh_author_names_caches

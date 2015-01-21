@@ -72,9 +72,9 @@ class CatalogController < ApplicationController
     @taxon = Taxon.find_by_id(@parameters[:id]) || Family.first
 
     if session[:show_unavailable_subfamilies]
-      @subfamilies = ::Subfamily.ordered_by_name
+      @subfamilies = ::Subfamily.all.ordered_by_name
     else
-      @subfamilies = ::Subfamily.ordered_by_name.where "status != 'unavailable'"
+      @subfamilies = ::Subfamily.all.ordered_by_name.where "status != 'unavailable'"
     end
 
     case @taxon

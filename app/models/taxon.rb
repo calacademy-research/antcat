@@ -11,7 +11,6 @@ class Taxon < ActiveRecord::Base
   before_save { |record| clean_newlines record, :headline_notes_taxt, :type_taxt }
 
 
-
   def save_with_transaction! change_id
     save!
     transaction = Transaction.new
@@ -21,11 +20,10 @@ class Taxon < ActiveRecord::Base
   end
 
 
-
 ###############################################
 # nested attributes
   belongs_to :name; validates :name, presence: true
-  #belongs_to :protonym, dependent: :destroy; validates :protonym, presence: true
+#belongs_to :protonym, dependent: :destroy; validates :protonym, presence: true
   belongs_to :protonym; validates :protonym, presence: true
 
   belongs_to :type_name, class_name: 'Name', foreign_key: :type_name_id
@@ -50,9 +48,13 @@ class Taxon < ActiveRecord::Base
 
 ###############################################
 # name
-  scope :with_names, joins(:name).readonly(false)
-  scope :ordered_by_name, with_names.order('names.name').includes(:name)
+  scope :with_names, -> { joins(:name).readonly(false) }
 
+ # scope :with_names, joins(:name).readonly(false)
+#scope :ordered_by_name, with_names.order('names.name').includes(:name)
+  scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
+
+# scope :longago, -> { order(:published_at) }
   def self.find_by_name name
     where(name_cache: name).first
   end
@@ -314,8 +316,8 @@ class Taxon < ActiveRecord::Base
 
 ###############################################
 # other associations
-  has_many :history_items, class_name: 'TaxonHistoryItem', order: :position, dependent: :destroy
-  has_many :reference_sections, order: :position, dependent: :destroy
+  has_many :history_items, -> { order 'position' }, class_name: 'TaxonHistoryItem', dependent: :destroy
+  has_many :reference_sections, -> { order 'position' }, dependent: :destroy
 
 ###############################################
 # statuses, fossil
@@ -356,7 +358,7 @@ class Taxon < ActiveRecord::Base
 
 ###############################################
   def authorship_string
-    # TODO: Joe - this triggers a save in the Name model for some reason.
+    # TODO: this triggers a save in the Name model for some reason.
     string = protonym.authorship_string
     if string && recombination?
       string = '(' + string + ')'

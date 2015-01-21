@@ -71,7 +71,10 @@ class Name < ActiveRecord::Base
   end
 
   def self.picklist_matching letters_in_name, options = {}
-    join = options[:taxa_only] || options[:species_only] || options[:genera_only] || options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+    join = options[:taxa_only] ||
+        options[:species_only] ||
+        options[:genera_only] ||
+        options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
     rank_filter =
       case
       when options[:species_only] then 'AND taxa.type = "Species"'
@@ -83,15 +86,25 @@ class Name < ActiveRecord::Base
     # I do not see why the code beginning with Name.select can't be factored out, but it can't
     search_term = letters_in_name + '%'
     prefix_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("name LIKE '#{search_term}' #{rank_filter}").order('taxon_id desc').order(:name)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
+          joins("#{join} taxa ON taxa.name_id = names.id").
+          where("name LIKE '#{search_term}' #{rank_filter}").
+          order('taxon_id desc').
+          order(:name)
 
     search_term = letters_in_name.split('').join('%') + '%'
     epithet_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("epithet LIKE '#{search_term}' #{rank_filter}").order(:epithet)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
+          joins("#{join} taxa ON taxa.name_id = names.id").
+          where("epithet LIKE '#{search_term}' #{rank_filter}").
+          order(:epithet)
 
     search_term = letters_in_name.split('').join('%') + '%'
     first_then_any_letter_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("name LIKE '#{search_term}' #{rank_filter}").order(:name)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
+          joins("#{join} taxa ON taxa.name_id = names.id").
+          where("name LIKE '#{search_term}' #{rank_filter}").
+          order(:name)
 
     [picklist_matching_format(prefix_matches),
      picklist_matching_format(epithet_matches),
