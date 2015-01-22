@@ -18,7 +18,7 @@ class Change < ActiveRecord::Base
 
 
   def get_user_version
-    Version.find_by_sql("select * from versions,changes, transactions
+    PaperTrail::Version.find_by_sql("select * from versions,changes, transactions
         where changes.user_changed_taxon_id = versions.item_id AND
         transactions.change_id = changes.id  AND
         transactions.paper_trail_version_id = versions.id AND
