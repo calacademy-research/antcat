@@ -26,8 +26,13 @@ class Name < ActiveRecord::Base
   end
 
   def set_taxon_caches
-    Taxon.update_all ['name_cache = ?', name], name_id: id
-    Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
+
+
+
+    #Taxon.update_all ['name_cache = ?', name], name_id: id
+    Taxon.update_all(name_cache: name, name_id: id)
+    #Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
+    Taxon.update_all(name_html_cache: name_html, name_id: id)
   end
 
   def words
