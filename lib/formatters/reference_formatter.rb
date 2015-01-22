@@ -4,7 +4,9 @@ class Formatters::ReferenceFormatter
   extend ERB::Util
   include Formatters::Formatter
   extend ActionView::Context
-  extend Sprockets::Helpers::RailsHelper
+  #extend Sprockets::Helpers::RailsHelper
+  extend Sprockets::Rails::Helper
+
 
   def self.format reference
     make_formatter(reference).format

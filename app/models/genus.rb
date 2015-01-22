@@ -6,8 +6,8 @@ class Genus < GenusGroupTaxon
   has_many :subspecies
   has_many :subgenera
 
-  scope :without_subfamily, where(subfamily_id: nil)
-  scope :without_tribe, where(tribe_id: nil)
+  scope :without_subfamily, -> { where(subfamily_id: nil) }
+  scope :without_tribe, -> { where(tribe_id: nil) }
 
   def update_parent new_parent
     set_name_caches

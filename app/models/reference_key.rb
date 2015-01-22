@@ -3,8 +3,10 @@ class ReferenceKey
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::AssetTagHelper
   include ActionView::Context
-  include Sprockets::Helpers::RailsHelper
-  include Sprockets::Helpers::IsolatedHelper
+  include Sprockets::Rails::Helper
+  # TODO: Change for rails 4 upgrade; remove if everyting is happy
+  # include Sprockets::Rails::Helpers::RailsHelper
+  # include Sprockets::Rails::Helpers::IsolatedHelper
   include Formatters::Formatter
   include Formatters::LinkFormatter
 
