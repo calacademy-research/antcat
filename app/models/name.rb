@@ -5,6 +5,11 @@ class Name < ActiveRecord::Base
   validates :name, presence: true
   after_save :set_taxon_caches
   has_paper_trail
+  attr_accessible :name,
+                  :name_html,
+                  :epithet,
+                  :epithet_html,
+                  :protonym_html
 
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)
@@ -30,9 +35,10 @@ class Name < ActiveRecord::Base
 
 
     #Taxon.update_all ['name_cache = ?', name], name_id: id
-    Taxon.update_all(name_cache: name, name_id: id)
+    Taxon.where(name_id: id).update_all(name_cache: name)
     #Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
-    Taxon.update_all(name_html_cache: name_html, name_id: id)
+    #Taxon.update_all({name_html_cache: name_html}, {name_id: id})
+    Taxon.where(name_id: id).update_all(name_html_cache: name_html)
   end
 
   def words

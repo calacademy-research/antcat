@@ -22,6 +22,7 @@ class Taxon < ActiveRecord::Base
                   :type_specimen_url
 
 
+
                   include CleanNewlines
   before_save { |record| clean_newlines record, :headline_notes_taxt, :type_taxt }
 
