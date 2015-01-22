@@ -6,8 +6,23 @@ require 'taxon_workflow'
 class Taxon < ActiveRecord::Base
   self.table_name = :taxa
   has_paper_trail
+  attr_accessible :name_id,
+                  :status,
+                  :incertae_sedis_in,
+                  :fossil,
+                  :nomen_nudum,
+                  :unresolved_homonym,
+                  :ichnotaxon,
+                  :hong,
+                  :headline_notes_taxt,
+                  :biogeographic_region,
+                  :verbatim_type_locality,
+                  :type_specimen_repository,
+                  :type_specimen_code,
+                  :type_specimen_url
 
-  include CleanNewlines
+
+                  include CleanNewlines
   before_save { |record| clean_newlines record, :headline_notes_taxt, :type_taxt }
 
 

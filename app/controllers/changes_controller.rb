@@ -118,7 +118,7 @@ class ChangesController < ApplicationController
   def find_all_versions_for_change change_id
     versions=[]
     Transaction.find_all_by_change_id(change_id).each do |transaction|
-      versions << Version.find(transaction.paper_trail_version)
+      versions << PaperTrail::Version.find(transaction.paper_trail_version)
     end
     versions
   end

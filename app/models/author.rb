@@ -1,7 +1,7 @@
 # coding: UTF-8
 class Author < ActiveRecord::Base
   has_many :names, -> { order :name }, class_name: 'AuthorName'
-  scope :sorted_by_name, select('authors.id').joins(:names).group('authors.id').order('name')
+  scope :sorted_by_name, -> { select('authors.id').joins(:names).group('authors.id').order('name') }
 
 
   has_paper_trail
