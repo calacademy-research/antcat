@@ -3,7 +3,7 @@ ruby '2.1.2'
 
 gem 'acts_as_list'
 gem 'aws-sdk'
-gem 'citrus'
+gem 'citrus', '2.4.1'
 # see https://github.com/cucumber/cucumber-rails/issues/187#issuecomment-4160160
 # shouldn't this be in test only? todo: move this and try it
 gem 'cucumber-rails', require: false
@@ -21,7 +21,7 @@ gem 'jquery-rails', '2.1.3'
 gem 'mysql2'
 gem 'newrelic_rpm'
 gem 'nokogiri'
-gem 'paper_trail'
+gem 'paper_trail', :git => "https://github.com/airblade/paper_trail.git", :tag => 'v4.0.0.beta2'
 #gem 'paper_trail_manager'
 gem 'protected_attributes' #attr_accesssible deprecated in rails 4.
 gem 'rails-observers' # observers deprecated in rails 4
