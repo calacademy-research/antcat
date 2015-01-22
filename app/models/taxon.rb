@@ -19,7 +19,10 @@ class Taxon < ActiveRecord::Base
                   :verbatim_type_locality,
                   :type_specimen_repository,
                   :type_specimen_code,
-                  :type_specimen_url
+                  :type_specimen_url,
+                  :type_fossil,
+                  :type_taxt,
+                  :type_name_id
 
 
 
