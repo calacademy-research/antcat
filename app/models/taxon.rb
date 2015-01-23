@@ -73,6 +73,7 @@ class Taxon < ActiveRecord::Base
 #scope :ordered_by_name, with_names.order('names.name').includes(:name)
   scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
 
+
 # scope :longago, -> { order(:published_at) }
   def self.find_by_name name
     where(name_cache: name).first

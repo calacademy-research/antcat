@@ -29,7 +29,7 @@ class DuplicatesController < TaxaController
       render :nothing => true, status: :no_content
       return
     end
-    # TODO: Rails 4 requires that authorship_String and duplicate_ttpe be db columns. Refactor
+    # TODO: Rails 4 requires that authorship_String and duplicate_type be db columns. Refactor
     # This code to pass these some other way, and remove these two columns from the taxa db entry
     options.each do |option|
       # Todo: Joe calls to protonym.authorship_string trigger a save somehow

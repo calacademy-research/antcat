@@ -17,6 +17,9 @@ class Name < ActiveRecord::Base
                   :protonym_html,
                   :gender
 
+  scope :find_all_by_name, lambda {|name| where name: name}
+
+
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)
     raise Taxon::TaxonExists if existing_names.any? {|name| not name.references.empty?}

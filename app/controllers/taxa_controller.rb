@@ -183,8 +183,22 @@ class TaxaController < ApplicationController
   def redirect_by_parent_name_id
     parent_name_id = params.delete(:parent_name_id)
     if parent_name_id && parent = Taxon.find_by_name_id(parent_name_id)
-      params[:parent_id] = parent.id
-      redirect_to params
+      # params[:parent_id] = parent.id
+      # action = params[:action]
+      # controller = params[:controller]
+      # parent_id = params[:parent_id]
+      # rank_to_create = params[:rank_to_create]
+      # previous_combination_id = params[:previous_combination_id]
+      # redirect_to action: action, controller: controller, parent_id: parent_id, rank_to_create: rank_to_create, previous_combination_id: previous_combination_id
+      new_hash = {}
+      # recirect_to doesn't want to work off of "params", security hole. enjoy.
+      params.each do |p|
+        new_hash[p[0]] = p[1]
+      end
+      unless parent.nil?
+        new_hash[:parent_id] = parent.id
+      end
+      redirect_to new_hash
     end
   end
 
