@@ -9,7 +9,13 @@ class Name < ActiveRecord::Base
                   :name_html,
                   :epithet,
                   :epithet_html,
-                  :protonym_html
+                  :protonym_html,
+                  :epithets,
+                  :type,
+                  :epithet,
+                  :epithet_html,
+                  :protonym_html,
+                  :gender
 
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)

@@ -161,8 +161,10 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Atta major"
     And I should see "Atta major" in the protonym
 
+
   Scenario: Adding a subspecies
     And there is a species "Eciton major" with genus "Eciton"
+    #http://localhost:3000/catalog/6
     When I go to the catalog page for "Eciton major"
     And I press "Edit"
     And I press "Add subspecies"
@@ -200,7 +202,7 @@ Feature: Adding a taxon
       And I click the first search result
       And I press "OK"
     When I click the type name field
-      Then the type name field should contain "Dorylinae"
+      Then the type name field should contain "Dorylinae "
     When I set the type name to "Atta"
       And I press "OK" in "#type_name_field"
       And I press "Add this name"

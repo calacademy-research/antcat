@@ -35,7 +35,10 @@ module AntCat
     config.action_dispatch.cookies_serializer = :hybrid
     # suppress deprecation warning
     config.active_record.raise_in_transactional_callbacks = true
-
+    # Opens all attributes of all models to be writable. Awful security hole,
+    # which existed before we upgraded to rails 4.
+    # should turn this off ASAP and do proper access controls on each model
+    config.active_record.whitelist_attributes = false
   end
 end
 

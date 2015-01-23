@@ -1,7 +1,8 @@
 # coding: UTF-8
 class TaxonHistoryItem < ActiveRecord::Base
   belongs_to :taxon
-  attr_accessible :taxon_id
+
+  attr_accessible :taxon_id, :taxt, :position
   acts_as_list scope: :taxon
   validates_presence_of :taxt
   has_paper_trail
@@ -23,9 +24,5 @@ class TaxonHistoryItem < ActiveRecord::Base
     errors.add :base, "The reference '#{e}' could not be found. Was the ID changed?"
   end
 
-  def self.new(val)
-    params = ActionController::Parameters.new(val)
-    taxon_id = params[:taxon_id]
-    super
-  end
+
 end
