@@ -117,7 +117,7 @@ When /^I add the genus "Atta"$/ do
   taxon = mother.create_taxon Rank[:genus], create_subfamily
   mother.save_taxon taxon, genus_params
   taxon.last_change.paper_trail_versions.each do |version|
-    version.update_attributes whodunnit: @user
+    version.update_attributes whodunnit: @user.id
   end
 end
 

@@ -13,13 +13,20 @@ class ApplicationController < ActionController::Base
 
   def send_back_json hash
     json = hash.to_json
-    json = '<textarea>' + json + '</textarea>' unless
-      params[:picker].present? || params[:popup].present? || params[:field].present? || Rails.env.test?
+    json = '<textarea>' + json + '</textarea>' unless params[:picker].present? || params[:popup].present? || params[:field].present? || Rails.env.test?
     render json: json, content_type: 'text/html'
   end
 
   def authenticate_editor
     authenticate_user! && $Milieu.user_can_edit?(current_user)
   end
+
+  def user_for_paper_trail
+    unless current_user.nil?
+      return current_user.id
+    end
+    nil
+  end
+
 
 end
