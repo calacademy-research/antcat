@@ -299,6 +299,7 @@ ActiveRecord::Schema.define(version: 20150122140635) do
     t.text     "type_specimen_url",               limit: 65535
     t.string   "authorship_string",               limit: 255
     t.string   "duplicate_type",                  limit: 255
+    t.integer  "collision_merge_id",              limit: 4
   end
 
   add_index "taxa", ["family_id"], name: "index_taxa_on_family_id", using: :btree

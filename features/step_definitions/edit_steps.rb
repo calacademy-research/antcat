@@ -27,7 +27,7 @@ Then /^I should still see the name field$/ do
   page.find('#name_field .edit').should be_visible
 end
 When /^the name field should contain "([^"]*)"$/ do |name|
-  find('#name_string').value.should == name
+  page.find('#name_field .display_button').text().should == name
 end
 
 # gender

@@ -22,11 +22,11 @@ class Taxon < ActiveRecord::Base
                   :type_specimen_url,
                   :type_fossil,
                   :type_taxt,
-                  :type_name_id
+                  :type_name_id,
+                  :collision_merge_id
 
 
-
-                  include CleanNewlines
+  include CleanNewlines
   before_save { |record| clean_newlines record, :headline_notes_taxt, :type_taxt }
 
 
@@ -69,7 +69,7 @@ class Taxon < ActiveRecord::Base
 # name
   scope :with_names, -> { joins(:name).readonly(false) }
 
- # scope :with_names, joins(:name).readonly(false)
+# scope :with_names, joins(:name).readonly(false)
 #scope :ordered_by_name, with_names.order('names.name').includes(:name)
   scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
 
@@ -426,7 +426,7 @@ class Taxon < ActiveRecord::Base
     statistics = {}
     ranks.each do |rank|
       #count = send(rank).count :group => [:fossil, :status]
-      count = send(rank).group('fossil','status').count
+      count = send(rank).group('fossil', 'status').count
       delete_original_combinations count
       self.class.massage_count count, rank, statistics
     end
