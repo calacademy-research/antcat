@@ -7,7 +7,7 @@ class Protonym < ActiveRecord::Base
   belongs_to :name; validates :name, presence: true # This model has a name_id
   accepts_nested_attributes_for :name, :authorship
   has_paper_trail
-  attr_accessible :fossil, :sic, :locality, :id, :name_id
+  attr_accessible :fossil, :sic, :locality, :id, :name_id,:name,:authorship
 
 
 

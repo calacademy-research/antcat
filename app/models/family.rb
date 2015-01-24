@@ -1,6 +1,7 @@
 # coding: UTF-8
 class Family < Taxon
   include Importers::Bolton::Catalog::Updater
+  attr_accessible :name,:protonym,:type_name
 
   def genera
     Genus.without_subfamily.ordered_by_name

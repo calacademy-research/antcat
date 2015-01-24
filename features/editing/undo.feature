@@ -1,4 +1,5 @@
 @javascript
+@allow_rescue
 Feature: Workflow
   As an editor of AntCat
   I want to change a taxon's parent

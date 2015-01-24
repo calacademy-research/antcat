@@ -1,11 +1,11 @@
 GIT
   remote: https://github.com/airblade/paper_trail.git
-  revision: fbd08dbbceda1a7357b5a7f45bb2ca8d09acc600
-  tag: v4.0.0.beta2
+  revision: 700c9d63ea2a9898546353db7bf9ab087fddd088
+  tag: v3.0.6
   specs:
-    paper_trail (4.0.0.beta2)
-      activerecord (>= 3.0, < 6.0)
-      activesupport (>= 3.0, < 6.0)
+    paper_trail (3.0.6)
+      activerecord (>= 3.0, < 5.0)
+      activesupport (>= 3.0, < 5.0)
 
 GEM
   remote: http://rubygems.org/

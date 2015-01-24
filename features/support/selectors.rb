@@ -48,7 +48,7 @@ module HtmlSelectorsHelpers
       "#qq"
 
     when /the header/
-      ".header"
+      "div.header"
 
     when /the first reference/
       first '.reference'

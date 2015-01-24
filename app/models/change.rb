@@ -44,7 +44,7 @@ class Change < ActiveRecord::Base
 
 
   def user
-    user_id = get_user_version.whodunnit
+    user =  get_user_version.whodunnit
     user_id ? User.find(user_id) : nil
   end
 

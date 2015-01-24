@@ -1,4 +1,5 @@
 @javascript
+@allow_rescue
 Feature: Workflow
 
   Background:
@@ -108,6 +109,7 @@ Feature: Workflow
     When I go to the changes page
     Then I should not see an "Approve" button
 
+  @allow_rescue
   Scenario: Editing a taxon - modified, not added
     Given there is a family "Formicidae"
     And I log in
@@ -122,7 +124,7 @@ Feature: Workflow
     And I go to the changes page
     And I should see "Mark Wilden changed Wildencidae"
 
-
+  @allow_rescue
   Scenario: People's names linked to their email
     When I add the genus "Atta"
     And I go to the changes page

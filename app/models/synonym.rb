@@ -1,5 +1,7 @@
 # coding: UTF-8
 class Synonym < ActiveRecord::Base
+  attr_accessible :senior_synonym, :junior_synonym,:senior_synonym_id, :junior_synonym_id
+
   belongs_to :junior_synonym, class_name: 'Taxon'; validates :junior_synonym, presence: true
   belongs_to :senior_synonym, class_name: 'Taxon' # in the process of fixing up, an incomplete Synonym can be created
   has_paper_trail

@@ -13,6 +13,7 @@ Feature: Adding a taxon
     And there is a subfamily "Formicinae"
     And I log in
 
+  @allow_rescue
 
   Scenario: Adding a genus
     Given there is a genus "Eciton"

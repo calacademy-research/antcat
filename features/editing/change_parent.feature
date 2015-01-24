@@ -22,7 +22,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should be on the catalog page for "Eciton major"
     And the name in the header should be "Eciton major"
 
-  @allow_rescue
   Scenario: Changing a species's genus by using the helper link
     Given there is a species "Atta major" with genus "Atta"
     And there is a genus "Eciton"

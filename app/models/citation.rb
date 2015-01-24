@@ -4,7 +4,7 @@ class Citation < ActiveRecord::Base
   belongs_to :reference
   validates :reference, presence: true
   has_paper_trail
-  attr_accessible :pages, :forms, :id, :reference_id
+  attr_accessible :pages, :forms, :id, :reference_id, :reference, :notes_taxt
 
   include CleanNewlines
   before_save {|record| clean_newlines record, :notes_taxt}
