@@ -2,6 +2,8 @@
 class Place < ActiveRecord::Base
   validates_presence_of :name
   has_paper_trail
+  attr_accessible :name
+
 
   def self.import name
     place = find_or_create_by_name name

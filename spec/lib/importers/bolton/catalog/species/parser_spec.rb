@@ -7,7 +7,7 @@ describe Importers::Bolton::Catalog::Species::Grammar do
   end
 
   it "should parse a representative sample" do
-    @grammar.parse(%{*<i>tucumanus</i>. *<i>Neoforelius tucumanus</i> var. <i>modesta</i> Kusnezov, 1953b: 330, figs. 1-12, no caste given, BALTIC AMBER (Eocene). [First available use of <i>Forelius maccooki</i> r. <i>fiebrigi</i> var. <i>breviscapa</i> Forel, 1913l: 241; unavailable name.] [Also described as new by Heer, 1850: 142.] Cuezzo, 2000: 216 (q.m.). Combination in *<i>Forelius</i>: Smith, F., 1992c: 95; in <i>Atta</i>: Bolton, 2002: 3. Material referred to <i>rufa</i> by Yarrow, 1955a: 4. Raised to species: Wheeler, W.C. & Wheeler, M., 1954b: 37. Status as species: Creighton, 1960: 1. Mayr, 1886d: 432 (q.m.); Forel, 1886b: xxxix (w.). Junior synonym of <i>pusillus</i>: Creighton, 1950a: 342; Petralia & Vinson, 1980: 386. Subspecies of <i>mccooki</i>: Forel, 1912h: 43. Senior synonym of <i>fiebrigi</i>, <i>pilipes</i> and material of the unavailable name <i>carmelitana</i> referred here: Cuezzo, 2000: 229. [<i>Iridomyrmex maccooki</i> Forel, 1878: 382. <i>Nomen nudum</i>.] [Misspelled as <i>paucistriatus</i> by Kempf, 1972a: 109.] Unidentifiable to genus; <i>incertae sedis</i> in <i>Formica</i>: Bolton, 1995b: 190. [Obviously incorrect.] Revived from synonymy: Kusnezov, 1957b: 16 (in key). Relationship with <i>densiventris</i>: Cole, 1954a: 89. Material of the unavailable names <i>transversa</i>, <i>clara</i> referred here by Dlussky, 1967a: 77. Revived status as species: Bernard, 1967: 298. See also: Bolton, 2000: 1. Current subspecies: nominal plus <i>alpina</i>, <i>whymperi</i>. See also: Cuezzo, 2000: 253. [Another note.]}).value_with_matched_text_removed.should == {
+    expect(@grammar.parse(%{*<i>tucumanus</i>. *<i>Neoforelius tucumanus</i> var. <i>modesta</i> Kusnezov, 1953b: 330, figs. 1-12, no caste given, BALTIC AMBER (Eocene). [First available use of <i>Forelius maccooki</i> r. <i>fiebrigi</i> var. <i>breviscapa</i> Forel, 1913l: 241; unavailable name.] [Also described as new by Heer, 1850: 142.] Cuezzo, 2000: 216 (q.m.). Combination in *<i>Forelius</i>: Smith, F., 1992c: 95; in <i>Atta</i>: Bolton, 2002: 3. Material referred to <i>rufa</i> by Yarrow, 1955a: 4. Raised to species: Wheeler, W.C. & Wheeler, M., 1954b: 37. Status as species: Creighton, 1960: 1. Mayr, 1886d: 432 (q.m.); Forel, 1886b: xxxix (w.). Junior synonym of <i>pusillus</i>: Creighton, 1950a: 342; Petralia & Vinson, 1980: 386. Subspecies of <i>mccooki</i>: Forel, 1912h: 43. Senior synonym of <i>fiebrigi</i>, <i>pilipes</i> and material of the unavailable name <i>carmelitana</i> referred here: Cuezzo, 2000: 229. [<i>Iridomyrmex maccooki</i> Forel, 1878: 382. <i>Nomen nudum</i>.] [Misspelled as <i>paucistriatus</i> by Kempf, 1972a: 109.] Unidentifiable to genus; <i>incertae sedis</i> in <i>Formica</i>: Bolton, 1995b: 190. [Obviously incorrect.] Revived from synonymy: Kusnezov, 1957b: 16 (in key). Relationship with <i>densiventris</i>: Cole, 1954a: 89. Material of the unavailable names <i>transversa</i>, <i>clara</i> referred here by Dlussky, 1967a: 77. Revived status as species: Bernard, 1967: 298. See also: Bolton, 2000: 1. Current subspecies: nominal plus <i>alpina</i>, <i>whymperi</i>. See also: Cuezzo, 2000: 253. [Another note.]}).value_with_matched_text_removed).to eq({
       :type => :species_record,
       :species_group_epithet => 'tucumanus',
       :fossil => true,
@@ -113,7 +113,7 @@ describe Importers::Bolton::Catalog::Species::Grammar do
           {:closing_bracket => ']'},
         ]},
       ],
-    }
+    })
   end
 
   it "should parse an unavailable name" do
@@ -125,7 +125,7 @@ describe Importers::Bolton::Catalog::Species::Grammar do
   end
 
   it "should parse a subspecies" do
-    @grammar.parse(%{<i>alpicola</i>. <i>Formica fusca</i> var. <i>alpicola</i> Gredler, 1858: 10 (w.) AUSTRIA. Relationship with <i>densiventris</i>: Cole, 1954a: 89.}).value_with_matched_text_removed.should == {
+    expect(@grammar.parse(%{<i>alpicola</i>. <i>Formica fusca</i> var. <i>alpicola</i> Gredler, 1858: 10 (w.) AUSTRIA. Relationship with <i>densiventris</i>: Cole, 1954a: 89.}).value_with_matched_text_removed).to eq({
       :type => :species_record,
       :species_group_epithet => 'alpicola',
       :protonym => {
@@ -141,7 +141,7 @@ describe Importers::Bolton::Catalog::Species::Grammar do
           :references => [{:author_names => ['Cole'], :year => '1954a', :pages => '89'}]
         }}
       ]
-    }
+    })
   end
 
   it "should parse one with multiple senior synonyms" do
@@ -190,7 +190,7 @@ describe Importers::Bolton::Catalog::Species::Grammar do
 
   describe "parsing the unparseable" do
     it "should save unparseable sentences as notes" do
-      @grammar.parse(%{<i>candida</i>. <i>Formica candida</i> Smith, F. 1878b: 11 (q.) KYRGHYZSTAN. [Smith's description is repeated by Bingham, 1903: 335 (footnote).] Probable synonym of <i>picea</i> Nylander: Emery, 1925b: 249. Junior synonym of <i>picea</i> Nylander: Dlussky, 1967a: 61. Hence <i>candida</i> first available replacement name for <i>Formica picea</i> Nylander, 1846a: 917 [Junior primary homonym of <i>Formica picea</i> Leach, 1825: 292 (now in <i>Camponotus</i>).]: Bolton, 1995b: 192. Valid species, not synonymous with <i>picea</i> Nylander: Seifert, 2004: 35. Current subspecies: nominal plus <i>formosae</i>.}).value_with_matched_text_removed.should == {
+      expect(@grammar.parse(%{<i>candida</i>. <i>Formica candida</i> Smith, F. 1878b: 11 (q.) KYRGHYZSTAN. [Smith's description is repeated by Bingham, 1903: 335 (footnote).] Probable synonym of <i>picea</i> Nylander: Emery, 1925b: 249. Junior synonym of <i>picea</i> Nylander: Dlussky, 1967a: 61. Hence <i>candida</i> first available replacement name for <i>Formica picea</i> Nylander, 1846a: 917 [Junior primary homonym of <i>Formica picea</i> Leach, 1825: 292 (now in <i>Camponotus</i>).]: Bolton, 1995b: 192. Valid species, not synonymous with <i>picea</i> Nylander: Seifert, 2004: 35. Current subspecies: nominal plus <i>formosae</i>.}).value_with_matched_text_removed).to eq({
         :type => :species_record,
         :species_group_epithet => 'candida',
         :protonym => {
@@ -244,12 +244,12 @@ describe Importers::Bolton::Catalog::Species::Grammar do
           ], text_suffix: '. '},
           {:subspecies => [{:species_group_epithet => 'formosae'}]},
         ]
-      }
+      })
     end
   end
 
   it "should handle a period after an unparseable" do
-    @grammar.parse('<i>pediculus</i>. <i>Formica pediculus</i> Christ, 1791: 518 (w.) no locality given. [According to Emery, 1892b: 162, this is a termite, Order ISOPTERA].').value_with_matched_text_removed.should == {
+    expect(@grammar.parse('<i>pediculus</i>. <i>Formica pediculus</i> Christ, 1791: 518 (w.) no locality given. [According to Emery, 1892b: 162, this is a termite, Order ISOPTERA].').value_with_matched_text_removed).to eq({
       :type => :species_record,
       :species_group_epithet => 'pediculus',
       :protonym => {
@@ -268,15 +268,15 @@ describe Importers::Bolton::Catalog::Species::Grammar do
           {:delimiter => '.'},
         ]}
       ]
-    }
+    })
   end
 
   it "should handle a parenthetical note after a reference" do
-    @grammar.parse('<i>australis</i>. <i>Amblyopone australis</i> Erichson, 1842: 261, pl. 5, fig. 7 (w.) AUSTRALIA. Smith, F. 1858b: 109 (q.m.); Wheeler, G.C. & Wheeler, J. 1952a: 116 (l.); Imai, Crozier & Taylor, 1977: 347 (k.). Senior synonym of <i>laevidens</i>, <i>nana</i>: Wilson, 1958a: 142; of <i>cephalotes</i> (and its junior synonym <i>maculata</i>): Brown, 1958h: 14; of <i>fortis</i>, <i>foveolata</i>, <i>minor</i>, <i>obscura</i>, and material of the unavailable names <i>howensis</i>, <i>norfolkensis</i>, <i>pallens</i>, <i>queenslandica</i> referred here: Brown, 1960a: 167 (these previously provisional synonyms in Brown, 1958h: 13). See also: Taylor, 1979: 835.').value[:type].should == :species_record
+    expect(@grammar.parse('<i>australis</i>. <i>Amblyopone australis</i> Erichson, 1842: 261, pl. 5, fig. 7 (w.) AUSTRALIA. Smith, F. 1858b: 109 (q.m.); Wheeler, G.C. & Wheeler, J. 1952a: 116 (l.); Imai, Crozier & Taylor, 1977: 347 (k.). Senior synonym of <i>laevidens</i>, <i>nana</i>: Wilson, 1958a: 142; of <i>cephalotes</i> (and its junior synonym <i>maculata</i>): Brown, 1958h: 14; of <i>fortis</i>, <i>foveolata</i>, <i>minor</i>, <i>obscura</i>, and material of the unavailable names <i>howensis</i>, <i>norfolkensis</i>, <i>pallens</i>, <i>queenslandica</i> referred here: Brown, 1960a: 167 (these previously provisional synonyms in Brown, 1958h: 13). See also: Taylor, 1979: 835.').value[:type]).to eq(:species_record)
   end
 
   it "handle a complicated 'forms'" do
-    @grammar.parse("<i>humilis</i>. <i>Acanthomyrmex humilis</i> Eguchi, Bui & Yamane, 2008: 238, figs. 22-30 (s.w.ergatoid q.) VIETNAM.").value[:type].should == :species_record
+    expect(@grammar.parse("<i>humilis</i>. <i>Acanthomyrmex humilis</i> Eguchi, Bui & Yamane, 2008: 238, figs. 22-30 (s.w.ergatoid q.) VIETNAM.").value[:type]).to eq(:species_record)
   end
 
   it "should handle a senior synonym list where one of the clauses is unparseable" do
@@ -293,19 +293,19 @@ describe Importers::Bolton::Catalog::Species::Grammar do
 
   describe "Bad protonyms" do
     it "should parse weirdness in the protonym name" do
-      @grammar.parse(%{<i>expolitus</i>. <i>Aphaenogaster (Attomyrmex</i> [sic]) <i>expolitus</i> Azuma, 1950: 34, JAPAN. <i>Nomen nudum</i>. See Onoyama, 1980: 194.}).value_with_matched_text_removed.should == {
+      expect(@grammar.parse(%{<i>expolitus</i>. <i>Aphaenogaster (Attomyrmex</i> [sic]) <i>expolitus</i> Azuma, 1950: 34, JAPAN. <i>Nomen nudum</i>. See Onoyama, 1980: 194.}).value_with_matched_text_removed).to eq({
         :type => :species_record,
         :species_group_epithet => 'expolitus',
         :unparseable => '<i>Aphaenogaster (Attomyrmex</i> [sic]) <i>expolitus</i> Azuma, 1950: 34, JAPAN. <i>Nomen nudum</i>. See Onoyama, 1980: 194.'
-      }
+      })
     end
     it "should parse a missing protonym" do
-      @grammar.parse(%{*<i>tucumanus</i>. Unknown.}).value_with_matched_text_removed.should == {
+      expect(@grammar.parse(%{*<i>tucumanus</i>. Unknown.}).value_with_matched_text_removed).to eq({
         :type => :species_record,
         :species_group_epithet => 'tucumanus',
         :fossil => true,
         :unparseable => 'Unknown.'
-      }
+      })
     end
   end
 
@@ -318,7 +318,7 @@ describe Importers::Bolton::Catalog::Species::Grammar do
   end
 
   it "should handle a (?) after a genus name" do
-    @grammar.parse(%{*<i>tabanifluviensis</i>. *<i>Myrmeciites (?) tabanifluviensis</i> Archibald, 2006: 502.}).value_with_matched_text_removed.should == {
+    expect(@grammar.parse(%{*<i>tabanifluviensis</i>. *<i>Myrmeciites (?) tabanifluviensis</i> Archibald, 2006: 502.}).value_with_matched_text_removed).to eq({
       type: :species_record,
       species_group_epithet: 'tabanifluviensis',
       fossil: true,
@@ -328,11 +328,11 @@ describe Importers::Bolton::Catalog::Species::Grammar do
         fossil: true,
         authorship: [{author_names: ['Archibald'], year: '2006', pages: '502'}],
       },
-    }
+    })
   end
 
   it "should handle 'morph'" do
-    @grammar.parse(%{<i>pallens</i>. <i>Leptothorax nylanderi</i> morph <i>pallens</i> Plateaux, 1981: 64.}).value_with_matched_text_removed[:protonym][:authorship].should_not be_nil
+    expect(@grammar.parse(%{<i>pallens</i>. <i>Leptothorax nylanderi</i> morph <i>pallens</i> Plateaux, 1981: 64.}).value_with_matched_text_removed[:protonym][:authorship]).not_to be_nil
   end
 
   it "should handle these nested parentheses after a quoted passage" do
@@ -344,7 +344,7 @@ describe Importers::Bolton::Catalog::Species::Grammar do
   end
 
   it "should handle these author names" do
-    @grammar.parse(%{<i>breviscapa</i>. <i>Plagiolepis breviscapa</i> Collingwood & van Harten, 2005: 77, fig. 8 (w.).}).value_with_matched_text_removed.should == {
+    expect(@grammar.parse(%{<i>breviscapa</i>. <i>Plagiolepis breviscapa</i> Collingwood & van Harten, 2005: 77, fig. 8 (w.).}).value_with_matched_text_removed).to eq({
       type: :species_record,
       species_group_epithet: 'breviscapa',
       protonym: {
@@ -352,7 +352,7 @@ describe Importers::Bolton::Catalog::Species::Grammar do
         species_epithet: 'breviscapa',
         authorship:[{author_names: ['Collingwood', 'van Harten'], year: '2005', pages: '77, fig. 8', forms: 'w.'}]
       },
-    }
+    })
   end
 
 end

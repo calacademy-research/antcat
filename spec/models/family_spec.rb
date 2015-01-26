@@ -20,24 +20,24 @@ describe Family do
         }
 
         family = Family.import data
-        family.name.to_s.should == 'Formicidae'
-        family.should_not be_invalid
-        family.should_not be_fossil
-        family.history_items.map(&:taxt).should == ['Formicidae as family']
+        expect(family.name.to_s).to eq('Formicidae')
+        expect(family).not_to be_invalid
+        expect(family).not_to be_fossil
+        expect(family.history_items.map(&:taxt)).to eq(['Formicidae as family'])
 
-        family.type_name.to_s.should == 'Formica'
-        family.type_name.rank.should == 'genus'
-        family.type_taxt.should == ', by monotypy'
+        expect(family.type_name.to_s).to eq('Formica')
+        expect(family.type_name.rank).to eq('genus')
+        expect(family.type_taxt).to eq(', by monotypy')
 
         protonym = family.protonym
-        protonym.name.to_s.should == 'Formicariae'
+        expect(protonym.name.to_s).to eq('Formicariae')
 
         authorship = protonym.authorship
-        authorship.pages.should == '124'
+        expect(authorship.pages).to eq('124')
 
-        authorship.reference.should == reference
+        expect(authorship.reference).to eq(reference)
 
-        Update.count.should == 1
+        expect(Update.count).to eq(1)
       end
       it "should save the note (when there's not a type taxon note)" do
         reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
@@ -52,20 +52,20 @@ describe Family do
         }
 
         family = Family.import(data).reload
-        family.name.to_s.should == 'Formicidae'
-        family.should_not be_invalid
-        family.should_not be_fossil
-        family.history_items.map(&:taxt).should == ['Formicidae as family']
+        expect(family.name.to_s).to eq('Formicidae')
+        expect(family).not_to be_invalid
+        expect(family).not_to be_fossil
+        expect(family.history_items.map(&:taxt)).to eq(['Formicidae as family'])
 
-        family.headline_notes_taxt.should == '[Note.]'
+        expect(family.headline_notes_taxt).to eq('[Note.]')
 
         protonym = family.protonym
-        protonym.name.to_s.should == 'Formicariae'
+        expect(protonym.name.to_s).to eq('Formicariae')
 
         authorship = protonym.authorship
-        authorship.pages.should == '124'
+        expect(authorship.pages).to eq('124')
 
-        authorship.reference.should == reference
+        expect(authorship.reference).to eq(reference)
       end
     end
 
@@ -140,21 +140,21 @@ describe Family do
 
         family = Family.import data
 
-        Update.count.should == 2
+        expect(Update.count).to eq(2)
 
         update = Update.find_by_field_name 'fossil'
-        update.name.should == 'Formicidae'
-        update.class_name.should == 'Family'
-        update.field_name.should == 'fossil'
-        update.record_id.should == family.id
-        update.before.should == '0'
-        update.after.should == '1'
-        family.fossil.should be_true
+        expect(update.name).to eq('Formicidae')
+        expect(update.class_name).to eq('Family')
+        expect(update.field_name).to eq('fossil')
+        expect(update.record_id).to eq(family.id)
+        expect(update.before).to eq('0')
+        expect(update.after).to eq('1')
+        expect(family.fossil).to be_truthy
 
         update = Update.find_by_field_name 'status'
-        update.before.should == 'valid'
-        update.after.should == 'synonym'
-        family.status.should == 'synonym'
+        expect(update.before).to eq('valid')
+        expect(update.after).to eq('synonym')
+        expect(family.status).to eq('synonym')
       end
 
       it "should compare, update and record taxt" do
@@ -169,24 +169,24 @@ describe Family do
 
         family = Family.import data
 
-        Update.count.should == 2
+        expect(Update.count).to eq(2)
 
         update = Update.find_by_field_name 'headline_notes_taxt'
-        update.before.should == @ref_taxt
-        update.after.should == @nam_taxt
-        family.headline_notes_taxt.should == @nam_taxt
+        expect(update.before).to eq(@ref_taxt)
+        expect(update.after).to eq(@nam_taxt)
+        expect(family.headline_notes_taxt).to eq(@nam_taxt)
 
         update = Update.find_by_field_name 'type_taxt'
-        update.before.should == @ref_taxt
-        update.after.should == @nam_taxt
-        family.type_taxt.should == @nam_taxt
+        expect(update.before).to eq(@ref_taxt)
+        expect(update.after).to eq(@nam_taxt)
+        expect(family.type_taxt).to eq(@nam_taxt)
       end
 
       it "should set status to valid when updating by default" do
         data = @data.dup
         data.delete :status
         Family.import data
-        Update.count.should == 0
+        expect(Update.count).to eq(0)
       end
 
       it "should handle the type fields" do
@@ -198,22 +198,22 @@ describe Family do
           }
         )
         family = Family.import data
-        Update.count.should == 3
+        expect(Update.count).to eq(3)
 
         update = Update.find_by_field_name 'type_taxt'
-        update.before.should == @ref_taxt
-        update.after.should == @nam_taxt
-        family.type_taxt.should == @nam_taxt
+        expect(update.before).to eq(@ref_taxt)
+        expect(update.after).to eq(@nam_taxt)
+        expect(family.type_taxt).to eq(@nam_taxt)
 
         update = Update.find_by_field_name 'type_fossil'
-        update.before.should == '0'
-        update.after.should == '1'
-        family.type_fossil.should be_true
+        expect(update.before).to eq('0')
+        expect(update.after).to eq('1')
+        expect(family.type_fossil).to be_truthy
 
         update = Update.find_by_field_name 'type_name'
-        update.before.should == 'Eciton'
-        update.after.should == 'Bolla'
-        family.type_name.should == @bolla_name
+        expect(update.before).to eq('Eciton')
+        expect(update.after).to eq('Bolla')
+        expect(family.type_name).to eq(@bolla_name)
       end
 
       describe "Taxon history" do
@@ -223,15 +223,15 @@ describe Family do
           )
           family = Family.import data
 
-          Update.count.should == 1
+          expect(Update.count).to eq(1)
 
           update = Update.find_by_field_name 'taxt'
-          update.class_name.should == 'TaxonHistoryItem'
-          update.record_id.should == family.history_items.first.id
-          update.before.should == '1st history item'
-          update.after.should == '1st history item with change'
-          family.history_items.count.should == 1
-          family.history_items.first.taxt.should == '1st history item with change'
+          expect(update.class_name).to eq('TaxonHistoryItem')
+          expect(update.record_id).to eq(family.history_items.first.id)
+          expect(update.before).to eq('1st history item')
+          expect(update.after).to eq('1st history item with change')
+          expect(family.history_items.count).to eq(1)
+          expect(family.history_items.first.taxt).to eq('1st history item with change')
         end
         it "should append new items" do
           data = @data.merge(
@@ -239,16 +239,16 @@ describe Family do
           )
           family = Family.import data
 
-          Update.count.should == 1
+          expect(Update.count).to eq(1)
 
           update = Update.find_by_field_name 'taxt'
-          update.class_name.should == 'TaxonHistoryItem'
-          update.record_id.should == family.history_items.second.id
-          update.before.should == nil
-          update.after.should == '2nd history item'
-          family.history_items.count.should == 2
-          family.history_items.first.taxt.should == '1st history item'
-          family.history_items.second.taxt.should == '2nd history item'
+          expect(update.class_name).to eq('TaxonHistoryItem')
+          expect(update.record_id).to eq(family.history_items.second.id)
+          expect(update.before).to eq(nil)
+          expect(update.after).to eq('2nd history item')
+          expect(family.history_items.count).to eq(2)
+          expect(family.history_items.first.taxt).to eq('1st history item')
+          expect(family.history_items.second.taxt).to eq('2nd history item')
         end
         it "should delete deleted ones" do
           data = @data.merge(history: [])
@@ -256,14 +256,14 @@ describe Family do
 
           family = Family.import data
 
-          Update.count.should == 1
+          expect(Update.count).to eq(1)
 
           update = Update.find_by_field_name 'delete'
-          update.class_name.should == 'TaxonHistoryItem'
-          update.record_id.should == original_id
-          update.before.should == '1st history item'
-          update.after.should == nil
-          family.history_items.count.should == 0
+          expect(update.class_name).to eq('TaxonHistoryItem')
+          expect(update.record_id).to eq(original_id)
+          expect(update.before).to eq('1st history item')
+          expect(update.after).to eq(nil)
+          expect(family.history_items.count).to eq(0)
         end
       end
 
@@ -275,20 +275,20 @@ describe Family do
 
           @family.import_reference_sections reference_sections
 
-          Update.count.should == 3
+          expect(Update.count).to eq(3)
 
           update = Update.find_by_field_name 'title_taxt'
-          update.class_name.should == 'ReferenceSection'
-          update.record_id.should == @family.reference_sections.first.id
-          update.before.should == 'References'
-          update.after.should == @ants_title_taxt
+          expect(update.class_name).to eq('ReferenceSection')
+          expect(update.record_id).to eq(@family.reference_sections.first.id)
+          expect(update.before).to eq('References')
+          expect(update.after).to eq(@ants_title_taxt)
 
           update = Update.find_by_field_name 'subtitle_taxt'
-          update.before.should == 'of New Guinea'
-          update.after.should == @ants_subtitle_taxt
+          expect(update.before).to eq('of New Guinea')
+          expect(update.after).to eq(@ants_subtitle_taxt)
 
-          @family.reference_sections.count.should == 1
-          @family.reference_sections.first.title_taxt.should == @ants_title_taxt
+          expect(@family.reference_sections.count).to eq(1)
+          expect(@family.reference_sections.first.title_taxt).to eq(@ants_title_taxt)
         end
 
         it "should append new items" do
@@ -299,16 +299,16 @@ describe Family do
 
           @family.import_reference_sections reference_sections
 
-          Update.count.should == 3
+          expect(Update.count).to eq(3)
 
           update = Update.find_by_field_name 'title_taxt'
-          update.class_name.should == 'ReferenceSection'
-          update.record_id.should == @family.reference_sections.second.id
-          update.before.should == nil
-          update.after.should == '2nd reference section'
-          @family.reference_sections.count.should == 2
-          @family.reference_sections.first.title_taxt.should == 'References'
-          @family.reference_sections.second.title_taxt.should == '2nd reference section'
+          expect(update.class_name).to eq('ReferenceSection')
+          expect(update.record_id).to eq(@family.reference_sections.second.id)
+          expect(update.before).to eq(nil)
+          expect(update.after).to eq('2nd reference section')
+          expect(@family.reference_sections.count).to eq(2)
+          expect(@family.reference_sections.first.title_taxt).to eq('References')
+          expect(@family.reference_sections.second.title_taxt).to eq('2nd reference section')
         end
         it "should delete deleted ones" do
           reference_sections = []
@@ -316,13 +316,13 @@ describe Family do
 
           @family.import_reference_sections reference_sections
 
-          Update.count.should == 1
+          expect(Update.count).to eq(1)
 
           update = Update.find_by_class_name_and_record_id 'ReferenceSection', original_id
-          update.field_name.should be_nil
-          update.before.should be_nil
-          update.after.should be_nil
-          @family.reference_sections.count.should == 0
+          expect(update.field_name).to be_nil
+          expect(update.before).to be_nil
+          expect(update.after).to be_nil
+          expect(@family.reference_sections.count).to eq(0)
         end
       end
 
@@ -335,28 +335,28 @@ describe Family do
 
           family = Family.import data
 
-          Update.count.should == 3
+          expect(Update.count).to eq(3)
 
           update = Update.find_by_field_name 'sic'
-          update.class_name.should == 'Protonym'
-          update.record_id.should == @protonym.id
-          update.before.should == '0'
-          update.after.should == '1'
-          family.protonym.sic.should be_true
+          expect(update.class_name).to eq('Protonym')
+          expect(update.record_id).to eq(@protonym.id)
+          expect(update.before).to eq('0')
+          expect(update.after).to eq('1')
+          expect(family.protonym.sic).to be_truthy
 
           update = Update.find_by_field_name 'fossil'
-          update.class_name.should == 'Protonym'
-          update.record_id.should == @protonym.id
-          update.before.should == '0'
-          update.after.should == '1'
-          family.protonym.fossil.should be_true
+          expect(update.class_name).to eq('Protonym')
+          expect(update.record_id).to eq(@protonym.id)
+          expect(update.before).to eq('0')
+          expect(update.after).to eq('1')
+          expect(family.protonym.fossil).to be_truthy
 
           update = Update.find_by_field_name 'locality'
-          update.class_name.should == 'Protonym'
-          update.record_id.should == @protonym.id
-          update.before.should == 'CANADA'
-          update.after.should == 'U.S.A.'
-          family.protonym.locality.should be_true
+          expect(update.class_name).to eq('Protonym')
+          expect(update.record_id).to eq(@protonym.id)
+          expect(update.before).to eq('CANADA')
+          expect(update.after).to eq('U.S.A.')
+          expect(family.protonym.locality).to be_truthy
 
         end
 
@@ -366,12 +366,12 @@ describe Family do
 
           family = Family.import data
 
-          Update.count.should == 1
+          expect(Update.count).to eq(1)
 
           update = Update.find_by_field_name 'name'
-          update.before.should == 'Formicariae'
-          update.after.should == 'Formicadiae'
-          family.protonym.name.name.should == 'Formicadiae'
+          expect(update.before).to eq('Formicariae')
+          expect(update.after).to eq('Formicadiae')
+          expect(family.protonym.name.name).to eq('Formicadiae')
         end
 
       end
@@ -382,10 +382,10 @@ describe Family do
           data[:protonym][:authorship][0][:notes] = [[{genus_name: 'Atta'}]]
           family = Family.import data
           update = Update.find_by_field_name 'notes_taxt'
-          update.class_name.should == 'Citation'
-          update.before.should == nil
-          update.after.should == " (#{@nam_taxt})"
-          family.protonym.authorship.notes_taxt.should == " (#{@nam_taxt})"
+          expect(update.class_name).to eq('Citation')
+          expect(update.before).to eq(nil)
+          expect(update.after).to eq(" (#{@nam_taxt})")
+          expect(family.protonym.authorship.notes_taxt).to eq(" (#{@nam_taxt})")
         end
         it "should record changes in value fields" do
           data = @data.dup
@@ -395,18 +395,18 @@ describe Family do
 
           family = Family.import data
 
-          Update.count.should == 2
+          expect(Update.count).to eq(2)
 
           update = Update.find_by_field_name 'pages'
-          update.class_name.should == 'Citation'
-          update.before.should == '12'
-          update.after.should == '100'
-          family.protonym.authorship.pages.should == '100'
+          expect(update.class_name).to eq('Citation')
+          expect(update.before).to eq('12')
+          expect(update.after).to eq('100')
+          expect(family.protonym.authorship.pages).to eq('100')
 
           update = Update.find_by_field_name 'forms'
-          update.before.should == 'w.'
-          update.after.should == 'q.'
-          family.protonym.authorship.forms.should == 'q.'
+          expect(update.before).to eq('w.')
+          expect(update.after).to eq('q.')
+          expect(family.protonym.authorship.forms).to eq('q.')
         end
         it "should record a different reference than before" do
           new_reference = FactoryGirl.create :article_reference,
@@ -417,13 +417,13 @@ describe Family do
 
           family = Family.import data
 
-          Update.count.should == 1
+          expect(Update.count).to eq(1)
 
           update = Update.find_by_field_name 'reference'
-          update.class_name.should == 'Citation'
-          update.before.should == 'Latreille, 1809'
-          update.after.should == 'Bolton, 2005'
-          family.protonym.authorship.reference.principal_author_last_name.should == 'Bolton'
+          expect(update.class_name).to eq('Citation')
+          expect(update.before).to eq('Latreille, 1809')
+          expect(update.after).to eq('Bolton, 2005')
+          expect(family.protonym.authorship.reference.principal_author_last_name).to eq('Bolton')
         end
       end
 
@@ -438,16 +438,16 @@ describe Family do
       genus = FactoryGirl.create :genus, :subfamily => subfamily, :tribe => tribe
       FactoryGirl.create :genus, :subfamily => subfamily, :status => 'homonym', :tribe => tribe
       2.times {FactoryGirl.create :subfamily, :fossil => true}
-      family.statistics.should == {
+      expect(family.statistics).to eq({
         :extant => {subfamilies: {'valid' => 1}, tribes: {'valid' => 1}, genera: {'valid' => 1, 'homonym' => 1}},
         :fossil => {subfamilies: {'valid' => 2}}
-      }
+      })
     end
   end
 
   describe "Label" do
     it "should be the family name" do
-      FactoryGirl.create(:family, name: FactoryGirl.create(:name, name: 'Formicidae')).name.to_html.should == 'Formicidae'
+      expect(FactoryGirl.create(:family, name: FactoryGirl.create(:name, name: 'Formicidae')).name.to_html).to eq('Formicidae')
     end
   end
 
@@ -457,7 +457,7 @@ describe Family do
       subfamily = create_subfamily
       genus_without_subfamily = create_genus subfamily: nil
       genus_with_subfamily = create_genus subfamily: subfamily
-      family.genera.should == [genus_without_subfamily]
+      expect(family.genera).to eq([genus_without_subfamily])
     end
   end
 
@@ -465,7 +465,7 @@ describe Family do
     it "should include all the subfamilies" do
       family = create_family
       subfamily = create_subfamily
-      family.subfamilies.should == [subfamily]
+      expect(family.subfamilies).to eq([subfamily])
     end
   end
 

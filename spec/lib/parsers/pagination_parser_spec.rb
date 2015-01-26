@@ -23,13 +23,13 @@ describe Parsers::PaginationParser do
   ].each do |pagination|
     it "should handle '#{pagination}'" do
       string = pagination.dup
-      @parser.parse(string).should == pagination
-      string.should be_empty
+      expect(@parser.parse(string)).to eq(pagination)
+      expect(string).to be_empty
     end
   end
 
   it "shouldn't consider '4th' a pagination" do
-    @parser.parse('4th').should be_nil
+    expect(@parser.parse('4th')).to be_nil
   end
 
 end

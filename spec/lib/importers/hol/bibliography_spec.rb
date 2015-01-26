@@ -6,36 +6,36 @@ describe Importers::Hol::Bibliography do
     before do
       @hol = Importers::Hol::Bibliography
       @curl_result = double
-      @curl_result.stub(:body_str).and_return ''
+      allow(@curl_result).to receive(:body_str).and_return ''
     end
 
     it "should go to the right URL" do
-      Curl::Easy.should_receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=fisher").and_return @curl_result
+      expect(Curl::Easy).to receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=fisher").and_return @curl_result
       @hol.search_for_author 'fisher'
     end
 
     it "should URL-encode a name with diacritic" do
       utf8 = 'hölldobler'
-      Curl::Easy.should_receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=h%F6lldobler").and_return @curl_result
+      expect(Curl::Easy).to receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=h%F6lldobler").and_return @curl_result
       @hol.search_for_author utf8
     end
 
     it "should URL-encode a name with spaces" do
-      Curl::Easy.should_receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=baroni+urbani").and_return @curl_result
+      expect(Curl::Easy).to receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=baroni+urbani").and_return @curl_result
       @hol.search_for_author 'baroni urbani'
     end
 
     it "should convert what it gets from HOL to UTF-8" do
-      Curl::Easy.should_receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=baroni+urbani").and_return @curl_result
+      expect(Curl::Easy).to receive(:perform).with("http://osuc.biosci.ohio-state.edu/hymenoptera/manage_lit.list_pubs?author=baroni+urbani").and_return @curl_result
       iso_8859_string = ('A' + 246.chr + 'B').force_encoding('ISO-8859-1') # o with diaresis
       utf_8_string = 'AöB'
-      @curl_result.should_receive(:body_str).and_return iso_8859_string
-      Nokogiri.should_receive(:HTML).with(utf_8_string, nil, 'UTF-8').and_return 'foobar'
+      expect(@curl_result).to receive(:body_str).and_return iso_8859_string
+      expect(Nokogiri).to receive(:HTML).with(utf_8_string, nil, 'UTF-8').and_return 'foobar'
       @hol.search_for_author 'baroni urbani'
     end
 
     it "should parse each reference" do
-      Importers::Hol::Bibliography.stub(:search_for_author).and_return Nokogiri::HTML <<-SEARCH_RESULTS
+      allow(Importers::Hol::Bibliography).to receive(:search_for_author).and_return Nokogiri::HTML <<-SEARCH_RESULTS
 <HTML>
 <HEAD>
 <TITLE>Hymenoptera On-Line Database</TITLE>
@@ -84,7 +84,7 @@ See Site Statistics</a><p>
 </HTML>
       SEARCH_RESULTS
 
-      @hol.read_references('fisher').should have(3).items
+      expect(@hol.read_references('fisher').size).to eq(3)
     end
 
     it "should parse a reference where the journal name begins with a UTF-8 character" do
@@ -97,7 +97,7 @@ See Site Statistics</a><p>
 <A HREF="http://128.146.250.117/pdfs/22662/22662.pdf" TARGET="_blank"> entire file (557k)</A>
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
       LI
-      result.title.should == 'Stridulationsorgan och ljudf"ornimmelser hos myror'
+      expect(result.title).to eq('Stridulationsorgan och ljudf"ornimmelser hos myror')
     end
 
     it "should at least not crash when information is absent" do
@@ -110,7 +110,7 @@ See Site Statistics</a><p>
 <A HREF="http://128.146.250.117/pdfs/22662/22662.pdf" TARGET="_blank"> entire file (557k)</A>
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
       LI
-      result.title.should be_nil
+      expect(result.title).to be_nil
     end
 
     it "should parse an article reference" do
@@ -125,11 +125,11 @@ See Site Statistics</a><p>
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
       LI
 
-      result.document_url.should == 'http://antbase.org/ants/publications/22169/22169.pdf'
-      result.year.should == 2008
-      result.series_volume_issue.should == '1929(1)'
-      result.title.should == 'Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae)'
-      result.pagination.should == '1-37'
+      expect(result.document_url).to eq('http://antbase.org/ants/publications/22169/22169.pdf')
+      expect(result.year).to eq(2008)
+      expect(result.series_volume_issue).to eq('1929(1)')
+      expect(result.title).to eq('Afrotropical ants of the ponerine genera Centromyrmex Mayr, Promyopias Santschi gen. rev. and Feroponera gen. n., with a revised key to genera of African Ponerinae (Hymenoptera: Formicidae)')
+      expect(result.pagination).to eq('1-37')
     end
 
     it "should parse an article reference with a single author" do
@@ -143,16 +143,16 @@ See Site Statistics</a><p>
 <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
       LI
 
-      result.title.should == 'Myrmecologiska notiser'
+      expect(result.title).to eq('Myrmecologiska notiser')
     end
 
     it "should parse a book reference" do
       result = @hol.parse_reference(Nokogiri::HTML(<<-LI).at_css('html body'), 'Fisher')
 <strong><a href=\"http://hol.osu.edu/reference-full.html?id=6373\" title=\"View extended reference information from Hymenoptera Online\">6373</a></strong>\n<a href=\"http://hol.osu.edu/agent-full.html?id=2711\">Foerster, J. R.</a>\n 1771. Novae species insectorum. Centuria I. T. Davies, London. 100 pp.\n<p>\n</p>\n<center>\n<a href=\"http://osuc.biosci.ohio-state.edu/hymDB/hym_utilities.site_stats\">\nSee Site Statistics</a><p>\n<img src=\"http://iris.biosci.ohio-state.edu/gifs/bl_bds.gif\"></p>\n<p>\n<a href=\"http://iris.biosci.ohio-state.edu/hymenoptera/hym_db_form.html\">Return to Hymenoptera On-Line Opening Page</a>\n<br><a href=\"http://iris.biosci.ohio-state.edu/index.html\">Return to OSU Insect Collection Home Page</a>\n<br>\n10 October  , 2010\n</p>\n</center>\n\n\n\n\n<title>Hymenoptera On-Line Database</title>\n<script language=\"JAVASCRIPT\">\n<!-- Hide script from old browsers\nfunction popup(url, x, y) {\n  newWindow = window.open(url, \"coverwin\",\n    \"toolbar=yes,directories=yes,menubar=yes,status=yes,width=800,height=600,resizable=yes,scrollbars=yes\")\n  newWindow.focus()\n}\n// end hiding script from old browsers -->\n</script><title>Hymenoptera On-Line Database</title>\n<script language=\"JAVASCRIPT\">\n<!-- Hide script from old browsers\nfunction popup(url, x, y) {\n  newWindow = window.open(url, \"coverwin\",\n    \"toolbar=yes,directories=yes,menubar=yes,status=yes,width=800,height=600,resizable=yes,scrollbars=yes\")\n  newWindow.focus()\n}\n// end hiding script from old browsers -->\n</script><h3>Publications of Luis A. Foerster:</h3>\n<p>\n</p>
       LI
-      result.document_url.should == 'http://antbase.org/ants/publications/6373/6373.pdf'
-      result.year.should == 1771
-      result.pagination.should == '100 pp.'
+      expect(result.document_url).to eq('http://antbase.org/ants/publications/6373/6373.pdf')
+      expect(result.year).to eq(1771)
+      expect(result.pagination).to eq('100 pp.')
     end
 
     it "should parse the URL out of the document, if it exists" do
@@ -166,7 +166,7 @@ See Site Statistics</a><p>
                   <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
       LI
 
-      result.document_url.should == "http://128.146.250.117/pdfs/22497/22497.pdf"
+      expect(result.document_url).to eq("http://128.146.250.117/pdfs/22497/22497.pdf")
     end
 
     it "should set the author" do
@@ -179,7 +179,7 @@ See Site Statistics</a><p>
                     <A HREF="http://128.146.250.117/pdfs/22497/22497.pdf" TARGET="_blank"> entire file (583k)</A>
                     <IMG SRC="http://osuc.biosci.ohio-state.edu/images/pdf.gif">
         LI
-      result.author.should == 'Fisher'
+      expect(result.author).to eq('Fisher')
     end
   end
 

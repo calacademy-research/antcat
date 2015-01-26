@@ -18,7 +18,7 @@ describe Formatters::AdvancedSearchTextFormatter do
       taxon = create_genus 'Atta', incertae_sedis_in: 'genus', nomen_nudum: true
       taxon.protonym.authorship.update_attributes reference: reference
       string = @formatter.format taxon
-      string.should == "Atta incertae sedis in genus, nomen nudum\nLatreille, P. A. 1809. Atta. Science (1):3.   #{reference.id}\n\n"
+      expect(string).to eq("Atta incertae sedis in genus, nomen nudum\nLatreille, P. A. 1809. Atta. Science (1):3.   #{reference.id}\n\n")
     end
   end
 end

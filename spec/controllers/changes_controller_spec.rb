@@ -11,9 +11,9 @@ describe ChangesController do
 
       get :undo_items, id: change_id
       changes=JSON.parse(response.body)
-      expect(changes).to have(1).item
-      changes[0]['name'].should == 'Genus1'
-      changes[0]['change_type'].should == 'create'
+      expect(changes.size).to eq(1)
+      expect(changes[0]['name']).to eq('Genus1')
+      expect(changes[0]['change_type']).to eq('create')
     end
 
     it "should return multiple items when undoing an older change would hit newer changes" do
@@ -21,7 +21,7 @@ describe ChangesController do
       taxon = create_taxon_version_and_change :waiting, adder
       taxon.save
       change = FactoryGirl.build :change, user_changed_taxon_id: taxon.id, change_type: "update"
-      version = FactoryGirl.build :version, item_id: taxon.id, whodunnit: adder
+      version = FactoryGirl.build :version, item_id: taxon.id, whodunnit: adder.id
       FactoryGirl.create :transaction, paper_trail_version: version, change: change
 
 
@@ -32,15 +32,15 @@ describe ChangesController do
       get :undo_items, id: change_id
       changes=JSON.parse(response.body)
 
-      expect(changes).to have(2).items
-      changes[0]['name'].should == 'Genus1'
-      changes[0]['change_type'].should == 'create'
-      changes[0]['change_timestamp'].should_not be nil
-      changes[0]['user_name'].should == 'Mark Wilden'
+      expect(changes.size).to eq(2)
+      expect(changes[0]['name']).to eq('Genus1')
+      expect(changes[0]['change_type']).to eq('create')
+      expect(changes[0]['change_timestamp']).not_to be nil
+      expect(changes[0]['user_name']).to eq('Mark Wilden')
 
 
-      changes[1]['name'].should == 'Genus1'
-      changes[1]['change_type'].should == 'update'
+      expect(changes[1]['name']).to eq('Genus1')
+      expect(changes[1]['change_type']).to eq('update')
     end
 
 

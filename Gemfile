@@ -37,6 +37,8 @@ gem 'will_paginate'
 gem 'workflow'
 gem 'xml-simple'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
+ #tODO: remove
+gem 'transpec'
 
 group :development, :test do
   gem 'byebug'

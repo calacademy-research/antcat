@@ -4,6 +4,7 @@ class Journal < ActiveRecord::Base
   scope :list, -> { order(:name) }
   has_paper_trail
 
+  attr_accessible :name
   def self.import name
     return unless name.present?
     journal = find_or_create_by_name name

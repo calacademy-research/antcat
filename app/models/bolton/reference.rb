@@ -9,6 +9,17 @@ class Bolton::Reference < ActiveRecord::Base
 
   before_validation :set_year
   before_save :set_key_cache
+  attr_accessible :authors,
+                  :citation_year,
+                  :title,
+                  :reference_type,
+                  :series_volume_issue,
+                  :pagination,
+                  :import_result,
+                  :journal,
+                  :note,
+                  :original,
+                  :place
 
   searchable do
     text :original

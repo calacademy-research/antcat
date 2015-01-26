@@ -14,6 +14,7 @@ class ReferenceDocument < ActiveRecord::Base
   validate :check_url
   before_post_process :transliterate_file_name
 
+  attr_accessible :url, :file_file_name, :public
   def transliterate_file_name
     extension = File.extname(file_file_name).gsub(/^\.+/, '')
     filename = file_file_name.gsub(/\.#{extension}$/, '')

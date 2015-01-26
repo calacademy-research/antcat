@@ -4,17 +4,17 @@ require 'spec_helper'
 describe Journal do
   describe "importing from a new record" do
     it "should create and return the journal" do
-      Journal.import(:name => 'Antucopia').name.should == 'Antucopia'
+      expect(Journal.import(:name => 'Antucopia').name).to eq('Antucopia')
     end
 
     it "should raise on invalid input" do
-      lambda {Journal.import(:name => '')}.should raise_error
+      expect {Journal.import(:name => '')}.to raise_error
     end
 
     it "should reuse an existing journal" do
       Journal.import(:name => 'Antucopia')
       Journal.import(:name => 'Antucopia')
-      Journal.count.should == 1
+      expect(Journal.count).to eq(1)
     end
   end
 
@@ -22,12 +22,12 @@ describe Journal do
     it "should do fuzzy matching of journal names" do
       FactoryGirl.create(:journal, :name => 'American Bibliographic Proceedings')
       FactoryGirl.create(:journal, :name => 'Playboy')
-      Journal.search('ABP').should == ['American Bibliographic Proceedings']
+      expect(Journal.search('ABP')).to eq(['American Bibliographic Proceedings'])
     end
 
     it "should require matching the first letter" do
       FactoryGirl.create(:journal, :name => 'ABC')
-      Journal.search('BC').should == []
+      expect(Journal.search('BC')).to eq([])
     end
 
     it "should return results in order of most used" do
@@ -39,14 +39,14 @@ describe Journal do
       4.times {FactoryGirl.create :article_reference, :journal => Journal.find_by_name('Most Used')}
       0.times {FactoryGirl.create :article_reference, :journal => Journal.find_by_name('Never Used')}
 
-      Journal.search.should == ['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used']
+      expect(Journal.search).to eq(['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used'])
     end
   end
 
   describe 'validation' do
     it 'should require a name' do
-      Journal.new.should_not be_valid
-      Journal.new(:name => 'name').should be_valid
+      expect(Journal.new).not_to be_valid
+      expect(Journal.new(:name => 'name')).to be_valid
     end
   end
 
@@ -54,7 +54,7 @@ describe Journal do
     it "should record versions" do
       with_versioning do
         journal = FactoryGirl.create :journal
-        journal.versions.last.event.should == 'create'
+        expect(journal.versions.last.event).to eq('create')
       end
     end
   end

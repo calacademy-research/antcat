@@ -11,6 +11,7 @@ class Subfamily < Taxon
            -> { where(status: 'collective group name') },
             class_name: 'Genus'
 
+
   def self.import data
     taxon, name = find_taxon_to_update data
     transaction do

@@ -17,7 +17,7 @@ describe Change do
     change.paper_trail_version = genus_version
     change.save!
     change.reload
-    change.paper_trail_version.should == genus_version
+    expect(change.paper_trail_version).to eq(genus_version)
   end
 
   it "has a user (the editor)" do
@@ -28,7 +28,7 @@ describe Change do
     genus.last_version.update_attributes whodunnit: user.id
 
     change = Change.new paper_trail_version: genus.last_version
-    change.user.should == user
+    expect(change.user).to eq(user)
   end
 
   it "should be able to be reified after being created" do
@@ -36,21 +36,21 @@ describe Change do
 
     change = Change.new paper_trail_version: genus.last_version
     taxon = change.reify
-    taxon.should == genus
-    taxon.class.should == Genus
+    expect(taxon).to eq(genus)
+    expect(taxon.class).to eq(Genus)
 
     genus.update_attributes name_cache: 'Atta'
 
     change = Change.new paper_trail_version: genus.last_version
     taxon = change.reify
-    taxon.should == genus
-    taxon.class.should == Genus
+    expect(taxon).to eq(genus)
+    expect(taxon.class).to eq(Genus)
   end
 
   it "has a taxon" do
     taxon = create_genus
     change = Change.new paper_trail_version: taxon.last_version
-    change.taxon.should == taxon
+    expect(change.taxon).to eq(taxon)
   end
 
   describe "Scopes" do
@@ -61,7 +61,7 @@ describe Change do
       another_version = FactoryGirl.create :version, event: 'update', item_id: item.id
       updation = Change.create paper_trail_version: another_version
 
-      Change.creations.should == [creation]
+      expect(Change.creations).to eq([creation])
     end
     it "should return creations with unapproved first, then approved in reverse chronological order" do
       item = create_genus review_state: 'waiting'
@@ -75,7 +75,7 @@ describe Change do
       approved_earlier = Change.create approved_at: Date.today - 7, paper_trail_version: approved_earlier_version
       approved_later = Change.create approved_at: Date.today + 7, paper_trail_version: approved_later_version
 
-      Change.creations.map(&:id).should == [unapproved.id, approved_later.id, approved_earlier.id]
+      expect(Change.creations.map(&:id)).to eq([unapproved.id, approved_later.id, approved_earlier.id])
     end
   end
 

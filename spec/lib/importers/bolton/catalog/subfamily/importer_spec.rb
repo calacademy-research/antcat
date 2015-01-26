@@ -12,8 +12,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     end
 
     it "should parse the family, then the supersubfamilies" do
-      @importer.should_receive(:parse_family).ordered
-      @importer.should_receive(:parse_supersubfamilies).ordered
+      expect(@importer).to receive(:parse_family).ordered
+      expect(@importer).to receive(:parse_supersubfamilies).ordered
       @importer.import_html make_contents %{
   <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
   normal'><span lang=EN-GB>FAMILY FORMICIDAE<o:p></o:p></span></b></p>
@@ -21,10 +21,10 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     end
 
     it "should parse a supersubfamily" do
-      @importer.should_receive(:parse_family).ordered
-      @importer.should_receive(:parse_genera_lists).ordered
-      @importer.should_receive(:parse_subfamily).twice.ordered.and_return false
-      @importer.should_receive(:parse_genera_lists).ordered
+      expect(@importer).to receive(:parse_family).ordered
+      expect(@importer).to receive(:parse_genera_lists).ordered
+      expect(@importer).to receive(:parse_subfamily).twice.ordered.and_return false
+      expect(@importer).to receive(:parse_genera_lists).ordered
 
       @importer.import_html make_contents %{
 <p><b>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE</p>

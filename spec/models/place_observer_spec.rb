@@ -5,7 +5,7 @@ describe PlaceObserver do
   describe "Invalidating the formatted reference cache" do
     it "should be asked to invalidate the cache when a change occurs" do
       place = FactoryGirl.create :place, name: 'Constantinople'
-      PlaceObserver.any_instance.should_receive :before_update
+      expect_any_instance_of(PlaceObserver).to receive :before_update
       place.name = 'Istanbul'
       place.save!
     end
@@ -23,15 +23,15 @@ describe PlaceObserver do
         ReferenceFormatterCache.instance.populate references[i]
       end
 
-      references[0].formatted_cache.should_not be_nil
-      references[1].formatted_cache.should_not be_nil
-      references[2].formatted_cache.should_not be_nil
+      expect(references[0].formatted_cache).not_to be_nil
+      expect(references[1].formatted_cache).not_to be_nil
+      expect(references[2].formatted_cache).not_to be_nil
 
       PlaceObserver.instance.before_update place
 
-      references[0].reload.formatted_cache.should be_nil
-      references[1].reload.formatted_cache.should be_nil
-      references[2].reload.formatted_cache.should_not be_nil
+      expect(references[0].reload.formatted_cache).to be_nil
+      expect(references[1].reload.formatted_cache).to be_nil
+      expect(references[2].reload.formatted_cache).not_to be_nil
     end
   end
 end

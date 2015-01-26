@@ -6,6 +6,7 @@ class AuthorName < ActiveRecord::Base
   validates :author, :name, presence: true
   validates :name, uniqueness: true
   has_paper_trail
+  attr_accessible :name, :author
 
   def last_name
     name_parts[:last]

@@ -8,7 +8,7 @@ describe Importers::Bolton::Catalog::Species::History do
 
   it "should consider an empty history as valid" do
     for history in [nil, []]
-      @klass.new(history).status.should == 'valid'
+      expect(@klass.new(history).status).to eq('valid')
     end
   end
 
@@ -17,71 +17,71 @@ describe Importers::Bolton::Catalog::Species::History do
       history = @klass.new([
         {synonym_ofs: [{species_epithet: 'ferox'}]},
       ])
-      history.status.should == 'synonym'
-      history.epithets.should == ['ferox']
+      expect(history.status).to eq('synonym')
+      expect(history.epithets).to eq(['ferox'])
     end
     it "should recognize a synonym_of even if it's not the first item in the history" do
       history = @klass.new([
         {combinations_in: [{genus_name:"Acanthostichus"}]},
         {synonym_ofs: [{species_epithet: 'ferox'}]},
       ])
-      history.status.should == 'synonym'
-      history.epithets.should == ['ferox']
+      expect(history.status).to eq('synonym')
+      expect(history.epithets).to eq(['ferox'])
     end
     it "should overrule synonymy with revival from synonymy" do
-      @klass.new([
+      expect(@klass.new([
         {synonym_ofs: [{species_epithet: 'ferox'}]},
         {revived_from_synonymy: {}},
-      ]).status.should == 'valid'
+      ]).status).to eq('valid')
     end
     it "should overrule synonymy with raisal to species with revival from synonymy" do
-      @klass.new([
+      expect(@klass.new([
         {synonym_ofs: [{species_epithet: 'ferox'}]},
         {raised_to_species: {revived_from_synonymy:true}},
-      ]).status.should == 'valid'
+      ]).status).to eq('valid')
     end
     it "should stop on 'first available replacement' and make it valid" do
-      @klass.new([
+      expect(@klass.new([
         {synonym_ofs: [{species_epithet: 'ferox'}]},
         {text: [], matched_text: 'hence first available replacement name for'},
         {homonym_of: {primary_or_secondary: :primary, genus_name: 'Formice'}},
-      ]).status.should == 'valid'
+      ]).status).to eq('valid')
     end
     it "should stop on 'Replacement name for' and make it valid" do
-      @klass.new([
+      expect(@klass.new([
         {text: [], matched_text: ' Replacement name for <i>Acromyrmex gallardoi</i> Santschi, 1936d: 411.'},
         {text: [], matched_text: '[Junior secondary homonym of <i>Sericomyrmex gallardoi</i> Santschi, 1920d: 379.]'},
-      ]).status.should == 'valid'
+      ]).status).to eq('valid')
     end
     it "should overrule synonymy with raisal to species with revival from synonymy" do
-      @klass.new([
+      expect(@klass.new([
         {synonym_ofs: [{species_epithet: 'ferox'}]},
         {raised_to_species: {revived_from_synonymy:true}},
-      ]).status.should == 'valid'
+      ]).status).to eq('valid')
     end
   end
 
   describe "Revival" do
     it "should recognize this text string" do
-      @klass.new([
+      expect(@klass.new([
         {synonym_ofs: [{species_epithet: 'ferox'}]},
         {text: [], matched_text: ' Revived from synonymy, revived status as species and senior synonym of <i>australiae</i>: Kohout, 1988c: 430. '},
-      ]).status.should == 'valid'
+      ]).status).to eq('valid')
     end
     it "should overrule synonymy with revival from synonymy" do
-      @klass.new([
+      expect(@klass.new([
         {synonym_ofs: [{species_epithet: 'ferox'}]},
         {revived_from_synonymy: {}},
-      ]).status.should == 'valid'
+      ]).status).to eq('valid')
     end
     it "should recognize revived as species" do
-      @klass.new([
+      expect(@klass.new([
         {synonym_ofs: [{species_epithet: 'ferox'}]},
         {revived_status_as_species: {}},
-      ]).status.should == 'valid'
+      ]).status).to eq('valid')
     end
     it "should recognize revived as species" do
-      @klass.new([
+      expect(@klass.new([
   {:first_available_use_of=>
      {:genus_name=>"Formica",
       :species_epithet=>"exsecta",
@@ -155,74 +155,74 @@ describe Importers::Bolton::Catalog::Species::History do
         {:species_group_epithet=>"tamarae"}]},
     :matched_text=>
      " Revived status as species and senior synonym of <i>goesswaldi</i>, <i>naefi</i>, <i>tamarae</i>: Seifert, 2000a: 543."}
-      ]).status.should == 'valid'
+      ]).status).to eq('valid')
     end
 
     it "should set anything thats a first available replacement name as a Species" do
-      @klass.new([{:text=> [], matched_text: " Junior synonym of <i>australis</i> Forel, 1900b: 68 [junior secondary homonym of <i>australis</i> Forel, 1895f: 422] and hence first available replacement name: Brown, 1975: 22."}
-      ]).taxon_subclass.should == Species
+      expect(@klass.new([{:text=> [], matched_text: " Junior synonym of <i>australis</i> Forel, 1900b: 68 [junior secondary homonym of <i>australis</i> Forel, 1895f: 422] and hence first available replacement name: Brown, 1975: 22."}
+      ]).taxon_subclass).to eq(Species)
     end
   end
 
   it "should read 'currently subspecies of' in the text" do
-    @klass.new([
+    expect(@klass.new([
       {text: [], matched_text: " Currently subspecies of <i>adamsi</i> (as the latter name has priority over <i>whymperi</i>): Bolton, 1995b: 206."}
-    ]).taxon_subclass.should == Subspecies
+    ]).taxon_subclass).to eq(Subspecies)
   end
 
   it "should handle an unavailable name" do
-    @klass.new([{unavailable_name: true}]).status.should == 'unavailable'
+    expect(@klass.new([{unavailable_name: true}]).status).to eq('unavailable')
   end
 
   it "should handle a nomen nudum" do
-    @klass.new([{nomen_nudum: true}]).status.should == 'nomen nudum'
+    expect(@klass.new([{nomen_nudum: true}]).status).to eq('nomen nudum')
   end
 
   it "should consider anything with a subspecies list to be valid" do
-    @klass.new([
+    expect(@klass.new([
       {synonym_ofs: [{species_epithet: 'ferox'}]},
       {subspecies: [{species_group_epithet: 'falcifer'}]},
-    ]).status.should == 'valid'
+    ]).status).to eq('valid')
   end
 
   describe "Unidentifiable taxa" do
     it "should handle explicit parse" do
-      @klass.new([{unidentifiable: true}]).status.should == 'unidentifiable'
+      expect(@klass.new([{unidentifiable: true}]).status).to eq('unidentifiable')
     end
     it "should handle 'unidentifiable' in the text" do
-      @klass.new([{text: [], matched_text: 'Unidentifiable taxon'},]).status.should == 'unidentifiable'
+      expect(@klass.new([{text: [], matched_text: 'Unidentifiable taxon'},]).status).to eq('unidentifiable')
     end
   end
 
   it "should handle 'homonym' in the text" do
-    @klass.new([{text: [], matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'}]).status.should == 'homonym'
+    expect(@klass.new([{text: [], matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'}]).status).to eq('homonym')
   end
 
   describe "Unresolved homonyms" do
     it "should handle an unresolved homonym even if it's a current subspecies" do
-      @klass.new([
+      expect(@klass.new([
         {homonym_of: {:unresolved=>true}},
         {currently_subspecies_of: {}},
-      ]).status.should == 'unresolved homonym'
+      ]).status).to eq('unresolved homonym')
     end
     it "should handle an unresolved homonym in text" do
-      @klass.new([{text: [], matched_text: ' [Unresolved junior primary homonym of <i>longiceps</i> Santschi, above (Bolton, 1995b: 156).]'},
-      ]).status.should == 'unresolved homonym'
+      expect(@klass.new([{text: [], matched_text: ' [Unresolved junior primary homonym of <i>longiceps</i> Santschi, above (Bolton, 1995b: 156).]'},
+      ]).status).to eq('unresolved homonym')
     end
   end
 
   it "should a taxon excluded from Formicidae" do
-    @klass.new([{text: [], matched_text: 'Excluded from Formicidae'}]).status.should == 'excluded from Formicidae'
+    expect(@klass.new([{text: [], matched_text: 'Excluded from Formicidae'}]).status).to eq('excluded from Formicidae')
   end
 
   it "should handle it when information is in matched_text" do
-    @klass.new([{text: [], matched_text: ' Unidentifiable taxon, <i>incertae sedis</i> in <i>Acromyrmex</i>: Kempf, 1972a: 16.'}]).status.should == 'unidentifiable'
+    expect(@klass.new([{text: [], matched_text: ' Unidentifiable taxon, <i>incertae sedis</i> in <i>Acromyrmex</i>: Kempf, 1972a: 16.'}]).status).to eq('unidentifiable')
   end
 
   it "should handle unnecessary replacement name in text" do
     history = @klass.new([{text: [], matched_text: ' Unnecessary replacement name for <i>Odontomachus tyrannicus</i> Smith, F. 1861b: 44 and hence junior synonym of <i>gladiator</i> Mayr, 1862: 712, the first available replacement name: Brown, 1978c: 556.'}])
-    history.status.should == 'synonym'
-    history.epithets.should == ['gladiator']
+    expect(history.status).to eq('synonym')
+    expect(history.epithets).to eq(['gladiator'])
   end
 
   it "should handle both a first and second replacement name" do
@@ -233,7 +233,7 @@ describe Importers::Bolton::Catalog::Species::History do
       {text: [], matched_text: " First replacement name: <i>menozzii</i> Donisthorpe, 1941k: 237. "},
       {text: [], matched_text: "Second (unnecessary) replacement name: <i>ineditus</i> Baroni Urbani, 1971b: 360."},
         ])
-    history.status.should == 'homonym'
+    expect(history.status).to eq('homonym')
     #history.epithets.should == ['menozzii']
   end
 
@@ -250,42 +250,42 @@ describe Importers::Bolton::Catalog::Species::History do
        ], matched_text: ' [<i>clara</i> oldest synonym and hence first available replacement name.]'
       },
     ]
-    history.status.should == 'homonym'
+    expect(history.status).to eq('homonym')
   end
 
   it "should handle 'un' in the text" do
-    @klass.new([{text: [], matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'}]).status.should == 'homonym'
+    expect(@klass.new([{text: [], matched_text: '[Junior secondary homonym of <i>Cerapachys cooperi</i> Arnold, 1915: 14.]'}]).status).to eq('homonym')
   end
 
   describe "Species that became valid after being invalid" do
 
     it "should handle becoming a species after being a subspecies and a synonym" do
-      @klass.new([
+      expect(@klass.new([
         {synonym_ofs: [{species_epithet:'minutum', junior_or_senior: :junior}]},
         {subspecies_ofs: [{species: {species_epithet: 'minutum'}}]},
         {status_as_species: {references: []}},
-      ]).status.should == 'valid'
+      ]).status).to eq('valid')
     end
 
     it "should handle being revived and raised" do
-      @klass.new([
+      expect(@klass.new([
         {subspecies_ofs: [{species: {species_epithet: 'minutum'}}]},
         {revived_from_synonymy: {raised_to_species: true}},
-      ]).status.should == 'valid'
+      ]).status).to eq('valid')
     end
 
   end
 
   describe "Determining whether it's a species or a subspecies by looking at history" do
     it "should return nil if the history doesn't help" do
-      @klass.new([{synonym_ofs: [{species_epithet:'minutum', junior_or_senior: :junior}]}]).taxon_subclass.should be_nil
+      expect(@klass.new([{synonym_ofs: [{species_epithet:'minutum', junior_or_senior: :junior}]}]).taxon_subclass).to be_nil
     end
     it "should handle becoming a species after being a subspecies and a synonym" do
-      @klass.new([
+      expect(@klass.new([
         {synonym_ofs: [{species_epithet:'minutum', junior_or_senior: :junior}]},
         {subspecies_ofs: [{species: {species_epithet: 'minutum'}}]},
         {status_as_species: {references: []}},
-      ]).taxon_subclass.should == Species
+      ]).taxon_subclass).to eq(Species)
     end
   end
 

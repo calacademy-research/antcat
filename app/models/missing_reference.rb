@@ -1,6 +1,6 @@
 # coding: UTF-8
 class MissingReference < Reference
-
+  attr_accessible :reason_missing
   def key
     MissingReferenceKey.new citation
   end

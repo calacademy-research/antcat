@@ -8,7 +8,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
 
   describe "Importing a genus" do
     def make_contents content
-      @importer.stub :parse_family
+      allow(@importer).to receive :parse_family
 
       %{<html><body><div>
       <p>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE</p>
@@ -36,22 +36,23 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>Baroni Urbani, 1977c: 482 (review of genus).</p>
       }
       genus = Genus.find_by_name 'Condylodon'
-      genus.should_not be_invalid
-      genus.should_not be_fossil
-      genus.subfamily.name.to_s.should == 'Martialinae'
-      genus.history_items.map(&:taxt).should =~
+      expect(genus).not_to be_invalid
+      expect(genus).not_to be_fossil
+      expect(genus.subfamily.name.to_s).to eq('Martialinae')
+      expect(genus.history_items.map(&:taxt)).to match_array(
         ["{nam #{Name.find_by_name('Condylodon').id}} in family {nam #{Name.find_by_name('Mutillidae').id}}: {ref #{swainson.id}}: 173."]
-      genus.type_name.to_s.should == "Condylodon audouini"
-      genus.type_taxt.should == ", by monotypy."
-      genus.type_name.rank.should == 'species'
-      genus.reference_sections.map(&:title_taxt).should == ['Genus references']
-      genus.reference_sections.map(&:references_taxt).should == ["{ref #{baroni.id}}: 482 (review of genus)."]
+      )
+      expect(genus.type_name.to_s).to eq("Condylodon audouini")
+      expect(genus.type_taxt).to eq(", by monotypy.")
+      expect(genus.type_name.rank).to eq('species')
+      expect(genus.reference_sections.map(&:title_taxt)).to eq(['Genus references'])
+      expect(genus.reference_sections.map(&:references_taxt)).to eq(["{ref #{baroni.id}}: 482 (review of genus)."])
 
       protonym = genus.protonym
-      protonym.name.to_s.should == 'Condylodon'
-      protonym.name.rank.should == 'genus'
-      protonym.authorship.reference.should == lund
-      protonym.authorship.pages.should == '131'
+      expect(protonym.name.to_s).to eq('Condylodon')
+      expect(protonym.name.rank).to eq('genus')
+      expect(protonym.authorship.reference).to eq(lund)
+      expect(protonym.authorship.pages).to eq('131')
     end
 
     describe "Importing a genus that replaced a homonym" do
@@ -69,10 +70,10 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         }
 
         sphinctomyrmex = Genus.find_by_name 'Sphinctomyrmex'
-        sphinctomyrmex.should_not be_nil
+        expect(sphinctomyrmex).not_to be_nil
         acrostigma = Genus.find_by_name 'Acrostigma'
-        acrostigma.should_not be_nil
-        acrostigma.should be_homonym_replaced_by sphinctomyrmex
+        expect(acrostigma).not_to be_nil
+        expect(acrostigma).to be_homonym_replaced_by sphinctomyrmex
       end
     end
 
@@ -98,10 +99,10 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         }
         acanthomyops = Taxon.find_by_epithet('Acanthomyops').first
         lasius = Genus.find_by_name 'Lasius'
-        acanthomyops.genus.should == lasius
+        expect(acanthomyops.genus).to eq(lasius)
         tylolasius = Genus.find_by_name 'Tylolasius'
-        lasius.junior_synonyms.should == [tylolasius]
-        tylolasius.senior_synonyms.should == [lasius]
+        expect(lasius.junior_synonyms).to eq([tylolasius])
+        expect(tylolasius.senior_synonyms).to eq([lasius])
       end
 
       it "should handle this second version of Ancylognathus" do
@@ -140,14 +141,14 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
           <p><i>Sphinctomyrmex</i> references</p>
         }
         sphinctomyrmex = Genus.find_by_name 'Sphinctomyrmex'
-        sphinctomyrmex.history_items.map(&:taxt).should == ['Sphinctomyrmex history']
-        sphinctomyrmex.reference_sections.map(&:references_taxt).should == [
+        expect(sphinctomyrmex.history_items.map(&:taxt)).to eq(['Sphinctomyrmex history'])
+        expect(sphinctomyrmex.reference_sections.map(&:references_taxt)).to eq([
           "[Note. Entries prior to {ref #{bolton.id}}: 44, refer to genus as {nam #{Name.find_by_name('Acantholepis').id}}.]",
           "{tax #{sphinctomyrmex.id}} references",
-        ]
+        ])
         aethiopopone = Genus.find_by_name 'Aethiopopone'
-        aethiopopone.history_items.map(&:taxt).should == ["{nam #{aethiopopone.name.id}} history"]
-        aethiopopone.reference_sections.should == []
+        expect(aethiopopone.history_items.map(&:taxt)).to eq(["{nam #{aethiopopone.name.id}} history"])
+        expect(aethiopopone.reference_sections).to eq([])
       end
     end
 
@@ -162,10 +163,10 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p><i>Condylodon</i> in family Mutillidae: Swainson &amp; Shuckard, 1840: 173.</p>
         <p><i>Condylodon</i> as junior synonym of <i>Pseudomyrma</i>: Dalla Torre, 1893: 55.</p>
       </div>}
-      @importer.parse_history.should == [
+      expect(@importer.parse_history).to eq([
         "{nam #{Name.find_by_name('Condylodon').id}} in family {nam #{Name.find_by_name('Mutillidae').id}}: {ref #{swainson.id}}: 173.",
         "{nam #{Name.find_by_name('Condylodon').id}} as junior synonym of {nam #{Name.find_by_name('Pseudomyrma').id}}: {ref #{dalla_torre.id}}: 55."
-      ]
+      ])
     end
     it "should handle the special case of Ponerites, which looks like a genus_headline" do
       dlussky = FactoryGirl.create :article_reference, :bolton_key_cache => 'Dlussky 1981b'
@@ -173,9 +174,9 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>Taxonomic history</p>
         <p><i>Ponerites</i> Dlussky, 1981b: 67 [collective group name].</p>
       </div>}
-      @importer.parse_history.should == [
+      expect(@importer.parse_history).to eq([
         "{nam #{Name.find_by_name('Ponerites').id}} {ref #{dlussky.id}}: 67 [collective group name]."
-      ]
+      ])
     end
   end
 
@@ -189,9 +190,10 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>Another note</p>
       </div>}
       @importer.parse_genus_references genus
-      genus.reference_sections.map(&:title_taxt).should ==
+      expect(genus.reference_sections.map(&:title_taxt)).to eq(
         ["Genus {tax #{genus.id}} references", ""]
-      genus.reference_sections.map(&:references_taxt).should == ["Note", "Another note"]
+      )
+      expect(genus.reference_sections.map(&:references_taxt)).to eq(["Note", "Another note"])
     end
 
     describe "Genus reference sections with abbreviated genus names" do
@@ -202,7 +204,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
           <p>Key <i>D. (Dolichoderus)</i></p>
         </div>}
         @importer.parse_genus_references genus
-        Name.find_by_name('Dolichoderus (Dolichoderus)').should_not be_nil
+        expect(Name.find_by_name('Dolichoderus (Dolichoderus)')).not_to be_nil
       end
       it "should handle this genus reference section with a species name with abbreviated genus" do
         genus = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Dolichoderus')
@@ -211,7 +213,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
           <p>Key <i>D. cuspidatus</i></p>
         </div>}
         @importer.parse_genus_references genus
-        Name.find_by_name('Dolichoderus cuspidatus').should_not be_nil
+        expect(Name.find_by_name('Dolichoderus cuspidatus')).not_to be_nil
       end
     end
 

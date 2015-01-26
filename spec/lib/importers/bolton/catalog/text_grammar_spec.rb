@@ -7,52 +7,52 @@ describe Importers::Bolton::Catalog::Grammar do
   end
 
   it "should parse a family/subfamily name" do
-    @grammar.parse("Formicinae", :root => :text).value_with_matched_text_removed.should == {:text => [:family_or_subfamily_name => 'Formicinae']}
+    expect(@grammar.parse("Formicinae", :root => :text).value_with_matched_text_removed).to eq({:text => [:family_or_subfamily_name => 'Formicinae']})
   end
 
   it "should parse a family/subfamily name followed by a ?" do
-    @grammar.parse("Formicinae?", :root => :text).value_with_matched_text_removed.should == {:text => [:family_or_subfamily_name => 'Formicinae', :questionable => true]}
+    expect(@grammar.parse("Formicinae?", :root => :text).value_with_matched_text_removed).to eq({:text => [:family_or_subfamily_name => 'Formicinae', :questionable => true]})
   end
 
   it "should parse words followed by family/subfamily name" do
-      @grammar.parse(%{not in Pseudomyrmecinae}, :root => :text).value_with_matched_text_removed.should == {
+      expect(@grammar.parse(%{not in Pseudomyrmecinae}, :root => :text).value_with_matched_text_removed).to eq({
         :text => [
           {:phrase => "not in", :delimiter => ' '},
           {:family_or_subfamily_name => 'Pseudomyrmecinae'},
         ]
-      }
+      })
   end
 
   it "should parse words followed by family/subfamily name followed by more words" do
-      @grammar.parse(%{not in Pseudomyrmecinae, dubiously in Myrmecenae}, :root => :text).value_with_matched_text_removed.should == {
+      expect(@grammar.parse(%{not in Pseudomyrmecinae, dubiously in Myrmecenae}, :root => :text).value_with_matched_text_removed).to eq({
         :text => [
           {:phrase => "not in", :delimiter => ' '},
           {:family_or_subfamily_name => 'Pseudomyrmecinae'},
           {:phrase => ", dubiously in", :delimiter => ' '},
           {:family_or_subfamily_name => 'Myrmecenae'},
         ]
-      }
+      })
   end
 
   it "should parse words followed by family/subfamily name" do
-      @grammar.parse(%{not in Pseudomyrmecinae}, :root => :text).value_with_matched_text_removed.should == {
+      expect(@grammar.parse(%{not in Pseudomyrmecinae}, :root => :text).value_with_matched_text_removed).to eq({
         :text => [
           {:phrase => "not in", :delimiter => ' '},
           {:family_or_subfamily_name => 'Pseudomyrmecinae'},
         ]
-      }
+      })
   end
 
   it "should parse a tribe name" do
-    @grammar.parse("Formicini", :root => :text).value_with_matched_text_removed.should == {:text => [:tribe_name => 'Formicini']}
+    expect(@grammar.parse("Formicini", :root => :text).value_with_matched_text_removed).to eq({:text => [:tribe_name => 'Formicini']})
   end
 
   it "should parse a single word" do
-    @grammar.parse("Mayr", :root => :text).value_with_matched_text_removed.should == {:text => [{:phrase => 'Mayr'}]}
+    expect(@grammar.parse("Mayr", :root => :text).value_with_matched_text_removed).to eq({:text => [{:phrase => 'Mayr'}]})
   end
 
   it "should parse this instead of just giving it up as unparseable" do
-    @grammar.parse("[According to Emery, 1892b: 162, this is a termite, Order ISOPTERA]", :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("[According to Emery, 1892b: 162, this is a termite, Order ISOPTERA]", :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:opening_bracket => '['},
         {:phrase => 'According to', :delimiter => ' '},
@@ -60,11 +60,11 @@ describe Importers::Bolton::Catalog::Grammar do
         {:phrase => ', this is a termite, Order ISOPTERA'},
         {:closing_bracket => ']'},
       ]
-    }
+    })
   end
 
   it "should parse lots of italicized stuff" do
-    @grammar.parse("[Later references to this name, <i>e.g</i>. Emery, 1884a: 381; Emery, 1891b: 8, are <i>nomina nuda</i> or unavailable names.]", :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("[Later references to this name, <i>e.g</i>. Emery, 1884a: 381; Emery, 1891b: 8, are <i>nomina nuda</i> or unavailable names.]", :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:opening_bracket => '['},
         {:phrase => 'Later references to this name, <i>e.g</i>.', :delimiter => ' '},
@@ -75,21 +75,21 @@ describe Importers::Bolton::Catalog::Grammar do
         {:phrase => 'or unavailable names', :delimiter => '.'},
         {:closing_bracket => ']'},
       ]
-    }
+    })
   end
 
   it "should parse a parenthesized phrase" do
-    @grammar.parse(%{(family unresolved)}, :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse(%{(family unresolved)}, :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:opening_parenthesis => '('},
         {:phrase => 'family unresolved'},
         {:closing_parenthesis => ')'}
       ]
-    }
+    })
   end
 
   it "should parse a parenthesized phrase not ending with a period" do
-    @grammar.parse(%{(as *<i>Myrmecium</i>, incorrect subsequent spelling)}, :root => :parenthesized_text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse(%{(as *<i>Myrmecium</i>, incorrect subsequent spelling)}, :root => :parenthesized_text).value_with_matched_text_removed).to eq({
       :text => [
         {:opening_parenthesis => '('},
         {:phrase => "as", :delimiter => ' '},
@@ -97,27 +97,27 @@ describe Importers::Bolton::Catalog::Grammar do
         {:phrase => ', incorrect subsequent spelling'},
         {:closing_parenthesis => ')'},
       ]
-    }
+    })
   end
   it "should parse a parenthesized phrase ending with a period" do
-    @grammar.parse(%{(family unresolved).}, :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse(%{(family unresolved).}, :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:opening_parenthesis => '('},
         {:phrase => 'family unresolved'},
         {:closing_parenthesis => ')'},
         {:delimiter => '.'}
       ]
-    }
+    })
   end
 
   it "should handle a quoted phrase" do
-    @grammar.parse(%{Included as "(Myrmicinae) <i>longaeva</i>": Carpenter, 1930: 21}, :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse(%{Included as "(Myrmicinae) <i>longaeva</i>": Carpenter, 1930: 21}, :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:phrase => 'Included as', :delimiter => ' '},
         {:phrase => '"(Myrmicinae) <i>longaeva</i>"', :delimiter => ': '},
         {:author_names => ['Carpenter'], :year => '1930', :pages => '21'},
       ]
-    }
+    })
   end
 
   it "should handle an abbreviated genus" do
@@ -125,14 +125,14 @@ describe Importers::Bolton::Catalog::Grammar do
   end
 
   it "should parse a set of words" do
-    @grammar.parse("Mayr considers <i>afar</i> Mayr, 1923 to be a termite: Mayr, 1962: 23", :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("Mayr considers <i>afar</i> Mayr, 1923 to be a termite: Mayr, 1962: 23", :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:phrase => 'Mayr considers', :delimiter => ' '},
         {:species_group_epithet => 'afar', :authorship => [{:author_names => ['Mayr'], :year => '1923'}], :delimiter => ' '},
         {:phrase => 'to be a termite', :delimiter => ': '},
         {:author_names => ['Mayr'], :year => '1962', :pages => '23'},
       ]
-    }
+    })
   end
 
   it "should handle a period after a bracket" do
@@ -140,25 +140,25 @@ describe Importers::Bolton::Catalog::Grammar do
   end
 
   it "should parse a bracketed string" do
-    @grammar.parse("[A note]", :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("[A note]", :root => :text).value_with_matched_text_removed).to eq({
       :text => [{:opening_bracket => '['}, {:phrase => 'A note'}, {:closing_bracket => ']'}]
-    }
+    })
   end
 
   it "bracketed_text rule should leave the ending period" do
-    @grammar.parse("[A note].", :root => :bracketed_text, :consume => false).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("[A note].", :root => :bracketed_text, :consume => false).value_with_matched_text_removed).to eq({
       :text => [{:opening_bracket => '['}, {:phrase => 'A note'}, {:closing_bracket => ']'}]
-    }
+    })
   end
 
   it "should parse text with an apostrophe" do
-    @grammar.parse("Smith's hubris", :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("Smith's hubris", :root => :text).value_with_matched_text_removed).to eq({
       :text => [{:phrase => "Smith's hubris"}]
-    }
+    })
   end
   it "should parse it even when there's bracketed text inside" do
-    @grammar.parse("Hence <i>candida</i> first available replacement name for <i>Formica picea</i> Nylander, 1846a: 917 [Junior primary homonym of <i>Formica picea</i> Leach, 1825: 292 (now in <i>Camponotus</i>).]: Bolton, 1995b: 192.",
-                    :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("Hence <i>candida</i> first available replacement name for <i>Formica picea</i> Nylander, 1846a: 917 [Junior primary homonym of <i>Formica picea</i> Leach, 1825: 292 (now in <i>Camponotus</i>).]: Bolton, 1995b: 192.",
+                    :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:phrase => "Hence", :delimiter => ' '},
         {:species_group_epithet => "candida", :delimiter => ' '},
@@ -180,23 +180,23 @@ describe Importers::Bolton::Catalog::Grammar do
         {:author_names => ['Bolton'], :year => '1995b', :pages => '192'}
       ],
       text_suffix: '.'
-    }
+    })
   end
 
   it "should parse a bracketed string" do
-    @grammar.parse("[A note]", :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("[A note]", :root => :text).value_with_matched_text_removed).to eq({
       :text => [{:opening_bracket => '['}, {:phrase => 'A note'}, {:closing_bracket => ']'}]
-    }
+    })
   end
 
   it "should parse text with an apostrophe" do
-    @grammar.parse("Smith's hubris", :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("Smith's hubris", :root => :text).value_with_matched_text_removed).to eq({
       :text => [{:phrase => "Smith's hubris"}]
-    }
+    })
   end
   it "should parse it even when there's bracketed text inside" do
-    @grammar.parse("Hence <i>candida</i> first available replacement name for <i>Formica picea</i> Nylander, 1846a: 917 [Junior primary homonym of <i>Formica picea</i> Leach, 1825: 292 (now in <i>Camponotus</i>).]: Bolton, 1995b: 192.",
-                    :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("Hence <i>candida</i> first available replacement name for <i>Formica picea</i> Nylander, 1846a: 917 [Junior primary homonym of <i>Formica picea</i> Leach, 1825: 292 (now in <i>Camponotus</i>).]: Bolton, 1995b: 192.",
+                    :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:phrase => "Hence", :delimiter => ' '},
         {:species_group_epithet => "candida", :delimiter => ' '},
@@ -217,11 +217,11 @@ describe Importers::Bolton::Catalog::Grammar do
         ], :delimiter => ": "},
         {:author_names => ['Bolton'], :year => '1995b', :pages => '192'}
       ], text_suffix: '.'
-    }
+    })
   end
 
   it "should include delimiters with following phrase" do
-    @grammar.parse('[According to Emery, 1892b: 162, this is a termite, Order ISOPTERA]', :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse('[According to Emery, 1892b: 162, this is a termite, Order ISOPTERA]', :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:opening_bracket => '['},
         {:phrase => 'According to', :delimiter => ' '},
@@ -229,31 +229,31 @@ describe Importers::Bolton::Catalog::Grammar do
         {:phrase => ', this is a termite, Order ISOPTERA'},
         {:closing_bracket => ']'},
       ]
-    }
+    })
   end
 
   it "should parse text with comma, name, and reference" do
-    @grammar.parse("Valid species, not synonymous with <i>picea</i> Nylander: Seifert, 2004: 35.", :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("Valid species, not synonymous with <i>picea</i> Nylander: Seifert, 2004: 35.", :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:phrase => "Valid species, not synonymous with", :delimiter => ' '},
         {:species_group_epithet => "picea", :authorship => [{:author_names => ['Nylander']}], :delimiter => ': '},
         {:author_names => ['Seifert'], :year => '2004', :pages => '35'},
       ], text_suffix: '.'
-    }
+    })
   end
 
   it "should parse text followed by reference without a delimiter" do
-    @grammar.parse("Smith's description is repeated by Bingham, 1903: 335 (footnote).", :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("Smith's description is repeated by Bingham, 1903: 335 (footnote).", :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:phrase => "Smith's description is repeated by", :delimiter => ' '},
         {:author_names => ['Bingham'], :year => '1903', :pages => '335 (footnote)'},
       ], text_suffix: '.'
-    }
+    })
   end
 
   it "should handle text starting with a reference" do
-    @grammar.parse('[Santschi, 1916e: 393 erroneously refers to this taxon as <i>major</i>.]',
-                  :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse('[Santschi, 1916e: 393 erroneously refers to this taxon as <i>major</i>.]',
+                  :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:opening_bracket => '['},
         {:author_names => ['Santschi'], :year => '1916e', :pages => '393', :delimiter => ' '},
@@ -261,7 +261,7 @@ describe Importers::Bolton::Catalog::Grammar do
         {:species_group_epithet => 'major', :delimiter => '.'},
         {:closing_bracket => ']'},
       ]
-    }
+    })
   end
 
   it "should handle a semicolon" do
@@ -281,7 +281,7 @@ describe Importers::Bolton::Catalog::Grammar do
   end
 
   it "should handle a Latin phrase that's not a genus name" do
-    @grammar.parse('<i>formicae cephalicae</i>', :root => :text).value_with_matched_text_removed.should == {:text => [{:phrase => '<i>formicae cephalicae</i>'}]}
+    expect(@grammar.parse('<i>formicae cephalicae</i>', :root => :text).value_with_matched_text_removed).to eq({:text => [{:phrase => '<i>formicae cephalicae</i>'}]})
   end
 
   it "should handle this one" do
@@ -293,7 +293,7 @@ describe Importers::Bolton::Catalog::Grammar do
   end
 
   it "should handle this one, too" do
-    @grammar.parse("(replacement name for *<i>parvula</i> Dlussky, proposed subsequent to Dlussky's 2002a synonymy and hence automatic junior synonym).", :root => :text).value_with_matched_text_removed.should ==
+    expect(@grammar.parse("(replacement name for *<i>parvula</i> Dlussky, proposed subsequent to Dlussky's 2002a synonymy and hence automatic junior synonym).", :root => :text).value_with_matched_text_removed).to eq(
       {:text => [
         {:opening_parenthesis => '('},
         {:phrase => 'replacement name for', :delimiter => ' '},
@@ -302,6 +302,7 @@ describe Importers::Bolton::Catalog::Grammar do
         {:closing_parenthesis => ')'},
         {:delimiter => '.'},
       ]}
+    )
   end
 
   it "should handle a species_epithet group" do
@@ -309,28 +310,28 @@ describe Importers::Bolton::Catalog::Grammar do
   end
 
   it "should not consider <i>recte</i> a species epithet" do
-    @grammar.parse('<i>recte</i>', :root => :text).value_with_matched_text_removed.should == {:text => [{:phrase => '<i>recte</i>'}]}
+    expect(@grammar.parse('<i>recte</i>', :root => :text).value_with_matched_text_removed).to eq({:text => [{:phrase => '<i>recte</i>'}]})
   end
 
   it "should handle a plus sign" do
-    @grammar.parse('Colombia + Panama', :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse('Colombia + Panama', :root => :text).value_with_matched_text_removed).to eq({
       :text => [
         {:phrase => 'Colombia', :delimiter => ' + '},
         {:phrase => 'Panama'}
       ]
-    }
+    })
   end
 
   it "should save the leading whitespace/delimiters" do
-    @grammar.parse(" Start here", :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse(" Start here", :root => :text).value_with_matched_text_removed).to eq({
       text: [{phrase: 'Start here'}], text_prefix: ' '
-    }
+    })
   end
 
   it "should handle an asterisk" do
-    @grammar.parse("*fossil taxa catalogue", :root => :text).value_with_matched_text_removed.should == {
+    expect(@grammar.parse("*fossil taxa catalogue", :root => :text).value_with_matched_text_removed).to eq({
       text: [{phrase: '*'}, {phrase: 'fossil taxa catalogue'}]
-    }
+    })
   end
 
 end

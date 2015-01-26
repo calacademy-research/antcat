@@ -5,7 +5,7 @@ describe PublisherObserver do
   describe "Invalidating the formatted reference cache" do
     it "should be asked to invalidate the cache when a change occurs" do
       publisher = FactoryGirl.create :publisher, name: 'Barnes & Noble'
-      PublisherObserver.any_instance.should_receive :before_update
+      expect_any_instance_of(PublisherObserver).to receive :before_update
       publisher.name = 'Istanbul'
       publisher.save!
     end
@@ -22,15 +22,15 @@ describe PublisherObserver do
         ReferenceFormatterCache.instance.populate references[i]
       end
 
-      references[0].formatted_cache.should_not be_nil
-      references[1].formatted_cache.should_not be_nil
-      references[2].formatted_cache.should_not be_nil
+      expect(references[0].formatted_cache).not_to be_nil
+      expect(references[1].formatted_cache).not_to be_nil
+      expect(references[2].formatted_cache).not_to be_nil
 
       PublisherObserver.instance.before_update publisher
 
-      references[0].reload.formatted_cache.should be_nil
-      references[1].reload.formatted_cache.should be_nil
-      references[2].reload.formatted_cache.should_not be_nil
+      expect(references[0].reload.formatted_cache).to be_nil
+      expect(references[1].reload.formatted_cache).to be_nil
+      expect(references[2].reload.formatted_cache).not_to be_nil
     end
   end
 

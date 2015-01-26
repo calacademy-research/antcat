@@ -8,14 +8,14 @@ describe Vlad do
 
   it "should show taxon counts by rank" do
     FactoryGirl.create :family
-    Vlad::TaxonCounts.query.should =~ [['Family', 1]]
+    expect(Vlad::TaxonCounts.query).to match_array([['Family', 1]])
   end
 
   it "should show taxon counts by status" do
     FactoryGirl.create :family, status: 'synonym', name: create_name('Family1')
     FactoryGirl.create :family, status: 'valid', name: create_name('Family2')
     FactoryGirl.create :family, status: 'valid', name: create_name('Family3')
-    Vlad::StatusCounts.query.should =~ [['valid', 2], ['synonym', 1]]
+    expect(Vlad::StatusCounts.query).to match_array([['valid', 2], ['synonym', 1]])
   end
 
   it "should show genera with tribes but not subfamilies" do
@@ -24,8 +24,8 @@ describe Vlad do
     genus_with_tribe_and_subfamily = FactoryGirl.create :genus, subfamily: tribe.subfamily, tribe: tribe
     genus_with_subfamily_but_not_tribe = FactoryGirl.create :genus, subfamily: tribe.subfamily, tribe: nil
     results = Vlad::GeneraWithTribesButNotSubfamilies.query
-    results.count.should == 1
-    results.first.should == genus_with_tribe_but_not_subfamily
+    expect(results.count).to eq(1)
+    expect(results.first).to eq(genus_with_tribe_but_not_subfamily)
   end
 
   it "should show names without taxa or type names" do
@@ -35,8 +35,8 @@ describe Vlad do
     create_subfamily type_name: eciton
     create_subfamily type_name: nil, protonym: FactoryGirl.create(:protonym, name: formica)
     results = Vlad::NamesWithoutTaxa.query
-    results.count.should == 1
-    results.first.to_s.should == 'Atta'
+    expect(results.count).to eq(1)
+    expect(results.first.to_s).to eq('Atta')
   end
 
   it "should show subspecies without species" do
@@ -44,8 +44,8 @@ describe Vlad do
     subspecies_with_species = create_subspecies 'Atta major minor', species: species
     subspecies_without_species = create_subspecies 'Atta major minor', species: nil
     results = Vlad::SubspeciesWithoutSpecies.query
-    results.count.should == 1
-    results.first.should == subspecies_without_species
+    expect(results.count).to eq(1)
+    expect(results.first).to eq(subspecies_without_species)
   end
 
   it "should show taxa with synonym status, but no synonyms" do
@@ -53,22 +53,22 @@ describe Vlad do
     no_synonym = create_genus status: 'synonym'
     has_synonym = create_synonym genus
     results = Vlad::SynonymsWithoutSeniors.query
-    results.map(&:id).should =~ [no_synonym.id]
+    expect(results.map(&:id)).to match_array([no_synonym.id])
   end
 
   it "should show synonym cycles" do
     genus = create_genus 'Atta'
     another_genus = create_genus 'Betta'
     synonym_a = Synonym.create! senior_synonym: genus, junior_synonym: another_genus
-    another_genus.should be_synonym_of genus
-    Vlad::SynonymCycles.query.should be_blank
+    expect(another_genus).to be_synonym_of genus
+    expect(Vlad::SynonymCycles.query).to be_blank
 
     synonym_b = Synonym.create! senior_synonym: another_genus, junior_synonym: genus
-    genus.should be_synonym_of another_genus
+    expect(genus).to be_synonym_of another_genus
     results = Vlad::SynonymCycles.query
-    Vlad::SynonymCycles.query.should_not be_blank
-    results.should have(1).item
-    results.should == [['Atta', 'Betta']]
+    expect(Vlad::SynonymCycles.query).not_to be_blank
+    expect(results.size).to eq(1)
+    expect(results).to eq([['Atta', 'Betta']])
   end
 
   it "should show protonyms without authorships" do
@@ -79,16 +79,16 @@ describe Vlad do
     protonym_without_authorship_or_taxon = FactoryGirl.create :protonym
     protonym_without_authorship_or_taxon.update_attribute :authorship, nil
 
-    protonym_without_authorship.reload.authorship.should be_nil
+    expect(protonym_without_authorship.reload.authorship).to be_nil
 
     create_genus protonym: protonym_with_authorship
     genus = create_genus
     genus.update_attribute :protonym, protonym_without_authorship
 
     results = Vlad::ProtonymsWithoutAuthorships.query
-    results.should =~ [protonym_without_authorship, protonym_without_authorship_or_taxon]
+    expect(results).to match_array([protonym_without_authorship, protonym_without_authorship_or_taxon])
 
-    -> {Vlad::ProtonymsWithoutAuthorships.display}.should_not raise_error
+    expect {Vlad::ProtonymsWithoutAuthorships.display}.not_to raise_error
   end
 
   it "should show taxa without protonyms" do
@@ -96,22 +96,22 @@ describe Vlad do
     genus_without_protonym = create_genus
     genus_without_protonym.update_attribute :protonym, nil
     results = Vlad::TaxaWithoutProtonyms.query
-    results.should == [genus_without_protonym]
-    -> {Vlad::TaxaWithoutProtonyms.display}.should_not raise_error
+    expect(results).to eq([genus_without_protonym])
+    expect {Vlad::TaxaWithoutProtonyms.display}.not_to raise_error
   end
 
   it "should show taxa with deleted protonyms" do
     taxon = create_genus
     taxon.protonym.destroy
     results = Vlad::TaxaWithDeletedProtonyms.query
-    results.should == [taxon]
-    -> {Vlad::TaxaWithDeletedProtonyms.display}.should_not raise_error
+    expect(results).to eq([taxon])
+    expect {Vlad::TaxaWithDeletedProtonyms.display}.not_to raise_error
   end
 
   it "should show orphan protonyms" do
     genus = create_genus
     orphan_protonym = FactoryGirl.create :protonym
-    -> {Vlad::OrphanProtonyms.display}.should_not raise_error
+    expect {Vlad::OrphanProtonyms.display}.not_to raise_error
   end
 
   it "should show duplicate synonyms" do
@@ -123,7 +123,7 @@ describe Vlad do
     another_junior = create_genus
     Synonym.create! senior_synonym: another_senior, junior_synonym: another_junior
     results = Vlad::DuplicateSynonyms.query
-    results.map(&:junior_synonym_id).should =~ [junior.id]
+    expect(results.map(&:junior_synonym_id)).to match_array([junior.id])
   end
 
 
@@ -132,25 +132,25 @@ describe Vlad do
       create_genus 'Eciton'
       genus = create_genus 'Atta'
       create_genus name: genus.name
-      Vlad::DuplicateValids.query.map {|e| [e[:name], e[:count]]}.should =~ [['Atta', 2]]
+      expect(Vlad::DuplicateValids.query.map {|e| [e[:name], e[:count]]}).to match_array([['Atta', 2]])
     end
     it "should be cool with same species name if genus is different" do
       create_species 'Atta niger'
       create_species 'Betta major'
       create_species 'Kappa major'
-      Vlad::DuplicateValids.query.should be_empty
+      expect(Vlad::DuplicateValids.query).to be_empty
     end
     it "should be cool with same species name if status is different" do
       genus = create_genus
       species = create_species 'Atta major', genus: genus
       create_species name: species.name, genus: genus, status: 'synonym'
-      Vlad::DuplicateValids.query.should be_empty
+      expect(Vlad::DuplicateValids.query).to be_empty
     end
     it "should be cool with same name if both statuses are valid, but one is an unresolved junior homonym" do
       genus = create_genus
       species = create_species 'Atta major', genus: genus
       create_species name: species.name, genus: genus, unresolved_homonym: true
-      Vlad::DuplicateValids.query.should be_empty
+      expect(Vlad::DuplicateValids.query).to be_empty
     end
   end
 
@@ -168,14 +168,14 @@ describe Vlad do
       document_without_reference = FactoryGirl.create :reference_document
 
       results = Vlad::ReferenceDocumentCounts.query
-      results[:references_count].should == 11
-      results[:reference_documents_count].should == 11
-      results[:references_with_documents_count].should == 10
+      expect(results[:references_count]).to eq(11)
+      expect(results[:reference_documents_count]).to eq(11)
+      expect(results[:references_with_documents_count]).to eq(10)
 
-      results[:locations][:antcat].should == 1
-      results[:locations][:antbase].should == 2
-      results[:locations][:ip_128_146_250_117].should == 3
-      results[:locations][:other].should == 4
+      expect(results[:locations][:antcat]).to eq(1)
+      expect(results[:locations][:antbase]).to eq(2)
+      expect(results[:locations][:ip_128_146_250_117]).to eq(3)
+      expect(results[:locations][:other]).to eq(4)
 
     end
   end
@@ -188,8 +188,8 @@ describe Vlad do
       another_senior_synonym = create_species
       another_junior_synonym = create_synonym another_senior_synonym, current_valid_taxon: taxon
       results = Vlad::SynonymsWithoutCurrentValidTaxon.query
-      results.should have(1).item
-      results.first.should == junior_synonym
+      expect(results.size).to eq(1)
+      expect(results.first).to eq(junior_synonym)
     end
   end
 

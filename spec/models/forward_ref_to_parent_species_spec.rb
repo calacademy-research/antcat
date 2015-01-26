@@ -16,7 +16,7 @@ describe ForwardRefToParentSpecies do
       })
       forward_ref.fixup
       subspecies.reload
-      subspecies.species.name.to_s.should == 'Atta molestans'
+      expect(subspecies.species.name.to_s).to eq('Atta molestans')
     end
 
     it "should adjust the species epithet when the gender has changed" do
@@ -29,8 +29,8 @@ describe ForwardRefToParentSpecies do
       })
       forward_ref.fixup
       subspecies.reload
-      subspecies.name.to_s.should == 'Atta perpa rufa'
-      subspecies.name.epithets.to_s.should == 'perpa rufa'
+      expect(subspecies.name.to_s).to eq('Atta perpa rufa')
+      expect(subspecies.name.epithets.to_s).to eq('perpa rufa')
     end
   end
 

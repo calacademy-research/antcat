@@ -18,7 +18,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         :type_genus => {:genus_name => 'Formica'},
         :history => ['Taxonomic history']
       )
-      @importer.stub :parse_family
+      allow(@importer).to receive :parse_family
     end
 
     def make_contents content
@@ -93,73 +93,73 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>*<i>Myrmeciites incertae sedis</i> in Hymenoptera: Baroni Urbani, 2008: 7.</p>
       }
 
-      Taxon.count.should == 10
+      expect(Taxon.count).to eq(10)
 
       subfamily = Subfamily.find_by_name 'Aneuretinae'
-      subfamily.should_not be_invalid
-      subfamily.type_name.to_s.should == 'Aneuretus'
-      subfamily.type_name.rank.should == 'genus'
+      expect(subfamily).not_to be_invalid
+      expect(subfamily.type_name.to_s).to eq('Aneuretus')
+      expect(subfamily.type_name.rank).to eq('genus')
 
       protonym = subfamily.protonym
-      protonym.name.to_s.should == 'Aneuretini'
-      protonym.name.rank.should == 'tribe'
+      expect(protonym.name.to_s).to eq('Aneuretini')
+      expect(protonym.name.rank).to eq('tribe')
 
       authorship = protonym.authorship
-      authorship.reference.should == emery
-      authorship.pages.should == '6'
+      expect(authorship.reference).to eq(emery)
+      expect(authorship.pages).to eq('6')
 
-      subfamily.type_name.to_s.should == 'Aneuretus'
-      subfamily.type_name.rank.should == 'genus'
+      expect(subfamily.type_name.to_s).to eq('Aneuretus')
+      expect(subfamily.type_name.rank).to eq('genus')
 
-      subfamily.history_items.map(&:taxt).should =~ [
+      expect(subfamily.history_items.map(&:taxt)).to match_array([
         "{nam #{Name.find_by_name('Aneuretinae').id}} as junior synonym of {nam #{Name.find_by_name('Dolichoderinae').id}}: {ref #{MissingReference.first.id}}: 147."
-      ]
+      ])
 
       tribe = Tribe.find_by_name 'Aneuretini'
-      tribe.subfamily.should == subfamily
-      tribe.history_items.map(&:taxt).should == ["history"]
-      tribe.type_name.to_s.should == 'Aneuretus'
-      tribe.type_name.rank.should == 'genus'
-      tribe.reference_sections.map(&:title_taxt).should == ["Subfamily, tribe {tax #{Taxon.find_by_name('Aneuretini').id}} and genus {nam #{Name.find_by_name('Aneuretus').id}} references"]
-      tribe.reference_sections.map(&:references_taxt).should == ["{ref #{emery.id}}: 461 (diagnosis)"]
+      expect(tribe.subfamily).to eq(subfamily)
+      expect(tribe.history_items.map(&:taxt)).to eq(["history"])
+      expect(tribe.type_name.to_s).to eq('Aneuretus')
+      expect(tribe.type_name.rank).to eq('genus')
+      expect(tribe.reference_sections.map(&:title_taxt)).to eq(["Subfamily, tribe {tax #{Taxon.find_by_name('Aneuretini').id}} and genus {nam #{Name.find_by_name('Aneuretus').id}} references"])
+      expect(tribe.reference_sections.map(&:references_taxt)).to eq(["{ref #{emery.id}}: 461 (diagnosis)"])
 
       junior_synonym = Tribe.find_by_name 'Anonychomyrmini'
-      junior_synonym.should be_synonym
-      junior_synonym.should be_synonym_of tribe
+      expect(junior_synonym).to be_synonym
+      expect(junior_synonym).to be_synonym_of tribe
 
       aneuretus = Genus.find_by_name 'Aneuretus'
-      aneuretus.tribe.should == tribe
-      aneuretus.subfamily.should == subfamily
-      aneuretus.reference_sections.map(&:references_taxt).should == ["{tax #{aneuretus.id}} reference"]
+      expect(aneuretus.tribe).to eq(tribe)
+      expect(aneuretus.subfamily).to eq(subfamily)
+      expect(aneuretus.reference_sections.map(&:references_taxt)).to eq(["{tax #{aneuretus.id}} reference"])
 
       junior_synonym = Genus.find_by_name 'Odontomyrmex'
-      junior_synonym.should be_synonym_of aneuretus
-      junior_synonym.should be_synonym
-      junior_synonym.tribe.should == aneuretus.tribe
-      junior_synonym.subfamily.should == aneuretus.subfamily
+      expect(junior_synonym).to be_synonym_of aneuretus
+      expect(junior_synonym).to be_synonym
+      expect(junior_synonym.tribe).to eq(aneuretus.tribe)
+      expect(junior_synonym.subfamily).to eq(aneuretus.subfamily)
 
       homonym = Genus.find_by_name 'Diabolus'
-      homonym.should be_homonym
-      homonym.homonym_replaced_by.should == junior_synonym
-      homonym.tribe.should == aneuretus.tribe
-      homonym.subfamily.should == aneuretus.subfamily
+      expect(homonym).to be_homonym
+      expect(homonym.homonym_replaced_by).to eq(junior_synonym)
+      expect(homonym.tribe).to eq(aneuretus.tribe)
+      expect(homonym.subfamily).to eq(aneuretus.subfamily)
 
       genus = Genus.find_by_name 'Burmomyrma'
-      genus.should_not be_invalid
-      genus.should be_fossil
-      genus.tribe.should be_nil
-      genus.incertae_sedis_in.should == 'subfamily'
-      genus.subfamily.should == subfamily
+      expect(genus).not_to be_invalid
+      expect(genus).to be_fossil
+      expect(genus.tribe).to be_nil
+      expect(genus.incertae_sedis_in).to eq('subfamily')
+      expect(genus.subfamily).to eq(subfamily)
 
       genus = Genus.find_by_name 'Wilsonia'
-      genus.tribe.should be_nil
-      genus.incertae_sedis_in.should == 'subfamily'
-      genus.subfamily.should == subfamily
-      genus.should be_hong
-      genus.status.should == Status['valid'].to_s
+      expect(genus.tribe).to be_nil
+      expect(genus.incertae_sedis_in).to eq('subfamily')
+      expect(genus.subfamily).to eq(subfamily)
+      expect(genus).to be_hong
+      expect(genus.status).to eq(Status['valid'].to_s)
 
       collective_group_name = Genus.find_by_name 'Myrmeciites'
-      collective_group_name.should be_collective_group_name
+      expect(collective_group_name).to be_collective_group_name
     end
   end
 end

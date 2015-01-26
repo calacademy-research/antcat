@@ -4,6 +4,7 @@ class Subspecies < SpeciesGroupTaxon
 
   belongs_to :species
   before_validation :set_genus
+  attr_accessible :subfamily, :genus, :name, :protonym, :species
 
   def update_parent new_parent
     super

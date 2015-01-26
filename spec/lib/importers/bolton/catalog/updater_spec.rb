@@ -20,7 +20,7 @@ describe Importers::Bolton::Catalog::Updater do
       }
       # create the tribe from scratch
       @attini = Tribe.import @data
-      Update.count.should == 1
+      expect(Update.count).to eq(1)
       @ecitonini = create_tribe 'Ecitonini'
       @bacerosini = create_tribe 'Baserosini'
       @formicini = create_tribe 'Formicini'
@@ -32,20 +32,20 @@ describe Importers::Bolton::Catalog::Updater do
         @data[:synonym_of] = @bacerosini
         # update the existing tribe
         Tribe.import @data
-        @attini.should be_junior_synonym_of @bacerosini
-        @bacerosini.should be_senior_synonym_of @attini
+        expect(@attini).to be_junior_synonym_of @bacerosini
+        expect(@bacerosini).to be_senior_synonym_of @attini
 
-        Update.count.should == 3
+        expect(Update.count).to eq(3)
 
         update = Update.find_by_record_id_and_field_name @attini.id, 'status'
-        update.class_name.should == 'Tribe'
-        update.before.should == 'valid'
-        update.after.should == 'synonym'
+        expect(update.class_name).to eq('Tribe')
+        expect(update.before).to eq('valid')
+        expect(update.after).to eq('synonym')
 
         update = Update.find_by_record_id_and_field_name @attini.id, 'junior_synonym_of'
-        update.class_name.should == 'Tribe'
-        update.before.should == nil
-        update.after.should == 'Baserosini'
+        expect(update.class_name).to eq('Tribe')
+        expect(update.before).to eq(nil)
+        expect(update.after).to eq('Baserosini')
       end
 
       describe "Unit test" do
@@ -54,20 +54,20 @@ describe Importers::Bolton::Catalog::Updater do
           @attini.update_synonyms do
             @attini.become_not_junior_synonym_of @bacerosini
           end
-          Update.count.should == 2
+          expect(Update.count).to eq(2)
           update = Update.find_by_record_id_and_field_name @attini.id, 'junior_synonym_of'
-          update.before.should == 'Baserosini'
-          update.after.should == nil
+          expect(update.before).to eq('Baserosini')
+          expect(update.after).to eq(nil)
         end
 
         it "should record when a junior synonymy is added" do
           @attini.update_synonyms do
             @attini.become_junior_synonym_of @bacerosini
           end
-          Update.count.should == 2
+          expect(Update.count).to eq(2)
           update = Update.find_by_record_id_and_field_name @attini.id, 'junior_synonym_of'
-          update.before.should == nil
-          update.after.should == 'Baserosini'
+          expect(update.before).to eq(nil)
+          expect(update.after).to eq('Baserosini')
         end
 
         it "should record when a senior synonymy is removed" do
@@ -75,20 +75,20 @@ describe Importers::Bolton::Catalog::Updater do
           @attini.update_synonyms do
             @bacerosini.become_not_junior_synonym_of @attini
           end
-          Update.count.should == 2
+          expect(Update.count).to eq(2)
           update = Update.find_by_record_id_and_field_name @attini.id, 'senior_synonym_of'
-          update.before.should == 'Baserosini'
-          update.after.should == nil
+          expect(update.before).to eq('Baserosini')
+          expect(update.after).to eq(nil)
         end
 
         it "should record when a senior synonymy is added" do
           @attini.update_synonyms do
             @bacerosini.become_junior_synonym_of @attini
           end
-          Update.count.should == 2
+          expect(Update.count).to eq(2)
           update = Update.find_by_record_id_and_field_name @attini.id, 'senior_synonym_of'
-          update.before.should == nil
-          update.after.should == 'Baserosini'
+          expect(update.before).to eq(nil)
+          expect(update.after).to eq('Baserosini')
         end
 
       end
@@ -111,7 +111,7 @@ describe Importers::Bolton::Catalog::Updater do
       }
 
       taxon, name = Genus.find_taxon_to_update(data)
-      taxon.should == genus
+      expect(taxon).to eq(genus)
     end
   end
 

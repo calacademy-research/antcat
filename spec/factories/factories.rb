@@ -12,77 +12,77 @@ FactoryGirl.define do
   factory :author
 
   factory :author_name do
-    sequence(:name) {|n| "Fisher#{n}, B.L."}
+    sequence(:name) { |n| "Fisher#{n}, B.L." }
     author
   end
 
   factory :journal do
-    sequence(:name) {|n| "Ants#{n}"}
+    sequence(:name) { |n| "Ants#{n}" }
   end
 
   factory :publisher do
-    name  'Wiley'
+    name 'Wiley'
     place
   end
 
   factory :place do
-    name  'New York'
+    name 'New York'
   end
 
   factory :reference do
-    sequence(:title)          {|n| "Ants are my life#{n}"}
-    sequence(:citation_year)  {|n| "201#{n}d"}
-    author_names              {[FactoryGirl.create(:author_name)]}
+    sequence(:title) { |n| "Ants are my life#{n}" }
+    sequence(:citation_year) { |n| "201#{n}d" }
+    author_names { [FactoryGirl.create(:author_name)] }
   end
 
   factory :article_reference do
-    author_names                    {[FactoryGirl.create(:author_name)]}
-    sequence(:title)                {|n| "Ants are my life#{n}"}
-    sequence(:citation_year)        {|n| "201#{n}d"}
+    author_names { [FactoryGirl.create(:author_name)] }
+    sequence(:title) { |n| "Ants are my life#{n}" }
+    sequence(:citation_year) { |n| "201#{n}d" }
     journal
-    sequence(:series_volume_issue)  {|n| n}
-    sequence(:pagination)           {|n| n}
+    sequence(:series_volume_issue) { |n| n }
+    sequence(:pagination) { |n| n }
   end
 
   factory :book_reference do
-    author_names                    {[FactoryGirl.create(:author_name)]}
-    sequence(:title)                {|n| "Ants are my life#{n}"}
-    sequence(:citation_year)        {|n| "201#{n}d"}
+    author_names { [FactoryGirl.create(:author_name)] }
+    sequence(:title) { |n| "Ants are my life#{n}" }
+    sequence(:citation_year) { |n| "201#{n}d" }
     publisher
-    pagination                      '22 pp.'
+    pagination '22 pp.'
   end
 
   factory :unknown_reference do
-    author_names                    {[FactoryGirl.create(:author_name)]}
-    sequence(:title)                {|n| "Ants are my life#{n}"}
-    sequence(:citation_year)        {|n| "201#{n}d"}
-    citation                        'New York'
+    author_names { [FactoryGirl.create(:author_name)] }
+    sequence(:title) { |n| "Ants are my life#{n}" }
+    sequence(:citation_year) { |n| "201#{n}d" }
+    citation 'New York'
   end
 
   factory :missing_reference do
-    title         '(missing)'
+    title '(missing)'
     citation_year '2009'
-    citation      'Latreille, 2009'
+    citation 'Latreille, 2009'
   end
 
   factory :nested_reference do
-    author_names              {[FactoryGirl.create(:author_name)]}
-    sequence(:title)          {|n| "Nested ants #{n}"}
-    sequence(:citation_year)  {|n| "201#{n}d"}
-    pages_in                  'In: '
-    nesting_reference         {FactoryGirl.create :book_reference}
+    author_names { [FactoryGirl.create(:author_name)] }
+    sequence(:title) { |n| "Nested ants #{n}" }
+    sequence(:citation_year) { |n| "201#{n}d" }
+    pages_in 'In: '
+    nesting_reference { FactoryGirl.create :book_reference }
   end
 
   factory :user do
-    name      'Mark Wilden'
-    sequence(:email) {|n| "mark#{n}@example.com"}
-    password  'secret'
+    name 'Mark Wilden'
+    sequence(:email) { |n| "mark#{n}@example.com" }
+    password 'secret'
   end
 
   factory :editor, class: User do
-    name      'Brian Fisher'
-    sequence(:email) {|n| "brian#{n}@example.com"}
-    password  'secret'
+    name 'Brian Fisher'
+    sequence(:email) { |n| "brian#{n}@example.com" }
+    password 'secret'
   end
 
   factory :bolton_reference, :class => Bolton::Reference do
@@ -112,76 +112,76 @@ FactoryGirl.define do
 
   ####################################################
   factory :name do
-    sequence(:name) {|n| raise}
-    name_html       {name}
-    epithet         {name}
-    epithet_html    {name_html}
-   end
+    sequence(:name) { |n| raise }
+    name_html { name }
+    epithet { name }
+    epithet_html { name_html }
+  end
 
   factory :family_or_subfamily_name do
     name 'FamilyOrSubfamily'
-    name_html       {name}
-    epithet         {name}
-    epithet_html    {name_html}
+    name_html { name }
+    epithet { name }
+    epithet_html { name_html }
   end
 
   factory :family_name do
-    name            'Family'
-    name_html       {name}
-    epithet         {name}
-    epithet_html    {name_html}
+    name 'Family'
+    name_html { name }
+    epithet { name }
+    epithet_html { name_html }
   end
 
   factory :subfamily_name do
-    sequence(:name) {|n| "Subfamily#{n}"}
-    name_html       {name}
-    epithet         {name}
-    epithet_html    {name_html}
+    sequence(:name) { |n| "Subfamily#{n}" }
+    name_html { name }
+    epithet { name }
+    epithet_html { name_html }
   end
 
   factory :tribe_name do
-    sequence(:name) {|n| "Tribe#{n}"}
-    name_html       {name}
-    epithet         {name}
-    epithet_html    {name_html}
+    sequence(:name) { |n| "Tribe#{n}" }
+    name_html { name }
+    epithet { name }
+    epithet_html { name_html }
   end
 
   factory :subtribe_name do
-    sequence(:name) {|n| "Subtribe#{n}"}
-    name_html       {name}
-    epithet         {name}
-    epithet_html    {name_html}
+    sequence(:name) { |n| "Subtribe#{n}" }
+    name_html { name }
+    epithet { name }
+    epithet_html { name_html }
   end
 
   factory :genus_name do
-    sequence(:name) {|n| "Genus#{n}"}
-    name_html       {"<i>#{name}</i>"}
-    epithet         {name}
-    epithet_html    {"<i>#{name}</i>"}
+    sequence(:name) { |n| "Genus#{n}" }
+    name_html { "<i>#{name}</i>" }
+    epithet { name }
+    epithet_html { "<i>#{name}</i>" }
   end
 
   factory :subgenus_name do
-    sequence(:name) {|n| "Atta (Subgenus#{n})"}
-    name_html       {"<i>Atta</i> <i>(#{name})</i>"}
-    epithet         {name.split(' ').last}
-    epithet_html    {"<i>#{epithet}</i>"}
+    sequence(:name) { |n| "Atta (Subgenus#{n})" }
+    name_html { "<i>Atta</i> <i>(#{name})</i>" }
+    epithet { name.split(' ').last }
+    epithet_html { "<i>#{epithet}</i>" }
   end
 
   factory :species_name do
-    sequence(:name) {|n| "Atta species#{n}"}
-    name_html       {"<i>#{name}</i>"}
-    epithet         {name.split(' ').last}
-    epithet_html    {"<i>#{epithet}</i>"}
-    protonym_html   {name_html}
+    sequence(:name) { |n| "Atta species#{n}" }
+    name_html { "<i>#{name}</i>" }
+    epithet { name.split(' ').last }
+    epithet_html { "<i>#{epithet}</i>" }
+    protonym_html { name_html }
   end
 
   factory :subspecies_name do
-    sequence(:name) {|n| "Atta species subspecies#{n}"}
-    name_html       {"<i>#{name}</i>"}
-    epithet         {name.split(' ').last}
-    epithets        {name.split(' ')[-2..-1].join(' ')}
-    epithet_html    {"<i>#{epithet}</i>"}
-    protonym_html   {name_html}
+    sequence(:name) { |n| "Atta species subspecies#{n}" }
+    name_html { "<i>#{name}</i>" }
+    epithet { name.split(' ').last }
+    epithets { name.split(' ')[-2..-1].join(' ') }
+    epithet_html { "<i>#{epithet}</i>" }
+    protonym_html { name_html }
   end
 
   ####################################################
@@ -190,21 +190,21 @@ FactoryGirl.define do
     association :name, factory: :genus_name
     association :type_name, factory: :species_name
     protonym
-    status  'valid'
+    status 'valid'
   end
 
   factory :family do
     association :name, factory: :family_name
     association :type_name, factory: :genus_name
     protonym
-    status  'valid'
+    status 'valid'
   end
 
   factory :subfamily do
     association :name, factory: :subfamily_name
     association :type_name, factory: :genus_name
     protonym
-    status  'valid'
+    status 'valid'
   end
 
   factory :tribe do
@@ -212,7 +212,7 @@ FactoryGirl.define do
     association :type_name, factory: :genus_name
     subfamily
     protonym
-    status  'valid'
+    status 'valid'
   end
 
   factory :subtribe do
@@ -220,16 +220,16 @@ FactoryGirl.define do
     association :type_name, factory: :genus_name
     subfamily
     protonym
-    status  'valid'
+    status 'valid'
   end
 
   factory :genus do
     association :name, factory: :genus_name
     association :type_name, factory: :species_name
     tribe
-    subfamily   {|a| a.tribe && a.tribe.subfamily}
+    subfamily { |a| a.tribe && a.tribe.subfamily }
     protonym
-    status  'valid'
+    status 'valid'
   end
 
   factory :subgenus do
@@ -237,21 +237,21 @@ FactoryGirl.define do
     association :type_name, factory: :species_name
     genus
     protonym
-    status  'valid'
+    status 'valid'
   end
 
   factory :species_group_taxon do
     association :name, factory: :species_name
     genus
     protonym
-    status  'valid'
+    status 'valid'
   end
 
   factory :species do
     association :name, factory: :species_name
     genus
     protonym
-    status  'valid'
+    status 'valid'
   end
 
   factory :subspecies do
@@ -259,7 +259,7 @@ FactoryGirl.define do
     species
     genus
     protonym
-    status  'valid'
+    status 'valid'
   end
 
   ####################################################
@@ -280,8 +280,8 @@ FactoryGirl.define do
   ####################################################
   factory :reference_section do
     association :taxon
-    sequence(:position) {|n| n}
-    sequence(:references_taxt) {|n| "Reference #{n}"}
+    sequence(:position) { |n| n }
+    sequence(:references_taxt) { |n| "Reference #{n}" }
   end
 
   ####################################################
@@ -289,9 +289,9 @@ FactoryGirl.define do
   end
 
   ####################################################
-  factory :version do
+  factory :version, :class => PaperTrail::Version do
     item_type 'Taxon'
-    event     'create'
+    event 'create'
     association :whodunnit, factory: :user
   end
 
@@ -301,7 +301,7 @@ FactoryGirl.define do
   end
 
   factory :change do
-    change_type     "create"
+    change_type "create"
   end
 
 end
@@ -383,11 +383,11 @@ end
 def create_taxon_version_and_change review_state, user = @user, approver = nil
   taxon = FactoryGirl.create :genus, review_state: review_state
   change = FactoryGirl.build :change, user_changed_taxon_id: taxon.id, change_type: "create"
-  version = FactoryGirl.build :version, item_id: taxon.id, whodunnit: user
+  version = FactoryGirl.build :version, item_id: taxon.id, whodunnit: user.id
+
+  unless approver.nil?
+    change.update_attributes! approver: approver, approved_at: Time.now if approver
+  end
   FactoryGirl.create :transaction, paper_trail_version: version, change: change
-  change.update_attributes! approver: approver, approved_at: Time.now if approver
   taxon
-
-
-
 end

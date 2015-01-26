@@ -13,15 +13,15 @@ describe ForwardRef do
       }
     end
     it "is valid with the valid attributes" do
-      ForwardRef.new(@valid_attributes).should be_valid
+      expect(ForwardRef.new(@valid_attributes)).to be_valid
     end
     it "needs a fixee" do
       @valid_attributes.delete :fixee
-      ForwardRef.new(@valid_attributes).should_not be_valid
+      expect(ForwardRef.new(@valid_attributes)).not_to be_valid
     end
     it "needs a fixee_attribute" do
       @valid_attributes.delete :fixee_attribute
-      ForwardRef.new(@valid_attributes).should_not be_valid
+      expect(ForwardRef.new(@valid_attributes)).not_to be_valid
     end
   end
 
@@ -29,9 +29,9 @@ describe ForwardRef do
     it "should call each's fixup method" do
       first = double
       second = double
-      ForwardRef.should_receive(:all).and_return [first, second]
-      first.should_receive :fixup
-      second.should_receive :fixup
+      expect(ForwardRef).to receive(:all).and_return [first, second]
+      expect(first).to receive :fixup
+      expect(second).to receive :fixup
       ForwardRef.fixup
     end
   end

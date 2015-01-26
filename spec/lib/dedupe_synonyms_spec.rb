@@ -11,9 +11,9 @@ describe DedupeSynonyms do
     another_senior = create_genus
     another_junior = create_genus
     Synonym.create! senior_synonym: another_senior, junior_synonym: another_junior
-    Synonym.count.should == 3
+    expect(Synonym.count).to eq(3)
     DedupeSynonyms.dedupe
-    Synonym.count.should == 2
+    expect(Synonym.count).to eq(2)
   end
 
 end

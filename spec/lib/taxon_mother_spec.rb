@@ -11,16 +11,16 @@ describe TaxonMother do
       end
       it "should create a new record to be edited, filling in child objects" do
         taxon = @mother.create_taxon Rank[:species], @genus
-        taxon.should be_kind_of Species
-        taxon.name.should_not be_blank
-        taxon.protonym.should_not be_blank
-        taxon.protonym.name.should_not be_blank
-        taxon.protonym.authorship.should_not be_blank
-        taxon.type_name.should_not be_blank
+        expect(taxon).to be_kind_of Species
+        expect(taxon.name).not_to be_blank
+        expect(taxon.protonym).not_to be_blank
+        expect(taxon.protonym.name).not_to be_blank
+        expect(taxon.protonym.authorship).not_to be_blank
+        expect(taxon.type_name).not_to be_blank
       end
       it "should set the parent of a new record" do
         taxon = @mother.create_taxon Rank[:species], @genus
-        taxon.parent.should == @genus
+        expect(taxon.parent).to eq(@genus)
       end
     end
 
@@ -31,12 +31,12 @@ describe TaxonMother do
       end
       it "should load a record to be edited, filling in child objects" do
         taxon = @mother.load_taxon
-        taxon.should == @genus
-        taxon.name.should_not be_blank
-        taxon.protonym.should_not be_blank
-        taxon.protonym.name.should_not be_blank
-        taxon.protonym.authorship.should_not be_blank
-        taxon.type_name.should_not be_blank
+        expect(taxon).to eq(@genus)
+        expect(taxon.name).not_to be_blank
+        expect(taxon.protonym).not_to be_blank
+        expect(taxon.protonym.name).not_to be_blank
+        expect(taxon.protonym.authorship).not_to be_blank
+        expect(taxon.type_name).not_to be_blank
       end
     end
   end
@@ -91,9 +91,9 @@ describe TaxonMother do
       params[:type_taxt] = ''
       @mother.save_taxon taxon, params
       taxon.reload
-      taxon.name.name.should == 'Atta'
-      taxon.protonym.name.name.should == 'Betta'
-      taxon.type_name.name.should == 'Betta major'
+      expect(taxon.name.name).to eq('Atta')
+      expect(taxon.protonym.name.name).to eq('Betta')
+      expect(taxon.type_name.name).to eq('Betta major')
     end
 
     it "should set the new taxon's state" do
@@ -104,8 +104,8 @@ describe TaxonMother do
       @mother.save_taxon taxon, params
       taxon.reload
 
-      taxon.should be_waiting
-      taxon.can_approve?.should be_true
+      expect(taxon).to be_waiting
+      expect(taxon.can_approve?).to be_truthy
     end
 
     it "should create a new species" do
@@ -113,8 +113,8 @@ describe TaxonMother do
       params = @species_params.deep_dup
       @mother.save_taxon taxon, params
       taxon.reload
-      taxon.name.name.should == 'Atta major'
-      taxon.protonym.name.name.should == 'Betta major'
+      expect(taxon.name.name).to eq('Atta major')
+      expect(taxon.protonym.name.name).to eq('Betta major')
     end
 
     it "should create a new subspecies" do
@@ -123,8 +123,8 @@ describe TaxonMother do
       params = @subspecies_params
       @mother.save_taxon taxon, params
       taxon.reload
-      taxon.name.name.should == 'Atta major minor'
-      taxon.protonym.name.name.should == 'Betta major minor'
+      expect(taxon.name.name).to eq('Atta major minor')
+      expect(taxon.protonym.name.name).to eq('Betta major minor')
     end
 
     it "should set name, status and flag fields" do
@@ -145,13 +145,13 @@ describe TaxonMother do
       @mother.save_taxon taxon, params
 
       taxon.reload
-      taxon.should be_incertae_sedis_in 'genus'
-      taxon.should be_nomen_nudum
-      taxon.should be_hong
-      taxon.should be_unresolved_homonym
-      taxon.should be_ichnotaxon
-      taxon.headline_notes_taxt.should == "{ref #{headline_reference.id}}"
-      taxon.type_taxt.should ==  "{ref #{taxt_reference.id}}"
+      expect(taxon).to be_incertae_sedis_in 'genus'
+      expect(taxon).to be_nomen_nudum
+      expect(taxon).to be_hong
+      expect(taxon).to be_unresolved_homonym
+      expect(taxon).to be_ichnotaxon
+      expect(taxon.headline_notes_taxt).to eq("{ref #{headline_reference.id}}")
+      expect(taxon.type_taxt).to eq("{ref #{taxt_reference.id}}")
     end
 
     it "should set authorship taxt" do
@@ -165,7 +165,7 @@ describe TaxonMother do
       @mother.save_taxon taxon, params
 
       taxon.reload
-      taxon.protonym.authorship.notes_taxt.should == "{ref #{reference.id}}"
+      expect(taxon.protonym.authorship.notes_taxt).to eq("{ref #{reference.id}}")
     end
 
     it "should set homonym replaced by" do
@@ -178,7 +178,7 @@ describe TaxonMother do
 
       taxon.reload
 
-      taxon.homonym_replaced_by.should == replacement_homonym
+      expect(taxon.homonym_replaced_by).to eq(replacement_homonym)
     end
 
     it "should set current valid taxon" do
@@ -191,7 +191,7 @@ describe TaxonMother do
 
       taxon.reload
 
-      taxon.current_valid_taxon.should == current_valid_taxon
+      expect(taxon.current_valid_taxon).to eq(current_valid_taxon)
     end
 
     it "should allow name gender to be set when updating a taxon" do
@@ -199,12 +199,12 @@ describe TaxonMother do
       params = @genus_params.deep_dup
       @mother.save_taxon taxon, params
       taxon.reload
-      taxon.name.gender.should be_nil
+      expect(taxon.name.gender).to be_nil
       params = @genus_params.deep_dup
       params[:name_attributes][:gender] = 'masculine'
       @mother.save_taxon taxon, params
       taxon.reload
-      taxon.name.gender.should == 'masculine'
+      expect(taxon.name.gender).to eq('masculine')
     end
 
     it "should allow name gender to be unset when updating a taxon" do
@@ -212,12 +212,12 @@ describe TaxonMother do
       params = @genus_params.deep_dup
       @mother.save_taxon taxon, params
       taxon.name.update_column(:gender, 'masculine')
-      taxon.name.gender.should == 'masculine'
+      expect(taxon.name.gender).to eq('masculine')
       params = @genus_params.deep_dup
       params[:name_attributes][:gender] = ''
       @mother.save_taxon taxon, params
       taxon.reload
-      taxon.name.gender.should be_nil
+      expect(taxon.name.gender).to be_nil
     end
 
     describe "Creating a Change" do
@@ -226,7 +226,7 @@ describe TaxonMother do
           taxon = @mother.create_taxon Rank[:species], create_genus
           @mother.save_taxon taxon, @genus_params
           change = Change.first
-          change.paper_trail_versions.should include(taxon.last_version)
+          expect(change.paper_trail_versions).to include(taxon.last_version)
         end
       end
 
@@ -235,15 +235,15 @@ describe TaxonMother do
         with_versioning do
           @mother.save_taxon genus, @genus_params
         end
-        Change.count.should equal 1
-        Change.first[:change_type].should eq 'update'
+        expect(Change.count).to equal 1
+        expect(Change.first[:change_type]).to eq 'update'
       end
       it "should  change the review state after editing" do
         genus = create_genus
         with_versioning do
           @mother.save_taxon genus, @genus_params
         end
-        genus.should_not be_old
+        expect(genus).not_to be_old
       end
     end
 

@@ -6,20 +6,20 @@ describe Citation do
   it "has a Reference" do
     reference = FactoryGirl.create :reference
     citation = Citation.create! :reference => reference
-    citation.reload.reference.should == reference
+    expect(citation.reload.reference).to eq(reference)
   end
 
   it "does require a Reference" do
     citation = Citation.create
-    citation.reference.should be_nil
-    citation.should_not be_valid
+    expect(citation.reference).to be_nil
+    expect(citation).not_to be_valid
   end
 
   describe "Versioning" do
     it "should record versions" do
       with_versioning do
         citation = FactoryGirl.create :citation
-        citation.versions.last.event.should == 'create'
+        expect(citation.versions.last.event).to eq('create')
       end
     end
   end
@@ -32,18 +32,18 @@ describe Citation do
 
       citation = Citation.import(data).reload
 
-      citation.pages.should == '124'
-      citation.reference.should == reference
-      citation.forms.should == 'w.q.'
+      expect(citation.pages).to eq('124')
+      expect(citation.reference).to eq(reference)
+      expect(citation.forms).to eq('w.q.')
     end
 
     it "should link to a MissingReference, if necessary" do
       data = {:author_names => ["Latreille"], :year => "1809a", :pages => "124", :matched_text => 'Latreille, 1809a: 124'}
       citation = Citation.import(data).reload
-      citation.pages.should == '124'
+      expect(citation.pages).to eq('124')
       missing_reference = citation.reference
-      missing_reference.citation.should == 'Latreille, 1809a'
-      missing_reference.reason_missing.should == 'no Bolton'
+      expect(missing_reference.citation).to eq('Latreille, 1809a')
+      expect(missing_reference.reason_missing).to eq('no Bolton')
     end
 
     it "should handle a nested reference when the year is only with the parent" do
@@ -58,8 +58,8 @@ describe Citation do
 
       citation = Citation.import(data).reload
 
-      citation.pages.should == '24'
-      citation.reference.should == reference
+      expect(citation.pages).to eq('24')
+      expect(citation.reference).to eq(reference)
     end
 
     it "should handle a note" do
@@ -79,7 +79,7 @@ describe Citation do
       }
 
       citation = Citation.import(data).reload
-      citation.notes_taxt.should == " [as member of family {nam #{Name.find_by_name('Braconidae').id}}]"
+      expect(citation.notes_taxt).to eq(" [as member of family {nam #{Name.find_by_name('Braconidae').id}}]")
     end
 
   end
@@ -88,7 +88,7 @@ describe Citation do
     it "should show the author and year" do
       reference = reference_factory author_name: 'Bolton', citation_year: '2001'
       citation = FactoryGirl.build_stubbed :citation, reference: reference
-      citation.authorship_string.should == 'Bolton, 2001'
+      expect(citation.authorship_string).to eq('Bolton, 2001')
     end
     it "should handle multiple authors" do
       reference = FactoryGirl.build_stubbed(:article_reference, author_names: [
@@ -96,27 +96,27 @@ describe Citation do
         FactoryGirl.create(:author_name, :name => 'Fisher, R.'),
       ], citation_year: '2001', year: '2001')
       citation = FactoryGirl.build_stubbed :citation, reference: reference
-      citation.authorship_string.should == 'Bolton & Fisher, 2001'
+      expect(citation.authorship_string).to eq('Bolton & Fisher, 2001')
     end
     it "should not include the year ordinal" do
       reference = reference_factory author_name: 'Bolton', citation_year: '1885g'
       citation = FactoryGirl.build_stubbed :citation, reference: reference
-      citation.authorship_string.should == 'Bolton, 1885'
+      expect(citation.authorship_string).to eq('Bolton, 1885')
     end
   end
 
   describe "Authorship HTML string" do
     it "should show the author and year" do
       citation = FactoryGirl.build_stubbed :citation
-      Formatters::ReferenceFormatter.should_receive(:format_authorship_html).and_return('XYZ')
-      citation.authorship_html_string.should == 'XYZ'
+      expect(Formatters::ReferenceFormatter).to receive(:format_authorship_html).and_return('XYZ')
+      expect(citation.authorship_html_string).to eq('XYZ')
     end
   end
   describe "Authors' last names string" do
     it "should show the authors' last names" do
       reference = reference_factory author_name: 'Bolton', citation_year: '2001'
       citation = FactoryGirl.build_stubbed :citation, reference: reference
-      citation.author_last_names_string.should == 'Bolton'
+      expect(citation.author_last_names_string).to eq('Bolton')
     end
   end
 
@@ -124,7 +124,7 @@ describe Citation do
     it "should show the year" do
       reference = reference_factory author_name: 'Bolton', citation_year: '2001'
       citation = FactoryGirl.build_stubbed :citation, reference: reference
-      citation.year.should == '2001'
+      expect(citation.year).to eq('2001')
     end
   end
 

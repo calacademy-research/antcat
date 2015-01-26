@@ -18,8 +18,8 @@ describe Importers::Bolton::Catalog::Species::Importer do
       }
       @importer.finish_importing
       subspecies = Subspecies.find_by_name 'Camponotus gilviventris refectus'
-      subspecies.genus.name.to_s.should == 'Camponotus'
-      subspecies.species.name.to_s.should == 'Camponotus gilviventris'
+      expect(subspecies.genus.name.to_s).to eq('Camponotus')
+      expect(subspecies.species.name.to_s).to eq('Camponotus gilviventris')
     end
     it "should import a subspecies of a species inside a genus when the protonym genus is different" do
       genus = create_genus 'Camponotus'
@@ -30,7 +30,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
         <p><i>spinosa</i>. <i>Pheidologeton (Aneleus) perpusillus</i> subsp. <i>spinosus</i> Roger, 1863a: 145 (w.) CUBA.
       }
       @importer.finish_importing
-      Subspecies.find_by_name('Camponotus perpusillus spinosa').should_not be_nil
+      expect(Subspecies.find_by_name('Camponotus perpusillus spinosa')).not_to be_nil
     end
   end
 
@@ -41,7 +41,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
       <p><i>spinosa</i>. <i>Pheidologeton spinosa</i> Roger, 1863a: 145 (w.) CUBA.
     }
     @importer.finish_importing
-    Species.find_by_name('Camponotus spinosa').should_not be_nil
+    expect(Species.find_by_name('Camponotus spinosa')).not_to be_nil
   end
 
   it "should create history items with subspecies names for 'Current subspecies'" do
@@ -53,8 +53,8 @@ describe Importers::Bolton::Catalog::Species::Importer do
     }
     species = Species.find_by_name 'Camponotus gilviventris'
     subspecies = Subspecies.find_by_name 'Camponotus gilviventris refectus'
-    subspecies.history_items.first.taxt.should == %{Currently subspecies of {tax #{species.id}}}
-    species.history_items.first.taxt.should == %{Current subspecies: {nam #{subspecies.name.id}}}
+    expect(subspecies.history_items.first.taxt).to eq(%{Currently subspecies of {tax #{species.id}}})
+    expect(species.history_items.first.taxt).to eq(%{Current subspecies: {nam #{subspecies.name.id}}})
   end
 
   it "should link species to existing genera" do
@@ -62,19 +62,19 @@ describe Importers::Bolton::Catalog::Species::Importer do
       <p><i>ACANTHOMYRMEX</i> (Oriental, Indo-Australian)</p>
       <p><i>basispinosus</i>. <i>Acanthomyrmex basispinosus</i> Moffett, 1986c: 67, figs. 8A, 9-14 (s.w.) INDONESIA (Sulawesi).</p>
     }
-    Progress.should_not_receive(:error)
+    expect(Progress).not_to receive(:error)
     create_genus 'Acanthomyrmex', subfamily: nil, tribe: nil
     @importer.import_html contents
 
-    Taxon.count.should == 2
+    expect(Taxon.count).to eq(2)
 
     acanthomyrmex = Genus.find_by_name 'Acanthomyrmex'
-    acanthomyrmex.should_not be_nil
+    expect(acanthomyrmex).not_to be_nil
     basispinosus = Species.find_by_name 'Acanthomyrmex basispinosus'
-    basispinosus.genus.should == acanthomyrmex
+    expect(basispinosus.genus).to eq(acanthomyrmex)
 
-    basispinosus.protonym.locality.should == 'Indonesia (Sulawesi)'
-    basispinosus.protonym.authorship.forms.should == 's.w.'
+    expect(basispinosus.protonym.locality).to eq('Indonesia (Sulawesi)')
+    expect(basispinosus.protonym.authorship.forms).to eq('s.w.')
   end
 
   it "should link a synonym to its senior when the senior has already been seen" do
@@ -88,7 +88,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
     @importer.finish_importing
     dyak = Species.find_by_name 'Acanthomyrmex dyak'
     ferox = Species.find_by_name 'Acanthomyrmex ferox'
-    dyak.should be_synonym_of ferox
+    expect(dyak).to be_synonym_of ferox
   end
 
   it "should handle a genus header note" do
@@ -99,7 +99,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
     }
     @importer.import_html contents
     @importer.finish_importing
-    Genus.find_by_name('Crematogaster').genus_species_header_notes_taxt.should == '[Notes.]'
+    expect(Genus.find_by_name('Crematogaster').genus_species_header_notes_taxt).to eq('[Notes.]')
   end
 
   it "should handle this kind of homonym" do
@@ -111,7 +111,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
     }
     @importer.import_html contents
     @importer.finish_importing
-    Species.find_by_name('Camponotus macrocephalus').should be_homonym
+    expect(Species.find_by_name('Camponotus macrocephalus')).to be_homonym
   end
 
   it "should link a synonym to its senior when the senior has not already been seen" do
@@ -122,7 +122,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
       <p><i>ferox</i>. <i>Acanthomyrmex ferox</i> Moffett, 1986c: 67 (s.w.) INDONESIA.</p>
     }
     @importer.import_html contents
-    Species.find_by_name('Acanthomyrmex dyak').should be_synonym_of Species.find_by_name 'Acanthomyrmex ferox'
+    expect(Species.find_by_name('Acanthomyrmex dyak')).to be_synonym_of Species.find_by_name 'Acanthomyrmex ferox'
   end
 
   it "should pick the valid genus when there's two" do
@@ -133,7 +133,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
       <p><i>dyak</i>. <i>Acanthomyrmex dyak</i> Moffett, 1986c: 67 (s.w.) INDONESIA. Junior synonym of <i>ferox</i>: Moffett, 1986c: 70.</p>
     }
     @importer.import_html contents
-    Species.find_by_name('Acanthomyrmex dyak').genus.should == valid
+    expect(Species.find_by_name('Acanthomyrmex dyak').genus).to eq(valid)
   end
 
   #it "should recognize a homonym and link to it" do
@@ -166,8 +166,8 @@ describe Importers::Bolton::Catalog::Species::Importer do
   describe "Parsing taxonomic history" do
 
     it "should handle nothing" do
-      @importer.class.convert_history_to_taxts([]).should == []
-      @importer.class.convert_history_to_taxts(nil).should == []
+      expect(@importer.class.convert_history_to_taxts([])).to eq([])
+      expect(@importer.class.convert_history_to_taxts(nil)).to eq([])
     end
 
     it "should handle the happy case" do
@@ -176,7 +176,7 @@ describe Importers::Bolton::Catalog::Species::Importer do
         see_also: {references: [{author_names:['Gray'], year:'1969', pages:'94', matched_text:'Gray, 1969: 94'}]},
         matched_text: 'See also Gray, 1969: 94'
       }]
-      @importer.class.convert_history_to_taxts(history).should == ["See also {ref #{reference.id}}: 94"]
+      expect(@importer.class.convert_history_to_taxts(history)).to eq(["See also {ref #{reference.id}}: 94"])
     end
 
     it "should handle a single taxonomic history item that needs to be parsed as more than one taxt" do
@@ -187,10 +187,10 @@ describe Importers::Bolton::Catalog::Species::Importer do
         matched_text: 'Replacement name for <i>Acropyga silvestrii</i> Wheeler, W.M. 1927h: 100. [Junior primary homonym of <i>Acropyga silvestrii</i> Emery, 1915g: 21.]'
       }]
       history = @importer.class.convert_history_to_taxts history
-      history.should == [
+      expect(history).to eq([
         "Replacement name for {nam #{Name.find_by_name('Acropyga silvestrii').id}} {ref #{wheeler.id}}: 100",
         "[Junior primary homonym of {nam #{Name.find_by_name('Acropyga silvestrii').id}} {ref #{emery.id}}: 21.]"
-      ]
+      ])
     end
 
     describe "change_key" do
@@ -203,13 +203,13 @@ describe Importers::Bolton::Catalog::Species::Importer do
          ], text_suffix: '.', text_prefix: ' '}
         ]
         @importer.class.change_key text, :species_group_epithet, :subspecies_epithet
-        text.should == [
+        expect(text).to eq([
           {text: [
             {phrase: 'Current subspecies', delimiter: ': '},
             {phrase: 'nominal plus', delimiter: ' '},
             {subspecies_epithet: 'fuhrmanni'}
          ], text_suffix: '.', text_prefix: ' '}
-        ]
+        ])
       end
     end
 
@@ -217,26 +217,26 @@ describe Importers::Bolton::Catalog::Species::Importer do
       history = [{subspecies:[{species_group_epithet:"fuhrmanni"}], matched_text: ' Current subspecies: nominal plus <i>fuhrmanni</i>.'}]
       history = @importer.class.convert_history_to_taxts history, 'Atta', 'major'
       subspecies_name = SubspeciesName.find_by_name 'Atta major fuhrmanni'
-      history.should == ["Current subspecies: nominal plus {nam #{subspecies_name.id}}"]
+      expect(history).to eq(["Current subspecies: nominal plus {nam #{subspecies_name.id}}"])
     end
 
     it "should handle Combination in..." do
       history = [{matched_text: "Combination in"}]
       history = @importer.class.convert_history_to_taxts history
-      history.should == ["Combination in"]
+      expect(history).to eq(["Combination in"])
     end
 
     it "should handle forms with a reference" do
       reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Mann 1916'
-      @importer.class.convert_history_to_taxts([{
+      expect(@importer.class.convert_history_to_taxts([{
         references: [{
           author_names: ['Mann'], year: '1916', pages: '452', forms: 'q',
           matched_text: 'Mann, 1916: 452 (q)'
         }],
         matched_text: 'Mann, 1916: 452 (q).'
-      }]).should == [
+      }])).to eq([
         "{ref #{reference.id}}: 452 (q)"
-      ]
+      ])
     end
   end
 
@@ -245,19 +245,19 @@ describe Importers::Bolton::Catalog::Species::Importer do
       it "should make one the synonym of the other and set statuses" do
         junior = create_genus 'Atta'
         senior = create_genus 'Attaboi'
-        junior.status.should == 'valid'
-        junior.should_not be_synonym_of senior
-        senior.status.should == 'valid'
-        senior.should_not be_synonym_of junior
+        expect(junior.status).to eq('valid')
+        expect(junior).not_to be_synonym_of senior
+        expect(senior.status).to eq('valid')
+        expect(senior).not_to be_synonym_of junior
 
         @importer.class.set_synonym junior.name.to_s, senior.name.to_s
         junior.reload
         senior.reload
 
-        junior.status.should == 'synonym'
-        junior.should be_synonym_of senior
-        senior.status.should == 'valid'
-        senior.should_not be_synonym_of junior
+        expect(junior.status).to eq('synonym')
+        expect(junior).to be_synonym_of senior
+        expect(senior.status).to eq('valid')
+        expect(senior).not_to be_synonym_of junior
       end
     end
   end

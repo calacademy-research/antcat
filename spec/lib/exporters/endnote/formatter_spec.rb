@@ -13,8 +13,7 @@ describe Exporters::Endnote::Formatter do
       :citation_year => '1933',
       :publisher => FactoryGirl.create(:publisher, :name => 'Springer Verlag', :place => FactoryGirl.create(:place, :name => 'Dresden')),
       :pagination => 'ix + 33pp.'
-    @formatter.format([reference]).should ==
-%{%0 Book
+    expect(@formatter.format([reference])).to eq(%{%0 Book
 %A Bolton, B.
 %D 1933
 %T Ants Are My Life
@@ -23,7 +22,7 @@ describe Exporters::Endnote::Formatter do
 %P ix + 33pp.
 %~ AntCat
 
-}
+})
   end
 
   it "should format multiple authors correctly" do
@@ -33,8 +32,7 @@ describe Exporters::Endnote::Formatter do
       :citation_year => '1933',
       :publisher => FactoryGirl.create(:publisher, :name => 'Springer Verlag', :place => FactoryGirl.create(:place, :name => 'Dresden')),
       :pagination => 'ix + 33pp.'
-    Exporters::Endnote::Formatter.format([reference]).should ==
-%{%0 Book
+    expect(Exporters::Endnote::Formatter.format([reference])).to eq(%{%0 Book
 %A Bolton, B.
 %A Fisher, B.L.
 %D 1933
@@ -44,7 +42,7 @@ describe Exporters::Endnote::Formatter do
 %P ix + 33pp.
 %~ AntCat
 
-}
+})
   end
 
   it "should not emit %A if there is no author" do
@@ -54,8 +52,7 @@ describe Exporters::Endnote::Formatter do
       :citation_year => '1933',
       :publisher => FactoryGirl.create(:publisher, :name => 'Springer Verlag', :place => FactoryGirl.create(:place, :name => 'Dresden')),
       :pagination => 'ix + 33pp.'
-    @formatter.format([reference]).should ==
-%{%0 Book
+    expect(@formatter.format([reference])).to eq(%{%0 Book
 %D 1933
 %T Ants Are My Life
 %C Dresden
@@ -63,7 +60,7 @@ describe Exporters::Endnote::Formatter do
 %P ix + 33pp.
 %~ AntCat
 
-}
+})
   end
 
   it "should format a article reference correctly" do
@@ -76,8 +73,7 @@ describe Exporters::Endnote::Formatter do
       :pagination => '3-4'
     reference.create_document :url => 'http://antcat.org/article.pdf'
     string = @formatter.format([reference])
-    string.should ==
-%{%0 Journal Article
+    expect(string).to eq(%{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
@@ -87,7 +83,7 @@ describe Exporters::Endnote::Formatter do
 %U http://antcat.org/article.pdf
 %~ AntCat
 
-}
+})
   end
 
   it "should strip out the italics formatting" do
@@ -98,8 +94,7 @@ describe Exporters::Endnote::Formatter do
       :journal => FactoryGirl.create(:journal, :name => 'Psyche'),
       :series_volume_issue => '1(2)',
       :pagination => '3-4'
-    @formatter.format([reference]).should ==
-%{%0 Journal Article
+    expect(@formatter.format([reference])).to eq(%{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
@@ -108,7 +103,7 @@ describe Exporters::Endnote::Formatter do
 %P 3-4
 %~ AntCat
 
-}
+})
   end
 
   it "should export public and taxonomic notes" do
@@ -121,8 +116,7 @@ describe Exporters::Endnote::Formatter do
       :pagination => '3-4',
       :public_notes => 'Public notes.',
       :taxonomic_notes => 'Taxonomic notes'
-    @formatter.format([reference]).should ==
-%{%0 Journal Article
+    expect(@formatter.format([reference])).to eq(%{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
@@ -133,7 +127,7 @@ describe Exporters::Endnote::Formatter do
 %K Taxonomic notes
 %~ AntCat
 
-}
+})
   end
 
   it "should not export blank public and taxonomic notes" do
@@ -146,8 +140,7 @@ describe Exporters::Endnote::Formatter do
       :pagination => '3-4',
       :public_notes => '',
       :taxonomic_notes => ''
-    @formatter.format([reference]).should ==
-%{%0 Journal Article
+    expect(@formatter.format([reference])).to eq(%{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
@@ -156,11 +149,11 @@ describe Exporters::Endnote::Formatter do
 %P 3-4
 %~ AntCat
 
-}
+})
   end
 
   it "should bail on a class it doesn't know about " do
-    lambda {@formatter.format([String.new])}.should raise_error
+    expect {@formatter.format([String.new])}.to raise_error
   end
 
   it "should format an unknown reference correctly" do
@@ -169,20 +162,19 @@ describe Exporters::Endnote::Formatter do
       :citation_year => '1933',
       :title => 'Another title',
       :citation => 'Dresden'
-    @formatter.format([reference]).should ==
-%{%0 Generic
+    expect(@formatter.format([reference])).to eq(%{%0 Generic
 %A MacKay, W.
 %D 1933
 %T Another title
 %1 Dresden
 %~ AntCat
 
-}
+})
   end
 
   it "should not output nested references" do
     reference = FactoryGirl.create :nested_reference
-    @formatter.format([reference]).should == "\n"
+    expect(@formatter.format([reference])).to eq("\n")
   end
 
 end

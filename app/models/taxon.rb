@@ -23,7 +23,10 @@ class Taxon < ActiveRecord::Base
                   :type_fossil,
                   :type_taxt,
                   :type_name_id,
-                  :collision_merge_id
+                  :collision_merge_id,
+                  :name,
+                  :protonym,
+                  :type_name
 
 
   include CleanNewlines
