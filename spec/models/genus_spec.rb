@@ -21,14 +21,14 @@ describe Genus do
   it "should have subspecies" do
     genus = FactoryGirl.create :genus
     FactoryGirl.create :subspecies, genus: genus
-    expect(genus.size).to eq(1)
+    expect(genus.subspecies.count).to eq(1)
   end
 
   it "should use the species's' genus, if nec." do
     genus = FactoryGirl.create :genus
     species = FactoryGirl.create :species, genus: genus
     FactoryGirl.create :subspecies, species: species, genus: nil
-    expect(genus.size).to eq(1)
+    expect(genus.subspecies.count).to eq(1)
   end
 
   it "should have subgenera" do
@@ -220,7 +220,7 @@ describe Genus do
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
         history: [],
       })
-      expect(Genus.find(genus).type_name.to_s).to eq('Atta major')
+      expect(Genus.find(genus.id).type_name.to_s).to eq('Atta major')
     end
 
     it "should not mind if there's no type" do
@@ -265,7 +265,7 @@ describe Genus do
         :type_species => {:genus_name => 'Myrmicium', :species_epithet => 'heeri'},
         :history => []
       })
-      genus = Genus.find genus
+      genus = Genus.find genus.id
       expect(genus.type_name.to_s).to eq('Myrmicium heeri')
       expect(genus.type_name.rank).to eq('species')
     end
