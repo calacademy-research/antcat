@@ -91,7 +91,8 @@ class AuthorName < ActiveRecord::Base
     author = names.first.author
     names[1..-1].each do |name|
       Progress.puts "Aliasing '#{name.name}' to '#{names.first.name}'"
-      update_all({:author_id => author.id}, {:author_id => name.author_id})
+      where(:author_id => name.author_id).update_all(:author_id => author.id)
+      #update_all({:author_id => author.id}, {:author_id => name.author_id})
       name.author.destroy unless name.author.names(true).present?
     end
   end
