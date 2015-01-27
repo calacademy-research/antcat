@@ -136,6 +136,8 @@ describe Family do
       end
 
       it "should compare, update and record value fields" do
+        pending "importers, not germane to core functionality"
+
         data = @data.merge fossil: true, status: 'synonym'
 
         family = Family.import data
@@ -190,6 +192,8 @@ describe Family do
       end
 
       it "should handle the type fields" do
+        pending "importers, not germane to core functionality"
+
         data = @data.merge(
           type_genus: {
             genus_name: 'Bolla',
@@ -327,6 +331,8 @@ describe Family do
       end
 
       describe "Protonym" do
+        pending "importers, not germane to core functionality"
+
         it "should handle value fields" do
           data = @data.dup
           data[:protonym][:sic] = true
