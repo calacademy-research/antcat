@@ -19,8 +19,9 @@ class MissingReferencesController < ApplicationController
       .joins(authorship: :reference)
       .where("references.type = 'MissingReference'")
       .group(:citation)
-      .order(:citation)
+      .order('citation')
   end
+
 
   def edit
     @missing_reference = MissingReference.find params[:id]
@@ -37,7 +38,7 @@ class MissingReferencesController < ApplicationController
       return
     end
 
-    MissingReference.find(@missing_reference).replace_citation_with @replacement
+    MissingReference.find(@missing_reference.id).replace_citation_with @replacement
 
     redirect_to missing_references_path
   end

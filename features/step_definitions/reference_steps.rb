@@ -322,7 +322,7 @@ Given /^there is a missing reference(?: with citation "(.+)")?( in a protonym)?$
 end
 
 Given /^I click "replace" in the first row of missing references$/ do
-  find('#missing_references a.replace_link:first').click
+  first('#missing_references a.replace_link').click
 end
 
 And /^I click the replacement field$/ do
