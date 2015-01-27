@@ -6,14 +6,14 @@ Feature: Edit reference
 
   Scenario: Not logged in
     Given I am not logged in
-    And these references exist
+    And these dated references exist
       | authors | citation   | cite_code | created_at | date     | possess | title | updated_at | year |
       | authors | Psyche 3:3 | CiteCode  | TODAYS_DATE      | 20100712 | Possess | title | TODAYS_DATE      | 2010 |
     When I go to the references page
     Then there should not be an edit form
 
   Scenario: Edit a reference
-    Given these references exist
+    Given these dated references exist
       | authors | citation   | cite_code | created_at | date     | possess | title | updated_at | year |
       | authors | Psyche 5:3 | CiteCode  | TODAYS_DATE      | 20100712 | Possess | title | TODAYS_DATE      | 2010 |
     When I log in
@@ -30,7 +30,7 @@ Feature: Edit reference
 
   @preview
   Scenario: Edit a reference in the preview environment
-    Given these references exist
+    Given these dated references exist
       | authors | citation   | cite_code | created_at | date     | possess | title | updated_at | year |
       | authors | Psyche 5:3 | CiteCode  | TODAYS_DATE      | 20100712 | Possess | title | TODAYS_DATE      | 2010 |
     Given I am not logged in
@@ -44,7 +44,7 @@ Feature: Edit reference
 
   Scenario: Inserting an author name into the middle of the list
     Given I am logged in
-    And these references exist
+    And these dated references exist
       | authors             | citation   | cite_code | created_at | date     | possess | title | updated_at | year |
       | Ward, P.;Bolton, B. | Psyche 5:3 | CiteCode  | TODAYS_DATE      | 20100712 | Possess | title | TODAYS_DATE      | 2010 |
     When I go to the references page
@@ -55,7 +55,7 @@ Feature: Edit reference
 
   Scenario: Change a reference's year
     Given I am logged in
-    And these references exist
+    And these dated references exist
       | authors      | title | citation   | year | created_at | updated_at |
       | Aho, B.L.    | Ants  | Psyche 6:4 | 2010 | TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
@@ -66,7 +66,7 @@ Feature: Edit reference
 
   Scenario: Change a reference's type
     Given I am logged in
-    And these references exist
+    And these dated references exist
       | authors    | title | citation   | year |  created_at | updated_at |
       | Fisher, B. | Ants  | Psyche 6:4 | 2010 | TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
@@ -120,7 +120,7 @@ Feature: Edit reference
 
   Scenario: Clearing an article reference's fields
     Given I am logged in
-    And these references exist
+    And these dated references exist
       | authors    | citation   | year  | title | created_at | updated_at |
       | Aho, P.S.  | Psyche 1:2 | 2010a | Ants  |   TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
@@ -159,7 +159,7 @@ Feature: Edit reference
 
   Scenario: Specifying the document URL
     Given I am logged in
-    And these references exist
+    And these dated references exist
       | authors    | citation   | year  | title | created_at | updated_at |
       | Ward, P.S. | Psyche 1:1 | 2010a | Ants  |  TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
@@ -186,7 +186,7 @@ Feature: Edit reference
 
   Scenario: Adding the authors' role
     Given I am logged in
-    And these references exist
+    And these dated references exist
       | authors    | citation   | year  | title | created_at | updated_at |
       | Ward, P.S. | Psyche 1:1 | 2010a | Ants  |  TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
@@ -197,7 +197,7 @@ Feature: Edit reference
 
   Scenario: Removing the authors' role
     Given I am logged in
-    And these references exist
+    And these dated references exist
       | authors          | citation   | year  | title | created_at | updated_at |
       | Ward, P.S. (ed.) | Psyche 1:1 | 2010a | Ants  |  TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
@@ -209,7 +209,7 @@ Feature: Edit reference
 
   Scenario: Specifying the document URL when it doesn't exist
     Given I am logged in
-    And these references exist
+    And these dated references exist
       | authors    | citation   | year  | title | created_at | updated_at |
       | Ward, P.S. | Psyche 1:1 | 2010a | Ants  |  TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
@@ -221,7 +221,7 @@ Feature: Edit reference
 
   Scenario: Viewing a reference's id
     Given I am logged in
-    And these references exist
+    And these dated references exist
       | authors | citation   | cite_code | created_at | date     | possess | title | updated_at | year |
       | authors | Psyche 5:3 | CiteCode  | TODAYS_DATE      | 20100712 | Possess | title | TODAYS_DATE      | 2010 |
     When I go to the references page
@@ -231,7 +231,7 @@ Feature: Edit reference
 
   Scenario: Edit a nested reference
     Given I am logged in
-    And these references exist
+    And these dated references exist
       | authors    | citation   | year | title |  created_at | updated_at |
       | Ward, P.S. | Psyche 5:3 | 2001 | Ants  |   TODAYS_DATE | TODAYS_DATE |
     And the following entry nests it
@@ -246,7 +246,7 @@ Feature: Edit reference
 
   Scenario: Edit a nested reference and changing its nestee to itself
     Given I am logged in
-    And these references exist
+    And these dated references exist
       | authors    | citation   | year | title | created_at | updated_at |
       | Ward, P.S. | Psyche 5:3 | 2001 | Ants  |  TODAYS_DATE | TODAYS_DATE |
     And the following entry nests it
@@ -284,7 +284,7 @@ Feature: Edit reference
   Scenario: Cancelling edit after an error
     Given I am logged in
     And there are no references
-    And this reference exists
+    And this dated reference exists
       | authors   | year | title                    | citation      | created_at | updated_at |
       | Forel, A. | 1874 | Les fourmis de la Suisse | Neue 26:1-452 |  TODAYS_DATE | TODAYS_DATE |
     And I go to the references page

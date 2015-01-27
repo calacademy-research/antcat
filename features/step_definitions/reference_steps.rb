@@ -1,6 +1,22 @@
 # coding: UTF-8
 Given /^(?:this|these) references? exists?$/ do |table|
   Reference.delete_all
+
+
+  table.hashes.each do |hash|
+    citation = hash.delete 'citation'
+    matches = citation.match /(\w+) (\d+):([\d\-]+)/
+    journal = FactoryGirl.create :journal, name: matches[1]
+    hash.merge! journal: journal, series_volume_issue: matches[2], pagination: matches[3]
+    create_reference :article_reference, hash
+  end
+end
+
+Given /^(?:this|these) dated references? exists?$/ do |table|
+  Reference.delete_all
+  #keys =table.hashes[0].keys
+  # this doesn't work because mysterious.
+  #if keys.include?('created_at')
   table.map_column!('created_at') do |date|
     if date == 'TODAYS_DATE'
       date = Time.now.strftime("%Y-%m-%d")
@@ -14,6 +30,8 @@ Given /^(?:this|these) references? exists?$/ do |table|
     end
     date
   end
+
+
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
@@ -22,8 +40,6 @@ Given /^(?:this|these) references? exists?$/ do |table|
     create_reference :article_reference, hash
   end
 end
-
-
 
 
 Given /(?:these|this) Bolton references? exists?/ do |table|
@@ -63,7 +79,7 @@ Given /(?:these|this) book references? exists?/ do |table|
     citation = hash.delete 'citation'
     matches = citation.match /([^:]+): (\w+), (.*)/
     hash.merge! :publisher => FactoryGirl.create(:publisher, :name => matches[2],
-                                      :place => FactoryGirl.create(:place, :name => matches[1])),
+                                                 :place => FactoryGirl.create(:place, :name => matches[1])),
                 :pagination => matches[3]
     create_reference :book_reference, hash
   end
@@ -105,8 +121,8 @@ Given /the following entry nests it/ do |table|
   data = table.hashes.first
   @nestee_reference = @reference
   @reference = NestedReference.create! :author_names => [FactoryGirl.create(:author_name, :name => data[:authors])],
-    :citation_year => data[:year], :title => data[:title], :pages_in => data[:pages_in],
-    nesting_reference: @nestee_reference
+                                       :citation_year => data[:year], :title => data[:title], :pages_in => data[:pages_in],
+                                       nesting_reference: @nestee_reference
 end
 
 Given /that the entry has a URL that's on our site( that is public)?/ do |is_public|
@@ -118,7 +134,7 @@ end
 
 Given /that the entry has a URL that's not on our site/ do
   @reference.update_attribute :document, ReferenceDocument.create!
-  @reference.document.update_attribute :url,  'google.com/foo'
+  @reference.document.update_attribute :url, 'google.com/foo'
 end
 
 Then /I should see these entries (with a header )?in this order:/ do |with_header, entries|
@@ -251,7 +267,7 @@ Then /I should (not )?see the "add" icon/ do |do_not|
   find("img[alt=add]").send selector, be_visible
 end
 
-very_long_author_names_string = (0...26).inject([]) {|a, n| a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A."}.join('; ')
+very_long_author_names_string = (0...26).inject([]) { |a, n| a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A." }.join('; ')
 
 When /in the new edit form I fill in "reference_author_names_string" with a very long author names string/ do
   within first("#reference_") do
