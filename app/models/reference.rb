@@ -130,7 +130,7 @@ class Reference < ActiveRecord::Base
   def check_for_duplicate
     duplicates = DuplicateMatcher.new.match self
     return unless duplicates.present?
-    duplicate = Reference.find duplicates.first[:match]
+    duplicate = Reference.find duplicates.first[:match].id
     errors.add :base, "This may be a duplicate of #{Formatters::ReferenceFormatter.format duplicate} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
     true
   end

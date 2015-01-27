@@ -1,6 +1,8 @@
 # coding: UTF-8
 When /^I click the first search result$/ do
-  step 'I click ".search_results .display:first"'
+  sleep 1
+  first('.search_results .display').click
+
 end
 
 Then /^the authorship field should contain the reference by (\w+)$/ do |author|
