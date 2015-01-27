@@ -33,8 +33,9 @@ describe ForwardRefToSeniorSynonym do
     expect(Progress).to receive :error
     forward_ref.fixup
     junior = synonym.reload.junior_synonym
-    expect(junior.size).to eq(0)
-    expect(junior.size).to eq(0)
+    expect(junior.junior_synonyms.count). to eq(0)
+    expect(junior.senior_synonyms.count). to eq(0)
+
   end
 
   it "clear the attribute and record an error if there is more than one result" do
@@ -48,8 +49,8 @@ describe ForwardRefToSeniorSynonym do
     expect(Progress).to receive :error
     forward_ref.fixup
     junior = synonym.reload.junior_synonym
-    expect(junior.size).to eq(0)
-    expect(junior.size).to eq(0)
+    expect(junior.junior_synonyms.count). to eq(0)
+    expect(junior.senior_synonyms.count). to eq(0)
   end
 
   it "should use declension rules to find Atta magnus when the synonym is to Atta magna" do
