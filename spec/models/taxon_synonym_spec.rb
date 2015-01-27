@@ -96,13 +96,19 @@ describe Taxon do
       atta.become_junior_synonym_of eciton
       expect(atta).to be_synonym
       expect(atta.senior_synonyms.size).to eq(1)
-      expect(eciton.size).to eq(1)
+      expect(eciton.junior_synonyms.size).to eq(1)
+
+      # atta.should have(1).senior_synonym
+      # eciton.should have(1).junior_synonym
 
       atta.update_attribute :status, 'valid'
 
       expect(atta).not_to be_synonym
-      expect(atta.size).to eq(0)
-      expect(eciton.size).to eq(0)
+
+      # atta.should have(0).senior_synonyms
+      # eciton.should have(0).junior_synonyms
+      expect(atta.senior_synonyms.size).to eq(0)
+      expect(eciton.junior_synonyms.size).to eq(0)
     end
   end
 
