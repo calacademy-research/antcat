@@ -207,8 +207,8 @@ describe AuthorName do
       without_hyphen = FactoryGirl.create :author_name, :name => 'Ward, P. S.', :author => author
       reference = FactoryGirl.create :reference, :author_names => [without_hyphen]
       AuthorName.create_hyphenation_aliases
-      expect(Author.find(AuthorName.find(with_hyphen).author)).to eq(author)
-      expect(Author.find(AuthorName.find(without_hyphen).author)).to eq(author)
+      expect(Author.find(AuthorName.find(with_hyphen).author).id).to eq(author)
+      expect(Author.find(AuthorName.find(without_hyphen).author).id).to eq(author)
     end
   end
 

@@ -1,6 +1,19 @@
 # coding: UTF-8
 Given /^(?:this|these) references? exists?$/ do |table|
   Reference.delete_all
+  table.map_column!('created_at') do |date|
+    if date == 'TODAYS_DATE'
+      date = Time.now.strftime("%Y-%m-%d")
+    end
+    date
+  end
+
+  table.map_column!('updated_at') do |date|
+    if date == 'TODAYS_DATE'
+      date = Time.now.strftime("%Y-%m-%d")
+    end
+    date
+  end
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
@@ -10,7 +23,11 @@ Given /^(?:this|these) references? exists?$/ do |table|
   end
 end
 
+
+
+
 Given /(?:these|this) Bolton references? exists?/ do |table|
+
   table.hashes.each do |hash|
     hash.delete('match_status') if hash['match_status'].blank?
     @bolton_reference = FactoryGirl.create :bolton_reference, hash
@@ -138,7 +155,8 @@ Then /I should see a new edit form/ do
 end
 
 Then 'I should not see the reference' do
-  find("#reference_#{@reference.id} .reference_display").should_not be_visible
+  #Capybara::ElementNotFound: Unable to find css "#reference_2 .reference_display"
+  find("#reference_#{@reference.id}").should_not be_visible
 end
 
 When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|

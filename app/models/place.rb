@@ -6,7 +6,9 @@ class Place < ActiveRecord::Base
 
 
   def self.import name
-    place = find_or_create_by_name name
+    #place = find_or_create_by_name name
+
+    place = find_or_create_by(:name => name)
     raise unless place.valid?
     place
   end

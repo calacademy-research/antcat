@@ -3,12 +3,14 @@ class Publisher < ActiveRecord::Base
   belongs_to :place
   validates_presence_of :name
   has_paper_trail
-  attr_accessible :name, :place
+  attr_accessible :name, :place, :place_id
 
   def self.import data
     return unless data[:name].present?
     place = Place.import data[:place]
-    publisher = find_or_create_by_name_and_place_id(data[:name], place.id)
+    #publisher = find_or_create_by_name_and_place_id(data[:name], place.id)
+    publisher = find_or_create_by(name: data[:name], place_id: place.id)
+
     raise unless publisher.valid?
     publisher
   end

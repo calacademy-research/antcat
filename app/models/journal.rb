@@ -7,7 +7,8 @@ class Journal < ActiveRecord::Base
   attr_accessible :name
   def self.import name
     return unless name.present?
-    journal = find_or_create_by_name name
+    journal = find_or_create_by(:name => name)
+
     raise unless journal.valid?
     journal
   end
