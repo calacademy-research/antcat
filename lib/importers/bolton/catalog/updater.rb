@@ -72,7 +72,7 @@ module Importers::Bolton::Catalog::Updater
     update_field          :incertae_sedis_in,     data[:incertae_sedis_in], attributes
     update_boolean_field  'hong',                 data[:hong], attributes
 
-    unless kind_of? Species or kind_of? Subspecies
+    unless kind_of? AntCat::Species or kind_of? Subspecies
       headline_notes_taxt = data[:headline_notes_taxt] || data[:note] || data[:additional_notes]
       update_taxt_field     'headline_notes_taxt',  headline_notes_taxt, attributes
       type_attributes = self.class.get_type_attributes data
