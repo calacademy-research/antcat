@@ -357,7 +357,8 @@ describe Name do
         name.save!
 
         versions = name.versions(true)
-        expect(name.size).to eq(2)
+        expect(name.versions.count).to eq(2)
+
         version = versions.first
         expect(version.event).to eq('create')
         version = versions.last
