@@ -13,11 +13,14 @@ describe Change do
   it "has a version" do
     genus = create_genus
     change = Change.new
+    transaction = Transaction.new
+    transaction.change = change
     genus_version = genus.last_version
-    change.paper_trail_version = genus_version
+    transaction.paper_trail_version = genus_version
     change.save!
+    transaction.save!
     change.reload
-    expect(change.paper_trail_version).to eq(genus_version)
+    expect(change.paper_trail_versions.first).to eq(genus_version)
   end
 
   it "has a user (the editor)" do

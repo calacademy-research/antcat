@@ -5,7 +5,11 @@ class Change < ActiveRecord::Base
   has_many :transactions
   has_many :paper_trail_versions, :through => :transactions
   belongs_to :taxon, :foreign_key => :user_changed_taxon_id
-  attr_accessible :approver_id, :approved_at, :paper_trail_versions, :paper_trail_version
+  attr_accessible :approver_id,
+                  :approved_at,
+                  :paper_trail_versions,
+                  :paper_trail_version,
+                  :approver
 
 
   scope :creations, -> {joins(:paper_trail_versions).

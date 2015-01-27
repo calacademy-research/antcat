@@ -2,7 +2,7 @@
 class TaxonHistoryItem < ActiveRecord::Base
   belongs_to :taxon
 
-  attr_accessible :taxon_id, :taxt, :position
+  attr_accessible :taxon_id, :taxt, :position, :taxon
   acts_as_list scope: :taxon
   validates_presence_of :taxt
   has_paper_trail
