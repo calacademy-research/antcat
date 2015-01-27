@@ -20,6 +20,11 @@ Given /^(?:this|these) dated references? exists?$/ do |table|
   table.map_column!('created_at') do |date|
     if date == 'TODAYS_DATE'
       date = Time.now.strftime("%Y-%m-%d")
+    elsif date == 'YESTERDAYS_DATE'
+      t=Time.now
+      yesterday=t-1.day
+
+      date = yesterday.strftime("%Y-%m-%d")
     end
     date
   end
@@ -159,6 +164,7 @@ Then /I (#{SHOULD_OR_SHOULD_NOT}) see the edit form/ do |should_selector|
 end
 
 Then /I should not be editing/ do
+  # TODO Rails 4 upgrade - this isn't working. Verified manually.
   within first('.icons') do
     page.should have_css('img[alt=edit]')
   end

@@ -44,9 +44,21 @@ When /^(?:|I )press "([^"]*)"$/ do |button|
   click_button(button)
 end
 
+When (/^I follow the first edit$/) do
+  first('.edit_icon').click
+
+end
+
+When (/^stop here$/) do
+  puts "whoopie!"
+end
+
+
+
 When /^(?:|I )follow "([^"]*)"$/ do |link|
   click_link(link)
 end
+
 
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"$/ do |field, value|
   fill_in(field, :with => value)

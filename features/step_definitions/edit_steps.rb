@@ -219,10 +219,12 @@ When /^I click the history item$/ do
   find('.history_items .history_item div.display').click
 end
 Then /^the history should be "(.*)"$/ do |history|
-  page.find('.history_items .history_item_body:first div.display').text.should =~ /#{history}\.?/
+  page.first('.history_items .history_item_body').find('div.display').text.should =~ /#{history}\.?/
 end
 Then /^the history item field should be "(.*)"$/ do |history|
-  page.find('.history_items .history_item_body:first div.edit textarea').text.should =~ /#{history}\.?/
+#  page.find('.history_items .history_item_body:first div.edit textarea').text.should =~ /#{history}\.?/
+
+  page.first('.history_items .history_item_body').find('div.edit textarea').text.should =~ /#{history}\.?/
 end
 Then /^the history should be empty$/ do
   page.should_not have_css '.history_items .history_item'
@@ -263,7 +265,9 @@ end
 
 # references section
 Then /^the reference section should be "(.*)"$/ do |reference|
-  page.find('.reference_sections .reference_section:first div.display').text.should =~ /#{reference}\.?/
+#  page.find('.reference_sections .reference_section:first div.display').text.should =~ /#{reference}\.?/
+
+  page.first('.reference_sections .reference_section').find('div.display').text.should =~ /#{reference}\.?/
 end
 When /^I click the reference section/ do
   find('.reference_sections .reference_section:first div.display').click
