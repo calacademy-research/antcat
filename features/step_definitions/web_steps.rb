@@ -53,7 +53,13 @@ When (/^stop here$/) do
   puts "whoopie!"
 end
 
+def click_first_link(locator, options={})
+  first(:link, locator, options).click
+end
 
+When /^(?:|I )follow the first "([^"]*)"$/ do |link|
+  click_first_link(link)
+end
 
 When /^(?:|I )follow "([^"]*)"$/ do |link|
   click_link(link)

@@ -1,4 +1,3 @@
-@javascript
 Feature: Using the catalog
   As a user of AntCat
   I want to view the taxonomy of ants hierarchically

@@ -99,7 +99,7 @@ Feature: Hiding and showing tribes in the index
     And I follow "(no tribe)"
     Then I should see "Atta" in the index
     And I should not see "Dolichoderus" in the index
-    When I follow "Dolichoderini"
+    When I follow the first "Dolichoderini"
     Then I should not see "Atta" in the index
     And I should see "Dolichoderus" in the index
 
@@ -107,7 +107,7 @@ Feature: Hiding and showing tribes in the index
     When I go to the catalog
     And I follow "show tribes"
     And I follow "Dolichoderinae" in the index
-    And I follow "Dolichoderini"
+    And I follow the first "Dolichoderini"
     And I follow "hide" in the tribes index
     Then I should not see the tribes index
     And I should see "Dolichoderus" in the index
@@ -117,8 +117,8 @@ Feature: Hiding and showing tribes in the index
     When I go to the catalog
     And I follow "show tribes"
     And I follow "Dolichoderinae" in the index
-    And I follow "Dolichoderini"
-    And I follow "Dolichoderus"
+    And I follow the first "Dolichoderini"
+    And I follow the first "Dolichoderus"
     And I follow "hide" in the tribes index
     Then I should not see the tribes index
     And "Dolichoderinae" should be selected
@@ -137,4 +137,4 @@ Feature: Hiding and showing tribes in the index
     And I follow "show tribes"
     And I follow "hide"
     And I follow "(no subfamily)"
-    When I follow "Eciton"
+    When I follow the first "Eciton"
