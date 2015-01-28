@@ -9,10 +9,11 @@ class Citation < ActiveRecord::Base
   include CleanNewlines
   before_save {|record| clean_newlines record, :notes_taxt}
 
-  def title
-    # for PaperTrailManager's RSS output
-    id.to_s
-  end
+  # TODO: Rails 4 remove this if tests pass
+  # def title
+  #   # for PaperTrailManager's RSS output
+  #   id.to_s
+  # end
 
   def authorship_string
     reference and "#{author_names_string}, #{reference.year}"
