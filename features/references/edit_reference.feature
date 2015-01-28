@@ -21,7 +21,8 @@ Feature: Edit reference
     And I should not be editing
     When I follow "edit" in the first reference
     Then I should see the edit form
-    #And I should not see the reference
+    # TODO: Rails 4 upgrade hosed this. Verified manually.
+#    And I should not see the reference
     When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B." in the first reference
     And I fill in "reference_title" with "Ant Title" in the first reference
     And I save my changes to the first reference

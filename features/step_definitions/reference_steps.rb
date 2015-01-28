@@ -177,8 +177,7 @@ Then /I should see a new edit form/ do
 end
 
 Then 'I should not see the reference' do
-  #Capybara::ElementNotFound: Unable to find css "#reference_2 .reference_display"
-  find("#reference_#{@reference.id}").should_not be_visible
+  find("#reference_#{@reference.id}",visible: false).should_not be_visible
 end
 
 When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
