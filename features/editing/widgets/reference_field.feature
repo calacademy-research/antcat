@@ -2,7 +2,7 @@
 Feature: Reference field
 
   Background:
-    Given these references exist
+    Given these dated references exist
       | authors                 | year          | title                 | citation   |  created_at | updated_at |
       | Fisher, B.              | 1995b         | Fisher's book         | Ants 1:1-2 |   TODAYS_DATE | TODAYS_DATE |
       | Bolton, B.              | 2010 ("2011") | Bolton's book         | Ants 2:1-2 |   TODAYS_DATE | TODAYS_DATE |

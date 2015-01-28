@@ -118,7 +118,7 @@ class ChangesController < ApplicationController
   def find_all_versions_for_change change_id
     versions=[]
     Transaction.find_all_by_change_id(change_id).each do |transaction|
-      versions << PaperTrail::Version.find(transaction.paper_trail_version)
+      versions << PaperTrail::Version.find(transaction.paper_trail_version.id)
     end
     versions
   end
@@ -127,7 +127,7 @@ class ChangesController < ApplicationController
     versions.sort_by &:id
     versions.reverse!
     # Some side effect of restoring this created a change record that hosed our world pretty good.
-    Taxon.paper_trail_off
+    Taxon.paper_trail_off!
     versions.each do |version|
       if version.reify
         version.reify.save!
@@ -136,7 +136,7 @@ class ChangesController < ApplicationController
       end
       version.delete
     end
-    Taxon.paper_trail_on
+    Taxon.paper_trail_on!
 
 
   end

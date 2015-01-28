@@ -49,7 +49,9 @@ class Change < ActiveRecord::Base
 
 
   def user
-    user_id =  get_user_version.whodunnit
+    # is this looks for a "User" object in a test, check that you're writing the id and not the user object
+    # in factorygirl.
+    user_id = get_user_version.whodunnit
     user_id ? User.find(user_id) : nil
   end
 
