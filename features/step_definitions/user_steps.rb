@@ -20,6 +20,10 @@ Given /^I press "([^"]+)" to log in$/ do |string|
   step %{I press "#{string}"}
 end
 
+Given /^I press the first "([^"]+)" to log in$/ do |string|
+  step %{I press the first "#{string}"}
+end
+
 Given 'I am not logged in' do
 end
 

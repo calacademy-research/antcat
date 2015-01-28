@@ -44,6 +44,14 @@ When /^(?:|I )press "([^"]*)"$/ do |button|
   click_button(button)
 end
 
+def click_first_button(locator, options={})
+  first(:button, locator, options).click
+end
+
+When /^(?:|I )press the first "([^"]*)"$/ do |button|
+  click_first_button(button)
+end
+
 When (/^I follow the first edit$/) do
   first('.edit_icon').click
 

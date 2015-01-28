@@ -9,7 +9,7 @@ end
 Given /^there is a genus "([^"]*)" that's waiting for approval$/ do |name|
   genus = create_genus name, review_state: :waiting
   change = FactoryGirl.build :change, user_changed_taxon_id: genus.id
-  version = FactoryGirl.build :version, item_id: genus.id
+  version = FactoryGirl.build :version, item_id: genus.id, whodunnit: 1
   FactoryGirl.create :transaction, paper_trail_version: version, change: change
 end
 
