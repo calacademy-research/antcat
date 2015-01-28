@@ -32,6 +32,11 @@ When /^the name field should contain "([^"]*)"$/ do |name|
 
 end
 
+When /^the name button should contain "([^"]*)"$/ do |name|
+  page.find('#name_field .display_button').text().should == name
+
+end
+
 # gender
 Then /I set the name gender to "([^"]*)"/ do |gender|
   step %{I select "#{gender}" from "taxon_name_attributes_gender"}

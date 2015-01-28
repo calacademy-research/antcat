@@ -94,7 +94,7 @@ Feature: Adding a taxon
     Then I should be on the create taxon page
     And I should see "Protonym name name can't be blank"
     And the "taxon_type_taxt" field should contain "Notes"
-    And the name field should contain "Atta"
+    And the name button should contain "Atta"
 
   Scenario: Cancelling
     And I go to the edit page for "Formicinae"
