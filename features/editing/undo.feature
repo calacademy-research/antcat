@@ -81,7 +81,7 @@ Feature: Workflow
     And I press "OK"
     Then I should see "Would you like to create a new combination under this parent?"
     When I press "Yes, create new combination"
-    Then the name field should contain "Chatsworth major"
+    Then the name button should contain "Chatsworth major"
     When I save my changes
 
    # We are now on the catalog page after doing A -> B -> C
@@ -139,7 +139,7 @@ Feature: Workflow
     And I press "OK"
     Then I should see "Would you like to create a new combination under this parent?"
     When I press "Yes, create new combination"
-    Then the name field should contain "Chatsworth major"
+    Then the name button should contain "Chatsworth major"
     When I save my changes
 
     When I go to the changes page

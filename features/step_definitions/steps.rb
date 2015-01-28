@@ -97,7 +97,7 @@ Then "I should not see any search results" do
 end
 
 Then /^the page title should have "([^"]*)" in it$/ do |title|
-  page.should have_css('title', text: /#{title}/)
+  page.title.should have_content(title)
 end
 
 Then /^I should see a link "([^"]*)"$/ do |link|
