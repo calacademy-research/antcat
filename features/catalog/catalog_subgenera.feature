@@ -1,3 +1,4 @@
+@javascript
 Feature: Using the catalog
   As a user of AntCat
   I want to view the taxonomy of ants hierarchically
@@ -33,7 +34,7 @@ Feature: Using the catalog
     And I follow "show subgenera"
     And I follow "Subdolichoderus"
     Then I should see "Dolichoderus (Subdolichoderus) history"
-    And I should see "abruptus" in the species index
+    And I should see "abruptus" in the species taxon index
 
   Scenario: Hiding subgenera after selecting a subgenus
     When I go to the catalog
