@@ -26,7 +26,8 @@ class Taxon < ActiveRecord::Base
                   :collision_merge_id,
                   :name,
                   :protonym,
-                  :type_name
+                  :type_name,
+                  :id
 
 
   include CleanNewlines

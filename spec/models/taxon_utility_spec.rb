@@ -8,28 +8,28 @@ describe Taxon do
       senior = create_genus
       junior = create_genus
       junior.import_synonyms senior
-      Synonym.count.should == 1
+      expect(Synonym.count).to eq(1)
       synonym = Synonym.first
-      synonym.junior_synonym.should == junior
-      synonym.senior_synonym.should == senior
+      expect(synonym.junior_synonym).to eq(junior)
+      expect(synonym.senior_synonym).to eq(senior)
     end
     it "should not create a new synonym if it exists" do
       senior = create_genus
       junior = create_genus
       Synonym.create! junior_synonym: junior, senior_synonym: senior
-      Synonym.count.should == 1
+      expect(Synonym.count).to eq(1)
 
       junior.import_synonyms senior
-      Synonym.count.should == 1
+      expect(Synonym.count).to eq(1)
       synonym = Synonym.first
-      synonym.junior_synonym.should == junior
-      synonym.senior_synonym.should == senior
+      expect(synonym.junior_synonym).to eq(junior)
+      expect(synonym.senior_synonym).to eq(senior)
     end
     it "should not try to create a synonym if the senior is nil" do
       senior = nil
       junior = create_genus
       junior.import_synonyms senior
-      Synonym.count.should be_zero
+      expect(Synonym.count).to be_zero
     end
   end
 
@@ -48,12 +48,12 @@ describe Taxon do
 
       Taxon.extract_original_combinations
 
-      Taxon.count.should == taxon_count + 1
+      expect(Taxon.count).to eq(taxon_count + 1)
       original_combinations = Taxon.where status: 'original combination'
-      original_combinations.size.should == 1
+      expect(original_combinations.size).to eq(1)
       original_combination = original_combinations.first
-      original_combination.genus.should == paratrechina
-      original_combination.current_valid_taxon.should == recombined
+      expect(original_combination.genus).to eq(paratrechina)
+      expect(original_combination.current_valid_taxon).to eq(recombined)
     end
   end
 
@@ -63,13 +63,13 @@ describe Taxon do
       current_valid_taxon = create_genus
       taxon = create_synonym senior, current_valid_taxon: current_valid_taxon
       taxon.update_current_valid_taxon
-      taxon.current_valid_taxon.should == current_valid_taxon
+      expect(taxon.current_valid_taxon).to eq(current_valid_taxon)
     end
     it "should find the latest senior synonym" do
       senior = create_genus
       taxon = create_synonym senior
       taxon.update_current_valid_taxon
-      taxon.current_valid_taxon.should == senior
+      expect(taxon.current_valid_taxon).to eq(senior)
     end
     it "should find the latest senior synonym that's valid" do
       senior = create_genus
@@ -77,7 +77,7 @@ describe Taxon do
       taxon = create_synonym invalid_senior
       Synonym.create! senior_synonym: senior, junior_synonym: taxon
       taxon.update_current_valid_taxon
-      taxon.current_valid_taxon.should == senior
+      expect(taxon.current_valid_taxon).to eq(senior)
     end
     it "should handle when none are valid, in preparation for a Vlad run" do
       invalid_senior = create_genus status: 'homonym'
@@ -85,7 +85,7 @@ describe Taxon do
       taxon = create_synonym invalid_senior
       Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: taxon
       taxon.update_current_valid_taxon
-      taxon.current_valid_taxon.should be_nil
+      expect(taxon.current_valid_taxon).to be_nil
     end
     it "should handle when there's a synonym of a synonym" do
       senior_synonym = create_genus
@@ -94,7 +94,7 @@ describe Taxon do
       synonym_of_synonym = create_genus status: 'synonym'
       Synonym.create! junior_synonym: synonym_of_synonym, senior_synonym: synonym
       synonym.update_current_valid_taxon
-      synonym.current_valid_taxon.should == senior_synonym
+      expect(synonym.current_valid_taxon).to eq(senior_synonym)
     end
   end
 
@@ -110,53 +110,53 @@ describe Taxon do
         protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
         taxon = create_genus protonym: protonym
         taxon.update_biogeographic_region_from_locality make_map 'CAPETOWN' => 'Africa'
-        taxon.biogeographic_region.should be_nil
+        expect(taxon.biogeographic_region).to be_nil
       end
       it "should do the replacement if there's a replacement defined" do
         protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
         taxon = create_genus protonym: protonym
         taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'Africa'
-        taxon.biogeographic_region.should == 'Africa'
+        expect(taxon.biogeographic_region).to eq('Africa')
       end
       it "should not do the replacement if it's a fossil taxon" do
         protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
         taxon = create_genus protonym: protonym, fossil: true
         taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'Africa'
-        taxon.biogeographic_region.should be_nil
+        expect(taxon.biogeographic_region).to be_nil
       end
       it "should be case-insensitive" do
         protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
         taxon = create_genus protonym: protonym
         taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'Africa'
-        taxon.biogeographic_region.should == 'Africa'
+        expect(taxon.biogeographic_region).to eq('Africa')
       end
       it "should treat 'none' as nil" do
         protonym = FactoryGirl.create :protonym, locality: 'San Pedro'
         taxon = create_genus protonym: protonym
         taxon.update_biogeographic_region_from_locality make_map 'SAN PEDRO' => 'none'
-        taxon.biogeographic_region.should be_nil
+        expect(taxon.biogeographic_region).to be_nil
       end
     end
 
     describe "Reporting" do
       it "should show which localities in Flávia's document weren't used" do
-        File.stub(:open).and_return "America 3\tNuevo\n"
-        Taxon.biogeographic_regions_for_localities.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 0}}
+        allow(File).to receive(:open).and_return "America 3\tNuevo\n"
+        expect(Taxon.biogeographic_regions_for_localities).to eq({'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 0}})
       end
       it "should not show taxa which were used" do
         protonym = FactoryGirl.create :protonym, locality: 'America'
         taxon = create_genus protonym: protonym
-        File.stub(:open).and_return "America 3\tNuevo\n"
+        allow(File).to receive(:open).and_return "America 3\tNuevo\n"
         map = Taxon.biogeographic_regions_for_localities
         taxon.update_biogeographic_region_from_locality map
-        map.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 1}}
+        expect(map).to eq({'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 1}})
       end
     end
 
     describe "Reading Flávia's document to produce locality-to-biogregion mapping" do
       it "should strip the counts and create a hash" do
-        File.stub(:open).and_return "America 3\tNuevo\n"
-        Taxon.biogeographic_regions_for_localities.should == {'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 0}}
+        allow(File).to receive(:open).and_return "America 3\tNuevo\n"
+        expect(Taxon.biogeographic_regions_for_localities).to eq({'AMERICA' => {biogeographic_region: 'Nuevo', used_count: 0}})
       end
     end
   end

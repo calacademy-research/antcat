@@ -10,11 +10,11 @@ describe UnknownReference do
         :citation => 'Citation'
     end
     it "should be be valid the way I set it up" do
-      @reference.should be_valid
+      expect(@reference).to be_valid
     end
     it "should be not be valid without a citation" do
       @reference.citation = nil
-      @reference.should_not be_valid
+      expect(@reference).not_to be_valid
     end
   end
 
@@ -24,8 +24,8 @@ describe UnknownReference do
       reference.title = "A\nB"
       reference.citation = "A\nB"
       reference.save!
-      reference.title.should == "A B"
-      reference.citation.should == "A B"
+      expect(reference.title).to eq("A B")
+      expect(reference.citation).to eq("A B")
     end
   end
 

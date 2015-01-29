@@ -7,35 +7,35 @@ describe Subspecies do
   end
 
   it "has no statistics" do
-    Subspecies.new.statistics.should be_nil
+    expect(Subspecies.new.statistics).to be_nil
   end
 
   it "does not have to have a species (before being fixed up, e.g.)" do
     subspecies = create_subspecies 'Atta major colobopsis', genus: @genus, species: nil
-    subspecies.should be_valid
+    expect(subspecies).to be_valid
   end
 
   it "must have a genus" do
     subspecies = create_subspecies 'Atta major colobopsis', genus: nil, species: nil, build: true
-    subspecies.should_not be_valid
+    expect(subspecies).not_to be_valid
   end
 
   it "has its subfamily assigned from its genus" do
     subspecies = create_subspecies 'Atta major colobopsis', species: nil, genus: @genus
-    subspecies.subfamily.should == @genus.subfamily
+    expect(subspecies.subfamily).to eq(@genus.subfamily)
   end
 
   it "has its genus assigned from its species, if there is one" do
     genus = create_genus
     species = create_species genus: genus
     subspecies = create_subspecies 'Atta major colobopsis', genus: nil, species: species
-    subspecies.genus.should == genus
+    expect(subspecies.genus).to eq(genus)
   end
 
   it "does not have its genus assigned from its species, if there is not one" do
     genus = create_genus
     subspecies = create_subspecies 'Atta major colobopsis', genus: genus, species: nil
-    subspecies.genus.should == genus
+    expect(subspecies.genus).to eq(genus)
   end
 
   describe "Updating the parent" do
@@ -43,10 +43,10 @@ describe Subspecies do
       subspecies = create_subspecies 'Atta beta kappa'
       species = create_species
       subspecies.update_parent species
-      subspecies.species.should == species
-      subspecies.genus.should == species.genus
-      subspecies.subgenus.should == species.subgenus
-      subspecies.subfamily.should == species.subfamily
+      expect(subspecies.species).to eq(species)
+      expect(subspecies.genus).to eq(species.genus)
+      expect(subspecies.subgenus).to eq(species.subgenus)
+      expect(subspecies.subfamily).to eq(species.subfamily)
     end
   end
 
@@ -54,17 +54,17 @@ describe Subspecies do
     it "should return the genus" do
       genus = create_genus
       taxon = create_subspecies genus: genus, species: nil
-      taxon.parent.should == genus
+      expect(taxon.parent).to eq(genus)
     end
   end
 
   describe "Elevating to species" do
     it "should turn the record into a Species" do
       taxon = create_subspecies 'Atta major colobopsis'
-      taxon.should be_kind_of Subspecies
+      expect(taxon).to be_kind_of Subspecies
       taxon.elevate_to_species
       taxon = Species.find taxon.id
-      taxon.should be_kind_of Species
+      expect(taxon).to be_kind_of Species
     end
     it "should form the new species name from the epithet" do
       species = create_species 'Atta major', genus: @genus
@@ -79,12 +79,12 @@ describe Subspecies do
       taxon = create_subspecies name: subspecies_name, genus: @genus, species: species
       taxon.elevate_to_species
       taxon = Species.find taxon.id
-      taxon.name.name.should == 'Atta colobopsis'
-      taxon.name.name_html.should == '<i>Atta colobopsis</i>'
-      taxon.name.epithet.should == 'colobopsis'
-      taxon.name.epithet_html.should == '<i>colobopsis</i>'
-      taxon.name.epithets.should be_nil
-      taxon.name.protonym_html.should == '<i>Atta major colobopsis</i>'
+      expect(taxon.name.name).to eq('Atta colobopsis')
+      expect(taxon.name.name_html).to eq('<i>Atta colobopsis</i>')
+      expect(taxon.name.epithet).to eq('colobopsis')
+      expect(taxon.name.epithet_html).to eq('<i>colobopsis</i>')
+      expect(taxon.name.epithets).to be_nil
+      expect(taxon.name.protonym_html).to eq('<i>Atta major colobopsis</i>')
     end
     it "should create the new species name, if necessary" do
       species = create_species 'Atta major', genus: @genus
@@ -99,7 +99,7 @@ describe Subspecies do
       taxon = create_subspecies name: subspecies_name, genus: @genus, species: species
       name_count = Name.count
       taxon.elevate_to_species
-      Name.count.should == name_count + 1
+      expect(Name.count).to eq(name_count + 1)
     end
     it "should find an existing species name, if possible" do
       species = create_species 'Atta colobopsis', genus: @genus
@@ -114,7 +114,7 @@ describe Subspecies do
       taxon = create_subspecies name: subspecies_name, genus: @genus, species: species
       taxon.elevate_to_species
       taxon = Species.find taxon.id
-      taxon.name.should == species.name
+      expect(taxon.name).to eq(species.name)
     end
     it "should not crash and burn if the species already exists" do
       species = create_species 'Atta major', genus: @genus
@@ -127,7 +127,7 @@ describe Subspecies do
         protonym_html:  '<i>Atta batta major</i>',
       })
       taxon = create_subspecies name: subspecies_name, species: species
-      -> {taxon.elevate_to_species}.should_not raise_error
+      expect {taxon.elevate_to_species}.not_to raise_error
     end
   end
 
@@ -139,23 +139,23 @@ describe Subspecies do
       species = create_species 'Atta major', genus: @genus
       name = FactoryGirl.create :subspecies_name, name: "Atta major minor", epithets: 'major minor'
       subspecies = FactoryGirl.create :subspecies, name: name, species: nil, genus: @genus
-      subspecies.species.should_not == species
+      expect(subspecies.species).not_to eq(species)
       subspecies.fix_missing_species
-      subspecies.species.should == species
+      expect(subspecies.species).to eq(species)
     end
     it "should find the species that's the first word of epithets when there's more than one subspecies epithet" do
       species = create_species 'Atta major', genus: @genus
       name = FactoryGirl.create :subspecies_name, name: "Atta major minor minimus", epithets: 'major minor minimus'
       subspecies = FactoryGirl.create :subspecies, name: name, species: nil, genus: @genus
-      subspecies.species.should_not == species
+      expect(subspecies.species).not_to eq(species)
       subspecies.fix_missing_species
-      subspecies.reload.species.should == species
+      expect(subspecies.reload.species).to eq(species)
     end
     it "should not croak if the species can't be found" do
       name = FactoryGirl.create :subspecies_name, name: "Atta blanco negro", epithets: 'blanco negro'
       subspecies = FactoryGirl.create :subspecies, name: name, species: nil, genus: @genus
       subspecies.fix_missing_species
-      subspecies.reload.species.should be_nil
+      expect(subspecies.reload.species).to be_nil
     end
     it "should not find a species in a different genus" do
       different_genus = create_genus 'Eciton'
@@ -163,14 +163,14 @@ describe Subspecies do
       name = FactoryGirl.create :subspecies_name, name: "Atta major minor", epithets: 'major minor'
       subspecies = FactoryGirl.create :subspecies, name: name, species: nil, genus: @genus
       subspecies.fix_missing_species
-      subspecies.species.should be_nil
+      expect(subspecies.species).to be_nil
     end
     it "should find a species with a different ending" do
       species = create_species 'Atta perversus', genus: @genus
       name = FactoryGirl.create :subspecies_name, name: 'Atta perversa minor', epithets: 'perversa minor'
       subspecies = FactoryGirl.create :subspecies, name: name, species: nil, genus: @genus
       subspecies.fix_missing_species
-      subspecies.species.should == species
+      expect(subspecies.species).to eq(species)
     end
   end
 
@@ -192,11 +192,11 @@ describe Subspecies do
             subspecies_epithet: 'refectus',
         }]})
       subspecies = Subspecies.find subspecies
-      subspecies.name.to_s.should == 'Camponotus gilviventris refectus'
+      expect(subspecies.name.to_s).to eq('Camponotus gilviventris refectus')
       ref = ForwardRefToParentSpecies.first
-      ref.fixee.should == subspecies
-      ref.genus.should == genus
-      ref.epithet.should == 'gilviventris'
+      expect(ref.fixee).to eq(subspecies)
+      expect(ref.genus).to eq(genus)
+      expect(ref.epithet).to eq('gilviventris')
     end
 
     describe "When the protonym has a different species" do
@@ -215,7 +215,7 @@ describe Subspecies do
             },
             raw_history: [{currently_subspecies_of: {species: {species_epithet: 'hova'}}}]
           )
-          Subspecies.find(subspecies).name.to_s.should == 'Camponotus hova radamae'
+          expect(Subspecies.find(subspecies).name.to_s).to eq('Camponotus hova radamae')
         end
         it "should import a subspecies that has a species protonym" do
           genus = create_genus 'Acromyrmex'
@@ -230,7 +230,7 @@ describe Subspecies do
             raw_history: [{currently_subspecies_of: {species: {species_epithet: 'lundii'}}}]
           )
           subspecies = Subspecies.find subspecies
-          subspecies.name.to_s.should == 'Acromyrmex lundii boliviensis'
+          expect(subspecies.name.to_s).to eq('Acromyrmex lundii boliviensis')
         end
         it "if it's already a subspecies, don't just keep adding on to its epithets, but replace the middle one(s)" do
           genus = create_genus 'Crematogaster'
@@ -246,7 +246,7 @@ describe Subspecies do
             },
             raw_history: [{currently_subspecies_of: {species: {species_epithet: 'jehovae'}}}]
           )
-          Subspecies.find(subspecies).name.to_s.should == 'Crematogaster jehovae mosis'
+          expect(Subspecies.find(subspecies).name.to_s).to eq('Crematogaster jehovae mosis')
         end
       end
 
@@ -265,7 +265,7 @@ describe Subspecies do
           },
           raw_history: [{revived_from_synonymy: {subspecies_of: {species_epithet: 'castanea'}}}],
         )
-        Subspecies.find(subspecies).name.to_s.should == 'Crematogaster castanea mediorufa'
+        expect(Subspecies.find(subspecies).name.to_s).to eq('Crematogaster castanea mediorufa')
       end
     end
 
@@ -280,7 +280,7 @@ describe Subspecies do
         },
         genus: @genus,
       )
-      subspecies.name.epithet.should == 'brunneus'
+      expect(subspecies.name.epithet).to eq('brunneus')
     end
 
   end
@@ -304,10 +304,10 @@ describe Subspecies do
             subspecies_epithet: 'refectus'}]}}
       subspecies = Subspecies.import data
       subspecies = Subspecies.find subspecies
-      subspecies.name.to_s.should == 'Camponotus gilviventris refectus'
+      expect(subspecies.name.to_s).to eq('Camponotus gilviventris refectus')
 
       updated_subspecies = Subspecies.import data
-      updated_subspecies.should == subspecies
+      expect(updated_subspecies).to eq(subspecies)
     end
 
     it "should handle variants" do
@@ -326,13 +326,13 @@ describe Subspecies do
         :history=>[]
           }
       subspecies = Subspecies.import data
-      subspecies.name.name.should == 'Philidris cordata protensa'
+      expect(subspecies.name.name).to eq('Philidris cordata protensa')
     end
 
     it "should delete the species if it looks like the species has been lowered to subspecies" do
       genus = create_genus 'Leptothorax'
       old_species = create_species 'Leptothorax euxanthus', genus: genus
-      Taxon.find_by_id(old_species.id).should_not be_blank
+      expect(Taxon.find_by_id(old_species.id)).not_to be_blank
       data = {
         genus:                  old_species.genus,
         species_group_epithet:  'euxanthus',
@@ -345,14 +345,14 @@ describe Subspecies do
         }
       }
       taxon = Subspecies.import data
-      taxon.name.name.should == 'Leptothorax nylanderi euxanthus'
-      Taxon.find_by_id(old_species.id).should be_blank
-      Update.count.should == 2
+      expect(taxon.name.name).to eq('Leptothorax nylanderi euxanthus')
+      expect(Taxon.find_by_id(old_species.id)).to be_blank
+      expect(Update.count).to eq(2)
 
       update = Update.find_by_name 'Leptothorax euxanthus'
-      update.field_name.should == 'delete'
+      expect(update.field_name).to eq('delete')
       update = Update.find_by_name 'Leptothorax nylanderi euxanthus'
-      update.field_name.should == 'create'
+      expect(update.field_name).to eq('create')
     end
 
     it "should not delete the species if it has any other subspecies" do
@@ -371,12 +371,12 @@ describe Subspecies do
         }
       }
       taxon = Subspecies.import data
-      taxon.name.name.should == 'Leptothorax nylanderi euxanthus'
-      Taxon.find_by_id(old_species.id).should_not be_blank
-      Update.count.should == 1
+      expect(taxon.name.name).to eq('Leptothorax nylanderi euxanthus')
+      expect(Taxon.find_by_id(old_species.id)).not_to be_blank
+      expect(Update.count).to eq(1)
 
       update = Update.find_by_name 'Leptothorax nylanderi euxanthus'
-      update.field_name.should == 'create'
+      expect(update.field_name).to eq('create')
     end
   end
 end

@@ -5,38 +5,38 @@ describe Taxon do
 
   describe "Find by name" do
     it "should return nil if nothing matches" do
-      Taxon.find_by_name('sdfsdf').should == nil
+      expect(Taxon.find_by_name('sdfsdf')).to eq(nil)
     end
     it "should return one of the items if there are more than one (bad!)" do
       name = FactoryGirl.create :genus_name, name: 'Monomorium'
       2.times {FactoryGirl.create :genus, name: name}
-      Taxon.find_by_name('Monomorium').name.name.should == 'Monomorium'
+      expect(Taxon.find_by_name('Monomorium').name.name).to eq('Monomorium')
     end
   end
 
   describe "Find by epithet" do
     it "should return nil if nothing matches" do
-      Taxon.find_by_epithet('sdfsdf').should be_empty
+      expect(Taxon.find_by_epithet('sdfsdf')).to be_empty
     end
     it "should return all the items if there is more than one" do
       FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: 'Monomorium alta', epithet: 'alta')
       FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: 'Atta alta', epithet: 'alta')
-      Taxon.find_by_epithet('alta').map(&:name).map(&:to_s).should =~ ['Monomorium alta', 'Atta alta']
+      expect(Taxon.find_by_epithet('alta').map(&:name).map(&:to_s)).to match_array(['Monomorium alta', 'Atta alta'])
     end
   end
 
   describe "Find an epithet in a genus" do
     it "should return nil if nothing matches" do
-      Taxon.find_epithet_in_genus('sdfsdf', create_genus).should == nil
+      expect(Taxon.find_epithet_in_genus('sdfsdf', create_genus)).to eq(nil)
     end
     it "should return the one item" do
       species = create_species 'Atta serratula'
-      Taxon.find_epithet_in_genus('serratula', species.genus).should == [species]
+      expect(Taxon.find_epithet_in_genus('serratula', species.genus)).to eq([species])
     end
     describe "Finding mandatory spelling changes" do
       it "should find -a when asked to find -us" do
         species = create_species 'Atta serratula'
-        Taxon.find_epithet_in_genus('serratulus', species.genus).should == [species]
+        expect(Taxon.find_epithet_in_genus('serratulus', species.genus)).to eq([species])
       end
     end
   end
@@ -49,20 +49,20 @@ describe Taxon do
       @rufa = FactoryGirl.create :species, genus: @monoceros, name: species_name
     end
     it "should return [] if nothing matches" do
-      Taxon.find_name('sdfsdf').should == []
+      expect(Taxon.find_name('sdfsdf')).to eq([])
     end
     it "should return an exact match" do
-      Taxon.find_name('Monomorium').first.name.to_s.should == 'Monomorium'
+      expect(Taxon.find_name('Monomorium').first.name.to_s).to eq('Monomorium')
     end
     it "should return a prefix match" do
-      Taxon.find_name('Monomor', 'beginning with').first.name.to_s.should == 'Monomorium'
+      expect(Taxon.find_name('Monomor', 'beginning with').first.name.to_s).to eq('Monomorium')
     end
     it "should return a substring match" do
-      Taxon.find_name('iu', 'containing').first.name.to_s.should == 'Monomorium'
+      expect(Taxon.find_name('iu', 'containing').first.name.to_s).to eq('Monomorium')
     end
     it "should return multiple matches" do
       results = Taxon.find_name('Mono', 'containing')
-      results.size.should == 2
+      expect(results.size).to eq(2)
     end
     it "should not return anything but subfamilies, tribes, genera, subgenera, species,and subspecies" do
       create_subfamily 'Lepto'
@@ -72,28 +72,28 @@ describe Taxon do
       create_species 'Lepto4'
       create_subspecies 'Lepto5'
       results = Taxon.find_name 'Lepto', 'beginning with'
-      results.size.should == 6
+      expect(results.size).to eq(6)
     end
     it "should sort results by name" do
       FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepti')
       FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepta')
       FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepte')
       results = Taxon.find_name 'Lept', 'beginning with'
-      results.map(&:name).map(&:to_s).should == ['Lepta', 'Lepte', 'Lepti']
+      expect(results.map(&:name).map(&:to_s)).to eq(['Lepta', 'Lepte', 'Lepti'])
     end
 
     describe "Finding full species name" do
       it "should search for full species name" do
         results = Taxon.find_name 'Monoceros rufa '
-        results.first.should == @rufa
+        expect(results.first).to eq(@rufa)
       end
       it "should search for whole name, even when using beginning with, even with trailing space" do
         results = Taxon.find_name 'Monoceros rufa ', 'beginning with'
-        results.first.should == @rufa
+        expect(results.first).to eq(@rufa)
       end
       it "should search for partial species name" do
         results = Taxon.find_name 'Monoceros ruf', 'beginning with'
-        results.first.should == @rufa
+        expect(results.first).to eq(@rufa)
       end
     end
   end
@@ -107,7 +107,7 @@ describe Taxon do
       @genus = create_genus 'Atta', protonym: @protonym
     end
     it "should find a taxon matching the name and authorship ID" do
-      Taxon.find_by_name_and_authorship(@genus.name, [@reference.principal_author_last_name_cache], @reference.year).should == @genus
+      expect(Taxon.find_by_name_and_authorship(@genus.name, [@reference.principal_author_last_name_cache], @reference.year)).to eq(@genus)
     end
     it "should distinguish between homonyms by using the authorship" do
       homonym_reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Fisher')], citation_year: '2005', bolton_key_cache: 'Fisher 2005'
@@ -115,11 +115,11 @@ describe Taxon do
       homonym_protonym = FactoryGirl.create :protonym, authorship: homonym_authorship
       homonym_genus = create_genus 'Atta', protonym: homonym_protonym
 
-      Taxon.find_by_name_and_authorship(homonym_genus.name, ['Latreille'], @reference.year).should == @genus
+      expect(Taxon.find_by_name_and_authorship(homonym_genus.name, ['Latreille'], @reference.year)).to eq(@genus)
     end
     it "should distinguish between ones with same authorship by using the name" do
       other_genus = create_genus 'Dolichoderus', protonym: @protonym
-      Taxon.find_by_name_and_authorship(other_genus.name, ['Latreille'], @reference.year).should == other_genus
+      expect(Taxon.find_by_name_and_authorship(other_genus.name, ['Latreille'], @reference.year)).to eq(other_genus)
     end
     it "should distinguish between ones with same name and authorship by using the page" do
       reference = FactoryGirl.create :article_reference, author_names: [@latreille], citation_year: '1809', bolton_key_cache: 'Latreille 1809'
@@ -129,7 +129,7 @@ describe Taxon do
       genus_200_protonym = FactoryGirl.create :protonym, authorship: genus_200_authorship
       genus_100 = create_genus 'Dolichoderus', protonym: genus_100_protonym
       genus_200 = create_genus 'Dolichoderus', protonym: genus_200_protonym
-      Taxon.find_by_name_and_authorship(Name.import(genus_name: 'Dolichoderus'), ['Latreille'], '1809', '100').should == genus_100
+      expect(Taxon.find_by_name_and_authorship(Name.import(genus_name: 'Dolichoderus'), ['Latreille'], '1809', '100')).to eq(genus_100)
     end
 
     describe "Searching for other forms of the epithet(s)" do
@@ -142,7 +142,7 @@ describe Taxon do
         cordatus.protonym.authorship.update_attribute :reference, @reference
         search_name = Name.import genus_name: 'Philidris', species_epithet: 'cordata', subspecies: [{subspecies_epithet: 'protensa'}]
         taxon = Taxon.find_by_name_and_authorship search_name, ['Fisher'], 2005
-        taxon.name.name.should == 'Philidris cordatus protensa'
+        expect(taxon.name.name).to eq('Philidris cordatus protensa')
       end
       it "should find the taxon even when two components need changing" do
         protensus_name = Name.create! name: 'Philidris cordatus protensus'
@@ -150,7 +150,7 @@ describe Taxon do
         protensus.protonym.authorship.update_attribute :reference, @reference
         search_name = Name.import genus_name: 'Philidris', species_epithet: 'cordata', subspecies: [{subspecies_epithet: 'protensa'}]
         taxon = Taxon.find_by_name_and_authorship search_name, ['Fisher'], 2005
-        taxon.name.name.should == 'Philidris cordatus protensus'
+        expect(taxon.name.name).to eq('Philidris cordatus protensus')
       end
     end
   end

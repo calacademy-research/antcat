@@ -6,14 +6,14 @@ describe Synonym do
   describe "The object" do
     it "should require the junior, but not the senior" do
       synonym = Synonym.new
-      synonym.should_not be_valid
+      expect(synonym).not_to be_valid
       synonym.junior_synonym = create_species 'Formica'
-      synonym.should be_valid
+      expect(synonym).to be_valid
       synonym.senior_synonym = create_species 'Atta'
       synonym.save!
       synonym.reload
-      synonym.junior_synonym.name.to_s.should == 'Formica'
-      synonym.senior_synonym.name.to_s.should == 'Atta'
+      expect(synonym.junior_synonym.name.to_s).to eq('Formica')
+      expect(synonym.senior_synonym.name.to_s).to eq('Atta')
     end
   end
 
@@ -24,17 +24,17 @@ describe Synonym do
     end
     it "should create the synonym if it doesn't exist" do
       Synonym.find_or_create @junior, @senior
-      Synonym.count.should == 1
-      Synonym.where(junior_synonym_id: @junior, senior_synonym_id: @senior).count.should == 1
+      expect(Synonym.count).to eq(1)
+      expect(Synonym.where(junior_synonym_id: @junior, senior_synonym_id: @senior).count).to eq(1)
     end
     it "should return the existing synonym" do
       Synonym.create! junior_synonym: @junior, senior_synonym: @senior
-      Synonym.count.should == 1
-      Synonym.where(junior_synonym_id: @junior, senior_synonym_id: @senior).count.should == 1
+      expect(Synonym.count).to eq(1)
+      expect(Synonym.where(junior_synonym_id: @junior, senior_synonym_id: @senior).count).to eq(1)
 
       Synonym.find_or_create @junior, @senior
-      Synonym.count.should == 1
-      Synonym.where(junior_synonym_id: @junior, senior_synonym_id: @senior).count.should == 1
+      expect(Synonym.count).to eq(1)
+      expect(Synonym.where(junior_synonym_id: @junior, senior_synonym_id: @senior).count).to eq(1)
     end
   end
 
@@ -42,7 +42,7 @@ describe Synonym do
     it "should record versions" do
       with_versioning do
         synonym = FactoryGirl.create :synonym
-        synonym.versions.last.event.should == 'create'
+        expect(synonym.versions.last.event).to eq('create')
       end
     end
   end
@@ -50,7 +50,7 @@ describe Synonym do
   describe "Finding senior synonyms that aren't valid taxa" do
     it "should return nothing if there are none such" do
       results = Synonym.invalid_senior_synonyms
-      results.should == []
+      expect(results).to eq([])
     end
     it "should return the one invalid synonym" do
       junior = create_species
@@ -60,7 +60,7 @@ describe Synonym do
       valid_synonymy = Synonym.find_or_create junior, valid_senior
 
       results = Synonym.invalid_senior_synonyms
-      results.should == [invalid_synonymy]
+      expect(results).to eq([invalid_synonymy])
     end
 
     it "should return nothing if none invalid" do
@@ -71,7 +71,7 @@ describe Synonym do
       valid_synonymy = Synonym.find_or_create junior, another_valid_senior
 
       results = Synonym.invalid_senior_synonyms
-      results.should == []
+      expect(results).to eq([])
     end
     it "should return all if all invalid" do
       junior = create_species
@@ -81,7 +81,7 @@ describe Synonym do
       another_invalid_synonymy = Synonym.find_or_create junior, another_invalid_senior
 
       results = Synonym.invalid_senior_synonyms
-      results.should =~ [invalid_synonymy, another_invalid_synonymy]
+      expect(results).to match_array([invalid_synonymy, another_invalid_synonymy])
     end
   end
 
