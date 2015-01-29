@@ -232,8 +232,8 @@ test:
 # transaction, you can leave this on all the time without
 # incurring any user-visible performance degradation.
 production:
-#  <<: *default_settings
-#  monitor_mode: true
+  <<: *default_settings
+  monitor_mode: false
 
 # Many applications have a staging environment which behaves
 # identically to production. Support for that environment is provided
