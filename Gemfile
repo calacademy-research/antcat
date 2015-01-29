@@ -19,11 +19,9 @@ gem 'jquery-rails', '2.1.3'
 # Todo: Switch to a gem-ified version of jquery-ui
 #gem 'jquery-ui-rails'
 gem 'mysql2'
-gem 'newrelic_rpm'
+#gem 'newrelic_rpm'
 gem 'nokogiri'
-#gem 'paper_trail', :git => "https://github.com/airblade/paper_trail.git", :tag => 'v2.7.2'
 gem 'paper_trail', :git => "https://github.com/airblade/paper_trail.git", :tag => 'v4.0.0.beta2'
-#gem 'paper_trail_manager'
 gem 'protected_attributes' #attr_accesssible deprecated in rails 4.
 gem 'rails-observers' # observers deprecated in rails 4
 gem 'progress_bar'
