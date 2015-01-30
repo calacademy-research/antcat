@@ -36,6 +36,8 @@ module AntCat
     config.action_dispatch.cookies_serializer = :hybrid
     # suppress deprecation warning
     config.active_record.raise_in_transactional_callbacks = true
+    config.serve_static_assets = true
+
 
   end
 end
