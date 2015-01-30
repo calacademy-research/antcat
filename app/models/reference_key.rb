@@ -82,7 +82,7 @@ class ReferenceKey
   end
 
   def goto_reference_link
-    link image_tag('external_link.png'), "/references?q=#{@reference.id}", class: :goto_reference_link
+    link image_tag('/assets/external_link.png'), "/references?q=#{@reference.id}", class: :goto_reference_link
   end
 
 end

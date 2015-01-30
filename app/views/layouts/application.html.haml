@@ -30,7 +30,7 @@
     = stylesheet_link_tag 'jquery.ui.custom.custom.css'
     = stylesheet_link_tag controller.class.to_s.demodulize.gsub('Controller', '').underscore
 
-    = favicon_link_tag
+    = favicon_link_tag 'favicon.ico'
 
     = yield :head
 
