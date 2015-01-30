@@ -24,12 +24,13 @@ gem 'nokogiri'
 gem 'paper_trail', :git => "https://github.com/airblade/paper_trail.git", :tag => 'v4.0.0.beta2'
 gem 'protected_attributes' #attr_accesssible deprecated in rails 4.
 gem 'rails-observers' # observers deprecated in rails 4
-gem 'progress_bar'
 gem 'rack'
 gem 'rails', '>= 4.1'
 gem 'rake'
-gem 'sass'
+gem 'sass', '3.2.2'
 gem 'sunspot_rails'
+gem 'sunspot_solr'
+
 gem 'paperclip'
 gem 'will_paginate'
 gem 'workflow'
@@ -45,7 +46,6 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'spork'
-  gem 'sunspot_solr'
   gem 'thin'
   #gem 'web-console', '~> 2.0'
 end
@@ -68,12 +68,12 @@ end
 
 gem 'coffee-rails'
 #TODO: Lots of ways to include blueprint! Only "compass-blueprint" seemed to do it.
-gem 'blueprint-rails'
-gem 'blueprint'
-gem 'compass-rails'
-gem 'compass'
+# gem 'blueprint-rails'
+# gem 'blueprint'
+# gem 'compass-rails'
+# gem 'compass'
 gem 'compass-blueprint'
-gem 'sass-rails'
+gem 'sass-rails', '4.0.5'
 gem 'uglifier'
 gem 'yui-compressor'
 

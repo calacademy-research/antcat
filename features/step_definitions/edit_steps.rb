@@ -111,6 +111,7 @@ end
 When /I click the parent name field/ do
   find('#parent_name_field .display_button').click
 end
+
 When /^I set the parent name to "([^"]*)"$/ do |name|
   step %{I fill in "name_string" with "#{name}"}
 end

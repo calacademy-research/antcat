@@ -26,6 +26,8 @@ Feature: Searching references
     And I should not see "Bolton, B."
     And I should not see "Hölldobler, B."
 
+  # If this test fails it is likely a solr configuraiton issue.
+  # Worth checking on the deployed server to see if it's actually working.
   Scenario: Searching for an author name with diacritics, using the diacritics in the query
     When I go to the references page
     And I fill in the search box with "Hölldobler"

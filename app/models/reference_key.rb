@@ -4,6 +4,7 @@ class ReferenceKey
   include Formatters::Formatter
   include Formatters::LinkFormatter
 
+
   def initialize reference
     @reference = reference
   end
@@ -80,7 +81,8 @@ class ReferenceKey
     # isn't available at this level (The methods are, but they lack the context to do the right thing).
     # I could probably work around this, but returning image code out of the model isn't good practice.
     # This whole file should be re-written as a helper.
-    link "Ref", "/references?q=#{@reference.id}", class: :goto_reference_link
+
+    link 'link', "/references?q=#{@reference.id}", class: :goto_reference_link
   end
 
 end

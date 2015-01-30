@@ -1,20 +1,18 @@
 production:
   solr:
-    hostname: index.websolr.com
-    port: 80
-    path: <%=
-      require 'milieu'
-      $Milieu.preview? ? '/solr/ea8fcb74b3b' : '/solr/9fc4e55b887'
-    %>
+    hostname: localhost
+    port: 8983
     log_level: WARNING
+    path: /solr/production
+    # read_timeout: 2
+    # open_timeout: 0.5
 
 development:
   solr:
     hostname: localhost
-    port: 8983
-    log_level: WARNING
+    port: 8982
+    log_level: INFO
     path: /solr/development
-
 
 test:
   solr:
@@ -22,5 +20,4 @@ test:
     port: 8981
     log_level: WARNING
     path: /solr/test
-
-
+    
