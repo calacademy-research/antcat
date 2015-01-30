@@ -1,5 +1,4 @@
 # coding: UTF-8
-                sdfsdf
 class TaxonMother
   # A TaxonMother is responsible for creating/saving
   # an object web of objects, starting with Taxon

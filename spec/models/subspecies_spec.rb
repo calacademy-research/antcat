@@ -191,7 +191,7 @@ describe Subspecies do
           subspecies: [{type:   'var.',
             subspecies_epithet: 'refectus',
         }]})
-      subspecies = Subspecies.find subspecies
+      subspecies = Subspecies.find subspecies.id
       expect(subspecies.name.to_s).to eq('Camponotus gilviventris refectus')
       ref = ForwardRefToParentSpecies.first
       expect(ref.fixee).to eq(subspecies)
@@ -215,7 +215,7 @@ describe Subspecies do
             },
             raw_history: [{currently_subspecies_of: {species: {species_epithet: 'hova'}}}]
           )
-          expect(Subspecies.find(subspecies).name.to_s).to eq('Camponotus hova radamae')
+          expect(Subspecies.find(subspecies.id).name.to_s).to eq('Camponotus hova radamae')
         end
         it "should import a subspecies that has a species protonym" do
           genus = create_genus 'Acromyrmex'
@@ -229,7 +229,7 @@ describe Subspecies do
             },
             raw_history: [{currently_subspecies_of: {species: {species_epithet: 'lundii'}}}]
           )
-          subspecies = Subspecies.find subspecies
+          subspecies = Subspecies.find subspecies.id
           expect(subspecies.name.to_s).to eq('Acromyrmex lundii boliviensis')
         end
         it "if it's already a subspecies, don't just keep adding on to its epithets, but replace the middle one(s)" do
@@ -246,7 +246,7 @@ describe Subspecies do
             },
             raw_history: [{currently_subspecies_of: {species: {species_epithet: 'jehovae'}}}]
           )
-          expect(Subspecies.find(subspecies).name.to_s).to eq('Crematogaster jehovae mosis')
+          expect(Subspecies.find(subspecies.id).name.to_s).to eq('Crematogaster jehovae mosis')
         end
       end
 
@@ -265,7 +265,7 @@ describe Subspecies do
           },
           raw_history: [{revived_from_synonymy: {subspecies_of: {species_epithet: 'castanea'}}}],
         )
-        expect(Subspecies.find(subspecies).name.to_s).to eq('Crematogaster castanea mediorufa')
+        expect(Subspecies.find(subspecies.id).name.to_s).to eq('Crematogaster castanea mediorufa')
       end
     end
 
@@ -303,7 +303,7 @@ describe Subspecies do
           subspecies: [{type:   'var.',
             subspecies_epithet: 'refectus'}]}}
       subspecies = Subspecies.import data
-      subspecies = Subspecies.find subspecies
+      subspecies = Subspecies.find subspecies.id
       expect(subspecies.name.to_s).to eq('Camponotus gilviventris refectus')
 
       updated_subspecies = Subspecies.import data

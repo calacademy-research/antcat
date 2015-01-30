@@ -127,7 +127,7 @@ describe Species do
           authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
         history: ['Atta major as species', 'Atta major as subspecies']
       )
-      species = Species.find species
+      species = Species.find species.id
       expect(species.name.to_s).to eq('Fiona major')
       expect(species).not_to be_invalid
       expect(species).to be_fossil
