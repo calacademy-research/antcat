@@ -6,6 +6,7 @@ class AuthorName < ActiveRecord::Base
   validates :author, :name, presence: true
   validates :name, uniqueness: true
   has_paper_trail
+  attr_accessible :name, :author,:author_id
 
   def last_name
     name_parts[:last]
@@ -18,15 +19,17 @@ class AuthorName < ActiveRecord::Base
   def self.import data
     data.inject([]) do |author_names, name|
       author_names << (
-        all(conditions: ['name = ?', name]).find {|possible_name| possible_name.name == name} ||
-        create!(name: name, author: Author.create!)
+      all.where(name: name).find { |possible_name| possible_name.name == name } ||
+          create!(name: name, author: Author.create!)
       )
     end
   end
 
   def self.search term = ''
-    all(:conditions => ["name LIKE ?", "%#{term}%"], :include => :reference_author_names,
-        :order => 'reference_author_names.created_at DESC, name').map(&:name)
+    #all(:conditions => ["name LIKE ?", "%#{term}%"], :include => :reference_author_names,
+    #    :order => 'reference_author_names.created_at DESC, name').map(&:name)
+    all.where('name like ?', "%#{term}%").includes(:reference_author_names).order('reference_author_names.created_at desc', 'name').map(&:name)
+
   end
 
   def self.import_author_names_string string
@@ -63,7 +66,7 @@ class AuthorName < ActiveRecord::Base
 
   def self.create_hyphenation_aliases show_progress = false
     Progress.init show_progress
-    all(:order => 'name').each do |author_name|
+    all.order('name').each do |author_name|
       next unless author_name.name =~ /-/
       Progress.puts
       Progress.print "Found name with hyphen(s): '#{author_name.name}'"
@@ -88,7 +91,8 @@ class AuthorName < ActiveRecord::Base
     author = names.first.author
     names[1..-1].each do |name|
       Progress.puts "Aliasing '#{name.name}' to '#{names.first.name}'"
-      update_all({:author_id => author.id}, {:author_id => name.author_id})
+      where(:author_id => name.author_id).update_all(:author_id => author.id)
+      #update_all({:author_id => author.id}, {:author_id => name.author_id})
       name.author.destroy unless name.author.names(true).present?
     end
   end
@@ -102,7 +106,8 @@ class AuthorName < ActiveRecord::Base
     if existing_name
       Progress.puts 'which already exists'
       references = bad_name.references.dup
-      ReferenceAuthorName.all(:conditions => ['author_name_id = ?', bad_name.id]).each do |e|
+      #ReferenceAuthorName.all(:conditions => ['author_name_id = ?', bad_name.id]).each do |e|
+      ReferenceAuthorName.all.where(author_name_id: bad_name.id).each do |e|
         e.author_name_id = existing_name.id
         e.save!
       end
@@ -130,7 +135,7 @@ class AuthorName < ActiveRecord::Base
 
       name_without_space = name.gsub! /^#{match[1]}/, match[1][0..-2]
       if (author_name_without_space = find_by_name(name_without_space)) &&
-         author_name_without_space.author != author_name.author
+          author_name_without_space.author != author_name.author
         synonyms << [author_name, author_name_without_space]
       end
 
@@ -139,7 +144,7 @@ class AuthorName < ActiveRecord::Base
       name << ', ' + match[1]
       name_with_preposition_at_end = name
       if (author_name_with_preposition_at_end = find_by_name(name_with_preposition_at_end)) &&
-         author_name_with_preposition_at_end.author != author_name.author
+          author_name_with_preposition_at_end.author != author_name.author
         synonyms << [author_name, author_name_with_preposition_at_end]
       end
     end

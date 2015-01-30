@@ -22,24 +22,24 @@ describe Parsers::PaginationGrammar do
     'Pp. 63-396 (part)',
   ].each do |pagination|
     it "should handle '#{pagination}'" do
-      @parser.parse(pagination).should == pagination
+      expect(@parser.parse(pagination)).to eq(pagination)
     end
   end
 
   it "shouldn't consider '4th' a pagination" do
-    @parser.parse('4th', :consume => false).should == '4'
+    expect(@parser.parse('4th', :consume => false)).to eq('4')
   end
 
   it 'should handle a space after a hyphen' do
-    @parser.parse('123- 4').should == '123- 4'
+    expect(@parser.parse('123- 4')).to eq('123- 4')
   end
 
   it 'should handle spaces around the hyphen' do
-    @parser.parse('123 - 4').should == '123 - 4'
+    expect(@parser.parse('123 - 4')).to eq('123 - 4')
   end
 
   it 'should handle and ampersand between clauses' do
-    @parser.parse('131-132 & 143-145').should == '131-132 & 143-145'
+    expect(@parser.parse('131-132 & 143-145')).to eq('131-132 & 143-145')
   end
 
 end

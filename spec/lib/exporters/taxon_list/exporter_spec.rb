@@ -7,14 +7,14 @@ describe Exporters::TaxonList::Exporter do
   end
 
   it "should write its output to the right file" do
-    File.should_receive(:open).with 'data/output/antcat_taxon_list.txt', 'w'
+    expect(File).to receive(:open).with 'data/output/antcat_taxon_list.txt', 'w'
     @exporter.export
   end
 
   describe "Exporting" do
     before do
       @file = double
-      File.stub(:open).and_yield @file
+      allow(File).to receive(:open).and_yield @file
     end
 
     def create_taxon author_name, year
@@ -32,9 +32,9 @@ describe Exporters::TaxonList::Exporter do
         3.times {|i| create_taxon fisher, '2013'}
         2.times {|i| create_taxon fisher, '2011'}
         1.times {|i| create_taxon bolton, '2000'}
-        @exporter.should_receive(:write).with(@file, "Bolton, B.\t" + "2000\t" + '1').ordered
-        @exporter.should_receive(:write).with(@file, "Fisher, B.L.\t" + "2011\t" + '2').ordered
-        @exporter.should_receive(:write).with(@file, "Fisher, B.L.\t" + "2013\t" + '3').ordered
+        expect(@exporter).to receive(:write).with(@file, "Bolton, B.\t" + "2000\t" + '1').ordered
+        expect(@exporter).to receive(:write).with(@file, "Fisher, B.L.\t" + "2011\t" + '2').ordered
+        expect(@exporter).to receive(:write).with(@file, "Fisher, B.L.\t" + "2013\t" + '3').ordered
         @exporter.export
       end
 

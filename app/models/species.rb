@@ -3,6 +3,7 @@ class Species < SpeciesGroupTaxon
   include Formatters::Formatter
 
   has_many :subspecies
+  attr_accessible :name, :protonym, :genus, :current_valid_taxon, :homonym_replaced_by
 
   def siblings
     genus.species

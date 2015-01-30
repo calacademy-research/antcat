@@ -8,8 +8,8 @@
 
 .navigation
   = render 'shared/login'
+
   = make_link_menu link_to('Advanced Search', advanced_search_path), |
-                   link_to('Catalog', catalog_path),                 |
                    link_to('References', references_path)
   %br
   = make_link_menu link_to('Authors', authors_path),                 |

@@ -1,12 +1,9 @@
 # coding: UTF-8
 class ReferenceKey
-  include ActionView::Helpers::TagHelper
-  include ActionView::Helpers::AssetTagHelper
   include ActionView::Context
-  include Sprockets::Helpers::RailsHelper
-  include Sprockets::Helpers::IsolatedHelper
   include Formatters::Formatter
   include Formatters::LinkFormatter
+
 
   def initialize reference
     @reference = reference
@@ -80,7 +77,12 @@ class ReferenceKey
   end
 
   def goto_reference_link
-    link image_tag('external_link.png'), "/references?q=#{@reference.id}", class: :goto_reference_link
+    # TODO Rails 4: This used to be an image link to external_link.png. The asset rewriting
+    # isn't available at this level (The methods are, but they lack the context to do the right thing).
+    # I could probably work around this, but returning image code out of the model isn't good practice.
+    # This whole file should be re-written as a helper.
+
+    link 'link', "/references?q=#{@reference.id}", class: :goto_reference_link
   end
 
 end

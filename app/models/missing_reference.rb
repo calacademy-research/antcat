@@ -1,6 +1,6 @@
 # coding: UTF-8
 class MissingReference < Reference
-
+  attr_accessible :reason_missing
   def key
     MissingReferenceKey.new citation
   end
@@ -47,7 +47,7 @@ class MissingReference < Reference
   def self.destroy_found_missing_references records_to_destroy
     Progress.puts "#{records_to_destroy.count} MissingReferences to delete"
     for id in records_to_destroy
-      find(id).destroy
+      find(id.id).destroy
     end
   end
 

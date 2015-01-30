@@ -12,7 +12,7 @@ Feature: Expanding reference keys
       And I should not see the reference key expansion
     When I click the reference key
     Then I should see the reference key expansion
-    # Randomly roduces "Unable to find css [...]"
+    # Randomly produces "Unable to find css [...]"
       #And I should not see the reference key "Latreille, 1809"
     When I click the reference key expansion
     #Then I should see the reference key "Latreille, 1809"

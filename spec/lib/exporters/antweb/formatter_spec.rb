@@ -26,7 +26,7 @@ describe Exporters::Antweb::Formatter do
       species = create_species 'Atta major', genus: genus
       genus.update_attribute :type_name, species.name
       item = genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
-      @formatter.new(genus).format.should ==
+      expect(@formatter.new(genus).format).to eq(
         %{<div class="antcat_taxon">} +
 
           # statistics
@@ -65,6 +65,7 @@ describe Exporters::Antweb::Formatter do
           %{</div></div>} +
 
         %{</div>}
+      )
     end
   end
 

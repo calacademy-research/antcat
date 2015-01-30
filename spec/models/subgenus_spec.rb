@@ -5,16 +5,16 @@ describe Subgenus do
 
   it "must have a genus" do
     colobopsis = FactoryGirl.build :subgenus, name: FactoryGirl.create(:name, name: 'Colobopsis'), genus: nil
-    colobopsis.should_not be_valid
+    expect(colobopsis).not_to be_valid
     colobopsis.genus = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Camponotus')
 
     colobopsis.save!
-    colobopsis.reload.genus.name.to_s.should == 'Camponotus'
+    expect(colobopsis.reload.genus.name.to_s).to eq('Camponotus')
   end
 
   describe "Statistics" do
     it "should have none" do
-      FactoryGirl.create(:subgenus).statistics.should be_nil
+      expect(FactoryGirl.create(:subgenus).statistics).to be_nil
     end
   end
 
@@ -23,11 +23,11 @@ describe Subgenus do
       @subgenus = create_subgenus 'Subdolichoderus'
     end
     it "should return an empty array if there are none" do
-      @subgenus.species_group_descendants.should == []
+      expect(@subgenus.species_group_descendants).to eq([])
     end
     it "should return all the species" do
       species = create_species subgenus: @subgenus
-      @subgenus.species_group_descendants.should == [species]
+      expect(@subgenus.species_group_descendants).to eq([species])
     end
   end
 
@@ -47,26 +47,26 @@ describe Subgenus do
         history: ["Atta as subgenus", "Atta as species"]
       )
 
-      subgenus.name.to_s.should == 'Atta (Subatta)'
-      subgenus.name.epithet.should == 'Subatta'
-      subgenus.should_not be_invalid
-      subgenus.should be_fossil
-      subgenus.genus.should == genus
-      genus.subgenera.map(&:id).should == [subgenus.id]
-      subgenus.history_items.map(&:taxt).should == ['Atta as subgenus', 'Atta as species']
-      subgenus.type_taxt.should == ', by monotypy'
+      expect(subgenus.name.to_s).to eq('Atta (Subatta)')
+      expect(subgenus.name.epithet).to eq('Subatta')
+      expect(subgenus).not_to be_invalid
+      expect(subgenus).to be_fossil
+      expect(subgenus.genus).to eq(genus)
+      expect(genus.subgenera.map(&:id)).to eq([subgenus.id])
+      expect(subgenus.history_items.map(&:taxt)).to eq(['Atta as subgenus', 'Atta as species'])
+      expect(subgenus.type_taxt).to eq(', by monotypy')
 
       protonym = subgenus.protonym
-      protonym.name.to_s.should == 'Atta (Subatta)'
+      expect(protonym.name.to_s).to eq('Atta (Subatta)')
 
       authorship = protonym.authorship
-      authorship.pages.should == '124'
+      expect(authorship.pages).to eq('124')
 
-      authorship.reference.should == reference
+      expect(authorship.reference).to eq(reference)
 
       subgenus.reload
-      subgenus.type_name.to_s.should == 'Atta major'
-      subgenus.type_name.rank.should == 'species'
+      expect(subgenus.type_name.to_s).to eq('Atta major')
+      expect(subgenus.type_name.rank).to eq('species')
     end
 
   end

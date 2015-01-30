@@ -8,46 +8,91 @@ class Reference < ActiveRecord::Base
   attr_accessor :publisher_string
   attr_accessor :journal_name
   has_paper_trail
-
+  attr_accessible :citation_year,
+                  :title,
+                  :journal_name,
+                  :series_volume_issue,
+                  :publisher_string,
+                  :pages_in,
+                  :nesting_reference_id,
+                  :citation,
+                  :document_attributes,
+                  :public_notes,
+                  :editor_notes,
+                  :taxonomic_notes,
+                  :cite_code,
+                  :possess,
+                  :date,
+                  :author_names,
+                  :author_names_suffix,
+                  :pagination
   include CleanNewlines
-  before_save {|record| clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation}
+  before_save { |record| clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
 
   # associations
-  has_many    :reference_author_names, -> { order :position }
+  has_many :reference_author_names, -> { order :position }
   has_many :groups, :through => :group_assets
 
 
-  has_many    :author_names,
-              -> { order :position },
-              :through => :reference_author_names,
-              :after_add => :refresh_author_names_caches,
-              :after_remove => :refresh_author_names_caches
-  belongs_to  :journal
-  belongs_to  :publisher
-  def nestees; self.class.where nesting_reference_id: id; end
+  has_many :author_names,
+           -> { order 'reference_author_names.position' },
+           :through => :reference_author_names,
+           :after_add => :refresh_author_names_caches,
+           :after_remove => :refresh_author_names_caches
+  belongs_to :journal
+  belongs_to :publisher
+
+  def nestees;
+    self.class.where nesting_reference_id: id;
+  end
 
   # scopes
-  scope :sorted_by_principal_author_last_name, order(:principal_author_last_name_cache)
-  scope :with_principal_author_last_name, lambda {|last_name| where principal_author_last_name_cache: last_name}
-  scope :non_missing, where('type IS NULL OR type != "MissingReference"')
+  scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
+  scope :with_principal_author_last_name, lambda { |last_name| where principal_author_last_name_cache: last_name }
+  scope :non_missing, -> { where('type IS NULL OR type != "MissingReference"') }
 
   # Other plugins and mixins
-  include ReferenceComparable; def author; principal_author_last_name; end
+  include ReferenceComparable;
+
+  def author;
+    principal_author_last_name;
+  end
 
   # validation and callbacks
   before_validation :set_year_from_citation_year, :strip_text_fields
-  validates         :title, presence: true, if: Proc.new {|record| record.class.requires_title}
-  def self.requires_title; true end
-  before_save       :set_author_names_caches
-  before_destroy    :check_not_nested
+  validates :title, presence: true, if: Proc.new { |record| record.class.requires_title }
+
+  def self.requires_title;
+    true
+  end
+
+  before_save :set_author_names_caches
+  before_destroy :check_not_nested
 
   # accessors
-  def to_s()                        "#{author_names_string} #{citation_year}. #{id}." end
-  def key()                         @key ||= ReferenceKey.new(self) end
-  def authors(reload = false)       author_names(reload).map &:author end
-  def author_names_string()         author_names_string_cache end
-  def author_names_string=(string)  self.author_names_string_cache = string end
-  def principal_author_last_name()  principal_author_last_name_cache end
+  def to_s()
+    "#{author_names_string} #{citation_year}. #{id}."
+  end
+
+  def key()
+    @key ||= ReferenceKey.new(self)
+  end
+
+  def authors(reload = false)
+    author_names(reload).map &:author
+  end
+
+  def author_names_string()
+    author_names_string_cache
+  end
+
+  def author_names_string=(string)
+    self.author_names_string_cache = string
+  end
+
+  def principal_author_last_name()
+    principal_author_last_name_cache
+  end
 
   def short_citation_year
     citation_year.gsub %r{ .*$}, ''
@@ -85,7 +130,7 @@ class Reference < ActiveRecord::Base
   def check_for_duplicate
     duplicates = DuplicateMatcher.new.match self
     return unless duplicates.present?
-    duplicate = Reference.find duplicates.first[:match]
+    duplicate = Reference.find duplicates.first[:match].id
     errors.add :base, "This may be a duplicate of #{Formatters::ReferenceFormatter.format duplicate} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
     true
   end
@@ -102,8 +147,7 @@ class Reference < ActiveRecord::Base
 
   def to_class suffix = '', prefix = ''
     class_name = self.class.name
-    raise "Don't know what kind of reference this is: #{inspect}" unless
-      ['Article', 'Book', 'Nested', 'Unknown', 'Missing'].map {|e| e + 'Reference'}.include? class_name
+    raise "Don't know what kind of reference this is: #{inspect}" unless ['Article', 'Book', 'Nested', 'Unknown', 'Missing'].map { |e| e + 'Reference' }.include? class_name
     class_name = prefix + class_name + suffix
     class_name.constantize
   end

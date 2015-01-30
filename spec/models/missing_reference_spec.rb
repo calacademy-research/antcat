@@ -13,7 +13,7 @@ describe MissingReference do
       it "should replace references in taxt to the MissingReference to the found reference" do
         item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
         @missing_reference.replace_with @found_reference
-        item.reload.taxt.should == "{ref #{@found_reference.id}}"
+        expect(item.reload.taxt).to eq("{ref #{@found_reference.id}}")
       end
       it "should not save records that don't contain the {ref}" do
         item = TaxonHistoryItem.create! taxt: "Just some taxt"
@@ -21,12 +21,12 @@ describe MissingReference do
         updated_at = item.updated_at
         @missing_reference.replace_with @found_reference
         item.reload
-        item.updated_at.should == updated_at
+        expect(item.updated_at).to eq(updated_at)
       end
       it "should replace references in citations" do
         citation = Citation.create! reference: @missing_reference
         @missing_reference.replace_with @found_reference
-        citation.reload.reference.should == @found_reference
+        expect(citation.reload.reference).to eq(@found_reference)
       end
     end
 
@@ -40,8 +40,8 @@ describe MissingReference do
 
         MissingReference.replace_citation 'Citation', nonmissing_reference
 
-        first_citation_occurrence.reload.taxt.should == "{ref #{nonmissing_reference.id}}"
-        second_citation_occurrence.reload.taxt.should == "{ref #{nonmissing_reference.id}}"
+        expect(first_citation_occurrence.reload.taxt).to eq("{ref #{nonmissing_reference.id}}")
+        expect(second_citation_occurrence.reload.taxt).to eq("{ref #{nonmissing_reference.id}}")
       end
     end
 
@@ -49,35 +49,35 @@ describe MissingReference do
 
   describe "Optional year" do
     it "should permit a missing year (unlike other references)" do
-      MissingReference.new(title: 'missing', citation: 'Bolton').should be_valid
+      expect(MissingReference.new(title: 'missing', citation: 'Bolton')).to be_valid
     end
   end
 
   describe "Importing" do
     it "should create the reference based on the passed data" do
       reference = MissingReference.import 'no Bolton', :author_names => ['Bolton'], :year => '1920', :matched_text => 'Bolton, 1920: 22'
-      reference.reload.year.should == 1920
-      reference.citation.should == 'Bolton, 1920'
-      reference.reason_missing.should == 'no Bolton'
+      expect(reference.reload.year).to eq(1920)
+      expect(reference.citation).to eq('Bolton, 1920')
+      expect(reference.reason_missing).to eq('no Bolton')
     end
     it "should save the whole thing in the citation if there's no colon" do
       reference = MissingReference.import 'no Bolton', :author_names => ['Bolton'], :year => '1920', :matched_text => 'Bolton, 1920'
-      reference.reload.year.should == 1920
-      reference.citation.should == 'Bolton, 1920'
-      reference.reason_missing.should == 'no Bolton'
+      expect(reference.reload.year).to eq(1920)
+      expect(reference.citation).to eq('Bolton, 1920')
+      expect(reference.reason_missing).to eq('no Bolton')
     end
     it "should handle missing year" do
       reference = MissingReference.import 'no year', :author_names => ['Bolton'], :matched_text => 'Bolton'
-      reference.reload.year.should be_nil
-      reference.citation.should == 'Bolton'
-      reference.reason_missing.should == 'no year'
+      expect(reference.reload.year).to be_nil
+      expect(reference.citation).to eq('Bolton')
+      expect(reference.reason_missing).to eq('no year')
     end
   end
 
   describe "Key" do
     it "has its own kind of key" do
       reference = FactoryGirl.create :missing_reference
-      reference.key.should be_kind_of MissingReferenceKey
+      expect(reference.key).to be_kind_of MissingReferenceKey
     end
   end
 

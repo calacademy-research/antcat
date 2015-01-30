@@ -18,9 +18,9 @@ describe ForwardRefToSeniorSynonym do
     synonym.reload
     junior = synonym.junior_synonym
     senior = synonym.senior_synonym
-    junior.senior_synonyms.should == [senior]
-    junior.should be_synonym_of  senior
-    senior.junior_synonyms.should == [junior]
+    expect(junior.senior_synonyms).to eq([senior])
+    expect(junior).to be_synonym_of  senior
+    expect(senior.junior_synonyms).to eq([junior])
   end
 
   it "clear the attribute and record an error if there are no results" do
@@ -30,11 +30,12 @@ describe ForwardRefToSeniorSynonym do
       fixee: synonym, fixee_attribute: 'senior_synonym',
       genus: @genus, epithet: 'major'
     })
-    Progress.should_receive :error
+    expect(Progress).to receive :error
     forward_ref.fixup
     junior = synonym.reload.junior_synonym
-    junior.should have(0).senior_synonyms
-    junior.should have(0).junior_synonyms
+    expect(junior.junior_synonyms.count). to eq(0)
+    expect(junior.senior_synonyms.count). to eq(0)
+
   end
 
   it "clear the attribute and record an error if there is more than one result" do
@@ -45,11 +46,11 @@ describe ForwardRefToSeniorSynonym do
       genus: @genus, epithet: 'major'
     })
     2.times {create_species name: junior.name, genus: @genus}
-    Progress.should_receive :error
+    expect(Progress).to receive :error
     forward_ref.fixup
     junior = synonym.reload.junior_synonym
-    junior.should have(0).senior_synonyms
-    junior.should have(0).junior_synonyms
+    expect(junior.junior_synonyms.count). to eq(0)
+    expect(junior.senior_synonyms.count). to eq(0)
   end
 
   it "should use declension rules to find Atta magnus when the synonym is to Atta magna" do
@@ -64,9 +65,9 @@ describe ForwardRefToSeniorSynonym do
     synonym.reload
     junior = synonym.junior_synonym
     senior = synonym.senior_synonym
-    junior.senior_synonyms.should == [senior]
-    junior.should be_synonym_of senior
-    senior.junior_synonyms.should == [junior]
+    expect(junior.senior_synonyms).to eq([senior])
+    expect(junior).to be_synonym_of senior
+    expect(senior.junior_synonyms).to eq([junior])
   end
 
   it "should find a senior synonym subspecies" do
@@ -79,8 +80,8 @@ describe ForwardRefToSeniorSynonym do
     senior = create_subspecies 'Atta magnus molestans', genus: @genus
     forward_ref.fixup
     junior = synonym.reload.junior_synonym
-    junior.should be_synonym_of senior
-    junior.senior_synonyms.should == [senior]
+    expect(junior).to be_synonym_of senior
+    expect(junior.senior_synonyms).to eq([senior])
   end
 
   it "should pick the validest target when fixing up" do
@@ -94,8 +95,8 @@ describe ForwardRefToSeniorSynonym do
     senior = create_species name: invalid_senior.name, genus: @genus
     forward_ref.fixup
     junior = synonym.reload.junior_synonym
-    junior.should be_synonym_of senior
-    junior.senior_synonyms.should == [senior]
+    expect(junior).to be_synonym_of senior
+    expect(junior.senior_synonyms).to eq([senior])
   end
 
 end

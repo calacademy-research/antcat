@@ -20,17 +20,17 @@
     = javascript_include_tag 'google_analytics' if Rails.env == 'production' && $Milieu.production?
     = javascript_include_tag 'application'
 
-    = stylesheet_link_tag 'blueprint/screen', media: 'screen, projection'
-    = stylesheet_link_tag 'blueprint/print', media: 'print'
-    /[if IE]
-      = stylesheet_link_tag 'blueprint/ie', media: 'screen, projection'
+    -#= stylesheet_link_tag 'blueprint/screen', media: 'screen, projection'
+    -#= stylesheet_link_tag 'blueprint/print', media: 'print'
+    -#/[if IE]
+    -#  = stylesheet_link_tag 'blueprint/ie', media: 'screen, projection'
 
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'ext/jquery.ui.custom.css'
     = stylesheet_link_tag 'jquery.ui.custom.custom.css'
     = stylesheet_link_tag controller.class.to_s.demodulize.gsub('Controller', '').underscore
 
-    = favicon_link_tag
+    = favicon_link_tag 'favicon.ico'
 
     = yield :head
 

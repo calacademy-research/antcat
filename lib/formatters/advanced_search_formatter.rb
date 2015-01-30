@@ -1,11 +1,12 @@
 # coding: UTF-8
+
 module Formatters::AdvancedSearchFormatter
   include Formatters::Formatter
   include ActionView::Helpers::TagHelper
 
   def format taxon
     string = convert_to_text(format_name taxon)
-    status = format_status(taxon).html_safe
+    status = format_status_reference(taxon).html_safe
     string << convert_to_text(' ' + status) if status.present?
     type_localities = format_type_localities(taxon)
     string << convert_to_text(' ' + type_localities) if type_localities.present?
@@ -16,7 +17,7 @@ module Formatters::AdvancedSearchFormatter
     string
   end
 
-  def format_status taxon
+  def format_status_reference taxon
     return format_original_combination_status taxon if taxon.original_combination?
     labels = []
     labels << "#{italicize 'incertae sedis'} in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in

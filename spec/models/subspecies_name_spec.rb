@@ -6,21 +6,21 @@ describe SubspeciesName do
   describe "Name parts" do
     it "should know its species epithet" do
       name = SubspeciesName.new name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
-      name.genus_epithet.should == 'Atta'
-      name.species_epithet.should == 'major'
-      name.subspecies_epithets.should == 'minor'
+      expect(name.genus_epithet).to eq('Atta')
+      expect(name.species_epithet).to eq('major')
+      expect(name.subspecies_epithets).to eq('minor')
     end
   end
 
   describe "Parsing words" do
     it "should parse words into a subspecies name" do
       name = SubspeciesName.parse_words ['Atta', 'major', 'minor']
-      name.name.should == 'Atta major minor'
-      name.name_html.should == '<i>Atta major minor</i>'
-      name.epithet.should == 'minor'
-      name.epithet_html.should == '<i>minor</i>'
-      name.epithets.should == 'major minor'
-      name.protonym_html.should == '<i>Atta major minor</i>'
+      expect(name.name).to eq('Atta major minor')
+      expect(name.name_html).to eq('<i>Atta major minor</i>')
+      expect(name.epithet).to eq('minor')
+      expect(name.epithet_html).to eq('<i>minor</i>')
+      expect(name.epithets).to eq('major minor')
+      expect(name.protonym_html).to eq('<i>Atta major minor</i>')
     end
   end
 
@@ -41,11 +41,11 @@ describe SubspeciesName do
 
       subspecies_name.change_parent species_name
 
-      subspecies_name.name.should == 'Eciton niger minor'
-      subspecies_name.name_html.should == '<i>Eciton niger minor</i>'
-      subspecies_name.epithet.should == 'minor'
-      subspecies_name.epithet_html.should == '<i>minor</i>'
-      subspecies_name.epithets.should == 'niger minor'
+      expect(subspecies_name.name).to eq('Eciton niger minor')
+      expect(subspecies_name.name_html).to eq('<i>Eciton niger minor</i>')
+      expect(subspecies_name.epithet).to eq('minor')
+      expect(subspecies_name.epithet_html).to eq('<i>minor</i>')
+      expect(subspecies_name.epithets).to eq('niger minor')
     end
     it "should handle more than one subspecies epithet" do
       subspecies_name = SubspeciesName.new(
@@ -63,12 +63,12 @@ describe SubspeciesName do
 
       subspecies_name.change_parent species_name
 
-      subspecies_name.name.should == 'Eciton niger minor medii'
+      expect(subspecies_name.name).to eq('Eciton niger minor medii')
 
-      subspecies_name.name_html.should == '<i>Eciton niger minor medii</i>'
-      subspecies_name.epithet.should == 'medii'
-      subspecies_name.epithet_html.should == '<i>medii</i>'
-      subspecies_name.epithets.should == 'niger minor medii'
+      expect(subspecies_name.name_html).to eq('<i>Eciton niger minor medii</i>')
+      expect(subspecies_name.epithet).to eq('medii')
+      expect(subspecies_name.epithet_html).to eq('<i>medii</i>')
+      expect(subspecies_name.epithets).to eq('niger minor medii')
     end
     it "should raise an error if the new name already exists for a different taxon" do
       existing_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
@@ -77,14 +77,14 @@ describe SubspeciesName do
       species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
       protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
 
-      -> {subspecies_name.change_parent species_name}.should raise_error
+      expect {subspecies_name.change_parent species_name}.to raise_error
     end
     it "should not raise an error if the new name already exists, but is an orphan" do
       orphan_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
       subspecies_name = SubspeciesName.create! name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
       species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
       protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
-      -> {subspecies_name.change_parent species_name}.should_not raise_error
+      expect {subspecies_name.change_parent species_name}.not_to raise_error
     end
   end
 
@@ -93,11 +93,11 @@ describe SubspeciesName do
     it "should recognize its key and set its name appropriately" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpina'}]
       name = SubspeciesName.find name
-      name.name.should == 'Atta major alpina'
-      name.to_html.should == '<i>Atta</i> <i>major</i> <i>alpina</i>'
-      name.epithet.should == 'alpina'
-      name.epithet_html.should == '<i>alpina</i>'
-      name.epithets.should == 'major alpina'
+      expect(name.name).to eq('Atta major alpina')
+      expect(name.to_html).to eq('<i>Atta</i> <i>major</i> <i>alpina</i>')
+      expect(name.epithet).to eq('alpina')
+      expect(name.epithet_html).to eq('<i>alpina</i>')
+      expect(name.epithets).to eq('major alpina')
     end
 
     it "should recognize a subspecies name with :subspecies_epithet as the key" do
@@ -106,59 +106,59 @@ describe SubspeciesName do
         {subspecies_epithet: 'whymperi', type: 'var.'},
       ]
       name = SubspeciesName.find name
-      name.name.should == 'Formica rufa obscuripes whymperi'
+      expect(name.name).to eq('Formica rufa obscuripes whymperi')
     end
 
     it "escape bad characters" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpi>na'}]
       name = SubspeciesName.find name
-      name.name_html.should == '<i>Atta</i> <i>major</i> <i>alpi&gt;na</i>'
-      name.epithet_html.should == '<i>alpi&gt;na</i>'
+      expect(name.name_html).to eq('<i>Atta</i> <i>major</i> <i>alpi&gt;na</i>')
+      expect(name.epithet_html).to eq('<i>alpi&gt;na</i>')
     end
     it "should reuse names" do
       attributes = {genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpina'}]}
       Name.import attributes
-      Name.count.should == 3
+      expect(Name.count).to eq(3)
       Name.import attributes
-      Name.count.should == 3
+      expect(Name.count).to eq(3)
     end
     it "should not reuse name for another species" do
       Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpina'}]
-      Name.count.should == 3
+      expect(Name.count).to eq(3)
       Name.import genus_name: 'Atta', species_epithet: 'minor', subspecies: [{species_group_epithet: 'alpina'}]
-      Name.count.should == 5
+      expect(Name.count).to eq(5)
     end
 
     it "should handle subspecies types" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [{:type => 'r.', species_group_epithet: 'alpina'}]
       name = SubspeciesName.find name
-      name.to_s.should == 'Atta major alpina'
-      name.to_html.should == '<i>Atta</i> <i>major</i> <i>alpina</i>'
-      name.epithet.should == 'alpina'
-      name.epithet_html.should == '<i>alpina</i>'
-      name.epithets.should == 'major alpina'
-      name.protonym_html.should == '<i>Atta</i> <i>major</i> r. <i>alpina</i>'
+      expect(name.to_s).to eq('Atta major alpina')
+      expect(name.to_html).to eq('<i>Atta</i> <i>major</i> <i>alpina</i>')
+      expect(name.epithet).to eq('alpina')
+      expect(name.epithet_html).to eq('<i>alpina</i>')
+      expect(name.epithets).to eq('major alpina')
+      expect(name.protonym_html).to eq('<i>Atta</i> <i>major</i> r. <i>alpina</i>')
     end
 
     it "should import a subspecies name with a subgenus name" do
       name = Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta', species_epithet: 'major', subspecies: [{:type => 'r.', species_group_epithet: 'alpina'}]
       name = SubspeciesName.find name
-      name.to_s.should == 'Atta major alpina'
-      name.to_html.should == '<i>Atta</i> <i>major</i> <i>alpina</i>'
-      name.epithet.should == 'alpina'
-      name.epithet_html.should == '<i>alpina</i>'
-      name.epithets.should == 'major alpina'
-      name.protonym_html.should == '<i>Atta</i> <i>(Subatta)</i> <i>major</i> r. <i>alpina</i>'
+      expect(name.to_s).to eq('Atta major alpina')
+      expect(name.to_html).to eq('<i>Atta</i> <i>major</i> <i>alpina</i>')
+      expect(name.epithet).to eq('alpina')
+      expect(name.epithet_html).to eq('<i>alpina</i>')
+      expect(name.epithets).to eq('major alpina')
+      expect(name.protonym_html).to eq('<i>Atta</i> <i>(Subatta)</i> <i>major</i> r. <i>alpina</i>')
     end
 
     it "should import a subspecies name designated by :subspecies_epithet" do
       name = Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta', species_epithet: 'major', subspecies: [{:type => 'r.', subspecies_epithet: 'alpina'}]
-      name.to_s.should == 'Atta major alpina'
+      expect(name.to_s).to eq('Atta major alpina')
     end
 
     it "should import a subspecies, using the epithet from the headline, not the protonym" do
       name = Name.import genus: create_genus('Atta'), species_epithet: 'major', subspecies_epithet: 'alpinus', subspecies: [{:type => 'r.', subspecies_epithet: 'alpina'}]
-      name.to_s.should == 'Atta major alpinus'
+      expect(name.to_s).to eq('Atta major alpinus')
     end
 
   end
@@ -167,7 +167,7 @@ describe SubspeciesName do
     it "should return the subspecies epithets minus the species epithet" do
       name = SubspeciesName.new name: 'Acus major minor medium', name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
         epithet_html: '<i>medium</i>', epithets: 'major minor medium', protonym_html: '<i>Acus major minor medium</i>'
-      name.subspecies_epithets.should == 'minor medium'
+      expect(name.subspecies_epithets).to eq('minor medium')
     end
   end
 

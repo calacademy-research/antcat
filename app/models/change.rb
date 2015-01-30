@@ -5,6 +5,11 @@ class Change < ActiveRecord::Base
   has_many :transactions
   has_many :paper_trail_versions, :through => :transactions
   belongs_to :taxon, :foreign_key => :user_changed_taxon_id
+  attr_accessible :approver_id,
+                  :approved_at,
+                  :paper_trail_versions,
+                  :paper_trail_version,
+                  :approver
 
 
   scope :creations, -> {joins(:paper_trail_versions).
@@ -18,7 +23,7 @@ class Change < ActiveRecord::Base
 
 
   def get_user_version
-    Version.find_by_sql("select * from versions,changes, transactions
+    PaperTrail::Version.find_by_sql("select * from versions,changes, transactions
         where changes.user_changed_taxon_id = versions.item_id AND
         transactions.change_id = changes.id  AND
         transactions.paper_trail_version_id = versions.id AND
@@ -44,6 +49,8 @@ class Change < ActiveRecord::Base
 
 
   def user
+    # is this looks for a "User" object in a test, check that you're writing the id and not the user object
+    # in factorygirl.
     user_id = get_user_version.whodunnit
     user_id ? User.find(user_id) : nil
   end

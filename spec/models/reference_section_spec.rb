@@ -10,15 +10,15 @@ describe ReferenceSection do
       taxon.reference_sections.create references_taxt: 'Taxt', position: 1
       taxon.reference_sections.create references_taxt: 'Not taxt', position: 3
       taxon.reload
-      taxon.should have(3).reference_sections
+      expect(taxon.reference_sections.size).to eq(3)
 
       ReferenceSection.dedupe
 
       taxon.reload
-      taxon.should have(2).reference_sections
-      taxon.reference_sections.map do |reference_section|
+      expect(taxon.size).to eq(2)
+      expect(taxon.reference_sections.map do |reference_section|
         [reference_section.position, reference_section.references_taxt]
-      end.should =~ [[1, 'Taxt'], [3, 'Not taxt']]
+      end).to match_array([[1, 'Taxt'], [3, 'Not taxt']])
     end
   end
 
@@ -26,7 +26,7 @@ describe ReferenceSection do
     it "should record versions" do
       with_versioning do
         reference_section = FactoryGirl.create :reference_section
-        reference_section.versions.last.event.should == 'create'
+        expect(reference_section.versions.last.event).to eq('create')
       end
     end
   end

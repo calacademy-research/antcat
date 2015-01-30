@@ -8,28 +8,28 @@ describe Parsers::ReferenceKeyParser do
 
   describe "Parsing a key string into its components" do
     it "should return an author and a year" do
-      @parser.parse('Bolton 1975').should == {author_last_names: ['Bolton'], nester_last_names: nil,  year: '1975', year_ordinal: nil}
+      expect(@parser.parse('Bolton 1975')).to eq({author_last_names: ['Bolton'], nester_last_names: nil,  year: '1975', year_ordinal: nil})
     end
     it "should return a year ordinal" do
-      @parser.parse('Bolton, 1975b').should == {author_last_names: ['Bolton'], nester_last_names: nil,  year: '1975', year_ordinal: 'b'}
+      expect(@parser.parse('Bolton, 1975b')).to eq({author_last_names: ['Bolton'], nester_last_names: nil,  year: '1975', year_ordinal: 'b'})
     end
     it "should return two authors" do
-      @parser.parse('Bolton & Fisher, 1975').should == {author_last_names: ['Bolton', 'Fisher'], nester_last_names: nil, year: '1975', year_ordinal: nil}
+      expect(@parser.parse('Bolton & Fisher, 1975')).to eq({author_last_names: ['Bolton', 'Fisher'], nester_last_names: nil, year: '1975', year_ordinal: nil})
     end
     it "should handle et al." do
-      @parser.parse('Bolton, <i>et al.</i> 1975').should == {author_last_names: ['Bolton'], nester_last_names: nil, year: '1975', year_ordinal: nil}
+      expect(@parser.parse('Bolton, <i>et al.</i> 1975')).to eq({author_last_names: ['Bolton'], nester_last_names: nil, year: '1975', year_ordinal: nil})
     end
     it "should handle et al. with two names" do
-      @parser.parse('Bolton, Ward <i>et al.</i> 1975').should == {author_last_names: ['Bolton', 'Ward'], nester_last_names: nil, year: '1975', year_ordinal: nil}
+      expect(@parser.parse('Bolton, Ward <i>et al.</i> 1975')).to eq({author_last_names: ['Bolton', 'Ward'], nester_last_names: nil, year: '1975', year_ordinal: nil})
     end
     it "should handle three or more items" do
-      @parser.parse('Bolton, Fisher & Ward, 1975').should == {author_last_names: ['Bolton', 'Fisher', 'Ward'], nester_last_names: nil, year: '1975', year_ordinal: nil}
+      expect(@parser.parse('Bolton, Fisher & Ward, 1975')).to eq({author_last_names: ['Bolton', 'Fisher', 'Ward'], nester_last_names: nil, year: '1975', year_ordinal: nil})
     end
     it "should handle it when the year is missing" do
-      @parser.parse('Bolton').should == {author_last_names: ['Bolton'], nester_last_names: nil, year: nil, year_ordinal: nil}
+      expect(@parser.parse('Bolton')).to eq({author_last_names: ['Bolton'], nester_last_names: nil, year: nil, year_ordinal: nil})
     end
     it "should handle a 'de' prefix" do
-      @parser.parse('de Andrade, 2001').should == {author_last_names: ['de Andrade'], nester_last_names: nil, year: '2001', year_ordinal: nil}
+      expect(@parser.parse('de Andrade, 2001')).to eq({author_last_names: ['de Andrade'], nester_last_names: nil, year: '2001', year_ordinal: nil})
     end
   end
 

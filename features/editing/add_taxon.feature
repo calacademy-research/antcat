@@ -7,11 +7,13 @@ Feature: Adding a taxon
 
   Background:
     Given that version tracking is enabled
-    And these references exist
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+    And these dated references exist
+      | authors | citation   | title | year |  created_at | updated_at |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |   TODAYS_DATE | TODAYS_DATE |
     And there is a subfamily "Formicinae"
     And I log in
+
+  @allow_rescue
 
   Scenario: Adding a genus
     Given there is a genus "Eciton"
@@ -92,7 +94,7 @@ Feature: Adding a taxon
     Then I should be on the create taxon page
     And I should see "Protonym name name can't be blank"
     And the "taxon_type_taxt" field should contain "Notes"
-    And the name field should contain "Atta"
+    And the name button should contain "Atta"
 
   Scenario: Cancelling
     And I go to the edit page for "Formicinae"
@@ -160,8 +162,10 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Atta major"
     And I should see "Atta major" in the protonym
 
+
   Scenario: Adding a subspecies
     And there is a species "Eciton major" with genus "Eciton"
+    #http://localhost:3000/catalog/6
     When I go to the catalog page for "Eciton major"
     And I press "Edit"
     And I press "Add subspecies"

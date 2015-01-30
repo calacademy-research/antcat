@@ -7,7 +7,7 @@ describe ReferenceAuthorName do
     it "should record versions" do
       with_versioning do
         reference_author_name = FactoryGirl.create :reference_author_name
-        reference_author_name.versions.last.event.should == 'create'
+        expect(reference_author_name.versions.last.event).to eq('create')
       end
     end
   end

@@ -7,7 +7,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
   end
 
   def make_contents contents
-    @importer.stub :parse_family
+    allow(@importer).to receive :parse_family
 
     %{<html><body><div>
     <p>THE DOLICHODEROMORPHS: SUBFAMILIES ANEURETINAE AND DOLICHODERINAE</p>
@@ -36,10 +36,10 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     lasius = Genus.find_by_name 'Lasius'
 
     acanthomyops = Subgenus.find_by_name 'Lasius (Acanthomyops)'
-    acanthomyops.genus.should == lasius
-    acanthomyops.type_name.to_s.should == 'Formica clavigera'
+    expect(acanthomyops.genus).to eq(lasius)
+    expect(acanthomyops.type_name.to_s).to eq('Formica clavigera')
 
-    lasius.subgenera.map(&:id).should == [acanthomyops.id]
+    expect(lasius.subgenera.map(&:id)).to eq([acanthomyops.id])
   end
 
   it "should handle a homonym replaced by the subgenus" do
@@ -57,8 +57,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     }
     acanthomyops = Subgenus.find_by_name 'Lasius (Acanthomyops)'
     orthonotus = Subgenus.find_by_name 'Lasius (Orthonotus)'
-    orthonotus.homonym_replaced_by.should == acanthomyops
-    orthonotus.status.should == 'homonym'
+    expect(orthonotus.homonym_replaced_by).to eq(acanthomyops)
+    expect(orthonotus.status).to eq('homonym')
   end
 
   it "should handle a synonym of a subgenus" do
@@ -76,8 +76,8 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
     }
     acanthomyops = Subgenus.find_by_name 'Lasius (Acanthomyops)'
     condylomyrma = Subgenus.find_by_name 'Lasius (Condylomyrma)'
-    condylomyrma.should be_synonym
-    condylomyrma.should be_synonym_of acanthomyops
+    expect(condylomyrma).to be_synonym
+    expect(condylomyrma).to be_synonym_of acanthomyops
   end
 
 end

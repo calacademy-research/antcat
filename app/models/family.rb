@@ -1,6 +1,7 @@
 # coding: UTF-8
 class Family < Taxon
   include Importers::Bolton::Catalog::Updater
+  attr_accessible :name,:protonym,:type_name
 
   def genera
     Genus.without_subfamily.ordered_by_name
@@ -16,7 +17,8 @@ class Family < Taxon
 
   def get_statistics *ranks
     ranks.inject({}) do |statistics, klass|
-      count = klass.count group: [:fossil, :status]
+      #count = klass.count group: [:fossil, :status]
+      count = klass.group(:fossil,:status).count
       self.class.massage_count count, Rank[klass].to_sym(:plural), statistics
       statistics
     end

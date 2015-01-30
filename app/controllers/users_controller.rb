@@ -1,4 +1,6 @@
 # coding: UTF-8
+# TODO: Rails 4 - everything in this file is overridden by devise in routes.
+# Once tests pass, remove this file.
 class UsersController < ApplicationController
   def index
     @users = User.order(:name).all

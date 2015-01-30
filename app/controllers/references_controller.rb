@@ -26,10 +26,14 @@ EOS
       format.html   {
         @references = Reference.do_search params
       }
-      format.endnote_import  {
+
+      # If you meant to respond to a variant like :tablet or :phone, not a custom format,
+      # be sure to nest your variant response within a format response: format.html { |html| html.tablet { ... } }):
+
+      format.html { |html| html.endnote_import  {
         references = Reference.do_search params.merge format: :endnote_import
         render plain: Exporters::Endnote::Formatter.format(references)
-      }
+      } }
     end
   end
 

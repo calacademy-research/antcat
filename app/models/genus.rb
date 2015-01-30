@@ -6,8 +6,16 @@ class Genus < GenusGroupTaxon
   has_many :subspecies
   has_many :subgenera
 
-  scope :without_subfamily, where(subfamily_id: nil)
-  scope :without_tribe, where(tribe_id: nil)
+  scope :without_subfamily, -> { where(subfamily_id: nil) }
+  scope :without_tribe, -> { where(tribe_id: nil) }
+  attr_accessible :name,
+                  :protonym,
+                  :subfamily,
+                  :tribe,
+                  :type_name,
+                  :current_valid_taxon_id,
+                  :current_valid_taxon,
+                  :homonym_replaced_by
 
   def update_parent new_parent
     set_name_caches

@@ -11,42 +11,42 @@ describe Species do
     create_subspecies 'Atta chilensis robusta', species: species
     create_subspecies 'Atta chilensis saltensis', species: species
     species = Species.find_by_name 'Atta chilensis'
-    species.subspecies.map(&:name).map(&:epithet).should =~ ['robusta', 'saltensis']
-    species.children.should == species.subspecies
+    expect(species.subspecies.map(&:name).map(&:epithet)).to match_array(['robusta', 'saltensis'])
+    expect(species.children).to eq(species.subspecies)
   end
 
   describe "Statistics" do
     it "should handle 0 children" do
-      create_species.statistics.should == {}
+      expect(create_species.statistics).to eq({})
     end
     it "should handle 1 valid subspecies" do
       species = create_species
       subspecies = create_subspecies species: species
-      species.statistics.should == {extant: {subspecies: {'valid' => 1}}}
+      expect(species.statistics).to eq({extant: {subspecies: {'valid' => 1}}})
     end
     it "should differentiate between extant and fossil subspecies" do
       species = create_species
       subspecies = create_subspecies species: species
       create_subspecies species: species, fossil: true
-      species.statistics.should == {
+      expect(species.statistics).to eq({
         extant: {subspecies: {'valid' => 1}},
         fossil: {subspecies: {'valid' => 1}},
-      }
+      })
     end
     it "should differentiate between extant and fossil subspecies" do
       species = create_species
       subspecies = create_subspecies species: species
       create_subspecies species: species, fossil: true
-      species.statistics.should == {
+      expect(species.statistics).to eq({
         extant: {subspecies: {'valid' => 1}},
         fossil: {subspecies: {'valid' => 1}},
-      }
+      })
     end
     it "should handle 1 valid subspecies and 2 synonyms" do
       species = create_species
       create_subspecies species: species
       2.times {create_subspecies species: species, status: 'synonym'}
-      species.statistics.should == {extant: {subspecies: {'valid' => 1, 'synonym' => 2}}}
+      expect(species.statistics).to eq({extant: {subspecies: {'valid' => 1, 'synonym' => 2}}})
     end
 
   end
@@ -64,12 +64,12 @@ describe Species do
       taxon.become_subspecies_of new_species
 
       taxon = Subspecies.find taxon.id
-      taxon.name.name.should == 'Atta major minor'
-      taxon.name.epithets.should == 'major minor'
-      taxon.name.protonym_html.should be_nil
-      taxon.should be_kind_of Subspecies
-      taxon.name.should be_kind_of SubspeciesName
-      taxon.name_cache.should == 'Atta major minor'
+      expect(taxon.name.name).to eq('Atta major minor')
+      expect(taxon.name.epithets).to eq('major minor')
+      expect(taxon.name.protonym_html).to be_nil
+      expect(taxon).to be_kind_of Subspecies
+      expect(taxon.name).to be_kind_of SubspeciesName
+      expect(taxon.name_cache).to eq('Atta major minor')
     end
 
     it "should set the species, genus and subfamily" do
@@ -77,16 +77,16 @@ describe Species do
       new_species = create_species 'Atta major', genus: @genus
       taxon.become_subspecies_of new_species
       taxon = Subspecies.find taxon.id
-      taxon.species.should == new_species
-      taxon.genus.should == new_species.genus
-      taxon.subfamily.should == new_species.subfamily
+      expect(taxon.species).to eq(new_species)
+      expect(taxon.genus).to eq(new_species.genus)
+      expect(taxon.subfamily).to eq(new_species.subfamily)
     end
 
     it "should handle when the new subspecies exists" do
       taxon = create_species 'Camponotus dallatorrei', genus: @genus
       new_species = create_species 'Camponotus alii', genus: @genus
       existing_subspecies = create_subspecies 'Atta alii dallatorrei', genus: @genus
-      -> {taxon.become_subspecies_of new_species}.should raise_error Taxon::TaxonExists
+      expect {taxon.become_subspecies_of new_species}.to raise_error Taxon::TaxonExists
     end
 
     it "should handle when the new subspecies name exists, but just as the protonym of the new subspecies" do
@@ -97,8 +97,8 @@ describe Species do
       taxon.become_subspecies_of new_species
 
       taxon = Subspecies.find taxon.id
-      taxon.name.name.should == 'Atta major minor'
-      taxon.protonym.name.protonym_html.should == '<i>Atta major minor</i>'
+      expect(taxon.name.name).to eq('Atta major minor')
+      expect(taxon.protonym.name.protonym_html).to eq('<i>Atta major minor</i>')
     end
 
   end
@@ -109,7 +109,7 @@ describe Species do
       genus = create_genus
       species = create_species genus: genus
       another_species = create_species genus: genus
-      species.siblings.should =~ [species, another_species]
+      expect(species.siblings).to match_array([species, another_species])
     end
   end
 
@@ -127,21 +127,21 @@ describe Species do
           authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]},
         history: ['Atta major as species', 'Atta major as subspecies']
       )
-      species = Species.find species
-      species.name.to_s.should == 'Fiona major'
-      species.should_not be_invalid
-      species.should be_fossil
-      species.genus.should == genus
-      species.subfamily.should == subfamily
-      species.history_items.map(&:taxt).should == ['Atta major as species', 'Atta major as subspecies']
+      species = Species.find species.id
+      expect(species.name.to_s).to eq('Fiona major')
+      expect(species).not_to be_invalid
+      expect(species).to be_fossil
+      expect(species.genus).to eq(genus)
+      expect(species.subfamily).to eq(subfamily)
+      expect(species.history_items.map(&:taxt)).to eq(['Atta major as species', 'Atta major as subspecies'])
 
       protonym = species.protonym
-      protonym.name.to_s.should == 'Atta major'
+      expect(protonym.name.to_s).to eq('Atta major')
 
       authorship = protonym.authorship
-      authorship.pages.should == '124'
+      expect(authorship.pages).to eq('124')
 
-      authorship.reference.should == @reference
+      expect(authorship.reference).to eq(@reference)
     end
 
     describe "Importing species that look like subspecies" do
@@ -160,7 +160,7 @@ describe Species do
           },
           raw_history: [{subspecies: [{species_group_epithet: 'falcifer'}]}],
         )
-        taxon.should be_kind_of Species
+        expect(taxon).to be_kind_of Species
       end
 
       it "should import a species with a subspecies protonym that was raised to species" do
@@ -178,7 +178,7 @@ describe Species do
           },
           raw_history: [{raised_to_species: {references:[]}}]
         )
-        taxon.should be_kind_of Species
+        expect(taxon).to be_kind_of Species
       end
 
       it "should import a species with a subspecies protonym that has 'raised to species' in the text" do
@@ -196,7 +196,7 @@ describe Species do
           },
           raw_history: [{text: [], matched_text:'Raised to species and senior synonym of', delimiter:' '}]
         )
-        taxon.should be_kind_of Species
+        expect(taxon).to be_kind_of Species
       end
 
       it "should import a subspecies that was revived from synonymy as a species" do
@@ -211,7 +211,7 @@ describe Species do
           },
           raw_history: [{revived_from_synonymy: {references:[], subspecies_of: {species_epithet: 'castanea'}}}]
         )
-        Subspecies.find_by_name('Crematogaster castanea tricolor').should_not be_nil
+        expect(Subspecies.find_by_name('Crematogaster castanea tricolor')).not_to be_nil
       end
     end
 
@@ -254,9 +254,9 @@ describe Species do
           :matched_text=>
           ""}]}
       taxon = Species.import data
-      taxon.protonym.authorship.notes_taxt.should == ' (w., not m. as stated)'
+      expect(taxon.protonym.authorship.notes_taxt).to eq(' (w., not m. as stated)')
       taxon = Species.import data
-      taxon.protonym.authorship.notes_taxt.should == ' (w., not m. as stated)'
+      expect(taxon.protonym.authorship.notes_taxt).to eq(' (w., not m. as stated)')
     end
     it "should not change the history when going through twice" do
       atta = create_genus 'Atta'
@@ -280,9 +280,9 @@ describe Species do
         :history=> ['A history item']
       }
       taxon = Species.import data
-      taxon.history_items.count.should == 1
+      expect(taxon.history_items.count).to eq(1)
       taxon = Species.import data
-      taxon.history_items.count.should == 1
+      expect(taxon.history_items.count).to eq(1)
     end
 
     it "should not change the protonym name when going through twice" do
@@ -307,7 +307,7 @@ describe Species do
       taxon = Species.import data
       protonym_name = taxon.protonym.name.name
       taxon = Species.import data
-      taxon.protonym.name.name.should == protonym_name
+      expect(taxon.protonym.name.name).to eq(protonym_name)
     end
 
     it "should not create duplicate synonyms" do
@@ -335,11 +335,11 @@ describe Species do
       }
       taxon = Species.import data
       ForwardRef.fixup
-      taxon.should be_synonym_of xerox
-      Synonym.count.should == 1
+      expect(taxon).to be_synonym_of xerox
+      expect(Synonym.count).to eq(1)
 
       taxon = Species.import data
-      Synonym.count.should == 1
+      expect(Synonym.count).to eq(1)
     end
 
     it "should not change the protonym name when going through twice" do
@@ -364,7 +364,7 @@ describe Species do
       taxon = Species.import data
       protonym_name = taxon.protonym.name.name
       taxon = Species.import data
-      taxon.protonym.name.name.should == protonym_name
+      expect(taxon.protonym.name.name).to eq(protonym_name)
     end
 
     it "should update value fields" do
@@ -395,22 +395,22 @@ describe Species do
 
       taxon = Species.import data
 
-      Update.count.should == 4
+      expect(Update.count).to eq(4)
 
       update = Update.find_by_field_name 'fossil'
-      update.before.should == '0'
-      update.after.should == '1'
-      taxon.fossil.should be_true
+      expect(update.before).to eq('0')
+      expect(update.after).to eq('1')
+      expect(taxon.fossil).to be_truthy
 
       update = Update.find_by_field_name 'homonym_replaced_by_id'
-      update.before.should be_nil
-      update.after.should == 'Eciton major'
-      taxon.homonym_replaced_by.should == homonym_species
+      expect(update.before).to be_nil
+      expect(update.after).to eq('Eciton major')
+      expect(taxon.homonym_replaced_by).to eq(homonym_species)
 
       update = Update.find_by_field_name 'pages'
-      update.before.should == '124'
-      update.after.should == '23'
-      taxon.protonym.authorship.pages.should == '23'
+      expect(update.before).to eq('124')
+      expect(update.after).to eq('23')
+      expect(taxon.protonym.authorship.pages).to eq('23')
     end
 
     it "should record creations" do
@@ -428,11 +428,11 @@ describe Species do
       Species.import data
       taxon = Species.import data
 
-      Update.count.should == 1
+      expect(Update.count).to eq(1)
       update = Update.find_by_record_id taxon.id
-      update.name.should == 'Atta minor'
-      update.class_name.should == 'Species'
-      update.field_name.should == 'create'
+      expect(update.name).to eq('Atta minor')
+      expect(update.class_name).to eq('Species')
+      expect(update.field_name).to eq('create')
     end
 
     it "should create an Update only if status changes" do
@@ -447,20 +447,20 @@ describe Species do
         }, history: [], raw_history: [],
       }
       species = Species.import data
-      species.should be_valid
-      Update.count.should == 1
-      Update.first.field_name.should == 'create'
+      expect(species).to be_valid
+      expect(Update.count).to eq(1)
+      expect(Update.first.field_name).to eq('create')
 
       data[:raw_history] = [{synonym_ofs: [
         {species_epithet: 'ferox'},
         {species_epithet: 'xerox'},
       ]}]
       Species.import data
-      species.reload.should be_synonym
-      Update.count.should == 2
+      expect(species.reload).to be_synonym
+      expect(Update.count).to eq(2)
       update = Update.find_by_field_name 'status'
-      update.before.should == 'valid'
-      update.after.should == 'synonym'
+      expect(update.before).to eq('valid')
+      expect(update.after).to eq('synonym')
     end
   end
 
@@ -469,8 +469,8 @@ describe Species do
       genus = create_genus 'Myrmicium', status: 'excluded from Formicidae'
       Species.import_myrmicium_heerii
       species = Species.find_by_name 'Myrmicium heerii'
-      species.status.should == 'excluded from Formicidae'
-      species.genus.name.to_s.should == 'Myrmicium'
+      expect(species.status).to eq('excluded from Formicidae')
+      expect(species.genus.name.to_s).to eq('Myrmicium')
     end
   end
 

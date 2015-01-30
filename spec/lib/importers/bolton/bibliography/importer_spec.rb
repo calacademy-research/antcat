@@ -13,10 +13,10 @@ describe Importers::Bolton::Bibliography::Importer do
   end
 
   it "importing a file should call #import_html" do
-   File.should_receive(:read).with('file_name').and_return('contents')
-   @importer.should_receive(:import_html).with('contents')
+   expect(File).to receive(:read).with('file_name').and_return('contents')
+   expect(@importer).to receive(:import_html).with('contents')
    @importer.import_files ['file_name']
-   Bolton::Reference.all.should be_empty
+   expect(Bolton::Reference.all).to be_empty
   end
 
   describe "importing article references" do
@@ -26,15 +26,15 @@ species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-fon
 normal'>31</b>: 1-115. [31.vii.1991.]"
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.authors.should == 'Abe, M. & Smith, D.R.'
-      reference.citation_year.should == '1991d'
-      reference.year.should == 1991
-      reference.title.should == 'The genus-group names of Symphyta and their type species'
-      reference.journal.should == 'Esakia'
-      reference.series_volume_issue.should == '31'
-      reference.pagination.should == '1-115'
-      reference.note.should == '31.vii.1991'
-      reference.reference_type.should == 'ArticleReference'
+      expect(reference.authors).to eq('Abe, M. & Smith, D.R.')
+      expect(reference.citation_year).to eq('1991d')
+      expect(reference.year).to eq(1991)
+      expect(reference.title).to eq('The genus-group names of Symphyta and their type species')
+      expect(reference.journal).to eq('Esakia')
+      expect(reference.series_volume_issue).to eq('31')
+      expect(reference.pagination).to eq('1-115')
+      expect(reference.note).to eq('31.vii.1991')
+      expect(reference.reference_type).to eq('ArticleReference')
     end
 
    it "should handle comma instead of period before note" do
@@ -44,14 +44,14 @@ the National Museum, Victoria</i> <b style='mso-bidi-font-weight:normal'>8</b>:
 21-47, [(30).ix.1934.]"
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.authors.should == 'Clark, J.'
-     reference.citation_year.should == '1934b'
-     reference.year.should == 1934
-     reference.title.should == 'New Australian ants'
-     reference.journal.should == "Memoirs of the National Museum, Victoria"
-     reference.series_volume_issue.should == "8"
-     reference.pagination.should == '21-47'
-     reference.note.should == '(30).ix.1934'
+     expect(reference.authors).to eq('Clark, J.')
+     expect(reference.citation_year).to eq('1934b')
+     expect(reference.year).to eq(1934)
+     expect(reference.title).to eq('New Australian ants')
+     expect(reference.journal).to eq("Memoirs of the National Museum, Victoria")
+     expect(reference.series_volume_issue).to eq("8")
+     expect(reference.pagination).to eq('21-47')
+     expect(reference.note).to eq('(30).ix.1934')
    end
 
    it "should handle italics in an article title" do
@@ -65,14 +65,14 @@ style='mso-bidi-font-weight:normal'>9</b>: 89. [1.2.1934.]
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.authors.should == 'Dumpert, K.'
-     reference.citation_year.should == '2006'
-     reference.year.should == 2006
-     reference.title.should == "Camponotus (Karavaievia) khaosokensis nom. n. proposed as replacement name for Camponotus (Karavaievia) hoelldobleri Dumpert, 2006"
-     reference.journal.should == "Myrmecologische Nachrichten"
-     reference.series_volume_issue.should == '9'
-     reference.pagination.should == "89"
-     reference.note.should == '1.2.1934'
+     expect(reference.authors).to eq('Dumpert, K.')
+     expect(reference.citation_year).to eq('2006')
+     expect(reference.year).to eq(2006)
+     expect(reference.title).to eq("Camponotus (Karavaievia) khaosokensis nom. n. proposed as replacement name for Camponotus (Karavaievia) hoelldobleri Dumpert, 2006")
+     expect(reference.journal).to eq("Myrmecologische Nachrichten")
+     expect(reference.series_volume_issue).to eq('9')
+     expect(reference.pagination).to eq("89")
+     expect(reference.note).to eq('1.2.1934')
    end
 
    it "should handle a missing note" do
@@ -86,14 +86,14 @@ style='mso-bidi-font-weight:normal'>9</b>: 89.
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.authors.should == 'Dumpert, K.'
-     reference.citation_year.should == '2006'
-     reference.year.should == 2006
-     reference.title.should == "Camponotus (Karavaievia) khaosokensis nom. n. proposed as replacement name for Camponotus (Karavaievia) hoelldobleri Dumpert, 2006"
-     reference.journal.should == "Myrmecologische Nachrichten"
-     reference.series_volume_issue.should == '9'
-     reference.pagination.should == "89"
-     reference.note.should be_nil
+     expect(reference.authors).to eq('Dumpert, K.')
+     expect(reference.citation_year).to eq('2006')
+     expect(reference.year).to eq(2006)
+     expect(reference.title).to eq("Camponotus (Karavaievia) khaosokensis nom. n. proposed as replacement name for Camponotus (Karavaievia) hoelldobleri Dumpert, 2006")
+     expect(reference.journal).to eq("Myrmecologische Nachrichten")
+     expect(reference.series_volume_issue).to eq('9')
+     expect(reference.pagination).to eq("89")
+     expect(reference.note).to be_nil
    end
 
    it "should handle missing space after note" do
@@ -105,14 +105,14 @@ style='mso-bidi-font-weight:normal'>15</b>: 79-87. [8.xii.1960.]
 
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.authors.should == 'Arnold, G.'
-     reference.citation_year.should == '1960a'
-     reference.year.should == 1960
-     reference.title.should == "Aculeate Hymenoptera from the Drakensberg Mountains, Natal"
-     reference.journal.should == "Annals of the Natal Museum"
-     reference.series_volume_issue.should == '15'
-     reference.pagination.should == '79-87'
-     reference.note.should == '8.xii.1960'
+     expect(reference.authors).to eq('Arnold, G.')
+     expect(reference.citation_year).to eq('1960a')
+     expect(reference.year).to eq(1960)
+     expect(reference.title).to eq("Aculeate Hymenoptera from the Drakensberg Mountains, Natal")
+     expect(reference.journal).to eq("Annals of the Natal Museum")
+     expect(reference.series_volume_issue).to eq('15')
+     expect(reference.pagination).to eq('79-87')
+     expect(reference.note).to eq('8.xii.1960')
    end
 
    it "should handle these extra spans" do
@@ -121,7 +121,7 @@ style='mso-bidi-font-weight:normal'>15</b>: 79-87. [8.xii.1960.]
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.authors.should == 'Brown, W.L.,Jr.'
+     expect(reference.authors).to eq('Brown, W.L.,Jr.')
    end
 
    it "should handle missing space after author" do
@@ -132,14 +132,14 @@ style='mso-bidi-font-weight:normal'>54</b>: 263-264. [17.ii.1948.]
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.authors.should == 'Brown, W.L.,Jr.'
-     reference.citation_year.should == '1948a'
-     reference.year.should == 1948
-     reference.title.should == 'A new Stictoponera, with notes on the genus'
-     reference.journal.should == 'Psyche'
-     reference.series_volume_issue.should == '54'
-     reference.pagination.should == '263-264'
-     reference.note.should == '17.ii.1948'
+     expect(reference.authors).to eq('Brown, W.L.,Jr.')
+     expect(reference.citation_year).to eq('1948a')
+     expect(reference.year).to eq(1948)
+     expect(reference.title).to eq('A new Stictoponera, with notes on the genus')
+     expect(reference.journal).to eq('Psyche')
+     expect(reference.series_volume_issue).to eq('54')
+     expect(reference.pagination).to eq('263-264')
+     expect(reference.note).to eq('17.ii.1948')
    end
 
    it "should handle text after volume" do
@@ -150,14 +150,14 @@ style='mso-bidi-font-weight:normal'>54</b> (1947): 263-264. [17.ii.1948.]
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.authors.should == 'Brown, W.L.,Jr.'
-     reference.citation_year.should == '1948a'
-     reference.year.should == 1948
-     reference.title.should == 'A new Stictoponera, with notes on the genus'
-     reference.journal.should == 'Psyche'
-     reference.series_volume_issue.should == '54 (1947)'
-     reference.pagination.should == '263-264'
-     reference.note.should == '17.ii.1948'
+     expect(reference.authors).to eq('Brown, W.L.,Jr.')
+     expect(reference.citation_year).to eq('1948a')
+     expect(reference.year).to eq(1948)
+     expect(reference.title).to eq('A new Stictoponera, with notes on the genus')
+     expect(reference.journal).to eq('Psyche')
+     expect(reference.series_volume_issue).to eq('54 (1947)')
+     expect(reference.pagination).to eq('263-264')
+     expect(reference.note).to eq('17.ii.1948')
    end
 
    it "should handle missing period after year" do
@@ -169,14 +169,14 @@ the Tennessee Academy of Science</i> <b style='mso-bidi-font-weight:normal'>27</
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.authors.should == 'Cole, A.C.,Jr.'
-     reference.citation_year.should == '1952a'
-     reference.year.should == 1952
-     reference.title.should == 'A new subspecies of Trachymyrmex smithi from New Mexico'
-     reference.journal.should == 'Journal of the Tennessee Academy of Science'
-     reference.series_volume_issue.should == '27'
-     reference.pagination.should == '159-162'
-     reference.note.should == '(30).iv.1952'
+     expect(reference.authors).to eq('Cole, A.C.,Jr.')
+     expect(reference.citation_year).to eq('1952a')
+     expect(reference.year).to eq(1952)
+     expect(reference.title).to eq('A new subspecies of Trachymyrmex smithi from New Mexico')
+     expect(reference.journal).to eq('Journal of the Tennessee Academy of Science')
+     expect(reference.series_volume_issue).to eq('27')
+     expect(reference.pagination).to eq('159-162')
+     expect(reference.note).to eq('(30).iv.1952')
    end
 
    it "should handle a <span> in the title" do
@@ -196,7 +196,7 @@ Douwes, P., Jessen, K. & Buschinger, A. 1988. <i style="mso-bidi-font-style:norm
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.title.should == 'Epimyrma adlerzi sp. n. from Greece: morphology and life history'
+     expect(reference.title).to eq('Epimyrma adlerzi sp. n. from Greece: morphology and life history')
    end
 
    it "should handle a series indicator" do
@@ -205,7 +205,7 @@ Dupuis, C. 1986. Dates de publication de l'Histoire Naturelle Générale et Part
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.series_volume_issue.should == '(N.S.) 22'
+     expect(reference.series_volume_issue).to eq('(N.S.) 22')
    end
 
    it "should handle when the bold volume immediately follows the italic title" do
@@ -214,7 +214,7 @@ DuBois, M.B. 1998a. The first fossil Dorylinae, with notes on fossil Ecitoninae.
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.title.should == 'The first fossil Dorylinae, with notes on fossil Ecitoninae'
+     expect(reference.title).to eq('The first fossil Dorylinae, with notes on fossil Ecitoninae')
    end
 
    it "should handle a space after the hyphen in the pagination" do
@@ -223,7 +223,7 @@ DuBois, M.B. 1993. What's in a name? A clarification of <i style="mso-bidi-font-
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.pagination.should == '299- 334'
+     expect(reference.pagination).to eq('299- 334')
    end
 
    it "should handle spaces around the hyphen in the pagination" do
@@ -232,7 +232,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. A review of the subgenus <i style="mso-bidi-f
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.pagination.should == '93 - 104'
+     expect(reference.pagination).to eq('93 - 104')
    end
 
    it "should handle big ol' note at the end" do
@@ -241,18 +241,18 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
      }
      @importer.import_html contents
      reference = Bolton::Reference.first
-     reference.authors.should == "Dorow, W.H.O. & Kohout, R.J."
-     reference.reference_type.should == 'ArticleReference'
-     reference.title.should == 'Paleogene ants of the genus Archimyrmex Cockerell, 1923'
-     reference.pagination.should == '39-47'
-     reference.note.should == 'English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49'
+     expect(reference.authors).to eq("Dorow, W.H.O. & Kohout, R.J.")
+     expect(reference.reference_type).to eq('ArticleReference')
+     expect(reference.title).to eq('Paleogene ants of the genus Archimyrmex Cockerell, 1923')
+     expect(reference.pagination).to eq('39-47')
+     expect(reference.note).to eq('English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49')
    end
 
   end
 
   it 'should skip over a note' do
     contents = make_contents %s{Note: in publications the following name appears as either Dubovikoff or Dubovikov; the latter is used here throughout.  }
-    Importers::Bolton::Bibliography::Importer.should_not_receive(:parse)
+    expect(Importers::Bolton::Bibliography::Importer).not_to receive(:parse)
     @importer.import_html contents
   end
 
@@ -261,14 +261,14 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       contents = make_contents "Dixon, F. 1940. <i style='mso-bidi-font-style:normal'>The geology and fossils of the Tertiary and Cretaceous formation of Sussex</i>: 422 pp. London. [(31).xii.1850.]"
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.authors.should == 'Dixon, F.'
-      reference.citation_year.should == '1940'
-      reference.year.should == 1940
-      reference.title.should == "The geology and fossils of the Tertiary and Cretaceous formation of Sussex"
-      reference.pagination.should == '422 pp.'
-      reference.place.should == 'London'
-      reference.note.should == '(31).xii.1850'
-      reference.reference_type.should == 'BookReference'
+      expect(reference.authors).to eq('Dixon, F.')
+      expect(reference.citation_year).to eq('1940')
+      expect(reference.year).to eq(1940)
+      expect(reference.title).to eq("The geology and fossils of the Tertiary and Cretaceous formation of Sussex")
+      expect(reference.pagination).to eq('422 pp.')
+      expect(reference.place).to eq('London')
+      expect(reference.note).to eq('(31).xii.1850')
+      expect(reference.reference_type).to eq('BookReference')
     end
 
     it "should add the book information to the title" do
@@ -277,13 +277,13 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       }
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.authors.should == 'Dumpert, K.'
-      reference.citation_year.should == '1994'
-      reference.year.should == 1994
-      reference.title.should == 'Das Sozialleben der Ameisen. 2., neubearbeitete Auflage'
-      reference.place.should == 'Berlin & Hamburg'
-      reference.pagination.should == '257 pp.'
-      reference.note.should == '(31.xii).1994'
+      expect(reference.authors).to eq('Dumpert, K.')
+      expect(reference.citation_year).to eq('1994')
+      expect(reference.year).to eq(1994)
+      expect(reference.title).to eq('Das Sozialleben der Ameisen. 2., neubearbeitete Auflage')
+      expect(reference.place).to eq('Berlin & Hamburg')
+      expect(reference.pagination).to eq('257 pp.')
+      expect(reference.note).to eq('(31.xii).1994')
     end
 
     it "should handle a subtitle (without italics)" do
@@ -292,7 +292,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       }
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.title.should == 'Illustrations of Natural History. Wherein are exhibited upwards of two hundred and twenty figures of exotic insects. 2'
+      expect(reference.title).to eq('Illustrations of Natural History. Wherein are exhibited upwards of two hundred and twenty figures of exotic insects. 2')
     end
 
     it "should handle an edition" do
@@ -301,7 +301,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       }
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.title.should == 'British Ants, their life-history and classification (2nd. edition)'
+      expect(reference.title).to eq('British Ants, their life-history and classification (2nd. edition)')
     end
 
     it "should handle a missing note" do
@@ -310,7 +310,7 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       }
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.note.should be_nil
+      expect(reference.note).to be_nil
     end
 
   end
@@ -322,10 +322,10 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       }
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.title.should == "Fauna murav'ev Basseina R. Sumbar (Yugo-zapadnyi Kopetdag)"
-      reference.citation_year.should == "1985"
-      reference.pagination.should == "(pp. 208-246)"
-      reference.reference_type.should == 'NestedReference'
+      expect(reference.title).to eq("Fauna murav'ev Basseina R. Sumbar (Yugo-zapadnyi Kopetdag)")
+      expect(reference.citation_year).to eq("1985")
+      expect(reference.pagination).to eq("(pp. 208-246)")
+      expect(reference.reference_type).to eq('NestedReference')
     end
   end
 
@@ -336,8 +336,8 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       }
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.reference_type.should == 'ArticleReference'
-      reference.note.should == 'English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49'
+      expect(reference.reference_type).to eq('ArticleReference')
+      expect(reference.note).to eq('English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49')
     end
   end
 
@@ -348,9 +348,9 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
       }
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.reference_type.should == 'UnknownReference'
-      reference.citation_year.should == '2003'
-      reference.title.should == 'Paleogene ants of the genus Archimyrmex Cockerell, 1923. Paleontological Journal 37: 39-47. [English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49.]'
+      expect(reference.reference_type).to eq('UnknownReference')
+      expect(reference.citation_year).to eq('2003')
+      expect(reference.title).to eq('Paleogene ants of the genus Archimyrmex Cockerell, 1923. Paleontological Journal 37: 39-47. [English translation of Paleontologicheskii Zhurnal 2003 (No. 1): 40-49.]')
     end
   end
 
@@ -360,14 +360,14 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
     }
     @importer.import_html contents
     reference = Bolton::Reference.first
-    reference.title.should == 'The larva of Blepharidatta'
+    expect(reference.title).to eq('The larva of Blepharidatta')
   end
 
   describe 'saving the original' do
     it "should simplify the HTML markup" do
       contents = make_contents "Abe, M. &amp; Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i style='mso-bidi-font-style:normal'>Esakia</i> <b style='mso-bidi-font-weight: normal'>31</b>: 1-115. [31.vii.1991.]"
       @importer.import_html contents
-      Bolton::Reference.first.original.should == "Abe, M. & Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i>Esakia</i> <b>31</b>: 1-115. [31.vii.1991.]"
+      expect(Bolton::Reference.first.original).to eq("Abe, M. & Smith, D.R. 1991d. The genus-group names of Symphyta and their type species. <i>Esakia</i> <b>31</b>: 1-115. [31.vii.1991.]")
     end
   end
 
@@ -375,13 +375,13 @@ Dorow, W.H.O. & Kohout, R.J. 1995. Paleogene ants of the genus <i style="mso-bid
     it "should call BoltonReference.import" do
       contents = make_contents "Abe, M. &amp; Smith, D.R. 1991d. The genus. <i>Esakia</i> <b>31</b>: 1-115. [31.vii.1991.]"
       reference = FactoryGirl.create :bolton_reference
-      Bolton::Reference.should_receive(:import).and_return reference
+      expect(Bolton::Reference).to receive(:import).and_return reference
       @importer.import_html contents
     end
     it "should not clear the import result" do
       seen = FactoryGirl.create :bolton_reference, :import_result => 'added'
       Importers::Bolton::Bibliography::Importer.new
-      seen.reload.import_result.should == 'added'
+      expect(seen.reload.import_result).to eq('added')
     end
 
     it "should handle this &nbsp; properly" do
@@ -394,32 +394,32 @@ France </i><b style='mso-bidi-font-weight:normal'>1918</b>: 182-185.
       }
       @importer.import_html contents
       reference = Bolton::Reference.first
-      reference.original.should == %{Santschi, F. 1918d. Sous-genres et synonymies de <i>Cremastogaster</i>.<i>  Bulletin de la Société Entomologique de France </i><b>1918</b>: 182-185. [27.viii.1918.]}
+      expect(reference.original).to eq(%{Santschi, F. 1918d. Sous-genres et synonymies de <i>Cremastogaster</i>.<i>  Bulletin de la Société Entomologique de France </i><b>1918</b>: 182-185. [27.viii.1918.]})
     end
 
   end
 
   describe "Getting new references and seeing if they exist in AntCat" do
     it "should return nothing if there is nothing" do
-      @importer.get_new_references.should == []
+      expect(@importer.get_new_references).to eq([])
     end
     it "should return a new reference in Bolton" do
       antcat_reference = FactoryGirl.create :book_reference
       new_bolton_reference = FactoryGirl.create :bolton_reference, import_result: 'added'
       bolton_key = new_bolton_reference.key
-      @importer.get_new_references.should == [new_bolton_reference]
+      expect(@importer.get_new_references).to eq([new_bolton_reference])
     end
     it "should not return a new reference in Bolton that is already in AntCat" do
       new_bolton_reference = FactoryGirl.create :bolton_reference, import_result: 'added'
       bolton_key = new_bolton_reference.key
       antcat_reference = FactoryGirl.create :book_reference, bolton_key_cache: bolton_key
-      @importer.get_new_references.should == [new_bolton_reference]
+      expect(@importer.get_new_references).to eq([new_bolton_reference])
     end
     it "should not return a reference that's not new" do
       old_bolton_reference = FactoryGirl.create :bolton_reference, import_result: nil
       bolton_key = old_bolton_reference.key
       antcat_reference = FactoryGirl.create :book_reference, bolton_key_cache: bolton_key
-      @importer.get_new_references.should == []
+      expect(@importer.get_new_references).to eq([])
     end
   end
 

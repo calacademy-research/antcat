@@ -1,7 +1,9 @@
 # coding: UTF-8
 Then /^I should (not )?see the reference field edit form$/ do |should_not|
   selector = should_not ? :should_not : :should
-  find('.current .reference_item > .edit').send(selector, be_visible)
+  visible = should_not ? :false : :true
+
+  find('.current .reference_item > .edit', visible: visible).send(selector, be_visible)
 end
 
 # Reference field/popup
@@ -59,8 +61,9 @@ end
 
 # Reference popup
 Then /I should (not )?see the reference popup/ do |should_not|
+  visible = should_not ? :false : :true
   selector = should_not ? :should_not : :should
-  find('.antcat_reference_popup').send(selector, be_visible)
+  find('.antcat_reference_popup', visible: visible).send(selector, be_visible)
 end
 
 # Name field
@@ -83,11 +86,13 @@ end
 # Name popup
 Then /^I should (not )?see the name popup edit interface$/ do |should_not|
   selector = should_not ? :should_not : :should
-  find('#popup .controls').send(selector, be_visible)
+  visible = should_not ? :false : :true
+  find('#popup .controls', visible: visible).send(selector, be_visible)
 end
 Then /^I should (not )?see the name popup$/ do |should_not|
   selector = should_not ? :should_not : :should
-  find('.antcat_name_popup').send(selector, be_visible)
+  visible = should_not ? :false : :true
+  find('.antcat_name_popup', visible: visible).send(selector, be_visible)
 end
 
 # Results section

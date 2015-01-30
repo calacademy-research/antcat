@@ -12,7 +12,7 @@ describe AuthorName do
     reference = FactoryGirl.create(:reference)
     author_name.references << reference
 
-    author_name.references.first.should == reference
+    expect(author_name.references.first).to eq(reference)
   end
 
   it "has an author" do
@@ -22,20 +22,20 @@ describe AuthorName do
 
   it "must have an author" do
     author_name = AuthorName.new :name => 'Ward, P. S.'
-    author_name.should_not be_valid
+    expect(author_name).not_to be_valid
     author_name.author = FactoryGirl.create :author
-    author_name.should be_valid
+    expect(author_name).to be_valid
   end
 
   it "can't be blank" do
     author_name = AuthorName.new
     author_name.author = FactoryGirl.create :author
     author_name.name = nil
-    author_name.should_not be_valid
+    expect(author_name).not_to be_valid
     author_name.name = ''
-    author_name.should_not be_valid
+    expect(author_name).not_to be_valid
     author_name.name = 'Bolton, B.'
-    author_name.should be_valid
+    expect(author_name).to be_valid
   end
 
   it "can't be a duplicate" do
@@ -44,24 +44,25 @@ describe AuthorName do
     author_name.save!
 
     author_name = FactoryGirl.build :author_name, name: 'Bolton'
-    author_name.should_not be_valid
+    expect(author_name).not_to be_valid
   end
 
   describe "importing" do
     it "should create and return the authors" do
-      AuthorName.import(['Fisher, B.L.', 'Wheeler, W.M.']).map(&:name).should =~
+      expect(AuthorName.import(['Fisher, B.L.', 'Wheeler, W.M.']).map(&:name)).to match_array(
       ['Fisher, B.L.', 'Wheeler, W.M.']
+      )
     end
 
     it "should reuse existing authors" do
       AuthorName.import(['Fisher, B.L.', 'Wheeler, W.M.'])
       AuthorName.import(['Fisher, B.L.', 'Wheeler, W.M.'])
-      AuthorName.count.should == 2
+      expect(AuthorName.count).to eq(2)
     end
 
     it "should respect case" do
       AuthorName.import(['Mackay, W. M.', 'MacKay, W. M.'])
-      AuthorName.count.should == 2
+      expect(AuthorName.count).to eq(2)
     end
   end
 
@@ -70,7 +71,7 @@ describe AuthorName do
       author_name = FactoryGirl.create :author_name, :name => 'Ward'
       reference = FactoryGirl.create :reference, :author_names => [author_name]
       author_name.update_attribute :name, 'Fisher'
-      Reference.find(reference.id).author_names_string.should == 'Fisher'
+      expect(Reference.find(reference.id).author_names_string).to eq('Fisher')
     end
   end
 
@@ -78,36 +79,36 @@ describe AuthorName do
     it "should find or create authors with names in the string" do
       AuthorName.create! :name => 'Bolton, B.', :author => @author
       author_data = AuthorName.import_author_names_string('Ward, P.S.; Bolton, B.')
-      author_data[:author_names].first.name.should == 'Ward, P.S.'
-      author_data[:author_names].second.name.should == 'Bolton, B.'
-      author_data[:author_names_suffix].should be_nil
-      AuthorName.count.should == 2
+      expect(author_data[:author_names].first.name).to eq('Ward, P.S.')
+      expect(author_data[:author_names].second.name).to eq('Bolton, B.')
+      expect(author_data[:author_names_suffix]).to be_nil
+      expect(AuthorName.count).to eq(2)
     end
 
     it "should return the authors suffix" do
       author_data = AuthorName.import_author_names_string('Ward, P.S.; Bolton, B. (eds.)')
-      author_data[:author_names].first.name.should == 'Ward, P.S.'
-      author_data[:author_names].second.name.should == 'Bolton, B.'
-      author_data[:author_names_suffix].should == ' (eds.)'
+      expect(author_data[:author_names].first.name).to eq('Ward, P.S.')
+      expect(author_data[:author_names].second.name).to eq('Bolton, B.')
+      expect(author_data[:author_names_suffix]).to eq(' (eds.)')
     end
 
     it "should handle the Andres" do
       author_data = AuthorName.import_author_names_string('Andre, Edm.; Andre, Ern.')
-      author_data[:author_names].first.name.should == 'Andre, Edm.'
-      author_data[:author_names].second.name.should == 'Andre, Ern.'
+      expect(author_data[:author_names].first.name).to eq('Andre, Edm.')
+      expect(author_data[:author_names].second.name).to eq('Andre, Ern.')
     end
 
     it "should not just crap out when the input is invalid" do
       author_data = AuthorName.import_author_names_string(' ; ')
-      author_data[:author_names].should == []
-      author_data[:author_names_suffix].should be_nil
+      expect(author_data[:author_names]).to eq([])
+      expect(author_data[:author_names_suffix]).to be_nil
     end
 
    it "should handle a semicolon followed by a space at the end" do
      author_data = AuthorName.import_author_names_string('Ward, P. S.; ')
-     author_data[:author_names].should have(1).item
-     author_data[:author_names].first.name.should == 'Ward, P. S.'
-     author_data[:author_names_suffix].should be_nil
+     expect(author_data[:author_names].size).to eq(1)
+     expect(author_data[:author_names].first.name).to eq('Ward, P. S.')
+     expect(author_data[:author_names_suffix]).to be_nil
    end
 
   end
@@ -117,16 +118,16 @@ describe AuthorName do
       AuthorName.create! :name => 'Bolton', :author => @author
       AuthorName.create! :name => 'Fisher', :author => @author
       results = AuthorName.search('Bol')
-      results.count.should == 1
-      results.first.should == 'Bolton'
+      expect(results.count).to eq(1)
+      expect(results.first).to eq('Bolton')
     end
 
     it "should find an internal string" do
       AuthorName.create! :name => 'Bolton', :author => @author
       AuthorName.create! :name => 'Fisher', :author => @author
       results = AuthorName.search('ol')
-      results.count.should == 1
-      results.first.should == 'Bolton'
+      expect(results.count).to eq(1)
+      expect(results.first).to eq('Bolton')
     end
 
     it "should return authors in order of most recently used" do
@@ -138,30 +139,30 @@ describe AuthorName do
                                   :reference => reference
       ReferenceAuthorName.create! :created_at => Time.now - 10, :author_name => AuthorName.find_by_name('Old'),
                                   :reference => reference
-      AuthorName.search.should == ['Most Recent', 'Recent', 'Old', 'Never Used']
+      expect(AuthorName.search).to eq(['Most Recent', 'Recent', 'Old', 'Never Used'])
     end
   end
 
   describe "first and last name" do
     it "should simply return the name if there's only one word" do
       author_name = AuthorName.new :name => 'Bolton'
-      author_name.last_name.should == 'Bolton'
-      author_name.first_name_and_initials.should be_nil
+      expect(author_name.last_name).to eq('Bolton')
+      expect(author_name.first_name_and_initials).to be_nil
     end
     it "should separate the words if there are multiple" do
       author_name = AuthorName.new :name => 'Bolton, B.L.'
-      author_name.last_name.should == 'Bolton'
-      author_name.first_name_and_initials.should == 'B.L.'
+      expect(author_name.last_name).to eq('Bolton')
+      expect(author_name.first_name_and_initials).to eq('B.L.')
     end
     it "should use all words if there is no comma" do
       author_name = AuthorName.new :name => 'Royal Academy'
-      author_name.last_name.should == 'Royal Academy'
-      author_name.first_name_and_initials.should be_nil
+      expect(author_name.last_name).to eq('Royal Academy')
+      expect(author_name.first_name_and_initials).to be_nil
     end
     it "should use use all words before the comma if there are multiple" do
       author_name = AuthorName.new :name => 'Baroni Urbani, C.'
-      author_name.last_name.should == 'Baroni Urbani'
-      author_name.first_name_and_initials.should == 'C.'
+      expect(author_name.last_name).to eq('Baroni Urbani')
+      expect(author_name.first_name_and_initials).to eq('C.')
     end
   end
 
@@ -169,25 +170,25 @@ describe AuthorName do
     it "should not mess with missing space before comma" do
       author = AuthorName.create! :name => 'Ward, P. S., Jr.', :author => @author
       AuthorName.fix_missing_spaces
-      AuthorName.find(author).name.should == 'Ward, P. S., Jr.'
+      expect(AuthorName.find(author).name).to eq('Ward, P. S., Jr.')
     end
     it "should not mess with missing space before hyphen" do
       author = AuthorName.create! :name => 'Ward, P.-S.', :author => @author
       AuthorName.fix_missing_spaces
-      AuthorName.find(author).name.should == 'Ward, P.-S.'
+      expect(AuthorName.find(author).name).to eq('Ward, P.-S.')
     end
     it "should find and fix the author names with missing spaces and fix them" do
       author = AuthorName.create! :name => 'Ward, P.S.', :author => @author
       AuthorName.fix_missing_spaces
-      AuthorName.find(author).name.should == 'Ward, P. S.'
+      expect(AuthorName.find(author).name).to eq('Ward, P. S.')
     end
     it "should find an existing author that has the space and transfer references to it" do
       ward_with_spaces = AuthorName.create! :name => 'Ward, P. S.', :author => @author
       ward_without_spaces = AuthorName.create! :name => 'Ward, P.S.', :author => @author
       reference = FactoryGirl.create :reference, :author_names => [ward_without_spaces]
       AuthorName.fix_missing_spaces
-      reference.author_names(true).should == [ward_with_spaces]
-      AuthorName.count.should == 1
+      expect(reference.author_names(true)).to eq([ward_with_spaces])
+      expect(AuthorName.count).to eq(1)
     end
   end
 
@@ -198,7 +199,7 @@ describe AuthorName do
       reference = FactoryGirl.create :reference, :author_names => [without_hyphen]
       AuthorName.create_hyphenation_aliases
       author = reference.authors(true).first
-      author.names.should =~ [with_hyphen, without_hyphen]
+      expect(author.names).to match_array([with_hyphen, without_hyphen])
     end
     it "should do nothing if the author is already the same as the nonhyphenated one's author" do
       author = FactoryGirl.create :author
@@ -206,8 +207,8 @@ describe AuthorName do
       without_hyphen = FactoryGirl.create :author_name, :name => 'Ward, P. S.', :author => author
       reference = FactoryGirl.create :reference, :author_names => [without_hyphen]
       AuthorName.create_hyphenation_aliases
-      Author.find(AuthorName.find(with_hyphen).author).should == author
-      Author.find(AuthorName.find(without_hyphen).author).should == author
+      expect(Author.find(AuthorName.find(with_hyphen).author).id).to eq(author)
+      expect(Author.find(AuthorName.find(without_hyphen).author).id).to eq(author)
     end
   end
 
@@ -217,14 +218,14 @@ describe AuthorName do
       FactoryGirl.create :author_name, :name => 'Ward, P. S.'
       FactoryGirl.create :author_name, :name => 'Ward, Phil'
       AuthorName.alias false, 'Ward, P. S.', 'Ward, Phil'
-      AuthorName.find_by_name('Ward, P. S.').author.should == AuthorName.find_by_name('Ward, Phil').author
-      Author.count.should == 1
+      expect(AuthorName.find_by_name('Ward, P. S.').author).to eq(AuthorName.find_by_name('Ward, Phil').author)
+      expect(Author.count).to eq(1)
     end
     it "should handle the situation where none of the authors exist yet" do
       Author.delete_all
       AuthorName.alias false, 'Ward, P. S.', 'Ward, Phil'
-      AuthorName.find_by_name('Ward, P. S.').author.should == AuthorName.find_by_name('Ward, Phil').author
-      Author.count.should == 1
+      expect(AuthorName.find_by_name('Ward, P. S.').author).to eq(AuthorName.find_by_name('Ward, Phil').author)
+      expect(Author.count).to eq(1)
     end
     it "should not mess about aliases that are already there" do
       Author.delete_all
@@ -233,10 +234,10 @@ describe AuthorName do
       AuthorName.create! :name => 'Martínez-Ibáñez, M. D.', :author => martinez_ibanez
       FactoryGirl.create :author_name, :name => 'Martínez-Ibañez, D.'
       AuthorName.alias false, "Martínez Ibáñez, M. D.", "Martínez-Ibañez, D.", "Martínez-Ibáñez, M. D."
-      Author.count.should == 1
+      expect(Author.count).to eq(1)
       author = AuthorName.find_by_name("Martínez Ibáñez, M. D.").author
-      author.should == AuthorName.find_by_name("Martínez-Ibañez, D.").author
-      author.should == AuthorName.find_by_name("Martínez-Ibáñez, M. D.").author
+      expect(author).to eq(AuthorName.find_by_name("Martínez-Ibañez, D.").author)
+      expect(author).to eq(AuthorName.find_by_name("Martínez-Ibáñez, M. D.").author)
     end
   end
 
@@ -246,10 +247,10 @@ describe AuthorName do
         Author.delete_all
         reference = FactoryGirl.create :reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Ward, Phil')]
         AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
-        AuthorName.find_by_name('Ward, Phil').should be_nil
+        expect(AuthorName.find_by_name('Ward, Phil')).to be_nil
         reference = Reference.find reference
-        reference.author_names.map(&:name).should == ['Ward, P. S.']
-        reference.author_names_string.should == 'Ward, P. S.'
+        expect(reference.author_names.map(&:name)).to eq(['Ward, P. S.'])
+        expect(reference.author_names_string).to eq('Ward, P. S.')
       end
     end
     describe "when the correct name does exist" do
@@ -258,12 +259,12 @@ describe AuthorName do
         FactoryGirl.create :author_name, :name => 'Ward, P. S.'
         reference = FactoryGirl.create :reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Ward, Phil')]
         AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
-        AuthorName.find_by_name('Ward, Phil').should be_nil
+        expect(AuthorName.find_by_name('Ward, Phil')).to be_nil
         reference = Reference.find reference
-        reference.author_names.map(&:name).should == ['Ward, P. S.']
-        reference.author_names_string.should == 'Ward, P. S.'
-        AuthorName.count.should == 1
-        Author.count.should == 1
+        expect(reference.author_names.map(&:name)).to eq(['Ward, P. S.'])
+        expect(reference.author_names_string).to eq('Ward, P. S.')
+        expect(AuthorName.count).to eq(1)
+        expect(Author.count).to eq(1)
       end
       describe "when the correct name does exist and it has other names" do
         it "shouldn't delete the author" do
@@ -273,10 +274,10 @@ describe AuthorName do
           bad = FactoryGirl.create :author_name, :name => 'Ward, Phil', :author => author
           reference = FactoryGirl.create :reference, :author_names => [bad]
           AuthorName.correct 'Ward, Phil', 'Ward, P. S.', false
-          AuthorName.find_by_name('Ward, Phil').should be_nil
-          AuthorName.find_by_name('Ward, P. S.').author.should == author
-          AuthorName.count.should == 1
-          Author.count.should == 1
+          expect(AuthorName.find_by_name('Ward, Phil')).to be_nil
+          expect(AuthorName.find_by_name('Ward, P. S.').author).to eq(author)
+          expect(AuthorName.count).to eq(1)
+          expect(Author.count).to eq(1)
         end
       end
     end
@@ -288,14 +289,14 @@ describe AuthorName do
         no_space = FactoryGirl.create :author_name, :name => "#{preposition}farge, M."
         with_space = FactoryGirl.create :author_name, :name => "#{preposition} Farge, M."
         FactoryGirl.create :author_name, :name => "#{preposition}me, M."
-        AuthorName.find_preposition_synonyms.should == [[with_space, no_space]]
+        expect(AuthorName.find_preposition_synonyms).to eq([[with_space, no_space]])
       end
     end
     it "should find names that differ only in having a preposition in the back instead of the front" do
       in_front = FactoryGirl.create :author_name, :name => "La Farge, M."
       in_back = FactoryGirl.create :author_name, :name => "Farge, M., La"
       FactoryGirl.create :author_name, :name => "me, M., La"
-      AuthorName.find_preposition_synonyms.should == [[in_front, in_back]]
+      expect(AuthorName.find_preposition_synonyms).to eq([[in_front, in_back]])
     end
   end
 
@@ -303,7 +304,7 @@ describe AuthorName do
     it "should record versions" do
       with_versioning do
         author_name = FactoryGirl.create :author_name
-        author_name.versions.last.event.should == 'create'
+        expect(author_name.versions.last.event).to eq('create')
       end
     end
   end

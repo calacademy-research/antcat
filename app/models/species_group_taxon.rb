@@ -5,6 +5,7 @@ class SpeciesGroupTaxon < Taxon
   belongs_to :genus; validates :genus, presence: true
   belongs_to :subgenus
   before_create :set_subfamily
+  attr_accessible :genus, :subfamily, :subfamily_id
 
   def recombination?
     genus_epithet = name.genus_epithet
@@ -120,7 +121,13 @@ class SpeciesGroupTaxon < Taxon
   class NoProtonymError < StandardError; end
 
   def set_subfamily
-    self.subfamily = genus.subfamily if genus
+    # TODO: Rails 4 upgrade breaks this
+    # Remove the line below if all tests pass. This is having trouble because it appears that in
+    # rails 4, the belongs_to relationship isn't available at this point. Assigning IDs directly.
+
+    #self.subfamily = genus.subfamily if genus
+    self.subfamily_id = genus.subfamily.id if genus
+
   end
 
   ##################################################

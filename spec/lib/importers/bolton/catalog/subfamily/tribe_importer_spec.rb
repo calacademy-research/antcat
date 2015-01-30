@@ -18,7 +18,7 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         :type_genus => {:genus_name => 'Formica'},
         :history => ['Taxonomic history']
       )
-      @importer.stub :parse_family
+      allow(@importer).to receive :parse_family
     end
 
     def make_contents content
@@ -41,13 +41,13 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>Aneuretini history</p>
       }
 
-      Taxon.count.should == 3
+      expect(Taxon.count).to eq(3)
 
       tribe = Tribe.find_by_name 'Aneuretini'
-      tribe.subfamily.name.to_s.should == 'Aneuretinae'
-      tribe.history_items.map(&:taxt).should == ["{nam #{Name.find_by_name('Aneuretini').id}} history"]
-      tribe.type_name.to_s.should == 'Aneuretus'
-      tribe.type_name.rank.should == 'genus'
+      expect(tribe.subfamily.name.to_s).to eq('Aneuretinae')
+      expect(tribe.history_items.map(&:taxt)).to eq(["{nam #{Name.find_by_name('Aneuretini').id}} history"])
+      expect(tribe.type_name.to_s).to eq('Aneuretus')
+      expect(tribe.type_name.rank).to eq('genus')
     end
 
     it "should import the junior synonym of a tribe" do
@@ -64,13 +64,13 @@ describe Importers::Bolton::Catalog::Subfamily::Importer do
         <p>Paleosminthuridae as tribe of Dolichoderinae: Donisthorpe, 1947c: 588.</p>
       }
 
-      Taxon.count.should == 4
+      expect(Taxon.count).to eq(4)
 
       senior_synonym = Tribe.find_by_name 'Aneuretini'
       junior_synonym = Tribe.find_by_name 'Paleosminthuridae'
-      junior_synonym.should be_synonym
-      junior_synonym.should be_synonym_of senior_synonym
-      junior_synonym.subfamily.should == senior_synonym.subfamily
+      expect(junior_synonym).to be_synonym
+      expect(junior_synonym).to be_synonym_of senior_synonym
+      expect(junior_synonym.subfamily).to eq(senior_synonym.subfamily)
     end
 
     #it "should import an ichnotaxon" do

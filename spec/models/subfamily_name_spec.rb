@@ -7,16 +7,16 @@ describe SubfamilyName do
     it "should recognize its key and set its name appropriately" do
       name = Name.import subfamily_name: 'Aneuretinae'
       name = SubfamilyName.find name
-      name.name.should == 'Aneuretinae'
-      name.epithet.should == 'Aneuretinae'
-      name.to_s.should == 'Aneuretinae'
-      name.to_html.should == 'Aneuretinae'
-      name.epithet_html.should == 'Aneuretinae'
+      expect(name.name).to eq('Aneuretinae')
+      expect(name.epithet).to eq('Aneuretinae')
+      expect(name.to_s).to eq('Aneuretinae')
+      expect(name.to_html).to eq('Aneuretinae')
+      expect(name.epithet_html).to eq('Aneuretinae')
     end
     it "should reuse names" do
       FactoryGirl.create :name, name: 'Dolichoderinae'
       Name.import subfamily_name: 'Dolichoderinae'
-      Name.count.should == 1
+      expect(Name.count).to eq(1)
     end
   end
 

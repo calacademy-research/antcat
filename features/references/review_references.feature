@@ -14,10 +14,10 @@ Feature: Reviewing features
     Then I should see "Latest changes"
 
   Scenario: See features in reverse chronological order
-    And these references exist
+    And these dated references exist
       | authors    | citation   | created_at | title             | updated_at | year |
-      | Ward, P.   | Psyche 5:3 | today      | Ward's World      | 2010-2-2   | 2010 |
-      | Bolton, B. | Psyche 4:2 | yesterday  | Bolton's Bulletin | 2010-1-1   | 2010 |
+      | Ward, P.   | Psyche 5:3 | TODAYS_DATE      | Ward's World      | 2010-2-2   | 2010 |
+      | Bolton, B. | Psyche 4:2 | YESTERDAYS_DATE  | Bolton's Bulletin | 2010-1-1   | 2010 |
     Given I am logged in
     When I go to the references page
     And I follow "Latest changes"

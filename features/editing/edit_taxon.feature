@@ -83,7 +83,7 @@ Feature: Editing a taxon
     When I fill in the authorship notes with "Authorship notes"
     And I fill in "taxon_type_taxt" with "Notes"
     When I save my changes
-    Then I should see "Fisher 2004. Ants. Psyche 3:3." in the headline
+    Then The taxon mouseover should contain "Fisher 2004. Ants. Psyche 3:3."
     And I should see "Authorship notes" in the headline
 
   Scenario: Supplying the authorship when there wasn't one before
@@ -98,7 +98,7 @@ Feature: Editing a taxon
     And I click the first search result
     And I press "OK"
     And I save my changes
-    Then I should see "Fisher 2004. Ants. Psyche 3:3." in the headline
+    Then The taxon mouseover should contain "Fisher 2004. Ants. Psyche 3:3."
 
   Scenario: Changing the authorship but cancelling
     Given there is a genus "Eciton"

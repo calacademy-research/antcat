@@ -6,7 +6,7 @@ describe Genus do
   it "should have a tribe" do
     attini = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Attini'), :subfamily => FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Myrmicinae'))
     FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :tribe => attini
-    Genus.find_by_name('Atta').tribe.should == attini
+    expect(Genus.find_by_name('Atta').tribe).to eq(attini)
   end
 
   it "should have species, which are its children" do
@@ -14,21 +14,21 @@ describe Genus do
     FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'robusta'), :genus => atta
     FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'saltensis'), :genus => atta
     atta = Genus.find_by_name('Atta')
-    atta.species.map(&:name).map(&:to_s).should =~ ['robusta', 'saltensis']
-    atta.children.should == atta.species
+    expect(atta.species.map(&:name).map(&:to_s)).to match_array(['robusta', 'saltensis'])
+    expect(atta.children).to eq(atta.species)
   end
 
   it "should have subspecies" do
     genus = FactoryGirl.create :genus
     FactoryGirl.create :subspecies, genus: genus
-    genus.should have(1).subspecies
+    expect(genus.subspecies.count).to eq(1)
   end
 
   it "should use the species's' genus, if nec." do
     genus = FactoryGirl.create :genus
     species = FactoryGirl.create :species, genus: genus
     FactoryGirl.create :subspecies, species: species, genus: nil
-    genus.should have(1).subspecies
+    expect(genus.subspecies.count).to eq(1)
   end
 
   it "should have subgenera" do
@@ -36,41 +36,41 @@ describe Genus do
     FactoryGirl.create :subgenus, name: FactoryGirl.create(:name, name: 'robusta'), :genus => atta
     FactoryGirl.create :subgenus, name: FactoryGirl.create(:name, name: 'saltensis'), :genus => atta
     atta = Genus.find_by_name('Atta')
-    atta.subgenera.map(&:name).map(&:to_s).should =~ ['robusta', 'saltensis']
+    expect(atta.subgenera.map(&:name).map(&:to_s)).to match_array(['robusta', 'saltensis'])
   end
 
   describe "Statistics" do
 
     it "should handle 0 children" do
       genus = FactoryGirl.create :genus
-      genus.statistics.should == {}
+      expect(genus.statistics).to eq({})
     end
 
     it "should handle 1 valid species" do
       genus = FactoryGirl.create :genus
       species = FactoryGirl.create :species, :genus => genus
-      genus.statistics.should == {:extant => {:species => {'valid' => 1}}}
+      expect(genus.statistics).to eq({:extant => {:species => {'valid' => 1}}})
     end
 
     it "should ignore original combinations" do
       genus = create_genus
       FactoryGirl.create :species, genus: genus
       FactoryGirl.create :species, status: 'original combination', genus: genus
-      genus.statistics.should == {:extant => {:species => {'valid' => 1}}}
+      expect(genus.statistics).to eq({:extant => {:species => {'valid' => 1}}})
     end
 
     it "should handle 1 valid species and 2 synonyms" do
       genus = FactoryGirl.create :genus
       FactoryGirl.create :species, :genus => genus
       2.times {FactoryGirl.create :species, :genus => genus, :status => 'synonym'}
-      genus.statistics.should == {:extant => {:species => {'valid' => 1, 'synonym' => 2}}}
+      expect(genus.statistics).to eq({:extant => {:species => {'valid' => 1, 'synonym' => 2}}})
     end
 
     it "should handle 1 valid species with 2 valid subspecies" do
       genus = FactoryGirl.create :genus
       species = FactoryGirl.create :species, genus: genus
       2.times {FactoryGirl.create :subspecies, species: species, genus: genus}
-      genus.statistics.should == {extant: {species: {'valid' => 1}, subspecies: {'valid' => 2}}}
+      expect(genus.statistics).to eq({extant: {species: {'valid' => 1}, subspecies: {'valid' => 2}}})
     end
 
     it "should be able to differentiate extinct species and subspecies" do
@@ -80,10 +80,10 @@ describe Genus do
       FactoryGirl.create :subspecies, genus: genus, species: species, fossil: true
       FactoryGirl.create :subspecies, genus: genus, species: species
       FactoryGirl.create :subspecies, genus: genus, species: fossil_species, fossil: true
-      genus.statistics.should == {
+      expect(genus.statistics).to eq({
         extant: {species: {'valid' => 1}, subspecies: {'valid' => 1}},
         fossil: {species: {'valid' => 1}, subspecies: {'valid' => 2}},
-      }
+      })
     end
 
     it "should be able to differentiate extinct species and subspecies" do
@@ -93,10 +93,10 @@ describe Genus do
       FactoryGirl.create :subspecies, genus: genus, species: species, fossil: true
       FactoryGirl.create :subspecies, genus: genus, species: species
       FactoryGirl.create :subspecies, genus: genus, species: fossil_species, fossil: true
-      genus.statistics.should == {
+      expect(genus.statistics).to eq({
         extant: {species: {'valid' => 1}, subspecies: {'valid' => 1}},
         fossil: {species: {'valid' => 1}, subspecies: {'valid' => 2}},
-      }
+      })
     end
 
   end
@@ -105,7 +105,7 @@ describe Genus do
     it "should just return the genera with no subfamily" do
       cariridris = FactoryGirl.create :genus, :subfamily => nil
       atta = FactoryGirl.create :genus
-      Genus.without_subfamily.all.should == [cariridris]
+      expect(Genus.without_subfamily.all).to eq([cariridris])
     end
   end
 
@@ -114,7 +114,7 @@ describe Genus do
       tribe = FactoryGirl.create :tribe
       cariridris = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
       atta = FactoryGirl.create :genus, :subfamily => tribe.subfamily, :tribe => nil
-      Genus.without_tribe.all.should == [atta]
+      expect(Genus.without_tribe.all).to eq([atta])
     end
   end
 
@@ -124,7 +124,7 @@ describe Genus do
       FactoryGirl.create :genus
       tribe = FactoryGirl.create :tribe
       genus = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
-      genus.siblings.should == [genus]
+      expect(genus.siblings).to eq([genus])
     end
 
     it "should return itself and its tribe's other genera" do
@@ -132,14 +132,14 @@ describe Genus do
       tribe = FactoryGirl.create :tribe
       genus = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
       another_genus = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
-      genus.siblings.should =~ [genus, another_genus]
+      expect(genus.siblings).to match_array([genus, another_genus])
     end
 
     it "when there's no subfamily, should return all the genera with no subfamilies" do
       FactoryGirl.create :genus
       genus = FactoryGirl.create :genus, :subfamily => nil, :tribe => nil
       another_genus = FactoryGirl.create :genus, :subfamily => nil, :tribe => nil
-      genus.siblings.should =~ [genus, another_genus]
+      expect(genus.siblings).to match_array([genus, another_genus])
     end
 
     it "when there's no tribe, return the other genera in its subfamily without tribes" do
@@ -148,7 +148,7 @@ describe Genus do
       FactoryGirl.create :genus, :tribe => tribe, :subfamily => subfamily
       genus = FactoryGirl.create :genus, :subfamily => subfamily, :tribe => nil
       another_genus = FactoryGirl.create :genus, :subfamily => subfamily, :tribe => nil
-      genus.siblings.should =~ [genus, another_genus]
+      expect(genus.siblings).to match_array([genus, another_genus])
     end
 
   end
@@ -158,17 +158,17 @@ describe Genus do
       @genus = create_genus
     end
     it "should return an empty array if there are none" do
-      @genus.species_group_descendants.should == []
+      expect(@genus.species_group_descendants).to eq([])
     end
     it "should return all the species" do
       species = create_species genus: @genus
-      @genus.species_group_descendants.should == [species]
+      expect(@genus.species_group_descendants).to eq([species])
     end
     it "should return all the species and subspecies of the genus" do
       species = create_species genus: @genus
       subgenus = create_subgenus genus: @genus
       subspecies = create_subspecies genus: @genus, species: species
-      @genus.species_group_descendants.should =~ [species, subspecies]
+      expect(@genus.species_group_descendants).to match_array([species, subspecies])
     end
   end
 
@@ -187,28 +187,28 @@ describe Genus do
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
         history: ["Atta as genus", "Atta as species"]
       ).reload
-      genus.name.to_s.should == 'Atta'
-      genus.name.epithet.should == 'Atta'
-      genus.should_not be_invalid
-      genus.should be_fossil
-      genus.subfamily.should == subfamily
-      genus.history_items.map(&:taxt).should == ['Atta as genus', 'Atta as species']
-      genus.type_taxt.should == ', by monotypy'
+      expect(genus.name.to_s).to eq('Atta')
+      expect(genus.name.epithet).to eq('Atta')
+      expect(genus).not_to be_invalid
+      expect(genus).to be_fossil
+      expect(genus.subfamily).to eq(subfamily)
+      expect(genus.history_items.map(&:taxt)).to eq(['Atta as genus', 'Atta as species'])
+      expect(genus.type_taxt).to eq(', by monotypy')
 
       protonym = genus.protonym
-      protonym.name.to_s.should == 'Atta'
+      expect(protonym.name.to_s).to eq('Atta')
 
       authorship = protonym.authorship
-      authorship.pages.should == '124'
+      expect(authorship.pages).to eq('124')
 
-      authorship.reference.should == reference
+      expect(authorship.reference).to eq(reference)
 
-      Update.count.should == 1
+      expect(Update.count).to eq(1)
       update = Update.find_by_record_id genus.id
-      update.name.should == 'Atta'
-      update.class_name.should == 'Genus'
-      update.field_name.should == 'create'
-      update.name.should == 'Atta'
+      expect(update.name).to eq('Atta')
+      expect(update.class_name).to eq('Genus')
+      expect(update.field_name).to eq('create')
+      expect(update.name).to eq('Atta')
     end
 
     it "save the subgenus part correctly" do
@@ -220,7 +220,7 @@ describe Genus do
                           texts: [{text: [{phrase: ', by monotypy'}]}]},
         history: [],
       })
-      Genus.find(genus).type_name.to_s.should == 'Atta major'
+      expect(Genus.find(genus.id).type_name.to_s).to eq('Atta major')
     end
 
     it "should not mind if there's no type" do
@@ -233,7 +233,7 @@ describe Genus do
         },
         :history => ["Atta as genus", "Atta as species"]
       }).reload
-      genus.type_taxt.should be_nil
+      expect(genus.type_taxt).to be_nil
     end
 
     it "should create synonyms" do
@@ -248,10 +248,10 @@ describe Genus do
         attributes: {synonym_of: senior},
         history: []
       )
-      junior.junior_synonyms.should be_empty
-      junior.senior_synonyms.should == [senior]
-      senior.junior_synonyms.should == [junior]
-      senior.senior_synonyms.should be_empty
+      expect(junior.junior_synonyms).to be_empty
+      expect(junior.senior_synonyms).to eq([senior])
+      expect(senior.junior_synonyms).to eq([junior])
+      expect(senior.senior_synonyms).to be_empty
     end
 
     it "should make sure the type-species is fixed up to point to the genus and not just to any genus with the same name" do
@@ -265,16 +265,16 @@ describe Genus do
         :type_species => {:genus_name => 'Myrmicium', :species_epithet => 'heeri'},
         :history => []
       })
-      genus = Genus.find genus
-      genus.type_name.to_s.should == 'Myrmicium heeri'
-      genus.type_name.rank.should == 'species'
+      genus = Genus.find genus.id
+      expect(genus.type_name.to_s).to eq('Myrmicium heeri')
+      expect(genus.type_name.rank).to eq('species')
     end
 
     describe "Manual 'importing'" do
       it "should import Formicites" do
         Genus.import_formicites
         genus = Genus.find_by_name 'Formicites'
-        genus.status.should == 'collective group name'
+        expect(genus.status).to eq('collective group name')
       end
     end
 
@@ -302,9 +302,9 @@ describe Genus do
           tribe: @dolichoderini,
         }
         genus = Genus.import data
-        Taxon.count.should == 3
-        genus.subfamily.should == @dolichoderinae
-        genus.tribe.should == @dolichoderini
+        expect(Taxon.count).to eq(3)
+        expect(genus.subfamily).to eq(@dolichoderinae)
+        expect(genus.tribe).to eq(@dolichoderini)
 
         aectinae = create_subfamily 'Aectinae'
         aectini = create_tribe 'Aectini', subfamily: aectinae
@@ -312,20 +312,20 @@ describe Genus do
         data[:tribe] = aectini
 
         genus = Genus.import data
-        Taxon.count.should == 5
+        expect(Taxon.count).to eq(5)
 
-        genus.subfamily.should == aectinae
-        genus.tribe.should == aectini
+        expect(genus.subfamily).to eq(aectinae)
+        expect(genus.tribe).to eq(aectini)
 
-        Update.count.should == 3
-
-        update = Update.find_by_record_id_and_field_name genus, :subfamily_id
-        update.before.should == 'Dolichoderinae'
-        update.after.should == 'Aectinae'
+        expect(Update.count).to eq(3)
 
         update = Update.find_by_record_id_and_field_name genus, :subfamily_id
-        update.before.should == 'Dolichoderinae'
-        update.after.should == 'Aectinae'
+        expect(update.before).to eq('Dolichoderinae')
+        expect(update.after).to eq('Aectinae')
+
+        update = Update.find_by_record_id_and_field_name genus, :subfamily_id
+        expect(update.before).to eq('Dolichoderinae')
+        expect(update.after).to eq('Aectinae')
       end
     end
 
@@ -341,13 +341,13 @@ describe Genus do
         tribe: create_tribe,
       }
       genus = Genus.import data
-      genus.incertae_sedis_in.should be_nil
+      expect(genus.incertae_sedis_in).to be_nil
 
       data[:attributes] = {}
       data[:attributes][:incertae_sedis_in] = 'subfamily'
       genus = Genus.import data
 
-      genus.incertae_sedis_in.should == 'subfamily'
+      expect(genus.incertae_sedis_in).to eq('subfamily')
     end
 
     it "should record a change in hong" do
@@ -362,28 +362,28 @@ describe Genus do
         tribe: create_tribe,
       }
       genus = Genus.import data
-      genus.hong.should be_false
+      expect(genus.hong).to be_falsey
 
       data[:hong] = true
       genus = Genus.import data
-      genus.hong.should be_true
+      expect(genus.hong).to be_truthy
     end
   end
 
   describe "Parent" do
     it "should be nil, if there's no subfamily" do
       genus = create_genus subfamily: nil, tribe: nil
-      genus.parent.should be_nil
+      expect(genus.parent).to be_nil
     end
     it "should refer to the subfamily, if there is one" do
       subfamily = create_subfamily
       genus = create_genus subfamily: subfamily, tribe: nil
-      genus.parent.should == subfamily
+      expect(genus.parent).to eq(subfamily)
     end
     it "should refer to the tribe, if there is one" do
       tribe = create_tribe
       genus = create_genus subfamily: tribe.subfamily, tribe: tribe
-      genus.parent.should == tribe
+      expect(genus.parent).to eq(tribe)
     end
   end
 
@@ -394,8 +394,8 @@ describe Genus do
       protonym = FactoryGirl.create :protonym
       genus = Genus.create! name: FactoryGirl.create(:name, name: 'Aneuretus'), protonym: protonym
       genus.parent = tribe
-      genus.tribe.should == tribe
-      genus.subfamily.should == subfamily
+      expect(genus.tribe).to eq(tribe)
+      expect(genus.subfamily).to eq(subfamily)
     end
   end
   describe "Updating the parent" do
@@ -405,24 +405,24 @@ describe Genus do
       protonym = FactoryGirl.create :protonym
       genus = Genus.create! name: FactoryGirl.create(:name, name: 'Aneuretus'), protonym: protonym
       genus.update_parent tribe
-      genus.tribe.should == tribe
-      genus.subfamily.should == subfamily
+      expect(genus.tribe).to eq(tribe)
+      expect(genus.subfamily).to eq(subfamily)
     end
     it "should assign the subfamily when the tribe is nil, and set the tribe to nil" do
       subfamily = FactoryGirl.create :subfamily
       tribe = FactoryGirl.create :tribe, subfamily: subfamily
       genus = create_genus tribe: tribe
       genus.update_parent subfamily
-      genus.tribe.should == nil
-      genus.subfamily.should == subfamily
+      expect(genus.tribe).to eq(nil)
+      expect(genus.subfamily).to eq(subfamily)
     end
     it "should clear both subfamily and tribe when the new parent is nil" do
       subfamily = FactoryGirl.create :subfamily
       tribe = FactoryGirl.create :tribe, subfamily: subfamily
       genus = create_genus tribe: tribe
       genus.update_parent nil
-      genus.tribe.should == nil
-      genus.subfamily.should == nil
+      expect(genus.tribe).to eq(nil)
+      expect(genus.subfamily).to eq(nil)
     end
 
     it "should assign the subfamily of its descendants" do
@@ -434,14 +434,14 @@ describe Genus do
       species = create_species genus: genus
       subspecies = create_subspecies species: species, genus: genus
       # test the initial subfamilies
-      genus.subfamily.should == subfamily
-      genus.species.first.subfamily.should == subfamily
-      genus.subspecies.first.subfamily.should == subfamily
+      expect(genus.subfamily).to eq(subfamily)
+      expect(genus.species.first.subfamily).to eq(subfamily)
+      expect(genus.subspecies.first.subfamily).to eq(subfamily)
       # test the updated subfamilies
       genus.update_parent new_tribe
-      genus.subfamily.should == new_subfamily
-      genus.species.first.subfamily.should == new_subfamily
-      genus.subspecies.first.subfamily.should == new_subfamily
+      expect(genus.subfamily).to eq(new_subfamily)
+      expect(genus.species.first.subfamily).to eq(new_subfamily)
+      expect(genus.subspecies.first.subfamily).to eq(new_subfamily)
     end
   end
 end

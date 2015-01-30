@@ -44,9 +44,35 @@ When /^(?:|I )press "([^"]*)"$/ do |button|
   click_button(button)
 end
 
+def click_first_button(locator, options={})
+  first(:button, locator, options).click
+end
+
+When /^(?:|I )press the first "([^"]*)"$/ do |button|
+  click_first_button(button)
+end
+
+When (/^I follow the first edit$/) do
+  first('.edit_icon').click
+
+end
+
+When (/^stop here$/) do
+  puts "whoopie!"
+end
+
+def click_first_link(locator, options={})
+  first(:link, locator, options).click
+end
+
+When /^(?:|I )follow the first "([^"]*)"$/ do |link|
+  click_first_link(link)
+end
+
 When /^(?:|I )follow "([^"]*)"$/ do |link|
   click_link(link)
 end
+
 
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"$/ do |field, value|
   fill_in(field, :with => value)

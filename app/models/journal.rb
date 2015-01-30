@@ -1,12 +1,14 @@
 # coding: UTF-8
 class Journal < ActiveRecord::Base
   validates_presence_of :name
-  scope :list, order(:name)
+  scope :list, -> { order(:name) }
   has_paper_trail
 
+  attr_accessible :name
   def self.import name
     return unless name.present?
-    journal = find_or_create_by_name name
+    journal = find_or_create_by(:name => name)
+
     raise unless journal.valid?
     journal
   end

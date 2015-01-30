@@ -5,6 +5,7 @@ class NestedReference < UnmissingReference
   validates_presence_of :nesting_reference, :pages_in
   validate :validate_nested_reference_exists
   validate :validate_nested_reference_doesnt_point_to_itself
+  attr_accessible :nesting_reference, :bolton_key_cache, :year
 
   def self.requires_title; false end
 

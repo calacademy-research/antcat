@@ -14,8 +14,8 @@ describe ReferenceObserver do
           ReferenceFormatterCache.instance.populate nestee
           nesting_reference.title = 'Title'
           nesting_reference.save!
-          ReferenceFormatterCache.instance.get(nesting_reference).should be_nil
-          ReferenceFormatterCache.instance.get(nestee).should be_nil
+          expect(ReferenceFormatterCache.instance.get(nesting_reference)).to be_nil
+          expect(ReferenceFormatterCache.instance.get(nestee)).to be_nil
         end
         it "should invalidate the cache for the reference that uses the reference document" do
           nesting_reference = FactoryGirl.create :article_reference
@@ -25,8 +25,8 @@ describe ReferenceObserver do
           ReferenceFormatterCache.instance.populate reference
           ReferenceFormatterCache.instance.invalidate reference
           ReferenceObserver.instance.before_update reference
-          reference.formatted_cache.should be_nil
-          ReferenceFormatterCache.instance.get(reference).should be_nil
+          expect(reference.formatted_cache).to be_nil
+          expect(ReferenceFormatterCache.instance.get(reference)).to be_nil
         end
       end
     end

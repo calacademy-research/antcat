@@ -17,14 +17,13 @@ describe Formatters::AdvancedSearchHtmlFormatter do
       taxon = create_genus 'Atta', incertae_sedis_in: 'genus', nomen_nudum: true
       taxon.protonym.authorship.update_attributes reference: reference
       string = @formatter.format taxon
-      string.should == 
-"<a href=\"/catalog/#{taxon.id}\"><i>Atta</i></a> " +
+      expect(string).to eq("<a href=\"/catalog/#{taxon.id}\"><i>Atta</i></a> " +
 "<i>incertae sedis</i> in genus, <i>nomen nudum</i>\n" +
 "Latreille, P. A. 1809. " +
 "<i>Atta</i>. Science (1):3." +
 "<a class=\"goto_reference_link\" href=\"/references?q=#{reference.id}\" target=\"_blank\">" +
 "<img alt=\"External_link\" src=\"/assets/external_link.png\" /></a>" +
-"<span class=\"reference_id\">#{reference.id}</span>\n\n"
+"<span class=\"reference_id\">#{reference.id}</span>\n\n")
   end
 
 end

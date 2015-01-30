@@ -4,12 +4,24 @@ class MissingReferencesController < ApplicationController
   skip_before_filter :authenticate_editor, if: :preview?
 
   def index
+#      Unknown column 'protonyms.citation' in 'order clause':
+#
+#          SELECT citation FROM `protonyms`
+#      INNER JOIN `citations`
+#      ON `citations`.`id` = `protonyms`.`authorship_id`
+# INNER JOIN `references`
+# ON `references`.`id` = `citations`.`reference_id`
+# WHERE (references.type = 'MissingReference')
+# GROUP BY citation
+# ORDER BY `protonyms`.`citation` ASC
+
     @missing_references = Protonym.select(:citation)
       .joins(authorship: :reference)
       .where("references.type = 'MissingReference'")
       .group(:citation)
-      .order(:citation)
+      .order('citation')
   end
+
 
   def edit
     @missing_reference = MissingReference.find params[:id]
@@ -26,7 +38,7 @@ class MissingReferencesController < ApplicationController
       return
     end
 
-    MissingReference.find(@missing_reference).replace_citation_with @replacement
+    MissingReference.find(@missing_reference.id).replace_citation_with @replacement
 
     redirect_to missing_references_path
   end

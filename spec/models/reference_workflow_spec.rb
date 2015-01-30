@@ -7,38 +7,38 @@ describe Reference do
   end
 
   it "should start as 'none'" do
-    @reference.should be_none
-    @reference.can_start_reviewing?.should be_true
-    @reference.can_finish_reviewing?.should be_false
-    @reference.can_restart_reviewing?.should be_false
+    expect(@reference).to be_none
+    expect(@reference.can_start_reviewing?).to be_truthy
+    expect(@reference.can_finish_reviewing?).to be_falsey
+    expect(@reference.can_restart_reviewing?).to be_falsey
   end
 
   it "none transitions to start" do
     @reference.start_reviewing!
-    @reference.should be_reviewing
-    @reference.can_start_reviewing?.should be_false
-    @reference.can_finish_reviewing?.should be_true
-    @reference.can_restart_reviewing?.should be_false
+    expect(@reference).to be_reviewing
+    expect(@reference.can_start_reviewing?).to be_falsey
+    expect(@reference.can_finish_reviewing?).to be_truthy
+    expect(@reference.can_restart_reviewing?).to be_falsey
   end
 
   it "start transitions to finish" do
     @reference.start_reviewing!
     @reference.finish_reviewing!
-    @reference.should_not be_reviewing
-    @reference.should be_reviewed
-    @reference.can_start_reviewing?.should be_false
-    @reference.can_finish_reviewing?.should be_false
-    @reference.can_restart_reviewing?.should be_true
+    expect(@reference).not_to be_reviewing
+    expect(@reference).to be_reviewed
+    expect(@reference.can_start_reviewing?).to be_falsey
+    expect(@reference.can_finish_reviewing?).to be_falsey
+    expect(@reference.can_restart_reviewing?).to be_truthy
   end
 
   it "reviewed can transition back to reviewing" do
     @reference.start_reviewing!
     @reference.finish_reviewing!
     @reference.restart_reviewing!
-    @reference.should be_reviewing
-    @reference.can_start_reviewing?.should be_false
-    @reference.can_finish_reviewing?.should be_true
-    @reference.can_restart_reviewing?.should be_false
+    expect(@reference).to be_reviewing
+    expect(@reference.can_start_reviewing?).to be_falsey
+    expect(@reference.can_finish_reviewing?).to be_truthy
+    expect(@reference.can_restart_reviewing?).to be_falsey
   end
 
 end

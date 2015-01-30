@@ -6,23 +6,23 @@ describe Taxon do
   describe "References" do
     it "should have no references, if alone" do
       taxon = create_genus
-      taxon.should have(0).references
+      expect(taxon.references.size).to eq(0)
     end
 
     describe "references in Taxon fields" do
       it "should have a reference if it's a taxon's genus" do
         genus = create_genus
         species = create_species genus: genus
-        genus.references.should =~ [
+        expect(genus.references).to match_array([
           {table: 'taxa', field: :genus_id, id: species.id},
-        ]
+        ])
       end
       it "should have a reference if it's a taxon's subfamily" do
         genus = create_genus
-        genus.subfamily.references.should =~ [
+        expect(genus.subfamily.references).to match_array([
           {table: 'taxa', field: :subfamily_id, id: genus.id},
           {table: 'taxa', field: :subfamily_id, id: genus.tribe.id},
-        ]
+        ])
       end
     end
 
@@ -31,14 +31,14 @@ describe Taxon do
         atta = create_genus 'Atta'
         eciton = create_genus 'Eciton'
         eciton.update_attribute :type_taxt, "{tax #{atta.id}}"
-        atta.references.should =~ [
+        expect(atta.references).to match_array([
           {table: 'taxa', field: :type_taxt, id: eciton.id},
-        ]
+        ])
       end
       it "should not return references in its own taxt" do
         eciton = create_genus 'Eciton'
         eciton.update_attribute :type_taxt, "{tax #{eciton.id}}"
-        eciton.references.should be_empty
+        expect(eciton.references).to be_empty
       end
 
     end
@@ -47,7 +47,7 @@ describe Taxon do
       it "should not consider this an external reference" do
         eciton = create_genus 'Eciton'
         eciton.protonym.authorship.update_attribute :notes_taxt, "{tax #{eciton.id}}"
-        eciton.references.should be_empty
+        expect(eciton.references).to be_empty
       end
     end
 
@@ -56,12 +56,12 @@ describe Taxon do
         atta = create_genus 'Atta'
         eciton = create_genus 'Eciton'
         eciton.become_junior_synonym_of atta
-        atta.references.should =~ [
+        expect(atta.references).to match_array([
           {table: 'synonyms', field: :senior_synonym_id, id: eciton.id},
-        ]
-        eciton.references.should =~ [
+        ])
+        expect(eciton.references).to match_array([
           {table: 'synonyms', field: :junior_synonym_id, id: atta.id},
-        ]
+        ])
       end
     end
 
@@ -71,9 +71,9 @@ describe Taxon do
         eciton = create_genus 'Eciton'
         eciton.update_attribute :type_taxt, "{tax #{atta.id}}"
         eciton.update_attribute :homonym_replaced_by, atta
-        atta.nontaxt_references.should =~ [
+        expect(atta.nontaxt_references).to match_array([
           {table: 'taxa', field: :homonym_replaced_by_id, id: eciton.id},
-        ]
+        ])
       end
     end
   end

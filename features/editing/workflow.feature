@@ -1,4 +1,5 @@
 @javascript
+@allow_rescue
 Feature: Workflow
 
   Background:
@@ -10,7 +11,7 @@ Feature: Workflow
     And version tracking is enabled
     And I log in as a catalog editor
 
-
+    #expected failure due to reference picker problem.
   Scenario: Adding a taxon and seeing it on the Changes page
     When I go to the catalog page for "Formicinae"
     * I press "Edit"
@@ -68,8 +69,6 @@ Feature: Workflow
     Then I should be on the catalog page for "Atta"
 
 
-
-
   Scenario: Approving a change
     When I add the genus "Atta"
     And I go to the catalog page for "Atta"
@@ -108,6 +107,7 @@ Feature: Workflow
     When I go to the changes page
     Then I should not see an "Approve" button
 
+  @allow_rescue
   Scenario: Editing a taxon - modified, not added
     Given there is a family "Formicidae"
     And I log in
@@ -122,7 +122,7 @@ Feature: Workflow
     And I go to the changes page
     And I should see "Mark Wilden changed Wildencidae"
 
-
+  @allow_rescue
   Scenario: People's names linked to their email
     When I add the genus "Atta"
     And I go to the changes page

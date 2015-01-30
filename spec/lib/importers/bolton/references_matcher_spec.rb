@@ -9,21 +9,21 @@ describe Importers::Bolton::ReferencesMatcher do
     unmatching_reference = FactoryGirl.create :reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Fisher, B.L.')]
     unmatched_bolton = FactoryGirl.create :bolton_reference, :authors => 'Wheeler, W.M.'
 
-    Bolton::Reference.should_receive(:all).and_return [matched_bolton, unmatched_bolton]
-    matched_bolton.should_receive(:<=>).and_return 0.90
-    unmatched_bolton.should_not_receive(:<=>)
+    expect(Bolton::Reference).to receive(:all).and_return [matched_bolton, unmatched_bolton]
+    expect(matched_bolton).to receive(:<=>).and_return 0.90
+    expect(unmatched_bolton).not_to receive(:<=>)
 
     Importers::Bolton::ReferencesMatcher.new.find_matches_for_all
 
-    Bolton::Match.count.should == 1
-    Bolton::Match.first.similarity.should == 0.90
-    matched_bolton.possible_matches.should == [matching_reference]
-    matched_bolton.match.should == matching_reference
-    matched_bolton.match_status.should == 'auto'
+    expect(Bolton::Match.count).to eq(1)
+    expect(Bolton::Match.first.similarity).to eq(0.90)
+    expect(matched_bolton.possible_matches).to eq([matching_reference])
+    expect(matched_bolton.match).to eq(matching_reference)
+    expect(matched_bolton.match_status).to eq('auto')
 
-    unmatched_bolton.match.should be_nil
-    unmatched_bolton.match_status.should be_nil
-    unmatched_bolton.possible_matches.should be_empty
+    expect(unmatched_bolton.match).to be_nil
+    expect(unmatched_bolton.match_status).to be_nil
+    expect(unmatched_bolton.possible_matches).to be_empty
   end
 
   #it "should be able to be re-run without changing any manual matches/unmatchables" do

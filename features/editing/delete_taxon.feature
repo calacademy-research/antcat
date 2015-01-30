@@ -1,4 +1,5 @@
 @javascript
+@allow_rescue
 Feature: Deleting a taxon
   As an editor of AntCat
   I want to delete taxa

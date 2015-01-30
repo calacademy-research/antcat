@@ -15,23 +15,23 @@ describe SpeciesGroupForwardRef do
       }
     end
     it "is valid with the valid attributes" do
-      SpeciesGroupForwardRef.new(@valid_attributes).should be_valid
+      expect(SpeciesGroupForwardRef.new(@valid_attributes)).to be_valid
     end
     it "needs a fixee" do
       @valid_attributes.delete :fixee
-      SpeciesGroupForwardRef.new(@valid_attributes).should_not be_valid
+      expect(SpeciesGroupForwardRef.new(@valid_attributes)).not_to be_valid
     end
     it "needs a fixee_attribute" do
       @valid_attributes.delete :fixee_attribute
-      SpeciesGroupForwardRef.new(@valid_attributes).should_not be_valid
+      expect(SpeciesGroupForwardRef.new(@valid_attributes)).not_to be_valid
     end
     it "needs a genus" do
       @valid_attributes.delete :genus
-      SpeciesGroupForwardRef.new(@valid_attributes).should_not be_valid
+      expect(SpeciesGroupForwardRef.new(@valid_attributes)).not_to be_valid
     end
     it "needs a epithet" do
       @valid_attributes.delete :epithet
-      SpeciesGroupForwardRef.new(@valid_attributes).should_not be_valid
+      expect(SpeciesGroupForwardRef.new(@valid_attributes)).not_to be_valid
     end
   end
 

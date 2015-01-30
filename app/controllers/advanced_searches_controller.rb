@@ -11,7 +11,7 @@ class AdvancedSearchesController < ApplicationController
     respond_to do |format|
       format.json {send_author_name_picklist}
       format.html {send_html}
-      format.txt  {send_text}
+      format.text  {send_text}
     end
   end
 

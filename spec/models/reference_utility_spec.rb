@@ -11,20 +11,20 @@ describe Reference do
       lowercase = AuthorName.create! :name => 'Mackay, W. P.', :author => author
 
       reference = FactoryGirl.create :reference, :author_names => [uppercase]
-      reference.author_names_string.should == 'MacKay, W. P.'
+      expect(reference.author_names_string).to eq('MacKay, W. P.')
 
       reference.replace_author_name 'MacKay, W. P.', lowercase
 
-      reference.reload.author_names_string.should == 'Mackay, W. P.'
-      AuthorName.count.should == 2
+      expect(reference.reload.author_names_string).to eq('Mackay, W. P.')
+      expect(AuthorName.count).to eq(2)
     end
   end
 
   describe "importing PDF links" do
     it "should delegate to the right object" do
       mock = double Importers::Hol::DocumentUrlImporter
-      Importers::Hol::DocumentUrlImporter.should_receive(:new).and_return mock
-      mock.should_receive(:import)
+      expect(Importers::Hol::DocumentUrlImporter).to receive(:new).and_return mock
+      expect(mock).to receive(:import)
       Reference.import_hol_document_urls
     end
   end
@@ -35,26 +35,26 @@ describe Reference do
         missing_reference = FactoryGirl.create :missing_reference, citation: 'Borowiec, 2010'
         protonym = FactoryGirl.create :protonym, authorship: FactoryGirl.create(:citation, reference: missing_reference)
         taxon = create_genus protonym: protonym
-        taxon.protonym.authorship.reference.should == missing_reference
+        expect(taxon.protonym.authorship.reference).to eq(missing_reference)
         nonmissing_reference = FactoryGirl.create :article_reference, key_cache: 'Borowiec, 2010'
 
         Reference.replace_with_batch [{replace: missing_reference.id, with: nonmissing_reference.id}]
 
-        taxon.reload.protonym.authorship.reference.should == nonmissing_reference
+        expect(taxon.reload.protonym.authorship.reference).to eq(nonmissing_reference)
       end
       it "should replace references in taxt to the MissingReference to the found reference" do
         found_reference = FactoryGirl.create :article_reference
         missing_reference = FactoryGirl.create :missing_reference, citation: 'Borowiec, 2010'
         item = TaxonHistoryItem.create! taxt: "{ref #{missing_reference.id}}"
         Reference.replace_with_batch [{replace: missing_reference.id, with: found_reference.id}]
-        item.reload.taxt.should == "{ref #{found_reference.id}}"
+        expect(item.reload.taxt).to eq("{ref #{found_reference.id}}")
       end
       it "should replace references in citations" do
         found_reference = FactoryGirl.create :article_reference
         missing_reference = FactoryGirl.create :missing_reference, citation: 'Borowiec, 2010'
         citation = Citation.create! reference: missing_reference
         Reference.replace_with_batch [{replace: missing_reference.id, with: found_reference.id}]
-        citation.reload.reference.should == found_reference
+        expect(citation.reload.reference).to eq(found_reference)
       end
     end
   end

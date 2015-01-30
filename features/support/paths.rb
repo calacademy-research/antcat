@@ -16,9 +16,6 @@ module NavigationHelpers
     when /^the missing references page$/
       '/missing_references'
 
-    when /^the paper trail page$/
-      '/paper_trail'
-
     when /^the advanced search page$/
       advanced_search_path
 

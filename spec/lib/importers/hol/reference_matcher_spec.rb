@@ -8,9 +8,9 @@ describe Importers::Hol::ReferenceMatcher do
 
   describe "No matching authors" do
     it "should return :no_entries_for_author" do
-      Importers::Hol::Bibliography.stub(:read_references).and_return []
+      allow(Importers::Hol::Bibliography).to receive(:read_references).and_return []
       reference = FactoryGirl.build :reference
-      @matcher.match(reference).should == :no_entries_for_author
+      expect(@matcher.match(reference)).to eq(:no_entries_for_author)
     end
   end
 
@@ -19,10 +19,10 @@ describe Importers::Hol::ReferenceMatcher do
       best_match = double
       good_match = double
       reference = FactoryGirl.build :article_reference
-      Importers::Hol::Bibliography.stub(:read_references).and_return [good_match, best_match]
-      reference.should_receive(:<=>).with(best_match).and_return 0.9
-      reference.should_receive(:<=>).with(good_match).and_return 0.8
-      @matcher.match(reference).should == best_match
+      allow(Importers::Hol::Bibliography).to receive(:read_references).and_return [good_match, best_match]
+      expect(reference).to receive(:<=>).with(best_match).and_return 0.9
+      expect(reference).to receive(:<=>).with(good_match).and_return 0.8
+      expect(@matcher.match(reference)).to eq(best_match)
     end
   end
 
@@ -30,9 +30,9 @@ describe Importers::Hol::ReferenceMatcher do
     it "should return nil" do
       reference = FactoryGirl.build :article_reference
       hol_reference = Hol::Reference.new
-      @matcher.stub(:candidates_for).and_return [hol_reference]
-      reference.stub(:<=>).and_return 0.0
-      @matcher.match(reference).should be_nil
+      allow(@matcher).to receive(:candidates_for).and_return [hol_reference]
+      allow(reference).to receive(:<=>).and_return 0.0
+      expect(@matcher.match(reference)).to be_nil
     end
   end
 
@@ -40,16 +40,16 @@ describe Importers::Hol::ReferenceMatcher do
     it "should return that match" do
       reference = FactoryGirl.build :article_reference
       hol_reference = Hol::Reference.new
-      @matcher.stub(:candidates_for).and_return [hol_reference]
-      reference.stub(:<=>).and_return 1.0
-      @matcher.match(reference).should == hol_reference
+      allow(@matcher).to receive(:candidates_for).and_return [hol_reference]
+      allow(reference).to receive(:<=>).and_return 1.0
+      expect(@matcher.match(reference)).to eq(hol_reference)
     end
   end
 
   describe "Matching a book" do
     it "shouldn't" do
       reference = FactoryGirl.build :book_reference
-      @matcher.match(reference).should == :book_reference
+      expect(@matcher.match(reference)).to eq(:book_reference)
     end
   end
 

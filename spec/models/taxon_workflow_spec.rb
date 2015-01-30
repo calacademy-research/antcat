@@ -4,17 +4,17 @@ require 'spec_helper'
 describe Taxon do
   it "starts as 'old', and stays there" do
     taxon = FactoryGirl.create :genus
-    taxon.should be_old
-    taxon.can_approve?.should be_false
+    expect(taxon).to be_old
+    expect(taxon.can_approve?).to be_falsey
   end
 
   it "should be able to transition from waiting to approved" do
     taxon = FactoryGirl.create :genus, review_state: :waiting
-    taxon.should be_waiting
-    taxon.can_approve?.should be_true
+    expect(taxon).to be_waiting
+    expect(taxon.can_approve?).to be_truthy
     taxon.approve!
-    taxon.should be_approved
-    taxon.should_not be_waiting
+    expect(taxon).to be_approved
+    expect(taxon).not_to be_waiting
   end
 
   describe "Authorization" do
@@ -31,19 +31,19 @@ describe Taxon do
         @taxon = create_taxon_version_and_change nil
       end
       it "should allow it to be edited by any user that can edit the catalog" do
-        @taxon.can_be_edited_by?(nil).should be_false
-        @taxon.can_be_edited_by?(@editor).should be_true
-        @taxon.can_be_edited_by?(@user).should be_false
+        expect(@taxon.can_be_edited_by?(nil)).to be_falsey
+        expect(@taxon.can_be_edited_by?(@editor)).to be_truthy
+        expect(@taxon.can_be_edited_by?(@user)).to be_falsey
       end
       it "should not allow it to be reviewed" do
-        @taxon.can_be_reviewed_by?(nil).should be_false
-        @taxon.can_be_reviewed_by?(@editor).should be_false
-        @taxon.can_be_reviewed_by?(@user).should be_false
+        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
+        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
+        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
       end
       it "should not allow it to be approved" do
-        @taxon.can_be_reviewed_by?(nil).should be_false
-        @taxon.can_be_reviewed_by?(@editor).should be_false
-        @taxon.can_be_reviewed_by?(@user).should be_false
+        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
+        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
+        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
       end
     end
 
@@ -54,20 +54,20 @@ describe Taxon do
         @taxon = create_taxon_version_and_change :waiting, @changer
       end
       it "should allow any user to edit a waiting record" do
-        @taxon.can_be_edited_by?(nil).should be_false
-        @taxon.can_be_edited_by?(@user).should be_false
-        @taxon.can_be_edited_by?(@editor).should be_true
-        @taxon.can_be_edited_by?(@changer).should be_true
+        expect(@taxon.can_be_edited_by?(nil)).to be_falsey
+        expect(@taxon.can_be_edited_by?(@user)).to be_falsey
+        expect(@taxon.can_be_edited_by?(@editor)).to be_truthy
+        expect(@taxon.can_be_edited_by?(@changer)).to be_truthy
       end
       it "should allow it to be reviewed by a catalog editor" do
-        @taxon.can_be_reviewed_by?(nil).should be_false
-        @taxon.can_be_reviewed_by?(@editor).should be_true
-        @taxon.can_be_reviewed_by?(@user).should be_false
+        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
+        expect(@taxon.can_be_reviewed_by?(@editor)).to be_truthy
+        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
       end
       it "should allow it to be approved by an approver" do
-        @taxon.can_be_approved_by?(nil).should be_false
-        @taxon.can_be_approved_by?(@approver).should be_true
-        @taxon.can_be_approved_by?(@user).should be_false
+        expect(@taxon.can_be_approved_by?(nil)).to be_falsey
+        expect(@taxon.can_be_approved_by?(@approver)).to be_truthy
+        expect(@taxon.can_be_approved_by?(@user)).to be_falsey
       end
     end
 
@@ -77,23 +77,23 @@ describe Taxon do
         @taxon = create_taxon_version_and_change :approved, @editor, @approver
       end
       it "should have an approver and an approved_at" do
-        @taxon.approver.should == @approver
-        @taxon.approved_at.should be_within(7.hours).of(Time.now)
+        expect(@taxon.approver).to eq(@approver)
+        expect(@taxon.approved_at).to be_within(7.hours).of(Time.now)
       end
       it "should allow it to be edited by any user that can edit the catalog" do
-        @taxon.can_be_edited_by?(nil).should be_false
-        @taxon.can_be_edited_by?(@editor).should be_true
-        @taxon.can_be_edited_by?(@user).should be_false
+        expect(@taxon.can_be_edited_by?(nil)).to be_falsey
+        expect(@taxon.can_be_edited_by?(@editor)).to be_truthy
+        expect(@taxon.can_be_edited_by?(@user)).to be_falsey
       end
       it "should not allow it to be reviewed" do
-        @taxon.can_be_reviewed_by?(nil).should be_false
-        @taxon.can_be_reviewed_by?(@editor).should be_false
-        @taxon.can_be_reviewed_by?(@user).should be_false
+        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
+        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
+        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
       end
       it "should not allow it to be approved" do
-        @taxon.can_be_reviewed_by?(nil).should be_false
-        @taxon.can_be_reviewed_by?(@editor).should be_false
-        @taxon.can_be_reviewed_by?(@user).should be_false
+        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
+        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
+        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
       end
     end
   end
@@ -105,17 +105,13 @@ describe Taxon do
     describe "Last change" do
       it "should return nil if no Changes have been created for it" do
         taxon = create_genus
-        taxon.last_change.should be_nil
+        expect(taxon.last_change).to be_nil
       end
       it "should return the Change, if any" do
         taxon = create_genus
-        version = Version.create! item_id: taxon.id, event: 'create', item_type: 'Taxon'
-        transaction = Transaction.create! paper_trail_version_id: version.id
-        change = Change.create! user_changed_taxon_id: taxon.id
-        transaction.change = change
-        transaction.save
 
-        taxon.last_change.should == change
+        change = setup_version taxon.id
+        expect(taxon.last_change).to eq(change)
       end
     end
     describe "Last version" do
@@ -123,7 +119,7 @@ describe Taxon do
         genus = create_genus
         last_version = genus.last_version
         genus.reload
-        last_version.should == genus.versions(true).last
+        expect(last_version).to eq(genus.versions(true).last)
       end
     end
   end
@@ -134,34 +130,19 @@ describe Taxon do
     end
     it "should return the User who added the record, not a subsequent editor" do
       taxon = create_genus
-
       adder = FactoryGirl.create :user
-
-      # Barfed horribly when I tried to do this in a function. Probably a brain-o, but this works.
-      # Anyone refactoring this - get the two below and the one above.
-      version = Version.create! item_id: taxon.id, event: 'create', item_type: 'Taxon', whodunnit: adder
-      transaction = Transaction.create! paper_trail_version_id: version.id
-      change = Change.create! user_changed_taxon_id: taxon.id
-      transaction.change = change
-      transaction.save
-
       editor = FactoryGirl.create :user
+      setup_version taxon.id, adder
+
       taxon.update_attributes! incertae_sedis_in: 'genus'
-
-
       taxon.last_version.update_attributes! whodunnit: editor
+      taxon.save!
+      setup_version(taxon.id, adder)
 
-      version = Version.create! item_id: taxon.id, event: 'create', item_type: 'Taxon', whodunnit: adder
-      transaction = Transaction.create! paper_trail_version_id: version.id
-      change = Change.create! user_changed_taxon_id: taxon.id
-      transaction.change = change
-      transaction.save
-
-      taxon.added_by.should == adder
+      expect(taxon.added_by).to eq(adder)
     end
 
   end
-
 
 
 

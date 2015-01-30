@@ -63,6 +63,10 @@ Then /I should (not )?see "(.*?)" (?:with)?in (.*)$/ do |do_not, contents, locat
   end
 end
 
+Then(/^The taxon mouseover should contain "(.*?)"$/) do |arg1|
+  find('.reference_key')['title'].should have_content(arg1)
+end
+
 Then /The parent name field should have "(.*?)"$/ do |contents|
   display_button = find('#parent_name_field .display_button')
   display_button.should have_selector(contents)
@@ -97,7 +101,7 @@ Then "I should not see any search results" do
 end
 
 Then /^the page title should have "([^"]*)" in it$/ do |title|
-  page.should have_css('title', text: /#{title}/)
+  page.title.should have_content(title)
 end
 
 Then /^I should see a link "([^"]*)"$/ do |link|

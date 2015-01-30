@@ -6,24 +6,24 @@ describe Place do
   describe "importing" do
     it "should create and return the place" do
       place = Place.import 'Chicago'
-      place.name.should == 'Chicago'
+      expect(place.name).to eq('Chicago')
     end
 
     it "should raise on invalid input" do
-      lambda {Place.import(:name => '')}.should raise_error
+      expect {Place.import(:name => '')}.to raise_error
     end
 
     it "should reuse an existing place" do
-      Place.count.should == 0
+      expect(Place.count).to eq(0)
       2.times {Place.import('Chicago')}
-      Place.count.should == 1
+      expect(Place.count).to eq(1)
     end
   end
 
   describe 'validation' do
     it 'should require a name' do
-      Place.new.should_not be_valid
-      Place.new(:name => 'name').should be_valid
+      expect(Place.new).not_to be_valid
+      expect(Place.new(:name => 'name')).to be_valid
     end
   end
 
@@ -31,7 +31,7 @@ describe Place do
     it "should record versions" do
       with_versioning do
         place = FactoryGirl.create :place
-        place.versions.last.event.should == 'create'
+        expect(place.versions.last.event).to eq('create')
       end
     end
   end

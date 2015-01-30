@@ -1,4 +1,6 @@
 @javascript
+@allow_rescue
+
 Feature: Editing the synonyms section
 
   Background:

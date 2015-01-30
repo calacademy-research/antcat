@@ -4,14 +4,16 @@ class Citation < ActiveRecord::Base
   belongs_to :reference
   validates :reference, presence: true
   has_paper_trail
+  attr_accessible :pages, :forms, :id, :reference_id, :reference, :notes_taxt
 
   include CleanNewlines
   before_save {|record| clean_newlines record, :notes_taxt}
 
-  def title
-    # for PaperTrailManager's RSS output
-    id.to_s
-  end
+  # TODO: Rails 4 remove this if tests pass
+  # def title
+  #   # for PaperTrailManager's RSS output
+  #   id.to_s
+  # end
 
   def authorship_string
     reference and "#{author_names_string}, #{reference.year}"

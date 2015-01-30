@@ -3,6 +3,7 @@ class Tribe < Taxon
   include Importers::Bolton::Catalog::Updater
   belongs_to :subfamily
   has_many :genera
+  attr_accessible :name, :protonym, :subfamily, :type_name
 
   def update_parent new_parent
     set_name_caches

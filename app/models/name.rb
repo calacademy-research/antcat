@@ -5,6 +5,20 @@ class Name < ActiveRecord::Base
   validates :name, presence: true
   after_save :set_taxon_caches
   has_paper_trail
+  attr_accessible :name,
+                  :name_html,
+                  :epithet,
+                  :epithet_html,
+                  :protonym_html,
+                  :epithets,
+                  :type,
+                  :epithet,
+                  :epithet_html,
+                  :protonym_html,
+                  :gender
+
+  scope :find_all_by_name, lambda {|name| where name: name}
+
 
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)
@@ -26,8 +40,14 @@ class Name < ActiveRecord::Base
   end
 
   def set_taxon_caches
-    Taxon.update_all ['name_cache = ?', name], name_id: id
-    Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
+
+
+
+    #Taxon.update_all ['name_cache = ?', name], name_id: id
+    Taxon.where(name_id: id).update_all(name_cache: name)
+    #Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
+    #Taxon.update_all({name_html_cache: name_html}, {name_id: id})
+    Taxon.where(name_id: id).update_all(name_html_cache: name_html)
   end
 
   def words
@@ -71,7 +91,10 @@ class Name < ActiveRecord::Base
   end
 
   def self.picklist_matching letters_in_name, options = {}
-    join = options[:taxa_only] || options[:species_only] || options[:genera_only] || options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+    join = options[:taxa_only] ||
+        options[:species_only] ||
+        options[:genera_only] ||
+        options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
     rank_filter =
       case
       when options[:species_only] then 'AND taxa.type = "Species"'
@@ -83,15 +106,25 @@ class Name < ActiveRecord::Base
     # I do not see why the code beginning with Name.select can't be factored out, but it can't
     search_term = letters_in_name + '%'
     prefix_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("name LIKE '#{search_term}' #{rank_filter}").order('taxon_id desc').order(:name)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
+          joins("#{join} taxa ON taxa.name_id = names.id").
+          where("name LIKE '#{search_term}' #{rank_filter}").
+          order('taxon_id desc').
+          order(:name)
 
     search_term = letters_in_name.split('').join('%') + '%'
     epithet_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("epithet LIKE '#{search_term}' #{rank_filter}").order(:epithet)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
+          joins("#{join} taxa ON taxa.name_id = names.id").
+          where("epithet LIKE '#{search_term}' #{rank_filter}").
+          order(:epithet)
 
     search_term = letters_in_name.split('').join('%') + '%'
     first_then_any_letter_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').joins("#{join} taxa ON taxa.name_id = names.id").where("name LIKE '#{search_term}' #{rank_filter}").order(:name)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
+          joins("#{join} taxa ON taxa.name_id = names.id").
+          where("name LIKE '#{search_term}' #{rank_filter}").
+          order(:name)
 
     [picklist_matching_format(prefix_matches),
      picklist_matching_format(epithet_matches),

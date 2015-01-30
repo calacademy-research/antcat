@@ -1,7 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
+include Capybara::RSpecMatchers
 
-describe CoinsHelper do
+
+describe CoinsHelper, type: 'helper' do
   it "should format a journal reference correctly" do
     coins = helper.coins(ArticleReference.new(
       :author_names => [FactoryGirl.create(:author_name, :name => 'MacKay, W.')],
@@ -29,7 +31,7 @@ describe CoinsHelper do
   end
 
   it "should bail on a class it doesn't know about " do
-    lambda {helper.coins(String.new)}.should raise_error
+    expect {helper.coins(String.new)}.to raise_error
   end
 
   it "should use the numeric year" do
@@ -203,9 +205,9 @@ describe CoinsHelper do
 
   def check_parameters coins, expected_parameters
     match = coins.match(/<span class="Z3988" title="(.*)"/)
-    match.should_not be_nil
-    match[1].should_not be_nil
-    parameters = match[1].split("&amp;")
-    parameters.should =~ expected_parameters
+    expect(match).not_to be_nil
+    expect(match[1]).not_to be_nil
+    parameters = match[1].to_str.split("&amp;")
+    expect(parameters).to match_array(expected_parameters)
   end
 end
