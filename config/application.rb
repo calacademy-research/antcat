@@ -32,6 +32,7 @@ module AntCat
     ]
 
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
+
     config.action_dispatch.cookies_serializer = :hybrid
     # suppress deprecation warning
     config.active_record.raise_in_transactional_callbacks = true

@@ -24,30 +24,28 @@ describe Change do
   end
 
   it "has a user (the editor)" do
-    pending ("Not updated for new paper trail strategy")
     user = FactoryGirl.create :user
     genus = create_genus
-    create_taxon_change(genus,'create',user)
+
+    change = setup_version(genus.id, user)
 
     genus.last_version.update_attributes whodunnit: user.id
 
-    change = Change.new paper_trail_version: genus.last_version
     expect(change.user).to eq(user)
   end
 
   it "should be able to be reified after being created" do
-    pending ("Not updated for new paper trail strategy")
 
     genus = create_genus
-
-    change = Change.new paper_trail_version: genus.last_version
+    change = setup_version(genus.id)
     taxon = change.reify
     expect(taxon).to eq(genus)
     expect(taxon.class).to eq(Genus)
 
     genus.update_attributes name_cache: 'Atta'
 
-    change = Change.new paper_trail_version: genus.last_version
+    change = setup_version(genus.id)
+
     taxon = change.reify
     expect(taxon).to eq(genus)
     expect(taxon.class).to eq(Genus)
@@ -62,16 +60,14 @@ describe Change do
   end
 
   describe "Scopes" do
-    pending ("Not updated for new paper trail strategy")
+    #pending ("Not updated for new paper trail strategy")
 
     it "should return creations" do
       item = create_genus
-      version = FactoryGirl.create :version, event: 'create', item_id: item.id
-      creation = Change.create paper_trail_version: version
-      another_version = FactoryGirl.create :version, event: 'update', item_id: item.id
-      updation = Change.create paper_trail_version: another_version
+      creation = setup_version(item.id)
+      setup_version(item.id)
 
-      expect(Change.creations).to eq([creation])
+      expect(Change.creations.last.id).to eq(creation.id)
     end
     pending ("Not updated for new paper trail strategy")
 
@@ -91,12 +87,5 @@ describe Change do
     end
   end
 
-  def create_taxon_change (taxon, event, user)
-    version = Version.create! item_id: taxon.id, event: 'create', item_type: 'Taxon', whodunnit: adder
-    transaction = Transaction.create! paper_trail_version_id: version.id
-    change = Change.create! user_changed_taxon_id: taxon.id
-    transaction.change = change
-    transaction.save
-  end
 
 end

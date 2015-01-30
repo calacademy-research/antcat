@@ -109,10 +109,8 @@ describe Taxon do
       end
       it "should return the Change, if any" do
         taxon = create_genus
-        version = FactoryGirl.create :version,  item_id: taxon.id, event: 'create', item_type: 'Taxon'
-        change = FactoryGirl.create :change, user_changed_taxon_id: taxon.id
-        transaction = FactoryGirl.create :transaction, paper_trail_version_id: version.id, change_id: change.id
 
+        change = setup_version taxon.id
         expect(taxon.last_change).to eq(change)
       end
     end
@@ -132,36 +130,19 @@ describe Taxon do
     end
     it "should return the User who added the record, not a subsequent editor" do
       taxon = create_genus
-
       adder = FactoryGirl.create :user
-
-      # Barfed horribly when I tried to do this in a function. Probably a brain-o, but this works.
-      # Anyone refactoring this - get the two below and the one above.
-      version = PaperTrail::Version.create! item_id: taxon.id, event: 'create', item_type: 'Taxon', whodunnit: adder
-      transaction = Transaction.create! paper_trail_version_id: version.id
-      change = Change.create! user_changed_taxon_id: taxon.id
-      transaction.change = change
-      transaction.save
-
       editor = FactoryGirl.create :user
+      setup_version taxon.id, adder
+
       taxon.update_attributes! incertae_sedis_in: 'genus'
-
-
       taxon.last_version.update_attributes! whodunnit: editor
-
-      version = Version.create! item_id: taxon.id, event: 'create', item_type: 'Taxon', whodunnit: adder
-      transaction = Transaction.create! paper_trail_version_id: version.id
-      change = Change.create! user_changed_taxon_id: taxon.id
-      transaction.change = change
-      transaction.save
+      taxon.save!
+      setup_version(taxon.id, adder)
 
       expect(taxon.added_by).to eq(adder)
     end
 
   end
-
-  def
-
 
 
 
