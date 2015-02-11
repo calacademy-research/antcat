@@ -380,8 +380,9 @@ def create_synonym senior, attributes = {}
   junior
 end
 
-def create_taxon_version_and_change review_state, user = @user, approver = nil
-  taxon = FactoryGirl.create :genus, review_state: review_state
+def create_taxon_version_and_change(review_state, user = @user, approver = nil, genus_name = 'default_genus')
+  name = FactoryGirl.create :name, name: genus_name
+  taxon = FactoryGirl.create :genus, review_state: review_state, name: name
   change = FactoryGirl.build :change, user_changed_taxon_id: taxon.id, change_type: "create"
   version = FactoryGirl.build :version, item_id: taxon.id, whodunnit: user.id
 

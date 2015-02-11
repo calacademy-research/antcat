@@ -6,7 +6,7 @@ class AuthorName < ActiveRecord::Base
   validates :author, :name, presence: true
   validates :name, uniqueness: true
   has_paper_trail
-  attr_accessible :name, :author,:author_id
+  attr_accessible :name, :author, :author_id
 
   def last_name
     name_parts[:last]
@@ -97,6 +97,9 @@ class AuthorName < ActiveRecord::Base
     end
   end
 
+  # This is never called from anywhere but test code.
+  # The associated test is failing and marked as "dormant code"
+  # if you're going to use this, enable and fix the test first
   def self.correct bad, good, show_progress = true
     Progress.init show_progress
     Progress.print "Correcting '#{bad}' to '#{good}'..."

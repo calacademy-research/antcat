@@ -126,7 +126,7 @@ class SpeciesGroupTaxon < Taxon
     # rails 4, the belongs_to relationship isn't available at this point. Assigning IDs directly.
 
     #self.subfamily = genus.subfamily if genus
-    self.subfamily_id = genus.subfamily.id if genus
+    self.subfamily_id = genus.subfamily.id if genus and genus.subfamily
 
   end
 

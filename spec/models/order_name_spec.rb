@@ -7,7 +7,7 @@ describe OrderName do
 
     it "should recognize its key and set its name appropriately" do
       name = Name.import order_name: 'Formicaria'
-      expect(OrderName.find(name).name).to eq('Formicaria')
+      expect(OrderName.find(name.id).name).to eq('Formicaria')
     end
 
   end

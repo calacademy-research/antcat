@@ -85,7 +85,9 @@ describe Reference, slow:true do
         describe 'Author names' do
           it 'should at least find Bert!' do
             reference = reference_factory(:author_name => 'Hölldobler')
-            expect(Reference.perform_search(:fulltext => 'holldobler')).to eq([reference])
+            # perform_search has no downcase, behaviour changed in rails 4?
+            # this used to pass as "perform_search", and it shouldn't have!
+            expect(Reference.do_search(:fulltext => 'holldobler')).to eq([reference])
           end
           it 'should at least find Bert, even when the diacritic is used in the search term' do
             reference = reference_factory(:author_name => 'Hölldobler')

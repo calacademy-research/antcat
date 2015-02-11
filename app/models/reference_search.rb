@@ -115,6 +115,7 @@ class Reference < ActiveRecord::Base
     when options.key?(:q)
       fulltext_string = options[:q].dup || ''
 
+
       if match = fulltext_string.match(/\d{5,}/)
         return perform_search id: match[0].to_i
       end

@@ -398,8 +398,8 @@ describe Species do
       expect(Update.count).to eq(4)
 
       update = Update.find_by_field_name 'fossil'
-      expect(update.before).to eq('0')
-      expect(update.after).to eq('1')
+      expect(update.before).to eq('f')
+      expect(update.after).to eq('t')
       expect(taxon.fossil).to be_truthy
 
       update = Update.find_by_field_name 'homonym_replaced_by_id'

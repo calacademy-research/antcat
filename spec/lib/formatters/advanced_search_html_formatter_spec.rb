@@ -22,8 +22,7 @@ describe Formatters::AdvancedSearchHtmlFormatter do
 "Latreille, P. A. 1809. " +
 "<i>Atta</i>. Science (1):3." +
 "<a class=\"goto_reference_link\" href=\"/references?q=#{reference.id}\" target=\"_blank\">" +
-"<img alt=\"External_link\" src=\"/assets/external_link.png\" /></a>" +
-"<span class=\"reference_id\">#{reference.id}</span>\n\n")
+"link</a><span class=\"reference_id\">1</span>\n\n")
   end
 
 end

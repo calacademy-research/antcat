@@ -18,7 +18,7 @@ describe SpeciesName do
 
     it "should recognize its key and set its name appropriately" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major'
-      name = SpeciesName.find name
+      name = SpeciesName.find name.id
       expect(name.name).to eq('Atta major')
       expect(name.to_html).to eq('<i>Atta</i> <i>major</i>')
       expect(name.epithet).to eq('major')
@@ -26,7 +26,7 @@ describe SpeciesName do
     end
     it "escape bad characters" do
       name = Name.import genus_name: 'Atta', species_epithet: 'm>ajor'
-      name = Name.find name
+      name = Name.find name.id
       expect(name.epithet_html).to eq('<i>m&gt;ajor</i>')
     end
     it "should reuse names" do
@@ -43,7 +43,7 @@ describe SpeciesName do
     end
     it "should import a species name with a subgenus name" do
       name = Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta', species_epithet: 'major'
-      name = SpeciesName.find name
+      name = SpeciesName.find name.id
       expect(name.epithet).to eq('major')
       expect(name.name).to eq('Atta major')
       expect(name.protonym_html).to eq('<i>Atta</i> <i>(Subatta)</i> <i>major</i>')
@@ -51,7 +51,7 @@ describe SpeciesName do
     it "should import from a genus name object and a species_group_epithet" do
       genus_name = create_genus('Eciton').name
       name = Name.import genus_name: genus_name, species_group_epithet: 'major'
-      name = Name.find name
+      name = Name.find name.id
       expect(name.name).to eq('Eciton major')
     end
 

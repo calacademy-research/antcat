@@ -18,7 +18,7 @@ describe SpeciesGroupTaxon do
     expect(taxon).not_to be_valid
     genus = create_genus
     taxon.update_attributes genus: genus
-    taxon = SpeciesGroupTaxon.find taxon
+    taxon = SpeciesGroupTaxon.find taxon.id
     expect(taxon).to be_valid
     expect(taxon.genus).to eq(genus)
   end
@@ -26,7 +26,7 @@ describe SpeciesGroupTaxon do
   it "can have a subgenus" do
     subgenus = create_subgenus
     taxon = FactoryGirl.create :species_group_taxon, subgenus: subgenus
-    expect(SpeciesGroupTaxon.find(taxon).subgenus).to eq(subgenus)
+    expect(SpeciesGroupTaxon.find(taxon.id).subgenus).to eq(subgenus)
   end
 
   it "doesn't have to have a subgenus" do
@@ -93,7 +93,7 @@ describe SpeciesGroupTaxon do
       ]}]
 
       species.set_status_from_history history
-      species = Species.find species
+      species = Species.find species.id
       expect(species).to be_synonym_of ferox
 
       expect(ForwardRefToSeniorSynonym.count).to eq(1)

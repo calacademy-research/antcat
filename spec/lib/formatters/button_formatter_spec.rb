@@ -51,7 +51,7 @@ describe Formatters::ButtonFormatter do
   describe "Making a button to a path" do
     it "should handle making a button to a path" do
       string = @formatter.button_to_path 'Label', 'path'
-      expect(string).to eq("<form action=\"path\" class=\"button_to\" method=\"post\"><div><input class=\"ui-button ui-corner-all ui-priority-primary\" type=\"submit\" value=\"Label\" /></div></form>")
+      expect(string).to eq("<form class=\"button_to\" method=\"post\" action=\"path\"><input class=\"ui-button ui-corner-all ui-priority-primary\" type=\"submit\" value=\"Label\" /></form>")
       expect(string).to be_html_safe
     end
   end

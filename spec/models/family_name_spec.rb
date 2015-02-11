@@ -6,7 +6,7 @@ describe FamilyName do
   describe "Importing" do
     it "should recognize its key and set its name appropriately" do
       name = Name.import family_name: 'Formicidae'
-      name = FamilyName.find(name)
+      name = FamilyName.find(name.id)
       expect(name.name).to eq('Formicidae')
       expect(name.epithet).to eq('Formicidae')
       expect(name.to_s).to eq('Formicidae')

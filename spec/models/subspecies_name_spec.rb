@@ -92,7 +92,7 @@ describe SubspeciesName do
 
     it "should recognize its key and set its name appropriately" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpina'}]
-      name = SubspeciesName.find name
+      name = SubspeciesName.find name.id
       expect(name.name).to eq('Atta major alpina')
       expect(name.to_html).to eq('<i>Atta</i> <i>major</i> <i>alpina</i>')
       expect(name.epithet).to eq('alpina')
@@ -105,13 +105,13 @@ describe SubspeciesName do
         {subspecies_epithet: 'obscuripes', type: 'r.'},
         {subspecies_epithet: 'whymperi', type: 'var.'},
       ]
-      name = SubspeciesName.find name
+      name = SubspeciesName.find name.id
       expect(name.name).to eq('Formica rufa obscuripes whymperi')
     end
 
     it "escape bad characters" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [{species_group_epithet: 'alpi>na'}]
-      name = SubspeciesName.find name
+      name = SubspeciesName.find name.id
       expect(name.name_html).to eq('<i>Atta</i> <i>major</i> <i>alpi&gt;na</i>')
       expect(name.epithet_html).to eq('<i>alpi&gt;na</i>')
     end
@@ -131,7 +131,7 @@ describe SubspeciesName do
 
     it "should handle subspecies types" do
       name = Name.import genus_name: 'Atta', species_epithet: 'major', subspecies: [{:type => 'r.', species_group_epithet: 'alpina'}]
-      name = SubspeciesName.find name
+      name = SubspeciesName.find name.id
       expect(name.to_s).to eq('Atta major alpina')
       expect(name.to_html).to eq('<i>Atta</i> <i>major</i> <i>alpina</i>')
       expect(name.epithet).to eq('alpina')
@@ -142,7 +142,7 @@ describe SubspeciesName do
 
     it "should import a subspecies name with a subgenus name" do
       name = Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta', species_epithet: 'major', subspecies: [{:type => 'r.', species_group_epithet: 'alpina'}]
-      name = SubspeciesName.find name
+      name = SubspeciesName.find name.id
       expect(name.to_s).to eq('Atta major alpina')
       expect(name.to_html).to eq('<i>Atta</i> <i>major</i> <i>alpina</i>')
       expect(name.epithet).to eq('alpina')

@@ -7,7 +7,7 @@ describe SubgenusName do
 
     it "should recognize its key and set its name appropriately" do
       name = Name.import genus_name: 'Atta', subgenus_epithet: 'Subatta'
-      name = SubgenusName.find(name)
+      name = SubgenusName.find(name.id)
       expect(name.name).to eq('Atta (Subatta)')
       expect(name.epithet).to eq('Subatta')
       expect(name.to_s).to eq('Atta (Subatta)')
@@ -34,7 +34,7 @@ describe SubgenusName do
     it "should import from a genus name object and a subgenus_epithet" do
       genus_name = create_genus('Eciton').name
       name = Name.import genus_name: genus_name, subgenus_epithet: 'Subatta'
-      name = Name.find name
+      name = Name.find name.id
       expect(name.name).to eq('Eciton (Subatta)')
     end
   end

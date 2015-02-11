@@ -128,7 +128,7 @@ describe Taxon do
       taxon = FactoryGirl.create :family
       taxon.type_name = FactoryGirl.create(:family_name, name: 'Formicariae')
       taxon.save!
-      taxon = Taxon.find taxon
+      taxon = Taxon.find taxon.id
       expect(taxon.type_name.to_s).to eq('Formicariae')
       expect(taxon.type_name.rank).to eq('family')
     end
@@ -470,7 +470,7 @@ describe Taxon do
       expect(taxon.current_valid_taxon_including_synonyms).to eq(senior)
     end
     it "should find the latest senior synonym that's valid" do
-      valid_senior = create_genus
+      valid_senior = create_genus status: 'valid'
       invalid_senior = create_genus status: 'homonym'
       taxon = create_genus status: 'synonym'
       Synonym.create! senior_synonym: valid_senior, junior_synonym: taxon

@@ -7,7 +7,7 @@ describe Protonym do
     it "has an authorship" do
       authorship = FactoryGirl.create :citation
       protonym = Protonym.create! name: FactoryGirl.create(:name, name: 'Protonym'), authorship: authorship
-      expect(Protonym.find(protonym).authorship).to eq(authorship)
+      expect(Protonym.find(protonym.id).authorship).to eq(authorship)
     end
     it "requires an authorship" do
       protonym = Protonym.new name: FactoryGirl.create(:name, name: 'Protonym')
@@ -118,7 +118,7 @@ describe Protonym do
         authorship: [{author_names: ["Latreille"], year: "1809", pages: "124", forms: 'w.q.'}],
       }
 
-      protonym = Protonym.find Protonym.import(data)
+      protonym = Protonym.find Protonym.import(data).id
       expect(protonym.name.rank).to eq('family_or_subfamily')
       expect(protonym.name.to_s).to eq('Formicariae')
       expect(protonym.authorship.pages).to eq('124')
@@ -131,28 +131,28 @@ describe Protonym do
 
     it "should handle a tribe protonym" do
       data = {tribe_name: "Aneuretini", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
-      protonym = Protonym.find Protonym.import(data)
+      protonym = Protonym.find Protonym.import(data).id
       expect(protonym.name.rank).to eq('tribe')
       expect(protonym.name.to_s).to eq('Aneuretini')
     end
 
     it "should handle a subtribe protonym" do
       data = {subtribe_name: 'Bothriomyrmecina', authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
-      protonym = Protonym.find Protonym.import(data)
+      protonym = Protonym.find Protonym.import(data).id
       expect(protonym.name.rank).to eq('subtribe')
       expect(protonym.name.to_s).to eq('Bothriomyrmecina')
     end
 
     it "should handle a genus protonym" do
       data = {genus_name: "Atta", authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
-      protonym = Protonym.find Protonym.import(data)
+      protonym = Protonym.find Protonym.import(data).id
       expect(protonym.name.rank).to eq('genus')
       expect(protonym.name.to_s).to eq('Atta')
     end
 
     it "should handle a species protonym" do
       data = {genus_name: "Heteromyrmex", species_epithet: 'atopogaster', authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}]}
-      protonym = Protonym.find Protonym.import(data)
+      protonym = Protonym.find Protonym.import(data).id
       expect(protonym.name.rank).to eq('species')
       expect(protonym.name.to_s).to eq('Heteromyrmex atopogaster')
     end
@@ -190,16 +190,16 @@ describe Protonym do
       expect(update.class_name).to eq('Protonym')
       expect(update.field_name).to eq('sic')
       expect(update.record_id).to eq(@protonym.id)
-      expect(update.before).to eq('0')
-      expect(update.after).to eq('1')
+      expect(update.before).to eq('f')
+      expect(update.after).to eq('t')
       expect(@protonym.reload.sic).to be_truthy
 
       update = Update.find_by_field_name 'fossil'
       expect(update.class_name).to eq('Protonym')
       expect(update.field_name).to eq('fossil')
       expect(update.record_id).to eq(@protonym.id)
-      expect(update.before).to eq('0')
-      expect(update.after).to eq('1')
+      expect(update.before).to eq('f')
+      expect(update.after).to eq('t')
       expect(@protonym.reload.fossil).to be_truthy
 
       update = Update.find_by_field_name 'locality'

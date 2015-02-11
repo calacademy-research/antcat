@@ -45,6 +45,7 @@ group :development, :test do
   gem 'launchy'
   gem 'rspec'
   gem 'rspec-rails'
+  gem 'rspec-activemodel-mocks'
   gem 'spork'
   gem 'thin'
   #gem 'web-console', '~> 2.0'

@@ -6,7 +6,7 @@ describe Reference do
   describe "References" do
     it "should have no references, if alone" do
       reference = FactoryGirl.create :article_reference
-      expect(reference.size).to eq(0)
+      expect(reference.references.size).to eq(0)
     end
 
     describe "References in reference fields" do

@@ -7,7 +7,7 @@ describe TribeName do
 
     it "should recognize its key and set its name appropriately" do
       name = Name.import tribe_name: 'Aneuretini'
-      name = TribeName.find name
+      name = TribeName.find name.id
       expect(name.name).to eq('Aneuretini')
       expect(name.epithet).to eq('Aneuretini')
       expect(name.to_s).to eq('Aneuretini')

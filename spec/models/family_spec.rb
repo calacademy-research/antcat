@@ -136,7 +136,6 @@ describe Family do
       end
 
       it "should compare, update and record value fields" do
-        pending "importers, not germane to core functionality"
 
         data = @data.merge fossil: true, status: 'synonym'
 
@@ -149,8 +148,8 @@ describe Family do
         expect(update.class_name).to eq('Family')
         expect(update.field_name).to eq('fossil')
         expect(update.record_id).to eq(family.id)
-        expect(update.before).to eq('0')
-        expect(update.after).to eq('1')
+        expect(update.before).to eq('f')
+        expect(update.after).to eq('t')
         expect(family.fossil).to be_truthy
 
         update = Update.find_by_field_name 'status'
@@ -192,7 +191,7 @@ describe Family do
       end
 
       it "should handle the type fields" do
-        pending "importers, not germane to core functionality"
+        #pending "importers, not germane to core functionality"
 
         data = @data.merge(
           type_genus: {
@@ -210,8 +209,8 @@ describe Family do
         expect(family.type_taxt).to eq(@nam_taxt)
 
         update = Update.find_by_field_name 'type_fossil'
-        expect(update.before).to eq('0')
-        expect(update.after).to eq('1')
+        expect(update.before).to eq('f')
+        expect(update.after).to eq('t')
         expect(family.type_fossil).to be_truthy
 
         update = Update.find_by_field_name 'type_name'
@@ -331,7 +330,7 @@ describe Family do
       end
 
       describe "Protonym" do
-        pending "importers, not germane to core functionality"
+        #pending "importers, not germane to core functionality"
 
         it "should handle value fields" do
           data = @data.dup
@@ -346,15 +345,15 @@ describe Family do
           update = Update.find_by_field_name 'sic'
           expect(update.class_name).to eq('Protonym')
           expect(update.record_id).to eq(@protonym.id)
-          expect(update.before).to eq('0')
-          expect(update.after).to eq('1')
+          expect(update.before).to eq('f')
+          expect(update.after).to eq('t')
           expect(family.protonym.sic).to be_truthy
 
           update = Update.find_by_field_name 'fossil'
           expect(update.class_name).to eq('Protonym')
           expect(update.record_id).to eq(@protonym.id)
-          expect(update.before).to eq('0')
-          expect(update.after).to eq('1')
+          expect(update.before).to eq('f')
+          expect(update.after).to eq('t')
           expect(family.protonym.fossil).to be_truthy
 
           update = Update.find_by_field_name 'locality'

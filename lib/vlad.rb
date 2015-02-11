@@ -79,7 +79,8 @@ class Vlad
 
   class OrphanProtonyms < Problem
     def self.query
-      Protonym.includes(:taxon).where('taxa.id IS NULL')
+      #Protonym.joins(:taxon).where('taxa.id IS NULL')
+      Protonym.where("id NOT IN (SELECT protonym_id FROM taxa)")
     end
     def self.display
       display_results_section query do |protonym|

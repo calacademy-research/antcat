@@ -59,7 +59,7 @@ describe Exporters::Antweb::Formatter do
           # taxonomic history
           %{<p><b>Taxonomic history</b></p>} +
           %{<div class="history"><div class="history_item item_#{item.id}" data-id="#{item.id}">} +
-            %{<table><tr><td class="history_item_body" style="font-size: 13px">} +
+            %{<table><tr><td style="font-size: 13px" class="history_item_body">} +
               %{Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}" target="_blank"><i>Atta major</i></a> Name: <i>Atta major</i>.} +
             %{</td></tr></table>} +
           %{</div></div>} +

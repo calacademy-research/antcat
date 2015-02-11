@@ -5,7 +5,7 @@ describe Author do
   it "has many names" do
     author = Author.create!
     author.names << FactoryGirl.create(:author_name)
-    expect(author.size).to eq(1)
+    expect(author.names.size).to eq(1)
   end
 
   describe "sorting by first author name" do
@@ -35,9 +35,12 @@ describe Author do
       second_bolton_author = FactoryGirl.create(:author_name, name: 'Bolton,B.').author
       expect(Author.count).to eq(2)
       expect(AuthorName.count).to eq(2)
-      all_names = first_bolton_author.names.dup.concat(second_bolton_author.names).uniq.sort
+
+      all_names = (first_bolton_author.names + second_bolton_author.names).uniq.sort
+
       Author.merge [first_bolton_author, second_bolton_author]
       expect(all_names.all?{|name| name.author == first_bolton_author}).to be_truthy
+
       expect(Author.count).to eq(1)
       expect(AuthorName.count).to eq(2)
     end

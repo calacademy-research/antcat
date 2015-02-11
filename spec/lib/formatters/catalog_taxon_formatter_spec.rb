@@ -223,7 +223,7 @@ describe Formatters::CatalogTaxonFormatter do
       adder = FactoryGirl.create :user, can_edit: true
       approver = FactoryGirl.create :user, can_edit: true
       taxon = create_taxon_version_and_change :waiting, adder
-      change = Change.find taxon.last_change
+      change = Change.find taxon.last_change.id
       change.update_attributes! approver: approver, approved_at: Time.now
       taxon.approve!
       change_history = @formatter.new(taxon).change_history

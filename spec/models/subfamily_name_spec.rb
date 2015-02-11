@@ -6,7 +6,7 @@ describe SubfamilyName do
   describe "Importing" do
     it "should recognize its key and set its name appropriately" do
       name = Name.import subfamily_name: 'Aneuretinae'
-      name = SubfamilyName.find name
+      name = SubfamilyName.find name.id
       expect(name.name).to eq('Aneuretinae')
       expect(name.epithet).to eq('Aneuretinae')
       expect(name.to_s).to eq('Aneuretinae')

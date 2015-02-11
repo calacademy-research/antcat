@@ -60,7 +60,6 @@ describe Change do
   end
 
   describe "Scopes" do
-    #pending ("Not updated for new paper trail strategy")
 
     it "should return creations" do
       item = create_genus
@@ -69,9 +68,10 @@ describe Change do
 
       expect(Change.creations.last.id).to eq(creation.id)
     end
-    pending ("Not updated for new paper trail strategy")
 
     it "should return creations with unapproved first, then approved in reverse chronological order" do
+      pending ("Not updated for new paper trail strategy")
+
       item = create_genus review_state: 'waiting'
       unapproved_version = FactoryGirl.create :version, event: 'create', item_id: item.id
       item = create_genus review_state: 'approved'

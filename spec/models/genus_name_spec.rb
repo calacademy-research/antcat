@@ -14,7 +14,7 @@ describe GenusName do
 
     it "should recognize its key and set its name appropriately" do
       name = Name.import genus_name: 'Atta'
-      name = GenusName.find name
+      name = GenusName.find name.id
       expect(name.name).to eq('Atta')
       expect(name.epithet).to eq('Atta')
       expect(name.to_s).to eq('Atta')

@@ -7,7 +7,7 @@ describe SubtribeName do
 
     it "should recognize its key and set its name appropriately" do
       name = Name.import subtribe_name: 'Aneuretina'
-      name = SubtribeName.find name
+      name = SubtribeName.find name.id
       expect(name.name).to eq('Aneuretina')
       expect(name.epithet).to eq('Aneuretina')
       expect(name.to_s).to eq('Aneuretina')

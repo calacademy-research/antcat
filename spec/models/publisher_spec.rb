@@ -1,7 +1,10 @@
 # coding: UTF-8
 require 'spec_helper'
-
+# include RSpec::Rails::Mocks
+# include Rspec::Mocks::ExampleMethods
+include RSpec::Rails
 describe Publisher do
+
 
   describe "importing" do
     it "should create and return the publisher" do
