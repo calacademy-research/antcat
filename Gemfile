@@ -27,7 +27,6 @@ gem 'rails-observers' # observers deprecated in rails 4
 gem 'rack'
 gem 'rails', '>= 4.1'
 gem 'rake'
-gem 'sass', '3.2.2'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
 
@@ -36,8 +35,7 @@ gem 'will_paginate'
 gem 'workflow'
 gem 'xml-simple'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
- #tODO: remove
-gem 'transpec'
+
 
 group :development, :test do
   gem 'byebug'
@@ -68,13 +66,10 @@ group :test do
 end
 
 gem 'coffee-rails'
-#TODO: Lots of ways to include blueprint! Only "compass-blueprint" seemed to do it.
-# gem 'blueprint-rails'
-# gem 'blueprint'
-# gem 'compass-rails'
-# gem 'compass'
+gem 'sass-rails'
+gem 'compass-rails', '~> 2.0.1'
 gem 'compass-blueprint'
-gem 'sass-rails', '4.0.5'
+
 gem 'uglifier'
 gem 'yui-compressor'
 
