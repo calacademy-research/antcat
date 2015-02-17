@@ -2,7 +2,10 @@ source 'http://rubygems.org'
 ruby '2.1.2'
 
 gem 'acts_as_list'
-gem 'aws-sdk'
+# Version locked because of bug when fetching s3 hosted PDF:
+# uninitialized constant Paperclip::Storage::S3::AWS
+# test with: http://antcat.org/documents/6308/ward_2014_annu_rev_ecol_evol_syst_phylogeny_and_evolution_of_ants.pdf
+gem 'aws-sdk', '< 2.0'
 gem 'citrus', '2.4.1'
 # see https://github.com/cucumber/cucumber-rails/issues/187#issuecomment-4160160
 # shouldn't this be in test only? todo: move this and try it
