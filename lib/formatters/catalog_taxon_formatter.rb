@@ -138,7 +138,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
 
   def review_state
     if @taxon.waiting?
-      "This taxon has been changed and is awaiting approval"
+      "This taxon has been changed; changes awaiting approval"
     end
   end
 

@@ -1,7 +1,10 @@
 # coding: UTF-8
 class Citation < ActiveRecord::Base
   include Importers::Bolton::Catalog::Updater
-  belongs_to :reference
+
+  #belongs_to :reference, -> { includes :author_names}   # has a reference_id
+  belongs_to :reference   # has a reference_id
+
   validates :reference, presence: true
   has_paper_trail
   attr_accessible :pages, :forms, :id, :reference_id, :reference, :notes_taxt

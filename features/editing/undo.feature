@@ -33,7 +33,7 @@ Feature: Workflow
     * I fill in "taxon_headline_notes_taxt" with "asdfgh"
     * I save my changes
     * I go to the catalog page for "Formicinae"
-    Then I should see "This taxon has been changed and is awaiting approval"
+    Then I should see "This taxon has been changed; changes awaiting approval"
     * I should see the name "Formicinae" in the changes
     When I go to the changes page
     Then I should see "Formicinae"

@@ -45,7 +45,7 @@ Feature: Workflow
     * I add a history item "History item"
     * I add a reference section "Reference section"
     * I go to the catalog page for "Atta"
-    Then I should see "This taxon has been changed and is awaiting approval"
+    Then I should see "This taxon has been changed; changes awaiting approval"
     When I press "Review change"
     * I should see the name "Atta" in the changes
     * I should see the subfamily "Formicinae" in the changes
@@ -118,7 +118,7 @@ Feature: Workflow
     And I press "Save" within ".buttons_section"
     Then I should see "Wildencidae" in the header
     And I should see "Changed by Mark Wilden"
-    And I should see "This taxon has been changed and is awaiting approval"
+    And I should see "This taxon has been changed; changes awaiting approval"
     And I go to the changes page
     And I should see "Mark Wilden changed Wildencidae"
 

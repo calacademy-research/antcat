@@ -47,7 +47,9 @@ class Taxon < ActiveRecord::Base
 # nested attributes
   belongs_to :name; validates :name, presence: true
 #belongs_to :protonym, dependent: :destroy; validates :protonym, presence: true
-  belongs_to :protonym; validates :protonym, presence: true
+#has_and_belongs_to_many :projects, -> { includes :milestones, :manager }
+
+  belongs_to :protonym, -> { includes :authorship} ; validates :protonym, presence: true
 
   belongs_to :type_name, class_name: 'Name', foreign_key: :type_name_id
 

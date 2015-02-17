@@ -137,7 +137,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     When I save my changes
     Then I should see "Atta betus subbus"
     And I should see "unresolved junior homonym"
-    And I should see "This taxon has been changed and is awaiting approval"
+    And I should see "This taxon has been changed; changes awaiting approval"
 
 
 
