@@ -46,6 +46,12 @@ class ChangesController < ApplicationController
     render json: json, content_type: 'text/html'
   end
 
+  def delete
+
+    json = {success: true}.to_json
+    render json: json, content_type: 'text/html'
+  end
+
   # reutrn information about all the taxa that would be hit if we were to
   # hit "undo". Includes current taxon.
   def undo_items
