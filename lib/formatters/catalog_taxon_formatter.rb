@@ -16,8 +16,10 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   end
 
   def link_to_delete_taxon
-    if @user.is_superadmin?
-      button 'Delete', 'delete_button', 'data-delete-location' => "/taxa/#{@taxon.id}/delete"
+    unless @user.nil?
+      if @user.is_superadmin?
+        button 'Delete', 'delete_button', 'data-delete-location' => "/taxa/#{@taxon.id}/delete"
+      end
     end
   end
 

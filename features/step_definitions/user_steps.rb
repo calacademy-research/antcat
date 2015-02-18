@@ -27,13 +27,14 @@ end
 Given 'I am not logged in' do
 end
 
-def login can_edit, use_web_interface = false, user_name = nil
+def login can_edit, use_web_interface = false, user_name = nil, is_superadmin = false
   user_name ||= 'Mark Wilden'
   user = User.find_by_name 'user_name'
   user.destroy if user
   step 'I go to the main page'
   attributes = {email: "mark@#{rand.to_s.gsub(/\D/, '')[1..5]}example.com"}
   attributes[:can_edit] = true if can_edit
+  attributes[:is_superadmin] = true if is_superadmin
   attributes[:name] = user_name if user_name
   @user = FactoryGirl.create :user, attributes
 
@@ -57,6 +58,11 @@ end
 Given /^I log in as a catalog editor(?: named "([^"]+)")?$/ do |editor|
   login true, false, editor
 end
+
+Given /^I log in as a superadmin$/ do
+  login true, false, 'superman', true
+end
+
 Given /^I log in as a bibliography editor$/ do
   login false
 end
