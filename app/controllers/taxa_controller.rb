@@ -34,6 +34,12 @@ class TaxaController < ApplicationController
     save_taxon
   end
 
+  def delete
+    taxon = Taxon.find(params[:taxa_id])
+    puts(taxon.name.to_s)
+
+  end
+
   ###################
   def get_taxon create_or_update
     if create_or_update == :create

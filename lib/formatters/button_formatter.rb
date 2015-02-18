@@ -16,6 +16,8 @@ module Formatters::ButtonFormatter
     make_button label, id, 'button', parameters, ['cancel']
   end
 
+
+
   def button_to_path label, path, parameters = {}
     string = button_to label, path, parameters
     classes = get_css_classes parameters

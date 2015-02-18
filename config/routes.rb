@@ -52,7 +52,10 @@ AntCat::Application.routes.draw do
       end
     end
     resource 'convert_to_subspecies', only: [:new, :create]
+    match     'delete'    => 'taxa#delete',           as: :taxa, via: :get # for compatibility
+
   end
+
 
   resource :advanced_search, only: [:show]
   resource :default_reference, only: [:update]
@@ -71,7 +74,7 @@ AntCat::Application.routes.draw do
   resource :reference_popup, only: [:show]
   resource :duplicates, only: [:show,:create]
 
-
+  # These are shortcuts to support the tests in
   match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test', via: :get
   match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test', via: :get
   match '/widget_tests/reference_popup_test', to: 'widget_tests#reference_popup_test', via: :get
