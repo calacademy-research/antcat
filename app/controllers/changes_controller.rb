@@ -2,7 +2,7 @@
 class ChangesController < ApplicationController
 
   def index
-    @changes = Change.creations.uniq.paginate page: params[:page]
+    @changes = Change.creations.uniq.paginate page: params[:page], per_page: 2
 
 
     respond_to do |format|
@@ -34,7 +34,7 @@ class ChangesController < ApplicationController
     versions = []
     Taxon.transaction do
       change_id_set.each do |undo_this_change_id|
-        versions.concat( find_all_versions_for_change(undo_this_change_id))
+        versions.concat(find_all_versions_for_change(undo_this_change_id))
       end
       undo_versions versions
       change.delete
@@ -91,7 +91,7 @@ class ChangesController < ApplicationController
   def get_all_change_ids version
     new_version = version.next
     change_id_str = find_change_from_version(version)
-    if(change_id_str == nil)
+    if (change_id_str == nil)
       return SortedSet.new
     end
     change_id = change_id_str.to_i
@@ -133,19 +133,28 @@ class ChangesController < ApplicationController
   def undo_versions versions
     versions.sort_by &:id
     versions.reverse!
-    # Some side effect of restoring this created a change record that hosed our world pretty good.
+
     Taxon.paper_trail_off!
     versions.each do |version|
-      if version.reify
-        version.reify.save!
-      else
-        version.item.destroy
+      if version.reify do
+        taxon = version.reify
+        review_state = taxon[:review_state]
+        # review_state got moved to taxon_states.
+        # This makes it backwards compatible - if the variable is defined when we re-load the taxon,
+        # spool it out to the new table and remove it from taxon.
+        unless review_state.nil? do
+          taxon[:review_state]=nil
+          taxon.taxon_state.review_state = review_state
+        end
+          taxon.save!
+        else
+          version.item.destroy
+        end
+        version.delete
       end
-      version.delete
+        Taxon.paper_trail_on!
+      end
     end
-    Taxon.paper_trail_on!
-
-
   end
 end
 

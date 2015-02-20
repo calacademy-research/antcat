@@ -35,9 +35,12 @@ class TaxaController < ApplicationController
   end
 
   def delete
-    taxon = Taxon.find(params[:taxa_id])
-    puts(taxon.name.to_s)
+    delete_mother = TaxonMother.new params[:taxa_id]
 
+    taxon = delete_mother.load_taxon
+
+    puts(taxon.name.to_s)
+    delete_mother.delete_taxon taxon
   end
 
   ###################

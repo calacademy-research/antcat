@@ -1,7 +1,9 @@
 # coding: UTF-8
 class Taxon < ActiveRecord::Base
   include Workflow
-  workflow_column :review_state
+  #workflow_column :review_state
+  has_one :taxon_state
+
 
   workflow do
     state :old
@@ -12,6 +14,18 @@ class Taxon < ActiveRecord::Base
   end
 
   delegate :approver, :approved_at, to: :last_change
+
+
+  def load_workflow_state
+    @workflow_state = taxon_state.review_state
+  end
+
+  def persist_workflow_state(new_value)
+    @workflow_state = new_value
+    taxon_state.review_state = new_value
+    taxon_state.save!
+
+  end
 
   def can_be_edited_by? user
     return false unless $Milieu.user_can_edit?(user)

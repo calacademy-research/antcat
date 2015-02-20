@@ -20,6 +20,17 @@ class TaxonMother
     @taxon
   end
 
+  def delete_taxon taxon
+    Taxon.transaction do
+      change = save_change :delete
+      delete_taxon_children(@taxon, change.id)
+
+      @taxon.delete_with_transaction! change.id
+      change.user_changed_taxon_id = @taxon.id
+    end
+  end
+
+
   # TODO: Document params, and how that works.
   def save_taxon taxon, params, previous_combination = nil
     Taxon.transaction do
@@ -43,7 +54,7 @@ class TaxonMother
       change = save_change change_type
       change_id = change.id
       @taxon.save_with_transaction! change.id
-      if(change_type == :create)
+      if (change_type == :create)
         change.user_changed_taxon_id = @taxon.id
         change.save
       end
@@ -66,7 +77,7 @@ class TaxonMother
         if (previous_combination.id == @taxon.protonym.id)
           update_elements(taxon, params, previous_combination, Status['original combination'].to_s, change_id)
         else
-          update_elements(taxon, params, previous_combination, Status['obsolete combination'].to_s,  change_id)
+          update_elements(taxon, params, previous_combination, Status['obsolete combination'].to_s, change_id)
         end
       end
       save_taxon_children @taxon, change_id
@@ -102,7 +113,6 @@ class TaxonMother
     change.save!
     change
   end
-
 
 
   ####################################
@@ -164,7 +174,7 @@ class TaxonMother
       @taxon.type_name = nil
       return
     end
-    # Joe todo- why do we hit this case?
+    # Why do we hit this case?
     if !attributes.nil?
       attributes[:type_name_id] = attributes.delete :id
       @taxon.attributes = attributes
@@ -188,4 +198,12 @@ class TaxonMother
       save_taxon_children c, change_id
     end
   end
+
+  def delete_taxon_children taxon, change_id
+    taxon.children.each do |c|
+      c.delete_with_transaction! change_id
+      delete_taxon_children c, change_id
+    end
+  end
+
 end

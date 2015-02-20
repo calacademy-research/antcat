@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217205134) do
+ActiveRecord::Schema.define(version: 20150219200302) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -325,6 +325,15 @@ ActiveRecord::Schema.define(version: 20150217205134) do
   end
 
   add_index "taxon_history_items", ["taxon_id"], name: "index_taxonomic_history_items_on_taxon_id", using: :btree
+
+  create_table "taxon_states", force: :cascade do |t|
+    t.integer "taxon_id",     limit: 4
+    t.string  "review_state", limit: 255
+    t.boolean "deleted",      limit: 1
+    t.string  "deleted_name", limit: 255
+  end
+
+  add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx", using: :btree
 
   create_table "transactions", force: :cascade do |t|
     t.integer "paper_trail_version_id", limit: 4

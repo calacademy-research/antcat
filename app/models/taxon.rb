@@ -42,6 +42,15 @@ class Taxon < ActiveRecord::Base
     transaction.save!
   end
 
+  def delete_with_transaction! change_id
+    destroy!
+    transaction = Transaction.new
+    transaction.paper_trail_version = last_version
+    transaction.change_id = change_id
+    transaction.save!
+  end
+
+
 
 ###############################################
 # nested attributes
@@ -49,7 +58,7 @@ class Taxon < ActiveRecord::Base
 #belongs_to :protonym, dependent: :destroy; validates :protonym, presence: true
 #has_and_belongs_to_many :projects, -> { includes :milestones, :manager }
 
-  belongs_to :protonym, -> { includes :authorship} ; validates :protonym, presence: true
+  belongs_to :protonym, -> { includes :authorship }; validates :protonym, presence: true
 
   belongs_to :type_name, class_name: 'Name', foreign_key: :type_name_id
 
