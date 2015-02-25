@@ -10,6 +10,12 @@ class CatalogController < ApplicationController
     setup_taxon_and_index
   end
 
+  def delete_impact_list
+
+    taxa = Taxon.first
+    render json: taxa.to_json, status: :ok
+  end
+
   def search
     if params[:commit] == 'Clear'
       clear_search
@@ -79,6 +85,7 @@ class CatalogController < ApplicationController
 
     case @taxon
 
+    when Family
     when Family
       if @parameters[:child] == 'none'
         @subfamily = 'none'

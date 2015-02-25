@@ -15,10 +15,13 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     link_to_antweb @taxon
   end
 
+
+
+
   def link_to_delete_taxon
     unless @user.nil?
       if @user.is_superadmin?
-        button 'Delete', 'delete_button', 'data-delete-location' => "/taxa/#{@taxon.id}/delete"
+        button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete",'data-taxon-id' => "#{@taxon.id}"}
       end
     end
   end

@@ -26,6 +26,8 @@ AntCat::Application.routes.draw do
   match     'catalog/show_subgenera' => 'catalog#show_subgenera', as: :catalog_show_subgenera, via: :get
   match     'catalog/hide_subgenera' => 'catalog#hide_subgenera', as: :catalog_hide_subgenera, via: :get
   match     'catalog/(:id)'          => 'catalog#show',           as: :catalog, via: :get
+  match     'catalog/delete_impact_list/(:id)'          => 'catalog#delete_impact_list',           as: :catalog_delete_impact_list, via: :get
+
 
   resources :bolton_references, only: [:index, :update]
   match     '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
