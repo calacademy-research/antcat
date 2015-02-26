@@ -30,6 +30,10 @@ class TaxonMother
     end
   end
 
+  def get_children
+    get_taxon_children_recur(@taxon).concat([@taxon])
+  end
+
 
   # TODO: Document params, and how that works.
   def save_taxon taxon, params, previous_combination = nil
@@ -205,5 +209,15 @@ class TaxonMother
       delete_taxon_children c, change_id
     end
   end
+
+  def get_taxon_children_recur taxon
+    ret_val = []
+    taxon.children.each do |c|
+      ret_val.concat [c]
+      ret_val.concat get_taxon_children_recur c
+    end
+    ret_val
+  end
+
 
 end

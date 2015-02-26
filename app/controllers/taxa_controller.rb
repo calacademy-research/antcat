@@ -41,6 +41,8 @@ class TaxaController < ApplicationController
 
     puts(taxon.name.to_s)
     delete_mother.delete_taxon taxon
+    redirect_to root_url
+
   end
 
   ###################

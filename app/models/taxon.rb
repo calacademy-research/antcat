@@ -299,6 +299,9 @@ class Taxon < ActiveRecord::Base
   end
 
   def children
+    if(Rank[self] == Rank[:subspecies])
+      return []
+    end
     raise NotImplementedError
   end
 

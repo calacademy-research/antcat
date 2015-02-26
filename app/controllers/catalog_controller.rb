@@ -10,10 +10,16 @@ class CatalogController < ApplicationController
     setup_taxon_and_index
   end
 
+  # Return all the taxa that would be deleted if we delete this
+  # particular ID, inclusive. Same as children, really.
   def delete_impact_list
+    taxon_id = @parameters[:id]
+    mother = TaxonMother.new(taxon_id)
+    mother.load_taxon
+    taxon_array = mother.get_children
 
-    taxa = Taxon.first
-    render json: taxa.to_json, status: :ok
+
+    render json: taxon_array.to_json, status: :ok
   end
 
   def search
@@ -85,66 +91,66 @@ class CatalogController < ApplicationController
 
     case @taxon
 
-    when Family
-    when Family
-      if @parameters[:child] == 'none'
-        @subfamily = 'none'
-        @genera = Genus.without_subfamily.ordered_by_name
-      end
-
-    when Subfamily
-      @subfamily = @taxon
-
-      if session[:show_tribes]
-        @tribes = @subfamily.tribes.ordered_by_name
+      when Family
+      when Family
         if @parameters[:child] == 'none'
-          @tribe = 'none'
-          @genera = @subfamily.genera.without_tribe.ordered_by_name
+          @subfamily = 'none'
+          @genera = Genus.without_subfamily.ordered_by_name
         end
-      else
-        @genera = @subfamily.genera.ordered_by_name
-      end
 
-    when Tribe
-      @tribe = @taxon
-      @subfamily = @tribe.subfamily
+      when Subfamily
+        @subfamily = @taxon
 
-      session[:show_tribes] = true
-      @tribes = @tribe.siblings.ordered_by_name
-      @genera = @tribe.genera.ordered_by_name
+        if session[:show_tribes]
+          @tribes = @subfamily.tribes.ordered_by_name
+          if @parameters[:child] == 'none'
+            @tribe = 'none'
+            @genera = @subfamily.genera.without_tribe.ordered_by_name
+          end
+        else
+          @genera = @subfamily.genera.ordered_by_name
+        end
 
-    when Genus
-      @genus = @taxon
-      @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-      setup_genus_parent_columns
-      unless session[:show_subgenera]
-        @specieses = @genus.species_group_descendants
-      else
+      when Tribe
+        @tribe = @taxon
+        @subfamily = @tribe.subfamily
+
+        session[:show_tribes] = true
+        @tribes = @tribe.siblings.ordered_by_name
+        @genera = @tribe.genera.ordered_by_name
+
+      when Genus
+        @genus = @taxon
+        @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
+        setup_genus_parent_columns
+        unless session[:show_subgenera]
+          @specieses = @genus.species_group_descendants
+        else
+          @subgenera = @genus.subgenera.ordered_by_name
+        end
+
+      when Subgenus
+        @subgenus = @taxon
+        @genus = @subgenus.genus
+        @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
+        session[:show_subgenera] = true
         @subgenera = @genus.subgenera.ordered_by_name
-      end
+        setup_genus_parent_columns
+        @specieses = @subgenus.species_group_descendants
 
-    when Subgenus
-      @subgenus = @taxon
-      @genus = @subgenus.genus
-      @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-      session[:show_subgenera] = true
-      @subgenera = @genus.subgenera.ordered_by_name
-      setup_genus_parent_columns
-      @specieses = @subgenus.species_group_descendants
+      when Species
+        @species = @taxon
+        @genus = @species.genus
+        @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
+        setup_genus_parent_columns
+        @specieses = @genus.species_group_descendants
 
-    when Species
-      @species = @taxon
-      @genus = @species.genus
-      @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-      setup_genus_parent_columns
-      @specieses = @genus.species_group_descendants
-
-    when Subspecies
-      @species = @taxon
-      @genus = @species.genus
-      @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-      setup_genus_parent_columns
-      @specieses = @genus.species_group_descendants
+      when Subspecies
+        @species = @taxon
+        @genus = @species.genus
+        @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
+        setup_genus_parent_columns
+        @specieses = @genus.species_group_descendants
 
     end
   end
