@@ -290,7 +290,6 @@ ActiveRecord::Schema.define(version: 20150219200302) do
     t.integer  "current_valid_taxon_id",          limit: 4
     t.boolean  "ichnotaxon",                      limit: 1
     t.boolean  "nomen_nudum",                     limit: 1
-    t.string   "review_state",                    limit: 255
     t.integer  "family_id",                       limit: 4
     t.string   "verbatim_type_locality",          limit: 255
     t.string   "biogeographic_region",            limit: 255
@@ -330,7 +329,6 @@ ActiveRecord::Schema.define(version: 20150219200302) do
     t.integer "taxon_id",     limit: 4
     t.string  "review_state", limit: 255
     t.boolean "deleted",      limit: 1
-    t.string  "deleted_name", limit: 255
   end
 
   add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx", using: :btree

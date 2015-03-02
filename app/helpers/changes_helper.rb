@@ -65,22 +65,36 @@ module ChangesHelper
   end
 
   def edit_button taxon
-    if taxon.can_be_edited_by? current_user
-      button 'Edit', 'edit_button', 'data-edit-location' => edit_taxa_path(taxon)
+    unless taxon.taxon_state.nil?
+      if taxon.can_be_edited_by? current_user
+        button 'Edit', 'edit_button', 'data-edit-location' => edit_taxa_path(taxon)
+
+      end
+    else
+      #TODO make this pretty
+      return "<Deleted by later edit>"
     end
   end
 
   def undo_button taxon, change
-    # bull; this should tag with current change id.
-    if taxon.can_be_edited_by? current_user
+    # This extra check (for change_type deleted) covers the case when we've deleted children
+    # in a change that only shows the parent being deleted.
+    if  (!change[:change_type] == 'delete' && taxon.can_be_edited_by?(current_user)) or current_user.can_edit
       button 'Undo', 'undo_button', 'data-undo-id' => change.id, class: 'undo_button_' + change.id.to_s
     end
   end
 
-  def approve_button taxon
-    if taxon.can_be_approved_by? current_user
-      button 'Approve', 'approve_button', 'data-change-id' => taxon.last_change.id
+  def approve_button taxon, change
+    taxon_id = change.user_changed_taxon_id
+    taxon_state = TaxonState.find_by taxon_id: taxon_id
+    unless taxon_state.review_state == "approved"
+      if (taxon.taxon_state.nil? and $Milieu.user_is_editor? current_user) or
+          (!taxon_state.nil? and taxon.can_be_approved_by? change.id, current_user)
+
+        button 'Approve', 'approve_button', 'data-change-id' => taxon.last_change(change.id).id
+      end
     end
   end
+
 
 end

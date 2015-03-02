@@ -27,6 +27,7 @@ class TaxonMother
 
       @taxon.delete_with_transaction! change.id
       change.user_changed_taxon_id = @taxon.id
+
     end
   end
 
@@ -47,7 +48,7 @@ class TaxonMother
       update_type_name params.delete :type_name_attributes
       update_name_status_flags params
 
-      @taxon.review_state = :waiting
+      @taxon.taxon_state.review_state = :waiting
 
       if @taxon.new_record?
         change_type = :create

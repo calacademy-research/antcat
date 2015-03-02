@@ -40,16 +40,26 @@ class Taxon < ActiveRecord::Base
     transaction.paper_trail_version = last_version
     transaction.change_id = change_id
     transaction.save!
+    puts("Joe: for taxa id: "+id.to_s+" Creating new transaction with id: + " + transaction.id.to_s +
+             " change id: " + change_id.to_s + " paper trail id: " + transaction.paper_trail_version.id.to_s)
+
   end
 
   def delete_with_transaction! change_id
-    destroy!
-    transaction = Transaction.new
-    transaction.paper_trail_version = last_version
-    transaction.change_id = change_id
-    transaction.save!
-  end
+    Taxon.transaction do
+      taxon_state = self.taxon_state
+      taxon_state.deleted=true
+      taxon_state.review_state='waiting'
+      taxon_state.save
+      destroy!
+      transaction = Transaction.new
+      transaction.paper_trail_version = last_version
+      transaction.change_id = change_id
+      transaction.save!
+    end
 
+
+  end
 
 
 ###############################################
@@ -299,7 +309,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def children
-    if(Rank[self] == Rank[:subspecies])
+    if (Rank[self] == Rank[:subspecies])
       return []
     end
     raise NotImplementedError

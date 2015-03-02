@@ -11,12 +11,19 @@ class Citation < ActiveRecord::Base
 
   include CleanNewlines
   before_save {|record| clean_newlines record, :notes_taxt}
+  after_save :link_change_id
 
   # TODO: Rails 4 remove this if tests pass
   # def title
   #   # for PaperTrailManager's RSS output
   #   id.to_s
   # end
+
+  def link_change_id
+    puts "What's up, buttercup?"
+  end
+
+
 
   def authorship_string
     reference and "#{author_names_string}, #{reference.year}"

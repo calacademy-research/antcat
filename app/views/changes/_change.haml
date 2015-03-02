@@ -1,10 +1,15 @@
 -#Locals: change
 
 - taxon = change.reify
+-# delete case
+- if taxon.nil?
+  -taxon = change.most_recent_valid_taxon
 
 = render 'header', taxon: taxon, change: change
 
-- css_class = taxon.approved? ? 'approved' : ''
+-unless taxon.taxon_state.nil?
+  - css_class = taxon.approved? ? 'approved' : ''
+
 %table.change{class: css_class}
   %tr
     %td

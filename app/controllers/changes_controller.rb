@@ -2,7 +2,7 @@
 class ChangesController < ApplicationController
 
   def index
-    @changes = Change.creations.uniq.paginate page: params[:page], per_page: 2
+    @changes = Change.creations.paginate page: params[:page], per_page: 2
 
 
     respond_to do |format|
@@ -17,8 +17,16 @@ class ChangesController < ApplicationController
 
   def approve
     @change = Change.find params[:id]
-    @change.taxon.approve!
-    @change.update_attributes! approver_id: current_user.id, approved_at: Time.now
+    if (@change.taxon.nil?)
+      # This case is for approving a delete
+      taxon_id = @change.user_changed_taxon_id
+      taxon_state = TaxonState.find_by taxon_id: taxon_id
+      taxon_state.review_state = "approved"
+      taxon_state.save!
+    else
+      @change.taxon.approve!
+      @change.update_attributes! approver_id: current_user.id, approved_at: Time.now
+    end
     json = {success: true}.to_json
     render json: json, content_type: 'text/html'
   end
@@ -37,10 +45,14 @@ class ChangesController < ApplicationController
         versions.concat(find_all_versions_for_change(undo_this_change_id))
       end
       undo_versions versions
-      change.delete
       change.transactions.each do |transaction|
         transaction.delete
+        puts("Joe removing transaction: " + transaction.id.to_s)
+
       end
+      puts("Joe removing change: " + change.id.to_s)
+      change.delete
+
     end
     json = {success: true}.to_json
     render json: json, content_type: 'text/html'
@@ -62,8 +74,12 @@ class ChangesController < ApplicationController
     changes = []
     change_id_set.each do |cur_change_id|
       cur_change = Change.find(cur_change_id)
-      cur_taxon = cur_change.taxon
+      cur_taxon = cur_change.reify
+      if (cur_taxon.nil?)
+        cur_taxon = cur_change.most_recent_valid_taxon
+      end
       cur_transaction = cur_change.transactions.first
+
       cur_user = User.find (cur_transaction.paper_trail_version.whodunnit)
       changes.append(name: cur_taxon.name.to_s,
                      change_type: cur_change.change_type,
@@ -136,27 +152,31 @@ class ChangesController < ApplicationController
 
     Taxon.paper_trail_off!
     versions.each do |version|
-      if version.reify do
-        taxon = version.reify
+      if taxon = version.reify(has_one: true)
         review_state = taxon[:review_state]
+        #taxon[:review_state] = nil
         # review_state got moved to taxon_states.
+        # If we ressurrect the json state of an old pre-change taxon, the
+        # review_state in the model needs to get preserved into the new taxon_state table
         # This makes it backwards compatible - if the variable is defined when we re-load the taxon,
         # spool it out to the new table and remove it from taxon.
-        unless review_state.nil? do
-          taxon[:review_state]=nil
+        unless review_state.nil?
+          #taxon[:review_state]=nil
           taxon.taxon_state.review_state = review_state
         end
-          taxon.save!
-        else
-          version.item.destroy
-        end
-        version.delete
+        taxon.taxon_state.deleted=false
+        taxon.save!
+
+      else
+        version.item.destroy
       end
-        Taxon.paper_trail_on!
-      end
+      version.delete
+      puts("Joe ungoing version: " + version.id.to_s)
     end
+    Taxon.paper_trail_on!
   end
 end
+
 
 
 

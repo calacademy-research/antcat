@@ -33,8 +33,8 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   end
 
   def link_to_review_change
-    if @taxon.can_be_reviewed_by?(@user) && @taxon.last_change
-      button 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.last_change.id}"
+    if @taxon.can_be_reviewed_by?(@user) && @taxon.latest_change
+      button 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.latest_change.id}"
     end
   end
 
@@ -170,7 +170,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   #########
   def change_history
     return if @taxon.old?
-    change = @taxon.last_change
+    change = @taxon.latest_change
     return unless change
     content_tag :span, class: 'change_history' do
       content = ''.html_safe
@@ -179,7 +179,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       else
         content << "Changed by"
       end
-      content << " #{format_doer_name(@taxon.added_by)} ".html_safe
+      content << " #{format_doer_name(@taxon.added_by(change.id))} ".html_safe
       content << format_time_ago(change.created_at).html_safe
 
       if @taxon.approved?

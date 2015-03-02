@@ -1,7 +1,8 @@
 # coding: UTF-8
+require_relative '../../lib/workflow_external_table'
 class Taxon < ActiveRecord::Base
   include Workflow
-  #workflow_column :review_state
+  include Workflow::ExternalTable
   has_one :taxon_state
 
 
@@ -15,17 +16,9 @@ class Taxon < ActiveRecord::Base
 
   delegate :approver, :approved_at, to: :last_change
 
+  #
+  #
 
-  def load_workflow_state
-    @workflow_state = taxon_state.review_state
-  end
-
-  def persist_workflow_state(new_value)
-    @workflow_state = new_value
-    taxon_state.review_state = new_value
-    taxon_state.save!
-
-  end
 
   def can_be_edited_by? user
     return false unless $Milieu.user_can_edit?(user)
@@ -39,15 +32,21 @@ class Taxon < ActiveRecord::Base
     $Milieu.user_can_review_changes?(user) && waiting?
   end
 
-  def can_be_approved_by? user
-    user != added_by && waiting? && $Milieu.user_can_approve_changes?(user)
+  def can_be_approved_by? change_id, user
+    user != added_by(change_id) && waiting? && $Milieu.user_can_approve_changes?(user)
   end
 
   # Returns the ID of the most recent change that touches this taxon.
   # Query that looks at all transactions and picks the latest one that has this
   # change ID.
-  def last_change
-    Change.joins(:paper_trail_versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').first
+  def last_change change_id
+    Change.joins(:paper_trail_versions).where('versions.item_id = ? AND versions.item_type = ? AND changes.id = ?', id, 'Taxon', change_id).last
+  end
+
+  # Returns the ID of the most recent change that touches this taxon.
+  # Query that looks at all transactions and picks the latest one
+  def latest_change
+    Change.joins(:paper_trail_versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').last
   end
 
   def last_version
@@ -55,8 +54,9 @@ class Taxon < ActiveRecord::Base
     versions(true).last
   end
 
-  def added_by
-    last_change.user
+  def added_by change_id
+    puts "joe: Loading change id: " + change_id.to_s
+    last_change(change_id).user
   end
 
 end

@@ -8,7 +8,11 @@ class Protonym < ActiveRecord::Base
   accepts_nested_attributes_for :name, :authorship
   has_paper_trail
   attr_accessible :fossil, :sic, :locality, :id, :name_id, :name, :authorship, :taxon
+  after_save :link_change_id
 
+  def link_change_id
+    puts "What's up, buttercup?"
+  end
 
   def authorship_string
     authorship and authorship.authorship_string
