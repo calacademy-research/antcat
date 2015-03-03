@@ -4,6 +4,7 @@ require 'taxon_utility'
 require 'taxon_workflow'
 
 class Taxon < ActiveRecord::Base
+  include UndoTracker
   self.table_name = :taxa
   has_paper_trail
   attr_accessible :name_id,
@@ -32,18 +33,19 @@ class Taxon < ActiveRecord::Base
 
   include CleanNewlines
   before_save { |record| clean_newlines record, :headline_notes_taxt, :type_taxt }
+  after_save :link_change_id
 
 
-  def save_with_transaction! change_id
-    save!
-    transaction = Transaction.new
-    transaction.paper_trail_version = last_version
-    transaction.change_id = change_id
-    transaction.save!
-    puts("Joe: for taxa id: "+id.to_s+" Creating new transaction with id: + " + transaction.id.to_s +
-             " change id: " + change_id.to_s + " paper trail id: " + transaction.paper_trail_version.id.to_s)
-
-  end
+  # def save_with_transaction! change_id
+  #   save!
+  #   transaction = Transaction.new
+  #   transaction.paper_trail_version = last_version
+  #   transaction.change_id = change_id
+  #   transaction.save!
+  #   puts("Joe: for taxa id: "+id.to_s+" Creating new transaction with id: + " + transaction.id.to_s +
+  #            " change id: " + change_id.to_s + " paper trail id: " + transaction.paper_trail_version.id.to_s)
+  #
+  # end
 
   def delete_with_transaction! change_id
     Taxon.transaction do

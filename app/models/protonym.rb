@@ -1,5 +1,6 @@
 # coding: UTF-8
 class Protonym < ActiveRecord::Base
+  include UndoTracker
   include Importers::Bolton::Catalog::Updater
   has_one :taxon # Taxon has a protnym_id
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy # this model has a single authorship_id that references the "Citation" table
@@ -10,9 +11,7 @@ class Protonym < ActiveRecord::Base
   attr_accessible :fossil, :sic, :locality, :id, :name_id, :name, :authorship, :taxon
   after_save :link_change_id
 
-  def link_change_id
-    puts "What's up, buttercup?"
-  end
+
 
   def authorship_string
     authorship and authorship.authorship_string

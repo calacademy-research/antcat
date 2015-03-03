@@ -1,6 +1,7 @@
 # coding: UTF-8
 class Citation < ActiveRecord::Base
   include Importers::Bolton::Catalog::Updater
+  include UndoTracker
 
   #belongs_to :reference, -> { includes :author_names}   # has a reference_id
   belongs_to :reference   # has a reference_id
@@ -19,9 +20,7 @@ class Citation < ActiveRecord::Base
   #   id.to_s
   # end
 
-  def link_change_id
-    puts "What's up, buttercup?"
-  end
+
 
 
 

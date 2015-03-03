@@ -38,6 +38,7 @@ gem 'will_paginate'
 gem 'workflow'
 gem 'xml-simple'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
+gem 'request_store'
 
 
 group :development, :test do

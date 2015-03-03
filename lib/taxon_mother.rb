@@ -1,5 +1,6 @@
 # coding: UTF-8
 class TaxonMother
+  include UndoTracker
   # A TaxonMother is responsible for creating/saving
   # an object web of objects, starting with Taxon
 
@@ -22,7 +23,7 @@ class TaxonMother
 
   def delete_taxon taxon
     Taxon.transaction do
-      change = save_change :delete
+      change = setup_change :delete
       delete_taxon_children(@taxon, change.id)
 
       @taxon.delete_with_transaction! change.id
@@ -56,9 +57,10 @@ class TaxonMother
         # we might want to get smarter about this
         change_type = :update
       end
-      change = save_change change_type
+      change = setup_change change_type
       change_id = change.id
-      @taxon.save_with_transaction! change.id
+      @taxon.save
+      # TODO: The below may not be being used
       if (change_type == :create)
         change.user_changed_taxon_id = @taxon.id
         change.save
@@ -111,13 +113,7 @@ class TaxonMother
     update_status
   end
 
-  def save_change change_type
-    change = Change.new
-    change.change_type = change_type
-    change.user_changed_taxon_id = @taxon.id
-    change.save!
-    change
-  end
+
 
 
   ####################################
