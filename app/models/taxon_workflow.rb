@@ -32,21 +32,26 @@ class Taxon < ActiveRecord::Base
     $Milieu.user_can_review_changes?(user) && waiting?
   end
 
-  def can_be_approved_by? change_id, user
-    user != added_by(change_id) && waiting? && $Milieu.user_can_approve_changes?(user)
+  def can_be_approved_by? change, user
+    user != change.changed_by && waiting? && $Milieu.user_can_approve_changes?(user)
   end
 
   # Returns the ID of the most recent change that touches this taxon.
   # Query that looks at all transactions and picks the latest one that has this
   # change ID.
   def last_change change_id
-    Change.joins(:paper_trail_versions).where('versions.item_id = ? AND versions.item_type = ? AND changes.id = ?', id, 'Taxon', change_id).last
+    # possibly shouldn't do this; we're not gaurenteed a taxon here. Change.get_most_recent_valid_taxon_version might be better bet
+
+    raise NotImplementedError
+    Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ? AND changes.id = ?', id, 'Taxon', change_id).last
   end
 
   # Returns the ID of the most recent change that touches this taxon.
   # Query that looks at all transactions and picks the latest one
+  # used for review change link
+
   def latest_change
-    Change.joins(:paper_trail_versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').last
+    Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').last
   end
 
   def last_version
@@ -54,9 +59,6 @@ class Taxon < ActiveRecord::Base
     versions(true).last
   end
 
-  def added_by change_id
-    puts "joe: Loading change id: " + change_id.to_s
-    last_change(change_id).user
-  end
+
 
 end

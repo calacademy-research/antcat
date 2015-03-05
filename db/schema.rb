@@ -326,17 +326,14 @@ ActiveRecord::Schema.define(version: 20150219200302) do
   add_index "taxon_history_items", ["taxon_id"], name: "index_taxonomic_history_items_on_taxon_id", using: :btree
 
   create_table "taxon_states", force: :cascade do |t|
-    t.integer "taxon_id",     limit: 4
-    t.string  "review_state", limit: 255
-    t.boolean "deleted",      limit: 1
+    t.integer  "taxon_id",     limit: 4
+    t.string   "review_state", limit: 255
+    t.boolean  "deleted",      limit: 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx", using: :btree
-
-  create_table "transactions", force: :cascade do |t|
-    t.integer "paper_trail_version_id", limit: 4
-    t.integer "change_id",              limit: 4
-  end
 
   create_table "updates", force: :cascade do |t|
     t.string   "class_name", limit: 255
@@ -389,6 +386,7 @@ ActiveRecord::Schema.define(version: 20150219200302) do
     t.text     "object",         limit: 65535
     t.datetime "created_at"
     t.text     "object_changes", limit: 65535
+    t.integer  "change_id",      limit: 4
   end
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree

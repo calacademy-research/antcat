@@ -2,7 +2,9 @@
 Before do
   include Milieu
   Family.destroy_all
-  FactoryGirl.create :family
+  family = FactoryGirl.build :family
+  FactoryGirl.create :taxon_state, taxon_id: family.id
+  family.save!
   $Milieu = RestrictedMilieu.new
 end
 

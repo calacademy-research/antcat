@@ -3,10 +3,12 @@ require 'taxon_advanced_search'
 require 'taxon_utility'
 require 'taxon_workflow'
 
+
 class Taxon < ActiveRecord::Base
   include UndoTracker
   self.table_name = :taxa
-  has_paper_trail
+  has_paper_trail meta: {change_id: :get_current_change_id}
+
   attr_accessible :name_id,
                   :status,
                   :incertae_sedis_in,
@@ -33,42 +35,32 @@ class Taxon < ActiveRecord::Base
 
   include CleanNewlines
   before_save { |record| clean_newlines record, :headline_notes_taxt, :type_taxt }
-  after_save :link_change_id
+  #after_save :link_change_id
 
 
-  # def save_with_transaction! change_id
-  #   save!
-  #   transaction = Transaction.new
-  #   transaction.paper_trail_version = last_version
-  #   transaction.change_id = change_id
-  #   transaction.save!
-  #   puts("Joe: for taxa id: "+id.to_s+" Creating new transaction with id: + " + transaction.id.to_s +
-  #            " change id: " + change_id.to_s + " paper trail id: " + transaction.paper_trail_version.id.to_s)
-  #
-  # end
-
-  def delete_with_transaction! change_id
+  def delete_with_state!
     Taxon.transaction do
       taxon_state = self.taxon_state
+      # Bit of a hack; this is a new table which may lack the depth of other tables.
+      # Creation doesn't add a record, so you can't "step back to" a valid version.
+      # doing touch_with_version (creeate a fallback point) in the migration makes an
+      # enourmous and unnecessary pile of these.
+      if (0 == taxon_state.versions.length)
+        taxon_state.touch_with_version
+      end
       taxon_state.deleted=true
       taxon_state.review_state='waiting'
       taxon_state.save
       destroy!
-      transaction = Transaction.new
-      transaction.paper_trail_version = last_version
-      transaction.change_id = change_id
-      transaction.save!
     end
-
-
   end
 
 
-###############################################
-# nested attributes
+  ###############################################
+  # nested attributes
   belongs_to :name; validates :name, presence: true
-#belongs_to :protonym, dependent: :destroy; validates :protonym, presence: true
-#has_and_belongs_to_many :projects, -> { includes :milestones, :manager }
+  #belongs_to :protonym, dependent: :destroy; validates :protonym, presence: true
+  #has_and_belongs_to_many :projects, -> { includes :milestones, :manager }
 
   belongs_to :protonym, -> { includes :authorship }; validates :protonym, presence: true
 
@@ -77,7 +69,6 @@ class Taxon < ActiveRecord::Base
   has_many :taxa, class_name: "Taxon", foreign_key: :genus_id
   belongs_to :genus, class_name: 'Taxon'
 
-  has_many :transactions
   accepts_nested_attributes_for :name, :protonym, :type_name
 
   before_save :set_name_caches, :delete_synonyms
@@ -92,16 +83,16 @@ class Taxon < ActiveRecord::Base
     synonyms_as_junior.destroy_all if synonyms_as_junior.present?
   end
 
-###############################################
-# name
+  ###############################################
+  # name
   scope :with_names, -> { joins(:name).readonly(false) }
 
-# scope :with_names, joins(:name).readonly(false)
-#scope :ordered_by_name, with_names.order('names.name').includes(:name)
+  # scope :with_names, joins(:name).readonly(false)
+  #scope :ordered_by_name, with_names.order('names.name').includes(:name)
   scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
 
 
-# scope :longago, -> { order(:published_at) }
+  # scope :longago, -> { order(:published_at) }
   def self.find_by_name name
     where(name_cache: name).first
   end
@@ -114,8 +105,8 @@ class Taxon < ActiveRecord::Base
     joins(:name).readonly(false).where ['epithet = ?', epithet]
   end
 
-# target_epithet is a string
-# genus is an object
+  # target_epithet is a string
+  # genus is an object
   def self.find_epithet_in_genus target_epithet, genus
     for epithet in Name.make_epithet_set target_epithet
       results = with_names.where(['genus_id = ? AND epithet = ?', genus.id, epithet])
@@ -211,8 +202,8 @@ class Taxon < ActiveRecord::Base
     end
   end
 
-###############################################
-# synonym
+  ###############################################
+  # synonym
   def synonym?;
     status == 'synonym'
   end
@@ -271,8 +262,8 @@ class Taxon < ActiveRecord::Base
     update_attributes! status: 'valid' if senior_synonyms.empty?
   end
 
-###############################################
-# homonym
+  ###############################################
+  # homonym
   belongs_to :homonym_replaced_by, class_name: 'Taxon'
   has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
 
@@ -287,8 +278,8 @@ class Taxon < ActiveRecord::Base
   attr_accessor :homonym_replaced_by_name
 
 
-###############################################
-# parent
+  ###############################################
+  # parent
   attr_accessor :parent_name
 
   def parent= id_or_object
@@ -321,8 +312,8 @@ class Taxon < ActiveRecord::Base
     Rank[self].to_s
   end
 
-###############################################
-# current_valid_taxon
+  ###############################################
+  # current_valid_taxon
   belongs_to :current_valid_taxon, class_name: 'Taxon'
   attr_accessor :current_valid_taxon_name
 
@@ -349,28 +340,28 @@ class Taxon < ActiveRecord::Base
     nil
   end
 
-###############################################
-# original combination
-# A status of 'original combination' means that the taxon/name is a placeholder
-# for the original name of the species under the original genus.
-# The original_combination? predicate checks that.
+  ###############################################
+  # original combination
+  # A status of 'original combination' means that the taxon/name is a placeholder
+  # for the original name of the species under the original genus.
+  # The original_combination? predicate checks that.
   def original_combination?;
     status == 'original combination'
   end
 
-# The original_combination accessor returns the taxon with 'original combination'
-# status whose 'current valid taxon' points to us.
+  # The original_combination accessor returns the taxon with 'original combination'
+  # status whose 'current valid taxon' points to us.
   def original_combination
     self.class.where(status: 'original combination', current_valid_taxon_id: id).first
   end
 
-###############################################
-# other associations
+  ###############################################
+  # other associations
   has_many :history_items, -> { order 'position' }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order 'position' }, dependent: :destroy
 
-###############################################
-# statuses, fossil
+  ###############################################
+  # statuses, fossil
   scope :valid, -> { where(status: 'valid') }
   scope :extant, -> { where(fossil: false) }
 
@@ -406,7 +397,7 @@ class Taxon < ActiveRecord::Base
     status == 'obsolete combination'
   end
 
-###############################################
+  ###############################################
   def authorship_string
     # TODO: this triggers a save in the Name model for some reason.
     string = protonym.authorship_string
@@ -432,7 +423,7 @@ class Taxon < ActiveRecord::Base
     false
   end
 
-###############################################
+  ###############################################
   before_validation :add_protocol_to_type_speciment_url
   validate :check_url
 
@@ -450,8 +441,8 @@ class Taxon < ActiveRecord::Base
     errors.add :type_specimen_url, 'is not in a valid format'
   end
 
-###############################################
-# statistics
+  ###############################################
+  # statistics
   def get_statistics ranks
     statistics = {}
     ranks.each do |rank|
@@ -489,7 +480,7 @@ class Taxon < ActiveRecord::Base
     children
   end
 
-###############################################
+  ###############################################
   def references options = {}
     references = []
     references.concat references_in_taxa
@@ -544,8 +535,8 @@ class Taxon < ActiveRecord::Base
     references
   end
 
-###############################################
-# import
+  ###############################################
+  # import
 
   def import_synonyms senior
     return unless senior

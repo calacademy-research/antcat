@@ -7,9 +7,9 @@ class Protonym < ActiveRecord::Base
   validates :authorship, presence: true
   belongs_to :name; validates :name, presence: true # Protonym has a name_id
   accepts_nested_attributes_for :name, :authorship
-  has_paper_trail
+  has_paper_trail meta: { change_id: :get_current_change_id}
+
   attr_accessible :fossil, :sic, :locality, :id, :name_id, :name, :authorship, :taxon
-  after_save :link_change_id
 
 
 

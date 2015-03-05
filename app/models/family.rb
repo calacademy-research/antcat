@@ -45,7 +45,15 @@ class Family < Taxon
           headline_notes_taxt: Importers::Bolton::Catalog::TextToTaxt.convert(data[:note]),
         }
         attributes.merge! get_type_attributes data
-        taxon = create! attributes
+
+        taxon = Family.new attributes
+        taxon.save validate: false
+        ts = TaxonState.new
+        ts.taxon_id = taxon.id
+        ts.review_state='old'
+        ts.deleted = false
+        ts.save
+
         taxon.import_history data[:history]
         create_update name, taxon.id, self.name
       end

@@ -24,9 +24,9 @@ class TaxonMother
   def delete_taxon taxon
     Taxon.transaction do
       change = setup_change :delete
-      delete_taxon_children(@taxon, change.id)
+      delete_taxon_children(@taxon)
 
-      @taxon.delete_with_transaction! change.id
+      @taxon.delete_with_state!
       change.user_changed_taxon_id = @taxon.id
 
     end
@@ -100,7 +100,7 @@ class TaxonMother
         update_all({senior_synonym_id: @taxon.id})
     Synonym.where({junior_synonym_id: taxon_to_update.id}).
         update_all({junior_synonym_id: @taxon.id})
-    taxon_to_update.save_with_transaction! change_id
+    taxon_to_update.save
   end
 
   def get_status_string(taxon_to_update)
@@ -192,18 +192,18 @@ class TaxonMother
 
   private
 
-  def save_taxon_children taxon, change_id
+  def save_taxon_children taxon
     return if taxon.kind_of?(Family) || taxon.kind_of?(Subspecies)
     taxon.children.each do |c|
-      c.save_with_transaction! change_id
-      save_taxon_children c, change_id
+      c.save
+      save_taxon_children c
     end
   end
 
-  def delete_taxon_children taxon, change_id
+  def delete_taxon_children taxon
     taxon.children.each do |c|
-      c.delete_with_transaction! change_id
-      delete_taxon_children c, change_id
+      c.delete_with_state!
+      delete_taxon_children c
     end
   end
 

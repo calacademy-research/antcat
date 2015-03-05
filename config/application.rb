@@ -2,6 +2,30 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
+#
+# This block is a duplicate of the paper_trail.rb initializer.
+# There is an intermittent (!) loading order issue where we're seeing
+# change_id being flagged as not writable. Putting this block here
+# seems to have fixed it; remove this block if/when we move beyond 4.0 beta 2 and see
+# if deleting and undoing a delete still causes the problem. Do at least three tests.
+#
+# Note: This should probably be require 'config/initializers/paper_trail.rb',
+# but because this is intermittent I'm not changing anything until I know this is the fix.
+#
+require 'protected_attributes'
+
+module PaperTrail
+  class Version < ::ActiveRecord::Base
+    attr_accessible :change_id
+  end
+end
+
+#
+#  End of stupid
+#
+
+
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

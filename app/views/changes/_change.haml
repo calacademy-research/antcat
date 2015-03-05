@@ -1,9 +1,6 @@
 -#Locals: change
+- taxon = change.get_most_recent_valid_taxon
 
-- taxon = change.reify
--# delete case
-- if taxon.nil?
-  -taxon = change.most_recent_valid_taxon
 
 = render 'header', taxon: taxon, change: change
 

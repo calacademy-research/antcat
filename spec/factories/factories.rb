@@ -9,6 +9,12 @@ end
 
 FactoryGirl.define do
 
+  factory :taxon_state do
+    review_state 'old'
+    deleted 0
+  end
+
+
   factory :author
 
   factory :author_name do
@@ -378,6 +384,13 @@ def create_synonym senior, attributes = {}
   junior = create_genus attributes.merge status: 'synonym'
   synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
   junior
+end
+
+def create_taxon_with_state(taxon_type, name)
+  taxon = FactoryGirl.build(taxon_type, name: name)
+  FactoryGirl.create :taxon_state, taxon_id: taxon.id
+  taxon.save!
+  taxon
 end
 
 def create_taxon_version_and_change(review_state, user = @user, approver = nil, genus_name = 'default_genus')

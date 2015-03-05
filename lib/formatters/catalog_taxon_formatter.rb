@@ -179,7 +179,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       else
         content << "Changed by"
       end
-      content << " #{format_doer_name(@taxon.added_by(change.id))} ".html_safe
+      content << " #{format_doer_name(change.changed_by)} ".html_safe
       content << format_time_ago(change.created_at).html_safe
 
       if @taxon.approved?

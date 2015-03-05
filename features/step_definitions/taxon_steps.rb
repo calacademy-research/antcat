@@ -23,24 +23,29 @@ end
 # subfamily
 Given /there is a subfamily "([^"]*)" with taxonomic history "([^"]*)"$/ do |taxon_name, history|
   name = FactoryGirl.create :subfamily_name, name: taxon_name
-  taxon = FactoryGirl.create :subfamily, name: name
+  taxon = create_taxon_with_state(:subfamily,name)
   taxon.history_items.create! taxt: history
 end
 Given /there is a subfamily "([^"]*)" with a reference section "(.*?)"$/ do |taxon_name, references|
   name = FactoryGirl.create :subfamily_name, name: taxon_name
-  taxon = FactoryGirl.create :subfamily, name: name
+  taxon = create_taxon_with_state(:subfamily,name)
   taxon.reference_sections.create! references_taxt: references
 end
 Given /there is a subfamily "([^"]*)"$/ do |taxon_name|
   name = FactoryGirl.create :subfamily_name, name: taxon_name
-  @subfamily = FactoryGirl.create :subfamily, name: name
+  @subfamily = create_taxon_with_state(:subfamily,name)
 end
 Given /^subfamily "(.*?)" exists$/ do |name|
-  @subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:subfamily_name, name: name)
+  @subfamily = create_taxon_with_state(:subfamily,FactoryGirl.create(:subfamily_name, name: name))
+  #@subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:subfamily_name, name: name)
   @subfamily.history_items.create! taxt: "#{name} history"
 end
 Given /^the unavailable subfamily "(.*?)" exists$/ do |name|
-  @subfamily = FactoryGirl.create :subfamily, status: 'unavailable', name: FactoryGirl.create(:subfamily_name, name: name)
+  @subfamily = FactoryGirl.build(:subfamily, status: 'unavailable', name: FactoryGirl.create(:subfamily_name, name: name))
+  FactoryGirl.create :taxon_state, taxon_id: taxon.id
+  @subfamily.save!
+  @subfamily
+  # @subfamily = FactoryGirl.create :subfamily, status: 'unavailable', name: FactoryGirl.create(:subfamily_name, name: name)
 end
 
 ###########################

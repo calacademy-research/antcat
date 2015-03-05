@@ -3,7 +3,7 @@
 %div.change_header
   - if change.change_type != 'delete' and not taxon.nil?
     %div.change_description
-      %div.name.left= format_adder_name change.change_type, taxon.added_by(change.id)
+      %div.name.left= format_adder_name change.change_type, change.changed_by
       %div.taxon.left= link_to_taxon taxon
       %div.edit_button.left= edit_button taxon
       %div.undo_button.left= undo_button taxon, change
@@ -18,7 +18,7 @@
         %div.clear
   - else
     %div.change_description
-      %div.name.left= format_adder_name change.change_type, taxon.added_by(change.id)
+      %div.name.left= format_adder_name change.change_type, change.changed_by
       %div.taxon.left=format_taxon_name taxon.name
       %div.undo_button.left= undo_button taxon, change
       %div.approve_button.left= approve_button taxon, change
