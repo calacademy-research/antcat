@@ -326,11 +326,9 @@ ActiveRecord::Schema.define(version: 20150219200302) do
   add_index "taxon_history_items", ["taxon_id"], name: "index_taxonomic_history_items_on_taxon_id", using: :btree
 
   create_table "taxon_states", force: :cascade do |t|
-    t.integer  "taxon_id",     limit: 4
-    t.string   "review_state", limit: 255
-    t.boolean  "deleted",      limit: 1
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "taxon_id",     limit: 4
+    t.string  "review_state", limit: 255
+    t.boolean "deleted",      limit: 1
   end
 
   add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx", using: :btree

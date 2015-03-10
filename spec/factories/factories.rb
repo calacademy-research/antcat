@@ -193,80 +193,148 @@ FactoryGirl.define do
   ####################################################
 
   factory :taxon do
+    after :create do |taxon|
+      FactoryGirl.create(:taxon_state, taxon_id: taxon.id)
+      taxon.touch_with_version
+    end
+    to_create {|instance| instance.save(validate: false) }
+
     association :name, factory: :genus_name
     association :type_name, factory: :species_name
     protonym
     status 'valid'
+
   end
 
   factory :family do
+    after :create do |family|
+      FactoryGirl.create(:taxon_state, taxon_id: family.id)
+      family.touch_with_version
+    end
+    to_create {|instance| instance.save(validate: false) }
+
     association :name, factory: :family_name
     association :type_name, factory: :genus_name
     protonym
     status 'valid'
+
   end
 
   factory :subfamily do
+    after :create do |subfamily|
+      FactoryGirl.create(:taxon_state, taxon_id: subfamily.id)
+      subfamily.touch_with_version
+    end
+    to_create {|instance| instance.save(validate: false) }
+
     association :name, factory: :subfamily_name
     association :type_name, factory: :genus_name
     protonym
     status 'valid'
+
   end
 
   factory :tribe do
+    after :create do |tribe|
+      FactoryGirl.create(:taxon_state, taxon_id: tribe.id)
+      tribe.touch_with_version
+    end
+    to_create {|instance| instance.save(validate: false) }
     association :name, factory: :tribe_name
     association :type_name, factory: :genus_name
     subfamily
     protonym
     status 'valid'
+
   end
 
   factory :subtribe do
+    after :create do |subtribe|
+      FactoryGirl.create(:taxon_state, taxon_id: subtribe.id)
+      subtribe.touch_with_version
+    end
+    to_create {|instance| instance.save(validate: false) }
     association :name, factory: :subtribe_name
     association :type_name, factory: :genus_name
     subfamily
     protonym
     status 'valid'
+
   end
 
   factory :genus do
+    after :create do |genus|
+      FactoryGirl.create(:taxon_state, taxon_id: genus.id)
+      genus.touch_with_version
+    end
+    to_create {|instance| instance.save(validate: false) }
     association :name, factory: :genus_name
     association :type_name, factory: :species_name
     tribe
     subfamily { |a| a.tribe && a.tribe.subfamily }
     protonym
     status 'valid'
+
   end
 
   factory :subgenus do
+    after :create do |subgenus|
+      FactoryGirl.create(:taxon_state, taxon_id: subgenus.id)
+      subgenus.touch_with_version
+    end
+    to_create {|instance| instance.save(validate: false) }
     association :name, factory: :subgenus_name
     association :type_name, factory: :species_name
     genus
     protonym
     status 'valid'
+
   end
 
   factory :species_group_taxon do
+    after :create do |species_group_taxon|
+      FactoryGirl.create(:taxon_state, taxon_id: species_group_taxon.id)
+      species_group_taxon.touch_with_version
+    end
+    to_create {|instance| instance.save(validate: false) }
     association :name, factory: :species_name
     genus
     protonym
     status 'valid'
+
   end
 
   factory :species do
+    after :create do |species|
+      FactoryGirl.create(:taxon_state, taxon_id: species.id)
+      species.touch_with_version
+    end
+    to_create {|instance| instance.save(validate: false) }
     association :name, factory: :species_name
     genus
     protonym
     status 'valid'
+
   end
 
   factory :subspecies do
+    after :create do |subspecies|
+      FactoryGirl.create(:taxon_state, taxon_id: subspecies.id)
+      subspecies.touch_with_version
+    end
+    to_create {|instance| instance.save(validate: false) }
     association :name, factory: :species_name
     species
     genus
     protonym
     status 'valid'
+
   end
+
+
+
+
+
 
   ####################################################
   factory :citation do
@@ -298,6 +366,7 @@ FactoryGirl.define do
   factory :version, :class => PaperTrail::Version do
     item_type 'Taxon'
     event 'create'
+    change_id 0
     association :whodunnit, factory: :user
   end
 
@@ -387,9 +456,9 @@ def create_synonym senior, attributes = {}
 end
 
 def create_taxon_with_state(taxon_type, name)
-  taxon = FactoryGirl.build(taxon_type, name: name)
+  taxon = FactoryGirl.create(taxon_type, name: name)
   FactoryGirl.create :taxon_state, taxon_id: taxon.id
-  taxon.save!
+  taxon.touch_with_version
   taxon
 end
 

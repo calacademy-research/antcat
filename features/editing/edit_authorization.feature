@@ -16,7 +16,6 @@ Feature: Editing a taxon with authorization constraints
     Then I should not see a "Edit" button
     And I should not see a "Delete" button
 
-
   Scenario: Trying to edit a taxon that's waiting for approval
     Given there is a genus "Calyptites" that's waiting for approval
     And I log in as a catalog editor

@@ -49,17 +49,33 @@ class TaxonMother
       update_type_name params.delete :type_name_attributes
       update_name_status_flags params
 
-      @taxon.taxon_state.review_state = :waiting
 
       if @taxon.new_record?
         change_type = :create
+        @taxon.taxon_state = TaxonState.new
+        @taxon.taxon_state.deleted = false
+        @taxon.taxon_state.id = @taxon.id
       else
         # we might want to get smarter about this
         change_type = :update
       end
+      @taxon.taxon_state.review_state = :waiting
+
       change = setup_change change_type
       change_id = change.id
+
+
       @taxon.save
+      # paper_trail is dumb. When a new object is created, it has no "object".
+      # So, if you undo the first change, and try to reify the previous one,
+      # you end up with no object! touch_with_version gives us one, but
+      # Just for the taxa, not the protonym or other changable objects.
+      # TODO fix all paper trail objects to get a "touch_with_version" during create event.
+      if(:create == change_type)
+        @taxon.touch_with_version
+      end
+
+
       # TODO: The below may not be being used
       if (change_type == :create)
         change.user_changed_taxon_id = @taxon.id
@@ -87,7 +103,7 @@ class TaxonMother
           update_elements(taxon, params, previous_combination, Status['obsolete combination'].to_s, change_id)
         end
       end
-      save_taxon_children @taxon, change_id
+      save_taxon_children @taxon
     end
   end
 
@@ -112,8 +128,6 @@ class TaxonMother
     end
     update_status
   end
-
-
 
 
   ####################################

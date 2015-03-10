@@ -3,14 +3,16 @@ When /^(?:that )?version tracking is (not)?enabled$/ do |is_not|
   PaperTrail.enabled = !is_not
 end
 When /^the changes are approved$/ do
-  Taxon.update_all review_state: :approved
+  TaxonState.update_all review_state: :approved
   Change.update_all approver_id: @user.id, approved_at: Time.now
 end
 Given /^there is a genus "([^"]*)" that's waiting for approval$/ do |name|
-  genus = create_genus name, review_state: :waiting
-  change = FactoryGirl.build :change, user_changed_taxon_id: genus.id
-  version = FactoryGirl.build :version, item_id: genus.id, whodunnit: 1
-  FactoryGirl.create :transaction, paper_trail_version: version, change: change
+  genus = create_genus name
+  genus.taxon_state.review_state = :waiting
+  genus.save
+  change = FactoryGirl.create :change, user_changed_taxon_id: genus.id
+  version = FactoryGirl.create :version, item_id: genus.id, whodunnit: 1, change_id: change.id
+  #FactoryGirl.create :transaction, paper_trail_version: version, change: change
 end
 
 ####

@@ -6,7 +6,10 @@ Given /^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/ do
     author_name = FactoryGirl.create :author_name, name: author, author: bolton
     reference.author_names = [author_name]
   end
-  taxon = FactoryGirl.create :species
+  #taxon = FactoryGirl.create :species
+  taxon = create_species
+  FactoryGirl.create :taxon_state, taxon_id: taxon.id
+
   taxon.update_attributes! status: 'synonym' if invalid
   taxon.protonym.authorship.update_attributes! reference: reference
 end
@@ -17,7 +20,9 @@ Given /^there is an original combination of "([^"]+)" described by "([^"]+)" whi
   author_name = FactoryGirl.create :author_name, name: author, author: bolton
   reference.author_names = [author_name]
   betta_major = create_species 'Betta major'
+  FactoryGirl.create :taxon_state, taxon_id: betta_major.id
   atta_major = create_species 'Atta major', status: 'original combination', current_valid_taxon: atta_major
+  FactoryGirl.create :taxon_state, taxon_id: atta_major.id
   atta_major.protonym.authorship.update_attributes! reference: reference
   atta_major.update_attributes current_valid_taxon: betta_major
   betta_major.protonym.authorship.update_attributes! reference: reference
@@ -28,6 +33,7 @@ Given /^there were (\d+) species described in (\d+)$/ do |count, year|
   reference = FactoryGirl.create :article_reference, citation_year: year
   count.to_i.times do |i|
     taxon = FactoryGirl.create :species
+    FactoryGirl.create :taxon_state, taxon_id: taxon.id
     taxon.protonym.authorship.update_attributes! reference: reference
   end
 end
@@ -35,33 +41,48 @@ end
 Given /^there is a subfamily described in (\d+)/ do |year|
   reference = FactoryGirl.create :article_reference, citation_year: year
   taxon = FactoryGirl.create :subfamily
+
+  FactoryGirl.create :taxon_state, taxon_id: taxon.id
   taxon.protonym.authorship.update_attributes! reference: reference
 end
 
 Given /^there is a genus located in "([^"]+)"$/ do |locality|
   protonym = FactoryGirl.create :protonym, locality: locality
-  FactoryGirl.create :genus, protonym: protonym
+  genus = FactoryGirl.create :genus, protonym: protonym
+  FactoryGirl.create :taxon_state, taxon_id: genus.id
 end
 Given /^there is a species located in "([^"]+)"$/ do |locality|
   protonym = FactoryGirl.create :protonym, locality: locality
-  FactoryGirl.create :species, protonym: protonym
+  species = FactoryGirl.create :species, protonym: protonym
+  FactoryGirl.create :taxon_state, taxon_id: species.id
+
 end
 Given /^there is a species with verbatim type locality "([^"]+)"$/ do |locality|
-  FactoryGirl.create :species, verbatim_type_locality: locality
+  species = FactoryGirl.create :species, verbatim_type_locality: locality
+  FactoryGirl.create :taxon_state, taxon_id: species.id
+
 end
 Given /^there is a species with type specimen repository "([^"]+)"$/ do |repository|
-  FactoryGirl.create :species, type_specimen_repository: repository
+  species = FactoryGirl.create :species, type_specimen_repository: repository
+  FactoryGirl.create :taxon_state, taxon_id: species.id
+
 end
 Given /^there is a species with type specimen code "([^"]+)"$/ do |code|
-  FactoryGirl.create :species, type_specimen_code: code
+  species = FactoryGirl.create :species, type_specimen_code: code
+  FactoryGirl.create :taxon_state, taxon_id: species.id
+
 end
 Given /^there is a species with biogeographic region "([^"]+)"$/ do |biogeographic_region|
-  FactoryGirl.create :species, biogeographic_region: biogeographic_region
+  species = FactoryGirl.create :species, biogeographic_region: biogeographic_region
+  FactoryGirl.create :taxon_state, taxon_id: species.id
+
 end
 Given /^there is a species with forms "([^"]+)"$/ do |forms|
   citation = FactoryGirl.create :citation, forms: forms
   protonym = FactoryGirl.create :protonym, authorship: citation
-  FactoryGirl.create :species, protonym: protonym
+  species = FactoryGirl.create :species, protonym: protonym
+  FactoryGirl.create :taxon_state, taxon_id: species.id
+
 end
 Then /^I should see the genus located in "([^"]+)"$/ do |locality|
   step %{I should see "#{locality}"}

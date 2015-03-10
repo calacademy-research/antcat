@@ -247,7 +247,7 @@ GEM
       sass (~> 3.2.2)
       sprockets (~> 2.8, < 3.0)
       sprockets-rails (~> 2.0)
-    selenium-webdriver (2.44.0)
+    selenium-webdriver (2.45.0)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
@@ -337,7 +337,7 @@ DEPENDENCIES
   rspec-activemodel-mocks
   rspec-rails
   sass-rails (= 4.0.5)
-  selenium-webdriver (>= 2.44.0)
+  selenium-webdriver (>= 2.45.0)
   spork
   sprockets-rails
   sunspot_rails

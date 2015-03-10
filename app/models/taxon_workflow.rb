@@ -37,13 +37,10 @@ class Taxon < ActiveRecord::Base
   end
 
   # Returns the ID of the most recent change that touches this taxon.
-  # Query that looks at all transactions and picks the latest one that has this
-  # change ID.
-  def last_change change_id
-    # possibly shouldn't do this; we're not gaurenteed a taxon here. Change.get_most_recent_valid_taxon_version might be better bet
+  # TODO: Fix these duplicates once the tests pass
+  def last_change
 
-    raise NotImplementedError
-    Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ? AND changes.id = ?', id, 'Taxon', change_id).last
+    Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon' ).last
   end
 
   # Returns the ID of the most recent change that touches this taxon.

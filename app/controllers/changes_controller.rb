@@ -40,22 +40,26 @@ class ChangesController < ApplicationController
     change_id = params[:id]
     change_id_set = find_future_changes(change_id)
     versions = SortedSet.new
+    items = SortedSet.new
     Taxon.transaction do
       change_id_set.each do |undo_this_change_id|
-        cur_change = Change.find(undo_this_change_id)
+        begin
+          # could be already undone.
+          cur_change = Change.find(undo_this_change_id)
+        rescue ActiveRecord::RecordNotFound
+          next
+        end
         cur_change.versions.each do |cur_version|
           versions.add(cur_version)
         end
-        puts("Joe removing change: " + cur_change.id.to_s)
         cur_change.delete
       end
       undo_versions versions
-
-
     end
     json = {success: true}.to_json
     render json: json, content_type: 'text/html'
   end
+
 
   def destroy
     destroy_id = params[:id]
@@ -72,7 +76,12 @@ class ChangesController < ApplicationController
     change_id_set = find_future_changes(change_id)
     changes = []
     change_id_set.each do |cur_change_id|
-      cur_change = Change.find(cur_change_id)
+      begin
+        # could be already undone.
+        cur_change = Change.find(cur_change_id)
+      rescue ActiveRecord::RecordNotFound
+        next
+      end
       # Could get cute and report exactly what was changed about any given taxon
       # For now, just report a change to the taxon in question.
       cur_taxon = cur_change.get_most_recent_valid_taxon
@@ -81,6 +90,8 @@ class ChangesController < ApplicationController
                      change_type: cur_change.change_type,
                      change_timestamp: cur_change.created_at.strftime("%B %d, %Y"),
                      user_name: cur_user.name)
+      # This would be a good place to warn from if we find that we can't undo
+      # something about a taxa.
     end
     render json: changes.to_json, status: :ok
   end
@@ -91,15 +102,23 @@ class ChangesController < ApplicationController
   # have an extracted taxon_state.
   def undo_versions versions
     versions.reverse_each do |version|
-      item = version.previous.reify
-      begin
-        # because we validate on things like the genus being present, and if we're doing an entire change set,
-        # it might not be!
-        item.save!(:validate => false)
-      rescue ActiveRecord::RecordInvalid => error
+      if 'create' == version.event
+        klass = version.item_type.constantize
+        item = klass.find(version.item_id)
+        item.delete
+      else
+        item = version.previous.reify
+        begin
+          # because we validate on things like the genus being present, and if we're doing an entire change set,
+          # it might not be!
+          unless (item.nil?)
+            item.save!(:validate => false)
+          end
+        rescue ActiveRecord::RecordInvalid => error
 
-        puts("=========Reify failure:" + error.to_s + " version item_type = " + version.item_type.to_s)
-        raise error
+          puts("=========Reify failure:" + error.to_s + " version item_type = " + version.item_type.to_s)
+          raise error
+        end
       end
     end
   end
