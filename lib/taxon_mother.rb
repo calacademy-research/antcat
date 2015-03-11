@@ -39,6 +39,7 @@ class TaxonMother
 
   # TODO: Document params, and how that works.
   def save_taxon taxon, params, previous_combination = nil
+    change_type=nil
     Taxon.transaction do
       @taxon = taxon
       update_name params.delete :name_attributes
@@ -48,7 +49,6 @@ class TaxonMother
       update_protonym params.delete :protonym_attributes
       update_type_name params.delete :type_name_attributes
       update_name_status_flags params
-
 
       if @taxon.new_record?
         change_type = :create
@@ -64,8 +64,7 @@ class TaxonMother
       change = setup_change change_type
       change_id = change.id
 
-
-      @taxon.save
+      @taxon.save!
       # paper_trail is dumb. When a new object is created, it has no "object".
       # So, if you undo the first change, and try to reify the previous one,
       # you end up with no object! touch_with_version gives us one, but
@@ -74,7 +73,6 @@ class TaxonMother
       if(:create == change_type)
         @taxon.touch_with_version
       end
-
 
       # TODO: The below may not be being used
       if (change_type == :create)
@@ -105,6 +103,8 @@ class TaxonMother
       end
       save_taxon_children @taxon
     end
+
+
   end
 
   def update_elements taxon, params, taxon_to_update, status_string, change_id

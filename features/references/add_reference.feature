@@ -110,8 +110,7 @@ Feature: Add reference
     When I follow "add" in the first reference
     And in the new edit form I fill in "reference_author_names_string" with "Fisher, B.L."
     And in the new edit form I press the "Save" button
-    Then I should see a new edit form
-    And I should see "Year can't be blank"
+    Then I should see "Year can't be blank"
     And I should see "Title can't be blank"
     And I should see "Journal can't be blank"
     And I should see "Series volume issue can't be blank"
@@ -122,7 +121,6 @@ Feature: Add reference
     And in the new edit form I follow "Book"
     And in the new edit form I fill in "reference_author_names_string" with "Fisher, B.L."
     And in the new edit form I press the "Save" button
-    Then I should see a new edit form
     And I should see "Year can't be blank"
     And I should see "Title can't be blank"
     And I should see "Publisher can't be blank"
@@ -133,7 +131,6 @@ Feature: Add reference
     And in the new edit form I follow "Nested"
     And in the new edit form I fill in "reference_author_names_string" with "Fisher, B.L."
     And in the new edit form I press the "Save" button
-    Then I should see a new edit form
     And I should see "Year can't be blank"
     And I should see "Pages in can't be blank"
     And I should see "Nesting reference can't be blank"

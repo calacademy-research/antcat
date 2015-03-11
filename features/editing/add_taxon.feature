@@ -6,12 +6,12 @@ Feature: Adding a taxon
   So people use AntCat
 
   Background:
-    Given that version tracking is enabled
+    Given I log in
+    And that version tracking is enabled
     And these dated references exist
       | authors | citation   | title | year |  created_at | updated_at |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |   TODAYS_DATE | TODAYS_DATE |
     And there is a subfamily "Formicinae"
-    And I log in
 
 
   Scenario: Adding a genus
