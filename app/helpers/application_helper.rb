@@ -10,7 +10,7 @@ module ApplicationHelper
     $Milieu.user_can_edit? current_user
   end
   def user_can_upload_pdfs?
-    $Milieu.user_can_upload_pdfs?user_can_upload_pdfs? current_user
+    $Milieu.user_can_upload_pdfs? current_user
   end
   def user_is_editor?
     $Milieu.user_is_editor? current_user

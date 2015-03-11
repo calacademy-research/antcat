@@ -51,6 +51,7 @@ class AntCat.UndoButton extends AntCat.ChangeButton
         }
     })
 
+
   click: =>
     change_id = @element.data('undo-id')
     url = "/changes/#{change_id}/undo_items"

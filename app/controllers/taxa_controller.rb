@@ -34,6 +34,17 @@ class TaxaController < ApplicationController
     save_taxon
   end
 
+  def delete
+    delete_mother = TaxonMother.new params[:taxa_id]
+
+    taxon = delete_mother.load_taxon
+
+    puts(taxon.name.to_s)
+    delete_mother.delete_taxon taxon
+    redirect_to root_url
+
+  end
+
   ###################
   def get_taxon create_or_update
     if create_or_update == :create

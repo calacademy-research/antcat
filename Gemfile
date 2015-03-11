@@ -38,6 +38,7 @@ gem 'will_paginate'
 gem 'workflow'
 gem 'xml-simple'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
+gem 'request_store'
 
 
 group :development, :test do
@@ -63,7 +64,7 @@ end
 group :test do
   # This webdriver works with firefox as of v34. If firefox popus up without a URL,
   # check the latest
-  gem 'selenium-webdriver', '>= 2.44.0'
+  gem 'selenium-webdriver', '>= 2.45.0'
   gem 'capybara', '>= 2.2.0'
   gem 'cucumber-api-steps', require: false
   gem 'database_cleaner'

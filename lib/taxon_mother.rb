@@ -1,5 +1,6 @@
 # coding: UTF-8
 class TaxonMother
+  include UndoTracker
   # A TaxonMother is responsible for creating/saving
   # an object web of objects, starting with Taxon
 
@@ -20,8 +21,25 @@ class TaxonMother
     @taxon
   end
 
+  def delete_taxon taxon
+    Taxon.transaction do
+      change = setup_change :delete
+      delete_taxon_children(@taxon)
+
+      @taxon.delete_with_state!
+      change.user_changed_taxon_id = @taxon.id
+
+    end
+  end
+
+  def get_children
+    get_taxon_children_recur(@taxon).concat([@taxon])
+  end
+
+
   # TODO: Document params, and how that works.
   def save_taxon taxon, params, previous_combination = nil
+    change_type=nil
     Taxon.transaction do
       @taxon = taxon
       update_name params.delete :name_attributes
@@ -32,18 +50,32 @@ class TaxonMother
       update_type_name params.delete :type_name_attributes
       update_name_status_flags params
 
-      @taxon.review_state = :waiting
-
       if @taxon.new_record?
         change_type = :create
+        @taxon.taxon_state = TaxonState.new
+        @taxon.taxon_state.deleted = false
+        @taxon.taxon_state.id = @taxon.id
       else
         # we might want to get smarter about this
         change_type = :update
       end
-      change = save_change change_type
+      @taxon.taxon_state.review_state = :waiting
+
+      change = setup_change change_type
       change_id = change.id
-      @taxon.save_with_transaction! change.id
-      if(change_type == :create)
+
+      @taxon.save!
+      # paper_trail is dumb. When a new object is created, it has no "object".
+      # So, if you undo the first change, and try to reify the previous one,
+      # you end up with no object! touch_with_version gives us one, but
+      # Just for the taxa, not the protonym or other changable objects.
+      # TODO fix all paper trail objects to get a "touch_with_version" during create event.
+      if(:create == change_type)
+        @taxon.touch_with_version
+      end
+
+      # TODO: The below may not be being used
+      if (change_type == :create)
         change.user_changed_taxon_id = @taxon.id
         change.save
       end
@@ -66,11 +98,13 @@ class TaxonMother
         if (previous_combination.id == @taxon.protonym.id)
           update_elements(taxon, params, previous_combination, Status['original combination'].to_s, change_id)
         else
-          update_elements(taxon, params, previous_combination, Status['obsolete combination'].to_s,  change_id)
+          update_elements(taxon, params, previous_combination, Status['obsolete combination'].to_s, change_id)
         end
       end
-      save_taxon_children @taxon, change_id
+      save_taxon_children @taxon
     end
+
+
   end
 
   def update_elements taxon, params, taxon_to_update, status_string, change_id
@@ -82,7 +116,7 @@ class TaxonMother
         update_all({senior_synonym_id: @taxon.id})
     Synonym.where({junior_synonym_id: taxon_to_update.id}).
         update_all({junior_synonym_id: @taxon.id})
-    taxon_to_update.save_with_transaction! change_id
+    taxon_to_update.save
   end
 
   def get_status_string(taxon_to_update)
@@ -94,15 +128,6 @@ class TaxonMother
     end
     update_status
   end
-
-  def save_change change_type
-    change = Change.new
-    change.change_type = change_type
-    change.user_changed_taxon_id = @taxon.id
-    change.save!
-    change
-  end
-
 
 
   ####################################
@@ -164,7 +189,7 @@ class TaxonMother
       @taxon.type_name = nil
       return
     end
-    # Joe todo- why do we hit this case?
+    # Why do we hit this case?
     if !attributes.nil?
       attributes[:type_name_id] = attributes.delete :id
       @taxon.attributes = attributes
@@ -181,11 +206,29 @@ class TaxonMother
 
   private
 
-  def save_taxon_children taxon, change_id
+  def save_taxon_children taxon
     return if taxon.kind_of?(Family) || taxon.kind_of?(Subspecies)
     taxon.children.each do |c|
-      c.save_with_transaction! change_id
-      save_taxon_children c, change_id
+      c.save
+      save_taxon_children c
     end
   end
+
+  def delete_taxon_children taxon
+    taxon.children.each do |c|
+      c.delete_with_state!
+      delete_taxon_children c
+    end
+  end
+
+  def get_taxon_children_recur taxon
+    ret_val = []
+    taxon.children.each do |c|
+      ret_val.concat [c]
+      ret_val.concat get_taxon_children_recur c
+    end
+    ret_val
+  end
+
+
 end

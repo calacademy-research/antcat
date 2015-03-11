@@ -26,7 +26,6 @@ Feature: Workflow
 # modify species b
 # undo first change to species b
 # see what happens!
-
   Scenario: Changing a taxon and seeing it on the Changes page, undoing it
     When I go to the catalog page for "Formicinae"
     * I press "Edit"

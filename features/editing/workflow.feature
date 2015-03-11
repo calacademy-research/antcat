@@ -1,15 +1,14 @@
 @javascript
-@allow_rescue
 Feature: Workflow
 
   Background:
-    Given these references exist
+    Given I log in as a catalog editor
+    And these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
     And there is a genus "Eciton"
     And version tracking is enabled
-    And I log in as a catalog editor
 
     #expected failure due to reference picker problem.
   Scenario: Adding a taxon and seeing it on the Changes page
@@ -82,6 +81,7 @@ Feature: Workflow
     When I go to the catalog page for "Atta"
     Then I should see "approved by Stan Blum"
 
+
   Scenario: Another editor editing a change that's waiting for approval
     When I add the genus "Atta"
     And I go to the changes page
@@ -93,12 +93,14 @@ Feature: Workflow
     And I save my changes
     When I press "Review change"
     Then I should see the incertae sedis status of "genus" in the changes
-    And I should see "Mark Wilden added"
+    And I should see "Stan Blum changed"
+    When I log in as a catalog editor named "Mark Wilden"
+    And I go to the changes page
     Given I will confirm on the next step
-    And I press "Approve"
-    Then I should see "Stan Blum approved"
+    And I press the first "Approve"
+    Then I should see "Mark Wilden approved"
     When I go to the catalog page for "Atta"
-    Then I should see "approved by Stan Blum"
+    Then I should see "approved by Mark Wilden"
 
   Scenario: Trying to approve one's own change
     When I add the genus "Atta"
@@ -107,7 +109,7 @@ Feature: Workflow
     When I go to the changes page
     Then I should not see an "Approve" button
 
-  @allow_rescue
+
   Scenario: Editing a taxon - modified, not added
     Given there is a family "Formicidae"
     And I log in
@@ -122,7 +124,6 @@ Feature: Workflow
     And I go to the changes page
     And I should see "Mark Wilden changed Wildencidae"
 
-  @allow_rescue
   Scenario: People's names linked to their email
     When I add the genus "Atta"
     And I go to the changes page

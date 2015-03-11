@@ -1,7 +1,10 @@
 # coding: UTF-8
+require_relative '../../lib/workflow_external_table'
 class Taxon < ActiveRecord::Base
   include Workflow
-  workflow_column :review_state
+  include Workflow::ExternalTable
+  has_one :taxon_state
+
 
   workflow do
     state :old
@@ -12,6 +15,10 @@ class Taxon < ActiveRecord::Base
   end
 
   delegate :approver, :approved_at, to: :last_change
+
+  #
+  #
+
 
   def can_be_edited_by? user
     return false unless $Milieu.user_can_edit?(user)
@@ -25,15 +32,23 @@ class Taxon < ActiveRecord::Base
     $Milieu.user_can_review_changes?(user) && waiting?
   end
 
-  def can_be_approved_by? user
-    user != added_by && waiting? && $Milieu.user_can_approve_changes?(user)
+  def can_be_approved_by? change, user
+    user != change.changed_by && waiting? && $Milieu.user_can_approve_changes?(user)
   end
 
   # Returns the ID of the most recent change that touches this taxon.
-  # Query that looks at all transactions and picks the latest one that has this
-  # change ID.
+  # TODO: Fix these duplicates once the tests pass
   def last_change
-    Change.joins(:paper_trail_versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').first
+
+    Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon' ).last
+  end
+
+  # Returns the ID of the most recent change that touches this taxon.
+  # Query that looks at all transactions and picks the latest one
+  # used for review change link
+
+  def latest_change
+    Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').last
   end
 
   def last_version
@@ -41,8 +56,6 @@ class Taxon < ActiveRecord::Base
     versions(true).last
   end
 
-  def added_by
-    last_change.user
-  end
+
 
 end

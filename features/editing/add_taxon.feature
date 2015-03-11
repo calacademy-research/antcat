@@ -2,18 +2,17 @@
 Feature: Adding a taxon
   As an editor of AntCat
   I want to add taxa
-  So that information is kept up-to-date
+  So that information is kept up-to-date˜
   So people use AntCat
 
   Background:
-    Given that version tracking is enabled
+    Given I log in
+    And that version tracking is enabled
     And these dated references exist
       | authors | citation   | title | year |  created_at | updated_at |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |   TODAYS_DATE | TODAYS_DATE |
     And there is a subfamily "Formicinae"
-    And I log in
 
-  @allow_rescue
 
   Scenario: Adding a genus
     Given there is a genus "Eciton"
@@ -65,6 +64,7 @@ Feature: Adding a taxon
     When I save my changes
       Then I should be on the catalog page for "Eciton"
 
+
   Scenario: Adding a genus without setting authorship reference
     Given there is a genus "Eciton"
     When I go to the edit page for "Formicinae"
@@ -82,6 +82,7 @@ Feature: Adding a taxon
     And I press "Add this name"
     And I save my changes
     Then I should see "Protonym authorship reference can't be blank"
+
 
   Scenario: Having an error, but leave fields as user entered them
     When I go to the edit page for "Formicinae"

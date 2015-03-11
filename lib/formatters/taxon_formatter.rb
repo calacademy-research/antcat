@@ -32,7 +32,9 @@ class Formatters::TaxonFormatter
       string << ' ' << link_to_other_site if link_to_other_site
       string << ' ' << link_to_antwiki(@taxon) if link_to_antwiki(@taxon)
       string << ' ' << link_to_edit_taxon if link_to_edit_taxon
+      string << ' ' << link_to_delete_taxon if link_to_delete_taxon
       string << ' ' << link_to_review_change if link_to_review_change
+
       string
     end
   end

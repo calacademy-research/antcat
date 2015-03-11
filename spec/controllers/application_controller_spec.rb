@@ -15,6 +15,14 @@ describe ApplicationController do
         controller.authenticate_editor
       end
     end
+
+    describe "Authentication and authorization to delete from catalog" do
+      it "should ask the milieu" do
+        expect($Milieu).to receive(:user_is_superadmin?).with @current_user
+        expect(controller).to receive(:authenticate_user!).and_return true
+        controller.authenticate_editor
+      end
+    end
   end
 
 end

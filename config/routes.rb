@@ -26,6 +26,8 @@ AntCat::Application.routes.draw do
   match     'catalog/show_subgenera' => 'catalog#show_subgenera', as: :catalog_show_subgenera, via: :get
   match     'catalog/hide_subgenera' => 'catalog#hide_subgenera', as: :catalog_hide_subgenera, via: :get
   match     'catalog/(:id)'          => 'catalog#show',           as: :catalog, via: :get
+  match     'catalog/delete_impact_list/(:id)'          => 'catalog#delete_impact_list',           as: :catalog_delete_impact_list, via: :get
+
 
   resources :bolton_references, only: [:index, :update]
   match     '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
@@ -52,7 +54,10 @@ AntCat::Application.routes.draw do
       end
     end
     resource 'convert_to_subspecies', only: [:new, :create]
+    match     'delete'    => 'taxa#delete',           as: :taxa, via: :get # for compatibility
+
   end
+
 
   resource :advanced_search, only: [:show]
   resource :default_reference, only: [:update]
@@ -71,7 +76,7 @@ AntCat::Application.routes.draw do
   resource :reference_popup, only: [:show]
   resource :duplicates, only: [:show,:create]
 
-
+  # These are shortcuts to support the tests in
   match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test', via: :get
   match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test', via: :get
   match '/widget_tests/reference_popup_test', to: 'widget_tests#reference_popup_test', via: :get
