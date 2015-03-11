@@ -5,7 +5,8 @@ class TaxonHistoryItem < ActiveRecord::Base
   attr_accessible :taxon_id, :taxt, :position, :taxon
   acts_as_list scope: :taxon
   validates_presence_of :taxt
-  has_paper_trail
+  has_paper_trail meta: {change_id: :get_current_change_id}
+
 
   # TOOD: Rails 4 upgrade, remove when tests pass
   # def title

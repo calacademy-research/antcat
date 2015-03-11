@@ -2,7 +2,8 @@
 class Publisher < ActiveRecord::Base
   belongs_to :place
   validates_presence_of :name
-  has_paper_trail
+  has_paper_trail meta: {change_id: :get_current_change_id}
+
   attr_accessible :name, :place, :place_id
 
   def self.import data

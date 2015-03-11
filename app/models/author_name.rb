@@ -5,7 +5,7 @@ class AuthorName < ActiveRecord::Base
   belongs_to :author
   validates :author, :name, presence: true
   validates :name, uniqueness: true
-  has_paper_trail
+  has_paper_trail meta: {change_id: :get_current_change_id}
   attr_accessible :name, :author, :author_id
 
   def last_name

@@ -4,7 +4,8 @@ class Name < ActiveRecord::Base
 
   validates :name, presence: true
   after_save :set_taxon_caches
-  has_paper_trail
+  has_paper_trail meta: {change_id: :get_current_change_id}
+
   attr_accessible :name,
                   :name_html,
                   :epithet,

@@ -4,7 +4,8 @@ class Author < ActiveRecord::Base
   scope :sorted_by_name, -> { select('authors.id').joins(:names).group('authors.id').order('name') }
   attr_accessible :names
 
-  has_paper_trail
+  has_paper_trail meta: {change_id: :get_current_change_id}
+
 
   def self.find_by_names names
     Author.joins(:names).where('name IN (?)', names).group('authors.id').to_a

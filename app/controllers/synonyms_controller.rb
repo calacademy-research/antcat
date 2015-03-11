@@ -29,7 +29,9 @@ class SynonymsController < ApplicationController
          Synonym.find_by_senior_synonym_id_and_junior_synonym_id(junior.id, senior.id)
         error_message = 'This taxon is already a synonym'
       else
-        Synonym.create! senior_synonym_id: senior.id, junior_synonym_id: junior.id
+        synonym = Synonym.create! senior_synonym_id: senior.id, junior_synonym_id: junior.id
+        synonym.touch_with_version
+        synonym
         if is_junior
           synonyms = taxon.junior_synonyms_with_names
         else
@@ -66,8 +68,9 @@ class SynonymsController < ApplicationController
 
     Synonym.where(junior_synonym_id: new_junior, senior_synonym_id: new_senior).destroy_all
     Synonym.where(senior_synonym_id: new_junior, junior_synonym_id: new_senior).destroy_all
-    Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
-
+    synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
+    synonym.touch_with_version
+    synonym
     content = render_to_string(partial: 'taxa/junior_and_senior_synonyms_section', locals: {taxon: taxon})
     json = {content: content, success: true, error_message: ''}.to_json
     render json: json, content_type: 'text/html'

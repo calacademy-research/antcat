@@ -7,7 +7,8 @@ require 'reference_workflow'
 class Reference < ActiveRecord::Base
   attr_accessor :publisher_string
   attr_accessor :journal_name
-  has_paper_trail
+  has_paper_trail meta: {change_id: :get_current_change_id}
+
   attr_accessible :citation_year,
                   :title,
                   :journal_name,

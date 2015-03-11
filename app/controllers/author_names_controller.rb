@@ -13,6 +13,7 @@ class AuthorNamesController < ApplicationController
   def create
     author = Author.find params[:author_id]
     @author_name = AuthorName.create author: author, name: params[:author_name]
+    @author_name.touch_with_version
     render_json true
   end
 
