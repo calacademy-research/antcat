@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219200302) do
+ActiveRecord::Schema.define(version: 20150325230756) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -122,10 +122,25 @@ ActiveRecord::Schema.define(version: 20150219200302) do
   add_index "forward_refs", ["fixee_id", "fixee_type"], name: "index_forward_refs_on_fixee_id_and_fixee_type", using: :btree
   add_index "forward_refs", ["name_id"], name: "index_forward_refs_on_name_id", using: :btree
 
-  create_table "hol_comparisons", force: :cascade do |t|
-    t.string "name",   limit: 255
-    t.string "status", limit: 255
+  create_table "hol_data", force: :cascade do |t|
+    t.integer "taxon_id",               limit: 4
+    t.integer "tnuid",                  limit: 4
+    t.integer "tnid",                   limit: 4
+    t.string  "name",                   limit: 255
+    t.string  "lsid",                   limit: 255
+    t.string  "taxon",                  limit: 255
+    t.string  "author",                 limit: 255
+    t.string  "rank",                   limit: 255
+    t.string  "status",                 limit: 255
+    t.string  "is_valid",               limit: 255
+    t.boolean "fossil",                 limit: 1
+    t.integer "num_spms",               limit: 4
+    t.boolean "many_antcat_references", limit: 1
+    t.boolean "many_hol_references",    limit: 1
   end
+
+  add_index "hol_data", ["taxon_id"], name: "hol_data_taxon_id_idx", using: :btree
+  add_index "hol_data", ["tnuid"], name: "hol_data_tnuid_idx", using: :btree
 
   create_table "journals", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -326,11 +341,9 @@ ActiveRecord::Schema.define(version: 20150219200302) do
   add_index "taxon_history_items", ["taxon_id"], name: "index_taxonomic_history_items_on_taxon_id", using: :btree
 
   create_table "taxon_states", force: :cascade do |t|
-    t.integer  "taxon_id",     limit: 4
-    t.string   "review_state", limit: 255
-    t.boolean  "deleted",      limit: 1
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "taxon_id",     limit: 4
+    t.string  "review_state", limit: 255
+    t.boolean "deleted",      limit: 1
   end
 
   add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx", using: :btree

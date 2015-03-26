@@ -12,4 +12,9 @@ namespace :hol do
     Importers::Hol::Catalog.new.compare_with_antcat
   end
 
+  desc "Compare subspecies"
+  task compare_subspecies: :environment do
+    Importers::Hol::Catalog.new.compare_subspecies
+  end
+
 end

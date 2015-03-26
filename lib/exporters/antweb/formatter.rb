@@ -11,6 +11,9 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
   end
 
   def link_to_edit_taxon; end
+
+  def link_to_delete_taxon; end
+
   def link_to_review_change; end
 
   def format

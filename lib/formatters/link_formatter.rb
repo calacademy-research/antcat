@@ -30,6 +30,14 @@ module Formatters::LinkFormatter
     link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{taxon.name.to_s.gsub(/ /, '_')}"
   end
 
+  def link_to_hol taxon
+    hol_id = taxon.hol_id
+    if(hol_id == 0)
+      return false
+    end
+    link_to_external_site 'HOL', "http://hol.osu.edu/index.html?id=#{taxon.hol_id}"
+  end
+
   def link_to_antweb taxon
     return if [Family, Tribe, Subgenus].include? taxon.class
     url = %{http://www.antweb.org/description.do?}

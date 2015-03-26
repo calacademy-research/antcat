@@ -1,0 +1,228 @@
+class HolData < ActiveRecord::Migration
+  def change
+    create_table :hol_data do |t|
+      t.integer :taxon_id
+      t.integer :tnuid
+      t.integer :tnid
+      t.string :name
+      t.string :lsid
+      t.string :taxon
+      t.string :author
+      t.string :rank
+      t.string :status
+      t.string :is_valid
+      t.boolean :fossil
+      t.integer :num_spms
+      t.boolean :many_antcat_references
+      t.boolean :many_hol_references
+
+
+    end
+
+    drop_table :hol_comparisons
+  end
+end
+
+# api({
+#         "id":"146777",
+#     "tnuid":146777,
+#     "name":"Acalama",
+#     "taxon":"Acalama",
+#     "author":"Smith",
+#     "status":"Original name/combination",
+#     "rank":"Genus",
+#     "valid":"Invalid",
+#     "fossil":"N",
+#     "rel_type":"Junior synonym",
+#     "source":{
+#     "id":"",
+#     "name":"",
+#     "logo":"",
+#     "query":"",
+#     "url":""
+# },
+#     "valid_taxon":{
+#     "id":"146964",
+#     "tnuid":146964,
+#     "taxon":"Gauromyrmex",
+#     "author":"Menozzi"
+# },
+#     "parent_taxon":{
+#     "id":"146964",
+#     "tnuid":146964,
+#     "taxon":"Gauromyrmex",
+#     "author":"Menozzi"
+# },
+#     "hier":{
+#     "Kingdom":{
+#     "name":"Animalia",
+#     "taxon":"Animalia",
+#     "author":"",
+#     "id":"15158",
+#     "tnuid":15158,
+#     "next":"Phylum"
+# },
+#     "Phylum":{
+#     "name":"Arthropoda",
+#     "taxon":"Arthropoda",
+#     "author":"",
+#     "id":"15157",
+#     "tnuid":15157,
+#     "next":"Class"
+# },
+#     "Class":{
+#     "name":"Hexapoda",
+#     "taxon":"Hexapoda",
+#     "author":"",
+#     "id":"1",
+#     "tnuid":1,
+#     "next":"Order"
+# },
+#     "Order":{
+#     "name":"Hymenoptera",
+#     "taxon":"Hymenoptera",
+#     "author":"",
+#     "id":"52",
+#     "tnuid":52,
+#     "next":"Superfamily"
+# },
+#     "Superfamily":{
+#     "name":"Vespoidea",
+#     "taxon":"Vespoidea",
+#     "author":"",
+#     "id":"69",
+#     "tnuid":69,
+#     "next":"Family"
+# },
+#     "Family":{
+#     "name":"Formicidae",
+#     "taxon":"Formicidae",
+#     "author":"Latreille",
+#     "id":"152",
+#     "tnuid":152,
+#     "next":"Subfamily"
+# },
+#     "Subfamily":{
+#     "name":"Myrmicinae",
+#     "taxon":"Myrmicinae",
+#     "author":"Lepeletier",
+#     "id":"2258",
+#     "tnuid":2258,
+#     "next":"Tribe"
+# },
+#     "Tribe":{
+#     "name":"Crematogastrini",
+#     "taxon":"Crematogastrini",
+#     "author":"Forel",
+#     "id":"2278",
+#     "tnuid":2278,
+#     "next":"Genus"
+# },
+#     "Genus":{
+#     "name":"Gauromyrmex",
+#     "taxon":"Gauromyrmex",
+#     "author":"Menozzi",
+#     "id":"146964",
+#     "tnuid":146964,
+#     "next":"null"
+# }
+# },
+#     "orig_desc":{
+#     "url":"antbase.org/ants/publications/2668/2668.pdf",
+#     "filesize":"155k",
+#     "pages":[
+#     {
+#         "page_num":"205",
+#     "page_url":"antbase.org/ants/publications/2668/2668_0205.pdf"
+# },
+#     {
+#         "page_num":"206",
+#     "page_url":"antbase.org/ants/publications/2668/2668_0206.pdf"
+# },
+#     {
+#         "page_num":"207",
+#     "page_url":"antbase.org/ants/publications/2668/2668_0207.pdf"
+# },
+#     {
+#         "page_num":"208",
+#     "page_url":"antbase.org/ants/publications/2668/2668_0208.pdf"
+# }
+# ],
+#     "public":"N",
+#     "date":"1949",
+#     "year":"1949",
+#     "month":"11",
+#     "type":"article",
+#     "title":"A new genus and species of ant from India (Hymenoptera: Formicidae).",
+#     "journal":"Journal of the New York Entomological Society",
+#     "jrnl_id":23,
+#     "journal_id":"23",
+#     "series":"",
+#     "volume":"56",
+#     "vol_num":"",
+#     "start_page":"205",
+#     "end_page":"208",
+#     "author_base_id":1703,
+#     "author":"Smith",
+#     "author_extended":[
+#     {
+#         "last_name":"Smith",
+#     "initials":"M. R.",
+#     "generation":"",
+#     "name_order":"W",
+#     "author_id":1703
+# }
+# ],
+#     "doi":"",
+#     "pub_id":2668
+# },
+#     "type_species":{
+#     "id":"145497",
+#     "taxon":"Acalama donisthorpei",
+#     "author":"Smith"
+# },
+#     "trash":"",
+#     "contribs":[
+#     {
+#         "contrib_id":565,
+#     "last_name":"Musetti",
+#     "initials":"L.",
+#     "name":"Luciana Musetti",
+#     "contrib_types":{
+#     "taxon":"N",
+#     "literature":"Y",
+#     "occurrence":"N",
+#     "media":"N"
+# }
+# },
+#     {
+#         "contrib_id":2,
+#     "last_name":"Johnson",
+#     "initials":"N. F.",
+#     "name":"Norman F. Johnson",
+#     "contrib_types":{
+#     "taxon":"Y",
+#     "literature":"Y",
+#     "occurrence":"N",
+#     "media":"N"
+# }
+# }
+# ],
+#     "common_names":[
+#
+# ],
+#     "stats":{
+#     "rank_value":4,
+#     "num_spms":0,
+#     "child_nums":[
+#     {
+#         "rank":"Species",
+#     "num":0
+# },
+#     {
+#         "rank":"Subspecies",
+#     "num":0
+# }
+# ]
+# }
+# });

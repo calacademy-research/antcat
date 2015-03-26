@@ -360,6 +360,40 @@ class Taxon < ActiveRecord::Base
   has_many :history_items, -> { order 'position' }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order 'position' }, dependent: :destroy
 
+
+
+  #TODO: This is hit four times on main page load. Why?
+
+  #todo test:
+  # we have one valid entry
+  # we have one invalid entry
+  # we have a valid and an invalid entry
+  # we have two invalid entries
+
+  def hol_id
+    hd = HolDatum.where(taxon_id: id)
+
+    #, is_valid: 'Valid'
+    valid_hd = nil
+    hd.each do |is_valid|
+      if is_valid['is_valid'].downcase == 'valid'
+        valid_hd = is_valid
+      end
+    end
+
+
+    if hd.count != 1 && valid_hd.nil?
+      # If we get more than one hit and we don't have a "valid" entry, then we can't tell
+      # which link to return. That's bad, so return nothing.
+      return nil
+    end
+    if valid_hd.nil?
+      return hd[0].tnuid
+    else
+      return valid_hd.tnuid
+    end
+  end
+
   ###############################################
   # statuses, fossil
   scope :valid, -> { where(status: 'valid') }
