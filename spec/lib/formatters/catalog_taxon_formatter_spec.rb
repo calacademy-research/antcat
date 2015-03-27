@@ -223,6 +223,7 @@ describe Formatters::CatalogTaxonFormatter do
       adder = FactoryGirl.create :user, can_edit: true
       approver = FactoryGirl.create :user, can_edit: true
       taxon = create_taxon_version_and_change :waiting, adder
+      taxon.taxon_state.review_state = :waiting
       change = Change.find taxon.last_change.id
       change.update_attributes! approver: approver, approved_at: Time.now
       taxon.approve!

@@ -11,7 +11,7 @@ module Workflow
       end
 
       def persist_workflow_state(new_value)
-        taxon_state =current_review_state
+        taxon_state = current_review_state
         taxon_state.review_state = new_value
         taxon_state.save!
 

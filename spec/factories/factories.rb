@@ -197,7 +197,7 @@ FactoryGirl.define do
       FactoryGirl.create(:taxon_state, taxon_id: taxon.id)
       taxon.touch_with_version
     end
-    to_create {|instance| instance.save(validate: false) }
+    to_create { |instance| instance.save(validate: false) }
 
     association :name, factory: :genus_name
     association :type_name, factory: :species_name
@@ -211,7 +211,7 @@ FactoryGirl.define do
       FactoryGirl.create(:taxon_state, taxon_id: family.id)
       family.touch_with_version
     end
-    to_create {|instance| instance.save(validate: false) }
+    to_create { |instance| instance.save(validate: false) }
 
     association :name, factory: :family_name
     association :type_name, factory: :genus_name
@@ -225,7 +225,7 @@ FactoryGirl.define do
       FactoryGirl.create(:taxon_state, taxon_id: subfamily.id)
       subfamily.touch_with_version
     end
-    to_create {|instance| instance.save(validate: false) }
+    to_create { |instance| instance.save(validate: false) }
 
     association :name, factory: :subfamily_name
     association :type_name, factory: :genus_name
@@ -239,7 +239,7 @@ FactoryGirl.define do
       FactoryGirl.create(:taxon_state, taxon_id: tribe.id)
       tribe.touch_with_version
     end
-    to_create {|instance| instance.save(validate: false) }
+    to_create { |instance| instance.save(validate: false) }
     association :name, factory: :tribe_name
     association :type_name, factory: :genus_name
     subfamily
@@ -253,7 +253,7 @@ FactoryGirl.define do
       FactoryGirl.create(:taxon_state, taxon_id: subtribe.id)
       subtribe.touch_with_version
     end
-    to_create {|instance| instance.save(validate: false) }
+    to_create { |instance| instance.save(validate: false) }
     association :name, factory: :subtribe_name
     association :type_name, factory: :genus_name
     subfamily
@@ -267,7 +267,7 @@ FactoryGirl.define do
       FactoryGirl.create(:taxon_state, taxon_id: genus.id)
       genus.touch_with_version
     end
-    to_create {|instance| instance.save(validate: false) }
+    to_create { |instance| instance.save(validate: false) }
     association :name, factory: :genus_name
     association :type_name, factory: :species_name
     tribe
@@ -282,7 +282,7 @@ FactoryGirl.define do
       FactoryGirl.create(:taxon_state, taxon_id: subgenus.id)
       subgenus.touch_with_version
     end
-    to_create {|instance| instance.save(validate: false) }
+    to_create { |instance| instance.save(validate: false) }
     association :name, factory: :subgenus_name
     association :type_name, factory: :species_name
     genus
@@ -296,7 +296,7 @@ FactoryGirl.define do
       FactoryGirl.create(:taxon_state, taxon_id: species_group_taxon.id)
       species_group_taxon.touch_with_version
     end
-    to_create {|instance| instance.save(validate: false) }
+    to_create { |instance| instance.save(validate: false) }
     association :name, factory: :species_name
     genus
     protonym
@@ -309,7 +309,7 @@ FactoryGirl.define do
       FactoryGirl.create(:taxon_state, taxon_id: species.id)
       species.touch_with_version
     end
-    to_create {|instance| instance.save(validate: false) }
+    to_create { |instance| instance.save(validate: false) }
     association :name, factory: :species_name
     genus
     protonym
@@ -322,7 +322,7 @@ FactoryGirl.define do
       FactoryGirl.create(:taxon_state, taxon_id: subspecies.id)
       subspecies.touch_with_version
     end
-    to_create {|instance| instance.save(validate: false) }
+    to_create { |instance| instance.save(validate: false) }
     association :name, factory: :species_name
     species
     genus
@@ -330,10 +330,6 @@ FactoryGirl.define do
     status 'valid'
 
   end
-
-
-
-
 
 
   ####################################################
@@ -464,13 +460,15 @@ end
 
 def create_taxon_version_and_change(review_state, user = @user, approver = nil, genus_name = 'default_genus')
   name = FactoryGirl.create :name, name: genus_name
-  taxon = FactoryGirl.create :genus, review_state: review_state, name: name
-  change = FactoryGirl.build :change, user_changed_taxon_id: taxon.id, change_type: "create"
-  version = FactoryGirl.build :version, item_id: taxon.id, whodunnit: user.id
+  taxon = FactoryGirl.create :genus, name: name
+  taxon.taxon_state.review_state = review_state
+
+  change = FactoryGirl.create :change, user_changed_taxon_id: taxon.id, change_type: "create"
+  FactoryGirl.create :version, item_id: taxon.id, whodunnit: user.id, change_id: change.id
 
   unless approver.nil?
     change.update_attributes! approver: approver, approved_at: Time.now if approver
   end
-  FactoryGirl.create :transaction, paper_trail_version: version, change: change
+  #  FactoryGirl.create :transaction, paper_trail_version: version, change: change
   taxon
 end
