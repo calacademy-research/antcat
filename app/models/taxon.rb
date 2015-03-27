@@ -362,27 +362,23 @@ class Taxon < ActiveRecord::Base
 
 
 
-  #TODO: This is hit four times on main page load. Why?
-
-  #todo test:
-  # we have one valid entry
-  # we have one invalid entry
-  # we have a valid and an invalid entry
-  # we have two invalid entries
+  #TODO: joe This is hit four times on main page load. Why
 
   def hol_id
     hd = HolDatum.where(taxon_id: id)
 
     #, is_valid: 'Valid'
     valid_hd = nil
+     valid_count = 0
     hd.each do |is_valid|
       if is_valid['is_valid'].downcase == 'valid'
+        valid_count = valid_count +1
         valid_hd = is_valid
       end
     end
 
 
-    if hd.count != 1 && valid_hd.nil?
+    if (hd.count != 1 && valid_hd.nil?) || valid_count > 1
       # If we get more than one hit and we don't have a "valid" entry, then we can't tell
       # which link to return. That's bad, so return nothing.
       return nil

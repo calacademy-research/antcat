@@ -54,6 +54,56 @@ describe Formatters::LinkFormatter do
     end
   end
 
+  describe "Linking to HOL" do
+    it "should provide no link if there's no matching hol_data" do
+      expect(@formatter.link_to_hol(create_subfamily 'Dolichoderinae')).to be nil
+    end
+
+    # we have one valid entry
+    it "should provide a link if there's a valid hol_data entry" do
+      taxon = create_subfamily 'Dolichoderinae'
+      FactoryGirl.create :hol_datum, taxon_id: taxon.id, tnuid: 1234
+      expect(@formatter.link_to_hol(taxon)).to eq (
+        %{<a class=\"link_to_external_site\" href=\"http://hol.osu.edu/index.html?id=1234\" target=\"_blank\">HOL</a>}
+                                                  )
+    end
+
+    # we have one invalid entry
+    it "should provide a link if there's one invalid hol_data entry" do
+      taxon = create_subfamily 'Dolichoderinae'
+      FactoryGirl.create :hol_datum, taxon_id: taxon.id, tnuid: 1234, is_valid: 'Invalid'
+      expect(@formatter.link_to_hol(taxon)).to eq (
+                                                      %{<a class=\"link_to_external_site\" href=\"http://hol.osu.edu/index.html?id=1234\" target=\"_blank\">HOL</a>}
+                                                  )
+    end
+
+    # we have one valid entry and one invalid entry
+
+    it "should provide a link if there's one valid and one invalid hol_data entry" do
+      taxon = create_subfamily 'Dolichoderinae'
+      FactoryGirl.create :hol_datum, taxon_id: taxon.id, tnuid: 1234
+      FactoryGirl.create :hol_datum, taxon_id: taxon.id, tnuid: 1235, is_valid: 'Invalid'
+      expect(@formatter.link_to_hol(taxon)).to eq (
+             %{<a class=\"link_to_external_site\" href=\"http://hol.osu.edu/index.html?id=1234\" target=\"_blank\">HOL</a>})
+    end
+
+    it "should provide no link if there are two invalid entries" do
+      taxon = create_subfamily 'Dolichoderinae'
+      FactoryGirl.create :hol_datum, taxon_id: taxon.id, tnuid: 1234, is_valid: 'Invalid'
+      FactoryGirl.create :hol_datum, taxon_id: taxon.id, tnuid: 1235, is_valid: 'Invalid'
+      expect(@formatter.link_to_hol(create_subfamily 'Dolichoderinae')).to be nil
+    end
+
+    it "should provide no link if there are two invalid entries" do
+      taxon = create_subfamily 'Dolichoderinae'
+      FactoryGirl.create :hol_datum, taxon_id: taxon.id, tnuid: 1234, is_valid: 'Valid'
+      FactoryGirl.create :hol_datum, taxon_id: taxon.id, tnuid: 1235, is_valid: 'Valid'
+      expect(@formatter.link_to_hol(create_subfamily 'Dolichoderinae')).to be nil
+    end
+
+
+  end
+
   describe "Creating a link from a site to AntWeb" do
     it "should handle subfamilies" do
       subfamily = create_subfamily 'Attaichnae'
