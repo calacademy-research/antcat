@@ -12,18 +12,22 @@ class AuthorNamesController < ApplicationController
 
   def create
     author = Author.find params[:author_id]
+
     @author_name = AuthorName.create author: author, name: params[:author_name]
-    @author_name.touch_with_version
+    if @author_name.errors.empty?
+      @author_name.touch_with_version
+    end
+
     render_json true
   end
 
   ###
   def render_json is_new
     json = {
-      isNew: is_new,
-      content: render_to_string(partial: 'author_names/panel', locals: {author_name: @author_name}),
-      id: @author_name.id,
-      success: @author_name.errors.empty?
+        isNew: is_new,
+        content: render_to_string(partial: 'author_names/panel', locals: {author_name: @author_name}),
+        id: @author_name.id,
+        success: @author_name.errors.empty?
     }.to_json
 
     render json: json, content_type: 'text/html'
