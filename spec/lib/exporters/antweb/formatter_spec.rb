@@ -24,6 +24,9 @@ describe Exporters::Antweb::Formatter do
       protonym = Protonym.create! name: name, authorship: authorship
       genus = create_genus name: name, protonym: protonym
       species = create_species 'Atta major', genus: genus
+      FactoryGirl.create :hol_datum, taxon_id: species.id, tnuid: 1234
+      FactoryGirl.create :hol_datum, taxon_id: genus.id, tnuid: 1235
+
       genus.update_attribute :type_name, species.name
       item = genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
       expect(@formatter.new(genus).format).to eq(
@@ -54,7 +57,7 @@ describe Exporters::Antweb::Formatter do
             %{ } +
             %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta" target="_blank">AntWiki</a>} +
             %{ } +
-            %{<a class="link_to_external_site" href="http://hol.osu.edu/index.html?id=" target="_blank">HOL</a>} +
+            %{<a class="link_to_external_site" href="http://hol.osu.edu/index.html?id=1235" target="_blank">HOL</a>} +
 
           %{</div>} +
 
@@ -72,3 +75,4 @@ describe Exporters::Antweb::Formatter do
   end
 
 end
+
