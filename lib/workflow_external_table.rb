@@ -6,7 +6,8 @@ module Workflow
     module InstanceMethods
 
       def load_workflow_state
-
+        # If this throws an error in testing, it's very likely that there's no associated
+        # taxon_state.
         current_review_state.review_state
       end
 

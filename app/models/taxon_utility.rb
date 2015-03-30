@@ -4,7 +4,7 @@ class Taxon < ActiveRecord::Base
     Progress.init show_progress
     Taxon.destroy_all status: 'original combination'
     Taxon.where('type = "Species" OR type = "Subspecies"').
-          where('status != "original combination"').find_each do |taxon|
+        where('status != "original combination"').find_each do |taxon|
       if taxon.recombination? and not Taxon.find_by_name_id taxon.protonym.name.id
         genus_epithet = taxon.protonym.name.genus_epithet
         original_genus = Genus.find_by_name genus_epithet
@@ -12,8 +12,13 @@ class Taxon < ActiveRecord::Base
           Progress.puts "Original genus #{genus_epithet} not found when creating original combination for #{taxon.name}"
           next
         end
-        taxon.class.create! name: taxon.protonym.name, status: 'original combination', protonym: taxon.protonym,
-                            genus: original_genus, current_valid_taxon: taxon
+        new_taxon = taxon.class.new name: taxon.protonym.name,
+                                     status: 'original combination',
+                                     protonym: taxon.protonym,
+                                     genus: original_genus,
+                                     current_valid_taxon: taxon
+
+
         Progress.tally_and_show_progress 100
       end
     end
@@ -84,7 +89,11 @@ class Taxon < ActiveRecord::Base
     map = biogeographic_regions_for_localities
     for taxon in taxa
       success = taxon.update_biogeographic_region_from_locality map
-      if success then replacement_count += 1 else unfound_count += 1; end
+      if success then
+        replacement_count += 1
+      else
+        unfound_count += 1;
+      end
       Progress.tally_and_show_progress 1000 do
         "#{replacement_count} replacements, #{unfound_count} not found"
       end
@@ -95,9 +104,9 @@ class Taxon < ActiveRecord::Base
   end
 
   def self.output_results_from_updating_biogeographic_locations map
-    map.select do |k,v|
+    map.select do |k, v|
       v[:used_count].zero?
-    end.sort.each do |k,v|
+    end.sort.each do |k, v|
       puts "#{k} "
     end
   end

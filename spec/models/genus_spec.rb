@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe Genus do
-
+  PaperTrail.enabled = true
   it "should have a tribe" do
     attini = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Attini'), :subfamily => FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Myrmicinae'))
     FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :tribe => attini
@@ -392,7 +392,11 @@ describe Genus do
       subfamily = FactoryGirl.create :subfamily
       tribe = FactoryGirl.create :tribe, subfamily: subfamily
       protonym = FactoryGirl.create :protonym
-      genus = Genus.create! name: FactoryGirl.create(:name, name: 'Aneuretus'), protonym: protonym
+
+
+      genus = create_genus 'Aneuretus', protonym: protonym
+
+
       genus.parent = tribe
       expect(genus.tribe).to eq(tribe)
       expect(genus.subfamily).to eq(subfamily)
@@ -403,7 +407,8 @@ describe Genus do
       subfamily = FactoryGirl.create :subfamily
       tribe = FactoryGirl.create :tribe, subfamily: subfamily
       protonym = FactoryGirl.create :protonym
-      genus = Genus.create! name: FactoryGirl.create(:name, name: 'Aneuretus'), protonym: protonym
+      genus = create_genus 'Aneuretus', protonym: protonym
+
       genus.update_parent tribe
       expect(genus.tribe).to eq(tribe)
       expect(genus.subfamily).to eq(subfamily)

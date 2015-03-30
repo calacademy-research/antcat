@@ -73,7 +73,7 @@ class Change < ActiveRecord::Base
     # in factorygirl.
     NotImplementedError
 
-    user_id = get_user_version(id).whodunnit
+    user_id = get_user_versions(id).whodunnit
     user_id ? User.find(user_id) : nil
   end
 

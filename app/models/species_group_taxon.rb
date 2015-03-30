@@ -53,13 +53,21 @@ class SpeciesGroupTaxon < Taxon
 
   def self.import_data protonym, data
     name = import_name data
-    taxon = create!(
+    taxon = new(
       genus:      data[:genus],
       name:       name,
       fossil:     data[:fossil] || false,
       status:     data[:status] || 'valid',
       protonym:   protonym,
     )
+    taxon.save(validate: false)
+    taxon_state = TaxonState.new
+    taxon_state.review_state='old'
+    taxon_state.deleted=false
+    taxon_state.taxon_id = taxon.id
+
+    taxon_state.save
+    taxon.validate
     after_creating taxon, data
     create_update name, taxon.id, self.name
     taxon

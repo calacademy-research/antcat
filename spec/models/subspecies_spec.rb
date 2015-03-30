@@ -17,6 +17,8 @@ describe Subspecies do
 
   it "must have a genus" do
     subspecies = create_subspecies 'Atta major colobopsis', genus: nil, species: nil, build: true
+    FactoryGirl.create :taxon_state, taxon_id: subspecies.id
+
     expect(subspecies).not_to be_valid
   end
 

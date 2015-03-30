@@ -23,7 +23,14 @@ class GenusGroupTaxon < Taxon
         attributes.merge! data[:attributes] if data[:attributes]
         attributes.merge! get_type_attributes data
         senior = attributes.delete :synonym_of
-        taxon = create! attributes
+        taxon = new attributes
+        taxon_state = TaxonState.new
+        taxon_state.review_state='old'
+        taxon_state.deleted=false
+        taxon.save!(:validate => false)
+        taxon_state.taxon_id = taxon.id
+        taxon_state.save
+        taxon.validate
         taxon.import_synonyms senior
         taxon.import_history data[:history]
         create_update name, taxon.id, self.name

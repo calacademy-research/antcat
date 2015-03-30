@@ -87,8 +87,8 @@ end
 
 
 def setup_version taxon_id, whodunnit=nil
-  version = FactoryGirl.create :version, item_id: taxon_id, event: 'create', item_type: 'Taxon', whodunnit: whodunnit.nil? ? nil : whodunnit.id
   change = FactoryGirl.create :change, user_changed_taxon_id: taxon_id
-  FactoryGirl.create :transaction, paper_trail_version_id: version.id, change_id: change.id
+
+  FactoryGirl.create :version, item_id: taxon_id, event: 'create', item_type: 'Taxon', change_id: change.id, whodunnit: whodunnit.nil? ? nil : whodunnit.id
   change
 end

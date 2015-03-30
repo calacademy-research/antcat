@@ -13,17 +13,19 @@ describe Change do
   it "has a version" do
     genus = create_genus
     change = Change.new
-    transaction = Transaction.new
-    transaction.change = change
-    genus_version = genus.last_version
-    transaction.paper_trail_version = genus_version
     change.save!
-    transaction.save!
     change.reload
-    expect(change.paper_trail_versions.first).to eq(genus_version)
+    FactoryGirl.create :version, item_id: genus.id, change_id: change.id
+
+
+    genus_version = genus.last_version
+
+    expect(change.versions.first).to eq(genus_version)
   end
 
   it "has a user (the editor)" do
+    pending "Not implemented change::user"
+
     user = FactoryGirl.create :user
     genus = create_genus
 
@@ -35,6 +37,7 @@ describe Change do
   end
 
   it "should be able to be reified after being created" do
+    pending "Not implemented change::user"
 
     genus = create_genus
     change = setup_version(genus.id)
