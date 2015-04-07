@@ -39,6 +39,7 @@ gem 'workflow'
 gem 'xml-simple'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'request_store'
+gem 'fuzzy-string-match'
 
 
 group :development, :test do

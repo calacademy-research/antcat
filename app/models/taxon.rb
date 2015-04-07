@@ -363,7 +363,12 @@ class Taxon < ActiveRecord::Base
 
 
   #TODO: joe This is hit four times on main page load. Why
-
+  # we have one valid entry
+  # it "should provide a link if there's a valid hol_data entry"
+  # it "should provide a link if there's one invalid hol_data entry"
+  # it "should provide a link if there's one valid and one invalid hol_data entry"
+  # it "should provide no link if there are two invalid entries"
+  # it "should provide no link if there are two valid entries"
   def hol_id
     hd = HolDatum.where(taxon_id: id)
 

@@ -108,6 +108,9 @@ class Reference < ActiveRecord::Base
       search_options.merge! order: :updated_at
 
     when options[:is_author_search]
+      # This is minimally useful; it only returns when we get an exact
+      # author match.
+      # TODO: rewrite to do a fuzzy search if there are no hits on "author"?
       author_names = Parsers::AuthorParser.parse(options[:q])[:names]
       authors = Author.find_by_names author_names
       search_options.merge! authors: authors

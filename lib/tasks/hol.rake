@@ -17,4 +17,19 @@ namespace :hol do
     Importers::Hol::Catalog.new.compare_subspecies
   end
 
+  desc "Get hol details for species not in antcat"
+  task get_full_literature_records: :environment do
+    Importers::Hol::HolLiterature.new.get_full_literature_records
+  end
+
+  desc "get hol taxon info json"
+  task get_hol_json: :environment do
+    Importers::Hol::HolTaxonInfo.new.get_json
+  end
+
+  desc "extract hol taxon info"
+  task expand_hol_json: :environment do
+    Importers::Hol::HolTaxonInfo.new.expand_json
+  end
+
 end

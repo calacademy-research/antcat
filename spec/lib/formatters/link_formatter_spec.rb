@@ -94,7 +94,7 @@ describe Formatters::LinkFormatter do
       expect(@formatter.link_to_hol(create_subfamily 'Dolichoderinae')).to be nil
     end
 
-    it "should provide no link if there are two invalid entries" do
+    it "should provide no link if there are two valid entries" do
       taxon = create_subfamily 'Dolichoderinae'
       FactoryGirl.create :hol_datum, taxon_id: taxon.id, tnuid: 1234, is_valid: 'Valid'
       FactoryGirl.create :hol_datum, taxon_id: taxon.id, tnuid: 1235, is_valid: 'Valid'

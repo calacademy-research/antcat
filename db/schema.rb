@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150325230756) do
+ActiveRecord::Schema.define(version: 20150403161335) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -141,6 +141,43 @@ ActiveRecord::Schema.define(version: 20150325230756) do
 
   add_index "hol_data", ["taxon_id"], name: "hol_data_taxon_id_idx", using: :btree
   add_index "hol_data", ["tnuid"], name: "hol_data_tnuid_idx", using: :btree
+
+  create_table "hol_literature_pages", force: :cascade do |t|
+    t.integer "literatures_id", limit: 4
+    t.string  "url",            limit: 255
+    t.string  "page",           limit: 255
+  end
+
+  create_table "hol_literatures", force: :cascade do |t|
+    t.integer "tnuid",     limit: 4
+    t.integer "pub_id",    limit: 4
+    t.string  "taxon",     limit: 255
+    t.string  "name",      limit: 255
+    t.string  "describer", limit: 255
+    t.string  "rank",      limit: 255
+    t.string  "year",      limit: 255
+    t.string  "month",     limit: 255
+    t.string  "comments",  limit: 255
+    t.string  "full_pdf",  limit: 255
+    t.string  "pages",     limit: 255
+    t.string  "public",    limit: 255
+    t.string  "author",    limit: 255
+  end
+
+  create_table "hol_taxon_data", force: :cascade do |t|
+    t.integer "tnuid",              limit: 4
+    t.text    "json",               limit: 4294967295
+    t.string  "author_last_name",   limit: 255
+    t.integer "antcat_author_id",   limit: 4
+    t.string  "journal_name",       limit: 255
+    t.integer "hol_journal_id",     limit: 4
+    t.integer "antcat_journal_id",  limit: 4
+    t.integer "year",               limit: 4
+    t.integer "hol_pub_id",         limit: 4
+    t.integer "start_page",         limit: 4
+    t.integer "end_page",           limit: 4
+    t.integer "antcat_protonym_id", limit: 4
+  end
 
   create_table "journals", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -341,9 +378,11 @@ ActiveRecord::Schema.define(version: 20150325230756) do
   add_index "taxon_history_items", ["taxon_id"], name: "index_taxonomic_history_items_on_taxon_id", using: :btree
 
   create_table "taxon_states", force: :cascade do |t|
-    t.integer "taxon_id",     limit: 4
-    t.string  "review_state", limit: 255
-    t.boolean "deleted",      limit: 1
+    t.integer  "taxon_id",     limit: 4
+    t.string   "review_state", limit: 255
+    t.boolean  "deleted",      limit: 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx", using: :btree

@@ -7,16 +7,16 @@ describe Family do
     describe "When the database is empty" do
       it "should create the Family, Protonym, and Citation, and should link to the right Genus and Reference" do
         reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
-        data =  {
-          :protonym => {
-            :family_or_subfamily_name => "Formicariae",
-            :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
-          },
-          :type_genus => {
-            :genus_name => 'Formica',
-            :texts => [{:text => [{:phrase => ', by monotypy'}]}]
-          },
-          :history => ["Formicidae as family"]
+        data = {
+            :protonym => {
+                :family_or_subfamily_name => "Formicariae",
+                :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+            },
+            :type_genus => {
+                :genus_name => 'Formica',
+                :texts => [{:text => [{:phrase => ', by monotypy'}]}]
+            },
+            :history => ["Formicidae as family"]
         }
 
         family = Family.import data
@@ -41,14 +41,14 @@ describe Family do
       end
       it "should save the note (when there's not a type taxon note)" do
         reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809'
-        data =  {
-          :protonym => {
-            :family_or_subfamily_name => "Formicariae",
-            :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
-          },
-          :type_genus => {:genus_name => 'Formica'},
-          :note => [{:phrase=>"[Note.]"}],
-          :history => ["Formicidae as family"]
+        data = {
+            :protonym => {
+                :family_or_subfamily_name => "Formicariae",
+                :authorship => [{:author_names => ["Latreille"], :year => "1809", :pages => "124"}],
+            },
+            :type_genus => {:genus_name => 'Formica'},
+            :note => [{:phrase => "[Note.]"}],
+            :history => ["Formicidae as family"]
         }
 
         family = Family.import(data).reload
@@ -75,63 +75,75 @@ describe Family do
         @bolla_name = create_name 'Bolla'
 
         reference = FactoryGirl.create :article_reference,
-          author_names: [FactoryGirl.create(:author_name, name: "Latreille")], citation_year: '1809', bolton_key_cache: 'Latreille 1809'
+                                       author_names: [FactoryGirl.create(:author_name, name: "Latreille")],
+                                       citation_year: '1809', bolton_key_cache: 'Latreille 1809'
         @ref_taxt = "{ref #{reference.id}}"
         @atta_name = create_name 'Atta'
         @nam_taxt = "{nam #{@atta_name.id}}"
 
         citation = Citation.create! reference: reference, pages: '12', forms: 'w.'
         @protonym = Protonym.create!(
-          name:         Name.import(family_or_subfamily_name: 'Formicariae'),
-          sic:          false,
-          fossil:       false,
-          authorship:   citation,
-          locality:     'CANADA'
+            name: Name.import(family_or_subfamily_name: 'Formicariae'),
+            sic: false,
+            fossil: false,
+            authorship: citation,
+            locality: 'CANADA'
         )
 
         # create a Family
         name = FamilyName.create! name: 'Formicidae'
-        @family = Family.create!(
-          name: name,
-          status: 'valid',
-          protonym: @protonym,
-          headline_notes_taxt: @ref_taxt,
-          type_taxt: @ref_taxt,
-          type_fossil: false,
-          type_name: @eciton_name
+        @family = Family.new(
+            name: name,
+            status: 'valid',
+            protonym: @protonym,
+            headline_notes_taxt: @ref_taxt,
+            type_taxt: @ref_taxt,
+            type_fossil: false,
+            type_name: @eciton_name
         )
+        @family.save(validate: false)
+        FactoryGirl.create(:taxon_state, taxon_id: @family.id)
+        @family.validate!
         @history_item = @family.history_items.create! taxt: "1st history item"
 
         ants_reference_for_title = FactoryGirl.create :article_reference,
-          author_names: [FactoryGirl.create(:author_name, name: "Fisher")], citation_year: '2001', bolton_key_cache: 'Fisher 2001'
+                                                      author_names: [FactoryGirl.create(:author_name, name: "Fisher")],
+                                                      citation_year: '2001',
+                                                      bolton_key_cache: 'Fisher 2001'
         @ants_title_taxt = "{ref #{ants_reference_for_title.id}}"
         ants_reference_for_subtitle = FactoryGirl.create :article_reference,
-          author_names: [FactoryGirl.create(:author_name, name: "Shattuck")], citation_year: '2009', bolton_key_cache: 'Shattuck 2009'
+                                                         author_names: [FactoryGirl.create(:author_name, name: "Shattuck")],
+                                                         citation_year: '2009',
+                                                         bolton_key_cache: 'Shattuck 2009'
         @ants_subtitle_taxt = "{ref #{ants_reference_for_subtitle.id}}"
         ants_reference_for_references = FactoryGirl.create :article_reference,
-          author_names: [FactoryGirl.create(:author_name, name: "Ward")], citation_year: '1995', bolton_key_cache: 'Ward 1995'
+                                                           author_names: [FactoryGirl.create(:author_name, name: "Ward")],
+                                                           citation_year: '1995',
+                                                           bolton_key_cache: 'Ward 1995'
         ants_references_taxt = "{ref #{ants_reference_for_references.id}}"
         #@reference_section = @family.reference_sections.create! title_taxt: @ants_title_taxt, subtitle_taxt: @ants_subtitle_taxt, references_taxt: ants_references_taxt
-        @reference_section = @family.reference_sections.create! title_taxt: 'References', subtitle_taxt: 'of New Guinea', references_taxt: 'References go here'
+        @reference_section = @family.reference_sections.create! title_taxt: 'References',
+                                                                subtitle_taxt: 'of New Guinea',
+                                                                references_taxt: 'References go here'
 
         # and data that matches it
         @data = {
-          fossil: false,
-          status: 'valid',
-          protonym: {
-            family_or_subfamily_name: "Formicariae",
-            sic: false,
             fossil: false,
-            authorship: [{author_names: ["Latreille"], year: "1809", pages: '12', forms: 'w.'}],
-            locality: 'CANADA',
-          },
-          note: [{author_names: ["Latreille"], year: "1809"}],
-          type_genus: {
-            genus_name: 'Eciton',
-            fossil: false,
-            texts: [{author_names: ["Latreille"], year: "1809"}],
-          },
-          history: ['1st history item'],
+            status: 'valid',
+            protonym: {
+                family_or_subfamily_name: "Formicariae",
+                sic: false,
+                fossil: false,
+                authorship: [{author_names: ["Latreille"], year: "1809", pages: '12', forms: 'w.'}],
+                locality: 'CANADA',
+            },
+            note: [{author_names: ["Latreille"], year: "1809"}],
+            type_genus: {
+                genus_name: 'Eciton',
+                fossil: false,
+                texts: [{author_names: ["Latreille"], year: "1809"}],
+            },
+            history: ['1st history item'],
         }
       end
 
@@ -160,12 +172,12 @@ describe Family do
 
       it "should compare, update and record taxt" do
         data = @data.merge(
-          note: [{genus_name: 'Atta'}],
-          type_genus: {
-            genus_name: 'Eciton',
-            fossil: false,
-            texts: [{genus_name: 'Atta'}],
-          }
+            note: [{genus_name: 'Atta'}],
+            type_genus: {
+                genus_name: 'Eciton',
+                fossil: false,
+                texts: [{genus_name: 'Atta'}],
+            }
         )
 
         family = Family.import data
@@ -194,11 +206,11 @@ describe Family do
         #pending "importers, not germane to core functionality"
 
         data = @data.merge(
-          type_genus: {
-            genus_name: 'Bolla',
-            fossil: true,
-            texts: [{genus_name: 'Atta'}]
-          }
+            type_genus: {
+                genus_name: 'Bolla',
+                fossil: true,
+                texts: [{genus_name: 'Atta'}]
+            }
         )
         family = Family.import data
         expect(Update.count).to eq(3)
@@ -222,7 +234,7 @@ describe Family do
       describe "Taxon history" do
         it "should replace existing items when the count is the same" do
           data = @data.merge(
-            history: ['1st history item with change']
+              history: ['1st history item with change']
           )
           family = Family.import data
 
@@ -238,7 +250,7 @@ describe Family do
         end
         it "should append new items" do
           data = @data.merge(
-            history: ['1st history item', '2nd history item']
+              history: ['1st history item', '2nd history item']
           )
           family = Family.import data
 
@@ -273,7 +285,7 @@ describe Family do
       describe "Reference sections" do
         it "should replace existing items when the count is the same, and not convert incoming taxt" do
           reference_sections = [
-            {title_taxt: @ants_title_taxt, subtitle_taxt: @ants_subtitle_taxt, references_taxt: @ants_references_taxt},
+              {title_taxt: @ants_title_taxt, subtitle_taxt: @ants_subtitle_taxt, references_taxt: @ants_references_taxt},
           ]
 
           @family.import_reference_sections reference_sections
@@ -296,8 +308,8 @@ describe Family do
 
         it "should append new items" do
           reference_sections = [
-            {title_taxt: 'References', subtitle_taxt: 'of New Guinea', references_taxt: 'References go here'},
-            {title_taxt: '2nd reference section', subtitle_taxt: '2nd subtitle', references_taxt: '2nd references'},
+              {title_taxt: 'References', subtitle_taxt: 'of New Guinea', references_taxt: 'References go here'},
+              {title_taxt: '2nd reference section', subtitle_taxt: '2nd subtitle', references_taxt: '2nd references'},
           ]
 
           @family.import_reference_sections reference_sections
@@ -415,7 +427,7 @@ describe Family do
         end
         it "should record a different reference than before" do
           new_reference = FactoryGirl.create :article_reference,
-            author_names: [FactoryGirl.create(:author_name, name: 'Bolton')], citation_year: '2005', bolton_key_cache: 'Bolton 2005'
+                                             author_names: [FactoryGirl.create(:author_name, name: 'Bolton')], citation_year: '2005', bolton_key_cache: 'Bolton 2005'
           data = @data.dup
           data[:protonym][:authorship].first[:author_names] = ['Bolton, B.']
           data[:protonym][:authorship].first[:year] = '2005'
@@ -442,11 +454,11 @@ describe Family do
       tribe = FactoryGirl.create :tribe, subfamily: subfamily
       genus = FactoryGirl.create :genus, :subfamily => subfamily, :tribe => tribe
       FactoryGirl.create :genus, :subfamily => subfamily, :status => 'homonym', :tribe => tribe
-      2.times {FactoryGirl.create :subfamily, :fossil => true}
+      2.times { FactoryGirl.create :subfamily, :fossil => true }
       expect(family.statistics).to eq({
-        :extant => {subfamilies: {'valid' => 1}, tribes: {'valid' => 1}, genera: {'valid' => 1, 'homonym' => 1}},
-        :fossil => {subfamilies: {'valid' => 2}}
-      })
+                                          :extant => {subfamilies: {'valid' => 1}, tribes: {'valid' => 1}, genera: {'valid' => 1, 'homonym' => 1}},
+                                          :fossil => {subfamilies: {'valid' => 2}}
+                                      })
     end
   end
 

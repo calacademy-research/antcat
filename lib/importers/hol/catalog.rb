@@ -1,5 +1,10 @@
 # coding: UTF-8
 
+
+#
+# Import top level HOL taxa data based on names.
+# Entry points are compare_with_antcat and  compare_subspecies.
+#
 class Importers::Hol::Catalog
   include HolCommands
 
@@ -20,37 +25,8 @@ class Importers::Hol::Catalog
     puts "Done pre-loading tables"
   end
 
-  def print_char char
-    if @print_char>=80
-      @print_char=0
-      puts char
-    else
-      print char
-      @print_char = @print_char + 1
-    end
 
-
-  end
-
-  # runs and compares all subspecies, one at a time
-  def compare_subspecies
-    subspecies_count=0
-    for subspecies in Tribe.order(:name_cache).all
-      if (subspecies_count >= 0)
-       check_and_save_hol_for_taxon subspecies
-      end
-      if subspecies_count > 10000
-        exit
-      end
-      if subspecies_count % 20 == 0
-        print " " + subspecies_count.to_s + " "
-        @print_char = @print_char + 2 + subspecies_count.to_s.length
-      end
-      subspecies_count = subspecies_count +1
-    end
-  end
-
-  # runs and compares all genera
+  # runs and compares all genera known to antcat.
   def compare_with_antcat
     #HolDatum.delete_all
 
@@ -77,6 +53,30 @@ class Importers::Hol::Catalog
     ary = @hol_dictionary[hol_hash['name'].downcase]
     ary.concat [hol_hash]
   end
+
+
+
+
+  # runs and compares all TAXON TYPE (hardocded), one at a time
+  # pull all *foo* by name and compare them
+  def compare_subspecies
+    subspecies_count=0
+    for subspecies in Tribe.order(:name_cache).all
+      if (subspecies_count >= 0)
+       check_and_save_hol_for_taxon subspecies
+      end
+      if subspecies_count > 10000
+        exit
+      end
+      if subspecies_count % 20 == 0
+        print " " + subspecies_count.to_s + " "
+        @print_char = @print_char + 2 + subspecies_count.to_s.length
+      end
+      subspecies_count = subspecies_count +1
+    end
+  end
+
+
 
 
 

@@ -16,7 +16,7 @@ class Exporters::Antweb::Exporter
   end
 
   def get_taxa
-    Taxon.joins protonym: [{authorship: :reference}]
+    Taxon.joins(protonym: [{authorship: :reference}]).order(:status).reverse
   end
 
   def export_taxon taxon
@@ -46,6 +46,7 @@ class Exporters::Antweb::Exporter
       biogeographic_region: taxon.biogeographic_region,
       locality:             taxon.protonym.locality,
       rank:                 taxon.class.to_s,
+      hol_id:               taxon.hol_id,
       parent:               parent_name,
     }
 
@@ -85,7 +86,8 @@ class Exporters::Antweb::Exporter
     "bioregion\t"               +# [19]
     "country\t"                 +# [20]
     "current valid rank\t"      +# [21]
-    "current valid parent"       # [22]
+    "hol id\t"      +# [22]
+        "current valid parent"       # [23]
   end
 
   def convert_to_antweb_array values
@@ -111,6 +113,7 @@ class Exporters::Antweb::Exporter
      values[:biogeographic_region],
      values[:locality],
      values[:rank],
+     values[:hol_id],
      values[:parent],
     ]
   end
