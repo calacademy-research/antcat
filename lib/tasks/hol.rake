@@ -24,12 +24,17 @@ namespace :hol do
 
   desc "get hol taxon info json"
   task get_hol_json: :environment do
-    Importers::Hol::HolTaxonInfo.new.get_json
+    Importers::Hol::GetHolTaxonInfo.new.get_json
   end
 
   desc "extract hol taxon info"
   task expand_hol_json: :environment do
-    Importers::Hol::HolTaxonInfo.new.expand_json
+    Importers::Hol::GetHolTaxonInfo.new.expand_json
+  end
+
+  desc "Get hol synonyms"
+  task get_synonyms: :environment do
+    Importers::Hol::GetHolSynonyms.new.get_synonym_records
   end
 
 end

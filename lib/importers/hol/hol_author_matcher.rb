@@ -1,13 +1,11 @@
-require 'fuzzystringmatch'
-
-class Importers::Hol::AuthorMatcher < Importers::Hol::BaseUtils
+class Importers::Hol::HolAuthorMatcher < Importers::Hol::BaseUtils
 
   def initialize
+    super
+    @journal_name_string_map ={}
 
-    def initialize
-      Rails.logger.level = Logger::INFO
-      @journal_name_string_map ={}
-    end
+    Rails.logger.level = Logger::INFO
+
 
     # Map from hol name to antcat name
     @author_last_name_string_map={'Jaegerskioeld' => 'Jägerskiöld'}
@@ -28,9 +26,9 @@ class Importers::Hol::AuthorMatcher < Importers::Hol::BaseUtils
 
     @author_last_name_string_map={'Jaegerskioeld' => 'Jägerskiöld'}
     @author_full_name_string_map={
-                                  '' => '',
-                                  '' => '',
-                                  '' => ''}
+        '' => '',
+        '' => '',
+        '' => ''}
   end
 
   #
@@ -38,6 +36,8 @@ class Importers::Hol::AuthorMatcher < Importers::Hol::BaseUtils
 
   #
   def get_antcat_author_id details_hash
+    Rails.logger.level = Logger::INFO
+
     last_name = extract details_hash, ["orig_desc", "author_extended", 0, "last_name"]
     if last_name.nil?
       print_char "L"
@@ -58,6 +58,9 @@ class Importers::Hol::AuthorMatcher < Importers::Hol::BaseUtils
     full_name = make_full_name last_name, initials
     if author_name.nil? && @author_full_name_string_map.has_key?(full_name)
       mapped_name = @author_full_name_string_map[full_name]
+      if mapped_name.nil?
+        return nil
+      end
       author_name = find_author mapped_name
       unless author_name.nil?
         # puts " Found alternate full name spelling: " + author_name['name']
@@ -65,11 +68,11 @@ class Importers::Hol::AuthorMatcher < Importers::Hol::BaseUtils
     end
 
     if author_name.nil?
-      puts "failed to get author, trying search: " +full_name + " tnuid: " + details_hash['tnuid'].to_s
+      #puts "failed to get author, trying search: " +full_name + " tnuid: " + details_hash['tnuid'].to_s
       #print_char "A"
       return author_search_matcher full_name
     end
-    print_char "a"
+    #print_char "a"
     author_name.author_id
   end
 
@@ -78,60 +81,26 @@ class Importers::Hol::AuthorMatcher < Importers::Hol::BaseUtils
   end
 
   #note that each reference can have multiple authors; check all
-  def author_search_matcher hol_author_full_name
-    references = author_search hol_author_full_name
-    author_id = nil
-    candidate_antcat_author_string = nil
-    author_distance = 0
+  def author_search_matcher hol_string
 
-    jarow = FuzzyStringMatch::JaroWinkler.create(:pure)
-    if references.length == 0
-      Rails.logger.debug "No references found."
+    references = reference_search hol_string
+    if references.nil?
       return nil
     end
     references.each do |reference|
-      if reference.journal.nil?
+      if reference.author_names.nil? || reference.author_names.length == 0
         next
       end
       reference_author_names = reference.author_names
       reference_author_names.each do |reference_author|
         cur_author_name = reference_author
-        cur_author_name_string = cur_author_name.name
-        cur_author_id = reference_author.author_id
-       # Rails.logger.debug "found author:" + cur_author_name_string + " "
-        if author_id.nil?
-          author_id = cur_author_id
-          candidate_antcat_author_string = cur_author_name_string
-          author_distance = jarow.getDistance(candidate_antcat_author_string,hol_author_full_name)
-          Rails.logger.debug " first example:" + cur_author_name_string+ " " + author_distance.to_s
-        else
-          if cur_author_id == author_id
-           # Rails.logger.debug "these are the same, skipping"
-            next
-          end
-          new_distance = jarow.getDistance(cur_author_name_string, hol_author_full_name)
-          if new_distance > author_distance
-            author_id = cur_author_id
-            candidate_antcat_author_string = cur_author_name_string
-            author_distance = new_distance
-            Rails.logger.debug " I like this better: " + candidate_antcat_author_string+ " " + new_distance.to_s
-          else
-            Rails.logger.debug " Kept the old one: " + cur_author_name_string+ " " + new_distance.to_s
-          end
-        end
+        @cur_string = cur_author_name.name
+        @cur_id = reference_author.author_id
+        check_and_swap_reference
       end
     end
-    if author_distance > 0.75
-      Rails.logger.debug ("The winner is: " + candidate_antcat_author_string)
-      @author_full_name_string_map[hol_author_full_name] = candidate_antcat_author_string
-      return author_id
-    else
-      Rails.logger.warning (hol_author_full_name + " just isn't close enough to "+candidate_antcat_author_string+". Discarding.")
-      return nil
-    end
+    return filter_result @author_full_name_string_map
   end
-
-
 
 
   def author_search search_string
@@ -139,9 +108,7 @@ class Importers::Hol::AuthorMatcher < Importers::Hol::BaseUtils
     # params={filter: :no_missing_references,
     #         is_author_string: true,
     #         author_names: search_string}
-    params={filter: :no_missing_references,
-            fulltext: search_string}
-    Reference.perform_search params
+
 
   end
 

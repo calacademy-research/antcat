@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150403161335) do
+ActiveRecord::Schema.define(version: 20150410173255) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -35,11 +35,13 @@ ActiveRecord::Schema.define(version: 20150403161335) do
   end
 
   create_table "author_names", force: :cascade do |t|
-    t.string   "name",       limit: 255
+    t.string   "name",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "verified",   limit: 1
-    t.integer  "author_id",  limit: 4
+    t.boolean  "verified",       limit: 1
+    t.integer  "author_id",      limit: 4
+    t.boolean  "auto_generated", limit: 1,   default: false
+    t.string   "origin",         limit: 255
   end
 
   add_index "author_names", ["author_id"], name: "author_names_author_id_idx", using: :btree
@@ -97,12 +99,14 @@ ActiveRecord::Schema.define(version: 20150403161335) do
   add_index "changes", ["approver_id"], name: "index_changes_on_approver_id", using: :btree
 
   create_table "citations", force: :cascade do |t|
-    t.integer  "reference_id", limit: 4
-    t.string   "pages",        limit: 255
+    t.integer  "reference_id",   limit: 4
+    t.string   "pages",          limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "notes_taxt",   limit: 65535
-    t.string   "forms",        limit: 255
+    t.text     "notes_taxt",     limit: 65535
+    t.string   "forms",          limit: 255
+    t.boolean  "auto_generated", limit: 1,     default: false
+    t.string   "origin",         limit: 255
   end
 
   add_index "citations", ["reference_id"], name: "index_authorships_on_reference_id", using: :btree
@@ -157,11 +161,17 @@ ActiveRecord::Schema.define(version: 20150403161335) do
     t.string  "rank",      limit: 255
     t.string  "year",      limit: 255
     t.string  "month",     limit: 255
-    t.string  "comments",  limit: 255
+    t.text    "comments",  limit: 65535, null: false
     t.string  "full_pdf",  limit: 255
     t.string  "pages",     limit: 255
     t.string  "public",    limit: 255
     t.string  "author",    limit: 255
+  end
+
+  create_table "hol_synonyms", force: :cascade do |t|
+    t.integer "tnuid",      limit: 4
+    t.integer "synonym_id", limit: 4
+    t.text    "json",       limit: 4294967295
   end
 
   create_table "hol_taxon_data", force: :cascade do |t|
@@ -180,24 +190,28 @@ ActiveRecord::Schema.define(version: 20150403161335) do
   end
 
   create_table "journals", force: :cascade do |t|
-    t.string   "name",       limit: 255
+    t.string   "name",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "auto_generated", limit: 1,   default: false
+    t.string   "origin",         limit: 255
   end
 
   add_index "journals", ["name"], name: "journals_name_idx", using: :btree
 
   create_table "names", force: :cascade do |t|
-    t.string   "type",          limit: 255
-    t.string   "name",          limit: 255
-    t.string   "name_html",     limit: 255
-    t.string   "epithet",       limit: 255
-    t.string   "epithet_html",  limit: 255
-    t.string   "epithets",      limit: 255
-    t.string   "protonym_html", limit: 255
+    t.string   "type",           limit: 255
+    t.string   "name",           limit: 255
+    t.string   "name_html",      limit: 255
+    t.string   "epithet",        limit: 255
+    t.string   "epithet_html",   limit: 255
+    t.string   "epithets",       limit: 255
+    t.string   "protonym_html",  limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "gender",        limit: 255
+    t.string   "gender",         limit: 255
+    t.boolean  "auto_generated", limit: 1,   default: false
+    t.string   "origin",         limit: 255
   end
 
   add_index "names", ["name"], name: "name_name_index", using: :btree
@@ -214,11 +228,13 @@ ActiveRecord::Schema.define(version: 20150403161335) do
   create_table "protonyms", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "authorship_id", limit: 4
-    t.boolean  "fossil",        limit: 1
-    t.boolean  "sic",           limit: 1
-    t.string   "locality",      limit: 255
-    t.integer  "name_id",       limit: 4
+    t.integer  "authorship_id",  limit: 4
+    t.boolean  "fossil",         limit: 1
+    t.boolean  "sic",            limit: 1
+    t.string   "locality",       limit: 255
+    t.integer  "name_id",        limit: 4
+    t.boolean  "auto_generated", limit: 1,   default: false
+    t.string   "origin",         limit: 255
   end
 
   add_index "protonyms", ["authorship_id"], name: "index_protonyms_on_authorship_id", using: :btree
@@ -240,6 +256,8 @@ ActiveRecord::Schema.define(version: 20150403161335) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position",       limit: 4
+    t.boolean  "auto_generated", limit: 1,   default: false
+    t.string   "origin",         limit: 255
   end
 
   add_index "reference_author_names", ["author_name_id"], name: "author_participations_author_id_idx", using: :btree
@@ -298,6 +316,8 @@ ActiveRecord::Schema.define(version: 20150403161335) do
     t.string   "review_state",                     limit: 255
     t.text     "formatted_cache",                  limit: 65535
     t.text     "inline_citation_cache",            limit: 65535
+    t.boolean  "auto_generated",                   limit: 1,     default: false
+    t.string   "origin",                           limit: 255
   end
 
   add_index "references", ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: {"author_names_string_cache"=>255, "citation_year"=>nil}, using: :btree
@@ -313,6 +333,8 @@ ActiveRecord::Schema.define(version: 20150403161335) do
     t.integer  "junior_synonym_id", limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "auto_generated",    limit: 1,   default: false
+    t.string   "origin",            limit: 255
   end
 
   create_table "taxa", force: :cascade do |t|
@@ -351,6 +373,8 @@ ActiveRecord::Schema.define(version: 20150403161335) do
     t.string   "authorship_string",               limit: 255
     t.string   "duplicate_type",                  limit: 255
     t.integer  "collision_merge_id",              limit: 4
+    t.boolean  "auto_generated",                  limit: 1,     default: false
+    t.string   "origin",                          limit: 255
   end
 
   add_index "taxa", ["family_id"], name: "index_taxa_on_family_id", using: :btree

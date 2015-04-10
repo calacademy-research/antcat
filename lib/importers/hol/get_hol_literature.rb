@@ -6,13 +6,13 @@ require 'json'
 # Import top level HOL taxa data based on names.
 # Entry points are compare_with_antcat and  compare_subspecies.
 #
-class Importers::Hol::HolLiterature
+class Importers::Hol::GetHolLiterature
   include HolCommands
 
   def initialize
     @print_char=0
     @hol_taxa_dictionary={}
-    for hol_lit in HolLiterature.all
+    for hol_lit in GetHolLiterature.all
       @hol_taxa_dictionary[hol_lit.tnuid]=hol_lit
     end
 
@@ -51,7 +51,7 @@ class Importers::Hol::HolLiterature
         lit.each do |cur_lit|
           pages = cur_lit['pages']
           cur_lit['pages'] = nil
-          lit_reference = HolLiterature.new(cur_lit)
+          lit_reference = GetHolLiterature.new(cur_lit)
           #lit_reference.pages = pages.to_json
           lit_reference.save!
           print_char 'S'

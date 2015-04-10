@@ -47,13 +47,15 @@ module Importers::Hol::HolCommands
     start_time = Time.now
     begin
       status = Timeout::timeout(10) do
-        timeout_string = Curl::Easy.perform(url).body_str
+        string = Curl::Easy.perform(url).body_str
       end
+        # hcurl hostresolutionsfailure too
+        # but really, just rescue everything at this point
     rescue Curl::Err::ConnectionFailedError, Curl::Err::TimeoutError, Timeout::Error
       Timeout::Error
       tries += 1
       unless status.nil?
-        puts ("timeout status :"+ timeout_string.to_s + " " + status.to_s )
+        puts ("timeout status :"+ timeout_string.to_s + " " + status.to_s)
       end
       sleep 3
       retry if tries < 20
@@ -77,6 +79,7 @@ module Importers::Hol::HolCommands
       string.gsub! /^api\((.*)\);$/, '\1'
       if no_parse
         retval = string
+        retval = string
       else
         retval = JSON.parse(string, :quirks_mode => true)
       end
@@ -97,11 +100,15 @@ module Importers::Hol::HolCommands
 
   end
 
+  def get_synonyms tnuid
+    synonyms = run_hol_command "getTaxonSynonyms?tnuid=" + tnuid.to_s
+    synonyms['synonyms']
+  end
+
 
   def get_taxon_info_command tunid
     run_hol_command "getTaxonInfo?tnuid=" + tunid.to_s, true
   end
-
 
 
 end

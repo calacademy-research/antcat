@@ -11,5 +11,13 @@ class HolTaxonDatum < ActiveRecord::Base
                   :hol_pub_id,
                   :start_page,
                   :end_page,
-                  :antcat_protonym_id
+                  :antcat_protonym_id,
+                  :antcat_citation_id,
+                  :antcat_name_id,
+                  :antcat_reference_id,
+                  :rank,
+                  :rel_type,
+                  :fossil,
+                  :status
+
 end

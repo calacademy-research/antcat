@@ -67,6 +67,8 @@ class Reference < ActiveRecord::Base
     true
   end
 
+
+
   before_save :set_author_names_caches
   before_destroy :check_not_nested
 

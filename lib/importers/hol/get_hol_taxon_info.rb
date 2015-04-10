@@ -2,7 +2,6 @@
 require 'json'
 
 
-
 #
 # TODO: When complete, dump the string maps for authors, pubs, etc.
 # review and correct, and re-run.
@@ -12,29 +11,30 @@ require 'json'
 # Import top level HOL taxa data based on names.
 # Entry points are compare_with_antcat and  compare_subspecies.
 #
-class Importers::Hol::HolTaxonInfo < Importers::Hol::BaseUtils
+class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
   include HolCommands
 
 
   def initialize
     @print_char=0
-    @tnuid_dictionary={}
-    @journal_matcher = JournalMatcher.new
-    @author_matcher = AuthorMatcher.new
-
+    @journal_matcher = HolJournalMatcher.new
+    @author_matcher = HolAuthorMatcher.new
+    @reference_matcher = HolReferenceMatcher.new
+    @name_matcher = HolNameMatcher.new
+    @citation_matcher = HolCitationMatcher.new
 
 
   end
 
   def setup_tnuid_dictionary
+    @tnuid_dictionary = {}
     for hol_data in HolTaxonDatum.all
       @tnuid_dictionary[hol_data.tnuid]=nil
-      puts "Done pre-loading tables"
 
     end
+    puts "Done pre-loading tables"
+
   end
-
-
 
 
   # runs and compares all genera known to antcat.
@@ -81,7 +81,7 @@ class Importers::Hol::HolTaxonInfo < Importers::Hol::BaseUtils
       end
       if hol_count % 10 == 0
 
-        print_string hol_count.to_s
+        print_string hol_hash.tnuid.to_s
 
       end
       if hol_count % 15 == 0
@@ -111,40 +111,67 @@ class Importers::Hol::HolTaxonInfo < Importers::Hol::BaseUtils
         puts "Failed to parse record " + hol_details.tnuid.to_s + " json: " + hol_details.json
       end
 
-      if get_family hol_details != "Formicidae"
-        delete_hol hol_details.tnuid
+      family = get_family details_hash
+      if family != "Formicidae"
+        puts ("****** Deleting from family: " + family.to_s + " tnuid:" + hol_details.tnuid.to_s)
+        #delete_hol hol_details.tnuid
+        next
       end
 
       hol_details['antcat_author_id'] = @author_matcher.get_antcat_author_id details_hash
-      hol_details['year'] = get_year details_hash
+      if hol_details['antcat_author_id'].nil?
+        print_char 'A'
+      else
+        print_char 'a'
+      end
+
       hol_details['year'] = get_year details_hash
       hol_details['start_page'] = get_start_page details_hash
       hol_details['end_page'] = get_end_page details_hash
       hol_details['journal_name'] = get_journal_name details_hash
       hol_details['hol_journal_id'] = get_hol_journal_id details_hash
+      hol_details['rank'] = get_rank details_hash
+      hol_details['rel_type'] = get_rel_type details_hash
+      hol_details['status'] = get_status details_hash
+      hol_details['fossil'] = get_fossil details_hash
+
+
+
+      if hol_details['hol_journal_id'].nil?
+        print_char 'J'
+      else
+        print_char 'j'
+      end
       hol_details['antcat_journal_id'] = @journal_matcher.get_antcat_journal_id hol_details['journal_name']
+      reference = @reference_matcher.get_reference hol_details, details_hash, @journal_matcher
+      if (reference.nil?)
+        print_char 'R'
+      else
+        print_char 'r'
+        hol_details['reference_id'] = reference.id
+      end
+      name = @name_matcher.get_name hol_details, details_hash
+      if (name.nil?)
+        print_char 'N'
+      else
+        print_char 'n'
+        hol_details['antcat_name_id'] = name.id
+      end
+      citation = @citation_matcher.get_citation reference, hol_details, details_hash
+      if(citation.nil?)
+        print_char 'C'
+      else
+        hol_details['antcat_citation_id'] = citation.id
+        print_char 'c'
+      end
+      # build synonyms?
 
-      # todo: look up name_id
-      # protonym has name_id
-      # protonyum -> citation (via 'authorship')
-      # citation has pages
-      # citation -> reference
-      # reference has year
-      # reference has journal id
-      # reference has publisher id
 
-      # User.where(name: 'David', occupation: 'Code Artist').order('created_at DESC')
-      # Protonym.where(authorship_id: hol_details.antcat_author_id, )
       hol_details.save!
 
-      # unless hol_details.antcat_author_id.nil?
-      #   hol_details.save!
-      # end
+
     end
   end
-
-
-
 
 
   def get_hol_journal_id details_hash
@@ -154,7 +181,6 @@ class Importers::Hol::HolTaxonInfo < Importers::Hol::BaseUtils
   def get_journal_name details_hash
     extract details_hash, ["orig_desc", "journal"]
   end
-
 
 
   def get_year details_hash
@@ -182,13 +208,36 @@ class Importers::Hol::HolTaxonInfo < Importers::Hol::BaseUtils
   end
 
   def get_family details_hash
-    extract details_hash, ['hier',"Family", "name"]
+    extract details_hash, ['hier', "Family", "name"]
   end
 
-  def delete_hol
+
+  def get_status details_hash
+      extract details_hash, ['status']
+  end
+
+  def get_rank details_hash
+    extract details_hash, ['rank']
+  end
+
+  def get_rel_type details_hash
+    extract details_hash, ['rel_type']
+  end
+
+  def get_fossil details_hash
+    fossil = extract details_hash, ['fossil']
+
+    unless fossil.nil?
+      fossil = ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(fossil)
+    end
+    fossil
+  end
 
 
-
+  def delete_hol tnuid
+    HolDatum.destroy.where(tunid: tnuid)
+    HolTaxonDatum.destroy.where(tunid: tnuid)
+  end
 
 end
 
