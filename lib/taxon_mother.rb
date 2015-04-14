@@ -69,7 +69,6 @@ class TaxonMother
       # So, if you undo the first change, and try to reify the previous one,
       # you end up with no object! touch_with_version gives us one, but
       # Just for the taxa, not the protonym or other changable objects.
-      # TODO fix all paper trail objects to get a "touch_with_version" during create event.
       if(:create == change_type)
         @taxon.touch_with_version
       end

@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 20150410175344) do
     t.string  "rank",      limit: 255
     t.string  "year",      limit: 255
     t.string  "month",     limit: 255
-    t.text    "comments",  limit: 65535, null: false
+    t.string  "comments",  limit: 255
     t.string  "full_pdf",  limit: 255
     t.string  "pages",     limit: 255
     t.string  "public",    limit: 255

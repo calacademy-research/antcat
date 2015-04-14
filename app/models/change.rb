@@ -86,7 +86,7 @@ class Change < ActiveRecord::Base
   end
 
   def changed_by
-    version =versions.first
+    version = versions.first
     unless version.nil?
       return User.find(version.whodunnit.to_i)
     end

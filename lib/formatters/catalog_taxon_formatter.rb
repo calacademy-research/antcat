@@ -183,8 +183,15 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       content << format_time_ago(change.created_at).html_safe
 
       if @taxon.approved?
-        content << "; approved by #{format_doer_name(@taxon.approver)} ".html_safe
-        content << format_time_ago(change.approved_at).html_safe
+        # I don't fully understand this case;
+        # it appears that somehow, we're able to generate "changes" without affiliated taxon_states.
+        # not clear to me how this happens or whether this should be allowed.
+        # Workaround: If the taxon_state is showing "approved", go get the most recent change that
+        # has a noted approval.
+        approved_change = Change.where('user_changed_taxon_id = ? and approved_at is not null', change.user_changed_taxon_id).last
+
+        content << "; approved by #{format_doer_name(approved_change.approver)} ".html_safe
+        content << format_time_ago(approved_change.approved_at).html_safe
       end
 
       content

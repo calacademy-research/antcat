@@ -154,5 +154,9 @@ Feature: Workflow
 
     # test this where we undo the oldest and then both are gone
 
+  # Add scenario - add a new species, delete it, undo the delete
+
+  # Same as above, with notes
+
 
 
