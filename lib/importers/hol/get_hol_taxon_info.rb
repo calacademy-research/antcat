@@ -148,20 +148,20 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
         print_char 'R'
       else
         print_char 'r'
-        hol_details['reference_id'] = reference.id
+        hol_details['antcat_reference_id'] = reference
       end
-      name = @name_matcher.get_name hol_details, details_hash
+      name = @name_matcher.get_antcat_name_id hol_details, details_hash
       if (name.nil?)
         print_char 'N'
       else
         print_char 'n'
-        hol_details['antcat_name_id'] = name.id
+        hol_details['antcat_name_id'] = name
       end
-      citation = @citation_matcher.get_citation reference, hol_details, details_hash
+      citation = @citation_matcher.get_antcat_citation_id reference, hol_details, details_hash
       if(citation.nil?)
         print_char 'C'
       else
-        hol_details['antcat_citation_id'] = citation.id
+        hol_details['antcat_citation_id'] = citation
         print_char 'c'
       end
       # build synonyms?

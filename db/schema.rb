@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150410173255) do
+ActiveRecord::Schema.define(version: 20150410175344) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -175,18 +175,25 @@ ActiveRecord::Schema.define(version: 20150410173255) do
   end
 
   create_table "hol_taxon_data", force: :cascade do |t|
-    t.integer "tnuid",              limit: 4
-    t.text    "json",               limit: 4294967295
-    t.string  "author_last_name",   limit: 255
-    t.integer "antcat_author_id",   limit: 4
-    t.string  "journal_name",       limit: 255
-    t.integer "hol_journal_id",     limit: 4
-    t.integer "antcat_journal_id",  limit: 4
-    t.integer "year",               limit: 4
-    t.integer "hol_pub_id",         limit: 4
-    t.integer "start_page",         limit: 4
-    t.integer "end_page",           limit: 4
-    t.integer "antcat_protonym_id", limit: 4
+    t.integer "tnuid",               limit: 4
+    t.text    "json",                limit: 4294967295
+    t.string  "author_last_name",    limit: 255
+    t.integer "antcat_author_id",    limit: 4
+    t.string  "journal_name",        limit: 255
+    t.integer "hol_journal_id",      limit: 4
+    t.integer "antcat_journal_id",   limit: 4
+    t.integer "year",                limit: 4
+    t.integer "hol_pub_id",          limit: 4
+    t.integer "start_page",          limit: 4
+    t.integer "end_page",            limit: 4
+    t.integer "antcat_protonym_id",  limit: 4
+    t.integer "antcat_reference_id", limit: 4
+    t.integer "antcat_name_id",      limit: 4
+    t.integer "antcat_citation_id",  limit: 4
+    t.string  "rank",                limit: 255
+    t.string  "rel_type",            limit: 255
+    t.boolean "fossil",              limit: 1
+    t.string  "status",              limit: 255
   end
 
   create_table "journals", force: :cascade do |t|

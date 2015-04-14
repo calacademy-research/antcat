@@ -107,7 +107,10 @@ class ChangesController < ApplicationController
         item = klass.find(version.item_id)
         item.delete
       else
-        item = version.previous.reify
+        item = version.reify
+        if item.nil?
+          raise "failed to reify version: " + version.id.to_s + " referencing change: " + version.change_id.to_s
+        end
         begin
           # because we validate on things like the genus being present, and if we're doing an entire change set,
           # it might not be!

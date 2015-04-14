@@ -13,7 +13,7 @@ class Importers::Hol::HolNameMatcher < Importers::Hol::BaseUtils
   def get_antcat_name_id hol_deatils, hol_hash
     Rails.logger.level = Logger::INFO
 
-
+    hol_name = hol_hash['name']
     if hol_name.nil?
       return nil
     end
@@ -28,6 +28,9 @@ class Importers::Hol::HolNameMatcher < Importers::Hol::BaseUtils
       return Name.find_by_name(mapped_name).id
     end
     # if name is still nil here, this is were we'd add a fuzzy match on taxa names.
+    if name.nil?
+      return nil
+    end
     name.id
 
   end

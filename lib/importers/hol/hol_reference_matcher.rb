@@ -32,7 +32,6 @@ class Importers::Hol::HolReferenceMatcher < Importers::Hol::BaseUtils
     if references.nil?
       return nil
     end
-    puts ("....................................")
     references.each do |reference|
       if reference.title.nil?
         puts ("***** reference has no title?")
@@ -62,9 +61,13 @@ class Importers::Hol::HolReferenceMatcher < Importers::Hol::BaseUtils
         next
       end
       page_hash = get_page_from_string reference.pagination
-      unless page_in_range page_hash, @hol_start_page, @hol_end_page
-        next
+      unless page_hash.nil?
+        unless page_in_range page_hash, @hol_start_page, @hol_end_page
+          next
+        end
       end
+
+      # Code moved down to get_page_from_string and page_in_range; remove once they're confirmed working
 
       # start_page = nil
       # end_page = nil
@@ -99,7 +102,6 @@ class Importers::Hol::HolReferenceMatcher < Importers::Hol::BaseUtils
     else
       puts "Matched reference:" + hol_string
     end
-    puts ("==============================")
 
     #Rails.logger.debug ("The winner is: " + @candidate_antcat_string)
 

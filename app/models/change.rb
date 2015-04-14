@@ -51,13 +51,21 @@ class Change < ActiveRecord::Base
       end
     end
 
+    # version = PaperTrail::Version.find_by_sql("select * from versions where item_type = 'Taxon'
+    #   and object is not null
+    #   and versions.event <> 'destroy'
+    #   and item_id = '"+user_changed_taxon_id.to_s+"'
+    #   order by id desc").first
+
+
+
     # This change didn't happen to touch taxon. Go ahead and search for the most recent
     # version of this taxon that has object information
-    PaperTrail::Version.find_by_sql("select * from versions where item_type = 'Taxon'
+    version = PaperTrail::Version.find_by_sql("select * from versions where item_type = 'Taxon'
       and object is not null
-      and versions.event <> 'destroy'
       and item_id = '"+user_changed_taxon_id.to_s+"'
       order by id desc").first
+    version
   end
 
   #

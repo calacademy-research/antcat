@@ -97,9 +97,9 @@ class Importers::Hol::BaseUtils
       return @candidate_id
     else
       if @candidate_id.nil?
-        Rails.logger.warn ("No mapping found for: " +@hol_string)
+        Rails.logger.debug ("No mapping found for: " +@hol_string)
       else
-        Rails.logger.warn (@hol_string + " just isn't close enough to "+@candidate_antcat_string+". Discarding.")
+        Rails.logger.debug (@hol_string + " just isn't close enough to "+@candidate_antcat_string+". Discarding.")
       end
       string_map[@hol_string] = nil
 
@@ -134,18 +134,25 @@ class Importers::Hol::BaseUtils
   def get_page_from_string page_string
     start_page = nil
     end_page = nil
-    if match = get_page_from_string.match(/([0-9]+)-([0-9]+)/)
+             joe roman numeral converter here
+    if  match = page_string.match(/([0-9]+)-([0-9]+)/)
       start_page = match[1].to_i
       end_page = match[2].to_i
-    elsif   match = get_page_from_string.match(/(([ivcx]+) \+ )*([0-9]+)/)
-      start_page = match[1].to_i
+    elsif   match = page_string.match(/(([ilvcx]+) \+ )+([0-9]+)/)
+      start_page = match[1]
       end_page = match[2].to_i
+    elsif  match = page_string.match(/([0-9]+)/)
+      start_page = end_page = match[1].to_i
+    elsif  match = page_string.match(/([ilvmcx]+)/)
+      start_page = end_page = match[1]
     end
+
+
     return {start_page: start_page, end_page: end_page}
   end
 
   # is start_page and end_page contained in the page hash?
-  def page_in_range page_hash, internal_start_page,internal_end_page
+  def page_in_range page_hash, internal_start_page, internal_end_page
     start_page = page_hash[:start_page]
     end_page = page_hash[:end_page]
     # the antcat page ranges, ok.
