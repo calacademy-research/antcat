@@ -13,7 +13,7 @@ class Importers::Hol::HolJournalMatcher < Importers::Hol::BaseUtils
     @journal_name_string_map.key(value)
   end
 
-  def get_antcat_journal_id hol_journal_name
+  def get_antcat_journal hol_journal_name
     Rails.logger.level = Logger::INFO
 
 
@@ -28,12 +28,12 @@ class Importers::Hol::HolJournalMatcher < Importers::Hol::BaseUtils
       end
 
       Rails.logger.debug "Hey, we know this one. Here it is: " + mapped_name
-      return Journal.find_by_name(mapped_name).id
+      return Journal.find_by_name(mapped_name)
     end
     if journal.nil?
       return journal_search_matcher hol_journal_name
     end
-    journal.id
+    journal
 
   end
 

@@ -30,34 +30,38 @@ class Importers::Hol::HolReferenceMatcher < Importers::Hol::BaseUtils
     Rails.logger.debug "@references: failed to find journal name in antcat: " +hol_string
     references = reference_search hol_string
     if references.nil?
+    #  puts "No references"
       return nil
     end
     references.each do |reference|
       if reference.title.nil?
-        puts ("***** reference has no title?")
+   #     puts ("***** reference has no title?")
         next
       end
       # Many references lack a journal ID altogether
       # since HOL has one, we might be able to add it if everything else makes sense.
       unless  reference.journal.nil?
         if reference.journal_id != @antcat_journal_id
-          #     puts "\nFailed journal match"
+            #   puts "\nFailed journal match"
           #     dump_reference_info reference
           next
         end
       end
       if reference.reference_author_names.length==0
-        #   puts ("**** no authors to match")
+  #         puts ("**** no authors to match")
 
         next
       end
       if reference.reference_author_names.first.author_name.author_id != @antcat_author_id
-        #   puts ("Failed author match")
+           # puts ("Failed author match: " +
+           #          reference.reference_author_names.first.author_name.name.to_s +
+           #          " " +
+           #          AuthorName.find(@antcat_author_id).name)
         next
       end
 
       if reference.year != @hol_year
-        #   puts ("Failed year match")
+   #       puts ("Failed year match")
         next
       end
       page_hash = get_page_from_string reference.pagination
@@ -67,43 +71,19 @@ class Importers::Hol::HolReferenceMatcher < Importers::Hol::BaseUtils
         end
       end
 
-      # Code moved down to get_page_from_string and page_in_range; remove once they're confirmed working
 
-      # start_page = nil
-      # end_page = nil
-      # if match = reference.pagination.match(/([0-9]+)-([0-9]+)/)
-      #   start_page = match[1].to_i
-      #   end_page = match[2].to_i
-      # elsif   match = reference.pagination.match(/(([ivcx]+) \+ )*([0-9]+)/)
-      #   start_page = match[1].to_i
-      #   end_page = match[2].to_i
-      # end
-      # # If page ranges are present, and the HOL page range is contained within
-      # # the antcat page ranges, ok.
-      # unless @hol_start_page.nil? || start_page.nil?
-      #   if start_page > @hol_start_page
-      #     puts ("Page start range mismatch")
-      #     next
-      #   end
-      # end
-      # unless @hol_end_page.nil? || end_page.nil?
-      #   if end_page < @hol_end_page
-      #     puts ("Page end range mismatch")
-      #     next
-      #   end
-      # end
 
       @cur_string = reference.title
       @cur_id = reference.id
+      @cur = reference
       check_and_swap_reference
     end
-    if @candidate_antcat_string.nil?
-      puts "No matches for this title: " + hol_string
-    else
-      puts "Matched reference:" + hol_string
-    end
+    # if @candidate_antcat_string.nil?
+    #   puts "No matches for this title: " + hol_string
+    # else
+    #   puts "Matched reference:" + hol_string
+    # end
 
-    #Rails.logger.debug ("The winner is: " + @candidate_antcat_string)
 
     filter_result @reference_title_name_string_map
   end

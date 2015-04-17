@@ -31,7 +31,7 @@ class Importers::Hol::HolNameMatcher < Importers::Hol::BaseUtils
     if name.nil?
       return nil
     end
-    name.id
+    name
 
   end
 

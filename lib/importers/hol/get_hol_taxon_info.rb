@@ -43,15 +43,15 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
     if @tnuid_dictionary.nil?
       setup_tnuid_dictionary
     end
-    start_at = 0
+    start_at = 3700
     hol_count = 0
     #for hol_hash in HolDatum.order(:name).where(taxon_id: nil, is_valid: 'Valid')
     #for hol_hash in HolDatum.order(:tnuid).where(is_valid: 'Valid')
     for hol_hash in HolDatum.order(:tnuid)
 
-      #if hol_count > 100000
-      #exit
-      #end
+      # if hol_count > 5
+      #   exit
+      # end
 
       hol_count = hol_count +1
       if (hol_count < start_at)
@@ -94,9 +94,59 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
     end
   end
 
+  def match_protonym name, reference
+    keep = nil
+
+    unless reference.nil? || name.nil?
+      protonyms = Protonym.where(name_id: name.id)
+      #puts "name and reference: " + name.name + " " + reference.id.to_s
+      protonyms.each do |protonym|
+        citation = protonym.authorship
+        unless citation.nil?
+          cit_reference = citation.reference
+          unless reference.nil? || cit_reference.nil?
+            if reference.id == cit_reference.id
+              unless keep.nil?
+                puts "Two or more protonyms match reference: " +
+                         reference.id.to_s +
+                         " protonum 1:" +
+                         keep.id.to_s +
+                         " protonum 2:" +
+                         protonym.id.to_s
+
+                return nil
+
+              end
+              keep = protonym
+            end
+          end
+        end
+      end
+    end
+
+    keep
+
+  end
+
+
   # iterates over the existing json blobs and populates selected columns
-  def expand_json
+  # Links to antcat objects when and where possible. If those antcat columns
+  # are already populated, it does not attempt the link.
+  # "Citation" links take a long time and are currently hardcoded disabled.
+  # We're also not getting any hits on "citation".
+  def link_objects
+    start_at = 18030
+    stop_after = 1000000
+    hol_count = 0
     for hol_details in HolTaxonDatum.order(:tnuid)
+      hol_count = hol_count +1
+      if (hol_count < start_at)
+        next
+      end
+      if hol_count > start_at + stop_after
+        exit
+      end
+      print_char "."
       begin
         details_hash = JSON.parse hol_details.json
       rescue JSON::ParserError
@@ -105,6 +155,7 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
 
       begin
         unless details_hash['rank']=='Species'
+          # puts "not species"
           next
         end
       rescue TypeError => e
@@ -118,11 +169,16 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
         next
       end
 
-      hol_details['antcat_author_id'] = @author_matcher.get_antcat_author_id details_hash
-      if hol_details['antcat_author_id'].nil?
-        print_char 'A'
-      else
-        print_char 'a'
+      if hol_details.antcat_author_id.nil?
+        author = @author_matcher.get_antcat_author_name details_hash
+        unless author.nil?
+          hol_details['antcat_author_id'] = author.author_id
+        end
+        if hol_details['antcat_author_id'].nil?
+          print_char 'A'
+        else
+          print_char 'a'
+        end
       end
 
       hol_details['year'] = get_year details_hash
@@ -134,44 +190,283 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
       hol_details['rel_type'] = get_rel_type details_hash
       hol_details['status'] = get_status details_hash
       hol_details['fossil'] = get_fossil details_hash
+      protonym = nil
+      reference = nil
+
+      #
+      # Journal
+      #
+
+      if hol_details.antcat_journal_id.nil?
+
+        journal = @journal_matcher.get_antcat_journal hol_details['journal_name']
+        unless journal.nil?
+          hol_details['antcat_journal_id'] = journal.id
+        end
+        if hol_details['antcat_journal_id'].nil?
+          print_char 'J'
+        else
+          print_char 'j'
+        end
+      end
+
+      #
+      # reference
+      #
+      if hol_details.antcat_reference_id.nil?
+        reference = @reference_matcher.get_reference hol_details, details_hash, @journal_matcher
+        if reference.nil?
+          print_char 'R'
+        else
+          print_char 'r'
+          hol_details['antcat_reference_id'] = reference.id
+        end
+      end
+
+      #
+      # taxon name
+      #
+      if hol_details.antcat_name_id.nil?
+        name = @name_matcher.get_antcat_name_id hol_details, details_hash
+        if name.nil?
+          print_char 'N'
+        else
+          print_char 'n'
+          hol_details['antcat_name_id'] = name.id
+        end
+      end
 
 
+      #
+      # protonym
+      #
+      if hol_details.antcat_protonym_id.nil? and !hol_details.antcat_reference_id.nil?
+        if reference.nil?
+          reference = Reference.find hol_details.antcat_reference_id
+        end
+        protonym = match_protonym name, reference
+        if protonym.nil?
+          print_char "P"
+        else
+          hol_details['antcat_protonym_id'] = protonym.id
+          print_char "p"
+        end
+      end
 
-      if hol_details['hol_journal_id'].nil?
-        print_char 'J'
-      else
-        print_char 'j'
-      end
-      hol_details['antcat_journal_id'] = @journal_matcher.get_antcat_journal_id hol_details['journal_name']
-      reference = @reference_matcher.get_reference hol_details, details_hash, @journal_matcher
-      if (reference.nil?)
-        print_char 'R'
-      else
-        print_char 'r'
-        hol_details['antcat_reference_id'] = reference
-      end
-      name = @name_matcher.get_antcat_name_id hol_details, details_hash
-      if (name.nil?)
-        print_char 'N'
-      else
-        print_char 'n'
-        hol_details['antcat_name_id'] = name
-      end
-      citation = @citation_matcher.get_antcat_citation_id reference, hol_details, details_hash
-      if(citation.nil?)
-        print_char 'C'
-      else
-        hol_details['antcat_citation_id'] = citation
-        print_char 'c'
-      end
-      # build synonyms?
+      #
+      # Citation
+      #
+      do_citations = false
+      if do_citations and hol_details.antcat_citation_id.nil? and !hol_details.antcat_reference_id.nil?
+        if reference.nil?
+          reference = Reference.find hol_details.antcat_reference_id
+        end
 
+        #
+        # for diagnosis only
+        #
+        diags = false
+        # unless hol_details.antcat_protonym_id.nil?
+        #   diags = true
+        #   if protonym.nil?
+        #     protonym = Protonym.find hol_details.antcat_protonym_id
+        #   end
+        #   puts ("Protonym citation id: "+ protonym.authorship.id.to_s)
+        #
+        # end
+
+        #
+        # End diagnosis
+        #
+
+        citation = @citation_matcher.get_antcat_citation_id reference, hol_details, details_hash, diags
+        if citation.nil?
+          print_char 'C'
+        else
+          hol_details['antcat_citation_id'] = citation.id
+          print_char 'c'
+        end
+
+
+      end
+
+      #
+      # Taxon
+      #
+      taxon = nil
+      if hol_details.antcat_taxon_id.nil? and !hol_details.antcat_protonym_id.nil?
+        if protonym.nil?
+          protonym = Protonym.find hol_details.antcat_protonym_id
+        end
+        unless protonym.nil?
+          #puts ("Protonym citation id: "+ protonym.authorship.id.to_s)
+          taxa = Taxon.where(protonym_id: protonym.id, name_id: name)
+          if taxa.length == 1
+            taxon = taxa[0]
+            hol_details['antcat_taxon_id'] = taxon.id
+            print_char 't'
+          else
+            if (taxa.length > 1)
+              puts "No matching protonyms. Count: " + taxa.length.to_s
+            end
+            print_char 'T'
+          end
+        end
+      end
 
       hol_details.save!
 
+    end
+  end
+
+  def create_objects
+    start_at = 2005
+    stop_after = 2000
+    hol_count = 0
+    for hol_details in HolTaxonDatum.order(:tnuid)
+      hol_count = hol_count +1
+      if (hol_count < start_at)
+        next
+      end
+      if hol_count > start_at + stop_after
+        exit
+      end
+      print_char "."
+      if hol_details.antcat_name_id.nil?
+
+        print_char "*"
+        create_new_name hol_details
+      end
 
     end
   end
+
+
+  # TODO:  author/year for honomyms. Check to see if we can create more reference (citation?) matches
+  # by doing author/year
+
+  #   Camponotus semicarinatus => Camponotus (Colobopsis) semicarinata status: Subsequent name/combination
+  # genus (subgenus) species
+
+
+  # we have 15911 objects with no name match but a reference, author, and journal match).
+  #
+  #     In this case, I will search all the synonyms and their statuses to see if we can
+  # find any synonym with a valid antcat name. The very first pass will be to identify a HOL
+  # synonym that is a valid antcat taxon that matches a taxon that HOL also thinks is valid.
+  #  Create the taxa with the new name, mark it with a status that maps nicely to an antcat status,
+  #   create a citation (I’ll search just in case we get lucky and get a match,
+  # but I really have gotten zero..) and create the protonym.
+  #
+  # Prerequesite: Name is nil.
+  def create_new_name hol_details
+    puts
+    tnuid = hol_details.tnuid
+    hol_data = HolDatum.find_by_tnuid tnuid
+    unless name_valid? hol_data.name
+      return
+    end
+
+    puts "#{hol_data.name}  status: #{hol_details.status} valid: #{hol_data.is_valid} rel_type: #{hol_details.rel_type}"
+    for hol_synonym in HolSynonym.where(tnuid: tnuid)
+
+      hol_details_synonym = HolTaxonDatum.find_by_tnuid hol_synonym.synonym_id
+
+      unless hol_details_synonym.nil?
+        synonym_tnuid = hol_details_synonym.tnuid
+        hol_data_synonym = HolDatum.find_by_tnuid synonym_tnuid
+        unless name_valid? hol_data_synonym.name
+          next
+        end
+        puts "  #{hol_data.name} => #{hol_data_synonym.name} status: #{hol_details_synonym.status} valid: #{hol_data_synonym.is_valid} taxon_id: #{hol_details_synonym.antcat_taxon_id} rel_type: #{hol_details_synonym.rel_type}"
+      end
+    end
+
+
+  end
+
+  # these taxon names aren't using standard nomenclature, so they're not interesting to us.
+  # the real thing to do here - keep all these,
+  def name_valid? name
+    invalid_array = [" var. ",  # "var." notation - alternate spelling?
+                     " r. ",
+                     " subsp. ",
+                     " (",
+                     " )",
+                     " st. "
+    ]
+
+    invalid_array.each do |invalid_string|
+      if name.include? invalid_string
+        return false
+      end
+    end
+    return true
+
+  end
+
+
+  # If we have found no name that matches this one,
+  # then iterate over the hol_synonyms for this taxon.
+  # for each tnuid in the synonym list, "expand" its record
+  # (find the base objects), if it hasn't been done already
+  #
+  # Determine what this name is. Options:
+  #  New valid combination that obsoletes an existing taxon
+  #  A synonym for an existing valid taxon
+  #   Create taxon entry
+  #    Create
+  #   Create protonym
+  #   Create reference (if needed)
+  #   Create antcat synonym information
+  #  A valid combination of a previously non-existent taxon
+  #   All new stuff, no synonym entries necessary.
+
+
+  # def create_new_name hol_details, details_hash, taxon, reference, name, citation, protonym
+  #   # Iterate over all the hol_synonyms. If we get a hit with an existing antcat-linked taxon,
+  #   # then it's a synonym of said item. Create linkages.
+  #
+  #   # If we find no antcat linked taxa in the hol_synonyms, then we create this item (and its synonyms!)
+  #   # from scratch. Use what we have from above.
+  # end
+
+  # hol status:
+  # "Original name/combination"
+  # "Subsequent name/combination"
+  # "Justified emendation"
+  # "Replacement name"
+  # "Unavailable, literature misspelling"
+  # "Junior homonym"
+  # "Susequent name/combination"
+  # "Subseqent name/combination"
+  # "Unavailable, suppressed by ruling"
+  # "Homonym & junior synonym"
+  # "Unnecessary replacement name"
+  # "Unavailable, incorrect original spelling"
+  # Emendation
+  # "Unjustified emendation"
+  # "Common name"
+  # "Unavailable, other"
+  # "Unavailable, nomen nudum"
+  # Misidentification
+
+  # antcat status:
+  # valid
+  # unidentifiable
+  # "excluded from Formicidae"
+  # homonym
+  # unavailable
+  # synonym
+  # "collective group name"
+  # "obsolete combination"
+  # "original combination"
+
+  # hol "rel_type"
+  # Member
+  # Synonym
+  # "Nomen nudum"
+  # "Junior synonym"
 
 
   def get_hol_journal_id details_hash
@@ -213,7 +508,7 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
 
 
   def get_status details_hash
-      extract details_hash, ['status']
+    extract details_hash, ['status']
   end
 
   def get_rank details_hash

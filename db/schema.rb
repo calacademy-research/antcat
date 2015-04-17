@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150410175344) do
+ActiveRecord::Schema.define(version: 20150416212731) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -161,7 +161,7 @@ ActiveRecord::Schema.define(version: 20150410175344) do
     t.string  "rank",      limit: 255
     t.string  "year",      limit: 255
     t.string  "month",     limit: 255
-    t.string  "comments",  limit: 255
+    t.text    "comments",  limit: 65535, null: false
     t.string  "full_pdf",  limit: 255
     t.string  "pages",     limit: 255
     t.string  "public",    limit: 255
@@ -194,7 +194,10 @@ ActiveRecord::Schema.define(version: 20150410175344) do
     t.string  "rel_type",            limit: 255
     t.boolean "fossil",              limit: 1
     t.string  "status",              limit: 255
+    t.integer "antcat_taxon_id",     limit: 4
   end
+
+  add_index "hol_taxon_data", ["tnuid"], name: "hol_taxon_data_tnuid_idx", using: :btree
 
   create_table "journals", force: :cascade do |t|
     t.string   "name",           limit: 255

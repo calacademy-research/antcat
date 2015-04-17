@@ -9,20 +9,7 @@ class Importers::Hol::HolAuthorMatcher < Importers::Hol::BaseUtils
 
     # Map from hol name to antcat name
     @author_last_name_string_map={'Jaegerskioeld' => 'Jägerskiöld'}
-    # @author_full_name_string_map={'Brown, W. L.' => 'Brown, W. L., Jr.',
-    #                               'McAreavey, J. J.' => 'McAreavey, J.',
-    #                               'Peng, J.-W.' => 'Peng, J.',
-    #                               'Watkins, J. F.' => 'Watkins, J. F., II',
-    #                               'Ihering, H. von' => 'Ihering, H.',
-    #                               'Cole, A. C.' => 'Cole, A. C., Jr.',
-    #                               'Olivier, A.-G.' => 'Olivier, A. G.',
-    #                               'Förster, A.' => 'Forster, J. A.',
-    #                               'Tarbinsky, Yu. S.' => 'Tarbinsky, Y. S.',
-    #                               'Motschoulsky, V. de.' => 'Motschoulsky, V. de',
-    #                               'Almeida, A. J.' => 'Almeida Filho, A. J. de',
-    #                               '' => '',
-    #                               '' => '',
-    #                               '' => ''}
+
 
     @author_last_name_string_map={'Jaegerskioeld' => 'Jägerskiöld'}
     @author_full_name_string_map={
@@ -35,7 +22,7 @@ class Importers::Hol::HolAuthorMatcher < Importers::Hol::BaseUtils
   # Tries to match against a string literal in the database, then the string map,
 
   #
-  def get_antcat_author_id details_hash
+  def get_antcat_author_name details_hash
     Rails.logger.level = Logger::INFO
 
     last_name = extract details_hash, ["orig_desc", "author_extended", 0, "last_name"]
@@ -73,7 +60,7 @@ class Importers::Hol::HolAuthorMatcher < Importers::Hol::BaseUtils
       return author_search_matcher full_name
     end
     #print_char "a"
-    author_name.author_id
+    author_name
   end
 
   def find_author name
@@ -96,6 +83,7 @@ class Importers::Hol::HolAuthorMatcher < Importers::Hol::BaseUtils
         cur_author_name = reference_author
         @cur_string = cur_author_name.name
         @cur_id = reference_author.author_id
+        @cur = reference_author
         check_and_swap_reference
       end
     end

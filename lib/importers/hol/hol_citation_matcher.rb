@@ -9,7 +9,7 @@ class Importers::Hol::HolCitationMatcher < Importers::Hol::BaseUtils
   # Hol details is model we're populating.
   # precondition: we're identified the reference
   #
-  def get_antcat_citation_id reference, hol_details, details_hash
+  def get_antcat_citation_id reference, hol_details, details_hash, diags = false
     Rails.logger.level = Logger::INFO
 
     if reference.nil?
@@ -27,12 +27,41 @@ class Importers::Hol::HolCitationMatcher < Importers::Hol::BaseUtils
       end
       page_hash = get_page_from_string pages
       if page_in_range page_hash, hol_start_page, hol_end_page
-        unless citation.nil?
-          puts "We have multiple matching citations!"
+        if citation.nil?
+          citation = cur_citation
+        else
+          #
+          # No ambiguity tolerated at this point.
+          #
+          puts "\nWe have multiple matching citations:" +
+                   cur_citation.pages +
+                   " and " + citation.pages + " id:" +
+                   cur_citation.id.to_s + " & " +
+                   citation.id.to_s
+          return nil
         end
-        citation = cur_citation
+
       else
-        puts "Page out of range for this citation"
+        if diags
+          print "  Page out of range for this citation - cur citation pages: " +
+                    pages +
+                    " " +
+                    "which hash as:"
+
+          if page_hash.nil?
+            print "nil"
+          else
+            print page_hash[:start_page].to_s +
+                      "-" +
+                      page_hash[:end_page].to_s
+          end
+          puts " compared to: " +
+                   hol_start_page.to_s +
+                   "-" +
+                   hol_end_page.to_s +
+                   " citation id: " +
+                   cur_citation.id.to_s
+        end
         next
       end
 

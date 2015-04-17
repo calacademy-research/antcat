@@ -7,10 +7,25 @@ class Importers::Hol::BaseUtils
 # and does puts on exceptions
   def initialize
     @candidate_id = nil
+    @candidate = nil
     @candidate_antcat_string = nil
     @candidate_distance = 0
     @jarow = FuzzyStringMatch::JaroWinkler.create(:pure)
-
+    @roman_data = [
+        ["M", 1000],
+        ["CM", 900],
+        ["D", 500],
+        ["CD", 400],
+        ["C", 100],
+        ["XC", 90],
+        ["L", 50],
+        ["XL", 40],
+        ["X", 10],
+        ["IX", 9],
+        ["V", 5],
+        ["IV", 4],
+        ["I", 1]
+    ]
   end
 
   def extract hash, hash_key_array
@@ -57,6 +72,7 @@ class Importers::Hol::BaseUtils
 
   def clear_candidate
     @candidate_id = nil
+    @candidate = nil
     @candidate_antcat_string = nil
     @candidate_distance = 0
   end
@@ -65,6 +81,7 @@ class Importers::Hol::BaseUtils
   def check_and_swap_reference
     if @candidate_id.nil?
       @candidate_id = @cur_id
+      @candidate = @cur
       @candidate_antcat_string = @cur_string
       @candidate_distance = @jarow.getDistance(@candidate_antcat_string, @hol_string)
       Rails.logger.debug " first example:" + @cur_string+ " " + @candidate_distance.to_s
@@ -81,6 +98,7 @@ class Importers::Hol::BaseUtils
   def swap_if_better new_distance
     if new_distance > @candidate_distance
       @candidate_id = @cur_id
+      @candidate = @cur
       @candidate_antcat_string = @cur_string
       @candidate_distance = new_distance
       Rails.logger.debug " I like this better: " + @candidate_antcat_string+ " " + new_distance.to_s
@@ -94,7 +112,7 @@ class Importers::Hol::BaseUtils
     if @candidate_distance > 0.75
       Rails.logger.debug ("The winner is: " + @candidate_antcat_string)
       string_map[@hol_string] = @candidate_antcat_string
-      return @candidate_id
+      return @candidate
     else
       if @candidate_id.nil?
         Rails.logger.debug ("No mapping found for: " +@hol_string)
@@ -119,7 +137,6 @@ class Importers::Hol::BaseUtils
     references
   end
 
-
   def string_search search_string
     # This is not too useful; it only returns on perfect matches.
     # params={filter: :no_missing_references,
@@ -128,24 +145,47 @@ class Importers::Hol::BaseUtils
     params={filter: :no_missing_references,
             fulltext: search_string}
     Reference.perform_search params
-
   end
+
+
+  def roman_to_i rom
+    rom.upcase!
+    total = 0
+    for key, value in @roman_data
+      while !rom.index(key).nil?
+        total += value
+        rom.slice!(key)
+      end
+    end
+    total
+  end
+
 
   def get_page_from_string page_string
     start_page = nil
     end_page = nil
-             joe roman numeral converter here
-    if  match = page_string.match(/([0-9]+)-([0-9]+)/)
+    #"111, figs. 149-154"
+    # matched 149-154
+    if page_string.nil?
+      return nil
+    end
+    if  match = page_string.match(/^([0-9]+)-([0-9]+)/)
       start_page = match[1].to_i
       end_page = match[2].to_i
-    elsif   match = page_string.match(/(([ilvcx]+) \+ )+([0-9]+)/)
+    elsif   match = page_string.match(/(([ilvdmcx]+) \+ )+([0-9]+)/)
       start_page = match[1]
+      start_page = roman_to_i start_page
       end_page = match[2].to_i
-    elsif  match = page_string.match(/([0-9]+)/)
+    elsif  match = page_string.match(/^([0-9]+)/)
       start_page = end_page = match[1].to_i
-    elsif  match = page_string.match(/([ilvmcx]+)/)
-      start_page = end_page = match[1]
+    elsif  match = page_string.match(/([ilvdmcx]+)/)
+      page_num = roman_to_i match[1]
+
+      start_page = end_page = page_num
+    else
+      return nil
     end
+
 
 
     return {start_page: start_page, end_page: end_page}
@@ -153,18 +193,33 @@ class Importers::Hol::BaseUtils
 
   # is start_page and end_page contained in the page hash?
   def page_in_range page_hash, internal_start_page, internal_end_page
+    if page_hash.nil?
+      return nil
+    end
     start_page = page_hash[:start_page]
     end_page = page_hash[:end_page]
     # the antcat page ranges, ok.
     unless internal_start_page.nil? || start_page.nil?
       if start_page > internal_start_page
-        puts ("Page start range mismatch")
+        # puts ("Page start range mismatch. Existing range: " +
+        #          start_page.to_s +
+        #          "-" +
+        #          end_page.to_s +
+        #          "  This range: " +
+        #          internal_start_page.to_s +
+        #          "-" + internal_end_page.to_s)
         return false
       end
     end
     unless internal_end_page.nil? || end_page.nil?
       if end_page < internal_end_page
-        puts ("Page end range mismatch")
+        # puts ("Page end range mismatch Existing range: " +
+        #          start_page.to_s +
+        #          "-" +
+        #          end_page.to_s +
+        #          "  This range: " +
+        #          internal_start_page.to_s +
+        #          "-" + internal_end_page.to_s)
         return false
       end
     end

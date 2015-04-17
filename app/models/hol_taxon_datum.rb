@@ -1,5 +1,6 @@
 # coding: UTF-8
 class HolTaxonDatum < ActiveRecord::Base
+
   attr_accessible :tnuid,
                   :json,
                   :author_last_name,
@@ -15,6 +16,7 @@ class HolTaxonDatum < ActiveRecord::Base
                   :antcat_citation_id,
                   :antcat_name_id,
                   :antcat_reference_id,
+                  :antcat_taxon_id,
                   :rank,
                   :rel_type,
                   :fossil,
