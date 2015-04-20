@@ -10,18 +10,25 @@ class ReferenceDocument < ActiveRecord::Base
                     s3_protocol: 'http'
   has_paper_trail meta: {change_id: :get_current_change_id}
 
+
+  do_not_validate_attachment_file_type :pdf
+
   before_validation :add_protocol_to_url
   belongs_to :reference
   validate :check_url
   before_post_process :transliterate_file_name
 
-  attr_accessible :url, :file_file_name, :public
+  attr_accessible :url, :file_file_name, :public, :file
   def transliterate_file_name
     extension = File.extname(file_file_name).gsub(/^\.+/, '')
     filename = file_file_name.gsub(/\.#{extension}$/, '')
     file.instance_write(:file_name, "#{ActiveSupport::Inflector.parameterize(filename)}.#{ActiveSupport::Inflector.parameterize(extension)}")
   end
 
+
+  def pdf
+    true
+  end
   def host= host
     return unless hosted_by_us?
     update_attribute :url, "http://#{host}/documents/#{id}/#{file_file_name}"

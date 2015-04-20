@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416212731) do
+ActiveRecord::Schema.define(version: 20150417174520) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -195,6 +195,9 @@ ActiveRecord::Schema.define(version: 20150416212731) do
     t.boolean "fossil",              limit: 1
     t.string  "status",              limit: 255
     t.integer "antcat_taxon_id",     limit: 4
+    t.integer "valid_tnuid",         limit: 4
+    t.string  "name",                limit: 255
+    t.string  "is_valid",            limit: 255
   end
 
   add_index "hol_taxon_data", ["tnuid"], name: "hol_taxon_data_tnuid_idx", using: :btree

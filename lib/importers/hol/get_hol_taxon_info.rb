@@ -135,7 +135,7 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
   # "Citation" links take a long time and are currently hardcoded disabled.
   # We're also not getting any hits on "citation".
   def link_objects
-    start_at = 18030
+    start_at = 0
     stop_after = 1000000
     hol_count = 0
     for hol_details in HolTaxonDatum.order(:tnuid)
@@ -162,12 +162,31 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
         puts "Failed to parse record " + hol_details.tnuid.to_s + " json: " + hol_details.json
       end
 
+
       family = get_family details_hash
+
       if family != "Formicidae"
         puts ("****** Deleting from family: " + family.to_s + " tnuid:" + hol_details.tnuid.to_s)
         #delete_hol hol_details.tnuid
         next
       end
+
+      hol_details['year'] = get_year details_hash
+      hol_details['start_page'] = get_start_page details_hash
+      hol_details['end_page'] = get_end_page details_hash
+      hol_details['journal_name'] = get_journal_name details_hash
+      hol_details['hol_journal_id'] = get_hol_journal_id details_hash
+      hol_details['rank'] = get_rank details_hash
+      hol_details['rel_type'] = get_rel_type details_hash
+      hol_details['status'] = get_status details_hash
+      hol_details['fossil'] = get_fossil details_hash
+      hol_details['valid_tnuid'] = get_valid_tnuid details_hash
+      hol_details['name'] = get_name details_hash
+      hol_details['is_valid'] = get_valid details_hash
+      hol_details.save
+
+      next
+
 
       if hol_details.antcat_author_id.nil?
         author = @author_matcher.get_antcat_author_name details_hash
@@ -181,15 +200,7 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
         end
       end
 
-      hol_details['year'] = get_year details_hash
-      hol_details['start_page'] = get_start_page details_hash
-      hol_details['end_page'] = get_end_page details_hash
-      hol_details['journal_name'] = get_journal_name details_hash
-      hol_details['hol_journal_id'] = get_hol_journal_id details_hash
-      hol_details['rank'] = get_rank details_hash
-      hol_details['rel_type'] = get_rel_type details_hash
-      hol_details['status'] = get_status details_hash
-      hol_details['fossil'] = get_fossil details_hash
+
       protonym = nil
       reference = nil
 
@@ -359,36 +370,107 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
   # but I really have gotten zero..) and create the protonym.
   #
   # Prerequesite: Name is nil.
-  def create_new_name hol_details
+  def create_new_name hol_taxon
     puts
-    tnuid = hol_details.tnuid
-    hol_data = HolDatum.find_by_tnuid tnuid
-    unless name_valid? hol_data.name
-      return
-    end
+    tnuid = hol_taxon.tnuid
+    # unless name_valid? hol_data.name
+    #   return
+    # end
 
-    puts "#{hol_data.name}  status: #{hol_details.status} valid: #{hol_data.is_valid} rel_type: #{hol_details.rel_type}"
-    for hol_synonym in HolSynonym.where(tnuid: tnuid)
 
-      hol_details_synonym = HolTaxonDatum.find_by_tnuid hol_synonym.synonym_id
+    puts "#{hol_taxon.name}  status: #{hol_taxon.status} valid: #{hol_taxon.is_valid} rel_type: #{hol_taxon.rel_type} tnuid: '#{hol_taxon.tnuid}'"
 
-      unless hol_details_synonym.nil?
-        synonym_tnuid = hol_details_synonym.tnuid
-        hol_data_synonym = HolDatum.find_by_tnuid synonym_tnuid
-        unless name_valid? hol_data_synonym.name
-          next
-        end
-        puts "  #{hol_data.name} => #{hol_data_synonym.name} status: #{hol_details_synonym.status} valid: #{hol_data_synonym.is_valid} taxon_id: #{hol_details_synonym.antcat_taxon_id} rel_type: #{hol_details_synonym.rel_type}"
+    valid_hol_taxon = nil
+    if (hol_taxon.is_valid.nil? or hol_taxon.is_valid.downcase != "valid")
+      valid_hol_taxon_tnuid = hol_taxon.valid_tnuid
+      if valid_hol_taxon_tnuid.nil?
+        puts "valid tnuid entry missing"
+      else
+        valid_hol_taxon = HolTaxonDatum.find_by_tnuid valid_hol_taxon_tnuid
+
+        puts "  VALID hol taxon: '#{valid_hol_taxon.name}'  status: '#{valid_hol_taxon.status}' "+
+                 " valid: '#{valid_hol_taxon.is_valid}' rel_type: '#{valid_hol_taxon.rel_type}' "+
+                 "antcat_taxon_id: '#{valid_hol_taxon.antcat_taxon_id}' tnuid: '#{valid_hol_taxon.tnuid}'"
       end
     end
 
+    if valid_hol_taxon.antcat_taxon_id.nil?
+      valid_hol_taxon.antcat_taxon_id = find_antcat_taxon valid_hol_taxon
+    end
 
+
+    for hol_synonym in HolSynonym.where(tnuid: tnuid)
+
+      hol_taxon_synonym = HolTaxonDatum.find_by_tnuid hol_synonym.synonym_id
+
+      unless hol_taxon_synonym.nil?
+        synonym_tnuid = hol_taxon_synonym.tnuid
+        # unless name_valid? hol_taxon_synonym.name
+        #   next
+        # end
+        puts "  #{hol_taxon.name} => '#{hol_taxon_synonym.name}' status: '#{hol_taxon_synonym.status}' "+
+                 "valid: '#{hol_taxon_synonym.is_valid}' taxon_id: #{hol_taxon_synonym.antcat_taxon_id}"+
+                 " rel_type: '#{hol_taxon_synonym.rel_type}'  tnuid: '#{hol_taxon_synonym.tnuid}'"
+      end
+    end
   end
 
-  # these taxon names aren't using standard nomenclature, so they're not interesting to us.
-  # the real thing to do here - keep all these,
+  # Takes an hol taxon and does any hierustics to match up with an antcat taxon
+  # This is assuming we don't get a perfect across the board match from earlier work.
+
+  # Start with a name search - if we can't match a name, then check if it's something very new?
+  # If it's 2014 or later, create everything.
+
+  # if we can match a name, check year and author name. If those match, check page numbers. If all of those match, we're golden
+
+  def find_antcat_taxon valid_hol_taxon
+    if valid_hol_taxon.antcat_name_id.nil?
+      if valid_hol_taxon.year >= 2014
+        puts "Hey, this might be new! I can't find the name, and it's 2014 or later!"
+      end
+    else
+      #
+      # We have a name, what's missing?
+      #
+      unless valid_hol_taxon.antcat_protonym_id.nil?
+        puts "What the hell - we have a protonym and we can't figure this out?"
+      end
+      if valid_hol_taxon.antcat_journal_id.nil?
+        # Aha, journal is missing. Let's patch that up.
+        candidate_taxa = Taxon.where(name_id: valid_hol_taxon.antcat_name_id)
+        candidate_taxa.each do |taxon|
+          antcat_protonym = taxon.protonym
+          citation = antcat_protonym.authorship
+          reference = citation.reference
+          score = 0
+          booshite
+          if reference.reference_author_names.first.author_name_id == valid_hol_taxon.antcat_author_id
+            puts "Author match"
+            score += 1
+          end
+          if reference.year == valid_hol_taxon.year
+            puts "year match"
+            score += 1
+          end
+
+          hol_start_page = valid_hol_taxon['start_page']
+          hol_end_page = valid_hol_taxon['end_page']
+          page_hash = get_page_from_string reference.pagination
+          unless page_hash.nil?
+            if page_in_range page_hash, hol_start_page, hol_end_page
+              puts "page range match"
+              score += 1
+            end
+          end
+        end
+      end
+    end
+  end
+
+
+  # Identifies obsolete nomenclature
   def name_valid? name
-    invalid_array = [" var. ",  # "var." notation - alternate spelling?
+    invalid_array = [" var. ", # "var." notation - alternate spelling?
                      " r. ",
                      " subsp. ",
                      " (",
@@ -526,6 +608,19 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
       fossil = ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(fossil)
     end
     fossil
+  end
+
+  def get_valid_tnuid details_hash
+    extract details_hash, ['valid_taxon', 'tnuid']
+
+  end
+
+  def get_name details_hash
+    extract details_hash, ['name']
+  end
+
+  def get_valid details_hash
+    extract details_hash, ['valid']
   end
 
 

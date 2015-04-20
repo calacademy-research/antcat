@@ -20,6 +20,9 @@ class HolTaxonDatum < ActiveRecord::Base
                   :rank,
                   :rel_type,
                   :fossil,
-                  :status
+                  :status,
+                  :valid_tnuid,
+                  :name,
+                  :is_valid
 
 end
