@@ -131,6 +131,10 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       label = 'an obsolete combination of '
       label << format_valid_combination(taxon)
       labels << label
+    elsif taxon.unavailable_misspelling?
+      label = 'a literature misspelling of '
+      label << format_valid_combination(taxon)
+      labels << label
     elsif taxon.invalid?
       label = Status[taxon].to_s.dup
       labels << label

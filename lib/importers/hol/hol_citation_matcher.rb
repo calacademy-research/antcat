@@ -26,7 +26,9 @@ class Importers::Hol::HolCitationMatcher < Importers::Hol::BaseUtils
         next
       end
       page_hash = get_page_from_string pages
-      if page_in_range page_hash, hol_start_page, hol_end_page
+      start_page = page_hash[:start_page]
+      end_page = page_hash[:end_page]
+      if page_in_range  hol_start_page, hol_end_page, start_page,end_page
         if citation.nil?
           citation = cur_citation
         else

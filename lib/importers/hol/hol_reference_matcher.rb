@@ -54,7 +54,7 @@ class Importers::Hol::HolReferenceMatcher < Importers::Hol::BaseUtils
       end
       if reference.reference_author_names.first.author_name.author_id != @antcat_author_id
            # puts ("Failed author match: " +
-           #          reference.reference_author_names.first.author_name.name.to_s +
+           #          reference.reference_author_names.first.author_name.name.to_s +˜                                       ˜
            #          " " +
            #          AuthorName.find(@antcat_author_id).name)
         next
@@ -65,8 +65,10 @@ class Importers::Hol::HolReferenceMatcher < Importers::Hol::BaseUtils
         next
       end
       page_hash = get_page_from_string reference.pagination
+      start_page = page_hash[:start_page]
+      end_page = page_hash[:end_page]
       unless page_hash.nil?
-        unless page_in_range page_hash, @hol_start_page, @hol_end_page
+        unless page_in_range  @hol_start_page, @hol_end_page,  start_page,end_page
           next
         end
       end

@@ -43,4 +43,9 @@ namespace :hol do
     Importers::Hol::GetHolTaxonInfo.new.create_objects
   end
 
+  desc "Fuzzy match taxon ids"
+  task fuzzy_match_taxa: :environment do
+    Importers::Hol::GetHolTaxonInfo.new.fuzzy_match_taxa
+  end
+
 end

@@ -11,21 +11,7 @@ class Importers::Hol::BaseUtils
     @candidate_antcat_string = nil
     @candidate_distance = 0
     @jarow = FuzzyStringMatch::JaroWinkler.create(:pure)
-    @roman_data = [
-        ["M", 1000],
-        ["CM", 900],
-        ["D", 500],
-        ["CD", 400],
-        ["C", 100],
-        ["XC", 90],
-        ["L", 50],
-        ["XL", 40],
-        ["X", 10],
-        ["IX", 9],
-        ["V", 5],
-        ["IV", 4],
-        ["I", 1]
-    ]
+
   end
 
   def extract hash, hash_key_array
@@ -149,9 +135,26 @@ class Importers::Hol::BaseUtils
 
 
   def roman_to_i rom
+
+    roman_data = [
+        ["M", 1000],
+        ["CM", 900],
+        ["D", 500],
+        ["CD", 400],
+        ["C", 100],
+        ["XC", 90],
+        ["L", 50],
+        ["XL", 40],
+        ["X", 10],
+        ["IX", 9],
+        ["V", 5],
+        ["IV", 4],
+        ["I", 1]
+    ]
+
     rom.upcase!
     total = 0
-    for key, value in @roman_data
+    for key, value in roman_data
       while !rom.index(key).nil?
         total += value
         rom.slice!(key)
@@ -191,32 +194,32 @@ class Importers::Hol::BaseUtils
     return {start_page: start_page, end_page: end_page}
   end
 
+
+
   # is start_page and end_page contained in the page hash?
-  def page_in_range page_hash, internal_start_page, internal_end_page
-    if page_hash.nil?
-      return nil
-    end
-    start_page = page_hash[:start_page]
-    end_page = page_hash[:end_page]
+  def page_in_range external_start_page, external_end_page, internal_start_page, internal_end_page
+
+    # start_page = page_hash[:start_page]
+    # end_page = page_hash[:end_page]
     # the antcat page ranges, ok.
-    unless internal_start_page.nil? || start_page.nil?
-      if start_page > internal_start_page
+    unless external_start_page.nil? || internal_start_page.nil?
+      if external_start_page > internal_start_page
         # puts ("Page start range mismatch. Existing range: " +
-        #          start_page.to_s +
+        #          internal_start_page.to_s +
         #          "-" +
-        #          end_page.to_s +
+        #          external_end_page.to_s +
         #          "  This range: " +
         #          internal_start_page.to_s +
         #          "-" + internal_end_page.to_s)
         return false
       end
     end
-    unless internal_end_page.nil? || end_page.nil?
-      if end_page < internal_end_page
+    unless internal_end_page.nil? || external_end_page.nil?
+      if external_end_page < internal_end_page
         # puts ("Page end range mismatch Existing range: " +
-        #          start_page.to_s +
+        #          internal_start_page.to_s +
         #          "-" +
-        #          end_page.to_s +
+        #          external_end_page.to_s +
         #          "  This range: " +
         #          internal_start_page.to_s +
         #          "-" + internal_end_page.to_s)
@@ -225,5 +228,39 @@ class Importers::Hol::BaseUtils
     end
     true
   end
+
+  def create_citation_from_hol reference, hol_taxon
+
+  end
+
+  def create_reference_from_hol author, journal, hol_taxon
+
+  end
+
+  def create_journal_from_hol hol_taxon
+
+  end
+
+  def create_author_from_hol hol_taxon
+
+  end
+
+  def create_taxon_from_hol protonym, hol_taxon
+
+  end
+
+  def hol_string valid_hol_taxon
+     "'#{valid_hol_taxon.name}'  status: '#{valid_hol_taxon.status}' "+
+             " valid: '#{valid_hol_taxon.is_valid}' rel_type: '#{valid_hol_taxon.rel_type}' "+
+             "antcat_taxon_id: '#{valid_hol_taxon.antcat_taxon_id}' tnuid: '#{valid_hol_taxon.tnuid}'"
+  end
+
+
+  # pass in antcat reference, name, author, journal
+  def create_protonym_from_hol reference, name, author, journal, hol_taxon
+
+  end
+
+
 
 end

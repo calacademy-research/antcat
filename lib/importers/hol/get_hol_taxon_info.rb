@@ -16,6 +16,7 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
 
 
   def initialize
+
     @print_char=0
     @journal_matcher = HolJournalMatcher.new
     @author_matcher = HolAuthorMatcher.new
@@ -43,7 +44,7 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
     if @tnuid_dictionary.nil?
       setup_tnuid_dictionary
     end
-    start_at = 3700
+    start_at = 0
     hol_count = 0
     #for hol_hash in HolDatum.order(:name).where(taxon_id: nil, is_valid: 'Valid')
     #for hol_hash in HolDatum.order(:tnuid).where(is_valid: 'Valid')
@@ -154,8 +155,9 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
       end
 
       begin
-        unless details_hash['rank']=='Species'
-          # puts "not species"
+        unless details_hash['rank'].downcase=='species'
+          # puts "not species"    (in hol, there is no 'subspecies')
+
           next
         end
       rescue TypeError => e
@@ -302,7 +304,8 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
       end
 
       #
-      # Taxon
+      # Taxon - this only works if we have a protonym, which requires a reference.
+      #  in other words, >everything< matches.
       #
       taxon = nil
       if hol_details.antcat_taxon_id.nil? and !hol_details.antcat_protonym_id.nil?
@@ -330,11 +333,57 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
     end
   end
 
+  #
+  # Meant to be run after initial import; this step will match as many bits as it can
+  # to associate a hol taxa with an antcat taxa.
+  #
+  def fuzzy_match_taxa
+    start_at = 4316
+    stop_after = 200000000
+    hol_count = 0
+    for hol_taxon in HolTaxonDatum.order(:tnuid)
+      if hol_count % 200 == 0
+        print_string(" #{hol_count.to_s} ")
+      end
+      hol_count = hol_count +1
+      if (hol_count < start_at)
+        next
+      end
+      if hol_count > start_at + stop_after
+        exit
+      end
+      unless hol_taxon['rank']=='Species'
+        next
+      end
+      if hol_taxon.antcat_taxon_id.nil?
+
+        hol_taxon.antcat_taxon_id = match_antcat_taxon hol_taxon
+        if hol_taxon.antcat_taxon_id.nil?
+          print_char "V"
+        else
+          print_char "v"
+          hol_taxon.save
+          next
+        end
+      else
+        print_char "."
+      end
+
+
+    end
+
+
+  end
+
+
   def create_objects
     start_at = 2005
-    stop_after = 2000
+    stop_after = 1
     hol_count = 0
     for hol_details in HolTaxonDatum.order(:tnuid)
+      if hol_count % 20 == 0
+        print_string(" #{hol_count.to_s} ")
+      end
       hol_count = hol_count +1
       if (hol_count < start_at)
         next
@@ -343,24 +392,12 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
         exit
       end
       print_char "."
-      if hol_details.antcat_name_id.nil?
-
-        print_char "*"
-        create_new_name hol_details
-      end
+      create_objects_from_hol_taxon hol_details
 
     end
   end
 
 
-  # TODO:  author/year for honomyms. Check to see if we can create more reference (citation?) matches
-  # by doing author/year
-
-  #   Camponotus semicarinatus => Camponotus (Colobopsis) semicarinata status: Subsequent name/combination
-  # genus (subgenus) species
-
-
-  # we have 15911 objects with no name match but a reference, author, and journal match).
   #
   #     In this case, I will search all the synonyms and their statuses to see if we can
   # find any synonym with a valid antcat name. The very first pass will be to identify a HOL
@@ -369,51 +406,270 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
   #   create a citation (I’ll search just in case we get lucky and get a match,
   # but I really have gotten zero..) and create the protonym.
   #
-  # Prerequesite: Name is nil.
-  def create_new_name hol_taxon
+  #
+  #
+  #
+  def create_objects_from_hol_taxon hol_taxon
     puts
-    tnuid = hol_taxon.tnuid
-    # unless name_valid? hol_data.name
-    #   return
-    # end
+
+    # For many of these hol synonyms, we're looking to create an "obsolete combination"
+    # of an existing valid taxa.
+    # We need these obsolete combinations to point to the protonym of the valid taxa,
+    # and to create synonym entries. If we can't locate the protonym of the valid taxa,
+    # we're pretty much out of luck.
+    #
 
 
-    puts "#{hol_taxon.name}  status: #{hol_taxon.status} valid: #{hol_taxon.is_valid} rel_type: #{hol_taxon.rel_type} tnuid: '#{hol_taxon.tnuid}'"
+    puts hol_string(hol_taxon)
 
+    #
+    # Get valid taxon
+    #
     valid_hol_taxon = nil
-    if (hol_taxon.is_valid.nil? or hol_taxon.is_valid.downcase != "valid")
+    # If we're not starting from a valid taxa, then
+
+
+    #  Add a note that we need to be checking the hol protonym for an antcat match, too,
+    #  just in case we match that way.
+    #  end
+    # ", I expect many of the combinations in HOL will be found among the Taxt notes that Mark semi-parsed"
+    valid_antcat_taxon = find_valid_antcat_taxon hol_taxon
+    create_taxon_synonym valid_antcat_taxon, hol_taxon
+    for hol_synonym in HolSynonym.where(tnuid: hol_taxon.tnuid)
+      puts "  #{hol_taxon.name} => " + hol_string(hol_taxon_synonym)
+      hol_taxon_synonym = HolTaxonDatum.find_by_tnuid hol_synonym.synonym_id
+      unless hol_taxon_synonym.nil?
+        create_taxon_synonym valid_antcat_taxon, hol_taxon_synonym
+      end
+    end
+  end
+
+
+  # start at hol_taxon. If there's a valid antcat id, get it's current_valid.
+  # if there's no valid antcat id, get hol's valid, then go to above.
+  #
+  #    It's possible that hol says that a taxa is valid, and it points to a tnuid that
+  # has a matching antcat taxon id, but that the antcat taxon id is pointing to a record that
+  # antcat thinks is invalid. If that is the case, find the current valid species according to antcat
+  # and make that the current valid.
+
+  def find_valid_antcat_taxon hol_taxon
+    # if we have a valid antcat taxon right away, use it, and get its current valid.
+
+    valid_antcat_taxon = get_most_recent_antcat_taxon hol_taxon.antcat_taxon_id
+    unless valid_antcat_taxon.nil?
+      puts "Got the most recent from the passed in hol taxon(#{hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
+      return valid_antcat_taxon
+    end
+
+    # if not, let's get the "current valid" HOL object and see if THAT has an antcat taxon mapping.
+    valid_hol_taxon = nil
+    if hol_taxon.is_valid.nil? or hol_taxon.is_valid.downcase != "valid"
       valid_hol_taxon_tnuid = hol_taxon.valid_tnuid
       if valid_hol_taxon_tnuid.nil?
         puts "valid tnuid entry missing"
       else
         valid_hol_taxon = HolTaxonDatum.find_by_tnuid valid_hol_taxon_tnuid
+        puts "  VALID " + hol_string(valid_hol_taxon)
+      end
+    end
+    if valid_hol_taxon.nil?
+      print_string "N"
+      return
+    end
 
-        puts "  VALID hol taxon: '#{valid_hol_taxon.name}'  status: '#{valid_hol_taxon.status}' "+
-                 " valid: '#{valid_hol_taxon.is_valid}' rel_type: '#{valid_hol_taxon.rel_type}' "+
-                 "antcat_taxon_id: '#{valid_hol_taxon.antcat_taxon_id}' tnuid: '#{valid_hol_taxon.tnuid}'"
+    valid_antcat_taxon = get_most_recent_antcat_taxon valid_hol_taxon.antcat_taxon_id
+    unless valid_antcat_taxon.nil?
+      puts "Got the most recent from discovered valid hol taxon(#{valid_hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
+
+      return valid_antcat_taxon
+    end
+
+    #
+    # Comb through all hol synonyms to see if any of them have an
+    # indicated antcat_taxon_id. Hol will include the protonym here.
+
+    for hol_synonym in HolSynonym.where(tnuid: hol_taxon.tnuid)
+      hol_taxon_synonym = HolTaxonDatum.find_by_tnuid hol_synonym.synonym_id
+      unless hol_taxon_synonym.nil?
+        if !hol_taxon_synonym.antcat_taxon_id.nil?
+          valid_antcat_taxon = get_most_recent_antcat_taxon hol_taxon_synonym.antcat_taxon_id
+          unless valid_antcat_taxon.nil?
+            puts "Got the most recent from a synonym of the hol taxon(#{hol_taxon_synonym.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
+
+            return valid_antcat_taxon
+          end
+        end
       end
     end
 
+
+    # Can't match to a valid antcat object. For now, we abort and abandon
+    # these names because they don't have antcat objects to support them.
+    # Later, we'll want to create antcat objects for this case.
     if valid_hol_taxon.antcat_taxon_id.nil?
-      valid_hol_taxon.antcat_taxon_id = find_antcat_taxon valid_hol_taxon
+      print_string "T"
     end
+  end
 
+  # Given an antcat taxon id, return the most current antcat taxon.
+  def get_most_recent_antcat_taxon antcat_taxon_id
+    if antcat_taxon_id.nil?
+      return nil
+    else
+      antcat_taxon = Taxon.find antcat_taxon_id
+      valid_antcat_taxon = get_most_recent_from_antcat_object antcat_taxon
+      unless valid_antcat_taxon.nil?
+        if valid_antcat_taxon.current_valid_taxon.nil?
+          puts "End of the line. Most current valid according to antcat is #{valid_antcat_taxon.name_cache}."
+        end
+        while !valid_antcat_taxon.current_valid_taxon.nil?
+          puts ("iterating up the tree")
+          valid_antcat_taxon = get_most_recent_antcat_taxon valid_antcat_taxon
+          if valid_antcat_taxon.nil?
+            puts "Fatal - invalid pointer to most current valid taxon. Started at antcat id: #{antcat_taxon_id}"
+          end
+        end
+      end
+      return valid_antcat_taxon
+    end
+  end
 
-    for hol_synonym in HolSynonym.where(tnuid: tnuid)
-
-      hol_taxon_synonym = HolTaxonDatum.find_by_tnuid hol_synonym.synonym_id
-
-      unless hol_taxon_synonym.nil?
-        synonym_tnuid = hol_taxon_synonym.tnuid
-        # unless name_valid? hol_taxon_synonym.name
-        #   next
-        # end
-        puts "  #{hol_taxon.name} => '#{hol_taxon_synonym.name}' status: '#{hol_taxon_synonym.status}' "+
-                 "valid: '#{hol_taxon_synonym.is_valid}' taxon_id: #{hol_taxon_synonym.antcat_taxon_id}"+
-                 " rel_type: '#{hol_taxon_synonym.rel_type}'  tnuid: '#{hol_taxon_synonym.tnuid}'"
+  def get_most_recent_from_antcat_object antcat_taxon
+    if antcat_taxon.nil?
+      return nil
+    else
+      if !antcat_taxon.current_valid_taxon.nil?
+        return Taxon.find antcat_taxon.current_valid_taxon
+      else
+        return antcat_taxon
       end
     end
   end
+
+
+  #
+  # Given a hol entry, create a synonym (if necessary)
+  # to the valid antcat taxon passed in, if possible.
+  #
+  def create_taxon_synonym valid_antcat_taxon, hol_taxon
+    unless hol_taxon.antcat_taxon_id.nil?
+      # If there is a valid antcat ID for this object, skip everything -
+      # it's already part of our world
+      print_string "k"
+      return
+    end
+
+    puts "Parsing new name: #{hol_taxon.name} as type: #{valid_antcat_taxon.rank}"
+    name = nil
+    if hol_taxon.antcat_name_id.nil?
+      name = create_and_add_name valid_antcat_taxon, hol_taxon
+      if name.nil?
+        return
+      end
+    else
+      name = Name.find hol_taxon.antcat_name_id
+    end
+
+    puts "Created name id: #{name.id}"
+
+
+    # create name!
+
+    mother = TaxonMother.new
+
+    new_taxon = mother.create_taxon Rank[valid_antcat_taxon.rank], valid_antcat_taxon.parent
+    new_taxon.auto_generated = true
+    new_taxon.origin = 'hol'
+    # Todo: status could well be valid - handle?
+    if hol_taxon.status.downcase.index("unavailable").nil?
+      new_taxon.status = 'obsolete combination'
+    else
+      new_taxon.status = 'unavailable'
+    end
+    new_taxon.current_valid_taxon_id = valid_antcat_taxon.id
+
+    new_taxon.protonym = valid_antcat_taxon.protonym
+    # new_taxon.fossil = valid_antcat_taxon.fossil
+    # new_taxon.type = valid_antcat_taxon.type
+    #    new_taxon.touch_with_version
+    new_taxon.name = name
+    new_taxon.name_cache = name.name
+    new_taxon.type = valid_antcat_taxon.type
+    new_taxon.type_name_id=1
+
+
+    taxon_state = TaxonState.new
+    taxon_state.deleted = false
+    taxon_state.review_state = :old
+    new_taxon.taxon_state = taxon_state
+    taxon_state.save
+
+    change = Change.new
+    change.change_type = :create
+    change.save!
+
+    new_taxon.save!
+    taxon_state.taxon_id = new_taxon.id
+    taxon_state.save
+    change.user_changed_taxon_id = new_taxon.id
+    change.save!
+    new_taxon.touch_with_version
+
+
+    abort("Take a look at taxon id: #{new_taxon.id}")
+
+
+    # Create a taxon entry that is "obsolete combination", have its protonym be the same as valid_antcat_taxon's.
+
+  end
+
+
+  def delete_auto_gen
+    # delete antcat_name_id where it points to an auto-gen record.
+    # delete names where auto_gen is true
+    # delete synonym record where it points to auto_gen taxon
+    # delete taxon where auto_gen is true
+    # delete versions which refer to an autogenned taxon
+    # Todo: Hijack version to unset autogen flag?
+    # Todo: if taxon autogen status set to "false", remove autogen flag from name, too
+    #   taxonmother delete should handle this; double check
+  end
+
+  #
+  # If it's missing, create an antcat name and add it to the hol_taxon record.
+  # If there's a pre-existing name that matches, add it to the antcat record
+  #
+  def create_and_add_name valid_antcat_taxon, hol_taxon
+    # Make certain this doesn't already exist!
+    name = Name.find_by_name hol_taxon.name
+    if name.nil?
+      name = Name.parse hol_taxon.name
+
+      # if valid_antcat_taxon.rank == 'subspecies'
+      #   name = SubspeciesName.new
+      # elsif valid_antcat_taxon.rank == 'species'
+      #   name = SpeciesName.new
+      #   attributes = Name.parse hol_taxon.name
+      #
+      # else
+      #   puts ("Unexpected rank match: #{valid_antcat_taxon.rank}")
+      #   return
+      # end
+      if name.nil?
+        puts "Failed to parse name; fatal"
+        return
+      end
+      name.auto_generated = true
+      name.origin = 'hol'
+      name.save
+    end
+    valid_antcat_taxon.antcat_name_id = name.id
+    valid_antcat_taxon.save
+
+    name
+  end
+
 
   # Takes an hol taxon and does any hierustics to match up with an antcat taxon
   # This is assuming we don't get a perfect across the board match from earlier work.
@@ -423,67 +679,111 @@ class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
 
   # if we can match a name, check year and author name. If those match, check page numbers. If all of those match, we're golden
 
-  def find_antcat_taxon valid_hol_taxon
+  def match_antcat_taxon valid_hol_taxon
+    #puts "Starting to try to match: " + valid_hol_taxon.name
     if valid_hol_taxon.antcat_name_id.nil?
-      if valid_hol_taxon.year >= 2014
+      if !valid_hol_taxon.year.nil? and valid_hol_taxon.year >= 2014
         puts "Hey, this might be new! I can't find the name, and it's 2014 or later!"
+      else
+        #puts "no name match"
+        return nil
       end
-    else
-      #
-      # We have a name, what's missing?
-      #
-      unless valid_hol_taxon.antcat_protonym_id.nil?
-        puts "What the hell - we have a protonym and we can't figure this out?"
-      end
-      if valid_hol_taxon.antcat_journal_id.nil?
-        # Aha, journal is missing. Let's patch that up.
-        candidate_taxa = Taxon.where(name_id: valid_hol_taxon.antcat_name_id)
-        candidate_taxa.each do |taxon|
-          antcat_protonym = taxon.protonym
-          citation = antcat_protonym.authorship
-          reference = citation.reference
-          score = 0
-          booshite
-          if reference.reference_author_names.first.author_name_id == valid_hol_taxon.antcat_author_id
-            puts "Author match"
-            score += 1
-          end
-          if reference.year == valid_hol_taxon.year
-            puts "year match"
-            score += 1
-          end
+    end
 
-          hol_start_page = valid_hol_taxon['start_page']
-          hol_end_page = valid_hol_taxon['end_page']
-          page_hash = get_page_from_string reference.pagination
-          unless page_hash.nil?
-            if page_in_range page_hash, hol_start_page, hol_end_page
-              puts "page range match"
-              score += 1
-            end
-          end
+
+    #
+    # We have a name, what's missing?
+    #
+    unless valid_hol_taxon.antcat_protonym_id.nil?
+      puts "What the hell - we have a protonym and we can't figure this out?"
+    end
+    @antcat_reference=nil
+    unless valid_hol_taxon.antcat_reference_id.nil?
+      #puts "We have a full reference.. that includes year, page range, and author."
+      @antcat_reference = Reference.find valid_hol_taxon.antcat_reference_id
+
+    end
+
+
+    candidate_taxa = Taxon.where(name_id: valid_hol_taxon.antcat_name_id)
+    #puts "Checking #{candidate_taxa.length} taxa for matches"
+
+
+    candidate_taxa.each do |taxon|
+      taxon_id = check_taxon @antcat_reference, valid_hol_taxon, taxon
+
+      # Check antcat synonyms
+      if taxon_id.nil?
+        taxon.junior_synonyms.each do |synonym|
+          # puts "Checking synonym as junior_synonyms #{synonym.name_cache}"
+
+          taxon_id = check_taxon @antcat_reference, valid_hol_taxon, synonym
         end
       end
-    end
-  end
-
-
-  # Identifies obsolete nomenclature
-  def name_valid? name
-    invalid_array = [" var. ", # "var." notation - alternate spelling?
-                     " r. ",
-                     " subsp. ",
-                     " (",
-                     " )",
-                     " st. "
-    ]
-
-    invalid_array.each do |invalid_string|
-      if name.include? invalid_string
-        return false
+      if taxon_id.nil?
+        taxon.senior_synonyms.each do |synonym|
+          # puts "Checking synonym as senior_synonyms #{synonym.name_cache}"
+          taxon_id = check_taxon @antcat_reference, valid_hol_taxon, synonym
+        end
+      end
+      unless taxon_id.nil?
+        return taxon_id
       end
     end
-    return true
+
+    # puts ("=============== match failed")
+    nil
+  end
+
+  #
+  # Does this reference match this hol_taxon?
+  # Todo: we don't need to pass "taxon" here.
+  #
+  def check_taxon antcat_reference, valid_hol_taxon, taxon
+
+    antcat_protonym = taxon.protonym
+    citation = antcat_protonym.authorship
+    reference = citation.reference
+
+    if !antcat_reference.nil? and antcat_reference.id == reference.id
+      #puts "References and name match - it's antcat taxon " + taxon.id.to_s
+      return taxon.id
+    end
+
+    first_author_name = reference.reference_author_names.first
+    if !first_author_name.nil? and first_author_name.author_name.author_id ==
+        valid_hol_taxon.antcat_author_id
+      #puts "Author match"
+    else
+      # puts "author mismatch - antcat: #{reference.reference_author_names.first.author_name.author_id} vs #{valid_hol_taxon.antcat_author_id}"
+      return nil
+    end
+
+    if reference.year == valid_hol_taxon.year
+      #puts "year match"
+    else
+      # puts "year mismatch antcat: #{reference.year} vs #{valid_hol_taxon.year}"
+      return nil
+
+    end
+
+
+    hol_start_page = valid_hol_taxon['start_page']
+    hol_end_page = valid_hol_taxon['end_page']
+    page_hash = get_page_from_string citation.pages
+
+    unless page_hash.nil?
+      start_page = page_hash[:start_page]
+      end_page = page_hash[:end_page]
+      if page_in_range hol_start_page, hol_end_page, start_page, end_page
+        #puts "page range match"
+        # puts "Good match, no reference to antcat id #{taxon.id}"
+        return taxon.id
+      else
+        # puts "pages mismatch"
+        return nil
+      end
+    end
 
   end
 
@@ -836,6 +1136,257 @@ end
 # }
 # });
 
-
-
-
+#
+# # {
+# "code":100,
+#     "message":"API resource successfully retrieved",
+#     "data":{
+#     "id":"36809",
+#     "tnuid":36809,
+#     "name":"Technomyrmex elatior",
+#     "taxon":"Technomyrmex elatior",
+#     "author":"Forel",
+#     "status":"Subsequent name/combination",
+#     "rank":"Species",
+#     "valid":"Valid",
+#     "fossil":"N",
+#     "rel_type":"Member",
+#     "source":{
+#     "id":"",
+#     "name":"",
+#     "logo":"",
+#     "query":"",
+#     "url":""
+# },
+#     "parent_taxon":{
+#     "id":"2485",
+#     "tnuid":2485,
+#     "taxon":"Technomyrmex",
+#     "author":"Mayr"
+# },
+#     "hier":{
+#     "Kingdom":{
+#     "name":"Animalia",
+#     "taxon":"Animalia",
+#     "author":"",
+#     "id":"15158",
+#     "tnuid":15158,
+#     "next":"Phylum"
+# },
+#     "Phylum":{
+#     "name":"Arthropoda",
+#     "taxon":"Arthropoda",
+#     "author":"",
+#     "id":"15157",
+#     "tnuid":15157,
+#     "next":"Class"
+# },
+#     "Class":{
+#     "name":"Hexapoda",
+#     "taxon":"Hexapoda",
+#     "author":"",
+#     "id":"1",
+#     "tnuid":1,
+#     "next":"Order"
+# },
+#     "Order":{
+#     "name":"Hymenoptera",
+#     "taxon":"Hymenoptera",
+#     "author":"",
+#     "id":"52",
+#     "tnuid":52,
+#     "next":"Superfamily"
+# },
+#     "Superfamily":{
+#     "name":"Vespoidea",
+#     "taxon":"Vespoidea",
+#     "author":"",
+#     "id":"69",
+#     "tnuid":69,
+#     "next":"Family"
+# },
+#     "Family":{
+#     "name":"Formicidae",
+#     "taxon":"Formicidae",
+#     "author":"Latreille",
+#     "id":"152",
+#     "tnuid":152,
+#     "next":"Subfamily"
+# },
+#     "Subfamily":{
+#     "name":"Dolichoderinae",
+#     "taxon":"Dolichoderinae",
+#     "author":"Forel",
+#     "id":"2250",
+#     "tnuid":2250,
+#     "next":"Tribe"
+# },
+#     "Tribe":{
+#     "name":"Tapinomini",
+#     "taxon":"Tapinomini",
+#     "author":"Emery",
+#     "id":"239613",
+#     "tnuid":239613,
+#     "next":"Genus"
+# },
+#     "Genus":{
+#     "name":"Technomyrmex",
+#     "taxon":"Technomyrmex",
+#     "author":"Mayr",
+#     "id":"2485",
+#     "tnuid":2485,
+#     "next":"Species"
+# },
+#     "Species":{
+#     "name":"Technomyrmex elatior",
+#     "taxon":"Technomyrmex elatior",
+#     "author":"Forel",
+#     "id":"36809",
+#     "tnuid":36809,
+#     "next":"null"
+# }
+# },
+#     "orig_desc":{
+#     "url":"antbase.org/ants/publications/3984/3984.pdf",
+#     "filesize":"723k",
+#     "pages":[
+#     {
+#         "page_num":"284",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0284.pdf"
+# },
+#     {
+#         "page_num":"285",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0285.pdf"
+# },
+#     {
+#         "page_num":"286",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0286.pdf"
+# },
+#     {
+#         "page_num":"287",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0287.pdf"
+# },
+#     {
+#         "page_num":"288",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0288.pdf"
+# },
+#     {
+#         "page_num":"289",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0289.pdf"
+# },
+#     {
+#         "page_num":"290",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0290.pdf"
+# },
+#     {
+#         "page_num":"291",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0291.pdf"
+# },
+#     {
+#         "page_num":"292",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0292.pdf"
+# },
+#     {
+#         "page_num":"293",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0293.pdf"
+# },
+#     {
+#         "page_num":"294",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0294.pdf"
+# },
+#     {
+#         "page_num":"295",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0295.pdf"
+# },
+#     {
+#         "page_num":"296",
+#     "page_url":"antbase.org/ants/publications/3984/3984_0296.pdf"
+# }
+# ],
+#     "public":"Y",
+#     "date":"1902",
+#     "year":"1902",
+#     "month":"01",
+#     "type":"article",
+#     "title":"Variétés myrmécologiques.",
+#     "journal":"Annales de la Société Entomologique de Belgique",
+#     "jrnl_id":1025,
+#     "journal_id":"1025",
+#     "series":"",
+#     "volume":"46",
+#     "vol_num":"",
+#     "start_page":"284",
+#     "end_page":"296",
+#     "author_base_id":1005,
+#     "author":"Forel",
+#     "author_extended":[
+#     {
+#         "last_name":"Forel",
+#     "initials":"A.",
+#     "generation":"",
+#     "name_order":"W",
+#     "author_id":1005
+# }
+# ],
+#     "doi":"10.5281/ZENODO.14504",
+#     "pub_id":3984
+# },
+#     "trash":"",
+#     "contribs":[
+#     {
+#         "contrib_id":2279,
+#     "last_name":"Agosti",
+#     "initials":"D.",
+#     "name":"Donat Agosti",
+#     "contrib_types":{
+#     "taxon":"N",
+#     "literature":"Y",
+#     "occurrence":"N",
+#     "media":"N"
+# }
+# },
+#     {
+#         "contrib_id":7748,
+#     "last_name":"Cora",
+#     "initials":"J. R.",
+#     "name":"Joseph R. Cora",
+#     "contrib_types":{
+#     "taxon":"N",
+#     "literature":"Y",
+#     "occurrence":"N",
+#     "media":"N"
+# }
+# },
+#     {
+#         "contrib_id":2,
+#     "last_name":"Johnson",
+#     "initials":"N. F.",
+#     "name":"Norman F. Johnson",
+#     "contrib_types":{
+#     "taxon":"Y",
+#     "literature":"Y",
+#     "occurrence":"N",
+#     "media":"N"
+# }
+# }
+# ],
+#     "common_names":[
+#
+# ],
+#     "stats":{
+#     "rank_value":3,
+#     "num_records":0,
+#     "num_spms":0,
+#     "child_nums":[
+#     {
+#         "rank":"Subspecies",
+#     "num":0
+# }
+# ]
+# }
+# }
+# }
+#
+#
+#
+#

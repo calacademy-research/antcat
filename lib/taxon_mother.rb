@@ -37,6 +37,36 @@ class TaxonMother
   end
 
 
+  #
+  # Does the necessary stuff around versions and state for any taxon
+  # addition or change.
+  #
+  def simple_taxon_save taxon
+    if taxon.new_record?
+      change_type = :create
+      taxon.taxon_state = TaxonState.new
+      taxon.taxon_state.deleted = false
+      taxon.taxon_state.id = taxon.id
+    else
+      # we might want to get smarter about this
+      change_type = :update
+    end
+    taxon.taxon_state.review_state = :waiting
+
+    change = setup_change change_type
+    change_id = change.id
+
+    taxon.save!
+    # paper_trail is dumb. When a new object is created, it has no "object".
+    # So, if you undo the first change, and try to reify the previous one,
+    # you end up with no object! touch_with_version gives us one, but
+    # Just for the taxa, not the protonym or other changable objects.
+    if(:create == change_type)
+      taxon.touch_with_version
+    end
+    taxon
+  end
+
   # TODO: Document params, and how that works.
   def save_taxon taxon, params, previous_combination = nil
     change_type=nil
@@ -50,29 +80,7 @@ class TaxonMother
       update_type_name params.delete :type_name_attributes
       update_name_status_flags params
 
-      if @taxon.new_record?
-        change_type = :create
-        @taxon.taxon_state = TaxonState.new
-        @taxon.taxon_state.deleted = false
-        @taxon.taxon_state.id = @taxon.id
-      else
-        # we might want to get smarter about this
-        change_type = :update
-      end
-      @taxon.taxon_state.review_state = :waiting
-
-      change = setup_change change_type
-      change_id = change.id
-
-      @taxon.save!
-      # paper_trail is dumb. When a new object is created, it has no "object".
-      # So, if you undo the first change, and try to reify the previous one,
-      # you end up with no object! touch_with_version gives us one, but
-      # Just for the taxa, not the protonym or other changable objects.
-      if(:create == change_type)
-        @taxon.touch_with_version
-      end
-
+      @taxon = simple_taxon_save @taxon
       # TODO: The below may not be being used
       if (change_type == :create)
         change.user_changed_taxon_id = @taxon.id

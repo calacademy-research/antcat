@@ -30,7 +30,9 @@ class Taxon < ActiveRecord::Base
                   :name,
                   :protonym,
                   :type_name,
-                  :id
+                  :id,
+                  :auto_generated, #false == nil.
+                  :origin #if it's generated, where did it come from? string (e.g.: 'hol')
 
 
   include CleanNewlines
@@ -40,7 +42,7 @@ class Taxon < ActiveRecord::Base
 
   def delete_with_state!
     Taxon.transaction do
-      taxon_state = self.taxon_state                                                                        ˜
+      taxon_state = self.taxon_state
       # Bit of a hack; this is a new table which may lack the depth of other tables.
       # Creation doesn't add a record, so you can't "step back to" a valid version.
       # doing touch_with_version (creeate a fallback point) in the migration makes an
@@ -59,8 +61,7 @@ class Taxon < ActiveRecord::Base
   ###############################################
   # nested attributes
   belongs_to :name; validates :name, presence: true
-  #belongs_to :protonym, dependent: :destroy; validates :protonym, presence: true
-  #has_and_belongs_to_many :projects, -> { includes :milestones, :manager }
+
 
   belongs_to :protonym, -> { includes :authorship }; validates :protonym, presence: true
 
@@ -216,8 +217,6 @@ class Taxon < ActiveRecord::Base
     junior_synonyms.include? taxon
   end
 
-  alias synonym_of? junior_synonym_of?
-  has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
 
   def junior_synonyms_with_names;
     synonyms_with_names :junior
@@ -245,6 +244,8 @@ class Taxon < ActiveRecord::Base
     }
   end
 
+  alias synonym_of? junior_synonym_of?
+  has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
   has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
   has_many :junior_synonyms, through: :synonyms_as_senior
   has_many :senior_synonyms, through: :synonyms_as_junior
@@ -361,7 +362,6 @@ class Taxon < ActiveRecord::Base
   has_many :reference_sections, -> { order 'position' }, dependent: :destroy
 
 
-
   #TODO: joe This is hit four times on main page load. Why
   # we have one valid entry
   # it "should provide a link if there's a valid hol_data entry"
@@ -374,7 +374,7 @@ class Taxon < ActiveRecord::Base
 
     #, is_valid: 'Valid'
     valid_hd = nil
-     valid_count = 0
+    valid_count = 0
     hd.each do |is_valid|
       if is_valid['is_valid'].downcase == 'valid'
         valid_count = valid_count +1
@@ -430,6 +430,10 @@ class Taxon < ActiveRecord::Base
 
   def obsolete_combination?;
     status == 'obsolete combination'
+  end
+
+  def unavailable_misspelling?
+    status == 'unavailable misspelling'
   end
 
   ###############################################

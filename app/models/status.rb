@@ -65,6 +65,8 @@ class Status
                                              plural_label: 'collective group names'),
       Status.new(string: 'obsolete combination',    label: 'obsolete combination',
                                              plural_label: 'obsolete combinations'),
+      Status.new(string: 'unavailable misspelling',             label: 'unavailable misspelling',
+                 plural_label: 'unavailable misspelling'),
     ]
     end
 end
