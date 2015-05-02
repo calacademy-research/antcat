@@ -65,9 +65,10 @@ class Importers::Hol::HolReferenceMatcher < Importers::Hol::BaseUtils
         next
       end
       page_hash = get_page_from_string reference.pagination
-      start_page = page_hash[:start_page]
-      end_page = page_hash[:end_page]
+
       unless page_hash.nil?
+        start_page = page_hash[:start_page]
+        end_page = page_hash[:end_page]
         unless page_in_range  @hol_start_page, @hol_end_page,  start_page,end_page
           next
         end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150417174520) do
+ActiveRecord::Schema.define(version: 20150423202603) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -213,18 +213,19 @@ ActiveRecord::Schema.define(version: 20150417174520) do
   add_index "journals", ["name"], name: "journals_name_idx", using: :btree
 
   create_table "names", force: :cascade do |t|
-    t.string   "type",           limit: 255
-    t.string   "name",           limit: 255
-    t.string   "name_html",      limit: 255
-    t.string   "epithet",        limit: 255
-    t.string   "epithet_html",   limit: 255
-    t.string   "epithets",       limit: 255
-    t.string   "protonym_html",  limit: 255
+    t.string   "type",               limit: 255
+    t.string   "name",               limit: 255
+    t.string   "name_html",          limit: 255
+    t.string   "epithet",            limit: 255
+    t.string   "epithet_html",       limit: 255
+    t.string   "epithets",           limit: 255
+    t.string   "protonym_html",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "gender",         limit: 255
-    t.boolean  "auto_generated", limit: 1,   default: false
-    t.string   "origin",         limit: 255
+    t.string   "gender",             limit: 255
+    t.boolean  "auto_generated",     limit: 1,   default: false
+    t.string   "origin",             limit: 255
+    t.boolean  "nonconforming_name", limit: 1
   end
 
   add_index "names", ["name"], name: "name_name_index", using: :btree

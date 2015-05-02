@@ -6,7 +6,7 @@ task create_approved_taxon: :environment do
   Taxon.find_by_name('Wildensi').delete rescue nil
   user = User.find_by_email 'sblum@calacademy.org'
   taxon = create_taxon_version_and_change :waiting, user
-  taxon.update_attributes! name: create_name('Wildensi')
+  taxon.update_attributes! name: find_or_create_name('Wildensi')
 end
 
 desc 'Update current valid taxa'

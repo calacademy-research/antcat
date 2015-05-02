@@ -67,7 +67,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
           {bracketed:true}
         ]],
       }]
-      name = create_name 'Formicidae'
+      name = find_or_create_name 'Formicidae'
       expect(@converter.convert(data)).to eq("{ref #{reference.id}}: 356 [first spelling as {nam #{name.id}}]")
     end
 
@@ -99,7 +99,7 @@ describe Importers::Bolton::Catalog::TextToTaxt do
       ], :delimiter => '; '},
       {:phrase => 'all subsequent authors'},
     ]
-    name = create_name 'Formicariae'
+    name = find_or_create_name 'Formicariae'
     expect(@converter.convert(data)).to eq("Formicidae as family: {ref #{reference.id}}: 124 [{nam #{name.id}}]; all subsequent authors")
   end
 

@@ -21,7 +21,7 @@ describe Name do
 
   describe "Updating taxon cache" do
     before do
-      @atta = create_name 'Atta'
+      @atta = find_or_create_name 'Atta'
       @atta.update_attribute :name_html, '<i>Atta</i>'
     end
 
@@ -47,7 +47,7 @@ describe Name do
     end
 
     it "should change the cache when a different name is assigned" do
-      betta = create_name 'Betta'
+      betta = find_or_create_name 'Betta'
       betta.update_attribute :name_html, '<i>Betta</i>'
 
       taxon = create_genus name: @atta
@@ -136,19 +136,19 @@ describe Name do
     end
 
     it "should find one prefix match" do
-      name = create_name 'Atta'
+      name = find_or_create_name 'Atta'
       name.update_attributes name_html:  '<i>Atta</i>'
       expect(Name.picklist_matching('att')).to eq([id: name.id, name: name.name, label: '<b><i>Atta</i></b>', value: name.name])
     end
 
     it "should find one fuzzy match" do
-      name = create_name 'Gesomyrmex'
+      name = find_or_create_name 'Gesomyrmex'
       name.update_attributes name_html:  '<i>Gesomyrmex</i>'
       expect(Name.picklist_matching('gyx')).to eq([id: name.id, name: name.name, label: '<b><i>Gesomyrmex</i></b>', value: name.name])
     end
 
     it "should return the taxon_id, if there is one" do
-      bothroponera = create_name 'Bothroponera'
+      bothroponera = find_or_create_name 'Bothroponera'
       bothroponera.update_attributes name_html: '<i>Bothroponera</i>'
       brachyponera = create_genus 'Brachyponera'
       expect(Name.picklist_matching('bera')).to eq([
@@ -158,13 +158,13 @@ describe Name do
     end
 
     it "put prefix matches at beginning" do
-      acropyga = create_name 'Acropyga dubitata'
+      acropyga = find_or_create_name 'Acropyga dubitata'
       acropyga.update_attributes name_html: '<i>Acropyga dubitata</i>'
 
-      atta = create_name 'Atta'
+      atta = find_or_create_name 'Atta'
       atta.update_attribute :name_html, "<i>Atta</i>"
 
-      acanthognathus = create_name 'Acanthognathus laevigatus'
+      acanthognathus = find_or_create_name 'Acanthognathus laevigatus'
       acanthognathus.update_attributes name_html: '<i>Acanthognathus laevigatus</i>'
 
       expect(Name.picklist_matching('atta')).to eq([
@@ -175,8 +175,8 @@ describe Name do
     end
 
     it "should require the first letter to match either the name or the epithet" do
-      dubitata = create_name 'Acropyga dubitata'
-      indubitata = create_name 'Acropyga indubitata'
+      dubitata = find_or_create_name 'Acropyga dubitata'
+      indubitata = find_or_create_name 'Acropyga indubitata'
 
       results = Name.picklist_matching('dubitata')
       expect(results.size).to eq(1)
@@ -185,7 +185,7 @@ describe Name do
 
     it "should only return names attached to taxa, if that option is sent" do
       atta = create_genus 'Atta'
-      atta_nudum = create_name 'Attanuda'
+      atta_nudum = find_or_create_name 'Attanuda'
       results = Name.picklist_matching('atta', taxa_only: true)
       expect(results.size).to eq(1)
       expect(results.first[:name]).to eq('Atta')

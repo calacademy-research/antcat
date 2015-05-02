@@ -439,7 +439,7 @@ def get_name_parts name
   return name, epithet, epithets
 end
 
-def create_name name
+def find_or_create_name name
   name, epithet, epithets = get_name_parts name
   FactoryGirl.create :name, name: name, epithet: epithet, epithets: epithets
 end

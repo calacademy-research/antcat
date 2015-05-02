@@ -32,7 +32,7 @@ describe Taxt do
           expect(Taxt.encode_taxon_name(genus_name: 'Nomen', species_epithet: 'nudum')).to eq("<i>Nomen nudum</i>")
         end
         it "should reuse a name if possible" do
-          create_name 'Atta'
+          find_or_create_name 'Atta'
           expect(Name.count).to eq(1)
           taxt = Taxt.encode_taxon_name genus_name: 'Atta'
           expect(Name.count).to eq(1)
@@ -46,32 +46,32 @@ describe Taxt do
       end
 
       it "should create a {nam 1234} tag, pointing to the Name" do
-        name = create_name 'Atta'
+        name = find_or_create_name 'Atta'
         expect(Taxt.encode_taxon_name(genus_name: 'Atta')).to eq("{nam #{name.id}}")
       end
       it "should handle a family-group name" do
-        name = create_name 'Dolichoderinae'
+        name = find_or_create_name 'Dolichoderinae'
         expect(Taxt.encode_taxon_name(family_or_subfamily_name: 'Dolichoderinae')).to eq("{nam #{name.id}}")
       end
       it "should handle a genus name" do
-        name = create_name 'Atta'
+        name = find_or_create_name 'Atta'
         expect(Taxt.encode_taxon_name(genus_name: 'Atta')).to eq("{nam #{name.id}}")
       end
       it "should handle a species name" do
-        name = create_name 'Eoformica eofornica'
+        name = find_or_create_name 'Eoformica eofornica'
         expect(Taxt.encode_taxon_name(genus_name: 'Eoformica', species_epithet: 'eofornica')).to eq("{nam #{name.id}}")
       end
       it "should handle a genus name + subgenus epithet" do
-        name = create_name 'Acanthostichus (Ctenopyga)'
+        name = find_or_create_name 'Acanthostichus (Ctenopyga)'
         expect(Taxt.encode_taxon_name(genus_name: 'Acanthostichus', subgenus_epithet: 'Ctenopyga')).to eq("{nam #{name.id}}")
       end
       it "should handle a genus name object + subgenus epithet" do
         genus = create_genus 'Camponotus'
-        name = create_name 'Camponotus (Ctenopyga)'
+        name = find_or_create_name 'Camponotus (Ctenopyga)'
         expect(Taxt.encode_taxon_name(genus_name: genus.name, subgenus_epithet: 'Ctenopyga')).to eq("{nam #{name.id}}")
       end
       it "should handle a species name with subgenus" do
-        name = create_name 'Formica subspinosa'
+        name = find_or_create_name 'Formica subspinosa'
         expect(Taxt.encode_taxon_name(genus_name: 'Formica', subgenus_epithet: 'Hypochira', species_epithet: 'subspinosa')).to eq("{nam #{name.id}}")
       end
       it "should handle a subspecies name" do
@@ -266,7 +266,7 @@ describe Taxt do
 
   describe "Cleanup" do
     before do
-      @america = create_name 'America'
+      @america = find_or_create_name 'America'
       @genus = create_genus
     end
     it "should change these fields in these tables" do
@@ -310,7 +310,7 @@ describe Taxt do
     end
 
     it "should leave {nam}s alone that don't match a taxt" do
-      name = create_name 'Atta'
+      name = find_or_create_name 'Atta'
       expect(Taxt.cleanup_field("{nam #{name.id}}")).to eq("{nam #{name.id}}")
     end
 

@@ -12,9 +12,9 @@ describe Vlad do
   end
 
   it "should show taxon counts by status" do
-    FactoryGirl.create :family, status: 'synonym', name: create_name('Family1')
-    FactoryGirl.create :family, status: 'valid', name: create_name('Family2')
-    FactoryGirl.create :family, status: 'valid', name: create_name('Family3')
+    FactoryGirl.create :family, status: 'synonym', name: find_or_create_name('Family1')
+    FactoryGirl.create :family, status: 'valid', name: find_or_create_name('Family2')
+    FactoryGirl.create :family, status: 'valid', name: find_or_create_name('Family3')
     expect(Vlad::StatusCounts.query).to match_array([['valid', 2], ['synonym', 1]])
   end
 
@@ -29,9 +29,9 @@ describe Vlad do
   end
 
   it "should show names without taxa or type names" do
-    eciton = create_name 'Eciton'
-    formica = create_name 'Formica'
-    atta = create_name 'Atta'
+    eciton = find_or_create_name 'Eciton'
+    formica = find_or_create_name 'Formica'
+    atta = find_or_create_name 'Atta'
     create_subfamily type_name: eciton
     create_subfamily type_name: nil, protonym: FactoryGirl.create(:protonym, name: formica)
     results = Vlad::NamesWithoutTaxa.query

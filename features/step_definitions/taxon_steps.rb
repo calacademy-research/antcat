@@ -240,5 +240,5 @@ end
 ##################################################
 
 Given /^there is a species name "([^"]*)"$/ do |name|
-  create_name name
+  find_or_create_name name
 end

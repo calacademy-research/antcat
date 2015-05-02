@@ -43,6 +43,8 @@ class Status
     [@hash[:label], @hash[:string]]
   end
 
+  #joe - see if we can not display "unavailable uncategorized"
+
   def self.statuses
     @_statuses ||= [
       Status.new(string: 'valid',                   label: 'valid',
@@ -67,6 +69,11 @@ class Status
                                              plural_label: 'obsolete combinations'),
       Status.new(string: 'unavailable misspelling',             label: 'unavailable misspelling',
                  plural_label: 'unavailable misspelling'),
+      Status.new(string: 'nonconforming synonym',             label: 'nonconforming synonym',
+                 plural_label: 'nonconforming synonym'),
+      Status.new(string: 'unavailable uncategorized',             label: 'unavailable uncategorized',
+                 plural_label: 'unavailable uncategorized')
+
     ]
     end
 end

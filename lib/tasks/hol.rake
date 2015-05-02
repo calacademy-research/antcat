@@ -27,20 +27,20 @@ namespace :hol do
     Importers::Hol::GetHolTaxonInfo.new.get_json
   end
 
-  desc "extract hol taxon info"
+  desc "Expand hol json and make as many objects as possible without any fuzzy matching"
   task expand_hol_json: :environment do
     Importers::Hol::GetHolTaxonInfo.new.link_objects
   end
 
   desc "Get hol synonyms"
-  task get_synonyms: :environment do
+  task download_synonyms_from_hol: :environment do
     Importers::Hol::GetHolSynonyms.new.get_synonym_records
   end
 
 
-  desc "Create hol objects"
-  task create_hol_objects: :environment do
-    Importers::Hol::GetHolTaxonInfo.new.create_objects
+  desc "Create hol synonyms"
+  task create_hol_synonyms: :environment do
+    Importers::Hol::HolSynonymLink.new.create_objects
   end
 
   desc "Fuzzy match taxon ids"

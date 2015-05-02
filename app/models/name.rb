@@ -16,21 +16,23 @@ class Name < ActiveRecord::Base
                   :epithet,
                   :epithet_html,
                   :protonym_html,
-                  :gender
+                  :gender,
+                  :nonconforming_name
 
-  scope :find_all_by_name, lambda {|name| where name: name}
+  scope :find_all_by_name, lambda { |name| where name: name }
 
 
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)
-    raise Taxon::TaxonExists if existing_names.any? {|name| not name.references.empty?}
+    raise Taxon::TaxonExists if existing_names.any? { |name| not name.references.empty? }
     update_attributes!({
-      name:           name_string,
-      name_html:      italicize(name_string),
-    })
+                           name: name_string,
+                           name_html: italicize(name_string),
+                       })
   end
 
-  def change_parent _; end
+  def change_parent _;
+  end
 
   def quadrinomial?
     name.split(' ').size == 4
@@ -41,7 +43,6 @@ class Name < ActiveRecord::Base
   end
 
   def set_taxon_caches
-
 
 
     #Taxon.update_all ['name_cache = ?', name], name_id: id
@@ -55,15 +56,25 @@ class Name < ActiveRecord::Base
     @_words ||= name.split ' '
   end
 
-  def self.parse string
+  # Irregular flag allows parsing of names that don't conform to naming standards so we can support bad spellings.
+  def self.parse string, irregular=false
     # explicit loading seems to help Citrus's problem with reloading its grammars
     # when Rails's class caching is off
     Citrus.load Rails.root.to_s + '/lib/parsers/common_grammar', force: true unless defined? Parsers::CommonGrammar
     Citrus.load Rails.root.to_s + '/lib/parsers/author_grammar', force: true unless defined? Parsers::AuthorGrammar
     Citrus.load Rails.root.to_s + '/lib/importers/bolton/catalog/grammar', force: true unless defined? Importers::Bolton::Catalog::Grammar
 
+    word_count = string.split(' ').count
+
+
     name_class = Name.parse_rank string
-    raise "No Name subclass wanted the string: #{string}" unless name_class
+
+    if name_class.nil? and irregular
+
+      name_class = SpeciesName
+    else
+      raise "No Name subclass wanted the string: #{string}" unless name_class
+    end
     words = string.split ' '
     name_class.parse_words(words)
   end
@@ -73,9 +84,20 @@ class Name < ActiveRecord::Base
     create! make_import_attributes words[0]
   end
 
+  #
+  # Removes subgenus before evaluating
+  #
   def self.parse_rank string
     # extremely kludgey
     word_count = string.split(' ').count
+    # # Subgenus matcher
+    # if word_count == 3
+    #   if  match = string.match(/^([a-zA-Z]+) (\(([a-zA-Z]+)\)) ([a-zA-Z]+)/)
+    #     string = match[1] + " " + match[4]
+    #     word_count = 2
+    #     puts ("subgenus stripped - now it's #{string}")
+    #   end
+    # end
     return SubspeciesName if word_count >= 3
     for key in [:subfamily_name, :tribe_name, :genus_name, :species_name]
       begin
@@ -97,40 +119,44 @@ class Name < ActiveRecord::Base
         options[:genera_only] ||
         options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
     rank_filter =
-      case
-      when options[:species_only] then 'AND taxa.type = "Species"'
-      when options[:genera_only] then 'AND taxa.type = "Genus"'
-      when options[:subfamilies_or_tribes_only] then 'AND (taxa.type = "Subfamily" OR taxa.type = "Tribe")'
-      else ''
-      end
+        case
+          when options[:species_only] then
+            'AND taxa.type = "Species"'
+          when options[:genera_only] then
+            'AND taxa.type = "Genus"'
+          when options[:subfamilies_or_tribes_only] then
+            'AND (taxa.type = "Subfamily" OR taxa.type = "Tribe")'
+          else
+            ''
+        end
 
     # I do not see why the code beginning with Name.select can't be factored out, but it can't
     search_term = letters_in_name + '%'
     prefix_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
-          joins("#{join} taxa ON taxa.name_id = names.id").
-          where("name LIKE '#{search_term}' #{rank_filter}").
-          order('taxon_id desc').
-          order(:name)
+        Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
+            joins("#{join} taxa ON taxa.name_id = names.id").
+            where("name LIKE '#{search_term}' #{rank_filter}").
+            order('taxon_id desc').
+            order(:name)
 
     search_term = letters_in_name.split('').join('%') + '%'
     epithet_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
-          joins("#{join} taxa ON taxa.name_id = names.id").
-          where("epithet LIKE '#{search_term}' #{rank_filter}").
-          order(:epithet)
+        Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
+            joins("#{join} taxa ON taxa.name_id = names.id").
+            where("epithet LIKE '#{search_term}' #{rank_filter}").
+            order(:epithet)
 
     search_term = letters_in_name.split('').join('%') + '%'
     first_then_any_letter_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
-          joins("#{join} taxa ON taxa.name_id = names.id").
-          where("name LIKE '#{search_term}' #{rank_filter}").
-          order(:name)
+        Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
+            joins("#{join} taxa ON taxa.name_id = names.id").
+            where("name LIKE '#{search_term}' #{rank_filter}").
+            order(:name)
 
     [picklist_matching_format(prefix_matches),
      picklist_matching_format(epithet_matches),
      picklist_matching_format(first_then_any_letter_matches),
-    ].flatten.uniq {|item| item[:name]}[0, 100]
+    ].flatten.uniq { |item| item[:name] }[0, 100]
   end
 
   def self.picklist_matching_format matches
@@ -143,17 +169,17 @@ class Name < ActiveRecord::Base
 
   def self.import data
     SubspeciesName.import_data(data) or
-    SpeciesName.import_data(data)    or
-    SubgenusName.import_data(data)   or
-    GenusName.import_data(data)      or
-    CollectiveGroupName.import_data(data) or
-    SubtribeName.import_data(data)   or
-    TribeName.import_data(data)      or
-    SubfamilyName.import_data(data)  or
-    FamilyName.import_data(data)     or
-    FamilyOrSubfamilyName.import_data(data) or
-    OrderName.import_data(data)      or
-    raise "No Name subclass wanted to import #{data}"
+        SpeciesName.import_data(data) or
+        SubgenusName.import_data(data) or
+        GenusName.import_data(data) or
+        CollectiveGroupName.import_data(data) or
+        SubtribeName.import_data(data) or
+        TribeName.import_data(data) or
+        SubfamilyName.import_data(data) or
+        FamilyName.import_data(data) or
+        FamilyOrSubfamilyName.import_data(data) or
+        OrderName.import_data(data) or
+        raise "No Name subclass wanted to import #{data}"
   end
 
   def self.import_data data
@@ -307,7 +333,7 @@ class Name < ActiveRecord::Base
 
   def self.find_by_name string
     Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false).
-      where(name: string).order('taxa.id desc').order(:name).first
+        where(name: string).order('taxa.id desc').order(:name).first
   end
 
 end

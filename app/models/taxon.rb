@@ -436,6 +436,14 @@ class Taxon < ActiveRecord::Base
     status == 'unavailable misspelling'
   end
 
+  def unavailable_uncategorized?
+    status == 'unavailable uncategorized'
+  end
+
+  def nonconfirming_synonym?
+    status == 'nonconforming synonym'
+  end
+
   ###############################################
   def authorship_string
     # TODO: this triggers a save in the Name model for some reason.

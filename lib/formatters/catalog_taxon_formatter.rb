@@ -16,12 +16,10 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   end
 
 
-
-
   def link_to_delete_taxon
     unless @user.nil?
       if @user.is_superadmin?
-        button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete",'data-taxon-id' => "#{@taxon.id}"}
+        button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete", 'data-taxon-id' => "#{@taxon.id}"}
       end
     end
   end
@@ -84,18 +82,24 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       genus = taxon.genus
       string << header_link(genus, genus.name.to_html_with_fossil(genus.fossil?))
       string << ' '.html_safe
-      if taxon.kind_of? Species
-        string << header_link(taxon, taxon.name.epithet_html.html_safe)
+      if taxon.name.nonconforming_name
+        # This name is a radical misspelling, or an obsolete name formulation.
+        # Display literally.
+        string << header_link(taxon, italicize(taxon.name.epithets))
       else
-        taxon.kind_of? Subspecies
-        species = taxon.species
-        if species
-          string << header_link(species, species.name.epithet_html.html_safe)
-          string << ' '.html_safe
-          epithets_without_species = taxon.name.epithets.split(' ')[1..-1].join ' '
-          string << header_link(taxon, italicize(epithets_without_species))
+        if taxon.kind_of? Species
+          string << header_link(taxon, taxon.name.epithet_html.html_safe)
         else
-          string << header_link(taxon, italicize(taxon.name.epithets))
+          taxon.kind_of? Subspecies
+          species = taxon.species
+          if species
+            string << header_link(species, species.name.epithet_html.html_safe)
+            string << ' '.html_safe
+            epithets_without_species = taxon.name.epithets.split(' ')[1..-1].join ' '
+            string << header_link(taxon, italicize(epithets_without_species))
+          else
+            string << header_link(taxon, italicize(taxon.name.epithets))
+          end
         end
       end
     else
@@ -132,7 +136,16 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
       label << format_valid_combination(taxon)
       labels << label
     elsif taxon.unavailable_misspelling?
-      label = 'a literature misspelling of '
+      label = 'a misspelling of '
+      label << format_valid_combination(taxon)
+      labels << label
+
+    elsif taxon.unavailable_uncategorized?
+      label = 'see '
+      label << format_valid_combination(taxon)
+      labels << label
+    elsif taxon.nonconfirming_synonym?
+      label = 'a non standard form of '
       label << format_valid_combination(taxon)
       labels << label
     elsif taxon.invalid?

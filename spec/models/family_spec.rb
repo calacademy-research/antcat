@@ -71,14 +71,14 @@ describe Family do
 
     describe "When the family exists" do
       before do
-        @eciton_name = create_name 'Eciton'
-        @bolla_name = create_name 'Bolla'
+        @eciton_name = find_or_create_name 'Eciton'
+        @bolla_name = find_or_create_name 'Bolla'
 
         reference = FactoryGirl.create :article_reference,
                                        author_names: [FactoryGirl.create(:author_name, name: "Latreille")],
                                        citation_year: '1809', bolton_key_cache: 'Latreille 1809'
         @ref_taxt = "{ref #{reference.id}}"
-        @atta_name = create_name 'Atta'
+        @atta_name = find_or_create_name 'Atta'
         @nam_taxt = "{nam #{@atta_name.id}}"
 
         citation = Citation.create! reference: reference, pages: '12', forms: 'w.'
