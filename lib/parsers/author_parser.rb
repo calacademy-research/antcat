@@ -11,7 +11,6 @@ module Parsers::AuthorParser
 
     match = Parsers::AuthorGrammar.parse(string, :consume => false)
     result = match.value
-            puts "hello"
     string.gsub! /#{Regexp.escape match}/, ''
 
     {:names => result[:names], :suffix => result[:suffix]}

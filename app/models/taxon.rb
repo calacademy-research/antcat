@@ -32,7 +32,8 @@ class Taxon < ActiveRecord::Base
                   :type_name,
                   :id,
                   :auto_generated, #false == nil.
-                  :origin #if it's generated, where did it come from? string (e.g.: 'hol')
+                  :origin, #if it's generated, where did it come from? string (e.g.: 'hol')
+                  :display # if false, won't show in the taxon browser. Used for misspellings and such.
 
 
   include CleanNewlines

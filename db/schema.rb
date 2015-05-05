@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150423202603) do
+ActiveRecord::Schema.define(version: 20150505005535) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -389,6 +389,7 @@ ActiveRecord::Schema.define(version: 20150423202603) do
     t.integer  "collision_merge_id",              limit: 4
     t.boolean  "auto_generated",                  limit: 1,     default: false
     t.string   "origin",                          limit: 255
+    t.boolean  "display",                         limit: 1,     default: true
   end
 
   add_index "taxa", ["family_id"], name: "index_taxa_on_family_id", using: :btree

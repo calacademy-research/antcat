@@ -117,6 +117,10 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   end
 
   def self.taxon_status taxon
+    #
+    # Note: Cleverness is used here to make these queries (e.g.: obsolete_combination?)
+    # appear as tags. That's how CSS does its coloring.
+    #
     labels = []
     labels << "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in
     if taxon.homonym? && taxon.homonym_replaced_by

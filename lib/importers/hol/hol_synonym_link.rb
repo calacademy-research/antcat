@@ -451,20 +451,20 @@ class Importers::Hol::HolSynonymLink < Importers::Hol::BaseUtils
     # "Junior synonym"
 
 
-    status_map = {"Unavailable, literature misspelling" => 'unavailable misspelling',
-                  "Unavailable, incorrect original spelling" => 'unavailable misspelling',
-                  "Unavailable, other" => 'unavailable uncategorized',
-                  "Unavailable, nomen nudum" => 'unavailable uncategorized',
-                  "Susequent name/combination" => 'unavailable uncategorized',
-                  "Subseqent name/combination" => 'unavailable uncategorized',
-                  "Subsequent name/combination" => 'unavailable uncategorized',
-                  "Original name/combination" => 'unavailable uncategorized',
-                  "Unavailable, suppressed by ruling" => 'unavailable uncategorized',
-                  "Unnecessary replacement name" => 'unavailable uncategorized',
-                  "Unavailable, incorrect original spelling" => 'unavailable uncategorized',
-                  "Emendation" => 'unavailable uncategorized',
-                  "Misidentification" => 'unavailable uncategorized',
-                  "Unjustified emendation" => 'unavailable uncategorized',
+    status_map = {"Unavailable, literature misspelling" => ['unavailable misspelling',false],
+                  "Unavailable, incorrect original spelling" => ['unavailable misspelling',false],
+                  "Unavailable, other" => ['unavailable uncategorized',false],
+                  "Unavailable, nomen nudum" => ['unavailable uncategorized',false],
+                  "Susequent name/combination" => ['unavailable uncategorized',false],
+                  "Subseqent name/combination" => ['unavailable uncategorized',false],
+                  "Subsequent name/combination" => ['unavailable uncategorized',false],
+                  "Original name/combination" => ['unavailable uncategorized',false],
+                  "Unavailable, suppressed by ruling" => ['unavailable uncategorized',false],
+                  "Unnecessary replacement name" => ['unavailable uncategorized',false],
+                  "Unavailable, incorrect original spelling" => ['unavailable uncategorized',false],
+                  "Emendation" => ['unavailable uncategorized',false],
+                  "Misidentification" => ['unavailable uncategorized',false],
+                  "Unjustified emendation" => ['unavailable uncategorized',false],
 
 
 
@@ -473,7 +473,8 @@ class Importers::Hol::HolSynonymLink < Importers::Hol::BaseUtils
 
     for key, value in status_map
       if !hol_status.index(key).nil?
-        new_taxon.status = value
+        new_taxon.status = value[0]
+        new_taxon.display = value[1]
         break
       end
     end
@@ -529,6 +530,7 @@ class Importers::Hol::HolSynonymLink < Importers::Hol::BaseUtils
   end
 
   def delete_auto_gen
+
     # delete antcat_name_id where it points to an auto-gen record.
     # delete names where auto_gen is true
     # delete synonym record where it points to auto_gen taxon
