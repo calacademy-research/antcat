@@ -371,7 +371,7 @@ class Taxon < ActiveRecord::Base
   # it "should provide no link if there are two invalid entries"
   # it "should provide no link if there are two valid entries"
   def hol_id
-    hd = HolDatum.where(taxon_id: id)
+    hd = HolTaxonDatum.where(antcat_taxon_id: id)
 
     #, is_valid: 'Valid'
     valid_hd = nil

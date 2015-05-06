@@ -11,29 +11,30 @@ describe Exporters::Antweb::Exporter do
   describe "The header" do
     it "should be the same as the code" do
       expect(@exporter.header).to eq("antcat id\t" +
-                                 "subfamily\t" +
-                                 "tribe\t" +
-                                 "genus\t" +
-                                 "subgenus\t" +
-                                 "species\t" +
-                                 "subspecies\t" +
-                                 "author date\t" +
-                                 "author date html\t" +
-                                 "authors\t" +
-                                 "year\t" +
-                                 "status\t" +
-                                 "available\t" +
-                                 "current valid name\t" +
-                                 "original combination\t" +
-                                 "was original combination\t" +
-                                 "fossil\t" +
-                                 "taxonomic history html\t" +
-                                 "reference id\t" +
-                                 "bioregion\t" +
-                                 "country\t" +
-                                 "current valid rank\t" +
-                                 "current valid parent" +
-                                 "")
+                                         "subfamily\t" +
+                                         "tribe\t" +
+                                         "genus\t" +
+                                         "subgenus\t" +
+                                         "species\t" +
+                                         "subspecies\t" +
+                                         "author date\t" +
+                                         "author date html\t" +
+                                         "authors\t" +
+                                         "year\t" +
+                                         "status\t" +
+                                         "available\t" +
+                                         "current valid name\t" +
+                                         "original combination\t" +
+                                         "was original combination\t" +
+                                         "fossil\t" +
+                                         "taxonomic history html\t" +
+                                         "reference id\t" +
+                                         "bioregion\t" +
+                                         "country\t" +
+                                         "current valid rank\t" +
+                                         "hol id\t" +
+                                         "current valid parent" +
+                                         "")
     end
   end
 
@@ -87,7 +88,7 @@ describe Exporters::Antweb::Exporter do
       allow(acanthognathus).to receive(:authorship_string).and_return 'Fisher, 2013'
       allow(acanthognathus).to receive(:author_last_names_string).and_return('Fisher')
       allow(acanthognathus).to receive(:year).and_return 2001
-      expect(@exporter.export_taxon(acanthognathus)[0..17]).to eq([acanthognathus.id, 'incertae_sedis', nil, 'Acanothognathus', nil, nil, nil, 'Fisher, 2013',  '<span title="Bolton. Ants>Bolton, 1970</span>', 'Fisher', '2001', 'valid', 'TRUE', 'Acanothognathus', 'FALSE', nil, 'FALSE', 'history'])
+      expect(@exporter.export_taxon(acanthognathus)[0..17]).to eq([acanthognathus.id, 'incertae_sedis', nil, 'Acanothognathus', nil, nil, nil, 'Fisher, 2013', '<span title="Bolton. Ants>Bolton, 1970</span>', 'Fisher', '2001', 'valid', 'TRUE', 'Acanothognathus', 'FALSE', nil, 'FALSE', 'history'])
     end
 
     describe "Exporting species" do
@@ -204,9 +205,9 @@ describe Exporters::Antweb::Exporter do
       journal = FactoryGirl.create :journal, name: "Neue Denkschriften"
       author_name = FactoryGirl.create :author_name, name: "Forel, A."
       reference = FactoryGirl.create(:article_reference, author_names: [author_name],
-                          citation_year: "1874",
-                          title: "Les fourmis de la Suisse",
-                          journal: journal, series_volume_issue: "26", pagination: "1-452")
+                                     citation_year: "1874",
+                                     title: "Les fourmis de la Suisse",
+                                     journal: journal, series_volume_issue: "26", pagination: "1-452")
       taxon = create_genus
       taxon.protonym.authorship.reference = reference
       taxon.protonym.authorship.save!
@@ -275,46 +276,46 @@ describe Exporters::Antweb::Exporter do
     end
     it "should not punt on a subfamily's family" do
       taxon = create_subfamily
-      expect(@exporter.export_taxon(taxon)[22]).to eq('Formicidae')
+      expect(@exporter.export_taxon(taxon)[23]).to eq('Formicidae')
     end
     it "should handle a taxon's subfamily" do
       taxon = create_tribe subfamily: @subfamily
-      expect(@exporter.export_taxon(taxon)[22]).to eq('Dolichoderinae')
+      expect(@exporter.export_taxon(taxon)[23]).to eq('Dolichoderinae')
     end
 
     it "should not skip over tribe and return the subfamily" do
       taxon = create_genus tribe: @tribe
-      expect(@exporter.export_taxon(taxon)[22]).to eq('Attini')
+      expect(@exporter.export_taxon(taxon)[23]).to eq('Attini')
     end
 
     it "should return the subfamily only if there's no tribe" do
       taxon = create_genus subfamily: @subfamily, tribe: nil
-      expect(@exporter.export_taxon(taxon)[22]).to eq('Dolichoderinae')
+      expect(@exporter.export_taxon(taxon)[23]).to eq('Dolichoderinae')
     end
 
     it "should skip over subgenus and return the genus" do
       taxon = create_species genus: @genus, subgenus: @subgenus
-      expect(@exporter.export_taxon(taxon)[22]).to eq('Atta')
+      expect(@exporter.export_taxon(taxon)[23]).to eq('Atta')
     end
 
     it "should handle a taxon's species" do
       taxon = create_subspecies 'Atta betta cappa', species: @species, genus: @genus, subfamily: @subfamily
-      expect(@exporter.export_taxon(taxon)[22]).to eq('Atta betta')
+      expect(@exporter.export_taxon(taxon)[23]).to eq('Atta betta')
     end
     it "should handle a synonym" do
       senior = create_genus 'Eciton', subfamily: @subfamily
       junior = create_genus 'Atta', subfamily: @subfamily, current_valid_taxon: senior
       taxon = create_species genus: junior
       Synonym.create! senior_synonym: senior, junior_synonym: junior
-      expect(@exporter.export_taxon(taxon)[22]).to eq('Eciton')
+      expect(@exporter.export_taxon(taxon)[23]).to eq('Eciton')
     end
     it "should handle a genus without a subfamily" do
       taxon = create_genus 'Acanothognathus', tribe: nil, subfamily: nil
-      expect(@exporter.export_taxon(taxon)[22]).to eq('Formicidae')
+      expect(@exporter.export_taxon(taxon)[23]).to eq('Formicidae')
     end
     it "should handle a subspecies without a species" do
       taxon = create_subspecies 'Atta betta kappa', genus: @genus, species: nil, subfamily: nil
-      expect(@exporter.export_taxon(taxon)[22]).to eq('Atta')
+      expect(@exporter.export_taxon(taxon)[23]).to eq('Atta')
     end
   end
 end

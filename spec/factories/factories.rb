@@ -18,6 +18,16 @@ FactoryGirl.define do
     fossil 0
     tnuid 5678
   end
+
+  factory :hol_taxon_datum do
+    name "Atta major"
+    rank 'Species'
+    status 'Original name/combination'
+    is_valid 'Valid'
+    fossil 0
+    tnuid 5678
+  end
+
   factory :taxon_state do
     review_state 'old'
     deleted 0

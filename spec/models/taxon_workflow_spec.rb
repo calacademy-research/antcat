@@ -3,13 +3,18 @@ require 'spec_helper'
 
 describe Taxon do
   it "starts as 'old', and stays there" do
-    taxon = FactoryGirl.create :genus
+    adder = FactoryGirl.create :user, can_edit: true
+
+    taxon = create_taxon_version_and_change :old, adder
+
     expect(taxon).to be_old
     expect(taxon.can_approve?).to be_falsey
   end
 
   it "should be able to transition from waiting to approved" do
-    taxon = FactoryGirl.create :genus, review_state: :waiting
+    adder = FactoryGirl.create :user, can_edit: true
+
+    taxon = create_taxon_version_and_change :waiting, adder
     expect(taxon).to be_waiting
     expect(taxon.can_approve?).to be_truthy
     taxon.approve!
@@ -51,7 +56,17 @@ describe Taxon do
       before do
         @changer = FactoryGirl.create :user, can_edit: true
         @approver = FactoryGirl.create :user, can_edit: true
-        @taxon = create_taxon_version_and_change :waiting, @changer
+        #@taxon = create_taxon_version_and_change :waiting, @changer
+
+        name = FactoryGirl.create :name, name: 'default_genus'
+        @taxon = FactoryGirl.create :genus, name: name
+        @taxon.taxon_state.review_state = :waiting
+
+        @change = FactoryGirl.create :change, user_changed_taxon_id: @taxon.id, change_type: "create"
+        FactoryGirl.create :version, item_id: @taxon.id, whodunnit: @changer.id, change_id: @change.id
+        @change.update_attributes! approver: @changer, approved_at: Time.now
+
+
       end
       it "should allow any user to edit a waiting record" do
         expect(@taxon.can_be_edited_by?(nil)).to be_falsey
@@ -65,9 +80,9 @@ describe Taxon do
         expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
       end
       it "should allow it to be approved by an approver" do
-        expect(@taxon.can_be_approved_by?(nil)).to be_falsey
-        expect(@taxon.can_be_approved_by?(@approver)).to be_truthy
-        expect(@taxon.can_be_approved_by?(@user)).to be_falsey
+        expect(@taxon.can_be_approved_by?(@change,nil)).to be_falsey
+        expect(@taxon.can_be_approved_by?(@change,@approver)).to be_truthy
+        expect(@taxon.can_be_approved_by?(@change,@user)).to be_falsey
       end
     end
 
@@ -116,7 +131,10 @@ describe Taxon do
     end
     describe "Last version" do
       it "should return the most recent Version" do
-        genus = create_genus
+        adder = FactoryGirl.create :user, can_edit: true
+
+        taxon = create_taxon_version_and_change :waiting, adder
+        genus = taxon
         last_version = genus.last_version
         genus.reload
         expect(last_version).to eq(genus.versions(true).last)
@@ -124,25 +142,27 @@ describe Taxon do
     end
   end
 
-  describe "Added by" do
-    around do |example|
-      with_versioning &example
-    end
-    it "should return the User who added the record, not a subsequent editor" do
-      taxon = create_genus
-      adder = FactoryGirl.create :user
-      editor = FactoryGirl.create :user
-      setup_version taxon.id, adder
-
-      taxon.update_attributes! incertae_sedis_in: 'genus'
-      taxon.last_version.update_attributes! whodunnit: editor
-      taxon.save!
-      setup_version(taxon.id, adder)
-
-      expect(taxon.added_by).to eq(adder)
-    end
-
-  end
+  # We no longer support "Added by" display.
+  # describe "Added by" do
+  #   around do |example|
+  #     with_versioning &example
+  #   end
+  #   it "should return the User who added the record, not a subsequent editor" do
+  #     adder = FactoryGirl.create :user
+  #     editor = FactoryGirl.create :user
+  #     taxon = create_taxon_version_and_change :waiting, adder
+  #
+  #     setup_version taxon.id, adder
+  #
+  #     taxon.update_attributes! incertae_sedis_in: 'genus'
+  #     taxon.last_version.update_attributes! whodunnit: editor
+  #     taxon.save!
+  #     setup_version(taxon.id, adder)
+  #
+  #     expect(taxon.added_by).to eq(adder)
+  #   end
+  #
+  # end
 
 
 

@@ -24,8 +24,8 @@ describe Exporters::Antweb::Formatter do
       protonym = Protonym.create! name: name, authorship: authorship
       genus = create_genus name: name, protonym: protonym
       species = create_species 'Atta major', genus: genus
-      FactoryGirl.create :hol_datum, taxon_id: species.id, tnuid: 1234
-      FactoryGirl.create :hol_datum, taxon_id: genus.id, tnuid: 1235
+      FactoryGirl.create :hol_taxon_datum, antcat_taxon_id: species.id, tnuid: 1234
+      FactoryGirl.create :hol_taxon_datum, antcat_taxon_id: genus.id, tnuid: 1235
 
       genus.update_attribute :type_name, species.name
       item = genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
