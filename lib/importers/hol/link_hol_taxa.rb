@@ -1,4 +1,4 @@
-class Importers::Hol::HolSynonymLink < Importers::Hol::BaseUtils
+class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
 
   def initialize
     @name_matcher = HolNameMatcher.new
@@ -530,11 +530,21 @@ class Importers::Hol::HolSynonymLink < Importers::Hol::BaseUtils
   end
 
   def delete_auto_gen
+    # Add code to flip auto-gen bit on edit. Flip it for all imported things: aTax
+    # Add "auto gen" to journal
+    # Add "auto gen" tag to reference
+    # add "auto gen" flag support to importer
+    # Add "auto gen" for author?
 
-    # delete antcat_name_id where it points to an auto-gen record.
-    # delete names where auto_gen is true
-    # delete synonym record where it points to auto_gen taxon
-    # delete taxon where auto_gen is true
+
+    # for each taxon where auto_gen is true and origin = hol
+    #   delete via taxon_mother
+    # For each synonym where auto_gen is true and origin = hol
+    #   delete
+    #  for each name where auto_gen is true and origin = hol
+    #
+
+
     # delete versions which refer to an autogenned taxon
     # Todo: Hijack version to unset autogen flag?
     # Todo: if taxon autogen status set to " false ", remove autogen flag from name, too

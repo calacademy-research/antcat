@@ -1,11 +1,14 @@
 # coding: UTF-8
 
+#
+#
+#
 
 #
 # Import top level HOL taxa data based on names.
 # Entry points are compare_with_antcat and  compare_subspecies.
 #
-class Importers::Hol::Catalog
+class Importers::Hol::DownloadHolTaxa
   include HolCommands
 
   def initialize

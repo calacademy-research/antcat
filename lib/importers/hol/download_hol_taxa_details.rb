@@ -3,6 +3,12 @@ require 'json'
 
 
 #
+#  Step three of four
+#
+#
+
+
+#
 # TODO: When complete, dump the string maps for authors, pubs, etc.
 # review and correct, and re-run.
 #
@@ -11,7 +17,7 @@ require 'json'
 # Import top level HOL taxa data based on names.
 # Entry points are compare_with_antcat and  compare_subspecies.
 #
-class Importers::Hol::GetHolTaxonInfo < Importers::Hol::BaseUtils
+class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
   include HolCommands
 
 
