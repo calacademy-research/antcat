@@ -6,6 +6,8 @@ require 'json'
 # Import top level HOL taxa data based on names.
 # Entry points are compare_with_antcat and  compare_subspecies.
 #
+# Not used as part of linking at present.
+#
 class Importers::Hol::GetHolLiterature
   include HolCommands
 
@@ -20,7 +22,6 @@ class Importers::Hol::GetHolLiterature
   end
 
 
- # misnomer; this populates the literatiure field
   def get_full_literature_records
 
     start_at = 13880

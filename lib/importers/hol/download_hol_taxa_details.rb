@@ -3,10 +3,16 @@ require 'json'
 
 
 #
-#  Step three of four
+#  Steps 3,4 and 5
 #
+#  step 3 "get_json":  download all the json records and create initial rows in the hol_taxon_data
+# table. Populates only tnuid and json records.
 #
+# Step 4 "link_objects": makes loads of objects and does errorless matching up to antcat_taxon_id.
+# Populates most of the fields in this table
 
+# step 5- "fuzzy_match_taxa_ Meant to be run after initial import; this step will match as many bits as it can
+# to associate a hol taxa with an antcat taxa.
 
 #
 # TODO: When complete, dump the string maps for authors, pubs, etc.
@@ -161,12 +167,37 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
         next
       end
 
-      link_object details_hash
+      link_object details_hash, hol_details
     end
   end
 
+  def unlink_objects
+    # Wipe out "matched" fields on hol_taxon_data
+    HolTaxonDatum.all.each do |taxa|
+      taxa.year = nil
+      taxa.start_page = nil
+      taxa.end_page = nil
+      taxa.journal_name = nil
+      taxa.hol_journal_id = nil
+      taxa.rank = nil
+      taxa.rel_type = nil
+      taxa.status = nil
+      taxa.fossil = nil
+      taxa.valid_tnuid = nil
+      taxa.name = nil
+      taxa.is_valid = nil
+      taxa.antcat_journal_id = nil
+      taxa.antcat_author_id = nil
+      taxa.antcat_reference_id = nil
+      taxa.antcat_protonym_id = nil
+      taxa.antcat_taxon_id = nil
+      taxa.save
+    end
 
-  def link_object details_hash
+  end
+
+
+  def link_object details_hash, hol_details
     # unless details_hash['rank'].downcase=='species'
     #   # puts "not species"    (in hol, there is no 'subspecies')
     #
@@ -180,7 +211,7 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
     if family != "Formicidae"
       puts ("****** Deleting from family: " + family.to_s + " tnuid:" + hol_details.tnuid.to_s)
       #delete_hol hol_details.tnuid
-      next
+      return
     end
 
     hol_details['year'] = get_year details_hash
@@ -195,7 +226,6 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
     hol_details['valid_tnuid'] = get_valid_tnuid details_hash
     hol_details['name'] = get_name details_hash
     hol_details['is_valid'] = get_valid details_hash
-
 
 
     if hol_details.antcat_author_id.nil?
@@ -369,8 +399,10 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
   # Meant to be run after initial import; this step will match as many bits as it can
   # to associate a hol taxa with an antcat taxa.
   #
+  # Only runs if there's nil for antcaon_taxon_id.
+  #
   def fuzzy_match_taxa
-    start_at = 4316
+    start_at = 0
     stop_after = 200000000
     hol_count = 0
     for hol_taxon in HolTaxonDatum.order(:tnuid)

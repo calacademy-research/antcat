@@ -172,7 +172,7 @@ end
 Then /^I should (not )?see the homonym replaced by field$/ do |should_not|
   visible = should_not ? :false : :true
   selector = should_not ? :should_not : :should
-  find("#homonym_replaced_by_row",visible: visible).send(selector, be_visible)
+  find("#homonym_replaced_by_row", visible: visible).send(selector, be_visible)
 end
 When /the homonym replaced by name should be "([^"]*)"$/ do |name|
   page.find('#homonym_replaced_by_name_field div.display').text.should == name
@@ -361,3 +361,13 @@ When /^I fill in the senior synonym name with "([^"]*)"$/ do |name|
     step %{I fill in "name" with "#{name}"}
   end
 end
+
+# auto_generated
+Then(/^the name "(.*?)" genus "(.*?)" should not be auto generated$/) do |species, genus|
+  taxon = Taxon.find_by_name_cache genus + " " + species
+  taxon.auto_generated.should be_falsey
+  name = taxon.name
+  name.auto_generated.should be_falsey
+
+end
+

@@ -1,11 +1,9 @@
 # coding: UTF-8
 class HolDatum < ActiveRecord::Base
   attr_accessible :name,
-                  :taxon_id,
                   :lsid,
                   :tnid,
                   :tnuid,
-                  :taxon,
                   :author,
                   :rank,:status,
                   :is_valid,

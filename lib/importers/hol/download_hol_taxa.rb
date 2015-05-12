@@ -1,6 +1,15 @@
 # coding: UTF-8
 
 #
+#  Step 1 and 2 of ?
+# starting point: downlad_hol_taxa_hash. Imports hol_taxon_data. This is just top level stuff, n
+# ot enough details to link to much of anything.
+# we start with each genus that antcat knows about, and asks HOL for that genus. It then asks for the children
+# of that genus. This is used as the basis for future quries.
+#
+# This process has the potential of missing a new genus that antcat has never heard of.
+# So there is a second (optional) entry point "download_children_of_type" that pulls a given category
+# (hardcoded) from hol, and if it's not already something that we have a copy of, saves it.
 #
 #
 
@@ -30,7 +39,7 @@ class Importers::Hol::DownloadHolTaxa
 
 
   # runs and compares all genera known to antcat.
-  def compare_with_antcat
+  def downlad_hol_taxa_hash
     #HolDatum.delete_all
 
     #genus = Genus.find_by_name 'Bilobomyrma'
@@ -47,37 +56,17 @@ class Importers::Hol::DownloadHolTaxa
 
       genus_count = genus_count +1
     end
+    save_hol_data
   end
 
   def add_to_hol_dict hol_hash
-    if @hol_dictionary[hol_hash['name'].downcase].nil?
-      @hol_dictionary[hol_hash['name'].downcase] = []
+    if @hol_dictionary[hol_hash['tnuid']].nil?
+      @hol_dictionary[hol_hash['tnuid'].downcase] = []
     end
-    ary = @hol_dictionary[hol_hash['name'].downcase]
+    ary = @hol_dictionary[hol_hash['tnuid'].downcase]
     ary.concat [hol_hash]
   end
 
-
-
-
-  # runs and compares all TAXON TYPE (hardocded), one at a time
-  # pull all *foo* by name and compare them
-  def compare_subspecies
-    subspecies_count=0
-    for subspecies in Tribe.order(:name_cache).all
-      if (subspecies_count >= 0)
-       check_and_save_hol_for_taxon subspecies
-      end
-      if subspecies_count > 10000
-        exit
-      end
-      if subspecies_count % 20 == 0
-        print " " + subspecies_count.to_s + " "
-        @print_char = @print_char + 2 + subspecies_count.to_s.length
-      end
-      subspecies_count = subspecies_count +1
-    end
-  end
 
 
 
@@ -148,6 +137,45 @@ class Importers::Hol::DownloadHolTaxa
     false
   end
 
+
+  def find_antcat_taxa(name)
+    @antcat_taxa_dictionary[name.downcase]
+  end
+
+
+
+  def save_hol_data
+    @hol_dictionary.each do |missing_hols_tuple|
+      missing_hols_tuple[1].each do |hol_hash|
+        save_hol_taxa hol_hash
+      end
+    end
+  end
+
+  #==============================================================
+
+
+
+  # runs and compares all TAXON TYPE (hardocded), one at a time
+  # pull all *foo* by name and compare them
+  def download_children_of_type
+    subspecies_count=0
+    # Could iterate over Tribe, etc. Genus is already handled.
+    for subspecies in Tribe.order(:name_cache).all
+      if (subspecies_count >= 0)
+        check_and_save_hol_for_taxon subspecies
+      end
+      if subspecies_count > 10000
+        exit
+      end
+      if subspecies_count % 20 == 0
+        print " " + subspecies_count.to_s + " "
+        @print_char = @print_char + 2 + subspecies_count.to_s.length
+      end
+      subspecies_count = subspecies_count +1
+    end
+  end
+
   # Go back to hol and ask about this particular taxon name.
   def check_and_save_hol_for_taxon(taxon)
     # It might already exist in the hol_data; do a lookup.
@@ -166,20 +194,19 @@ class Importers::Hol::DownloadHolTaxa
       return nil
     end
     hol_taxa_hash.each do |hol_hash|
-      save_hol_data hol_hash, taxon.id
+      save_hol_taxa hol_hash
     end
 
   end
 
 
 
-  def save_hol_data hol_hash, taxon_id
+  def save_hol_taxa hol_hash
     if  @tnuid_dictionary.has_key?(hol_hash['tnuid'])
       print_char ","
       return
     end
     hd = create_hol_datum_from_hash(hol_hash)
-    hd.taxon_id = taxon_id
 
 
     records = nil
@@ -189,7 +216,6 @@ class Importers::Hol::DownloadHolTaxa
 
     end
     if records.nil?
-      #get_additional_hol_taxon_info hol_hash
       hd.save
       @tnuid_dictionary[hol_hash['tnuid']]=nil
 
@@ -203,85 +229,5 @@ class Importers::Hol::DownloadHolTaxa
     hd
   end
 
-  def find_antcat_taxa(name)
-    @antcat_taxa_dictionary[name.downcase]
-  end
-
-  # @param [Object] hol_hash
-  # Does a query using HOLs "getTaxonInfo" api.
-  def get_additional_hol_taxon_info hol_hash
-#    hol_taxa_hash = get_taxa_command "getTaxaFromText?name=#{query_string}&limit=10&nameOnly=N"
-#http://osuc.biosci.ohio-state.edu/OJ_Break/getTaxonInfo?tnuid=30148&inst_id=0&format=json&key=FBF57A9F7A666FC0E0430100007F0CDC
-    @print_char = @print_char +1
-    results = run_hol_command "getTaxonInfo?tnuid=#{hol_hash['tnuid']}"
-    hol_hash.rel_type = results['rel_type']
-    puts results
-  end
-
-  # An array of antcat species taxa and a genus taxa (the latter for diagnosis and reporting)
-  def compare_hol_and_antcat_species antcat_species, genus
-
-    # Iterate over the hol dictionary. Match against the antcat_species
-    # that we've passed in (should be all the species in the antcat genus)
-    # When we get a match, write a record to the database table and remove
-    # the hol entry from the dictionary
-    antcat_species.each do |antcat_taxa|
-      antcat_name = antcat_taxa.name.name
-      # puts ("Got " + antcat_species.count.to_s + " antcat results")
-
-      hol_species = @hol_dictionary[antcat_name.downcase]
-      if hol_species.nil?
-        #puts ("No HOL equivalant for " + antcat_name)
-        check_and_save_hol_for_taxon antcat_taxa
-        next
-      end
-      hol_species.each do |hol_hash|
-        save_hol_data hol_hash, antcat_taxa.id
-        print_char "M"
-        #puts ("Found and matched " + antcat_name)
-      end
-
-      @hol_dictionary.delete(antcat_name.downcase)
-    end
-    # After we've matched every known antcat item against the returned items from
-    # HOL, we have these HOL items left over that don't seem to have antcat equivalants
-    @hol_dictionary.each do |missing_hols_tuple|
-      missing_hols_tuple[1].each do |hol_hash|
-        # do a find against antcat internally
-        antcat_taxa = find_antcat_taxa hol_hash['name']
-        if (antcat_taxa.nil? || antcat_taxa.count==0)
-          #puts ("No antcat equivalant for " + hol_hash['name'].to_s)
-          print_char "A"
-          save_hol_data hol_hash, nil
-        elsif (antcat_taxa.count == 1)
-          #puts (" Found a match in antcat; HOL returned "+ hol_hash['name']+" that isn't in genus "+genus.name_cache+" according to antcat.")
-          print_char "q"
-          save_hol_data hol_hash, antcat_taxa[0]
-        else
-          hol_hash['many_antcat_references']=1
-          save_hol_data hol_hash, antcat_taxa[0]
-          puts (" ** Got multiple antcat taxa; marked")
-        end
-      end
-    end
-  end
 end
 
-# Cases -
-# multiple possible antcat references
-#  -  mark a field as "has multiple antcat true"
-#    Causes:
-#      Homonyms
-#      ?
-# multiple possible hol references
-#  - do a post-facto query where we mark has multiple hol true" (scan HolData for multiple instances of a name)
-#    Causes:
-#      Homonyms
-#      ?
-# No matching antcat record
-# -
-
-# Ideas - for something listed as "original combo" query for subsequent, and vice versa.
-
-# index on tnuid
-# find on each first

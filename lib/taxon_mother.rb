@@ -37,81 +37,28 @@ class TaxonMother
   end
 
 
-  #
-  # Does the necessary stuff around versions and state for any taxon
-  # addition or change. Returns the change ID and updates @taxon.
-  #
-  def simple_taxon_save taxon
-    if taxon.new_record?
-      change_type = :create
-      taxon.taxon_state = TaxonState.new
-      taxon.taxon_state.deleted = false
-      taxon.taxon_state.id = taxon.id
-    else
-      # we might want to get smarter about this
-      change_type = :update
+  def remove_auto_generated
+    @taxon.auto_generated = false
+    name = @taxon.name
+    if name.auto_generated
+      name.auto_generated = false
+      name.save
     end
-    taxon.taxon_state.review_state = :waiting
-
-    change = setup_change change_type
-    change_id = change.id
-
-    taxon.save!
-    # paper_trail is dumb. When a new object is created, it has no "object".
-    # So, if you undo the first change, and try to reify the previous one,
-    # you end up with no object! touch_with_version gives us one, but
-    # Just for the taxa, not the protonym or other changable objects.
-    if(:create == change_type)
-      taxon.touch_with_version
-    end
-    @taxon = taxon
-    change_id
-  end
-
-  # TODO: Document params, and how that works.
-  def save_taxon_old taxon, params, previous_combination = nil
-    change_type=nil
-    Taxon.transaction do
-      @taxon = taxon
-      update_name params.delete :name_attributes
-      update_parent params.delete :parent_name_attributes
-      update_current_valid_taxon params.delete :current_valid_taxon_name_attributes
-      update_homonym_replaced_by params.delete :homonym_replaced_by_name_attributes
-      update_protonym params.delete :protonym_attributes
-      update_type_name params.delete :type_name_attributes
-      update_name_status_flags params
-
-      change_id = simple_taxon_save @taxon
-      # TODO: The below may not be being used
-      if (change_type == :create)
-        change.user_changed_taxon_id = @taxon.id
-        change.save
+    synonyms = Synonym.where(senior_synonym_id: @taxon.id)
+    synonyms.each do |synonym|
+      if synonym.auto_generated
+        synonym.auto_generated = false
+        synonym.save
       end
-
-      # for each taxon save, we need to have a change_id AND we need to create a new
-      # transaction record
-      if previous_combination
-        # the taxon that was just saved is a new combination. Update the
-        # previous combination's status, associated it with the new
-        # combination, and transfer all taxon history and synonyms
-
-        # find all taxa that list previous_combination.id as
-        # current_valid_taxon_id and update them
-        Taxon.where(current_valid_taxon_id: previous_combination.id).each do |taxon_to_update|
-          update_elements(taxon, params, taxon_to_update, get_status_string(taxon_to_update), change_id)
-        end
-
-        # since the previous doesn't have a pointer to current_valid_taxon, it won't show up
-        # in the above search. If it's the protonym, set it propertly.
-        if (previous_combination.id == @taxon.protonym.id)
-          update_elements(taxon, params, previous_combination, Status['original combination'].to_s, change_id)
-        else
-          update_elements(taxon, params, previous_combination, Status['obsolete combination'].to_s, change_id)
-        end
-      end
-      save_taxon_children @taxon
     end
 
+    synonyms = Synonym.where(junior_synonym_id: @taxon.id)
+    synonyms.each do |synonym|
+      if synonym.auto_generated
+        synonym.auto_generated = false
+        synonym.save
+      end
+    end
 
   end
 
@@ -141,13 +88,15 @@ class TaxonMother
 
       change = setup_change change_type
       change_id = change.id
-
+      if @taxon.auto_generated
+        remove_auto_generated
+      end
       @taxon.save!
       # paper_trail is dumb. When a new object is created, it has no "object".
       # So, if you undo the first change, and try to reify the previous one,
       # you end up with no object! touch_with_version gives us one, but
       # Just for the taxa, not the protonym or other changable objects.
-      if(:create == change_type)
+      if (:create == change_type)
         @taxon.touch_with_version
       end
 

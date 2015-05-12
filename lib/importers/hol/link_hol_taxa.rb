@@ -6,13 +6,12 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   end
 
   def create_objects
-    start_at = 3006
-    stop_after = 10
+    start_at = 0
+    stop_after = 100000
     hol_count = 0
     for hol_details in HolTaxonDatum.order(:tnuid)
-      if hol_count % 20 == 0
-        print_string(" #{hol_count.to_s} ")
-      end
+      #if hol_count % 20 == 0
+      #end
       hol_count = hol_count +1
       if (hol_count < start_at)
         next
@@ -21,10 +20,10 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
         exit
       end
       #   print_char "."
+      print_string(" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% #{hol_count.to_s} \n")
       create_objects_from_hol_taxon hol_details
-
-
     end
+
   end
 
 
@@ -41,7 +40,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   #
   def create_objects_from_hol_taxon hol_taxon
     puts
-    puts
+
 
     # For many of these hol synonyms, we're looking to create an "obsolete combination"
     # of an existing valid taxa.
@@ -65,6 +64,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     #  end
     # ", I expect many of the combinations in HOL will be found among the Taxt notes that Mark semi-parsed"
     valid_antcat_taxon = find_valid_antcat_taxon hol_taxon
+
     if valid_antcat_taxon.nil?
       puts "==== cannot locate valid antcat taxon for #{hol_taxon.name} tnuid: #{hol_taxon.tnuid}"
       return
@@ -109,7 +109,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
 
       if name.nil?
         puts "Failed to parse name; fatal"
-        return
+        return nil
       end
       name.auto_generated = true
       name.origin = 'hol'
@@ -134,8 +134,10 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     # if we have a valid antcat taxon right away, use it, and get its current valid.
 
     valid_antcat_taxon = get_most_recent_antcat_taxon hol_taxon.antcat_taxon_id
+
     unless valid_antcat_taxon.nil?
       #puts "Got the most recent from the passed in hol taxon(#{hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
+
       return valid_antcat_taxon
     end
 
@@ -147,13 +149,16 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
         puts "valid tnuid entry missing"
       else
         valid_hol_taxon = HolTaxonDatum.find_by_tnuid valid_hol_taxon_tnuid
-        puts "  VALID " + hol_string(valid_hol_taxon)
+        unless valid_antcat_taxon.nil?
+          puts "  VALID " + hol_string(valid_hol_taxon)
+        end
       end
     end
     if valid_hol_taxon.nil?
       print_string "N"
-      return
+      return nil
     end
+
 
     valid_antcat_taxon = get_most_recent_antcat_taxon valid_hol_taxon.antcat_taxon_id
     unless valid_antcat_taxon.nil?
@@ -187,39 +192,76 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     if valid_hol_taxon.antcat_taxon_id.nil?
       print_string "T"
     end
+    nil
   end
 
   # Given an antcat taxon id, return the most current antcat taxon.
-  def get_most_recent_antcat_taxon antcat_taxon_id
+  def get_most_recent_antcat_taxon antcat_taxon_id, history = nil
     if antcat_taxon_id.nil?
       return nil
     else
+      if history.nil?
+        history = {}
+      end
       antcat_taxon = Taxon.find antcat_taxon_id
       valid_antcat_taxon = get_most_recent_from_antcat_object antcat_taxon
-      unless valid_antcat_taxon.nil?
+      #
+      # Cycle detection
+      #
+      valid_count = 0
+      valid = nil
+      if history.has_key?(antcat_taxon_id)
+        history.each do |taxon_path_id|
+          cur_taxon = (Taxon.find taxon_path_id)[0]
+          if cur_taxon.status.downcase == "valid"
+            valid_count += 1
+            valid = cur_taxon
+          end
+        end
+        if 1 == valid_count
+          return valid
+        else
+          return nil
+        end
+      end
+
+      #   iterate over history and do a valid count (saving each valid hit)
+      #   if the valid count is 1, return it
+      #
+      #     if the valid count is other, return nil
+      # end
+      # end
+      # Self pointer; we're all set!
+      if valid_antcat_taxon.id == antcat_taxon.id
+        return valid_antcat_taxon
+      end
+      if valid_antcat_taxon.nil?
+        return antcat_taxon
+      end
+      unless valid_antcat_taxon.current_valid_taxon.nil?
         # if valid_antcat_taxon.current_valid_taxon.nil?
         #   puts "End of the line. Most current valid according to antcat is #{valid_antcat_taxon.name_cache}."
         # end
-        while !valid_antcat_taxon.current_valid_taxon.nil?
-          if valid_antcat_taxon.id == valid_antcat_taxon.current_valid_taxon_id
-            break
-          end
-          valid_antcat_taxon = get_most_recent_antcat_taxon valid_antcat_taxon
-
+        if valid_antcat_taxon.current_valid_taxon.id != valid_antcat_taxon.id
+          history[antcat_taxon_id] = nil
+          valid_antcat_taxon = get_most_recent_antcat_taxon valid_antcat_taxon, history
           if valid_antcat_taxon.nil?
             puts "Fatal - invalid pointer to most current valid taxon. Started at antcat id: #{antcat_taxon_id}"
+            return antcat_taxon
           end
         end
       end
+
       return valid_antcat_taxon
     end
   end
 
+  # returns taxon object referenced under "current valid taxon", or self if self is current valid.
   def get_most_recent_from_antcat_object antcat_taxon
     if antcat_taxon.nil?
       return nil
     else
-      if !antcat_taxon.current_valid_taxon.nil?
+      if antcat_taxon.current_valid_taxon
         return Taxon.find antcat_taxon.current_valid_taxon
       else
         return antcat_taxon
@@ -270,7 +312,12 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       #if  previous_genera.length == 1
       hol_taxon = update_hol_taxon hol_taxon, valid_antcat_taxon, full_previous_name
       unless hol_taxon.antcat_taxon_id
-        create_taxon_details valid_antcat_taxon, hol_taxon, full_previous_name, valid_antcat_taxon.rank, valid_antcat_taxon.parent
+        begin
+          create_taxon_details valid_antcat_taxon, hol_taxon, full_previous_name, valid_antcat_taxon.rank, valid_antcat_taxon.parent
+        rescue => e
+          puts "Failed to create taxon because: #{e.to_s}"
+        end
+
       end
       # else
       #   puts "   XXX Failed to match genus #{previous_genus}. Count: #{previous_genera.length}. Won't create taxon #{full_previous_name}"
@@ -278,10 +325,18 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
 
       hol_taxon = update_hol_taxon hol_taxon, valid_antcat_taxon, full_current_name
       unless hol_taxon.antcat_taxon_id
-        create_taxon_details valid_antcat_taxon, hol_taxon, full_current_name, valid_antcat_taxon.rank, valid_antcat_taxon.parent
+        begin
+          create_taxon_details valid_antcat_taxon, hol_taxon, full_current_name, valid_antcat_taxon.rank, valid_antcat_taxon.parent
+        rescue => e
+          puts "Failed to create taxon because: #{e.to_s}"
+        end
       end
     else
-      create_taxon_details valid_antcat_taxon, hol_taxon, hol_taxon.name, valid_antcat_taxon.rank, valid_antcat_taxon.parent
+      begin
+        create_taxon_details valid_antcat_taxon, hol_taxon, hol_taxon.name, valid_antcat_taxon.rank, valid_antcat_taxon.parent
+      rescue => e
+        puts "Failed to create taxon because: #{e.to_s}"
+      end
     end
 
   end
@@ -347,7 +402,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     name = find_or_create_name name_string
     if name.nil?
       puts "====== failed to create name, aborting"
-      return
+      return nil
     end
     hol_taxon.antcat_name_id = name.id
     hol_taxon.save
@@ -384,7 +439,9 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       name = find_or_create_name genus_string
       # joe find the hol record that conforms to a genus with this name. if it has an antcat_id, raise hell.
       # if not, get its status, and this new taxon we create should be mapped to this antcat id.
-
+      if name.nil
+        raise 'Failed to parse name'
+      end
       new_genus = create_taxon parent, hol_taxon, name, parent.rank, parent.parent, hol_taxon.status
       puts "   Created new genus: #{new_genus.id} with status #{hol_taxon.status}"
 
@@ -397,7 +454,6 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     nil
 
   end
-
 
 
   # Creates taxon,synonym (and any logic therein, derived from hol_Taxon.status),
@@ -451,24 +507,26 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     # "Junior synonym"
 
 
-    status_map = {"Unavailable, literature misspelling" => ['unavailable misspelling',false],
-                  "Unavailable, incorrect original spelling" => ['unavailable misspelling',false],
-                  "Unavailable, other" => ['unavailable uncategorized',false],
-                  "Unavailable, nomen nudum" => ['unavailable uncategorized',false],
-                  "Susequent name/combination" => ['unavailable uncategorized',false],
-                  "Subseqent name/combination" => ['unavailable uncategorized',false],
-                  "Subsequent name/combination" => ['unavailable uncategorized',false],
-                  "Original name/combination" => ['unavailable uncategorized',false],
-                  "Unavailable, suppressed by ruling" => ['unavailable uncategorized',false],
-                  "Unnecessary replacement name" => ['unavailable uncategorized',false],
-                  "Unavailable, incorrect original spelling" => ['unavailable uncategorized',false],
-                  "Emendation" => ['unavailable uncategorized',false],
-                  "Misidentification" => ['unavailable uncategorized',false],
-                  "Unjustified emendation" => ['unavailable uncategorized',false],
-
-
-
-
+    status_map = {"Unavailable, literature misspelling" => ['unavailable misspelling', false],
+                  "Unavailable, incorrect original spelling" => ['unavailable misspelling', false],
+                  "Unavailable, other" => ['unavailable uncategorized', false],
+                  "Unavailable, nomen nudum" => ['unavailable uncategorized', false],
+                  "Susequent name/combination" => ['unavailable uncategorized', false],
+                  "Subseqent name/combination" => ['unavailable uncategorized', false],
+                  "Subsequent name/combination" => ['unavailable uncategorized', false],
+                  "Original name/combination" => ['unavailable uncategorized', false],
+                  "Unavailable, suppressed by ruling" => ['unavailable uncategorized', false],
+                  "Unnecessary replacement name" => ['unavailable uncategorized', false],
+                  "Unavailable, incorrect original spelling" => ['unavailable uncategorized', false],
+                  "Emendation" => ['unavailable uncategorized', false],
+                  "Misidentification" => ['unavailable uncategorized', false],
+                  "Unjustified emendation" => ['unavailable uncategorized', false],
+                  "Original name/combination" => ['unavailable uncategorized', false],
+                  "Justified emendation" => ['unavailable uncategorized', false],
+                  "Replacement name" => ['unavailable uncategorized', false],
+                  "Junior homonym" => ['unavailable uncategorized', false],
+                  "Homonym & junior synonym" => ['unavailable uncategorized', false],
+                  "Common name" => ['unavailable uncategorized', false]
     }
 
     for key, value in status_map
@@ -529,26 +587,36 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     new_taxon
   end
 
-  def delete_auto_gen
-    # Add code to flip auto-gen bit on edit. Flip it for all imported things: aTax
-    # Add "auto gen" to journal
-    # Add "auto gen" tag to reference
-    # add "auto gen" flag support to importer
-    # Add "auto gen" for author?
+  def remove_auto_generated
+    auto_gen_taxa = Taxon.where(auto_generated: true, origin: 'hol')
+    auto_gen_taxa.each do |doomed_taxa|
+      Taxon.transaction do
+        hol_taxon = HolTaxonDatum.find_by_antcat_taxon_id doomed_taxa.id
+        hol_taxon.antcat_taxon_id = nil
+        hol_taxon.save
+        doomed_taxa.destroy!
+      end
+    end
 
-
-    # for each taxon where auto_gen is true and origin = hol
-    #   delete via taxon_mother
-    # For each synonym where auto_gen is true and origin = hol
-    #   delete
-    #  for each name where auto_gen is true and origin = hol
-    #
-
-
-    # delete versions which refer to an autogenned taxon
-    # Todo: Hijack version to unset autogen flag?
-    # Todo: if taxon autogen status set to " false ", remove autogen flag from name, too
-    #   taxonmother delete should handle this; double check
+    Name.where(auto_generated: true, origin: 'hol').each do |doomed_name|
+      Name.transaction do
+        hol_taxon = HolTaxonDatum.find_by_antcat_name_id doomed_name.id
+        hol_taxon.antcat_name_id = nil
+        hol_taxon.save
+        doomed_name.destroy!
+      end
+    end
   end
+
+
+  def remove_imported_data
+    # delete all from hol_data
+    # delete all from hol_literature_pages
+    # delete all from hol_literatures
+    # delete all from hol_synonyms
+    # delete all from hol_taxon_data
+
+  end
+
 
 end

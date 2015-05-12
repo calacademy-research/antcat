@@ -1,4 +1,5 @@
 # coding: UTF-8
+# Not used
 class Importers::Hol::DocumentUrlImporter
   attr_reader :success_count,
               :book_failure_count,

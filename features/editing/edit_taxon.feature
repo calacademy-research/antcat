@@ -37,6 +37,17 @@ Feature: Editing a taxon
     And I wait for a bit
     Then I should see "Atta major" in the header
 
+  Scenario: Edit an imported species and flip its state from auto gen
+    Given an imported species exists with a name of "major" and a genus of "Atta"
+    And I log in
+    When I go to the catalog page for "Atta major"
+    Then I should see "Atta major" in the header
+    When I go to the edit page for "Atta major"
+    And I save my changes
+    And I wait for a bit
+    Then the name "major" genus "Atta" should not be auto generated
+
+
   Scenario: Setting a genus's name to an existing one
     Given there is a genus "Calyptites"
     And there is a genus "Atta"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505005535) do
+ActiveRecord::Schema.define(version: 20150507234702) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -127,12 +127,10 @@ ActiveRecord::Schema.define(version: 20150505005535) do
   add_index "forward_refs", ["name_id"], name: "index_forward_refs_on_name_id", using: :btree
 
   create_table "hol_data", force: :cascade do |t|
-    t.integer "taxon_id",               limit: 4
     t.integer "tnuid",                  limit: 4
     t.integer "tnid",                   limit: 4
     t.string  "name",                   limit: 255
     t.string  "lsid",                   limit: 255
-    t.string  "taxon",                  limit: 255
     t.string  "author",                 limit: 255
     t.string  "rank",                   limit: 255
     t.string  "status",                 limit: 255
@@ -143,7 +141,6 @@ ActiveRecord::Schema.define(version: 20150505005535) do
     t.boolean "many_hol_references",    limit: 1
   end
 
-  add_index "hol_data", ["taxon_id"], name: "hol_data_taxon_id_idx", using: :btree
   add_index "hol_data", ["tnuid"], name: "hol_data_tnuid_idx", using: :btree
 
   create_table "hol_literature_pages", force: :cascade do |t|
@@ -161,7 +158,7 @@ ActiveRecord::Schema.define(version: 20150505005535) do
     t.string  "rank",      limit: 255
     t.string  "year",      limit: 255
     t.string  "month",     limit: 255
-    t.text    "comments",  limit: 65535, null: false
+    t.string  "comments",  limit: 255
     t.string  "full_pdf",  limit: 255
     t.string  "pages",     limit: 255
     t.string  "public",    limit: 255
@@ -200,6 +197,8 @@ ActiveRecord::Schema.define(version: 20150505005535) do
     t.string  "is_valid",            limit: 255
   end
 
+  add_index "hol_taxon_data", ["antcat_name_id"], name: "hol_taxon_data_antcat_name_id_idx", using: :btree
+  add_index "hol_taxon_data", ["antcat_taxon_id"], name: "hol_taxon_data_antcat_taxon_id_idx", using: :btree
   add_index "hol_taxon_data", ["tnuid"], name: "hol_taxon_data_tnuid_idx", using: :btree
 
   create_table "journals", force: :cascade do |t|
