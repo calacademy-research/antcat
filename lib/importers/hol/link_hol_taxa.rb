@@ -5,9 +5,14 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
 
   end
 
+  def create_bad_case
+    hol_details = HolTaxonDatum.find_by_tnuid 361797
+    create_objects_from_hol_taxon hol_details
+  end
+
   def create_objects
-    start_at = 0
-    stop_after = 100000
+    start_at = 60700
+    stop_after = 1000000
     hol_count = 0
     for hol_details in HolTaxonDatum.order(:tnuid)
       #if hol_count % 20 == 0
@@ -24,7 +29,16 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       create_objects_from_hol_taxon hol_details
     end
 
+
   end
+
+
+  #
+  # Bug in select * from taxa where id = 474744
+  # processing tnuid 17303 wrong.
+  # It points to genus Neoponera (430115), which is the parent of the current valid genus
+  # instead of genus Pachycondyla (430103) which is what corresponds to this name.
+  #
 
 
   #
@@ -85,27 +99,21 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   #
   # If it's missing, create an antcat name and return it.
   # If there's a pre-existing name that matches, return that.
-  # Sets "nonconfirming" flag as needed for displaying a literal string
+  # Sets "nonconforming" flag as needed for displaying a literal string
   #
-  def find_or_create_name hol_taxon_name_string
+  def find_or_create_name hol_taxon_name_string, force_nonconforming = false
     # Make certain this doesn't already exist!
 
 
     lookup_name = @name_matcher.get_name_without_previous_genus hol_taxon_name_string
     name = Name.find_by_name lookup_name
-    if name.nil?
-      is_nonconforming = nil
+    is_nonconforming = false
+    if(force_nonconforming or hol_taxon_name_string.index("."))
+      is_nonconforming = true
+    end
 
-      # if hol_taxon.status == "Unavailable, literature misspelling"
-      #   is_nonconforming = true
-      # end
-      if  hol_taxon_name_string.index(".")
-        is_nonconforming = true
-      end
-
-
+    if name.nil? or name.nonconforming_name != is_nonconforming
       name = Name.parse lookup_name, true
-
 
       if name.nil?
         puts "Failed to parse name; fatal"
@@ -114,6 +122,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       name.auto_generated = true
       name.origin = 'hol'
       name.nonconforming_name = is_nonconforming
+
       name.save
       puts "     **** new name created: #{name.name} with id: #{name.id} and is nonconforming: #{is_nonconforming}  type: #{name.type}"
     end
@@ -313,9 +322,9 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       hol_taxon = update_hol_taxon hol_taxon, valid_antcat_taxon, full_previous_name
       unless hol_taxon.antcat_taxon_id
         begin
-          create_taxon_details valid_antcat_taxon, hol_taxon, full_previous_name, valid_antcat_taxon.rank, valid_antcat_taxon.parent
+          create_taxon_details valid_antcat_taxon, hol_taxon, full_previous_name
         rescue => e
-          puts "Failed to create taxon because: #{e.to_s}"
+          puts "Failed to create taxon because 1: #{e.to_s}"
         end
 
       end
@@ -326,16 +335,16 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       hol_taxon = update_hol_taxon hol_taxon, valid_antcat_taxon, full_current_name
       unless hol_taxon.antcat_taxon_id
         begin
-          create_taxon_details valid_antcat_taxon, hol_taxon, full_current_name, valid_antcat_taxon.rank, valid_antcat_taxon.parent
+          create_taxon_details valid_antcat_taxon, hol_taxon, full_current_name
         rescue => e
-          puts "Failed to create taxon because: #{e.to_s}"
+          puts "Failed to create taxon because 2: #{e.to_s}"
         end
       end
     else
       begin
-        create_taxon_details valid_antcat_taxon, hol_taxon, hol_taxon.name, valid_antcat_taxon.rank, valid_antcat_taxon.parent
+        create_taxon_details valid_antcat_taxon, hol_taxon, hol_taxon.name
       rescue => e
-        puts "Failed to create taxon because: #{e.to_s}"
+        puts "Failed to create taxon because 3: #{e.to_s}"
       end
     end
 
@@ -379,19 +388,30 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       return nil
     end
   end
-
+                                    n
 
   # This >will< make a new taxon.
   # it MIGHT make a name id, if it needs one.
   # It will greate a new name and genus if the genus name doesn't match
-  def create_taxon_details valid_antcat_taxon, hol_taxon, name_string, rank, parent
-
+  def create_taxon_details valid_antcat_taxon, hol_taxon, name_string, force_nonconforming = false
+    rank = valid_antcat_taxon.rank
+    parent = valid_antcat_taxon.parent
+    force_nonconforming = false
     new_genus_parent = handle_genus valid_antcat_taxon, hol_taxon, name_string, rank, parent
     if new_genus_parent
-      parent = new_genus_parent
-      puts " Looks like that was the interesting bad genus case."
-    end
 
+      if  rank.downcase != "subspecies"
+        parent = new_genus_parent
+        puts " Looks like that was the interesting bad genus case."
+      elsif rank.downcase == "subspecies"
+        # This case get hit because the valid species is a subspecies, but we're a binomial,
+        # so we picked out our genus out of our "binomial subspecies". e.g.: we're "foo bar"
+        # and the valid subspecies is "foo bar baz". So the handle_genus routine says,
+        # "Hey, you're marked as genus foo, and the valid parent is species foo bar, let's match you to
+        # genus foo instead of species foo bar".
+        puts " Binomial subspecies!"
+      end
+    end
 
     #puts "Parsing new name: #{hol_taxon.name} as type: #{valid_antcat_taxon.rank}"
 
@@ -399,7 +419,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     # doing this even though we might have an antcat_name_id, because we could have split it
     # into previous and subsequent genera. Speed optimize to use the antcat_name_id if this is killing us.
     #
-    name = find_or_create_name name_string
+    name = find_or_create_name name_string, force_nonconforming
     if name.nil?
       puts "====== failed to create name, aborting"
       return nil
@@ -408,12 +428,19 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     hol_taxon.save
     # create name!
 
-
+    # Check here - if it claims to be a subspecies, but it's binomial,
+    # that's going to be a strange case.
+    # I can't make a subspecies be the child of a genus; object model goes blooie
+    # But the display USUALLY shows genus/species. Create a custom display for this case
+    # in the catalog viewer.
     create_taxon valid_antcat_taxon, hol_taxon, name, rank, parent, hol_taxon.status
 
   end
 
   # case to handle:
+  # The genus of this species might not match the genus of the valid species. Handle that.
+  # also, the genus of this species might not exist, so handle that too.
+  #
   # if we're failing to match on the genus part of the name, we need to create a genus
   # as a misspelling or alternate usage. That genus would have the same protonym as the valid genus
   # implicitly passed as part of valid_antcat_taxon.
@@ -437,7 +464,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     if genera.count == 0
       puts "  No genus found - creating name and taxon record for new genus '#{genus_string}'"
       name = find_or_create_name genus_string
-      # joe find the hol record that conforms to a genus with this name. if it has an antcat_id, raise hell.
+      #  find the hol record that conforms to a genus with this name. if it has an antcat_id, raise hell.
       # if not, get its status, and this new taxon we create should be mapped to this antcat id.
       if name.nil
         raise 'Failed to parse name'
@@ -448,6 +475,11 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       return new_genus
     elsif genera.count == 1
       puts ("   Good genus found: #{genus_string}")
+      # Does it match the valid taxon genus?
+      if valid_antcat_taxon.parent.name_cache != genus_string
+        puts "We need to point at this name's genus #{genus_string}, not the valid name's parent genus: #{valid_antcat_taxon.parent.name_cache}"
+        return genera[0]
+      end
     else
       puts "    Multiple genera found - that's odd: #{genera.count}"
     end
@@ -551,6 +583,15 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     new_taxon.type = valid_antcat_taxon.type
     new_taxon.type_name_id=1
 
+    does_exist = Taxon.where(auto_generated: new_taxon.auto_generated,
+                             protonym_id: new_taxon.protonym_id,
+                             name_id: new_taxon.name_id,
+                             current_valid_taxon_id: new_taxon.current_valid_taxon_id)
+    if does_exist.length >= 1
+      puts "$$$$$$$$$$$$$$$$ This taxa #{new_taxon.name_cache} already exists, not creating."
+      return does_exist[0]
+    end
+
 
     taxon_state = TaxonState.new
     taxon_state.deleted = false
@@ -595,6 +636,10 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
         hol_taxon.antcat_taxon_id = nil
         hol_taxon.save
         doomed_taxa.destroy!
+
+        TaxonState.destroy_all(taxon_id: doomed_taxa.id)
+        Version.destroy_all(item_type: 'Taxon', item_id: doomed_taxa.id)
+
       end
     end
 

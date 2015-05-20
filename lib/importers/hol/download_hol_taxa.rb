@@ -23,10 +23,10 @@ class Importers::Hol::DownloadHolTaxa
   def initialize
     @print_char=0
     @hol_dictionary = {}
-    @tnuid_dictionary={}
+    @tnuid_details_dictionary={}
     @antcat_taxa_dictionary={}
     for hol_data in HolDatum.all
-      @tnuid_dictionary[hol_data.tnuid]=nil
+      @tnuid_details_dictionary[hol_data.tnuid]=nil
     end
     for taxon in Taxon.all
       if @antcat_taxa_dictionary[taxon.name_cache.downcase].nil?
@@ -50,7 +50,7 @@ class Importers::Hol::DownloadHolTaxa
         get_hol_species genus.name.to_s, genus_count
         compare_hol_and_antcat_species antcat_species, genus
       end
-      if genus_count > 10000
+      if genus_count > 100000
         exit
       end
 
@@ -66,10 +66,6 @@ class Importers::Hol::DownloadHolTaxa
     ary = @hol_dictionary[hol_hash['tnuid'].downcase]
     ary.concat [hol_hash]
   end
-
-
-
-
 
 
   #
@@ -92,7 +88,7 @@ class Importers::Hol::DownloadHolTaxa
       #puts "Got " + genus_members_hash.count.to_s + " HOL results."
       genus_members_hash['includedTaxa'].each do |includedTaxa|
         #print includedTaxa['name'] + ", "
-        unless @tnuid_dictionary.has_key?(includedTaxa['tnuid'])
+        unless @tnuid_details_dictionary.has_key?(includedTaxa['tnuid'])
           add_to_hol_dict includedTaxa
           print_char "!"
         else
@@ -143,7 +139,6 @@ class Importers::Hol::DownloadHolTaxa
   end
 
 
-
   def save_hol_data
     @hol_dictionary.each do |missing_hols_tuple|
       missing_hols_tuple[1].each do |hol_hash|
@@ -153,7 +148,6 @@ class Importers::Hol::DownloadHolTaxa
   end
 
   #==============================================================
-
 
 
   # runs and compares all TAXON TYPE (hardocded), one at a time
@@ -175,6 +169,8 @@ class Importers::Hol::DownloadHolTaxa
       subspecies_count = subspecies_count +1
     end
   end
+
+
 
   # Go back to hol and ask about this particular taxon name.
   def check_and_save_hol_for_taxon(taxon)
@@ -200,9 +196,8 @@ class Importers::Hol::DownloadHolTaxa
   end
 
 
-
   def save_hol_taxa hol_hash
-    if  @tnuid_dictionary.has_key?(hol_hash['tnuid'])
+    if  @tnuid_details_dictionary.has_key?(hol_hash['tnuid'])
       print_char ","
       return
     end
@@ -217,7 +212,7 @@ class Importers::Hol::DownloadHolTaxa
     end
     if records.nil?
       hd.save
-      @tnuid_dictionary[hol_hash['tnuid']]=nil
+      @tnuid_details_dictionary[hol_hash['tnuid']]=nil
 
 
       print_char "s"

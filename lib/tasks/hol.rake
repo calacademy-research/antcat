@@ -67,6 +67,12 @@ namespace :hol do
     Importers::Hol::GetHolSynonyms.new.get_synonym_records
   end
 
+  # Step 6.5 - Download json details for hol synonyms. Gets the details pulled in step 6.
+  desc "Get hol synonym details"
+  task get_hol_synonym_json: :environment do
+    Importers::Hol::DownloadHolTaxaDetails.new.get_hol_synonym_json
+  end
+
   # Step 7 - Creates records! finally. Uses the synonym records from step 6
   # to create new names, if needed, and new taxon records that point
   # to existing valid taxa.
@@ -101,6 +107,20 @@ namespace :hol do
   desc "Get hol details for species not in antcat"
   task get_full_literature_records: :environment do
     Importers::Hol::HolLiterature.new.get_full_literature_records
+  end
+
+  #======== debugging
+  # Step 7 - Creates records! finally. Uses the synonym records from step 6
+  # to create new names, if needed, and new taxon records that point
+  # to existing valid taxa.
+  desc "Create hol synonyms"
+  task create_bad_case: :environment do
+    Importers::Hol::LinkHolTaxa.new.create_bad_case
+  end
+
+  desc "Fuzzy match singe taxon"
+  task fuzzy_match_single_taxon: :environment do
+    Importers::Hol::DownloadHolTaxaDetails.new.test_single_taxon
   end
 
 

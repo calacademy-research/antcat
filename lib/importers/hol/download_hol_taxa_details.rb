@@ -40,11 +40,13 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
   end
 
   def setup_tnuid_dictionary
-    @tnuid_dictionary = {}
-    for hol_data in HolTaxonDatum.all
-      @tnuid_dictionary[hol_data.tnuid]=nil
+    @tnuid_details_dictionary = {}
+    for hol_taxon_data in HolTaxonDatum.all
+      @tnuid_details_dictionary[hol_taxon_data.tnuid]=nil
 
     end
+
+
     puts "Done pre-loading tables"
 
   end
@@ -53,7 +55,7 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
   # runs and compares all genera known to antcat.
   # pulls the getTaxonInfo from hol and populates the json field with it
   def get_json
-    if @tnuid_dictionary.nil?
+    if @tnuid_details_dictionary.nil?
       setup_tnuid_dictionary
     end
     start_at = 0
@@ -71,7 +73,7 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
         next
       end
       tnuid = hol_hash.tnuid
-      if (@tnuid_dictionary.has_key?(tnuid))
+      if (@tnuid_details_dictionary.has_key?(tnuid))
         print_char '.'
         next
       end
@@ -79,33 +81,98 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
       # puts hol_hash.name
       # puts tnuid
       # info = get_taxon_info_command hol_hash.tnuid
-      json = get_taxon_info_command hol_hash.tnuid
-      HolTaxonDatum.transaction do
-        begin
-          HolTaxonDatum.create(json: json, tnuid: tnuid)
-        rescue ActiveRecord::StatementInvalid => e
-          puts "Failed to save tnuid: " + tnuid.to_s + " probably record too long: " + (json.bytesize()/1024).to_s + "+k"
-          puts e.to_s
-        end
+      populate_hol_details hol_hash.tnuid
 
-        print_char 's'
-
-        @tnuid_dictionary[tnuid] = nil
-      end
       if hol_count % 10 == 0
-
         print_string hol_hash.tnuid.to_s
-
       end
       if hol_count % 15 == 0
         print_string @average.to_s
-
       end
       if hol_count % 100 == 0
         reset_average
       end
     end
   end
+
+
+  # Checks the "synonym" table for any unpopulated hol_detail records.
+  # There will be gaps here; we pull the hol_details based on genera we know about.
+  #  e have downloaded 60,000 records from HOL so far. That’s of 360,000 some odd that they have,
+  # which includes everything. Obviously, we don’t want to do that - it would stuff our database with
+  # junk and take forever to download. Also it would place a high load on HOL, especially if we want
+  # to re-scrape to get more recent changes. So, here are the steps I took:
+
+  # 1: Iterate over all genera in antcat, and ask HOL for the record for that genus and all its children
+
+  # 3: Get the full details for all records requested in step 1 ( this takes 3 days)
+
+  # 6: Ask for the synonyms of all records pulled in step 1.
+
+  # Turns out (should have expected this!) that step one only returns VALID children
+  # (though I know I saw many invalid records go over the wire, so I ’ m not sure what happened there).
+  # I need:
+
+  # 6.5: Get the full details for all synonyms that weren’t pulled in step 1
+
+  # then re-run 7.
+  #
+  def get_hol_synonym_json
+    if @tnuid_details_dictionary.nil?
+      setup_tnuid_dictionary
+    end
+    start_at = 0
+    hol_count = 0
+    #for hol_hash in HolDatum.order(:name).where(taxon_id: nil, is_valid: 'Valid')
+    #for hol_hash in HolDatum.order(:tnuid).where(is_valid: 'Valid')
+    for hol_synonym in HolSynonym.order(:synonym_id)
+      get_tnuid = hol_synonym
+      # if hol_count > 5
+      #   exit
+      # end
+
+      hol_count = hol_count +1
+      if (hol_count < start_at)
+        next
+      end
+      tnuid = hol_synonym.synonym_id
+      if @tnuid_details_dictionary.has_key?(tnuid)
+        print_char '.'
+      else
+        populate_hol_details tnuid
+      end
+
+
+      # puts hol_hash.name
+      # puts tnuid
+      # info = get_taxon_info_command hol_hash.tnuid
+
+      if hol_count % 10 == 0
+        print_string tnuid.to_s
+      end
+      if hol_count % 15 == 0
+        print_string @average.to_s
+      end
+      if hol_count % 100 == 0
+        reset_average
+      end
+    end
+  end
+
+  def populate_hol_details tnuid
+    json = get_taxon_info_command tnuid
+    HolTaxonDatum.transaction do
+      begin
+        HolTaxonDatum.create(json: json, tnuid: tnuid)
+      rescue ActiveRecord::StatementInvalid => e
+        puts "Failed to save tnuid: " + tnuid.to_s + " probably record too long: " + (json.bytesize()/1024).to_s + "+k"
+        puts e.to_s
+      end
+      print_char 's'
+      @tnuid_details_dictionary[tnuid] = nil
+    end
+  end
+
 
   def match_protonym name, reference
     keep = nil
@@ -394,6 +461,12 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
 
   end
 
+  def test_single_taxon
+    # child =361797
+    # parent (should match) = 152080
+    hol_taxon = HolTaxonDatum.find_by_tnuid 152080
+    match_taxon hol_taxon
+  end
 
   #
   # Meant to be run after initial import; this step will match as many bits as it can
@@ -416,22 +489,27 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
       if hol_count > start_at + stop_after
         exit
       end
-      unless hol_taxon['rank']=='Species'
-        next
-      end
-      if hol_taxon.antcat_taxon_id.nil?
+      match_taxon hol_taxon
 
-        hol_taxon.antcat_taxon_id = match_antcat_taxon hol_taxon
-        if hol_taxon.antcat_taxon_id.nil?
-          print_char "V"
-        else
-          print_char "v"
-          hol_taxon.save
-          next
-        end
+    end
+  end
+
+  def match_taxon hol_taxon
+    unless hol_taxon['rank']=='Species' or   hol_taxon['rank']=='Subspecies'
+      return
+    end
+    if hol_taxon.antcat_taxon_id.nil?
+
+      hol_taxon.antcat_taxon_id = match_antcat_taxon hol_taxon
+      if hol_taxon.antcat_taxon_id.nil?
+        print_char "V"
       else
-        print_char "."
+        print_char "v"
+        hol_taxon.save
+        return
       end
+    else
+      print_char "."
     end
   end
 
@@ -445,12 +523,12 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
   # if we can match a name, check year and author name. If those match, check page numbers. If all of those match, we're golden
 
   def match_antcat_taxon valid_hol_taxon
-    #puts "Starting to try to match: " + valid_hol_taxon.name
+    puts "Starting to try to match: " + valid_hol_taxon.name
     if valid_hol_taxon.antcat_name_id.nil?
       if !valid_hol_taxon.year.nil? and valid_hol_taxon.year >= 2014
         puts "Hey, this might be new! I can't find the name, and it's 2014 or later!"
       else
-        #puts "no name match"
+        puts "no name match"
         return nil
       end
     end

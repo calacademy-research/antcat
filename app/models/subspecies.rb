@@ -20,6 +20,7 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   def parent
+    # Rubyism; a || b of two valid objects returns a. Order dependent.
     species || genus
   end
 

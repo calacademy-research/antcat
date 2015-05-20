@@ -40,7 +40,6 @@ class Change < ActiveRecord::Base
   end
 
 
-
   # Deletes don't store any object info, so you can't show what it used to look like.
   # used to pull an example of the way it once was.
   def get_most_recent_valid_taxon_version
@@ -56,7 +55,6 @@ class Change < ActiveRecord::Base
     #   and versions.event <> 'destroy'
     #   and item_id = '"+user_changed_taxon_id.to_s+"'
     #   order by id desc").first
-
 
 
     # This change didn't happen to touch taxon. Go ahead and search for the most recent
@@ -79,23 +77,28 @@ class Change < ActiveRecord::Base
   def user
     # is this looks for a "User" object in a test, check that you're writing the id and not the user object
     # in factorygirl.
-    NotImplementedError
+    raise NotImplementedError
 
     user_id = get_user_versions(id).whodunnit
     user_id ? User.find(user_id) : nil
   end
 
   def changed_by
-    version = versions.first
+    # adding user qualifier partly because of tests (setup doesn't have a "user" logged in),
+    # in any case, it remains correct, because all versions for a given change have the same
+    # user. Also may cover historical cases?
+    usered_versions = PaperTrail::Version.where(change_id: self.id, whodunnit: !nil)
+    version = usered_versions.first
     unless version.nil?
       return User.find(version.whodunnit.to_i)
     end
 
     # backwards compatibility
     version = PaperTrail::Version.find_by_sql("select * from versions
-      where item_id = '"+user_changed_taxon_id.to_s+"'
+      where item_id = '"+user_changed_taxon_id.to_s+"'and whodunnit is not null
       order by id desc").first
     user_id = version.whodunnit
+
     return User.find(user_id.to_i)
 
 

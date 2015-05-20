@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150507234702) do
+ActiveRecord::Schema.define(version: 20150514180245) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -170,6 +170,9 @@ ActiveRecord::Schema.define(version: 20150507234702) do
     t.integer "synonym_id", limit: 4
     t.text    "json",       limit: 4294967295
   end
+
+  add_index "hol_synonyms", ["synonym_id"], name: "hol_synonyms_antcat_synonym_id_idx", using: :btree
+  add_index "hol_synonyms", ["tnuid"], name: "hol_synonyms_antcat_tnuid_idx", using: :btree
 
   create_table "hol_taxon_data", force: :cascade do |t|
     t.integer "tnuid",               limit: 4
