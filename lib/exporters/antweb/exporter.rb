@@ -12,7 +12,7 @@ class Exporters::Antweb::Exporter
           row = export_taxon taxon
           if row
             if row[20]
-              row[20].delete('\"')
+              row[20].delete!('\"')
             end
             row.each do |col|
               if col.is_a? String

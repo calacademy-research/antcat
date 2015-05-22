@@ -124,4 +124,10 @@ namespace :hol do
   end
 
 
+  desc "Get a single hol taxon detail"
+  task get_single_hol_json: :environment do
+    Importers::Hol::DownloadHolTaxaDetails.new.get_single_taxa
+  end
+
+
 end

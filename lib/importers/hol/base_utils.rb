@@ -252,7 +252,7 @@ class Importers::Hol::BaseUtils
   def hol_string valid_hol_taxon
      "'#{valid_hol_taxon.name}'  status: '#{valid_hol_taxon.status}' "+
              " valid: '#{valid_hol_taxon.is_valid}' rel_type: '#{valid_hol_taxon.rel_type}' "+
-             "antcat_taxon_id: '#{valid_hol_taxon.antcat_taxon_id}' tnuid: '#{valid_hol_taxon.tnuid}'"
+             "antcat_taxon_id: '#{valid_hol_taxon.antcat_taxon_id}' tnuid: '#{valid_hol_taxon.tnuid}' name: #{valid_hol_taxon.name}"
   end
 
 

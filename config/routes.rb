@@ -90,4 +90,6 @@ AntCat::Application.routes.draw do
     resources :taxa
   end
 
+  resources :antweb_data, only: [:index]
+
 end

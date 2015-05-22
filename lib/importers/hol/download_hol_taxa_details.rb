@@ -51,6 +51,45 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
 
   end
 
+  def get_single_taxa
+    if @tnuid_details_dictionary.nil?
+      setup_tnuid_dictionary
+    end
+
+    # [138325,
+    # 234153,
+    # 243023,
+    # 246594,
+    # 249100,
+    # 263419,
+    # 266593,
+    # 266768,
+    # 280521,
+    # 135659,
+    # 136107,
+    # 137481,
+    # 138526,
+    # 308507]
+    fetch_array = [138325,
+    243023,
+    246594,
+    249100,
+    263419,
+    266593,
+    266768,
+    280521,
+    135659,
+    136107,
+    137481,
+    138526,
+    308507]
+
+    fetch_array.each do |id|
+      populate_hol_details id
+    end
+
+
+  end
 
   # runs and compares all genera known to antcat.
   # pulls the getTaxonInfo from hol and populates the json field with it
