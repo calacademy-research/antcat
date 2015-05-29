@@ -218,7 +218,7 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
 
     unless reference.nil? || name.nil?
       protonyms = Protonym.where(name_id: name.id)
-      #puts "name and reference: " + name.name + " " + reference.id.to_s
+      puts "name and reference: " + name.name + " " + reference.id.to_s
       protonyms.each do |protonym|
         citation = protonym.authorship
         unless citation.nil?
@@ -248,6 +248,11 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
   end
 
 
+  def create_bad_case
+    hol_details = HolTaxonDatum.find_by_tnuid 140626
+    details_hash = JSON.parse hol_details.json
+    link_object details_hash, hol_details
+  end
   # iterates over the existing json blobs and populates selected columns
   # Links to antcat objects when and where possible. If those antcat columns
   # are already populated, it does not attempt the link.
@@ -386,6 +391,7 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
     #
     if hol_details.antcat_name_id.nil?
       name = @name_matcher.get_antcat_name_id_from_hash details_hash
+      # puts "About to link name: #{name}"
       if name.nil?
         print_char 'N'
       else
@@ -503,7 +509,7 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
   def test_single_taxon
     # child =361797
     # parent (should match) = 152080
-    hol_taxon = HolTaxonDatum.find_by_tnuid 152080
+    hol_taxon = HolTaxonDatum.find_by_tnuid 140626
     match_taxon hol_taxon
   end
 
@@ -580,15 +586,18 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
       puts "What the hell - we have a protonym and we can't figure this out?"
     end
     @antcat_reference=nil
-    unless valid_hol_taxon.antcat_reference_id.nil?
-      #puts "We have a full reference.. that includes year, page range, and author."
+    if valid_hol_taxon.antcat_reference_id
+      puts "We have a full reference.. that includes year, page range, and author."
       @antcat_reference = Reference.find valid_hol_taxon.antcat_reference_id
 
+    else
+      puts "No reference listed."
     end
 
 
+
     candidate_taxa = Taxon.where(name_id: valid_hol_taxon.antcat_name_id)
-    #puts "Checking #{candidate_taxa.length} taxa for matches"
+    puts "Checking #{candidate_taxa.length} taxa for matches"
 
 
     candidate_taxa.each do |taxon|
@@ -597,14 +606,14 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
       # Check antcat synonyms
       if taxon_id.nil?
         taxon.junior_synonyms.each do |synonym|
-          # puts "Checking synonym as junior_synonyms #{synonym.name_cache}"
+           puts "Checking synonym as junior_synonyms #{synonym.name_cache}"
 
           taxon_id = check_taxon @antcat_reference, valid_hol_taxon, synonym
         end
       end
       if taxon_id.nil?
         taxon.senior_synonyms.each do |synonym|
-          # puts "Checking synonym as senior_synonyms #{synonym.name_cache}"
+           puts "Checking synonym as senior_synonyms #{synonym.name_cache}"
           taxon_id = check_taxon @antcat_reference, valid_hol_taxon, synonym
         end
       end
@@ -613,7 +622,7 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
       end
     end
 
-    # puts ("=============== match failed")
+     puts ("=============== match failed")
     nil
   end
 

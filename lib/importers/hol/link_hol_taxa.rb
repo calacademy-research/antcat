@@ -15,13 +15,13 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   end
 
   def create_bad_case
-    hol_details = HolTaxonDatum.find_by_tnuid 361797
+    hol_details = HolTaxonDatum.find_by_tnuid 140626
     create_objects_from_hol_taxon hol_details
   end
 
   def create_objects
     start_at = 0
-    stop_after = 31000
+    stop_after = 1000000
     hol_count = 0
     for hol_details in HolTaxonDatum.order(:tnuid)
       #if hol_count % 20 == 0
@@ -115,13 +115,17 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   def find_or_create_name hol_taxon_name_string, force_nonconforming = false
     # Make certain this doesn't already exist!
     lookup_name = @name_matcher.get_name_without_previous_genus hol_taxon_name_string
+    puts "Looking up name: #{lookup_name} based on name: #{hol_taxon_name_string}"
     name = Name.find_by_name lookup_name
+    puts ("looked up #{lookup_name} and got name id: #{name.id} and name string: #{name.name}")
     is_nonconforming = false
     if (force_nonconforming or hol_taxon_name_string.index("."))
       is_nonconforming = true
+      puts " This is a nonconforming name: #{lookup_name}"
     end
 
-    if name.nil? or name.nonconforming_name != is_nonconforming
+
+    if name.nil? or name.nonconforming_name == is_nonconforming
       name = Name.parse lookup_name, true
 
       if name.nil?
@@ -152,7 +156,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     valid_antcat_taxon = get_most_recent_antcat_taxon hol_taxon.antcat_taxon_id
 
     unless valid_antcat_taxon.nil?
-      #puts "Got the most recent from the passed in hol taxon(#{hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
+      puts "Got the most recent from the passed in hol taxon(#{hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
 
       return valid_antcat_taxon
     end
@@ -222,8 +226,9 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     #antcat_taxon = Taxon.find antcat_taxon_id
 
     antcat_taxon = @taxa_by_id[antcat_taxon_id.to_i]
-
+    #    puts "Got antcat taxon id: #{antcat_taxon_id} got pointer #{antcat_taxon}"
     valid_antcat_taxon = get_most_recent_from_antcat_object antcat_taxon
+    #    puts ("Valid antcat taxon returned from antcat_taxon: #{valid_antcat_taxon.id} from antcat taxon: #{antcat_taxon.id}")
     #
     # Cycle detection
     #
@@ -232,7 +237,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     if history.has_key?(antcat_taxon_id)
       history.each do |taxon_path_id|
         #cur_taxon = (Taxon.find taxon_path_id)[0]
-               puts ("joe thingy: #{taxon_path_id}")
+        # puts ("Taxon path id: #{taxon_path_id}")
         cur_taxon = @taxa_by_id[taxon_path_id[0].to_i]
 
         if cur_taxon.status.downcase == "valid"
@@ -309,7 +314,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       print_string "Taxon already created for #{hol_taxon.name}, moving on."
       return @taxa_by_id[hol_taxon.antcat_taxon_id.to_i]
     end
-    puts ("Joe 3: hol_taxon tnuid: #{hol_taxon.tnuid} name: #{hol_taxon.name}")
+    #puts ("hol_taxon tnuid: #{hol_taxon.tnuid} name: #{hol_taxon.name}")
 
 
     #
@@ -416,23 +421,28 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   def create_taxon_details valid_antcat_taxon, hol_taxon, name_string, force_nonconforming = false
     rank = valid_antcat_taxon.rank
     parent = valid_antcat_taxon.parent
+    puts "valid parent's name is: #{valid_antcat_taxon.name_cache}. valid parent id: #{valid_antcat_taxon.id}"
     force_nonconforming = false
     new_genus_parent = handle_genus valid_antcat_taxon, hol_taxon, name_string, rank, parent
     if new_genus_parent
+      puts "New genus parent, rank: #{rank}"
+      case rank.downcase
+        when "subspecies"
 
-      if  rank.downcase != "subspecies"
-        parent = new_genus_parent
-        puts " Looks like that was the interesting bad genus case."
-      elsif rank.downcase == "subspecies"
-        # This case get hit because the valid species is a subspecies, but we're a binomial,
-        # so we picked out our genus out of our "binomial subspecies". e.g.: we're "foo bar"
-        # and the valid subspecies is "foo bar baz". So the handle_genus routine says,
-        # "Hey, you're marked as genus foo, and the valid parent is species foo bar, let's match you to
-        # genus foo instead of species foo bar".
-        puts " Binomial subspecies!"
+          # This case get hit because the valid species is a subspecies, but we're a binomial,
+          # so we picked out our genus out of our "binomial subspecies". e.g.: we're "foo bar"
+          # and the valid subspecies is "foo bar baz". So the handle_genus routine says,
+          # "Hey, you're marked as genus foo, and the valid parent is species foo bar, let's match you to
+          # genus foo instead of species foo bar".
+          puts " Binomial subspecies!"
+        # when "tribe"
+        #   puts "woo tribe"
+        #   puts "2"
+        else
+          parent = new_genus_parent
+          puts " Looks like that was the bad genus case."
       end
     end
-
 
 
     #puts "Parsing new name: #{hol_taxon.name} as type: #{valid_antcat_taxon.rank}"
@@ -505,7 +515,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       puts ("   Good genus found: #{genus_string}")
       # Does it match the valid taxon genus?
       if valid_antcat_taxon.parent.name_cache != genus_string
-        puts "We need to point at this name's genus #{genus_string}, not the valid name's parent genus: #{valid_antcat_taxon.parent.name_cache}"
+        puts "We need to point at this name's genus #{genus_string}, not the valid name's parent genus: #{valid_antcat_taxon.parent.name_cache} valid name's parent rank: #{valid_antcat_taxon.rank}"
         return genera[0]
       end
     else
@@ -520,7 +530,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   # taxon state, change  Takes name object and parent.
   def create_taxon valid_antcat_taxon, hol_taxon, name, rank, parent, hol_status
     mother = TaxonMother.new
-    puts "Joe 2: valid_antcat_taxon id: #{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank} tnuid: #{hol_taxon.tnuid} name: #{name} rank #{rank} parent name: #{parent.name} parent rank: #{parent.rank}"
+    #puts " valid_antcat_taxon id: #{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank} tnuid: #{hol_taxon.tnuid} name: #{name} rank #{rank} parent name: #{parent.name} parent rank: #{parent.rank}"
 
     new_taxon = mother.create_taxon Rank[rank], parent
 
@@ -612,14 +622,25 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     new_taxon.type = valid_antcat_taxon.type
     new_taxon.type_name_id=1
 
-    does_exist = Taxon.where(auto_generated: new_taxon.auto_generated,
-                             protonym_id: new_taxon.protonym_id,
-                             name_id: new_taxon.name_id,
-                             current_valid_taxon_id: new_taxon.current_valid_taxon_id)
-    if does_exist.length >= 1
-      puts "$$$$$$$$$$$$$$$$ This taxa #{new_taxon.name_cache} already exists, not creating."
-      return does_exist[0]
+    # Get all taxa with the same name. Check for true honomyms - that is,
+    # if the name is the same, check if the homonym's current valid taxon is
+    # the same as new_taxon.current_valid_taxon_id.
+    # if that's true for none of them, carry on with creation.
+    # does_exist = Taxon.where(protonym_id: new_taxon.protonym_id,
+    #                          name_id: new_taxon.name_id,
+    #                          current_valid_taxon_id: new_taxon.current_valid_taxon_id)
+    homonyms = Taxon.where name_id: new_taxon.name_id
+    homonyms.each do |homonym|
+      if homonym.current_valid_taxon_id == new_taxon.current_valid_taxon_id
+        puts "$$$$$$$$$$$$$$$$ This taxa #{new_taxon.name_cache} already exists, not creating."
+        return homonym
+      elsif get_most_recent_antcat_taxon(homonym.id).id == new_taxon.current_valid_taxon_id
+        puts "$$$$$$$$$$$$$$$$ This taxa #{new_taxon.name_cache} already exists as an invalid synonym, not creating."
+        return homonym
+      end
     end
+
+    puts "No duplicates found. Searching name id: #{new_taxon.name_id} protonym id: #{new_taxon.protonym_id} and current valid id: #{new_taxon.current_valid_taxon_id}"
 
 
     taxon_state = TaxonState.new

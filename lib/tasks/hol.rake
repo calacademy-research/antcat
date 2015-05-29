@@ -110,24 +110,37 @@ namespace :hol do
   end
 
   #======== debugging
+
+  # Step 3
+  desc "Download a single hol taxon detail"
+  task expand_hol_json_debug_step_3: :environment do
+    Importers::Hol::DownloadHolTaxaDetails.new.get_single_taxa
+  end
+
+  # Step 4 - single case debug
+  desc "Expand hol json and link as many objects as possible without any fuzzy matching"
+  task expand_hol_json_debug_step_4: :environment do
+    Importers::Hol::DownloadHolTaxaDetails.new.create_bad_case
+  end
+
+  # step 5
+  desc "Fuzzy match singe taxon"
+  task expand_hol_json_debug_step_5: :environment do
+    Importers::Hol::DownloadHolTaxaDetails.new.test_single_taxon
+  end
+
   # Step 7 - Creates records! finally. Uses the synonym records from step 6
   # to create new names, if needed, and new taxon records that point
   # to existing valid taxa.
   desc "Create hol synonyms"
-  task create_bad_case: :environment do
+  task expand_hol_json_debug_step_7: :environment do
     Importers::Hol::LinkHolTaxa.new.create_bad_case
   end
 
-  desc "Fuzzy match singe taxon"
-  task fuzzy_match_single_taxon: :environment do
-    Importers::Hol::DownloadHolTaxaDetails.new.test_single_taxon
-  end
 
 
-  desc "Get a single hol taxon detail"
-  task get_single_hol_json: :environment do
-    Importers::Hol::DownloadHolTaxaDetails.new.get_single_taxa
-  end
+
+
 
 
 end
