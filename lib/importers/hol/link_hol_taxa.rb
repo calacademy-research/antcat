@@ -15,7 +15,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   end
 
   def create_bad_case
-    hol_details = HolTaxonDatum.find_by_tnuid 140626
+    hol_details = HolTaxonDatum.find_by_tnuid 351737
     create_objects_from_hol_taxon hol_details
   end
 
@@ -117,15 +117,17 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     lookup_name = @name_matcher.get_name_without_previous_genus hol_taxon_name_string
     puts "Looking up name: #{lookup_name} based on name: #{hol_taxon_name_string}"
     name = Name.find_by_name lookup_name
-    puts ("looked up #{lookup_name} and got name id: #{name.id} and name string: #{name.name}")
+    if name
+      puts ("looked up #{lookup_name} and got name id: #{name.id} and name string: #{name.name}")
+    end
     is_nonconforming = false
     if (force_nonconforming or hol_taxon_name_string.index("."))
       is_nonconforming = true
       puts " This is a nonconforming name: #{lookup_name}"
     end
 
+    if name.nil? or name.nonconforming_name != is_nonconforming
 
-    if name.nil? or name.nonconforming_name == is_nonconforming
       name = Name.parse lookup_name, true
 
       if name.nil?
@@ -155,7 +157,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
 
     valid_antcat_taxon = get_most_recent_antcat_taxon hol_taxon.antcat_taxon_id
 
-    unless valid_antcat_taxon.nil?
+    if valid_antcat_taxon
       puts "Got the most recent from the passed in hol taxon(#{hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
 
       return valid_antcat_taxon
@@ -178,11 +180,11 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       print_string "N"
       return nil
     end
-
+    puts "We have a valid hol tnuid, according to HOL tnuid #{valid_hol_taxon.tnuid}. Antcat taxon: #{valid_hol_taxon.antcat_taxon_id}"
 
     valid_antcat_taxon = get_most_recent_antcat_taxon valid_hol_taxon.antcat_taxon_id
     unless valid_antcat_taxon.nil?
-      #puts "Got the most recent from discovered valid hol taxon(#{valid_hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
+      puts "Got the most recent from discovered valid hol taxon(#{valid_hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
 
       return valid_antcat_taxon
     end
@@ -217,6 +219,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
 
   # Given an antcat taxon id, return the most current antcat taxon.
   def get_most_recent_antcat_taxon antcat_taxon_id, history = nil
+    puts "Get most recent antcat taxon - top. antcat_taxon_id: #{antcat_taxon_id}"
     if antcat_taxon_id.nil?
       return nil
     end
@@ -311,7 +314,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     unless hol_taxon.antcat_taxon_id.nil?
       # If there is a valid antcat ID for this object, skip everything -
       # it's already part of our world
-      print_string "Taxon already created for #{hol_taxon.name}, moving on."
+      print_string "Taxon already created in hol record #{hol_taxon.tnuid}for #{hol_taxon.name}, moving on."
       return @taxa_by_id[hol_taxon.antcat_taxon_id.to_i]
     end
     #puts ("hol_taxon tnuid: #{hol_taxon.tnuid} name: #{hol_taxon.name}")
@@ -365,6 +368,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     else
 
       # begin
+      puts " Create details for tnuid: #{hol_taxon.tnuid} with name #{hol_taxon.name}"
       create_taxon_details valid_antcat_taxon, hol_taxon, hol_taxon.name
       # rescue => e
       #  puts "Failed to create taxon because 3: #{e.to_s}"
@@ -421,27 +425,30 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   def create_taxon_details valid_antcat_taxon, hol_taxon, name_string, force_nonconforming = false
     rank = valid_antcat_taxon.rank
     parent = valid_antcat_taxon.parent
-    puts "valid parent's name is: #{valid_antcat_taxon.name_cache}. valid parent id: #{valid_antcat_taxon.id}"
+    puts "valid parent's name is: #{valid_antcat_taxon.name_cache}. valid parent id: #{valid_antcat_taxon.id} name string: #{name_string}"
     force_nonconforming = false
     new_genus_parent = handle_genus valid_antcat_taxon, hol_taxon, name_string, rank, parent
     if new_genus_parent
       puts "New genus parent, rank: #{rank}"
-      case rank.downcase
-        when "subspecies"
+      if rank.downcase == "subspecies"
+        # This case get hit because the valid species is a subspecies, but we're a binomial,
+        # so we picked out our genus out of our "binomial subspecies". e.g.: we're "foo bar"
+        # and the valid subspecies is "foo bar baz". So the handle_genus routine says,
+        # "Hey, you're marked as genus foo, and the valid parent is species foo bar, let's match you to
+        # genus foo instead of species foo bar".
 
-          # This case get hit because the valid species is a subspecies, but we're a binomial,
-          # so we picked out our genus out of our "binomial subspecies". e.g.: we're "foo bar"
-          # and the valid subspecies is "foo bar baz". So the handle_genus routine says,
-          # "Hey, you're marked as genus foo, and the valid parent is species foo bar, let's match you to
-          # genus foo instead of species foo bar".
-          puts " Binomial subspecies!"
-        # when "tribe"
-        #   puts "woo tribe"
-        #   puts "2"
-        else
-          parent = new_genus_parent
-          puts " Looks like that was the bad genus case."
+        # force_nonconforming was creaetd to handle this case, but isn't currently used; not sure
+        # what the best way to do this is. Right now this will bomb out with
+        # " Nonconforming - subspecies with a genus parent. Something is wrong, check this case."
+        # which is okay!
+
+        puts " Binomial subspecies!"
       end
+
+
+      parent = new_genus_parent
+      puts " Looks like that was the bad genus case."
+
     end
 
 
@@ -463,6 +470,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     if rank.downcase == "subspecies" and parent.rank.downcase == "genus"
       puts " Nonconforming - subspecies with a genus parent. Something is wrong, check this case."
       puts " %%% valid_antcat_taxon id: #{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank} tnuid: #{hol_taxon.tnuid} name: #{name} rank #{rank} parent name: #{parent.name} parent rank: #{parent.rank}"
+
       return nil
     end
     # Check here - if it claims to be a subspecies, but it's binomial,
@@ -470,6 +478,36 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     # I can't make a subspecies be the child of a genus; object model goes blooie
     # But the display USUALLY shows genus/species. Create a custom display for this case
     # in the catalog viewer.
+
+
+    #
+    # Handling this case (for example, where we have actually seen a subgenus style name point to
+    # a valid record that's a species) would require that we ensure that the name is nonconforming.
+    #   If the name is nonconforming, we may need a new name record that is the same as the conforming name,
+    #   but which has been forced somehow to lie about what it is. e.g.: Formica (Neoformica) claims to be
+    #   a species
+    #
+    # For now, we're dropping these.
+    #
+
+    name_rank = name.type.chomp("Name").downcase
+    valid_rank = valid_antcat_taxon.rank.downcase
+    if (name_rank != valid_rank) && !(name_rank.include?("species") and valid_rank.include?("species"))
+
+      if  name.nonconforming_name
+        puts "Nonconforming name has the wrong type. Updating."
+        name.type = valid_antcat_taxon.name.type
+        name.save
+
+      else
+        puts "The 1 name rank #{name.type.chomp("Name").downcase } doesn't match the taxon rank #{valid_antcat_taxon.rank.downcase}. aborting."
+        puts " %%% valid_antcat_taxon id: #{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank} tnuid: #{hol_taxon.tnuid} name: #{name} rank #{rank} parent name: #{parent.name} parent rank: #{parent.rank}"
+        return nil
+      end
+      # 18524
+      # tnuids: 142116
+      #
+    end
     create_taxon valid_antcat_taxon, hol_taxon, name, rank, parent, hol_taxon.status
 
   end
@@ -530,52 +568,12 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   # taxon state, change  Takes name object and parent.
   def create_taxon valid_antcat_taxon, hol_taxon, name, rank, parent, hol_status
     mother = TaxonMother.new
-    #puts " valid_antcat_taxon id: #{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank} tnuid: #{hol_taxon.tnuid} name: #{name} rank #{rank} parent name: #{parent.name} parent rank: #{parent.rank}"
+    puts " valid_antcat_taxon id: #{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank} tnuid: #{hol_taxon.tnuid} name: #{name} rank #{rank} parent name: #{parent.name} parent rank: #{parent.rank}"
 
     new_taxon = mother.create_taxon Rank[rank], parent
 
     new_taxon.auto_generated = true
     new_taxon.origin = 'hol'
-    # Todo: status could well be valid - handle?
-
-    # hol statuses:
-    # "Original name/combination"
-    # "Justified emendation"
-    # "Replacement name"
-    # "Junior homonym"
-    # "Homonym & junior synonym"
-    # "Common name"
-
-
-    ## "Susequent name/combination"
-    ## "Subseqent name/combination"
-    ## "Subsequent name/combination"
-    ## "Unavailable, other"
-    ## "Unavailable, nomen nudum"
-    ## "Unavailable, suppressed by ruling"
-    ## "Unnecessary replacement name"
-    ## "Unavailable, incorrect original spelling"
-    ## Emendation
-    ## "Unjustified emendation"
-    ## "Unavailable, literature misspelling"
-    ## Misidentification
-
-    # antcat status:
-    # valid
-    # unidentifiable
-    # "excluded from Formicidae"
-    # homonym
-    # unavailable
-    # synonym
-    # "collective group name"
-    # "obsolete combination"
-    # "original combination"
-
-    # hol "rel_type"
-    # Member
-    # Synonym
-    # "Nomen nudum"
-    # "Junior synonym"
 
 
     status_map = {"Unavailable, literature misspelling" => ['unavailable misspelling', false],
@@ -633,9 +631,14 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     homonyms.each do |homonym|
       if homonym.current_valid_taxon_id == new_taxon.current_valid_taxon_id
         puts "$$$$$$$$$$$$$$$$ This taxa #{new_taxon.name_cache} already exists, not creating."
+        hol_taxon.antcat_taxon_id = homonym.id
+        hol_taxon.save
         return homonym
+
       elsif get_most_recent_antcat_taxon(homonym.id).id == new_taxon.current_valid_taxon_id
         puts "$$$$$$$$$$$$$$$$ This taxa #{new_taxon.name_cache} already exists as an invalid synonym, not creating."
+        hol_taxon.antcat_taxon_id = homonym.id
+        hol_taxon.save
         return homonym
       end
     end

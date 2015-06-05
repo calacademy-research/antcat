@@ -6,4 +6,9 @@ namespace :antweb do
     Exporters::Antweb::Exporter.new(true).export 'data/output'
   end
 
+  desc "Export debug - single taxon"
+  task :export_one => :environment do
+    Exporters::Antweb::Exporter.new(true).export_one 442880
+  end
+
 end

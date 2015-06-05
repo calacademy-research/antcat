@@ -4,25 +4,39 @@ class Exporters::Antweb::Exporter
     Progress.init show_progress, Taxon.count
   end
 
+  def export_one id
+    taxa = Taxon.find id
+    pp export_taxon taxa
+  end
+
+
   def export directory
     File.open("#{directory}/antcat.antweb.txt", 'w') do |file|
       file.puts header
       get_taxa.each do |taxon|
-        if !taxon.name.nonconforming_name
-          row = export_taxon taxon
-          if row
-            if row[20]
-              row[20].delete!('\"')
-            end
-            row.each do |col|
-              if col.is_a? String
-                col.delete!("\n")
-                col.delete!("\r")
+        begin
+          if !taxon.name.nonconforming_name
+            row = export_taxon taxon
+            if row
+              if row[20]
+                row[20].delete!('\"')
+              end
+              row.each do |col|
+                if col.is_a? String
+                  col.delete!("\n")
+                  col.delete!("\r")
+                end
               end
             end
+            file.puts row.join("\t") if row
           end
-          file.puts row.join("\t") if row
+        rescue Exception => e
+          puts ("Fatal error exporting taxon id: #{taxon.id}")
+          puts e.message
+          puts e.backtrace.inspect
         end
+
+
       end
       Progress.show_results
     end

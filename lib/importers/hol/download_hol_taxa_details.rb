@@ -249,7 +249,7 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
 
 
   def create_bad_case
-    hol_details = HolTaxonDatum.find_by_tnuid 140626
+    hol_details = HolTaxonDatum.find_by_tnuid 242909
     details_hash = JSON.parse hol_details.json
     link_object details_hash, hol_details
   end
@@ -302,6 +302,7 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
       taxa.antcat_reference_id = nil
       taxa.antcat_protonym_id = nil
       taxa.antcat_taxon_id = nil
+      taxa.antcat_name_id = nil
       taxa.save
     end
 
@@ -509,7 +510,7 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
   def test_single_taxon
     # child =361797
     # parent (should match) = 152080
-    hol_taxon = HolTaxonDatum.find_by_tnuid 140626
+    hol_taxon = HolTaxonDatum.find_by_tnuid 242909
     match_taxon hol_taxon
   end
 
