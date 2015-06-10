@@ -15,7 +15,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   end
 
   def create_bad_case
-    hol_details = HolTaxonDatum.find_by_tnuid 351737
+    hol_details = HolTaxonDatum.find_by_tnuid 230062
     create_objects_from_hol_taxon hol_details
   end
 
@@ -126,6 +126,9 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       puts " This is a nonconforming name: #{lookup_name}"
     end
 
+    if name and name.nonconforming_name.nil?
+      name.nonconforming_name=false
+    end
     if name.nil? or name.nonconforming_name != is_nonconforming
 
       name = Name.parse lookup_name, true
@@ -158,7 +161,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     valid_antcat_taxon = get_most_recent_antcat_taxon hol_taxon.antcat_taxon_id
 
     if valid_antcat_taxon
-      puts "Got the most recent from the passed in hol taxon(#{hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
+      puts "Got the most recent from the passed in hol taxon(#{hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank}"
 
       return valid_antcat_taxon
     end
@@ -184,7 +187,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
 
     valid_antcat_taxon = get_most_recent_antcat_taxon valid_hol_taxon.antcat_taxon_id
     unless valid_antcat_taxon.nil?
-      puts "Got the most recent from discovered valid hol taxon(#{valid_hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
+      puts "Got the most recent from discovered valid hol taxon(#{valid_hol_taxon.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank}"
 
       return valid_antcat_taxon
     end
@@ -199,7 +202,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
         if !hol_taxon_synonym.antcat_taxon_id.nil?
           valid_antcat_taxon = get_most_recent_antcat_taxon hol_taxon_synonym.antcat_taxon_id
           unless valid_antcat_taxon.nil?
-            puts "Got the most recent from a synonym of the hol taxon(#{hol_taxon_synonym.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id}"
+            puts "Got the most recent from a synonym of the hol taxon(#{hol_taxon_synonym.name}). Most recent is #{valid_antcat_taxon.name_cache}:#{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank}"
 
             return valid_antcat_taxon
           end
@@ -425,9 +428,19 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   def create_taxon_details valid_antcat_taxon, hol_taxon, name_string, force_nonconforming = false
     rank = valid_antcat_taxon.rank
     parent = valid_antcat_taxon.parent
-    puts "valid parent's name is: #{valid_antcat_taxon.name_cache}. valid parent id: #{valid_antcat_taxon.id} name string: #{name_string}"
+    puts "valid parent's name is: #{parent.name_cache}. valid parent id: #{parent.id} Paretn's rank: #{parent.rank} name string: #{name_string}"
+
+
     force_nonconforming = false
-    new_genus_parent = handle_genus valid_antcat_taxon, hol_taxon, name_string, rank, parent
+
+    new_genus_parent = nil
+    #
+    # Sometimes this is a subfamily name, or a genus name, but not a full species declaration.
+    # If that's the case, we don't have a parent name to parse and worry about.
+    #
+    if Rank[rank].index == Rank["Species"].index
+      new_genus_parent = handle_missing_parent valid_antcat_taxon, hol_taxon, name_string
+    end
     if new_genus_parent
       puts "New genus parent, rank: #{rank}"
       if rank.downcase == "subspecies"
@@ -499,8 +512,10 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
         name.type = valid_antcat_taxon.name.type
         name.save
 
+      elsif name.type=="FamilyOrSubfamilyName" and (valid_antcat_taxon.rank.downcase=="subfamily" or valid_antcat_taxon.rank.downcase=="family")
+        puts "This seems deeply unclean, but ok: #{name.type}"
       else
-        puts "The 1 name rank #{name.type.chomp("Name").downcase } doesn't match the taxon rank #{valid_antcat_taxon.rank.downcase}. aborting."
+        puts "The name rank #{name.type.chomp("Name").downcase } doesn't match the taxon rank #{valid_antcat_taxon.rank.downcase}. aborting."
         puts " %%% valid_antcat_taxon id: #{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank} tnuid: #{hol_taxon.tnuid} name: #{name} rank #{rank} parent name: #{parent.name} parent rank: #{parent.rank}"
         return nil
       end
@@ -513,31 +528,34 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   end
 
   # case to handle:
-  # The genus of this species might not match the genus of the valid species. Handle that.
-  # also, the genus of this species might not exist, so handle that too.
+  # The {rank} of this species might not match the {rank} of the valid species. Handle that.
+  # also, the {rank} of this species might not exist, so handle that too.
   #
-  # if we're failing to match on the genus part of the name, we need to create a genus
-  # as a misspelling or alternate usage. That genus would have the same protonym as the valid genus
+  # if we're failing to match on the {rank} part of the name, we need to create a {rank}
+  # as a misspelling or alternate usage. That {rank} would have the same protonym as the valid {rank}
   # implicitly passed as part of valid_antcat_taxon.
   #
   # Returns nil if this isn't necessary.
   #
-  # Parent is the parent of the species in question. Aka: The genus we're replacing
+  # Parent is the parent of the species in question. Aka: The {rank} we're replacing
   # with this one, if we have to create it.
 
-  def handle_genus valid_antcat_taxon, hol_taxon, name_string, rank, parent
+  def handle_missing_parent valid_antcat_taxon, hol_taxon, name_string
     # Extract the genus name
     unless match = name_string.match(/^([a-zA-Z]+)([ a-zA-Z.]*)/)
       puts ("%%%%%%%% failed to match on genus/species?!")
       return nil
     end
     genus_string = match[1]
+    parent_rank = Rank[valid_antcat_taxon].parent
 
     name=nil
     # How do we know if the genus is what's not matching? Do a search in genus for matching name?
-    genera = Genus.where(name_cache: genus_string)
+    puts "Search  #{parent_rank} for #{genus_string}"
+    genera = parent_rank.to_class.where(name_cache: genus_string)
+
     if genera.count == 0
-      puts "  No genus found - creating name and taxon record for new genus '#{genus_string}'"
+      puts "  No #{parent_rank} found with name #{genus_string} - creating name and taxon record for new #{parent_rank} '#{genus_string}'"
       name = find_or_create_name genus_string
       #  find the hol record that conforms to a genus with this name. if it has an antcat_id, raise hell.
       # if not, get its status, and this new taxon we create should be mapped to this antcat id.
@@ -545,8 +563,8 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
         puts (" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Failed to parse name: #{genus_string}")
         return nil
       end
-      new_genus = create_taxon parent, hol_taxon, name, parent.rank, parent.parent, hol_taxon.status
-      puts "   Created new genus: #{new_genus.id} with status #{hol_taxon.status}"
+      new_genus = create_taxon parent, hol_taxon, name, parent_rank, valid_antcat_taxon.parent.parent, hol_taxon.status
+      puts "   Created new #{rank}: #{new_genus.id} with status #{hol_taxon.status}"
 
       return new_genus
     elsif genera.count == 1
@@ -568,7 +586,13 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   # taxon state, change  Takes name object and parent.
   def create_taxon valid_antcat_taxon, hol_taxon, name, rank, parent, hol_status
     mother = TaxonMother.new
-    puts " valid_antcat_taxon id: #{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank} tnuid: #{hol_taxon.tnuid} name: #{name} rank #{rank} parent name: #{parent.name} parent rank: #{parent.rank}"
+    puts " valid_antcat_taxon id: #{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank} tnuid: #{hol_taxon.tnuid} name: #{name} rank #{rank} "
+    if parent
+      puts "parent name: #{parent.name} parent rank: #{parent.rank}"
+    else
+      puts "XXXX no parent! "
+    end
+
 
     new_taxon = mother.create_taxon Rank[rank], parent
 
