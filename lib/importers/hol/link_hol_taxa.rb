@@ -15,12 +15,12 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
   end
 
   def create_bad_case
-    hol_details = HolTaxonDatum.find_by_tnuid 230062
+    hol_details = HolTaxonDatum.find_by_tnuid 24670
     create_objects_from_hol_taxon hol_details
   end
 
   def create_objects
-    start_at = 0
+    start_at = 300
     stop_after = 1000000
     hol_count = 0
     for hol_details in HolTaxonDatum.order(:tnuid)
@@ -563,8 +563,8 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
         puts (" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Failed to parse name: #{genus_string}")
         return nil
       end
-      new_genus = create_taxon parent, hol_taxon, name, parent_rank, valid_antcat_taxon.parent.parent, hol_taxon.status
-      puts "   Created new #{rank}: #{new_genus.id} with status #{hol_taxon.status}"
+      new_genus = create_taxon valid_antcat_taxon.parent, hol_taxon, name, parent_rank, valid_antcat_taxon.parent.parent, hol_taxon.status
+      puts "   Created new #{valid_antcat_taxon.rank}: #{new_genus.id} with status #{hol_taxon.status}"
 
       return new_genus
     elsif genera.count == 1
@@ -594,7 +594,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     end
 
 
-    new_taxon = mother.create_taxon Rank[rank], parent
+    new_taxon = mother.create_taxon Rank[rank.to_s.capitalize], parent
 
     new_taxon.auto_generated = true
     new_taxon.origin = 'hol'

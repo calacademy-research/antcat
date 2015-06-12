@@ -171,6 +171,9 @@ ActiveRecord::Schema.define(version: 20150514180245) do
     t.text    "json",       limit: 4294967295
   end
 
+  add_index "hol_synonyms", ["synonym_id"], name: "hol_synonyms_antcat_synonym_id_idx", using: :btree
+  add_index "hol_synonyms", ["tnuid"], name: "hol_synonyms_antcat_tnuid_idx", using: :btree
+
   create_table "hol_taxon_data", force: :cascade do |t|
     t.integer "tnuid",               limit: 4
     t.text    "json",                limit: 4294967295

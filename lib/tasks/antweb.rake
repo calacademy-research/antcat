@@ -8,7 +8,7 @@ namespace :antweb do
 
   desc "Export debug - single taxon"
   task :export_one => :environment do
-    Exporters::Antweb::Exporter.new(true).export_one 442880
+    Exporters::Antweb::Exporter.new(true).export_one 486707
   end
 
 end
