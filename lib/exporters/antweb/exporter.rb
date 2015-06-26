@@ -15,7 +15,7 @@ class Exporters::Antweb::Exporter
       file.puts header
       get_taxa.each do |taxon|
         begin
-          if !taxon.name.nonconforming_name
+          if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
             row = export_taxon taxon
             if row
               if row[20]
@@ -35,8 +35,6 @@ class Exporters::Antweb::Exporter
           puts e.message
           puts e.backtrace.inspect
         end
-
-
       end
       Progress.show_results
     end
@@ -67,7 +65,8 @@ class Exporters::Antweb::Exporter
         history: Exporters::Antweb::Formatter.new(taxon).format,
         author_date: taxon.authorship_string,
         author_date_html: taxon.authorship_html_string,
-        current_valid_name: taxon.current_valid_taxon_including_synonyms_and_self.name.to_s,
+        # removing "self" reference - delete when all this works.
+        # current_valid_name: taxon.current_valid_taxon_including_synonyms_and_self.name.to_s,
         original_combination?: taxon.original_combination?,
         original_combination: taxon.original_combination.try(:name).try(:name),
         authors: taxon.author_last_names_string,
@@ -79,6 +78,11 @@ class Exporters::Antweb::Exporter
         hol_id: taxon.hol_id,
         parent: parent_name,
     }
+    attributes.merge! current_valid_name: nil
+    if taxon.current_valid_taxon_including_synonyms
+       attributes.merge! current_valid_name: taxon.current_valid_taxon_including_synonyms.name.to_s
+    end
+
 
     convert_to_antweb_array taxon.add_antweb_attributes(attributes)
 
@@ -139,7 +143,7 @@ class Exporters::Antweb::Exporter
      values[:year],
      values[:status],
      boolean_to_antweb(values[:available?]),
-     values[:current_valid_name],
+     add_subfamily_to_current_valid(values[:subfamily], values[:current_valid_name]),
      boolean_to_antweb(values[:original_combination?]),
      values[:original_combination],
      boolean_to_antweb(values[:fossil?]),
@@ -151,6 +155,13 @@ class Exporters::Antweb::Exporter
      values[:hol_id],
      values[:parent],
     ]
+  end
+
+  def add_subfamily_to_current_valid subfamily, current_valid_name
+    if current_valid_name
+      return subfamily.to_s  + current_valid_name.to_s
+    end
+    nil
   end
 
 end

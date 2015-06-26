@@ -328,6 +328,8 @@ class Taxon < ActiveRecord::Base
     current_valid_taxon
   end
 
+  # Was used for export; probably safe to remove; we no longer want
+  # current valid name unless it's distinct from self.
   def current_valid_taxon_including_synonyms_and_self
     current_valid_taxon_including_synonyms || self
   end

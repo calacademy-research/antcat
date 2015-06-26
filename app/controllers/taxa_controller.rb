@@ -3,6 +3,8 @@ class TaxaController < ApplicationController
   before_filter :authenticate_editor, :get_params, :create_mother
   before_filter :redirect_by_parent_name_id, only: :new
   skip_before_filter :authenticate_editor, if: :preview?
+  skip_before_filter :authenticate_editor, only: :show
+
 
   helper ReferenceHelper
 
@@ -32,6 +34,19 @@ class TaxaController < ApplicationController
     return delete_taxon if @delete_taxon
     set_paths :update
     save_taxon
+  end
+
+  # rest endpoint - get taxa/[id]
+  def show
+    cur_id = params[:id]
+    begin
+    taxa = Taxon.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render :nothing => true, status: :not_found
+      return
+    end
+
+    render json: taxa.to_json, status: :ok
   end
 
   def delete

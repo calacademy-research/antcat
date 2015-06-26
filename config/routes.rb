@@ -15,22 +15,22 @@ AntCat::Application.routes.draw do
     resources :author_names, only: [:update, :create, :destroy]
   end
   resources :merge_authors, only: [:index, :merge]
-  match     '/merge_authors/merge', to: 'merge_authors#merge', via: :post
+  match '/merge_authors/merge', to: 'merge_authors#merge', via: :post
 
-  match     'catalog/index/(:id)'    => 'catalog#show',           as: :catalog_index, via: :get # for compatibility
-  match     'catalog/search'         => 'catalog#search',         as: :catalog_search, via: :get
-  match     'catalog/show_unavailable_subfamilies',               as: :catalog_show_subfamilies, via: :get
-  match     'catalog/hide_unavailable_subfamilies',               as: :catalog_hide_subfamilies, via: :get
-  match     'catalog/show_tribes'    => 'catalog#show_tribes',    as: :catalog_show_tribes, via: :get
-  match     'catalog/hide_tribes'    => 'catalog#hide_tribes',    as: :catalog_hide_tribes, via: :get
-  match     'catalog/show_subgenera' => 'catalog#show_subgenera', as: :catalog_show_subgenera, via: :get
-  match     'catalog/hide_subgenera' => 'catalog#hide_subgenera', as: :catalog_hide_subgenera, via: :get
-  match     'catalog/(:id)'          => 'catalog#show',           as: :catalog, via: :get
-  match     'catalog/delete_impact_list/(:id)'          => 'catalog#delete_impact_list',           as: :catalog_delete_impact_list, via: :get
+  match 'catalog/index/(:id)' => 'catalog#show', as: :catalog_index, via: :get # for compatibility
+  match 'catalog/search' => 'catalog#search', as: :catalog_search, via: :get
+  match 'catalog/show_unavailable_subfamilies', as: :catalog_show_subfamilies, via: :get
+  match 'catalog/hide_unavailable_subfamilies', as: :catalog_hide_subfamilies, via: :get
+  match 'catalog/show_tribes' => 'catalog#show_tribes', as: :catalog_show_tribes, via: :get
+  match 'catalog/hide_tribes' => 'catalog#hide_tribes', as: :catalog_hide_tribes, via: :get
+  match 'catalog/show_subgenera' => 'catalog#show_subgenera', as: :catalog_show_subgenera, via: :get
+  match 'catalog/hide_subgenera' => 'catalog#hide_subgenera', as: :catalog_hide_subgenera, via: :get
+  match 'catalog/(:id)' => 'catalog#show', as: :catalog, via: :get
+  match 'catalog/delete_impact_list/(:id)' => 'catalog#delete_impact_list', as: :catalog_delete_impact_list, via: :get
 
 
   resources :bolton_references, only: [:index, :update]
-  match     '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
+  match '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
   resources :journals, only: [:index, :show, :new, :create, :edit, :update]
   resources :publishers, only: [:index]
 
@@ -54,7 +54,7 @@ AntCat::Application.routes.draw do
       end
     end
     resource 'convert_to_subspecies', only: [:new, :create]
-    match     'delete'    => 'taxa#delete',           as: :taxa, via: :get # for compatibility
+    match 'delete' => 'taxa#delete', as: :taxa, via: :get # for compatibility
 
   end
 
@@ -74,7 +74,7 @@ AntCat::Application.routes.draw do
 
   resource :reference_field, only: [:show]
   resource :reference_popup, only: [:show]
-  resource :duplicates, only: [:show,:create]
+  resource :duplicates, only: [:show, :create]
 
   # These are shortcuts to support the tests in
   match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test', via: :get
@@ -91,5 +91,9 @@ AntCat::Application.routes.draw do
   end
 
   resources :antweb_data, only: [:index]
+
+  # REST
+  resources :taxon, :controller => 'taxa', :except => [:edit, :new, :update, :destroy]
+
 
 end
