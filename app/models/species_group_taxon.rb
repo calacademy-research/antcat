@@ -5,7 +5,7 @@ class SpeciesGroupTaxon < Taxon
   belongs_to :genus; validates :genus, presence: true
   belongs_to :subgenus
   before_create :set_subfamily
-  attr_accessible :genus, :subfamily, :subfamily_id
+  attr_accessible :genus, :subfamily, :subfamily_id,:type_name_id
 
   def recombination?
     genus_epithet = name.genus_epithet

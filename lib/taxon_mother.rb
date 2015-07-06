@@ -224,11 +224,12 @@ class TaxonMother
   end
 
   def build_children
+
     @taxon.build_name unless @taxon.name
+    @taxon.build_type_name unless @taxon.type_name
     @taxon.build_protonym unless @taxon.protonym
     @taxon.protonym.build_name unless @taxon.protonym.name
     @taxon.protonym.build_authorship unless @taxon.protonym.authorship
-    @taxon.build_type_name unless @taxon.type_name
   end
 
   private

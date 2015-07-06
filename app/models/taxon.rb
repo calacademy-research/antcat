@@ -41,6 +41,7 @@ class Taxon < ActiveRecord::Base
   #after_save :link_change_id
 
 
+
   def delete_with_state!
     Taxon.transaction do
       taxon_state = self.taxon_state

@@ -20,9 +20,9 @@ describe ChangesController do
       adder = FactoryGirl.create :user, can_edit: true
       taxon = create_taxon_version_and_change(:waiting, adder,nil,'Genus1')
       taxon.save
-      change = FactoryGirl.build :change, user_changed_taxon_id: taxon.id, change_type: "update"
-      version = FactoryGirl.build :version, item_id: taxon.id, whodunnit: adder.id
-      FactoryGirl.create :transaction, paper_trail_version: version, change: change
+      change = FactoryGirl.create :change, user_changed_taxon_id: taxon.id, change_type: "update"
+      version = FactoryGirl.create :version, item_id: taxon.id, whodunnit: adder.id, change_id: change.id
+      #FactoryGirl.create :transaction, paper_trail_version: version, change: change
 
 
       taxon.status = 'homonym'

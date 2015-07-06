@@ -40,6 +40,10 @@ class RestrictedMilieu < Milieu
     user && user.is_editor?
   end
 
+  def user_is_superadmin? user
+    user && user.is_superadmin?
+  end
+
   def user_can_edit? user
     user && user.is_editor?
   end

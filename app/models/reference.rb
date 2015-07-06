@@ -8,6 +8,7 @@ class Reference < ActiveRecord::Base
   attr_accessor :publisher_string
   attr_accessor :journal_name
   has_paper_trail meta: {change_id: :get_current_change_id}
+  include UndoTracker
 
   attr_accessible :citation_year,
                   :title,

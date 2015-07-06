@@ -1,6 +1,7 @@
 # coding: UTF-8
 class SubspeciesName < SpeciesGroupName
   extend Formatters::Formatter
+  has_paper_trail meta: {change_id: :get_current_change_id}
 
   def subspecies_epithets
     words[2..-1].join ' '

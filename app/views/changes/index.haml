@@ -1,6 +1,8 @@
 -#Instance variables: @changes
 - @title = 'Changes'
 
+%div.approve_all_button.right= approve_all_button
+
 %div= will_paginate @changes
 
 - @changes.each do |change|

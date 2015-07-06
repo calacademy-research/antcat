@@ -5,6 +5,7 @@ class Synonym < ActiveRecord::Base
   belongs_to :junior_synonym, class_name: 'Taxon'; validates :junior_synonym, presence: true
   belongs_to :senior_synonym, class_name: 'Taxon' # in the process of fixing up, an incomplete Synonym can be created
   has_paper_trail meta: {change_id: :get_current_change_id}
+  include UndoTracker
 
 
   def self.invalid_senior_synonyms

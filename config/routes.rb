@@ -9,7 +9,11 @@ AntCat::Application.routes.draw do
       put :undo
       get :undo_items
     end
+
   end
+  match 'changes/approve_all' => 'changes#approve_all', as: :changes_approve_all, via: :put
+
+
 
   resources :authors, only: [:index, :edit, :update] do
     resources :author_names, only: [:update, :create, :destroy]

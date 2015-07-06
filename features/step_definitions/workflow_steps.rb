@@ -82,7 +82,7 @@ end
 
 #############################
 # editing
-When /^I add the genus "Atta"$/ do
+When /^I add the genus "([^"]+)"?$/ do |genus_name|
   mother = TaxonMother.new
   reference = FactoryGirl.create :article_reference
 
@@ -112,7 +112,7 @@ When /^I add the genus "Atta"$/ do
       }
   )
   genus_params = taxon_params.deep_dup
-  genus_params[:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Atta').id
+  genus_params[:name_attributes][:id] = FactoryGirl.create(:genus_name, name: genus_name).id
   genus_params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Betta').id
   genus_params[:type_name_attributes] = {id: FactoryGirl.create(:species_name, name: 'Betta major').id}
 

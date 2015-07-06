@@ -1,6 +1,7 @@
 # coding: UTF-8
 class Name < ActiveRecord::Base
   include Formatters::Formatter
+  include UndoTracker
 
   validates :name, presence: true
   after_save :set_taxon_caches

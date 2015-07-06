@@ -1,6 +1,10 @@
 # coding: UTF-8
 class SpeciesGroupName < Name
   include Formatters::Formatter
+  include UndoTracker
+
+  has_paper_trail meta: {change_id: :get_current_change_id}
+
 
   def genus_epithet
     words[0]

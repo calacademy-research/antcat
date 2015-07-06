@@ -12,6 +12,7 @@ Feature: Workflow
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
     And there is a genus "Eciton"
+    And there is a genus "Eciton"
     And version tracking is enabled
     And I log in as a catalog editor
 

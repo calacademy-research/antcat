@@ -8,6 +8,7 @@ module ChangesHelper
     content_tag :a, label, href: %{/catalog/#{taxon.id}}
   end
 
+
   def format_adder_name change_type, user
     if change_type == "create"
       user_verb = "added"
@@ -97,6 +98,12 @@ module ChangesHelper
 
         button 'Approve', 'approve_button', 'data-change-id' => change.id
       end
+    end
+  end
+
+  def approve_all_button
+    if $Milieu.user_is_superadmin? current_user
+      button 'Approve all', 'approve_all_button'
     end
   end
 

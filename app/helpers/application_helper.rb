@@ -22,7 +22,7 @@ module ApplicationHelper
     $Milieu.user_can_review_changes? current_user
   end
   def user_is_superadmin?
-    $Milieu.is_superadmin? current_user
+    $Milieu.user_is_superadmin? current_user
   end
 
   ###

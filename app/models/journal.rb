@@ -3,6 +3,7 @@ class Journal < ActiveRecord::Base
   validates_presence_of :name
   scope :list, -> { order(:name) }
   has_paper_trail meta: {change_id: :get_current_change_id}
+  include UndoTracker
 
 
   attr_accessible :name

@@ -1,5 +1,8 @@
 # coding: UTF-8
 class SubfamilyName < FamilyOrSubfamilyName
+  has_paper_trail meta: {change_id: :get_current_change_id}
+  include UndoTracker
+
 
   def self.parse_words words
     return unless words.size == 1

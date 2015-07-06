@@ -12,6 +12,8 @@ Feature: Elevating subspecies to species
     Given I will confirm on the next step
     And I press "Elevate to species"
     Then I should see the catalog entry for "Solenopsis subbus"
+    When I go to the edit page for "Solenopsis subbus"
+    Then I should see "species of Solenopsis"
 
   Scenario: Only show button if showing a subspecies
     Given there is a species "Atta"

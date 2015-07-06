@@ -81,6 +81,22 @@ Feature: Workflow
     When I go to the catalog page for "Atta"
     Then I should see "approved by Stan Blum"
 
+  Scenario: Approving all changes
+    When I add the genus "Atta"
+    And I add the genus "Batta"
+    When I log in as a superadmin named "Stan Blum"
+    When I go to the changes page
+    Then I should see an "Approve all" button
+    When I go to the changes page
+    And I will confirm on the next step
+    And I press "Approve all"
+    When I go to the changes page
+    Then I should not see an "Approve" button
+
+  Scenario: Should not see approve all if not superadmin
+    When I go to the changes page
+    Then I should not see an "Approve all" button
+
 
   Scenario: Another editor editing a change that's waiting for approval
     When I add the genus "Atta"

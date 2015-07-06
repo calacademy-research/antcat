@@ -10,8 +10,12 @@ module UndoTracker
     change
   end
 
+  def clear_change
+    RequestStore.store[:current_change_id]=nil
+  end
+
   def get_current_change_id
-    RequestStore.store[:current_change_id]
+    RequestStore.read :current_change_id
   end
 
 

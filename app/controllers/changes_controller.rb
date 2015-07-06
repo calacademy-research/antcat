@@ -1,6 +1,6 @@
 # coding: UTF-8
 class ChangesController < ApplicationController
-
+  include UndoTracker
   def index
     @changes = Change.creations.paginate page: params[:page], per_page: 8
 
@@ -15,18 +15,36 @@ class ChangesController < ApplicationController
     @change = Change.find params[:id]
   end
 
-  def approve
-    @change = Change.find params[:id]
-    if (@change.taxon.nil?)
+  def do_approve this_change
+    taxon_id = this_change.user_changed_taxon_id
+    taxon_state = TaxonState.find_by taxon_id: taxon_id
+    if taxon_state.review_state == "approved"
+      return
+    end
+    if (this_change.taxon.nil?)
       # This case is for approving a delete
-      taxon_id = @change.user_changed_taxon_id
-      taxon_state = TaxonState.find_by taxon_id: taxon_id
       taxon_state.review_state = "approved"
       taxon_state.save!
     else
-      @change.taxon.approve!
-      @change.update_attributes! approver_id: current_user.id, approved_at: Time.now
+      this_change.taxon.approve!
+      this_change.update_attributes! approver_id: current_user.id, approved_at: Time.now
     end
+  end
+
+  def approve
+    @change = Change.find params[:id]
+    do_approve @change
+    json = {success: true}.to_json
+    render json: json, content_type: 'text/html'
+  end
+
+  def approve_all
+    TaxonState.where(review_state: 'waiting').each do |approve_taxon_state|
+      Change.where(user_changed_taxon_id: approve_taxon_state.taxon_id).each do |approve_change|
+        do_approve approve_change
+      end
+    end
+
     json = {success: true}.to_json
     render json: json, content_type: 'text/html'
   end
@@ -37,6 +55,7 @@ class ChangesController < ApplicationController
     # that touch this same item set.
     # find all versions, and undo the change
     # Sort to undo changes most recent to oldest
+    clear_change
     change_id = params[:id]
     change_id_set = find_future_changes(change_id)
     versions = SortedSet.new
@@ -56,6 +75,7 @@ class ChangesController < ApplicationController
       end
       undo_versions versions
     end
+
     json = {success: true}.to_json
     render json: json, content_type: 'text/html'
   end

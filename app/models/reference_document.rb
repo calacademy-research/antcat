@@ -9,6 +9,7 @@ class ReferenceDocument < ActiveRecord::Base
                     s3_permissions: 'authenticated-read',
                     s3_protocol: 'http'
   has_paper_trail meta: {change_id: :get_current_change_id}
+  include UndoTracker
 
 
   do_not_validate_attachment_file_type :pdf

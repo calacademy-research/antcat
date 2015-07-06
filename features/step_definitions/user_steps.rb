@@ -59,8 +59,8 @@ Given /^I log in as a catalog editor(?: named "([^"]+)")?$/ do |editor|
   login true, false, editor
 end
 
-Given /^I log in as a superadmin$/ do
-  login true, false, 'superman', true
+Given /^I log in as a superadmin(?: named "([^"]+)")?$/ do |editor|
+  login true, false, editor, true
 end
 
 Given /^I log in as a bibliography editor$/ do

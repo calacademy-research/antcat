@@ -7,6 +7,7 @@ class TaxonHistoryItem < ActiveRecord::Base
   validates_presence_of :taxt
   has_paper_trail meta: {change_id: :get_current_change_id}
 
+  include UndoTracker
 
   # TOOD: Rails 4 upgrade, remove when tests pass
   # def title

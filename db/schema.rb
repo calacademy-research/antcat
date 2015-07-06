@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150618101535) do
+ActiveRecord::Schema.define(version: 20150626154340) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -38,9 +38,9 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.string   "name",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "verified",       limit: 1
+    t.boolean  "verified"
     t.integer  "author_id",      limit: 4
-    t.boolean  "auto_generated", limit: 1,   default: false
+    t.boolean  "auto_generated",             default: false
     t.string   "origin",         limit: 255
   end
 
@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.datetime "updated_at"
     t.text     "notes_taxt",     limit: 65535
     t.string   "forms",          limit: 255
-    t.boolean  "auto_generated", limit: 1,     default: false
+    t.boolean  "auto_generated",               default: false
     t.string   "origin",         limit: 255
   end
 
@@ -135,10 +135,10 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.string  "rank",                   limit: 255
     t.string  "status",                 limit: 255
     t.string  "is_valid",               limit: 255
-    t.boolean "fossil",                 limit: 1
+    t.boolean "fossil"
     t.integer "num_spms",               limit: 4
-    t.boolean "many_antcat_references", limit: 1
-    t.boolean "many_hol_references",    limit: 1
+    t.boolean "many_antcat_references"
+    t.boolean "many_hol_references"
   end
 
   add_index "hol_data", ["tnuid"], name: "hol_data_tnuid_idx", using: :btree
@@ -189,7 +189,7 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.integer "antcat_citation_id",  limit: 4
     t.string  "rank",                limit: 255
     t.string  "rel_type",            limit: 255
-    t.boolean "fossil",              limit: 1
+    t.boolean "fossil"
     t.string  "status",              limit: 255
     t.integer "antcat_taxon_id",     limit: 4
     t.integer "valid_tnuid",         limit: 4
@@ -205,7 +205,7 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.string   "name",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "auto_generated", limit: 1,   default: false
+    t.boolean  "auto_generated",             default: false
     t.string   "origin",         limit: 255
   end
 
@@ -222,16 +222,16 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "gender",             limit: 255
-    t.boolean  "auto_generated",     limit: 1,   default: false
+    t.boolean  "auto_generated",                 default: false
     t.string   "origin",             limit: 255
-    t.boolean  "nonconforming_name", limit: 1
+    t.boolean  "nonconforming_name"
   end
 
   add_index "names", ["name"], name: "name_name_index", using: :btree
 
   create_table "places", force: :cascade do |t|
     t.string   "name",       limit: 255
-    t.boolean  "verified",   limit: 1
+    t.boolean  "verified"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -242,11 +242,11 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "authorship_id",  limit: 4
-    t.boolean  "fossil",         limit: 1
-    t.boolean  "sic",            limit: 1
+    t.boolean  "fossil"
+    t.boolean  "sic"
     t.string   "locality",       limit: 255
     t.integer  "name_id",        limit: 4
-    t.boolean  "auto_generated", limit: 1,   default: false
+    t.boolean  "auto_generated",             default: false
     t.string   "origin",         limit: 255
   end
 
@@ -269,7 +269,7 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position",       limit: 4
-    t.boolean  "auto_generated", limit: 1,   default: false
+    t.boolean  "auto_generated",             default: false
     t.string   "origin",         limit: 255
   end
 
@@ -283,7 +283,7 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "reference_id",   limit: 4
-    t.boolean  "public",         limit: 1
+    t.boolean  "public"
   end
 
   add_index "reference_documents", ["reference_id"], name: "documents_reference_id_idx", using: :btree
@@ -329,7 +329,7 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.string   "review_state",                     limit: 255
     t.text     "formatted_cache",                  limit: 65535
     t.text     "inline_citation_cache",            limit: 65535
-    t.boolean  "auto_generated",                   limit: 1,     default: false
+    t.boolean  "auto_generated",                                 default: false
     t.string   "origin",                           limit: 255
   end
 
@@ -346,7 +346,7 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.integer  "junior_synonym_id", limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "auto_generated",    limit: 1,   default: false
+    t.boolean  "auto_generated",                default: false
     t.string   "origin",            limit: 255
   end
 
@@ -354,7 +354,7 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.string   "type",                            limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "fossil",                          limit: 1,     default: false, null: false
+    t.boolean  "fossil",                                        default: false, null: false
     t.string   "status",                          limit: 255
     t.integer  "subfamily_id",                    limit: 4
     t.integer  "tribe_id",                        limit: 4
@@ -366,17 +366,17 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.text     "type_taxt",                       limit: 65535
     t.text     "headline_notes_taxt",             limit: 65535
     t.integer  "subgenus_id",                     limit: 4
-    t.boolean  "hong",                            limit: 1,     default: false, null: false
+    t.boolean  "hong",                                          default: false, null: false
     t.integer  "name_id",                         limit: 4
     t.integer  "type_name_id",                    limit: 4
     t.text     "genus_species_header_notes_taxt", limit: 65535
-    t.boolean  "type_fossil",                     limit: 1
+    t.boolean  "type_fossil"
     t.string   "name_cache",                      limit: 255
     t.string   "name_html_cache",                 limit: 255
-    t.boolean  "unresolved_homonym",              limit: 1,     default: false, null: false
+    t.boolean  "unresolved_homonym",                            default: false, null: false
     t.integer  "current_valid_taxon_id",          limit: 4
-    t.boolean  "ichnotaxon",                      limit: 1
-    t.boolean  "nomen_nudum",                     limit: 1
+    t.boolean  "ichnotaxon"
+    t.boolean  "nomen_nudum"
     t.integer  "family_id",                       limit: 4
     t.string   "verbatim_type_locality",          limit: 255
     t.string   "biogeographic_region",            limit: 255
@@ -386,9 +386,9 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.string   "authorship_string",               limit: 255
     t.string   "duplicate_type",                  limit: 255
     t.integer  "collision_merge_id",              limit: 4
-    t.boolean  "auto_generated",                  limit: 1,     default: false
+    t.boolean  "auto_generated",                                default: false
     t.string   "origin",                          limit: 255
-    t.boolean  "display",                         limit: 1,     default: true
+    t.boolean  "display",                                       default: true
   end
 
   add_index "taxa", ["family_id"], name: "index_taxa_on_family_id", using: :btree
@@ -418,7 +418,7 @@ ActiveRecord::Schema.define(version: 20150618101535) do
   create_table "taxon_states", force: :cascade do |t|
     t.integer  "taxon_id",     limit: 4
     t.string   "review_state", limit: 255
-    t.boolean  "deleted",      limit: 1
+    t.boolean  "deleted"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -453,14 +453,14 @@ ActiveRecord::Schema.define(version: 20150618101535) do
     t.string   "invitation_token",       limit: 20
     t.datetime "invitation_sent_at"
     t.datetime "reset_password_sent_at"
-    t.boolean  "can_edit",               limit: 1
+    t.boolean  "can_edit"
     t.datetime "invitation_accepted_at"
     t.integer  "invitation_limit",       limit: 4
     t.integer  "invited_by_id",          limit: 4
     t.string   "invited_by_type",        limit: 255
     t.string   "name",                   limit: 255
     t.datetime "invitation_created_at"
-    t.boolean  "is_superadmin",          limit: 1
+    t.boolean  "is_superadmin"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
