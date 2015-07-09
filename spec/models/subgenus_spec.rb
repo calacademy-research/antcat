@@ -5,6 +5,8 @@ describe Subgenus do
 
   it "must have a genus" do
     colobopsis = FactoryGirl.build :subgenus, name: FactoryGirl.create(:name, name: 'Colobopsis'), genus: nil
+    FactoryGirl.create :taxon_state, taxon_id: colobopsis.id
+
     expect(colobopsis).not_to be_valid
     colobopsis.genus = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Camponotus')
 
