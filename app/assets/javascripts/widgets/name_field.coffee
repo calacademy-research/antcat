@@ -11,6 +11,12 @@ class AntCat.NameField extends AntCat.Panel
   current_taxon_id: =>
     $('#current_taxon_id').val()
 
+  species_id: =>
+    $('#species_id').val()
+
+  taxon_name_string: =>
+    $('#taxon_name_string').val()
+
   current_reset_epithet: =>
     $('#reset_epithet').val()
 
@@ -58,6 +64,7 @@ class AntCat.NameField extends AntCat.Panel
     @hide_combination_message()
     super
 
+  # This is the main entry point after submission. start
   on_form_success: (data) =>
     @set_value data.id
     @set_submit_button_text 'OK'
@@ -98,12 +105,35 @@ class AntCat.NameField extends AntCat.Panel
   set_value: (value) =>
     $value_field = $('#' + @value_id)
     if (@taxon_rank == 'species' || @taxon_rank == 'subspecies') && @is_parent_name && parseInt($value_field.val()) != parseInt(value)
-      @check_for_duplicates(value)
-      # populates @duplicates variable
-      if(@duplicates == null)
-        @create_combination_message(value)
+     # @check_for_duplicates(value) if @options.check_for_duplicates
+      if @species_id().length == 0
+        @set_value_nospecies(value)
       else
-        @create_duplicate_message(@duplicates, value)
+        @set_value_default(value)
+
+
+
+  set_value_default: (value) =>
+    $value_field = $('#' + @value_id)
+    @check_for_duplicates(value)
+    # populates @duplicates variable
+    if(@duplicates == null)
+      @create_combination_message(value)
+    else
+      @create_duplicate_message(@duplicates, value)
+    @reset_value_id = $value_field.val()
+    $value_field.val value
+
+  set_value_nospecies: (value) =>
+    $value_field = $('#' + @value_id)
+    @check_for_duplicates_nospecies(value)
+    # populates @duplicates variable
+    # For this case, we always prompt.
+    if @duplicates.length == 0
+      alert "No species match, aborting."
+      return
+    @create_duplicate_nospecies_message(@duplicates, value)
+
     @reset_value_id = $value_field.val()
     $value_field.val value
 
@@ -119,7 +149,6 @@ class AntCat.NameField extends AntCat.Panel
        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
        Would you like to create a new combination under this parent?
      </p></div>'
-
 
 
   create_combination_message: (name_id) =>
@@ -138,12 +167,16 @@ class AntCat.NameField extends AntCat.Panel
             '&rank_to_create=' + @taxon_rank +
             '&previous_combination_id=' + @current_taxon_id()
         ,
+        "No, just change the parent": (a) =>
+          @set_value_nospecies(name_id)
+        ,
         Cancel: () =>
 
           @reset_autocomplete()
           dialog_box.dialog("close")
       }
     })
+
     @show_combination_message()
 
   hide_combination_message: =>
@@ -163,8 +196,85 @@ class AntCat.NameField extends AntCat.Panel
     $error_messages.text message
 
 # -----------------------------------------
+# Bad parent handling  - so far, this is only the subspecies case.
+# Note that this exists so that users have a tool to correct a widespread data error. (subspecies with no parent species)
+# We may want to remove this feature later.
+# -----------------------------------------
+  nospecies_homonym_message_html: (data)=>
+    message = '<div id="dialog-duplicate" title="Confirm parent species change."><p>
+       <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+           Choose a parent species:
+           <div id="duplicate-radio class="duplicate-radio">'
+
+
+    # one radio button per duplicate. If we hit a homonym case in here,
+    # we don't need an additonal option for one.
+
+    for i in [1..data.length] by 1
+      j = i - 1
+      item = data[j][Object.keys(data[0])[0]]
+
+      message = message + @make_nospecies_radio_html(item,j)
+
+
+
+    message = message + '</div></p></div>'
+    message
+
+
+
+
+  make_nospecies_radio_html: (item,j)=>
+    message = '<input type="radio" id='
+
+
+    message = message + j
+
+    if(j == 0)
+      message = message + ' checked="checked" '
+    message = message + ' name="radio">'
+    message = message + '<label for="radio' +
+      j +
+      '">' +
+      item.name_html_cache +
+      ": " +
+      item.authorship_string
+
+    if item.name_cache != this.taxon_name_string().split(/\s+/).slice(0,2).join(" ")
+      message = message + " This does not match the name of the current species. Use with caution."
+    message = message + '</label>'
+    message = message + '</br>'
+
+
+    message
+
+# -----------------------------------------
 # Duplicates message handling
 # -----------------------------------------
+
+  duplicate_message_html: (data)=>
+    message = '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations."><p>
+       <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+           Choose a representation:
+           <div id="duplicate-radio class="duplicate-radio">'
+
+
+
+    generate_additional_homonym_option = true
+    # one radio button per duplicate. If we hit a homonym case in here,
+    # we don't need an additonal option for one.
+
+    for i in [1..data.length] by 1
+      j = i - 1
+      item = data[j][Object.keys(data[0])[0]]
+      message = message + @make_radio_html(item,j)
+
+    if generate_additional_homonym_option
+      message = @append_homonym_button(message, item)
+
+    message = message + '</div></p></div>'
+    message
+
   make_radio_html: (item,j)=>
     message = '<input type="radio" id='
 
@@ -195,36 +305,6 @@ class AntCat.NameField extends AntCat.Panel
 
     message
 
-  duplicate_message_html: (data)=>
-    message = '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations."><p>
-       <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-           Choose a representation:
-           <div id="duplicate-radio class="duplicate-radio">'
-
-    generate_additional_homonym_option = true
-    # one radio button per duplicate. If we hit a homonym case in here,
-    # we don't need an additonal option for one.
-
-    for i in [1..data.length] by 1
-      j = i - 1
-      if(typeof data[j].species != "undefined")
-        item = data[j].species
-      else if(typeof data[j].subspecies != "undefined")
-        item = data[j].subspecies
-      else
-        # Unknown data type here, that's bad.
-        # Or quite possibly something to do with genus that I don't
-        # understand.
-        debugger
-      message = message + @make_radio_html(item,j)
-
-    if generate_additional_homonym_option
-      message = @append_homonym_button(message, item)
-
-    message = message + '</div></p></div>'
-    message
-
-
   append_homonym_button: (message, item) =>
     message = message + '<input type="radio" id="homonym' +
       '" name="radio"><label for="radio_homonym' +
@@ -247,6 +327,33 @@ class AntCat.NameField extends AntCat.Panel
       if this.checked == true
         result = this.id
     result
+
+  create_duplicate_nospecies_message: (data, new_parent_name_id) =>
+    @duplicate_message = $('#duplicate_message')
+    @duplicate_message.append($(@nospecies_homonym_message_html(data)))
+    dialog_box = $("#dialog-duplicate")
+    dialog_box.dialog({
+      resizable: true,
+      height: 280,
+      width: 720,
+      modal: true,
+      buttons: {
+        "Yes, update parent record only": (a) =>
+
+          data_object = data[@get_radio_value()]
+
+          window.location.href = '/taxa/'+@current_taxon_id()+'/update_parent/' + data_object[Object.keys(data[0])[0]].id
+        ,
+
+        "Cancel":
+          id: "Cancel-Dialog"
+          text: "Cancel"
+          click: =>
+            @reset_autocomplete()
+            dialog_box.dialog("close")
+      }
+    })
+    @show_duplicate_message()
 
   create_duplicate_message: (data, new_parent_name_id) =>
     @duplicate_message = $('#duplicate_message')
@@ -273,6 +380,13 @@ class AntCat.NameField extends AntCat.Panel
             '&previous_combination_id=' + @current_taxon_id() +
             '&collision_resolution=' + collision_resolution
         ,
+        "No, just change the parent":
+          backgroundColor: "red"
+          class: "superuser_button"
+          click: =>
+            dialog_box.dialog("close")
+            @set_value_nospecies(name_id)
+        ,
 
         "Cancel":
           id: "Cancel-Dialog"
@@ -285,14 +399,36 @@ class AntCat.NameField extends AntCat.Panel
     @show_duplicate_message()
 
 
+
+
   # does synchronus ajax query
   # against the duplicates controller. The results appear in this.duplicates
-  check_for_duplicates: (new_parent_name) =>
+  check_for_duplicates: (new_parent_name_id) =>
     url = "/duplicates?current_taxon_id=" +
         @current_taxon_id() +
         "&new_parent_name_id=" +
-        new_parent_name +
-        "&rank_to_create=species"
+        new_parent_name_id +
+        "&rank_to_create=subspecies"
+
+
+    $.ajax
+      url: url,
+      type: 'get',
+      dataType: 'json',
+      success: (data) =>
+        @got_duplicate_data(data)
+      async: false,
+      error: (xhr) => debugger
+
+  # does synchronus ajax query
+  # against the duplicates controller. The results appear in this.duplicates
+  # Misnomer; it may return only one, which is fine.
+  check_for_duplicates_nospecies: (new_parent_name_id) =>
+    url = "/duplicates?current_taxon_id=" +
+        @current_taxon_id() +
+        "&new_parent_name_id=" +
+        new_parent_name_id +
+        "&match_name_only=true"
     $.ajax
       url: url,
       type: 'get',

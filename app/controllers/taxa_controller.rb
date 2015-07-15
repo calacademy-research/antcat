@@ -60,7 +60,23 @@ class TaxaController < ApplicationController
 
   end
 
-  ###################
+  # The parent is updated via taxon id.
+  # params: taxon_id (int)
+  # new_parent_taxon_id (int)
+  def update_parent
+    puts ("wooooo!")
+  end
+
+
+  # I think there are zero cases of this at present...?
+  # the "no conflicts" case; we're just picking a taxon name here.
+  def update_parent_via_name
+    puts ("wooooo!")
+
+  end
+
+
+    ###################
   def get_taxon create_or_update
     if create_or_update == :create
       parent = Taxon.find(@parent_id)
@@ -82,7 +98,7 @@ class TaxaController < ApplicationController
       # if !@collision_resolution.nil?
       #   @taxon = @mother.create_taxon @rank_to_create, parent
       # else
-      #   # joe it might be that we just switch parent with collision_resolution_id, and then
+      #   #  it might be that we just switch parent with collision_resolution_id, and then
       #   # go ahead and call "create taxon".
       #   # then, in the secondary homonuym case, we post facto(here) mark it as a secondary.
       #   @taxon = @mother.create_taxon_collision @rank_to_create, parent, @collision_resolution

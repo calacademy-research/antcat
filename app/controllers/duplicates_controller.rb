@@ -10,10 +10,15 @@ class DuplicatesController < TaxaController
   # Takes requires parent_id (target parent)and previous_combination_id
   # returns all matching taxa that could conflict with this naming.
   def show
+    if params['match_name_only'] == "true"
+      find_name_duplicates_only
+      return
+    end
     if @rank_to_create != Rank['species']
       render :nothing => true, status: :no_content
       return
     end
+
     current_taxon = Taxon.find(params[:current_taxon_id])
     new_parent = Taxon.find_by_name_id(params[:new_parent_name_id])
     if(current_taxon.rank == Rank['subspecies'].to_s)
@@ -51,6 +56,12 @@ class DuplicatesController < TaxaController
       option['duplicate_type'] = duplicate_type
     end
     render json: options.to_json, status: :ok
+  end
+
+  def find_name_duplicates_only
+    name_conflict_taxa = Taxon.where name_id: params[:new_parent_name_id]
+    render json: name_conflict_taxa.to_json, status: :ok
+
   end
 
 

@@ -32,5 +32,7 @@ class FixCurrentValid < ActiveRecord::Migration
     set taxa.current_valid_taxon_id = null where current_valid_taxon_id = id"
 
 
+
+
   end
 end

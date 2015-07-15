@@ -58,9 +58,12 @@ AntCat::Application.routes.draw do
       end
     end
     resource 'convert_to_subspecies', only: [:new, :create]
-    match 'delete' => 'taxa#delete', as: :taxa, via: :get # for compatibility
+    #resource 'update_parent', only: [:update, :index]
 
+    match 'delete' => 'taxa#delete', as: :taxa, via: :get # for compatibility
+    #get 'update_parent', to: :update_parent
   end
+  match '/taxa/:taxon_id/update_parent/:new_parent_taxon_id', :controller => 'taxa', action: 'update_parent', via: :get
 
 
   resource :advanced_search, only: [:show]

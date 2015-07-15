@@ -57,8 +57,10 @@ class AntCat.TaxonForm extends AntCat.Form
     options = {}
     if @taxon_rank() == 'genus' or @taxon_rank() == 'tribe'
       options = {subfamilies_or_tribes_only: true}
-    else if @taxon_rank() == 'species' or @taxon_rank() == 'subspecies'
+    else if @taxon_rank() == 'species'
       options = {genera_only: true}
+    else if @taxon_rank() == 'subspecies'
+      options = {species_only: true}
     new AntCat.ParentSection options
 
   initialize_current_valid_name_section: =>

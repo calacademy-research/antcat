@@ -9,9 +9,15 @@ class Subspecies < SpeciesGroupTaxon
   has_paper_trail meta: {change_id: :get_current_change_id}
 
   def update_parent new_parent
+    # Joe - somewhere, we need to check and pop up for the homonym case if there are multiple possibles.
     super
-    self.genus = new_parent.genus
-    self.subgenus = new_parent.subgenus
+    if defined? new_parent.genus()
+      self.genus = new_parent.genus
+    end
+    if defined? new_parent.subgenus()
+      self.subgenus = new_parent.subgenus
+    end
+    self.species = new_parent
   end
 
   def set_genus
@@ -75,10 +81,10 @@ class Subspecies < SpeciesGroupTaxon
     # writes directly to db, bypasses save. "update_attributes" operates in memory and
     # lets you use the "save" path
     self.update_columns name_id: new_name.id,
-                           species_id: nil,
-                           name_cache: new_name.name,
-                           name_html_cache: new_name.name_html,
-                           type: 'Species'
+                        species_id: nil,
+                        name_cache: new_name.name,
+                        name_html_cache: new_name.name_html,
+                        type: 'Species'
     # ts = self.taxon_state
     # ts.review_state = :waiting
     # ts.save

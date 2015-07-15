@@ -274,3 +274,14 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I set the parent name to "Appaloosa"
     And I press "OK"
     Then I should see "This must be the name of an existing taxon"
+
+    joe's new cases
+    # All are to fix the missing "species_id" for a subspecies
+    # Pick a name that has no duplicates. It should have simple dialogs and then warp to a page that has the fix.
+    # Pick a name that has duplicates. Force a choice.
+    # Pick a name that doesn't match the current name (foo bar baz vs. with a parent of foo splat). Choices should have warnings.
+    # Changing a subspecies parent when species_id is current set should do the right thing, whatever that is.
+    # Attempt to save a subspecies with a genus parent - should alert.  # not done
+    # attempt to save a species with a family parent - should alert.    # not done
+    # attempt to save any taxon with no parent - should alert           # not done
+    # Attempt to change to a parent with a name match but no associated taxon records (it can happen!) should show abort/fail message.
