@@ -148,6 +148,7 @@ class TaxaController < ApplicationController
   end
 
   def set_view_variables create_or_update
+    @user = current_user
     if create_or_update == :create
       @cancel_path = edit_taxa_path @parent_id
     else
@@ -161,7 +162,6 @@ class TaxaController < ApplicationController
       @add_tribe_path = new_taxa_path rank_to_create: Tribe, parent_id: @taxon.id
       @cancel_path = catalog_path @taxon
       @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
-      @user = current_user
       if (@taxon.is_a? (Family))
         @reset_epithet = @taxon.name.to_s
       elsif (@taxon.is_a? (Species))
