@@ -20,6 +20,10 @@ class AntCat.NameField extends AntCat.Panel
   current_reset_epithet: =>
     $('#reset_epithet').val()
 
+  is_superadmin: =>
+    $('#is_superadmin').val()
+
+
   create_form: ($element, form_options) =>
     form_options.taxa_only = @options.taxa_only
     form_options.subfamilies_or_tribes_only = @options.subfamilies_or_tribes_only
@@ -157,27 +161,35 @@ class AntCat.NameField extends AntCat.Panel
     @element.append($(@combination_message_html()))
     dialog_box = $("#dialog-confirm")
     dialog_box.dialog({
-      resizable: true,
-      height: 140,
-      width: 520,
-      modal: true,
-      buttons: {
-        "Yes, create new combination": (a) =>
-          window.location.href = '/taxa/new?parent_name_id=' + name_id +
-            '&rank_to_create=' + @taxon_rank +
-            '&previous_combination_id=' + @current_taxon_id()
-        ,
-        "No, just change the parent": (a) =>
-          @set_value_nospecies(name_id)
-        ,
-        Cancel: () =>
-
-          @reset_autocomplete()
-          dialog_box.dialog("close")
-      }
-    })
-
+        resizable: true,
+        height: 140,
+        width: 520,
+        modal: true,
+        buttons: @create_combination_message_buttons(name_id, dialog_box)
+      })
     @show_combination_message()
+
+  create_combination_message_buttons: (name_id,dialog_box) =>
+    button_hash = {}
+    button_hash["Yes, create new combination"] = (a) =>
+      window.location.href = '/taxa/new?parent_name_id=' + name_id +
+        '&rank_to_create=' + @taxon_rank +
+        '&previous_combination_id=' + @current_taxon_id()
+    if @is_superadmin() == "true"
+      button_hash["No, just change the parent"] =
+      text: "No, just change the parent"
+      click: =>
+          dialog_box.dialog("close")
+          @set_value_nospecies(name_id)
+
+    button_hash["Cancel"] =
+      id: "Cancel-Dialog"
+      text: "Cancel"
+      click: =>
+        @reset_autocomplete()
+        dialog_box.dialog("close")
+
+    return button_hash
 
   hide_combination_message: =>
     if message = @element.find('#combination_message')
@@ -206,23 +218,14 @@ class AntCat.NameField extends AntCat.Panel
            Choose a parent species:
            <div id="duplicate-radio class="duplicate-radio">'
 
-
     # one radio button per duplicate. If we hit a homonym case in here,
     # we don't need an additonal option for one.
-
     for i in [1..data.length] by 1
       j = i - 1
       item = data[j][Object.keys(data[0])[0]]
-
       message = message + @make_nospecies_radio_html(item,j)
-
-
-
     message = message + '</div></p></div>'
     message
-
-
-
 
   make_nospecies_radio_html: (item,j)=>
     message = '<input type="radio" id='
@@ -240,7 +243,8 @@ class AntCat.NameField extends AntCat.Panel
       ": " +
       item.authorship_string
 
-    if item.name_cache != this.taxon_name_string().split(/\s+/).slice(0,2).join(" ")
+
+    if this.taxon_name_string().split(/\s+/).slice(0, 2).join(" ").indexOf(item.name_cache) == -1
       message = message + " This does not match the name of the current species. Use with caution."
     message = message + '</label>'
     message = message + '</br>'
@@ -339,9 +343,7 @@ class AntCat.NameField extends AntCat.Panel
       modal: true,
       buttons: {
         "Yes, update parent record only": (a) =>
-
           data_object = data[@get_radio_value()]
-
           window.location.href = '/taxa/'+@current_taxon_id()+'/update_parent/' + data_object[Object.keys(data[0])[0]].id
         ,
 
@@ -364,42 +366,42 @@ class AntCat.NameField extends AntCat.Panel
       height: 280,
       width: 720,
       modal: true,
-      buttons: {
-        "Yes, create new combination": (a) =>
-          # This code is nasty. there's gotta be a better way.
-          if (@get_radio_value() == 'homonym' || @get_radio_value() == 'secondary_junior_homonym')
-            collision_resolution = 'homonym'
-          else
-            data_object = data[@get_radio_value()]
-            if(data_object['species'] != undefined)
-              collision_resolution = data_object['species'].id
-            else if (data_object['subspecies'] != undefined)
-              collision_resolution = data_object['subspecies'].id
-          window.location.href = '/taxa/new?parent_name_id=' + new_parent_name_id +
-            '&rank_to_create=' + @taxon_rank +
-            '&previous_combination_id=' + @current_taxon_id() +
-            '&collision_resolution=' + collision_resolution
-        ,
-        "No, just change the parent":
-          backgroundColor: "red"
-          class: "superuser_button"
-          click: =>
-            dialog_box.dialog("close")
-            @set_value_nospecies(name_id)
-        ,
-
-        "Cancel":
-          id: "Cancel-Dialog"
-          text: "Cancel"
-          click: =>
-            @reset_autocomplete()
-            dialog_box.dialog("close")
-      }
+      buttons: @create_duplicate_message_buttons(dialog_box)
     })
     @show_duplicate_message()
 
 
+  create_duplicate_message_buttons: (dialog_box) =>
+    button_hash = {}
+    button_hash["Yes, create new combination"] = (a) =>
+      # This code is nasty. there's gotta be a better way.
+      if (@get_radio_value() == 'homonym' || @get_radio_value() == 'secondary_junior_homonym')
+        collision_resolution = 'homonym'
+      else
+        data_object = data[@get_radio_value()]
+        if(data_object['species'] != undefined)
+          collision_resolution = data_object['species'].id
+        else if (data_object['subspecies'] != undefined)
+          collision_resolution = data_object['subspecies'].id
+      window.location.href = '/taxa/new?parent_name_id=' + new_parent_name_id +
+        '&rank_to_create=' + @taxon_rank +
+        '&previous_combination_id=' + @current_taxon_id() +
+        '&collision_resolution=' + collision_resolution
+    if @is_superadmin() == "true"
+      button_hash["No, just change the parent"] =
+        text: "No, just change the parent"
+        click: =>
+          dialog_box.dialog("close")
+          @set_value_nospecies(name_id)
 
+    button_hash["Cancel"] =
+      id: "Cancel-Dialog"
+      text: "Cancel"
+      click: =>
+        @reset_autocomplete()
+        dialog_box.dialog("close")
+
+    return button_hash
 
   # does synchronus ajax query
   # against the duplicates controller. The results appear in this.duplicates

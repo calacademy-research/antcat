@@ -10,7 +10,7 @@ class TaxaController < ApplicationController
 
   def new
     get_taxon :create
-    set_paths :create
+    set_view_variables :create
     get_default_name_string
     set_authorship_reference
     render :edit
@@ -18,13 +18,13 @@ class TaxaController < ApplicationController
 
   def create
     get_taxon :create
-    set_paths :create
+    set_view_variables :create
     save_taxon
   end
 
   def edit
     get_taxon :update
-    set_paths :update
+    set_view_variables :update
     setup_edit_buttons
   end
 
@@ -32,7 +32,7 @@ class TaxaController < ApplicationController
     get_taxon :update
     return elevate_to_species if @elevate_to_species
     return delete_taxon if @delete_taxon
-    set_paths :update
+    set_view_variables :update
     save_taxon
   end
 
@@ -40,7 +40,7 @@ class TaxaController < ApplicationController
   def show
     cur_id = params[:id]
     begin
-    taxa = Taxon.find(params[:id])
+      taxa = Taxon.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       render :nothing => true, status: :not_found
       return
@@ -64,19 +64,27 @@ class TaxaController < ApplicationController
   # params: taxon_id (int)
   # new_parent_taxon_id (int)
   def update_parent
-    puts ("wooooo!")
+    taxon = Taxon.find(params[:taxon_id])
+    new_parent = Taxon.find(params[:new_parent_taxon_id])
+    if new_parent.rank =="species"
+      taxon.species_id = new_parent.id
+    elsif  new_parent.rank == "genus"
+
+      taxon.genus_id =new_parent.id
+    elsif  new_parent.rank == "subgenus"
+      taxon.subgenus_id =new_parent.id
+    elsif  new_parent.rank == "subfamily"
+      taxon.subfamily_id =new_parent.id
+    elsif  new_parent.rank == "family"
+      taxon.family_id =new_parent.id
+    end
+    taxon.save!
+    redirect_to root_url+"/taxa/"+taxon.id.to_s+"/edit"
+
   end
 
 
-  # I think there are zero cases of this at present...?
-  # the "no conflicts" case; we're just picking a taxon name here.
-  def update_parent_via_name
-    puts ("wooooo!")
-
-  end
-
-
-    ###################
+  ###################
   def get_taxon create_or_update
     if create_or_update == :create
       parent = Taxon.find(@parent_id)
@@ -139,7 +147,7 @@ class TaxaController < ApplicationController
     end
   end
 
-  def set_paths create_or_update
+  def set_view_variables create_or_update
     if create_or_update == :create
       @cancel_path = edit_taxa_path @parent_id
     else
@@ -153,6 +161,7 @@ class TaxaController < ApplicationController
       @add_tribe_path = new_taxa_path rank_to_create: Tribe, parent_id: @taxon.id
       @cancel_path = catalog_path @taxon
       @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
+      @user = current_user
       if (@taxon.is_a? (Family))
         @reset_epithet = @taxon.name.to_s
       elsif (@taxon.is_a? (Species))
@@ -160,6 +169,7 @@ class TaxaController < ApplicationController
       else
         @reset_epithet = ""
       end
+
     end
   end
 

@@ -285,3 +285,11 @@ Feature: Changing parent genus, species, tribe or subfamily
     # attempt to save a species with a family parent - should alert.    # not done
     # attempt to save any taxon with no parent - should alert           # not done
     # Attempt to change to a parent with a name match but no associated taxon records (it can happen!) should show abort/fail message.
+    # Run through the "change parent" dialogs for homonym and non homonym cases
+    # try as superadmin - shouldn't see the "change parent" option UNLESS the species_id is null AND it's a subspecies in queestion
+  # Test changing subfamily
+  # test changing subgenus
+  # test changnig genus
+  # change to a parent that is inconcistnet with currnet name, get watning
+  # change to a parent that is concistent with current name, get no warning
+  # Do above two for change of genus parent of species and species parent of subspecies
