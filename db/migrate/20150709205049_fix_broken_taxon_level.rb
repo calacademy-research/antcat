@@ -21,7 +21,7 @@ class FixBrokenTaxonLevel < ActiveRecord::Migration
   join names
       set taxa.type = TRIM(TRAILING 'Name' FROM names.type)
 where
- taxa.name_id = names.id AND TRIM(TRAILING 'Name' FROM names.type) != Taxa.type
+ taxa.name_id = names.id AND TRIM(TRAILING 'Name' FROM names.type) != taxa.type
                 AND taxa.auto_generated = FALSE AND (taxa.type = 'Subspecies' OR taxa.type = 'Species')
                 AND names.type = 'SubspeciesName' AND species_id IS not NULL"
 
@@ -31,7 +31,7 @@ where
     join names
     set taxa.type = TRIM(TRAILING 'Name' FROM names.type)
     where
-    taxa.name_id = names.id AND TRIM(TRAILING 'Name' FROM names.type) != Taxa.type
+    taxa.name_id = names.id AND TRIM(TRAILING 'Name' FROM names.type) != taxa.type
     AND taxa.auto_generated = FALSE AND (taxa.type = 'Subspecies' OR taxa.type = 'Species')
     AND names.type = 'SpeciesName' AND species_id IS  NULL"
 
