@@ -30,9 +30,9 @@ class TaxaController < ApplicationController
 
   def update
     get_taxon :update
+    set_view_variables :update
     return elevate_to_species if @elevate_to_species
     return delete_taxon if @delete_taxon
-    set_view_variables :update
     save_taxon
   end
 
@@ -50,6 +50,7 @@ class TaxaController < ApplicationController
   end
 
   def delete
+    @user = current_user
     delete_mother = TaxonMother.new params[:taxa_id]
 
     taxon = delete_mother.load_taxon

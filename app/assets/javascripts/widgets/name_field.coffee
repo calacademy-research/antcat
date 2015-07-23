@@ -254,6 +254,7 @@ class AntCat.NameField extends AntCat.Panel
 
     message
 
+
 # -----------------------------------------
 # Duplicates message handling
 # -----------------------------------------
@@ -368,12 +369,12 @@ class AntCat.NameField extends AntCat.Panel
       height: 280,
       width: 720,
       modal: true,
-      buttons: @create_duplicate_message_buttons(dialog_box)
+      buttons: @create_duplicate_message_buttons(data, new_parent_name_id,dialog_box)
     })
     @show_duplicate_message()
 
 
-  create_duplicate_message_buttons: (dialog_box) =>
+  create_duplicate_message_buttons: (data,new_parent_name_id, dialog_box) =>
     button_hash = {}
     button_hash["Yes, create new combination"] = (a) =>
       # This code is nasty. there's gotta be a better way.
@@ -412,7 +413,7 @@ class AntCat.NameField extends AntCat.Panel
         @current_taxon_id() +
         "&new_parent_name_id=" +
         new_parent_name_id +
-        "&rank_to_create=subspecies"
+        '&rank_to_create=' + @taxon_rank
 
 
     $.ajax
