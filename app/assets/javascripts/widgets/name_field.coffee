@@ -109,11 +109,13 @@ class AntCat.NameField extends AntCat.Panel
   set_value: (value) =>
     $value_field = $('#' + @value_id)
     if (@taxon_rank == 'species' || @taxon_rank == 'subspecies') && @is_parent_name && parseInt($value_field.val()) != parseInt(value)
-     # @check_for_duplicates(value) if @options.check_for_duplicates
       if @species_id().length == 0
         @set_value_nospecies(value)
       else
         @set_value_default(value)
+    else
+      @reset_value_id = $value_field.val()
+      $value_field.val value
 
 
 
