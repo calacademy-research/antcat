@@ -39,7 +39,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "see Eciton major"
 
   # Change parent from A -> B -> A
-
   Scenario: Merging back when we have the same protonym
     Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
     When I go to the edit page for "Beta major"
@@ -76,6 +75,9 @@ Feature: Changing parent genus, species, tribe or subfamily
 #    When I click the parent name field
 #    And I set the parent name to "Atta"
 #    Then I should see "This new combination looks a lot like existing combinations"
+  # Change parent of a subspecies from one species to another. Create a conflict that way and detect it.
+  # Change parent of a genus from one subfamily to another. Create a conflict that way and detect it.
+
 
 
   Scenario: Creating a secondary junior homonym
@@ -275,21 +277,94 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "OK"
     Then I should see "This must be the name of an existing taxon"
 
-    joe's new cases
+
+
+  # Fix a subspecies with no species record as a normal editor
+  # Pick a name that has no duplicates. It should have simple dialogs and then warp to a page that has the fix.
+  Scenario: Merging back when we have the same protonym
+    And there is a species "Atta major" with genus "Atta"
+    And there is a parentless subspecies "Atta major minor"
+    When I go to the edit page for "Atta major minor"
+    Then I should see "subspecies of (no species)"
+    And I click the parent name field
+    And I set the parent name to "Atta major"
+    And I press "OK"
+    Then I should see "Confirm parent species change"
+    And I should see "Atta major: "
+    And I should see "Choose a parent species:"
+    And I press "Yes, update parent record only"
+    Then I should see "subspecies of Atta major"
+
+
+  Scenario: Merging back when we have the same protonym without superadmin
+    Given there is a subspecies "Batta speccus subbus" which is a subspecies of "Batta speccus" in the genus "Batta"
+    And there is a subspecies "Atta speccus subbus" which is a subspecies of "Atta speccus" in the genus "Atta"
+    When I go to the edit page for "Atta speccus subbus"
+    Then I should see "subspecies of Atta speccus"
+    And I click the parent name field
+    And I set the parent name to "Batta speccus"
+    And I press "OK"
+    Then I should see "This new combination looks a lot like existing combinations."
+    And I should see "Batta speccus subbus: "
+    And I should see " This would become a secondary junior homonym; name conflict with distinct authorship"
+    And I should see "Create secondary junior homonym of Batta speccus subbus: "
+    And I should not see "No, just change the parent"
+    And I should see "Yes, create new combination"
+
+  # Pick a name that has duplicates. Force a choice.
+  Scenario: Merging back when we have the same protonym with superadmin
+    Given I log in as a superadmin
+    And there is a subspecies "Batta speccus subbus" which is a subspecies of "Batta speccus" in the genus "Batta"
+    And there is a subspecies "Atta speccus subbus" which is a subspecies of "Atta speccus" in the genus "Atta"
+    When I go to the edit page for "Atta speccus subbus"
+    Then I should see "subspecies of Atta speccus"
+    And I click the parent name field
+    And I set the parent name to "Batta speccus"
+    And I press "OK"
+    Then I should see "This new combination looks a lot like existing combinations."
+    And I should see "Batta speccus subbus: "
+    And I should see "This would become a secondary junior homonym; name conflict with distinct authorship"
+    And I should see "Create secondary junior homonym of Batta speccus subbus:"
+    And I should see "No, just change the parent"
+    And I should see "Yes, create new combination"
+    And I press "No, just change the parent"
+    Then I should see "Atta speccus subbus"
+
+    #@no-database-cleaner
+
+  Scenario: Changing parent of subspecies to a species with an inconsistent name
+    Given I log in as a superadmin
+    And there is a subspecies "Batta fpeccus subbus" which is a subspecies of "Batta fpeccus" in the genus "Batta"
+    And there is a subspecies "Atta speccus subbus" which is a subspecies of "Atta speccus" in the genus "Atta"
+    When I go to the edit page for "Atta speccus subbus"
+    Then I should see "subspecies of Atta speccus"
+    And I click the parent name field
+    And I set the parent name to "Batta fpeccus"
+    And I press "OK"
+    Then I should see "This new combination looks a lot like existing combinations."
+    And I should see "Batta fpeccus subbus:"
+    And I should see "This would become a secondary junior homonym; name conflict with distinct authorship"
+    And I should see "Create secondary junior homonym of Batta fpeccus subbus: (Fisher"
+    And I should see "No, just change the parent"
+    And I should see "Yes, create new combination"
+    And I press "No, just change the parent"
+    Then I should see "Batta fpeccus:"
+    And I should see "This does not match the name of the current species. Use with caution."
+    And I should see "Yes, update parent record only"
+    And I press "Yes, update parent record only"
+    Then I should see "subspecies of Batta fpeccus"
+
+
+   # new cases pending
     # All are to fix the missing "species_id" for a subspecies
-    # Pick a name that has no duplicates. It should have simple dialogs and then warp to a page that has the fix.
-    # Pick a name that has duplicates. Force a choice.
-    # Pick a name that doesn't match the current name (foo bar baz vs. with a parent of foo splat). Choices should have warnings.
-    # Changing a subspecies parent when species_id is current set should do the right thing, whatever that is.
-    # Attempt to save a subspecies with a genus parent - should alert.  # not done
-    # attempt to save a species with a family parent - should alert.    # not done
-    # attempt to save any taxon with no parent - should alert           # not done
+    # Attempt to save a subspecies with a genus parent - should alert.  # feature not implemented
+    # attempt to save a species with a family parent - should alert.    # feature not implemented
+    # attempt to save any taxon with no parent - should alert           # feature not implemented
     # Attempt to change to a parent with a name match but no associated taxon records (it can happen!) should show abort/fail message.
-    # Run through the "change parent" dialogs for homonym and non homonym cases
-    # try as superadmin - shouldn't see the "change parent" option UNLESS the species_id is null AND it's a subspecies in queestion
-  # Test changing subfamily
   # test changing subgenus
   # test changnig genus
-  # change to a parent that is inconcistnet with currnet name, get watning
-  # change to a parent that is concistent with current name, get no warning
+  # change to a parent that is inconcistnet with currnet name, get warning  [done]
+  # change to a parent that is concistent with current name, get no warning [done]
   # Do above two for change of genus parent of species and species parent of subspecies
+
+

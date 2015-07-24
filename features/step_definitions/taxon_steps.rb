@@ -151,6 +151,12 @@ end
 Given /^there is a species "([^"]*)"$/ do |name|
   create_species name
 end
+Given /^there is a parentless subspecies "([^"]*)"$/ do |name|
+  @subspecies = create_subspecies name
+  @subspecies.species_id = nil
+  @subspecies.save!(:validate => false)
+end
+
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|
   genus = Genus.find_by_name(parent_name) || FactoryGirl.create(:genus, name: FactoryGirl.create(:genus_name, name: parent_name))
   FactoryGirl.create :taxon_state, taxon_id: genus.id
