@@ -1,4 +1,10 @@
 .ackrc
+.idea
+/data/output
+import_db
+mysql-connector-java*
+/data/backups
+antcat.iml
 .rspec
 .sass-cache
 *.DS_Store
@@ -14,9 +20,11 @@ public/assets
 s3.yml
 selenium
 server.yml
-solr/data
+solr
 sunspot-solr.pid
 tmp
 tags
 data/output/bolton.txt
 data/output/antcat.antweb.txt
+script/*.sql
+script/antcat*
