@@ -1,0 +1,81 @@
+swagger: '2.0'
+
+info:
+  version: "0.1.0"
+  title: ANTCAT Rest API
+  description: Read only API to access antcat.org
+  contact: 
+    name: Joe Russack
+    email: JRussack@calacademy.org
+
+host: antcat.org
+basePath: /v0.1
+schemes: [http]
+consumes: [application/json]
+produces: [application/json]
+
+
+
+# Describe your paths here
+paths:
+  /taxon/{id}:
+    get:
+      summary: Get a single taxon
+      operationId: listPets
+      tags:
+        - taxa
+      parameters:
+        - name: id
+          in: path
+          description: taxon id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single taxon record
+          schema:
+            description: The taxon rank
+            type: [string]
+            enum:
+              - Family
+              - Genus
+              - Species
+              - Subfamily
+              - Subgenus
+              - Subspecies
+              - Tribe
+            properties:
+              id:
+                type: integer
+                description: Antcat taxon id
+              
+        "404":
+          description: Record not found
+        "505":
+          description: Lies, lies
+          schema:
+            $ref: Taxon
+        default:
+          description: Error
+          
+definitions:
+  Taxon:
+    description: The taxon rank
+    type: [string]
+    enum:
+      - Family
+      - Genus
+      - Species
+      - Subfamily
+      - Subgenus
+      - Subspecies
+      - Tribe
+    properties:
+      id:
+        type: integer
+        description: Antcat taxon id
+          
+
+
+
