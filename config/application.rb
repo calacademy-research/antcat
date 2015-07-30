@@ -61,7 +61,11 @@ module AntCat
     # suppress deprecation warning
     config.active_record.raise_in_transactional_callbacks = true
     config.assets.enabled = true
-
+    #
+    # We were not reloading /lib properly (despite the above "autoload paths" invocation.)
+    # This voodoo does it.
+    #
+    config.eager_load_paths += ["#{Rails.root}/lib}"]
   end
 end
 
