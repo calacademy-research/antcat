@@ -14,10 +14,12 @@ class DuplicatesController < TaxaController
       find_name_duplicates_only
       return
     end
-    if @rank_to_create != Rank['species']
-      render :nothing => true, status: :no_content
-      return
-    end
+    # This check shouldn't be valid; there's nothing wrong with
+    # a conflict in a subspecies parent, for example.
+    # if @rank_to_create != Rank['species']
+    #   render :nothing => true, status: :no_content
+    #   return
+    # end
 
     current_taxon = Taxon.find(params[:current_taxon_id])
     new_parent = Taxon.find_by_name_id(params[:new_parent_name_id])
