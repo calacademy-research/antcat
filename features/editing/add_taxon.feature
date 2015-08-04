@@ -126,6 +126,34 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Eciton major"
     And I should see "Eciton major" in the protonym
 
+  Scenario: Adding a species to a subgenus
+    Given subfamily "Dolichoderinae" exists
+    And tribe "Dolichoderini" exists in that subfamily
+    And genus "Dolichoderus" exists in that tribe
+    And species "Dolichoderus major" exists in that genus
+    And subgenus "Dolichoderus (Subdolichoderus)" exists in that genus
+    When I go to the catalog page for "Dolichoderus (Subdolichoderus)"
+    And I press "Edit"
+    And I press "Add species"
+    Then I should be on the new taxon page
+    And I should see "new species of "
+    And I should see "Dolichoderus (Subdolichoderus)"
+    When I click the name field
+    Then the name field should contain "Dolichoderus (Subdolichoderus) "
+    When I set the name to "Dolichoderus (Subdolichoderus) major"
+    And I press "OK"
+    And I click the protonym name field
+    And I set the protonym name to "Dolichoderus (Subdolichoderus) major"
+    And I press "OK"
+    And I click the authorship field
+    And I search for the author "Fisher"
+    And I click the first search result
+    And I press "OK"
+    And I save my changes
+    Then I should be on the catalog page for "Dolichoderus (Subdolichoderus) major"
+    And I should see "Dolichoderus (Subdolichoderus) major" in the protonym
+
+
   Scenario: Using a genus's type-species for the name of a species
     When I go to the catalog page for "Formicinae"
     And I press "Edit"

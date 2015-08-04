@@ -41,7 +41,6 @@ class Taxon < ActiveRecord::Base
   #after_save :link_change_id
 
 
-
   def delete_with_state!
     Taxon.transaction do
       taxon_state = self.taxon_state
@@ -287,12 +286,28 @@ class Taxon < ActiveRecord::Base
 
   def parent= id_or_object
     parent_taxon = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
-    send Rank[self].parent.write_selector, parent_taxon
+    #
+    # New taxa can have parents that are either in the "standard" rank progression (e.g.: Genus, species)
+    # or they can be children of (subfamily) etc.
+    #
+
+    if parent_taxon.is_a?(Subgenus)
+      self.subgenus = parent_taxon
+      self.genus = subgenus.parent
+    else
+      send Rank[self].parent.write_selector, parent_taxon
+    end
+
+    #send Rank[self].parent.write_selector, parent_taxon
+
   end
 
   def parent
     return nil if kind_of? Family
     return Family.first if kind_of? Subfamily
+    if self.subgenus_id
+      return subgenus
+    end
     send Rank[self].parent.read_selector
   end
 

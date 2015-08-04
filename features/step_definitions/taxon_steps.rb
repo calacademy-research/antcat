@@ -86,6 +86,11 @@ end
 Given /^there is a genus "([^"]*)"$/ do |name|
   genus = create_genus name
 end
+
+Given /^there is a subgenus "([^"]*)"$/ do |name|
+  genus = create_subgenus name
+end
+
 Given /^there is a genus "([^"]*)" with taxonomic history "(.*?)"$/ do |name, history|
   genus = create_genus name
   genus.history_items.create! taxt: history

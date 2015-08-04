@@ -15,6 +15,10 @@ class Rank
     @hash[:uncommon]
   end
 
+  # Returns only Genus for species and Family for genus.
+  # Can't take subfamily or subgenus into consideration.
+  # These cases should be handled in code where there is more information
+  # avaiable.
   def parent
     parent_index = index - 1
     return nil if parent_index < 0
