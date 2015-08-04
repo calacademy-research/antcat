@@ -1,5 +1,6 @@
 .ackrc
 .idea
+/app/assets/images/favicon.ico
 /data/output
 import_db
 mysql-connector-java*
