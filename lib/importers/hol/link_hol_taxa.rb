@@ -1,7 +1,7 @@
 class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
 
   def initialize
-    @name_matcher = HolNameMatcher.new
+    @name_matcher = Importers::Hol::HolNameMatcher.new
     @taxa_by_id = {}
     Taxon.all.each do |taxon|
       @taxa_by_id[taxon.id.to_i] = taxon
@@ -222,7 +222,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
 
   # Given an antcat taxon id, return the most current antcat taxon.
   def get_most_recent_antcat_taxon antcat_taxon_id, history = nil
-    puts "Get most recent antcat taxon - top. antcat_taxon_id: #{antcat_taxon_id}"
+    puts "  Get most recent antcat taxon - top. antcat_taxon_id: #{antcat_taxon_id}"
     if antcat_taxon_id.nil?
       return nil
     end
@@ -742,6 +742,8 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     # delete all from hol_taxon_data
 
   end
+
+
 
 
 end
