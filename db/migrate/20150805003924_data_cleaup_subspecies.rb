@@ -27,7 +27,12 @@ class DataCleaupSubspecies < ActiveRecord::Migration
 FROM taxa, protonyms, names AS protonym_name
 WHERE protonyms.id = taxa.protonym_id
       AND protonyms.name_id = protonym_name.id
-      AND instr(protonym_name.protonym_html, "(") != 0 AND protonym_name.auto_generated = 0'
+      AND instr(protonym_name.protonym_html, "(") != 0 '
+
+  #AND protonym_name.auto_generated = 0 note removed this
+
+
+
 
   reg_exp = /([<a-zA-Z >\/]*)(\(([a-zA-Z]*)\)[<\/i>]* )(<i>)*([a-z A-Z.]*)(<\/i>)*/
 
