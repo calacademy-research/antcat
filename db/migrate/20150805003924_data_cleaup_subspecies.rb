@@ -29,12 +29,9 @@ WHERE protonyms.id = taxa.protonym_id
       AND protonyms.name_id = protonym_name.id
       AND instr(protonym_name.protonym_html, "(") != 0 '
 
-  #AND protonym_name.auto_generated = 0 note removed this
 
 
-
-
-  reg_exp = /([<a-zA-Z >\/]*)(\(([a-zA-Z]*)\)[<\/i>]* )(<i>)*([a-z A-Z.]*)(<\/i>)*/
+  reg_exp = /[<\>i]*([a-zA-Z]+)[<\>\/i ]*\(([a-zA-Z]*)\)[<\/i>]* [<i>]*([a-z A-Z.]*)[<\/i>]*/
 
   # <i>Aphaenogaster</i> <i>(Attomyrma)</i> <i>famelica</i> subsp. <i>angulata</i>
   # 1.	[1-22]	`<i>Aphaenogaster</i> `
@@ -64,8 +61,9 @@ WHERE protonyms.id = taxa.protonym_id
         puts (" Name to be parsed and added to notes: #{protonym_name.protonym_html}")
       end
 
-      previous_genus_string = genus_match[3]
-      species_string = genus_match[5]
+      genus_string = genus_match[1]
+      previous_genus_string = genus_match[2]
+      species_string = genus_match[3]
       candidate_for_creation_string = "#{previous_genus_string} #{species_string}"
       puts (" Got previous genus : '#{previous_genus_string}' and species '#{species_string}' processing protonym name: '#{protonym_name}'")
       previous_parent = Taxon.find_by_name previous_genus_string
@@ -132,54 +130,5 @@ WHERE protonyms.id = taxa.protonym_id
     end
   end
 
-
-  # end loop
-
-  # next loop:
-
-
-  # Do a query for every taxa that has the condition in its protonym, and remove it.
-  results = Taxon.find_by_sql(query_string)
-  puts ("results.count : #{results.count}")
-  results.each do |taxon|
-    puts ("Processing name for taxon: #{taxon.id} - #{taxon.name_cache}")
-    protonym = taxon.protonym
-    name = protonym.name
-
-    if name.protonym_html.include?("(")
-      puts ("  We found one: #{name.protonym_html} in taxon: #{taxon.id}")
-      # Extract the parenthetical genus
-      genus_match = name.protonym_html.match(reg_exp)
-      if genus_match.nil?
-        puts ("  Unable to process name: #{name.protonym_html} from taxa: #{taxon.id}")
-        next
-      end
-      previous_genus_string = genus_match[3]
-      species_string = genus_match[5]
-      previous_taxon = Taxon.find_by_name previous_genus_string
-
-      unless previous_taxon.nil?
-
-        rank_string = previous_taxon.rank
-        puts ("  Got rank identifier #{rank_string}")
-        if (rank_string != "genus")
-          puts ("  Interesting! We have a parenthetical combianation that isn't a previous genus: #{name.protonym_html}. Not correcting")
-          next
-        end
-        # Remove the parenthetical from the name_html.
-        puts ("  old name: #{name.protonym_html}")
-        name.protonym_html = genus_match[1] +  genus_match[5] +  genus_match[6]
-        puts ("  new name: #{name.protonym_html}")
-
-        #puts ("Save temporarily disabled")
-        name.save!
-        puts ("  new name: #{name.protonym_html}")
-      end
-    end
-
-  end
-
-  # Next: Scan for the parentetical condition in just name, is it there?
-  #
 
 end

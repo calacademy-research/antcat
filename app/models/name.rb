@@ -11,7 +11,6 @@ class Name < ActiveRecord::Base
                   :name_html,
                   :epithet,
                   :epithet_html,
-                  :protonym_html,
                   :epithets,
                   :type,
                   :epithet,
