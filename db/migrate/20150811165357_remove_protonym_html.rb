@@ -83,7 +83,7 @@ class RemoveProtonymHtml < ActiveRecord::Migration
   end
 
   def change
-    remove_column :names, :protonym_html
+    #remove_column :names, :protonym_html
     execute "delete from names where names.id not in (select name_id from taxa union select name_id from protonyms)"
   end
 end
