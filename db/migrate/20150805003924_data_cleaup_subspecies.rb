@@ -90,9 +90,9 @@ WHERE protonyms.id = taxa.protonym_id
           puts ("  It would refer to #{current_valid_taxon.name_cache}")
 
           # create
-          name = linker.find_or_create_name candidate_for_creation_string
+          name = linker.literal_find_or_create_name candidate_for_creation_string
           if name.auto_generated
-            name.origin='migration'
+            name.origin='migration - data cleanup subspecies'
             name.save
           end
           protonym = Protonym.new
