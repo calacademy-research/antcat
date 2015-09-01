@@ -2,6 +2,7 @@
 class TaxonHistoryItemsController < ApplicationController
   before_filter :authenticate_editor
   skip_before_filter :authenticate_editor, if: :preview?
+  include UndoTracker
 
   def update
     @item = TaxonHistoryItem.find params[:id]
@@ -10,8 +11,9 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def create
-    taxon = Taxon.find params[:taxa_id]
-    @item = TaxonHistoryItem.create_taxt_from_editable taxon, params[:taxt]
+    @taxon = Taxon.find params[:taxa_id]
+    setup_change :create
+    @item = TaxonHistoryItem.create_taxt_from_editable @taxon, params[:taxt]
     render_json true
   end
 
