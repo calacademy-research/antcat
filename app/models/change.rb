@@ -83,15 +83,24 @@ class Change < ActiveRecord::Base
     user_id ? User.find(user_id) : nil
   end
 
+  #
+  # This is hit from the haml; it returns the user ID of
+  # the person who made the change.
+  #
   def changed_by
     # adding user qualifier partly because of tests (setup doesn't have a "user" logged in),
     # in any case, it remains correct, because all versions for a given change have the same
     # user. Also may cover historical cases?
-    usered_versions = PaperTrail::Version.where(change_id: self.id, whodunnit: !nil)
+    #usered_versions = PaperTrail::Version.where(change_id: self.id, whodunnit: !nil)
+    usered_versions = PaperTrail::Version.where("change_id = #{self.id} and whodunnit is not null")
+
+
+
     version = usered_versions.first
     unless version.nil?
       return User.find(version.whodunnit.to_i)
     end
+
 
     # backwards compatibility
     version = PaperTrail::Version.find_by_sql("select * from versions
