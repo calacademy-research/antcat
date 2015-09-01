@@ -1,11 +1,13 @@
 # coding: UTF-8
 class TaxonHistoryItem < ActiveRecord::Base
+  include UndoTracker
   belongs_to :taxon
 
   attr_accessible :taxon_id, :taxt, :position, :taxon
   acts_as_list scope: :taxon
   validates_presence_of :taxt
   has_paper_trail meta: {change_id: :get_current_change_id}
+
 
   include UndoTracker
 
