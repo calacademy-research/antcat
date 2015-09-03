@@ -5,21 +5,30 @@ describe Taxon do
 
   describe "Fields and validations" do
     it "should require a name" do
-      expect(FactoryGirl.build(:taxon, name: nil)).not_to be_valid
+      taxon = FactoryGirl.build(:taxon, name: nil)
+      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      expect(taxon).not_to be_valid
       taxon = FactoryGirl.create :taxon, name: FactoryGirl.create(:name, name: 'Cerapachynae')
       expect(taxon.name.to_s).to eq('Cerapachynae')
       expect(taxon).to be_valid
     end
     it "should be (Rails) valid with a nil status" do
-      expect(FactoryGirl.build(:taxon)).to be_valid
-      expect(FactoryGirl.build(:taxon, status: 'valid')).to be_valid
+      taxon = FactoryGirl.build(:taxon)
+      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      expect(taxon).to be_valid
+      taxon = FactoryGirl.build(:taxon, status: 'valid')
+      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      expect(taxon).to be_valid
     end
     it "when status 'valid', should not be invalid" do
       taxon = FactoryGirl.build :taxon
+      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+
       expect(taxon).not_to be_invalid
     end
     it "should be able to be unidentifiable" do
       taxon = FactoryGirl.build :taxon
+      FactoryGirl.create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_unidentifiable
       taxon.update_attribute :status, 'unidentifiable'
       expect(taxon).to be_unidentifiable
@@ -27,6 +36,7 @@ describe Taxon do
     end
     it "should be able to be a collective group name" do
       taxon = FactoryGirl.build :taxon
+      FactoryGirl.create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_collective_group_name
       taxon.update_attribute :status, 'collective group name'
       expect(taxon).to be_collective_group_name
@@ -34,6 +44,7 @@ describe Taxon do
     end
     it "should be able to be an ichnotaxon" do
       taxon = FactoryGirl.build :taxon
+      FactoryGirl.create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_ichnotaxon
       taxon.update_attribute :ichnotaxon, true
       expect(taxon).to be_ichnotaxon
@@ -41,6 +52,7 @@ describe Taxon do
     end
     it "should be able to be unavailable" do
       taxon = FactoryGirl.build :taxon
+      FactoryGirl.create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_unavailable
       expect(taxon).to be_available
       taxon.update_attribute :status, 'unavailable'
@@ -50,6 +62,7 @@ describe Taxon do
     end
     it "should be able to be excluded" do
       taxon = FactoryGirl.build :taxon
+      FactoryGirl.create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_excluded_from_formicidae
       taxon.update_attribute :status, 'excluded from Formicidae'
       expect(taxon).to be_excluded_from_formicidae
@@ -57,16 +70,17 @@ describe Taxon do
     end
     it "should be able to be a fossil" do
       taxon = FactoryGirl.build :taxon
+      FactoryGirl.create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_fossil
       expect(taxon.fossil).to eq(false)
       taxon.update_attribute :fossil, true
       expect(taxon).to be_fossil
     end
-    it "should raise if anyone calls #children directly" do
-      expect {Taxon.new.children}.to raise_error NotImplementedError
-    end
+
     it "should be able to be a homonym of something else" do
       neivamyrmex = FactoryGirl.create :taxon
+      FactoryGirl.create :taxon_state, taxon_id: neivamyrmex.id
+
       acamatus = FactoryGirl.create :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
       acamatus.reload
       expect(acamatus).to be_homonym
@@ -344,7 +358,7 @@ describe Taxon do
       @new_parent = create_species 'Eciton nigrus', genus: @eciton
 
       subspecies_name = create_subspecies_name 'Atta major medius minor'
-      subspecies_name.update_attribute :protonym_html, '<i>Atta major medius minor</i>'
+     # subspecies_name.update_attribute :protonym_html, '<i>Atta major medius minor</i>'
       @subspecies = create_subspecies name: subspecies_name, species: @old_parent
     end
 
@@ -378,7 +392,6 @@ describe Taxon do
       expect(name.epithet).to eq('minor')
       expect(name.epithet_html).to eq('<i>minor</i>')
       expect(name.epithets).to eq('nigrus medius minor')
-      expect(name.protonym_html).to eq('<i>Atta major medius minor</i>')
     end
 
     it "should change the cached name, etc., of a subspecies" do
@@ -444,6 +457,7 @@ describe Taxon do
     end
     it "should make sure it's a valid URL" do
       taxon = FactoryGirl.build :species, type_specimen_url: '*'
+      FactoryGirl.create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_valid
       expect(taxon.errors.full_messages).to match_array(['Type specimen url is not in a valid format'])
     end

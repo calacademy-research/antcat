@@ -12,6 +12,7 @@ class Subfamily < Taxon
             class_name: 'Genus'
 
 
+  # TODO: Remove the importers
   def self.import data
     taxon, name = find_taxon_to_update data
     transaction do

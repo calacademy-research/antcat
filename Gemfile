@@ -15,7 +15,7 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'diff-lcs'
 gem 'ey_config'
-gem 'newrelic_rpm'
+#gem 'newrelic_rpm'
 gem 'factory_girl_rails'
 gem 'haml'
 gem 'high_voltage'
@@ -43,8 +43,7 @@ gem 'fuzzy-string-match'
 
 
 group :development, :test do
-  gem 'byebug'
-  #gem 'engineyard'
+  #gem 'byebug'
   gem 'launchy'
   gem 'rspec'
   gem 'rspec-rails'
@@ -65,7 +64,7 @@ end
 group :test do
   # This webdriver works with firefox as of v34. If firefox popus up without a URL,
   # check the latest
-  gem 'selenium-webdriver', '>= 2.45.0'
+  gem 'selenium-webdriver', '>= 2.47.1'
   gem 'capybara', '>= 2.2.0'
   gem 'cucumber-api-steps', require: false
   gem 'database_cleaner'

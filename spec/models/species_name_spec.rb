@@ -10,7 +10,6 @@ describe SpeciesName do
       expect(name.name_html).to eq('<i>Atta major</i>')
       expect(name.epithet).to eq('major')
       expect(name.epithet_html).to eq('<i>major</i>')
-      expect(name.protonym_html).to eq('<i>Atta major</i>')
     end
   end
 
@@ -46,7 +45,6 @@ describe SpeciesName do
       name = SpeciesName.find name.id
       expect(name.epithet).to eq('major')
       expect(name.name).to eq('Atta major')
-      expect(name.protonym_html).to eq('<i>Atta</i> <i>(Subatta)</i> <i>major</i>')
     end
     it "should import from a genus name object and a species_group_epithet" do
       genus_name = create_genus('Eciton').name

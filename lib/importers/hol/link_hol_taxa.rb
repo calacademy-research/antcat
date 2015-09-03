@@ -147,6 +147,25 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     name
   end
 
+  def literal_find_or_create_name hol_taxon_name_string, force_nonconforming = false
+    new_name_record = Name.find_by_name(hol_taxon_name_string)
+    if (new_name_record.nil?)
+      new_name_record = Name.parse hol_taxon_name_string, true
+      if new_name_record.nil?
+        puts "  Unrecoverable error attempting to create name #{name.name}"
+        return nil
+      end
+      new_name_record.auto_generated = true
+      new_name_record.origin = 'migration'
+      new_name_record.save
+      puts ("  Made new name: #{new_name_record.id} with name #{new_name_record.name} and html: #{new_name_record.name_html}")
+    else
+      puts "  Successfully looked up name: #{new_name_record.id}: #{new_name_record.name}"
+
+    end
+    new_name_record
+  end
+
   # start at hol_taxon. If there's a valid antcat id, get it's current_valid.
   # if there's no valid antcat id, get hol's valid, then go to above.
   #
@@ -742,8 +761,6 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     # delete all from hol_taxon_data
 
   end
-
-
 
 
 end

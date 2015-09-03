@@ -1,29 +1,6 @@
 # coding: UTF-8
 class Taxon < ActiveRecord::Base
-  def self.extract_original_combinations show_progress = false
-    Progress.init show_progress
-    Taxon.destroy_all status: 'original combination'
-    Taxon.where('type = "Species" OR type = "Subspecies"').
-        where('status != "original combination"').find_each do |taxon|
-      if taxon.recombination? and not Taxon.find_by_name_id taxon.protonym.name.id
-        genus_epithet = taxon.protonym.name.genus_epithet
-        original_genus = Genus.find_by_name genus_epithet
-        unless original_genus
-          Progress.puts "Original genus #{genus_epithet} not found when creating original combination for #{taxon.name}"
-          next
-        end
-        new_taxon = taxon.class.new name: taxon.protonym.name,
-                                     status: 'original combination',
-                                     protonym: taxon.protonym,
-                                     genus: original_genus,
-                                     current_valid_taxon: taxon
 
-
-        Progress.tally_and_show_progress 100
-      end
-    end
-    Progress.show_results
-  end
 
   def self.report_counts_for_genera
     for genus in Genus.order(:name_cache).all

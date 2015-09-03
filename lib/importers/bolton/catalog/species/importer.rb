@@ -154,9 +154,9 @@ class Importers::Bolton::Catalog::Species::Importer < Importers::Bolton::Catalog
     spinipes.update_attribute :species_id, species.id
 
     # change protonym name
-    protonym_name = spinipes.protonym.name
-    new_protonym_html = protonym_name.protonym_html + '[sic] var. <i>spinipes</i>'
-    protonym_name.update_attribute :protonym_html, new_protonym_html
+    # protonym_name = spinipes.protonym.name
+    # new_protonym_html = protonym_name.protonym_html + '[sic] var. <i>spinipes</i>'
+    # protonym_name.update_attribute :protonym_html, new_protonym_html
 
     # fix locality
     protonym = spinipes.protonym

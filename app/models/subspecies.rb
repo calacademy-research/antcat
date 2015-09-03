@@ -73,7 +73,6 @@ class Subspecies < SpeciesGroupTaxon
                                      epithet: name.epithet,
                                      epithet_html: name.epithet_html,
                                      epithets: nil,
-                                     protonym_html: name.protonym_html,
                                  })
       new_name.save
     end

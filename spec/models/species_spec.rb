@@ -57,7 +57,8 @@ describe Species do
     end
     it "should turn the record into a Subspecies" do
       taxon = create_species 'Atta minor', genus: @genus
-      taxon.protonym.name.protonym_html = 'Atta (Myrma) minor'
+
+      taxon.protonym.name.name = 'Atta (Myrma) minor'
       taxon.protonym.name.save!
       new_species = create_species 'Atta major', genus: @genus
 
@@ -66,7 +67,6 @@ describe Species do
       taxon = Subspecies.find taxon.id
       expect(taxon.name.name).to eq('Atta major minor')
       expect(taxon.name.epithets).to eq('major minor')
-      expect(taxon.name.protonym_html).to be_nil
       expect(taxon).to be_kind_of Subspecies
       expect(taxon.name).to be_kind_of SubspeciesName
       expect(taxon.name_cache).to eq('Atta major minor')
@@ -90,7 +90,7 @@ describe Species do
     end
 
     it "should handle when the new subspecies name exists, but just as the protonym of the new subspecies" do
-      subspecies_name = FactoryGirl.create :subspecies_name, name: 'Atta major minor', protonym_html: '<i>Atta major minor</i>'
+      subspecies_name = FactoryGirl.create :subspecies_name, name: 'Atta major minor'
       taxon = create_species 'Atta minor', genus: @genus, protonym: FactoryGirl.create(:protonym, name: subspecies_name)
       new_species = create_species 'Atta major', genus: @genus
 
@@ -98,7 +98,6 @@ describe Species do
 
       taxon = Subspecies.find taxon.id
       expect(taxon.name.name).to eq('Atta major minor')
-      expect(taxon.protonym.name.protonym_html).to eq('<i>Atta major minor</i>')
     end
 
   end

@@ -20,7 +20,6 @@ describe SubspeciesName do
       expect(name.epithet).to eq('minor')
       expect(name.epithet_html).to eq('<i>minor</i>')
       expect(name.epithets).to eq('major minor')
-      expect(name.protonym_html).to eq('<i>Atta major minor</i>')
     end
   end
 
@@ -137,7 +136,6 @@ describe SubspeciesName do
       expect(name.epithet).to eq('alpina')
       expect(name.epithet_html).to eq('<i>alpina</i>')
       expect(name.epithets).to eq('major alpina')
-      expect(name.protonym_html).to eq('<i>Atta</i> <i>major</i> r. <i>alpina</i>')
     end
 
     it "should import a subspecies name with a subgenus name" do
@@ -148,7 +146,6 @@ describe SubspeciesName do
       expect(name.epithet).to eq('alpina')
       expect(name.epithet_html).to eq('<i>alpina</i>')
       expect(name.epithets).to eq('major alpina')
-      expect(name.protonym_html).to eq('<i>Atta</i> <i>(Subatta)</i> <i>major</i> r. <i>alpina</i>')
     end
 
     it "should import a subspecies name designated by :subspecies_epithet" do

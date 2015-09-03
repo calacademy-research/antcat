@@ -65,8 +65,6 @@ class Exporters::Antweb::Exporter
         history: Exporters::Antweb::Formatter.new(taxon).format,
         author_date: taxon.authorship_string,
         author_date_html: taxon.authorship_html_string,
-        # removing "self" reference - delete when all this works.
-        # current_valid_name: taxon.current_valid_taxon_including_synonyms_and_self.name.to_s,
         original_combination?: taxon.original_combination?,
         original_combination: taxon.original_combination.try(:name).try(:name),
         authors: taxon.author_last_names_string,
@@ -102,6 +100,8 @@ class Exporters::Antweb::Exporter
   end
 
   def header
+
+
     "antcat id\t" +# [0]
         "subfamily\t" +# [1]
         "tribe\t" +# [2]

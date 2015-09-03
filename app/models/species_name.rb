@@ -22,7 +22,6 @@ class SpeciesName < SpeciesGroupName
       name_html: name_html,
       epithet: species,
       epithet_html: italicize(species),
-      protonym_html: name_html,
     }
     create! attributes
   end
@@ -58,11 +57,7 @@ class SpeciesName < SpeciesGroupName
     parent_name = get_parent_name data
     attributes[:name]          = "#{parent_name} #{attributes[:epithet]}"
     attributes[:name_html]     = "#{parent_name.to_html} #{attributes[:epithet_html]}"
-    if @subgenus_name
-      attributes[:protonym_html] = "#{@subgenus_name.protonym_html} #{attributes[:epithet_html]}"
-    else
-      attributes[:protonym_html] = "#{parent_name.to_html} #{attributes[:epithet_html]}"
-    end
+
 
     attributes
   end

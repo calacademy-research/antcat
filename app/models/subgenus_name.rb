@@ -25,7 +25,6 @@ class SubgenusName < GenusGroupName
       epithet_html: epithet_html,
       name:         "#{parent_name} (#{name})",
       name_html:    name_html,
-      protonym_html:name_html,
     }
   end
 

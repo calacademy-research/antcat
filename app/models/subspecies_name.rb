@@ -27,7 +27,6 @@ class SubspeciesName < SpeciesGroupName
       epithet:      epithet,
       epithet_html: italicize(epithet),
       epithets:     epithets,
-      protonym_html:name_html,
     }
     create! attributes
   end
@@ -72,7 +71,6 @@ class SubspeciesName < SpeciesGroupName
     attributes[:name_html]     = parent_name.to_html + ' ' + epithets_html
     attributes[:epithets]      = "#{parent_name.epithet} #{attributes[:epithets]}"
 
-    attributes[:protonym_html] = parent_name.protonym_html + ' ' + epithets_with_subspecies_types_html
     attributes
   end
 

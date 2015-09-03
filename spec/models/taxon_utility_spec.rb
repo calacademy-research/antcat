@@ -33,29 +33,7 @@ describe Taxon do
     end
   end
 
-  describe "Extracting original combinations" do
-    it "should create an 'original combination' taxon when genus doesn't match protonym's genus" do
-      nylanderia = create_genus 'Nylanderia'
-      paratrechina = create_genus 'Paratrechina'
 
-      recombined_protonym = FactoryGirl.create :protonym, name: create_species_name('Paratrechina minutula')
-      recombined = create_species 'Nylanderia minutula', genus: nylanderia, protonym: recombined_protonym
-
-      not_recombined_protonym = FactoryGirl.create :protonym, name: create_species_name('Nylanderia illustra')
-      not_recombined = create_species 'Nylanderia illustra', genus: nylanderia, protonym: not_recombined_protonym
-
-      taxon_count = Taxon.count
-
-      Taxon.extract_original_combinations
-
-      expect(Taxon.count).to eq(taxon_count + 1)
-      original_combinations = Taxon.where status: 'original combination'
-      expect(original_combinations.size).to eq(1)
-      original_combination = original_combinations.first
-      expect(original_combination.genus).to eq(paratrechina)
-      expect(original_combination.current_valid_taxon).to eq(recombined)
-    end
-  end
 
   describe "Setting current valid taxon to the senior synonym" do
     it "should not worry if the field is already populated" do

@@ -84,7 +84,6 @@ describe Name do
       expect(name.name_html).to eq('Dorylinae')
       expect(name.epithet).to eq('Dorylinae')
       expect(name.epithet_html).to eq('Dorylinae')
-      expect(name.protonym_html).to eq('Dorylinae')
     end
     it "should parse a genus name" do
       name = Name.parse('Atta')
@@ -93,7 +92,6 @@ describe Name do
       expect(name.name_html).to eq('<i>Atta</i>')
       expect(name.epithet).to eq('Atta')
       expect(name.epithet_html).to eq('<i>Atta</i>')
-      expect(name.protonym_html).to eq('<i>Atta</i>')
     end
     it "should parse a species name" do
       name = Name.parse('Atta major')
@@ -102,7 +100,6 @@ describe Name do
       expect(name.name_html).to eq('<i>Atta major</i>')
       expect(name.epithet).to eq('major')
       expect(name.epithet_html).to eq('<i>major</i>')
-      expect(name.protonym_html).to eq('<i>Atta major</i>')
     end
     describe "Parsing subspecies names" do
       it "should handle one with two epithets, no type" do
@@ -113,7 +110,6 @@ describe Name do
         expect(name.epithet).to eq('minor')
         expect(name.epithet_html).to eq('<i>minor</i>')
         expect(name.epithets).to eq('major minor')
-        expect(name.protonym_html).to eq('<i>Atta major minor</i>')
       end
       it "should handle one with two epithets, including a type" do
         name = Name.parse('Atta major var. minor')
@@ -123,7 +119,6 @@ describe Name do
         expect(name.epithet).to eq('minor')
         expect(name.epithet_html).to eq('<i>minor</i>')
         expect(name.epithets).to eq('major var. minor')
-        expect(name.protonym_html).to eq('<i>Atta major var. minor</i>')
       end
     end
 

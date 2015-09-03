@@ -15,7 +15,6 @@ class Name < ActiveRecord::Base
                   :type,
                   :epithet,
                   :epithet_html,
-                  :protonym_html,
                   :gender,
                   :nonconforming_name
 
@@ -189,7 +188,7 @@ class Name < ActiveRecord::Base
   end
 
   def self.make_import_attributes name, data = nil
-    {name: name, name_html: name, epithet: name, epithet_html: name, protonym_html: name}
+    {name: name, name_html: name, epithet: name, epithet_html: name}
   end
 
   def to_s
@@ -225,11 +224,9 @@ class Name < ActiveRecord::Base
   def protonym_with_fossil_html fossil
     string = ''.html_safe
     string << dagger_html if fossil
-    if protonym_html.present?
-      string << protonym_html.html_safe
-    else
-      string << name_html.html_safe
-    end
+
+    string << name_html.html_safe
+
     string
   end
 

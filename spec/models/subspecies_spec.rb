@@ -86,7 +86,6 @@ describe Subspecies do
       expect(taxon.name.epithet).to eq('colobopsis')
       expect(taxon.name.epithet_html).to eq('<i>colobopsis</i>')
       expect(taxon.name.epithets).to be_nil
-      expect(taxon.name.protonym_html).to eq('<i>Atta major colobopsis</i>')
     end
     it "should create the new species name, if necessary" do
       species = create_species 'Atta major', genus: @genus

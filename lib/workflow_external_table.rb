@@ -1,4 +1,4 @@
-# Monkeypatch into workflow to use taxon_state table.
+# Monkeypatch into workflow gem to use taxon_state table.
 
 
 module Workflow

@@ -226,7 +226,7 @@ describe TaxonMother do
           taxon = @mother.create_taxon Rank[:species], create_genus
           @mother.save_taxon taxon, @genus_params
           change = Change.first
-          expect(change.paper_trail_versions).to include(taxon.last_version)
+          expect(change.user_changed_taxon_id).to eq(taxon.last_version.item_id)
         end
       end
 
