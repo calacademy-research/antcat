@@ -6,7 +6,14 @@ class AuthorNamesController < ApplicationController
   def update
     @author_name = AuthorName.find params[:id]
     @author_name.name = params[:author_name]
-    @author_name.save!
+    begin
+      @author_name.save!
+    rescue ActiveRecord::RecordInvalid => invalid
+      err={'error' => "Name already exists"}
+      render :json => err.to_json, :status => 409
+      return
+    end
+
     render_json false
   end
 
@@ -28,6 +35,8 @@ class AuthorNamesController < ApplicationController
     author_name = AuthorName.find params[:id]
     author.delete
     author_name.delete
+
+
     render json: nil, content_type: 'text/html'
   end
 

@@ -52,6 +52,14 @@ class AntCat.AuthorNameForm extends AntCat.NestedForm
     @buttons.find('.delete').off('click').on('click', @delete)
 
 
+  handle_error: (jq_xhr, text_status, error_thrown) =>
+    @stop_throbbing()
+    if jq_xhr['status'] == 409
+      alert "This name already exists, can't save."
+    else
+      super.handle_error(jq_xhr,text_status,error_thrown)
+
+
   delete: =>
     return false unless confirm 'Do you want to delete this author name?'
     @start_throbbing()
