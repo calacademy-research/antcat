@@ -21,6 +21,17 @@ class AuthorNamesController < ApplicationController
     render_json true
   end
 
+  # From URL: : "/authors/11282/author_names/194557"
+  # Params are "author_id"(11282) and "id" (194557) (The latter links to author_names
+  def destroy
+    author = Author.find params[:author_id]
+    author_name = AuthorName.find params[:id]
+    author.delete
+    author_name.delete
+    render json: nil, content_type: 'text/html'
+  end
+
+
   ###
   def render_json is_new
     json = {

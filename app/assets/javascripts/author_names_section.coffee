@@ -51,15 +51,17 @@ class AntCat.AuthorNameForm extends AntCat.NestedForm
     super
     @buttons.find('.delete').off('click').on('click', @delete)
 
+
   delete: =>
     return false unless confirm 'Do you want to delete this author name?'
     @start_throbbing()
+    # Magically builds: "/authors/11282/author_names/194557"
     url = @form().attr('action')
     $.post url, {_method: 'delete'}, null, 'json'
     @close()
     @options.on_delete() if @options.on_delete
     @element.closest('.author_name').remove()
-    false
+    window.location = "/authors"
 
   cancel: =>
     $('.added_author_name').remove()

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150831190359) do
+ActiveRecord::Schema.define(version: 20150904004319) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -383,7 +383,6 @@ ActiveRecord::Schema.define(version: 20150831190359) do
     t.text     "type_specimen_repository",        limit: 65535
     t.text     "type_specimen_code",              limit: 65535
     t.text     "type_specimen_url",               limit: 65535
-    t.string   "authorship_string",               limit: 255
     t.string   "duplicate_type",                  limit: 255
     t.integer  "collision_merge_id",              limit: 4
     t.boolean  "auto_generated",                                default: false
