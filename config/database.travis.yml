@@ -1,0 +1,15 @@
+development: &development
+  adapter: mysql2
+  database: antcat_development_travis
+  pool: 5
+  username: root
+  password: 
+  timeout: 5000
+
+test: &test
+  adapter: mysql2
+  database: antcat_development_travis
+  pool: 5
+  username: root
+  password: 
+  timeout: 5000
