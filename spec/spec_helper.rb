@@ -13,6 +13,8 @@ Spork.prefork do
 
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+  RSpec::Expectations.configuration.warn_about_potential_false_positives = false
+  
   RSpec.configure do |config|
     config.mock_with :rspec
     config.use_transactional_fixtures = true
