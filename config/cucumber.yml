@@ -1,2 +1,2 @@
-default: --require features --format pretty
+default: --require features --format progress
 in_vim: --require features --format pretty --no-source

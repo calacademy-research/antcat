@@ -17,7 +17,7 @@ Spork.prefork do
 
   ActionController::Base.allow_rescue = false
 
-  DatabaseCleaner.strategy = :truncation
+  DatabaseCleaner.strategy = :transaction
 
   Capybara.save_and_open_page_path = '/tmp'
   Capybara.default_max_wait_time = 5
