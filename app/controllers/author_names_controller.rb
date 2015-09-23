@@ -29,12 +29,17 @@ class AuthorNamesController < ApplicationController
   end
 
   # From URL: : "/authors/11282/author_names/194557"
-  # Params are "author_id"(11282) and "id" (194557) (The latter links to author_names
+  # Params are "author_id"(11282) and "id" (194557) (The latter links to author_names)
+
   def destroy
     author = Author.find params[:author_id]
     author_name = AuthorName.find params[:id]
-    author.delete
     author_name.delete
+    # Remove the author if there are no more author names that reference it
+    if AuthorName.find_by_author_id(params[:author_id]).nil?
+      author.delete
+    end
+
 
 
     render json: nil, content_type: 'text/html'
