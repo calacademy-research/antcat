@@ -4,7 +4,7 @@
 Devise.setup do |config|
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in DeviseMailer.
-  config.mailer_sender = "sblum@calacademy.org"
+  config.mailer_sender = "jrussack@calacademy.org"
 
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
@@ -69,6 +69,7 @@ Devise.setup do |config|
   # If invitation_limit n > 0, users can send n invitations.
   # Default: nil
   # config.invitation_limit = 5
+
 
   # The key to be used to check existing users when sending an invitation
   # config.invite_key = :email
