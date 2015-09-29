@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150904004319) do
+ActiveRecord::Schema.define(version: 20150929202525) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -110,6 +110,16 @@ ActiveRecord::Schema.define(version: 20150904004319) do
   end
 
   add_index "citations", ["reference_id"], name: "index_authorships_on_reference_id", using: :btree
+
+  create_table "email_configurations", force: :cascade do |t|
+    t.integer "port",                 limit: 4
+    t.string  "address",              limit: 255
+    t.string  "domain",               limit: 255
+    t.string  "user_name",            limit: 255
+    t.string  "password",             limit: 255
+    t.string  "authentication",       limit: 255
+    t.boolean "enable_starttls_auto"
+  end
 
   create_table "forward_refs", force: :cascade do |t|
     t.integer  "fixee_id",        limit: 4
@@ -386,7 +396,6 @@ ActiveRecord::Schema.define(version: 20150904004319) do
     t.text     "type_specimen_repository",        limit: 65535
     t.text     "type_specimen_code",              limit: 65535
     t.text     "type_specimen_url",               limit: 65535
-    t.string   "duplicate_type",                  limit: 255
     t.integer  "collision_merge_id",              limit: 4
     t.boolean  "auto_generated",                                default: false
     t.string   "origin",                          limit: 255

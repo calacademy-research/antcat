@@ -28,7 +28,7 @@ gem 'paper_trail', :git => "https://github.com/airblade/paper_trail.git", :tag =
 gem 'protected_attributes' #attr_accesssible deprecated in rails 4.
 gem 'rails-observers' # observers deprecated in rails 4
 gem 'rack'
-gem 'rails', '>= 4.1'
+gem 'rails', '>= 4.2'
 gem 'rake'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
