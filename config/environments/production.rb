@@ -80,12 +80,12 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-      address:              'smtp.gmail.com',
-      port:                 587,
-      domain:               'antcat.org',
-      user_name:            'academyantcat',
-      password:             'spq0ap11',
-      authentication:       'plain',
-      enable_starttls_auto: true  }
+      address:              Rails.application.secrets.email_address,
+      port:                 Rails.application.secrets.email_port,
+      domain:               Rails.application.secrets.email_domain,
+      user_name:            Rails.application.secrets.email_user_name,
+      password:             Rails.application.secrets.email_password,
+      authentication:       Rails.application.secrets.email_authentication,
+      enable_starttls_auto: Rails.application.secrets.email_enable_starttls_auto  }
 
 end

@@ -37,32 +37,9 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   config.action_mailer.raise_delivery_errors = true
-  # config.action_mailer.smtp_settings = {
-  #     address:              'smtp.gmail.com',
-  #     port:                 587,
-  #     domain:               'antcat.org',
-  #     user_name:            'academyantcat',
-  #     password:             'spq0ap11',
-  #     authentication:       'plain',
-  #     enable_starttls_auto: true  }
-  config.action_mailer.delivery_method = :smtp
-  # config.action_mailer.smtp_settings = {
-  #     address:              ENV["email_address"],
-  #     port:                 ENV["email_port"],
-  #     domain:               ENV["email_domain"],
-  #     user_name:            ENV["email_user_name"],
-  #     password:             ENV["email_password"],
-  #     authentication:       ENV["email_authentication"],
-  #     enable_starttls_auto: ENV["email_enable_starttls_auto"]  }
 
-  # config.action_mailer.smtp_settings = {
-  #     address: Rails.application.secrets.email_address,
-  #     port:                 587,
-  #     domain:               'antcat.org',
-  #     user_name:            'academyantcat',
-  #     password:             'spq0ap11',
-  #     authentication:       'plain',
-  #     enable_starttls_auto: true  }
+  config.action_mailer.delivery_method = :smtp
+
 
   config.action_mailer.smtp_settings = {
       address:              Rails.application.secrets.email_address,
