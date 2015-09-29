@@ -3,6 +3,7 @@
 # genus A, moving to genus B, and then back to A, while retaining the same
 # species epithet.
 
+
 class DuplicatesController < TaxaController
   before_filter :authenticate_editor, :get_params, :create_mother
 
@@ -36,11 +37,10 @@ class DuplicatesController < TaxaController
       render :nothing => true, status: :no_content
       return
     end
-    # TODO: Rails 4 requires that authorship_String and duplicate_type be db columns. Refactor
     # This code to pass these some other way, and remove these two columns from the taxa db entry
     options.each do |option|
       # Todo: Joe calls to protonym.authorship_string trigger a save somehow
-      option[:authorship_string] = option.protonym.authorship_string
+      option.authorship_string = option.protonym.authorship_string
 
       #Todo: joe check page number case?
 
@@ -55,9 +55,11 @@ class DuplicatesController < TaxaController
       else
         duplicate_type = 'secondary_junior_homonym'
       end
-      option['duplicate_type'] = duplicate_type
+      option.duplicate_type = duplicate_type
     end
-    render json: options.to_json, status: :ok
+
+
+    render json: options.to_json(:methods => [:authorship_string, :duplicate_type]), status: :ok
   end
 
   def find_name_duplicates_only

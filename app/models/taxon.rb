@@ -8,7 +8,7 @@ class Taxon < ActiveRecord::Base
   include UndoTracker
   self.table_name = :taxa
   has_paper_trail meta: {change_id: :get_current_change_id}
-
+  attr_accessor :authorship_string, :duplicate_type
   attr_accessible :name_id,
                   :status,
                   :incertae_sedis_in,
