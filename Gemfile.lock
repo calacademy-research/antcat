@@ -330,7 +330,7 @@ DEPENDENCIES
   paperclip
   protected_attributes
   rack
-  rails (>= 4.1)
+  rails (>= 4.2)
   rails-erd
   rails-observers
   rake
