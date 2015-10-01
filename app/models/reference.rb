@@ -27,7 +27,8 @@ class Reference < ActiveRecord::Base
                   :date,
                   :author_names,
                   :author_names_suffix,
-                  :pagination
+                  :pagination,
+                  :review_state
   include CleanNewlines
   before_save { |record| clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
 

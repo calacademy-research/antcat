@@ -5,13 +5,23 @@ module Taxt
 
   # These values are duplicated in taxt_editor.coffee
   REFERENCE_TAG_TYPE = 1
-  TAXON_TAG_TYPE     = 2
-  NAME_TAG_TYPE      = 3
+  TAXON_TAG_TYPE = 2
+  NAME_TAG_TYPE = 3
 
-  class ReferenceNotFound < StandardError; end
-  class TaxonNotFound < StandardError; end
-  class NameNotFound < StandardError; end
-  class IdNotFound < StandardError; end
+  class ReferenceNotFound < StandardError;
+  end
+  class TaxonNotFound < StandardError;
+  end
+  class NameNotFound < StandardError
+    attr_accessor :id
+
+    def initialize(message = nil, id = nil)
+      super(message)
+      self.id = id
+    end
+  end
+  class IdNotFound < StandardError;
+  end
 
   ################################
   def self.to_string taxt, user = nil, options = {}
@@ -86,18 +96,25 @@ module Taxt
     editable_taxt.gsub /{((.*?)? )?([#{Regexp.escape EDITABLE_ID_DIGITS}]+)}/ do |string|
       id, type_number = id_from_editable $3
       case type_number
-      when REFERENCE_TAG_TYPE
-        raise ReferenceNotFound.new(string) unless Reference.find_by_id id
-        "{ref #{id}}"
-      when TAXON_TAG_TYPE
-        raise TaxonNotFound.new(string) unless Taxon.find id
-        "{tax #{id}}"
-      when NAME_TAG_TYPE
-        raise NameNotFound.new(string) unless Name.find id
-        "{nam #{id}}"
+        when REFERENCE_TAG_TYPE
+          raise ReferenceNotFound.new(string) unless Reference.find_by_id id
+          "{ref #{id}}"
+        when TAXON_TAG_TYPE
+          raise TaxonNotFound.new(string) unless Taxon.find id
+          "{tax #{id}}"
+        when NAME_TAG_TYPE
+          begin
+            Name.find id
+          rescue ActiveRecord::RecordNotFound
+            raise NameNotFound.new(string, id)
+          end
+          "{nam #{id}}"
       end
     end
   end
+
+
+
 
   def self.id_for_editable id, type_number
     AnyBase.base_10_to_base_x(id.to_i * 10 + type_number, EDITABLE_ID_DIGITS).reverse
@@ -198,29 +215,29 @@ module Taxt
 
   ####################################
   SpuriousNames = [
-    'America', 'Africa', 'Algeria', 'Arabia', 'Argentina', 'Armenia', 'Asia',
-    'Bolivia', 'Bulgaria', 'Burma',
-    'Caledonia', 'California', 'Canada', 'China', 'Corsica', 'Costa', 'Crimea', 'Cuba',
-    'Dakota',
-    'Florida',
-    'Ghana', 'Guatemala', 'Guinea', 'Guyana',
-    'Himalaya',
-    'incertae sedis', 'incertae', 'India', 'Indonesia', 'Iowa',
-    'Korea',
-    'Lanka',
-    'Malta', 'Mongolia',
-    'Nevada', 'Nomen dubium', 'Nomen nudum', 'Nomen oblitum', 'Nomina', 'Nomina nuda',
-    'Oceania', 'Polynesia',
-    'Rica', 'Ritsema', 'Russia',
-    'Samoa', 'Siberia', 'Slovakia', 'Somalia', 'Sumatra', 'Syria',
-    'Tonga',
-    'Venezuela',
-    'Yoshimura',
+      'America', 'Africa', 'Algeria', 'Arabia', 'Argentina', 'Armenia', 'Asia',
+      'Bolivia', 'Bulgaria', 'Burma',
+      'Caledonia', 'California', 'Canada', 'China', 'Corsica', 'Costa', 'Crimea', 'Cuba',
+      'Dakota',
+      'Florida',
+      'Ghana', 'Guatemala', 'Guinea', 'Guyana',
+      'Himalaya',
+      'incertae sedis', 'incertae', 'India', 'Indonesia', 'Iowa',
+      'Korea',
+      'Lanka',
+      'Malta', 'Mongolia',
+      'Nevada', 'Nomen dubium', 'Nomen nudum', 'Nomen oblitum', 'Nomina', 'Nomina nuda',
+      'Oceania', 'Polynesia',
+      'Rica', 'Ritsema', 'Russia',
+      'Samoa', 'Siberia', 'Slovakia', 'Somalia', 'Sumatra', 'Syria',
+      'Tonga',
+      'Venezuela',
+      'Yoshimura',
   ]
 
   NamesToItalicize = [
-    'incertae sedis', 'incertae',
-    'Nomen dubium', 'Nomen nudum', 'Nomen oblitum', 'Nomina', 'Nomina nuda'
+      'incertae sedis', 'incertae',
+      'Nomen dubium', 'Nomen nudum', 'Nomen oblitum', 'Nomina', 'Nomina nuda'
   ]
 
   def self.translate_spurious name
@@ -239,16 +256,16 @@ module Taxt
 
   def self.taxt_fields
     [
-     [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-     [Citation, [:notes_taxt]],
-     [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
-     [TaxonHistoryItem, [:taxt]]
+        [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+        [Citation, [:notes_taxt]],
+        [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
+        [TaxonHistoryItem, [:taxt]]
     ]
   end
 
   def self.cleanup show_progress = false
     count = @replaced_count = 0
-    taxt_fields.each {|table, field| count += table.count}
+    taxt_fields.each { |table, field| count += table.count }
     Progress.new_init show_progress: show_progress, total_count: count, show_errors: true
     taxt_fields.each do |klass, fields|
       for record in klass.send :all

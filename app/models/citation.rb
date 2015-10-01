@@ -27,6 +27,8 @@ class Citation < ActiveRecord::Base
 
   def year
     reference and reference.year.to_s
+
+
   end
 
   def author_names_string

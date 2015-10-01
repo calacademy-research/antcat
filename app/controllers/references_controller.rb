@@ -120,6 +120,15 @@ EOS
     redirect_to '/references?commit=new'
   end
 
+  def approve_all
+    Reference.where('review_state != "reviewed"').each  do |reference|
+      reference[:review_state]='reviewed'
+      reference.save!
+    end
+
+    redirect_to '/references?commit=new'
+  end
+
   private
   def set_pagination
     params[:reference][:pagination] =
@@ -198,5 +207,7 @@ EOS
     reference.type = type
     reference
   end
+
+
 
 end

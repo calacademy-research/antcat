@@ -36,8 +36,9 @@ function setupSearch() {
 }
 
 function setupButtons() {
-  $('.review_buttons input[type=submit]').button()
-  $('.default_reference_status input[type=submit]').button()
+    $('.review_buttons input[type=submit]').button()
+    $('.default_reference_status input[type=submit]').button()
+    $('#approve_all_button').button().live('click', approveHandler);
 }
 
 function setupSearchBox(selector_text) {
@@ -98,6 +99,15 @@ function setupEdits() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+
+
+
+function approveHandler() {
+    var r = confirm("Mark all citations as reviewed? This operation cannot be undone!");
+    if (r == true) {
+        return window.location.href = '/references/approve_all';
+    }
+}
 
 function editReference() {
   if (isEditing())
