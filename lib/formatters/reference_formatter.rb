@@ -143,6 +143,7 @@ class Formatters::ReferenceFormatter
     match = input.match(/(.*?)(\d{4,8})(.*)/)
     prefix = match[1]
     input = match[2]
+    input = match[2]
     suffix = match[3]
 
     date = input[0, 4]
@@ -156,13 +157,14 @@ end
 
 class Formatters::ArticleReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.format_italics add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
+    self.class.format_italics add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination} #{h @reference.doi}".html_safe
+    #"Formatter formatter formatter"
   end
 end
 
 class Formatters::BookReferenceFormatter < Formatters::ReferenceFormatter
   def format_citation
-    self.class.format_italics add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
+    self.class.format_italics add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination} #{h @reference.doi}".html_safe
   end
 end
 

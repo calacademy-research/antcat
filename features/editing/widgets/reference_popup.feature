@@ -11,14 +11,14 @@ Feature: Reference popup
 
   Scenario: Seeing the popup
     When I go to the reference popup widget test page, opened to the first reference
-    Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
+    Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2 10.10.1038/nphys1170."
 
   Scenario: Selecting a reference from search results
     Given I am logged in
     When I go to the reference popup widget test page
     And I search for the author "Fisher, B."
     And I click the first search result
-    Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
+    Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2 10.10.1038/nphys1170."
     When I press "OK"
     Then the widget results should be the taxt for "Fisher 1995"
 
@@ -35,7 +35,7 @@ Feature: Reference popup
     Given I am logged in
     When I go to the reference popup widget test page
     And I add a reference by Brian Fisher
-    Then the current reference should be "Fisher, B.L. 1992. Between Pacific Tides. Ants 2:1."
+    Then the current reference should be "Fisher, B.L. 1992. Between Pacific Tides. Ants 2:1 ."
 
   Scenario: Editing the selected reference
     Given I am logged in
@@ -45,7 +45,7 @@ Feature: Reference popup
     And I set the title to "Ant Title"
     And I save my changes to the current reference
     # potential flickerer
-    Then the current reference should be "Ward, B.L.; Bolton, B. 1995b. Ant Title. Ants 1:1-2."
+    Then the current reference should be "Ward, B.L.; Bolton, B. 1995b. Ant Title. Ants 1:1-2 10.10.1038/nphys1170."
 
   Scenario: Error when editing reference
     Given I am logged in
@@ -58,10 +58,10 @@ Feature: Reference popup
   Scenario: Cancelling when there's already a reference (regression)
     Given I am logged in
     When I go to the reference popup widget test page, opened to the first reference
-    Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
+    Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2 10.10.1038/nphys1170."
     And I search for the author "Hölldobler, B."
     And I click the first search result
-    Then the current reference should be "Hölldobler, B. 1995b. Bert's book. Ants 1:1-2."
+    Then the current reference should be "Hölldobler, B. 1995b. Bert's book. Ants 1:1-2 10.10.1038/nphys1170."
     When I press "Cancel"
     Then the widget results should be the ID for "Fisher 1995"
 
@@ -71,6 +71,6 @@ Feature: Reference popup
     Then the current reference should be "(none)"
     And I search for the author "Hölldobler, B."
     And I click the first search result
-    Then the current reference should be "Hölldobler, B. 1995b. Bert's book. Ants 1:1-2."
+    Then the current reference should be "Hölldobler, B. 1995b. Bert's book. Ants 1:1-2 10.10.1038/nphys1170."
     When I press "Cancel"
     Then the widget results should be ""

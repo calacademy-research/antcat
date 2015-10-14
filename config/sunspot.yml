@@ -13,13 +13,14 @@ development:
     hostname: localhost
     port: 8982
     log_level: INFO
-    path: /solr/development
+    path: /solr/default
+    #solr_home: solr
 
 test:
   solr:
     hostname: localhost
-    port: 8981
+    port: 8982
     log_level: WARNING
-    path: /solr/test
+    path: /solr/default
 
     #http://hostname:8983/solr/

@@ -62,7 +62,8 @@ class TaxonMother
 
   end
 
-
+  # previous_combination will be a pointer to the species taxon record
+  # if non-nil
   def save_taxon taxon, params, previous_combination = nil
     change_type=nil
     Taxon.transaction do

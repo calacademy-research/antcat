@@ -20,7 +20,7 @@ describe Formatters::AdvancedSearchHtmlFormatter do
       expect(string).to eq("<a href=\"/catalog/#{taxon.id}\"><i>Atta</i></a> " +
 "<i>incertae sedis</i> in genus, <i>nomen nudum</i>\n" +
 "Latreille, P. A. 1809. " +
-"<i>Atta</i>. Science (1):3." +
+"<i>Atta</i>. Science (1):3 10.10.1038/nphys1170." +
 "<a class=\"goto_reference_link\" href=\"/references?q=#{reference.id}\" target=\"_blank\">" +
 "link</a><span class=\"reference_id\">1</span>\n\n")
   end

@@ -18,6 +18,9 @@ class Reference < ActiveRecord::Base
     text    :taxonomic_notes
     string  :citation_year
     string  :author_names_string
+    # Tried adding DOI here, we get "NoMethodError: undefined method `doi' for #<MissingReference:0x007fc4abfce460> "
+    # Missing references shouldn't have a DOI, I would think.
+    # TODO: Test searching for doi, see if that works?
   end
 
   def self.perform_search options = {}

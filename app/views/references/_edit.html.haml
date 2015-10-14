@@ -95,6 +95,8 @@
             %tr
               %td{:style => 'padding-right: 5px'}= label_tag :reference_cite_code, 'Cite code'
               %td.cite_code= f.text_field :cite_code
+              %td= label_tag :reference_doi, 'DOI'
+              %td.doi= f.text_field :doi
               %td= label_tag :reference_possess, 'Possess'
               %td.possess= f.text_field :possess
               %td= label_tag :reference_date, 'Date'

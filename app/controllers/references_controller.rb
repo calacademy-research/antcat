@@ -155,6 +155,7 @@ EOS
     params[:reference][:journal] = Journal.import @reference.journal_name
   end
 
+
   def set_publisher
     @reference.publisher_string = params[:reference][:publisher_string]
     publisher = Publisher.import_string @reference.publisher_string

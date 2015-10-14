@@ -28,7 +28,8 @@ class Reference < ActiveRecord::Base
                   :author_names,
                   :author_names_suffix,
                   :pagination,
-                  :review_state
+                  :review_state,
+                  :doi
   include CleanNewlines
   before_save { |record| clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
 

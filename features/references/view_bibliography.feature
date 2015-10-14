@@ -9,7 +9,7 @@ Feature: View bibliography
       | authors    | year  | title     | citation | cite_code | possess | date     | public_notes | editor_notes   |
       | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 | Public notes | Editor's notes |
     When I go to the references page
-    Then I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1. [2010-07-12]"
+    Then I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1 10.10.1038/nphys1170. [2010-07-12]"
     And I should see "Public notes"
     And I should not see "Editor's notes"
 
@@ -38,8 +38,8 @@ Feature: View bibliography
     When I go to the references page
     Then I should see these entries in this order:
       | entry                                                         |
-      | Forel, A. 1874. Les fourmis de la Suisse. Neue 26:10.         |
-      | Wheeler, W. M. 1910a. Small artificial ant-nests. Psyche 1:1. |
+      | Forel, A. 1874. Les fourmis de la Suisse. Neue 26:10 10.10.1038/nphys1170.         |
+      | Wheeler, W. M. 1910a. Small artificial ant-nests. Psyche 1:1 10.10.1038/nphys1170. |
       | Wheeler, W. M. 1910b. Ants. Psyche 2:2                        |
 
   Scenario: Viewing an entry with a URL to a document on our site, but the user isn't logged in
@@ -110,7 +110,7 @@ Feature: View bibliography
     And there is a missing reference
     When I go to the references page
     Then I should not see the missing reference
-    And I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1."
+    And I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1 10.10.1038/nphys1170."
 
   Scenario: Not logged in
     Given these references exist

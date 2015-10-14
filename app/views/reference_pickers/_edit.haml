@@ -45,18 +45,23 @@
             = text_field_tag 'reference[series_volume_issue]', reference.series_volume_issue, :class => 'series_volume_issue'
             = label_tag :article_pagination, 'Pagination'
             = text_field_tag :article_pagination, reference.pagination, :class => 'pages'
+            = text_field_tag :doi, 'DOI'
+
 
           .tabbable{'data-title' => 'Book'}
             = label_tag :publisher_string, 'Publisher'
             = text_field_tag 'reference[publisher_string]', reference.publisher_string, :class => 'publisher'
             = label_tag :book_pagination, 'Pagination'
             = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
+            = text_field_tag :doi, 'DOI'
 
           .tabbable{'data-title' => 'Nested'}
             = label_tag :reference_pages_in, 'Pages in'
             = text_field_tag 'reference[pages_in]', reference.pages_in, :class => 'pages'
             = label_tag :reference_nesting_reference_id, 'Nested reference ID'
             = text_field_tag 'reference[nesting_reference_id]', reference.nesting_reference_id, :class => 'pages'
+            = text_field_tag :doi, 'DOI'
+
             %p.help
               %span.help= raw "To find, edit or add the nesting reference in a new browser window, click #{link_to 'here', references_path(:q => reference.nesting_reference_id), :target => '_blank'}"
 
@@ -92,6 +97,8 @@
             %tr
               %td{:style => 'padding-right: 5px'}= label_tag :reference_cite_code, 'Cite code'
               %td.cite_code= text_field_tag 'reference[cite_code]', reference.cite_code
+              %td= label_tag :reference_doi, 'DOI'
+              %td.doi= text_field_tag 'reference[doi]', reference.doi
               %td= label_tag :reference_possess, 'Possess'
               %td.possess= text_field_tag 'reference[possess]', reference.possess
               %td= label_tag :reference_date, 'Date'

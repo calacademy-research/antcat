@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150929202525) do
+ActiveRecord::Schema.define(version: 20151013234952) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -111,6 +111,16 @@ ActiveRecord::Schema.define(version: 20150929202525) do
 
   add_index "citations", ["reference_id"], name: "index_authorships_on_reference_id", using: :btree
 
+  create_table "email_configurations", force: :cascade do |t|
+    t.integer "port",                 limit: 4
+    t.string  "address",              limit: 255
+    t.string  "domain",               limit: 255
+    t.string  "user_name",            limit: 255
+    t.string  "password",             limit: 255
+    t.string  "authentication",       limit: 255
+    t.boolean "enable_starttls_auto"
+  end
+
   create_table "forward_refs", force: :cascade do |t|
     t.integer  "fixee_id",        limit: 4
     t.string   "fixee_attribute", limit: 255
@@ -170,6 +180,9 @@ ActiveRecord::Schema.define(version: 20150929202525) do
     t.integer "synonym_id", limit: 4
     t.text    "json",       limit: 4294967295
   end
+
+  add_index "hol_synonyms", ["synonym_id"], name: "hol_synonyms_antcat_synonym_id_idx", using: :btree
+  add_index "hol_synonyms", ["tnuid"], name: "hol_synonyms_antcat_tnuid_idx", using: :btree
 
   create_table "hol_taxon_data", force: :cascade do |t|
     t.integer "tnuid",               limit: 4
@@ -331,6 +344,7 @@ ActiveRecord::Schema.define(version: 20150929202525) do
     t.text     "inline_citation_cache",            limit: 65535
     t.boolean  "auto_generated",                                 default: false
     t.string   "origin",                           limit: 255
+    t.string   "doi",                              limit: 255
   end
 
   add_index "references", ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: {"author_names_string_cache"=>255, "citation_year"=>nil}, using: :btree

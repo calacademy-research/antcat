@@ -213,7 +213,7 @@ describe Exporters::Antweb::Exporter do
       taxon.protonym.authorship.reference = reference
       taxon.protonym.authorship.save!
       string = @exporter.export_taxon(taxon)[8]
-      expect(string).to eq('<span title="Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.">Forel, 1874</span>')
+      expect(string).to eq('<span title="Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452 10.10.1038/nphys1170.">Forel, 1874</span>')
     end
   end
 

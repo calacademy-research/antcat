@@ -11,7 +11,7 @@ Feature: Reference field
 
   Scenario: Seeing the field
     When I go to the reference field test page, opened to the first reference
-    Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2."
+    Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2 10.10.1038/nphys1170."
 
   # There's a problem getting the search type selector to pick the right one
   #Scenario: Searching
