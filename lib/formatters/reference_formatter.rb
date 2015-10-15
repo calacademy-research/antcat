@@ -4,7 +4,6 @@ class Formatters::ReferenceFormatter
   extend ERB::Util
   include Formatters::Formatter
   extend ActionView::Context
-  #extend Sprockets::Helpers::RailsHelper
   extend Sprockets::Rails::Helper
 
 
@@ -35,7 +34,7 @@ class Formatters::ReferenceFormatter
   def self.format_authorship_html reference
     content = format_authorship reference
     title = format reference
-    content_tag(:span, title: title) {content}
+    content_tag(:span, title: title) { content }
   end
 
   def self.format_authorship reference
@@ -135,6 +134,15 @@ class Formatters::ReferenceFormatter
     @reference.key.to_s
   end
 
+  # transform "10.11646/zootaxa.4029.1.1"
+  # http://dx.doi.org/10.11646/zootaxa.4029.1.1
+  # <a href="http://www.w3schools.com">Visit W3Schools</a>
+  def create_link_from_doi doi
+    #"<a href=\"http://dx.doi.org/" + doi + "\">#{doi}</a>"
+    "http://dx.doi.org/" + doi
+
+  end
+
   private
   def format_date input
     date = input
@@ -156,15 +164,29 @@ class Formatters::ReferenceFormatter
 end
 
 class Formatters::ArticleReferenceFormatter < Formatters::ReferenceFormatter
+  include Formatters::LinkFormatter
+
   def format_citation
-    self.class.format_italics add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination} #{h @reference.doi}".html_safe
-    #"Formatter formatter formatter"
+    if @reference.doi.length == 0
+      self.class.format_italics add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
+    else
+      italics = self.class.format_italics "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination} DOI:".html_safe
+      add_period_if_necessary italics + link(@reference.doi, create_link_from_doi(@reference.doi), class: 'document_link')
+    end
+
   end
 end
 
 class Formatters::BookReferenceFormatter < Formatters::ReferenceFormatter
+  include Formatters::LinkFormatter
+
   def format_citation
-    self.class.format_italics add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination} #{h @reference.doi}".html_safe
+    if @reference.doi.length == 0
+      self.class.format_italics add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
+    else
+      italics = self.class.format_italics "#{h @reference.publisher}, #{h @reference.pagination} DOI:".html_safe
+      add_period_if_necessary italics + link(@reference.doi, create_link_from_doi(@reference.doi), class: 'document_link')
+    end
   end
 end
 
@@ -184,6 +206,7 @@ class Formatters::MissingReferenceFormatter < Formatters::ReferenceFormatter
   def format_inline_citation reference = nil, user = nil, options = nil
     self.class.make_html_safe @reference.citation
   end
+
   def format_citation
     self.class.make_html_safe @reference.citation
   end
