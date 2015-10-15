@@ -18,7 +18,7 @@ describe Formatters::AdvancedSearchTextFormatter do
       taxon = create_genus 'Atta', incertae_sedis_in: 'genus', nomen_nudum: true
       taxon.protonym.authorship.update_attributes reference: reference
       string = @formatter.format taxon
-      expect(string).to eq("Atta incertae sedis in genus, nomen nudum\nLatreille, P. A. 1809. Atta. Science (1):3.   #{reference.id}\n\n")
+      expect(string).to eq('Atta incertae sedis in genus, nomen nudum'+"\n"+'Latreille, P. A. 1809. Atta. Science (1):3 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.   '+reference.id.to_s+"\n\n")
     end
   end
 end

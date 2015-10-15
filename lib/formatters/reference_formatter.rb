@@ -167,7 +167,7 @@ class Formatters::ArticleReferenceFormatter < Formatters::ReferenceFormatter
   include Formatters::LinkFormatter
 
   def format_citation
-    if @reference.doi.length == 0
+    if @reference.doi.nil? or @reference.doi.length == 0
       self.class.format_italics add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
     else
       italics = self.class.format_italics "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination} DOI:".html_safe
@@ -181,7 +181,7 @@ class Formatters::BookReferenceFormatter < Formatters::ReferenceFormatter
   include Formatters::LinkFormatter
 
   def format_citation
-    if @reference.doi.length == 0
+    if @reference.doi.nil? or @reference.doi.length == 0
       self.class.format_italics add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
     else
       italics = self.class.format_italics "#{h @reference.publisher}, #{h @reference.pagination} DOI:".html_safe
