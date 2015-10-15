@@ -294,10 +294,10 @@ Feature: Edit reference
     And I press the "Save" button
     Then I should see "Title can't be blank"
     When I press the "Cancel" button
-    Then I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 10.10.1038/nphys1170."
+    Then I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 "
     When I follow "edit"
     Then I should not see any error messages
     When I press the "Save" button
     Then I should not see any error messages
-    And I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 10.10.1038/nphys1170."
+    And I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 "
 

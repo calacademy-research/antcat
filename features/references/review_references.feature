@@ -23,6 +23,6 @@ Feature: Reviewing features
     And I follow "Latest changes"
     Then I should see these entries with a header in this order:
       | updated_at | entry                                           |
-      | 2010-02-02 | Ward, P. 2010. Ward's World. Psyche 5:3 10.10.1038/nphys1170.        |
-      | 2010-01-01 | Bolton, B. 2010. Bolton's Bulletin. Psyche 4:2 10.10.1038/nphys1170. |
+      | 2010-02-02 | Ward, P. 2010. Ward's World. Psyche 5:3         |
+      | 2010-01-01 | Bolton, B. 2010. Bolton's Bulletin. Psyche 4:2  |
 

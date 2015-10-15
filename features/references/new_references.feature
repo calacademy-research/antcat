@@ -15,8 +15,8 @@ Feature: Seeing what's new
     And I follow "Latest additions"
     Then I should see these entries with a header in this order:
       | date       | entry                                           | review_state  |
-      | 2010-02-02 | Ward, P. 2010. Ward's World. Psyche 5:3 10.10.1038/nphys1170.        |               |
-      | 2010-01-01 | Bolton, B. 2010. Bolton's Bulletin. Psyche 4:2 10.10.1038/nphys1170. | Being reviewed|
+      | 2010-02-02 | Ward, P. 2010. Ward's World. Psyche 5:3         |               |
+      | 2010-01-01 | Bolton, B. 2010. Bolton's Bulletin. Psyche 4:2  | Being reviewed|
 
   Scenario: Start reviewing
     Given I am logged in

@@ -23,13 +23,13 @@ Feature: Using the default reference
   And I go to the catalog page for "Atta"
   And I press "Edit"
   And I press "Add species"
-  Then the authorship field should contain "Ward, P.S. 2010. Annals of Ants. Psyche 1:1 10.10.1038/nphys1170."
+  Then the authorship field should contain "Ward, P.S. 2010. Annals of Ants. Psyche 1:1 "
 
   Scenario: Using the default reference in the reference popup
   Given the default reference is "Ward 2010"
   When I go to the reference popup widget test page
   And I press "Ward, 2010"
-  Then the current reference should be "Ward, P.S. 2010. Annals of Ants. Psyche 1:1 10.10.1038/nphys1170."
+  Then the current reference should be "Ward, P.S. 2010. Annals of Ants. Psyche 1:1 "
 
   Scenario: Don't show the button if there's no default
   Given there is no default reference

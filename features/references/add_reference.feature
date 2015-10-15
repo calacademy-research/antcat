@@ -30,7 +30,7 @@ Feature: Add reference
     And in the new edit form I press the "Save" button
     Then I should be on the references page
  #   And I should not be editing
-    And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1 ."
+    And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
 
   @preview
   Scenario: Adding when not logged in, but in preview environment
@@ -46,7 +46,7 @@ Feature: Add reference
     And in the new edit form I fill in "reference_citation_year" with "1992"
     And in the new edit form I press the "Save" button
 #    And I should not be editing
-    And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1 ."
+    And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
 
   Scenario: Adding a reference but then cancelling
     When I follow "add" in the first reference
@@ -94,7 +94,7 @@ Feature: Add reference
     And in the new edit form I fill in "reference_pages_in" with "Pp. 32-33 in:"
     And in the new edit form I fill in "reference_nesting_reference_id" with the ID for "Annals of Ants"
     And in the new edit form I press the "Save" button
-    Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Annals of Ants. Psyche 1:1 10.10.1038/nphys1170."
+    Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Annals of Ants. Psyche 1:1 "
 
   Scenario: Adding an 'Other' reference
     When I follow "add" in the first reference

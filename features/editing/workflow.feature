@@ -54,7 +54,7 @@ Feature: Workflow
     * I should see the notes "Notes" in the changes
     * I should see the protonym name "Eciton" in the changes
     * I should see the protonym attribute "sic" in the changes
-    * I should see the authorship reference "Fisher 2004. Ants. Psyche 3:3 10.10.1038/nphys1170." in the changes
+    * I should see the authorship reference "Fisher 2004. Ants. Psyche 3:3 " in the changes
     * I should see the page "260" in the changes
     * I should see the forms "m." in the changes
     * I should see the authorship notes "Authorship notes" in the changes
