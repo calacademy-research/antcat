@@ -483,8 +483,6 @@ describe Taxon do
       taxon = create_synonym senior, current_valid_taxon: current_valid_taxon
       expect(taxon.current_valid_taxon_including_synonyms).to eq(senior)
     end
-    # Intermittent failure
-
     it "should find the latest senior synonym that's valid" do
       valid_senior = create_genus status: 'valid'
       invalid_senior = create_genus status: 'homonym'

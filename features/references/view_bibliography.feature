@@ -9,7 +9,7 @@ Feature: View bibliography
       | authors    | year  | title     | citation | cite_code | possess | date     | public_notes | editor_notes   |
       | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 | Public notes | Editor's notes |
     When I go to the references page
-    Then I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1 DOI:10.10.1038/nphys1170. [2010-07-12]"
+    Then I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1"
     And I should see "Public notes"
     And I should not see "Editor's notes"
 

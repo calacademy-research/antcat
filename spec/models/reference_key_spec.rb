@@ -51,10 +51,11 @@ describe ReferenceKey do
       allow(@reference).to receive(:downloadable_by?).and_return true
       expect(@reference.key.to_link(nil)).to eq(
         %{<span class="reference_key_and_expansion">} +
-          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. Atta. Science (1):3 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.">Latreille, 1809</a>} +
+          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. Atta. Science (1):3.">Latreille, 1809</a>} +
           %{<span class="reference_key_expansion">} +
-            %{<span title="Latreille, 1809" class="reference_key_expansion_text">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.</span>} +
+            %{<span title="Latreille, 1809" class="reference_key_expansion_text">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
             %{ } +
+            %{<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a> } +
             %{<a class="document_link" href="example.com" target="_blank">PDF</a>} +
             %{<a class="goto_reference_link" href="/references?q=#{@reference.id}" target="_blank">link</a>} +
           %{</span>} +
@@ -63,15 +64,16 @@ describe ReferenceKey do
 
 
 
+
     end
     it "should create a link to the reference without the PDF link if the user isn't logged in" do
       allow(@reference).to receive(:downloadable_by?).and_return false
       expect(@reference.key.to_link(nil)).to eq(
         %{<span class="reference_key_and_expansion">} +
-          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. Atta. Science (1):3 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.">Latreille, 1809</a>} +
+          %{<a class="reference_key" href="#" title="Latreille, P. A. 1809. Atta. Science (1):3.">Latreille, 1809</a>} +
           %{<span class="reference_key_expansion">} +
-            %{<span title="Latreille, 1809" class="reference_key_expansion_text">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.</span>} +
-
+            %{<span title="Latreille, 1809" class="reference_key_expansion_text">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span> }+
+            %{<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a> } +
             %{<a class="goto_reference_link" href="/references?q=#{@reference.id}" target="_blank">link</a>} +
           %{</span>} +
         %{</span>}
@@ -81,13 +83,13 @@ describe ReferenceKey do
       it "should not include the PDF link, if not available to the user" do
         allow(@reference).to receive(:downloadable_by?).and_return false
         expect(@reference.key.to_link(nil, expansion: false)).to eq(
-          %{<a href="http://antcat.org/references?q=#{@reference.id}" target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.">Latreille, 1809</a>}
+          %{<a href="http://antcat.org/references?q=#{@reference.id}" target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3.">Latreille, 1809</a> <a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a> }
         )
       end
       it "should include the PDF link, if available to the user" do
         allow(@reference).to receive(:downloadable_by?).and_return true
         expect(@reference.key.to_link(nil, expansion: false)).to eq(
-          %{<a href="http://antcat.org/references?q=#{@reference.id}" target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.">Latreille, 1809</a>} +
+          %{<a href="http://antcat.org/references?q=#{@reference.id}" target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3.">Latreille, 1809</a> <a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>} +
           %{ } +
           %{<a class="document_link" href="example.com" target="_blank">PDF</a>}
         )

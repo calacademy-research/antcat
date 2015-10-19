@@ -11,7 +11,9 @@ module Formatters::LinkFormatter
     attributes_string = attributes.keys.sort.inject(''.html_safe) do |string, key|
       string << "#{key}=\"#{h attributes[key]}\" ".html_safe
     end.strip.html_safe
-    '<a '.html_safe + attributes_string + '>'.html_safe + contents + '</a>'.html_safe
+    foo = '<a '.html_safe + attributes_string + '>'.html_safe + contents + '</a>'.html_safe
+    foo
+    #'<a '.html_safe + attributes_string + '>'.html_safe + contents + '</a>'.html_safe
   end
 
   def link_to_external_site label, url

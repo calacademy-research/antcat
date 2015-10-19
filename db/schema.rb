@@ -111,16 +111,6 @@ ActiveRecord::Schema.define(version: 20151013234952) do
 
   add_index "citations", ["reference_id"], name: "index_authorships_on_reference_id", using: :btree
 
-  create_table "email_configurations", force: :cascade do |t|
-    t.integer "port",                 limit: 4
-    t.string  "address",              limit: 255
-    t.string  "domain",               limit: 255
-    t.string  "user_name",            limit: 255
-    t.string  "password",             limit: 255
-    t.string  "authentication",       limit: 255
-    t.boolean "enable_starttls_auto"
-  end
-
   create_table "forward_refs", force: :cascade do |t|
     t.integer  "fixee_id",        limit: 4
     t.string   "fixee_attribute", limit: 255
@@ -180,9 +170,6 @@ ActiveRecord::Schema.define(version: 20151013234952) do
     t.integer "synonym_id", limit: 4
     t.text    "json",       limit: 4294967295
   end
-
-  add_index "hol_synonyms", ["synonym_id"], name: "hol_synonyms_antcat_synonym_id_idx", using: :btree
-  add_index "hol_synonyms", ["tnuid"], name: "hol_synonyms_antcat_tnuid_idx", using: :btree
 
   create_table "hol_taxon_data", force: :cascade do |t|
     t.integer "tnuid",               limit: 4

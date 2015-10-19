@@ -35,7 +35,7 @@ describe Formatters::ReferenceFormatter do
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
       string = @formatter.format reference
       expect(string).to be_html_safe
-      expect(string).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+      expect(string).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should add a period after the title if none exists" do
@@ -43,7 +43,7 @@ describe Formatters::ReferenceFormatter do
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
-      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should not add a period after the author_names' suffix" do
@@ -52,7 +52,7 @@ describe Formatters::ReferenceFormatter do
                           :title => "Les fourmis de la Suisse",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
       reference.update_attribute :author_names_suffix, ' (ed.)'
-      expect(@formatter.format(reference)).to eq('Forel, A. (ed.) 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+      expect(@formatter.format(reference)).to eq('Forel, A. (ed.) 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should not add a period after the title if it ends with a question mark" do
@@ -60,7 +60,7 @@ describe Formatters::ReferenceFormatter do
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse?",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
-      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse? Neue Denkschriften 26:1-452 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse? Neue Denkschriften 26:1-452.')
     end
 
     it "should not add a period after the title if it ends with an exclamation mark" do
@@ -68,7 +68,7 @@ describe Formatters::ReferenceFormatter do
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse!",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
-      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse! Neue Denkschriften 26:1-452 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse! Neue Denkschriften 26:1-452.')
     end
 
     it "should not add a period after the title if there's already one" do
@@ -76,7 +76,7 @@ describe Formatters::ReferenceFormatter do
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
-      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should add a period after the citation if none exists" do
@@ -84,7 +84,7 @@ describe Formatters::ReferenceFormatter do
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452")
-      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should not add a period after the citation if there's already one" do
@@ -92,7 +92,7 @@ describe Formatters::ReferenceFormatter do
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :journal => @journal, :series_volume_issue => "26", :pagination => "1-452.")
-      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452. DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should separate the publisher and the pagination with a comma" do
@@ -100,7 +100,7 @@ describe Formatters::ReferenceFormatter do
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :publisher => @publisher, :pagination => "22 pp.")
-      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp. DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.')
     end
 
     it "should format an unknown reference" do
@@ -121,7 +121,7 @@ describe Formatters::ReferenceFormatter do
         :author_names => [@author_name], :title => 'Les fourmis de la Suisse',
         :citation_year => '1874', :pages_in => 'Pp. 32-45 in'
       expect(@formatter.format(nested_reference)).to eq(
-        'Forel, A. 1874. Les fourmis de la Suisse. Pp. 32-45 in Mayr, E. 2010. Ants I have known. New York: Wiley, 32 pp. DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.'
+        'Forel, A. 1874. Les fourmis de la Suisse. Pp. 32-45 in Mayr, E. 2010. Ants I have known. New York: Wiley, 32 pp.'
       )
     end
 
@@ -132,7 +132,7 @@ describe Formatters::ReferenceFormatter do
                           :citation_year => "1874",
                           :title => "Les fourmis de la Suisse.",
                           :publisher => publisher, :pagination => "22 pp.")
-      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. Wiley, 22 pp. DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+      expect(@formatter.format(reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. Wiley, 22 pp.')
     end
 
     describe "unsafe characters" do
@@ -165,13 +165,13 @@ describe Formatters::ReferenceFormatter do
       it "should escape the citation in an article reference" do
         reference = FactoryGirl.create :article_reference, :title => 'Ants are my life', :author_names => @author_names,
           :journal => FactoryGirl.create(:journal, :name => '<script>'), :citation_year => '2010d', :series_volume_issue => '<', :pagination => '>'
-        expect(@formatter.format(reference)).to eq('Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt; DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+        expect(@formatter.format(reference)).to eq('Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt;.')
       end
 
       it "should escape the citation in a book reference" do
         reference = FactoryGirl.create :book_reference, :citation_year => '2010d', :title => 'Ants are my life', :author_names => @author_names,
           :publisher => FactoryGirl.create(:publisher, :name => '<', :place => FactoryGirl.create(:place, :name => '>')), :pagination => '>'
-        expect(@formatter.format(reference)).to eq('Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt; DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.')
+        expect(@formatter.format(reference)).to eq('Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt;.')
       end
 
       it "should escape the citation in an unknown reference" do
@@ -273,7 +273,7 @@ describe Formatters::ReferenceFormatter do
     end
 
     def check expected
-      expect(@formatter.format(@reference)).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452. DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.'+expected)
+      expect(@formatter.format(@reference)).to eq("Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.#{expected}")
     end
   end
 
@@ -337,7 +337,7 @@ describe Formatters::ReferenceFormatter do
       reference = FactoryGirl.create :article_reference,
         author_names: [author_name], citation_year: '1874', title: 'Format',
         journal: journal, series_volume_issue: '1:1', pagination: '2'
-      expected = 'Forel, A. 1874. Format. Ants 1:1:2 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.'
+      expected = 'Forel, A. 1874. Format. Ants 1:1:2.'
       expect(@formatter.format(reference)).to eq(expected)
     end
   end
@@ -349,7 +349,7 @@ describe Formatters::ReferenceFormatter do
       reference = FactoryGirl.create :article_reference,
         author_names: [author_name], citation_year: '1874', title: 'Format',
         journal: journal, series_volume_issue: '1:1', pagination: '2'
-      expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2 DOI:<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170" target="_blank">10.10.1038/nphys1170</a>.">Forel, 1874</span>'
+      expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2.">Forel, 1874</span>'
       expect(@formatter.format_authorship_html(reference)).to be === expected
     end
   end

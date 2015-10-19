@@ -260,6 +260,7 @@ Feature: Edit reference
     And I save my changes to the first reference
     Then I should see "Nesting reference can't point to itself"
 
+
   #Scenario: Edit a nested reference to remove its nestedness, delete the nestee, go back to the first one and set it as nested
     #Given I am logged in
     #And these references exist
