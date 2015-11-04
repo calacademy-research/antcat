@@ -1,7 +1,7 @@
 - @title = 'Merge Authors'
 
 - content_for :head do
-  = javascript_include_tag 'qtip', 'merge_authors'
+  = javascript_include_tag  'merge_authors'
 
 - content_for :page_contents do
   - for panel in @panels
@@ -10,4 +10,3 @@
   - if @authors.count >= 2 && user_is_editor?
     = render 'merge', panels: @panels, names: @names
 
-= render 'shared/qtip'

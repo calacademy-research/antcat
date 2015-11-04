@@ -9,7 +9,7 @@ $ ->
   splitter_top = $('#splitter').position().top
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
   $('#delete_button')
-  .unbutton()
+ # .unbutton()
   .button()
   #.click -> window.location = $(@).data('delete-location')
   .click =>
@@ -28,11 +28,11 @@ $ ->
 
 
   $('#edit_button')
-  .unbutton()
+ # .unbutton()
   .button()
   .click -> window.location = $(@).data('edit-location')
   $('#review_button')
-  .unbutton()
+ # .unbutton()
   .button()
   .click -> window.location = $(@).data('review-location')
   $('#hide_all').remove()

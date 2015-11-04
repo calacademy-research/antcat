@@ -19,10 +19,11 @@ gem 'ey_config'
 gem 'factory_girl_rails'
 gem 'haml'
 gem 'high_voltage'
-gem 'jquery-rails', '2.1.3'
-# Todo: Switch to a gem-ified version of jquery-ui
-#gem 'jquery-ui-rails'
-gem 'mysql2'
+# gem 'jquery-rails', '2.1.3'
+# gem 'jquery-migrate-rails', '>= 1.2.1'
+gem 'mysql2', '~> 0.3.18'
+gem 'jquery-rails', '> 4.0'
+gem 'jquery-ui-rails', '> 5.0'
 gem 'nokogiri'
 gem 'paper_trail', :git => "https://github.com/airblade/paper_trail.git", :tag => 'v4.0.0.beta2'
 gem 'protected_attributes' #attr_accesssible deprecated in rails 4.
@@ -40,6 +41,7 @@ gem 'xml-simple'
 gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'request_store'
 gem 'fuzzy-string-match'
+gem 'rails_admin', '>= 0.7.0'
 
 
 group :development, :test do
@@ -64,7 +66,7 @@ end
 group :test do
   # This webdriver works with firefox as of v34. If firefox popus up without a URL,
   # check the latest
-  gem 'selenium-webdriver', '>= 2.47.1'
+  gem 'selenium-webdriver', '>= 2.48'
   gem 'capybara', '>= 2.2.0'
   gem 'cucumber-api-steps', require: false
   gem 'database_cleaner'

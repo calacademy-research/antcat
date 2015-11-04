@@ -43,6 +43,8 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @form().open()
     @setup_search_selector()
 
+
+
   hide_form: =>
     @edit_section.hide()
     @display_section.show()
@@ -87,7 +89,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
       .find('.controls')
         .undisable()
         .find(':button')
-          .unbutton()
+         # .unbutton()
           .button()
           .end()
         .end()
@@ -136,23 +138,26 @@ class AntCat.ReferencePicker extends AntCat.Panel
           false
         .end()
 
-    @setup_search_selector()
+    #@setup_search_selector()
     @enable_search_author_autocomplete()
 
   get_default_reference_string: =>
     @controls.find('#default_reference_string').val()
 
   setup_search_selector: =>
-    @search_selector
-      .selectmenu('destroy')
-      .selectmenu(wrapperElement: "<span />")
+      @search_selector
+  #      .selectmenu('destroy')
+        .selectmenu(wrapperElement: "<span />")
+      .selectmenu()
+
       .change =>
-        new_type = @search_selector.find('option:selected').text()
-        if new_type is 'Search for'
-          @disable_search_author_autocomplete()
-        else
-          @enable_search_author_autocomplete()
-        @textbox.focus()
+          new_type = @search_selector.find('option:selected').text()
+          if new_type is 'Search for'
+            @disable_search_author_autocomplete()
+          else
+            @enable_search_author_autocomplete()
+          @textbox.focus()
+
 
   enable_controls: => @expansion.find('.controls').undisable()
   disable_controls: => @expansion.find('.controls').disable()

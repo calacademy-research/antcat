@@ -192,6 +192,7 @@ Feature: Add reference
     And in the new edit form I fill in "reference_citation_year" with "1981"
     And in the new edit form I press the "Save" button
     Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
+    And in the new edit form I follow "Book"
     And in the new edit form the "reference_publisher_string" field should contain "Pensoft, Sophia"
 
   Scenario: Very long author string

@@ -29,7 +29,7 @@ When /^I set the title to "([^"]*)"$/ do |title|
   end
 end
 When /^I add a reference by Brian Fisher$/ do
-  step 'I press "Add"'
+  click_button "Add"
   within '.current' do
     step %{I fill in "reference[author_names_string]" with "Fisher, B.L."}
     step %{I fill in "reference[title]" with "Between Pacific Tides"}
@@ -47,16 +47,42 @@ When /In the search box, I press "Go"/ do
   step 'I press "Go" within ".expansion"'
 end
 When /^I search for the authors? "([^"]*)"$/ do |authors|
-  within '.expansion' do
-    step %{I follow "Search for author(s)"}
-  end
+  # Something is broken in webdriver land. However, it defaults to
+  # "seach for authors", so this can be a no-op.
+
+  #this is the only thing that works. The rest of the things are ideas, left
+  # for the next time I want to bang my head against this wall.
+  #step %{I click ".ui-selectmenu-text"}
+
+  # Scribbles:
+  # within '.expansion' do
+  #.antcat-reference-picker .display_button
+  # within '#authorship_field' do
+  #within '.ui-selectmenu-text' do
+
+
+  # step %{I click ".ui-selectmenu-text"}
+  # sleep 2
+  #page.driver.browser.key_down(:enter).key_up(:enter).perform
+  #click_link "Search for"
+  #find '.ui-selectmenu-text'.node.send_keys(:enter)
+  # find 'Search for author'.click
+  # step %{I follow "Search for author(s)"}
+
+
+  #end
+  # end
   step %{I fill in the search box with "#{authors}"}
+  sleep 1
   step %{In the search box, I press "Go"}
+  sleep 4
 end
 
 # Reference field
 And /^I click the reference field$/ do
+  sleep 2
   step %{I click ".display_button"}
+  sleep 2
 end
 
 # Reference popup

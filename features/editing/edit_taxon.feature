@@ -81,8 +81,8 @@ Feature: Editing a taxon
 
   Scenario: Changing the authorship
     Given these references exist
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+      | authors | citation   | title | year | doi |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |          |
     Given there is a genus "Eciton"
     And I log in
     When I go to the edit page for "Eciton"
@@ -99,8 +99,8 @@ Feature: Editing a taxon
 
   Scenario: Supplying the authorship when there wasn't one before
     Given these references exist
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+      | authors | citation   | title | year | doi |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |          |
     Given there is a genus "Eciton" without protonym authorship
     And I log in
     And I go to the edit page for "Eciton"

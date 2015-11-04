@@ -1,8 +1,7 @@
 - @title = "#{@taxon.name.epithet}"
 
 - content_for :head do
-  -#= javascript_include_tag 'qtip', 'ext/jquery.ui.selectmenu.js', 'ext/jquery.spinner.js'
-  -#= stylesheet_link_tag 'ext/jquery.ui.selectmenu.css'
+  -#= javascript_include_tag 'ext/jquery.spinner.js'
 
 #hide_all
   &nbsp;
@@ -24,4 +23,3 @@
       = render'rank',  rank: :subgenus, items: @subgenera,  selected_item: @subgenus,  parent: nil,       parameters: @parameters, options: {hideable_name: 'subgenera'}
     = render  'rank',  rank: :species,  items: @specieses,  selected_item: @species,   parent: nil,       parameters: @parameters, options: {}
 
-= render 'shared/qtip'

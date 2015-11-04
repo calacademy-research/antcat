@@ -10,8 +10,8 @@ Feature: Deleting a taxon
     Given the Formicidae family exists
     And that version tracking is enabled
     Given these references exist
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+      | authors | citation   | title | year |  doi |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |            |
       * there is a subfamily "Dolichoderinae"
       * I log in
       * there is a genus "Eciton"

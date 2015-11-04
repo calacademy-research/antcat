@@ -70,7 +70,7 @@ $.fn.find_topmost = (selector) ->
 # for some reason to do with jQuery UI's widget factory, so do this part
 # manually
 $.fn.unbutton = ->
-  @.button 'destroy'
+  #@.button 'destroy'
   @each ->
     button_text = $(@).find '.ui-button-text'
     return if button_text.length is 0

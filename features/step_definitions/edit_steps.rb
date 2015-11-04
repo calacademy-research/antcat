@@ -186,6 +186,7 @@ end
 
 ### authorship
 And /^I click the authorship field$/ do
+  sleep 1
   step %{I click "#authorship_field .display_button"}
 end
 When /^I fill in the authorship notes with "([^"]*)"$/ do |notes|
@@ -204,6 +205,7 @@ When /^I set the protonym name to "([^"]*)"$/ do |name|
 end
 
 # type name field
+
 When /I click the type name field/ do
   find('#type_name_field .display_button').click
 end

@@ -7,8 +7,8 @@ Feature: Security for editing taxa
 
   Background:
     Given these references exist
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+      | authors | citation   | title | year | doi |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |          |
     And there is a subfamily "Formicinae"
 
   Scenario: Adding a genus

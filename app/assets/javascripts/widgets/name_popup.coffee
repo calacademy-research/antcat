@@ -98,7 +98,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
         autoFocus: true,
         source: "/name_pickers/search",
         minLength: 3)
-      .data('autocomplete')._renderItem = @render_item
+      .data('uiAutocomplete')._renderItem = @render_item
 
   # this is required to display HTML in the list
   render_item: (ul, item) =>

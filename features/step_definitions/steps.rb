@@ -57,6 +57,9 @@ When /I press "Go" by the search box/ do
   step 'I press "Go" within "#navigation_bar form"'
 end
 
+
+
+
 Then /I should (not )?see "(.*?)" (?:with)?in (.*)$/ do |do_not, contents, location|
   with_scope location do
     step %{I should #{do_not}see "#{contents}"}

@@ -14,16 +14,16 @@ class AntCat.ReferenceForm extends AntCat.NestedForm
 
   setup_tabs: =>
     $tabs = @element.find '.tabs'
-    $tabs.tabs 'destroy'
+    #    $tabs.tabs 'destroy'
     $tabs.find('> ul').remove()
     $list = $('<ul/>').prependTo $tabs
     $tabs.find('.tabbable').each ->
       id = 'A' + Math.random().toString().replace '.', ''
       $list_item = $('<li/>').appendTo $list
       $('<a/>')
-        .appendTo($list_item)
-        .text($(this).data('title'))
-        .attr 'href', '#' + id
+      .appendTo($list_item)
+      .text($(this).data('title'))
+      .attr 'href', '#' + id
       $(this).attr 'id', id
     $tabs.tabs selected: @element.find('.selected_tab').val()
 
@@ -60,6 +60,6 @@ class AntCat.ReferenceForm extends AntCat.NestedForm
       minLength: 3
 
   before_serialize: ($form, options) =>
-    selectedTab = $.trim($('.ui-tabs-selected', $form).text())
-    $('#selected_tab', $form).val selectedTab
-    true
+    selected_tab = $.trim($('.ui-tabs-active', $form).text())
+    $('#selected_tab', $form).val selected_tab
+true

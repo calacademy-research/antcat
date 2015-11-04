@@ -1,11 +1,10 @@
 # coding: UTF-8
 When /^I click the first search result$/ do
-  sleep 1
-  first('.search_results .display').click
-
+  first('.search_results .reference_table').click
 end
 
 Then /^the authorship field should contain the reference by (\w+)$/ do |author|
+  sleep 5
   page.find('#authorship_field .display').text.should =~ /#{author}.*/
 end
 

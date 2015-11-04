@@ -18,8 +18,8 @@ Feature: Replace missing references
   Scenario: Replacing a missing reference
     Given I am logged in
     And this reference exists
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+      | authors | citation   | title | year | doi |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |          |
     And there is a missing reference with citation "Bolton, 1970" in a protonym
     When I go to the missing references page
     Then I should see "Bolton, 1970"

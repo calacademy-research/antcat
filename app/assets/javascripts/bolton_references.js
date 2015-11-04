@@ -1,10 +1,9 @@
 $(function() {
-  setupHelp();
   setupButtonHandlers();
 })
 
 function setupButtonHandlers() {
-  $('.enter_id').live('click', enterID);
+  $('body').on('click','.enter_id', enterID);
 }
 
 enterIDInput = '';
@@ -18,9 +17,4 @@ function enterID() {
   $form.attr('action', action.replace('_id_', enterIDInput));
 }
 
-function setupHelp() {
-  setupQtip('#q_help', "Enter search words, e.g. 'Bolton 2011'. References matching all words will be displayed.",
-    {position: {adjust: {y: -7}, corner: {target: 'topLeft', tooltip: 'bottomRight'}}});
-  setupQtip('#match_status_help', "'Auto' matches are those for which the score was >= 0.8. 'None' shows references without matches.",
-    {position: { adjust: {y: -7}, corner: {target: 'topLeft', tooltip: 'bottomRight'}}});
-}
+

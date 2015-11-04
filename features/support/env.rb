@@ -20,7 +20,7 @@ Spork.prefork do
   DatabaseCleaner.strategy = :truncation
 
   Capybara.save_and_open_page_path = '/tmp'
-  Capybara.default_wait_time = 5
+  Capybara.default_max_wait_time = 5
 
   require 'webmock/cucumber'
   WebMock.disable_net_connect! allow_localhost: true

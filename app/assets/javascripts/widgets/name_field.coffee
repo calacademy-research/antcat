@@ -123,7 +123,7 @@ class AntCat.NameField extends AntCat.Panel
     $value_field = $('#' + @value_id)
     @check_for_duplicates(value)
     # populates @duplicates variable
-    if(@duplicates == null)
+    if(@duplicates == undefined)
       @create_combination_message(value)
     else
       @create_duplicate_message(@duplicates, value)
@@ -494,7 +494,7 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
     url += '?genera_only=1' if @options.genera_only
     url += '?subfamilies_or_tribes_only=1' if @options.subfamilies_or_tribes_only
     $textbox.autocomplete(autoFocus: true, source: url, minLength: 3)
-    .data('autocomplete')._renderItem = @render_item
+    .data('uiAutocomplete')._renderItem = @render_item
 
   # this is required to display HTML in the list
   render_item: (ul, item) =>

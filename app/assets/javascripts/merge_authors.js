@@ -1,5 +1,4 @@
 $(function() {
-  setupHelp();
   setupAuthorAutocomplete();
   setupCloseLinks();
   $("input[type=text]:last").focus();
@@ -12,9 +11,6 @@ function setupCloseLinks() {
   });
 }
 
-function setupHelp() {
-  setupQtip('.help_icon', "Type some letters in the author's name, then choose the name from the list.")
-}
 
 function setupAuthorAutocomplete() {
   if (AntCat.testing)

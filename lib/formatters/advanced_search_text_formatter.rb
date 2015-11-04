@@ -17,7 +17,9 @@ module Formatters::AdvancedSearchTextFormatter
   end
 
   def reference_id reference
-    "   #{reference.id.to_s}"
+    string = ''
+    string << " DOI: " << reference.doi if reference.doi and reference.doi.length > 0
+    string << "   #{reference.id.to_s}"
   end
 
   def convert_to_text string

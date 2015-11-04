@@ -9,11 +9,11 @@ Feature: Adding a taxon
     Given I log in
     And that version tracking is enabled
     And these dated references exist
-      | authors | citation   | title | year |  created_at | updated_at |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |   TODAYS_DATE | TODAYS_DATE |
+      | authors | citation   | title | year |  created_at | updated_at | doi |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |   TODAYS_DATE | TODAYS_DATE |  |
     And there is a subfamily "Formicinae"
 
-
+                          #spurrious failures
   Scenario: Adding a genus
     Given there is a genus "Eciton"
     When I go to the catalog page for "Formicinae"
@@ -30,7 +30,7 @@ Feature: Adding a taxon
     When I click the authorship field
       And I search for the author "Fisher"
       And I click the first search result
-      And I press "OK"
+    And I press "OK"
     When I click the type name field
       Then the type name field should contain "Eciton "
     When I set the type name to "Atta major"
@@ -42,6 +42,7 @@ Feature: Adding a taxon
     When I go to the catalog page for "Formicinae"
       Then I should see "Atta" in the index
 
+    #spurrious failure
   Scenario: Adding a genus which has a tribe
     Given tribe "Ecitonini" exists in that subfamily
     When I go to the catalog page for "Ecitonini"
