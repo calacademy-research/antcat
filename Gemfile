@@ -15,12 +15,9 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'diff-lcs'
 gem 'ey_config'
-#gem 'newrelic_rpm'
 gem 'factory_girl_rails'
 gem 'haml'
 gem 'high_voltage'
-# gem 'jquery-rails', '2.1.3'
-# gem 'jquery-migrate-rails', '>= 1.2.1'
 gem 'mysql2', '~> 0.3.18'
 gem 'jquery-rails', '> 4.0'
 gem 'jquery-ui-rails', '> 5.0'
@@ -42,10 +39,10 @@ gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'request_store'
 gem 'fuzzy-string-match'
 gem 'rails_admin', '>= 0.7.0'
+gem 'activeadmin', '>= 1.0.0.pre2'
 
 
 group :development, :test do
-  #gem 'byebug'
   gem 'launchy'
   gem 'rspec'
   gem 'rspec-rails'
@@ -53,8 +50,6 @@ group :development, :test do
   gem 'spork'
   gem 'thin'
   #gem 'web-console', '~> 2.0'
-
-
 end
 
 group :development do
@@ -64,7 +59,7 @@ group :development do
 end
 
 group :test do
-  # This webdriver works with firefox as of v34. If firefox popus up without a URL,
+  # This webdriver works with firefox as of v41. If firefox popus up without a URL,
   # check the latest
   gem 'selenium-webdriver', '>= 2.48'
   gem 'capybara', '>= 2.2.0'

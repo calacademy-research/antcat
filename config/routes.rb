@@ -1,6 +1,10 @@
 # coding: UTF-8
 AntCat::Application.routes.draw do
 
+  devise_for :users, ActiveAdmin::Devise.config
+  resources :users
+
+  ActiveAdmin.routes(self)
   root to: 'catalog#show'
 
   resources :changes, only: [:show, :index] do
@@ -91,8 +95,7 @@ AntCat::Application.routes.draw do
   match '/widget_tests/reference_field_test', to: 'widget_tests#reference_field_test', via: :get
   match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test', via: :get
 
-  devise_for :users
-  resources :users
+
 
   namespace :api, defaults: {format: :json} do
     resources :taxa
