@@ -42,7 +42,7 @@ gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'request_store'
 gem 'fuzzy-string-match'
 gem 'rails_admin', '>= 0.7.0'
-
+gem 'activeadmin', '~> 1.0.0.pre2'
 
 group :development, :test do
   #gem 'byebug'
