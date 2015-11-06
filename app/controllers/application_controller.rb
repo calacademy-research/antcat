@@ -1,10 +1,9 @@
 # coding: UTF-8
-
-
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :save_location
   before_action :configure_permitted_parameters, if: :devise_controller?
+
 
   def preview?
     $Milieu.preview?
@@ -30,31 +29,6 @@ class ApplicationController < ActionController::Base
     end
     nil
   end
-
-  def root_redirect(exception)
-    redirect_to root_url
-  end
-
-  #
-  # the active_admin page rewrites the function "root_path".
-  # These are the functions it calls; these override the default
-  # devise functions.
-
-  #
-  # We could add a feature to track the most recent antcat url; using request.env['PATH_INFO']
-  # just sends you to the login or logout path, which isnt' useful, you need the one
-  # before that.
-  #
-  #
-  def after_sign_out_path_for(resource_or_scope)
-    root_url
-  end
-
-  def after_sign_in_path_for(resource)
-    root_url
-  end
-
-
 
   protected
 

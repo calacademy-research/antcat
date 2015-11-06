@@ -1,10 +1,7 @@
 # coding: UTF-8
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, 
-         :recoverable, :rememberable, :trackable, :validatable
-
+  devise :database_authenticatable, :recoverable, :registerable,
+         :rememberable, :trackable, :validatable, :invitable
 
   attr_accessible :email, :name, :password, :password_confirmation, :can_edit, :is_superadmin, :remember_me
 
