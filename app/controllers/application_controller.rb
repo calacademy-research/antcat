@@ -1,9 +1,10 @@
 # coding: UTF-8
+
+
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :save_location
   before_action :configure_permitted_parameters, if: :devise_controller?
-
 
   def preview?
     $Milieu.preview?
@@ -28,6 +29,10 @@ class ApplicationController < ActionController::Base
       return current_user.id
     end
     nil
+  end
+
+  def root_redirect(exception)
+    redirect_to root_url
   end
 
   protected
