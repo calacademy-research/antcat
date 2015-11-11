@@ -26,6 +26,11 @@ class Bolton::Reference < ActiveRecord::Base
     integer :id
   end
 
+  def self.search &block
+    Sunspot.search Bolton::Reference, &block
+  end
+
+
   def self.do_search options = {}
     query =
       select('DISTINCT bolton_references.*').

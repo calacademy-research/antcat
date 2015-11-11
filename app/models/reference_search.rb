@@ -23,6 +23,12 @@ class Reference < ActiveRecord::Base
     # TODO: Test searching for doi, see if that works?
   end
 
+  def self.search &block
+     Sunspot.search Reference, &block
+  end
+
+
+
   def self.perform_search options = {}
     page = options[:page]
     case
