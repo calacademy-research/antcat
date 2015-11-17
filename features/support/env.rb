@@ -13,6 +13,17 @@ Spork.prefork do
 
   require 'cucumber/rails'
 
+  if ENV['HEADLESS'] == 'true'
+    require 'headless'
+
+    headless = Headless.new
+    headless.start
+
+    at_exit do
+      headless.destroy
+    end
+  end
+  
   Capybara.javascript_driver = :webkit
   Capybara.default_selector = :css
 

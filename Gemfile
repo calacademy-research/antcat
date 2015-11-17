@@ -52,8 +52,8 @@ group :development, :test do
   gem 'spork'
   gem 'thin'
   #gem 'web-console', '~> 2.0'
-  gem "sunspot_test"
-
+  gem 'sunspot_test'
+  gem 'headless'
 end
 
 group :development do

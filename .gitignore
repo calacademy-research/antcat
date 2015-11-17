@@ -31,3 +31,7 @@ data/output/antcat.antweb.txt
 script/*.sql
 script/antcat*
 vendor/bundle
+cookbooks/*
+!cookbooks/.keep
+.bundle
+.vagrant
