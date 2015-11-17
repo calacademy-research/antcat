@@ -23,8 +23,11 @@ Spork.prefork do
       headless.destroy
     end
   end
-  
-  Capybara.javascript_driver = :webkit
+
+  if ENV['DRIVER'] == 'webkit'
+      Capybara.javascript_driver = :webkit
+  end
+
   Capybara.default_selector = :css
 
   ActionController::Base.allow_rescue = false
