@@ -71,6 +71,7 @@ group :test do
   gem 'database_cleaner'
   gem 'webmock'
   gem 'capybara-webkit'
+  gem 'capybara-screenshot'
 end
 
 gem 'coffee-rails'

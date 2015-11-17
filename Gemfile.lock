@@ -83,6 +83,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-screenshot (1.0.11)
+      capybara (>= 1.0, < 3)
+      launchy
     capybara-webkit (1.7.0)
       capybara (>= 2.3.0, < 2.6.0)
       json
@@ -357,6 +360,7 @@ DEPENDENCIES
   acts_as_list
   aws-sdk (< 2.0)
   capybara (>= 2.2.0)
+  capybara-screenshot
   capybara-webkit
   citrus (= 2.4.1)
   coffee-rails

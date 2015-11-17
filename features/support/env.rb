@@ -30,11 +30,14 @@ Spork.prefork do
 
   Capybara.default_selector = :css
 
+  Capybara.save_and_open_page_path = './tmp/capybara'
+  require 'capybara-screenshot/cucumber'
+  Capybara::Screenshot.prune_strategy = :keep_last_run
+
   ActionController::Base.allow_rescue = false
 
   DatabaseCleaner.strategy = :transaction
 
-  Capybara.save_and_open_page_path = '/tmp'
   Capybara.default_max_wait_time = 5
 
   require 'webmock/cucumber'
