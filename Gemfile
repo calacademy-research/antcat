@@ -70,6 +70,7 @@ group :test do
   gem 'cucumber-api-steps', require: false
   gem 'database_cleaner'
   gem 'webmock'
+  gem 'capybara-webkit'
 end
 
 gem 'coffee-rails'

@@ -13,6 +13,7 @@ Spork.prefork do
 
   require 'cucumber/rails'
 
+  Capybara.javascript_driver = :webkit
   Capybara.default_selector = :css
 
   ActionController::Base.allow_rescue = false
