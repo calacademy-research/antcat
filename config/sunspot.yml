@@ -21,6 +21,6 @@ test:
     hostname: localhost
     port: 8982
     log_level: WARNING
-    path: /solr/default
-
+    path: /solr/test
+    solr_home: solr
     #http://hostname:8983/solr/

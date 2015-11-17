@@ -316,6 +316,8 @@ GEM
       rails (>= 3)
       sunspot (= 2.2.0)
     sunspot_solr (2.2.0)
+    sunspot_test (0.4.0)
+      sunspot_rails (>= 1.2.1)
     thin (1.6.4)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
@@ -390,6 +392,7 @@ DEPENDENCIES
   sprockets-rails
   sunspot_rails
   sunspot_solr
+  sunspot_test
   thin
   uglifier
   webmock
@@ -398,3 +401,6 @@ DEPENDENCIES
   workflow
   xml-simple
   yui-compressor
+
+BUNDLED WITH
+   1.10.5

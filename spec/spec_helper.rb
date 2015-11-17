@@ -1,7 +1,7 @@
 # coding: UTF-8
 require 'devise'
 require 'spork'
-
+require 'sunspot_test/rspec'
 
 Spork.prefork do
   ENV["RAILS_ENV"] ||= 'test'

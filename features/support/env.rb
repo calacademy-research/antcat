@@ -9,7 +9,7 @@ require 'cucumber/api_steps'
 Spork.prefork do
   ENV["RAILS_ENV"] ||= "test"
   require_relative '../../config/environment'
-  require_relative '../../spec/support/sunspot'
+  require 'sunspot_test/cucumber'
 
   require 'cucumber/rails'
 
@@ -26,16 +26,9 @@ Spork.prefork do
   WebMock.disable_net_connect! allow_localhost: true
   WebMock.stub_request :put, 'https://antcat.s3.amazonaws.com/1/21105.pdf'
   Capybara.app = Rack::ShowExceptions.new(AntCat::Application)
-
-
 end
 
 Spork.each_run{FactoryGirl.reload}
-
-Sunspot.session = Sunspot.session.original_session if ENV['DRB'] != 'true'
-at_exit do
-  Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session) if ENV['DRB'] != 'true'
-end
 
 include Warden::Test::Helpers
 Warden.test_mode!

@@ -41,9 +41,7 @@ describe Bolton::Reference do
     end
   end
 
-  describe 'Searching' do
-    include EnableSunspot
-
+  describe 'Searching', search: true do
     it 'should simply return all records if there are no search terms' do
       reference = FactoryGirl.create :bolton_reference, :original => 'foo'
       expect(Bolton::Reference.do_search).to eq([reference])

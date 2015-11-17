@@ -1,8 +1,7 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Reference, slow:true do
-  include EnableSunspot
+describe Reference, slow: true do
 
   before do
     Reference.delete_all
@@ -38,6 +37,7 @@ describe Reference, slow:true do
           bolton_b = FactoryGirl.create :author_name, author: bolton, name: 'Bolton, B.'
           bolton_barry_reference = FactoryGirl.create :book_reference, :author_names => [bolton_barry], :title => '1', :pagination => '1'
           bolton_b_reference = FactoryGirl.create :book_reference, :author_names => [bolton_b], :title => '2', :pagination => '2'
+          
           expect(Reference.perform_search(:authors => [bolton]).map(&:id)).to match(
             [bolton_b_reference, bolton_barry_reference].map(&:id)
           )
@@ -63,21 +63,24 @@ describe Reference, slow:true do
         end
       end
 
-      describe 'Fulltext' do
+      describe 'Fulltext', search: true do
         describe 'Notes' do
           it 'should find something in public notes' do
             matching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'abcdef')
             unmatching_reference = reference_factory(:author_name => 'Hölldobler', :public_notes => 'fedcba')
+            Sunspot.commit
             expect(Reference.perform_search(:fulltext => 'abcdef')).to eq([matching_reference])
           end
           it 'should find something in editor notes' do
             matching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'abcdef')
             unmatching_reference = reference_factory(:author_name => 'Hölldobler', :editor_notes => 'fedcba')
+            Sunspot.commit
             expect(Reference.perform_search(:fulltext => 'abcdef')).to eq([matching_reference])
           end
           it 'should find something in taxonomic notes' do
             matching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'abcdef')
             unmatching_reference = reference_factory(:author_name => 'Hölldobler', :taxonomic_notes => 'fedcba')
+            Sunspot.commit
             expect(Reference.perform_search(:fulltext => 'abcdef')).to eq([matching_reference])
           end
         end
@@ -91,6 +94,7 @@ describe Reference, slow:true do
           end
           it 'should at least find Bert, even when the diacritic is used in the search term' do
             reference = reference_factory(:author_name => 'Hölldobler')
+            Sunspot.commit
             expect(Reference.perform_search(:fulltext => 'Hölldobler')).to eq([reference])
           end
         end
@@ -99,10 +103,12 @@ describe Reference, slow:true do
           it "should find a cite code that's doesn't look like a current year" do
             matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'abcdef')
             unmatching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => 'fedcba')
+            Sunspot.commit
             expect(Reference.perform_search(:fulltext => 'abcdef')).to eq([matching_reference])
           end
           it "should find a cite code that looks like a year, but not a current year" do
             matching_reference = reference_factory(:author_name => 'Hölldobler', :cite_code => '1600')
+            Sunspot.commit
             expect(Reference.perform_search(:fulltext => '1600')).to eq([matching_reference])
           end
         end
@@ -112,6 +118,7 @@ describe Reference, slow:true do
             journal = FactoryGirl.create :journal, :name => 'Journal'
             matching_reference = reference_factory(:author_name => 'Hölldobler', :journal => journal)
             unmatching_reference = reference_factory(:author_name => 'Hölldobler')
+            Sunspot.commit
             expect(Reference.perform_search(:fulltext => 'journal')).to eq([matching_reference])
           end
         end
@@ -121,6 +128,7 @@ describe Reference, slow:true do
             publisher = FactoryGirl.create :publisher, :name => 'Publisher'
             matching_reference = reference_factory(:author_name => 'Hölldobler', :publisher => publisher)
             unmatching_reference = reference_factory(:author_name => 'Hölldobler')
+            Sunspot.commit
             expect(Reference.perform_search(:fulltext => 'Publisher')).to eq([matching_reference])
           end
         end
@@ -129,6 +137,7 @@ describe Reference, slow:true do
           it 'should find something in citation' do
             matching_reference = reference_factory(:author_name => 'Hölldobler', :citation => 'Citation')
             unmatching_reference = reference_factory(:author_name => 'Hölldobler')
+            Sunspot.commit
             expect(Reference.perform_search(:fulltext => 'Citation')).to eq([matching_reference])
           end
         end
@@ -140,6 +149,7 @@ describe Reference, slow:true do
             reference_factory(:author_name => 'Bolton', :citation_year => '1996')
             reference_factory(:author_name => 'Bolton', :citation_year => '1997')
             reference_factory(:author_name => 'Bolton', :citation_year => '1998')
+            Sunspot.commit
           end
           it "should return an empty array if nothing is found for year" do
             expect(Reference.perform_search(:fulltext => '', :start_year => 1992, :end_year => 1993)).to be_empty
@@ -149,6 +159,7 @@ describe Reference, slow:true do
           end
           it "should find references in the year of the end range, even if they have extra characters" do
             reference_factory(:author_name => 'Bolton', :citation_year => '2004.')
+            Sunspot.commit
             expect(Reference.perform_search(:fulltext => '', :start_year => '2004').map(&:year)).to match_array([2004])
           end
         end
@@ -158,6 +169,7 @@ describe Reference, slow:true do
             atta2004 = FactoryGirl.create :book_reference, :title => 'Atta', :citation_year => '2004'
             atta2003 = FactoryGirl.create :book_reference, :title => 'Atta', :citation_year => '2003'
             formica2004 = FactoryGirl.create :book_reference, :title => 'Formica', :citation_year => '2003'
+            Sunspot.commit
             expect(Reference.perform_search(:fulltext => 'atta', :start_year => 2004)).to eq([atta2004])
           end
         end
@@ -216,27 +228,30 @@ describe Reference, slow:true do
 
     end
 
-    describe "Filtering" do
+    describe "Filtering", search: true do
       it "should apply the :unknown_references_only filter that's passed" do
         known = FactoryGirl.create :article_reference
         unknown = FactoryGirl.create :unknown_reference
+        Sunspot.commit
         expect(Reference.perform_search(:fulltext => '', :filter => :unknown_references_only)).to eq([unknown])
       end
       it "should apply the :no_missing_references filter that's passed" do
         expect(MissingReference.count).to be > 0
         reference = FactoryGirl.create :article_reference
+        Sunspot.commit
         expect(Reference.perform_search(:fulltext => '', :filter => :no_missing_references)).to eq([reference])
       end
       it "should apply the :nested_references_only filter that's passed" do
         nested = FactoryGirl.create :nested_reference
         unnested = FactoryGirl.create :unknown_reference
+        Sunspot.commit
         expect(Reference.perform_search(:fulltext => '', :filter => :nested_references_only)).to eq([nested])
       end
     end
 
   end
 
-  describe "Searching with Solr" do
+  describe "Searching with Solr", search: true do
     it "should return an empty array if nothing is found for author_name" do
       FactoryGirl.create :reference
       expect(Reference.search {keywords 'foo'}.results).to be_empty
@@ -245,6 +260,7 @@ describe Reference, slow:true do
     it "should find the reference for a given author_name if it exists" do
       reference = reference_factory(:author_name => 'Ward')
       reference_factory(:author_name => 'Fisher')
+      Sunspot.commit
       expect(Reference.search {keywords 'Ward'}.results).to eq([reference])
     end
 
@@ -253,6 +269,7 @@ describe Reference, slow:true do
       reference_factory(:author_name => 'Bolton', :citation_year => '1995')
       reference_factory(:author_name => 'Fisher', :citation_year => '2011')
       reference_factory(:author_name => 'Fisher', :citation_year => '1996')
+      #Sunspot.commit
       expect(Reference.search {
         with(:year).between(2012..2013)
         keywords 'Fisher'
@@ -264,15 +281,17 @@ describe Reference, slow:true do
       reference_factory(:author_name => 'Bolton', :citation_year => '1995')
       reference_factory(:author_name => 'Fisher', :citation_year => '2011')
       reference = reference_factory(:author_name => 'Fisher', :citation_year => '1996')
+      Sunspot.commit
       expect(Reference.search {
         with(:year).between(1996..1996)
         keywords 'Fisher'
       }.results).to eq([reference])
     end
 
-    it "should search citation year" do
+    it"should search citation year" do
       with_letter = reference_factory(:author_name => 'Bolton', :citation_year => '2010b')
       reference_factory(:author_name => 'Bolton', :citation_year => '2010')
+      Sunspot.commit
       expect(Reference.search {
         keywords '2010b'
       }.results).to eq([with_letter])

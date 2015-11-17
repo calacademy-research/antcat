@@ -17,5 +17,3 @@ end
 After('@preview') do
   $Milieu = RestrictedMilieu.new
 end
-
-After {Sunspot.remove_all!}
