@@ -26,6 +26,11 @@ if ENV['DRIVER'] == 'webkit'
     Capybara.javascript_driver = :webkit
 end
 
+
+Capybara::Webkit.configure do |config|
+  config.block_unknown_urls
+end
+
 Capybara.default_selector = :css
 
 Capybara.save_and_open_page_path = './tmp/capybara'
