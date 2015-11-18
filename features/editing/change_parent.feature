@@ -208,6 +208,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I click the parent name field
     And I set the parent name to "Eciton nigra"
     And I press "OK"
+    When I press "Yes, create new combination"
     When I save my changes
     Then I should be on the catalog page for "Eciton nigra minor"
     And the name in the header should be "Eciton nigra minor"
@@ -233,6 +234,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I click the parent name field
     And I set the parent name to "Crematogaster menilekii"
     And I press "OK"
+    When I press "Yes, update parent record only"
     When I save my changes
     Then I should be on the catalog page for "Crematogaster menilekii proserpina"
 
