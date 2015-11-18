@@ -1,4 +1,4 @@
-@dor
+@dormant
 Feature: Sending feedback
 
   @javascript
