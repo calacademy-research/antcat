@@ -243,7 +243,7 @@ Feature: Editing a taxon
     Then I should be on the catalog page for "Atta major"
     And I should see "Malagasy"
     When I press "Edit"
-    Then I should see "Malagasy"
+    Then I should see "Malagasy" selected in "taxon_biogeographic_region"
 
   Scenario: Don't see biogeographic region field for genus-group name
     Given a species exists with a name of "major" and a genus of "Atta"
