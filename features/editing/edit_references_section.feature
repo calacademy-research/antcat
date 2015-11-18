@@ -17,6 +17,7 @@ Feature: Editing references sections
     When I click the reference section
     And I fill in the references field with "(none)"
     And I save the reference section
+    And I wait for a while
     Then I should not see "Original reference"
     And the reference section should be "(none)"
 

@@ -18,6 +18,7 @@ Feature: Editing a history item
     And I edit the history item to "(none)"
     And I save the history item
     Then I should not see "Taxonomic history"
+    And I wait for a while
     Then the history should be "(none)"
     When I click the history item
     Then the history item field should be "(none)"

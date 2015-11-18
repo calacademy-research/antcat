@@ -56,5 +56,6 @@ Feature: Using the default reference
     When I go to the reference field test page
     And I click the reference field
     And I press "Ward, 2010"
+    And I wait for a while
     And I press "Cancel"
     Then the authorship field should contain "(none)"
