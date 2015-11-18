@@ -44,26 +44,31 @@ describe Bolton::Reference do
   describe 'Searching', search: true do
     it 'should simply return all records if there are no search terms' do
       reference = FactoryGirl.create :bolton_reference, :original => 'foo'
+      Sunspot.commit
       expect(Bolton::Reference.do_search).to eq([reference])
     end
 
     it 'should find one term' do
       reference = FactoryGirl.create :bolton_reference, :original => 'foo'
+      Sunspot.commit
       expect(Bolton::Reference.do_search(:q => 'foo')).to eq([reference])
     end
 
     it 'should find not find one term' do
       reference = FactoryGirl.create :bolton_reference, :original => 'foo'
+      Sunspot.commit
       expect(Bolton::Reference.do_search(:q => 'bar')).to be_empty
     end
 
     it 'should handle leading/trailing space' do
       reference = FactoryGirl.create :bolton_reference, :original => 'foo'
+      Sunspot.commit
       expect(Bolton::Reference.do_search(:q => ' foo ')).to eq([reference])
     end
 
     it 'should handle multiple terms' do
       reference = FactoryGirl.create :bolton_reference, :original => 'Bolton 1970'
+      Sunspot.commit
       expect(Bolton::Reference.do_search(:q => '1970 Bolton')).to eq([reference])
       expect(Bolton::Reference.do_search(:q => 'Bolton')).to eq([reference])
       expect(Bolton::Reference.do_search(:q => '1970')).to eq([reference])
