@@ -35,7 +35,7 @@
     = hidden_field_tag 'collision_resolution', @collision_resolution
     = hidden_field_tag 'reset_epithet', @reset_epithet
     = hidden_field_tag 'previous_combination_id', @previous_combination ? @previous_combination.id : nil
-    = hidden_field_tag 'is_superadmin', @user.is_superadmin?
+    = hidden_field_tag 'is_superadmin', @user.try(:is_superadmin?)
 
     = render 'shared/errors_for', resource: @taxon
 
