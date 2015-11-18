@@ -1,7 +1,6 @@
 .ackrc
 .idea
 /config/secrets.yml
-/app/assets/images/favicon.ico
 /data/output
 import_db
 mysql-connector-java*
