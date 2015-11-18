@@ -12,9 +12,9 @@ class Change < ActiveRecord::Base
   def self.creations
     self.joins('JOIN taxon_states on taxon_states.taxon_id = changes.user_changed_taxon_id').
         order('CASE review_state ' +
-                  'WHEN "waiting" THEN changes.created_at * 1000 ' +
+                  'WHEN "waiting" THEN (changes.updated_at * 1000) ' +
                   'WHEN "approved" THEN changes.approved_at ' +
-                  'END DESC').uniq
+                  'END DESC, changes.id DESC').uniq
   end
 
   def get_user_versions change_id

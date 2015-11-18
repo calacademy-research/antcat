@@ -17,7 +17,6 @@ describe Change do
     change.reload
     FactoryGirl.create :version, item_id: genus.id, change_id: change.id
 
-
     genus_version = genus.last_version
 
     expect(change.versions.first).to eq(genus_version)
@@ -73,22 +72,26 @@ describe Change do
     end
 
     it "should return creations with unapproved first, then approved in reverse chronological order" do
-      pending ("Not updated for new paper trail strategy")
+      item = create_genus
+      item.taxon_state.update_attributes review_state: 'waiting'
+      unapproved_change = setup_version item.id
+      
+      item = create_genus
+      item.taxon_state.update_attributes review_state: 'approved'
+      approved_earlier_change = setup_version item.id
+      approved_earlier_change.update_attributes(approved_at: Date.today - 7)
 
-      item = create_genus review_state: 'waiting'
-      unapproved_version = FactoryGirl.create :version, event: 'create', item_id: item.id
-      item = create_genus review_state: 'approved'
-      approved_earlier_version = FactoryGirl.create :version, event: 'create', item_id: item.id
-      item = create_genus review_state: 'approved'
-      approved_later_version = FactoryGirl.create :version, event: 'create', item_id: item.id
+      item = create_genus
+      item.taxon_state.update_attributes review_state: 'approved'
+      approved_later_change = setup_version item.id
+      approved_later_change.update_attributes(approved_at: Date.today + 7)
 
-      unapproved = Change.create approved_at: nil, paper_trail_version: unapproved_version
-      approved_earlier = Change.create approved_at: Date.today - 7, paper_trail_version: approved_earlier_version
-      approved_later = Change.create approved_at: Date.today + 7, paper_trail_version: approved_later_version
-
-      expect(Change.creations.map(&:id)).to eq([unapproved.id, approved_later.id, approved_earlier.id])
+      expect(Change.creations.map(&:id)).to eq([
+        unapproved_change.id,
+        approved_later_change.id,
+        approved_earlier_change.id
+      ])
     end
   end
-
 
 end
