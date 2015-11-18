@@ -114,3 +114,7 @@ end
 Given /that URL "([^"]*)" exists/ do |link|
   stub_request :any, link
 end
+
+And 'I screenshot' do
+  screenshot_and_save_page
+end
