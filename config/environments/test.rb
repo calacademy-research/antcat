@@ -38,6 +38,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.log_level = :info
+  config.active_support.test_order = :sorted
   
   config.action_mailer.smtp_settings = {
       address:              'smtp.gmail.com',
