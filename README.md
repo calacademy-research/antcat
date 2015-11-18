@@ -1,18 +1,20 @@
 #AntCat
 ##California Academy of Sciences
 Ant taxonomy database -- http://antcat.org/
-                                                    |   /
-                                                     \  |
-                                                      \_|
-                      _    _____      _          __  /` ;
-          /\         | |  / ____|    | |       `'  \ `\_/ _
-         /  \   _ __ | |_| |     __ _| |_           '-/ \/ '._
-        / /\ \ | '_ \| __| |    / _` | __|       /'-./| |.--. `
-       / ____ \| | | | |_| |___| (_| | |_      _/  _.-\/--.  |
-      /_/    \_\_| |_|\__|\_____\__,_|\__|    `   |   /`-. \ '-.
-                                                  |   |   | \
-                                                 /    |   /  `-.
-                                               -'     \__/
+
+                                                      |   /
+                                                       \  |
+                                                        \_|
+                        _    _____      _          __  /` ;
+            /\         | |  / ____|    | |       `'  \ `\_/ _
+           /  \   _ __ | |_| |     __ _| |_           '-/ \/ '._
+          / /\ \ | '_ \| __| |    / _` | __|       /'-./| |.--. `
+         / ____ \| | | | |_| |___| (_| | |_      _/  _.-\/--.  |
+        /_/    \_\_| |_|\__|\_____\__,_|\__|    `   |   /`-. \ '-.
+                                                    |   |   | \
+                                                   /    |   /  `-.
+                                                 -'     \__/
+                                                 
 ##Installation (work in progress)
 ```bash
 git clone https://github.com/calacademy/antcat.git
@@ -60,7 +62,7 @@ librarian-chef install # possibly redundant
 Running `vagrant up` will ask for your sudo password (for the `synced_folder`). To disable the prompt (and synced folder), uncomment this line: `config.vm.synced_folder '.', '/vagrant', nfs: true` in the [Vagrantfile](Vagrantfile).
 
 Install/run Vagrant box. This can take a while.
-Make sure you have edited (database.yml)[config/database.yml] before this step (and uncomment socket)
+Make sure you have edited `config/database.yml` before this step (and uncomment socket)
 ```bash
 MYSQL_PASSWORD=secret123 vagrant up # downloads the 'precise64' box on the first run
 # MYSQL_PASSWORD defaults to 'lasius' if not set
@@ -82,7 +84,7 @@ bundle exec rake db:test:prepare
 ##Usage
 Start Vagrant
 ```bash
-vagrant up # if not running
+vagrant up # if not already running
 vagrant ssh
 ```
 
