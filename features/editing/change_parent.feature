@@ -18,6 +18,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I set the parent name to "Eciton"
     And I press "OK"
     And I should see "Would you like to create a new combination under this parent?"
+    When I press "Yes, create new combination"
     When I save my changes
     Then I should be on the catalog page for "Eciton major"
     And the name in the header should be "Eciton major"
@@ -168,6 +169,8 @@ Feature: Changing parent genus, species, tribe or subfamily
     When I press "Yes, create new combination"
     When I save my changes
 
+    And I wait for a bit
+
     # Change parent from B -> C
     When I go to the edit page for "Becton major"
     And I click the parent name field
@@ -193,8 +196,9 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I click the parent name field
     And I set the parent name to "Eciton"
     And I press "OK"
-    When I save my changes
-    And I should see "This name is in use by another taxon"
+    And I should see "This new combination looks a lot like existing combinations"
+    #When I save my changes
+    #And I should see "This name is in use by another taxon"
 
   Scenario: Changing a subspecies's species
     Given there is a species "Atta major" with genus "Atta"
