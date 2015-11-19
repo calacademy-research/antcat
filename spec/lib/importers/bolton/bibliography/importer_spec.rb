@@ -409,14 +409,14 @@ France </i><b style='mso-bidi-font-weight:normal'>1918</b>: 182-185.
       bolton_key = new_bolton_reference.key
       expect(@importer.get_new_references).to eq([new_bolton_reference])
     end
-    it "should not return a new reference in Bolton that is already in AntCat" do
+    it "should not return a new reference in Bolton that is already in AntCat", pending: true do
       pending("importers no longer used, kept for reference, currently failing")
       new_bolton_reference = FactoryGirl.create :bolton_reference, import_result: 'added'
       bolton_key = new_bolton_reference.key
       antcat_reference = FactoryGirl.create :book_reference, bolton_key_cache: bolton_key
       expect(@importer.get_new_references).to eq([new_bolton_reference])
     end
-    it "should not return a reference that's not new" do
+    it "should not return a reference that's not new", pending: true do
       pending("importers no longer used, kept for reference, currently failing")
       old_bolton_reference = FactoryGirl.create :bolton_reference, import_result: nil
       bolton_key = old_bolton_reference.key

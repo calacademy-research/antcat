@@ -254,7 +254,7 @@ describe AuthorName do
       end
     end
     describe "when the correct name does exist" do
-      it "should add the correct name, delete the old name, and update its references" do
+      it "should add the correct name, delete the old name, and update its references", pending: true do
         pending "Known to fail; testing code that isn't invoked from the app"
         Author.delete_all
         FactoryGirl.create :author_name, :name => 'Ward, P. S.'

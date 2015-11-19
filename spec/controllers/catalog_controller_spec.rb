@@ -4,7 +4,7 @@ describe CatalogController do
 
   describe "Handling invalid UTF-8 (which we seem to get a lot)" do
 
-    it "should ask the milieu" do
+    it "should ask the milieu", pending: true do
       pending("Rails 4 upgrade - test failing, underlying behaviour ok")
       # This test makes no sense at all.
       @current_user = double

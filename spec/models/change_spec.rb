@@ -22,7 +22,7 @@ describe Change do
     expect(change.versions.first).to eq(genus_version)
   end
 
-  it "has a user (the editor)" do
+  it "has a user (the editor)", pending: true do
     pending "Not implemented change::user"
 
     user = FactoryGirl.create :user
@@ -35,7 +35,7 @@ describe Change do
     expect(change.user).to eq(user)
   end
 
-  it "should be able to be reified after being created" do
+  it "should be able to be reified after being created", pending: true do
     pending "Not implemented change::user"
 
     genus = create_genus
@@ -53,7 +53,7 @@ describe Change do
     expect(taxon.class).to eq(Genus)
   end
 
-  it "has a taxon" do
+  it "has a taxon", pending: true do
     pending ("Not updated for new paper trail strategy")
 
     taxon = create_genus

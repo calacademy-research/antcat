@@ -48,7 +48,7 @@ describe Tribe do
   end
 
   describe "Importing" do
-    it "should work" do
+    it "should work", pending: true do
       pending("importers no longer used, kept for reference, currently failing")
       reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Emery 1913a'
       tribe = Tribe.import(
@@ -83,7 +83,7 @@ describe Tribe do
   end
 
   describe "Updating" do
-    it "should record a change in parent taxon" do
+    it "should record a change in parent taxon", pending: true do
       pending("importers no longer used, kept for reference, currently failing")
       dolichoderinae = create_subfamily 'Dolichoderinae'
       fisher_reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Fisher')], bolton_key_cache: 'Fisher 2004'

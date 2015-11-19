@@ -4,7 +4,7 @@ require 'spec_helper'
 describe DuplicatesController do
   describe "find a duplicate case" do
 
-    it "Should find a secondary_junior_homonym match for same name" do
+    it "Should find a secondary_junior_homonym match for same name", pending: true do
       pending ("Known to be broken - update to reflect current duplicates controller functinality")
 
       @user = FactoryGirl.create :user
@@ -22,7 +22,7 @@ describe DuplicatesController do
       expect(taxa[0]['species']['duplicate_type']).to eq 'secondary_junior_homonym'
     end
 
-    it "Should find a return_to_original match for same protonym" do
+    it "Should find a return_to_original match for same protonym", pending: true do
       pending ("Known to be broken - update to reflect current duplicates controller functinality")
 
       @user = FactoryGirl.create :user
@@ -42,7 +42,7 @@ describe DuplicatesController do
       #expect(response.body).to include ("Asset id 999 not found")
     end
 
-    it "Should find no matches for same protonym distinct epithet" do
+    it "Should find no matches for same protonym distinct epithet", pending: true do
       pending ("Known to be broken - update to reflect current duplicates controller functinality")
 
       @user = FactoryGirl.create :user
