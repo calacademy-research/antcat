@@ -17,7 +17,7 @@ Ant taxonomy database -- http://antcat.org/
                                                  -'     \__/
                                                  
 ##Installation
-See [INSTALLATION.md](INSTALLATION.md)
+See [INSTALL.md](INSTALL.md)
 
 ##Contributing
 Contributions welcome!
