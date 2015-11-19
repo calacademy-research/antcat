@@ -1,15 +1,18 @@
 # coding: UTF-8
 
+ENV["RAILS_ENV"] ||= "test"
+require_relative '../../config/environment'
+
 require 'factory_girl'
+
+require 'cucumber/rails'
 require 'cucumber/formatter/progress'
 require 'cucumber/rspec/doubles'
 require 'cucumber/api_steps'
 
-ENV["RAILS_ENV"] ||= "test"
-require_relative '../../config/environment'
+require 'capybara-screenshot/cucumber'
+require 'webmock/cucumber'
 require 'sunspot_test/cucumber'
-
-require 'cucumber/rails'
 
 if ENV['HEADLESS'] == 'true'
   require 'headless'
@@ -26,26 +29,22 @@ if ENV['DRIVER'] == 'webkit'
     Capybara.javascript_driver = :webkit
 end
 
-
 Capybara::Webkit.configure do |config|
   config.block_unknown_urls
 end
 
+Capybara.default_max_wait_time = 5
 Capybara.default_selector = :css
-
 Capybara.save_and_open_page_path = './tmp/capybara'
-require 'capybara-screenshot/cucumber'
 Capybara::Screenshot.prune_strategy = :keep_last_run
 
 ActionController::Base.allow_rescue = false
 
 DatabaseCleaner.strategy = :transaction
 
-Capybara.default_max_wait_time = 5
-
-require 'webmock/cucumber'
 WebMock.disable_net_connect! allow_localhost: true
 WebMock.stub_request :put, 'https://antcat.s3.amazonaws.com/1/21105.pdf'
+
 Capybara.app = Rack::ShowExceptions.new(AntCat::Application)
 
 include Warden::Test::Helpers
