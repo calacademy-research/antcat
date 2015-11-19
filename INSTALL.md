@@ -9,12 +9,9 @@ cp config/secrets.yml.example config/secrets.yml #TODO this file does not exist 
 
 ###Install dependencies
 ####Vagrant / Librarian-Chef (semi-automatic)
-```bash
-sudo apt-get install dpkg-dev virtualbox-dkms
-```
-
 Copy the link to the latest Vagrant package from http://www.vagrantup.com/downloads.html
 ```bash
+sudo apt-get install dpkg-dev virtualbox-dkms # VirtualBox
 #replace vagrant_1.7.4_x86_64.deb with the latest vagrant package
 wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.4_x86_64.deb
 sudo dpkg -i vagrant_1.7.4_x86_64.deb
@@ -23,7 +20,7 @@ sudo apt-get install linux-headers-$(uname -r)
 sudo dpkg-reconfigure virtualbox-dkms
 ```
 
-Optional, but highly recommended; this makes vagrant cache apt, gems and more
+Optional, but recommended; this makes vagrant cache apt, gems and more
 ```bash
 vagrant plugin install vagrant-cachier
 ```
@@ -54,9 +51,8 @@ MYSQL_PASSWORD=secret123 vagrant up # downloads the 'precise64' box on the first
 ####Manual installation
 First install RVM, Apache Solr, MySQL, curl, NodeJs (use Google).
 
-Install gems
 ```bash
-bundle install
+bundle install # install gems
 ```
 ###Database
 ```bash
@@ -64,22 +60,25 @@ bundle exec rake db:create && rake db:schema:load
 bundle exec rake db:test:prepare
 ```
 
+####Sample data
+```bash
+bundle exec rake antcat:import_sample_data # imports sample data
+```
+
 ##Usage
-Start Vagrant
 ```bash
-vagrant up # if not already running
+bundle exec rake sunspot:solr:start RAILS_ENV=development # start Solr
+bundle exec rails server # start the app
+```
+
+Visit http://localhost:3000/
+
+###Vagrant
+```bash
+vagrant up # boot Vagrant box if not already running
 vagrant ssh
+bundle exec rake sunspot:solr:start RAILS_ENV=development # start Solr
+bundle exec rails server -b 0.0.0.0 # start the app
 ```
 
-Start Solr
-```bash
-bundle exec rake sunspot:solr:start RAILS_ENV=development
-```
-
-Start the app
-```bash
-bundle exec rails server -b 0.0.0.0    # if Vagrant
-bundle exec rails server               # without Vagrant
-```
-
-Visit http://192.168.50.50:3000/ (Vagrant) or http://localhost:3000/ (without Vagrant)
+Visit http://192.168.50.50:3000/
