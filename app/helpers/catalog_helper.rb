@@ -67,17 +67,12 @@ module CatalogHelper
   end
 
   def snake_taxon_columns items
-    column_count = items.count / 26.0
+    column_count = case items.count
+                   when 0..27 then 1
+                   when 27..52 then 2
+                   else 3 end
     css_class = 'taxon_item'
-    if column_count < 1
-      column_count = 1
-    else
-      column_count = column_count.ceil
-    end
-    if column_count >= 3
-      column_count = 3
-      css_class << ' teensy'
-    end
+    css_class << ' teensy' if column_count == 3
     [snake(items, column_count), css_class]
   end
 
