@@ -9,18 +9,18 @@
       %span.undo_button= undo_button taxon, change
       %span.approve_button= approve_button taxon, change
       %span.time.right= format_time_ago change.created_at
-      %span.clear
+      %div.clear
 
     - if change.approver
       %div.change_status
-        %div.approver.left= format_approver_name change.approver
-        %div.approval_time.right= format_time_ago change.approved_at
+        %span.approver.left= format_approver_name change.approver
+        %span.approval_time.right= format_time_ago change.approved_at
         %div.clear
   - else
     %div.change_description
-      %div.name.left= format_adder_name change.change_type, change.changed_by
-      %div.taxon.left=format_taxon_name taxon.name
-      %div.undo_button.left= undo_button taxon, change
-      %div.approve_button.left= approve_button taxon, change
+      %span.name.left= format_adder_name change.change_type, change.changed_by
+      %span.taxon.left=format_taxon_name taxon.name
+      %span.undo_button.left= undo_button taxon, change
+      %span.approve_button.left= approve_button taxon, change
       %div.clear
 

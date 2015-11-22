@@ -67,6 +67,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :shell, name: "profile", privileged: false, inline: %[
     echo "export HEADLESS=true" >> /home/vagrant/.profile
+    echo "export VAGRANT=true" >> /home/vagrant/.profile
     echo "cd /vagrant" >> /home/vagrant/.bashrc
   ]
 

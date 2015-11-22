@@ -246,7 +246,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I click the parent name field
     And I set the parent name to "Ecitoni"
     And I press "OK"
-    And I wait for a while
+    And I wait for a bit
     When I save my changes
     Then I should be on the catalog page for "Atta"
     When I follow "show tribes"

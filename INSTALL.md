@@ -1,4 +1,5 @@
-##Installation (work in progress)
+##Installation (Linux, work in progress)
+
 ```bash
 git clone https://github.com/calacademy/antcat.git
 cd antcat
@@ -8,6 +9,12 @@ cp config/secrets.yml.example config/secrets.yml #TODO this file does not exist 
 ```
 
 ###Install dependencies
+##Basic deps
+```bash
+sudo apt-get install git
+sudo apt-get install ruby
+```
+
 ####Vagrant / Librarian-Chef (semi-automatic)
 Copy the link to the latest Vagrant package from http://www.vagrantup.com/downloads.html
 ```bash
@@ -16,8 +23,10 @@ sudo apt-get install dpkg-dev virtualbox-dkms # VirtualBox
 wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.4_x86_64.deb
 sudo dpkg -i vagrant_1.7.4_x86_64.deb
 
-sudo apt-get install linux-headers-$(uname -r)
-sudo dpkg-reconfigure virtualbox-dkms
+sudo apt-get install linux-headers-$(uname -r) # try this if vagrant up fails
+sudo dpkg-reconfigure virtualbox-dkms  # try this if vagrant up fails
+
+sudo apt-get install nfs-kernel-server nfs-common # for network syncing
 ```
 
 Optional, but recommended; this makes vagrant cache apt, gems and more
