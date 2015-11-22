@@ -93,7 +93,7 @@ AntCat::Application.routes.draw do
   match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test', via: :get
 
   devise_for :users
-  resources :users
+  resources :users, only: [:index]
 
   namespace :api, defaults: {format: :json} do
     resources :taxa
