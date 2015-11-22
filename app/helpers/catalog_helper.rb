@@ -1,5 +1,4 @@
 # coding: UTF-8
-require 'snake'
 
 module CatalogHelper
   def status_labels
@@ -11,8 +10,8 @@ module CatalogHelper
   end
 
   def make_catalog_search_results_columns items
-    column_count = 5
-    items.snake column_count
+    column_count = 4
+    snake items, column_count
   end
 
   def index_column_link rank, taxon, selected_taxon, parent_taxon, parameters = {}
@@ -79,7 +78,10 @@ module CatalogHelper
       column_count = 3
       css_class << ' teensy'
     end
-    return items.snake(column_count), css_class
+    [snake(items, column_count), css_class]
   end
 
+  def snake array, column_count
+    array.in_groups(column_count).transpose
+  end
 end
