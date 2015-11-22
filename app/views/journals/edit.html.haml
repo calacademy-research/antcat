@@ -1,7 +1,7 @@
-- @title = 'Edit Journal'
+-@title = 'Edit Journal'
 
-= render 'form', :journal => @journal
+=render 'form', :journal => @journal
 
 %h4 References using this journal
-- Reference.sorted_by_principal_author_last_name.where(journal_id: @journal.id).each do |reference|
-  %p.reference_list= "#{Formatters::ReferenceFormatter.format(reference)} #{reference.id}"
+-Reference.sorted_by_principal_author_last_name.where(journal_id: @journal.id).each do |reference|
+  %p.reference_list= Formatters::ReferenceFormatter.format(reference) + " #{reference.id}"
