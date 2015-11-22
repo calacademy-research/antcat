@@ -18,9 +18,9 @@
         %div.clear
   - else
     %div.change_description
-      %span.name.left= format_adder_name change.change_type, change.changed_by
-      %span.taxon.left=format_taxon_name taxon.name
-      %span.undo_button.left= undo_button taxon, change
+      %span.name= format_adder_name change.change_type, change.changed_by
+      %span.taxon=format_taxon_name taxon.name
+      %span.undo_button= undo_button taxon, change
       %span.approve_button.left= approve_button taxon, change
       %div.clear
 
