@@ -1,9 +1,10 @@
 # coding: UTF-8
 class ChangesController < ApplicationController
+  before_filter :authenticate_editor#, except: [:index, :show]
   include UndoTracker
+
   def index
     @changes = Change.creations.paginate page: params[:page], per_page: 8
-
 
     respond_to do |format|
       format.atom { render(nothing: true) }

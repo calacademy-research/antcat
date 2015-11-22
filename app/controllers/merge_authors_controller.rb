@@ -1,6 +1,6 @@
 # coding: UTF-8
 class MergeAuthorsController < ApplicationController
-  before_filter :authenticate_user!, only: :merge
+  before_filter :authenticate_user!, except: [:index, :create_panels, :add_blank_panel_if_necessary]
   skip_before_filter :authenticate_user!, :if => :preview?
 
   def index

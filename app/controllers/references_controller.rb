@@ -1,8 +1,7 @@
 # coding: UTF-8
 class ReferencesController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :download]
-  skip_before_filter :authenticate_user!, if: :preview?
-
+  before_filter :authenticate_editor, except: [:index, :download]
+  skip_before_filter :authenticate_editor, if: :preview?
 
   def index
     searching = params[:q].present?
