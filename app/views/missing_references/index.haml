@@ -9,7 +9,7 @@
 #missing_references
   - for missing_reference in @missing_references
     .missing_reference
-      %span= missing_reference.citation
+      %span= Formatters::ReferenceFormatter.make_html_safe(missing_reference.citation)
       - if user_can_edit?
         - surrogate_missing_reference = MissingReference.find_by_citation missing_reference.citation
         = link_to 'replace', edit_missing_reference_path(surrogate_missing_reference), class: 'replace_link'
