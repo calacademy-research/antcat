@@ -57,7 +57,7 @@ module NavigationHelpers
     when /^the Bolton references page$/
       bolton_references_path
 
-    when /^the "Edit journals" page$/
+    when /^the "journals index" page$/
       journals_path
 
     when /^the Merge Authors page$/
