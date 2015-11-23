@@ -1,0 +1,11 @@
+-@title = @journal.name
+
+=link_to "Edit", edit_journal_path(@journal) if user_can_edit?
+=link_to 'Back', journals_path
+
+%h4="References using this journal (id #{@journal.id})"
+-@references.each do |reference|
+  %p.reference_list
+    = Formatters::ReferenceFormatter.format(reference) + " #{reference.id}"
+-if @references.empty?
+  %p None

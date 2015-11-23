@@ -1,24 +1,32 @@
 # coding: UTF-8
 class JournalsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index]
-  before_filter :find_journal, only: [:edit, :update]
+  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :set_journal, only: [:show, :edit, :update]
 
   def index
+    @journals = Journal.order(:name)
     respond_to do |format|
-      format.html {@journals = Journal.list}
-      format.json {render json: Journal.search(params[:term]).to_json}
+      format.html
+      format.json { render json: Journal.search(params[:term]) } # json search in #index
     end
+  end
+
+  def show
+    @references = Reference.sorted_by_principal_author_last_name.where(journal: @journal)
   end
 
   def new
     @journal = Journal.new
   end
 
+  def edit
+  end
+
   def create
     @journal = Journal.new(params[:journal])
     if @journal.save
       flash[:notice] = "Successfully created journal."
-      render :edit
+      redirect_to @journal
     else
       render :new
     end
@@ -27,13 +35,14 @@ class JournalsController < ApplicationController
   def update
     if @journal.update_attributes(params[:journal])
       flash[:notice] = "Successfully updated journal."
+      redirect_to @journal
+    else
+      render :edit
     end
-    render :edit, journal: @journal
   end
 
   private
-  def find_journal
-    @journal = Journal.find(params[:id])
-  end
-
+    def set_journal
+      @journal = Journal.find(params[:id])
+    end
 end

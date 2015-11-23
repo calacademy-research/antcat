@@ -1,10 +1,7 @@
-= form_for journal do |f|
-  = render 'shared/errors_for', :resource => journal
+=form_for @journal do |f|
+  =render 'shared/errors_for', :resource => @journal
   %p
-    = f.label :name, 'Journal name'
+    =f.label :name, 'Journal name'
     %br
-    = f.text_field :name
-    = f.submit previewize 'Save'
-  %p
-  %p
-    %br
+    =f.text_field :name
+    =f.submit previewize 'Save'
