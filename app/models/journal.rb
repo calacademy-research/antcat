@@ -1,10 +1,10 @@
 # coding: UTF-8
 class Journal < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
   include UndoTracker
+  
   validates_presence_of :name
   has_paper_trail meta: {change_id: :get_current_change_id}
-  
-  attr_accessible :name
 
   def self.import name
     return unless name.present?
@@ -25,5 +25,4 @@ class Journal < ActiveRecord::Base
         order('COUNT(*) DESC').
         map(&:name)
   end
-
 end

@@ -23,7 +23,7 @@ class JournalsController < ApplicationController
   end
 
   def create
-    @journal = Journal.new(params[:journal])
+    @journal = Journal.new journal_params
     if @journal.save
       flash[:notice] = "Successfully created journal."
       redirect_to @journal
@@ -33,7 +33,7 @@ class JournalsController < ApplicationController
   end
 
   def update
-    if @journal.update_attributes(params[:journal])
+    if @journal.update journal_params
       flash[:notice] = "Successfully updated journal."
       redirect_to @journal
     else
@@ -44,5 +44,9 @@ class JournalsController < ApplicationController
   private
     def set_journal
       @journal = Journal.find(params[:id])
+    end
+    
+    def journal_params
+      params.require(:journal).permit(:name)
     end
 end
