@@ -5,9 +5,11 @@ module Formatters::Formatter
   include ActionView::Helpers::DateHelper
   include ERB::Util
 
-  def pluralize_with_delimiters count, word, plural = nil
-    if count != 1
-      word = plural ? plural : word.pluralize
+  def pluralize_with_delimiters count, singular, plural = nil
+    word = if count == 1
+      singular
+    else
+      plural || singular.pluralize
     end
     "#{number_with_delimiter(count)} #{word}"
   end
@@ -19,17 +21,10 @@ module Formatters::Formatter
   end
 
   def conjuncted_list items, css_class
-    items = items.flatten.uniq.map{|item| %{<span class="#{css_class}">}.html_safe + item + %{</span>}.html_safe}.sort
-    case
-    when items.count == 0
-      ''
-    when items.count == 1
-      items.first
-    when items.count == 2
-      items.first + ' and ' + items.second
-    else
-      items[0..-2].join(', ') + ' and ' + items.last
-    end.html_safe
+    items = items.flatten.uniq.map do |item|
+      %{<span class="#{css_class}">}.html_safe + item + %{</span>}.html_safe
+    end.sort
+    items.to_sentence(last_word_connector: " and ").html_safe
   end
 
   def add_period_if_necessary string

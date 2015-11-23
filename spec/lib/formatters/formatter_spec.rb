@@ -10,12 +10,6 @@ describe Formatters::Formatter do
     @formatter = FormattersFormatterTestClass.new
   end
 
- describe "Pluralizing with commas" do
-    it "should handle a single item" do
-      expect(@formatter.pluralize_with_delimiters(1, 'bear')).to eq('1 bear')
-    end
-  end
-
   describe "Formatting a count with a noun" do
     it "should work" do
       expect(@formatter.count_and_noun(['1'], 'reference')).to eq('1 reference')
@@ -40,6 +34,9 @@ describe Formatters::Formatter do
   end
 
   describe "Pluralizing, with commas" do
+    it "should handle a single item" do
+      expect(@formatter.pluralize_with_delimiters(1, 'bear')).to eq('1 bear')
+    end
     it "should pluralize" do
       expect(@formatter.pluralize_with_delimiters(2, 'bear')).to eq('2 bears')
     end
