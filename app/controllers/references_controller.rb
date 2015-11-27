@@ -4,7 +4,6 @@ class ReferencesController < ApplicationController
   skip_before_filter :authenticate_editor, if: :preview?
 
   def index
-    searching = params[:q].present?
     params[:search_selector] ||= 'Search for'
     if ['review', 'new', 'clear'].include? params[:commit]
       params[:q] = ''
@@ -13,28 +12,33 @@ class ReferencesController < ApplicationController
     params[:review] = params[:commit] == 'review'
     params[:whats_new] = params[:commit] == 'new'
 
-    @endnote_export_confirmation_message = <<EOS
-AntCat will download these references to a file named "antcat_references.utf8.endnote_import". When your browser asks, save this file. Then use EndNote's Import function on its File menu to import the file. Choose "EndNote Import" from Import Options, and "Unicode (UTF-8)" as the Text Translation.
-EOS
-    unless searching
-      @endnote_export_confirmation_message << "\nSince there are no search criteria, AntCat will download all ten thousand references. This will take several minutes."
-    end
-
     params[:is_author_search] = params[:search_selector] == 'Search for author(s)'
 
-    respond_to do |format|
-      format.html   {
-        @references = Reference.do_search params
-      }
+    searching = params[:q].present?
+    @endnote_export_all_message = unless searching then <<-"MSG".squish else "" end
+        Since there are no search criteria, AntCat will download all twelve
+        thousand references. Do you want to continue?
+    MSG
 
-      # If you meant to respond to a variant like :tablet or :phone, not a custom format,
-      # be sure to nest your variant response within a format response: format.html { |html| html.tablet { ... } }):
+    @references = Reference.do_search params
+  end
 
-      format.html { |html| html.endnote_import  {
-        references = Reference.do_search params.merge format: :endnote_import
-        render plain: Exporters::Endnote::Formatter.format(references)
-      } }
-    end
+  def endnote_export
+    searching = params[:q].present?
+
+    references = if searching
+                   Reference.do_search params.merge format: :endnote_import
+                 else
+                   # Not very pretty and doesn't really belong here, but this is
+                   # actually a single SQL query (page takes a couple of seconds load),
+                   # which is better than making ~50000 queries (takes minutes).
+                   # TODO refactor into the Sunspot search method after figuring out
+                   # how to make it ':include' related fields and handle pagination
+                   Reference.joins(:author_names)
+                     .includes(:journal, :author_names, :document, [{publisher: :place}])
+                     .where.not(type: 'MissingReference').all
+                 end
+    render plain: Exporters::Endnote::Formatter.format(references)
   end
 
   def download
@@ -207,7 +211,5 @@ EOS
     reference.type = type
     reference
   end
-
-
 
 end

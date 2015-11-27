@@ -49,7 +49,7 @@ AntCat::Application.routes.draw do
   match 'references/approve_all' => 'references#approve_all', as: :approve_all, via: :get
   resources :missing_references, only: [:index, :edit, :update]
 
-  match '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import, via: :get
+  get 'references/endnote_export', to: 'references#endnote_export', as: :endnote_export
 
   resources :taxa do
     resources 'taxon_history_items', only: [:update, :create, :destroy]

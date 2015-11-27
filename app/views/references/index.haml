@@ -11,7 +11,7 @@
         - items << link_to('Latest changes', references_path(commit: 'review'))
         - items << link_to('Journals', journals_path)
         - items << link_to('Fix missing', missing_references_path)
-      - items << link_to('Export to EndNote', endnote_import_path(q: params[:q]), confirm: @endnote_export_confirmation_message)
+      - items << link_to('Export to EndNote', endnote_export_path(q: params[:q]), data: {confirm: @endnote_export_all_message })
       = make_link_menu items
 
     = render 'search', params: params
@@ -22,14 +22,9 @@
     %h3.right by Philip S. Ward, et al.
     .clear
 
-
-
-
 -if @references.empty?
   .no_results_found
     No results found
-
-
 
 %table.references
   - if params[:commit] == 'new'
