@@ -1,5 +1,4 @@
 - @title = "Log in"
-%h2 Log in
 
 = form_for resource, :as => resource_name, :url => session_path(resource_name) do |f|
   %p= f.label :email
@@ -13,4 +12,4 @@
     = f.label :remember_me
   %p= f.submit "Log in"
   %p
-    %a{href: 'http://localhost:3000/users/password/new'} forgot password?
+    =link_to 'Forgot password?', new_user_password_path

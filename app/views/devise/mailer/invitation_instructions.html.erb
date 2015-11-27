@@ -2,7 +2,7 @@ Hello <%= @resource.email %>!
 <p>
 The California Academy of Sciences invites you to <%= root_url %>
 </p>
-<%= link_to 'Accept invitation', accept_invitation_url(@resource, invitation_token: @resource.invitation_token) %>
+<%= link_to 'Accept invitation', accept_invitation_url(@resource, invitation_token: @token) %>
 </p>
 <p>
 This is an invitation to become an AntCat editor. If you accept, you will be

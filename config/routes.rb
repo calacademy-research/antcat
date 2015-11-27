@@ -92,7 +92,7 @@ AntCat::Application.routes.draw do
   match '/widget_tests/reference_field_test', to: 'widget_tests#reference_field_test', via: :get
   match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test', via: :get
 
-  devise_for :users
+  devise_for :users, :controllers => { :invitations => 'users/invitations' }
   resources :users, only: [:index]
 
   namespace :api, defaults: {format: :json} do
