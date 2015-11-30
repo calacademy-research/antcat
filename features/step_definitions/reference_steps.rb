@@ -90,7 +90,7 @@ Given /(?:these|this) book references? exists?/ do |table|
   end
 end
 
-Given /(?:these|this) unknown references? exists?/ do |table|
+Given(/(?:these|this) unknown references? exists?/) do |table|
   table.hashes.each do |hash|
     create_reference :unknown_reference, hash
   end
@@ -110,7 +110,13 @@ def create_reference type, hash
     end
   end
 
-  hash[:citation_year] = hash.delete('year').to_s
+  hash[:year] = hash.delete('year').to_i
+  hash[:citation_year] = if hash[:citation_year].present?
+                           hash.delete('citation_year').to_s
+                         else
+                           hash[:year].to_s
+                         end
+
   reference = FactoryGirl.create type, hash.merge(:author_names => author_names, :author_names_suffix => author_names_suffix)
   @reference ||= reference
   set_timestamps reference, hash

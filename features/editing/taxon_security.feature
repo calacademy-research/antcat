@@ -11,6 +11,7 @@ Feature: Security for editing taxa
       | Fisher  | Psyche 3:3 | Ants  | 2004 |          |
     And there is a subfamily "Formicinae"
 
+  @search
   Scenario: Adding a genus
     Given there is a genus "Eciton"
     When I go to the catalog page for "Formicinae"

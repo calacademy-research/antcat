@@ -3,16 +3,17 @@ Feature: Reference popup
 
   Background:
     Given these references exist
-      | authors                 | year          | title                 | citation   |
-      | Fisher, B.              | 1995b         | Fisher's book         | Ants 1:1-2 |
-      | Bolton, B.              | 2010 ("2011") | Bolton's book         | Ants 2:1-2 |
-      | Fisher, B.; Bolton, B.  | 1995b         | Fisher Bolton book    | Ants 1:1-2 |
-      | Hölldobler, B.          | 1995b         | Bert's book           | Ants 1:1-2 |
+      | authors                | year | citation_year | title              | citation   |
+      | Fisher, B.             | 1995 | 1995b         | Fisher's book      | Ants 1:1-2 |
+      | Bolton, B.             | 2010 | 2010 ("2011") | Bolton's book      | Ants 2:1-2 |
+      | Fisher, B.; Bolton, B. | 1995 | 1995b         | Fisher Bolton book | Ants 1:1-2 |
+      | Hölldobler, B.         | 1995 | 1995b         | Bert's book        | Ants 1:1-2 |
 
   Scenario: Seeing the popup
     When I go to the reference popup widget test page, opened to the first reference
     Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2"
 
+  @search
   Scenario: Selecting a reference from search results
     Given I am logged in
     When I go to the reference popup widget test page
@@ -55,6 +56,7 @@ Feature: Reference popup
     And I save my changes to the current reference
     And I should see "Title can't be blank"
 
+  @search
   Scenario: Cancelling when there's already a reference (regression)
     Given I am logged in
     When I go to the reference popup widget test page, opened to the first reference
@@ -65,6 +67,7 @@ Feature: Reference popup
     When I press "Cancel"
     Then the widget results should be the ID for "Fisher 1995"
 
+  @search
   Scenario: Cancelling when there's not already a reference (regression)
     Given I am logged in
     When I go to the reference popup widget test page

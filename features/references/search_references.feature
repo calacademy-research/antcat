@@ -8,10 +8,10 @@ Feature: Searching references
 
   Background:
     Given these references exist
-      | authors        | year          | title                 | citation   |
-      | Fisher, B.     | 1995b         | Anthill               | Ants 1:1-2 |
-      | Hölldobler, B. | 1995b         | Formis                | Ants 1:1-2 |
-      | Bolton, B.     | 2010 ("2011") | Ants of North America | Ants 2:1-2 |
+      | authors        | year | citation_year | title                 | citation   |
+      | Fisher, B.     | 1995 | 1995          | Anthill               | Ants 1:1-2 |
+      | Hölldobler, B. | 1995 | 1995b         | Formis                | Ants 1:1-2 |
+      | Bolton, B.     | 2010 | 2010 ("2011") | Ants of North America | Ants 2:1-2 |
 
   Scenario: Not searching yet
     When I go to the references page
@@ -37,7 +37,7 @@ Feature: Searching references
     And I should not see "Bolton, B."
     And I should see "Hölldobler, B."
 
-
+  @search
   Scenario: Finding nothing
     When I go to the references page
     And I fill in the search box with "zzzzzz"
@@ -47,13 +47,15 @@ Feature: Searching references
     And I should not see "Hölldobler, B."
     And I should see "No results found"
 
+  @search
   Scenario: Maintaining search box contents
     When I go to the references page
-    And I fill in the search box with "zzzzzz 1972-1980"
+    And I fill in the search box with "zzzzzz year:1972-1980"
     And I press "Go" by the search box
     Then I should see "No results found"
-    And the "q" field should contain "zzzzzz 1972-1980"
+    And the "q" field should contain "zzzzzz year:1972-1980"
 
+  @search
   Scenario: Searching by year
     When I go to the references page
     And I fill in the search box with "1995"
@@ -62,30 +64,32 @@ Feature: Searching references
     And I should see "Hölldobler, B. 1995b"
     And I should not see "Bolton, B. 2010"
 
+  @search
   Scenario: Searching by a year range
     Given these references exist
-      | year   | authors | title  | citation    |
-      | 2009a. | authors | title1 | Ants 31:1-2 |
-      | 2010c. | authors | title2 | Ants 32:1-2 |
-      | 2011d. | authors | title3 | Ants 33:1-2 |
-      | 2012e. | authors | title4 | Ants 34:1-2 |
+      | year | citation_year | authors | title  | citation    |
+      | 2009 | 2009a         | authors | title1 | Ants 31:1-2 |
+      | 2010 | 2010c         | authors | title2 | Ants 32:1-2 |
+      | 2011 | 2011d         | authors | title3 | Ants 33:1-2 |
+      | 2012 | 2012e         | authors | title4 | Ants 34:1-2 |
     When I go to the references page
-    And I fill in the search box with "2010-2011"
+    And I fill in the search box with "year:2010-2011"
     And I press "Go" by the search box
     Then I should see "2010c."
     And I should see "2011d."
     And I should not see "2009a."
     And I should not see "2012e."
 
+  @search
   Scenario: Searching by author and year
     Given these references exist
-      | authors    | year  | title  | citation    |
-      | Fisher, B. | 1895a | title5 | Ants 11:1-2 |
-      | Fisher, B. | 1810b | title6 | Ants 12:1-2 |
-      | Bolton, B. | 1810e | title7 | Ants 13:1-2 |
-      | Bolton, B. | 1895d | title8 | Ants 14:1-2 |
+      | authors    | year | citation_year | title  | citation    |
+      | Fisher, B. | 1895 | 1895a         | title5 | Ants 11:1-2 |
+      | Fisher, B. | 1810 | 1810b         | title6 | Ants 12:1-2 |
+      | Bolton, B. | 1810 | 1810e         | title7 | Ants 13:1-2 |
+      | Bolton, B. | 1895 | 1895d         | title8 | Ants 14:1-2 |
     When I go to the references page
-    And I fill in the search box with "fisher 1895-1895"
+    And I fill in the search box with "fisher year:1895-1895"
     And I press "Go" by the search box
     Then I should see "Fisher, B. 1895"
     And I should not see "Fisher, B. 1810"
@@ -104,9 +108,9 @@ Feature: Searching references
 
   Scenario: Searching by cite code that looks like a year
     Given these references exist
-      | authors    | year  | title  | citation    | cite_code |
-      | Fisher, B. | 1895a | title5 | Ants 11:1-2 | 96-1984   |
-      | Fisher, B. | 1895a | title6 | Ants 11:2-3 | 97-9321   |
+      | authors    | year | citation_year | title  | citation    | cite_code |
+      | Fisher, B. | 1895 | 1895a         | title5 | Ants 11:1-2 | 96-1984   |
+      | Fisher, B. | 1895 | 1895a         | title6 | Ants 11:2-3 | 97-9321   |
     When I go to the references page
     Then I should see "Ants 11:1-2"
     And I should see "Ants 11:2-3"
@@ -117,16 +121,15 @@ Feature: Searching references
 
   Scenario: Seeing just "other" references (not article, book, etc.)
     Given these references exists
-      | authors    | year  | title | citation      |
-      | Fisher, B. | 1895a | Known | Psyche 11:1-2 |
+      | authors    | year | citation_year | title | citation      |
+      | Fisher, B. | 1895 | 1895a         | Known | Psyche 11:1-2 |
     And this unknown reference exists
       | authors    | year | title   | citation       |
       | Bolton, B. | 2001 | Unknown | Science 11:1-2 |
     When I go to the references page
     Then I should see "Known"
     And I should see "Unknown"
-    When I fill in the search box with "?"
+    When I fill in the search box with "type:unknown"
     And I press "Go" by the search box
     Then I should not see "Known"
     And I should see "Unknown"
-

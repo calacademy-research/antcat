@@ -27,7 +27,7 @@ class ReferencesController < ApplicationController
     searching = params[:q].present?
 
     references = if searching
-                   Reference.do_search params.merge format: :endnote_import
+                   Reference.do_search params.merge format: :endnote_export
                  else
                    # Not very pretty and doesn't really belong here, but this is
                    # actually a single SQL query (page takes a couple of seconds load),

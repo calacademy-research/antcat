@@ -14,6 +14,7 @@ Feature: Adding a taxon
     And there is a subfamily "Formicinae"
 
                           #spurrious failures
+  @search
   Scenario: Adding a genus
     Given there is a genus "Eciton"
     When I go to the catalog page for "Formicinae"
@@ -43,6 +44,7 @@ Feature: Adding a taxon
       Then I should see "Atta" in the index
 
     #spurrious failure
+  @search
   Scenario: Adding a genus which has a tribe
     Given tribe "Ecitonini" exists in that subfamily
     When I go to the catalog page for "Ecitonini"
@@ -84,7 +86,6 @@ Feature: Adding a taxon
     And I save my changes
     Then I should see "Protonym authorship reference can't be blank"
 
-
   Scenario: Having an error, but leave fields as user entered them
     When I go to the edit page for "Formicinae"
     And I press "Add genus"
@@ -104,6 +105,7 @@ Feature: Adding a taxon
     And I press "Cancel"
     Then I should be on the edit page for "Formicinae"
 
+  @search
   Scenario: Adding a species
     Given there is a genus "Eciton"
     When I go to the catalog page for "Eciton"
@@ -127,6 +129,7 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Eciton major"
     And I should see "Eciton major" in the protonym
 
+  @search
   Scenario: Adding a species to a subgenus
     Given subfamily "Dolichoderinae" exists
     And tribe "Dolichoderini" exists in that subfamily
@@ -154,7 +157,7 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Dolichoderus (Subdolichoderus) major"
     And I should see "Dolichoderus (Subdolichoderus) major" in the protonym
 
-
+  @search
   Scenario: Using a genus's type-species for the name of a species
     When I go to the catalog page for "Formicinae"
     And I press "Edit"
@@ -192,7 +195,7 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Atta major"
     And I should see "Atta major" in the protonym
 
-
+  @search
   Scenario: Adding a subspecies
     And there is a species "Eciton major" with genus "Eciton"
     #http://localhost:3000/catalog/6
@@ -217,6 +220,7 @@ Feature: Adding a taxon
     And I should see "infra" in the index
     And I should see "Eciton major infra" in the protonym
 
+  @search
   Scenario: Adding a subfamily
     When I go to the catalog page for "Family"
       And I press "Edit"
@@ -243,6 +247,7 @@ Feature: Adding a taxon
     When I go to the catalog page for "Formicinae"
       Then I should see "Dorylinae" in the index
 
+  @search
   Scenario: Adding a tribe
     When I go to the catalog page for "Formicinae"
       And I press "Edit"

@@ -1,4 +1,6 @@
-@dormant @javascript
+@search
+@dormant
+@javascript
 Feature: Checking for duplicates during data entry
   As an AntCat editor
   I want duplicate references to be rejected
@@ -20,6 +22,7 @@ Feature: Checking for duplicates during data entry
     And I press the "Save" button
     And I should see "This may be a duplicate of Ward, P. 2010. Ants. Psyche 6:1 "
     When I press "Save Anyway"
+
 
   Scenario: Editing a reference that makes it a duplicate
     Given these references exist

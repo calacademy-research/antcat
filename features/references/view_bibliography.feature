@@ -6,8 +6,8 @@ Feature: View bibliography
 
   Scenario: View one entry
     Given these references exist
-      | authors    | year  | title     | citation | cite_code | possess | date     | public_notes | editor_notes   |
-      | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 | Public notes | Editor's notes |
+      | authors    | year | citation_year | title     | citation | cite_code | possess | date     | public_notes | editor_notes   |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 | Public notes | Editor's notes |
     When I go to the references page
     Then I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1"
     And I should see "Public notes"
@@ -31,10 +31,10 @@ Feature: View bibliography
 
   Scenario: Viewing more than one entry, sorted by author + date (including slug)
     Given these references exist
-      | authors        | year  | title                      | citation   |
-      | Wheeler, W. M. | 1910b | Ants                       | Psyche 2:2 |
-      | Forel, A.      | 1874  | Les fourmis de la Suisse   | Neue 26:10 |
-      | Wheeler, W. M. | 1910a | Small artificial ant-nests | Psyche 1:1 |
+      | authors        | year | citation_year | title                      | citation   |
+      | Wheeler, W. M. | 1910 | 1910b         | Ants                       | Psyche 2:2 |
+      | Forel, A.      | 1874 | 1874          | Les fourmis de la Suisse   | Neue 26:10 |
+      | Wheeler, W. M. | 1910 | 1910a         | Small artificial ant-nests | Psyche 1:1 |
     When I go to the references page
     Then I should see these entries in this order:
       | entry                                                         |
@@ -44,8 +44,8 @@ Feature: View bibliography
 
   Scenario: Viewing an entry with a URL to a document on our site, but the user isn't logged in
     Given these references exist
-      | authors    | year  | title     | citation | cite_code | possess | date     |
-      | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 |
+      | authors    | year | citation_year | title     | citation | cite_code | possess | date     |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 |
     And that the entry has a URL that's on our site
     When I go to the references page
     Then I should see a "PDF" link
@@ -53,32 +53,32 @@ Feature: View bibliography
   @preview
   Scenario: Even in preview environment, give access to our private PDFs
     Given these references exist
-      | authors    | year  | title     | citation | cite_code | possess | date     |
-      | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 |
+      | authors    | year | citation_year | title     | citation | cite_code | possess | date     |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 |
     And that the entry has a URL that's on our site
     When I go to the references page
     Then I should see a "PDF" link
 
   Scenario: Viewing an entry with a URL to a document on our site, the user isn't logged in, but it's public
     Given these references exist
-      | authors    | year  | title     | citation | date     |
-      | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 | 20100712 |
+      | authors    | year | citation_year | title     | citation | date     |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 20100712 |
     And that the entry has a URL that's on our site that is public
     When I go to the references page
     Then I should see a "PDF" link
 
   Scenario: Viewing an entry with a URL to a document that's not on our site, and the user isn't logged in
     Given these references exist
-      | authors    | year  | title     | citation | cite_code | possess |
-      | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 | 232       | PSW     |
+      | authors    | year | citation_year | title     | citation | cite_code | possess |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       | PSW     |
     And that the entry has a URL that's not on our site
     When I go to the references page
     Then I should see a "PDF" link
 
   Scenario: Viewing an entry with a URL to a document on our site, but the user is logged in
     Given these references exist
-      | authors    | year  | title     | citation | cite_code |
-      | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 | 232       |
+      | authors    | year | citation_year | title     | citation | cite_code |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       |
     And that the entry has a URL that's on our site
     And I am logged in
     When I go to the references page
@@ -86,8 +86,8 @@ Feature: View bibliography
 
   Scenario: Viewing an entry with a URL to a document that's not on our site, and the user is logged in
     Given these references exist
-      | authors    | year  | title     | citation |
-      | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 |
+      | authors    | year | citation_year | title     | citation |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 |
     And that the entry has a URL that's not on our site
     And I log in
     And I go to the references page
@@ -105,8 +105,8 @@ Feature: View bibliography
 
   Scenario: Viewing a missing reference
     Given these references exist
-      | authors    | year  | title     | citation |
-      | Ward, P.S. | 2010d | Ant Facts | Ants 1:1 |
+      | authors    | year | citation_year | title     | citation |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 |
     And there is a missing reference
     When I go to the references page
     Then I should not see the missing reference

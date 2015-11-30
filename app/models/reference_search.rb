@@ -11,6 +11,7 @@ class Reference < ActiveRecord::Base
     text    :title
     text    :journal_name do journal.name if journal end
     text    :publisher_name do publisher.name if publisher end
+    text    :year_as_string  do year.to_s if year end # quick fix to make the year searchable as a keyword
     text    :citation
     text    :cite_code
     text    :editor_notes
@@ -24,156 +25,50 @@ class Reference < ActiveRecord::Base
   end
 
   def self.search &block
-     Sunspot.search Reference, &block
-  end
-
-
-
-  def self.perform_search options = {}
-    page = options[:page]
-    case
-    when options[:fulltext]
-      start_year, end_year = options[:start_year], options[:end_year]
-      search {
-        keywords options[:fulltext]
-
-        if start_year
-          if end_year
-            with(:year).between(start_year..end_year)
-          else
-            with(:year).equal_to start_year
-          end
-        end
-
-        case options[:filter]
-        when :unknown_references_only
-          with :type, 'UnknownReference'
-        when :nested_references_only
-          with :type, 'NestedReference'
-        when :no_missing_references
-          without :type, 'MissingReference'
-        end
-
-        if page
-          paginate page: page
-        else
-          paginate page: 1, per_page: 9999999
-        end
-
-        order_by :author_names_string
-        order_by :citation_year
-      }.results
-
-    when options[:authors]
-      authors = options[:authors]
-      query = select('`references`.*').
-         joins(:author_names)
-        .joins('JOIN authors ON authors.id = author_names.author_id')
-        .where('authors.id IN (?)', authors)
-        .group('references.id')
-        .having("COUNT(`references`.id) = #{authors.length}")
-        .order(:author_names_string_cache, :citation_year)
-      query = query.paginate page: page if page
-      query
-
-    when options[:id]
-      query = where id: options[:id]
-      query = query.paginate page: page
-      query
-
-    else
-      if options[:order]
-        query = order "#{options[:order]} DESC"
-      else
-        query = order 'author_names_string_cache, citation_year'
-      end
-      query = query.paginate page: page if page
-      query
-      case options[:filter]
-      when :unknown_references_only
-        query = query.where 'type == "UnknownReference"'
-      when :nested_references_only
-        query = query.where 'type == "NestedReference"'
-      when :no_missing_references, nil
-        query = query.where 'type != "MissingReference" OR type IS NULL'
-      end
-      query
-    end
+    Sunspot.search Reference, &block
   end
 
   def self.do_search options = {}
+    search_query = if options[:q].present? then options[:q].dup else "" end
     search_options = {}
-    if options[:format] != :endnote_import
-      search_options[:page] = options[:page] || 1
-    end
+    search_options[:page] = options[:page] || 1
+    search_options[:reference_type] = :nomissing
+    search_options[:endnote_export] = true if options[:format] == :endnote_export
 
-    search_options[:filter] = :no_missing_references
+    #TODO refactor callers to make this snippet redundant
+    search_type = if options[:whats_new]
+                    :whats_new
+                  elsif options[:review]
+                    :review
+                  elsif search_query.match(/\d{5,}/)
+                    :id
+                  elsif !search_query.empty?
+                    :fulltext
+                  else
+                    :list_all
+                  end
 
-    case
-    when options[:whats_new]
-      search_options.merge! order: :created_at
+    case search_type
+    when :whats_new
+      search_options[:order] = :created_at
+      return list_references search_options
 
-    when options[:review]
-      search_options.merge! order: :updated_at
+    when :review
+      search_options[:order] = :updated_at
+      return list_references search_options
 
-    when options[:is_author_search]
-      # This is minimally useful; it only returns when we get an exact
-      # author match.
-      # TODO: rewrite to do a fuzzy search if there are no hits on "author"?
-      author_names = Parsers::AuthorParser.parse(options[:q])[:names]
-      authors = Author.find_by_names author_names
-      search_options.merge! authors: authors
+    when :id
+      match = search_query.match(/\d{5,}/)
+      id = match[0]
+      return get_reference id
 
-    when options.key?(:q)
-      fulltext_string = options[:q].dup || ''
+    when :fulltext
+      keyword_params = extract_keyword_params search_query
+      search_options.merge! keyword_params
+      return fulltext_search search_options
 
-
-      if match = fulltext_string.match(/\d{5,}/)
-        return perform_search id: match[0].to_i
-      end
-
-      start_year, end_year = parse_and_extract_years fulltext_string
-      filter = parse_and_extract_filter fulltext_string
-      fulltext_string = ActiveSupport::Inflector.transliterate fulltext_string.downcase
-
-      search_options[:fulltext] = fulltext_string if fulltext_string
-      search_options[:start_year] = start_year if start_year
-      search_options[:end_year] = end_year if end_year
-      search_options[:filter] = filter if filter
-
-    end
-
-    perform_search search_options
-
-  end
-
-  def self.parse_and_extract_years string
-    start_year = end_year = nil
-    if match = string.match(/\b(\d{4})-(\d{4}\b)/)
-      start_year = match[1].to_i
-      end_year = match[2].to_i
-    elsif match = string.match(/(?:^|\s)(\d{4})\b/)
-      start_year = match[1].to_i
-    end
-
-    return nil, nil unless (1758..(Time.now.year + 1)).include? start_year
-
-    string.gsub! /#{match[0]}/, '' if match
-    return start_year, end_year
-  end
-
-  def self.parse_and_extract_filter string
-    question_mark_index = string.index '?'
-    if question_mark_index
-      string[question_mark_index] = ''
-      string.strip!
-      return :unknown_references_only
-    end
-    hash_index = string.index '#'
-    if hash_index
-      string[hash_index] = ''
-      string.strip!
-      return :nested_references_only
+    when :list_all
+      return list_references search_options
     end
   end
 
@@ -185,11 +80,9 @@ class Reference < ActiveRecord::Base
 
   def self.find_by_bolton_key data
     author_names, year = get_author_names_and_year data
-
     return MissingReference.import 'no year', data unless year
 
     bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), year).to_s :db
-
     reference = find_by_bolton_key_cache bolton_key
     return reference if reference
 
@@ -201,13 +94,11 @@ class Reference < ActiveRecord::Base
     end
 
     reference.update_attribute :bolton_key_cache, bolton_key
-
     reference
   end
 
   def self.find_bolton bolton_reference
     bolton_key = bolton_reference.key.to_s :db
-
     reference = find_by_bolton_key_cache bolton_key
     return reference if reference
 
@@ -219,8 +110,115 @@ class Reference < ActiveRecord::Base
     end
 
     reference.update_attribute :bolton_key_cache, bolton_key if reference
-
     reference
   end
 
+  private
+    def self.extract_keyword_params keyword_string
+      keywords_params = {}
+      regexes = [                                                          # order matters
+        ["year",   '(?<start_year>\d{4})-(?<end_year>\d{4})'],             # year:2003-2015
+        ["year",   '(\d{4})'],                                             # year:2003
+        ["type",   '(?<reference_type>nested|unknown|nomissing|missing)'], # type:nested
+        ["author", '"(.*?)"'],                                             # author:"Barry Bolton"
+        ["author", '\'(.*?)\''],                                           # author:'Barry Bolton'
+        ["author", '(\w+)']                                                # author:Bolton
+      ]
+
+      regexes.each do |keyword, regex|
+        match = keyword_string.match /#{keyword}:#{regex}/
+        next unless match
+
+        unless match.names.empty?
+          match.names.each {|param| keywords_params[param.to_sym] = match[param] }
+        else
+          keywords_params[keyword.to_sym] = $1
+        end
+        keyword_string.gsub! match.to_s, ""
+      end
+
+      if keywords_params[:reference_type].present?
+        keywords_params[:reference_type] = keywords_params[:reference_type].to_sym
+      end
+      keywords_params[:keywords] = keyword_string.squish
+      keywords_params
+    end
+
+    # TODO remove; kept while refactoring
+    def self.get_reference id
+      query = where(id: id)
+      query = query.paginate(page: 1)
+    end
+
+    #TODO split logic into scopes/controller
+    def self.list_references options = {}
+      reference_type = options[:reference_type] || :nomissing # legacy
+
+      query = if options[:order]
+                order("#{options[:order]} DESC")
+              else
+                order('author_names_string_cache, citation_year')
+              end
+
+      query = case reference_type
+              when :unknown
+                query.where('type == "UnknownReference"')
+              when :nested
+                query.where('type == "NestedReference"')
+              when :missing
+                query.where('type == "MissingReference"')
+              when :nomissing
+                query.where('type != "MissingReference" OR type IS NULL')
+              end
+
+      page = options[:page] || 1
+      query.paginate(page: options[:page])
+    end
+
+    def self.fulltext_search options = {}
+      page            = options[:page] || 1
+      year            = options[:year]
+      start_year      = options[:start_year]
+      end_year        = options[:end_year]
+      author          = options[:author]
+      search_keywords = options[:keywords] || ""
+
+      search {
+        keywords search_keywords
+
+        if author
+          keywords author do
+            fields(:author_names_string)
+          end
+        end
+
+        if year
+          with(:year).equal_to year
+        end
+
+        if start_year && end_year
+          with(:year).between(start_year..end_year)
+        end
+
+        case options[:reference_type]
+        when :unknown
+          with :type, 'UnknownReference'
+        when :nested
+          with :type, 'NestedReference'
+        when :missing
+          with :type, 'MissingReference'
+        when :nomissing
+          without :type, 'MissingReference'
+        end
+
+        if options[:endnote_export]
+          paginate page: 1, per_page: 9999999
+        elsif page
+          paginate page: page
+        end
+
+        order_by :author_names_string
+        order_by :citation_year
+      }.results
+    end
 end
