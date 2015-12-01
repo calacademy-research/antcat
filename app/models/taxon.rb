@@ -127,6 +127,9 @@ class Taxon < ActiveRecord::Base
   end
 
   def self.find_name name, search_type = 'matching'
+    return unless name.present?
+    return if search_type.nil?
+
     name = name.dup.strip
     query = ordered_by_name
     column = name.split(' ').size > 1 ? 'name' : 'epithet'

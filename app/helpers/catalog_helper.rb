@@ -38,13 +38,18 @@ module CatalogHelper
     link_to label, "/catalog#{id_string}#{parameters_string}", class: classes
   end
 
-  def search_result_link item, parameters
+  def search_result_link item, parameters, search_query, st="bw"
     parameters = parameters.dup
+    
     css_class = item[:id].to_s == parameters[:id].to_s ? 'selected' : nil
-    parameters.delete :id
+
+    parameters[:qq] = search_query
+    parameters[:id] = item[:id]
+    parameters[:st] = st
     parameters.delete :child
+
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
-    link_to raw(item[:name]), "/catalog/#{item[:id]}#{parameters_string}", class: css_class
+    link_to raw(item[:name]), "/catalog/search#{parameters_string}", class: css_class
   end
 
   ############
@@ -78,5 +83,14 @@ module CatalogHelper
 
   def snake array, column_count
     array.in_groups(column_count).transpose
+  end
+
+  def clear_search_results_link id
+    path = if id.present?
+      "/catalog/#{id}" # TODO create a proper route
+    else
+      root_path
+    end
+    link_to "Clear", path
   end
 end

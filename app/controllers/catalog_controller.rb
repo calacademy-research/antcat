@@ -6,7 +6,7 @@ class CatalogController < ApplicationController
     if @parameters[:id].blank?
       @parameters[:id] = Family.first.id
     end
-    do_search
+
     setup_taxon_and_index
   end
 
@@ -18,17 +18,30 @@ class CatalogController < ApplicationController
     mother.load_taxon
     taxon_array = mother.get_children
 
-
     render json: taxon_array.to_json, status: :ok
   end
 
   def search
-    if params[:commit] == 'Clear'
-      clear_search
-    else
-      do_search
-      set_id_parameter @search_results.first[:id] if @search_results.present?
+    if params[:commit] == "Go"
+      @parameters.delete :id
+      params.delete :id
     end
+
+    do_search
+
+    id = params[:id]
+    @parameters[:id] = id if id
+    @search_query = params[:qq] || ''
+    @st = params[:st] || ''
+
+    if @search_results.present? && @search_results.count == 1
+      # sets taxon if a single match is found
+      # explicitly picked ids are still displayed together with the list of matches
+      # defaults to Formicidae unless there's a single match or an id is picked
+      @parameters[:id] = @search_results.first[:id]
+      return redirect_to_id
+    end
+
     setup_taxon_and_index
     render :show
   end
@@ -81,7 +94,6 @@ class CatalogController < ApplicationController
 
   ##########################
   def setup_taxon_and_index
-    #
     # Amoung other thigs, this populates the lower half of the table
     # that is browsable (subfamiles, genera, [subgenera], species, [subspecies])
 
@@ -170,43 +182,10 @@ class CatalogController < ApplicationController
   end
 
   ##########################
-  def do_search
-    return unless @parameters[:qq].present?
-    search_selector_value = translate_search_selector_value_to_english @parameters[:st]
-    @search_results = Taxon.find_name @parameters[:qq], search_selector_value
-    if @search_results.blank?
-      @search_results_message = "No results found for name #{search_selector_value} '#{@parameters[:qq]}'"
-    else
-      @search_results = @search_results.map do |search_result|
-        {name: search_result.name.name_html, id: search_result.id}
-      end
-    end
-  end
-
-  def clear_search
-    @parameters.delete :qq
-    @parameters.delete :st
-  end
-
-  def translate_search_selector_value_to_english value
-    {'m' => 'matching', 'bw' => 'beginning with', 'c' => 'containing'}[value]
-  end
-
-  ##########################
   def get_parameters
     @parameters = HashWithIndifferentAccess.new
     @parameters[:id] = params[:id] if params[:id].present?
     @parameters[:child] = params[:child] if params[:child].present?
-    # We get invalid UTF-8 sometimes. #present crashes in that case so first test nility, then validity
-    if params[:qq]
-      if params[:qq].valid_encoding?
-        @parameters[:qq] = params[:qq].strip
-      else
-        # if it is invalid, don't use it as the search box's contents
-        params[:qq] = ''
-      end
-    end
-    @parameters[:st] = params[:st] if params[:st].present?
   end
 
   def set_id_parameter id, child = nil
@@ -218,4 +197,24 @@ class CatalogController < ApplicationController
     end
   end
 
+  private
+    def do_search
+      return unless params[:qq].present?
+
+      st = params[:st] || 'bw'
+      search_selector_value = translate_search_selector_value_to_english st
+      @search_results = Taxon.find_name params[:qq], search_selector_value
+
+      if @search_results.blank?
+        @search_results_message = "No results found for name #{search_selector_value} '#{params[:qq]}'"
+      else
+        @search_results = @search_results.map do |search_result|
+          {name: search_result.name.name_html, id: search_result.id}
+        end
+      end
+    end
+
+    def translate_search_selector_value_to_english value
+      {'m' => 'matching', 'bw' => 'beginning with', 'c' => 'containing'}[value]
+    end
 end
