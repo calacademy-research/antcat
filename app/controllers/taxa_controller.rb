@@ -3,8 +3,7 @@ class TaxaController < ApplicationController
   before_filter :authenticate_editor, :get_params, :create_mother
   before_filter :redirect_by_parent_name_id, only: :new
   skip_before_filter :authenticate_editor, if: :preview?
-  skip_before_filter :authenticate_editor, only: :show
-
+  skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
   helper ReferenceHelper
 
@@ -83,7 +82,6 @@ class TaxaController < ApplicationController
     redirect_to root_url+"/taxa/"+taxon.id.to_s+"/edit"
 
   end
-
 
   ###################
   def get_taxon create_or_update
@@ -252,6 +250,25 @@ class TaxaController < ApplicationController
         new_hash[:parent_id] = parent.id
       end
       redirect_to new_hash
+    end
+  end
+
+  def autocomplete
+    q = params[:q] || ''
+    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
+
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |taxon|
+          {
+            name: taxon.name_html_cache,
+            authorship: taxon.authorship_string,
+            search_query: taxon.name_cache
+          }
+        end
+        $stderr.puts results.to_json
+        render json: results
+      end
     end
   end
 

@@ -55,6 +55,9 @@ AntCat::Application.routes.draw do
   get 'references/endnote_export', to: 'references#endnote_export', as: :endnote_export
 
   resources :taxa do
+    collection do
+      get "autocomplete"
+    end
     resources 'taxon_history_items', only: [:update, :create, :destroy]
     resources 'reference_sections', only: [:update, :create, :destroy]
     resources 'synonyms', only: [:create, :destroy] do
