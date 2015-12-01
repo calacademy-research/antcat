@@ -17,11 +17,14 @@ etc
 log
 mind maps
 pids
-public/assets
 s3.yml
 selenium
 server.yml
-solr
+solr/data
+solr/default
+solr/development
+solr/test
+solr/pids
 sunspot-solr.pid
 tmp
 tags
