@@ -10,9 +10,7 @@ describe Reference, slow: true do
   end
 
   describe "Searching (perform_search)" do
-
     describe "Search parameters" do
-
       describe "Searching for nothing", search: true do
         it "should return everything" do
           reference = FactoryGirl.create :reference
@@ -25,6 +23,7 @@ describe Reference, slow: true do
         it "should return an empty array if nothing is found for the author names" do
           expect(Reference.do_search(q: "author:Balou")).to be_empty
         end
+
         it "should find the reference for a given author_name if it exists" do
           bolton = FactoryGirl.create :author_name
           reference = FactoryGirl.create :book_reference, author_names: [bolton]
@@ -56,7 +55,7 @@ describe Reference, slow: true do
           Sunspot.commit
           expect(Reference.do_search(q: %q{author:"Bolton Fisher"})).to eq([bolton_fisher_reference])
         end
-      ends
+      end
 
       describe "ID" do
         it "should ignore everything else if an ID of sufficient length is provided" do
@@ -94,20 +93,16 @@ describe Reference, slow: true do
         end
 
         describe 'Author names', search: true do
+          before do
+            @reference = reference_factory(:author_name => 'Hölldobler')
+            Sunspot.commit
+          end
           it 'should work when diacritics are used in the search term' do
-            reference = reference_factory(:author_name => 'Hölldobler')
-            Sunspot.commit
-            expect(Reference.do_search(q: 'Hölldobler')).to eq([reference])
+            expect(Reference.do_search(q: 'Hölldobler')).to eq([@reference])
           end
-          it 'should work when diacritics are substituted with English letters', pending: true do
-            pending "downcasing/transliteration removed valid search results TODO config solr"
-            reference = reference_factory(:author_name => 'Hölldobler')
-            # perform_search has no downcase, behaviour changed in rails 4?
-            # this used to pass as "perform_search", and it shouldn't have!
-            Sunspot.commit
-            expect(Reference.do_search(q: 'holldobler')).to eq([reference])
+          it 'should work when diacritics are substituted with English letters' do
+            expect(Reference.do_search(q: 'holldobler')).to eq([@reference])
           end
-
         end
 
         describe 'Cite code', search: true  do
@@ -201,7 +196,6 @@ describe Reference, slow: true do
 
         expect(Reference.list_references(:order => :updated_at)).to eq([updated_today, updated_yesterday, updated_last_week])
       end
-
       it "should be able to sort by created_at" do
         Reference.record_timestamps = false
         created_yesterday = reference_factory(:author_name => 'Fisher', :citation_year => '1910b')
@@ -225,16 +219,6 @@ describe Reference, slow: true do
 
           expect(Reference.list_references).to eq([fisher1910a, fisher1910b, wheeler1874])
         end
-
-        it "should sort by multiple author_names using their order in each reference" do
-          a = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names])
-          m = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
-          v = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
-          Sunspot.commit
-
-          expect(Reference.list_references).to eq([a, m, v])
-        end
-
         it "should sort by multiple author_names using their order in each reference" do
           a = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names])
           m = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
@@ -244,7 +228,6 @@ describe Reference, slow: true do
           expect(Reference.list_references).to eq([a, m, v])
         end
       end
-
     end
 
     describe "Filtering", search: true do
@@ -267,7 +250,6 @@ describe Reference, slow: true do
         expect(Reference.fulltext_search(q: 'bolton', reference_type: :nested)).to eq([nested])
       end
     end
-
   end
 
   describe "Searching with Solr", search: true do
@@ -276,14 +258,12 @@ describe Reference, slow: true do
       Sunspot.commit
       expect(Reference.search {keywords 'foo'}.results).to be_empty
     end
-
     it "should find the reference for a given author_name if it exists" do
       reference = reference_factory(:author_name => 'Ward')
       reference_factory(:author_name => 'Fisher')
       Sunspot.commit
       expect(Reference.search {keywords 'Ward'}.results).to eq([reference])
     end
-
     it "should return an empty array if nothing is found for a given year and author_name" do
       reference_factory(:author_name => 'Bolton', :citation_year => '2010')
       reference_factory(:author_name => 'Bolton', :citation_year => '1995')
@@ -295,7 +275,6 @@ describe Reference, slow: true do
         keywords 'Fisher'
       }.results).to be_empty
     end
-
     it "should return the one reference for a given year and author_name" do
       reference_factory(:author_name => 'Bolton', :citation_year => '2010')
       reference_factory(:author_name => 'Bolton', :citation_year => '1995')
@@ -308,8 +287,7 @@ describe Reference, slow: true do
         keywords 'Fisher'
       }.results).to eq([reference])
     end
-
-    it"should search citation year" do
+    it "should search citation year" do
       with_letter = reference_factory(:author_name => 'Bolton', :citation_year => '2010b')
       reference_factory(:author_name => 'Bolton', :citation_year => '2010')
       Sunspot.commit
@@ -317,11 +295,9 @@ describe Reference, slow: true do
         keywords '2010b'
       }.results).to eq([with_letter])
     end
-
   end
 
   describe "Do search" do
-
     describe "Searching for nothing" do
       it "should return everything" do
         expect(Reference).to receive(:list_references).with hash_including(page: 1, reference_type: :nomissing)
@@ -355,18 +331,15 @@ describe Reference, slow: true do
         expect(Reference).to receive(:fulltext_search).with hash_including(keywords: '', start_year: "1992", end_year: "1993")
         Reference.do_search q: 'year:1992-1993'
       end
-
       it "extract the starting year" do
         expect(Reference).to receive(:fulltext_search).with hash_including(keywords: '', year: "1992")
         Reference.do_search q: 'year:1992'
       end
-
       it "should convert the query string", pending: true do
         pending "downcasing/transliteration removed valid search results TODO config solr"
         expect(Reference).to receive(:fulltext_search).with hash_including(keywords: 'andre')
         Reference.do_search q: 'André'
       end
-
       it "should distinguish between years and citation years" do
         expect(Reference).to receive(:fulltext_search).with hash_including(keywords: '1970a', year: "1970")
         Reference.do_search q: '1970a year:1970'
@@ -374,7 +347,8 @@ describe Reference, slow: true do
     end
 
     describe "Pagination on or off for different search types" do
-      it "should not paginate EndNote format" do
+      it "should not paginate EndNote format", pending: true do
+        pending "not implemented like this any longer"
         expect(Reference).to receive(:fulltext_search).with hash_excluding(page: 1)
         Reference.do_search q: 'bolton', format: :endnote_export
       end
@@ -390,7 +364,6 @@ describe Reference, slow: true do
         Reference.do_search q: 'Monroe type:unknown'
       end
     end
-
   end
 
   describe "Finding the reference for a Bolton citation" do
@@ -445,7 +418,7 @@ describe Reference do
       expect(keyword_params[:keywords]).to eq(q)
     end
 
-    it "modifies keywords string after extraction" do
+    it "modifies the keywords string after extraction" do
       keyword_params = Reference.extract_keyword_params "Bolton year:2003"
       expect(keyword_params[:keywords]).to eq("Bolton")
     end

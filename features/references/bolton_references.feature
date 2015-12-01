@@ -1,4 +1,4 @@
-@dormant @javascript
+@dormant @javascript @search
 Feature: View Bolton bibliography
   As an AntCat bibliography editor
   I want to see the Bolton bibliography

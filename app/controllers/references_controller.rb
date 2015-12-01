@@ -1,6 +1,6 @@
 # coding: UTF-8
 class ReferencesController < ApplicationController
-  before_filter :authenticate_editor, except: [:index, :download]
+  before_filter :authenticate_editor, except: [:index, :download, :autocomplete]
   skip_before_filter :authenticate_editor, if: :preview?
 
   def index
@@ -132,6 +132,38 @@ class ReferencesController < ApplicationController
     redirect_to '/references?commit=new'
   end
 
+  def autocomplete
+    search_query = params[:q] || ''
+
+    search_options = {}
+    keyword_params = Reference.send(:extract_keyword_params, search_query)
+
+    search_options[:reference_type] = :nomissing
+    search_options[:items_per_page] = 5
+    search_options.merge! keyword_params
+    search_results = Reference.send(:fulltext_search, search_options)
+
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |reference|
+          search_query = if keyword_params.size == 1 # size 1 = no keyword params were matched
+                           reference.title
+                         else
+                           format_autosuggest_keywords reference, keyword_params
+                         end
+          {
+            search_query: search_query,
+            title: reference.title,
+            author: reference.author_names_string,
+            year: reference.citation_year
+          }
+        end
+
+        render json: results
+      end
+    end
+  end
+
   private
   def set_pagination
     params[:reference][:pagination] =
@@ -210,6 +242,20 @@ class ReferencesController < ApplicationController
     reference = Reference.find(params[:id]).becomes((type).constantize)
     reference.type = type
     reference
+  end
+
+  def format_autosuggest_keywords reference, keyword_params
+    replaced = []
+    replaced << keyword_params[:keywords] || ''
+    replaced << "author:'#{reference.author_names_string}'" if keyword_params[:author]
+    replaced << "year:#{keyword_params[:year]}" if keyword_params[:year]
+
+    start_year = keyword_params[:start_year]
+    end_year   = keyword_params[:end_year]
+    if start_year && end_year
+      replaced << "year:#{start_year}-#{end_year}"
+    end
+    replaced.join(" ").strip
   end
 
 end

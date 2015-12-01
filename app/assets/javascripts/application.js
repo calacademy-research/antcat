@@ -4,3 +4,4 @@
 //= require application_coffee
 //= require_tree ./ext
 //= require jquery-ui
+//= require twitter/typeahead

@@ -177,11 +177,15 @@ class Reference < ActiveRecord::Base
 
     def self.fulltext_search options = {}
       page            = options[:page] || 1
+      items_per_page  = options[:items_per_page] || 30
       year            = options[:year]
       start_year      = options[:start_year]
       end_year        = options[:end_year]
       author          = options[:author]
       search_keywords = options[:keywords] || ""
+
+      substrings_to_remove = ['<i>', '</i>', '\*'] # TODO move to solr conf?
+      substrings_to_remove.each {|substring| search_keywords.gsub! /#{substring}/, '' }
 
       search {
         keywords search_keywords
@@ -212,9 +216,9 @@ class Reference < ActiveRecord::Base
         end
 
         if options[:endnote_export]
-          paginate page: 1, per_page: 9999999
+          paginate page: 1, per_page: 9999999 #hehhehe
         elsif page
-          paginate page: page
+          paginate page: page, per_page: items_per_page
         end
 
         order_by :author_names_string

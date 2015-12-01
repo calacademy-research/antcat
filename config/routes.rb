@@ -40,6 +40,9 @@ AntCat::Application.routes.draw do
   resources :publishers, only: [:index]
 
   resources :references, only: [:index, :update, :create, :destroy] do
+    collection do
+      get "autocomplete"
+    end
     member do
       post 'start_reviewing'
       post 'finish_reviewing'

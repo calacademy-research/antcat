@@ -331,6 +331,10 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
+    twitter-typeahead-rails (0.11.1)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
@@ -402,6 +406,7 @@ DEPENDENCIES
   sunspot_solr
   sunspot_test
   thin
+  twitter-typeahead-rails
   uglifier
   webmock
   will_paginate
