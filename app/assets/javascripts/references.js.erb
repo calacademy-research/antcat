@@ -38,8 +38,8 @@ function setupSearch() {
 function setupButtons() {
   $('.review_buttons input[type=submit]').button()
   $('.default_reference_status input[type=submit]').button()
-  if ($('#approve_all_button').length) {
-    $('body').button().on('click', '#approve_all_button', approveHandler);
+  if $('#approve_all_button').length {
+    $('#approve_all_button').button().on('click', approveHandler);
   }
 }
 

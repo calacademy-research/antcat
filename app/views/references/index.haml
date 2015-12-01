@@ -26,10 +26,10 @@
   .no_results_found
     No results found
 
-%table.references
-  - if params[:commit] == 'new'
-    %div.approve_all_button.right= approve_all_button
+- if params[:commit] == 'new'
+  %div.approve_all_button.right= approve_all_button
 
+%table.references
   - if params[:review]
     %tr
       %td
