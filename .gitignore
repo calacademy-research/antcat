@@ -1,37 +1,45 @@
 .ackrc
 .idea
-/config/secrets.yml
-/data/output
 import_db
 mysql-connector-java*
-/data/backups
 antcat.iml
 .rspec
-.sass-cache
-*.DS_Store
-backups/*.tmp
-coverage
 data/pdfs
-database.yml
 etc
-log
 mind maps
-pids
 s3.yml
 selenium
 server.yml
+tags
+script/*.sql
+script/antcat*
+
+# temp/cache
+tmp
+log
+pids
+backups/*.tmp
+.sass-cache
+*.DS_Store
+coverage
 solr/data
 solr/default
 solr/development
 solr/test
 solr/pids
 sunspot-solr.pid
-tmp
-tags
+
+# secrets
+config/secrets.yml
+database.yml
+
+# generated output
 data/output/bolton.txt
 data/output/antcat.antweb.txt
-script/*.sql
-script/antcat*
+data/output
+data/backups
+
+# Vagrant/Chef/Travis/
 vendor/bundle
 cookbooks/*
 !cookbooks/.keep
