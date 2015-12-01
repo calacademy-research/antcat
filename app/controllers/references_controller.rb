@@ -1,17 +1,22 @@
 # coding: UTF-8
 class ReferencesController < ApplicationController
-  before_filter :authenticate_editor, except: [:index, :download, :autocomplete]
+  before_filter :authenticate_editor, except: [
+    :index, :download, :autocomplete, :show
+  ]
   skip_before_filter :authenticate_editor, if: :preview?
 
+  # TODO make controller more RESTful
   def index
+    params[:q].strip! if params[:q]
+    params[:q] ||= ''
+
     params[:search_selector] ||= 'Search for'
     if ['review', 'new', 'clear'].include? params[:commit]
       params[:q] = ''
     end
-    params[:q].strip! if params[:q]
+    
     params[:review] = params[:commit] == 'review'
     params[:whats_new] = params[:commit] == 'new'
-
     params[:is_author_search] = params[:search_selector] == 'Search for author(s)'
 
     searching = params[:q].present?
@@ -20,7 +25,27 @@ class ReferencesController < ApplicationController
         thousand references. Do you want to continue?
     MSG
 
-    @references = Reference.do_search params
+    # moved some branching here from the model
+    search_type = if params[:q].match(/^\d{5,}$/)
+                    :id
+                  else
+                    :other # refactoring...
+                  end
+
+    if search_type == :id
+      match = params[:q].match(/\d{5,}/)
+      id = match[0]
+      redirect_to action: "show", id: id
+    else
+      @references = Reference.do_search params
+    end
+  end
+
+  def show
+    id = params[:id]
+
+    @references = Reference.where(id: id).paginate(page: 1)
+    render "index"
   end
 
   def endnote_export

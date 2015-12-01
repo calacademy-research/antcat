@@ -40,8 +40,6 @@ class Reference < ActiveRecord::Base
                     :whats_new
                   elsif options[:review]
                     :review
-                  elsif search_query.match(/\d{5,}/)
-                    :id
                   elsif !search_query.empty?
                     :fulltext
                   else
@@ -56,11 +54,6 @@ class Reference < ActiveRecord::Base
     when :review
       search_options[:order] = :updated_at
       return list_references search_options
-
-    when :id
-      match = search_query.match(/\d{5,}/)
-      id = match[0]
-      return get_reference id
 
     when :fulltext
       keyword_params = extract_keyword_params search_query
@@ -142,12 +135,6 @@ class Reference < ActiveRecord::Base
       end
       keywords_params[:keywords] = keyword_string.squish
       keywords_params
-    end
-
-    # TODO remove; kept while refactoring
-    def self.get_reference id
-      query = where(id: id)
-      query = query.paginate(page: 1)
     end
 
     #TODO split logic into scopes/controller
