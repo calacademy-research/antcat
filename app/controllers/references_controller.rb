@@ -7,8 +7,8 @@ class ReferencesController < ApplicationController
 
   # TODO make controller more RESTful
   def index
-    params[:q].strip! if params[:q]
     params[:q] ||= ''
+    params[:q].strip!
 
     if params[:q].match(/^\d{5,}$/) # move to a route?
       match = params[:q].match(/\d{5,}/)
@@ -16,7 +16,13 @@ class ReferencesController < ApplicationController
       redirect_to action: "show", id: id
     end
 
-    @references = Reference.do_search params
+    searching = params[:q].present?
+    @references = if searching
+                    Reference.do_search params
+                  else
+                    Reference.list_references
+                  end
+
     @action = :index
   end
 
