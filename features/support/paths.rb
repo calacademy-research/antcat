@@ -51,7 +51,7 @@ module NavigationHelpers
     when /^the references page$/
       references_path
     when /^the new references page$/
-      references_path commit: 'new'
+      latest_additions_references_path
     when /^the page for that reference$/
       reference_path(@reference || Reference.first)
     when /^the Bolton references page$/

@@ -6,7 +6,7 @@ class DefaultReferencesController < ApplicationController
     if request.xhr?
       render nothing: true
     else
-      redirect_to '/references?commit=new'
+      redirect_to latest_additions_references_path
     end
   end
 

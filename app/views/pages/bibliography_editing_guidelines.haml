@@ -10,10 +10,10 @@
         %b Smith_et_al_2012_Abbreviated_Journal_Title Your subjective abbreviated title
       %div
         See
-        %a{href: '/references?commit=new', target: '_blank'}recently added references
-        for examples.
+        =link_to "recently added references for examples.", latest_additions_references_path
       %div
         Journal abbreviations follow the ones adopted in the published version of AntBib,
+        =link_to "Ward et al. 1996.", reference_path(132573)
         %a{href: '/references?q=132573', target: '_blank'}Ward et al. 1996.
         In cases where the journal name is not to be found there, follow the
         %a{href: 'http://www.issn.org/2-22661-LTWA-online.php', target: '_blank'}List of Title Word Abbreviations from ISSN.
@@ -34,9 +34,9 @@
 
     %li
       Look for nested citations, i.e. cases where a portion of the paper (often a taxonomic description) has authorship that differs from that of the paper as a whole. We are citing these separately. For example, see
-      %a{href: '/references?q=133042', target: '_blank'}Lacau, S.; Groc, S.; Dejean, A.; Oliveira, M. L. de; Delabie, J. H. C. 2012
+      =link_to "Lacau, S.; Groc, S.; Dejean, A.; Oliveira, M. L. de; Delabie, J. H. C. 2012", reference_path(133042)
       (an nesting_reference reference) and
-      %a{href: '/references?q=133043.', target: '_blank'}Lacau, in Lacau, Groc, et al., 2012
+      =link_to "Lacau, in Lacau, Groc, et al., 2012", reference_path(133043)
       (a nested reference inside the nesting reference).
 
     %li

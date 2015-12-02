@@ -29,40 +29,13 @@ class Reference < ActiveRecord::Base
   end
 
   def self.do_search options = {}
+    options[:page] ||= 1
     search_query = if options[:q].present? then options[:q].dup else "" end
-    search_options = {}
-    search_options[:page] = options[:page] || 1
-    search_options[:reference_type] = :nomissing
-    search_options[:endnote_export] = true if options[:format] == :endnote_export
 
-    #TODO refactor callers to make this snippet redundant
-    search_type = if options[:whats_new]
-                    :whats_new
-                  elsif options[:review]
-                    :review
-                  elsif !search_query.empty?
-                    :fulltext
-                  else
-                    :list_all
-                  end
+    keyword_params = extract_keyword_params search_query
+    options.merge! keyword_params
 
-    case search_type
-    when :whats_new
-      search_options[:order] = :created_at
-      return list_references search_options
-
-    when :review
-      search_options[:order] = :updated_at
-      return list_references search_options
-
-    when :fulltext
-      keyword_params = extract_keyword_params search_query
-      search_options.merge! keyword_params
-      return fulltext_search search_options
-
-    when :list_all
-      return list_references search_options
-    end
+    fulltext_search options
   end
 
   def self.get_author_names_and_year data
@@ -139,7 +112,7 @@ class Reference < ActiveRecord::Base
 
     #TODO split logic into scopes/controller
     def self.list_references options = {}
-      reference_type = options[:reference_type] || :nomissing # legacy
+      reference_type = options[:reference_type] || :nomissing
 
       query = if options[:order]
                 order("#{options[:order]} DESC")
@@ -159,7 +132,16 @@ class Reference < ActiveRecord::Base
               end
 
       page = options[:page] || 1
-      query.paginate(page: options[:page])
+      query.paginate(page: page)
+    end
+
+    def self.list_all_references_for_endnote
+      # Not very pretty but this is actually a single SQL query (page takes a couple of seconds load),
+      # which is better than making ~50000 queries (takes minutes). TODO refactor into the Sunspot
+      # search method after figuring out how to make it ':include' related fields and handle pagination
+      joins(:author_names)
+        .includes(:journal, :author_names, :document, [{publisher: :place}])
+        .where.not(type: 'MissingReference').all
     end
 
     def self.fulltext_search options = {}
@@ -199,6 +181,8 @@ class Reference < ActiveRecord::Base
         when :missing
           with :type, 'MissingReference'
         when :nomissing
+          without :type, 'MissingReference'
+        else
           without :type, 'MissingReference'
         end
 

@@ -41,18 +41,20 @@ AntCat::Application.routes.draw do
 
   resources :references, only: [:index, :show, :update, :create, :destroy] do
     collection do
-      get "autocomplete"
+      get 'autocomplete'
+      get 'latest_additions'
+      get 'latest_changes'
+      get 'endnote_export'
+      get 'approve_all'
     end
     member do
       post 'start_reviewing'
       post 'finish_reviewing'
       post 'restart_reviewing'
+      get  'endnote_export'
     end
   end
-  match 'references/approve_all' => 'references#approve_all', as: :approve_all, via: :get
   resources :missing_references, only: [:index, :edit, :update]
-
-  get 'references/endnote_export', to: 'references#endnote_export', as: :endnote_export
 
   resources :taxa do
     collection do
@@ -72,7 +74,6 @@ AntCat::Application.routes.draw do
     #get 'update_parent', to: :update_parent
   end
   match '/taxa/:taxon_id/update_parent/:new_parent_taxon_id', :controller => 'taxa', action: 'update_parent', via: :get
-
 
   resource :advanced_search, only: [:show]
   resource :default_reference, only: [:update]
@@ -109,6 +110,5 @@ AntCat::Application.routes.draw do
 
   # REST
   resources :taxon, :controller => 'taxa', :except => [:edit, :new, :update, :destroy]
-
 
 end
