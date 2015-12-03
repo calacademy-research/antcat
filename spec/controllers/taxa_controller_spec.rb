@@ -13,8 +13,6 @@ describe TaxaController do
         ratta = create_genus 'Ratta'
         nylanderia = create_genus 'Nylanderia'
 
-        $stderr.puts atta.name_cache
-
         get :autocomplete, q: "att", format: :json
         json = JSON.parse(response.body)
 

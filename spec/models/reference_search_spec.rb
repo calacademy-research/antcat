@@ -57,19 +57,6 @@ describe Reference, slow: true do
         end
       end
 
-      describe "ID" do
-        it "should ignore everything else if an ID of sufficient length is provided" do
-          reference = reference_factory(:id => 99999, :author_name => 'Hölldobler')
-          Sunspot.commit
-          expect(Reference.do_search(q: "#{reference.id}")).to eq([reference])
-        end
-        it "should not freak out if it can't find the ID" do
-          FactoryGirl.create :reference
-          Sunspot.commit
-          expect(Reference.do_search(q: "23233")).to eq([])
-        end
-      end
-
       describe 'Fulltext', search: true do
         describe 'Notes' do
           it 'should find something in public notes' do
@@ -298,34 +285,6 @@ describe Reference, slow: true do
   end
 
   describe "Do search" do
-    describe "Searching for nothing" do
-      it "should return everything" do
-        expect(Reference).to receive(:list_references).with hash_including(page: 1, reference_type: :nomissing)
-        Reference.do_search
-      end
-    end
-
-    describe "Review" do
-      it "should sort by updated_at" do
-        expect(Reference).to receive(:list_references).with hash_including(:order => :updated_at, :page => 1, reference_type: :nomissing)
-        Reference.do_search :review => true
-      end
-    end
-
-    describe "New" do
-      it "should sort by created_at" do
-        expect(Reference).to receive(:list_references).with hash_including(:order => :created_at, :page => 1, reference_type: :nomissing)
-        Reference.do_search :whats_new => true
-      end
-    end
-
-    describe "Searching for an ID" do
-      it "should pass the id if an id is matched in the string" do
-        expect(Reference).to receive(:get_reference).with "12345"
-        Reference.do_search q: '12345 1972 Bolton'
-      end
-    end
-
     describe "Searching for text and/or years" do
       it "should extract the starting and ending years" do
         expect(Reference).to receive(:fulltext_search).with hash_including(keywords: '', start_year: "1992", end_year: "1993")

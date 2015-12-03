@@ -52,7 +52,6 @@ module CatalogHelper
     link_to raw(item[:name]), "/catalog/search#{parameters_string}", class: css_class
   end
 
-  ############
   def hide_link name, selected, parameters
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
     link_to 'hide', "/catalog/hide_#{name}#{parameters_string}"
@@ -81,16 +80,17 @@ module CatalogHelper
     [snake(items, column_count), css_class]
   end
 
-  def snake array, column_count
-    array.in_groups(column_count).transpose
-  end
-
   def clear_search_results_link id
     path = if id.present?
-      "/catalog/#{id}" # TODO create a proper route
+      catalog_path id
     else
       root_path
     end
     link_to "Clear", path
   end
+
+  private
+    def snake array, column_count
+      array.in_groups(column_count).transpose
+    end
 end

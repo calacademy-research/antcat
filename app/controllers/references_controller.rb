@@ -1,19 +1,22 @@
 # coding: UTF-8
 class ReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [
-    :index, :download, :autocomplete, :show, :endnote_export, :latest_additions
-  ]
+    :index, :download, :autocomplete, :show, :endnote_export, :latest_additions]
+  before_filter :set_reference, only: [
+    :show, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
+
   skip_before_filter :authenticate_editor, if: :preview?
+
+  NUMBER_OF_AUTOCOMPLETE_SUGGESTIONS = 5
 
   # TODO make controller more RESTful
   def index
     params[:q] ||= ''
     params[:q].strip!
 
-    if params[:q].match(/^\d{5,}$/) # move to a route?
-      match = params[:q].match(/\d{5,}/)
-      id = match[0]
-      redirect_to action: "show", id: id
+    if params[:q].match(/^\d{5,}$/)
+      id = params[:q]
+      redirect_to reference_path(id) if Reference.exists? id
     end
 
     searching = params[:q].present?
@@ -27,7 +30,7 @@ class ReferencesController < ApplicationController
   end
 
   def show
-    id = params[:id]
+    id = @reference.id # weird until we have made this controller more RESTful
     @references = Reference.where(id: id).paginate(page: 1)
 
     @action = :show
@@ -35,10 +38,7 @@ class ReferencesController < ApplicationController
   end
 
   def latest_additions
-    options = {
-      order: :created_at,
-      page: params[:page]
-    }
+    options = { order: :created_at, page: params[:page] }
     @references = Reference.list_references options
 
     @action = :latest_additions
@@ -46,10 +46,7 @@ class ReferencesController < ApplicationController
   end
 
   def latest_changes
-    options = {
-      order: :updated_at,
-      page: params[:page]
-    }
+    options = { order: :updated_at, page: params[:page] }
     @references = Reference.list_references options
 
     @action = :latest_changes
@@ -83,7 +80,7 @@ class ReferencesController < ApplicationController
     if document.downloadable_by? current_user
       redirect_to document.actual_url
     else
-      head 401
+      head :unauthorized
     end
   end
 
@@ -131,38 +128,35 @@ class ReferencesController < ApplicationController
   end
 
   def destroy
-    @reference = Reference.find(params[:id])
-    if @reference.any_references? or not @reference.destroy
-      json = {success: false, message: "This reference can't be deleted, as there are other references to it."}.to_json
-    else
-      json = {success: true}
-    end
+    json =  if @reference.any_references? or not @reference.destroy
+              { success: false,
+                message: "This reference can't be deleted, as there are other references to it." }
+            else
+              { success: true }
+            end
     render json: json
   end
 
   def start_reviewing
-    @reference = Reference.find(params[:id])
     @reference.start_reviewing!
     DefaultReference.set session, @reference
     redirect_to latest_additions_references_path
   end
 
   def finish_reviewing
-    @reference = Reference.find(params[:id])
     @reference.finish_reviewing!
     redirect_to latest_additions_references_path
   end
 
   def restart_reviewing
-    @reference = Reference.find(params[:id])
     @reference.restart_reviewing!
     DefaultReference.set session, @reference
     redirect_to latest_additions_references_path
   end
 
   def approve_all
-    Reference.where('review_state != "reviewed"').each do |reference|
-      reference[:review_state] = 'reviewed'
+    Reference.where('review_state != "reviewed"').find_each do |reference|
+      reference.review_state = 'reviewed'
       reference.save!
     end
 
@@ -176,7 +170,7 @@ class ReferencesController < ApplicationController
     keyword_params = Reference.send(:extract_keyword_params, search_query)
 
     search_options[:reference_type] = :nomissing
-    search_options[:items_per_page] = 5
+    search_options[:items_per_page] = NUMBER_OF_AUTOCOMPLETE_SUGGESTIONS
     search_options.merge! keyword_params
     search_results = Reference.send(:fulltext_search, search_options)
 
@@ -232,7 +226,11 @@ class ReferencesController < ApplicationController
       @reference.publisher_string = params[:reference][:publisher_string]
       publisher = Publisher.import_string @reference.publisher_string
       if publisher.nil? and @reference.publisher_string.present?
-        @reference.errors.add :publisher_string, "couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
+        @reference.errors.add :publisher_string, <<-MSG.squish
+          couldn't be parsed. In general, use the format 'Place: Publisher'.
+          Otherwise, please post a message on http://groups.google.com/group/antcat/,
+          and we'll see what we can do!
+        MSG
       else
         params[:reference][:publisher] = publisher
       end
@@ -250,10 +248,10 @@ class ReferencesController < ApplicationController
     def render_json new = false
       template =
       case
-        when params[:field].present? then 'reference_fields/panel'
+        when params[:field].present?  then 'reference_fields/panel'
         when params[:picker].present? then 'reference_fields/panel'
-        when params[:popup].present? then 'reference_popups/panel'
-        else 'references/reference'
+        when params[:popup].present?  then 'reference_popups/panel'
+        else                               'references/reference'
       end
 
       send_back_json(
@@ -266,8 +264,8 @@ class ReferencesController < ApplicationController
     def new_reference
       case params[:selected_tab]
       when 'Article' then ArticleReference.new
-      when 'Book' then    BookReference.new
-      when 'Nested' then  NestedReference.new
+      when 'Book'    then BookReference.new
+      when 'Nested'  then NestedReference.new
       else                UnknownReference.new
       end
     end
@@ -295,4 +293,13 @@ class ReferencesController < ApplicationController
       replaced.join(" ").strip
     end
 
+    # conventional Rails method name, not to be confused with the above #get_reference
+    def set_reference
+      @reference = Reference.find params[:id]
+    end
+
+    def reference_params
+      raise NotImplementedError
+      #params.require(:reference).permit(:....)
+    end
 end

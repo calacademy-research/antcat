@@ -5,8 +5,11 @@ class TaxaController < ApplicationController
   skip_before_filter :authenticate_editor, if: :preview?
   skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
+  NUMBER_OF_AUTOCOMPLETE_SUGGESTIONS = 10
+
   helper ReferenceHelper
 
+  # TODO make more RESTful
   def new
     get_taxon :create
     set_view_variables :create
@@ -45,7 +48,7 @@ class TaxaController < ApplicationController
       return
     end
 
-    render json: taxa.to_json, status: :ok
+    render json: taxa, status: :ok
   end
 
   def delete
@@ -54,10 +57,8 @@ class TaxaController < ApplicationController
 
     taxon = delete_mother.load_taxon
 
-    puts(taxon.name.to_s)
     delete_mother.delete_taxon taxon
     redirect_to root_url
-
   end
 
   # The parent is updated via taxon id.
@@ -66,21 +67,20 @@ class TaxaController < ApplicationController
   def update_parent
     taxon = Taxon.find(params[:taxon_id])
     new_parent = Taxon.find(params[:new_parent_taxon_id])
-    if new_parent.rank =="species"
+    case new_parent.rank
+    when "species"
       taxon.species_id = new_parent.id
-    elsif  new_parent.rank == "genus"
-
-      taxon.genus_id =new_parent.id
-    elsif  new_parent.rank == "subgenus"
-      taxon.subgenus_id =new_parent.id
-    elsif  new_parent.rank == "subfamily"
-      taxon.subfamily_id =new_parent.id
-    elsif  new_parent.rank == "family"
-      taxon.family_id =new_parent.id
+    when "genus"
+      taxon.genus_id = new_parent.id
+    when "subgenus"
+      taxon.subgenus_id = new_parent.id
+    when "subfamily"
+      taxon.subfamily_id = new_parent.id
+    when "family"
+      taxon.family_id = new_parent.id
     end
     taxon.save!
-    redirect_to root_url+"/taxa/"+taxon.id.to_s+"/edit"
-
+    redirect_to edit_taxa_path taxon
   end
 
   ###################
@@ -168,7 +168,6 @@ class TaxaController < ApplicationController
       else
         @reset_epithet = ""
       end
-
     end
   end
 
@@ -197,7 +196,10 @@ class TaxaController < ApplicationController
     @taxon.elevate_to_species
     redirect_to catalog_path @taxon
   rescue Subspecies::NoSpeciesForSubspeciesError
-    @taxon.errors[:base] = "This subspecies doesn't have a species. Use the \"Assign species to subspecies\" button to fix, then you can elevate the subspecies to the species."
+    @taxon.errors[:base] = <<-MSG.squish
+      This subspecies doesn't have a species. Use the "Assign species to subspecies"
+      button to fix, then you can elevate the subspecies to the species.
+    MSG
     render :edit and return
   end
 
@@ -206,10 +208,11 @@ class TaxaController < ApplicationController
     if references.empty?
       @taxon.destroy
     else
-      @taxon.errors[:base] =
-          "Other taxa refer to this taxon, so it can't be deleted. " +
-              "Please talk to Stan (sblum@calacademy.org) to determine a solution. " +
-              "The items referring to this taxon are: #{references.to_s}."
+      @taxon.errors[:base] = <<-MSG.squish
+          Other taxa refer to this taxon, so it can't be deleted.
+          Please talk to Stan (sblum@calacademy.org) to determine a solution.
+          The items referring to this taxon are: #{references.to_s}.
+      MSG
       render :edit and return
     end
     redirect_to catalog_path @taxon.parent
@@ -255,7 +258,7 @@ class TaxaController < ApplicationController
 
   def autocomplete
     q = params[:q] || ''
-    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
+    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take NUMBER_OF_AUTOCOMPLETE_SUGGESTIONS
 
     respond_to do |format|
       format.json do
@@ -266,7 +269,6 @@ class TaxaController < ApplicationController
             search_query: taxon.name_cache
           }
         end
-        $stderr.puts results.to_json
         render json: results
       end
     end

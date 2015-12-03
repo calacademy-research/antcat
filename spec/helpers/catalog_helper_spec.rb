@@ -58,30 +58,44 @@ describe CatalogHelper do
     end
   end
 
+  describe "#clear_search_results_link" do
+    it "links the root path if no id is given" do
+      id = nil
+      clear_link = clear_search_results_link(id)
+      expect(clear_link).to include root_path
+      expect(clear_link).to_not include "catalog"
+    end
+
+    it "links the taxon if an id is given" do
+      id = 101
+      expect(clear_search_results_link(id)).to include catalog_path(id)
+    end
+  end
+
   describe "array snaking" do
-    it "should handle []" do
-      expect(snake([], 1)).to eq([])
+    it "handles empty arrays" do
+      expect(snake([], 1)).to eq []
     end
-    it "should handle [1]" do
-      expect(snake([1], 1)).to eq([[1]])
-    end
-
-    it "should handle [1,2,3,4]" do
-      expect(snake([1,2,3,4], 2)).to eq([[1,3], [2,4]])
+    it "handles arrays with single items" do
+      expect(snake([1], 1)).to eq [[1]]
     end
 
-    it "should handle empty cells" do
-      expect(snake([1,2,3,4,5], 2)).to eq([[1,4], [2,5], [3,nil]])
+    it "handles arrays with multiple items" do
+      expect(snake([1, 2, 3, 4], 2)).to eq [[1, 3], [2, 4]]
     end
 
-    it "should put all nil padding items at the end" do
+    it "handles empty cells" do
+      expect(snake([1, 2, 3, 4, 5], 2)).to eq [[1, 4], [2, 5], [3, nil]]
+    end
+
+    it "puts all nil padding items at the end" do
       array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       manually_snaked = [
         [1, 4, 6, 8, 10],
         [2, 5, 7, 9, 11],
         [3, nil, nil, nil, nil]
       ]
-      expect(snake(array, 5)).to eq(manually_snaked)
+      expect(snake(array, 5)).to eq manually_snaked
     end
   end
 
