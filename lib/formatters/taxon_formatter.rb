@@ -36,4 +36,35 @@ class Formatters::TaxonFormatter
     @taxon.decorate.references
   end
 
+  public def history
+    if @taxon.history_items.present?
+      content_tag :div, class: 'history' do
+        @taxon.history_items.inject(''.html_safe) do |content, item|
+          content << history_item(item)
+        end
+      end
+    end
+  end
+
+  private def history_item item
+    css_class = "history_item item_#{item.id}"
+    content_tag :div, class: css_class, 'data-id' => item.id do
+      content_tag :table do
+        content_tag :tr do
+          history_item_body item
+        end
+      end
+    end
+  end
+
+  private def history_item_body_attributes
+    {}
+  end
+
+  private def history_item_body item
+    content_tag :td, history_item_body_attributes.merge(class: 'history_item_body') do
+      add_period_if_necessary detaxt item.taxt
+    end
+  end
+
 end
