@@ -7,18 +7,23 @@ Given /^the Formicidae family exists$/ do
   ForwardRef.destroy_all
   Reference.destroy_all
 
-  FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Latreille, I.')], citation_year: '1809', title: 'Ants', bolton_key_cache: 'Latreille 1809'
+  reference = FactoryGirl.create :article_reference,
+    author_names: [FactoryGirl.create(:author_name, name: 'Latreille, I.')],
+    citation_year: '1809',
+    title: 'Ants',
+    bolton_key_cache: 'Latreille 1809'
 
-  family = Family.import(
-      protonym: {
-          family_or_subfamily_name: "Formicariae",
-          authorship: [{author_names: ["Latreille"], year: "1809", pages: "124"}],
-      },
-      type_genus: {genus_name: 'Formica'},
-      history: ['Taxonomic history']
-  )
+  protonym = FactoryGirl.create :protonym,
+    name: FactoryGirl.create(:family_or_subfamily_name, name: "Formicariae"),
+    authorship: FactoryGirl.create(:citation, reference: reference, pages: "124" )
+
+  family = FactoryGirl.create :family,
+    name: FactoryGirl.create(:family_name, name: "Formicidae"),
+    protonym: protonym,
+    type_name: FactoryGirl.create(:genus_name, name: "Formica"),
+    history_items: [FactoryGirl.create(:taxon_history_item)]
+  
   FactoryGirl.create :taxon_state, taxon_id: family.id
-
 end
 
 #############################
