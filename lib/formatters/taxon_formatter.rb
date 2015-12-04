@@ -12,18 +12,18 @@ class Formatters::TaxonFormatter
     @taxon, @user = taxon, user
   end
 
-  def statistics options = {}
+  public def statistics options = {}
     statistics = @taxon.statistics or return ''
     content_tag :div, Formatters::StatisticsFormatter.statistics(statistics, options), class: 'statistics'
   end
 
-  def genus_species_header_notes_taxt
+  public def genus_species_header_notes_taxt
     if @taxon.genus_species_header_notes_taxt.present?
       content_tag :div, detaxt(@taxon.genus_species_header_notes_taxt), class: 'genus_species_header_notes_taxt'
     end
   end
 
-  def headline
+  public def headline
     content_tag :div, class: 'headline' do
       notes = headline_notes
       string = headline_protonym
@@ -40,7 +40,7 @@ class Formatters::TaxonFormatter
     end
   end
 
-  def headline_protonym
+  private def headline_protonym
     protonym = @taxon.protonym
     return ''.html_safe unless protonym
     string = protonym_name protonym
@@ -50,7 +50,7 @@ class Formatters::TaxonFormatter
   end
 
   ##########
-  def headline_type
+  private def headline_type
     string = ''.html_safe
     string << headline_type_name_and_taxt
     string << headline_biogeographic_region
@@ -61,7 +61,7 @@ class Formatters::TaxonFormatter
     string.rstrip.html_safe
   end
 
-  def headline_type_name_and_taxt
+  private def headline_type_name_and_taxt
     taxt = @taxon.type_taxt
     if not @taxon.type_name and taxt
       string = headline_type_taxt taxt
@@ -78,28 +78,28 @@ class Formatters::TaxonFormatter
     end
   end
 
-  def headline_type_name
+  private def headline_type_name
     type = Taxon.find_by_name @taxon.type_name.to_s
     return headline_type_name_link(type) if type
     headline_type_name_no_link @taxon.type_name, @taxon.type_fossil
   end
 
-  def headline_type_name_link type
+  private def headline_type_name_link type
     self.class.link_to_taxon type
   end
 
-  def headline_type_name_no_link type_name, fossil
+  private def headline_type_name_no_link type_name, fossil
     rank = type_name.rank
     rank = 'genus' if rank == 'subgenus'
     name = type_name.to_html_with_fossil fossil
     content_tag :span, name, class: "#{rank} taxon"
   end
 
-  def headline_type_taxt taxt
+  private def headline_type_taxt taxt
     add_period_if_necessary(detaxt taxt)
   end
 
-  def headline_biogeographic_region
+  private def headline_biogeographic_region
     string = ''
     return string if @taxon.biogeographic_region.blank?
     string << ' ' unless string.length.zero?
@@ -108,7 +108,7 @@ class Formatters::TaxonFormatter
     string
   end
 
-  def headline_verbatim_type_locality
+  private def headline_verbatim_type_locality
     string = ''
     return string if @taxon.verbatim_type_locality.blank?
     string << '"'
@@ -118,7 +118,7 @@ class Formatters::TaxonFormatter
     string
   end
 
-  def headline_type_specimen
+  private def headline_type_specimen
     string = ''.html_safe
     if @taxon.type_specimen_repository.present?
       periodized_string = add_period_if_necessary @taxon.type_specimen_repository
@@ -138,11 +138,11 @@ class Formatters::TaxonFormatter
   end
 
   #########
-  def protonym_name protonym
+  private def protonym_name protonym
     content_tag :b, content_tag(:span, Formatters::CatalogFormatter.protonym_label(protonym), class: 'protonym_name')
   end
 
-  def headline_authorship authorship
+  private def headline_authorship authorship
     return '' unless authorship
     return '' unless authorship.reference
     string = link_to_reference(authorship.reference, @user)
@@ -152,19 +152,19 @@ class Formatters::TaxonFormatter
     content_tag :span, string, class: :authorship
   end
 
-  def locality locality
+  private def locality locality
     return '' unless locality.present?
     locality = locality.upcase.gsub(/\(.+?\)/) {|text| text.titlecase}
     add_period_if_necessary ' ' + locality
   end
 
-  def headline_notes
+  private def headline_notes
     return unless @taxon.headline_notes_taxt.present?
     detaxt @taxon.headline_notes_taxt
   end
 
   ##########
-  def history
+  public def history
     if @taxon.history_items.present?
       content_tag :div, class: 'history' do
         @taxon.history_items.inject(''.html_safe) do |content, item|
@@ -174,7 +174,7 @@ class Formatters::TaxonFormatter
     end
   end
 
-  def history_item item
+  private def history_item item
     css_class = "history_item item_#{item.id}"
     content_tag :div, class: css_class, 'data-id' => item.id do
       content_tag :table do
@@ -185,18 +185,18 @@ class Formatters::TaxonFormatter
     end
   end
 
-  def history_item_body_attributes
+  private def history_item_body_attributes
     {}
   end
 
-  def history_item_body item
+  private def history_item_body item
     content_tag :td, history_item_body_attributes.merge(class: 'history_item_body') do
       add_period_if_necessary detaxt item.taxt
     end
   end
 
   ##########
-  def child_lists
+  public def child_lists
     content = ''.html_safe
     content << child_lists_for_rank(@taxon, :subfamilies)
     content << child_lists_for_rank(@taxon, :tribes)
@@ -208,7 +208,7 @@ class Formatters::TaxonFormatter
     end
   end
 
-  def child_lists_for_rank parent, children_selector
+  private def child_lists_for_rank parent, children_selector
     return '' unless parent.respond_to?(children_selector) && parent.send(children_selector).present?
 
     if Subfamily === parent && children_selector == :genera
@@ -219,13 +219,13 @@ class Formatters::TaxonFormatter
     end
   end
 
-  def collective_group_name_child_list parent
+  private def collective_group_name_child_list parent
     children_selector = :collective_group_names
     return '' unless parent.respond_to?(children_selector) && parent.send(children_selector).present?
     child_list parent, parent.send(children_selector), false, collective_group_names: true
   end
 
-  def child_list_fossil_pairs parent, children_selector, conditions = {}
+  private def child_list_fossil_pairs parent, children_selector, conditions = {}
     extant_conditions = conditions.merge fossil: false
     extinct_conditions = conditions.merge fossil: true
     extinct = parent.child_list_query children_selector, extinct_conditions
@@ -236,7 +236,7 @@ class Formatters::TaxonFormatter
     child_list(parent, extinct, specify_extinct_or_extant, extinct_conditions)
   end
 
-  def child_list parent, children, specify_extinct_or_extant, conditions = {}
+  private def child_list parent, children, specify_extinct_or_extant, conditions = {}
     label = ''.html_safe
     return label unless children.present?
 
@@ -274,14 +274,14 @@ class Formatters::TaxonFormatter
     end
   end
 
-  def child_list_items children
+  private def child_list_items children
     children.inject([]) do |string, child|
       string << self.class.link_to_taxon(child)
     end.join(', ').html_safe
   end
 
   ############
-  def references
+  public def references
     if @taxon.reference_sections.present?
       content_tag :div, class: 'reference_sections' do
         @taxon.reference_sections.inject(''.html_safe) do |content, section|
@@ -291,7 +291,7 @@ class Formatters::TaxonFormatter
     end
   end
 
-  def reference_section section
+  private def reference_section section
     content_tag :div, class: 'section' do
       [:title_taxt, :subtitle_taxt, :references_taxt].inject(''.html_safe) do |content, field|
         if section[field].present?
@@ -303,7 +303,7 @@ class Formatters::TaxonFormatter
   end
 
   ############
-  def detaxt taxt
+  private def detaxt taxt
     return '' unless taxt.present?
     Taxt.to_string taxt, @user, expansion: expand_references?, formatter: self.class
   end

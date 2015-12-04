@@ -3,20 +3,20 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   include Formatters::ButtonFormatter
   include Formatters::LinkFormatter
 
-  def include_invalid;
+  private def include_invalid;
     true
   end
 
-  def expand_references?;
+  private def expand_references?;
     true
   end
 
-  def link_to_other_site
+  private def link_to_other_site
     link_to_antweb @taxon
   end
 
 
-  def link_to_delete_taxon
+  private def link_to_delete_taxon
     unless @user.nil?
       if @user.is_superadmin?
         button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete", 'data-taxon-id' => "#{@taxon.id}"}
@@ -24,13 +24,13 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     end
   end
 
-  def link_to_edit_taxon
+  private def link_to_edit_taxon
     if @taxon.can_be_edited_by? @user
       button 'Edit', 'edit_button', 'data-edit-location' => "/taxa/#{@taxon.id}/edit"
     end
   end
 
-  def link_to_review_change
+  private def link_to_review_change
     if @taxon.can_be_reviewed_by?(@user) && @taxon.latest_change
       button 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.latest_change.id}"
     end
@@ -42,7 +42,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   end
 
   #########
-  def header
+  public def header
     return original_combination_header if @taxon.original_combination?
     content_tag :div, class: 'header' do
       content = ''.html_safe
@@ -55,7 +55,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     end
   end
 
-  def original_combination_header
+  private def original_combination_header
     content_tag :div, class: 'header' do
       content = ''.html_safe
       content << content_tag(:span, header_name, class: Formatters::CatalogFormatter.css_classes_for_rank(@taxon))
@@ -68,15 +68,15 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     end
   end
 
-  def header_link taxon, label
+  private def header_link taxon, label
     link label, %{/catalog/#{taxon.id}}, target: nil
   end
 
-  def header_name
+  private def header_name
     header_name_for_taxon @taxon
   end
 
-  def header_name_for_taxon taxon
+  private def header_name_for_taxon taxon
     string = ''.html_safe
     if taxon.kind_of?(Species) or taxon.kind_of?(Subspecies)
       genus = taxon.genus
@@ -108,11 +108,11 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     string
   end
 
-  def header_authorship
+  private def header_authorship
     @taxon.authorship_string
   end
 
-  def status
+  private def status
     self.class.taxon_status @taxon
   end
 
@@ -164,11 +164,11 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
     labels.join(', ').html_safe
   end
 
-  def gender
+  private def gender
     (@taxon.name.gender || '').html_safe
   end
 
-  def review_state
+  private def review_state
     if @taxon.waiting?
       "This taxon has been changed; changes awaiting approval"
     end
@@ -189,7 +189,7 @@ class Formatters::CatalogTaxonFormatter < Formatters::TaxonFormatter
   end
 
   #########
-  def change_history
+  public def change_history
     return if @taxon.old?
     change = @taxon.latest_change
     return unless change
