@@ -2,9 +2,4 @@
 class FamilyName < FamilyOrSubfamilyName
   has_paper_trail meta: {change_id: :get_current_change_id}
   include UndoTracker
-
-  def self.get_name data
-    data[:family_name]
-  end
-
 end

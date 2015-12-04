@@ -4,7 +4,6 @@ Given /^there is a family "Formicidae"$/ do
 end
 Given /^the Formicidae family exists$/ do
   Taxon.destroy_all
-  ForwardRef.destroy_all
   Reference.destroy_all
 
   reference = FactoryGirl.create :article_reference,

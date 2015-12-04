@@ -8,10 +8,10 @@ module Taxt
   TAXON_TAG_TYPE = 2
   NAME_TAG_TYPE = 3
 
-  class ReferenceNotFound < StandardError;
-  end
-  class TaxonNotFound < StandardError;
-  end
+  class ReferenceNotFound < StandardError; end
+
+  class TaxonNotFound < StandardError; end
+
   class NameNotFound < StandardError
     attr_accessor :id
 
@@ -20,8 +20,8 @@ module Taxt
       self.id = id
     end
   end
-  class IdNotFound < StandardError;
-  end
+  
+  class IdNotFound < StandardError; end
 
   ################################
   def self.to_string taxt, user = nil, options = {}
@@ -113,9 +113,6 @@ module Taxt
     end
   end
 
-
-
-
   def self.id_for_editable id, type_number
     AnyBase.base_10_to_base_x(id.to_i * 10 + type_number, EDITABLE_ID_DIGITS).reverse
   end
@@ -175,25 +172,6 @@ module Taxt
 
   def self.encode_reference reference
     "{ref #{reference.id}}"
-  end
-
-  def self.encode_taxon_name data
-    epithet = data[:species_group_epithet] || data[:species_epithet]
-    if data[:genus_name] or not epithet
-      name = Name.import data
-      if name_string = translate_spurious(name.name)
-        name_string
-      else
-        taxon = Taxon.find_by_name_id name.id
-        if taxon
-          "{tax #{taxon.id}}"
-        else
-          "{nam #{name.id}}"
-        end
-      end
-    else
-      "{epi #{epithet}}"
-    end
   end
 
   def self.encode_taxon taxon

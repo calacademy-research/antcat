@@ -5,7 +5,6 @@ class SpeciesGroupName < Name
 
   has_paper_trail meta: {change_id: :get_current_change_id}
 
-
   def genus_epithet
     words[0]
   end
@@ -19,4 +18,3 @@ class SpeciesGroupName < Name
   end
 
 end
-

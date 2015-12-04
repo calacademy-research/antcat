@@ -42,8 +42,6 @@ class Name < ActiveRecord::Base
   end
 
   def set_taxon_caches
-
-
     #Taxon.update_all ['name_cache = ?', name], name_id: id
     Taxon.where(name_id: id).update_all(name_cache: name)
     #Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
@@ -57,59 +55,7 @@ class Name < ActiveRecord::Base
 
   # Irregular flag allows parsing of names that don't conform to naming standards so we can support bad spellings.
   def self.parse string, irregular=false
-    return parse_replacement string, irregular # redirect call to replacement method
-    raise "we should never get here..."
-    # explicit loading seems to help Citrus's problem with reloading its grammars
-    # when Rails's class caching is off
-    Citrus.load Rails.root.to_s + '/lib/parsers/common_grammar', force: true unless defined? Parsers::CommonGrammar
-    Citrus.load Rails.root.to_s + '/lib/parsers/author_grammar', force: true unless defined? Parsers::AuthorGrammar
-    Citrus.load Rails.root.to_s + '/lib/importers/bolton/catalog/grammar', force: true unless defined? Importers::Bolton::Catalog::Grammar
-
-    word_count = string.split(' ').count
-
-
-    name_class = Name.parse_rank string
-
-    if name_class.nil? and irregular
-
-      name_class = SpeciesName
-    else
-      raise "No Name subclass wanted the string: #{string}" unless name_class
-    end
-    words = string.split ' '
-
-    output = name_class.parse_words(words)
-    output_replacement = parse_replacement string
-
-    output_string = make_output_comparable output
-    output_replacement_string = make_output_comparable output_replacement
-
-    unless output_string == output_replacement_string
-      File.open('self.parse', 'a') do |file|
-        file.puts "#{string} (#{irregular})"
-        file.puts "output: #{output.inspect}"
-        file.puts "replac: #{output_replacement.inspect}\n"
-      end
-    end
-
-    output
-  end
-
-  # refactor helper
-  def self.make_output_comparable output
-    output.inspect.to_s
-      .gsub(/ id: \d+,/, '')
-      .gsub(/ created_at: .*?,/, '')
-      .gsub(/ updated_at: .*?,/, '')
-  end
-
-  def self.i_tagify string
-    "<i>#{string}</i>"
-  end
-
-  # to replace #self.parse
-  def self.parse_replacement string, irregular
-    words = string.split " "
+   words = string.split " "
 
     name_type = case words.size
                 when 1 then :genus_or_tribe_subfamily
@@ -194,38 +140,8 @@ class Name < ActiveRecord::Base
     raise "No Name subclass wanted the string: #{string}" # from the original method
   end
 
-  def self.parse_words words
-    return unless words.size == 1
-    create! make_import_attributes words[0]
-  end
-
-  #
-  # Removes subgenus before evaluating
-  #
-  def self.parse_rank string
-    # extremely kludgey
-    word_count = string.split(' ').count
-    # # Subgenus matcher
-    # if word_count == 3
-    #   if  match = string.match(/^([a-zA-Z]+) (\(([a-zA-Z]+)\)) ([a-zA-Z]+)/)
-    #     string = match[1] + " " + match[4]
-    #     word_count = 2
-    #     puts ("subgenus stripped - now it's #{string}")
-    #   end
-    # end
-    return SubspeciesName if word_count >= 3
-    for key in [:subfamily_name, :tribe_name, :genus_name, :species_name]
-      begin
-        result = Importers::Bolton::Catalog::Grammar.parse(string, root: key).value
-        if key == :species_name && result.has_key?(:genus_name) && result.has_key?(:species_epithet)
-          return SpeciesName
-        end
-      rescue Citrus::ParseError => e
-        next
-      end
-      return key.to_s.camelize.constantize if result.has_key? key
-    end
-    nil
+  def self.i_tagify string
+    "<i>#{string}</i>"
   end
 
   def self.picklist_matching letters_in_name, options = {}
@@ -280,31 +196,6 @@ class Name < ActiveRecord::Base
       result[:taxon_id] = e.taxon_id.to_i if e.taxon_id
       result
     end
-  end
-
-  def self.import data
-    SubspeciesName.import_data(data) or
-        SpeciesName.import_data(data) or
-        SubgenusName.import_data(data) or
-        GenusName.import_data(data) or
-        CollectiveGroupName.import_data(data) or
-        SubtribeName.import_data(data) or
-        TribeName.import_data(data) or
-        SubfamilyName.import_data(data) or
-        FamilyName.import_data(data) or
-        FamilyOrSubfamilyName.import_data(data) or
-        OrderName.import_data(data) or
-        raise "No Name subclass wanted to import #{data}"
-  end
-
-  def self.import_data data
-    return unless name = get_name(data)
-    attributes = make_import_attributes name, data
-    Name.find_by_name(attributes[:name]) or create!(attributes)
-  end
-
-  def self.make_import_attributes name, data = nil
-    {name: name, name_html: name, epithet: name, epithet_html: name}
   end
 
   def to_s

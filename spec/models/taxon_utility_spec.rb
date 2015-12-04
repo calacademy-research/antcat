@@ -3,38 +3,6 @@ require 'spec_helper'
 
 describe Taxon do
 
-  describe "Import synonyms" do
-    it "should create a new synonym if it doesn't exist" do
-      senior = create_genus
-      junior = create_genus
-      junior.import_synonyms senior
-      expect(Synonym.count).to eq(1)
-      synonym = Synonym.first
-      expect(synonym.junior_synonym).to eq(junior)
-      expect(synonym.senior_synonym).to eq(senior)
-    end
-    it "should not create a new synonym if it exists" do
-      senior = create_genus
-      junior = create_genus
-      Synonym.create! junior_synonym: junior, senior_synonym: senior
-      expect(Synonym.count).to eq(1)
-
-      junior.import_synonyms senior
-      expect(Synonym.count).to eq(1)
-      synonym = Synonym.first
-      expect(synonym.junior_synonym).to eq(junior)
-      expect(synonym.senior_synonym).to eq(senior)
-    end
-    it "should not try to create a synonym if the senior is nil" do
-      senior = nil
-      junior = create_genus
-      junior.import_synonyms senior
-      expect(Synonym.count).to be_zero
-    end
-  end
-
-
-
   describe "Setting current valid taxon to the senior synonym" do
     it "should not worry if the field is already populated" do
       senior = create_genus

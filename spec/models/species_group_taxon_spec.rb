@@ -78,38 +78,4 @@ describe SpeciesGroupTaxon do
     end
 
   end
-
-  describe "Importing" do
-    it "should raise an error if there is no protonym" do
-      genus = create_genus 'Afropone'
-      expect {
-        SpeciesGroupTaxon.import(genus: genus, species_group_epithet: 'orapa', unparseable: 'asdfasdf')
-      }.to raise_error SpeciesGroupTaxon::NoProtonymError
-    end
-  end
-
-  describe "Setting status from history" do
-    it "should recognize a synonym_of and set the status accordingly, and should not create ForwardRefs unless necessary" do
-      genus = create_genus 'Atta'
-      ferox = create_species 'Atta ferox', genus: genus
-      species = create_species 'Atta dyak', genus: genus
-      history = [{synonym_ofs: [
-        {species_epithet: 'ferox'},
-        {species_epithet: 'xerox'},
-      ]}]
-
-      species.set_status_from_history history
-      species = Species.find species.id
-      expect(species).to be_synonym_of ferox
-
-      expect(ForwardRefToSeniorSynonym.count).to eq(1)
-
-      ref = ForwardRefToSeniorSynonym.first
-      expect(ref.fixee.junior_synonym).to eq(species)
-      expect(ref.fixee_attribute).to eq('senior_synonym')
-      expect(ref.genus).to eq(genus)
-      expect(ref.epithet).to eq('xerox')
-    end
-  end
-
 end

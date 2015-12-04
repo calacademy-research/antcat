@@ -1,6 +1,5 @@
 # coding: UTF-8
 class Tribe < Taxon
-  include Importers::Bolton::Catalog::Updater
   belongs_to :subfamily
   has_many :genera
   attr_accessible :name, :protonym, :subfamily, :type_name
@@ -13,42 +12,10 @@ class Tribe < Taxon
     end
   end
 
-  def self.import data
-    taxon, name = find_taxon_to_update data
-    transaction do
-      if taxon
-        taxon.update_status do
-          taxon.update_data data
-        end
-      else
-        attributes = {
-          name:       name,
-          fossil:     data[:fossil] || false,
-          status:     data[:status] || 'valid',
-          protonym:   Protonym.import(data[:protonym]),
-          subfamily:  data[:subfamily],
-        }
-        attributes.merge! get_type_attributes data
-        senior = data.delete :synonym_of
-        taxon = create! attributes
-        taxon.import_synonyms senior
-        taxon.import_history data[:history]
-        create_update name, taxon.id, self.name
-      end
-      taxon
-    end
-  end
-
-  def self.get_type_key
-    :type_genus
-  end
-
   def add_antweb_attributes attributes
     attributes.merge subfamily: subfamily.name.to_s, tribe: name.to_s
   end
-
-  #########
-
+  
   def children
     genera
   end

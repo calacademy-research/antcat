@@ -3,7 +3,6 @@ require 'taxon_advanced_search'
 require 'taxon_utility'
 require 'taxon_workflow'
 
-
 class Taxon < ActiveRecord::Base
   include UndoTracker
   self.table_name = :taxa
@@ -40,7 +39,6 @@ class Taxon < ActiveRecord::Base
   before_save { |record| clean_newlines record, :headline_notes_taxt, :type_taxt }
   #after_save :link_change_id
 
-
   def delete_with_state!
     Taxon.transaction do
       taxon_state = self.taxon_state
@@ -58,14 +56,10 @@ class Taxon < ActiveRecord::Base
     end
   end
 
-
   ###############################################
   # nested attributes
   belongs_to :name; validates :name, presence: true
-
-
   belongs_to :protonym, -> { includes :authorship }; validates :protonym, presence: true
-
   belongs_to :type_name, class_name: 'Name', foreign_key: :type_name_id
 
   has_many :taxa, class_name: "Taxon", foreign_key: :genus_id
@@ -92,7 +86,6 @@ class Taxon < ActiveRecord::Base
   # scope :with_names, joins(:name).readonly(false)
   #scope :ordered_by_name, with_names.order('names.name').includes(:name)
   scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
-
 
   # scope :longago, -> { order(:published_at) }
   def self.find_by_name name
@@ -221,7 +214,6 @@ class Taxon < ActiveRecord::Base
     junior_synonyms.include? taxon
   end
 
-
   def junior_synonyms_with_names;
     synonyms_with_names :junior
   end
@@ -282,7 +274,6 @@ class Taxon < ActiveRecord::Base
 
   attr_accessor :homonym_replaced_by_name
 
-
   ###############################################
   # parent
   attr_accessor :parent_name
@@ -302,7 +293,6 @@ class Taxon < ActiveRecord::Base
     end
 
     #send Rank[self].parent.write_selector, parent_taxon
-
   end
 
   def parent
@@ -403,7 +393,6 @@ class Taxon < ActiveRecord::Base
         valid_hd = is_valid
       end
     end
-
 
     if (hd.count != 1 && valid_hd.nil?) || valid_count > 1
       # If we get more than one hit and we don't have a "valid" entry, then we can't tell
@@ -607,32 +596,6 @@ class Taxon < ActiveRecord::Base
   ###############################################
   # import
 
-  def import_synonyms senior
-    return unless senior
-    Synonym.find_or_create self, senior
-  end
-
-  def self.get_type_attributes data
-    key = get_type_key
-    attributes = {}
-    if data[key]
-      attributes[:type_name] = Name.import data[key]
-      attributes[:type_fossil] = data[key][:fossil]
-      attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[key][:texts]
-    end
-    attributes
-  end
-
-  def import_history history
-    history.each do |item|
-      history_items.create! taxt: item
-    end
-  end
-
-  def self.import_name data
-    Name.import data
-  end
-
   def self.inherit_attributes_for_new_combination(new_combination, old_combination, new_combination_parent)
     if new_combination_parent.is_a? Species
       new_combination.name = Name.parse([new_combination_parent.name.genus_epithet,
@@ -688,6 +651,5 @@ class Taxon < ActiveRecord::Base
     }
   end
 
-  class TaxonExists < StandardError;
-  end
+  class TaxonExists < StandardError; end
 end
