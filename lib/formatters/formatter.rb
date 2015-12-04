@@ -5,20 +5,7 @@ module Formatters::Formatter
   include ActionView::Helpers::DateHelper
   include ERB::Util
 
-  def pluralize_with_delimiters count, singular, plural = nil
-    word = if count == 1
-      singular
-    else
-      plural || singular.pluralize
-    end
-    "#{number_with_delimiter(count)} #{word}"
-  end
 
-  def count_and_noun collection, noun
-    quantity = collection.present? ? collection.count.to_s : 'no'
-    noun << 's' unless collection.count == 1
-    "#{quantity} #{noun}"
-  end
 
   def conjuncted_list items, css_class
     items = items.flatten.uniq.map do |item|

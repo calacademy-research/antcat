@@ -1,15 +1,16 @@
 class TaxonDecorator::Statistics
   include ActionView::Helpers
   include ActionView::Context
+  include ApplicationHelper #pluralize_with_delimiters, count_and_status
 
-  def self.taxon_statistics taxon, options = {}
+  def taxon_statistics taxon, options = {}
     return '' unless taxon
     statistics = taxon.statistics
     return '' unless statistics
     statistics statistics, options
   end
 
-  def self.statistics statistics, options = {}
+  def statistics statistics, options = {}
     options.reverse_merge! :include_invalid => true, :include_fossil => true
     return '' unless statistics && statistics.present?
     strings = [:extant, :fossil].inject({}) do |strings, extant_or_fossil|
@@ -40,7 +41,7 @@ class TaxonDecorator::Statistics
     end.join.html_safe
   end
 
-  def self.rank_statistics statistics, rank, include_invalid
+  def rank_statistics statistics, rank, include_invalid
     statistics = statistics[rank]
     return unless statistics
     statistics_strings = []
@@ -53,7 +54,7 @@ class TaxonDecorator::Statistics
     statistics_strings.join ' '
   end
 
-  def self.valid_statistics statistics, rank, include_invalid
+  def valid_statistics statistics, rank, include_invalid
     string = ''
     if statistics['valid']
       string << rank_status_count(rank, 'valid', statistics['valid'], include_invalid)
@@ -62,7 +63,7 @@ class TaxonDecorator::Statistics
     string
   end
 
-  def self.invalid_statistics statistics
+  def invalid_statistics statistics
     sorted_keys = statistics.keys.sort_by do |key|
       Status.ordered_statuses.index key
     end
@@ -80,7 +81,7 @@ class TaxonDecorator::Statistics
     string
   end
 
-  def self.rank_status_count rank, status, count, label_statuses = true
+  def rank_status_count rank, status, count, label_statuses = true
     if label_statuses
       count_and_status = pluralize_with_delimiters count, status, Status[status].to_s(status != 'valid' ? :plural : nil)
     else

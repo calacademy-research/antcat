@@ -3,6 +3,7 @@ class TaxonDecorator::Headline
   include ActionView::Helpers
   include ActionView::Context
   include ApplicationHelper
+  include RefactorHelper
 
   def initialize taxon, user=nil
     @taxon = taxon
@@ -71,7 +72,7 @@ class TaxonDecorator::Headline
   end
 
   private def headline_type_name_link type
-    self.class.link_to_taxon type
+    link_to_taxon type
   end
 
   private def headline_type_name_no_link type_name, fossil
@@ -131,7 +132,7 @@ class TaxonDecorator::Headline
   private def headline_authorship authorship
     return '' unless authorship
     return '' unless authorship.reference
-    string = link_to_reference(authorship.reference, current_user)
+    string = link_to_reference(authorship.reference, @user)
     string << ": #{authorship.pages}" if authorship.pages.present?
     string << " (#{authorship.forms})" if authorship.forms.present?
     string << ' ' << detaxt(authorship.notes_taxt) if authorship.notes_taxt
@@ -149,5 +150,30 @@ class TaxonDecorator::Headline
     detaxt @taxon.headline_notes_taxt
   end
 
+  private def detaxt taxt
+    return '' unless taxt.present?
+    Taxt.to_string taxt, @user, expansion: true#, formatter: nil
+  end
 
+  private def link_to_review_change
+    if @taxon.can_be_reviewed_by?(@user) && @taxon.latest_change
+      button 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.latest_change.id}"
+    end
+  end
+
+  private def link_to_delete_taxon
+    unless @user.nil?
+      if @user.is_superadmin?
+        button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete", 'data-taxon-id' => "#{@taxon.id}"}
+      end
+    end
+  end
+
+  private def link_to_other_site
+    link_to_antweb @taxon
+  end
+
+  private def link_to_reference reference, user
+    reference.key.to_link user, expansion: true
+  end
 end

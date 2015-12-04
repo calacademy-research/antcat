@@ -3,6 +3,7 @@ class TaxonDecorator::Header
   include ActionView::Helpers::TagHelper
   include ActionView::Context
   include ApplicationHelper
+  include RefactorHelper
 
   def initialize taxon, user=nil
     @taxon = taxon
@@ -11,7 +12,6 @@ class TaxonDecorator::Header
 
   #########
   public def header
-    @taxon.decorate.header
     return original_combination_header if @taxon.original_combination?
     content_tag :div, class: 'header' do
       content = ''.html_safe
@@ -82,10 +82,10 @@ class TaxonDecorator::Header
   end
 
   private def status
-    self.class.taxon_status @taxon
+    taxon_status @taxon
   end
 
-  def self.taxon_status taxon
+  def taxon_status taxon
     #
     # Note: Cleverness is used here to make these queries (e.g.: obsolete_combination?)
     # appear as tags. That's how CSS does its coloring.
@@ -143,14 +143,14 @@ class TaxonDecorator::Header
     end
   end
 
-  def self.format_senior_synonym taxon
+  def format_senior_synonym taxon
     if current_valid_taxon = taxon.current_valid_taxon_including_synonyms
       return ' of current valid taxon ' << link_to_taxon(current_valid_taxon)
     end
     ''
   end
 
-  def self.format_valid_combination taxon
+  def format_valid_combination taxon
     if current_valid_taxon = taxon.current_valid_taxon_including_synonyms
       return link_to_taxon(current_valid_taxon)
     end

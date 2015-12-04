@@ -20,10 +20,6 @@ module Formatters::LinkFormatter
     link label, url, class: 'link_to_external_site'
   end
 
-  def link_to_reference reference, user
-    reference.key.to_link user, expansion: expand_references?
-  end
-
   def link_to_antcat taxon, label = 'AntCat'
     link_to_external_site label, "http://www.antcat.org/catalog/#{taxon.id}"
   end

@@ -14,7 +14,7 @@ class TaxonDecorator < Draper::Decorator
 
   public def statistics options = {}
     statistics = taxon.statistics or return ''
-    string = TaxonDecorator::Statistics.new(taxon, helpers.current_user).statistics(statistics, options)
+    string = TaxonDecorator::Statistics.new.statistics(statistics, options)
     helpers.content_tag :div, string, class: 'statistics'
   end
 
@@ -29,17 +29,17 @@ class TaxonDecorator < Draper::Decorator
   ##################
 
   public def genus_species_header_notes_taxt
-    if @taxon.genus_species_header_notes_taxt.present?
-      content_tag :div, detaxt(@taxon.genus_species_header_notes_taxt), class: 'genus_species_header_notes_taxt'
+    if taxon.genus_species_header_notes_taxt.present?
+      content_tag :div, detaxt(taxon.genus_species_header_notes_taxt), class: 'genus_species_header_notes_taxt'
     end
   end
 
   ##########
 
   public def references
-    if @taxon.reference_sections.present?
+    if taxon.reference_sections.present?
       content_tag :div, class: 'reference_sections' do
-        @taxon.reference_sections.inject(''.html_safe) do |content, section|
+        taxon.reference_sections.inject(''.html_safe) do |content, section|
           content << reference_section(section)
         end
       end
@@ -59,8 +59,8 @@ class TaxonDecorator < Draper::Decorator
 
   #########
   public def change_history
-    return if @taxon.old?
-    change = @taxon.latest_change
+    return if taxon.old?
+    change = taxon.latest_change
     return unless change
     content_tag :span, class: 'change_history' do
       content = ''.html_safe
@@ -72,7 +72,7 @@ class TaxonDecorator < Draper::Decorator
       content << " #{format_doer_name(change.changed_by)} ".html_safe
       content << format_time_ago(change.created_at).html_safe
 
-      if @taxon.approved?
+      if taxon.approved?
         # I don't fully understand this case;
         # it appears that somehow, we're able to generate "changes" without affiliated taxon_states.
         # not clear to me how this happens or whether this should be allowed.
@@ -91,6 +91,6 @@ class TaxonDecorator < Draper::Decorator
   ############
   private def detaxt taxt
     return '' unless taxt.present?
-    Taxt.to_string taxt, current_user, expansion: expand_references?, formatter: self.class
+    Taxt.to_string taxt, current_user, expansion: true#, formatter: nil
   end
 end

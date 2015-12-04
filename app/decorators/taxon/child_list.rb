@@ -2,6 +2,7 @@ class TaxonDecorator::ChildList
   include ActionView::Helpers
   include ActionView::Context
   include ApplicationHelper
+  include RefactorHelper
 
   def initialize taxon, user=nil
     @taxon = taxon
@@ -89,7 +90,7 @@ class TaxonDecorator::ChildList
 
   private def child_list_items children
     children.inject([]) do |string, child|
-      string << self.class.link_to_taxon(child)
+      string << link_to_taxon(child)
     end.join(', ').html_safe
   end
 end
