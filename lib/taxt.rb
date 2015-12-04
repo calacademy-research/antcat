@@ -155,14 +155,13 @@ module Taxt
       Taxon.find(taxon_id_match).name.to_html
     else
       taxon = Taxon.find taxon_id_match
-      #(options[:formatter] || Formatters::CatalogTaxonFormatter).link_to_taxon taxon
-      link_to_taxon taxon # TODO fix
+      (options[:formatter] || self).link_to_taxon taxon
     end
   rescue
     whole_match
   end
 
-  def self.link_to_taxon taxon
+  def self.link_to_taxon taxon #TODO remove
     label = taxon.name.to_html_with_fossil(taxon.fossil?)
     content_tag :a, label, href: %{/catalog/#{taxon.id}}
   end

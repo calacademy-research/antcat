@@ -3,7 +3,9 @@ class TaxonDecorator::Headline
   include ActionView::Helpers
   include ActionView::Context
   include ApplicationHelper
+  
   include RefactorHelper
+  include AntwebRefactorHelper if $use_ant_web_formatter
 
   def initialize taxon, user=nil
     @taxon = taxon
@@ -150,11 +152,6 @@ class TaxonDecorator::Headline
     detaxt @taxon.headline_notes_taxt
   end
 
-  private def detaxt taxt
-    return '' unless taxt.present?
-    Taxt.to_string taxt, @user, expansion: true#, formatter: nil
-  end
-
   private def link_to_review_change
     if @taxon.can_be_reviewed_by?(@user) && @taxon.latest_change
       button 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.latest_change.id}"
@@ -169,11 +166,4 @@ class TaxonDecorator::Headline
     end
   end
 
-  private def link_to_other_site
-    link_to_antweb @taxon
-  end
-
-  private def link_to_reference reference, user
-    reference.key.to_link user, expansion: true
-  end
 end

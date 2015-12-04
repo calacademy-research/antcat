@@ -1,5 +1,8 @@
 class TaxonDecorator < Draper::Decorator
   include Draper::LazyHelpers
+  include ERB::Util
+  include ActionView::Helpers::TagHelper
+  include ActionView::Context
   delegate_all
 
   require_relative 'taxon/child_list'
@@ -7,23 +10,31 @@ class TaxonDecorator < Draper::Decorator
   require_relative 'taxon/headline'
   require_relative 'taxon/statistics'
 
+  include AntwebRefactorHelper if $use_ant_web_formatter
+
+  private def get_current_user
+    helpers.current_user
+    rescue NoMethodError
+      nil
+  end
 
   public def header
-    TaxonDecorator::Header.new(taxon, helpers.current_user).header
+    TaxonDecorator::Header.new(taxon, get_current_user).header
   end
 
   public def statistics options = {}
+
     statistics = taxon.statistics or return ''
     string = TaxonDecorator::Statistics.new.statistics(statistics, options)
     helpers.content_tag :div, string, class: 'statistics'
   end
 
   public def headline
-    TaxonDecorator::Headline.new(taxon, helpers.current_user).headline
+    TaxonDecorator::Headline.new(taxon, get_current_user).headline
   end
 
   public def child_lists
-    TaxonDecorator::ChildList.new(taxon, helpers.current_user).child_lists
+    TaxonDecorator::ChildList.new(taxon, get_current_user).child_lists
   end
 
   ##################
@@ -91,6 +102,6 @@ class TaxonDecorator < Draper::Decorator
   ############
   private def detaxt taxt
     return '' unless taxt.present?
-    Taxt.to_string taxt, current_user, expansion: true#, formatter: nil
+    Taxt.to_string taxt, get_current_user
   end
 end

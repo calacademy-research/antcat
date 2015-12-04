@@ -1,11 +1,4 @@
 module RefactorHelper
-  def include_invalid;
-    true
-  end
-
-  def expand_references?;
-    true
-  end
 
   def link_to_edit_taxon
     if @taxon.can_be_edited_by? @user
@@ -13,7 +6,7 @@ module RefactorHelper
     end
   end
 
-  def link_to_taxon taxon #fix AntWeb
+  def link_to_taxon taxon
     label = taxon.name.to_html_with_fossil(taxon.fossil?)
     content_tag :a, label, href: %{/catalog/#{taxon.id}}
   end
@@ -24,6 +17,19 @@ module RefactorHelper
     return string if string.empty?
     return string + '.' unless string[-1..-1] =~ /[.!?]/
     string
+  end
+
+  def link_to_other_site
+    link_to_antweb @taxon
+  end
+
+  def link_to_reference reference, user
+    reference.key.to_link user
+  end
+
+  def detaxt taxt
+    return '' unless taxt.present?
+    Taxt.to_string taxt, @user, expansion: true#, formatter: nil
   end
 
 end

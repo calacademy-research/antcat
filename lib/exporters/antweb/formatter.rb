@@ -3,23 +3,12 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
   include Formatters::LinkFormatter
   extend Formatters::LinkFormatter
 
-  def include_invalid; false end
-  def expand_references?; false end
-
-  def link_to_other_site
-    link_to_antcat @taxon
-  end
-
-  def link_to_edit_taxon; end
-
-  def link_to_delete_taxon; end
-
-  def link_to_review_change; end
+  $use_ant_web_formatter = true
 
   def format
     content_tag :div, class: 'antcat_taxon' do
       content = ''.html_safe
-      content << statistics(include_invalid: include_invalid)
+      content << statistics(include_invalid: false)
       content << genus_species_header_notes_taxt
       content << headline
       content << history
@@ -35,10 +24,10 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
   end
 
   def history_item_body_attributes
-    {style: 'font-size: 13px'}
+    { style: 'font-size: 13px' }
   end
 
-  def self.link_to_taxon taxon
+  def self.link_to_taxon taxon # used in Taxt.rb
     link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
   end
 

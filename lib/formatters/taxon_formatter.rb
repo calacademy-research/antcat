@@ -24,10 +24,6 @@ class Formatters::TaxonFormatter
     @taxon.decorate.headline
   end
 
-  def history
-    @taxon.decorate.history
-  end
-
   def child_lists
     @taxon.decorate.child_lists
   end
@@ -38,11 +34,12 @@ class Formatters::TaxonFormatter
 
   public def history
     if @taxon.history_items.present?
-      content_tag :div, class: 'history' do
+      content = content_tag :div, class: 'history' do
         @taxon.history_items.inject(''.html_safe) do |content, item|
           content << history_item(item)
         end
       end
+      content
     end
   end
 
@@ -65,6 +62,11 @@ class Formatters::TaxonFormatter
     content_tag :td, history_item_body_attributes.merge(class: 'history_item_body') do
       add_period_if_necessary detaxt item.taxt
     end
+  end
+
+  private def detaxt taxt #for AntWeb exporter
+    return '' unless taxt.present?
+    Taxt.to_string taxt, @user, expansion: false, formatter: Exporters::Antweb::Formatter
   end
 
 end
