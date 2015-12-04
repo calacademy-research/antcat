@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151123092209) do
+ActiveRecord::Schema.define(version: 20151204142522) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -110,21 +110,6 @@ ActiveRecord::Schema.define(version: 20151123092209) do
   end
 
   add_index "citations", ["reference_id"], name: "index_authorships_on_reference_id", using: :btree
-
-  create_table "forward_refs", force: :cascade do |t|
-    t.integer  "fixee_id",        limit: 4
-    t.string   "fixee_attribute", limit: 255
-    t.integer  "genus_id",        limit: 4
-    t.string   "epithet",         limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "fixee_type",      limit: 255
-    t.string   "type",            limit: 255
-    t.integer  "name_id",         limit: 4
-  end
-
-  add_index "forward_refs", ["fixee_id", "fixee_type"], name: "index_forward_refs_on_fixee_id_and_fixee_type", using: :btree
-  add_index "forward_refs", ["name_id"], name: "index_forward_refs_on_name_id", using: :btree
 
   create_table "hol_data", force: :cascade do |t|
     t.integer "tnuid",                  limit: 4
