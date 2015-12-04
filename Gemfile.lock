@@ -147,6 +147,11 @@ GEM
       actionmailer (>= 3.2.6, < 5)
       devise (>= 3.2.0)
     diff-lcs (1.2.5)
+    draper (2.1.0)
+      actionpack (>= 3.0)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      request_store (~> 1.0)
     erubis (2.7.0)
     eventmachine (1.0.8)
     execjs (2.6.0)
@@ -376,6 +381,7 @@ DEPENDENCIES
   devise
   devise_invitable
   diff-lcs
+  draper
   ey_config
   factory_girl_rails
   fuzzy-string-match
