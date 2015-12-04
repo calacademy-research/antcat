@@ -29,7 +29,12 @@ module RefactorHelper
 
   def detaxt taxt
     return '' unless taxt.present?
-    Taxt.to_string taxt, @user, expansion: true#, formatter: nil
+    Taxt.to_string taxt, @user, expansion: true
+  end
+
+  # duplicated from Formatters::Formatter
+  def italicize string
+    content_tag :i, string
   end
 
 end

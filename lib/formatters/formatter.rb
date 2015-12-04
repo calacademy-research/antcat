@@ -5,7 +5,7 @@ module Formatters::Formatter
   include ActionView::Helpers::DateHelper
   include ERB::Util
 
-
+  include ApplicationHelper #pluralize_with_delimiters
 
   def conjuncted_list items, css_class
     items = items.flatten.uniq.map do |item|

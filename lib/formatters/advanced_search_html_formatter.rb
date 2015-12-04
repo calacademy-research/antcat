@@ -3,8 +3,10 @@ module Formatters::AdvancedSearchHtmlFormatter
   include Formatters::Formatter
   include Formatters::AdvancedSearchFormatter
 
+  include RefactorHelper
+
   def format_name taxon
-    Formatters::CatalogTaxonFormatter.link_to_taxon taxon
+    link_to_taxon taxon
   end
 
   def reference_id reference
