@@ -57,6 +57,8 @@ class Name < ActiveRecord::Base
 
   # Irregular flag allows parsing of names that don't conform to naming standards so we can support bad spellings.
   def self.parse string, irregular=false
+    return parse_replacement string, irregular # redirect call to replacement method
+    raise "we should never get here..."
     # explicit loading seems to help Citrus's problem with reloading its grammars
     # when Rails's class caching is off
     Citrus.load Rails.root.to_s + '/lib/parsers/common_grammar', force: true unless defined? Parsers::CommonGrammar
@@ -75,7 +77,121 @@ class Name < ActiveRecord::Base
       raise "No Name subclass wanted the string: #{string}" unless name_class
     end
     words = string.split ' '
-    name_class.parse_words(words)
+
+    output = name_class.parse_words(words)
+    output_replacement = parse_replacement string
+
+    output_string = make_output_comparable output
+    output_replacement_string = make_output_comparable output_replacement
+
+    unless output_string == output_replacement_string
+      File.open('self.parse', 'a') do |file|
+        file.puts "#{string} (#{irregular})"
+        file.puts "output: #{output.inspect}"
+        file.puts "replac: #{output_replacement.inspect}\n"
+      end
+    end
+
+    output
+  end
+
+  # refactor helper
+  def self.make_output_comparable output
+    output.inspect.to_s
+      .gsub(/ id: \d+,/, '')
+      .gsub(/ created_at: .*?,/, '')
+      .gsub(/ updated_at: .*?,/, '')
+  end
+
+  def self.i_tagify string
+    "<i>#{string}</i>"
+  end
+
+  # to replace #self.parse
+  def self.parse_replacement string, irregular
+    words = string.split " "
+
+    name_type = case words.size
+                when 1 then :genus_or_tribe_subfamily
+                when 2 then :species
+                when 3 then :subspecies
+                when 4..5 then :subspecies_with_two_epithets
+                end
+
+    if name_type == :genus_or_tribe_subfamily
+      name_type = case string
+                  when /inae$/ then :subfamily
+                  when /idae$/ then :subfamily # actually a family name, but let's rewrite the old
+                                               # method before changing the behavior; edge case anyway
+                  when /ini$/ then :tribe
+                  else :genus end
+    end
+
+    case name_type
+    when :subspecies
+      return SubspeciesName.create!(
+        name: string,
+        name_html: i_tagify(string),
+        epithet: words.third,
+        epithet_html: i_tagify(words.third),
+        epithets: [words.second, words.third].join(' ')
+      )
+
+    when :subspecies_with_two_epithets
+      return SubspeciesName.create!(
+        name: string,
+        name_html: i_tagify(string),
+        epithet: words.last,
+        epithet_html: i_tagify(words.last),
+        epithets: words[1..-1].join(' ')
+      )
+
+    when :species
+      return SpeciesName.create!(
+        name: string,
+        name_html: i_tagify(string),
+        epithet: words.second,
+        epithet_html: i_tagify(words.second)
+      )
+
+    when :genus
+        return GenusName.create!(
+          name: string,
+          name_html: i_tagify(string),
+          epithet: string,
+          epithet_html: i_tagify(string)
+          #protonym_html: i_tagify(string)
+          # Note: GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }
+          # => all true except Aretidris because protonym_html is nil
+        )
+    when :tribe
+        return TribeName.create!(
+          name: string,
+          name_html: string,
+          epithet: string,
+          epithet_html: string
+          #protonym_html: string
+        )
+    when :subfamily
+        return SubfamilyName.create!(
+          name: string,
+          name_html: string,
+          epithet: string,
+          epithet_html: string
+          #protonym_html: string
+          # Note: SubfamilyName.all.map {|t| t.name == t.protonym_html }.uniq # => true
+        )
+    end
+
+    if irregular
+      return SpeciesName.create!(
+        name: string,
+        name_html: i_tagify(string),
+        epithet: words.second,
+        epithet_html: i_tagify(words.second)
+      )
+    end
+    raise "No Name subclass wanted the string: #{string}" # from the original method
   end
 
   def self.parse_words words
