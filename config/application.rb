@@ -56,6 +56,7 @@ module AntCat
     ]
 
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
+    config.autoload_paths += Dir["#{config.root}/app/models/**/"]
 
     config.action_dispatch.cookies_serializer = :hybrid
     # suppress deprecation warning
@@ -70,4 +71,3 @@ module AntCat
 end
 
 ActiveSupport::JSON::Encoding.escape_html_entities_in_json = true
-

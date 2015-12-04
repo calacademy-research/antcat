@@ -1,8 +1,8 @@
 # coding: UTF-8
-require 'reference_has_document'
-require 'reference_search'
-require 'reference_utility'
-require 'reference_workflow'
+require 'references/reference_has_document'
+require 'references/reference_search'
+require 'references/reference_utility'
+require 'references/reference_workflow'
 
 class Reference < ActiveRecord::Base
   attr_accessor :publisher_string
@@ -69,8 +69,6 @@ class Reference < ActiveRecord::Base
   def self.requires_title;
     true
   end
-
-
 
   before_save :set_author_names_caches
   before_destroy :check_not_nested

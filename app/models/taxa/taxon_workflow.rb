@@ -1,10 +1,9 @@
 # coding: UTF-8
-require_relative '../../lib/workflow_external_table'
+require_relative '../../../lib/workflow_external_table'
 class Taxon < ActiveRecord::Base
   include Workflow
   include Workflow::ExternalTable
   has_one :taxon_state
-
 
   workflow do
     state :old
@@ -15,10 +14,6 @@ class Taxon < ActiveRecord::Base
   end
 
   delegate :approver, :approved_at, to: :last_change
-
-  #
-  #
-
 
   def can_be_edited_by? user
     return false unless $Milieu.user_can_edit?(user)
@@ -39,14 +34,12 @@ class Taxon < ActiveRecord::Base
   # Returns the ID of the most recent change that touches this taxon.
   # TODO: Fix these duplicates once the tests pass
   def last_change
-
     Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon' ).last
   end
 
   # Returns the ID of the most recent change that touches this taxon.
   # Query that looks at all transactions and picks the latest one
   # used for review change link
-
   def latest_change
     Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').last
   end
@@ -55,7 +48,5 @@ class Taxon < ActiveRecord::Base
     # it seems to be necessary to reload the association and get its last element
     versions(true).last
   end
-
-
 
 end
