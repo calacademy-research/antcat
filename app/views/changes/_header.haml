@@ -3,7 +3,7 @@
 %div.change_header
   - if change.change_type != 'delete' and not taxon.nil?
     %div.change_description
-      %span.name= format_adder_name change.change_type, change.changed_by
+      %span.name= change.decorate.format_adder_name
       %span.taxon= link_to_taxon taxon
       %span.edit_button= edit_button taxon
       %span.undo_button= undo_button taxon, change
@@ -13,12 +13,12 @@
 
     - if change.approver
       %div.change_status
-        %span.approver.left= format_approver_name change.approver
+        %span.approver.left= change.approver.decorate.format_approver_name
         %span.approval_time.right= format_time_ago change.approved_at
         %div.clear
   - else
     %div.change_description
-      %span.name= format_adder_name change.change_type, change.changed_by
+      %span.name= change.decorate.format_adder_name
       %span.taxon=format_taxon_name taxon.name
       %span.undo_button= undo_button taxon, change
       %span.approve_button.left= approve_button taxon, change

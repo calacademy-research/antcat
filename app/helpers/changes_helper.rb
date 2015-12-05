@@ -8,19 +8,6 @@ module ChangesHelper
     content_tag :a, label, href: %{/catalog/#{taxon.id}}
   end
 
-
-  def format_adder_name change_type, user
-    if change_type == "create"
-      user_verb = "added"
-    elsif change_type == "delete"
-      user_verb = "deleted"
-    else
-      user_verb = "changed"
-    end
-
-    ("#{format_doer_name user} "+ user_verb).html_safe
-  end
-
   def format_taxon_name name
     name.name_html.html_safe
   end

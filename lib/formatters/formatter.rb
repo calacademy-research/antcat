@@ -42,15 +42,6 @@ module Formatters::Formatter
     content_tag :span, "#{time_ago_in_words time} ago", title: time
   end
 
-  def format_doer_name user
-    return "Someone" unless user
-    format_name_linking_to_email user.name, user.email
-  end
-
-  def format_name_linking_to_email name, email
-    content_tag(:a, name, href: %{mailto:#{email}}.html_safe)
-  end
-
   def hash_to_params_string hash
     hash.keys.sort.inject(''.html_safe) do |string, key|
       key_and_value = %{#{key}=#{h hash[key]}}

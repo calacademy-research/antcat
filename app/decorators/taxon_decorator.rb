@@ -80,7 +80,7 @@ class TaxonDecorator < Draper::Decorator
       else
         content << "Changed by"
       end
-      content << " #{format_doer_name(change.changed_by)} ".html_safe
+      content << " #{change.changed_by.decorate.format_doer_name} ".html_safe
       content << format_time_ago(change.created_at).html_safe
 
       if taxon.approved?
@@ -91,7 +91,7 @@ class TaxonDecorator < Draper::Decorator
         # has a noted approval.
         approved_change = Change.where('user_changed_taxon_id = ? and approved_at is not null', change.user_changed_taxon_id).last
 
-        content << "; approved by #{format_doer_name(approved_change.approver)} ".html_safe
+        content << "; approved by #{approved_change.approver.decorate.format_doer_name} ".html_safe
         content << format_time_ago(approved_change.approved_at).html_safe
       end
 

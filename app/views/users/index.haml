@@ -10,6 +10,6 @@
     %tr
       %td.id= user.id
       %td= user.can_edit? ? '*' : ' '
-      %td= format_name_linking_to_email user.name, user.email
+      %td= user.decorate.format_name_linking_to_email
       %td= user.email
 * = editor
