@@ -8,6 +8,7 @@ class TaxonDecorator < Draper::Decorator
   require_relative 'taxon/child_list'
   require_relative 'taxon/header'
   require_relative 'taxon/headline'
+  require_relative 'taxon/history'
   require_relative 'taxon/statistics'
 
   include AntwebRefactorHelper if $use_ant_web_formatter
@@ -18,36 +19,35 @@ class TaxonDecorator < Draper::Decorator
       nil
   end
 
-  public def header
+  def header
     TaxonDecorator::Header.new(taxon, get_current_user).header
   end
 
-  public def statistics options = {}
-
+  def statistics options = {}
     statistics = taxon.statistics or return ''
     string = TaxonDecorator::Statistics.new.statistics(statistics, options)
     helpers.content_tag :div, string, class: 'statistics'
   end
 
-  public def headline
+  def headline
     TaxonDecorator::Headline.new(taxon, get_current_user).headline
   end
 
-  public def child_lists
+  def child_lists
     TaxonDecorator::ChildList.new(taxon, get_current_user).child_lists
   end
 
-  ##################
+  def history
+    TaxonDecorator::History.new(taxon, get_current_user).history
+  end
 
-  public def genus_species_header_notes_taxt
+  def genus_species_header_notes_taxt
     if taxon.genus_species_header_notes_taxt.present?
       content_tag :div, detaxt(taxon.genus_species_header_notes_taxt), class: 'genus_species_header_notes_taxt'
     end
   end
 
-  ##########
-
-  public def references
+  def references
     if taxon.reference_sections.present?
       content_tag :div, class: 'reference_sections' do
         taxon.reference_sections.inject(''.html_safe) do |content, section|
@@ -57,19 +57,7 @@ class TaxonDecorator < Draper::Decorator
     end
   end
 
-  private def reference_section section
-    content_tag :div, class: 'section' do
-      [:title_taxt, :subtitle_taxt, :references_taxt].inject(''.html_safe) do |content, field|
-        if section[field].present?
-          content << content_tag(:div, detaxt(section[field]), class: field)
-        end
-        content
-      end
-    end
-  end
-
-  #########
-  public def change_history
+  def change_history
     return if taxon.old?
     change = taxon.latest_change
     return unless change
@@ -99,9 +87,20 @@ class TaxonDecorator < Draper::Decorator
     end
   end
 
-  ############
-  private def detaxt taxt
-    return '' unless taxt.present?
-    Taxt.to_string taxt, get_current_user
-  end
+  private
+    def reference_section section
+      content_tag :div, class: 'section' do
+        [:title_taxt, :subtitle_taxt, :references_taxt].inject(''.html_safe) do |content, field|
+          if section[field].present?
+            content << content_tag(:div, detaxt(section[field]), class: field)
+          end
+          content
+        end
+      end
+    end
+
+    def detaxt taxt
+      return '' unless taxt.present?
+      Taxt.to_string taxt, get_current_user
+    end
 end

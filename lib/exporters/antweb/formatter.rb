@@ -3,7 +3,7 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
   include Formatters::LinkFormatter
   extend Formatters::LinkFormatter
 
-  $use_ant_web_formatter = true
+  $use_ant_web_formatter = true # TODO remove
 
   def format
     content_tag :div, class: 'antcat_taxon' do
@@ -16,15 +16,6 @@ class Exporters::Antweb::Formatter < Formatters::TaxonFormatter
       content << references
       content
     end
-  end
-
-  def history
-    return unless @taxon.history_items.present?
-    '<p><b>Taxonomic history</b></p>'.html_safe + super
-  end
-
-  def history_item_body_attributes
-    { style: 'font-size: 13px' }
   end
 
   def self.link_to_taxon taxon # used in Taxt.rb

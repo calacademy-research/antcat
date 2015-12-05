@@ -2,18 +2,17 @@ class ChangeDecorator < Draper::Decorator
   delegate_all
 
   def format_adder_name
-    change_type = change.change_type
+    user_verb = case change.change_type
+                when "create" then "added"
+                when "delete" then "deleted"
+                else               "changed"
+                end
+
     user = change.changed_by
+    user_string = if user then user.decorate.format_doer_name
+                  else "Someone" end
 
-    if change_type == "create"
-      user_verb = "added"
-    elsif change_type == "delete"
-      user_verb = "deleted"
-    else
-      user_verb = "changed"
-    end
-
-    "#{user.decorate.format_doer_name} #{user_verb}".html_safe
+    "#{user_string} #{user_verb}".html_safe
   end
 
   def format_approver_name

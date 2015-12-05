@@ -49,11 +49,6 @@ module Formatters::CatalogFormatter
     [taxon.type.downcase, 'taxon', 'name']
   end
 
-
-  def self.format_reference_document_link reference, user
-    reference.decorate.format_reference_document_link reference, user
-  end
-
   # deprecated
   def self.taxon_label_and_css_classes taxon, options = {}
     {label: taxon_label(taxon, options), css_classes: taxon_css_classes(taxon, options)}

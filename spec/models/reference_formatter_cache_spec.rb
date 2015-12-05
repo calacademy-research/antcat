@@ -24,7 +24,6 @@ describe ReferenceFormatterCache do
       expect(reference.formatted_cache).to be_nil
       expect(reference.inline_citation_cache).to be_nil
     end
-
   end
 
   describe "Filling" do

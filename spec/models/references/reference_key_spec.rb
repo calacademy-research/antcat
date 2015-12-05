@@ -61,10 +61,6 @@ describe ReferenceKey do
           %{</span>} +
         %{</span>}
       )
-
-
-
-
     end
     it "should create a link to the reference without the PDF link if the user isn't logged in" do
       allow(@reference).to receive(:downloadable_by?).and_return false

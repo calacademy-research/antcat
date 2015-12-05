@@ -59,9 +59,8 @@ describe Formatters::CatalogFormatter do
       reference = FactoryGirl.create :reference
       allow(reference).to receive(:downloadable_by?).and_return true
       allow(reference).to receive(:url).and_return 'example.com'
-      expect(@formatter.format_reference_document_link(reference, nil)).to eq('<a class="document_link" href="example.com" target="_blank">PDF</a>')
+      expect(reference.decorate.format_reference_document_link).to eq('<a class="document_link" href="example.com" target="_blank">PDF</a>')
     end
   end
-
 
 end

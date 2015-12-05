@@ -4,7 +4,6 @@ class ReferenceKey
   include Formatters::Formatter
   include Formatters::LinkFormatter
 
-
   def initialize reference
     @reference = reference
   end
@@ -71,7 +70,7 @@ class ReferenceKey
   end
 
   def document_link user
-    string = Formatters::CatalogFormatter.format_reference_document_link @reference, user
+    string = @reference.decorate.format_reference_document_link
     return '' unless string
     ' '.html_safe + string
   end

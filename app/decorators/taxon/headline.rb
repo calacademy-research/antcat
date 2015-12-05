@@ -12,7 +12,7 @@ class TaxonDecorator::Headline
     @user = user
   end
 
-  public def headline
+  def headline
     content_tag :div, class: 'headline' do
       notes = headline_notes
       string = headline_protonym
@@ -29,141 +29,138 @@ class TaxonDecorator::Headline
     end
   end
 
-  private def headline_protonym
-    protonym = @taxon.protonym
-    return ''.html_safe unless protonym
-    string = protonym_name protonym
-    string << ' ' << headline_authorship(protonym.authorship)
-    string << locality(protonym.locality)
-    add_period_if_necessary(string || '')
-  end
-
-  ##########
-  private def headline_type
-    string = ''.html_safe
-    string << headline_type_name_and_taxt
-    string << headline_biogeographic_region
-    string << ' ' unless string.empty?
-    string << headline_verbatim_type_locality
-    string << ' ' unless string.empty?
-    string << headline_type_specimen
-    string.rstrip.html_safe
-  end
-
-  private def headline_type_name_and_taxt
-    taxt = @taxon.type_taxt
-    if not @taxon.type_name and taxt
-      string = headline_type_taxt taxt
-    else
-      return ''.html_safe if not @taxon.type_name
-      rank = @taxon.type_name.rank
-      rank = 'genus' if rank == 'subgenus'
-      string = "Type-#{rank}: ".html_safe
-      string << headline_type_name + headline_type_taxt(taxt)
-      string
+  private
+    def headline_protonym
+      protonym = @taxon.protonym
+      return ''.html_safe unless protonym
+      string = protonym_name protonym
+      string << ' ' << headline_authorship(protonym.authorship)
+      string << locality(protonym.locality)
+      add_period_if_necessary(string || '')
     end
-    content_tag :span, class: 'type' do
-      add_period_if_necessary string
-    end
-  end
 
-  private def headline_type_name
-    type = Taxon.find_by_name @taxon.type_name.to_s
-    return headline_type_name_link(type) if type
-    headline_type_name_no_link @taxon.type_name, @taxon.type_fossil
-  end
-
-  private def headline_type_name_link type
-    link_to_taxon type
-  end
-
-  private def headline_type_name_no_link type_name, fossil
-    rank = type_name.rank
-    rank = 'genus' if rank == 'subgenus'
-    name = type_name.to_html_with_fossil fossil
-    content_tag :span, name, class: "#{rank} taxon"
-  end
-
-  private def headline_type_taxt taxt
-    add_period_if_necessary(detaxt taxt)
-  end
-
-  private def headline_biogeographic_region
-    string = ''
-    return string if @taxon.biogeographic_region.blank?
-    string << ' ' unless string.length.zero?
-    periodized_string = add_period_if_necessary @taxon.biogeographic_region
-    string << periodized_string
-    string
-  end
-
-  private def headline_verbatim_type_locality
-    string = ''
-    return string if @taxon.verbatim_type_locality.blank?
-    string << '"'
-    periodized_string = add_period_if_necessary @taxon.verbatim_type_locality
-    string << periodized_string
-    string << '"'
-    string
-  end
-
-  private def headline_type_specimen
-    string = ''.html_safe
-    if @taxon.type_specimen_repository.present?
-      periodized_string = add_period_if_necessary @taxon.type_specimen_repository
-      string << periodized_string
-    end
-    if @taxon.type_specimen_code.present?
+    def headline_type
+      string = ''.html_safe
+      string << headline_type_name_and_taxt
+      string << headline_biogeographic_region
       string << ' ' unless string.empty?
-      periodized_string = add_period_if_necessary @taxon.type_specimen_code
-      string << periodized_string
-    end
-    if @taxon.type_specimen_url.present?
+      string << headline_verbatim_type_locality
       string << ' ' unless string.empty?
-      s = @taxon.type_specimen_url
-      string << link(s, s)
+      string << headline_type_specimen
+      string.rstrip.html_safe
     end
-    string.html_safe
-  end
 
-  #########
-  private def protonym_name protonym
-    content_tag :b, content_tag(:span, Formatters::CatalogFormatter.protonym_label(protonym), class: 'protonym_name')
-  end
-
-  private def headline_authorship authorship
-    return '' unless authorship
-    return '' unless authorship.reference
-    string = link_to_reference(authorship.reference, @user)
-    string << ": #{authorship.pages}" if authorship.pages.present?
-    string << " (#{authorship.forms})" if authorship.forms.present?
-    string << ' ' << detaxt(authorship.notes_taxt) if authorship.notes_taxt
-    content_tag :span, string, class: :authorship
-  end
-
-  private def locality locality
-    return '' unless locality.present?
-    locality = locality.upcase.gsub(/\(.+?\)/) {|text| text.titlecase}
-    add_period_if_necessary ' ' + locality
-  end
-
-  private def headline_notes
-    return unless @taxon.headline_notes_taxt.present?
-    detaxt @taxon.headline_notes_taxt
-  end
-
-  private def link_to_review_change
-    if @taxon.can_be_reviewed_by?(@user) && @taxon.latest_change
-      button 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.latest_change.id}"
-    end
-  end
-
-  private def link_to_delete_taxon
-    unless @user.nil?
-      if @user.is_superadmin?
-        button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete", 'data-taxon-id' => "#{@taxon.id}"}
+    def headline_type_name_and_taxt
+      taxt = @taxon.type_taxt
+      if not @taxon.type_name and taxt
+        string = headline_type_taxt taxt
+      else
+        return ''.html_safe if not @taxon.type_name
+        rank = @taxon.type_name.rank
+        rank = 'genus' if rank == 'subgenus'
+        string = "Type-#{rank}: ".html_safe
+        string << headline_type_name + headline_type_taxt(taxt)
+        string
+      end
+      content_tag :span, class: 'type' do
+        add_period_if_necessary string
       end
     end
-  end
+
+    def headline_type_name
+      type = Taxon.find_by_name @taxon.type_name.to_s
+      return headline_type_name_link(type) if type
+      headline_type_name_no_link @taxon.type_name, @taxon.type_fossil
+    end
+
+    def headline_type_name_link type
+      link_to_taxon type
+    end
+
+    def headline_type_name_no_link type_name, fossil
+      rank = type_name.rank
+      rank = 'genus' if rank == 'subgenus'
+      name = type_name.to_html_with_fossil fossil
+      content_tag :span, name, class: "#{rank} taxon"
+    end
+
+    def headline_type_taxt taxt
+      add_period_if_necessary(detaxt taxt)
+    end
+
+    def headline_biogeographic_region
+      string = ''
+      return string if @taxon.biogeographic_region.blank?
+      string << ' ' unless string.length.zero?
+      periodized_string = add_period_if_necessary @taxon.biogeographic_region
+      string << periodized_string
+      string
+    end
+
+    def headline_verbatim_type_locality
+      string = ''
+      return string if @taxon.verbatim_type_locality.blank?
+      string << '"'
+      periodized_string = add_period_if_necessary @taxon.verbatim_type_locality
+      string << periodized_string
+      string << '"'
+      string
+    end
+
+    def headline_type_specimen
+      string = ''.html_safe
+      if @taxon.type_specimen_repository.present?
+        periodized_string = add_period_if_necessary @taxon.type_specimen_repository
+        string << periodized_string
+      end
+      if @taxon.type_specimen_code.present?
+        string << ' ' unless string.empty?
+        periodized_string = add_period_if_necessary @taxon.type_specimen_code
+        string << periodized_string
+      end
+      if @taxon.type_specimen_url.present?
+        string << ' ' unless string.empty?
+        s = @taxon.type_specimen_url
+        string << link(s, s)
+      end
+      string.html_safe
+    end
+
+    def protonym_name protonym
+      content_tag :b, content_tag(:span, Formatters::CatalogFormatter.protonym_label(protonym), class: 'protonym_name')
+    end
+
+    def headline_authorship authorship
+      return '' unless authorship
+      return '' unless authorship.reference
+      string = link_to_reference(authorship.reference, @user)
+      string << ": #{authorship.pages}" if authorship.pages.present?
+      string << " (#{authorship.forms})" if authorship.forms.present?
+      string << ' ' << detaxt(authorship.notes_taxt) if authorship.notes_taxt
+      content_tag :span, string, class: :authorship
+    end
+
+    def locality locality
+      return '' unless locality.present?
+      locality = locality.upcase.gsub(/\(.+?\)/) {|text| text.titlecase}
+      add_period_if_necessary ' ' + locality
+    end
+
+    def headline_notes
+      return unless @taxon.headline_notes_taxt.present?
+      detaxt @taxon.headline_notes_taxt
+    end
+
+    def link_to_review_change
+      if @taxon.can_be_reviewed_by?(@user) && @taxon.latest_change
+        button 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.latest_change.id}"
+      end
+    end
+
+    def link_to_delete_taxon
+        if @user.try :is_superadmin?
+          button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete", 'data-taxon-id' => "#{@taxon.id}"}
+        end
+    end
 
 end

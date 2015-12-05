@@ -3,7 +3,6 @@ module Formatters::ButtonFormatter
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::UrlHelper
 
-
   #
   # "Parameters" for the three below items end up as literal parameters for the html input object.
   # e.g.:  button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete",'data-taxon-id' => "#{@taxon.id}"}
@@ -22,8 +21,6 @@ module Formatters::ButtonFormatter
     parameters[:secondary] = true
     make_button label, id, 'button', parameters, ['cancel']
   end
-
-
 
   def button_to_path label, path, parameters = {}
     string = button_to label, path, parameters

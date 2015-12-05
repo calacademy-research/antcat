@@ -3,16 +3,10 @@ class TaxonDecorator::Statistics
   include ActionView::Context
   include ApplicationHelper #pluralize_with_delimiters, count_and_status
 
-  def taxon_statistics taxon, options = {}
-    return '' unless taxon
-    statistics = taxon.statistics
-    return '' unless statistics
-    statistics statistics, options
-  end
-
   def statistics statistics, options = {}
     options.reverse_merge! :include_invalid => true, :include_fossil => true
     return '' unless statistics && statistics.present?
+
     strings = [:extant, :fossil].inject({}) do |strings, extant_or_fossil|
       extant_or_fossil_statistics = statistics[extant_or_fossil]
       if extant_or_fossil_statistics
@@ -41,55 +35,55 @@ class TaxonDecorator::Statistics
     end.join.html_safe
   end
 
-  def rank_statistics statistics, rank, include_invalid
-    statistics = statistics[rank]
-    return unless statistics
-    statistics_strings = []
-    string = valid_statistics statistics, rank, include_invalid
-    statistics_strings << string if string.present?
-    if include_invalid
-      string = invalid_statistics statistics
+  private
+    def rank_statistics statistics, rank, include_invalid
+      statistics = statistics[rank]
+      return unless statistics
+      statistics_strings = []
+      string = valid_statistics statistics, rank, include_invalid
       statistics_strings << string if string.present?
-    end
-    statistics_strings.join ' '
-  end
-
-  def valid_statistics statistics, rank, include_invalid
-    string = ''
-    if statistics['valid']
-      string << rank_status_count(rank, 'valid', statistics['valid'], include_invalid)
-      statistics.delete 'valid'
-    end
-    string
-  end
-
-  def invalid_statistics statistics
-    sorted_keys = statistics.keys.sort_by do |key|
-      Status.ordered_statuses.index key
+      if include_invalid
+        string = invalid_statistics statistics
+        statistics_strings << string if string.present?
+      end
+      statistics_strings.join ' '
     end
 
-    status_strings = sorted_keys.inject([]) do |status_strings, status|
-      status_strings << rank_status_count(:genera, status, statistics[status])
+    def valid_statistics statistics, rank, include_invalid
+      string = ''
+      if statistics['valid']
+        string << rank_status_count(rank, 'valid', statistics['valid'], include_invalid)
+        statistics.delete 'valid'
+      end
+      string
     end
 
-    string = ''
-    if status_strings.present?
-      string << ' ' if string.present?
-      string << "(#{status_strings.join(', ')})"
+    def invalid_statistics statistics
+      sorted_keys = statistics.keys.sort_by do |key|
+        Status.ordered_statuses.index key
+      end
+
+      status_strings = sorted_keys.inject([]) do |status_strings, status|
+        status_strings << rank_status_count(:genera, status, statistics[status])
+      end
+
+      string = ''
+      if status_strings.present?
+        string << ' ' if string.present?
+        string << "(#{status_strings.join(', ')})"
+      end
+
+      string
     end
 
-    string
-  end
-
-  def rank_status_count rank, status, count, label_statuses = true
-    if label_statuses
-      count_and_status = pluralize_with_delimiters count, status, Status[status].to_s(status != 'valid' ? :plural : nil)
-    else
-      count_and_status = number_with_delimiter count
+    def rank_status_count rank, status, count, label_statuses = true
+      if label_statuses
+        count_and_status = pluralize_with_delimiters count, status, Status[status].to_s(status != 'valid' ? :plural : nil)
+      else
+        count_and_status = number_with_delimiter count
+      end
+      string = count_and_status
+      string << " #{Rank[rank].to_s(count)}" if status == 'valid'
+      string
     end
-    string = count_and_status
-    string << " #{Rank[rank].to_s(count)}" if status == 'valid'
-    string
-  end
-
 end

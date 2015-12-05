@@ -52,7 +52,7 @@ describe Exporters::Antweb::Formatter do
             # type
             %{<span class="type">Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}" target="_blank"><i>Atta major</i></a>.</span>} +
             %{ } +
-      # links
+            # links
             %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>} +
             %{ } +
             %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta" target="_blank">AntWiki</a>} +
@@ -75,4 +75,3 @@ describe Exporters::Antweb::Formatter do
   end
 
 end
-
