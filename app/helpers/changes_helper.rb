@@ -1,7 +1,6 @@
 # coding: UTF-8
 module ChangesHelper
   include Formatters::Formatter
-  include Formatters::ChangesFormatter
 
   def link_to_taxon taxon
     label = taxon.name.to_html_with_fossil(taxon.fossil?)
@@ -56,7 +55,6 @@ module ChangesHelper
     unless taxon.taxon_state.nil?
       if taxon.can_be_edited_by? current_user
         button 'Edit', 'edit_button', 'data-edit-location' => edit_taxa_path(taxon)
-
       end
       # else
       #   #TODO make this pretty
@@ -93,6 +91,5 @@ module ChangesHelper
       button 'Approve all', 'approve_all_button'
     end
   end
-
 
 end

@@ -1,7 +1,7 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Formatters::StatisticsFormatter do
+describe TaxonDecorator::Statistics do
   before do
     # WIP refactoring formatter into a decorator
     @decorator_helper = TaxonDecorator::Statistics.new

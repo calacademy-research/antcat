@@ -1,7 +1,7 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Formatters::ChangesFormatter do
+describe "ChangeDecorator-ish" do
   describe "Formatting approver name" do
     it "should call Formatters::CatalogFormatter" do
       approver = FactoryGirl.create :editor, name: 'Brian Fisher'
