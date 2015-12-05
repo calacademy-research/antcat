@@ -16,7 +16,8 @@ class ChangeDecorator < Draper::Decorator
     "#{user.decorate.format_doer_name} #{user_verb}".html_safe
   end
 
-  def format_approver_name user
+  def format_approver_name
+    user = change.approver
     "#{user.decorate.format_doer_name} approved this change".html_safe
   end
 

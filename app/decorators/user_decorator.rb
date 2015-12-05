@@ -6,7 +6,7 @@ class UserDecorator < Draper::Decorator
   end
 
   def format_doer_name
-    format_name_linking_to_email
+    format_name_linking_to_email || 'Someone'
   end
 
 end
