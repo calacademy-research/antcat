@@ -7,8 +7,8 @@
         Children
       .clear
     .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
-      - formatter = Formatters::CatalogTaxonFormatter.new taxon, current_user
+      - formatter = Formatters::TaxonFormatter.new taxon, current_user
       - for child in Taxon.sort_by_status_and_name(taxon.children)
-        = Formatters::CatalogTaxonFormatter.link_to_taxon child
-        = raw "(" + Formatters::CatalogTaxonFormatter.taxon_status(child) + ")"
+        = Formatters::TaxonFormatter.link_to_taxon child
+        = raw "(" + Formatters::TaxonFormatter.taxon_status(child) + ")"
         %br

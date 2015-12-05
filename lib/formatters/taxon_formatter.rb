@@ -31,6 +31,14 @@ class Formatters::TaxonFormatter
     @taxon.decorate.history
   end
 
+  def header
+    @taxon.decorate.header
+  end
+
+  def change_history
+    @taxon.decorate.change_history
+  end
+
   private
     def detaxt taxt #for AntWeb exporter
       return '' unless taxt.present?

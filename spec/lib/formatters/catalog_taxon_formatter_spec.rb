@@ -1,9 +1,9 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Formatters::CatalogTaxonFormatter do
+describe Formatters::TaxonFormatter do
   before do
-    @formatter = Formatters::CatalogTaxonFormatter
+    @formatter = Formatters::TaxonFormatter
   end
 
   describe "Header formatting" do
@@ -179,8 +179,8 @@ describe Formatters::CatalogTaxonFormatter do
     it "should get the statistics, then format them", pending: true do
       pending "test after refactoring TaxonDecorator"
       subfamily = double
-      expect(subfamily).to receive(:statistics).and_return extant: :foo
-      formatter = Formatters::CatalogTaxonFormatter.new subfamily
+      expect(subfamily).to TaxonFormatter(:statistics).and_return extant: :foo
+      formatter = Formatters::TaxonFormatter.new subfamily
       expect(Formatters::StatisticsFormatter).to receive(:statistics).with({extant: :foo}, {})
       formatter.statistics
     end
@@ -188,20 +188,20 @@ describe Formatters::CatalogTaxonFormatter do
       pending "test after refactoring TaxonDecorator"
       subfamily = double
       expect(subfamily).to receive(:statistics).and_return nil
-      formatter = Formatters::CatalogTaxonFormatter.new subfamily
+      formatter = Formatters::TaxonFormatter.new subfamily
       expect(Formatters::StatisticsFormatter).not_to receive :statistics
       expect(formatter.statistics).to eq('')
     end
     it "should not leave a comma at the end if only showing valid taxa" do
       genus = create_genus
       expect(genus).to receive(:statistics).and_return extant: {species: {'valid' => 2}}
-      formatter = Formatters::CatalogTaxonFormatter.new genus
+      formatter = Formatters::TaxonFormatter.new genus
       expect(formatter.statistics(include_invalid: false)).to eq("<div class=\"statistics\"><p class=\"taxon_statistics\">2 species</p></div>")
     end
     it "should not leave a comma at the end if only showing valid taxa" do
       genus = create_genus
       expect(genus).to receive(:statistics).and_return :extant => {:species => {'valid' => 2}}
-      formatter = Formatters::CatalogTaxonFormatter.new genus
+      formatter = Formatters::TaxonFormatter.new genus
       expect(formatter.statistics(include_invalid: false)).to eq("<div class=\"statistics\"><p class=\"taxon_statistics\">2 species</p></div>")
     end
   end
