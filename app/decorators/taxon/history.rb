@@ -55,7 +55,7 @@ class TaxonDecorator::History
 
     def detaxt taxt #for AntWeb exporter
       return '' unless taxt.present?
-      Taxt.to_string taxt, @user, expansion: false, formatter: Exporters::Antweb::Formatter
+      Taxt.to_string taxt, @user, expansion: false
     end
 
 end

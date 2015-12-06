@@ -155,10 +155,19 @@ module Taxt
       Taxon.find(taxon_id_match).name.to_html
     else
       taxon = Taxon.find taxon_id_match
-      (options[:formatter] || self).link_to_taxon taxon
+
+      if $use_ant_web_formatter # TODO remove dependency on global variable
+        antweb_formatter_link_to_taxon taxon
+      else
+        link_to_taxon taxon
+      end
     end
   rescue
     whole_match
+  end
+
+  def self.antweb_formatter_link_to_taxon taxon #TODO remove
+    link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
   end
 
   def self.link_to_taxon taxon #TODO remove

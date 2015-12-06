@@ -4,8 +4,7 @@ require 'spec_helper'
 describe Exporters::Antweb::Exporter do
   before do
     @exporter = Exporters::Antweb::Exporter.new
-    stub = double format: 'history'
-    allow(Exporters::Antweb::Formatter).to receive(:new).and_return stub
+    allow(@exporter).to receive(:export_history).and_return 'history'
   end
 
   describe "The header" do

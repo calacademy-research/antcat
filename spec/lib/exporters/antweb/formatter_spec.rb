@@ -1,14 +1,14 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe Exporters::Antweb::Formatter do
+describe Exporters::Antweb::Exporter do
   before do
-    @formatter = Exporters::Antweb::Formatter
+    @formatter = Exporters::Antweb::Exporter
   end
 
   describe "Taxon" do
     it "should work" do
-      @formatter.new(create_genus, nil).format
+      @formatter.new.send(:export_history, create_genus)
     end
   end
 
@@ -29,7 +29,8 @@ describe Exporters::Antweb::Formatter do
 
       genus.update_attribute :type_name, species.name
       item = genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
-      expect(@formatter.new(genus).format).to eq(
+      #expect(@formatter.new(genus).format).to eq(
+      expect(@formatter.new.send(:export_history, genus)).to eq(
         %{<div class="antcat_taxon">} +
 
           # statistics

@@ -162,10 +162,12 @@ describe Taxt do
           expect(Taxt.to_string("{tax #{genus.id}}")).to eq(%{<a href="/catalog/#{genus.id}"><i>Atta</i></a>})
         end
         it "should be able to use a different link formatter" do
+          # TODO cleanup
           genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
-          formatter = double
-          expect(formatter).to receive :link_to_taxon
-          Taxt.to_string("{tax #{genus.id}}", nil, formatter: formatter)
+          expect(Taxt).to receive :antweb_formatter_link_to_taxon
+          $use_ant_web_formatter = true
+          Taxt.to_string("{tax #{genus.id}}", nil)
+          $use_ant_web_formatter = false
         end
         it "should include the fossil symbol if applicable" do
           genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>'), fossil: true
