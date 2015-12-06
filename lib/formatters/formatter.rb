@@ -15,8 +15,7 @@ module Formatters::Formatter
   end
 
   def add_period_if_necessary string
-    return unless string
-    return string if string.empty?
+    return unless string.present?
     return string + '.' unless string[-1..-1] =~ /[.!?]/
     string
   end
@@ -45,9 +44,8 @@ module Formatters::Formatter
   def hash_to_params_string hash
     hash.keys.sort.inject(''.html_safe) do |string, key|
       key_and_value = %{#{key}=#{h hash[key]}}
-      string << '&'.html_safe if string.length != 0
+      string << '&'.html_safe unless string.empty?
       string << key_and_value.html_safe
-      string
     end
   end
 

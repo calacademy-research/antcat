@@ -11,49 +11,50 @@ class TaxonDecorator::ChildList
 
   def child_lists
     content = ''.html_safe
-    content << child_lists_for_rank(@taxon, :subfamilies)
-    content << child_lists_for_rank(@taxon, :tribes)
-    content << child_lists_for_rank(@taxon, :genera)
-    content << collective_group_name_child_list(@taxon)
+    [:subfamilies, :tribes, :genera].each do |rank|
+      content << child_lists_for_rank(rank)
+    end
+    content << collective_group_name_child_list
     return unless content.present?
+
     content_tag :div, class: 'child_lists' do
       content
     end
   end
 
   private
-    def child_lists_for_rank parent, children_selector
-      return '' unless parent.respond_to?(children_selector) && parent.send(children_selector).present?
+    def child_lists_for_rank children_selector
+      return '' unless @taxon.respond_to?(children_selector) && @taxon.send(children_selector).present?
 
-      if Subfamily === parent && children_selector == :genera
-        child_list_fossil_pairs(parent, children_selector, incertae_sedis_in: 'subfamily', hong: false) +
-        child_list_fossil_pairs(parent, children_selector, incertae_sedis_in: 'subfamily', hong: true)
+      if Subfamily === @taxon && children_selector == :genera
+        child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: false) +
+        child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: true)
       else
-        child_list_fossil_pairs parent, children_selector
+        child_list_fossil_pairs children_selector
       end
     end
 
-    def collective_group_name_child_list parent
+    def collective_group_name_child_list
       children_selector = :collective_group_names
-      return '' unless parent.respond_to?(children_selector) && parent.send(children_selector).present?
-      child_list parent, parent.send(children_selector), false, collective_group_names: true
+      return '' unless @taxon.respond_to?(children_selector) && @taxon.send(children_selector).present?
+      child_list @taxon.send(children_selector), false, collective_group_names: true
     end
 
-    def child_list_fossil_pairs parent, children_selector, conditions = {}
+    def child_list_fossil_pairs children_selector, conditions = {}
       extant_conditions = conditions.merge fossil: false
       extinct_conditions = conditions.merge fossil: true
-      extinct = parent.child_list_query children_selector, extinct_conditions
-      extant = parent.child_list_query children_selector, extant_conditions
+      extinct = @taxon.child_list_query children_selector, extinct_conditions
+      extant = @taxon.child_list_query children_selector, extant_conditions
       specify_extinct_or_extant = extinct.present?
 
-      child_list(parent, extant, specify_extinct_or_extant, extant_conditions) +
-      child_list(parent, extinct, specify_extinct_or_extant, extinct_conditions)
+      child_list(extant, specify_extinct_or_extant, extant_conditions) +
+      child_list(extinct, specify_extinct_or_extant, extinct_conditions)
     end
 
-    def child_list parent, children, specify_extinct_or_extant, conditions = {}
-      label = ''.html_safe
-      return label unless children.present?
+    def child_list children, specify_extinct_or_extant, conditions = {}
+      return '' unless children.present?
 
+      label = ''.html_safe
       label << 'Hong (2002) ' if conditions[:hong]
 
       if conditions[:collective_group_names]
@@ -64,7 +65,7 @@ class TaxonDecorator::ChildList
 
       if specify_extinct_or_extant
         label << ' ('
-        label << (conditions[:fossil] ? 'extinct' : 'extant')
+        label << if conditions[:fossil] then 'extinct' else 'extant' end
         label << ')'
       end
 
@@ -76,7 +77,7 @@ class TaxonDecorator::ChildList
         label << ' of '
       end
 
-      label << Formatters::CatalogFormatter.taxon_label_span(parent, ignore_status: true)
+      label << Formatters::CatalogFormatter.taxon_label_span(@taxon, ignore_status: true)
 
       content_tag :div, class: :child_list do
         content = ''.html_safe
@@ -84,7 +85,6 @@ class TaxonDecorator::ChildList
         content << ': '
         content << child_list_items(children)
         content << '.'
-        content
       end
     end
 

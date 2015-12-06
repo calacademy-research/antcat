@@ -19,6 +19,11 @@ class TaxonDecorator < Draper::Decorator
       nil
   end
 
+  def link_to_taxon
+    label = taxon.name.to_html_with_fossil(taxon.fossil?)
+    content_tag :a, label, href: %{/catalog/#{taxon.id}}
+  end
+
   def header
     TaxonDecorator::Header.new(taxon, get_current_user).header
   end
@@ -87,6 +92,54 @@ class TaxonDecorator < Draper::Decorator
     end
   end
 
+  def taxon_status
+    #
+    # Note: Cleverness is used here to make these queries (e.g.: obsolete_combination?)
+    # appear as tags. That's how CSS does its coloring.
+    #
+    labels = []
+    labels << "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in
+    if taxon.homonym? && taxon.homonym_replaced_by
+      labels << "homonym replaced by #{link_to_taxon(taxon.homonym_replaced_by)}"
+    elsif taxon.unidentifiable?
+      labels << 'unidentifiable'
+    elsif taxon.unresolved_homonym?
+      labels << "unresolved junior homonym"
+    elsif taxon.nomen_nudum?
+      labels << "<i>nomen nudum</i>"
+    elsif taxon.synonym?
+      label = 'junior synonym'
+      label << format_senior_synonym
+      labels << label
+    elsif taxon.obsolete_combination?
+      label = 'an obsolete combination of '
+      label << format_valid_combination
+      labels << label
+    elsif taxon.unavailable_misspelling?
+      label = 'a misspelling of '
+      label << format_valid_combination
+      labels << label
+
+    elsif taxon.unavailable_uncategorized?
+      label = 'see '
+      label << format_valid_combination
+      labels << label
+    elsif taxon.nonconfirming_synonym?
+      label = 'a non standard form of '
+      label << format_valid_combination
+      labels << label
+    elsif taxon.invalid?
+      label = Status[taxon].to_s.dup
+      labels << label
+    else
+      labels << 'valid'
+    end
+
+    labels << 'ichnotaxon' if taxon.ichnotaxon?
+
+    labels.join(', ').html_safe
+  end
+
   private
     def reference_section section
       content_tag :div, class: 'section' do
@@ -102,5 +155,19 @@ class TaxonDecorator < Draper::Decorator
     def detaxt taxt
       return '' unless taxt.present?
       Taxt.to_string taxt, get_current_user
+    end
+
+    def format_senior_synonym
+      if current_valid_taxon = taxon.current_valid_taxon_including_synonyms
+        return ' of current valid taxon ' << current_valid_taxon.decorate.link_to_taxon
+      end
+      ''
+    end
+
+    def format_valid_combination
+      if current_valid_taxon = taxon.current_valid_taxon_including_synonyms
+        return current_valid_taxon.decorate.link_to_taxon
+      end
+      ''
     end
 end

@@ -1,4 +1,4 @@
 # coding: UTF-8
 module UsersHelper
-  include Formatters::Formatter
+  #include Formatters::Formatter
 end

@@ -1,13 +1,6 @@
 # coding: UTF-8
 
 module CatalogHelper
-  def status_labels
-    Formatters::CatalogFormatter.status_labels
-  end
-
-  def format_statistics statistics, include_invalid = true
-    Formatters::CatalogFormatter.format_statistics statistics, :include_invalid => include_invalid
-  end
 
   def make_catalog_search_results_columns items
     column_count = 4

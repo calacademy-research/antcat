@@ -89,22 +89,18 @@ class TaxonDecorator::Headline
     end
 
     def headline_biogeographic_region
-      string = ''
-      return string if @taxon.biogeographic_region.blank?
-      string << ' ' unless string.length.zero?
+      return '' if @taxon.biogeographic_region.blank?
+      string =  ''
       periodized_string = add_period_if_necessary @taxon.biogeographic_region
       string << periodized_string
-      string
     end
 
     def headline_verbatim_type_locality
-      string = ''
-      return string if @taxon.verbatim_type_locality.blank?
-      string << '"'
+      return '' if @taxon.verbatim_type_locality.blank?
+      string =  '"'
       periodized_string = add_period_if_necessary @taxon.verbatim_type_locality
       string << periodized_string
       string << '"'
-      string
     end
 
     def headline_type_specimen
@@ -131,8 +127,7 @@ class TaxonDecorator::Headline
     end
 
     def headline_authorship authorship
-      return '' unless authorship
-      return '' unless authorship.reference
+      return '' unless authorship && authorship.reference
       string = link_to_reference(authorship.reference, @user)
       string << ": #{authorship.pages}" if authorship.pages.present?
       string << " (#{authorship.forms})" if authorship.forms.present?

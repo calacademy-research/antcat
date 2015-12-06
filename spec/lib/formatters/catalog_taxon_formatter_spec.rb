@@ -96,23 +96,23 @@ describe Formatters::TaxonFormatter do
     describe "Child lists" do
       it "should format a tribes list" do
         attini = create_tribe 'Attini', subfamily: @subfamily
-        expect(@decorator_helper.new(nil).send(:child_list, @subfamily, @subfamily.tribes, true)).to eq(%{<div class="child_list"><span class="label">Tribe (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>})
+        expect(@decorator_helper.new(@subfamily).send(:child_list, @subfamily.tribes, true)).to eq(%{<div class="child_list"><span class="label">Tribe (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>})
       end
       it "should format a child list, specifying extinctness" do
         atta = create_genus 'Atta', subfamily: @subfamily
-        expect(@decorator_helper.new(nil).send(:child_list, @subfamily, Genus.all, true)).to eq(%{<div class="child_list"><span class="label">Genus (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>})
+        expect(@decorator_helper.new(@subfamily).send(:child_list, Genus.all, true)).to eq(%{<div class="child_list"><span class="label">Genus (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>})
       end
       it "should format a genera list, not specifying extinctness" do
         atta = create_genus 'Atta', subfamily: @subfamily
-        expect(@decorator_helper.new(nil).send(:child_list, @subfamily, Genus.all, false)).to eq(%{<div class="child_list"><span class="label">Genus of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>})
+        expect(@decorator_helper.new(@subfamily).send(:child_list, Genus.all, false)).to eq(%{<div class="child_list"><span class="label">Genus of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>})
       end
       it "should format an incertae sedis genera list" do
         genus = create_genus 'Atta', subfamily: @subfamily, incertae_sedis_in: 'subfamily'
-        expect(@decorator_helper.new(nil).send(:child_list, @subfamily, [genus], false, incertae_sedis_in: 'subfamily')).to eq(%{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>})
+        expect(@decorator_helper.new(@subfamily).send(:child_list, [genus], false, incertae_sedis_in: 'subfamily')).to eq(%{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>})
       end
       it "should format a list of collective group names" do
         genus = create_genus 'Atta', subfamily: @subfamily, status: 'collective group name'
-        expect(@decorator_helper.new(nil).send(:collective_group_name_child_list, @subfamily)).to eq(%{<div class="child_list"><span class="label">Collective group name in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>})
+        expect(@decorator_helper.new(@subfamily).send(:collective_group_name_child_list)).to eq(%{<div class="child_list"><span class="label">Collective group name in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>})
       end
     end
   end
@@ -259,7 +259,7 @@ describe Formatters::TaxonFormatter do
       invalid_senior = create_genus 'Atta', status: 'synonym'
       junior = create_genus 'Eciton', status: 'synonym'
       Synonym.create! junior_synonym: junior, senior_synonym: invalid_senior
-      expect(@decorator_helper.new(junior).send(:format_senior_synonym, junior)).to eq('')
+      expect(junior.decorate.send(:format_senior_synonym)).to eq('')
     end
   end
 end

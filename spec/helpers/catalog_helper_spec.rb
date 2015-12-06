@@ -16,17 +16,6 @@ describe CatalogHelper do
     end
   end
 
-  describe "Delegation to Formatters::CatalogFormatter" do
-    it "status labels" do
-      expect(Formatters::CatalogFormatter).to receive :status_labels
-      helper.status_labels
-    end
-    it "format statistics" do
-      expect(Formatters::CatalogFormatter).to receive(:format_statistics).with(1, :include_invalid => true)
-      helper.format_statistics 1, true
-    end
-  end
-
   describe "Hide link" do
     it "should create a link to the hide tribes action with all the current parameters" do
       taxon = FactoryGirl.create :genus
@@ -38,17 +27,6 @@ describe CatalogHelper do
     it "should create a link to the show action" do
       taxon = FactoryGirl.create :genus
       expect(helper.show_child_link('tribes', taxon, {})).to eq(%{<a href="/catalog/show_tribes">show tribes</a>})
-    end
-  end
-
-  describe "Delegation to Formatters::CatalogFormatter" do
-    it "status labels" do
-      expect(Formatters::CatalogFormatter).to receive :status_labels
-      helper.status_labels
-    end
-    it "format statistics" do
-      expect(Formatters::CatalogFormatter).to receive(:format_statistics).with(1, include_invalid: true)
-      helper.format_statistics 1, true
     end
   end
 

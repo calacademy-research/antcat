@@ -41,13 +41,8 @@ class TaxonDecorator::Header
           content << content_tag(:span, " see ", class: 'see')
           content << content_tag(:span, header_name_for_taxon(@taxon.current_valid_taxon))
         end
-        content << link_to_edit_taxon if link_to_edit_taxon
-        content
+        content << link_to_edit_taxon
       end
-    end
-
-    def header_link taxon, label
-      link label, %{/catalog/#{taxon.id}}, target: nil
     end
 
     def header_name
@@ -86,60 +81,16 @@ class TaxonDecorator::Header
       string
     end
 
+    def header_link taxon, label
+      link label, %{/catalog/#{taxon.id}}, target: nil
+    end
+
     def header_authorship
       @taxon.authorship_string
     end
 
     def status
-      taxon_status @taxon
-    end
-
-    def taxon_status taxon
-      #
-      # Note: Cleverness is used here to make these queries (e.g.: obsolete_combination?)
-      # appear as tags. That's how CSS does its coloring.
-      #
-      labels = []
-      labels << "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in
-      if taxon.homonym? && taxon.homonym_replaced_by
-        labels << "homonym replaced by #{link_to_taxon(taxon.homonym_replaced_by)}"
-      elsif taxon.unidentifiable?
-        labels << 'unidentifiable'
-      elsif taxon.unresolved_homonym?
-        labels << "unresolved junior homonym"
-      elsif taxon.nomen_nudum?
-        labels << "<i>nomen nudum</i>"
-      elsif taxon.synonym?
-        label = 'junior synonym'
-        label << format_senior_synonym(taxon)
-        labels << label
-      elsif taxon.obsolete_combination?
-        label = 'an obsolete combination of '
-        label << format_valid_combination(taxon)
-        labels << label
-      elsif taxon.unavailable_misspelling?
-        label = 'a misspelling of '
-        label << format_valid_combination(taxon)
-        labels << label
-
-      elsif taxon.unavailable_uncategorized?
-        label = 'see '
-        label << format_valid_combination(taxon)
-        labels << label
-      elsif taxon.nonconfirming_synonym?
-        label = 'a non standard form of '
-        label << format_valid_combination(taxon)
-        labels << label
-      elsif taxon.invalid?
-        label = Status[taxon].to_s.dup
-        labels << label
-      else
-        labels << 'valid'
-      end
-
-      labels << 'ichnotaxon' if taxon.ichnotaxon?
-
-      labels.join(', ').html_safe
+      @taxon.decorate.taxon_status
     end
 
     def gender
@@ -150,20 +101,6 @@ class TaxonDecorator::Header
       if @taxon.waiting?
         "This taxon has been changed; changes awaiting approval"
       end
-    end
-
-    def format_senior_synonym taxon
-      if current_valid_taxon = taxon.current_valid_taxon_including_synonyms
-        return ' of current valid taxon ' << link_to_taxon(current_valid_taxon)
-      end
-      ''
-    end
-
-    def format_valid_combination taxon
-      if current_valid_taxon = taxon.current_valid_taxon_including_synonyms
-        return link_to_taxon(current_valid_taxon)
-      end
-      ''
     end
 
 end

@@ -30,31 +30,30 @@ module Formatters::LinkFormatter
 
   def link_to_hol taxon
     hol_id = taxon.hol_id
-    if(hol_id.nil?)
-      return nil
-    end
-    link_to_external_site 'HOL', "http://hol.osu.edu/index.html?id=#{taxon.hol_id}"
+    return unless hol_id
+    link_to_external_site 'HOL', "http://hol.osu.edu/index.html?id=#{hol_id}"
   end
 
   def link_to_antweb taxon
     return if [Family, Tribe, Subgenus].include? taxon.class
+
     url = %{http://www.antweb.org/description.do?}
-    url << case taxon
-    when Species
-      %{rank=species&genus=#{taxon.genus.name.to_s.downcase}&species=#{taxon.name.epithet.to_s.downcase}}
-    when Subspecies
-      return unless taxon.species
-      %{rank=subspecies} + '&' +
-      %{genus=#{taxon.genus.name.to_s.downcase}} + '&' +
-      %{species=#{taxon.species.name.epithet}} + '&' +
-      %{subspecies=#{taxon.name.subspecies_epithets.to_s.downcase}}
-    when Genus
-      %{rank=genus&genus=#{taxon.name.to_s.downcase}}
-    when Subfamily
-      %{rank=subfamily&subfamily=#{taxon.name.to_s.downcase}}
-    else
-      raise "Don't know how to link #{taxon} to AntWeb"
-    end
+    url <<  case taxon
+            when Species
+              %{rank=species&genus=#{taxon.genus.name.to_s.downcase}&species=#{taxon.name.epithet.to_s.downcase}}
+            when Subspecies
+              return unless taxon.species
+              %{rank=subspecies} + '&' +
+              %{genus=#{taxon.genus.name.to_s.downcase}} + '&' +
+              %{species=#{taxon.species.name.epithet}} + '&' +
+              %{subspecies=#{taxon.name.subspecies_epithets.to_s.downcase}}
+            when Genus
+              %{rank=genus&genus=#{taxon.name.to_s.downcase}}
+            when Subfamily
+              %{rank=subfamily&subfamily=#{taxon.name.to_s.downcase}}
+            else
+              raise "Don't know how to link #{taxon} to AntWeb"
+            end
     url << %{&project=worldants}
     link_to_external_site 'AntWeb', url.html_safe
   end

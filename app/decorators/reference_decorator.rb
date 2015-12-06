@@ -10,21 +10,21 @@ class ReferenceDecorator < Draper::Decorator
   end
 
   def format_reference_document_link
-    doi = format_doi_link reference
+    doi = format_doi_link
 
     if reference.downloadable_by? get_current_user
       pdf = link 'PDF', reference.url, class: 'document_link'
     end
 
-    if doi #TODO fix
-      return doi + " " + pdf
+    if doi
+      return doi + " " + pdf #pdf may not be defined at this poit TODO fix
     else
       return pdf
     end
   end
 
   private
-    def format_doi_link reference
+    def format_doi_link
       unless reference.doi.nil? or reference.doi.length == 0
         link reference.doi, create_link_from_doi(reference.doi), class: 'document_link'
       end
