@@ -1,6 +1,6 @@
 # coding: UTF-8
 module Formatters::AdvancedSearchHtmlFormatter
-  include Formatters::Formatter
+  #include Formatters::Formatter
   include Formatters::AdvancedSearchFormatter
 
   include RefactorHelper

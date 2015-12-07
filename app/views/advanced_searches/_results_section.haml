@@ -1,22 +1,27 @@
--#Locals: taxa, search_results_message
+-#Locals: taxa, is_author_search
 
 .results_section
-
   .results_header
     .left.results_message
-      = search_results_message
+      -if taxa.empty?
+        -if is_author_search
+          No results found. If you're choosing an author, make sure you pick the name from the dropdown list.
+        -else
+          No results found.
+      -else
+        ="#{pluralize_with_delimiters(@taxa_count, 'result')}"
     .left
-      = will_paginate taxa
+      =will_paginate taxa
     .left.buttons
-      - if taxa && taxa.count > 0
+      -unless taxa.empty?
         .download_button= button 'Download', nil, 'data-location' => "/advanced_search.txt?#{hash_to_params_string(request.parameters)}"
     .clear
 
   .results_items
-    - if taxa && taxa.count > 0
+    -unless taxa.empty?
       %hr
-      - for taxon in taxa
-        = render 'result', taxon: taxon
+      -taxa.each do |taxon|
+        =render 'result', taxon: taxon
       %hr
       .left
-        = will_paginate taxa
+        =will_paginate taxa
