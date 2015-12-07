@@ -1,7 +1,5 @@
 # coding: UTF-8
-module Formatters::LinkFormatter
-  include ActionView::Helpers::TagHelper
-  include ERB::Util
+module LinkHelper
 
   def link contents, href, attributes = {}
     attributes = attributes.dup

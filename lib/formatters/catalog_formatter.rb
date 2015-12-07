@@ -8,7 +8,7 @@ module Formatters::CatalogFormatter
   extend AbstractController::Rendering
 
   extend Formatters::Formatter
-  extend Formatters::LinkFormatter
+  extend LinkHelper
 
   def self.taxon_label_span taxon, options = {}
     content_tag :span, class: taxon_css_classes(taxon, options) do

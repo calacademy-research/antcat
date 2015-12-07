@@ -2,7 +2,7 @@
 class ReferenceKey
   include ActionView::Context
   include Formatters::Formatter
-  include Formatters::LinkFormatter
+  include LinkHelper
 
   def initialize reference
     @reference = reference

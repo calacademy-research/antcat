@@ -12,7 +12,6 @@ class Formatters::ReferenceFormatter
   extend ActionView::Context
   extend Sprockets::Rails::Helper
 
-
   def self.format reference
     make_formatter(reference).format
   end
@@ -164,7 +163,7 @@ class Formatters::ReferenceFormatter
 end
 
 class Formatters::ArticleReferenceFormatter < Formatters::ReferenceFormatter
-  include Formatters::LinkFormatter
+  include LinkHelper
 
   def format_citation
     self.class.format_italics add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
@@ -172,7 +171,7 @@ class Formatters::ArticleReferenceFormatter < Formatters::ReferenceFormatter
 end
 
 class Formatters::BookReferenceFormatter < Formatters::ReferenceFormatter
-  include Formatters::LinkFormatter
+  include LinkHelper
 
   def format_citation
     self.class.format_italics add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe

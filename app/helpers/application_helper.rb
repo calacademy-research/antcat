@@ -1,9 +1,8 @@
 # coding: UTF-8
 require 'milieu'
 module ApplicationHelper
-  #include Formatters::Formatter
-  include Formatters::LinkFormatter
-  include Formatters::ButtonFormatter
+  include LinkHelper
+  include ButtonHelper
 
   ### authorization methods
   def user_can_edit?
