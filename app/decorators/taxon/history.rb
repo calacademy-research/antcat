@@ -5,7 +5,6 @@ class TaxonDecorator::History
   include ApplicationHelper
 
   include RefactorHelper
-  include AntwebRefactorHelper if $use_ant_web_formatter
 
   def initialize taxon, user=nil
     @taxon = taxon
@@ -51,11 +50,6 @@ class TaxonDecorator::History
       content_tag :td, history_item_body_attributes.merge(class: 'history_item_body') do
         add_period_if_necessary detaxt item.taxt
       end
-    end
-
-    def detaxt taxt #for AntWeb exporter
-      return '' unless taxt.present?
-      Taxt.to_string taxt, @user, expansion: false
     end
 
 end

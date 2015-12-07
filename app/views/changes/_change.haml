@@ -1,7 +1,6 @@
 -#Locals: change
 - taxon = change.get_most_recent_valid_taxon
 
-
 = render 'header', taxon: taxon, change: change
 
 -unless taxon.taxon_state.nil?
@@ -11,13 +10,11 @@
   %tr
     %td
       %table
-
         %tr
           %td.label Name
           %td.value.name= format_taxon_name taxon.name
 
         %tr
-
           -#Special case - we ONLY see this if we ever modify family Formicidae
           -#taxon.name has a special case for family that return nil; I'm scared of breaking the universe
           -#if I change that behaviour.
@@ -108,5 +105,4 @@
               %td.value.type_notes= format_taxt taxon.type_taxt
 
       = render 'history_items', taxon: taxon
-
       = render 'reference_sections', taxon: taxon

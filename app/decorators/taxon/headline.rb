@@ -5,7 +5,6 @@ class TaxonDecorator::Headline
   include ApplicationHelper
   
   include RefactorHelper
-  include AntwebRefactorHelper if $use_ant_web_formatter
 
   def initialize taxon, user=nil
     @taxon = taxon

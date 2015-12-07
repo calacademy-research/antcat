@@ -1,9 +1,10 @@
 -# Locals: taxon, change
+-change = change.decorate
 
 %div.change_header
-  - if change.change_type != 'delete' and not taxon.nil?
+  -if change.change_type != 'delete' and not taxon.nil?
     %div.change_description
-      %span.name= change.decorate.format_adder_name
+      %span.name= change.format_adder_name
       %span.taxon= taxon.decorate.link_to_taxon
       %span.edit_button= edit_button taxon
       %span.undo_button= undo_button taxon, change
@@ -11,14 +12,14 @@
       %span.time.right= format_time_ago change.created_at
       %div.clear
 
-    - if change.approver
+    -if change.approver
       %div.change_status
-        %span.approver.left= change.decorate.format_approver_name
+        %span.approver.left= change.format_approver_name
         %span.approval_time.right= format_time_ago change.approved_at
         %div.clear
-  - else
+  -else
     %div.change_description
-      %span.name= change.decorate.format_adder_name
+      %span.name= change.format_adder_name
       %span.taxon=format_taxon_name taxon.name
       %span.undo_button= undo_button taxon, change
       %span.approve_button.left= approve_button taxon, change

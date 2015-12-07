@@ -1,5 +1,7 @@
 module RefactorHelper
 
+  # $use_ant_web_formatter is not optimal, but...
+
   def link_to_edit_taxon
     if @taxon.can_be_edited_by? @user
       button 'Edit', 'edit_button', 'data-edit-location' => "/taxa/#{@taxon.id}/edit"
@@ -7,8 +9,12 @@ module RefactorHelper
   end
 
   def link_to_taxon taxon
-    label = taxon.name.to_html_with_fossil(taxon.fossil?)
-    content_tag :a, label, href: %{/catalog/#{taxon.id}}
+    if $use_ant_web_formatter
+      link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
+    else
+      label = taxon.name.to_html_with_fossil(taxon.fossil?)
+      content_tag :a, label, href: %{/catalog/#{taxon.id}}
+    end
   end
 
   # duplicated in Formatters::Formatter
@@ -19,16 +25,28 @@ module RefactorHelper
   end
 
   def link_to_other_site
-    link_to_antweb @taxon
+    if $use_ant_web_formatter
+      link_to_antcat @taxon
+    else
+      link_to_antweb @taxon
+    end
   end
 
   def link_to_reference reference, user
-    reference.key.to_link user
+    if $use_ant_web_formatter
+      reference.key.to_link user, expansion: false
+    else
+      reference.key.to_link user
+    end
   end
 
   def detaxt taxt
     return '' unless taxt.present?
-    Taxt.to_string taxt, @user, expansion: true
+    if $use_ant_web_formatter
+      Taxt.to_string taxt, get_current_user, expansion: false
+    else
+      Taxt.to_string taxt, @user, expansion: true
+    end
   end
 
   # duplicated from Formatters::Formatter

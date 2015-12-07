@@ -11,8 +11,6 @@ class TaxonDecorator < Draper::Decorator
   require_relative 'taxon/history'
   require_relative 'taxon/statistics'
 
-  include AntwebRefactorHelper if $use_ant_web_formatter
-
   private def get_current_user
     helpers.current_user
     rescue NoMethodError
@@ -119,7 +117,6 @@ class TaxonDecorator < Draper::Decorator
       label = 'a misspelling of '
       label << format_valid_combination
       labels << label
-
     elsif taxon.unavailable_uncategorized?
       label = 'see '
       label << format_valid_combination
@@ -136,7 +133,6 @@ class TaxonDecorator < Draper::Decorator
     end
 
     labels << 'ichnotaxon' if taxon.ichnotaxon?
-
     labels.join(', ').html_safe
   end
 
