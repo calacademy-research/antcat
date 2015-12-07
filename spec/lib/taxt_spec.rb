@@ -155,20 +155,28 @@ describe Taxt do
       end
     end
 
+    describe "AntWeb formatter quirk" do
+      before do # TODO cleanup
+        $use_ant_web_formatter = true
+      end
+      after do
+        $use_ant_web_formatter = nil
+      end
+
+      it "should be able to use a different link formatter" do
+        genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
+        expect(Taxt).to receive :antweb_formatter_link_to_taxon
+        Taxt.to_string("{tax #{genus.id}}", nil)
+      end
+    end
+
     describe "Taxon" do
       describe "Linked" do
         it "should use the HTML version of the taxon's name" do
           genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
           expect(Taxt.to_string("{tax #{genus.id}}")).to eq(%{<a href="/catalog/#{genus.id}"><i>Atta</i></a>})
         end
-        it "should be able to use a different link formatter" do
-          # TODO cleanup
-          genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
-          expect(Taxt).to receive :antweb_formatter_link_to_taxon
-          $use_ant_web_formatter = true
-          Taxt.to_string("{tax #{genus.id}}", nil)
-          $use_ant_web_formatter = false
-        end
+
         it "should include the fossil symbol if applicable" do
           genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>'), fossil: true
           expect(Taxt.to_string("{tax #{genus.id}}")).to eq(%{<a href="/catalog/#{genus.id}"><i>&dagger;</i><i>Atta</i></a>})

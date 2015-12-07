@@ -43,7 +43,7 @@ module RefactorHelper
   def detaxt taxt
     return '' unless taxt.present?
     if $use_ant_web_formatter
-      Taxt.to_string taxt, get_current_user, expansion: false
+      Taxt.to_string taxt, @user, expansion: false
     else
       Taxt.to_string taxt, @user, expansion: true
     end

@@ -1,12 +1,12 @@
 # coding: UTF-8
 class Subspecies < SpeciesGroupTaxon
-  include Formatters::Formatter
+  include Formatters::RefactorFormatter
   include UndoTracker
 
   belongs_to :species
   before_validation :set_genus
   attr_accessible :subfamily, :genus, :name, :protonym, :species, :type, :type_name_id
-  has_paper_trail meta: {change_id: :get_current_change_id}
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   def update_parent new_parent
     # Joe - somewhere, we need to check and pop up for the homonym case if there are multiple possibles.

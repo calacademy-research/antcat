@@ -9,7 +9,6 @@ class Exporters::Antweb::Exporter
     pp export_taxon taxa
   end
 
-
   def export directory
     File.open("#{directory}/antcat.antweb.txt", 'w') do |file|
       file.puts header
@@ -124,7 +123,6 @@ class Exporters::Antweb::Exporter
         "current valid parent" # [23]
   end
 
-
   def convert_to_antweb_array values
     [values[:antcat_id],
      values[:subfamily],
@@ -166,19 +164,19 @@ class Exporters::Antweb::Exporter
 
     def export_history taxon
       $use_ant_web_formatter = true # TODO remove
-      taxon = taxon.decorate
-      content_tag :div, class: 'antcat_taxon' do
-        content = ''.html_safe
-        content << taxon.statistics(include_invalid: false)
-        content << taxon.genus_species_header_notes_taxt
-        content << taxon.headline
-        content << taxon.history
-        content << taxon.child_lists
-        content << taxon.references
-
+      begin
+        taxon = taxon.decorate
+        return content_tag :div, class: 'antcat_taxon' do
+          content = ''.html_safe
+          content << taxon.statistics(include_invalid: false)
+          content << taxon.genus_species_header_notes_taxt
+          content << taxon.headline
+          content << taxon.history
+          content << taxon.child_lists
+          content << taxon.references
+        end
+      ensure
         $use_ant_web_formatter = false
-        content
       end
     end
-
 end

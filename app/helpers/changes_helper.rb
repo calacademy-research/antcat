@@ -1,6 +1,6 @@
 # coding: UTF-8
 module ChangesHelper
-  include Formatters::Formatter
+  #include Formatters::Formatter
 
   def link_to_taxon taxon
     label = taxon.name.to_html_with_fossil(taxon.fossil?)

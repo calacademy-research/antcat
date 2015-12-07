@@ -24,7 +24,7 @@ class TaxonDecorator::ChildList
 
   private
     def child_lists_for_rank children_selector
-      return '' unless @taxon.respond_to?(children_selector) && @taxon.send(children_selector).present?
+      return ''.html_safe unless @taxon.respond_to?(children_selector) && @taxon.send(children_selector).present?
 
       if Subfamily === @taxon && children_selector == :genera
         child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: false) +
@@ -52,7 +52,7 @@ class TaxonDecorator::ChildList
     end
 
     def child_list children, specify_extinct_or_extant, conditions = {}
-      return '' unless children.present?
+      return ''.html_safe unless children.present?
 
       label = ''.html_safe
       label << 'Hong (2002) ' if conditions[:hong]

@@ -1,8 +1,8 @@
 # coding: UTF-8
 class GenusName < GenusGroupName
-  extend Formatters::Formatter
-  has_paper_trail meta: {change_id: :get_current_change_id}
   include UndoTracker
+
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   def genus_name
     words[0]

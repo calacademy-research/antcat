@@ -1,6 +1,6 @@
 # coding: UTF-8
 class GenusGroupTaxon < Taxon
-  include Formatters::Formatter
+  include Formatters::RefactorFormatter
   belongs_to :subfamily
   belongs_to :tribe
 

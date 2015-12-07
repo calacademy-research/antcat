@@ -1,6 +1,6 @@
 # coding: UTF-8
 class Species < SpeciesGroupTaxon
-  include Formatters::Formatter
+  include Formatters::RefactorFormatter
 
   has_many :subspecies
   attr_accessible :name, :protonym, :genus, :current_valid_taxon, :homonym_replaced_by, :type

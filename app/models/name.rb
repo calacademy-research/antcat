@@ -1,11 +1,11 @@
 # coding: UTF-8
 class Name < ActiveRecord::Base
-  include Formatters::Formatter
   include UndoTracker
+  include Formatters::RefactorFormatter
 
   validates :name, presence: true
   after_save :set_taxon_caches
-  has_paper_trail meta: {change_id: :get_current_change_id}
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   attr_accessible :name,
                   :name_html,
@@ -20,14 +20,11 @@ class Name < ActiveRecord::Base
 
   scope :find_all_by_name, lambda { |name| where name: name }
 
-
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)
     raise Taxon::TaxonExists if existing_names.any? { |name| not name.references.empty? }
-    update_attributes!({
-                           name: name_string,
-                           name_html: italicize(name_string),
-                       })
+    update_attributes!( name: name_string,
+                        name_html: italicize(name_string))
   end
 
   def change_parent _;
@@ -96,17 +93,17 @@ class Name < ActiveRecord::Base
       return SpeciesName.create!(
         name: string,
         name_html: i_tagify(string),
-        epithet: words.second,
-        epithet_html: i_tagify(words.second)
+        epithet: words.second, #is this used?
+        epithet_html: i_tagify(words.second) #is this used?
       )
 
     when :genus
         return GenusName.create!(
           name: string,
           name_html: i_tagify(string),
-          epithet: string,
-          epithet_html: i_tagify(string)
-          #protonym_html: i_tagify(string)
+          epithet: string, #is this used?
+          epithet_html: i_tagify(string) #is this used?
+          #protonym_html: i_tagify(string) #is this used?
           # Note: GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }
           # => all true except Aretidris because protonym_html is nil
         )
@@ -114,17 +111,17 @@ class Name < ActiveRecord::Base
         return TribeName.create!(
           name: string,
           name_html: string,
-          epithet: string,
-          epithet_html: string
+          epithet: string, #is this used?
+          epithet_html: string #is this used?
           #protonym_html: string
         )
     when :subfamily
         return SubfamilyName.create!(
           name: string,
           name_html: string,
-          epithet: string,
-          epithet_html: string
-          #protonym_html: string
+          epithet: string, #is this used?
+          epithet_html: string #is this used?
+          #protonym_html: string #is this used?
           # Note: SubfamilyName.all.map {|t| t.name == t.protonym_html }.uniq # => true
         )
     end
@@ -146,9 +143,9 @@ class Name < ActiveRecord::Base
 
   def self.picklist_matching letters_in_name, options = {}
     join = options[:taxa_only] ||
-        options[:species_only] ||
-        options[:genera_only] ||
-        options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+           options[:species_only] ||
+           options[:genera_only] ||
+           options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
     rank_filter =
         case
           when options[:species_only] then
@@ -192,7 +189,7 @@ class Name < ActiveRecord::Base
 
   def self.picklist_matching_format matches
     matches.map do |e|
-      result = {id: e.id.to_i, name: e.name, label: "<b>#{e.name_html}</b>", value: e.name}
+      result = { id: e.id.to_i, name: e.name, label: "<b>#{e.name_html}</b>", value: e.name }
       result[:taxon_id] = e.taxon_id.to_i if e.taxon_id
       result
     end
@@ -225,16 +222,12 @@ class Name < ActiveRecord::Base
     string = ''.html_safe
     string << dagger_html if fossil
     string << epithet_html.html_safe
-    string
   end
 
   def protonym_with_fossil_html fossil
     string = ''.html_safe
     string << dagger_html if fossil
-
     string << name_html.html_safe
-
-    string
   end
 
   def dagger_html
