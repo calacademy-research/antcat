@@ -7,7 +7,7 @@ module Formatters::CatalogFormatter
   extend ActionView::Context
   extend AbstractController::Rendering
 
-  extend Formatters::Formatter
+  extend ApplicationHelper
   extend LinkHelper
 
   def self.taxon_label_span taxon, options = {}

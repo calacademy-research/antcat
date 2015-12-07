@@ -1,8 +1,9 @@
 # coding: UTF-8
 class ReferenceKey
+  include ERB::Util
+  include ActionView::Helpers::TagHelper
   include ActionView::Context
-  include Formatters::Formatter
-  include LinkHelper
+  include ApplicationHelper
 
   def initialize reference
     @reference = reference
@@ -15,12 +16,12 @@ class ReferenceKey
   def to_s
     return '' unless @reference.id
     names = @reference.author_names.map &:last_name
-    case
-    when names.size == 0
+    case names.size
+    when 0
       '[no authors]'
-    when names.size == 1
+    when 1
       "#{names.first}"
-    when names.size == 2
+    when 2
       "#{names.first} & #{names.second}"
     else
       string = names[0..-2].join ', '

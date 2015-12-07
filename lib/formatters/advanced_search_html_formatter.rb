@@ -1,6 +1,8 @@
 # coding: UTF-8
 module Formatters::AdvancedSearchHtmlFormatter
   include Formatters::AdvancedSearchFormatter
+  include ActionView::Helpers::TagHelper
+  include ActionView::Context
   include RefactorHelper
 
   def format_name taxon

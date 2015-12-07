@@ -1,8 +1,7 @@
 # coding: UTF-8
 
 module Formatters::AdvancedSearchFormatter
-  include Formatters::Formatter
-  include ActionView::Helpers::TagHelper
+  include ApplicationHelper
 
   def format taxon
     string = convert_to_text(format_name taxon)
@@ -14,7 +13,6 @@ module Formatters::AdvancedSearchFormatter
     protonym = convert_to_text(format_protonym taxon, nil)
     string << protonym if protonym.present?
     string << "\n\n"
-    string
   end
 
   def format_status_reference taxon
@@ -94,7 +92,7 @@ module Formatters::AdvancedSearchFormatter
   end
 
   def senior_synonym_list taxon
-    return '' unless taxon.senior_synonyms.count > 0
+    return '' if taxon.senior_synonyms.empty?
     ' of ' << taxon.senior_synonyms.map {|e| format_name(e)}.join(', ')
   end
 

@@ -81,7 +81,7 @@ module ApplicationHelper
     string = ''.html_safe
     string << option_for_select(first_label, nil, value)
     string << option_for_select(second_label, second_label, value) if second_label.present?
-    for biogeographic_region in BiogeographicRegion.instances
+    BiogeographicRegion.instances.each do |biogeographic_region|
       string << option_for_select(biogeographic_region.label, biogeographic_region.value, value)
       string
     end
@@ -124,7 +124,8 @@ module ApplicationHelper
       string << (parent ? parent.name.to_html : '(no species)')
     else
       ''
-             end
+    end
+
     # Todo: Joe test this case
     if taxon[:unresolved_homonym] == true && taxon.new_record?
       string = ' secondary junior homonym of ' + string
@@ -152,5 +153,32 @@ module ApplicationHelper
     noun << 's' unless collection.count == 1
     "#{quantity} #{noun}"
   end
-end
 
+  def add_period_if_necessary string
+    return unless string.present?
+    return string + '.' unless string[-1..-1] =~ /[.!?]/
+    string
+  end
+
+  def italicize string
+    content_tag :i, string
+  end
+
+  def unitalicize string
+    raise "Can't unitalicize an unsafe string" unless string.html_safe?
+    string = string.dup
+    string.gsub!('<i>', '')
+    string.gsub!('</i>', '')
+    string.html_safe
+  end
+
+  def embolden string
+    content_tag :b, string
+  end
+
+  def format_time_ago time
+    return unless time
+    content_tag :span, "#{time_ago_in_words time} ago", title: time
+  end
+
+end

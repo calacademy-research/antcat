@@ -1,7 +1,9 @@
 # coding: UTF-8
 module Taxt
-  include Formatters::Formatter
-  extend Formatters::Formatter
+  extend ERB::Util
+  extend ActionView::Helpers::TagHelper
+  extend ApplicationHelper
+  #include ApplicationHelper
 
   # These values are duplicated in taxt_editor.coffee
   REFERENCE_TAG_TYPE = 1
@@ -155,9 +157,8 @@ module Taxt
       Taxon.find(taxon_id_match).name.to_html
     else
       taxon = Taxon.find taxon_id_match
-
       if $use_ant_web_formatter # TODO remove dependency on global variable
-        antweb_formatter_link_to_taxon taxon
+        link_to_antcat_from_antweb taxon
       else
         link_to_taxon taxon
       end
@@ -166,7 +167,7 @@ module Taxt
     whole_match
   end
 
-  def self.antweb_formatter_link_to_taxon taxon #TODO remove
+  def self.link_to_antcat_from_antweb taxon #TODO remove
     link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
   end
 
@@ -176,7 +177,7 @@ module Taxt
   end
 
   def self.decode_epithet epithet
-    Formatters::Formatter.italicize epithet
+    italicize epithet
   end
 
   ################################

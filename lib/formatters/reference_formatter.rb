@@ -1,14 +1,14 @@
 # coding: UTF-8
 
-#
-#  Note; this references ReferenceFormatterCache.
+# Note; this references ReferenceFormatterCache.
 # Most of these routines are only hit if there's a change in the content, at which
 # point it's reformatted and saved in references::formatted_cache.
-#
+
 class Formatters::ReferenceFormatter
   include ERB::Util
   extend ERB::Util
-  include Formatters::Formatter
+  extend ApplicationHelper
+  include ApplicationHelper
   extend ActionView::Context
   extend Sprockets::Rails::Helper
 
@@ -141,38 +141,33 @@ class Formatters::ReferenceFormatter
     @reference.key.to_s
   end
 
-
   private
-  def format_date input
-    date = input
-    return date if input.length < 4
+    def format_date input
+      date = input
+      return date if input.length < 4
 
-    match = input.match(/(.*?)(\d{4,8})(.*)/)
-    prefix = match[1]
-    input = match[2]
-    input = match[2]
-    suffix = match[3]
+      match = input.match(/(.*?)(\d{4,8})(.*)/)
+      prefix = match[1]
+      input = match[2]
+      input = match[2]
+      suffix = match[3]
 
-    date = input[0, 4]
-    return prefix + date + suffix if input.length < 6
-    date << '-' << input[4, 2]
-    return prefix + date + suffix if input.length < 8
-    date << '-' << input[6, 2]
-    h prefix + date + suffix
-  end
+      date = input[0, 4]
+      return prefix + date + suffix if input.length < 6
+      date << '-' << input[4, 2]
+      return prefix + date + suffix if input.length < 8
+      date << '-' << input[6, 2]
+      h prefix + date + suffix
+    end
 end
 
 class Formatters::ArticleReferenceFormatter < Formatters::ReferenceFormatter
-  include LinkHelper
-
   def format_citation
     self.class.format_italics add_period_if_necessary "#{h @reference.journal.name} #{h @reference.series_volume_issue}:#{h @reference.pagination}".html_safe
   end
 end
 
 class Formatters::BookReferenceFormatter < Formatters::ReferenceFormatter
-  include LinkHelper
-
   def format_citation
     self.class.format_italics add_period_if_necessary "#{h @reference.publisher}, #{h @reference.pagination}".html_safe
   end

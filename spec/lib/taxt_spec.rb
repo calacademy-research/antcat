@@ -165,7 +165,7 @@ describe Taxt do
 
       it "should be able to use a different link formatter" do
         genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
-        expect(Taxt).to receive :antweb_formatter_link_to_taxon
+        expect(Taxt).to receive :link_to_antcat_from_antweb
         Taxt.to_string("{tax #{genus.id}}", nil)
       end
     end

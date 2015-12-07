@@ -29,7 +29,7 @@ describe Exporters::Antweb::Exporter do
 
       genus.update_attribute :type_name, species.name
       item = genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
-      #expect(@formatter.new(genus).format).to eq(
+
       expect(@formatter.new.send(:export_history, genus)).to eq(
         %{<div class="antcat_taxon">} +
 
