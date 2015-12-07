@@ -1,12 +1,12 @@
 -#Locals: reference
 
 %td.date
-  = Formatters::ReferenceFormatter.format_timestamp reference.created_at
+  = reference.decorate.created_at
 
 - if user_can_edit?
 
   %td.review_state
-    = Formatters::ReferenceFormatter.format_review_state reference.review_state
+    = reference.decorate.format_review_state
 
   %td.review_buttons
     - if reference.can_finish_reviewing?

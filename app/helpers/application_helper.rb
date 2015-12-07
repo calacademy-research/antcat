@@ -181,4 +181,29 @@ module ApplicationHelper
     content_tag :span, "#{time_ago_in_words time} ago", title: time
   end
 
+  # duplicated from ReferenceDecorator
+  def format_italics string
+    return unless string
+    raise "Can't call format_italics on an unsafe string" unless string.html_safe?
+    string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
+    string = string.gsub /\|(.*?)\|/, '<i>\1</i>'
+    string.html_safe
+  end
+
+  # duplicated from ReferenceDecorator
+  def make_html_safe string
+    string = string.dup
+    quote_code = 'xdjvs4'
+    begin_italics_code = '2rjsd4'
+    end_italics_code = '1rjsd4'
+    string.gsub! '<i>', begin_italics_code
+    string.gsub! '</i>', end_italics_code
+    string.gsub! '"', quote_code
+    string = h string
+    string.gsub! quote_code, '"'
+    string.gsub! end_italics_code, '</i>'
+    string.gsub! begin_italics_code, '<i>'
+    string.html_safe
+  end
+
 end

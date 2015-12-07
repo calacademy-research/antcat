@@ -41,7 +41,7 @@ describe Exporters::Antweb::Exporter do
     before do
       @ponerinae = create_subfamily 'Ponerinae'
       @attini = create_tribe 'Attini', subfamily: @ponerinae
-      allow(Formatters::ReferenceFormatter).to receive(:format_authorship_html).and_return '<span title="Bolton. Ants>Bolton, 1970</span>'
+      allow_any_instance_of(ReferenceDecorator).to receive(:format_authorship_html).and_return '<span title="Bolton. Ants>Bolton, 1970</span>'
     end
 
     it "should export a subfamily" do
@@ -49,7 +49,6 @@ describe Exporters::Antweb::Exporter do
       allow(@ponerinae).to receive(:authorship_string).and_return('Bolton, 2011')
       allow(@ponerinae).to receive(:author_last_names_string).and_return('Bolton')
       allow(@ponerinae).to receive(:year).and_return 2001
-
       expect(@exporter.export_taxon(@ponerinae)[0..17]).to eq([@ponerinae.id, 'Ponerinae', nil, nil, nil, nil, nil, 'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>', 'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'])
     end
 

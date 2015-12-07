@@ -153,21 +153,19 @@ describe Taxon do
   end
 
   describe "Taxonomic history items" do
+    let(:taxon) { FactoryGirl.create :family }
     it "should have some" do
-      taxon = FactoryGirl.create :family
       expect(taxon.history_items).to be_empty
       taxon.history_items.create! taxt: 'foo'
       expect(taxon.reload.history_items.map(&:taxt)).to eq(['foo'])
     end
     it "should cascade to delete history items when it's deleted" do
-      taxon = FactoryGirl.create :family
       history_item = taxon.history_items.create! taxt: 'taxt'
       expect(TaxonHistoryItem.find_by_id(history_item.id)).not_to be_nil
       taxon.destroy
       expect(TaxonHistoryItem.find_by_id(history_item.id)).to be_nil
     end
     it "should show the items in the order in which they were added to the taxon" do
-      taxon = FactoryGirl.create :family
       taxon.history_items.create! taxt: '1'
       taxon.history_items.create! taxt: '2'
       taxon.history_items.create! taxt: '3'
@@ -178,20 +176,19 @@ describe Taxon do
   end
 
   describe "Reference sections" do
+    let(:taxon) { FactoryGirl.create :family }
+
     it "should have some" do
-      taxon = FactoryGirl.create :family
       expect(taxon.reference_sections).to be_empty
       taxon.reference_sections.create! references_taxt: 'foo'
       expect(taxon.reload.reference_sections.map(&:references_taxt)).to eq(['foo'])
     end
     it "should cascade to delete the reference sections when it's deleted" do
-      taxon = FactoryGirl.create :family
       reference_section = taxon.reference_sections.create! references_taxt: 'foo'
       taxon.destroy
       expect(ReferenceSection.find_by_id(reference_section.id)).to be_nil
     end
     it "should show the items in the order in which they were added to the taxon" do
-      taxon = FactoryGirl.create :family
       taxon.reference_sections.create! references_taxt: '1'
       taxon.reference_sections.create! references_taxt: '2'
       taxon.reference_sections.create! references_taxt: '3'
@@ -259,7 +256,6 @@ describe Taxon do
         expect(taxon.authorship_html_string).to eq(%{XYZ})
       end
     end
-
   end
 
   describe "Recombination" do
@@ -284,22 +280,21 @@ describe Taxon do
   end
 
   describe "Child list queries" do
-    before do
-      @subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae')
-    end
+    let!(:subfamily) { FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae') }
+
     it "should find all genera for the taxon if there are no conditions" do
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), subfamily: @subfamily
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Eciton'), subfamily: @subfamily, fossil: true
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Aneuretus'), subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
-      expect(@subfamily.child_list_query(:genera).map(&:name).map(&:to_s).sort).to eq(['Aneuretus', 'Atta', 'Eciton'])
-      expect(@subfamily.child_list_query(:genera, fossil: true).map(&:name).map(&:to_s).sort).to eq(['Aneuretus', 'Eciton'])
-      expect(@subfamily.child_list_query(:genera, incertae_sedis_in: 'subfamily').map(&:name).map(&:to_s).sort).to eq(['Aneuretus'])
+      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), subfamily: subfamily
+      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Eciton'), subfamily: subfamily, fossil: true
+      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Aneuretus'), subfamily: subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      expect(subfamily.child_list_query(:genera).map(&:name).map(&:to_s).sort).to eq(['Aneuretus', 'Atta', 'Eciton'])
+      expect(subfamily.child_list_query(:genera, fossil: true).map(&:name).map(&:to_s).sort).to eq(['Aneuretus', 'Eciton'])
+      expect(subfamily.child_list_query(:genera, incertae_sedis_in: 'subfamily').map(&:name).map(&:to_s).sort).to eq(['Aneuretus'])
     end
     it "should not include invalid taxa" do
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), subfamily: @subfamily, status: 'synonym'
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Eciton'), subfamily: @subfamily, fossil: true
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Aneuretus'), subfamily: @subfamily, fossil: true, incertae_sedis_in: 'subfamily'
-      expect(@subfamily.child_list_query(:genera).map(&:name).map(&:to_s).sort).to eq(['Aneuretus', 'Eciton'])
+      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), subfamily: subfamily, status: 'synonym'
+      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Eciton'), subfamily: subfamily, fossil: true
+      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Aneuretus'), subfamily: subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      expect(subfamily.child_list_query(:genera).map(&:name).map(&:to_s).sort).to eq(['Aneuretus', 'Eciton'])
     end
   end
 
@@ -330,16 +325,15 @@ describe Taxon do
   end
 
   describe "Setting and getting parent virtual field" do
+    let(:genus) { FactoryGirl.create :genus }
+    let(:subfamily) { FactoryGirl.create :subfamily }
+
     it "should be able to assign from an object" do
-      genus = FactoryGirl.create :genus
-      subfamily = FactoryGirl.create :subfamily
       genus.parent = subfamily
       genus.save!
       expect(genus.reload.subfamily).to eq(subfamily)
     end
     it "should be able to assign from an id" do
-      genus = FactoryGirl.create :genus
-      subfamily = FactoryGirl.create :subfamily
       genus.parent = subfamily.id
       genus.save!
       expect(genus.reload.subfamily).to eq(subfamily)
@@ -399,7 +393,6 @@ describe Taxon do
       expect(@subspecies.name_cache).to eq('Eciton nigrus medius minor')
       expect(@subspecies.name_html_cache).to eq('<i>Eciton nigrus medius minor</i>')
     end
-
   end
 
   describe "Scopes" do

@@ -32,7 +32,7 @@ class ReferenceKey
   def to_link user, options = {}
     options = options.reverse_merge expansion: true
     reference_key_string = to_s
-    reference_string = Formatters::ReferenceFormatter.format @reference
+    reference_string = @reference.decorate.format
     if options[:expansion]
       to_link_with_expansion reference_key_string, reference_string, user
     else

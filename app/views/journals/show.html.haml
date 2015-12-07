@@ -6,6 +6,6 @@
 %h4="References using this journal (id #{@journal.id})"
 -@references.each do |reference|
   %p.reference_list
-    = Formatters::ReferenceFormatter.format(reference) + " #{reference.id}"
+    =reference.decorate.format + " #{reference.id}"
 -if @references.empty?
   %p None

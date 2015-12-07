@@ -18,10 +18,6 @@ module ChangesHelper
     Status[status].to_s
   end
 
-  def format_reference reference
-    Formatters::ReferenceFormatter.format reference
-  end
-
   def format_attributes taxon
     string = []
     string << 'Fossil' if taxon.fossil?

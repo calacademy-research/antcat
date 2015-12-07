@@ -4,8 +4,6 @@ require 'spec_helper'
 describe Journal do
   describe "importing from a new record" do
     it "should create and return the journal" do
-#      Journal.import(:name => 'Antucopia').name.should == 'Antucopia'
-
       expect(Journal.import(:name => 'Antucopia').name).to include('Antucopia')
     end
 

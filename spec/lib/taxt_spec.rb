@@ -200,35 +200,33 @@ describe Taxt do
   end
 
   describe "Sentence output" do
-    before do
-      @reference = FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809'
-    end
+    let(:reference) { FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809' }
+
     it "should add a period" do
-      expect(Taxt.to_sentence("{ref #{@reference.id}}", nil)).to eq('Latreille, 1809.')
+      expect(Taxt.to_sentence("{ref #{reference.id}}", nil)).to eq('Latreille, 1809.')
     end
     it "should not add a period if one's already there" do
-      expect(Taxt.to_sentence("{ref #{@reference.id}}.", nil)).to eq('Latreille, 1809.')
+      expect(Taxt.to_sentence("{ref #{reference.id}}.", nil)).to eq('Latreille, 1809.')
     end
   end
 
   describe "Cleanup" do
-    before do
-      @america = find_or_create_name 'America'
-      @genus = create_genus
-    end
+    let(:america) { find_or_create_name 'America' }
+    let(:genus) { create_genus }
+
     it "should change these fields in these tables" do
       taxon = FactoryGirl.create :genus,
-                         type_taxt: "{nam #{@america.id}}",
-                         headline_notes_taxt: "{nam #{@america.id}}",
-                         genus_species_header_notes_taxt: "{nam #{@america.id}}"
+                         type_taxt: "{nam #{america.id}}",
+                         headline_notes_taxt: "{nam #{america.id}}",
+                         genus_species_header_notes_taxt: "{nam #{america.id}}"
 
-      taxon.protonym.authorship.notes_taxt = "{nam #{@america.id}}"
+      taxon.protonym.authorship.notes_taxt = "{nam #{america.id}}"
       taxon.protonym.authorship.save!
 
-      reference_section = ReferenceSection.create! title_taxt: "{nam #{@america.id}}",
-                               subtitle_taxt: "{nam #{@america.id}}",
-                               references_taxt: "{nam #{@america.id}}"
-      history_item = TaxonHistoryItem.create! taxt: "{nam #{@america.id}}"
+      reference_section = ReferenceSection.create! title_taxt: "{nam #{america.id}}",
+                               subtitle_taxt: "{nam #{america.id}}",
+                               references_taxt: "{nam #{america.id}}"
+      history_item = TaxonHistoryItem.create! taxt: "{nam #{america.id}}"
 
       Taxt.cleanup
 
@@ -249,11 +247,11 @@ describe Taxt do
     end
 
     it "should replace spurious {nam}s with the word" do
-      expect(Taxt.cleanup_field("{nam #{@america.id}}")).to eq('America')
+      expect(Taxt.cleanup_field("{nam #{america.id}}")).to eq('America')
     end
 
     it "should replace {nam}s with {tax}s where possible" do
-      expect(Taxt.cleanup_field("{nam #{@genus.name.id}}")).to eq("{tax #{@genus.id}}")
+      expect(Taxt.cleanup_field("{nam #{genus.name.id}}")).to eq("{tax #{genus.id}}")
     end
 
     it "should leave {nam}s alone that don't match a taxt" do
@@ -262,7 +260,7 @@ describe Taxt do
     end
 
     it "should handle more than one replacement in same string" do
-      expect(Taxt.cleanup_field("{nam #{@america.id}}, {nam #{@genus.name.id}}")).to eq("America, {tax #{@genus.id}}")
+      expect(Taxt.cleanup_field("{nam #{america.id}}, {nam #{genus.name.id}}")).to eq("America, {tax #{genus.id}}")
     end
   end
 

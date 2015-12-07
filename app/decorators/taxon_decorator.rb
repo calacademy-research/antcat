@@ -11,12 +11,6 @@ class TaxonDecorator < Draper::Decorator
   require_relative 'taxon/history'
   require_relative 'taxon/statistics'
 
-  private def get_current_user
-    helpers.current_user
-    rescue NoMethodError
-      nil
-  end
-
   def link_to_taxon
     label = taxon.name.to_html_with_fossil(taxon.fossil?)
     content_tag :a, label, href: %{/catalog/#{taxon.id}}
@@ -66,7 +60,7 @@ class TaxonDecorator < Draper::Decorator
     return unless change
     content_tag :span, class: 'change_history' do
       content = ''.html_safe
-      if (change.change_type == 'create')
+      if change.change_type == 'create'
         content << "Added by"
       else
         content << "Changed by"
@@ -82,7 +76,7 @@ class TaxonDecorator < Draper::Decorator
         # has a noted approval.
         approved_change = Change.where('user_changed_taxon_id = ? and approved_at is not null', change.user_changed_taxon_id).last
 
-        content << "; approved by #{approved_change.approver.decorate.format_doer_name} ".html_safe
+        content << "; approved by #{approved_change.decorate.format_approver_name} ".html_safe
         content << format_time_ago(approved_change.approved_at).html_safe
       end
 
@@ -91,14 +85,12 @@ class TaxonDecorator < Draper::Decorator
   end
 
   def taxon_status
-    #
     # Note: Cleverness is used here to make these queries (e.g.: obsolete_combination?)
     # appear as tags. That's how CSS does its coloring.
-    #
     labels = []
     labels << "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in
     if taxon.homonym? && taxon.homonym_replaced_by
-      labels << "homonym replaced by #{link_to_taxon(taxon.homonym_replaced_by)}"
+      labels << "homonym replaced by #{taxon.homonym_replaced_by.decorate.link_to_taxon}"
     elsif taxon.unidentifiable?
       labels << 'unidentifiable'
     elsif taxon.unresolved_homonym?
@@ -137,6 +129,12 @@ class TaxonDecorator < Draper::Decorator
   end
 
   private
+    def get_current_user
+      helpers.current_user
+      rescue NoMethodError
+        nil
+    end
+
     def reference_section section
       content_tag :div, class: 'section' do
         [:title_taxt, :subtitle_taxt, :references_taxt].inject(''.html_safe) do |content, field|

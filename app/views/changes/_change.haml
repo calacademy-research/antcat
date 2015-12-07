@@ -64,7 +64,7 @@
           %tr
             - authorship = protonym.authorship
             %td.label Authorship
-            %td.value.authorship_reference= format_reference authorship.reference
+            %td.value.authorship_reference= authorship.reference.decorate.format
 
           %tr
             %td.label Page

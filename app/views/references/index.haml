@@ -53,7 +53,7 @@
         =render 'reference', reference: reference, css_class: 'reference'
       -if @action == :latest_changes
         %td.date
-          =Formatters::ReferenceFormatter.format_timestamp reference.updated_at
+          =reference.decorate.updated_at
 
       =render 'references/latest_additions_controls', reference: reference if @action == :latest_additions
 

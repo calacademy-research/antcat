@@ -48,7 +48,7 @@ describe Citation do
   describe "Authorship HTML string" do
     it "should show the author and year" do
       citation = FactoryGirl.build_stubbed :citation
-      expect(Formatters::ReferenceFormatter).to receive(:format_authorship_html).and_return('XYZ')
+      expect_any_instance_of(ReferenceDecorator).to receive(:format_authorship_html).and_return('XYZ')
       expect(citation.authorship_html_string).to eq('XYZ')
     end
   end

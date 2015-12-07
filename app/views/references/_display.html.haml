@@ -1,12 +1,12 @@
 - css_class = 'reference_display'
 - css_class << ' downloadable' if reference.downloadable_by? current_user
 %div{:class => css_class}
-  = raw Formatters::ReferenceFormatter.format reference
+  = raw reference.decorate.format
   - document_link = reference.decorate.format_reference_document_link
   = raw document_link if document_link
   = reference.id
 
-  %p.notes= Formatters::ReferenceFormatter.format_italics h reference.public_notes
+  %p.notes= reference.decorate.public_notes
   - if user_is_editor?
-    %p.editor.notes= Formatters::ReferenceFormatter.format_italics h reference.editor_notes
-    %p.notes= Formatters::ReferenceFormatter.format_italics h reference.taxonomic_notes
+    %p.editor.notes= reference.decorate.editor_notes
+    %p.notes= reference.decorate.taxonomic_notes

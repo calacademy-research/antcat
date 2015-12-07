@@ -3,7 +3,7 @@
 
 %div{class: css_class}
   - if reference
-    = raw Formatters::ReferenceFormatter.format reference
+    = raw reference.decorate.format
     - document_link = reference.decorate.format_reference_document_link
     = raw document_link if document_link
   - else

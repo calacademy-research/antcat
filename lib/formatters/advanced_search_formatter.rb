@@ -45,7 +45,7 @@ module Formatters::AdvancedSearchFormatter
   def format_protonym taxon, user
     reference = taxon.protonym.authorship.reference
     string = ''.html_safe
-    string << Formatters::ReferenceFormatter.format(reference)
+    string << reference.decorate.format
     string << document_link(reference.key, user)
     string << goto_reference_link(reference.key)
     string << reference_id(reference)

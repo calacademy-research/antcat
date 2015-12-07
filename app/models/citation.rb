@@ -17,7 +17,7 @@ class Citation < ActiveRecord::Base
   end
 
   def authorship_html_string
-    reference and Formatters::ReferenceFormatter::format_authorship_html(reference)
+    reference and reference.decorate.format_authorship_html
   end
 
   def author_last_names_string
@@ -30,12 +30,12 @@ class Citation < ActiveRecord::Base
 
   def author_names_string
     names = reference.author_names.map &:last_name
-    case
-    when names.size == 0
+    case names.size
+    when 0
       '[no authors]'
-    when names.size == 1
+    when 1
       "#{names.first}"
-    when names.size == 2
+    when 2
       "#{names.first} & #{names.second}"
     else
       string = names[0..-2].join ', '
