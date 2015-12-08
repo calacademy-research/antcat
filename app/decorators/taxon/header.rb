@@ -3,6 +3,7 @@ class TaxonDecorator::Header
   include ActionView::Helpers::TagHelper
   include ActionView::Context
   include ApplicationHelper
+  include CatalogHelper
 
   include RefactorHelper
 
@@ -23,7 +24,7 @@ class TaxonDecorator::Header
     def normal_header
       content_tag :div, class: 'header' do
         content = ''.html_safe
-        content << content_tag(:span, header_name, class: Formatters::CatalogFormatter.css_classes_for_rank(@taxon))
+        content << content_tag(:span, header_name, class: css_classes_for_rank(@taxon))
         content << content_tag(:span, header_authorship, class: :authorship)
         content << content_tag(:span, status, class: :status)
         content << content_tag(:span, gender, class: :gender)
@@ -35,7 +36,7 @@ class TaxonDecorator::Header
     def original_combination_header
       content_tag :div, class: 'header' do
         content = ''.html_safe
-        content << content_tag(:span, header_name, class: Formatters::CatalogFormatter.css_classes_for_rank(@taxon))
+        content << content_tag(:span, header_name, class: css_classes_for_rank(@taxon))
         if @taxon.current_valid_taxon
           content << content_tag(:span, " see ", class: 'see')
           content << content_tag(:span, header_name_for_taxon(@taxon.current_valid_taxon))

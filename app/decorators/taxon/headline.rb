@@ -3,7 +3,8 @@ class TaxonDecorator::Headline
   include ActionView::Helpers
   include ActionView::Context
   include ApplicationHelper
-  
+  include CatalogHelper
+
   include RefactorHelper
 
   def initialize taxon, user=nil
@@ -122,7 +123,7 @@ class TaxonDecorator::Headline
     end
 
     def protonym_name protonym
-      content_tag :b, content_tag(:span, Formatters::CatalogFormatter.protonym_label(protonym), class: 'protonym_name')
+      content_tag :b, content_tag(:span, protonym_label(protonym), class: 'protonym_name')
     end
 
     def headline_authorship authorship

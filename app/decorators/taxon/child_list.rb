@@ -3,6 +3,7 @@ class TaxonDecorator::ChildList
   include ActionView::Context
   include ApplicationHelper
   include RefactorHelper
+  include CatalogHelper
 
   def initialize taxon, user=nil
     @taxon = taxon
@@ -77,7 +78,7 @@ class TaxonDecorator::ChildList
         label << ' of '
       end
 
-      label << Formatters::CatalogFormatter.taxon_label_span(@taxon, ignore_status: true)
+      label << taxon_label_span(@taxon, ignore_status: true)
 
       content_tag :div, class: :child_list do
         content = ''.html_safe
