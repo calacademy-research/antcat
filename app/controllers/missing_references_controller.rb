@@ -15,11 +15,11 @@ class MissingReferencesController < ApplicationController
 # GROUP BY citation
 # ORDER BY `protonyms`.`citation` ASC
 
-    @missing_references = Protonym.select(:citation)
-      .joins(authorship: :reference)
+    ids = Protonym.joins(authorship: :reference)
       .where("references.type = 'MissingReference'")
-      .group(:citation)
-      .order('citation')
+      .uniq.pluck('references.id')
+
+    @missing_references = MissingReference.find(ids).sort_by(&:citation)
   end
 
 

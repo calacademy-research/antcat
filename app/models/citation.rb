@@ -9,8 +9,7 @@ class Citation < ActiveRecord::Base
   has_paper_trail meta: { change_id: :get_current_change_id}
   attr_accessible :pages, :forms, :id, :reference_id, :reference, :notes_taxt
 
-  include CleanNewlines
-  before_save {|record| clean_newlines record, :notes_taxt}
+  before_save { |record| CleanNewlines::clean_newlines record, :notes_taxt }
 
   def authorship_string
     reference and "#{author_names_string}, #{reference.year}"

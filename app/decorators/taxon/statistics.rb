@@ -19,17 +19,19 @@ class TaxonDecorator::Statistics
       end
       strings
     end
+
     strings = if strings[:extant] && strings[:fossil] && options[:include_fossil]
-      strings[:extant].insert 0, 'Extant: '
-      strings[:fossil].insert 0, 'Fossil: '
-      [strings[:extant], strings[:fossil]]
-    elsif strings[:extant]
-      [strings[:extant]]
-    elsif options[:include_fossil]
-      ['Fossil: ' + strings[:fossil]]
-    else
-      []
-    end
+                strings[:extant].insert 0, 'Extant: '
+                strings[:fossil].insert 0, 'Fossil: '
+                [strings[:extant], strings[:fossil]]
+              elsif strings[:extant]
+                [strings[:extant]]
+              elsif options[:include_fossil]
+                ['Fossil: ' + strings[:fossil]]
+              else
+                []
+              end
+
     strings.map do |string|
       content_tag :p, string, class: 'taxon_statistics'
     end.join.html_safe
@@ -39,13 +41,16 @@ class TaxonDecorator::Statistics
     def rank_statistics statistics, rank, include_invalid
       statistics = statistics[rank]
       return unless statistics
+
       statistics_strings = []
       string = valid_statistics statistics, rank, include_invalid
       statistics_strings << string if string.present?
+
       if include_invalid
         string = invalid_statistics statistics
         statistics_strings << string if string.present?
       end
+
       statistics_strings.join ' '
     end
 
@@ -67,21 +72,21 @@ class TaxonDecorator::Statistics
         status_strings << rank_status_count(:genera, status, statistics[status])
       end
 
-      string = ''
       if status_strings.present?
-        string << ' ' if string.present?
-        string << "(#{status_strings.join(', ')})"
+        "(#{status_strings.join(', ')})"
+      else
+        ''
       end
-
-      string
     end
 
     def rank_status_count rank, status, count, label_statuses = true
       if label_statuses
-        count_and_status = pluralize_with_delimiters count, status, Status[status].to_s(status != 'valid' ? :plural : nil)
+        options = if status == 'valid' then :nil else :plural end
+        count_and_status = pluralize_with_delimiters count, status, Status[status].to_s(options)
       else
         count_and_status = number_with_delimiter count
       end
+
       string = count_and_status
       string << " #{Rank[rank].to_s(count)}" if status == 'valid'
       string

@@ -7,8 +7,7 @@ class ReferenceSection < ActiveRecord::Base
 
   attr_accessible :taxon_id, :title_taxt, :subtitle_taxt, :references_taxt,:position, :taxon
 
-  include CleanNewlines
-  before_save {|record| clean_newlines record, :subtitle_taxt, :references_taxt}
+  before_save { |record| CleanNewlines::clean_newlines record, :subtitle_taxt, :references_taxt }
 
   def self.dedupe
     all.each do |reference_section|

@@ -1,7 +1,8 @@
 # coding: UTF-8
 module CleanNewlines
 
-  def clean_newlines record, *text_attributes
+  # TODO move to a concern?
+  def self.clean_newlines record, *text_attributes
     for text_attribute in text_attributes
       dirty_string = record[text_attribute]
       next if dirty_string.nil? or dirty_string.empty?

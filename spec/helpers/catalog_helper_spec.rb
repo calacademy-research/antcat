@@ -120,15 +120,6 @@ describe CatalogHelper do
         expect(helper.send(:taxon_css_classes, taxon)).to eq("genus name taxon valid")
       end
     end
-
-    describe "PDF link formatting" do
-      it "should create a link" do
-        reference = FactoryGirl.create :reference
-        allow(reference).to receive(:downloadable_by?).and_return true
-        allow(reference).to receive(:url).and_return 'example.com'
-        expect(reference.decorate.format_reference_document_link).to eq('<a class="document_link" href="example.com" target="_blank">PDF</a>')
-      end
-    end
   end
 
 end

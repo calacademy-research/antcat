@@ -1,6 +1,5 @@
 # coding: UTF-8
 class Status
-  extend ActionView::Helpers::NumberHelper
 
   def initialize hash
     @hash = hash
@@ -8,7 +7,7 @@ class Status
 
   def to_s *options
     numeric_argument = options.find {|option| option.kind_of? Numeric}
-    options << :plural if numeric_argument && numeric_argument > 1
+    options << :plural if numeric_argument && numeric_argument > 1 #hmm
 
     string = (options.include?(:plural) ? @hash[:plural_label] : @hash[:label]).dup
     string
@@ -44,36 +43,23 @@ class Status
   end
 
   #joe - see if we can not display "unavailable uncategorized"
-
   def self.statuses
     @_statuses ||= [
-      Status.new(string: 'valid',                   label: 'valid',
-                                             plural_label: 'valid'),
-      Status.new(string: 'synonym',                 label: 'synonym',
-                                             plural_label: 'synonyms'),
-      Status.new(string: 'homonym',                 label: 'homonym',
-                                             plural_label: 'homonyms'),
-      Status.new(string: 'unidentifiable',          label: 'unidentifiable',
-                                             plural_label: 'unidentifiable'),
-      Status.new(string: 'unavailable',             label: 'unavailable',
-                                             plural_label: 'unavailable'),
-      Status.new(string: 'excluded from Formicidae',label: 'excluded from Formicidae',
-                                             plural_label: 'excluded from Formicidae'),
-
-      Status.new(string: 'original combination',    label: 'original combination',
-                                             plural_label: 'original combinations'),
-
-      Status.new(string: 'collective group name',   label: 'collective group name',
-                                             plural_label: 'collective group names'),
-      Status.new(string: 'obsolete combination',    label: 'obsolete combination',
-                                             plural_label: 'obsolete combinations'),
-      Status.new(string: 'unavailable misspelling',             label: 'unavailable misspelling',
-                 plural_label: 'unavailable misspelling'),
-      Status.new(string: 'nonconforming synonym',             label: 'nonconforming synonym',
-                 plural_label: 'nonconforming synonym'),
-      Status.new(string: 'unavailable uncategorized',             label: 'unavailable uncategorized',
-                 plural_label: 'unavailable uncategorized')
-
-    ]
+      ['valid',                     'valid',                     'valid'],
+      ['synonym',                   'synonym',                   'synonyms'],
+      ['homonym',                   'homonym',                   'homonyms'],
+      ['unidentifiable',            'unidentifiable',            'unidentifiable'],
+      ['unavailable',               'unavailable',               'unavailable'],
+      ['excluded from Formicidae',  'excluded from Formicidae',  'excluded from Formicidae'],
+      ['original combination',      'original combination',      'original combinations'],
+      ['collective group name',     'collective group name',     'collective group names'],
+      ['obsolete combination',      'obsolete combination',      'obsolete combinations'],
+      ['unavailable misspelling',   'unavailable misspelling',   'unavailable misspelling'],
+      ['nonconforming synonym',     'nonconforming synonym',     'nonconforming synonym'],
+      ['unavailable uncategorized', 'unavailable uncategorized', 'unavailable uncategorized']
+    ].map do |status|
+      Status.new(string: status.first, label: status.second, plural_label: status.third)
     end
+  end
+
 end

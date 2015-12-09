@@ -53,7 +53,7 @@ class Rank
 
   def to_s *options
     numeric_argument = options.find {|option| option.kind_of? Numeric}
-    options << :plural if numeric_argument && numeric_argument > 1
+    options << :plural if numeric_argument && numeric_argument > 1 #hmm
 
     s = (options.include?(:plural) ? @hash[:plural_string] : @hash[:string]).dup
     s = s.titleize if options.include? :capitalized

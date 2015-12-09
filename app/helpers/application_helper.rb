@@ -62,24 +62,15 @@ module ApplicationHelper
     $Milieu.preview? ? (content_tag :div, 'preview', class: :preview) : ''
   end
 
-  def rank_options_for_select value
-    value = 'All' unless value.present?
-    string = ''.html_safe
-
-    string = ''.html_safe
-    string << option_for_select('All', 'All', value)
-    for rank in Rank.ranks
-      next if rank.plural.capitalize == 'Families'
-      string << option_for_select(rank.plural.capitalize, rank.string.capitalize, value)
-      string
-    end
-    string
+  def rank_options_for_select value='All'
+    string =  option_for_select('All', 'All', value)
+    string << Rank.ranks.reject { |rank| rank.string == 'family'}.reduce("") do |options, rank|
+              options << option_for_select(rank.plural.capitalize, rank.string.capitalize, value)
+            end.html_safe
   end
 
-  def biogeographic_region_options_for_select value, first_label = '', second_label = nil
-    value = '' unless value.present?
-    string = ''.html_safe
-    string << option_for_select(first_label, nil, value)
+  def biogeographic_region_options_for_select value='', first_label = '', second_label = nil
+    string =  option_for_select(first_label, nil, value)
     string << option_for_select(second_label, second_label, value) if second_label.present?
     BiogeographicRegion.instances.each do |biogeographic_region|
       string << option_for_select(biogeographic_region.label, biogeographic_region.value, value)
@@ -88,43 +79,38 @@ module ApplicationHelper
     string
   end
 
-  def option_for_select label, value, current_value
-    options = {value: value}
-    options[:selected] = 'selected' if value == current_value
-    content_tag :option, label, options
-  end
-
   def search_selector search_type
     select_tag :st, options_for_select([['matching', 'm'], ['beginning with', 'bw'], ['containing', 'c']], search_type || 'bw')
   end
 
   def name_description taxon
-    string = case taxon
-    when Subfamily
-      'subfamily'
-    when Tribe
-      string = "tribe of "
-      parent = taxon.subfamily
-      string << (parent ? parent.name.to_html : '(no subfamily)')
-    when Genus
-      string = "genus of "
-      parent = taxon.tribe ? taxon.tribe : taxon.subfamily
-      string << (parent ? parent.name.to_html : '(no subfamily)')
-    when Species
-      string = "species of "
-      parent = taxon.parent
-      string << parent.name.to_html
-     when Subgenus
-       string = "subgenus of "
-       parent = taxon.parent
-       string << parent.name.to_html
-    when Subspecies
-      string = "subspecies of "
-      parent = taxon.species
-      string << (parent ? parent.name.to_html : '(no species)')
-    else
-      ''
-    end
+    string =
+      case taxon
+      when Subfamily
+        'subfamily'
+      when Tribe
+        string = "tribe of "
+        parent = taxon.subfamily
+        string << (parent ? parent.name.to_html : '(no subfamily)')
+      when Genus
+        string = "genus of "
+        parent = taxon.tribe ? taxon.tribe : taxon.subfamily
+        string << (parent ? parent.name.to_html : '(no subfamily)')
+      when Species
+        string = "species of "
+        parent = taxon.parent
+        string << parent.name.to_html
+       when Subgenus
+         string = "subgenus of "
+         parent = taxon.parent
+         string << parent.name.to_html
+      when Subspecies
+        string = "subspecies of "
+        parent = taxon.species
+        string << (parent ? parent.name.to_html : '(no species)')
+      else
+        ''
+      end
 
     # Todo: Joe test this case
     if taxon[:unresolved_homonym] == true && taxon.new_record?
@@ -138,7 +124,6 @@ module ApplicationHelper
     string.html_safe
   end
 
-  # from formatters
   def pluralize_with_delimiters count, singular, plural = nil
     word = if count == 1
       singular
@@ -190,20 +175,10 @@ module ApplicationHelper
     string.html_safe
   end
 
-  # duplicated from ReferenceDecorator
-  def make_html_safe string
-    string = string.dup
-    quote_code = 'xdjvs4'
-    begin_italics_code = '2rjsd4'
-    end_italics_code = '1rjsd4'
-    string.gsub! '<i>', begin_italics_code
-    string.gsub! '</i>', end_italics_code
-    string.gsub! '"', quote_code
-    string = h string
-    string.gsub! quote_code, '"'
-    string.gsub! end_italics_code, '</i>'
-    string.gsub! begin_italics_code, '<i>'
-    string.html_safe
-  end
-
+  private
+    def option_for_select label, value, current_value
+      options = { value: value }
+      options[:selected] = 'selected' if value == current_value
+      content_tag :option, label, options
+    end
 end

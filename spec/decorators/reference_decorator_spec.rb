@@ -1,26 +1,35 @@
 # coding: UTF-8
 require 'spec_helper'
 
-describe "ReferenceDecorator-ish" do
+describe ReferenceDecorator do
   let(:nil_decorator) { ReferenceDecorator.new(nil) }
   let(:journal) { FactoryGirl.create :journal, name: "Neue Denkschriften" }
   let(:author_name) { FactoryGirl.create :author_name, name: "Forel, A." }
 
+  describe "PDF link formatting" do
+    it "should create a link" do
+      reference = FactoryGirl.create :reference
+      allow(reference).to receive(:downloadable_by?).and_return true
+      allow(reference).to receive(:url).and_return 'example.com'
+      expect(reference.decorate.format_reference_document_link).to eq('<a class="document_link" href="example.com" target="_blank">PDF</a>')
+    end
+  end
+
   describe "Making a string HTML-safe" do
     it "should not touch a string without HTML" do
-      expect(nil_decorator.make_html_safe('string')).to eq('string')
+      expect(nil_decorator.send(:make_html_safe, 'string')).to eq('string')
     end
     it "should leave italics alone" do
-      expect(nil_decorator.make_html_safe('<i>string</i>')).to eq('<i>string</i>')
+      expect(nil_decorator.send(:make_html_safe, '<i>string</i>')).to eq('<i>string</i>')
     end
     it "should leave quotes alone" do
-      expect(nil_decorator.make_html_safe('"string"')).to eq('"string"')
+      expect(nil_decorator.send(:make_html_safe, '"string"')).to eq('"string"')
     end
     it "should return an html_safe string" do
-      expect(nil_decorator.make_html_safe('"string"')).to be_html_safe
+      expect(nil_decorator.send(:make_html_safe, '"string"')).to be_html_safe
     end
     it "should escape other HTML" do
-      expect(nil_decorator.make_html_safe('<script>danger</script>')).to eq('&lt;script&gt;danger&lt;/script&gt;')
+      expect(nil_decorator.send(:make_html_safe, '<script>danger</script>')).to eq('&lt;script&gt;danger&lt;/script&gt;')
     end
   end
 
@@ -181,7 +190,6 @@ describe "ReferenceDecorator-ish" do
         reference = FactoryGirl.create :nested_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => author_names, :pages_in => '>', :nesting_reference => nested_reference
         expect(reference.decorate.format).to eq('Ward, P. S. 2010d. Ants are my life. &gt; Ward, P. S. 2010d. Ants are my life. New York.')
       end
-
     end
 
     describe "Italicizing title and citation" do
@@ -233,14 +241,12 @@ describe "ReferenceDecorator-ish" do
         expect(string).to be_html_safe
       end
     end
-
   end
 
   it "should not have a space at the beginning when there are no authors" do
     reference = FactoryGirl.create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => 'Ants', :title => 'Tapinoma'
     expect(reference.decorate.format).to eq "2010d. Tapinoma. Ants."
   end
-
 
   describe "formatting the date" do
     it "should use ISO 8601 format for calendar dates" do
@@ -387,8 +393,8 @@ describe "ReferenceDecorator-ish" do
           expect(ReferenceFormatterCache.instance).to receive(:set).with(reference, 'Cache', :formatted_cache)
           reference.decorate.format
         end
-
       end
+
       describe "format!" do
         it "should not touch the cache" do
           reference = FactoryGirl.create :article_reference
@@ -411,7 +417,6 @@ describe "ReferenceDecorator-ish" do
         end
       end
     end
-
   end
 
 end

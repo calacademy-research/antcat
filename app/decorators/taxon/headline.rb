@@ -148,14 +148,16 @@ class TaxonDecorator::Headline
 
     def link_to_review_change
       if @taxon.can_be_reviewed_by?(@user) && @taxon.latest_change
-        button 'Review change', 'review_button', 'data-review-location' => "/changes/#{@taxon.latest_change.id}"
+        parameters = { 'data-review-location' => "/changes/#{@taxon.latest_change.id}" }
+        button 'Review change', 'review_button', parameters
       end
     end
 
     def link_to_delete_taxon
-        if @user.try :is_superadmin?
-          button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete", 'data-taxon-id' => "#{@taxon.id}"}
-        end
+      if @user.try :is_superadmin?
+        parameters = { 'data-delete-location' => "/taxa/#{@taxon.id}/delete", 'data-taxon-id' => "#{@taxon.id}" }
+        button 'Delete', 'delete_button', parameters
+      end
     end
 
 end

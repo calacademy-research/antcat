@@ -17,13 +17,6 @@ module RefactorHelper
     end
   end
 
-  # duplicated in Formatters::Formatter
-  def add_period_if_necessary string
-    return unless string.present?
-    return string + '.' unless string[-1..-1] =~ /[.!?]/
-    string
-  end
-
   def link_to_other_site
     if $use_ant_web_formatter
       link_to_antcat @taxon
@@ -47,11 +40,6 @@ module RefactorHelper
     else
       Taxt.to_string taxt, @user, expansion: true
     end
-  end
-
-  # duplicated from Formatters::Formatter
-  def italicize string
-    content_tag :i, string
   end
 
 end

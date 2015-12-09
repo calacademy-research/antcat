@@ -4,12 +4,8 @@
 # point it's reformatted and saved in references::formatted_cache.
 
 class ReferenceDecorator < Draper::Decorator
-  delegate_all
   include ERB::Util
-
-  #def title
-  #  format_italics h reference.title
-  #end
+  delegate_all
 
   def created_at
     format_timestamp reference.created_at
@@ -65,24 +61,15 @@ class ReferenceDecorator < Draper::Decorator
 
   def format_review_state
     review_state = reference.review_state
-    return 'Being reviewed' if review_state == 'reviewing'
-    return '' if review_state == 'none'
-    review_state.present? ? review_state.capitalize : ''
-  end
 
-  def make_html_safe string
-    string = string.dup
-    quote_code = 'xdjvs4'
-    begin_italics_code = '2rjsd4'
-    end_italics_code = '1rjsd4'
-    string.gsub! '<i>', begin_italics_code
-    string.gsub! '</i>', end_italics_code
-    string.gsub! '"', quote_code
-    string = h string
-    string.gsub! quote_code, '"'
-    string.gsub! end_italics_code, '</i>'
-    string.gsub! begin_italics_code, '<i>'
-    string.html_safe
+    case review_state
+    when 'reviewing'
+      'Being reviewed'
+    when 'none' || nil
+      ''
+    else
+      review_state.capitalize
+    end
   end
 
   # See header note about cache
@@ -120,6 +107,7 @@ class ReferenceDecorator < Draper::Decorator
   def format_inline_citation options = {}
     user = options.delete :user
     user ||= get_current_user
+
     # cache/decache under same conditions
     using_cache = user.present?
     if using_cache
@@ -128,11 +116,9 @@ class ReferenceDecorator < Draper::Decorator
     end
 
     string = format_inline_citation! options
-
     if using_cache
       ReferenceFormatterCache.instance.set reference, string, :inline_citation_cache
     end
-
     string
   end
 
@@ -157,22 +143,38 @@ class ReferenceDecorator < Draper::Decorator
       timestamp.strftime '%Y-%m-%d'
     end
 
-    def format_date input
-      date = input
-      return date if input.length < 4
+    def make_html_safe string
+      string = string.dup
+      quote_code = 'xdjvs4'
+      begin_italics_code = '2rjsd4'
+      end_italics_code = '1rjsd4'
+      string.gsub! '<i>', begin_italics_code
+      string.gsub! '</i>', end_italics_code
+      string.gsub! '"', quote_code
+      string = h string
+      string.gsub! quote_code, '"'
+      string.gsub! end_italics_code, '</i>'
+      string.gsub! begin_italics_code, '<i>'
+      string.html_safe
+    end
 
-      match = input.match(/(.*?)(\d{4,8})(.*)/)
+    def format_date input # TODO store parsed value in the database
+      return input if input.length < 4
+
+      match = input.match /(.*?)(\d{4,8})(.*)/
       prefix = match[1]
-      input = match[2]
-      input = match[2]
+      digits = match[2]
       suffix = match[3]
 
-      date = input[0, 4]
-      return prefix + date + suffix if input.length < 6
-      date << '-' << input[4, 2]
-      return prefix + date + suffix if input.length < 8
-      date << '-' << input[6, 2]
-      h prefix + date + suffix
+      year  = digits[0...4]
+      month = digits[4...6]
+      day   = digits[6...8]
+
+      date = year
+      date << '-' + month if month.present?
+      date << '-' + day if day.present?
+
+      prefix + date + suffix
     end
 
     def format_doi_link

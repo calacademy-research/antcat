@@ -14,7 +14,7 @@
       =will_paginate taxa
     .left.buttons
       -unless taxa.empty?
-        .download_button= button 'Download', nil, 'data-location' => "/advanced_search.txt?#{hash_to_params_string(request.parameters)}"
+        .download_button= button 'Download', nil, 'data-location' => "/advanced_search.txt?#{request.parameters.to_param}"
     .clear
 
   .results_items

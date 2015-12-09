@@ -30,13 +30,12 @@ class Reference < ActiveRecord::Base
                   :pagination,
                   :review_state,
                   :doi
-  include CleanNewlines
-  before_save { |record| clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
+
+  before_save { |record| CleanNewlines::clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
 
   # associations
   has_many :reference_author_names, -> { order :position }
   has_many :groups, :through => :group_assets
-
 
   has_many :author_names,
            -> { order 'reference_author_names.position' },

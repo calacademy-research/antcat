@@ -16,7 +16,7 @@ class ReferencesController < ApplicationController
 
     if params[:q].match(/^\d{5,}$/)
       id = params[:q]
-      redirect_to reference_path(id) if Reference.exists? id
+      return redirect_to reference_path(id) if Reference.exists? id
     end
 
     searching = params[:q].present?

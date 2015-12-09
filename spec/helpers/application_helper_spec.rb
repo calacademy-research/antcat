@@ -1,6 +1,5 @@
 # coding: UTF-8
 require 'spec_helper'
-require 'application_helper'
 
 describe ApplicationHelper do
 
@@ -107,24 +106,6 @@ describe ApplicationHelper do
       string = helper.embolden 'Atta'
       expect(string).to eq '<b>Atta</b>'
       expect(string).to be_html_safe
-    end
-  end
-
-  describe "Formatting an email address + name" do #TODO fix
-    it "should format it correctly in the general case" do
-      user = FactoryGirl.create :user, name: "Stan Blum", email: "sblum@example.com"
-      string = user.decorate.format_doer_name
-      expect(string).to eq('<a href="mailto:sblum@example.com">Stan Blum</a>')
-    end
-    it "should format it correctly for 'doers'" do
-      user = FactoryGirl.create :user, name: 'Stan Blum', email: 'sblum@example.com'
-      string = user.decorate.format_doer_name
-      expect(string).to eq('<a href="mailto:sblum@example.com">Stan Blum</a>')
-    end
-    it "should format it correctly when the 'doer' is nil", pending: true do
-      pending "TODO"
-      string = @formatter.format_doer_name nil
-      expect(string).to eq('Someone')
     end
   end
 

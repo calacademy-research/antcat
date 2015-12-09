@@ -8,21 +8,21 @@ class TaxonDecorator::History
 
   def initialize taxon, user=nil
     @taxon = taxon
-    @user = user
   end
 
   def history
-    if @taxon.history_items.present?
-      content = content_tag :div, class: 'history' do
-        @taxon.history_items.inject(''.html_safe) do |content, item|
-          content << history_item(item)
-        end
+    return unless @taxon.history_items.present?
+
+    history_content = content_tag :div, class: 'history' do
+      @taxon.history_items.inject(''.html_safe) do |content, item|
+        content << history_item(item)
       end
-      if $use_ant_web_formatter
-        return '<p><b>Taxonomic history</b></p>'.html_safe + content
-      else
-        return content
-      end
+    end
+
+    if $use_ant_web_formatter
+      return '<p><b>Taxonomic history</b></p>'.html_safe + history_content
+    else
+      return history_content
     end
   end
 
