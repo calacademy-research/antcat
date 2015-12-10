@@ -3,7 +3,6 @@ module Taxt
   extend ERB::Util
   extend ActionView::Helpers::TagHelper
   extend ApplicationHelper
-  #include ApplicationHelper
 
   # These values are duplicated in taxt_editor.coffee
   REFERENCE_TAG_TYPE = 1
@@ -17,7 +16,7 @@ module Taxt
   class NameNotFound < StandardError
     attr_accessor :id
 
-    def initialize(message = nil, id = nil)
+    def initialize message = nil, id = nil
       super(message)
       self.id = id
     end
@@ -198,55 +197,14 @@ module Taxt
   ################################
   def self.replace replace_what, replace_with
     taxt_fields.each do |klass, fields|
-      for record in klass.send :all
-        for field in fields
+      klass.send(:all).each do |record|
+        fields.each do |field|
           next unless record[field]
           record[field] = record[field].gsub replace_what, replace_with
         end
         record.save!
       end
     end
-  end
-
-  ####################################
-  SpuriousNames = [
-      'America', 'Africa', 'Algeria', 'Arabia', 'Argentina', 'Armenia', 'Asia',
-      'Bolivia', 'Bulgaria', 'Burma',
-      'Caledonia', 'California', 'Canada', 'China', 'Corsica', 'Costa', 'Crimea', 'Cuba',
-      'Dakota',
-      'Florida',
-      'Ghana', 'Guatemala', 'Guinea', 'Guyana',
-      'Himalaya',
-      'incertae sedis', 'incertae', 'India', 'Indonesia', 'Iowa',
-      'Korea',
-      'Lanka',
-      'Malta', 'Mongolia',
-      'Nevada', 'Nomen dubium', 'Nomen nudum', 'Nomen oblitum', 'Nomina', 'Nomina nuda',
-      'Oceania', 'Polynesia',
-      'Rica', 'Ritsema', 'Russia',
-      'Samoa', 'Siberia', 'Slovakia', 'Somalia', 'Sumatra', 'Syria',
-      'Tonga',
-      'Venezuela',
-      'Yoshimura',
-  ]
-
-  NamesToItalicize = [
-      'incertae sedis', 'incertae',
-      'Nomen dubium', 'Nomen nudum', 'Nomen oblitum', 'Nomina', 'Nomina nuda'
-  ]
-
-  def self.translate_spurious name
-    if spurious? name
-      if NamesToItalicize.index name
-        return "<i>#{name}</i>"
-      else
-        return name
-      end
-    end
-  end
-
-  def self.spurious? name
-    SpuriousNames.index name
   end
 
   def self.taxt_fields
@@ -256,51 +214,6 @@ module Taxt
         [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
         [TaxonHistoryItem, [:taxt]]
     ]
-  end
-
-  def self.cleanup show_progress = false
-    count = @replaced_count = 0
-    taxt_fields.each { |table, field| count += table.count }
-    Progress.new_init show_progress: show_progress, total_count: count, show_errors: true
-    taxt_fields.each do |klass, fields|
-      for record in klass.send :all
-        for field in fields
-          next unless record[field]
-          record[field] = cleanup_field record[field] if record[field]
-        end
-        record.save!
-        Progress.tally_and_show_progress 1000
-      end
-    end
-    Progress.show_results
-    Progress.puts "Replaced #{@replaced_count} {nam}s with {tax}"
-  end
-
-  def self.cleanup_field taxt
-    taxt.gsub /{nam (\d+)}/ do |match|
-      taxa = Taxon.where name_id: $1
-      if taxa.present?
-        if taxa.count > 1
-          Progress.error "Taxt: found multiple valid targets among #{taxa.map(&:name).map(&:to_s).join(', ')}"
-          match
-        else
-          @replaced_count += 1
-          "{tax #{taxa.first.id}}"
-        end
-      else
-        name = Name.find $1
-        if name.present?
-          if SpuriousNames.include? name.name
-            name.name
-          else
-            match
-          end
-        else
-          Progress.error "Taxt: couldn't even find name record for #{taxt}"
-          match
-        end
-      end
-    end
   end
 
 end

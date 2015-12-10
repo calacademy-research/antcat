@@ -88,27 +88,6 @@ describe CatalogHelper do
       end
     end
 
-    describe 'taxon label and css classes' do
-      it "should return the CSS class based on the type of the taxon and its status" do
-        taxon_label_and_css_classes = helper.taxon_label_and_css_classes(taxon)
-        expect(taxon_label_and_css_classes[:label]).to eq('Atta')
-        expect(taxon_label_and_css_classes[:css_classes]).to eq('genus name taxon valid')
-      end
-      it "should prepend a fossil symbol" do
-        taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :fossil => true
-        expect(helper.taxon_label_and_css_classes(taxon)[:label]).to eq('&dagger;Atta')
-      end
-      it "should handle being selected" do
-        expect(helper.taxon_label_and_css_classes(taxon, :selected => true)[:css_classes]).to eq('genus name selected taxon valid')
-      end
-      it "should handle upper case" do
-        expect(helper.taxon_label_and_css_classes(taxon, :uppercase => true)[:label]).to eq('ATTA')
-      end
-      it "should return an HTML safe label" do
-        expect(helper.taxon_label_and_css_classes(taxon)[:label]).to be_html_safe
-      end
-    end
-
     describe 'taxon rank css classes' do
       it 'should return the right ones' do
         expect(helper.css_classes_for_rank(taxon)).to match_array(['genus', 'taxon', 'name'])

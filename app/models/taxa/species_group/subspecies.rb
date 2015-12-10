@@ -3,6 +3,8 @@ class Subspecies < SpeciesGroupTaxon
   include Formatters::RefactorFormatter
   include UndoTracker
 
+  class NoSpeciesForSubspeciesError < StandardError; end
+
   belongs_to :species
   before_validation :set_genus
   attr_accessible :subfamily, :genus, :name, :protonym, :species, :type, :type_name_id
@@ -11,10 +13,10 @@ class Subspecies < SpeciesGroupTaxon
   def update_parent new_parent
     # Joe - somewhere, we need to check and pop up for the homonym case if there are multiple possibles.
     super
-    if defined? new_parent.genus()
+    if defined? new_parent.genus
       self.genus = new_parent.genus
     end
-    if defined? new_parent.subgenus()
+    if defined? new_parent.subgenus
       self.subgenus = new_parent.subgenus
     end
     self.species = new_parent
@@ -24,11 +26,9 @@ class Subspecies < SpeciesGroupTaxon
     self.genus = species.genus if species and not genus
   end
 
-  def statistics
-  end
+  def statistics; end
 
   def parent
-    # Rubyism; a || b of two valid objects returns a. Order dependent.
     species || genus
   end
 
@@ -36,7 +36,6 @@ class Subspecies < SpeciesGroupTaxon
   # and the others are handled there.
   def elevate_to_species
     raise NoSpeciesForSubspeciesError unless species
-
     # to add support for change/undo (commented out here)
     # There are two issues with this;
     # #1: in taxon_mother, save invokes "build_children", which calls
@@ -56,23 +55,22 @@ class Subspecies < SpeciesGroupTaxon
 
     # Do monkey-see-monkey-do in species.rb become_species_of for orthogonal features.
 
-
     # change = Change.new
     # change.change_type = :update
     # change.user_changed_taxon_id = self.id
     # change.save!
     # RequestStore.store[:current_change_id] = change.id
 
-    new_name_string = species.genus.name.to_s + ' ' + name.epithet
+    new_name_string = "#{species.genus.name} #{name.epithet}"
     new_name = SpeciesName.find_by_name new_name_string
-    if new_name.nil?
+    unless new_name
       new_name = SpeciesName.new
       new_name.update_attributes({
-                                     name: new_name_string,
-                                     name_html: italicize(new_name_string),
-                                     epithet: name.epithet,
-                                     epithet_html: name.epithet_html,
-                                     epithets: nil,
+                                    name: new_name_string,
+                                    name_html: italicize(new_name_string),
+                                    epithet: name.epithet,
+                                    epithet_html: name.epithet_html,
+                                    epithets: nil
                                  })
       new_name.save
     end
@@ -93,28 +91,17 @@ class Subspecies < SpeciesGroupTaxon
     # clear_change
   end
 
-  def fix_missing_species
-    return if species
-    epithet = name.epithets.split(' ').first
-    results = Species.find_epithet_in_genus epithet, genus
-    return unless results
-    self.species = results.first
-    save!
-  end
-
-  def self.fix_missing_species;
-    all.each { |e| e.fix_missing_species }
-  end
-
   def add_antweb_attributes attributes
     subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
     tribe_name = genus.tribe && genus.tribe.name.to_s
     #species_name = species && species.name.epithet
     #attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: genus.name.to_s, species: species_name, subspecies: name.epithet
 
-    if name.type == 'SubspeciesName'
-      attributes.merge! genus: genus.name.to_s, species: name.epithets.split(' ').first, subspecies: name.epithet
-    elsif name.type == 'SpeciesName'
+    case name.type
+    when 'SubspeciesName'
+      attributes.merge! genus: genus.name.to_s,
+        species: name.epithets.split(' ').first, subspecies: name.epithet
+    when 'SpeciesName'
       attributes.merge! genus: name.to_s.split(' ').first, species: name.epithet
     else
       attributes.merge! genus: genus.name.to_s, species: name.epithet
@@ -123,7 +110,5 @@ class Subspecies < SpeciesGroupTaxon
     # attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: genus.name.to_s
     attributes.merge subfamily: subfamily_name, tribe: tribe_name
   end
-
-  class NoSpeciesForSubspeciesError < StandardError; end
 
 end

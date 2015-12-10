@@ -1,7 +1,5 @@
 # coding: UTF-8
 class Reference < ActiveRecord::Base
-  class BoltonReferenceNotMatched < StandardError; end
-  class BoltonReferenceNotFound < StandardError; end
 
   searchable do
     string  :type
@@ -38,47 +36,6 @@ class Reference < ActiveRecord::Base
     fulltext_search options
   end
 
-  def self.get_author_names_and_year data
-    year = data[:year] || data[:in] && data[:in][:year]
-    author_names = data[:in] && data[:in][:author_names] || data[:author_names]
-    return author_names, year
-  end
-
-  def self.find_by_bolton_key data
-    author_names, year = get_author_names_and_year data
-    return MissingReference.import 'no year', data unless year
-
-    bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), year).to_s :db
-    reference = find_by_bolton_key_cache bolton_key
-    return reference if reference
-
-    bolton_reference = Bolton::Reference.find_by_key_cache bolton_key
-    if !bolton_reference
-      reference = MissingReference.import 'no Bolton', data
-    else
-      reference = bolton_reference.match || MissingReference.import('no Bolton match', data)
-    end
-
-    reference.update_attribute :bolton_key_cache, bolton_key
-    reference
-  end
-
-  def self.find_bolton bolton_reference
-    bolton_key = bolton_reference.key.to_s :db
-    reference = find_by_bolton_key_cache bolton_key
-    return reference if reference
-
-    bolton_reference = Bolton::Reference.find_by_key_cache bolton_key
-    if !bolton_reference
-      reference = nil
-    else
-      reference = bolton_reference.match
-    end
-
-    reference.update_attribute :bolton_key_cache, bolton_key if reference
-    reference
-  end
-
   private
     def self.extract_keyword_params keyword_string
       keywords_params = {}
@@ -96,7 +53,7 @@ class Reference < ActiveRecord::Base
         next unless match
 
         unless match.names.empty?
-          match.names.each {|param| keywords_params[param.to_sym] = match[param] }
+          match.names.each { |param| keywords_params[param.to_sym] = match[param] }
         else
           keywords_params[keyword.to_sym] = $1
         end
@@ -154,7 +111,8 @@ class Reference < ActiveRecord::Base
       search_keywords = options[:keywords] || ""
 
       substrings_to_remove = ['<i>', '</i>', '\*'] # TODO move to solr conf?
-      substrings_to_remove.each {|substring| search_keywords.gsub! /#{substring}/, '' }
+      substrings_to_remove.each { |substring| search_keywords.gsub! /#{substring}/, '' }
+      search_keywords.gsub! /-|:/, ' ' # TODO fix in solr
 
       search {
         keywords search_keywords

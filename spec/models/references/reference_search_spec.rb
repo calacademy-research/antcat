@@ -324,43 +324,6 @@ describe Reference, slow: true do
       end
     end
   end
-
-  describe "Finding the reference for a Bolton citation" do
-    it "creates a 'no Bolton' MissingReference if it can't find the reference" do
-      reference = Reference.find_by_bolton_key :author_names => ['Bolton'], :year => '1920', :matched_text => 'Bolton, 1920'
-      expect(reference.citation).to eq('Bolton, 1920')
-      expect(reference.reason_missing).to eq('no Bolton')
-    end
-    it "creates a 'no Bolton match' MissingReference if the Bolton reference exists, but not the Reference" do
-      bolton_reference = FactoryGirl.create :bolton_reference, :authors => 'Bolton, B.', :citation_year => '1920'
-      data = {:author_names => ['Bolton'], :year => '1920', :matched_text => 'Bolton, 1920'}
-      reference = Reference.find_by_bolton_key data
-      expect(reference.reason_missing).to eq('no Bolton match')
-    end
-    it "creates a 'no year' MissingReference if the key doesn't have a year" do
-      data = {author_names: ['Bolton'], matched_text: 'Bolton'}
-      reference = Reference.find_by_bolton_key data
-      expect(reference.reason_missing).to eq('no year')
-    end
-    it "reuses a MissingReference, even with no year" do
-      missing_reference = MissingReference.create! title: '(missing)', citation: 'Fabricius'
-      data = {author_names: ['Fabricius'], matched_text: 'Fabricius'}
-      reference = Reference.find_by_bolton_key data
-      expect(reference).to eq(missing_reference)
-    end
-    it "reuses a MissingReference" do
-      data = {author_names: ['Bolton'], year: '1920', matched_text: 'Bolton, 1920'}
-      reference = Reference.find_by_bolton_key data
-      other_reference = Reference.find_by_bolton_key data
-      expect(reference).to eq(other_reference)
-    end
-    it "uses the nesting_reference's year and author names" do
-      data = {author_names: ['Bolton'], year: '1920', in: {author_names: ['Fisher'], year: '2013'}}
-      author_names, year = Reference.get_author_names_and_year data
-      expect(author_names).to eq(['Fisher'])
-      expect(year).to eq('1920')
-    end
-  end
 end
 
 describe Reference do

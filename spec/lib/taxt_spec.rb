@@ -196,7 +196,6 @@ describe Taxt do
         end
       end
     end
-
   end
 
   describe "Sentence output" do
@@ -207,60 +206,6 @@ describe Taxt do
     end
     it "should not add a period if one's already there" do
       expect(Taxt.to_sentence("{ref #{reference.id}}.", nil)).to eq('Latreille, 1809.')
-    end
-  end
-
-  describe "Cleanup" do
-    let(:america) { find_or_create_name 'America' }
-    let(:genus) { create_genus }
-
-    it "should change these fields in these tables" do
-      taxon = FactoryGirl.create :genus,
-                         type_taxt: "{nam #{america.id}}",
-                         headline_notes_taxt: "{nam #{america.id}}",
-                         genus_species_header_notes_taxt: "{nam #{america.id}}"
-
-      taxon.protonym.authorship.notes_taxt = "{nam #{america.id}}"
-      taxon.protonym.authorship.save!
-
-      reference_section = ReferenceSection.create! title_taxt: "{nam #{america.id}}",
-                               subtitle_taxt: "{nam #{america.id}}",
-                               references_taxt: "{nam #{america.id}}"
-      history_item = TaxonHistoryItem.create! taxt: "{nam #{america.id}}"
-
-      Taxt.cleanup
-
-      taxon.reload
-      expect(taxon.type_taxt).to eq('America')
-      expect(taxon.headline_notes_taxt).to eq('America')
-      expect(taxon.genus_species_header_notes_taxt).to eq('America')
-
-      expect(taxon.protonym.authorship.notes_taxt).to eq('America')
-
-      reference_section.reload
-      expect(reference_section.title_taxt).to eq('America')
-      expect(reference_section.subtitle_taxt).to eq('America')
-      expect(reference_section.references_taxt).to eq('America')
-
-      history_item.reload
-      expect(history_item.taxt).to eq('America')
-    end
-
-    it "should replace spurious {nam}s with the word" do
-      expect(Taxt.cleanup_field("{nam #{america.id}}")).to eq('America')
-    end
-
-    it "should replace {nam}s with {tax}s where possible" do
-      expect(Taxt.cleanup_field("{nam #{genus.name.id}}")).to eq("{tax #{genus.id}}")
-    end
-
-    it "should leave {nam}s alone that don't match a taxt" do
-      name = find_or_create_name 'Atta'
-      expect(Taxt.cleanup_field("{nam #{name.id}}")).to eq("{nam #{name.id}}")
-    end
-
-    it "should handle more than one replacement in same string" do
-      expect(Taxt.cleanup_field("{nam #{america.id}}, {nam #{genus.name.id}}")).to eq("America, {tax #{genus.id}}")
     end
   end
 

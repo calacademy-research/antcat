@@ -44,33 +44,11 @@ describe MissingReference do
         expect(second_citation_occurrence.reload.taxt).to eq("{ref #{nonmissing_reference.id}}")
       end
     end
-
   end
 
   describe "Optional year" do
     it "should permit a missing year (unlike other references)" do
       expect(MissingReference.new(title: 'missing', citation: 'Bolton')).to be_valid
-    end
-  end
-
-  describe "Importing" do
-    it "should create the reference based on the passed data" do
-      reference = MissingReference.import 'no Bolton', :author_names => ['Bolton'], :year => '1920', :matched_text => 'Bolton, 1920: 22'
-      expect(reference.reload.year).to eq(1920)
-      expect(reference.citation).to eq('Bolton, 1920')
-      expect(reference.reason_missing).to eq('no Bolton')
-    end
-    it "should save the whole thing in the citation if there's no colon" do
-      reference = MissingReference.import 'no Bolton', :author_names => ['Bolton'], :year => '1920', :matched_text => 'Bolton, 1920'
-      expect(reference.reload.year).to eq(1920)
-      expect(reference.citation).to eq('Bolton, 1920')
-      expect(reference.reason_missing).to eq('no Bolton')
-    end
-    it "should handle missing year" do
-      reference = MissingReference.import 'no year', :author_names => ['Bolton'], :matched_text => 'Bolton'
-      expect(reference.reload.year).to be_nil
-      expect(reference.citation).to eq('Bolton')
-      expect(reference.reason_missing).to eq('no year')
     end
   end
 

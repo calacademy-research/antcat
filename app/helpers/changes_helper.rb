@@ -37,9 +37,7 @@ module ChangesHelper
   end
 
   def format_type_attributes taxon
-    string = []
-    string << 'Fossil' if taxon.type_fossil?
-    string.join(', ').html_safe
+    if taxon.type_fossil? then 'Fossil' else '' end.html_safe
   end
 
   def format_taxt taxt
@@ -54,30 +52,6 @@ module ChangesHelper
       # else
       #   #TODO make this pretty
       #   return "<Deleted by later edit>"
-    end
-  end
-
-  def undo_button taxon, change
-    # This extra check (for change_type deleted) covers the case when we've deleted children
-    # in a change that only shows the parent being deleted.
-    unless current_user.nil?
-      if  (!change[:change_type] == 'delete' && taxon.can_be_edited_by?(current_user)) or current_user.can_edit
-        if change.versions.length > 0
-          button 'Undo', 'undo_button', 'data-undo-id' => change.id, class: 'undo_button_' + change.id.to_s
-        end
-      end
-    end
-  end
-
-  def approve_button taxon, change
-    taxon_id = change.user_changed_taxon_id
-    taxon_state = TaxonState.find_by taxon_id: taxon_id
-    unless taxon_state.review_state == "approved"
-      if (taxon.taxon_state.nil? and $Milieu.user_is_editor? current_user) or
-          (!taxon_state.nil? and taxon.can_be_approved_by? change, current_user)
-
-        button 'Approve', 'approve_button', 'data-change-id' => change.id
-      end
     end
   end
 

@@ -1,12 +1,13 @@
 # coding: UTF-8
 class AuthorName < ActiveRecord::Base
+  include UndoTracker
+
   has_many :reference_author_names
   has_many :references, through: :reference_author_names
   belongs_to :author
   validates :author, :name, presence: true
   validates :name, uniqueness: true
-  has_paper_trail meta: {change_id: :get_current_change_id}
-  include UndoTracker
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   attr_accessible :name, :author, :author_id
 
@@ -28,137 +29,20 @@ class AuthorName < ActiveRecord::Base
   end
 
   def self.search term = ''
-    #all(:conditions => ["name LIKE ?", "%#{term}%"], :include => :reference_author_names,
-    #    :order => 'reference_author_names.created_at DESC, name').map(&:name)
-    all.where('name like ?', "%#{term}%").includes(:reference_author_names).order('reference_author_names.created_at desc', 'name').map(&:name)
-
+    all.where('name LIKE ?', "%#{term}%").includes(:reference_author_names)
+      .order('reference_author_names.created_at DESC', 'name').map(&:name)
   end
 
   def self.import_author_names_string string
     author_data = Parsers::AuthorParser.parse!(string)
-    {:author_names => import(author_data[:names]), :author_names_suffix => author_data[:suffix]}
+    { :author_names => import(author_data[:names]), :author_names_suffix => author_data[:suffix] }
   rescue Citrus::ParseError
-    {:author_names => [], :author_names_suffix => nil}
-  end
-
-  def self.fix_missing_spaces show_progress = false
-    Progress.init show_progress
-    missing_space_pattern = /\.([^ ,\-])/
-    all.each do |author_name|
-      name = author_name.name.dup
-      next unless name =~ missing_space_pattern
-      name.gsub! missing_space_pattern, '. \1'
-      Progress.print "Changing '#{author_name.name}' to '#{name}'..."
-      existing_author_name = find_by_name name
-      if existing_author_name
-        Progress.print "which already exists"
-        author_name.references.each do |reference|
-          reference.author_names.delete author_name
-          reference.author_names << existing_author_name
-          author_name.destroy
-        end
-      else
-        Progress.print "which doesn't already exist"
-        author_name.name = name
-        author_name.save!
-      end
-      Progress.puts
-    end
-  end
-
-  def self.create_hyphenation_aliases show_progress = false
-    Progress.init show_progress
-    all.order('name').each do |author_name|
-      next unless author_name.name =~ /-/
-      Progress.puts
-      Progress.print "Found name with hyphen(s): '#{author_name.name}'"
-      next unless without_hyphens = find_by_name(author_name.name.gsub /-/, ' ')
-      next if author_name.author == without_hyphens.author
-      Progress.print "...aliasing to '#{without_hyphens.name}'"
-      author_name.author.destroy
-      author_name.author = without_hyphens.author
-      author_name.save!
-    end
-  end
-
-  def self.alias show_progress, *names
-    Progress.init show_progress
-    names = names.map do |name|
-      author_name = nil
-      unless author_name = find_by_name(name)
-        author_name = create! :author => Author.create!, :name => name
-      end
-      author_name
-    end
-    author = names.first.author
-    names[1..-1].each do |name|
-      Progress.puts "Aliasing '#{name.name}' to '#{names.first.name}'"
-      where(:author_id => name.author_id).update_all(:author_id => author.id)
-      #update_all({:author_id => author.id}, {:author_id => name.author_id})
-      name.author.destroy unless name.author.names(true).present?
-    end
-  end
-
-  # This is never called from anywhere but test code.
-  # The associated test is failing and marked as "dormant code"
-  # if you're going to use this, enable and fix the test first
-  def self.correct bad, good, show_progress = true
-    Progress.init show_progress
-    Progress.print "Correcting '#{bad}' to '#{good}'..."
-    bad_name = find_by_name bad
-    raise unless bad_name
-    existing_name = find_by_name good
-    if existing_name
-      Progress.puts 'which already exists'
-      references = bad_name.references.dup
-      #ReferenceAuthorName.all(:conditions => ['author_name_id = ?', bad_name.id]).each do |e|
-      ReferenceAuthorName.all.where(author_name_id: bad_name.id).each do |e|
-        e.author_name_id = existing_name.id
-        e.save!
-      end
-      author = bad_name.author
-      bad_name.destroy
-      author.destroy unless author.names.present?
-      references.each do |reference|
-        Progress.puts "Changed #{reference}"
-        reference.refresh_author_names_caches
-        Progress.puts "     to #{reference}"
-      end
-    else
-      Progress.puts "which doesn't exist"
-      bad_name.name = good
-      bad_name.save!
-    end
-  end
-
-  def self.find_preposition_synonyms show_progress = false
-    synonyms = []
-    all.each do |author_name|
-      name = author_name.name.dup
-      match = name.match /^((?:La|Le|De) )(.*)/i
-      next unless match
-
-      name_without_space = name.gsub! /^#{match[1]}/, match[1][0..-2]
-      if (author_name_without_space = find_by_name(name_without_space)) &&
-          author_name_without_space.author != author_name.author
-        synonyms << [author_name, author_name_without_space]
-      end
-
-      name = author_name.name.dup
-      name[0, match[1].length] = ''
-      name << ', ' + match[1]
-      name_with_preposition_at_end = name
-      if (author_name_with_preposition_at_end = find_by_name(name_with_preposition_at_end)) &&
-          author_name_with_preposition_at_end.author != author_name.author
-        synonyms << [author_name, author_name_with_preposition_at_end]
-      end
-    end
-    synonyms
+    { :author_names => [], :author_names_suffix => nil }
   end
 
   private
-  def name_parts
-    @name_parts ||= Parsers::AuthorParser.get_name_parts name
-  end
+    def name_parts
+      @name_parts ||= Parsers::AuthorParser.get_name_parts name
+    end
 
 end
