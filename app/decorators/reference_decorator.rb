@@ -3,8 +3,8 @@
 # Most of these routines are only hit if there's a change in the content, at which
 # point it's reformatted and saved in references::formatted_cache.
 
-class ReferenceDecorator < Draper::Decorator
-  include ERB::Util
+class ReferenceDecorator < ApplicationDecorator
+  include ERB::Util # for the h method
   delegate_all
 
   def created_at
@@ -28,17 +28,14 @@ class ReferenceDecorator < Draper::Decorator
   end
 
   def format_reference_document_link
-    doi = format_doi_link
+    pdf_link = if reference.downloadable?
+                 helpers.link 'PDF', reference.url, class: 'document_link', target: '_blank'
+               else
+                 ''
+               end
 
-    if reference.downloadable_by? get_current_user
-      pdf = helpers.link 'PDF', reference.url, class: 'document_link'
-    end
-
-    if doi
-      return doi + " " + pdf #pdf may not be defined at this poit TODO fix
-    else
-      return pdf
-    end
+    doi_link = format_doi_link
+    [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
   end
 
   def format_authorship_html
@@ -110,6 +107,8 @@ class ReferenceDecorator < Draper::Decorator
 
     # cache/decache under same conditions
     using_cache = user.present?
+    # temporarily keeping commented out line
+    #using_cache = false # perhaps we could add this as a global setting? TODO investigate
     if using_cache
       string = ReferenceFormatterCache.instance.get reference, :inline_citation_cache
       return string.html_safe if string
@@ -132,13 +131,28 @@ class ReferenceDecorator < Draper::Decorator
     reference.key.to_s
   end
 
-  private
-    def get_current_user
-      helpers.current_user
-      rescue NoMethodError
-        nil
-    end
+  def goto_reference_link
+    path = Rails.application.routes.url_helpers.reference_path(reference)
+    helpers.link helpers.image_tag('external_link.png'),
+      path, class: :goto_reference_link, target: '_blank'
+  end
 
+  def format_author_last_names
+    names = reference.author_names.map &:last_name
+    case names.size
+    when 0
+      '[no authors]'
+    when 1
+      "#{names.first}"
+    when 2
+      "#{names.first} & #{names.second}"
+    else
+      string = names[0..-2].join ', '
+      string << " & " << names[-1]
+    end << ', ' << reference.short_citation_year
+  end
+
+  private
     def format_timestamp timestamp
       timestamp.strftime '%Y-%m-%d'
     end
@@ -178,15 +192,13 @@ class ReferenceDecorator < Draper::Decorator
     end
 
     def format_doi_link
-      unless reference.doi.nil? or reference.doi.length == 0
-        helpers.link reference.doi, create_link_from_doi(reference.doi), class: 'document_link'
-      end
+      return unless reference.doi.present?
+      helpers.link reference.doi, create_link_from_doi(reference.doi),
+        class: 'document_link', target: '_blank'
     end
 
-    # transform "10.11646/zootaxa.4029.1.1"
-    # http://dx.doi.org/10.11646/zootaxa.4029.1.1
+    # transform "10.11646/zootaxa.4029.1.1" --> "http://dx.doi.org/10.11646/zootaxa.4029.1.1"
     def create_link_from_doi doi
-      #"<a href=\"http://dx.doi.org/" + doi + "\">#{doi}</a>"
       "http://dx.doi.org/" + doi
     end
 end

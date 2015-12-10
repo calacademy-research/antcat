@@ -10,10 +10,31 @@ Before do
   $Milieu = RestrictedMilieu.new
 end
 
-Before('@preview') do
+Before '@preview' do
   $Milieu = SandboxMilieu.new :preview
 end
 
-After('@preview') do
+After '@preview' do
   $Milieu = RestrictedMilieu.new
+end
+
+# from http://makandracards.com/makandra/1709-single-step-and-slow-motion-for-cucumber-scenarios-using-javascript-selenium
+Before '@slow_motion' do
+  @slow_motion = true
+end
+
+After '@slow_motion' do
+  @slow_motion = false
+end
+
+Transform /.*/ do |match|
+  if @slow_motion
+    sleep 1.5
+  end
+  match
+end
+
+AfterStep '@single_step' do
+  print "Single Stepping. Hit enter to continue."
+  STDIN.getc
 end

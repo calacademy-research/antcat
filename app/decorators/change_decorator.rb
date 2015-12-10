@@ -35,6 +35,32 @@ class ChangeDecorator < Draper::Decorator
     format_time_ago change.approved_at
   end
 
+  def undo_button
+    taxon = change.get_most_recent_valid_taxon
+    # This extra check (for change_type deleted) covers the case when we've deleted children
+    # in a change that only shows the parent being deleted.
+    unless helpers.current_user.nil?
+      if (!change[:change_type] == 'delete' && taxon.can_be_edited_by?(helpers.current_user)) or helpers.current_user.can_edit
+        unless change.versions.empty?
+          helpers.button 'Undo', 'undo_button', 'data-undo-id' => change.id, class: "undo_button_#{change.id}"
+        end
+      end
+    end
+  end
+
+  def approve_button
+    taxon = change.get_most_recent_valid_taxon
+    taxon_id = change.user_changed_taxon_id
+    taxon_state = TaxonState.find_by taxon_id: taxon_id
+
+    unless taxon_state.review_state == "approved"
+      if (taxon.taxon_state.nil? and $Milieu.user_is_editor? helpers.current_user) or
+          (!taxon_state.nil? and taxon.can_be_approved_by? change, helpers.current_user)
+        helpers.button 'Approve', 'approve_button', 'data-change-id' => change.id
+      end
+    end
+  end
+
   private
     def format_username user
       if user
