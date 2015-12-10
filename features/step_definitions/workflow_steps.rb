@@ -2,10 +2,12 @@
 When /^(?:that )?version tracking is (not)?enabled$/ do |is_not|
   PaperTrail.enabled = !is_not
 end
+
 When /^the changes are approved$/ do
   TaxonState.update_all review_state: :approved
   Change.update_all approver_id: @user.id, approved_at: Time.now
 end
+
 Given /^there is a genus "([^"]*)" that's waiting for approval$/ do |name|
   genus = create_genus name
   genus.taxon_state.review_state = :waiting
@@ -126,4 +128,3 @@ end
 Then /I should not see any change history/ do
   page.should_not have_css '.change_history'
 end
-

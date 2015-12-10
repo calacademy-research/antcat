@@ -1,7 +1,7 @@
 -#Local variables: taxon
 
 %table
-  - for item in taxon.reference_sections
+  -taxon.reference_sections.each do |item|
     %tr.reference_section
       %td.label
       %td.value.title_taxt= Taxt.to_display_sentence item.title_taxt, current_user

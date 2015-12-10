@@ -4,10 +4,10 @@ class ChangesController < ApplicationController
   include UndoTracker
 
   def index
-    @changes = Change.creations.paginate page: params[:page], per_page: 8
+    @changes = Change.creations.paginate(page: params[:page], per_page: 8)
 
     respond_to do |format|
-      format.atom { render(nothing: true) }
+      format.atom { render nothing: true }
       format.html
     end
   end
@@ -19,10 +19,9 @@ class ChangesController < ApplicationController
   def do_approve this_change
     taxon_id = this_change.user_changed_taxon_id
     taxon_state = TaxonState.find_by taxon_id: taxon_id
-    if taxon_state.review_state == "approved"
-      return
-    end
-    if (this_change.taxon.nil?)
+    return if taxon_state.review_state == "approved"
+
+    if this_change.taxon.nil?
       # This case is for approving a delete
       taxon_state.review_state = "approved"
       taxon_state.save!
@@ -35,7 +34,7 @@ class ChangesController < ApplicationController
   def approve
     @change = Change.find params[:id]
     do_approve @change
-    json = {success: true}.to_json
+    json = { success: true }
     render json: json, content_type: 'text/html'
   end
 
@@ -46,13 +45,12 @@ class ChangesController < ApplicationController
       end
     end
 
-    json = {success: true}.to_json
+    json = { success: true }
     render json: json, content_type: 'text/html'
   end
 
-
   def undo
-    #  Once you have the change id, find all future changes
+    # Once you have the change id, find all future changes
     # that touch this same item set.
     # find all versions, and undo the change
     # Sort to undo changes most recent to oldest
@@ -77,20 +75,19 @@ class ChangesController < ApplicationController
       undo_versions versions
     end
 
-    json = {success: true}.to_json
+    json = { success: true }
     render json: json, content_type: 'text/html'
   end
-
 
   def destroy
     destroy_id = params[:id]
     raise NotImplementedError
 
-    json = {success: true}.to_json
+    json = { success: true }
     render json: json, content_type: 'text/html'
   end
 
-  # reutrn information about all the taxa that would be hit if we were to
+  # return information about all the taxa that would be hit if we were to
   # hit "undo". Includes current taxon. For display.
   def undo_items
     change_id = params[:id]
@@ -114,11 +111,10 @@ class ChangesController < ApplicationController
       # This would be a good place to warn from if we find that we can't undo
       # something about a taxa.
     end
-    render json: changes.to_json, status: :ok
+    render json: changes, status: :ok
   end
 
   private
-
   # Note that because of schema change, we can't do this for changes that don't
   # have an extracted taxon_state.
   def undo_versions versions
@@ -130,23 +126,21 @@ class ChangesController < ApplicationController
       else
         item = version.reify
         if item.nil?
-          raise "failed to reify version: " + version.id.to_s + " referencing change: " + version.change_id.to_s
+          raise "failed to reify version: #{version.id} referencing change: #{version.change_id}"
         end
         begin
           # because we validate on things like the genus being present, and if we're doing an entire change set,
           # it might not be!
-          unless (item.nil?)
-            item.save!(:validate => false)
+          unless item.nil?
+            item.save! :validate => false
           end
         rescue ActiveRecord::RecordInvalid => error
-
-          puts("=========Reify failure:" + error.to_s + " version item_type = " + version.item_type.to_s)
+          puts "=========Reify failure: #{error} version item_type =  #{version.item_type}"
           raise error
         end
       end
     end
   end
-
 
   # Starting at a given version (which can reference any of a set of objects), it iterates forwards and
   # returns all changes that created future versions of said object. Exclusive of
@@ -154,22 +148,22 @@ class ChangesController < ApplicationController
   def get_future_change_ids version
     new_version = version.next
     change_id = version.change_id
-    if (change_id == nil)
+
+    unless change_id
       return SortedSet.new
     end
-    if new_version == nil
-      return SortedSet.new([change_id])
+
+    unless new_version
+      SortedSet.new [change_id]
     else
-      return (SortedSet.new([change_id]).merge(get_future_change_ids(new_version)))
+      SortedSet.new([change_id]).merge get_future_change_ids(new_version)
     end
   end
-
 
   # Look up all future changes of this change, return change IDs in an array,
   # ordered most recent to oldest.
   # inclusive of the change passed as argument.
   def find_future_changes change_id
-
     # This returns changes that touch future versions of
     # all paper trail type items.
 
@@ -188,12 +182,4 @@ class ChangesController < ApplicationController
     change_ids
   end
 
-
 end
-
-
-
-
-
-
-

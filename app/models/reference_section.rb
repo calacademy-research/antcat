@@ -1,9 +1,10 @@
 # coding: UTF-8
 class ReferenceSection < ActiveRecord::Base
+  include UndoTracker
+
   belongs_to :taxon
   acts_as_list scope: :taxon
-  has_paper_trail meta: {change_id: :get_current_change_id}
-  include UndoTracker
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   attr_accessible :taxon_id, :title_taxt, :subtitle_taxt, :references_taxt,:position, :taxon
 

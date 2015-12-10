@@ -7,7 +7,11 @@ class Reference < ActiveRecord::Base
     document.try :url
   end
 
-  def downloadable_by? user
+  def downloadable?
+    downloadable_by?
+  end
+
+  def downloadable_by? user = nil
     document.try :downloadable_by?, user
   end
 

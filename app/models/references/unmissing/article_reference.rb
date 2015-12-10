@@ -3,12 +3,11 @@ class ArticleReference < UnmissingReference
   belongs_to :journal
 
   validates_presence_of :journal, :series_volume_issue, :pagination
-  attr_accessible :year,:journal,:doi
+  attr_accessible :year,:journal, :doi
 
   def start_page
     page_parts[:start]
   end
-
 
   def end_page
     page_parts[:end]
@@ -27,13 +26,12 @@ class ArticleReference < UnmissingReference
   end
 
   private
+    def series_volume_issue_parts
+      @series_volume_issue_parts ||= Parsers::ArticleCitationParser.get_series_volume_issue_parts series_volume_issue
+    end
 
-  def series_volume_issue_parts
-    @series_volume_issue_parts ||= Parsers::ArticleCitationParser.get_series_volume_issue_parts series_volume_issue
-  end
-
-  def page_parts
-    @page_parts ||= Parsers::ArticleCitationParser.get_page_parts pagination
-  end
+    def page_parts
+      @page_parts ||= Parsers::ArticleCitationParser.get_page_parts pagination
+    end
 
 end

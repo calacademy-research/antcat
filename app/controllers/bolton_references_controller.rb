@@ -27,7 +27,7 @@ class BoltonReferencesController < ApplicationController
   def update
     @bolton_reference = Bolton::Reference.find params[:id]
     @bolton_reference.set_match_manually params[:match]
-    respond_to {|format| format.js}
+    respond_to { |format| format.js }
   end
 
 end

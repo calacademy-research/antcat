@@ -26,7 +26,7 @@ if ENV['HEADLESS'] == 'true'
 end
 
 if ENV['DRIVER'] == 'webkit'
-    Capybara.javascript_driver = :webkit
+  Capybara.javascript_driver = :webkit
 end
 
 Capybara::Webkit.configure do |config|

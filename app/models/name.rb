@@ -27,8 +27,7 @@ class Name < ActiveRecord::Base
                         name_html: italicize(name_string))
   end
 
-  def change_parent _;
-  end
+  def change_parent _; end
 
   def quadrinomial?
     name.split(' ').size == 4
@@ -39,10 +38,7 @@ class Name < ActiveRecord::Base
   end
 
   def set_taxon_caches
-    #Taxon.update_all ['name_cache = ?', name], name_id: id
     Taxon.where(name_id: id).update_all(name_cache: name)
-    #Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
-    #Taxon.update_all({name_html_cache: name_html}, {name_id: id})
     Taxon.where(name_id: id).update_all(name_html_cache: name_html)
   end
 
@@ -164,7 +160,7 @@ class Name < ActiveRecord::Base
         Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
             joins("#{join} taxa ON taxa.name_id = names.id").
             where("name LIKE '#{search_term}' #{rank_filter}").
-            order('taxon_id desc').
+            order('taxon_id DESC').
             order(:name)
 
     search_term = letters_in_name.split('').join('%') + '%'
@@ -207,7 +203,6 @@ class Name < ActiveRecord::Base
     string = ''.html_safe
     string << dagger_html if fossil
     string << name_html.html_safe
-    string
   end
 
   def rank
@@ -235,7 +230,7 @@ class Name < ActiveRecord::Base
   end
 
   def self.duplicates
-    name_strings = Name.find_by_sql("SELECT * FROM names GROUP by name HAVING COUNT(*) > 1").map(&:name)
+    name_strings = Name.find_by_sql("SELECT * FROM names GROUP BY name HAVING COUNT(*) > 1").map(&:name)
     Name.where(name: name_strings).order(:name)
   end
 
@@ -270,21 +265,21 @@ class Name < ActiveRecord::Base
 
   def references_to_taxon_name
     Taxon.where(name_id: id).inject([]) do |references, taxon|
-      references << {table: 'taxa', field: :name_id, id: taxon.id}
+      references << { table: 'taxa', field: :name_id, id: taxon.id }
       references
     end
   end
 
   def references_to_taxon_type_name
     Taxon.where(type_name_id: id).inject([]) do |references, taxon|
-      references << {table: 'taxa', field: :type_name_id, id: taxon.id}
+      references << { table: 'taxa', field: :type_name_id, id: taxon.id }
       references
     end
   end
 
   def references_to_protonym_name
     Protonym.where(name_id: id).inject([]) do |references, protonym|
-      references << {table: 'protonyms', field: :name_id, id: protonym.id}
+      references << { table: 'protonyms', field: :name_id, id: protonym.id }
       references
     end
   end
@@ -293,11 +288,11 @@ class Name < ActiveRecord::Base
     references = []
     Taxt.taxt_fields.each do |klass, fields|
       table = klass.arel_table
-      for field in fields
-        for record in klass.where(table[field].matches("%{nam #{id}}%"))
+      fields.each do |field|
+        klass.where(table[field].matches("%{nam #{id}}%")).each do |record|
           next unless record[field]
           if record[field] =~ /{nam #{id}}/
-            references << {table: klass.table_name, field: field, id: record[:id]}
+            references << { table: klass.table_name, field: field, id: record[:id] }
           end
         end
       end
@@ -329,8 +324,8 @@ class Name < ActiveRecord::Base
   end
 
   def self.find_by_name string
-    Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false).
-        where(name: string).order('taxa.id desc').order(:name).first
+    Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false)
+      .where(name: string).order('taxa.id DESC').order(:name).first
   end
 
 end

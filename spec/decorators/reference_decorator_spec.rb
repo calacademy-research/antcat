@@ -11,7 +11,7 @@ describe ReferenceDecorator do
       reference = FactoryGirl.create :reference
       allow(reference).to receive(:downloadable_by?).and_return true
       allow(reference).to receive(:url).and_return 'example.com'
-      expect(reference.decorate.format_reference_document_link).to eq('<a class="document_link" href="example.com" target="_blank">PDF</a>')
+      expect(reference.decorate.format_reference_document_link).to eq('<a class="document_link" target="_blank" href="example.com">PDF</a>')
     end
   end
 

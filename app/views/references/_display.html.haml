@@ -1,10 +1,10 @@
 - css_class = 'reference_display'
-- css_class << ' downloadable' if reference.downloadable_by? current_user
+- css_class << ' downloadable' if reference.downloadable?
+
 %div{:class => css_class}
-  = raw reference.decorate.format
-  - document_link = reference.decorate.format_reference_document_link
-  = raw document_link if document_link
-  = reference.id
+  = reference.decorate.format
+  = reference.decorate.format_reference_document_link
+  = reference.decorate.goto_reference_link
 
   %p.notes= reference.decorate.public_notes
   - if user_is_editor?

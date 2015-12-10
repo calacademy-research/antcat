@@ -9,8 +9,8 @@ class AuthorNamesController < ApplicationController
     begin
       @author_name.save!
     rescue ActiveRecord::RecordInvalid => invalid
-      err={'error' => "Name already exists"}
-      render :json => err.to_json, :status => 409
+      err = { 'error' => "Name already exists" }
+      render json: err, status: :conflict
       return
     end
 
@@ -24,7 +24,6 @@ class AuthorNamesController < ApplicationController
     if @author_name.errors.empty?
       @author_name.touch_with_version
     end
-
     render_json true
   end
 
@@ -39,23 +38,19 @@ class AuthorNamesController < ApplicationController
     if AuthorName.find_by_author_id(params[:author_id]).nil?
       author.delete
     end
-
-
-
     render json: nil, content_type: 'text/html'
   end
 
+  private
+    def render_json is_new
+      json = {
+          isNew: is_new,
+          content: render_to_string(partial: 'author_names/panel', locals: { author_name: @author_name }),
+          id: @author_name.id,
+          success: @author_name.errors.empty?
+      }
 
-  ###
-  def render_json is_new
-    json = {
-        isNew: is_new,
-        content: render_to_string(partial: 'author_names/panel', locals: {author_name: @author_name}),
-        id: @author_name.id,
-        success: @author_name.errors.empty?
-    }.to_json
-
-    render json: json, content_type: 'text/html'
-  end
+      render json: json, content_type: 'text/html'
+    end
 
 end

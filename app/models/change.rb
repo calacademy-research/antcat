@@ -1,6 +1,7 @@
 # coding: UTF-8
 class Change < ActiveRecord::Base
   include ActionView::Helpers::DateHelper
+
   belongs_to :approver, class_name: 'User'
   has_many :versions, class_name: 'PaperTrail::Version'
   attr_accessible :approver_id,
@@ -10,7 +11,7 @@ class Change < ActiveRecord::Base
                   :approver
 
   def self.creations
-    self.joins('JOIN taxon_states on taxon_states.taxon_id = changes.user_changed_taxon_id').
+    self.joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id').
         order('CASE review_state ' +
                   'WHEN "waiting" THEN (changes.updated_at * 1000) ' +
                   'WHEN "approved" THEN changes.approved_at ' +
@@ -18,7 +19,7 @@ class Change < ActiveRecord::Base
   end
 
   def get_user_versions change_id
-    PaperTrail::Version.find_by_sql("select * from versions where change_id  = '"+change_id.to_s+"'")
+    PaperTrail::Version.find_by_sql("SELECT * FROM versions WHERE change_id  = '#{change_id}'")
   end
 
   def taxon
@@ -27,7 +28,6 @@ class Change < ActiveRecord::Base
     rescue ActiveRecord::RecordNotFound
       nil
     end
-
   end
 
   def get_most_recent_valid_taxon
@@ -38,7 +38,6 @@ class Change < ActiveRecord::Base
     version = get_most_recent_valid_taxon_version
     version.reify
   end
-
 
   # Deletes don't store any object info, so you can't show what it used to look like.
   # used to pull an example of the way it once was.
@@ -56,13 +55,14 @@ class Change < ActiveRecord::Base
     #   and item_id = '"+user_changed_taxon_id.to_s+"'
     #   order by id desc").first
 
-
     # This change didn't happen to touch taxon. Go ahead and search for the most recent
     # version of this taxon that has object information
-    version = PaperTrail::Version.find_by_sql("select * from versions where item_type = 'Taxon'
-      and object is not null
-      and item_id = '"+user_changed_taxon_id.to_s+"'
-      order by id desc").first
+    version = PaperTrail::Version.find_by_sql(<<-SQL.squish).first
+      SELECT * FROM versions WHERE item_type = 'Taxon'
+      AND object IS NOT NULL
+      AND item_id = '#{user_changed_taxon_id}'
+      ORDER BY id DESC
+    SQL
     version
   end
 
@@ -73,10 +73,9 @@ class Change < ActiveRecord::Base
     raise NotImplementedError
   end
 
-
   def user
-    # is this looks for a "User" object in a test, check that you're writing the id and not the user object
-    # in factorygirl.
+    # is this looks for a "User" object in a test, check that you're writing
+    # the id and not the user object in factorygirl.
     raise NotImplementedError
 
     user_id = get_user_versions(id).whodunnit
@@ -92,26 +91,20 @@ class Change < ActiveRecord::Base
     # in any case, it remains correct, because all versions for a given change have the same
     # user. Also may cover historical cases?
     #usered_versions = PaperTrail::Version.where(change_id: self.id, whodunnit: !nil)
-    usered_versions = PaperTrail::Version.where("change_id = #{self.id} and whodunnit is not null")
-
-
-
+    usered_versions = PaperTrail::Version.where("change_id = #{self.id} AND whodunnit IS NOT NULL")
     version = usered_versions.first
-    unless version.nil?
-      return User.find(version.whodunnit.to_i)
-    end
-
+    return User.find(version.whodunnit.to_i) if version
 
     # backwards compatibility
-    version = PaperTrail::Version.find_by_sql("select * from versions
-      where item_id = '"+user_changed_taxon_id.to_s+"'and whodunnit is not null
-      order by id desc").first
+    version = PaperTrail::Version.find_by_sql(<<-SQL.squish).first
+      SELECT * FROM versions
+      WHERE item_id = '#{user_changed_taxon_id}'
+      AND whodunnit IS NOT NULL
+      ORDER BY id DESC
+    SQL
     user_id = version.whodunnit
 
     return User.find(user_id.to_i)
-
-
   end
-
 
 end

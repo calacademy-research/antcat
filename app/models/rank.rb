@@ -85,7 +85,7 @@ class Rank
     identifier = identifier.first.class if identifier.kind_of? ActiveRecord::Relation
     identifier = identifier.downcase if identifier.kind_of? String
 
-    ranks.find {|rank| rank.includes? identifier} or raise "Couldn't find rank for '#{identifier}'"
+    ranks.find { |rank| rank.includes? identifier } or raise "Couldn't find rank for '#{identifier}'"
   end
   class << self; alias_method :[], :find end
 

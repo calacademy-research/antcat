@@ -52,15 +52,14 @@ describe Species do
   end
 
   describe "Becoming subspecies" do
-    before do
-      @genus = create_genus 'Atta'
-    end
+    let(:genus) { create_genus 'Atta' }
+
     it "should turn the record into a Subspecies" do
-      taxon = create_species 'Atta minor', genus: @genus
+      taxon = create_species 'Atta minor', genus: genus
 
       taxon.protonym.name.name = 'Atta (Myrma) minor'
       taxon.protonym.name.save!
-      new_species = create_species 'Atta major', genus: @genus
+      new_species = create_species 'Atta major', genus: genus
 
       taxon.become_subspecies_of new_species
 
@@ -73,8 +72,8 @@ describe Species do
     end
 
     it "should set the species, genus and subfamily" do
-      taxon = create_species 'Atta minor', genus: @genus
-      new_species = create_species 'Atta major', genus: @genus
+      taxon = create_species 'Atta minor', genus: genus
+      new_species = create_species 'Atta major', genus: genus
       taxon.become_subspecies_of new_species
       taxon = Subspecies.find taxon.id
       expect(taxon.species).to eq(new_species)
@@ -83,16 +82,16 @@ describe Species do
     end
 
     it "should handle when the new subspecies exists" do
-      taxon = create_species 'Camponotus dallatorrei', genus: @genus
-      new_species = create_species 'Camponotus alii', genus: @genus
-      existing_subspecies = create_subspecies 'Atta alii dallatorrei', genus: @genus
+      taxon = create_species 'Camponotus dallatorrei', genus: genus
+      new_species = create_species 'Camponotus alii', genus: genus
+      existing_subspecies = create_subspecies 'Atta alii dallatorrei', genus: genus
       expect {taxon.become_subspecies_of new_species}.to raise_error Taxon::TaxonExists
     end
 
     it "should handle when the new subspecies name exists, but just as the protonym of the new subspecies" do
       subspecies_name = FactoryGirl.create :subspecies_name, name: 'Atta major minor'
-      taxon = create_species 'Atta minor', genus: @genus, protonym: FactoryGirl.create(:protonym, name: subspecies_name)
-      new_species = create_species 'Atta major', genus: @genus
+      taxon = create_species 'Atta minor', genus: genus, protonym: FactoryGirl.create(:protonym, name: subspecies_name)
+      new_species = create_species 'Atta major', genus: genus
 
       taxon.become_subspecies_of new_species
 

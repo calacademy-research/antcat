@@ -3,7 +3,7 @@ class Taxon < ActiveRecord::Base
 
 
   def self.report_counts_for_genera
-    for genus in Genus.order(:name_cache).all
+    Genus.order(:name_cache).all.each do |genus|
       puts "#{genus.name_cache},#{genus.species.valid.count},#{genus.subspecies.valid.count}"
     end
     nil
@@ -64,12 +64,12 @@ class Taxon < ActiveRecord::Base
     replacement_count = unfound_count = 0
     Progress.init true, taxa.count
     map = biogeographic_regions_for_localities
-    for taxon in taxa
+    taxa.each do |taxon|
       success = taxon.update_biogeographic_region_from_locality map
       if success then
         replacement_count += 1
       else
-        unfound_count += 1;
+        unfound_count += 1
       end
       Progress.tally_and_show_progress 1000 do
         "#{replacement_count} replacements, #{unfound_count} not found"

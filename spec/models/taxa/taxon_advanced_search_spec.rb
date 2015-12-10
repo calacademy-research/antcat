@@ -53,7 +53,7 @@ describe Taxon do
           taxa << @species = create_species(genus: @genus)
           taxa << @subspecies = create_subspecies('Atta major minor', species: @species, genus: @genus)
           reference = reference_factory author_name: 'Bolton', citation_year: '1977'
-          for taxon in taxa
+          taxa.each do |taxon|
             taxon.protonym.authorship.update_attributes! reference: reference
           end
         end

@@ -6,7 +6,7 @@ class Status
   end
 
   def to_s *options
-    numeric_argument = options.find {|option| option.kind_of? Numeric}
+    numeric_argument = options.find { |option| option.kind_of? Numeric }
     options << :plural if numeric_argument && numeric_argument > 1 #hmm
 
     string = (options.include?(:plural) ? @hash[:plural_label] : @hash[:label]).dup
@@ -26,12 +26,12 @@ class Status
     identifier = identifier.first.status if identifier.kind_of? Enumerable
     identifier = identifier.first.status if identifier.kind_of? ActiveRecord::Relation
 
-    statuses.find {|status| status.includes? identifier} or raise "Couldn't find status for '#{identifier}'"
+    statuses.find { |status| status.includes? identifier } or raise "Couldn't find status for '#{identifier}'"
   end
   class << self; alias_method :[], :find end
 
   def self.options_for_select
-    statuses.reject(&:internal?).map {|status| status.option_for_select}
+    statuses.reject(&:internal?).map { |status| status.option_for_select }
   end
 
   def internal?

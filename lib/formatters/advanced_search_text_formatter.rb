@@ -6,11 +6,9 @@ module Formatters::AdvancedSearchTextFormatter
     taxon.name_cache
   end
 
-  def document_link _, __
-  end
+  def document_link _; end
 
-  def goto_reference_link _
-  end
+  def goto_reference_link _; end
 
   def italicize string
     string
@@ -19,7 +17,7 @@ module Formatters::AdvancedSearchTextFormatter
   def reference_id reference
     string = ''
     string << " DOI: " << reference.doi if reference.doi and reference.doi.length > 0
-    string << "   #{reference.id.to_s}"
+    string << "   #{reference.id}"
   end
 
   def convert_to_text string

@@ -43,7 +43,7 @@ class Exporters::Antweb::Exporter
   end
 
   def get_taxa
-    Taxon.joins(protonym: [{authorship: :reference}]).order(:status).reverse
+    Taxon.joins(protonym: [{ authorship: :reference }]).order(:status).reverse
   end
 
   def export_taxon taxon

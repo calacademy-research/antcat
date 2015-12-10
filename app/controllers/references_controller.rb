@@ -7,8 +7,6 @@ class ReferencesController < ApplicationController
 
   skip_before_filter :authenticate_editor, if: :preview?
 
-  NUMBER_OF_AUTOCOMPLETE_SUGGESTIONS = 5
-
   # TODO make controller more RESTful
   def index
     params[:q] ||= ''
@@ -77,7 +75,7 @@ class ReferencesController < ApplicationController
 
   def download
     document = ReferenceDocument.find params[:id]
-    if document.downloadable_by? current_user
+    if document.downloadable?
       redirect_to document.actual_url
     else
       head :unauthorized
@@ -170,7 +168,7 @@ class ReferencesController < ApplicationController
     keyword_params = Reference.send(:extract_keyword_params, search_query)
 
     search_options[:reference_type] = :nomissing
-    search_options[:items_per_page] = NUMBER_OF_AUTOCOMPLETE_SUGGESTIONS
+    search_options[:items_per_page] = 5
     search_options.merge! keyword_params
     search_results = Reference.send(:fulltext_search, search_options)
 
@@ -221,7 +219,6 @@ class ReferencesController < ApplicationController
       params[:reference][:journal] = Journal.import @reference.journal_name
     end
 
-
     def set_publisher
       @reference.publisher_string = params[:reference][:publisher_string]
       publisher = Publisher.import_string @reference.publisher_string
@@ -247,16 +244,18 @@ class ReferencesController < ApplicationController
 
     def render_json new = false
       template =
-      case
-        when params[:field].present?  then 'reference_fields/panel'
-        when params[:picker].present? then 'reference_fields/panel'
-        when params[:popup].present?  then 'reference_popups/panel'
-        else                               'references/reference'
-      end
+        case
+          when params[:field].present?  then 'reference_fields/panel'
+          when params[:picker].present? then 'reference_fields/panel'
+          when params[:popup].present?  then 'reference_popups/panel'
+          else                               'references/reference'
+        end
 
       send_back_json(
         isNew: new,
-        content: render_to_string(partial: template, locals: {reference: @reference, css_class: 'reference'}),
+        content: render_to_string(
+          partial: template, locals: { reference: @reference, css_class: 'reference' }
+        ),
         id: @reference.id,
         success: @reference.errors.empty?)
     end

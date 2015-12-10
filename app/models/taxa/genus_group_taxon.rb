@@ -1,6 +1,7 @@
 # coding: UTF-8
 class GenusGroupTaxon < Taxon
   include Formatters::RefactorFormatter
+
   belongs_to :subfamily
   belongs_to :tribe
 
@@ -39,7 +40,7 @@ class GenusGroupTaxon < Taxon
   end
 
   def parent
-    if(self.is_a?(Subgenus))
+    if self.is_a? Subgenus
       return genus
     end
     tribe || subfamily

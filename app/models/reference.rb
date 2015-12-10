@@ -5,10 +5,11 @@ require 'references/reference_utility'
 require 'references/reference_workflow'
 
 class Reference < ActiveRecord::Base
+  include UndoTracker
+
   attr_accessor :publisher_string
   attr_accessor :journal_name
-  has_paper_trail meta: {change_id: :get_current_change_id}
-  include UndoTracker
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   attr_accessible :citation_year,
                   :title,
@@ -45,8 +46,8 @@ class Reference < ActiveRecord::Base
   belongs_to :journal
   belongs_to :publisher
 
-  def nestees;
-    self.class.where nesting_reference_id: id;
+  def nestees
+    self.class.where nesting_reference_id: id
   end
 
   # scopes
@@ -55,17 +56,17 @@ class Reference < ActiveRecord::Base
   scope :non_missing, -> { where('type IS NULL OR type != "MissingReference"') }
 
   # Other plugins and mixins
-  include ReferenceComparable;
+  include ReferenceComparable
 
-  def author;
-    principal_author_last_name;
+  def author
+    principal_author_last_name
   end
 
   # validation and callbacks
   before_validation :set_year_from_citation_year, :strip_text_fields
   validates :title, presence: true, if: Proc.new { |record| record.class.requires_title }
 
-  def self.requires_title;
+  def self.requires_title
     true
   end
 
@@ -73,19 +74,19 @@ class Reference < ActiveRecord::Base
   before_destroy :check_not_nested
 
   # accessors
-  def to_s()
+  def to_s
     "#{author_names_string} #{citation_year}. #{id}."
   end
 
-  def key()
+  def key
     @key ||= ReferenceKey.new(self)
   end
 
-  def authors(reload = false)
+  def authors reload = false
     author_names(reload).map &:author
   end
 
-  def author_names_string()
+  def author_names_string
     author_names_string_cache
   end
 
@@ -93,7 +94,7 @@ class Reference < ActiveRecord::Base
     self.author_names_string_cache = string
   end
 
-  def principal_author_last_name()
+  def principal_author_last_name
     principal_author_last_name_cache
   end
 
@@ -106,7 +107,9 @@ class Reference < ActiveRecord::Base
   # validation
   def check_not_nested
     nesting_reference = NestedReference.find_by_nesting_reference_id id
-    errors.add :base, "This reference can't be deleted because it's nested in #{nesting_reference}" if nesting_reference
+    if nesting_reference
+      errors.add :base, "This reference can't be deleted because it's nested in #{nesting_reference}"
+    end
     nesting_reference.nil?
   end
 
@@ -133,6 +136,7 @@ class Reference < ActiveRecord::Base
   def check_for_duplicate
     duplicates = DuplicateMatcher.new.match self
     return unless duplicates.present?
+
     duplicate = Reference.find duplicates.first[:match].id
     errors.add :base, "This may be a duplicate of #{duplicate.decorate.format} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
     true
@@ -150,7 +154,12 @@ class Reference < ActiveRecord::Base
 
   def to_class suffix = '', prefix = ''
     class_name = self.class.name
-    raise "Don't know what kind of reference this is: #{inspect}" unless ['Article', 'Book', 'Nested', 'Unknown', 'Missing'].map { |e| e + 'Reference' }.include? class_name
+
+    unless ['Article', 'Book', 'Nested', 'Unknown', 'Missing']
+      .map { |e| e + 'Reference' }.include? class_name
+        raise "Don't know what kind of reference this is: #{inspect}"
+    end
+
     class_name = prefix + class_name + suffix
     class_name.constantize
   end
@@ -159,25 +168,25 @@ class Reference < ActiveRecord::Base
   def references options = {}
     references = []
     Taxt.taxt_fields.each do |klass, fields|
-      for record in klass.send :all
-        for field in fields
+      klass.send(:all).each do |record|
+        fields.each do |field|
           next unless record[field]
           if record[field] =~ /{ref #{id}}/
-            references << {table: klass.table_name, id: record[:id], field: field}
+            references << { table: klass.table_name, id: record[:id], field: field }
             return true if options[:any?]
           end
         end
       end
     end
 
-    for klass in [Citation, Bolton::Match]
-      for record in klass.where(reference_id: id).all
-        references << {table: klass.table_name, id: record[:id], field: :reference_id}
+    [Citation, Bolton::Match].each do |klass|
+      klass.where(reference_id: id).all.each do |record|
+        references << { table: klass.table_name, id: record[:id], field: :reference_id }
         return true if options[:any?]
       end
     end
-    for record in NestedReference.where(nesting_reference_id: id).all
-      references << {table: 'references', id: record[:id], field: :nesting_reference_id}
+    NestedReference.where(nesting_reference_id: id).all.each do |record|
+      references << { table: 'references', id: record[:id], field: :nesting_reference_id }
       return true if options[:any?]
     end
     return false if options[:any?]
@@ -190,38 +199,37 @@ class Reference < ActiveRecord::Base
 
   ###############################################
   private
-  def strip_text_fields
-    [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation].each do |field|
-      value = self[field]
-      next unless value.present?
-      value.gsub! /(\n|\r|\n\r|\r\n)/, ' '
-      value.strip!
-      value.squeeze! ' '
-      self[field] = value
+    def strip_text_fields
+      [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation].each do |field|
+        value = self[field]
+        next unless value.present?
+        value.gsub! /(\n|\r|\n\r|\r\n)/, ' '
+        value.strip!
+        value.squeeze! ' '
+        self[field] = value
+      end
     end
-  end
 
-  def set_year_from_citation_year
-    self.year = self.class.citation_year_to_year citation_year
-  end
-
-  # author names caches
-  def set_author_names_caches(*)
-    self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
-  end
-
-  def make_author_names_caches
-    string = author_names.map(&:name).join('; ')
-    string << author_names_suffix if author_names_suffix.present?
-    first_author_name = author_names.first
-    last_name = first_author_name && first_author_name.last_name
-    return string, last_name
-  end
-
-  class DuplicateMatcher < ReferenceMatcher
-    def min_similarity
-      0.5
+    def set_year_from_citation_year
+      self.year = self.class.citation_year_to_year citation_year
     end
-  end
+
+    def set_author_names_caches(*)
+      self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
+    end
+
+    def make_author_names_caches
+      string = author_names.map(&:name).join('; ')
+      string << author_names_suffix if author_names_suffix.present?
+      first_author_name = author_names.first
+      last_name = first_author_name && first_author_name.last_name
+      return string, last_name
+    end
+
+    class DuplicateMatcher < ReferenceMatcher
+      def min_similarity
+        0.5
+      end
+    end
 
 end

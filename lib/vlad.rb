@@ -29,11 +29,9 @@ class Vlad
     end
   end
 
-  class Problem < Report
-  end
+  class Problem < Report; end
 
-  class Statistic < Report
-  end
+  class Statistic < Report; end
 
   ###########
   class ProtonymsWithoutAuthorships < Problem
@@ -139,7 +137,7 @@ class Vlad
 
   class SynonymsWithoutSeniors < Problem
     def self.query
-      Taxon.find_by_sql "SELECT taxa.id FROM taxa LEFT OUTER JOIN synonyms on taxa.id = synonyms.junior_synonym_id WHERE status = 'synonym' AND synonyms.id IS NULL"
+      Taxon.find_by_sql "SELECT taxa.id FROM taxa LEFT OUTER JOIN synonyms ON taxa.id = synonyms.junior_synonym_id WHERE status = 'synonym' AND synonyms.id IS NULL"
     end
     def self.display
       display_results_section query do |taxon|
@@ -150,7 +148,7 @@ class Vlad
 
   class DuplicateSynonyms < Problem
     def self.query
-      Taxon.find_by_sql "SELECT junior_synonym_id FROM synonyms GROUP by senior_synonym_id, junior_synonym_id HAVING COUNT(*) > 1"
+      Taxon.find_by_sql "SELECT junior_synonym_id FROM synonyms GROUP BY senior_synonym_id, junior_synonym_id HAVING COUNT(*) > 1"
     end
     def self.display
       display_result_count query.size
@@ -274,7 +272,7 @@ class Vlad
         TaxonHistoryItem,
         User,
       ].map do |table|
-        {table: table.to_s, count: table.count}
+        { table: table.to_s, count: table.count }
       end
     end
     def self.display
@@ -292,7 +290,7 @@ class Vlad
         references_with_documents_count: Reference.find_by_sql('select count(distinct `references`.id) as count from `references` join reference_documents on `references`.id = reference_documents.reference_id').first[:count],
       }
       locations = {antcat: 0, antbase: 0, ip_128_146_250_117: 0, other: 0}
-      for reference in Reference.non_missing do
+      Reference.non_missing.each do |reference|
         next unless reference.document
         case reference.document.url
         when /antcat/ then locations[:antcat] += 1
@@ -311,7 +309,7 @@ class Vlad
       Progress.puts "  #{results[:references_count].to_s.rjust(7)} references"
       Progress.puts "  #{results[:reference_documents_count].to_s.rjust(7)} reference documents"
       Progress.puts "  #{results[:references_with_documents_count].to_s.rjust(7)} references with documents"
-      for result in results[:locations]
+      results[:locations].each do |result|
         Progress.puts "  #{result.second.to_s.rjust(7)} #{result.first}"
       end
       Progress.puts

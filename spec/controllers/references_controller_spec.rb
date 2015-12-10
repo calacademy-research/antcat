@@ -79,7 +79,6 @@ describe ReferencesController do
       end
       context "with full access" do
         before do
-          #actual_url = "http://localhost/file.pdf"
           allow_any_instance_of(ReferenceDocument).to receive(:actual_url)
             .and_return "http://localhost/file.pdf"
           allow_any_instance_of(ReferenceDocument).to receive(:downloadable_by?).and_return true

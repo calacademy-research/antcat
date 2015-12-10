@@ -228,7 +228,7 @@ describe Name do
       name = Name.create! name: 'Atta'
       # create an instance for each type of taxt
       Taxt.taxt_fields.each do |klass, fields|
-        for field in fields
+        fields.each do |field|
           FactoryGirl.create klass, field => "{nam #{name.id}}"
         end
       end
@@ -239,7 +239,7 @@ describe Name do
       )
       # count the total referencing items of each type
       Taxt.taxt_fields.each do |klass, fields|
-        for field in fields
+        fields.each do |field|
           expect(refs.select{ |i| i[:table] == klass.table_name }.length).to eq(
             Taxt.taxt_fields.detect{ |k, f| k == klass }[1].length
           )

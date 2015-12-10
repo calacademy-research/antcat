@@ -17,7 +17,5 @@ class AntwikiValidTaxon < ActiveRecord::Base
                   :source,
                   :images
 
-
-
   self.table_name = :antwiki_valid_taxa
 end

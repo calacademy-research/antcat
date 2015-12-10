@@ -1,6 +1,6 @@
 -#Locals: parameters, search_results, search_results_message, taxon, parameters, search_query, st
 
-- if (search_results && search_results.size > 1) || search_results_message
+- if search_results
   #search_results
     - if search_results_message
       %span.no_results_found= search_results_message

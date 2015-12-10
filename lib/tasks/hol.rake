@@ -137,10 +137,4 @@ namespace :hol do
     Importers::Hol::LinkHolTaxa.new.create_bad_case
   end
 
-
-
-
-
-
-
 end

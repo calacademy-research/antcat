@@ -2,13 +2,11 @@
 require 'spec_helper'
 
 describe Exporters::Antweb::Exporter do
-  before do
-    @formatter = Exporters::Antweb::Exporter
-  end
+  let(:formatter) { Exporters::Antweb::Exporter }
 
   describe "Taxon" do
     it "should work" do
-      @formatter.new.send(:export_history, create_genus)
+      formatter.new.send(:export_history, create_genus)
     end
   end
 
@@ -30,7 +28,7 @@ describe Exporters::Antweb::Exporter do
       genus.update_attribute :type_name, species.name
       item = genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
 
-      expect(@formatter.new.send(:export_history, genus)).to eq(
+      expect(formatter.new.send(:export_history, genus)).to eq(
         %{<div class="antcat_taxon">} +
 
           # statistics
@@ -45,20 +43,20 @@ describe Exporters::Antweb::Exporter do
 
             # authorship
             %{<span class="authorship">} +
-              %{<a href="http://antcat.org/references?q=#{reference.id}" target="_blank" title="Bolton, B. 2010a. Ants I have known. Psyche 1:2.">Bolton, 2010a</a>} +
+              %{<a target="_blank" title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{reference.id}">Bolton, 2010a</a>} +
               %{: 12} +
             %{</span>} +
             %{. } +
 
             # type
-            %{<span class="type">Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}" target="_blank"><i>Atta major</i></a>.</span>} +
+            %{<span class="type">Type-species: <a class="link_to_external_site" target="_blank" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span>} +
             %{ } +
             # links
-            %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}" target="_blank">AntCat</a>} +
+            %{<a class="link_to_external_site" target="_blank" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>} +
             %{ } +
-            %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta" target="_blank">AntWiki</a>} +
+            %{<a class="link_to_external_site" target="_blank" href="http://www.antwiki.org/wiki/Atta">AntWiki</a>} +
             %{ } +
-            %{<a class="link_to_external_site" href="http://hol.osu.edu/index.html?id=1235" target="_blank">HOL</a>} +
+            %{<a class="link_to_external_site" target="_blank" href="http://hol.osu.edu/index.html?id=1235">HOL</a>} +
 
           %{</div>} +
 
@@ -66,7 +64,7 @@ describe Exporters::Antweb::Exporter do
           %{<p><b>Taxonomic history</b></p>} +
           %{<div class="history"><div class="history_item item_#{item.id}" data-id="#{item.id}">} +
             %{<table><tr><td style="font-size: 13px" class="history_item_body">} +
-              %{Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}" target="_blank"><i>Atta major</i></a> Name: <i>Atta major</i>.} +
+              %{Taxon: <a class="link_to_external_site" target="_blank" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.} +
             %{</td></tr></table>} +
           %{</div></div>} +
 

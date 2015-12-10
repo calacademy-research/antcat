@@ -117,7 +117,7 @@ class TaxonDecorator::Headline
       if @taxon.type_specimen_url.present?
         string << ' ' unless string.empty?
         s = @taxon.type_specimen_url
-        string << link(s, s)
+        string << link(s, s, target: '_blank')
       end
       string.html_safe
     end

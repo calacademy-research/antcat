@@ -10,7 +10,7 @@ class Reference < ActiveRecord::Base
 
   def replace_author_name old_name, new_author_name
     old_author_name = AuthorName.find_by_name old_name
-    reference_author_name = reference_author_names.where(:author_name_id => old_author_name).first
+    reference_author_name = reference_author_names.where(author_name_id: old_author_name).first
     reference_author_name.author_name = new_author_name
     reference_author_name.save!
     author_names(true)
@@ -19,16 +19,15 @@ class Reference < ActiveRecord::Base
 
   def replace_with reference, options = {}
     Taxt.taxt_fields.each do |klass, fields|
-      for record in klass.send :all
-        for field in fields
+      klass.send(:all).each do |record|
+        fields.each do |field|
           next unless record[field]
           record[field] = record[field].gsub /{ref #{id}}/, "{ref #{reference.id}}"
         end
         record.save!
       end
     end
-
-    self.class.update_fields [{replace: id, with: reference.id}]
+    self.class.update_fields [{ replace: id, with: reference.id }]
   end
 
   def self.get_total_records_to_update
@@ -47,11 +46,11 @@ class Reference < ActiveRecord::Base
     Taxt.taxt_fields.each do |klass, fields|
       Progress.init show_progress, klass.send(:count)
       Progress.puts "Updating #{klass}..."
-      for record in klass.send :all
+      klass.send(:all).each do |record|
         Progress.tally_and_show_progress 300
-        for field in fields
+        fields.each do |field|
           next unless record[field]
-          for replacement in batch
+          batch.each do |replacement|
             from = "{ref #{replacement[:replace]}}"
             to = "{ref #{replacement[:with]}}"
             field_contents = record[field]
@@ -71,11 +70,13 @@ class Reference < ActiveRecord::Base
   end
 
   def self.update_fields batch
-    for replacement in batch
-      for klass in [Citation, Bolton::Match]
-        klass.where(reference_id: replacement[:replace]).update_all(reference_id: replacement[:with])
+    batch.each do |replacement|
+      [Citation, Bolton::Match].each do |klass|
+        klass.where(reference_id: replacement[:replace])
+          .update_all(reference_id: replacement[:with])
       end
-      NestedReference.where(nesting_reference_id: replacement[:replace]).update_all(nesting_reference_id: replacement[:with])
+      NestedReference.where(nesting_reference_id: replacement[:replace])
+        .update_all(nesting_reference_id: replacement[:with])
     end
   end
 

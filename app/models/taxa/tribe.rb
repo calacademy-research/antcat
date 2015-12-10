@@ -38,13 +38,12 @@ class Tribe < Taxon
   end
 
   private
-
-  def update_descendants_subfamilies
-    self.genera.each{ |g|
-      g.subfamily = self.subfamily
-      g.species.each{ |s| s.subfamily = self.subfamily }
-      g.subspecies.each{ |s| s.subfamily = self.subfamily }
-    }
-  end
+    def update_descendants_subfamilies
+      self.genera.each{ |g|
+        g.subfamily = self.subfamily
+        g.species.each{ |s| s.subfamily = self.subfamily }
+        g.subspecies.each{ |s| s.subfamily = self.subfamily }
+      }
+    end
 
 end

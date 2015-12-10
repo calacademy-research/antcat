@@ -64,14 +64,14 @@ describe TaxonDecorator do
         subfamily = create_subfamily 'Dolichoderinae'
         genus = create_genus 'Atta', subfamily: subfamily
         species = create_species 'Atta major', genus: genus, subfamily: subfamily
-        expect(decorator_helper.new(species).send(:link_to_other_site)).to eq(%{<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants" target="_blank">AntWeb</a>})
+        expect(decorator_helper.new(species).send(:link_to_other_site)).to eq(%{<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>})
       end
       it "should link to a subspecies" do
         subfamily = create_subfamily 'Dolichoderinae'
         genus = create_genus 'Atta', subfamily: subfamily
         species = create_species 'Atta major', genus: genus, subfamily: subfamily
         species = create_subspecies 'Atta major nigrans', species: species, genus: genus, subfamily: subfamily
-        expect(decorator_helper.new(species).send(:link_to_other_site)).to eq(%{<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=nigrans&project=worldants" target="_blank">AntWeb</a>})
+        expect(decorator_helper.new(species).send(:link_to_other_site)).to eq(%{<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=nigrans&project=worldants">AntWeb</a>})
       end
       it "should link to an invalid taxon" do
         subfamily = create_subfamily 'Dolichoderinae', status: 'synonym'

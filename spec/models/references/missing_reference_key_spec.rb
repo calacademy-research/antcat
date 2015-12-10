@@ -13,7 +13,7 @@ describe MissingReferenceKey do
   describe "Unapplicable methods" do
     it "should just return nil from them" do
       key = MissingReferenceKey.new('citation')
-      expect(key.document_link(FactoryGirl.create :user)).to be_nil
+      expect(key.document_link).to be_nil
       expect(key.goto_reference_link).to be_nil
     end
   end

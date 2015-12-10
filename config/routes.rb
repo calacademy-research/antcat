@@ -5,16 +5,15 @@ AntCat::Application.routes.draw do
   root to: 'catalog#show'
 
   resources :changes, only: [:show, :index] do
+    collection do
+      put 'approve_all'
+    end
     member do
       put :approve
       put :undo
       get :undo_items
     end
-
   end
-  match 'changes/approve_all' => 'changes#approve_all', as: :changes_approve_all, via: :put
-
-
 
   resources :authors, only: [:index, :edit, :update] do
     resources :author_names, only: [:update, :create, :destroy]
@@ -32,7 +31,6 @@ AntCat::Application.routes.draw do
   match 'catalog/hide_subgenera' => 'catalog#hide_subgenera', as: :catalog_hide_subgenera, via: :get
   match 'catalog/(:id)' => 'catalog#show', as: :catalog, via: :get
   match 'catalog/delete_impact_list/(:id)' => 'catalog#delete_impact_list', as: :catalog_delete_impact_list, via: :get
-
 
   resources :bolton_references, only: [:index, :update]
   match '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
@@ -58,7 +56,7 @@ AntCat::Application.routes.draw do
 
   resources :taxa do
     collection do
-      get "autocomplete"
+      get 'autocomplete'
     end
     resources 'taxon_history_items', only: [:update, :create, :destroy]
     resources 'reference_sections', only: [:update, :create, :destroy]
@@ -87,17 +85,9 @@ AntCat::Application.routes.draw do
   get 'name_fields/find'
   match 'name_fields/:type/:id' => 'name_fields#show', via: :get
 
-
   resource :reference_field, only: [:show]
   resource :reference_popup, only: [:show]
   resource :duplicates, only: [:show, :create]
-
-  # These are shortcuts to support the tests in
-  match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test', via: :get
-  match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test', via: :get
-  match '/widget_tests/reference_popup_test', to: 'widget_tests#reference_popup_test', via: :get
-  match '/widget_tests/reference_field_test', to: 'widget_tests#reference_field_test', via: :get
-  match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test', via: :get
 
   devise_for :users, :controllers => { :invitations => 'users/invitations' }
   resources :users, only: [:index]
@@ -110,5 +100,12 @@ AntCat::Application.routes.draw do
 
   # REST
   resources :taxon, :controller => 'taxa', :except => [:edit, :new, :update, :destroy]
+
+  # These are shortcuts to support the tests in
+  match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test', via: :get
+  match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test', via: :get
+  match '/widget_tests/reference_popup_test', to: 'widget_tests#reference_popup_test', via: :get
+  match '/widget_tests/reference_field_test', to: 'widget_tests#reference_field_test', via: :get
+  match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test', via: :get
 
 end

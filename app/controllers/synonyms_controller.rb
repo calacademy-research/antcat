@@ -48,14 +48,13 @@ class SynonymsController < ApplicationController
       }),
       success: error_message.blank?,
       error_message: error_message,
-    }.to_json
-
+    }
     render json: json, content_type: 'text/html'
   end
 
   def destroy
     Synonym.find(params[:id]).destroy
-    json = {success: true}.to_json
+    json = { success: true }
     render json: json, content_type: 'text/html'
   end
 
@@ -70,9 +69,12 @@ class SynonymsController < ApplicationController
     Synonym.where(senior_synonym_id: new_junior, junior_synonym_id: new_senior).destroy_all
     synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
     synonym.touch_with_version
-    synonym
-    content = render_to_string(partial: 'taxa/junior_and_senior_synonyms_section', locals: {taxon: taxon})
-    json = {content: content, success: true, error_message: ''}.to_json
+
+    content = render_to_string(
+      partial: 'taxa/junior_and_senior_synonyms_section',
+      locals: { taxon: taxon }
+    )
+    json = { content: content, success: true, error_message: '' }
     render json: json, content_type: 'text/html'
   end
 

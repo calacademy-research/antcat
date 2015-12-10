@@ -55,8 +55,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "new merge back into original Atta major"
     When I save my changes
 
-
-
     # not working. Cancel never seems to get hit. Likely a webdriver problem.
 #  Scenario: I cancel out of the homonym conflict box
 #    Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
@@ -78,8 +76,6 @@ Feature: Changing parent genus, species, tribe or subfamily
 #    Then I should see "This new combination looks a lot like existing combinations"
   # Change parent of a subspecies from one species to another. Create a conflict that way and detect it.
   # Change parent of a genus from one subfamily to another. Create a conflict that way and detect it.
-
-
 
   Scenario: Creating a secondary junior homonym
     Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
@@ -111,8 +107,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     When I press "Yes, create new combination"
     Then I should see "new secondary junior homonym of species of Atta"
 
-
-
     #test case notes:
 
   # try this for a case where there are no duplicate candidates
@@ -141,8 +135,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "Atta betus subbus"
     And I should see "unresolved junior homonym"
     And I should see "This taxon has been changed; changes awaiting approval"
-
-
 
   # tagged "work in progress" - I saw this fail once, requires checking.
 #  Scenario: Change a subspecies to a species should error gracefully
@@ -284,8 +276,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "OK"
     Then I should see "This must be the name of an existing taxon"
 
-
-
   # Fix a subspecies with no species record as a normal editor
   # Pick a name that has no duplicates. It should have simple dialogs and then warp to a page that has the fix.
   Scenario: Merging back when we have the same protonym
@@ -301,7 +291,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I should see "Choose a parent species:"
     And I press "Yes, update parent record only"
     Then I should see "subspecies of Atta major"
-
 
   Scenario: Merging back when we have the same protonym without superadmin
     Given there is a subspecies "Batta speccus subbus" which is a subspecies of "Batta speccus" in the genus "Batta"
@@ -337,8 +326,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "No, just change the parent"
     Then I should see "Atta speccus subbus"
 
-    #@no-database-cleaner
-
   Scenario: Changing parent of subspecies to a species with an inconsistent name
     Given I log in as a superadmin
     And there is a subspecies "Batta fpeccus subbus" which is a subspecies of "Batta fpeccus" in the genus "Batta"
@@ -360,7 +347,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I should see "Yes, update parent record only"
     And I press "Yes, update parent record only"
     Then I should see "subspecies of Batta fpeccus"
-
 
    # new cases pending
     # All are to fix the missing "species_id" for a subspecies

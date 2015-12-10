@@ -1,8 +1,9 @@
 # coding: UTF-8
 class TaxonHistoryItemsController < ApplicationController
+  include UndoTracker
+
   before_filter :authenticate_editor
   skip_before_filter :authenticate_editor, if: :preview?
-  include UndoTracker
 
   def update
     @item = TaxonHistoryItem.find params[:id]
@@ -20,21 +21,20 @@ class TaxonHistoryItemsController < ApplicationController
   def destroy
     @item = TaxonHistoryItem.find params[:id]
     @item.destroy
-    json = {success: true}.to_json
+    json = { success: true }
     render json: json, content_type: 'text/html'
   end
 
-  ###
+  private
+    def render_json is_new
+      json = {
+        isNew: is_new,
+        content: render_to_string(partial: 'history_items/panel', locals: { item: @item }),
+        id: @item.id,
+        success: @item.errors.empty?
+      }
 
-  def render_json is_new
-    json = {
-      isNew: is_new,
-      content: render_to_string(partial: 'history_items/panel', locals: {item: @item}),
-      id: @item.id,
-      success: @item.errors.empty?
-    }.to_json
-
-    render json: json, content_type: 'text/html'
-  end
+      render json: json, content_type: 'text/html'
+    end
 
 end

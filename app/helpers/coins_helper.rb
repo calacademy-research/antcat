@@ -3,7 +3,7 @@ module CoinsHelper
   def coins reference
     klass = reference.to_class 'CoinsHelper'
     title = klass.new(reference).coins
-    content_tag(:span, "", :class => "Z3988", :title => raw(title.join("&amp;")))
+    content_tag(:span, "", class: "Z3988", title: raw(title.join("&amp;")))
   end
 end
 
@@ -23,26 +23,26 @@ class CoinsHelperBase
   end
 
   private
-  def add tag, value
-    @title << "#{tag}=#{treat(value)}" if value
-  end
+    def add tag, value
+      @title << "#{tag}=#{treat(value)}" if value
+    end
 
-  def treat string
-    CGI::escape(string.gsub(/[|*]/, ''))
-  end
+    def treat string
+      CGI::escape(string.gsub(/[|*]/, ''))
+    end
 
-  def author_names
-    @reference.author_names.inject([]) do |author_names, author|
-      first_name_and_initials = author.first_name_and_initials
-      last_name = author.last_name
-      if first_name_and_initials && last_name
-        author_names << "rft.aulast=#{treat last_name}"
-        author_names << "rft.aufirst=#{treat first_name_and_initials}"
-      else
-        author_names << "rft.au=#{treat last_name}"
+    def author_names
+      @reference.author_names.inject([]) do |author_names, author|
+        first_name_and_initials = author.first_name_and_initials
+        last_name = author.last_name
+        if first_name_and_initials && last_name
+          author_names << "rft.aulast=#{treat last_name}"
+          author_names << "rft.aufirst=#{treat first_name_and_initials}"
+        else
+          author_names << "rft.au=#{treat last_name}"
+        end
       end
     end
-  end
 end
 
 class ArticleReferenceCoinsHelper < CoinsHelperBase

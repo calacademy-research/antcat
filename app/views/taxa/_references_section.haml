@@ -9,7 +9,7 @@
         %button.submit.ui-priority-primary.small_button Add
       .clear
     .reference_sections.ui-dialog-content.ui-widget-content.ui-corner-bottom
-      - for reference_section in taxon.reference_sections do
-        = render 'reference_sections/panel', item: reference_section
+      -taxon.reference_sections.each do |reference_section|
+        =render 'reference_sections/panel', item: reference_section
     .reference_section_template
-      = render 'reference_sections/panel', item: ReferenceSection.new(taxon_id: taxon.id)
+      =render 'reference_sections/panel', item: ReferenceSection.new(taxon_id: taxon.id)

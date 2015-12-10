@@ -1,7 +1,7 @@
 -#Local variables: taxon
 
 %table
-  - for history_item in taxon.history_items
+  -taxon.history_items.each do |history_item|
     %tr
       %td.label History
       %td.value.history_item= Taxt.to_display_sentence history_item.taxt, current_user

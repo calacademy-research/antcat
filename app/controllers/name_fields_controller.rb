@@ -55,8 +55,8 @@ class NameFieldsController < NamePickersController
       end
     end
 
-    data[:content] = render_to_string(partial: 'name_fields/panel', locals: {name_string: name_string})
-    render json: data.to_json, content_type: 'text/html'
+    data[:content] = render_to_string(partial: 'name_fields/panel', locals: { name_string: name_string })
+    render json: data, content_type: 'text/html'
   end
 
   # TODO joe - this is probably where we should handle the cases currently done in

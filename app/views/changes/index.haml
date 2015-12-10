@@ -5,8 +5,6 @@
 
 %div= will_paginate @changes
 
-- @changes.each do |change|
-  = render 'change', change: change
+= render @changes
 
 %div= will_paginate @changes
-

@@ -1,30 +1,34 @@
 # coding: UTF-8
 require 'milieu'
+
 module ApplicationHelper
   include LinkHelper
   include ButtonHelper
 
-  ### authorization methods
   def user_can_edit?
     $Milieu.user_can_edit? current_user
   end
+
   def user_can_upload_pdfs?
     $Milieu.user_can_upload_pdfs? current_user
   end
+
   def user_is_editor?
     $Milieu.user_is_editor? current_user
   end
+
   def user_can_approve_changes?
     $Milieu.user_can_approve_changes? current_user
   end
+
   def user_can_review_changes?
     $Milieu.user_can_review_changes? current_user
   end
+
   def user_is_superadmin?
     $Milieu.user_is_superadmin? current_user
   end
 
-  ###
   def make_title title
     string = ''.html_safe
     string << "#{title} - " if title
@@ -80,7 +84,9 @@ module ApplicationHelper
   end
 
   def search_selector search_type
-    select_tag :st, options_for_select([['matching', 'm'], ['beginning with', 'bw'], ['containing', 'c']], search_type || 'bw')
+    select_tag :st, options_for_select([['matching', 'm'],
+                                        ['beginning with', 'bw'],
+                                        ['containing', 'c']], search_type || 'bw')
   end
 
   def name_description taxon
@@ -114,13 +120,13 @@ module ApplicationHelper
 
     # Todo: Joe test this case
     if taxon[:unresolved_homonym] == true && taxon.new_record?
-      string = ' secondary junior homonym of ' + string
+      string = " secondary junior homonym of #{string}"
     elsif !taxon[:collision_merge_id].nil? && taxon.new_record?
       target_taxon = Taxon.find_by_id(taxon[:collision_merge_id])
-      string = ' merge back into original ' + target_taxon.name_html_cache
+      string = " merge back into original #{target_taxon.name_html_cache}"
     end
 
-    string = 'new ' + string if taxon.new_record?
+    string = "new #{string}" if taxon.new_record?
     string.html_safe
   end
 

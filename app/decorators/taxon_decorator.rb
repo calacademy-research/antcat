@@ -1,4 +1,4 @@
-class TaxonDecorator < Draper::Decorator
+class TaxonDecorator < ApplicationDecorator
   delegate_all
 
   require_relative 'taxon/child_list'
@@ -71,8 +71,9 @@ class TaxonDecorator < Draper::Decorator
         # taxon_states. not clear to me how this happens or whether this should be allowed.
         # Workaround: If the taxon_state is showing "approved", go get the most recent change
         # that has a noted approval.
-        approved_change = Change.where('user_changed_taxon_id = ? and approved_at is not null', change.user_changed_taxon_id).last
-
+        approved_change = Change.where(<<-SQL.squish, change.user_changed_taxon_id).last
+          user_changed_taxon_id = ? AND approved_at IS NOT NULL
+        SQL
         content << "; approved by #{approved_change.decorate.format_approver_name} ".html_safe
         content << approved_change.decorate.format_approved_at.html_safe
       end
@@ -85,7 +86,7 @@ class TaxonDecorator < Draper::Decorator
     # Note: Cleverness is used here to make these queries (e.g.: obsolete_combination?)
     # appear as tags. That's how CSS does its coloring.
     labels = []
-    labels << "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in
+    labels << "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in]}" if taxon.incertae_sedis_in
     if taxon.homonym? && taxon.homonym_replaced_by
       labels << "homonym replaced by #{taxon.homonym_replaced_by.decorate.link_to_taxon}"
     elsif taxon.unidentifiable?
@@ -126,12 +127,6 @@ class TaxonDecorator < Draper::Decorator
   end
 
   private
-    def get_current_user
-      helpers.current_user
-      rescue NoMethodError
-        nil
-    end
-
     def reference_section section
       helpers.content_tag :div, class: 'section' do
         [:title_taxt, :subtitle_taxt, :references_taxt].inject(''.html_safe) do |content, field|

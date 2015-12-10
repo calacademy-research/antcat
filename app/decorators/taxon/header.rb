@@ -82,7 +82,7 @@ class TaxonDecorator::Header
     end
 
     def header_link taxon, label
-      link label, %{/catalog/#{taxon.id}}, target: nil
+      link label, %{/catalog/#{taxon.id}}
     end
 
     def header_authorship

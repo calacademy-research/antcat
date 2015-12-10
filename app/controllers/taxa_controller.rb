@@ -5,8 +5,6 @@ class TaxaController < ApplicationController
   skip_before_filter :authenticate_editor, if: :preview?
   skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
-  NUMBER_OF_AUTOCOMPLETE_SUGGESTIONS = 10
-
   helper ReferenceHelper
 
   # TODO make more RESTful
@@ -44,7 +42,7 @@ class TaxaController < ApplicationController
     begin
       taxa = Taxon.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      render :nothing => true, status: :not_found
+      render nothing: true, status: :not_found
       return
     end
 
@@ -100,7 +98,6 @@ class TaxaController < ApplicationController
           @original_combination = Taxon.find(@collision_resolution)
           Taxon.inherit_attributes_for_new_combination(@original_combination, @previous_combination, parent)
         end
-
       end
       # if !@collision_resolution.nil?
       #   @taxon = @mother.create_taxon @rank_to_create, parent
@@ -211,7 +208,7 @@ class TaxaController < ApplicationController
       @taxon.errors[:base] = <<-MSG.squish
           Other taxa refer to this taxon, so it can't be deleted.
           Please talk to Stan (sblum@calacademy.org) to determine a solution.
-          The items referring to this taxon are: #{references.to_s}.
+          The items referring to this taxon are: #{references}.
       MSG
       render :edit and return
     end
@@ -258,7 +255,7 @@ class TaxaController < ApplicationController
 
   def autocomplete
     q = params[:q] || ''
-    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take NUMBER_OF_AUTOCOMPLETE_SUGGESTIONS
+    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
 
     respond_to do |format|
       format.json do

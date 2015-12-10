@@ -6,7 +6,7 @@ class Citation < ActiveRecord::Base
   belongs_to :reference   # has a reference_id
 
   validates :reference, presence: true
-  has_paper_trail meta: { change_id: :get_current_change_id}
+  has_paper_trail meta: { change_id: :get_current_change_id }
   attr_accessible :pages, :forms, :id, :reference_id, :reference, :notes_taxt
 
   before_save { |record| CleanNewlines::clean_newlines record, :notes_taxt }

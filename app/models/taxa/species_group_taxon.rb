@@ -1,10 +1,11 @@
 # coding: UTF-8
 class SpeciesGroupTaxon < Taxon
   belongs_to :subfamily
-  belongs_to :genus; validates :genus, presence: true
+  belongs_to :genus
+  validates :genus, presence: true
   belongs_to :subgenus
   before_create :set_subfamily
-  attr_accessible :genus, :subfamily, :subfamily_id,:type_name_id
+  attr_accessible :genus, :subfamily, :subfamily_id, :type_name_id
 
   def recombination?
     genus_epithet = name.genus_epithet
@@ -30,9 +31,9 @@ class SpeciesGroupTaxon < Taxon
 
   def self.pick_validest targets
     return unless targets
-    validest = targets.select {|target| target.status == 'valid'}
+    validest = targets.select { |target| target.status == 'valid' }
     if validest.empty?
-      validest = targets.select {|target| target.status != 'valid' and target.status != 'homonym'}
+      validest = targets.select { |target| target.status != 'valid' and target.status != 'homonym' }
     end
     validest.presence
   end
