@@ -1,4 +1,4 @@
-@dormant @javascript
+@dormant @javascript @search
 Feature: Checking for duplicates during data entry
   As an AntCat editor
   I want duplicate references to be rejected
@@ -30,6 +30,7 @@ Feature: Checking for duplicates during data entry
     When I go to the references page
     And I fill in the search box with "Bolton"
     And I press "Go" by the search box
+    And stop here
     And I follow "edit"
     And I fill in "reference_author_names_string" with "Ward, P."
     And I fill in "reference_title" with "Ants"
