@@ -409,6 +409,3 @@ DEPENDENCIES
   workflow
   xml-simple
   yui-compressor
-
-BUNDLED WITH
-   1.10.5
