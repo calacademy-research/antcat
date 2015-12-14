@@ -1,5 +1,6 @@
 # coding: UTF-8
 require 'references/reference_has_document'
+require 'references/reference_key'
 require 'references/reference_search'
 require 'references/reference_utility'
 require 'references/reference_workflow'
