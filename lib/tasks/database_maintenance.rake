@@ -42,11 +42,11 @@ namespace :antcat do
       puts "Found no broken tags." and next if broken_ids.all? &:empty?
       
       broken_ids_statistics = broken_ids.map { |tag, ids| "#{ids.size} #{tag}(s)" }.to_sentence 
-      prompt "Found #{broken_ids_statistics}. List which? [Y/n/q]" do
+      antcat_prompt "Found #{broken_ids_statistics}. List which? [Y/n/q]" do
         broken_ids.each { |tag, ids| puts "#{tag}: #{ids}" }
       end
 
-      prompt "Search destroyed? [Y/n/q]" do
+      antcat_prompt "Search destroyed? [Y/n/q]" do
         broken_ids.each_id do |id, tag|
           PaperTrail::Version.where(event: 'destroy', item_type: tags[tag].to_s, item_id: id).each do |version|
             puts "Found #{tag} ##{id} (version id #{version.id}, #{version.event}): #{version.reify.to_s}"
@@ -54,7 +54,7 @@ namespace :antcat do
         end
       end
 
-      prompt "Search *any* version? (may take a while) [Y/n/q]" do
+      antcat_prompt "Search *any* version? (may take a while) [Y/n/q]" do
         broken_ids.each_id do |id, tag |
           PaperTrail::Version.where(item_id: id).each do |version|
             puts "Found #{tag} ##{id} (version id #{version.id}): #{version.reify}"
@@ -62,13 +62,13 @@ namespace :antcat do
         end
       end
 
-      prompt "Search for matching ids in other models (Reference, Name, Taxon)? [Y/n/q]" do
+      antcat_prompt "Search for matching ids in other models (Reference, Name, Taxon)? [Y/n/q]" do
         [Reference, Name, Taxon].each do |model|
           model.where(id: broken_ids.each_id).each { |item| puts "#{model.to_s}: #{item.id}" }
         end
       end
 
-      prompt "List affected taxa? [Y/n/q]" do
+      antcat_prompt "List affected taxa? [Y/n/q]" do
         taxon_id_field = {
           ReferenceSection => 'taxon_id',
           TaxonHistoryItem => 'taxon_id',
@@ -118,7 +118,7 @@ namespace :antcat do
 
       puts "No matches found." and next if count.zero?
 
-      prompt <<-MSG.squish, default: "q" do |answer|
+      antcat_prompt <<-MSG.squish, default: "q" do |answer|
           Found #{count} redundant curly braces. Try to fix (under development)? 
           Warning: descructive command. Current database is '#{Rails.env}'. 
           Enter 'yes' to continue [y/l/Q] (l=list only)

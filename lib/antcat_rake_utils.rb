@@ -54,7 +54,7 @@ module AntCat
       ids
     end
 
-    def prompt message = "Type something..", options = {}
+    def antcat_prompt message = "Type something..", options = {}
       print "\n#{message}"
       answer = STDIN.gets.chomp
       answer = options.fetch(:default) { "y" } unless answer.present?
