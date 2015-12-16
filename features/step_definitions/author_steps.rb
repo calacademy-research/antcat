@@ -1,8 +1,6 @@
 # coding: UTF-8
 Given /^I click "edit" in the first row$/ do
   first('#authors a.edit_link').click
-  # find('#authors a.edit_link:first').click
-
 end
 
 When /^I click the "Add Author Name" button$/ do

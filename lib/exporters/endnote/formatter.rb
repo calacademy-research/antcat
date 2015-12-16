@@ -10,7 +10,7 @@ class Exporters::Endnote::Formatter
       else raise "Don't know what kind of reference this is: #{reference.inspect}"
       end
       klass.new(reference).format
-    end.select{|string| string.present?}.join("\n") + "\n"
+    end.select{ |string| string.present? }.join("\n") + "\n"
   end
 end
 
@@ -34,16 +34,15 @@ class Exporters::Endnote::Formatter::Base
   end
 
   private
-  def add tag, value
-    @string << "%#{tag} #{value.to_s.gsub(/[|*]/, '')}" if value.present?
-  end
-
-  def add_author_names
-    for author in @reference.author_names
-      add "A", author.name
+    def add tag, value
+      @string << "%#{tag} #{value.to_s.gsub(/[|*]/, '')}" if value.present?
     end
-  end
 
+    def add_author_names
+      @reference.author_names.each do |author|
+        add "A", author.name
+      end
+    end
 end
 
 class Exporters::Endnote::Formatter::Article < Exporters::Endnote::Formatter::Base

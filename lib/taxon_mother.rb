@@ -24,18 +24,16 @@ class TaxonMother
   def delete_taxon taxon
     Taxon.transaction do
       change = setup_change :delete
-      delete_taxon_children(@taxon)
+      delete_taxon_children @taxon
 
       @taxon.delete_with_state!
       change.user_changed_taxon_id = @taxon.id
-
     end
   end
 
   def get_children
     get_taxon_children_recur(@taxon).concat([@taxon])
   end
-
 
   def remove_auto_generated
     @taxon.auto_generated = false
@@ -59,13 +57,12 @@ class TaxonMother
         synonym.save
       end
     end
-
   end
 
   # previous_combination will be a pointer to the species taxon record
   # if non-nil
   def save_taxon taxon, params, previous_combination = nil
-    change_type=nil
+    change_type = nil
     Taxon.transaction do
       @taxon = taxon
       update_name params.delete :name_attributes
@@ -97,12 +94,12 @@ class TaxonMother
       # So, if you undo the first change, and try to reify the previous one,
       # you end up with no object! touch_with_version gives us one, but
       # Just for the taxa, not the protonym or other changable objects.
-      if (:create == change_type)
+      if change_type == :create
         @taxon.touch_with_version
       end
 
       # TODO: The below may not be being used
-      if (change_type == :create)
+      if change_type == :create
         change.user_changed_taxon_id = @taxon.id
         change.save
       end
@@ -122,7 +119,7 @@ class TaxonMother
 
         # since the previous doesn't have a pointer to current_valid_taxon, it won't show up
         # in the above search. If it's the protonym, set it propertly.
-        if (previous_combination.id == @taxon.protonym.id)
+        if previous_combination.id == @taxon.protonym.id
           update_elements(taxon, params, previous_combination, Status['original combination'].to_s, change_id)
         else
           update_elements(taxon, params, previous_combination, Status['obsolete combination'].to_s, change_id)
@@ -130,33 +127,24 @@ class TaxonMother
       end
       save_taxon_children @taxon
     end
-
-
   end
-
 
   def update_elements taxon, params, taxon_to_update, status_string, change_id
     taxon_to_update.status = status_string
     taxon_to_update.current_valid_taxon = @taxon
-    TaxonHistoryItem.where({taxon_id: taxon_to_update.id}).
-        update_all({taxon_id: @taxon.id})
-    Synonym.where({senior_synonym_id: taxon_to_update.id}).
-        update_all({senior_synonym_id: @taxon.id})
-    Synonym.where({junior_synonym_id: taxon_to_update.id}).
-        update_all({junior_synonym_id: @taxon.id})
+    TaxonHistoryItem.where(taxon_id: taxon_to_update.id).update_all(taxon_id: @taxon.id)
+    Synonym.where(senior_synonym_id: taxon_to_update.id).update_all(senior_synonym_id: @taxon.id)
+    Synonym.where(junior_synonym_id: taxon_to_update.id).update_all(junior_synonym_id: @taxon.id)
     taxon_to_update.save
   end
 
-  def get_status_string(taxon_to_update)
-    update_status=nil
+  def get_status_string taxon_to_update
     if Status[taxon_to_update] == Status['original combination']
-      update_status=Status['original combination'].to_s
+      Status['original combination'].to_s
     else
-      update_status=Status['obsolete combination'].to_s
+      Status['obsolete combination'].to_s
     end
-    update_status
   end
-
 
   ####################################
   def update_name attributes
@@ -225,7 +213,6 @@ class TaxonMother
   end
 
   def build_children
-
     @taxon.build_name unless @taxon.name
     @taxon.build_type_name unless @taxon.type_name
     @taxon.build_protonym unless @taxon.protonym
@@ -234,30 +221,27 @@ class TaxonMother
   end
 
   private
-
-  def save_taxon_children taxon
-    return if taxon.kind_of?(Family) || taxon.kind_of?(Subspecies)
-    taxon.children.each do |c|
-      c.save
-      save_taxon_children c
+    def save_taxon_children taxon
+      return if taxon.kind_of?(Family) || taxon.kind_of?(Subspecies)
+      taxon.children.each do |c|
+        c.save
+        save_taxon_children c
+      end
     end
-  end
 
-  def delete_taxon_children taxon
-    taxon.children.each do |c|
-      c.delete_with_state!
-      delete_taxon_children c
+    def delete_taxon_children taxon
+      taxon.children.each do |c|
+        c.delete_with_state!
+        delete_taxon_children c
+      end
     end
-  end
 
-  def get_taxon_children_recur taxon
-    ret_val = []
-    taxon.children.each do |c|
-      ret_val.concat [c]
-      ret_val.concat get_taxon_children_recur c
+    def get_taxon_children_recur taxon
+      ret_val = []
+      taxon.children.each do |c|
+        ret_val.concat [c]
+        ret_val.concat get_taxon_children_recur c
+      end
+      ret_val
     end
-    ret_val
-  end
-
-
 end

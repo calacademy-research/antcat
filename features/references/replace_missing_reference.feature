@@ -15,6 +15,7 @@ Feature: Replace missing references
     And I should see "Fisher, 1990"
 
   @javascript
+  @search
   Scenario: Replacing a missing reference
     Given I am logged in
     And this reference exists

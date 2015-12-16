@@ -9,7 +9,6 @@ class Exporters::Antweb::Exporter
     pp export_taxon taxa
   end
 
-
   def export directory
     File.open("#{directory}/antcat.antweb.txt", 'w') do |file|
       file.puts header
@@ -44,7 +43,7 @@ class Exporters::Antweb::Exporter
   end
 
   def get_taxa
-    Taxon.joins(protonym: [{authorship: :reference}]).order(:status).reverse
+    Taxon.joins(protonym: [{ authorship: :reference }]).order(:status).reverse
   end
 
   def export_taxon taxon
@@ -62,7 +61,7 @@ class Exporters::Antweb::Exporter
         status: taxon.status,
         available?: !taxon.invalid?,
         fossil?: taxon.fossil,
-        history: Exporters::Antweb::Formatter.new(taxon).format,
+        history: export_history(taxon),
         author_date: taxon.authorship_string,
         author_date_html: taxon.authorship_html_string,
         original_combination?: taxon.original_combination?,
@@ -81,9 +80,7 @@ class Exporters::Antweb::Exporter
        attributes.merge! current_valid_name: taxon.current_valid_taxon_including_synonyms.name.to_s
     end
 
-
     convert_to_antweb_array taxon.add_antweb_attributes(attributes)
-
   end
 
   def boolean_to_antweb boolean
@@ -100,8 +97,6 @@ class Exporters::Antweb::Exporter
   end
 
   def header
-
-
     "antcat id\t" +# [0]
         "subfamily\t" +# [1]
         "tribe\t" +# [2]
@@ -127,7 +122,6 @@ class Exporters::Antweb::Exporter
         "hol id\t" +# [22]
         "current valid parent" # [23]
   end
-
 
   def convert_to_antweb_array values
     [values[:antcat_id],
@@ -164,6 +158,25 @@ class Exporters::Antweb::Exporter
     nil
   end
 
+  private
+    include ActionView::Helpers::TagHelper # content_tag
+    include ActionView::Context # content_tag
+
+    def export_history taxon
+      $use_ant_web_formatter = true # TODO remove
+      begin
+        taxon = taxon.decorate
+        return content_tag :div, class: 'antcat_taxon' do
+          content = ''.html_safe
+          content << taxon.statistics(include_invalid: false)
+          content << taxon.genus_species_header_notes_taxt
+          content << taxon.headline
+          content << taxon.history
+          content << taxon.child_lists
+          content << taxon.references
+        end
+      ensure
+        $use_ant_web_formatter = false
+      end
+    end
 end
-
-

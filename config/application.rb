@@ -19,12 +19,9 @@ module PaperTrail
     attr_accessible :change_id
   end
 end
-
 #
 #  End of stupid
 #
-
-
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -56,6 +53,8 @@ module AntCat
     ]
 
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
+    config.autoload_paths += Dir["#{config.root}/app/models/**/"]
+    config.autoload_paths += Dir["#{config.root}/app/decorators/**/"]
 
     config.action_dispatch.cookies_serializer = :hybrid
     # suppress deprecation warning
@@ -70,4 +69,3 @@ module AntCat
 end
 
 ActiveSupport::JSON::Encoding.escape_html_entities_in_json = true
-

@@ -4,7 +4,7 @@
   = javascript_include_tag  'merge_authors'
 
 - content_for :page_contents do
-  - for panel in @panels
+  - @panels.each do |panel|
     = render 'panel', panels: @panels, panel: panel
 
   - if @authors.count >= 2 && user_is_editor?

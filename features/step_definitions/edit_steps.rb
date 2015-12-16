@@ -34,7 +34,6 @@ end
 
 When /^the name button should contain "([^"]*)"$/ do |name|
   page.find('#name_field .display_button').text().should == name
-
 end
 
 # gender
@@ -133,7 +132,6 @@ end
 When /^I submit the new species form/ do
   find('#new_taxon').click();
 end
-
 
 ### tribe name field
 When /I click the tribe name field/ do
@@ -370,6 +368,4 @@ Then(/^the name "(.*?)" genus "(.*?)" should not be auto generated$/) do |specie
   taxon.auto_generated.should be_falsey
   name = taxon.name
   name.auto_generated.should be_falsey
-
 end
-

@@ -10,7 +10,7 @@
 
   .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
     = render 'taxa/synonym_form', taxon: taxon, junior_or_senior: junior_or_senior
-    - for synonym in synonyms
+    -synonyms.each do |synonym|
       .synonym_row
         =synonym[:name].html_safe
         %button.submit.ui-priority-primary.small_button.delete{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym[:id]} Delete

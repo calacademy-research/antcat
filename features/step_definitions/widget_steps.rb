@@ -46,33 +46,9 @@ end
 When /In the search box, I press "Go"/ do
   step 'I press "Go" within ".expansion"'
 end
+
 When /^I search for the authors? "([^"]*)"$/ do |authors|
-  # Something is broken in webdriver land. However, it defaults to
-  # "seach for authors", so this can be a no-op.
-
-  #this is the only thing that works. The rest of the things are ideas, left
-  # for the next time I want to bang my head against this wall.
-  #step %{I click ".ui-selectmenu-text"}
-
-  # Scribbles:
-  # within '.expansion' do
-  #.antcat-reference-picker .display_button
-  # within '#authorship_field' do
-  #within '.ui-selectmenu-text' do
-
-
-  # step %{I click ".ui-selectmenu-text"}
-  # sleep 2
-  #page.driver.browser.key_down(:enter).key_up(:enter).perform
-  #click_link "Search for"
-  #find '.ui-selectmenu-text'.node.send_keys(:enter)
-  # find 'Search for author'.click
-  # step %{I follow "Search for author(s)"}
-
-
-  #end
-  # end
-  step %{I fill in the search box with "#{authors}"}
+  step %{I fill in the search box with "author:'#{authors}'"}
   sleep 1
   step %{In the search box, I press "Go"}
   sleep 4

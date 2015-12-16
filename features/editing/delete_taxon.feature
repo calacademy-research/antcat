@@ -36,6 +36,7 @@ Feature: Deleting a taxon
       * the changes are approved
       * I go to the catalog page for "Atta"
 
+  @search
   Scenario: Deleting a taxon that was just added
     When I press "Edit"
     And I will confirm on the next step
@@ -44,6 +45,7 @@ Feature: Deleting a taxon
     Then I should be on the catalog page for "Dolichoderinae"
     And I should see "Dolichoderinae" in the header
 
+  @search
   Scenario: Can delete even if taxon is referred to by child records
     Given I add a history item to "Dolichoderinae"
     When I press "Edit"
@@ -54,6 +56,7 @@ Feature: Deleting a taxon
     And I should be on the catalog page for "Dolichoderinae"
     And I should see "Dolichoderinae" in the header
 
+  @search
   Scenario: If taxon has only references from others taxt, still show the Delete button, but don't let them delete
     Given there is a genus "Formica"
     And there is a genus "Eciton"

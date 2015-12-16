@@ -6,11 +6,11 @@
 
 - content_for :page_header do
   #navigation_bar
-    = render 'shared/search', search_results: @search_results, search_results_message: @search_results_message
+    = render 'shared/search', search_results: @search_results
   = render 'shared/catalog_title'
 
 - content_for :page_contents do
-  = render 'search_results', search_results: @search_results, search_results_message: @search_results_message, taxon: @taxon, parameters: @parameters
+  = render 'search_results', search_results: @search_results, search_results_message: @search_results_message, taxon: @taxon, parameters: @parameters, search_query: @search_query, st: @st
   = yield
   .clear
   = render 'taxon_key'

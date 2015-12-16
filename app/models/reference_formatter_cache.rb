@@ -23,10 +23,10 @@ class ReferenceFormatterCache
     value
   end
 
-  def populate reference
-    set reference, Formatters::ReferenceFormatter.format!(reference), :formatted_cache
+  def populate reference # is this used outside of specs? #TODO find out
+    set reference, reference.decorate.format!, :formatted_cache
     user = User.find_by_email 'sblum@calacademy.org'
-    set reference, Formatters::ReferenceFormatter.new(reference).format_inline_citation!(user), :inline_citation_cache
+    set reference, reference.decorate.format_inline_citation!(user: user), :inline_citation_cache
   end
 
 end

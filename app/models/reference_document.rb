@@ -1,5 +1,7 @@
 # coding: UTF-8
 class ReferenceDocument < ActiveRecord::Base
+  include UndoTracker
+
   has_attached_file :file,
                     url: ':s3_domain_url',
                     path: ':id/:filename',
@@ -8,9 +10,7 @@ class ReferenceDocument < ActiveRecord::Base
                     s3_credentials: (Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/') + 's3.yml',
                     s3_permissions: 'authenticated-read',
                     s3_protocol: 'http'
-  has_paper_trail meta: {change_id: :get_current_change_id}
-  include UndoTracker
-
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   do_not_validate_attachment_file_type :pdf
 
@@ -20,31 +20,38 @@ class ReferenceDocument < ActiveRecord::Base
   before_post_process :transliterate_file_name
 
   attr_accessible :url, :file_file_name, :public, :file
+
   def transliterate_file_name
     extension = File.extname(file_file_name).gsub(/^\.+/, '')
     filename = file_file_name.gsub(/\.#{extension}$/, '')
     file.instance_write(:file_name, "#{ActiveSupport::Inflector.parameterize(filename)}.#{ActiveSupport::Inflector.parameterize(extension)}")
   end
 
-
   def pdf
     true
   end
+
   def host= host
     return unless hosted_by_us?
     update_attribute :url, "http://#{host}/documents/#{id}/#{file_file_name}"
   end
 
-  def downloadable_by? user
+  def downloadable?
+    downloadable_by? nil
+  end
+
+  def downloadable_by? user = nil
     url.present? && !hosted_by_antbase? && !hosted_by_hol?
   end
 
+  # Hardcoded IP, yuck
   def hosted_by_hol?
-    url.present? && url =~ %r{^http://128.146.250.117}
+    url.present? && url =~ %r{^https?://128.146.250.117}
   end
 
+  # Hardcoded address, yuck
   def hosted_by_antbase?
-    url.present? && url =~ %r{^http://antbase\.org}
+    url.present? && url =~ %r{^https?://antbase\.org}
   end
 
   def actual_url
@@ -75,27 +82,6 @@ class ReferenceDocument < ActiveRecord::Base
 
   def s3_url
     file.expiring_url(10)
-  end
-
-  def self.upload_antbase_pdf pdf
-    key = File.basename pdf, '.pdf'
-    reference_document = where("url LIKE '%/#{key}.pdf'").first
-    reference_document.upload_antbase_pdf pdf if reference_document
-    reference_document
-  end
-
-  def upload_antbase_pdf pdf
-    return if url =~ /antcat\.org/
-    if !reference
-      puts id
-      return
-    end
-    File.open pdf do |file|
-      self.public = reference.year < 1923
-      self.file = file
-      save!
-      self.host = 'antcat.org'
-    end
   end
 
 end

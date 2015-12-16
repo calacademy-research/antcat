@@ -21,3 +21,7 @@ See [INSTALL.md](INSTALL.md)
 
 ##Contributing
 Contributions welcome!
+
+##Commit history notes
+We removed the source data files in commit 6de1064967319876344be72098bd1db6dfcbef03
+

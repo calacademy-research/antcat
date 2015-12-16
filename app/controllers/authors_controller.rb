@@ -5,8 +5,12 @@ class AuthorsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html {@authors = Author.sorted_by_name.paginate page: params[:page], per_page: 60}
-      format.json {render json: AuthorName.search(params[:term]).to_json}
+      format.html do
+        @authors = Author.sorted_by_name.paginate(page: params[:page], per_page: 60)
+      end
+      format.json do
+        render json: AuthorName.search(params[:term])
+      end
     end
   end
 

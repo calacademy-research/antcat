@@ -10,6 +10,7 @@ Feature: Workflow
     And there is a genus "Eciton"
     And version tracking is enabled
 
+  @search
   Scenario: Adding a taxon and seeing it on the Changes page
     When I go to the catalog page for "Formicinae"
     * I press "Edit"

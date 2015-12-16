@@ -1,48 +1,84 @@
 # coding: UTF-8
 class ReferencesController < ApplicationController
-  before_filter :authenticate_editor, except: [:index, :download]
+  before_filter :authenticate_editor, except: [
+    :index, :download, :autocomplete, :show, :endnote_export, :latest_additions]
+  before_filter :set_reference, only: [
+    :show, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
+
   skip_before_filter :authenticate_editor, if: :preview?
 
+  # TODO make controller more RESTful
   def index
+    params[:q] ||= ''
+    params[:q].strip!
+
+    if params[:q].match(/^\d{5,}$/)
+      id = params[:q]
+      return redirect_to reference_path(id) if Reference.exists? id
+    end
+
     searching = params[:q].present?
-    params[:search_selector] ||= 'Search for'
-    if ['review', 'new', 'clear'].include? params[:commit]
-      params[:q] = ''
-    end
-    params[:q].strip! if params[:q]
-    params[:review] = params[:commit] == 'review'
-    params[:whats_new] = params[:commit] == 'new'
+    @references = if searching
+                    Reference.do_search params
+                  else
+                    Reference.list_references
+                  end
 
-    @endnote_export_confirmation_message = <<EOS
-AntCat will download these references to a file named "antcat_references.utf8.endnote_import". When your browser asks, save this file. Then use EndNote's Import function on its File menu to import the file. Choose "EndNote Import" from Import Options, and "Unicode (UTF-8)" as the Text Translation.
-EOS
-    unless searching
-      @endnote_export_confirmation_message << "\nSince there are no search criteria, AntCat will download all ten thousand references. This will take several minutes."
-    end
+    @action = :index
+  end
 
-    params[:is_author_search] = params[:search_selector] == 'Search for author(s)'
+  def show
+    id = @reference.id # weird until we have made this controller more RESTful
+    @references = Reference.where(id: id).paginate(page: 1)
 
-    respond_to do |format|
-      format.html   {
-        @references = Reference.do_search params
-      }
+    @action = :show
+    render "index"
+  end
 
-      # If you meant to respond to a variant like :tablet or :phone, not a custom format,
-      # be sure to nest your variant response within a format response: format.html { |html| html.tablet { ... } }):
+  def latest_additions
+    options = { order: :created_at, page: params[:page] }
+    @references = Reference.list_references options
 
-      format.html { |html| html.endnote_import  {
-        references = Reference.do_search params.merge format: :endnote_import
-        render plain: Exporters::Endnote::Formatter.format(references)
-      } }
-    end
+    @action = :latest_additions
+    render "index"
+  end
+
+  def latest_changes
+    options = { order: :updated_at, page: params[:page] }
+    @references = Reference.list_references options
+
+    @action = :latest_changes
+    render "index"
+  end
+
+  def endnote_export
+    id = params[:id]
+    searching = params[:q].present?
+
+    references =  if id
+                    Reference.where(id: id) # where and not find because we need to return an array
+                  elsif searching
+                    Reference.do_search params.merge endnote_export: true
+                  else
+                    Reference.list_all_references_for_endnote
+                  end
+
+    render plain: Exporters::Endnote::Formatter.format(references)
+
+    rescue
+      render plain: <<-MSG.squish
+        Looks like something went wrong.
+        Exporting missing references is not supported.
+        If you tried to export a list of references, try to filter the query with "type:nomissing".
+      MSG
   end
 
   def download
     document = ReferenceDocument.find params[:id]
-    if document.downloadable_by? current_user
+    if document.downloadable?
       redirect_to document.actual_url
     else
-      head 401
+      head :unauthorized
     end
   end
 
@@ -90,124 +126,179 @@ EOS
   end
 
   def destroy
-    @reference = Reference.find(params[:id])
-    if @reference.any_references? or not @reference.destroy
-      json = {success: false, message: "This reference can't be deleted, as there are other references to it."}.to_json
-    else
-      json = {success: true}
-    end
+    json =  if @reference.any_references? or not @reference.destroy
+              { success: false,
+                message: "This reference can't be deleted, as there are other references to it." }
+            else
+              { success: true }
+            end
     render json: json
   end
 
   def start_reviewing
-    @reference = Reference.find(params[:id])
     @reference.start_reviewing!
     DefaultReference.set session, @reference
-    redirect_to '/references?commit=new'
+    redirect_to latest_additions_references_path
   end
 
   def finish_reviewing
-    @reference = Reference.find(params[:id])
     @reference.finish_reviewing!
-    redirect_to '/references?commit=new'
+    redirect_to latest_additions_references_path
   end
 
   def restart_reviewing
-    @reference = Reference.find(params[:id])
     @reference.restart_reviewing!
     DefaultReference.set session, @reference
-    redirect_to '/references?commit=new'
+    redirect_to latest_additions_references_path
   end
 
   def approve_all
-    Reference.where('review_state != "reviewed"').each  do |reference|
-      reference[:review_state]='reviewed'
+    Reference.where('review_state != "reviewed"').find_each do |reference|
+      reference.review_state = 'reviewed'
       reference.save!
     end
 
-    redirect_to '/references?commit=new'
+    redirect_to latest_additions_references_path
+  end
+
+  def autocomplete
+    search_query = params[:q] || ''
+
+    search_options = {}
+    keyword_params = Reference.send(:extract_keyword_params, search_query)
+
+    search_options[:reference_type] = :nomissing
+    search_options[:items_per_page] = 5
+    search_options.merge! keyword_params
+    search_results = Reference.send(:fulltext_search, search_options)
+
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |reference|
+          search_query = if keyword_params.size == 1 # size 1 = no keyword params were matched
+                           reference.title
+                         else
+                           format_autosuggest_keywords reference, keyword_params
+                         end
+          {
+            search_query: search_query,
+            title: reference.title,
+            author: reference.author_names_string,
+            year: reference.citation_year
+          }
+        end
+
+        render json: results
+      end
+    end
   end
 
   private
-  def set_pagination
-    params[:reference][:pagination] =
-      case @reference
-      when ArticleReference then params[:article_pagination]
-      when BookReference then params[:book_pagination]
-      else nil
+    def set_pagination
+      params[:reference][:pagination] =
+        case @reference
+        when ArticleReference then params[:article_pagination]
+        when BookReference then params[:book_pagination]
+        else nil
+        end
+    end
+
+    def set_document_host
+      @reference.document_host = request.host
+    end
+
+    def parse_author_names_string
+      author_names_and_suffix = @reference.parse_author_names_and_suffix params[:reference].delete(:author_names_string)
+      @reference.author_names.clear
+      params[:reference][:author_names] = author_names_and_suffix[:author_names]
+      params[:reference][:author_names_suffix] = author_names_and_suffix[:author_names_suffix]
+    end
+
+    def set_journal
+      @reference.journal_name = params[:reference][:journal_name]
+      params[:reference][:journal] = Journal.import @reference.journal_name
+    end
+
+    def set_publisher
+      @reference.publisher_string = params[:reference][:publisher_string]
+      publisher = Publisher.import_string @reference.publisher_string
+      if publisher.nil? and @reference.publisher_string.present?
+        @reference.errors.add :publisher_string, <<-MSG.squish
+          couldn't be parsed. In general, use the format 'Place: Publisher'.
+          Otherwise, please post a message on http://groups.google.com/group/antcat/,
+          and we'll see what we can do!
+        MSG
+      else
+        params[:reference][:publisher] = publisher
       end
-  end
-
-  def set_document_host
-    @reference.document_host = request.host
-  end
-
-  def parse_author_names_string
-    author_names_and_suffix = @reference.parse_author_names_and_suffix params[:reference].delete(:author_names_string)
-    @reference.author_names.clear
-    params[:reference][:author_names] = author_names_and_suffix[:author_names]
-    params[:reference][:author_names_suffix] = author_names_and_suffix[:author_names_suffix]
-  end
-
-  def set_journal
-    @reference.journal_name = params[:reference][:journal_name]
-    params[:reference][:journal] = Journal.import @reference.journal_name
-  end
-
-
-  def set_publisher
-    @reference.publisher_string = params[:reference][:publisher_string]
-    publisher = Publisher.import_string @reference.publisher_string
-    if publisher.nil? and @reference.publisher_string.present?
-      @reference.errors.add :publisher_string, "couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
-    else
-      params[:reference][:publisher] = publisher
-    end
-  end
-
-  def clear_nesting_reference_id
-    params[:reference][:nesting_reference_id] = nil
-  end
-
-  def clear_document_params_if_necessary
-    return unless params[:reference][:document_attributes]
-    params[:reference][:document_attributes][:id] = nil unless params[:reference][:document_attributes][:url].present?
-  end
-
-  def render_json new = false
-    template =
-    case
-      when params[:field].present? then 'reference_fields/panel'
-      when params[:picker].present? then 'reference_fields/panel'
-      when params[:popup].present? then 'reference_popups/panel'
-      else 'references/reference'
     end
 
-    send_back_json(
-      isNew: new,
-      content: render_to_string(partial: template, locals: {reference: @reference, css_class: 'reference'}),
-      id: @reference.id,
-      success: @reference.errors.empty?)
-  end
-
-  def new_reference
-    case params[:selected_tab]
-    when 'Article' then ArticleReference.new
-    when 'Book' then    BookReference.new
-    when 'Nested' then  NestedReference.new
-    else                UnknownReference.new
+    def clear_nesting_reference_id
+      params[:reference][:nesting_reference_id] = nil
     end
-  end
 
-  def get_reference
-    selected_tab = params[:selected_tab]
-    selected_tab = 'Unknown' if selected_tab == 'Other'
-    type = selected_tab + 'Reference'
-    reference = Reference.find(params[:id]).becomes((type).constantize)
-    reference.type = type
-    reference
-  end
+    def clear_document_params_if_necessary
+      return unless params[:reference][:document_attributes]
+      params[:reference][:document_attributes][:id] = nil unless params[:reference][:document_attributes][:url].present?
+    end
 
+    def render_json new = false
+      template =
+        case
+          when params[:field].present?  then 'reference_fields/panel'
+          when params[:picker].present? then 'reference_fields/panel'
+          when params[:popup].present?  then 'reference_popups/panel'
+          else                               'references/reference'
+        end
 
+      send_back_json(
+        isNew: new,
+        content: render_to_string(
+          partial: template, locals: { reference: @reference, css_class: 'reference' }
+        ),
+        id: @reference.id,
+        success: @reference.errors.empty?)
+    end
 
+    def new_reference
+      case params[:selected_tab]
+      when 'Article' then ArticleReference.new
+      when 'Book'    then BookReference.new
+      when 'Nested'  then NestedReference.new
+      else                UnknownReference.new
+      end
+    end
+
+    def get_reference
+      selected_tab = params[:selected_tab]
+      selected_tab = 'Unknown' if selected_tab == 'Other'
+      type = selected_tab + 'Reference'
+      reference = Reference.find(params[:id]).becomes((type).constantize)
+      reference.type = type
+      reference
+    end
+
+    def format_autosuggest_keywords reference, keyword_params
+      replaced = []
+      replaced << keyword_params[:keywords] || ''
+      replaced << "author:'#{reference.author_names_string}'" if keyword_params[:author]
+      replaced << "year:#{keyword_params[:year]}" if keyword_params[:year]
+
+      start_year = keyword_params[:start_year]
+      end_year   = keyword_params[:end_year]
+      if start_year && end_year
+        replaced << "year:#{start_year}-#{end_year}"
+      end
+      replaced.join(" ").strip
+    end
+
+    # conventional Rails method name, not to be confused with the above #get_reference
+    def set_reference
+      @reference = Reference.find params[:id]
+    end
+
+    def reference_params
+      raise NotImplementedError
+      #params.require(:reference).permit(:....)
+    end
 end

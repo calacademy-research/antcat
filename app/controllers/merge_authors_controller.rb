@@ -16,7 +16,7 @@ class MergeAuthorsController < ApplicationController
 
     @panels = []
     @authors = []
-    for term in params[:terms]
+    params[:terms].each do |term|
       panel = OpenStruct.new term: term.strip, author: Author.find_by_names(term).first
       @panels << panel
       next unless panel.author
@@ -31,7 +31,6 @@ class MergeAuthorsController < ApplicationController
     @panels << OpenStruct.new(term: '') unless @panels.find{|panel| !panel.author}
   end
 
-  #######
   def merge
     term = params[:terms].first
     create_panels

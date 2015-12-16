@@ -3,11 +3,11 @@ class TaxaController < ApplicationController
   before_filter :authenticate_editor, :get_params, :create_mother
   before_filter :redirect_by_parent_name_id, only: :new
   skip_before_filter :authenticate_editor, if: :preview?
-  skip_before_filter :authenticate_editor, only: :show
-
+  skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
   helper ReferenceHelper
 
+  # TODO make more RESTful
   def new
     get_taxon :create
     set_view_variables :create
@@ -42,11 +42,11 @@ class TaxaController < ApplicationController
     begin
       taxa = Taxon.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      render :nothing => true, status: :not_found
+      render nothing: true, status: :not_found
       return
     end
 
-    render json: taxa.to_json, status: :ok
+    render json: taxa, status: :ok
   end
 
   def delete
@@ -55,10 +55,8 @@ class TaxaController < ApplicationController
 
     taxon = delete_mother.load_taxon
 
-    puts(taxon.name.to_s)
     delete_mother.delete_taxon taxon
     redirect_to root_url
-
   end
 
   # The parent is updated via taxon id.
@@ -67,23 +65,21 @@ class TaxaController < ApplicationController
   def update_parent
     taxon = Taxon.find(params[:taxon_id])
     new_parent = Taxon.find(params[:new_parent_taxon_id])
-    if new_parent.rank =="species"
+    case new_parent.rank
+    when "species"
       taxon.species_id = new_parent.id
-    elsif  new_parent.rank == "genus"
-
-      taxon.genus_id =new_parent.id
-    elsif  new_parent.rank == "subgenus"
-      taxon.subgenus_id =new_parent.id
-    elsif  new_parent.rank == "subfamily"
-      taxon.subfamily_id =new_parent.id
-    elsif  new_parent.rank == "family"
-      taxon.family_id =new_parent.id
+    when "genus"
+      taxon.genus_id = new_parent.id
+    when "subgenus"
+      taxon.subgenus_id = new_parent.id
+    when "subfamily"
+      taxon.subfamily_id = new_parent.id
+    when "family"
+      taxon.family_id = new_parent.id
     end
     taxon.save!
-    redirect_to root_url+"/taxa/"+taxon.id.to_s+"/edit"
-
+    redirect_to edit_taxa_path taxon
   end
-
 
   ###################
   def get_taxon create_or_update
@@ -102,7 +98,6 @@ class TaxaController < ApplicationController
           @original_combination = Taxon.find(@collision_resolution)
           Taxon.inherit_attributes_for_new_combination(@original_combination, @previous_combination, parent)
         end
-
       end
       # if !@collision_resolution.nil?
       #   @taxon = @mother.create_taxon @rank_to_create, parent
@@ -170,7 +165,6 @@ class TaxaController < ApplicationController
       else
         @reset_epithet = ""
       end
-
     end
   end
 
@@ -199,7 +193,10 @@ class TaxaController < ApplicationController
     @taxon.elevate_to_species
     redirect_to catalog_path @taxon
   rescue Subspecies::NoSpeciesForSubspeciesError
-    @taxon.errors[:base] = "This subspecies doesn't have a species. Use the \"Assign species to subspecies\" button to fix, then you can elevate the subspecies to the species."
+    @taxon.errors[:base] = <<-MSG.squish
+      This subspecies doesn't have a species. Use the "Assign species to subspecies"
+      button to fix, then you can elevate the subspecies to the species.
+    MSG
     render :edit and return
   end
 
@@ -208,10 +205,11 @@ class TaxaController < ApplicationController
     if references.empty?
       @taxon.destroy
     else
-      @taxon.errors[:base] =
-          "Other taxa refer to this taxon, so it can't be deleted. " +
-              "Please talk to Stan (sblum@calacademy.org) to determine a solution. " +
-              "The items referring to this taxon are: #{references.to_s}."
+      @taxon.errors[:base] = <<-MSG.squish
+          Other taxa refer to this taxon, so it can't be deleted.
+          Please talk to Stan (sblum@calacademy.org) to determine a solution.
+          The items referring to this taxon are: #{references}.
+      MSG
       render :edit and return
     end
     redirect_to catalog_path @taxon.parent
@@ -252,6 +250,24 @@ class TaxaController < ApplicationController
         new_hash[:parent_id] = parent.id
       end
       redirect_to new_hash
+    end
+  end
+
+  def autocomplete
+    q = params[:q] || ''
+    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
+
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |taxon|
+          {
+            name: taxon.name_html_cache,
+            authorship: taxon.authorship_string,
+            search_query: taxon.name_cache
+          }
+        end
+        render json: results
+      end
     end
   end
 

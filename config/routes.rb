@@ -5,16 +5,15 @@ AntCat::Application.routes.draw do
   root to: 'catalog#show'
 
   resources :changes, only: [:show, :index] do
+    collection do
+      put 'approve_all'
+    end
     member do
       put :approve
       put :undo
       get :undo_items
     end
-
   end
-  match 'changes/approve_all' => 'changes#approve_all', as: :changes_approve_all, via: :put
-
-
 
   resources :authors, only: [:index, :edit, :update] do
     resources :author_names, only: [:update, :create, :destroy]
@@ -33,25 +32,32 @@ AntCat::Application.routes.draw do
   match 'catalog/(:id)' => 'catalog#show', as: :catalog, via: :get
   match 'catalog/delete_impact_list/(:id)' => 'catalog#delete_impact_list', as: :catalog_delete_impact_list, via: :get
 
-
   resources :bolton_references, only: [:index, :update]
   match '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
   resources :journals, only: [:index, :show, :new, :create, :edit, :update]
   resources :publishers, only: [:index]
 
-  resources :references, only: [:index, :update, :create, :destroy] do
+  resources :references, only: [:index, :show, :update, :create, :destroy] do
+    collection do
+      get 'autocomplete'
+      get 'latest_additions'
+      get 'latest_changes'
+      get 'endnote_export'
+      get 'approve_all'
+    end
     member do
       post 'start_reviewing'
       post 'finish_reviewing'
       post 'restart_reviewing'
+      get  'endnote_export'
     end
   end
-  match 'references/approve_all' => 'references#approve_all', as: :approve_all, via: :get
   resources :missing_references, only: [:index, :edit, :update]
 
-  match '/antcat_references.utf8.endnote_import', to: 'references#index', format: :endnote_import, as: :endnote_import, via: :get
-
   resources :taxa do
+    collection do
+      get 'autocomplete'
+    end
     resources 'taxon_history_items', only: [:update, :create, :destroy]
     resources 'reference_sections', only: [:update, :create, :destroy]
     resources 'synonyms', only: [:create, :destroy] do
@@ -67,7 +73,6 @@ AntCat::Application.routes.draw do
   end
   match '/taxa/:taxon_id/update_parent/:new_parent_taxon_id', :controller => 'taxa', action: 'update_parent', via: :get
 
-
   resource :advanced_search, only: [:show]
   resource :default_reference, only: [:update]
   resource :taxon_window_height, only: [:update, :show]
@@ -80,19 +85,11 @@ AntCat::Application.routes.draw do
   get 'name_fields/find'
   match 'name_fields/:type/:id' => 'name_fields#show', via: :get
 
-
   resource :reference_field, only: [:show]
   resource :reference_popup, only: [:show]
   resource :duplicates, only: [:show, :create]
 
-  # These are shortcuts to support the tests in
-  match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test', via: :get
-  match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test', via: :get
-  match '/widget_tests/reference_popup_test', to: 'widget_tests#reference_popup_test', via: :get
-  match '/widget_tests/reference_field_test', to: 'widget_tests#reference_field_test', via: :get
-  match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test', via: :get
-
-  devise_for :users
+  devise_for :users, :controllers => { :invitations => 'users/invitations' }
   resources :users, only: [:index]
 
   namespace :api, defaults: {format: :json} do
@@ -104,5 +101,11 @@ AntCat::Application.routes.draw do
   # REST
   resources :taxon, :controller => 'taxa', :except => [:edit, :new, :update, :destroy]
 
+  # These are shortcuts to support the tests in
+  match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test', via: :get
+  match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test', via: :get
+  match '/widget_tests/reference_popup_test', to: 'widget_tests#reference_popup_test', via: :get
+  match '/widget_tests/reference_field_test', to: 'widget_tests#reference_field_test', via: :get
+  match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test', via: :get
 
 end

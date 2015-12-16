@@ -147,6 +147,11 @@ GEM
       actionmailer (>= 3.2.6, < 5)
       devise (>= 3.2.0)
     diff-lcs (1.2.5)
+    draper (2.1.0)
+      actionpack (>= 3.0)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      request_store (~> 1.0)
     erubis (2.7.0)
     eventmachine (1.0.8)
     execjs (2.6.0)
@@ -331,6 +336,10 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
+    twitter-typeahead-rails (0.11.1)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
@@ -372,6 +381,7 @@ DEPENDENCIES
   devise
   devise_invitable
   diff-lcs
+  draper
   ey_config
   factory_girl_rails
   fuzzy-string-match
@@ -402,6 +412,7 @@ DEPENDENCIES
   sunspot_solr
   sunspot_test
   thin
+  twitter-typeahead-rails
   uglifier
   webmock
   will_paginate

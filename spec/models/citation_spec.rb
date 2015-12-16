@@ -24,66 +24,6 @@ describe Citation do
     end
   end
 
-  describe "Importing" do
-
-    it "should create the Citation, which is linked to an existing Reference" do
-      reference = FactoryGirl.create :article_reference, :bolton_key_cache => 'Latreille 1809a'
-      data = {author_names: ['Latreille'], year: '1809a', pages: '124', forms: 'w.q.'}
-
-      citation = Citation.import(data).reload
-
-      expect(citation.pages).to eq('124')
-      expect(citation.reference).to eq(reference)
-      expect(citation.forms).to eq('w.q.')
-    end
-
-    it "should link to a MissingReference, if necessary" do
-      data = {:author_names => ["Latreille"], :year => "1809a", :pages => "124", :matched_text => 'Latreille, 1809a: 124'}
-      citation = Citation.import(data).reload
-      expect(citation.pages).to eq('124')
-      missing_reference = citation.reference
-      expect(missing_reference.citation).to eq('Latreille, 1809a')
-      expect(missing_reference.reason_missing).to eq('no Bolton')
-    end
-
-    it "should handle a nested reference when the year is only with the parent" do
-      reference = FactoryGirl.create :nested_reference, bolton_key_cache: 'Bolton 2004'
-      data = {
-        author_names: ['Latreille'],
-        in: {
-          author_names: ['Bolton'], year: '2004'
-        },
-        pages: '24'
-      }
-
-      citation = Citation.import(data).reload
-
-      expect(citation.pages).to eq('24')
-      expect(citation.reference).to eq(reference)
-    end
-
-    it "should handle a note" do
-      data = {
-        :author_names=>["Scudder"],
-        :year=>"1877b",
-        :pages=>"270",
-        :notes=>
-        [
-          [
-            {:phrase=>"as member of family", :delimiter=>" "},
-            {:family_or_subfamily_name=>"Braconidae"},
-            {:bracketed=>true}
-          ]
-        ],
-        :matched_text=> "Scudder, 1877b: 270 [as member of family Braconidae]"
-      }
-
-      citation = Citation.import(data).reload
-      expect(citation.notes_taxt).to eq(" [as member of family {nam #{Name.find_by_name('Braconidae').id}}]")
-    end
-
-  end
-
   describe "Authorship string" do
     it "should show the author and year" do
       reference = reference_factory author_name: 'Bolton', citation_year: '2001'
@@ -108,7 +48,7 @@ describe Citation do
   describe "Authorship HTML string" do
     it "should show the author and year" do
       citation = FactoryGirl.build_stubbed :citation
-      expect(Formatters::ReferenceFormatter).to receive(:format_authorship_html).and_return('XYZ')
+      expect_any_instance_of(ReferenceDecorator).to receive(:format_authorship_html).and_return('XYZ')
       expect(citation.authorship_html_string).to eq('XYZ')
     end
   end

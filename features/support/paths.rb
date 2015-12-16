@@ -51,13 +51,13 @@ module NavigationHelpers
     when /^the references page$/
       references_path
     when /^the new references page$/
-      references_path commit: 'new'
+      latest_additions_references_path
     when /^the page for that reference$/
       reference_path(@reference || Reference.first)
     when /^the Bolton references page$/
       bolton_references_path
 
-    when /^the "Edit journals" page$/
+    when /^the "journals index" page$/
       journals_path
 
     when /^the Merge Authors page$/

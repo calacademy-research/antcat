@@ -12,7 +12,7 @@ Feature: Editing journals
     And a journal exists with a name of "Psyche"
     When I go to the references page
     And I follow "Journals"
-    Then I should be on the "Edit journals" page
+    Then I should be on the "journals index" page
 
   Scenario: Edit a journal name
     Given I am logged in
@@ -20,6 +20,7 @@ Feature: Editing journals
     When I go to the references page
     And I follow "Journals"
     And I follow "Psyche"
+    And I follow "Edit"
     And I fill in "journal_name" with "Science"
     And I press "Save"
     Then I should see "Successfully updated journal"
@@ -27,3 +28,8 @@ Feature: Editing journals
     And I follow "Journals"
     Then I should see "Science"
 
+  Scenario: Edit a journal name without logging in
+    Given a journal exists with a name of "Psyche"
+    When I go to the "journals index" page
+    And I follow "Psyche"
+    Then I should not see "Edit"

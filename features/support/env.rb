@@ -25,8 +25,11 @@ if ENV['HEADLESS'] == 'true'
   end
 end
 
-if ENV['DRIVER'] == 'webkit'
-    Capybara.javascript_driver = :webkit
+
+Capybara.javascript_driver = :webkit
+if ENV['DRIVER'] == 'selenium'
+  print "Enabling selenium driver..."
+  Capybara.javascript_driver = :selenium
 end
 
 Capybara::Webkit.configure do |config|

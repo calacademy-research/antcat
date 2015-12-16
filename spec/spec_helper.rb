@@ -9,7 +9,7 @@ require 'rspec/rails'
 require 'webmock/rspec'
 WebMock.disable_net_connect! allow_localhost: true
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec::Expectations.configuration.warn_about_potential_false_positives = false
 
@@ -49,11 +49,11 @@ class Object
   def deep_delete_matched_text
     if respond_to? :keys
       delete :matched_text
-      for key in keys
+      keys.each do |key|
         self[key].deep_delete_matched_text
       end
     elsif respond_to? :each
-      each.map {|e| e.deep_delete_matched_text}
+      each.map { |e| e.deep_delete_matched_text }
     end
     self
   end

@@ -1,31 +1,34 @@
 # coding: UTF-8
 require 'milieu'
-module ApplicationHelper
-  #include Formatters::Formatter
-  include Formatters::LinkFormatter
-  include Formatters::ButtonFormatter
 
-  ### authorization methods
+module ApplicationHelper
+  include LinkHelper
+  include ButtonHelper
+
   def user_can_edit?
     $Milieu.user_can_edit? current_user
   end
+
   def user_can_upload_pdfs?
     $Milieu.user_can_upload_pdfs? current_user
   end
+
   def user_is_editor?
     $Milieu.user_is_editor? current_user
   end
+
   def user_can_approve_changes?
     $Milieu.user_can_approve_changes? current_user
   end
+
   def user_can_review_changes?
     $Milieu.user_can_review_changes? current_user
   end
+
   def user_is_superadmin?
     $Milieu.user_is_superadmin? current_user
   end
 
-  ###
   def make_title title
     string = ''.html_safe
     string << "#{title} - " if title
@@ -48,93 +51,140 @@ module ApplicationHelper
   end
 
   def feedback_link
-    mail_to 'sblum@calacademy.org', 'Feedback', target: '_blank', subject: previewize('AntCat feedback'), body: <<-EOS
-Thanks for helping us make AntCat better by replacing this message with your comments, suggestions, and questions. You may also want to check out the AntCat Google group at https://groups.google.com/forum/?fromgroups#!forum/antcat where we discuss the project.
+    mail_to 'sblum@calacademy.org', 'Feedback', subject: previewize('AntCat feedback'), body: <<-MSG.squish
+      Thanks for helping us make AntCat better by replacing this message with your comments,
+      suggestions, and questions. You may also want to check out the AntCat Google group at
+      https://groups.google.com/forum/?fromgroups#!forum/antcat where we discuss the project.
 
-Stan Blum
-California Academy of Sciences
-http://antcat.org
-      EOS
+      Stan Blum
+      California Academy of Sciences
+      http://antcat.org
+    MSG
   end
 
   def milieu_indicator
     $Milieu.preview? ? (content_tag :div, 'preview', class: :preview) : ''
   end
 
-  def rank_options_for_select value
-    value = 'All' unless value.present?
-    string = ''.html_safe
-
-    string = ''.html_safe
-    string << option_for_select('All', 'All', value)
-    for rank in Rank.ranks
-      next if rank.plural.capitalize == 'Families'
-      string << option_for_select(rank.plural.capitalize, rank.string.capitalize, value)
-      string
-    end
-    string
+  def rank_options_for_select value='All'
+    string =  option_for_select('All', 'All', value)
+    string << Rank.ranks.reject { |rank| rank.string == 'family'}.reduce("") do |options, rank|
+              options << option_for_select(rank.plural.capitalize, rank.string.capitalize, value)
+            end.html_safe
   end
 
-  def biogeographic_region_options_for_select value, first_label = '', second_label = nil
-    value = '' unless value.present?
-    string = ''.html_safe
-    string << option_for_select(first_label, nil, value)
+  def biogeographic_region_options_for_select value='', first_label = '', second_label = nil
+    string =  option_for_select(first_label, nil, value)
     string << option_for_select(second_label, second_label, value) if second_label.present?
-    for biogeographic_region in BiogeographicRegion.instances
+    BiogeographicRegion.instances.each do |biogeographic_region|
       string << option_for_select(biogeographic_region.label, biogeographic_region.value, value)
       string
     end
     string
   end
 
-  def option_for_select label, value, current_value
-    options = {value: value}
-    options[:selected] = 'selected' if value == current_value
-    content_tag :option, label, options
-  end
-
   def search_selector search_type
-    select_tag :st, options_for_select([['matching', 'm'], ['beginning with', 'bw'], ['containing', 'c']], search_type || 'bw')
+    select_tag :st, options_for_select([['matching', 'm'],
+                                        ['beginning with', 'bw'],
+                                        ['containing', 'c']], search_type || 'bw')
   end
 
   def name_description taxon
-    string = case taxon
-    when Subfamily
-      'subfamily'
-    when Tribe
-      string = "tribe of "
-      parent = taxon.subfamily
-      string << (parent ? parent.name.to_html : '(no subfamily)')
-    when Genus
-      string = "genus of "
-      parent = taxon.tribe ? taxon.tribe : taxon.subfamily
-      string << (parent ? parent.name.to_html : '(no subfamily)')
-    when Species
-      string = "species of "
-      parent = taxon.parent
-      string << parent.name.to_html
-     when Subgenus
-       string = "subgenus of "
-       parent = taxon.parent
-       string << parent.name.to_html
-    when Subspecies
-      string = "subspecies of "
-      parent = taxon.species
-      string << (parent ? parent.name.to_html : '(no species)')
-    else
-      ''
-             end
+    string =
+      case taxon
+      when Subfamily
+        'subfamily'
+      when Tribe
+        string = "tribe of "
+        parent = taxon.subfamily
+        string << (parent ? parent.name.to_html : '(no subfamily)')
+      when Genus
+        string = "genus of "
+        parent = taxon.tribe ? taxon.tribe : taxon.subfamily
+        string << (parent ? parent.name.to_html : '(no subfamily)')
+      when Species
+        string = "species of "
+        parent = taxon.parent
+        string << parent.name.to_html
+       when Subgenus
+         string = "subgenus of "
+         parent = taxon.parent
+         string << parent.name.to_html
+      when Subspecies
+        string = "subspecies of "
+        parent = taxon.species
+        string << (parent ? parent.name.to_html : '(no species)')
+      else
+        ''
+      end
+
     # Todo: Joe test this case
     if taxon[:unresolved_homonym] == true && taxon.new_record?
-      string = ' secondary junior homonym of ' + string
+      string = " secondary junior homonym of #{string}"
     elsif !taxon[:collision_merge_id].nil? && taxon.new_record?
       target_taxon = Taxon.find_by_id(taxon[:collision_merge_id])
-      string = ' merge back into original ' + target_taxon.name_html_cache
+      string = " merge back into original #{target_taxon.name_html_cache}"
     end
 
-    string = 'new ' + string if taxon.new_record?
+    string = "new #{string}" if taxon.new_record?
     string.html_safe
   end
 
-end
+  def pluralize_with_delimiters count, singular, plural = nil
+    word = if count == 1
+      singular
+    else
+      plural || singular.pluralize
+    end
+    "#{number_with_delimiter(count)} #{word}"
+  end
 
+  def count_and_noun collection, noun
+    quantity = collection.present? ? collection.count.to_s : 'no'
+    noun << 's' unless collection.count == 1
+    "#{quantity} #{noun}"
+  end
+
+  def add_period_if_necessary string
+    return unless string.present?
+    return string + '.' unless string[-1..-1] =~ /[.!?]/
+    string
+  end
+
+  def italicize string
+    content_tag :i, string
+  end
+
+  def unitalicize string
+    raise "Can't unitalicize an unsafe string" unless string.html_safe?
+    string = string.dup
+    string.gsub!('<i>', '')
+    string.gsub!('</i>', '')
+    string.html_safe
+  end
+
+  def embolden string
+    content_tag :b, string
+  end
+
+  def format_time_ago time
+    return unless time
+    content_tag :span, "#{time_ago_in_words time} ago", title: time
+  end
+
+  # duplicated from ReferenceDecorator
+  def format_italics string
+    return unless string
+    raise "Can't call format_italics on an unsafe string" unless string.html_safe?
+    string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
+    string = string.gsub /\|(.*?)\|/, '<i>\1</i>'
+    string.html_safe
+  end
+
+  private
+    def option_for_select label, value, current_value
+      options = { value: value }
+      options[:selected] = 'selected' if value == current_value
+      content_tag :option, label, options
+    end
+end

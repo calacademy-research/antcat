@@ -1,11 +1,11 @@
 # coding: UTF-8
 class Name < ActiveRecord::Base
-  include Formatters::Formatter
   include UndoTracker
+  include Formatters::RefactorFormatter
 
   validates :name, presence: true
   after_save :set_taxon_caches
-  has_paper_trail meta: {change_id: :get_current_change_id}
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   attr_accessible :name,
                   :name_html,
@@ -20,18 +20,14 @@ class Name < ActiveRecord::Base
 
   scope :find_all_by_name, lambda { |name| where name: name }
 
-
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)
     raise Taxon::TaxonExists if existing_names.any? { |name| not name.references.empty? }
-    update_attributes!({
-                           name: name_string,
-                           name_html: italicize(name_string),
-                       })
+    update_attributes!( name: name_string,
+                        name_html: italicize(name_string))
   end
 
-  def change_parent _;
-  end
+  def change_parent _; end
 
   def quadrinomial?
     name.split(' ').size == 4
@@ -42,12 +38,7 @@ class Name < ActiveRecord::Base
   end
 
   def set_taxon_caches
-
-
-    #Taxon.update_all ['name_cache = ?', name], name_id: id
     Taxon.where(name_id: id).update_all(name_cache: name)
-    #Taxon.update_all ['name_html_cache = ?', name_html], name_id: id
-    #Taxon.update_all({name_html_cache: name_html}, {name_id: id})
     Taxon.where(name_id: id).update_all(name_html_cache: name_html)
   end
 
@@ -57,66 +48,100 @@ class Name < ActiveRecord::Base
 
   # Irregular flag allows parsing of names that don't conform to naming standards so we can support bad spellings.
   def self.parse string, irregular=false
-    # explicit loading seems to help Citrus's problem with reloading its grammars
-    # when Rails's class caching is off
-    Citrus.load Rails.root.to_s + '/lib/parsers/common_grammar', force: true unless defined? Parsers::CommonGrammar
-    Citrus.load Rails.root.to_s + '/lib/parsers/author_grammar', force: true unless defined? Parsers::AuthorGrammar
-    Citrus.load Rails.root.to_s + '/lib/importers/bolton/catalog/grammar', force: true unless defined? Importers::Bolton::Catalog::Grammar
+   words = string.split " "
 
-    word_count = string.split(' ').count
+    name_type = case words.size
+                when 1 then :genus_or_tribe_subfamily
+                when 2 then :species
+                when 3 then :subspecies
+                when 4..5 then :subspecies_with_two_epithets
+                end
 
-
-    name_class = Name.parse_rank string
-
-    if name_class.nil? and irregular
-
-      name_class = SpeciesName
-    else
-      raise "No Name subclass wanted the string: #{string}" unless name_class
+    if name_type == :genus_or_tribe_subfamily
+      name_type = case string
+                  when /inae$/ then :subfamily
+                  when /idae$/ then :subfamily # actually a family name, but let's rewrite the old
+                                               # method before changing the behavior; edge case anyway
+                  when /ini$/ then :tribe
+                  else :genus end
     end
-    words = string.split ' '
-    name_class.parse_words(words)
+
+    case name_type
+    when :subspecies
+      return SubspeciesName.create!(
+        name: string,
+        name_html: i_tagify(string),
+        epithet: words.third,
+        epithet_html: i_tagify(words.third),
+        epithets: [words.second, words.third].join(' ')
+      )
+
+    when :subspecies_with_two_epithets
+      return SubspeciesName.create!(
+        name: string,
+        name_html: i_tagify(string),
+        epithet: words.last,
+        epithet_html: i_tagify(words.last),
+        epithets: words[1..-1].join(' ')
+      )
+
+    when :species
+      return SpeciesName.create!(
+        name: string,
+        name_html: i_tagify(string),
+        epithet: words.second, #is this used?
+        epithet_html: i_tagify(words.second) #is this used?
+      )
+
+    when :genus
+        return GenusName.create!(
+          name: string,
+          name_html: i_tagify(string),
+          epithet: string, #is this used?
+          epithet_html: i_tagify(string) #is this used?
+          #protonym_html: i_tagify(string) #is this used?
+          # Note: GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }
+          # => all true except Aretidris because protonym_html is nil
+        )
+    when :tribe
+        return TribeName.create!(
+          name: string,
+          name_html: string,
+          epithet: string, #is this used?
+          epithet_html: string #is this used?
+          #protonym_html: string
+        )
+    when :subfamily
+        return SubfamilyName.create!(
+          name: string,
+          name_html: string,
+          epithet: string, #is this used?
+          epithet_html: string #is this used?
+          #protonym_html: string #is this used?
+          # Note: SubfamilyName.all.map {|t| t.name == t.protonym_html }.uniq # => true
+        )
+    end
+
+    if irregular
+      return SpeciesName.create!(
+        name: string,
+        name_html: i_tagify(string),
+        epithet: words.second,
+        epithet_html: i_tagify(words.second)
+      )
+    end
+    raise "No Name subclass wanted the string: #{string}" # from the original method
   end
 
-  def self.parse_words words
-    return unless words.size == 1
-    create! make_import_attributes words[0]
-  end
-
-  #
-  # Removes subgenus before evaluating
-  #
-  def self.parse_rank string
-    # extremely kludgey
-    word_count = string.split(' ').count
-    # # Subgenus matcher
-    # if word_count == 3
-    #   if  match = string.match(/^([a-zA-Z]+) (\(([a-zA-Z]+)\)) ([a-zA-Z]+)/)
-    #     string = match[1] + " " + match[4]
-    #     word_count = 2
-    #     puts ("subgenus stripped - now it's #{string}")
-    #   end
-    # end
-    return SubspeciesName if word_count >= 3
-    for key in [:subfamily_name, :tribe_name, :genus_name, :species_name]
-      begin
-        result = Importers::Bolton::Catalog::Grammar.parse(string, root: key).value
-        if key == :species_name && result.has_key?(:genus_name) && result.has_key?(:species_epithet)
-          return SpeciesName
-        end
-      rescue Citrus::ParseError => e
-        next
-      end
-      return key.to_s.camelize.constantize if result.has_key? key
-    end
-    nil
+  def self.i_tagify string
+    "<i>#{string}</i>"
   end
 
   def self.picklist_matching letters_in_name, options = {}
     join = options[:taxa_only] ||
-        options[:species_only] ||
-        options[:genera_only] ||
-        options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+           options[:species_only] ||
+           options[:genera_only] ||
+           options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
     rank_filter =
         case
           when options[:species_only] then
@@ -135,7 +160,7 @@ class Name < ActiveRecord::Base
         Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
             joins("#{join} taxa ON taxa.name_id = names.id").
             where("name LIKE '#{search_term}' #{rank_filter}").
-            order('taxon_id desc').
+            order('taxon_id DESC').
             order(:name)
 
     search_term = letters_in_name.split('').join('%') + '%'
@@ -160,35 +185,10 @@ class Name < ActiveRecord::Base
 
   def self.picklist_matching_format matches
     matches.map do |e|
-      result = {id: e.id.to_i, name: e.name, label: "<b>#{e.name_html}</b>", value: e.name}
+      result = { id: e.id.to_i, name: e.name, label: "<b>#{e.name_html}</b>", value: e.name }
       result[:taxon_id] = e.taxon_id.to_i if e.taxon_id
       result
     end
-  end
-
-  def self.import data
-    SubspeciesName.import_data(data) or
-        SpeciesName.import_data(data) or
-        SubgenusName.import_data(data) or
-        GenusName.import_data(data) or
-        CollectiveGroupName.import_data(data) or
-        SubtribeName.import_data(data) or
-        TribeName.import_data(data) or
-        SubfamilyName.import_data(data) or
-        FamilyName.import_data(data) or
-        FamilyOrSubfamilyName.import_data(data) or
-        OrderName.import_data(data) or
-        raise "No Name subclass wanted to import #{data}"
-  end
-
-  def self.import_data data
-    return unless name = get_name(data)
-    attributes = make_import_attributes name, data
-    Name.find_by_name(attributes[:name]) or create!(attributes)
-  end
-
-  def self.make_import_attributes name, data = nil
-    {name: name, name_html: name, epithet: name, epithet_html: name}
   end
 
   def to_s
@@ -203,7 +203,6 @@ class Name < ActiveRecord::Base
     string = ''.html_safe
     string << dagger_html if fossil
     string << name_html.html_safe
-    string
   end
 
   def rank
@@ -218,16 +217,12 @@ class Name < ActiveRecord::Base
     string = ''.html_safe
     string << dagger_html if fossil
     string << epithet_html.html_safe
-    string
   end
 
   def protonym_with_fossil_html fossil
     string = ''.html_safe
     string << dagger_html if fossil
-
     string << name_html.html_safe
-
-    string
   end
 
   def dagger_html
@@ -235,7 +230,7 @@ class Name < ActiveRecord::Base
   end
 
   def self.duplicates
-    name_strings = Name.find_by_sql("SELECT * FROM names GROUP by name HAVING COUNT(*) > 1").map(&:name)
+    name_strings = Name.find_by_sql("SELECT * FROM names GROUP BY name HAVING COUNT(*) > 1").map(&:name)
     Name.where(name: name_strings).order(:name)
   end
 
@@ -270,21 +265,21 @@ class Name < ActiveRecord::Base
 
   def references_to_taxon_name
     Taxon.where(name_id: id).inject([]) do |references, taxon|
-      references << {table: 'taxa', field: :name_id, id: taxon.id}
+      references << { table: 'taxa', field: :name_id, id: taxon.id }
       references
     end
   end
 
   def references_to_taxon_type_name
     Taxon.where(type_name_id: id).inject([]) do |references, taxon|
-      references << {table: 'taxa', field: :type_name_id, id: taxon.id}
+      references << { table: 'taxa', field: :type_name_id, id: taxon.id }
       references
     end
   end
 
   def references_to_protonym_name
     Protonym.where(name_id: id).inject([]) do |references, protonym|
-      references << {table: 'protonyms', field: :name_id, id: protonym.id}
+      references << { table: 'protonyms', field: :name_id, id: protonym.id }
       references
     end
   end
@@ -293,11 +288,11 @@ class Name < ActiveRecord::Base
     references = []
     Taxt.taxt_fields.each do |klass, fields|
       table = klass.arel_table
-      for field in fields
-        for record in klass.where(table[field].matches("%{nam #{id}}%"))
+      fields.each do |field|
+        klass.where(table[field].matches("%{nam #{id}}%")).each do |record|
           next unless record[field]
           if record[field] =~ /{nam #{id}}/
-            references << {table: klass.table_name, field: field, id: record[:id]}
+            references << { table: klass.table_name, field: field, id: record[:id] }
           end
         end
       end
@@ -329,8 +324,8 @@ class Name < ActiveRecord::Base
   end
 
   def self.find_by_name string
-    Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false).
-        where(name: string).order('taxa.id desc').order(:name).first
+    Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false)
+      .where(name: string).order('taxa.id DESC').order(:name).first
   end
 
 end

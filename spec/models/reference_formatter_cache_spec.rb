@@ -24,7 +24,6 @@ describe ReferenceFormatterCache do
       expect(reference.formatted_cache).to be_nil
       expect(reference.inline_citation_cache).to be_nil
     end
-
   end
 
   describe "Filling" do
@@ -34,10 +33,9 @@ describe ReferenceFormatterCache do
         expect(reference.formatted_cache).to be_nil
         expect(reference.inline_citation_cache).to be_nil
 
-        user = double
-        formatter = Formatters::ReferenceFormatter.new(reference)
-        formatted_cache_value = Formatters::ReferenceFormatter.format! reference
-        inline_citation_cache_value = formatter.format_inline_citation! user
+        decorated = reference.decorate
+        formatted_cache_value = decorated.format!
+        inline_citation_cache_value = decorated.format_inline_citation!
 
         expect(reference.formatted_cache).to eq(formatted_cache_value)
         expect(reference.inline_citation_cache).to be_nil

@@ -1,10 +1,10 @@
-- @title = 'Journals'
+-@title = 'Journals'
 
 %table
-  %tr
-  - for journal in @journals
+  -@journals.each do |journal|
     %tr
-      %td= link_to journal.name, edit_journal_path(journal)
+      %td
+        =link_to journal.name, journal
 
-- if user_can_edit?
+-if user_can_edit?
   %p= button_to "New Journal", new_journal_path, :method => :get

@@ -5,8 +5,13 @@ class Milieu
     @server = server.try(:to_sym) || :production
   end
 
-  def production?; @server == :production end
-  def preview?;    @server == :preview end
+  def production?
+    @server == :production
+  end
+
+  def preview?
+    @server == :preview
+  end
 
   def previewize string
     return string + ' (preview)' if preview?
@@ -28,13 +33,16 @@ class Milieu
     file_name = "#{directory}/server.yml"
     YAML.load_file file_name
   end
-
 end
 
 class RestrictedMilieu < Milieu
-  def title; 'AntCat' end
+  def title
+    'AntCat'
+  end
 
-  def user_can_upload_pdfs? _; true end
+  def user_can_upload_pdfs? _
+    true
+  end
 
   def user_is_editor? user
     user && user.is_editor?
@@ -55,13 +63,16 @@ class RestrictedMilieu < Milieu
   def user_can_approve_changes? user
     user && user.can_approve_changes?
   end
-
 end
 
 class SandboxMilieu < Milieu
-  def title; 'Preview of AntCat' end
+  def title
+    'Preview of AntCat'
+  end
 
-  def user_can_upload_pdfs? _; false end
+  def user_can_upload_pdfs? _
+    false
+  end
 
   def user_is_editor? user
     true
@@ -78,7 +89,6 @@ class SandboxMilieu < Milieu
   def user_can_approve_changes? _
     true
   end
-
 end
 
 $Milieu = Milieu.create

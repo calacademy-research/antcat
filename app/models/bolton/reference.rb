@@ -125,8 +125,13 @@ class Bolton::Reference < ActiveRecord::Base
   end
 
   # ReferenceComparable
-  def author; authors.split(',').first; end
-  def type; reference_type; end
+  def author
+    authors.split(',').first
+  end
+
+  def type
+    reference_type
+  end
 
   def key
     @key ||= Bolton::ReferenceKey.new authors, citation_year

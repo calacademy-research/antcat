@@ -82,6 +82,5 @@ gem 'compass-blueprint'
 
 gem 'uglifier'
 gem 'yui-compressor'
-
-
-
+gem 'twitter-typeahead-rails'
+gem 'draper'

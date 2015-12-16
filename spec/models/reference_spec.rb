@@ -2,50 +2,44 @@
 require 'spec_helper'
 
 describe Reference do
-  before :each do
-    @author_names = [FactoryGirl.create(:author_name)]
-  end
+  let(:author_names) { [FactoryGirl.create(:author_name)] }
 
   describe "Relationships" do
+    let(:reference) { Reference.create! :author_names => author_names, :title => 'asdf', :citation_year => '2010d' }
+
     it "has many author_names" do
-      reference = Reference.create! :author_names => @author_names, :title => 'asdf', :citation_year => '2010d'
-      expect(reference.author_names.first).to eq(@author_names.first)
+      expect(reference.author_names.first).to eq(author_names.first)
     end
     it "has many authors" do
-      reference = Reference.create! :author_names => @author_names, :title => 'asdf', :citation_year => '2010d'
-      expect(reference.authors.first).to eq(@author_names.first.author)
+      expect(reference.authors.first).to eq(author_names.first.author)
     end
     describe "Nested references" do
+      let!(:nesting_reference) { FactoryGirl.create :reference }
+      let(:nestee) { FactoryGirl.create :nested_reference, nesting_reference: nesting_reference }
+
       it "can have a nesting_reference" do
-        nesting_reference = FactoryGirl.create :reference
-        nestee = FactoryGirl.create :nested_reference, nesting_reference: nesting_reference
         expect(nestee.nesting_reference).to eq(nesting_reference)
       end
       it "can have many nestees" do
-        nesting_reference = FactoryGirl.create :reference
-        nestee = FactoryGirl.create :nested_reference, nesting_reference: nesting_reference
         expect(nesting_reference.nestees).to match_array([nestee])
       end
     end
-
   end
 
   describe "author_names_string" do
-
     describe "parsing" do
-      before do
-        @reference = FactoryGirl.create :reference
-      end
+      let(:reference) { FactoryGirl.create :reference }
+
       it "should return nothing if empty" do
-        expect(@reference.parse_author_names_and_suffix('')) .to eq({:author_names => [], :author_names_suffix => nil})
+        expect(reference.parse_author_names_and_suffix('')) .to eq({:author_names => [], :author_names_suffix => nil})
       end
       it "should add an error and raise and exception if invalid" do
-        expect {@reference.parse_author_names_and_suffix('...asdf sdf dsfdsf')}.to raise_error ActiveRecord::RecordInvalid
-        expect(@reference.errors.messages).to eq({:author_names_string => ["couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"]})
-        expect(@reference.author_names_string).to eq('...asdf sdf dsfdsf')
+        expect {reference.parse_author_names_and_suffix('...asdf sdf dsfdsf')}.to raise_error ActiveRecord::RecordInvalid
+        expect(reference.errors.messages).to eq({:author_names_string => ["couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"]})
+        expect(reference.author_names_string).to eq('...asdf sdf dsfdsf')
       end
       it "should return the author names and the suffix" do
-        expect(@reference.parse_author_names_and_suffix('Fisher, B.; Bolton, B. (eds.)')).to eq({:author_names => [AuthorName.find_by_name('Fisher, B.'), AuthorName.find_by_name('Bolton, B.')], :author_names_suffix => ' (eds.)'})
+        expect(reference.parse_author_names_and_suffix('Fisher, B.; Bolton, B. (eds.)')).to eq({:author_names => [AuthorName.find_by_name('Fisher, B.'), AuthorName.find_by_name('Bolton, B.')], :author_names_suffix => ' (eds.)'})
       end
     end
 
@@ -72,31 +66,29 @@ describe Reference do
     end
 
     describe "updating, when things change" do
-      before do
-        @reference = FactoryGirl.create(:reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Fisher, B.L.')])
-      end
+      let(:reference) { FactoryGirl.create(:reference, :author_names => [FactoryGirl.create(:author_name, :name => 'Fisher, B.L.')]) }
+      let(:author_name) { FactoryGirl.create(:author_name, :name => 'Ward') }
+
       it "should update its author_names_string when an author_name is added" do
-        @reference.author_names << FactoryGirl.create(:author_name, :name => 'Ward')
-        expect(@reference.author_names_string).to eq('Fisher, B.L.; Ward')
+        reference.author_names << author_name
+        expect(reference.author_names_string).to eq('Fisher, B.L.; Ward')
       end
       it "should update its author_names_string when an author_name is removed" do
-        author_name = FactoryGirl.create(:author_name, :name => 'Ward')
-        @reference.author_names << author_name
-        expect(@reference.author_names_string).to eq('Fisher, B.L.; Ward')
-        @reference.author_names.delete author_name
-        expect(@reference.author_names_string).to eq('Fisher, B.L.')
+        reference.author_names << author_name
+        expect(reference.author_names_string).to eq('Fisher, B.L.; Ward')
+        reference.author_names.delete author_name
+        expect(reference.author_names_string).to eq('Fisher, B.L.')
       end
       it "should update its author_names_string when an author_name's name is changed" do
-        author_name = FactoryGirl.create(:author_name, :name => 'Ward')
-        @reference.author_names = [author_name]
-        expect(@reference.author_names_string).to eq('Ward')
+        reference.author_names = [author_name]
+        expect(reference.author_names_string).to eq('Ward')
         author_name.update_attribute :name, 'Fisher'
-        expect(@reference.reload.author_names_string).to eq('Fisher')
+        expect(reference.reload.author_names_string).to eq('Fisher')
       end
       it "should update its author_names_string when the author_names_suffix changes" do
-        @reference.author_names_suffix = ' (eds.)'
-        @reference.save
-        expect(@reference.reload.author_names_string).to eq('Fisher, B.L. (eds.)')
+        reference.author_names_suffix = ' (eds.)'
+        reference.save
+        expect(reference.reload.author_names_string).to eq('Fisher, B.L. (eds.)')
       end
     end
 
@@ -114,21 +106,20 @@ describe Reference do
   end
 
   describe "principal author last name" do
-    before do
-      @ward = FactoryGirl.create :author_name, :name => 'Ward, P.'
-      @fisher = FactoryGirl.create :author_name, :name => 'Fisher, B.'
-    end
+    let(:ward) { FactoryGirl.create :author_name, :name => 'Ward, P.' }
+    let(:fisher) { FactoryGirl.create :author_name, :name => 'Fisher, B.' }
+
     it "should not freak out if there are no authors" do
       reference = Reference.create! :title => 'title', :citation_year => '1993'
       expect(reference.principal_author_last_name).to be_nil
     end
     it "should cache the last name of the principal author" do
-      reference = FactoryGirl.create :reference, :author_names => [@ward, @fisher]
+      reference = FactoryGirl.create :reference, :author_names => [ward, fisher]
       expect(reference.principal_author_last_name).to eq('Ward')
     end
     it "should update its author_names_string when an author_name's name is changed" do
-      reference = FactoryGirl.create :reference, :author_names => [@ward]
-      @ward.update_attributes :name => 'Bolton, B.'
+      reference = FactoryGirl.create :reference, :author_names => [ward]
+      ward.update_attributes :name => 'Bolton, B.'
       expect(reference.reload.principal_author_last_name).to eq('Bolton')
     end
     it "should be possible to read from, aliased to principal_author_last_name_cache" do
@@ -139,18 +130,16 @@ describe Reference do
   end
 
   describe "validations" do
-    before do
-      author_name = FactoryGirl.create :author_name
-      @reference = Reference.new :author_names => [author_name], :title => 'title', :citation_year => '1910'
-    end
+    let!(:author_name) { FactoryGirl.create :author_name }
+    let(:reference) { Reference.new :author_names => [author_name], :title => 'title', :citation_year => '1910' }
 
     it "should be OK when all fields are present" do
-      expect(@reference).to be_valid
+      expect(reference).to be_valid
     end
 
     it "should not be OK when the title is missing" do
-      @reference.title = nil
-      expect(@reference).not_to be_valid
+      reference.title = nil
+      expect(reference).not_to be_valid
     end
 
     describe "Difference between Missing and UnmissingReferences" do
@@ -169,7 +158,6 @@ describe Reference do
         expect(reference).to be_valid
       end
     end
-
   end
 
   describe "changing the citation year" do
@@ -191,8 +179,9 @@ describe Reference do
   end
 
   describe "entering a newline in the title, public_notes, editor_notes or taxonomic_notes" do
+    let(:reference) { FactoryGirl.create :reference }
+
     it "should strip the newline" do
-      reference = FactoryGirl.create :reference
       reference.title = "A\nB"
       reference.public_notes = "A\nB"
       reference.editor_notes = "A\nB"
@@ -204,13 +193,11 @@ describe Reference do
       expect(reference.taxonomic_notes).to eq("A B")
     end
     it "should handle all sorts of newlines" do
-      reference = FactoryGirl.create :reference
       reference.title = "A\r\nB"
       reference.save!
       expect(reference.title).to eq("A B")
     end
     it "should completely remove newlines at the beginning and end" do
-      reference = FactoryGirl.create :reference
       reference.title = "\r\nA\r\nB\n\n"
       reference.save!
       expect(reference.title).to eq("A B")
@@ -219,7 +206,7 @@ describe Reference do
 
   describe "long fields" do
     it "should not truncate long fields" do
-      Reference.create! :author_names => @author_names, :editor_notes => 'e' * 1000, :citation => 'c' * 2000,
+      Reference.create! :author_names => author_names, :editor_notes => 'e' * 1000, :citation => 'c' * 2000,
         :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 't' * 1900, :citation_year => '2010'
       reference = Reference.first
       expect(reference.citation.length).to eq(2000)
@@ -333,9 +320,9 @@ describe Reference do
   end
 
   describe "References to a reference" do
+    let(:reference) { FactoryGirl.create :article_reference }
 
     it "should recognize various uses of this reference in taxt" do
-      reference = FactoryGirl.create :article_reference
       citation = FactoryGirl.create :citation, reference: reference, notes_taxt: "{ref #{reference.id}}"
       protonym = FactoryGirl.create :protonym, authorship: citation
       taxon = FactoryGirl.create :genus, protonym: protonym, type_taxt: "{ref #{reference.id}}", headline_notes_taxt: "{ref #{reference.id}}", genus_species_header_notes_taxt: "{ref #{reference.id}}"
@@ -361,7 +348,6 @@ describe Reference do
 
     describe "Any references?" do
       it "should return false if there are no references to this reference" do
-        reference = FactoryGirl.create :article_reference
         expect(reference.any_references?).to be_falsey
       end
     end

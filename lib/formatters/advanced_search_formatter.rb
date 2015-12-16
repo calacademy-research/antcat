@@ -1,8 +1,7 @@
 # coding: UTF-8
 
 module Formatters::AdvancedSearchFormatter
-  include Formatters::Formatter
-  include ActionView::Helpers::TagHelper
+  include ApplicationHelper
 
   def format taxon
     string = convert_to_text(format_name taxon)
@@ -14,13 +13,12 @@ module Formatters::AdvancedSearchFormatter
     protonym = convert_to_text(format_protonym taxon, nil)
     string << protonym if protonym.present?
     string << "\n\n"
-    string
   end
 
   def format_status_reference taxon
     return format_original_combination_status taxon if taxon.original_combination?
     labels = []
-    labels << "#{italicize 'incertae sedis'} in #{Rank[taxon.incertae_sedis_in].to_s}" if taxon.incertae_sedis_in
+    labels << "#{italicize 'incertae sedis'} in #{Rank[taxon.incertae_sedis_in]}" if taxon.incertae_sedis_in
     if taxon.homonym? && taxon.homonym_replaced_by
       labels << "homonym replaced by #{format_name taxon.homonym_replaced_by}"
     elsif taxon.unidentifiable?
@@ -47,9 +45,9 @@ module Formatters::AdvancedSearchFormatter
   def format_protonym taxon, user
     reference = taxon.protonym.authorship.reference
     string = ''.html_safe
-    string << Formatters::ReferenceFormatter.format(reference)
-    string << document_link(reference.key, user)
-    string << goto_reference_link(reference.key)
+    string << reference.decorate.format
+    string << ' ' << document_link(reference.key) if document_link(reference.key)
+    string << ' ' << goto_reference_link(reference.key) if goto_reference_link(reference.key)
     string << reference_id(reference)
     string
   end
@@ -85,8 +83,8 @@ module Formatters::AdvancedSearchFormatter
     string << add_period_if_necessary(taxon.protonym.authorship.forms)
   end
 
-  def document_link reference_key, user
-    reference_key.document_link user
+  def document_link reference_key
+    reference_key.document_link
   end
 
   def goto_reference_link reference_key
@@ -94,8 +92,8 @@ module Formatters::AdvancedSearchFormatter
   end
 
   def senior_synonym_list taxon
-    return '' unless taxon.senior_synonyms.count > 0
-    ' of ' << taxon.senior_synonyms.map {|e| format_name(e)}.join(', ')
+    return '' if taxon.senior_synonyms.empty?
+    ' of ' << taxon.senior_synonyms.map { |e| format_name(e) }.join(', ')
   end
 
   def unitalicize string

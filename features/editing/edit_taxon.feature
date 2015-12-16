@@ -79,6 +79,7 @@ Feature: Editing a taxon
     And I save my changes
     Then I should see "Eciton" in the headline
 
+  @search
   Scenario: Changing the authorship
     Given these references exist
       | authors | citation   | title | year | doi |
@@ -97,10 +98,11 @@ Feature: Editing a taxon
     Then The taxon mouseover should contain "Fisher 2004. Ants. Psyche 3:3"
     And I should see "Authorship notes" in the headline
 
+  @search
   Scenario: Supplying the authorship when there wasn't one before
     Given these references exist
       | authors | citation   | title | year | doi |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |          |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |     |
     Given there is a genus "Eciton" without protonym authorship
     And I log in
     And I go to the edit page for "Eciton"

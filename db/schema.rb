@@ -11,22 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151106044036) do
-
-  create_table "active_admin_comments", force: :cascade do |t|
-    t.string   "namespace",     limit: 255
-    t.text     "body",          limit: 65535
-    t.string   "resource_id",   limit: 255,   null: false
-    t.string   "resource_type", limit: 255,   null: false
-    t.integer  "author_id",     limit: 4
-    t.string   "author_type",   limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
-  add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
-  add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
+ActiveRecord::Schema.define(version: 20151204143323) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -125,21 +110,6 @@ ActiveRecord::Schema.define(version: 20151106044036) do
   end
 
   add_index "citations", ["reference_id"], name: "index_authorships_on_reference_id", using: :btree
-
-  create_table "forward_refs", force: :cascade do |t|
-    t.integer  "fixee_id",        limit: 4
-    t.string   "fixee_attribute", limit: 255
-    t.integer  "genus_id",        limit: 4
-    t.string   "epithet",         limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "fixee_type",      limit: 255
-    t.string   "type",            limit: 255
-    t.integer  "name_id",         limit: 4
-  end
-
-  add_index "forward_refs", ["fixee_id", "fixee_type"], name: "index_forward_refs_on_fixee_id_and_fixee_type", using: :btree
-  add_index "forward_refs", ["name_id"], name: "index_forward_refs_on_name_id", using: :btree
 
   create_table "hol_data", force: :cascade do |t|
     t.integer "tnuid",                  limit: 4
@@ -439,17 +409,6 @@ ActiveRecord::Schema.define(version: 20151106044036) do
 
   add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx", using: :btree
 
-  create_table "updates", force: :cascade do |t|
-    t.string   "class_name", limit: 255
-    t.integer  "record_id",  limit: 4
-    t.string   "field_name", limit: 255
-    t.text     "before",     limit: 65535
-    t.text     "after",      limit: 65535
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "name",       limit: 255
-  end
-
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
     t.string   "encrypted_password",     limit: 255, default: ""
@@ -464,7 +423,7 @@ ActiveRecord::Schema.define(version: 20151106044036) do
     t.string   "last_sign_in_ip",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "invitation_token",       limit: 20
+    t.string   "invitation_token",       limit: 255
     t.datetime "invitation_sent_at"
     t.datetime "reset_password_sent_at"
     t.boolean  "can_edit"

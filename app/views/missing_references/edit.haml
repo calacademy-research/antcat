@@ -11,10 +11,9 @@
   #navigation_bar
     .clear
     .title.left= @title
-    = render 'shared/search', search_results: @search_results, search_results_message: @search_results_message
 
 - content_for :page_contents do
-  = form_tag  "/missing_references/#{@missing_reference.id}", method: :put, class: 'missing_references_form ui-widget' do
+  = form_tag  @missing_reference, method: :put, class: 'missing_references_form ui-widget' do
     .fields_section.section.ui-widget-content.ui-corner-all
       .species_section.section.ui-widget-content.ui-conrner-all
         %table

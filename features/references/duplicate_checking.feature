@@ -21,6 +21,7 @@ Feature: Checking for duplicates during data entry
     And I should see "This may be a duplicate of Ward, P. 2010. Ants. Psyche 6:1 "
     When I press "Save Anyway"
 
+
   Scenario: Editing a reference that makes it a duplicate
     Given these references exist
       | authors    | citation   | title            | year |

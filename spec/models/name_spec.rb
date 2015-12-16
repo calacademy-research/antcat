@@ -58,72 +58,6 @@ describe Name do
 
   end
 
-  describe "Parse rank" do
-    it "should recognize a subfamily name" do
-      expect(Name.parse_rank('Dorylinae')).to eq(SubfamilyName)
-    end
-    it "should recognize a genus name" do
-      expect(Name.parse_rank('Atta')).to eq(GenusName)
-    end
-    it "should recognize a tribe name" do
-      expect(Name.parse_rank('Attini')).to eq(TribeName)
-    end
-    it "should recognize a species name" do
-      expect(Name.parse_rank('Atta major')).to eq(SpeciesName)
-    end
-    it "should recognize a subspecies name" do
-      expect(Name.parse_rank('Atta major minor')).to eq(SubspeciesName)
-    end
-  end
-
-  describe "Parsing" do
-    it "should parse a subfamily name" do
-      name = Name.parse('Dorylinae')
-      expect(name).to be_kind_of SubfamilyName
-      expect(name.name).to eq('Dorylinae')
-      expect(name.name_html).to eq('Dorylinae')
-      expect(name.epithet).to eq('Dorylinae')
-      expect(name.epithet_html).to eq('Dorylinae')
-    end
-    it "should parse a genus name" do
-      name = Name.parse('Atta')
-      expect(name).to be_kind_of GenusName
-      expect(name.name).to eq('Atta')
-      expect(name.name_html).to eq('<i>Atta</i>')
-      expect(name.epithet).to eq('Atta')
-      expect(name.epithet_html).to eq('<i>Atta</i>')
-    end
-    it "should parse a species name" do
-      name = Name.parse('Atta major')
-      expect(name).to be_kind_of SpeciesName
-      expect(name.name).to eq('Atta major')
-      expect(name.name_html).to eq('<i>Atta major</i>')
-      expect(name.epithet).to eq('major')
-      expect(name.epithet_html).to eq('<i>major</i>')
-    end
-    describe "Parsing subspecies names" do
-      it "should handle one with two epithets, no type" do
-        name = Name.parse('Atta major minor')
-        expect(name).to be_kind_of SubspeciesName
-        expect(name.name).to eq('Atta major minor')
-        expect(name.name_html).to eq('<i>Atta major minor</i>')
-        expect(name.epithet).to eq('minor')
-        expect(name.epithet_html).to eq('<i>minor</i>')
-        expect(name.epithets).to eq('major minor')
-      end
-      it "should handle one with two epithets, including a type" do
-        name = Name.parse('Atta major var. minor')
-        expect(name).to be_kind_of SubspeciesName
-        expect(name.name).to eq('Atta major var. minor')
-        expect(name.name_html).to eq('<i>Atta major var. minor</i>')
-        expect(name.epithet).to eq('minor')
-        expect(name.epithet_html).to eq('<i>minor</i>')
-        expect(name.epithets).to eq('major var. minor')
-      end
-    end
-
-  end
-
   describe "Name picker list" do
 
     it "should return empty values if no match" do
@@ -294,7 +228,7 @@ describe Name do
       name = Name.create! name: 'Atta'
       # create an instance for each type of taxt
       Taxt.taxt_fields.each do |klass, fields|
-        for field in fields
+        fields.each do |field|
           FactoryGirl.create klass, field => "{nam #{name.id}}"
         end
       end
@@ -305,7 +239,7 @@ describe Name do
       )
       # count the total referencing items of each type
       Taxt.taxt_fields.each do |klass, fields|
-        for field in fields
+        fields.each do |field|
           expect(refs.select{ |i| i[:table] == klass.table_name }.length).to eq(
             Taxt.taxt_fields.detect{ |k, f| k == klass }[1].length
           )

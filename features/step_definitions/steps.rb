@@ -3,10 +3,6 @@ Then /^I (#{SHOULD_OR_SHOULD_NOT}) see an? "([^"]*)" button$/ do |should_selecto
   page.send(should_selector.to_sym, have_css("input[value='#{button}']"))
 end
 
-And 'I debug' do
-  debugger
-end
-
 Then /^there should be the HTML "(.*)"$/ do |html|
   body.should =~ /#{html}/
 end
@@ -57,9 +53,6 @@ When /I press "Go" by the search box/ do
   step 'I press "Go" within "#navigation_bar form"'
 end
 
-
-
-
 Then /I should (not )?see "(.*?)" (?:with)?in (.*)$/ do |do_not, contents, location|
   with_scope location do
     step %{I should #{do_not}see "#{contents}"}
@@ -73,9 +66,7 @@ end
 Then /The parent name field should have "(.*?)"$/ do |contents|
   display_button = find('#parent_name_field .display_button')
   display_button.should have_selector(contents)
-
 end
-
 
 Then /I should see "([^"]*)" italicized/ do |italicized_text|
   page.should have_css('i', text: italicized_text)
@@ -113,8 +104,4 @@ end
 
 Given /that URL "([^"]*)" exists/ do |link|
   stub_request :any, link
-end
-
-And 'I screenshot' do
-  screenshot_and_save_page
 end

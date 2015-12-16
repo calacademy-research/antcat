@@ -53,7 +53,7 @@ class Rank
 
   def to_s *options
     numeric_argument = options.find {|option| option.kind_of? Numeric}
-    options << :plural if numeric_argument && numeric_argument > 1
+    options << :plural if numeric_argument && numeric_argument > 1 #hmm
 
     s = (options.include?(:plural) ? @hash[:plural_string] : @hash[:string]).dup
     s = s.titleize if options.include? :capitalized
@@ -85,7 +85,7 @@ class Rank
     identifier = identifier.first.class if identifier.kind_of? ActiveRecord::Relation
     identifier = identifier.downcase if identifier.kind_of? String
 
-    ranks.find {|rank| rank.includes? identifier} or raise "Couldn't find rank for '#{identifier}'"
+    ranks.find { |rank| rank.includes? identifier } or raise "Couldn't find rank for '#{identifier}'"
   end
   class << self; alias_method :[], :find end
 

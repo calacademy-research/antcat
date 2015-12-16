@@ -14,7 +14,7 @@ task :update_current_valid_taxa => :environment do
   taxa = Taxon.where status: 'synonym'
   Progress.init true, taxa.count
   synonyms_without_current_valid_taxon = 0
-  for synonym in taxa
+  taxa.each do |synonym|
     Progress.tally_and_show_progress 1000
     synonym.update_current_valid_taxon
     unless synonym.reload.current_valid_taxon.present?

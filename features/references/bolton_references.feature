@@ -1,4 +1,4 @@
-@dormant @javascript
+@dormant @javascript @search
 Feature: View Bolton bibliography
   As an AntCat bibliography editor
   I want to see the Bolton bibliography
@@ -82,8 +82,8 @@ Feature: View Bolton bibliography
       | authors    | title |
       | Ward, P.S. | Ants  |
     Given these references exist
-      | authors    | title           | citation | citation_year |  year |
-      | Ward, P.S. | Arbitrary Match | Ants 1:1 | 2001d         |     2010  |
+      | authors    | title           | citation | citation_year | year |
+      | Ward, P.S. | Arbitrary Match | Ants 1:1 | 2010d         | 2010  |
     When I go to the Bolton references page
     Then the Bolton reference should be red
     And I should see "Manual (0)"

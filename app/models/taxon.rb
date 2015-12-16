@@ -3,11 +3,13 @@ require 'taxon_advanced_search'
 require 'taxon_utility'
 require 'taxon_workflow'
 
-
 class Taxon < ActiveRecord::Base
   include UndoTracker
+
+  class TaxonExists < StandardError; end
+
   self.table_name = :taxa
-  has_paper_trail meta: {change_id: :get_current_change_id}
+  has_paper_trail meta: { change_id: :get_current_change_id }
   attr_accessor :authorship_string, :duplicate_type
   attr_accessible :name_id,
                   :status,
@@ -35,11 +37,7 @@ class Taxon < ActiveRecord::Base
                   :origin, #if it's generated, where did it come from? string (e.g.: 'hol')
                   :display # if false, won't show in the taxon browser. Used for misspellings and such.
 
-
-  include CleanNewlines
-  before_save { |record| clean_newlines record, :headline_notes_taxt, :type_taxt }
-  #after_save :link_change_id
-
+  before_save { |record| CleanNewlines::clean_newlines record, :headline_notes_taxt, :type_taxt }
 
   def delete_with_state!
     Taxon.transaction do
@@ -48,24 +46,22 @@ class Taxon < ActiveRecord::Base
       # Creation doesn't add a record, so you can't "step back to" a valid version.
       # doing touch_with_version (creeate a fallback point) in the migration makes an
       # enourmous and unnecessary pile of these.
-      if (0 == taxon_state.versions.length)
+      if taxon_state.versions.empty?
         taxon_state.touch_with_version
       end
-      taxon_state.deleted=true
-      taxon_state.review_state='waiting'
+
+      taxon_state.deleted = true
+      taxon_state.review_state = 'waiting'
       taxon_state.save
       destroy!
     end
   end
 
-
   ###############################################
   # nested attributes
   belongs_to :name; validates :name, presence: true
-
-
-  belongs_to :protonym, -> { includes :authorship }; validates :protonym, presence: true
-
+  belongs_to :protonym, -> { includes :authorship }
+  validates :protonym, presence: true
   belongs_to :type_name, class_name: 'Name', foreign_key: :type_name_id
 
   has_many :taxa, class_name: "Taxon", foreign_key: :genus_id
@@ -89,18 +85,14 @@ class Taxon < ActiveRecord::Base
   # name
   scope :with_names, -> { joins(:name).readonly(false) }
 
-  # scope :with_names, joins(:name).readonly(false)
-  #scope :ordered_by_name, with_names.order('names.name').includes(:name)
   scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
 
-
-  # scope :longago, -> { order(:published_at) }
   def self.find_by_name name
     where(name_cache: name).first
   end
 
   def self.find_all_by_name name
-    where name_cache: name
+    where(name_cache: name)
   end
 
   def self.find_by_epithet epithet
@@ -110,7 +102,7 @@ class Taxon < ActiveRecord::Base
   # target_epithet is a string
   # genus is an object
   def self.find_epithet_in_genus target_epithet, genus
-    for epithet in Name.make_epithet_set target_epithet
+    Name.make_epithet_set(target_epithet).each do |epithet|
       results = with_names.where(['genus_id = ? AND epithet = ?', genus.id, epithet])
       return results unless results.empty?
     end
@@ -118,8 +110,8 @@ class Taxon < ActiveRecord::Base
   end
 
   def self.find_subspecies_in_genus target_subspecies, genus
-    for epithet in Name.make_epithet_set target_subspecies
-#      results = with_names.where(['genus_id = ? AND epithet = ? and type="SubspeciesName"', genus.id, epithet])
+    Name.make_epithet_set(target_subspecies).each do |epithet|
+      #results = with_names.where(['genus_id = ? AND epithet = ? and type="SubspeciesName"', genus.id, epithet])
       results = with_names.where(['genus_id = ? AND epithet = ?', genus.id, epithet])
       return results unless results.empty?
     end
@@ -127,72 +119,24 @@ class Taxon < ActiveRecord::Base
   end
 
   def self.find_name name, search_type = 'matching'
+    return if name.blank? || search_type.nil?
+
     name = name.dup.strip
     query = ordered_by_name
     column = name.split(' ').size > 1 ? 'name' : 'epithet'
-    case search_type
-      when 'matching'
-        query = query.where ["names.#{column} = ?", name]
-      when 'beginning with'
-        query = query.where ["names.#{column} LIKE ?", name + '%']
-      when 'containing'
-        query = query.where ["names.#{column} LIKE ?", '%' + name + '%']
-    end
+
+    query = case search_type
+            when 'matching'
+              query.where ["names.#{column} = ?", name]
+            when 'beginning with'
+              query.where ["names.#{column} LIKE ?", name + '%']
+            when 'containing'
+              query.where ["names.#{column} LIKE ?", '%' + name + '%']
+            end
     query.all
   end
 
-  def self.find_by_name_and_authorship name, author_names, year, pages = nil
-    bolton_key = Bolton::ReferenceKey.new(author_names.join(' '), year).to_s :db if author_names
-    Progress.log "Name: #{name.name} Author names: #{author_names} year: #{year}, pages: #{pages} Bolton key: #{bolton_key}"
-    Species; Subspecies
-    if name.kind_of? SpeciesGroupName
-      taxon = find_species_group_taxon_by_name_and_authorship name, bolton_key, pages
-    else
-      taxon = search_for_name_and_authorship name.name, bolton_key, pages
-    end
-    Progress.log "Not found" unless taxon
-    taxon
-  end
-
-  def self.find_species_group_taxon_by_name_and_authorship name, bolton_key, pages
-    name_parts = name.name.split ' '
-    name_parts[2] ||= ''
-    name_parts[3] ||= ''
-    # elide subgenus
-    if name_parts[1] =~ /\(.*?\)/
-      name_parts[0] << ' ' << name_parts[1]
-      name_parts[1..-2] = name_parts[2..-1]
-    end
-    for first_word in EpithetSearchSet.new(name_parts[1]).epithets
-      for second_word in EpithetSearchSet.new(name_parts[2]).epithets
-        for third_word in EpithetSearchSet.new(name_parts[3]).epithets
-          name = name_parts[0] + ' ' + first_word + ' ' + second_word + ' ' + third_word
-          name.strip!
-          taxon = search_for_name_and_authorship name, bolton_key, pages
-          return taxon if taxon
-        end
-      end
-    end
-    nil
-  end
-
-  def self.search_for_name_and_authorship name, bolton_key, pages = nil
-    results = where name_cache: name
-    if results.size > 1
-      results = joins(protonym: [{authorship: :reference}]).where 'name_cache = ? AND references.bolton_key_cache = ?', name, bolton_key
-      if results.size > 1 and pages
-        results = results.to_a.select { |result| result.protonym.authorship.pages == pages }
-        if results.size > 1
-          raise 'Duplicate name + authorships'
-        end
-      end
-    end
-    return if results.size == 0
-    Progress.log 'Found it'
-    return find results.first.id
-  end
-
-  def self.sort_by_status_and_name(taxa)
+  def self.sort_by_status_and_name taxa
     taxa.sort do |a, b|
       if a.status == b.status
         # name ascending
@@ -206,24 +150,23 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # synonym
-  def synonym?;
+  def synonym?
     status == 'synonym'
   end
 
-  def junior_synonym_of? taxon;
+  def junior_synonym_of? taxon
     senior_synonyms.include? taxon
   end
 
-  def senior_synonym_of? taxon;
+  def senior_synonym_of? taxon
     junior_synonyms.include? taxon
   end
 
-
-  def junior_synonyms_with_names;
+  def junior_synonyms_with_names
     synonyms_with_names :junior
   end
 
-  def senior_synonyms_with_names;
+  def senior_synonyms_with_names
     synonyms_with_names :senior
   end
 
@@ -236,13 +179,13 @@ class Taxon < ActiveRecord::Base
       where_column = 'junior_synonym_id'
     end
 
-    self.class.find_by_sql %{
+    self.class.find_by_sql <<-SQL.squish
       SELECT synonyms.id, taxa.name_html_cache AS name
       FROM synonyms JOIN taxa ON synonyms.#{join_column} = taxa.id
       JOIN names ON taxa.name_id = names.id
       WHERE #{where_column} = #{id}
       ORDER BY name
-    }
+    SQL
   end
 
   alias synonym_of? junior_synonym_of?
@@ -269,16 +212,15 @@ class Taxon < ActiveRecord::Base
   belongs_to :homonym_replaced_by, class_name: 'Taxon'
   has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
 
-  def homonym?;
+  def homonym?
     status == 'homonym'
   end
 
-  def homonym_replaced_by? taxon;
+  def homonym_replaced_by? taxon
     homonym_replaced_by == taxon
   end
 
   attr_accessor :homonym_replaced_by_name
-
 
   ###############################################
   # parent
@@ -291,15 +233,12 @@ class Taxon < ActiveRecord::Base
     # or they can be children of (subfamily) etc.
     #
 
-    if parent_taxon.is_a?(Subgenus)
+    if parent_taxon.is_a? Subgenus
       self.subgenus = parent_taxon
       self.genus = subgenus.parent
     else
       send Rank[self].parent.write_selector, parent_taxon
     end
-
-    #send Rank[self].parent.write_selector, parent_taxon
-
   end
 
   def parent
@@ -320,7 +259,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def children
-    if (Rank[self] == Rank[:subspecies])
+    if Rank[self] == Rank[:subspecies]
       return []
     end
     raise NotImplementedError
@@ -352,7 +291,7 @@ class Taxon < ActiveRecord::Base
 
   def find_most_recent_valid_senior_synonym
     return unless senior_synonyms
-    for senior_synonym in senior_synonyms.order('created_at DESC')
+    senior_synonyms.order('created_at DESC').each do |senior_synonym|
       return senior_synonym if !senior_synonym.invalid?
       return nil unless senior_synonym.synonym?
       return senior_synonym.find_most_recent_valid_senior_synonym
@@ -365,7 +304,7 @@ class Taxon < ActiveRecord::Base
   # A status of 'original combination' means that the taxon/name is a placeholder
   # for the original name of the species under the original genus.
   # The original_combination? predicate checks that.
-  def original_combination?;
+  def original_combination?
     status == 'original combination'
   end
 
@@ -379,7 +318,6 @@ class Taxon < ActiveRecord::Base
   # other associations
   has_many :history_items, -> { order 'position' }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order 'position' }, dependent: :destroy
-
 
   #TODO: joe This is hit four times on main page load. Why
   # we have one valid entry
@@ -396,21 +334,21 @@ class Taxon < ActiveRecord::Base
     valid_count = 0
     hd.each do |is_valid|
       if is_valid['is_valid'].downcase == 'valid'
-        valid_count = valid_count +1
+        valid_count = valid_count + 1
         valid_hd = is_valid
       end
     end
-
 
     if (hd.count != 1 && valid_hd.nil?) || valid_count > 1
       # If we get more than one hit and we don't have a "valid" entry, then we can't tell
       # which link to return. That's bad, so return nothing.
       return nil
     end
+
     if valid_hd.nil?
-      return hd[0].tnuid
+      hd[0].tnuid
     else
-      return valid_hd.tnuid
+      valid_hd.tnuid
     end
   end
 
@@ -419,35 +357,35 @@ class Taxon < ActiveRecord::Base
   scope :valid, -> { where(status: 'valid') }
   scope :extant, -> { where(fossil: false) }
 
-  def unavailable?;
+  def unavailable?
     status == 'unavailable'
   end
 
-  def available?;
+  def available?
     !unavailable?
   end
 
-  def invalid?;
+  def invalid?
     status != 'valid'
   end
 
-  def excluded_from_formicidae?;
+  def excluded_from_formicidae?
     status == 'excluded from Formicidae'
   end
 
-  def incertae_sedis_in? rank;
+  def incertae_sedis_in? rank
     incertae_sedis_in == rank
   end
 
-  def collective_group_name?;
+  def collective_group_name?
     status == 'collective group name'
   end
 
-  def unidentifiable?;
+  def unidentifiable?
     status == 'unidentifiable'
   end
 
-  def obsolete_combination?;
+  def obsolete_combination?
     status == 'obsolete combination'
   end
 
@@ -494,7 +432,8 @@ class Taxon < ActiveRecord::Base
   validate :check_url
 
   def add_protocol_to_type_speciment_url
-    self.type_specimen_url = "http://" + type_specimen_url if type_specimen_url.present? && type_specimen_url !~ %r{^http://}
+    return if type_specimen_url.blank? || type_specimen_url =~ %r{^https?://}
+    self.type_specimen_url = "http://#{type_specimen_url}"
   end
 
   def check_url
@@ -512,7 +451,6 @@ class Taxon < ActiveRecord::Base
   def get_statistics ranks
     statistics = {}
     ranks.each do |rank|
-      #count = send(rank).count :group => [:fossil, :status]
       count = send(rank).group('fossil', 'status').count
       delete_original_combinations count
       self.class.massage_count count, rank, statistics
@@ -537,11 +475,11 @@ class Taxon < ActiveRecord::Base
 
   def child_list_query children_selector, conditions = {}
     children = send children_selector
-    children = children.where fossil: !!conditions[:fossil] if conditions.key? :fossil
+    children = children.where(fossil: !!conditions[:fossil]) if conditions.key? :fossil
     incertae_sedis_in = conditions[:incertae_sedis_in]
-    children = children.where incertae_sedis_in: incertae_sedis_in if incertae_sedis_in
-    children = children.where hong: !!conditions[:hong] if conditions.key? :hong
-    children = children.where status: 'valid'
+    children = children.where(incertae_sedis_in: incertae_sedis_in) if incertae_sedis_in
+    children = children.where(hong: !!conditions[:hong]) if conditions.key? :hong
+    children = children.where(status: 'valid')
     children = children.ordered_by_name
     children
   end
@@ -560,9 +498,10 @@ class Taxon < ActiveRecord::Base
 
   def references_in_taxa
     references = []
-    [:subfamily_id, :tribe_id, :genus_id, :subgenus_id, :species_id, :homonym_replaced_by_id, :current_valid_taxon_id].each do |field|
+    [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,:species_id,
+     :homonym_replaced_by_id, :current_valid_taxon_id].each do |field|
       Taxon.where(field => id).each do |taxon|
-        references << {table: 'taxa', field: field, id: taxon.id}
+        references << { table: 'taxa', field: field, id: taxon.id }
       end
     end
     references
@@ -571,10 +510,10 @@ class Taxon < ActiveRecord::Base
   def references_in_synonyms
     references = []
     synonyms_as_senior.each do |synonym|
-      references << {table: 'synonyms', field: :senior_synonym_id, id: synonym.junior_synonym_id}
+      references << { table: 'synonyms', field: :senior_synonym_id, id: synonym.junior_synonym_id }
     end
     synonyms_as_junior.each do |synonym|
-      references << {table: 'synonyms', field: :junior_synonym_id, id: synonym.senior_synonym_id}
+      references << { table: 'synonyms', field: :junior_synonym_id, id: synonym.senior_synonym_id }
     end
     references
   end
@@ -582,7 +521,7 @@ class Taxon < ActiveRecord::Base
   def references_in_taxt
     references = []
     Taxt.taxt_fields.each do |klass, fields|
-      for record in klass.send :all
+      klass.send(:all).each do |record|
         # don't include the taxt in this or child records
         next if klass == Taxon && record.id == id
         next if klass == Protonym && record.id == protonym_id
@@ -590,10 +529,10 @@ class Taxon < ActiveRecord::Base
           authorship_id = protonym.try(:authorship).try(:id)
           next if authorship_id == record.id
         end
-        for field in fields
+        fields.each do |field|
           next unless record[field]
           if record[field] =~ /{tax #{id}}/
-            references << {table: klass.table_name, field: field, id: record[:id]}
+            references << { table: klass.table_name, field: field, id: record[:id] }
           end
         end
       end
@@ -604,87 +543,61 @@ class Taxon < ActiveRecord::Base
   ###############################################
   # import
 
-  def import_synonyms senior
-    return unless senior
-    Synonym.find_or_create self, senior
+  def self.inherit_attributes_for_new_combination new_comb, old_comb, new_comb_parent
+    new_comb.name =
+      if new_comb_parent.is_a? Species
+        Name.parse [ new_comb_parent.name.genus_epithet,
+                     new_comb_parent.name.species_epithet,
+                     old_comb.name.epithet ].join(' ')
+      else
+        Name.parse [ new_comb_parent.name.genus_epithet, old_comb.name.species_epithet ].join(' ')
+      end
+
+    new_comb.protonym = old_comb.protonym
+    new_comb.verbatim_type_locality = old_comb.verbatim_type_locality
+    new_comb.biogeographic_region = old_comb.biogeographic_region
+    new_comb.type_specimen_repository = old_comb.type_specimen_repository
+    new_comb.type_specimen_code = old_comb.type_specimen_code
+    new_comb.type_specimen_url = old_comb.type_specimen_url
   end
 
-  def self.get_type_attributes data
-    key = get_type_key
-    attributes = {}
-    if data[key]
-      attributes[:type_name] = Name.import data[key]
-      attributes[:type_fossil] = data[key][:fossil]
-      attributes[:type_taxt] = Importers::Bolton::Catalog::TextToTaxt.convert data[key][:texts]
-    end
-    attributes
-  end
-
-  def import_history history
-    history.each do |item|
-      history_items.create! taxt: item
-    end
-  end
-
-  def self.import_name data
-    Name.import data
-  end
-
-  def self.inherit_attributes_for_new_combination(new_combination, old_combination, new_combination_parent)
-    if new_combination_parent.is_a? Species
-      new_combination.name = Name.parse([new_combination_parent.name.genus_epithet,
-                                         new_combination_parent.name.species_epithet, old_combination.name.epithet].join(' '))
-    else
-      new_combination.name = Name.parse([new_combination_parent.name.genus_epithet,
-                                         old_combination.name.species_epithet].join(' '))
-    end
-    new_combination.protonym = old_combination.protonym
-    new_combination.verbatim_type_locality = old_combination.verbatim_type_locality
-    new_combination.biogeographic_region = old_combination.biogeographic_region
-    new_combination.type_specimen_repository = old_combination.type_specimen_repository
-    new_combination.type_specimen_code = old_combination.type_specimen_code
-    new_combination.type_specimen_url = old_combination.type_specimen_url
-  end
-
-  def self.attributes_for_new_usage(new_combination, old_combination)
+  def self.attributes_for_new_usage new_comb, old_comb
     {
-        name_attributes: {id: new_combination.name ? new_combination.name.id : old_combination.name.id},
+        name_attributes: { id: new_comb.name ? new_comb.name.id : old_comb.name.id },
         status: 'valid',
         homonym_replaced_by_name_attributes: {
-            id: old_combination.homonym_replaced_by ? old_combination.homonym_replaced_by.name_id : nil},
+            id: old_comb.homonym_replaced_by ? old_comb.homonym_replaced_by.name_id : nil},
         current_valid_taxon_name_attributes: {
-            id: old_combination.current_valid_taxon ? old_combination.current_valid_taxon.name_id : nil},
-        incertae_sedis_in: old_combination.incertae_sedis_in,
-        fossil: old_combination.fossil,
-        nomen_nudum: old_combination.nomen_nudum,
-        unresolved_homonym: old_combination.unresolved_homonym,
-        ichnotaxon: old_combination.ichnotaxon,
-        hong: old_combination.hong,
-        headline_notes_taxt: old_combination.headline_notes_taxt || "",
-        biogeographic_region: old_combination.biogeographic_region,
-        verbatim_type_locality: old_combination.verbatim_type_locality,
-        type_specimen_repository: old_combination.type_specimen_repository,
-        type_specimen_code: old_combination.type_specimen_code,
-        type_specimen_url: old_combination.type_specimen_url,
+            id: old_comb.current_valid_taxon ? old_comb.current_valid_taxon.name_id : nil},
+        incertae_sedis_in: old_comb.incertae_sedis_in,
+        fossil: old_comb.fossil,
+        nomen_nudum: old_comb.nomen_nudum,
+        unresolved_homonym: old_comb.unresolved_homonym,
+        ichnotaxon: old_comb.ichnotaxon,
+        hong: old_comb.hong,
+        headline_notes_taxt: old_comb.headline_notes_taxt || "",
+        biogeographic_region: old_comb.biogeographic_region,
+        verbatim_type_locality: old_comb.verbatim_type_locality,
+        type_specimen_repository: old_comb.type_specimen_repository,
+        type_specimen_code: old_comb.type_specimen_code,
+        type_specimen_url: old_comb.type_specimen_url,
         protonym_attributes: {
             name_attributes: {
-                id: old_combination.protonym.name_id},
-            fossil: old_combination.protonym.fossil,
-            sic: old_combination.protonym.sic,
-            locality: old_combination.protonym.locality,
-            id: old_combination.protonym_id,
+                id: old_comb.protonym.name_id },
+            fossil: old_comb.protonym.fossil,
+            sic: old_comb.protonym.sic,
+            locality: old_comb.protonym.locality,
+            id: old_comb.protonym_id,
             authorship_attributes: {
                 reference_attributes: {
-                    id: old_combination.protonym.authorship.reference_id},
-                pages: old_combination.protonym.authorship.pages,
-                forms: old_combination.protonym.authorship.forms,
-                notes_taxt: old_combination.protonym.authorship.notes_taxt || "",
-                id: old_combination.protonym.authorship_id
+                    id: old_comb.protonym.authorship.reference_id },
+                pages: old_comb.protonym.authorship.pages,
+                forms: old_comb.protonym.authorship.forms,
+                notes_taxt: old_comb.protonym.authorship.notes_taxt || "",
+                id: old_comb.protonym.authorship_id
             }
         }
     }
   end
 
-  class TaxonExists < StandardError;
-  end
 end

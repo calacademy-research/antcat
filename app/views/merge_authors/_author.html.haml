@@ -1,13 +1,13 @@
 -# Locals: author
 .author
-  - for author_name in author.names
+  -author.names.each do |author_name|
     .author_name
-      - references = author_name.references
+      -references = author_name.references
       .name
-        = author_name.name
+        =author_name.name
         %span.count= count_and_noun references, 'reference'
-      - if references.present?
+      -if references.present?
         .references
-          - for reference in references
+          -references.each do |reference|
             .reference
-              = link_to Formatters::ReferenceFormatter.format(reference), "/references?q=#{reference.id}", target: '_blank'
+              =link_to reference.decorate.format, reference_path(reference), target: '_blank'

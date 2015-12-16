@@ -66,11 +66,9 @@ describe ReferenceDocument do
   end
 
   describe "downloadable_by?" do
-    before do
-      @user = FactoryGirl.create :user
-    end
     it "should not be downloadable if there is no url" do
-      expect(ReferenceDocument.new).not_to be_downloadable_by @user
+      user = FactoryGirl.create :user
+      expect(ReferenceDocument.new).not_to be_downloadable_by user
     end
     it "should be downloadable by anyone if we just have a URL, not a file name on S3" do
       expect(ReferenceDocument.new(url: 'foo')).to be_downloadable_by nil
@@ -113,27 +111,6 @@ describe ReferenceDocument do
       document = ReferenceDocument.create! :file_file_name => 'foo'
       document.host = 'localhost'
       expect(document.url).to eq("http://localhost/documents/#{document.id}/foo")
-    end
-
-  end
-
-  describe "uploading PDFs from antbase" do
-    it "should find the document and tell it to upload" do
-      document = FactoryGirl.create :reference_document
-      expect(ReferenceDocument).to receive(:where).and_return [document]
-      expect(document).to receive(:upload_antbase_pdf).with('1488.pdf')
-      ReferenceDocument.upload_antbase_pdf '1488.pdf'
-    end
-    it "should do somezing" do
-      document = FactoryGirl.create :reference_document, reference: FactoryGirl.create(:reference)
-      expect(File).to receive(:open).with('1488.pdf')
-      document.upload_antbase_pdf '1488.pdf'
-    end
-    it "should not upload the file if it's already been uploaded" do
-      document = FactoryGirl.create :reference_document
-      document.url = "http://antcat.org/documents/#{document.reference_id}/1488.pdf"
-      expect(document).not_to receive(:save!)
-      document.upload_antbase_pdf '1488.pdf'
     end
   end
 

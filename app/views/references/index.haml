@@ -1,20 +1,29 @@
-- @title = 'Bibliography'
+-@title = 'Bibliography'
 
-- content_for :head do
+-endnote_export_all_message = unless params[:q].present?
+  -"Since there are no search criteria, AntCat will download all twelve thousand references. Do you want to continue?"
+-else
+  -''
+
+-content_for :head do
   = javascript_include_tag 'references', 'reference_autocompletion'
 
-- content_for :page_header do
+-content_for :page_header do
   #navigation_bar
     .actions
-      - items = [link_to('Latest additions', references_path(commit: 'new'))]
-      - if user_is_editor?
-        - items << link_to('Latest changes', references_path(commit: 'review'))
-        - items << link_to('Journals', journals_path)
-        - items << link_to('Fix missing', missing_references_path)
-      - items << link_to('Export to EndNote', endnote_import_path(q: params[:q]), confirm: @endnote_export_confirmation_message)
-      = make_link_menu items
+      -items = []
+      -items << link_to('Latest additions', latest_additions_references_path)
+      -if user_is_editor?
+        -items << link_to('Latest changes', latest_changes_references_path)
+        -items << link_to('Journals', journals_path)
+        -items << link_to('Fix missing', missing_references_path)
+      -if @action == :show
+        -items << link_to('Export to EndNote', endnote_export_reference_path(@references.first))
+      -else
+        -items << link_to('Export to EndNote', endnote_export_references_path(q: params[:q]), data: { confirm: endnote_export_all_message })
+      =make_link_menu items
 
-    = render 'search', params: params
+    =render 'search', params: params
 
   .title
     %h2.left ANTBIB
@@ -22,38 +31,33 @@
     %h3.right by Philip S. Ward, et al.
     .clear
 
-
-
-
 -if @references.empty?
   .no_results_found
     No results found
 
-
+-if @action == :latest_changes
+  %div.approve_all_button.right= approve_all_button
 
 %table.references
-  - if params[:commit] == 'new'
-    %div.approve_all_button.right= approve_all_button
-
-  - if params[:review]
+  - if @action == :latest_changes
     %tr
       %td
       %td.date_header
         Changed
 
-  = render 'references/whats_new_headings' if params[:whats_new]
+  =render 'references/latest_additions_headings' if @action == :latest_additions
 
-  - for reference in @references
+  -@references.each do |reference|
     %tr.reference_row
       %td
-        = render 'reference', reference: reference, css_class: 'reference'
-      - if params[:review]
+        =render 'reference', reference: reference, css_class: 'reference'
+      -if @action == :latest_changes
         %td.date
-          = Formatters::ReferenceFormatter.format_timestamp reference.updated_at
+          =reference.decorate.updated_at
 
-      = render 'references/whats_new_controls', reference: reference if params[:whats_new]
+      =render 'references/latest_additions_controls', reference: reference if @action == :latest_additions
 
-  - if user_can_edit?
+  -if user_can_edit?
     %tr.reference_template_row
       %td
         = render 'reference', reference: Reference.new, css_class: 'reference_template'

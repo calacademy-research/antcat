@@ -1,11 +1,14 @@
--#Locals: search_results, search_results_message
+-#Locals: search_results
 
-= form_tag '/catalog/search', method: :get do
+- content_for :head do
+  = javascript_include_tag 'taxa_autocomplete'
+
+= form_tag catalog_search_path, method: :get do
   = hidden_field_tag 'id', params[:id]
   .search
     Search for name
     = search_selector params[:st]
-    = text_field_tag 'qq', params[:qq]
+    = text_field_tag 'qq', @search_query, class: 'typeahead', placeholder: "Search..."
     = submit_tag  'Go', class: 'submit'
     = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
-    = submit_tag 'Clear' if (search_results.present? && search_results.size > 1) || search_results_message
+    = clear_search_results_link(params[:id]) if search_results.present?

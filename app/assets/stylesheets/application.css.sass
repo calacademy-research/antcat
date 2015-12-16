@@ -7,6 +7,7 @@
 @import "jquery-ui/core"
 @import "jquery-ui/selectmenu"
 
+@import "autocomplete"
 ///////////////////////////////////////////////////
 // tags
 
@@ -197,6 +198,9 @@ img.help_icon
   background: $color_navigation_bar_background
   height: 30px
 
+  a
+    color: $color_navigation_bar
+    
   .actions
     margin-top: 6px
     position: absolute
@@ -213,7 +217,7 @@ img.help_icon
     vertical-align: middle
     input[type=text]
       padding-left: 4px
-      width: 100px
+      width: 200px
       border: 1px solid $color_input_border
       height: 20px
     @include header_submit_button($color_navigation_bar_button, $color_navigation_bar_button_border)

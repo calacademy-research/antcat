@@ -1,6 +1,6 @@
 require 'paper_trail'
-module UndoTracker
 
+module UndoTracker
   def setup_change change_type
     change = Change.new
     change.change_type = change_type
@@ -11,12 +11,10 @@ module UndoTracker
   end
 
   def clear_change
-    RequestStore.store[:current_change_id]=nil
+    RequestStore.store[:current_change_id] = nil
   end
 
   def get_current_change_id
     RequestStore.read :current_change_id
   end
-
-
 end

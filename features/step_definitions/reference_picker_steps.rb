@@ -22,7 +22,7 @@ end
 
 Then /^the widget results should be the ID for "([^"]*)"$/ do |key|
   reference = find_reference_by_key key
-  step %{the widget results should be "#{reference.id.to_s}"}
+  step %{the widget results should be "#{reference.id}"}
 end
 
 Then /^the widget results should be the taxt for "Fisher 1995"$/ do
