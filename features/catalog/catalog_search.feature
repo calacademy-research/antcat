@@ -131,3 +131,12 @@ Feature: Searching the catalog
     When I fill in the catalog search box with "Subdol"
     And I press "Go" by the search box
     Then I should see "Dolichoderus (Subdolichoderus) history"
+
+  @javascript
+  Scenario: Search using autocomplete
+    When I go to the catalog
+    When I fill in the catalog search box with "majo"
+    Then I should see the following autocomplete suggestions:
+      | Dolichoderus major |
+    And I should not see the following autocomplete suggestions:
+      | Dolichoderini |

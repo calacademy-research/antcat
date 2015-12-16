@@ -133,7 +133,7 @@ class ReferenceDecorator < ApplicationDecorator
 
   def goto_reference_link
     path = Rails.application.routes.url_helpers.reference_path(reference)
-    helpers.link helpers.image_tag('external_link.png'),
+    helpers.link reference.id,
       path, class: :goto_reference_link, target: '_blank'
   end
 
