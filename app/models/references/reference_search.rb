@@ -45,7 +45,7 @@ class Reference < ActiveRecord::Base
         ["type",   '(?<reference_type>nested|unknown|nomissing|missing)'], # type:nested
         ["author", '"(.*?)"'],                                             # author:"Barry Bolton"
         ["author", '\'(.*?)\''],                                           # author:'Barry Bolton'
-        ["author", '(\w+)']                                                # author:Bolton
+        ["author", '([^ ]+)'] # stops matching at space or end of string   # author:Bolton
       ]
 
       regexes.each do |keyword, regex|
@@ -113,6 +113,7 @@ class Reference < ActiveRecord::Base
       substrings_to_remove = ['<i>', '</i>', '\*'] # TODO move to solr conf?
       substrings_to_remove.each { |substring| search_keywords.gsub! /#{substring}/, '' }
       search_keywords.gsub! /-|:/, ' ' # TODO fix in solr
+      author.gsub!(/-|:/, ' ') if author # TODO fix in solr
 
       search {
         keywords search_keywords

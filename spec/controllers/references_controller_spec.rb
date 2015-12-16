@@ -104,6 +104,8 @@ describe ReferencesController do
   end
 
   describe "autocompleting", search: true do
+    let(:controller) { ReferencesController.new }
+
     it "autocompletes" do
       reference_factory author_name: 'E.O. Wilson'
       reference_factory author_name: 'Bolton'
@@ -124,12 +126,33 @@ describe ReferencesController do
 
     describe "#format_autosuggest_keywords" do
       it "replaces the typed author with the suggested author" do
-        controller = ReferencesController.new
-
         reference = reference_factory author_name: 'E.O. Wilson'
         keyword_params = { author: "wil" }
         search_query = controller.send :format_autosuggest_keywords, reference, keyword_params
         expect(search_query).to eq "author:'E.O. Wilson'"
+      end
+    end
+
+    describe "author queries not wrapped in quotes" do
+      it "handles queries containing non-English characters" do
+        reference = reference_factory author_name: 'Bert Hölldobler'
+        Sunspot.commit
+
+        get :autocomplete, q: "author:höll", format: :json
+        json = JSON.parse response.body
+
+        expect(json.first["author"]).to eq 'Bert Hölldobler'
+      end
+
+      it "handles hyphens" do
+        reference = reference_factory author_name: 'M.S. Abdul-Rassoul'
+        $stderr.puts "reference: #{reference}"
+        Sunspot.commit
+
+        get :autocomplete, q: "author:abdul-ras", format: :json
+        json = JSON.parse response.body
+
+        expect(json.first["author"]).to eq 'M.S. Abdul-Rassoul'
       end
     end
   end

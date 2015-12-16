@@ -380,6 +380,25 @@ describe Reference do
       end
     end
 
+    describe "author queries not wrapped in quotes" do
+      it "handles hyphens" do
+        keyword_params = Reference.extract_keyword_params 'author:Barry-Bolton'
+        expect(keyword_params[:author]).to eq("Barry-Bolton")
+      end
+
+      it "handles diacritics" do
+        keyword_params = Reference.extract_keyword_params "author:Hölldobler"
+        expect(keyword_params[:author]).to eq("Hölldobler")
+      end
+
+      it "doesn't break if more search term are added after the author keyword" do
+        q = "author:Hölldobler random string"
+        keyword_params = Reference.extract_keyword_params q
+        expect(keyword_params[:author]).to eq("Hölldobler")
+        expect(keyword_params[:keywords]).to eq("random string")
+      end
+    end
+
     it "handles multiple keyword params" do
       q = 'Ants Book author:"Barry Bolton" year:2003 type:missing'
       keyword_params = Reference.extract_keyword_params q
