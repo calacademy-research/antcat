@@ -44,10 +44,12 @@ class ReferenceDocument < ActiveRecord::Base
     url.present? && !hosted_by_antbase? && !hosted_by_hol?
   end
 
+  # Hardcoded IP, yuck
   def hosted_by_hol?
     url.present? && url =~ %r{^https?://128.146.250.117}
   end
 
+  # Hardcoded address, yuck
   def hosted_by_antbase?
     url.present? && url =~ %r{^https?://antbase\.org}
   end
