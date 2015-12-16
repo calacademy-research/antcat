@@ -1,5 +1,4 @@
-@javascript
-@search
+@javascript @search
 Feature: Searching references
   As a user of AntCat
   I want to search for references
@@ -133,3 +132,33 @@ Feature: Searching references
     And I press "Go" by the search box
     Then I should not see "Known"
     And I should see "Unknown"
+
+  Scenario: Search using autocomplete
+    When I go to the references page
+    And I fill in the search box with "bolt"
+    Then I should see the following autocomplete suggestions:
+      | Ants of North America |
+    And I should not see the following autocomplete suggestions:
+      | Formis |
+      | Anthill |
+
+  Scenario: Search using autocomplete keywords
+    Given these references exists
+      | authors    | year | citation_year | title                  | citation      |
+      | Fisher, B. | 1995 | 1995          | Anthill                | Ants 1:1-2    |
+      | Bolton, B. | 1895 | 1895a         | Fisher's Favorite Ants | Psyche 11:1-2 |
+    When I go to the references page
+    And I fill in the search box with "author:fish"
+    Then I should see the following autocomplete suggestions:
+      | Anthill |
+    And I should not see the following autocomplete suggestions:
+      | Fisher's Favorite Ants |
+
+  Scenario: Expanding autocomplete suggestions
+    When I go to the references page
+    And I fill in the search box with "author:fish"
+    Then I should see the following autocomplete suggestions:
+      | Anthill |
+
+    Then I click the first autocomplete suggestion
+    And the search box should contain "author:'Fisher, B.'"
