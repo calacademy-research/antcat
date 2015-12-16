@@ -4,7 +4,6 @@ require 'references/reference_key'
 require 'references/reference_search'
 require 'references/reference_utility'
 require 'references/reference_workflow'
-require 'references/reference_key'
 
 class Reference < ActiveRecord::Base
   include UndoTracker
