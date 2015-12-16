@@ -24,7 +24,7 @@ describe Formatters::AdvancedSearchHtmlFormatter do
       '<i>Atta</i>. Science (1):3. <a class="document_link" target="_blank" ' +
       'href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>' +
       ' <a class="goto_reference_link" target="_blank" href="/references/' + reference.id.to_s +
-      '"><img src="/assets/external_link.png" alt="External link" />' +
+      "\">#{reference.id}" +
       '</a><span class="reference_id">' + reference.id.to_s +
       '</span>'+
       "\n\n")
