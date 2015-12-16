@@ -1,61 +1,60 @@
 namespace :antcat do
-  desc <<-DESC
-    Import sample data.
-    Run using the command 'rake antcat:import_sample_data [RAILS_ENV=development]'
-  DESC
+  namespace :db do
+    desc "Import sample data"
+    task :import_sample_data => [:environment] do
+      require 'factory_girl'
+      require 'sunspot_test'
 
-  task :import_sample_data => [:environment] do
-    require 'factory_girl'
-    require 'sunspot_test'
+      ENV["RAILS_ENV"] ||= 'development'
+      SunspotTest.stub
 
-    ENV["RAILS_ENV"] ||= 'development'
-    SunspotTest.stub
+      puts "Warning: this command may corrupt the '#{ENV["RAILS_ENV"]}' " +
+           "database. Enter 'y' to continue:"
+      abort 'Aborting.' unless STDIN.gets.chomp == "y"
 
-    puts "Warning: this command may corrupt the '#{ENV["RAILS_ENV"]}' database. Enter 'y' to continue:"
-    abort 'Aborting.' unless STDIN.gets.chomp == "y"
-    
-    puts "Creating taxa..."
-    antcatidae = create_taxon_object 'Antcatidae', :family, :family_name
+      puts "Creating taxa..."
+      antcatidae = create_taxon_object 'Antcatidae', :family, :family_name
 
-    antcatinae = create_subfamily 'Antcatinae'
-    antcatini = create_tribe 'Antcatini', subfamily: antcatinae
+      antcatinae = create_subfamily 'Antcatinae'
+      antcatini = create_tribe 'Antcatini', subfamily: antcatinae
 
-    # a bunch of species
-    pseudoantcatia = create_genus 'Pseudoantcatia', tribe: antcatini
-    %w[ africana maximus indicus celebensis columbi ].each do |species|
-      create_species "Pseudoantcatia #{species}", genus: pseudoantcatia
+      # a bunch of species
+      pseudoantcatia = create_genus 'Pseudoantcatia', tribe: antcatini
+      %w[ africana maximus indicus celebensis columbi ].each do |species|
+        create_species "Pseudoantcatia #{species}", genus: pseudoantcatia
+      end
+
+      # a bunch of subspecies
+      antcatia = create_genus 'Antcatia', tribe: antcatini
+      antcatia_tigris = create_species 'Antcatia tigris', genus: antcatia
+      %w[ corbetti jacksoni sumatrae ].each do |subspecies|
+        create_subspecies "Antcatia tigris #{subspecies}",
+          subfamily: antcatinae,
+          genus: antcatia,
+          species: antcatia_tigris
+      end
+
+      # fossil genus
+      tactania = create_genus 'Tactania', tribe: antcatini, fossil: true
+      %w[ sisneopmos sisneuhsnihs silatneiro snorfinalpbus ].each do |species|
+        create_species "Tactania #{species}", genus: tactania, fossil: true
+      end
+
+      # fossil subfamily
+      paraantcatinae = create_subfamily 'Paraantcatinae'
+      paraantcatini = create_tribe 'Paraantcatini', subfamily: paraantcatinae
+
+      paraantcatia = create_genus 'Paraantcatia', tribe: paraantcatini, fossil: true
+      %w[ subplanifrons orientalis shinshuensis sompoensis ].each do |species|
+        create_species "Paraantcatia #{species}", genus: paraantcatia, fossil: true
+      end
+
+      puts "Creating users..."
+      User.create! email: 'user@example.com', name: 'Test User', password: 'secret123'
+      User.create! email: 'editor@example.com', name: 'Test Editor', password: 'secret123', can_edit: true
+      User.create! email: 'superadmin@example.com', name: 'Test Superadmin', password: 'secret123', can_edit: true, is_superadmin: true
+
+      puts "Successfully imported sample data."
     end
-
-    # a bunch of subspecies
-    antcatia = create_genus 'Antcatia', tribe: antcatini
-    antcatia_tigris = create_species 'Antcatia tigris', genus: antcatia
-    %w[ corbetti jacksoni sumatrae ].each do |subspecies|
-      create_subspecies "Antcatia tigris #{subspecies}", 
-        subfamily: antcatinae, 
-        genus: antcatia, 
-        species: antcatia_tigris
-    end
-
-    # fossil genus
-    tactania = create_genus 'Tactania', tribe: antcatini, fossil: true
-    %w[ sisneopmos sisneuhsnihs silatneiro snorfinalpbus ].each do |species|
-      create_species "Tactania #{species}", genus: tactania, fossil: true
-    end
-
-    # fossil subfamily
-    paraantcatinae = create_subfamily 'Paraantcatinae'
-    paraantcatini = create_tribe 'Paraantcatini', subfamily: paraantcatinae
-
-    paraantcatia = create_genus 'Paraantcatia', tribe: paraantcatini, fossil: true
-    %w[ subplanifrons orientalis shinshuensis sompoensis ].each do |species|
-      create_species "Paraantcatia #{species}", genus: paraantcatia, fossil: true
-    end
-
-    puts "Creating users..."
-    User.create! email: 'user@example.com', name: 'Test User', password: 'secret123'
-    User.create! email: 'editor@example.com', name: 'Test Editor', password: 'secret123', can_edit: true
-    User.create! email: 'superadmin@example.com', name: 'Test Superadmin', password: 'secret123', can_edit: true, is_superadmin: true
-
-    puts "Successfully imported sample data."
   end
 end
