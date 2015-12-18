@@ -51,8 +51,8 @@ class TooltipsController < ApplicationController
   end
 
   def enabled_selectors # TODO improve this
-    json = Tooltip.enabled_selectors.pluck(:selector, :text)
-    render json: json
+    json = Tooltip.enabled_selectors.pluck(:selector, :text, :id)
+    render json: json # more "json" than json..
   end
 
   private

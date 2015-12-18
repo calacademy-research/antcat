@@ -15,14 +15,16 @@ class AntCat.Tooltips
     for tooltip in tooltips
       selector = tooltip[0]
       title    = tooltip[1]
-      @createTooltip selector, title
+      id       = tooltip[2]
+      @createTooltip selector, title, id
 
-  createTooltip: (selector, title) ->
+  createTooltip: (selector, title, id) ->
+    disable_edit_link = false # TODO add this, currently it's not possible to disable
     selector = $(selector)
 
     # Only insert if there's no tooltip already.
     unless selector.next().is TOOLTIP_SELECTOR
-      iconElement = @_createIcon title
+      iconElement = @_createIcon title, id
       $(iconElement).insertAfter selector
 
   # This method basically formats the tooltips.
@@ -38,6 +40,6 @@ class AntCat.Tooltips
         stopHoverHandler = -> $(this).remove()
         ui.tooltip.hover startHoverHandler, stopHoverHandler
 
-  _createIcon: (title) ->
-    '<img class="help_icon tooltip" title="' +
-      title + '" src="/assets/help.png" alt="Help" />'
+  _createIcon: (title, id) -> # TODO move the link from this function
+    '<a href="/tooltips/' + id + '"><img class="help_icon tooltip" title="' +
+      title + '" src="/assets/help.png" alt="Help" /></a>'
