@@ -3,6 +3,9 @@ module TooltipHelper
   # Shortcut to avoid adding the JavaScript include tag. All the actual tooltips are
   # dynamically created (including hard-coded tooltips). We need this snippet to do that.
   def enable_tooltips
+    # Currently all tooltips are for editors only. Do not show to non-logged in users,
+    # but let's be nice and show them to all logged in users, even if they are not editors.
+    return unless current_user
     content_for :head do
       javascript_include_tag 'tooltips_create'
     end
