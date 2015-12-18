@@ -3,7 +3,10 @@ class TooltipsController < ApplicationController
   before_filter :authenticate_editor
 
   def index
-    @tooltips = Tooltip.all
+    tooltips = Tooltip.all
+    @grouped_tooltips = tooltips.group_by do |tooltip|
+      main_namespace_of_key tooltip.key
+    end
   end
 
   def show
@@ -53,5 +56,9 @@ class TooltipsController < ApplicationController
 
     def tooltip_params
       params.require(:tooltip).permit(:key, :text, :enabled, :selector, :selector_enabled)
+    end
+
+    def main_namespace_of_key key
+      key.scan(/.*?(?=\.)/).first
     end
 end
