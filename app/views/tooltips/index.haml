@@ -1,5 +1,6 @@
 -@title = "Edit Tooltips"
 
+=enable_tooltips
 -content_for :head do
   =javascript_include_tag 'tooltips_edit_in_place'
 
@@ -8,14 +9,19 @@
     %tr
       %th
         Key
+        =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
       %th
         Key enabled?
+        =tooltip_icon :enabled, scope: :tooltips, disable_edit_link: true
       %th
         Tooltip text
+        =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
       %th
         Selector
+        =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
       %th
         Selector enabled?
+        =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
   %tbody
     -if @grouped_tooltips.empty?
       %tr
