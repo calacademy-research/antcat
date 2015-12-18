@@ -1,15 +1,11 @@
 # FIX weird filename `tooltips_create.coffee`
 # TODO find a method for letting editors test selectors
 $ ->
-  # currently statically generated TODO
-  tooltipsToInsert = [
-    ["label[for='reference_author_names_string']",
-     "Ayyyy this tooltip found a place to live. Not editable though."]
-  ]
-
-  engine = new AntCat.Tooltips
-  engine.insertTooltips tooltipsToInsert
-  engine.tooltipifyAll()
+  $.ajax 'tooltips/enabled_selectors', success: (data) -> # TODO improve this
+    tooltipsToInsert = data
+    engine = new AntCat.Tooltips
+    engine.createTooltips tooltipsToInsert
+    engine.tooltipifyAll()
 
 class AntCat.Tooltips
   TOOLTIP_SELECTOR = 'img.help_icon'

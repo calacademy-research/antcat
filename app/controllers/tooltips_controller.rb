@@ -1,6 +1,7 @@
 class TooltipsController < ApplicationController
   before_action :set_tooltip, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_editor
+  skip_before_filter :authenticate_editor, only: [:enabled_selectors]
 
   def index
     tooltips = Tooltip.all
@@ -47,6 +48,11 @@ class TooltipsController < ApplicationController
       format.html { redirect_to tooltips_url, notice: 'Tooltip was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def enabled_selectors # TODO improve this
+    json = Tooltip.enabled_selectors.pluck(:selector, :text)
+    render json: json
   end
 
   private

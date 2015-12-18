@@ -98,7 +98,11 @@ AntCat::Application.routes.draw do
 
   resources :antweb_data, only: [:index]
 
-  resources :tooltips, only: [:index, :show, :new, :edit, :create, :update, :destroy]
+  resources :tooltips, only: [:index, :show, :new, :edit, :create, :update, :destroy] do
+    collection do
+      get 'enabled_selectors'
+    end
+  end
 
   # REST
   resources :taxon, :controller => 'taxa', :except => [:edit, :new, :update, :destroy]
