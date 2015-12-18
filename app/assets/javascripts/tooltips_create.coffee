@@ -1,11 +1,14 @@
 # FIX weird filename `tooltips_create.coffee`
-# TODO find a method for letting editors test selectors
 $ ->
+  engine = new AntCat.Tooltips
   $.ajax 'tooltips/enabled_selectors', success: (data) -> # TODO improve this
     tooltipsToInsert = data
-    engine = new AntCat.Tooltips
     engine.createTooltips tooltipsToInsert
     engine.tooltipifyAll()
+
+  # TODO create a method for letting editors test selectors. This is the beta:
+  window.testTooltip = engine.createTooltip
+  window.tooltipifyAll = engine.tooltipifyAll
 
 class AntCat.Tooltips
   TOOLTIP_SELECTOR = 'img.help_icon'
@@ -18,7 +21,7 @@ class AntCat.Tooltips
       id       = tooltip[2]
       @createTooltip selector, title, id
 
-  createTooltip: (selector, title, id) ->
+  createTooltip: (selector, title, id) =>
     disable_edit_link = false # TODO add this, currently it's not possible to disable
     selector = $(selector)
 
@@ -40,6 +43,6 @@ class AntCat.Tooltips
         stopHoverHandler = -> $(this).remove()
         ui.tooltip.hover startHoverHandler, stopHoverHandler
 
-  _createIcon: (title, id) -> # TODO move the link from this function
+  _createIcon: (title, id) => # TODO move the link from this function
     '<a href="/tooltips/' + id + '"><img class="help_icon tooltip" title="' +
       title + '" src="/assets/help.png" alt="Help" /></a>'
