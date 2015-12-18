@@ -30,7 +30,7 @@
       %td
         =@tooltip.id
       %td
-        =@tooltip.key
+        =best_in_place @tooltip, :key, as: :textarea, ok_button: 'Save', cancel_button: 'Cancel'
       %td
         =best_in_place @tooltip, :enabled, as: :select, collection: { "true" => "Yes", "false" => "No" } # there is a checkbox for this, but it's too easy to change by mistake
       %td
