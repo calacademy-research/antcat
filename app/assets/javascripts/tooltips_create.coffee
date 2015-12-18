@@ -7,19 +7,27 @@ $ ->
      "Ayyyy this tooltip found a place to live. Not editable though."]
   ]
 
-  engine = new AntCat.Tooltips tooltipsToInsert
+  engine = new AntCat.Tooltips
+  engine.insertTooltips tooltipsToInsert
   engine.tooltipifyAll()
 
-# This function's constuctor takes an array of arrays: [['selector', 'tooltip_text']],
-# which is iterated over to dynamically create tooltips.
 class AntCat.Tooltips
   TOOLTIP_SELECTOR = 'img.help_icon'
 
-  constructor: (tooltips) -> # TODO move mass-creating from constructor
+  # Accepts an array of arrays in this format: [['jquery_selector', 'tooltip_text']]
+  createTooltips: (tooltips) ->
     for tooltip in tooltips
       selector = tooltip[0]
       title    = tooltip[1]
-      @_insertTooltip selector, title
+      @createTooltip selector, title
+
+  createTooltip: (selector, title) ->
+    selector = $(selector)
+
+    # Only insert if there's no tooltip already.
+    unless selector.next().is TOOLTIP_SELECTOR
+      iconElement = @_createIcon title
+      $(iconElement).insertAfter selector
 
   # This method basically formats the tooltips.
   tooltipifyAll: ->
@@ -33,14 +41,6 @@ class AntCat.Tooltips
         startHoverHandler = -> $(this).stop(true)
         stopHoverHandler = -> $(this).remove()
         ui.tooltip.hover startHoverHandler, stopHoverHandler
-
-  _insertTooltip: (selector, title) ->
-    selector = $(selector)
-
-    # Only insert if there's no tooltip already.
-    unless selector.next().is TOOLTIP_SELECTOR
-      iconElement = @_createIcon title
-      $(iconElement).insertAfter selector
 
   _createIcon: (title) ->
     '<img class="help_icon tooltip" title="' +
