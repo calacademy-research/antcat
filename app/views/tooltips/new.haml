@@ -1,0 +1,22 @@
+-@title = "New Tooltip"
+
+=form_for @tooltip do |f|
+  =render 'shared/errors_for', resource: @tooltip
+  %p
+    =f.label :key
+    =f.text_field :key
+    =f.label :enabled
+    =f.check_box :enabled
+  %p
+    =f.label :text
+    =f.text_field :text
+  %p
+    =f.label :selector
+    =f.text_field :selector
+    =f.label :selector_enabled
+    =f.check_box :selector_enabled
+
+  .actions
+    = f.submit
+
+= link_to 'Tooltip Index', tooltips_path

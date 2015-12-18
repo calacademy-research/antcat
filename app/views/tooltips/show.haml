@@ -1,0 +1,12 @@
+-@title = "Tooltip ##{@tooltip.id}"
+
+%table
+  %thead
+    %tr
+      %th{:colspan => "3"}
+  %tbody
+    -# Very curde. WIP.
+    =render @tooltip
+
+= link_to 'Destroy', { action: :destroy, id: @tooltip.id }, method: :delete, data: { confirm: 'Are you sure?' }
+=link_to 'Tooltip Index', tooltips_path

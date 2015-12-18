@@ -1,0 +1,29 @@
+-@title = "Edit Tooltips"
+
+%table#tooltips
+  %thead
+    %tr
+      %th
+        Key
+      %th
+        Key enabled?
+      %th
+        Tooltip Text
+      %th
+        Selector
+      %th
+        Selector enabled?
+  %tbody
+    -if @tooltips.empty?
+      %tr
+        %td{colspan: 5}
+          No tooltips found.
+          =link_to 'Be a hero and create the first one?', new_tooltip_path
+    =render @tooltips
+
+%br/
+
+%h2 Quick Help
+%p TODO add stuff here.
+
+=link_to 'New tooltip', new_tooltip_path
