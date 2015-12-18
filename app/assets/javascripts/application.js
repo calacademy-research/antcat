@@ -5,3 +5,4 @@
 //= require_tree ./ext
 //= require jquery-ui
 //= require twitter/typeahead
+//= require best_in_place

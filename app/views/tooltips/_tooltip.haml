@@ -4,7 +4,7 @@
   %td
     =tooltip.enabled ? "yes" : "no"
   %td
-    =tooltip.text
+    =best_in_place tooltip, :text, as: :textarea, ok_button: 'Save', cancel_button: 'Cancel'
   %td
     =tooltip.selector
   %td

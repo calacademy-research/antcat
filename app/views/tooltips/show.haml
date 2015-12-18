@@ -1,12 +1,26 @@
 -@title = "Tooltip ##{@tooltip.id}"
 
+-content_for :head do
+  =javascript_include_tag 'tooltips_edit_in_place'
+
 %table
   %thead
     %tr
-      %th{:colspan => "3"}
+      %th{colspan: 6}
   %tbody
-    -# Very curde. WIP.
-    =render @tooltip
+    %tr
+      %td
+        =@tooltip.id
+      %td
+        =@tooltip.key
+      %td
+        =best_in_place @tooltip, :enabled, as: :select, collection: { "true" => "Yes", "false" => "No" } # there is a checkbox for this, but it's too easy to change by mistake
+      %td
+        =best_in_place @tooltip, :text, as: :textarea, ok_button: 'Save', cancel_button: 'Cancel'
+      %td
+        =best_in_place @tooltip, :selector, as: :textarea, ok_button: 'Save', cancel_button: 'Cancel'
+      %td
+        =best_in_place @tooltip, :selector_enabled, as: :select, collection: { "true" => "Yes", "false" => "No" }
 
-= link_to 'Destroy', { action: :destroy, id: @tooltip.id }, method: :delete, data: { confirm: 'Are you sure?' }
+=link_to 'Destroy', @tooltip, method: :delete, data: { confirm: 'Are you sure?' }
 =link_to 'Tooltip Index', tooltips_path

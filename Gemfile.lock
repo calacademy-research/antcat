@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/bernat/best_in_place.git
+  revision: 57b525e487cd6ba10467b47d8bf8907c645f6917
+  specs:
+    best_in_place (3.1.0)
+      actionpack (>= 3.2)
+      railties (>= 3.2)
+
+GIT
   remote: https://github.com/airblade/paper_trail.git
   revision: fbd08dbbceda1a7357b5a7f45bb2ca8d09acc600
   tag: v4.0.0.beta2
@@ -367,6 +375,7 @@ DEPENDENCIES
   activeadmin (~> 1.0.0.pre2)
   acts_as_list
   aws-sdk (< 2.0)
+  best_in_place!
   capybara (>= 2.2.0)
   capybara-screenshot
   capybara-webkit
@@ -420,3 +429,6 @@ DEPENDENCIES
   workflow
   xml-simple
   yui-compressor
+
+BUNDLED WITH
+   1.10.5
