@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151204143323) do
+ActiveRecord::Schema.define(version: 20151218101005) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -408,6 +408,16 @@ ActiveRecord::Schema.define(version: 20151204143323) do
   end
 
   add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx", using: :btree
+
+  create_table "tooltips", force: :cascade do |t|
+    t.string   "key",              limit: 255
+    t.text     "text",             limit: 65535
+    t.boolean  "enabled",                        default: true
+    t.string   "selector",         limit: 255
+    t.boolean  "selector_enabled"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
