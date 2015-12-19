@@ -9,12 +9,10 @@
     %tr
       %th
         Key
-        -# uncommented out two `disable_edit_link`s to make it easier to create
-        -# missing tooltips while testing this TODO ununcomment
-        =tooltip_icon :key, scope: :tooltips#, disable_edit_link: true
+        =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
       %th
         Key enabled?
-        =tooltip_icon :enabled, scope: :tooltips#, disable_edit_link: true
+        =tooltip_icon :enabled, scope: :tooltips, disable_edit_link: true
       %th
         Tooltip text
         =tooltip_icon :text, scope: :tooltips, disable_edit_link: true

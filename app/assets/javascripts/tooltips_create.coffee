@@ -13,7 +13,8 @@ $ ->
 class AntCat.Tooltips
   TOOLTIP_SELECTOR = 'img.help_icon'
 
-  # Accepts an array of arrays in this format: [['jquery_selector', 'tooltip_text']]
+  # Accepts an array of arrays in this format:
+  # [['jquery_selector', 'tooltip_text', 'id']]
   createTooltips: (tooltips) ->
     for tooltip in tooltips
       selector = tooltip[0]
@@ -30,7 +31,11 @@ class AntCat.Tooltips
       iconElement = @_createIcon title, id
       $(iconElement).insertAfter selector
 
-  # This method basically formats the tooltips.
+  # Wrapper function that formats the tooltips.
+  #
+  # `$('.tooltip').tooltip()` is built-into jQuery UI; it takes a selector
+  # (class="tooltip" by convention), and "tooltipifies" all elements matching that selector;
+  # whatever is in the `title` attribute on those elements is used as the tooltip text.
   tooltipifyAll: ->
     $('.tooltip').tooltip
       show: false # show immediately
