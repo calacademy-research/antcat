@@ -1,16 +1,15 @@
 # FIX weird filename `tooltips_create.coffee`
 $ ->
-  engine = new AntCat.Tooltips
   $.ajax 'tooltips/enabled_selectors', success: (data) -> # TODO improve this
     tooltipsToInsert = data
-    engine.createTooltips tooltipsToInsert
-    engine.tooltipifyAll()
+    (new AntCat.InsertDynamicTooltips).createTooltips tooltipsToInsert
+    (new AntCat.Tooltipify).tooltipifyAll()
 
   # TODO create a method for letting editors test selectors. This is the beta:
-  window.testTooltip = engine.createTooltip
-  window.tooltipifyAll = engine.tooltipifyAll
+  window.createTooltip = (new AntCat.InsertDynamicTooltips).createTooltip
+  window.tooltipifyAll = (new AntCat.Tooltipify).tooltipifyAll
 
-class AntCat.Tooltips
+class AntCat.InsertDynamicTooltips
   TOOLTIP_SELECTOR = 'img.help_icon'
 
   # Accepts an array of arrays in this format:
@@ -31,6 +30,11 @@ class AntCat.Tooltips
       iconElement = @_createIcon title, id
       $(iconElement).insertAfter selector
 
+  _createIcon: (title, id) => # TODO move the link from this function
+    '<a href="/tooltips/' + id + '"><img class="help_icon tooltip" title="' +
+      title + '" src="/assets/help.png" alt="Help" /></a>'
+
+class AntCat.Tooltipify
   # Wrapper function that formats the tooltips.
   #
   # `$('.tooltip').tooltip()` is built-into jQuery UI; it takes a selector
@@ -47,7 +51,3 @@ class AntCat.Tooltips
         startHoverHandler = -> $(this).stop(true)
         stopHoverHandler = -> $(this).remove()
         ui.tooltip.hover startHoverHandler, stopHoverHandler
-
-  _createIcon: (title, id) => # TODO move the link from this function
-    '<a href="/tooltips/' + id + '"><img class="help_icon tooltip" title="' +
-      title + '" src="/assets/help.png" alt="Help" /></a>'
