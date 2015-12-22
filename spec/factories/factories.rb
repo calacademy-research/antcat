@@ -33,8 +33,6 @@ FactoryGirl.define do
     deleted 0
   end
 
-
-
   factory :author
 
   factory :author_name do
@@ -214,7 +212,6 @@ FactoryGirl.define do
   end
 
   ####################################################
-
   factory :taxon do
     after :create do |taxon|
       FactoryGirl.create(:taxon_state, taxon_id: taxon.id)
@@ -226,7 +223,6 @@ FactoryGirl.define do
     association :type_name, factory: :species_name
     protonym
     status 'valid'
-
   end
 
   factory :family do
@@ -240,7 +236,6 @@ FactoryGirl.define do
     association :type_name, factory: :genus_name
     protonym
     status 'valid'
-
   end
 
   factory :subfamily do
@@ -254,7 +249,6 @@ FactoryGirl.define do
     association :type_name, factory: :genus_name
     protonym
     status 'valid'
-
   end
 
   factory :tribe do
@@ -268,7 +262,6 @@ FactoryGirl.define do
     subfamily
     protonym
     status 'valid'
-
   end
 
   factory :subtribe do
@@ -282,7 +275,6 @@ FactoryGirl.define do
     subfamily
     protonym
     status 'valid'
-
   end
 
   factory :genus do
@@ -297,7 +289,6 @@ FactoryGirl.define do
     subfamily { |a| a.tribe && a.tribe.subfamily }
     protonym
     status 'valid'
-
   end
 
   factory :subgenus do
@@ -311,7 +302,6 @@ FactoryGirl.define do
     genus
     protonym
     status 'valid'
-
   end
 
   factory :species_group_taxon do
@@ -324,7 +314,6 @@ FactoryGirl.define do
     genus
     protonym
     status 'valid'
-
   end
 
   factory :species do
@@ -337,7 +326,6 @@ FactoryGirl.define do
     genus
     protonym
     status 'valid'
-
   end
 
   factory :subspecies do
@@ -351,9 +339,7 @@ FactoryGirl.define do
     genus
     protonym
     status 'valid'
-
   end
-
 
   ####################################################
   factory :citation do
@@ -398,6 +384,10 @@ FactoryGirl.define do
     change_type "create"
   end
 
+  ####################################################
+  factory :tooltip do
+    sequence(:key) { |n| "test.key#{n}" }
+  end
 end
 
 def create_family
