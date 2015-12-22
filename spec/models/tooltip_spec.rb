@@ -1,6 +1,9 @@
 require 'spec_helper'
 
-describe Tooltip do
+describe Tooltip, type: :model do
+
+  it { should validate_uniqueness_of(:key) }
+  it { should validate_presence_of(:key) }
 
   describe "scopes" do
     describe "default scope" do
@@ -14,8 +17,8 @@ describe Tooltip do
     end
 
     describe ".enabled" do
-      let!(:enabled) {  FactoryGirl.create :tooltip }
-      let!(:disabled) {  FactoryGirl.create :tooltip, enabled: false }
+      let!(:enabled) { FactoryGirl.create :tooltip }
+      let!(:disabled) { FactoryGirl.create :tooltip, enabled: false }
 
       it "only returns enabled" do
         expect(Tooltip.enabled).to eq [enabled]
