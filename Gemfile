@@ -71,6 +71,7 @@ group :test do
   gem 'webmock'
   gem 'capybara-webkit'
   gem 'capybara-screenshot'
+  gem 'shoulda-matchers'
 end
 
 gem 'coffee-rails'

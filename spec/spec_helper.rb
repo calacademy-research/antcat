@@ -41,6 +41,13 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 end
 
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
 # When a reference is parsed, it returns the text of what was matched in :matched_text
 # The trouble is that none of the hundreds of existing tests account for this new field,
 # so they would all fail without either 1) fixing them all (and all future) to test the
