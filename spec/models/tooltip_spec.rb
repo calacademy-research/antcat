@@ -4,6 +4,9 @@ describe Tooltip, type: :model do
 
   it { should validate_uniqueness_of(:key) }
   it { should validate_presence_of(:key) }
+  it { should allow_value('name-space._key1:').for(:key) }
+  it { should_not allow_value('^namespace').for(:key) }
+  it { should_not allow_value('nämespace').for(:key) }
 
   describe "scopes" do
     describe "default scope" do

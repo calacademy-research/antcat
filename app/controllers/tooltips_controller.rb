@@ -36,7 +36,7 @@ class TooltipsController < ApplicationController
         format.html { redirect_to(@tooltip, notice: 'Tooltip was successfully updated.') }
         format.json { respond_with_bip(@tooltip) }
       else
-        format.html { render action: "edit" }
+        format.html { render action: :show }
         format.json { respond_with_bip(@tooltip) }
       end
     end

@@ -8,6 +8,7 @@ class Tooltip < ActiveRecord::Base
     enabled.where(selector_enabled: true).where.not(selector: "")
   end
 
-  validates_uniqueness_of :key
-  validates_presence_of :key
+  validates :key, presence: true, uniqueness: true,
+    format: { with: /\A[a-zA-Z0-9._:\-]+\z/,
+      message: "can only contain alphanumeric characters and '.-_:'" }
 end
