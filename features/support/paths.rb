@@ -69,6 +69,9 @@ module NavigationHelpers
     when /^the author edit page for "(.*)"$/
       "/authors/#{Author.find_by_names($1).first.id}/edit"
 
+    when /^the tooltips editing page$/
+      "/tooltips"
+
     when /^the edit user page$/
       '/users/edit'
     when /^the forgot password page$/

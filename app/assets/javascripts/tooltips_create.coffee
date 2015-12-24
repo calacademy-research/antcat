@@ -1,6 +1,6 @@
 # FIX weird filename `tooltips_create.coffee`
 $ ->
-  $.ajax 'tooltips/enabled_selectors', success: (data) -> # TODO improve this
+  $.ajax '/tooltips/enabled_selectors', success: (data) -> # TODO improve this
     tooltipsToInsert = data
     (new AntCat.SelectorTooltips).createTooltips tooltipsToInsert
     (new AntCat.Tooltipify).tooltipifyAll()

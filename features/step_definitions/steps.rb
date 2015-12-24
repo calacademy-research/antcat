@@ -105,3 +105,7 @@ end
 Given /that URL "([^"]*)" exists/ do |link|
   stub_request :any, link
 end
+
+When /^I reload the page$/ do
+  visit current_path
+end
