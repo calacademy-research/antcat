@@ -7,14 +7,26 @@ end
 # "next to" as in "sibling element".
 # Required for hovering selector-based tooltips, because the are always
 # inserted after another element.
-When(/^I hover the the tooltip next to "([^"]*)"$/) do |text|
+When(/^I hover the tooltip next to "([^"]*)"$/) do |text|
   # TODO make easier to understand
-  find(:xpath, "//*[contains(., '#{text}')]/following-sibling::" +
-    "a[contains(concat(' ', @class, ' '), ' selector-tooltip')]").hover
+  tooltip = first(:xpath, "//*[contains(., '#{text}')]/following::" +
+    "*[contains(concat(' ', @class, ' '), ' tooltip')][1]")
+  tooltip.hover
 end
 
 # "within" as in "within the element that matches the text".
 # Only for hard-coded tooltips.
-When(/^I hover the the tooltip within "([^"]*)"$/) do |text|
-  find('*', text: /^#{text}$/).find('img.help_icon').hover
+When(/^I hover the tooltip within "([^"]*)"$/) do |text|
+  find('*', text: /^#{text}$/).first('img.help_icon').hover
+end
+
+Then /^I should (not )?see the tooltip text "([^"]*)"$/ do |should_not, text|
+  selector = should_not ? :should_not : :should
+  page.send selector, have_css('.ui-tooltip', visible: true, text: text)
+end
+
+Then(/^I should not see any tooltips next to "([^"]*)"$/) do |text|
+  tooltip = first(:xpath, "//*[contains(., '#{text}')]/following::" +
+    "*[contains(concat(' ', @class, ' '), ' tooltip')][1]")
+  expect(tooltip).to be nil
 end

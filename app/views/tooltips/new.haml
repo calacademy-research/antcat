@@ -1,26 +1,5 @@
 -@title = "New Tooltip"
 
-=enable_tooltips
+=render 'form'
 
-=form_for @tooltip do |f|
-  =render 'shared/errors_for', resource: @tooltip
-  %p
-    =f.label :key
-    =f.text_field :key, value: (params[:key].presence || "") # Pre-populate if requested.
-    =f.label :enabled
-    =f.check_box :enabled
-  %p
-    =f.label :text
-    =f.text_field :text
-  %p
-    =f.label :selector
-    =f.text_field :selector
-    =tooltip_icon :selector, scope: [:tooltips, :new], disable_edit_link: true
-    =f.label :selector_enabled
-    =f.check_box :selector_enabled
-    =tooltip_icon :selector_enabled, scope: [:tooltips, :new], disable_edit_link: true
-
-  .actions
-    = f.submit
-
-= link_to 'Tooltip Index', tooltips_path
+=link_to 'Tooltip Index', tooltips_path

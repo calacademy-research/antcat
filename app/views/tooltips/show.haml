@@ -1,44 +1,6 @@
 -@title = "Tooltip ##{@tooltip.id}"
 
-=enable_tooltips
--content_for :head do
-  =javascript_include_tag 'tooltips_edit_in_place'
-
--# duplicated from the index, will not look like this TODO
-%table#tooltips
-  %thead
-    %tr
-      %th
-        Id
-      %th
-        Key
-        =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
-      %th
-        Key enabled?
-        =tooltip_icon :enabled, scope: :tooltips, disable_edit_link: true
-      %th
-        Tooltip text
-        =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
-      %th
-        Selector
-        =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
-      %th
-        Selector enabled?
-        =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
-  %tbody
-    %tr
-      %td
-        =@tooltip.id
-      %td
-        =best_in_place @tooltip, :key, as: :textarea, ok_button: 'Save', cancel_button: 'Cancel'
-      %td
-        =best_in_place @tooltip, :enabled, as: :select, collection: { "true" => "Yes", "false" => "No" } # there is a checkbox for this, but it's too easy to change by mistake
-      %td
-        =best_in_place @tooltip, :text, as: :textarea, ok_button: 'Save', cancel_button: 'Cancel'
-      %td
-        =best_in_place @tooltip, :selector, as: :textarea, ok_button: 'Save', cancel_button: 'Cancel'
-      %td
-        =best_in_place @tooltip, :selector_enabled, as: :select, collection: { "true" => "Yes", "false" => "No" }
+=render 'form'
 
 =link_to 'Destroy', @tooltip, method: :delete, data: { confirm: 'Are you sure?' }
 =link_to 'Tooltip Index', tooltips_path
