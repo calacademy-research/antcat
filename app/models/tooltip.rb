@@ -2,10 +2,10 @@ class Tooltip < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
   default_scope { order(:key) }
-  scope :enabled, -> { where(enabled: true) }
+  scope :enabled_keys, -> { where(key_enabled: true) }
 
   scope :enabled_selectors, -> do
-    enabled.where(selector_enabled: true).where.not(selector: "")
+    where(selector_enabled: true).where.not(selector: "")
   end
 
   validates :key, presence: true, uniqueness: true,

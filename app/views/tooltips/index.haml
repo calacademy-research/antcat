@@ -12,7 +12,7 @@
         =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
       %th
         Key enabled?
-        =tooltip_icon :enabled, scope: :tooltips, disable_edit_link: true
+        =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
       %th
         Tooltip text
         =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
@@ -43,7 +43,7 @@
 
 %h2 Quick wall-of-text guide
 %p `key` is used for hard-coded tooltips; developers can render them (see TooltipHelper#tooltip_icon) by referencing them in the views. `key` is also used for namespacing, so a key 'references.authors' is grouped with all other referece tooltips.
-%p `enabled` is on by default. If disabled, hides both hard-coded [not implemented yet] and selector-based tooltips.
+%p `key_enabled` is on by default. Hides hard-coded [not implemented yet] if disabled.
 %p `text` is the text.
 %p `selector` is a jQuery selector; this makes is possible for editors to add new tooltips anywhere. Demo: add a tooltip with this selector "label[for='reference_author_names_string']" and edit a reference. Prefer a hard-coded tooltip? 1) First we let editors attach tooltips anywhere they see fit via selectors. 2) They should also give it a key, because developers are lazy. 3) Ask a friendly developer to implement it. 4) ??????
 %p `selector_enabled`, not enabled by default; without this, selector tooltips wont show.
@@ -52,6 +52,6 @@
 %p Short version: 1) browse the HTML source and search for "whatever" 2) test it using [not fully implemented but this works in Chrome's developer's console: "testTooltipSelector('label[for="reference_title"]', "Wololoo", "9999");" //currently only enabled in the reference and tooltip indexes; //second and third arguments are optional] 3) pretend that you forgot everything about computers and ask Joe to do it for you.
 
 %h2 A bunch of stuff
-%p [This belongs in a tooltip, hehe] To edit a tooltip: click on the text or selector in this list or on the show route for an individual tooltip, then 'Save'. The show route it currently the only place where it's possible to change key/enabled/selector_enabled. Use `=enable_tooltips` in views to enable this whole shebang.
+%p [This belongs in a tooltip, hehe] To edit a tooltip: click on the text or selector in this list or on the show route for an individual tooltip, then 'Save'. The show route it currently the only place where it's possible to change key/key_enabled/selector_enabled. Use `=enable_tooltips` in views to enable this whole shebang.
 
 =link_to 'New tooltip', new_tooltip_path

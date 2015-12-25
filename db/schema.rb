@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151218101005) do
+ActiveRecord::Schema.define(version: 20151225190210) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -412,7 +412,7 @@ ActiveRecord::Schema.define(version: 20151218101005) do
   create_table "tooltips", force: :cascade do |t|
     t.string   "key",              limit: 255
     t.text     "text",             limit: 65535
-    t.boolean  "enabled",                        default: true
+    t.boolean  "key_enabled",                    default: true
     t.string   "selector",         limit: 255
     t.boolean  "selector_enabled"
     t.datetime "created_at"

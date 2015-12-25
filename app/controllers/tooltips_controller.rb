@@ -61,7 +61,8 @@ class TooltipsController < ApplicationController
     end
 
     def tooltip_params
-      params.require(:tooltip).permit(:key, :text, :enabled, :selector, :selector_enabled)
+      params.require(:tooltip).permit(
+        :key, :text, :key_enabled, :selector, :selector_enabled)
     end
 
     def main_namespace_of_key key

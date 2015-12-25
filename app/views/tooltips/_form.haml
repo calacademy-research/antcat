@@ -9,9 +9,9 @@
       =f.text_field :key, value: (params[:key].presence || "") # Pre-populate if requested.
     -else
       =f.text_field :key
-    =f.label :enabled
-    =tooltip_icon :enabled, scope: :tooltips, disable_edit_link: true
-    =f.check_box :enabled
+    =f.label :key_enabled
+    =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
+    =f.check_box :key_enabled
   %p
     =f.label :text
     =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
