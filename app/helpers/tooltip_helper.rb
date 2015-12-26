@@ -49,7 +49,7 @@ module TooltipHelper
     def key_disabled? tooltip
       if tooltip && tooltip.key_disabled?
         # TODO log this somewhere
-        $stderr.puts "A tooltip with a disabled key was called in a view."
+        puts "A tooltip with a disabled key was called in a view."
         true
       end
     end

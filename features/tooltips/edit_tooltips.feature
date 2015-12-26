@@ -33,7 +33,7 @@ Feature: Editing tooltips
     And I hover the tooltip within "Tooltip text"
     Then I should see the tooltip text "Could not find tooltip with key 'tooltips.text'"
 
-    Then I follow "New tooltip"
+    Then I follow "New Tooltip"
     And I fill in "tooltip[key]" with "tooltips.text"
     And I check "tooltip[key_enabled]"
     And I fill in "tooltip[text]" with "Text used in the tooltip"
