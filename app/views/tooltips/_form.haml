@@ -1,4 +1,6 @@
 =enable_tooltips
+-content_for :head do
+  =javascript_include_tag 'tooltips_generate_selector_test_string'
 
 =form_for @tooltip do |f|
   =render 'shared/errors_for', resource: @tooltip
@@ -25,4 +27,10 @@
     =f.check_box :selector_enabled
 
   .actions
+    = button_tag "Test Selector", type: "button", id: "test_selector_button" # hooked into by jQuery
     = f.submit
+
+-# The #test_selector_notice and #test_selector_snippet elements are used for
+-# letting editors test the selector, hooked into by jQuery.
+%p#test_selector_notice
+%pre#test_selector_snippet
