@@ -11,4 +11,8 @@ class Tooltip < ActiveRecord::Base
   validates :key, presence: true, uniqueness: true,
     format: { with: /\A[a-zA-Z0-9._:\-]+\z/,
       message: "can only contain alphanumeric characters and '.-_:'" }
+
+  def key_disabled?
+    !key_enabled?
+  end
 end

@@ -70,6 +70,27 @@ Feature: Editing tooltips
     Then I should see the tooltip text "A title"
 
   @javascript
+  Scenario: Disabling a key-based tooltip
+    Given this tooltip exist
+      | key                       | text                    |
+      | tooltips.selector_enabled | Enable jQuery selector? |
+
+    When I go to the tooltips editing page
+    Then I should not see the tooltip text "Enable jQuery selector?"
+
+    When I hover the tooltip within "Selector enabled\?"
+    Then I should see the tooltip text "Enable jQuery selector?"
+
+    And I follow "tooltips.selector_enabled"
+
+    Then I uncheck "tooltip[key_enabled]"
+    And I press "Update Tooltip"
+    And I wait for a bit
+
+    When I go to the tooltips editing page
+    Then I should not see any tooltips within "Selector enabled\?"
+
+  @javascript
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
       | key        | text    | selector | selector_enabled |

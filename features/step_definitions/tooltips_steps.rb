@@ -30,3 +30,8 @@ Then(/^I should not see any tooltips next to "([^"]*)"$/) do |text|
     "*[contains(concat(' ', @class, ' '), ' tooltip')][1]")
   expect(tooltip).to be nil
 end
+
+Then(/^I should not see any tooltips within "([^"]*)"$/) do |text|
+  tooltip = find('*', text: /^#{text}$/).first('img.help_icon')
+  expect(tooltip).to be nil
+end
