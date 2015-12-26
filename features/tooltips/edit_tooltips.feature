@@ -8,8 +8,8 @@ Feature: Editing tooltips
 
   Scenario: Listing all tooltips
     Given this tooltip exist
-      | key                       | text                    |
-      | tooltips.selector_enabled | Enable jQuery selector? |
+      | key                       | key_enabled | text                    |
+      | tooltips.selector_enabled | true        | Enable jQuery selector? |
 
     When I go to the tooltips editing page
     Then I should see "Edit Tooltips"
@@ -18,8 +18,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Hovering a tooltip
     Given this tooltip exists
-      | key                       | text                    |
-      | tooltips.selector_enabled | Enable jQuery selector? |
+      | key                       | key_enabled | text                    |
+      | tooltips.selector_enabled | true        | Enable jQuery selector? |
 
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Enable jQuery selector?"
@@ -35,6 +35,7 @@ Feature: Editing tooltips
 
     Then I follow "New tooltip"
     And I fill in "tooltip[key]" with "tooltips.text"
+    And I check "tooltip[key_enabled]"
     And I fill in "tooltip[text]" with "Text used in the tooltip"
     Then I press "Create Tooltip"
     And I wait for a bit
@@ -72,8 +73,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Disabling a key-based tooltip
     Given this tooltip exist
-      | key                       | text                    |
-      | tooltips.selector_enabled | Enable jQuery selector? |
+      | key                       | key_enabled | text                    |
+      | tooltips.selector_enabled | true        | Enable jQuery selector? |
 
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Enable jQuery selector?"

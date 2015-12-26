@@ -20,7 +20,7 @@ describe Tooltip, type: :model do
     end
 
     describe ".enabled_keys" do
-      let!(:enabled) { FactoryGirl.create :tooltip }
+      let!(:enabled) { FactoryGirl.create :tooltip, key_enabled: true }
       let!(:disabled) { FactoryGirl.create :tooltip, key_enabled: false }
 
       it "only returns enabled keys" do
@@ -30,7 +30,7 @@ describe Tooltip, type: :model do
 
     describe ".enabled_selectors" do
       let!(:enabled) { FactoryGirl.create :tooltip }
-      let!(:disabled) { FactoryGirl.create :tooltip, key_enabled: false }
+      let!(:disabled) { FactoryGirl.create :tooltip, selector_enabled: false }
       let!(:selector_enabled) do
          FactoryGirl.create :tooltip, selector_enabled: true, selector: "#header"
       end
