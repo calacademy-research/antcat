@@ -6,6 +6,6 @@
   %td
     =best_in_place tooltip, :text, as: :textarea, ok_button: 'Save', cancel_button: 'Cancel'
   %td
-    =best_in_place tooltip, :selector, as: :textarea, ok_button: 'Save', cancel_button: 'Cancel'
+    %code= tooltip.selector
   %td
     =tooltip.selector_enabled ? "yes" : "no"
