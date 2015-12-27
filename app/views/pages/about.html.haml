@@ -15,16 +15,16 @@
     %h2
       Other links
     %ul
-      - if user_is_editor?
-        %li= link_to 'Adding a new species name', page_path('adding_species')
-        %li= link_to 'Bibliography editing guidelines', page_path('bibliography_editing_guidelines')
+      %li= link_to 'Help pages', page_path('help')
       %li= link_to 'Source code', 'https://github.com/calacademy/antcat'
       %li= link_to 'Project plan', 'https://www.pivotaltracker.com/s/projects/97176'
       %li= link_to 'Contact us ', 'mailto:sblum@calacademy.org'
 
   %div.section
-    This material is based on work supported by the National Science Foundation under grant number 0642321.  Any opinions,
-    findings, and conclusions or recommendations are those of the author(s) and do not necessarily reflect the views of the
-    National Science Foundation.
+    This material is based on work supported by the
+    =link_to 'National Science Foundation (NSF)', 'http://www.nsf.gov/'
+    under grant number
+    =link_to('0642321', 'http://www.nsf.gov/awardsearch/showAward?AWD_ID=0642321') + '.'
+    Any opinions, findings, and conclusions or recommendations are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
 
   %div.last_section
