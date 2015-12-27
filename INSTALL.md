@@ -68,6 +68,10 @@ bundle install # install gems
 bundle exec rake db:create && rake db:schema:load
 bundle exec rake db:test:prepare
 ```
+####Seeds
+```bash
+bundle exec rake db:seed # contains tooltips
+```
 
 ####Sample data
 ```bash

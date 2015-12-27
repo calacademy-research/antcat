@@ -1,8 +1,5 @@
-# coding: UTF-8
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
-#   Mayor.create(:name => 'Daley', :city => cities.first)
+# This data can be loaded with `rake db:seed` (or created alongside the db with db:setup).
+
+tooltips_seed_file = Rails.root.join('db', 'seeds', 'tooltips.yml')
+tooltips = YAML::load_file(tooltips_seed_file)
+Tooltip.create! tooltips
