@@ -1,0 +1,68 @@
+-@title = "Editing tooltips"
+%p
+  To edit an existing tooltip: find it in the
+  =link_to "Tooltips Index", tooltips_path
+  , click on the linked key, edit and click 'Update Tooltip'. Updating the tooltip text (ie not all that other stuff) can be done directly in the list by clicking the text (a textbox will appear) and then 'Save'.
+
+%h2 Creating a selector-based tooltip
+%ol
+  %li <strong>Open the HTML source:</strong> Visit the page where you want to add a tooltip and open the HTML source (something like this works in most browsers: right-click anywhere on the page and click "View page source").
+
+  %li <strong>Figure out where to add the tooltip:</strong> This can be tricky, so let's try it with an example. Say you want to add a tooltip next to the "Editor notes" on the Edit Reference page. In the first step you would have opened the References page, clicked on the green edit icon, and opened the HTML source. Search for "Editor notes". This is the first match: <code>&lt;p class='editor notes'&gt;&lt;/p&gt;</code>. Nope, wrong element. Let's try the next search result: <code>&lt;td&gt;&lt;label for=&quot;reference_editor_notes&quot;&gt;Editor notes&lt;/label&gt;&lt;/td&gt;</code>. Looks like this is the element we're looking for (the <code>textarea</code> that is visible in the next line in the source is a good sign that we have foud the correct location -- also keep an eye out for any <code>input</code> if you want to add a tooltip close to a textfield (the smaller ones) or a checkbox).
+
+  %li
+    <strong>
+    =link_to 'Write a selector that matches the element:', 'http://imgur.com/gallery/nCec3EU'
+    </strong> This is by far the hardest step, but hopefully you can figure out how to format the selector by comparing it with other already working tooltips.
+    =link_to 'This jQuery Selectors', 'http://www.w3schools.com/jquery/jquery_ref_selectors.asp'
+    guide by W3 Schools may be useful, but if this "selector thing" still looks like a bunch of random characters, you should probably ask your nerdiest friend to help you. Continuing the example we would focus on this line <code>&lt;label for=&quot;reference_editor_notes&quot;&gt;</code>, because unlike the string "Editor notes", we can expect the <code>for</code> attribute (with the value <code>reference_editor_notes</code> to not change from day to day. A selector for selecting this element looks like this: <code>label[for='reference_editor_notes']</code>.
+
+  %li
+    <strong>Create the tooltip:</strong> Go to the
+    =link_to "Tooltips Index", tooltips_path
+    and click on the
+    =link_to "New Tooltip link.", new_tooltip_path
+    Fill in the form with something like this: <code>key</code>: <i><code>references.editor_notes</code></i> ('references.' to group it with the other reference tooltips, and 'editor_notes' because it is descriptive), <code>key_enabled</code>: <i><code>false</code></i> (because we are not going to refer to this tooltip by its key), <code>text</code>: <i><code>Editor notes are only visible to logged-in users.</code></i>, <code>selector</code>: <i><code>label[for='reference_editor_notes']</code></i> (from the previous step), <code>selector_enabled</code>: <i><code>true</code></i> (otherwise it will not be visible).
+
+  %li <strong>Test the selector:</strong> Click the button 'Test Selector' and follow the instructions there (basically, go to the page where you want to add the tooltip and paste the generated code snipped into your browser's JavaScript Console).
+
+  %li <strong>Save:</strong> If the everything looks good, press 'Save'.
+
+
+%h2 Attributes
+%dl#tooltips_attributes
+  %dt <code>key</code> <small>[required]</small>
+  %dd
+    Has two different uses:
+  %dd
+    1) Used as the identfier for hard-coded/key-based tooltips (which can be added and edited by editors, but must be added to the souce code by a developer).
+  %dd
+    2) Namespacing, so a key <code>'references.authors'</code> is grouped with all other referece tooltips.
+  %dd
+    The <code>key</code>, including the "main namespace" (the first word before the period), has no inherent meaning -- it is only used for organizing the tooltips index and identifying hard-coded tooltips. Unless you know what you're doing, you should probably not change the key on tooltips with <code>key_enabled</code> set to true, becuase that could break links. Allowed characters: English alphanumeric characters and <code>.-_:</code>.
+
+  %dt <code>key_enabled</code> <small>[default=false]</small>
+  %dd
+    Hides hard-coded/key-based tooltips if disabled. Tooltips with <code>selector_enabled</code> set to true are still visible even after setting <code>key_enabled</code> to false.
+
+  %dt <code>text</code>
+  %dd The tooltip text. HTML is allowed.
+
+  %dt <code>selector</code>
+  %dd
+    A
+    =link_to 'jQuery', 'http://jquery.com'
+    selector; this makes is possible for editors to add new tooltips anywhere. It is possible to chain
+    =link_to 'multiple selectors', 'https://api.jquery.com/multiple-selector/'
+    by separating them with a comma. Example: <code>label[for='reference_author_names_string'], label[for='reference_title']</code>
+
+  %dt <code>selector_enabled</code> <small>[default=false]</small>
+  %dd Hides selector-based tooltips if disabled.
+
+%h2 Where is my tooltip?
+%ul#where_is_my_tooltip
+  %li Are you logged in? Tooltips are only visible to logged-in users.
+  %li Are there other working tooltips on the page? If not, then a developer may have to enable tooltips on that page. If you're feeling adventurous, browse the HTML source of the page and look for this line "<code>Tooltips are enabled on this page</code>".
+  %li Key-based tooltips: Is <code>key_enabled</code> set to true?
+  %li Key-based tooltips: Has the key been added to a page by a developer? Editors can add and edit any key-based tooltips, but adding the code that actually shows them on the page can only be done by a developer.
+  %li Selector-based tooltips: Is <code>selector_enabled</code> set to true?
