@@ -28,4 +28,16 @@ ActiveAdmin.register Tooltip do
     end
     f.actions
   end
+
+  # From https://github.com/activeadmin/activeadmin/wiki/Auditing-via-paper_trail-(change-history)
+  controller do
+    def show
+        @tooltip = Tooltip.includes(versions: :item).find(params[:id])
+        @versions = @tooltip.versions
+        @tooltip = @tooltip.versions[params[:version].to_i].reify if params[:version]
+        show! #it seems to need this
+    end
+  end
+  sidebar "Versions", partial: "shared/admin/version", only: :show
+
 end
