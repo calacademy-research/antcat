@@ -6,6 +6,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require_relative '../config/environment'
 require 'rspec/rails'
 
+require 'paper_trail/frameworks/rspec'
 require 'webmock/rspec'
 WebMock.disable_net_connect! allow_localhost: true
 

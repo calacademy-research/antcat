@@ -2,6 +2,17 @@ require 'spec_helper'
 
 describe Tooltip, type: :model do
 
+  describe "versioning", versioning: true do
+    let!(:tooltip) { FactoryGirl.create :tooltip, key: "references.authors" }
+
+    it 'keeps versions' do
+      expect(tooltip.versions.last.event).to eq "create"
+      tooltip.update_attributes! key: "oops.typo"
+      expect(tooltip.versions.last.event).to eq "update"
+      expect(tooltip).to have_a_version_with key: "references.authors"
+    end
+  end
+
   it { should validate_uniqueness_of(:key) }
   it { should validate_presence_of(:key) }
   it { should allow_value('name-space._key1:').for(:key) }

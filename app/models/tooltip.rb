@@ -1,6 +1,8 @@
 class Tooltip < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
+  has_paper_trail
+
   default_scope { order(:key) }
   scope :enabled_keys, -> { where(key_enabled: true) }
 
@@ -15,4 +17,5 @@ class Tooltip < ActiveRecord::Base
   def key_disabled?
     !key_enabled?
   end
+
 end
