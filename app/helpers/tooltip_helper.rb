@@ -1,21 +1,22 @@
 module TooltipHelper
 
-  # Shortcut to avoid adding the JavaScript include tag. All the actual tooltips are
-  # dynamically created (including hard-coded tooltips). We need this snippet to do that.
+  # Includes the code that transforms the tooltip elements (both hard-coded and
+  # selector-based) from <xzy class="tooltip" title="text"/> into tooltips.
   def enable_tooltips
     # Currently all tooltips are for editors only. Do not show to non-logged in users,
     # but let's be nice and show them to all logged in users, even if they are not editors.
     return unless current_user
     content_for :head do
-      javascript_include_tag 'tooltips_create'
+      javascript_include_tag 'tooltips'
     end
     content_for :head do
       "\n<!-- Tooltips are enabled on this page. -->".html_safe
     end
   end
 
-  # For rendering hard-coded tooltips. See explanation of key/scope in #parse_lookup_params
-  # Much of this is duplicated in `tooltips_create.coffee` TODO fix
+  # Call in views to render hard-coded tooltips.
+  # See explanation of key/scope in #parse_lookup_params
+  # Similar logic is duplicated in `tooltips.coffee` TODO fix?
   def tooltip_icon key_param, scope: nil, disable_edit_link: false
     key = parse_lookup_params key_param, scope: scope
     tooltip = Tooltip.find_by(key: key)
@@ -30,7 +31,6 @@ module TooltipHelper
     tooltip_icon = image_tag 'help.png', class: 'help_icon tooltip', title: text
 
     if disable_edit_link
-      # Disable linking the icon if the method was called with `disable_edit_link`
       tooltip_icon
     else
       # Tooltip icons are linked to the the tooltip, where it's possible to edit the text.
@@ -76,7 +76,7 @@ module TooltipHelper
         scope_string = Array.wrap(scope).join(".")
         "#{scope_string}.#{key_param}"
       else
-        "#{key_param}" # to_s to support symbols
+        "#{key_param}"
       end
     end
 end

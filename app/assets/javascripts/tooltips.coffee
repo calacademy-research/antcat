@@ -1,4 +1,3 @@
-# FIX weird filename `tooltips_create.coffee`
 $ ->
   $.ajax '/tooltips/enabled_selectors', success: (data) -> # TODO improve this
     tooltipsToInsert = data
