@@ -24,13 +24,13 @@ Feature: Editing tooltips
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Enable jQuery selector?"
 
-    When I hover the tooltip within "Selector enabled\?"
+    When I hover the tooltip next to the text "Selector enabled\?"
     Then I should see the tooltip text "Enable jQuery selector?"
 
   @javascript
   Scenario: Adding a key-based tooltip
     When I go to the tooltips editing page
-    And I hover the tooltip within "Tooltip text"
+    And I hover the tooltip next to the text "Tooltip text"
     Then I should see the tooltip text "Could not find tooltip with key 'tooltips.text'"
 
     Then I follow "New Tooltip"
@@ -41,7 +41,7 @@ Feature: Editing tooltips
     And I wait for a bit
 
     Then I go to the tooltips editing page
-    When I hover the tooltip within "Tooltip text"
+    When I hover the tooltip next to the text "Tooltip text"
     Then I should see the tooltip text "Text used in the tooltip"
 
   @javascript
@@ -53,7 +53,7 @@ Feature: Editing tooltips
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Typo oops"
 
-    When I hover the tooltip next to "Edit Tooltips"
+    When I hover the tooltip next to the element containing "Edit Tooltips"
     Then I should see the tooltip text "Typo oops"
 
     Then I go to the tooltips editing page
@@ -67,7 +67,7 @@ Feature: Editing tooltips
     Then I should not see the tooltip text "Typo oops"
     And I should not see the tooltip text "A title"
 
-    When I hover the tooltip next to "Edit Tooltips"
+    When I hover the tooltip next to the element containing "Edit Tooltips"
     Then I should see the tooltip text "A title"
 
   @javascript
@@ -79,7 +79,7 @@ Feature: Editing tooltips
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Enable jQuery selector?"
 
-    When I hover the tooltip within "Selector enabled\?"
+    When I hover the tooltip next to the text "Selector enabled\?"
     Then I should see the tooltip text "Enable jQuery selector?"
 
     And I follow "tooltips.selector_enabled"
@@ -89,7 +89,7 @@ Feature: Editing tooltips
     And I wait for a bit
 
     When I go to the tooltips editing page
-    Then I should not see any tooltips within "Selector enabled\?"
+    Then I should not see any tooltips next to the text "Selector enabled\?"
 
   @javascript
   Scenario: Disabling a selector-based tooltip
@@ -100,7 +100,7 @@ Feature: Editing tooltips
     When I go to the tooltips editing page
     And I wait for a bit
 
-    When I hover the tooltip next to "Edit Tooltips"
+    When I hover the tooltip next to the element containing "Edit Tooltips"
     Then I should see the tooltip text "A title"
 
     And I follow "test.title"
@@ -110,4 +110,4 @@ Feature: Editing tooltips
     And I wait for a bit
 
     When I go to the tooltips editing page
-    Then I should not see any tooltips next to "A title"
+    Then I should not see any tooltips next to the element containing "Edit Tooltips"

@@ -1,22 +1,31 @@
+# Note on "next to":
+#   I hover the tooltip next to ...
+#   I should not see any tooltips next to ...
+# Both of these steps can be followed by:
+#   ... the text "Text"
+#   ... the element containing "Text"
+#
+# The difference is:
+# 'next to the text "Text"' --> "within the element that matches the text"
+#    <p>Text<tooltip/></p>
+# here <tooltip/> is next to the text "Text".
+#
+# 'next to the element containing "Text" --> "sibling of the element that contains the text"
+#    <p>Text</p><tooltip/>
+# here <tooltip/> is next to the element containing "Text"
+
 Given /^(?:these|this) tooltips? (?:also)? ?exists?$/ do |table|
   table.hashes.each do |hash|
     FactoryGirl.create :tooltip, hash
   end
 end
 
-# "next to" as in "sibling element".
-# Required for hovering selector-based tooltips, because the are always
-# inserted after another element.
-When(/^I hover the tooltip next to "([^"]*)"$/) do |text|
-  # TODO make easier to understand
-  tooltip = first(:xpath, "//*[contains(., '#{text}')]/following::" +
-    "*[contains(concat(' ', @class, ' '), ' tooltip')][1]")
-  tooltip.hover
+When(/^I hover the tooltip next to the element containing "([^"]*)"$/) do |text|
+  look_next_to_this = first('*', text: /^#{text}$/)
+  look_next_to_this.find('img[class~=tooltip]').hover
 end
 
-# "within" as in "within the element that matches the text".
-# Only for hard-coded tooltips.
-When(/^I hover the tooltip within "([^"]*)"$/) do |text|
+When(/^I hover the tooltip next to the text "([^"]*)"$/) do |text|
   find('*', text: /^#{text}$/).first('img.help_icon').hover
 end
 
@@ -25,13 +34,12 @@ Then /^I should (not )?see the tooltip text "([^"]*)"$/ do |should_not, text|
   page.send selector, have_css('.ui-tooltip', visible: true, text: text)
 end
 
-Then(/^I should not see any tooltips next to "([^"]*)"$/) do |text|
-  tooltip = first(:xpath, "//*[contains(., '#{text}')]/following::" +
-    "*[contains(concat(' ', @class, ' '), ' tooltip')][1]")
-  expect(tooltip).to be nil
+Then(/^I should not see any tooltips next to the element containing "([^"]*)"$/) do |text|
+  look_next_to_this = first('*', text: /^#{text}$/)
+  expect(look_next_to_this).to have_no_selector('.tooltip')
 end
 
-Then(/^I should not see any tooltips within "([^"]*)"$/) do |text|
+Then(/^I should not see any tooltips next to the text "([^"]*)"$/) do |text|
   tooltip = find('*', text: /^#{text}$/).first('img.help_icon')
   expect(tooltip).to be nil
 end
