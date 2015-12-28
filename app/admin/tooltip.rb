@@ -1,0 +1,31 @@
+ActiveAdmin.register Tooltip do
+  permit_params :key, :key_enabled, :text, :selector, :selector_enabled
+
+  index do
+    selectable_column
+    id_column
+    column :key
+    column :key_enabled
+    column :text
+    column :selector
+    column :selector_enabled
+    actions
+  end
+
+  filter :key
+  filter :key_enabled
+  filter :text
+  filter :selector
+  filter :selector_enabled
+
+  form do |f|
+    f.inputs "Tooltip Details" do
+      f.input :key
+      f.input :key_enabled
+      f.input :text
+      f.input :selector
+      f.input :selector_enabled
+    end
+    f.actions
+  end
+end
