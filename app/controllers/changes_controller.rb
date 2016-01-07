@@ -114,71 +114,71 @@ class ChangesController < ApplicationController
   end
 
   private
-  # Note that because of schema change, we can't do this for changes that don't
-  # have an extracted taxon_state.
-  def undo_versions versions
-    versions.reverse_each do |version|
-      if 'create' == version.event
-        klass = version.item_type.constantize
-        item = klass.find(version.item_id)
-        item.delete
-      else
-        item = version.reify
-        if item.nil?
-          raise "failed to reify version: #{version.id} referencing change: #{version.change_id}"
-        end
-        begin
-          # because we validate on things like the genus being present, and if we're doing an entire change set,
-          # it might not be!
-          unless item.nil?
-            item.save! :validate => false
+    # Note that because of schema change, we can't do this for changes that don't
+    # have an extracted taxon_state.
+    def undo_versions versions
+      versions.reverse_each do |version|
+        if 'create' == version.event
+          klass = version.item_type.constantize
+          item = klass.find(version.item_id)
+          item.delete
+        else
+          item = version.reify
+          if item.nil?
+            raise "failed to reify version: #{version.id} referencing change: #{version.change_id}"
           end
-        rescue ActiveRecord::RecordInvalid => error
-          puts "=========Reify failure: #{error} version item_type =  #{version.item_type}"
-          raise error
+          begin
+            # because we validate on things like the genus being present, and if we're doing an entire change set,
+            # it might not be!
+            unless item.nil?
+              item.save! :validate => false
+            end
+          rescue ActiveRecord::RecordInvalid => error
+            puts "=========Reify failure: #{error} version item_type =  #{version.item_type}"
+            raise error
+          end
         end
       end
     end
-  end
 
-  # Starting at a given version (which can reference any of a set of objects), it iterates forwards and
-  # returns all changes that created future versions of said object. Exclusive of
-  # the passed in object.
-  def get_future_change_ids version
-    new_version = version.next
-    change_id = version.change_id
+    # Starting at a given version (which can reference any of a set of objects), it iterates forwards and
+    # returns all changes that created future versions of said object. Exclusive of
+    # the passed in object.
+    def get_future_change_ids version
+      new_version = version.next
+      change_id = version.change_id
 
-    unless change_id
-      return SortedSet.new
+      unless change_id
+        return SortedSet.new
+      end
+
+      unless new_version
+        SortedSet.new [change_id]
+      else
+        SortedSet.new([change_id]).merge get_future_change_ids(new_version)
+      end
     end
 
-    unless new_version
-      SortedSet.new [change_id]
-    else
-      SortedSet.new([change_id]).merge get_future_change_ids(new_version)
-    end
-  end
+    # Look up all future changes of this change, return change IDs in an array,
+    # ordered most recent to oldest.
+    # inclusive of the change passed as argument.
+    def find_future_changes change_id
+      # This returns changes that touch future versions of
+      # all paper trail type items.
 
-  # Look up all future changes of this change, return change IDs in an array,
-  # ordered most recent to oldest.
-  # inclusive of the change passed as argument.
-  def find_future_changes change_id
-    # This returns changes that touch future versions of
-    # all paper trail type items.
-
-    # For each change, get all the versions.
-    # for each version get the change record id.
-    #   Add that change record id plus its timestamp to a hash list if it isn't in there already
-    #   if there is a "future" version of this version, recurse above loop.
-    # sort and return the change record list.
-    # because we need to go through papertrail's version
-    change = Change.find change_id
-    change_ids = SortedSet.new
-    change_ids.add(change_id.to_i)
-    change.versions.each do |version|
-      change_ids.merge(get_future_change_ids(version))
+      # For each change, get all the versions.
+      # for each version get the change record id.
+      #   Add that change record id plus its timestamp to a hash list if it isn't in there already
+      #   if there is a "future" version of this version, recurse above loop.
+      # sort and return the change record list.
+      # because we need to go through papertrail's version
+      change = Change.find change_id
+      change_ids = SortedSet.new
+      change_ids.add(change_id.to_i)
+      change.versions.each do |version|
+        change_ids.merge(get_future_change_ids(version))
+      end
+      change_ids
     end
-    change_ids
-  end
 
 end

@@ -146,7 +146,6 @@ describe ReferencesController do
 
       it "handles hyphens" do
         reference = reference_factory author_name: 'M.S. Abdul-Rassoul'
-        $stderr.puts "reference: #{reference}"
         Sunspot.commit
 
         get :autocomplete, q: "author:abdul-ras", format: :json

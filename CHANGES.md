@@ -6,4 +6,5 @@ This is by no means a complete log -- most changes are only listed in the commit
 * [Dormant code] Removed 'Preview' in TODO remove
 * [Dormant code] Removed COins-related code in TODO remove
 * [Dormant code] Removed Vlad in TODO remove
+* [Dormant code] Removed taxon_utility.rb in TODO remove
 * [Task completed] Removed HOL importers in TODO remove

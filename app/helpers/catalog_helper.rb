@@ -95,14 +95,6 @@ module CatalogHelper
     epithet_label taxon.name, taxon.fossil?, options
   end
 
-  # never called; deprecated?
-  def name_label name, fossil, options = {}
-    raise "opsie name_label was called"
-    name = name.to_html_with_fossil fossil
-    name = name.upcase if options[:uppercase]
-    name
-  end
-
   def protonym_label protonym
     protonym.name.protonym_with_fossil_html protonym.fossil
   end

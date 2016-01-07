@@ -204,9 +204,9 @@ class TaxaController < ApplicationController
       @taxon.destroy
     else
       @taxon.errors[:base] = <<-MSG.squish
-          Other taxa refer to this taxon, so it can't be deleted.
-          Please talk to Stan (sblum@calacademy.org) to determine a solution.
-          The items referring to this taxon are: #{references}.
+        Other taxa refer to this taxon, so it can't be deleted.
+        Please talk to Stan (sblum@calacademy.org) to determine a solution.
+        The items referring to this taxon are: #{references}.
       MSG
       render :edit and return
     end
