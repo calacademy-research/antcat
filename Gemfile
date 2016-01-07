@@ -7,16 +7,12 @@ gem 'acts_as_list'
 # test with: http://antcat.org/documents/6308/ward_2014_annu_rev_ecol_evol_syst_phylogeny_and_evolution_of_ants.pdf
 gem 'aws-sdk', '< 2.0'
 gem 'citrus', '2.4.1'
-# see https://github.com/cucumber/cucumber-rails/issues/187#issuecomment-4160160
-# shouldn't this be in test only? todo: move this and try it
-gem 'cucumber-rails', require: false
 gem 'curb', require: 'curl'
 gem 'devise'
 gem 'devise_invitable'
 gem 'diff-lcs'
 gem 'ey_config'
 #gem 'newrelic_rpm'
-gem 'factory_girl_rails'
 gem 'haml'
 gem 'high_voltage'
 # gem 'jquery-rails', '2.1.3'
@@ -33,7 +29,6 @@ gem 'rails', '>= 4.2'
 gem 'rake'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
-
 gem 'paperclip'
 gem 'will_paginate'
 gem 'workflow'
@@ -44,9 +39,9 @@ gem 'fuzzy-string-match'
 gem 'activeadmin', '~> 1.0.0.pre2'
 
 group :development, :test do
+  gem 'factory_girl_rails'
   #gem 'byebug'
   gem 'launchy'
-  gem 'rspec'
   gem 'rspec-rails'
   gem 'rspec-activemodel-mocks'
   gem 'thin'
@@ -64,6 +59,7 @@ end
 group :test do
   # This webdriver works with firefox as of v34. If firefox popus up without a URL,
   # check the latest
+  gem 'cucumber-rails', require: false
   gem 'selenium-webdriver', '>= 2.48'
   gem 'capybara', '>= 2.2.0'
   gem 'cucumber-api-steps', require: false

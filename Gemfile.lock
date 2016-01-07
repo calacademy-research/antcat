@@ -413,7 +413,6 @@ DEPENDENCIES
   rails-observers
   rake
   request_store
-  rspec
   rspec-activemodel-mocks
   rspec-rails
   sass-rails (= 4.0.5)
