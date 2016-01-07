@@ -1,3 +1,10 @@
+# I (jonk) *slightly* improved the layout by adding `magic_offset`s (they were already implicitly
+# in the code, but now they have a name!). The layout is still very fragile: 1) browser renders
+# elements slightly larger than expected 2) browser adds scrollbars, both vertical and horizontal
+# 3) ??????
+#
+# Move the splitter downwards to see how toolbars still semi-randomly appear.
+# We will probably have a new design by the time we have time to make this pretty.
 splitter_top = 0
 taxon_height = null
 
@@ -24,9 +31,6 @@ $ ->
       async: false,
       error: (xhr) => debugger
 
-
-
-
   $('#edit_button')
  # .unbutton()
   .button()
@@ -36,7 +40,6 @@ $ ->
   .button()
   .click -> window.location = $(@).data('review-location')
   $('#hide_all').remove()
-
 
 confirm_delete_dialog = (data,destination) ->
   @delete_message = $('#delete_message')
@@ -54,7 +57,6 @@ confirm_delete_dialog = (data,destination) ->
 
     message = message + '</li>'
   message = message + '</ul>'
-
 
   message = message + '</div></p></div>'
   @delete_message.append(message)
@@ -119,18 +121,30 @@ set_fixed_height = ->
   $('.antcat_taxon').css 'overflow', ''
 
 set_catalog_height = (height) ->
-  $("#catalog").height height
-  $("#catalog .index").height height - $("#catalog .antcat_taxon").height()
+  magic_offset = 7 + 2 + 2 + 2
+  # #catalog margin-top: 2
+  # hr: 2
+  # .antcat_taxon margin-bottom: 2
+  # #splitter: 7
+  $("#catalog .index").height height - $("#catalog .antcat_taxon").height() - magic_offset
+
 
 calculate_catalog_height = ->
+  magic_offset = 2 + 3 + 2 + 2 + 2
+  # hr: 2
+  # #page_contents padding-bottom: 3
+  # #catalog margin-top: 2
+  # hr *inside* #page_contents: 2
+  # hr : 2
   $('#page').height() -
     $('#site_header').height() -
-    $('#page_header').height() - 2 -
+    $('#page_header').height() -
     $('#page_notice').height() -
     $('#page_alert').height() -
-    $('#search_results').height() - 3 - 2 - 2 -
-    $('#taxon_key').height() - 2 -
-    $('#site_footer').height() - 8
+    $('#search_results').outerHeight(true) -
+    $('#taxon_key').height() -
+    $('#site_footer').height() -
+    magic_offset
 
 calculate_taxon_height = ->
   return taxon_height if taxon_height?
@@ -142,4 +156,5 @@ calculate_taxon_height = ->
   30
 
 set_width = ->
-  $('#catalog .antcat_taxon, #catalog').width $('#page').width()
+  magic_offset = 24
+  $('#catalog .antcat_taxon, #catalog').width ($('#page').width() - magic_offset)
