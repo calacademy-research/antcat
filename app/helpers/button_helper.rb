@@ -1,4 +1,3 @@
-# coding: UTF-8
 module ButtonHelper
   # "Parameters" for the three below items end up as literal parameters for the html input object.
   # e.g.:  button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete",'data-taxon-id' => "#{@taxon.id}"}

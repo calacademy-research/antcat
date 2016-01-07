@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Genus < GenusGroupTaxon
   belongs_to :tribe
   has_many :species

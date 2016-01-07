@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Bolton::ReferenceKey
 
   def initialize authors_string, citation_year

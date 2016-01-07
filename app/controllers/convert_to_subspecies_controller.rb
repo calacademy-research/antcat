@@ -1,4 +1,3 @@
-# coding: UTF-8
 class ConvertToSubspeciesController < ApplicationController
   before_filter :authenticate_editor
   skip_before_filter :authenticate_editor, if: :preview?

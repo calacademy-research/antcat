@@ -1,4 +1,3 @@
-# coding: UTF-8
 class TaxaController < ApplicationController
   before_filter :authenticate_editor, :get_params, :create_mother
   before_filter :redirect_by_parent_name_id, only: :new

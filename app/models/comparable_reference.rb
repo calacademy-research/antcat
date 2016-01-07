@@ -1,4 +1,3 @@
-# coding: UTF-8
 class ComparableReference
   include ReferenceComparable
   attr_accessor :author, :year, :title, :type, :series_volume_issue, :pagination

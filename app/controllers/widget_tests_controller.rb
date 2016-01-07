@@ -1,4 +1,3 @@
-# coding: UTF-8
 class WidgetTestsController < ApplicationController
 
   def name_popup_test; end

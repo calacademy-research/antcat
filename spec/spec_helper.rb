@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'devise'
 require 'sunspot_test/rspec'
 

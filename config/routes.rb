@@ -1,4 +1,3 @@
-# coding: UTF-8
 AntCat::Application.routes.draw do
 
   ActiveAdmin.routes(self)

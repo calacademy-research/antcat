@@ -1,4 +1,3 @@
-# coding: UTF-8
 When /^I click the first search result$/ do
   first('.search_results .reference_table').click
 end

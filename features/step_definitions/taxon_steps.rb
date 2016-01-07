@@ -1,4 +1,3 @@
-# coding: UTF-8
 Given /^there is a family "Formicidae"$/ do
   create_family
 end

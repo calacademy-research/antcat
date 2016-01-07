@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Tribe < Taxon
   belongs_to :subfamily
   has_many :genera

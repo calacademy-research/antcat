@@ -1,4 +1,3 @@
-# coding: UTF-8
 if Rails.env.development?
   MAX_LOG_SIZE = 1000.megabytes
 

@@ -1,4 +1,3 @@
-# coding: UTF-8
 class MissingReferenceKey
 
   def initialize citation

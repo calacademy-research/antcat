@@ -1,4 +1,3 @@
-# coding: UTF-8
 Given /^I click "edit" in the first row$/ do
   first('#authors a.edit_link').click
 end

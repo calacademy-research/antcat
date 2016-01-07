@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Rank
   def initialize hash
     @hash = hash

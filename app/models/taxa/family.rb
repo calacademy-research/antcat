@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Family < Taxon
   attr_accessible :name,:protonym,:type_name
 

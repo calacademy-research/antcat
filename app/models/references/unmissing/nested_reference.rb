@@ -1,4 +1,3 @@
-# coding: UTF-8
 class NestedReference < UnmissingReference
   belongs_to :nesting_reference, class_name: 'Reference'
 

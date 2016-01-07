@@ -1,4 +1,3 @@
-# coding: UTF-8
 Then /^I should (not )?see the reference field edit form$/ do |should_not|
   selector = should_not ? :should_not : :should
   visible = should_not ? :false : :true

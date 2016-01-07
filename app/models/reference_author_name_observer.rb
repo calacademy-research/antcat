@@ -1,4 +1,3 @@
-# coding: UTF-8
 class ReferenceAuthorNameObserver < ActiveRecord::Observer
 
   def before_save reference_author_name

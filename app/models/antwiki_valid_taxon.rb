@@ -1,4 +1,3 @@
-# coding: UTF-8
 class AntwikiValidTaxon < ActiveRecord::Base
   attr_accessible :name,
                   :subfamilia,

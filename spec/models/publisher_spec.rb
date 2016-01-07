@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 # include RSpec::Rails::Mocks
 # include Rspec::Mocks::ExampleMethods

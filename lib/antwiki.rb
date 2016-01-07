@@ -1,4 +1,3 @@
-# coding: UTF-8
 # To get data from AntWiki to compare with AntCat:
 #
 # 1. Download http://ants.csiro.au/Ant_Wiki/images/9/9e/AntWiki_Valid_Species.txt

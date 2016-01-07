@@ -1,4 +1,3 @@
-# coding: UTF-8
 module Parsers::PublisherParser
   def self.parse string
     # explicit loading seems to help Citrus's problem with reloading its grammars

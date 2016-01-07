@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'milieu'
 
 module ApplicationHelper

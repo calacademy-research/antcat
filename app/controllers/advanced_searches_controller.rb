@@ -1,4 +1,3 @@
-# coding: UTF-8
 class AdvancedSearchesController < ApplicationController
   def show
     if params[:rank].present?

@@ -1,4 +1,3 @@
-# coding: UTF-8
 module ReferenceComparable
   # requires that the client have:
   #   type, author, title

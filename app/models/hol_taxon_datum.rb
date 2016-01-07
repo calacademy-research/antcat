@@ -1,4 +1,3 @@
-# coding: UTF-8
 class HolTaxonDatum < ActiveRecord::Base
 
   attr_accessible :tnuid,

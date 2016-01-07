@@ -1,4 +1,3 @@
-# coding: UTF-8
 
 module LinkHelper
   include ActionView::Helpers::UrlHelper

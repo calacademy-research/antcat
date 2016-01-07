@@ -1,4 +1,3 @@
-# coding: UTF-8
 Then /^I (#{SHOULD_OR_SHOULD_NOT}) see an? "([^"]*)" button$/ do |should_selector, button|
   page.send(should_selector.to_sym, have_css("input[value='#{button}']"))
 end

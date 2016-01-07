@@ -1,4 +1,3 @@
-# coding: UTF-8
 # This is from rack/util.rb as of Aug 15, 2011
 # It fixes warnings about comparing /.../n regexp
 # to UTF-8 strings

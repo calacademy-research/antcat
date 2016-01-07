@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Exporters::Antweb::Exporter
   def initialize show_progress = false
     Progress.init show_progress, Taxon.count

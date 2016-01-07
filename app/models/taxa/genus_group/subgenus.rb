@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Subgenus < GenusGroupTaxon
   belongs_to :genus
   validates_presence_of :genus

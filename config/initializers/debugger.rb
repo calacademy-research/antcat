@@ -1,4 +1,3 @@
-# coding: UTF-8
 module Debugger
   class QuitCommand
     def execute

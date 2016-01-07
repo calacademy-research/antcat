@@ -1,4 +1,3 @@
-# coding: UTF-8
 def reference_factory attributes = {}
   name = attributes.delete :author_name
   author_name = AuthorName.find_by_name name

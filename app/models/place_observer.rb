@@ -1,4 +1,3 @@
-# coding: UTF-8
 class PlaceObserver < ActiveRecord::Observer
 
   def before_update place

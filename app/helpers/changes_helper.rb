@@ -1,4 +1,3 @@
-# coding: UTF-8
 module ChangesHelper
 
   def link_to_taxon taxon

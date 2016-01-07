@@ -1,4 +1,3 @@
-# coding: UTF-8
 class BoltonReferencesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index]
   skip_before_filter :authenticate_user!, :if => :preview?

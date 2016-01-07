@@ -1,4 +1,3 @@
-# coding: UTF-8
 module ReferenceHelper
   def approve_all_button
     if $Milieu.user_is_superadmin? current_user

@@ -1,4 +1,3 @@
-# coding: UTF-8
 module Taxt
   extend ERB::Util
   extend ActionView::Helpers::TagHelper

@@ -1,4 +1,3 @@
-# coding: UTF-8
 class TaxonHistoryItem < ActiveRecord::Base
   include UndoTracker
   belongs_to :taxon

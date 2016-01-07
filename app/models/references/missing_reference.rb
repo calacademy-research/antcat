@@ -1,4 +1,3 @@
-# coding: UTF-8
 class MissingReference < Reference
   attr_accessible :reason_missing
 

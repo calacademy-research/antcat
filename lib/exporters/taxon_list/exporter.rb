@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Exporters::TaxonList::Exporter
   def export directory = 'data/output'
     File.open "#{directory}/antcat_taxon_list.txt", 'w' do |file|

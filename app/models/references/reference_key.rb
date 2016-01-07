@@ -1,4 +1,3 @@
-# coding: UTF-8
 class ReferenceKey
   include ERB::Util
   include ActionView::Helpers::TagHelper

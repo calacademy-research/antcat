@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Species < SpeciesGroupTaxon
   include Formatters::RefactorFormatter
 

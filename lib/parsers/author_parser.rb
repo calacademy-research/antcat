@@ -1,4 +1,3 @@
-# coding: UTF-8
 module Parsers::AuthorParser
 
   def self.parse! string

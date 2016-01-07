@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Place < ActiveRecord::Base
   include UndoTracker
 

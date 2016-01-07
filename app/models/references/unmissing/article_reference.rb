@@ -1,4 +1,3 @@
-# coding: UTF-8
 class ArticleReference < UnmissingReference
   belongs_to :journal
 

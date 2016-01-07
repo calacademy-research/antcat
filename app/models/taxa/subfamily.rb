@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Subfamily < Taxon
   belongs_to :family
   has_many :tribes

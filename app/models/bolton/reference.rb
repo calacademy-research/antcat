@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Bolton::Reference < ActiveRecord::Base
   include ReferenceComparable
   self.table_name = :bolton_references

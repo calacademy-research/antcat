@@ -1,4 +1,3 @@
-# coding: UTF-8
 module Parsers::ReferenceKeyParser
 
   def self.parse string

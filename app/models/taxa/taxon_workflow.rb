@@ -1,4 +1,3 @@
-# coding: UTF-8
 require_relative '../../../lib/workflow_external_table'
 class Taxon < ActiveRecord::Base
   include Workflow

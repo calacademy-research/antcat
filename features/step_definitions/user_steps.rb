@@ -1,4 +1,3 @@
-# coding: UTF-8
 Given /this user exists/ do |table|
   table.hashes.each {|hash| User.create! hash}
 end

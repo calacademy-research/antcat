@@ -1,4 +1,3 @@
-# coding: UTF-8
 module HtmlSelectorsHelpers
   def selector_for(locator)
     case locator

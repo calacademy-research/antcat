@@ -1,4 +1,3 @@
-# coding: UTF-8
 module DedupeSynonyms
 
   def self.dedupe

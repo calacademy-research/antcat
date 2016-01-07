@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Api::TaxaController < ApplicationController
   def index
     @taxa = Taxon.connection.select_all("SELECT id, name_cache AS name FROM taxa ORDER BY name_cache LIMIT 1000")

@@ -1,4 +1,3 @@
-# coding: UTF-8
 class ReferenceDocument < ActiveRecord::Base
   include UndoTracker
 

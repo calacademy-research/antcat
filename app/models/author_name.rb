@@ -1,4 +1,3 @@
-# coding: UTF-8
 class AuthorName < ActiveRecord::Base
   include UndoTracker
 

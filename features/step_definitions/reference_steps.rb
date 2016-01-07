@@ -1,4 +1,3 @@
-# coding: UTF-8
 Given /^(?:this|these) references? exists?$/ do |table|
   Reference.delete_all
 

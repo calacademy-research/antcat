@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Vlad
 
   def Vlad.idate show_progress = false

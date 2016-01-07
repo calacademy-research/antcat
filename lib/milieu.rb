@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Milieu
   def initialize server = nil
     server = :local if server.nil? and Rails.env.test?

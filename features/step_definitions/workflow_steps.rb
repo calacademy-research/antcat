@@ -1,4 +1,3 @@
-# coding: UTF-8
 When /^(?:that )?version tracking is (not)?enabled$/ do |is_not|
   PaperTrail.enabled = !is_not
 end

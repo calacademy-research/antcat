@@ -1,4 +1,3 @@
-# coding: UTF-8
 class BiogeographicRegion
 
   def initialize string

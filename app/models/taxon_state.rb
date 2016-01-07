@@ -1,4 +1,3 @@
-# coding: UTF-8
 class TaxonState < ActiveRecord::Base
   include UndoTracker
   has_paper_trail

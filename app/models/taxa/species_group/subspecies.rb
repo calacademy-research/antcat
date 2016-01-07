@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Subspecies < SpeciesGroupTaxon
   include Formatters::RefactorFormatter
   include UndoTracker

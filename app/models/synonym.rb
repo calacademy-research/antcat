@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Synonym < ActiveRecord::Base
   include UndoTracker
 

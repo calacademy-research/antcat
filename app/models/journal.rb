@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Journal < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
   include UndoTracker

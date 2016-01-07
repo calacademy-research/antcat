@@ -1,4 +1,3 @@
-# coding: UTF-8
 When /^I save my changes$/ do
   step 'I press "Save"'
 end

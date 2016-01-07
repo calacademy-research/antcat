@@ -1,4 +1,3 @@
-# coding: UTF-8
 class ChangesController < ApplicationController
   before_filter :authenticate_editor, except: [:index, :show]
   include UndoTracker

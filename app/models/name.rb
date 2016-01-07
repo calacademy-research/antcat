@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Name < ActiveRecord::Base
   include UndoTracker
   include Formatters::RefactorFormatter

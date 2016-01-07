@@ -1,4 +1,3 @@
-# coding: UTF-8
 class TaxonMother
   include UndoTracker
   # A TaxonMother is responsible for creating/saving

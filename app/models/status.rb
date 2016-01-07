@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Status
 
   def initialize hash

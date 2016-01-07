@@ -1,4 +1,3 @@
-# coding: UTF-8
 class ReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [
     :index, :download, :autocomplete, :show, :endnote_export, :latest_additions]

@@ -1,4 +1,3 @@
-# coding: UTF-8
 class CatalogController < ApplicationController
   before_filter :get_parameters
 

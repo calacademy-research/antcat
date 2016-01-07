@@ -1,4 +1,3 @@
-# coding: UTF-8
 class GenusGroupTaxon < Taxon
   include Formatters::RefactorFormatter
 

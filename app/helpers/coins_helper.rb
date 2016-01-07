@@ -1,4 +1,3 @@
-# coding: UTF-8
 module CoinsHelper
   def coins reference
     klass = reference.to_class 'CoinsHelper'

@@ -1,4 +1,3 @@
-# coding: UTF-8
 if ENV['MY_RUBY_HOME'] && ENV['MY_RUBY_HOME'].include?('rvm')
   begin
     rvm_path     = File.dirname(File.dirname(ENV['MY_RUBY_HOME']))

@@ -1,4 +1,3 @@
-# coding: UTF-8
 Then /^I should (not )?see the reference key "([^"]+)"$/ do |should_not, text|
   selector = should_not ? :should_not : :should
   find(".reference_key", :text => text).send(selector, be_visible)

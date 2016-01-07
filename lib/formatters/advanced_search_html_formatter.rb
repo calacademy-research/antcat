@@ -1,4 +1,3 @@
-# coding: UTF-8
 module Formatters::AdvancedSearchHtmlFormatter
   include Formatters::AdvancedSearchFormatter
   include ActionView::Helpers::TagHelper
