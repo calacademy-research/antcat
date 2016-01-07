@@ -6,7 +6,7 @@ class Exporters::Antweb::Exporter
 
   def export_one id
     taxa = Taxon.find id
-    pp export_taxon taxa
+    export_taxon taxa
   end
 
   def export directory
@@ -43,7 +43,7 @@ class Exporters::Antweb::Exporter
   end
 
   def get_taxa
-    Taxon.joins(protonym: [{ authorship: :reference }]).order(:status).reverse
+    Taxon.joins(protonym: [{authorship: :reference}]).order(:status).reverse
   end
 
   def export_taxon taxon
@@ -77,10 +77,18 @@ class Exporters::Antweb::Exporter
     }
     attributes.merge! current_valid_name: nil
     if taxon.current_valid_taxon_including_synonyms
-       attributes.merge! current_valid_name: taxon.current_valid_taxon_including_synonyms.name.to_s
+      attributes.merge! current_valid_name: taxon.current_valid_taxon_including_synonyms.name.to_s
+    end
+    begin
+      convert_to_antweb_array taxon.add_antweb_attributes(attributes)
+    rescue Exception => exception
+      STDERR.puts "========================================================"
+      STDERR.puts "An error of type #{exception} happened, message is #{exception.message}"
+      STDERR.puts exception.backtrace
+      STDERR.puts "========================================================"
+
     end
 
-    convert_to_antweb_array taxon.add_antweb_attributes(attributes)
   end
 
   def boolean_to_antweb boolean
@@ -153,30 +161,30 @@ class Exporters::Antweb::Exporter
 
   def add_subfamily_to_current_valid subfamily, current_valid_name
     if current_valid_name
-      return subfamily.to_s  + current_valid_name.to_s
+      return subfamily.to_s + current_valid_name.to_s
     end
     nil
   end
 
   private
-    include ActionView::Helpers::TagHelper # content_tag
-    include ActionView::Context # content_tag
+  include ActionView::Helpers::TagHelper # content_tag
+  include ActionView::Context # content_tag
 
-    def export_history taxon
-      $use_ant_web_formatter = true # TODO remove
-      begin
-        taxon = taxon.decorate
-        return content_tag :div, class: 'antcat_taxon' do
-          content = ''.html_safe
-          content << taxon.statistics(include_invalid: false)
-          content << taxon.genus_species_header_notes_taxt
-          content << taxon.headline
-          content << taxon.history
-          content << taxon.child_lists
-          content << taxon.references
-        end
-      ensure
-        $use_ant_web_formatter = false
+  def export_history taxon
+    $use_ant_web_formatter = true # TODO remove
+    begin
+      taxon = taxon.decorate
+      return content_tag :div, class: 'antcat_taxon' do
+        content = ''.html_safe
+        content << taxon.statistics(include_invalid: false)
+        content << taxon.genus_species_header_notes_taxt
+        content << taxon.headline
+        content << taxon.history
+        content << taxon.child_lists
+        content << taxon.references
       end
+    ensure
+      $use_ant_web_formatter = false
     end
+  end
 end
