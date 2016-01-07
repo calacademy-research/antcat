@@ -1,4 +1,3 @@
-# coding: UTF-8
 desc "Display nomen nudums"
 task nomen_nudums: :environment do
 

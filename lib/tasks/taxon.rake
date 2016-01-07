@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'factory_girl'
 
 desc "Create a new genus that is waiting to be approved"

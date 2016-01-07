@@ -1,4 +1,3 @@
-# coding: UTF-8
 namespace :references do
   desc 'Check URLs'
   task :check_urls => :environment do

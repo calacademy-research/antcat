@@ -1,4 +1,3 @@
-# coding: UTF-8
 namespace :antweb do
 
   desc "Export taxonomy"
