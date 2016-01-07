@@ -5,7 +5,7 @@ git clone https://github.com/calacademy/antcat.git
 cd antcat
 cp config/database.yml.example config/database.yml # edit database.yml
 cp config/server.yml.example config/server.yml
-cp config/secrets.yml.example config/secrets.yml #TODO this file does not exist in the main repo
+cp config/secrets.yml.example config/secrets.yml
 ```
 
 ###Install dependencies
