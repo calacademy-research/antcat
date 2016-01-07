@@ -18,4 +18,3 @@
         = render 'display', :reference => reference if !reference.new_record? && reference.errors.empty?
         - if user_can_edit?
           = render 'edit', reference: reference, possible_duplicate: @possible_duplicate
-        -#= render 'shared/coins', :reference => reference if !reference.new_record? && reference.errors.empty? # commented out becuase the partial is empty TODO fix?
