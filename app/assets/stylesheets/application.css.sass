@@ -49,10 +49,6 @@ a, a:active, a:focus, a:visited
     color: $color_link_highlight
     background-color: $color_link_highlight_background
 
-a
-//  @include hover-link
-//  @import "compass/typography/links/hover-link"
-
 hr
   padding: 0
   margin: 0
@@ -245,12 +241,18 @@ img.help_icon
   padding-bottom: 3px
   overflow: auto
 
+// equally space out images
 #site_footer
   @include margins
-  .images
-    padding-bottom: 5px
+  text-align: justify
+
+  div
+    width: 100px
+    display: inline-block
+    vertical-align: middle
+    *display: inline // ie
+    zoom: 1 // ie
+  &:after
+    content: ""
     width: 100%
-    td
-      vertical-align: middle
-
-
+    display: inline-block
