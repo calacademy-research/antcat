@@ -47,6 +47,7 @@ class Exporters::Antweb::Exporter
   end
 
   def export_taxon taxon
+    puts ("Processing: #{taxon.id}")
     Progress.tally_and_show_progress 100
 
     reference = taxon.protonym.authorship.reference
@@ -82,7 +83,7 @@ class Exporters::Antweb::Exporter
     begin
       convert_to_antweb_array taxon.add_antweb_attributes(attributes)
     rescue Exception => exception
-      STDERR.puts "========================================================"
+      STDERR.puts "========================#{taxon.id}================================"
       STDERR.puts "An error of type #{exception} happened, message is #{exception.message}"
       STDERR.puts exception.backtrace
       STDERR.puts "========================================================"
