@@ -4,8 +4,6 @@ class ReferencesController < ApplicationController
   before_filter :set_reference, only: [
     :show, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
 
-  skip_before_filter :authenticate_editor, if: :preview?
-
   # TODO make controller more RESTful
   def index
     params[:q] ||= ''

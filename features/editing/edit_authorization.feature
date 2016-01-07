@@ -37,12 +37,3 @@ Feature: Editing a taxon with authorization constraints
     When I go to the catalog page for "Calyptites"
     Then I should see an "Edit" button
     And I should see a "Review change" button
-
-  @preview
-  Scenario: Trying to edit without catalog editing rights on preview server
-    Given there is a genus "Calyptites"
-    When I go to the catalog page for "Calyptites"
-    And I press "Edit"
-    Then I should be on the edit page for "Calyptites"
-
-

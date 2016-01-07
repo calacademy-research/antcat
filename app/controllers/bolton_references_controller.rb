@@ -1,6 +1,5 @@
 class BoltonReferencesController < ApplicationController
   before_filter :authenticate_user!, :except => [:index]
-  skip_before_filter :authenticate_user!, :if => :preview?
 
   def index
     unless params[:match_status_auto].present? ||

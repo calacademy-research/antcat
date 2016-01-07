@@ -3,10 +3,6 @@ class ApplicationController < ActionController::Base
   before_filter :save_location
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  def preview?
-    $Milieu.preview?
-  end
-
   def save_location
     session[:user_return_to] = request.url unless request.url =~ %r{/users/}
   end

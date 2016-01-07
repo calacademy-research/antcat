@@ -1,6 +1,5 @@
 class ConvertToSubspeciesController < ApplicationController
   before_filter :authenticate_editor
-  skip_before_filter :authenticate_editor, if: :preview?
 
   def new
     @taxon = Taxon.find params[:taxa_id]

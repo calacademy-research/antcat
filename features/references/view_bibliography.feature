@@ -50,15 +50,6 @@ Feature: View bibliography
     When I go to the references page
     Then I should see a "PDF" link
 
-  @preview
-  Scenario: Even in preview environment, give access to our private PDFs
-    Given these references exist
-      | authors    | year | citation_year | title     | citation | cite_code | possess | date     |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 |
-    And that the entry has a URL that's on our site
-    When I go to the references page
-    Then I should see a "PDF" link
-
   Scenario: Viewing an entry with a URL to a document on our site, the user isn't logged in, but it's public
     Given these references exist
       | authors    | year | citation_year | title     | citation | date     |
@@ -131,4 +122,3 @@ Feature: View bibliography
     Then I should see "Public"
     And I should see "Editor"
     And I should see "Taxonomy"
-

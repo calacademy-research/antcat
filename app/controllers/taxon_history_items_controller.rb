@@ -2,7 +2,6 @@ class TaxonHistoryItemsController < ApplicationController
   include UndoTracker
 
   before_filter :authenticate_editor
-  skip_before_filter :authenticate_editor, if: :preview?
 
   def update
     @item = TaxonHistoryItem.find params[:id]

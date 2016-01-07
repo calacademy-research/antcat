@@ -8,23 +8,9 @@ class Milieu
     @server == :production
   end
 
-  def preview?
-    @server == :preview
-  end
-
-  def previewize string
-    return string + ' (preview)' if preview?
-    string
-  end
-
   def self.create
     contents = read_server_config_file
-    case contents
-    when 'preview'
-      SandboxMilieu.new contents
-    else
-      RestrictedMilieu.new contents
-    end
+    RestrictedMilieu.new contents
   end
 
   def self.read_server_config_file
@@ -61,32 +47,6 @@ class RestrictedMilieu < Milieu
 
   def user_can_approve_changes? user
     user && user.can_approve_changes?
-  end
-end
-
-class SandboxMilieu < Milieu
-  def title
-    'Preview of AntCat'
-  end
-
-  def user_can_upload_pdfs? _
-    false
-  end
-
-  def user_is_editor? user
-    true
-  end
-
-  def user_can_edit? _
-    true
-  end
-
-  def user_can_review_changes? user
-    true
-  end
-
-  def user_can_approve_changes? _
-    true
   end
 end
 

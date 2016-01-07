@@ -1,6 +1,5 @@
 class MissingReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [:index]
-  skip_before_filter :authenticate_editor, if: :preview?
 
   def index
     ids = Protonym.joins(authorship: :reference)

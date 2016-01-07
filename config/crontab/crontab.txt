@@ -1,4 +1,4 @@
-# This is the output of crontab -l on production and preview
+# This is the output of crontab -l on production
 # It reindexes the Solr fulltext database every 24 hours
 # at 7am UTC = midnight PST
 # This crontab is overwritten each time Engine Yard's "Apply" button

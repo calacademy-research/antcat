@@ -30,15 +30,3 @@ Feature: Delete reference
 #    * I press the "Delete" button
 #    # can't test contents of alert box
 #    Then I should see "Psyche 2:1"
-
-  @preview
-  Scenario: Delete a reference when not logged in, but in preview mode
-    Given these references exist
-      | authors    | citation   | year | title |
-      | Fisher, B. | Psyche 2:1 | year | title |
-    And I am not logged in
-    When I go to the references page
-    * I will confirm on the next step
-    * I follow "edit"
-    * I press the "Delete" button
-    Then I should not see "Fisher, B."

@@ -1,6 +1,5 @@
 class SynonymsController < ApplicationController
   before_filter :authenticate_editor
-  skip_before_filter :authenticate_editor, if: :preview?
 
   def create
     taxon = Taxon.find params[:taxa_id]

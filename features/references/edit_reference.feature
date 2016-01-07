@@ -29,20 +29,6 @@ Feature: Edit reference
     Then I should be on the references page
     And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
-  @preview
-  Scenario: Edit a reference in the preview environment
-    Given these dated references exist
-      | authors | citation   | cite_code | created_at  | date     | possess | title | updated_at  | year | doi |
-      | authors | Psyche 5:3 | CiteCode  | TODAYS_DATE | 20100712 | Possess | title | TODAYS_DATE | 2010 |     |
-    Given I am not logged in
-    When I go to the references page
-    * I follow "edit" in the first reference
-    * I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B." in the first reference
-    * I fill in "reference_title" with "Ant Title" in the first reference
-    * I save my changes to the first reference
-    Then I should be on the references page
-    And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
-
   Scenario: Inserting an author name into the middle of the list
     Given I am logged in
     And these dated references exist
@@ -260,7 +246,6 @@ Feature: Edit reference
     And I save my changes to the first reference
     Then I should see "Nesting reference can't point to itself"
 
-
   #Scenario: Edit a nested reference to remove its nestedness, delete the nestee, go back to the first one and set it as nested
     #Given I am logged in
     #And these references exist
@@ -301,4 +286,3 @@ Feature: Edit reference
     When I press the "Save" button
     Then I should not see any error messages
     And I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 "
-

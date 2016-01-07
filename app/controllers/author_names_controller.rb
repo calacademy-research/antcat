@@ -1,6 +1,5 @@
 class AuthorNamesController < ApplicationController
   before_filter :authenticate_editor
-  skip_before_filter :authenticate_editor, if: :preview?
 
   def update
     @author_name = AuthorName.find params[:id]

@@ -9,14 +9,6 @@ Before do
   $Milieu = RestrictedMilieu.new
 end
 
-Before '@preview' do
-  $Milieu = SandboxMilieu.new :preview
-end
-
-After '@preview' do
-  $Milieu = RestrictedMilieu.new
-end
-
 # from http://makandracards.com/makandra/1709-single-step-and-slow-motion-for-cucumber-scenarios-using-javascript-selenium
 Before '@slow_motion' do
   @slow_motion = true
