@@ -23,9 +23,12 @@ ActiveAdmin.register_page "Dashboard" do
         column("Item") { |v| v.item }
         column("Type") { |v| v.item_type.underscore.humanize }
         column("Modified at") { |v| v.created_at.to_s :long }
-        column "User" do |v|
-          link_to User.find(v.whodunnit).email, [:admin, User.find(v.whodunnit)]
-        end
+
+        # This used to work; leaving commented out code because this is still very much WIP
+        # `ActionView::Template::Error: Couldn't find User with 'id'=6`
+        #column "User" do |v|
+        #  link_to User.find(v.whodunnit).email, [:admin, User.find(v.whodunnit)]
+        #end
       end
     end
 
