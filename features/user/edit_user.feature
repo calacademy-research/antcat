@@ -66,7 +66,7 @@ Feature: Editing a user
     When I follow "Admin"
     Then I should see "Dashboard"
 
-  Scenario: When admins logout, it should redirect to antcat root
+  Scenario: When admins logout, it should redirect to AntCat root
     Given I log in as a superadmin
     When I go to the main page
     When I follow "Admin"
@@ -74,7 +74,7 @@ Feature: Editing a user
     When I follow "Logout"
     Then I should see "An Online Catalog of the Ants of the World"
 
-  Scenario: Non-admins should be bounced from admin pages to antcat root
+  Scenario: Non-admins should be bounced from admin pages to AntCat root
     Given I am logged in
     When I go to the useradmin page
     Then I should be on the main page
