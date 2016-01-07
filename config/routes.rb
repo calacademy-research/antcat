@@ -91,10 +91,6 @@ AntCat::Application.routes.draw do
   devise_for :users, :controllers => { :invitations => 'users/invitations' }
   resources :users, only: [:index]
 
-  namespace :api, defaults: {format: :json} do
-    resources :taxa
-  end
-
   resources :antweb_data, only: [:index]
 
   resources :tooltips, only: [:index, :show, :new, :edit, :create, :update, :destroy] do

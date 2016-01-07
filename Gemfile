@@ -57,12 +57,9 @@ group :development do
 end
 
 group :test do
-  # This webdriver works with firefox as of v34. If firefox popus up without a URL,
-  # check the latest
   gem 'cucumber-rails', require: false
-  gem 'selenium-webdriver', '>= 2.48'
+  gem 'selenium-webdriver', '>= 2.48' # works with firefox as of v34
   gem 'capybara', '>= 2.2.0'
-  gem 'cucumber-api-steps', require: false
   gem 'database_cleaner'
   gem 'webmock'
   gem 'capybara-webkit'

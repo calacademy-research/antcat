@@ -7,7 +7,6 @@ require 'factory_girl'
 require 'cucumber/rails'
 require 'cucumber/formatter/progress'
 require 'cucumber/rspec/doubles'
-require 'cucumber/api_steps'
 
 require 'capybara-screenshot/cucumber'
 require 'webmock/cucumber'
