@@ -24,14 +24,6 @@ describe Taxon do
       taxon.update_current_valid_taxon
       expect(taxon.current_valid_taxon).to eq(senior)
     end
-    it "should handle when none are valid, in preparation for a Vlad run" do
-      invalid_senior = create_genus status: 'homonym'
-      another_invalid_senior = create_genus status: 'homonym'
-      taxon = create_synonym invalid_senior
-      Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: taxon
-      taxon.update_current_valid_taxon
-      expect(taxon.current_valid_taxon).to be_nil
-    end
     it "should handle when there's a synonym of a synonym" do
       senior_synonym = create_genus
       synonym = create_genus status: 'synonym'
