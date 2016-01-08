@@ -20,8 +20,6 @@ class AntCat.SelectorTooltips
       @createTooltip selector, title, id
 
   createTooltip: (selector, title, id, test_tooltip=false) =>
-    disable_edit_link = false # TODO add this, currently it's not possible to disable
-
     iconElement = $(@_createIcon title, id)
     iconElement.addClass(SELECTOR_TEST_TOOLTIP_CLASS) if test_tooltip
 
@@ -29,7 +27,7 @@ class AntCat.SelectorTooltips
 
   removeAllSelectorTestTooltips: -> $(".#{SELECTOR_TEST_TOOLTIP_CLASS}").remove()
 
-  _createIcon: (title, id) => # TODO move the link from this function
+  _createIcon: (title, id) =>
     """<a class="#{SELECTOR_TOOLTIP_CLASS}" href="/tooltips/#{id}">\
        <img class="help_icon tooltip #{SELECTOR_TOOLTIP_CLASS}" \
        title="#{title}" src="/assets/help.png" alt="Help" /></a>"""

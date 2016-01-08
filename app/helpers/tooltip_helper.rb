@@ -16,7 +16,7 @@ module TooltipHelper
 
   # Call in views to render hard-coded tooltips.
   # See explanation of key/scope in #parse_lookup_params
-  # Similar logic is duplicated in `tooltips.coffee` TODO fix?
+  # Similar logic is duplicated in `tooltips.coffee`
   def tooltip_icon key_param, scope: nil, disable_edit_link: false
     key = parse_lookup_params key_param, scope: scope
     tooltip = Tooltip.find_by(key: key)
@@ -25,7 +25,6 @@ module TooltipHelper
     text =  if tooltip
               tooltip.try(:text) || "No tooltip text set. Click icon to edit."
             else
-              # TODO take into account `disable_edit_link`
               "Could not find tooltip with key '#{key}'. Click icon to create."
             end
     tooltip_icon = image_tag 'help.png', class: 'help_icon tooltip', title: text
@@ -71,7 +70,6 @@ module TooltipHelper
     #   :authors, scope: [:references, :books]   # both returns 'references.books.authors'
     def parse_lookup_params key_param, scope: nil
       if scope.present?
-        # Wrap `scope` to allow calling with either a single string/symbol or an array.
         scope_string = Array.wrap(scope).join(".")
         "#{scope_string}.#{key_param}"
       else
