@@ -19,6 +19,4 @@
             %td#gender_field
               = name_form.label :gender
               = name_form.select :gender, [ [ 'unknown', nil ], 'masculine', 'feminine', 'neuter' ]
-      .name_description
-        = name_description taxon
-
+      .name_description= taxon.decorate.name_description

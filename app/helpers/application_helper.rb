@@ -68,47 +68,6 @@ module ApplicationHelper
                                         ['containing', 'c']], search_type || 'bw')
   end
 
-  def name_description taxon
-    string =
-      case taxon
-      when Subfamily
-        'subfamily'
-      when Tribe
-        string = "tribe of "
-        parent = taxon.subfamily
-        string << (parent ? parent.name.to_html : '(no subfamily)')
-      when Genus
-        string = "genus of "
-        parent = taxon.tribe ? taxon.tribe : taxon.subfamily
-        string << (parent ? parent.name.to_html : '(no subfamily)')
-      when Species
-        string = "species of "
-        parent = taxon.parent
-        string << parent.name.to_html
-       when Subgenus
-         string = "subgenus of "
-         parent = taxon.parent
-         string << parent.name.to_html
-      when Subspecies
-        string = "subspecies of "
-        parent = taxon.species
-        string << (parent ? parent.name.to_html : '(no species)')
-      else
-        ''
-      end
-
-    # Todo: Joe test this case
-    if taxon[:unresolved_homonym] == true && taxon.new_record?
-      string = " secondary junior homonym of #{string}"
-    elsif !taxon[:collision_merge_id].nil? && taxon.new_record?
-      target_taxon = Taxon.find_by_id(taxon[:collision_merge_id])
-      string = " merge back into original #{target_taxon.name_html_cache}"
-    end
-
-    string = "new #{string}" if taxon.new_record?
-    string.html_safe
-  end
-
   def pluralize_with_delimiters count, singular, plural = nil
     word = if count == 1
       singular
