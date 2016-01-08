@@ -41,7 +41,7 @@ class TaxonDecorator::Header
           content << content_tag(:span, " see ", class: 'see')
           content << content_tag(:span, header_name_for_taxon(@taxon.current_valid_taxon))
         end
-        content << link_to_edit_taxon
+        content
       end
     end
 

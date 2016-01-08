@@ -11,6 +11,7 @@ class TaxonDecorator < ApplicationDecorator
   delegate_all
 
   require_relative 'taxon/child_list'
+  require_relative 'taxon/editor_buttons'
   require_relative 'taxon/header'
   require_relative 'taxon/headline'
   require_relative 'taxon/history'
@@ -19,6 +20,10 @@ class TaxonDecorator < ApplicationDecorator
   def link_to_taxon
     label = taxon.name.to_html_with_fossil(taxon.fossil?)
     helpers.content_tag :a, label, href: %{/catalog/#{taxon.id}}
+  end
+
+  def editor_buttons
+    TaxonDecorator::EditorButtons.new(taxon, get_current_user).editor_buttons
   end
 
   def header
@@ -170,6 +175,9 @@ end
 # Example mentioned above. When ("if", heh) this becomes outdated and it takes more
 # than 1 minute to update, please remove. From Aneuretinae:
 #
+# ---------- edit_buttons ----------
+# Edit Delete
+#
 # ---------- header ----------
 # Aneuretinae Emery, 1913 valid
 #
@@ -181,7 +189,7 @@ end
 # # empty
 #
 # ---------- headline ----------
-# Aneuretini Emery, 1913a: 6. Type-genus: Aneuretus. AntWeb AntWiki Edit Delete
+# Aneuretini Emery, 1913a: 6. Type-genus: Aneuretus. AntWeb AntWiki
 #
 # ---------- taxon.history_items.each { ... } ----------
 # Aneuretinae as junior synonym of Dolichoderinae: Baroni Urbani, 1989: 147. Aneuretinae as ...

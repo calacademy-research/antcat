@@ -21,10 +21,6 @@ class TaxonDecorator::Headline
       string << ' ' << link_to_other_site if link_to_other_site
       string << ' ' << link_to_antwiki(@taxon) if link_to_antwiki(@taxon)
       string << ' ' << link_to_hol(@taxon) if link_to_hol(@taxon)
-      string << ' ' << link_to_edit_taxon if link_to_edit_taxon
-      string << ' ' << link_to_delete_taxon if link_to_delete_taxon
-      string << ' ' << link_to_review_change if link_to_review_change
-
       string
     end
   end
@@ -144,20 +140,6 @@ class TaxonDecorator::Headline
     def headline_notes
       return unless @taxon.headline_notes_taxt.present?
       detaxt @taxon.headline_notes_taxt
-    end
-
-    def link_to_review_change
-      if @taxon.can_be_reviewed_by?(@user) && @taxon.latest_change
-        parameters = { 'data-review-location' => "/changes/#{@taxon.latest_change.id}" }
-        button 'Review change', 'review_button', parameters
-      end
-    end
-
-    def link_to_delete_taxon
-      if @user.try :is_superadmin?
-        parameters = { 'data-delete-location' => "/taxa/#{@taxon.id}/delete", 'data-taxon-id' => "#{@taxon.id}" }
-        button 'Delete', 'delete_button', parameters
-      end
     end
 
 end

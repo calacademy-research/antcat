@@ -2,12 +2,6 @@ module RefactorHelper
 
   # $use_ant_web_formatter is not optimal, but...
 
-  def link_to_edit_taxon
-    if @taxon.can_be_edited_by? @user
-      button 'Edit', 'edit_button', 'data-edit-location' => "/taxa/#{@taxon.id}/edit"
-    end
-  end
-
   def link_to_taxon taxon
     if $use_ant_web_formatter
       link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
