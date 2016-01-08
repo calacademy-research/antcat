@@ -2,10 +2,9 @@ module Formatters::AdvancedSearchHtmlFormatter
   include Formatters::AdvancedSearchFormatter
   include ActionView::Helpers::TagHelper
   include ActionView::Context
-  include RefactorHelper
 
   def format_name taxon
-    link_to_taxon taxon
+    taxon.decorate.link_to_taxon
   end
 
   def reference_id reference
