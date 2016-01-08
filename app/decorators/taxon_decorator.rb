@@ -10,13 +10,6 @@
 class TaxonDecorator < ApplicationDecorator
   delegate_all
 
-  require_relative 'taxon/child_list'
-  require_relative 'taxon/editor_buttons'
-  require_relative 'taxon/header'
-  require_relative 'taxon/headline'
-  require_relative 'taxon/history'
-  require_relative 'taxon/statistics'
-
   def link_to_taxon
     label = taxon.name.to_html_with_fossil(taxon.fossil?)
     helpers.content_tag :a, label, href: %{/catalog/#{taxon.id}}
