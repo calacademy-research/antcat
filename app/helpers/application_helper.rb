@@ -45,18 +45,6 @@ module ApplicationHelper
     end
   end
 
-  def feedback_link
-    mail_to 'sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: <<-MSG.squish
-      Thanks for helping us make AntCat better by replacing this message with your comments,
-      suggestions, and questions. You may also want to check out the AntCat Google group at
-      https://groups.google.com/forum/?fromgroups#!forum/antcat where we discuss the project.
-
-      Stan Blum
-      California Academy of Sciences
-      http://antcat.org
-    MSG
-  end
-
   def rank_options_for_select value='All'
     string =  option_for_select('All', 'All', value)
     string << Rank.ranks.reject { |rank| rank.string == 'family'}.reduce("") do |options, rank|

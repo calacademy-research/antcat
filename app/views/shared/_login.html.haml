@@ -1,3 +1,14 @@
+:ruby
+  feedback_body = <<-MSG.squish
+    Thanks for helping us make AntCat better by replacing this message with your comments,
+    suggestions, and questions. You may also want to check out the AntCat Google group at
+    https://groups.google.com/forum/?fromgroups#!forum/antcat where we discuss the project.
+
+    Stan Blum
+    California Academy of Sciences
+    http://antcat.org
+  MSG
+
 #login
   .link
     - items = []
@@ -8,7 +19,7 @@
         - items << link_to('Admin', admin_root_path)
     - else
       - items << link_to('Login', '#', class: :link)
-    - items << feedback_link
+    - items << mail_to('sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: feedback_body)
     = make_link_menu items
 
   .form
