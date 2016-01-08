@@ -81,7 +81,7 @@ describe ReferencesController do
         before do
           allow_any_instance_of(ReferenceDocument).to receive(:actual_url)
             .and_return "http://localhost/file.pdf"
-          allow_any_instance_of(ReferenceDocument).to receive(:downloadable_by?).and_return true
+          allow_any_instance_of(ReferenceDocument).to receive(:downloadable?).and_return true
         end
 
         it "redirects to the file" do
@@ -92,7 +92,7 @@ describe ReferencesController do
 
       context "without access" do
         before do
-          allow_any_instance_of(ReferenceDocument).to receive(:downloadable_by?).and_return false
+          allow_any_instance_of(ReferenceDocument).to receive(:downloadable?).and_return false
         end
 
         it "redirects to the file" do

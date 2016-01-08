@@ -47,7 +47,7 @@ describe ReferenceKey do
       allow(@reference).to receive(:url).and_return 'example.com'
     end
     it "should create a link to the reference" do
-      allow(@reference).to receive(:downloadable_by?).and_return true
+      allow(@reference).to receive(:downloadable?).and_return true
       expect(@reference.key.to_link(nil)).to eq(
         %{<span class="reference_key_and_expansion">} +
           %{<a class="reference_key" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
@@ -63,7 +63,7 @@ describe ReferenceKey do
       )
     end
     it "should create a link to the reference without the PDF link if the user isn't logged in" do
-      allow(@reference).to receive(:downloadable_by?).and_return false
+      allow(@reference).to receive(:downloadable?).and_return false
       expect(@reference.key.to_link(nil)).to eq(
         %{<span class="reference_key_and_expansion">} +
           %{<a class="reference_key" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
@@ -77,7 +77,7 @@ describe ReferenceKey do
     end
     describe "When expansion is not desired" do
       it "should not include the PDF link, if not available to the user" do
-        allow(@reference).to receive(:downloadable_by?).and_return false
+        allow(@reference).to receive(:downloadable?).and_return false
         expect(@reference.key.to_link(nil, expansion: false)).to eq(
           %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
           %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
@@ -86,7 +86,7 @@ describe ReferenceKey do
         )
       end
       it "should include the PDF link, if available to the user" do
-        allow(@reference).to receive(:downloadable_by?).and_return true
+        allow(@reference).to receive(:downloadable?).and_return true
         expect(@reference.key.to_link(nil, expansion: false)).to eq(
           %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
           %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +

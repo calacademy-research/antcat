@@ -36,10 +36,6 @@ class ReferenceDocument < ActiveRecord::Base
   end
 
   def downloadable?
-    downloadable_by? nil
-  end
-
-  def downloadable_by? user = nil
     url.present? && !hosted_by_antbase? && !hosted_by_hol?
   end
 
