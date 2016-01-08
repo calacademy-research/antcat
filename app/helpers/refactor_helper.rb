@@ -1,6 +1,9 @@
-module RefactorHelper
+# This is a relic from migrating all Formatters to Decorators. Adding global variables
+# is not something I (jonk) think is a Good Idea(tm), but it made rafactoring so much easier
+# and $use_ant_web_formatter only enabled in 'lib/exporters/antweb/exporter.rb', which is
+# run on a machine separate from production. Hopefully we can get rid of this some day.
 
-  # $use_ant_web_formatter is not optimal, but...
+module RefactorHelper
 
   def link_to_taxon taxon
     if $use_ant_web_formatter
