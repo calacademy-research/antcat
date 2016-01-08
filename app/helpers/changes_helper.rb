@@ -1,10 +1,5 @@
 module ChangesHelper
 
-  def link_to_taxon taxon
-    label = taxon.name.to_html_with_fossil(taxon.fossil?)
-    content_tag :a, label, href: %{/catalog/#{taxon.id}}
-  end
-
   def format_taxon_name name
     name.name_html.html_safe
   end
