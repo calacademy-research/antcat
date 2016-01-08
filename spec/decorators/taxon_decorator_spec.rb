@@ -200,7 +200,7 @@ describe TaxonDecorator do
 
   describe "Taxon link class methods" do
     describe "Creating a link from AntCat to a taxon on AntCat" do
-      it "should creat the link" do
+      it "should create the link" do
         genus = create_genus 'Atta'
         expect(genus.decorate.link_to_taxon).to eq(%{<a href="/catalog/#{genus.id}"><i>Atta</i></a>})
       end
