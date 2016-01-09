@@ -4,6 +4,15 @@ describe Journal do
 
   it { should validate_presence_of(:name) }
 
+  describe "importing" do
+    context "invalid" do
+      it "silently returns without raising if name is blank" do
+        expect(Journal.import name: "").to be nil
+        expect { Journal.import name: ""}.to_not raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+  end
+
   describe "searching" do
     it "should do fuzzy matching of journal names" do
       FactoryGirl.create(:journal, :name => 'American Bibliographic Proceedings')

@@ -7,11 +7,10 @@ class Publisher < ActiveRecord::Base
 
   attr_accessible :name, :place, :place_id
 
-  def self.import data
-    return unless data[:name].present?
-
-    place = Place.import data[:place]
-    find_or_create_by!(name: data[:name], place_id: place.id)
+  def self.import(name:, place:)
+    return unless name.present?
+    place_record = Place.find_or_create_by!(name: place)
+    find_or_create_by!(name: name, place: place_record)
   end
 
   def self.import_string string

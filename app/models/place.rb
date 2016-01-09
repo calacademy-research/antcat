@@ -6,8 +6,4 @@ class Place < ActiveRecord::Base
 
   attr_accessible :name
 
-  def self.import name
-    find_or_create_by!(name: name)
-  end
-
 end
