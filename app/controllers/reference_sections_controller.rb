@@ -11,7 +11,7 @@ class ReferenceSectionsController < ApplicationController
       subtitle_taxt: subtitle_taxt,
       references_taxt: references_taxt
     )
-    render_json false
+    render_json is_new: false
   end
 
   def create
@@ -25,7 +25,7 @@ class ReferenceSectionsController < ApplicationController
       subtitle_taxt: subtitle_taxt,
       references_taxt: references_taxt
     )
-    render_json true
+    render_json is_new: true
   end
 
   def destroy
@@ -36,7 +36,7 @@ class ReferenceSectionsController < ApplicationController
   end
 
   private
-    def render_json is_new
+    def render_json(is_new:)
       json = {
         isNew: is_new,
         content: render_to_string(partial: 'reference_sections/panel', locals: { item: @item }),

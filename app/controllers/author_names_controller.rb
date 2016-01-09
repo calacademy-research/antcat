@@ -12,7 +12,7 @@ class AuthorNamesController < ApplicationController
       return
     end
 
-    render_json false
+    render_json is_new: false
   end
 
   def create
@@ -22,7 +22,7 @@ class AuthorNamesController < ApplicationController
     if @author_name.errors.empty?
       @author_name.touch_with_version
     end
-    render_json true
+    render_json is_new: true
   end
 
   # From URL: : "/authors/11282/author_names/194557"
@@ -40,7 +40,7 @@ class AuthorNamesController < ApplicationController
   end
 
   private
-    def render_json is_new
+    def render_json(is_new:)
       json = {
           isNew: is_new,
           content: render_to_string(partial: 'author_names/panel', locals: { author_name: @author_name }),
