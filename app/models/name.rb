@@ -45,9 +45,15 @@ class Name < ActiveRecord::Base
     @_words ||= name.split ' '
   end
 
+  # Feel free to refactor this. It was written to replace code that 1) made some initial
+  # parsing using Citrus 2) dynamically called `name_class.parse_words(words)` depending on
+  # what Citrus returned 3) which initiated [depending on subclass] a long call chain involving
+  # importer methods that we really had to remove.
+  # Added in ac9a8a; refer to the change log for more commit ids.
+  #
   # Irregular flag allows parsing of names that don't conform to naming standards so we can support bad spellings.
   def self.parse string, irregular=false
-   words = string.split " "
+    words = string.split " "
 
     name_type = case words.size
                 when 1 then :genus_or_tribe_subfamily

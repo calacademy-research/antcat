@@ -172,7 +172,7 @@ class ReferenceDecorator < ApplicationDecorator
       string.html_safe
     end
 
-    def format_date input # TODO store parsed value in the database
+    def format_date input # TODO? store denormalized value in the database
       return input if input.length < 4
 
       match = input.match /(.*?)(\d{4,8})(.*)/

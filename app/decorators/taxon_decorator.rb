@@ -5,7 +5,7 @@
 # December 2015: All "sub decorators" (such as ChildList, Headline) were originally intended
 # for isolating logical chunks into smaller units only while migrating all Formatters to
 # Decorators (refer to the change log for commit ids). The code is not terrible (and surely
-# an improvement), but we still need that encapsulation.
+# an improvement), but we still need (want) that encapsulation.
 
 class TaxonDecorator < ApplicationDecorator
   delegate_all
