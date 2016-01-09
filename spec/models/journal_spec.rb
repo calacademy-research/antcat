@@ -6,14 +6,11 @@ describe Journal do
       expect(Journal.import(:name => 'Antucopia').name).to include('Antucopia')
     end
 
-    it "should raise on invalid input", pending: true do
-      pending "Import test - not worth maintaining at present."
+    it "should raise on invalid input" do
       expect {Journal.import(:name => '')}.to raise_error
     end
 
-    it "should reuse an existing journal", pending: true do
-      pending "Import test - not worth maintaining at present."
-
+    it "should reuse an existing journal" do
       Journal.import(:name => 'Antucopia')
       Journal.import(:name => 'Antucopia')
       expect(Journal.count).to eq(1)

@@ -18,7 +18,8 @@ describe Publisher do
     end
 
     it "should raise an error if name is supplied but no place" do
-      expect {Publisher.import(:name => 'Wiley')}.to raise_error
+      expect {Publisher.import(:name => 'Wiley')}.to raise_error(
+        ActiveRecord::RecordInvalid)
     end
 
   end

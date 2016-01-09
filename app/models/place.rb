@@ -7,9 +7,7 @@ class Place < ActiveRecord::Base
   attr_accessible :name
 
   def self.import name
-    place = find_or_create_by(name: name)
-    raise unless place.valid?
-    place
+    find_or_create_by!(name: name)
   end
 
 end

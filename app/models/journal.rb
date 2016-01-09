@@ -5,14 +5,8 @@ class Journal < ActiveRecord::Base
   validates_presence_of :name
   has_paper_trail meta: { change_id: :get_current_change_id }
 
-  def self.import name
-    return unless name.present?
-    journal = Journal.where('name = ?', name).first_or_create! do |new_journal|
-      new_journal.name = name
-    end
-
-    raise unless journal.valid?
-    journal
+  def self.import(name:)
+    find_or_create_by!(name: name)
   end
 
   def self.search term = ''
