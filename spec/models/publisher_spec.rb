@@ -1,9 +1,9 @@
 require 'spec_helper'
-# include RSpec::Rails::Mocks
-# include Rspec::Mocks::ExampleMethods
-include RSpec::Rails
+
 describe Publisher do
 
+  it { should validate_presence_of(:name) }
+  it { should belong_to(:place) }
 
   describe "importing" do
     it "should create and return the publisher" do
@@ -21,7 +21,6 @@ describe Publisher do
       expect {Publisher.import(:name => 'Wiley')}.to raise_error(
         ActiveRecord::RecordInvalid)
     end
-
   end
 
   describe "searching" do
@@ -55,18 +54,6 @@ describe Publisher do
     it "should format correctly if there is no place" do
       expect(Publisher.create!(:name => "Wiley").to_s).to eq('Wiley')
     end
-  end
-
-  describe 'validation' do
-    it 'should require a name but not a place' do
-      expect(Publisher.new).not_to be_valid
-      expect(Publisher.new(:name => 'name')).to be_valid
-    end
-  end
-
-  it 'belongs to a Place' do
-    place = Place.create! :name => 'Bogota'
-    publisher = Publisher.new :name => 'Wiley', :place => place
   end
 
   describe "Versioning" do
