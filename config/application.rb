@@ -62,6 +62,8 @@ module AntCat
     config.assets.enabled = true
     # Note: this may have been fixed after removing a bunch of code.
     # Uncommented to check. TODO remove or restore
+    # Update: seems to work, but editing files making calls to Citrus/Parsers::
+    # may require restarting the server. TODO investigate further.
     # We were not reloading /lib properly (despite the above "autoload paths" invocation.)
     # This voodoo does it.
     #
