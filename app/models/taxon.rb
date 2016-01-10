@@ -281,13 +281,7 @@ class Taxon < ActiveRecord::Base
     current_valid_taxon
   end
 
-  # Was used for export; probably safe to remove; we no longer want
-  # current valid name unless it's distinct from self.
-  def current_valid_taxon_including_synonyms_and_self
-    current_valid_taxon_including_synonyms || self
-  end
-
-  def find_most_recent_valid_senior_synonym
+  private def find_most_recent_valid_senior_synonym
     return unless senior_synonyms
     senior_synonyms.order('created_at DESC').each do |senior_synonym|
       return senior_synonym if !senior_synonym.invalid?

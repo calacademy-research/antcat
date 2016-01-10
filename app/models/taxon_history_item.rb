@@ -5,10 +5,7 @@ class TaxonHistoryItem < ActiveRecord::Base
   attr_accessible :taxon_id, :taxt, :position, :taxon
   acts_as_list scope: :taxon
   validates_presence_of :taxt
-  has_paper_trail meta: {change_id: :get_current_change_id}
-
-
-  include UndoTracker
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   # TOOD: Rails 4 upgrade, remove when tests pass
   # def title
@@ -27,6 +24,5 @@ class TaxonHistoryItem < ActiveRecord::Base
   rescue Taxt::ReferenceNotFound => e
     errors.add :base, "The reference '#{e}' could not be found. Was the ID changed?"
   end
-
 
 end

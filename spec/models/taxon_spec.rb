@@ -500,12 +500,6 @@ describe Taxon do
 
       expect(taxon.current_valid_taxon_including_synonyms).to eq(senior_synonym_of_senior_synonym)
     end
-    describe "Including the taxon itself" do
-      it "should return the taxon itself if no senior synonyms and no current_valid_taxon" do
-        taxon = create_genus
-        expect(taxon.current_valid_taxon_including_synonyms_and_self).to eq(taxon)
-      end
-    end
   end
 
 end

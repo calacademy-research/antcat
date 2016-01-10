@@ -1,8 +1,7 @@
 class Citation < ActiveRecord::Base
   include UndoTracker
 
-  #belongs_to :reference, -> { includes :author_names}   # has a reference_id
-  belongs_to :reference   # has a reference_id
+  belongs_to :reference
 
   validates :reference, presence: true
   has_paper_trail meta: { change_id: :get_current_change_id }
