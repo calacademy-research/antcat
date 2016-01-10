@@ -1,23 +1,7 @@
 $ ->
-  preload_images()
   setup_login()
   setup_reference_keys()
   $('input[type=text]:visible:first').focus()
-
-preload_images = ->
-  for image in [
-    '<%= image_path 'header_bg.png' %>'
-    '<%= image_path 'antcat_logo.png' %>'
-    '<%= image_path 'site_header_ant_5.png' %>'
-    '<%= image_path 'ui-anim_basic_16x16.gif' %>'
-    '<%= image_path 'collapsed.png' %>'
-    '<%= image_path 'expanded.png' %>'
-  ]
-    (new Image()).src = image
-
-AntCat.spinner_path = '<%= image_path 'ui-anim_basic_16x16.gif' %>'
-AntCat.collapsed_image_path = '<%= image_path 'collapsed.png' %>'
-AntCat.expanded_image_path = '<%= image_path 'expanded.png' %>'
 
 AntCat.log = (message) ->
   unless typeof console == 'undefined'
