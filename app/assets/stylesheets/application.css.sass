@@ -11,7 +11,7 @@
 body
   font: normal 16px/17px Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif
   width: 100%
-  background-color: black
+  background-color: #fff
   min-width: 630px
   margin: 0
 
@@ -231,16 +231,41 @@ img.help_icon
   overflow: auto
 
 // equally space out images
+#taxon_key
+  width: 100%
+  text-align: justify
+
+  .taxon_key_item
+    font-style: italic
+    display: inline-block
+    margin-top: 1em
+    margin-bottom: -1em
+
+    &:first-child
+      padding-left: 10px
+    &:last-child
+      padding-right: 10px
+
+  &:after
+    content: ""
+    width: 100%
+    display: inline-block
+
+// equally space out images
 #site_footer
-  @include margins
   text-align: justify
 
   div
-    width: 100px
     display: inline-block
     vertical-align: middle
-    *display: inline // ie
-    zoom: 1 // ie
+    margin-top: 0.5em
+    margin-bottom: -0.5em
+
+    &:first-child
+      padding-left: 10px
+    &:last-child
+      padding-right: 10px
+
   &:after
     content: ""
     width: 100%
