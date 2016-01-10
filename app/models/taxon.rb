@@ -311,7 +311,7 @@ class Taxon < ActiveRecord::Base
   has_many :history_items, -> { order 'position' }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order 'position' }, dependent: :destroy
 
-  #TODO: joe This is hit four times on main page load. Why
+  # TODO: joe This is hit four times on main page load. Why
   # we have one valid entry
   # it "should provide a link if there's a valid hol_data entry"
   # it "should provide a link if there's one invalid hol_data entry"

@@ -60,14 +60,25 @@ module AntCat
     # suppress deprecation warning
     config.active_record.raise_in_transactional_callbacks = true
     config.assets.enabled = true
-    # Note: this may have been fixed after removing a bunch of code.
-    # Uncommented to check. TODO remove or restore
+    # Note: this may have been fixed after removing a bunch of code. Uncommented to check.
     # Update: seems to work, but editing files making calls to Citrus/Parsers::
-    # may require restarting the server. TODO investigate further.
+    # may require restarting the server.
+    # TODO investigate further.
     # We were not reloading /lib properly (despite the above "autoload paths" invocation.)
     # This voodoo does it.
     #
     # config.eager_load_paths += ["#{Rails.root}/lib}"]
+
+    # For `rake notes`
+    config.annotations.register_extensions('sass') do |annotation|
+      %r{//\s*(#{annotation}):?\s*(.*?)$}
+    end
+    config.annotations.register_extensions('haml') do |annotation|
+      %r{-#\s*(#{annotation}):?\s*(.*?)$}
+    end
+    config.annotations.register_extensions('coffee') do |annotation|
+      %r(#\s*(#{annotation}):?\s*(.*?)$)
+    end
   end
 end
 

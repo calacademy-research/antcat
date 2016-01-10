@@ -34,7 +34,8 @@ describe Reference, slow: true do
           expect(results).to eq([reference])
         end
         it "should find the references for all aliases of a given author_name", pending: true do
-          pending "broke when search method was refactored TODO find out where this is used"
+          pending "broke when search method was refactored"
+          # TODO find out where this is used
           bolton = FactoryGirl.create :author
           bolton_barry = FactoryGirl.create :author_name, author: bolton, name: 'Bolton, Barry'
           bolton_b = FactoryGirl.create :author_name, author: bolton, name: 'Bolton, B.'
@@ -294,7 +295,8 @@ describe Reference, slow: true do
         Reference.do_search q: 'year:1992'
       end
       it "should convert the query string", pending: true do
-        pending "downcasing/transliteration removed valid search results TODO config solr"
+        pending "downcasing/transliteration removed valid search results"
+        # TODO config solr
         expect(Reference).to receive(:fulltext_search).with hash_including(keywords: 'andre')
         Reference.do_search q: 'André'
       end

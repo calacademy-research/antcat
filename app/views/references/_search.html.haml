@@ -3,9 +3,8 @@
 
 = form_tag references_path, :method => 'get', :id => 'search_form' do
   .search
-    -# disable old autocomplete function, the option "Search for" is required TODO remove
+    -# TODO remove. Disable old autocomplete; the option "Search for" is required.
     .hidden{style: 'display: none'}
       = select_tag "search_selector", options_for_select(["Search for"])
     = text_field_tag "q", params[:q], class: "typeahead", placeholder: "Search..."
-    -#= image_tag 'help.png', :class => 'help_icon' # is this working? uncommented
     = submit_tag "Go"

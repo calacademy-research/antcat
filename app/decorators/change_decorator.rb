@@ -1,7 +1,7 @@
 class ChangeDecorator < Draper::Decorator
   delegate_all
 
-  # very much WIP
+  # WIP
 
   def format_adder_name
     user_verb = case change.change_type

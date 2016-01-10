@@ -2,7 +2,7 @@ ActiveAdmin.register_page "Dashboard" do
 
   menu priority: 1, label: "Dashboard"
 
-  content title: "Dashboard" do
+  content title: "Dashboard" do # WIP
     # From https://github.com/activeadmin/activeadmin/wiki/How-to-display-the-version-tag-and-commit-hash-of-the-currently-deployed-source-on-the-dashboard
     panel "Currently deployed" do
       link_title = `git log --max-count=1 --pretty=format:"%h (%ar): %s"`
@@ -18,7 +18,7 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     # From https://github.com/activeadmin/activeadmin/wiki/Auditing-via-paper_trail-(change-history)
-    section "Recent changes [WIP, currently not very useful]" do
+    section "Recent changes [WIP, currently not very useful]" do # WIP
       table_for PaperTrail::Version.order('id desc').limit(20) do
         column("Item") { |v| v.item }
         column("Type") { |v| v.item_type.underscore.humanize }

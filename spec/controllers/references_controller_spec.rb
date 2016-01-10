@@ -37,7 +37,7 @@ describe ReferencesController do
     end
 
     it "renders its own template", pending: true do
-      pending "TODO implement this"
+      pending "TODO implement this" # TODO
       response = get :latest_additions
       expect(response).to render_template "latest_additions"
     end

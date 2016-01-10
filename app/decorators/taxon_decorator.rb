@@ -162,7 +162,7 @@ class TaxonDecorator < ApplicationDecorator
         ''
       end
 
-    # Todo: Joe test this case
+    # TODO: Joe test this case
     if taxon[:unresolved_homonym] == true && taxon.new_record?
       string = " secondary junior homonym of #{string}"
     elsif !taxon[:collision_merge_id].nil? && taxon.new_record?

@@ -628,7 +628,7 @@ class Importers::Hol::DownloadHolTaxaDetails < Importers::Hol::BaseUtils
 
   #
   # Does this reference match this hol_taxon?
-  # Todo: we don't need to pass "taxon" here.
+  # TODO: we don't need to pass "taxon" here.
   #
   def check_taxon antcat_reference, valid_hol_taxon, taxon
 

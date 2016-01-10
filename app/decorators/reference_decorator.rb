@@ -108,7 +108,8 @@ class ReferenceDecorator < ApplicationDecorator
     # cache/decache under same conditions
     using_cache = user.present?
     # temporarily keeping commented out line
-    #using_cache = false # perhaps we could add this as a global setting? TODO investigate
+    # TODO: perhaps we could add this as a global setting? TODO investigate
+    #using_cache = false
     if using_cache
       string = ReferenceFormatterCache.instance.get reference, :inline_citation_cache
       return string.html_safe if string
