@@ -21,8 +21,7 @@
     = javascript_include_tag 'application'
 
     = stylesheet_link_tag 'application'
-    = stylesheet_link_tag 'ext/jquery.ui.custom.css'
-    = stylesheet_link_tag 'jquery.ui.custom.custom.css'
+    = stylesheet_link_tag 'jquery_overrides'
     = stylesheet_link_tag params[:controller] if AntCat::Application.assets.find_asset params[:controller]
 
     = favicon_link_tag 'favicon.ico'
