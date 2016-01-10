@@ -71,9 +71,6 @@ gem 'coffee-rails'
 #version locked to fix error that happens in test: features/references/journals.feature:18
 # "uninitialized constant Haml::Filters::SassImporter"
 gem 'sass-rails', '4.0.5'
-gem 'compass-rails', '2.0.0'
-gem 'compass-blueprint'
-
 gem 'uglifier'
 gem 'yui-compressor'
 gem 'twitter-typeahead-rails'
