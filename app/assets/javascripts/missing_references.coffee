@@ -12,4 +12,3 @@ class AntCat.MissingReferencesForm extends AntCat.Form
 
   cancel: =>
     window.location = '/missing_references'
-

@@ -5,5 +5,3 @@ class AntCat.ParentSection
     options.require_existing = true
     #options.check_for_duplicates = false
     new AntCat.NameField $('#parent_name_field'), options
-
-#

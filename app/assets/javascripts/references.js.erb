@@ -47,8 +47,6 @@ function setupSearchBox(selector_text) {
   }
 }
 
-
-
 /////////////////////////////////////////////////////////////////////////
 
 function setupDisplays() {
@@ -208,8 +206,6 @@ function showReferenceEdit($reference, options) {
 
   if (!options.showDeleteButton)
     $('.delete', $edit).hide();
-//  Added for debugging, remove this line before commit joe
-//  $edit.show();
 
   setupTabs($reference);
 
@@ -245,7 +241,6 @@ function setupTabs($reference) {
   $('.tabs', $reference).tabs();
   // Activates the relevant tab for this article
   $('.tabs', $reference).tabs("option", "active", selected_tab);
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -318,7 +313,6 @@ function cancelReferenceEdit() {
     if (AntCat.testing)
       $('.icon', $reference).show();
   }
-
   return false;
 }
 
@@ -327,4 +321,3 @@ function cancelReferenceEdit() {
 function isEditing() {
   return $('.reference_edit').is(':visible');
 }
-

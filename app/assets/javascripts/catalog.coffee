@@ -5,6 +5,7 @@
 #
 # Move the splitter downwards to see how toolbars still semi-randomly appear.
 # We will probably have a new design by the time we have time to make this pretty.
+
 splitter_top = 0
 taxon_height = null
 
@@ -15,31 +16,29 @@ $ ->
   $('.edit_icon').show() if AntCat.testing
   splitter_top = $('#splitter').position().top
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
+
   $('#delete_button')
- # .unbutton()
-  .button()
-  #.click -> window.location = $(@).data('delete-location')
-  .click =>
-    taxon_id = $('#delete_button').data('taxon-id')
-    url = "/catalog/delete_impact_list/"+taxon_id
-    $.ajax
-      url: url,
-      type: 'get',
-      dataType: 'json',
-      success: (data) =>
-        confirm_delete_dialog(data,$('#delete_button').data('delete-location'))
-      async: false,
-      error: (xhr) => debugger
+    .button()
+    .click =>
+      taxon_id = $('#delete_button').data('taxon-id')
+      url = "/catalog/delete_impact_list/"+taxon_id
+      $.ajax
+        url: url,
+        type: 'get',
+        dataType: 'json',
+        success: (data) =>
+          confirm_delete_dialog(data,$('#delete_button').data('delete-location'))
+        async: false,
+        error: (xhr) => debugger
 
   $('#edit_button')
- # .unbutton()
-  .button()
-  .click -> window.location = $(@).data('edit-location')
+    .button()
+    .click -> window.location = $(@).data('edit-location')
+
   $('#review_button')
- # .unbutton()
-  .button()
-  .click -> window.location = $(@).data('review-location')
-  $('#hide_all').remove()
+    .button()
+    .click -> window.location = $(@).data('review-location')
+    $('#hide_all').remove()
 
 confirm_delete_dialog = (data,destination) ->
   @delete_message = $('#delete_message')
@@ -127,7 +126,6 @@ set_catalog_height = (height) ->
   # .antcat_taxon margin-bottom: 2
   # #splitter: 7
   $("#catalog .index").height height - $("#catalog .antcat_taxon").height() - magic_offset
-
 
 calculate_catalog_height = ->
   magic_offset = 2 + 3 + 2 + 2 + 2

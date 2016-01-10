@@ -1,14 +1,19 @@
-$ -> new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section .buttons_section'
+$ ->
+  new AntCat.TaxonForm(
+    $('.taxon_form'),
+    button_container: '> .fields_section .buttons_section')
 
 class AntCat.ProtonymField extends AntCat.NameField
   constructor: ($parent_element, @name_field, @options = {}) ->
     super $parent_element, @options
+
   get_default_name_string: =>
     @name_field.string_value()
 
 class AntCat.TypeNameField extends AntCat.NameField
   constructor: ($parent_element, @protonym_field, @options = {}) ->
     super $parent_element, @options
+
   get_default_name_string: =>
     string = @protonym_field.string_value()
     return unless string
@@ -27,10 +32,7 @@ class AntCat.TaxonForm extends AntCat.Form
     @initialize_task_buttons()
     @initialize_events()
     @original_submit = null
-
     super
-
-
 
   ###### initialization
   initialize_fields_section: =>
@@ -84,7 +86,6 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.find('#delete_taxon').click => @delete_taxon(); false
     @element.find('#convert_to_subspecies').click => @convert_to_subspecies(); false
 
-
   initialize_events: =>
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
@@ -106,7 +107,6 @@ class AntCat.TaxonForm extends AntCat.Form
   cancel: => window.location = $('#cancel_path').val()
 
   ###### client functions
-
   replace_junior_and_senior_synonyms_section: (content) =>
     $('.junior_and_senior_synonyms_section').replaceWith content
     @initialize_junior_and_senior_synonyms_section()
@@ -139,11 +139,3 @@ class AntCat.TaxonForm extends AntCat.Form
 
   on_form_open: =>
     super
-
-
-
-
-
-
-
-

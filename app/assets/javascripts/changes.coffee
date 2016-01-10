@@ -6,7 +6,6 @@ class AntCat.ChangeButton
     self = @
     @element.click => self.click()
 
-
 class AntCat.EditButton extends AntCat.ChangeButton
   click: => window.location = @element.data 'edit-location'
 
@@ -52,7 +51,6 @@ class AntCat.UndoButton extends AntCat.ChangeButton
         }
     })
 
-
   click: =>
     change_id = @element.data('undo-id')
     url = "/changes/#{change_id}/undo_items"
@@ -93,4 +91,3 @@ $ ->
   $('.undo_button input[type=button]').each -> new AntCat.UndoButton($(this))
   $('.approve_button input[type=button]').each -> new AntCat.ApproveButton($(this))
   $('.approve_all_button input[type=button]').each -> new AntCat.ApproveAllButton($(this))
-

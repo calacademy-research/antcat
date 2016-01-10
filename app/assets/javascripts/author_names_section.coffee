@@ -59,7 +59,6 @@ class AntCat.AuthorNameForm extends AntCat.NestedForm
     else
       super.handle_error(jq_xhr,text_status,error_thrown)
 
-
   delete: =>
     return false unless confirm 'Do you want to delete this author name?'
     @start_throbbing()
