@@ -8,11 +8,6 @@ class ReferenceKey
     @reference = reference
   end
 
-  def to_taxt
-    raise "is this used outside specs?"
-    Taxt.encode_reference @reference
-  end
-
   def to_s
     return '' unless @reference.id
     names = @reference.decorate.format_author_last_names

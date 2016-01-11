@@ -20,9 +20,6 @@ module Taxt
       self.id = id
     end
   end
-  
-  # TODO is this used?
-  class IdNotFound < StandardError; end
 
   ################################
   def self.to_string taxt, user = nil, options = {}
@@ -175,41 +172,6 @@ module Taxt
   def self.link_to_taxon taxon #TODO remove
     label = taxon.name.to_html_with_fossil(taxon.fossil?)
     content_tag :a, label, href: %{/catalog/#{taxon.id}}
-  end
-
-  def self.decode_epithet epithet
-    raise "is this used?"
-    italicize epithet
-  end
-
-  ################################
-  def self.encode_unparseable string
-    raise "is this used outside specs?"
-    "{? #{string}}"
-  end
-
-  def self.encode_reference reference
-    raise "is this used outside specs?"
-    "{ref #{reference.id}}"
-  end
-
-  def self.encode_taxon taxon
-    raise "is this used outside specs?"
-    "{tax #{taxon.id}}"
-  end
-
-  ################################
-  def self.replace replace_what, replace_with
-    raise "is this used?"
-    taxt_fields.each do |klass, fields|
-      klass.send(:all).each do |record|
-        fields.each do |field|
-          next unless record[field]
-          record[field] = record[field].gsub replace_what, replace_with
-        end
-        record.save!
-      end
-    end
   end
 
   def self.taxt_fields

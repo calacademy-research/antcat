@@ -268,7 +268,6 @@ And /^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?
   taxon.history_items.create! taxt: taxt
 end
 
-# TODO Moved from Taxt.rb; testing...
 def encode_taxon taxon
   "{tax #{taxon.id}}"
 end
