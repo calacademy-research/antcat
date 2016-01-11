@@ -8,7 +8,8 @@ describe ReferenceKey do
     @ward = FactoryGirl.create :author_name, name: 'Ward, P.S.'
   end
 
-  it "should output a {ref xxx} for Taxt" do
+  it "should output a {ref xxx} for Taxt", pending: true do
+    pending "ReferenceKey.to_taxt likely only used in this spec" # TODO remove?
     reference = FactoryGirl.create :article_reference, :author_names => [@bolton], citation_year: '1970a'
     expect(ReferenceKey.new(reference).to_taxt).to eq("{ref #{reference.id}}")
   end

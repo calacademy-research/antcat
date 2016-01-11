@@ -9,6 +9,7 @@ class ReferenceKey
   end
 
   def to_taxt
+    raise "is this used outside specs?"
     Taxt.encode_reference @reference
   end
 

@@ -21,6 +21,7 @@ module Taxt
     end
   end
   
+  # TODO is this used?
   class IdNotFound < StandardError; end
 
   ################################
@@ -177,24 +178,29 @@ module Taxt
   end
 
   def self.decode_epithet epithet
+    raise "is this used?"
     italicize epithet
   end
 
   ################################
   def self.encode_unparseable string
+    raise "is this used outside specs?"
     "{? #{string}}"
   end
 
   def self.encode_reference reference
+    raise "is this used outside specs?"
     "{ref #{reference.id}}"
   end
 
   def self.encode_taxon taxon
+    raise "is this used outside specs?"
     "{tax #{taxon.id}}"
   end
 
   ################################
   def self.replace replace_what, replace_with
+    raise "is this used?"
     taxt_fields.each do |klass, fields|
       klass.send(:all).each do |record|
         fields.each do |field|

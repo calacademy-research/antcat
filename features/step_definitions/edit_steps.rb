@@ -261,12 +261,18 @@ And /^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?
   taxon = Taxon.find_by_name taxon_name
   if tag_taxon_name
     tag_taxon = Taxon.find_by_name tag_taxon_name
-    taxt = Taxt.encode_taxon tag_taxon
+    taxt = encode_taxon tag_taxon
   else
     taxt = 'Tag'
   end
   taxon.history_items.create! taxt: taxt
 end
+
+# TODO Moved from Taxt.rb; testing...
+def encode_taxon taxon
+  "{tax #{taxon.id}}"
+end
+
 When /^I add a history item "(.*?)"/ do |text|
   step %{I click the "Add History" button}
   step %{I edit the history item to "#{text}"}

@@ -3,16 +3,19 @@ require 'spec_helper'
 describe Taxt do
 
   describe "Encodings" do
-    it "should encode an unparseable string" do
+    it "should encode an unparseable string", pending: true do
+      pending "is this used outside of specs?" # TODO remove?
       expect(Taxt.encode_unparseable('foo')).to eq('{? foo}')
     end
-    it "should encode a reference" do
+    it "should encode a reference", pending: true do
+      pending "Taxt.encode_reference likely only used in this spec" # TODO remove?
       reference = FactoryGirl.create :book_reference
       expect(Taxt.encode_reference(reference)).to eq("{ref #{reference.id}}")
     end
 
     describe "Encoding a taxon" do
-      it "should encode a taxon" do
+      it "should encode a taxon", pending: true do
+        pending "is this used outside of specs?" # TODO remove?
         genus = create_genus
         expect(Taxt.encode_taxon(genus)).to eq("{tax #{genus.id}}")
       end
