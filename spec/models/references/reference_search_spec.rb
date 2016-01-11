@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Reference, slow: true do
+describe Reference do
 
   before do
     Reference.delete_all
@@ -24,13 +24,18 @@ describe Reference, slow: true do
         end
 
         it "should find the reference for a given author_name if it exists" do
-          bolton = FactoryGirl.create :author_name
+          bolton = FactoryGirl.create :author_name, name: "Bolton Barry"
+          # Test fixed by creating the :author_name with `name: "Bolton Barry"`
+          # Always succeeds if run with no other tests, but eg this fails:
+          #   rspec spec/models/references/reference_*
+          # Seems like we're having issues with tests not cleaning up between runs.
+          # TODO fix?
           reference = FactoryGirl.create :book_reference, author_names: [bolton]
           FactoryGirl.create :book_reference, author_names: [FactoryGirl.create(:author_name, name: 'Fisher')]
 
           Sunspot.commit
 
-          results = Reference.do_search(q: "author:#{bolton.name}")
+          results = Reference.do_search(q: "author:'#{bolton.name}'")
           expect(results).to eq([reference])
         end
         it "should find the references for all aliases of a given author_name", pending: true do
