@@ -386,6 +386,7 @@ DEPENDENCIES
   rails-observers
   rake
   request_store
+  rspec-core
   rspec-rails
   sass-rails (= 4.0.5)
   selenium-webdriver (>= 2.48)

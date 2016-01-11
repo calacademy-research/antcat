@@ -42,6 +42,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   #gem 'byebug'
   gem 'launchy'
+  gem 'rspec-core' # required for configuring RSpec from env.rb
   gem 'rspec-rails'
   gem 'thin'
   #gem 'web-console', '~> 2.0'
