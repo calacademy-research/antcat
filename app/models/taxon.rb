@@ -281,7 +281,7 @@ class Taxon < ActiveRecord::Base
     current_valid_taxon
   end
 
-  private def find_most_recent_valid_senior_synonym
+  def find_most_recent_valid_senior_synonym
     return unless senior_synonyms
     senior_synonyms.order('created_at DESC').each do |senior_synonym|
       return senior_synonym if !senior_synonym.invalid?
