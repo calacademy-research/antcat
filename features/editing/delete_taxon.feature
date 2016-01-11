@@ -11,7 +11,7 @@ Feature: Deleting a taxon
     And that version tracking is enabled
     Given these references exist
       | authors | citation   | title | year |  doi |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |            |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |      |
       * there is a subfamily "Dolichoderinae"
       * I log in
       * there is a genus "Eciton"
@@ -41,7 +41,6 @@ Feature: Deleting a taxon
     When I press "Edit"
     And I will confirm on the next step
     And I press "Delete"
-    And I will confirm on the next step
     Then I should be on the catalog page for "Dolichoderinae"
     And I should see "Dolichoderinae" in the header
 
@@ -51,7 +50,6 @@ Feature: Deleting a taxon
     When I press "Edit"
     And I will confirm on the next step
     And I press "Delete"
-    And I will confirm on the next step
     Then I should not see "This taxon already has additional information attached to it."
     And I should be on the catalog page for "Dolichoderinae"
     And I should see "Dolichoderinae" in the header
@@ -65,5 +63,4 @@ Feature: Deleting a taxon
     And I press "Edit"
     And I will confirm on the next step
     And I press "Delete"
-    And I will confirm on the next step
     Then I should see "Other taxa refer to this taxon, so it can't be deleted. "
