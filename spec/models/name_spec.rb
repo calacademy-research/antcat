@@ -186,19 +186,6 @@ describe Name do
     end
   end
 
-  describe "Deleting duplicate names" do
-    it "should delete duplicate names" do
-      first_atta_name = FactoryGirl.create :name, name: 'Atta'
-      genus = create_genus name: first_atta_name
-      second_atta_name = FactoryGirl.create :name, name: 'Atta'
-      not_atta_name = FactoryGirl.create :name, name: 'Notatta'
-      Name.destroy_duplicates
-      expect(Name.find_by_id(first_atta_name)).not_to be_nil
-      expect(Name.find_by_id(second_atta_name)).to be_nil
-      expect(Name.find_by_id(not_atta_name)).not_to be_nil
-    end
-  end
-
   describe "References" do
     it "should return references in fields" do
       atta = create_genus 'Atta'
@@ -292,17 +279,6 @@ describe Name do
         version = versions.last
         expect(version.event).to eq('update')
       end
-    end
-  end
-
-  describe "Finding trinomials that are like quadronimals" do
-    it "should return those taxa with names that differ in this way" do
-      create_subspecies 'Camponotus maculatus georgei'
-      create_subspecies 'Camponotus maculatus arnoldius georgei'
-      create_subspecies 'Camponotus maculatus alpaca'
-      expect(Name.find_trinomials_like_quadrinomials).to match_array([
-        'Camponotus maculatus georgei'
-      ])
     end
   end
 

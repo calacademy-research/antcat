@@ -305,29 +305,6 @@ class Name < ActiveRecord::Base
     references
   end
 
-  def self.destroy_duplicates options = {}
-    duplicates_with_references(options).each do |name, duplicate|
-      duplicate.each do |id, references|
-        Name.find(id).destroy unless references.present?
-      end
-    end
-  end
-
-  def self.find_trinomials_like_quadrinomials
-    Name.all.inject([]) do |names, name|
-      if name.quadrinomial?
-        if trinomial = Name.find_by_name("#{name.at(0)} #{name.at(1)} #{name.at(3)}")
-          if taxon = Taxon.find_by_name(trinomial.name)
-            unless taxon.unavailable?
-              names << trinomial.name
-            end
-          end
-        end
-      end
-      names
-    end
-  end
-
   def self.find_by_name string
     Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false)
       .where(name: string).order('taxa.id DESC').order(:name).first
