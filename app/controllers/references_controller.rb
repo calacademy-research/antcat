@@ -81,15 +81,15 @@ class ReferencesController < ApplicationController
 
   def create
     @reference = new_reference
-    save true
+    save is_new: true
   end
 
   def update
     @reference = get_reference
-    save false
+    save is_new: false
   end
 
-  def save new
+  def save(is_new:)
     begin
       Reference.transaction do
         clear_document_params_if_necessary
@@ -99,7 +99,7 @@ class ReferencesController < ApplicationController
         set_publisher if @reference.kind_of? BookReference
         set_pagination
         # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
-        @reference.update_column :type, @reference.type unless new
+        @reference.update_column :type, @reference.type unless is_new
 
         unless @reference.errors.present?
           @reference.update_attributes params[:reference]
@@ -114,12 +114,11 @@ class ReferencesController < ApplicationController
         raise ActiveRecord::RecordInvalid.new @reference if @reference.errors.present?
       end
     rescue ActiveRecord::RecordInvalid
-      @reference[:id] = nil if new
-      @reference.instance_variable_set :@new_record, new
-
+      @reference[:id] = nil if is_new
+      @reference.instance_variable_set :@new_record, is_new
     end
     DefaultReference.set session, @reference
-    render_json new
+    render_json is_new: is_new
   end
 
   def destroy
@@ -239,7 +238,7 @@ class ReferencesController < ApplicationController
       params[:reference][:document_attributes][:id] = nil unless params[:reference][:document_attributes][:url].present?
     end
 
-    def render_json new = false
+    def render_json(is_new: false)
       template =
         case
           when params[:field].present?  then 'reference_fields/panel'
@@ -249,7 +248,7 @@ class ReferencesController < ApplicationController
         end
 
       send_back_json(
-        isNew: new,
+        isNew: is_new,
         content: render_to_string(
           partial: template, locals: { reference: @reference, css_class: 'reference' }
         ),
