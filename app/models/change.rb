@@ -48,12 +48,6 @@ class Change < ActiveRecord::Base
       end
     end
 
-    # version = PaperTrail::Version.find_by_sql("select * from versions where item_type = 'Taxon'
-    #   and object is not null
-    #   and versions.event <> 'destroy'
-    #   and item_id = '"+user_changed_taxon_id.to_s+"'
-    #   order by id desc").first
-
     # This change didn't happen to touch taxon. Go ahead and search for the most recent
     # version of this taxon that has object information
     version = PaperTrail::Version.find_by_sql(<<-SQL.squish).first
@@ -89,7 +83,6 @@ class Change < ActiveRecord::Base
     # adding user qualifier partly because of tests (setup doesn't have a "user" logged in),
     # in any case, it remains correct, because all versions for a given change have the same
     # user. Also may cover historical cases?
-    #usered_versions = PaperTrail::Version.where(change_id: self.id, whodunnit: !nil)
     usered_versions = PaperTrail::Version.where("change_id = #{self.id} AND whodunnit IS NOT NULL")
     version = usered_versions.first
     return User.find(version.whodunnit.to_i) if version

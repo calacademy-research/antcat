@@ -36,9 +36,6 @@ class Exporters::Antweb::Exporter
       end
       Progress.show_results
     end
-
-    # row = export_taxon taxon
-    # file.puts row.join("\t") if row
   end
 
   def get_taxa

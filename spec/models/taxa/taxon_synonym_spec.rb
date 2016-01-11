@@ -30,12 +30,6 @@ describe Taxon do
     expect(senior.senior_synonyms.count).to eq(0)
     expect(junior.senior_synonyms.count).to eq(1)
     expect(junior.junior_synonyms.count).to eq(0)
-
-
-    # senior.should have(1).junior_synonym
-    # senior.should have(0).senior_synonyms
-    # junior.should have(1).senior_synonym
-    # junior.should have(0).junior_synonyms
   end
 
   describe "Reversing synonymy" do
@@ -97,15 +91,9 @@ describe Taxon do
       expect(atta.senior_synonyms.size).to eq(1)
       expect(eciton.junior_synonyms.size).to eq(1)
 
-      # atta.should have(1).senior_synonym
-      # eciton.should have(1).junior_synonym
-
       atta.update_attribute :status, 'valid'
 
       expect(atta).not_to be_synonym
-
-      # atta.should have(0).senior_synonyms
-      # eciton.should have(0).junior_synonyms
       expect(atta.senior_synonyms.size).to eq(0)
       expect(eciton.junior_synonyms.size).to eq(0)
     end

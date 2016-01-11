@@ -97,14 +97,7 @@ class TaxaController < ApplicationController
           Taxon.inherit_attributes_for_new_combination(@original_combination, @previous_combination, parent)
         end
       end
-      # if !@collision_resolution.nil?
-      #   @taxon = @mother.create_taxon @rank_to_create, parent
-      # else
-      #   #  it might be that we just switch parent with collision_resolution_id, and then
-      #   # go ahead and call "create taxon".
-      #   # then, in the secondary homonuym case, we post facto(here) mark it as a secondary.
-      #   @taxon = @mother.create_taxon_collision @rank_to_create, parent, @collision_resolution
-      # end
+
       if @previous_combination
         Taxon.inherit_attributes_for_new_combination(@taxon, @previous_combination, parent)
       end
@@ -232,13 +225,6 @@ class TaxaController < ApplicationController
   def redirect_by_parent_name_id
     parent_name_id = params.delete(:parent_name_id)
     if parent_name_id && parent = Taxon.find_by_name_id(parent_name_id)
-      # params[:parent_id] = parent.id
-      # action = params[:action]
-      # controller = params[:controller]
-      # parent_id = params[:parent_id]
-      # rank_to_create = params[:rank_to_create]
-      # previous_combination_id = params[:previous_combination_id]
-      # redirect_to action: action, controller: controller, parent_id: parent_id, rank_to_create: rank_to_create, previous_combination_id: previous_combination_id
       new_hash = {}
       # recirect_to doesn't want to work off of "params", security hole. enjoy.
       params.each do |p|

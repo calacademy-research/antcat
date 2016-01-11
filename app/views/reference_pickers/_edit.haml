@@ -2,7 +2,7 @@
 
 - possible_duplicate ||= nil
 
--#This is pretty much a copy of references/_edit
+-# This is pretty much a copy of references/_edit
 - reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
 - reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
 - selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
@@ -47,7 +47,6 @@
             = text_field_tag :article_pagination, reference.pagination, :class => 'pages'
             = text_field_tag :doi, 'DOI'
 
-
           .tabbable{'data-title' => 'Book'}
             = label_tag :publisher_string, 'Publisher'
             = text_field_tag 'reference[publisher_string]', reference.publisher_string, :class => 'publisher'
@@ -68,18 +67,6 @@
           .tabbable{'data-title' => 'Other'}
             = label_tag :reference_citation, 'Citation'
             = text_area_tag 'reference[citation]', reference.citation, :rows => 2
-
-      -#= f.fields_for :document, reference.document || ReferenceDocument.new do |document_form|
-        -#%tr
-          -#%td= label_tag :document_url, 'Source URL'
-          -#%td{:colspan => 3, :class => :right_side_field}
-            -#= document_form.text_field :url
-            -#= label_tag :document_public, 'Internal but public?'
-            -#= document_form.check_box :public
-        - if user_can_upload_pdfs?
-          -#%tr
-            -#%td= label_tag :document_file, 'Upload'
-            -#%td= document_form.file_field :file
 
       %tr
         %td= label_tag :reference_public_notes, 'Public notes'

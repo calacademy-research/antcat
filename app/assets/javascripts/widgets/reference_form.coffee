@@ -14,7 +14,6 @@ class AntCat.ReferenceForm extends AntCat.NestedForm
 
   setup_tabs: =>
     $tabs = @element.find '.tabs'
-    #    $tabs.tabs 'destroy'
     $tabs.find('> ul').remove()
     $list = $('<ul/>').prependTo $tabs
     $tabs.find('.tabbable').each ->

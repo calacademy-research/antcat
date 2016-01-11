@@ -10,7 +10,7 @@ class Subspecies < SpeciesGroupTaxon
   has_paper_trail meta: { change_id: :get_current_change_id }
 
   def update_parent new_parent
-    # Joe - somewhere, we need to check and pop up for the homonym case if there are multiple possibles.
+    # TODO Joe - somewhere, we need to check and pop up for the homonym case if there are multiple possibles.
     super
     if defined? new_parent.genus
       self.genus = new_parent.genus
@@ -35,30 +35,7 @@ class Subspecies < SpeciesGroupTaxon
   # and the others are handled there.
   def elevate_to_species
     raise NoSpeciesForSubspeciesError unless species
-    # to add support for change/undo (commented out here)
-    # There are two issues with this;
-    # #1: in taxon_mother, save invokes "build_children", which calls
-    #     @taxon.build_type_name unless @taxon.type_name. This populates
-    # type_name_id, which breaks display. I haven't root caused the purpose of
-    # type_name_id, so won't take unilateral action.
-    #
-    # #2: paper_trail can't save the "type" field. This is likely because
-    # it's linked to object-ness in activerecord (when you instate an object, this is how rails
-    # knows what type it is). doing an "undo" cauases everything to revert except for
-    # the type field. Fix unclear.
-    #
-    # possible workarounds: Disable "undo" and show the change so it can be approved.
-    # hack the paper_Trail version record to manually add the "type" field.
-    # Root cause how paper trail treats "types".
-    # #3 is the only real option. I did some of this but it was a rat-hole.
-
-    # Do monkey-see-monkey-do in species.rb become_species_of for orthogonal features.
-
-    # change = Change.new
-    # change.change_type = :update
-    # change.user_changed_taxon_id = self.id
-    # change.save!
-    # RequestStore.store[:current_change_id] = change.id
+    # Removed commented out code that looked very WIP
 
     new_name_string = "#{species.genus.name} #{name.epithet}"
     new_name = SpeciesName.find_by_name new_name_string
@@ -81,20 +58,11 @@ class Subspecies < SpeciesGroupTaxon
                         name_cache: new_name.name,
                         name_html_cache: new_name.name_html,
                         type: 'Species'
-    # ts = self.taxon_state
-    # ts.review_state = :waiting
-    # ts.save
-
-    #self.save!(:validate => false)
-
-    # clear_change
   end
 
   def add_antweb_attributes attributes
     subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
     tribe_name = genus.tribe && genus.tribe.name.to_s
-    #species_name = species && species.name.epithet
-    #attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: genus.name.to_s, species: species_name, subspecies: name.epithet
 
     case name.type
     when 'SubspeciesName'
@@ -106,7 +74,6 @@ class Subspecies < SpeciesGroupTaxon
       attributes.merge! genus: genus.name.to_s, species: name.epithet
     end
 
-    # attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: genus.name.to_s
     attributes.merge subfamily: subfamily_name, tribe: tribe_name
   end
 

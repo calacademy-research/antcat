@@ -43,8 +43,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @form().open()
     @setup_search_selector()
 
-
-
   hide_form: =>
     @edit_section.hide()
     @display_section.show()
@@ -89,7 +87,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
       .find('.controls')
         .undisable()
         .find(':button')
-         # .unbutton()
           .button()
           .end()
         .end()
@@ -138,7 +135,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
           false
         .end()
 
-    #@setup_search_selector()
     @enable_search_author_autocomplete()
 
   get_default_reference_string: =>
@@ -146,7 +142,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
 
   setup_search_selector: =>
       @search_selector
-  #      .selectmenu('destroy')
         .selectmenu(wrapperElement: "<span />")
       .selectmenu()
 

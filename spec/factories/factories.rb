@@ -198,7 +198,6 @@ FactoryGirl.define do
     name_html { "<i>#{name}</i>" }
     epithet { name.split(' ').last }
     epithet_html { "<i>#{epithet}</i>" }
-    #protonym_html { name_html }
   end
 
   factory :subspecies_name do
@@ -207,7 +206,6 @@ FactoryGirl.define do
     epithet { name.split(' ').last }
     epithets { name.split(' ')[-2..-1].join(' ') }
     epithet_html { "<i>#{epithet}</i>" }
-    #protonym_html { name_html }
   end
 
   ####################################################
@@ -482,6 +480,6 @@ def create_taxon_version_and_change(review_state, user = @user, approver = nil, 
   unless approver.nil?
     change.update_attributes! approver: approver, approved_at: Time.now if approver
   end
-  #  FactoryGirl.create :transaction, paper_trail_version: version, change: change
+
   taxon
 end

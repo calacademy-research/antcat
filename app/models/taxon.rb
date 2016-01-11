@@ -31,7 +31,7 @@ class Taxon < ActiveRecord::Base
                   :protonym,
                   :type_name,
                   :id,
-                  :auto_generated, #false == nil.
+                  :auto_generated,
                   :origin, #if it's generated, where did it come from? string (e.g.: 'hol')
                   :display # if false, won't show in the taxon browser. Used for misspellings and such.
 
@@ -109,7 +109,6 @@ class Taxon < ActiveRecord::Base
 
   def self.find_subspecies_in_genus target_subspecies, genus
     Name.make_epithet_set(target_subspecies).each do |epithet|
-      #results = with_names.where(['genus_id = ? AND epithet = ? and type="SubspeciesName"', genus.id, epithet])
       results = with_names.where(['genus_id = ? AND epithet = ?', genus.id, epithet])
       return results unless results.empty?
     end
@@ -321,7 +320,6 @@ class Taxon < ActiveRecord::Base
   def hol_id
     hd = HolTaxonDatum.where(antcat_taxon_id: id)
 
-    #, is_valid: 'Valid'
     valid_hd = nil
     valid_count = 0
     hd.each do |is_valid|

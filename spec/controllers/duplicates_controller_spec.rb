@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 describe DuplicatesController do
   describe "find a duplicate case" do
 
@@ -38,8 +37,6 @@ describe DuplicatesController do
       expect(taxa.size).to eq(1)
       expect(taxa[0]['species']['name_cache']).to eq species_epithet
       expect(taxa[0]['species']['duplicate_type']).to eq 'return_to_original'
-      #expect(asset['connection_id']).to eq(@connection1['id'])
-      #expect(response.body).to include ("Asset id 999 not found")
     end
 
     it "Should find no matches for same protonym distinct epithet", pending: true do
@@ -54,7 +51,6 @@ describe DuplicatesController do
       sign_in @user
       get :show, parent_id: genus_a.id, previous_combination_id: species_b.id, rank_to_create: 'species'
       expect(response.status).to eq(204)
-
     end
   end
 

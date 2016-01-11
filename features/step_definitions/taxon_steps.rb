@@ -43,7 +43,6 @@ end
 
 Given /^subfamily "(.*?)" exists$/ do |name|
   @subfamily = create_taxon_with_state(:subfamily, FactoryGirl.create(:subfamily_name, name: name))
-  #@subfamily = FactoryGirl.create :subfamily, name: FactoryGirl.create(:subfamily_name, name: name)
   @subfamily.history_items.create! taxt: "#{name} history"
 end
 Given /^the unavailable subfamily "(.*?)" exists$/ do |name|
@@ -78,7 +77,6 @@ Given /^subgenus "(.*?)" exists in that genus$/ do |name|
   epithet = name.match(/\((.*?)\)/)[1]
   name = FactoryGirl.create :subgenus_name, name: name, epithet: epithet
 
-#  @subgenus = FactoryGirl.create :subgenus, subfamily: @subfamily, tribe: @tribe, genus: @genus, name: name
   @subgenus = FactoryGirl.create :subgenus, subfamily: @subfamily, tribe: @tribe, genus: @genus, name: name
   FactoryGirl.create :taxon_state, taxon_id: @subgenus.id
   @subgenus.history_items.create! taxt: "#{name} history"

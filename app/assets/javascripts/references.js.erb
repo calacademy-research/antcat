@@ -93,7 +93,6 @@ function setupEdits() {
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-
 function approveHandler() {
   var r = confirm("Mark all citations as reviewed? This operation cannot be undone!");
   if (r == true) {
@@ -214,15 +213,13 @@ function showReferenceEdit($reference, options) {
   setupReferenceEditPublisherAutocomplete($reference);
 
   $edit.show();
-//  var selected_tab = $('.selected_tab', $reference).val();
-//  $('.tabs', $reference).tabs('select', selected_tab);
 
   $('#reference_author_names_string', $edit)[0].focus();
 }
 
 function setupTabs($reference) {
   var id = $reference.attr('id');
-  //   selected_tab is set in references/_edit.html.haml
+  // selected_tab is set in references/_edit.html.haml
   var selected_tab = $('.selected_tab', $reference).val();
 
   $('.tabs .article-tab', $reference).attr('href', '#reference_article' + id);
@@ -237,7 +234,7 @@ function setupTabs($reference) {
   $('.tabs .unknown-tab', $reference).attr('href', '#reference_unknown' + id);
   $('.tabs .unknown-tab-section', $reference).attr('id', 'reference_unknown' + id);
 
-  //  This line initializes the jquery_ui tabs object with the selected_tab highlighted
+  // This line initializes the jquery_ui tabs object with the selected_tab highlighted
   $('.tabs', $reference).tabs();
   // Activates the relevant tab for this article
   $('.tabs', $reference).tabs("option", "active", selected_tab);
@@ -256,7 +253,6 @@ function submitReferenceEdit() {
 }
 
 function beforeSerialize($form, options) {
-  //var selectedTab =  $(".tabs ul li a").eq($(".tabs").tabs( "option", "selected" )).text()
   var selectedTab = $.trim($('.ui-tabs-active', $form).text())
   $('#selected_tab', $form).val(selectedTab)
   return true;

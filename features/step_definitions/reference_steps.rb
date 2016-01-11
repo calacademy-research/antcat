@@ -13,9 +13,6 @@ end
 
 Given /^(?:this|these) dated references? exists?$/ do |table|
   Reference.delete_all
-  #keys =table.hashes[0].keys
-  # this doesn't work because mysterious.
-  #if keys.include?('created_at')
   table.map_column!('created_at') do |date|
     if date == 'TODAYS_DATE'
       date = Time.now.strftime("%Y-%m-%d")

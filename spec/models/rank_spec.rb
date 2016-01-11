@@ -43,7 +43,6 @@ describe Rank do
   end
   it "should convert from an ActiveRecord relation" do
     FactoryGirl.create :genus
-    #Rank[Genus.where(true)].to_s.should == 'genus'
     expect(Rank[Genus.first].to_s).to eq('genus')
   end
   it "should raise an error if it doesn't understand the input" do

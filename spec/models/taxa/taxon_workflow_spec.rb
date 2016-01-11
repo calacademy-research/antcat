@@ -55,7 +55,6 @@ describe Taxon do
       before do
         @changer = FactoryGirl.create :user, can_edit: true
         @approver = FactoryGirl.create :user, can_edit: true
-        #@taxon = create_taxon_version_and_change :waiting, @changer
 
         name = FactoryGirl.create :name, name: 'default_genus'
         @taxon = FactoryGirl.create :genus, name: name
@@ -64,8 +63,6 @@ describe Taxon do
         @change = FactoryGirl.create :change, user_changed_taxon_id: @taxon.id, change_type: "create"
         FactoryGirl.create :version, item_id: @taxon.id, whodunnit: @changer.id, change_id: @change.id
         @change.update_attributes! approver: @changer, approved_at: Time.now
-
-
       end
       it "should allow any user to edit a waiting record" do
         expect(@taxon.can_be_edited_by?(nil)).to be_falsey
@@ -162,7 +159,5 @@ describe Taxon do
   #   end
   #
   # end
-
-
 
 end
