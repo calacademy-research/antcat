@@ -2,7 +2,7 @@
 Feature: Workflow
 
   Background:
-    Given I log in as a catalog editor
+    Given I log in as a catalog editor named "Mark Wilden"
     And these references exist
       | authors | citation   | title | year |  doi |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |      |
@@ -16,7 +16,6 @@ Feature: Workflow
     * I press "Edit"
     * I press "Add genus"
     * I click the name field
-    * I set the name to "Atta"
     * I set the name to "Atta"
     * I press "OK"
     * I select "subfamily" from "taxon_incertae_sedis_in"
@@ -69,7 +68,6 @@ Feature: Workflow
     When I follow "Atta"
     Then I should be on the catalog page for "Atta"
 
-
   Scenario: Approving a change
     When I add the genus "Atta"
     And I go to the catalog page for "Atta"
@@ -99,7 +97,6 @@ Feature: Workflow
     When I go to the changes page
     Then I should not see an "Approve all" button
 
-
   Scenario: Another editor editing a change that's waiting for approval
     When I add the genus "Atta"
     And I go to the changes page
@@ -126,7 +123,6 @@ Feature: Workflow
     Then I should see "Added by Mark Wilden" in the change history
     When I go to the changes page
     Then I should not see an "Approve" button
-
 
   Scenario: Editing a taxon - modified, not added
     Given there is a family "Formicidae"

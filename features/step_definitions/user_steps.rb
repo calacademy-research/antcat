@@ -46,12 +46,12 @@ Given /^I log in$/ do
   login_programmatically
 end
 
-Given /^I log in as a catalog editor(?: named "([^"]+)")?$/ do |editor|
+Given /^I log in as a catalog editor(?: named "([^"]+)")?$/ do |name|
   @user = FactoryGirl.create :user, can_edit: true, name: name
   login_programmatically
 end
 
-Given /^I log in as a superadmin(?: named "([^"]+)")?$/ do |editor|
+Given /^I log in as a superadmin(?: named "([^"]+)")?$/ do |name|
   @user = FactoryGirl.create :user, can_edit: true, is_superadmin: true, name: name
   login_programmatically
 end

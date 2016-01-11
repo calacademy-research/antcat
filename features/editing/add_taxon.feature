@@ -177,6 +177,7 @@ Feature: Adding a taxon
       And I press "OK"
       And I press "Add this name"
     And I save my changes
+    And I wait for a bit
     And the changes are approved
     And I go to the catalog page for "Atta"
     And I press "Edit"
@@ -192,6 +193,7 @@ Feature: Adding a taxon
       And I click the first search result
       And I press "OK"
     And I save my changes
+    And I wait for a bit
     Then I should be on the catalog page for "Atta major"
     And I should see "Atta major" in the protonym
 

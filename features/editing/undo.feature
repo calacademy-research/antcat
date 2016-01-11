@@ -14,7 +14,7 @@ Feature: Workflow
     And there is a genus "Eciton"
     And there is a genus "Eciton"
     And version tracking is enabled
-    And I log in as a catalog editor
+    And I log in as a catalog editor named "Mark Wilden"
 
   # Add these scenarios
 
