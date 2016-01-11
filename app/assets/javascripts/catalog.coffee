@@ -38,7 +38,6 @@ $ ->
   $('#review_button')
     .button()
     .click -> window.location = $(@).data('review-location')
-    $('#hide_all').remove()
 
 confirm_delete_dialog = (data,destination) ->
   @delete_message = $('#delete_message')

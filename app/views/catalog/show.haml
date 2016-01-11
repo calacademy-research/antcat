@@ -1,16 +1,13 @@
 - @title = "#{@taxon.name.epithet}"
 
-#hide_all
-  &nbsp;
-
 #catalog
   = render 'catalog/taxon', taxon: @taxon
   %div{:class => "delete-modal", :type => 'hidden', :id => "delete_message"}
 
   #splitter
 
+  -# This is the lower half of the table for browsing
   .index
-    -# This is the lower half of the table for browsing
     = render   'rank', rank: :subfamily,items: @subfamilies,selected_item: @subfamily, parent: nil,       parameters: @parameters, options: {can_show_unavailable: true, show_none: 'none', hideable_child_name: 'tribes'}
     - if session[:show_tribes] and @subfamily != 'none'
       = render 'rank', rank: :tribe,    items: @tribes,     selected_item: @tribe,     parent: @subfamily,parameters: @parameters, options: {hideable_name: 'tribes', show_none: 'none'}
