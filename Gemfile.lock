@@ -263,10 +263,6 @@ GEM
       railties (>= 4.2.0, < 5)
     rsolr (1.0.13)
       builder (>= 2.1.2)
-    rspec-activemodel-mocks (1.0.2)
-      activemodel (>= 3.0)
-      activesupport (>= 3.0)
-      rspec-mocks (>= 2.99, < 4.0)
     rspec-core (3.3.2)
       rspec-support (~> 3.3.0)
     rspec-expectations (3.3.1)
@@ -390,7 +386,6 @@ DEPENDENCIES
   rails-observers
   rake
   request_store
-  rspec-activemodel-mocks
   rspec-rails
   sass-rails (= 4.0.5)
   selenium-webdriver (>= 2.48)

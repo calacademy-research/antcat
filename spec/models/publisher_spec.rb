@@ -42,9 +42,8 @@ describe Publisher do
         Publisher.import_string ''
       end
       it "parses" do
-        publisher = mock_model Publisher
-        expect(Publisher).to receive(:import).with(:name => 'Houghton Mifflin', :place => 'New York').and_return publisher
-        expect(Publisher.import_string('New York: Houghton Mifflin')).to eq(publisher)
+        expected = Publisher.import_string('New York: Houghton Mifflin')
+        expect(expected.to_s).to eq 'New York: Houghton Mifflin'
       end
     end
   end
