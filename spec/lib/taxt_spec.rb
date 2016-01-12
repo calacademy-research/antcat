@@ -89,22 +89,22 @@ describe Taxt do
           key_stub = double
           expect(reference).to receive(:key).and_return key_stub
           expect(key_stub).to receive(:to_link).and_return('foo')
-          expect(Taxt.to_string("{ref #{reference.id}}", nil)).to eq('foo')
+          expect(Taxt.to_string("{ref #{reference.id}}")).to eq('foo')
         end
         it "should not freak if the ref is malformed" do
-          expect(Taxt.to_string("{ref sdf}", nil)).to eq('{ref sdf}')
+          expect(Taxt.to_string("{ref sdf}")).to eq('{ref sdf}')
         end
         it "should not freak if the ref points to a reference that doesn't exist" do
-          expect {expect(Taxt.to_string("{ref 12345}", nil)).to eq('{ref 12345}')}.not_to raise_error
-          expect(Taxt.to_string("{ref 12345}", nil)).to eq('{ref 12345}')
+          expect {expect(Taxt.to_string("{ref 12345}")).to eq('{ref 12345}')}.not_to raise_error
+          expect(Taxt.to_string("{ref 12345}")).to eq('{ref 12345}')
         end
         it "should handle a MissingReference" do
           reference = FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809'
-          expect(Taxt.to_string("{ref #{reference.id}}", nil)).to eq('Latreille, 1809')
+          expect(Taxt.to_string("{ref #{reference.id}}")).to eq('Latreille, 1809')
         end
         #it "should escape input" do
           #reference = FactoryGirl.create :missing_reference, citation: 'Latreille, 1809 <script>'
-          #Taxt.to_string("{ref #{reference.id}}", nil).should == 'Latreille, 1809 &lt;script&gt;'
+          #Taxt.to_string("{ref #{reference.id}}").should == 'Latreille, 1809 &lt;script&gt;'
         #end
       end
       describe "Display" do
@@ -114,7 +114,7 @@ describe Taxt do
           key_stub = double
           expect(reference).to receive(:key).and_return key_stub
           expect(key_stub).to receive(:to_s).and_return('foo')
-          expect(Taxt.to_display_string("{ref #{reference.id}}", nil)).to eq('foo')
+          expect(Taxt.to_display_string("{ref #{reference.id}}")).to eq('foo')
         end
       end
     end
@@ -148,7 +148,7 @@ describe Taxt do
       it "should be able to use a different link formatter" do
         genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
         expect(Taxt).to receive :link_to_antcat_from_antweb
-        Taxt.to_string("{tax #{genus.id}}", nil)
+        Taxt.to_string("{tax #{genus.id}}")
       end
     end
 
@@ -184,10 +184,10 @@ describe Taxt do
     let(:reference) { FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809' }
 
     it "should add a period" do
-      expect(Taxt.to_sentence("{ref #{reference.id}}", nil)).to eq('Latreille, 1809.')
+      expect(Taxt.to_sentence("{ref #{reference.id}}")).to eq('Latreille, 1809.')
     end
     it "should not add a period if one's already there" do
-      expect(Taxt.to_sentence("{ref #{reference.id}}.", nil)).to eq('Latreille, 1809.')
+      expect(Taxt.to_sentence("{ref #{reference.id}}.")).to eq('Latreille, 1809.')
     end
   end
 

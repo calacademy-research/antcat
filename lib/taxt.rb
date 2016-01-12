@@ -22,23 +22,23 @@ module Taxt
   end
 
   ################################
-  def self.to_string taxt, user = nil, options = {}
-    decode taxt, user, options
+  def self.to_string taxt, options = {}
+    decode taxt, options
   end
 
-  def self.to_display_string taxt, user = nil, options = {}
+  def self.to_display_string taxt, options = {}
     options[:display] = true
-    to_string taxt, user, options
+    to_string taxt, options
   end
 
-  def self.to_sentence taxt, user, options = {}
-    string = decode taxt, user, options
+  def self.to_sentence taxt, options = {}
+    string = decode taxt, options
     add_period_if_necessary string
   end
 
-  def self.to_display_sentence taxt, user, options = {}
+  def self.to_display_sentence taxt, options = {}
     options[:display] = true
-    to_sentence taxt, user, options
+    to_sentence taxt, options
   end
 
   ################################
@@ -124,10 +124,10 @@ module Taxt
   end
 
   ################################
-  def self.decode taxt, user = nil, options = {}
+  def self.decode taxt, options = {}
     return '' unless taxt
     taxt.gsub(/{ref (\d+)}/) do |whole_match|
-      decode_reference whole_match, $1, user, options
+      decode_reference whole_match, $1, options
     end.gsub(/{nam (\d+)}/) do |whole_match|
       decode_name whole_match, $1
     end.gsub(/{tax (\d+)}/) do |whole_match|
@@ -136,7 +136,7 @@ module Taxt
     end.html_safe
   end
 
-  def self.decode_reference whole_match, reference_id_match, user, options
+  def self.decode_reference whole_match, reference_id_match, options
     if options[:display]
       reference = Reference.find(reference_id_match) rescue whole_match
       reference.decorate.format_inline_citation_without_links rescue whole_match

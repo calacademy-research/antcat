@@ -187,7 +187,7 @@ class TaxonDecorator < ApplicationDecorator
 
     def detaxt taxt
       return '' unless taxt.present?
-      Taxt.to_string taxt, get_current_user
+      Taxt.to_string taxt
     end
 
     def format_senior_synonym

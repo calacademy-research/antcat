@@ -13,7 +13,7 @@
     -if taxon.history_items.present?
       .history
         -taxon.history_items.each do |history_item|
-          =Taxt.to_sentence history_item.taxt, current_user
+          =Taxt.to_sentence history_item.taxt
 
     =taxon.child_lists
     =taxon.references

@@ -35,7 +35,7 @@ module ChangesHelper
   end
 
   def format_taxt taxt
-    Taxt.to_string taxt, current_user
+    Taxt.to_string taxt
   end
 
   def edit_button taxon
