@@ -2,12 +2,13 @@ require 'spec_helper'
 
 describe CatalogController do
 
-  describe "Handling invalid UTF-8 (which we seem to get a lot)" do
-    it "should ask the milieu" do
-      # This test makes no sense at all.
-      @current_user = double
-      allow(controller).to receive(:current_user).and_return @current_user
-      expect { get :show, id: create_genus.id, qq: "\255" }.not_to raise_error
+  it { should use_before_action(:handle_family_not_found) }
+  it { should use_before_action(:get_parameters) }
+
+  describe 'GET #show' do
+    context "without a family existing in the database" do
+      before { get :show }
+      it { should render_template('family_not_found') }
     end
   end
 

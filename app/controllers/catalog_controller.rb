@@ -1,4 +1,5 @@
 class CatalogController < ApplicationController
+  before_filter :handle_family_not_found, only: [:show]
   before_filter :get_parameters
 
   def show
@@ -84,6 +85,12 @@ class CatalogController < ApplicationController
   end
 
   private
+    # Avoid blowing up if there's no family. Useful in test and dev.
+    def handle_family_not_found
+      family = Family.first
+      render 'family_not_found' and return unless family
+    end
+
     def redirect_to_id
       id = @parameters.delete :id
       id_string = "/#{id}"
@@ -92,7 +99,7 @@ class CatalogController < ApplicationController
     end
 
     def setup_taxon_and_index
-      # Amoung other thigs, this populates the lower half of the table
+      # Among other thigs, this populates the lower half of the table
       # that is browsable (subfamiles, genera, [subgenera], species, [subspecies])
       @taxon = Taxon.find_by_id(@parameters[:id]) || Family.first
 
@@ -175,7 +182,7 @@ class CatalogController < ApplicationController
       end
     end
 
-    def get_parameters # refactor
+    def get_parameters # TODO refactor
       @parameters = HashWithIndifferentAccess.new
       @parameters[:id] = params[:id] if params[:id].present?
       @parameters[:child] = params[:child] if params[:child].present?
