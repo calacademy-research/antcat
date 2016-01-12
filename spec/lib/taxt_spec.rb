@@ -110,11 +110,8 @@ describe Taxt do
       describe "Display" do
         it "should format a ref" do
           reference = FactoryGirl.create :article_reference
-          expect(Reference).to receive(:find).with(reference.id.to_s).and_return reference
-          key_stub = double
-          expect(reference).to receive(:key).and_return key_stub
-          expect(key_stub).to receive(:to_s).and_return('foo')
-          expect(Taxt.to_display_string("{ref #{reference.id}}")).to eq('foo')
+          expected = reference.decorate.format_author_last_names # HACK
+          expect(Taxt.to_display_string("{ref #{reference.id}}")).to eq expected
         end
       end
     end

@@ -309,10 +309,10 @@ describe ReferenceDecorator do
       it "nonmissing references should defer to the key" do
         key = double
         reference = FactoryGirl.create :article_reference
-        expect(reference).to receive(:key).and_return key
-        expect(key).to receive(:to_s)
+        decorated = reference.decorate
+        expect(decorated).to receive(:format_author_last_names).and_return key
 
-        reference.decorate.format_inline_citation_without_links
+        decorated.format_inline_citation_without_links
       end
     end
   end
