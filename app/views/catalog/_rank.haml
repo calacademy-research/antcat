@@ -9,15 +9,15 @@
         = rank.to_s :plural, :capitalized
 
         - if options[:can_show_unavailable]
-          .hide_show= hide_or_show_unavailable_subfamilies_link session[:show_unavailable_subfamilies], parameters, id
+          .hide_show= hide_or_show_unavailable_subfamilies_link session[:show_unavailable_subfamilies], child, id
 
         - if options[:hideable_name]
-          .hide_show= hide_link options[:hideable_name], id, parameters, id
+          .hide_show= hide_link options[:hideable_name], id, child, id
         - if options[:hideable_child_name]
           .hide_show
             - showing_child = "show_#{options[:hideable_child_name]}".to_sym
             - unless session[showing_child]
-              = show_child_link options[:hideable_child_name], id, parameters, id
+              = show_child_link options[:hideable_child_name], id, child, id
     %tr
       %td
         - if items
@@ -31,4 +31,4 @@
                 - row.each do |item|
                   %td{class: css_class}
                     - if item
-                      = index_column_link rank.to_sym, item, selected_item, parent, parameters, id
+                      = index_column_link rank.to_sym, item, selected_item, parent, child, id

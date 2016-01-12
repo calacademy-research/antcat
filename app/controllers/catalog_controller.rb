@@ -93,7 +93,7 @@ class CatalogController < ApplicationController
     def redirect_to_id
       id = @id
       id_string = "/#{id}"
-      parameters_string = @parameters.empty? ? '' : "?#{@parameters.to_query}"
+      parameters_string = @child ? '' : "?child=#{@child}"
       redirect_to "/catalog#{id_string}#{parameters_string}"
     end
 
@@ -110,7 +110,7 @@ class CatalogController < ApplicationController
 
       case @taxon
       when Family
-        if @parameters[:child] == 'none'
+        if @child == 'none'
           @subfamily = 'none'
           @genera = Genus.where("display != false").without_subfamily.ordered_by_name
         end
@@ -120,7 +120,7 @@ class CatalogController < ApplicationController
 
         if session[:show_tribes]
           @tribes = @subfamily.tribes.where("display != false").ordered_by_name
-          if @parameters[:child] == 'none'
+          if @child == 'none'
             @tribe = 'none'
             @genera = @subfamily.genera.where("display != false").without_tribe.ordered_by_name
           end
@@ -182,14 +182,13 @@ class CatalogController < ApplicationController
     end
 
     def get_parameters # TODO refactor
-      @parameters = HashWithIndifferentAccess.new
       @id = params[:id] if params[:id].present?
-      @parameters[:child] = params[:child] if params[:child].present?
+      @child = params[:child] if params[:child].present?
     end
 
     def set_id_parameter id
       @id = id
-      @parameters.delete :child
+      @child = nil
     end
 
     def do_search

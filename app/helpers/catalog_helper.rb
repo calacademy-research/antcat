@@ -5,9 +5,8 @@ module CatalogHelper
     snake items, column_count
   end
 
-  def index_column_link rank, taxon, selected_taxon, parent_taxon, parameters = {}, id
-    parameters = parameters.dup
-    parameters.delete :child
+  def index_column_link rank, taxon, selected_taxon, parent_taxon, child, id
+    parameters = {}
     
     if taxon == 'none'
       parameters[:child] = 'none'
@@ -30,29 +29,30 @@ module CatalogHelper
     link_to label, "/catalog#{id_string}#{parameters_string}", class: classes
   end
 
-  def search_result_link item, parameters, search_query, st="bw", id
-    parameters = parameters.dup
+  def search_result_link item, child, search_query, st="bw", id
+    parameters = {}
     
     css_class = item[:id].to_s == id.to_s ? 'selected' : nil
 
     parameters[:qq] = search_query
     parameters[:id] = item[:id]
     parameters[:st] = st
-    parameters.delete :child
 
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
     link_to raw(item[:name]), "/catalog/search#{parameters_string}", class: css_class
   end
 
-  def hide_link name, selected, parameters, id
-    parameters = parameters.dup
+  def hide_link name, selected, child, id
+    parameters = {}
+    parameters[:child] = child if child
     parameters[:id] = id if id
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
     link_to 'hide', "/catalog/hide_#{name}#{parameters_string}"
   end
 
-  def hide_or_show_unavailable_subfamilies_link is_hiding_link, parameters, id
-    parameters = parameters.dup
+  def hide_or_show_unavailable_subfamilies_link is_hiding_link, child, id
+    parameters = {}
+    parameters[:child] = child if child
     parameters[:id] = id
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
     command = is_hiding_link ? 'hide' : 'show'
@@ -61,8 +61,9 @@ module CatalogHelper
     link_to text, "/catalog/#{action}#{parameters_string}"
   end
 
-  def show_child_link name, selected, parameters, id
-    parameters = parameters.dup
+  def show_child_link name, selected, child, id
+    parameters = {}
+    parameters[:child] = child if child
     parameters[:id] = id if id
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
     link_to "show #{name}", "/catalog/show_#{name}#{parameters_string}"
