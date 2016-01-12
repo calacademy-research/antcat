@@ -48,32 +48,6 @@ Feature: Searching the catalog
     And I press "Go" by the search box
     And I follow "Dolichoderini" in the search results
     Then I should see "Dolichoderini history"
-    And I should see "Dolichoderini" in the search results
-
-  Scenario: Keeping search results open after selecting another taxon in the search results
-    When I go to the catalog
-    And I fill in the catalog search box with "doli"
-    And I press "Go" by the search box
-    And I follow "Dolichoderini" in the search results
-    And I follow "Dolichoderinae" in the search results
-    Then I should see "Dolichoderini" in the search results
-
-  Scenario: Closing the search results after selecting another taxon in the index
-    When I go to the catalog
-    And I fill in the catalog search box with "doli"
-    And I press "Go" by the search box
-    And I follow "Dolichoderini" in the search results
-    And I follow "Dolichoderinae" in the index
-    Then I should not see any search results
-
-  Scenario: Closing the search results
-    When I go to the catalog
-    And I fill in the catalog search box with "doli"
-    And I press "Go" by the search box
-    And I follow "Dolichoderini" in the search results
-    And I follow "Clear"
-    Then I should not see any search results
-    And "Dolichoderini" should be selected in the index
 
   Scenario: Finding a genus without a subfamily or a tribe
     Given a genus exists with a name of "Monomorium" and no subfamily and a taxonomic history of "Monomorium history"

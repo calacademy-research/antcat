@@ -41,8 +41,7 @@ class CatalogController < ApplicationController
       return redirect_to_id @id
     end
 
-    setup_taxon_and_index @id
-    render :show
+    render 'search_results'
   end
 
   def show_tribes

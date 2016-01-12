@@ -10,7 +10,6 @@
   = render 'catalog_title'
 
 - content_for :page_contents do
-  = render 'search_results', search_results: @search_results, search_results_message: @search_results_message, taxon: @taxon, child: @child, search_query: @search_query, st: @st, id: @id
   = yield
   .clear
   = render 'taxon_key'

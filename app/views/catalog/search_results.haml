@@ -1,0 +1,23 @@
+-#Locals: parameters, search_results, search_results_message, taxon, parameters, search_query, st
+
+#search_results
+  -if @search_results
+    -if @search_results_message
+      %span.no_results_found= @search_results_message
+    -else
+      %table
+        -rows = make_catalog_search_results_columns @search_results
+        -rows.each do |row|
+          %tr
+            -row.each do |item|
+              -if item
+                %td= search_result_link item, nil, @search_query, @st, nil
+
+  -else
+    %span.no_results_found No search term
+%hr
+
+-# Push down the partner links; makes the search result page look better after decoupling it from show.haml
+#catalog
+  #splitter{style: "display: none"}
+  .index

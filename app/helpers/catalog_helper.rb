@@ -30,16 +30,7 @@ module CatalogHelper
   end
 
   def search_result_link item, child, search_query, st="bw", id
-    parameters = {}
-    
-    css_class = item[:id].to_s == id.to_s ? 'selected' : nil
-
-    parameters[:qq] = search_query
-    parameters[:id] = item[:id]
-    parameters[:st] = st
-
-    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
-    link_to raw(item[:name]), "/catalog/search#{parameters_string}", class: css_class
+    link_to raw(item[:name]), "/catalog/#{item[:id]}"
   end
 
   def hide_link name, selected, child, id
