@@ -17,6 +17,9 @@ class Change < ActiveRecord::Base
                   'END DESC, changes.id DESC').uniq
   end
 
+  # Why isn't `user_changed_taxon_id` called `taxon`?
+  # Could be made into a `belongs_to` relationship
+  # TODO: investigate
   def taxon
     begin
       Taxon.find(user_changed_taxon_id)
@@ -55,15 +58,13 @@ class Change < ActiveRecord::Base
     version
   end
 
-  #
-  # return the taxon associated with this change, or null if there isn't one.
-  #
+  # Return the taxon associated with this change, or null if there isn't one.
   def most_recent_valid_taxon_version
     raise NotImplementedError
   end
 
   def user
-    # is this looks for a "User" object in a test, check that you're writing
+    # If this looks for a "User" object in a test, check that you're writing
     # the id and not the user object in factorygirl.
     raise NotImplementedError
 
@@ -71,12 +72,10 @@ class Change < ActiveRecord::Base
     user_id ? User.find(user_id) : nil
   end
 
-  #
   # This is hit from the haml; it returns the user ID of
   # the person who made the change.
-  #
   def changed_by
-    # adding user qualifier partly because of tests (setup doesn't have a "user" logged in),
+    # Adding user qualifier partly because of tests (setup doesn't have a "user" logged in),
     # in any case, it remains correct, because all versions for a given change have the same
     # user. Also may cover historical cases?
     usered_versions = PaperTrail::Version.where("change_id = #{self.id} AND whodunnit IS NOT NULL")
