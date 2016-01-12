@@ -9,8 +9,7 @@ class ReferenceKey
   end
 
   def to_s
-    return '' unless @reference.id
-    names = @reference.decorate.format_author_last_names
+    @reference.decorate.format_author_last_names
   end
 
   def to_link user, options = {}

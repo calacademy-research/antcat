@@ -1,7 +1,7 @@
 # From Formatters::ReferenceFormatter:
-# Note; this references ReferenceFormatterCache.
-# Most of these routines are only hit if there's a change in the content, at which
-# point it's reformatted and saved in references::formatted_cache.
+#    Note: this references ReferenceFormatterCache.
+#    Most of these routines are only hit if there's a change in the content, at which
+#    point it's reformatted and saved in references::formatted_cache.
 
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the h method
@@ -45,7 +45,7 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_authorship
-    reference.key.to_s
+    format_author_last_names
   end
 
   def format_italics string
@@ -129,7 +129,7 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_inline_citation_without_links
-    reference.key.to_s
+    format_author_last_names
   end
 
   def goto_reference_link
@@ -139,6 +139,8 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_author_last_names
+    return '' unless reference.id
+
     names = reference.author_names.map &:last_name
     case names.size
     when 0

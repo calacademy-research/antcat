@@ -24,7 +24,8 @@ class TaxonDecorator < ApplicationDecorator
   end
 
   def statistics options = {}
-    statistics = taxon.statistics or return ''
+    statistics = taxon.statistics
+    return '' unless statistics
     string = TaxonDecorator::Statistics.new.statistics(statistics, options)
     helpers.content_tag :div, string, class: 'statistics'
   end
@@ -42,17 +43,15 @@ class TaxonDecorator < ApplicationDecorator
   end
 
   def genus_species_header_notes_taxt
-    if taxon.genus_species_header_notes_taxt.present?
-      helpers.content_tag :div, detaxt(taxon.genus_species_header_notes_taxt), class: 'genus_species_header_notes_taxt'
-    end
+    return unless taxon.genus_species_header_notes_taxt.present?
+    helpers.content_tag :div, detaxt(taxon.genus_species_header_notes_taxt), class: 'genus_species_header_notes_taxt'
   end
 
   def references
-    if taxon.reference_sections.present?
-      helpers.content_tag :div, class: 'reference_sections' do
-        taxon.reference_sections.inject(''.html_safe) do |content, section|
-          content << reference_section(section)
-        end
+    return unless taxon.reference_sections.present?
+    helpers.content_tag :div, class: 'reference_sections' do
+      taxon.reference_sections.inject(''.html_safe) do |content, section|
+        content << reference_section(section)
       end
     end
   end
