@@ -6,13 +6,24 @@ describe CatalogController do
   it { should use_before_action(:get_parameters) }
 
   describe 'GET #show' do
-    context "without a family existing in the database" do
-      before { get :show }
-      it { should render_template('family_not_found') }
+    describe "handle non-existing family" do
+      context "family exists" do
+        before do
+          FactoryGirl.create(:family)
+          get :show
+        end
+        it { should render_template('show') }
+      end
+      context "without a family existing in the database" do
+        before { get :show }
+        it { should render_template('family_not_found') }
+      end
     end
   end
 
   describe "show an hide" do
+    before { FactoryGirl.create(:family) }
+
     describe "tribes" do
       describe 'GET #show_tribes' do
         before { get :show_tribes }

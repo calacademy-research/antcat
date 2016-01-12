@@ -1,18 +1,17 @@
 #search_results
-  -if @search_results
-    -if @search_results_message
-      %span.no_results_found= @search_results_message
-    -else
-      %table
-        -rows = make_catalog_search_results_columns @search_results
-        -rows.each do |row|
-          %tr
-            -row.each do |taxon|
-              -if taxon
-                %td= search_result_link taxon
-
-  -else
+  -if @search_results.nil?
     %span.no_results_found No search term
+  -elsif @search_results.empty?
+    %span.no_results_found
+      = "No results found for name #{@search_selector_value} '#{params[:qq]}'"
+  -else
+    %table
+      -rows = make_catalog_search_results_columns @search_results
+      -rows.each do |row|
+        %tr
+          -row.each do |taxon|
+            -if taxon
+              %td= search_result_link taxon
 %hr
 
 -# Push down the partner links; makes the search result page look better after decoupling it from show.haml

@@ -1,38 +1,21 @@
 class CatalogController < ApplicationController
   before_filter :handle_family_not_found, only: [:show]
-  before_filter :get_parameters
+  before_filter :get_parameters, except: [:search]
 
   def show
     setup_taxon_and_index @id
   end
 
-  # Return all the taxa that would be deleted if we delete this
-  # particular ID, inclusive. Same as children, really.
-  def delete_impact_list
-    mother = TaxonMother.new(@id)
-    mother.load_taxon
-    taxon_array = mother.get_children
-
-    render json: taxon_array, status: :ok
-  end
-
   def search
-    @search_query = params[:qq] || ''
-    @st = params[:st] || ''
+    @search_results = get_search_results(params[:qq], params[:st])
 
-    @search_results = do_search(@search_query, @st)
-
-    if @search_results.blank?
-      search_selector_value = translate_search_selector_value_to_english @st
-      @search_results_message = "No results found for name #{search_selector_value} '#{params[:qq]}'"
-    end
-
+    # Single match --> skip search results and just show the match
     if @search_results.try(:count) == 1
-      # Single match --> skip search results and just show the match
-      @id = @search_results.first[:id]
-      return redirect_to_id @id
+      id = @search_results.first[:id]
+      return redirect_to_id id
     end
 
+    @search_selector_value = search_selector_value_in_english(params[:st])
     render 'search_results'
   end
 
@@ -78,6 +61,16 @@ class CatalogController < ApplicationController
       end
     end
     redirect_to_id @id
+  end
+
+  # Return all the taxa that would be deleted if we delete this
+  # particular ID, inclusive. Same as children, really.
+  def delete_impact_list
+    mother = TaxonMother.new(@id)
+    mother.load_taxon
+    taxon_array = mother.get_children
+
+    render json: taxon_array, status: :ok
   end
 
   private
@@ -135,10 +128,10 @@ class CatalogController < ApplicationController
         @genus = @taxon
         @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
         setup_genus_parent_columns
-        unless session[:show_subgenera]
-          @specieses = @genus.species_group_descendants.where("display != false")
-        else
+        if session[:show_subgenera]
           @subgenera = @genus.subgenera.where("display != false").ordered_by_name
+        else
+          @specieses = @genus.species_group_descendants.where("display != false")
         end
 
       when Subgenus
@@ -181,16 +174,16 @@ class CatalogController < ApplicationController
       @child = params[:child]
     end
 
-    def do_search qq, st = 'bw'
+    def get_search_results qq, st = 'bw'
       return unless qq.present?
-      search_selector_value = translate_search_selector_value_to_english st
+      search_selector_value = search_selector_value_in_english st
 
       Taxon.find_name(qq, search_selector_value).map do |search_result|
         { name: search_result.name.name_html, id: search_result.id }
       end
     end
 
-    def translate_search_selector_value_to_english value
+    def search_selector_value_in_english value
       { 'm' => 'matching', 'bw' => 'beginning with', 'c' => 'containing' }[value]
     end
 end
