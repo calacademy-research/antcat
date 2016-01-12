@@ -89,38 +89,6 @@ class ReferencesController < ApplicationController
     save is_new: false
   end
 
-  def save(is_new:)
-    begin
-      Reference.transaction do
-        clear_document_params_if_necessary
-        clear_nesting_reference_id unless @reference.kind_of? NestedReference
-        parse_author_names_string
-        set_journal if @reference.kind_of? ArticleReference
-        set_publisher if @reference.kind_of? BookReference
-        set_pagination
-        # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
-        @reference.update_column :type, @reference.type unless is_new
-
-        unless @reference.errors.present?
-          @reference.update_attributes params[:reference]
-
-          @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
-          unless @possible_duplicate
-            @reference.save!
-            set_document_host
-          end
-        end
-
-        raise ActiveRecord::RecordInvalid.new @reference if @reference.errors.present?
-      end
-    rescue ActiveRecord::RecordInvalid
-      @reference[:id] = nil if is_new
-      @reference.instance_variable_set :@new_record, is_new
-    end
-    DefaultReference.set session, @reference
-    render_json is_new: is_new
-  end
-
   def destroy
     json =  if @reference.any_references? or not @reference.destroy
               { success: false,
@@ -190,6 +158,38 @@ class ReferencesController < ApplicationController
   end
 
   private
+    def save(is_new:)
+      begin
+        Reference.transaction do
+          clear_document_params_if_necessary
+          clear_nesting_reference_id unless @reference.kind_of? NestedReference
+          parse_author_names_string
+          set_journal if @reference.kind_of? ArticleReference
+          set_publisher if @reference.kind_of? BookReference
+          set_pagination
+          # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
+          @reference.update_column :type, @reference.type unless is_new
+
+          unless @reference.errors.present?
+            @reference.update_attributes params[:reference]
+
+            @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
+            unless @possible_duplicate
+              @reference.save!
+              set_document_host
+            end
+          end
+
+          raise ActiveRecord::RecordInvalid.new @reference if @reference.errors.present?
+        end
+      rescue ActiveRecord::RecordInvalid
+        @reference[:id] = nil if is_new
+        @reference.instance_variable_set :@new_record, is_new
+      end
+      DefaultReference.set session, @reference
+      render_json is_new: is_new
+    end
+
     def set_pagination
       params[:reference][:pagination] =
         case @reference

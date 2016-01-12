@@ -17,10 +17,6 @@ class Change < ActiveRecord::Base
                   'END DESC, changes.id DESC').uniq
   end
 
-  def get_user_versions change_id
-    PaperTrail::Version.find_by_sql("SELECT * FROM versions WHERE change_id  = '#{change_id}'")
-  end
-
   def taxon
     begin
       Taxon.find(user_changed_taxon_id)
@@ -99,4 +95,8 @@ class Change < ActiveRecord::Base
     return User.find(user_id.to_i)
   end
 
+  private
+    def get_user_versions change_id
+      PaperTrail::Version.find_by_sql("SELECT * FROM versions WHERE change_id  = '#{change_id}'")
+    end
 end

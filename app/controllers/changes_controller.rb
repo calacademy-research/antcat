@@ -15,21 +15,6 @@ class ChangesController < ApplicationController
     @change = Change.find params[:id]
   end
 
-  def do_approve this_change
-    taxon_id = this_change.user_changed_taxon_id
-    taxon_state = TaxonState.find_by taxon_id: taxon_id
-    return if taxon_state.review_state == "approved"
-
-    if this_change.taxon.nil?
-      # This case is for approving a delete
-      taxon_state.review_state = "approved"
-      taxon_state.save!
-    else
-      this_change.taxon.approve!
-      this_change.update_attributes! approver_id: current_user.id, approved_at: Time.now
-    end
-  end
-
   def approve
     @change = Change.find params[:id]
     do_approve @change
@@ -114,6 +99,21 @@ class ChangesController < ApplicationController
   end
 
   private
+    def do_approve this_change
+      taxon_id = this_change.user_changed_taxon_id
+      taxon_state = TaxonState.find_by taxon_id: taxon_id
+      return if taxon_state.review_state == "approved"
+
+      if this_change.taxon.nil?
+        # This case is for approving a delete
+        taxon_state.review_state = "approved"
+        taxon_state.save!
+      else
+        this_change.taxon.approve!
+        this_change.update_attributes! approver_id: current_user.id, approved_at: Time.now
+      end
+    end
+
     # Note that because of schema change, we can't do this for changes that don't
     # have an extracted taxon_state.
     def undo_versions versions
