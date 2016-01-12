@@ -174,6 +174,7 @@ class CatalogController < ApplicationController
       @child = params[:child]
     end
 
+    # TODO rename all occurrences of "st"
     def get_search_results qq, st = 'bw'
       return unless qq.present?
       search_selector_value = search_selector_value_in_english st

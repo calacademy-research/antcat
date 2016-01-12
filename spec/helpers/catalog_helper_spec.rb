@@ -18,20 +18,22 @@ describe CatalogHelper do
   describe "Hide link" do
     it "should create a link to the hide tribes action with all the current parameters" do
       taxon = FactoryGirl.create :genus
-      expect(helper.hide_link('tribes', taxon, nil, nil)).to eq('<a href="/catalog/hide_tribes">hide</a>')
+      expected = %Q[<a href="/catalog/hide_tribes?id=#{taxon.id}">hide</a>]
+      expect(helper.hide_link('tribes', taxon.id, nil)).to eq expected
     end
   end
 
   describe "Show child link" do
     it "should create a link to the show action" do
       taxon = FactoryGirl.create :genus
-      expect(helper.show_child_link('tribes', taxon, nil, nil)).to eq(%{<a href="/catalog/show_tribes">show tribes</a>})
+      expected = %Q[<a href="/catalog/show_tribes?id=#{taxon.id}">show tribes</a>]
+      expect(helper.show_child_link('tribes', taxon.id, nil)).to eq expected
     end
   end
 
   describe "Index column link" do
     it "should work" do
-      expect(helper.index_column_link(:subfamily, 'none', 'none', nil, nil, nil)).to eq('<a class="valid selected" href="/catalog?child=none">(no subfamily)</a>')
+      expect(helper.index_column_link(:subfamily, 'none', 'none', nil)).to eq('<a class="valid selected" href="/catalog?child=none">(no subfamily)</a>')
     end
   end
 
