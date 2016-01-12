@@ -47,9 +47,9 @@ module RefactorHelper
 
   def link_to_reference reference, user
     if $use_ant_web_formatter
-      reference.key.to_link user, expansion: false
+      reference.key.to_link expansion: false
     else
-      reference.key.to_link user
+      reference.key.to_link
     end
   end
 

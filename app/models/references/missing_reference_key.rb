@@ -4,7 +4,7 @@ class MissingReferenceKey
     @citation = citation
   end
 
-  def to_link _user = nil, _options = nil
+  def to_link _options = nil
     @citation.html_safe
   end
 

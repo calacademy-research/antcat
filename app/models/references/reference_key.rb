@@ -12,7 +12,7 @@ class ReferenceKey
     @reference.decorate.format_author_last_names
   end
 
-  def to_link user, options = {}
+  def to_link options = {}
     options = options.reverse_merge expansion: true
     reference_key_string = to_s
     reference_string = @reference.decorate.format

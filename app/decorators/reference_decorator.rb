@@ -102,9 +102,6 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_inline_citation options = {}
-    user = options.delete :user
-    user ||= get_current_user
-
     # cache/decache under same conditions
     using_cache = user.present?
 
@@ -123,9 +120,7 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_inline_citation! options = {}
-    user = options.delete :user
-    user ||= get_current_user
-    reference.key.to_link user, options
+    reference.key.to_link options
   end
 
   def format_inline_citation_without_links
