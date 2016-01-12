@@ -6,9 +6,10 @@ Feature: Security for editing taxa
   And make AntCat less valuable
 
   Background:
+    Given the Formicidae family exists
     Given these references exist
       | authors | citation   | title | year | doi |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |          |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |     |
     And there is a subfamily "Formicinae"
 
   @search

@@ -2,6 +2,7 @@
 Feature: Workflow
 
   Background:
+    Given the Formicidae family exists
     Given I log in as a catalog editor named "Mark Wilden"
     And these references exist
       | authors | citation   | title | year |  doi |
@@ -54,7 +55,7 @@ Feature: Workflow
     * I should see the notes "Notes" in the changes
     * I should see the protonym name "Eciton" in the changes
     # See antcat issue #93
-#    * I should see the protonym attribute "sic" in the changes
+    #* I should see the protonym attribute "sic" in the changes
     * I should see the authorship reference "Fisher 2004. Ants. Psyche 3:3" in the changes
     * I should see the page "260" in the changes
     * I should see the forms "m." in the changes
@@ -124,12 +125,20 @@ Feature: Workflow
     When I go to the changes page
     Then I should not see an "Approve" button
 
+  @search
   Scenario: Editing a taxon - modified, not added
-    Given there is a family "Formicidae"
     And I log in
     When I go to the edit page for "Formicidae"
     And I click the name field
     And I set the name to "Wildencidae"
+    And I press "OK"
+    And I click the protonym name field
+    And I set the protonym name to "Eciton"
+    And I click "#taxon_protonym_attributes_sic"
+    And I press "OK"
+    And I click the authorship field
+    And I search for the author "Fisher"
+    And I click the first search result
     And I press "OK"
     And I press "Save" within ".buttons_section"
     Then I should see "Wildencidae" in the header

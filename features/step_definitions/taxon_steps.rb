@@ -2,6 +2,7 @@ Given /^there is a family "Formicidae"$/ do
   create_family
 end
 Given /^the Formicidae family exists$/ do
+  # TODO refactor to not use `.destroy_all`
   Taxon.destroy_all
   Reference.destroy_all
 

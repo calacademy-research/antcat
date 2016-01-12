@@ -1,15 +1,11 @@
 Before do
   include Milieu
-  Family.destroy_all
-  family = FactoryGirl.build :family
-  family.save(validate: false)
-  FactoryGirl.create :taxon_state, taxon_id: family.id
-  # TODO joe remove this
-  family.save
   $Milieu = RestrictedMilieu.new
 end
 
-# from http://makandracards.com/makandra/1709-single-step-and-slow-motion-for-cucumber-scenarios-using-javascript-selenium
+# From http://makandracards.com/makandra/1709-single-step-and-
+# slow-motion-for-cucumber-scenarios-using-javascript-selenium
+# Use with `@javascript` and `DRIVER=selenium --format pretty` for the full experience.
 Before '@slow_motion' do
   @slow_motion = true
 end

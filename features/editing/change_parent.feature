@@ -6,6 +6,7 @@ Feature: Changing parent genus, species, tribe or subfamily
   So people use AntCat
 
   Background:
+    Given the Formicidae family exists
     Given I am logged in
     And that version tracking is enabled
 
@@ -55,25 +56,27 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "new merge back into original Atta major"
     When I save my changes
 
-    # not working. Cancel never seems to get hit. Likely a webdriver problem.
-#  Scenario: I cancel out of the homonym conflict box
-#    Given there is species "Atta major" and another species "Beta major" shared between protonym genus "Atta" and later genus "Beta"
-#    When I go to the edit page for "Beta major"
-#    And I click the parent name field
-#    And I set the parent name to "Atta"
-#    And I press "OK"
-#    Then I should see "This new combination looks a lot like existing combinations"
-#    And I should see "Choose a representation"
-#    And I should see "Atta major: (Fisher5, 2015) return to a previous usage"
-#    And I should see "Create secondary junior homonym of Atta major"
-#    When I press "Cancel-Dialog"
-#    Then I should not see "Atta"
-#    Broken. "cancel" button is found, but the button press isn't going through.
-
-#    Then The parent name field should have "Beta"
-#    When I click the parent name field
-#    And I set the parent name to "Atta"
-#    Then I should see "This new combination looks a lot like existing combinations"
+  # TODO not working. Cancel never seems to get hit. Likely a webdriver problem.
+  #Scenario: I cancel out of the homonym conflict box
+  #  Given there is species "Atta major" and another species "Beta major" shared between protonym #genus "Atta" and later genus "Beta"
+  #  When I go to the edit page for "Beta major"
+  #  And I click the parent name field
+  #  And I set the parent name to "Atta"
+  #  And I press "OK"
+  #  Then I should see "This new combination looks a lot like existing combinations"
+  #  And I should see "Choose a representation"
+  #  And I should see "Atta major: (Fisher5, 2015) return to a previous usage"
+  #  And I should see "Create secondary junior homonym of Atta major"
+  #  When I press "Cancel-Dialog"
+  #  Then I should not see "Atta"
+  #
+  # Broken. "cancel" button is found, but the button press isn't going through.
+  #
+  #  Then The parent name field should have "Beta"
+  #  When I click the parent name field
+  #  And I set the parent name to "Atta"
+  #  Then I should see "This new combination looks a lot like existing combinations"
+  #
   # Change parent of a subspecies from one species to another. Create a conflict that way and detect it.
   # Change parent of a genus from one subfamily to another. Create a conflict that way and detect it.
 
@@ -108,15 +111,15 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "new secondary junior homonym of species of Atta"
 
     #test case notes:
+    # try this for a case where there are no duplicate candidates
+    # try this for a case with more than one duplicate candidate
+    # For homonym case, check that the references for "b" in a - b -a' case are good.
+    # for reversion case(s), check that the references for "b" are good
+    # Standard case(maybe already covered?) where there is no conflict/duplicate
+    # a-b-a' case for both options     (with and without approval)
+    # a-b-c case, check all references
+    # a-b-c + appprove, check all reference
 
-  # try this for a case where there are no duplicate candidates
-  # try this for a case with more than one duplicate candidate
-  # For homonym case, check that the references for "b" in a - b -a' case are good.
-  # for reversion case(s), check that the references for "b" are good
-  # Standard case(maybe already covered?) where there is no conflict/duplicate
-  # a-b-a' case for both options     (with and without approval)
-  # a-b-c case, check all references
-  # a-b-c + appprove, check all reference
   Scenario: Detecting a possible secondary homonym when there is a subspecies name conflict
     Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
     Given there is a subspecies "Atta betus subbus" which is a subspecies of "Atta betus" in the genus "Atta"
@@ -136,16 +139,16 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I should see "unresolved junior homonym"
     And I should see "This taxon has been changed; changes awaiting approval"
 
-  # tagged "work in progress" - I saw this fail once, requires checking.
-#  Scenario: Change a subspecies to a species should error gracefully
-#    Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
-#    Given there is a genus "Atta"
-#    And I am logged in
-#    When I go to the edit page for "Solenopsis speccus subbus"
-#    And I click the parent name field
-#    And I set the parent name to "Atta"
-#    And I press "OK"
-#    Try this manually, see what happens. If all is well, then that's bad - this should be an error case.
+  # WIP? tagged "work in progress" - I saw this fail once, requires checking.
+  #Scenario: Change a subspecies to a species should error gracefully
+  #  Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
+  #  Given there is a genus "Atta"
+  #  And I am logged in
+  #  When I go to the edit page for "Solenopsis speccus subbus"
+  #  And I click the parent name field
+  #  And I set the parent name to "Atta"
+  #  And I press "OK"
+  #  Try this manually, see what happens. If all is well, then that's bad - this should be an error case.
 
   Scenario: Changing a species's genus twice by using the helper link
     Given there is an original species "Atta major" with genus "Atta"
@@ -348,16 +351,14 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "Yes, update parent record only"
     Then I should see "subspecies of Batta fpeccus"
 
-   # new cases pending
-    # All are to fix the missing "species_id" for a subspecies
-    # Attempt to save a subspecies with a genus parent - should alert.  # feature not implemented
-    # attempt to save a species with a family parent - should alert.    # feature not implemented
-    # attempt to save any taxon with no parent - should alert           # feature not implemented
-    # Attempt to change to a parent with a name match but no associated taxon records (it can happen!) should show abort/fail message.
+  # TODO new cases pending
+  # All are to fix the missing "species_id" for a subspecies
+  # Attempt to save a subspecies with a genus parent - should alert.  # feature not implemented
+  # attempt to save a species with a family parent - should alert.    # feature not implemented
+  # attempt to save any taxon with no parent - should alert           # feature not implemented
+  # Attempt to change to a parent with a name match but no associated taxon records (it can happen!) should show abort/fail message.
   # test changing subgenus
   # test changnig genus
   # change to a parent that is inconcistnet with currnet name, get warning  [done]
   # change to a parent that is concistent with current name, get no warning [done]
   # Do above two for change of genus parent of species and species parent of subspecies
-
-

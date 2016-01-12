@@ -6,10 +6,10 @@ Feature: Editing a taxon
   So people use AntCat
 
   Background:
+    Given the Formicidae family exists
     Given version tracking is enabled
 
   Scenario: Editing a family's name
-    Given there is a family "Formicidae"
     And I log in
     When I go to the edit page for "Formicidae"
     And I click the name field
@@ -19,7 +19,6 @@ Feature: Editing a taxon
     Then I should see "Wildencidae" in the header
 
   Scenario: Trying to enter a blank name
-    Given there is a family "Formicidae"
     And I log in
     When I go to the edit page for "Formicidae"
     And I click the name field
@@ -46,7 +45,6 @@ Feature: Editing a taxon
     And I save my changes
     And I wait for a bit
     Then the name "major" genus "Atta" should not be auto generated
-
 
   Scenario: Setting a genus's name to an existing one
     Given there is a genus "Calyptites"

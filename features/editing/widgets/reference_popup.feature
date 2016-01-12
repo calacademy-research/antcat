@@ -2,6 +2,9 @@
 Feature: Reference popup
 
   Background:
+    # Formicidae is only explicitly required by 'Selecting a reference from search results'
+    # TODO leaving this here
+    Given the Formicidae family exists
     Given these references exist
       | authors                | year | citation_year | title              | citation   |
       | Fisher, B.             | 1995 | 1995b         | Fisher's book      | Ants 1:1-2 |
@@ -25,12 +28,12 @@ Feature: Reference popup
 
   # There's a problem getting the search type selector to pick the right one
   #Scenario: Searching
-    #When I go to the reference popup widget test page
-    #And I search for "bolton"
-    #Then I should see "Bolton's book"
-    #* I should see "Fisher Bolton book"
-    #* I should not see "Bert's book"
-    #* I should not see "Fisher's book"
+  #  When I go to the reference popup widget test page
+  #  And I search for "bolton"
+  #  Then I should see "Bolton's book"
+  #  * I should see "Fisher Bolton book"
+  #  * I should not see "Bert's book"
+  #  * I should not see "Fisher's book"
 
   Scenario: Adding a selected reference
     Given I am logged in

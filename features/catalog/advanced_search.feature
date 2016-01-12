@@ -3,6 +3,9 @@ Feature: Searching the catalog
   I want to search the catalog in index view
   So that I can find taxa with their parents and siblings
 
+  Background:
+    Given the Formicidae family exists
+
   Scenario: Searching when not logged in
     When I go to the catalog
     And I follow "Advanced Search"

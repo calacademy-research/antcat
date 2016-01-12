@@ -2,10 +2,13 @@
 Feature: Adding a taxon
   As an editor of AntCat
   I want to add taxa
-  So that information is kept up-to-date˜
+  So that information is kept up-to-date
   So people use AntCat
 
   Background:
+    # Formicidae is only explicitly required by 'Adding a subfamily'
+    # TODO leaving this here
+    Given the Formicidae family exists
     Given I log in
     And that version tracking is enabled
     And these dated references exist
@@ -13,7 +16,7 @@ Feature: Adding a taxon
       | Fisher  | Psyche 3:3 | Ants  | 2004 |   TODAYS_DATE | TODAYS_DATE |  |
     And there is a subfamily "Formicinae"
 
-                          #spurrious failures
+  # spurrious failures
   @search
   Scenario: Adding a genus
     Given there is a genus "Eciton"
@@ -43,7 +46,7 @@ Feature: Adding a taxon
     When I go to the catalog page for "Formicinae"
       Then I should see "Atta" in the index
 
-    #spurrious failure
+  # spurrious failure
   @search
   Scenario: Adding a genus which has a tribe
     Given tribe "Ecitonini" exists in that subfamily
@@ -66,7 +69,6 @@ Feature: Adding a taxon
       And I press "Add this name"
     When I save my changes
       Then I should be on the catalog page for "Eciton"
-
 
   Scenario: Adding a genus without setting authorship reference
     Given there is a genus "Eciton"
@@ -200,7 +202,6 @@ Feature: Adding a taxon
   @search
   Scenario: Adding a subspecies
     And there is a species "Eciton major" with genus "Eciton"
-    #http://localhost:3000/catalog/6
     When I go to the catalog page for "Eciton major"
     And I press "Edit"
     And I press "Add subspecies"
@@ -224,7 +225,7 @@ Feature: Adding a taxon
 
   @search
   Scenario: Adding a subfamily
-    When I go to the catalog page for "Family"
+    When I go to the main page
       And I press "Edit"
       And I press "Add subfamily"
     Then I should be on the new taxon page
