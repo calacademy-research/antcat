@@ -35,20 +35,6 @@ describe CatalogHelper do
     end
   end
 
-  describe "#clear_search_results_link" do
-    it "links the root path if no id is given" do
-      id = nil
-      clear_link = clear_search_results_link(id)
-      expect(clear_link).to include root_path
-      expect(clear_link).to_not include "catalog"
-    end
-
-    it "links the taxon if an id is given" do
-      id = 101
-      expect(clear_search_results_link(id)).to include catalog_path(id)
-    end
-  end
-
   describe "array snaking" do
     it "handles empty arrays" do
       expect(snake([], 1)).to eq []

@@ -11,4 +11,3 @@
     = text_field_tag 'qq', @search_query, class: 'typeahead', placeholder: "Search..."
     = submit_tag  'Go', class: 'submit'
     = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
-    = clear_search_results_link(params[:id]) if search_results.present?

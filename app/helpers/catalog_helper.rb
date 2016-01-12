@@ -72,15 +72,6 @@ module CatalogHelper
     [snake(items, column_count), css_class]
   end
 
-  def clear_search_results_link id
-    path = if id.present?
-             catalog_path id
-           else
-             root_path
-           end
-    link_to "Clear", path
-  end
-
   def taxon_label_span taxon, options = {}
     content_tag :span, class: taxon_css_classes(taxon, options) do
       taxon_label(taxon, options).html_safe
