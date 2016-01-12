@@ -1,5 +1,3 @@
--#Locals: taxon, form
-
 %tr#current_valid_taxon_row
   - form.object.current_valid_taxon_name ||= form.object.current_valid_taxon.try(:name)
   - form.object.current_valid_taxon_name ||= Name.new

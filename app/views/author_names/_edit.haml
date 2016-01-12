@@ -1,5 +1,3 @@
--#Locals: author, author_name
-
 .edit.ui-widget-content
   - url = "/authors/#{author.id}/author_names/#{author_name.id}"
   - method = author_name.persisted? ? 'put' : 'post'

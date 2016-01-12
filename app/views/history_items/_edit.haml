@@ -1,5 +1,3 @@
--#Locals: item
-
 .edit.ui-widget-content
   - url = "/taxa/#{item.taxon.id}/taxon_history_items/#{item.id}"
   - method = item.persisted? ? 'put' : 'post'
