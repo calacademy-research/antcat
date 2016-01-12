@@ -62,14 +62,14 @@ module CatalogHelper
     [snake(items, column_count), css_class]
   end
 
-  def taxon_label_span taxon, options = {}
-    content_tag :span, class: taxon_css_classes(taxon, options) do
-      taxon_label(taxon, options).html_safe
+  def taxon_label_span(taxon, ignore_status: false)
+    content_tag :span, class: taxon_css_classes(taxon, ignore_status: ignore_status) do
+      taxon_label(taxon).html_safe
     end
   end
 
-  def taxon_label taxon, options = {}
-    epithet_label taxon.name, taxon.fossil?, options
+  def taxon_label taxon
+    epithet_label taxon.name, taxon.fossil?
   end
 
   def protonym_label protonym
@@ -88,22 +88,20 @@ module CatalogHelper
       parameters.empty? ? '' : "?#{parameters.to_query}"
     end
 
-    def epithet_label name, fossil, options = {}
-      name = name.epithet_with_fossil_html fossil
-      name = name.upcase if options[:uppercase]
-      name
+    def epithet_label name, fossil
+      name.epithet_with_fossil_html fossil
     end
 
-    def taxon_css_classes taxon, options = {}
+    def taxon_css_classes(taxon, selected: nil, ignore_status: false)
       css_classes = css_classes_for_rank taxon
 
-      unless options[:ignore_status]
+      unless ignore_status
         css_classes << taxon.status.downcase.gsub(/ /, '_')
         css_classes << 'nomen_nudum' if taxon.nomen_nudum?
         css_classes << 'collective_group_name' if taxon.collective_group_name?
       end
 
-      css_classes << 'selected' if options[:selected]
+      css_classes << 'selected' if selected
       css_classes.sort.join ' '
     end
 
