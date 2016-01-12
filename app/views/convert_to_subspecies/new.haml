@@ -7,10 +7,6 @@
   = javascript_include_tag  'widgets/name_field'
   = javascript_include_tag  'convert_to_subspecies'
 
-- content_for :page_header do
-  #navigation_bar
-  = render 'shared/catalog_title'
-
 - content_for :page_contents do
   = form_tag  "/taxa/#{@taxon.id}/convert_to_subspecies", class: 'convert_to_subspecies_form ui-widget' do
     = render 'shared/errors_for', resource: @taxon
