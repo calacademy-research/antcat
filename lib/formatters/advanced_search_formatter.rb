@@ -9,7 +9,7 @@ module Formatters::AdvancedSearchFormatter
     type_localities = format_type_localities(taxon)
     string << convert_to_text(' ' + type_localities) if type_localities.present?
     string << "\n"
-    protonym = convert_to_text(format_protonym taxon, nil)
+    protonym = convert_to_text(format_protonym taxon)
     string << protonym if protonym.present?
     string << "\n\n"
   end
@@ -41,7 +41,7 @@ module Formatters::AdvancedSearchFormatter
     string
   end
 
-  def format_protonym taxon, user
+  def format_protonym taxon
     reference = taxon.protonym.authorship.reference
     string = ''.html_safe
     string << reference.decorate.format

@@ -124,7 +124,7 @@ class TaxonDecorator::Headline
 
     def headline_authorship authorship
       return '' unless authorship && authorship.reference
-      string = link_to_reference(authorship.reference, @user)
+      string = link_to_reference(authorship.reference)
       string << ": #{authorship.pages}" if authorship.pages.present?
       string << " (#{authorship.forms})" if authorship.forms.present?
       string << ' ' << detaxt(authorship.notes_taxt) if authorship.notes_taxt
