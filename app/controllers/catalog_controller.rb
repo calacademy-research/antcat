@@ -3,17 +3,13 @@ class CatalogController < ApplicationController
   before_filter :get_parameters
 
   def show
-    if @id.blank?
-      @id = Family.first.id
-    end
     setup_taxon_and_index @id
   end
 
   # Return all the taxa that would be deleted if we delete this
   # particular ID, inclusive. Same as children, really.
   def delete_impact_list
-    taxon_id = @id
-    mother = TaxonMother.new(taxon_id)
+    mother = TaxonMother.new(@id)
     mother.load_taxon
     taxon_array = mother.get_children
 
@@ -21,22 +17,18 @@ class CatalogController < ApplicationController
   end
 
   def search
-    if params[:commit] == "Go"
-      @id = nil
-      params.delete :id
-    end
-
-    do_search
-
-    id = params[:id]
-    @id = id if id
     @search_query = params[:qq] || ''
     @st = params[:st] || ''
 
-    if @search_results.present? && @search_results.count == 1
-      # sets taxon if a single match is found
-      # explicitly picked ids are still displayed together with the list of matches
-      # defaults to Formicidae unless there's a single match or an id is picked
+    @search_results = do_search(@search_query, @st)
+
+    if @search_results.blank?
+      search_selector_value = translate_search_selector_value_to_english @st
+      @search_results_message = "No results found for name #{search_selector_value} '#{params[:qq]}'"
+    end
+
+    if @search_results.try(:count) == 1
+      # Single match --> skip search results and just show the match
       @id = @search_results.first[:id]
       return redirect_to_id @id
     end
@@ -100,15 +92,15 @@ class CatalogController < ApplicationController
       redirect_to "/catalog/#{id}#{parameters_string}"
     end
 
+    # Among other thigs, this populates the lower half of the table
+    # that is browsable (subfamiles, genera, [subgenera], species, [subspecies])
     def setup_taxon_and_index id
-      # Among other thigs, this populates the lower half of the table
-      # that is browsable (subfamiles, genera, [subgenera], species, [subspecies])
       @taxon = Taxon.find_by_id(id) || Family.first
 
       if session[:show_unavailable_subfamilies]
-        @subfamilies = ::Subfamily.all.ordered_by_name.where "display != false"
+        @subfamilies = ::Subfamily.all.ordered_by_name.where("display != false")
       else
-        @subfamilies = ::Subfamily.all.ordered_by_name.where "status != 'unavailable' and display != false"
+        @subfamilies = ::Subfamily.all.ordered_by_name.where("status != 'unavailable' and display != false")
       end
 
       case @taxon
@@ -184,23 +176,17 @@ class CatalogController < ApplicationController
       end
     end
 
-    def get_parameters # TODO refactor
-      @id = params[:id] if params[:id].present?
-      @child = params[:child] if params[:child].present?
+    def get_parameters
+      @id = params[:id] || Family.first.id
+      @child = params[:child]
     end
 
-    def do_search
-      return unless params[:qq].present?
-
-      st = params[:st] || 'bw'
+    def do_search qq, st = 'bw'
+      return unless qq.present?
       search_selector_value = translate_search_selector_value_to_english st
 
-      @search_results = Taxon.find_name(params[:qq], search_selector_value).map do |search_result|
+      Taxon.find_name(qq, search_selector_value).map do |search_result|
         { name: search_result.name.name_html, id: search_result.id }
-      end
-
-      if @search_results.blank?
-        @search_results_message = "No results found for name #{search_selector_value} '#{params[:qq]}'"
       end
     end
 

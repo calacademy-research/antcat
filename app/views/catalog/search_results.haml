@@ -9,9 +9,9 @@
         -rows = make_catalog_search_results_columns @search_results
         -rows.each do |row|
           %tr
-            -row.each do |item|
-              -if item
-                %td= search_result_link item, nil, @search_query, @st, nil
+            -row.each do |taxon|
+              -if taxon
+                %td= search_result_link taxon
 
   -else
     %span.no_results_found No search term

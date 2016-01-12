@@ -29,8 +29,8 @@ module CatalogHelper
     link_to label, "/catalog#{id_string}#{parameters_string}", class: classes
   end
 
-  def search_result_link item, child, search_query, st="bw", id
-    link_to raw(item[:name]), "/catalog/#{item[:id]}"
+  def search_result_link taxon
+    link_to raw(taxon[:name]), "/catalog/#{taxon[:id]}"
   end
 
   def hide_link name, selected, child, id
