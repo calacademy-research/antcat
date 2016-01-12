@@ -12,4 +12,41 @@ describe CatalogController do
     end
   end
 
+  describe "show an hide" do
+    describe "tribes" do
+      describe 'GET #show_tribes' do
+        before { get :show_tribes }
+        it { should set_session[:show_tribes].to(true) }
+      end
+      describe 'GET #hide_tribes' do
+        before { get :hide_tribes }
+        it { should set_session[:show_tribes].to(false) }
+        # TODO take into account (in test) if the linked was clicked from a tribe page
+      end
+    end
+
+    describe "unavailable subfamilies" do
+      describe 'GET #show_unavailable_subfamilies' do
+        before { get :show_unavailable_subfamilies }
+        it { should set_session[:show_unavailable_subfamilies].to(true) }
+      end
+      describe 'GET #hide_unavailable_subfamilies' do
+        before { get :hide_unavailable_subfamilies }
+        it { should set_session[:show_unavailable_subfamilies].to(false) }
+      end
+    end
+
+    describe "subgenera" do
+      describe 'GET #show_subgenera' do
+        before { get :show_subgenera }
+        it { should set_session[:show_subgenera].to(true) }
+      end
+      describe 'GET #hide_subgenera' do
+        before { get :hide_subgenera }
+        it { should set_session[:show_subgenera].to(false) }
+        # TODO take into account (in test) if the linked was clicked from a subgenus page
+      end
+    end
+  end
+
 end
