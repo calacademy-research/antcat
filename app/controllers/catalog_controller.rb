@@ -66,7 +66,6 @@ class CatalogController < ApplicationController
 
   def hide_unavailable_subfamilies
     session[:show_unavailable_subfamilies] = false
-    taxon = Family.first
     redirect_to_id
   end
 
@@ -188,13 +187,9 @@ class CatalogController < ApplicationController
       @parameters[:child] = params[:child] if params[:child].present?
     end
 
-    def set_id_parameter id, child = nil
+    def set_id_parameter id
       @parameters[:id] = id
-      if child
-        @parameters[:child] = child
-      else
-        @parameters.delete :child
-      end
+      @parameters.delete :child
     end
 
     def do_search
