@@ -26,11 +26,4 @@ class Protonym < ActiveRecord::Base
   def year
     authorship and authorship.year
   end
-
-  def self.destroy_orphans
-    orphans = Protonym.where("id NOT IN (SELECT protonym_id FROM taxa)")
-    orphans.each do |orphan|
-      orphan.destroy
-    end
-  end
 end

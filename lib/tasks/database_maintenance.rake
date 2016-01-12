@@ -1,3 +1,4 @@
+# TODO cleanup and split this file
 require  'antcat_rake_utils'
 include AntCat::RakeUtils
 
@@ -184,6 +185,18 @@ namespace :antcat do
       end
 
       puts "Done."
+    end
+  end
+end
+
+namespace :antcat do
+  namespace :db do
+    desc "Moved from protonym.rb"
+    task :destroy_protonym_orphans => :environment do
+      orphans = Protonym.where("id NOT IN (SELECT protonym_id FROM taxa)")
+      orphans.each do |orphan|
+        orphan.destroy
+      end
     end
   end
 end
