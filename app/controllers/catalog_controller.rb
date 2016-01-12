@@ -6,7 +6,7 @@ class CatalogController < ApplicationController
     if @id.blank?
       @id = Family.first.id
     end
-    setup_taxon_and_index
+    setup_taxon_and_index @id
   end
 
   # Return all the taxa that would be deleted if we delete this
@@ -38,49 +38,55 @@ class CatalogController < ApplicationController
       # explicitly picked ids are still displayed together with the list of matches
       # defaults to Formicidae unless there's a single match or an id is picked
       @id = @search_results.first[:id]
-      return redirect_to_id
+      return redirect_to_id @id
     end
 
-    setup_taxon_and_index
+    setup_taxon_and_index @id
     render :show
   end
 
   def show_tribes
     session[:show_tribes] = true
-    redirect_to_id
+    redirect_to_id @id
   end
 
   def hide_tribes
     session[:show_tribes] = false
     if @id.present?
       taxon = Taxon.find @id
-      set_id_parameter taxon.subfamily.id if taxon.kind_of? Tribe
+      if taxon.kind_of? Tribe
+        @id = taxon.subfamily.id
+        @child = nil
+      end
     end
-    redirect_to_id
+    redirect_to_id @id
   end
 
   def show_unavailable_subfamilies
     session[:show_unavailable_subfamilies] = true
-    redirect_to_id
+    redirect_to_id @id
   end
 
   def hide_unavailable_subfamilies
     session[:show_unavailable_subfamilies] = false
-    redirect_to_id
+    redirect_to_id @id
   end
 
   def show_subgenera
     session[:show_subgenera] = true
-    redirect_to_id
+    redirect_to_id @id
   end
 
   def hide_subgenera
     session[:show_subgenera] = false
     if @id.present?
       taxon = Taxon.find @id
-      set_id_parameter taxon.genus.id if taxon.kind_of? Subgenus
+      if taxon.kind_of? Subgenus
+        @id = taxon.genus.id
+        @child = nil
+      end
     end
-    redirect_to_id
+    redirect_to_id @id
   end
 
   private
@@ -90,17 +96,15 @@ class CatalogController < ApplicationController
       render 'family_not_found' and return unless family
     end
 
-    def redirect_to_id
-      id = @id
-      id_string = "/#{id}"
-      parameters_string = @child ? '' : "?child=#{@child}"
-      redirect_to "/catalog#{id_string}#{parameters_string}"
+    def redirect_to_id id
+      parameters_string = @child ? "?child=#{@child}" : ''
+      redirect_to "/catalog/#{id}#{parameters_string}"
     end
 
-    def setup_taxon_and_index
+    def setup_taxon_and_index id
       # Among other thigs, this populates the lower half of the table
       # that is browsable (subfamiles, genera, [subgenera], species, [subspecies])
-      @taxon = Taxon.find_by_id(@id) || Family.first
+      @taxon = Taxon.find_by_id(id) || Family.first
 
       if session[:show_unavailable_subfamilies]
         @subfamilies = ::Subfamily.all.ordered_by_name.where "display != false"
@@ -184,11 +188,6 @@ class CatalogController < ApplicationController
     def get_parameters # TODO refactor
       @id = params[:id] if params[:id].present?
       @child = params[:child] if params[:child].present?
-    end
-
-    def set_id_parameter id
-      @id = id
-      @child = nil
     end
 
     def do_search
