@@ -111,6 +111,7 @@ module CatalogHelper
     end
 
     def snake array, column_count
-      array.in_groups(column_count).transpose
+      transposed = array.in_groups(column_count).transpose
+      transposed.map(&:compact)
     end
 end

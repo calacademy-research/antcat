@@ -10,8 +10,7 @@
       -rows.each do |row|
         %tr
           -row.each do |taxon|
-            -if taxon
-              %td= search_result_link taxon
+            %td= search_result_link taxon
 %hr
 
 -# Push down the partner links; makes the search result page look better after decoupling it from show.haml

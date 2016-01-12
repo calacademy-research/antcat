@@ -27,5 +27,4 @@
               %tr
                 - row.each do |item|
                   %td{class: css_class}
-                    - if item
-                      = index_column_link rank.to_sym, item, selected_item, parent, child, id
+                    = index_column_link rank.to_sym, item, selected_item, parent, child, id

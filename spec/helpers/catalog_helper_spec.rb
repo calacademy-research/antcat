@@ -48,15 +48,15 @@ describe CatalogHelper do
     end
 
     it "handles empty cells" do
-      expect(snake([1, 2, 3, 4, 5], 2)).to eq [[1, 4], [2, 5], [3, nil]]
+      expect(snake([1, 2, 3, 4, 5], 2)).to eq [[1, 4], [2, 5], [3]]
     end
 
-    it "puts all nil padding items at the end" do
+    it "doesn't pad with nil" do
       array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       manually_snaked = [
         [1, 4, 6, 8, 10],
         [2, 5, 7, 9, 11],
-        [3, nil, nil, nil, nil]
+        [3]
       ]
       expect(snake(array, 5)).to eq manually_snaked
     end
