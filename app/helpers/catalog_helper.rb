@@ -1,4 +1,3 @@
-
 module CatalogHelper
 
   def make_catalog_search_results_columns items
@@ -6,9 +5,8 @@ module CatalogHelper
     snake items, column_count
   end
 
-  def index_column_link rank, taxon, selected_taxon, parent_taxon, parameters = {}
+  def index_column_link rank, taxon, selected_taxon, parent_taxon, parameters = {}, id
     parameters = parameters.dup
-    parameters.delete :id
     parameters.delete :child
     
     if taxon == 'none'
@@ -32,10 +30,10 @@ module CatalogHelper
     link_to label, "/catalog#{id_string}#{parameters_string}", class: classes
   end
 
-  def search_result_link item, parameters, search_query, st="bw"
+  def search_result_link item, parameters, search_query, st="bw", id
     parameters = parameters.dup
     
-    css_class = item[:id].to_s == parameters[:id].to_s ? 'selected' : nil
+    css_class = item[:id].to_s == id.to_s ? 'selected' : nil
 
     parameters[:qq] = search_query
     parameters[:id] = item[:id]
@@ -46,12 +44,16 @@ module CatalogHelper
     link_to raw(item[:name]), "/catalog/search#{parameters_string}", class: css_class
   end
 
-  def hide_link name, selected, parameters
+  def hide_link name, selected, parameters, id
+    parameters = parameters.dup
+    parameters[:id] = id if id
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
     link_to 'hide', "/catalog/hide_#{name}#{parameters_string}"
   end
 
-  def hide_or_show_unavailable_subfamilies_link is_hiding_link, parameters
+  def hide_or_show_unavailable_subfamilies_link is_hiding_link, parameters, id
+    parameters = parameters.dup
+    parameters[:id] = id
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
     command = is_hiding_link ? 'hide' : 'show'
     action = command.dup << '_unavailable_subfamilies'
@@ -59,7 +61,9 @@ module CatalogHelper
     link_to text, "/catalog/#{action}#{parameters_string}"
   end
 
-  def show_child_link name, selected, parameters
+  def show_child_link name, selected, parameters, id
+    parameters = parameters.dup
+    parameters[:id] = id if id
     parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
     link_to "show #{name}", "/catalog/show_#{name}#{parameters_string}"
   end
