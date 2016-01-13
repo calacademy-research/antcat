@@ -55,9 +55,9 @@ class DuplicatesController < TaxaController
   end
 
   private
-  def find_name_duplicates_only
-    name_conflict_taxa = Taxon.where name_id: params[:new_parent_name_id]
-    render json: name_conflict_taxa, status: :ok
-  end
+    def find_name_duplicates_only
+      name_conflict_taxa = Taxon.where name_id: params[:new_parent_name_id]
+      render json: name_conflict_taxa, status: :ok
+    end
 
 end
