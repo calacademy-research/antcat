@@ -17,7 +17,7 @@ class ChangesController < ApplicationController
 
   def approve
     @change = Change.find params[:id]
-    do_approve @change
+    approve_change @change
     json = { success: true }
     render json: json, content_type: 'text/html'
   end
@@ -25,7 +25,7 @@ class ChangesController < ApplicationController
   def approve_all
     TaxonState.where(review_state: 'waiting').each do |approve_taxon_state|
       Change.where(user_changed_taxon_id: approve_taxon_state.taxon_id).each do |approve_change|
-        do_approve approve_change
+        approve_change approve_change
       end
     end
 
@@ -99,18 +99,18 @@ class ChangesController < ApplicationController
   end
 
   private
-    def do_approve this_change
-      taxon_id = this_change.user_changed_taxon_id
-      taxon_state = TaxonState.find_by taxon_id: taxon_id
+    def approve_change change
+      taxon_id = change.user_changed_taxon_id
+      taxon_state = TaxonState.find_by(taxon_id: taxon_id)
       return if taxon_state.review_state == "approved"
 
-      if this_change.taxon.nil?
+      if change.taxon
+        change.taxon.approve!
+        change.update_attributes! approver_id: current_user.id, approved_at: Time.now
+      else
         # This case is for approving a delete
         taxon_state.review_state = "approved"
         taxon_state.save!
-      else
-        this_change.taxon.approve!
-        this_change.update_attributes! approver_id: current_user.id, approved_at: Time.now
       end
     end
 
@@ -147,15 +147,12 @@ class ChangesController < ApplicationController
     def get_future_change_ids version
       new_version = version.next
       change_id = version.change_id
+      return SortedSet.new unless change_id
 
-      unless change_id
-        return SortedSet.new
-      end
-
-      unless new_version
-        SortedSet.new [change_id]
-      else
+      if new_version
         SortedSet.new([change_id]).merge get_future_change_ids(new_version)
+      else
+        SortedSet.new([change_id])
       end
     end
 
