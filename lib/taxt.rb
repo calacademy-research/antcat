@@ -22,23 +22,13 @@ module Taxt
   end
 
   ################################
-  def self.to_string(taxt, expansion: true)
-    decode taxt, expansion: expansion
-  end
-
-  def self.to_display_string taxt, options = {}
-    raise "is this used?"
-    options[:display] = true
-    to_string taxt, options
-  end
-
-  def self.to_sentence(taxt, display: false)
-    string = decode taxt, display: display
-    add_period_if_necessary string
+  def self.to_string taxt, options = {}
+    decode taxt, options
   end
 
   def self.to_display_sentence taxt
-    to_sentence taxt, display: true
+    string = to_string taxt, display: true
+    add_period_if_necessary string
   end
 
   ################################
@@ -167,7 +157,7 @@ module Taxt
         if $use_ant_web_formatter # TODO remove dependency on global variable
           link_to_antcat_from_antweb taxon
         else
-          link_to_taxon taxon
+          taxon.decorate.link_to_taxon
         end
       end
     rescue
@@ -177,10 +167,4 @@ module Taxt
     def self.link_to_antcat_from_antweb taxon #TODO remove
       link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
     end
-
-    def self.link_to_taxon taxon #TODO remove
-      label = taxon.name.to_html_with_fossil(taxon.fossil?)
-      content_tag :a, label, href: %{/catalog/#{taxon.id}}
-    end
-
 end

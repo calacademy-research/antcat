@@ -158,15 +158,4 @@ describe Taxt do
     end
   end
 
-  describe "Sentence output" do
-    let(:reference) { FactoryGirl.create :missing_reference, :citation => 'Latreille, 1809' }
-
-    it "should add a period" do
-      expect(Taxt.to_sentence("{ref #{reference.id}}")).to eq('Latreille, 1809.')
-    end
-    it "should not add a period if one's already there" do
-      expect(Taxt.to_sentence("{ref #{reference.id}}.")).to eq('Latreille, 1809.')
-    end
-  end
-
 end
