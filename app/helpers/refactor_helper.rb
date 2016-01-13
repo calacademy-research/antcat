@@ -58,7 +58,7 @@ module RefactorHelper
     if $use_ant_web_formatter
       Taxt.to_string taxt, expansion: false
     else
-      Taxt.to_string taxt, expansion: true
+      Taxt.to_string taxt
     end
   end
 

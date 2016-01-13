@@ -147,11 +147,10 @@ class ReferenceDecorator < ApplicationDecorator
     end << ', ' << reference.short_citation_year
   end
 
-  def to_link options = {}
-    options = options.reverse_merge expansion: true
+  def to_link(expansion: true)
     reference_key_string = format_author_last_names
     reference_string = format
-    if options[:expansion]
+    if expansion
       to_link_with_expansion reference_key_string, reference_string
     else
       to_link_without_expansion reference_key_string, reference_string

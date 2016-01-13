@@ -22,23 +22,23 @@ module Taxt
   end
 
   ################################
-  def self.to_string taxt, options = {}
-    decode taxt, options
+  def self.to_string(taxt, expansion: true)
+    decode taxt, expansion: expansion
   end
 
   def self.to_display_string taxt, options = {}
+    raise "is this used?"
     options[:display] = true
     to_string taxt, options
   end
 
-  def self.to_sentence taxt, options = {}
-    string = decode taxt, options
+  def self.to_sentence(taxt, display: false)
+    string = decode taxt, display: display
     add_period_if_necessary string
   end
 
-  def self.to_display_sentence taxt, options = {}
-    options[:display] = true
-    to_sentence taxt, options
+  def self.to_display_sentence taxt
+    to_sentence taxt, display: true
   end
 
   ################################

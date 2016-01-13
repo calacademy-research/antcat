@@ -107,13 +107,6 @@ describe Taxt do
           #Taxt.to_string("{ref #{reference.id}}").should == 'Latreille, 1809 &lt;script&gt;'
         #end
       end
-      describe "Display" do
-        it "should format a ref" do
-          reference = FactoryGirl.create :article_reference
-          expected = reference.decorate.format_author_last_names # HACK
-          expect(Taxt.to_display_string("{ref #{reference.id}}")).to eq expected
-        end
-      end
     end
 
     describe "Name" do
@@ -124,12 +117,6 @@ describe Taxt do
         end
         it "should not freak if the name can't be found" do
           expect(Taxt.to_string("{nam 12345}")).to eq('{nam 12345}')
-        end
-      end
-      describe "Display" do
-        it "should return the HTML version of the name" do
-          name = FactoryGirl.create :subspecies_name, name_html: '<i>Atta major minor</i>'
-          expect(Taxt.to_display_string("{nam #{name.id}}")).to eq('<i>Atta major minor</i>')
         end
       end
     end
@@ -166,12 +153,6 @@ describe Taxt do
         it "should use the HTML version of the taxon's name" do
           genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
           expect(Taxt.to_string("{tax #{genus.id}}")).to eq(%{<a href="/catalog/#{genus.id}"><i>Atta</i></a>})
-        end
-      end
-      describe "Display" do
-        it "should use the HTML version of the taxon's name" do
-          genus = create_genus name: FactoryGirl.create(:genus_name, name_html: '<i>Atta</i>')
-          expect(Taxt.to_display_string("{tax #{genus.id}}")).to eq(%{<i>Atta</i>})
         end
       end
     end
