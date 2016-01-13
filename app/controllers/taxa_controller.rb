@@ -8,7 +8,7 @@ class TaxaController < ApplicationController
   # TODO make more RESTful
   def new
     get_taxon :create
-    set_view_variables :create
+    set_create_view_variables
     get_default_name_string
     set_authorship_reference
     render :edit
@@ -16,19 +16,19 @@ class TaxaController < ApplicationController
 
   def create
     get_taxon :create
-    set_view_variables :create
+    set_create_view_variables
     save_taxon
   end
 
   def edit
     get_taxon :update
-    set_view_variables :update
+    set_update_view_variables
     setup_edit_buttons
   end
 
   def update
     get_taxon :update
-    set_view_variables :update
+    set_update_view_variables
     return elevate_to_species if @elevate_to_species
     return delete_taxon if @delete_taxon
     save_taxon
@@ -134,28 +134,29 @@ class TaxaController < ApplicationController
     end
   end
 
-  def set_view_variables create_or_update
+  def set_create_view_variables
     @user = current_user
-    if create_or_update == :create
-      @cancel_path = edit_taxa_path @parent_id
+    @cancel_path = edit_taxa_path @parent_id
+  end
+
+  def set_update_view_variables
+    @user = current_user
+    if @collision_resolution.nil?
+
+      @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
     else
-      if @collision_resolution.nil?
+      @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id, collision_resolution: @collision_resolution
+    end
 
-        @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
-      else
-        @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id, collision_resolution: @collision_resolution
-      end
-
-      @add_tribe_path = new_taxa_path rank_to_create: Tribe, parent_id: @taxon.id
-      @cancel_path = catalog_path @taxon
-      @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
-      if (@taxon.is_a? (Family))
-        @reset_epithet = @taxon.name.to_s
-      elsif (@taxon.is_a? (Species))
-        @reset_epithet = @taxon.name.genus_epithet
-      else
-        @reset_epithet = ""
-      end
+    @add_tribe_path = new_taxa_path rank_to_create: Tribe, parent_id: @taxon.id
+    @cancel_path = catalog_path @taxon
+    @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
+    if (@taxon.is_a? (Family))
+      @reset_epithet = @taxon.name.to_s
+    elsif (@taxon.is_a? (Species))
+      @reset_epithet = @taxon.name.genus_epithet
+    else
+      @reset_epithet = ""
     end
   end
 
