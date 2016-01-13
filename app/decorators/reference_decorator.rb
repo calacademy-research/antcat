@@ -147,6 +147,17 @@ class ReferenceDecorator < ApplicationDecorator
     end << ', ' << reference.short_citation_year
   end
 
+  def to_link options = {}
+    options = options.reverse_merge expansion: true
+    reference_key_string = format_author_last_names
+    reference_string = format
+    if options[:expansion]
+      to_link_with_expansion reference_key_string, reference_string
+    else
+      to_link_without_expansion reference_key_string, reference_string
+    end
+  end
+
   private
     def format_timestamp timestamp
       timestamp.strftime '%Y-%m-%d'
@@ -195,5 +206,41 @@ class ReferenceDecorator < ApplicationDecorator
     # transform "10.11646/zootaxa.4029.1.1" --> "http://dx.doi.org/10.11646/zootaxa.4029.1.1"
     def create_link_from_doi doi
       "http://dx.doi.org/" + doi
+    end
+
+    def to_link_with_expansion reference_key_string, reference_string
+      helpers.content_tag :span, class: :reference_key_and_expansion do
+        content = helpers.link reference_key_string, '#',
+                       title: make_to_link_title(reference_string),
+                       class: :reference_key
+
+        content << helpers.content_tag(:span, class: :reference_key_expansion) do
+          inner_content = []
+          inner_content << reference_key_expansion_text(reference_string, reference_key_string)
+          inner_content << format_reference_document_link
+          inner_content << goto_reference_link
+          inner_content.reject(&:blank?).join(' ').html_safe
+        end
+      end
+    end
+
+    def to_link_without_expansion reference_key_string, reference_string
+      content = []
+      content << helpers.link(reference_key_string,
+                      "http://antcat.org/references/#{reference.id}",
+                      title: make_to_link_title(reference_string),
+                      target: '_blank')
+      content << format_reference_document_link
+      content.reject(&:blank?).join(' ').html_safe
+    end
+
+    def make_to_link_title string
+      helpers.unitalicize string
+    end
+
+    def reference_key_expansion_text reference_string, reference_key_string
+      helpers.content_tag :span, reference_string,
+        class: :reference_key_expansion_text,
+        title: reference_key_string
     end
 end
