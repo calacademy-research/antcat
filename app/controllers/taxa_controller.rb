@@ -79,6 +79,41 @@ class TaxaController < ApplicationController
     redirect_to edit_taxa_path taxon
   end
 
+  def autocomplete
+    q = params[:q] || ''
+    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
+
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |taxon|
+          {
+            name: taxon.name_html_cache,
+            authorship: taxon.authorship_string,
+            search_query: taxon.name_cache
+          }
+        end
+        render json: results
+      end
+    end
+  end
+
+  protected
+  def get_params
+    @id = params[:id]
+    @rank_to_create = Rank[params[:rank_to_create]]
+    @parent_id = params[:parent_id]
+    @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
+    @taxon_params = params[:taxon]
+    @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
+    @delete_taxon = params[:task_button_command] == 'delete_taxon'
+    @collision_resolution = params[:collision_resolution]
+  end
+
+  def create_mother
+    @mother = TaxonMother.new @id
+  end
+
+  private
   ###################
   def get_taxon_for_create
     parent = Taxon.find(@parent_id)
@@ -208,20 +243,6 @@ class TaxaController < ApplicationController
   end
 
   #####################
-  def get_params
-    @id = params[:id]
-    @rank_to_create = Rank[params[:rank_to_create]]
-    @parent_id = params[:parent_id]
-    @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
-    @taxon_params = params[:taxon]
-    @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
-    @delete_taxon = params[:task_button_command] == 'delete_taxon'
-    @collision_resolution = params[:collision_resolution]
-  end
-
-  def create_mother
-    @mother = TaxonMother.new @id
-  end
 
   def redirect_by_parent_name_id
     parent_name_id = params.delete(:parent_name_id)
@@ -235,24 +256,6 @@ class TaxaController < ApplicationController
         new_hash[:parent_id] = parent.id
       end
       redirect_to new_hash
-    end
-  end
-
-  def autocomplete
-    q = params[:q] || ''
-    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
-
-    respond_to do |format|
-      format.json do
-        results = search_results.map do |taxon|
-          {
-            name: taxon.name_html_cache,
-            authorship: taxon.authorship_string,
-            search_query: taxon.name_cache
-          }
-        end
-        render json: results
-      end
     end
   end
 
