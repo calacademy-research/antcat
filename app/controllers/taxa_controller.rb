@@ -7,7 +7,7 @@ class TaxaController < ApplicationController
 
   # TODO make more RESTful
   def new
-    get_taxon :create
+    get_taxon_for_create
     set_create_view_variables
     get_default_name_string
     set_authorship_reference
@@ -15,19 +15,19 @@ class TaxaController < ApplicationController
   end
 
   def create
-    get_taxon :create
+    get_taxon_for_create
     set_create_view_variables
     save_taxon
   end
 
   def edit
-    get_taxon :update
+    get_taxon_for_update
     set_update_view_variables
     setup_edit_buttons
   end
 
   def update
-    get_taxon :update
+    get_taxon_for_update
     set_update_view_variables
     return elevate_to_species if @elevate_to_species
     return delete_taxon if @delete_taxon
@@ -80,31 +80,31 @@ class TaxaController < ApplicationController
   end
 
   ###################
-  def get_taxon create_or_update
-    if create_or_update == :create
-      parent = Taxon.find(@parent_id)
-      # Radio button case - we got duplicates, and the user picked one
-      # to resolve the problem.
-      @taxon = @mother.create_taxon @rank_to_create, parent
+  def get_taxon_for_create
+    parent = Taxon.find(@parent_id)
+    # Radio button case - we got duplicates, and the user picked one
+    # to resolve the problem.
+    @taxon = @mother.create_taxon @rank_to_create, parent
 
-      if !@collision_resolution.nil?
-        if @collision_resolution == 'homonym' or @collision_resolution == ""
-          @taxon[:unresolved_homonym] = true
-          @taxon[:status] = Status['homonym'].to_s
-        else
-          @taxon[:collision_merge_id] = @collision_resolution
-          @original_combination = Taxon.find(@collision_resolution)
-          Taxon.inherit_attributes_for_new_combination(@original_combination, @previous_combination, parent)
-        end
+    if !@collision_resolution.nil?
+      if @collision_resolution == 'homonym' or @collision_resolution == ""
+        @taxon[:unresolved_homonym] = true
+        @taxon[:status] = Status['homonym'].to_s
+      else
+        @taxon[:collision_merge_id] = @collision_resolution
+        @original_combination = Taxon.find(@collision_resolution)
+        Taxon.inherit_attributes_for_new_combination(@original_combination, @previous_combination, parent)
       end
-
-      if @previous_combination
-        Taxon.inherit_attributes_for_new_combination(@taxon, @previous_combination, parent)
-      end
-    else
-      @taxon = @mother.load_taxon
-      @rank_to_create = Rank[@taxon].child
     end
+
+    if @previous_combination
+      Taxon.inherit_attributes_for_new_combination(@taxon, @previous_combination, parent)
+    end
+  end
+
+  def get_taxon_for_update
+    @taxon = @mother.load_taxon
+    @rank_to_create = Rank[@taxon].child
   end
 
   def save_taxon
