@@ -3,9 +3,6 @@ class TaxaController < ApplicationController
   before_filter :redirect_by_parent_name_id, only: :new
   skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
-  helper ReferenceHelper
-
-  # TODO make more RESTful
   def new
     get_taxon_for_create
     set_create_view_variables
@@ -29,6 +26,7 @@ class TaxaController < ApplicationController
   def update
     get_taxon_for_update
     set_update_view_variables
+    # TODO move `elevate_to_species` and `delete_taxon` to their own routes
     return elevate_to_species if @elevate_to_species
     return delete_taxon if @delete_taxon
     save_taxon
@@ -36,7 +34,6 @@ class TaxaController < ApplicationController
 
   # rest endpoint - get taxa/[id]
   def show
-    cur_id = params[:id]
     begin
       taxa = Taxon.find(params[:id])
     rescue ActiveRecord::RecordNotFound
@@ -47,6 +44,7 @@ class TaxaController < ApplicationController
     render json: taxa, status: :ok
   end
 
+  # TODO is this used?
   def delete
     @user = current_user
     delete_mother = TaxonMother.new params[:taxa_id]
@@ -57,7 +55,7 @@ class TaxaController < ApplicationController
     redirect_to root_url
   end
 
-  # The parent is updated via taxon id.
+  # The parent is updated via taxon_id.
   # params: taxon_id (int)
   # new_parent_taxon_id (int)
   def update_parent
@@ -114,7 +112,6 @@ class TaxaController < ApplicationController
     end
 
   private
-  ###################
     def get_taxon_for_create
       parent = Taxon.find(@parent_id)
       # Radio button case - we got duplicates, and the user picked one
@@ -144,7 +141,6 @@ class TaxaController < ApplicationController
 
     def save_taxon
       # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
-
       if @collision_resolution.nil? or @collision_resolution == "" or @collision_resolution == 'homonym'
         @mother.save_taxon @taxon, @taxon_params, @previous_combination
       else
@@ -176,8 +172,8 @@ class TaxaController < ApplicationController
 
     def set_update_view_variables
       @user = current_user
-      if @collision_resolution.nil?
 
+      if @collision_resolution.nil?
         @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
       else
         @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id, collision_resolution: @collision_resolution
@@ -186,13 +182,11 @@ class TaxaController < ApplicationController
       @add_tribe_path = new_taxa_path rank_to_create: Tribe, parent_id: @taxon.id
       @cancel_path = catalog_path @taxon
       @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
-      if (@taxon.is_a? (Family))
-        @reset_epithet = @taxon.name.to_s
-      elsif (@taxon.is_a? (Species))
-        @reset_epithet = @taxon.name.genus_epithet
-      else
-        @reset_epithet = ""
-      end
+      @reset_epithet  = case @taxon
+                        when Family then @taxon.name.to_s
+                        when Species then @taxon.name.genus_epithet
+                        else ""
+                        end
     end
 
     def set_authorship_reference
@@ -215,7 +209,6 @@ class TaxaController < ApplicationController
       @add_tribe_button_text = "Add tribe" if @taxon.kind_of? Subfamily
     end
 
-    #####################
     def elevate_to_species
       @taxon.elevate_to_species
       redirect_to catalog_path @taxon
@@ -227,6 +220,7 @@ class TaxaController < ApplicationController
       render :edit and return
     end
 
+    # TODO rename to #destroy and make more RESTful
     def delete_taxon
       references = @taxon.references
       if references.empty?
@@ -242,21 +236,17 @@ class TaxaController < ApplicationController
       redirect_to catalog_path @taxon.parent
     end
 
-    #####################
-
     def redirect_by_parent_name_id
       parent_name_id = params.delete(:parent_name_id)
       if parent_name_id && parent = Taxon.find_by_name_id(parent_name_id)
         new_hash = {}
-        # recirect_to doesn't want to work off of "params", security hole. enjoy.
-        params.each do |p|
-          new_hash[p[0]] = p[1]
-        end
+        # redirect_to doesn't want to work off of "params", security hole. enjoy.
+        params.each { |p| new_hash[p[0]] = p[1] }
+
         unless parent.nil?
           new_hash[:parent_id] = parent.id
         end
         redirect_to new_hash
       end
     end
-
 end
