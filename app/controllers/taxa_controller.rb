@@ -118,8 +118,8 @@ class TaxaController < ApplicationController
       # to resolve the problem.
       @taxon = @mother.create_taxon @rank_to_create, parent
 
-      if !@collision_resolution.nil?
-        if @collision_resolution == 'homonym' or @collision_resolution == ""
+      if @collision_resolution
+        if @collision_resolution == 'homonym' || @collision_resolution == ""
           @taxon[:unresolved_homonym] = true
           @taxon[:status] = Status['homonym'].to_s
         else
@@ -141,14 +141,14 @@ class TaxaController < ApplicationController
 
     def save_taxon
       # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
-      if @collision_resolution.nil? or @collision_resolution == "" or @collision_resolution == 'homonym'
+      if @collision_resolution.blank? || @collision_resolution == 'homonym'
         @mother.save_taxon @taxon, @taxon_params, @previous_combination
       else
         @original_combination = Taxon.find(@collision_resolution)
         @mother.save_taxon @original_combination, @taxon_params, @previous_combination
       end
 
-      if @previous_combination && @previous_combination.is_a?(Species) && @previous_combination.children.any?
+      if @previous_combination.is_a?(Species) && @previous_combination.children.any?
         create_new_usages_for_subspecies
       end
       redirect_to catalog_path @taxon
@@ -173,10 +173,10 @@ class TaxaController < ApplicationController
     def set_update_view_variables
       @user = current_user
 
-      if @collision_resolution.nil?
-        @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
-      else
+      if @collision_resolution
         @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id, collision_resolution: @collision_resolution
+      else
+        @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
       end
 
       @add_tribe_path = new_taxa_path rank_to_create: Tribe, parent_id: @taxon.id
