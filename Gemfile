@@ -66,9 +66,7 @@ group :test do
 end
 
 gem 'coffee-rails'
-#version locked to fix error that happens in test: features/references/journals.feature:18
-# "uninitialized constant Haml::Filters::SassImporter"
-gem 'sass-rails', '4.0.5'
+gem 'sass-rails'
 gem 'uglifier'
 gem 'yui-compressor'
 gem 'quiet_assets'
