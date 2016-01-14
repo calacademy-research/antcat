@@ -8,3 +8,5 @@
 
 -if user_can_edit?
   %p= button_to "New Journal", new_journal_path, :method => :get
+
+%div= will_paginate @journals

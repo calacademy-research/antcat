@@ -3,7 +3,7 @@ class JournalsController < ApplicationController
   before_filter :set_journal, only: [:show, :edit, :update]
 
   def index
-    @journals = Journal.order(:name)
+    @journals = Journal.order(:name).paginate(page: params[:page], per_page: 100)
     respond_to do |format|
       format.html
       format.json { render json: Journal.search(params[:term]) } # json search in #index
