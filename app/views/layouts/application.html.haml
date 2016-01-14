@@ -15,14 +15,14 @@
       AntCat.environment = '#{Rails.env}';
       AntCat.testing = #{Rails.env == 'test'};
       AntCat.user_can_edit = #{!!user_can_edit?};
-      AntCat.delete_confirmation_message = "Do you want to delete this reference? Note: it can take a minute or to to check that there are no references to this one.";
+      AntCat.delete_confirmation_message = "Do you want to delete this reference? Note: it can take a minute or to to check that there are no references to this one."; // TODO move
 
-    = javascript_include_tag 'google_analytics.js'
+    = javascript_include_tag 'google_analytics'
     = javascript_include_tag 'application'
 
     = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'jquery_overrides'
-    = stylesheet_link_tag params[:controller] if AntCat::Application.assets.find_asset params[:controller]
+    = stylesheet_link_tag "controllers/#{params[:controller]}" if AntCat::Application.assets.find_asset "controllers/#{params[:controller]}"
 
     = favicon_link_tag 'favicon.ico'
 
