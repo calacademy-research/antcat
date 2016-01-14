@@ -71,6 +71,8 @@ gem 'coffee-rails'
 gem 'sass-rails', '4.0.5'
 gem 'uglifier'
 gem 'yui-compressor'
+gem 'quiet_assets'
+
 gem 'twitter-typeahead-rails'
 gem 'draper'
 gem 'best_in_place', github: 'bernat/best_in_place'
