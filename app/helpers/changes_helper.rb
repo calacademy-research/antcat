@@ -38,17 +38,6 @@ module ChangesHelper
     Taxt.to_string taxt
   end
 
-  def edit_button taxon
-    unless taxon.taxon_state.nil?
-      if taxon.can_be_edited_by? current_user
-        link_to "Edit", edit_taxa_path(taxon), class: "btn-edit"
-      end
-      # else
-      #   #TODO make this pretty
-      #   return "<Deleted by later edit>"
-    end
-  end
-
   def approve_all_changes_button
     if $Milieu.user_is_superadmin? current_user
       button 'Approve all', 'approve_all_button'
