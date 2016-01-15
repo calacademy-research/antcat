@@ -8,15 +8,12 @@
 # an improvement), but we still need (want) that encapsulation.
 
 class TaxonDecorator < ApplicationDecorator
+  include TaxonDecorator::EditorButtons
   delegate_all
 
   def link_to_taxon
     label = taxon.name.to_html_with_fossil(taxon.fossil?)
     helpers.content_tag :a, label, href: %{/catalog/#{taxon.id}}
-  end
-
-  def editor_buttons
-    TaxonDecorator::EditorButtons.new(taxon, get_current_user).editor_buttons
   end
 
   def header
