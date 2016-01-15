@@ -13,7 +13,7 @@ class TaxonDecorator < ApplicationDecorator
 
   def link_to_taxon
     label = taxon.name.to_html_with_fossil(taxon.fossil?)
-    helpers.content_tag :a, label, href: %{/catalog/#{taxon.id}}
+    helpers.link_to label, helpers.catalog_path(taxon)
   end
 
   def header

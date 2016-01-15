@@ -125,9 +125,8 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def goto_reference_link
-    path = Rails.application.routes.url_helpers.reference_path(reference)
-    helpers.link reference.id,
-      path, class: :goto_reference_link, target: '_blank'
+    helpers.link reference.id, helpers.reference_path(reference),
+      class: :goto_reference_link, target: '_blank'
   end
 
   def format_author_last_names

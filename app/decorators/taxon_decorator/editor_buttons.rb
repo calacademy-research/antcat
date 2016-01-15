@@ -16,7 +16,7 @@ module TaxonDecorator::EditorButtons
 
   def link_to_edit_taxon
     if taxon.can_be_edited_by? get_current_user
-      helpers.link_to "Edit", "/taxa/#{taxon.id}/edit", class: "btn-edit"
+      helpers.link_to "Edit", helpers.edit_taxa_path(taxon), class: "btn-edit"
     end
   end
 
@@ -30,7 +30,7 @@ module TaxonDecorator::EditorButtons
 
     def link_to_delete_taxon
       if get_current_user.try :is_superadmin?
-        parameters = { 'data-delete-location' => "/taxa/#{taxon.id}", 'data-taxon-id' => "#{taxon.id}" }
+        parameters = { 'data-delete-location' => helpers.taxa_path(taxon), 'data-taxon-id' => "#{taxon.id}" }
         helpers.button 'Delete', 'delete_button', parameters
       end
     end
