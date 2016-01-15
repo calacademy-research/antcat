@@ -1,6 +1,6 @@
 $(function () {
   setupSearch();
-  setupDisplays();
+  setupIcons();
   setupButtons();
   if (AntCat.user_can_edit) {
     setupEdits();
@@ -48,10 +48,6 @@ function setupSearchBox(selector_text) {
 }
 
 /////////////////////////////////////////////////////////////////////////
-
-function setupDisplays() {
-  setupIcons();
-}
 
 function setupIcons() {
   setupIconVisibility()
@@ -124,11 +120,6 @@ function deleteReference() {
         });
   }
   $reference.removeClass('about_to_be_deleted');
-  return false;
-}
-
-function addReference() {
-  addOrInsertReferenceEdit(null);
   return false;
 }
 
