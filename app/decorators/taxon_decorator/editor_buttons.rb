@@ -25,7 +25,7 @@ class TaxonDecorator::EditorButtons
   private
     def link_to_edit_taxon
       if @taxon.can_be_edited_by? @user
-        button 'Edit', 'edit_button', 'data-edit-location' => "/taxa/#{@taxon.id}/edit"
+        link_to "Edit", "/taxa/#{@taxon.id}/edit", class: "btn-edit"
       end
     end
 

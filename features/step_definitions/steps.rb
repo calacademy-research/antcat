@@ -1,5 +1,10 @@
 Then /^I (#{SHOULD_OR_SHOULD_NOT}) see an? "([^"]*)" button$/ do |should_selector, button|
-  page.send(should_selector.to_sym, have_css("input[value='#{button}']"))
+  # TODO treat buttons and "button link" the same
+  if button == "Edit"
+    page.send(should_selector.to_sym, have_css("a.btn-edit"))
+  else
+    page.send(should_selector.to_sym, have_css("input[value='#{button}']"))
+  end
 end
 
 Then /^there should be the HTML "(.*)"$/ do |html|

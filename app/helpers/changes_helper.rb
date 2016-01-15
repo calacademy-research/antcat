@@ -41,7 +41,7 @@ module ChangesHelper
   def edit_button taxon
     unless taxon.taxon_state.nil?
       if taxon.can_be_edited_by? current_user
-        button 'Edit', 'edit_button', 'data-edit-location' => edit_taxa_path(taxon)
+        link_to "Edit", edit_taxa_path(taxon), class: "btn-edit"
       end
       # else
       #   #TODO make this pretty

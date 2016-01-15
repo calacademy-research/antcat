@@ -18,7 +18,12 @@ When /^(?:|I )go to (.+)$/ do |page_name|
 end
 
 When /^(?:|I )press "([^"]*)"$/ do |button|
-  click_button(button)
+  # TODO treat buttons and "button link" the same
+  if button == "Edit"
+    first('a.btn-edit').click
+  else
+    click_button(button)
+  end
 end
 
 def click_first_button(locator, options={})

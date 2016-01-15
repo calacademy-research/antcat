@@ -7,8 +7,7 @@ $brand-primary: #479F03
 @import "bootstrap/mixins"
 @import "bootstrap/buttons"
 
-// TODO split and format all buttons to use the same classes, eg
-// "btn btn-md-custom btn btn-primary"
+// TODO split and format all buttons to use the same classes
 @mixin medium_button
   @extend .btn
   @extend .btn-sm
@@ -35,6 +34,11 @@ button.delete, #delete_button
   @extend .btn-delete
 
 // TODO use these
+.btn-edit, a.btn-edit
+  @include medium_button
+  @extend .btn-primary
+  color: #fff
+
 .btn-cancel
   @include medium_button
   @extend .btn-secondary

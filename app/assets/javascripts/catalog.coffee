@@ -31,10 +31,6 @@ $ ->
         async: false,
         error: (xhr) => debugger
 
-  $('#edit_button')
-    .button()
-    .click -> window.location = $(@).data('edit-location')
-
   $('#review_button')
     .button()
     .click -> window.location = $(@).data('review-location')
