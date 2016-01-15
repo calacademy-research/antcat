@@ -1,0 +1,37 @@
+// See https://github.com/twbs/bootstrap-rubygem/blob/master/
+// assets/stylesheets/_bootstrap.scss for a list of available mixins.
+
+$brand-primary: #479F03
+
+@import "bootstrap/variables"
+@import "bootstrap/mixins"
+@import "bootstrap/buttons"
+
+// TODO split and format all buttons to use the same classes, eg
+// "btn btn-md-custom btn btn-primary"
+@mixin medium_button
+  @extend .btn
+  @extend .btn-sm
+  @extend .btn-primary
+  padding: 0.1em 0.4em
+
+input[type=submit]
+  @include medium_button
+
+.ui-button
+  @include medium_button
+
+.small_button
+  @include medium_button
+
+button.submit, button.cancel, button.delete
+  @include medium_button
+
+// TODO use these
+.btn-md-custom
+  @include medium_button
+
+.btn-xs-custom
+  @include medium_button
+  padding: 0.1em 0.4em
+  font-size: 80%

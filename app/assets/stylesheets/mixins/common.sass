@@ -1,6 +1,5 @@
 @import 'mixins/colors'
 @import 'mixins/fonts'
-@import 'mixins/buttons'
 
 $left_margin:   12px
 $right_margin:  $left_margin
@@ -10,13 +9,3 @@ $link_padding:  4px
 @mixin margins
   padding-left: $left_margin
   padding-right: $right_margin
-
-@mixin header_submit_button($background_color, $border_color)
-  input[type=submit]
-    color: white
-    background-color: $background_color
-    font-weight: bold
-    height: 20px
-    margin-left: 2px
-    padding-bottom: 2px
-    border: 1px solid $border_color

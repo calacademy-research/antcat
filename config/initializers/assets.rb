@@ -6,10 +6,15 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 
-# TODO: Probably not the right way to do any of this. Bootstrapping rails 4.
-Rails.application.config.assets.precompile += %w( widgets/*.js )
-Rails.application.config.assets.precompile += %w( widgets/*.coffee )
-
 Rails.application.config.assets.precompile += %w(*.svg *.eot *.woff *.ttf *.gif *.png *.ico)
-Rails.application.config.assets.precompile << /\A(?!active_admin).*\.(js|css)\z/
 Rails.application.config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif *.ico)
+
+Rails.application.config.assets.precompile += %w( *.js )
+
+Rails.application.config.assets.precompile += %w( active_admin.css )
+Rails.application.config.assets.precompile += %w( bootstrap_custom.css )
+Rails.application.config.assets.precompile += %w( ie_antcat.css )
+Rails.application.config.assets.precompile += %w( jquery_overrides.css )
+
+Rails.application.config.assets.precompile += %w( widgets/*.css )
+Rails.application.config.assets.precompile += %w( controllers/*.css )

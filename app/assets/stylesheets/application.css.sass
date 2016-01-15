@@ -5,6 +5,7 @@
 @import "autocomplete"
 @import "tooltip"
 @import "pages"
+
 ///////////////////////////////////////////////////
 // tags
 
@@ -38,12 +39,9 @@ input[type=text], input[type=file], input[type=password], textarea
   padding-left: 2px
   border: 1px solid $color_input_border
 
-a, a:active, a:focus, a:visited
+a, a:active, a:focus, a:visited, a:hover
   color: $color_link
   text-decoration: none
-  &:hover
-    color: $color_link_highlight
-    background-color: $color_link_highlight_background
 
 hr
   padding: 0
@@ -174,7 +172,6 @@ img.help_icon
     width: 140px
   input[type=password]
     width: 100px
-  @include header_submit_button($color_login_button, $color_login_button_border)
   .small
     font-size: 10.5px
 
@@ -213,7 +210,6 @@ img.help_icon
       width: 200px
       border: 1px solid $color_input_border
       height: 20px
-    @include header_submit_button($color_navigation_bar_button, $color_navigation_bar_button_border)
 
   .throbber
     vertical-align: middle
