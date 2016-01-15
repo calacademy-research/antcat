@@ -35,7 +35,7 @@ $ ->
     .button()
     .click -> window.location = $(@).data('review-location')
 
-confirm_delete_dialog = (data,destination) ->
+confirm_delete_dialog = (data, destination) ->
   @delete_message = $('#delete_message')
   message = '<div id="delete-modal" title="This delete will remove the following taxa:"><p>
          <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>'
@@ -62,7 +62,13 @@ confirm_delete_dialog = (data,destination) ->
     modal: true,
     buttons: {
       "Delete?": (a) =>
-        window.location.href = destination
+        $.ajax
+          url: destination,
+          type: 'DELETE',
+          dataType: 'json',
+          success: (data) -> window.location.href = "/"
+          async: false,
+          error: (xhr) => debugger
       ,
       "Cancel":
         id: "Cancel-Dialog"

@@ -44,15 +44,17 @@ class TaxaController < ApplicationController
     render json: taxa, status: :ok
   end
 
-  # TODO is this used?
-  def delete
-    @user = current_user
-    delete_mother = TaxonMother.new params[:taxa_id]
-
+  def destroy
+    delete_mother = TaxonMother.new params[:id]
     taxon = delete_mother.load_taxon
-
     delete_mother.delete_taxon taxon
-    redirect_to root_url
+
+    flash[:notice] = "Taxon was successfully destroyed."
+
+    respond_to do |format|
+      format.html { redirect_to root_url }
+      format.json { head :no_content }
+    end
   end
 
   # The parent is updated via taxon_id.
@@ -220,7 +222,9 @@ class TaxaController < ApplicationController
       render :edit and return
     end
 
-    # TODO rename to #destroy and make more RESTful
+    # Not the same as #destroy (which is for superadmins only). This method
+    # allows editors to delete taxa if certain conditions are met (see
+    # #setup_edit_buttons for when this action is available in the GUI).
     def delete_taxon
       references = @taxon.references
       if references.empty?
