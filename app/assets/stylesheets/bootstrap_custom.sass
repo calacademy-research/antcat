@@ -24,10 +24,25 @@ input[type=submit]
 .small_button
   @include medium_button
 
-button.submit, button.cancel, button.delete
+button.submit
   @include medium_button
+  @extend .btn-primary
+
+button.cancel, input.cancel
+  @extend .btn-cancel
+
+button.delete, #delete_button
+  @extend .btn-delete
 
 // TODO use these
+.btn-cancel
+  @include medium_button
+  @extend .btn-secondary
+
+.btn-delete
+  @include medium_button
+  @extend .btn-danger
+
 .btn-md-custom
   @include medium_button
 
