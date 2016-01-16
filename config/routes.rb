@@ -20,15 +20,20 @@ AntCat::Application.routes.draw do
   resources :merge_authors, only: [:index, :merge]
   match '/merge_authors/merge', to: 'merge_authors#merge', via: :post
 
+  namespace "catalog" do
+    get 'search'
+    get 'show_unavailable_subfamilies'
+    get 'hide_unavailable_subfamilies'
+    get 'show_tribes'
+    get 'hide_tribes'
+    get 'show_subgenera'
+    get 'hide_subgenera'
+  end
+
+  # TODO remove?
   match 'catalog/index/(:id)' => 'catalog#show', as: :catalog_index, via: :get # for compatibility
-  match 'catalog/search' => 'catalog#search', as: :catalog_search, via: :get
-  match 'catalog/show_unavailable_subfamilies', as: :catalog_show_subfamilies, via: :get
-  match 'catalog/hide_unavailable_subfamilies', as: :catalog_hide_subfamilies, via: :get
-  match 'catalog/show_tribes' => 'catalog#show_tribes', as: :catalog_show_tribes, via: :get
-  match 'catalog/hide_tribes' => 'catalog#hide_tribes', as: :catalog_hide_tribes, via: :get
-  match 'catalog/show_subgenera' => 'catalog#show_subgenera', as: :catalog_show_subgenera, via: :get
-  match 'catalog/hide_subgenera' => 'catalog#hide_subgenera', as: :catalog_hide_subgenera, via: :get
   match 'catalog/(:id)' => 'catalog#show', as: :catalog, via: :get
+  # TODO move to TaxaController
   match 'catalog/delete_impact_list/(:id)' => 'catalog#delete_impact_list', as: :catalog_delete_impact_list, via: :get
 
   resources :bolton_references, only: [:index, :update]
