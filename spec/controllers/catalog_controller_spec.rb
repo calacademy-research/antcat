@@ -2,6 +2,22 @@ require 'spec_helper'
 
 describe CatalogController do
 
+  describe "Routing" do
+    describe "hide/show" do
+      [ 'show_unavailable_subfamilies',
+        'hide_unavailable_subfamilies',
+        'show_tribes',
+        'hide_tribes',
+        'show_subgenera',
+        'hide_subgenera'
+      ].each do |item|
+        it { should route(:get, "/catalog/#{item}").to(action: item.to_sym) }
+      end
+    end
+
+    it { should route(:get, "/catalog/search").to(action: :search) }
+  end
+
   it { should use_before_action(:handle_family_not_found) }
   it { should use_before_action(:get_parameters) }
 
