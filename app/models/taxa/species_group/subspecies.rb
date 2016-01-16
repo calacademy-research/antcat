@@ -64,11 +64,11 @@ class Subspecies < SpeciesGroupTaxon
     subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
     tribe_name = genus.tribe && genus.tribe.name.to_s
 
-    case name.type
-    when 'SubspeciesName'
+    case name
+    when SubspeciesName
       attributes.merge! genus: genus.name.to_s,
         species: name.epithets.split(' ').first, subspecies: name.epithet
-    when 'SpeciesName'
+    when SpeciesName
       attributes.merge! genus: name.to_s.split(' ').first, species: name.epithet
     else
       attributes.merge! genus: genus.name.to_s, species: name.epithet

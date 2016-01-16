@@ -17,14 +17,14 @@ class Genus < GenusGroupTaxon
 
   def update_parent new_parent
     set_name_caches
-    case
-    when new_parent.kind_of?(Tribe)
+    case new_parent
+    when Tribe
       self.tribe = new_parent
       self.subfamily = new_parent.subfamily
-    when new_parent.kind_of?(Subfamily)
+    when Subfamily
       self.tribe = nil
       self.subfamily = new_parent
-    when new_parent.nil?
+    when nil
       self.tribe = nil
       self.subfamily = nil
     end

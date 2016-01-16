@@ -63,17 +63,17 @@ class TaxaController < ApplicationController
   def update_parent
     taxon = Taxon.find(params[:taxon_id])
     new_parent = Taxon.find(params[:new_parent_taxon_id])
-    case new_parent.rank
-    when "species"
-      taxon.species_id = new_parent.id
-    when "genus"
-      taxon.genus_id = new_parent.id
-    when "subgenus"
-      taxon.subgenus_id = new_parent.id
-    when "subfamily"
-      taxon.subfamily_id = new_parent.id
-    when "family"
-      taxon.family_id = new_parent.id
+    case new_parent
+    when Species
+      taxon.species = new_parent
+    when Genus
+      taxon.genus = new_parent
+    when Subgenus
+      taxon.subgenus = new_parent
+    when Subfamily
+      taxon.subfamily = new_parent
+    when Family
+      taxon.family = new_parent
     end
     taxon.save!
     redirect_to edit_taxa_path taxon
