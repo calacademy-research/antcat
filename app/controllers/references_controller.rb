@@ -117,7 +117,7 @@ class ReferencesController < ApplicationController
   end
 
   def approve_all
-    Reference.where('review_state != "reviewed"').find_each do |reference|
+    Reference.where.not(review_state: "reviewed").find_each do |reference|
       reference.review_state = 'reviewed'
       reference.save!
     end

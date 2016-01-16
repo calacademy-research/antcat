@@ -47,13 +47,12 @@ class Reference < ActiveRecord::Base
   belongs_to :publisher
 
   def nestees
-    self.class.where nesting_reference_id: id
+    self.class.where(nesting_reference_id: id)
   end
 
   # scopes
   scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
-  scope :with_principal_author_last_name, lambda { |last_name| where principal_author_last_name_cache: last_name }
-  scope :non_missing, -> { where('type IS NULL OR type != "MissingReference"') }
+  scope :with_principal_author_last_name, lambda { |last_name| where(principal_author_last_name_cache: last_name) }
 
   # Other plugins and mixins
   include ReferenceComparable
