@@ -3,9 +3,5 @@
 
 = form_tag references_path, :method => 'get', :id => 'search_form' do
   .search
-    -# TODO remove.
-    -# Disable old autocomplete by hiding it; we cannot simply remove it because the option "Search for" is required by some code that has not been removed yet.
-    .hidden{style: 'display: none'}
-      = select_tag "search_selector", options_for_select(["Search for"])
     = text_field_tag "q", params[:q], class: "typeahead", placeholder: "Search..."
     = submit_tag "Go"
