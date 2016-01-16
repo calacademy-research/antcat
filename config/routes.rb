@@ -41,7 +41,7 @@ AntCat::Application.routes.draw do
   resources :journals, only: [:index, :show, :new, :create, :edit, :update]
   resources :publishers, only: [:index]
 
-  resources :references, only: [:index, :show, :new, :update, :create, :destroy] do
+  resources :references do
     collection do
       get 'autocomplete'
       get 'latest_additions'

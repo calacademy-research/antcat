@@ -39,7 +39,6 @@ function setupIconVisibility() {
 }
 
 function setupIconClickHandlers() {
-  $('body').on('click', '.edit_icon', editReference);
   $('body').on('click', '.icon.delete', deleteReference);
 }
 
@@ -56,16 +55,6 @@ function approveHandler() {
   if (r == true) {
     return window.location.href = '/references/approve_all';
   }
-}
-
-function editReference() {
-  if (isEditing())
-    return false;
-
-  $reference = $(this).closest('.reference');
-  saveReference($reference);
-  showReferenceEdit($reference, {showDeleteButton: true});
-  return false;
 }
 
 function deleteReference() {

@@ -2,7 +2,7 @@ class ReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [
     :index, :download, :autocomplete, :show, :endnote_export, :latest_additions]
   before_filter :set_reference, only: [
-    :show, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
+    :show, :edit, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
 
   # TODO make controller more RESTful
   def index
@@ -33,6 +33,10 @@ class ReferencesController < ApplicationController
   end
 
   def new
+  end
+
+  def edit
+    @reference = Reference.find(params[:id])
   end
 
   def create

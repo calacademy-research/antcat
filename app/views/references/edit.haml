@@ -1,0 +1,11 @@
+-@possible_duplicate = nil # TODO
+=enable_tooltips
+
+-content_for :head do
+  =javascript_include_tag 'references'
+
+:coffee
+  $ ->
+    $('.tabs').tabs()
+
+=render 'form', reference: @reference, possible_duplicate: @possible_duplicate
