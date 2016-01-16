@@ -105,11 +105,14 @@ AntCat::Application.routes.draw do
   # REST
   resources :taxon, :controller => 'taxa', :except => [:edit, :new, :update, :destroy]
 
-  # These are shortcuts to support the tests in
-  match '/widget_tests/name_popup_test', to: 'widget_tests#name_popup_test', via: :get
-  match '/widget_tests/name_field_test', to: 'widget_tests#name_field_test', via: :get
-  match '/widget_tests/reference_popup_test', to: 'widget_tests#reference_popup_test', via: :get
-  match '/widget_tests/reference_field_test', to: 'widget_tests#reference_field_test', via: :get
-  match '/widget_tests/taxt_editor_test', to: 'widget_tests#taxt_editor_test', via: :get
+  unless Rails.env.production?
+    namespace "widget_tests" do
+      get 'name_popup_test'
+      get 'name_field_test'
+      get 'reference_popup_test'
+      get 'reference_field_test'
+      get 'taxt_editor_test'
+    end
+  end
 
 end
