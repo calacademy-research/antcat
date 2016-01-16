@@ -40,12 +40,10 @@ function setupIconVisibility() {
 
 function setupIconClickHandlers() {
   $('body').on('click', '.edit_icon', editReference);
-  $('body').on('click', '.icon.add', insertReference);
   $('body').on('click', '.icon.delete', deleteReference);
 }
 
 function setupEdits() {
-  $('.reference_edit').hide();
   $('body').on('click', '.reference_edit .submit', submitReferenceEdit);
   $('body').on('click', '.reference_edit .cancel', cancelReferenceEdit);
   $('body').on('click', '.reference_edit .delete', deleteReference);
@@ -85,26 +83,6 @@ function deleteReference() {
   }
   $reference.removeClass('about_to_be_deleted');
   return false;
-}
-
-function insertReference() {
-  addOrInsertReferenceEdit($(this).closest('.reference'));
-  return false
-}
-
-function addOrInsertReferenceEdit($reference) {
-  $referenceTemplateRow = $('.reference_template_row');
-  $newReferenceRow = $referenceTemplateRow.clone(true);
-  $newReferenceRow.removeClass('reference_template_row').addClass('reference_row');
-  $('.reference_template', $newReferenceRow).removeClass('reference_template').addClass('reference');
-
-  if ($reference == null)
-    $('.references').prepend($newReferenceRow);
-  else
-    $reference.closest('tr').after($newReferenceRow);
-
-  $newReference = $('.reference', $newReferenceRow);
-  showReferenceEdit($newReference);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

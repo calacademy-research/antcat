@@ -32,6 +32,9 @@ class ReferencesController < ApplicationController
     render "index"
   end
 
+  def new
+  end
+
   def create
     @reference = new_reference
     save is_new: true

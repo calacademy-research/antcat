@@ -34,6 +34,11 @@ button.delete, #delete_button
   @extend .btn-delete
 
 // TODO use these
+.btn-new, a.btn-new
+  @include medium_button
+  @extend .btn-primary
+  color: #fff
+
 .btn-edit, a.btn-edit
   @include medium_button
   @extend .btn-primary
@@ -46,11 +51,3 @@ button.delete, #delete_button
 .btn-delete
   @include medium_button
   @extend .btn-danger
-
-.btn-md-custom
-  @include medium_button
-
-.btn-xs-custom
-  @include medium_button
-  padding: 0.1em 0.4em
-  font-size: 80%

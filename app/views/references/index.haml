@@ -1,3 +1,6 @@
+-content_for :head do
+  = stylesheet_link_tag 'refactor_references'
+
 -@title = 'Bibliography'
 
 =enable_tooltips
@@ -30,6 +33,7 @@
   .title
     %h2.left ANTBIB
     %h2.left A Bibliography of Ant Systematics
+    %h2.left= link_to "Add reference", new_reference_path, class: "btn-new" if user_can_edit?
     %h3.right by Philip S. Ward, et al.
     .clear
 
