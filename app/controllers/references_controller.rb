@@ -32,6 +32,61 @@ class ReferencesController < ApplicationController
     render "index"
   end
 
+  def create
+    @reference = new_reference
+    save is_new: true
+  end
+
+  def update
+    @reference = get_reference
+    save is_new: false
+  end
+
+  def destroy
+    json =  if @reference.any_references? or not @reference.destroy
+              { success: false,
+                message: "This reference can't be deleted, as there are other references to it." }
+            else
+              { success: true }
+            end
+    render json: json
+  end
+
+  def download
+    document = ReferenceDocument.find params[:id]
+    if document.downloadable?
+      redirect_to document.actual_url
+    else
+      head :unauthorized
+    end
+  end
+
+  def start_reviewing
+    @reference.start_reviewing!
+    DefaultReference.set session, @reference
+    redirect_to latest_additions_references_path
+  end
+
+  def finish_reviewing
+    @reference.finish_reviewing!
+    redirect_to latest_additions_references_path
+  end
+
+  def restart_reviewing
+    @reference.restart_reviewing!
+    DefaultReference.set session, @reference
+    redirect_to latest_additions_references_path
+  end
+
+  def approve_all
+    Reference.where.not(review_state: "reviewed").find_each do |reference|
+      reference.review_state = 'reviewed'
+      reference.save!
+    end
+
+    redirect_to latest_additions_references_path
+  end
+
   def latest_additions
     options = { order: :created_at, page: params[:page] }
     @references = Reference.list_references options
@@ -68,61 +123,6 @@ class ReferencesController < ApplicationController
         Exporting missing references is not supported.
         If you tried to export a list of references, try to filter the query with "type:nomissing".
       MSG
-  end
-
-  def download
-    document = ReferenceDocument.find params[:id]
-    if document.downloadable?
-      redirect_to document.actual_url
-    else
-      head :unauthorized
-    end
-  end
-
-  def create
-    @reference = new_reference
-    save is_new: true
-  end
-
-  def update
-    @reference = get_reference
-    save is_new: false
-  end
-
-  def destroy
-    json =  if @reference.any_references? or not @reference.destroy
-              { success: false,
-                message: "This reference can't be deleted, as there are other references to it." }
-            else
-              { success: true }
-            end
-    render json: json
-  end
-
-  def start_reviewing
-    @reference.start_reviewing!
-    DefaultReference.set session, @reference
-    redirect_to latest_additions_references_path
-  end
-
-  def finish_reviewing
-    @reference.finish_reviewing!
-    redirect_to latest_additions_references_path
-  end
-
-  def restart_reviewing
-    @reference.restart_reviewing!
-    DefaultReference.set session, @reference
-    redirect_to latest_additions_references_path
-  end
-
-  def approve_all
-    Reference.where.not(review_state: "reviewed").find_each do |reference|
-      reference.review_state = 'reviewed'
-      reference.save!
-    end
-
-    redirect_to latest_additions_references_path
   end
 
   def autocomplete
