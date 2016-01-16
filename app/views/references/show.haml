@@ -1,0 +1,19 @@
+-@title = "Reference ##{@reference.id}"
+
+-# TODO remove duplication
+-content_for :page_header do
+  #navigation_bar
+    .actions
+      -items = []
+      -items << link_to('Export to EndNote', endnote_export_reference_path(@reference))
+      =make_link_menu items
+
+  .title
+    %h2.left Reference ##{@reference.id}
+    -if user_is_editor?
+      %h2.left= link_to "Delete reference", reference_path(@reference), class: "btn-delete", method: :delete, data: { confirm: "Do you want to delete this reference? Note: it can take a minute or to to check that there are no references to this one." }
+    .clear
+
+=render 'reference', reference: @reference
+
+-# TODO Feature: Items using this reference

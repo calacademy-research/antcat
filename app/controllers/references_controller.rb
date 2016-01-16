@@ -25,11 +25,6 @@ class ReferencesController < ApplicationController
   end
 
   def show
-    id = @reference.id # weird until we have made this controller more RESTful
-    @references = Reference.where(id: id).paginate(page: 1)
-
-    @action = :show
-    render "index"
   end
 
   def new

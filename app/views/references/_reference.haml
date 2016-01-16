@@ -1,10 +1,13 @@
-- id = "reference_#{reference.id}"
-- css_class << ' ' << id
+-if !reference.new_record? && reference.errors.empty?
+  -css_class = 'reference_display'
+  -css_class << ' downloadable' if reference.downloadable?
 
-%div{id: id, class: css_class, 'data-reference-id' => reference.id, 'data-taxt' => Taxt.to_editable_reference(reference)}
-  %table.reference_table
-    %tr
-      %td.reference_item
-        = render 'display', :reference => reference if !reference.new_record? && reference.errors.empty?
-        - if user_can_edit?
-          = render 'form', reference: reference, possible_duplicate: @possible_duplicate
+  %div{class: css_class}
+    =reference.decorate.format
+    =reference.decorate.format_reference_document_link
+    =reference.decorate.goto_reference_link
+
+    %p.notes= reference.decorate.public_notes
+    -if user_is_editor?
+      %p.editor.notes= reference.decorate.editor_notes
+      %p.notes= reference.decorate.taxonomic_notes
