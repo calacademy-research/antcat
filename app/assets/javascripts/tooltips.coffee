@@ -8,7 +8,10 @@ $ ->
 $ ->
   $.ajax '/tooltips/render_missing_tooltips', success: (data) ->
     if data.show_missing_tooltips == "true"
-      $('label, button, .ui-button').not('.display_button').after(""" boo""")
+      $('label, button, .ui-button').not('.display_button').after("""\
+      <img class="help_icon tooltip foo" \
+       title="foo" src="/assets/create_tip.png" alt="Help" /></a>\
+       """)
 
 
   # Added to the global window object to make it callable from anywhere.
