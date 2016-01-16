@@ -262,7 +262,7 @@ When /I fill in "([^"]*)" with a URL to a document that doesn't exist/ do |field
   end
 end
 
-And /I (edit|delete|copy) "(.*?)"/ do |verb, author|
+And /I (edit|delete) "(.*?)"/ do |verb, author|
   reference = Reference.where('author_names_string_cache like ?', "%#{author}%").first
   step %{I follow "#{verb}" within "#reference_#{reference.id}"}
 end
