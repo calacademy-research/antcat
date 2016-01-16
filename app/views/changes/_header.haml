@@ -1,25 +1,25 @@
 -change = change.decorate
 
-%div.change_header
+.change_header
   -if change.change_type != 'delete' and not taxon.nil?
-    %div.change_description
+    .change_description
       %span.name= change.format_adder_name
       %span.taxon= taxon.decorate.link_to_taxon
       %span.edit_button= taxon.decorate.link_to_edit_taxon
       %span.undo_button= change.undo_button
       %span.approve_button= change.approve_button
       %span.time.right= change.format_created_at
-      %div.clear
+      .clear
 
     -if change.approver
-      %div.change_status
+      .change_status
         %span.approver.left= change.format_approver_name
         %span.approval_time.right= change.format_approved_at
-        %div.clear
+        .clear
   -else
-    %div.change_description
+    .change_description
       %span.name= change.format_adder_name
       %span.taxon= format_taxon_name taxon.name
       %span.undo_button= change.undo_button
       %span.approve_button.left= change.approve_button
-      %div.clear
+      .clear
