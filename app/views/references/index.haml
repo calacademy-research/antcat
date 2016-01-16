@@ -41,12 +41,7 @@
   .approve_all_button.right= approve_all_references_button
 
 %table.references
-  - if @action == :latest_changes
-    %tr
-      %td
-      %td.date_header
-        Changed
-
+  =render 'references/latest_changes_headings' if @action == :latest_changes
   =render 'references/latest_additions_headings' if @action == :latest_additions
 
   -@references.each do |reference|
