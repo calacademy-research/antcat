@@ -22,6 +22,13 @@ describe CatalogController do
   it { should use_before_action(:get_parameters) }
 
   describe 'GET #show' do
+    describe "RecordNotFound" do
+      before do
+        FactoryGirl.create(:family)
+        get :show, id: 99999
+      end
+      it { should respond_with(404) }
+    end
     describe "handle non-existing family" do
       context "family exists" do
         before do

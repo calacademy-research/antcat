@@ -3,7 +3,10 @@ class CatalogController < ApplicationController
   before_filter :get_parameters, except: [:search]
 
   def show
+    @id = Family.first if @id.blank? # TODO move to new method #index
     setup_taxon_and_index @id
+  rescue ActiveRecord::RecordNotFound
+    render_404 and return
   end
 
   def search
@@ -80,6 +83,10 @@ class CatalogController < ApplicationController
       render 'family_not_found' and return unless family
     end
 
+    def render_404
+      render file: 'public/404.html', status: :not_found, layout: false
+    end
+
     def redirect_to_id id
       parameters_string = @child ? "?child=#{@child}" : ''
       redirect_to "/catalog/#{id}#{parameters_string}"
@@ -88,7 +95,7 @@ class CatalogController < ApplicationController
     # Among other thigs, this populates the lower half of the table
     # that is browsable (subfamiles, genera, [subgenera], species, [subspecies])
     def setup_taxon_and_index id
-      @taxon = Taxon.find_by_id(id) || Family.first
+      @taxon = Taxon.find(id)
 
       if session[:show_unavailable_subfamilies]
         @subfamilies = ::Subfamily.all.ordered_by_name.where("display != false")
