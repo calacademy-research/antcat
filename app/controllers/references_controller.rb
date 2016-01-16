@@ -50,13 +50,18 @@ class ReferencesController < ApplicationController
   end
 
   def destroy
-    json =  if @reference.any_references? or not @reference.destroy
-              { success: false,
-                message: "This reference can't be deleted, as there are other references to it." }
-            else
-              { success: true }
-            end
-    render json: json
+    if @reference.any_references?
+      # TODO list which refereces
+      redirect_to reference_path(@reference),
+        notice: "This reference can't be deleted, as there are other references to it."
+      return
+    end
+
+    @reference.destroy
+    respond_to do |format|
+      format.html { redirect_to references_path, notice: 'Reference was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
 
   def download

@@ -4,9 +4,6 @@
 %div{id: id, class: css_class, 'data-reference-id' => reference.id, 'data-taxt' => Taxt.to_editable_reference(reference)}
   %table.reference_table
     %tr
-      %td.icons
-        %a.icon.delete{:title => 'delete', :href => '#'}
-          = image_tag 'delete_off.png', :alt => 'delete'
       %td.reference_item
         = render 'display', :reference => reference if !reference.new_record? && reference.errors.empty?
         - if user_can_edit?

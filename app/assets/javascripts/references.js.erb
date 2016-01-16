@@ -16,9 +16,6 @@ function setupButtons() {
 
 function setupIcons() {
   setupIconVisibility()
-  if (AntCat.user_can_edit) {
-    setupIconClickHandlers()
-  }
 }
 
 function setupIconVisibility() {
@@ -38,14 +35,9 @@ function setupIconVisibility() {
       });
 }
 
-function setupIconClickHandlers() {
-  $('body').on('click', '.icon.delete', deleteReference);
-}
-
 function setupEdits() {
   $('body').on('click', '.reference_edit .submit', submitReferenceEdit);
   $('body').on('click', '.reference_edit .cancel', cancelReferenceEdit);
-  $('body').on('click', '.reference_edit .delete', deleteReference);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -55,23 +47,6 @@ function approveHandler() {
   if (r == true) {
     return window.location.href = '/references/approve_all';
   }
-}
-
-function deleteReference() {
-  $reference = $(this).closest('.reference');
-  $reference.addClass('about_to_be_deleted');
-  if (confirm(AntCat.delete_confirmation_message)) {
-    $.post($reference.find('form').attr('action'), {'_method': 'delete'},
-        function (data) {
-          if (data.success) {
-            $reference.closest('tr').remove();
-            removeSavedReference()
-          } else
-            alert(data.message);
-        });
-  }
-  $reference.removeClass('about_to_be_deleted');
-  return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -103,9 +78,6 @@ function showReferenceEdit($reference, options) {
     $('.icon').hide()
 
   var $edit = $('.reference_edit', $reference);
-
-  if (!options.showDeleteButton)
-    $('.delete', $edit).hide();
 
   setupTabs($reference);
 
