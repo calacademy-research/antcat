@@ -4,6 +4,13 @@ $ ->
     (new AntCat.SelectorTooltips).createTooltips tooltipsToInsert
     (new AntCat.Tooltipify).tooltipifyAll()
 
+
+$ ->
+  $.ajax '/tooltips/render_missing_tooltips', success: (data) ->
+    if data.show_missing_tooltips == "true"
+      $('label, button, .ui-button').not('.display_button').after(""" boo""")
+
+
   # Added to the global window object to make it callable from anywhere.
   window.testTooltipSelector = (new AntCat.TestTooltipSelector).testTooltipSelector
 

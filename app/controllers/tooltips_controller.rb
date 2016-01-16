@@ -55,6 +55,11 @@ class TooltipsController < ApplicationController
     render json: json # more "json" than json..
   end
 
+  def render_missing_tooltips
+    payload = { :show_missing_tooltips => :true }
+    render json: payload
+  end
+
   private
     def set_tooltip
       @tooltip = Tooltip.find params[:id]

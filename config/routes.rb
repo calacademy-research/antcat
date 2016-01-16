@@ -101,6 +101,8 @@ AntCat::Application.routes.draw do
   resources :tooltips, only: [:index, :show, :new, :edit, :create, :update, :destroy] do
     collection do
       get 'enabled_selectors'
+      get 'render_missing_tooltips'
+
     end
   end
 
