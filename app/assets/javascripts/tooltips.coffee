@@ -235,11 +235,13 @@ $ ->
 $ ->
   $.ajax '/tooltips/render_missing_tooltips', success: (data) ->
     # Find a plugin that does this
-    # Temporarily dumped .css above this line for testing.
+    # Temporarily dumped coffeescript for CssSelectorGenerator above this line for testing.
     # https://github.com/fczbkk/css-selector-generator-benchmark
     # https://github.com/autarc/optimal-select
     # https://github.com/fczbkk/css-selector-generator
-    #    selector = "foo"
+    # TODO: make it so that if you cick an "edit" icon, if there's already a live tooltip, edit that one instead.
+    # TODO: If the edit screen is reached by clicking one of these edit icons, a "save" should bring you back
+    #       to the origin screen.
     selector_generator = new CssSelectorGenerator
 
     if data.show_missing_tooltips == true
