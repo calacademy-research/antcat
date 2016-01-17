@@ -21,6 +21,8 @@ When /^(?:|I )press "([^"]*)"$/ do |button|
   # TODO treat buttons and "button link" the same
   if button == "Edit"
     first('a.btn-edit').click
+  elsif button == "Cancel"
+    first('a.btn-cancel').click
   else
     click_button(button)
   end

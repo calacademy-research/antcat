@@ -51,9 +51,6 @@ module HtmlSelectorsHelpers
       when /the header/
         "div.header"
 
-      when /the first reference/
-        first '.reference'
-
       when /the headline/
         '.headline'
 

@@ -1,7 +1,6 @@
 Given /^(?:this|these) references? exists?$/ do |table|
   Reference.delete_all
 
-
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
@@ -157,62 +156,17 @@ end
 
 ##################
 
-Then /I (#{SHOULD_OR_SHOULD_NOT}) see the edit form/ do |should_selector|
-  css_selector = "#reference_"
-  css_selector << @reference.id.to_s if @reference
-  find("#{css_selector} .reference_edit").send should_selector.to_sym, be_visible
-end
-
-Then /I should not be editing/ do
-  # TODO Rails 4 upgrade - this isn't working. Verified manually.
-  within first('.icons') do
-    page.should have_css('img[alt=edit]')
-  end
-end
-
-Then /I should see a new edit form/ do
-  within first("#reference_") do
-    find(".reference_edit").should be_visible
-  end
+When(/^I follow first reference link$/) do
+  first('.references div a.goto_reference_link').click
 end
 
 Then 'I should not see the reference' do
   find("#reference_#{@reference.id}",visible: false).should_not be_visible
 end
 
-When /in the new edit form I fill in "(.*?)" with "(.*?)"/ do |field, value|
-  within first("#reference_") do
-    step "I fill in \"#{field}\" with \"#{value}\""
-  end
-end
-
-When /in the new edit form I fill in "reference_nesting_reference_id" with the ID for "(.*?)"$/ do |title|
+When /I fill in "reference_nesting_reference_id" with the ID for "(.*?)"$/ do |title|
   reference = Reference.find_by_title title
-  within first("#reference_") do
-    step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""
-  end
-end
-
-Then /in the new edit form the "(.*?)" field (#{SHOULD_OR_SHOULD_NOT}) contain "(.*?)"/ do |field, should_or_should_not, value|
-  within first("#reference_") do
-    step %{the "#{field}" field #{should_or_should_not} contain "#{value}"}
-  end
-end
-
-When /in the new edit form I follow "(.*?)"/ do |value|
-  within first("#reference_") do
-    step "I follow \"#{value}\""
-  end
-end
-
-When /in the new edit form I press the "(.*?)" button/ do |button|
-  within first("#reference_") do
-    step "I press \"#{button}\""
-  end
-end
-
-Then /there should not be an edit form/ do
-  page.should have_no_css "#reference_#{@reference.id} .reference_edit"
+  step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""
 end
 
 Then 'all the buttons should be disabled' do
@@ -243,23 +197,17 @@ Then "I should see the reference's ID beside its label" do
 end
 
 When /I fill in "reference_nesting_reference_id" with its own ID$/ do
-  within first('.reference') do
-    step "I fill in \"reference_nesting_reference_id\" with \"#{@reference.id}\""
-  end
+  step "I fill in \"reference_nesting_reference_id\" with \"#{@reference.id}\""
 end
 
 When /I fill in "([^"]*)" with a URL to a document that exists/ do |field|
   stub_request :any, "google.com/foo"
-  within first('.reference') do
-    step "I fill in \"#{field}\" with \"google\.com/foo\""
-  end
+  step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
 When /I fill in "([^"]*)" with a URL to a document that doesn't exist/ do |field|
   stub_request(:any, "google.com/foo").to_return :status => 404
-  within first('.reference') do
-    step "I fill in \"#{field}\" with \"google\.com/foo\""
-  end
+  step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
 And /I (edit|delete) "(.*?)"/ do |verb, author|
@@ -267,38 +215,14 @@ And /I (edit|delete) "(.*?)"/ do |verb, author|
   step %{I follow "#{verb}" within "#reference_#{reference.id}"}
 end
 
-Then /I should (not )?see the "add" icon/ do |do_not|
-  selector = do_not ? :should_not : :should
-  find("img[alt=add]").send selector, be_visible
-end
-
 very_long_author_names_string = (0...26).inject([]) { |a, n| a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A." }.join('; ')
 
-When /in the new edit form I fill in "reference_author_names_string" with a very long author names string/ do
-  within first("#reference_") do
-    step %{I fill in "reference_author_names_string" with "#{very_long_author_names_string}"}
-  end
+When /I fill in "reference_author_names_string" with a very long author names string/ do
+  step %{I fill in "reference_author_names_string" with "#{very_long_author_names_string}"}
 end
 
-When /in the edit form I fill in "([^"]*)" with "([^"]*)"/ do |field, text|
-  within "#reference_#{@reference.id}" do
-    step %{I fill in "#{field}" with "#{text}"}
-  end
-end
 Then /I should see a very long author names string/ do
   step %{I should see "#{very_long_author_names_string}"}
-end
-
-When /^I click the "edit" link beside the reference$/ do
-  within "#reference_#{@reference.id}" do
-    step %{I follow "edit"}
-  end
-end
-
-When /^In the edit form, I press the "Save" button$/ do
-  within "#reference_#{@reference.id}" do
-    step %{I press the "Save" button}
-  end
 end
 
 Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
@@ -334,12 +258,6 @@ end
 
 Given /there are no references/ do
   Reference.delete_all
-end
-
-When /^I save my changes to the first reference$/ do
-  within first('.reference') do
-    step 'I save my changes'
-  end
 end
 
 # New references list
