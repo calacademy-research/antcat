@@ -79,7 +79,7 @@ class ReferencesController < ApplicationController
 
   def start_reviewing
     @reference.start_reviewing!
-    DefaultReference.set session, @reference
+    make_default_reference @reference
     redirect_to latest_additions_references_path
   end
 
@@ -90,7 +90,7 @@ class ReferencesController < ApplicationController
 
   def restart_reviewing
     @reference.restart_reviewing!
-    DefaultReference.set session, @reference
+    make_default_reference @reference
     redirect_to latest_additions_references_path
   end
 
@@ -173,6 +173,10 @@ class ReferencesController < ApplicationController
   end
 
   private
+    def make_default_reference reference
+      DefaultReference.set session, reference
+    end
+
     def save
       begin
         Reference.transaction do
@@ -201,7 +205,8 @@ class ReferencesController < ApplicationController
         @reference[:id] = nil if @reference.new_record?
         return false
       end
-      DefaultReference.set session, @reference
+
+      make_default_reference @reference if params[:make_default]
       return true
     end
 
