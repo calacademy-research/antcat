@@ -1,3 +1,13 @@
+=enable_tooltips
+
+:coffee
+  $ ->
+    $('.tabs').tabs()
+    $('form.edit_reference, form.new_reference').submit ->
+      selectedTab = $.trim($('.ui-tabs-active').text())
+      console.log("_form selectedTab", selectedTab)
+      $('#selected_tab').val(selectedTab)
+
 - possible_duplicate ||= nil
 
 - reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
@@ -104,4 +114,5 @@
       %tr
         %td{:colspan => 4}
           %button.submit= possible_duplicate ? 'Save Anyway' : 'Save'
-          %button.cancel Cancel
+          -cancel_link = reference.new_record? ? references_path : reference_path(reference)
+          =link_to "Cancel", cancel_link, class: "btn-cancel"

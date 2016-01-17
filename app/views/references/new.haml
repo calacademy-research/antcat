@@ -1,9 +1,1 @@
-=enable_tooltips
-
--content_for :head do
-  =javascript_include_tag 'references'
-
--if user_can_edit?
-  %tr.reference_template_row
-    %td
-      = render 'reference', reference: Reference.new, css_class: 'reference_template'
+=render 'form', reference: @reference

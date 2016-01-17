@@ -18,7 +18,7 @@ class ReferencesController < ApplicationController
     @references = if searching
                     Reference.do_search params
                   else
-                    Reference.list_references
+                    Reference.list_references params
                   end
 
     @action = :index
@@ -28,6 +28,7 @@ class ReferencesController < ApplicationController
   end
 
   def new
+    @reference = Reference.new
   end
 
   def edit
@@ -36,12 +37,22 @@ class ReferencesController < ApplicationController
 
   def create
     @reference = new_reference
-    save is_new: true
+    if save is_new: true
+      redirect_to reference_path(@reference),
+      notice: 'Reference was successfully created.'
+    else
+      render :new
+    end
   end
 
   def update
     @reference = get_reference
-    save is_new: false
+    if save is_new: false
+      redirect_to reference_path(@reference),
+        notice: 'Reference was successfully updated.'
+    else
+      render :edit
+    end
   end
 
   def destroy
@@ -53,10 +64,7 @@ class ReferencesController < ApplicationController
     end
 
     @reference.destroy
-    respond_to do |format|
-      format.html { redirect_to references_path, notice: 'Reference was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to references_path, notice: 'Reference was successfully destroyed.'
   end
 
   def download
@@ -192,9 +200,10 @@ class ReferencesController < ApplicationController
       rescue ActiveRecord::RecordInvalid
         @reference[:id] = nil if is_new
         @reference.instance_variable_set :@new_record, is_new
+        return false
       end
       DefaultReference.set session, @reference
-      render_json is_new: is_new
+      return true
     end
 
     def set_pagination
@@ -243,24 +252,6 @@ class ReferencesController < ApplicationController
     def clear_document_params_if_necessary
       return unless params[:reference][:document_attributes]
       params[:reference][:document_attributes][:id] = nil unless params[:reference][:document_attributes][:url].present?
-    end
-
-    def render_json(is_new: false)
-      template =
-        case
-          when params[:field].present?  then 'reference_fields/panel'
-          when params[:picker].present? then 'reference_fields/panel'
-          when params[:popup].present?  then 'reference_popups/panel'
-          else                               'references/reference'
-        end
-
-      send_back_json(
-        isNew: is_new,
-        content: render_to_string(
-          partial: template, locals: { reference: @reference, css_class: 'reference' }
-        ),
-        id: @reference.id,
-        success: @reference.errors.empty?)
     end
 
     def new_reference

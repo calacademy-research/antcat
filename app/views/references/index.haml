@@ -30,7 +30,7 @@
   .title
     %h2.left ANTBIB
     %h2.left A Bibliography of Ant Systematics
-    %h2.left= link_to "Add reference", new_reference_path, class: "btn-new" if user_can_edit?
+    %h2.left= link_to "New", new_reference_path, class: "btn-new" if user_can_edit?
     %h3.right by Philip S. Ward, et al.
     .clear
 
@@ -54,10 +54,5 @@
           =reference.decorate.updated_at
 
       =render 'references/latest_additions_controls', reference: reference if @action == :latest_additions
-
-  -if user_can_edit?
-    %tr.reference_template_row
-      %td
-        = render 'reference', reference: Reference.new, css_class: 'reference_template'
 
 %div= will_paginate @references
