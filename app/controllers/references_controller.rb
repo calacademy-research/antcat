@@ -2,7 +2,7 @@ class ReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [
     :index, :download, :autocomplete, :show, :endnote_export, :latest_additions]
   before_filter :set_reference, only: [
-    :show, :edit, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
+    :show, :edit, :update, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
 
   # TODO make controller more RESTful
   def index
@@ -37,6 +37,7 @@ class ReferencesController < ApplicationController
 
   def create
     @reference = new_reference
+    # TODO check is_new elsewhere
     if save is_new: true
       redirect_to reference_path(@reference),
       notice: 'Reference was successfully created.'
@@ -46,7 +47,8 @@ class ReferencesController < ApplicationController
   end
 
   def update
-    @reference = get_reference
+    @reference = set_reference_type
+
     if save is_new: false
       redirect_to reference_path(@reference),
         notice: 'Reference was successfully updated.'
@@ -262,11 +264,11 @@ class ReferencesController < ApplicationController
       end
     end
 
-    def get_reference
+    def set_reference_type
       selected_tab = params[:selected_tab]
       selected_tab = 'Unknown' if selected_tab == 'Other'
-      type = selected_tab + 'Reference'
-      reference = Reference.find(params[:id]).becomes((type).constantize)
+      type = "#{selected_tab}Reference".constantize
+      reference = @reference.becomes(type)
       reference.type = type
       reference
     end
@@ -285,7 +287,6 @@ class ReferencesController < ApplicationController
       replaced.join(" ").strip
     end
 
-    # conventional Rails method name, not to be confused with the above #get_reference
     def set_reference
       @reference = Reference.find params[:id]
     end
