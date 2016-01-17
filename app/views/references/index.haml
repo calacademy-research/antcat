@@ -40,9 +40,9 @@
   =render 'references/latest_additions_headings' if @action == :latest_additions
 
   -@references.each do |reference|
-    %tr.reference_row
+    %tr
       %td
-        =render 'reference', reference: reference, css_class: 'reference'
+        =render 'reference', reference: reference
       -if @action == :latest_changes
         %td.date
           =reference.decorate.updated_at

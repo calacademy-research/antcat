@@ -1,7 +1,5 @@
 -if !reference.new_record? && reference.errors.empty?
-  -css_class = 'reference_display'
-
-  %div{class: css_class}
+  %div
     =reference.decorate.format
     =reference.decorate.format_reference_document_link
     =reference.decorate.goto_reference_link
