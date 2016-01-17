@@ -14,7 +14,8 @@ class TooltipsController < ApplicationController
   end
 
   def new
-    @tooltip = Tooltip.new
+
+    @tooltip = Tooltip.new(params.permit(:selector))
   end
 
   def edit

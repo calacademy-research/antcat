@@ -7,6 +7,7 @@ module TooltipHelper
     # but let's be nice and show them to all logged in users, even if they are not editors.
     return unless current_user
     content_for :head do
+      javascript_include_tag 'css-selector-generator'
       javascript_include_tag 'tooltips'
     end
     content_for :head do
