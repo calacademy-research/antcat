@@ -1,11 +1,21 @@
 =enable_tooltips
 
+-content_for :head do
+  = javascript_include_tag 'reference_autocompletion'
+
 :coffee
   $ ->
+    # Tabify
     $('.tabs').tabs()
+
+    # Autocompletion
+    setupAuthorAutocomplete $('#reference_author_names_string')
+    setupReferenceEditJournalAutocomplete $('#reference_journal_name')
+    setupReferenceEditPublisherAutocomplete $('#reference_publisher_string')
+
+    # Include reference type in the form before submitting
     $('form.edit_reference, form.new_reference').submit ->
       selectedTab = $.trim($('.ui-tabs-active').text())
-      console.log("_form selectedTab", selectedTab)
       $('#selected_tab').val(selectedTab)
 
 - possible_duplicate ||= nil
