@@ -189,14 +189,18 @@ class ReferencesController < ApplicationController
           # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
           @reference.update_column :type, @reference.type unless @reference.new_record?
 
-          unless @reference.errors.present?
+          if @reference.errors.present?
+            return
+          else
             @reference.update_attributes params[:reference]
 
             @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
-            unless @possible_duplicate
-              @reference.save!
-              set_document_host
-            end
+            return if @possible_duplicate
+
+            @reference.save!
+            set_document_host
+            make_default_reference @reference if params[:make_default]
+            return true
           end
 
           raise ActiveRecord::RecordInvalid.new @reference if @reference.errors.present?
@@ -205,9 +209,6 @@ class ReferencesController < ApplicationController
         @reference[:id] = nil if @reference.new_record?
         return false
       end
-
-      make_default_reference @reference if params[:make_default]
-      return true
     end
 
     def set_pagination
