@@ -242,11 +242,13 @@ $ ->
     # TODO: make it so that if you cick an "edit" icon, if there's already a live tooltip, edit that one instead.
     # TODO: If the edit screen is reached by clicking one of these edit icons, a "save" should bring you back
     #       to the origin screen.
+    # TODO: Some way to organize this on a per-screen basis. selectors will be unique on a per screen basis,
+    #       but are unlikely to be universal.
     selector_generator = new CssSelectorGenerator
 
     if data.show_missing_tooltips == true
       $('label, button, .ui-button').not('.display_button').each (index, element) =>
-        selector = encodeURI(selector_generator.getSelector(element));
+        selector = encodeURIComponent(selector_generator.getSelector(element));
         $(element).after("""\
         <a class = "create_tooltip" href="/tooltips/new/?selector=""" + selector +
                         """ "> \
