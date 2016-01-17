@@ -262,22 +262,19 @@ end
 
 # New references list
 When /^I click "(.*?)" on the Ward reference$/ do |button|
-  # TODO ".reference_row" has been removed
-  within find(".reference_row", :text => 'Ward') do
-    step %{I press "#{button}"}
+  within find("tr", :text => 'Ward') do
+    first(".btn-normal", text: button).click
   end
 end
 Then /^the review status on the Ward reference should change to "(.*?)"$/ do |status|
-  # TODO ".reference_row" has been removed
-  within find(".reference_row", :text => 'Ward') do
+  within find("tr", :text => 'Ward') do
     step %{I should see "#{status}"}
   end
 end
 Then /^it (#{SHOULD_OR_SHOULD_NOT}) show "(.*?)" as the default$/ do |should_selector, key|
   reference = find_reference_by_key key
   author = key.split(' ').first
-  # TODO ".reference_row" has been removed
-  within find(".reference_row", text: author) do
+  within find("tr", :text => author) do
     step %{I #{should_selector} see "Default"}
   end
 end
