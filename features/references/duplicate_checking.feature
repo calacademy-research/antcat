@@ -10,7 +10,7 @@ Feature: Checking for duplicates during data entry
       | Ward, P.  | Psyche 6:1| Ants  | 2010 |
     Given I am logged in
     When I go to the references page
-    And I follow "add"
+    And I follow "New"
     And I fill in "reference_author_names_string" with "Ward, P."
     And I fill in "reference_title" with "Ants"
     And I fill in "reference_series_volume_issue" with "6"
@@ -21,7 +21,6 @@ Feature: Checking for duplicates during data entry
     And I should see "This may be a duplicate of Ward, P. 2010. Ants. Psyche 6:1 "
     When I press "Save Anyway"
 
-
   Scenario: Editing a reference that makes it a duplicate
     Given these references exist
       | authors    | citation   | title            | year |
@@ -31,7 +30,8 @@ Feature: Checking for duplicates during data entry
     When I go to the references page
     And I fill in the search box with "Bolton"
     And I press "Go" by the search box
-    And I follow "edit"
+    When I follow first reference link
+    When I follow "Edit"
     And I fill in "reference_author_names_string" with "Ward, P."
     And I fill in "reference_title" with "Ants"
     And I fill in "reference_series_volume_issue" with "6:1"
