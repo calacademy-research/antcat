@@ -56,21 +56,20 @@ class TooltipsController < ApplicationController
   end
 
   def render_missing_tooltips
-    payload = { :show_missing_tooltips => :true }
-    render json: payload
+    render json: {:show_missing_tooltips => current_user.is_superadmin?}
   end
 
   private
-    def set_tooltip
-      @tooltip = Tooltip.find params[:id]
-    end
+  def set_tooltip
+    @tooltip = Tooltip.find params[:id]
+  end
 
-    def tooltip_params
-      params.require(:tooltip).permit(
+  def tooltip_params
+    params.require(:tooltip).permit(
         :key, :text, :key_enabled, :selector, :selector_enabled)
-    end
+  end
 
-    def main_namespace_of_key key
-      key.scan(/.*?(?=\.)/).first
-    end
+  def main_namespace_of_key key
+    key.scan(/.*?(?=\.)/).first
+  end
 end

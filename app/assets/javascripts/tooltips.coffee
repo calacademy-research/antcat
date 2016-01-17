@@ -7,10 +7,14 @@ $ ->
 
 $ ->
   $.ajax '/tooltips/render_missing_tooltips', success: (data) ->
-    if data.show_missing_tooltips == "true"
+    # Find a plugin that does this
+    selector = "foo"
+    if data.show_missing_tooltips == true
       $('label, button, .ui-button').not('.display_button').after("""\
-      <img class="help_icon tooltip foo" \
-       title="foo" src="/assets/create_tip.png" alt="Help" /></a>\
+      <a class = "create_tooltip" href="/tooltips/?selector=""" + selector +
+      """ "> \
+      <img class="help_icon tooltip " \
+       title="create tooltip" src="/assets/create_tip.png" alt="Help" /></a>\
        """)
 
 
