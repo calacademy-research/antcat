@@ -13,7 +13,7 @@ Feature: Edit reference
       | authors | citation   | cite_code | created_at  | date     | possess | title | updated_at  | year |
       | authors | Psyche 3:3 | CiteCode  | TODAYS_DATE | 20100712 | Possess | title | TODAYS_DATE | 2010 |
     When I go to the references page
-    Then I should see "New"
+    Then I should not see "New"
 
   Scenario: Edit a reference
     Given these dated references exist
@@ -277,9 +277,9 @@ Feature: Edit reference
     And I fill in "reference_title" with ""
     And I press the "Save" button
     Then I should see "Title can't be blank"
-    When I press the "Cancel" button
+    When I press "Cancel"
     Then I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 "
-    When I follow "edit"
+    When I follow "Edit"
     Then I should not see any error messages
     When I press the "Save" button
     Then I should not see any error messages

@@ -101,6 +101,7 @@ Feature: Searching references
     And I fill in the search box with "50000"
     And I press "Go" by the search box
     Then I should see "Dolerichoderinae"
+    When I go to the references page
     When I fill in the search box with "10000"
     And I press "Go" by the search box
     Then I should not see "Dolerichoderinae"
