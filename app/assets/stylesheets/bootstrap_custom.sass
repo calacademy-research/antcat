@@ -34,6 +34,12 @@ button.delete, #delete_button
   @extend .btn-delete
 
 // TODO use these
+// TODO rename
+.btn-normal, a.btn-normal
+  @include medium_button
+  @extend .btn-primary
+  color: #fff
+
 .btn-destructive, a.btn-destructive
   @include medium_button
   @extend .btn-danger
