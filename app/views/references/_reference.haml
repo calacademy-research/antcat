@@ -1,6 +1,5 @@
 -if !reference.new_record? && reference.errors.empty?
   -css_class = 'reference_display'
-  -css_class << ' downloadable' if reference.downloadable?
 
   %div{class: css_class}
     =reference.decorate.format
