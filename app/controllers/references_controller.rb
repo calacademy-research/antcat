@@ -98,8 +98,7 @@ class ReferencesController < ApplicationController
       reference.review_state = 'reviewed'
       reference.save!
     end
-
-    redirect_to latest_additions_references_path
+    redirect_to latest_changes_references_path, notice: "Approved all changes."
   end
 
   def latest_additions

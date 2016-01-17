@@ -34,6 +34,11 @@ button.delete, #delete_button
   @extend .btn-delete
 
 // TODO use these
+.btn-destructive, a.btn-destructive
+  @include medium_button
+  @extend .btn-danger
+  color: #fff
+
 .btn-new, a.btn-new
   @include medium_button
   @extend .btn-primary

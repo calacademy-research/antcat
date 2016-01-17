@@ -47,7 +47,7 @@ AntCat::Application.routes.draw do
       get 'latest_additions'
       get 'latest_changes'
       get 'endnote_export'
-      get 'approve_all'
+      put 'approve_all'
     end
     member do
       post 'start_reviewing'
