@@ -73,7 +73,7 @@ Feature: Add reference
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. In Muller, Brown 1928. Ants. p. 23."
 
   Scenario: Leaving other fields blank when adding an article reference
-    # TODO
+    # TODO pending
     When I follow "New"
     And I fill in "reference_author_names_string" with "Fisher, B.L."
     And I press the "Save" button

@@ -98,6 +98,7 @@ Feature: Edit reference
     And I should see "Pagination can't be blank"
 
   Scenario: Clearing an article reference's fields
+    # TODO pending
     Given I am logged in
     And these dated references exist
       | authors    | citation   | year | citation_year | title | created_at  | updated_at  |     doi |

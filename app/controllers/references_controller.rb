@@ -32,7 +32,6 @@ class ReferencesController < ApplicationController
   end
 
   def edit
-    @reference = Reference.find(params[:id])
   end
 
   def create
@@ -178,30 +177,30 @@ class ReferencesController < ApplicationController
     end
 
     def save
-        Reference.transaction do
-          clear_document_params_if_necessary
-          clear_nesting_reference_id unless @reference.kind_of? NestedReference
-          parse_author_names_string
-          set_journal if @reference.kind_of? ArticleReference
-          set_publisher if @reference.kind_of? BookReference
-          set_pagination
-          # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
-          @reference.update_column :type, @reference.type unless @reference.new_record?
+      Reference.transaction do
+        clear_document_params_if_necessary
+        clear_nesting_reference_id unless @reference.kind_of? NestedReference
+        parse_author_names_string
+        set_journal if @reference.kind_of? ArticleReference
+        set_publisher if @reference.kind_of? BookReference
+        set_pagination
+        # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
+        @reference.update_column :type, @reference.type unless @reference.new_record?
 
-          return if @reference.errors.present?
+        return if @reference.errors.present?
 
-          @reference.update_attributes params[:reference]
+        @reference.update_attributes params[:reference]
 
-          @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
-          return if @possible_duplicate
+        @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
+        return if @possible_duplicate
 
-          @reference.save!
-          set_document_host
-          make_default_reference @reference if params[:make_default]
-          return true
-        end
-      rescue ActiveRecord::RecordInvalid
-        return false
+        @reference.save!
+        set_document_host
+        make_default_reference @reference if params[:make_default]
+        return true
+      end
+    rescue ActiveRecord::RecordInvalid
+      return false
     end
 
     def set_pagination
