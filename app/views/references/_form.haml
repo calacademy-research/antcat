@@ -47,7 +47,7 @@
       %tr
         %td= label_tag :reference_author_names_string, 'Authors'
         %td.authors= f.text_field :author_names_string, :class => 'authors'
-        %td{:style => 'padding-right: 5px'}= label_tag :reference_citation_year, 'Year'
+        %td= label_tag :reference_citation_year, 'Year'
         %td{:class => :right_side_field}= f.text_field :citation_year
       %tr
         %td= label_tag :reference_title, 'Title'
@@ -116,7 +116,7 @@
         %td{:colspan => 4}
           %table.small_fields
             %tr
-              %td{:style => 'padding-right: 5px'}= label_tag :reference_cite_code, 'Cite code'
+              %td= label_tag :reference_cite_code, 'Cite code'
               %td.cite_code= f.text_field :cite_code
               %td= label_tag :reference_doi, 'DOI'
               %td.doi= f.text_field :doi
