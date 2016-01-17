@@ -37,8 +37,7 @@ class ReferencesController < ApplicationController
 
   def create
     @reference = new_reference
-    # TODO check is_new elsewhere
-    if save is_new: true
+    if save
       redirect_to reference_path(@reference),
       notice: 'Reference was successfully created.'
     else
@@ -49,7 +48,7 @@ class ReferencesController < ApplicationController
   def update
     @reference = set_reference_type
 
-    if save is_new: false
+    if save
       redirect_to reference_path(@reference),
         notice: 'Reference was successfully updated.'
     else
@@ -174,7 +173,7 @@ class ReferencesController < ApplicationController
   end
 
   private
-    def save(is_new:)
+    def save
       begin
         Reference.transaction do
           clear_document_params_if_necessary
@@ -184,7 +183,7 @@ class ReferencesController < ApplicationController
           set_publisher if @reference.kind_of? BookReference
           set_pagination
           # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
-          @reference.update_column :type, @reference.type unless is_new
+          @reference.update_column :type, @reference.type unless @reference.new_record?
 
           unless @reference.errors.present?
             @reference.update_attributes params[:reference]
@@ -199,8 +198,7 @@ class ReferencesController < ApplicationController
           raise ActiveRecord::RecordInvalid.new @reference if @reference.errors.present?
         end
       rescue ActiveRecord::RecordInvalid
-        @reference[:id] = nil if is_new
-        @reference.instance_variable_set :@new_record, is_new
+        @reference[:id] = nil if @reference.new_record?
         return false
       end
       DefaultReference.set session, @reference
