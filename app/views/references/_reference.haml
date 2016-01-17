@@ -2,7 +2,7 @@
   %div
     =reference.decorate.format
     =reference.decorate.format_reference_document_link
-    =reference.decorate.goto_reference_link
+    =reference.decorate.goto_reference_link target: nil
 
     %p.notes= reference.decorate.public_notes
     -if user_is_editor?
