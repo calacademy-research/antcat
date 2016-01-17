@@ -5,11 +5,6 @@ class Journal < ActiveRecord::Base
   validates_presence_of :name
   has_paper_trail meta: { change_id: :get_current_change_id }
 
-  def self.import(name: "")
-    return unless name.present?
-    find_or_create_by!(name: name)
-  end
-
   def self.search term = ''
     search_expression = term.split('').join('%') + '%'
     select('journals.name, COUNT(*)').
