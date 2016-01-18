@@ -1,26 +1,15 @@
 class ReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [
-    :index, :download, :autocomplete, :show, :endnote_export, :latest_additions]
+    :index, :download, :autocomplete, :show, :search, :endnote_export, :latest_additions]
   before_filter :set_reference, only: [
     :show, :edit, :update, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
+  before_filter :redirect_if_search_matches_id, only: [:index, :search]
+  # TODO remove filter from the index? Currently only for legacy reasons,
+  #   would break non-restful `reference_path`s such as /index/q=21255
 
-  # TODO split index.haml
+  # TODO split index.haml (used in latest_additions, latest_changes & search)
   def index
-    params[:q] ||= ''
-    params[:q].strip!
-
-    if params[:q].match(/^\d{5,}$/)
-      id = params[:q]
-      return redirect_to reference_path(id) if Reference.exists? id
-    end
-
-    searching = params[:q].present?
-    @references = if searching
-                    Reference.do_search params
-                  else
-                    Reference.list_references params
-                  end
-
+    @references = Reference.list_references params
     @action = :index
   end
 
@@ -101,6 +90,14 @@ class ReferencesController < ApplicationController
     redirect_to latest_changes_references_path, notice: "Approved all changes."
   end
 
+  def search
+    return redirect_to action: :index unless params[:q].present?
+    @references = Reference.do_search params
+
+    @action = :search
+    render "index"
+  end
+
   def latest_additions
     options = { order: :created_at, page: params[:page] }
     @references = Reference.list_references options
@@ -172,6 +169,16 @@ class ReferencesController < ApplicationController
   end
 
   private
+    def redirect_if_search_matches_id
+      params[:q] ||= ''
+      params[:q].strip!
+
+      if params[:q].match(/^\d{5,}$/)
+        id = params[:q]
+        return redirect_to reference_path(id) if Reference.exists? id
+      end
+    end
+
     def make_default_reference reference
       DefaultReference.set session, reference
     end

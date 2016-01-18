@@ -1,7 +1,7 @@
 - content_for :head do
   = javascript_include_tag 'references_autocomplete'
 
-= form_tag references_path, :method => 'get', :id => 'search_form' do
+= form_tag search_references_path, :method => 'get', :id => 'search_form' do
   .search
     = text_field_tag "q", params[:q], class: "typeahead", placeholder: "Search..."
     = submit_tag "Go"
