@@ -232,16 +232,19 @@ class ReferencesController < ApplicationController
     end
 
     def set_publisher
-      @reference.publisher_string = params[:reference][:publisher_string]
-      publisher = Publisher.import_string @reference.publisher_string
-      if publisher.nil? and @reference.publisher_string.present?
+      publisher_string = params[:reference][:publisher_string]
+      publisher = if publisher_string.present?
+        Publisher.import_string publisher_string
+      end
+      @reference.publisher = publisher
+
+      if publisher.nil? && publisher_string.present?
+        @reference.publisher_string = publisher_string
         @reference.errors.add :publisher_string, <<-MSG.squish
           couldn't be parsed. In general, use the format 'Place: Publisher'.
           Otherwise, please post a message on http://groups.google.com/group/antcat/,
           and we'll see what we can do!
         MSG
-      else
-        params[:reference][:publisher] = publisher
       end
     end
 
