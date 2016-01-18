@@ -6,20 +6,13 @@
   .no_results_found
     No results found
 
--if @action == :latest_changes
-  .approve_all_button.right= approve_all_references_button
-
 %table.references
-  =render 'references/latest_changes_headings' if @action == :latest_changes
   =render 'references/latest_additions_headings' if @action == :latest_additions
 
   -@references.each do |reference|
     %tr
       %td
         =render 'reference', reference: reference
-      -if @action == :latest_changes
-        %td.date
-          =reference.decorate.updated_at
 
       =render 'references/latest_additions_controls', reference: reference if @action == :latest_additions
 

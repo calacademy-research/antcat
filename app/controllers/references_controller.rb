@@ -106,9 +106,6 @@ class ReferencesController < ApplicationController
   def latest_changes
     options = { order: :updated_at, page: params[:page] }
     @references = Reference.list_references options
-
-    @action = :latest_changes
-    render "index"
   end
 
   def endnote_export
