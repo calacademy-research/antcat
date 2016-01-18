@@ -13,7 +13,6 @@ Rails.application.config.assets.precompile += %w( *.js )
 
 Rails.application.config.assets.precompile += %w( active_admin.css )
 Rails.application.config.assets.precompile += %w( bootstrap_custom.css )
-Rails.application.config.assets.precompile += %w( ie_antcat.css )
 Rails.application.config.assets.precompile += %w( jquery_overrides.css )
 
 Rails.application.config.assets.precompile += %w( widgets/*.css )
