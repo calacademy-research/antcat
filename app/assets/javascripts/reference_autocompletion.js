@@ -1,3 +1,8 @@
+// This seems the be the original JavaScript that was used and then duplicated in the
+// CoffeeScript class AntCat.ReferenceForm (itself a subclass of AntCat.NestedForm),
+// which is too coupled to reuse here (some of the relevant functions are found in
+// AntCat.ReferenceForm --> AntCat.ReferenceField --> AntCat.ReferencePicker).
+
 function setupAuthorAutocomplete(selector) {
   if (AntCat.testing)
     return
