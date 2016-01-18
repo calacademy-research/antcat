@@ -41,13 +41,14 @@ AntCat::Application.routes.draw do
   resources :journals, only: [:index, :show, :new, :create, :edit, :update]
   resources :publishers, only: [:index]
 
-  resources :references, only: [:index, :show, :update, :create, :destroy] do
+  resources :references do
     collection do
+      get 'search'
       get 'autocomplete'
       get 'latest_additions'
       get 'latest_changes'
       get 'endnote_export'
-      get 'approve_all'
+      put 'approve_all'
     end
     member do
       post 'start_reviewing'

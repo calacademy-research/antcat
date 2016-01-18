@@ -267,6 +267,7 @@ describe Reference do
                                :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
       duplicate = ArticleReference.new :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
                            :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
+      expect(duplicate.errors).to be_empty
       expect(duplicate.check_for_duplicate).to be_truthy
       expect(duplicate.errors).not_to be_empty
     end

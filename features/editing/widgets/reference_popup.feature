@@ -35,30 +35,6 @@ Feature: Reference popup
   #  * I should not see "Bert's book"
   #  * I should not see "Fisher's book"
 
-  Scenario: Adding a selected reference
-    Given I am logged in
-    When I go to the reference popup widget test page
-    And I add a reference by Brian Fisher
-    Then the current reference should be "Fisher, B.L. 1992. Between Pacific Tides. Ants 2:1"
-
-  Scenario: Editing the selected reference
-    Given I am logged in
-    When I go to the reference popup widget test page, opened to the first reference
-    And I edit the reference
-    When I set the authors to "Ward, B.L.; Bolton, B."
-    And I set the title to "Ant Title"
-    And I save my changes to the current reference
-    # potential flickerer
-    Then the current reference should be "Ward, B.L.; Bolton, B. 1995b. Ant Title. Ants 1:1-2"
-
-  Scenario: Error when editing reference
-    Given I am logged in
-    When I go to the reference popup widget test page, opened to the first reference
-    And I edit the reference
-    When I set the title to ""
-    And I save my changes to the current reference
-    And I should see "Title can't be blank"
-
   @search
   Scenario: Cancelling when there's already a reference (regression)
     Given I am logged in

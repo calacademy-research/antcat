@@ -1,8 +1,13 @@
-function setupAuthorAutocomplete(field) {
+// This seems the be the original JavaScript that was used and then duplicated in the
+// CoffeeScript class AntCat.ReferenceForm (itself a subclass of AntCat.NestedForm),
+// which is too coupled to reuse here (some of the relevant functions are found in
+// AntCat.ReferenceForm --> AntCat.ReferenceField --> AntCat.ReferencePicker).
+
+function setupAuthorAutocomplete(selector) {
   if (AntCat.testing)
     return
 
-  field.autocomplete({
+  selector.autocomplete({
     autoFocus: true,
     minLength: 3,
     source: function(request, response) {
@@ -25,18 +30,6 @@ function setupAuthorAutocomplete(field) {
   });
 }
 
-function setupAdvancedSearchAuthorAutocomplete() {
-  setupAuthorAutocomplete($('#q'));
-}
-
-function removeAdvancedSearchAuthorAutocomplete() {
-  $('#q').autocomplete('destroy');
-}
-
-function setupReferenceEditAuthorAutocomplete($reference) {
-  setupAuthorAutocomplete($('.reference_edit .authors', $reference));
-}
-
 function extractAuthorSearchTerm(string, position) {
   if (string.length == 0)
     return "";
@@ -45,8 +38,7 @@ function extractAuthorSearchTerm(string, position) {
   return $.trim(beforeCursor.substring(lastSemicolon + 1, position));
 }
 
-function insertAuthor(string, position, author)
-{ 
+function insertAuthor(string, position, author) {
   if (string.length == 0)
     return {string: string, position: 0};
 
@@ -66,20 +58,16 @@ function insertAuthor(string, position, author)
   return {string: string, position: position};
 }
 
-///////////////////////////////////////////////////////
-
-function setupReferenceEditJournalAutocomplete($reference) {
-  $('.reference_edit .journal', $reference).autocomplete({
+function setupReferenceEditJournalAutocomplete(selector) {
+  selector.autocomplete({
     autoFocus: true,
     source: "/journals",
     minLength: 3
   });
 }
 
-///////////////////////////////////////////////////////
-
-function setupReferenceEditPublisherAutocomplete($reference) {
-  $('.reference_edit .publisher', $reference).autocomplete({
+function setupReferenceEditPublisherAutocomplete(selector) {
+  selector.autocomplete({
     autoFocus: true,
     source: "/publishers",
     minLength: 3

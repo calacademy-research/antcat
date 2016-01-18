@@ -11,5 +11,5 @@
     -synonyms.each do |synonym|
       .synonym_row
         =synonym[:name].html_safe
-        %button.submit.ui-priority-primary.small_button.delete{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym[:id]} Delete
+        %button.submit.ui-priority-primary.small_button.delete.btn-delete{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym[:id]} Delete
         %button.submit.ui-priority-primary.small_button.reverse_synonymy{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym[:id]} Reverse synonymy

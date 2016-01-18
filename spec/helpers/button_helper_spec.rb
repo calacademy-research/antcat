@@ -31,7 +31,7 @@ describe ButtonHelper do
   describe "Making a cancel button" do
     it "should handle a cancel button" do
       string = helper.cancel_button
-      expect(string).to eq("<input class=\"cancel ui-button ui-corner-all ui-priority-secondary\" id=\"cancel_button\" type=\"button\" value=\"Cancel\"></input>")
+      expect(string).to eq("<input class=\"btn-cancel cancel ui-button ui-corner-all ui-priority-secondary\" id=\"cancel_button\" type=\"button\" value=\"Cancel\"></input>")
     end
   end
 

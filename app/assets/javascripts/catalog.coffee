@@ -13,7 +13,6 @@ $ ->
   set_dimensions()
   setup_throbber()
   $(window).resize set_dimensions
-  $('.edit_icon').show() if AntCat.testing
   splitter_top = $('#splitter').position().top
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
 

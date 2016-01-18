@@ -124,9 +124,9 @@ class ReferenceDecorator < ApplicationDecorator
     format_author_last_names
   end
 
-  def goto_reference_link
+  def goto_reference_link target: '_blank'
     helpers.link reference.id, helpers.reference_path(reference),
-      class: :goto_reference_link, target: '_blank'
+      class: :goto_reference_link, target: target
   end
 
   def format_author_last_names

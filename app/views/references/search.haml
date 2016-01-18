@@ -1,6 +1,9 @@
--@title = 'Bibliography'
+-@title = 'Search references'
 
 =render 'references_page_header'
+
+-if @references.empty?
+  .no_results_found No results found
 
 %table.references
   -@references.each do |reference|

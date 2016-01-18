@@ -7,7 +7,11 @@
   padding-left: 0
 
 .references
+  @include margins
   width: 100%
+
+.reference
+  @include margins
 
 .pagination
   padding: 2px 40px 0 52px
@@ -15,9 +19,6 @@
 .no_results_found
   padding: 2px 40px 0 52px
   color: $color_error
-
-a.source_link
-  font-size: .7em
 
 td.reference_item
   vertical-align: top
@@ -39,19 +40,7 @@ td.reference_item
 .reference_table
   width: 100%
 
-.reference_display
-  color: $color_reference_without_document
-  &.downloadable
-    color: $color_reference_with_document
-
-.reference.about_to_be_deleted
-  background-color: $color_reference_highlight
-
-.reference_template, .reference_template_row
-  display: none
-
 .reference_edit
-  display: none
   ul.error_messages
     margin: 0 0 3px 5px
   table
@@ -84,30 +73,8 @@ td.reference_item
           input
             width: 75px
 
-table.reference-fields
-  width: 800px
-  .wide
-    width: 100%
-  .small
-    width: 100px
-
 td.authors
   padding-right: 5px
-
-.icons
-  width: 44px
-  padding-top: 0px
-  vertical-align: top
-  a, a:active, a:hover, a:focus, a:visited
-    &:hover
-      background: none
-
-.icon
-  display: none
-  float: left
-  height: 16px
-  padding: 0
-  margin: 0
 
 p.notes
   margin: 0 20px
@@ -122,8 +89,8 @@ td.review_state_header
   text-align: center
 
 td.date
-  width: 75px
   vertical-align: top
+  white-space: nowrap
 
 td.review_state
   width: 96px
@@ -132,10 +99,6 @@ td.review_state
 
 .search input[type=text]#q
   width: 200px
-
-.help_icon
-  vertical-align: middle
-  margin-left: 3px
 
 td.review_buttons, td.default_reference_status
   vertical-align: top

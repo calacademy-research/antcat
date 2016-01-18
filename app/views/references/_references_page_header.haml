@@ -1,0 +1,20 @@
+-content_for :page_header do
+  #navigation_bar
+    .actions
+      -items = []
+      -items << link_to('Latest additions', latest_additions_references_path)
+      -if user_is_editor?
+        -items << link_to('Latest changes', latest_changes_references_path)
+        -items << link_to('Journals', journals_path)
+        -items << link_to('Fix missing', missing_references_path)
+        -items << link_to('Export to EndNote', endnote_export_references_path(q: params[:q])) if params[:action] == "search"
+      =make_link_menu items
+
+    =render 'search_form', params: params
+
+  .title
+    %h2.left ANTBIB
+    %h2.left A Bibliography of Ant Systematics
+    %h2.left= link_to "New", new_reference_path, class: "btn-new" if user_can_edit?
+    %h3.right by Philip S. Ward, et al.
+    .clear

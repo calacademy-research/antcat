@@ -1,10 +1,17 @@
--@title = 'Bibliography'
+-@title = 'Latest changes'
 
 =render 'references_page_header'
 
+.approve_all_button.right=approve_all_references_button
+
 %table.references
+  %tr
+    %td
+    %td.date_header Changed
+
   -@references.each do |reference|
     %tr
       %td=render 'reference', reference: reference
+      %td.date=reference.decorate.updated_at
 
 %div= will_paginate @references

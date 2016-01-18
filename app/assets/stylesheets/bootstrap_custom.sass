@@ -34,23 +34,32 @@ button.delete, #delete_button
   @extend .btn-delete
 
 // TODO use these
+// TODO rename
+.btn-normal, a.btn-normal
+  @include medium_button
+  @extend .btn-primary
+  color: #fff
+
+.btn-destructive, a.btn-destructive
+  @include medium_button
+  @extend .btn-danger
+  color: #fff
+
+.btn-new, a.btn-new
+  @include medium_button
+  @extend .btn-primary
+  color: #fff
+
 .btn-edit, a.btn-edit
   @include medium_button
   @extend .btn-primary
   color: #fff
 
-.btn-cancel
+.btn-cancel, a.btn-cancel
   @include medium_button
   @extend .btn-secondary
 
-.btn-delete
+.btn-delete, a.btn-delete
   @include medium_button
   @extend .btn-danger
-
-.btn-md-custom
-  @include medium_button
-
-.btn-xs-custom
-  @include medium_button
-  padding: 0.1em 0.4em
-  font-size: 80%
+  color: #fff

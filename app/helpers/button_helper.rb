@@ -3,8 +3,8 @@ module ButtonHelper
   # e.g.:  button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete",'data-taxon-id' => "#{@taxon.id}"}
   # Yields: "<input data-delete-location="/taxa/449381/delete" data-taxon-id="449381" class="ui-button  ...
 
-  def button label, id = nil, parameters = {}
-    make_button label, id, 'button', parameters
+  def button label, id = nil, parameters = {}, extra_classes = []
+    make_button label, id, 'button', parameters, extra_classes
   end
 
   def submit_button label, id = nil, parameters = {}
@@ -13,7 +13,7 @@ module ButtonHelper
 
   def cancel_button label = 'Cancel', id = nil, parameters = {}
     parameters[:secondary] = true
-    make_button label, id, 'button', parameters, ['cancel']
+    make_button label, id, 'button', parameters, ['cancel', 'btn-cancel']
   end
 
   def button_to_path label, path, parameters = {}
