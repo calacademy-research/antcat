@@ -189,7 +189,7 @@ class ReferencesController < ApplicationController
 
         return if @reference.errors.present?
 
-        @reference.update_attributes params[:reference]
+        @reference.attributes = params[:reference]
 
         @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
         return if @possible_duplicate
