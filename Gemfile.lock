@@ -117,6 +117,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
+    colorize (0.7.7)
     concurrent-ruby (1.0.0)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
@@ -359,6 +360,7 @@ DEPENDENCIES
   capybara-webkit
   citrus (= 2.4.1)
   coffee-rails
+  colorize
   cucumber-rails
   curb
   database_cleaner
