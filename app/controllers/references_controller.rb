@@ -4,7 +4,7 @@ class ReferencesController < ApplicationController
   before_filter :set_reference, only: [
     :show, :edit, :update, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
 
-  # TODO make controller more RESTful
+  # TODO split index.haml
   def index
     params[:q] ||= ''
     params[:q].strip!
@@ -184,8 +184,6 @@ class ReferencesController < ApplicationController
         set_journal if @reference.kind_of? ArticleReference
         set_publisher if @reference.kind_of? BookReference
         set_pagination
-        # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
-        @reference.update_column :type, @reference.type unless @reference.new_record?
 
         return if @reference.errors.present?
 
@@ -242,8 +240,6 @@ class ReferencesController < ApplicationController
         @reference.publisher_string = publisher_string
         @reference.errors.add :publisher_string, <<-MSG.squish
           couldn't be parsed. In general, use the format 'Place: Publisher'.
-          Otherwise, please post a message on http://groups.google.com/group/antcat/,
-          and we'll see what we can do!
         MSG
       end
     end
@@ -295,6 +291,7 @@ class ReferencesController < ApplicationController
 
     def reference_params
       raise NotImplementedError
+      # TODO
       #params.require(:reference).permit(:....)
     end
 end

@@ -156,7 +156,7 @@ Feature: Add reference
     And I fill in "book_pagination" with "1"
     And I fill in "reference_citation_year" with "1981"
     And I press the "Save" button
-    Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'. Otherwise, please post a message on http://groups.google.com/group/antcat/, and we'll see what we can do!"
+    Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'."
     And I follow "Book"
     And the "reference_publisher_string" field should contain "Pensoft, Sophia"
 
