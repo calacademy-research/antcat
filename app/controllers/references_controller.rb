@@ -83,10 +83,7 @@ class ReferencesController < ApplicationController
   end
 
   def approve_all
-    Reference.where.not(review_state: "reviewed").find_each do |reference|
-      reference.review_state = 'reviewed'
-      reference.save!
-    end
+    Reference.approve_all
     redirect_to latest_changes_references_path, notice: "Approved all changes."
   end
 

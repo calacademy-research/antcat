@@ -196,7 +196,13 @@ class Reference < ActiveRecord::Base
     self.references any?: true
   end
 
-  ###############################################
+  def self.approve_all
+    Reference.where.not(review_state: "reviewed").find_each do |reference|
+      reference.review_state = 'reviewed'
+      reference.save!
+    end
+  end
+
   private
     def strip_text_fields
       [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation].each do |field|
