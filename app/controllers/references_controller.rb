@@ -224,8 +224,11 @@ class ReferencesController < ApplicationController
     end
 
     def set_journal
-      @reference.journal_name = params[:reference][:journal_name]
-      params[:reference][:journal] = Journal.find_or_create_by!(name: @reference.journal_name)
+      journal_name = params[:reference][:journal_name]
+      journal = if journal_name.present?
+        Journal.find_or_create_by!(name: journal_name)
+      end
+      @reference.journal = journal
     end
 
     def set_publisher
