@@ -14,8 +14,8 @@ class TooltipsController < ApplicationController
   end
 
   def new
-
     @tooltip = Tooltip.new(params.permit(:selector))
+    @referral=params[:referral]
   end
 
   def edit
@@ -25,13 +25,18 @@ class TooltipsController < ApplicationController
   def create
     @tooltip = Tooltip.new(tooltip_params)
     if @tooltip.save
-      redirect_to tooltip_path(@tooltip), notice: 'Tooltip was successfully created.'
+      if params[:referral] && params[:referral].length > 0
+        redirect_to params[:referral]
+      else
+        redirect_to tooltip_path(@tooltip), notice: 'Tooltip was successfully created.'
+      end
     else
       render :new
     end
   end
 
   def update
+
     respond_to do |format|
       if @tooltip.update_attributes tooltip_params
         format.html { redirect_to(@tooltip, notice: 'Tooltip was successfully updated.') }
@@ -41,6 +46,8 @@ class TooltipsController < ApplicationController
         format.json { respond_with_bip(@tooltip) }
       end
     end
+
+
   end
 
   def destroy

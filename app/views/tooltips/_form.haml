@@ -3,7 +3,8 @@
   =javascript_include_tag 'tooltips_generate_selector_test_string'
 
 =form_for @tooltip do |f|
-  =render 'shared/errors_for', resource: @tooltip
+  = hidden_field_tag 'referral', @referral
+  = render 'shared/errors_for', resource: @tooltip
   %p
     =f.label :key
     =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
