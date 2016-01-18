@@ -18,14 +18,22 @@ describe ReferencesController do
     describe "search terms matching ids" do
       it "redirects to #show" do
         reference = reference_factory author_name: 'E.O. Wilson', id: 99999
-        get :index, q: reference.id
+        get :search, q: reference.id
         expect(response).to redirect_to reference_path(reference)
       end
 
       it "does not redirect unless the reference exists" do
         reference_factory author_name: 'E.O. Wilson', id: 88888
-        get :index, q: "11111"
-        expect(response).to render_template "index"
+        get :search, q: "11111"
+        expect(response).to render_template "search"
+      end
+
+      describe "legacy URL" do
+        it "redirects to #show" do
+          reference = reference_factory author_name: 'E.O. Wilson', id: 99999
+          get :index, q: reference.id
+          expect(response).to redirect_to reference_path(reference)
+        end
       end
     end
   end
@@ -36,8 +44,7 @@ describe ReferencesController do
       get :latest_additions
     end
 
-    it "renders its own template", pending: true do
-      pending "TODO implement this" # TODO
+    it "renders its own template" do
       response = get :latest_additions
       expect(response).to render_template "latest_additions"
     end
@@ -48,6 +55,10 @@ describe ReferencesController do
       before do
         editor = FactoryGirl.create :user, can_edit: true
         sign_in editor #TODO create/find helper method #sign_in_editor
+      end
+      it "renders its own template" do
+        response = get :latest_changes
+        expect(response).to render_template "latest_changes"
       end
       it "sorts by updated_at" do
         expect(Reference).to receive(:list_references).with hash_including order: :updated_at
