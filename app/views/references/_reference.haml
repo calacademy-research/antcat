@@ -1,5 +1,5 @@
 -if !reference.new_record? && reference.errors.empty?
-  %div
+  %div.reference
     =reference.decorate.format
     =reference.decorate.format_reference_document_link
     =reference.decorate.goto_reference_link target: nil
