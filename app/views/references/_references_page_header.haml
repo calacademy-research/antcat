@@ -1,8 +1,3 @@
--endnote_export_all_message = unless params[:q].present?
-  -"Since there are no search criteria, AntCat will download all twelve thousand references. Do you want to continue?"
--else
-  -''
-
 -content_for :page_header do
   #navigation_bar
     .actions
@@ -12,7 +7,7 @@
         -items << link_to('Latest changes', latest_changes_references_path)
         -items << link_to('Journals', journals_path)
         -items << link_to('Fix missing', missing_references_path)
-        -items << link_to('Export to EndNote', endnote_export_references_path(q: params[:q]), data: { confirm: endnote_export_all_message })
+        -items << link_to('Export to EndNote', endnote_export_references_path(q: params[:q])) if params[:action] == "search"
       =make_link_menu items
 
     =render 'search_form', params: params
