@@ -7,13 +7,9 @@
     No results found
 
 %table.references
-  =render 'references/latest_additions_headings' if @action == :latest_additions
-
   -@references.each do |reference|
     %tr
       %td
         =render 'reference', reference: reference
-
-      =render 'references/latest_additions_controls', reference: reference if @action == :latest_additions
 
 %div= will_paginate @references

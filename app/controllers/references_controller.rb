@@ -98,9 +98,6 @@ class ReferencesController < ApplicationController
   def latest_additions
     options = { order: :created_at, page: params[:page] }
     @references = Reference.list_references options
-
-    @action = :latest_additions
-    render "index"
   end
 
   def latest_changes
