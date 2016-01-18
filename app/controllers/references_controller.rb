@@ -7,10 +7,8 @@ class ReferencesController < ApplicationController
   # TODO remove filter from the index? Currently only for legacy reasons,
   #   would break non-restful `reference_path`s such as /index/q=21255
 
-  # TODO split index.haml (used in latest_additions, latest_changes & search)
   def index
     @references = Reference.list_references params
-    @action = :index
   end
 
   def show
@@ -90,9 +88,6 @@ class ReferencesController < ApplicationController
   def search
     return redirect_to action: :index unless params[:q].present?
     @references = Reference.do_search params
-
-    @action = :search
-    render "index"
   end
 
   def latest_additions
