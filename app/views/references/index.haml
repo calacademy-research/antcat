@@ -19,7 +19,7 @@
         -items << link_to('Export to EndNote', endnote_export_references_path(q: params[:q]), data: { confirm: endnote_export_all_message })
       =make_link_menu items
 
-    =render 'search', params: params
+    =render 'search_form', params: params
 
   .title
     %h2.left ANTBIB
