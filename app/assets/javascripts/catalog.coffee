@@ -10,6 +10,7 @@ splitter_top = 0
 taxon_height = null
 
 $ ->
+  taxon_height = parseFloat Cookies.get('taxon_height')
   set_dimensions()
   setup_throbber()
   $(window).resize set_dimensions
@@ -90,9 +91,7 @@ on_splitter_change = (top) ->
   taxon_height += delta
   set_height()
   $('#splitter').css 'top', 0
-  url = '/taxon_window_height'
-  data = {taxon_window_height: taxon_height}
-  $.ajax url: url, data: data, type: 'put'
+  Cookies.set 'taxon_height', taxon_height
 
 set_dimensions = ->
   set_height()
@@ -146,8 +145,6 @@ calculate_catalog_height = ->
 
 calculate_taxon_height = ->
   return taxon_height if taxon_height?
-  session_height = $('.antcat_taxon').data 'taxon-window-height'
-  return session_height if session_height
   page_height = $('#page').height()
   return 200 if page_height > 800
   return 90 if page_height > 600
