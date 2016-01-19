@@ -22,6 +22,9 @@ $ ->
     # Test: superadmins and admins should be able to edit tooltips. nobody else.
     # Test: Create a tooltip with a page identifier, ensure it shows up
     # Test: Create a tooltip with the same selector as above, diffierett page origin, ensure it does not show up
+    # Test: Ensure page renders when there are no tooltips
+    # Test: ensure no (i) icons, click http://localhost:3000/tooltips, Show tooltips helper, see (i) icons.
+    # Test: see (i) icons, click "Hide tooltips helper", see no (i) icons.
 
     if data.show_missing_tooltips == true
       $('label, button, .ui-button, .apply_tooltip').not('.display_button, .remove_tooltip').each (index, element) =>
