@@ -1,6 +1,6 @@
 Before do
   include Milieu
-  $Milieu = RestrictedMilieu.new
+  $Milieu = Milieu.new
 end
 
 # From http://makandracards.com/makandra/1709-single-step-and-

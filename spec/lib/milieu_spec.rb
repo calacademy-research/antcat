@@ -1,11 +1,12 @@
 require 'spec_helper'
+
 describe Milieu do
 
   describe "Authorization" do
-    describe "Production milieu" do
+    describe "Application milieu" do
       before do
         @user = double
-        @milieu = RestrictedMilieu.new
+        @milieu = Milieu.new
       end
 
       specify "Uploading PDFs" do

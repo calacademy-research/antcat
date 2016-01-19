@@ -1,26 +1,4 @@
 class Milieu
-  def initialize server = nil
-    server = :local if server.nil? and Rails.env.test?
-    @server = server.try(:to_sym) || :production
-  end
-
-  def production?
-    @server == :production
-  end
-
-  def self.create
-    contents = read_server_config_file
-    RestrictedMilieu.new contents
-  end
-
-  def self.read_server_config_file
-    directory = Rails.env.production? ? '/data/antcat/shared/config' : Rails.root + 'config'
-    file_name = "#{directory}/server.yml"
-    YAML.load_file file_name
-  end
-end
-
-class RestrictedMilieu < Milieu
   def title
     'AntCat'
   end
@@ -50,4 +28,4 @@ class RestrictedMilieu < Milieu
   end
 end
 
-$Milieu = Milieu.create
+$Milieu = Milieu.new
