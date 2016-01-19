@@ -27,15 +27,6 @@ class Tribe < Taxon
     subfamily.tribes
   end
 
-  def inspect
-    string = super
-    if subfamily
-      string << ", #{subfamily.name} #{subfamily.id}"
-      string << " #{subfamily.status}" if subfamily.invalid?
-    end
-    string
-  end
-
   private
     def update_descendants_subfamilies
       self.genera.each do |genus|

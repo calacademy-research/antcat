@@ -151,18 +151,6 @@ class Reference < ActiveRecord::Base
     end
   end
 
-  def to_class suffix = '', prefix = ''
-    class_name = self.class.name
-
-    unless ['Article', 'Book', 'Nested', 'Unknown', 'Missing']
-      .map { |e| e + 'Reference' }.include? class_name
-        raise "Don't know what kind of reference this is: #{inspect}"
-    end
-
-    class_name = prefix + class_name + suffix
-    class_name.constantize
-  end
-
   ###############################################
   def references options = {}
     references = []
