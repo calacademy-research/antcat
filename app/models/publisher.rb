@@ -7,15 +7,15 @@ class Publisher < ActiveRecord::Base
 
   attr_accessible :name, :place, :place_id
 
-  def self.import(name:, place:)
+  def self.create_with_place(name:, place:)
     return unless name.present?
     place_record = Place.find_or_create_by!(name: place)
     find_or_create_by!(name: name, place: place_record)
   end
 
-  def self.import_string string
+  def self.create_with_place_form_string string
     parts = Parsers::PublisherParser.parse string
-    import parts[:publisher] if parts
+    create_with_place parts[:publisher] if parts
   end
 
   def to_s

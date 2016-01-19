@@ -225,7 +225,7 @@ class ReferencesController < ApplicationController
     def set_publisher
       publisher_string = params[:reference][:publisher_string]
       publisher = if publisher_string.present?
-        Publisher.import_string publisher_string
+        Publisher.create_with_place_form_string publisher_string
       end
       @reference.publisher = publisher
 
