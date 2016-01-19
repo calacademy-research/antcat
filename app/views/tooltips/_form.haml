@@ -27,8 +27,8 @@
     =f.check_box :selector_enabled
 
   .actions
-    = button_tag "Test Selector", type: "button", id: "test_selector_button" # hooked into by jQuery
     = f.submit
+    = button_tag "Test Selector", type: "button", id: "test_selector_button", class: "btn-non-destructive" # hooked into by jQuery
 
 -# The #test_selector_notice and #test_selector_snippet elements are used for
 -# letting editors test the selector, hooked into by jQuery.

@@ -3,10 +3,9 @@
 %table
   -@journals.each do |journal|
     %tr
-      %td
-        =link_to journal.name, journal
+      %td=link_to journal.name, journal
 
 -if user_can_edit?
-  %p= button_to "New Journal", new_journal_path, :method => :get
+  %p= link_to "New Journal", new_journal_path, class: "btn-normal"
 
 %div= will_paginate @journals
