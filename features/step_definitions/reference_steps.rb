@@ -40,37 +40,6 @@ Given /^(?:this|these) dated references? exists?$/ do |table|
   end
 end
 
-Given /(?:these|this) Bolton references? exists?/ do |table|
-  table.hashes.each do |hash|
-    hash.delete('match_status') if hash['match_status'].blank?
-    @bolton_reference = FactoryGirl.create :bolton_reference, hash
-  end
-end
-
-Given /^the following references? match(?:es)? that Bolton reference$/ do |table|
-  table.hashes.each do |hash|
-    similarity = hash.delete 'similarity'
-    FactoryGirl.create :bolton_match, :reference => FactoryGirl.create(:article_reference, hash), :bolton_reference => @bolton_reference, :similarity => similarity
-  end
-end
-
-# cf. bolton_references.sass
-CSS_CLASSES = {'green' => 'auto', 'red' => 'none', 'darkgreen' => 'manual', 'darkred' => 'unmatchable'}
-
-Then /^the Bolton reference should be (.+)$/ do |color|
-  css_class = CSS_CLASSES[color]
-  page.should have_css ".bolton_reference.#{css_class}"
-end
-
-Then /^the (?:matched )?reference should be (.+)$/ do |color|
-  if color == 'white'
-    page.should have_css ".match"
-  else
-    css_class = CSS_CLASSES[color]
-    page.should have_css ".match.#{css_class}"
-  end
-end
-
 Given /(?:these|this) book references? exists?/ do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'

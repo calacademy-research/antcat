@@ -327,7 +327,6 @@ describe Reference do
       protonym = FactoryGirl.create :protonym, authorship: citation
       taxon = FactoryGirl.create :genus, protonym: protonym, type_taxt: "{ref #{reference.id}}", headline_notes_taxt: "{ref #{reference.id}}", genus_species_header_notes_taxt: "{ref #{reference.id}}"
       history_item = taxon.history_items.create! taxt: "{ref #{reference.id}}"
-      bolton_match = FactoryGirl.create :bolton_match, reference: reference
       reference_section = FactoryGirl.create :reference_section, title_taxt: "{ref #{reference.id}}", subtitle_taxt: "{ref #{reference.id}}", references_taxt: "{ref #{reference.id}}"
       nested_reference = FactoryGirl.create :nested_reference, nesting_reference: reference
       results = reference.references
@@ -337,7 +336,6 @@ describe Reference do
         {table: 'taxa',               id: taxon.id,             field: :genus_species_header_notes_taxt},
         {table: 'citations',          id: citation.id,          field: :notes_taxt},
         {table: 'citations',          id: citation.id,          field: :reference_id},
-        {table: 'bolton_matches',     id: bolton_match.id,      field: :reference_id},
         {table: 'reference_sections', id: reference_section.id, field: :title_taxt},
         {table: 'reference_sections', id: reference_section.id, field: :subtitle_taxt},
         {table: 'reference_sections', id: reference_section.id, field: :references_taxt},

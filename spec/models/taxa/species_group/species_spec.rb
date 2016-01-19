@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Species do
   before do
-    @reference = FactoryGirl.create :article_reference, bolton_key_cache: 'Latreille 1809'
+    @reference = FactoryGirl.create :article_reference
   end
 
   it "should have subspecies, which are its children" do

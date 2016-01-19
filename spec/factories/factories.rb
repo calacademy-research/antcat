@@ -111,18 +111,6 @@ FactoryGirl.define do
     password 'secret'
   end
 
-  factory :bolton_reference, :class => Bolton::Reference do
-    title 'New General Catalog'
-    citation_year '2011'
-    authors 'Fisher, B.L.'
-  end
-
-  factory :bolton_match, :class => Bolton::Match do
-    bolton_reference
-    reference
-    similarity 0.9
-  end
-
   factory :reference_document do
   end
 

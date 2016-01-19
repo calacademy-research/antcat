@@ -178,12 +178,12 @@ class Reference < ActiveRecord::Base
       end
     end
 
-    [Citation, Bolton::Match].each do |klass|
-      klass.where(reference_id: id).all.each do |record|
-        references << { table: klass.table_name, id: record[:id], field: :reference_id }
-        return true if options[:any?]
-      end
+    # Previously looped over [Citation, Bolton::Match].each ...
+    Citation.where(reference_id: id).all.each do |record|
+      references << { table: Citation.table_name, id: record[:id], field: :reference_id }
+      return true if options[:any?]
     end
+
     NestedReference.where(nesting_reference_id: id).all.each do |record|
       references << { table: 'references', id: record[:id], field: :nesting_reference_id }
       return true if options[:any?]

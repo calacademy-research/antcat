@@ -36,7 +36,6 @@ AntCat::Application.routes.draw do
   # TODO move to TaxaController
   match 'catalog/delete_impact_list/(:id)' => 'catalog#delete_impact_list', as: :catalog_delete_impact_list, via: :get
 
-  resources :bolton_references, only: [:index, :update]
   match '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
   resources :journals, only: [:index, :show, :new, :create, :edit, :update]
   resources :publishers, only: [:index]

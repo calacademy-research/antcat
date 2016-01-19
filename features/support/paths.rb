@@ -53,8 +53,6 @@ module NavigationHelpers
       latest_additions_references_path
     when /^the page for that reference$/
       reference_path(@reference || Reference.first)
-    when /^the Bolton references page$/
-      bolton_references_path
 
     when /^the "journals index" page$/
       journals_path

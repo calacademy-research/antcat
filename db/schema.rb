@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151226171636) do
+ActiveRecord::Schema.define(version: 20160118235230) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -51,40 +52,6 @@ ActiveRecord::Schema.define(version: 20151226171636) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "bolton_matches", force: :cascade do |t|
-    t.integer  "bolton_reference_id", limit: 4
-    t.integer  "reference_id",        limit: 4
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.float    "similarity",          limit: 24
-  end
-
-  add_index "bolton_matches", ["bolton_reference_id"], name: "bolton_matches_bolton_reference_id_idx", using: :btree
-  add_index "bolton_matches", ["reference_id"], name: "bolton_matches_reference_id_idx", using: :btree
-
-  create_table "bolton_references", force: :cascade do |t|
-    t.string   "authors",             limit: 255
-    t.string   "note",                limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "title",               limit: 255
-    t.string   "journal",             limit: 255
-    t.string   "series_volume_issue", limit: 255
-    t.string   "pagination",          limit: 255
-    t.string   "reference_type",      limit: 255
-    t.integer  "year",                limit: 4
-    t.string   "citation_year",       limit: 255
-    t.string   "publisher",           limit: 255
-    t.string   "place",               limit: 255
-    t.text     "original",            limit: 65535
-    t.integer  "match_id",            limit: 4
-    t.string   "match_status",        limit: 255
-    t.string   "key_cache",           limit: 255
-    t.string   "import_result",       limit: 255
-  end
-
-  add_index "bolton_references", ["match_id"], name: "index_bolton_references_on_match_id", using: :btree
 
   create_table "changes", force: :cascade do |t|
     t.datetime "created_at",                        null: false
@@ -307,7 +274,6 @@ ActiveRecord::Schema.define(version: 20151226171636) do
     t.string   "pages_in",                         limit: 255
     t.string   "author_names_suffix",              limit: 255
     t.string   "principal_author_last_name_cache", limit: 255
-    t.string   "bolton_key_cache",                 limit: 255
     t.string   "reason_missing",                   limit: 255
     t.string   "key_cache",                        limit: 255
     t.string   "review_state",                     limit: 255
@@ -319,7 +285,6 @@ ActiveRecord::Schema.define(version: 20151226171636) do
   end
 
   add_index "references", ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: {"author_names_string_cache"=>255, "citation_year"=>nil}, using: :btree
-  add_index "references", ["bolton_key_cache"], name: "index_references_on_bolton_citation_key", using: :btree
   add_index "references", ["created_at"], name: "references_created_at_idx", using: :btree
   add_index "references", ["journal_id"], name: "references_journal_id_idx", using: :btree
   add_index "references", ["nesting_reference_id"], name: "references_nested_reference_id_idx", using: :btree
@@ -407,6 +372,16 @@ ActiveRecord::Schema.define(version: 20151226171636) do
   end
 
   add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx", using: :btree
+
+  create_table "taxt_items", force: :cascade do |t|
+    t.text     "taxt",          limit: 65535
+    t.integer  "taxtable_id",   limit: 4
+    t.string   "taxtable_type", limit: 255
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "taxt_items", ["taxtable_type", "taxtable_id"], name: "index_taxt_items_on_taxtable_type_and_taxtable_id", using: :btree
 
   create_table "tooltips", force: :cascade do |t|
     t.string   "key",              limit: 255

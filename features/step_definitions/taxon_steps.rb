@@ -9,8 +9,7 @@ Given /^the Formicidae family exists$/ do
   reference = FactoryGirl.create :article_reference,
     author_names: [FactoryGirl.create(:author_name, name: 'Latreille, I.')],
     citation_year: '1809',
-    title: 'Ants',
-    bolton_key_cache: 'Latreille 1809'
+    title: 'Ants'
 
   protonym = FactoryGirl.create :protonym,
     name: FactoryGirl.create(:family_or_subfamily_name, name: "Formicariae"),
