@@ -1,7 +1,7 @@
 
 
 $ ->
-  $.ajax '/tooltips/enabled_selectors', success: (data) -> # TODO improve this
+  $.ajax '/tooltips/enabled_selectors', success: (data) -> # uses request origin to restrict returned items
     tooltipsToInsert = data
     (new AntCat.SelectorTooltips).createTooltips tooltipsToInsert
     (new AntCat.Tooltipify).tooltipifyAll()
@@ -10,9 +10,6 @@ $ ->
 $ ->
   $.ajax '/tooltips/render_missing_tooltips', success: (data) ->
     # List of selectors: https://github.com/fczbkk/css-selector-generator-benchmark
-    # TODO: Some way to organize this on a per-screen basis. selectors will be unique on a per screen basis,
-    #       but are unlikely to be universal.
-    #       have it pass an argument
     # TODO: Remove 'enabled' flags? Dig into docs, review.
     # TODO: Update 'help' pages.
     # TEST: Click on (I), create a tooltip, save it, end up on origin page with new tooltip visible
@@ -23,8 +20,9 @@ $ ->
     # Test: Click "?" icon when not superadmin, nothing happens.
     # Test: Ensure that the window comes up with selector and key enabled
     # Test: superadmins and admins should be able to edit tooltips. nobody else.
+    # Test: Create a tooltip with a page identifier, ensure it shows up
+    # Test: Create a tooltip with the same selector as above, diffierett page origin, ensure it does not show up
 
-#    selector_generator = new CssSelectorGenerator
     if data.show_missing_tooltips == true
       $('label, button, .ui-button, .apply_tooltip').not('.display_button, .remove_tooltip').each (index, element) =>
         $(element).after("""\
@@ -34,7 +32,6 @@ $ ->
            """)
         $(element).next().click  ->
           if $(this).next().attr('href') == undefined
-#            selector = encodeURIComponent(selector_generator.getSelector(element));
             selector = encodeURIComponent(OptimalSelect.select(element));
 
             $(this).attr('href',"/tooltips/new/?selector=" +
