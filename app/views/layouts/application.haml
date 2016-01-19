@@ -10,7 +10,7 @@
     %style{type: 'text/css'}=".js #flash {display:none;}"
 
     :coffee
-      AntCat = {} unless AntCat?
+      window.AntCat = {} unless window.AntCat?
       AntCat.environment = '#{Rails.env}'
       AntCat.testing = #{Rails.env == 'test'}
       AntCat.user_can_edit = #{!!user_can_edit?}
