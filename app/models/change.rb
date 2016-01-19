@@ -10,11 +10,13 @@ class Change < ActiveRecord::Base
                   :approver
 
   def self.creations
-    self.joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id').
-        order('CASE review_state ' +
-                  'WHEN "waiting" THEN (changes.updated_at * 1000) ' +
-                  'WHEN "approved" THEN changes.approved_at ' +
-                  'END DESC, changes.id DESC').uniq
+    self.joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id')
+      .order(<<-SQL.squish).uniq
+        CASE review_state
+        WHEN "waiting" THEN (changes.updated_at * 1000)
+        WHEN "approved" THEN changes.approved_at
+        END DESC, changes.id DESC
+      SQL
   end
 
   # Why isn't `user_changed_taxon_id` called `taxon`?
@@ -78,7 +80,9 @@ class Change < ActiveRecord::Base
     # Adding user qualifier partly because of tests (setup doesn't have a "user" logged in),
     # in any case, it remains correct, because all versions for a given change have the same
     # user. Also may cover historical cases?
-    usered_versions = PaperTrail::Version.where("change_id = #{self.id} AND whodunnit IS NOT NULL")
+    usered_versions = PaperTrail::Version.where(<<-SQL.squish)
+      change_id = #{self.id} AND whodunnit IS NOT NULL
+    SQL
     version = usered_versions.first
     return User.find(version.whodunnit.to_i) if version
 
@@ -96,6 +100,8 @@ class Change < ActiveRecord::Base
 
   private
     def get_user_versions change_id
-      PaperTrail::Version.find_by_sql("SELECT * FROM versions WHERE change_id  = '#{change_id}'")
+      PaperTrail::Version.find_by_sql(<<-SQL.squish)
+        SELECT * FROM versions WHERE change_id  = '#{change_id}'
+      SQL
     end
 end
