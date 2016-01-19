@@ -10,7 +10,8 @@ splitter_top = 0
 taxon_height = null
 
 $ ->
-  taxon_height = parseFloat Cookies.get('taxon_height')
+  taxon_height_cookie = parseFloat Cookies.get('taxon_height')
+  taxon_height = taxon_height_cookie if taxon_height_cookie
   set_dimensions()
   setup_throbber()
   $(window).resize set_dimensions
@@ -148,7 +149,7 @@ calculate_taxon_height = ->
   page_height = $('#page').height()
   return 200 if page_height > 800
   return 90 if page_height > 600
-  30
+  90
 
 set_width = ->
   magic_offset = 24
