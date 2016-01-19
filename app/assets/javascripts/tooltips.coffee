@@ -9,11 +9,7 @@ $ ->
 
 $ ->
   $.ajax '/tooltips/render_missing_tooltips', success: (data) ->
-    # Find a plugin that does this
-    # Temporarily dumped coffeescript for CssSelectorGenerator above this line for testing.
-    # https://github.com/fczbkk/css-selector-generator-benchmark
-    # https://github.com/autarc/optimal-select
-    # https://github.com/fczbkk/css-selector-generator
+
     # TODO: make it so that if you cick an "edit" icon, if there's already a live tooltip, edit that one instead.
 
     # TODO: Some way to organize this on a per-screen basis. selectors will be unique on a per screen basis,
@@ -23,22 +19,31 @@ $ ->
     # TEST: Click on (I), create a tooltip, save it, end up on origin page with new tooltip visible
     # Test, go to tooltip creation directly, create a tooltip, save it, remain on tooltip page.
 
-
+    # TODO: Have this generate the tooltip after you click on it.
     selector_generator = new CssSelectorGenerator
 
     if data.show_missing_tooltips == true
       $('label, button, .ui-button').not('.display_button').each (index, element) =>
-        selector = encodeURIComponent(selector_generator.getSelector(element));
         $(element).after("""\
-          <a class = "create_tooltip" href="/tooltips/new/?selector=""" +
-            selector +
-          "&referral=" +
-            encodeURIComponent(window.location.href) +
-
-          """ "> \
+          <a class = "create_tooltip" > \
           <img class="help_icon tooltip " \
            title="Create tooltip" src="/assets/create_tip.png" alt="Help" /></a>\
            """)
+        $(element).next().click  ->
+          selector = encodeURIComponent(selector_generator.getSelector(element));
+          $(this).attr('href',"/tooltips/new/?selector=" +
+              selector +
+              "&referral=" +
+              encodeURIComponent(window.location.href))
+
+
+  #
+#    $('.create_tooltip').on 'click', ->
+#      selector_generator = new CssSelectorGenerator
+#      selector = encodeURIComponent(selector_generator.getSelector($(this).parent()));
+#      parent = $(this).parent()
+#      selector2 = selector_generator.getSelector(parent)
+#      alert("foo" + selector2)
 
 
 
