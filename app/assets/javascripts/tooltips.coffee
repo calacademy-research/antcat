@@ -13,9 +13,10 @@ $ ->
     # TODO: Some way to organize this on a per-screen basis. selectors will be unique on a per screen basis,
     #       but are unlikely to be universal.
     #       have it pass an argument
+    # TODO: Remove 'enabled' flags? Dig into docs, review.
+    # TODO: Update 'help' pages.
     # TEST: Click on (I), create a tooltip, save it, end up on origin page with new tooltip visible
     # Test, go to tooltip creation directly, create a tooltip, save it, remain on tooltip page.
-
     # TEST: click tooltip, go to edit screen. When done editing, warp to soure page
     # Test: go directly to edit, edit, see 'Tooltip was successfully updated.'
     # test: click new (i) icon for existing tooltip, get same edit behaviour as clicking "?".
@@ -25,7 +26,7 @@ $ ->
 
 #    selector_generator = new CssSelectorGenerator
     if data.show_missing_tooltips == true
-      $('label, button, .ui-button, .apply_tooltip').not('.display_button').each (index, element) =>
+      $('label, button, .ui-button, .apply_tooltip').not('.display_button, .remove_tooltip').each (index, element) =>
         $(element).after("""\
           <a class = "create_tooltip" > \
           <img class="help_icon tooltip " \

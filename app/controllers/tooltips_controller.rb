@@ -11,12 +11,13 @@ class TooltipsController < ApplicationController
   end
 
   def show
-    @referral=params[:referral]
+    @referral=request.referer
   end
 
   def new
     @tooltip = Tooltip.new(params.permit(:selector))
-    @referral=params[:referral]
+    @tooltip[:page_origin] = get_page_from_url(request.referer)
+    @referral=request.referer
   end
 
   def edit
@@ -64,8 +65,9 @@ class TooltipsController < ApplicationController
     end
   end
 
-  def enabled_selectors # TODO improve this
-    json = Tooltip.enabled_selectors.pluck(:selector, :text, :id)
+  def enabled_selectors  # TODO improve this
+    page_origin = get_page_from_url(request.referer)
+    json = Tooltip.enabled_selectors.where(page_origin: page_origin).pluck(:selector, :text, :id)
     render json: json # more "json" than json..
   end
 
@@ -84,13 +86,21 @@ class TooltipsController < ApplicationController
   end
 
   private
+  def get_page_from_url url
+    unless url
+      return nil
+    end
+    url.slice! root_url
+    return url.split('/').first
+
+  end
   def set_tooltip
     @tooltip = Tooltip.find params[:id]
   end
 
   def tooltip_params
     params.require(:tooltip).permit(
-        :key, :text, :key_enabled, :selector, :selector_enabled)
+        :key, :page_origin, :text, :key_enabled, :selector, :selector_enabled)
   end
 
   def main_namespace_of_key key
