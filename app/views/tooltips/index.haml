@@ -10,29 +10,31 @@
     %tr
       %th{class: 'apply_tooltip'}
         Key
-        -#=tooltip_icon :key, scope: :tooltips, disable_edit_link: true
+        =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
+      %th{class: 'apply_tooltip'}
+        Page origin
       %th{class: 'apply_tooltip'}
         Key enabled?
-        -#=tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
+        =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
       %th{class: 'apply_tooltip'}
         Tooltip text
-        -#=tooltip_icon :text, scope: :tooltips, disable_edit_link: true
+        =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
       %th{class: 'apply_tooltip'}
         Selector
-        -#=tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
+        =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
       %th{class: 'apply_tooltip'}
         Selector enabled?
-        -#=tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
+        =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
   %tbody
     -if @grouped_tooltips.empty?
       %tr
-        %td{colspan: 5}
+        %td{colspan: 6}
           No tooltips found.
           =link_to 'Be a hero and create the first one?', new_tooltip_path
     -else
       -@grouped_tooltips.each do |namespace, tooltips|
         %tr.fake_subheader
-          %td{colspan: 5}
+          %td{colspan: 6}
             %h3
               =if namespace.present? then namespace.capitalize else "No namespace" end
         =render tooltips
