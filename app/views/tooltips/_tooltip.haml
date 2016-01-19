@@ -2,6 +2,8 @@
   %td
     =link_to tooltip.key, tooltip_path(tooltip)
   %td
+    =tooltip.page_origin
+  %td
     =tooltip.key_enabled ? "yes" : "no"
   %td
     =best_in_place tooltip, :text, as: :textarea, ok_button: 'Save', cancel_button: 'Cancel'
