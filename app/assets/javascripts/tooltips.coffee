@@ -9,13 +9,10 @@ $ ->
 
 $ ->
   $.ajax '/tooltips/render_missing_tooltips', success: (data) ->
-
-    #TODO: go back to that other selection engine that used "for".
+    # List of selectors: https://github.com/fczbkk/css-selector-generator-benchmark
     # TODO: Some way to organize this on a per-screen basis. selectors will be unique on a per screen basis,
     #       but are unlikely to be universal.
     #       have it pass an argument
-    # TODO: A button to toggle this feature once or to toggle on/off
-    # TODO: pre "check" tooltip boxes.
     # TEST: Click on (I), create a tooltip, save it, end up on origin page with new tooltip visible
     # Test, go to tooltip creation directly, create a tooltip, save it, remain on tooltip page.
 
@@ -23,28 +20,29 @@ $ ->
     # Test: go directly to edit, edit, see 'Tooltip was successfully updated.'
     # test: click new (i) icon for existing tooltip, get same edit behaviour as clicking "?".
     # Test: Click "?" icon when not superadmin, nothing happens.
+    # Test: Ensure that the window comes up with selector and key enabled
+    # Test: superadmins and admins should be able to edit tooltips. nobody else.
 
-
-
-
-    selector_generator = new CssSelectorGenerator
+#    selector_generator = new CssSelectorGenerator
     if data.show_missing_tooltips == true
-      $('label, button, .ui-button').not('.display_button').each (index, element) =>
+      $('label, button, .ui-button, .apply_tooltip').not('.display_button').each (index, element) =>
         $(element).after("""\
           <a class = "create_tooltip" > \
           <img class="help_icon tooltip " \
-           title="Create tooltip" src="/assets/create_tip.png" alt="Help" /></a>\
+           title="Create or edit tooltip" src="/assets/create_tip.png" alt="Help" /></a>\
            """)
         $(element).next().click  ->
-          if $(this).next().attr('href') != null
-            $(this).attr('href',$(this).next().attr('href'))
-          else
-            selector = encodeURIComponent(selector_generator.getSelector(element));
+          if $(this).next().attr('href') == undefined
+#            selector = encodeURIComponent(selector_generator.getSelector(element));
+            selector = encodeURIComponent(OptimalSelect.select(element));
+
             $(this).attr('href',"/tooltips/new/?selector=" +
                 selector +
                 "&referral=" +
                 encodeURIComponent(window.location.href)
             )
+          else
+            $(this).attr('href',$(this).next().attr('href'))
 
 
 

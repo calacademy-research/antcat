@@ -2,26 +2,27 @@
 
 =enable_tooltips
 -content_for :head do
-  =javascript_include_tag 'tooltips_edit_in_place'
+  = javascript_include_tag 'optimal-select.min'
+  = javascript_include_tag 'tooltips_edit_in_place'
 
 %table#tooltips
   %thead
     %tr
-      %th
+      %th{class: 'apply_tooltip'}
         Key
-        =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
-      %th
+        -#=tooltip_icon :key, scope: :tooltips, disable_edit_link: true
+      %th{class: 'apply_tooltip'}
         Key enabled?
-        =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-      %th
+        -#=tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
+      %th{class: 'apply_tooltip'}
         Tooltip text
-        =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
-      %th
+        -#=tooltip_icon :text, scope: :tooltips, disable_edit_link: true
+      %th{class: 'apply_tooltip'}
         Selector
-        =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
-      %th
+        -#=tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
+      %th{class: 'apply_tooltip'}
         Selector enabled?
-        =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
+        -#=tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
   %tbody
     -if @grouped_tooltips.empty?
       %tr
@@ -41,3 +42,8 @@
 =link_to 'Help', page_path('help/editing_tooltips')
 |
 =link_to 'New Tooltip', new_tooltip_path
+|
+- if session[:show_missing_tooltips]
+  =link_to 'Hide tooltips helper', tooltips_path+'/toggle_tooltip_helper'
+- else
+  =link_to 'Show tooltips helper', tooltips_path+'/toggle_tooltip_helper'

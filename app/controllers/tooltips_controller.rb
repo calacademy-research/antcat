@@ -70,7 +70,17 @@ class TooltipsController < ApplicationController
   end
 
   def render_missing_tooltips
-    render json: {:show_missing_tooltips => current_user.is_superadmin?}
+    render json: {:show_missing_tooltips => session[:show_missing_tooltips]}
+    #render json: {:show_missing_tooltips => current_user.is_superadmin?}
+  end
+
+  def toggle_tooltip_helper
+    if session[:show_missing_tooltips]
+      session[:show_missing_tooltips] = false
+    else
+      session[:show_missing_tooltips] = true
+    end
+    redirect_to tooltips_path
   end
 
   private

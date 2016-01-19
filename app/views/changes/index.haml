@@ -3,6 +3,9 @@
 
 =enable_tooltips
 
+- content_for :head do
+  = javascript_include_tag 'optimal-select.min'
+
 %div.approve_all_button.right= approve_all_button
 
 %div= will_paginate @changes

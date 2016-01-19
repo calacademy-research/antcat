@@ -7,6 +7,14 @@ module TooltipHelper
     # but let's be nice and show them to all logged in users, even if they are not editors.
     return unless current_user
     content_for :head do
+      # TODO: This isn't working. Manually added to:
+      # views/authors/edit.haml
+      # views/changes/index.haml
+      # views/references/index.haml
+      # views/taxa/edit.haml
+      # views/tooltips/_form.haml
+      # views/tooltips/index.haml
+      javascript_include_tag 'optimal-select.min'
       javascript_include_tag 'tooltips'
     end
     content_for :head do
@@ -17,6 +25,10 @@ module TooltipHelper
   # Call in views to render hard-coded tooltips.
   # See explanation of key/scope in #parse_lookup_params
   # Similar logic is duplicated in `tooltips.coffee` TODO fix?
+  # TODO: This is broken at the moment. Removed the references from tooltip pages
+  #       which is the only place they're used. With the new automatic
+  #       selector generation, not as essential.
+  #       Examples are commented out in tooltips/_form.haml
   def tooltip_icon key_param, scope: nil, disable_edit_link: false
     key = parse_lookup_params key_param, scope: scope
     tooltip = Tooltip.find_by(key: key)

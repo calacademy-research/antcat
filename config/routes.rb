@@ -102,7 +102,7 @@ AntCat::Application.routes.draw do
     collection do
       get 'enabled_selectors'
       get 'render_missing_tooltips'
-
+      get 'toggle_tooltip_helper'
     end
   end
 
