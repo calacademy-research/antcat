@@ -31,7 +31,7 @@ module ApplicationHelper
   def make_title title
     string = ''.html_safe
     string << "#{title} - " if title
-    string << $Milieu.title
+    string << "AntCat"
     string << (Rails.env.production? ? '' : " (#{Rails.env})")
     string
   end

@@ -1,8 +1,4 @@
 class Milieu
-  def title
-    'AntCat'
-  end
-
   def user_can_upload_pdfs? _
     true
   end
