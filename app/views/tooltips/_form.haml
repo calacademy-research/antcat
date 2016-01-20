@@ -20,9 +20,9 @@
     -else
       =f.text_field :key
 
-      =f.label :scope
-      =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-      =f.text_field :scope
+    =f.label :scope
+    =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
+    =f.text_field :scope
 
   %p
     =f.label :text
@@ -35,7 +35,7 @@
       =f.label :selector
       =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
       .clear
-      =f.text_area :selector, cols: 30, rows: 10
+      =f.text_area :selector, cols: 40, rows: 10
 
     %p
       =f.label :selector_enabled
