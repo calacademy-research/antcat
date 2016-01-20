@@ -1,32 +1,38 @@
 =enable_tooltips
 -content_for :head do
   = javascript_include_tag  'optimal-select.min'
-  = javascript_include_tag 'tooltips_generate_selector_test_string'
+
+  =javascript_include_tag 'tooltips_generate_selector_test_string'
 
 =form_for @tooltip do |f|
   = hidden_field_tag 'referral', @referral
   = render 'shared/errors_for', resource: @tooltip
-
-
   %p
     =f.label :key
+    =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
     -if action_name == "new" # Works, but not very pretty
       =f.text_field :key, value: (params[:key].presence || "") # Pre-populate if requested.
     -else
       =f.text_field :key
+    =f.label :key_enabled
+    =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
+    =f.check_box :key_enabled, checked: true
 
   %p
     =f.label :scope
+    =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
     =f.text_area :scope
-
-
   %p
     =f.label :text
+    =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
     =f.text_area :text
   %p
     =f.label :selector
+    =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
     =f.text_area :selector
-
+    =f.label :selector_enabled
+    =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
+    =f.check_box :selector_enabled, checked: true
 
   .actions
     = button_tag "Test Selector", type: "button", id: "test_selector_button" # hooked into by jQuery

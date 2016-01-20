@@ -1,6 +1,5 @@
 class Tooltip < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-  after_initialize :default_values
 
   has_paper_trail
 
@@ -22,9 +21,6 @@ class Tooltip < ActiveRecord::Base
   end
 
   private
-  def default_values
-    self.key_enabled ||= true
-    self.selector_enabled ||= true
-  end
+
 
 end

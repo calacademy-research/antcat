@@ -8,7 +8,7 @@ Feature: Editing tooltips
 
   Scenario: Listing all tooltips
     Given this tooltip exist
-      | key                       | key_enabled | text                    |  page_origin |
+      | key                       | key_enabled | text                    |  scope |
       | tooltips.selector_enabled | true        | Enable jQuery selector? |  tooltips |
 
     When I go to the tooltips editing page
@@ -18,8 +18,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Hovering a tooltip
     Given this tooltip exists
-      | key                       | key_enabled | text                    |  page_origin |
-      | tooltips.selector_enabled | true        | Enable jQuery selector? |  tooltips |
+      | key                       | key_enabled | text                    |  scope |
+      | selector_enabled | true        | Enable jQuery selector? |  tooltips |
 
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Enable jQuery selector?"
@@ -31,11 +31,12 @@ Feature: Editing tooltips
   Scenario: Adding a key-based tooltip
     When I go to the tooltips editing page
     And I hover the tooltip next to the text "Tooltip text"
-    Then I should see the tooltip text "Could not find tooltip with key 'tooltips.text'"
+    Then I should see the tooltip text "Could not find tooltip with key 'text'"
 
     Then I follow "New Tooltip"
-    And I fill in "tooltip[key]" with "tooltips.text"
+    And I fill in "tooltip[key]" with "text"
     And I check "tooltip[key_enabled]"
+    And I fill in "tooltip[scope]" with "tooltips"
     And I fill in "tooltip[text]" with "Text used in the tooltip"
     Then I press "Create Tooltip"
     And I wait for a bit
@@ -47,8 +48,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Editing a selector-based tooltip
     Given this tooltip exists
-      | key        | text      | selector | selector_enabled |  page_origin |
-      | test.title | Typo oops | h2.title | true             |  tooltips |
+      | key        | text      | selector | selector_enabled |  scope |
+      | title | Typo oops | h2.title | true             |  tooltips |
 
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Typo oops"
@@ -57,7 +58,7 @@ Feature: Editing tooltips
     Then I should see the tooltip text "Typo oops"
 
     Then I go to the tooltips editing page
-    And I follow "test.title"
+    And I follow "title"
 
     Then I fill in "tooltip[text]" with "A title"
     And I press "Update Tooltip"
@@ -73,8 +74,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Disabling a key-based tooltip
     Given this tooltip exists
-      | key                       | key_enabled | text                    | page_origin |
-      | tooltips.selector_enabled | true        | Enable jQuery selector? | tooltips    |
+      | key                       | key_enabled | text                    | scope |
+      | selector_enabled | true        | Enable jQuery selector? | tooltips    |
 
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Enable jQuery selector?"
@@ -82,7 +83,7 @@ Feature: Editing tooltips
     When I hover the tooltip next to the text "Selector enabled\?"
     Then I should see the tooltip text "Enable jQuery selector?"
 
-    And I follow "tooltips.selector_enabled"
+    And I follow "selector_enabled"
 
     Then I uncheck "tooltip[key_enabled]"
     And I press "Update Tooltip"
@@ -94,8 +95,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
-      | key        | text    | selector | selector_enabled |  page_origin |
-      | test.title | A title | h2.title | true             | tooltips    |
+      | key        | text    | selector | selector_enabled |  scope |
+      | title | A title | h2.title | true             | test    |
 
     When I go to the tooltips editing page
     And I wait for a bit
