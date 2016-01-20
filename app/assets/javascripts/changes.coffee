@@ -1,10 +1,7 @@
 class AntCat.ChangeButton
   constructor: (@element) ->
-    @element
-      .unbutton()
-      .button()
-      self = @
-      @element.click => self.click()
+    self = @
+    @element.click => self.click()
 
 class AntCat.UndoButton extends AntCat.ChangeButton
   create_impacted_taxa_contents: (json_data) =>
@@ -26,7 +23,7 @@ class AntCat.UndoButton extends AntCat.ChangeButton
     message_end = '</ul></p></div>'
     "#{message_start}#{message}#{message_end}"
 
-  create_impacted_taxa_dialog: (data,change_id) =>
+  create_impacted_taxa_dialog: (data, change_id) =>
     @undo_impacted_taxa_message = $(@create_impacted_taxa_contents(data))
     @element.append($(@create_impacted_taxa_contents(data)))
     dialog_box = $("#dialog-undo-impacted-taxa")

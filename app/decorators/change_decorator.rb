@@ -37,14 +37,17 @@ class ChangeDecorator < Draper::Decorator
 
   def undo_button
     taxon = change.get_most_recent_valid_taxon
+    return unless helpers.current_user
+    return if change.versions.empty?
     # This extra check (for change_type deleted) covers the case when we've deleted children
     # in a change that only shows the parent being deleted.
-    unless helpers.current_user.nil?
-      if (!change[:change_type] == 'delete' && taxon.can_be_edited_by?(helpers.current_user)) or helpers.current_user.can_edit
-        unless change.versions.empty?
-          helpers.button 'Undo', 'undo_button', 'data-undo-id' => change.id, class: "undo_button_#{change.id}"
-        end
-      end
+
+    if !change.change_type == 'delete' && taxon.can_be_edited_by?(helpers.current_user)
+      show_button = true
+    end
+
+    if show_button || helpers.current_user.can_edit
+      helpers.button "Undo", "undo_button", { data: { 'undo-id' => change.id }, class: "undo_button_#{change.id}" }, ["btn-destructive"]
     end
   end
 
