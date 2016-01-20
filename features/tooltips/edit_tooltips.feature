@@ -8,8 +8,8 @@ Feature: Editing tooltips
 
   Scenario: Listing all tooltips
     Given this tooltip exist
-      | key                       | key_enabled | text                    |
-      | tooltips.selector_enabled | true        | Enable jQuery selector? |
+      | key                       | key_enabled | text                    |  page_origin |
+      | tooltips.selector_enabled | true        | Enable jQuery selector? |  tooltips |
 
     When I go to the tooltips editing page
     Then I should see "Edit Tooltips"
@@ -18,8 +18,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Hovering a tooltip
     Given this tooltip exists
-      | key                       | key_enabled | text                    |
-      | tooltips.selector_enabled | true        | Enable jQuery selector? |
+      | key                       | key_enabled | text                    |  page_origin |
+      | tooltips.selector_enabled | true        | Enable jQuery selector? |  tooltips |
 
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Enable jQuery selector?"
@@ -47,8 +47,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Editing a selector-based tooltip
     Given this tooltip exists
-      | key        | text      | selector | selector_enabled |
-      | test.title | Typo oops | h2.title | true             |
+      | key        | text      | selector | selector_enabled |  page_origin |
+      | test.title | Typo oops | h2.title | true             |  tooltips |
 
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Typo oops"
@@ -72,9 +72,9 @@ Feature: Editing tooltips
 
   @javascript
   Scenario: Disabling a key-based tooltip
-    Given this tooltip exist
-      | key                       | key_enabled | text                    |
-      | tooltips.selector_enabled | true        | Enable jQuery selector? |
+    Given this tooltip exists
+      | key                       | key_enabled | text                    | page_origin |
+      | tooltips.selector_enabled | true        | Enable jQuery selector? | tooltips    |
 
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Enable jQuery selector?"
@@ -94,8 +94,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
-      | key        | text    | selector | selector_enabled |
-      | test.title | A title | h2.title | true             |
+      | key        | text    | selector | selector_enabled |  page_origin |
+      | test.title | A title | h2.title | true             | tooltips    |
 
     When I go to the tooltips editing page
     And I wait for a bit

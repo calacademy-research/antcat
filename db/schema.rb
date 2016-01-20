@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119183617) do
+ActiveRecord::Schema.define(version: 20160120003845) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -417,7 +417,7 @@ ActiveRecord::Schema.define(version: 20160119183617) do
     t.boolean  "selector_enabled"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "page_origin",      limit: 255
+    t.string   "scope",            limit: 255
   end
 
   create_table "users", force: :cascade do |t|

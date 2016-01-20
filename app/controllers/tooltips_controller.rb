@@ -6,7 +6,7 @@ class TooltipsController < ApplicationController
   def index
     tooltips = Tooltip.all
     @grouped_tooltips = tooltips.group_by do |tooltip|
-      main_namespace_of_key tooltip.key
+      tooltip.scope
     end
   end
 
@@ -16,7 +16,7 @@ class TooltipsController < ApplicationController
 
   def new
     @tooltip = Tooltip.new(params.permit(:selector))
-    @tooltip[:page_origin] = get_page_from_url(request.referer)
+    @tooltip[:scope] = get_page_from_url(request.referer)
     @referral=request.referer
   end
 
@@ -28,7 +28,7 @@ class TooltipsController < ApplicationController
     @tooltip = Tooltip.new(tooltip_params)
     if @tooltip.save
       if params[:referral] && params[:referral].length > 0
-        redirect_to params[:referral]
+        redirect_to params[:referral]     # joe dis broke
       else
         redirect_to tooltip_path(@tooltip), notice: 'Tooltip was successfully created.'
       end
@@ -66,8 +66,8 @@ class TooltipsController < ApplicationController
   end
 
   def enabled_selectors  # TODO improve this
-    page_origin = get_page_from_url(request.referer)
-    json = Tooltip.enabled_selectors.where(page_origin: page_origin).pluck(:selector, :text, :id)
+    scope = get_page_from_url(request.referer)
+    json = Tooltip.enabled_selectors.where(scope: scope).pluck(:selector, :text, :id)
     render json: json # more "json" than json..
   end
 
@@ -90,8 +90,9 @@ class TooltipsController < ApplicationController
     unless url
       return nil
     end
-    url.slice! root_url
-    return url.split('/').first
+    doomed = url.clone
+    doomed.slice! root_url
+    return doomed.split('/').first
 
   end
   def set_tooltip
@@ -100,10 +101,8 @@ class TooltipsController < ApplicationController
 
   def tooltip_params
     params.require(:tooltip).permit(
-        :key, :page_origin, :text, :key_enabled, :selector, :selector_enabled)
+        :key, :scope, :text, :key_enabled, :selector, :selector_enabled)
   end
 
-  def main_namespace_of_key key
-    key.scan(/.*?(?=\.)/).first
-  end
+
 end

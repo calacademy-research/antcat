@@ -25,6 +25,8 @@ $ ->
     # Test: Ensure page renders when there are no tooltips
     # Test: ensure no (i) icons, click http://localhost:3000/tooltips, Show tooltips helper, see (i) icons.
     # Test: see (i) icons, click "Hide tooltips helper", see no (i) icons.
+    # Test: Make sure edit links are disabled if no edit privs? Does that even make sense? right now you only see
+    #       tooltips for edit-able pages.
 
     if data.show_missing_tooltips == true
       $('label, button, .ui-button, .apply_tooltip').not('.display_button, .remove_tooltip').each (index, element) =>

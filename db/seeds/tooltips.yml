@@ -1,11 +1,14 @@
 # hard-coded into the UI
-- key: 'tooltips.key'
+- key: 'key'
+  scope: 'tooltips'
   key_enabled: true
   text: >
     Used for referencing hard-coded tooltips. Also used for namespacing.
     Give all tooltips a key that makes sense.
 
-- key: 'tooltips.key_enabled'
+- key: 'key_enabled'
+  scope: 'tooltips'
+
   key_enabled: true
   text: >
     Set to false to disable hard-coded/key-based tooltips. Useful if an editor wants to
@@ -13,20 +16,24 @@
     (edit the tooltip to include a selector and then uncheck <i>key_enabled</i> and check
     <i>selector_enabled</i>), without having to ask a developer to do it.
 
-- key: 'tooltips.selector'
+- key: 'tooltips'
+  scope: 'tooltips'
   key_enabled: true
   text: 'jQuery selector, see <a href="/help/editing_tooltips">Help page</a>.'
 
-- key: 'tooltips.selector_enabled'
+- key: 'selector_enabled'
+  scope: 'tooltips'
   key_enabled: true
   text: 'Set to false to disable selector-based tooltips.'
 
-- key: 'tooltips.text'
+- key: 'text'
+  scope: 'tooltips'
   key_enabled: true
   text: 'The tooltip text. HTML is allowed. Double quotes are not 100% supported.'
 
 # example tooltips
-- key: 'references.authors'
+- key: 'authors'
+  scope: 'references'
   selector: "label[for='reference_author_names_string']"
   selector_enabled: true
   text: >
@@ -34,11 +41,13 @@
     Format: 'Lastname, F.I; Antcatson, A.'
 
 - key: 'references.title'
+  scope: 'references'
   selector: "label[for='reference_title']"
   selector_enabled: true
   text: "EXAMPLE TOOLTIP: Surround genus/species names with *asterisks* to add<i>italics</i>'"
 
-- key: 'author_names.add'
+- key: 'add'
+  scope: 'references'
   selector: ".author_names_section_buttons > button"
   selector_enabled: true
   text: >
@@ -47,7 +56,9 @@
     but rendered in the HTML source; may look something like this: -->
     <!-- 'TODO improve this tooltip' -->
 
-- key: 'taxa.hong'
+- key: 'hong'
+  scope: 'taxa'
+
   selector: "label[for='taxon_hong']"
   selector_enabled: true
   text: >

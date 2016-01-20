@@ -12,7 +12,7 @@
         Key
         =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
       %th{class: 'apply_tooltip'}
-        Page origin
+        Page scope
       %th{class: 'apply_tooltip'}
         Key enabled?
         =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
@@ -21,7 +21,7 @@
         =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
       %th{class: 'apply_tooltip'}
         Selector
-        =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
+        =tooltip_icon :selector, scope: :tooltips, disable_edit_link: false
       %th{class: 'apply_tooltip'}
         Selector enabled?
         =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true

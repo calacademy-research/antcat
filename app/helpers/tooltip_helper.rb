@@ -25,20 +25,17 @@ module TooltipHelper
   # Call in views to render hard-coded tooltips.
   # See explanation of key/scope in #parse_lookup_params
   # Similar logic is duplicated in `tooltips.coffee` TODO fix?
-  # TODO: This is broken at the moment. Removed the references from tooltip pages
-  #       which is the only place they're used. With the new automatic
-  #       selector generation, not as essential.
-  #       Examples are commented out in tooltips/_form.haml
+
   def tooltip_icon key_param, scope: nil, disable_edit_link: false
-    key = parse_lookup_params key_param, scope: scope
-    tooltip = Tooltip.find_by(key: key)
-    return "<!-- Disabled tooltip '#{key}' -->".html_safe if key_disabled? tooltip
+    # key = parse_lookup_params key_param, scope: scope
+    tooltip = Tooltip.find_by(key: key_param, scope: scope)
+    return "<!-- Disabled tooltip '#{key_param}' -->".html_safe if key_disabled? tooltip
 
     text =  if tooltip
               tooltip.try(:text) || "No tooltip text set. Click icon to edit."
             else
               # TODO take into account `disable_edit_link`
-              "Could not find tooltip with key '#{key}'. Click icon to create."
+              "Could not find tooltip with key '#{key_param}' with page scope '#{scope}'. Click icon to create."
             end
     tooltip_icon = image_tag 'help.png', class: 'help_icon tooltip', title: text
 
@@ -49,7 +46,7 @@ module TooltipHelper
       # If someone asked for a tooltip with a key that we cannot find, then let's be nice
       # and link `new_tooltip_path` and pre-polulate it (via `new_populated_tooltip_link`)
       # with the key that was explicitly asked for.
-      link_to (tooltip || new_populated_tooltip_link(key)) do
+      link_to (tooltip || new_populated_tooltip_link(key_param)) do
         tooltip_icon
       end
     end
@@ -82,13 +79,13 @@ module TooltipHelper
     # `scope` is optional and may be either a string, symbol, or an array containing either:
     #   :authors, scope: ['references', 'books']
     #   :authors, scope: [:references, :books]   # both returns 'references.books.authors'
-    def parse_lookup_params key_param, scope: nil
-      if scope.present?
-        # Wrap `scope` to allow calling with either a single string/symbol or an array.
-        scope_string = Array.wrap(scope).join(".")
-        "#{scope_string}.#{key_param}"
-      else
-        "#{key_param}"
-      end
-    end
+    # def parse_lookup_params key_param, scope: nil
+    #   if scope.present?
+    #     # Wrap `scope` to allow calling with either a single string/symbol or an array.
+    #     scope_string = Array.wrap(scope).join(".")
+    #     "#{scope_string}.#{key_param}"
+    #   else
+    #     "#{key_param}"
+    #   end
+    # end
 end
