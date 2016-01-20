@@ -38,14 +38,17 @@ class TooltipsController < ApplicationController
   end
 
   def update
-    if params[:referral] && params[:referral].length > 0
-      redirect_to params[:referral]
-      return
-    end
+
 
     respond_to do |format|
 
       if @tooltip.update_attributes tooltip_params
+
+        if params[:referral] && params[:referral].length > 0
+          redirect_to params[:referral]
+          return
+        end
+
         format.html { redirect_to(@tooltip, notice: 'Tooltip was successfully updated.') }
         format.json { respond_with_bip(@tooltip) }
       else

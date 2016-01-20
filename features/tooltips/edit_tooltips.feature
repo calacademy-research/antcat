@@ -96,7 +96,7 @@ Feature: Editing tooltips
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
       | key        | text    | selector | selector_enabled |  scope |
-      | title | A title | h2.title | true             | test    |
+      | title | A title | h2.title | true             | tooltips    |
 
     When I go to the tooltips editing page
     And I wait for a bit
@@ -104,7 +104,7 @@ Feature: Editing tooltips
     When I hover the tooltip next to the element containing "Edit Tooltips"
     Then I should see the tooltip text "A title"
 
-    And I follow "test.title"
+    And I follow "title"
 
     Then I uncheck "tooltip[selector_enabled]"
     And I press "Update Tooltip"
