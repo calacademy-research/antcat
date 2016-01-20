@@ -69,23 +69,5 @@ module TooltipHelper
       new_tooltip_path key: key
     end
 
-    # This method basically joins the params into a string, separated by periods if necessary.
-    #
-    # Accepts string(s) or symbol(s). These are all the same:
-    #   'references.authors'
-    #   :authors, scope: :references  # returns 'references.authors'
-    #   :authors, scope, 'references'
-    #
-    # `scope` is optional and may be either a string, symbol, or an array containing either:
-    #   :authors, scope: ['references', 'books']
-    #   :authors, scope: [:references, :books]   # both returns 'references.books.authors'
-    # def parse_lookup_params key_param, scope: nil
-    #   if scope.present?
-    #     # Wrap `scope` to allow calling with either a single string/symbol or an array.
-    #     scope_string = Array.wrap(scope).join(".")
-    #     "#{scope_string}.#{key_param}"
-    #   else
-    #     "#{key_param}"
-    #   end
-    # end
+
 end

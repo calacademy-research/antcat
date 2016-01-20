@@ -9,10 +9,10 @@ describe TooltipsController do
   describe '#index' do
     context "signed in" do
       let!(:no_namespace)         { FactoryGirl.create :tooltip, key: "no_namespace" }
-      let!(:references_authors)   { FactoryGirl.create :tooltip, key: "references.authors" }
-      let!(:references_title)     { FactoryGirl.create :tooltip, key: "references.title" }
-      let!(:references_new_title) { FactoryGirl.create :tooltip, key: "references.new.title" }
-      let!(:taxa_type_species)    { FactoryGirl.create :tooltip, key: "taxa.type_species" }
+      let!(:references_authors)   { FactoryGirl.create :tooltip, key: "authors", scope: "references"}
+      let!(:references_title)     { FactoryGirl.create :tooltip, key: "title", scope: "references" }
+      let!(:references_new_title) { FactoryGirl.create :tooltip, key: "new.title", scope: "references" }
+      let!(:taxa_type_species)    { FactoryGirl.create :tooltip, key: "type_species", scope: "taxa" }
 
       before do
         editor = FactoryGirl.create :user, can_edit: true
@@ -153,26 +153,5 @@ describe TooltipsController do
     # TODO
   end
 
-  describe '#main_namespace_of_key' do
-    context "no namespace" do
-      it 'returns nil' do
-        result = controller.send(:main_namespace_of_key, "refereces")
-        expect(result).to eq nil
-      end
-    end
 
-    context "single namespace" do
-      it 'returns the first namespace' do
-        result = controller.send(:main_namespace_of_key, "refereces.authors")
-        expect(result).to eq "refereces"
-      end
-    end
-
-    context "nested namespaces" do
-      it 'returns the first namespace' do
-        result = controller.send(:main_namespace_of_key, "refereces.edit.authors")
-        expect(result).to eq "refereces"
-      end
-    end
-  end
 end
