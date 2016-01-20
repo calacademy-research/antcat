@@ -66,7 +66,9 @@ class ChangeDecorator < Draper::Decorator
     end
 
     if show_button
-      helpers.button 'Approve', 'approve_button', 'data-change-id' => change.id
+      helpers.link_to 'Approve', helpers.approve_change_path(change),
+        method: :put, class: "btn-normal",
+        data: { confirm: "Are you sure you want to approve this change?" }
     end
   end
 

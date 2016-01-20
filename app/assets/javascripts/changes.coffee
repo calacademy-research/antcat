@@ -58,18 +58,5 @@ class AntCat.UndoButton extends AntCat.ChangeButton
       async: false,
       error: (xhr) => debugger
 
-class AntCat.ApproveButton extends AntCat.ChangeButton
-  click: =>
-    return unless confirm 'Are you sure you want to approve this change?'
-    change_id = @element.data('change-id')
-    url = "/changes/#{change_id}/approve"
-    $.ajax
-      url: url,
-      type: 'put',
-      dataType: 'json',
-      success: (data) => window.location = '/changes'
-      error: (xhr) => debugger
-
 $ ->
   $('.undo_button input[type=button]').each -> new AntCat.UndoButton($(this))
-  $('.approve_button input[type=button]').each -> new AntCat.ApproveButton($(this))

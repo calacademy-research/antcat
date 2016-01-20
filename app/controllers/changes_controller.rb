@@ -18,8 +18,7 @@ class ChangesController < ApplicationController
   def approve
     @change = Change.find params[:id]
     approve_change @change
-    json = { success: true }
-    render json: json, content_type: 'text/html'
+    redirect_to changes_path, notice: "Approved change."
   end
 
   def approve_all
