@@ -32,10 +32,6 @@ $ ->
         async: false,
         error: (xhr) => debugger
 
-  $('#review_button')
-    .button()
-    .click -> window.location = $(@).data('review-location')
-
 confirm_delete_dialog = (data, destination) ->
   @delete_message = $('#delete_message')
   message = '<div id="delete-modal" title="This delete will remove the following taxa:"><p>

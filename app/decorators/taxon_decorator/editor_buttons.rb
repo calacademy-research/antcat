@@ -23,8 +23,7 @@ module TaxonDecorator::EditorButtons
   private
     def link_to_review_change
       if taxon.can_be_reviewed_by?(get_current_user) && taxon.latest_change
-        parameters = { 'data-review-location' => "/changes/#{taxon.latest_change.id}" }
-        helpers.button 'Review change', 'review_button', parameters
+        helpers.link_to 'Review change', "/changes/#{taxon.latest_change.id}", class: "btn-normal"
       end
     end
 
