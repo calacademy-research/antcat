@@ -53,11 +53,20 @@ class ChangeDecorator < Draper::Decorator
     taxon_id = change.user_changed_taxon_id
     taxon_state = TaxonState.find_by taxon_id: taxon_id
 
-    unless taxon_state.review_state == "approved"
-      if (taxon.taxon_state.nil? and $Milieu.user_is_editor? helpers.current_user) or
-          (!taxon_state.nil? and taxon.can_be_approved_by? change, helpers.current_user)
-        helpers.button 'Approve', 'approve_button', 'data-change-id' => change.id
-      end
+    return if taxon_state.review_state == "approved"
+
+    # Editors can approve taxa with no associated taxon_state
+    if taxon.taxon_state.nil? && $Milieu.user_is_editor?(helpers.current_user)
+      show_button = true
+    end
+
+    # Another check from `can_be_approved_by?` (taxon_workflow.rb)
+    if !taxon_state.nil? && taxon.can_be_approved_by?(change, helpers.current_user)
+      show_button = true
+    end
+
+    if show_button
+      helpers.button 'Approve', 'approve_button', 'data-change-id' => change.id
     end
   end
 
