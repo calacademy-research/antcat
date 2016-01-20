@@ -72,7 +72,7 @@
           %td= label_tag :document_url, 'Source URL'
           %td{:colspan => 3, :class => :right_side_field}
             = document_form.text_field :url
-            = label_tag :document_public, 'Internal but public?'
+            = label_tag :document_public, 'Make PDF public?'
             = document_form.check_box :public
         - if user_can_upload_pdfs?
           %tr
