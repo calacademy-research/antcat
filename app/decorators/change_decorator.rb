@@ -47,7 +47,7 @@ class ChangeDecorator < Draper::Decorator
     end
 
     if show_button || helpers.current_user.can_edit
-      helpers.button "Undo", "undo_button", { data: { 'undo-id' => change.id }, class: "undo_button_#{change.id}" }, ["btn-destructive"]
+      helpers.button "Undo", "undo_button_#{change.id}", { data: { 'undo-id' => change.id } }, ["btn-destructive"]
     end
   end
 

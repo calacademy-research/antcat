@@ -94,7 +94,7 @@ Feature: Workflow
     Then I should see "an obsolete combination of Chatsworth major"
 
     When I go to the changes page
-    And I click ".undo_button_2"
+    And I click "#undo_button_2"
     Then I should see "This undo will roll back the following changes"
     When I press "Undo!"
     * I should see the genus "Becton" in the changes
@@ -105,7 +105,7 @@ Feature: Workflow
     Then I should see "Becton major" in the header
 
     When I go to the changes page
-    Then I click ".undo_button_1"
+    Then I click "#undo_button_1"
     Then I should see "This undo will roll back the following changes"
     When I press "Undo!"
     * I should not see "Becton"
@@ -143,7 +143,7 @@ Feature: Workflow
     When I save my changes
 
     When I go to the changes page
-    When I click ".undo_button_1"
+    When I click "#undo_button_1"
     Then I should see "This undo will roll back the following changes"
     When I press "Undo!"
     * I should not see "Becton"
