@@ -29,8 +29,7 @@ class ChangesController < ApplicationController
       end
     end
 
-    json = { success: true }
-    render json: json, content_type: 'text/html'
+    redirect_to changes_path, notice: "Approved all changes."
   end
 
   def undo

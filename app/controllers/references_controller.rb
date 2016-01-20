@@ -82,7 +82,7 @@ class ReferencesController < ApplicationController
 
   def approve_all
     Reference.approve_all
-    redirect_to latest_changes_references_path, notice: "Approved all changes."
+    redirect_to latest_changes_references_path, notice: "Approved all references."
   end
 
   def search
