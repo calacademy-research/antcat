@@ -22,7 +22,7 @@ $ ->
     .button()
     .click =>
       taxon_id = $('#delete_button').data('taxon-id')
-      url = "/catalog/delete_impact_list/"+taxon_id
+      url = "/catalog/delete_impact_list/" + taxon_id
       $.ajax
         url: url,
         type: 'get',
@@ -52,12 +52,12 @@ confirm_delete_dialog = (data, destination) ->
   message = message + '</div></p></div>'
   @delete_message.append(message)
   dialog_box = $("#delete-modal")
-  dialog_box.dialog({
+  dialog_box.dialog
     resizable: true,
     height: 280,
     width: 720,
     modal: true,
-    buttons: {
+    buttons:
       "Delete?": (a) =>
         $.ajax
           url: destination,
@@ -66,14 +66,11 @@ confirm_delete_dialog = (data, destination) ->
           success: (data) -> window.location.href = "/"
           async: false,
           error: (xhr) => debugger
-      ,
       "Cancel":
         id: "Cancel-Dialog"
         text: "Cancel"
         click: =>
           dialog_box.dialog("close")
-    }
-  })
   $('.delete_message').show()
 
 setup_throbber = ->
@@ -94,19 +91,12 @@ set_dimensions = ->
   set_height()
   set_width()
 
-set_height = (taxon_area_height = 'fixed') ->
-  if taxon_area_height is 'fixed'
-    set_fixed_height()
-    height = calculate_catalog_height()
-    set_catalog_height(height)
-  else
-    set_auto_height()
+set_height = ->
+  set_fixed_height()
+  height = calculate_catalog_height()
+  set_catalog_height(height)
 
-set_auto_height = ->
-  $('#page').css 'overflow', 'auto'
-  $(".antcat_taxon").height 'auto'
-  $(".antcat_taxon").css 'min-height', calculate_taxon_height()
-  $('#catalog .index').css 'height', ''
+# unreachable function `set_auto_height` was removed from here
 
 set_fixed_height = ->
   $('#page').css 'overflow', 'inherit'
