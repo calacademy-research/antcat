@@ -71,6 +71,7 @@ class TooltipsController < ApplicationController
   def enabled_selectors  # TODO improve this
     scope = get_page_from_url(request.referer)
     json = Tooltip.enabled_selectors.where(scope: scope).pluck(:selector, :text, :id)
+    # json=[]
     render json: json # more "json" than json..
   end
 

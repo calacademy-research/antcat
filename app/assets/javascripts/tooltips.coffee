@@ -12,21 +12,7 @@ $ ->
     # List of selectors: https://github.com/fczbkk/css-selector-generator-benchmark
     # TODO: Remove 'enabled' flags? Dig into docs, review.
     # TODO: Update 'help' pages.
-    # TEST: Click on (I), create a tooltip, save it, end up on origin page with new tooltip visible
-    # Test, go to tooltip creation directly, create a tooltip, save it, remain on tooltip page.
-    # TEST: click tooltip, go to edit screen. When done editing, warp to soure page
-    # Test: go directly to edit, edit, see 'Tooltip was successfully updated.'
-    # test: click new (i) icon for existing tooltip, get same edit behaviour as clicking "?".
-    # Test: Click "?" icon when not superadmin, nothing happens.
-    # Test: Ensure that the window comes up with selector and key enabled
-    # Test: superadmins and admins should be able to edit tooltips. nobody else.
-    # Test: Create a tooltip with a page identifier, ensure it shows up
-    # Test: Create a tooltip with the same selector as above, diffierett page origin, ensure it does not show up
-    # Test: Ensure page renders when there are no tooltips
-    # Test: ensure no (i) icons, click http://localhost:3000/tooltips, Show tooltips helper, see (i) icons.
-    # Test: see (i) icons, click "Hide tooltips helper", see no (i) icons.
-    # Test: Make sure edit links are disabled if no edit privs? Does that even make sense? right now you only see
-    #       tooltips for edit-able pages.
+
 
     if data.show_missing_tooltips == true
       $('label, button, .ui-button, .apply_tooltip').not('.display_button, .remove_tooltip').each (index, element) =>
