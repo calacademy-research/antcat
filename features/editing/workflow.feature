@@ -1,4 +1,4 @@
-@javascript
+
 Feature: Workflow
 
   Background:
@@ -11,7 +11,7 @@ Feature: Workflow
     And there is a genus "Eciton"
     And version tracking is enabled
 
-  @search
+  @javascript @search
   Scenario: Adding a taxon and seeing it on the Changes page
     When I go to the catalog page for "Formicinae"
     * I press "Edit"
@@ -68,7 +68,7 @@ Feature: Workflow
     * I should see a reference section "Reference section" in the changes
     When I follow "Atta"
     Then I should be on the catalog page for "Atta"
-
+  @javascript
   Scenario: Approving a change
     When I add the genus "Atta"
     And I go to the catalog page for "Atta"
@@ -77,7 +77,8 @@ Feature: Workflow
     When I go to the changes page
     And I will confirm on the next step
     And I press "Approve"
-    Then I should not see "Approve"
+    Then I should not see "Approve[^d]"
+    # TODO fix ugly regex hack
     And I should see "Stan Blum approved"
     When I go to the catalog page for "Atta"
     Then I should see "approved by Stan Blum"
@@ -87,17 +88,19 @@ Feature: Workflow
     And I add the genus "Batta"
     When I log in as a superadmin named "Stan Blum"
     When I go to the changes page
-    Then I should see an "Approve all" button
+    Then I should see "Approve all"
     When I go to the changes page
     And I will confirm on the next step
     And I press "Approve all"
     When I go to the changes page
-    Then I should not see an "Approve" button
+    Then I should not see "Approve[^d]"
+    # TODO fix ugly regex hack
 
   Scenario: Should not see approve all if not superadmin
     When I go to the changes page
-    Then I should not see an "Approve all" button
+    Then I should not see "Approve all"
 
+  @javascript
   Scenario: Another editor editing a change that's waiting for approval
     When I add the genus "Atta"
     And I go to the changes page
@@ -113,7 +116,9 @@ Feature: Workflow
     When I log in as a catalog editor named "Mark Wilden"
     And I go to the changes page
     Given I will confirm on the next step
-    And I press the first "Approve"
+    And I press "Approve"
+    # TODO fix. Works because "first" is implied, used to say
+    # this:  And I press the first "Approve"
     Then I should see "Mark Wilden approved"
     When I go to the catalog page for "Atta"
     Then I should see "approved by Mark Wilden"
@@ -125,7 +130,7 @@ Feature: Workflow
     When I go to the changes page
     Then I should not see an "Approve" button
 
-  @search
+  @javascript @search
   Scenario: Editing a taxon - modified, not added
     And I log in
     When I go to the edit page for "Formicidae"
@@ -156,7 +161,8 @@ Feature: Workflow
     When I go to the changes page
     And I will confirm on the next step
     And I press "Approve"
-    Then I should not see "Approve"
+    Then I should not see "Approve[^d]"
+    # TODO fix ugly regex hack
     And I should see "Stan Blum approved"
     And there should be a mailto link to the email of "Stan Blum"
     And there should be a mailto link to the email of "Mark Wilden"
