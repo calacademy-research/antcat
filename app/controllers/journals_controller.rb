@@ -1,13 +1,9 @@
 class JournalsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :authenticate_user!, except: [:index, :show, :autocomplete]
   before_filter :set_journal, only: [:show, :edit, :update]
 
   def index
     @journals = Journal.order(:name).paginate(page: params[:page], per_page: 100)
-    respond_to do |format|
-      format.html
-      format.json { render json: Journal.search(params[:term]) } # json search in #index
-    end
   end
 
   def show
@@ -37,6 +33,12 @@ class JournalsController < ApplicationController
       redirect_to @journal
     else
       render :edit
+    end
+  end
+
+  def autocomplete
+    respond_to do |format|
+      format.json { render json: Journal.search(params[:term]) }
     end
   end
 

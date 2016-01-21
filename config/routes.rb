@@ -37,7 +37,11 @@ AntCat::Application.routes.draw do
   match 'catalog/delete_impact_list/(:id)' => 'catalog#delete_impact_list', as: :catalog_delete_impact_list, via: :get
 
   match '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
-  resources :journals, only: [:index, :show, :new, :create, :edit, :update]
+  resources :journals, only: [:index, :show, :new, :create, :edit, :update] do
+    collection do
+      get :autocomplete
+    end
+  end
 
   namespace :publishers do
     get :autocomplete

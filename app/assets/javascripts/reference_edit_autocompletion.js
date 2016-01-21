@@ -61,7 +61,7 @@ function insertAuthor(string, position, author) {
 function setupReferenceEditJournalAutocomplete(selector) {
   selector.autocomplete({
     autoFocus: true,
-    source: "/journals",
+    source: "/journals/autocomplete",
     minLength: 3
   });
 }
