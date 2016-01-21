@@ -55,7 +55,7 @@ class AntCat.ReferenceForm extends AntCat.NestedForm
     return if AntCat.testing
     @element.find('.publisher').autocomplete
       autoFocus: true,
-      source: "/publishers",
+      source: "/publishers/autocomplete",
       minLength: 3
 
   before_serialize: ($form, options) =>

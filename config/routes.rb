@@ -38,7 +38,10 @@ AntCat::Application.routes.draw do
 
   match '/documents/:id/:file_name', to: 'references#download', file_name: /.+/, via: :get
   resources :journals, only: [:index, :show, :new, :create, :edit, :update]
-  resources :publishers, only: [:index]
+
+  namespace :publishers do
+    get :autocomplete
+  end
 
   resources :references do
     collection do

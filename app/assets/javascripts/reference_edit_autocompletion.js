@@ -69,7 +69,7 @@ function setupReferenceEditJournalAutocomplete(selector) {
 function setupReferenceEditPublisherAutocomplete(selector) {
   selector.autocomplete({
     autoFocus: true,
-    source: "/publishers",
+    source: "/publishers/autocomplete",
     minLength: 3
   });
 }
