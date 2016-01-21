@@ -52,6 +52,7 @@ Feature: Editing tooltips
 
     Then I follow "New Tooltip"
     And I fill in "tooltip[key]" with "text"
+    And I follow "Hide/show advanced"
     And I check "tooltip[key_enabled]"
     And I fill in "tooltip[scope]" with "tooltips"
     And I fill in "tooltip[text]" with "Text used in the tooltip"
@@ -102,6 +103,7 @@ Feature: Editing tooltips
 
     And I follow "selector_enabled"
 
+    And I follow "Hide/show advanced"
     Then I uncheck "tooltip[key_enabled]"
     And I press "Update Tooltip"
     And I wait for a bit
@@ -123,13 +125,13 @@ Feature: Editing tooltips
 
     And I follow "title"
 
+    And I follow "Hide/show advanced"
     Then I uncheck "tooltip[selector_enabled]"
     And I press "Update Tooltip"
     And I wait for a bit
 
     When I go to the tooltips editing page
     Then I should not see any tooltips next to the element containing "Edit Tooltips"
-
 
   @javascript
   Scenario: Page based exclusion works.
@@ -139,6 +141,7 @@ Feature: Editing tooltips
 
     Then I follow "New Tooltip"
     And I fill in "tooltip[key]" with "text"
+    And I follow "Hide/show advanced"
     And I check "tooltip[key_enabled]"
     And I fill in "tooltip[scope]" with "tooltips2"
     And I fill in "tooltip[text]" with "Text used in the tooltip"
@@ -149,7 +152,6 @@ Feature: Editing tooltips
     When I hover the tooltip next to the text "Tooltip text"
     Then I should not see the tooltip text "Text used in the tooltip"
 
-
   @javascript
   Scenario: toggle i helpers
     When I go to the tooltips editing page
@@ -157,6 +159,3 @@ Feature: Editing tooltips
     Then I should see "Hide tooltips helper"
     And I follow "Hide tooltips helper"
     Then I should see "Show tooltips helper"
-
-
-

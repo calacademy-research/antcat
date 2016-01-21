@@ -1,8 +1,13 @@
 =enable_tooltips
+
 -content_for :head do
   = javascript_include_tag  'optimal-select.min'
-
   =javascript_include_tag 'tooltips_generate_selector_test_string'
+
+:coffee
+  $ ->
+    $("#toggle_advanced_options").click ->
+      $("#advanced_options").slideToggle("slow")
 
 =form_for @tooltip do |f|
   = hidden_field_tag 'referral', @referral
@@ -14,28 +19,36 @@
       =f.text_field :key, value: (params[:key].presence || "") # Pre-populate if requested.
     -else
       =f.text_field :key
-    =f.label :key_enabled
-    =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-    =f.check_box :key_enabled, checked: true
 
-  %p
     =f.label :scope
     =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-    =f.text_area :scope
+    =f.text_field :scope
+
   %p
     =f.label :text
     =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
-    =f.text_area :text
-  %p
-    =f.label :selector
-    =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
-    =f.text_area :selector
-    =f.label :selector_enabled
-    =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
-    =f.check_box :selector_enabled, checked: true
+    .clear
+    =f.text_area :text, cols: 40, rows: 10
+
+  #advanced_options{style: "display: none"}
+    %p
+      =f.label :selector
+      =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
+      .clear
+      =f.text_area :selector, cols: 40, rows: 10
+
+    %p
+      =f.label :selector_enabled
+      =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
+      =f.check_box :selector_enabled, checked: true
+
+      =f.label :key_enabled
+      =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
+      =f.check_box :key_enabled, checked: true
+
+      = button_tag "Test Selector", type: "button", id: "test_selector_button" # hooked into by jQuery
 
   .actions
-    = button_tag "Test Selector", type: "button", id: "test_selector_button" # hooked into by jQuery
     = f.submit
 
 -# The #test_selector_notice and #test_selector_snippet elements are used for
