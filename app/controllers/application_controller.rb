@@ -17,6 +17,10 @@ class ApplicationController < ActionController::Base
     authenticate_user! && $Milieu.user_can_edit?(current_user)
   end
 
+  def authenticate_superadmin
+    authenticate_user! && $Milieu.user_is_superadmin?(current_user)
+  end
+
   def user_for_paper_trail
     current_user.try(:id)
   end

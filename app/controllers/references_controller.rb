@@ -1,6 +1,7 @@
 class ReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [
     :index, :download, :autocomplete, :show, :search, :endnote_export, :latest_additions]
+  before_filter :authenticate_superadmin, only: [:approve_all]
   before_filter :set_reference, only: [
     :show, :edit, :update, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
   before_filter :redirect_if_search_matches_id, only: [:index, :search]

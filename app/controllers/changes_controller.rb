@@ -1,5 +1,7 @@
 class ChangesController < ApplicationController
   before_filter :authenticate_editor, except: [:index, :show]
+  before_filter :authenticate_superadmin, only: [:approve_all]
+
   include UndoTracker
 
   def index

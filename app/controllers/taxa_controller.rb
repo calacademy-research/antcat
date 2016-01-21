@@ -1,5 +1,6 @@
 class TaxaController < ApplicationController
   before_filter :authenticate_editor, :get_params, :create_mother
+  before_filter :authenticate_superadmin, only: [:destroy]
   before_filter :redirect_by_parent_name_id, only: :new
   skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
