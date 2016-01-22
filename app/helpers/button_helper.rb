@@ -1,7 +1,7 @@
 module ButtonHelper
   # "Parameters" for the three below items end up as literal parameters for the html input object.
   # e.g.:  button 'Delete', 'delete_button', {'data-delete-location' => "/taxa/#{@taxon.id}/delete",'data-taxon-id' => "#{@taxon.id}"}
-  # Yields: "<input data-delete-location="/taxa/449381/delete" data-taxon-id="449381" class="ui-button  ...
+  # Yields: "<input data-delete-location="/taxa/449381/delete" data-taxon-id="449381" ...
 
   def button label, id = nil, parameters = {}, extra_classes = []
     make_button label, id, 'button', parameters, extra_classes
@@ -12,7 +12,6 @@ module ButtonHelper
   end
 
   def cancel_button label = 'Cancel', id = nil, parameters = {}
-    parameters[:secondary] = true
     make_button label, id, 'button', parameters, ['cancel', 'btn-cancel']
   end
 
@@ -35,15 +34,7 @@ module ButtonHelper
 
     def get_css_classes parameters, extra_classes = []
       classes = (parameters[:class] || '').split ' '
-      classes.concat jquery_css_classes
-
-      parameters.delete :secondary # legacy
-
       classes.concat extra_classes
       classes.sort.join ' '
-    end
-
-    def jquery_css_classes
-      %w{ui-button ui-corner-all}
     end
 end

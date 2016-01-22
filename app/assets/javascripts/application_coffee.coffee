@@ -39,15 +39,6 @@ $.fn.find_topmost = (selector) ->
   all_elements = @find(selector)
   all_elements.filter -> not all_elements.is $(@).parents()
 
-# calling button('destroy') isn't getting through to the destroy function
-# for some reason to do with jQuery UI's widget factory, so do this part
-# manually
-$.fn.unbutton = ->
-  @each ->
-    button_text = $(@).find '.ui-button-text'
-    return if button_text.length is 0
-    $(@).text button_text.text()
-
 $.fn.select = -> @.addClass 'ui-selecting'
 
 AntCat.deselect = -> $('.ui-selecting').removeClass('ui-selecting')

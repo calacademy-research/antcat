@@ -4,7 +4,7 @@ describe ButtonHelper do
   describe "Making a button" do
     it "should handle a button with an id" do
       string = helper.button 'Button'
-      expect(string).to eq("<input class=\"ui-button ui-corner-all\" id=\"button_button\" type=\"button\" value=\"Button\"></input>")
+      expect(string).to eq("<input class=\"\" id=\"button_button\" type=\"button\" value=\"Button\"></input>")
     end
   end
 
@@ -15,21 +15,21 @@ describe ButtonHelper do
     end
     it "should default the ID" do
       string = helper.submit_button 'Cancel'
-      expect(string).to eq("<input class=\"submit ui-button ui-corner-all\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>")
+      expect(string).to eq("<input class=\"submit\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>")
     end
   end
 
   describe "Making a cancel button" do
     it "should handle a cancel button" do
       string = helper.cancel_button
-      expect(string).to eq("<input class=\"btn-cancel cancel ui-button ui-corner-all\" id=\"cancel_button\" type=\"button\" value=\"Cancel\"></input>")
+      expect(string).to eq("<input class=\"btn-cancel cancel\" id=\"cancel_button\" type=\"button\" value=\"Cancel\"></input>")
     end
   end
 
   describe "Making a button to a path" do
     it "should handle making a button to a path" do
       string = helper.button_to_path 'Label', 'path'
-      expect(string).to eq("<form class=\"button_to\" method=\"post\" action=\"path\"><input class=\"ui-button ui-corner-all\" type=\"submit\" value=\"Label\" /></form>")
+      expect(string).to eq("<form class=\"button_to\" method=\"post\" action=\"path\"><input class=\"\" type=\"submit\" value=\"Label\" /></form>")
       expect(string).to be_html_safe
     end
   end
