@@ -7,10 +7,6 @@ module ButtonHelper
     make_button label, id, 'button', parameters, extra_classes
   end
 
-  def submit_button label, id = nil, parameters = {}
-    make_button label, id, 'submit', parameters, ['submit']
-  end
-
   def cancel_button label = 'Cancel', id = nil, parameters = {}
     make_button label, id, 'button', parameters, ['cancel', 'btn-cancel']
   end

@@ -3,7 +3,7 @@
 
   .left_buttons
     - save_button_text = possible_homonym ? 'Save homonym' : 'Save'
-    = submit_button save_button_text, nil, class: "btn-save"
+    = button save_button_text, nil, { class: "btn-save" }, ['submit']
     = cancel_button
     = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
 

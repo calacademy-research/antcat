@@ -8,17 +8,6 @@ describe ButtonHelper do
     end
   end
 
-  describe "Making a submit button" do
-    it "should return an html_safe string" do
-      string = helper.submit_button 'Go', 'submit_button'
-      expect(string).to be_html_safe
-    end
-    it "should default the ID" do
-      string = helper.submit_button 'Cancel'
-      expect(string).to eq("<input class=\"submit\" id=\"cancel_button\" type=\"submit\" value=\"Cancel\"></input>")
-    end
-  end
-
   describe "Making a cancel button" do
     it "should handle a cancel button" do
       string = helper.cancel_button
