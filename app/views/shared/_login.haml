@@ -28,7 +28,7 @@
       = text_field_tag "user[email]"
       Password
       = password_field_tag "user[password]"
-      = submit_tag "Go"
+      = submit_tag "Go", class: "btn-login"
       %br
       %span.small
         = make_link_menu check_box_tag("user[remember_me]", "1", true) + "Remember me ",  link_to('Forgot password?', new_user_password_path), link_to('Cancel', '#', class: :link)

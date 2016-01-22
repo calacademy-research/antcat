@@ -17,7 +17,7 @@
             - label << 'author'
             = label_tag 'terms[]', label
             = text_field_tag 'terms[]', panel.term
-            = submit_tag 'Go'
+            = submit_tag 'Go', class: "btn-search"
       .right
         = link_to 'close', {}, class: 'close_link' if panel != panels.last
       .clear

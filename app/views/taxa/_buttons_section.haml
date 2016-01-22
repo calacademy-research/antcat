@@ -1,19 +1,21 @@
 .buttons_section
   %input{type: :hidden, name: :possible_homonym, id: :possible_homonym, value: possible_homonym ? 'true' : nil}
+
   .left_buttons
     - save_button_text = possible_homonym ? 'Save homonym' : 'Save'
-    = submit_button save_button_text
+    = submit_button save_button_text, nil, class: "btn-save"
     = cancel_button
     = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
+
   .right_buttons
     %input{type: :hidden, name: :task_button_command, id: :task_button_command}
     -if add_taxon_button_text
-      = button add_taxon_button_text, :add_taxon
+      = button add_taxon_button_text, :add_taxon, class: "btn-new"
     -if add_tribe_button_text
-      = button add_tribe_button_text, :add_tribe
+      = button add_tribe_button_text, :add_tribe, class: "btn-new"
     -if show_convert_to_subspecies_button
-      = button 'Convert to subspecies', :convert_to_subspecies
+      = button 'Convert to subspecies', :convert_to_subspecies, class: "btn-new"
     -if show_elevate_to_species_button
-      = button 'Elevate to species', :elevate_to_species
+      = button 'Elevate to species', :elevate_to_species, class: "btn-new"
     -if show_delete_taxon_button
       = button 'Delete', :delete_taxon, {}, ["btn-delete"]

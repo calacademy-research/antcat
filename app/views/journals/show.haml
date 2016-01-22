@@ -1,6 +1,7 @@
 -@title = @journal.name
 
-=link_to "Edit", edit_journal_path(@journal) if user_can_edit?
+-if user_can_edit?
+  =link_to "Edit", edit_journal_path(@journal), class: "btn-edit"
 =link_to 'Back', journals_path
 
 %h4="References using this journal (id #{@journal.id})"

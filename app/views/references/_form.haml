@@ -108,7 +108,7 @@
               %td= reference.id
       %tr
         %td{:colspan => 4}
-          %button.submit= possible_duplicate ? 'Save Anyway' : 'Save'
+          %button.submit.btn-save= possible_duplicate ? 'Save Anyway' : 'Save'
           -cancel_link = reference.new_record? ? references_path : reference_path(reference)
           =link_to "Cancel", cancel_link, class: "btn-cancel"
           =label_tag :make_default, 'Make default after save?'

@@ -14,28 +14,28 @@ $brand-primary: #479F03
   @extend .btn-primary
   padding: 0.1em 0.4em
 
-input[type=submit]
-  @include medium_button
-
-.ui-button
-  @include medium_button
-
-.small_button
-  @include medium_button
-
-button.submit
+// TODO cleanup
+.btn-normal, a.btn-normal
   @include medium_button
   @extend .btn-primary
+  color: #fff
 
-button.cancel, input.cancel
-  @extend .btn-cancel
+.btn-save, a.btn-save
+  @include medium_button
+  @extend .btn-primary
+  color: #fff
 
-button.delete, #delete_button
-  @extend .btn-delete
+.btn-login, a.btn-login
+  @include medium_button
+  @extend .btn-primary
+  color: #fff
 
-// TODO use these
-// TODO rename
-.btn-normal, a.btn-normal
+.btn-download, a.btn-download
+  @include medium_button
+  @extend .btn-primary
+  color: #fff
+
+.btn-search, a.btn-search
   @include medium_button
   @extend .btn-primary
   color: #fff
@@ -67,3 +67,13 @@ button.delete, #delete_button
   @include medium_button
   @extend .btn-danger
   color: #fff
+
+// TODO fix in views
+.small_button
+  @include medium_button
+
+// Support legacy to avoid pulling in two extra Devise views
+#new_user, #edit_user
+  input[type="submit"]
+    @include medium_button
+    @extend .btn-primary
