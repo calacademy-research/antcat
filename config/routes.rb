@@ -96,6 +96,8 @@ AntCat::Application.routes.draw do
   scope module: 'api' do
     namespace :v1 do
       resources :taxa
+      resources :protonyms
+
     end
     # For the next version...
     # namespace :v2 do

@@ -1,27 +1,27 @@
 swagger: '2.0'
 
 info:
-  version: "0.1.0"
+  version: "1.0.0"
   title: ANTCAT Rest API
   description: Read only API to access antcat.org
   contact: 
     name: Joe Russack
     email: JRussack@calacademy.org
 
-host: antcat.org
-basePath: /v0.1
+#host: antcat.org
+host: localhost:3000
+#basePath: /v0.1
 schemes: [http]
 consumes: [application/json]
 produces: [application/json]
 
 
 
-# Describe your paths here
 paths:
-  /taxon/{id}:
+  /v1/taxa/{id}:
     get:
       summary: Get a single taxon
-      operationId: listPets
+      operationId: getTaxon
       tags:
         - taxa
       parameters:
@@ -35,47 +35,184 @@ paths:
         "200":
           description: a single taxon record
           schema:
-            description: The taxon rank
-            type: [string]
-            enum:
-              - Family
-              - Genus
-              - Species
-              - Subfamily
-              - Subgenus
-              - Subspecies
-              - Tribe
-            properties:
-              id:
-                type: integer
-                description: Antcat taxon id
-              
+            $ref: '#/definitions/Taxon'
         "404":
           description: Record not found
-        "505":
-          description: Lies, lies
+
+  /v1/protonyms/{id}:
+    get:
+      summary: Get a ptotonym
+      operationId: getProtonym
+      tags:
+        - protonym
+      parameters:
+        - name: id
+          in: path
+          description: protonym id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single protonym record
           schema:
-            $ref: Taxon
-        default:
-          description: Error
-          
+            $ref: '#/definitions/Protonym'
+        "404":
+          description: Record not found
+
+
+# Perhaps we break these out by
+# family, species, etc. just because rails lump
+# all these together doesn't mean that
+# we have to (e.g.: family_id not used in species. etc
+
 definitions:
+
   Taxon:
-    description: The taxon rank
-    type: [string]
-    enum:
-      - Family
-      - Genus
-      - Species
-      - Subfamily
-      - Subgenus
-      - Subspecies
-      - Tribe
+    description: Taxon level
+    type: object
+    properties:
+      level:
+        type: string
+        description: Level of this particular taxon
+        enum:
+        - family
+        - genus
+        - species
+        - subfamily
+        - subgenus
+        - subspecies
+        - tribe
+      body:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: Antcat taxon id, primary key
+          created_at:
+            type: string
+            format: date-time
+            description: Automatically generated timestamp for original creation
+          updated_at:
+            type: string
+            format: date-time
+            description: Automatically generated timestamp for most recent update
+          fossil:
+            type: boolean
+            description: is it a fossil?
+          status:
+            type: string
+            description: State (status of this record)
+            enum:
+            - valid
+            - unidentifiable
+            - excluded from Formicidae
+            - homonym
+            - unavailable
+            - synonym
+            - collective group name
+            - obsolete combination
+            - unavailable misspelling
+            - original combination
+            - unavailable uncategorized
+          protonym_id:
+            type: integer
+            description: Id of the protonym record
+          family_id:
+            type: integer
+            description: Only populated if this is a subfamily with a valid family
+          subfamily_id:
+            type: integer
+            description: Populated for most records
+          tribe_id:
+            type: integer
+            description: Only populated if this is a genus with a valid tribe.
+          subgenus_id:
+            type: integer
+            description: Only populated if this is a species with a valid subgenus
+          name_id:
+            type: integer
+            description: Link to the name record
+          foo:
+            type: integer
+          homonym_replaced_by_id:
+            type: integer
+            description: Populated only if this is a homonym that has been superseded by another taxa.
+          incertae_sedis_in:
+            type: string
+          type_taxt:
+            type: string
+          headline_notes_taxt:
+            type: string
+          hong:
+            type: string
+          type_name_id:
+            type: integer
+          genus_species_header_notes_taxt:
+            type: string
+          type_fossil:
+            type: boolean
+          name_cache:
+            type: string
+            description: de-normalized cache of the name object
+          name_html_cache:
+            type: string
+            description: de-normalized cache of the name object in html format
+          unresolved_homonym:
+            type: boolean
+          current_valid_taxon_id:
+            type: integer
+          ichnotaxon:
+            type: string
+          nomen_nudum:
+            type: string
+          verbatim_type_locality:
+            type: string
+          biogeographic_region:
+            type: string
+          type_specimen_repository:
+            type: string
+          type_specimen_code:
+            type: string
+          type_specimen_url:
+            type: string
+          collision_merge_id:
+            type: integer
+          auto_generated:
+            type: boolean
+            description: True if this was generated by an automatic import. Changed to false if a human has touched it.
+          origin:
+            type: string
+            description: The origin of an automatic import. Remains populated even if an editor has touched it and turned the auto_generated flag to false.
+          display:
+            type: boolean
+            description: True if it should be shown in the taxon browser. If false, it will still show in searches.
+
+
+  Protonym:
+    description: Taxon protonym
+    type: object
     properties:
       id:
         type: integer
-        description: Antcat taxon id
-          
+        description: Integer id, primary key
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+
+
+
+
+
+
+
+
+
 
 
 
