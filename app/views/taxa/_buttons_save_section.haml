@@ -1,0 +1,8 @@
+%input{type: :hidden, name: :possible_homonym, id: :possible_homonym, value: possible_homonym ? 'true' : nil}
+
+.left_buttons
+  - save_button_text = possible_homonym ? 'Save homonym' : 'Save'
+  = button save_button_text, nil, { class: "btn-save" }, ['submit']
+  - cancel_link = taxon.new_record? ? edit_taxa_path(params[:parent_id]) : catalog_path(taxon)
+  = link_to 'Cancel', cancel_link, class: 'btn-cancel'
+  = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
