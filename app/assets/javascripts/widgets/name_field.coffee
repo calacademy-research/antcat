@@ -23,7 +23,6 @@ class AntCat.NameField extends AntCat.Panel
   is_superadmin: =>
     $('#is_superadmin').val()
 
-
   create_form: ($element, form_options) =>
     form_options.taxa_only = @options.taxa_only
     form_options.subfamilies_or_tribes_only = @options.subfamilies_or_tribes_only
@@ -43,16 +42,21 @@ class AntCat.NameField extends AntCat.Panel
     @set_add_name_field()
 
   set_help: =>
-    text = if @deciding_whether_to_add_name
-      "Click Add this name, or Cancel"
-    else if @options.allow_blank
-      "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or clear this name."
-    else if @options.new_or_homonym
-      "Type the name, or type characters in the name then choose a name from the drop-down list, or type a new name, or choose a homonym."
-    else if @options.require_new
-      "Type a new taxon name"
-    else
-      "Type the name, or type characters in the name then choose a name from the drop-down list."
+    text =
+      if @deciding_whether_to_add_name
+        "Click Add this name, or Cancel"
+      else if @options.allow_blank
+        "Type the name, or type characters in the name then choose a name
+        from the drop-down list, or type a new name, or clear this name."
+      else if @options.new_or_homonym
+        "Type the name, or type characters in the name then choose a name
+        from the drop-down list, or type a new name, or choose a homonym."
+      else if @options.require_new
+        "Type a new taxon name"
+      else
+        "Type the name, or type characters in the name then choose a name
+        from the drop-down list."
+
     @element.find('.help').text text
 
   construct_parameters: =>
@@ -94,7 +98,6 @@ class AntCat.NameField extends AntCat.Panel
 
   #------------
 
-
   set_add_name_field: =>
     $confirm_add_name_field = @element.find('#confirm_add_name')
     if @deciding_whether_to_add_name
@@ -117,29 +120,30 @@ class AntCat.NameField extends AntCat.Panel
       @reset_value_id = $value_field.val()
       $value_field.val value
 
-
-
   set_value_default: (value) =>
     $value_field = $('#' + @value_id)
     @check_for_duplicates(value)
+
     # populates @duplicates variable
-    if(@duplicates == undefined)
+    if @duplicates == undefined
       @create_combination_message(value)
     else
       @create_duplicate_message(@duplicates, value)
+
     @reset_value_id = $value_field.val()
     $value_field.val value
 
   set_value_nospecies: (value) =>
     $value_field = $('#' + @value_id)
     @check_for_duplicates_nospecies(value)
+
     # populates @duplicates variable
     # For this case, we always prompt.
     if @duplicates.length == 0
       alert "No species match, aborting."
       return
-    @create_duplicate_nospecies_message(@duplicates, value)
 
+    @create_duplicate_nospecies_message(@duplicates, value)
     @reset_value_id = $value_field.val()
     $value_field.val value
 
@@ -149,38 +153,37 @@ class AntCat.NameField extends AntCat.Panel
     $('.antcat_form .ui-autocomplete-input')[0].value = null
     $('#parent_name_field .display_button').text(@current_reset_epithet())
 
-
   combination_message_html: =>
     '<div id="dialog-confirm" title="Do you want a new combination?"><p>
        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
        Would you like to create a new combination under this parent?
      </p></div>'
 
-
   create_combination_message: (name_id) =>
     action = @element.closest('form').attr('action')
     console.log('showing the message')
     @element.append($(@combination_message_html()))
     dialog_box = $("#dialog-confirm")
-    dialog_box.dialog({
-        resizable: true,
-        height: 140,
-        width: 520,
-        modal: true,
-        buttons: @create_combination_message_buttons(name_id, dialog_box)
-      })
+    dialog_box.dialog
+      resizable: true
+      height: 140
+      width: 520
+      modal: true
+      buttons: @create_combination_message_buttons(name_id, dialog_box)
+
     @show_combination_message()
 
-  create_combination_message_buttons: (name_id,dialog_box) =>
+  create_combination_message_buttons: (name_id, dialog_box) =>
     button_hash = {}
     button_hash["Yes, create new combination"] = (a) =>
       window.location.href = '/taxa/new?parent_name_id=' + name_id +
         '&rank_to_create=' + @taxon_rank +
         '&previous_combination_id=' + @current_taxon_id()
+
     if @is_superadmin() == "true"
       button_hash["No, just change the parent"] =
-      text: "No, just change the parent"
-      click: =>
+        text: "No, just change the parent"
+        click: =>
           dialog_box.dialog("close")
           @set_value_nospecies(name_id)
 
@@ -214,7 +217,7 @@ class AntCat.NameField extends AntCat.Panel
 # Note that this exists so that users have a tool to correct a widespread data error. (subspecies with no parent species)
 # We may want to remove this feature later.
 # -----------------------------------------
-  nospecies_homonym_message_html: (data)=>
+  nospecies_homonym_message_html: (data) =>
     message = '<div id="dialog-duplicate" title="Confirm parent species change."><p>
        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
            Choose a parent species:
@@ -225,17 +228,15 @@ class AntCat.NameField extends AntCat.Panel
     for i in [1..data.length] by 1
       j = i - 1
       item = data[j][Object.keys(data[0])[0]]
-      message = message + @make_nospecies_radio_html(item,j)
+      message = message + @make_nospecies_radio_html(item, j)
     message = message + '</div></p></div>'
     message
 
-  make_nospecies_radio_html: (item,j)=>
+  make_nospecies_radio_html: (item, j) =>
     message = '<input type="radio" id='
-
-
     message = message + j
 
-    if(j == 0)
+    if j == 0
       message = message + ' checked="checked" '
     message = message + ' name="radio">'
     message = message + '<label for="radio' +
@@ -245,36 +246,29 @@ class AntCat.NameField extends AntCat.Panel
       ": " +
       item.authorship_string
 
-
     if this.taxon_name_string().split(/\s+/).slice(0, 2).join(" ").indexOf(item.name_cache) == -1
       message = message + " This does not match the name of the current species. Use with caution."
     message = message + '</label>'
     message = message + '</br>'
 
-
     message
-
 
 # -----------------------------------------
 # Duplicates message handling
 # -----------------------------------------
-
-  duplicate_message_html: (data)=>
+  duplicate_message_html: (data) =>
     message = '<div id="dialog-duplicate" title="This new combination looks a lot like existing combinations."><p>
        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
            Choose a representation:
            <div id="duplicate-radio class="duplicate-radio">'
 
-
-
     generate_additional_homonym_option = true
     # one radio button per duplicate. If we hit a homonym case in here,
     # we don't need an additonal option for one.
-
     for i in [1..data.length] by 1
       j = i - 1
       item = data[j][Object.keys(data[0])[0]]
-      message = message + @make_radio_html(item,j)
+      message = message + @make_radio_html(item, j)
 
     if generate_additional_homonym_option
       message = @append_homonym_button(message, item)
@@ -282,7 +276,7 @@ class AntCat.NameField extends AntCat.Panel
     message = message + '</div></p></div>'
     message
 
-  make_radio_html: (item,j)=>
+  make_radio_html: (item, j) =>
     message = '<input type="radio" id='
 
     if item['duplicate_type'] == 'secondary_junior_homonym'
@@ -291,7 +285,7 @@ class AntCat.NameField extends AntCat.Panel
     else
       message = message + j
 
-    if(j == 0)
+    if j == 0
       message = message + ' checked="checked" '
     message = message + ' name="radio">'
     message = message + '<label for="radio' +
@@ -308,7 +302,6 @@ class AntCat.NameField extends AntCat.Panel
 
     message = message + '</label>'
     message = message + '</br>'
-
 
     message
 
@@ -327,7 +320,6 @@ class AntCat.NameField extends AntCat.Panel
         '</label>'
     message
 
-
   get_radio_value: =>
     result = null
     $("#dialog-duplicate :radio").each ->
@@ -339,57 +331,55 @@ class AntCat.NameField extends AntCat.Panel
     @duplicate_message = $('#duplicate_message')
     @duplicate_message.append($(@nospecies_homonym_message_html(data)))
     dialog_box = $("#dialog-duplicate")
-    dialog_box.dialog({
-      resizable: true,
-      height: 280,
-      width: 720,
-      modal: true,
-      buttons: {
+    dialog_box.dialog
+      resizable: true
+      height: 280
+      width: 720
+      modal: true
+      buttons:
         "Yes, update parent record only": (a) =>
           data_object = data[@get_radio_value()]
-          window.location.href = '/taxa/'+@current_taxon_id()+'/update_parent/' + data[0][Object.keys(data[0])[0]].id
+          window.location.href = '/taxa/'+ @current_taxon_id() + '/update_parent/' + data[0][Object.keys(data[0])[0]].id
         ,
-
         "Cancel":
           id: "Cancel-Dialog"
           text: "Cancel"
           click: =>
             @reset_autocomplete()
             dialog_box.dialog("close")
-      }
-    })
+
     @show_duplicate_message()
 
   create_duplicate_message: (data, new_parent_name_id) =>
     @duplicate_message = $('#duplicate_message')
     @duplicate_message.append($(@duplicate_message_html(data)))
     dialog_box = $("#dialog-duplicate")
-    dialog_box.dialog({
-      resizable: true,
-      height: 280,
-      width: 720,
-      modal: true,
-      buttons: @create_duplicate_message_buttons(data, new_parent_name_id,dialog_box)
-    })
+    dialog_box.dialog
+      resizable: true
+      height: 280
+      width: 720
+      modal: true
+      buttons: @create_duplicate_message_buttons(data, new_parent_name_id, dialog_box)
+
     @show_duplicate_message()
 
-
-  create_duplicate_message_buttons: (data,new_parent_name_id, dialog_box) =>
+  create_duplicate_message_buttons: (data, new_parent_name_id, dialog_box) =>
     button_hash = {}
+    # TODO This code is nasty. there's gotta be a better way.
     button_hash["Yes, create new combination"] = (a) =>
-      # This code is nasty. there's gotta be a better way.
       if (@get_radio_value() == 'homonym' || @get_radio_value() == 'secondary_junior_homonym')
         collision_resolution = 'homonym'
       else
         data_object = data[@get_radio_value()]
-        if(data_object['species'] != undefined)
+        if data_object['species'] != undefined
           collision_resolution = data_object['species'].id
-        else if (data_object['subspecies'] != undefined)
+        else if data_object['subspecies'] != undefined
           collision_resolution = data_object['subspecies'].id
       window.location.href = '/taxa/new?parent_name_id=' + new_parent_name_id +
         '&rank_to_create=' + @taxon_rank +
         '&previous_combination_id=' + @current_taxon_id() +
         '&collision_resolution=' + collision_resolution
+
     if @is_superadmin() == "true"
       button_hash["No, just change the parent"] =
         text: "No, just change the parent"
@@ -415,14 +405,13 @@ class AntCat.NameField extends AntCat.Panel
         new_parent_name_id +
         '&rank_to_create=' + @taxon_rank
 
-
     $.ajax
-      url: url,
-      type: 'get',
-      dataType: 'json',
+      url: url
+      type: 'get'
+      dataType: 'json'
       success: (data) =>
         @got_duplicate_data(data)
-      async: false,
+      async: false
       error: (xhr) => debugger
 
   # does synchronus ajax query
@@ -434,13 +423,14 @@ class AntCat.NameField extends AntCat.Panel
         "&new_parent_name_id=" +
         new_parent_name_id +
         "&match_name_only=true"
+
     $.ajax
-      url: url,
-      type: 'get',
-      dataType: 'json',
+      url: url
+      type: 'get'
+      dataType: 'json'
       success: (data) =>
         @got_duplicate_data(data)
-      async: false,
+      async: false
       error: (xhr) => debugger
 
   # Hit from check_for_duplicates; if there are no duplicates, carry on.
@@ -454,12 +444,9 @@ class AntCat.NameField extends AntCat.Panel
   hide_duplicate_message: =>
     $('.duplicate_message').hide()
 
-
   show_duplicate_message: =>
     $('.duplicate_message').show()
 
-
-# -----------------------------------------
 class AntCat.NameFieldForm extends AntCat.NestedForm
   constructor: (@element, @options = {}) ->
     @options.button_container = '.controls'
@@ -493,12 +480,13 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
     url += '?species_only=1' if @options.species_only
     url += '?genera_only=1' if @options.genera_only
     url += '?subfamilies_or_tribes_only=1' if @options.subfamilies_or_tribes_only
+
     $textbox.autocomplete(autoFocus: true, source: url, minLength: 3)
-    .data('uiAutocomplete')._renderItem = @render_item
+      .data('uiAutocomplete')._renderItem = @render_item
 
   # this is required to display HTML in the list
   render_item: (ul, item) =>
     $("<li>")
-    .data('item.autocomplete', item)
-    .append('<a>' + item.label + '</a>')
-    .appendTo ul
+      .data('item.autocomplete', item)
+      .append('<a>' + item.label + '</a>')
+      .appendTo ul
