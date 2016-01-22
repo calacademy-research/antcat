@@ -7,13 +7,6 @@ module ButtonHelper
     make_button label, id, 'button', parameters, extra_classes
   end
 
-  def button_to_path label, path, parameters = {}
-    string = button_to label, path, parameters
-    classes = get_css_classes parameters
-    string.gsub! /<input /, "<input class=\"#{classes}\" "
-    string.html_safe
-  end
-
   private
     def make_button label, id, type, parameters = {}, extra_classes = []
       parameters = parameters.dup
