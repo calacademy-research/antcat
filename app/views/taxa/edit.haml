@@ -29,7 +29,6 @@
     = hidden_field_tag 'parent_id', @parent_id
     = hidden_field_tag 'add_taxon_path', @add_taxon_path
     = hidden_field_tag 'add_tribe_path', @add_tribe_path
-    = hidden_field_tag 'cancel_path', @cancel_path
     = hidden_field_tag 'convert_to_subspecies_path', @convert_to_subspecies_path
     = hidden_field_tag 'taxon_rank', @taxon.rank
     = hidden_field_tag 'species_id', @taxon.rank.to_s == "subspecies" ?  @taxon.species_id : true
@@ -49,6 +48,7 @@
       -#Passed to the buttons widget (javascript) to control how the buttons look and behave. Populated
       -#by the taxa_controller.
       = render 'buttons_section',                   form: form,                                                              |
+                                                      taxon:                             @taxon,                             |
                                                       possible_homonym:                  @possible_homonym,                  |
                                                       show_elevate_to_species_button:    @show_elevate_to_species_button,    |
                                                       show_convert_to_subspecies_button: @show_convert_to_subspecies_button, |

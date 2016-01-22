@@ -170,7 +170,6 @@ class TaxaController < ApplicationController
 
     def set_create_view_variables
       @user = current_user
-      @cancel_path = edit_taxa_path @parent_id
     end
 
     def set_update_view_variables
@@ -183,7 +182,6 @@ class TaxaController < ApplicationController
       end
 
       @add_tribe_path = new_taxa_path rank_to_create: Tribe, parent_id: @taxon.id
-      @cancel_path = catalog_path @taxon
       @convert_to_subspecies_path = new_taxa_convert_to_subspecies_path @taxon.id
       @reset_epithet  = case @taxon
                         when Family then @taxon.name.to_s

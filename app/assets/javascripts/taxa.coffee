@@ -103,9 +103,6 @@ class AntCat.TaxonForm extends AntCat.Form
     else
       @homonym_replaced_by_name_row.hide()
 
-  ###### overrides
-  cancel: => window.location = $('#cancel_path').val()
-
   ###### client functions
   replace_junior_and_senior_synonyms_section: (content) =>
     $('.junior_and_senior_synonyms_section').replaceWith content
