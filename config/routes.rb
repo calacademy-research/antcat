@@ -49,7 +49,7 @@ AntCat::Application.routes.draw do
       post 'start_reviewing'
       post 'finish_reviewing'
       post 'restart_reviewing'
-      get  'endnote_export'
+      get 'endnote_export'
     end
   end
   resources :missing_references, only: [:index, :edit, :update]
@@ -89,12 +89,20 @@ AntCat::Application.routes.draw do
   resource :reference_popup, only: [:show]
   resource :duplicates, only: [:show, :create]
 
-  devise_for :users, :controllers => { :invitations => 'users/invitations' }
+  devise_for :users, :controllers => {:invitations => 'users/invitations'}
   resources :users, only: [:index]
 
-  namespace :api, defaults: {format: :json} do
-    resources :taxa
+
+  scope module: 'api' do
+    namespace :v1 do
+      resources :taxa
+    end
+    # For the next version...
+    # namespace :v2 do
+    #   resources :taxa
+    # end
   end
+
 
   resources :antweb_data, only: [:index]
 

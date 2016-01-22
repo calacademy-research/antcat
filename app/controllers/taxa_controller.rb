@@ -7,7 +7,6 @@ class TaxaController < ApplicationController
 
   helper ReferenceHelper
 
-  # TODO make more RESTful
   def new
     get_taxon :create
     set_view_variables :create
@@ -36,18 +35,7 @@ class TaxaController < ApplicationController
     save_taxon
   end
 
-  # rest endpoint - get taxa/[id]
-  def show
-    cur_id = params[:id]
-    begin
-      taxa = Taxon.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      render nothing: true, status: :not_found
-      return
-    end
 
-    render json: taxa, status: :ok
-  end
 
   def delete
     @user = current_user
