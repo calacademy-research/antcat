@@ -37,11 +37,8 @@ module ButtonHelper
       classes = (parameters[:class] || '').split ' '
       classes.concat jquery_css_classes
 
-      classes << if parameters.delete :secondary
-                   'ui-priority-secondary'
-                 else
-                   'ui-priority-primary'
-                 end
+      parameters.delete :secondary # legacy
+
       classes.concat extra_classes
       classes.sort.join ' '
     end

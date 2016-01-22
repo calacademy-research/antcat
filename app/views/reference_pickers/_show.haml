@@ -24,15 +24,15 @@
             = hidden_field_tag 'reference_picker_id', reference.try(:id)
 
             .ok_cancel_controls
-              %button.ok.ui-priority-primary.btn-normal OK
-              %button.close.ui-priority-secondary.btn-cancel Cancel
+              %button.ok.btn-normal OK
+              %button.close.btn-cancel Cancel
 
             .default_reference_controls
               = render partial: 'default_references/default_reference'
 
             .search_controls
               = text_field_tag 'q', params[:q], class: 'search_controls q'
-              %button.search_controls.go.ui-priority-primary.btn-search Go
+              %button.search_controls.go.btn-search Go
             = will_paginate references if references
             .help_banner
               %span.help_banner_text

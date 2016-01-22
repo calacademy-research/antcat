@@ -16,7 +16,7 @@
         %td.taxt_editor= render 'taxt_editors/show', name: 'references_taxt',value: Taxt.to_editable(item.references_taxt)
 
     .buttons
-      %button.submit.ui-priority-primary.btn-save Save
-      %button.cancel.ui-priority-secondary.btn-cancel Cancel
+      %button.submit.btn-save Save
+      %button.cancel.btn-cancel Cancel
       - if item.persisted?
-        %button.delete.ui-priority-secondary.btn-delete Delete
+        %button.delete.btn-delete Delete

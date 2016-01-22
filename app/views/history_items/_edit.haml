@@ -8,7 +8,7 @@
       = render 'taxt_editors/show', name: 'taxt', value: Taxt.to_editable(item.taxt)
 
     .buttons
-      %button.submit.ui-priority-primary.btn-save Save
-      %button.cancel.ui-priority-secondary.btn-cancel Cancel
+      %button.submit.btn-save Save
+      %button.cancel.btn-cancel Cancel
       - if item.persisted?
-        %button.delete.ui-priority-secondary.btn-delete Delete
+        %button.delete.btn-delete Delete
