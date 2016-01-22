@@ -14,9 +14,6 @@ class AntCat.AuthorForm extends AntCat.Form
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
 
-  ###### overrides
-  cancel: => window.location = $('#cancel_path').val()
-
   ###### client functions
   add_author_name_panel: ($panel) =>
     @element.find('.author_names').append $panel
