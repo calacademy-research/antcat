@@ -1,4 +1,3 @@
-@javascript
 Feature: Elevating subspecies to species
   As an editor of AntCat
   I want to make a subspecies a species

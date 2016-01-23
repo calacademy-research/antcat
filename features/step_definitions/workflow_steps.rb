@@ -12,7 +12,8 @@ Given /^there is a genus "([^"]*)" that's waiting for approval$/ do |name|
   genus.taxon_state.review_state = :waiting
   genus.save
   change = FactoryGirl.create :change, user_changed_taxon_id: genus.id
-  version = FactoryGirl.create :version, item_id: genus.id, whodunnit: 1, change_id: change.id
+  whodunnit = User.first.id
+  version = FactoryGirl.create :version, item_id: genus.id, whodunnit: whodunnit, change_id: change.id
 end
 
 ####

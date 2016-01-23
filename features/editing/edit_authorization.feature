@@ -1,6 +1,4 @@
-@javascript
 Feature: Editing a taxon with authorization constraints
-
   Background:
     Given the Formicidae family exists
     Given that version tracking is enabled
@@ -18,8 +16,8 @@ Feature: Editing a taxon with authorization constraints
     And I should not see a "Delete" button
 
   Scenario: Trying to edit a taxon that's waiting for approval
+    Given I log in as a catalog editor
     Given there is a genus "Calyptites" that's waiting for approval
-    And I log in as a catalog editor
     When I go to the catalog page for "Calyptites"
     Then I should see an "Edit" button
     And I should see "Review change"
@@ -33,8 +31,8 @@ Feature: Editing a taxon with authorization constraints
     And I should see a "Delete" button
 
   Scenario: Trying to edit a taxon that's waiting for approval
+    Given I log in as a catalog editor
     Given there is a genus "Calyptites" that's waiting for approval
-    And I log in as a catalog editor
     When I go to the catalog page for "Calyptites"
     Then I should see an "Edit" button
     And I should see "Review change"
