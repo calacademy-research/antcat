@@ -74,6 +74,7 @@ AntCat::Application.routes.draw do
     end
     member do
       put :elevate_to_species
+      delete :destroy_unreferenced
     end
     resources :taxon_history_items, only: [:update, :create, :destroy]
     resources :reference_sections, only: [:update, :create, :destroy]

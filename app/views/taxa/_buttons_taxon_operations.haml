@@ -1,5 +1,4 @@
 .right_buttons
-  %input{type: :hidden, name: :task_button_command, id: :task_button_command}
   -if add_taxon_button_text
     = button add_taxon_button_text, :add_taxon, class: "btn-new"
 
@@ -13,4 +12,4 @@
     = link_to 'Elevate to species', elevate_to_species_taxa_path(@taxon), method: :put, class: "btn-new", data: { confirm: "Are you sure you want to elevate this subspecies to species?" }
 
   -if show_delete_taxon_button
-    = button 'Delete', :delete_taxon, {}, ["btn-delete"]
+    = link_to 'Delete', destroy_unreferenced_taxa_path(@taxon), method: :delete, class: "btn-delete", data: { confirm: "Are you sure you want to delete this taxon? Note: It may take a few moments to check that this taxon isn't being referenced." }

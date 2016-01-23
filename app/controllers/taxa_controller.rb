@@ -2,7 +2,7 @@ class TaxaController < ApplicationController
   before_filter :authenticate_editor, :get_params, :create_mother
   before_filter :authenticate_superadmin, only: [:destroy]
   before_filter :redirect_by_parent_name_id, only: :new
-  before_filter :set_taxon, only: [:elevate_to_species]
+  before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced]
   skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
   def new
@@ -27,7 +27,6 @@ class TaxaController < ApplicationController
     get_taxon_for_update
     set_update_view_variables
     setup_edit_buttons
-    return delete_taxon if @delete_taxon
     save_taxon
   end
 
@@ -54,6 +53,23 @@ class TaxaController < ApplicationController
       format.html { redirect_to root_url }
       format.json { head :no_content }
     end
+  end
+
+  # "Light version" of #destroy (which is for superadmins only). This method
+  # allows editors to delete a taxon if there are no [non-taxt] references to it.
+  def destroy_unreferenced
+    references = @taxon.references
+    if references.empty?
+      @taxon.destroy
+    else
+      redirect_to edit_taxa_path(@taxon), notice: <<-MSG.squish
+        Other taxa refer to this taxon, so it can't be deleted.
+        Please talk to Stan (sblum@calacademy.org) to determine a solution.
+        The items referring to this taxon are: #{references}.
+      MSG
+      return
+    end
+    redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully destroyed."
   end
 
   # The parent is updated via taxon_id.
@@ -112,7 +128,6 @@ class TaxaController < ApplicationController
       @parent_id = params[:parent_id]
       @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
       @taxon_params = params[:taxon]
-      @delete_taxon = params[:task_button_command] == 'delete_taxon'
       @collision_resolution = params[:collision_resolution]
     end
 
@@ -209,24 +224,6 @@ class TaxaController < ApplicationController
         add_taxon_button_text: ("Add #{rank_to_add}" if rank_to_add),
         add_tribe_button_text: ("Add tribe" if @taxon.kind_of? Subfamily)
       }
-    end
-
-    # Not the same as #destroy (which is for superadmins only). This method
-    # allows editors to delete taxa if certain conditions are met (see
-    # #setup_edit_buttons for when this action is available in the GUI).
-    def delete_taxon
-      references = @taxon.references
-      if references.empty?
-        @taxon.destroy
-      else
-        @taxon.errors[:base] = <<-MSG.squish
-          Other taxa refer to this taxon, so it can't be deleted.
-          Please talk to Stan (sblum@calacademy.org) to determine a solution.
-          The items referring to this taxon are: #{references}.
-        MSG
-        render :edit and return
-      end
-      redirect_to catalog_path @taxon.parent
     end
 
     def redirect_by_parent_name_id
