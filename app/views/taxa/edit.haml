@@ -29,7 +29,6 @@
     = hidden_field_tag 'parent_id', @parent_id
     = hidden_field_tag 'add_taxon_path', @add_taxon_path
     = hidden_field_tag 'add_tribe_path', @add_tribe_path
-    = hidden_field_tag 'convert_to_subspecies_path', @convert_to_subspecies_path
     = hidden_field_tag 'taxon_rank', @taxon.rank
     = hidden_field_tag 'species_id', @taxon.rank.to_s == "subspecies" ?  @taxon.species_id : true
     = hidden_field_tag 'taxon_name_string', @taxon.name_cache

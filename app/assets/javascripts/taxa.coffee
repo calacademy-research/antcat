@@ -84,7 +84,6 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.find('#add_tribe').click => @add_tribe(); false
     @element.find('#elevate_to_species').click => @elevate_to_species(); false
     @element.find('#delete_taxon').click => @delete_taxon(); false
-    @element.find('#convert_to_subspecies').click => @convert_to_subspecies(); false
 
   initialize_events: =>
     @element.bind 'keydown', (event) ->
@@ -118,9 +117,6 @@ class AntCat.TaxonForm extends AntCat.Form
     return unless confirm "Note: It may take a few moments to check that this taxon isn't being referenced."
     $('#task_button_command').val('delete_taxon')
     @submit()
-
-  convert_to_subspecies: =>
-    window.location = $('#convert_to_subspecies_path').val()
 
   add_taxon: =>
     window.location = $('#add_taxon_path').val()
