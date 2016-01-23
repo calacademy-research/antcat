@@ -22,7 +22,7 @@ Feature: Adding a taxon
     Given there is a genus "Eciton"
     When I go to the catalog page for "Formicinae"
       And I press "Edit"
-      And I press "Add genus"
+      And I follow "Add genus"
     Then I should be on the new taxon page
     When I click the name field
       And I set the name to "Atta"
@@ -52,7 +52,7 @@ Feature: Adding a taxon
     Given tribe "Ecitonini" exists in that subfamily
     When I go to the catalog page for "Ecitonini"
       And I press "Edit"
-      And I press "Add genus"
+      And I follow "Add genus"
       And I click the name field
       And I set the name to "Eciton"
       And I press "OK"
@@ -73,7 +73,7 @@ Feature: Adding a taxon
   Scenario: Adding a genus without setting authorship reference
     Given there is a genus "Eciton"
     When I go to the edit page for "Formicinae"
-    And I press "Add genus"
+    And I follow "Add genus"
     Then I should be on the new taxon page
     When I click the name field
       And I set the name to "Atta"
@@ -90,7 +90,7 @@ Feature: Adding a taxon
 
   Scenario: Having an error, but leave fields as user entered them
     When I go to the edit page for "Formicinae"
-    And I press "Add genus"
+    And I follow "Add genus"
     And I click the name field
       And I set the name to "Atta"
       And I press "OK"
@@ -103,7 +103,7 @@ Feature: Adding a taxon
 
   Scenario: Cancelling
     And I go to the edit page for "Formicinae"
-    And I press "Add genus"
+    And I follow "Add genus"
     And I press "Cancel"
     Then I should be on the edit page for "Formicinae"
 
@@ -112,7 +112,7 @@ Feature: Adding a taxon
     Given there is a genus "Eciton"
     When I go to the catalog page for "Eciton"
     And I press "Edit"
-    And I press "Add species"
+    And I follow "Add species"
     Then I should be on the new taxon page
     And I should see "new species of "
     And I should see "Eciton"
@@ -140,7 +140,7 @@ Feature: Adding a taxon
     And subgenus "Dolichoderus (Subdolichoderus)" exists in that genus
     When I go to the catalog page for "Dolichoderus (Subdolichoderus)"
     And I press "Edit"
-    And I press "Add species"
+    And I follow "Add species"
     Then I should be on the new taxon page
     And I should see "new species of "
     And I should see "Dolichoderus (Subdolichoderus)"
@@ -163,7 +163,7 @@ Feature: Adding a taxon
   Scenario: Using a genus's type-species for the name of a species
     When I go to the catalog page for "Formicinae"
     And I press "Edit"
-    And I press "Add genus"
+    And I follow "Add genus"
     And I click the name field
       And I set the name to "Atta"
       And I press "OK"
@@ -183,7 +183,7 @@ Feature: Adding a taxon
     And the changes are approved
     And I go to the catalog page for "Atta"
     And I press "Edit"
-    And I press "Add species"
+    And I follow "Add species"
     When I click the name field
       And I set the name to "Atta major"
       And I press "OK"
@@ -204,7 +204,7 @@ Feature: Adding a taxon
     And there is a species "Eciton major" with genus "Eciton"
     When I go to the catalog page for "Eciton major"
     And I press "Edit"
-    And I press "Add subspecies"
+    And I follow "Add subspecies"
     Then I should be on the new taxon page
     And I should see "new subspecies of Eciton major"
     When I click the name field
@@ -227,7 +227,7 @@ Feature: Adding a taxon
   Scenario: Adding a subfamily
     When I go to the main page
       And I press "Edit"
-      And I press "Add subfamily"
+      And I follow "Add subfamily"
     Then I should be on the new taxon page
     When I click the name field
       And I set the name to "Dorylinae"

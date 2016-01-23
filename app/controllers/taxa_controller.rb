@@ -190,12 +190,6 @@ class TaxaController < ApplicationController
     end
 
     def set_update_view_variables
-      if @collision_resolution
-        @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id, collision_resolution: @collision_resolution
-      else
-        @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
-      end
-
       @reset_epithet  = case @taxon
                         when Family then @taxon.name.to_s
                         when Species then @taxon.name.genus_epithet

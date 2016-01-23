@@ -29,7 +29,6 @@ class AntCat.TaxonForm extends AntCat.Form
     @initialize_references_section()
     @initialize_current_valid_taxon_section()
     @initialize_homonym_replaced_by_section()
-    @initialize_task_buttons()
     @initialize_events()
     @original_submit = null
     super
@@ -79,10 +78,6 @@ class AntCat.TaxonForm extends AntCat.Form
     @current_valid_taxon_name_row = $ 'tr#current_valid_taxon_row'
     new AntCat.CurrentValidTaxonSection $('#current_valid_taxon_name_field'), parent_form: @
 
-  initialize_task_buttons: =>
-    @element.find('#add_taxon').click => @add_taxon(); false
-    @element.find('#add_tribe').click => @add_tribe(); false
-
   initialize_events: =>
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
@@ -104,9 +99,6 @@ class AntCat.TaxonForm extends AntCat.Form
   replace_junior_and_senior_synonyms_section: (content) =>
     $('.junior_and_senior_synonyms_section').replaceWith content
     @initialize_junior_and_senior_synonyms_section()
-
-  add_taxon: =>
-    window.location = $('#add_taxon_path').val()
 
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel

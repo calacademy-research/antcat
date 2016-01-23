@@ -1,6 +1,4 @@
-
 Feature: Workflow
-
   Background:
     Given the Formicidae family exists
     Given I log in as a catalog editor named "Mark Wilden"
@@ -15,7 +13,7 @@ Feature: Workflow
   Scenario: Adding a taxon and seeing it on the Changes page
     When I go to the catalog page for "Formicinae"
     * I press "Edit"
-    * I press "Add genus"
+    * I follow "Add genus"
     * I click the name field
     * I set the name to "Atta"
     * I press "OK"
@@ -68,6 +66,7 @@ Feature: Workflow
     * I should see a reference section "Reference section" in the changes
     When I follow "Atta"
     Then I should be on the catalog page for "Atta"
+
   @javascript
   Scenario: Approving a change
     When I add the genus "Atta"
