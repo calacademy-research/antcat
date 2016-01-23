@@ -2,7 +2,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require debugging
-//= require application_coffee
+//= require site
 //= require_tree ./ext
 //= require jquery-ui
 //= require twitter/typeahead
