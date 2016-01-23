@@ -40,7 +40,7 @@ Feature: Workflow
     Then I should see "Formicinae"
     And I should see "Mark Wilden changed Formicinae"
     * I should see the notes "asdfgh" in the changes
-    When I press "Undo"
+    When I follow "Undo"
     Then I should see "This undo will roll back the following changes"
     And I should see "Formicinae"
     And I should see "changed by Mark Wilden"
