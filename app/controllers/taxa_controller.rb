@@ -27,6 +27,7 @@ class TaxaController < ApplicationController
   def update
     get_taxon_for_update
     set_update_view_variables
+    setup_edit_buttons
     # TODO move `elevate_to_species` and `delete_taxon` to their own routes
     return elevate_to_species if @elevate_to_species
     return delete_taxon if @delete_taxon
@@ -202,12 +203,15 @@ class TaxaController < ApplicationController
     end
 
     def setup_edit_buttons
-      @show_elevate_to_species_button = @taxon.kind_of? Subspecies
-      @show_convert_to_subspecies_button = @taxon.kind_of? Species
-      @show_delete_taxon_button = @taxon.nontaxt_references.empty?
-      string = Rank[@taxon].child.try :string
-      @add_taxon_button_text = "Add #{string}" if string
-      @add_tribe_button_text = "Add tribe" if @taxon.kind_of? Subfamily
+      rank_to_add = Rank[@taxon].child.try :string
+
+      @buttons_section_local_variables = {
+        show_elevate_to_species_button: @taxon.kind_of?(Subspecies),
+        show_convert_to_subspecies_button: @taxon.kind_of?(Species),
+        show_delete_taxon_button: @taxon.nontaxt_references.empty?, # TODO check taxt references
+        add_taxon_button_text: ("Add #{rank_to_add}" if rank_to_add),
+        add_tribe_button_text: ("Add tribe" if @taxon.kind_of? Subfamily)
+      }
     end
 
     def elevate_to_species
