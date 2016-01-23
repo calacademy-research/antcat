@@ -19,7 +19,7 @@
     .expansion.nested_form
       %table
         %tr
-          %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
+          %td.throbber= shared_spinner_icon
           %td.controls
             = hidden_field_tag 'reference_picker_id', reference.try(:id)
 

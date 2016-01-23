@@ -116,6 +116,10 @@ module ApplicationHelper
     "<span class='spinner'><i class='fa fa-refresh fa-spin'></i></span>".html_safe
   end
 
+  def shared_spinner_icon
+    "<span class='shared-spinner'><i class='fa fa-refresh fa-spin'></i></span>".html_safe
+  end
+
   # duplicated from ReferenceDecorator
   def format_italics string
     return unless string

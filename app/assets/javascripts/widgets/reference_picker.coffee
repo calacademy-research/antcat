@@ -52,7 +52,9 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @edit_section.is ':visible'
 
   start_throbbing: =>
-    @element.find('.throbber img').show()
+    # Calling twice or else the spinner will not show on the first loading, sorry about that
+    @element.find('.throbber .shared-spinner').show()
+    @element.find('.throbber .shared-spinner').show()
     @element.find('> .expansion > .controls').disable()
 
   #---------------------------------
