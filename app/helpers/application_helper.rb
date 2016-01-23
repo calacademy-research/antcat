@@ -2,7 +2,6 @@ require 'milieu'
 
 module ApplicationHelper
   include LinkHelper
-  include ButtonHelper
 
   def user_can_edit?
     $Milieu.user_can_edit? current_user
