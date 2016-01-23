@@ -6,7 +6,6 @@ class TaxaController < ApplicationController
 
   def new
     get_taxon_for_create
-    set_create_view_variables
     get_default_name_string
     set_authorship_reference
     render :edit
@@ -14,7 +13,6 @@ class TaxaController < ApplicationController
 
   def create
     get_taxon_for_create
-    set_create_view_variables
     save_taxon
   end
 
@@ -169,13 +167,7 @@ class TaxaController < ApplicationController
       end
     end
 
-    def set_create_view_variables
-      @user = current_user
-    end
-
     def set_update_view_variables
-      @user = current_user
-
       if @collision_resolution
         @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id, collision_resolution: @collision_resolution
       else
