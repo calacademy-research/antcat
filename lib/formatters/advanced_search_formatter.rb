@@ -47,7 +47,6 @@ module Formatters::AdvancedSearchFormatter
     string << reference.decorate.format
     string << ' ' << document_link(reference.key) if document_link(reference.key)
     string << ' ' << goto_reference_link(reference.key) if goto_reference_link(reference.key)
-    string << reference_id(reference)
     string
   end
 
