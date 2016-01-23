@@ -122,6 +122,12 @@ Given /^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and 
   history = 'none' unless history.present?
   taxon.history_items.create! taxt: history
 end
+Given /^a non-displayable genus exists with a name of "(.*?)" and a subfamily of "(.*?)"$/ do |taxon_name, subfamily_name|
+  subfamily = (Subfamily.find_by_name(subfamily_name) || FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: subfamily_name)))
+  FactoryGirl.create :taxon_state, taxon_id: subfamily.id
+  taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: taxon_name), subfamily: subfamily, tribe: nil, status: 'valid', display: false
+  FactoryGirl.create :taxon_state, taxon_id: taxon.id
+end
 Given /a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, history|
   another_genus = FactoryGirl.create(:genus_name, name: taxon_name)
   FactoryGirl.create :taxon_state, taxon_id: another_genus.id

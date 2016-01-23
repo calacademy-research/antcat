@@ -118,3 +118,10 @@ Feature: Using the catalog
     And "Dolichoderinae" should be selected in the subfamilies index
     And I should see "Dolichoderinae history"
 
+  Scenario: Not showing non-displayable taxa
+    Given a non-displayable genus exists with a name of "Lasius" and a subfamily of "Dolichoderinae"
+    When I go to the catalog
+    And I follow "Dolichoderinae" in the index
+    And I screenshot
+    Then I should not see "Lasius" in the genera index
+    And I should see "Brownerus" in the genera index
