@@ -19,7 +19,6 @@ $ ->
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
 
   $('#delete_button')
-    .button()
     .click =>
       taxon_id = $('#delete_button').data('taxon-id')
       url = "/catalog/delete_impact_list/" + taxon_id
