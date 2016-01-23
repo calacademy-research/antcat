@@ -9,6 +9,13 @@
 splitter_top = 0
 taxon_height = null
 
+class AntCat.Splitter
+  constructor: (@element, @on_change) ->
+    @element.draggable(axis: 'y', cursor: 'row-resize', stop: @stop)
+
+  stop: =>
+    @on_change(@element.css('top')) if @on_change
+
 $ ->
   taxon_height_cookie = parseFloat Cookies.get('taxon_height')
   taxon_height = taxon_height_cookie if taxon_height_cookie
