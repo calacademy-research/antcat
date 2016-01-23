@@ -4,7 +4,6 @@
 //= require debugging
 //= require site
 //= require_tree ./ext
-//= require jquery-ui
 //= require twitter/typeahead
 //= require best_in_place
 //= require js.cookie
