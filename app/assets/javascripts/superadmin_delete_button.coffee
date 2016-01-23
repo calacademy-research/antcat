@@ -4,12 +4,12 @@ $ ->
       taxon_id = $('#delete_button').data('taxon-id')
       url = "/catalog/delete_impact_list/" + taxon_id
       $.ajax
-        url: url,
-        type: 'get',
-        dataType: 'json',
+        url: url
+        type: 'get'
+        dataType: 'json'
         success: (data) =>
-          confirm_delete_dialog(data,$('#delete_button').data('delete-location'))
-        async: false,
+          confirm_delete_dialog(data, $('#delete_button').data('delete-location'))
+        async: false
         error: (xhr) => debugger
 
 confirm_delete_dialog = (data, destination) ->
@@ -18,11 +18,10 @@ confirm_delete_dialog = (data, destination) ->
          <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>'
 
   message = message + '<ul>'
-  for i in [1..data.length] by 1
-    j = i - 1
-    item = data[j]
-    for k,v of item
-      if(k != '__proto__')
+  for i in [0..data.length-1] by 1
+    item = data[i]
+    for k, v of item
+      if k != '__proto__'
         item = v
     message = message + '<li>' + item.name_html_cache + ", " + item.authorship_string + ": " + "created at: " + item.created_at
 
@@ -33,18 +32,18 @@ confirm_delete_dialog = (data, destination) ->
   @delete_message.append(message)
   dialog_box = $("#delete-modal")
   dialog_box.dialog
-    resizable: true,
-    height: 280,
-    width: 720,
-    modal: true,
+    resizable: true
+    height: 280
+    width: 720
+    modal: true
     buttons:
       "Delete?": (a) =>
         $.ajax
-          url: destination,
-          type: 'DELETE',
-          dataType: 'json',
+          url: destination
+          type: 'DELETE'
+          dataType: 'json'
           success: (data) -> window.location.href = "/"
-          async: false,
+          async: false
           error: (xhr) => debugger
       "Cancel":
         id: "Cancel-Dialog"
