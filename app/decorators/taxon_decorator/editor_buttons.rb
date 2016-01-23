@@ -30,7 +30,7 @@ module TaxonDecorator::EditorButtons
     def link_to_delete_taxon
       if get_current_user.try :is_superadmin?
         helpers.link_to 'Delete', "#", id: "delete_button", class: "btn-delete",
-          data: { 'data-delete-location' => helpers.taxa_path(taxon), "taxon-id" => taxon.id }
+          data: { 'delete-location' => helpers.taxa_path(taxon), "taxon-id" => taxon.id }
       end
     end
 end
