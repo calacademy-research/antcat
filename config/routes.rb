@@ -36,8 +36,6 @@ AntCat::Application.routes.draw do
   # TODO remove?
   get 'catalog/index/(:id)' => 'catalog#show', as: :catalog_index # for compatibility
   get 'catalog/(:id)' => 'catalog#show', as: :catalog
-  # TODO move to TaxaController
-  get 'catalog/delete_impact_list/(:id)' => 'catalog#delete_impact_list', as: :catalog_delete_impact_list
 
   get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
   resources :journals, only: [:index, :show, :new, :create, :edit, :update] do
@@ -73,6 +71,7 @@ AntCat::Application.routes.draw do
       get :autocomplete
     end
     member do
+      get :delete_impact_list
       put :elevate_to_species
       delete :destroy_unreferenced
     end

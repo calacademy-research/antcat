@@ -103,6 +103,16 @@ class TaxaController < ApplicationController
     redirect_to catalog_path(@taxon), notice: "Subspecies was successfully elevated a species."
   end
 
+  # Return all the taxa that would be deleted if we delete this
+  # particular ID, inclusive. Same as children, really.
+  def delete_impact_list
+    mother = TaxonMother.new(params[:id])
+    mother.load_taxon
+    taxon_array = mother.get_children
+
+    render json: taxon_array, status: :ok
+  end
+
   def autocomplete
     q = params[:q] || ''
     search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)

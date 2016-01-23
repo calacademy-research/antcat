@@ -66,16 +66,6 @@ class CatalogController < ApplicationController
     redirect_to_id @id
   end
 
-  # Return all the taxa that would be deleted if we delete this
-  # particular ID, inclusive. Same as children, really.
-  def delete_impact_list
-    mother = TaxonMother.new(@id)
-    mother.load_taxon
-    taxon_array = mother.get_children
-
-    render json: taxon_array, status: :ok
-  end
-
   private
     # Avoid blowing up if there's no family. Useful in test and dev.
     def handle_family_not_found

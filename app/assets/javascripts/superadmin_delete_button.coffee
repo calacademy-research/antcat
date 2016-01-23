@@ -2,7 +2,7 @@ $ ->
   $('#delete_button')
     .click =>
       taxon_id = $('#delete_button').data('taxon-id')
-      url = "/catalog/delete_impact_list/" + taxon_id
+      url = "/taxa/#{taxon_id}/delete_impact_list"
       $.ajax
         url: url
         type: 'get'
