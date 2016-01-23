@@ -47,7 +47,6 @@ Feature: Logging in
     * I follow "forgot password"
     Then I should be on the forgot password page
 
-  @javascript
   Scenario: Returning to previous page
     Given I am not logged in
     * I go to the references page

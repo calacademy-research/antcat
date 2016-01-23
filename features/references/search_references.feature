@@ -1,4 +1,4 @@
-@javascript @search
+@search
 Feature: Searching references
   As a user of AntCat
   I want to search for references
@@ -134,6 +134,7 @@ Feature: Searching references
     Then I should not see "Known"
     And I should see "Unknown"
 
+  @javascript
   Scenario: Search using autocomplete
     When I go to the references page
     And I fill in the search box with "bolt"
@@ -143,6 +144,7 @@ Feature: Searching references
       | Formis |
       | Anthill |
 
+  @javascript
   Scenario: Search using autocomplete keywords
     Given these references exists
       | authors    | year | citation_year | title                  | citation      |
@@ -155,6 +157,7 @@ Feature: Searching references
     And I should not see the following autocomplete suggestions:
       | Fisher's Favorite Ants |
 
+  @javascript
   Scenario: Expanding autocomplete suggestions
     When I go to the references page
     And I fill in the search box with "author:fish"

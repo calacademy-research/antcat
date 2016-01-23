@@ -1,4 +1,4 @@
-@dormant @javascript
+@dormant
 Feature: Edit reference
   As Phil Ward
   I want to change previously entered references
@@ -15,6 +15,7 @@ Feature: Edit reference
     When I go to the references page
     Then I should not see "New"
 
+  @javascript
   Scenario: Edit a reference
     Given these dated references exist
       | authors | citation   | cite_code | created_at  | date     | possess | title | updated_at  | year | doi |
@@ -28,6 +29,7 @@ Feature: Edit reference
     And I press the "Save" button
     And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
+  @javascript
   Scenario: Change a reference's year
     Given I am logged in
     And these dated references exist
@@ -40,6 +42,7 @@ Feature: Edit reference
     And I press the "Save" button
     Then I should see "Aho, B.L. 1910a"
 
+  @javascript
   Scenario: Change a reference's type
     Given I am logged in
     And these dated references exist
@@ -54,6 +57,7 @@ Feature: Edit reference
     And I press the "Save" button
     Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
 
+  @javascript
   Scenario: See the correct tab initially
     Given I am logged in
     And these book references exist
@@ -66,6 +70,7 @@ Feature: Edit reference
     And I press the "Save" button
     Then I should see "Fisher, B. 2010. Ants. New York: Harcourt, 22 pp."
 
+  @javascript
   Scenario: See the correct tab initially
     Given I am logged in
     And this unknown reference exists
@@ -78,6 +83,7 @@ Feature: Edit reference
     And I press the "Save" button
     Then I should see "Fisher, B. 2010. Ants. New Jersey."
 
+  @javascript
   Scenario: Clearing a book reference's fields
     Given I am logged in
     And these book references exist
@@ -97,6 +103,7 @@ Feature: Edit reference
     And I should see "Publisher can't be blank"
     And I should see "Pagination can't be blank"
 
+  @javascript
   Scenario: Clearing an article reference's fields
     # TODO pending
     Given I am logged in
@@ -119,6 +126,7 @@ Feature: Edit reference
     And I should see "Series volume issue can't be blank"
     And I should see "Pagination can't be blank"
 
+  @javascript
   Scenario: Clearing an unknown reference's fields
     Given I am logged in
     And these unknown references exist
@@ -137,6 +145,7 @@ Feature: Edit reference
     And I should see "Year can't be blank"
     And I should see "Citation can't be blank"
 
+  @javascript
   Scenario: Specifying the document URL
     Given I am logged in
     And these dated references exist
@@ -165,6 +174,7 @@ Feature: Edit reference
     #And I go to the references page
     #Then I should see a "PDF" link
 
+  @javascript
   Scenario: Adding the authors' role
     Given I am logged in
     And these dated references exist
@@ -177,6 +187,7 @@ Feature: Edit reference
     And I press the "Save" button
     Then I should see "Ward, P.S. (ed.)"
 
+  @javascript
   Scenario: Removing the authors' role
     Given I am logged in
     And these dated references exist
@@ -190,6 +201,7 @@ Feature: Edit reference
     And I press the "Save" button
     Then I should see "Ward, P.S."
 
+  @javascript
   Scenario: Specifying the document URL when it doesn't exist
     Given I am logged in
     And these dated references exist
@@ -212,6 +224,7 @@ Feature: Edit reference
     When I follow "Edit"
     And I should see the reference's ID beside its label
 
+  @javascript
   Scenario: Edit a nested reference
     Given I am logged in
     And these dated references exist
@@ -228,6 +241,7 @@ Feature: Edit reference
     And I press the "Save" button
     Then I should see "Bolton, B. 2001. Ants are my life. Pp. 32 in: Ward, P.S. 2001. Ants. Psyche 5:3"
 
+  @javascript
   Scenario: Edit a nested reference and changing its nestee to itself
     Given I am logged in
     And these dated references exist
@@ -266,6 +280,7 @@ Feature: Edit reference
     #And I press the "Save" button
     #Then I should see "nesting_reference can't be blank"
 
+  @javascript
   Scenario: Cancelling edit after an error
     Given I am logged in
     And there are no references

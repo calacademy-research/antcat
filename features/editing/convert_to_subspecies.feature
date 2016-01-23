@@ -1,9 +1,9 @@
-@javascript
 Feature: Converting a species to a subspecies
   As an editor of AntCat
   I want to make a species a subspecies
   So the data is correct
 
+  @javascript
   Scenario: Converting a species to a subspecies
     Given there is a species "Camponotus dallatorei" with genus "Camponotus"
     And there is a species "Camponotus alii" with genus "Camponotus"
@@ -20,6 +20,7 @@ Feature: Converting a species to a subspecies
     When I go to the edit page for "Camponotus alii dallatorei"
     Then I should see "subspecies of Camponotus alii"
 
+  @javascript
   Scenario: Converting a species to a subspecies when it already exists
     Given there is a subspecies "Camponotus alii dallatorei" with genus "Camponotus" and no species
     And there is a species "Camponotus dallatorei" with genus "Camponotus"
@@ -33,6 +34,7 @@ Feature: Converting a species to a subspecies
     And I press "OK"
     Then I should see "The subspecies 'Camponotus alii dallatorei' already exists."
 
+  @javascript
   Scenario: Converting a species to a subspecies when the species has subspecies
     Given there is a species "Camponotus alii"
     And there is a subspecies "Camponotus alii major" which is a subspecies of "Camponotus alii"
@@ -45,6 +47,7 @@ Feature: Converting a species to a subspecies
     And I press "OK"
     Then I should see "This species has subspecies of its own"
 
+  @javascript
   Scenario: Leaving the species blank
     Given there is a species "Camponotus dallatorei" with genus "Camponotus"
     And there is a species "Camponotus alii" with genus "Camponotus"
