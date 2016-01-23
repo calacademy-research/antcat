@@ -88,29 +88,29 @@ class CatalogController < ApplicationController
       @taxon = Taxon.find(id)
 
       if session[:show_unavailable_subfamilies]
-        @subfamilies = ::Subfamily.all.ordered_by_name.where("display != false")
+        @subfamilies = Subfamily.displayable.ordered_by_name
       else
-        @subfamilies = ::Subfamily.all.ordered_by_name.where("status != 'unavailable' and display != false")
+        @subfamilies = Subfamily.displayable.ordered_by_name.where.not(status: 'unavailable')
       end
 
       case @taxon
       when Family
         if @child == 'none'
           @subfamily = 'none'
-          @genera = Genus.where("display != false").without_subfamily.ordered_by_name
+          @genera = Genus.displayable.without_subfamily.ordered_by_name
         end
 
       when Subfamily
         @subfamily = @taxon
 
         if session[:show_tribes]
-          @tribes = @subfamily.tribes.where("display != false").ordered_by_name
+          @tribes = @subfamily.tribes.displayable.ordered_by_name
           if @child == 'none'
             @tribe = 'none'
-            @genera = @subfamily.genera.where("display != false").without_tribe.ordered_by_name
+            @genera = @subfamily.genera.displayable.without_tribe.ordered_by_name
           end
         else
-          @genera = @subfamily.genera.where("display != false").ordered_by_name
+          @genera = @subfamily.genera.displayable.ordered_by_name
         end
 
       when Tribe
@@ -118,17 +118,17 @@ class CatalogController < ApplicationController
         @subfamily = @tribe.subfamily
 
         session[:show_tribes] = true
-        @tribes = @tribe.siblings.where("display != false").ordered_by_name
-        @genera = @tribe.genera.where("display != false").ordered_by_name
+        @tribes = @tribe.siblings.displayable.ordered_by_name
+        @genera = @tribe.genera.displayable.ordered_by_name
 
       when Genus
         @genus = @taxon
         @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
         setup_genus_parent_columns
         if session[:show_subgenera]
-          @subgenera = @genus.subgenera.where("display != false").ordered_by_name
+          @subgenera = @genus.subgenera.displayable.ordered_by_name
         else
-          @specieses = @genus.species_group_descendants.where("display != false")
+          @specieses = @genus.species_group_descendants.displayable
         end
 
       when Subgenus
@@ -136,23 +136,23 @@ class CatalogController < ApplicationController
         @genus = @subgenus.genus
         @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
         session[:show_subgenera] = true
-        @subgenera = @genus.subgenera.where("display != false").ordered_by_name
+        @subgenera = @genus.subgenera.displayable.ordered_by_name
         setup_genus_parent_columns
-        @specieses = @subgenus.species_group_descendants.where("display != false")
+        @specieses = @subgenus.species_group_descendants.displayable
 
       when Species
         @species = @taxon
         @genus = @species.genus
         @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
         setup_genus_parent_columns
-        @specieses = @genus.species_group_descendants.where("display != false")
+        @specieses = @genus.species_group_descendants.displayable
 
       when Subspecies
         @species = @taxon
         @genus = @species.genus
         @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
         setup_genus_parent_columns
-        @specieses = @genus.species_group_descendants.where("display != false")
+        @specieses = @genus.species_group_descendants.displayable
       end
     end
 
@@ -160,9 +160,9 @@ class CatalogController < ApplicationController
       if session[:show_tribes]
         @genera = @genus.siblings.ordered_by_name
         @tribe = @genus.tribe ? @genus.tribe : 'none'
-        @tribes = @subfamily == 'none' ? nil : @subfamily.tribes.where("display != false").ordered_by_name
+        @tribes = @subfamily == 'none' ? nil : @subfamily.tribes.displayable.ordered_by_name
       else
-        @genera = @subfamily == 'none' ? Genus.without_subfamily.ordered_by_name : @subfamily.genera.where("display != false").ordered_by_name
+        @genera = @subfamily == 'none' ? Genus.without_subfamily.ordered_by_name : @subfamily.genera.displayable.ordered_by_name
       end
     end
 

@@ -37,6 +37,8 @@ class Taxon < ActiveRecord::Base
 
   before_save { |record| CleanNewlines::clean_newlines record, :headline_notes_taxt, :type_taxt }
 
+  scope :displayable, -> { where(display: true) }
+
   def delete_with_state!
     Taxon.transaction do
       taxon_state = self.taxon_state
