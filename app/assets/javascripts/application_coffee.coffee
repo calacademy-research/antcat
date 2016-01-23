@@ -3,18 +3,6 @@ $ ->
   setup_reference_keys()
   $('input[type=text]:visible:first').focus()
 
-AntCat.log = (message) ->
-  unless typeof console == 'undefined'
-    console.log message
-
-AntCat.check = (caller, object_name, object) ->
-  return if object and object.size() == 1
-  AntCat.log "#{caller}: #{object_name}.size() != 1"
-
-AntCat.check_nil = (caller, object_name, object) ->
-  return if object
-  AntCat.log "#{caller}: #{object_name} == nil"
-
 setup_login = ->
   $('#login .form').hide()
   $('#login a.link').click -> $('#login div').toggle()
