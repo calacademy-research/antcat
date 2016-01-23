@@ -47,7 +47,7 @@ class TaxaController < ApplicationController
     taxon = delete_mother.load_taxon
     delete_mother.delete_taxon taxon
 
-    flash[:notice] = "Taxon was successfully destroyed."
+    flash[:notice] = "Taxon was successfully deleted."
 
     respond_to do |format|
       format.html { redirect_to root_url }
@@ -69,7 +69,7 @@ class TaxaController < ApplicationController
       MSG
       return
     end
-    redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully destroyed."
+    redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
   end
 
   # The parent is updated via taxon_id.
