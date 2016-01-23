@@ -72,6 +72,9 @@ AntCat::Application.routes.draw do
     collection do
       get :autocomplete
     end
+    member do
+      put :elevate_to_species
+    end
     resources :taxon_history_items, only: [:update, :create, :destroy]
     resources :reference_sections, only: [:update, :create, :destroy]
     resources :synonyms, only: [:create, :destroy] do

@@ -2,6 +2,7 @@ class TaxaController < ApplicationController
   before_filter :authenticate_editor, :get_params, :create_mother
   before_filter :authenticate_superadmin, only: [:destroy]
   before_filter :redirect_by_parent_name_id, only: :new
+  before_filter :set_taxon, only: [:elevate_to_species]
   skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
   def new
@@ -26,8 +27,6 @@ class TaxaController < ApplicationController
     get_taxon_for_update
     set_update_view_variables
     setup_edit_buttons
-    # TODO move `elevate_to_species` and `delete_taxon` to their own routes
-    return elevate_to_species if @elevate_to_species
     return delete_taxon if @delete_taxon
     save_taxon
   end
@@ -79,6 +78,15 @@ class TaxaController < ApplicationController
     redirect_to edit_taxa_path taxon
   end
 
+  def elevate_to_species
+    unless @taxon.kind_of? Subspecies
+      redirect_to edit_taxa_path(@taxon), notice: "Not a subspecies"
+      return
+    end
+    @taxon.elevate_to_species
+    redirect_to catalog_path(@taxon), notice: "Subspecies was successfully elevated a species."
+  end
+
   def autocomplete
     q = params[:q] || ''
     search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
@@ -104,7 +112,6 @@ class TaxaController < ApplicationController
       @parent_id = params[:parent_id]
       @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
       @taxon_params = params[:taxon]
-      @elevate_to_species = params[:task_button_command] == 'elevate_to_species'
       @delete_taxon = params[:task_button_command] == 'delete_taxon'
       @collision_resolution = params[:collision_resolution]
     end
@@ -204,17 +211,6 @@ class TaxaController < ApplicationController
       }
     end
 
-    def elevate_to_species
-      @taxon.elevate_to_species
-      redirect_to catalog_path @taxon
-    rescue Subspecies::NoSpeciesForSubspeciesError
-      @taxon.errors[:base] = <<-MSG.squish
-        This subspecies doesn't have a species. Use the "Assign species to subspecies"
-        button to fix, then you can elevate the subspecies to the species.
-      MSG
-      render :edit and return
-    end
-
     # Not the same as #destroy (which is for superadmins only). This method
     # allows editors to delete taxa if certain conditions are met (see
     # #setup_edit_buttons for when this action is available in the GUI).
@@ -245,5 +241,9 @@ class TaxaController < ApplicationController
         end
         redirect_to new_hash
       end
+    end
+
+    def set_taxon
+      @taxon = Taxon.find(params[:id])
     end
 end

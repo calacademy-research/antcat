@@ -10,7 +10,7 @@
     = link_to 'Convert to subspecies', new_taxa_convert_to_subspecies_path(@taxon.id), class: "btn-new"
 
   -if show_elevate_to_species_button
-    = button 'Elevate to species', :elevate_to_species, class: "btn-new"
+    = link_to 'Elevate to species', elevate_to_species_taxa_path(@taxon), method: :put, class: "btn-new", data: { confirm: "Are you sure you want to elevate this subspecies to species?" }
 
   -if show_delete_taxon_button
     = button 'Delete', :delete_taxon, {}, ["btn-delete"]

@@ -13,7 +13,7 @@ Feature: Elevating subspecies to species
     When I go to the catalog entry for "Solenopsis speccus subbus"
     And I press "Edit"
     Given I will confirm on the next step
-    And I press "Elevate to species"
+    And I follow "Elevate to species"
     Then I should see the catalog entry for "Solenopsis subbus"
     When I go to the edit page for "Solenopsis subbus"
     Then I should see "species of Solenopsis"
@@ -32,5 +32,5 @@ Feature: Elevating subspecies to species
     When I go to the catalog entry for "Solenopsis speccus subbus"
     And I press "Edit"
     Given I will confirm on the next step
-    And I press "Elevate to species"
+    And I follow "Elevate to species"
     Then I should see the catalog entry for "Solenopsis subbus"

@@ -82,7 +82,6 @@ class AntCat.TaxonForm extends AntCat.Form
   initialize_task_buttons: =>
     @element.find('#add_taxon').click => @add_taxon(); false
     @element.find('#add_tribe').click => @add_tribe(); false
-    @element.find('#elevate_to_species').click => @elevate_to_species(); false
     @element.find('#delete_taxon').click => @delete_taxon(); false
 
   initialize_events: =>
@@ -106,11 +105,6 @@ class AntCat.TaxonForm extends AntCat.Form
   replace_junior_and_senior_synonyms_section: (content) =>
     $('.junior_and_senior_synonyms_section').replaceWith content
     @initialize_junior_and_senior_synonyms_section()
-
-  elevate_to_species: =>
-    return unless confirm 'Are you sure you want to elevate this subspecies to species?'
-    $('#task_button_command').val('elevate_to_species')
-    @submit()
 
   delete_taxon: =>
     return unless confirm 'Are you sure you want to delete this taxon?'
