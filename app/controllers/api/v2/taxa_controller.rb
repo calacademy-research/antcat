@@ -4,7 +4,7 @@
 module Api::V2
   class TaxaController < Api::ApiController
     def index
-      @taxa = Taxon.connection.select_all("SELECT id, name_cache AS name FROM taxa ORDER BY name_cache LIMIT 1000")
+      @taxa = Taxon.connection.select_all("SELECT id, name_cache AS name FROM taxa ORDER BY name_cache")
       respond_to do |format|
         format.json { render json: @taxa }
       end

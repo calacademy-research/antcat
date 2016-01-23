@@ -97,6 +97,7 @@ AntCat::Application.routes.draw do
     namespace :v1 do
       resources :taxa
       resources :protonyms
+      resources :authors
 
     end
     # For the next version...

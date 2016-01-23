@@ -39,6 +39,21 @@ paths:
         "404":
           description: Record not found
 
+  /v1/taxa:
+    get:
+      summary: Get all taxa
+      operationId: getTaxa
+      tags:
+        - taxa
+
+      responses:
+        "200":
+          description: Array of Ids and names of all taxa
+          schema:
+            $ref: '#/definitions/Taxa'
+        "404":
+          description: Record not found
+
   /v1/protonyms/{id}:
     get:
       summary: Get a ptotonym
@@ -60,13 +75,56 @@ paths:
         "404":
           description: Record not found
 
+  /v1/authors/{id}:
+    get:
+      summary: Get an author
+      operationId: getAuthor
+      tags:
+        - author
+      parameters:
+        - name: id
+          in: path
+          description: author id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single author record
+          schema:
+            $ref: '#/definitions/Author'
+        "404":
+          description: Record not found
 
-# Perhaps we break these out by
-# family, species, etc. just because rails lump
-# all these together doesn't mean that
-# we have to (e.g.: family_id not used in species. etc
+  /v1/authors:
+    get:
+      summary: Get all authors
+      operationId: getAuthors
+      tags:
+        - authors
+
+      responses:
+        "200":
+          description: Array of Ids of all authors
+          schema:
+            $ref: '#/definitions/Author'
+        "404":
+          description: Record not found
+
+
+
 
 definitions:
+  Taxa:
+    description: Abridged taxa records
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Antcat taxon id, primary key
+      name:
+        type: string
+        description: de-normalized cache of the name object
 
   Taxon:
     description: Taxon level
@@ -205,8 +263,21 @@ definitions:
         format: date-time
         description: Automatically generated timestamp for most recent update
 
-
-
+  Author:
+    description: Author record
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Antcat author id, primary key
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
 
 
 
