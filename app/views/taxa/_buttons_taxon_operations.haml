@@ -4,7 +4,7 @@
     = button add_taxon_button_text, :add_taxon, class: "btn-new"
 
   -if add_tribe_button_text
-    = link_to 'Convert to subspecies', new_taxa_path(rank_to_create: Tribe, parent_id: @taxon.id), class: "btn-new"
+    = link_to add_tribe_button_text, new_taxa_path(rank_to_create: Tribe, parent_id: @taxon.id), class: "btn-new"
 
   -if show_convert_to_subspecies_button
     = link_to 'Convert to subspecies', new_taxa_convert_to_subspecies_path(@taxon.id), class: "btn-new"

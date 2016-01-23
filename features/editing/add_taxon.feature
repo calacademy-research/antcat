@@ -254,7 +254,7 @@ Feature: Adding a taxon
   Scenario: Adding a tribe
     When I go to the catalog page for "Formicinae"
       And I press "Edit"
-      And I press "Add tribe"
+      And I follow "Add tribe"
     Then I should be on the new taxon page
     When I click the name field
       And I set the name to "Dorylini"
