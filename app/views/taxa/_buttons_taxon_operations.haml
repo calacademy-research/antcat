@@ -2,11 +2,15 @@
   %input{type: :hidden, name: :task_button_command, id: :task_button_command}
   -if add_taxon_button_text
     = button add_taxon_button_text, :add_taxon, class: "btn-new"
+
   -if add_tribe_button_text
-    = button add_tribe_button_text, :add_tribe, class: "btn-new"
+    = link_to 'Convert to subspecies', new_taxa_path(rank_to_create: Tribe, parent_id: @taxon.id), class: "btn-new"
+
   -if show_convert_to_subspecies_button
     = link_to 'Convert to subspecies', new_taxa_convert_to_subspecies_path(@taxon.id), class: "btn-new"
+
   -if show_elevate_to_species_button
     = button 'Elevate to species', :elevate_to_species, class: "btn-new"
+
   -if show_delete_taxon_button
     = button 'Delete', :delete_taxon, {}, ["btn-delete"]

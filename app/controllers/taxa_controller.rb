@@ -174,7 +174,6 @@ class TaxaController < ApplicationController
         @add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
       end
 
-      @add_tribe_path = new_taxa_path rank_to_create: Tribe, parent_id: @taxon.id
       @reset_epithet  = case @taxon
                         when Family then @taxon.name.to_s
                         when Species then @taxon.name.genus_epithet

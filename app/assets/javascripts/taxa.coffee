@@ -121,9 +121,6 @@ class AntCat.TaxonForm extends AntCat.Form
   add_taxon: =>
     window.location = $('#add_taxon_path').val()
 
-  add_tribe: =>
-    window.location = $('#add_tribe_path').val()
-
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel
 
