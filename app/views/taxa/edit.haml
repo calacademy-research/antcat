@@ -1,0 +1,8 @@
+- @title = @taxon.name.epithet
+
+- content_for :page_header do
+  #navigation_bar
+    .clear
+    .title.left= @title
+
+= render 'form'

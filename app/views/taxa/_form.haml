@@ -1,6 +1,4 @@
-- @title = @taxon.name.epithet
-
-=enable_tooltips
+= enable_tooltips
 
 - content_for :head do
   = javascript_include_tag  'widgets/panel'
@@ -10,11 +8,6 @@
   = javascript_include_tag  'widgets/name_field'
   = javascript_include_tag  'widgets/reference_popup', 'widgets/name_popup', 'widgets/taxt_editor'
   = javascript_include_tag  'taxa', 'parent_section', 'current_valid_taxon_section', 'history_items_section', 'synonyms_section', 'references_section', 'homonym_replaced_by_section'
-
-- content_for :page_header do
-  #navigation_bar
-    .clear
-    .title.left= @title
 
 - content_for :page_contents do
   - url = @taxon.new_record? ?  '/taxa': "/taxa/#{@taxon.id}"

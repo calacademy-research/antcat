@@ -9,12 +9,16 @@ class TaxaController < ApplicationController
     get_taxon_for_create
     get_default_name_string
     set_authorship_reference
-    render :edit
   end
 
   def create
     get_taxon_for_create
     save_taxon
+
+    redirect_to catalog_path(@taxon), notice: 'Taxon was successfully created.'
+
+  rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
+    render :new
   end
 
   def edit
@@ -28,6 +32,11 @@ class TaxaController < ApplicationController
     set_update_view_variables
     setup_edit_buttons
     save_taxon
+
+    redirect_to catalog_path(@taxon), notice: 'Taxon was successfully updated.'
+
+  rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
+    render :edit
   end
 
   # rest endpoint - get taxa/[id]
@@ -185,9 +194,6 @@ class TaxaController < ApplicationController
       if @previous_combination.is_a?(Species) && @previous_combination.children.any?
         create_new_usages_for_subspecies
       end
-      redirect_to catalog_path @taxon
-    rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
-      render :edit and return
     end
 
     def create_new_usages_for_subspecies
