@@ -1,10 +1,11 @@
 -if !reference.new_record? && reference.errors.empty?
-  %div.reference
-    =reference.decorate.format
-    =reference.decorate.format_reference_document_link
-    =reference.decorate.goto_reference_link target: nil
+  .reference
+    -reference = reference.decorate
+    =reference.format
+    =reference.format_reference_document_link
+    =reference.goto_reference_link target: nil
 
-    %p.notes= reference.decorate.public_notes
+    %p.notes= reference.public_notes
     -if user_is_editor?
-      %p.editor.notes= reference.decorate.editor_notes
-      %p.notes= reference.decorate.taxonomic_notes
+      %p.editor.notes= reference.editor_notes
+      %p.notes= reference.taxonomic_notes
