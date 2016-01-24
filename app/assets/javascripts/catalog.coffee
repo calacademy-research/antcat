@@ -20,15 +20,9 @@ $ ->
   taxon_height_cookie = parseFloat Cookies.get('taxon_height')
   taxon_height = taxon_height_cookie if taxon_height_cookie
   set_dimensions()
-  setup_throbber()
   $(window).resize set_dimensions
   splitter_top = $('#splitter').position().top
   splitter = new AntCat.Splitter $('#splitter'), on_splitter_change
-
-setup_throbber = ->
-  $('#navigation_bar form').submit ->
-    $('#navigation_bar .submit').hide()
-    $('#navigation_bar .throbber').show()
 
 on_splitter_change = (top) ->
   top = $('#splitter').position().top

@@ -109,6 +109,17 @@ module ApplicationHelper
     content_tag :span, "#{time_ago_in_words time} ago", title: time
   end
 
+  # First attempt at creating a spinner that works on all elements.
+  # Add .has-spinner to the button/link/element and call this method inside that element.
+  # To be improved once all buttons are more consistently formatted site-wide.
+  def spinner_icon
+    "<span class='spinner'><i class='fa fa-refresh fa-spin'></i></span>".html_safe
+  end
+
+  def shared_spinner_icon
+    "<span class='shared-spinner'><i class='fa fa-refresh fa-spin'></i></span>".html_safe
+  end
+
   # duplicated from ReferenceDecorator
   def format_italics string
     return unless string
