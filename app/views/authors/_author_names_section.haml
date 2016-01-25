@@ -6,8 +6,7 @@
       %button.submit.small_button Add
     .clear
   .author_names.ui-dialog-content.ui-widget-content.ui-corner-bottom
-    %ul#sortable
-      -author.names.each do |author_name|
-        =render 'author_names/panel', author_name: author_name
+    -author.names.each do |author_name|
+      =render 'author_names/panel', author_name: author_name
   .author_name_template
     =render 'author_names/panel', author_name: AuthorName.new(author_id: author.id)
