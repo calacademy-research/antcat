@@ -1,27 +1,22 @@
 @import 'mixins/common'
 
-#page .title, #page_notice, #page_alert
-  padding-left: 50px
-
-#page_contents
-  padding-left: 0
+#page_content
+  @include margins
 
 .references
-  @include margins
   width: 100%
 
-.reference
-  @include margins
-
 .pagination
-  padding: 2px 40px 0 52px
+  margin-top: 10px
 
 .no_results_found
-  padding: 2px 40px 0 52px
   color: $color_error
 
 td.reference_item
   vertical-align: top
+
+.reference_table
+  width: 100%
 
 .reference_edit
   .ui-tabs .ui-tabs-nav li
@@ -37,12 +32,9 @@ td.reference_item
   .ui-widget
     font-size: 1em
 
-.reference_table
-  width: 100%
-
-.reference_edit
   ul.error_messages
     margin: 0 0 3px 5px
+
   table
     width: 100%
     td
@@ -105,8 +97,3 @@ td.review_buttons, td.default_reference_status
 
 td.default_reference_status
   text-align: center
-
-#approve_all_button
-  margin-left: 16px
-  background: #459e00
-  color: white
