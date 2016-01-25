@@ -1,14 +1,42 @@
 .ui-dialog-content, .ui-widget-content
-  font-size: 90% !important
+  font-size: 14px
   background: #f5f3e5 url('css_images/ui-bg_highlight-hard_100_f5f3e5_1x100.png') 50% top repeat-x !important
 
 .ui-widget-header
   background: #ece8da url('css_images/ui-bg_gloss-wave_100_ece8da_500x100.png') 50% 50% repeat-x !important
 
+.ui-widget-content
+  border: 1px solid #dfd9c3
+
+.ui-autocomplete
+  position: absolute
+  cursor: default
+
+.ui-tabs .ui-tabs-nav li
+  margin: 0 .2em 0px 0
+  border-bottom: 0 !important
+
 .ui-tabs-nav > li
   width: auto !important
   float: left
 
+.ui-tabs-nav
+  .ui-state-active
+    background: #479F03
+
+.ui-state-active a
+  color: #fff
+  &:link, &:visited
+    color: #fff
+
+.ui-dialog-titlebar
+  font-style: italic
+  font-size: 14px
+
 // hide dialog close button
 .ui-dialog-titlebar-close
   display: none
+
+// hide dialog resize handle
+.ui-resizable-handle
+  display: none !important
