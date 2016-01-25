@@ -1,7 +1,12 @@
 // gems
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui
+//= require jquery-ui/core
+//= require jquery-ui/autocomplete
+//= require jquery-ui/dialog
+//= require jquery-ui/selectmenu
+//= require jquery-ui/tabs
+//= require jquery-ui/tooltip
 
 // vendor/assets/javascripts
 //= require jquery.a-tools-1.5.2
