@@ -36,7 +36,6 @@ class AntCat.TaxtEditor
 
     @tag_buttons.show() if AntCat.testing
     @tag_buttons
-      .find(':button, :submit').button().end()
       .find('.taxon_button')
         .off('mousedown')
         .on('mousedown', @insert_taxon).end()

@@ -88,9 +88,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @expansion
       .find('.controls')
         .undisable()
-        .find(':button')
-          .button()
-          .end()
         .end()
 
       .find(':button.ok')

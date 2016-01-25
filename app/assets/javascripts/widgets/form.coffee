@@ -13,7 +13,7 @@ class AntCat.Form
     @options.button_container or= '> .buttons'
     @buttons = @element.find(@options.button_container); AntCat.check 'Form.initialize_buttons', '@buttons', @buttons
     @buttons
-      .find(':button, :submit').button().end()
+      .find(':button, :submit').end()
       .find('.submit')
         .off('click')
         .on('click', @submit).end()

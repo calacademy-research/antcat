@@ -106,7 +106,7 @@ class AntCat.NameField extends AntCat.Panel
       $confirm_add_name_field.val ''
 
   set_submit_button_text: (text) =>
-    $submit_button = @element.find('.controls .submit span')
+    $submit_button = @element.find('.controls .submit')
     $submit_button.text text
 
   set_value: (value) =>
