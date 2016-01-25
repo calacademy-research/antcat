@@ -12,7 +12,6 @@
 = form_for @author, as: :author, url: url, method: method, html: {class: 'author_form ui-widget'} do |form|
   = render 'shared/errors_for', resource: @author
 
-  .fields_section.section.ui-widget-content.ui-corner-all
   - unless @author.new_record?
     = render 'author_names_section', author: @author
 

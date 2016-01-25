@@ -1,4 +1,5 @@
-$ -> new AntCat.AuthorForm $('.author_form'), button_container: '> .fields_section .buttons_section'
+$ ->
+  new AntCat.AuthorForm $('.author_form')
 
 class AntCat.AuthorForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
