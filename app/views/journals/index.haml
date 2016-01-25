@@ -8,4 +8,4 @@
 -if user_can_edit?
   %p= link_to "New Journal", new_journal_path, class: "btn-normal"
 
-%div= will_paginate @journals
+= will_paginate @journals

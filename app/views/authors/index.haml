@@ -1,6 +1,6 @@
 -@title = 'Authors'
 
-%div= will_paginate @authors
+= will_paginate @authors
 
 #authors
   -@authors.each do |author|
@@ -10,4 +10,4 @@
         =link_to 'edit', edit_author_path(author), class: 'edit_link'
       %br
 
-%div= will_paginate @authors
+= will_paginate @authors
