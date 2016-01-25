@@ -1,3 +1,5 @@
+Citrus.load "#{__dir__}/pagination_grammar"
+
 module Parsers::PaginationParser
   def self.parse string
     return unless string.present?

@@ -1,3 +1,5 @@
+require "common_grammar"
+
 grammar Parsers::AuthorGrammar
   include Parsers::CommonGrammar
 

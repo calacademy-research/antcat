@@ -1,9 +1,12 @@
 require 'spec_helper'
 
-describe Parsers::PaginationGrammar do
+Citrus.load "#{Rails.root.join}/lib/parsers/pagination_grammar"
+
+describe "Parsers::PaginationGrammar" do
   before do
     @parser = Parsers::PaginationGrammar
   end
+
   ['1 p., 5 maps',
     '12 + 532 pp.',
     '24 pp. 24 pls.',

@@ -1,3 +1,6 @@
+require "author_grammar"
+require "common_grammar"
+
 grammar Parsers::CitationGrammar
   include Parsers::CommonGrammar
   include Parsers::AuthorGrammar

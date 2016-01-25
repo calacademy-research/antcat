@@ -4,6 +4,7 @@ describe Parsers::PaginationParser do
   before do
     @parser = Parsers::PaginationParser
   end
+
   ['1 p., 5 maps',
     '12 + 532 pp.',
     '24 pp. 24 pls.',

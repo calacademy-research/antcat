@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Parsers::CitationGrammar do
+describe Parsers::CitationParser do
   before do
     @parser = Parsers::CitationParser
   end

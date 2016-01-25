@@ -1,3 +1,5 @@
+Citrus.load "#{__dir__}/author_grammar"
+
 module Parsers::AuthorParser
 
   def self.parse! string

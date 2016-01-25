@@ -1,6 +1,8 @@
 require 'spec_helper'
 
-describe Parsers::CommonGrammar do
+Citrus.load "#{Rails.root.join}/lib/parsers/common_grammar"
+
+describe "Parsers::CommonGrammar" do
   before do
     @parser = Parsers::CommonGrammar
   end

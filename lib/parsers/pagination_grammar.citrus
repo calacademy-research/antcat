@@ -1,3 +1,5 @@
+require "common_grammar"
+
 grammar Parsers::PaginationGrammar
   include Parsers::CommonGrammar
 

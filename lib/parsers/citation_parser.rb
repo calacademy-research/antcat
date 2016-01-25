@@ -1,3 +1,5 @@
+Citrus.load "#{__dir__}/citation_grammar"
+
 module Parsers::CitationParser
 
   def self.parse string

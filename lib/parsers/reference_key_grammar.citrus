@@ -1,3 +1,5 @@
+require "common_grammar"
+
 grammar Parsers::ReferenceKeyGrammar
   include Parsers::CommonGrammar
 
