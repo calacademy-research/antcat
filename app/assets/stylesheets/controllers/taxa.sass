@@ -78,9 +78,7 @@
       width: 500px
 
   .history_items_section
-    font-size: 15px
-    padding-left: 0
-    line-height: 1.2
+    font-size: 90%
     .template
       display: none
     .section_header
@@ -99,7 +97,6 @@
             margin-left: 16px
       .display
         padding-left: 10px
-        text-indent: -10px
         &.ui-selecting
           background: $color_current_being_edited_background
 
@@ -107,9 +104,7 @@
     .reference_section_template
       display: none
     .reference_sections
-      font-size: 15px
-      padding-left: 0
-      line-height: 1.2
+      font-size: 90%
       .template
         display: none
       .section_header
@@ -132,9 +127,8 @@
               margin-left: 16px
         .display
           padding: 6px
-          padding-left: 16px
-          text-indent: -10px
-          max-height: 48px
+          padding-left: 10px
+          max-height: 80px
           overflow: auto
           &.ui-selecting
             background: $color_current_being_edited_background
@@ -144,9 +138,10 @@
   .reference_section + .reference_section
     margin-top: 6px
 
+  .children_section
+    .section_contents
+      padding-left: 10px
   .junior_and_senior_synonyms_section
-    font-size: 15px
-    line-height: 1.2
     .container
       width: 50%
     .junior_synonyms_section
@@ -181,8 +176,6 @@
       position: absolute
       right: 10px
       top: 0px
-      a
-        margin-left: 10px
     .show
       margin-left: 7px
     form
@@ -218,11 +211,3 @@ td.top_aligned
 
 .display_button
   white-space: normal
-
-// jQuery UI
-.ui-dialog-titlebar, .ui-dialog-content
-  padding: 6px
-
-.ui-dialog-titlebar
-  font-style: italic
-  font-size: 16px
