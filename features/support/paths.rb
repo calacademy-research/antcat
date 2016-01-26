@@ -75,6 +75,10 @@ module NavigationHelpers
       '/users/password/new'
     when /^the login (page|form)$/
       '/users/sign_in'
+    when /^the sign ?up (page|form)$/
+      '/users/sign_up'
+    when /^the users page$/
+      '/users'
 
     when /^the reference field test page, opened to the first reference$/
       "/widget_tests/reference_field_test?id=#{Reference.first.id}"
