@@ -19,7 +19,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def can_be_approved_by? change, user
-    user != change.changed_by && waiting? && $Milieu.user_can_approve_changes?(user)
+    user != change.changed_by && waiting? && user.can_approve_changes?
   end
 
   # Returns the ID of the most recent change that touches this taxon.
