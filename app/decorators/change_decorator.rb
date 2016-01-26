@@ -88,7 +88,7 @@ class ChangeDecorator < Draper::Decorator
     # duplicated from ApplicationHelper
     def format_time_ago time
       return unless time
-      helpers.content_tag :span, "#{time_ago_in_words time} ago", title: time
+      helpers.content_tag :span, "#{helpers.time_ago_in_words time} ago", title: time
     end
 
 end

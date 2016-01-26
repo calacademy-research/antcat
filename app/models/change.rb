@@ -1,6 +1,4 @@
 class Change < ActiveRecord::Base
-  include ActionView::Helpers::DateHelper
-
   belongs_to :approver, class_name: 'User'
   has_many :versions, class_name: 'PaperTrail::Version'
   attr_accessible :approver_id,
