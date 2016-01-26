@@ -1,5 +1,4 @@
 require 'references/reference_has_document'
-require 'references/reference_key'
 require 'references/reference_search'
 require 'references/reference_utility'
 require 'references/reference_workflow'
@@ -75,10 +74,6 @@ class Reference < ActiveRecord::Base
   # accessors
   def to_s
     "#{author_names_string} #{citation_year}. #{id}."
-  end
-
-  def key
-    @key ||= ReferenceKey.new(self)
   end
 
   def authors reload = false

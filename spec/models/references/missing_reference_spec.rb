@@ -52,9 +52,9 @@ describe MissingReference do
   end
 
   describe "Key" do
-    it "has its own kind of key" do
+    it "has its own kind of decorator" do
       reference = FactoryGirl.create :missing_reference
-      expect(reference.key).to be_kind_of MissingReferenceKey
+      expect(reference.decorate).to be_kind_of MissingReferenceDecorator
     end
   end
 

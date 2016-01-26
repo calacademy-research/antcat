@@ -7,12 +7,13 @@ describe Taxt do
     describe "To editable taxt" do
       describe "References" do
         it "should use the inline citation format followed by the id, with type number" do
-          key = double 'key'
-          expect(key).to receive(:to_s).and_return 'Fisher, 1922'
+          decorated = double 'key'
           reference = double 'reference', id: 36
+          expect(reference).to receive(:decorate).and_return decorated
+          expect(decorated).to receive(:to_s).and_return 'Fisher, 1922'
           expect(Reference).to receive(:find).and_return reference
-          allow(reference).to receive(:key).and_return key
           editable_key = Taxt.id_for_editable reference.id, 1
+
           expect(Taxt.to_editable("{ref #{reference.id}}")).to eq("{Fisher, 1922 #{editable_key}}")
         end
         it "should handle a missing reference" do
@@ -85,10 +86,10 @@ describe Taxt do
       describe "Linked" do
         it "should format a ref" do
           reference = FactoryGirl.create :article_reference
+          decorated = reference.decorate
           expect(Reference).to receive(:find).with(reference.id.to_s).and_return reference
-          key_stub = double
-          expect(reference).to receive(:key).and_return key_stub
-          expect(key_stub).to receive(:to_link).and_return('foo')
+          expect(reference).to receive(:decorate).and_return decorated
+          expect(decorated).to receive(:to_link).and_return('foo')
           expect(Taxt.to_string("{ref #{reference.id}}")).to eq('foo')
         end
         it "should not freak if the ref is malformed" do

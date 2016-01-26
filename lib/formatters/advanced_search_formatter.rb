@@ -45,8 +45,14 @@ module Formatters::AdvancedSearchFormatter
     reference = taxon.protonym.authorship.reference
     string = ''.html_safe
     string << reference.decorate.format
-    string << ' ' << document_link(reference.key) if document_link(reference.key)
-    string << ' ' << goto_reference_link(reference.key) if goto_reference_link(reference.key)
+
+    if show_document_link? && reference.decorate.format_reference_document_link.present?
+      string << ' ' << reference.decorate.format_reference_document_link
+    end
+
+    if show_goto_reference_link? && reference.decorate.goto_reference_link.present?
+      string << ' ' << reference.decorate.goto_reference_link
+    end
     string << " DOI: " << reference.doi if reference.doi.present?
     string << "   #{reference_id(reference)}" if reference_id(reference)
     string
@@ -81,14 +87,6 @@ module Formatters::AdvancedSearchFormatter
     return unless taxon.protonym.authorship.forms.present?
     string = 'Forms: '
     string << add_period_if_necessary(taxon.protonym.authorship.forms)
-  end
-
-  def document_link reference_key
-    reference_key.document_link
-  end
-
-  def goto_reference_link reference_key
-    reference_key.goto_reference_link
   end
 
   def senior_synonym_list taxon

@@ -13,4 +13,11 @@ module Formatters::AdvancedSearchHtmlFormatter
     string.html_safe
   end
 
+  def show_document_link?
+    true
+  end
+
+  def show_goto_reference_link?
+    true
+  end
 end

@@ -273,13 +273,6 @@ describe Reference do
     end
   end
 
-  describe "Key" do
-    it "has a key" do
-      reference = FactoryGirl.create :article_reference
-      reference.key
-    end
-  end
-
   describe "Short citation year" do
     it "should be same as citation year if nothing extra" do
       reference = FactoryGirl.create :article_reference, :citation_year => '1970'

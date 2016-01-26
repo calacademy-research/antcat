@@ -295,10 +295,10 @@ describe ReferenceDecorator do
       it "nonmissing references should defer to the key" do
         key = double
         reference = FactoryGirl.create :article_reference
-        expect(reference).to receive(:key).and_return key
-        expect(key).to receive(:to_link)
+        decorated = reference.decorate
+        expect(decorated).to receive(:to_link).and_return key
 
-        reference.decorate.format_inline_citation
+        decorated.format_inline_citation
       end
       it "should just output the citation for a MissingReference" do
         reference = FactoryGirl.create :missing_reference, citation: 'foo'

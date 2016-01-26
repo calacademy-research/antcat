@@ -5,9 +5,13 @@ module Formatters::AdvancedSearchTextFormatter
     taxon.name_cache
   end
 
-  def document_link _; end
+  def show_document_link?
+    false
+  end
 
-  def goto_reference_link _; end
+  def show_goto_reference_link?
+    false
+  end
 
   def italicize string
     string

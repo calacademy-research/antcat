@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ReferenceKey do
+describe "ReferenceDecorator formerly ReferenceKey" do
 
   before do
     @bolton = FactoryGirl.create :author_name, name: 'Bolton, B.'
@@ -10,27 +10,27 @@ describe ReferenceKey do
 
   describe "Representing as a string" do
     it "should be blank if a new record" do
-      expect(BookReference.new.key.to_s).to eq('')
+      expect(BookReference.new.decorate.to_s).to eq('')
     end
     it "Citation year with extra" do
       reference = FactoryGirl.create :article_reference, :author_names => [@bolton], citation_year: '1970a ("1971")'
-      expect(reference.key.to_s).to eq('Bolton, 1970a')
+      expect(reference.decorate.to_s).to eq('Bolton, 1970a')
     end
     it "No authors" do
       reference = FactoryGirl.create :article_reference, :author_names => [], citation_year: '1970a'
-      expect(reference.key.to_s).to eq('[no authors], 1970a')
+      expect(reference.decorate.to_s).to eq('[no authors], 1970a')
     end
     it "One author" do
       reference = FactoryGirl.create :article_reference, :author_names => [@bolton], citation_year: '1970a'
-      expect(reference.key.to_s).to eq('Bolton, 1970a')
+      expect(reference.decorate.to_s).to eq('Bolton, 1970a')
     end
     it "Two authors" do
       reference = FactoryGirl.create :article_reference, :author_names => [@bolton, @fisher], citation_year: '1970a'
-      expect(reference.key.to_s).to eq('Bolton & Fisher, 1970a')
+      expect(reference.decorate.to_s).to eq('Bolton & Fisher, 1970a')
     end
     it "Three authors" do
       reference = FactoryGirl.create :article_reference, :author_names => [@bolton, @fisher, @ward], citation_year: '1970a'
-      expect(reference.key.to_s).to eq('Bolton, Fisher & Ward, 1970a')
+      expect(reference.decorate.to_s).to eq('Bolton, Fisher & Ward, 1970a')
     end
   end
 
@@ -43,7 +43,7 @@ describe ReferenceKey do
     end
     it "should create a link to the reference" do
       allow(@reference).to receive(:downloadable?).and_return true
-      expect(@reference.key.to_link).to eq(
+      expect(@reference.decorate.to_link).to eq(
         %{<span class="reference_key_and_expansion">} +
           %{<a class="reference_key" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
           %{<span class="reference_key_expansion">} +
@@ -59,7 +59,7 @@ describe ReferenceKey do
     end
     it "should create a link to the reference without the PDF link if the user isn't logged in" do
       allow(@reference).to receive(:downloadable?).and_return false
-      expect(@reference.key.to_link).to eq(
+      expect(@reference.decorate.to_link).to eq(
         %{<span class="reference_key_and_expansion">} +
           %{<a class="reference_key" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
           %{<span class="reference_key_expansion">} +
@@ -73,7 +73,7 @@ describe ReferenceKey do
     describe "When expansion is not desired" do
       it "should not include the PDF link, if not available to the user" do
         allow(@reference).to receive(:downloadable?).and_return false
-        expect(@reference.key.to_link(expansion: false)).to eq(
+        expect(@reference.decorate.to_link(expansion: false)).to eq(
           %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
           %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
           %{ <a class="document_link" target="_blank" } +
@@ -82,7 +82,7 @@ describe ReferenceKey do
       end
       it "should include the PDF link, if available to the user" do
         allow(@reference).to receive(:downloadable?).and_return true
-        expect(@reference.key.to_link(expansion: false)).to eq(
+        expect(@reference.decorate.to_link(expansion: false)).to eq(
           %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
           %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
           %{ <a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>} +
@@ -93,7 +93,7 @@ describe ReferenceKey do
     describe "Handling quotes in the title" do
       it "should escape them" do
         @reference = FactoryGirl.create :unknown_reference, author_names: [@latreille], citation_year: '1809', title: '"Atta"'
-        expect(@reference.key.to_link(expansion: false)).to eq(
+        expect(@reference.decorate.to_link(expansion: false)).to eq(
           %{<a target="_blank" title="Latreille, P. A. 1809. "Atta". New York." href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>}
         )
       end

@@ -7,6 +7,11 @@ class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the h method
   delegate_all
 
+  # A relic from ReferenceKey; should probably be renamed.
+  def to_s
+    format_author_last_names
+  end
+
   def created_at
     format_timestamp reference.created_at
   end
@@ -117,7 +122,7 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_inline_citation! options = {}
-    reference.key.to_link options
+    to_link options
   end
 
   def format_inline_citation_without_links
