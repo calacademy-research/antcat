@@ -13,3 +13,4 @@ This is by no means a complete log -- most changes are only listed in the commit
 * Removed commented out code in [37064d](https://github.com/jonkerz/antcat/commit/37064da56f47a530a388b268289a73cb24b93d75)
 * [Hard to maintain] Removed 'edit references in place' feature in [604eee](https://github.com/jonkerz/antcat/commit/604eee89bc25abd9202c579989a5163a5dd6539e)
 * [Hard to maintain / edge-case / possibly introduces copy/paste errors] Removed 'copy reference' feature in [786d60](https://github.com/jonkerz/antcat/commit/786d60b0d4e8395816e6a65b7248d2ef91c3897b)
+* [Task completed] Removed unused parsers/grammar in TODO add hash
