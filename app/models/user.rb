@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   devise :database_authenticatable, :recoverable, :registerable,
          :rememberable, :trackable, :validatable, :invitable
-
-  attr_accessible :email, :name, :password, :password_confirmation, :can_edit, :is_superadmin, :remember_me
 
   def is_editor?
     can_edit
