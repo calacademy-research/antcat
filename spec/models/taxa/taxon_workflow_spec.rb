@@ -45,16 +45,16 @@ describe Taxon do
       #  expect(@taxon.can_be_edited_by?(@editor)).to be_truthy
       #  expect(@taxon.can_be_edited_by?(@user)).to be_falsey
       #end
-      it "should not allow it to be reviewed" do
-        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
-      end
-      it "should not allow it to be approved" do
-        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
-      end
+      #it "should not allow it to be reviewed" do
+      #  expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
+      #  expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
+      #  expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
+      #end
+      #it "should not allow it to be approved" do
+      #  expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
+      #  expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
+      #  expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
+      #end
     end
 
     describe "A waiting record" do
@@ -76,11 +76,11 @@ describe Taxon do
       #  expect(@taxon.can_be_edited_by?(@editor)).to be_truthy
       #  expect(@taxon.can_be_edited_by?(@changer)).to be_truthy
       #end
-      it "should allow it to be reviewed by a catalog editor" do
-        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@editor)).to be_truthy
-        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
-      end
+      #it "should allow it to be reviewed by a catalog editor" do
+      #  expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
+      #  expect(@taxon.can_be_reviewed_by?(@editor)).to be_truthy
+      #  expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
+      #end
       it "should allow it to be approved by an approver" do
         expect(@taxon.can_be_approved_by?(@change,nil)).to be_falsey
         expect(@taxon.can_be_approved_by?(@change,@approver)).to be_truthy
@@ -102,16 +102,16 @@ describe Taxon do
       #  expect(@taxon.can_be_edited_by?(@editor)).to be_truthy
       #  expect(@taxon.can_be_edited_by?(@user)).to be_falsey
       #end
-      it "should not allow it to be reviewed" do
-        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
-      end
-      it "should not allow it to be approved" do
-        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
-      end
+      #it "should not allow it to be reviewed" do
+      #  expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
+      #  expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
+      #  expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
+      #end
+      #it "should not allow it to be approved" do
+      #  expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
+      #  expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
+      #  expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
+      #end
     end
   end
 

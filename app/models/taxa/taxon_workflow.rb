@@ -14,8 +14,8 @@ class Taxon < ActiveRecord::Base
 
   delegate :approver, :approved_at, to: :last_change
 
-  def can_be_reviewed_by? user
-    $Milieu.user_can_review_changes?(user) && waiting?
+  def can_be_reviewed?
+    waiting?
   end
 
   def can_be_approved_by? change, user

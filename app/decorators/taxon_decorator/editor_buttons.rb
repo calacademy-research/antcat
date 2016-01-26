@@ -22,7 +22,9 @@ module TaxonDecorator::EditorButtons
 
   private
     def link_to_review_change
-      if taxon.can_be_reviewed_by?(get_current_user) && taxon.latest_change
+      return unless $Milieu.user_can_review_changes?(get_current_user)
+
+      if taxon.can_be_reviewed? && taxon.latest_change
         helpers.link_to 'Review change', "/changes/#{taxon.latest_change.id}", class: "btn-normal"
       end
     end
