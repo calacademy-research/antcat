@@ -15,7 +15,7 @@ module TaxonDecorator::EditorButtons
   end
 
   def link_to_edit_taxon
-    if taxon.can_be_edited_by? get_current_user
+    if helpers.user_can_edit?
       helpers.link_to "Edit", helpers.edit_taxa_path(taxon), class: "btn-edit"
     end
   end

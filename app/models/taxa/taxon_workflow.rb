@@ -14,15 +14,6 @@ class Taxon < ActiveRecord::Base
 
   delegate :approver, :approved_at, to: :last_change
 
-  def can_be_edited_by? user
-    return false unless $Milieu.user_can_edit? user
-    return true if old?
-    return true if approved?
-    return true if waiting?
-
-    raise "we should never get here"
-  end
-
   def can_be_reviewed_by? user
     $Milieu.user_can_review_changes?(user) && waiting?
   end

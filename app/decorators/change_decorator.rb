@@ -42,7 +42,7 @@ class ChangeDecorator < Draper::Decorator
     # This extra check (for change_type deleted) covers the case when we've deleted children
     # in a change that only shows the parent being deleted.
 
-    if !change.change_type == 'delete' && taxon.can_be_edited_by?(helpers.current_user)
+    if !change.change_type == 'delete' && helpers.user_can_edit?
       show_button = true
     end
 
