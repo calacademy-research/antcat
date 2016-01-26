@@ -1,7 +1,7 @@
-require 'references/reference_has_document'
-require 'references/reference_search'
-require 'references/reference_utility'
-require 'references/reference_workflow'
+require_dependency 'references/reference_has_document'
+require_dependency 'references/reference_search'
+require_dependency 'references/reference_utility'
+require_dependency 'references/reference_workflow'
 
 class Reference < ActiveRecord::Base
   include UndoTracker
