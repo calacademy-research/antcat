@@ -179,9 +179,9 @@ class ReferencesController < ApplicationController
         set_publisher if @reference.kind_of? BookReference
         set_pagination
 
-        return if @reference.errors.present?
-
         @reference.attributes = params[:reference]
+
+        return if @reference.errors.present?
 
         @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
         return if @possible_duplicate
