@@ -1,5 +1,5 @@
-require 'taxon_advanced_search'
-require 'taxon_workflow'
+require_dependency 'taxon_advanced_search'
+require_dependency 'taxon_workflow'
 
 class Taxon < ActiveRecord::Base
   include UndoTracker

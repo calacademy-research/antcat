@@ -1,4 +1,6 @@
-Citrus.load "#{__dir__}/citation_grammar"
+Citrus.load "#{__dir__}/common_grammar", force: true unless defined? Parsers::CommonGrammar
+Citrus.load "#{__dir__}/author_grammar", force: true unless defined? Parsers::AuthorGrammar
+Citrus.load "#{__dir__}/citation_grammar", force: true unless defined? Parsers::CitationGrammar
 
 module Parsers::CitationParser
 
