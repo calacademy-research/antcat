@@ -1,4 +1,3 @@
-@dormant
 Feature: Logging in
   As a user of AntCat
   I want to be able to log in
@@ -28,6 +27,7 @@ Feature: Logging in
     * I press the first "Go" to log in
     Then I should be on the main page
 
+  @javascript
   Scenario: Logging in unsuccessfully
     Given I am not logged in
     * I go to the main page
@@ -36,16 +36,6 @@ Feature: Logging in
     * I fill in the password field with "asd;fljl;jsdfljsdfj"
     * I press the first "Go" to log in
     Then I should be on the login page
-
-  Scenario: Forgot password
-    Given I am not logged in
-    * I go to the main page
-    * I follow "Login"
-    * I fill in the email field with "email@example.com"
-    * I fill in the password field with "asd;fljl;jsdfljsdfj"
-    * I press the first "Go" to log in
-    * I follow "forgot password"
-    Then I should be on the forgot password page
 
   Scenario: Returning to previous page
     Given I am not logged in

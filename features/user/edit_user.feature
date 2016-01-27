@@ -1,4 +1,3 @@
-@dormant
 Feature: Editing a user
   As a user of AntCat
   I want to edit my password and email
@@ -49,17 +48,17 @@ Feature: Editing a user
     When I go to the main page
     Then I should see "Logout"
 
-  Scenario: Superadmins should have access to active admin pages
+  Scenario: Superadmins should have access to Active Admin pages
     Given I log in as a superadmin
     When I go to the main page
     Then I should see "Admin"
 
-  Scenario: regular users should have access to active admin pages
+  Scenario: Regular users should not have access to Active Admin pages
     Given I am logged in
     When I go to the main page
     Then I should not see "Admin"
 
-  Scenario: Admins to be able to go to the active admin pages
+  Scenario: Admins to be able to go to the Active Admin pages
     Given I log in as a superadmin
     When I go to the main page
     Then I should see "Admin"
@@ -83,4 +82,3 @@ Feature: Editing a user
     Given I log in as a superadmin
     When I go to the useradmin page
     Then I should be on the useradmin page
-
