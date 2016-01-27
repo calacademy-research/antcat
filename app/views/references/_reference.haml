@@ -6,6 +6,6 @@
     =reference.goto_reference_link target: nil
 
     %p.notes= reference.public_notes
-    -if user_is_editor?
+    -if user_can_edit?
       %p.editor.notes= reference.editor_notes
       %p.notes= reference.taxonomic_notes

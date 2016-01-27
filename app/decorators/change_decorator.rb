@@ -60,7 +60,7 @@ class ChangeDecorator < Draper::Decorator
     return if taxon_state.review_state == "approved"
 
     # Editors can approve taxa with no associated taxon_state
-    if taxon.taxon_state.nil? && $Milieu.user_is_editor?(helpers.current_user)
+    if taxon.taxon_state.nil? && helpers.user_can_edit?
       show_button = true
     end
 

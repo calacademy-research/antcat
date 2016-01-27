@@ -10,7 +10,7 @@
 
   .title
     %h2.left= "Reference ##{@reference.id}"
-    -if user_is_editor?
+    -if user_can_edit?
       -# TODO Add more button here, eg 'make default', 'review'
       %h2.left= link_to "Edit", edit_reference_path(@reference), class: "btn-edit"
     -if user_can_edit?

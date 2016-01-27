@@ -6,7 +6,7 @@
   %li= link_to 'Full taxon color key', page_path('help/full_key')
   %li= link_to 'Tooltips editing guide', page_path('help/editing_tooltips')
 
--if user_is_editor?
+-if user_can_edit?
   -# Collect a bunch of links that are not reachable from the GUI
   %h2 Editor's links
   %ul
