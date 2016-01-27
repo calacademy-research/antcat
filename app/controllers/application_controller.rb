@@ -3,10 +3,10 @@ class ApplicationController < ActionController::Base
   before_filter :save_location
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  delegate :can_edit?, :is_superadmin?, :can_upload_pdfs?, :can_review_changes?,
+  delegate :can_edit?, :is_superadmin?, :can_review_changes?,
     :can_approve_changes?, to: :current_user, prefix: 'user', allow_nil: true
 
-  helper_method :user_can_edit?, :user_is_superadmin?, :user_can_upload_pdfs?,
+  helper_method :user_can_edit?, :user_is_superadmin?,
     :user_can_review_changes?, :user_can_approve_changes?
 
   def save_location

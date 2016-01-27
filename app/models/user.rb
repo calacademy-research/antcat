@@ -12,8 +12,4 @@ class User < ActiveRecord::Base
     can_edit?
   end
 
-  def can_upload_pdfs?
-    can_edit?
-  end
-
 end
