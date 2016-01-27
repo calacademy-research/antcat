@@ -1,8 +1,6 @@
 class ChangeDecorator < Draper::Decorator
   delegate_all
 
-  # WIP
-
   def format_adder_name
     user_verb = case change.change_type
                 when "create" then "added"
@@ -36,40 +34,51 @@ class ChangeDecorator < Draper::Decorator
   end
 
   def undo_button
+    # TODO sort this out
+    # This is the snippet that was moved here from ChangesHelper
+    #   # This extra check (for change_type deleted) covers the case when we've deleted children
+    #   # in a change that only shows the parent being deleted.
+    #   unless current_user.nil?
+    #     if  (!change[:change_type] == 'delete' && taxon.can_be_edited_by?(current_user)) or current_user.can_edit
+    #       if change.versions.length > 0
+    #         button 'Undo', 'undo_button', 'data-undo-id' => change.id, class: 'undo_button_' + change.id.to_s
+    #       end
+    #     end
+    #   end
+    #
+    # But it looks like the extra check is always ignored? Move stuff around and
+    # after a while it will look like this:
+    #   return unless helpers.user_can_edit? || change.versions.present?
+    #
+    #   if change.change_type == 'delete' || helpers.user_can_edit?
+    #     button 'Undo', 'undo_button', 'data-undo-id' => change.id,
+    #       class: 'undo_button_' + change.id.to_s
+    #   end
+    #
+    # `taxon.can_be_edited_by?` [now removed, at least temporarily], effectively
+    # did the same thing as `helpers.user_can_edit?`
+
+    return unless helpers.user_can_edit? || change.versions.present?
     taxon = change.get_most_recent_valid_taxon
-    return unless helpers.current_user
-    return if change.versions.empty?
-    # This extra check (for change_type deleted) covers the case when we've deleted children
-    # in a change that only shows the parent being deleted.
 
-    if !change.change_type == 'delete' && taxon.can_be_edited_by?(helpers.current_user)
-      show_button = true
-    end
-
-    if show_button || helpers.current_user.can_edit
-      helpers.link_to "Undo", "#", id: "undo_button_#{change.id}",
-        class: "btn-destructive", data: { 'undo-id' => change.id }
-    end
+    helpers.link_to "Undo", "#", id: "undo_button_#{change.id}",
+      class: "btn-destructive", data: { 'undo-id' => change.id }
   end
 
   def approve_button
+    return unless helpers.user_can_edit?
+
     taxon = change.get_most_recent_valid_taxon
     taxon_id = change.user_changed_taxon_id
     taxon_state = TaxonState.find_by taxon_id: taxon_id
-
     return if taxon_state.review_state == "approved"
 
-    # Editors can approve taxa with no associated taxon_state
-    if taxon.taxon_state.nil? && $Milieu.user_is_editor?(helpers.current_user)
-      show_button = true
-    end
-
-    # Another check from `can_be_approved_by?` (taxon_workflow.rb)
-    if !taxon_state.nil? && taxon.can_be_approved_by?(change, helpers.current_user)
-      show_button = true
-    end
-
-    if show_button
+    # TODO clarify this; does the nil check mean that editors are allowed
+    # to approve their own changes if the taxon has no taxon_state?
+    #
+    # Editors can approve taxa with no associated taxon_state. The GUI probably
+    # does not allow for this to happen, just an additional check (?).
+    if taxon.taxon_state.nil? || taxon.can_be_approved_by?(change, helpers.current_user)
       helpers.link_to 'Approve', helpers.approve_change_path(change),
         method: :put, class: "btn-normal",
         data: { confirm: "Are you sure you want to approve this change?" }

@@ -3,7 +3,7 @@
     .actions
       -items = []
       -items << link_to('Latest additions', latest_additions_references_path)
-      -if user_is_editor?
+      -if user_can_edit?
         -items << link_to('Latest changes', latest_changes_references_path)
         -items << link_to('Journals', journals_path)
         -items << link_to('Fix missing', missing_references_path)

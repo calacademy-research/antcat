@@ -1,8 +1,3 @@
-Before do
-  include Milieu
-  $Milieu = Milieu.new
-end
-
 # From http://makandracards.com/makandra/1709-single-step-and-
 # slow-motion-for-cucumber-scenarios-using-javascript-selenium
 # Use with `@javascript` and `DRIVER=selenium --format pretty` for the full experience.
