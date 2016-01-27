@@ -56,4 +56,4 @@ class AntCat.UndoButton extends AntCat.ChangeButton
       error: (xhr) => debugger
 
 $ ->
-  $('.undo_button .btn-destructive').each -> new AntCat.UndoButton($(this))
+  $('.undo_button .btn-undo').each -> new AntCat.UndoButton($(this))

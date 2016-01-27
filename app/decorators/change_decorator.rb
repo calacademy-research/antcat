@@ -61,8 +61,7 @@ class ChangeDecorator < Draper::Decorator
     return unless helpers.user_can_edit? || change.versions.present?
     taxon = change.get_most_recent_valid_taxon
 
-    helpers.link_to "Undo", "#", id: "undo_button_#{change.id}",
-      class: "btn-destructive", data: { 'undo-id' => change.id }
+    helpers.link_to "Undo", "#", class: "btn-undo", data: { 'undo-id' => change.id }
   end
 
   def approve_button
