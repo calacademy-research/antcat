@@ -147,6 +147,19 @@ Feature: Add reference
     Then I should see "Author names string couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
     And the "reference_author_names_string" field should contain "asdf"
 
+  Scenario: Unparseable (blank) journal name
+    When I follow "New"
+    And I fill in "reference_title" with "A reference title"
+    And I follow "Article"
+    And I fill in "reference_journal_name" with ""
+    And I fill in "article_pagination" with "1"
+    And I press the "Save" button
+    Then I should see "Journal can't be blank"
+    And the "reference_title" field should contain "A reference title"
+    And I follow "Article"
+    And the "reference_journal_name" field should contain ""
+    And the "article_pagination" field should contain "1"
+
   Scenario: Unparseable publisher string
     When I follow "New"
     And I fill in "reference_author_names_string" with "Ward, B.L"
@@ -158,7 +171,9 @@ Feature: Add reference
     And I press the "Save" button
     Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'."
     And I follow "Book"
+    And the "reference_title" field should contain "A reference title"
     And the "reference_publisher_string" field should contain "Pensoft, Sophia"
+    And the "book_pagination" field should contain "1"
 
   Scenario: Very long author string
     When I follow "New"
