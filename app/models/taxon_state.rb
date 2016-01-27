@@ -3,5 +3,5 @@ class TaxonState < ActiveRecord::Base
   has_paper_trail
 
   attr_accessible :review_state, :created_at, :updated_at
-
+  belongs_to :taxon
 end

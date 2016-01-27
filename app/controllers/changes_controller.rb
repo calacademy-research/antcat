@@ -96,7 +96,7 @@ class ChangesController < ApplicationController
   private
     def approve_change change
       taxon_id = change.user_changed_taxon_id
-      taxon_state = TaxonState.find_by(taxon_id: taxon_id)
+      taxon_state = TaxonState.find_by(taxon: taxon_id)
       return if taxon_state.review_state == "approved"
 
       if change.taxon

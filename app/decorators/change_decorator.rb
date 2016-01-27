@@ -67,7 +67,7 @@ class ChangeDecorator < Draper::Decorator
     return unless helpers.user_can_edit?
 
     taxon_id = change.user_changed_taxon_id
-    taxon_state = TaxonState.find_by taxon_id: taxon_id
+    taxon_state = TaxonState.find_by(taxon: taxon_id)
     return if taxon_state.review_state == "approved"
 
     # TODO clarify this; does the nil check mean that editors are allowed
