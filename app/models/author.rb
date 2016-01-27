@@ -3,7 +3,6 @@ class Author < ActiveRecord::Base
 
   has_many :names, -> { order :name }, class_name: 'AuthorName'
   scope :sorted_by_name, -> { select('authors.id').joins(:names).group('authors.id').order('name') }
-  attr_accessible :names
 
   has_paper_trail meta: { change_id: :get_current_change_id }
 

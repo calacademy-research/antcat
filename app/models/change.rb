@@ -3,12 +3,6 @@ class Change < ActiveRecord::Base
   belongs_to :taxon, class_name: 'Taxon', foreign_key: 'user_changed_taxon_id'
   has_many :versions, class_name: 'PaperTrail::Version'
 
-  attr_accessible :approver_id,
-                  :approved_at,
-                  :versions,
-                  :version,
-                  :approver
-
   def self.creations
     self.joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id')
       .order(<<-SQL.squish).uniq

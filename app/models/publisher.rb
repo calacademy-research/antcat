@@ -5,8 +5,6 @@ class Publisher < ActiveRecord::Base
   validates_presence_of :name
   has_paper_trail meta: { change_id: :get_current_change_id }
 
-  attr_accessible :name, :place, :place_id
-
   def self.create_with_place(name:, place:)
     return unless name.present?
     place_record = Place.find_or_create_by!(name: place)
