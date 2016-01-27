@@ -53,19 +53,20 @@ class ChangeDecorator < Draper::Decorator
   end
 
   def approve_button
+    return unless helpers.user_can_edit?
+
     taxon = change.get_most_recent_valid_taxon
     taxon_id = change.user_changed_taxon_id
     taxon_state = TaxonState.find_by taxon_id: taxon_id
-
     return if taxon_state.review_state == "approved"
 
-    # Editors can approve taxa with no associated taxon_state
-    if taxon.taxon_state.nil? && helpers.user_can_edit?
+    # Editors can approve taxa with no associated taxon_state. The GUI probably
+    # does not allow for this to happen, just an additional check.
+    if taxon.taxon_state.nil?
       show_button = true
     end
 
-    # Another check from `can_be_approved_by?` (taxon_workflow.rb)
-    if !taxon_state.nil? && taxon.can_be_approved_by?(change, helpers.current_user)
+    if taxon.can_be_approved_by?(change, helpers.current_user)
       show_button = true
     end
 

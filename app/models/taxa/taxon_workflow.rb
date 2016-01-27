@@ -19,6 +19,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def can_be_approved_by? change, user
+    return unless user && change
     user != change.changed_by && waiting? && user.can_approve_changes?
   end
 
