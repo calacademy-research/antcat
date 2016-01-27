@@ -6,7 +6,7 @@ class TaxonDecorator::History
 
   include RefactorHelper
 
-  def initialize taxon, user=nil
+  def initialize taxon
     @taxon = taxon
   end
 

@@ -5,9 +5,8 @@ class TaxonDecorator::ChildList
   include RefactorHelper
   include CatalogHelper
 
-  def initialize taxon, user=nil
+  def initialize taxon
     @taxon = taxon
-    @user = user
   end
 
   def child_lists

@@ -17,7 +17,7 @@ class TaxonDecorator < ApplicationDecorator
   end
 
   def header
-    TaxonDecorator::Header.new(taxon, get_current_user).header
+    TaxonDecorator::Header.new(taxon).header
   end
 
   def statistics options = {}
@@ -28,15 +28,15 @@ class TaxonDecorator < ApplicationDecorator
   end
 
   def headline
-    TaxonDecorator::Headline.new(taxon, get_current_user).headline
+    TaxonDecorator::Headline.new(taxon).headline
   end
 
   def child_lists
-    TaxonDecorator::ChildList.new(taxon, get_current_user).child_lists
+    TaxonDecorator::ChildList.new(taxon).child_lists
   end
 
   def history
-    TaxonDecorator::History.new(taxon, get_current_user).history
+    TaxonDecorator::History.new(taxon).history
   end
 
   def genus_species_header_notes_taxt

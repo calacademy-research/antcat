@@ -7,9 +7,8 @@ class TaxonDecorator::Header
 
   include RefactorHelper
 
-  def initialize taxon, user=nil
+  def initialize taxon
     @taxon = taxon
-    @user = user
   end
 
   def header
