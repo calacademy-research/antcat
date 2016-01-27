@@ -8,7 +8,7 @@
       %span.edit_button= taxon.decorate.link_to_edit_taxon
       %span= change.undo_button(taxon)
       %span= change.approve_button(taxon)
-      %span.time.right= change.format_created_at
+      %span.time.right= link_to change.format_created_at, change
       .clear
 
     -if change.approver
@@ -22,5 +22,5 @@
       %span.taxon= format_taxon_name taxon.name
       %span= change.undo_button(taxon)
       %span.left= change.approve_button(taxon)
-      %span.time.right= change.format_created_at
+      %span.time.right= link_to change.format_created_at, change
       .clear
