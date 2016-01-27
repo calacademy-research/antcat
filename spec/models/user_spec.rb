@@ -1,9 +1,6 @@
 require 'spec_helper'
-describe User do
 
-  specify "A user is not necessarily an editor" do
-    expect(User.new.is_editor?).not_to be_truthy
-  end
+describe User do
 
   it "knows whether it can edit the catalog" do
     expect(User.new.can_edit).to be_falsey
