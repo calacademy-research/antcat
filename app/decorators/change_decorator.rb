@@ -33,7 +33,7 @@ class ChangeDecorator < Draper::Decorator
     format_time_ago change.approved_at
   end
 
-  def undo_button
+  def undo_button taxon
     # TODO sort this out
     # This is the snippet that was moved here from ChangesHelper
     #   # This extra check (for change_type deleted) covers the case when we've deleted children
@@ -59,15 +59,13 @@ class ChangeDecorator < Draper::Decorator
     # did the same thing as `helpers.user_can_edit?`
 
     return unless helpers.user_can_edit? || change.versions.present?
-    taxon = change.get_most_recent_valid_taxon
 
     helpers.link_to "Undo", "#", class: "btn-undo", data: { 'undo-id' => change.id }
   end
 
-  def approve_button
+  def approve_button taxon
     return unless helpers.user_can_edit?
 
-    taxon = change.get_most_recent_valid_taxon
     taxon_id = change.user_changed_taxon_id
     taxon_state = TaxonState.find_by taxon_id: taxon_id
     return if taxon_state.review_state == "approved"

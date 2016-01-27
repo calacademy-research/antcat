@@ -6,8 +6,8 @@
       %span.name= change.format_adder_name
       %span.taxon= taxon.decorate.link_to_taxon
       %span.edit_button= taxon.decorate.link_to_edit_taxon
-      %span= change.undo_button
-      %span= change.approve_button
+      %span= change.undo_button(taxon)
+      %span= change.approve_button(taxon)
       %span.time.right= change.format_created_at
       .clear
 
@@ -20,6 +20,6 @@
     .change_description
       %span.name= change.format_adder_name
       %span.taxon= format_taxon_name taxon.name
-      %span= change.undo_button
-      %span.left= change.approve_button
+      %span= change.undo_button(taxon)
+      %span.left= change.approve_button(taxon)
       .clear
