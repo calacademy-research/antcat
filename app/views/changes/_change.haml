@@ -21,9 +21,12 @@
             %td.label.parent_rank= 'Order'
             %td.value.parent= 'Hymenoptera'
           - else
-            %td.label.parent_rank= format_rank Rank[taxon.parent.rank]
-            %td.value.parent= format_taxon_name taxon.parent.name
-
+            - if taxon.parent
+              %td.label.parent_rank= format_rank Rank[taxon.parent.rank]
+              %td.value.parent= format_taxon_name taxon.parent.name
+            - else
+              %td
+              %td.parent_not_found Parent not found in the database
         %tr
           %td.label Status
           %td.value.status= format_status taxon.status
