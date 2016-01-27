@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe ApplicationController do
-  let!(:editor) { FactoryGirl.create :user, can_edit: true }
-
   controller do
     def index
       @current_user = current_user
@@ -12,13 +10,18 @@ describe ApplicationController do
 
   describe "Authorization" do
     context "not signed in" do
-      it "return a user's roles" do
+      before { get :index }
+      it "defaults user right to nil" do
         expect(controller.user_can_edit?).to be nil
         expect(controller.user_is_superadmin?).to be nil
+        expect(controller.user_can_upload_pdfs?).to be nil
+        expect(controller.user_can_review_changes?).to be nil
+        expect(controller.user_can_approve_changes?).to be nil
       end
     end
 
-    context "signed in as editor" do
+    context "signed in as an editor" do
+      let!(:editor) { FactoryGirl.create :user, can_edit: true }
       before do
         sign_in editor
         get :index
@@ -28,14 +31,37 @@ describe ApplicationController do
         expect(assigns(:current_user)).to eq editor
       end
 
-      it "knows stuff" do
+      it "knows what editors are allow to do" do
         expect(controller.user_can_edit?).to be true
         expect(controller.user_is_superadmin?).to be_falsey
+        expect(controller.user_can_upload_pdfs?).to be true
+        expect(controller.user_can_review_changes?).to be true
+        expect(controller.user_can_approve_changes?).to be true
+      end
+    end
+
+    context "signed in as a superadmin" do
+      let!(:superadmin) { FactoryGirl.create :user, is_superadmin: true }
+      before do
+        sign_in superadmin
+        get :index
+      end
+
+      it "assigns the current_user" do
+        expect(assigns(:current_user)).to eq superadmin
+      end
+
+      it "knows what superadmins are allow to do" do
+        expect(controller.user_can_edit?).to be_falsey
+        expect(controller.user_is_superadmin?).to be true
+        expect(controller.user_can_upload_pdfs?).to be_falsey
+        expect(controller.user_can_review_changes?).to be_falsey
+        expect(controller.user_can_approve_changes?).to be_falsey
       end
     end
 
     it "delegates to User" do
-      current_user = editor
+      current_user = FactoryGirl.create :user, can_edit: true
       allow(controller).to receive(:current_user).and_return current_user
       expect(current_user).to receive(:can_edit?)
       expect(controller).to receive(:authenticate_user!).and_return true

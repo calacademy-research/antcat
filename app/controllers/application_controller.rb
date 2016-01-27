@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
     :can_approve_changes?, to: :current_user, prefix: 'user', allow_nil: true
 
   helper_method :user_can_edit?, :user_is_superadmin?, :user_can_upload_pdfs?,
-    :user_can_review_changes?, :can_approve_changes?
+    :user_can_review_changes?, :user_can_approve_changes?
 
   def save_location
     session[:user_return_to] = request.url unless request.url =~ %r{/users/}
