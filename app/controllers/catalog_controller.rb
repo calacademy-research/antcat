@@ -13,9 +13,9 @@ class CatalogController < ApplicationController
     @search_results = get_search_results(params[:qq], params[:st])
 
     # Single match --> skip search results and just show the match
-    if @search_results.try(:count) == 1
-      id = @search_results.first[:id]
-      return redirect_to_id id
+    if @search_results.count == 1
+      taxon = @search_results.first
+      return redirect_to catalog_path(taxon)
     end
 
     @search_selector_value = search_selector_value_in_english(params[:st])
@@ -176,9 +176,7 @@ class CatalogController < ApplicationController
       return unless qq.present?
       search_selector_value = search_selector_value_in_english st
 
-      Taxon.find_name(qq, search_selector_value).map do |search_result|
-        { name: search_result.name.name_html, id: search_result.id }
-      end
+      Taxon.find_name(qq, search_selector_value)
     end
 
     def search_selector_value_in_english value

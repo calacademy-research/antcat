@@ -10,7 +10,7 @@
       -rows.each do |row|
         %tr
           -row.each do |taxon|
-            %td= search_result_link taxon
+            %td= taxon.decorate.link_to_taxon
 %hr
 
 -# Push down the partner links; makes the search result page look better after decoupling it from show.haml

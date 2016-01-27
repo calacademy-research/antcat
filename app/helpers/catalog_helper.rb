@@ -28,10 +28,6 @@ module CatalogHelper
     link_to label, "/catalog#{id_string}#{parameter_string}", class: classes
   end
 
-  def search_result_link taxon
-    link_to raw(taxon[:name]), "/catalog/#{taxon[:id]}"
-  end
-
   def hide_link name, id, child
     parameter_string = build_parameter_string(id, child)
     link_to 'hide', "/catalog/hide_#{name}#{parameter_string}"
