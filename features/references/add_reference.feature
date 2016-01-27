@@ -73,7 +73,6 @@ Feature: Add reference
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. In Muller, Brown 1928. Ants. p. 23."
 
   Scenario: Leaving other fields blank when adding an article reference
-    # TODO pending
     When I follow "New"
     And I fill in "reference_author_names_string" with "Fisher, B.L."
     And I press the "Save" button
@@ -82,6 +81,17 @@ Feature: Add reference
     And I should see "Journal can't be blank"
     And I should see "Series volume issue can't be blank"
     And I should see "Pagination can't be blank"
+
+  Scenario: Leaving a required field blank should not affect other fields (article)
+    When I follow "New"
+    And I fill in "reference_title" with "A reference title"
+    And I fill in "reference_journal_name" with "Ant Journal"
+    And I fill in "article_pagination" with "2"
+    And I press the "Save" button
+    And the "reference_title" field should contain "A reference title"
+    And I follow "Article"
+    And the "reference_journal_name" field should contain "Ant Journal"
+    And the "article_pagination" field should contain "2"
 
   Scenario: Leaving other fields blank when adding a book reference
     When I follow "New"
@@ -92,6 +102,18 @@ Feature: Add reference
     And I should see "Title can't be blank"
     And I should see "Publisher can't be blank"
     And I should see "Pagination can't be blank"
+
+  Scenario: Leaving a required field blank should not affect other fields (book)
+    When I follow "New"
+    And I follow "Book"
+    And I fill in "reference_title" with "A reference title"
+    And I fill in "reference_publisher_string" with "Capua: House of Batiatus"
+    And I fill in "book_pagination" with "2"
+    And I press the "Save" button
+    And the "reference_title" field should contain "A reference title"
+    And I follow "Book"
+    And the "reference_publisher_string" field should contain "Capua: House of Batiatus"
+    And the "book_pagination" field should contain "2"
 
   Scenario: Leaving other fields blank when adding a nested reference
     When I follow "New"

@@ -173,11 +173,11 @@ class ReferencesController < ApplicationController
     def save
       Reference.transaction do
         clear_document_params_if_necessary
+        set_pagination
         clear_nesting_reference_id unless @reference.kind_of? NestedReference
         parse_author_names_string
         set_journal if @reference.kind_of? ArticleReference
         set_publisher if @reference.kind_of? BookReference
-        set_pagination
 
         @reference.attributes = params[:reference]
 

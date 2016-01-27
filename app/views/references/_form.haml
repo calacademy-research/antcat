@@ -10,11 +10,7 @@
 - selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
 .reference_edit.ui-corner-all.ui-widget-content.ui-widget
-  - url = reference.new_record? ? references_path : reference_path(reference)
-  - method = reference.new_record? ? 'post' : 'put'
-  - html_options = Rails.env.test? ? {} : {:multipart => true}
-  = form_for reference, :as => :reference, :url => url, :html => html_options do |f|
-    %input{:type => 'hidden', :name => '_method', :value => method}
+  = form_for reference.becomes(Reference) do |f|
     %input{type: :hidden, name: :selected_tab, id: :selected_tab, class: :selected_tab, value: selected_tab}
     %input{type: :hidden, name: 'possible_duplicate', id: 'possible_duplicate', value: possible_duplicate ? 'true' : nil}
     = render 'shared/errors_for', :resource => reference
@@ -46,7 +42,7 @@
 
           %div{:class => 'article-tab-section', :id => "tabs-article-#{reference.id}"}
             = label_tag :reference_journal_name, 'Journal'
-            = f.text_field :journal_name, class: 'journal'
+            = f.text_field :journal_name, value: reference.journal_name, class: 'journal'
             = label_tag :reference_series_volume_issue, 'Series volume issue'
             = f.text_field :series_volume_issue, :class => 'series_volume_issue'
             = label_tag :article_pagination, 'Pagination'
@@ -54,7 +50,7 @@
 
           %div{:class => 'book-tab-section', :id => "tabs-book-#{reference.id}"}
             = label_tag :reference_publisher_string, 'Publisher'
-            = f.text_field :publisher_string, class: 'publisher'
+            = f.text_field :publisher_string, value: reference.publisher_string, class: 'publisher'
             = label_tag :book_pagination, 'Pagination'
             = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
 
