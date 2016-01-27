@@ -1,6 +1,8 @@
 class Change < ActiveRecord::Base
   belongs_to :approver, class_name: 'User'
+  belongs_to :taxon, class_name: 'Taxon', foreign_key: 'user_changed_taxon_id'
   has_many :versions, class_name: 'PaperTrail::Version'
+
   attr_accessible :approver_id,
                   :approved_at,
                   :versions,
@@ -17,21 +19,8 @@ class Change < ActiveRecord::Base
       SQL
   end
 
-  # Why isn't `user_changed_taxon_id` called `taxon`?
-  # Could be made into a `belongs_to` relationship
-  # TODO: investigate
-  def taxon
-    begin
-      Taxon.find(user_changed_taxon_id)
-    rescue ActiveRecord::RecordNotFound
-      nil
-    end
-  end
-
   def get_most_recent_valid_taxon
-    unless taxon.nil?
-      return taxon
-    end
+    return taxon if taxon
 
     version = get_most_recent_valid_taxon_version
     version.reify
