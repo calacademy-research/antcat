@@ -1,31 +1,5 @@
-require 'milieu'
-
 module ApplicationHelper
   include LinkHelper
-
-  def user_can_edit?
-    $Milieu.user_can_edit? current_user
-  end
-
-  def user_can_upload_pdfs?
-    $Milieu.user_can_upload_pdfs? current_user
-  end
-
-  def user_is_editor?
-    $Milieu.user_is_editor? current_user
-  end
-
-  def user_can_approve_changes?
-    $Milieu.user_can_approve_changes? current_user
-  end
-
-  def user_can_review_changes?
-    $Milieu.user_can_review_changes? current_user
-  end
-
-  def user_is_superadmin?
-    $Milieu.user_is_superadmin? current_user
-  end
 
   def make_title title
     string = ''.html_safe
