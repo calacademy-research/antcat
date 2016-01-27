@@ -22,7 +22,7 @@ module TaxonDecorator::EditorButtons
 
   private
     def link_to_review_change
-      return unless $Milieu.user_can_review_changes?(get_current_user)
+      return unless helpers.user_can_review_changes?
 
       if taxon.can_be_reviewed? && taxon.latest_change
         helpers.link_to 'Review change', "/changes/#{taxon.latest_change.id}", class: "btn-normal"
@@ -30,9 +30,9 @@ module TaxonDecorator::EditorButtons
     end
 
     def link_to_delete_taxon
-      if get_current_user.try :is_superadmin?
-        helpers.link_to 'Delete', "#", id: "delete_button", class: "btn-delete",
-          data: { 'delete-location' => helpers.taxa_path(taxon), "taxon-id" => taxon.id }
-      end
+      return unless helpers.user_is_superadmin?
+
+      helpers.link_to 'Delete', "#", id: "delete_button", class: "btn-delete",
+        data: { 'delete-location' => helpers.taxa_path(taxon), "taxon-id" => taxon.id }
     end
 end

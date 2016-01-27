@@ -1,6 +1,6 @@
 module ReferenceHelper
   def approve_all_references_button
-    return unless $Milieu.user_is_superadmin? current_user
+    return unless user_is_superadmin?
 
     link_to 'Approve all', approve_all_references_path,
       method: :put, class: "btn-destructive",
