@@ -19,6 +19,7 @@ describe CatalogController do
   end
 
   it { should use_before_action(:handle_family_not_found) }
+  it { should use_before_action(:set_taxon) }
   it { should use_before_action(:get_parameters) }
 
   describe 'GET #index' do

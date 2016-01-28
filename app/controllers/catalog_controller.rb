@@ -1,15 +1,16 @@
 class CatalogController < ApplicationController
   before_filter :handle_family_not_found, only: [:index]
+  before_filter :set_taxon, except: [:index, :search]
   before_filter :get_parameters, except: [:search]
 
   def index
-    taxon_id = Family.first.id
-    setup_taxon_and_index taxon_id
+    taxon = Family.first
+    setup_taxon_and_index taxon
     render 'show'
   end
 
   def show
-    setup_taxon_and_index @id
+    setup_taxon_and_index @taxon
   end
 
   def search
@@ -27,53 +28,54 @@ class CatalogController < ApplicationController
 
   def show_tribes
     session[:show_tribes] = true
-    redirect_to_id @id
+    redirect_to_id @taxon.try(:id)
   end
 
   def hide_tribes
     session[:show_tribes] = false
-    if @id.present?
-      taxon = Taxon.find @id
-      if taxon.kind_of? Tribe
-        @id = taxon.subfamily.id
-        @child = nil
-      end
+
+    if @taxon.kind_of? Tribe
+      @taxon = @taxon.subfamily
+      @child = nil
     end
-    redirect_to_id @id
+
+    redirect_to_id @taxon.try(:id)
   end
 
   def show_unavailable_subfamilies
     session[:show_unavailable_subfamilies] = true
-    redirect_to_id @id
+    redirect_to_id @taxon.try(:id)
   end
 
   def hide_unavailable_subfamilies
     session[:show_unavailable_subfamilies] = false
-    redirect_to_id @id
+    redirect_to_id @taxon.try(:id)
   end
 
   def show_subgenera
     session[:show_subgenera] = true
-    redirect_to_id @id
+    redirect_to_id @taxon.try(:id)
   end
 
   def hide_subgenera
     session[:show_subgenera] = false
-    if @id.present?
-      taxon = Taxon.find @id
-      if taxon.kind_of? Subgenus
-        @id = taxon.genus.id
-        @child = nil
-      end
+
+    if @taxon.kind_of? Subgenus
+      @taxon = @taxon.genus
+      @child = nil
     end
-    redirect_to_id @id
+
+    redirect_to_id @taxon.try(:id)
   end
 
   private
     # Avoid blowing up if there's no family. Useful in test and dev.
     def handle_family_not_found
-      family = Family.first
-      render 'family_not_found' and return unless family
+      render 'family_not_found' and return unless Family.first
+    end
+
+    def set_taxon
+      @taxon = Taxon.find(params[:id]) unless params[:id].blank?
     end
 
     def redirect_to_id id
@@ -84,8 +86,8 @@ class CatalogController < ApplicationController
 
     # Among other thigs, this populates the lower half of the table
     # that is browsable (subfamiles, genera, [subgenera], species, [subspecies])
-    def setup_taxon_and_index id
-      @taxon = Taxon.find(id)
+    def setup_taxon_and_index taxon
+      @taxon = taxon
 
       if session[:show_unavailable_subfamilies]
         @subfamilies = Subfamily.displayable.ordered_by_name
@@ -167,7 +169,6 @@ class CatalogController < ApplicationController
     end
 
     def get_parameters
-      @id = params[:id]
       @child = params[:child]
     end
 
