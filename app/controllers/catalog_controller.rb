@@ -1,11 +1,12 @@
 class CatalogController < ApplicationController
   before_filter :handle_family_not_found, only: [:index]
   before_filter :set_taxon, except: [:index, :search]
-  before_filter :get_parameters, except: [:search]
+  before_filter :set_child, except: [:index, :search]
 
   def index
     taxon = Family.first
     setup_taxon_and_index taxon
+    params[:id] = taxon.id # because the show/hide links requires an id
     render 'show'
   end
 
@@ -28,44 +29,34 @@ class CatalogController < ApplicationController
 
   def show_tribes
     session[:show_tribes] = true
-    redirect_to_id @taxon.try(:id)
+    redirect_to_taxon @taxon
   end
 
   def hide_tribes
     session[:show_tribes] = false
-
-    if @taxon.kind_of? Tribe
-      @taxon = @taxon.subfamily
-      @child = nil
-    end
-
-    redirect_to_id @taxon.try(:id)
+    return redirect_to catalog_path(@taxon.subfamily) if @taxon.kind_of? Tribe
+    redirect_to_taxon @taxon
   end
 
   def show_unavailable_subfamilies
     session[:show_unavailable_subfamilies] = true
-    redirect_to_id @taxon.try(:id)
+    redirect_to_taxon @taxon
   end
 
   def hide_unavailable_subfamilies
     session[:show_unavailable_subfamilies] = false
-    redirect_to_id @taxon.try(:id)
+    redirect_to_taxon @taxon
   end
 
   def show_subgenera
     session[:show_subgenera] = true
-    redirect_to_id @taxon.try(:id)
+    redirect_to_taxon @taxon
   end
 
   def hide_subgenera
     session[:show_subgenera] = false
-
-    if @taxon.kind_of? Subgenus
-      @taxon = @taxon.genus
-      @child = nil
-    end
-
-    redirect_to_id @taxon.try(:id)
+    return redirect_to catalog_path(@taxon.genus) if @taxon.kind_of? Subgenus
+    redirect_to_taxon @taxon
   end
 
   private
@@ -75,17 +66,19 @@ class CatalogController < ApplicationController
     end
 
     def set_taxon
-      @taxon = Taxon.find(params[:id]) unless params[:id].blank?
+      @taxon = Taxon.find(params[:id])
     end
 
-    def redirect_to_id id
-      redirect_to root_path and return unless id.present?
-      parameters_string = @child ? "?child=#{@child}" : ''
-      redirect_to "/catalog/#{id}#{parameters_string}"
+    def set_child
+      @child = params[:child]
     end
 
-    # Among other thigs, this populates the lower half of the table
-    # that is browsable (subfamiles, genera, [subgenera], species, [subspecies])
+    def redirect_to_taxon taxon
+      redirect_to catalog_path(taxon, child: @child)
+    end
+
+    # Among other things, this populates the lower half of the table that is
+    # browsable (subfamiles, [tribes], genera, [subgenera], species, [subspecies]).
     def setup_taxon_and_index taxon
       @taxon = taxon
 
@@ -166,10 +159,6 @@ class CatalogController < ApplicationController
       else
         @genera = @subfamily == 'none' ? Genus.without_subfamily.ordered_by_name : @subfamily.genera.displayable.ordered_by_name
       end
-    end
-
-    def get_parameters
-      @child = params[:child]
     end
 
     # TODO rename all occurrences of "st"
