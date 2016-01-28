@@ -11,7 +11,7 @@ module CatalogHelper
       classes = 'valid'
       classes << ' selected' if taxon == selected_taxon
       if rank == :subfamily
-        id_string = ''
+        id_string = "/#{Family.first.id}"
         label = '(no subfamily)'
       elsif rank == :tribe
         id_string = "/#{parent_taxon.id}"
