@@ -28,7 +28,7 @@ module NavigationHelpers
       taxon = Taxon.find_by_name $2
       "/catalog/#{taxon.id}"
     when /^the catalog$/
-      catalog_path
+      root_path
 
     when /^the edit page for "(.*)"$/
       "/taxa/#{Taxon.find_by_name($1).id}/edit"

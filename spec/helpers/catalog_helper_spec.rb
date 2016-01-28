@@ -33,7 +33,9 @@ describe CatalogHelper do
 
   describe "Index column link" do
     it "should work" do
-      expect(helper.index_column_link(:subfamily, 'none', 'none', nil)).to eq('<a class="valid selected" href="/catalog?child=none">(no subfamily)</a>')
+      formicidae = FactoryGirl.create :family
+      expect(helper.index_column_link(:subfamily, 'none', 'none', nil))
+        .to eq %[<a class="valid selected" href="/catalog/#{formicidae.id}?child=none">(no subfamily)</a>]
     end
   end
 

@@ -21,25 +21,27 @@ describe CatalogController do
   it { should use_before_action(:handle_family_not_found) }
   it { should use_before_action(:get_parameters) }
 
-  describe 'GET #show' do
-    describe "RecordNotFound" do
-      before do
-        FactoryGirl.create(:family)
-        get :show, id: 99999
-      end
-      it { should respond_with(404) }
-    end
+  describe 'GET #index' do
     describe "handle non-existing family" do
       context "family exists" do
         before do
           FactoryGirl.create(:family)
-          get :show
+          get :index
         end
         it { should render_template('show') }
       end
       context "without a family existing in the database" do
-        before { get :show }
+        before { get :index }
         it { should render_template('family_not_found') }
+      end
+    end
+  end
+
+  describe 'GET #show' do
+    describe "RecordNotFound" do
+      before { FactoryGirl.create(:family) }
+      it "raises on taxon not found (=404 in prod)" do
+        expect{ get :show, id: 99999 }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

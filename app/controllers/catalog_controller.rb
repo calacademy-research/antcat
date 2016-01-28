@@ -1,12 +1,15 @@
 class CatalogController < ApplicationController
-  before_filter :handle_family_not_found, only: [:show]
+  before_filter :handle_family_not_found, only: [:index]
   before_filter :get_parameters, except: [:search]
 
+  def index
+    taxon_id = Family.first.id
+    setup_taxon_and_index taxon_id
+    render 'show'
+  end
+
   def show
-    @id = Family.first if @id.blank? # TODO move to new method #index
     setup_taxon_and_index @id
-  rescue ActiveRecord::RecordNotFound
-    render_404 and return
   end
 
   def search
@@ -71,10 +74,6 @@ class CatalogController < ApplicationController
     def handle_family_not_found
       family = Family.first
       render 'family_not_found' and return unless family
-    end
-
-    def render_404
-      render file: 'public/404.html', status: :not_found, layout: false
     end
 
     def redirect_to_id id
@@ -167,7 +166,7 @@ class CatalogController < ApplicationController
     end
 
     def get_parameters
-      @id = params[:id] || Family.first.id
+      @id = params[:id]
       @child = params[:child]
     end
 

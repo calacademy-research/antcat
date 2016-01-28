@@ -1,7 +1,7 @@
 AntCat::Application.routes.draw do
 
   ActiveAdmin.routes(self)
-  root to: 'catalog#show'
+  root to: 'catalog#index'
 
   resources :changes, only: [:show, :index] do
     collection do
@@ -34,8 +34,8 @@ AntCat::Application.routes.draw do
   end
 
   # TODO remove?
-  get 'catalog/index/(:id)' => 'catalog#show', as: :catalog_index # for compatibility
-  get 'catalog/(:id)' => 'catalog#show', as: :catalog
+  get 'catalog/index/:id' => 'catalog#show' # for compatibility
+  get 'catalog/:id' => 'catalog#show', as: :catalog
 
   get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
   resources :journals, only: [:index, :show, :new, :create, :edit, :update] do
