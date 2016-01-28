@@ -11,19 +11,9 @@ class Protonym < ActiveRecord::Base
 
   attr_accessible :fossil, :sic, :locality, :id, :name_id, :name, :authorship, :taxon
 
-  def authorship_string
-    authorship and authorship.authorship_string
-  end
+  # allow_nil should not be needed (per `validates :authorship, presence: true`),
+  # but protonym_spec.rb uses `build_stubbed`, so we need it for the moment.
+  delegate :authorship_string, :authorship_html_string, :author_last_names_string, :year,
+    to: :authorship, allow_nil: true
 
-  def authorship_html_string
-    authorship and authorship.authorship_html_string
-  end
-
-  def author_last_names_string
-    authorship and authorship.author_last_names_string
-  end
-
-  def year
-    authorship and authorship.year
-  end
 end
