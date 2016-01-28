@@ -25,6 +25,9 @@
             - rows, css_class = snake_taxon_columns items
             - rows.each do |row|
               %tr
-                - row.each do |item|
+                - row.each do |taxon|
                   %td{class: css_class}
-                    = index_column_link rank.to_sym, item, selected_item, parent
+                    - if taxon == 'none'
+                      = incertae_sedis_column_link rank.to_sym, taxon, selected_item, parent
+                    -else
+                      = taxon_column_link rank.to_sym, taxon, selected_item, parent
