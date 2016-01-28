@@ -63,7 +63,7 @@ class Reference < ActiveRecord::Base
       ]
 
       regexes.each do |keyword, regex|
-        match = keyword_string.match /#{keyword}:#{regex}/
+        match = keyword_string.match /#{keyword}: ?#{regex}/i
         next unless match
 
         # match.names contains named captured groups.
