@@ -22,6 +22,8 @@
     = stylesheet_link_tag 'bootstrap_custom'
     = stylesheet_link_tag 'jquery_overrides'
     = stylesheet_link_tag "controllers/#{params[:controller]}" if AntCat::Application.assets.find_asset "controllers/#{params[:controller]}"
+    = stylesheet_link_tag 'dev_env' if Rails.env == 'development' && !params[:prod]
+    -# dev-specific CSS. Suffix the url with ?prod=pizza to disable.
 
     = favicon_link_tag 'favicon.ico'
 
