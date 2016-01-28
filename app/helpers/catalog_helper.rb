@@ -28,22 +28,19 @@ module CatalogHelper
     link_to label, "/catalog#{id_string}#{parameter_string}", class: classes
   end
 
-  def hide_link name, id, child
-    parameter_string = build_parameter_string(id, child)
-    link_to 'hide', "/catalog/hide_#{name}#{parameter_string}"
+  def hide_link name, _id, _child
+    link_to 'hide', "/catalog/hide_#{name}#{build_params}".html_safe
   end
 
-  def hide_or_show_unavailable_subfamilies_link is_hiding_link, id, child
-    parameter_string = build_parameter_string(id, child)
+  def hide_or_show_unavailable_subfamilies_link is_hiding_link, _id, _child
     command = is_hiding_link ? 'hide' : 'show'
     action = command.dup << '_unavailable_subfamilies'
     text = command + ' unavailable'
-    link_to text, "/catalog/#{action}#{parameter_string}"
+    link_to text, "/catalog/#{action}#{build_params}".html_safe
   end
 
-  def show_child_link name, id, child
-    parameter_string = build_parameter_string(id, child)
-    link_to "show #{name}", "/catalog/show_#{name}#{parameter_string}"
+  def show_child_link name, _id, _child
+    link_to "show #{name}", "/catalog/show_#{name}#{build_params}".html_safe
   end
 
   def snake_taxon_columns items
@@ -77,11 +74,13 @@ module CatalogHelper
   end
 
   private
-    def build_parameter_string id, child
-      parameters = {}
-      parameters[:child] = child if child
-      parameters[:id] = id if id
-      parameters.empty? ? '' : "?#{parameters.to_query}"
+    def build_params
+      hash = {
+        id: params[:id],
+        child: params[:child]
+      }
+      hash.compact!
+      "?#{hash.to_query}" if hash.present?
     end
 
     def epithet_label name, fossil

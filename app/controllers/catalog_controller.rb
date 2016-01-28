@@ -77,6 +77,7 @@ class CatalogController < ApplicationController
     end
 
     def redirect_to_id id
+      redirect_to root_path and return unless id.present?
       parameters_string = @child ? "?child=#{@child}" : ''
       redirect_to "/catalog/#{id}#{parameters_string}"
     end
