@@ -81,6 +81,8 @@ class CatalogController < ApplicationController
     # browsable (subfamiles, [tribes], genera, [subgenera], species, [subspecies]).
     def setup_taxon_and_index taxon
       @taxon = taxon
+      @family = Family.first # FIX Hard-coded because we only have a single family,
+      # which is not really correct, but it's done like this in other parts of the code.
 
       if session[:show_unavailable_subfamilies]
         @subfamilies = Subfamily.displayable.ordered_by_name
