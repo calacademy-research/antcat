@@ -7,49 +7,15 @@ module CatalogHelper
 
   # The "(no subfamily/tribe)"/"?child=none" links
   def incertae_sedis_column_link rank, taxon, selected_taxon, parent_taxon
-    if taxon == 'none'
-      child = 'none'
-      classes = 'valid'
-      classes << ' selected' if taxon == selected_taxon
-      if rank == :subfamily
-        id_string = "/#{parent_taxon.id}"
-        label = '(no subfamily)'
-      elsif rank == :tribe
-        id_string = "/#{parent_taxon.id}"
-        label = '(no tribe)'
-      end
-    else
-      child = nil
-      id_string = "/#{taxon.id}"
-      label = taxon_label taxon
-      classes = taxon_css_classes taxon, selected: taxon == selected_taxon
-    end
-
-    parameter_string = child ? "?child=#{child}" : ''
-    link_to label, "/catalog#{id_string}#{parameter_string}", class: classes
+    classes = 'valid'
+    classes << ' selected' if taxon == selected_taxon
+    link_to "(no #{rank})", catalog_path(parent_taxon, child: "none"), class: classes
   end
 
-  def taxon_column_link rank, taxon, selected_taxon, parent_taxon
-    if taxon == 'none'
-      child = 'none'
-      classes = 'valid'
-      classes << ' selected' if taxon == selected_taxon
-      if rank == :subfamily
-        id_string = "/#{parent_taxon.id}"
-        label = '(no subfamily)'
-      elsif rank == :tribe
-        id_string = "/#{parent_taxon.id}"
-        label = '(no tribe)'
-      end
-    else
-      child = nil
-      id_string = "/#{taxon.id}"
-      label = taxon_label taxon
-      classes = taxon_css_classes taxon, selected: taxon == selected_taxon
-    end
-
-    parameter_string = child ? "?child=#{child}" : ''
-    link_to label, "/catalog#{id_string}#{parameter_string}", class: classes
+  def taxon_column_link taxon, selected_taxon
+    classes = taxon_css_classes taxon, selected: taxon == selected_taxon
+    label = taxon_label taxon
+    link_to label, catalog_path(taxon), class: classes
   end
 
   def hide_link name

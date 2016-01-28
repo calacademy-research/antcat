@@ -51,11 +51,24 @@ describe CatalogHelper do
     end
   end
 
-  describe "Index column link" do
-    it "should work" do
+  describe "index column links" do
+    it "#incertae_sedis_column_link" do
       formicidae = FactoryGirl.create :family
-      expect(helper.index_column_link(:subfamily, 'none', 'none', nil))
+      expect(helper.incertae_sedis_column_link(:subfamily, 'none', 'none', formicidae))
         .to eq %[<a class="valid selected" href="/catalog/#{formicidae.id}?child=none">(no subfamily)</a>]
+    end
+    describe "#taxon_column_link" do
+      it "formats selected" do
+        selected = FactoryGirl.create :genus
+        expect(helper.taxon_column_link(selected, selected))
+          .to eq %[<a class="genus name selected taxon valid" href="/catalog/#{selected.id}"><i>#{selected.name}</i></a>]
+      end
+      it "formats non-selected" do
+        selected = FactoryGirl.create :genus
+        not_selected = FactoryGirl.create :genus
+        expect(helper.taxon_column_link(selected, not_selected))
+          .to eq %[<a class="genus name taxon valid" href="/catalog/#{selected.id}"><i>#{selected.name}</i></a>]
+      end
     end
   end
 
