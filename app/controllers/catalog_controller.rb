@@ -118,7 +118,6 @@ class CatalogController < ApplicationController
 
       when Genus
         @genus = @taxon
-        @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
         setup_genus_parent_columns
         if session[:show_subgenera]
           @subgenera = @genus.subgenera.displayable.ordered_by_name
@@ -129,7 +128,6 @@ class CatalogController < ApplicationController
       when Subgenus
         @subgenus = @taxon
         @genus = @subgenus.genus
-        @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
         session[:show_subgenera] = true
         @subgenera = @genus.subgenera.displayable.ordered_by_name
         setup_genus_parent_columns
@@ -138,20 +136,19 @@ class CatalogController < ApplicationController
       when Species
         @species = @taxon
         @genus = @species.genus
-        @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
         setup_genus_parent_columns
         @specieses = @genus.species_group_descendants.displayable
 
       when Subspecies
         @species = @taxon
         @genus = @species.genus
-        @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
         setup_genus_parent_columns
         @specieses = @genus.species_group_descendants.displayable
       end
     end
 
     def setup_genus_parent_columns
+      @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
       if session[:show_tribes]
         @genera = @genus.siblings.ordered_by_name
         @tribe = @genus.tribe ? @genus.tribe : 'none'
