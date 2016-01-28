@@ -19,17 +19,17 @@ describe CatalogHelper do
     it "creates a link to the hide tribes action with all the current parameters" do
       helper.stub(:params).and_return({ id: 99 })
       expected = %Q[<a href="/catalog/hide_tribes?id=99">hide</a>]
-      expect(helper.hide_link('tribes', nil, nil)).to eq expected
+      expect(helper.hide_link('tribes')).to eq expected
     end
     it "handles child params" do
       helper.stub(:params).and_return({ child: "none" })
       expected = %Q[<a href="/catalog/hide_tribes?child=none">hide</a>]
-      expect(helper.hide_link('tribes', nil, nil)).to eq expected
+      expect(helper.hide_link('tribes')).to eq expected
     end
     it "handles child and id params at the same time" do
       helper.stub(:params).and_return({ id: 99, child: "none" })
       expected = %Q[<a href="/catalog/hide_tribes?child=none&id=99">hide</a>]
-      expect(helper.hide_link('tribes', nil, nil)).to eq expected
+      expect(helper.hide_link('tribes')).to eq expected
     end
   end
 
@@ -37,17 +37,17 @@ describe CatalogHelper do
     it "creates a link to the show action" do
       helper.stub(:params).and_return({ id: 99 })
       expected = %Q[<a href="/catalog/show_tribes?id=99">show tribes</a>]
-      expect(helper.show_child_link('tribes', nil, nil)).to eq expected
+      expect(helper.show_child_link('tribes')).to eq expected
     end
     it "handles child params" do
       helper.stub(:params).and_return({ child: "none" })
       expected = %Q[<a href="/catalog/hide_tribes?child=none">hide</a>]
-      expect(helper.hide_link('tribes', nil, nil)).to eq expected
+      expect(helper.hide_link('tribes')).to eq expected
     end
     it "handles child and id params at the same time" do
       helper.stub(:params).and_return({ id: 99, child: "none" })
       expected = %Q[<a href="/catalog/hide_tribes?child=none&id=99">hide</a>]
-      expect(helper.hide_link('tribes', nil, nil)).to eq expected
+      expect(helper.hide_link('tribes')).to eq expected
     end
   end
 

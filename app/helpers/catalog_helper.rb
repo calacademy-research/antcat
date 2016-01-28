@@ -28,18 +28,18 @@ module CatalogHelper
     link_to label, "/catalog#{id_string}#{parameter_string}", class: classes
   end
 
-  def hide_link name, _id, _child
+  def hide_link name
     link_to 'hide', "/catalog/hide_#{name}#{build_params}".html_safe
   end
 
-  def hide_or_show_unavailable_subfamilies_link is_hiding_link, _id, _child
+  def hide_or_show_unavailable_subfamilies_link is_hiding_link
     command = is_hiding_link ? 'hide' : 'show'
     action = command.dup << '_unavailable_subfamilies'
     text = command + ' unavailable'
     link_to text, "/catalog/#{action}#{build_params}".html_safe
   end
 
-  def show_child_link name, _id, _child
+  def show_child_link name
     link_to "show #{name}", "/catalog/show_#{name}#{build_params}".html_safe
   end
 

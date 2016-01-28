@@ -6,15 +6,15 @@
         = rank.to_s :plural, :capitalized
 
         - if options[:can_show_unavailable]
-          .hide_show= hide_or_show_unavailable_subfamilies_link session[:show_unavailable_subfamilies], id, child
+          .hide_show= hide_or_show_unavailable_subfamilies_link session[:show_unavailable_subfamilies]
 
         - if options[:hideable_name]
-          .hide_show= hide_link options[:hideable_name], id, child
+          .hide_show= hide_link options[:hideable_name]
         - if options[:hideable_child_name]
           .hide_show
             - showing_child = "show_#{options[:hideable_child_name]}".to_sym
             - unless session[showing_child]
-              = show_child_link options[:hideable_child_name], id, child
+              = show_child_link options[:hideable_child_name]
     %tr
       %td
         - if items
