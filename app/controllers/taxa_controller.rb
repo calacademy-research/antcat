@@ -109,7 +109,7 @@ class TaxaController < ApplicationController
       return
     end
     @taxon.elevate_to_species
-    redirect_to catalog_path(@taxon), notice: "Subspecies was successfully elevated a species."
+    redirect_to catalog_path(@taxon), notice: "Subspecies was successfully elevated to a species."
   end
 
   # Return all the taxa that would be deleted if we delete this
