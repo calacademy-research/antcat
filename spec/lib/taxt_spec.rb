@@ -10,7 +10,7 @@ describe Taxt do
           decorated = double 'key'
           reference = double 'reference', id: 36
           expect(reference).to receive(:decorate).and_return decorated
-          expect(decorated).to receive(:to_s).and_return 'Fisher, 1922'
+          expect(decorated).to receive(:key).and_return 'Fisher, 1922'
           expect(Reference).to receive(:find).and_return reference
           editable_key = Taxt.id_for_editable reference.id, 1
 

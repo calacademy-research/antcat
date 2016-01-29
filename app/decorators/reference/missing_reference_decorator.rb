@@ -13,7 +13,7 @@ class MissingReferenceDecorator < ReferenceDecorator
     citation.html_safe
   end
 
-  def to_s
+  def key
     reference.citation
   end
 

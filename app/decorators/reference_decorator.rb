@@ -7,8 +7,7 @@ class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the h method
   delegate_all
 
-  # A relic from ReferenceKey; should probably be renamed.
-  def to_s
+  def key
     format_author_last_names
   end
 
