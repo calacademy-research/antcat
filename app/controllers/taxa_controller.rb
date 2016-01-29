@@ -163,7 +163,6 @@ class TaxaController < ApplicationController
   protected
     def get_params
       @id = params[:id]
-      @rank_to_create = Rank[params[:rank_to_create]]
       @parent_id = params[:parent_id]
       @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
       @taxon_params = params[:taxon]
@@ -177,10 +176,11 @@ class TaxaController < ApplicationController
   private
     def get_taxon_for_create
       parent = Taxon.find(@parent_id)
+      rank_to_create = Rank[params[:rank_to_create]]
+      @taxon = @mother.create_taxon rank_to_create, parent
+
       # Radio button case - we got duplicates, and the user picked one
       # to resolve the problem.
-      @taxon = @mother.create_taxon @rank_to_create, parent
-
       if @collision_resolution
         if @collision_resolution == 'homonym' || @collision_resolution == ""
           @taxon[:unresolved_homonym] = true
@@ -199,7 +199,6 @@ class TaxaController < ApplicationController
 
     def get_taxon_for_update
       @taxon = @mother.load_taxon
-      @rank_to_create = Rank[@taxon].child
     end
 
     def save_taxon
