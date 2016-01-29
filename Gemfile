@@ -66,6 +66,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'sunspot_test'
   gem 'thin'
+  gem 'pry'
 end
 
 group :test do
