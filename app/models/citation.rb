@@ -9,6 +9,8 @@ class Citation < ActiveRecord::Base
 
   before_save { |record| CleanNewlines::clean_newlines record, :notes_taxt }
 
+  # FIX? the reference nil check is probably not needed outside of tests,
+  # per `validates :reference, presence: true`.
   def authorship_string
     reference and "#{author_names_string}, #{reference.year}"
   end
@@ -25,19 +27,20 @@ class Citation < ActiveRecord::Base
     reference and reference.year.to_s
   end
 
-  def author_names_string
-    names = reference.author_names.map &:last_name
-    case names.size
-    when 0
-      '[no authors]'
-    when 1
-      "#{names.first}"
-    when 2
-      "#{names.first} & #{names.second}"
-    else
-      string = names[0..-2].join ', '
-      string << " & " << names[-1]
+  private
+    def author_names_string
+      names = reference.author_names.map &:last_name
+      case names.size
+      when 0
+        '[no authors]'
+      when 1
+        "#{names.first}"
+      when 2
+        "#{names.first} & #{names.second}"
+      else
+        string = names[0..-2].join ', '
+        string << " & " << names[-1]
+      end
     end
-  end
 
 end
