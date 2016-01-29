@@ -27,4 +27,13 @@ module TaxonHelper
       MSG
   end
 
+  def delete_unreferenced_taxon_button taxon
+    return unless taxon.nontaxt_references.empty? # TODO check taxt references
+
+    link_to 'Delete', destroy_unreferenced_taxa_path(taxon), method: :delete,
+      class: "btn-delete", data: { confirm: <<-MSG.squish }
+        Are you sure you want to delete this taxon? Note: It may take a few
+        moments to check that this taxon isn't being referenced.
+      MSG
+  end
 end
