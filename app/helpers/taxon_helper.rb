@@ -11,6 +11,18 @@ module TaxonHelper
     end
   end
 
+  # TODO fix `rank_to_create` / `rank_to_add`
+  def add_taxon_button taxon, rank_to_create, collision_resolution
+    rank_to_add = Rank[taxon].child.try(:string)
+    return unless rank_to_add
+
+    collision_resolution = nil if collision_resolution.blank?
+    # Hopefully not needed, but leaving this extra check here to be on the safe side
+
+    link_to "Add #{rank_to_add}", new_taxa_path(rank_to_create: rank_to_create,
+      parent_id: taxon.id, collision_resolution: collision_resolution), class: "btn-new"
+  end
+
   def convert_to_subspecies_button taxon
     return unless taxon.kind_of? Species
 

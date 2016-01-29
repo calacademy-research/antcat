@@ -247,10 +247,7 @@ class TaxaController < ApplicationController
     end
 
     def setup_edit_buttons
-      rank_to_add = Rank[@taxon].child.try :string
-
       @buttons_section_local_variables = {
-        add_taxon_button_text: ("Add #{rank_to_add}" if rank_to_add),
         add_tribe_button_text: ("Add tribe" if @taxon.kind_of? Subfamily)
       }
     end

@@ -1,10 +1,5 @@
 .right_buttons
-  -if add_taxon_button_text
-    -if @collision_resolution
-      -@add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id, collision_resolution: @collision_resolution
-    -else
-      -@add_taxon_path = new_taxa_path rank_to_create: @rank_to_create, parent_id: @taxon.id
-    = link_to add_taxon_button_text, @add_taxon_path, class: "btn-new"
+  = add_taxon_button @taxon, @rank_to_create, @collision_resolution
 
   -if add_tribe_button_text
     = link_to add_tribe_button_text, new_taxa_path(rank_to_create: Tribe, parent_id: @taxon.id), class: "btn-new"
