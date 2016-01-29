@@ -250,7 +250,6 @@ class TaxaController < ApplicationController
       rank_to_add = Rank[@taxon].child.try :string
 
       @buttons_section_local_variables = {
-        show_convert_to_subspecies_button: @taxon.kind_of?(Species),
         show_delete_taxon_button: @taxon.nontaxt_references.empty?, # TODO check taxt references
         add_taxon_button_text: ("Add #{rank_to_add}" if rank_to_add),
         add_tribe_button_text: ("Add tribe" if @taxon.kind_of? Subfamily)

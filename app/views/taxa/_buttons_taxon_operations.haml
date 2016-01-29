@@ -9,9 +9,7 @@
   -if add_tribe_button_text
     = link_to add_tribe_button_text, new_taxa_path(rank_to_create: Tribe, parent_id: @taxon.id), class: "btn-new"
 
-  -if show_convert_to_subspecies_button
-    = link_to 'Convert to subspecies', new_taxa_convert_to_subspecies_path(@taxon.id), class: "btn-new"
-
+  = convert_to_subspecies_button @taxon
   = elevate_to_species_button @taxon
 
   -if show_delete_taxon_button
