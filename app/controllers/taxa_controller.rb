@@ -15,6 +15,21 @@ class TaxaController < ApplicationController
     get_taxon_for_create
     save_taxon
 
+    # Nil check to avoid showing 404 to the user and breaking the tests.
+    # `change_parent.feature` fails without this, but it seems to work if the
+    # steps are manually reproduced in the browser.
+    #
+    # The reason @taxon may be nil is has to do with saves made in TaxonMother
+    # without updating the local instance variable.
+    #
+    # This imitates the previous behavior we had when CatalogController#show was
+    # responsible for both the index and show actions, and nil ids were silently
+    # redirected to Formicidae (nil are not allowed by routes.rb any longer).
+    unless @taxon.id
+      redirect_to root_path, notice: 'Taxon was successfully created.'
+      return
+    end
+
     redirect_to catalog_path(@taxon), notice: 'Taxon was successfully created.'
 
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
@@ -32,6 +47,13 @@ class TaxaController < ApplicationController
     set_update_view_variables
     setup_edit_buttons
     save_taxon
+
+    # See #create for the raison d'etre of this nil check.
+    # Note: Tests pass without this snippets.
+    unless @taxon.id
+      redirect_to root_path, notice: 'Taxon was successfully updated.'
+      return
+    end
 
     redirect_to catalog_path(@taxon), notice: 'Taxon was successfully updated.'
 

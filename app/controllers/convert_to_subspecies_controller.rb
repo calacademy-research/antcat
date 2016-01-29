@@ -29,7 +29,7 @@ class ConvertToSubspeciesController < ApplicationController
       render :new and return
     end
 
-    redirect_to catalog_url @taxon
+    redirect_to catalog_path @taxon
   end
 
 end

@@ -3,6 +3,9 @@ Feature: Converting a species to a subspecies
   I want to make a species a subspecies
   So the data is correct
 
+  Background:
+    Given the Formicidae family exists
+
   @javascript
   Scenario: Converting a species to a subspecies
     Given there is a species "Camponotus dallatorei" with genus "Camponotus"
