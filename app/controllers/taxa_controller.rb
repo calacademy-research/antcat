@@ -39,13 +39,11 @@ class TaxaController < ApplicationController
   def edit
     get_taxon_for_update
     set_update_view_variables
-    setup_edit_buttons
   end
 
   def update
     get_taxon_for_update
     set_update_view_variables
-    setup_edit_buttons
     save_taxon
 
     # See #create for the raison d'etre of this nil check.
@@ -244,12 +242,6 @@ class TaxaController < ApplicationController
         parent = Taxon.find @parent_id
         @default_name_string = parent.name.name
       end
-    end
-
-    def setup_edit_buttons
-      @buttons_section_local_variables = {
-        add_tribe_button_text: ("Add tribe" if @taxon.kind_of? Subfamily)
-      }
     end
 
     def redirect_by_parent_name_id

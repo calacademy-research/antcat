@@ -1,9 +1,6 @@
 .right_buttons
   = add_taxon_button @taxon, @rank_to_create, @collision_resolution
-
-  -if add_tribe_button_text
-    = link_to add_tribe_button_text, new_taxa_path(rank_to_create: Tribe, parent_id: @taxon.id), class: "btn-new"
-
+  = add_tribe_button @taxon
   = convert_to_subspecies_button @taxon
   = elevate_to_species_button @taxon
   = delete_unreferenced_taxon_button @taxon
