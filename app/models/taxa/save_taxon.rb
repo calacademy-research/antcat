@@ -63,15 +63,15 @@ class Taxa::SaveTaxon
         # find all taxa that list previous_combination.id as
         # current_valid_taxon_id and update them
         Taxon.where(current_valid_taxon_id: previous_combination.id).each do |taxon_to_update|
-          update_elements(nil, params, taxon_to_update, get_status_string(taxon_to_update), change_id)
+          update_elements(params, taxon_to_update, get_status_string(taxon_to_update), change_id)
         end
 
         # since the previous doesn't have a pointer to current_valid_taxon, it won't show up
         # in the above search. If it's the protonym, set it propertly.
         if previous_combination.id == @taxon.protonym.id
-          update_elements(nil, params, previous_combination, Status['original combination'].to_s, change_id)
+          update_elements(params, previous_combination, Status['original combination'].to_s, change_id)
         else
-          update_elements(nil, params, previous_combination, Status['obsolete combination'].to_s, change_id)
+          update_elements(params, previous_combination, Status['obsolete combination'].to_s, change_id)
         end
       end
       save_taxon_children @taxon
@@ -79,7 +79,7 @@ class Taxa::SaveTaxon
   end
 
   private
-    def update_elements _taxon, params, taxon_to_update, status_string, change_id
+    def update_elements params, taxon_to_update, status_string, change_id
       taxon_to_update.status = status_string
       taxon_to_update.current_valid_taxon = @taxon
       TaxonHistoryItem.where(taxon_id: taxon_to_update.id).update_all(taxon_id: @taxon.id)
