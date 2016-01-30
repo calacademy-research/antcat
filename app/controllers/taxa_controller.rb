@@ -1,20 +1,21 @@
 class TaxaController < ApplicationController
-  before_filter :authenticate_editor
-  before_filter :set_previous_combination, only: [:new, :create, :edit, :update]
+  before_filter :authenticate_editor, except: [:show, :autocomplete]
   before_filter :authenticate_superadmin, only: [:destroy]
+
   before_filter :redirect_by_parent_name_id, only: :new
+
+  before_filter :set_previous_combination, only: [:new, :create, :edit, :update]
   before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced,
     :delete_impact_list, :destroy, :edit, :update]
-  skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
   def new
-    get_taxon_for_create
-    get_default_name_string
+    set_taxon_for_create
+    set_default_name_string
     set_authorship_reference
   end
 
   def create
-    get_taxon_for_create
+    set_taxon_for_create
     save_taxon
 
     # Nil check to avoid showing 404 to the user and breaking the tests.
@@ -39,11 +40,11 @@ class TaxaController < ApplicationController
   end
 
   def edit
-    set_update_view_variables
+    set_reset_epithet
   end
 
   def update
-    set_update_view_variables
+    set_reset_epithet
     save_taxon
 
     # See #create for the raison d'etre of this nil check.
@@ -161,6 +162,10 @@ class TaxaController < ApplicationController
       @previous_combination = Taxon.find(params[:previous_combination_id])
     end
 
+    def set_taxon
+      @taxon = Taxon.find(params[:id])
+    end
+
     def get_taxon_for_create
       parent = Taxon.find(params[:parent_id])
 
@@ -217,7 +222,7 @@ class TaxaController < ApplicationController
       end
     end
 
-    def set_update_view_variables
+    def set_reset_epithet
       @reset_epithet  = case @taxon
                         when Family then @taxon.name.to_s
                         when Species then @taxon.name.genus_epithet
@@ -229,7 +234,7 @@ class TaxaController < ApplicationController
       @taxon.protonym.authorship.reference ||= DefaultReference.get session
     end
 
-    def get_default_name_string
+    def set_default_name_string
       if @taxon.kind_of? SpeciesGroupTaxon
         parent = Taxon.find(params[:parent_id])
         @default_name_string = parent.name.name
@@ -248,10 +253,6 @@ class TaxaController < ApplicationController
         end
         redirect_to new_hash
       end
-    end
-
-    def set_taxon
-      @taxon = Taxon.find(params[:id])
     end
 
     def build_new_taxon rank
