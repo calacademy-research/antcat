@@ -167,9 +167,8 @@ class TaxaController < ApplicationController
   private
     def get_taxon_for_create
       parent = Taxon.find(@parent_id)
-      rank_to_create = Rank[params[:rank_to_create]]
 
-      @taxon = constantize_rank(rank_to_create).new
+      @taxon = constantize_rank(params[:rank_to_create]).new
       build_relationships
       @taxon.parent = parent
 
@@ -177,10 +176,10 @@ class TaxaController < ApplicationController
       # to resolve the problem.
       if @collision_resolution
         if @collision_resolution == 'homonym' || @collision_resolution == ""
-          @taxon[:unresolved_homonym] = true
-          @taxon[:status] = Status['homonym'].to_s
+          @taxon.unresolved_homonym = true
+          @taxon.status = Status['homonym'].to_s
         else
-          @taxon[:collision_merge_id] = @collision_resolution
+          @taxon.collision_merge_id = @collision_resolution
           original_combination = Taxon.find(@collision_resolution)
           Taxon.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
         end
@@ -210,8 +209,8 @@ class TaxaController < ApplicationController
     # TODO looks like this isn't tested
     def create_new_usages_for_subspecies
       @previous_combination.children.select { |t| t.status == 'valid' }.each do |t|
-        new_child = constantize_rank(Rank['subspecies']).new
-        build_relationships
+        new_child = Subspecies.new
+        build_relationships # whoops, wrong taxon
         new_child.parent = @taxon
 
         Taxon.inherit_attributes_for_new_combination(new_child, t, @taxon)
