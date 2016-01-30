@@ -156,7 +156,6 @@ class TaxaController < ApplicationController
 
   protected
     def get_params
-      @parent_id = params[:parent_id]
       @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
       @taxon_params = params[:taxon]
       @collision_resolution = params[:collision_resolution]
@@ -164,7 +163,7 @@ class TaxaController < ApplicationController
 
   private
     def get_taxon_for_create
-      parent = Taxon.find(@parent_id)
+      parent = Taxon.find(params[:parent_id])
 
       @taxon = build_new_taxon(params[:rank_to_create])
       @taxon.parent = parent
@@ -231,7 +230,7 @@ class TaxaController < ApplicationController
 
     def get_default_name_string
       if @taxon.kind_of? SpeciesGroupTaxon
-        parent = Taxon.find @parent_id
+        parent = Taxon.find(params[:parent_id])
         @default_name_string = parent.name.name
       end
     end
