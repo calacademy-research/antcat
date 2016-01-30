@@ -210,7 +210,10 @@ class TaxaController < ApplicationController
     def create_new_usages_for_subspecies
       @previous_combination.children.select { |t| t.status == 'valid' }.each do |t|
         new_child = Subspecies.new
-        build_relationships # whoops, wrong taxon
+
+        # Only building type_name because all other will be compied from 't'.
+        # TODO Not sure why type_name is not copied?
+        new_child.build_type_name
         new_child.parent = @taxon
 
         Taxon.inherit_attributes_for_new_combination(new_child, t, @taxon)
