@@ -84,7 +84,6 @@ end
 #############################
 # editing
 When /^I add the genus "([^"]+)"?$/ do |genus_name|
-  mother = TaxonMother.new
   reference = FactoryGirl.create :article_reference
 
   taxon_params = HashWithIndifferentAccess.new(
@@ -117,11 +116,26 @@ When /^I add the genus "([^"]+)"?$/ do |genus_name|
   genus_params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Betta').id
   genus_params[:type_name_attributes] = {id: FactoryGirl.create(:species_name, name: 'Betta major').id}
 
-  taxon = mother.create_taxon Rank[:genus], create_subfamily
+  taxon = mother_replacement_create_taxon Rank[:genus], create_subfamily
+  mother = TaxonMother.new
+  mother.load_taxon_object taxon
   mother.save_taxon taxon, genus_params
   taxon.last_change.versions.each do |version|
     version.update_attributes whodunnit: @user.id
   end
+end
+
+# from ex TaxonMother
+# TODO replace with factory?
+def mother_replacement_create_taxon rank, parent
+  taxon = rank.string.titlecase.constantize.new
+  taxon.parent = parent
+  taxon.build_name
+  taxon.build_type_name
+  taxon.build_protonym
+  taxon.protonym.build_name
+  taxon.protonym.build_authorship
+  taxon
 end
 
 Then /I should not see any change history/ do

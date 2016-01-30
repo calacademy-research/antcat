@@ -206,11 +206,16 @@ class TaxaController < ApplicationController
       end
     end
 
+    # TODO looks like this isn't tested
     def create_new_usages_for_subspecies
       @previous_combination.children.select { |t| t.status == 'valid' }.each do |t|
-        mother = TaxonMother.new
-        new_child = mother.create_taxon(Rank['subspecies'], @taxon)
+        new_child = constantize_rank(Rank['subspecies']).new
+        build_relationships
+        new_child.parent = @taxon
+
         Taxon.inherit_attributes_for_new_combination(new_child, t, @taxon)
+
+        mother = TaxonMother.new
         mother.save_taxon(new_child, Taxon.attributes_for_new_usage(new_child, t), t)
       end
     end

@@ -7,10 +7,8 @@ class TaxonMother
     @id = id
   end
 
-  def create_taxon rank, parent
-    @taxon = rank.string.titlecase.constantize.new
-    @taxon.parent = parent
-    build_children
+  def load_taxon_object taxon
+    @taxon = taxon
     @taxon
   end
 
@@ -189,14 +187,6 @@ class TaxonMother
       attributes[:type_name_id] = attributes.delete :id
       @taxon.attributes = attributes
     end
-  end
-
-  def build_children
-    @taxon.build_name unless @taxon.name
-    @taxon.build_type_name unless @taxon.type_name
-    @taxon.build_protonym unless @taxon.protonym
-    @taxon.protonym.build_name unless @taxon.protonym.name
-    @taxon.protonym.build_authorship unless @taxon.protonym.authorship
   end
 
   private
