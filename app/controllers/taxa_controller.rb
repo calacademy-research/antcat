@@ -1,5 +1,5 @@
 class TaxaController < ApplicationController
-  before_filter :authenticate_editor, :get_params, :create_mother
+  before_filter :authenticate_editor, :get_params
   before_filter :authenticate_superadmin, only: [:destroy]
   before_filter :redirect_by_parent_name_id, only: :new
   before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced,
@@ -164,15 +164,11 @@ class TaxaController < ApplicationController
       @collision_resolution = params[:collision_resolution]
     end
 
-    def create_mother
-      @mother = TaxonMother.new params[:id]
-    end
-
   private
     def get_taxon_for_create
       parent = Taxon.find(@parent_id)
       rank_to_create = Rank[params[:rank_to_create]]
-      @taxon = @mother.create_taxon rank_to_create, parent
+      @taxon = create_taxon rank_to_create, parent
 
       # Radio button case - we got duplicates, and the user picked one
       # to resolve the problem.
@@ -193,16 +189,17 @@ class TaxaController < ApplicationController
     end
 
     def get_taxon_for_update
-      @taxon = @mother.load_taxon
+      @taxon = load_taxon params[:id]
     end
 
     def save_taxon
+      mother = TaxonMother.new @taxon.id
       # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
       if @collision_resolution.blank? || @collision_resolution == 'homonym'
-        @mother.save_taxon @taxon, @taxon_params, @previous_combination
+        mother.save_taxon @taxon, @taxon_params, @previous_combination
       else
         @original_combination = Taxon.find(@collision_resolution)
-        @mother.save_taxon @original_combination, @taxon_params, @previous_combination
+        mother.save_taxon @original_combination, @taxon_params, @previous_combination
       end
 
       if @previous_combination.is_a?(Species) && @previous_combination.children.any?
@@ -254,5 +251,28 @@ class TaxaController < ApplicationController
 
     def set_taxon
       @taxon = Taxon.find(params[:id])
+    end
+
+    # duplicated from TaxonMother
+    # "taxon_ex_mother" is to be renamed/rmoved
+    def load_taxon id
+      @taxon_ex_mother = Taxon.find id
+      build_children
+      @taxon_ex_mother
+    end
+
+    def create_taxon rank, parent
+      @taxon_ex_mother = rank.string.titlecase.constantize.new
+      @taxon_ex_mother.parent = parent
+      build_children
+      @taxon_ex_mother
+    end
+
+    def build_children
+      @taxon_ex_mother.build_name unless @taxon_ex_mother.name
+      @taxon_ex_mother.build_type_name unless @taxon_ex_mother.type_name
+      @taxon_ex_mother.build_protonym unless @taxon_ex_mother.protonym
+      @taxon_ex_mother.protonym.build_name unless @taxon_ex_mother.protonym.name
+      @taxon_ex_mother.protonym.build_authorship unless @taxon_ex_mother.protonym.authorship
     end
 end
