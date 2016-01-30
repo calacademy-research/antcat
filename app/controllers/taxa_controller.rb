@@ -162,7 +162,6 @@ class TaxaController < ApplicationController
 
   protected
     def get_params
-      @id = params[:id]
       @parent_id = params[:parent_id]
       @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
       @taxon_params = params[:taxon]
@@ -170,7 +169,7 @@ class TaxaController < ApplicationController
     end
 
     def create_mother
-      @mother = TaxonMother.new @id
+      @mother = TaxonMother.new params[:id]
     end
 
   private
