@@ -181,8 +181,8 @@ class TaxaController < ApplicationController
           @taxon[:status] = Status['homonym'].to_s
         else
           @taxon[:collision_merge_id] = @collision_resolution
-          @original_combination = Taxon.find(@collision_resolution)
-          Taxon.inherit_attributes_for_new_combination(@original_combination, @previous_combination, parent)
+          original_combination = Taxon.find(@collision_resolution)
+          Taxon.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
         end
       end
 
@@ -197,8 +197,8 @@ class TaxaController < ApplicationController
         mother = Taxa::SaveTaxon.new @taxon
         mother.save_taxon @taxon_params, @previous_combination
       else
-        @original_combination = Taxon.find(@collision_resolution)
-        mother = Taxa::SaveTaxon.new @original_combination
+        original_combination = Taxon.find(@collision_resolution)
+        mother = Taxa::SaveTaxon.new original_combination
         mother.save_taxon @taxon_params, @previous_combination
       end
 
