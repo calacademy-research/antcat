@@ -157,7 +157,6 @@ class TaxaController < ApplicationController
   protected
     def get_params
       @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
-      @collision_resolution = params[:collision_resolution]
     end
 
   private
@@ -169,13 +168,14 @@ class TaxaController < ApplicationController
 
       # Radio button case - we got duplicates, and the user picked one
       # to resolve the problem.
-      if @collision_resolution
-        if @collision_resolution == 'homonym' || @collision_resolution == ""
+      collision_resolution = params[:collision_resolution]
+      if collision_resolution
+        if collision_resolution == 'homonym' || collision_resolution == ""
           @taxon.unresolved_homonym = true
           @taxon.status = Status['homonym'].to_s
         else
-          @taxon.collision_merge_id = @collision_resolution
-          original_combination = Taxon.find(@collision_resolution)
+          @taxon.collision_merge_id = collision_resolution
+          original_combination = Taxon.find(collision_resolution)
           Taxon.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
         end
       end
@@ -187,10 +187,11 @@ class TaxaController < ApplicationController
 
     def save_taxon
       # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
-      if @collision_resolution.blank? || @collision_resolution == 'homonym'
+      collision_resolution = params[:collision_resolution]
+      if collision_resolution.blank? || collision_resolution == 'homonym'
         @taxon.save_taxon(params[:taxon], @previous_combination)
       else
-        original_combination = Taxon.find(@collision_resolution)
+        original_combination = Taxon.find(collision_resolution)
         original_combination.save_taxon(params[:taxon], @previous_combination)
       end
 
