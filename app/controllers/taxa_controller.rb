@@ -192,7 +192,7 @@ class TaxaController < ApplicationController
     end
 
     def save_taxon
-      mother = TaxonMother.new @taxon.id
+      mother = Taxa::SaveTaxon.new @taxon.id
       # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
       if @collision_resolution.blank? || @collision_resolution == 'homonym'
         mother.save_taxon @taxon, @taxon_params, @previous_combination
@@ -215,7 +215,7 @@ class TaxaController < ApplicationController
 
         Taxon.inherit_attributes_for_new_combination(new_child, t, @taxon)
 
-        mother = TaxonMother.new
+        mother = Taxa::SaveTaxon.new
         mother.save_taxon(new_child, Taxon.attributes_for_new_usage(new_child, t), t)
       end
     end

@@ -117,7 +117,7 @@ When /^I add the genus "([^"]+)"?$/ do |genus_name|
   genus_params[:type_name_attributes] = {id: FactoryGirl.create(:species_name, name: 'Betta major').id}
 
   taxon = mother_replacement_create_taxon Rank[:genus], create_subfamily
-  mother = TaxonMother.new
+  mother = Taxa::SaveTaxon.new
   mother.load_taxon_object taxon
   mother.save_taxon taxon, genus_params
   taxon.last_change.versions.each do |version|

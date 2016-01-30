@@ -1,7 +1,9 @@
-class TaxonMother
+# Formerly taxon_mother.rb
+# A TaxonMother is responsible for creating/saving
+# an object web of objects, starting with Taxon
+
+class Taxa::SaveTaxon
   include UndoTracker
-  # A TaxonMother is responsible for creating/saving
-  # an object web of objects, starting with Taxon
 
   def initialize id = nil
     @id = id
