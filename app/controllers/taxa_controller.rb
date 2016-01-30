@@ -1,5 +1,6 @@
 class TaxaController < ApplicationController
-  before_filter :authenticate_editor, :get_params
+  before_filter :authenticate_editor
+  before_filter :set_previous_combination, only: [:new, :create, :edit, :update]
   before_filter :authenticate_superadmin, only: [:destroy]
   before_filter :redirect_by_parent_name_id, only: :new
   before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced,
@@ -154,12 +155,12 @@ class TaxaController < ApplicationController
     end
   end
 
-  protected
-    def get_params
-      @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
+  private
+    def set_previous_combination
+      return unless params[:previous_combination_id].present?
+      @previous_combination = Taxon.find(params[:previous_combination_id])
     end
 
-  private
     def get_taxon_for_create
       parent = Taxon.find(params[:parent_id])
 
