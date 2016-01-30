@@ -157,7 +157,6 @@ class TaxaController < ApplicationController
   protected
     def get_params
       @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
-      @taxon_params = params[:taxon]
       @collision_resolution = params[:collision_resolution]
     end
 
@@ -189,10 +188,10 @@ class TaxaController < ApplicationController
     def save_taxon
       # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
       if @collision_resolution.blank? || @collision_resolution == 'homonym'
-        @taxon.save_taxon(@taxon_params, @previous_combination)
+        @taxon.save_taxon(params[:taxon], @previous_combination)
       else
         original_combination = Taxon.find(@collision_resolution)
-        original_combination.save_taxon(@taxon_params, @previous_combination)
+        original_combination.save_taxon(params[:taxon], @previous_combination)
       end
 
       if @previous_combination.is_a?(Species) && @previous_combination.children.any?
