@@ -4,7 +4,7 @@
 # species epithet.
 
 class DuplicatesController < TaxaController
-  before_filter :authenticate_editor, :get_params, :create_mother
+  before_filter :authenticate_editor, :get_params
 
   # Takes requires parent_id (target parent)and previous_combination_id
   # returns all matching taxa that could conflict with this naming.

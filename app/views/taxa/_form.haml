@@ -16,7 +16,7 @@
 
     -#These fields are used to pass pre-caulculated data to javascript
     -# and they're magically appended to the POST.
-    = hidden_field_tag 'current_taxon_id', @id
+    = hidden_field_tag 'current_taxon_id', @taxon.id
     = hidden_field_tag 'rank_to_create', params[:rank_to_create]
     = hidden_field_tag 'parent_id', @parent_id
     = hidden_field_tag 'taxon_rank', @taxon.rank

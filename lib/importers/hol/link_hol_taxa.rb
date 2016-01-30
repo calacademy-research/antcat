@@ -600,11 +600,23 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
 
   end
 
+  # from ex TaxonMother
+  # Since the HOL importers are to be removed, I'm OK with this,
+  # but sorry nevertheless for this ugly chunk.
+  def mother_replacement_create_taxon rank, parent
+    taxon = rank.string.titlecase.constantize.new
+    taxon.parent = parent
+    taxon.build_name
+    taxon.build_type_name
+    taxon.build_protonym
+    taxon.protonym.build_name
+    taxon.protonym.build_authorship
+    taxon
+  end
 
   # Creates taxon,synonym (and any logic therein, derived from hol_Taxon.status),
   # taxon state, change  Takes name object and parent.
   def create_taxon valid_antcat_taxon, hol_taxon, name, rank, parent, hol_status
-    mother = TaxonMother.new
     puts " valid_antcat_taxon id: #{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank} tnuid: #{hol_taxon.tnuid} name: #{name} rank #{rank} "
     if parent
       puts "parent name: #{parent.name} parent rank: #{parent.rank}"
@@ -613,7 +625,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     end
 
 
-    new_taxon = mother.create_taxon Rank[rank.to_s.capitalize], parent
+    new_taxon = mother_replacement_create_taxon Rank[rank.to_s.capitalize], parent
 
     new_taxon.auto_generated = true
     new_taxon.origin = 'hol'

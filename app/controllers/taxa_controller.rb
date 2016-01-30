@@ -1,8 +1,9 @@
 class TaxaController < ApplicationController
-  before_filter :authenticate_editor, :get_params, :create_mother
+  before_filter :authenticate_editor, :get_params
   before_filter :authenticate_superadmin, only: [:destroy]
   before_filter :redirect_by_parent_name_id, only: :new
-  before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced]
+  before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced,
+    :delete_impact_list, :destroy, :edit, :update]
   skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
   def new
@@ -37,12 +38,10 @@ class TaxaController < ApplicationController
   end
 
   def edit
-    get_taxon_for_update
     set_update_view_variables
   end
 
   def update
-    get_taxon_for_update
     set_update_view_variables
     save_taxon
 
@@ -72,9 +71,7 @@ class TaxaController < ApplicationController
   end
 
   def destroy
-    delete_mother = TaxonMother.new params[:id]
-    taxon = delete_mother.load_taxon
-    delete_mother.delete_taxon taxon
+    @taxon.delete_taxon_and_children
 
     flash[:notice] = "Taxon was successfully deleted."
 
@@ -135,10 +132,7 @@ class TaxaController < ApplicationController
   # Return all the taxa that would be deleted if we delete this
   # particular ID, inclusive. Same as children, really.
   def delete_impact_list
-    mother = TaxonMother.new(params[:id])
-    mother.load_taxon
-    taxon_array = mother.get_children
-
+    taxon_array = @taxon.delete_impact_list
     render json: taxon_array, status: :ok
   end
 
@@ -162,33 +156,29 @@ class TaxaController < ApplicationController
 
   protected
     def get_params
-      @id = params[:id]
       @parent_id = params[:parent_id]
       @previous_combination = params[:previous_combination_id].blank? ? nil : Taxon.find(params[:previous_combination_id])
       @taxon_params = params[:taxon]
       @collision_resolution = params[:collision_resolution]
     end
 
-    def create_mother
-      @mother = TaxonMother.new @id
-    end
-
   private
     def get_taxon_for_create
       parent = Taxon.find(@parent_id)
-      rank_to_create = Rank[params[:rank_to_create]]
-      @taxon = @mother.create_taxon rank_to_create, parent
+
+      @taxon = build_new_taxon(params[:rank_to_create])
+      @taxon.parent = parent
 
       # Radio button case - we got duplicates, and the user picked one
       # to resolve the problem.
       if @collision_resolution
         if @collision_resolution == 'homonym' || @collision_resolution == ""
-          @taxon[:unresolved_homonym] = true
-          @taxon[:status] = Status['homonym'].to_s
+          @taxon.unresolved_homonym = true
+          @taxon.status = Status['homonym'].to_s
         else
-          @taxon[:collision_merge_id] = @collision_resolution
-          @original_combination = Taxon.find(@collision_resolution)
-          Taxon.inherit_attributes_for_new_combination(@original_combination, @previous_combination, parent)
+          @taxon.collision_merge_id = @collision_resolution
+          original_combination = Taxon.find(@collision_resolution)
+          Taxon.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
         end
       end
 
@@ -197,17 +187,13 @@ class TaxaController < ApplicationController
       end
     end
 
-    def get_taxon_for_update
-      @taxon = @mother.load_taxon
-    end
-
     def save_taxon
       # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
       if @collision_resolution.blank? || @collision_resolution == 'homonym'
-        @mother.save_taxon @taxon, @taxon_params, @previous_combination
+        @taxon.save_taxon(@taxon_params, @previous_combination)
       else
-        @original_combination = Taxon.find(@collision_resolution)
-        @mother.save_taxon @original_combination, @taxon_params, @previous_combination
+        original_combination = Taxon.find(@collision_resolution)
+        original_combination.save_taxon(@taxon_params, @previous_combination)
       end
 
       if @previous_combination.is_a?(Species) && @previous_combination.children.any?
@@ -215,12 +201,19 @@ class TaxaController < ApplicationController
       end
     end
 
+    # TODO looks like this isn't tested
     def create_new_usages_for_subspecies
       @previous_combination.children.select { |t| t.status == 'valid' }.each do |t|
-        mother = TaxonMother.new
-        new_child = mother.create_taxon(Rank['subspecies'], @taxon)
+        new_child = Subspecies.new
+
+        # Only building type_name because all other will be compied from 't'.
+        # TODO Not sure why type_name is not copied?
+        new_child.build_type_name
+        new_child.parent = @taxon
+
         Taxon.inherit_attributes_for_new_combination(new_child, t, @taxon)
-        mother.save_taxon(new_child, Taxon.attributes_for_new_usage(new_child, t), t)
+
+        new_child.save_taxon(Taxon.attributes_for_new_usage(new_child, t), t)
       end
     end
 
@@ -260,4 +253,15 @@ class TaxaController < ApplicationController
     def set_taxon
       @taxon = Taxon.find(params[:id])
     end
+
+    def build_new_taxon rank
+      taxon = "#{rank}".titlecase.constantize.new
+      taxon.build_name
+      taxon.build_type_name
+      taxon.build_protonym
+      taxon.protonym.build_name
+      taxon.protonym.build_authorship
+      taxon
+    end
+
 end
