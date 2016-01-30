@@ -2,7 +2,8 @@ class TaxaController < ApplicationController
   before_filter :authenticate_editor, :get_params, :create_mother
   before_filter :authenticate_superadmin, only: [:destroy]
   before_filter :redirect_by_parent_name_id, only: :new
-  before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced]
+  before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced,
+    :delete_impact_list]
   skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
   def new
@@ -135,10 +136,7 @@ class TaxaController < ApplicationController
   # Return all the taxa that would be deleted if we delete this
   # particular ID, inclusive. Same as children, really.
   def delete_impact_list
-    mother = TaxonMother.new(params[:id])
-    mother.load_taxon
-    taxon_array = mother.get_children
-
+    taxon_array = @taxon.delete_impact_list
     render json: taxon_array, status: :ok
   end
 

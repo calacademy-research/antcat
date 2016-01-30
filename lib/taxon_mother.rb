@@ -30,10 +30,6 @@ class TaxonMother
     end
   end
 
-  def get_children
-    get_taxon_children_recur(@taxon).concat([@taxon])
-  end
-
   def remove_auto_generated
     @taxon.auto_generated = false
     name = @taxon.name
@@ -235,12 +231,4 @@ class TaxonMother
       end
     end
 
-    def get_taxon_children_recur taxon
-      ret_val = []
-      taxon.children.each do |c|
-        ret_val.concat [c]
-        ret_val.concat get_taxon_children_recur c
-      end
-      ret_val
-    end
 end

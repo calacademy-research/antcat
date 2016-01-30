@@ -39,6 +39,10 @@ class Taxon < ActiveRecord::Base
 
   scope :displayable, -> { where(display: true) }
 
+  def delete_impact_list
+    Taxa::Utility.new(self).delete_impact_list
+  end
+
   def delete_with_state!
     Taxon.transaction do
       taxon_state = self.taxon_state
