@@ -168,7 +168,10 @@ class TaxaController < ApplicationController
     def get_taxon_for_create
       parent = Taxon.find(@parent_id)
       rank_to_create = Rank[params[:rank_to_create]]
-      @taxon = create_taxon rank_to_create, parent
+
+      @taxon = constantize_rank(rank_to_create).new
+      build_relationships
+      @taxon.parent = parent
 
       # Radio button case - we got duplicates, and the user picked one
       # to resolve the problem.
@@ -261,11 +264,8 @@ class TaxaController < ApplicationController
       @taxon_ex_mother
     end
 
-    def create_taxon rank, parent
-      @taxon_ex_mother = rank.string.titlecase.constantize.new
-      @taxon_ex_mother.parent = parent
-      build_children
-      @taxon_ex_mother
+    def constantize_rank rank
+      rank.string.titlecase.constantize
     end
 
     def build_children
@@ -275,4 +275,13 @@ class TaxaController < ApplicationController
       @taxon_ex_mother.protonym.build_name unless @taxon_ex_mother.protonym.name
       @taxon_ex_mother.protonym.build_authorship unless @taxon_ex_mother.protonym.authorship
     end
+
+    def build_relationships
+      @taxon.build_name unless @taxon.name
+      @taxon.build_type_name unless @taxon.type_name
+      @taxon.build_protonym unless @taxon.protonym
+      @taxon.protonym.build_name unless @taxon.protonym.name
+      @taxon.protonym.build_authorship unless @taxon.protonym.authorship
+    end
+
 end
