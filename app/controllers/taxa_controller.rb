@@ -192,13 +192,14 @@ class TaxaController < ApplicationController
     end
 
     def save_taxon
-      mother = Taxa::SaveTaxon.new @taxon.id
       # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
       if @collision_resolution.blank? || @collision_resolution == 'homonym'
-        mother.save_taxon @taxon, @taxon_params, @previous_combination
+        mother = Taxa::SaveTaxon.new @taxon
+        mother.save_taxon @taxon_params, @previous_combination
       else
         @original_combination = Taxon.find(@collision_resolution)
-        mother.save_taxon @original_combination, @taxon_params, @previous_combination
+        mother = Taxa::SaveTaxon.new @original_combination
+        mother.save_taxon @taxon_params, @previous_combination
       end
 
       if @previous_combination.is_a?(Species) && @previous_combination.children.any?
