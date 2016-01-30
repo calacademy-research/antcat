@@ -1,28 +1,6 @@
 require 'spec_helper'
-describe TaxonMother do
 
-  describe "Returning a web of objects to be edited in a form" do
-
-    describe "Returning an object web suitable for filling in for a new record" do
-      before do
-        @genus = create_genus
-        @mother = TaxonMother.new
-      end
-      it "should create a new record to be edited, filling in child objects" do
-        taxon = @mother.create_taxon Rank[:species], @genus
-        expect(taxon).to be_kind_of Species
-        expect(taxon.name).not_to be_blank
-        expect(taxon.protonym).not_to be_blank
-        expect(taxon.protonym.name).not_to be_blank
-        expect(taxon.protonym.authorship).not_to be_blank
-        expect(taxon.type_name).not_to be_blank
-      end
-      it "should set the parent of a new record" do
-        taxon = @mother.create_taxon Rank[:species], @genus
-        expect(taxon.parent).to eq(@genus)
-      end
-    end
-  end
+describe Taxa::SaveTaxon do
 
   describe "Saving a new record, based on params from a form with nested attributes" do
     before do
