@@ -14,3 +14,7 @@ And 'I pause' do
   print "Paused. Hit enter to continue."
   STDIN.getc
 end
+
+Given /^PENDING/ do
+  pending
+end

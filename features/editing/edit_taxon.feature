@@ -98,6 +98,8 @@ Feature: Editing a taxon
 
   @search
   Scenario: Supplying the authorship when there wasn't one before
+    Given PENDING: this state can (should?) never happen
+    # Artificially created in a step. If this happens we have bigger issues
     Given these references exist
       | authors | citation   | title | year | doi |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |     |
