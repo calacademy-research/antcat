@@ -166,8 +166,7 @@ class TaxaController < ApplicationController
     def get_taxon_for_create
       parent = Taxon.find(@parent_id)
 
-      @taxon = constantize_rank(params[:rank_to_create]).new
-      build_relationships
+      @taxon = build_new_taxon(params[:rank_to_create])
       @taxon.parent = parent
 
       # Radio button case - we got duplicates, and the user picked one
@@ -262,12 +261,14 @@ class TaxaController < ApplicationController
       rank.string.titlecase.constantize
     end
 
-    def build_relationships
-      @taxon.build_name unless @taxon.name
-      @taxon.build_type_name unless @taxon.type_name
-      @taxon.build_protonym unless @taxon.protonym
-      @taxon.protonym.build_name unless @taxon.protonym.name
-      @taxon.protonym.build_authorship unless @taxon.protonym.authorship
+    def build_new_taxon rank
+      taxon = "#{rank}".titlecase.constantize.new
+      taxon.build_name
+      taxon.build_type_name
+      taxon.build_protonym
+      taxon.protonym.build_name
+      taxon.protonym.build_authorship
+      taxon
     end
 
 end
