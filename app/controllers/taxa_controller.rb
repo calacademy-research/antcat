@@ -38,12 +38,10 @@ class TaxaController < ApplicationController
   end
 
   def edit
-    build_relationships
     set_update_view_variables
   end
 
   def update
-    build_relationships
     set_update_view_variables
     save_taxon
 
