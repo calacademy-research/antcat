@@ -10,7 +10,7 @@ class TaxaController < ApplicationController
 
   def new
     set_taxon_for_create
-    set_default_name_string
+    @default_name_string = default_name_string
     set_authorship_reference
   end
 
@@ -40,11 +40,11 @@ class TaxaController < ApplicationController
   end
 
   def edit
-    set_reset_epithet
+    @reset_epithet = reset_epithet
   end
 
   def update
-    set_reset_epithet
+    @reset_epithet = reset_epithet
     save_taxon
 
     # See #create for the raison d'etre of this nil check.
@@ -166,7 +166,7 @@ class TaxaController < ApplicationController
       @taxon = Taxon.find(params[:id])
     end
 
-    def get_taxon_for_create
+    def set_taxon_for_create
       parent = Taxon.find(params[:parent_id])
 
       @taxon = build_new_taxon(params[:rank_to_create])
@@ -222,23 +222,22 @@ class TaxaController < ApplicationController
       end
     end
 
-    def set_reset_epithet
-      @reset_epithet  = case @taxon
-                        when Family then @taxon.name.to_s
-                        when Species then @taxon.name.genus_epithet
-                        else ""
-                        end
+    def reset_epithet
+      case @taxon
+      when Family then @taxon.name.to_s
+      when Species then @taxon.name.genus_epithet
+      else ""
+      end
     end
 
     def set_authorship_reference
       @taxon.protonym.authorship.reference ||= DefaultReference.get session
     end
 
-    def set_default_name_string
-      if @taxon.kind_of? SpeciesGroupTaxon
-        parent = Taxon.find(params[:parent_id])
-        @default_name_string = parent.name.name
-      end
+    def default_name_string
+      return unless @taxon.kind_of? SpeciesGroupTaxon
+      parent = Taxon.find(params[:parent_id])
+      parent.name.name
     end
 
     def redirect_by_parent_name_id
