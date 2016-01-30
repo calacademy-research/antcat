@@ -43,6 +43,10 @@ class Taxon < ActiveRecord::Base
     Taxa::Utility.new(self).delete_impact_list
   end
 
+  def delete_taxon_and_children
+    Taxa::Utility.new(self).delete_taxon_and_children
+  end
+
   def delete_with_state!
     Taxon.transaction do
       taxon_state = self.taxon_state

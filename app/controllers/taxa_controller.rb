@@ -3,7 +3,7 @@ class TaxaController < ApplicationController
   before_filter :authenticate_superadmin, only: [:destroy]
   before_filter :redirect_by_parent_name_id, only: :new
   before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced,
-    :delete_impact_list]
+    :delete_impact_list, :destroy]
   skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
   def new
@@ -73,9 +73,7 @@ class TaxaController < ApplicationController
   end
 
   def destroy
-    delete_mother = TaxonMother.new params[:id]
-    taxon = delete_mother.load_taxon
-    delete_mother.delete_taxon taxon
+    @taxon.delete_taxon_and_children
 
     flash[:notice] = "Taxon was successfully deleted."
 

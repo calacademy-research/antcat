@@ -20,16 +20,6 @@ class TaxonMother
     @taxon
   end
 
-  def delete_taxon taxon
-    Taxon.transaction do
-      change = setup_change :delete
-      delete_taxon_children @taxon
-
-      @taxon.delete_with_state!
-      change.user_changed_taxon_id = @taxon.id
-    end
-  end
-
   def remove_auto_generated
     @taxon.auto_generated = false
     name = @taxon.name
@@ -221,13 +211,6 @@ class TaxonMother
       taxon.children.each do |c|
         c.save
         save_taxon_children c
-      end
-    end
-
-    def delete_taxon_children taxon
-      taxon.children.each do |c|
-        c.delete_with_state!
-        delete_taxon_children c
       end
     end
 
