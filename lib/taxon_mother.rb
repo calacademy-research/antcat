@@ -7,12 +7,6 @@ class TaxonMother
     @id = id
   end
 
-  def load_taxon
-    @taxon = Taxon.find @id
-    build_children
-    @taxon
-  end
-
   def create_taxon rank, parent
     @taxon = rank.string.titlecase.constantize.new
     @taxon.parent = parent

@@ -3,7 +3,7 @@ class TaxaController < ApplicationController
   before_filter :authenticate_superadmin, only: [:destroy]
   before_filter :redirect_by_parent_name_id, only: :new
   before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced,
-    :delete_impact_list, :destroy]
+    :delete_impact_list, :destroy, :edit, :update]
   skip_before_filter :authenticate_editor, only: [:show, :autocomplete]
 
   def new
@@ -38,12 +38,12 @@ class TaxaController < ApplicationController
   end
 
   def edit
-    get_taxon_for_update
+    build_relationships
     set_update_view_variables
   end
 
   def update
-    get_taxon_for_update
+    build_relationships
     set_update_view_variables
     save_taxon
 
@@ -191,10 +191,6 @@ class TaxaController < ApplicationController
       end
     end
 
-    def get_taxon_for_update
-      @taxon = load_taxon params[:id]
-    end
-
     def save_taxon
       mother = TaxonMother.new @taxon.id
       # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
@@ -256,24 +252,8 @@ class TaxaController < ApplicationController
       @taxon = Taxon.find(params[:id])
     end
 
-    # duplicated from TaxonMother
-    # "taxon_ex_mother" is to be renamed/rmoved
-    def load_taxon id
-      @taxon_ex_mother = Taxon.find id
-      build_children
-      @taxon_ex_mother
-    end
-
     def constantize_rank rank
       rank.string.titlecase.constantize
-    end
-
-    def build_children
-      @taxon_ex_mother.build_name unless @taxon_ex_mother.name
-      @taxon_ex_mother.build_type_name unless @taxon_ex_mother.type_name
-      @taxon_ex_mother.build_protonym unless @taxon_ex_mother.protonym
-      @taxon_ex_mother.protonym.build_name unless @taxon_ex_mother.protonym.name
-      @taxon_ex_mother.protonym.build_authorship unless @taxon_ex_mother.protonym.authorship
     end
 
     def build_relationships

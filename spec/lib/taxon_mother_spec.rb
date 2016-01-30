@@ -22,22 +22,6 @@ describe TaxonMother do
         expect(taxon.parent).to eq(@genus)
       end
     end
-
-    describe "Returning an object web from an existing record" do
-      before do
-        @genus = create_genus
-        @mother = TaxonMother.new @genus.id
-      end
-      it "should load a record to be edited, filling in child objects" do
-        taxon = @mother.load_taxon
-        expect(taxon).to eq(@genus)
-        expect(taxon.name).not_to be_blank
-        expect(taxon.protonym).not_to be_blank
-        expect(taxon.protonym.name).not_to be_blank
-        expect(taxon.protonym.authorship).not_to be_blank
-        expect(taxon.type_name).not_to be_blank
-      end
-    end
   end
 
   describe "Saving a new record, based on params from a form with nested attributes" do

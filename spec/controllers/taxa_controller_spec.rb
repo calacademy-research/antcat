@@ -25,4 +25,25 @@ describe TaxaController do
     end
   end
 
+  describe "#build_relationships" do
+    before do
+      controller.instance_variable_set(:@taxon, Taxon.new)
+    end
+    it "builds" do
+      controller.send(:build_relationships)
+      taxon = assigns(:taxon)
+      expect(taxon.name).not_to be_blank
+      expect(taxon.type_name).not_to be_blank
+      expect(taxon.protonym).not_to be_blank
+      expect(taxon.protonym.name).not_to be_blank
+      expect(taxon.protonym.authorship).not_to be_blank
+    end
+    it "doesn't build unless called" do
+      taxon = assigns(:taxon)
+      expect(taxon.name).to be_blank
+      expect(taxon.type_name).to be_blank
+      expect(taxon.protonym).to be_blank
+    end
+  end
+
 end
