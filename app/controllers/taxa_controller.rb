@@ -190,12 +190,10 @@ class TaxaController < ApplicationController
     def save_taxon
       # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
       if @collision_resolution.blank? || @collision_resolution == 'homonym'
-        Taxa::SaveTaxon.new(@taxon).save_taxon(
-          @taxon_params, @previous_combination)
+        @taxon.save_taxon(@taxon_params, @previous_combination)
       else
         original_combination = Taxon.find(@collision_resolution)
-        Taxa::SaveTaxon.new(original_combination).save_taxon(
-          @taxon_params, @previous_combination)
+        original_combination.save_taxon(@taxon_params, @previous_combination)
       end
 
       if @previous_combination.is_a?(Species) && @previous_combination.children.any?
@@ -208,15 +206,14 @@ class TaxaController < ApplicationController
       @previous_combination.children.select { |t| t.status == 'valid' }.each do |t|
         new_child = Subspecies.new
 
-        # Only building type_name because all other will be copied from 't'.
+        # Only building type_name because all other will be compied from 't'.
         # TODO Not sure why type_name is not copied?
         new_child.build_type_name
         new_child.parent = @taxon
 
         Taxon.inherit_attributes_for_new_combination(new_child, t, @taxon)
 
-        Taxa::SaveTaxon.new(new_child).save_taxon(
-          Taxon.attributes_for_new_usage(new_child, t), t)
+        new_child.save_taxon(Taxon.attributes_for_new_usage(new_child, t), t)
       end
     end
 
