@@ -9,13 +9,13 @@ class TaxaController < ApplicationController
     :delete_impact_list, :destroy, :edit, :update]
 
   def new
-    set_taxon_for_create
+    @taxon = get_taxon_for_create
     @default_name_string = default_name_string
     set_authorship_reference
   end
 
   def create
-    set_taxon_for_create
+    @taxon = get_taxon_for_create
     save_taxon
 
     # Nil check to avoid showing 404 to the user and breaking the tests.
@@ -166,29 +166,31 @@ class TaxaController < ApplicationController
       @taxon = Taxon.find(params[:id])
     end
 
-    def set_taxon_for_create
+    def get_taxon_for_create
       parent = Taxon.find(params[:parent_id])
 
-      @taxon = build_new_taxon(params[:rank_to_create])
-      @taxon.parent = parent
+      taxon = build_new_taxon(params[:rank_to_create])
+      taxon.parent = parent
 
       # Radio button case - we got duplicates, and the user picked one
       # to resolve the problem.
       collision_resolution = params[:collision_resolution]
       if collision_resolution
         if collision_resolution == 'homonym' || collision_resolution == ""
-          @taxon.unresolved_homonym = true
-          @taxon.status = Status['homonym'].to_s
+          taxon.unresolved_homonym = true
+          taxon.status = Status['homonym'].to_s
         else
-          @taxon.collision_merge_id = collision_resolution
+          taxon.collision_merge_id = collision_resolution
           original_combination = Taxon.find(collision_resolution)
           Taxon.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
         end
       end
 
       if @previous_combination
-        Taxon.inherit_attributes_for_new_combination(@taxon, @previous_combination, parent)
+        Taxon.inherit_attributes_for_new_combination(taxon, @previous_combination, parent)
       end
+
+      taxon
     end
 
     def save_taxon
