@@ -178,12 +178,12 @@ class TaxaController < ApplicationController
         else
           taxon.collision_merge_id = collision_resolution
           original_combination = Taxon.find(collision_resolution)
-          Taxon.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
+          Taxa::Utility.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
         end
       end
 
       if @previous_combination
-        Taxon.inherit_attributes_for_new_combination(taxon, @previous_combination, parent)
+        Taxa::Utility.inherit_attributes_for_new_combination(taxon, @previous_combination, parent)
       end
 
       taxon
@@ -214,9 +214,9 @@ class TaxaController < ApplicationController
         new_child.build_type_name
         new_child.parent = @taxon
 
-        Taxon.inherit_attributes_for_new_combination(new_child, t, @taxon)
+        Taxa::Utility.inherit_attributes_for_new_combination(new_child, t, @taxon)
 
-        new_child.save_taxon(Taxon.attributes_for_new_usage(new_child, t), t)
+        new_child.save_taxon(Taxa::Utility.attributes_for_new_usage(new_child, t), t)
       end
     end
 
