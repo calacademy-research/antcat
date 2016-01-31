@@ -63,22 +63,4 @@ class Subspecies < SpeciesGroupTaxon
                         name_html_cache: new_name.name_html,
                         type: 'Species'
   end
-
-  def add_antweb_attributes attributes
-    subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
-    tribe_name = genus.tribe && genus.tribe.name.to_s
-
-    case name
-    when SubspeciesName
-      attributes.merge! genus: genus.name.to_s,
-        species: name.epithets.split(' ').first, subspecies: name.epithet
-    when SpeciesName
-      attributes.merge! genus: name.to_s.split(' ').first, species: name.epithet
-    else
-      attributes.merge! genus: genus.name.to_s, species: name.epithet
-    end
-
-    attributes.merge subfamily: subfamily_name, tribe: tribe_name
-  end
-
 end

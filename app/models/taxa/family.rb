@@ -13,10 +13,6 @@ class Family < Taxon
     get_statistics Subfamily, Tribe, Genus, Species, Subspecies
   end
 
-  def add_antweb_attributes attributes
-    attributes.merge subfamily: 'Formicidae'
-  end
-
   private
     def get_statistics *ranks
       ranks.inject({}) do |statistics, klass|

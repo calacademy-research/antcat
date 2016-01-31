@@ -43,22 +43,4 @@ class Species < SpeciesGroupTaxon
 
   end
 
-  def add_antweb_attributes attributes
-    return unless genus
-    subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
-    tribe_name = genus.tribe && genus.tribe.name.to_s
-    # Sometimes we get names that conform to subspecies format when we parse an invalid.
-    # The name will tell us that it's a subspecies name.
-    # We should handle that with grace.
-    # Really, we should consolidate name handling and unlink it from from all this type-like stuff;
-    # because non conforming names are possible, we shouldn't enforce structure on them at all.
-    # This would be a pretty major rewrite.
-    if name.type == 'SubspeciesName'
-      attributes.merge! species: name.epithets.split(' ').first, subspecies: name.epithet
-    else
-      attributes.merge! species: name.epithet
-    end
-
-    attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: genus.name.to_s
-  end
 end

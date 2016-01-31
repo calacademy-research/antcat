@@ -10,10 +10,6 @@ class Tribe < Taxon
       update_descendants_subfamilies
     end
   end
-
-  def add_antweb_attributes attributes
-    attributes.merge subfamily: subfamily.name.to_s, tribe: name.to_s
-  end
   
   def children
     genera

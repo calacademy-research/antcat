@@ -45,12 +45,6 @@ class Genus < GenusGroupTaxon
     Taxon.where(genus_id: id).where('taxa.type != ?', 'subgenus').includes(:name).order('names.epithet')
   end
 
-  def add_antweb_attributes attributes
-    subfamily_name = subfamily && subfamily.name.to_s || 'incertae_sedis'
-    tribe_name = tribe && tribe.name.to_s
-    attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: name.to_s
-  end
-
   private
     def update_descendants_subfamilies
       self.species.each{ |s| s.subfamily = self.subfamily }

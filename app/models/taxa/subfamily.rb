@@ -8,10 +8,6 @@ class Subfamily < Taxon
            -> { where(status: 'collective group name') },
             class_name: 'Genus'
 
-  def add_antweb_attributes attributes
-    attributes.merge subfamily: name.to_s
-  end
-
   def children
     tribes
   end
