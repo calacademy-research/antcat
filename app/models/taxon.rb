@@ -2,6 +2,7 @@ require_dependency 'taxon_workflow'
 
 class Taxon < ActiveRecord::Base
   include UndoTracker
+  include Taxa::CallbacksAndValidators
 
   class TaxonExists < StandardError; end
 
@@ -33,8 +34,6 @@ class Taxon < ActiveRecord::Base
                   :auto_generated,
                   :origin, #if it's generated, where did it come from? string (e.g.: 'hol')
                   :display # if false, won't show in the taxon browser. Used for misspellings and such.
-
-  before_save { |record| CleanNewlines::clean_newlines record, :headline_notes_taxt, :type_taxt }
 
   scope :displayable, -> { where(display: true) }
 
@@ -70,27 +69,14 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # nested attributes
-  belongs_to :name; validates :name, presence: true
+  belongs_to :name
   belongs_to :protonym, -> { includes :authorship }
-  validates :protonym, presence: true
   belongs_to :type_name, class_name: 'Name', foreign_key: :type_name_id
 
   has_many :taxa, class_name: "Taxon", foreign_key: :genus_id
   belongs_to :genus, class_name: 'Taxon'
 
   accepts_nested_attributes_for :name, :protonym, :type_name
-
-  before_save :set_name_caches, :delete_synonyms
-
-  def set_name_caches
-    self.name_cache = name.name
-    self.name_html_cache = name.name_html
-  end
-
-  def delete_synonyms
-    return unless changes['status'].try(:first) == 'synonym'
-    synonyms_as_junior.destroy_all if synonyms_as_junior.present?
-  end
 
   ###############################################
   # name
@@ -398,25 +384,6 @@ class Taxon < ActiveRecord::Base
 
   def recombination?
     false
-  end
-
-  ###############################################
-  before_validation :add_protocol_to_type_speciment_url
-  validate :check_url
-
-  def add_protocol_to_type_speciment_url
-    return if type_specimen_url.blank? || type_specimen_url =~ %r{^https?://}
-    self.type_specimen_url = "http://#{type_specimen_url}"
-  end
-
-  def check_url
-    return if type_specimen_url.blank?
-    # a URL with spaces is valid, but URI.parse rejects it
-    uri = URI.parse type_specimen_url.gsub(/ /, '%20')
-    response_code = Net::HTTP.new(uri.host, 80).request_head(uri.request_uri).code.to_i
-    errors.add :type_specimen_url, 'was not found' unless (200..399).include? response_code
-  rescue SocketError, URI::InvalidURIError, ArgumentError
-    errors.add :type_specimen_url, 'is not in a valid format'
   end
 
   ###############################################
