@@ -13,17 +13,6 @@ describe Taxon do
     end
   end
 
-  describe "Find by epithet" do
-    it "should return nil if nothing matches" do
-      expect(Taxon.find_by_epithet('sdfsdf')).to be_empty
-    end
-    it "should return all the items if there is more than one" do
-      FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: 'Monomorium alta', epithet: 'alta')
-      FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: 'Atta alta', epithet: 'alta')
-      expect(Taxon.find_by_epithet('alta').map(&:name).map(&:to_s)).to match_array(['Monomorium alta', 'Atta alta'])
-    end
-  end
-
   describe "Find an epithet in a genus" do
     it "should return nil if nothing matches" do
       expect(Taxon.find_epithet_in_genus('sdfsdf', create_genus)).to eq(nil)

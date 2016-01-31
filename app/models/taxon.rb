@@ -106,10 +106,6 @@ class Taxon < ActiveRecord::Base
     where(name_cache: name)
   end
 
-  def self.find_by_epithet epithet
-    joins(:name).readonly(false).where ['epithet = ?', epithet]
-  end
-
   # target_epithet is a string
   # genus is an object
   def self.find_epithet_in_genus target_epithet, genus
