@@ -5,8 +5,7 @@ class TaxaController < ApplicationController
   before_filter :redirect_by_parent_name_id, only: :new
 
   before_filter :set_previous_combination, only: [:new, :create, :edit, :update]
-  before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced,
-    :delete_impact_list, :destroy, :edit, :update, :update_parent]
+  before_filter :set_taxon, except: [:new, :create, :show, :autocomplete]
 
   def new
     @taxon = get_taxon_for_create
