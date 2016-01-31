@@ -66,6 +66,8 @@ class Taxon < ActiveRecord::Base
   scope :with_names, -> { joins(:name).readonly(false) }
   scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
 
+  accepts_nested_attributes_for :name, :protonym, :type_name
+
   def save_taxon params, previous_combination = nil
     Taxa::SaveTaxon.new(self).save_taxon(params, previous_combination)
   end
@@ -96,15 +98,6 @@ class Taxon < ActiveRecord::Base
     end
   end
 
-  ###############################################
-  # nested attributes
-
-
-
-  accepts_nested_attributes_for :name, :protonym, :type_name
-
-  ###############################################
-  # name
   def self.find_by_name name
     where(name_cache: name).first
   end
@@ -135,8 +128,6 @@ class Taxon < ActiveRecord::Base
     nil
   end
 
-  ###############################################
-  # synonym
   def junior_synonyms_with_names
     synonyms_with_names :junior
   end
@@ -176,19 +167,10 @@ class Taxon < ActiveRecord::Base
     update_attributes! status: 'valid' if senior_synonyms.empty?
   end
 
-  ###############################################
-  # homonym
-
-  ###############################################
-  # parent
-
   def parent= id_or_object
     parent_taxon = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
-    #
     # New taxa can have parents that are either in the "standard" rank progression (e.g.: Genus, species)
     # or they can be children of (subfamily) etc.
-    #
-
     if parent_taxon.is_a? Subgenus
       self.subgenus = parent_taxon
       self.genus = subgenus.parent
@@ -218,9 +200,6 @@ class Taxon < ActiveRecord::Base
     Rank[self].to_s
   end
 
-  ###############################################
-  # current_valid_taxon
-
   def current_valid_taxon_including_synonyms
     if synonym?
       if senior = find_most_recent_valid_senior_synonym
@@ -245,9 +224,6 @@ class Taxon < ActiveRecord::Base
   def original_combination
     self.class.where(status: 'original combination', current_valid_taxon_id: id).first
   end
-
-  ###############################################
-  # other associations
 
   # TODO: joe This is hit four times on main page load. Why
   # we have one valid entry
@@ -281,10 +257,6 @@ class Taxon < ActiveRecord::Base
     end
   end
 
-  ###############################################
-  # statuses, fossil
-
-  ###############################################
   def authorship_string
     # TODO: this triggers a save in the Name model for some reason.
     string = protonym.authorship_string
