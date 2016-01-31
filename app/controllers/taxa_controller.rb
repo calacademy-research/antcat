@@ -6,7 +6,7 @@ class TaxaController < ApplicationController
 
   before_filter :set_previous_combination, only: [:new, :create, :edit, :update]
   before_filter :set_taxon, only: [:elevate_to_species, :destroy_unreferenced,
-    :delete_impact_list, :destroy, :edit, :update]
+    :delete_impact_list, :destroy, :edit, :update, :update_parent]
 
   def new
     @taxon = get_taxon_for_create
@@ -100,26 +100,23 @@ class TaxaController < ApplicationController
     redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
   end
 
-  # The parent is updated via taxon_id.
-  # params: taxon_id (int)
-  # new_parent_taxon_id (int)
+  # TODO move logic to model?
   def update_parent
-    taxon = Taxon.find(params[:taxon_id])
-    new_parent = Taxon.find(params[:new_parent_taxon_id])
+    new_parent = Taxon.find(params[:new_parent_id])
     case new_parent
     when Species
-      taxon.species = new_parent
+      @taxon.species = new_parent
     when Genus
-      taxon.genus = new_parent
+      @taxon.genus = new_parent
     when Subgenus
-      taxon.subgenus = new_parent
+      @taxon.subgenus = new_parent
     when Subfamily
-      taxon.subfamily = new_parent
+      @taxon.subfamily = new_parent
     when Family
-      taxon.family = new_parent
+      @taxon.family = new_parent
     end
-    taxon.save!
-    redirect_to edit_taxa_path taxon
+    @taxon.save!
+    redirect_to edit_taxa_path(@taxon)
   end
 
   def elevate_to_species

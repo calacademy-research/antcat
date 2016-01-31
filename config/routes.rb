@@ -72,6 +72,7 @@ AntCat::Application.routes.draw do
     end
     member do
       get :delete_impact_list
+      get :update_parent # TODO change to put
       put :elevate_to_species
       delete :destroy_unreferenced
     end
@@ -83,10 +84,7 @@ AntCat::Application.routes.draw do
       end
     end
     resource :convert_to_subspecies, only: [:new, :create]
-    #resource 'update_parent', only: [:update, :index]
-    #get 'update_parent', to: :update_parent
   end
-  get '/taxa/:taxon_id/update_parent/:new_parent_taxon_id', controller: 'taxa', action: 'update_parent'
 
   resource :advanced_search, only: [:show]
   resource :default_reference, only: [:update]

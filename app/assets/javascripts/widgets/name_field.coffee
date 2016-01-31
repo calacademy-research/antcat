@@ -339,7 +339,9 @@ class AntCat.NameField extends AntCat.Panel
       buttons:
         "Yes, update parent record only": (a) =>
           data_object = data[@get_radio_value()]
-          window.location.href = '/taxa/'+ @current_taxon_id() + '/update_parent/' + data[0][Object.keys(data[0])[0]].id
+          new_parent_id = data[0][Object.keys(data[0])[0]].id
+          window.location.href = "/taxa/#{@current_taxon_id()}
+            /update_parent?new_parent_id=#{new_parent_id}"
         ,
         "Cancel":
           id: "Cancel-Dialog"
