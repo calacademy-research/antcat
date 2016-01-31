@@ -205,13 +205,6 @@ class Taxon < ActiveRecord::Base
     self.subfamily = new_parent.subfamily
   end
 
-  def children
-    if Rank[self] == Rank[:subspecies]
-      return []
-    end
-    raise NotImplementedError
-  end
-
   def rank
     Rank[self].to_s
   end

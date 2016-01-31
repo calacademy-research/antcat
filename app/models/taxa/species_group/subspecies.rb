@@ -31,6 +31,10 @@ class Subspecies < SpeciesGroupTaxon
     species || genus
   end
 
+  def children
+    []
+  end
+
   # This possibly should go through taxon_mother. It's a taxon change, after all,
   # and the others are handled there.
   def elevate_to_species
