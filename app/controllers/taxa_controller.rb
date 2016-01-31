@@ -239,16 +239,16 @@ class TaxaController < ApplicationController
     end
 
     def redirect_by_parent_name_id
-      parent_name_id = params.delete(:parent_name_id)
-      if parent_name_id && parent = Taxon.find_by_name_id(parent_name_id)
-        new_hash = {}
-        # redirect_to doesn't want to work off of "params", security hole. enjoy.
-        params.each { |p| new_hash[p[0]] = p[1] }
+      return unless params[:parent_name_id]
 
-        unless parent.nil?
-          new_hash[:parent_id] = parent.id
-        end
-        redirect_to new_hash
+      if parent = Taxon.find_by_name_id(params[:parent_name_id])
+        hash = {
+          parent_id: parent.id,
+          rank_to_create: params[:rank_to_create],
+          previous_combination_id: params[:previous_combination_id],
+          collision_resolution: params[:collision_resolution]
+        }
+        redirect_to new_taxa_path(hash)
       end
     end
 
