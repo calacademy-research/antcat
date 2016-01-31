@@ -1,2 +1,0 @@
-class SubtribeName < Name
-end
