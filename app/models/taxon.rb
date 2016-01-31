@@ -128,24 +128,6 @@ class Taxon < ActiveRecord::Base
     nil
   end
 
-  def self.find_name name, search_type = 'matching'
-    return if name.blank? || search_type.nil?
-
-    name = name.dup.strip
-    query = ordered_by_name
-    column = name.split(' ').size > 1 ? 'name' : 'epithet'
-
-    query = case search_type
-            when 'matching'
-              query.where ["names.#{column} = ?", name]
-            when 'beginning with'
-              query.where ["names.#{column} LIKE ?", name + '%']
-            when 'containing'
-              query.where ["names.#{column} LIKE ?", '%' + name + '%']
-            end
-    query.all
-  end
-
   ###############################################
   # synonym
   def synonym?

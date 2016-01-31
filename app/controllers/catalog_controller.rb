@@ -165,7 +165,7 @@ class CatalogController < ApplicationController
       return unless qq.present?
       search_selector_value = search_selector_value_in_english st
 
-      Taxon.find_name(qq, search_selector_value)
+      Taxa::Search.find_name(qq, search_selector_value)
     end
 
     def search_selector_value_in_english value

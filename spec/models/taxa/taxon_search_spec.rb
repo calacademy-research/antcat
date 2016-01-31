@@ -48,19 +48,19 @@ describe Taxon do
       @rufa = FactoryGirl.create :species, genus: @monoceros, name: species_name
     end
     it "should return [] if nothing matches" do
-      expect(Taxon.find_name('sdfsdf')).to eq([])
+      expect(Taxa::Search.find_name('sdfsdf')).to eq([])
     end
     it "should return an exact match" do
-      expect(Taxon.find_name('Monomorium').first.name.to_s).to eq('Monomorium')
+      expect(Taxa::Search.find_name('Monomorium').first.name.to_s).to eq('Monomorium')
     end
     it "should return a prefix match" do
-      expect(Taxon.find_name('Monomor', 'beginning with').first.name.to_s).to eq('Monomorium')
+      expect(Taxa::Search.find_name('Monomor', 'beginning with').first.name.to_s).to eq('Monomorium')
     end
     it "should return a substring match" do
-      expect(Taxon.find_name('iu', 'containing').first.name.to_s).to eq('Monomorium')
+      expect(Taxa::Search.find_name('iu', 'containing').first.name.to_s).to eq('Monomorium')
     end
     it "should return multiple matches" do
-      results = Taxon.find_name('Mono', 'containing')
+      results = Taxa::Search.find_name('Mono', 'containing')
       expect(results.size).to eq(2)
     end
     it "should not return anything but subfamilies, tribes, genera, subgenera, species,and subspecies" do
@@ -70,28 +70,28 @@ describe Taxon do
       create_subgenus 'Lepto3'
       create_species 'Lepto4'
       create_subspecies 'Lepto5'
-      results = Taxon.find_name 'Lepto', 'beginning with'
+      results = Taxa::Search.find_name 'Lepto', 'beginning with'
       expect(results.size).to eq(6)
     end
     it "should sort results by name" do
       FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepti')
       FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepta')
       FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepte')
-      results = Taxon.find_name 'Lept', 'beginning with'
+      results = Taxa::Search.find_name 'Lept', 'beginning with'
       expect(results.map(&:name).map(&:to_s)).to eq(['Lepta', 'Lepte', 'Lepti'])
     end
 
     describe "Finding full species name" do
       it "should search for full species name" do
-        results = Taxon.find_name 'Monoceros rufa '
+        results = Taxa::Search.find_name 'Monoceros rufa '
         expect(results.first).to eq(@rufa)
       end
       it "should search for whole name, even when using beginning with, even with trailing space" do
-        results = Taxon.find_name 'Monoceros rufa ', 'beginning with'
+        results = Taxa::Search.find_name 'Monoceros rufa ', 'beginning with'
         expect(results.first).to eq(@rufa)
       end
       it "should search for partial species name" do
-        results = Taxon.find_name 'Monoceros ruf', 'beginning with'
+        results = Taxa::Search.find_name 'Monoceros ruf', 'beginning with'
         expect(results.first).to eq(@rufa)
       end
     end
