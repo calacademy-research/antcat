@@ -1,4 +1,3 @@
-require_dependency 'taxon_advanced_search'
 require_dependency 'taxon_workflow'
 
 class Taxon < ActiveRecord::Base
