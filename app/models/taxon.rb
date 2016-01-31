@@ -40,6 +40,9 @@ class Taxon < ActiveRecord::Base
 
   scope :displayable, -> { where(display: true) }
 
+  delegate :authorship_html_string, :author_last_names_string, :year,
+    to: :protonym
+
   def save_taxon params, previous_combination = nil
     Taxa::SaveTaxon.new(self).save_taxon(params, previous_combination)
   end
@@ -289,18 +292,6 @@ class Taxon < ActiveRecord::Base
       string = '(' + string + ')'
     end
     string
-  end
-
-  def authorship_html_string
-    protonym.authorship_html_string
-  end
-
-  def author_last_names_string
-    protonym.author_last_names_string
-  end
-
-  def year
-    protonym.year
   end
 
 end
