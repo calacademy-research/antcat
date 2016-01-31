@@ -11,7 +11,7 @@ class Taxon < ActiveRecord::Base
 
   self.table_name = :taxa
   has_paper_trail meta: { change_id: :get_current_change_id }
-  attr_accessor :authorship_string, :duplicate_type
+
   attr_accessible :name_id,
                   :status,
                   :incertae_sedis_in,
@@ -37,6 +37,9 @@ class Taxon < ActiveRecord::Base
                   :auto_generated,
                   :origin, #if it's generated, where did it come from? string (e.g.: 'hol')
                   :display # if false, won't show in the taxon browser. Used for misspellings and such.
+
+  attr_accessor :authorship_string, :duplicate_type, :parent_name,
+    :current_valid_taxon_name, :homonym_replaced_by_name
 
   scope :displayable, -> { where(display: true) }
 
@@ -170,11 +173,9 @@ class Taxon < ActiveRecord::Base
   # homonym
   belongs_to :homonym_replaced_by, class_name: 'Taxon'
   has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
-  attr_accessor :homonym_replaced_by_name
 
   ###############################################
   # parent
-  attr_accessor :parent_name
 
   def parent= id_or_object
     parent_taxon = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
@@ -215,7 +216,6 @@ class Taxon < ActiveRecord::Base
   ###############################################
   # current_valid_taxon
   belongs_to :current_valid_taxon, class_name: 'Taxon'
-  attr_accessor :current_valid_taxon_name
 
   def current_valid_taxon_including_synonyms
     if synonym?
