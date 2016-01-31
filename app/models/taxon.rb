@@ -41,10 +41,14 @@ class Taxon < ActiveRecord::Base
   attr_accessor :authorship_string, :duplicate_type, :parent_name,
     :current_valid_taxon_name, :homonym_replaced_by_name
 
-  scope :displayable, -> { where(display: true) }
-
   delegate :authorship_html_string, :author_last_names_string, :year,
     to: :protonym
+
+  scope :displayable, -> { where(display: true) }
+  scope :valid, -> { where(status: 'valid') }
+  scope :extant, -> { where(fossil: false) }
+  scope :with_names, -> { joins(:name).readonly(false) }
+  scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
 
   def save_taxon params, previous_combination = nil
     Taxa::SaveTaxon.new(self).save_taxon(params, previous_combination)
@@ -89,10 +93,6 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # name
-  scope :with_names, -> { joins(:name).readonly(false) }
-
-  scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
-
   def self.find_by_name name
     where(name_cache: name).first
   end
@@ -281,8 +281,6 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # statuses, fossil
-  scope :valid, -> { where(status: 'valid') }
-  scope :extant, -> { where(fossil: false) }
 
   ###############################################
   def authorship_string
