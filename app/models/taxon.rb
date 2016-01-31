@@ -44,6 +44,13 @@ class Taxon < ActiveRecord::Base
   delegate :authorship_html_string, :author_last_names_string, :year,
     to: :protonym
 
+  belongs_to :name
+  belongs_to :protonym, -> { includes :authorship }
+  belongs_to :type_name, class_name: 'Name', foreign_key: :type_name_id
+  belongs_to :genus, class_name: 'Taxon'
+  belongs_to :homonym_replaced_by, class_name: 'Taxon'
+  belongs_to :current_valid_taxon, class_name: 'Taxon'
+
   scope :displayable, -> { where(display: true) }
   scope :valid, -> { where(status: 'valid') }
   scope :extant, -> { where(fossil: false) }
@@ -82,12 +89,9 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # nested attributes
-  belongs_to :name
-  belongs_to :protonym, -> { includes :authorship }
-  belongs_to :type_name, class_name: 'Name', foreign_key: :type_name_id
 
   has_many :taxa, class_name: "Taxon", foreign_key: :genus_id
-  belongs_to :genus, class_name: 'Taxon'
+
 
   accepts_nested_attributes_for :name, :protonym, :type_name
 
@@ -171,7 +175,6 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # homonym
-  belongs_to :homonym_replaced_by, class_name: 'Taxon'
   has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
 
   ###############################################
@@ -215,7 +218,6 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # current_valid_taxon
-  belongs_to :current_valid_taxon, class_name: 'Taxon'
 
   def current_valid_taxon_including_synonyms
     if synonym?
