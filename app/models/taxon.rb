@@ -136,24 +136,6 @@ class Taxon < ActiveRecord::Base
     synonyms_with_names :senior
   end
 
-  def synonyms_with_names junior_or_senior
-    if junior_or_senior == :junior
-      join_column = 'junior_synonym_id'
-      where_column = 'senior_synonym_id'
-    else
-      join_column = 'senior_synonym_id'
-      where_column = 'junior_synonym_id'
-    end
-
-    self.class.find_by_sql <<-SQL.squish
-      SELECT synonyms.id, taxa.name_html_cache AS name
-      FROM synonyms JOIN taxa ON synonyms.#{join_column} = taxa.id
-      JOIN names ON taxa.name_id = names.id
-      WHERE #{where_column} = #{id}
-      ORDER BY name
-    SQL
-  end
-
   def become_junior_synonym_of senior
     Synonym.where(junior_synonym_id: senior, senior_synonym_id: self).destroy_all
     Synonym.where(senior_synonym_id: senior, junior_synonym_id: self).destroy_all
@@ -266,4 +248,22 @@ class Taxon < ActiveRecord::Base
     string
   end
 
+  private
+    def synonyms_with_names junior_or_senior
+      if junior_or_senior == :junior
+        join_column = 'junior_synonym_id'
+        where_column = 'senior_synonym_id'
+      else
+        join_column = 'senior_synonym_id'
+        where_column = 'junior_synonym_id'
+      end
+
+      self.class.find_by_sql <<-SQL.squish
+        SELECT synonyms.id, taxa.name_html_cache AS name
+        FROM synonyms JOIN taxa ON synonyms.#{join_column} = taxa.id
+        JOIN names ON taxa.name_id = names.id
+        WHERE #{where_column} = #{id}
+        ORDER BY name
+      SQL
+    end
 end

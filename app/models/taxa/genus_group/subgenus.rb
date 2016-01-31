@@ -12,8 +12,7 @@ class Subgenus < GenusGroupTaxon
     super.merge genus: data[:genus]
   end
 
-  def statistics
-  end
+  def statistics; end
 
   def add_antweb_attributes attributes
     subfamily_name = subfamily && subfamily.name.to_s || 'incertae_sedis'

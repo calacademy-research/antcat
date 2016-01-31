@@ -13,21 +13,6 @@ module Taxa::Statistics
     end
   end
 
-  def get_statistics ranks
-    statistics = {}
-    ranks.each do |rank|
-      count = send(rank).group('fossil', 'status').count
-      delete_original_combinations count
-      self.class.massage_count count, rank, statistics
-    end
-    statistics
-  end
-
-  def delete_original_combinations count
-    count.delete [true, 'original combination']
-    count.delete [false, 'original combination']
-  end
-
   def child_list_query children_selector, conditions = {}
     children = send children_selector
     children = children.where(fossil: !!conditions[:fossil]) if conditions.key? :fossil
@@ -38,4 +23,21 @@ module Taxa::Statistics
     children = children.ordered_by_name
     children
   end
+
+  protected
+    def get_statistics ranks
+      statistics = {}
+      ranks.each do |rank|
+        count = send(rank).group('fossil', 'status').count
+        delete_original_combinations count
+        self.class.massage_count count, rank, statistics
+      end
+      statistics
+    end
+
+  private
+    def delete_original_combinations count
+      count.delete [true, 'original combination']
+      count.delete [false, 'original combination']
+    end
 end
