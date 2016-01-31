@@ -3,6 +3,7 @@ require_dependency 'taxon_workflow'
 class Taxon < ActiveRecord::Base
   include UndoTracker
   include Taxa::CallbacksAndValidators
+  include Taxa::PredicateMethods
 
   class TaxonExists < StandardError; end
 
@@ -116,18 +117,6 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # synonym
-  def synonym?
-    status == 'synonym'
-  end
-
-  def junior_synonym_of? taxon
-    senior_synonyms.include? taxon
-  end
-
-  def senior_synonym_of? taxon
-    junior_synonyms.include? taxon
-  end
-
   def junior_synonyms_with_names
     synonyms_with_names :junior
   end
@@ -154,7 +143,6 @@ class Taxon < ActiveRecord::Base
     SQL
   end
 
-  alias synonym_of? junior_synonym_of?
   has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
   has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
   has_many :junior_synonyms, through: :synonyms_as_senior
@@ -177,15 +165,6 @@ class Taxon < ActiveRecord::Base
   # homonym
   belongs_to :homonym_replaced_by, class_name: 'Taxon'
   has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
-
-  def homonym?
-    status == 'homonym'
-  end
-
-  def homonym_replaced_by? taxon
-    homonym_replaced_by == taxon
-  end
-
   attr_accessor :homonym_replaced_by_name
 
   ###############################################
@@ -259,15 +238,6 @@ class Taxon < ActiveRecord::Base
     nil
   end
 
-  ###############################################
-  # original combination
-  # A status of 'original combination' means that the taxon/name is a placeholder
-  # for the original name of the species under the original genus.
-  # The original_combination? predicate checks that.
-  def original_combination?
-    status == 'original combination'
-  end
-
   # The original_combination accessor returns the taxon with 'original combination'
   # status whose 'current valid taxon' points to us.
   def original_combination
@@ -316,50 +286,6 @@ class Taxon < ActiveRecord::Base
   scope :valid, -> { where(status: 'valid') }
   scope :extant, -> { where(fossil: false) }
 
-  def unavailable?
-    status == 'unavailable'
-  end
-
-  def available?
-    !unavailable?
-  end
-
-  def invalid?
-    status != 'valid'
-  end
-
-  def excluded_from_formicidae?
-    status == 'excluded from Formicidae'
-  end
-
-  def incertae_sedis_in? rank
-    incertae_sedis_in == rank
-  end
-
-  def collective_group_name?
-    status == 'collective group name'
-  end
-
-  def unidentifiable?
-    status == 'unidentifiable'
-  end
-
-  def obsolete_combination?
-    status == 'obsolete combination'
-  end
-
-  def unavailable_misspelling?
-    status == 'unavailable misspelling'
-  end
-
-  def unavailable_uncategorized?
-    status == 'unavailable uncategorized'
-  end
-
-  def nonconfirming_synonym?
-    status == 'nonconforming synonym'
-  end
-
   ###############################################
   def authorship_string
     # TODO: this triggers a save in the Name model for some reason.
@@ -380,10 +306,6 @@ class Taxon < ActiveRecord::Base
 
   def year
     protonym.year
-  end
-
-  def recombination?
-    false
   end
 
   ###############################################
