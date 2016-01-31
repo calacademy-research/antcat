@@ -209,7 +209,7 @@ class TaxaController < ApplicationController
       @previous_combination.children.select { |t| t.status == 'valid' }.each do |t|
         new_child = Subspecies.new
 
-        # Only building type_name because all other will be compied from 't'.
+        # Only building type_name because all other will be copied from 't'.
         # TODO Not sure why type_name is not copied?
         new_child.build_type_name
         new_child.parent = @taxon

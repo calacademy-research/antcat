@@ -25,7 +25,7 @@ module TaxonHelper
   def add_tribe_button taxon
     return unless taxon.kind_of? Subfamily
 
-    link_to "Add tribe", new_taxa_path(rank_to_create: Tribe, parent_id: taxon.id),
+    link_to "Add tribe", new_taxa_path(rank_to_create: 'tribe', parent_id: taxon.id),
     class: "btn-new"
   end
 
