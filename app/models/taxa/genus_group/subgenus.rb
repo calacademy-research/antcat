@@ -8,9 +8,5 @@ class Subgenus < GenusGroupTaxon
     Taxon.where(subgenus_id: id).where('taxa.type != ?', 'subgenus').includes(:name).order('names.epithet')
   end
 
-  def self.parent_attributes data, attributes
-    super.merge genus: data[:genus]
-  end
-
   def statistics; end
 end
