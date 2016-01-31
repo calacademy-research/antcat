@@ -51,6 +51,15 @@ class Taxon < ActiveRecord::Base
   belongs_to :homonym_replaced_by, class_name: 'Taxon'
   belongs_to :current_valid_taxon, class_name: 'Taxon'
 
+  has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
+  has_many :taxa, class_name: "Taxon", foreign_key: :genus_id
+  has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
+  has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
+  has_many :junior_synonyms, through: :synonyms_as_senior
+  has_many :senior_synonyms, through: :synonyms_as_junior
+  has_many :history_items, -> { order 'position' }, class_name: 'TaxonHistoryItem', dependent: :destroy
+  has_many :reference_sections, -> { order 'position' }, dependent: :destroy
+
   scope :displayable, -> { where(display: true) }
   scope :valid, -> { where(status: 'valid') }
   scope :extant, -> { where(fossil: false) }
@@ -90,7 +99,6 @@ class Taxon < ActiveRecord::Base
   ###############################################
   # nested attributes
 
-  has_many :taxa, class_name: "Taxon", foreign_key: :genus_id
 
 
   accepts_nested_attributes_for :name, :protonym, :type_name
@@ -155,11 +163,6 @@ class Taxon < ActiveRecord::Base
     SQL
   end
 
-  has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
-  has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
-  has_many :junior_synonyms, through: :synonyms_as_senior
-  has_many :senior_synonyms, through: :synonyms_as_junior
-
   def become_junior_synonym_of senior
     Synonym.where(junior_synonym_id: senior, senior_synonym_id: self).destroy_all
     Synonym.where(senior_synonym_id: senior, junior_synonym_id: self).destroy_all
@@ -175,7 +178,6 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # homonym
-  has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
 
   ###############################################
   # parent
@@ -246,8 +248,6 @@ class Taxon < ActiveRecord::Base
 
   ###############################################
   # other associations
-  has_many :history_items, -> { order 'position' }, class_name: 'TaxonHistoryItem', dependent: :destroy
-  has_many :reference_sections, -> { order 'position' }, dependent: :destroy
 
   # TODO: joe This is hit four times on main page load. Why
   # we have one valid entry
