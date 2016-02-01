@@ -15,16 +15,16 @@ describe Taxon do
 
   describe "Find an epithet in a genus" do
     it "should return nil if nothing matches" do
-      expect(Taxon.find_epithet_in_genus('sdfsdf', create_genus)).to eq(nil)
+      expect(Taxa::Utility.find_epithet_in_genus('sdfsdf', create_genus)).to eq(nil)
     end
     it "should return the one item" do
       species = create_species 'Atta serratula'
-      expect(Taxon.find_epithet_in_genus('serratula', species.genus)).to eq([species])
+      expect(Taxa::Utility.find_epithet_in_genus('serratula', species.genus)).to eq([species])
     end
     describe "Finding mandatory spelling changes" do
       it "should find -a when asked to find -us" do
         species = create_species 'Atta serratula'
-        expect(Taxon.find_epithet_in_genus('serratulus', species.genus)).to eq([species])
+        expect(Taxa::Utility.find_epithet_in_genus('serratulus', species.genus)).to eq([species])
       end
     end
   end
