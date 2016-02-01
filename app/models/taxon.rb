@@ -126,43 +126,15 @@ class Taxon < ActiveRecord::Base
   # it "should provide no link if there are two invalid entries"
   # it "should provide no link if there are two valid entries"
   def hol_id
-    hd = HolTaxonDatum.where(antcat_taxon_id: id)
+    hol_data = HolTaxonDatum.where(antcat_taxon_id: id)
 
-    valid_hd = nil
-    valid_count = 0
-    hd.each do |is_valid|
-      if is_valid['is_valid'].downcase == 'valid'
-        valid_count = valid_count + 1
-        valid_hd = is_valid
-      end
-    end
-    # now we know how many valid hol data we found,
-    # and valid_hd is set to the last valid item
-
-    # "hd.count != 1 && valid_hd.nil?" -->
-    #   if we have no valid_hd, then
-    #     return if we have zero total matches, or more than one [invalid matches]
-    #
-    # "valid_count > 1" -->
-    #   return if we have more than one valid match
-    if (hd.count != 1 && valid_hd.nil?) || valid_count > 1
-      # If we get more than one hit and we don't have a "valid" entry, then we can't tell
-      # which link to return. That's bad, so return nothing.
-      return nil
-    end
-
-    # if we have no valid_hd, then
-    #   return the tnuid of the first [invalid and only] hol data match
-    # else return the tnuid the valid_hd [which is the only match]
-    if valid_hd.nil?
-      hd[0].tnuid
-    else
-      valid_hd.tnuid
-    end
+    valids, invalids = hol_data.partition(&:is_valid?)
+    return valids.first.tnuid if valids.size == 1
+    return invalids.first.tnuid if invalids.size == 1
   end
 
+  # TODO: this triggers a save in the Name model for some reason.
   def authorship_string
-    # TODO: this triggers a save in the Name model for some reason.
     string = protonym.authorship_string
     if string && recombination?
       string = '(' + string + ')'
