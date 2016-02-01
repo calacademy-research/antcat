@@ -136,13 +136,24 @@ class Taxon < ActiveRecord::Base
         valid_hd = is_valid
       end
     end
+    # now we know how many valid hol data we found,
+    # and valid_hd is set to the last valid item
 
+    # "hd.count != 1 && valid_hd.nil?" -->
+    #   if we have no valid_hd, then
+    #     return if we have zero total matches, or more than one [invalid matches]
+    #
+    # "valid_count > 1" -->
+    #   return if we have more than one valid match
     if (hd.count != 1 && valid_hd.nil?) || valid_count > 1
       # If we get more than one hit and we don't have a "valid" entry, then we can't tell
       # which link to return. That's bad, so return nothing.
       return nil
     end
 
+    # if we have no valid_hd, then
+    #   return the tnuid of the first [invalid and only] hol data match
+    # else return the tnuid the valid_hd [which is the only match]
     if valid_hd.nil?
       hd[0].tnuid
     else
