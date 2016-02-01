@@ -4,6 +4,10 @@ class Species < SpeciesGroupTaxon
   has_many :subspecies
   attr_accessible :name, :protonym, :genus, :current_valid_taxon, :homonym_replaced_by, :type
 
+  def parent
+    subgenus || genus
+  end
+
   def siblings
     genus.species
   end

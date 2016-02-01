@@ -8,6 +8,10 @@ class Subfamily < Taxon
            -> { where(status: 'collective group name') },
             class_name: 'Genus'
 
+  def parent
+    Family.first
+  end
+
   def children
     tribes
   end

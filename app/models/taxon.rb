@@ -100,15 +100,6 @@ class Taxon < ActiveRecord::Base
     end
   end
 
-  def parent
-    return nil if kind_of? Family
-    return Family.first if kind_of? Subfamily
-    if self.subgenus_id
-      return subgenus
-    end
-    send Rank[self].parent.read_selector
-  end
-
   def update_parent new_parent
     return if self.parent == new_parent
     self.name.change_parent new_parent.name

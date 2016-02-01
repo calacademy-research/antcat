@@ -3,6 +3,10 @@ class Tribe < Taxon
   has_many :genera
   attr_accessible :name, :protonym, :subfamily, :type_name
 
+  def parent
+    subfamily
+  end
+
   def update_parent new_parent
     set_name_caches
     if new_parent.kind_of? Subfamily

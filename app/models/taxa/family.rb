@@ -1,6 +1,8 @@
 class Family < Taxon
   attr_accessible :name,:protonym,:type_name
 
+  def parent; end
+
   def genera
     Genus.without_subfamily.ordered_by_name
   end
