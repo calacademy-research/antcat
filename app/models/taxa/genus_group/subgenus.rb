@@ -4,6 +4,10 @@ class Subgenus < GenusGroupTaxon
   has_many :species
   attr_accessible :subfamily, :tribe, :genus, :homonym_replaced_by
 
+  def parent
+    genus
+  end
+
   def species_group_descendants
     Taxon.where(subgenus_id: id).where('taxa.type != ?', 'subgenus')
       .includes(:name).order('names.epithet')

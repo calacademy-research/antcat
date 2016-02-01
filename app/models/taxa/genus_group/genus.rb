@@ -35,6 +35,10 @@ class Genus < GenusGroupTaxon
     get_statistics [:species, :subspecies]
   end
 
+  def parent
+    tribe || subfamily
+  end
+
   def siblings
     tribe && tribe.genera.ordered_by_name ||
     subfamily && subfamily.genera.without_tribe.ordered_by_name ||

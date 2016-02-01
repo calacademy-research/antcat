@@ -22,11 +22,4 @@ class GenusGroupTaxon < Taxon
     end
   end
 
-  def parent
-    if self.is_a? Subgenus
-      return genus
-    end
-    tribe || subfamily
-  end
-
 end
