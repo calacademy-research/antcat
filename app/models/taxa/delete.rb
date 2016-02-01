@@ -36,17 +36,17 @@ module Taxa::Delete
   private
     def get_taxon_children_recur taxon
       ret_val = []
-      taxon.children.each do |c|
-        ret_val.concat [c]
-        ret_val.concat get_taxon_children_recur c
+      taxon.children.each do |child|
+        ret_val.concat [child]
+        ret_val.concat get_taxon_children_recur child
       end
       ret_val
     end
 
     def delete_taxon_children taxon
-      taxon.children.each do |c|
-        c.delete_with_state!
-        delete_taxon_children c
+      taxon.children.each do |child|
+        child.delete_with_state!
+        delete_taxon_children child
       end
     end
 end

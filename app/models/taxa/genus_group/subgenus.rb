@@ -5,7 +5,8 @@ class Subgenus < GenusGroupTaxon
   attr_accessible :subfamily, :tribe, :genus, :homonym_replaced_by
 
   def species_group_descendants
-    Taxon.where(subgenus_id: id).where('taxa.type != ?', 'subgenus').includes(:name).order('names.epithet')
+    Taxon.where(subgenus_id: id).where('taxa.type != ?', 'subgenus')
+      .includes(:name).order('names.epithet')
   end
 
   def statistics; end

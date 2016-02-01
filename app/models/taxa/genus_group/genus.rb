@@ -42,7 +42,8 @@ class Genus < GenusGroupTaxon
   end
 
   def species_group_descendants
-    Taxon.where(genus_id: id).where('taxa.type != ?', 'subgenus').includes(:name).order('names.epithet')
+    Taxon.where(genus_id: id).where('taxa.type != ?', 'subgenus')
+      .includes(:name).order('names.epithet')
   end
 
   private

@@ -188,9 +188,9 @@ class Taxa::SaveTaxon
 
     def save_taxon_children taxon
       return if taxon.kind_of?(Family) || taxon.kind_of?(Subspecies)
-      taxon.children.each do |c|
-        c.save
-        save_taxon_children c
+      taxon.children.each do |child|
+        child.save
+        save_taxon_children child
       end
     end
 

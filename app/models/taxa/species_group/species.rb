@@ -25,22 +25,19 @@ class Species < SpeciesGroupTaxon
     new_name = SubspeciesName.find_by_name new_name_string
     if new_name.nil?
       new_name = SubspeciesName.new
-      new_name.update_attributes({
-                                    name: new_name_string,
-                                    name_html: italicize(new_name_string),
-                                    epithet: name.epithet,
-                                    epithet_html: name.epithet_html,
-                                    epithets: "#{species.name.epithet} #{name.epithet}"
-                                 })
+      new_name.update_attributes name: new_name_string,
+                                 name_html: italicize(new_name_string),
+                                 epithet: name.epithet,
+                                 epithet_html: name.epithet_html,
+                                 epithets: "#{species.name.epithet} #{name.epithet}"
       new_name.save
     end
 
     self.update_columns name_id: new_name.id,
-                           species_id: species.id,
-                           name_cache: new_name.name,
-                           name_html_cache: new_name.name_html,
-                           type: 'Subspecies'
-
+                        species_id: species.id,
+                        name_cache: new_name.name,
+                        name_html_cache: new_name.name_html,
+                        type: 'Subspecies'
   end
 
 end
