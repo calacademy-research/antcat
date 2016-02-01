@@ -45,36 +45,4 @@ describe SpeciesGroupTaxon do
     expect(taxon.subfamily).to eq(genus.subfamily)
   end
 
-  describe "Picking the validest " do
-    it "should return nil if there is none" do
-      targets = []
-      expect(SpeciesGroupTaxon.pick_validest(targets)).to be_nil
-    end
-
-    it "should return nil if there is none" do
-      targets = nil
-      expect(SpeciesGroupTaxon.pick_validest(targets)).to be_nil
-    end
-
-    it "should pick the best target, if there is more than one" do
-      invalid_species = create_species status: 'homonym'
-      valid_species = create_species status: 'valid'
-      targets = [invalid_species, valid_species]
-      expect(SpeciesGroupTaxon.pick_validest(targets)).to eq([valid_species])
-    end
-
-    it "should return all the targets if there's no clear choice" do
-      valid_species = create_species 'Atta major'
-      another_valid_species = create_species 'Atta minor'
-      targets = [another_valid_species, valid_species]
-      expect(SpeciesGroupTaxon.pick_validest(targets)).to match_array([valid_species, another_valid_species])
-    end
-
-    it "should not pick the homonym, no matter what" do
-      homonym_species = create_species status: 'homonym'
-      targets = [homonym_species]
-      expect(SpeciesGroupTaxon.pick_validest(targets)).to be_nil
-    end
-
-  end
 end
