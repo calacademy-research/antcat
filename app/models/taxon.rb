@@ -98,12 +98,18 @@ class Taxon < ActiveRecord::Base
     end
   end
 
+  # Deprecated: Many of the callers probably do not expect
+  # that the first match is picked.
   def self.find_by_name name
-    where(name_cache: name).first
+    logger.info <<-MSG.squish
+      AntCat: `Taxon.find_by_name` is deprecated. Use `Taxon.find_first_by_name`
+      [not recommended] or `Taxon.where(name_cache:)` instead."
+    MSG
+    find_first_by_name name
   end
 
-  def self.find_all_by_name name
-    where(name_cache: name)
+  def self.find_first_by_name name
+    where(name_cache: name).first
   end
 
   # target_epithet is a string
