@@ -3,9 +3,10 @@ require_dependency 'taxon_workflow'
 class Taxon < ActiveRecord::Base
   include UndoTracker
   include Taxa::CallbacksAndValidators
+  include Taxa::Delete
   include Taxa::PredicateMethods
-  include Taxa::Statistics
   include Taxa::References
+  include Taxa::Statistics
 
   class TaxonExists < StandardError; end
 
@@ -78,24 +79,6 @@ class Taxon < ActiveRecord::Base
 
   def delete_taxon_and_children
     Taxa::Utility.new(self).delete_taxon_and_children
-  end
-
-  def delete_with_state!
-    Taxon.transaction do
-      taxon_state = self.taxon_state
-      # Bit of a hack; this is a new table which may lack the depth of other tables.
-      # Creation doesn't add a record, so you can't "step back to" a valid version.
-      # doing touch_with_version (creeate a fallback point) in the migration makes an
-      # enourmous and unnecessary pile of these.
-      if taxon_state.versions.empty?
-        taxon_state.touch_with_version
-      end
-
-      taxon_state.deleted = true
-      taxon_state.review_state = 'waiting'
-      taxon_state.save
-      destroy!
-    end
   end
 
   # Deprecated: Many of the callers probably do not expect
