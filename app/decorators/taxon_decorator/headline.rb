@@ -14,12 +14,13 @@ class TaxonDecorator::Headline
   def headline
     content_tag :div, class: 'headline' do
       notes = headline_notes
+      hol_link = link_to_hol(@taxon)
       string = headline_protonym
       string << ' ' << headline_type
       string << ' ' << notes if notes
       string << ' ' << link_to_other_site if link_to_other_site
       string << ' ' << link_to_antwiki(@taxon) if link_to_antwiki(@taxon)
-      string << ' ' << link_to_hol(@taxon) if link_to_hol(@taxon)
+      string << ' ' << hol_link if hol_link
       string
     end
   end
