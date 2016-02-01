@@ -112,24 +112,6 @@ class Taxon < ActiveRecord::Base
     where(name_cache: name).first
   end
 
-  # target_epithet is a string
-  # genus is an object
-  def self.find_epithet_in_genus target_epithet, genus
-    Name.make_epithet_set(target_epithet).each do |epithet|
-      results = with_names.where(['genus_id = ? AND epithet = ?', genus.id, epithet])
-      return results unless results.empty?
-    end
-    nil
-  end
-
-  def self.find_subspecies_in_genus target_subspecies, genus
-    Name.make_epithet_set(target_subspecies).each do |epithet|
-      results = with_names.where(['genus_id = ? AND epithet = ?', genus.id, epithet])
-      return results unless results.empty?
-    end
-    nil
-  end
-
   def junior_synonyms_with_names
     synonyms_with_names :junior
   end
