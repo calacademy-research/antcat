@@ -1,2 +1,0 @@
-class OrderName < Name
-end

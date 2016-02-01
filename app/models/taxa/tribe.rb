@@ -3,16 +3,16 @@ class Tribe < Taxon
   has_many :genera
   attr_accessible :name, :protonym, :subfamily, :type_name
 
+  def parent
+    subfamily
+  end
+
   def update_parent new_parent
     set_name_caches
     if new_parent.kind_of? Subfamily
       self.subfamily = new_parent
       update_descendants_subfamilies
     end
-  end
-
-  def add_antweb_attributes attributes
-    attributes.merge subfamily: subfamily.name.to_s, tribe: name.to_s
   end
   
   def children

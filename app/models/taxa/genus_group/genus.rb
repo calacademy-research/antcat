@@ -35,6 +35,10 @@ class Genus < GenusGroupTaxon
     get_statistics [:species, :subspecies]
   end
 
+  def parent
+    tribe || subfamily
+  end
+
   def siblings
     tribe && tribe.genera.ordered_by_name ||
     subfamily && subfamily.genera.without_tribe.ordered_by_name ||
@@ -42,13 +46,8 @@ class Genus < GenusGroupTaxon
   end
 
   def species_group_descendants
-    Taxon.where(genus_id: id).where('taxa.type != ?', 'subgenus').includes(:name).order('names.epithet')
-  end
-
-  def add_antweb_attributes attributes
-    subfamily_name = subfamily && subfamily.name.to_s || 'incertae_sedis'
-    tribe_name = tribe && tribe.name.to_s
-    attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: name.to_s
+    Taxon.where(genus_id: id).where.not(type: 'Subgenus')
+      .includes(:name).order('names.epithet')
   end
 
   private

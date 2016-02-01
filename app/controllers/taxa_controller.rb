@@ -178,12 +178,12 @@ class TaxaController < ApplicationController
         else
           taxon.collision_merge_id = collision_resolution
           original_combination = Taxon.find(collision_resolution)
-          Taxon.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
+          Taxa::Utility.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
         end
       end
 
       if @previous_combination
-        Taxon.inherit_attributes_for_new_combination(taxon, @previous_combination, parent)
+        Taxa::Utility.inherit_attributes_for_new_combination(taxon, @previous_combination, parent)
       end
 
       taxon
@@ -209,14 +209,14 @@ class TaxaController < ApplicationController
       @previous_combination.children.select { |t| t.status == 'valid' }.each do |t|
         new_child = Subspecies.new
 
-        # Only building type_name because all other will be compied from 't'.
+        # Only building type_name because all other will be copied from 't'.
         # TODO Not sure why type_name is not copied?
         new_child.build_type_name
         new_child.parent = @taxon
 
-        Taxon.inherit_attributes_for_new_combination(new_child, t, @taxon)
+        Taxa::Utility.inherit_attributes_for_new_combination(new_child, t, @taxon)
 
-        new_child.save_taxon(Taxon.attributes_for_new_usage(new_child, t), t)
+        new_child.save_taxon(Taxa::Utility.attributes_for_new_usage(new_child, t), t)
       end
     end
 

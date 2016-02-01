@@ -1,2 +1,0 @@
-class Subtribe < Taxon
-end

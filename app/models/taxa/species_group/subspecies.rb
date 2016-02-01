@@ -31,6 +31,10 @@ class Subspecies < SpeciesGroupTaxon
     species || genus
   end
 
+  def children
+    []
+  end
+
   # This possibly should go through taxon_mother. It's a taxon change, after all,
   # and the others are handled there.
   def elevate_to_species
@@ -41,13 +45,11 @@ class Subspecies < SpeciesGroupTaxon
     new_name = SpeciesName.find_by_name new_name_string
     unless new_name
       new_name = SpeciesName.new
-      new_name.update_attributes({
-                                    name: new_name_string,
-                                    name_html: italicize(new_name_string),
-                                    epithet: name.epithet,
-                                    epithet_html: name.epithet_html,
-                                    epithets: nil
-                                 })
+      new_name.update_attributes name: new_name_string,
+                                 name_html: italicize(new_name_string),
+                                 epithet: name.epithet,
+                                 epithet_html: name.epithet_html,
+                                 epithets: nil
       new_name.save
     end
 
@@ -59,22 +61,4 @@ class Subspecies < SpeciesGroupTaxon
                         name_html_cache: new_name.name_html,
                         type: 'Species'
   end
-
-  def add_antweb_attributes attributes
-    subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
-    tribe_name = genus.tribe && genus.tribe.name.to_s
-
-    case name
-    when SubspeciesName
-      attributes.merge! genus: genus.name.to_s,
-        species: name.epithets.split(' ').first, subspecies: name.epithet
-    when SpeciesName
-      attributes.merge! genus: name.to_s.split(' ').first, species: name.epithet
-    else
-      attributes.merge! genus: genus.name.to_s, species: name.epithet
-    end
-
-    attributes.merge subfamily: subfamily_name, tribe: tribe_name
-  end
-
 end
