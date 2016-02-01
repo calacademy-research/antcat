@@ -73,14 +73,6 @@ class Taxon < ActiveRecord::Base
     Taxa::SaveTaxon.new(self).save_taxon(params, previous_combination)
   end
 
-  def delete_impact_list
-    Taxa::Utility.new(self).delete_impact_list
-  end
-
-  def delete_taxon_and_children
-    Taxa::Utility.new(self).delete_taxon_and_children
-  end
-
   # Deprecated: Many of the callers probably do not expect
   # that the first match is picked.
   def self.find_by_name name
