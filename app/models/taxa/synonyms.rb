@@ -12,7 +12,7 @@ module Taxa::Synonyms
 
   def find_most_recent_valid_senior_synonym
     return unless senior_synonyms
-    senior_synonyms.order('created_at DESC').each do |senior_synonym|
+    senior_synonyms.order(created_at: :desc).each do |senior_synonym|
       return senior_synonym if !senior_synonym.invalid?
       return nil unless senior_synonym.synonym?
       return senior_synonym.find_most_recent_valid_senior_synonym
@@ -29,15 +29,15 @@ module Taxa::Synonyms
   end
 
   def become_junior_synonym_of senior
-    Synonym.where(junior_synonym_id: senior, senior_synonym_id: self).destroy_all
-    Synonym.where(senior_synonym_id: senior, junior_synonym_id: self).destroy_all
+    Synonym.where(junior_synonym: senior, senior_synonym: self).destroy_all
+    Synonym.where(senior_synonym: senior, junior_synonym: self).destroy_all
     Synonym.create! junior_synonym: self, senior_synonym: senior
     senior.update_attributes! status: 'valid'
     update_attributes! status: 'synonym'
   end
 
   def become_not_junior_synonym_of senior
-    Synonym.where('junior_synonym_id = ? AND senior_synonym_id = ?', id, senior).destroy_all
+    Synonym.where(junior_synonym: self, senior_synonym: senior).destroy_all
     update_attributes! status: 'valid' if senior_synonyms.empty?
   end
 

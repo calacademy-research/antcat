@@ -9,7 +9,7 @@ class Subgenus < GenusGroupTaxon
   end
 
   def species_group_descendants
-    Taxon.where(subgenus_id: id).where('taxa.type != ?', 'subgenus')
+    Taxon.where(subgenus_id: id).where.not(type: 'Subgenus')
       .includes(:name).order('names.epithet')
   end
 
