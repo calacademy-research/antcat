@@ -38,7 +38,7 @@ class ChangesController < ApplicationController
     # find all versions, and undo the change
     # Sort to undo changes most recent to oldest
     clear_change
-    change_id_set = find_future_changes(@change.id)
+    change_id_set = find_future_changes(@change)
     versions = SortedSet.new
     items = SortedSet.new
     Taxon.transaction do
@@ -71,7 +71,7 @@ class ChangesController < ApplicationController
   # return information about all the taxa that would be hit if we were to
   # hit "undo". Includes current taxon. For display.
   def undo_items
-    change_id_set = find_future_changes(@change.id)
+    change_id_set = find_future_changes(@change)
     changes = []
     change_id_set.each do |cur_change_id|
       begin
@@ -159,7 +159,7 @@ class ChangesController < ApplicationController
     # Look up all future changes of this change, return change IDs in an array,
     # ordered most recent to oldest.
     # inclusive of the change passed as argument.
-    def find_future_changes change_id
+    def find_future_changes change
       # This returns changes that touch future versions of
       # all paper trail type items.
 
@@ -169,9 +169,8 @@ class ChangesController < ApplicationController
       #   if there is a "future" version of this version, recurse above loop.
       # sort and return the change record list.
       # because we need to go through papertrail's version
-      change = Change.find change_id
       change_ids = SortedSet.new
-      change_ids.add(change_id.to_i)
+      change_ids.add(change.id)
       change.versions.each do |version|
         change_ids.merge(get_future_change_ids(version))
       end
