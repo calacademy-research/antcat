@@ -3,42 +3,14 @@ class Change < ActiveRecord::Base
   belongs_to :taxon, class_name: 'Taxon', foreign_key: 'user_changed_taxon_id'
   has_many :versions, class_name: 'PaperTrail::Version'
 
-  def self.creations
-    self.joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id')
-      .order(<<-SQL.squish).uniq
-        CASE review_state
-        WHEN "waiting" THEN (changes.updated_at * 1000)
-        WHEN "approved" THEN changes.approved_at
-        END DESC, changes.id DESC
-      SQL
-  end
+  scope :waiting, -> { joins_taxon_states.where("taxon_states.review_state = 'waiting'") }
+  scope :joins_taxon_states, -> { joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id') }
 
   def get_most_recent_valid_taxon
     return taxon if taxon
 
     version = get_most_recent_valid_taxon_version
     version.reify
-  end
-
-  # Deletes don't store any object info, so you can't show what it used to look like.
-  # used to pull an example of the way it once was.
-  def get_most_recent_valid_taxon_version
-    # "Destroy" events don't have populated data fields.
-    versions.each do |version|
-      if version.item_type == 'Taxon' && !version.object.nil? && 'destroy' != version.event
-        return version
-      end
-    end
-
-    # This change didn't happen to touch taxon. Go ahead and search for the most recent
-    # version of this taxon that has object information
-    version = PaperTrail::Version.find_by_sql(<<-SQL.squish).first
-      SELECT * FROM versions WHERE item_type = 'Taxon'
-      AND object IS NOT NULL
-      AND item_id = '#{user_changed_taxon_id}'
-      ORDER BY id DESC
-    SQL
-    version
   end
 
   # Return the taxon associated with this change, or null if there isn't one.
@@ -55,6 +27,7 @@ class Change < ActiveRecord::Base
     user_id ? User.find(user_id) : nil
   end
 
+  # TODO Expensive call; move to a field?
   # This is hit from the haml; it returns the user ID of
   # the person who made the change.
   def changed_by
@@ -80,6 +53,27 @@ class Change < ActiveRecord::Base
   end
 
   private
+    # Deletes don't store any object info, so you can't show what it used to look like.
+    # used to pull an example of the way it once was.
+    def get_most_recent_valid_taxon_version
+      # "Destroy" events don't have populated data fields.
+      versions.each do |version|
+        if version.item_type == 'Taxon' && !version.object.nil? && 'destroy' != version.event
+          return version
+        end
+      end
+
+      # This change didn't happen to touch taxon. Go ahead and search for the most recent
+      # version of this taxon that has object information
+      version = PaperTrail::Version.find_by_sql(<<-SQL.squish).first
+        SELECT * FROM versions WHERE item_type = 'Taxon'
+        AND object IS NOT NULL
+        AND item_id = '#{user_changed_taxon_id}'
+        ORDER BY id DESC
+      SQL
+      version
+    end
+
     def get_user_versions change_id
       PaperTrail::Version.find_by_sql(<<-SQL.squish)
         SELECT * FROM versions WHERE change_id  = '#{change_id}'

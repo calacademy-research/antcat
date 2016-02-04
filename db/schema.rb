@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131134813) do
+ActiveRecord::Schema.define(version: 20160204125608) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -373,16 +373,6 @@ ActiveRecord::Schema.define(version: 20160131134813) do
 
   add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx", using: :btree
 
-  create_table "taxt_items", force: :cascade do |t|
-    t.text     "taxt",          limit: 65535
-    t.integer  "taxtable_id",   limit: 4
-    t.string   "taxtable_type", limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-  end
-
-  add_index "taxt_items", ["taxtable_type", "taxtable_id"], name: "index_taxt_items_on_taxtable_type_and_taxtable_id", using: :btree
-
   create_table "tooltips", force: :cascade do |t|
     t.string   "key",              limit: 255
     t.text     "text",             limit: 65535
@@ -436,6 +426,9 @@ ActiveRecord::Schema.define(version: 20160131134813) do
     t.integer  "change_id",      limit: 4
   end
 
+  add_index "versions", ["change_id"], name: "index_versions_on_change_id", using: :btree
+  add_index "versions", ["event"], name: "index_versions_on_event", using: :btree
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
+  add_index "versions", ["whodunnit"], name: "index_versions_on_whodunnit", using: :btree
 
 end
