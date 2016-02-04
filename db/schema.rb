@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160204125608) do
+ActiveRecord::Schema.define(version: 20160204152431) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20160204125608) do
   end
 
   add_index "changes", ["approver_id"], name: "index_changes_on_approver_id", using: :btree
+  add_index "changes", ["user_changed_taxon_id"], name: "index_changes_on_user_changed_taxon_id", using: :btree
 
   create_table "citations", force: :cascade do |t|
     t.integer  "reference_id",   limit: 4
@@ -178,6 +179,7 @@ ActiveRecord::Schema.define(version: 20160204125608) do
     t.boolean  "nonconforming_name"
   end
 
+  add_index "names", ["id", "type"], name: "index_names_on_id_and_type", using: :btree
   add_index "names", ["name"], name: "name_name_index", using: :btree
 
   create_table "places", force: :cascade do |t|
@@ -286,6 +288,7 @@ ActiveRecord::Schema.define(version: 20160204125608) do
 
   add_index "references", ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: {"author_names_string_cache"=>255, "citation_year"=>nil}, using: :btree
   add_index "references", ["created_at"], name: "references_created_at_idx", using: :btree
+  add_index "references", ["id", "type"], name: "index_references_on_id_and_type", using: :btree
   add_index "references", ["journal_id"], name: "references_journal_id_idx", using: :btree
   add_index "references", ["nesting_reference_id"], name: "references_nested_reference_id_idx", using: :btree
   add_index "references", ["publisher_id"], name: "references_publisher_id_idx", using: :btree
@@ -299,6 +302,10 @@ ActiveRecord::Schema.define(version: 20160204125608) do
     t.boolean  "auto_generated",                default: false
     t.string   "origin",            limit: 255
   end
+
+  add_index "synonyms", ["junior_synonym_id", "senior_synonym_id"], name: "index_synonyms_on_junior_synonym_id_and_senior_synonym_id", using: :btree
+  add_index "synonyms", ["junior_synonym_id"], name: "index_synonyms_on_junior_synonym_id", using: :btree
+  add_index "synonyms", ["senior_synonym_id"], name: "index_synonyms_on_senior_synonym_id", using: :btree
 
   create_table "taxa", force: :cascade do |t|
     t.string   "type",                            limit: 255
@@ -339,6 +346,7 @@ ActiveRecord::Schema.define(version: 20160204125608) do
     t.boolean  "display",                                       default: true
   end
 
+  add_index "taxa", ["current_valid_taxon_id"], name: "index_taxa_on_current_valid_taxon_id", using: :btree
   add_index "taxa", ["family_id"], name: "index_taxa_on_family_id", using: :btree
   add_index "taxa", ["genus_id"], name: "taxa_genus_id_idx", using: :btree
   add_index "taxa", ["homonym_replaced_by_id"], name: "index_taxa_on_homonym_replaced_by_id", using: :btree
