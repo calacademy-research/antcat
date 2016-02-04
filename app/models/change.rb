@@ -13,27 +13,6 @@ class Change < ActiveRecord::Base
     version.reify
   end
 
-  # Deletes don't store any object info, so you can't show what it used to look like.
-  # used to pull an example of the way it once was.
-  def get_most_recent_valid_taxon_version
-    # "Destroy" events don't have populated data fields.
-    versions.each do |version|
-      if version.item_type == 'Taxon' && !version.object.nil? && 'destroy' != version.event
-        return version
-      end
-    end
-
-    # This change didn't happen to touch taxon. Go ahead and search for the most recent
-    # version of this taxon that has object information
-    version = PaperTrail::Version.find_by_sql(<<-SQL.squish).first
-      SELECT * FROM versions WHERE item_type = 'Taxon'
-      AND object IS NOT NULL
-      AND item_id = '#{user_changed_taxon_id}'
-      ORDER BY id DESC
-    SQL
-    version
-  end
-
   # Return the taxon associated with this change, or null if there isn't one.
   def most_recent_valid_taxon_version
     raise NotImplementedError
@@ -74,6 +53,27 @@ class Change < ActiveRecord::Base
   end
 
   private
+    # Deletes don't store any object info, so you can't show what it used to look like.
+    # used to pull an example of the way it once was.
+    def get_most_recent_valid_taxon_version
+      # "Destroy" events don't have populated data fields.
+      versions.each do |version|
+        if version.item_type == 'Taxon' && !version.object.nil? && 'destroy' != version.event
+          return version
+        end
+      end
+
+      # This change didn't happen to touch taxon. Go ahead and search for the most recent
+      # version of this taxon that has object information
+      version = PaperTrail::Version.find_by_sql(<<-SQL.squish).first
+        SELECT * FROM versions WHERE item_type = 'Taxon'
+        AND object IS NOT NULL
+        AND item_id = '#{user_changed_taxon_id}'
+        ORDER BY id DESC
+      SQL
+      version
+    end
+
     def get_user_versions change_id
       PaperTrail::Version.find_by_sql(<<-SQL.squish)
         SELECT * FROM versions WHERE change_id  = '#{change_id}'
