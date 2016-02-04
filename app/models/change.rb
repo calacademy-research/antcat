@@ -3,15 +3,8 @@ class Change < ActiveRecord::Base
   belongs_to :taxon, class_name: 'Taxon', foreign_key: 'user_changed_taxon_id'
   has_many :versions, class_name: 'PaperTrail::Version'
 
-  def self.creations
-    self.joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id')
-      .order(<<-SQL.squish).uniq
-        CASE review_state
-        WHEN "waiting" THEN (changes.updated_at * 1000)
-        WHEN "approved" THEN changes.approved_at
-        END DESC, changes.id DESC
-      SQL
-  end
+  scope :waiting, -> { joins_taxon_states.where("taxon_states.review_state = 'waiting'") }
+  scope :joins_taxon_states, -> { joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id') }
 
   def get_most_recent_valid_taxon
     return taxon if taxon
@@ -55,6 +48,7 @@ class Change < ActiveRecord::Base
     user_id ? User.find(user_id) : nil
   end
 
+  # TODO Expensive call; move to a field?
   # This is hit from the haml; it returns the user ID of
   # the person who made the change.
   def changed_by

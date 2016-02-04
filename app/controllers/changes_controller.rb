@@ -5,11 +5,15 @@ class ChangesController < ApplicationController
   include UndoTracker
 
   def index
-    @changes = Change.creations.paginate(page: params[:page], per_page: 8)
+    @changes = Change.order(created_at: :desc).paginate(page: params[:page], per_page: 8)
   end
 
   def show
     @change = Change.find params[:id]
+  end
+
+  def unapproved
+    @changes = Change.waiting.order(created_at: :desc).paginate(page: params[:page], per_page: 8)
   end
 
   def approve

@@ -61,35 +61,24 @@ describe Change do
   end
 
   describe "Scopes" do
+    describe "#waiting" do
+      it "returns unapproved changes" do
+        item = create_genus
+        item.taxon_state.update_attributes review_state: 'waiting'
+        unapproved_change = setup_version item.id
 
-    it "should return creations" do
-      item = create_genus
-      creation = setup_version(item.id)
-      setup_version(item.id)
+        item = create_genus
+        item.taxon_state.update_attributes review_state: 'approved'
+        approved_earlier_change = setup_version item.id
+        approved_earlier_change.update_attributes(approved_at: Date.today - 7)
 
-      expect(Change.creations.last.id).to eq(creation.id)
-    end
+        item = create_genus
+        item.taxon_state.update_attributes review_state: 'approved'
+        approved_later_change = setup_version item.id
+        approved_later_change.update_attributes(approved_at: Date.today + 7)
 
-    it "should return creations with unapproved first, then approved in reverse chronological order" do
-      item = create_genus
-      item.taxon_state.update_attributes review_state: 'waiting'
-      unapproved_change = setup_version item.id
-      
-      item = create_genus
-      item.taxon_state.update_attributes review_state: 'approved'
-      approved_earlier_change = setup_version item.id
-      approved_earlier_change.update_attributes(approved_at: Date.today - 7)
-
-      item = create_genus
-      item.taxon_state.update_attributes review_state: 'approved'
-      approved_later_change = setup_version item.id
-      approved_later_change.update_attributes(approved_at: Date.today + 7)
-
-      expect(Change.creations.map(&:id)).to eq([
-        unapproved_change.id,
-        approved_later_change.id,
-        approved_earlier_change.id
-      ])
+        expect(Change.waiting).to eq [unapproved_change]
+      end
     end
   end
 
