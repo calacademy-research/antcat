@@ -134,14 +134,14 @@ paths:
 
   /v1/author_names/{id}:
     get:
-      summary: Get an author name
+      summary: Get an author name by author id
       operationId: getAuthorName
       tags:
         - author_names
       parameters:
         - name: id
           in: path
-          description: author name id
+          description: author id (not author NAME id!)
           required: true
           type: integer
           format: int32
