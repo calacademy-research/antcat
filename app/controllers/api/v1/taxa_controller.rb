@@ -22,8 +22,7 @@ module Api::V1
       render json: taxa, status: :ok
     end
 
-    # Search for known present species
-    # search for known absent species
+
     def search
       q = params[:string] || ''
       search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)

@@ -39,13 +39,33 @@ paths:
         "404":
           description: Record not found
 
+  /v1/taxa/search/{string}:
+    get:
+      summary: Search taxa using advanced search string
+      operationId: searchTaxa
+      tags:
+        - taxa
+        - search
+      parameters:
+        - name: string
+          in: path
+          description: Advanced search string
+          required: true
+          type: string
+      responses:
+        "200":
+          description: matching taxa records
+          schema:
+            $ref: '#/definitions/Taxa'
+        "404":
+          description: Record not found
+
   /v1/taxa:
     get:
       summary: Get all taxa
       operationId: getTaxa
       tags:
         - taxa
-
       responses:
         "200":
           description: Array of Ids and names of all taxa
@@ -59,7 +79,7 @@ paths:
       summary: Get a ptotonym
       operationId: getProtonym
       tags:
-        - protonym
+        - protonyms
       parameters:
         - name: id
           in: path
@@ -80,7 +100,7 @@ paths:
       summary: Get an author
       operationId: getAuthor
       tags:
-        - author
+        - authors
       parameters:
         - name: id
           in: path
@@ -105,11 +125,61 @@ paths:
 
       responses:
         "200":
-          description: Array of Ids of all authors
+          description: Array of Ids of all authors and their create/update dates
           schema:
             $ref: '#/definitions/Author'
         "404":
           description: Record not found
+
+
+  /v1/author_names/{id}:
+    get:
+      summary: Get an author name
+      operationId: getAuthorName
+      tags:
+        - author_names
+      parameters:
+        - name: id
+          in: path
+          description: author name id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single author name record
+          schema:
+            $ref: '#/definitions/AuthorName'
+        "404":
+          description: Record not found
+
+  /v1/author_names:
+    get:
+      summary: Get all author names
+      operationId: getAuthorNames
+      tags:
+        - authors
+
+      responses:
+        "200":
+          description: Array of all author names
+          schema:
+            $ref: '#/definitions/AuthorName'
+        "404":
+          description: Record not found
+
+#citation
+#journal
+#place
+#protonym
+#publisher
+#reference
+#reference_author_name
+#reference_document
+#reference_section
+#synonym
+#taxon_history_item
+
 
 
 
@@ -264,12 +334,42 @@ definitions:
         description: Automatically generated timestamp for most recent update
 
   Author:
-    description: Author record
+    description: Author primary key IDs
     type: object
     properties:
       id:
         type: integer
         description: Antcat author id, primary key
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+
+  AuthorName:
+    description: Author name record
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Antcat author name id, primary key
+      author_id:
+        type: integer
+        description: FK to author
+      name:
+        type: string
+        description: author name
+      verified:
+        type: boolean
+      auto_generated:
+        type: boolean
+        description: Programatically generated (typically from an exteral import)
+      source:
+        type: string
+        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
         type: string
         format: date-time

@@ -99,7 +99,8 @@ AntCat::Application.routes.draw do
       get '/taxa/search/:string', to: 'taxa#search'
       resources :protonyms
       resources :authors
-
+      resources :author_names
+      resources :names
     end
     # For the next version...
     # namespace :v2 do
