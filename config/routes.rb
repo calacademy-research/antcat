@@ -96,6 +96,7 @@ AntCat::Application.routes.draw do
   scope module: 'api' do
     namespace :v1 do
       resources :taxa
+      get '/taxa/search/:string', to: 'taxa#search'
       resources :protonyms
       resources :authors
 
