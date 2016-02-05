@@ -74,9 +74,30 @@ paths:
         "404":
           description: Record not found
 
+  /v1/protonyms:
+    get:
+      summary: Get all protonyms
+      operationId: getProtonym
+      tags:
+        - protonyms
+      parameters:
+        - name: id
+          in: path
+          description: protonym id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single protonym record
+          schema:
+            $ref: '#/definitions/Protonym'
+        "404":
+          description: Record not found
+
   /v1/protonyms/{id}:
     get:
-      summary: Get a ptotonym
+      summary: Get a protonym
       operationId: getProtonym
       tags:
         - protonyms
@@ -171,7 +192,6 @@ paths:
 #citation
 #journal
 #place
-#protonym
 #publisher
 #reference
 #reference_author_name
@@ -317,21 +337,7 @@ definitions:
             description: True if it should be shown in the taxon browser. If false, it will still show in searches.
 
 
-  Protonym:
-    description: Taxon protonym
-    type: object
-    properties:
-      id:
-        type: integer
-        description: Integer id, primary key
-      created_at:
-        type: string
-        format: date-time
-        description: Automatically generated timestamp for original creation
-      updated_at:
-        type: string
-        format: date-time
-        description: Automatically generated timestamp for most recent update
+
 
   Author:
     description: Author primary key IDs
@@ -367,7 +373,7 @@ definitions:
       auto_generated:
         type: boolean
         description: Programatically generated (typically from an exteral import)
-      source:
+      origin:
         type: string
         description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
@@ -379,7 +385,37 @@ definitions:
         format: date-time
         description: Automatically generated timestamp for most recent update
 
-
+  Protonym:
+    description: Taxon protonym record
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Protonym id, primary key
+      authorship_id:
+        type: integer
+        description: FK to author
+      name_id:
+        type: integer
+        description: FK to name
+      fossil:
+        type: boolean
+      locality:
+        type: string
+      auto_generated:
+        type: boolean
+        description: Programatically generated (typically from an exteral import)
+      origin:
+        type: string
+        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
 
 
 

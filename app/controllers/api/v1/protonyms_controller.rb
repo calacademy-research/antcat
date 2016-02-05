@@ -1,6 +1,13 @@
 module Api::V1
   class ProtonymsController < Api::ApiController
-    # rest endpoint - get protonym/[id]
+
+
+    def index
+      protonyms = Protonym.all
+      render json: protonyms, status: :ok
+    end
+
+
     def show
       begin
         protonym = Protonym.find(params[:id])
