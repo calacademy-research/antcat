@@ -4,12 +4,15 @@
 module Api::V1
   class TaxaController < Api::ApiController
     def index
-      @taxa = Taxon.connection.select_all("SELECT id, name_cache AS name FROM taxa ORDER BY name_cache LIMIT 1000")
-      respond_to do |format|
-        format.json { render json: @taxa }
-      end
-    end
+      if params[:starts_at]
+        starts_at = params[:starts_at]
+        taxa = Taxon.where('id >= ?',starts_at.to_i).order('id asc').limit('100')
+      else
+        taxa = Taxon.all.order('id asc').limit('100')
 
+      end
+      render json: taxa, status: :ok
+    end
 
     def show
       begin

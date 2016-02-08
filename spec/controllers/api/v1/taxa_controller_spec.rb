@@ -16,17 +16,6 @@ describe Api::V1::TaxaController do
       expect(response.body.to_s).to include("Atta")
       expect(parsed_species['species']['name_cache']).to eq("Atta minor maxus")
 
-      # get(:show, {'id' => '12'}, nil)
-      # expect(response.status).to eq(200)
-      # parsed_species=JSON.parse(response.body)
-      # expect(response.body.to_s).not_to include("<html>")
-      #
-      #
-      # get :index, {:group_id => group_id, :use_route => :groups}.merge(@json_auth), nil
-      # connections=JSON.parse(response.body)
-      # expect(connections).to have(2).items
-      # expect(response.body.to_s).to include("account_name_1")
-      # expect(response.body.to_s).to include("account_name_2")
     end
 
     it "should search for a taxa" do
@@ -42,6 +31,28 @@ describe Api::V1::TaxaController do
       get(:search, {'string' => 'maxuus'}, nil)
       expect(response.status).to eq(404)
 
+    end
+
+    it "gets all taxa" do
+      create_taxon
+      species = create_species 'Atta minor'
+      protonym_name = create_species_name 'Eciton minor'
+
+
+      get(:index, starts_at: 4)
+      expect(response.status).to eq(200)
+      names=JSON.parse(response.body)
+      expect(names[0]['subfamily']['id']).to eq(4)
+
+      expect(names.count).to eq(4)
+
+      get(:index, nil)
+      expect(response.status).to eq(200)
+      expect(response.body.to_s).to include("Atta")
+
+
+      names=JSON.parse(response.body)
+      expect(names.count).to eq(7)
     end
 
   end

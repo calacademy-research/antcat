@@ -23,7 +23,7 @@ paths:
       summary: Get a single taxon
       operationId: getTaxon
       tags:
-        - taxa
+        - taxon
       parameters:
         - name: id
           in: path
@@ -62,31 +62,32 @@ paths:
 
   /v1/taxa:
     get:
-      summary: Get all taxa
+      summary: Get taxa
       operationId: getTaxa
       tags:
         - taxa
+      parameters:
+        - name: starts_at
+          in: query
+          description: Lowest taxon ID to be returned
+          required: false
+          type: integer
+          format: int32
       responses:
         "200":
-          description: Array of Ids and names of all taxa
+          description: Returns 100 taxa at a time starting at an arbitrary taxon id. If no id is supplied, starts at zero
           schema:
-            $ref: '#/definitions/Taxa'
+            $ref: '#/definitions/Taxon'
         "404":
           description: Record not found
 
   /v1/protonyms:
     get:
       summary: Get all protonyms
-      operationId: getProtonym
+      operationId: getProtonyms
       tags:
         - protonyms
-      parameters:
-        - name: id
-          in: path
-          description: protonym id
-          required: true
-          type: integer
-          format: int32
+        - protonym
       responses:
         "200":
           description: a single protonym record
@@ -100,7 +101,7 @@ paths:
       summary: Get a protonym
       operationId: getProtonym
       tags:
-        - protonyms
+        - protonym
       parameters:
         - name: id
           in: path
@@ -189,6 +190,49 @@ paths:
         "404":
           description: Record not found
 
+  /v1/names/{id}:
+    get:
+      summary: Get an author name by author id
+      operationId: getName
+      tags:
+        - name
+      parameters:
+        - name: id
+          in: path
+          description: name id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single taxon name record
+          schema:
+            $ref: '#/definitions/Name'
+        "404":
+          description: Record not found
+
+  /v1/names:
+    get:
+      summary: returns a maximum of 100 taxon names
+      operationId: getNames
+      tags:
+        - names
+        - name
+      parameters:
+        - name: starts_at
+          in: query
+          description: Lowest name ID to be returned
+          required: false
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Array of all author names
+          schema:
+            $ref: '#/definitions/AuthorName'
+        "404":
+          description: Record not found
+
 #citation
 #journal
 #place
@@ -215,7 +259,6 @@ definitions:
       name:
         type: string
         description: de-normalized cache of the name object
-
   Taxon:
     description: Taxon level
     type: object
@@ -402,6 +445,69 @@ definitions:
         type: boolean
       locality:
         type: string
+      auto_generated:
+        type: boolean
+        description: Programatically generated (typically from an exteral import)
+      origin:
+        type: string
+        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+  Name:
+    description: Taxon name
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Name id, primary key
+      type:
+        type: string
+        description: Level of name
+        enum:
+        - FamilyOrSubfamilyName
+        - SubtribeName
+        - GenusName
+        - OrderName
+        - SpeciesName
+        - TribeName
+        - CollectiveGroupName
+        - SubfamilyName
+        - SubgenusName
+        - SubspeciesName
+      name:
+        type: string
+        description: Plain text name
+      name_html:
+        type: string
+        description: html version of name (with formatting, usually italics)
+      epithet:
+        type: string
+        description: Plain text terminal epithet
+      epithet_html:
+        type: string
+        description: html version of terminal epithet (with formatting, usually italics)
+      epithets:
+        type: string
+        description: all epithets, plain text
+      protonym_html:
+        type: string
+        description: Populated only for valid protonyms.
+      gender:
+        type: string
+        description: gender
+        enum:
+        - masculine
+        - feninine
+        - neuter
+      nonconforming_name:
+        type: boolean
+        description: Names not confirming to standard naming conventions because they're archiac or erroneous.
       auto_generated:
         type: boolean
         description: Programatically generated (typically from an exteral import)
