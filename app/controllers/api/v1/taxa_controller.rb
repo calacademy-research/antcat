@@ -4,25 +4,12 @@
 module Api::V1
   class TaxaController < Api::ApiController
     def index
-      if params[:starts_at]
-        starts_at = params[:starts_at]
-        taxa = Taxon.where('id >= ?',starts_at.to_i).order('id asc').limit('100')
-      else
-        taxa = Taxon.all.order('id asc').limit('100')
-
-      end
-      render json: taxa, status: :ok
+      super(Taxon)
     end
 
-    def show
-      begin
-        taxa = Taxon.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        render nothing: true, status: :not_found
-        return
-      end
 
-      render json: taxa, status: :ok
+    def show
+      super(Taxon)
     end
 
 

@@ -10,7 +10,7 @@ describe Api::V1::ProtonymsController do
     end
 
 
-    it "gets all author names keys" do
+    it "gets all protonyms" do
       create_taxon
       species = create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'

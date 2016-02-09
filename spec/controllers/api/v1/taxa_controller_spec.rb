@@ -33,26 +33,32 @@ describe Api::V1::TaxaController do
 
     end
 
-    it "gets all taxa" do
+    it "gets all taxa greater than a given number" do
       create_taxon
       species = create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
-
+      # Get index starting at four
       get(:index, starts_at: 4)
       expect(response.status).to eq(200)
-      names=JSON.parse(response.body)
-      expect(names[0]['subfamily']['id']).to eq(4)
+      taxa=JSON.parse(response.body)
+      # since we want no ids less than 4, we should get a starting id at 4
+      expect(taxa[0]['subfamily']['id']).to eq(4)
+      expect(taxa.count).to eq(4)
+    end
 
-      expect(names.count).to eq(4)
+    it "gets all taxa" do
+      create_taxon
+      species = create_species 'Atta minor'
+      protonym_name = create_species_name 'Eciton minor'
 
       get(:index, nil)
       expect(response.status).to eq(200)
       expect(response.body.to_s).to include("Atta")
 
 
-      names=JSON.parse(response.body)
-      expect(names.count).to eq(7)
+      taxa=JSON.parse(response.body)
+      expect(taxa.count).to eq(7)
     end
 
   end

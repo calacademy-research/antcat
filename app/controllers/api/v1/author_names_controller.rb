@@ -7,13 +7,7 @@ module Api::V1
 
 
     def show
-      begin
-        authors = AuthorName.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        render nothing: true, status: :not_found
-        return
-      end
-      render json: authors, status: :ok
+      super AuthorName
     end
 
   end

@@ -9,14 +9,7 @@ module Api::V1
 
 
     def show
-      begin
-        protonym = Protonym.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        render nothing: true, status: :not_found
-        return
-      end
-
-      render json: protonym, status: :ok
+      super Name
     end
   end
 end

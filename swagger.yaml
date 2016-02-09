@@ -90,7 +90,7 @@ paths:
         - protonym
       responses:
         "200":
-          description: a single protonym record
+          description: the first hundred citation records.
           schema:
             $ref: '#/definitions/Protonym'
         "404":
@@ -233,7 +233,50 @@ paths:
         "404":
           description: Record not found
 
-#citation
+  /v1/citations:
+    get:
+      summary: Get all citations
+      operationId: getCitations
+      tags:
+        - citations
+        - citation
+      parameters:
+          - name: starts_at
+            in: query
+            description: Lowest citation ID to be returned
+            required: false
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Returns 100 citations at a time starting at an arbitrary citation id. If no id is supplied, starts at zero
+
+          schema:
+            $ref: '#/definitions/Citation'
+        "404":
+          description: Record not found
+
+  /v1/citations/{id}:
+    get:
+      summary: Get a citation
+      operationId: getCitation
+      tags:
+        - citation
+      parameters:
+        - name: id
+          in: path
+          description: citation id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single citation record
+          schema:
+            $ref: '#/definitions/Citation'
+        "404":
+          description: Record not found
+
 #journal
 #place
 #publisher
@@ -508,6 +551,69 @@ definitions:
       nonconforming_name:
         type: boolean
         description: Names not confirming to standard naming conventions because they're archiac or erroneous.
+      auto_generated:
+        type: boolean
+        description: Programatically generated (typically from an exteral import)
+      origin:
+        type: string
+        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+
+
+  Protonym:
+    description: Taxon protonym record
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Protonym id, primary key
+      authorship_id:
+        type: integer
+        description: FK to author
+      name_id:
+        type: integer
+        description: FK to name
+      fossil:
+        type: boolean
+      locality:
+        type: string
+      auto_generated:
+        type: boolean
+        description: Programatically generated (typically from an exteral import)
+      origin:
+        type: string
+        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+  Protonym:
+    description: Taxon name
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Name id, primary key
+      reference_id:
+        type: integer
+        description: fk to reference
+      pages:
+        type: string
+        description: String describing the page range; no standard format
+      notes_taxt:
+        type: text
+        description: Long field with text and notes
       auto_generated:
         type: boolean
         description: Programatically generated (typically from an exteral import)
