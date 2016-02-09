@@ -598,7 +598,8 @@ definitions:
         type: string
         format: date-time
         description: Automatically generated timestamp for most recent update
-  Protonym:
+
+  Citation:
     description: Taxon name
     type: object
     properties:
@@ -612,7 +613,7 @@ definitions:
         type: string
         description: String describing the page range; no standard format
       notes_taxt:
-        type: text
+        type: string
         description: Long field with text and notes
       auto_generated:
         type: boolean
