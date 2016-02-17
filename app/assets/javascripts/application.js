@@ -1,6 +1,7 @@
 // gems
 //= require jquery
 //= require jquery_ujs
+//= require foundation
 //= require jquery-ui/core
 //= require jquery-ui/autocomplete
 //= require jquery-ui/dialog

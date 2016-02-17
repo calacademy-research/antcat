@@ -3,6 +3,7 @@
   %head
     %title= make_title @title
     %meta{'http-equiv' => "content-type", content: "text/html;charset=UTF-8"}
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
 
     = csrf_meta_tag
 
@@ -19,6 +20,7 @@
     = javascript_include_tag 'application'
 
     = stylesheet_link_tag 'application'
+    = stylesheet_link_tag 'foundation_and_overrides'
     = stylesheet_link_tag 'bootstrap_custom'
     = stylesheet_link_tag 'jquery_overrides'
     = stylesheet_link_tag "controllers/#{params[:controller]}" if AntCat::Application.assets.find_asset "controllers/#{params[:controller]}"

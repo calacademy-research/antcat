@@ -1,4 +1,5 @@
 $ ->
+  $(document).foundation()
   setup_login()
   setup_reference_keys()
   $('input[type=text]:visible:first').focus()
