@@ -1,6 +1,15 @@
 - @title = "#{@taxon.name.epithet}"
 
 #taxon_browser
+  -# WIP
+  #taxon_browser_options
+    = render 'rank_options', rank: :subfamily, can_show_unavailable: true, hideable_child_name: 'tribes'
+    - if session[:show_tribes] and @subfamily != 'none'
+      = render 'rank_options', rank: :tribe, hideable_name: 'tribes'
+    = render 'rank_options', rank: :genus, hideable_child_name: 'subgenera'
+    - if session[:show_subgenera]
+      = render 'rank_options', rank: :subgenus, hideable_name: 'subgenera'
+
   %ul.accordion{"data-accordion" => "", "data-allow-all-closed" => "true", "data-multi-expand" => "true"}
     = render   'rank', rank: :subfamily,items: @subfamilies,selected_item: @subfamily, parent: @family,    options: {can_show_unavailable: true, show_none: 'none', hideable_child_name: 'tribes'}
     - if session[:show_tribes] and @subfamily != 'none'

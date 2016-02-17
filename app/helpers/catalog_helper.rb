@@ -25,7 +25,7 @@ module CatalogHelper
   def hide_or_show_unavailable_subfamilies_link is_hiding_link
     command = is_hiding_link ? 'hide' : 'show'
     action = command.dup << '_unavailable_subfamilies'
-    text = command + ' unavailable'
+    text = command + ' unavailable subfamilies'
     link_to text, "/catalog/#{action}#{build_params}".html_safe
   end
 
