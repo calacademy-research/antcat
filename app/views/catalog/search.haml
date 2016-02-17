@@ -12,8 +12,3 @@
           -row.each do |taxon|
             %td= taxon.decorate.link_to_taxon
 %hr
-
--# Push down the partner links; makes the search result page look better after decoupling it from show.haml
-#catalog
-  #splitter{style: "display: none"}
-  .index

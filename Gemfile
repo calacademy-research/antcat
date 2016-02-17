@@ -40,9 +40,6 @@ gem 'twitter-typeahead-rails'
 gem 'will_paginate'
 gem 'workflow'
 
-# To remember the catalog #splitter's position
-gem 'js_cookie_rails'
-
 # HOL importer
 gem 'curb', require: 'curl'
 gem 'fuzzy-string-match'

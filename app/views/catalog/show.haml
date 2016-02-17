@@ -4,8 +4,6 @@
   = render 'catalog/taxon', taxon: @taxon
   %div{:class => "delete-modal", :type => 'hidden', :id => "delete_message"}
 
-  #splitter
-
   -# This is the lower half of the table for browsing
   .index
     = render   'rank', rank: :subfamily,items: @subfamilies,selected_item: @subfamily, parent: @family,    options: {can_show_unavailable: true, show_none: 'none', hideable_child_name: 'tribes'}
