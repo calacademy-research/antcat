@@ -24,7 +24,6 @@ class CatalogController < ApplicationController
     end
 
     @search_selector_value = search_selector_value_in_english(params[:st])
-    render 'search_results'
   end
 
   def show_tribes
