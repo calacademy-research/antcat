@@ -160,6 +160,13 @@ FactoryGirl.define do
     epithet_html { name_html }
   end
 
+  factory :subtribe_name do
+    sequence(:name) { |n| "Subtribe#{n}" }
+    name_html { name }
+    epithet { name }
+    epithet_html { name_html }
+  end
+
   factory :genus_name do
     sequence(:name) { |n| "Genus#{n}" }
     name_html { "<i>#{name}</i>" }
@@ -236,6 +243,19 @@ FactoryGirl.define do
     end
     to_create { |instance| instance.save(validate: false) }
     association :name, factory: :tribe_name
+    association :type_name, factory: :genus_name
+    subfamily
+    protonym
+    status 'valid'
+  end
+
+  factory :subtribe do
+    after :create do |subtribe|
+      FactoryGirl.create(:taxon_state, taxon_id: subtribe.id)
+      subtribe.touch_with_version
+    end
+    to_create { |instance| instance.save(validate: false) }
+    association :name, factory: :subtribe_name
     association :type_name, factory: :genus_name
     subfamily
     protonym

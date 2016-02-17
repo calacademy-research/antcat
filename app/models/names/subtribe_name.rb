@@ -1,0 +1,2 @@
+class SubtribeName < Name
+end
