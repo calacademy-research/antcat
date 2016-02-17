@@ -81,7 +81,7 @@ class TaxonDecorator::ChildList
 
       content_tag :div, class: :child_list do
         content = ''.html_safe
-        content << content_tag(:span, label, class: :label)
+        content << content_tag(:span, label, class: :caption)
         content << ': '
         content << child_list_items(children)
         content << '.'

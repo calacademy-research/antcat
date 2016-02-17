@@ -19,11 +19,11 @@
         %table
 
           %tr
-            %td.label= label_tag :taxon, 'Replace'
+            %td.caption= label_tag :taxon, 'Replace'
             %td.value= @missing_reference.citation
 
           %tr
-            %td.label= label_tag :replacement, 'with'
+            %td.caption= label_tag :replacement, 'with'
             %td.value
               #replacement_id_field
                 = hidden_field_tag 'replacement_id', @replacement.try(:id)

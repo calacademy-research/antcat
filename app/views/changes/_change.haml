@@ -10,7 +10,7 @@
     %td
       %table
         %tr
-          %td.label Name
+          %td.caption Name
           %td.value.name= format_taxon_name taxon.name
 
         %tr
@@ -18,34 +18,34 @@
           -#taxon.name has a special case for family that return nil; I'm scared of breaking the universe
           -#if I change that behaviour.
           - if taxon.rank == 'family'
-            %td.label.parent_rank= 'Order'
+            %td.caption.parent_rank= 'Order'
             %td.value.parent= 'Hymenoptera'
           - else
             - if taxon.parent
-              %td.label.parent_rank= format_rank Rank[taxon.parent.rank]
+              %td.caption.parent_rank= format_rank Rank[taxon.parent.rank]
               %td.value.parent= format_taxon_name taxon.parent.name
             - else
               -# see 8a7b3f95b312362c8cb03e9589f79e8ff8c5e0a4
               %td
               %td.parent_not_found Parent not found in the database
         %tr
-          %td.label Status
+          %td.caption Status
           %td.value.status= format_status taxon.status
 
         - if taxon.incertae_sedis_in.present?
           %tr
-            %td.label Incertae sedis in
+            %td.caption Incertae sedis in
             %td.value.incertae_sedis= taxon.incertae_sedis_in
 
         - attributes = format_attributes taxon
         - if attributes.present?
           %tr
-            %td.label Attributes
+            %td.caption Attributes
             %td.value.attributes= attributes
 
         - if taxon.headline_notes_taxt.present?
           %tr
-            %td.label Notes
+            %td.caption Notes
             %td.value.notes= format_taxt taxon.headline_notes_taxt
 
       %table
@@ -55,36 +55,36 @@
           %td.header Protonym
 
           %tr
-            %td.label Name
+            %td.caption Name
             %td.value.protonym_name= format_taxon_name protonym.name
 
           - attributes = format_protonym_attributes taxon
           - if attributes.present?
             %tr
-              %td.label Attributes
+              %td.caption Attributes
               %td.value.protonym_attributes= attributes
 
           %tr
             - authorship = protonym.authorship
-            %td.label Authorship
+            %td.caption Authorship
             %td.value.authorship_reference= authorship.reference.decorate.format
 
           %tr
-            %td.label Page
+            %td.caption Page
             %td.value.page= authorship.pages
 
           %tr
-            %td.label Forms
+            %td.caption Forms
             %td.value.forms= authorship.forms
 
           %tr
-            %td.label Locality
+            %td.caption Locality
             %td.value.locality= protonym.locality
 
           - authorship_notes = authorship.notes_taxt
           - if authorship_notes.present?
             %tr
-              %td.label Notes
+              %td.caption Notes
               %td.value.authorship_notes= format_taxt authorship_notes
 
       - if taxon.type_name.present?
@@ -93,18 +93,18 @@
             %td.header Type
 
           %tr
-            %td.label Name
+            %td.caption Name
             %td.value.type_name= format_taxon_name taxon.type_name
 
           - attributes = format_type_attributes taxon
           - if attributes.present?
             %tr
-              %td.label Attributes
+              %td.caption Attributes
               %td.value.type_attributes= attributes
 
           - if taxon.type_taxt.present?
             %tr
-              %td.label Notes
+              %td.caption Notes
               %td.value.type_notes= format_taxt taxon.type_taxt
 
       = render 'history_items', taxon: taxon

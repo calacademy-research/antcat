@@ -5,20 +5,20 @@
 
     - if taxon.kind_of? SpeciesGroupTaxon
       %tr
-        %td.label.top_aligned= form.label :biogeographic_region
+        %td.caption.top_aligned= form.label :biogeographic_region
         %td.biogeographic_region.top_aligned
           = form.select :biogeographic_region, biogeographic_region_options_for_select(taxon.biogeographic_region)
       %tr
-        %td.label.top_aligned= form.label :verbatim_type_locality
+        %td.caption.top_aligned= form.label :verbatim_type_locality
         %td.verbatim_type_locality.top_aligned= form.text_area :verbatim_type_locality, rows: 3
       %tr
-        %td.label.top_aligned= form.label :type_specimen_repository
+        %td.caption.top_aligned= form.label :type_specimen_repository
         %td.type_specimen_repository.top_aligned= form.text_area :type_specimen_repository, rows: 3
       %tr
-        %td.label.top_aligned= form.label :type_specimen_code
+        %td.caption.top_aligned= form.label :type_specimen_code
         %td.type_specimen_code.top_aligned= form.text_area :type_specimen_code, rows: 2
       %tr
-        %td.label.top_aligned= form.label :type_specimen_url, 'Type specimen URL'
+        %td.caption.top_aligned= form.label :type_specimen_url, 'Type specimen URL'
         %td.type_specimen_url.top_aligned= form.text_field :type_specimen_url
 
     - else
@@ -26,15 +26,15 @@
         = form.fields_for :type_name do |type_name_form|
           - if taxon.type_name.new_record?
             = hidden_field_tag 'taxon[type_name_attributes][id]'
-          %td.label.top_aligned= type_name_form.label :name
+          %td.caption.top_aligned= type_name_form.label :name
           %td
             #type_name_field
               = render 'name_fields/panel', name_string: taxon.type_name.try(:name)
       %tr
-        %td.label= form.label :type_fossil, 'Fossil'
+        %td.caption= form.label :type_fossil, 'Fossil'
         %td= form.check_box :type_fossil
 
       %tr
-        %td.label.top_aligned= form.label :type_taxt, 'Notes'
+        %td.caption.top_aligned= form.label :type_taxt, 'Notes'
         %td#type_taxt_editor.taxt_editor
           = render 'taxt_editors/show', name: 'taxon[type_taxt]', value: Taxt.to_editable(taxon.type_taxt)

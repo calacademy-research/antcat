@@ -1,11 +1,11 @@
 %table
   -taxon.reference_sections.each do |item|
     %tr.reference_section
-      %td.label
+      %td.caption
       %td.value.title_taxt= Taxt.to_display_sentence item.title_taxt
     %tr
-      %td.label
+      %td.caption
       %td.value.subtitle_taxt= Taxt.to_display_sentence item.subtitle_taxt
     %tr
-      %td.label
+      %td.caption
       %td.value.references_taxt= Taxt.to_display_sentence item.references_taxt
