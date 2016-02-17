@@ -14,8 +14,8 @@ module NavigationHelpers
     when /^the changes page$/
       '/changes'
 
-    when /^the unapproved changes page$/
-      '/changes/unapproved'
+    when /^the unreviewed changes page$/
+      '/changes/unreviewed'
 
     when /^the missing reference edit page for "([^"]*)"$/
       reference = MissingReference.find_by_citation $1

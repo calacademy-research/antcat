@@ -62,10 +62,10 @@ describe Change do
 
   describe "Scopes" do
     describe "#waiting" do
-      it "returns unapproved changes" do
+      it "returns unreviewed changes" do
         item = create_genus
         item.taxon_state.update_attributes review_state: 'waiting'
-        unapproved_change = setup_version item.id
+        unreviewed_change = setup_version item.id
 
         item = create_genus
         item.taxon_state.update_attributes review_state: 'approved'
@@ -77,7 +77,7 @@ describe Change do
         approved_later_change = setup_version item.id
         approved_later_change.update_attributes(approved_at: Date.today + 7)
 
-        expect(Change.waiting).to eq [unapproved_change]
+        expect(Change.waiting).to eq [unreviewed_change]
       end
     end
   end

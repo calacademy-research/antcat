@@ -6,7 +6,7 @@
     .actions
       -items = []
       -items << link_to('All changes', changes_path)
-      -items << link_to('Unapproved changes', unapproved_changes_path)
+      -items << link_to('Unreviewed changes', unreviewed_changes_path)
       =make_link_menu items
 
 = render file: 'layouts/application'

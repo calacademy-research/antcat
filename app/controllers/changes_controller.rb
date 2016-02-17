@@ -13,7 +13,7 @@ class ChangesController < ApplicationController
   def show
   end
 
-  def unapproved
+  def unreviewed
     @changes = Change.waiting.order(created_at: :desc).paginate(page: params[:page], per_page: 8)
   end
 

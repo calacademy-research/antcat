@@ -85,16 +85,16 @@ Feature: Workflow
     When I add the genus "Atta"
     And I add the genus "Batta"
     When I log in as a superadmin named "Stan Blum"
-    When I go to the unapproved changes page
+    When I go to the unreviewed changes page
     Then I should see "Approve all"
     And I will confirm on the next step
     And I press "Approve all"
-    When I go to the unapproved changes page
+    When I go to the unreviewed changes page
     Then I should not see "Approve[^d]"
     # TODO fix ugly regex hack
 
   Scenario: Should not see approve all if not superadmin
-    When I go to the unapproved changes page
+    When I go to the unreviewed changes page
     Then I should not see "Approve all"
 
   @javascript

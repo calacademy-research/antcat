@@ -5,7 +5,7 @@ AntCat::Application.routes.draw do
 
   resources :changes, only: [:show, :index] do
     collection do
-      get :unapproved
+      get :unreviewed
       put :approve_all
     end
     member do
