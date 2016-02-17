@@ -1,4 +1,5 @@
 - content_for :head do
+  = javascript_include_tag  'catalog'
   = javascript_include_tag  'superadmin_delete_button' if user_is_superadmin?
 
 - content_for :page_header do
