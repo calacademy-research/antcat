@@ -1,5 +1,5 @@
 crumb :antcat do
- link "AntCat"
+  link "AntCat"
 end
 
 crumb :about do

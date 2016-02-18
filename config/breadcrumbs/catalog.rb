@@ -1,5 +1,5 @@
 crumb :catalog do
- link "Catalog", root_path
+  link "Catalog", root_path
 end
 
   crumb :family do |taxon|

@@ -1,5 +1,5 @@
 crumb :references do
- link "References", references_path
+  link "References", references_path
 end
 
   crumb :reference do |reference|
