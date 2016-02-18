@@ -18,17 +18,6 @@
       - if current_user.is_superadmin?
         - items << link_to('Admin', admin_root_path)
     - else
-      - items << link_to('Login', '#', class: :link)
+      - items << link_to('Login', new_user_session_path, class: :link)
     - items << mail_to('sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: feedback_body)
     = make_link_menu items
-
-  .form
-    = form_tag user_session_path do
-      Email
-      = text_field_tag "user[email]"
-      Password
-      = password_field_tag "user[password]"
-      = submit_tag "Go", class: "btn-login"
-      %br
-      %span.small
-        = make_link_menu check_box_tag("user[remember_me]", "1", true) + "Remember me ",  link_to('Forgot password?', new_user_password_path), link_to('Cancel', '#', class: :link)

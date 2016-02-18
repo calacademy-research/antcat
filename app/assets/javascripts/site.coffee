@@ -1,12 +1,6 @@
 $ ->
   $(document).foundation()
-  setup_login()
   setup_reference_keys()
-  $('input[type=text]:visible:first').focus()
-
-setup_login = ->
-  $('#login .form').hide()
-  $('#login a.link').click -> $('#login div').toggle()
 
 #_something seems to override this method when it's named
 # enable - it doesn't get called
