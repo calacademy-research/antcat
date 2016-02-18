@@ -1,74 +1,57 @@
-.search_section
-  = form_tag advanced_search_path, method: :get do
-    %table.table_find
-      %tr
-        %td.find
-          Find
-          = select_tag :rank, rank_options_for_select(params[:rank])
-        %td
-          described by
-          = text_field_tag :author_name, params[:author_name]
-        %td
-          in the year
-          = text_field_tag :year, params[:year]
+=form_tag advanced_search_path, method: :get do
+  .row
+    .medium-3.columns
+      Rank
+      =select_tag :rank, rank_options_for_select(params[:rank])
+    .medium-3.columns
+      Described by
+      =text_field_tag :author_name, params[:author_name], id: "author_name-js-hook"
+    .medium-3.columns
+      Described year
+      =text_field_tag :year, params[:year]
+    .medium-3.columns
+      Biogeographic region
+      =select_tag :biogeographic_region, biogeographic_region_options_for_select(params[:biogeographic_region], 'Any', 'None')
 
-    %table
-      %tr
-        %td.caption
-          where
-          %b locality
-          contains
-        %td= text_field_tag :locality, params[:locality]
+  .row
+    .medium-6.columns
+      where
+      %b locality
+      contains
+      =text_field_tag :locality, params[:locality]
+    .medium-6.columns
+      where
+      %b verbatim type locality
+      contains
+      =text_field_tag :verbatim_type_locality, params[:verbatim_type_locality]
 
-      %tr
-        %td.caption
-          where
-          %b verbatim type locality
-          contains
-        %td= text_field_tag :verbatim_type_locality, params[:verbatim_type_locality]
+  .row
+    .medium-6.columns
+      where
+      %b type specimen repository
+      contains
+      =text_field_tag :type_specimen_repository, params[:type_specimen_repository]
+    .medium-6.columns
+      where
+      %b type specimen code
+      contains
+      =text_field_tag :type_specimen_code, params[:type_specimen_code]
 
-      %tr
-        %td.caption
-          where
-          %b type specimen repository
-          contains
-        %td= text_field_tag :type_specimen_repository, params[:type_specimen_repository]
+  .row
+    .medium-6.columns
+      where
+      %b forms
+      contains
+      =text_field_tag :forms, params[:forms]
+    .medium-6.columns
+      where
+      %b genus
+      contains
+      =text_field_tag :genus, params[:genus]
 
-      %tr
-        %td.caption
-          where
-          %b type specimen code
-          contains
-        %td= text_field_tag :type_specimen_code, params[:type_specimen_code]
-
-      %tr
-        %td.caption
-          where
-          %b biogeographic region
-          is
-        %td= select_tag :biogeographic_region, biogeographic_region_options_for_select(params[:biogeographic_region], 'Any', 'None')
-
-      %tr
-        %td.caption
-          where
-          %b forms
-          contains
-        %td= text_field_tag :forms, params[:forms]
-
-      %tr
-        %td.caption
-          where
-          %b genus
-          contains
-        %td= text_field_tag :genus, params[:genus]
-
-
-      %tr
-        %td.caption= label_tag 'Valid only?'
-        %td= check_box_tag :valid_only
-
-      %tr
-        %td
-        %td
-          =button_tag type: 'submit', class: 'btn-search has-spinner' do
-            =spinner_icon + "Go"
+  .row
+    .medium-12.columns
+      =button_tag type: 'submit', class: 'btn-search has-spinner' do
+        =spinner_icon + "Go"
+      =label_tag 'Valid only?'
+      =check_box_tag :valid_only
