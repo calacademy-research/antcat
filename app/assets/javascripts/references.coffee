@@ -2,7 +2,7 @@ $ ->
   # Tabify
   $('.tabs').tabs()
   # Activates the relevant tab for this reference
-  selected_tab = $('.selected_tab').val()
+  selected_tab = $('#selected_tab').val()
   $('.tabs').tabs("option", "active", selected_tab)
 
   # TODO clear irrelevant attributes before save
