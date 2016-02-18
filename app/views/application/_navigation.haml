@@ -1,0 +1,75 @@
+:ruby
+  feedback_body = <<-MSG.squish
+    Thanks for helping us make AntCat better by replacing this message with your comments,
+    suggestions, and questions. You may also want to check out the AntCat Google group at
+    https://groups.google.com/forum/?fromgroups#!forum/antcat where we discuss the project.
+
+    Stan Blum
+    California Academy of Sciences
+    http://antcat.org
+  MSG
+
+#top-bar.top-bar
+  #mobile-logo.top-bar-title.hide-for-large
+    %span{"data-hide-for" => "large", "data-responsive-toggle" => "mobile-menu"}
+      %span.menu-icon{"data-toggle" => ""}
+
+    =link_to root_path do
+      =image_tag 'antcat_logo_small.png', alt: 'AntCat'
+
+  #desktop-logo.top-bar-title.show-for-large
+    =link_to root_path do
+      =image_tag 'antcat_logo.png', alt: 'AntCat'
+
+  #desktop-menu.show-for-large
+    #upper-desktop-menu.top-bar-right
+      %ul.dropdown.menu{"data-dropdown-menu" => ""}
+        %li=link_to('References', references_path)
+        %li=link_to('Changes', changes_path)
+        %li=link_to('AntWeb', 'http://www.antweb.org/')
+        %li=link_to('About', page_path('about'))
+
+        -if user_signed_in?
+          %li=link_to(current_user.name || current_user.email, edit_user_registration_path) # TODO
+          %li=link_to('Logout', destroy_user_session_path)
+        -else
+          %li=link_to('Sign in', new_user_session_path)
+        -if user_is_superadmin?
+          %li=link_to('Admin', admin_root_path)
+
+        %li=mail_to('sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: feedback_body)
+    #lower-desktop-menu.top-bar-right
+      %ul.menu
+        %li
+          =form_tag catalog_search_path, method: :get do
+            .input-group
+              =text_field_tag 'qq', params[:qq], class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook', placeholder: "Search Catalog"
+              .input-group-button
+                =button_tag type: 'submit', class: 'button has-spinner' do
+                  =spinner_icon + "Go"
+        %li.centered-text=link_to('Advanced<br> Search'.html_safe, advanced_search_path, class: "without-top-padding")
+
+  #mobile-menu.hide-for-large{"data-hide-for" => "large"}
+    %ul.vertical.dropdown.menu{"data-dropdown-menu" => ""}
+      -# TODO
+      %li=link_to('References', references_path)
+      %li=link_to('Changes', changes_path)
+      %li=link_to('AntWeb', 'http://www.antweb.org/')
+      %li=link_to('About', page_path('about'))
+
+      -if user_signed_in?
+        %li=link_to(current_user.name || current_user.email, edit_user_registration_path) # TODO
+        %li=link_to('Logout', destroy_user_session_path)
+      -else
+        %li=link_to('Sign in', new_user_session_path)
+      -if user_is_superadmin?
+        %li=link_to('Admin', admin_root_path)
+
+      %li=mail_to('sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: feedback_body)
+      -# TODO
+      %li.has-form
+        .row.collapse
+          .small-9.columns
+            %input{placeholder: "Search Catalog", type: "search"}
+          .small-3.columns
+            %input.button{type: "submit", value: "Go"}

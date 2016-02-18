@@ -7,9 +7,6 @@
 
     = csrf_meta_tag
 
-    -# FOUC fix
-    %style{type: 'text/css'}=".js #flash {display:none;}"
-
     :coffee
       window.AntCat = {} unless window.AntCat?
       AntCat.environment = '#{Rails.env}'
@@ -27,33 +24,30 @@
     = stylesheet_link_tag 'dev_env' if Rails.env == 'development' && !params[:prod]
     -# dev-specific CSS. Suffix the url with ?prod=pizza to disable.
 
-    = favicon_link_tag 'favicon.ico'
-
+    = favicon_link_tag
     = yield :head
 
-  %body#flash{class: controller.class}
-    #page
-      #site_header
-        = render 'site_header'
+    %body
+      =render 'navigation'
 
       #page_header
-        - if content_for? :page_header
-          = yield :page_header
-        - else
+        -if content_for? :page_header
+          =yield :page_header
+        -else
           %h5.title= @title
-      .clear
 
-      - if flash[:notice].present?
-        #page_notice= flash[:notice]
-      - if flash[:alert].present?
-        #page_alert= flash[:alert]
+      .row
+        .small-12.columns
+          -if flash[:notice].present?
+            #page_notice= flash[:notice]
+          -if flash[:alert].present?
+            #page_alert= flash[:alert]
 
-      #page_contents
-        = content_for?(:page_contents) ? yield(:page_contents) : yield
-      %hr
+      .row
+        .small-12.columns
+          = content_for?(:page_contents) ? yield(:page_contents) : yield
+          %hr
 
-      #site_footer
-        = render 'site_footer'
-
-      :javascript
-        $('#flash').show(); // FOUC fix
+      .row
+        .small-12.columns
+          #site_footer= render 'footer'

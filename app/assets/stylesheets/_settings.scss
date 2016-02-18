@@ -45,7 +45,7 @@
 // ---------
 
 $global-font-size: 100%;
-$global-width: rem-calc(1200);
+$global-width: 100%;
 $global-lineheight: 1.5;
 $primary-color: #479f03;
 $secondary-color: #777;
@@ -546,3 +546,10 @@ $topbar-padding: 0.5rem;
 $topbar-background: $light-gray;
 $topbar-title-spacing: 1rem;
 $topbar-input-width: 200px;
+
+
+// 36. Some Overrides
+// -----------
+
+$topbar-background: #262C3A;
+$titlebar-background: #262C3A;

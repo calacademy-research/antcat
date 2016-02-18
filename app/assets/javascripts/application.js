@@ -17,6 +17,7 @@
 //= require debugging
 //= require site
 //= require spinner
+//= require taxa_autocompletion
 
 // gems
 //= require twitter/typeahead

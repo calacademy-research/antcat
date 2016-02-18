@@ -15,15 +15,16 @@ class CatalogController < ApplicationController
   end
 
   def search
-    @search_results = get_search_results(params[:qq], params[:st])
+    st = params[:st] || "bw"
+    @search_results = get_search_results(params[:qq], st)
 
     # Single match --> skip search results and just show the match
-    if @search_results.count == 1
+    if @search_results && @search_results.count == 1
       taxon = @search_results.first
       return redirect_to catalog_path(taxon)
     end
 
-    @search_selector_value = search_selector_value_in_english(params[:st])
+    @search_selector_value = search_selector_value_in_english(st)
   end
 
   def show_tribes

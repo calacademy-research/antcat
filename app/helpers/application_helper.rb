@@ -36,9 +36,10 @@ module ApplicationHelper
   end
 
   def search_selector search_type
-    select_tag :st, options_for_select([['matching', 'm'],
-                                        ['beginning with', 'bw'],
-                                        ['containing', 'c']], search_type || 'bw')
+    options = [['matching', 'm'],
+               ['beginning with', 'bw'],
+               ['containing', 'c']]
+    select_tag :st, options_for_select(options, search_type || 'bw')
   end
 
   def pluralize_with_delimiters count, singular, plural = nil
