@@ -174,6 +174,15 @@ FactoryGirl.define do
     epithet_html { "<i>#{name}</i>" }
   end
 
+  # TODO possibly broken
+  # from prod db
+  # Subgenus.first.name.name_html # "<i>Lasius</i> <i>(Acanthomyops)</i>"
+  #
+  # from
+  # $rails console test --sandbox
+  # SunspotTest.stub
+  # FactoryGirl.create :subgenus
+  # Subgenus.first.name.name_html # "<i>Atta</i> <i>(Atta (Subgenus2))</i>"
   factory :subgenus_name do
     sequence(:name) { |n| "Atta (Subgenus#{n})" }
     name_html { "<i>Atta</i> <i>(#{name})</i>" }
@@ -249,6 +258,8 @@ FactoryGirl.define do
     status 'valid'
   end
 
+  # FIX? Broken. The are 8 SubtribeName:s in the prod db, but no
+  # Subtribe:s, so low-priority.
   factory :subtribe do
     after :create do |subtribe|
       FactoryGirl.create(:taxon_state, taxon_id: subtribe.id)

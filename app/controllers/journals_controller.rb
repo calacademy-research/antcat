@@ -1,6 +1,7 @@
 class JournalsController < ApplicationController
   before_filter :authenticate_user!, except: [:index, :show, :autocomplete]
   before_filter :set_journal, only: [:show, :edit, :update]
+  layout "references"
 
   def index
     @journals = Journal.order(:name).paginate(page: params[:page], per_page: 100)
