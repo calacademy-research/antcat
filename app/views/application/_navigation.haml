@@ -33,7 +33,7 @@
           %li=link_to(current_user.name || current_user.email, edit_user_registration_path) # TODO
           %li=link_to('Logout', destroy_user_session_path)
         -else
-          %li=link_to('Sign in', new_user_session_path)
+          %li=link_to('Login', new_user_session_path)
         -if user_is_superadmin?
           %li=link_to('Admin', admin_root_path)
 
@@ -61,7 +61,7 @@
         %li=link_to(current_user.name || current_user.email, edit_user_registration_path) # TODO
         %li=link_to('Logout', destroy_user_session_path)
       -else
-        %li=link_to('Sign in', new_user_session_path)
+        %li=link_to('Login', new_user_session_path)
       -if user_is_superadmin?
         %li=link_to('Admin', admin_root_path)
 
