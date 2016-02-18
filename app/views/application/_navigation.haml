@@ -22,7 +22,7 @@
       =image_tag 'antcat_logo.png', alt: 'AntCat'
 
   #desktop-menu.show-for-large
-    #upper-desktop-menu.top-bar-right
+    #desktop-upper-menu.top-bar-right
       %ul.dropdown.menu{"data-dropdown-menu" => ""}
         %li=link_to('References', references_path)
         %li=link_to('Changes', changes_path)
@@ -38,7 +38,7 @@
           %li=link_to('Admin', admin_root_path)
 
         %li=mail_to('sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: feedback_body)
-    #lower-desktop-menu.top-bar-right
+    #desktop-lower-menu.top-bar-right
       %ul.menu
         %li
           =form_tag catalog_search_path, method: :get do

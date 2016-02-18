@@ -30,6 +30,8 @@
     %body
       =render 'navigation'
 
+      =render "breadcrumbs"
+
       #page_header
         -if content_for? :page_header
           =yield :page_header

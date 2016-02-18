@@ -178,14 +178,6 @@ img.help_icon
       margin-right: 12px
 
 #navigation_bar
-  @include paddings
-  color: $color_navigation_bar
-  background: $color_navigation_bar_background
-  height: 30px
-
-  a
-    color: $color_navigation_bar
-    
   .actions
     margin-top: 6px
     position: absolute
@@ -267,7 +259,7 @@ img.help_icon
     width: 100%
     display: inline-block
 
-#lower-desktop-menu
+#desktop-lower-menu
   .expandable-catalog-search
     width: 130px
     transition: all .5s
@@ -288,7 +280,7 @@ img.help_icon
 #desktop-menu
   padding-top: 4rem
 
-#upper-desktop-menu
+#desktop-upper-menu
   position: absolute
   right: 0
   top: 1rem
@@ -299,6 +291,26 @@ img.help_icon
 
 .centered-text
   text-align: center
-desktop-
+
 .without-top-padding
   padding-top: 0 !important
+
+// TODO DRY
+$brand-primary: #479F03
+
+#breadcrumbs
+  padding: 0.4rem 1rem
+  color: #fff
+  background: $brand-primary
+
+  a
+    color: #fff
+
+#navigation_bar
+  @include paddings
+  color: $color_navigation_bar
+  background: lighten(desaturate($brand-primary, 10%), 10%)
+  height: 2rem
+
+  a
+    color: $color_navigation_bar
