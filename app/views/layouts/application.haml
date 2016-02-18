@@ -33,10 +33,7 @@
       =render "breadcrumbs"
 
       #page_header
-        -if content_for? :page_header
-          =yield :page_header
-        -else
-          %h5.title= @title
+        =yield :page_header if content_for? :page_header
 
       .row
         .small-12.columns
