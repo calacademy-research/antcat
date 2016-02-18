@@ -4,7 +4,7 @@
   =link_to "Tooltips Index", tooltips_path
   , click on the linked key, edit and click 'Update Tooltip'. Updating the tooltip text (ie not all that other stuff) can be done directly in the list by clicking the text (a textbox will appear) and then 'Save'.
 
-%h2 Creating a selector-based tooltip
+%h5 Creating a selector-based tooltip
 %ol
   %li <strong>Open the HTML source:</strong> Visit the page where you want to add a tooltip and open the HTML source (something like this works in most browsers: right-click anywhere on the page and click "View page source").
 
@@ -29,7 +29,7 @@
   %li <strong>Save:</strong> If the everything looks good, press 'Save'.
 
 
-%h2 Attributes
+%h5 Attributes
 %dl#tooltips_attributes
   %dt <code>key</code> <small>[required]</small>
   %dd
@@ -59,7 +59,7 @@
   %dt <code>selector_enabled</code> <small>[default=false]</small>
   %dd Hides selector-based tooltips if disabled.
 
-%h2 Where is my tooltip?
+%h5 Where is my tooltip?
 %ul#where_is_my_tooltip
   %li Are you logged in? Tooltips are only visible to logged-in users.
   %li Are there other working tooltips on the page? If not, then a developer may have to enable tooltips on that page. If you're feeling adventurous, browse the HTML source of the page and look for this line "<code>Tooltips are enabled on this page</code>".

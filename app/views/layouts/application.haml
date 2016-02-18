@@ -40,8 +40,8 @@
         - if content_for? :page_header
           = yield :page_header
         - else
-          %h2.title= @title
-      %hr
+          %h5.title= @title
+      .clear
 
       - if flash[:notice].present?
         #page_notice= flash[:notice]

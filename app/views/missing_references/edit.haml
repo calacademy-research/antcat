@@ -7,11 +7,6 @@
   = javascript_include_tag  'widgets/reference_field'
   = javascript_include_tag  'missing_references'
 
-- content_for :page_header do
-  #navigation_bar
-    .clear
-    .title.left= @title
-
 - content_for :page_contents do
   = form_tag  @missing_reference, method: :put, class: 'missing_references_form ui-widget' do
     .fields_section.section.ui-widget-content.ui-corner-all
