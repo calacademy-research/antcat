@@ -2,13 +2,14 @@
   #navigation_bar
     .actions
       -items = []
+      -items << link_to('All references', references_path)
       -items << link_to('Latest additions', latest_additions_references_path)
-      -items << link_to('Authors', authors_path)
       -if user_can_edit?
         -items << link_to('Latest changes', latest_changes_references_path)
-        -items << link_to('Journals', journals_path)
         -items << link_to('Fix missing', missing_references_path)
         -items << link_to('Export to EndNote', endnote_export_references_path(q: params[:q])) if params[:action] == "search"
+      -items << link_to('Journals', journals_path)
+      -items << link_to('Authors', authors_path)
       =make_link_menu items
 
     =render 'search_form', params: params
