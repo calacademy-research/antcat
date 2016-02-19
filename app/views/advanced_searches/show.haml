@@ -6,7 +6,8 @@
   = javascript_include_tag 'advanced_searches'
 
 - content_for :page_contents do
-  = render 'search_section'
+  .search_section-test-hook
+    = render 'search_section'
   - if @taxa
     %hr
     = render 'results_section', taxa: @taxa, is_author_search: @is_author_search

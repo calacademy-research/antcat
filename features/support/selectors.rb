@@ -15,20 +15,18 @@ module HtmlSelectorsHelpers
         '.senior_synonyms_section'
 
       when /the index/
-        "#catalog .index"
-      when /the species taxon index/
-        "#catalog .index .species .taxon"
+        "#taxon_browser"
       when /the (\w*) index/
-        "#catalog .index .#{$1}"
+        "#taxon_browser .#{$1}-test-hook"
       when /the content/
-        "#catalog .antcat_taxon"
+        "#taxon_description"
       when /the change history/
-        "#catalog .antcat_taxon .change_history"
+        "#taxon_description .change_history"
       when /the search results/
         "#search_results"
 
       when /the search section/
-        '.search_section'
+        ".search_section-test-hook"
 
       when /the author panel/, /the first author panel/
         ".author_panel:first-of-type"

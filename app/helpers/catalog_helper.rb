@@ -19,7 +19,7 @@ module CatalogHelper
   end
 
   def hide_link name
-    link_to 'hide', "/catalog/hide_#{name}#{build_params}".html_safe
+    link_to "hide #{name}", "/catalog/hide_#{name}#{build_params}".html_safe
   end
 
   def hide_or_show_unavailable_subfamilies_link is_hiding_link
