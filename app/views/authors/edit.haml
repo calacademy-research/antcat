@@ -15,6 +15,3 @@
 
   - unless @author.new_record?
     = render 'author_names_section', author: @author
-
-= make_link_menu link_to('Back to Authors', authors_path),   |
-                 link_to('Merge Authors', merge_authors_path)
