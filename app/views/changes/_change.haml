@@ -46,11 +46,11 @@
         %td Notes
         %td= format_taxt taxon.headline_notes_taxt
 
-  %table
-    %tr
-      -protonym = taxon.protonym
-    -if protonym
-      %td Protonym
+  -protonym = taxon.protonym
+  -if protonym
+    %table
+      %tr
+        %td Protonym
 
       %tr
         %td Name
