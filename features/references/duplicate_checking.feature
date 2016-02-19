@@ -28,8 +28,8 @@ Feature: Checking for duplicates during data entry
       | Ward, P.   | Psyche 6:1 | Ants             | 2010 |
     And I am logged in
     When I go to the references page
-    And I fill in the search box with "Bolton"
-    And I press "Go" by the search box
+    And I fill in the references search box with "Bolton"
+    And I press "Go" by the references search box
     When I follow first reference link
     When I follow "Edit"
     And I fill in "reference_author_names_string" with "Ward, P."

@@ -33,19 +33,11 @@ Feature: Working with authors and their names
     When I go to the author edit page for "Bolton, B."
     Then I should be on the login page
 
-  Scenario: Going back to authors page from author page
-    Given the following names exist for an author
-      | Bolton, B. |
-    And I am logged in
-    When I go to the author edit page for "Bolton, B."
-    And I follow "Back to Authors"
-    Then I should be on the authors page
-
   Scenario: Going to Merge Authors from Edit Author
     Given the following names exist for an author
       | Bolton, B. |
     And I am logged in
-    When I go to the author edit page for "Bolton, B."
+    When I go to the authors page
     And I follow "Merge Authors"
     Then I should be on the Merge Authors page
 
@@ -59,7 +51,7 @@ Feature: Working with authors and their names
     And I edit the author name to "Fisher, B."
     And I save the author name
     And I wait for a bit
-    And I follow "Back to Authors"
+    And I follow "Authors" inside the breadcrumb
     Then I should see "Bolton, B.; Fisher, B."
 
   @javascript

@@ -6,14 +6,15 @@ module HtmlSelectorsHelpers
         "html > body"
 
       when /the protonym/
-        "#catalog .protonym_name"
+        "#taxon_description .protonym_name"
       when /the type name/
-        "#catalog .type"
+        "#taxon_description .type"
       when /^the junior synonyms section$/
         '.junior_synonyms_section'
       when /^the senior synonyms section$/
         '.senior_synonyms_section'
 
+      # TODO rename
       when /the index/
         "#taxon_browser"
       when /the (\w*) index/

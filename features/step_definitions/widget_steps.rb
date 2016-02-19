@@ -3,10 +3,11 @@ When /In the search box, I press "Go"/ do
   step 'I press "Go" within ".expansion"'
 end
 
+# TODO rename
 When /^I search for the authors? "([^"]*)"$/ do |authors|
-  step %{I fill in the search box with "author:'#{authors}'"}
+  step %{I fill in the reference picker search box with "author:'#{authors}'"}
   sleep 1
-  step %{In the search box, I press "Go"}
+  step %{I press "Go" by the reference picker search box}
   sleep 4
 end
 

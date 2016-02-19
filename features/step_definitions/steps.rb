@@ -49,12 +49,26 @@ When /I fill in the catalog search box with "(.*?)"/ do |search_term|
   step %{I fill in "qq" with "#{search_term}"}
 end
 
-When /I fill in the search box with "(.*?)"/ do |search_term|
-  step %{I fill in "q" with "#{search_term}"}
+When /I fill in the references search box with "(.*?)"/ do |search_term|
+  within "#breadcrumbs" do
+    step %{I fill in "q" with "#{search_term}"}
+  end
+end
+When /I press "Go" by the references search box/ do
+  within "#breadcrumbs" do
+    step 'I press "Go"'
+  end
 end
 
-When /I press "Go" by the search box/ do
-  step 'I press "Go" within "#desktop-lower-menu"'
+When /I fill in the reference picker search box with "(.*?)"/ do |search_term|
+  within ".antcat_reference_picker" do
+    step %{I fill in "q" with "#{search_term}"}
+  end
+end
+When /I press "Go" by the reference picker search box/ do
+  within ".antcat_reference_picker" do
+    step 'I press "Go"'
+  end
 end
 
 Then /I should (not )?see "(.*?)" (?:with)?in (.*)$/ do |do_not, contents, location|
@@ -112,4 +126,10 @@ end
 
 When /^I reload the page$/ do
   visit current_path
+end
+
+When /^I follow "([^"]*)" inside the breadcrumb$/ do |link|
+  within "#breadcrumbs" do
+    step %{I follow "#{link}"}
+  end
 end

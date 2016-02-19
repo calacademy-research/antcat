@@ -12,7 +12,7 @@ end
     crumb rank do |taxon|
       link taxon_breadcrumb_link(taxon)
       parent_as_symbol = taxon.parent.class.name.downcase.to_sym
-      parent parent_as_symbol, taxon.parent
+      parent parent_as_symbol, taxon.parent rescue :family
     end
   end
 
