@@ -1,3 +1,5 @@
+
+
 -content_for :page_header do
   #navigation_bar
     .actions
@@ -12,11 +14,12 @@
       -items << link_to('Authors', authors_path)
       =make_link_menu items
 
-    =render 'references/search_form', params: params
-
   .title
     %h5.left ANTBIB: A Bibliography of Ant Systematics
     .left= link_to "New", new_reference_path, class: "btn-new" if user_can_edit?
     .right by Philip S. Ward, et al.
 
-= render file: 'layouts/application'
+-content_for :breadcrumbs_right do
+  =render 'references/search_form', params: params
+
+=render file: 'layouts/application'
