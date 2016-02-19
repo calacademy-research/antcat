@@ -1,6 +1,11 @@
 -@title = 'References'
 -breadcrumb :all_references
 
+=render "references_title"
+
+-# Until we find a new home for this guy
+.left= link_to "New", new_reference_path, class: "btn-new" if user_can_edit?
+
 %table.references
   -@references.each do |reference|
     %tr

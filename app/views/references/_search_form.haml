@@ -1,8 +1,7 @@
-- content_for :head do
-  = javascript_include_tag 'references_autocompletion'
+-content_for :head do
+  =javascript_include_tag 'references_autocompletion'
 
-= form_tag search_references_path, :method => 'get', :id => 'search_form' do
-  .search
-    = text_field_tag "q", params[:q], class: "typeahead", placeholder: "Search..."
-    = button_tag type: 'submit', class: 'btn-search has-spinner' do
-      = spinner_icon + "Go"
+=form_tag search_references_path, method: :get do
+  =text_field_tag "q", params[:q], class: "typeahead", placeholder: "Search References"
+  =button_tag type: 'submit', class: 'btn-search has-spinner' do
+    =spinner_icon + "Go"

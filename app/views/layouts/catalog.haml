@@ -2,10 +2,8 @@
   = javascript_include_tag  'catalog'
   = javascript_include_tag  'superadmin_delete_button' if user_is_superadmin?
 
-- content_for :page_header do
-  = render 'catalog_title'
-
 - content_for :page_contents do
+  = render 'catalog_title'
   = yield
 
 = render file: 'layouts/application'
