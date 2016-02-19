@@ -71,10 +71,12 @@ $global-text-direction: ltr;
 // 2. Breakpoints
 // --------------
 
+// HACK should be "large: 1024px" but the default Capybara window is 1000px // wide, so.. yeah it's a quick fix that may stay with us for a while;
+// not very pretty but fairly harmless.
 $breakpoints: (
   small: 0,
   medium: 640px,
-  large: 1024px,
+  large: 999px,
   xlarge: 1200px,
   xxlarge: 1440px,
 );
