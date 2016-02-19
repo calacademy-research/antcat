@@ -161,10 +161,6 @@ Then /I should (not )?see a "PDF" link/ do |should_not|
   end
 end
 
-Then "I should see the reference's ID beside its label" do
-  step "I should see \"ID #{@reference.id}\""
-end
-
 When /I fill in "reference_nesting_reference_id" with its own ID$/ do
   step "I fill in \"reference_nesting_reference_id\" with \"#{@reference.id}\""
 end
