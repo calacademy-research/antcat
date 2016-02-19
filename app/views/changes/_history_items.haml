@@ -1,6 +1,6 @@
 -unless taxon.history_items.empty?
   %table
+    %caption History
     -taxon.history_items.each do |history_item|
       %tr
-        %td History
         %td= Taxt.to_display_sentence history_item.taxt

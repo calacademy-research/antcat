@@ -1,12 +1,11 @@
 -unless taxon.reference_sections.empty?
   %table
+    %caption References
+    -# TODO prints too many empty fields
     -taxon.reference_sections.each do |item|
       %tr
-        %td
         %td= Taxt.to_display_sentence item.title_taxt
       %tr
-        %td
         %td= Taxt.to_display_sentence item.subtitle_taxt
       %tr
-        %td
         %td= Taxt.to_display_sentence item.references_taxt
