@@ -8,7 +8,7 @@
 .change{class: css_class}
   %table
     %tr
-      %td Name
+      %th Name
       %td= format_taxon_name taxon.name
 
     %tr
@@ -16,34 +16,34 @@
       -#taxon.name has a special case for family that return nil; I'm scared of breaking the universe
       -#if I change that behaviour.
       -if taxon.rank == 'family'
-        %td= 'Order'
-        %td= 'Hymenoptera'
+        %th Order
+        %td Hymenoptera
       -else
         -if taxon.parent
-          %td= format_rank Rank[taxon.parent.rank]
+          %th= format_rank Rank[taxon.parent.rank]
           %td= format_taxon_name taxon.parent.name
         -else
           -# see 8a7b3f95b312362c8cb03e9589f79e8ff8c5e0a4
-          %td
+          %th
           %td.parent_not_found Parent not found in the database
     %tr
-      %td Status
+      %th Status
       %td= format_status taxon.status
 
     -if taxon.incertae_sedis_in.present?
       %tr
-        %td Incertae sedis in
+        %th Incertae sedis in
         %td= taxon.incertae_sedis_in
 
     -attributes = format_attributes taxon
     -if attributes.present?
       %tr
-        %td Attributes
+        %th Attributes
         %td= attributes
 
     -if taxon.headline_notes_taxt.present?
       %tr
-        %td Notes
+        %th Notes
         %td= format_taxt taxon.headline_notes_taxt
 
   -protonym = taxon.protonym
@@ -52,36 +52,36 @@
       %caption Protonym
 
       %tr
-        %td Name
+        %th Name
         %td= format_taxon_name protonym.name
 
       -attributes = format_protonym_attributes taxon
       -if attributes.present?
         %tr
-          %td Attributes
+          %th Attributes
           %td= attributes
 
       %tr
         -authorship = protonym.authorship
-        %td Authorship
+        %th Authorship
         %td= authorship.reference.decorate.format
 
       %tr
-        %td Page
+        %th Page
         %td= authorship.pages
 
       %tr
-        %td Forms
+        %th Forms
         %td= authorship.forms
 
       %tr
-        %td Locality
+        %th Locality
         %td= protonym.locality
 
       -authorship_notes = authorship.notes_taxt
       -if authorship_notes.present?
         %tr
-          %td Notes
+          %th Notes
           %td= format_taxt authorship_notes
 
   -if taxon.type_name.present?
@@ -89,18 +89,18 @@
       %caption Type
 
       %tr
-        %td Name
+        %th Name
         %td= format_taxon_name taxon.type_name
 
       -attributes = format_type_attributes taxon
       -if attributes.present?
         %tr
-          %td Attributes
+          %th Attributes
           %td= attributes
 
       -if taxon.type_taxt.present?
         %tr
-          %td Notes
+          %th Notes
           %td= format_taxt taxon.type_taxt
 
   =render 'history_items', taxon: taxon
