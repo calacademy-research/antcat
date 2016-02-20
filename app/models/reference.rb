@@ -32,6 +32,7 @@ class Reference < ActiveRecord::Base
                   :doi
 
   before_save { |record| CleanNewlines::clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
+  before_destroy :check_not_referenced
 
   # associations
   has_many :reference_author_names, -> { order :position }
@@ -187,6 +188,14 @@ class Reference < ActiveRecord::Base
   end
 
   private
+    def check_not_referenced
+      return true unless self.any_references?
+
+      # TODO list which items
+      errors.add :base, "This reference can't be deleted, as there are other references to it."
+      return false
+    end
+
     def strip_text_fields
       [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation].each do |field|
         value = self[field]

@@ -113,6 +113,8 @@ module ApplicationHelper
         "alert"
       when :alert
         "alert"
+      when :warning
+        "alert"
       when :notice
         "primary"
       else

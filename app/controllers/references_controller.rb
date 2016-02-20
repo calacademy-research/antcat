@@ -50,15 +50,14 @@ class ReferencesController < ApplicationController
   end
 
   def destroy
-    if @reference.any_references?
-      # TODO list which refereces
-      redirect_to reference_path(@reference),
-        notice: "This reference can't be deleted, as there are other references to it."
-      return
+    if @reference.destroy
+      redirect_to references_path, notice: 'Reference was successfully destroyed.'
+    else
+      if @reference.errors.present?
+        flash[:warning] = @reference.errors.full_messages.to_sentence
+      end
+      redirect_to reference_path(@reference)
     end
-
-    @reference.destroy
-    redirect_to references_path, notice: 'Reference was successfully destroyed.'
   end
 
   def download
