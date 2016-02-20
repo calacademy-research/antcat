@@ -23,4 +23,7 @@ class WidgetTestsController < ApplicationController
     @taxon = Family.first
   end
 
+  def tooltips_test
+  end
+
 end

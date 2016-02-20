@@ -126,6 +126,7 @@ AntCat::Application.routes.draw do
       get :reference_popup_test
       get :reference_field_test
       get :taxt_editor_test
+      get :tooltips_test
     end
   end
 
