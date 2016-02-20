@@ -107,6 +107,8 @@ AntCat::Application.routes.draw do
 
   resources :antweb_data, only: [:index]
 
+  get "panel", to: "editors_panels#index", as: "editors_panel"
+
   resources :tooltips do
     collection do
       get :enabled_selectors

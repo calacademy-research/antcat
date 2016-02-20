@@ -1,4 +1,5 @@
 -@title = 'Send Invitation'
+-breadcrumb :invite_people
 
 =form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post } do |f|
   =render 'shared/errors_for', resource: resource
