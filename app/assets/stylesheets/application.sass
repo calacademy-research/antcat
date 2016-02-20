@@ -69,13 +69,6 @@ p.help span.help a
 span.help
   font-style: italic
 
-.right_side_field
-  padding-right: 5px !important
-
-.instructions
-  font-size: small
-  font-style: italic
-
 ul.error_messages
   list-style: none
   margin: 15px 0 0 0
@@ -84,10 +77,6 @@ ul.error_messages
     font-size: small
     color: $color_error
     font-style: italic
-
-.pagination
-  padding-bottom: 10px
-  padding-top: 5px
 
 .selected
   background: yellow !important
@@ -130,89 +119,6 @@ a:hover.taxon
 
 img.help_icon
   vertical-align: middle
-
-///////////////////////////////////////////////////
-// elements
-
-#page
-  width: 100%
-  background-color: $color_contents_background
-
-#site_header
-  @include paddings
-  color: $color_site_header
-  background: image-url("header_bg.png") repeat scroll 0 0
-  height: 95px
-
-  .logo, .image
-    float: left
-
-  .navigation
-    text-align: right
-    float: right
-  a, a:active, a:visited, a:link
-    color: $color_site_header_link
-    font-weight: bold
-    &:hover
-      color: $color_site_header_link_highlight !important
-      background: none
-
-#login
-  height: 58px
-  input[type=text]
-    width: 140px
-  input[type=password]
-    width: 100px
-  .small
-    font-size: 10.5px
-
-#page_header
-  .title
-    @include paddings
-    padding-top: 8px
-    h2
-      margin-right: 12px
-
-#navigation_bar
-  .actions
-    margin-top: 6px
-    position: absolute
-    font-weight: bold
-    a, a:active, a:focus, a:visited
-      color: $color_navigation_bar_link
-      &:hover
-        color: $color_navigation_bar_link_highlight !important
-        background: none
-
-  .search
-    float: right
-    top: 3px
-    vertical-align: middle
-    input[type=text]
-      padding-left: 4px
-      width: 200px
-      border: 1px solid $color_input_border
-      height: 20px
-
-  .throbber
-    vertical-align: middle
-    display: none
-    padding-left: 11px
-    padding-right: 10px
-
-#page_notice
-  @include paddings
-  color: $color_notice
-
-#page_alert
-  @include paddings
-  color: $color_error
-
-#page_contents
-  @include paddings
-  padding-top: 2px
-  padding-bottom: 3px
-  overflow: auto
 
 // equally space out images
 #taxon_key

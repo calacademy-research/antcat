@@ -2,55 +2,6 @@
 @import 'widgets/taxt_editor'
 @import 'taxon'
 
-#navigation_bar
-  .actions.catalog_view_selector
-    left: -3px
-    margin-top: 0
-    position: absolute
-    font-weight: bold
-    label
-      height: 28px
-
-#search_results
-  @include paddings
-  margin-bottom: 3px
-  a
-    padding-top: 0
-    padding-bottom: 0
-    padding-left: $link_padding
-    padding-right: $link_padding
-    margin-right: 6px
-
-#page_contents
-  padding: 0
-  padding-bottom: 3px
-
-#catalog
-  margin-top: 2px
-  min-width: 1200px
-
-  .rank
-    overflow-y: auto
-    overflow-x: hidden
-    border-right: solid 1px black
-    float: left
-    .header
-      height: 45px
-      padding-left: $left_padding
-      padding-top: 4px
-      text-align: left
-      vertical-align: top
-      font-size: 1.5em
-      border-bottom: solid black 1px
-      .hide_show
-        height: 11px
-        font-size: 10px
-        margin-left: 4px
-
-  td.taxon_item
-    padding-right: 13px
-    padding-left: $left_padding
-
 .reference_key_and_expansion
   &:hover
     cursor: pointer
@@ -63,7 +14,7 @@
       &:hover
         background: $color_link_highlight_background
         color: $color_link_highlight
-      
+
     .goto_reference_link
       padding-right: 0
 

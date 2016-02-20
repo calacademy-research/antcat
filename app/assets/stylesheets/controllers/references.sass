@@ -1,66 +1,8 @@
-@import 'mixins/common'
-
-#page_content
-  @include paddings
-
-.references
-  width: 100%
-
-.pagination
-  margin-top: 10px
-
 td.reference_item
   vertical-align: top
 
 .reference_table
   width: 100%
-
-.reference_edit
-  .ui-tabs .ui-tabs-nav li
-    font-weight: normal
-  .ui-tabs-panel
-    padding-left: 3px
-    padding-right: 5px
-  .ui-tabs .ui-tabs-nav li a
-    padding: 1px 5px
-  .ui-widget-header
-    font-weight: normal
-    border: none
-  .ui-widget
-    font-size: 1em
-
-  ul.error_messages
-    margin: 0 0 3px 5px
-
-  table
-    width: 100%
-    td
-      padding: 0 0 3px 0
-      vertical-align: middle
-      input[type=text], textarea
-        width: 100%
-      &.authors
-        padding-right: 4px
-      & input.year
-        width: 100%
-      & input.pages
-        width: 150px
-      & input.series_volume_issue
-        width: 150px
-
-      table.small_fields
-        width: auto
-        td.cite_code
-          padding-right: 8px
-          input
-            width: 70px
-        td.possess
-          input
-            width: 100px
-        td.date
-          padding-left: 8px
-          input
-            width: 75px
 
 td.authors
   padding-right: 5px
@@ -85,9 +27,6 @@ td.review_state
   width: 96px
   text-align: center
   vertical-align: top
-
-.search input[type=text]#q
-  width: 200px
 
 td.review_buttons, td.default_reference_status
   vertical-align: top
