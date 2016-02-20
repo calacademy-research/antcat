@@ -1,4 +1,5 @@
 -@title = "Edit Tooltips"
+-breadcrumb :tooltips
 
 =enable_tooltips
 -content_for :head do
@@ -32,7 +33,7 @@
       -@grouped_tooltips.each do |namespace, tooltips|
         %tr.fake_subheader
           %td{colspan: 5}
-            %h3
+            %h6
               =if namespace.present? then namespace.capitalize else "No namespace" end
         =render tooltips
 

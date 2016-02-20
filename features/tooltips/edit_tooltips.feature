@@ -47,13 +47,13 @@ Feature: Editing tooltips
   @javascript
   Scenario: Editing a selector-based tooltip
     Given this tooltip exists
-      | key        | text      | selector | selector_enabled |
-      | test.title | Typo oops | h2.title | true             |
+      | key        | text      | selector                   | selector_enabled |
+      | test.title | Typo oops | li > a.without-top-padding | true             |
 
     When I go to the tooltips editing page
     Then I should not see the tooltip text "Typo oops"
 
-    When I hover the tooltip next to the element containing "Edit Tooltips"
+    When I hover the tooltip next to the element containing "Advanced Search"
     Then I should see the tooltip text "Typo oops"
 
     Then I go to the tooltips editing page
@@ -67,7 +67,7 @@ Feature: Editing tooltips
     Then I should not see the tooltip text "Typo oops"
     And I should not see the tooltip text "A title"
 
-    When I hover the tooltip next to the element containing "Edit Tooltips"
+    When I hover the tooltip next to the element containing "Advanced Search"
     Then I should see the tooltip text "A title"
 
   @javascript
@@ -94,13 +94,13 @@ Feature: Editing tooltips
   @javascript
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
-      | key        | text    | selector | selector_enabled |
-      | test.title | A title | h2.title | true             |
+      | key        | text    | selector                   | selector_enabled |
+      | test.title | A title | li > a.without-top-padding | true             |
 
     When I go to the tooltips editing page
     And I wait for a bit
 
-    When I hover the tooltip next to the element containing "Edit Tooltips"
+    When I hover the tooltip next to the element containing "Advanced Search"
     Then I should see the tooltip text "A title"
 
     And I follow "test.title"
@@ -110,4 +110,4 @@ Feature: Editing tooltips
     And I wait for a bit
 
     When I go to the tooltips editing page
-    Then I should not see any tooltips next to the element containing "Edit Tooltips"
+    Then I should not see any tooltips next to the element containing "Advanced Search"
