@@ -1,10 +1,10 @@
 #taxon_key
-  .taxon_key_item &dagger;fossil
-  .taxon_key_item.valid valid
-  .taxon_key_item.synonym synonym
-  .taxon_key_item.subrank subspecies
-  .taxon_key_item.unidentifiable unidentifiable/excluded from Formicidae
-  .taxon_key_item.unavailable unavailable/nomen nudum
-  .taxon_key_item.homonym homonym
-  .taxon_key_item.original_combination original combination
-  .taxon_key_item= link_to "View full key", page_path('help/full_key')
+  %div &dagger;fossil
+  .valid valid
+  .synonym synonym
+  .subrank subspecies
+  .unidentifiable unidentifiable/excluded from Formicidae
+  .unavailable unavailable/nomen nudum
+  .homonym homonym
+  .original_combination original combination
+  %div= link_to "View full key", page_path('help/full_key')

@@ -1,10 +1,10 @@
 @import "font-awesome"
 @import "jquery-ui/core"
-@import "jquery-ui/selectmenu"
 @import "jquery-ui/theme"
 
-@import "push_down_footer"
 @import "autocomplete"
+@import "navigation"
+@import "push_down_footer"
 @import "spinner"
 @import "tooltip"
 
@@ -51,17 +51,13 @@
 #taxon_key
   width: 100%
   text-align: justify
+  padding-left: 1rem
+  padding-right: 1rem
 
-  .taxon_key_item
-    font-style: italic
+  div
     display: inline-block
     margin-top: 1em
     margin-bottom: -1em
-
-    &:first-child
-      padding-left: 10px
-    &:last-child
-      padding-right: 10px
 
   &:after
     content: ""
@@ -71,6 +67,8 @@
 // equally space out images
 #footer
   text-align: justify
+  padding-left: 1rem
+  padding-right: 1rem
 
   div
     display: inline-block
@@ -78,51 +76,10 @@
     margin-top: 0.5em
     margin-bottom: -0.5em
 
-    &:first-child
-      padding-left: 10px
-    &:last-child
-      padding-right: 10px
-
   &:after
     content: ""
     width: 100%
     display: inline-block
-
-#desktop-lower-menu
-  .expandable-catalog-search
-    width: 130px
-    transition: all .5s
-    // fix background after typeahead messes it up
-    background-color: #fff !important
-    &:focus
-      width: 250px
-
-.menu > li > a
-  color: #fff !important
-
-.top-bar-title
-  color: #fff !important
-
-#desktop-logo
-  padding-top: 3rem
-
-#desktop-menu
-  padding-top: 4rem
-
-#desktop-upper-menu
-  position: absolute
-  right: 0
-  top: 1rem
-
-#mobile-logo
-  > span
-    padding-right: 1rem
-
-.centered-text
-  text-align: center
-
-.without-top-padding
-  padding-top: 0 !important
 
 // TODO DRY
 $brand-primary: #479F03
