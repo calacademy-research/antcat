@@ -1,17 +1,15 @@
 module CatalogHelper
 
   def show_hide_menu #TODO
-    showing_tribes = session[:show_tribes]
-
     items = []
     items << hide_or_show_unavailable_subfamilies_link(session[:show_unavailable_subfamilies])
-    items <<  if showing_tribes
+    items <<  if session[:show_tribes]
                 hide_link "tribes"
               else
                 show_child_link "tribes"
               end
 
-    items <<  if showing_tribes
+    items <<  if session[:show_subgenera]
                 hide_link "subgenera"
               else
                 show_child_link "subgenera"

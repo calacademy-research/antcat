@@ -1,17 +1,22 @@
+-parent ||= nil
+-show_none ||= nil
+
 -if items.present?
   -rank = Rank[rank]
   -css_class = "#{rank.to_sym(:plural)}-test-hook"
+
   %li.accordion-item.is-active{class: css_class, "data-accordion-item" => ""}
     %a.accordion-title
       =rank.to_s.capitalize + ":"
-      -if options[:show_none] && selected_item == "none"
+      -if show_none && selected_item == "none"
         -selected_item_text = "(none)"
       -else
         -selected_item_text = selected_item && selected_item.name_html_cache.html_safe
       =selected_item_text || "not seleted"
+
     .mr-scrollbary.accordion-content{"data-tab-content" => ""}
       %ul.snaked.no-bullet
-        -if options[:show_none]
+        -if show_none
           %li=incertae_sedis_column_link rank.to_sym, "none", selected_item, parent
         -items.each do |taxon|
           %li=taxon_column_link taxon, selected_item

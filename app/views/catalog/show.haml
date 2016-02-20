@@ -5,13 +5,13 @@
   =show_hide_menu
 
   %ul.accordion{"data-accordion" => "", "data-allow-all-closed" => "true", "data-multi-expand" => "true"}
-    =render   'rank',  rank: :subfamily, items: @subfamilies,selected_item: @subfamily, parent: @family,    options: {show_none: 'none'}
+    =render   'rank',  rank: :subfamily, items: @subfamilies,selected_item: @subfamily, parent: @family,    show_none: true
     -if session[:show_tribes] && @subfamily != 'none'
-      =render 'rank',  rank: :tribe,     items: @tribes,     selected_item: @tribe,     parent: @subfamily, options: {show_none: 'none'}
-    =render   'rank',  rank: :genus,     items: @genera,     selected_item: @genus,     parent: nil,        options: {}
+      =render 'rank',  rank: :tribe,     items: @tribes,     selected_item: @tribe,     parent: @subfamily, show_none: true
+    =render   'rank',  rank: :genus,     items: @genera,     selected_item: @genus
     -if session[:show_subgenera]
-      =render 'rank',  rank: :subgenus,  items: @subgenera,  selected_item: @subgenus,  parent: nil,        options: {}
-    =render   'rank',  rank: :species,   items: @specieses,  selected_item: @species,   parent: nil,        options: {}
+      =render 'rank',  rank: :subgenus,  items: @subgenera,  selected_item: @subgenus
+    =render   'rank',  rank: :species,   items: @specieses,  selected_item: @species
 
     =render 'taxon_key'
 
