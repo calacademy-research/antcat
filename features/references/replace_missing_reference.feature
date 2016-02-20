@@ -4,7 +4,7 @@ Feature: Replace missing references
     Given there is a missing reference with citation "Bolton, 1970" in a protonym
     When I go to the missing references page
     Then I should see "Bolton, 1970"
-    And I should not see "edit" in the first row of missing references
+    And I should not see "edit"
 
   Scenario: Seeing all the authors with their names
     Given there is a missing reference with citation "Bolton, 1970" in a protonym
@@ -24,7 +24,7 @@ Feature: Replace missing references
     And there is a missing reference with citation "Bolton, 1970" in a protonym
     When I go to the missing references page
     Then I should see "Bolton, 1970"
-    When I click "replace" in the first row of missing references
+    When I follow "replace"
     Then I should be on the missing reference edit page for "Bolton, 1970"
     When I click the replacement field
     And in the reference picker, I search for the author "Fisher"

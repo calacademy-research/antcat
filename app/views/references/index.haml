@@ -6,7 +6,8 @@
 -# Until we find a new home for this guy
 .left=link_to "New", new_reference_path, class: "btn-new" if user_can_edit?
 
-%table
+-# table.references is used in tests
+%table.references
   -@references.each do |reference|
     %tr
       %td=render 'reference', reference: reference
