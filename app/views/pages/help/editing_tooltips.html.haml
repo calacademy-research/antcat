@@ -1,4 +1,5 @@
 -@title = "Editing tooltips"
+
 %p
   To edit an existing tooltip: find it in the
   =link_to "Tooltips Index", tooltips_path
@@ -30,7 +31,7 @@
 
 
 %h5 Attributes
-%dl#tooltips_attributes
+%dl
   %dt <code>key</code> <small>[required]</small>
   %dd
     Has two different uses:
@@ -60,7 +61,7 @@
   %dd Hides selector-based tooltips if disabled.
 
 %h5 Where is my tooltip?
-%ul#where_is_my_tooltip
+%ul
   %li Are you logged in? Tooltips are only visible to logged-in users.
   %li Are there other working tooltips on the page? If not, then a developer may have to enable tooltips on that page. If you're feeling adventurous, browse the HTML source of the page and look for this line "<code>Tooltips are enabled on this page</code>".
   %li Key-based tooltips: Is <code>key_enabled</code> set to true?

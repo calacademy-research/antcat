@@ -1,30 +1,21 @@
 - @title = 'About'
 - breadcrumb :about
 
-.about
-  .section
-    AntCat is a catalog and bibliography of the taxonomy of the world's ants.
-    v.j1
+%p AntCat is a catalog and bibliography of the taxonomy of the world's ants.
 
-  .section
-    %h5 To cite AntCat:
+%h5 To cite AntCat
+%p Bolton, B. 2014. An online catalog of the ants of the world. Available from http://antcat.org. (accessed [date])
 
-  .cite
-    %b Bolton, B. 2014. An online catalog of the ants of the world. Available from http://antcat.org. (accessed [date])
+%h5 Other links
+%ul
+  %li= link_to 'Help pages', page_path('help')
+  %li= link_to 'Source code', 'https://github.com/calacademy/antcat'
+  %li= link_to 'Project plan', 'https://www.pivotaltracker.com/s/projects/97176'
+  %li= link_to 'Contact us ', 'mailto:sblum@calacademy.org'
 
-  .section
-    %h5 Other links
-    %ul
-      %li= link_to 'Help pages', page_path('help')
-      %li= link_to 'Source code', 'https://github.com/calacademy/antcat'
-      %li= link_to 'Project plan', 'https://www.pivotaltracker.com/s/projects/97176'
-      %li= link_to 'Contact us ', 'mailto:sblum@calacademy.org'
-
-  .section
-    This material is based on work supported by the
-    =link_to 'National Science Foundation (NSF)', 'http://www.nsf.gov/'
-    under grant number
-    =link_to('0642321', 'http://www.nsf.gov/awardsearch/showAward?AWD_ID=0642321') + '.'
-    Any opinions, findings, and conclusions or recommendations are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
-
-  .last_section
+%p
+  This material is based on work supported by the
+  =link_to 'National Science Foundation (NSF)', 'http://www.nsf.gov/'
+  under grant number
+  =link_to('0642321', 'http://www.nsf.gov/awardsearch/showAward?AWD_ID=0642321') + '.'
+  Any opinions, findings, and conclusions or recommendations are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
