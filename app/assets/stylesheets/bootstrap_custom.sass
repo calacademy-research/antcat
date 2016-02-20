@@ -76,9 +76,3 @@ $brand-primary: #479F03
 // TODO fix in views
 .small_button
   @include medium_button
-
-// Support legacy to avoid pulling in two extra Devise views
-#new_user, #edit_user
-  input[type="submit"]
-    @include medium_button
-    @extend .btn-primary
