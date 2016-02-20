@@ -120,6 +120,7 @@ AntCat::Application.routes.draw do
 
   unless Rails.env.production?
     namespace :widget_tests do
+      get :index
       get :name_popup_test
       get :name_field_test
       get :reference_popup_test
