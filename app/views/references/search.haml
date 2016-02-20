@@ -4,9 +4,9 @@
 -if @references.empty?
   .alert.callout No results found
 
-%table.references
+%table
   -@references.each do |reference|
     %tr
       %td=render 'reference', reference: reference
 
-= will_paginate @references
+=will_paginate @references

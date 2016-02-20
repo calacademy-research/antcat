@@ -10,48 +10,6 @@
 @import "spinner"
 @import "tooltip"
 
-///////////////////////////////////////////////////
-// tags
-
-body
-  font: normal 16px/17px Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif
-  width: 100%
-  background-color: #fff
-  min-width: 630px
-  margin: 0
-
-table
-  border-collapse: separate
-  border-spacing: 2px
-
-label
-  margin-right: 5px
-
-h2, h3
-  font-weight: normal
-  line-height: 22px
-  padding-bottom: 8px
-
-h2
-  font-size: 20px
-
-h3
-  font-size: 16px
-
-a, a:active, a:focus, a:visited, a:hover
-  color: $color_link
-  text-decoration: none
-
-hr
-  padding: 0
-  margin: 0
-
-button
-  white-space: nowrap
-
-///////////////////////////////////////////////////
-// classes
-
 .left
   float: left
 
@@ -61,31 +19,8 @@ button
 .clear
   clear: both
 
-p.help span.help a
-  color: $color_link
-  &:hover
-    color: $color_link_highlight
-
-span.help
-  font-style: italic
-
-ul.error_messages
-  list-style: none
-  margin: 15px 0 0 0
-  padding: 0
-  li
-    font-size: small
-    color: $color_error
-    font-style: italic
-
 .selected
   background: yellow !important
-
-span.date
-  font-size: .8em
-  font-weight: normal
-  font-style: italic
-  margin-left: 4px
 
 .valid
   color: red !important
@@ -113,12 +48,6 @@ span.date
 
 .latin
   font-style: italic
-
-a:hover.taxon
-  color: black !important
-
-img.help_icon
-  vertical-align: middle
 
 // equally space out images
 #taxon_key
@@ -207,15 +136,6 @@ $brand-primary: #479F03
 
   a
     color: #fff
-
-#navigation_bar
-  @include paddings
-  color: $color_navigation_bar
-  background: lighten(desaturate($brand-primary, 10%), 10%)
-  height: 2rem
-
-  a
-    color: $color_navigation_bar
 
 #q
   height: 1.6rem

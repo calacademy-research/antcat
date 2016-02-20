@@ -3,14 +3,14 @@
 
 .right=approve_all_references_button
 
-%table.references
-  %tr
-    %td
-    %td.date_header Changed
+%table
+  %thead
+    %th Reference
+    %th Changed
 
   -@references.each do |reference|
     %tr
       %td=render 'reference', reference: reference
-      %td.date=reference.decorate.updated_at
+      %td.no-wrap-align-top=reference.decorate.updated_at
 
-= will_paginate @references
+=will_paginate @references
