@@ -9,8 +9,6 @@
       = "No results found for name #{@search_selector_value} '#{params[:qq]}'"
   -else
     %table
-      -rows = make_catalog_search_results_columns @search_results
-      -rows.each do |row|
+      -@search_results.each do |taxon|
         %tr
-          -row.each do |taxon|
-            %td= taxon.decorate.link_to_taxon
+          %td= taxon.decorate.link_to_taxon

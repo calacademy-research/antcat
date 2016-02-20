@@ -1,10 +1,5 @@
 module CatalogHelper
 
-  def make_catalog_search_results_columns items
-    column_count = 4
-    snake items, column_count
-  end
-
   # The "(no subfamily/tribe)"/"?child=none" links
   def incertae_sedis_column_link rank, taxon, selected_taxon, parent_taxon
     classes = 'valid'
@@ -31,18 +26,6 @@ module CatalogHelper
 
   def show_child_link name
     link_to "show #{name}", "/catalog/show_#{name}#{build_params}".html_safe
-  end
-
-  def snake_taxon_columns items
-    column_count = case items.count
-                   when 0..27  then 1
-                   when 27..52 then 2
-                   else             3
-                   end
-
-    css_class = 'taxon_item'
-    css_class << ' teensy' if column_count == 3
-    [snake(items, column_count), css_class]
   end
 
   def taxon_label_span(taxon, ignore_status: false)
@@ -90,8 +73,4 @@ module CatalogHelper
       css_classes.sort.join ' '
     end
 
-    def snake array, column_count
-      transposed = array.in_groups(column_count).transpose
-      transposed.map(&:compact)
-    end
 end
