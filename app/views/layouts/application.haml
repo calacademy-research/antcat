@@ -33,10 +33,7 @@
         =render "breadcrumbs"
         =render "subnavigation"
 
-        -if flash[:notice].present?
-          #page_notice= flash[:notice]
-        -if flash[:alert].present?
-          #page_alert= flash[:alert]
+        =render "shared/flash_messages"
 
         #content
           .row

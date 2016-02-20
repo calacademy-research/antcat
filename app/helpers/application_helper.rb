@@ -105,6 +105,21 @@ module ApplicationHelper
     string.html_safe
   end
 
+  def foundation_class_for flash_type
+    case flash_type.to_sym
+      when :success
+        "primary"
+      when :error
+        "alert"
+      when :alert
+        "alert"
+      when :notice
+        "primary"
+      else
+        "secondary"
+    end
+  end
+
   private
     def option_for_select label, value, current_value
       options = { value: value }

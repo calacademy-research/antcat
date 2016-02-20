@@ -1,0 +1,10 @@
+-unless flash.empty?
+  .row
+    .small-12.columns
+      -flash.each do |type, message|
+        -css_class = foundation_class_for(type)
+
+        .callout.small-12.medium-6{class: css_class, "data-closable" => ""}
+          =sanitize message
+          %button.close-button{"aria-label" => "Dismiss alert", "data-close" => "", :type => "button"}
+            %span{"aria-hidden" => "true"} &times;
