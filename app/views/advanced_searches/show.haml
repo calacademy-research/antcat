@@ -1,13 +1,14 @@
-- @title = 'Advanced Search'
+-@title = 'Advanced Search'
 
 -breadcrumb :catalog_advanced_search
 
-- content_for :head do
-  = javascript_include_tag 'advanced_searches'
+-content_for :head do
+  =javascript_include_tag 'advanced_searches'
 
-- content_for :page_contents do
-  .search_section-test-hook
-    = render 'search_section'
-  - if @taxa
-    %hr
-    = render 'results_section', taxa: @taxa, is_author_search: @is_author_search
+.search_section-test-hook
+  =render 'search_section'
+
+-if @taxa
+  %hr
+  .results_section-test-hook
+    =render 'results_section', taxa: @taxa, is_author_search: @is_author_search

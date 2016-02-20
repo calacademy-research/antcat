@@ -98,7 +98,7 @@ Feature: Searching the catalog
     And I fill in "locality" with "Africa"
     And I press "Go" in the search section
     Then I should see "1 result"
-    And I should see "Africa" within ".results_section"
+    And I should see "Africa" within ".results_section-test-hook"
 
   Scenario: Searching for verbatim type locality
     Given there is a species with verbatim type locality "Africa"
@@ -108,7 +108,7 @@ Feature: Searching the catalog
     And I fill in "verbatim_type_locality" with "Africa"
     And I press "Go" in the search section
     Then I should see "1 result"
-    And I should see "Africa" within ".results_section"
+    And I should see "Africa" within ".results_section-test-hook"
 
   Scenario: Searching for type specimen repository
     Given there is a species with type specimen repository "CZN"
@@ -118,7 +118,7 @@ Feature: Searching the catalog
     And I fill in "type_specimen_repository" with "CZN"
     And I press "Go" in the search section
     Then I should see "1 result"
-    And I should see "CZN" within ".results_section"
+    And I should see "CZN" within ".results_section-test-hook"
 
   Scenario: Searching for type specimen code
     Given there is a species with type specimen code "1234"
@@ -129,7 +129,7 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     And I wait for a while
     Then I should see "1 result"
-    And I should see "1234" within ".results_section"
+    And I should see "1234" within ".results_section-test-hook"
 
   Scenario: Searching for biogeographic_region
     Given there is a species with biogeographic region "Malagasy"
@@ -140,7 +140,7 @@ Feature: Searching the catalog
     And I select "Afrotropic" from the biogeographic region selector
     And I press "Go" in the search section
     Then I should see "2 results"
-    And I should see "Afrotropic" within ".results_section"
+    And I should see "Afrotropic" within ".results_section-test-hook"
 
   Scenario: Searching for 'Any' biogeographic_region
     Given there is a species with biogeographic region "Malagasy"
@@ -163,7 +163,7 @@ Feature: Searching the catalog
     And I select "None" from the biogeographic region selector
     And I press "Go" in the search section
     Then I should see "1 result"
-    And I should see "Africa" within ".results_section"
+    And I should see "Africa" within ".results_section-test-hook"
 
   Scenario: Searching for a form
     Given there is a species with forms "w.q."
@@ -173,4 +173,4 @@ Feature: Searching the catalog
     And I fill in "forms" with "w."
     And I press "Go" in the search section
     Then I should see "1 result"
-    And I should see "w." within ".results_section"
+    And I should see "w." within ".results_section-test-hook"
