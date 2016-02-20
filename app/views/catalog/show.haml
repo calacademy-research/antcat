@@ -1,29 +1,21 @@
-- @title = "#{@taxon.name.epithet}"
-
+-@title = "#{@taxon.name.epithet}"
 -breadcrumb @taxon
 
 #taxon_browser
-  -# WIP
-  #taxon_browser_options
-    = render 'rank_options', rank: :subfamily, can_show_unavailable: true, hideable_child_name: 'tribes'
-    - if session[:show_tribes] and @subfamily != 'none'
-      = render 'rank_options', rank: :tribe, hideable_name: 'tribes'
-    = render 'rank_options', rank: :genus, hideable_child_name: 'subgenera'
-    - if session[:show_subgenera]
-      = render 'rank_options', rank: :subgenus, hideable_name: 'subgenera'
+  =show_hide_menu
 
   %ul.accordion{"data-accordion" => "", "data-allow-all-closed" => "true", "data-multi-expand" => "true"}
-    = render   'rank', rank: :subfamily,items: @subfamilies,selected_item: @subfamily, parent: @family,    options: {can_show_unavailable: true, show_none: 'none', hideable_child_name: 'tribes'}
-    - if session[:show_tribes] and @subfamily != 'none'
-      = render 'rank', rank: :tribe,    items: @tribes,     selected_item: @tribe,     parent: @subfamily, options: {hideable_name: 'tribes', show_none: 'none'}
-    = render   'rank', rank: :genus,    items: @genera,     selected_item: @genus,     parent: nil,        options: {hideable_child_name: 'subgenera'}
-    - if session[:show_subgenera]
-      = render 'rank',  rank: :subgenus, items: @subgenera,  selected_item: @subgenus,  parent: nil,       options: {hideable_name: 'subgenera'}
-    = render  'rank',  rank: :species,  items: @specieses,  selected_item: @species,   parent: nil,        options: {}
+    =render   'rank',  rank: :subfamily, items: @subfamilies,selected_item: @subfamily, parent: @family,    options: {show_none: 'none'}
+    -if session[:show_tribes] && @subfamily != 'none'
+      =render 'rank',  rank: :tribe,     items: @tribes,     selected_item: @tribe,     parent: @subfamily, options: {show_none: 'none'}
+    =render   'rank',  rank: :genus,     items: @genera,     selected_item: @genus,     parent: nil,        options: {}
+    -if session[:show_subgenera]
+      =render 'rank',  rank: :subgenus,  items: @subgenera,  selected_item: @subgenus,  parent: nil,        options: {}
+    =render   'rank',  rank: :species,   items: @specieses,  selected_item: @species,   parent: nil,        options: {}
 
-    = render 'taxon_key'
+    =render 'taxon_key'
 
 #taxon_description
-  = render 'catalog/taxon', taxon: @taxon
+  =render 'catalog/taxon', taxon: @taxon
 
-%div{:class => "delete-modal", :type => 'hidden', :id => "delete_message"}
+#delete_message.delete-modal{type: 'hidden'}

@@ -1,5 +1,24 @@
 module CatalogHelper
 
+  def show_hide_menu #TODO
+    showing_tribes = session[:show_tribes]
+
+    items = []
+    items << hide_or_show_unavailable_subfamilies_link(session[:show_unavailable_subfamilies])
+    items <<  if showing_tribes
+                hide_link "tribes"
+              else
+                show_child_link "tribes"
+              end
+
+    items <<  if showing_tribes
+                hide_link "subgenera"
+              else
+                show_child_link "subgenera"
+              end
+    make_link_menu items
+  end
+
   # The "(no subfamily/tribe)"/"?child=none" links
   def incertae_sedis_column_link rank, taxon, selected_taxon, parent_taxon
     classes = 'valid'
@@ -11,21 +30,6 @@ module CatalogHelper
     classes = taxon_css_classes taxon, selected: taxon == selected_taxon
     label = taxon_label taxon
     link_to label, catalog_path(taxon), class: classes
-  end
-
-  def hide_link name
-    link_to "hide #{name}", "/catalog/hide_#{name}#{build_params}".html_safe
-  end
-
-  def hide_or_show_unavailable_subfamilies_link is_hiding_link
-    command = is_hiding_link ? 'hide' : 'show'
-    action = command.dup << '_unavailable_subfamilies'
-    text = command + ' unavailable subfamilies'
-    link_to text, "/catalog/#{action}#{build_params}".html_safe
-  end
-
-  def show_child_link name
-    link_to "show #{name}", "/catalog/show_#{name}#{build_params}".html_safe
   end
 
   def taxon_label_span(taxon, ignore_status: false)
@@ -47,6 +51,21 @@ module CatalogHelper
   end
 
   private
+    def hide_link name
+      link_to "hide #{name}", "/catalog/hide_#{name}#{build_params}".html_safe
+    end
+
+    def hide_or_show_unavailable_subfamilies_link is_hiding_link
+      command = is_hiding_link ? 'hide' : 'show'
+      action = command.dup << '_unavailable_subfamilies'
+      text = command + ' unavailable subfamilies'
+      link_to text, "/catalog/#{action}#{build_params}".html_safe
+    end
+
+    def show_child_link name
+      link_to "show #{name}", "/catalog/show_#{name}#{build_params}".html_safe
+    end
+
     def build_params
       hash = {
         id: params[:id],
