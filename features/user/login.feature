@@ -5,8 +5,8 @@ Feature: Logging in
 
   Background:
     Given this user exists
-      | email             | password | password_confirmation |
-      | email@example.com | secret   | secret                |
+      | email             | name    | password | password_confirmation |
+      | email@example.com | Quintus | secret   | secret                |
 
   @javascript
   Scenario: Logging in successfully from the login page
