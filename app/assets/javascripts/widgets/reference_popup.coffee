@@ -41,8 +41,6 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
     @element.show()
     @edit_section.show()
     @expansion.show()
-    # apparently, can't setup selectmenu unless it's visible
-    @setup_search_selector()
 
   ok: =>
     @element.find('#reference_picker_id').val(@id)

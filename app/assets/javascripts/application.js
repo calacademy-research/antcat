@@ -5,7 +5,6 @@
 //= require jquery-ui/core
 //= require jquery-ui/autocomplete
 //= require jquery-ui/dialog
-//= require jquery-ui/selectmenu
 //= require jquery-ui/tabs
 //= require jquery-ui/tooltip
 
