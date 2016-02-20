@@ -18,7 +18,7 @@ end
 
 ####
 def should_see_in_changes selector, value
-  page.should have_css selector, text: value
+  page.should have_css "#{selector}-test-hook", text: value
 end
 
 Then /^I should see the name "(.*?)" in the changes$/ do |value|
@@ -26,11 +26,11 @@ Then /^I should see the name "(.*?)" in the changes$/ do |value|
 end
 Then(/^I should see the genus "(.*?)" in the changes$/) do |value|
   should_see_in_changes '.parent_rank', 'Genus'
-  page.should have_css '.parent', text: value
+  page.should have_css '.parent-test-hook', text: value
 end
 Then /^I should see the subfamily "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.parent_rank', 'Subfamily'
-  page.should have_css '.parent', text: value
+  page.should have_css '.parent-test-hook', text: value
 end
 Then /^I should see the status "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.status', value

@@ -3,10 +3,6 @@ Feature: Editing journals
   I want to change the titles of journals
   So that they are correct
 
-  Scenario: Not logged in
-    When I go to the references page
-    Then I should not see "Journals"
-
   Scenario: Logged in
     Given I am logged in
     And a journal exists with a name of "Psyche"

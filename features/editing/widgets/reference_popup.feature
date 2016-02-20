@@ -20,7 +20,7 @@ Feature: Reference popup
   Scenario: Selecting a reference from search results
     Given I am logged in
     When I go to the reference popup widget test page
-    And I search for the author "Fisher, B."
+    And in the reference picker, I search for the author "Fisher, B."
     And I click the first search result
     Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2"
     When I press "OK"
@@ -40,7 +40,7 @@ Feature: Reference popup
     Given I am logged in
     When I go to the reference popup widget test page, opened to the first reference
     Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2"
-    And I search for the author "Hölldobler, B."
+    And in the reference picker, I search for the author "Hölldobler, B."
     And I click the first search result
     Then the current reference should be "Hölldobler, B. 1995b. Bert's book. Ants 1:1-2"
     When I press "Cancel"
@@ -51,7 +51,7 @@ Feature: Reference popup
     Given I am logged in
     When I go to the reference popup widget test page
     Then the current reference should be "(none)"
-    And I search for the author "Hölldobler, B."
+    And in the reference picker, I search for the author "Hölldobler, B."
     And I click the first search result
     Then the current reference should be "Hölldobler, B. 1995b. Bert's book. Ants 1:1-2"
     When I press "Cancel"

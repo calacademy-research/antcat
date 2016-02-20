@@ -10,6 +10,7 @@ Feature: Forgot password
     Then I should be on the forgot password page
 
   Scenario: Visiting the forgot password page after a failed login attempt
+    Given PENDING: JS login disabled
     Given I am not logged in
     * I go to the main page
     * I follow "Login"

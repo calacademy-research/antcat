@@ -214,16 +214,6 @@ Feature: Edit reference
     And I press the "Save" button
     And I should see "Document url was not found"
 
-  Scenario: Viewing a reference's id
-    Given I am logged in
-    And these dated references exist
-      | authors | citation   | cite_code | created_at  | date     | possess | title | updated_at  | year |    doi |
-      | authors | Psyche 5:3 | CiteCode  | TODAYS_DATE | 20100712 | Possess | title | TODAYS_DATE | 2010 |        |
-    When I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
-    And I should see the reference's ID beside its label
-
   @javascript
   Scenario: Edit a nested reference
     Given I am logged in

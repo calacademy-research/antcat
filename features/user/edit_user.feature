@@ -9,9 +9,9 @@ Feature: Editing a user
     When I go to the main page
     And I follow "Mark Wilden"
     Then I should be on the edit user page
-    When I fill in "user_password" with "new password" within "#page_contents"
-    And I fill in "user_password_confirmation" with "new password" within "#page_contents"
-    And I fill in "user_current_password" with "secret" within "#page_contents"
+    When I fill in "user_password" with "new password"
+    And I fill in "user_password_confirmation" with "new password"
+    And I fill in "user_current_password" with "secret"
     And I press "Save"
     Then I should be on the main page
     And I should see "Your account has been updated"
@@ -21,7 +21,7 @@ Feature: Editing a user
     When I follow "Login"
     And I fill in the email field with my email address
     And I fill in "user_password" with "new password"
-    And I press "Go" within "#login"
+    When I press "Login"
     Then I should be on the main page
     And I should see "Mark Wilden"
 
@@ -31,8 +31,8 @@ Feature: Editing a user
     Then I should see "Mark Wilden"
     And I should not see "Brian Fisher"
     When I follow "Mark Wilden"
-    And I fill in "user_name" with "Brian Fisher" within "#page_contents"
-    And I fill in "user_current_password" with "secret" within "#page_contents"
+    And I fill in "user_name" with "Brian Fisher"
+    And I fill in "user_current_password" with "secret"
     And I press "Save"
     Then I should be on the main page
     And I should see "Brian Fisher"

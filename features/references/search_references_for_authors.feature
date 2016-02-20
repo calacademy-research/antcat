@@ -16,8 +16,8 @@ Feature: Search references for authors
       | Forel, M.             | 1995 | 1995b         | Formis                | Ants 1:1-2 |
       | Bolton, B.            | 2010 | 2010          | Ants of North America | Ants 2:1-2 |
     When I go to the references page
-    And I fill in the search box with "author:'Bolton, B.'"
-    And I press "Go" by the search box
+    And I fill in the references search box with "author:'Bolton, B.'"
+    And I press "Go" by the references search box
     Then I should see "Anthill"
     And I should see "Ants of North America"
     And I should not see "Formis"
@@ -31,8 +31,8 @@ Feature: Search references for authors
       | Forel, M.             | 1995 | 1995b         | Formis                | Ants 1:1-2 |
       | Bolton, B.            | 2010 | 2010          | Ants of North America | Ants 2:1-2 |
     When I go to the references page
-    And I fill in the search box with "author:'Bolton, B.; Fisher, B.'"
-    And I press "Go" by the search box
+    And I fill in the references search box with "author:'Bolton, B.; Fisher, B.'"
+    And I press "Go" by the references search box
     Then I should see "Anthill"
     And I should not see "Ants of North America"
     And I should not see "Formis"

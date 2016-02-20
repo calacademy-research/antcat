@@ -1,6 +1,7 @@
 -if items.present?
   -rank = Rank[rank]
-  %li.accordion-item{"data-accordion-item" => ""}
+  -css_class = "#{rank.to_sym(:plural)}-test-hook"
+  %li.accordion-item.is-active{class: css_class, "data-accordion-item" => ""}
     %a.accordion-title
       =rank.to_s.capitalize + ":"
       -if options[:show_none] && selected_item == "none"

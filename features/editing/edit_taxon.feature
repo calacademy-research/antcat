@@ -86,7 +86,7 @@ Feature: Editing a taxon
     And I log in
     When I go to the edit page for "Eciton"
     And I click the authorship field
-    And I search for the author "Fisher"
+    And in the reference picker, I search for the author "Fisher"
     And I click the first search result
     And I press "OK"
     Then the authorship field should contain "Fisher 2004. Ants. Psyche 3:3"
@@ -107,7 +107,7 @@ Feature: Editing a taxon
     And I log in
     And I go to the edit page for "Eciton"
     And I click the authorship field
-    And I search for the author "Fisher"
+    And in the reference picker, I search for the author "Fisher"
     And I click the first search result
     And I press "OK"
     And I save my changes

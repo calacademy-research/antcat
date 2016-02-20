@@ -25,7 +25,7 @@ Feature: Workflow
     * I click "#taxon_protonym_attributes_sic"
     * I press "OK"
     * I click the authorship field
-    * I search for the author "Fisher"
+    * in the reference picker, I search for the author "Fisher"
     * I click the first search result
     * I press "OK"
     * I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "260"
@@ -139,7 +139,7 @@ Feature: Workflow
     And I click "#taxon_protonym_attributes_sic"
     And I press "OK"
     And I click the authorship field
-    And I search for the author "Fisher"
+    And in the reference picker, I search for the author "Fisher"
     And I click the first search result
     And I press "OK"
     And I press "Save" within ".buttons_section"

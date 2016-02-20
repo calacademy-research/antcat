@@ -27,7 +27,7 @@ Feature: Replace missing references
     When I click "replace" in the first row of missing references
     Then I should be on the missing reference edit page for "Bolton, 1970"
     When I click the replacement field
-    And I search for the author "Fisher"
+    And in the reference picker, I search for the author "Fisher"
     And I click the first search result
     And I press "OK"
     Given I will confirm on the next step
