@@ -25,8 +25,12 @@ class ReferencesController < ApplicationController
   def create
     @reference = new_reference
     if save
-      redirect_to reference_path(@reference),
-      notice: 'Reference was successfully created.'
+      redirect_to reference_path(@reference), notice: <<-MSG
+        Reference was successfully created.
+        <strong>#{view_context.link_to 'Back to the index', references_path}</strong>
+        or
+        <strong>#{view_context.link_to 'add another?', new_reference_path}</strong>
+      MSG
     else
       render :new
     end
@@ -36,8 +40,10 @@ class ReferencesController < ApplicationController
     @reference = set_reference_type
 
     if save
-      redirect_to reference_path(@reference),
-        notice: 'Reference was successfully updated.'
+      redirect_to reference_path(@reference), notice: <<-MSG
+        Reference was successfully updated.
+        <strong>#{view_context.link_to 'Back to the index', references_path}</strong>.
+      MSG
     else
       render :edit
     end
