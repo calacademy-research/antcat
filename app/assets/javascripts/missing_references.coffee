@@ -1,4 +1,6 @@
-$ -> new AntCat.MissingReferencesForm $('.missing_references_form'), button_container: '> .fields_section .buttons_section'
+$ ->
+  new AntCat.MissingReferencesForm $('.missing_references_form-js-hook'),
+    button_container: '> .fields_section .buttons_section'
 
 class AntCat.MissingReferencesForm extends AntCat.Form
   constructor: (@element, @options = {}) ->

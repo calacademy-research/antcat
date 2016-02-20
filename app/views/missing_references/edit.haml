@@ -9,11 +9,11 @@
   = javascript_include_tag  'missing_references'
 
 - content_for :page_contents do
-  = form_tag  @missing_reference, method: :put, class: 'missing_references_form ui-widget' do
+  = form_tag  @missing_reference, method: :put, class: 'missing_references_form-js-hook ui-widget' do
+    -# rename ".fields_section-js-hook"
     .fields_section.section.ui-widget-content.ui-corner-all
       .species_section.section.ui-widget-content.ui-conrner-all
         %table
-
           %tr
             %td.caption= label_tag :taxon, 'Replace'
             %td.value= @missing_reference.citation
@@ -25,7 +25,8 @@
                 = hidden_field_tag 'replacement_id', @replacement.try(:id)
                 = render 'reference_fields/show', references: nil, reference: nil
 
+      -# rename ".buttons_section-js-hook"
       .buttons_section
         .left_buttons
           = submit_tag 'OK', class: 'submit btn-normal'
-          %input{type: 'button', class: 'cancel btn-cancel', value: 'Cancel'}
+          %input.cancel.btn-cancel{type: 'button', value: 'Cancel'}
