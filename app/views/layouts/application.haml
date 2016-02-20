@@ -28,24 +28,19 @@
     = yield :head
 
     %body
-      =render 'navigation'
+      #page
+        =render "navigation"
+        =render "breadcrumbs"
+        =render "subnavigation"
 
-      =render "breadcrumbs"
+        -if flash[:notice].present?
+          #page_notice= flash[:notice]
+        -if flash[:alert].present?
+          #page_alert= flash[:alert]
 
-      =render "subnavigation"
+        #content
+          .row
+            .small-12.columns
+              = content_for?(:page_contents) ? yield(:page_contents) : yield
 
-      .row
-        .small-12.columns
-          -if flash[:notice].present?
-            #page_notice= flash[:notice]
-          -if flash[:alert].present?
-            #page_alert= flash[:alert]
-
-      .row
-        .small-12.columns
-          = content_for?(:page_contents) ? yield(:page_contents) : yield
-          %hr
-
-      .row
-        .small-12.columns
-          #site_footer= render 'footer'
+        #footer= render "footer"
