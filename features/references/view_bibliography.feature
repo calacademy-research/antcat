@@ -36,7 +36,7 @@ Feature: View bibliography
       | Forel, A.      | 1874 | 1874          | Les fourmis de la Suisse   | Neue 26:10 |
       | Wheeler, W. M. | 1910 | 1910a         | Small artificial ant-nests | Psyche 1:1 |
     When I go to the references page
-    Then I should see these entries in this order:
+    Then I should see these entries with a header in this order:
       | entry                                                         |
       | Forel, A. 1874. Les fourmis de la Suisse. Neue 26:10          |
       | Wheeler, W. M. 1910a. Small artificial ant-nests. Psyche 1:1  |

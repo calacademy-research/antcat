@@ -126,7 +126,7 @@ end
 ##################
 
 When(/^I follow first reference link$/) do
-  first('.references div a.goto_reference_link').click
+  first('a.goto_reference_link').click
 end
 
 Then 'I should not see the reference' do

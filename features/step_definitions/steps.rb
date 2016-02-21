@@ -48,6 +48,12 @@ end
 When /I fill in the catalog search box with "(.*?)"/ do |search_term|
   step %{I fill in "qq" with "#{search_term}"}
 end
+When /I press "Go" by the catalog search box/ do
+  # TODO fix mobile
+  within "#desktop-lower-menu" do
+    step 'I press "Go"'
+  end
+end
 
 When /I fill in the references search box with "(.*?)"/ do |search_term|
   within "#breadcrumbs" do
