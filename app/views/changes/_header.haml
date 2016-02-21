@@ -1,26 +1,27 @@
 -change = change.decorate
 
-.change_header
-  -if change.change_type != 'delete' and not taxon.nil?
-    .change_description
-      %span.name= change.format_adder_name
-      %span.taxon= taxon.decorate.link_to_taxon
-      %span.edit_button= taxon.decorate.link_to_edit_taxon
-      %span= change.undo_button(taxon)
-      %span= change.approve_button(taxon)
-      %span.time.right= link_to change.format_created_at, change
-      .clear
+.callout
+  -if change.change_type != 'delete' && taxon
+    %h5.left
+      =change.format_adder_name
+      =taxon.decorate.link_to_taxon
+    .left
+      =taxon.decorate.link_to_edit_taxon
+      =change.undo_button(taxon)
+      =change.approve_button(taxon)
+    .right=link_to change.format_created_at, change
+    .clear
 
     -if change.approver
-      .change_status
-        %span.approver.left= change.format_approver_name
-        %span.approval_time.right= change.format_approved_at
-        .clear
-  -else
-    .change_description
-      %span.name= change.format_adder_name
-      %span.taxon= format_taxon_name taxon.name
-      %span= change.undo_button(taxon)
-      %span.left= change.approve_button(taxon)
-      %span.time.right= link_to change.format_created_at, change
+      .left=change.format_approver_name
+      .right=change.format_approved_at
       .clear
+
+  -else
+    %h5
+      =change.format_adder_name
+      =format_taxon_name taxon.name
+      =change.undo_button(taxon)
+    .left=change.approve_button(taxon)
+    .right=link_to change.format_created_at, change
+    .clear
