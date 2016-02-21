@@ -7,7 +7,7 @@ class AntCat.AuthorNamesSection
     @initialize_panels()
 
   initialize_add_button: =>
-    $add_button = @element.find '.author_names_section_buttons button'
+    $add_button = @element.find '#add_author_name_button'
     unless $add_button.size() == 1
       AntCat.check 'AuthorNamesSection constructor: $add_button.size() != 1'
     $add_button.click => @add(); false

@@ -1,10 +1,5 @@
 -# JS breaks if we remove .author_name or .display
 
-%div{class: "author_name item_#{author_name.id} antcat_panel", 'data-id' => author_name.id}
-  %table
-    %tr
-      %td.author_name_body
-        %li
-          =render 'author_names/display', author_name: author_name
-        -if user_can_edit?
-          =render 'author_names/edit', author: author_name.author, author_name: author_name
+%li.author_name
+  .display=author_name.name
+  =render 'author_names/edit', author: author_name.author, author_name: author_name
