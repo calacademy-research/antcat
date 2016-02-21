@@ -26,7 +26,6 @@ $.fn.author_name_panel = (options = {}) ->
 class AntCat.AuthorNamePanel extends AntCat.Panel
   constructor: (@element, @options) ->
     @options.click_on_display = true
-    @options.highlight = true
     super
 
   initialize: (@element) =>
@@ -36,7 +35,6 @@ class AntCat.AuthorNamePanel extends AntCat.Panel
     new AntCat.AuthorNameForm $element, options
 
   on_form_open: =>
-    @options.on_form_open() if @options.on_form_open
     @element.find('input[type=text]').focus()
     super
 
