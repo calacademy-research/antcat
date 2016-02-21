@@ -31,6 +31,6 @@ Feature: Replace missing references
     And I click the first search result
     And I press "OK"
     Given I will confirm on the next step
-    When I press "OK"
+    When I press "Replace"
     Then I should be on the missing references page
     And I should not see "Bolton, 1970"

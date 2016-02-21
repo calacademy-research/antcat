@@ -1,32 +1,30 @@
-- @title = 'Fix Missing Reference'
-- breadcrumb :show_and_fix_missing_reference, @reference
+-# TODO list where it's used
+-# TODO some kind of log
 
-- content_for :head do
-  = javascript_include_tag  'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
-  = javascript_include_tag  'widgets/panel'
-  = javascript_include_tag  'widgets/reference_picker', 'widgets/reference_panel', 'widgets/reference_form'
-  = javascript_include_tag  'widgets/reference_field'
-  = javascript_include_tag  'missing_references'
+-@title = "Fix Missing Reference"
+-breadcrumb :show_and_fix_missing_reference, @reference
 
-- content_for :page_contents do
-  = form_tag  @reference, method: :put, class: 'missing_references_form-js-hook ui-widget' do
-    -# rename ".fields_section-js-hook"
-    .fields_section.section.ui-widget-content.ui-corner-all
-      .species_section.section.ui-widget-content.ui-conrner-all
-        %table
-          %tr
-            %td.caption= label_tag :taxon, 'Replace'
-            %td.value= @reference.citation
+-# reference picker code from widget_tests/reference_field_test
+-content_for :head do
+  =javascript_include_tag "widgets/form", "widgets/ajax_form", "widgets/nested_form"
+  =javascript_include_tag "widgets/panel"
+  =javascript_include_tag "widgets/reference_picker", "widgets/reference_panel", "widgets/reference_form"
+  =javascript_include_tag "widgets/reference_field"
+  =javascript_include_tag "missing_references"
+  =stylesheet_link_tag "widgets/reference_picker"
 
-          %tr
-            %td.caption= label_tag :replacement, 'with'
-            %td.value
-              #replacement_id_field
-                = hidden_field_tag 'replacement_id', @replacement.try(:id)
-                = render 'reference_fields/show', references: nil, reference: nil
+=form_for @reference do |f|
+  .row
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend Replace
+        =@reference.citation
 
-      -# rename ".buttons_section-js-hook"
-      .buttons_section
-        .left_buttons
-          = submit_tag 'OK', class: 'submit btn-normal'
-          %input.cancel.btn-cancel{type: 'button', value: 'Cancel'}
+      %fieldset.fieldset
+        %legend With
+        #replacement_id_field
+          =hidden_field_tag "replacement_id"
+          =render "reference_fields/show"
+
+      =button_tag type: 'submit', class: 'btn-destructive has-spinner', data: { confirm: "Do you want to replace this reference? It can take a minute or two." } do
+        =spinner_icon + "Replace"
