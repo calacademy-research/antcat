@@ -1,5 +1,5 @@
 - @title = 'Fix Missing Reference'
-- breadcrumb :show_and_fix_missing_reference, @missing_reference
+- breadcrumb :show_and_fix_missing_reference, @reference
 
 - content_for :head do
   = javascript_include_tag  'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
@@ -9,14 +9,14 @@
   = javascript_include_tag  'missing_references'
 
 - content_for :page_contents do
-  = form_tag  @missing_reference, method: :put, class: 'missing_references_form-js-hook ui-widget' do
+  = form_tag  @reference, method: :put, class: 'missing_references_form-js-hook ui-widget' do
     -# rename ".fields_section-js-hook"
     .fields_section.section.ui-widget-content.ui-corner-all
       .species_section.section.ui-widget-content.ui-conrner-all
         %table
           %tr
             %td.caption= label_tag :taxon, 'Replace'
-            %td.value= @missing_reference.citation
+            %td.value= @reference.citation
 
           %tr
             %td.caption= label_tag :replacement, 'with'
