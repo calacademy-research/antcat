@@ -1,5 +1,5 @@
 $ ->
-  new AntCat.AuthorForm $('.author_form')
+  new AntCat.AuthorForm $('.edit_author')
 
 class AntCat.AuthorForm extends AntCat.Form
   constructor: (@element) ->
