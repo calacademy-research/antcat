@@ -18,7 +18,6 @@ class AntCat.AuthorNamesSection
   initialize_panels: =>
     @element.find('.author_name')
       .author_name_panel
-        click_on_display: false
         parent_form: @options.parent_form
 
 $.fn.author_name_panel = (options = {}) ->
@@ -65,22 +64,20 @@ class AntCat.AuthorNameForm extends AntCat.NestedForm
     @buttons.find('.delete').off('click').on('click', @delete)
 
   handle_error: (jq_xhr, text_status, error_thrown) =>
-    @stop_throbbing()
     if jq_xhr['status'] == 409
       alert "This name already exists, can't save."
     else
-      super.handle_error(jq_xhr,text_status,error_thrown)
+      super.handle_error(jq_xhr, text_status, error_thrown)
 
   delete: =>
     return false unless confirm 'Do you want to delete this author name?'
-    @start_throbbing()
+
     # Magically builds: "/authors/11282/author_names/194557"
     url = @form().attr('action')
     $.post url, {_method: 'delete'}, null, 'json'
     @close()
     @options.on_delete() if @options.on_delete
     @element.closest('.author_name').remove()
-    window.location = "/authors"
 
   cancel: =>
     $('.added_author_name').remove()
