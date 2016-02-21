@@ -1,11 +1,13 @@
 -# JS breaks if we remove: .author_names_section, author_names,
--# .add_author_name_button button or .author_name_template
+-# #add_author_name_button or .author_name_template
 
 .author_names_section
-  %h5 Author Names
-  %button.btn-new#add_author_name_button Add
-  %ul.author_names.no-bullet
+  %p
+    ="Names belonging to author ##{author.id}."
+    %button.btn-new#add_author_name_button Add
+  %ul.author_names
     -author.names.each do |author_name|
       =render 'author_names/panel', author_name: author_name
-  .author_name_template.no-bullet
+
+  .author_name_template
     =render 'author_names/panel', author_name: AuthorName.new(author_id: author.id)
