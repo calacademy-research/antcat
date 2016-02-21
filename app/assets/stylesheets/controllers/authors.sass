@@ -1,111 +1,21 @@
 @import "colors"
 
-// index
-#authors
-  line-height: 18px
-
-.edit_link
-  font-size: 11px
-  margin-left: 6px
-
-// edit
-.author_form
-  padding: 10px
-
-  .taxt_edit_box
-    font-size: 14px
-
-  &.ui-widget
-    font-size: 14px
-
-  .section
-    margin-bottom: 4px
-    .section_header
-      padding-left: 6px
-
-  .fields_section
-    .section
-      margin-bottom: 12px
-      margin-left: 6px
-      margin-right: 6px
+form.edit_author
+  .display:hover
+    background-color: $color_current_being_edited_background
+    cursor: pointer
 
   .author_names_section
-    width: 300px
-    font-size: 15px
-    padding-left: 0
-    line-height: 1.2
-    .template
-      display: none
-    .section_header
-      .right
-        margin-right: 4px
     .author_name
-      table
-        border-spacing: 0
       .edit
         display: none
-        .taxt_editor
-          margin-bottom: 4px
         .buttons
-          margin-bottom: 4px
           .delete
-            margin-left: 16px
-      .display
-        padding-left: 10px
-        text-indent: -10px
-        &.ui-selecting
-          background: $color_current_being_edited_background
-    .author_name_body
-      list-style-type: none
-      li
-        margin: 0 3px 3px 3px
-        height: 16px
+            margin-left: 1rem
 
   .buttons_section
-    vertical-align: middle
-    margin-bottom: 12px
-    position: relative
-    .left_buttons
-      margin-left: 8px
-    .right_buttons
-      position: absolute
-      right: 10px
-      top: 0px
-      a
-        margin-left: 10px
-    img.throbber
-      display: none
-    .show
-      margin-left: 7px
     form
       display: inline-block
 
-  .small_button
-    font-size: 12px
-    line-height: 12px
-    height: 16px
-
-.navigation_link
-  margin-left: 10px
-//elements
-ul.error_messages
-  color: red
-  font-size: 14px
-  margin: 0 0 5px 17px
-
-label
-  font-style: italic
-  font-size: 14px
-
-td.caption
-  width: 72px
-
-table
-  width: 100%
-
-td.top_aligned
-  vertical-align: top
-  padding-top: 3px
-
-.display_button
-  white-space: normal
+  .author_name_template
+    display: none

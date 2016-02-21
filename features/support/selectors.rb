@@ -63,7 +63,7 @@ module HtmlSelectorsHelpers
         '#test_new_or_homonym_name_field .display'
 
       when /the first row of author names/
-        '#authors .author_row:first'
+        '#content table > tr:first'
 
       when /"(.+)"/
         $1
