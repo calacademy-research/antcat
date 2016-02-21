@@ -30,14 +30,14 @@ module CatalogHelper
     link_to label, catalog_path(taxon), class: classes
   end
 
-  def taxon_label_span(taxon, ignore_status: false)
-    content_tag :span, class: taxon_css_classes(taxon, ignore_status: ignore_status) do
+  def taxon_label_span taxon
+    content_tag :span, class: taxon_css_classes(taxon, ignore_status: true) do
       taxon_label(taxon).html_safe
     end
   end
 
   def taxon_label taxon
-    epithet_label taxon.name, taxon.fossil?
+    taxon.name.epithet_with_fossil_html taxon.fossil?
   end
 
   def protonym_label protonym
@@ -71,10 +71,6 @@ module CatalogHelper
       }
       hash.compact!
       "?#{hash.to_query}" if hash.present?
-    end
-
-    def epithet_label name, fossil
-      name.epithet_with_fossil_html fossil
     end
 
     def taxon_css_classes(taxon, selected: nil, ignore_status: false)
