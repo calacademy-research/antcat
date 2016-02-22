@@ -7,10 +7,19 @@ Feature: Taxon browser
   Background:
     Given the Formicidae family exists
 
-  Scenario: Show/hide
+  Scenario: Show/hide (desktop menu)
     When I go to the catalog
     Then I should see the taxon browser
     Then I toggle the taxon browser
-    And I screenshot
     Then I should not see the taxon browser
-    And I screenshot
+
+  Scenario: Show/hide (mobile menu)
+    When I go to the catalog
+    Then I should see the taxon browser
+
+    When I resize the browser window to mobile
+    Then I should see the desktop site
+    And I should see the taxon browser
+
+    And I toggle the taxon browser
+    Then I should not see the taxon browser
