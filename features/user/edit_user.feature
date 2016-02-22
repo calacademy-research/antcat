@@ -7,7 +7,7 @@ Feature: Editing a user
   Scenario: Changing my password
     Given I am logged in
     When I go to the main page
-    And I follow "Mark Wilden"
+    And I follow the first "Mark Wilden"
     Then I should be on the edit user page
     When I fill in "user_password" with "new password"
     And I fill in "user_password_confirmation" with "new password"
@@ -16,12 +16,12 @@ Feature: Editing a user
     Then I should be on the main page
     And I should see "Your account has been updated"
   #Scenario: Logging in with changed password
-    When I follow "Logout"
+    When I follow the first "Logout"
     Then I should not see "Mark Wilden"
-    When I follow "Login"
+    When I follow the first "Login"
     And I fill in the email field with my email address
     And I fill in "user_password" with "new password"
-    When I press "Login"
+    When I press the first "Login"
     Then I should be on the main page
     And I should see "Mark Wilden"
 
@@ -30,7 +30,7 @@ Feature: Editing a user
     When I go to the main page
     Then I should see "Mark Wilden"
     And I should not see "Brian Fisher"
-    When I follow "Mark Wilden"
+    When I follow the first "Mark Wilden"
     And I fill in "user_name" with "Brian Fisher"
     And I fill in "user_current_password" with "secret"
     And I press "Save"
@@ -62,15 +62,15 @@ Feature: Editing a user
     Given I log in as a superadmin
     When I go to the main page
     Then I should see "Admin"
-    When I follow "Admin"
+    When I follow the first "Admin"
     Then I should see "Dashboard"
 
   Scenario: When admins logout, it should redirect to AntCat root
     Given I log in as a superadmin
     When I go to the main page
-    When I follow "Admin"
+    When I follow the first "Admin"
     Then I should see "Dashboard"
-    When I follow "Logout"
+    When I follow the first "Logout"
     Then I should see "An Online Catalog of the Ants of the World"
 
   Scenario: Non-admins should be bounced from admin pages to AntCat root
