@@ -1,0 +1,16 @@
+#show_and_hide_menu
+  -show_and_hide_links.each do |link|
+    %span.label.secondary=link
+  %span.label.white.hide-for-large
+    =link_to "full key", page_path('help/full_key')
+
+%ul.accordion{"data-accordion" => "", "data-allow-all-closed" => "true", "data-multi-expand" => "true"}
+  =render   'rank',  rank: :subfamily, items: @subfamilies,selected_item: @subfamily, parent: @family,    show_none: true
+  -if session[:show_tribes] && @subfamily != 'none'
+    =render 'rank',  rank: :tribe,     items: @tribes,     selected_item: @tribe,     parent: @subfamily, show_none: true
+  =render   'rank',  rank: :genus,     items: @genera,     selected_item: @genus
+  -if session[:show_subgenera]
+    =render 'rank',  rank: :subgenus,  items: @subgenera,  selected_item: @subgenus
+  =render   'rank',  rank: :species,   items: @specieses,  selected_item: @species
+
+  =render 'taxon_key'
