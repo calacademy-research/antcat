@@ -13,12 +13,14 @@ Feature: Taxon browser
     Then I toggle the taxon browser
     Then I should not see the taxon browser
 
+  @responsive
   Scenario: Show/hide (mobile menu)
     When I go to the catalog
-    Then I should see the taxon browser
+    Then I should see the desktop layout
+    And I should see the taxon browser
 
     When I resize the browser window to mobile
-    Then I should see the desktop site
+    Then I should see the mobile layout
     And I should see the taxon browser
 
     And I toggle the taxon browser

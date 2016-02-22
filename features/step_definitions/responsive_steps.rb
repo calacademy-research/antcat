@@ -1,38 +1,36 @@
 When /^I resize the browser window to (mobile|tablet|desktop)$/ do |device|
+  resize_window_to_device device
+end
+
+Then /^I should see the desktop layout$/ do
+  page.should have_css("#desktop-only", visible: true)
+  page.should have_no_css("#mobile-only", visible: true)
+end
+
+Then /^I should see the mobile layout$/ do
+  page.should have_css("#mobile-only", visible: true)
+  page.should have_no_css("#desktop-only", visible: true)
+end
+
+def resize_window_to_device device
   size = case device.to_sym
          when :mobile then  [640, 480]
          when :tablet then  [960, 640]
          when :desktop then [1024, 768]
          end
-
-  resize_window size
+  resize_window *size
 end
 
-Then /^I should see the desktop site$/ do
-  selenium_only do
-    page.should have_css("#desktop-only", visible: true)
-    page.should have_no_css("#mobile-only", visible: true)
-  end
-end
-
-Then /^I should see the mobile site$/ do
-  selenium_only do
-    page.should have_css("#mobile-only", visible: true)
-    page.should have_no_css("#desktop-only", visible: true)
-  end
-end
-
-def resize_window size
-  current_browser = Capybara.current_session.driver.browser
-  return unless current_browser.respond_to? :manage
-  current_browser.manage.window.resize_to *size
-end
-
-# Too much of a hassle to get this working in Webkit
-def selenium_only
-  if Capybara.javascript_driver == :selenium
-    yield
+# From http://railsware.com/blog/2015/02/11/responsive-layout-tests-with-capybara-and-rspec/
+def resize_window width, height
+  case Capybara.current_driver
+  when :selenium
+    Capybara.current_session.driver.browser.manage.window.resize_to(width, height)
+  when :webkit
+    handle = Capybara.current_session.driver.current_window_handle
+    Capybara.current_session.driver.resize_window_to(handle, width, height)
   else
-    $stderr.puts "not running Selenium = not testing responsiveness".yellow
+    raise NotImplementedError,
+      "resize_window is not supported for #{Capybara.current_driver} driver"
   end
 end
