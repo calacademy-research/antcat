@@ -14,7 +14,10 @@ module CatalogHelper
               else
                 show_child_link "subgenera"
               end
-    make_link_menu items
+
+    items.map do |item|
+      content_tag :span, item, class: "secondary label"
+    end.join('').html_safe
   end
 
   # The "(no subfamily/tribe)"/"?child=none" links

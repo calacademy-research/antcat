@@ -2,6 +2,7 @@ class CatalogController < ApplicationController
   before_filter :handle_family_not_found, only: [:index]
   before_filter :set_taxon, except: [:index, :search]
   before_filter :set_child, except: [:index, :search]
+  before_filter :enable_taxon_toggler, only: [:index, :show]
 
   def index
     taxon = Family.first
@@ -71,6 +72,10 @@ class CatalogController < ApplicationController
 
     def set_child
       @child = params[:child]
+    end
+
+    def enable_taxon_toggler
+      @display_taxon_toggler = true
     end
 
     def redirect_to_taxon taxon

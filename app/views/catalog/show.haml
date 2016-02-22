@@ -2,7 +2,10 @@
 -breadcrumb @taxon
 
 #taxon_browser
-  =show_hide_menu
+  #show_hide_menu
+    =show_hide_menu
+    %span.label.white.hide-for-large
+      =link_to "Full key", page_path('help/full_key')
 
   %ul.accordion{"data-accordion" => "", "data-allow-all-closed" => "true", "data-multi-expand" => "true"}
     =render   'rank',  rank: :subfamily, items: @subfamilies,selected_item: @subfamily, parent: @family,    show_none: true
