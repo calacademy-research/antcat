@@ -54,9 +54,7 @@
         #mobile-logo.top-bar-title
           %span.float-left{"data-responsive-toggle" => "mobile-menu"}
             %span.menu-icon{"data-toggle" => ""}
-
-          =link_to root_path do
-            =image_tag 'antcat_logo_small.png', alt: 'AntCat'
+          =image_tag 'antcat_logo_small.png'
 
       .small-6.columns
         %ul.menu.float-right
@@ -65,7 +63,7 @@
 
   #mobile-menu
     %ul.vertical.dropdown.menu{"data-dropdown-menu" => ""}
-      %li Responsive menu link
+      %li=link_to "Catalog", root_path
     -#%ul.vertical.dropdown.menu{"data-dropdown-menu" => ""}
       -# TODO
       %li=link_to('References', references_path)

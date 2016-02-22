@@ -1,4 +1,4 @@
-#taxon_key
+#taxon_key.show-for-large
   %div &dagger;fossil
   .valid valid
   .synonym synonym
@@ -8,3 +8,6 @@
   .homonym homonym
   .original_combination original combination
   %div= link_to "View full key", page_path('help/full_key')
+
+.hide-for-large
+  = link_to "View full key", page_path('help/full_key')
