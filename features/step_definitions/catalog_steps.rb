@@ -39,6 +39,6 @@ Then /^I should (not )?see the taxon browser$/ do |should_not|
   end
 end
 
-Then /^I toggle the taxon browser$/ do
-  first(".toggle-taxon-browser-js-hook").click
+Then /^I click the (tiny|mobile|desktop) taxon browser toggler$/ do |size|
+  first("##{size}-toggler").click
 end

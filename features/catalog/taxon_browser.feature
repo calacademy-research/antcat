@@ -10,7 +10,7 @@ Feature: Taxon browser
   Scenario: Show/hide (desktop menu)
     When I go to the catalog
     Then I should see the taxon browser
-    Then I toggle the taxon browser
+    Then I click the desktop taxon browser toggler
     Then I should not see the taxon browser
 
   @responsive
@@ -23,5 +23,5 @@ Feature: Taxon browser
     Then I should see the mobile layout
     And I should see the taxon browser
 
-    And I toggle the taxon browser
+    And I click the mobile taxon browser toggler
     Then I should not see the taxon browser

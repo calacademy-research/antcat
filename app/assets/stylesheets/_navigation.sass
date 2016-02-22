@@ -26,7 +26,7 @@
         &:focus
           width: 250px
 
-      .large-toggler
+      .desktop-toggler-parent
         padding-right: 1rem !important
 
       .centered-text
@@ -45,6 +45,18 @@
     > span
       padding-right: 1rem
 
-  .small-toggler
+  #mobile-toggler
     height: 1.4rem
     padding-top: 0.2rem !important
+
+// Tiny toggler for tiny screens (shorter button text)
+#tiny-toggler
+  display: none !important
+
+@media screen and (max-width: 400px)
+  #mobile-toggler
+    display: none !important
+  #tiny-toggler
+    height: 1.4rem
+    padding-top: 0.2rem !important
+    display: block !important

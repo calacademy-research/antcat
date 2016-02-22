@@ -36,8 +36,8 @@
       #desktop-lower-menu.top-bar-right
         %ul.menu
           %li
-            .button-group.large-toggler
-              %a.button.toggle-taxon-browser-js-hook Hide taxon browser
+            .button-group.desktop-toggler-parent
+              %a.button#desktop-toggler Hide Taxon Browser
           %li
             =form_tag catalog_search_path, method: :get do
               .input-group
@@ -59,7 +59,8 @@
       .small-6.columns
         %ul.menu.float-right
           %li
-            %a.button.toggle-taxon-browser-js-hook.small-toggler Hide taxon browser
+            %a.button#mobile-toggler Hide Taxon Browser
+            %a.button#tiny-toggler Taxon Browser
 
   #mobile-menu
     %ul.vertical.dropdown.menu{"data-dropdown-menu" => ""}
