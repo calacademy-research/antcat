@@ -1,23 +1,12 @@
 module CatalogHelper
 
-  def show_hide_menu #TODO
-    items = []
-    items << hide_or_show_unavailable_subfamilies_link(session[:show_unavailable_subfamilies])
-    items <<  if session[:show_tribes]
-                hide_link "tribes"
-              else
-                show_child_link "tribes"
-              end
-
-    items <<  if session[:show_subgenera]
-                hide_link "subgenera"
-              else
-                show_child_link "subgenera"
-              end
-
-    items.map do |item|
-      content_tag :span, item, class: "secondary label"
-    end.join('').html_safe
+  def show_and_hide_links
+    { unavailable_subfamilies: "unavailable subfamilies",
+      tribes: "tribes",
+      subgenera: "subgenera"
+    }.map do |key, name|
+      show_or_hide_link key, name
+    end
   end
 
   # The "(no subfamily/tribe)"/"?child=none" links
@@ -52,26 +41,14 @@ module CatalogHelper
   end
 
   private
-    def hide_link name
-      link_to "hide #{name}", "/catalog/hide_#{name}#{build_params}".html_safe
-    end
-
-    def hide_or_show_unavailable_subfamilies_link is_hiding_link
-      command = is_hiding_link ? 'hide' : 'show'
-      action = command.dup << '_unavailable_subfamilies'
-      text = command + ' unavailable subfamilies'
-      link_to text, "/catalog/#{action}#{build_params}".html_safe
-    end
-
-    def show_child_link name
-      link_to "show #{name}", "/catalog/show_#{name}#{build_params}".html_safe
+    def show_or_hide_link key, name
+      show_option = session["show_#{key}".to_sym]
+      verb = show_option ? "hide" : "show"
+      link_to "#{verb} #{name}", "/catalog/#{verb}_#{key}#{build_params}".html_safe
     end
 
     def build_params
-      hash = {
-        id: params[:id],
-        child: params[:child]
-      }
+      hash = { id: params[:id], child: params[:child] }
       hash.compact!
       "?#{hash.to_query}" if hash.present?
     end
