@@ -1,17 +1,25 @@
 class ConvertToSubspeciesController < ApplicationController
   before_filter :authenticate_editor
+  before_filter :set_taxon, only: [:new, :create]
 
   def new
-    @taxon = Taxon.find params[:taxa_id]
-    @new_species = nil
     @default_name_string = @taxon.genus.name.name + ' '
   end
 
+  # TODO move validation to model
   def create
-    @taxon = Taxon.find params[:taxa_id]
+    # Probably? At least according to the UI and the code breaks otherwise
+    unless @taxon.kind_of? Species
+      @taxon.errors.add :base,
+        "Taxon to be converted to a subspecies must be of rank species."
+      render :new and return
+    end
 
-    if @taxon.kind_of? SpeciesGroupTaxon and @taxon.subspecies.present?
-      @taxon.errors.add :base, "This species has subspecies of its own, so it can't be converted to a subspecies"
+    if @taxon.subspecies.present?
+      @taxon.errors.add :base, <<-MSG
+        This species has subspecies of its own,
+        so it can't be converted to a subspecies
+      MSG
       render :new and return
     end
 
@@ -22,6 +30,25 @@ class ConvertToSubspeciesController < ApplicationController
 
     @new_species = Taxon.find_by_name_id params[:new_species_id]
 
+    unless @new_species.kind_of? Species
+      @taxon.errors.add :base, "The new parent must be of rank species."
+      render :new and return
+    end
+
+    # TODO allow moving to incerae sedis genera
+    unless @new_species.genus
+      @taxon.errors.add :base, "The new parent must have a genus."
+      render :new and return
+    end
+
+    # TODO allow converting species to subspecies of other genus?
+    # The current model code allows this, but it doesn't change the
+    # genus, leading to corrupt data.
+    unless @new_species.genus == @taxon.genus
+      @taxon.errors.add :base, "The new parent must be in the same genus."
+      render :new and return
+    end
+
     begin
       @taxon.become_subspecies_of @new_species
     rescue Taxon::TaxonExists => e
@@ -29,7 +56,12 @@ class ConvertToSubspeciesController < ApplicationController
       render :new and return
     end
 
-    redirect_to catalog_path @taxon
+    redirect_to catalog_path(@taxon),
+      notice: "Probably converted species to a subspecies."
   end
 
+  private
+    def set_taxon
+      @taxon = Taxon.find(params[:taxa_id])
+    end
 end
