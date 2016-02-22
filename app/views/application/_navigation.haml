@@ -24,12 +24,11 @@
           %li=link_to('About', page_path('about'))
 
           -if user_signed_in?
+            %li=link_to "Editor's Panel", editors_panel_path
             %li=link_to(current_user.name || current_user.email, edit_user_registration_path) # TODO
             %li=link_to('Logout', destroy_user_session_path)
           -else
             %li=link_to('Login', new_user_session_path)
-          -if user_is_superadmin?
-            %li=link_to('Admin', admin_root_path)
 
           %li=mail_to('sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: feedback_body)
 
@@ -74,12 +73,11 @@
       %li=link_to('About', page_path('about'))
 
       -if user_signed_in?
+        %li=link_to "Editor's Panel", editors_panel_path
         %li=link_to(current_user.name || current_user.email, edit_user_registration_path) # TODO
         %li=link_to('Logout', destroy_user_session_path)
       -else
         %li=link_to('Login', new_user_session_path)
-      -if user_is_superadmin?
-        %li=link_to('Admin', admin_root_path)
 
       %li=mail_to('sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: feedback_body)
       %li=link_to('Advanced Search', advanced_search_path)

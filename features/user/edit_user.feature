@@ -51,24 +51,27 @@ Feature: Editing a user
   Scenario: Superadmins should have access to Active Admin pages
     Given I log in as a superadmin
     When I go to the main page
-    Then I should see "Admin"
+    And I follow the first "Editor's Panel"
+    Then I should see "Admin Dashboard"
 
   Scenario: Regular users should not have access to Active Admin pages
     Given I am logged in
     When I go to the main page
-    Then I should not see "Admin"
+    And I follow the first "Editor's Panel"
+    Then I should not see "Admin Dashboard"
 
   Scenario: Admins to be able to go to the Active Admin pages
     Given I log in as a superadmin
     When I go to the main page
-    Then I should see "Admin"
-    When I follow the first "Admin"
+    And I follow the first "Editor's Panel"
+    When I follow "Admin Dashboard"
     Then I should see "Dashboard"
 
   Scenario: When admins logout, it should redirect to AntCat root
     Given I log in as a superadmin
     When I go to the main page
-    When I follow the first "Admin"
+    And I follow the first "Editor's Panel"
+    When I follow "Admin Dashboard"
     Then I should see "Dashboard"
     When I follow the first "Logout"
     Then I should see "An Online Catalog of the Ants of the World"
