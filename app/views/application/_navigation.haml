@@ -10,12 +10,15 @@
   MSG
 
 #top-bar.top-bar
-  #mobile-logo.top-bar-title.hide-for-large
-    %span{"data-hide-for" => "large", "data-responsive-toggle" => "mobile-menu"}
-      %span.menu-icon{"data-toggle" => ""}
+  #mobile-only.hide-for-large
+    .row.align-justify
+      .small-6.columns
+        #mobile-logo.top-bar-title.hide-for-large
+          %span.float-left{"data-hide-for" => "large", "data-responsive-toggle" => "mobile-menu"}
+            %span.menu-icon{"data-toggle" => ""}
 
-    =link_to root_path do
-      =image_tag 'antcat_logo_small.png', alt: 'AntCat'
+          =link_to root_path do
+            =image_tag 'antcat_logo_small.png', alt: 'AntCat'
 
   #desktop-logo.top-bar-title.show-for-large
     =link_to root_path do
