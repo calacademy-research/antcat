@@ -13,6 +13,11 @@ crumb :taxon_being_edited do |taxon|
 end
 
 crumb :edit_taxon do |taxon|
-  link "Edit"
+  link "Edit", edit_taxa_path(taxon)
   parent :taxon_being_edited, taxon
+end
+
+crumb :convert_to_species do |taxon|
+  link "Convert to Species"
+  parent :edit_taxon, taxon
 end
