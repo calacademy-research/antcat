@@ -6,7 +6,8 @@ After "@responsive" do
   resize_window_to_device :desktop
 end
 
-# TODO explain this
+# Temporary work-around.
+# Added in f3f10710011ad3b3ccdbc3059ffa000f8be8fbd3.
 Before "@enable_taxon_browser_autohide" do
   $enable_taxon_browser_autohide = true
 end

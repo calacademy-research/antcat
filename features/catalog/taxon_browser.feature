@@ -1,4 +1,4 @@
-@javascript
+@javascript @enable_taxon_browser_autohide
 Feature: Taxon browser
   As a user of AntCat
   I want be able to show and hide the taxon browser
@@ -7,21 +7,36 @@ Feature: Taxon browser
   Background:
     Given the Formicidae family exists
 
-  Scenario: Show/hide (desktop menu)
+  Scenario: Closed by default
     When I go to the catalog
-    Then I should see the taxon browser
-    Then I click the desktop taxon browser toggler
     Then I should not see the taxon browser
 
+  Scenario: Toggle show/hide (desktop menu)
+    When I go to the catalog
+    Then I should not see the taxon browser
+
+    When I click the desktop taxon browser toggler
+    Then I should see the taxon browser
+
   @responsive
-  Scenario: Show/hide (mobile menu)
+  Scenario: Toggle show/hide (mobile menu)
     When I go to the catalog
     Then I should see the desktop layout
-    And I should see the taxon browser
+    And I should not see the taxon browser
 
     When I resize the browser window to mobile
     Then I should see the mobile layout
-    And I should see the taxon browser
+    And I should not see the taxon browser
 
-    And I click the mobile taxon browser toggler
+    When I click the mobile taxon browser toggler
+    Then I should see the taxon browser
+
+  Scenario: Remembering open/closed state
+    When I go to the catalog
     Then I should not see the taxon browser
+
+    When I click the desktop taxon browser toggler
+    Then I should see the taxon browser
+
+    When I reload the page
+    Then I should see the taxon browser
