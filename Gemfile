@@ -66,6 +66,8 @@ group :development, :test do
   gem 'sunspot_test'
   gem 'thin'
   gem 'pry'
+  gem 'teaspoon-jasmine'
+  gem 'jasmine-jquery-rails'
 end
 
 group :test do
