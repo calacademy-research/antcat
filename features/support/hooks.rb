@@ -6,6 +6,15 @@ After "@responsive" do
   resize_window_to_device :desktop
 end
 
+# TODO explain this
+Before "@enable_taxon_browser_autohide" do
+  $enable_taxon_browser_autohide = true
+end
+
+After "@enable_taxon_browser_autohide" do
+  $enable_taxon_browser_autohide = false
+end
+
 # From http://makandracards.com/makandra/1709-single-step-and-
 # slow-motion-for-cucumber-scenarios-using-javascript-selenium
 # Use with `@javascript` and `DRIVER=selenium --format pretty` for the full experience.
