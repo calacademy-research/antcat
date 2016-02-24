@@ -1,10 +1,10 @@
 // gems
 //= require jquery
 //= require jquery_ujs
+//= require foundation
 //= require jquery-ui/core
 //= require jquery-ui/autocomplete
 //= require jquery-ui/dialog
-//= require jquery-ui/selectmenu
 //= require jquery-ui/tabs
 //= require jquery-ui/tooltip
 
@@ -16,6 +16,7 @@
 //= require debugging
 //= require site
 //= require spinner
+//= require taxa_autocompletion
 
 // gems
 //= require twitter/typeahead

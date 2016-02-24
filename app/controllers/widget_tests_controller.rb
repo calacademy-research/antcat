@@ -1,6 +1,10 @@
 class WidgetTestsController < ApplicationController
 
-  def name_popup_test; end
+  def index
+  end
+
+  def name_popup_test
+  end
 
   def reference_field_test
     @reference = Reference.first if params[:id]
@@ -17,6 +21,9 @@ class WidgetTestsController < ApplicationController
 
   def taxt_editor_test
     @taxon = Family.first
+  end
+
+  def tooltips_test
   end
 
 end

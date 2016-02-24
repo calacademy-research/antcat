@@ -1,61 +1,12 @@
-@import 'mixins/common'
-
 @import "font-awesome"
 @import "jquery-ui/core"
-@import "jquery-ui/selectmenu"
 @import "jquery-ui/theme"
 
 @import "autocomplete"
-@import "pages"
+@import "navigation"
+@import "push_down_footer"
 @import "spinner"
 @import "tooltip"
-
-///////////////////////////////////////////////////
-// tags
-
-body
-  font: normal 16px/17px Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif
-  width: 100%
-  background-color: #fff
-  min-width: 630px
-  margin: 0
-
-table
-  border-collapse: separate
-  border-spacing: 2px
-
-label
-  margin-right: 5px
-
-h2, h3
-  font-weight: normal
-  line-height: 22px
-  padding-bottom: 8px
-
-h2
-  font-size: 20px
-
-h3
-  font-size: 16px
-
-input[type=text], input[type=file], input[type=password], textarea
-  background-color: $color_input_background
-  padding-left: 2px
-  border: 1px solid $color_input_border
-
-a, a:active, a:focus, a:visited, a:hover
-  color: $color_link
-  text-decoration: none
-
-hr
-  padding: 0
-  margin: 0
-
-button
-  white-space: nowrap
-
-///////////////////////////////////////////////////
-// classes
 
 .left
   float: left
@@ -65,43 +16,6 @@ button
 
 .clear
   clear: both
-
-p.help span.help a
-  color: $color_link
-  &:hover
-    color: $color_link_highlight
-
-span.help
-  font-style: italic
-
-.right_side_field
-  padding-right: 5px !important
-
-.instructions
-  font-size: small
-  font-style: italic
-
-ul.error_messages
-  list-style: none
-  margin: 15px 0 0 0
-  padding: 0
-  li
-    font-size: small
-    color: $color_error
-    font-style: italic
-
-.pagination
-  padding-bottom: 10px
-  padding-top: 5px
-
-.selected
-  background: yellow !important
-
-span.date
-  font-size: .8em
-  font-weight: normal
-  font-style: italic
-  margin-left: 4px
 
 .valid
   color: red !important
@@ -130,126 +44,20 @@ span.date
 .latin
   font-style: italic
 
-a:hover.taxon
-  color: black !important
-
-img.help_icon
-  vertical-align: middle
-
-.link_menu a
-  margin: 0
-  padding: 0
-
-.tabs
-  margin: 2.5em !important
-  padding: 0.5em !important
-
-///////////////////////////////////////////////////
-// elements
-
-#page
-  width: 100%
-  background-color: $color_contents_background
-
-#site_header
-  @include paddings
-  color: $color_site_header
-  background: image-url("header_bg.png") repeat scroll 0 0
-  height: 95px
-
-  .logo, .image
-    float: left
-
-  .navigation
-    text-align: right
-    float: right
-  a, a:active, a:visited, a:link
-    color: $color_site_header_link
-    font-weight: bold
-    &:hover
-      color: $color_site_header_link_highlight !important
-      background: none
-
-#login
-  height: 58px
-  input[type=text]
-    width: 140px
-  input[type=password]
-    width: 100px
-  .small
-    font-size: 10.5px
-
-#page_header
-  .title
-    @include paddings
-    padding-top: 8px
-    h2
-      margin-right: 12px
-
-#navigation_bar
-  @include paddings
-  color: $color_navigation_bar
-  background: $color_navigation_bar_background
-  height: 30px
-
-  a
-    color: $color_navigation_bar
-    
-  .actions
-    margin-top: 6px
-    position: absolute
-    font-weight: bold
-    a, a:active, a:focus, a:visited
-      color: $color_navigation_bar_link
-      &:hover
-        color: $color_navigation_bar_link_highlight !important
-        background: none
-
-  .search
-    float: right
-    top: 3px
-    vertical-align: middle
-    input[type=text]
-      padding-left: 4px
-      width: 200px
-      border: 1px solid $color_input_border
-      height: 20px
-
-  .throbber
-    vertical-align: middle
-    display: none
-    padding-left: 11px
-    padding-right: 10px
-
-#page_notice
-  @include paddings
-  color: $color_notice
-
-#page_alert
-  @include paddings
-  color: $color_error
-
-#page_contents
-  @include paddings
-  padding-top: 2px
-  padding-bottom: 3px
-  overflow: auto
+button
+  white-space: nowrap
 
 // equally space out images
 #taxon_key
   width: 100%
   text-align: justify
+  padding-left: 1rem
+  padding-right: 1rem
 
-  .taxon_key_item
-    font-style: italic
+  div
     display: inline-block
     margin-top: 1em
     margin-bottom: -1em
-
-    &:first-child
-      padding-left: 10px
-    &:last-child
-      padding-right: 10px
 
   &:after
     content: ""
@@ -257,8 +65,10 @@ img.help_icon
     display: inline-block
 
 // equally space out images
-#site_footer
+#footer
   text-align: justify
+  padding-left: 1rem
+  padding-right: 1rem
 
   div
     display: inline-block
@@ -266,12 +76,40 @@ img.help_icon
     margin-top: 0.5em
     margin-bottom: -0.5em
 
-    &:first-child
-      padding-left: 10px
-    &:last-child
-      padding-right: 10px
-
   &:after
     content: ""
     width: 100%
     display: inline-block
+
+// TODO DRY
+$brand-primary: #479F03
+
+#breadcrumbs
+  padding: 0.4rem 1rem
+  color: #fff
+  background: $brand-primary
+
+  a
+    color: #fff
+
+#q
+  height: 1.6rem
+  margin-bottom: 0
+
+input.typeahead.tt-hint
+  height: 1.6rem
+
+#subnavigation
+  padding: 0.4rem 1rem
+  color: #fff
+  background: lighten(desaturate($brand-primary, 10%), 10%)
+
+  a
+    color: #fff
+
+// for the full color key
+.bold
+  font-weight: bold
+
+.italic
+  font-style: italic

@@ -170,11 +170,16 @@ GEM
     formtastic (3.1.3)
       actionpack (>= 3.2.13)
     formtastic_i18n (0.4.1)
+    foundation-rails (6.1.2.0)
+      railties (>= 3.1.0)
+      sass (>= 3.3.0, < 3.5)
     fuzzy-string-match (0.9.7)
       RubyInline (>= 3.8.6)
     gherkin3 (3.1.2)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    gretel (3.0.8)
+      rails (>= 3.2.0)
     haml (4.0.7)
       tilt
     has_scope (0.6.0)
@@ -189,6 +194,7 @@ GEM
       has_scope (~> 0.6.0.rc)
       railties (>= 3.2, < 5)
       responders
+    jasmine-jquery-rails (2.0.3)
     jquery-rails (4.0.5)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
@@ -327,6 +333,10 @@ GEM
     sunspot_solr (2.2.0)
     sunspot_test (0.4.0)
       sunspot_rails (>= 1.2.1)
+    teaspoon (1.1.4)
+      railties (>= 3.2.5, < 5)
+    teaspoon-jasmine (2.3.4)
+      teaspoon (>= 1.0.0)
     thin (1.6.4)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
@@ -382,10 +392,13 @@ DEPENDENCIES
   ey_config
   factory_girl_rails
   font-awesome-rails
+  foundation-rails
   fuzzy-string-match
+  gretel
   haml
   headless
   high_voltage
+  jasmine-jquery-rails
   jquery-rails (> 4.0)
   jquery-ui-rails (> 5.0)
   js_cookie_rails
@@ -411,6 +424,7 @@ DEPENDENCIES
   sunspot_rails
   sunspot_solr
   sunspot_test
+  teaspoon-jasmine
   thin
   twitter-typeahead-rails
   uglifier

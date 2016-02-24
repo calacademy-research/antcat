@@ -1,5 +1,6 @@
-%table
-  -taxon.history_items.each do |history_item|
-    %tr
-      %td.caption History
-      %td.value.history_item= Taxt.to_display_sentence history_item.taxt
+-unless taxon.history_items.empty?
+  %table
+    %caption History
+    -taxon.history_items.each do |history_item|
+      %tr
+        %td.history_item-test-hook= Taxt.to_display_sentence history_item.taxt

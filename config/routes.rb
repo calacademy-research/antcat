@@ -107,6 +107,8 @@ AntCat::Application.routes.draw do
 
   resources :antweb_data, only: [:index]
 
+  get "panel", to: "editors_panels#index", as: "editors_panel"
+
   resources :tooltips do
     collection do
       get :enabled_selectors
@@ -118,11 +120,13 @@ AntCat::Application.routes.draw do
 
   unless Rails.env.production?
     namespace :widget_tests do
+      get :index
       get :name_popup_test
       get :name_field_test
       get :reference_popup_test
       get :reference_field_test
       get :taxt_editor_test
+      get :tooltips_test
     end
   end
 

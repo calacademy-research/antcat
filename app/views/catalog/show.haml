@@ -1,17 +1,12 @@
-- @title = "#{@taxon.name.epithet}"
+-@title = "#{@taxon.name.epithet}"
+-breadcrumb @taxon
 
-#catalog
-  = render 'catalog/taxon', taxon: @taxon
-  %div{:class => "delete-modal", :type => 'hidden', :id => "delete_message"}
+-content_for :head do
+  =javascript_include_tag "taxon_browser_toggler"
+  =javascript_include_tag "catalog"
 
-  #splitter
+#taxon_browser=render "taxon_browser"
 
-  -# This is the lower half of the table for browsing
-  .index
-    = render   'rank', rank: :subfamily,items: @subfamilies,selected_item: @subfamily, parent: @family,    options: {can_show_unavailable: true, show_none: 'none', hideable_child_name: 'tribes'}
-    - if session[:show_tribes] and @subfamily != 'none'
-      = render 'rank', rank: :tribe,    items: @tribes,     selected_item: @tribe,     parent: @subfamily, options: {hideable_name: 'tribes', show_none: 'none'}
-    = render   'rank', rank: :genus,    items: @genera,     selected_item: @genus,     parent: nil,        options: {hideable_child_name: 'subgenera'}
-    - if session[:show_subgenera]
-      = render 'rank',  rank: :subgenus, items: @subgenera,  selected_item: @subgenus,  parent: nil,       options: {hideable_name: 'subgenera'}
-    = render  'rank',  rank: :species,  items: @specieses,  selected_item: @species,   parent: nil,        options: {}
+#taxon_description=render "catalog/taxon", taxon: @taxon
+
+#delete_message.delete-modal{type: 'hidden'}

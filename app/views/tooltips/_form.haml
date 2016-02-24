@@ -4,31 +4,35 @@
 
 =form_for @tooltip do |f|
   =render 'shared/errors_for', resource: @tooltip
-  %p
-    =f.label :key
-    =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
-    -if action_name == "new" # Works, but not very pretty
-      =f.text_field :key, value: (params[:key].presence || "") # Pre-populate if requested.
-    -else
-      =f.text_field :key
-    =f.label :key_enabled
-    =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-    =f.check_box :key_enabled
-  %p
-    =f.label :text
-    =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
-    =f.text_area :text
-  %p
-    =f.label :selector
-    =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
-    =f.text_area :selector
-    =f.label :selector_enabled
-    =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
-    =f.check_box :selector_enabled
-
-  .actions
-    = f.submit class: "btn-save"
-    = button_tag "Test Selector", type: "button", id: "test_selector_button", class: "btn-non-destructive" # hooked into by jQuery
+  .row
+    .medium-6.columns
+      =f.label :key
+      =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
+      -if action_name == "new" # Works, but not very pretty
+        =f.text_field :key, value: (params[:key].presence || "") # Pre-populate if requested.
+      -else
+        =f.text_field :key
+      =f.label :key_enabled
+      =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
+      =f.check_box :key_enabled
+  .row
+    .medium-6.columns
+      =f.label :text
+      =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
+      =f.text_area :text
+  .row
+    .medium-6.columns
+      =f.label :selector
+      =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
+      =f.text_area :selector
+      =f.label :selector_enabled
+      =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
+      =f.check_box :selector_enabled
+  .row
+    .medium-6.columns
+      .actions
+        =f.submit class: "btn-save"
+        =button_tag "Test Selector", type: "button", id: "test_selector_button", class: "btn-non-destructive" # hooked into by jQuery
 
 -# The #test_selector_notice and #test_selector_snippet elements are used for
 -# letting editors test the selector, hooked into by jQuery.

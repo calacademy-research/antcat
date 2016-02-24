@@ -1,66 +1,4 @@
-@import 'mixins/common'
-@import 'widgets/taxt_editor'
-@import 'taxon'
-
-html, body, #page, .rank
-  height: 100%
-
-#navigation_bar
-  .actions.catalog_view_selector
-    left: -3px
-    margin-top: 0
-    position: absolute
-    font-weight: bold
-    label
-      height: 28px
-
-#search_results
-  @include paddings
-  margin-bottom: 3px
-  a
-    padding-top: 0
-    padding-bottom: 0
-    padding-left: $link_padding
-    padding-right: $link_padding
-    margin-right: 6px
-  .no_results_found
-    color: $color_error
-
-#page_contents
-  padding: 0
-  padding-bottom: 3px
-
-#catalog
-  margin-top: 2px
-  min-width: 1200px
-
-  #splitter
-    height: 7px
-    width: 100%
-    background: gray
-    cursor: row-resize
-
-  .rank
-    overflow-y: auto
-    overflow-x: hidden
-    border-right: solid 1px black
-    float: left
-    .header
-      height: 45px
-      padding-left: $left_padding
-      padding-top: 4px
-      text-align: left
-      vertical-align: top
-      font-size: 1.5em
-      border-bottom: solid black 1px
-      .hide_show
-        height: 11px
-        font-size: 10px
-        margin-left: 4px
-
-  td.taxon_item
-    padding-right: 13px
-    padding-left: $left_padding
+@import "colors"
 
 .reference_key_and_expansion
   &:hover
@@ -70,20 +8,107 @@ html, body, #page, .rank
     display: none
 
     .reference_key_expansion_text
-      background: $color_reference_key_expansion
+      background: lighten(#90EE90, 10%)
       &:hover
         background: $color_link_highlight_background
         color: $color_link_highlight
-      
-    .goto_reference_link
-      padding-right: 0
 
-  .reference_key
-    padding-right: 0
+#show_and_hide_menu
+  margin: 1rem 0
+  a
+    color: #fff
+  .label
+    margin-right: 0.5rem
+    margin-top: 0.2rem
+  .white
+    background-color: #fff
+    border: 1px solid #000
+    a
+      color: #000
 
-  .document_link
-    margin-left: 0
-    padding-right: 2px
+#taxon_browser
+  .snaked
+    -webkit-column-width: 10em
+    -moz-column-width: 10em
+    column-width: 10em
 
-.editor_buttons
-  float: left
+  .mr-scrollbary
+    max-height: 12rem
+    overflow-y: auto
+
+#taxon_description
+  h4
+    font-weight: bold
+
+  .link_to_external_site
+    font-weight: bold
+    font-variant: small-caps
+    font-size: 15px
+
+  .editor_buttons
+    float: left
+
+  .header
+    .name
+      color: black !important
+      font-size: 18px
+      font-weight: bold
+
+    .authorship
+      font-size: 15px
+      margin-left: 6px
+
+    .status, .gender
+      font-size: 15px
+      margin-left: 6px
+
+    .review_state
+      margin-left: 8px
+      font-style: italic
+      color: red
+
+    .see
+      margin-left: 6px
+
+  .statistics
+    font-style: italic
+    margin-bottom: 6px
+    font-size: 14px
+    line-height: 1.1
+
+  .headline
+    margin-bottom: 4px
+    .epithet
+      font-weight: bold
+      font-style: italic
+    .name
+      font-weight: bold
+
+  .history
+    font-size: 15px
+    padding-left: 0
+    line-height: 1.2
+    .history_item
+      table
+        border-spacing: 0
+
+  .child_lists
+    font-size: 15px
+    .caption
+      font-weight: bold
+
+  .reference_sections
+    font-size: 15px
+    .section
+      .title_taxt
+        padding-top: 6px
+        font-weight: bold
+      .subtitle_taxt
+        padding-top: 6px
+      .title_taxt + .subtitle_taxt
+        padding-top: 0
+      .references
+
+  .change_history
+    font-size: 13px
+    font-style: italic

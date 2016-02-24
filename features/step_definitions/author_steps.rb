@@ -1,5 +1,5 @@
 Given /^I click "edit" in the first row$/ do
-  first('#authors a.edit_link').click
+  first('#content table a').click
 end
 
 When /^I click the "Add Author Name" button$/ do

@@ -1,13 +1,12 @@
--@title = 'Search references'
-
-=render 'references_page_header'
+-@title = 'Search Results'
+-breadcrumb :references_search_results
 
 -if @references.empty?
-  .no_results_found No results found
+  .alert.callout No results found
 
-%table.references
+%table
   -@references.each do |reference|
     %tr
       %td=render 'reference', reference: reference
 
-= will_paginate @references
+=will_paginate @references

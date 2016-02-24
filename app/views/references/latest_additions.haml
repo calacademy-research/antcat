@@ -1,15 +1,16 @@
--@title = 'Latest additions'
+-@title = 'Latest Additions'
+-breadcrumb :references_latest_additions
 
-=render 'references_page_header'
-
+-# table.references is used in tests
 %table.references
-  %tr
-    %td
-    %td.date_header Created
+  %thead
+    %th Reference
+    %th Created
 
     -if user_can_edit?
-      %td.review_state_header Review status
-      %td.default_reference_status_header
+      %th Review status
+      %th Review
+      %th Set as default
 
   -@references.each do |reference|
     %tr
@@ -17,4 +18,4 @@
 
       =render 'references/latest_additions_controls', reference: reference
 
-= will_paginate @references
+=will_paginate @references

@@ -3,55 +3,41 @@
   %head
     %title= make_title @title
     %meta{'http-equiv' => "content-type", content: "text/html;charset=UTF-8"}
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
 
     = csrf_meta_tag
 
-    -# FOUC fix
-    %style{type: 'text/css'}=".js #flash {display:none;}"
-
-    :coffee
-      window.AntCat = {} unless window.AntCat?
-      AntCat.environment = '#{Rails.env}'
-      AntCat.testing = #{Rails.env == 'test'}
+    :javascript
+      window.AntCat = {}
       AntCat.user_can_edit = #{!!user_can_edit?}
+      AntCat.testing = #{Rails.env.test?}
+      AntCat.taxon_browser_test_hack = #{Rails.env.test? && !$taxon_browser_test_hack}
 
     = javascript_include_tag 'google_analytics'
     = javascript_include_tag 'application'
 
     = stylesheet_link_tag 'application'
+    = stylesheet_link_tag 'foundation_and_overrides'
     = stylesheet_link_tag 'bootstrap_custom'
     = stylesheet_link_tag 'jquery_overrides'
     = stylesheet_link_tag "controllers/#{params[:controller]}" if AntCat::Application.assets.find_asset "controllers/#{params[:controller]}"
     = stylesheet_link_tag 'dev_env' if Rails.env == 'development' && !params[:prod]
     -# dev-specific CSS. Suffix the url with ?prod=pizza to disable.
 
-    = favicon_link_tag 'favicon.ico'
-
+    = favicon_link_tag
     = yield :head
 
-  %body#flash{class: controller.class}
-    #page
-      #site_header
-        = render 'site_header'
+    %body
+      #page
+        =render "navigation"
+        =render "breadcrumbs"
+        =render "subnavigation"
 
-      #page_header
-        - if content_for? :page_header
-          = yield :page_header
-        - else
-          %h2.title= @title
-      %hr
+        =render "shared/flash_messages"
 
-      - if flash[:notice].present?
-        #page_notice= flash[:notice]
-      - if flash[:alert].present?
-        #page_alert= flash[:alert]
+        #content
+          .row
+            .small-12.columns
+              = content_for?(:page_contents) ? yield(:page_contents) : yield
 
-      #page_contents
-        = content_for?(:page_contents) ? yield(:page_contents) : yield
-      %hr
-
-      #site_footer
-        = render 'site_footer'
-
-      :javascript
-        $('#flash').show(); // FOUC fix
+        =render "footer"

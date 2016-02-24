@@ -18,18 +18,18 @@ describe CatalogHelper do
   describe "Hide link" do
     it "creates a link to the hide tribes action with all the current parameters" do
       helper.stub(:params).and_return({ id: 99 })
-      expected = %Q[<a href="/catalog/hide_tribes?id=99">hide</a>]
-      expect(helper.hide_link('tribes')).to eq expected
+      expected = %Q[<a href="/catalog/hide_tribes?id=99">hide tribes</a>]
+      expect(helper.send(:hide_link, 'tribes')).to eq expected
     end
     it "handles child params" do
       helper.stub(:params).and_return({ child: "none" })
-      expected = %Q[<a href="/catalog/hide_tribes?child=none">hide</a>]
-      expect(helper.hide_link('tribes')).to eq expected
+      expected = %Q[<a href="/catalog/hide_tribes?child=none">hide tribes</a>]
+      expect(helper.send(:hide_link, 'tribes')).to eq expected
     end
     it "handles child and id params at the same time" do
       helper.stub(:params).and_return({ id: 99, child: "none" })
-      expected = %Q[<a href="/catalog/hide_tribes?child=none&id=99">hide</a>]
-      expect(helper.hide_link('tribes')).to eq expected
+      expected = %Q[<a href="/catalog/hide_tribes?child=none&id=99">hide tribes</a>]
+      expect(helper.send(:hide_link, 'tribes')).to eq expected
     end
   end
 
@@ -37,17 +37,17 @@ describe CatalogHelper do
     it "creates a link to the show action" do
       helper.stub(:params).and_return({ id: 99 })
       expected = %Q[<a href="/catalog/show_tribes?id=99">show tribes</a>]
-      expect(helper.show_child_link('tribes')).to eq expected
+      expect(helper.send(:show_child_link, 'tribes')).to eq expected
     end
     it "handles child params" do
       helper.stub(:params).and_return({ child: "none" })
-      expected = %Q[<a href="/catalog/hide_tribes?child=none">hide</a>]
-      expect(helper.hide_link('tribes')).to eq expected
+      expected = %Q[<a href="/catalog/hide_tribes?child=none">hide tribes</a>]
+      expect(helper.send(:hide_link, 'tribes')).to eq expected
     end
     it "handles child and id params at the same time" do
       helper.stub(:params).and_return({ id: 99, child: "none" })
-      expected = %Q[<a href="/catalog/hide_tribes?child=none&id=99">hide</a>]
-      expect(helper.hide_link('tribes')).to eq expected
+      expected = %Q[<a href="/catalog/hide_tribes?child=none&id=99">hide tribes</a>]
+      expect(helper.send(:hide_link, 'tribes')).to eq expected
     end
   end
 
@@ -69,33 +69,6 @@ describe CatalogHelper do
         expect(helper.taxon_column_link(selected, not_selected))
           .to eq %[<a class="genus name taxon valid" href="/catalog/#{selected.id}"><i>#{selected.name}</i></a>]
       end
-    end
-  end
-
-  describe "array snaking" do
-    it "handles empty arrays" do
-      expect(snake([], 1)).to eq []
-    end
-    it "handles arrays with single items" do
-      expect(snake([1], 1)).to eq [[1]]
-    end
-
-    it "handles arrays with multiple items" do
-      expect(snake([1, 2, 3, 4], 2)).to eq [[1, 3], [2, 4]]
-    end
-
-    it "handles empty cells" do
-      expect(snake([1, 2, 3, 4, 5], 2)).to eq [[1, 4], [2, 5], [3]]
-    end
-
-    it "doesn't pad with nil" do
-      array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-      manually_snaked = [
-        [1, 4, 6, 8, 10],
-        [2, 5, 7, 9, 11],
-        [3]
-      ]
-      expect(snake(array, 5)).to eq manually_snaked
     end
   end
 

@@ -1,4 +1,4 @@
-@import 'mixins/common'
+@import "colors"
 
 $antcat_reference_picker_gutter_size: 20px
 $pale_green: desaturate(#98FB98, 50%) // palegreen
@@ -55,8 +55,6 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
         margin-right: 10px
         .q
           width: 200px
-        .ui-selectmenu
-          width: 175px !important
 
     .pagination
       display: inline
@@ -69,7 +67,7 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
         a, a:active, a:focus, a:visited
           color: white
           &:hover
-            color: $color_site_header_link_highlight
+            color: lightgray
             background-color: $color_picker_background
 
     .help_banner

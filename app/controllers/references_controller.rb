@@ -25,8 +25,12 @@ class ReferencesController < ApplicationController
   def create
     @reference = new_reference
     if save
-      redirect_to reference_path(@reference),
-      notice: 'Reference was successfully created.'
+      redirect_to reference_path(@reference), notice: <<-MSG
+        Reference was successfully created.
+        <strong>#{view_context.link_to 'Back to the index', references_path}</strong>
+        or
+        <strong>#{view_context.link_to 'add another?', new_reference_path}</strong>
+      MSG
     else
       render :new
     end
@@ -36,23 +40,24 @@ class ReferencesController < ApplicationController
     @reference = set_reference_type
 
     if save
-      redirect_to reference_path(@reference),
-        notice: 'Reference was successfully updated.'
+      redirect_to reference_path(@reference), notice: <<-MSG
+        Reference was successfully updated.
+        <strong>#{view_context.link_to 'Back to the index', references_path}</strong>.
+      MSG
     else
       render :edit
     end
   end
 
   def destroy
-    if @reference.any_references?
-      # TODO list which refereces
-      redirect_to reference_path(@reference),
-        notice: "This reference can't be deleted, as there are other references to it."
-      return
+    if @reference.destroy
+      redirect_to references_path, notice: 'Reference was successfully destroyed.'
+    else
+      if @reference.errors.present?
+        flash[:warning] = @reference.errors.full_messages.to_sentence
+      end
+      redirect_to reference_path(@reference)
     end
-
-    @reference.destroy
-    redirect_to references_path, notice: 'Reference was successfully destroyed.'
   end
 
   def download

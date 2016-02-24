@@ -1,11 +1,9 @@
-@import 'mixins/common'
+@import "colors"
 
 .taxt_editor
   .taxt_edit_box
-    border: 1px solid black
     width: 100%
-    font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
-    @include taxt_editor_font
+    font-family: Monaco, Courier, monospace
     padding: 2px
     margin-left: -2px
   .antcat_reference_field
@@ -19,7 +17,6 @@
     overflow: auto
     border: 1px solid black
     padding: 2px
-    background: $color_input_background
     .antcat_taxt_simulated_selection
       color: $color_current_being_edited
       background: $color_current_being_edited_background

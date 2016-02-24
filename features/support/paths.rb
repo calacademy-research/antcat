@@ -101,6 +101,8 @@ module NavigationHelpers
       "/widget_tests/name_field_test?id=#{Name.first.id}"
     when /^the name field test page$/
       '/widget_tests/name_field_test'
+    when /^the tooltips test page$/
+      '/widget_tests/tooltips_test'
 
     else
       raise "#{page_name} not found"

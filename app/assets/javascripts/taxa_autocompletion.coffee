@@ -22,4 +22,4 @@ $ ->
       empty: '<div class="empty-message">No results</div>'
       suggestion: (taxon) -> '<p>' + taxon.name + '<br><small>' + taxon.authorship + '</small></p>'
 
-  $('input.typeahead').typeahead options, dataSet
+  $('input.typeahead-taxa-js-hook').typeahead options, dataSet

@@ -1,25 +1,28 @@
-- @title = 'Edit User'
+-@title = 'Edit User'
+-breadcrumb :edit_user
 
-= form_for resource, as: resource_name, url: registration_path(resource_name), html: {method: :put} do |f|
-  = render 'shared/errors_for', resource: resource
+=form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put } do |f|
+  =render 'shared/errors_for', resource: resource
+  .row
+    .medium-6.columns
+      =f.label :email
+      =f.text_field :email
 
-  %p= f.label :email
-  %p= f.text_field :email
+      =f.label :name
+      =f.text_field :name
 
-  %p= f.label :name
-  %p= f.text_field :name
+  .row
+    .medium-6.columns
+      =f.label :password, "Password (leave blank if you don't want to change it)"
+      =f.password_field :password
 
-  %p
-    = f.label :password
-    %span.help (leave blank if you don't want to change it)
-  %p= f.password_field :password
+      =f.label :password_confirmation
+      =f.password_field :password_confirmation
 
-  %p= f.label :password_confirmation
-  %p= f.password_field :password_confirmation
+      =f.label :current_password, "Current password (we need your current password to confirm your changes)"
 
-  %p
-    = f.label :current_password
-    %span.help (we need your current password to confirm your changes)
-  %p= f.password_field :current_password
+      =f.password_field :current_password
 
-  %p= f.submit 'Save'
+  .row
+    .medium-6.columns
+      =f.submit 'Save', class: "btn-normal"

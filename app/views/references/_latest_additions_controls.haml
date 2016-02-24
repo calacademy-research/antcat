@@ -1,11 +1,9 @@
-%td.date
-  = reference.decorate.created_at
+%td.no-wrap-align-top=reference.decorate.created_at
 
-- if user_can_edit?
-  %td.review_state
-    = reference.decorate.format_review_state
+-if user_can_edit?
+  %td=reference.decorate.format_review_state
 
-  %td.review_buttons
+  %td
     -if reference.can_finish_reviewing?
       =link_to 'Finish reviewing', finish_reviewing_reference_path(reference),
         method: :post, class: "btn-normal",
@@ -19,7 +17,7 @@
         method: :post, class: "btn-normal",
         data: { confirm: 'Do you want to start reviewing this reference again?' }
 
-  %td.default_reference_status
+  %td
     -if reference == DefaultReference.get(session)
       Default
     -else

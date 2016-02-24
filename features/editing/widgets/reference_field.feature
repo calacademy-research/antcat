@@ -27,7 +27,7 @@ Feature: Reference field
   Scenario: Setting a reference when there wasn't one before
     When I go to the reference field test page
     And I click the reference field
-    And I search for the author "Fisher, B."
+    And in the reference picker, I search for the author "Fisher, B."
     And I click the first search result
     And I press "OK"
     Then the authorship field should contain the reference by Fisher
@@ -36,7 +36,7 @@ Feature: Reference field
   Scenario: Searching for multiple authors
     When I go to the reference field test page
     And I click the reference field
-    And I search for the authors "Bolton, B.; Fisher, B."
+    And in the reference picker, I search for the authors "Bolton, B.; Fisher, B."
     Then I should see "Fisher Bolton book"
     And I should not see "Fisher's book"
     And I should not see "Bolton's book"
@@ -45,7 +45,7 @@ Feature: Reference field
   Scenario: Cancelling
     When I go to the reference field test page
     And I click the reference field
-    And I search for the author "Fisher, B."
+    And in the reference picker, I search for the author "Fisher, B."
     And I click the first search result
     And I press "Cancel"
     Then the authorship field should contain "(none)"

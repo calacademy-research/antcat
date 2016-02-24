@@ -1,11 +1,11 @@
-%table
-  -taxon.reference_sections.each do |item|
-    %tr.reference_section
-      %td.caption
-      %td.value.title_taxt= Taxt.to_display_sentence item.title_taxt
-    %tr
-      %td.caption
-      %td.value.subtitle_taxt= Taxt.to_display_sentence item.subtitle_taxt
-    %tr
-      %td.caption
-      %td.value.references_taxt= Taxt.to_display_sentence item.references_taxt
+-unless taxon.reference_sections.empty?
+  %table
+    %caption References
+    -# TODO prints too many empty fields
+    -taxon.reference_sections.each do |item|
+      %tr
+        %td= Taxt.to_display_sentence item.title_taxt
+      %tr
+        %td= Taxt.to_display_sentence item.subtitle_taxt
+      %tr
+        %td.references_taxt-test-hook= Taxt.to_display_sentence item.references_taxt

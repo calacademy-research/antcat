@@ -1,15 +1,11 @@
 - content_for :head do
-  = javascript_include_tag  'catalog'
   = javascript_include_tag  'superadmin_delete_button' if user_is_superadmin?
 
-- content_for :page_header do
-  #navigation_bar
-    = render 'search_form', search_results: @search_results
-  = render 'catalog_title'
-
 - content_for :page_contents do
+  .title.show-for-large
+    %h5.left An Online Catalog of the Ants of the World
+    .right by Barry Bolton
+    .clearfix
   = yield
-  .clear
-  = render 'taxon_key'
 
 = render file: 'layouts/application'

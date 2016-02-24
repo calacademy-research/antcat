@@ -1,51 +1,12 @@
-@import "mixins/common"
-
-.change_header
-  font-size: 24px
-  border: 1px solid
-
-.change_description
-  padding: 12px
-
-.change_status
-  padding: 6px
-  padding-left: 12px
-  padding-right: 12px
-  border-top: 1px solid
-  font-size: 16px
-  .approver
-  .approval_time
-
-.change_description
-  .time
-    font-size: 16px
-
 .parent_not_found
-  color: $color_error
+  color: red
 
-td
-  vertical-align: top
-
-td.caption
-  width: 114px
-  font-style: italic
-
-td.value
-  font-weight: bold
-
-td.header
-  font-weight: bold
-  font-size: 16px
-
-table
-  margin-bottom: 6px
-  margin-left: 6px
-
-.title_taxt, .subtitle_taxt
-  font-weight: bold
-
-.change_description .name
-  margin-top: 2px
-
-table.change.approved
+.change.approved
   color: darkgrey
+
+.change caption
+  text-align: left
+
+.change th
+  text-align: left
+  width: 7rem

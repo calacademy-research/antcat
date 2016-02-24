@@ -6,29 +6,28 @@ module HtmlSelectorsHelpers
         "html > body"
 
       when /the protonym/
-        "#catalog .protonym_name"
+        "#taxon_description .protonym_name"
       when /the type name/
-        "#catalog .type"
+        "#taxon_description .type"
       when /^the junior synonyms section$/
         '.junior_synonyms_section'
       when /^the senior synonyms section$/
         '.senior_synonyms_section'
 
+      # TODO rename
       when /the index/
-        "#catalog .index"
-      when /the species taxon index/
-        "#catalog .index .species .taxon"
+        "#taxon_browser"
       when /the (\w*) index/
-        "#catalog .index .#{$1}"
+        "#taxon_browser .#{$1}-test-hook"
       when /the content/
-        "#catalog .antcat_taxon"
+        "#taxon_description"
       when /the change history/
-        "#catalog .antcat_taxon .change_history"
+        "#taxon_description .change_history"
       when /the search results/
         "#search_results"
 
       when /the search section/
-        '.search_section'
+        ".search_section-test-hook"
 
       when /the author panel/, /the first author panel/
         ".author_panel:first-of-type"
@@ -64,10 +63,7 @@ module HtmlSelectorsHelpers
         '#test_new_or_homonym_name_field .display'
 
       when /the first row of author names/
-        '#authors .author_row:first'
-
-      when /the first row of missing references/
-        '#missing_references .missing_reference:first'
+        '#content table > tr:first'
 
       when /"(.+)"/
         $1

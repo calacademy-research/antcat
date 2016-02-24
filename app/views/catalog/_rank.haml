@@ -1,33 +1,24 @@
-.rank
-  - rank = Rank[rank]
-  %table{class: rank.to_sym(:plural)}
-    %tr
-      %td.header
-        = rank.to_s :plural, :capitalized
+-parent ||= nil
+-show_none ||= nil
 
-        - if options[:can_show_unavailable]
-          .hide_show= hide_or_show_unavailable_subfamilies_link session[:show_unavailable_subfamilies]
+-if items.present?
+  -rank = Rank[rank]
+  -css_class = ["#{rank.to_sym(:plural)}-test-hook"]
+  -css_class << "is-active" if is_last_panel? selected_item, rank
+  -css_class << "is-active" if Rails.env.test? && !$taxon_browser_test_hack # open all panels in tests
 
-        - if options[:hideable_name]
-          .hide_show= hide_link options[:hideable_name]
-        - if options[:hideable_child_name]
-          .hide_show
-            - showing_child = "show_#{options[:hideable_child_name]}".to_sym
-            - unless session[showing_child]
-              = show_child_link options[:hideable_child_name]
-    %tr
-      %td
-        - if items
-          %table
-            - if options[:show_none]
-              - items = items.to_a
-              - items.insert 0, options[:show_none]
-            - rows, css_class = snake_taxon_columns items
-            - rows.each do |row|
-              %tr
-                - row.each do |taxon|
-                  %td{class: css_class}
-                    - if taxon == 'none'
-                      = incertae_sedis_column_link rank.to_sym, taxon, selected_item, parent
-                    -else
-                      = taxon_column_link taxon, selected_item
+  %li.accordion-item{class: css_class, "data-accordion-item" => ""}
+    %a.accordion-title
+      =rank.to_s.capitalize + ":"
+      -if show_none && selected_item == "none"
+        -selected_item_text = "(none)"
+      -else
+        -selected_item_text = selected_item && selected_item.name_html_cache.html_safe
+      =selected_item_text || "not seleted"
+
+    .mr-scrollbary.accordion-content{"data-tab-content" => ""}
+      %ul.snaked.no-bullet
+        -if show_none
+          %li=incertae_sedis_column_link rank.to_sym, "none", selected_item, parent
+        -items.each do |taxon|
+          %li=taxon_column_link taxon, selected_item

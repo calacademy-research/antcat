@@ -47,11 +47,13 @@ Given /^I log in$/ do
 end
 
 Given /^I log in as a catalog editor(?: named "([^"]+)")?$/ do |name|
+  name = "Quintus Batiatus" if name.blank?
   @user = FactoryGirl.create :user, can_edit: true, name: name
   login_programmatically
 end
 
 Given /^I log in as a superadmin(?: named "([^"]+)")?$/ do |name|
+  name = "Quintus Batiatus" if name.blank?
   @user = FactoryGirl.create :user, can_edit: true, is_superadmin: true, name: name
   login_programmatically
 end

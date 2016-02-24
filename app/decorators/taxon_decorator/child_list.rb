@@ -77,7 +77,7 @@ class TaxonDecorator::ChildList
         label << ' of '
       end
 
-      label << taxon_label_span(@taxon, ignore_status: true)
+      label << taxon_label_span(@taxon)
 
       content_tag :div, class: :child_list do
         content = ''.html_safe

@@ -1,17 +1,17 @@
--@title = 'Latest changes'
-
-=render 'references_page_header'
+-@title = 'Latest Changes'
+-breadcrumb :references_latest_changes
 
 .right=approve_all_references_button
 
+-# table.references is used in tests
 %table.references
-  %tr
-    %td
-    %td.date_header Changed
+  %thead
+    %th Reference
+    %th Changed
 
   -@references.each do |reference|
     %tr
       %td=render 'reference', reference: reference
-      %td.date=reference.decorate.updated_at
+      %td.no-wrap-align-top=reference.decorate.updated_at
 
-= will_paginate @references
+=will_paginate @references

@@ -1,12 +1,8 @@
+-@subnav = []
+-@subnav << link_to('All changes', changes_path)
+-@subnav << link_to('Unreviewed changes', unreviewed_changes_path)
+
 - content_for :head do
   = javascript_include_tag  'changes'
-
-- content_for :page_header do
-  #navigation_bar
-    .actions
-      -items = []
-      -items << link_to('All changes', changes_path)
-      -items << link_to('Unreviewed changes', unreviewed_changes_path)
-      =make_link_menu items
 
 = render file: 'layouts/application'

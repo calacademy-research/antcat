@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def make_link_menu *items
-    content_tag :span, class: 'link_menu' do |content|
+    content_tag :span do |content|
       items.flatten.inject(''.html_safe) do |string, item|
         string << ' | '.html_safe unless string.empty?
         string << item
@@ -36,9 +36,10 @@ module ApplicationHelper
   end
 
   def search_selector search_type
-    select_tag :st, options_for_select([['matching', 'm'],
-                                        ['beginning with', 'bw'],
-                                        ['containing', 'c']], search_type || 'bw')
+    options = [['matching', 'm'],
+               ['beginning with', 'bw'],
+               ['containing', 'c']]
+    select_tag :st, options_for_select(options, search_type || 'bw')
   end
 
   def pluralize_with_delimiters count, singular, plural = nil
@@ -102,6 +103,23 @@ module ApplicationHelper
     string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
     string = string.gsub /\|(.*?)\|/, '<i>\1</i>'
     string.html_safe
+  end
+
+  def foundation_class_for flash_type
+    case flash_type.to_sym
+      when :success
+        "primary"
+      when :error
+        "alert"
+      when :alert
+        "alert"
+      when :warning
+        "alert"
+      when :notice
+        "primary"
+      else
+        "secondary"
+    end
   end
 
   private

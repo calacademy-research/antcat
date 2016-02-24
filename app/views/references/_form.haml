@@ -1,114 +1,112 @@
 =enable_tooltips
 
 -content_for :head do
-  = javascript_include_tag 'reference_edit_autocompletion', 'references'
+  =javascript_include_tag 'reference_edit_autocompletion', 'references'
 
-- possible_duplicate ||= nil
+-possible_duplicate ||= nil
 
-- reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
-- reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
-- selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
+-reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
+-reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
+-selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
-.reference_edit.ui-corner-all.ui-widget-content.ui-widget
-  = form_for reference.becomes(Reference) do |f|
-    %input{type: :hidden, name: :selected_tab, id: :selected_tab, class: :selected_tab, value: selected_tab}
-    %input{type: :hidden, name: 'possible_duplicate', id: 'possible_duplicate', value: possible_duplicate ? 'true' : nil}
-    = render 'shared/errors_for', :resource => reference
+=form_for reference.becomes(Reference) do |f|
+  %input{type: :hidden, name: :selected_tab, id: :selected_tab, value: selected_tab}
+  %input{type: :hidden, name: 'possible_duplicate', id: 'possible_duplicate', value: possible_duplicate ? 'true' : nil}
+  =render 'shared/errors_for', resource: reference
 
-    %table
-      %col{:width => '50px'}
-      %col{:width => '*'}
-      %col{:align => 'right', :width => '34px'}
-      %col{:width => '100px'}
-      %tr
-        %td= label_tag :reference_author_names_string, 'Authors'
-        %td.authors= f.text_field :author_names_string, :class => 'authors'
-        %td= label_tag :reference_citation_year, 'Year'
-        %td{:class => :right_side_field}= f.text_field :citation_year
-      %tr
-        %td= label_tag :reference_title, 'Title'
-        %td{:colspan => 3, :class => :right_side_field}= f.text_area :title, :rows => 2
-      %tr
-        %td.tabs{:colspan => 4}
-          %ul
-            %li
-              %a{:class => 'article-tab', :href => "#tabs-article-#{reference.id}"}Article
-            %li
-              %a{:class => 'book-tab', :href => "#tabs-book-#{reference.id}"}Book
-            %li
-              %a{:class => 'nested-tab', :href => "#tabs-nested-#{reference.id}"}Nested
-            %li
-              %a{:class => 'unknown-tab', :href => "#tabs-unknown-#{reference.id}"}Other
+  .row
+    .medium-10.columns
+      =label_tag :reference_author_names_string, 'Authors'
+      =f.text_field :author_names_string
+    .medium-2.columns
+      =label_tag :reference_citation_year, 'Year'
+      =f.text_field :citation_year
+  .row
+    .medium-12.columns
+      =label_tag :reference_title, 'Title'
+      =f.text_area :title, rows: 2
 
-          %div{:class => 'article-tab-section', :id => "tabs-article-#{reference.id}"}
-            = label_tag :reference_journal_name, 'Journal'
-            = f.text_field :journal_name, value: reference.journal_name, class: 'journal'
-            = label_tag :reference_series_volume_issue, 'Series volume issue'
-            = f.text_field :series_volume_issue, :class => 'series_volume_issue'
-            = label_tag :article_pagination, 'Pagination'
-            = text_field_tag :article_pagination, reference.pagination, :class => 'pages'
+  .row
+    .medium-12.columns
+      .tabs
+        %ul
+          %li
+            %a{href: "#tabs-article"}Article
+          %li
+            %a{href: "#tabs-book"}Book
+          %li
+            %a{href: "#tabs-nested"}Nested
+          %li
+            %a{href: "#tabs-unknown"}Other
 
-          %div{:class => 'book-tab-section', :id => "tabs-book-#{reference.id}"}
-            = label_tag :reference_publisher_string, 'Publisher'
-            = f.text_field :publisher_string, value: reference.publisher_string, class: 'publisher'
-            = label_tag :book_pagination, 'Pagination'
-            = text_field_tag :book_pagination, reference.pagination, :class => 'pages'
+        #tabs-article
+          =label_tag :reference_journal_name, 'Journal'
+          =f.text_field :journal_name, value: reference.journal_name
+          =label_tag :reference_series_volume_issue, 'Series volume issue'
+          =f.text_field :series_volume_issue
+          =label_tag :article_pagination, 'Pagination'
+          =text_field_tag :article_pagination, reference.pagination
 
-          %div{:class => 'nested-tab-section', :id => "tabs-nested-#{reference.id}"}
-            = label_tag :reference_pages_in, 'Pages in'
-            = f.text_field :pages_in, :class => 'pages'
-            = label_tag :nesting_reference_id, 'nesting_reference ID'
-            = f.text_field :nesting_reference_id, :class => 'pages'
-            %p.help
-              %span.help= raw "To find, edit or add the nesting_reference in a new browser window, click #{link_to 'here', references_path(:q => reference.nesting_reference_id), :target => '_blank'}"
+        #tabs-book
+          =label_tag :reference_publisher_string, 'Publisher'
+          =f.text_field :publisher_string, value: reference.publisher_string
+          =label_tag :book_pagination, 'Pagination'
+          =text_field_tag :book_pagination, reference.pagination
 
-          %div{:class => 'unknown-tab-section', :id => "tabs-unknown-#{reference.id}"}
-            = label_tag :reference_citation, 'Citation'
-            = f.text_area :citation, :rows => 2
+        #tabs-nested
+          =label_tag :reference_pages_in, 'Pages in'
+          =f.text_field :pages_in
+          =label_tag :nesting_reference_id, 'nesting_reference ID'
+          =f.text_field :nesting_reference_id
+          -#%p.help
+            %span.help=raw "To find, edit or add the nesting_reference in a new browser window, click #{link_to 'here', references_path(q: reference.nesting_reference_id), target: '_blank'}"
 
-      = f.fields_for :document, reference.document || ReferenceDocument.new do |document_form|
-        %tr
-          %td= label_tag :document_url, 'Source URL'
-          %td{:colspan => 3, :class => :right_side_field}
-            = document_form.text_field :url
-            = label_tag :document_public, 'Internal but public?'
-            = document_form.check_box :public
-        %tr
-          %td= label_tag :document_file, 'Upload'
-          %td= document_form.file_field :file
+        #tabs-unknown
+          =label_tag :reference_citation, 'Citation'
+          =f.text_area :citation, rows: 2
+  .row
+    .medium-12.columns
+      =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
+        =label_tag :document_url, 'Source URL'
+        =document_form.text_field :url
+        =label_tag :document_public, 'Internal but public?'
+        =document_form.check_box :public
+        =label_tag :document_file, 'Upload'
+        =document_form.file_field :file
 
-      %tr
-        %td= label_tag :reference_public_notes, 'Public notes'
-        %td{:colspan => 3, :class => :right_side_field}= f.text_area :public_notes, :rows => 2
-      - if user_can_edit?
-        %tr
-          %td= label_tag :reference_editor_notes, 'Editor notes'
-          %td{:colspan => 3, :class => :right_side_field}= f.text_area :editor_notes, :rows => 2
-        %tr
-          %td= label_tag :reference_taxonomic_notes, 'Taxonomic notes'
-          %td{:colspan => 3, :class => :right_side_field}= f.text_area :taxonomic_notes, :rows => 2
-      %tr
-        %td{:colspan => 4}
-          %table.small_fields
-            %tr
-              %td= label_tag :reference_cite_code, 'Cite code'
-              %td.cite_code= f.text_field :cite_code
-              %td= label_tag :reference_doi, 'DOI'
-              %td.doi= f.text_field :doi
-              %td= label_tag :reference_possess, 'Possess'
-              %td.possess= f.text_field :possess
-              %td= label_tag :reference_date, 'Date'
-              %td.date= f.text_field :date
-              %td= label_tag :reference_id, 'ID'
-              %td= reference.id
-      %tr
-        %td{:colspan => 4}
-          %button.submit.btn-save.has-spinner
-            -save_text = possible_duplicate ? 'Save Anyway' : 'Save'
-            =spinner_icon + save_text
+  .row
+    .medium-12.columns
+      =label_tag :reference_public_notes, 'Public notes'
+      =f.text_area :public_notes, rows: 2
+      =label_tag :reference_editor_notes, 'Editor notes'
+      =f.text_area :editor_notes, rows: 2
+  .row
+    .medium-12.columns
+      =label_tag :reference_taxonomic_notes, 'Taxonomic notes'
+      =f.text_area :taxonomic_notes, rows: 2
 
-          -cancel_link = reference.new_record? ? references_path : reference_path(reference)
-          =link_to "Cancel", cancel_link, class: "btn-cancel"
+  .row
+    .medium-3.columns
+      =label_tag :reference_cite_code, 'Cite code'
+      =f.text_field :cite_code
+    .medium-3.columns
+      =label_tag :reference_doi, 'DOI'
+      =f.text_field :doi
+    .medium-3.columns
+      =label_tag :reference_possess, 'Possess'
+      =f.text_field :possess
+    .medium-3.columns
+      =label_tag :reference_date, 'Date'
+      =f.text_field :date
 
-          =label_tag :make_default, 'Make default after save?'
-          =check_box_tag :make_default, true, !!params[:make_default]
+  .row
+    .medium-12.columns
+      %button.submit.btn-save.has-spinner
+        -save_text = possible_duplicate ? 'Save Anyway' : 'Save'
+        =spinner_icon + save_text
+
+      -cancel_link = reference.new_record? ? references_path : reference_path(reference)
+      =link_to "Cancel", cancel_link, class: "btn-cancel"
+
+      =label_tag :make_default, 'Make default after save?'
+      =check_box_tag :make_default, true, !!params[:make_default]

@@ -1,4 +1,4 @@
-@import 'mixins/common'
+@import "colors"
 @import 'widgets/taxt_editor'
 @import 'widgets/name_popup'
 @import 'widgets/name_field'
@@ -6,8 +6,6 @@
 
 // Structure
 .taxon_form
-  padding: 10px
-
   .taxt_edit_box
     font-size: 14px
 
@@ -159,7 +157,7 @@
       padding: 6px
       padding-top: 4px
       display: none
-      background: $dark_green
+      background: $color_dark_green
       .help
         font-style: italic
         font-size: 12px
@@ -192,18 +190,8 @@ ul.error_messages
   font-size: 14px
   margin: 0 0 5px 17px
 
-label
-  font-style: italic
-  font-size: 14px
-
 td.caption
   width: 72px
-
-table
-  width: 100%
-
-input[type=checkbox]
-  margin-left: 0
 
 td.top_aligned
   vertical-align: top

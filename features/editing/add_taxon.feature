@@ -32,7 +32,7 @@ Feature: Adding a taxon
     When I set the protonym name to "Eciton"
       And I press "OK"
     When I click the authorship field
-      And I search for the author "Fisher"
+      And in the reference picker, I search for the author "Fisher"
       And I click the first search result
     And I press "OK"
     When I click the type name field
@@ -60,7 +60,7 @@ Feature: Adding a taxon
       And I set the protonym name to "Eciton"
       And I press "OK"
     When I click the authorship field
-      And I search for the author "Fisher"
+      And in the reference picker, I search for the author "Fisher"
       And I click the first search result
       And I press "OK"
     When I click the type name field
@@ -124,7 +124,7 @@ Feature: Adding a taxon
       And I set the protonym name to "Eciton major"
       And I press "OK"
     And I click the authorship field
-      And I search for the author "Fisher"
+      And in the reference picker, I search for the author "Fisher"
       And I click the first search result
       And I press "OK"
     And I save my changes
@@ -152,7 +152,7 @@ Feature: Adding a taxon
     And I set the protonym name to "Dolichoderus (Subdolichoderus) major"
     And I press "OK"
     And I click the authorship field
-    And I search for the author "Fisher"
+    And in the reference picker, I search for the author "Fisher"
     And I click the first search result
     And I press "OK"
     And I save my changes
@@ -171,7 +171,7 @@ Feature: Adding a taxon
       And I set the protonym name to "Atta"
       And I press "OK"
     And I click the authorship field
-      And I search for the author "Fisher"
+      And in the reference picker, I search for the author "Fisher"
       And I click the first search result
       And I press "OK"
     And I click the type name field
@@ -191,7 +191,7 @@ Feature: Adding a taxon
       And I set the protonym name to "Atta major"
       And I press "OK"
     And I click the authorship field
-      And I search for the author "Fisher"
+      And in the reference picker, I search for the author "Fisher"
       And I click the first search result
       And I press "OK"
     And I save my changes
@@ -215,7 +215,7 @@ Feature: Adding a taxon
       And I set the protonym name to "Eciton major infra"
       And I press "OK"
     And I click the authorship field
-      And I search for the author "Fisher"
+      And in the reference picker, I search for the author "Fisher"
       And I click the first search result
       And I press "OK"
     And I save my changes
@@ -236,7 +236,7 @@ Feature: Adding a taxon
       Then the protonym name field should contain "Dorylinae"
     When I press "OK"
     And I click the authorship field
-      And I search for the author "Fisher"
+      And in the reference picker, I search for the author "Fisher"
       And I click the first search result
       And I press "OK"
     When I click the type name field
@@ -263,7 +263,7 @@ Feature: Adding a taxon
       Then the protonym name field should contain "Dorylini"
     When I press "OK"
     And I click the authorship field
-      And I search for the author "Fisher"
+      And in the reference picker, I search for the author "Fisher"
       And I click the first search result
       And I press "OK"
     When I save my changes

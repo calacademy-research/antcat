@@ -1,5 +1,7 @@
 class MissingReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [:index]
+  before_filter :set_reference, only: [:edit, :update]
+  layout "references"
 
   def index
     ids = Protonym.joins(authorship: :reference)
@@ -10,22 +12,25 @@ class MissingReferencesController < ApplicationController
   end
 
   def edit
-    @missing_reference = MissingReference.find params[:id]
-    @replacement = nil
   end
 
   def update
-    @missing_reference = MissingReference.find params[:id] rescue nil
     @replacement = Reference.find params[:replacement_id] rescue nil
 
     unless @replacement
-      edit
+      flash[:warning] = "A replacement ID is required."
       render :edit
       return
     end
 
-    MissingReference.find(@missing_reference.id).replace_citation_with @replacement
-    redirect_to missing_references_path
+    @reference.replace_citation_with @replacement
+
+    redirect_to missing_references_path,
+      notice: "Probably replaced reference."
   end
 
+  private
+    def set_reference
+      @reference = MissingReference.find params[:id]
+    end
 end

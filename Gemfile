@@ -26,11 +26,14 @@ gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'colorize'
 gem 'devise'
 gem 'devise_invitable'
-gem 'font-awesome-rails'
 gem 'draper'
+gem 'font-awesome-rails'
+gem 'foundation-rails'
+gem 'gretel'
 gem 'high_voltage'
 gem 'jquery-rails', '> 4.0'
 gem 'jquery-ui-rails', '> 5.0'
+gem 'js_cookie_rails'
 gem 'paper_trail', :git => "https://github.com/airblade/paper_trail.git", :tag => 'v4.0.0.beta2'
 gem 'paperclip'
 gem 'sunspot_rails'
@@ -38,9 +41,6 @@ gem 'sunspot_solr'
 gem 'twitter-typeahead-rails'
 gem 'will_paginate'
 gem 'workflow'
-
-# To remember the catalog #splitter's position
-gem 'js_cookie_rails'
 
 # HOL importer
 gem 'curb', require: 'curl'
@@ -67,6 +67,8 @@ group :development, :test do
   gem 'sunspot_test'
   gem 'thin'
   gem 'pry'
+  gem 'teaspoon-jasmine'
+  gem 'jasmine-jquery-rails'
 end
 
 group :test do

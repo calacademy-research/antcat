@@ -111,7 +111,7 @@ Given /that the entry has a URL that's not on our site/ do
 end
 
 Then /I should see these entries (with a header )?in this order:/ do |with_header, entries|
-  offset = with_header ? 2 : 1
+  offset = with_header ? 1 : 0
   entries.hashes.each_with_index do |e, i|
     page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['entry']
     page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['date']
@@ -126,7 +126,7 @@ end
 ##################
 
 When(/^I follow first reference link$/) do
-  first('.references div a.goto_reference_link').click
+  first('a.goto_reference_link').click
 end
 
 Then 'I should not see the reference' do
@@ -159,10 +159,6 @@ Then /I should (not )?see a "PDF" link/ do |should_not|
   rescue Exception
     raise
   end
-end
-
-Then "I should see the reference's ID beside its label" do
-  step "I should see \"ID #{@reference.id}\""
 end
 
 When /I fill in "reference_nesting_reference_id" with its own ID$/ do
@@ -211,10 +207,6 @@ Given /^there is a missing reference(?: with citation "(.+)")?( in a protonym)?$
   if in_protonym
     FactoryGirl.create :protonym, authorship: FactoryGirl.create(:citation, reference: missing_reference)
   end
-end
-
-Given /^I click "replace" in the first row of missing references$/ do
-  first('#missing_references a.replace_link').click
 end
 
 And /^I click the replacement field$/ do

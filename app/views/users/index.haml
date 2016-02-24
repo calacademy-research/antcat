@@ -1,15 +1,15 @@
 -@title = 'Users'
+-breadcrumb :users
 
 %table
-  %tr
+  %thead
     %th ID
-    %th
+    %th Editor
     %th Name
     %th Email
   -@users.each do |user|
     %tr
       %td.id= user.id
-      %td= user.can_edit? ? '*' : ' '
+      %td= user.can_edit? ? 'Yes' : ''
       %td= user.decorate.format_name_linking_to_email
       %td= user.email
-* = editor
