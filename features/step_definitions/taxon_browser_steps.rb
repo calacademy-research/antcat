@@ -13,7 +13,25 @@ end
 
 Then /^I should see all taxon browser panels opened$/ do
   accordion = find("#taxon_browser ul.accordion")
-  all_panels = accordion.find(".accordion-item")
-  open_panels = accordion.find(".accordion-item.is-active")
-  expect(open_panels).to eq all_panels
+  all_panels = accordion.find_all(".accordion-item")
+  open_panels = accordion.find_all(".accordion-item.is-active")
+
+  expect(all_panels.size).to eq open_panels.size
+end
+
+When /^I click on the (subfamilies|genera|species) panel$/ do |rank|
+  find(".#{rank}-test-hook", visible: true).click
+end
+
+Then /^I should see the (subfamilies|genera|species) panel (opened|closed)$/ do |rank, state|
+  selector = ".#{rank}-test-hook.is-active"
+
+  case state
+  when "opened"
+    page.should have_css(selector, visible: true)
+  when "closed"
+    page.should have_no_css(selector, visible: true)
+  else
+    raise "use (open|closed), not '#{state}'"
+  end
 end

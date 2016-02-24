@@ -8,7 +8,7 @@ end
 
 # Temporary work-around.
 # Basically:
-#   In dev/prod: autohide taxon browser and [TODO] close all except the last panel
+#   In dev/prod: autohide taxon browser and close all except the last panel
 #   In test: don't autohide, and open all panels (performance/test reasons)
 #   In @taxon_browser tests: behave as in prod/dev
 # Added in f3f10710011ad3b3ccdbc3059ffa000f8be8fbd3.

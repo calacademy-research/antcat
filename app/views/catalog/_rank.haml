@@ -3,9 +3,11 @@
 
 -if items.present?
   -rank = Rank[rank]
-  -css_class = "#{rank.to_sym(:plural)}-test-hook"
+  -css_class = ["#{rank.to_sym(:plural)}-test-hook"]
+  -css_class << "is-active" if is_last_panel? selected_item, rank
+  -css_class << "is-active" if Rails.env.test? && !$taxon_browser_test_hack # open all panels in tests
 
-  %li.accordion-item.is-active{class: css_class, "data-accordion-item" => ""}
+  %li.accordion-item{class: css_class, "data-accordion-item" => ""}
     %a.accordion-title
       =rank.to_s.capitalize + ":"
       -if show_none && selected_item == "none"

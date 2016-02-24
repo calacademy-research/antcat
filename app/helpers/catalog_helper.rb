@@ -43,6 +43,13 @@ module CatalogHelper
     [taxon.type.downcase, 'taxon', 'name']
   end
 
+  # HACK -ish
+  def is_last_panel? selected_item, rank
+    selected_item.nil? ||             # no selected -> must be last
+    selected_item.is_a?(Species) ||   # species is always last
+    (selected_item == "none" && rank == :tribe) # special case
+  end
+
   private
     def show_or_hide_link key, name
       show_option = session["show_#{key}".to_sym]
