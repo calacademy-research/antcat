@@ -13,6 +13,11 @@ html, body
   // height-ish of footer + paddings/margins
   padding-bottom: 90px
 
+// there's no footer on small screens, reverse mega padding
+@media screen and (max-width: 640px)
+  #content
+    padding-bottom: 1rem
+
 #footer
   width: 100%
   position: absolute

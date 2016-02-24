@@ -7,11 +7,11 @@
 
     = csrf_meta_tag
 
-    :coffee
-      window.AntCat = {} unless window.AntCat?
-      AntCat.environment = '#{Rails.env}'
-      AntCat.testing = #{Rails.env == 'test'}
+    :javascript
+      window.AntCat = {}
       AntCat.user_can_edit = #{!!user_can_edit?}
+      AntCat.testing = #{Rails.env.test?}
+      AntCat.taxon_browser_test_hack = #{Rails.env.test? && !$taxon_browser_test_hack}
 
     = javascript_include_tag 'google_analytics'
     = javascript_include_tag 'application'
@@ -40,4 +40,4 @@
             .small-12.columns
               = content_for?(:page_contents) ? yield(:page_contents) : yield
 
-        #footer= render "footer"
+        =render "footer"

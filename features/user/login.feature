@@ -41,7 +41,7 @@ Feature: Logging in
   Scenario: Returning to previous page
     Given I am not logged in
     * I go to the references page
-    * I follow "Login"
+    * I follow the first "Login"
     * I fill in the email field with "email@example.com"
     * I fill in the password field with "secret"
     * I press "Login"

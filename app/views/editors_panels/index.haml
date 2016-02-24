@@ -14,3 +14,5 @@
   %li=link_to 'Edit tooltips', tooltips_path
   %li=link_to 'Fix missing references', missing_references_path
   %li=link_to "Change password, update name/email", edit_user_registration_path
+  -if user_is_superadmin?
+    %li=link_to "Admin Dashboard", admin_root_path

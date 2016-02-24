@@ -46,7 +46,7 @@ Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
 end
 
 When /I fill in the catalog search box with "(.*?)"/ do |search_term|
-  step %{I fill in "qq" with "#{search_term}"}
+  find("#desktop-lower-menu #qq").set search_term
 end
 When /I press "Go" by the catalog search box/ do
   # TODO fix mobile

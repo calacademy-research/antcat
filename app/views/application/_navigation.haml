@@ -9,69 +9,84 @@
     http://antcat.org
   MSG
 
-#top-bar.top-bar
-  #mobile-logo.top-bar-title.hide-for-large
-    %span{"data-hide-for" => "large", "data-responsive-toggle" => "mobile-menu"}
-      %span.menu-icon{"data-toggle" => ""}
+#desktop-only.show-for-large
+  .top-bar
+    #desktop-logo.top-bar-title
+      =link_to root_path do
+        =image_tag 'antcat_logo.png', alt: 'AntCat'
 
-    =link_to root_path do
-      =image_tag 'antcat_logo_small.png', alt: 'AntCat'
+    #desktop-menu
+      #desktop-upper-menu.top-bar-right
+        %ul.dropdown.menu{"data-dropdown-menu" => ""}
+          %li=link_to('References', references_path)
+          %li=link_to('Changes', changes_path)
+          %li=link_to('AntWeb', 'http://www.antweb.org/')
+          %li=link_to('About', page_path('about'))
 
-  #desktop-logo.top-bar-title.show-for-large
-    =link_to root_path do
-      =image_tag 'antcat_logo.png', alt: 'AntCat'
+          -if user_signed_in?
+            %li=link_to "Editor's Panel", editors_panel_path
+            %li=link_to(current_user.name || current_user.email, edit_user_registration_path) # TODO
+            %li=link_to('Logout', destroy_user_session_path)
+          -else
+            %li=link_to('Login', new_user_session_path)
 
-  #desktop-menu.show-for-large
-    #desktop-upper-menu.top-bar-right
-      %ul.dropdown.menu{"data-dropdown-menu" => ""}
-        %li=link_to('References', references_path)
-        %li=link_to('Changes', changes_path)
-        %li=link_to('AntWeb', 'http://www.antweb.org/')
-        %li=link_to('About', page_path('about'))
+          %li=mail_to('sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: feedback_body)
 
-        -if user_signed_in?
-          %li=link_to(current_user.name || current_user.email, edit_user_registration_path) # TODO
-          %li=link_to('Logout', destroy_user_session_path)
-        -else
-          %li=link_to('Login', new_user_session_path)
-        -if user_is_superadmin?
-          %li=link_to('Admin', admin_root_path)
+      #desktop-lower-menu.top-bar-right
+        %ul.menu
+          -if @display_taxon_toggler
+            %li
+              .button-group.desktop-toggler-parent
+                %a.button#desktop-toggler Hide Taxon Browser
+          %li
+            =form_tag catalog_search_path, method: :get do
+              .input-group
+                =text_field_tag 'qq', params[:qq], class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook', placeholder: "Search Catalog"
+                .input-group-button
+                  =button_tag type: 'submit', class: 'button has-spinner' do
+                    =spinner_icon + "Go"
+          %li.centered-text=link_to('Advanced<br> Search'.html_safe, advanced_search_path, class: "without-top-padding")
 
-        %li=mail_to('sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: feedback_body)
-    #desktop-lower-menu.top-bar-right
-      %ul.menu
-        %li
-          =form_tag catalog_search_path, method: :get do
-            .input-group
-              =text_field_tag 'qq', params[:qq], class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook', placeholder: "Search Catalog"
-              .input-group-button
-                =button_tag type: 'submit', class: 'button has-spinner' do
-                  =spinner_icon + "Go"
-        %li.centered-text=link_to('Advanced<br> Search'.html_safe, advanced_search_path, class: "without-top-padding")
+#mobile-only.hide-for-large
+  .top-bar
+    .row
+      .small-5.columns
+        #mobile-logo.top-bar-title{"data-hide-for" => "large", "data-responsive-toggle" => "mobile-menu"}
+          %span.float-left
+            %span.menu-icon{"data-toggle" => ""}
+          =image_tag 'antcat_logo_small.png', data: { toggle: "" }
 
-  #mobile-menu.hide-for-large{"data-hide-for" => "large"}
+      -if @display_taxon_toggler
+        .small-4.columns
+          %ul.menu.float-right
+            %li
+              %a.button#mobile-toggler Hide Taxon Browser
+              %a.button#tiny-toggler Browser
+
+  #mobile-menu
+    -# TODO probably DRY
     %ul.vertical.dropdown.menu{"data-dropdown-menu" => ""}
-      %li Responsive menu link
-    -#%ul.vertical.dropdown.menu{"data-dropdown-menu" => ""}
-      -# TODO
+      %li=link_to "Catalog", root_path
       %li=link_to('References', references_path)
       %li=link_to('Changes', changes_path)
       %li=link_to('AntWeb', 'http://www.antweb.org/')
       %li=link_to('About', page_path('about'))
 
       -if user_signed_in?
+        %li=link_to "Editor's Panel", editors_panel_path
         %li=link_to(current_user.name || current_user.email, edit_user_registration_path) # TODO
         %li=link_to('Logout', destroy_user_session_path)
       -else
         %li=link_to('Login', new_user_session_path)
-      -if user_is_superadmin?
-        %li=link_to('Admin', admin_root_path)
 
       %li=mail_to('sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: feedback_body)
-      -# TODO
+      %li=link_to('Advanced Search', advanced_search_path)
+
       %li.has-form
-        .row.collapse
-          .small-9.columns
-            %input{placeholder: "Search Catalog", type: "search"}
-          .small-3.columns
-            %input.button{type: "submit", value: "Go"}
+        =form_tag catalog_search_path, method: :get do
+          .row.collapse
+            .small-10.columns
+              =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog"
+            .small-2.columns
+              -# TODO enter key not working
+              =button_tag "Go", type: "submit", class: "button expanded"
