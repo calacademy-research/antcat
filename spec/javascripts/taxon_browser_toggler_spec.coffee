@@ -97,11 +97,11 @@ describe "TaxonBrowserToggler Test Env Exception", ->
 
   beforeEach ->
     fixture.load "taxon_browser_toggler.html"
-    window.AntCat.disable_taxon_browser_autohide = true
+    window.AntCat.taxon_browser_test_hack = true
     engine = new TaxonBrowserToggler()
 
   afterEach ->
-    window.AntCat.disable_taxon_browser_autohide = false
+    window.AntCat.taxon_browser_test_hack = false
 
   it "is not hidden in test env", ->
     expect($ "#taxon_browser").toBeVisible()

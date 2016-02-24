@@ -37,13 +37,11 @@ class @TaxonBrowserToggler
     verb = if @_isVisible then "Hide" else "Show"
     $(elements).text "#{verb} Taxon Browser"
 
-  # Hide browser unless the value from the cookie tells us otherwise.
   _hideUnlessVisible: ->
     unless @_isVisible
       $(TAXON_BROWSER).hide()
       @_updateLabels LABELS_TO_UPDATE
 
-  # Always show in tests, unless scenario is tagged
-  # with @enable_taxon_browser_autohide.
+  # Always show in tests, unless scenario is tagged with @taxon_browser.
   _setToVisibleIfTestEnv: ->
-    @_isVisible = true if AntCat.disable_taxon_browser_autohide
+    @_isVisible = true if AntCat.taxon_browser_test_hack

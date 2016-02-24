@@ -30,15 +30,3 @@ end
 And /^the name in the header should be "([^"]*)"/ do |name|
   page.should have_css('.header .taxon', text: name)
 end
-
-Then /^I should (not )?see the taxon browser$/ do |should_not|
-  if should_not
-    page.should have_no_css("#taxon_browser")
-  else
-    page.should have_css("#taxon_browser", visible: true)
-  end
-end
-
-Then /^I click the (tiny|mobile|desktop) taxon browser toggler$/ do |size|
-  first("##{size}-toggler").click
-end
