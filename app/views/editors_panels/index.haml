@@ -16,3 +16,5 @@
   %li=link_to "Change password, update name/email", edit_user_registration_path
   -if user_is_superadmin?
     %li=link_to "Admin Dashboard", admin_root_path
+  -if Rails.env.development?
+    %li=link_to "Lazy links (dev-only link)", page_path("lazy_links")

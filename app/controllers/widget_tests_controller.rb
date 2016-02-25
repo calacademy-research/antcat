@@ -1,8 +1,5 @@
 class WidgetTestsController < ApplicationController
 
-  def index
-  end
-
   def name_popup_test
   end
 
