@@ -5,6 +5,7 @@ require_dependency 'references/reference_workflow'
 
 class Reference < ActiveRecord::Base
   include UndoTracker
+  include ReferenceComparable
 
   attr_accessor :publisher_string
   attr_accessor :journal_name
@@ -34,9 +35,7 @@ class Reference < ActiveRecord::Base
   before_save { |record| CleanNewlines::clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
   before_destroy :check_not_referenced
 
-  # associations
   has_many :reference_author_names, -> { order :position }
-  has_many :groups, :through => :group_assets
 
   has_many :author_names,
            -> { order 'reference_author_names.position' },
@@ -50,18 +49,9 @@ class Reference < ActiveRecord::Base
     self.class.where(nesting_reference_id: id)
   end
 
-  # scopes
   scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
   scope :with_principal_author_last_name, lambda { |last_name| where(principal_author_last_name_cache: last_name) }
 
-  # Other plugins and mixins
-  include ReferenceComparable
-
-  def author
-    principal_author_last_name
-  end
-
-  # validation and callbacks
   before_validation :set_year_from_citation_year, :strip_text_fields
   validates :title, presence: true, if: Proc.new { |record| record.class.requires_title }
 
@@ -72,13 +62,16 @@ class Reference < ActiveRecord::Base
   before_save :set_author_names_caches
   before_destroy :check_not_nested
 
-  # accessors
   def to_s
     "#{author_names_string} #{citation_year}. #{id}."
   end
 
   def authors reload = false
     author_names(reload).map &:author
+  end
+
+  def author
+    principal_author_last_name
   end
 
   def author_names_string
@@ -95,17 +88,6 @@ class Reference < ActiveRecord::Base
 
   def short_citation_year
     citation_year.gsub %r{ .*$}, ''
-  end
-
-  ## callbacks
-
-  # validation
-  def check_not_nested
-    nesting_reference = NestedReference.find_by_nesting_reference_id id
-    if nesting_reference
-      errors.add :base, "This reference can't be deleted because it's nested in #{nesting_reference}"
-    end
-    nesting_reference.nil?
   end
 
   # update (including observed updates)
@@ -162,7 +144,6 @@ class Reference < ActiveRecord::Base
       end
     end
 
-    # Previously looped over [Citation, Bolton::Match].each ...
     Citation.where(reference_id: id).all.each do |record|
       references << { table: Citation.table_name, id: record[:id], field: :reference_id }
       return true if options[:any?]
@@ -194,6 +175,14 @@ class Reference < ActiveRecord::Base
       # TODO list which items
       errors.add :base, "This reference can't be deleted, as there are other references to it."
       return false
+    end
+
+    def check_not_nested
+      nesting_reference = NestedReference.find_by_nesting_reference_id id
+      if nesting_reference
+        errors.add :base, "This reference can't be deleted because it's nested in #{nesting_reference}"
+      end
+      nesting_reference.nil?
     end
 
     def strip_text_fields
