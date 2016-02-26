@@ -105,6 +105,7 @@ AntCat::Application.routes.draw do
       resources :taxon_history_items
       resources :journals
       resources :places
+      resources :publishers
     end
     # For the next version...
     # namespace :v2 do

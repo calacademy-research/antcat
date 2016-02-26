@@ -409,7 +409,50 @@ paths:
         "404":
           description: Record not found
 
-#publisher
+  /v1/publishers:
+    get:
+      summary: Get all publishers
+      operationId: getPublishers
+      tags:
+        - Publishers
+        - Publisher
+      parameters:
+          - name: starts_at
+            in: query
+            description: Lowest publisher id to be returned
+            required: false
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Returns 100 publishers at a time starting the specified publisher id. If no id is supplied, starts at zero
+
+          schema:
+            $ref: '#/definitions/Publisher'
+        "404":
+          description: Record not found
+
+  /v1/publishers/{id}:
+    get:
+      summary: Get a single publisher
+      operationId: getpublisher
+      tags:
+        - Publisher
+      parameters:
+        - name: id
+          in: path
+          description: getpublisher id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single publisher record
+          schema:
+            $ref: '#/definitions/Publisher'
+        "404":
+          description: Record not found
+
 #reference
 #reference_author_name
 #reference_document
@@ -795,6 +838,31 @@ definitions:
       name:
         type: string
         description: Place name
+      auto_generated:
+        type: boolean
+        description: Programatically generated (typically from an exteral import)
+      origin:
+        type: string
+        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+
+  Publisher:
+    description: publisher
+    type: object
+    properties:
+      id:
+        type: integer
+        description: publisher id, primary key
+      name:
+        type: string
+        description: Publisher name
       auto_generated:
         type: boolean
         description: Programatically generated (typically from an exteral import)
