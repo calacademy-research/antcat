@@ -1,4 +1,4 @@
-@dormant @javascript @search
+@javascript @search
 Feature: Checking for duplicates during data entry
   As an AntCat editor
   I want duplicate references to be rejected

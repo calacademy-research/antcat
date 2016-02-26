@@ -1,4 +1,3 @@
-@dormant
 Feature: View bibliography
   As a researcher
   I want to see what the literature is for ant taxonomy

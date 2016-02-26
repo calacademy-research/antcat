@@ -1,4 +1,3 @@
-@dormant
 Feature: Search references for authors
   As any old user of AntCat
   I want to do more than just search for text/year/id/author in one field

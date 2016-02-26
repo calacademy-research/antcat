@@ -1,4 +1,4 @@
-@dormant @javascript
+@javascript
 Feature: Merging authors
   As an editor of AntCat
   I want to merge together author names

@@ -1,4 +1,4 @@
-@dormant @javascript
+@javascript
 Feature: Add reference
   As Phil Ward
   I want to add new references
