@@ -1,3 +1,6 @@
+# Note: This is the superclass of Species and Subspecies, not
+# be confused with "species group" as used in in taxonomy.
+
 class SpeciesGroupTaxon < Taxon
   belongs_to :subfamily
   belongs_to :genus
