@@ -6,7 +6,8 @@
   =javascript_include_tag "taxon_browser_keep_open"
   =javascript_include_tag "catalog"
 
-#taxon_browser=render "taxon_browser"
+#taxon_browser.callout
+  =render "taxon_browser", panels: @panels, self_and_parents: @self_and_parents
 
 #taxon_description=render "catalog/taxon", taxon: @taxon
 

@@ -55,19 +55,13 @@ Feature: Searching the catalog
     And I fill in the catalog search box with "Monomorium"
     And I press "Go" by the catalog search box
     Then I should see "Monomorium history"
-    And "(no subfamily)" should be selected in the subfamilies index
-    And "Monomorium" should be selected in the genera index
 
   Scenario: Finding a genus without a tribe but with a subfamily
     Given a genus exists with a name of "Monomorium" and a subfamily of "Dolichoderinae" and a taxonomic history of "Monomorium history"
     When I go to the catalog
-    And I follow "show tribes"
     And I fill in the catalog search box with "Monomorium"
     And I press "Go" by the catalog search box
     Then I should see "Monomorium history"
-    And "Dolichoderinae" should be selected in the subfamilies index
-    And "(no tribe)" should be selected in the tribes index
-    And "Monomorium" should be selected in the genera index
 
   Scenario: Finding a tribe when tribes are hidden
     When I go to the catalog
@@ -77,6 +71,7 @@ Feature: Searching the catalog
     Then I should see "Dolichoderini" in the tribes index
 
   Scenario: Finding a subgenus when subgenera are hidden
+    Given PENDING probably remove
     When I go to the catalog
     And I fill in the catalog search box with "Subdolichoderus"
     And I press "Go" by the catalog search box

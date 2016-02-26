@@ -46,6 +46,18 @@
 .display_button
   @extend .primary, .hollow, .button
 
-.selected
-  @extend .label
-  color: #fff !important
+#taxon_browser
+  .selected
+    @extend .label
+    a, a.valid.subspecies
+      color: #fff !important
+
+  .white-label
+    @extend .label
+    background-color: #fff
+    border: 1px solid #000
+    a
+      color: #000 !important
+
+  .accordion-title
+    font-size: 100%

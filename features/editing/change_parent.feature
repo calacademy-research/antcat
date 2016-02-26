@@ -244,8 +244,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I wait for a bit
     When I save my changes
     Then I should be on the catalog page for "Atta"
-    When I follow "show tribes"
-    And "Ecitoni" should be selected in the tribes index
+    And "Ecitoni" should be selected in the subfamilies index
 
   Scenario: Changing a genus's subfamily
     Given there is a subfamily "Attininae"
@@ -257,9 +256,10 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "OK"
     When I save my changes
     Then I should be on the catalog page for "Atta"
-    And "Ecitoninae" should be selected in the subfamilies index
+    And "Ecitoninae" should be selected in the families index
 
   Scenario: Setting a genus's parent to blank
+    Given PENDING: TODO selected only works for the incertae sedis / all genera links themselves, not child taxa
     Given there is a subfamily "Attininae"
     And genus "Atta" exists in that subfamily
     When I go to the edit page for "Atta"
@@ -268,7 +268,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "OK"
     When I save my changes
     Then I should be on the catalog page for "Atta"
-    And "(no subfamily)" should be selected in the subfamilies index
+    And "Incertae sedis" should be selected in the subfamilies index
 
   Scenario: Setting a genus's parent to a nonexistent name
     Given there is a subfamily "Attininae"

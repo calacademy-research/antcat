@@ -140,4 +140,15 @@ class Taxon < ActiveRecord::Base
     string
   end
 
+  def self_and_parents
+    parents = []
+    current_taxon = self
+
+    while current_taxon
+      parents << current_taxon
+      current_taxon = current_taxon.parent
+    end
+    parents.reverse
+  end
+
 end

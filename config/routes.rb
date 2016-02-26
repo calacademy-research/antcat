@@ -26,12 +26,7 @@ AntCat::Application.routes.draw do
 
   namespace :catalog do
     get :search
-    get :show_unavailable_subfamilies
-    get :hide_unavailable_subfamilies
-    get :show_tribes
-    get :hide_tribes
-    get :show_subgenera
-    get :hide_subgenera
+    get :options
   end
 
   # TODO remove?

@@ -1,7 +1,20 @@
 class Family < Taxon
   attr_accessible :name,:protonym,:type_name
 
-  def parent; end
+  def parent
+  end
+
+  def all_displayable_genera
+    Genus.displayable.ordered_by_name
+  end
+
+  def genera_incertae_sedis_in
+    genera.displayable
+  end
+
+  def children
+    subfamilies
+  end
 
   def genera
     Genus.without_subfamily.ordered_by_name

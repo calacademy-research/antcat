@@ -20,4 +20,11 @@ class Subfamily < Taxon
     get_statistics [:tribes, :genera, :species, :subspecies]
   end
 
+  def all_displayable_genera
+    genera.displayable.ordered_by_name
+  end
+
+  def genera_incertae_sedis_in
+    genera.displayable.without_tribe.ordered_by_name
+  end
 end

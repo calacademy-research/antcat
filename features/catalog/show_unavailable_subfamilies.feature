@@ -15,9 +15,9 @@ Feature: Showing/hiding unavailable subfamilies
 
   Scenario: Showing unavailable subfamilies
     When I go to the catalog
-    And I follow "show unavailable subfamilies"
+    And I follow "show invalid"
     Then I should see "Unavailabledae"
     And I should see "Availabledae"
-    When I follow "hide unavailable subfamilies"
+    When I follow "show valid only"
     Then I should see "Availabledae"
     And I should not see "Unavailabledae"

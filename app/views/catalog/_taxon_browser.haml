@@ -1,19 +1,16 @@
-#show_and_hide_menu
-  -show_and_hide_links.each do |link|
-    %span.label.secondary=link
-  %span.label.white.hide-for-large
-    =link_to "full key", page_path('help/full_key')
-
-  =check_box_tag :keep_taxon_browser_open, "999", false
-  =label_tag :keep_taxon_browser_open, "keep open"
+#show_and_hide_menu.row.collapse
+  .medium-6-columns.float-left
+    %span.label.secondary=toggle_valid_only_link
+    %span.label.white-label.hide-for-large=link_to "full key", page_path('help/full_key')
+  .medium-6-columns.float-right
+    =check_box_tag :keep_taxon_browser_open, "999", false
+    =label_tag :keep_taxon_browser_open, "keep open"
 
 %ul.accordion{"data-accordion" => "", "data-allow-all-closed" => "true", "data-multi-expand" => "true"}
-  =render   'rank',  rank: :subfamily, items: @subfamilies,selected_item: @subfamily, parent: @family,    show_none: true
-  -if session[:show_tribes] && @subfamily != 'none'
-    =render 'rank',  rank: :tribe,     items: @tribes,     selected_item: @tribe,     parent: @subfamily, show_none: true
-  =render   'rank',  rank: :genus,     items: @genera,     selected_item: @genus
-  -if session[:show_subgenera]
-    =render 'rank',  rank: :subgenus,  items: @subgenera,  selected_item: @subgenus
-  =render   'rank',  rank: :species,   items: @specieses,  selected_item: @species
+  -panels.each do |selected_and_children|
+    -selected = selected_and_children[:selected]
+    -children = selected_and_children[:children]
 
-=render 'taxon_key'
+    =render "rank", selected: selected, self_and_parents: self_and_parents, children: children
+
+=render "taxon_key"

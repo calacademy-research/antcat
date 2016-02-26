@@ -1,28 +1,32 @@
 module CatalogHelper
 
-  def show_and_hide_links
-    { unavailable_subfamilies: "unavailable subfamilies",
-      tribes: "tribes",
-      subgenera: "subgenera"
-    }.map do |key, name|
-      show_or_hide_link key, name
-    end
-  end
-
-  # The "(no subfamily/tribe)"/"?child=none" links
-  def incertae_sedis_column_link rank, taxon, selected_taxon, parent_taxon
-    classes = ['valid']
-    classes << 'selected' if taxon == selected_taxon
-
-    link_to "(no #{rank})", catalog_path(parent_taxon, child: "none"), class: classes
-  end
-
-  def taxon_column_link taxon, selected_taxon
+  def taxon_browser_link taxon
     classes = css_classes_for_rank(taxon)
-    classes = css_classes_for_status(taxon)
-    classes << 'selected' if taxon == selected_taxon
-
+    classes << css_classes_for_status(taxon)
     link_to taxon_label(taxon), catalog_path(taxon), class: classes
+  end
+
+  def panel_header selected
+    if selected.is_a? Taxon
+      "#{selected.rank.capitalize}: #{taxon_breadcrumb_label selected}"
+    else
+      selected[:title_for_panel]
+    end.html_safe
+  end
+
+  def all_genera_link selected
+    extra_panel_link selected, "All genera", "all_genera_in_#{selected.rank}"
+  end
+
+  def incertae_sedis_link selected
+    return if selected.genera_incertae_sedis_in.empty?
+    extra_panel_link selected, "Incertae sedis", "incertae_sedis_in_#{selected.rank}"
+  end
+
+  def toggle_valid_only_link
+    showing = session[:show_valid_only]
+    label = showing ? "show invalid" : "show valid only"
+    link_to label, catalog_options_path(valid_only: showing)
   end
 
   def taxon_label_span taxon
@@ -44,23 +48,34 @@ module CatalogHelper
   end
 
   # HACK -ish
-  def is_last_panel? selected_item, rank
-    selected_item.nil? ||             # no selected -> must be last
-    selected_item.is_a?(Species) ||   # species is always last
-    (selected_item == "none" && rank == :tribe) # special case
+  def open_panel? selected, self_and_parents
+    return true # TODO do not open all panels
+
+    is_last_panel?(selected, self_and_parents) ||
+    selected.is_a?(Genus) ||              # always open genus panel
+    (Rails.env.test? && !$taxon_browser_test_hack) # always open in test
   end
 
   private
-    def show_or_hide_link key, name
-      show_option = session["show_#{key}".to_sym]
-      verb = show_option ? "hide" : "show"
-      link_to "#{verb} #{name}", "/catalog/#{verb}_#{key}#{build_params}".html_safe
+    def is_last_panel? selected, self_and_parents
+      self_and_parents.last == selected ||  # last taxon in panel chain
+      # hack for "incertae sedis"/"all genera", which alsays is last
+      !selected.is_a?(Taxon) ||
+      selected.nil? ||           # no selected -> must be last
+      selected.is_a?(Species)    # species is always last
     end
 
-    def build_params
-      hash = { id: params[:id], child: params[:child] }
-      hash.compact!
-      "?#{hash.to_query}" if hash.present?
+    def extra_panel_link selected, label, param
+      css_class = if params[:display] == param
+                    "upcase selected"
+                  else
+                    "upcase white-label"
+                  end
+      content_tag :li do
+        content_tag :span, class: css_class do
+          link_to label, catalog_path(selected, display: param)
+        end
+      end
     end
 
     def css_classes_for_status taxon

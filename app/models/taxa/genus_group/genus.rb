@@ -36,7 +36,7 @@ class Genus < GenusGroupTaxon
   end
 
   def parent
-    tribe || subfamily
+    tribe || subfamily || Family.first
   end
 
   def siblings

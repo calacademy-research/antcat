@@ -32,7 +32,7 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   def children
-    []
+    Subspecies.none
   end
 
   # This possibly should go through taxon_mother. It's a taxon change, after all,
