@@ -41,8 +41,36 @@ Feature: Taxon browser
     When I click the taxon browser toggler
     Then I should see the taxon browser
 
-    When I reload the page
+    When I check "keep_taxon_browser_open"
+    And I reload the page
     Then I should see the taxon browser
+
+  @taxon_browser
+  Scenario: Keep open checkbox
+    # hidden + off = HIDE
+    When I go to the catalog
+    Then I should not see the taxon browser
+
+    # visible + off = HIDE
+    # hides visible browser unless asked not to
+    When I click the taxon browser toggler
+    Then I should see the taxon browser
+    When I reload the page
+    Then I should not see the taxon browser
+
+    # visible + on = SHOW
+    # only show browser if it's open and asked to not hide it
+    When I click the taxon browser toggler
+    And I check "keep_taxon_browser_open"
+    And I reload the page
+    Then I should see the taxon browser
+
+    # hidden + on = HIDE
+    # if browser is hidden, keep it hidden even if "keep open" is checked
+    When I click the taxon browser toggler
+    And I check "keep_taxon_browser_open"
+    And I reload the page
+    Then I should not see the taxon browser
 
   @taxon_browser
   Scenario: Opening and closing panels

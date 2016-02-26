@@ -15,7 +15,7 @@ describe "TaxonBrowserToggler", ->
 
   beforeEach ->
     fixture.load "taxon_browser_toggler.html"
-    Cookies.remove "taxon_browser"
+    Cookies.remove "browser_toggler"
     engine = new TaxonBrowserToggler()
 
   describe "initialization", ->
