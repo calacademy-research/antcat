@@ -9,7 +9,7 @@ describe Api::V1::TaxaController do
       # nylanderia = create_genus 'Nylanderia'
       species = create_species 'Atta minor maxus'
       # protonym_name = create_subspecies_name 'Eciton minor maxus'
-      get(:show, {'id' => '4'}, nil)
+      get(:show, {'id' => species.id}, nil)
       expect(response.status).to eq(200)
       parsed_species=JSON.parse(response.body)
 
@@ -35,16 +35,16 @@ describe Api::V1::TaxaController do
 
     it "gets all taxa greater than a given number" do
       create_taxon
+      create_species 'Not interesting'
       species = create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
-      # Get index starting at four
-      get(:index, starts_at: 4)
+      # Get index
+      get(:index, starts_at: species.id)
       expect(response.status).to eq(200)
       taxa=JSON.parse(response.body)
-      # since we want no ids less than 4, we should get a starting id at 4
-      expect(taxa[0]['subfamily']['id']).to eq(4)
-      expect(taxa.count).to eq(4)
+      expect(taxa[0]['species']['id']).to eq(species.id)
+      expect(taxa.count).to eq(1)
     end
 
     it "gets all taxa" do

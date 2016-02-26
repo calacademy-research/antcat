@@ -9,7 +9,7 @@ module Api::V1
 
 
     def show
-      super Name
+      super Protonym
     end
   end
 end

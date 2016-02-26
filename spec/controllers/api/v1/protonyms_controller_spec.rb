@@ -3,10 +3,10 @@ require 'spec_helper'
 describe Api::V1::ProtonymsController do
   describe "getting data" do
     it "fetches a protonym" do
-      create_taxon
-      get(:show, {'id' => '1'}, nil)
+      taxon=create_taxon
+      get(:show, {'id' => taxon.protonym_id}, nil)
       expect(response.status).to eq(200)
-      expect(response.body.to_s).to include("1")
+      expect(response.body.to_s).to include(taxon.id.to_s)
     end
 
 

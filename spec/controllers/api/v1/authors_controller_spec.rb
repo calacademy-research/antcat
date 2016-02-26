@@ -5,9 +5,9 @@ describe Api::V1::AuthorsController do
     it "fetches an author primary key" do
       barry_bolton = FactoryGirl.create :author
       bolton = FactoryGirl.create :author_name, name: 'Bolton', author: barry_bolton
-      get(:show, {'id' => '1'}, nil)
+      get(:show, {'id' => bolton.id}, nil)
       expect(response.status).to eq(200)
-      expect(response.body.to_s).to include("1")
+      expect(response.body.to_s).to include(bolton.id.to_s)
     end
 
 
@@ -17,8 +17,8 @@ describe Api::V1::AuthorsController do
 
       get(:index, nil)
       expect(response.status).to eq(200)
-      expect(response.body.to_s).to include("1")
-      expect(response.body.to_s).to include("2")
+      expect(response.body.to_s).to include(barry_bolton.id.to_s)
+      expect(response.body.to_s).to include(second.id.to_s)
 
       authors=JSON.parse(response.body)
       expect(authors.count).to eq(2)

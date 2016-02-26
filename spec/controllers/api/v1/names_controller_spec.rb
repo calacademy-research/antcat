@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Api::V1::NamesController do
   describe "getting data" do
     it "fetches a name" do
-      create_taxon
-      get(:show, {'id' => '1'}, nil)
+      taxon = create_taxon
+      get(:show, {'id' => taxon.name_id}, nil)
       expect(response.status).to eq(200)
       expect(response.body.to_s).to include("Atta")
     end
@@ -16,12 +16,12 @@ describe Api::V1::NamesController do
       protonym_name = create_species_name 'Eciton minor'
 
 
-      get(:index, starts_at: 4)
+      get(:index, starts_at: protonym_name.id)
       expect(response.status).to eq(200)
       names=JSON.parse(response.body)
-      expect(names[0]['genus_name']['id']).to eq(4)
+      expect(names[0]['species_name']['id']).to eq(protonym_name.id)
 
-      expect(names.count).to eq(18)
+      expect(names.count).to eq(1)
 
       get(:index, nil)
       expect(response.status).to eq(200)

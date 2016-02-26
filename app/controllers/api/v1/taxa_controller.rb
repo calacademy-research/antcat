@@ -4,12 +4,12 @@
 module Api::V1
   class TaxaController < Api::ApiController
     def index
-      super(Taxon)
+      super Taxon
     end
 
 
     def show
-      super(Taxon)
+      super Taxon
     end
 
 
