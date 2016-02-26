@@ -46,7 +46,7 @@ class Reference < ActiveRecord::Base
   belongs_to :publisher
 
   def nestees
-    self.class.where(nesting_reference_id: id)
+    Reference.where(nesting_reference_id: id)
   end
 
   scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }

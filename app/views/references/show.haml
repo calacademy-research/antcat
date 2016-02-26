@@ -8,4 +8,12 @@
 
 =render 'reference', reference: @reference
 
+-nestees = @reference.nestees
+-if nestees.present?
+  %h5 Nested references
+  %table
+    -nestees.each do |reference|
+      %tr
+        %td=render "reference", reference: reference
+
 -# TODO Feature: Items using this reference
