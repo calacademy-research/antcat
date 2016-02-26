@@ -75,7 +75,7 @@ paths:
           format: int32
       responses:
         "200":
-          description: Returns 100 taxa at a time starting at an arbitrary taxon id. If no id is supplied, starts at zero
+          description: Returns 100 taxa at a time starting at the specified taxon id. If no id is supplied, starts at zero
           schema:
             $ref: '#/definitions/Taxon'
         "404":
@@ -249,7 +249,7 @@ paths:
             format: int32
       responses:
         "200":
-          description: Returns 100 citations at a time starting at an arbitrary citation id. If no id is supplied, starts at zero
+          description: Returns 100 citations at a time starting at the specified citation id. If no id is supplied, starts at zero
 
           schema:
             $ref: '#/definitions/Citation'
@@ -282,8 +282,8 @@ paths:
       summary: Get all taxon_history_items
       operationId: getTaxonHistoryItems
       tags:
-        - getTaxonHistoryItems
-        - getTaxonHistoryItem
+        - TaxonHistoryItems
+        - TaxonHistoryItem
       parameters:
           - name: starts_at
             in: query
@@ -293,10 +293,10 @@ paths:
             format: int32
       responses:
         "200":
-          description: Returns 100 citations at a time starting at an arbitrary taxon_history_item_id id. If no id is supplied, starts at zero
+          description: Returns 100 taxon history items at a time starting at the specified taxon_history_item_id id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Citation'
+            $ref: '#/definitions/TaxonHistoryItem'
         "404":
           description: Record not found
 
@@ -305,7 +305,7 @@ paths:
       summary: Get a single taxon_history_item
       operationId: getTaxonHistoryItem
       tags:
-        - getTaxonHistoryItem
+        - TaxonHistoryItem
       parameters:
         - name: id
           in: path
@@ -321,16 +321,100 @@ paths:
         "404":
           description: Record not found
 
-#journal
-#place
+  /v1/journals:
+    get:
+      summary: Get all journals
+      operationId: getJournals
+      tags:
+        - Journals
+        - Journal
+      parameters:
+          - name: starts_at
+            in: query
+            description: Lowest journal id to be returned
+            required: false
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Returns 100 journals at a time starting the specified journal id. If no id is supplied, starts at zero
+
+          schema:
+            $ref: '#/definitions/Journal'
+        "404":
+          description: Record not found
+
+  /v1/journals/{id}:
+    get:
+      summary: Get a single journal
+      operationId: getJournal
+      tags:
+        - Journal
+      parameters:
+        - name: id
+          in: path
+          description: getJournal id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single journal record
+          schema:
+            $ref: '#/definitions/Journal'
+        "404":
+          description: Record not found
+
+  /v1/places:
+    get:
+      summary: Get all places
+      operationId: getPlaces
+      tags:
+        - Places
+        - Place
+      parameters:
+          - name: starts_at
+            in: query
+            description: Lowest place id to be returned
+            required: false
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Returns 100 places at a time starting the specified place id. If no id is supplied, starts at zero
+
+          schema:
+            $ref: '#/definitions/Place'
+        "404":
+          description: Record not found
+
+  /v1/places/{id}:
+    get:
+      summary: Get a single place
+      operationId: getplace
+      tags:
+        - Place
+      parameters:
+        - name: id
+          in: path
+          description: getplace id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single place record
+          schema:
+            $ref: '#/definitions/Place'
+        "404":
+          description: Record not found
+
 #publisher
 #reference
 #reference_author_name
 #reference_document
 #reference_section
 #synonym
-
-
 
 
 
@@ -618,7 +702,7 @@ definitions:
     properties:
       id:
         type: integer
-        description: Name id, primary key
+        description: Citation id, primary key
       reference_id:
         type: integer
         description: fk to reference
@@ -649,7 +733,7 @@ definitions:
     properties:
       id:
         type: integer
-        description: Name id, primary key
+        description: taxon history id, primary key
       taxon_id:
         type: integer
         description: fk to taxon
@@ -659,6 +743,58 @@ definitions:
       taxt:
         type: string
         description: Long field with text and notes. Contains references to taxaon and reference ids with format {ref *}:.
+      auto_generated:
+        type: boolean
+        description: Programatically generated (typically from an exteral import)
+      origin:
+        type: string
+        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+
+
+
+  Journal:
+    description: Journal
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Journal id, primary key
+      name:
+        type: string
+        description: Journal name
+      auto_generated:
+        type: boolean
+        description: Programatically generated (typically from an exteral import)
+      origin:
+        type: string
+        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+
+  Place:
+    description: place
+    type: object
+    properties:
+      id:
+        type: integer
+        description: place id, primary key
+      name:
+        type: string
+        description: Place name
       auto_generated:
         type: boolean
         description: Programatically generated (typically from an exteral import)
