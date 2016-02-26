@@ -1,11 +1,8 @@
 Given /^there is a family "Formicidae"$/ do
   create_family
 end
-Given /^the Formicidae family exists$/ do
-  # TODO refactor to not use `.destroy_all`
-  Taxon.destroy_all
-  Reference.destroy_all
 
+Given /^the Formicidae family exists$/ do
   reference = FactoryGirl.create :article_reference,
     author_names: [FactoryGirl.create(:author_name, name: 'Latreille, I.')],
     citation_year: '1809',
