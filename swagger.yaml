@@ -585,8 +585,50 @@ paths:
         "404":
           description: Record not found
 
-#reference_document
-#reference_section
+  /v1/reference_sections:
+    get:
+      summary: Get all reference/Author Name association records
+      operationId: getReferenceSections
+      tags:
+        - ReferenceSections
+        - ReferenceSection
+      parameters:
+          - name: starts_at
+            in: query
+            description: Lowest reference id to be returned
+            required: false
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Returns 100 referenceSections at a time starting the specified reference id. If no id is supplied, starts at zero
+
+          schema:
+            $ref: '#/definitions/Reference'
+        "404":
+          description: Record not found
+
+  /v1/reference_sections/{id}:
+    get:
+      summary: Get a single reference/author name association
+      operationId: getReferenceSection
+      tags:
+        - ReferenceSection
+      parameters:
+        - name: id
+          in: path
+          description: get referenceAuthor by ID
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single reference/author association record
+          schema:
+            $ref: '#/definitions/ReferenceSection'
+        "404":
+          description: Record not found
+
 #synonym
 
 
@@ -1146,3 +1188,31 @@ definitions:
         format: date-time
         description: Automatically generated timestamp for most recent update
 
+  ReferenceSection:
+    description: reference section
+    type: object
+    properties:
+      id:
+        type: integer
+      taxon_id:
+        type: integer
+      position:
+        type: integer
+        description: relative priority of this particular taxon history item agsint others on this taxon
+      references_taxt:
+        type: string
+        description: Long field with text and notes. Contains references to taxaon and reference ids with format {ref *}:.
+      title_taxt:
+        type: string
+      subtitle_taxt:
+        type: string
+      public:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
