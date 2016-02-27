@@ -130,7 +130,10 @@ class Reference < ActiveRecord::Base
   end
 
   ###############################################
-  def references options = {}
+  # Expensive method
+  def reference_references return_true_or_false: false
+    return_early = return_true_or_false
+
     references = []
     Taxt.taxt_fields.each do |klass, fields|
       klass.send(:all).each do |record|
@@ -138,7 +141,7 @@ class Reference < ActiveRecord::Base
           next unless record[field]
           if record[field] =~ /{ref #{id}}/
             references << { table: klass.table_name, id: record[:id], field: field }
-            return true if options[:any?]
+            return true if return_early
           end
         end
       end
@@ -146,19 +149,19 @@ class Reference < ActiveRecord::Base
 
     Citation.where(reference_id: id).all.each do |record|
       references << { table: Citation.table_name, id: record[:id], field: :reference_id }
-      return true if options[:any?]
+      return true if return_early
     end
 
     NestedReference.where(nesting_reference_id: id).all.each do |record|
       references << { table: 'references', id: record[:id], field: :nesting_reference_id }
-      return true if options[:any?]
+      return true if return_early
     end
-    return false if options[:any?]
+    return false if return_early
     references
   end
 
-  def any_references?
-    self.references any?: true
+  def has_any_references?
+    self.reference_references return_true_or_false: true
   end
 
   def self.approve_all
@@ -170,7 +173,7 @@ class Reference < ActiveRecord::Base
 
   private
     def check_not_referenced
-      return true unless self.any_references?
+      return true unless self.has_any_references?
 
       # TODO list which items
       errors.add :base, "This reference can't be deleted, as there are other references to it."
