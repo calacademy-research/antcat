@@ -3,24 +3,11 @@ require 'spec_helper'
 describe CatalogController do
 
   describe "Routing" do
-    describe "hide/show" do
-      [ 'show_unavailable_subfamilies',
-        'hide_unavailable_subfamilies',
-        'show_tribes',
-        'hide_tribes',
-        'show_subgenera',
-        'hide_subgenera'
-      ].each do |item|
-        it { should route(:get, "/catalog/#{item}").to(action: item.to_sym) }
-      end
-    end
-
     it { should route(:get, "/catalog/search").to(action: :search) }
   end
 
   it { should use_before_action(:handle_family_not_found) }
   it { should use_before_action(:set_taxon) }
-  it { should use_before_action(:set_child) }
 
   describe 'GET #index' do
     describe "handle non-existing family" do
@@ -47,42 +34,21 @@ describe CatalogController do
     end
   end
 
-  describe "show an hide" do
+  describe "valid_only toggler" do
     let!(:taxon) { FactoryGirl.create(:family) }
+    before { @request.env["HTTP_REFERER"] = "http://antcat.org" }
 
-    describe "tribes" do
-      describe 'GET #show_tribes' do
-        before { get :show_tribes, id: taxon.id }
-        it { should set_session[:show_tribes].to(true) }
-      end
-      describe 'GET #hide_tribes' do
-        before { get :hide_tribes, id: taxon.id }
-        it { should set_session[:show_tribes].to(false) }
-        # TODO take into account (in test) if the linked was clicked from a tribe page
-      end
+    describe "toggles the session" do
+      before { get :options, valid_only: "true" }
+      it { should set_session[:show_valid_only].to(true) }
     end
 
-    describe "unavailable subfamilies" do
-      describe 'GET #show_unavailable_subfamilies' do
-        before { get :show_unavailable_subfamilies, id: taxon.id }
-        it { should set_session[:show_unavailable_subfamilies].to(true) }
+    describe "toggles back" do
+      before do
+        get :options, valid_only: "true"
+        get :options, valid_only: "false"
       end
-      describe 'GET #hide_unavailable_subfamilies' do
-        before { get :hide_unavailable_subfamilies, id: taxon.id }
-        it { should set_session[:show_unavailable_subfamilies].to(false) }
-      end
-    end
-
-    describe "subgenera" do
-      describe 'GET #show_subgenera' do
-        before { get :show_subgenera, id: taxon.id }
-        it { should set_session[:show_subgenera].to(true) }
-      end
-      describe 'GET #hide_subgenera' do
-        before { get :hide_subgenera, id: taxon.id }
-        it { should set_session[:show_subgenera].to(false) }
-        # TODO take into account (in test) if the linked was clicked from a subgenus page
-      end
+      it { should set_session[:show_valid_only].to(false) }
     end
   end
 

@@ -15,67 +15,24 @@ describe CatalogHelper do
     end
   end
 
-  describe "Hide link" do
-    it "creates a link to the hide tribes action with all the current parameters" do
-      helper.stub(:params).and_return({ id: 99 })
-      expected = %Q[<a href="/catalog/hide_tribes?id=99">hide tribes</a>]
-      expect(helper.send(:hide_link, 'tribes')).to eq expected
-    end
-    it "handles child params" do
-      helper.stub(:params).and_return({ child: "none" })
-      expected = %Q[<a href="/catalog/hide_tribes?child=none">hide tribes</a>]
-      expect(helper.send(:hide_link, 'tribes')).to eq expected
-    end
-    it "handles child and id params at the same time" do
-      helper.stub(:params).and_return({ id: 99, child: "none" })
-      expected = %Q[<a href="/catalog/hide_tribes?child=none&id=99">hide tribes</a>]
-      expect(helper.send(:hide_link, 'tribes')).to eq expected
+  describe "#taxon_browser_link" do
+    it "formats" do
+      taxon = FactoryGirl.create :genus
+      expect(helper.taxon_browser_link(taxon))
+        .to eq %[<a class="genus name taxon valid" href="/catalog/#{taxon.id}"><i>#{taxon.name}</i></a>]
     end
   end
 
-  describe "Show child link" do
-    it "creates a link to the show action" do
-      helper.stub(:params).and_return({ id: 99 })
-      expected = %Q[<a href="/catalog/show_tribes?id=99">show tribes</a>]
-      expect(helper.send(:show_child_link, 'tribes')).to eq expected
-    end
-    it "handles child params" do
-      helper.stub(:params).and_return({ child: "none" })
-      expected = %Q[<a href="/catalog/hide_tribes?child=none">hide tribes</a>]
-      expect(helper.send(:hide_link, 'tribes')).to eq expected
-    end
-    it "handles child and id params at the same time" do
-      helper.stub(:params).and_return({ id: 99, child: "none" })
-      expected = %Q[<a href="/catalog/hide_tribes?child=none&id=99">hide tribes</a>]
-      expect(helper.send(:hide_link, 'tribes')).to eq expected
-    end
-  end
-
-  describe "index column links" do
-    it "#incertae_sedis_column_link" do
-      formicidae = FactoryGirl.create :family
-      expect(helper.incertae_sedis_column_link(:subfamily, 'none', 'none', formicidae))
-        .to eq %[<a class="valid selected" href="/catalog/#{formicidae.id}?child=none">(no subfamily)</a>]
-    end
-    describe "#taxon_column_link" do
-      it "formats selected" do
-        selected = FactoryGirl.create :genus
-        expect(helper.taxon_column_link(selected, selected))
-          .to eq %[<a class="genus name selected taxon valid" href="/catalog/#{selected.id}"><i>#{selected.name}</i></a>]
-      end
-      it "formats non-selected" do
-        selected = FactoryGirl.create :genus
-        not_selected = FactoryGirl.create :genus
-        expect(helper.taxon_column_link(selected, not_selected))
-          .to eq %[<a class="genus name taxon valid" href="/catalog/#{selected.id}"><i>#{selected.name}</i></a>]
-      end
-    end
-  end
+  # TODO add once the code is more stable
+  # describe "#panel_header selected"
+  # describe "#all_genera_link selected"
+  # describe "#incertae_sedis_link selected"
+  # describe "#toggle_valid_only_link"
 
   describe "labels" do
     let(:taxon) { FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta') }
 
-    describe "Taxon label span" do
+    describe "#taxon_label_span" do
       it "should create a span based on the type of the taxon and its status" do
         result = helper.taxon_label_span(taxon)
         expect(result).to eq('<span class="genus name taxon valid">Atta</span>')
@@ -83,16 +40,17 @@ describe CatalogHelper do
       end
     end
 
-    describe 'taxon rank css classes' do
+    describe "#css_classes_for_rank" do
       it 'should return the right ones' do
         expect(helper.css_classes_for_rank(taxon)).to match_array(['genus', 'taxon', 'name'])
       end
     end
 
-    describe 'taxon class' do
+    describe "#css_classes_for_status" do
       it "should return the correct classes" do
-        expect(helper.send(:taxon_css_classes, taxon)).to eq("genus name taxon valid")
+        expect(helper.send(:css_classes_for_status, taxon)).to match_array ["valid"]
       end
+      # Not tested: "nomen_nudum"/"collective_group_name"
     end
   end
 

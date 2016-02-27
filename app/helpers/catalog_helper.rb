@@ -44,7 +44,7 @@ module CatalogHelper
   end
 
   def css_classes_for_rank taxon
-    [taxon.type.downcase, 'taxon', 'name']
+    [taxon.type.downcase, 'taxon', 'name'].sort
   end
 
   # HACK -ish
