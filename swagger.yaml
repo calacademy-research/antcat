@@ -453,7 +453,94 @@ paths:
         "404":
           description: Record not found
 
-#reference
+  /v1/references:
+    get:
+      summary: Get all references
+      operationId: getReferences
+      tags:
+        - References
+        - Reference
+      parameters:
+          - name: starts_at
+            in: query
+            description: Lowest reference id to be returned
+            required: false
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Returns 100 references at a time starting the specified reference id. If no id is supplied, starts at zero
+
+          schema:
+            $ref: '#/definitions/Reference'
+        "404":
+          description: Record not found
+
+  /v1/references/{id}:
+    get:
+      summary: Get a single reference
+      operationId: getreference
+      tags:
+        - Reference
+      parameters:
+        - name: id
+          in: path
+          description: getreference id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single reference record
+          schema:
+            $ref: '#/definitions/Reference'
+        "404":
+          description: Record not found
+
+  /v1/reference_author_names:
+    get:
+      summary: Get all reference/Author Name association records
+      operationId: getReferenceAuthorNames
+      tags:
+        - ReferenceAuthorNames
+        - Reference
+      parameters:
+          - name: starts_at
+            in: query
+            description: Lowest reference id to be returned
+            required: false
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Returns 100 referenceAuthorNames at a time starting the specified reference id. If no id is supplied, starts at zero
+
+          schema:
+            $ref: '#/definitions/Reference'
+        "404":
+          description: Record not found
+
+  /v1/reference_author_names/{id}:
+    get:
+      summary: Get a single reference/author name association
+      operationId: getReferenceAuthorName
+      tags:
+        - ReferenceAuthorName
+      parameters:
+        - name: id
+          in: path
+          description: get referenceAuthor by ID
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single reference/author association record
+          schema:
+            $ref: '#/definitions/ReferenceAuthorName'
+        "404":
+          description: Record not found
+
 #reference_author_name
 #reference_document
 #reference_section
@@ -863,6 +950,119 @@ definitions:
       name:
         type: string
         description: Publisher name
+      auto_generated:
+        type: boolean
+        description: Programatically generated (typically from an exteral import)
+      origin:
+        type: string
+        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+
+  Reference:
+    description: reference
+    type: object
+    properties:
+      id:
+        type: integer
+        description: reference id, primary key
+      year:
+        type: integer
+      possess:
+        type: string
+      date:
+        type: string
+      cite_code:
+        type: string
+      citation_year:
+        type: string
+      type:
+        type: string
+      publisher_id:
+        type: integer
+        description: fk to publisher
+      journal_id:
+        type: integer
+        description: fk to journal
+      series_volume_issue:
+        type: integer
+      pagination:
+        type: string
+      author_names_string_cache:
+        type: string
+      editor_notes:
+        type: string
+      public_notes:
+        type: string
+      taxonomic_notes:
+        type: string
+      title:
+        type: string
+      citation:
+        type: string
+      nesting_reference_id:
+        type: string
+      pages_in:
+        type: string
+      author_names_suffix:
+        type: string
+      principal_author_last_name_cache:
+        type: string
+      bolton_key_cache:
+        type: string
+      reason_missing:
+        type: string
+      key_cache:
+        type: string
+      review_state:
+        type: string
+      formatted_cache:
+        type: string
+      inline_citation_cache:
+        type: string
+      doi:
+        type: string
+        description: DOI citation reference
+      name:
+        type: string
+        description: Reference name
+      auto_generated:
+        type: boolean
+        description: Programatically generated (typically from an exteral import)
+      origin:
+        type: string
+        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+
+
+
+
+  ReferenceAuthorName:
+    description: reference authorn name - table to associate references with author names
+    type: object
+    properties:
+      id:
+        type: integer
+        description: ReferenceAuthorName id, primary key
+      author_name_id:
+        type: integer
+      reference_id:
+        type: integer
+      position:
+        type: integer
       auto_generated:
         type: boolean
         description: Programatically generated (typically from an exteral import)

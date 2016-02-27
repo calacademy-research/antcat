@@ -106,6 +106,8 @@ AntCat::Application.routes.draw do
       resources :journals
       resources :places
       resources :publishers
+      resources :references
+      resources :reference_author_names
     end
     # For the next version...
     # namespace :v2 do
