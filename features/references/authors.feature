@@ -1,8 +1,4 @@
 Feature: Working with authors and their names
-
-  Background:
-    Given that version tracking is enabled
-
   Scenario: Not logged in
     Given the following names exist for an author
       | Bolton, B. |

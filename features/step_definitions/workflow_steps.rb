@@ -1,7 +1,3 @@
-When /^(?:that )?version tracking is (not)?enabled$/ do |is_not|
-  PaperTrail.enabled = !is_not
-end
-
 When /^the changes are approved$/ do
   TaxonState.update_all review_state: :approved
   Change.update_all approver_id: @user.id, approved_at: Time.now

@@ -7,7 +7,6 @@ Feature: Editing a taxon
 
   Background:
     Given the Formicidae family exists
-    Given version tracking is enabled
 
   Scenario: Editing a family's name
     And I log in

@@ -8,7 +8,6 @@ Feature: Changing parent genus, species, tribe or subfamily
   Background:
     Given the Formicidae family exists
     Given I am logged in
-    And that version tracking is enabled
 
   Scenario: Changing a species's genus
     Given there is a genus "Atta"

@@ -10,7 +10,6 @@ Feature: Adding a taxon
     # TODO leaving this here
     Given the Formicidae family exists
     Given I log in
-    And that version tracking is enabled
     And these dated references exist
       | authors | citation   | title | year |  created_at | updated_at | doi |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |   TODAYS_DATE | TODAYS_DATE |  |

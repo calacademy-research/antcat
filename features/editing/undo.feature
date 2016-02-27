@@ -1,5 +1,4 @@
-@javascript
-@allow_rescue
+@javascript @papertrail
 Feature: Workflow
   As an editor of AntCat
   I want to change a taxon's parent
@@ -14,7 +13,6 @@ Feature: Workflow
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
-    And version tracking is enabled
     And I log in as a catalog editor named "Mark Wilden"
 
   # Add these scenarios
