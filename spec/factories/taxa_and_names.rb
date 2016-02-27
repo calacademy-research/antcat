@@ -285,14 +285,14 @@ def create_synonym senior, attributes = {}
   junior
 end
 
-def create_taxon_with_state(taxon_type, name)
-  taxon = FactoryGirl.create(taxon_type, name: name)
+def create_taxon_with_state taxon_type, name
+  taxon = FactoryGirl.create taxon_type, name: name
   FactoryGirl.create :taxon_state, taxon_id: taxon.id
   taxon.touch_with_version
   taxon
 end
 
-def create_taxon_version_and_change(review_state, user = @user, approver = nil, genus_name = 'default_genus')
+def create_taxon_version_and_change review_state, user = @user, approver = nil, genus_name = 'default_genus'
   name = FactoryGirl.create :name, name: genus_name
   taxon = FactoryGirl.create :genus, name: name
   taxon.taxon_state.review_state = review_state

@@ -48,8 +48,7 @@ FactoryGirl.define do
     sequence(:references_taxt) { |n| "Reference #{n}" }
   end
 
-  factory :antwiki_valid_taxon do
-  end
+  factory :antwiki_valid_taxon
 
   factory :version, :class => PaperTrail::Version do
     item_type 'Taxon'

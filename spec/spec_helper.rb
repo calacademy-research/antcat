@@ -40,6 +40,7 @@ RSpec.configure do |config|
   end
 
   config.infer_spec_type_from_file_location!
+  config.include Devise::TestHelpers, type: :controller
 end
 
 Shoulda::Matchers.configure do |config|
@@ -47,18 +48,4 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
-end
-
-def with_versioning
-  was_enabled = PaperTrail.enabled?
-  PaperTrail.enabled = true
-  begin
-    yield
-  ensure
-    PaperTrail.enabled = was_enabled
-  end
-end
-
-RSpec.configure do |config|
-  config.include Devise::TestHelpers, type: :controller
 end

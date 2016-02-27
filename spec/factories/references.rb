@@ -24,8 +24,7 @@ FactoryGirl.define do
     name 'New York'
   end
 
-  factory :reference_document do
-  end
+  factory :reference_document
 
   factory :reference do
     sequence(:title) { |n| "Ants are my life#{n}" }
