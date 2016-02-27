@@ -541,7 +541,50 @@ paths:
         "404":
           description: Record not found
 
-#reference_author_name
+  /v1/reference_documents:
+    get:
+      summary: Get all reference/Author Name association records
+      operationId: getReferenceDocuments
+      tags:
+        - ReferenceDocuments
+        - ReferenceDocument
+      parameters:
+          - name: starts_at
+            in: query
+            description: Lowest reference id to be returned
+            required: false
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Returns 100 referenceDocuments at a time starting the specified reference id. If no id is supplied, starts at zero
+
+          schema:
+            $ref: '#/definitions/Reference'
+        "404":
+          description: Record not found
+
+  /v1/reference_documents/{id}:
+    get:
+      summary: Get a single reference/author name association
+      operationId: getReferenceDocument
+      tags:
+        - ReferenceDocument
+      parameters:
+        - name: id
+          in: path
+          description: get referenceAuthor by ID
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single reference/author association record
+          schema:
+            $ref: '#/definitions/ReferenceDocument'
+        "404":
+          description: Record not found
+
 #reference_document
 #reference_section
 #synonym
@@ -1077,3 +1120,29 @@ definitions:
         type: string
         format: date-time
         description: Automatically generated timestamp for most recent update
+
+  ReferenceDocument:
+    description: reference document
+    type: object
+    properties:
+      id:
+        type: integer
+      reference_id:
+        type: integer
+      url:
+        type: string
+        description: reference document URL
+      file_file_name:
+        type: string
+        description: Filename
+      public:
+        type: boolean
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+
