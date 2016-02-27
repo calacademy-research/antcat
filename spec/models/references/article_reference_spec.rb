@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe ArticleReference do
 
+  it { should validate_presence_of(:year) }
+
   describe "parsing fields from series_volume_issue" do
     it "can parse out volume and issue" do
       reference = FactoryGirl.create(:article_reference, :series_volume_issue => "92(32)")

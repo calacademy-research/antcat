@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe NestedReference do
 
+  it { should validate_presence_of(:year) }
+
   describe "Validation" do
     before do
       @reference = NestedReference.new :title => 'asdf', :author_names => [FactoryGirl.create(:author_name)], :citation_year => '2010',

@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe UnknownReference do
 
+  it { should validate_presence_of(:year) }
+
   describe "validation" do
     before do
       author_name = FactoryGirl.create :author_name

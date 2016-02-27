@@ -140,23 +140,6 @@ describe Reference do
       reference.title = nil
       expect(reference).not_to be_valid
     end
-
-    describe "Difference between Missing and UnmissingReferences" do
-      it "should require the year when it's Unmissing" do
-        reference = UnmissingReference.new title: 'foo'
-        reference.citation_year = nil
-        expect(reference).not_to be_valid
-        reference.citation_year = ''
-        expect(reference).not_to be_valid
-      end
-      it "should not require the year when it's Missing" do
-        reference = MissingReference.create title: 'foo'
-        reference.citation_year = nil
-        expect(reference).to be_valid
-        reference.citation_year = ''
-        expect(reference).to be_valid
-      end
-    end
   end
 
   describe "changing the citation year" do

@@ -1,6 +1,6 @@
-class UnknownReference < UnmissingReference
+class UnknownReference < Reference
 
-  validates_presence_of :citation
+  validates_presence_of :year, :citation
   attr_accessible :year
 
 end

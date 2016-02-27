@@ -1,8 +1,8 @@
-class ArticleReference < UnmissingReference
+class ArticleReference < Reference
   belongs_to :journal
 
-  validates_presence_of :journal, :series_volume_issue, :pagination
-  attr_accessible :year,:journal, :doi
+  validates_presence_of :year, :journal, :series_volume_issue, :pagination
+  attr_accessible :year, :journal, :doi
 
   def start_page
     page_parts[:start]
