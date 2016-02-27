@@ -1,14 +1,19 @@
+
 class Rank
-  def initialize hash
-    @hash = hash
+  attr_reader :singular, :plural, :string
+
+  def initialize singular, plural, uncommon: false
+    @singular = singular
+    @plural = plural
+    @uncommon = uncommon
   end
 
   def string
-    @hash[:string]
+    @singular
   end
 
   def uncommon?
-    @hash[:uncommon]
+    @uncommon
   end
 
   # Returns only Genus for species and Family for genus.
@@ -17,7 +22,7 @@ class Rank
   # avaiable.
   def parent
     parent_index = index - 1
-    return nil if parent_index < 0
+    return if parent_index < 0
     parent = at parent_index
     parent = parent.parent if parent.uncommon?
     parent
@@ -25,40 +30,32 @@ class Rank
 
   def child
     child_index = index + 1
-    return nil if child_index >= self.class.ranks.size
+    return if child_index >= self.class.ranks.size
     child = at child_index
     child = child.child if child.uncommon?
     child
   end
 
-  def to_sym *options
-    if options.include? :plural
-      @hash[:plural].to_sym
+  def to_sym plural: false
+    if plural
+      @plural.to_sym
     else
-      @hash[:string].to_sym
+      @singular.to_sym
     end
-  end
-
-  def plural
-    @hash[:plural]
   end
 
   def to_s *options
     numeric_argument = options.find {|option| option.kind_of? Numeric}
     options << :plural if numeric_argument && numeric_argument > 1 #hmm
 
-    s = (options.include?(:plural) ? @hash[:plural] : @hash[:string]).dup
+    s = (options.include?(:plural) ? @plural : @singular).dup
     s = s.titleize if options.include? :capitalized
     s
   end
 
-  def includes? identifier
-    @hash.values.include? identifier
-  end
-
   def index
     self.class.ranks.index do |rank|
-      @hash[:string] == rank.string
+      @singular == rank.string
     end
   end
 
@@ -75,20 +72,23 @@ class Rank
         "#{identifier}".downcase
       end
 
-    ranks.find { |rank| rank.includes? search_ranks_for_this } or raise "Couldn't find rank for '#{identifier}'"
+    ranks.find { |rank|
+      rank.singular == search_ranks_for_this ||
+      rank.plural == search_ranks_for_this
+    } or raise "Couldn't find rank for '#{identifier}'"
   end
 
   class << self; alias_method :[], :find end
 
   def self.ranks
     @_ranks ||= [
-      Rank.new(string: 'family',     plural: 'families'),
-      Rank.new(string: 'subfamily',  plural: 'subfamilies'),
-      Rank.new(string: 'tribe',      plural: 'tribes', uncommon: true),
-      Rank.new(string: 'genus',      plural: 'genera'),
-      Rank.new(string: 'subgenus',   plural: 'subgenera', uncommon: true),
-      Rank.new(string: 'species',    plural: 'species'),
-      Rank.new(string: 'subspecies', plural: 'subspecies'),
+      Rank.new("family", "families"),
+      Rank.new("subfamily", "subfamilies"),
+      Rank.new("tribe", "tribes", uncommon: true),
+      Rank.new("genus", "genera"),
+      Rank.new("subgenus", "subgenera", uncommon: true),
+      Rank.new("species", "species"),
+      Rank.new("subspecies", "subspecies")
     ]
   end
 

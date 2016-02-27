@@ -38,7 +38,7 @@ describe Rank do
   end
 
   it "should do plural symbol" do
-    expect(Rank['Genera'].to_sym(:plural)).to eq(:genera)
+    expect(Rank['Genera'].to_sym(plural: true)).to eq(:genera)
   end
 
   it "should convert from a taxon to a symbol" do

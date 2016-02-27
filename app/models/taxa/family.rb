@@ -32,7 +32,7 @@ class Family < Taxon
     def get_statistics *ranks
       ranks.inject({}) do |statistics, klass|
         count = klass.group(:fossil,:status).count
-        self.class.massage_count count, Rank[klass].to_sym(:plural), statistics
+        self.class.massage_count count, Rank[klass].to_sym(plural: true), statistics
         statistics
       end
     end
