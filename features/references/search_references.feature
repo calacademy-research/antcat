@@ -1,4 +1,3 @@
-@search
 Feature: Searching references
   As a user of AntCat
   I want to search for references
@@ -18,6 +17,7 @@ Feature: Searching references
     And I should see "Hölldobler, B."
     And I should see "Bolton, B."
 
+  @search
   Scenario: Finding one reference for an author
     When I go to the references page
     And I fill in the references search box with "Fisher"
@@ -26,8 +26,7 @@ Feature: Searching references
     And I should not see "Bolton, B."
     And I should not see "Hölldobler, B."
 
-  # If this test fails it is likely a solr configuraiton issue.
-  # Worth checking on the deployed server to see if it's actually working.
+  @search
   Scenario: Searching for an author name with diacritics, using the diacritics in the query
     When I go to the references page
     And I fill in the references search box with "Hölldobler"
@@ -106,6 +105,7 @@ Feature: Searching references
     And I press "Go" by the references search box
     Then I should not see "Dolerichoderinae"
 
+  @search
   Scenario: Searching by cite code that looks like a year
     Given these references exist
       | authors    | year | citation_year | title  | citation    | cite_code |
@@ -119,6 +119,7 @@ Feature: Searching references
     Then I should see "Ants 11:1-2"
     And I should not see "Ants 11:2-3"
 
+  @search
   Scenario: Seeing just "other" references (not article, book, etc.)
     Given these references exists
       | authors    | year | citation_year | title | citation      |
@@ -134,7 +135,7 @@ Feature: Searching references
     Then I should not see "Known"
     And I should see "Unknown"
 
-  @javascript
+  @javascript @search
   Scenario: Search using autocomplete
     When I go to the references page
     And I fill in the references search box with "bolt"
@@ -144,7 +145,7 @@ Feature: Searching references
       | Formis |
       | Anthill |
 
-  @javascript
+  @javascript @search
   Scenario: Search using autocomplete keywords
     Given these references exists
       | authors    | year | citation_year | title                  | citation      |
@@ -157,7 +158,7 @@ Feature: Searching references
     And I should not see the following autocomplete suggestions:
       | Fisher's Favorite Ants |
 
-  @javascript
+  @javascript @search
   Scenario: Expanding autocomplete suggestions
     When I go to the references page
     And I fill in the references search box with "author:fish"

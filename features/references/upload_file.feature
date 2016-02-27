@@ -1,4 +1,3 @@
-@javascript
 Feature: Upload a file
   As an editor
   I want to upload the document for a reference
