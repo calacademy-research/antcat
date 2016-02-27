@@ -4,10 +4,6 @@ module ChangesHelper
     name.name_html.html_safe
   end
 
-  def format_rank rank
-    rank.string.titlecase
-  end
-
   def format_status status
     Status[status].to_s
   end

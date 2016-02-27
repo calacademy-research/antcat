@@ -1,14 +1,10 @@
 class Rank
-  attr_reader :singular, :plural, :string
+  attr_reader :singular, :plural
 
   def initialize singular, plural, uncommon: false
     @singular = singular
     @plural = plural
     @uncommon = uncommon
-  end
-
-  def string
-    @singular
   end
 
   def uncommon?
@@ -35,21 +31,18 @@ class Rank
     child
   end
 
-  def to_s *options
-    numeric_argument = options.find {|option| option.kind_of? Numeric}
-    options << :plural if numeric_argument && numeric_argument > 1 #hmm
-
-    (options.include?(:plural) ? @plural : @singular).dup
+  def to_s
+    "#{@singular}"
   end
 
   def index
     self.class.ranks.index do |rank|
-      @singular == rank.string
+      self.to_s == rank.to_s
     end
   end
 
   def self.find identifier
-    return nil if identifier.blank?
+    return if identifier.blank?
 
     search_ranks_for_this =
       case identifier

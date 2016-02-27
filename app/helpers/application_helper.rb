@@ -20,8 +20,8 @@ module ApplicationHelper
 
   def rank_options_for_select value='All'
     string =  option_for_select('All', 'All', value)
-    string << Rank.ranks.reject { |rank| rank.string == 'family'}.reduce("") do |options, rank|
-              options << option_for_select(rank.plural.capitalize, rank.string.capitalize, value)
+    string << Rank.ranks.reject { |rank| rank.to_s == 'family'}.reduce("") do |options, rank|
+              options << option_for_select(rank.to_s.pluralize.capitalize, rank.to_s.capitalize, value)
             end.html_safe
   end
 

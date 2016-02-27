@@ -3,8 +3,7 @@
 
 -# TODO make pretty
 -if selected.is_a? Taxon
-  -rank = Rank[selected.rank]
-  -css_class << "#{rank.plural.to_sym}-test-hook"
+  -css_class << "#{selected.rank.pluralize}-test-hook"
 
 %li.accordion-item{class: css_class, "data-accordion-item" => ""}
   %a.accordion-title=panel_header selected

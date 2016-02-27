@@ -12,8 +12,8 @@ module TaxonHelper
   end
 
   def add_taxon_button taxon, collision_resolution
-    rank_to_add = Rank[taxon].child.try(:string)
-    return unless rank_to_add
+    rank_to_add = Rank[taxon].child.to_s
+    return unless rank_to_add.present?
 
     collision_resolution = nil if collision_resolution.blank?
     # Hopefully not needed, but leaving this extra check here to be on the safe side

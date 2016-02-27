@@ -20,7 +20,7 @@
         %td.parent-test-hook Hymenoptera
       -else
         -if taxon.parent
-          %th.parent_rank-test-hook= format_rank Rank[taxon.parent.rank]
+          %th.parent_rank-test-hook= taxon.parent.rank.titlecase
           %td.parent-test-hook= format_taxon_name taxon.parent.name
         -else
           -# see 8a7b3f95b312362c8cb03e9589f79e8ff8c5e0a4

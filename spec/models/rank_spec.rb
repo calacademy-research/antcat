@@ -9,12 +9,12 @@ describe Rank do
       [:species, "species"],
       [:subspecies, "subspecies"]
     ].each do |symbol, string|
-      expect(Rank[symbol].string).to eq(string)
+      expect(Rank[symbol].to_s).to eq(string)
     end
   end
 
   it "ex #to_class replacement code proof of concept" do
-    expect(Rank[:genus].string.capitalize.constantize).to eq(Genus)
+    expect(Rank[:genus].to_s.capitalize.constantize).to eq(Genus)
   end
 
   it "should return a string" do
@@ -22,16 +22,7 @@ describe Rank do
   end
 
   it "ex #display_string replacement code proof of concept" do
-    expect(Rank[:tribes].string.titlecase).to eq('Tribe')
-  end
-
-  it "should do plural symbol" do
-    expect(Rank['Genera'].plural.to_sym).to eq(:genera)
-  end
-
-  it "should automatically singularize or pluralize depending on a count" do
-    expect(Rank[Genus.new].to_s(1)).to eq('genus')
-    expect(Rank[Genus.new].to_s(2)).to eq('genera')
+    expect(Rank[:tribes].to_s.titlecase).to eq('Tribe')
   end
 
   it "should convert from an array of taxa" do
@@ -53,7 +44,7 @@ describe Rank do
   end
 
   it "ex #write_selector replacement code proof of concept" do
-    expect("#{Rank[create_genus].string}=".to_sym).to eq(:genus=)
+    expect("#{Rank[create_genus].to_s}=".to_sym).to eq(:genus=)
   end
 
   it "should understand its parent" do
