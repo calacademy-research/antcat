@@ -1,9 +1,6 @@
 class Rank
-  attr_reader :singular, :plural
-
-  def initialize singular, plural, uncommon: false
-    @singular = singular
-    @plural = plural
+  def initialize name, uncommon: false
+    @name = name
     @uncommon = uncommon
   end
 
@@ -32,7 +29,7 @@ class Rank
   end
 
   def to_s
-    "#{@singular}"
+    "#{@name}"
   end
 
   def index
@@ -44,33 +41,28 @@ class Rank
   def self.find identifier
     return if identifier.blank?
 
-    search_ranks_for_this =
+    rank_to_find =
       case identifier
       when Taxon
         identifier.class.name.downcase
-      when Enumerable, ActiveRecord::Relation
-        identifier.first.class.name.downcase
       else
-        "#{identifier}".downcase
+        "#{identifier}".singularize.downcase
       end
 
-    ranks.find { |rank|
-      rank.singular == search_ranks_for_this ||
-      rank.plural == search_ranks_for_this
-    } or raise "Couldn't find rank for '#{identifier}'"
+    ranks.find { |rank| rank.to_s == rank_to_find } or raise "Couldn't find rank for '#{identifier}'"
   end
 
   class << self; alias_method :[], :find end
 
   def self.ranks
     @_ranks ||= [
-      Rank.new("family", "families"),
-      Rank.new("subfamily", "subfamilies"),
-      Rank.new("tribe", "tribes", uncommon: true),
-      Rank.new("genus", "genera"),
-      Rank.new("subgenus", "subgenera", uncommon: true),
-      Rank.new("species", "species"),
-      Rank.new("subspecies", "subspecies")
+      Rank.new("family"),
+      Rank.new("subfamily"),
+      Rank.new("tribe", uncommon: true),
+      Rank.new("genus"),
+      Rank.new("subgenus", uncommon: true),
+      Rank.new("species"),
+      Rank.new("subspecies")
     ]
   end
 

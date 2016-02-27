@@ -60,7 +60,7 @@ class TaxonDecorator::ChildList
       if conditions[:collective_group_names]
         label << Status['collective group name'].to_s(children.count).humanize
       else
-        label << Rank[children].to_s.pluralize(children.count).titleize
+        label << children.first.rank.pluralize(children.count).titleize
       end
 
       if specify_extinct_or_extant

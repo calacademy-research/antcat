@@ -17,7 +17,7 @@ module Formatters::AdvancedSearchFormatter
   def format_status_reference taxon
     return format_original_combination_status taxon if taxon.original_combination?
     labels = []
-    labels << "#{italicize 'incertae sedis'} in #{Rank[taxon.incertae_sedis_in]}" if taxon.incertae_sedis_in
+    labels << "#{italicize 'incertae sedis'} in #{taxon.incertae_sedis_in}" if taxon.incertae_sedis_in
     if taxon.homonym? && taxon.homonym_replaced_by
       labels << "homonym replaced by #{format_name taxon.homonym_replaced_by}"
     elsif taxon.unidentifiable?

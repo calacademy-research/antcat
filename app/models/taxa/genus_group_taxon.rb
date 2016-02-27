@@ -17,9 +17,10 @@ class GenusGroupTaxon < Taxon
 
   def parent= id_or_object
     parent_taxon = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
-    if parent_taxon.kind_of? Subfamily
+    case parent_taxon
+    when Subfamily
       self.subfamily = parent_taxon
-    elsif parent_taxon.kind_of? Tribe
+    when Tribe
       self.subfamily = parent_taxon.subfamily
       self.tribe = parent_taxon
     end

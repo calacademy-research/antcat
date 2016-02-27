@@ -13,38 +13,8 @@ describe Rank do
     end
   end
 
-  it "ex #to_class replacement code proof of concept" do
-    expect(Rank[:genus].to_s.capitalize.constantize).to eq(Genus)
-  end
-
-  it "should return a string" do
-    expect(Rank[:tribes].to_s).to eq('tribe')
-  end
-
-  it "ex #display_string replacement code proof of concept" do
-    expect(Rank[:tribes].to_s.titlecase).to eq('Tribe')
-  end
-
-  it "should convert from an array of taxa" do
-    expect(Rank[[Genus.new]].to_s).to eq('genus')
-  end
-
-  it "should convert from an ActiveRecord relation" do
-    FactoryGirl.create :genus
-    expect(Rank[Genus.first.subfamily].to_s).to eq('subfamily')
-  end
-
-  it "should convert from an ActiveRecord relation" do
-    FactoryGirl.create :genus
-    expect(Rank[Genus.first].to_s).to eq('genus')
-  end
-
   it "should raise an error if it doesn't understand the input" do
     expect {Rank['asdf']}.to raise_error
-  end
-
-  it "ex #write_selector replacement code proof of concept" do
-    expect("#{Rank[create_genus].to_s}=".to_sym).to eq(:genus=)
   end
 
   it "should understand its parent" do

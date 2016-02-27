@@ -89,7 +89,7 @@ class TaxonDecorator < ApplicationDecorator
     # Note: Cleverness is used here to make these queries (e.g.: obsolete_combination?)
     # appear as tags. That's how CSS does its coloring.
     labels = []
-    labels << "<i>incertae sedis</i> in #{Rank[taxon.incertae_sedis_in]}" if taxon.incertae_sedis_in
+    labels << "<i>incertae sedis</i> in #{taxon.incertae_sedis_in}" if taxon.incertae_sedis_in
     if taxon.homonym? && taxon.homonym_replaced_by
       labels << "homonym replaced by #{taxon.homonym_replaced_by.decorate.link_to_taxon}"
     elsif taxon.unidentifiable?

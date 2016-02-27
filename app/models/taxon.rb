@@ -96,7 +96,7 @@ class Taxon < ActiveRecord::Base
       self.subgenus = parent_taxon
       self.genus = subgenus.parent
     else
-      send "#{Rank[self].parent.to_s}=".to_sym, parent_taxon
+      send "#{Rank[self].parent}=".to_sym, parent_taxon
     end
   end
 
