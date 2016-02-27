@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe ArticleReference do
 
-  it { should validate_presence_of(:year) }
-
   describe "parsing fields from series_volume_issue" do
     it "can parse out volume and issue" do
       reference = FactoryGirl.create(:article_reference, :series_volume_issue => "92(32)")
@@ -41,6 +39,10 @@ describe ArticleReference do
 
   end
 
+  it { should validate_presence_of(:year) }
+  it { should validate_presence_of(:series_volume_issue) }
+  it { should validate_presence_of(:journal) }
+
   describe "validation" do
     before do
       author_name = FactoryGirl.create :author_name
@@ -51,14 +53,6 @@ describe ArticleReference do
 
     it "should be valid the way I just set it up" do
       expect(@reference).to be_valid
-    end
-    it "should not be valid without a series/volume/issue" do
-      @reference.series_volume_issue = nil
-      expect(@reference).not_to be_valid
-    end
-    it "should not be valid without a journal" do
-      @reference.journal = nil
-      expect(@reference).not_to be_valid
     end
   end
 

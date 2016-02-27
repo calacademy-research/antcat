@@ -2,17 +2,13 @@ require 'spec_helper'
 
 describe Protonym do
 
+  it { should validate_presence_of(:authorship) }
+
   describe "Authorship" do
     it "has an authorship" do
       authorship = FactoryGirl.create :citation
       protonym = Protonym.create! name: FactoryGirl.create(:name, name: 'Protonym'), authorship: authorship
       expect(Protonym.find(protonym.id).authorship).to eq(authorship)
-    end
-    it "requires an authorship" do
-      protonym = Protonym.new name: FactoryGirl.create(:name, name: 'Protonym')
-      expect(protonym).not_to be_valid
-      protonym.update_attribute :authorship, FactoryGirl.create(:citation)
-      expect(protonym).to be_valid
     end
   end
 

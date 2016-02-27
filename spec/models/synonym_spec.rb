@@ -2,19 +2,7 @@ require 'spec_helper'
 
 describe Synonym do
 
-  describe "The object" do
-    it "should require the junior, but not the senior" do
-      synonym = Synonym.new
-      expect(synonym).not_to be_valid
-      synonym.junior_synonym = create_species 'Formica'
-      expect(synonym).to be_valid
-      synonym.senior_synonym = create_species 'Atta'
-      synonym.save!
-      synonym.reload
-      expect(synonym.junior_synonym.name.to_s).to eq('Formica')
-      expect(synonym.senior_synonym.name.to_s).to eq('Atta')
-    end
-  end
+  it { should validate_presence_of(:junior_synonym) }
 
   describe "Finding and creating" do
     before do

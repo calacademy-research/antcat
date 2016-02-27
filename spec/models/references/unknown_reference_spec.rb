@@ -3,6 +3,7 @@ require 'spec_helper'
 describe UnknownReference do
 
   it { should validate_presence_of(:year) }
+  it { should validate_presence_of(:citation) }
 
   describe "validation" do
     before do
@@ -12,10 +13,6 @@ describe UnknownReference do
     end
     it "should be be valid the way I set it up" do
       expect(@reference).to be_valid
-    end
-    it "should be not be valid without a citation" do
-      @reference.citation = nil
-      expect(@reference).not_to be_valid
     end
   end
 
