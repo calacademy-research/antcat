@@ -5,7 +5,7 @@ module ChangesHelper
   end
 
   def format_rank rank
-    rank.display_string
+    rank.string.titlecase
   end
 
   def format_status status

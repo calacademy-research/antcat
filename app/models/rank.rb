@@ -7,9 +7,6 @@ class Rank
     @hash[:string]
   end
 
-  def display_string
-    string.titlecase
-  end
   def uncommon?
     @hash[:uncommon]
   end
@@ -34,14 +31,6 @@ class Rank
     child
   end
 
-  def write_selector
-    "#{@hash[:string]}=".to_sym
-  end
-
-  def read_selector
-    "#{@hash[:string]}".to_sym
-  end
-
   def to_sym *options
     options.include?(:plural) ? @hash[:plural_symbol] : @hash[:symbol]
   end
@@ -57,10 +46,6 @@ class Rank
     s = (options.include?(:plural) ? @hash[:plural_string] : @hash[:string]).dup
     s = s.titleize if options.include? :capitalized
     s
-  end
-
-  def to_class
-    @hash[:klass]
   end
 
   def includes? identifier
@@ -79,24 +64,33 @@ class Rank
 
   def self.find identifier
     return nil if identifier.blank?
-    identifier = identifier.class if identifier.kind_of? Taxon
-    identifier = identifier.first.class if identifier.kind_of? Enumerable
-    identifier = identifier.first.class if identifier.kind_of? ActiveRecord::Relation
-    identifier = identifier.downcase if identifier.kind_of? String
 
-    ranks.find { |rank| rank.includes? identifier } or raise "Couldn't find rank for '#{identifier}'"
+    search_ranks_for_this =
+      case identifier
+      when Taxon
+        identifier.class.name.downcase
+      when Enumerable, ActiveRecord::Relation
+        identifier.first.class.name.downcase
+      when String
+        identifier.downcase
+      else
+        "#{identifier}".downcase
+      end
+
+    ranks.find { |rank| rank.includes? search_ranks_for_this } or raise "Couldn't find rank for '#{identifier}'"
   end
+
   class << self; alias_method :[], :find end
 
   def self.ranks
     @_ranks ||= [
-      Rank.new(string: 'family',     plural_string: 'families',     symbol: :family,     plural_symbol: :families,    klass: Family),
-      Rank.new(string: 'subfamily',  plural_string: 'subfamilies',  symbol: :subfamily,  plural_symbol: :subfamilies, klass: Subfamily),
-      Rank.new(string: 'tribe',      plural_string: 'tribes',       symbol: :tribe,      plural_symbol: :tribes,      klass: Tribe, uncommon: true),
-      Rank.new(string: 'genus',      plural_string: 'genera',       symbol: :genus,      plural_symbol: :genera,      klass: Genus),
-      Rank.new(string: 'subgenus',   plural_string: 'subgenera',    symbol: :subgenus,   plural_symbol: :subgenera,   klass: Subgenus, uncommon: true),
-      Rank.new(string: 'species',    plural_string: 'species',      symbol: :species,    plural_symbol: :species,     klass: Species),
-      Rank.new(string: 'subspecies', plural_string: 'subspecies',   symbol: :subspecies, plural_symbol: :subspecies,  klass: Subspecies),
+      Rank.new(string: 'family',     plural_string: 'families',    symbol: :family,     plural_symbol: :families),
+      Rank.new(string: 'subfamily',  plural_string: 'subfamilies', symbol: :subfamily,  plural_symbol: :subfamilies),
+      Rank.new(string: 'tribe',      plural_string: 'tribes',      symbol: :tribe,      plural_symbol: :tribes,       uncommon: true),
+      Rank.new(string: 'genus',      plural_string: 'genera',      symbol: :genus,      plural_symbol: :genera),
+      Rank.new(string: 'subgenus',   plural_string: 'subgenera',   symbol: :subgenus,   plural_symbol: :subgenera, uncommon: true),
+      Rank.new(string: 'species',    plural_string: 'species',     symbol: :species,    plural_symbol: :species),
+      Rank.new(string: 'subspecies', plural_string: 'subspecies',  symbol: :subspecies, plural_symbol: :subspecies),
     ]
   end
 

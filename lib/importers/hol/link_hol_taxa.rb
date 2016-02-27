@@ -571,7 +571,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     name=nil
     # How do we know if the genus is what's not matching? Do a search in genus for matching name?
     puts "Search  #{parent_rank} for #{genus_string}"
-    genera = parent_rank.to_class.where(name_cache: genus_string)
+    genera = parent_rank.string.capitalize.constantize.where(name_cache: genus_string)
 
     if genera.count == 0
       puts "  No #{parent_rank} found with name #{genus_string} - creating name and taxon record for new #{parent_rank} '#{genus_string}'"

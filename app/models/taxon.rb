@@ -96,7 +96,7 @@ class Taxon < ActiveRecord::Base
       self.subgenus = parent_taxon
       self.genus = subgenus.parent
     else
-      send Rank[self].parent.write_selector, parent_taxon
+      send "#{Rank[self].parent.string}=".to_sym, parent_taxon
     end
   end
 
@@ -109,7 +109,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def rank
-    Rank[self].to_s
+    Rank[self].string
   end
 
   # The original_combination accessor returns the taxon with 'original combination'
