@@ -332,11 +332,6 @@ describe Taxon do
       genus.save!
       expect(genus.reload.subfamily).to eq(subfamily)
     end
-    it "should be able to assign from an id" do
-      genus.parent = subfamily.id
-      genus.save!
-      expect(genus.reload.subfamily).to eq(subfamily)
-    end
     it "should give the parent of a family as nil" do
       family = FactoryGirl.create :family
       expect(family.parent).to be_nil

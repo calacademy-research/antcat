@@ -15,8 +15,6 @@ class SpeciesGroupTaxon < Taxon
     genus_epithet != protonym_genus_epithet
   end
 
-  class NoProtonymError < StandardError; end
-
   def set_subfamily
     # TODO: Rails 4 upgrade breaks this
     # Remove the line below if all tests pass. This is having trouble because it appears that in

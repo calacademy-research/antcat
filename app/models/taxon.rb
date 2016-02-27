@@ -88,8 +88,7 @@ class Taxon < ActiveRecord::Base
     where(name_cache: name).first
   end
 
-  def parent= id_or_object
-    parent_taxon = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
+  def parent= parent_taxon
     # New taxa can have parents that are either in the "standard" rank progression (e.g.: Genus, species)
     # or they can be children of (subfamily) etc.
     if parent_taxon.is_a? Subgenus

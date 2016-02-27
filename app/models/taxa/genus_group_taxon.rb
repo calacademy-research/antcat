@@ -15,8 +15,7 @@ class GenusGroupTaxon < Taxon
     italicize name
   end
 
-  def parent= id_or_object
-    parent_taxon = id_or_object.kind_of?(Taxon) ? id_or_object : Taxon.find(id_or_object)
+  def parent= parent_taxon
     case parent_taxon
     when Subfamily
       self.subfamily = parent_taxon
