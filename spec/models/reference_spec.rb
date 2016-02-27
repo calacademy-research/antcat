@@ -305,7 +305,7 @@ describe Reference do
       history_item = taxon.history_items.create! taxt: "{ref #{reference.id}}"
       reference_section = FactoryGirl.create :reference_section, title_taxt: "{ref #{reference.id}}", subtitle_taxt: "{ref #{reference.id}}", references_taxt: "{ref #{reference.id}}"
       nested_reference = FactoryGirl.create :nested_reference, nesting_reference: reference
-      results = reference.reference_references
+      results = reference.send(:reference_references)
       expect(results).to match_array([
         {table: 'taxa',               id: taxon.id,             field: :type_taxt},
         {table: 'taxa',               id: taxon.id,             field: :headline_notes_taxt},
@@ -322,7 +322,7 @@ describe Reference do
 
     describe "Any references?" do
       it "should return false if there are no references to this reference" do
-        expect(reference.has_any_references?).to be_falsey
+        expect(reference.send(:has_any_references?)).to be_falsey
       end
     end
   end

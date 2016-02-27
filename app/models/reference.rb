@@ -129,41 +129,6 @@ class Reference < ActiveRecord::Base
     end
   end
 
-  ###############################################
-  # Expensive method
-  def reference_references return_true_or_false: false
-    return_early = return_true_or_false
-
-    references = []
-    Taxt.taxt_fields.each do |klass, fields|
-      klass.send(:all).each do |record|
-        fields.each do |field|
-          next unless record[field]
-          if record[field] =~ /{ref #{id}}/
-            references << { table: klass.table_name, id: record[:id], field: field }
-            return true if return_early
-          end
-        end
-      end
-    end
-
-    Citation.where(reference_id: id).all.each do |record|
-      references << { table: Citation.table_name, id: record[:id], field: :reference_id }
-      return true if return_early
-    end
-
-    NestedReference.where(nesting_reference_id: id).all.each do |record|
-      references << { table: 'references', id: record[:id], field: :nesting_reference_id }
-      return true if return_early
-    end
-    return false if return_early
-    references
-  end
-
-  def has_any_references?
-    self.reference_references return_true_or_false: true
-  end
-
   def self.approve_all
     Reference.where.not(review_state: "reviewed").find_each do |reference|
       reference.review_state = 'reviewed'
@@ -173,7 +138,7 @@ class Reference < ActiveRecord::Base
 
   private
     def check_not_referenced
-      return true unless self.has_any_references?
+      return true unless has_any_references?
 
       # TODO list which items
       errors.add :base, "This reference can't be deleted, as there are other references to it."
@@ -213,6 +178,40 @@ class Reference < ActiveRecord::Base
       first_author_name = author_names.first
       last_name = first_author_name && first_author_name.last_name
       return string, last_name
+    end
+
+    # Expensive method
+    def reference_references return_true_or_false: false
+      return_early = return_true_or_false
+
+      references = []
+      Taxt.taxt_fields.each do |klass, fields|
+        klass.send(:all).each do |record|
+          fields.each do |field|
+            next unless record[field]
+            if record[field] =~ /{ref #{id}}/
+              references << { table: klass.table_name, id: record[:id], field: field }
+              return true if return_early
+            end
+          end
+        end
+      end
+
+      Citation.where(reference_id: id).all.each do |record|
+        references << { table: Citation.table_name, id: record[:id], field: :reference_id }
+        return true if return_early
+      end
+
+      NestedReference.where(nesting_reference_id: id).all.each do |record|
+        references << { table: 'references', id: record[:id], field: :nesting_reference_id }
+        return true if return_early
+      end
+      return false if return_early
+      references
+    end
+
+    def has_any_references?
+      reference_references return_true_or_false: true
     end
 
     class DuplicateMatcher < ReferenceMatcher

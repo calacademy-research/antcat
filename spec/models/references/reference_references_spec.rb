@@ -5,7 +5,7 @@ describe Reference do
   describe "References" do
     it "should have no references, if alone" do
       reference = FactoryGirl.create :article_reference
-      expect(reference.reference_references.size).to eq(0)
+      expect(reference.send(:reference_references).size).to eq(0)
     end
 
     describe "References in reference fields" do
@@ -13,7 +13,7 @@ describe Reference do
         reference = FactoryGirl.create :article_reference
         eciton = create_genus 'Eciton'
         eciton.protonym.authorship.update_attributes! reference_id: reference.id
-        expect(reference.reference_references).to match_array([
+        expect(reference.send(:reference_references)).to match_array([
           {table: 'citations', field: :reference_id, id: eciton.protonym.authorship.id},
         ])
       end
@@ -24,7 +24,7 @@ describe Reference do
         reference = FactoryGirl.create :article_reference
         eciton = create_genus 'Eciton'
         eciton.update_attribute :type_taxt, "{ref #{reference.id}}"
-        expect(reference.reference_references).to match_array([
+        expect(reference.send(:reference_references)).to match_array([
           {table: 'taxa', field: :type_taxt, id: eciton.id},
         ])
       end
