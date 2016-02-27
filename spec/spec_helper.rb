@@ -18,26 +18,27 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.fail_fast = false
 
-  config.before(:suite) do
+  config.before :suite do
     DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.clean_with :truncation
   end
 
-  config.before(:all) do
+  config.before :all do
     DeferredGarbageCollection.start
   end
 
-  config.after(:all) do
+  config.after :all do
     DeferredGarbageCollection.reconsider
   end
 
-  config.before(:each) do
+  config.before :each do
     DatabaseCleaner.start
   end
 
-  config.after(:each) do
+  config.after :each do
     DatabaseCleaner.clean
   end
+
   config.infer_spec_type_from_file_location!
 end
 
@@ -45,29 +46,6 @@ Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
     with.library :rails
-  end
-end
-
-# When a reference is parsed, it returns the text of what was matched in :matched_text
-# The trouble is that none of the hundreds of existing tests account for this new field,
-# so they would all fail without either 1) fixing them all (and all future) to test the
-# :matched_text field, or 2) remove that field
-class Object
-  def deep_delete_matched_text
-    if respond_to? :keys
-      delete :matched_text
-      keys.each do |key|
-        self[key].deep_delete_matched_text
-      end
-    elsif respond_to? :each
-      each.map { |e| e.deep_delete_matched_text }
-    end
-    self
-  end
-end
-class Citrus::Match
-  def value_with_matched_text_removed
-    value.deep_delete_matched_text
   end
 end
 
