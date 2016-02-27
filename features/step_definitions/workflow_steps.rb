@@ -112,7 +112,7 @@ When /^I add the genus "([^"]+)"?$/ do |genus_name|
   genus_params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Betta').id
   genus_params[:type_name_attributes] = {id: FactoryGirl.create(:species_name, name: 'Betta major').id}
 
-  taxon = mother_replacement_create_taxon Rank[:genus], create_subfamily
+  taxon = mother_replacement_create_taxon Genus.new, create_subfamily
   taxon.save_taxon(genus_params)
 
   taxon.last_change.versions.each do |version|
@@ -122,8 +122,7 @@ end
 
 # from ex TaxonMother
 # TODO replace with factory?
-def mother_replacement_create_taxon rank, parent
-  taxon = rank.string.titlecase.constantize.new
+def mother_replacement_create_taxon taxon, parent
   taxon.parent = parent
   taxon.build_name
   taxon.build_type_name

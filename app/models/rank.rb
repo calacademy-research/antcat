@@ -32,18 +32,22 @@ class Rank
   end
 
   def to_sym *options
-    options.include?(:plural) ? @hash[:plural_symbol] : @hash[:symbol]
+    if options.include? :plural
+      @hash[:plural].to_sym
+    else
+      @hash[:string].to_sym
+    end
   end
 
   def plural
-    @hash[:plural_string]
+    @hash[:plural]
   end
 
   def to_s *options
     numeric_argument = options.find {|option| option.kind_of? Numeric}
     options << :plural if numeric_argument && numeric_argument > 1 #hmm
 
-    s = (options.include?(:plural) ? @hash[:plural_string] : @hash[:string]).dup
+    s = (options.include?(:plural) ? @hash[:plural] : @hash[:string]).dup
     s = s.titleize if options.include? :capitalized
     s
   end
@@ -58,10 +62,6 @@ class Rank
     end
   end
 
-  def at index
-    self.class.ranks[index]
-  end
-
   def self.find identifier
     return nil if identifier.blank?
 
@@ -71,8 +71,6 @@ class Rank
         identifier.class.name.downcase
       when Enumerable, ActiveRecord::Relation
         identifier.first.class.name.downcase
-      when String
-        identifier.downcase
       else
         "#{identifier}".downcase
       end
@@ -84,14 +82,18 @@ class Rank
 
   def self.ranks
     @_ranks ||= [
-      Rank.new(string: 'family',     plural_string: 'families',    symbol: :family,     plural_symbol: :families),
-      Rank.new(string: 'subfamily',  plural_string: 'subfamilies', symbol: :subfamily,  plural_symbol: :subfamilies),
-      Rank.new(string: 'tribe',      plural_string: 'tribes',      symbol: :tribe,      plural_symbol: :tribes,       uncommon: true),
-      Rank.new(string: 'genus',      plural_string: 'genera',      symbol: :genus,      plural_symbol: :genera),
-      Rank.new(string: 'subgenus',   plural_string: 'subgenera',   symbol: :subgenus,   plural_symbol: :subgenera, uncommon: true),
-      Rank.new(string: 'species',    plural_string: 'species',     symbol: :species,    plural_symbol: :species),
-      Rank.new(string: 'subspecies', plural_string: 'subspecies',  symbol: :subspecies, plural_symbol: :subspecies),
+      Rank.new(string: 'family',     plural: 'families'),
+      Rank.new(string: 'subfamily',  plural: 'subfamilies'),
+      Rank.new(string: 'tribe',      plural: 'tribes', uncommon: true),
+      Rank.new(string: 'genus',      plural: 'genera'),
+      Rank.new(string: 'subgenus',   plural: 'subgenera', uncommon: true),
+      Rank.new(string: 'species',    plural: 'species'),
+      Rank.new(string: 'subspecies', plural: 'subspecies'),
     ]
   end
 
+  private
+    def at index
+      self.class.ranks[index]
+    end
 end
