@@ -1,4 +1,3 @@
-
 class Rank
   attr_reader :singular, :plural, :string
 
@@ -19,7 +18,7 @@ class Rank
   # Returns only Genus for species and Family for genus.
   # Can't take subfamily or subgenus into consideration.
   # These cases should be handled in code where there is more information
-  # avaiable.
+  # available.
   def parent
     parent_index = index - 1
     return if parent_index < 0
@@ -36,21 +35,11 @@ class Rank
     child
   end
 
-  def to_sym plural: false
-    if plural
-      @plural.to_sym
-    else
-      @singular.to_sym
-    end
-  end
-
   def to_s *options
     numeric_argument = options.find {|option| option.kind_of? Numeric}
     options << :plural if numeric_argument && numeric_argument > 1 #hmm
 
-    s = (options.include?(:plural) ? @plural : @singular).dup
-    s = s.titleize if options.include? :capitalized
-    s
+    (options.include?(:plural) ? @plural : @singular).dup
   end
 
   def index

@@ -17,10 +17,6 @@ describe Rank do
     expect(Rank[:genus].string.capitalize.constantize).to eq(Genus)
   end
 
-  it "should convert a klass to a symbol" do
-    expect(Rank[:genus].to_sym).to eq(:genus)
-  end
-
   it "should return a string" do
     expect(Rank[:tribes].to_s).to eq('tribe')
   end
@@ -29,20 +25,8 @@ describe Rank do
     expect(Rank[:tribes].string.titlecase).to eq('Tribe')
   end
 
-  it "should do caps" do
-    expect(Rank[:tribes].to_s(:capitalized)).to eq('Tribe')
-  end
-
-  it "should do caps plural" do
-    expect(Rank[:tribes].to_s(:capitalized, :plural)).to eq('Tribes')
-  end
-
   it "should do plural symbol" do
-    expect(Rank['Genera'].to_sym(plural: true)).to eq(:genera)
-  end
-
-  it "should convert from a taxon to a symbol" do
-    expect(Rank[Genus.new].to_sym).to eq(:genus)
+    expect(Rank['Genera'].plural.to_sym).to eq(:genera)
   end
 
   it "should automatically singularize or pluralize depending on a count" do
