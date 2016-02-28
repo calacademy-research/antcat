@@ -6,6 +6,10 @@
     =check_box_tag :keep_taxon_browser_open, "999", false
     =label_tag :keep_taxon_browser_open, "keep open"
 
+    -close_inactive = cookies[:close_inactive_panels] != "false"
+    =check_box_tag :close_inactive_panels, "999", close_inactive
+    =label_tag :close_inactive_panels, "autoclose inactive panels"
+
 %ul.accordion{"data-accordion" => "", "data-allow-all-closed" => "true", "data-multi-expand" => "true"}
   -panels.each do |selected_and_children|
     -selected = selected_and_children[:selected]

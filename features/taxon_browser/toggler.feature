@@ -1,5 +1,5 @@
 @javascript
-Feature: Taxon browser
+Feature: Taxon Browser Toggler
   As a user of AntCat
   I want be able to show and hide the taxon browser
   So that I can choose a taxon easily
@@ -71,43 +71,3 @@ Feature: Taxon browser
     And I check "keep_taxon_browser_open"
     And I reload the page
     Then I should not see the taxon browser
-
-  @taxon_browser
-  Scenario: Opening and closing panels
-    Given there is a subfamily "Myrmicinae"
-    And a genus exists with a name of "Atta" and a subfamily of "Myrmicinae"
-    And a species exists with a name of "abruptus" and a genus of "Atta"
-
-    When I go to the catalog page for "Atta"
-    And I click the desktop taxon browser toggler
-    Then I should see the family panel closed
-    And I should see the subfamily panel closed
-    And I should see the genus panel opened
-    #And I should see the species panel opened
-
-    When I click on the subfamily panel
-    Then I should see the family panel closed
-    And I should see the subfamily panel opened
-    And I should see the genus panel opened
-    #And I should see the species panel opened
-
-  @taxon_browser
-  Scenario: Close all except last panel by default
-    Given there is a subfamily "Myrmicinae"
-    And a genus exists with a name of "Atta" and a subfamily of "Myrmicinae"
-    And a species exists with a name of "abruptus" and a genus of "Atta"
-
-    When I go to the catalog page for "Atta"
-    And I click the desktop taxon browser toggler
-    Then I should see the family panel closed
-    And I should see the subfamily panel closed
-    And I should see the genus panel opened
-
-  Scenario: All panels open by default in test env
-    Given there is a subfamily "Myrmicinae"
-    And a genus exists with a name of "Atta" and a subfamily of "Myrmicinae"
-    And a species exists with a name of "abruptus" and a genus of "Atta"
-
-    When I go to the catalog page for "Atta"
-    Then I should see all taxon browser panels opened
-    And I screenshot
