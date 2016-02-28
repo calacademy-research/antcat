@@ -47,20 +47,24 @@ module CatalogHelper
     [taxon.type.downcase, 'taxon', 'name'].sort
   end
 
-  # HACK -ish
   def open_panel? selected, self_and_parents
-    return true # TODO do not open all panels
+    # always open in test, unless we're testing the taxon browser
+    if Rails.env.test?
+      return true unless $taxon_browser_test_hack
+    end
 
     is_last_panel?(selected, self_and_parents) ||
-    selected.is_a?(Genus) ||              # always open genus panel
-    (Rails.env.test? && !$taxon_browser_test_hack) # always open in test
+    selected.is_a?(Genus)        # always open genus panel
   end
 
   private
+    # HACK -ish
     def is_last_panel? selected, self_and_parents
       self_and_parents.last == selected ||  # last taxon in panel chain
-      # hack for "incertae sedis"/"all genera", which alsays is last
+
+      # hack for "incertae sedis"/"all genera", which always is last
       !selected.is_a?(Taxon) ||
+
       selected.nil? ||           # no selected -> must be last
       selected.is_a?(Species)    # species is always last
     end

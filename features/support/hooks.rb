@@ -2,7 +2,7 @@
 # even when if it is globally disabled in the test env. Once enabled it
 # stays enabled, which spills over into unrelated tests.
 After do
-  PaperTrail.enabled = false# if PaperTrail.enabled?
+  PaperTrail.enabled = false
 end
 
 # putting `require 'paper_trail/frameworks/cucumber'` inside support/env.rb and

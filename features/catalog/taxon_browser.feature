@@ -80,14 +80,16 @@ Feature: Taxon browser
 
     When I go to the catalog page for "Atta"
     And I click the desktop taxon browser toggler
-    Then I should see the subfamilies panel closed
-    And I should see the genera panel closed
-    And I should see the species panel opened
+    Then I should see the family panel closed
+    And I should see the subfamily panel closed
+    And I should see the genus panel opened
+    #And I should see the species panel opened
 
-    When I click on the subfamilies panel
-    Then I should see the subfamilies panel opened
-    And I should see the genera panel closed
-    And I should see the species panel opened
+    When I click on the subfamily panel
+    Then I should see the family panel closed
+    And I should see the subfamily panel opened
+    And I should see the genus panel opened
+    #And I should see the species panel opened
 
   @taxon_browser
   Scenario: Close all except last panel by default
@@ -97,9 +99,9 @@ Feature: Taxon browser
 
     When I go to the catalog page for "Atta"
     And I click the desktop taxon browser toggler
-    Then I should see the subfamilies panel closed
-    And I should see the genera panel closed
-    And I should see the species panel opened
+    Then I should see the family panel closed
+    And I should see the subfamily panel closed
+    And I should see the genus panel opened
 
   Scenario: All panels open by default in test env
     Given there is a subfamily "Myrmicinae"

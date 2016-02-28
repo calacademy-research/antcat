@@ -19,12 +19,12 @@ Then /^I should see all taxon browser panels opened$/ do
   expect(all_panels.size).to eq open_panels.size
 end
 
-When /^I click on the (subfamilies|genera|species) panel$/ do |rank|
-  find(".#{rank}-test-hook", visible: true).click
+When /^I click on the (family|subfamily|genus|species) panel$/ do |rank|
+  find(".#{rank.pluralize}-test-hook", visible: true).click
 end
 
-Then /^I should see the (subfamilies|genera|species) panel (opened|closed)$/ do |rank, state|
-  selector = ".#{rank}-test-hook.is-active"
+Then /^I should see the (family|subfamily|genus|species) panel (opened|closed)$/ do |rank, state|
+  selector = ".#{rank.pluralize}-test-hook.is-active"
 
   case state
   when "opened"
