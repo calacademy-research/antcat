@@ -21,7 +21,7 @@ class @TaxonBrowserKeepOpen
   # browser_hidden       HIDE          HIDE
   # browser_visible      SHOW          HIDE
   _setTaxonBrowserVisibility: (checkBox) ->
-    browserHidden = not Cookies.getJSON("browser_toggler")?.show
+    browserHidden = Cookies.get("show_browser") != "true"
     return if browserHidden
 
     keepOpenEnabled = @_getCookie()
@@ -29,13 +29,13 @@ class @TaxonBrowserKeepOpen
       # do nothing and let the taxon browser decide
     else
       # keep open disabled --> default state --> closed
-      Cookies.set "browser_toggler", "show": false
+      Cookies.set "show_browser", "false"
 
   _setClickHandler: (checkBox) ->
     $(checkBox).change =>
       checked = $(checkBox).is(":checked")
       @_setCookie checked
 
-  _getCookie: -> Cookies.getJSON("browser_keep_open")?.keep_open
+  _getCookie: -> Cookies.get("keep_open") == "true"
 
-  _setCookie: (keepOpen) -> Cookies.set "browser_keep_open", "keep_open": keepOpen
+  _setCookie: (keepOpen) -> Cookies.set "keep_open", keepOpen

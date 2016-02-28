@@ -15,7 +15,7 @@ describe "TaxonBrowserToggler", ->
 
   beforeEach ->
     fixture.load "taxon_browser_toggler.html"
-    Cookies.remove "browser_toggler"
+    Cookies.remove "show_browser"
     engine = new TaxonBrowserToggler()
 
   describe "initialization", ->
@@ -32,11 +32,11 @@ describe "TaxonBrowserToggler", ->
 
   describe "Methods", ->
     it "can read and write cookies", ->
-      expect(engine._getCookie()).toBeUndefined()
+      expect(engine._getCookie()).toBe false
       engine._setCookie true
-      expect(engine._getCookie()).toEqual true
+      expect(engine._getCookie()).toBe true
       engine._setCookie false
-      expect(engine._getCookie()).toEqual false
+      expect(engine._getCookie()).toBe false
 
   describe "Toggle Click Handler", ->
     it "calls @toggle", ->
@@ -62,22 +62,22 @@ describe "TaxonBrowserToggler", ->
       expect(engine._isVisible).toBe true
 
     it "sets the cookie", ->
-      expect(engine._getCookie()).toBeUndefined()
+      expect(engine._getCookie()).toBe false
       $("#desktop-toggler").click()
-      expect(engine._getCookie()).toEqual true
+      expect(engine._getCookie()).toBe true
 
     it "handles multiple toggles in a row", ->
       expectItToBeHidden = ->
         expect(engine._isVisible).toBe false
         expect($ "#taxon_browser").toBeHidden()
         expect($ "#desktop-toggler").toHaveText "Show Taxon Browser"
-        expect(engine._getCookie()).toBeFalsy()
+        expect(engine._getCookie()).toBe false
 
       expectItToBeVisible = ->
         expect(engine._isVisible).toBe true
         expect($ "#taxon_browser").toBeVisible()
         expect($ "#desktop-toggler").toHaveText "Hide Taxon Browser"
-        expect(engine._getCookie()).toEqual true
+        expect(engine._getCookie()).toBe true
 
       expectItToBeHidden()
 

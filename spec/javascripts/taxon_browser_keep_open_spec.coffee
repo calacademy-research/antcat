@@ -11,16 +11,16 @@ describe "Test Fixtures", ->
 describe "TaxonBrowserKeepOpen", ->
   beforeEach ->
     fixture.load "taxon_browser_keep_open.html"
-    Cookies.remove "browser_toggler"
-    Cookies.remove "browser_keep_open"
+    Cookies.remove "show_browser"
+    Cookies.remove "keep_open"
 
-  browserVisible = (value) -> Cookies.set "browser_toggler", "show": value
+  browserVisible = (value) -> Cookies.set "show_browser", value
 
-  keepOpen = (value) -> Cookies.set "browser_keep_open", "keep_open": value
+  keepOpen = (value) -> Cookies.set "keep_open", value
 
-  browserIsVisible = -> expect(Cookies.getJSON("browser_toggler").show).toBe true
+  browserIsVisible = -> expect(Cookies.get "show_browser").toEqual "true"
 
-  browserIsHidden = -> expect(Cookies.getJSON("browser_toggler").show).toBe false
+  browserIsHidden = -> expect(Cookies.get "show_browser").toEqual "false"
 
   describe "states/cookies", ->
     describe "browser hidden", ->

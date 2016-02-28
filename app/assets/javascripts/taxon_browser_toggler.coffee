@@ -27,9 +27,9 @@ class @TaxonBrowserToggler
     @_setCookie @_isVisible
     @_updateLabels LABELS_TO_UPDATE
 
-  _getCookie: -> Cookies.getJSON("browser_toggler")?.show
+  _getCookie: -> Cookies.get("show_browser") == "true"
 
-  _setCookie: (isVisible) -> Cookies.set("browser_toggler", "show": isVisible)
+  _setCookie: (isVisible) -> Cookies.set "show_browser", isVisible
 
   _setClickHandlers: (elements) -> $(elements).click => @toggle()
 
