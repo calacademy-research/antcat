@@ -12,14 +12,14 @@ module TaxonHelper
   end
 
   def add_taxon_button taxon, collision_resolution
-    ranks = { family:    "subfamily",
-              subfamily: "genus",
-              tribe:     "genus",
-              genus:     "species",
-              subgenus:  "species",
-              species:   "subspecies" }
+    child_ranks = { family:    "subfamily",
+                    subfamily: "genus",
+                    tribe:     "genus",
+                    genus:     "species",
+                    subgenus:  "species",
+                    species:   "subspecies" }
 
-    rank_to_add = ranks[taxon.rank.to_sym]
+    rank_to_add = child_ranks[taxon.rank.to_sym]
     return unless rank_to_add.present?
 
     collision_resolution = nil if collision_resolution.blank?

@@ -566,7 +566,13 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       return nil
     end
     genus_string = match[1]
-    parent_rank = Rank[valid_antcat_taxon].parent
+    parent_ranks = { subfamily:  "family",
+                     tribe:      "subfamily",
+                     genus:      "subfamily",
+                     subgenus:   "genus",
+                     species:    "genus",
+                     subspecies: "species" }
+    parent_rank = parent_ranks[valid_antcat_taxon.rank.to_sym]
 
     name=nil
     # How do we know if the genus is what's not matching? Do a search in genus for matching name?

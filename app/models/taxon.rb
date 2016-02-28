@@ -97,7 +97,7 @@ class Taxon < ActiveRecord::Base
   end
 
   def rank
-    Rank[self].to_s
+    self.type.downcase
   end
 
   # The original_combination accessor returns the taxon with 'original combination'
