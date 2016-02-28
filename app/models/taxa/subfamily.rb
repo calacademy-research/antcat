@@ -12,6 +12,10 @@ class Subfamily < Taxon
     Family.first
   end
 
+  def parent= parent_taxon
+    self.family = parent_taxon
+  end
+
   def children
     tribes
   end

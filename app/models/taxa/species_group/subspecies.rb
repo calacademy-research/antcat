@@ -27,6 +27,13 @@ class Subspecies < SpeciesGroupTaxon
 
   def statistics; end
 
+  def parent= parent_taxon
+    if parent_taxon.is_a? Subgenus
+      raise "we probably do not support this"
+    end
+    self.species = parent_taxon
+  end
+
   def parent
     species || genus
   end

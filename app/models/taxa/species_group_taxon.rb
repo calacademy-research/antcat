@@ -16,12 +16,6 @@ class SpeciesGroupTaxon < Taxon
   end
 
   def set_subfamily
-    # TODO: Rails 4 upgrade breaks this
-    # Remove the line below if all tests pass. This is having trouble because it appears that in
-    # rails 4, the belongs_to relationship isn't available at this point. Assigning IDs directly.
-
-    #self.subfamily = genus.subfamily if genus
-    self.subfamily_id = genus.subfamily.id if genus and genus.subfamily
+    self.subfamily = genus.subfamily if genus && genus.subfamily
   end
-
 end

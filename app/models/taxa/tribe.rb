@@ -7,6 +7,10 @@ class Tribe < Taxon
     subfamily
   end
 
+  def parent= parent_taxon
+    self.subfamily = parent_taxon
+  end
+
   def update_parent new_parent
     set_name_caches
     if new_parent.kind_of? Subfamily

@@ -88,17 +88,6 @@ class Taxon < ActiveRecord::Base
     where(name_cache: name).first
   end
 
-  def parent= parent_taxon
-    # New taxa can have parents that are either in the "standard" rank progression (e.g.: Genus, species)
-    # or they can be children of (subfamily) etc.
-    if parent_taxon.is_a? Subgenus
-      self.subgenus = parent_taxon
-      self.genus = subgenus.parent
-    else
-      send "#{Rank[self].parent}=".to_sym, parent_taxon
-    end
-  end
-
   def update_parent new_parent
     return if self.parent == new_parent
     self.name.change_parent new_parent.name

@@ -8,6 +8,15 @@ class Species < SpeciesGroupTaxon
     subgenus || genus
   end
 
+  def parent= parent_taxon
+    if parent_taxon.is_a? Subgenus
+      self.subgenus = parent_taxon
+      self.genus = subgenus.parent
+    else
+      self.genus = parent_taxon
+    end
+  end
+
   def siblings
     genus.species
   end
