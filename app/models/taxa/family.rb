@@ -1,5 +1,5 @@
 class Family < Taxon
-  attr_accessible :name,:protonym,:type_name
+  attr_accessible :name, :protonym, :type_name
 
   def parent
   end
@@ -25,15 +25,19 @@ class Family < Taxon
   end
 
   def statistics
-    get_statistics Subfamily, Tribe, Genus, Species, Subspecies
+    statistics = {}
+
+    { subfamilies: Subfamily,
+      tribes: Tribe,
+      genera: Genus,
+      species: Species,
+      subspecies: Subspecies
+    }.each do |rank, klass|
+      count = klass.group(:fossil, :status).count
+      self.class.massage_count count, rank, statistics
+    end
+
+    statistics
   end
 
-  private
-    def get_statistics *ranks
-      ranks.inject({}) do |statistics, klass|
-        count = klass.group(:fossil,:status).count
-        self.class.massage_count count, Rank[klass].to_s.pluralize.to_sym, statistics
-        statistics
-      end
-    end
 end
