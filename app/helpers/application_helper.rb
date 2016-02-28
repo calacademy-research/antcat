@@ -18,13 +18,6 @@ module ApplicationHelper
     end
   end
 
-  def rank_options_for_select value='All'
-    string =  option_for_select('All', 'All', value)
-    string << Rank.ranks.reject { |rank| rank.to_s == 'family'}.reduce("") do |options, rank|
-              options << option_for_select(rank.to_s.pluralize.capitalize, rank.to_s.capitalize, value)
-            end.html_safe
-  end
-
   def biogeographic_region_options_for_select value='', first_label = '', second_label = nil
     string =  option_for_select(first_label, nil, value)
     string << option_for_select(second_label, second_label, value) if second_label.present?
