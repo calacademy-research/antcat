@@ -91,20 +91,3 @@ describe "TaxonBrowserToggler", ->
       $("#desktop-toggler").click() # visible
 
       expectItToBeVisible()
-
-describe "TaxonBrowserToggler Test Env Exception", ->
-  engine = null
-
-  beforeEach ->
-    fixture.load "taxon_browser_toggler.html"
-    window.AntCat.taxon_browser_test_hack = true
-    engine = new TaxonBrowserToggler()
-
-  afterEach ->
-    window.AntCat.taxon_browser_test_hack = false
-
-  it "is not hidden in test env", ->
-    expect($ "#taxon_browser").toBeVisible()
-
-  it "sets @_isVisible correctly", ->
-    expect(engine._isVisible).toBe true

@@ -48,16 +48,17 @@ module CatalogHelper
   end
 
   def open_panel? selected, self_and_parents
-    # always open in test, unless we're testing the taxon browser
+    return true if disable_taxon_browser_js?
+
+    cookies[:close_inactive_panels] == "false" || # open if asked to do so
+    is_last_panel?(selected, self_and_parents) ||
+    selected.is_a?(Genus)        # always open genus panel
+  end
+
+  def disable_taxon_browser_js?
     if Rails.env.test?
       return true unless $taxon_browser_test_hack
     end
-
-    # always open if asked to do so
-    return true if cookies[:close_inactive_panels] == "false"
-
-    is_last_panel?(selected, self_and_parents) ||
-    selected.is_a?(Genus)        # always open genus panel
   end
 
   private

@@ -3,7 +3,7 @@
 #   * Toggle visibility
 #   * Update the togglers' labels after toggling
 #   * Save current visibility state in a cookie
-# * On init: read cookie, and hide browser if necessary (disabled in test)
+# * On init: read cookie, and hide browser if necessary
 
 class @TaxonBrowserToggler
   # Element we want to show/hide
@@ -17,7 +17,6 @@ class @TaxonBrowserToggler
 
   constructor: ->
     @_isVisible = @_getCookie() || false
-    @_setToVisibleIfTestEnv()
     @_hideUnlessVisible()
     @_setClickHandlers TOGGLERS
 
@@ -41,7 +40,3 @@ class @TaxonBrowserToggler
     unless @_isVisible
       $(TAXON_BROWSER).hide()
       @_updateLabels LABELS_TO_UPDATE
-
-  # Always show in tests, unless scenario is tagged with @taxon_browser.
-  _setToVisibleIfTestEnv: ->
-    @_isVisible = true if AntCat.taxon_browser_test_hack

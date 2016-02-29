@@ -1,10 +1,11 @@
 -@title = "#{@taxon.name.epithet}"
 -breadcrumb @taxon
 
--content_for :head do
-  =javascript_include_tag "cookie_checkbox"
-  =javascript_include_tag "taxon_browser_toggler"
-  =javascript_include_tag "taxon_browser"
+-unless disable_taxon_browser_js?
+  -content_for :head do
+    =javascript_include_tag "cookie_checkbox"
+    =javascript_include_tag "taxon_browser_toggler"
+    =javascript_include_tag "taxon_browser"
 
 #taxon_browser.callout
   =render "taxon_browser", panels: @panels, self_and_parents: @self_and_parents
