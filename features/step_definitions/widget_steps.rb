@@ -1,8 +1,4 @@
 # Search
-When /In the search box, I press "Go"/ do
-  step 'I press "Go" within ".expansion"'
-end
-
 When /^in the reference picker, I search for the authors? "([^"]*)"$/ do |authors|
   step %{I fill in the reference picker search box with "author:'#{authors}'"}
   sleep 1

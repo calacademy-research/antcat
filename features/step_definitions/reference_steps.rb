@@ -119,29 +119,15 @@ Then /I should see these entries (with a header )?in this order:/ do |with_heade
   end
 end
 
-Then 'there should be just the existing reference' do
-  all('.reference').size.should == 1
-end
-
 ##################
 
 When(/^I follow first reference link$/) do
   first('a.goto_reference_link').click
 end
 
-Then 'I should not see the reference' do
-  find("#reference_#{@reference.id}",visible: false).should_not be_visible
-end
-
 When /I fill in "reference_nesting_reference_id" with the ID for "(.*?)"$/ do |title|
   reference = Reference.find_by_title title
   step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""
-end
-
-Then 'all the buttons should be disabled' do
-  disabled = page.all('.margin .button_to input[disabled=disabled][type=submit]')
-  all = page.all('.margin .button_to input[type=submit]')
-  disabled.size.should == all.size
 end
 
 Then /I should (not )?see a "PDF" link/ do |should_not|
@@ -175,11 +161,6 @@ When /I fill in "([^"]*)" with a URL to a document that doesn't exist/ do |field
   step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
-And /I (edit|delete) "(.*?)"/ do |verb, author|
-  reference = Reference.where('author_names_string_cache like ?', "%#{author}%").first
-  step %{I follow "#{verb}" within "#reference_#{reference.id}"}
-end
-
 very_long_author_names_string = (0...26).inject([]) { |a, n| a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A." }.join('; ')
 
 When /I fill in "reference_author_names_string" with a very long author names string/ do
@@ -188,12 +169,6 @@ end
 
 Then /I should see a very long author names string/ do
   step %{I should see "#{very_long_author_names_string}"}
-end
-
-Given /^I will enter the ID of "Arbitrary Match" in the following dialog$/ do
-  id = Reference.find_by_title("Arbitrary Match").id
-  page.evaluate_script 'window.original_prompt_function = window.prompt;'
-  page.evaluate_script "window.prompt = function(msg) { return '#{id}'; }"
 end
 
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
@@ -253,10 +228,4 @@ And /^the default reference is "([^"]*)"$/ do |key|
 end
 And /^there is no default reference$/ do
   DefaultReference.stub(:get).and_return nil
-end
-
-Given /^there is a taxon with that reference as its protonym's reference$/ do
-  taxon = create_genus
-  taxon.protonym.authorship.reference = @reference
-  taxon.protonym.authorship.save!
 end

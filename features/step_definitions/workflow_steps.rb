@@ -131,7 +131,3 @@ def mother_replacement_create_taxon taxon, parent
   taxon.protonym.build_authorship
   taxon
 end
-
-Then /I should not see any change history/ do
-  page.should_not have_css '.change_history'
-end

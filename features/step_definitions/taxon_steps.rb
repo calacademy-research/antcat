@@ -49,10 +49,10 @@ Given /^the unavailable subfamily "(.*?)" exists$/ do |name|
 end
 
 ###########################
+# tribe
 Given /^there is a tribe "([^"]*)"$/ do |name|
   create_tribe name
 end
-# tribe
 Given /a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|
   subfamily = parent_name && (Subfamily.find_by_name(parent_name) ||
       create_taxon_with_state(:subfamily, name: FactoryGirl.create(:name, name: parent_name)))
@@ -83,10 +83,6 @@ end
 # genus
 Given /^there is a genus "([^"]*)"$/ do |name|
   genus = create_genus name
-end
-
-Given /^there is a subgenus "([^"]*)"$/ do |name|
-  genus = create_subgenus name
 end
 
 Given /^there is a genus "([^"]*)" with taxonomic history "(.*?)"$/ do |name, history|
@@ -183,7 +179,6 @@ Given /an imported species exists with a name of "(.*?)" and a genus of "(.*?)"/
 end
 
 Given /^species "(.*?)" exists in that subgenus$/ do |name|
-
   @species = FactoryGirl.create :species, subfamily: @subfamily, genus: @genus, subgenus: @subgenus, name: FactoryGirl.create(:species_name, name: name)
   FactoryGirl.create :taxon_state, taxon_id: @species.id
   @species.history_items.create! taxt: "#{name} history"
@@ -205,7 +200,6 @@ Given /^there is species "([^"]*)" and another species "([^"]*)" shared between 
   later_genus = create_genus valid_genus_name
   create_species valid_species_name, genus: later_genus, status: Status['valid'].to_s, protonym_id: proto_species.id
 end
-
 
 Given /^there is a species "([^"]*)" with genus "([^"]*)"$/ do |species_name, genus_name|
   genus = create_genus genus_name

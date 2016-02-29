@@ -15,10 +15,6 @@ Given /^I fill in the password field with "([^"]+)"$/ do |string|
   step %{I fill in "user_password" with "#{string}"}
 end
 
-Given /^I press "([^"]+)" to log in$/ do |string|
-  step %{I press "#{string}"}
-end
-
 Given /^I press the first "([^"]+)" to log in$/ do |string|
   step %{I press the first "#{string}"}
 end
@@ -61,15 +57,6 @@ end
 Given /^I log in as a bibliography editor$/ do
   @user = FactoryGirl.create :user
   login_programmatically
-end
-
-Given /^I log in through the web interface/ do
-  @user = FactoryGirl.create :user, can_edit: true
-  login_through_web_page
-end
-
-Given 'I log out' do
-  step %{I follow "Logout"}
 end
 
 Given 'I am logged in' do

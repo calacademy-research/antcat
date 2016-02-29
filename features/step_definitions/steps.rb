@@ -7,10 +7,6 @@ Then /^I (#{SHOULD_OR_SHOULD_NOT}) see an? "([^"]*)" button$/ do |should_selecto
   end
 end
 
-Then /^there should be the HTML "(.*)"$/ do |html|
-  body.should =~ /#{html}/
-end
-
 Then "I should not see any error messages" do
   page.should_not have_css '.error_messages li'
 end
@@ -83,11 +79,6 @@ Then(/^The taxon mouseover should contain "(.*?)"$/) do |arg1|
   find('.reference_key')['title'].should have_content(arg1)
 end
 
-Then /The parent name field should have "(.*?)"$/ do |contents|
-  display_button = find('#parent_name_field .display_button')
-  display_button.should have_selector(contents)
-end
-
 Then /I should see "([^"]*)" italicized/ do |italicized_text|
   page.should have_css('i', text: italicized_text)
 end
@@ -101,12 +92,6 @@ end
 And /I press "(.*?)" (?:with)?in (.*)$/ do |button, location|
   with_scope location do
     step %{I press "#{button}"}
-  end
-end
-
-And /I fill in "(.*?)" with "(.*?)" (?:with)?in (.*)$/ do |field, contents, location|
-  with_scope location do
-    step %{I fill in "#{field}" with "#{contents}"}
   end
 end
 

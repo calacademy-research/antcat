@@ -18,11 +18,6 @@ And /^I click the reference key expansion$/ do
   find(".reference_key_expansion").click
 end
 
-Then /^I should (not )?see the (\w+) index$/ do |should_not, rank|
-  selector = should_not ? :should_not : :should
-  page.send selector, have_css("#taxon_browser .#{rank}-test-hook")
-end
-
 Then /^I should see the catalog entry for "([^"]*)"$/ do |taxon|
   page.should have_css('.header .taxon', text: taxon)
 end
