@@ -1,13 +1,13 @@
 -@title = "#{@taxon.name.epithet}"
 -breadcrumb @taxon
 
--unless disable_taxon_browser_js?
+-unless disable_taxon_browser?
   -content_for :head do
     =javascript_include_tag "cookie_checkbox"
     =javascript_include_tag "taxon_browser_toggler"
     =javascript_include_tag "taxon_browser"
 
-#taxon_browser.callout
+#taxon_browser.callout{style: ("display: none" unless show_taxon_browser?)}
   =render "taxon_browser", panels: @panels, self_and_parents: @self_and_parents
 
 #taxon_description=render "catalog/taxon", taxon: @taxon

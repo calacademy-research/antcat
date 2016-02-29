@@ -3,7 +3,6 @@
 #   * Toggle visibility
 #   * Update the togglers' labels after toggling
 #   * Save current visibility state in a cookie
-# * On init: read cookie, and hide browser if necessary
 
 class @TaxonBrowserToggler
   # Element we want to show/hide
@@ -16,27 +15,18 @@ class @TaxonBrowserToggler
   LABELS_TO_UPDATE = "#desktop-toggler, #mobile-toggler"
 
   constructor: ->
-    @_isVisible = @_getCookie() || false
-    @_hideUnlessVisible()
+    @isVisible = $(TAXON_BROWSER).is(":visible")
+    @_updateLabels()
     @_setClickHandlers TOGGLERS
 
   toggle: ->
-    $(TAXON_BROWSER).slideToggle 250
-    @_isVisible = !@_isVisible
-    @_setCookie @_isVisible
-    @_updateLabels LABELS_TO_UPDATE
-
-  _getCookie: -> Cookies.get("show_browser") == "true"
-
-  _setCookie: (isVisible) -> Cookies.set "show_browser", isVisible
+    @isVisible = !@isVisible
+    Cookies.set "show_browser", @isVisible
+    @_updateLabels()
+    $(TAXON_BROWSER).slideToggle 200
 
   _setClickHandlers: (elements) -> $(elements).click => @toggle()
 
-  _updateLabels: (elements) ->
-    verb = if @_isVisible then "Hide" else "Show"
-    $(elements).text "#{verb} Taxon Browser"
-
-  _hideUnlessVisible: ->
-    unless @_isVisible
-      $(TAXON_BROWSER).hide()
-      @_updateLabels LABELS_TO_UPDATE
+  _updateLabels: ->
+    verb = if @isVisible then "Hide" else "Show"
+    $(LABELS_TO_UPDATE).text "#{verb} Taxon Browser"

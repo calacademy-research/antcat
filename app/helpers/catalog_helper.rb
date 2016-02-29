@@ -48,14 +48,29 @@ module CatalogHelper
   end
 
   def open_panel? selected, self_and_parents
-    return true if disable_taxon_browser_js?
+    return true if disable_taxon_browser?
 
     cookies[:close_inactive_panels] == "false" || # open if asked to do so
     is_last_panel?(selected, self_and_parents) ||
     selected.is_a?(Genus)        # always open genus panel
   end
 
-  def disable_taxon_browser_js?
+  def show_taxon_browser?
+    return true if disable_taxon_browser?
+
+    # "Keep open" means "continue to be open", not "always open".
+    # If the browser is hidden, it stays hidden. Like this:
+    #
+    #                  keep_open_on  keep_open_off
+    # browser_hidden       HIDE          HIDE
+    # browser_visible      SHOW          HIDE
+    cookies[:show_browser] == "true" &&
+    cookies[:keep_taxon_browser_open] == "true"
+  end
+
+  # For disabling the taxon browser by default in test env.
+  # Hiding it and closing its panels would break loads of tests.
+  def disable_taxon_browser?
     if Rails.env.test?
       return true unless $taxon_browser_test_hack
     end
