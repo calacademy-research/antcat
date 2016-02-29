@@ -18,16 +18,6 @@ module ApplicationHelper
     end
   end
 
-  def biogeographic_region_options_for_select value='', first_label = '', second_label = nil
-    string =  option_for_select(first_label, nil, value)
-    string << option_for_select(second_label, second_label, value) if second_label.present?
-    BiogeographicRegion.instances.each do |biogeographic_region|
-      string << option_for_select(biogeographic_region.label, biogeographic_region.value, value)
-      string
-    end
-    string
-  end
-
   def search_selector search_type
     options = [['matching', 'm'],
                ['beginning with', 'bw'],
@@ -115,10 +105,4 @@ module ApplicationHelper
     end
   end
 
-  private
-    def option_for_select label, value, current_value
-      options = { value: value }
-      options[:selected] = 'selected' if value == current_value
-      content_tag :option, label, options
-    end
 end

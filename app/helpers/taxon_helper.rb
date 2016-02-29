@@ -11,6 +11,11 @@ module TaxonHelper
     end
   end
 
+  def biogeographic_region_options_for_select value = nil
+    options_for_select([[nil, nil]], value) <<
+    options_for_select(BiogeographicRegion::REGIONS, value)
+  end
+
   def add_taxon_button taxon, collision_resolution
     child_ranks = { family:    "subfamily",
                     subfamily: "genus",

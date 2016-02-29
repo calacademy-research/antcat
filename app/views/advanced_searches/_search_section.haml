@@ -11,7 +11,7 @@
       =text_field_tag :year, params[:year]
     .medium-3.columns
       Biogeographic region
-      =select_tag :biogeographic_region, biogeographic_region_options_for_select(params[:biogeographic_region], 'Any', 'None')
+      =select_tag :biogeographic_region, search_biogeographic_region_options_for_select(params[:biogeographic_region])
 
   .row
     .medium-6.columns
