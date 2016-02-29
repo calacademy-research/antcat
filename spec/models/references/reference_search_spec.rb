@@ -413,5 +413,17 @@ describe Reference do
       expect(keyword_params[:year]).to eq("2003")
       expect(keyword_params[:keywords]).to eq("")
     end
+
+    it "ignores a single space after the colon after a keyword" do
+      keyword_params = Reference.extract_keyword_params 'author: Wilson'
+      expect(keyword_params[:author]).to eq("Wilson")
+      expect(keyword_params[:keywords]).to eq("")
+    end
+
+    it "doesn't care about capitalization of the keyword" do
+      keyword_params = Reference.extract_keyword_params 'Author:Wilson'
+      expect(keyword_params[:author]).to eq("Wilson")
+      expect(keyword_params[:keywords]).to eq("")
+    end
   end
 end

@@ -154,6 +154,18 @@ Feature: Searching references
     And I should not see the following autocomplete suggestions:
       | Fisher's Favorite Ants |
 
+  Scenario: Search using autocomplete keywords (that are not well formatted)
+    Given these references exists
+      | authors    | year | citation_year | title                  | citation      |
+      | Fisher, B. | 1995 | 1995          | Anthill                | Ants 1:1-2    |
+      | Bolton, B. | 1895 | 1895a         | Fisher's Favorite Ants | Psyche 11:1-2 |
+    When I go to the references page
+    And I fill in the search box with "Author: fish"
+    Then I should see the following autocomplete suggestions:
+      | Anthill |
+    And I should not see the following autocomplete suggestions:
+      | Fisher's Favorite Ants |
+
   Scenario: Expanding autocomplete suggestions
     When I go to the references page
     And I fill in the search box with "author:fish"
