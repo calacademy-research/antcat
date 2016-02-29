@@ -2,8 +2,8 @@
 # after the element's id). Also sets the initial value.
 
 $.fn.checkboxCookify = (defaultVal=false) ->
-  getCookie = ->
-    value = Cookies.get(cookie)
+  getValue = ->
+    value = Cookies.get cookie
     if value is undefined
       defaultVal
     else
@@ -11,11 +11,10 @@ $.fn.checkboxCookify = (defaultVal=false) ->
 
   setCookie = => Cookies.set cookie, @is(":checked")
 
+  setupCheckbox = =>
+    @attr "checked", getValue()
+    setCookie()
+    @change => setCookie() # set click handler
+
   cookie = @attr "id"
-
-  # init
-  @attr "checked", getCookie()
-  setCookie()
-
-  # click handler
-  @change => setCookie()
+  setupCheckbox()
