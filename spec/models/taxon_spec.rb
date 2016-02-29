@@ -96,6 +96,25 @@ describe Taxon do
       myanmyrma.reload
       expect(myanmyrma).to be_incertae_sedis_in('family')
     end
+
+    describe "biogeographic_region" do
+      before do
+        @taxon = FactoryGirl.build :taxon
+        FactoryGirl.create :taxon_state, taxon_id: @taxon.id
+      end
+
+      it "allows only allowed regions" do
+        @taxon.biogeographic_region = "Australasia"
+        expect(@taxon.valid?).to be true
+        @taxon.biogeographic_region = "Ancient Egypt"
+        expect(@taxon.valid?).to be false
+      end
+
+      it "allows nil" do
+        @taxon.biogeographic_region = nil
+        expect(@taxon.valid?).to be true
+      end
+    end
   end
 
   describe "Rank" do

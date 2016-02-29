@@ -1,5 +1,9 @@
 class BiogeographicRegion
 
+  # TODO DRY
+  REGIONS = %w( Nearctic Neotropic Palearctic Afrotropic
+                Malagasy Indomalaya Australasia Oceania )
+
   def initialize string
     @string = string
   end

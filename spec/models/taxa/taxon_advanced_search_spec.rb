@@ -226,8 +226,8 @@ describe Taxon do
         expect(Taxa::Search.advanced_search(rank: 'Species', biogeographic_region: 'None').map(&:id)).to eq([eciton.id])
       end
       it "should not do substring search" do
-        atta = create_species biogeographic_region: 'Indonesia'
-        expect(Taxa::Search.advanced_search(rank: 'All', biogeographic_region: 'Indo').map(&:id)).not_to eq([atta.id])
+        atta = create_species biogeographic_region: 'Australasia'
+        expect(Taxa::Search.advanced_search(rank: 'All', biogeographic_region: 'Aust').map(&:id)).not_to eq([atta.id])
       end
     end
 

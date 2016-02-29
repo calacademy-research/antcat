@@ -245,8 +245,8 @@ describe Exporters::Antweb::Exporter do
 
   describe "Sending other fields to AntWeb" do
     it "should send the biogeographic region" do
-      taxon = create_genus biogeographic_region: 'Malaya'
-      expect(@exporter.export_taxon(taxon)[19]).to eq('Malaya')
+      taxon = create_genus biogeographic_region: 'Neotropic'
+      expect(@exporter.export_taxon(taxon)[19]).to eq('Neotropic')
     end
     it "should send the locality" do
       taxon = create_genus protonym: FactoryGirl.create(:protonym, locality: 'Canada')
