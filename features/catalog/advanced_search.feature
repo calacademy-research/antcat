@@ -127,7 +127,6 @@ Feature: Searching the catalog
     And I follow the first "Advanced Search"
     And I fill in "type_specimen_code" with "1234"
     And I press "Go" in the search section
-    And I wait for a while
     Then I should see "1 result"
     And I should see "1234" within ".results_section-test-hook"
 

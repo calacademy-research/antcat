@@ -35,10 +35,6 @@ When /I wait for a bit(?: more)?/ do
   sleep 1
 end
 
-And /I wait for a while/ do
-  sleep 5
-end
-
 Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
   with_scope location || 'the page' do
     page.should have_css ".selected", :text => word
