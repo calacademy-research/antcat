@@ -8,8 +8,9 @@ info:
     name: Joe Russack
     email: JRussack@calacademy.org
 
-#host: antcat.org
-host: localhost:3000
+host: antcat.org
+# Uncomment for development testing
+#host: localhost:3000
 basePath: /v1
 schemes: [http]
 consumes: [application/json]
