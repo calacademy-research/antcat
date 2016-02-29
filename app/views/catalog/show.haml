@@ -2,10 +2,9 @@
 -breadcrumb @taxon
 
 -content_for :head do
+  =javascript_include_tag "cookie_checkbox"
   =javascript_include_tag "taxon_browser_toggler"
-  =javascript_include_tag "taxon_browser_keep_open"
-  =javascript_include_tag "taxon_browser_autoclose_panels_checkbox"
-  =javascript_include_tag "catalog"
+  =javascript_include_tag "taxon_browser"
 
 #taxon_browser.callout
   =render "taxon_browser", panels: @panels, self_and_parents: @self_and_parents
