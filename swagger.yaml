@@ -10,7 +10,7 @@ info:
 
 #host: antcat.org
 host: localhost:3000
-#basePath: /v0.1
+basePath: /v1
 schemes: [http]
 consumes: [application/json]
 produces: [application/json]
@@ -18,7 +18,7 @@ produces: [application/json]
 
 
 paths:
-  /v1/taxa/{id}:
+  /taxa/{id}:
     get:
       summary: Get a single taxon
       operationId: getTaxon
@@ -39,7 +39,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/taxa/search/{string}:
+  /taxa/search/{string}:
     get:
       summary: Search taxa using advanced search string
       operationId: searchTaxa
@@ -60,7 +60,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/taxa:
+  /taxa:
     get:
       summary: Get taxa
       operationId: getTaxa
@@ -81,7 +81,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/protonyms:
+  /protonyms:
     get:
       summary: Get all protonyms
       operationId: getProtonyms
@@ -96,7 +96,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/protonyms/{id}:
+  /protonyms/{id}:
     get:
       summary: Get a protonym
       operationId: getProtonym
@@ -117,7 +117,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/authors/{id}:
+  /authors/{id}:
     get:
       summary: Get an author
       operationId: getAuthor
@@ -138,7 +138,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/authors:
+  /authors:
     get:
       summary: Get all authors
       operationId: getAuthors
@@ -154,7 +154,7 @@ paths:
           description: Record not found
 
 
-  /v1/author_names/{id}:
+  /author_names/{id}:
     get:
       summary: Get an author name by author id
       operationId: getAuthorName
@@ -175,7 +175,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/author_names:
+  /author_names:
     get:
       summary: Get all author names
       operationId: getAuthorNames
@@ -190,7 +190,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/names/{id}:
+  /names/{id}:
     get:
       summary: Get an author name by author id
       operationId: getName
@@ -211,7 +211,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/names:
+  /names:
     get:
       summary: returns a maximum of 100 taxon names
       operationId: getNames
@@ -233,7 +233,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/citations:
+  /citations:
     get:
       summary: Get all citations
       operationId: getCitations
@@ -256,7 +256,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/citations/{id}:
+  /citations/{id}:
     get:
       summary: Get a citation
       operationId: getCitation
@@ -277,7 +277,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/taxon_history_items:
+  /taxon_history_items:
     get:
       summary: Get all taxon_history_items
       operationId: getTaxonHistoryItems
@@ -300,7 +300,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/taxon_history_items/{id}:
+  /taxon_history_items/{id}:
     get:
       summary: Get a single taxon_history_item
       operationId: getTaxonHistoryItem
@@ -321,7 +321,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/journals:
+  /journals:
     get:
       summary: Get all journals
       operationId: getJournals
@@ -344,7 +344,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/journals/{id}:
+  /journals/{id}:
     get:
       summary: Get a single journal
       operationId: getJournal
@@ -365,7 +365,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/places:
+  /places:
     get:
       summary: Get all places
       operationId: getPlaces
@@ -388,7 +388,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/places/{id}:
+  /places/{id}:
     get:
       summary: Get a single place
       operationId: getplace
@@ -409,7 +409,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/publishers:
+  /publishers:
     get:
       summary: Get all publishers
       operationId: getPublishers
@@ -432,7 +432,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/publishers/{id}:
+  /publishers/{id}:
     get:
       summary: Get a single publisher
       operationId: getpublisher
@@ -453,7 +453,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/references:
+  /references:
     get:
       summary: Get all references
       operationId: getReferences
@@ -476,7 +476,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/references/{id}:
+  /references/{id}:
     get:
       summary: Get a single reference
       operationId: getreference
@@ -497,7 +497,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/reference_author_names:
+  /reference_author_names:
     get:
       summary: Get all reference/Author Name association records
       operationId: getReferenceAuthorNames
@@ -520,7 +520,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/reference_author_names/{id}:
+  /reference_author_names/{id}:
     get:
       summary: Get a single reference/author name association
       operationId: getReferenceAuthorName
@@ -541,7 +541,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/reference_documents:
+  /reference_documents:
     get:
       summary: Get all reference/Author Name association records
       operationId: getReferenceDocuments
@@ -564,7 +564,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/reference_documents/{id}:
+  /reference_documents/{id}:
     get:
       summary: Get a single reference/author name association
       operationId: getReferenceDocument
@@ -585,7 +585,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/reference_sections:
+  /reference_sections:
     get:
       summary: Get all reference/Author Name association records
       operationId: getReferenceSections
@@ -608,7 +608,7 @@ paths:
         "404":
           description: Record not found
 
-  /v1/reference_sections/{id}:
+  /reference_sections/{id}:
     get:
       summary: Get a single reference/author name association
       operationId: getReferenceSection
@@ -629,7 +629,49 @@ paths:
         "404":
           description: Record not found
 
-#synonym
+  /synonyms:
+    get:
+      summary: Get all synonyms
+      operationId: getSynonyms
+      tags:
+        - Synonyms
+        - Synonym
+      parameters:
+          - name: starts_at
+            in: query
+            description: Lowest synonym id to be returned
+            required: false
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Returns 100 synonyms at a time starting the specified synonym id. If no id is supplied, starts at zero
+
+          schema:
+            $ref: '#/definitions/Synonym'
+        "404":
+          description: Record not found
+
+  /synonyms/{id}:
+    get:
+      summary: Get a single synonym
+      operationId: getsynonym
+      tags:
+        - Synonym
+      parameters:
+        - name: id
+          in: path
+          description: getsynonym id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: a single synonym record
+          schema:
+            $ref: '#/definitions/Synonym'
+        "404":
+          description: Record not found
 
 
 
@@ -1208,6 +1250,34 @@ definitions:
         type: string
       public:
         type: boolean
+      created_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for original creation
+      updated_at:
+        type: string
+        format: date-time
+        description: Automatically generated timestamp for most recent update
+
+  Synonym:
+    description: synonym mapping between two taxa
+    type: object
+    properties:
+      id:
+        type: integer
+        description: synonym id, primary key
+      senior_synonym_id:
+        type: integer
+        description: Senior taxa
+      junior_synonym_id:
+        type: integer
+        description: Junior taxa
+      auto_generated:
+        type: boolean
+        description: Programatically generated (typically from an exteral import)
+      origin:
+        type: string
+        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
         type: string
         format: date-time
