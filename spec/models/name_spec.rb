@@ -218,7 +218,7 @@ describe Name do
           FactoryGirl.create klass, field => "{nam #{name.id}}"
         end
       end
-      refs = name.references_in_taxt
+      refs = name.send :references_in_taxt
       # count the total referencing items
       expect(refs.length).to eq(
         Taxt.taxt_fields.collect{ |klass, fields| fields.length }.inject(&:+)

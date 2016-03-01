@@ -36,15 +36,6 @@ class Name < ActiveRecord::Base
     name.split(' ')[index]
   end
 
-  def set_taxon_caches
-    Taxon.where(name: self).update_all(name_cache: name)
-    Taxon.where(name: self).update_all(name_html_cache: name_html)
-  end
-
-  def words
-    @_words ||= name.split ' '
-  end
-
   # Feel free to refactor this. It was written to replace code that 1) made some initial
   # parsing using Citrus 2) dynamically called `name_class.parse_words(words)` depending on
   # what Citrus returned 3) which initiated [depending on subclass] a long call chain involving
@@ -254,49 +245,58 @@ class Name < ActiveRecord::Base
     references_in_fields.concat(references_in_taxt)
   end
 
-  def references_in_fields
-    references_to_taxon_name
-      .concat(references_to_taxon_type_name)
-      .concat(references_to_protonym_name)
-  end
-
-  def references_to_taxon_name
-    Taxon.where(name: self).map do |taxon|
-      { table: 'taxa', field: :name_id, id: taxon.id }
-    end
-  end
-
-  def references_to_taxon_type_name
-    Taxon.where(type_name: self).map do |taxon|
-      { table: 'taxa', field: :type_name_id, id: taxon.id }
-    end
-  end
-
-  def references_to_protonym_name
-    Protonym.where(name: self).map do |protonym|
-      { table: 'protonyms', field: :name_id, id: protonym.id }
-    end
-  end
-
-  def references_in_taxt
-    references = []
-    Taxt.taxt_fields.each do |klass, fields|
-      table = klass.arel_table
-      fields.each do |field|
-        klass.where(table[field].matches("%{nam #{id}}%")).each do |record|
-          next unless record[field]
-          if record[field] =~ /{nam #{id}}/
-            references << { table: klass.table_name, field: field, id: record[:id] }
-          end
-        end
-      end
-    end
-    references
-  end
-
   def self.find_by_name string
     Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false)
       .where(name: string).order('taxa.id DESC').order(:name).first
   end
 
+  private
+    def words
+      @_words ||= name.split ' '
+    end
+
+    def set_taxon_caches
+      Taxon.where(name: self).update_all(name_cache: name)
+      Taxon.where(name: self).update_all(name_html_cache: name_html)
+    end
+
+    def references_in_fields
+      references_to_taxon_name
+        .concat(references_to_taxon_type_name)
+        .concat(references_to_protonym_name)
+    end
+
+    def references_to_taxon_name
+      Taxon.where(name: self).map do |taxon|
+        { table: 'taxa', field: :name_id, id: taxon.id }
+      end
+    end
+
+    def references_to_taxon_type_name
+      Taxon.where(type_name: self).map do |taxon|
+        { table: 'taxa', field: :type_name_id, id: taxon.id }
+      end
+    end
+
+    def references_to_protonym_name
+      Protonym.where(name: self).map do |protonym|
+        { table: 'protonyms', field: :name_id, id: protonym.id }
+      end
+    end
+
+    def references_in_taxt
+      references = []
+      Taxt.taxt_fields.each do |klass, fields|
+        table = klass.arel_table
+        fields.each do |field|
+          klass.where(table[field].matches("%{nam #{id}}%")).each do |record|
+            next unless record[field]
+            if record[field] =~ /{nam #{id}}/
+              references << { table: klass.table_name, field: field, id: record[:id] }
+            end
+          end
+        end
+      end
+      references
+    end
 end
