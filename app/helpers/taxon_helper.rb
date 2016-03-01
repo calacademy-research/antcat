@@ -2,11 +2,9 @@ module TaxonHelper
   def sort_by_status_and_name taxa
     taxa.sort do |a, b|
       if a.status == b.status
-        # name ascending
-        a.name.name <=> b.name.name
+        a.name.name <=> b.name.name # name ascending
       else
-        # status descending
-        b.status <=> a.status
+        b.status <=> a.status # status descending
       end
     end
   end
@@ -27,8 +25,8 @@ module TaxonHelper
     rank_to_add = child_ranks[taxon.rank.to_sym]
     return unless rank_to_add.present?
 
-    collision_resolution = nil if collision_resolution.blank?
     # Hopefully not needed, but leaving this extra check here to be on the safe side
+    collision_resolution = nil if collision_resolution.blank?
 
     link_to "Add #{rank_to_add}", new_taxa_path(rank_to_create: rank_to_add,
       parent_id: taxon.id, collision_resolution: collision_resolution), class: "btn-new"

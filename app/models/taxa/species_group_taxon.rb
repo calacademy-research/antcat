@@ -1,5 +1,5 @@
 # Note: This is the superclass of Species and Subspecies, not
-# be confused with "species group" as used in in taxonomy.
+# be confused with "species group" as used in taxonomy.
 
 class SpeciesGroupTaxon < Taxon
   belongs_to :subfamily

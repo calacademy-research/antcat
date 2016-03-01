@@ -1,5 +1,5 @@
 # Note: This is the superclass of Genus and Subgenus, not
-# be confused with "genus group" as used in in taxonomy.
+# be confused with "genus group" as used in taxonomy.
 
 class GenusGroupTaxon < Taxon
   include Formatters::RefactorFormatter

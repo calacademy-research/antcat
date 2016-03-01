@@ -1,11 +1,11 @@
 class Protonym < ActiveRecord::Base
   include UndoTracker
 
-  has_one :taxon # Taxon has a protnym_id
-  belongs_to :authorship, class_name: 'Citation', dependent: :destroy # this model has a single authorship_id that references the "Citation" table
+  has_one :taxon
+  belongs_to :authorship, class_name: 'Citation', dependent: :destroy
   validates :authorship, presence: true
   belongs_to :name
-  validates :name, presence: true # Protonym has a name_id
+  validates :name, presence: true
   accepts_nested_attributes_for :name, :authorship
   has_paper_trail meta: { change_id: :get_current_change_id }
 

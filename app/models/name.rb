@@ -37,8 +37,8 @@ class Name < ActiveRecord::Base
   end
 
   def set_taxon_caches
-    Taxon.where(name_id: id).update_all(name_cache: name)
-    Taxon.where(name_id: id).update_all(name_html_cache: name_html)
+    Taxon.where(name: self).update_all(name_cache: name)
+    Taxon.where(name: self).update_all(name_html_cache: name_html)
   end
 
   def words
@@ -147,6 +147,7 @@ class Name < ActiveRecord::Base
            options[:species_only] ||
            options[:genera_only] ||
            options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+
     rank_filter =
         case
           when options[:species_only] then
@@ -205,13 +206,11 @@ class Name < ActiveRecord::Base
   end
 
   def to_html_with_fossil fossil
-    string = ''.html_safe
-    string << dagger_html if fossil
-    string << name_html.html_safe
+    "#{dagger_html if fossil}#{name_html}".html_safe
   end
 
   def rank
-    self.class.name[0, self.class.name.rindex('Name')].underscore
+    self.class.name.gsub(/Name$/, "").underscore
   end
 
   def self.make_epithet_set epithet
@@ -219,15 +218,11 @@ class Name < ActiveRecord::Base
   end
 
   def epithet_with_fossil_html fossil
-    string = ''.html_safe
-    string << dagger_html if fossil
-    string << epithet_html.html_safe
+    "#{dagger_html if fossil}#{epithet_html}".html_safe
   end
 
   def protonym_with_fossil_html fossil
-    string = ''.html_safe
-    string << dagger_html if fossil
-    string << name_html.html_safe
+    "#{dagger_html if fossil}#{name_html}".html_safe
   end
 
   def dagger_html
@@ -256,38 +251,30 @@ class Name < ActiveRecord::Base
   end
 
   def references
-    references = []
-    references.concat references_in_fields
-    references.concat references_in_taxt
-    references
+    references_in_fields.concat(references_in_taxt)
   end
 
   def references_in_fields
-    references = []
-    references.concat references_to_taxon_name
-    references.concat references_to_taxon_type_name
-    references.concat references_to_protonym_name
-    references
+    references_to_taxon_name
+      .concat(references_to_taxon_type_name)
+      .concat(references_to_protonym_name)
   end
 
   def references_to_taxon_name
-    Taxon.where(name_id: id).inject([]) do |references, taxon|
-      references << { table: 'taxa', field: :name_id, id: taxon.id }
-      references
+    Taxon.where(name: self).map do |taxon|
+      { table: 'taxa', field: :name_id, id: taxon.id }
     end
   end
 
   def references_to_taxon_type_name
-    Taxon.where(type_name_id: id).inject([]) do |references, taxon|
-      references << { table: 'taxa', field: :type_name_id, id: taxon.id }
-      references
+    Taxon.where(type_name: self).map do |taxon|
+      { table: 'taxa', field: :type_name_id, id: taxon.id }
     end
   end
 
   def references_to_protonym_name
-    Protonym.where(name_id: id).inject([]) do |references, protonym|
-      references << { table: 'protonyms', field: :name_id, id: protonym.id }
-      references
+    Protonym.where(name: self).map do |protonym|
+      { table: 'protonyms', field: :name_id, id: protonym.id }
     end
   end
 

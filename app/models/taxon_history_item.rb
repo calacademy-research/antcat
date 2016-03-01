@@ -7,12 +7,6 @@ class TaxonHistoryItem < ActiveRecord::Base
   validates_presence_of :taxt
   has_paper_trail meta: { change_id: :get_current_change_id }
 
-  # TOOD: Rails 4 upgrade, remove when tests pass
-  # def title
-  #   # for PaperTrailManager's RSS output
-  #   taxt
-  # end
-
   def update_taxt_from_editable editable_taxt
     update_attributes taxt: Taxt.from_editable(editable_taxt)
   rescue Taxt::ReferenceNotFound => e

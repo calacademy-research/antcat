@@ -48,8 +48,7 @@ class MissingReference < Reference
 
   def find_replacement
     search_term = citation.gsub /,/, ''
-    results = Reference.where key_cache_no_commas: search_term
-    results.first
+    Reference.where(key_cache_no_commas: search_term).first
   end
 
 end
