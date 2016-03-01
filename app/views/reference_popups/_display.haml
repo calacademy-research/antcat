@@ -1,8 +1,6 @@
-- css_class = 'display'
-
-%div{:class => css_class}
-  - if reference
-    = reference.decorate.format
-    = reference.decorate.format_reference_document_link
-  - else
+.display
+  -if reference
+    =reference.decorate.format
+    =reference.decorate.format_reference_document_link
+  -else
     (none)

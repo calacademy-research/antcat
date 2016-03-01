@@ -1,9 +1,8 @@
-- css_classes = [:panel]
-- css_classes << :blank if panel == panels.last
-- css_classes << :half_width if panel != panels.last && panels.count > 2
+- css_classes = []
+- css_classes << "blank" if panel == panels.last
+- css_classes << "half_width" if panel != panels.last && panels.count > 2
 
-.author_panel{class: css_classes.join(' ')}
-
+.author_panel.panel{class: css_classes}
   .search
     = form_tag merge_authors_path, method: :get do
       .left

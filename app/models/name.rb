@@ -17,7 +17,7 @@ class Name < ActiveRecord::Base
                   :gender,
                   :nonconforming_name
 
-  scope :find_all_by_name, lambda { |name| where name: name }
+  scope :find_all_by_name, lambda { |name| where(name: name) }
 
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)

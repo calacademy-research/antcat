@@ -68,8 +68,8 @@ class TaxonDecorator::Statistics
         Status.ordered_statuses.index key
       end
 
-      status_strings = sorted_keys.inject([]) do |status_strings, status|
-        status_strings << rank_status_count(:genera, status, statistics[status])
+      status_strings = sorted_keys.map do |status|
+        rank_status_count(:genera, status, statistics[status])
       end
 
       if status_strings.present?

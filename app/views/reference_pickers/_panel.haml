@@ -1,12 +1,12 @@
-- css_class = 'reference'
+- css_class = []
 - if reference
-  - css_class << " item_#{reference.id}"
+  - css_class << "item_#{reference.id}"
   - taxt = Taxt.to_editable_reference reference
   - id = reference.id
 - else
   - taxt = id = nil
 
-%div{class: css_class, 'data-id' => id, 'data-taxt' => taxt}
+.reference{class: css_class, 'data-id' => id, 'data-taxt' => taxt}
   %table.reference_table
     %tr
       %td.reference_item

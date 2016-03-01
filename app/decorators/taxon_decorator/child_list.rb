@@ -26,7 +26,7 @@ class TaxonDecorator::ChildList
     def child_lists_for_rank children_selector
       return ''.html_safe unless @taxon.respond_to?(children_selector) && @taxon.send(children_selector).present?
 
-      if Subfamily === @taxon && children_selector == :genera
+      if @taxon.is_a?(Subfamily) && children_selector == :genera
         child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: false) +
         child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: true)
       else
@@ -64,9 +64,7 @@ class TaxonDecorator::ChildList
       end
 
       if specify_extinct_or_extant
-        label << ' ('
-        label << if conditions[:fossil] then 'extinct' else 'extant' end
-        label << ')'
+        label << if conditions[:fossil] then ' (extinct)' else ' (extant)' end
       end
 
       if conditions[:incertae_sedis_in]
@@ -89,8 +87,8 @@ class TaxonDecorator::ChildList
     end
 
     def child_list_items children
-      children.inject([]) do |string, child|
-        string << link_to_taxon(child)
+      children.map do |child|
+        link_to_taxon(child)
       end.join(', ').html_safe
     end
 end
