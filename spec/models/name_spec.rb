@@ -319,17 +319,19 @@ describe Name do
     it "should work as expected" do
       name = SubspeciesName.new name: 'Acus major minor medium', name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
         epithet_html: '<i>medium</i>', epithets: 'major minor medium', protonym_html: '<i>Acus major minor medium</i>'
-      expect(name.at(0)).to eq('Acus')
-      expect(name.at(1)).to eq('major')
-      expect(name.at(2)).to eq('minor')
-      expect(name.at(3)).to eq('medium')
+      name_split = name.to_s.split
+      expect(name_split[0]).to eq('Acus')
+      expect(name_split[1]).to eq('major')
+      expect(name_split[2]).to eq('minor')
+      expect(name_split[3]).to eq('medium')
 
       name = GenusName.new name: 'Acus', name_html: '<i>Acus</i>', epithet: 'Acus',
         epithet_html: '<i>Acus</i>', epithets: nil, protonym_html: '<i>Acus</i>'
-      expect(name.at(0)).to eq('Acus')
-      expect(name.at(1)).to be_nil
-      expect(name.at(2)).to be_nil
-      expect(name.at(3)).to be_nil
+      name_split = name.to_s.split
+      expect(name_split[0]).to eq('Acus')
+      expect(name_split[1]).to be_nil
+      expect(name_split[2]).to be_nil
+      expect(name_split[3]).to be_nil
     end
   end
 

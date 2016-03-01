@@ -32,10 +32,6 @@ class Name < ActiveRecord::Base
     name.split(' ').size == 4
   end
 
-  def at index
-    name.split(' ')[index]
-  end
-
   # Feel free to refactor this. It was written to replace code that 1) made some initial
   # parsing using Citrus 2) dynamically called `name_class.parse_words(words)` depending on
   # what Citrus returned 3) which initiated [depending on subclass] a long call chain involving
