@@ -24,8 +24,7 @@ module TooltipHelper
 
   # Call in views to render hard-coded tooltips.
   # See explanation of key/scope in #parse_lookup_params
-  # Similar logic is duplicated in `tooltips.coffee` TODO fix?
-
+  # Similar logic is duplicated in `tooltips.coffee`
   def tooltip_icon key_param, scope: nil, disable_edit_link: false
     # key = parse_lookup_params key_param, scope: scope
     tooltip = Tooltip.find_by(key: key_param, scope: scope)
@@ -34,7 +33,6 @@ module TooltipHelper
     text =  if tooltip
               tooltip.try(:text) || "No tooltip text set. Click icon to edit."
             else
-              # TODO take into account `disable_edit_link`
               "Could not find tooltip with key '#{key_param}' with page scope '#{scope}'. Click icon to create."
             end
     tooltip_icon = image_tag 'help.png', class: 'help_icon tooltip', title: text
@@ -57,8 +55,7 @@ module TooltipHelper
     # want to notify editors about missing tooltips and encourage them to create them.
     def key_disabled? tooltip
       if tooltip && tooltip.key_disabled?
-        # TODO log this somewhere
-        puts "A tooltip with a disabled key was called in a view."
+        logger.info "A tooltip with a disabled key was called in a view."
         true
       end
     end
@@ -68,6 +65,5 @@ module TooltipHelper
     def new_populated_tooltip_link key
       new_tooltip_path key: key
     end
-
 
 end

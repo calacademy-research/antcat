@@ -1,18 +1,14 @@
-
-
 $ ->
   $.ajax '/tooltips/enabled_selectors', success: (data) -> # uses request origin to restrict returned items
     tooltipsToInsert = data
     (new AntCat.SelectorTooltips).createTooltips tooltipsToInsert
     (new AntCat.Tooltipify).tooltipifyAll()
 
-
 $ ->
   $.ajax '/tooltips/render_missing_tooltips', success: (data) ->
     # List of selectors: https://github.com/fczbkk/css-selector-generator-benchmark
     # TODO: Remove 'enabled' flags? Dig into docs, review.
     # TODO: Update 'help' pages.
-
 
     if data.show_missing_tooltips == true
       $('label, button, .ui-button, .apply_tooltip').not('.display_button, .remove_tooltip').each (index, element) =>
@@ -33,8 +29,6 @@ $ ->
           else
             $(this).attr('href',$(this).next().attr('href'))
 
-
-
   # Added to the global window object to make it callable from anywhere.
   window.testTooltipSelector = (new AntCat.TestTooltipSelector).testTooltipSelector
 
@@ -51,8 +45,6 @@ class AntCat.SelectorTooltips
       @createTooltip selector, title, id
 
   createTooltip: (selector, title, id, test_tooltip = false) =>
-    disable_edit_link = false # TODO add this, currently it's not possible to disable
-
     iconElement = $(@_createIcon title, id)
     iconElement.addClass(SELECTOR_TEST_TOOLTIP_CLASS) if test_tooltip
 

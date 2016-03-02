@@ -19,60 +19,59 @@ Feature: Editing tooltips
     # Test: Make sure edit links are disabled if no edit privs? Does that even make sense? right now you only see
     #       tooltips for edit-able pages.
 
-
   Background:
     Given I am logged in
 
   Scenario: Listing all tooltips
     Given this tooltip exist
-      | key                       | key_enabled | text                    |  scope |
-      | tooltips.selector_enabled | true        | Enable jQuery selector? |  tooltips |
+      | key      | key_enabled | text        | scope |
+      | selector | true        | Is enabled! | test  |
 
     When I go to the tooltips editing page
     Then I should see "Edit Tooltips"
-    And I should see "Enable jQuery selector?"
+    And I should see "Is enabled!"
 
   @javascript
   Scenario: Hovering a tooltip
     Given this tooltip exists
-      | key                       | key_enabled | text                    |  scope |
-      | selector_enabled | true        | Enable jQuery selector? |  tooltips |
+      | key       | key_enabled | text      | scope |
+      | hardcoded | true        | A tooltip | test  |
 
-    When I go to the tooltips editing page
-    Then I should not see the tooltip text "Enable jQuery selector?"
+    When I go to the tooltips test page
+    Then I should not see the tooltip text "A tooltip"
 
-    When I hover the tooltip next to the text "Selector enabled\?"
-    Then I should see the tooltip text "Enable jQuery selector?"
+    When I hover the tooltip next to the text "Hardcoded"
+    Then I should see the tooltip text "A tooltip"
 
   @javascript
   Scenario: Adding a key-based tooltip
-    When I go to the tooltips editing page
-    And I hover the tooltip next to the text "Tooltip text"
-    Then I should see the tooltip text "Could not find tooltip with key 'text'"
+    When I go to the tooltips test page
+    And I hover the tooltip next to the text "Hardcoded"
+    Then I should see the tooltip text "Could not find tooltip with key 'hardcoded'"
 
-    Then I follow "New Tooltip"
-    And I fill in "tooltip[key]" with "text"
-    And I follow "Hide/show advanced"
+    Then I go to the tooltips editing page
+    And I follow "New Tooltip"
+    And I fill in "tooltip[key]" with "hardcoded"
     And I check "tooltip[key_enabled]"
     And I fill in "tooltip[scope]" with "tooltips"
     And I fill in "tooltip[text]" with "Text used in the tooltip"
     Then I press "Create Tooltip"
     And I wait for a bit
 
-    Then I go to the tooltips editing page
-    When I hover the tooltip next to the text "Tooltip text"
+    Then I go to the tooltips test page
+    When I hover the tooltip next to the text "Hardcoded"
     Then I should see the tooltip text "Text used in the tooltip"
 
   @javascript
   Scenario: Editing a selector-based tooltip
     Given this tooltip exists
-      | key        | text      | selector | selector_enabled |  scope |
-      | title | Typo oops | h2.title | true             |  tooltips |
+      | key      | text      | selector | selector_enabled | scope |
+      | whatever | Typo oops | li.title | true             | test  |
 
-    When I go to the tooltips editing page
+    When I go to the tooltips test page
     Then I should not see the tooltip text "Typo oops"
 
-    When I hover the tooltip next to the element containing "Edit Tooltips"
+    When I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "Typo oops"
 
     Then I go to the tooltips editing page
@@ -82,56 +81,58 @@ Feature: Editing tooltips
     And I press "Update Tooltip"
     And I wait for a bit
 
-    When I go to the tooltips editing page
+    When I go to the tooltips test page
     Then I should not see the tooltip text "Typo oops"
     And I should not see the tooltip text "A title"
 
-    When I hover the tooltip next to the element containing "Edit Tooltips"
+    When I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "A title"
 
   @javascript
   Scenario: Disabling a key-based tooltip
-    Given this tooltip exists
-      | key                       | key_enabled | text                    | scope |
-      | selector_enabled | true        | Enable jQuery selector? | tooltips    |
+    Given this tooltip exist
+      | key       | key_enabled | text       | scope |
+      | hardcoded | true        | Is enabled | test  |
 
-    When I go to the tooltips editing page
-    Then I should not see the tooltip text "Enable jQuery selector?"
+    When I go to the tooltips test page
+    Then I should not see the tooltip text "Is enabled"
 
-    When I hover the tooltip next to the text "Selector enabled\?"
-    Then I should see the tooltip text "Enable jQuery selector?"
+    When I hover the tooltip next to the text "Hardcoded"
+    Then I should see the tooltip text "Is enabled"
 
-    And I follow "selector_enabled"
+    Then I go to the tooltips editing page
+    And I follow "hardcoded"
 
     And I follow "Hide/show advanced"
     Then I uncheck "tooltip[key_enabled]"
     And I press "Update Tooltip"
     And I wait for a bit
 
-    When I go to the tooltips editing page
-    Then I should not see any tooltips next to the text "Selector enabled\?"
+    When I go to the tooltips test page
+    Then I should not see any tooltips next to the text "Hardcoded"
 
   @javascript
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
-      | key        | text    | selector | selector_enabled |  scope |
-      | title | A title | h2.title | true             | tooltips    |
+      | key      | text    | selector | selector_enabled | scope |
+      | whatever | A title | li.title | true             | test  |
 
-    When I go to the tooltips editing page
+    When I go to the tooltips test page
     And I wait for a bit
-
-    When I hover the tooltip next to the element containing "Edit Tooltips"
+    When I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "A title"
 
-    And I follow "title"
+    Then I go to the tooltips editing page
+    And I wait for a bit
+    And I follow "whatever"
 
     And I follow "Hide/show advanced"
     Then I uncheck "tooltip[selector_enabled]"
     And I press "Update Tooltip"
     And I wait for a bit
 
-    When I go to the tooltips editing page
-    Then I should not see any tooltips next to the element containing "Edit Tooltips"
+    Then I go to the tooltips test page
+    Then I should not see any tooltips next to the element containing "Hook"
 
   @javascript
   Scenario: Page based exclusion works.

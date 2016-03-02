@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160120003845) do
+ActiveRecord::Schema.define(version: 20160204152431) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -53,40 +53,6 @@ ActiveRecord::Schema.define(version: 20160120003845) do
     t.datetime "updated_at"
   end
 
-  create_table "bolton_matches", force: :cascade do |t|
-    t.integer  "bolton_reference_id", limit: 4
-    t.integer  "reference_id",        limit: 4
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.float    "similarity",          limit: 24
-  end
-
-  add_index "bolton_matches", ["bolton_reference_id"], name: "bolton_matches_bolton_reference_id_idx", using: :btree
-  add_index "bolton_matches", ["reference_id"], name: "bolton_matches_reference_id_idx", using: :btree
-
-  create_table "bolton_references", force: :cascade do |t|
-    t.string   "authors",             limit: 255
-    t.string   "note",                limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "title",               limit: 255
-    t.string   "journal",             limit: 255
-    t.string   "series_volume_issue", limit: 255
-    t.string   "pagination",          limit: 255
-    t.string   "reference_type",      limit: 255
-    t.integer  "year",                limit: 4
-    t.string   "citation_year",       limit: 255
-    t.string   "publisher",           limit: 255
-    t.string   "place",               limit: 255
-    t.text     "original",            limit: 65535
-    t.integer  "match_id",            limit: 4
-    t.string   "match_status",        limit: 255
-    t.string   "key_cache",           limit: 255
-    t.string   "import_result",       limit: 255
-  end
-
-  add_index "bolton_references", ["match_id"], name: "index_bolton_references_on_match_id", using: :btree
-
   create_table "changes", force: :cascade do |t|
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
@@ -97,6 +63,7 @@ ActiveRecord::Schema.define(version: 20160120003845) do
   end
 
   add_index "changes", ["approver_id"], name: "index_changes_on_approver_id", using: :btree
+  add_index "changes", ["user_changed_taxon_id"], name: "index_changes_on_user_changed_taxon_id", using: :btree
 
   create_table "citations", force: :cascade do |t|
     t.integer  "reference_id",   limit: 4
@@ -212,6 +179,7 @@ ActiveRecord::Schema.define(version: 20160120003845) do
     t.boolean  "nonconforming_name"
   end
 
+  add_index "names", ["id", "type"], name: "index_names_on_id_and_type", using: :btree
   add_index "names", ["name"], name: "name_name_index", using: :btree
 
   create_table "places", force: :cascade do |t|
@@ -308,7 +276,6 @@ ActiveRecord::Schema.define(version: 20160120003845) do
     t.string   "pages_in",                         limit: 255
     t.string   "author_names_suffix",              limit: 255
     t.string   "principal_author_last_name_cache", limit: 255
-    t.string   "bolton_key_cache",                 limit: 255
     t.string   "reason_missing",                   limit: 255
     t.string   "key_cache",                        limit: 255
     t.string   "review_state",                     limit: 255
@@ -320,8 +287,8 @@ ActiveRecord::Schema.define(version: 20160120003845) do
   end
 
   add_index "references", ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: {"author_names_string_cache"=>255, "citation_year"=>nil}, using: :btree
-  add_index "references", ["bolton_key_cache"], name: "index_references_on_bolton_citation_key", using: :btree
   add_index "references", ["created_at"], name: "references_created_at_idx", using: :btree
+  add_index "references", ["id", "type"], name: "index_references_on_id_and_type", using: :btree
   add_index "references", ["journal_id"], name: "references_journal_id_idx", using: :btree
   add_index "references", ["nesting_reference_id"], name: "references_nested_reference_id_idx", using: :btree
   add_index "references", ["publisher_id"], name: "references_publisher_id_idx", using: :btree
@@ -335,6 +302,10 @@ ActiveRecord::Schema.define(version: 20160120003845) do
     t.boolean  "auto_generated",                default: false
     t.string   "origin",            limit: 255
   end
+
+  add_index "synonyms", ["junior_synonym_id", "senior_synonym_id"], name: "index_synonyms_on_junior_synonym_id_and_senior_synonym_id", using: :btree
+  add_index "synonyms", ["junior_synonym_id"], name: "index_synonyms_on_junior_synonym_id", using: :btree
+  add_index "synonyms", ["senior_synonym_id"], name: "index_synonyms_on_senior_synonym_id", using: :btree
 
   create_table "taxa", force: :cascade do |t|
     t.string   "type",                            limit: 255
@@ -375,6 +346,7 @@ ActiveRecord::Schema.define(version: 20160120003845) do
     t.boolean  "display",                                       default: true
   end
 
+  add_index "taxa", ["current_valid_taxon_id"], name: "index_taxa_on_current_valid_taxon_id", using: :btree
   add_index "taxa", ["family_id"], name: "index_taxa_on_family_id", using: :btree
   add_index "taxa", ["genus_id"], name: "taxa_genus_id_idx", using: :btree
   add_index "taxa", ["homonym_replaced_by_id"], name: "index_taxa_on_homonym_replaced_by_id", using: :btree
@@ -463,6 +435,9 @@ ActiveRecord::Schema.define(version: 20160120003845) do
     t.integer  "change_id",      limit: 4
   end
 
+  add_index "versions", ["change_id"], name: "index_versions_on_change_id", using: :btree
+  add_index "versions", ["event"], name: "index_versions_on_event", using: :btree
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
+  add_index "versions", ["whodunnit"], name: "index_versions_on_whodunnit", using: :btree
 
 end

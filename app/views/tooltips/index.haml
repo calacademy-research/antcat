@@ -1,6 +1,8 @@
 -@title = "Edit Tooltips"
+-breadcrumb :tooltips
 
 =enable_tooltips
+
 -content_for :head do
   = javascript_include_tag 'optimal-select.min'
   = javascript_include_tag 'tooltips_edit_in_place'
@@ -35,17 +37,16 @@
       -@grouped_tooltips.each do |namespace, tooltips|
         %tr.fake_subheader
           %td{colspan: 6}
-            %h3
+            %h6
               =if namespace.present? then namespace.capitalize else "No namespace" end
         =render tooltips
 
 %br/
 
+=link_to 'New Tooltip', new_tooltip_path, class: "btn-new"
 =link_to 'Help', page_path('help/editing_tooltips')
-|
-=link_to 'New Tooltip', new_tooltip_path
-|
-- if session[:show_missing_tooltips]
+
+-if session[:show_missing_tooltips]
   =link_to 'Hide tooltips helper', tooltips_path+'/toggle_tooltip_helper'
-- else
+-else
   =link_to 'Show tooltips helper', tooltips_path+'/toggle_tooltip_helper'
