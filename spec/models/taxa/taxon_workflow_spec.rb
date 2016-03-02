@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe Taxon do
@@ -35,20 +34,21 @@ describe Taxon do
       before do
         @taxon = create_taxon_version_and_change nil
       end
-      it "should allow it to be edited by any user that can edit the catalog" do
-        expect(@taxon.can_be_edited_by?(nil)).to be_falsey
-        expect(@taxon.can_be_edited_by?(@editor)).to be_truthy
-        expect(@taxon.can_be_edited_by?(@user)).to be_falsey
-      end
       it "should not allow it to be reviewed" do
-        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
+        expect(@taxon.can_be_reviewed?).to be_falsey
       end
       it "should not allow it to be approved" do
-        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
+        name = FactoryGirl.create :name, name: 'default_genus'
+        another_taxon = FactoryGirl.create :genus, name: name
+        another_taxon.taxon_state.review_state = :old
+
+        change = FactoryGirl.create :change, user_changed_taxon_id: another_taxon.id, change_type: "create"
+        FactoryGirl.create :version, item_id: another_taxon.id, whodunnit: @user.id, change_id: change.id
+        change.update_attributes! approver: @user, approved_at: Time.now
+
+        expect(@taxon.can_be_approved_by?(change, nil)).to be_falsey
+        expect(@taxon.can_be_approved_by?(change, @editor)).to be_falsey
+        expect(@taxon.can_be_approved_by?(change, @user)).to be_falsey
       end
     end
 
@@ -56,7 +56,6 @@ describe Taxon do
       before do
         @changer = FactoryGirl.create :user, can_edit: true
         @approver = FactoryGirl.create :user, can_edit: true
-        #@taxon = create_taxon_version_and_change :waiting, @changer
 
         name = FactoryGirl.create :name, name: 'default_genus'
         @taxon = FactoryGirl.create :genus, name: name
@@ -65,24 +64,14 @@ describe Taxon do
         @change = FactoryGirl.create :change, user_changed_taxon_id: @taxon.id, change_type: "create"
         FactoryGirl.create :version, item_id: @taxon.id, whodunnit: @changer.id, change_id: @change.id
         @change.update_attributes! approver: @changer, approved_at: Time.now
-
-
-      end
-      it "should allow any user to edit a waiting record" do
-        expect(@taxon.can_be_edited_by?(nil)).to be_falsey
-        expect(@taxon.can_be_edited_by?(@user)).to be_falsey
-        expect(@taxon.can_be_edited_by?(@editor)).to be_truthy
-        expect(@taxon.can_be_edited_by?(@changer)).to be_truthy
       end
       it "should allow it to be reviewed by a catalog editor" do
-        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@editor)).to be_truthy
-        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
+        expect(@taxon.can_be_reviewed?).to be true
       end
       it "should allow it to be approved by an approver" do
-        expect(@taxon.can_be_approved_by?(@change,nil)).to be_falsey
-        expect(@taxon.can_be_approved_by?(@change,@approver)).to be_truthy
-        expect(@taxon.can_be_approved_by?(@change,@user)).to be_falsey
+        expect(@taxon.can_be_approved_by?(@change, nil)).to be_falsey
+        expect(@taxon.can_be_approved_by?(@change, @approver)).to be_truthy
+        expect(@taxon.can_be_approved_by?(@change, @user)).to be_falsey
       end
     end
 
@@ -95,20 +84,15 @@ describe Taxon do
         expect(@taxon.approver).to eq(@approver)
         expect(@taxon.approved_at).to be_within(7.hours).of(Time.now)
       end
-      it "should allow it to be edited by any user that can edit the catalog" do
-        expect(@taxon.can_be_edited_by?(nil)).to be_falsey
-        expect(@taxon.can_be_edited_by?(@editor)).to be_truthy
-        expect(@taxon.can_be_edited_by?(@user)).to be_falsey
-      end
       it "should not allow it to be reviewed" do
-        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
+        expect(@taxon.can_be_reviewed?).to be_falsey
       end
-      it "should not allow it to be approved" do
-        expect(@taxon.can_be_reviewed_by?(nil)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@editor)).to be_falsey
-        expect(@taxon.can_be_reviewed_by?(@user)).to be_falsey
+      it "should not allow it to be approved", pending: true do
+        pending "was never tested"
+
+        expect(@taxon.can_be_approved_by?(change, nil)).to be_falsey
+        expect(@taxon.can_be_approved_by?(change, @editor)).to be_falsey
+        expect(@taxon.can_be_approved_by?(change, @user)).to be_falsey
       end
     end
   end
@@ -163,7 +147,5 @@ describe Taxon do
   #   end
   #
   # end
-
-
 
 end

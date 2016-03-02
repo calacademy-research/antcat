@@ -1,4 +1,3 @@
-@dormant
 Feature: Reviewing features
   As an editor of AntCat
   I want to see recently changed references
@@ -6,12 +5,12 @@ Feature: Reviewing features
 
   Scenario: Not logged in
     When I go to the references page
-    Then I should not see "Latest changes"
+    Then I should not see "Latest Changes"
 
   Scenario: Logged in
     When I log in
     And I go to the references page
-    Then I should see "Latest changes"
+    Then I should see "Latest Changes"
 
   Scenario: See features in reverse chronological order
     And these dated references exist
@@ -20,7 +19,7 @@ Feature: Reviewing features
       | Bolton, B. | Psyche 4:2 | YESTERDAYS_DATE | Bolton's Bulletin | 2010-1-1   | 2010 |
     Given I am logged in
     When I go to the references page
-    And I follow "Latest changes"
+    And I follow "Latest Changes"
     Then I should see these entries with a header in this order:
       | updated_at | entry                                           |
       | 2010-02-02 | Ward, P. 2010. Ward's World. Psyche 5:3         |

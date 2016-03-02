@@ -1,5 +1,3 @@
--#Locals: item
-
 .edit.ui-widget-content
   - url = "/taxa/#{item.taxon.id}/reference_sections/#{item.id}"
   - method = item.persisted? ? 'put' : 'post'
@@ -8,17 +6,17 @@
 
     %table
       %tr
-        %td.label.top_aligned= label_tag :title_taxt, 'Title'
+        %td.caption.top_aligned= label_tag :title_taxt, 'Title'
         %td.taxt_editor= render 'taxt_editors/show', name: 'title_taxt', value: Taxt.to_editable(item.title_taxt), rows: 1
       %tr
-        %td.label.top_aligned= label_tag :subtitle_taxt, 'Subtitle'
+        %td.caption.top_aligned= label_tag :subtitle_taxt, 'Subtitle'
         %td.taxt_editor= render 'taxt_editors/show', name: 'subtitle_taxt', value: Taxt.to_editable(item.subtitle_taxt), rows: 1
       %tr
-        %td.label.top_aligned= label_tag :references_taxt, 'References'
+        %td.caption.top_aligned= label_tag :references_taxt, 'References'
         %td.taxt_editor= render 'taxt_editors/show', name: 'references_taxt',value: Taxt.to_editable(item.references_taxt)
 
     .buttons
-      %button.submit.ui-priority-primary Save
-      %button.cancel.ui-priority-secondary Cancel
+      %button.submit.btn-save Save
+      %button.cancel.btn-cancel Cancel
       - if item.persisted?
-        %button.delete.ui-priority-secondary Delete
+        %button.delete.btn-delete Delete

@@ -1,4 +1,3 @@
-# coding: UTF-8
 class GenusName < GenusGroupName
   include UndoTracker
 

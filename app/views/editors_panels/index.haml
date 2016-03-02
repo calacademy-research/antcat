@@ -1,0 +1,20 @@
+-@title = "Editor's Panel"
+-breadcrumb :editors_panel
+
+%h5 Unreviewed changes
+%ul
+  %li=link_to "Unreviewed references", latest_additions_references_path
+  %li=link_to "Unreviewed catalog changes", unreviewed_changes_path
+
+%h5 Other links
+%ul
+  %li=link_to 'Help pages wiki (hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
+  %li=link_to 'AntCat users', users_path
+  %li=link_to 'Invite people to AntCat', new_user_invitation_path
+  %li=link_to 'Edit tooltips', tooltips_path
+  %li=link_to 'Fix missing references', missing_references_path
+  %li=link_to "Change password, update name/email", edit_user_registration_path
+  -if user_is_superadmin?
+    %li=link_to "Admin Dashboard", admin_root_path
+  -if Rails.env.development?
+    %li=link_to "Lazy links (dev-only link)", page_path("lazy_links")

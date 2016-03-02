@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe Name do
@@ -187,19 +186,6 @@ describe Name do
     end
   end
 
-  describe "Deleting duplicate names" do
-    it "should delete duplicate names" do
-      first_atta_name = FactoryGirl.create :name, name: 'Atta'
-      genus = create_genus name: first_atta_name
-      second_atta_name = FactoryGirl.create :name, name: 'Atta'
-      not_atta_name = FactoryGirl.create :name, name: 'Notatta'
-      Name.destroy_duplicates
-      expect(Name.find_by_id(first_atta_name)).not_to be_nil
-      expect(Name.find_by_id(second_atta_name)).to be_nil
-      expect(Name.find_by_id(not_atta_name)).not_to be_nil
-    end
-  end
-
   describe "References" do
     it "should return references in fields" do
       atta = create_genus 'Atta'
@@ -232,7 +218,7 @@ describe Name do
           FactoryGirl.create klass, field => "{nam #{name.id}}"
         end
       end
-      refs = name.references_in_taxt
+      refs = name.send :references_in_taxt
       # count the total referencing items
       expect(refs.length).to eq(
         Taxt.taxt_fields.collect{ |klass, fields| fields.length }.inject(&:+)
@@ -296,17 +282,6 @@ describe Name do
     end
   end
 
-  describe "Finding trinomials that are like quadronimals" do
-    it "should return those taxa with names that differ in this way" do
-      create_subspecies 'Camponotus maculatus georgei'
-      create_subspecies 'Camponotus maculatus arnoldius georgei'
-      create_subspecies 'Camponotus maculatus alpaca'
-      expect(Name.find_trinomials_like_quadrinomials).to match_array([
-        'Camponotus maculatus georgei'
-      ])
-    end
-  end
-
   describe "Quadrinomial?" do
     it "should just consider quadrinomials quadrinomials - nothing else" do
       name = SubfamilyName.new name: 'Acidinae', name_html: 'Acidinae', epithet: 'Acidinae',
@@ -344,17 +319,19 @@ describe Name do
     it "should work as expected" do
       name = SubspeciesName.new name: 'Acus major minor medium', name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
         epithet_html: '<i>medium</i>', epithets: 'major minor medium', protonym_html: '<i>Acus major minor medium</i>'
-      expect(name.at(0)).to eq('Acus')
-      expect(name.at(1)).to eq('major')
-      expect(name.at(2)).to eq('minor')
-      expect(name.at(3)).to eq('medium')
+      name_split = name.to_s.split
+      expect(name_split[0]).to eq('Acus')
+      expect(name_split[1]).to eq('major')
+      expect(name_split[2]).to eq('minor')
+      expect(name_split[3]).to eq('medium')
 
       name = GenusName.new name: 'Acus', name_html: '<i>Acus</i>', epithet: 'Acus',
         epithet_html: '<i>Acus</i>', epithets: nil, protonym_html: '<i>Acus</i>'
-      expect(name.at(0)).to eq('Acus')
-      expect(name.at(1)).to be_nil
-      expect(name.at(2)).to be_nil
-      expect(name.at(3)).to be_nil
+      name_split = name.to_s.split
+      expect(name_split[0]).to eq('Acus')
+      expect(name_split[1]).to be_nil
+      expect(name_split[2]).to be_nil
+      expect(name_split[3]).to be_nil
     end
   end
 

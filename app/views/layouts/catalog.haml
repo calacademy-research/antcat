@@ -1,18 +1,11 @@
 - content_for :head do
-  = javascript_include_tag  'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
-  = javascript_include_tag  'widgets/reference_form', 'widgets/reference_panel'
-  = javascript_include_tag  'widgets/splitter'
-  = javascript_include_tag  'catalog', 'taxon_key'
-
-- content_for :page_header do
-  #navigation_bar
-    = render 'shared/search', search_results: @search_results
-  = render 'shared/catalog_title'
+  = javascript_include_tag  'superadmin_delete_button' if user_is_superadmin?
 
 - content_for :page_contents do
-  = render 'search_results', search_results: @search_results, search_results_message: @search_results_message, taxon: @taxon, parameters: @parameters, search_query: @search_query, st: @st
+  .title.show-for-large
+    %h5.left An Online Catalog of the Ants of the World
+    .right by Barry Bolton
+    .clearfix
   = yield
-  .clear
-  = render 'taxon_key'
 
 = render file: 'layouts/application'

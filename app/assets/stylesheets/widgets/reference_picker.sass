@@ -1,19 +1,12 @@
-@import 'common'
-@import 'reference'
-//@import 'ext/jquery.ui.selectmenu'
+@import "colors"
 
 $antcat_reference_picker_gutter_size: 20px
-
 $pale_green: desaturate(#98FB98, 50%) // palegreen
 
 .antcat_reference_picker
   margin-right: 10px
   margin-top: 4px
   margin-bottom: 4px
-
-  .icon.edit_icon
-    border: none
-    display: none
 
   .display
     cursor: pointer
@@ -23,9 +16,6 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
   .edit
     display: none
     border: solid 1px black
-
-  .icons
-    width: $antcat_reference_picker_gutter_size !important
 
   .template
     display: none
@@ -45,10 +35,6 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
 
       td.throbber
         width: $antcat_reference_picker_gutter_size
-        img
-          vertical-align: middle
-          margin-bottom: 2px
-          display: none
 
     .controls
       background: $color_picker_background
@@ -69,8 +55,6 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
         margin-right: 10px
         .q
           width: 200px
-        .ui-selectmenu
-          width: 175px !important
 
     .pagination
       display: inline
@@ -83,7 +67,7 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
         a, a:active, a:focus, a:visited
           color: white
           &:hover
-            color: $color_site_header_link_highlight
+            color: lightgray
             background-color: $color_picker_background
 
     .help_banner
@@ -98,10 +82,6 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
 
     .no_results_found
       padding: 2px 40px 0 26px
-
-  .help_icon
-    vertical-align: middle
-    margin-left: 3px
 
   .has_no_current_reference
     display: none

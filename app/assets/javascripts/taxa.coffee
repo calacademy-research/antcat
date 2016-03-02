@@ -1,14 +1,19 @@
-$ -> new AntCat.TaxonForm $('.taxon_form'), button_container: '> .fields_section .buttons_section'
+$ ->
+  new AntCat.TaxonForm(
+    $('.taxon_form'),
+    button_container: '> .fields_section .buttons_section')
 
 class AntCat.ProtonymField extends AntCat.NameField
   constructor: ($parent_element, @name_field, @options = {}) ->
     super $parent_element, @options
+
   get_default_name_string: =>
     @name_field.string_value()
 
 class AntCat.TypeNameField extends AntCat.NameField
   constructor: ($parent_element, @protonym_field, @options = {}) ->
     super $parent_element, @options
+
   get_default_name_string: =>
     string = @protonym_field.string_value()
     return unless string
@@ -24,13 +29,9 @@ class AntCat.TaxonForm extends AntCat.Form
     @initialize_references_section()
     @initialize_current_valid_taxon_section()
     @initialize_homonym_replaced_by_section()
-    @initialize_task_buttons()
     @initialize_events()
     @original_submit = null
-
     super
-
-
 
   ###### initialization
   initialize_fields_section: =>
@@ -77,14 +78,6 @@ class AntCat.TaxonForm extends AntCat.Form
     @current_valid_taxon_name_row = $ 'tr#current_valid_taxon_row'
     new AntCat.CurrentValidTaxonSection $('#current_valid_taxon_name_field'), parent_form: @
 
-  initialize_task_buttons: =>
-    @element.find('#add_taxon').click => @add_taxon(); false
-    @element.find('#add_tribe').click => @add_tribe(); false
-    @element.find('#elevate_to_species').click => @elevate_to_species(); false
-    @element.find('#delete_taxon').click => @delete_taxon(); false
-    @element.find('#convert_to_subspecies').click => @convert_to_subspecies(); false
-
-
   initialize_events: =>
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
@@ -102,34 +95,10 @@ class AntCat.TaxonForm extends AntCat.Form
     else
       @homonym_replaced_by_name_row.hide()
 
-  ###### overrides
-  cancel: => window.location = $('#cancel_path').val()
-
   ###### client functions
-
   replace_junior_and_senior_synonyms_section: (content) =>
     $('.junior_and_senior_synonyms_section').replaceWith content
     @initialize_junior_and_senior_synonyms_section()
-
-  elevate_to_species: =>
-    return unless confirm 'Are you sure you want to elevate this subspecies to species?'
-    $('#task_button_command').val('elevate_to_species')
-    @submit()
-
-  delete_taxon: =>
-    return unless confirm 'Are you sure you want to delete this taxon?'
-    return unless confirm "Note: It may take a few moments to check that this taxon isn't being referenced."
-    $('#task_button_command').val('delete_taxon')
-    @submit()
-
-  convert_to_subspecies: =>
-    window.location = $('#convert_to_subspecies_path').val()
-
-  add_taxon: =>
-    window.location = $('#add_taxon_path').val()
-
-  add_tribe: =>
-    window.location = $('#add_tribe_path').val()
 
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel
@@ -139,11 +108,3 @@ class AntCat.TaxonForm extends AntCat.Form
 
   on_form_open: =>
     super
-
-
-
-
-
-
-
-

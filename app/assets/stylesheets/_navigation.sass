@@ -1,0 +1,64 @@
+.top-bar
+  white-space: nowrap !important
+  .top-bar-title
+    color: #fff !important
+    margin-left: 0 !important
+
+  .menu > li > a
+    color: #fff !important
+
+#desktop-only
+  #desktop-logo
+    padding-top: 3rem
+
+  #desktop-menu
+    padding-top: 4rem
+
+    #desktop-upper-menu
+      position: absolute
+      right: 0
+      top: 1rem
+
+    #desktop-lower-menu
+      .expandable-catalog-search
+        width: 130px
+        transition: all .5s
+        // fix background after typeahead messes it up
+        background-color: #fff !important
+        &:focus
+          width: 250px
+
+      .desktop-toggler-parent
+        padding-right: 1rem !important
+
+      .centered-text
+        text-align: center
+
+      .without-top-padding
+        padding-top: 0 !important
+
+#mobile-only
+  #mobile-menu
+    background-color: #262C3A
+    a
+      color: #fff
+
+  #mobile-logo
+    > span
+      padding-right: 1rem
+
+  #mobile-toggler
+    height: 1.4rem
+    padding-top: 0.2rem !important
+
+// Tiny toggler for tiny screens (shorter button text)
+#tiny-toggler
+  display: none !important
+
+@media screen and (max-width: 450px)
+  #mobile-toggler
+    display: none !important
+  #tiny-toggler
+    height: 1.4rem
+    padding-top: 0.2rem !important
+    display: block !important

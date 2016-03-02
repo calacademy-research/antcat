@@ -1,12 +1,32 @@
+# This is a relic from migrating all Formatters to Decorators. Adding global variables
+# is not something I (jonk) think is a Good Idea(tm), but it made rafactoring so much easier
+# and $use_ant_web_formatter only enabled in 'lib/exporters/antweb/exporter.rb', which is
+# run on a machine separate from production.
+#
+# TODO remove.
+#
+# [January 2016]: this module is included in:
+#   app/decorators/taxon_decorator/child_list.rb
+#   app/decorators/taxon_decorator/header.rb
+#   app/decorators/taxon_decorator/headline.rb
+#   app/decorators/taxon_decorator/history.rb
+#
+# Calls to individual methods:
+#   #link_to_taxon
+#     child_list.rb
+#     headline.rb
+#
+#   #link_to_other_site
+#      headline.rb
+#
+#   #link_to_reference
+#      headline.rb
+#
+#   #detaxt
+#      headline.rb
+#      history.rb
+
 module RefactorHelper
-
-  # $use_ant_web_formatter is not optimal, but...
-
-  def link_to_edit_taxon
-    if @taxon.can_be_edited_by? @user
-      button 'Edit', 'edit_button', 'data-edit-location' => "/taxa/#{@taxon.id}/edit"
-    end
-  end
 
   def link_to_taxon taxon
     if $use_ant_web_formatter
@@ -25,20 +45,20 @@ module RefactorHelper
     end
   end
 
-  def link_to_reference reference, user
+  def link_to_reference reference
     if $use_ant_web_formatter
-      reference.key.to_link user, expansion: false
+      reference.decorate.to_link expansion: false
     else
-      reference.key.to_link user
+      reference.decorate.to_link
     end
   end
 
   def detaxt taxt
     return '' unless taxt.present?
     if $use_ant_web_formatter
-      Taxt.to_string taxt, @user, expansion: false
+      Taxt.to_string taxt, expansion: false
     else
-      Taxt.to_string taxt, @user, expansion: true
+      Taxt.to_string taxt
     end
   end
 

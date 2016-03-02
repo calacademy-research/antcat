@@ -14,16 +14,16 @@
       %col{:width => '*'}
 
       %tr
-        %td.authorship.label.top_align= label_tag 'Authorship'
+        %td.authorship.caption.top_align= label_tag 'Authorship'
         %td
           #authorship_field
             = render 'reference_fields/show', references: @references, reference: @reference
 
       %tr
-        %td.label.top_align= label_tag 'Reference ID'
+        %td.caption.top_align= label_tag 'Reference ID'
         %td= text_field_tag 'authorship_value', '', disabled: true
 
       %tr.buttons
         %td.buttons{:colspan => 4}
-          %button.ui-priority-primary.submit  Save
-          %button.ui-priority-secondary.cancel Cancel
+          %button.submit.btn-save  Save
+          %button.cancel.btn-cancel Cancel

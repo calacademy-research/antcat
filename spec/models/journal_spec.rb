@@ -1,25 +1,8 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe Journal do
-  describe "importing from a new record" do
-    it "should create and return the journal" do
-      expect(Journal.import(:name => 'Antucopia').name).to include('Antucopia')
-    end
 
-    it "should raise on invalid input", pending: true do
-      pending "Import test - not worth maintaining at present."
-      expect {Journal.import(:name => '')}.to raise_error
-    end
-
-    it "should reuse an existing journal", pending: true do
-      pending "Import test - not worth maintaining at present."
-
-      Journal.import(:name => 'Antucopia')
-      Journal.import(:name => 'Antucopia')
-      expect(Journal.count).to eq(1)
-    end
-  end
+  it { should validate_presence_of(:name) }
 
   describe "searching" do
     it "should do fuzzy matching of journal names" do
@@ -43,13 +26,6 @@ describe Journal do
       0.times {FactoryGirl.create :article_reference, :journal => Journal.find_by_name('Never Used')}
 
       expect(Journal.search).to eq(['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used'])
-    end
-  end
-
-  describe 'validation' do
-    it 'should require a name' do
-      expect(Journal.new).not_to be_valid
-      expect(Journal.new(:name => 'name')).to be_valid
     end
   end
 

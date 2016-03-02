@@ -1,5 +1,3 @@
--#Locals: taxon, gender, parent, form, default_name_string
-
 - default_name_string ||= nil
 - gender ||= 'unknown'
 
@@ -8,7 +6,7 @@
     - if name_form.object.new_record?
       = hidden_field_tag 'taxon[name_attributes][id]'
 
-    %td.label.top_aligned= name_form.label :name
+    %td.caption.top_aligned= name_form.label :name
     %td
       %table.name_and_gender
         %tr
@@ -19,6 +17,4 @@
             %td#gender_field
               = name_form.label :gender
               = name_form.select :gender, [ [ 'unknown', nil ], 'masculine', 'feminine', 'neuter' ]
-      .name_description
-        = name_description taxon
-
+      .name_description= taxon.decorate.name_description

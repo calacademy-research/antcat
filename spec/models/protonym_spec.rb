@@ -1,19 +1,14 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe Protonym do
+
+  it { should validate_presence_of(:authorship) }
 
   describe "Authorship" do
     it "has an authorship" do
       authorship = FactoryGirl.create :citation
       protonym = Protonym.create! name: FactoryGirl.create(:name, name: 'Protonym'), authorship: authorship
       expect(Protonym.find(protonym.id).authorship).to eq(authorship)
-    end
-    it "requires an authorship" do
-      protonym = Protonym.new name: FactoryGirl.create(:name, name: 'Protonym')
-      expect(protonym).not_to be_valid
-      protonym.update_attribute :authorship, FactoryGirl.create(:citation)
-      expect(protonym).to be_valid
     end
   end
 
@@ -88,21 +83,6 @@ describe Protonym do
         protonym = FactoryGirl.create :protonym
         expect(protonym.versions.last.event).to eq('create')
       end
-    end
-  end
-
-  describe "Orphans" do
-    it "should delete the orphaned protonym(s) when the taxon is deleted" do
-      genus = create_genus
-      original_protonym_count = Protonym.count
-
-      orphan_protonym = FactoryGirl.create :protonym
-      expect(Protonym.count).to eq(original_protonym_count + 1)
-
-      Protonym.destroy_orphans
-
-      expect(Protonym.count).to eq(original_protonym_count)
-      expect(Protonym.all).not_to include(orphan_protonym)
     end
   end
   

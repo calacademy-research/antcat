@@ -1,45 +1,38 @@
 class AntCat.ChangeButton
   constructor: (@element) ->
-    @element
-    .unbutton()
-    .button()
     self = @
     @element.click => self.click()
 
-
-class AntCat.EditButton extends AntCat.ChangeButton
-  click: => window.location = @element.data 'edit-location'
-
 class AntCat.UndoButton extends AntCat.ChangeButton
   create_impacted_taxa_contents: (json_data) =>
-    message = '<div id="dialog-undo-impacted-taxa" title="This undo will roll back the following changes:"><p>
-       <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>'
-    message = message + '<ul>'
-    for i in [1..json_data.length] by 1
-      j = i - 1
-      item = json_data[j]
+    message_start = '''<div id="dialog-undo-impacted-taxa" title="This undo
+      will roll back the following changes:"><p><span class="ui-icon ui-icon-alert"
+      style="float:left; margin:0 7px 20px 0;"></span><ul>'''
 
-      message = message + '<li>' + item.name
-      if(item.change_type == 'create')
-        message = message + " added"
-      else if(item.change_type == 'update')
-        message = message + " changed "
-      message = message + " by " +  item.user_name + " on " + item.change_timestamp
-      message = message + '</li>'
-    message = message + '</ul>'
-    message = message + '</div></p></div>'
-    message
+    message = ''
+    for item in json_data
+      taxon_name = item.name
+      change_verb = switch item.change_type
+                    when 'create' then "added"
+                    when 'update' then "changed"
+                    else ''
+      username = item.user_name
+      timestamp  = item.change_timestamp
+      message += "<li>#{taxon_name} #{change_verb} by #{username} on #{timestamp}</li>"
 
-  create_impacted_taxa_dialog: (data,change_id) =>
+    message_end = '</ul></p></div>'
+    "#{message_start}#{message}#{message_end}"
+
+  create_impacted_taxa_dialog: (data, change_id) =>
     @undo_impacted_taxa_message = $(@create_impacted_taxa_contents(data))
     @element.append($(@create_impacted_taxa_contents(data)))
     dialog_box = $("#dialog-undo-impacted-taxa")
-    dialog_box.dialog({
+    dialog_box.dialog
       resizable: true,
       height: 180,
       width: 720,
       modal: true,
-      buttons: {
+      buttons:
         "Undo!": (a) =>
           $.ajax
             url: "/changes/#{change_id}/undo",
@@ -49,9 +42,6 @@ class AntCat.UndoButton extends AntCat.ChangeButton
             error: (xhr) => debugger
         Cancel: () =>
           dialog_box.dialog("close")
-        }
-    })
-
 
   click: =>
     change_id = @element.data('undo-id')
@@ -65,32 +55,5 @@ class AntCat.UndoButton extends AntCat.ChangeButton
       async: false,
       error: (xhr) => debugger
 
-class AntCat.ApproveAllButton extends AntCat.ChangeButton
-  click: =>
-    return unless confirm 'Are you sure you want to approve all changes?'
-    url = "/changes/approve_all"
-    $.ajax
-      url: url,
-      type: 'put',
-      dataType: 'json',
-      success: (data) => window.location = '/changes'
-      error: (xhr) => debugger
-
-class AntCat.ApproveButton extends AntCat.ChangeButton
-  click: =>
-    return unless confirm 'Are you sure you want to approve this change?'
-    change_id = @element.data('change-id')
-    url = "/changes/#{change_id}/approve"
-    $.ajax
-      url: url,
-      type: 'put',
-      dataType: 'json',
-      success: (data) => window.location = '/changes'
-      error: (xhr) => debugger
-
 $ ->
-  $('.edit_button input[type=button]').each -> new AntCat.EditButton($(this))
-  $('.undo_button input[type=button]').each -> new AntCat.UndoButton($(this))
-  $('.approve_button input[type=button]').each -> new AntCat.ApproveButton($(this))
-  $('.approve_all_button input[type=button]').each -> new AntCat.ApproveAllButton($(this))
-
+  $('.btn-undo').each -> new AntCat.UndoButton($(this))

@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Name < ActiveRecord::Base
   include UndoTracker
   include Formatters::RefactorFormatter
@@ -18,7 +17,7 @@ class Name < ActiveRecord::Base
                   :gender,
                   :nonconforming_name
 
-  scope :find_all_by_name, lambda { |name| where name: name }
+  scope :find_all_by_name, lambda { |name| where(name: name) }
 
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)
@@ -33,22 +32,15 @@ class Name < ActiveRecord::Base
     name.split(' ').size == 4
   end
 
-  def at index
-    name.split(' ')[index]
-  end
-
-  def set_taxon_caches
-    Taxon.where(name_id: id).update_all(name_cache: name)
-    Taxon.where(name_id: id).update_all(name_html_cache: name_html)
-  end
-
-  def words
-    @_words ||= name.split ' '
-  end
-
+  # Feel free to refactor this. It was written to replace code that 1) made some initial
+  # parsing using Citrus 2) dynamically called `name_class.parse_words(words)` depending on
+  # what Citrus returned 3) which initiated [depending on subclass] a long call chain involving
+  # importer methods that we really had to remove.
+  # Added in ac9a8a; refer to the change log for more commit ids.
+  #
   # Irregular flag allows parsing of names that don't conform to naming standards so we can support bad spellings.
   def self.parse string, irregular=false
-   words = string.split " "
+    words = string.split " "
 
     name_type = case words.size
                 when 1 then :genus_or_tribe_subfamily
@@ -142,6 +134,7 @@ class Name < ActiveRecord::Base
            options[:species_only] ||
            options[:genera_only] ||
            options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+
     rank_filter =
         case
           when options[:species_only] then
@@ -200,13 +193,11 @@ class Name < ActiveRecord::Base
   end
 
   def to_html_with_fossil fossil
-    string = ''.html_safe
-    string << dagger_html if fossil
-    string << name_html.html_safe
+    "#{dagger_html if fossil}#{name_html}".html_safe
   end
 
   def rank
-    self.class.name[0, self.class.name.rindex('Name')].underscore
+    self.class.name.gsub(/Name$/, "").underscore
   end
 
   def self.make_epithet_set epithet
@@ -214,15 +205,11 @@ class Name < ActiveRecord::Base
   end
 
   def epithet_with_fossil_html fossil
-    string = ''.html_safe
-    string << dagger_html if fossil
-    string << epithet_html.html_safe
+    "#{dagger_html if fossil}#{epithet_html}".html_safe
   end
 
   def protonym_with_fossil_html fossil
-    string = ''.html_safe
-    string << dagger_html if fossil
-    string << name_html.html_safe
+    "#{dagger_html if fossil}#{name_html}".html_safe
   end
 
   def dagger_html
@@ -230,7 +217,9 @@ class Name < ActiveRecord::Base
   end
 
   def self.duplicates
-    name_strings = Name.find_by_sql("SELECT * FROM names GROUP BY name HAVING COUNT(*) > 1").map(&:name)
+    name_strings = Name.find_by_sql(<<-SQL).map(&:name)
+      SELECT * FROM names GROUP BY name HAVING COUNT(*) > 1
+    SQL
     Name.where(name: name_strings).order(:name)
   end
 
@@ -249,78 +238,7 @@ class Name < ActiveRecord::Base
   end
 
   def references
-    references = []
-    references.concat references_in_fields
-    references.concat references_in_taxt
-    references
-  end
-
-  def references_in_fields
-    references = []
-    references.concat references_to_taxon_name
-    references.concat references_to_taxon_type_name
-    references.concat references_to_protonym_name
-    references
-  end
-
-  def references_to_taxon_name
-    Taxon.where(name_id: id).inject([]) do |references, taxon|
-      references << { table: 'taxa', field: :name_id, id: taxon.id }
-      references
-    end
-  end
-
-  def references_to_taxon_type_name
-    Taxon.where(type_name_id: id).inject([]) do |references, taxon|
-      references << { table: 'taxa', field: :type_name_id, id: taxon.id }
-      references
-    end
-  end
-
-  def references_to_protonym_name
-    Protonym.where(name_id: id).inject([]) do |references, protonym|
-      references << { table: 'protonyms', field: :name_id, id: protonym.id }
-      references
-    end
-  end
-
-  def references_in_taxt
-    references = []
-    Taxt.taxt_fields.each do |klass, fields|
-      table = klass.arel_table
-      fields.each do |field|
-        klass.where(table[field].matches("%{nam #{id}}%")).each do |record|
-          next unless record[field]
-          if record[field] =~ /{nam #{id}}/
-            references << { table: klass.table_name, field: field, id: record[:id] }
-          end
-        end
-      end
-    end
-    references
-  end
-
-  def self.destroy_duplicates options = {}
-    duplicates_with_references(options).each do |name, duplicate|
-      duplicate.each do |id, references|
-        Name.find(id).destroy unless references.present?
-      end
-    end
-  end
-
-  def self.find_trinomials_like_quadrinomials
-    Name.all.inject([]) do |names, name|
-      if name.quadrinomial?
-        if trinomial = Name.find_by_name("#{name.at(0)} #{name.at(1)} #{name.at(3)}")
-          if taxon = Taxon.find_by_name(trinomial.name)
-            unless taxon.unavailable?
-              names << trinomial.name
-            end
-          end
-        end
-      end
-      names
-    end
+    references_in_fields.concat(references_in_taxt)
   end
 
   def self.find_by_name string
@@ -328,4 +246,53 @@ class Name < ActiveRecord::Base
       .where(name: string).order('taxa.id DESC').order(:name).first
   end
 
+  private
+    def words
+      @_words ||= name.split ' '
+    end
+
+    def set_taxon_caches
+      Taxon.where(name: self).update_all(name_cache: name)
+      Taxon.where(name: self).update_all(name_html_cache: name_html)
+    end
+
+    def references_in_fields
+      references_to_taxon_name
+        .concat(references_to_taxon_type_name)
+        .concat(references_to_protonym_name)
+    end
+
+    def references_to_taxon_name
+      Taxon.where(name: self).map do |taxon|
+        { table: 'taxa', field: :name_id, id: taxon.id }
+      end
+    end
+
+    def references_to_taxon_type_name
+      Taxon.where(type_name: self).map do |taxon|
+        { table: 'taxa', field: :type_name_id, id: taxon.id }
+      end
+    end
+
+    def references_to_protonym_name
+      Protonym.where(name: self).map do |protonym|
+        { table: 'protonyms', field: :name_id, id: protonym.id }
+      end
+    end
+
+    def references_in_taxt
+      references = []
+      Taxt.taxt_fields.each do |klass, fields|
+        table = klass.arel_table
+        fields.each do |field|
+          klass.where(table[field].matches("%{nam #{id}}%")).each do |record|
+            next unless record[field]
+            if record[field] =~ /{nam #{id}}/
+              references << { table: klass.table_name, field: field, id: record[:id] }
+            end
+          end
+        end
+      end
+      references
+    end
 end

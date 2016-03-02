@@ -1,14 +1,5 @@
 -@title = 'Help'
 
 %ul
-  %li= link_to 'Adding a new species name', page_path('help/adding_species')
-  %li= link_to 'Bibliography editing guidelines', page_path('help/bibliography_editing_guidelines')
   %li= link_to 'Full taxon color key', page_path('help/full_key')
   %li= link_to 'Tooltips editing guide', page_path('help/editing_tooltips')
-
--if user_is_editor?
-  -# Collect a bunch of links that are not reachable from the GUI
-  %h2 Editor's links
-  %ul
-    %li= link_to 'Invite people to AntCat', new_user_invitation_path
-    %li= link_to 'Edit tooltips', tooltips_path

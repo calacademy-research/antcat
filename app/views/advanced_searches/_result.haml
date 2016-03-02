@@ -1,12 +1,7 @@
--#Locals: taxon
-.result
-  %span.name
-    = format_name taxon
-  %span.status
-    = format_status_reference taxon
-  %span.locality
-    = format_type_localities taxon
-  %span.forms
-    = format_forms taxon
-  .protonym
-    = format_protonym taxon, current_user
+%tr
+  %td
+    =format_name taxon
+    =format_status_reference taxon
+    =format_type_localities taxon
+    =format_forms taxon
+    =format_protonym taxon

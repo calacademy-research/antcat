@@ -1,29 +1,10 @@
-%hr
-%table#taxon_key
-  %tr
-    %td
-      %span.taxon_key_item &dagger;fossil
-    %td.spacer
-    %td
-      %span.taxon_key_item.valid valid
-    %td.spacer
-    %td
-      %span.taxon_key_item.synonym synonym
-    %td.spacer
-    %td
-      %span.taxon_key_item.subrank subspecies
-    %td.spacer
-    %td
-      %span.taxon_key_item.unidentifiable unidentifiable/excluded from Formicidae
-    %td.spacer
-    %td
-      %span.taxon_key_item.unavailable unavailable/nomen nudum
-    %td.spacer
-    %td
-      %span.taxon_key_item.homonym homonym
-    %td.spacer
-    %td
-      %span.taxon_key_item.original_combination original combination
-    %td.spacer
-    %td
-      %span.taxon_key_item= link_to "View full key", page_path('help/full_key'), :target => '_blank'
+#taxon_key.show-for-large
+  %div &dagger;fossil
+  .valid valid
+  .synonym synonym
+  .subrank subspecies
+  .unidentifiable unidentifiable/excluded from Formicidae
+  .unavailable unavailable/nomen nudum
+  .homonym homonym
+  .original_combination original combination
+  %div= link_to "View full key", page_path('help/full_key')

@@ -1,4 +1,3 @@
-# coding: UTF-8
 class NameFieldsController < NamePickersController
 
   def find

@@ -1,0 +1,12 @@
+-@title = 'Journals'
+-breadcrumb :journals
+
+%table
+  -@journals.each do |journal|
+    %tr
+      %td=link_to journal.name, journal
+
+-if user_can_edit?
+  %p= link_to "New Journal", new_journal_path, class: "btn-normal"
+
+= will_paginate @journals

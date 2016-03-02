@@ -1,17 +1,7 @@
-# coding: UTF-8
 module ChangesHelper
-
-  def link_to_taxon taxon
-    label = taxon.name.to_html_with_fossil(taxon.fossil?)
-    content_tag :a, label, href: %{/catalog/#{taxon.id}}
-  end
 
   def format_taxon_name name
     name.name_html.html_safe
-  end
-
-  def format_rank rank
-    rank.display_string
   end
 
   def format_status status
@@ -41,24 +31,15 @@ module ChangesHelper
   end
 
   def format_taxt taxt
-    Taxt.to_string taxt, current_user
+    Taxt.to_string taxt
   end
 
-  def edit_button taxon
-    unless taxon.taxon_state.nil?
-      if taxon.can_be_edited_by? current_user
-        button 'Edit', 'edit_button', 'data-edit-location' => edit_taxa_path(taxon)
-      end
-      # else
-      #   #TODO make this pretty
-      #   return "<Deleted by later edit>"
-    end
-  end
+  def approve_all_changes_button
+    return unless user_is_superadmin?
 
-  def approve_all_button
-    if $Milieu.user_is_superadmin? current_user
-      button 'Approve all', 'approve_all_button'
-    end
+    link_to 'Approve all', approve_all_changes_path,
+      method: :put, class: "btn-destructive",
+      data: { confirm: "Are you sure you want to approve all changes?" }
   end
 
 end

@@ -1,11 +1,15 @@
 # From Formatters::ReferenceFormatter:
-# Note; this references ReferenceFormatterCache.
-# Most of these routines are only hit if there's a change in the content, at which
-# point it's reformatted and saved in references::formatted_cache.
+#    Note: this references ReferenceFormatterCache.
+#    Most of these routines are only hit if there's a change in the content, at which
+#    point it's reformatted and saved in references::formatted_cache.
 
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the h method
   delegate_all
+
+  def key
+    format_author_last_names
+  end
 
   def created_at
     format_timestamp reference.created_at
@@ -45,7 +49,7 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_authorship
-    reference.key.to_s
+    format_author_last_names
   end
 
   def format_italics string
@@ -102,13 +106,8 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_inline_citation options = {}
-    user = options.delete :user
-    user ||= get_current_user
-
-    # cache/decache under same conditions
-    using_cache = user.present?
-    # temporarily keeping commented out line
-    #using_cache = false # perhaps we could add this as a global setting? TODO investigate
+    # TODO: `using_cache` as a global setting?
+    using_cache = false
     if using_cache
       string = ReferenceFormatterCache.instance.get reference, :inline_citation_cache
       return string.html_safe if string
@@ -122,22 +121,21 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_inline_citation! options = {}
-    user = options.delete :user
-    user ||= get_current_user
-    reference.key.to_link user, options
+    to_link options
   end
 
   def format_inline_citation_without_links
-    reference.key.to_s
+    format_author_last_names
   end
 
-  def goto_reference_link
-    path = Rails.application.routes.url_helpers.reference_path(reference)
-    helpers.link reference.id,
-      path, class: :goto_reference_link, target: '_blank'
+  def goto_reference_link target: '_blank'
+    helpers.link reference.id, helpers.reference_path(reference),
+      class: :goto_reference_link, target: target
   end
 
   def format_author_last_names
+    return '' unless reference.id
+
     names = reference.author_names.map &:last_name
     case names.size
     when 0
@@ -150,6 +148,16 @@ class ReferenceDecorator < ApplicationDecorator
       string = names[0..-2].join ', '
       string << " & " << names[-1]
     end << ', ' << reference.short_citation_year
+  end
+
+  def to_link(expansion: true)
+    reference_key_string = format_author_last_names
+    reference_string = format
+    if expansion
+      to_link_with_expansion reference_key_string, reference_string
+    else
+      to_link_without_expansion reference_key_string, reference_string
+    end
   end
 
   private
@@ -172,7 +180,7 @@ class ReferenceDecorator < ApplicationDecorator
       string.html_safe
     end
 
-    def format_date input # TODO store parsed value in the database
+    def format_date input # TODO? store denormalized value in the database
       return input if input.length < 4
 
       match = input.match /(.*?)(\d{4,8})(.*)/
@@ -200,5 +208,41 @@ class ReferenceDecorator < ApplicationDecorator
     # transform "10.11646/zootaxa.4029.1.1" --> "http://dx.doi.org/10.11646/zootaxa.4029.1.1"
     def create_link_from_doi doi
       "http://dx.doi.org/" + doi
+    end
+
+    def to_link_with_expansion reference_key_string, reference_string
+      helpers.content_tag :span, class: :reference_key_and_expansion do
+        content = helpers.link reference_key_string, '#',
+                       title: make_to_link_title(reference_string),
+                       class: :reference_key
+
+        content << helpers.content_tag(:span, class: :reference_key_expansion) do
+          inner_content = []
+          inner_content << reference_key_expansion_text(reference_string, reference_key_string)
+          inner_content << format_reference_document_link
+          inner_content << goto_reference_link
+          inner_content.reject(&:blank?).join(' ').html_safe
+        end
+      end
+    end
+
+    def to_link_without_expansion reference_key_string, reference_string
+      content = []
+      content << helpers.link(reference_key_string,
+                      "http://antcat.org/references/#{reference.id}",
+                      title: make_to_link_title(reference_string),
+                      target: '_blank')
+      content << format_reference_document_link
+      content.reject(&:blank?).join(' ').html_safe
+    end
+
+    def make_to_link_title string
+      helpers.unitalicize string
+    end
+
+    def reference_key_expansion_text reference_string, reference_key_string
+      helpers.content_tag :span, reference_string,
+        class: :reference_key_expansion_text,
+        title: reference_key_string
     end
 end

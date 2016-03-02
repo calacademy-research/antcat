@@ -1,20 +1,9 @@
-# coding: UTF-8
 class Journal < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
   include UndoTracker
   
-  validates_presence_of :name
+  validates :name, presence: true, allow_blank: false
   has_paper_trail meta: { change_id: :get_current_change_id }
-
-  def self.import name
-    return unless name.present?
-    journal = Journal.where('name = ?', name).first_or_create! do |new_journal|
-      new_journal.name = name
-    end
-
-    raise unless journal.valid?
-    journal
-  end
 
   def self.search term = ''
     search_expression = term.split('').join('%') + '%'

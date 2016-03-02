@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe ReferenceDecorator do
@@ -9,7 +8,7 @@ describe ReferenceDecorator do
   describe "PDF link formatting" do
     it "should create a link" do
       reference = FactoryGirl.create :reference
-      allow(reference).to receive(:downloadable_by?).and_return true
+      allow(reference).to receive(:downloadable?).and_return true
       allow(reference).to receive(:url).and_return 'example.com'
       expect(reference.decorate.format_reference_document_link).to eq('<a class="document_link" target="_blank" href="example.com">PDF</a>')
     end
@@ -296,10 +295,10 @@ describe ReferenceDecorator do
       it "nonmissing references should defer to the key" do
         key = double
         reference = FactoryGirl.create :article_reference
-        expect(reference).to receive(:key).and_return key
-        expect(key).to receive(:to_link)
+        decorated = reference.decorate
+        expect(decorated).to receive(:to_link).and_return key
 
-        reference.decorate.format_inline_citation
+        decorated.format_inline_citation
       end
       it "should just output the citation for a MissingReference" do
         reference = FactoryGirl.create :missing_reference, citation: 'foo'
@@ -310,10 +309,10 @@ describe ReferenceDecorator do
       it "nonmissing references should defer to the key" do
         key = double
         reference = FactoryGirl.create :article_reference
-        expect(reference).to receive(:key).and_return key
-        expect(key).to receive(:to_s)
+        decorated = reference.decorate
+        expect(decorated).to receive(:format_author_last_names).and_return key
 
-        reference.decorate.format_inline_citation_without_links
+        decorated.format_inline_citation_without_links
       end
     end
   end

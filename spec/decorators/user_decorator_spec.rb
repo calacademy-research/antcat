@@ -12,7 +12,7 @@ describe UserDecorator do
     end
 
     it "formats correctly when the 'doer' is nil", pending: true do
-      pending "TODO"
+      pending "TODO" # TODO
       string = user.decorate.format_doer_name
       expect(string).to eq('Someone')
     end

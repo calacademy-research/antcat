@@ -65,7 +65,6 @@ Feature: Using the catalog
 
   Scenario: Selecting a tribe
     When I go to the catalog
-    And I follow "show tribes"
     And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderini" in the index
     Then "Dolichoderinae" should be selected
@@ -77,17 +76,18 @@ Feature: Using the catalog
   Scenario: Selecting a genus
     When I go to the catalog
     And I follow "Dolichoderinae" in the index
+    And I follow "All genera" in the subfamilies index
     And I follow "Dolichoderus"
     Then "Dolichoderinae" should be selected
     And "Dolichoderus" should be selected
     And I should see "Dolichoderus history"
     And I should see "1 valid species, 1 valid subspecies"
     And I should see "abruptus" in the index
-    And I should see "minor" in the index
 
   Scenario: Selecting a species
     When I go to the catalog
     And I follow "Dolichoderinae" in the index
+    And I follow "All genera" in the subfamilies index
     And I follow "Dolichoderus"
     And I follow "abruptus"
     Then "Dolichoderinae" should be selected
@@ -98,23 +98,28 @@ Feature: Using the catalog
   Scenario: Selecting a subspecies from the species list
     When I go to the catalog
     And I follow "Dolichoderinae" in the index
+    And I follow "All genera" in the subfamilies index
     And I follow "Dolichoderus"
     Then I should see "abruptus" in the index
-    And I should see "minor" in the index
-    When I follow "minor"
-    Then I should see "minor history"
-    And I should see "abruptus" in the index
-    And I should see "minor" in the index
+    When I follow "abruptus"
+    Then I should see "minor" in the index
 
   Scenario: Showing the "no tribe" tribe
+    Given PENDING
     Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
     When I go to the catalog
     And I follow "Dolichoderinae" in the index
-    And I follow "show tribes"
-    And I follow "(no tribe)" in the tribes index
+    And I follow "Incertae sedis" in the subfamilies index
     Then I should see "Cariridris" in the genera index
     And I should not see "Atta" in the genera index
-    And "(no tribe)" should be selected in the tribes index
-    And "Dolichoderinae" should be selected in the subfamilies index
+    And "Incertae sedis" should be selected in the subfamilies index
+    And "Dolichoderinae" should be selected in the families index
     And I should see "Dolichoderinae history"
 
+  Scenario: Not showing non-displayable taxa
+    Given PENDING: there is code for this, just not activated
+    Given a non-displayable genus exists with a name of "Lasius" and a subfamily of "Dolichoderinae"
+    When I go to the catalog
+    And I follow "Dolichoderinae" in the index
+    Then I should not see "Lasius" in the genera index
+    And I should see "Brownerus" in the genera index

@@ -1,5 +1,4 @@
-@javascript
-@allow_rescue
+@javascript @papertrail
 Feature: Workflow
   As an editor of AntCat
   I want to change a taxon's parent
@@ -7,26 +6,26 @@ Feature: Workflow
   so mistakes can be repaired
 
   Background:
+    # Formicidae is only explicitly required by 'Changing a taxon and seeing it on ...'
+    # TODO leaving this here
+    Given the Formicidae family exists
     Given these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
-    And there is a genus "Eciton"
-    And there is a genus "Eciton"
-    And version tracking is enabled
-    And I log in as a catalog editor
+    And I log in as a catalog editor named "Mark Wilden"
 
   # Add these scenarios
-
   # test notes:
-# change something with children. Ensure they're hit. Undo it. Ensure they're moved back. verify with db to ensure this happened.
-# add two changes. Roll back the earlier change, ensure that the warning dialog box comes up listing the impact on the later change
+  # change something with children. Ensure they're hit. Undo it. Ensure they're moved back. verify with db to ensure this happened.
+  # add two changes. Roll back the earlier change, ensure that the warning dialog box comes up listing the impact on the later change
 
-# modify species b
-# a - b - a' case
-# modify species b
-# undo first change to species b
-# see what happens!
+  # modify species b
+  # a - b - a' case
+  # modify species b
+  # undo first change to species b
+  # see what happens!
+
   Scenario: Changing a taxon and seeing it on the Changes page, undoing it
     When I go to the catalog page for "Formicinae"
     * I press "Edit"
@@ -34,12 +33,13 @@ Feature: Workflow
     * I save my changes
     * I go to the catalog page for "Formicinae"
     Then I should see "This taxon has been changed; changes awaiting approval"
-    * I should see the name "Formicinae" in the changes
+    # Should you really see "Formicinae" in the *changes* at this step?
+    #* I should see the name "Formicinae" in the changes
     When I go to the changes page
     Then I should see "Formicinae"
     And I should see "Mark Wilden changed Formicinae"
     * I should see the notes "asdfgh" in the changes
-    When I press "Undo"
+    When I follow "Undo"
     Then I should see "This undo will roll back the following changes"
     And I should see "Formicinae"
     And I should see "changed by Mark Wilden"
@@ -62,7 +62,7 @@ Feature: Workflow
     And there is a genus "Becton"
     And there is a genus "Chatsworth"
 
-   # Change parent from A -> B
+    # Change parent from A -> B
     When I go to the edit page for "Atta major"
     And I click the parent name field
     And I set the parent name to "Becton"
@@ -74,7 +74,7 @@ Feature: Workflow
     Then I should see the genus "Becton" in the changes
     * I should see the name "major" in the changes
 
-   # Change parent from B -> C
+    # Change parent from B -> C
     When I go to the edit page for "Becton major"
     And I click the parent name field
     And I set the parent name to "Chatsworth"
@@ -84,7 +84,7 @@ Feature: Workflow
     Then the name button should contain "Chatsworth major"
     When I save my changes
 
-   # We are now on the catalog page after doing A -> B -> C
+    # We are now on the catalog page after doing A -> B -> C
     Then I should be on the catalog page for "Chatsworth major"
     And the name in the header should be "Chatsworth major"
     When I go to the catalog page for "Atta major"
@@ -93,7 +93,7 @@ Feature: Workflow
     Then I should see "an obsolete combination of Chatsworth major"
 
     When I go to the changes page
-    And I click ".undo_button_2"
+    And I click "[data-undo-id='2']"
     Then I should see "This undo will roll back the following changes"
     When I press "Undo!"
     * I should see the genus "Becton" in the changes
@@ -104,7 +104,7 @@ Feature: Workflow
     Then I should see "Becton major" in the header
 
     When I go to the changes page
-    Then I click ".undo_button_1"
+    Then I click "[data-undo-id='1']"
     Then I should see "This undo will roll back the following changes"
     When I press "Undo!"
     * I should not see "Becton"
@@ -114,13 +114,12 @@ Feature: Workflow
     When I go to the catalog page for "Atta major"
     Then I should see "Atta major" in the header
 
-
   Scenario: Changing a species's genus twice by using the helper link, undo oldest, restored to original condition.
     Given there is an original species "Atta major" with genus "Atta"
     And there is a genus "Becton"
     And there is a genus "Chatsworth"
 
- # Change parent from A -> B
+    # Change parent from A -> B
     When I go to the edit page for "Atta major"
     And I click the parent name field
     And I set the parent name to "Becton"
@@ -132,7 +131,7 @@ Feature: Workflow
     Then I should see the genus "Becton" in the changes
     * I should see the name "major" in the changes
 
- # Change parent from B -> C
+    # Change parent from B -> C
     When I go to the edit page for "Becton major"
     And I click the parent name field
     And I set the parent name to "Chatsworth"
@@ -143,7 +142,7 @@ Feature: Workflow
     When I save my changes
 
     When I go to the changes page
-    When I click ".undo_button_1"
+    When I click "[data-undo-id='1']"
     Then I should see "This undo will roll back the following changes"
     When I press "Undo!"
     * I should not see "Becton"
@@ -156,8 +155,4 @@ Feature: Workflow
     # test this where we undo the oldest and then both are gone
 
   # Add scenario - add a new species, delete it, undo the delete
-
   # Same as above, with notes
-
-
-

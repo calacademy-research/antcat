@@ -1,4 +1,3 @@
-@javascript
 Feature: Delete reference
   As Phil Ward
   I want to delete a reference
@@ -11,10 +10,9 @@ Feature: Delete reference
       | Fisher, B. | Psyche 2:1 | year | title |
     And I am logged in
     When I go to the references page
-    * I will confirm on the next step
-    * I follow "edit"
-    * I press the "Delete" button
-    Then I should not see "Fisher, B."
+    When I follow first reference link
+    And I press "Delete"
+    Then I should see "Reference was successfully destroyed"
 
     # TODO Rails 4 breaks this test. Verified manually.
 #  Scenario: Try to delete a reference when there are references to it
@@ -30,15 +28,3 @@ Feature: Delete reference
 #    * I press the "Delete" button
 #    # can't test contents of alert box
 #    Then I should see "Psyche 2:1"
-
-  @preview
-  Scenario: Delete a reference when not logged in, but in preview mode
-    Given these references exist
-      | authors    | citation   | year | title |
-      | Fisher, B. | Psyche 2:1 | year | title |
-    And I am not logged in
-    When I go to the references page
-    * I will confirm on the next step
-    * I follow "edit"
-    * I press the "Delete" button
-    Then I should not see "Fisher, B."

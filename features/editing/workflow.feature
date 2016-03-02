@@ -1,22 +1,20 @@
-@javascript
+@papertrail
 Feature: Workflow
-
   Background:
-    Given I log in as a catalog editor
+    Given the Formicidae family exists
+    Given I log in as a catalog editor named "Mark Wilden"
     And these references exist
       | authors | citation   | title | year |  doi |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |      |
     And there is a subfamily "Formicinae"
     And there is a genus "Eciton"
-    And version tracking is enabled
 
-  @search
+  @javascript @search
   Scenario: Adding a taxon and seeing it on the Changes page
     When I go to the catalog page for "Formicinae"
     * I press "Edit"
-    * I press "Add genus"
+    * I follow "Add genus"
     * I click the name field
-    * I set the name to "Atta"
     * I set the name to "Atta"
     * I press "OK"
     * I select "subfamily" from "taxon_incertae_sedis_in"
@@ -27,7 +25,7 @@ Feature: Workflow
     * I click "#taxon_protonym_attributes_sic"
     * I press "OK"
     * I click the authorship field
-    * I search for the author "Fisher"
+    * in the reference picker, I search for the author "Fisher"
     * I click the first search result
     * I press "OK"
     * I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "260"
@@ -55,7 +53,7 @@ Feature: Workflow
     * I should see the notes "Notes" in the changes
     * I should see the protonym name "Eciton" in the changes
     # See antcat issue #93
-#    * I should see the protonym attribute "sic" in the changes
+    #* I should see the protonym attribute "sic" in the changes
     * I should see the authorship reference "Fisher 2004. Ants. Psyche 3:3" in the changes
     * I should see the page "260" in the changes
     * I should see the forms "m." in the changes
@@ -69,7 +67,6 @@ Feature: Workflow
     When I follow "Atta"
     Then I should be on the catalog page for "Atta"
 
-
   Scenario: Approving a change
     When I add the genus "Atta"
     And I go to the catalog page for "Atta"
@@ -78,7 +75,8 @@ Feature: Workflow
     When I go to the changes page
     And I will confirm on the next step
     And I press "Approve"
-    Then I should not see "Approve"
+    Then I should not see "Approve[^d]"
+    # TODO fix ugly regex hack
     And I should see "Stan Blum approved"
     When I go to the catalog page for "Atta"
     Then I should see "approved by Stan Blum"
@@ -87,19 +85,19 @@ Feature: Workflow
     When I add the genus "Atta"
     And I add the genus "Batta"
     When I log in as a superadmin named "Stan Blum"
-    When I go to the changes page
-    Then I should see an "Approve all" button
-    When I go to the changes page
+    When I go to the unreviewed changes page
+    Then I should see "Approve all"
     And I will confirm on the next step
     And I press "Approve all"
-    When I go to the changes page
-    Then I should not see an "Approve" button
+    When I go to the unreviewed changes page
+    Then I should not see "Approve[^d]"
+    # TODO fix ugly regex hack
 
   Scenario: Should not see approve all if not superadmin
-    When I go to the changes page
-    Then I should not see an "Approve all" button
+    When I go to the unreviewed changes page
+    Then I should not see "Approve all"
 
-
+  @javascript
   Scenario: Another editor editing a change that's waiting for approval
     When I add the genus "Atta"
     And I go to the changes page
@@ -115,7 +113,9 @@ Feature: Workflow
     When I log in as a catalog editor named "Mark Wilden"
     And I go to the changes page
     Given I will confirm on the next step
-    And I press the first "Approve"
+    And I press "Approve"
+    # TODO fix. Works because "first" is implied, used to say
+    # this:  And I press the first "Approve"
     Then I should see "Mark Wilden approved"
     When I go to the catalog page for "Atta"
     Then I should see "approved by Mark Wilden"
@@ -127,13 +127,20 @@ Feature: Workflow
     When I go to the changes page
     Then I should not see an "Approve" button
 
-
+  @javascript @search
   Scenario: Editing a taxon - modified, not added
-    Given there is a family "Formicidae"
     And I log in
     When I go to the edit page for "Formicidae"
     And I click the name field
     And I set the name to "Wildencidae"
+    And I press "OK"
+    And I click the protonym name field
+    And I set the protonym name to "Eciton"
+    And I click "#taxon_protonym_attributes_sic"
+    And I press "OK"
+    And I click the authorship field
+    And in the reference picker, I search for the author "Fisher"
+    And I click the first search result
     And I press "OK"
     And I press "Save" within ".buttons_section"
     Then I should see "Wildencidae" in the header
@@ -151,7 +158,8 @@ Feature: Workflow
     When I go to the changes page
     And I will confirm on the next step
     And I press "Approve"
-    Then I should not see "Approve"
+    Then I should not see "Approve[^d]"
+    # TODO fix ugly regex hack
     And I should see "Stan Blum approved"
     And there should be a mailto link to the email of "Stan Blum"
     And there should be a mailto link to the email of "Mark Wilden"

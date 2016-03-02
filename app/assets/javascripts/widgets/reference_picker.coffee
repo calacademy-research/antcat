@@ -41,9 +41,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @display_section.hide()
     @edit_section.show()
     @form().open()
-    @setup_search_selector()
-
-
 
   hide_form: =>
     @edit_section.hide()
@@ -54,7 +51,9 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @edit_section.is ':visible'
 
   start_throbbing: =>
-    @element.find('.throbber img').show()
+    # Calling twice or else the spinner will not show on the first loading, sorry about that
+    @element.find('.throbber .shared-spinner').show()
+    @element.find('.throbber .shared-spinner').show()
     @element.find('> .expansion > .controls').disable()
 
   #---------------------------------
@@ -88,10 +87,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @expansion
       .find('.controls')
         .undisable()
-        .find(':button')
-         # .unbutton()
-          .button()
-          .end()
         .end()
 
       .find(':button.ok')
@@ -138,26 +133,10 @@ class AntCat.ReferencePicker extends AntCat.Panel
           false
         .end()
 
-    #@setup_search_selector()
     @enable_search_author_autocomplete()
 
   get_default_reference_string: =>
     @controls.find('#default_reference_string').val()
-
-  setup_search_selector: =>
-      @search_selector
-  #      .selectmenu('destroy')
-        .selectmenu(wrapperElement: "<span />")
-      .selectmenu()
-
-      .change =>
-          new_type = @search_selector.find('option:selected').text()
-          if new_type is 'Search for'
-            @disable_search_author_autocomplete()
-          else
-            @enable_search_author_autocomplete()
-          @textbox.focus()
-
 
   enable_controls: => @expansion.find('.controls').undisable()
   disable_controls: => @expansion.find('.controls').disable()
@@ -269,7 +248,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
       source: (request, result_handler) ->
         search_term = AntCat.ReferencePicker.extract_author_search_term(@element.val(), $(@element).getSelection().start)
         if search_term.length >= 3
-          $.getJSON '/authors', term: search_term, result_handler
+          $.getJSON '/authors/autocomplete', term: search_term, result_handler
         else
           result_handler []
       # don't update the search textbox when the autocomplete item changes

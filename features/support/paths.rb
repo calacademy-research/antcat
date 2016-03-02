@@ -1,4 +1,3 @@
-# coding: UTF-8
 module NavigationHelpers
   def path_to page_name
     case page_name
@@ -15,6 +14,9 @@ module NavigationHelpers
     when /^the changes page$/
       '/changes'
 
+    when /^the unreviewed changes page$/
+      '/changes/unreviewed'
+
     when /^the missing reference edit page for "([^"]*)"$/
       reference = MissingReference.find_by_citation $1
       "/missing_references/#{reference.id}/edit"
@@ -29,7 +31,7 @@ module NavigationHelpers
       taxon = Taxon.find_by_name $2
       "/catalog/#{taxon.id}"
     when /^the catalog$/
-      catalog_path
+      root_path
 
     when /^the edit page for "(.*)"$/
       "/taxa/#{Taxon.find_by_name($1).id}/edit"
@@ -54,8 +56,6 @@ module NavigationHelpers
       latest_additions_references_path
     when /^the page for that reference$/
       reference_path(@reference || Reference.first)
-    when /^the Bolton references page$/
-      bolton_references_path
 
     when /^the "journals index" page$/
       journals_path
@@ -78,6 +78,10 @@ module NavigationHelpers
       '/users/password/new'
     when /^the login (page|form)$/
       '/users/sign_in'
+    when /^the sign ?up (page|form)$/
+      '/users/sign_up'
+    when /^the users page$/
+      '/users'
 
     when /^the reference field test page, opened to the first reference$/
       "/widget_tests/reference_field_test?id=#{Reference.first.id}"
@@ -97,6 +101,8 @@ module NavigationHelpers
       "/widget_tests/name_field_test?id=#{Name.first.id}"
     when /^the name field test page$/
       '/widget_tests/name_field_test'
+    when /^the tooltips test page$/
+      '/widget_tests/tooltips_test'
 
     else
       raise "#{page_name} not found"

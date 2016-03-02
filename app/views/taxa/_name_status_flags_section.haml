@@ -1,10 +1,8 @@
--#Locals: taxon, form, default_name_string
-
 .name_status_flags_section.section
   %table
     = render 'name_section', taxon: taxon, form: form, default_name_string: default_name_string
     %tr.status_row
-      %td.label= form.label :status
+      %td.caption= form.label :status
       %td= form.select :status, Status.options_for_select
 
     = render 'homonym_replaced_by_section', taxon: taxon, form: form
@@ -35,6 +33,6 @@
         = form.label :hong
 
     %tr.headline_notes_taxt_row
-      %td.label.top_aligned= form.label :headline_notes_taxt, 'Notes'
+      %td.caption.top_aligned= form.label :headline_notes_taxt, 'Notes'
       %td#headline_notes_taxt_editor.taxt_editor
         = render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: Taxt.to_editable(taxon.headline_notes_taxt)

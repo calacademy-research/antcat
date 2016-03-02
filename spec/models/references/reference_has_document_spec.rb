@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe Reference do
@@ -12,16 +11,16 @@ describe Reference do
     end
   end
 
-  describe "downloadable_by?" do
+  describe "downloadable?" do
     it "should be false if there is no document" do
-      expect(FactoryGirl.create(:reference)).not_to be_downloadable_by FactoryGirl.create :user
+      expect(FactoryGirl.create(:reference)).not_to be_downloadable
     end
 
     it "should delegate to its document" do
       reference = FactoryGirl.create :reference, :document => FactoryGirl.create(:reference_document)
       user = FactoryGirl.create :user
-      expect(reference.document).to receive(:downloadable_by?).with(user)
-      reference.downloadable_by? user
+      expect(reference.document).to receive(:downloadable?)
+      reference.downloadable?
     end
   end
 

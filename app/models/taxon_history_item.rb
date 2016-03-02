@@ -1,4 +1,3 @@
-# coding: UTF-8
 class TaxonHistoryItem < ActiveRecord::Base
   include UndoTracker
   belongs_to :taxon
@@ -6,16 +5,7 @@ class TaxonHistoryItem < ActiveRecord::Base
   attr_accessible :taxon_id, :taxt, :position, :taxon
   acts_as_list scope: :taxon
   validates_presence_of :taxt
-  has_paper_trail meta: {change_id: :get_current_change_id}
-
-
-  include UndoTracker
-
-  # TOOD: Rails 4 upgrade, remove when tests pass
-  # def title
-  #   # for PaperTrailManager's RSS output
-  #   taxt
-  # end
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   def update_taxt_from_editable editable_taxt
     update_attributes taxt: Taxt.from_editable(editable_taxt)
@@ -28,6 +18,5 @@ class TaxonHistoryItem < ActiveRecord::Base
   rescue Taxt::ReferenceNotFound => e
     errors.add :base, "The reference '#{e}' could not be found. Was the ID changed?"
   end
-
 
 end

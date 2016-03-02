@@ -1,0 +1,51 @@
+= enable_tooltips
+
+- content_for :head do
+  = javascript_include_tag  'widgets/panel'
+  = javascript_include_tag  'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
+  = javascript_include_tag  'widgets/reference_picker', 'widgets/reference_panel', 'widgets/reference_form'
+  = javascript_include_tag  'widgets/reference_field'
+  = javascript_include_tag  'widgets/name_field'
+  = javascript_include_tag  'widgets/reference_popup', 'widgets/name_popup', 'widgets/taxt_editor'
+  = javascript_include_tag  'taxa', 'parent_section', 'current_valid_taxon_section', 'history_items_section', 'synonyms_section', 'references_section', 'homonym_replaced_by_section'
+
+- content_for :page_contents do
+  - url = @taxon.new_record? ?  '/taxa': "/taxa/#{@taxon.id}"
+  - method = @taxon.new_record? ? 'post' : 'put'
+  = form_for @taxon, as: :taxon, url: url, method: method, html: {class: 'taxon_form ui-widget'} do |form|
+
+    -#These fields are used to pass pre-caulculated data to javascript
+    -# and they're magically appended to the POST.
+    = hidden_field_tag 'current_taxon_id', @taxon.id
+    = hidden_field_tag 'rank_to_create', params[:rank_to_create]
+    = hidden_field_tag 'parent_id', params[:parent_id]
+    = hidden_field_tag 'taxon_rank', @taxon.rank
+    = hidden_field_tag 'species_id', @taxon.rank.to_s == "subspecies" ?  @taxon.species_id : true
+    = hidden_field_tag 'taxon_name_string', @taxon.name_cache
+    = hidden_field_tag 'collision_resolution', params[:collision_resolution]
+    = hidden_field_tag 'reset_epithet', @reset_epithet
+    = hidden_field_tag 'previous_combination_id', @previous_combination ? @previous_combination.id : nil
+    = hidden_field_tag 'is_superadmin', user_is_superadmin?
+
+    = render 'shared/errors_for', resource: @taxon
+
+    .fields_section.section.ui-widget-content.ui-corner-all
+      = render 'name_status_flags_section',         taxon: @taxon, form: form, default_name_string: @default_name_string
+      = render 'protonym_section',                  taxon: @taxon, form: form
+      = render 'type_section',                      taxon: @taxon, form: form
+
+      -#Passed to the buttons widget (javascript) to control how the buttons look and behave. Populated
+      -#by the taxa_controller.
+      .buttons_section
+        -# TODO @possible_homonym is not declared anywhere
+        = render 'buttons_save_section', taxon: @taxon, possible_homonym: @possible_homonym
+        - unless @taxon.new_record?
+          = render 'buttons_taxon_operations', taxon: @taxon, collision_resolution: @collision_resolution
+
+    - unless @taxon.new_record?
+      = render 'history_items_section',               taxon: @taxon
+      = render 'children_section',                    taxon: @taxon
+      = render 'junior_and_senior_synonyms_section',  taxon: @taxon
+      = render 'references_section',                  taxon: @taxon
+
+  #duplicate_message.ui-icon.ui-icon-alert.duplicate-modal

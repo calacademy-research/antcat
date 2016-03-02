@@ -1,0 +1,110 @@
+@import "colors"
+
+.reference_key_and_expansion
+  &:hover
+    cursor: pointer
+
+  .reference_key_expansion
+    display: none
+
+    .reference_key_expansion_text
+      background: lighten(#90EE90, 10%)
+      &:hover
+        background: $color_link_highlight_background
+        color: $color_link_highlight
+
+#taxon_browser
+  .snaked
+    -webkit-column-width: 10em
+    -moz-column-width: 10em
+    column-width: 10em
+  .mr-scrollbary
+    max-height: 12rem
+    overflow-y: auto
+  .upcase
+    text-transform: uppercase
+
+#show_and_hide_menu
+  margin-bottom: 0.5rem
+  a
+    color: #fff
+  .label
+    margin-right: 0.5rem
+    margin-top: 0.2rem
+
+#taxon_description
+  h4
+    font-weight: bold
+
+  .link_to_external_site
+    font-weight: bold
+    font-variant: small-caps
+    font-size: 15px
+
+  .editor_buttons
+    float: left
+
+  .header
+    .name
+      color: black !important
+      font-size: 18px
+      font-weight: bold
+
+    .authorship
+      font-size: 15px
+      margin-left: 6px
+
+    .status, .gender
+      font-size: 15px
+      margin-left: 6px
+
+    .review_state
+      margin-left: 8px
+      font-style: italic
+      color: red
+
+    .see
+      margin-left: 6px
+
+  .statistics
+    font-style: italic
+    margin-bottom: 6px
+    font-size: 14px
+    line-height: 1.1
+
+  .headline
+    margin-bottom: 4px
+    .epithet
+      font-weight: bold
+      font-style: italic
+    .name
+      font-weight: bold
+
+  .history
+    font-size: 15px
+    padding-left: 0
+    line-height: 1.2
+    .history_item
+      table
+        border-spacing: 0
+
+  .child_lists
+    font-size: 15px
+    .caption
+      font-weight: bold
+
+  .reference_sections
+    font-size: 15px
+    .section
+      .title_taxt
+        padding-top: 6px
+        font-weight: bold
+      .subtitle_taxt
+        padding-top: 6px
+      .title_taxt + .subtitle_taxt
+        padding-top: 0
+      .references
+
+  .change_history
+    font-size: 13px
+    font-style: italic

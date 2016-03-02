@@ -1,212 +1,102 @@
-# coding: UTF-8
 class CatalogController < ApplicationController
-  before_filter :get_parameters
+  before_filter :set_session, only: [:index, :show]
+  before_filter :handle_family_not_found, only: [:index]
+  before_filter :set_taxon, only: [:index, :show]
+  before_filter :setup_panels, only: [:index, :show]
+  before_filter :enable_taxon_toggler, only: [:index, :show]
 
-  def show
-    if @parameters[:id].blank?
-      @parameters[:id] = Family.first.id
-    end
-    setup_taxon_and_index
+  def index
+    render 'show'
   end
 
-  # Return all the taxa that would be deleted if we delete this
-  # particular ID, inclusive. Same as children, really.
-  def delete_impact_list
-    taxon_id = @parameters[:id]
-    mother = TaxonMother.new(taxon_id)
-    mother.load_taxon
-    taxon_array = mother.get_children
-
-    render json: taxon_array, status: :ok
+  def show
   end
 
   def search
-    if params[:commit] == "Go"
-      @parameters.delete :id
-      params.delete :id
+    st = params[:st] || "bw"
+    @search_results = get_search_results(params[:qq], st)
+
+    # Single match --> skip search results and just show the match
+    if @search_results && @search_results.count == 1
+      taxon = @search_results.first
+      return redirect_to catalog_path(taxon)
     end
 
-    do_search
-
-    id = params[:id]
-    @parameters[:id] = id if id
-    @search_query = params[:qq] || ''
-    @st = params[:st] || ''
-
-    if @search_results.present? && @search_results.count == 1
-      # sets taxon if a single match is found
-      # explicitly picked ids are still displayed together with the list of matches
-      # defaults to Formicidae unless there's a single match or an id is picked
-      @parameters[:id] = @search_results.first[:id]
-      return redirect_to_id
-    end
-
-    setup_taxon_and_index
-    render :show
+    @search_selector_value = search_selector_value_in_english(st)
   end
 
-  def show_tribes
-    session[:show_tribes] = true
-    redirect_to_id
-  end
-
-  def hide_tribes
-    session[:show_tribes] = false
-    if @parameters[:id].present?
-      taxon = Taxon.find @parameters[:id]
-      set_id_parameter taxon.subfamily.id if taxon.kind_of? Tribe
-    end
-    redirect_to_id
-  end
-
-  def show_unavailable_subfamilies
-    session[:show_unavailable_subfamilies] = true
-    redirect_to_id
-  end
-
-  def hide_unavailable_subfamilies
-    session[:show_unavailable_subfamilies] = false
-    taxon = Family.first
-    redirect_to_id
-  end
-
-  def show_subgenera
-    session[:show_subgenera] = true
-    redirect_to_id
-  end
-
-  def hide_subgenera
-    session[:show_subgenera] = false
-    if @parameters[:id].present?
-      taxon = Taxon.find @parameters[:id]
-      set_id_parameter taxon.genus.id if taxon.kind_of? Subgenus
-    end
-    redirect_to_id
+  def options
+    # params[:valid_only] is only for making the URL more intuitive
+    session[:show_valid_only] = !session[:show_valid_only]
+    redirect_to :back
   end
 
   private
-  def redirect_to_id
-    id = @parameters.delete :id
-    id_string = "/#{id}"
-    parameters_string = @parameters.empty? ? '' : "?#{@parameters.to_query}"
-    redirect_to "/catalog#{id_string}#{parameters_string}"
-  end
-
-  def setup_taxon_and_index
-    # Amoung other thigs, this populates the lower half of the table
-    # that is browsable (subfamiles, genera, [subgenera], species, [subspecies])
-    @taxon = Taxon.find_by_id(@parameters[:id]) || Family.first
-
-    if session[:show_unavailable_subfamilies]
-      @subfamilies = ::Subfamily.all.ordered_by_name.where "display != false"
-    else
-      @subfamilies = ::Subfamily.all.ordered_by_name.where "status != 'unavailable' and display != false"
+    # Avoid blowing up if there's no family. Useful in test and dev.
+    def handle_family_not_found
+      render 'family_not_found' and return unless Family.first
     end
 
-    case @taxon
-    when Family
-      if @parameters[:child] == 'none'
-        @subfamily = 'none'
-        @genera = Genus.where("display != false").without_subfamily.ordered_by_name
-      end
-
-    when Subfamily
-      @subfamily = @taxon
-
-      if session[:show_tribes]
-        @tribes = @subfamily.tribes.where("display != false").ordered_by_name
-        if @parameters[:child] == 'none'
-          @tribe = 'none'
-          @genera = @subfamily.genera.where("display != false").without_tribe.ordered_by_name
-        end
-      else
-        @genera = @subfamily.genera.where("display != false").ordered_by_name
-      end
-
-    when Tribe
-      @tribe = @taxon
-      @subfamily = @tribe.subfamily
-
-      session[:show_tribes] = true
-      @tribes = @tribe.siblings.where("display != false").ordered_by_name
-      @genera = @tribe.genera.where("display != false").ordered_by_name
-
-    when Genus
-      @genus = @taxon
-      @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-      setup_genus_parent_columns
-      unless session[:show_subgenera]
-        @specieses = @genus.species_group_descendants.where("display != false")
-      else
-        @subgenera = @genus.subgenera.where("display != false").ordered_by_name
-      end
-
-    when Subgenus
-      @subgenus = @taxon
-      @genus = @subgenus.genus
-      @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-      session[:show_subgenera] = true
-      @subgenera = @genus.subgenera.where("display != false").ordered_by_name
-      setup_genus_parent_columns
-      @specieses = @subgenus.species_group_descendants.where("display != false")
-
-    when Species
-      @species = @taxon
-      @genus = @species.genus
-      @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-      setup_genus_parent_columns
-      @specieses = @genus.species_group_descendants.where("display != false")
-
-    when Subspecies
-      @species = @taxon
-      @genus = @species.genus
-      @subfamily = @genus.subfamily ? @genus.subfamily : 'none'
-      setup_genus_parent_columns
-      @specieses = @genus.species_group_descendants.where("display != false")
-    end
-  end
-
-  def setup_genus_parent_columns
-    if session[:show_tribes]
-      @genera = @genus.siblings.ordered_by_name
-      @tribe = @genus.tribe ? @genus.tribe : 'none'
-      @tribes = @subfamily == 'none' ? nil : @subfamily.tribes.where("display != false").ordered_by_name
-    else
-      @genera = @subfamily == 'none' ? Genus.without_subfamily.ordered_by_name : @subfamily.genera.where("display != false").ordered_by_name
-    end
-  end
-
-  def get_parameters # refactor
-    @parameters = HashWithIndifferentAccess.new
-    @parameters[:id] = params[:id] if params[:id].present?
-    @parameters[:child] = params[:child] if params[:child].present?
-  end
-
-  def set_id_parameter id, child = nil
-    @parameters[:id] = id
-    if child
-      @parameters[:child] = child
-    else
-      @parameters.delete :child
-    end
-  end
-
-    def do_search
-      return unless params[:qq].present?
-
-      st = params[:st] || 'bw'
-      search_selector_value = translate_search_selector_value_to_english st
-
-      @search_results = Taxon.find_name(params[:qq], search_selector_value).map do |search_result|
-        { name: search_result.name.name_html, id: search_result.id }
-      end
-
-      if @search_results.blank?
-        @search_results_message = "No results found for name #{search_selector_value} '#{params[:qq]}'"
-      end
+    # TODO reverse name, so that this is not needed
+    def set_session
+      session[:show_valid_only] = true if session[:show_valid_only].nil?
     end
 
-    def translate_search_selector_value_to_english value
+    def set_taxon
+      @taxon =  if params[:id]
+                  Taxon.find(params[:id])
+                else
+                  Family.first
+                end
+    end
+
+    def setup_panels
+      @self_and_parents = @taxon.self_and_parents
+
+      @panels = @self_and_parents.reject do |taxon|
+        # never show the subspecies panel (has no children)
+        taxon.is_a?(Subspecies) ||
+        # don't show species panel unless the species has subspecies
+        (taxon.is_a?(Species) && taxon.children.empty?)
+      end.map do |taxon|
+        children = taxon.children.displayable.ordered_by_name
+        children = children.valid if session[:show_valid_only]
+        { selected: taxon, children: children }
+      end
+
+      setup_non_standard_panels
+    end
+
+    def setup_non_standard_panels
+      return unless params[:display]
+
+      case params[:display]
+      when /^incertae_sedis_in/
+        title = "Genera <i>incertae sedis</i> in #{@taxon.name_html_cache}"
+        children = @taxon.genera_incertae_sedis_in
+      when /^all_genera_in/
+        title = "All #{@taxon.name_cache} genera"
+        children = @taxon.all_displayable_genera
+      end
+
+      children = children.valid if session[:show_valid_only]
+      @panels << { selected: { title_for_panel: title },
+                  children: children }
+    end
+
+    def enable_taxon_toggler
+      @display_taxon_toggler = true
+    end
+
+    # TODO rename all occurrences of "st" ("starts with")
+    def get_search_results qq, st = 'bw'
+      return unless qq.present?
+      search_selector_value = search_selector_value_in_english st
+
+      Taxa::Search.find_name(qq, search_selector_value)
+    end
+
+    def search_selector_value_in_english value
       { 'm' => 'matching', 'bw' => 'beginning with', 'c' => 'containing' }[value]
     end
 end

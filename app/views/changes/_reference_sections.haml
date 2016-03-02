@@ -1,13 +1,11 @@
--#Local variables: taxon
-
-%table
-  -taxon.reference_sections.each do |item|
-    %tr.reference_section
-      %td.label
-      %td.value.title_taxt= Taxt.to_display_sentence item.title_taxt, current_user
-    %tr
-      %td.label
-      %td.value.subtitle_taxt= Taxt.to_display_sentence item.subtitle_taxt, current_user
-    %tr
-      %td.label
-      %td.value.references_taxt= Taxt.to_display_sentence item.references_taxt, current_user
+-unless taxon.reference_sections.empty?
+  %table
+    %caption References
+    -# TODO prints too many empty fields
+    -taxon.reference_sections.each do |item|
+      %tr
+        %td= Taxt.to_display_sentence item.title_taxt
+      %tr
+        %td= Taxt.to_display_sentence item.subtitle_taxt
+      %tr
+        %td.references_taxt-test-hook= Taxt.to_display_sentence item.references_taxt

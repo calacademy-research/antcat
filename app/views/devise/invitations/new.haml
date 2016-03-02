@@ -1,10 +1,14 @@
-- @title = 'Send invitation'
+-@title = 'Send Invitation'
+-breadcrumb :invite_people
 
-= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post} do |f|
-  = render 'shared/errors_for', :resource => resource
-  - resource.class.invite_key_fields.each do |field|
-    %p
-      = f.label field
-      %br/
-      = f.text_field field
-  %p= f.submit "Send invitation"
+=form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post } do |f|
+  =render 'shared/errors_for', resource: resource
+  .row
+    .medium-6.columns
+      -resource.class.invite_key_fields.each do |field|
+        =f.label field
+        =f.text_field field
+
+  .row
+    .medium-6.columns
+      =f.submit "Send Invitation", class: "btn-normal"

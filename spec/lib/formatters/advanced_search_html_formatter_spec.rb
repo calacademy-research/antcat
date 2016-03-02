@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 
 class FormattersAdvancedSearchHtmlFormatterTestClass
@@ -25,8 +24,7 @@ describe Formatters::AdvancedSearchHtmlFormatter do
       'href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>' +
       ' <a class="goto_reference_link" target="_blank" href="/references/' + reference.id.to_s +
       "\">#{reference.id}" +
-      '</a><span class="reference_id">' + reference.id.to_s +
-      '</span>'+
+      '</a> DOI: 10.10.1038/nphys1170' +
       "\n\n")
   end
 

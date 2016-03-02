@@ -1,0 +1,7 @@
+- @title = 'Unreviewed Changes'
+- breadcrumb :unreviewed_changes
+
+.right= approve_all_changes_button
+
+= render @changes
+= will_paginate @changes

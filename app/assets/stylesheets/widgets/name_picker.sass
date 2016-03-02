@@ -1,4 +1,4 @@
-@import 'common'
+@import "colors"
 
 @mixin controls_area
   color: $color_current_being_edited !important
@@ -6,6 +6,9 @@
   border: solid 1px black
 
 .antcat_name_picker
+  // restore background after Foundation
+  table tr:nth-of-type(even)
+    background-color: $color_picker_background !important
 
   ul.error_messages
     color: $color_picker_error

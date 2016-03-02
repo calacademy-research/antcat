@@ -1,13 +1,10 @@
-# coding: UTF-8
+Citrus.load "#{__dir__}/common_grammar", force: true unless defined? Parsers::CommonGrammar
+Citrus.load "#{__dir__}/author_grammar", force: true unless defined? Parsers::AuthorGrammar
+
 module Parsers::AuthorParser
 
   def self.parse! string
     return {:names => []} unless string.present?
-
-    # explicit loading seems to help Citrus's problem with reloading its grammars
-    # when Rails's class caching is off
-    Citrus.load Rails.root.to_s + '/lib/parsers/common_grammar', force: true unless defined? Parsers::CommonGrammar
-    Citrus.load Rails.root.to_s + '/lib/parsers/author_grammar', force: true unless defined? Parsers::AuthorGrammar
 
     match = Parsers::AuthorGrammar.parse(string, :consume => false)
     result = match.value

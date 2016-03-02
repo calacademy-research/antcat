@@ -1,5 +1,3 @@
--#Locals: taxon, form
-
 %tr#homonym_replaced_by_row
   - form.object.homonym_replaced_by_name ||= form.object.homonym_replaced_by.try(:name)
   - form.object.homonym_replaced_by_name ||= Name.new

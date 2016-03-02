@@ -1,4 +1,3 @@
-# coding: UTF-8
 # Progress.init show_progress, total_items
 # Progress.puts 'Importing...'
 # ...
@@ -170,31 +169,28 @@ class Progress
     "#{processed_count} processed in #{elapsed} #{rate}"
   end
 
-  ##########################################################################
-
   private
+    def self.open_log file_name, append, directory
+      return unless file_name
+      file_name = make_file_name file_name, directory
+      file = File.open file_name, append ? 'a' : 'w'
+      file.sync = true
+      @logger = Logger.new file
+      log "\n#{Time.now}" if append
+    end
 
-  def self.open_log file_name, append, directory
-    return unless file_name
-    file_name = make_file_name file_name, directory
-    file = File.open file_name, append ? 'a' : 'w'
-    file.sync = true
-    @logger = Logger.new file
-    log "\n#{Time.now}" if append
-  end
+    def self.make_file_name file_name, directory
+      file_name = file_name.gsub /::/, '_'
+      file_name = file_name.underscore
+      file_name = Rails.root.join (directory ? directory : 'log') + '/' + file_name + "-#{Rails.env}.log"
+      file_name
+    end
 
-  def self.make_file_name file_name, directory
-    file_name = file_name.gsub /::/, '_'
-    file_name = file_name.underscore
-    file_name = Rails.root.join (directory ? directory : 'log') + '/' + file_name + "-#{Rails.env}.log"
-    file_name
-  end
+    def self.elapsed_secs
+      Time.now - @start
+    end
 
-  def self.elapsed_secs
-    Time.now - @start
-  end
-
-  def self.rate_per_sec count
-    count.to_f / elapsed_secs
-  end
+    def self.rate_per_sec count
+      count.to_f / elapsed_secs
+    end
 end

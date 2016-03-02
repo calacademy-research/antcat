@@ -1,0 +1,14 @@
+-breadcrumb :catalog_search
+
+-# TODO make #search_results a "-test-hook"
+#search_results
+  -if @search_results.nil?
+    .alert.callout No search term
+  -elsif @search_results.empty?
+    .alert.callout
+      = "No results found for name #{@search_selector_value} '#{params[:qq]}'"
+  -else
+    %table
+      -@search_results.each do |taxon|
+        %tr
+          %td= taxon.decorate.link_to_taxon

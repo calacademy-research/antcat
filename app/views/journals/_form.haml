@@ -1,0 +1,7 @@
+=form_for @journal do |f|
+  =render 'shared/errors_for', :resource => @journal
+  %p
+    =f.label :name, 'Journal name'
+    %br
+    =f.text_field :name
+    =f.submit 'Save', class: "btn-save"

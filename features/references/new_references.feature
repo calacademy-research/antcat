@@ -12,7 +12,7 @@ Feature: Seeing what's new
   Scenario: See features in order of addition
     Given I am logged in
     When I go to the references page
-    And I follow "Latest additions"
+    And I follow "Latest Additions"
     Then I should see these entries with a header in this order:
       | date       | entry                                           | review_state  |
       | 2010-02-02 | Ward, P. 2010. Ward's World. Psyche 5:3         |               |

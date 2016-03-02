@@ -1,4 +1,3 @@
-# coding: UTF-8
 class ReferenceDocument < ActiveRecord::Base
   include UndoTracker
 
@@ -21,12 +20,6 @@ class ReferenceDocument < ActiveRecord::Base
 
   attr_accessible :url, :file_file_name, :public, :file
 
-  def transliterate_file_name
-    extension = File.extname(file_file_name).gsub(/^\.+/, '')
-    filename = file_file_name.gsub(/\.#{extension}$/, '')
-    file.instance_write(:file_name, "#{ActiveSupport::Inflector.parameterize(filename)}.#{ActiveSupport::Inflector.parameterize(extension)}")
-  end
-
   def pdf
     true
   end
@@ -37,51 +30,53 @@ class ReferenceDocument < ActiveRecord::Base
   end
 
   def downloadable?
-    downloadable_by? nil
-  end
-
-  def downloadable_by? user = nil
     url.present? && !hosted_by_antbase? && !hosted_by_hol?
-  end
-
-  # Hardcoded IP, yuck
-  def hosted_by_hol?
-    url.present? && url =~ %r{^https?://128.146.250.117}
-  end
-
-  # Hardcoded address, yuck
-  def hosted_by_antbase?
-    url.present? && url =~ %r{^https?://antbase\.org}
   end
 
   def actual_url
     hosted_by_us? ? s3_url : url
   end
 
-  def check_url
-    return if file_file_name.present? or url.blank?
-    # this is to avoid authentication problems when a URL to one of "our" files is copied
-    # to another reference (e.g., nested)
-    return if url =~ /antcat/
-    return if hosted_by_hol? || hosted_by_antbase?
-    # a URL with spaces is valid, but URI.parse rejects it
-    uri = URI.parse url.gsub(/ /, '%20')
-    response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
-    errors.add :url, 'was not found' unless (200..399).include? response_code
-  rescue SocketError, URI::InvalidURIError, ArgumentError
-    errors.add :url, 'is not in a valid format'
-  end
+  private
+    def transliterate_file_name
+      extension = File.extname(file_file_name).gsub(/^\.+/, '')
+      filename = file_file_name.gsub(/\.#{extension}$/, '')
+      file.instance_write(:file_name, "#{ActiveSupport::Inflector.parameterize(filename)}.#{ActiveSupport::Inflector.parameterize(extension)}")
+    end
 
-  def hosted_by_us?
-    file_file_name.present?
-  end
+    # Hardcoded IP, yuck
+    def hosted_by_hol?
+      url.present? && url =~ %r{^https?://128.146.250.117}
+    end
 
-  def add_protocol_to_url
-    self.url = "http://" + url if url.present? && url !~ %r{^http://}
-  end
+    # Hardcoded address, yuck
+    def hosted_by_antbase?
+      url.present? && url =~ %r{^https?://antbase\.org}
+    end
 
-  def s3_url
-    file.expiring_url(10)
-  end
+    def check_url
+      return if file_file_name.present? or url.blank?
+      # this is to avoid authentication problems when a URL to one of "our" files is copied
+      # to another reference (e.g., nested)
+      return if url =~ /antcat/
+      return if hosted_by_hol? || hosted_by_antbase?
+      # a URL with spaces is valid, but URI.parse rejects it
+      uri = URI.parse url.gsub(/ /, '%20')
+      response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
+      errors.add :url, 'was not found' unless (200..399).include? response_code
+    rescue SocketError, URI::InvalidURIError, ArgumentError
+      errors.add :url, 'is not in a valid format'
+    end
 
+    def hosted_by_us?
+      file_file_name.present?
+    end
+
+    def add_protocol_to_url
+      self.url = "http://" + url if url.present? && url !~ %r{^http://}
+    end
+
+    def s3_url
+      file.expiring_url(10)
+    end
 end

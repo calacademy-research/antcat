@@ -1,4 +1,5 @@
-# coding: UTF-8
+include Exporters::Antweb::MonkeyPatchTaxon
+
 class Exporters::Antweb::Exporter
   def initialize show_progress = false
     Progress.init show_progress, Taxon.count
@@ -37,9 +38,6 @@ class Exporters::Antweb::Exporter
       end
       Progress.show_results
     end
-
-    # row = export_taxon taxon
-    # file.puts row.join("\t") if row
   end
 
   def get_taxa

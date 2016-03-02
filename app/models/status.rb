@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Status
 
   def initialize hash
@@ -42,7 +41,7 @@ class Status
     [@hash[:label], @hash[:string]]
   end
 
-  #joe - see if we can not display "unavailable uncategorized"
+  # TODO joe - see if we can not display "unavailable uncategorized"
   def self.statuses
     @_statuses ||= [
       ['valid',                     'valid',                     'valid'],

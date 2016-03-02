@@ -23,8 +23,6 @@ describe ChangesController do
       taxon.save
       change = FactoryGirl.create :change, user_changed_taxon_id: taxon.id, change_type: "update"
       version = FactoryGirl.create :version, item_id: taxon.id, whodunnit: adder.id, change_id: change.id
-      #FactoryGirl.create :transaction, paper_trail_version: version, change: change
-
 
       taxon.status = 'homonym'
       taxon.save
@@ -39,11 +37,9 @@ describe ChangesController do
       expect(changes[0]['change_timestamp']).not_to be nil
       expect(changes[0]['user_name']).to eq('Mark Wilden')
 
-
       expect(changes[1]['name']).to eq('Genus1')
       expect(changes[1]['change_type']).to eq('update')
     end
-
 
   end
 end

@@ -1,5 +1,3 @@
-# coding: UTF-8
-
 module LinkHelper
   include ActionView::Helpers::UrlHelper
 
@@ -24,8 +22,8 @@ module LinkHelper
   end
 
   def link_to_hol taxon
-    return unless taxon.hol_id
-    link_to_external_site 'HOL', "http://hol.osu.edu/index.html?id=#{taxon.hol_id}"
+    return unless hol_id = taxon.hol_id
+    link_to_external_site 'HOL', "http://hol.osu.edu/index.html?id=#{hol_id}"
   end
 
   def link_to_antweb taxon

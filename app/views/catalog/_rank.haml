@@ -1,34 +1,23 @@
--#Locals: parameters, rank, options, items, selected_item, parent
--#Uses: session
+-css_class = []
+-css_class << "is-active" if open_panel? selected, self_and_parents
 
-.rank
-  - rank = Rank[rank]
-  %table{class: rank.to_sym(:plural)}
-    %tr
-      %td.header
-        = rank.to_s :plural, :capitalized
+-if selected.is_a? Taxon
+  -css_class << "#{selected.rank.pluralize}-test-hook"
 
-        - if options[:can_show_unavailable]
-          .hide_show= hide_or_show_unavailable_subfamilies_link session[:show_unavailable_subfamilies], parameters
+%li.accordion-item{class: css_class, "data-accordion-item" => ""}
+  %a.accordion-title=panel_header selected
 
-        - if options[:hideable_name]
-          .hide_show= hide_link options[:hideable_name], parameters[:id], parameters
-        - if options[:hideable_child_name]
-          .hide_show
-            - showing_child = "show_#{options[:hideable_child_name]}".to_sym
-            - unless session[showing_child]
-              = show_child_link options[:hideable_child_name], parameters[:id], parameters
-    %tr
-      %td
-        - if items
-          %table
-            - if options[:show_none]
-              - items = items.to_a
-              - items.insert 0, options[:show_none]
-            - rows, css_class = snake_taxon_columns items
-            - rows.each do |row|
-              %tr
-                - row.each do |item|
-                  %td{class: css_class}
-                    - if item
-                      = index_column_link rank.to_sym, item, selected_item, parent, parameters
+  .mr-scrollbary.accordion-content{"data-tab-content" => ""}
+    %ul.snaked.no-bullet
+      =render "rank_special_cases", selected: selected
+
+      -children.each do |child_taxon|
+        %li{class: ("selected" if child_taxon.in? self_and_parents)}
+          =taxon_browser_link child_taxon
+
+      -# Notify users that they can toggle "show invalid".
+      -if children.empty?
+        -# Exception for subfamilies only containing genera that are
+        -# incertae sedis in that subfamily (that is Martialinae, #430173).
+        -unless selected.try(:genera_incertae_sedis_in).present?
+          %li No valid child taxa

@@ -1,6 +1,6 @@
-# coding: UTF-8
 module DedupeSynonyms
 
+  # TODO? make callable from rake task
   def self.dedupe
     duplicate_count = 0
     synonyms = Synonym.all.to_a

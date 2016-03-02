@@ -1,4 +1,3 @@
-@dormant
 Feature: View bibliography
   As a researcher
   I want to see what the literature is for ant taxonomy
@@ -36,22 +35,13 @@ Feature: View bibliography
       | Forel, A.      | 1874 | 1874          | Les fourmis de la Suisse   | Neue 26:10 |
       | Wheeler, W. M. | 1910 | 1910a         | Small artificial ant-nests | Psyche 1:1 |
     When I go to the references page
-    Then I should see these entries in this order:
+    Then I should see these entries with a header in this order:
       | entry                                                         |
       | Forel, A. 1874. Les fourmis de la Suisse. Neue 26:10          |
       | Wheeler, W. M. 1910a. Small artificial ant-nests. Psyche 1:1  |
       | Wheeler, W. M. 1910b. Ants. Psyche 2:2                        |
 
   Scenario: Viewing an entry with a URL to a document on our site, but the user isn't logged in
-    Given these references exist
-      | authors    | year | citation_year | title     | citation | cite_code | possess | date     |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 |
-    And that the entry has a URL that's on our site
-    When I go to the references page
-    Then I should see a "PDF" link
-
-  @preview
-  Scenario: Even in preview environment, give access to our private PDFs
     Given these references exist
       | authors    | year | citation_year | title     | citation | cite_code | possess | date     |
       | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 |
@@ -131,4 +121,3 @@ Feature: View bibliography
     Then I should see "Public"
     And I should see "Editor"
     And I should see "Taxonomy"
-

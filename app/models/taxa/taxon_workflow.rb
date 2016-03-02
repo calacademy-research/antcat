@@ -1,5 +1,3 @@
-# coding: UTF-8
-require_relative '../../../lib/workflow_external_table'
 class Taxon < ActiveRecord::Base
   include Workflow
   include Workflow::ExternalTable
@@ -15,21 +13,13 @@ class Taxon < ActiveRecord::Base
 
   delegate :approver, :approved_at, to: :last_change
 
-  def can_be_edited_by? user
-    return false unless $Milieu.user_can_edit? user
-    return true if old?
-    return true if approved?
-    return true if waiting?
-
-    raise "we should never get here"
-  end
-
-  def can_be_reviewed_by? user
-    $Milieu.user_can_review_changes?(user) && waiting?
+  def can_be_reviewed?
+    waiting?
   end
 
   def can_be_approved_by? change, user
-    user != change.changed_by && waiting? && $Milieu.user_can_approve_changes?(user)
+    return unless user && change
+    user != change.changed_by && waiting? && user.can_approve_changes?
   end
 
   # Returns the ID of the most recent change that touches this taxon.

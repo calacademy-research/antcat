@@ -1,12 +1,13 @@
-# coding: UTF-8
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_filter :save_location
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  def preview?
-    $Milieu.preview?
-  end
+  delegate :can_edit?, :is_superadmin?, :can_review_changes?,
+    :can_approve_changes?, to: :current_user, prefix: 'user', allow_nil: true
+
+  helper_method :user_can_edit?, :user_is_superadmin?,
+    :user_can_review_changes?, :user_can_approve_changes?
 
   def save_location
     session[:user_return_to] = request.url unless request.url =~ %r{/users/}
@@ -19,7 +20,11 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_editor
-    authenticate_user! && $Milieu.user_can_edit?(current_user)
+    authenticate_user! && user_can_edit?
+  end
+
+  def authenticate_superadmin
+    authenticate_user! && user_is_superadmin?
   end
 
   def user_for_paper_trail
@@ -59,7 +64,7 @@ class ApplicationController < ActionController::Base
 
   protected
     def configure_permitted_parameters
-      devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }
+      devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:username, :email, :name, :password, :password_confirmation, :remember_me) }
       devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
       devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :name, :password, :password_confirmation, :current_password) }
     end

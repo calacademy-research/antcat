@@ -1,54 +1,109 @@
-# coding: UTF-8
 class ReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [
-    :index, :download, :autocomplete, :show, :endnote_export, :latest_additions]
+    :index, :download, :autocomplete, :show, :search, :endnote_export, :latest_additions]
+  before_filter :authenticate_superadmin, only: [:approve_all]
   before_filter :set_reference, only: [
-    :show, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
+    :show, :edit, :update, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
+  before_filter :redirect_if_search_matches_id, only: [:index, :search]
+  # TODO remove filter from the index? Currently only for legacy reasons,
+  #   would break non-restful `reference_path`s such as /index/q=21255
 
-  skip_before_filter :authenticate_editor, if: :preview?
-
-  # TODO make controller more RESTful
   def index
-    params[:q] ||= ''
-    params[:q].strip!
-
-    if params[:q].match(/^\d{5,}$/)
-      id = params[:q]
-      return redirect_to reference_path(id) if Reference.exists? id
-    end
-
-    searching = params[:q].present?
-    @references = if searching
-                    Reference.do_search params
-                  else
-                    Reference.list_references
-                  end
-
-    @action = :index
+    @references = Reference.list_references params
   end
 
   def show
-    id = @reference.id # weird until we have made this controller more RESTful
-    @references = Reference.where(id: id).paginate(page: 1)
+  end
 
-    @action = :show
-    render "index"
+  def new
+    @reference = Reference.new
+  end
+
+  def edit
+  end
+
+  def create
+    @reference = new_reference
+    if save
+      redirect_to reference_path(@reference), notice: <<-MSG
+        Reference was successfully created.
+        <strong>#{view_context.link_to 'Back to the index', references_path}</strong>
+        or
+        <strong>#{view_context.link_to 'add another?', new_reference_path}</strong>
+      MSG
+    else
+      render :new
+    end
+  end
+
+  def update
+    @reference = set_reference_type
+
+    if save
+      redirect_to reference_path(@reference), notice: <<-MSG
+        Reference was successfully updated.
+        <strong>#{view_context.link_to 'Back to the index', references_path}</strong>.
+      MSG
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    if @reference.destroy
+      redirect_to references_path, notice: 'Reference was successfully destroyed.'
+    else
+      if @reference.errors.present?
+        flash[:warning] = @reference.errors.full_messages.to_sentence
+      end
+      redirect_to reference_path(@reference)
+    end
+  end
+
+  def download
+    document = ReferenceDocument.find params[:id]
+    if document.downloadable?
+      redirect_to document.actual_url
+    else
+      head :unauthorized
+    end
+  end
+
+  def start_reviewing
+    @reference.start_reviewing!
+    make_default_reference @reference
+    redirect_to latest_additions_references_path
+  end
+
+  def finish_reviewing
+    @reference.finish_reviewing!
+    redirect_to latest_additions_references_path
+  end
+
+  def restart_reviewing
+    @reference.restart_reviewing!
+    make_default_reference @reference
+    redirect_to latest_additions_references_path
+  end
+
+  def approve_all
+    Reference.approve_all
+    redirect_to latest_changes_references_path, notice: "Approved all references."
+  end
+
+  def search
+    return redirect_to action: :index unless params[:q].present?
+    @references = Reference.do_search params
   end
 
   def latest_additions
     options = { order: :created_at, page: params[:page] }
     @references = Reference.list_references options
-
-    @action = :latest_additions
-    render "index"
   end
 
   def latest_changes
     options = { order: :updated_at, page: params[:page] }
     @references = Reference.list_references options
-
-    @action = :latest_changes
-    render "index"
   end
 
   def endnote_export
@@ -71,94 +126,6 @@ class ReferencesController < ApplicationController
         Exporting missing references is not supported.
         If you tried to export a list of references, try to filter the query with "type:nomissing".
       MSG
-  end
-
-  def download
-    document = ReferenceDocument.find params[:id]
-    if document.downloadable?
-      redirect_to document.actual_url
-    else
-      head :unauthorized
-    end
-  end
-
-  def create
-    @reference = new_reference
-    save true
-  end
-
-  def update
-    @reference = get_reference
-    save false
-  end
-
-  def save new
-    begin
-      Reference.transaction do
-        clear_document_params_if_necessary
-        clear_nesting_reference_id unless @reference.kind_of? NestedReference
-        parse_author_names_string
-        set_journal if @reference.kind_of? ArticleReference
-        set_publisher if @reference.kind_of? BookReference
-        set_pagination
-        # kludge around Rails 3 behavior that uses the type to look up a record - so you can't update the type!
-        @reference.update_column :type, @reference.type unless new
-
-        unless @reference.errors.present?
-          @reference.update_attributes params[:reference]
-
-          @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
-          unless @possible_duplicate
-            @reference.save!
-            set_document_host
-          end
-        end
-
-        raise ActiveRecord::RecordInvalid.new @reference if @reference.errors.present?
-      end
-    rescue ActiveRecord::RecordInvalid
-      @reference[:id] = nil if new
-      @reference.instance_variable_set :@new_record, new
-
-    end
-    DefaultReference.set session, @reference
-    render_json new
-  end
-
-  def destroy
-    json =  if @reference.any_references? or not @reference.destroy
-              { success: false,
-                message: "This reference can't be deleted, as there are other references to it." }
-            else
-              { success: true }
-            end
-    render json: json
-  end
-
-  def start_reviewing
-    @reference.start_reviewing!
-    DefaultReference.set session, @reference
-    redirect_to latest_additions_references_path
-  end
-
-  def finish_reviewing
-    @reference.finish_reviewing!
-    redirect_to latest_additions_references_path
-  end
-
-  def restart_reviewing
-    @reference.restart_reviewing!
-    DefaultReference.set session, @reference
-    redirect_to latest_additions_references_path
-  end
-
-  def approve_all
-    Reference.where('review_state != "reviewed"').find_each do |reference|
-      reference.review_state = 'reviewed'
-      reference.save!
-    end
-
-    redirect_to latest_additions_references_path
   end
 
   def autocomplete
@@ -194,6 +161,45 @@ class ReferencesController < ApplicationController
   end
 
   private
+    def redirect_if_search_matches_id
+      params[:q] ||= ''
+      params[:q].strip!
+
+      if params[:q].match(/^\d{5,}$/)
+        id = params[:q]
+        return redirect_to reference_path(id) if Reference.exists? id
+      end
+    end
+
+    def make_default_reference reference
+      DefaultReference.set session, reference
+    end
+
+    def save
+      Reference.transaction do
+        clear_document_params_if_necessary
+        set_pagination
+        clear_nesting_reference_id unless @reference.kind_of? NestedReference
+        parse_author_names_string
+        set_journal if @reference.kind_of? ArticleReference
+        set_publisher if @reference.kind_of? BookReference
+
+        @reference.attributes = params[:reference]
+
+        return if @reference.errors.present?
+
+        @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
+        return if @possible_duplicate
+
+        @reference.save!
+        set_document_host
+        make_default_reference @reference if params[:make_default]
+        return true
+      end
+    rescue ActiveRecord::RecordInvalid
+      return false
+    end
+
     def set_pagination
       params[:reference][:pagination] =
         case @reference
@@ -215,21 +221,25 @@ class ReferencesController < ApplicationController
     end
 
     def set_journal
-      @reference.journal_name = params[:reference][:journal_name]
-      params[:reference][:journal] = Journal.import @reference.journal_name
+      journal_name = params[:reference][:journal_name]
+      journal = if journal_name.present?
+        Journal.find_or_create_by!(name: journal_name)
+      end
+      @reference.journal = journal
     end
 
     def set_publisher
-      @reference.publisher_string = params[:reference][:publisher_string]
-      publisher = Publisher.import_string @reference.publisher_string
-      if publisher.nil? and @reference.publisher_string.present?
+      publisher_string = params[:reference][:publisher_string]
+      publisher = if publisher_string.present?
+        Publisher.create_with_place_form_string publisher_string
+      end
+      @reference.publisher = publisher
+
+      if publisher.nil? && publisher_string.present?
+        @reference.publisher_string = publisher_string
         @reference.errors.add :publisher_string, <<-MSG.squish
           couldn't be parsed. In general, use the format 'Place: Publisher'.
-          Otherwise, please post a message on http://groups.google.com/group/antcat/,
-          and we'll see what we can do!
         MSG
-      else
-        params[:reference][:publisher] = publisher
       end
     end
 
@@ -242,24 +252,6 @@ class ReferencesController < ApplicationController
       params[:reference][:document_attributes][:id] = nil unless params[:reference][:document_attributes][:url].present?
     end
 
-    def render_json new = false
-      template =
-        case
-          when params[:field].present?  then 'reference_fields/panel'
-          when params[:picker].present? then 'reference_fields/panel'
-          when params[:popup].present?  then 'reference_popups/panel'
-          else                               'references/reference'
-        end
-
-      send_back_json(
-        isNew: new,
-        content: render_to_string(
-          partial: template, locals: { reference: @reference, css_class: 'reference' }
-        ),
-        id: @reference.id,
-        success: @reference.errors.empty?)
-    end
-
     def new_reference
       case params[:selected_tab]
       when 'Article' then ArticleReference.new
@@ -269,11 +261,11 @@ class ReferencesController < ApplicationController
       end
     end
 
-    def get_reference
+    def set_reference_type
       selected_tab = params[:selected_tab]
       selected_tab = 'Unknown' if selected_tab == 'Other'
-      type = selected_tab + 'Reference'
-      reference = Reference.find(params[:id]).becomes((type).constantize)
+      type = "#{selected_tab}Reference".constantize
+      reference = @reference.becomes(type)
       reference.type = type
       reference
     end
@@ -292,13 +284,13 @@ class ReferencesController < ApplicationController
       replaced.join(" ").strip
     end
 
-    # conventional Rails method name, not to be confused with the above #get_reference
     def set_reference
       @reference = Reference.find params[:id]
     end
 
     def reference_params
       raise NotImplementedError
+      # TODO
       #params.require(:reference).permit(:....)
     end
 end

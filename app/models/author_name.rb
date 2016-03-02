@@ -1,4 +1,3 @@
-# coding: UTF-8
 class AuthorName < ActiveRecord::Base
   include UndoTracker
 
@@ -20,11 +19,9 @@ class AuthorName < ActiveRecord::Base
   end
 
   def self.import data
-    data.inject([]) do |author_names, name|
-      author_names << (
+    data.map do |name|
       all.where(name: name).find { |possible_name| possible_name.name == name } ||
-          create!(name: name, author: Author.create!)
-      )
+        create!(name: name, author: Author.create!)
     end
   end
 

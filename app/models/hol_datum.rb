@@ -1,4 +1,3 @@
-# coding: UTF-8
 class HolDatum < ActiveRecord::Base
   attr_accessible :name,
                   :lsid,
