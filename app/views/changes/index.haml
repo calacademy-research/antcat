@@ -1,8 +1,5 @@
 - @title = 'All Changes'
 - breadcrumb :all_changes
 
-- content_for :head do
-  = javascript_include_tag 'optimal-select.min'
-
 = render @changes
 = will_paginate @changes

@@ -6,17 +6,8 @@ module TooltipHelper
     # Currently all tooltips are for editors only. Do not show to non-logged in users,
     # but let's be nice and show them to all logged in users, even if they are not editors.
     return unless current_user
-    content_for :head do
-      # TODO: This isn't working. Manually added to:
-      # views/authors/edit.haml
-      # views/changes/index.haml
-      # views/references/index.haml
-      # views/taxa/edit.haml
-      # views/tooltips/_form.haml
-      # views/tooltips/index.haml
-      javascript_include_tag 'optimal-select.min'
-      javascript_include_tag 'tooltips'
-    end
+    content_for(:head) { javascript_include_tag "tooltips" }
+    content_for(:head) { javascript_include_tag "optimal-select.min" }
     content_for :head do
       "\n<!-- Tooltips are enabled on this page. -->".html_safe
     end
