@@ -50,6 +50,12 @@ module TooltipHelper
     end
   end
 
+  def toggle_tooltip_helper_tooltips_button
+    verb = session[:show_missing_tooltips] ? "Hide" : "Show"
+    link_to "#{verb} tooltips helper",
+      toggle_tooltip_helper_tooltips_path, class: "btn-normal"
+  end
+
   private
     # Only returns true if we have a tooltip *and* its key is disabled, because we
     # want to notify editors about missing tooltips and encourage them to create them.

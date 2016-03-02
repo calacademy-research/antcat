@@ -24,8 +24,8 @@ Feature: Editing tooltips
 
   Scenario: Listing all tooltips
     Given this tooltip exist
-      | key      | key_enabled | text        | scope |
-      | selector | true        | Is enabled! | test  |
+      | key      | key_enabled | text        | scope        |
+      | selector | true        | Is enabled! | widget_tests |
 
     When I go to the tooltips editing page
     Then I should see "Edit Tooltips"
@@ -34,8 +34,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Hovering a tooltip
     Given this tooltip exists
-      | key       | key_enabled | text      | scope |
-      | hardcoded | true        | A tooltip | test  |
+      | key       | key_enabled | text      | scope        |
+      | hardcoded | true        | A tooltip | widget_tests |
 
     When I go to the tooltips test page
     Then I should not see the tooltip text "A tooltip"
@@ -52,9 +52,10 @@ Feature: Editing tooltips
     Then I go to the tooltips editing page
     And I follow "New Tooltip"
     And I fill in "tooltip[key]" with "hardcoded"
-    And I check "tooltip[key_enabled]"
-    And I fill in "tooltip[scope]" with "tooltips"
+    And I fill in "tooltip[scope]" with "widget_tests"
     And I fill in "tooltip[text]" with "Text used in the tooltip"
+    And I follow "Hide/show advanced"
+    And I check "tooltip[key_enabled]"
     Then I press "Create Tooltip"
     And I wait for a bit
 
@@ -65,8 +66,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Editing a selector-based tooltip
     Given this tooltip exists
-      | key      | text      | selector | selector_enabled | scope |
-      | whatever | Typo oops | li.title | true             | test  |
+      | key      | text      | selector | selector_enabled | scope        |
+      | whatever | Typo oops | li.title | true             | widget_tests |
 
     When I go to the tooltips test page
     Then I should not see the tooltip text "Typo oops"
@@ -75,13 +76,13 @@ Feature: Editing tooltips
     Then I should see the tooltip text "Typo oops"
 
     Then I go to the tooltips editing page
-    And I follow "title"
+    And I follow "whatever"
 
     Then I fill in "tooltip[text]" with "A title"
     And I press "Update Tooltip"
-    And I wait for a bit
 
     When I go to the tooltips test page
+    And I wait for a bit
     Then I should not see the tooltip text "Typo oops"
     And I should not see the tooltip text "A title"
 
@@ -91,8 +92,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Disabling a key-based tooltip
     Given this tooltip exist
-      | key       | key_enabled | text       | scope |
-      | hardcoded | true        | Is enabled | test  |
+      | key       | key_enabled | text       | scope        |
+      | hardcoded | true        | Is enabled | widget_tests |
 
     When I go to the tooltips test page
     Then I should not see the tooltip text "Is enabled"
@@ -114,8 +115,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
-      | key      | text    | selector | selector_enabled | scope |
-      | whatever | A title | li.title | true             | test  |
+      | key      | text    | selector | selector_enabled | scope         |
+      | whatever | A title | li.title | true             | widget_tests  |
 
     When I go to the tooltips test page
     And I wait for a bit

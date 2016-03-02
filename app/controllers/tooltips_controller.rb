@@ -11,13 +11,13 @@ class TooltipsController < ApplicationController
   end
 
   def show
-    @referral=request.referer
+    @referral = request.referer
   end
 
   def new
     @tooltip = Tooltip.new(params.permit(:selector))
     @tooltip[:scope] = get_page_from_url(request.referer)
-    @referral=request.referer
+    @referral = request.referer
   end
 
   def edit
@@ -38,12 +38,8 @@ class TooltipsController < ApplicationController
   end
 
   def update
-
-
     respond_to do |format|
-
       if @tooltip.update_attributes tooltip_params
-
         if params[:referral] && params[:referral].length > 0
           redirect_to params[:referral]
           return
@@ -56,8 +52,6 @@ class TooltipsController < ApplicationController
         format.json { respond_with_bip(@tooltip) }
       end
     end
-
-
   end
 
   def destroy
@@ -68,16 +62,14 @@ class TooltipsController < ApplicationController
     end
   end
 
-  def enabled_selectors  # TODO improve this
+  def enabled_selectors
     scope = get_page_from_url(request.referer)
     json = Tooltip.enabled_selectors.where(scope: scope).pluck(:selector, :text, :id)
-    # json=[]
-    render json: json # more "json" than json..
+    render json: json
   end
 
   def render_missing_tooltips
-    render json: {:show_missing_tooltips => session[:show_missing_tooltips]}
-    #render json: {:show_missing_tooltips => current_user.is_superadmin?}
+    render json: { show_missing_tooltips: session[:show_missing_tooltips] }
   end
 
   def toggle_tooltip_helper
@@ -90,23 +82,21 @@ class TooltipsController < ApplicationController
   end
 
   private
-  def get_page_from_url url
-    unless url
-      return nil
+    def get_page_from_url url
+      return unless url
+
+      doomed = url.clone
+      doomed.slice! root_url
+      doomed.split('/').first
     end
-    doomed = url.clone
-    doomed.slice! root_url
-    return doomed.split('/').first
 
-  end
-  def set_tooltip
-    @tooltip = Tooltip.find params[:id]
-  end
+    def set_tooltip
+      @tooltip = Tooltip.find params[:id]
+    end
 
-  def tooltip_params
-    params.require(:tooltip).permit(
+    def tooltip_params
+      params.require(:tooltip).permit(
         :key, :scope, :text, :key_enabled, :selector, :selector_enabled)
-  end
-
+    end
 
 end

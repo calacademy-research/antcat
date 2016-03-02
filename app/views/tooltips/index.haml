@@ -10,21 +10,21 @@
 %table#tooltips
   %thead
     %tr
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Key
         =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Page scope
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Key enabled?
         =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Tooltip text
         =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Selector
         =tooltip_icon :selector, scope: :tooltips, disable_edit_link: false
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Selector enabled?
         =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
   %tbody
@@ -44,9 +44,5 @@
 %br/
 
 =link_to 'New Tooltip', new_tooltip_path, class: "btn-new"
+=toggle_tooltip_helper_tooltips_button
 =link_to 'Help', page_path('help/editing_tooltips')
-
--if session[:show_missing_tooltips]
-  =link_to 'Hide tooltips helper', tooltips_path+'/toggle_tooltip_helper'
--else
-  =link_to 'Show tooltips helper', tooltips_path+'/toggle_tooltip_helper'
