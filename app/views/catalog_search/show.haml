@@ -6,9 +6,9 @@
   =javascript_include_tag 'advanced_searches'
 
 .search_section-test-hook
-  =render 'search_section'
+  =render 'advanced_search_form'
 
 -if @taxa
   %hr
   .results_section-test-hook
-    =render 'results_section', taxa: @taxa, is_author_search: @is_author_search
+    =render 'results', taxa: @taxa, is_author_search: @is_author_search

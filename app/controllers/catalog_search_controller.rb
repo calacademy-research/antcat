@@ -1,4 +1,4 @@
-class AdvancedSearchesController < ApplicationController
+class CatalogSearchController < ApplicationController
   def show
     if params[:rank].present?
       get_taxa

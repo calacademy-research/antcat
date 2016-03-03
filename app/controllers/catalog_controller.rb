@@ -12,7 +12,7 @@ class CatalogController < ApplicationController
   def show
   end
 
-  def search
+  def quick_search
     st = params[:st] || "bw"
     @search_results = get_search_results(params[:qq], st)
 
@@ -23,6 +23,7 @@ class CatalogController < ApplicationController
     end
 
     @search_selector_value = search_selector_value_in_english(st)
+    render "search"
   end
 
   def options

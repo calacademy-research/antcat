@@ -39,13 +39,13 @@
               .button-group.desktop-toggler-parent
                 %a.button#desktop-toggler Hide Taxon Browser
           %li
-            =form_tag catalog_search_path, method: :get do
+            =form_tag catalog_quick_search_path, method: :get do
               .input-group
                 =text_field_tag 'qq', params[:qq], class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook', placeholder: "Search Catalog"
                 .input-group-button
                   =button_tag type: 'submit', class: 'button has-spinner' do
                     =spinner_icon + "Go"
-          %li.centered-text=link_to('Advanced<br> Search'.html_safe, advanced_search_path, class: "without-top-padding")
+          %li.centered-text=link_to('Advanced<br> Search'.html_safe, catalog_search_path, class: "without-top-padding")
 
 #mobile-only.hide-for-large
   .top-bar
@@ -80,10 +80,10 @@
         %li=link_to('Login', new_user_session_path)
 
       %li=mail_to('sblum@calacademy.org', 'Feedback', subject: 'AntCat feedback', body: feedback_body)
-      %li=link_to('Advanced Search', advanced_search_path)
+      %li=link_to('Advanced Search', catalog_search_path)
 
       %li.has-form
-        =form_tag catalog_search_path, method: :get do
+        =form_tag catalog_quick_search_path, method: :get do
           .row.collapse
             .small-10.columns
               =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog"

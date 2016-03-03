@@ -25,7 +25,7 @@ module NavigationHelpers
       '/missing_references'
 
     when /^the advanced search page$/
-      advanced_search_path
+      catalog_search_path
 
     when /^the catalog (entry|page) for "([^"]*)"$/
       taxon = Taxon.find_by_name $2
