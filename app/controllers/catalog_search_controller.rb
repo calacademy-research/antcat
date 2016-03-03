@@ -6,17 +6,12 @@ class CatalogSearchController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { send_author_name_picklist }
       format.html { send_html }
       format.text { send_text }
     end
   end
 
   private
-    def send_author_name_picklist
-      render json: AuthorName.search(params[:term])
-    end
-
     def send_html
       @taxa = @taxa.paginate(page: params[:page]) if @taxa
     end
