@@ -16,14 +16,18 @@
 
   .row
     .medium-10.columns
-      =label_tag :reference_author_names_string, 'Authors'
+      =label_tag :reference_author_names_string do
+        Authors
+        =tooltip_icon :authors, scope: :references
       =f.text_field :author_names_string
     .medium-2.columns
       =label_tag :reference_citation_year, 'Year'
       =f.text_field :citation_year
   .row
     .medium-12.columns
-      =label_tag :reference_title, 'Title'
+      =label_tag :reference_title do
+        Title
+        =tooltip_icon "references.title", scope: :references
       =f.text_area :title, rows: 2
 
   .row
@@ -40,22 +44,38 @@
             %a{href: "#tabs-unknown"}Other
 
         #tabs-article
-          =label_tag :reference_journal_name, 'Journal'
+          =label_tag :reference_journal_name do
+            Journal
+            =tooltip_icon "references.journal_name", scope: :references
           =f.text_field :journal_name, value: reference.journal_name
-          =label_tag :reference_series_volume_issue, 'Series volume issue'
+
+          =label_tag :reference_series_volume_issue do
+            Series volume issue
+            =tooltip_icon "references.series_volume_issue", scope: :references
           =f.text_field :series_volume_issue
-          =label_tag :article_pagination, 'Pagination'
+
+          =label_tag :article_pagination do
+            Pagination
+            =tooltip_icon "references.journal_pagination", scope: :references
           =text_field_tag :article_pagination, reference.pagination
 
         #tabs-book
-          =label_tag :reference_publisher_string, 'Publisher'
+          =label_tag :reference_publisher_string do
+            Publisher
+            =tooltip_icon "references.publisher", scope: :references
           =f.text_field :publisher_string, value: reference.publisher_string
-          =label_tag :book_pagination, 'Pagination'
+
+          =label_tag :book_pagination do
+            Pagination
+            =tooltip_icon "references.book_pagination", scope: :references
           =text_field_tag :book_pagination, reference.pagination
 
         #tabs-nested
-          =label_tag :reference_pages_in, 'Pages in'
+          =label_tag :reference_pages_in do
+            Pages in
+            =tooltip_icon "references.nested_pagination", scope: :references
           =f.text_field :pages_in
+
           =label_tag :nesting_reference_id, 'nesting_reference ID'
           =f.text_field :nesting_reference_id
           -#%p.help
@@ -67,22 +87,35 @@
   .row
     .medium-12.columns
       =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
-        =label_tag :document_url, 'Source URL'
+        =label_tag :document_url do
+          Source URL
+          =tooltip_icon "references.source.url", scope: :references
         =document_form.text_field :url
-        =label_tag :document_public, 'Internal but public?'
+
+        =label_tag :document_public do
+          Make PDF public?
+          =tooltip_icon "references.pdf.public", scope: :references
         =document_form.check_box :public
-        =label_tag :document_file, 'Upload'
+
+        =label_tag :document_file do
+          Upload
+          =tooltip_icon "references.pdf.upload", scope: :references
         =document_form.file_field :file
 
   .row
     .medium-12.columns
       =label_tag :reference_public_notes, 'Public notes'
       =f.text_area :public_notes, rows: 2
-      =label_tag :reference_editor_notes, 'Editor notes'
+
+      =label_tag :reference_editor_notes do
+        Editor notes
+        =tooltip_icon "EdNote", scope: :references
       =f.text_area :editor_notes, rows: 2
   .row
     .medium-12.columns
-      =label_tag :reference_taxonomic_notes, 'Taxonomic notes'
+      =label_tag :reference_taxonomic_notes do
+        Taxonomic notes
+        =tooltip_icon "TaxNote", scope: :references
       =f.text_area :taxonomic_notes, rows: 2
 
   .row
@@ -90,13 +123,17 @@
       =label_tag :reference_cite_code, 'Cite code'
       =f.text_field :cite_code
     .medium-3.columns
-      =label_tag :reference_doi, 'DOI'
+      =label_tag :reference_doi do
+        DOI
+        =tooltip_icon "references.doi", scope: :references
       =f.text_field :doi
     .medium-3.columns
       =label_tag :reference_possess, 'Possess'
       =f.text_field :possess
     .medium-3.columns
-      =label_tag :reference_date, 'Date'
+      =label_tag :reference_date do
+        Date
+        =tooltip_icon "references.date", scope: :references
       =f.text_field :date
 
   .row

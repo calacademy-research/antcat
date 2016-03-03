@@ -7,7 +7,10 @@
         = protonym_form.fields_for :name do |name_form|
           - if name_form.object.new_record?
             = hidden_field_tag 'taxon[protonym_attributes][name_attributes][id]'
-          %td.caption.top_aligned= name_form.label :name
+          %td.caption.top_aligned
+            =name_form.label :name do
+              Name
+              =tooltip_icon "protonym", scope: :taxa
           %td
             #protonym_name_field
               = render 'name_fields/panel', name_string: taxon.protonym.name.try(:name)
@@ -22,7 +25,10 @@
 
       %tr
         = protonym_form.fields_for :authorship do |authorship_form|
-          %td.caption.top_aligned= authorship_form.label :reference, 'Authorship'
+          %td.caption.top_aligned
+            =authorship_form.label :reference do
+              Authorship
+              =tooltip_icon "authorship", scope: :taxa
           %td
             #authorship_field
               = render 'reference_fields/show', references: nil, reference: authorship_form.object.reference
@@ -30,15 +36,24 @@
                 id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
 
           %tr
-            %td.caption= authorship_form.label :pages
+            %td.caption
+              =authorship_form.label :pages do
+                Pages
+                =tooltip_icon "pages", scope: :taxa
             %td.pages= authorship_form.text_field :pages
 
           %tr
-            %td.caption= authorship_form.label :forms
+            %td.caption
+              =authorship_form.label :forms do
+                Forms
+                =tooltip_icon "forms", scope: :taxa
             %td.forms= authorship_form.text_field :forms
 
           %tr
-            %td.caption= protonym_form.label :locality
+            %td.caption
+              =protonym_form.label :locality do
+                Locality
+                =tooltip_icon "locality", scope: :taxa
             %td.locality= protonym_form.text_field :locality
 
           %tr

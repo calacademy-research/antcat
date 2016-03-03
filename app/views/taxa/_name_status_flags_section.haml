@@ -17,8 +17,10 @@
         = form.label :incertae_sedis_in
         = form.select :incertae_sedis_in, [['(none)', nil], 'family', 'subfamily', 'tribe', 'genus']
 
-        = form.check_box :fossil
-        = form.label :fossil
+        =form.check_box :fossil
+        =form.label :fossil do
+          Fossil
+          =tooltip_icon "fossil", scope: :taxa
 
         = form.check_box :nomen_nudum
         = form.label :nomen_nudum, 'Nomen nudum'
@@ -29,8 +31,10 @@
         = form.check_box :ichnotaxon
         = form.label :ichnotaxon, 'Ichnotaxon'
 
-        = form.check_box :hong
-        = form.label :hong
+        =form.check_box :hong
+        =form.label :hong do
+          Hong
+          =tooltip_icon "hong", scope: :taxa
 
     %tr.headline_notes_taxt_row
       %td.caption.top_aligned= form.label :headline_notes_taxt, 'Notes'
