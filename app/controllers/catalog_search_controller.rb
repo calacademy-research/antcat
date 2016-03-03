@@ -6,21 +6,18 @@ class CatalogSearchController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { send_html }
-      format.text { send_text }
+      format.html do
+        @taxa = @taxa.paginate(page: params[:page])
+      end
+
+      format.text do
+        text = Exporters::AdvancedSearchExporter.new.export @taxa
+        send_data text, filename: @filename, type: 'text/plain'
+      end
     end
   end
 
   private
-    def send_html
-      @taxa = @taxa.paginate(page: params[:page]) if @taxa
-    end
-
-    def send_text
-      text = Exporters::AdvancedSearchExporter.new.export @taxa
-      send_data text, filename: @filename, type: 'text/plain'
-    end
-
     def get_taxa
       @taxa = Taxa::Search.advanced_search(
         author_name:              params[:author_name],
