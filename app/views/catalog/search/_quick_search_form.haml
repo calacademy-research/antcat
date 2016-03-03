@@ -6,5 +6,5 @@
       .input-group
         =text_field_tag "qq", params[:qq], class: "input-group-field"
         .input-group-button
-          =button_tag type: "submit", class: "button has-spinner" do
+          =button_tag type: "submit", name: nil, class: "button has-spinner" do
             =spinner_icon + "Go"

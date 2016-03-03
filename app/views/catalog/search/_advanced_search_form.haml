@@ -54,7 +54,7 @@
       =check_box_tag :valid_only
       =label_tag 'Valid only?'
 
-      =button_tag type: 'submit', class: 'btn-search has-spinner' do
+      =button_tag type: 'submit', name: nil, class: 'btn-search has-spinner' do
         =spinner_icon + "Go"
 
       -if @taxa.present? && !@is_quick_search
