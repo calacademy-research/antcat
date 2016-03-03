@@ -24,16 +24,14 @@ AntCat::Application.routes.draw do
   resources :merge_authors, only: [:index, :merge]
   post '/merge_authors/merge', to: 'merge_authors#merge'
 
+  namespace :catalog do
+    get :options
+    get "search", to: "search#index"
+    get "search/quick_search", to: "search#quick_search", as: "quick_search"
+  end
   # TODO remove?
   get 'catalog/index/:id' => 'catalog#show' # for compatibility
   get 'catalog/:id' => 'catalog#show', as: :catalog
-  namespace :catalog do
-    get :options
-  end
-
-  resource :catalog_search, only: [:show], controller: :catalog_search do
-    get :quick_search
-  end
 
   get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
   resources :journals, only: [:index, :show, :new, :create, :edit, :update] do
