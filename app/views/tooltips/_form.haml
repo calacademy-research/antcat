@@ -15,10 +15,7 @@
     .medium-6.columns
       =f.label :key
       =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
-      -if action_name == "new" # Works, but not very pretty
-        =f.text_field :key, value: (params[:key].presence || "") # Pre-populate if requested.
-      -else
-        =f.text_field :key
+      =f.text_field :key
 
       =f.label :scope
       =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
@@ -43,11 +40,11 @@
         %p
           =f.label :selector_enabled
           =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
-          =f.check_box :selector_enabled, checked: true
+          =f.check_box :selector_enabled
 
           =f.label :key_enabled
           =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-          =f.check_box :key_enabled, checked: true
+          =f.check_box :key_enabled
 
   .row
     .medium-6.columns

@@ -16,6 +16,8 @@ class TooltipsController < ApplicationController
 
   def new
     @tooltip = Tooltip.new(params.permit(:selector))
+    @tooltip.selector_enabled = true
+    @tooltip.key = params[:key]
     @tooltip[:scope] = get_page_from_url(request.referer)
     @referral = request.referer
   end
