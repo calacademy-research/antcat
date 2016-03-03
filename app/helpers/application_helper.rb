@@ -105,4 +105,13 @@ module ApplicationHelper
     end
   end
 
+  # dev-specific CSS. Disable by suffixing the url with ?prod=pizza,
+  # or toggle on/off from the Editor's Panel.
+  def dev_css
+    return unless Rails.env.development?
+
+    unless params[:prod] || session[:disable_dev_css]
+      stylesheet_link_tag "dev_env"
+    end
+  end
 end
