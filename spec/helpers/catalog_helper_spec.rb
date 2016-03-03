@@ -35,7 +35,7 @@ describe CatalogHelper do
     describe "#taxon_label_span" do
       it "should create a span based on the type of the taxon and its status" do
         result = helper.taxon_label_span(taxon)
-        expect(result).to eq('<span class="genus name taxon valid">Atta</span>')
+        expect(result).to eq('<span class="genus name taxon">Atta</span>')
         expect(result).to be_html_safe
       end
     end
