@@ -12,19 +12,6 @@ class CatalogController < ApplicationController
   def show
   end
 
-  def quick_search
-    @search_results = Taxa::Search.find_name(params[:qq], params[:search_type])
-      .paginate(page: params[:page])
-
-    # Single match --> skip search results and just show the match
-    if @search_results && @search_results.count == 1
-      taxon = @search_results.first
-      return redirect_to catalog_path(taxon)
-    end
-
-    render "search"
-  end
-
   def options
     # params[:valid_only] is only for making the URL more intuitive
     session[:show_valid_only] = !session[:show_valid_only]

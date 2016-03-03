@@ -18,6 +18,19 @@ class CatalogSearchController < ApplicationController
     end
   end
 
+  def quick_search
+    @is_quick_search = true
+    @taxa = Taxa::Search.find_name(params[:qq], params[:search_type])
+      .paginate(page: params[:page])
+
+    # Single match --> skip search results and just show the match
+    if @taxa && @taxa.count == 1
+      return redirect_to catalog_path(taxon = @taxa.first)
+    end
+
+    render "show"
+  end
+
   private
     def get_taxa
       Taxa::Search.advanced_search(
