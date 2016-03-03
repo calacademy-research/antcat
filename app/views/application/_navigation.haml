@@ -42,6 +42,7 @@
             =form_tag quick_search_catalog_search_path, method: :get do
               .input-group
                 =text_field_tag 'qq', params[:qq], class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook', placeholder: "Search Catalog"
+                =hidden_field_tag :im_feeling_lucky, true
                 .input-group-button
                   =button_tag type: 'submit', class: 'button has-spinner' do
                     =spinner_icon + "Go"
@@ -87,6 +88,7 @@
           .row.collapse
             .small-10.columns
               =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog"
+              =hidden_field_tag :im_feeling_lucky, true
             .small-2.columns
               -# TODO enter key not working
               =button_tag "Go", type: "submit", class: "button expanded"

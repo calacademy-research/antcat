@@ -24,8 +24,8 @@ class CatalogSearchController < ApplicationController
       .paginate(page: params[:page])
 
     # Single match --> skip search results and just show the match
-    if @taxa && @taxa.count == 1
-      return redirect_to catalog_path(taxon = @taxa.first)
+    if params[:im_feeling_lucky] && @taxa && @taxa.count == 1
+      return redirect_to catalog_path(@taxa.first, qq: params[:qq])
     end
 
     render "show"
