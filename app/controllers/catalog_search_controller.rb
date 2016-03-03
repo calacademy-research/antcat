@@ -2,9 +2,8 @@ class CatalogSearchController < ApplicationController
   def show
     return unless params[:rank].present? # just render the template
 
-    @taxa = get_taxa
+    @taxa = advanced_search_taxa
     @is_author_search = is_author_search?
-    @filename = filename
 
     respond_to do |format|
       format.html do
@@ -13,26 +12,26 @@ class CatalogSearchController < ApplicationController
 
       format.text do
         text = Exporters::AdvancedSearchExporter.new.export @taxa
-        send_data text, filename: @filename, type: 'text/plain'
+        send_data text, filename: download_filename, type: 'text/plain'
       end
     end
   end
 
   def quick_search
-    @is_quick_search = true
     @taxa = Taxa::Search.find_name(params[:qq], params[:search_type])
       .paginate(page: params[:page])
 
-    # Single match --> skip search results and just show the match
-    if params[:im_feeling_lucky] && @taxa && @taxa.count == 1
+    # Single match --> redirect
+    if params[:im_feeling_lucky] && @taxa.count == 1
       return redirect_to catalog_path(@taxa.first, qq: params[:qq])
     end
 
+    @is_quick_search = true
     render "show"
   end
 
   private
-    def get_taxa
+    def advanced_search_taxa
       Taxa::Search.advanced_search(
         author_name:              params[:author_name],
         rank:                     params[:rank],
@@ -55,7 +54,7 @@ class CatalogSearchController < ApplicationController
       AuthorName.find_by_name(name).nil?
     end
 
-    def filename
+    def download_filename
       "#{params[:author_name]}-#{params[:rank]}-#{params[:year]}-#{params[:locality]}-#{params[:valid_only]}".parameterize + '.txt'
     end
 end

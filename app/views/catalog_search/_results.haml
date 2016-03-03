@@ -1,14 +1,12 @@
 -if taxa.empty?
-  -if is_author_search
-    No results found. If you're choosing an author, make sure you pick the name from the dropdown list.
-  -else
-    No results found.
+  .alert.callout
+    -if is_author_search
+      No results found. If you're choosing an author, make sure you pick the name from the dropdown list.
+    -else
+      No results found.
 -else
-  ="#{pluralize_with_delimiters(@taxa.count, 'result')}"
-  -unless @is_quick_search
-    =link_to 'Download (advanced search only)', "/catalog_search.txt?#{request.parameters.to_param}", class: "btn-download"
-
   %table
+    %caption=pluralize_with_delimiters(taxa.count, 'result')
     -taxa.each do |taxon|
       =render 'result', taxon: taxon
 

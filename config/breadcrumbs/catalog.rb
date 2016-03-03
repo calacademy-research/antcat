@@ -20,8 +20,3 @@ crumb :catalog_search do
   link "Search"
   parent :catalog
 end
-
-crumb :catalog_advanced_search do
-  link "Advanced Search"
-  parent :catalog
-end

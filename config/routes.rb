@@ -30,7 +30,7 @@ AntCat::Application.routes.draw do
   namespace :catalog do
     get :options
   end
-  #get 'catalog/quick_search', to: "catalog#quick_search"
+
   resource :catalog_search, only: [:show], controller: :catalog_search do
     get :quick_search
   end

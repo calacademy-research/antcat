@@ -51,7 +51,11 @@
 
   .row
     .medium-12.columns
+      =check_box_tag :valid_only
+      =label_tag 'Valid only?'
+
       =button_tag type: 'submit', class: 'btn-search has-spinner' do
         =spinner_icon + "Go"
-      =label_tag 'Valid only?'
-      =check_box_tag :valid_only
+
+      -if @taxa.present? && !@is_quick_search
+        =link_to 'Download (advanced search only)', "/catalog_search.txt?#{request.parameters.to_param}", class: "btn-download"
