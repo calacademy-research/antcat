@@ -1,0 +1,10 @@
+=form_tag catalog_quick_search_path, method: :get do
+  .row
+    .medium-3.columns
+      =search_selector params[:st]
+    .medium-3.columns.end
+      .input-group
+        =text_field_tag "qq", params[:qq], class: "input-group-field"
+        .input-group-button
+          =button_tag type: "submit", class: "button has-spinner" do
+            =spinner_icon + "Go"
