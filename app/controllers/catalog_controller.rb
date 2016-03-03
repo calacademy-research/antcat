@@ -13,8 +13,8 @@ class CatalogController < ApplicationController
   end
 
   def quick_search
-    st = params[:st] || "bw"
-    @search_results = get_search_results(params[:qq], st)
+    @search_results = Taxa::Search.find_name(params[:qq], params[:search_type])
+      .paginate(page: params[:page])
 
     # Single match --> skip search results and just show the match
     if @search_results && @search_results.count == 1
@@ -22,7 +22,6 @@ class CatalogController < ApplicationController
       return redirect_to catalog_path(taxon)
     end
 
-    @search_selector_value = search_selector_value_in_english(st)
     render "search"
   end
 
@@ -89,15 +88,4 @@ class CatalogController < ApplicationController
       @display_taxon_toggler = true
     end
 
-    # TODO rename all occurrences of "st" ("starts with")
-    def get_search_results qq, st = 'bw'
-      return unless qq.present?
-      search_selector_value = search_selector_value_in_english st
-
-      Taxa::Search.find_name(qq, search_selector_value)
-    end
-
-    def search_selector_value_in_english value
-      { 'm' => 'matching', 'bw' => 'beginning with', 'c' => 'containing' }[value]
-    end
 end
