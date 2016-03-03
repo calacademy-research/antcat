@@ -32,9 +32,8 @@
         =render "breadcrumbs"
         =render "subnavigation"
 
-        =render "shared/flash_messages"
-
         #content
+          =render "shared/flash_messages"
           .row
             .small-12.columns
               = content_for?(:page_contents) ? yield(:page_contents) : yield
