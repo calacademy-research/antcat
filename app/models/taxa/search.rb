@@ -1,6 +1,6 @@
 class Taxa::Search
 
-  def self.find_name name, search_type
+  def self.find_name name, search_type = nil
     return Taxon.none if name.blank?
 
     search_type ||= "beginning_with"

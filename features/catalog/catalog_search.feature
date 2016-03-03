@@ -17,7 +17,7 @@ Feature: Searching the catalog
     When I go to the catalog
     And I fill in the catalog search box with "zxxz"
     And I press "Go" by the catalog search box
-    Then I should see "No results found for name beginning with 'zxxz'" in the search results
+    Then I should see "No results found."
 
   Scenario: Searching when only one result
     When I go to the catalog
@@ -35,12 +35,14 @@ Feature: Searching the catalog
     And I should see "Dolichoderus" in the search results`
 
   Scenario: Searching for a 'containing' match
-    Given PENDING: TODO restore
     When I go to the catalog
     And I fill in the catalog search box with "rup"
-    And I select "containing" from "st"
     And I press "Go" by the catalog search box
-    Then I should see "abruptus history"
+    Then I should see "No results"
+
+    When I select "Containing" from "search_type"
+    And I press "Go" in "#quick_search"
+    Then I should see "Dolichoderus (Subdolichoderus) abruptus"
 
   Scenario: Following a search result
     When I go to the catalog
@@ -69,13 +71,6 @@ Feature: Searching the catalog
     And I fill in the catalog search box with "Dolichoderini"
     And I press "Go" by the catalog search box
     Then I should see "Dolichoderini" in the tribes index
-
-  Scenario: Finding a subgenus when subgenera are hidden
-    Given PENDING probably remove
-    When I go to the catalog
-    And I fill in the catalog search box with "Subdolichoderus"
-    And I press "Go" by the catalog search box
-    Then "Subdolichoderus" should be selected in the subgenera index
 
   Scenario: Searching with spaces at beginning and/or end of query string
     When I go to the catalog

@@ -23,11 +23,11 @@ module HtmlSelectorsHelpers
         "#taxon_description"
       when /the change history/
         "#taxon_description .change_history"
-      when /the search results/
-        "#search_results"
 
+      when /the search results/
+        "table"
       when /the search section/
-        ".search_section-test-hook"
+        "#advanced_search"
 
       when /the author panel/, /the first author panel/
         ".author_panel:first-of-type"

@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe CatalogController do
 
-  describe "Routing" do
-    it { should route(:get, "/catalog/search").to(action: :search) }
-  end
-
   it { should use_before_action(:handle_family_not_found) }
   it { should use_before_action(:set_taxon) }
 
