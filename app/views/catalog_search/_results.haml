@@ -4,7 +4,7 @@
   -else
     No results found.
 -else
-  ="#{pluralize_with_delimiters(@taxa_count, 'result')}"
+  ="#{pluralize_with_delimiters(@taxa.count, 'result')}"
   =link_to 'Download', "/advanced_search.txt?#{request.parameters.to_param}", class: "btn-download"
 
   %table

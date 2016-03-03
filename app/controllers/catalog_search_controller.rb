@@ -1,9 +1,10 @@
 class CatalogSearchController < ApplicationController
   def show
-    if params[:rank].present?
-      get_taxa
-      set_is_author_search
-    end
+    return unless params[:rank].present? # just render the template
+
+    @taxa = get_taxa
+    @is_author_search = is_author_search?
+    @filename = filename
 
     respond_to do |format|
       format.html do
@@ -19,7 +20,7 @@ class CatalogSearchController < ApplicationController
 
   private
     def get_taxa
-      @taxa = Taxa::Search.advanced_search(
+      Taxa::Search.advanced_search(
         author_name:              params[:author_name],
         rank:                     params[:rank],
         year:                     params[:year],
@@ -31,16 +32,17 @@ class CatalogSearchController < ApplicationController
         biogeographic_region:     params[:biogeographic_region],
         genus:                    params[:genus],
         forms:                    params[:forms])
-
-      @taxa_count = @taxa.count
-      @filename = "#{params[:author_name]}-#{params[:rank]}-#{params[:year]}-#{params[:locality]}-#{params[:valid_only]}".parameterize + '.txt'
     end
 
-    def set_is_author_search
-      @is_author_search = params[:author_name].present? && no_matching_authors?(params[:author_name])
+    def is_author_search?
+      params[:author_name].present? && no_matching_authors?(params[:author_name])
     end
 
     def no_matching_authors? name
       AuthorName.find_by_name(name).nil?
+    end
+
+    def filename
+      "#{params[:author_name]}-#{params[:rank]}-#{params[:year]}-#{params[:locality]}-#{params[:valid_only]}".parameterize + '.txt'
     end
 end
