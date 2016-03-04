@@ -1,11 +1,10 @@
-// TODO DRY colors
-$brand-primary: #479F03
+@import "colors"
 
 #tooltips
   border-collapse: collapse
   thead
     text-align: left
-    background: $brand-primary
+    background: $color_green
     color: #fff
   td, th
     padding: 5px 10px
@@ -13,7 +12,7 @@ $brand-primary: #479F03
     max-width: 250px
   tr.fake_subheader // TODO remove obvious hack
     td
-      background: lighten(desaturate($brand-primary, 10%), 10%)
+      background: $color_light_green
     h6
       font-weight: bold
       padding: 0

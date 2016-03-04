@@ -1,3 +1,5 @@
+@import "colors"
+
 @import "font-awesome"
 @import "jquery-ui/core"
 @import "jquery-ui/theme"
@@ -88,13 +90,10 @@ caption
     width: 100%
     display: inline-block
 
-// TODO DRY
-$brand-primary: #479F03
-
 #breadcrumbs
   padding: 0.4rem 1rem
   color: #fff
-  background: $brand-primary
+  background: $color_green
 
   a
     color: #fff
@@ -106,7 +105,7 @@ $brand-primary: #479F03
 #subnavigation
   padding: 0.4rem 1rem
   color: #fff
-  background: lighten(desaturate($brand-primary, 10%), 10%)
+  background: $color_light_green
 
   a
     color: #fff
