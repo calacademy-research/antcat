@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  before_filter :save_location
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   delegate :can_edit?, :is_superadmin?, :can_review_changes?,
@@ -7,6 +8,10 @@ class ApplicationController < ActionController::Base
 
   helper_method :user_can_edit?, :user_is_superadmin?,
     :user_can_review_changes?, :user_can_approve_changes?
+
+  def save_location
+    session[:user_return_to] = request.url unless request.url =~ %r{/users/}
+  end
 
   def authenticate_editor
     authenticate_user! && user_can_edit?
