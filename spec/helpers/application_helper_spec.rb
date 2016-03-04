@@ -67,12 +67,4 @@ describe ApplicationHelper do
     end
   end
 
-  describe "bold" do
-    it "should bold" do
-      string = helper.embolden 'Atta'
-      expect(string).to eq '<b>Atta</b>'
-      expect(string).to be_html_safe
-    end
-  end
-
 end

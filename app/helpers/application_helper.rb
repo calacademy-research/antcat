@@ -51,10 +51,6 @@ module ApplicationHelper
     string.html_safe
   end
 
-  def embolden string
-    content_tag :b, string
-  end
-
   def format_time_ago time
     return unless time
     content_tag :span, "#{time_ago_in_words time} ago", title: time
