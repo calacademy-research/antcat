@@ -62,7 +62,6 @@ class TaxonDecorator::Header
           if taxon.kind_of? Species
             string << header_link(taxon, taxon.name.epithet_html.html_safe)
           else
-            taxon.kind_of? Subspecies
             species = taxon.species
             if species
               string << header_link(species, species.name.epithet_html.html_safe)

@@ -87,11 +87,10 @@ class TaxonDecorator::Statistics
         count_and_status = number_with_delimiter count
       end
 
-      string = count_and_status
       if status == 'valid'
         # we must first singularize because rank may already be pluralized
-        string << " #{rank.to_s.singularize.pluralize(count)}"
+        count_and_status << " #{rank.to_s.singularize.pluralize(count)}"
       end
-      string
+      count_and_status
     end
 end

@@ -8,23 +8,22 @@
   = javascript_include_tag  'widget_tests/reference_field_test'
   = stylesheet_link_tag 'widgets/reference_picker'
 
-- content_for :page_contents do
-  %form{id: 'taxon_form', class: 'antcat_form ui-corner-all ui-widget-content ui-widget'}
-    %table
-      %col{:width => '109px'}
-      %col{:width => '*'}
+%form#taxon_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget
+  %table
+    %col{:width => '109px'}
+    %col{:width => '*'}
 
-      %tr
-        %td.authorship.caption.top_align= label_tag 'Authorship'
-        %td
-          #authorship_field
-            = render 'reference_fields/show', references: @references, reference: @reference
+    %tr
+      %td.authorship.caption.top_align= label_tag 'Authorship'
+      %td
+        #authorship_field
+          = render 'reference_fields/show', references: @references, reference: @reference
 
-      %tr
-        %td.caption.top_align= label_tag 'Reference ID'
-        %td= text_field_tag 'authorship_value', '', disabled: true
+    %tr
+      %td.caption.top_align= label_tag 'Reference ID'
+      %td= text_field_tag 'authorship_value', '', disabled: true
 
-      %tr.buttons
-        %td.buttons{:colspan => 4}
-          %button.submit.btn-save  Save
-          %button.cancel.btn-cancel Cancel
+    %tr.buttons
+      %td.buttons{:colspan => 4}
+        %button.submit.btn-save  Save
+        %button.cancel.btn-cancel Cancel

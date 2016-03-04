@@ -86,29 +86,24 @@ class TaxonDecorator::Headline
 
     def headline_biogeographic_region
       return '' if @taxon.biogeographic_region.blank?
-      string =  ''
-      periodized_string = add_period_if_necessary @taxon.biogeographic_region
-      string << periodized_string
+      add_period_if_necessary(@taxon.biogeographic_region)
     end
 
     def headline_verbatim_type_locality
       return '' if @taxon.verbatim_type_locality.blank?
       string =  '"'
-      periodized_string = add_period_if_necessary @taxon.verbatim_type_locality
-      string << periodized_string
+      string << add_period_if_necessary(@taxon.verbatim_type_locality)
       string << '"'
     end
 
     def headline_type_specimen
       string = ''.html_safe
       if @taxon.type_specimen_repository.present?
-        periodized_string = add_period_if_necessary @taxon.type_specimen_repository
-        string << periodized_string
+        string << add_period_if_necessary(@taxon.type_specimen_repository)
       end
       if @taxon.type_specimen_code.present?
         string << ' ' unless string.empty?
-        periodized_string = add_period_if_necessary @taxon.type_specimen_code
-        string << periodized_string
+        string << add_period_if_necessary(@taxon.type_specimen_code)
       end
       if @taxon.type_specimen_url.present?
         string << ' ' unless string.empty?

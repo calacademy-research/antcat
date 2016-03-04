@@ -8,8 +8,11 @@ class Status
     numeric_argument = options.find { |option| option.kind_of? Numeric }
     options << :plural if numeric_argument && numeric_argument > 1 #hmm
 
-    string = (options.include?(:plural) ? @hash[:plural_label] : @hash[:label]).dup
-    string
+    if options.include?(:plural)
+      @hash[:plural_label]
+    else
+      @hash[:label]
+    end.dup
   end
 
   def self.ordered_statuses
@@ -30,34 +33,30 @@ class Status
   class << self; alias_method :[], :find end
 
   def self.options_for_select
-    statuses.reject(&:internal?).map { |status| status.option_for_select }
-  end
-
-  def internal?
-    @hash[:internal]
+    statuses.map &:option_for_select
   end
 
   def option_for_select
-    [@hash[:label], @hash[:string]]
+    [@hash[:label], @hash[:label]]
   end
 
   # TODO joe - see if we can not display "unavailable uncategorized"
   def self.statuses
     @_statuses ||= [
-      ['valid',                     'valid',                     'valid'],
-      ['synonym',                   'synonym',                   'synonyms'],
-      ['homonym',                   'homonym',                   'homonyms'],
-      ['unidentifiable',            'unidentifiable',            'unidentifiable'],
-      ['unavailable',               'unavailable',               'unavailable'],
-      ['excluded from Formicidae',  'excluded from Formicidae',  'excluded from Formicidae'],
-      ['original combination',      'original combination',      'original combinations'],
-      ['collective group name',     'collective group name',     'collective group names'],
-      ['obsolete combination',      'obsolete combination',      'obsolete combinations'],
-      ['unavailable misspelling',   'unavailable misspelling',   'unavailable misspelling'],
-      ['nonconforming synonym',     'nonconforming synonym',     'nonconforming synonym'],
-      ['unavailable uncategorized', 'unavailable uncategorized', 'unavailable uncategorized']
+      ['valid',                     'valid'],
+      ['synonym',                   'synonyms'],
+      ['homonym',                   'homonyms'],
+      ['unidentifiable',            'unidentifiable'],
+      ['unavailable',               'unavailable'],
+      ['excluded from Formicidae',  'excluded from Formicidae'],
+      ['original combination',      'original combinations'],
+      ['collective group name',     'collective group names'],
+      ['obsolete combination',      'obsolete combinations'],
+      ['unavailable misspelling',   'unavailable misspelling'],
+      ['nonconforming synonym',     'nonconforming synonym'],
+      ['unavailable uncategorized', 'unavailable uncategorized']
     ].map do |status|
-      Status.new(string: status.first, label: status.second, plural_label: status.third)
+      Status.new(label: status.first, plural_label: status.second)
     end
   end
 

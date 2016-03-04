@@ -6,7 +6,6 @@
   = javascript_include_tag  'widget_tests/reference_popup_test'
   = stylesheet_link_tag 'widgets/reference_picker'
 
-- content_for :page_contents do
-  #results
-  #popup
-    = render 'reference_popups/show', references: nil, reference: @reference
+#results
+#popup
+  =render 'reference_popups/show', references: nil, reference: @reference

@@ -6,40 +6,39 @@
   = javascript_include_tag  'widget_tests/name_field_test'
   = stylesheet_link_tag 'widgets/name_field'
 
-- content_for :page_contents do
-  #results
-  #new_or_homonym_results
+#results
+#new_or_homonym_results
 
-  #taxon_form.nested_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget
-    %table
-      %col{:width => '50px'}
-      %col{:width => '*'}
+#taxon_form.nested_form.antcat_form.ui-corner-all.ui-widget-content.ui-widget
+  %table
+    %col{:width => '50px'}
+    %col{:width => '*'}
 
-      %tr
-        %td= label_tag :name
-        %td#test_name_field
-          = render 'name_fields/panel', name_string: @name.try(:name)
-          = hidden_field_tag 'test_name_field_value', ''
+    %tr
+      %td= label_tag :name
+      %td#test_name_field
+        = render 'name_fields/panel', name_string: @name.try(:name)
+        = hidden_field_tag 'test_name_field_value', ''
 
-      %tr
-        %td= label_tag :allow_blank
-        %td#test_allow_blank_name_field
-          = render 'name_fields/panel', name_string: @name.try(:name)
-          = hidden_field_tag 'test_allow_blank_name_field_value', ''
+    %tr
+      %td= label_tag :allow_blank
+      %td#test_allow_blank_name_field
+        = render 'name_fields/panel', name_string: @name.try(:name)
+        = hidden_field_tag 'test_allow_blank_name_field_value', ''
 
-      %tr
-        %td= label_tag :new_or_homonym
-        %td#test_new_or_homonym_name_field
-          = render 'name_fields/panel', name_string: @name.try(:name)
-          = hidden_field_tag 'test_new_or_homonym_name_field_value', ''
+    %tr
+      %td= label_tag :new_or_homonym
+      %td#test_new_or_homonym_name_field
+        = render 'name_fields/panel', name_string: @name.try(:name)
+        = hidden_field_tag 'test_new_or_homonym_name_field_value', ''
 
-      %tr
-        %td= label_tag :default_name_string
-        %td#test_default_name_string_name_field
-          = render 'name_fields/panel', name_string: @name.try(:name), default_name_string: @default_name_string
-          = hidden_field_tag 'test_default_name_string_name_field', ''
+    %tr
+      %td= label_tag :default_name_string
+      %td#test_default_name_string_name_field
+        = render 'name_fields/panel', name_string: @name.try(:name), default_name_string: @default_name_string
+        = hidden_field_tag 'test_default_name_string_name_field', ''
 
-      %tr
-        %td.buttons{colspan: 4}
-          %button.submit.btn-save Save
-          %button.cancel.btn-cancel Cancel
+    %tr
+      %td.buttons{colspan: 4}
+        %button.submit.btn-save Save
+        %button.cancel.btn-cancel Cancel
