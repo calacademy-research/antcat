@@ -37,11 +37,15 @@ Feature: Using the default reference
   Scenario: Don't show the button if there's no default
     Given there is no default reference
     When I go to the reference popup widget test page
+    And I wait for a bit
     Then I should not see the default reference button
 
   Scenario: Seeing the default reference button on the taxt editor
     Given the default reference is "Ward 2010"
     When I go to the taxt editor test page
+    And I wait for a bit
+    And I wait for a bit
+    And I wait for a bit
     And I press "Ward, 2010"
     Then the taxt editor should contain the editable taxt for "Ward 2010 "
 

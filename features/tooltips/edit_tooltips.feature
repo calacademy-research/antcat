@@ -73,6 +73,10 @@ Feature: Editing tooltips
     When I go to the tooltips test page
     Then I should not see the tooltip text "Typo oops"
 
+    # Attempt to fix spurious failures
+    And I wait for a bit
+    And I wait for a bit
+    And I wait for a bit
     When I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "Typo oops"
 
@@ -121,6 +125,10 @@ Feature: Editing tooltips
       | whatever | A title | li.title | true             | widget_tests  |
 
     When I go to the tooltips test page
+    And I wait for a bit
+
+    # Attempt to fix spurious failures
+    And I wait for a bit
     And I wait for a bit
     When I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "A title"
