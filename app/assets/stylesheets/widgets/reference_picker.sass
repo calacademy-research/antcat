@@ -1,7 +1,6 @@
 @import "colors"
 
 $antcat_reference_picker_gutter_size: 20px
-$pale_green: desaturate(#98FB98, 50%) // palegreen
 
 .antcat_reference_picker
   margin-right: 10px
@@ -25,7 +24,7 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
 
   .expansion
     display: none
-    background: $pale_green
+    background: $color_pale_green
     min-height: 23px
     width: 100%
 
@@ -78,7 +77,7 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
         font-size: 12px
 
     .search_results
-      background: $pale_green
+      background: $color_pale_green
 
     .no_results_found
       padding: 2px 40px 0 26px
@@ -105,4 +104,4 @@ $pale_green: desaturate(#98FB98, 50%) // palegreen
 
   .reference_item .ui-selecting
     color: black !important
-    background-color: lighten(green, 10%)
+    background-color: $color_pale_green
