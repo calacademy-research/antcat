@@ -146,13 +146,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @make_current @template.find('.reference'), true
 
   setup_references: =>
-    @element
-      .find('.reference').reference_panel(
-          on_form_open:  @on_reference_form_open
-          on_form_close: @on_reference_form_close
-          on_form_done:  @on_reference_form_done)
-        .end()
-
     if @search_results()
       @search_results()
         .find(".reference .item_#{@id} div.display")
@@ -189,14 +182,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
     $current_contents = @current.find '> tbody > tr > td'
     $new_contents = $panel.clone()
     $current_contents.html $new_contents
-    $new_current_reference = @current.find('.reference')
-    $new_current_reference
-      .find('div.display').removeClass('ui-selected ui-selectee').end()
-      .reference_panel(
-          on_form_open: @on_reference_form_open
-          on_form_close: @on_reference_form_close
-          on_form_done: @on_reference_form_done
-          edit: edit)
+
     @element.find('div.display').bind 'click', (event) => @handle_click(event); false
     @element.find('div.display').hover(@hover, @unhover)
     @element.removeClass 'has_no_current_reference'
