@@ -1,18 +1,18 @@
+# Randomly fails.
+
 @javascript
 Feature: Using the default reference
 
   Background:
-    # Formicidae is only explicitly required by 'Default reference used for new taxon'
-    # TODO leaving this here
-    Given the Formicidae family exists
     Given I am logged in
-    And there is a genus "Atta"
     And these references exist
       | author     | title          | year | citation   |
       | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
     And I go to the references page
 
   Scenario: Default reference used for new taxon
+    Given the Formicidae family exists
+    Given there is a genus "Atta"
     When I follow "New"
     And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "Between Pacific Tides"
@@ -31,6 +31,8 @@ Feature: Using the default reference
   Scenario: Using the default reference in the reference popup
     Given the default reference is "Ward 2010"
     When I go to the reference popup widget test page
+    And I wait for a bit
+    And I wait for a bit
     And I press "Ward, 2010"
     Then the current reference should be "Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
 
@@ -43,9 +45,7 @@ Feature: Using the default reference
   Scenario: Seeing the default reference button on the taxt editor
     Given the default reference is "Ward 2010"
     When I go to the taxt editor test page
-    And I wait for a bit
-    And I wait for a bit
-    And I wait for a bit
+    And I hack the taxt editor in test env
     And I press "Ward, 2010"
     Then the taxt editor should contain the editable taxt for "Ward 2010 "
 
