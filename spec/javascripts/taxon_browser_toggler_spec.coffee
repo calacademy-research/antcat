@@ -1,4 +1,4 @@
-#= require taxon_browser_toggler
+#= require taxon_browser/taxon_browser_toggler
 #= require js.cookie
 
 fixture.preload "taxon_browser_toggler.html"

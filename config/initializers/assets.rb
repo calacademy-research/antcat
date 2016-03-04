@@ -8,6 +8,7 @@ Rails.application.config.assets.precompile += %w(*.svg *.eot *.woff *.ttf *.gif 
 Rails.application.config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif *.ico)
 
 Rails.application.config.assets.precompile += %w( *.js )
+#Rails.application.config.assets.precompile += %w( app/assets/javascripts/taxon_browser/*.js )
 
 Rails.application.config.assets.precompile += %w( active_admin.css )
 Rails.application.config.assets.precompile += %w( foundation_and_overrides.css )

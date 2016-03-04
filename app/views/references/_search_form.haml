@@ -1,5 +1,5 @@
 -content_for :head do
-  =javascript_include_tag 'references_autocompletion'
+  =javascript_include_tag 'references/references_autocompletion'
 
 =form_tag search_references_path, method: :get do
   =text_field_tag "q", params[:q], class: "typeahead", placeholder: "Search References"
