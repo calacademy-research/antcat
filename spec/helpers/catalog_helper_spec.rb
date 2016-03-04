@@ -1,20 +1,6 @@
 require 'spec_helper'
 
 describe CatalogHelper do
-
-  describe "search selector" do
-    it "should return the HTML for the selector with a default selected" do
-      expect(helper.search_selector(nil)).to eq(
-          %{<select name=\"st\" id=\"st\"><option value=\"m\">matching</option>\n<option selected=\"selected\" value=\"bw\">beginning with</option>\n<option value=\"c\">containing</option></select>}
-      )
-    end
-    it "should return the HTML for the selector with the specified one selected" do
-      expect(helper.search_selector('c')).to eq(
-          %{<select name=\"st\" id=\"st\"><option value=\"m\">matching</option>\n<option value=\"bw\">beginning with</option>\n<option selected=\"selected\" value=\"c\">containing</option></select>}
-      )
-    end
-  end
-
   describe "#taxon_browser_link" do
     it "formats" do
       taxon = FactoryGirl.create :genus

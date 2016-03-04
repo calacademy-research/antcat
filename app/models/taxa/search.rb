@@ -1,7 +1,9 @@
 class Taxa::Search
 
-  def self.find_name name, search_type = 'matching'
-    return if name.blank? || search_type.nil?
+  def self.find_name name, search_type = nil
+    return Taxon.none if name.blank?
+
+    search_type ||= "beginning_with"
 
     name = name.dup.strip
     query = Taxon.ordered_by_name
@@ -10,7 +12,7 @@ class Taxa::Search
     query = case search_type
             when 'matching'
               query.where(["names.#{column} = ?", name])
-            when 'beginning with'
+            when 'beginning_with'
               query.where(["names.#{column} LIKE ?", name + '%'])
             when 'containing'
               query.where(["names.#{column} LIKE ?", '%' + name + '%'])

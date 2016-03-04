@@ -43,7 +43,7 @@ describe Taxon do
       expect(Taxa::Search.find_name('Monomorium').first.name.to_s).to eq('Monomorium')
     end
     it "should return a prefix match" do
-      expect(Taxa::Search.find_name('Monomor', 'beginning with').first.name.to_s).to eq('Monomorium')
+      expect(Taxa::Search.find_name('Monomor', 'beginning_with').first.name.to_s).to eq('Monomorium')
     end
     it "should return a substring match" do
       expect(Taxa::Search.find_name('iu', 'containing').first.name.to_s).to eq('Monomorium')
@@ -59,14 +59,14 @@ describe Taxon do
       create_subgenus 'Lepto3'
       create_species 'Lepto4'
       create_subspecies 'Lepto5'
-      results = Taxa::Search.find_name 'Lepto', 'beginning with'
+      results = Taxa::Search.find_name 'Lepto', 'beginning_with'
       expect(results.size).to eq(6)
     end
     it "should sort results by name" do
       FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepti')
       FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepta')
       FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepte')
-      results = Taxa::Search.find_name 'Lept', 'beginning with'
+      results = Taxa::Search.find_name 'Lept', 'beginning_with'
       expect(results.map(&:name).map(&:to_s)).to eq(['Lepta', 'Lepte', 'Lepti'])
     end
 
@@ -76,11 +76,11 @@ describe Taxon do
         expect(results.first).to eq(@rufa)
       end
       it "should search for whole name, even when using beginning with, even with trailing space" do
-        results = Taxa::Search.find_name 'Monoceros rufa ', 'beginning with'
+        results = Taxa::Search.find_name 'Monoceros rufa ', 'beginning_with'
         expect(results.first).to eq(@rufa)
       end
       it "should search for partial species name" do
-        results = Taxa::Search.find_name 'Monoceros ruf', 'beginning with'
+        results = Taxa::Search.find_name 'Monoceros ruf', 'beginning_with'
         expect(results.first).to eq(@rufa)
       end
     end

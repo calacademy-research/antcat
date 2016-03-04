@@ -1,0 +1,25 @@
+-@title = 'Advanced Search'
+
+-breadcrumb :catalog_search
+
+-content_for :head do
+  =javascript_include_tag 'advanced_searches'
+
+-advanced_css = "is-active" unless @is_quick_search
+-quick_css = "is-active" if @is_quick_search
+
+%ul#search-tabs.tabs{"data-tabs" => ""}
+  %li.tabs-title{class: advanced_css}
+    =link_to "Advanced", "#advanced_search"
+  %li.tabs-title{class: quick_css}
+    =link_to "Quick", "#quick_search"
+
+.tabs-content{"data-tabs-content" => "search-tabs"}
+  #advanced_search.tabs-panel{class: advanced_css}
+    =render "advanced_search_form"
+
+  #quick_search.tabs-panel{class: quick_css}
+    =render "quick_search_form"
+
+-if @taxa
+  =render 'results', taxa: @taxa, is_author_search: @is_author_search

@@ -25,10 +25,10 @@ AntCat::Application.routes.draw do
   post '/merge_authors/merge', to: 'merge_authors#merge'
 
   namespace :catalog do
-    get :search
     get :options
+    get "search", to: "search#index"
+    get "search/quick_search", to: "search#quick_search", as: "quick_search"
   end
-
   # TODO remove?
   get 'catalog/index/:id' => 'catalog#show' # for compatibility
   get 'catalog/:id' => 'catalog#show', as: :catalog
@@ -82,7 +82,6 @@ AntCat::Application.routes.draw do
     resource :convert_to_subspecies, only: [:new, :create]
   end
 
-  resource :advanced_search, only: [:show]
   resource :default_reference, only: [:update]
 
   get 'name_pickers/search'

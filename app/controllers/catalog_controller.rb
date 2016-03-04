@@ -12,19 +12,6 @@ class CatalogController < ApplicationController
   def show
   end
 
-  def search
-    st = params[:st] || "bw"
-    @search_results = get_search_results(params[:qq], st)
-
-    # Single match --> skip search results and just show the match
-    if @search_results && @search_results.count == 1
-      taxon = @search_results.first
-      return redirect_to catalog_path(taxon)
-    end
-
-    @search_selector_value = search_selector_value_in_english(st)
-  end
-
   def options
     # params[:valid_only] is only for making the URL more intuitive
     session[:show_valid_only] = !session[:show_valid_only]
@@ -88,15 +75,4 @@ class CatalogController < ApplicationController
       @display_taxon_toggler = true
     end
 
-    # TODO rename all occurrences of "st" ("starts with")
-    def get_search_results qq, st = 'bw'
-      return unless qq.present?
-      search_selector_value = search_selector_value_in_english st
-
-      Taxa::Search.find_name(qq, search_selector_value)
-    end
-
-    def search_selector_value_in_english value
-      { 'm' => 'matching', 'bw' => 'beginning with', 'c' => 'containing' }[value]
-    end
 end
