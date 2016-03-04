@@ -29,8 +29,6 @@ AntCat::Application.routes.draw do
     get "search", to: "search#index"
     get "search/quick_search", to: "search#quick_search", as: "quick_search"
   end
-  # TODO remove?
-  get 'catalog/index/:id' => 'catalog#show' # for compatibility
   get 'catalog/:id' => 'catalog#show', as: :catalog
 
   get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/

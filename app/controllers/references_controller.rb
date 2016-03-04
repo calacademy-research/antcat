@@ -4,9 +4,7 @@ class ReferencesController < ApplicationController
   before_filter :authenticate_superadmin, only: [:approve_all]
   before_filter :set_reference, only: [
     :show, :edit, :update, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
-  before_filter :redirect_if_search_matches_id, only: [:index, :search]
-  # TODO remove filter from the index? Currently only for legacy reasons,
-  #   would break non-restful `reference_path`s such as /index/q=21255
+  before_filter :redirect_if_search_matches_id, only: [:search]
 
   def index
     @references = Reference.list_references params

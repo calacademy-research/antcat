@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 describe CatalogSearchHelper do
   describe "#search_type_selector" do

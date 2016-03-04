@@ -27,14 +27,6 @@ describe ReferencesController do
         get :search, q: "11111"
         expect(response).to render_template "search"
       end
-
-      describe "legacy URL" do
-        it "redirects to #show" do
-          reference = reference_factory author_name: 'E.O. Wilson', id: 99999
-          get :index, q: reference.id
-          expect(response).to redirect_to reference_path(reference)
-        end
-      end
     end
   end
 
