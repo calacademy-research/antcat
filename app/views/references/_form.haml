@@ -44,63 +44,56 @@
             %a{href: "#tabs-unknown"}Other
 
         #tabs-article
-          =label_tag :reference_journal_name do
-            Journal
-            =tooltip_icon "references.journal_name", scope: :references
-          =f.text_field :journal_name, value: reference.journal_name
+          .row
+            .medium-3.columns
+              =label_tag :reference_journal_name do
+                Journal
+                =tooltip_icon "references.journal_name", scope: :references
+              =f.text_field :journal_name, value: reference.journal_name
 
-          =label_tag :reference_series_volume_issue do
-            Series volume issue
-            =tooltip_icon "references.series_volume_issue", scope: :references
-          =f.text_field :series_volume_issue
+            .medium-3.columns
+              =label_tag :reference_series_volume_issue do
+                Series volume issue
+                =tooltip_icon "references.series_volume_issue", scope: :references
+              =f.text_field :series_volume_issue
 
-          =label_tag :article_pagination do
-            Pagination
-            =tooltip_icon "references.journal_pagination", scope: :references
-          =text_field_tag :article_pagination, reference.pagination
+            .medium-3.columns.end
+              =label_tag :article_pagination do
+                Pagination
+                =tooltip_icon "references.journal_pagination", scope: :references
+              =text_field_tag :article_pagination, reference.pagination
 
         #tabs-book
-          =label_tag :reference_publisher_string do
-            Publisher
-            =tooltip_icon "references.publisher", scope: :references
-          =f.text_field :publisher_string, value: reference.publisher_string
+          .row
+            .medium-3.columns
+              =label_tag :reference_publisher_string do
+                Publisher
+                =tooltip_icon "references.publisher", scope: :references
+              =f.text_field :publisher_string, value: reference.publisher_string
 
-          =label_tag :book_pagination do
-            Pagination
-            =tooltip_icon "references.book_pagination", scope: :references
-          =text_field_tag :book_pagination, reference.pagination
+            .medium-3.columns.end
+              =label_tag :book_pagination do
+                Pagination
+                =tooltip_icon "references.book_pagination", scope: :references
+              =text_field_tag :book_pagination, reference.pagination
 
         #tabs-nested
-          =label_tag :reference_pages_in do
-            Pages in
-            =tooltip_icon "references.nested_pagination", scope: :references
-          =f.text_field :pages_in
+          .row
+            .medium-3.columns
+              =label_tag :reference_pages_in do
+                Pages in
+                =tooltip_icon "references.nested_pagination", scope: :references
+              =f.text_field :pages_in
 
-          =label_tag :nesting_reference_id, 'nesting_reference ID'
-          =f.text_field :nesting_reference_id
-          -#%p.help
-            %span.help=raw "To find, edit or add the nesting_reference in a new browser window, click #{link_to 'here', references_path(q: reference.nesting_reference_id), target: '_blank'}"
+            .medium-3.columns.end
+              =label_tag :nesting_reference_id do
+                Nesting reference ID
+                =tooltip_icon "nesting_reference_id", scope: :references
+              =f.text_field :nesting_reference_id
 
         #tabs-unknown
           =label_tag :reference_citation, 'Citation'
           =f.text_area :citation, rows: 2
-  .row
-    .medium-12.columns
-      =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
-        =label_tag :document_url do
-          Source URL
-          =tooltip_icon "references.source.url", scope: :references
-        =document_form.text_field :url
-
-        =label_tag :document_public do
-          Make PDF public?
-          =tooltip_icon "references.pdf.public", scope: :references
-        =document_form.check_box :public
-
-        =label_tag :document_file do
-          Upload
-          =tooltip_icon "references.pdf.upload", scope: :references
-        =document_form.file_field :file
 
   .row
     .medium-12.columns
@@ -136,6 +129,25 @@
         =tooltip_icon "references.date", scope: :references
       =f.text_field :date
 
+  %fieldset.fieldset
+    %legend
+      Reference document
+      =tooltip_icon "references.pdf.upload", scope: :references
+    =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
+      .row
+        .medium-6.columns.end
+          =document_form.file_field :file
+
+          =document_form.check_box :public
+          =label_tag :document_public do
+            Make PDF public?
+            =tooltip_icon "references.pdf.public", scope: :references
+
+          =label_tag :document_url do
+            Source URL
+            =tooltip_icon "references.source.url", scope: :references
+          =document_form.text_field :url
+
   .row
     .medium-12.columns
       %button.submit.btn-save.has-spinner
@@ -145,5 +157,5 @@
       -cancel_link = reference.new_record? ? references_path : reference_path(reference)
       =link_to "Cancel", cancel_link, class: "btn-cancel"
 
-      =label_tag :make_default, 'Make default after save?'
       =check_box_tag :make_default, true, !!params[:make_default]
+      =label_tag :make_default, 'Make default after save?'
