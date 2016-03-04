@@ -3,15 +3,13 @@
 -content_for :head do
   =javascript_include_tag 'reference_edit_autocompletion', 'references'
 
--possible_duplicate ||= nil
-
 -reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
 -reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
 -selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
 =form_for reference.becomes(Reference) do |f|
-  %input{type: :hidden, name: :selected_tab, id: :selected_tab, value: selected_tab}
-  %input{type: :hidden, name: 'possible_duplicate', id: 'possible_duplicate', value: possible_duplicate ? 'true' : nil}
+  =hidden_field_tag :selected_tab, selected_tab
+  =hidden_field_tag :possible_duplicate, possible_duplicate
   =render 'shared/errors_for', resource: reference
 
   .row
