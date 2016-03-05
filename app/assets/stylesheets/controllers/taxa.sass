@@ -4,7 +4,6 @@
 @import 'widgets/name_field'
 @import 'widgets/reference_picker'
 
-// Structure
 .taxon_form
   .taxt_edit_box
     font-size: 14px
@@ -50,30 +49,18 @@
   .protonym_section
     #protonym_name_field
       display: inline-block
-      width: 100%
     #authorship_field
       display: inline-block
-
-    input[type=text]
-      width: 500px
 
   .type_section
     .caption
       padding-right: 6px
     .taxt textarea
-      width: 100%
+
     .verbatim_type_locality, .type_specimen_repository, .type_specimen_code
-      width: 100%
-      textarea
-        width: 100%
       padding-right: 4px
     .biogeographic_region
       padding-right: 4px
-      width: 100px
-      input
-        width: 100%
-    input[type=text]
-      width: 500px
 
   .history_items_section
     font-size: 90%
@@ -184,18 +171,12 @@
     line-height: 12px
     height: 16px
 
-//elements
-ul.error_messages
-  color: red
-  font-size: 14px
-  margin: 0 0 5px 17px
+  td.caption
+    width: 72px
 
-td.caption
-  width: 72px
+  td.top_aligned
+    vertical-align: top
+    padding-top: 3px
 
-td.top_aligned
-  vertical-align: top
-  padding-top: 3px
-
-.display_button
-  white-space: normal
+  .display_button
+    white-space: normal
