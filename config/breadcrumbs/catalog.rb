@@ -20,3 +20,8 @@ crumb :catalog_search do
   link "Search"
   parent :catalog
 end
+
+crumb :taxon_color_key do
+  link "Taxon Color Key"
+  parent :catalog
+end
