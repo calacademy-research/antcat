@@ -2,8 +2,10 @@
 
 =render 'header', taxon: taxon, change: change
 
--unless taxon.taxon_state.nil?
-  -css_class = taxon.approved? ? 'approved' : ''
+-if taxon.taxon_state && taxon.approved?
+  -css_class =  'approved'
+-else
+  -css_class = nil
 
 .change{class: css_class}
   %table
