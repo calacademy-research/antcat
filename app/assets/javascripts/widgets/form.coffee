@@ -55,11 +55,11 @@ class AntCat.Form
 
   start_throbbing: =>
     @buttons.find(button_selector).disable()
-    @element.find('img.throbber').show()
+    @element.find('.shared-spinner').show()
 
   stop_throbbing: =>
     @buttons.find(button_selector).undisable()
-    @element.find('img.throbber').hide()
+    @element.find('.shared-spinner').hide()
 
   enable_buttons: =>
     @buttons.find(button_selector).undisable()

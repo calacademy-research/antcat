@@ -46,7 +46,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     AntCat.NestedForm.create_form_from @element.find '.nested_form'
 
   start_throbbing: =>
-    @element.find('.throbber img').show()
+    @element.find('.shared-spinner').show()
     @element.find('> .controls').disable()
 
   submit: =>
