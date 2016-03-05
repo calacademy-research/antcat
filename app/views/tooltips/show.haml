@@ -1,7 +1,6 @@
 -@title = "Tooltip ##{@tooltip.id}"
 -breadcrumb :tooltip, @tooltip
 
-=render 'form'
+.right=link_to 'Destroy', @tooltip, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-delete"
 
-=link_to "Hide/show advanced", "#", id: "toggle_advanced_options"
-=link_to 'Destroy', @tooltip, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-delete"
+=render 'form'
