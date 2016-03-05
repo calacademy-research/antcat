@@ -6,6 +6,11 @@
 -content_for :head do
   = javascript_include_tag 'tooltips/edit_in_place'
 
+.buttons_right
+  =link_to 'New Tooltip', new_tooltip_path, class: "btn-new"
+  =toggle_tooltip_helper_tooltips_button
+  =link_to 'Help', page_path('help/editing_tooltips'), class: "btn-non-destructive"
+
 %table#tooltips
   %thead
     %tr
@@ -39,9 +44,3 @@
             %h6
               =if namespace.present? then namespace.capitalize else "No namespace" end
         =render tooltips
-
-%br/
-
-=link_to 'New Tooltip', new_tooltip_path, class: "btn-new"
-=toggle_tooltip_helper_tooltips_button
-=link_to 'Help', page_path('help/editing_tooltips')

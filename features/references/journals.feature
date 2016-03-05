@@ -16,7 +16,7 @@ Feature: Editing journals
     When I go to the references page
     And I follow "Journals"
     And I follow "Psyche"
-    And I follow "Edit"
+    And I follow "Edit journal name"
     And I fill in "journal_name" with "Science"
     And I press "Save"
     Then I should see "Successfully updated journal"
@@ -28,4 +28,4 @@ Feature: Editing journals
     Given a journal exists with a name of "Psyche"
     When I go to the "journals index" page
     And I follow "Psyche"
-    Then I should not see "Edit"
+    Then I should not see "Edit journal name"

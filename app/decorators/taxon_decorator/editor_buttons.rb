@@ -1,7 +1,7 @@
 module TaxonDecorator::EditorButtons
 
   def editor_buttons
-    helpers.content_tag :div, class: 'editor_buttons' do
+    helpers.content_tag :div do
       content = ''.html_safe
       if taxon.original_combination?
         content << ' ' << link_to_edit_taxon if link_to_edit_taxon

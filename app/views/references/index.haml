@@ -3,10 +3,9 @@
 
 =render "references_title"
 
--# Until we find a new home for this guy
-.left=link_to "New", new_reference_path, class: "btn-new" if user_can_edit?
+.buttons_right
+  =link_to "New", new_reference_path, class: "btn-new" if user_can_edit?
 
--# table.references is used in tests
 %table.references
   -@references.each do |reference|
     %tr
