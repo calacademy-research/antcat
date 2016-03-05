@@ -85,7 +85,7 @@ class ChangeDecorator < Draper::Decorator
   private
     def format_username user
       if user
-        user.decorate.format_doer_name
+        user.decorate.name_linking_to_email
       else
         "Someone"
       end
