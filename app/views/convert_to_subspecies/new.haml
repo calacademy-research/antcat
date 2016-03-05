@@ -6,7 +6,6 @@
   =javascript_include_tag 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
   =javascript_include_tag 'widgets/name_field'
   =javascript_include_tag 'taxa/convert_to_subspecies'
-  =stylesheet_link_tag "widgets/name_picker"
 
 =form_tag "/taxa/#{@taxon.id}/convert_to_subspecies", class: "convert_to_subspecies_form" do
   =render 'shared/errors_for', resource: @taxon
