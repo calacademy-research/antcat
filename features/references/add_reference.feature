@@ -5,11 +5,7 @@ Feature: Add reference
   So that the bibliography continues to be up-to-date
 
   Background:
-    Given the Formicidae family exists
     Given I am logged in
-    And these references exist
-      | author     | title          | year | citation   |
-      | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
     And I go to the references page
 
   Scenario: Add a reference
@@ -46,6 +42,9 @@ Feature: Add reference
     And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
 
   Scenario: Adding a nested reference
+    Given these references exist
+      | author     | title          | year | citation   |
+      | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
     When I follow "New"
     And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "A reference title"

@@ -3,14 +3,8 @@ Feature: Edit reference
   I want to change previously entered references
   So that I can fix mistakes
 
-  Background:
-    Given the Formicidae family exists
-
   Scenario: Not logged in
     Given I am not logged in
-    And these dated references exist
-      | authors | citation   | cite_code | created_at  | date     | possess | title | updated_at  | year |
-      | authors | Psyche 3:3 | CiteCode  | TODAYS_DATE | 20100712 | Possess | title | TODAYS_DATE | 2010 |
     When I go to the references page
     Then I should not see "New"
 
@@ -104,7 +98,6 @@ Feature: Edit reference
 
   @javascript
   Scenario: Clearing an article reference's fields
-    # TODO pending
     Given I am logged in
     And these dated references exist
       | authors    | citation   | year | citation_year | title | created_at  | updated_at  |     doi |
