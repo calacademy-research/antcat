@@ -57,14 +57,6 @@ Feature: Editing a taxon
     And I press "Save homonym"
     Then I should not see "This name is in use by another taxon. To create a homonym, click"
 
-  Scenario: Cancelling
-    Given there is a genus "Calyptites"
-    And I log in
-    When I go to the edit page for "Calyptites"
-    And I select "subfamily" from "taxon_incertae_sedis_in"
-    And I press "Cancel"
-    Then I should not see "incertae sedis" in the header
-
   Scenario: Changing the protonym name
     Given there is a genus "Atta" with protonym name "Atta"
     And there is a genus "Eciton"
