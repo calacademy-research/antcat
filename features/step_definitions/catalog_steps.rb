@@ -25,3 +25,18 @@ end
 And /^the name in the header should be "([^"]*)"/ do |name|
   page.should have_css('.header .taxon', text: name)
 end
+
+When /I fill in the catalog search box with "(.*?)"/ do |search_term|
+  find("#desktop-lower-menu #qq").set search_term
+end
+
+When /I press "Go" by the catalog search box/ do
+  # TODO fix mobile
+  within "#desktop-lower-menu" do
+    step 'I press "Go"'
+  end
+end
+
+Then "I should not see any search results" do
+  page.should_not have_css "#search_results"
+end

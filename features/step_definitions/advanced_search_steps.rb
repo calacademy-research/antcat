@@ -48,7 +48,6 @@ end
 Given /^there is a species with verbatim type locality "([^"]+)"$/ do |locality|
   species = FactoryGirl.create :species, verbatim_type_locality: locality
   FactoryGirl.create :taxon_state, taxon_id: species.id
-
 end
 Given /^there is a species with type specimen repository "([^"]+)"$/ do |repository|
   species = FactoryGirl.create :species, type_specimen_repository: repository

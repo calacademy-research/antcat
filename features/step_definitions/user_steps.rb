@@ -42,6 +42,10 @@ Given /^I log in$/ do
   login_programmatically
 end
 
+Given 'I am logged in' do
+  step 'I log in'
+end
+
 Given /^I log in as a catalog editor(?: named "([^"]+)")?$/ do |name|
   name = "Quintus Batiatus" if name.blank?
   @user = FactoryGirl.create :user, can_edit: true, name: name
@@ -57,10 +61,6 @@ end
 Given /^I log in as a bibliography editor$/ do
   @user = FactoryGirl.create :user
   login_programmatically
-end
-
-Given 'I am logged in' do
-  step 'I log in'
 end
 
 Given /^there should be a mailto link to the email of "([^"]+)"$/ do |user_name|

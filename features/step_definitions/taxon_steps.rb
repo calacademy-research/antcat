@@ -259,3 +259,7 @@ end
 Given /^there is a species name "([^"]*)"$/ do |name|
   find_or_create_name name
 end
+
+Then(/^The taxon mouseover should contain "(.*?)"$/) do |arg1|
+  find('.reference_key')['title'].should have_content(arg1)
+end
