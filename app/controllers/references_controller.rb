@@ -182,12 +182,19 @@ class ReferencesController < ApplicationController
         set_journal if @reference.kind_of? ArticleReference
         set_publisher if @reference.kind_of? BookReference
 
+        # Set attributes to make sure they're persisted in the form.
         @reference.attributes = params[:reference]
 
-        return if @reference.errors.present?
+        # Raise if there are errors -- #save! clears the errors
+        # before validating, so we need to manually raise here.
+        raise ActiveRecord::Rollback if @reference.errors.present?
 
-        @possible_duplicate = @reference.check_for_duplicate unless params[:possible_duplicate].present?
-        return if @possible_duplicate
+        unless params[:possible_duplicate].present?
+          if @reference.check_for_duplicate
+            @possible_duplicate = true
+            raise ActiveRecord::Rollback
+          end
+        end
 
         @reference.save!
         set_document_host
@@ -220,24 +227,28 @@ class ReferencesController < ApplicationController
 
     def set_journal
       journal_name = params[:reference][:journal_name]
-      journal = if journal_name.present?
-        Journal.find_or_create_by!(name: journal_name)
-      end
-      @reference.journal = journal
+
+      # Set journal_name for the form.
+      @reference.journal_name = journal_name
+
+      # Set nil or valid publisher in the params.
+      journal = Journal.find_or_create_by(name: journal_name)
+      params[:reference][:journal] = journal.valid? ? journal : nil
     end
 
     def set_publisher
       publisher_string = params[:reference][:publisher_string]
-      publisher = if publisher_string.present?
-        Publisher.create_with_place_form_string publisher_string
-      end
-      @reference.publisher = publisher
 
+      # Set publisher_string for the form.
+      @reference.publisher_string = publisher_string
+
+      # Add error or set valid publisher in the params.
+      publisher = Publisher.create_with_place_form_string publisher_string
       if publisher.nil? && publisher_string.present?
-        @reference.publisher_string = publisher_string
-        @reference.errors.add :publisher_string, <<-MSG.squish
-          couldn't be parsed. In general, use the format 'Place: Publisher'.
-        MSG
+        @reference.errors.add :publisher_string,
+          "couldn't be parsed. In general, use the format 'Place: Publisher'."
+      else
+        params[:reference][:publisher] = publisher
       end
     end
 
