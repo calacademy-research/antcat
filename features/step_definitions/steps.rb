@@ -1,5 +1,3 @@
-require 'uri'
-require 'cgi'
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "selectors"))
 
@@ -44,20 +42,12 @@ When /^(?:|I )press "([^"]*)"$/ do |button|
   end
 end
 
-def click_first_button(locator, options={})
-  first(:button, locator, options).click
-end
-
 When /^(?:|I )press the first "([^"]*)"$/ do |button|
-  click_first_button(button)
-end
-
-def click_first_link(locator, options={})
-  first(:link, locator, options).click
+  first(:button, button).click
 end
 
 When /^(?:|I )follow the first "([^"]*)"$/ do |link|
-  click_first_link(link)
+  first(:link, link).click
 end
 
 When /^(?:|I )follow "([^"]*)"$/ do |link|
