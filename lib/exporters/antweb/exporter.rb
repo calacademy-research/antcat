@@ -7,7 +7,7 @@ class Exporters::Antweb::Exporter
 
   def export_one id
     taxa = Taxon.find id
-    export_taxon taxa
+    puts export_taxon taxa
   end
 
   def export directory
@@ -45,7 +45,7 @@ class Exporters::Antweb::Exporter
   end
 
   def export_taxon taxon
-    puts ("Processing: #{taxon.id}")
+    puts "Processing: #{taxon.id}" unless Rails.env.test?
     Progress.tally_and_show_progress 100
 
     reference = taxon.protonym.authorship.reference
