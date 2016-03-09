@@ -28,8 +28,7 @@ class TaxonDecorator::History
 
   private
     def history_item item
-      css_class = "history_item item_#{item.id}"
-      content_tag :div, class: css_class, 'data-id' => item.id do
+      content_tag :div, class: "history_item", 'data-id' => item.id do
         content_tag :table do
           content_tag :tr do
             history_item_body item

@@ -146,7 +146,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
   setup_references: =>
     if @search_results()
       @search_results()
-        .find(".reference.item_#{@id} div.display")
+        .find("#reference_#{@id}.reference div.display")
           .addClass('ui-selected')
           .end()
 
@@ -171,7 +171,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
   on_reference_form_close: => @enable_controls()
   on_reference_form_done: ($panel) =>
     id = $panel.data 'id'
-    $(".item_#{id}").each -> $(@).replaceWith $panel.clone()
+    $("reference_#{id}").each -> $(@).replaceWith $panel.clone()
     @setup_references()
 
   # 'current' is the reference panel at the top of the field, above the controls
@@ -220,7 +220,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
   clear_current: =>
     $('.ui-selected').removeClass('ui-selected')
     @current = @element.find '> .edit > table.current'
-    @current.find(".item_#{@id} .reference_item").replaceWith('<div class="reference"><table class="reference_table"><tr><td class="reference_item"><div class="display">(none)</div></td></tr></table></div>')
+    @current.find("reference_#{@id} .reference_item").replaceWith('<div class="reference"><table class="reference_table"><tr><td class="reference_item"><div class="display">(none)</div></td></tr></table></div>')
 
   # -----------------------------------------
   enable_search_author_autocomplete: =>
