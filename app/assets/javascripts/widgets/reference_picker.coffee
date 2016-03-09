@@ -146,7 +146,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
   setup_references: =>
     if @search_results()
       @search_results()
-        .find(".reference .item_#{@id} div.display")
+        .find(".reference.item_#{@id} div.display")
           .addClass('ui-selected')
           .end()
 
