@@ -139,6 +139,10 @@ module Taxt
       if options[:display]
         reference = Reference.find(reference_id_match) rescue whole_match
         reference.decorate.format_inline_citation_without_links rescue whole_match
+      elsif $use_ant_web_formatter # TODO nuke
+        # We never want to expand references when exporting to AntWeb.
+        reference = Reference.find(reference_id_match) rescue whole_match
+        reference.decorate.format_inline_citation expansion: false rescue whole_match
       else
         reference = Reference.find(reference_id_match) rescue whole_match
         reference.decorate.format_inline_citation options rescue whole_match

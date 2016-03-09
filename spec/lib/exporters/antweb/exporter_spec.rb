@@ -318,4 +318,21 @@ describe Exporters::Antweb::Exporter do
       expect(@exporter.export_taxon(taxon)[23]).to eq('Atta')
     end
   end
+
+  describe "Test stubbed" do
+    let(:ponerinae) { create_subfamily "Ponerinae" }
+
+    it "'author date html' # [8]" do
+      reference = ponerinae.protonym.authorship.reference
+      author = reference.principal_author_last_name_cache
+      year = reference.citation_year
+      title = reference.title
+      journal_name = reference.journal.name
+      pagination = reference.pagination
+      volume = reference.series_volume_issue
+
+      expected = %Q[<span title="#{author}, B.L. #{year}. #{title}. #{journal_name} #{pagination}:#{volume}.">#{author}, #{year}</span>]
+      expect(@exporter.export_taxon(ponerinae)[8]).to eq expected
+    end
+  end
 end
