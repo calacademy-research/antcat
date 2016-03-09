@@ -13,7 +13,7 @@ class Exporters::Antweb::Exporter
   def export directory
     File.open("#{directory}/antcat.antweb.txt", 'w') do |file|
       file.puts header
-      get_taxa.each do |taxon|
+      get_taxa.find_each do |taxon|
         begin
           if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
             row = export_taxon taxon
@@ -41,11 +41,11 @@ class Exporters::Antweb::Exporter
   end
 
   def get_taxa
-    Taxon.joins(protonym: [{authorship: :reference}]).order(:status).reverse
+    Taxon.joins(protonym: [{authorship: :reference}]).order(:status)
   end
 
   def export_taxon taxon
-    puts "Processing: #{taxon.id}" unless Rails.env.test?
+    puts "Processing: #{taxon.id}" if ENV['DEBUG']
     Progress.tally_and_show_progress 100
 
     reference = taxon.protonym.authorship.reference
