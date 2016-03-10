@@ -10,10 +10,16 @@
 
 -nestees = @reference.nestees
 -if nestees.present?
-  %h5 Nested references
   %table
+    %caption Nested references
     -nestees.each do |reference|
       %tr
         %td=render "reference", reference: reference
+
+-if @reference.is_a? NestedReference
+  -nesting_reference = @reference.nesting_reference
+  %p
+    This reference is nested in
+    =link_to "#{nesting_reference.decorate.key}.", reference_path(nesting_reference)
 
 -# TODO Feature: Items using this reference
