@@ -13,35 +13,43 @@ class Exporters::Antweb::Exporter
   def export directory
     File.open("#{directory}/antcat.antweb.txt", 'w') do |file|
       file.puts header
-      get_taxa.find_each do |taxon|
-        begin
-          if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
-            row = export_taxon taxon
-            if row
-              if row[20]
-                row[20].delete!('\"')
-              end
-              row.each do |col|
-                if col.is_a? String
-                  col.delete!("\n")
-                  col.delete!("\r")
+
+      taxa_ids.each_slice(1000) do |chunk|
+        Taxon.where(id: chunk)
+          .order("field(taxa.id, #{chunk.join(',')})")
+          .joins(protonym: [{authorship: :reference}])
+          .each do |taxon|
+          begin
+            if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
+              row = export_taxon taxon
+              if row
+                if row[20]
+                  row[20].delete!('\"')
+                end
+                row.each do |col|
+                  if col.is_a? String
+                    col.delete!("\n")
+                    col.delete!("\r")
+                  end
                 end
               end
+              file.puts row.join("\t") if row
             end
-            file.puts row.join("\t") if row
+          rescue Exception => e
+            puts ("Fatal error exporting taxon id: #{taxon.id}")
+            puts e.message
+            puts e.backtrace.inspect
           end
-        rescue Exception => e
-          puts ("Fatal error exporting taxon id: #{taxon.id}")
-          puts e.message
-          puts e.backtrace.inspect
         end
       end
       Progress.show_results
     end
   end
 
-  def get_taxa
-    Taxon.joins(protonym: [{authorship: :reference}]).order(:status)
+  # For maintaining order, based on the old `#get_taxa`.
+  def taxa_ids
+    Taxon.joins(protonym: [{authorship: :reference}])
+      .order(:status).pluck(:id).reverse
   end
 
   def export_taxon taxon
@@ -85,9 +93,7 @@ class Exporters::Antweb::Exporter
       STDERR.puts "An error of type #{exception} happened, message is #{exception.message}"
       STDERR.puts exception.backtrace
       STDERR.puts "========================================================"
-
     end
-
   end
 
   def boolean_to_antweb boolean
