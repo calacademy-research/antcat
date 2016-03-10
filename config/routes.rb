@@ -45,6 +45,7 @@ AntCat::Application.routes.draw do
   resources :references do
     collection do
       get :search
+      get :search_help
       get :autocomplete
       get :latest_additions
       get :latest_changes

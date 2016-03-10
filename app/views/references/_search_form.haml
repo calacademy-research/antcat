@@ -5,3 +5,4 @@
   =text_field_tag "q", params[:q], class: "typeahead", placeholder: "Search References"
   =button_tag type: 'submit', name: nil, class: 'btn-search has-spinner' do
     =spinner_icon + "Go"
+  =link_to "help", search_help_references_path, class: "btn-normal"

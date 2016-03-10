@@ -22,6 +22,11 @@ crumb :references_search_results do
   parent :references
 end
 
+crumb :references_search_help do
+  link "Search Help"
+  parent :references
+end
+
 crumb :all_references do
   link "All References", references_path
   parent :references
