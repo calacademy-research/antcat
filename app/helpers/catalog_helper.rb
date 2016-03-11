@@ -64,8 +64,8 @@ module CatalogHelper
     #                  keep_open_on  keep_open_off
     # browser_hidden       HIDE          HIDE
     # browser_visible      SHOW          HIDE
-    cookies[:show_browser] == "true" &&
-    cookies[:keep_taxon_browser_open] == "true"
+    cookies[:show_browser] != "false" &&
+    cookies[:keep_taxon_browser_open] != "false"
   end
 
   # For disabling the taxon browser by default in test env.

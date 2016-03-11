@@ -153,6 +153,10 @@ Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
   end
 end
 
+Then(/^"([^"]*)" should be checked$/) do |checkbox|
+  expect(find("##{checkbox}")).to be_checked
+end
+
 # Misc
 Given 'I will confirm on the next step' do
   begin
