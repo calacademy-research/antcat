@@ -86,8 +86,15 @@ class Reference < ActiveRecord::Base
     principal_author_last_name_cache
   end
 
+  # TODO we should probably have #year [int] and something
+  # like #non_standard_year [string] instead of this +
+  # #year + #citation_year.
   def short_citation_year
-    citation_year.gsub %r{ .*$}, ''
+    if citation_year.present?
+      citation_year.gsub %r{ .*$}, ''
+    else
+      "[no year]"
+    end
   end
 
   # update (including observed updates)

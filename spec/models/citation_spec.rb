@@ -65,6 +65,12 @@ describe Citation do
       citation = FactoryGirl.build_stubbed :citation, reference: reference
       expect(citation.year).to eq('2001')
     end
+
+    it "handles nil years" do
+      reference = reference_factory author_name: 'Bolton', citation_year: nil
+      citation = FactoryGirl.build_stubbed :citation, reference: reference
+      expect(citation.year).to eq "[no year]"
+    end
   end
 
 end

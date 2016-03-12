@@ -11,8 +11,10 @@ class Citation < ActiveRecord::Base
 
   # FIX? the reference nil check is probably not needed outside of tests,
   # per `validates :reference, presence: true`.
+  # TODO delegate in a smarter way to avoid duplicating Reference.
+
   def authorship_string
-    reference and "#{author_names_string}, #{reference.year}"
+    reference and "#{author_names_string}, #{year}"
   end
 
   def authorship_html_string
@@ -24,7 +26,8 @@ class Citation < ActiveRecord::Base
   end
 
   def year
-    reference and reference.year.to_s
+    return "[no year]" unless reference && reference.year
+    reference.year.to_s
   end
 
   private

@@ -158,6 +158,11 @@ describe Reference do
       reference.save!
       expect(reference.year).to eq(2010)
     end
+
+    it "handles nil years" do
+      reference = reference_factory author_name: 'Bolton', citation_year: nil
+      expect(reference.short_citation_year).to eq "[no year]"
+    end
   end
 
   describe "entering a newline in the title, public_notes, editor_notes or taxonomic_notes" do
