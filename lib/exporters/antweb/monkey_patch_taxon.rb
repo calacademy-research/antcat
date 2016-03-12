@@ -62,6 +62,9 @@ module Exporters::Antweb::MonkeyPatchTaxon
 
   class ::Subspecies
     def add_antweb_attributes attributes
+      # TODO calling methods on nil genera here is the reason for
+      # "undefined method `subfamily' for nil:NilClass".
+      # Same issue as TaxonDecorator::Header#in header_name_for_taxon,
       subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
       tribe_name = genus.tribe && genus.tribe.name.to_s
 

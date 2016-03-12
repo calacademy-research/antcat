@@ -50,9 +50,18 @@ class TaxonDecorator::Header
 
     def header_name_for_taxon taxon
       string = ''.html_safe
-      if taxon.kind_of?(Species) or taxon.kind_of?(Subspecies)
+      if taxon.kind_of?(Species) || taxon.kind_of?(Subspecies)
         genus = taxon.genus
-        string << header_link(genus, genus.name.to_html_with_fossil(genus.fossil?))
+        if genus
+          string << header_link(genus, genus.name.to_html_with_fossil(genus.fossil?))
+        else
+          # TODO fix this
+          # As of March 2016 there are 9 subspecies without a genus,
+          # `Subspecies.where(genus: nil).count`,
+          # and question marks are better than unrescued error + 404.
+          # Same issue as in Exporters::Antweb::MonkeyPatchTaxon::Subspecies
+          string << "???"
+        end
         string << ' '.html_safe
         if taxon.name.nonconforming_name
           # This name is a radical misspelling, or an obsolete name formulation.
