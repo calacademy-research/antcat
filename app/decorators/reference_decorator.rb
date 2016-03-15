@@ -48,14 +48,6 @@ class ReferenceDecorator < ApplicationDecorator
     end
   end
 
-  def format_italics string
-    return unless string
-    raise "Can't call format_italics on an unsafe string" unless string.html_safe?
-    string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
-    string = string.gsub /\|(.*?)\|/, '<i>\1</i>'
-    string.html_safe
-  end
-
   def format_review_state
     review_state = reference.review_state
 
@@ -89,18 +81,6 @@ class ReferenceDecorator < ApplicationDecorator
     string
   end
 
-  def format_author_names
-    make_html_safe reference.author_names_string
-  end
-
-  def format_year
-    make_html_safe reference.citation_year if reference.citation_year?
-  end
-
-  def format_title
-    format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
-  end
-
   def format_inline_citation options = {}
     # TODO: `using_cache` as a global setting?
     using_cache = false
@@ -127,23 +107,6 @@ class ReferenceDecorator < ApplicationDecorator
   def goto_reference_link target: '_blank'
     helpers.link reference.id, helpers.reference_path(reference),
       class: :goto_reference_link, target: target
-  end
-
-  def format_author_last_names
-    return '' unless reference.id
-
-    names = reference.author_names.map &:last_name
-    case names.size
-    when 0
-      '[no authors]'
-    when 1
-      "#{names.first}"
-    when 2
-      "#{names.first} & #{names.second}"
-    else
-      string = names[0..-2].join ', '
-      string << " & " << names[-1]
-    end << ', ' << reference.short_citation_year
   end
 
   def to_link(expansion: true)
@@ -173,6 +136,14 @@ class ReferenceDecorator < ApplicationDecorator
       string.gsub! quote_code, '"'
       string.gsub! end_italics_code, '</i>'
       string.gsub! begin_italics_code, '<i>'
+      string.html_safe
+    end
+
+    def format_italics string
+      return unless string
+      raise "Can't call format_italics on an unsafe string" unless string.html_safe?
+      string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
+      string = string.gsub /\|(.*?)\|/, '<i>\1</i>'
       string.html_safe
     end
 
@@ -241,4 +212,34 @@ class ReferenceDecorator < ApplicationDecorator
         class: :reference_key_expansion_text,
         title: reference_key_string
     end
+
+    def format_author_last_names
+      return '' unless reference.id
+
+      names = reference.author_names.map &:last_name
+      case names.size
+      when 0
+        '[no authors]'
+      when 1
+        "#{names.first}"
+      when 2
+        "#{names.first} & #{names.second}"
+      else
+        string = names[0..-2].join ', '
+        string << " & " << names[-1]
+      end << ', ' << reference.short_citation_year
+    end
+
+    def format_author_names
+      make_html_safe reference.author_names_string
+    end
+
+    def format_year
+      make_html_safe reference.citation_year if reference.citation_year?
+    end
+
+    def format_title
+      format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
+    end
+
 end

@@ -226,7 +226,7 @@ describe ReferenceDecorator do
     describe "Escaping in the year" do
       it "should leave quotes (and italics) alone, but escape other HTML" do
         reference = FactoryGirl.create :unknown_reference, citation_year: '2010 ("2011")', author_names: [], citation: 'Ants', title: 'Tapinoma'
-        string = reference.decorate.format_year
+        string = reference.decorate.send :format_year
         expect(string).to eq '2010 ("2011")'
         expect(string).to be_html_safe
       end
@@ -235,7 +235,7 @@ describe ReferenceDecorator do
     describe "Escaping in the author names" do
       it "should not escape quotes and italics, should escape everything else" do
         reference = FactoryGirl.create :unknown_reference, author_names: [author_name], citation: 'Ants', title: 'Tapinoma', author_names_suffix: ' <i>et al.</i>'
-        string = reference.decorate.format_author_names
+        string = reference.decorate.send :format_author_names
         expect(string).to eq 'Forel, A. <i>et al.</i>'
         expect(string).to be_html_safe
       end
@@ -281,12 +281,12 @@ describe ReferenceDecorator do
 
   describe "italicizing" do
     it "should replace asterisks and bars with italics" do
-      string = nil_decorator.format_italics "|Hymenoptera| *Formicidae*".html_safe
+      string = nil_decorator.send :format_italics, "|Hymenoptera| *Formicidae*".html_safe
       expect(string).to eq("<i>Hymenoptera</i> <i>Formicidae</i>")
       expect(string).to be_html_safe
     end
     it "should raise if the string isn't html_safe already" do
-      expect { nil_decorator.format_italics 'roman' }.to raise_error
+      expect { nil_decorator.send :format_italics, 'roman' }.to raise_error
     end
   end
 
