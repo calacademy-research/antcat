@@ -43,13 +43,9 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_authorship_html
-    content = format_authorship
-    title = format
-    helpers.content_tag(:span, title: title) { content }
-  end
-
-  def format_authorship
-    format_author_last_names
+    helpers.content_tag(:span, title: format) do
+     format_author_last_names
+    end
   end
 
   def format_italics string

@@ -68,15 +68,6 @@ module ApplicationHelper
     "<span class='shared-spinner'><i class='fa fa-refresh fa-spin'></i></span>".html_safe
   end
 
-  # duplicated from ReferenceDecorator
-  def format_italics string
-    return unless string
-    raise "Can't call format_italics on an unsafe string" unless string.html_safe?
-    string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
-    string = string.gsub /\|(.*?)\|/, '<i>\1</i>'
-    string.html_safe
-  end
-
   def foundation_class_for flash_type
     case flash_type.to_sym
       when :success
