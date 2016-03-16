@@ -1,9 +1,6 @@
 class CatalogController < ApplicationController
-  before_filter :set_session, only: [:index, :show]
   before_filter :handle_family_not_found, only: [:index]
-  before_filter :set_taxon, only: [:index, :show]
-  before_filter :setup_panels, only: [:index, :show]
-  before_filter :enable_taxon_toggler, only: [:index, :show]
+  before_filter :setup_catalog, only: [:index, :show]
 
   def index
     render 'show'
@@ -24,17 +21,20 @@ class CatalogController < ApplicationController
       render 'family_not_found' and return unless Family.first
     end
 
+    def setup_catalog
+      set_session
+      set_taxon
+      setup_panels
+      enable_taxon_toggler
+    end
+
     # TODO reverse name, so that this is not needed
     def set_session
       session[:show_valid_only] = true if session[:show_valid_only].nil?
     end
 
     def set_taxon
-      @taxon =  if params[:id]
-                  Taxon.find(params[:id])
-                else
-                  Family.first
-                end
+      @taxon = params[:id] ? Taxon.find(params[:id]) : Family.first
     end
 
     def setup_panels

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe CatalogController do
 
   it { should use_before_action(:handle_family_not_found) }
-  it { should use_before_action(:set_taxon) }
+  it { should use_before_action(:setup_catalog) }
 
   describe 'GET #index' do
     describe "handle non-existing family" do
