@@ -17,13 +17,6 @@ describe ApplicationHelper do
     end
   end
 
-  describe "Formatting time ago" do
-    it "formats time" do
-      time = Time.now - 1.hour
-      expect(helper.format_time_ago(time)).to match(%r{<span title=[^>]+>about 1 hour ago</span>})
-    end
-  end
-
   describe "Formatting a count with a noun" do
     it "should work" do
       expect(helper.count_and_noun(['1'], 'reference')).to eq('1 reference')

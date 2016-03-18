@@ -51,11 +51,6 @@ module ApplicationHelper
     string.html_safe
   end
 
-  def format_time_ago time
-    return unless time
-    content_tag :span, "#{time_ago_in_words time} ago", title: time
-  end
-
   # First attempt at creating a spinner that works on all elements.
   # Add .has-spinner to the button/link/element and call this method inside that element.
   # To be improved once all buttons are more consistently formatted site-wide.
