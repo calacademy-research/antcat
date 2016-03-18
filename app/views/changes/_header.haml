@@ -1,26 +1,19 @@
 -change = change.decorate
 
 .callout
-  -if change.change_type != 'delete' && taxon
-    %h5.left
-      =change.format_adder_name
+  %h5.left
+    =change.format_adder_name
+    -if change.change_type != 'delete' && taxon
       =taxon.decorate.link_to_taxon
-    .left
-      =change.undo_button(taxon)
-      =change.approve_button(taxon)
-    .right=link_to change.format_created_at, change
-    .clear
-
-    -if change.approver
-      .left=change.format_approver_name
-      .right=change.format_approved_at
-      .clear
-
-  -else
-    %h5
-      =change.format_adder_name
+    -else
       =format_taxon_name taxon.name
-      =change.undo_button(taxon)
-    .left=change.approve_button(taxon)
-    .right=link_to change.format_created_at, change
+  .right
+    =change.undo_button(taxon)
+    =change.approve_button(taxon)
+    =link_to change.format_created_at, change
+  .clear
+
+  -if change.approver
+    .left=change.format_approver_name
+    .right=change.format_approved_at
     .clear
