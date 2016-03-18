@@ -4,32 +4,32 @@ class TaxonHistoryItemsController < ApplicationController
   before_filter :authenticate_editor
 
   def update
-    @item = TaxonHistoryItem.find params[:id]
-    @item.update_taxt_from_editable params[:taxt]
-    render_json is_new: false
+    item = TaxonHistoryItem.find params[:id]
+    item.update_taxt_from_editable params[:taxt]
+    render_json item, is_new: false
   end
 
   def create
-    @taxon = Taxon.find params[:taxa_id]
-    setup_change @taxon, :create
-    @item = TaxonHistoryItem.create_taxt_from_editable @taxon, params[:taxt]
-    render_json is_new: true
+    taxon = Taxon.find params[:taxa_id]
+    setup_change taxon, :create
+    item = TaxonHistoryItem.create_taxt_from_editable taxon, params[:taxt]
+    render_json item, is_new: true
   end
 
   def destroy
-    @item = TaxonHistoryItem.find params[:id]
-    @item.destroy
+    item = TaxonHistoryItem.find params[:id]
+    item.destroy
     json = { success: true }
     render json: json, content_type: 'text/html'
   end
 
   private
-    def render_json(is_new:)
+    def render_json(item, is_new:)
       json = {
         isNew: is_new,
-        content: render_to_string(partial: 'history_items/panel', locals: { item: @item }),
-        id: @item.id,
-        success: @item.errors.empty?
+        content: render_to_string(partial: 'history_items/panel', locals: { item: item }),
+        id: item.id,
+        success: item.errors.empty?
       }
 
       render json: json, content_type: 'text/html'

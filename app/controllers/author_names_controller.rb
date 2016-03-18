@@ -2,27 +2,27 @@ class AuthorNamesController < ApplicationController
   before_filter :authenticate_editor
 
   def update
-    @author_name = AuthorName.find params[:id]
-    @author_name.name = params[:author_name]
+    author_name = AuthorName.find params[:id]
+    author_name.name = params[:author_name]
     begin
-      @author_name.save!
+      author_name.save!
     rescue ActiveRecord::RecordInvalid => invalid
       err = { 'error' => "Name already exists" }
       render json: err, status: :conflict
       return
     end
 
-    render_json is_new: false
+    render_json author_name, is_new: false
   end
 
   def create
     author = Author.find params[:author_id]
 
-    @author_name = AuthorName.create author: author, name: params[:author_name]
-    if @author_name.errors.empty?
-      @author_name.touch_with_version
+    author_name = AuthorName.create author: author, name: params[:author_name]
+    if author_name.errors.empty?
+      author_name.touch_with_version
     end
-    render_json is_new: true
+    render_json author_name, is_new: true
   end
 
   # From URL: : "/authors/11282/author_names/194557"
@@ -40,12 +40,12 @@ class AuthorNamesController < ApplicationController
   end
 
   private
-    def render_json(is_new:)
+    def render_json(author_name, is_new:)
       json = {
           isNew: is_new,
-          content: render_to_string(partial: 'author_names/panel', locals: { author_name: @author_name }),
-          id: @author_name.id,
-          success: @author_name.errors.empty?
+          content: render_to_string(partial: 'author_names/panel', locals: { author_name: author_name }),
+          id: author_name.id,
+          success: author_name.errors.empty?
       }
 
       render json: json, content_type: 'text/html'
