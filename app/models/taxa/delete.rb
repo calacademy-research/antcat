@@ -25,7 +25,7 @@ module Taxa::Delete
 
   def delete_taxon_and_children
     Taxon.transaction do
-      change = setup_change :delete
+      change = setup_change self, :delete
       delete_taxon_children self
 
       delete_with_state!
@@ -34,6 +34,7 @@ module Taxa::Delete
   end
 
   private
+    # TODO see Subfamily#children for a known bug.
     def get_taxon_children_recur taxon
       ret_val = []
       taxon.children.each do |child|

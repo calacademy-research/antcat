@@ -16,6 +16,9 @@ class Subfamily < Taxon
     self.family = parent_taxon
   end
 
+  # TODO among other things, this is called when deleting a
+  # taxon + its children, and in that case it fails to take into
+  # account incertae sedis taxa (genera in this case).
   def children
     tribes
   end

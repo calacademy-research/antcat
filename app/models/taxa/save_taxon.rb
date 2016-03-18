@@ -33,7 +33,7 @@ class Taxa::SaveTaxon
       end
       @taxon.taxon_state.review_state = :waiting
 
-      change = setup_change change_type
+      change = setup_change @taxon, change_type
       change_id = change.id
       if @taxon.auto_generated
         remove_auto_generated

@@ -11,7 +11,7 @@ class TaxonHistoryItemsController < ApplicationController
 
   def create
     @taxon = Taxon.find params[:taxa_id]
-    setup_change :create
+    setup_change @taxon, :create
     @item = TaxonHistoryItem.create_taxt_from_editable @taxon, params[:taxt]
     render_json is_new: true
   end

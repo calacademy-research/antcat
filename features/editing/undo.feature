@@ -156,3 +156,36 @@ Feature: Workflow
 
   # Add scenario - add a new species, delete it, undo the delete
   # Same as above, with notes
+
+  # FIX: currently doesn't work with incertae sedis taxa, which
+  # is why we need to nest the genera in a tribe in this test.
+  Scenario: Deleting a subfamily with genera and undoing the change
+    Given I log in as a superadmin
+    And there is a subfamily "Ancatinae"
+    And tribe "Antcatini" exists in that subfamily
+    And genus "Antcatia" exists in that tribe
+    And genus "Tactania" exists in that tribe
+
+    When I go to the catalog page for "Formicidae"
+    And I follow "Ancatinae" in the families index
+    And I follow "All genera" in the subfamilies index
+    Then I should see "Antcatia"
+    And I should see "Tactania"
+
+    When I press "Delete"
+    And I press "Delete?"
+    And I go to the catalog page for "Formicidae"
+    Then I should not see "Ancatinae"
+    When I follow "All genera"
+    Then I should not see "Antcatia"
+    And I should not see "Tactania"
+
+    When I go to the changes page
+    And I click "[data-undo-id='1']"
+    And I press "Undo!"
+
+    And I go to the catalog page for "Formicidae"
+    Then I should see "Ancatinae"
+    When I follow "All genera"
+    Then I should see "Antcatia"
+    And I should see "Tactania"
