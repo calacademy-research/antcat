@@ -62,7 +62,7 @@ describe ApplicationController do
       allow(controller).to receive(:current_user).and_return current_user
       expect(current_user).to receive(:can_edit?)
       expect(controller).to receive(:authenticate_user!).and_return true
-      controller.authenticate_editor
+      controller.send :authenticate_editor
     end
   end
 
