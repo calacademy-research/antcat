@@ -241,3 +241,7 @@ When /I press "Go" by the references search box/ do
     step 'I press "Go"'
   end
 end
+
+When /I hover the export button/ do
+  find(".btn-normal", text: "Export").hover
+end

@@ -2,9 +2,12 @@
 -breadcrumb :reference, @reference
 
 .buttons_right
-  =link_to 'Export to EndNote', endnote_export_reference_path(@reference), class: "btn-normal"
-  -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
-    =link_to 'Export to Wikipedia', wikipedia_export_reference_path(@reference), class: "btn-normal"
+  .btn-normal.dropdown.button{"data-toggle" => "export-dropdown", type: "button"} Export
+  #export-dropdown.dropdown-pane{"data-dropdown" => "", "data-hover" => "true", "data-hover-pane" => "true"}
+    %ul.no-bullet
+      %li=link_to "EndNote", endnote_export_reference_path(@reference)
+      -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
+        %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
   =link_to "Edit", edit_reference_path(@reference), class: "btn-edit"
   =link_to "Delete", reference_path(@reference), class: "btn-delete",         method: :delete, data: { confirm: "Do you want to delete this reference? Note: it can take a minute or to to check that there are no references to this one." }
 
