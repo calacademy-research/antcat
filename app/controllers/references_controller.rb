@@ -1,9 +1,9 @@
 class ReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [:index, :download, :autocomplete,
-    :search_help, :show, :search, :endnote_export, :latest_additions]
+    :search_help, :show, :search, :endnote_export, :wikipedia_export, :latest_additions]
   before_filter :authenticate_superadmin, only: [:approve_all]
-  before_filter :set_reference, only: [
-    :show, :edit, :update, :destroy, :start_reviewing, :finish_reviewing, :restart_reviewing]
+  before_filter :set_reference, only: [:show, :edit, :update, :destroy,
+    :start_reviewing, :finish_reviewing, :restart_reviewing, :wikipedia_export]
   before_filter :redirect_if_search_matches_id, only: [:search]
 
   def index
@@ -127,6 +127,10 @@ class ReferencesController < ApplicationController
         Exporting missing references is not supported.
         If you tried to export a list of references, try to filter the query with "type:nomissing".
       MSG
+  end
+
+  def wikipedia_export
+    render plain: Wikipedia::ReferenceExporter.export(@reference)
   end
 
   def autocomplete

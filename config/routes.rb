@@ -57,6 +57,7 @@ AntCat::Application.routes.draw do
       post :finish_reviewing
       post :restart_reviewing
       get :endnote_export
+      get :wikipedia_export
     end
   end
   resources :missing_references, only: [:index, :edit, :update]
