@@ -683,7 +683,7 @@ definitions:
     properties:
       id:
         type: integer
-        description: Antcat taxon id, primary key
+        description: AntCat taxon id, primary key
       name:
         type: string
         description: de-normalized cache of the name object
@@ -707,7 +707,7 @@ definitions:
         properties:
           id:
             type: integer
-            description: Antcat taxon id, primary key
+            description: AntCat taxon id, primary key
           created_at:
             type: string
             format: date-time
@@ -816,7 +816,7 @@ definitions:
     properties:
       id:
         type: integer
-        description: Antcat author id, primary key
+        description: AntCat author id, primary key
       created_at:
         type: string
         format: date-time
@@ -832,7 +832,7 @@ definitions:
     properties:
       id:
         type: integer
-        description: Antcat author name id, primary key
+        description: AntCat author name id, primary key
       author_id:
         type: integer
         description: FK to author
