@@ -1,7 +1,7 @@
 class ChangesController < ApplicationController
   include UndoTracker
 
-  before_filter :authenticate_editor, except: [:index, :show]
+  before_filter :authenticate_editor, except: [:index, :show, :unreviewed]
   before_filter :authenticate_superadmin, only: [:approve_all]
   before_filter :set_change, only: [:show, :approve, :undo,
     :destroy, :undo_items]

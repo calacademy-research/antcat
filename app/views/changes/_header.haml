@@ -8,8 +8,9 @@
     -else
       =format_taxon_name taxon.name
   .right
-    =change.undo_button(taxon)
-    =change.approve_button(taxon)
+    -if user_can_edit?
+      =change.undo_button(taxon)
+      =change.approve_button(taxon)
     =link_to change.format_created_at, change
   .clear
 
