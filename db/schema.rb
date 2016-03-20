@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160204152431) do
+ActiveRecord::Schema.define(version: 20160319110725) do
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -306,6 +306,19 @@ ActiveRecord::Schema.define(version: 20160204152431) do
   add_index "synonyms", ["junior_synonym_id", "senior_synonym_id"], name: "index_synonyms_on_junior_synonym_id_and_senior_synonym_id", using: :btree
   add_index "synonyms", ["junior_synonym_id"], name: "index_synonyms_on_junior_synonym_id", using: :btree
   add_index "synonyms", ["senior_synonym_id"], name: "index_synonyms_on_senior_synonym_id", using: :btree
+
+  create_table "tasks", force: :cascade do |t|
+    t.integer  "closer_id",   limit: 4
+    t.integer  "adder_id",    limit: 4
+    t.string   "status",      limit: 255,   default: "open"
+    t.string   "title",       limit: 255
+    t.text     "description", limit: 65535
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
+  add_index "tasks", ["adder_id"], name: "index_tasks_on_adder_id", using: :btree
+  add_index "tasks", ["closer_id"], name: "index_tasks_on_closer_id", using: :btree
 
   create_table "taxa", force: :cascade do |t|
     t.string   "type",                            limit: 255

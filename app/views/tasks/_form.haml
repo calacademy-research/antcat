@@ -1,0 +1,9 @@
+=form_for @task do |f|
+  =render "shared/errors_for", resource: @task
+  =f.label :title
+  =f.text_field :title, disabled: @task.archived?
+
+  =f.label :description
+  =f.text_area :description, cols: 80, rows: 15, disabled: @task.archived?
+
+  =button_tag "Save", class: "btn-save" unless @task.archived?

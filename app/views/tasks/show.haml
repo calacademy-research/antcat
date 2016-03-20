@@ -1,0 +1,28 @@
+-@title = "Task ##{@task.id}"
+-breadcrumb :task, @task
+
+.left
+  %h5=@task.title
+  Added by
+  =@task.adder.decorate.name_linking_to_email
+  =time_ago_in_words(@task.created_at)
+
+-if user_can_edit?
+  .buttons_right
+    -if @task.archived?
+      =link_to("Re-open", reopen_task_path(@task), method: :put, class: "btn-destructive")
+    -else
+      =link_to("Complete", complete_task_path(@task), method: :put, class: "btn-normal")
+      =link_to("Close", close_task_path(@task), method: :put, class: "btn-destructive")
+      =link_to("Edit", edit_task_path(@task), class: "btn-normal")
+.clear
+
+-if @task.archived?
+  %p
+    Marked as
+    =@task.status
+    by
+    =@task.closer.decorate.name_linking_to_email
+
+.callout
+  =@task.description
