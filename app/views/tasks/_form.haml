@@ -4,29 +4,33 @@
 
 =form_for @task do |f|
   =render "shared/errors_for", resource: @task
-  =f.label :title
-  =f.text_field :title, disabled: @task.archived?
+  .row
+    .medium-6.columns
+      =f.label :title
+      =f.text_field :title, { maxlength: 70, disabled: @task.archived? }
 
-  #linked_taxa
-    =f.label :linked_taxa
-    =f.text_field :taxa_tokens, data: { load: @task.taxa.to_json(root: nil) }
+    .medium-6.columns
+      #linked_taxa
+        =f.label :linked_taxa
+        =f.text_field :taxa_tokens, data: { load: @task.taxa.to_json(root: nil) }
+  .row
+    .medium-12.columns
+      %ul#task-tabs.tabs{"data-tabs" => ""}
+        %li.tabs-title.is-active
+          =link_to "Description", "#description"
+        %li.tabs-title
+          =link_to "Preview", "#preview", id: "preview_markdown_link"
+        %li.tabs-title
+          =link_to "Formatting Help", "#formatting_help"
 
-  %ul#task-tabs.tabs{"data-tabs" => ""}
-    %li.tabs-title.is-active
-      =link_to "Description", "#description"
-    %li.tabs-title
-      =link_to "Preview", "#preview", id: "preview_markdown_link"
-    %li.tabs-title
-      =link_to "Formatting Help", "#formatting_help"
+      .tabs-content{"data-tabs-content" => "task-tabs"}
+        #description.tabs-panel.is-active
+          =f.text_area :description, cols: 80, rows: 15, disabled: @task.archived?
 
-  .tabs-content{"data-tabs-content" => "task-tabs"}
-    #description.tabs-panel.is-active
-      =f.text_area :description, cols: 80, rows: 15, disabled: @task.archived?
+        #preview.tabs-panel
 
-    #preview.tabs-panel
-
-    #formatting_help.tabs-panel
-      =render "markdown_formatting_help"
+        #formatting_help.tabs-panel
+          =render "markdown_formatting_help"
 
   =button_tag "Save", class: "btn-save" unless @task.archived?
   

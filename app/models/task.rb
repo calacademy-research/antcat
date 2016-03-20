@@ -10,7 +10,7 @@ class Task < ActiveRecord::Base
 
   validates :adder, presence: true
   validates :description, presence: true, allow_blank: false
-  validates :title, presence: true, allow_blank: false
+  validates :title, presence: true, allow_blank: false, length: { maximum: 70 }
   validates_inclusion_of :status, in: %w(open closed completed)
 
   scope :open, -> { where(status: "open")._desc_date }
