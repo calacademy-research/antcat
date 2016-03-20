@@ -9,4 +9,10 @@ module TasksHelper
   def markdown text
     AntcatMarkdown.render text
   end
+
+  def task_icon status
+    css_classes = ["antcat_icon task"]
+    css_classes << status
+    content_tag :span, nil, class: css_classes
+  end
 end

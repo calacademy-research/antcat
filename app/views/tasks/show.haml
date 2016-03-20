@@ -2,7 +2,9 @@
 -breadcrumb :task, @task
 
 .left
-  %h5=@task.title
+  %h5
+    =task_icon @task.status
+    =@task.title
   Added by
   =@task.adder.decorate.name_linking_to_email
   =time_ago_in_words(@task.created_at)
