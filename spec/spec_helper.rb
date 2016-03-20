@@ -41,6 +41,9 @@ RSpec.configure do |config|
 
   config.infer_spec_type_from_file_location!
   config.include Devise::TestHelpers, type: :controller
+
+  # To avoid typing `FactoryGirl.create` all the time (use `create`).
+  config.include FactoryGirl::Syntax::Methods
 end
 
 Shoulda::Matchers.configure do |config|
