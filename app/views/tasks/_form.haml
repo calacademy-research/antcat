@@ -1,7 +1,13 @@
+-content_for :head do
+  =javascript_include_tag "tasks"
+
 =form_for @task do |f|
   =render "shared/errors_for", resource: @task
   =f.label :title
   =f.text_field :title, disabled: @task.archived?
+
+  =f.label :linked_taxa
+  =f.text_field :taxa_tokens, data: { load: @task.taxa.to_json(root: nil) }
 
   =f.label :description
   =f.text_area :description, cols: 80, rows: 15, disabled: @task.archived?

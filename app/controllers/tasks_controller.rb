@@ -12,6 +12,10 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
+    if params[:taxon_id]
+      taxon = Taxon.find params[:taxon_id]
+      @task.taxa << taxon
+    end
   end
 
   def edit
@@ -69,6 +73,6 @@ class TasksController < ApplicationController
     end
 
     def task_params
-      params.require(:task).permit(:title, :description)
+      params.require(:task).permit(:title, :description, :taxa_tokens)
     end
 end

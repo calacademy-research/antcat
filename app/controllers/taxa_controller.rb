@@ -129,11 +129,11 @@ class TaxaController < ApplicationController
     respond_to do |format|
       format.json do
         results = search_results.map do |taxon|
-          {
-            name: taxon.name_html_cache,
+          { name: taxon.name_html_cache,
+            name_html_cache: taxon.name_html_cache,
+            id: taxon.id,
             authorship: taxon.authorship_string,
-            search_query: taxon.name_cache
-          }
+            search_query: taxon.name_cache }
         end
         render json: results
       end

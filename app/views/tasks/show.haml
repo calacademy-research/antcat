@@ -26,3 +26,9 @@
 
 .callout
   =@task.description
+
+-unless @task.taxa.empty?
+  .callout
+    Linked taxa:
+    -@task.taxa.each do |taxon|
+      =taxon.decorate.link_to_taxon

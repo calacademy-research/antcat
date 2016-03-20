@@ -52,7 +52,7 @@ Feature: Add and edit open tasks
     Then I should see the completed task "Fix typo"
 
   Scenario: Re-opening a closed task
-    Given there is an closed task "Add taxa from Aldous 2007"
+    Given there is a closed task "Add taxa from Aldous 2007"
     When I go to the open tasks page
     Then I should see "There are currently no open tasks."
     And I should see the closed task "Add taxa from Aldous 2007"
@@ -63,3 +63,18 @@ Feature: Add and edit open tasks
 
     When I go to the open tasks page
     Then I should see the open task "Add taxa from Aldous 2007"
+
+  Scenario: Adding linked taxa to a task
+    Given there is an open task "Fix L genera"
+    And there is a genus "Lasius"
+
+    When I go to the task page for "Fix L genera"
+    Then I should not see "Linked taxa"
+
+    When I follow "Edit"
+    And I select "Lasius" from the linked taxon dropdown
+    And I press "Save"
+    And I go to the task page for "Fix L genera"
+
+    Then I should see "Linked taxa"
+    And I should see "Lasius"

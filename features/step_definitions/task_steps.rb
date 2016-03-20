@@ -10,3 +10,10 @@ Then(/^I should see the (open|closed|completed) task "([^"]*)"$/) do |status, ti
   row = find("tr", text: title)
   row.find("td", text: status.capitalize)
 end
+
+# FIX? not actually selecting it from the autocomplete
+# token dropdown; hard to code.
+And(/^I select "([^"]*)" from the linked taxon dropdown$/) do |name|
+  taxon = Taxon.find_by(name_cache: name)
+  first("#task_taxa_tokens", visible: false).set taxon.id
+end
