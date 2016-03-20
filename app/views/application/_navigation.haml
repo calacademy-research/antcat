@@ -18,14 +18,19 @@
     #desktop-menu
       #desktop-upper-menu.top-bar-right
         %ul.dropdown.menu{"data-dropdown-menu" => ""}
+          -if user_signed_in?
+            %li
+              =link_to(editors_panel_path) do
+                .label.has-tip.top{"aria-haspopup" => "true", "data-disable-hover" => "false", "data-tooltip" => "", title: "Unreviewed changes"}
+                  =Notification.pending_count(:all)
+            %li=link_to "Editor's Panel", editors_panel_path
           %li=link_to('References', references_path)
           %li=link_to('Changes', changes_path)
           %li=link_to('AntWeb', 'http://www.antweb.org/')
           %li=link_to('About', page_path('about'))
 
           -if user_signed_in?
-            %li=link_to "Editor's Panel", editors_panel_path
-            %li=link_to(current_user.name || current_user.email, edit_user_registration_path) # TODO
+            %li=link_to(current_user.name || current_user.email, edit_user_registration_path)
             %li=link_to('Logout', destroy_user_session_path)
           -else
             %li=link_to('Login', new_user_session_path)
@@ -68,13 +73,14 @@
     -# TODO probably DRY
     %ul.vertical.dropdown.menu{"data-dropdown-menu" => ""}
       %li=link_to "Catalog", root_path
+      -if user_signed_in?
+        %li=link_to "Editor's Panel", editors_panel_path
       %li=link_to('References', references_path)
       %li=link_to('Changes', changes_path)
       %li=link_to('AntWeb', 'http://www.antweb.org/')
       %li=link_to('About', page_path('about'))
 
       -if user_signed_in?
-        %li=link_to "Editor's Panel", editors_panel_path
         %li=link_to(current_user.name || current_user.email, edit_user_registration_path) # TODO
         %li=link_to('Logout', destroy_user_session_path)
       -else

@@ -3,9 +3,15 @@
 
 %h5 Unreviewed changes
 %ul
-  %li=link_to "Open tasks", tasks_path
-  %li=link_to "Unreviewed references", latest_additions_references_path
-  %li=link_to "Unreviewed catalog changes", unreviewed_changes_path
+  %li
+    .label=@count[:open_tasks]
+    =link_to "Open tasks", tasks_path
+  %li
+    .label=@count[:unreviewed_references]
+    =link_to "Unreviewed references", latest_additions_references_path
+  %li
+    .label=@count[:unreviewed_catalog_changes]
+    =link_to "Unreviewed catalog changes", unreviewed_changes_path
 
 %h5 Other links
 %ul
