@@ -1,0 +1,33 @@
+%table
+  %caption AntCat-specific hooks
+  %thead
+    %tr
+      %th What
+      %th Code
+      %th Output
+  %tbody
+    %tr
+      %td Taxon link
+      %td
+        %code %429349
+      %td=Taxon.find(429349).decorate.link_to_taxon
+    %tr
+      %td Taxa list
+      %td
+        %code %tl[438771, 437477, 438835]
+      %td
+        =Taxon.find(438771).decorate.link_to_taxon + ","
+        =Taxon.find(437477).decorate.link_to_taxon + ","
+        =Taxon.find(438835).decorate.link_to_taxon
+    %tr
+      %td Reference link
+      %td
+        %code %126902
+      %td
+        =Reference.find(126902).decorate.to_link
+        (expandable)
+
+%p
+  See
+  =link_to "Markdown-Cheatsheet (@GitHub)", "https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
+  for general markdown formatting help.

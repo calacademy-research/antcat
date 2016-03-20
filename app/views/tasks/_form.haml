@@ -16,12 +16,17 @@
       =link_to "Description", "#description"
     %li.tabs-title
       =link_to "Preview", "#preview", id: "preview_markdown_link"
+    %li.tabs-title
+      =link_to "Formatting Help", "#formatting_help"
 
   .tabs-content{"data-tabs-content" => "task-tabs"}
     #description.tabs-panel.is-active
       =f.text_area :description, cols: 80, rows: 15, disabled: @task.archived?
 
     #preview.tabs-panel
+
+    #formatting_help.tabs-panel
+      =render "markdown_formatting_help"
 
   =button_tag "Save", class: "btn-save" unless @task.archived?
   
