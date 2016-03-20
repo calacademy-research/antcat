@@ -176,12 +176,23 @@ GEM
       rails (>= 3.2.0)
     haml (4.0.7)
       tilt
+    haml-rails (0.9.0)
+      actionpack (>= 4.0.1)
+      activesupport (>= 4.0.1)
+      haml (>= 4.0.6, < 5.0)
+      html2haml (>= 1.0.1)
+      railties (>= 4.0.1)
     has_scope (0.6.0)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
     hashdiff (0.2.2)
     headless (2.2.0)
     high_voltage (2.4.0)
+    html2haml (2.0.0)
+      erubis (~> 2.7.0)
+      haml (~> 4.0.0)
+      nokogiri (~> 1.6.0)
+      ruby_parser (~> 3.5)
     i18n (0.7.0)
     inherited_resources (1.6.0)
       actionpack (>= 3.2, < 5)
@@ -272,6 +283,7 @@ GEM
       activesupport (>= 3.0)
       i18n
       polyamorous (~> 1.2)
+    redcarpet (3.3.4)
     request_store (1.2.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
@@ -294,6 +306,8 @@ GEM
       rspec-mocks (~> 3.3.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
+    ruby_parser (3.8.1)
+      sexp_processor (~> 4.1)
     rubyzip (1.1.7)
     safe_yaml (1.0.4)
     sass (3.4.21)
@@ -308,6 +322,7 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
+    sexp_processor (4.7.0)
     shoulda-matchers (3.0.1)
       activesupport (>= 4.0.0)
     slop (3.6.0)
@@ -389,7 +404,7 @@ DEPENDENCIES
   foundation-rails
   fuzzy-string-match
   gretel
-  haml
+  haml-rails
   headless
   high_voltage
   jasmine-jquery-rails
@@ -408,6 +423,7 @@ DEPENDENCIES
   rails (~> 4.2)
   rails-observers
   rake (< 11.0)
+  redcarpet
   request_store
   rspec-core
   rspec-rails

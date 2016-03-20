@@ -136,6 +136,17 @@ AntCat::Application.routes.draw do
     end
   end
 
+  resources :tasks do
+    collection do
+      post :preview_markdown
+    end
+    member do
+      put :complete
+      put :close
+      put :reopen
+    end
+  end
+
   # REST
   resources :taxon, controller: 'taxa', except: [:edit, :new, :update, :destroy]
 

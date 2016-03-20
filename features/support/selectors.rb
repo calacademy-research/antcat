@@ -76,3 +76,6 @@ module HtmlSelectorsHelpers
 end
 
 World HtmlSelectorsHelpers
+
+# To avoid typing `FactoryGirl.create` all the time (use `create`).
+World FactoryGirl::Syntax::Methods

@@ -72,6 +72,12 @@ module NavigationHelpers
     when /^the tooltips editing page$/
       "/tooltips"
 
+    when /^the open tasks page$/
+      "/tasks"
+    when /^the task (entry|page) for "([^"]*)"$/
+      task = Task.find_by(title: $2)
+      "/tasks/#{task.id}"
+
     when /^the edit user page$/
       '/users/edit'
     when /^the forgot password page$/

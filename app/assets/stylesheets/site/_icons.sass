@@ -1,0 +1,17 @@
+@import "font-awesome"
+@import "colors"
+
+.antcat_icon
+  font-family: FontAwesome
+  text-align: center
+  display: inline-block
+
+  @extend .fa-fw
+
+  &.open.task
+    @extend .fa-plus-circle
+    color: $color_green
+
+  &.closed.task, &.completed.task
+    @extend .fa-check-circle
+    color: darkgrey

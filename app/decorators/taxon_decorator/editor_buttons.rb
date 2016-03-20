@@ -10,6 +10,7 @@ module TaxonDecorator::EditorButtons
         content << ' ' << link_to_delete_taxon if link_to_delete_taxon
         content << ' ' << link_to_review_change if link_to_review_change
       end
+      content << ' ' << link_to_add_task if link_to_add_task
       content
     end
   end
@@ -17,6 +18,13 @@ module TaxonDecorator::EditorButtons
   def link_to_edit_taxon
     if helpers.user_can_edit?
       helpers.link_to "Edit", helpers.edit_taxa_path(taxon), class: "btn-edit"
+    end
+  end
+
+  def link_to_add_task
+    if helpers.user_can_edit?
+      helpers.link_to "Add Task", helpers.new_task_path(taxon_id: taxon.id),
+      class: "btn-edit"
     end
   end
 
