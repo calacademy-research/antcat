@@ -283,6 +283,7 @@ GEM
       activesupport (>= 3.0)
       i18n
       polyamorous (~> 1.2)
+    redcarpet (3.3.4)
     request_store (1.2.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
@@ -422,6 +423,7 @@ DEPENDENCIES
   rails (~> 4.2)
   rails-observers
   rake (< 11.0)
+  redcarpet
   request_store
   rspec-core
   rspec-rails

@@ -6,4 +6,7 @@ module TasksHelper
     end.to_sentence.html_safe
   end
 
+  def markdown text
+    AntcatMarkdown.render text
+  end
 end
