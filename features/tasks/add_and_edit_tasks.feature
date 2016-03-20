@@ -69,12 +69,29 @@ Feature: Add and edit open tasks
     And there is a genus "Lasius"
 
     When I go to the task page for "Fix L genera"
-    Then I should not see "Linked taxa"
+    Then I should not see "Linked taxa:"
 
     When I follow "Edit"
     And I select "Lasius" from the linked taxon dropdown
     And I press "Save"
     And I go to the task page for "Fix L genera"
 
-    Then I should see "Linked taxa"
+    Then I should see "Linked taxa:"
     And I should see "Lasius"
+
+  @javascript
+  Scenario: Creating a new linked task from the catalog page
+    Given there is a genus "Lasius"
+
+    When I go to the catalog page for "Lasius"
+    Then I should not see "Related open tasks:"
+
+    When I follow "Add Task"
+    And I fill in "task_title" with "Typo?"
+    And I fill in "task_description" with "Spelled Glasiuss?"
+    And I press "Save"
+    Then I should see "Linked taxa:"
+    And I should see "Lasius"
+
+    When I go to the catalog page for "Lasius"
+    Then I should see "Related open tasks:"
