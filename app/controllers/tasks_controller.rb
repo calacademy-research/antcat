@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_filter :authenticate_editor, except: [:index, :show]
+  before_filter :authenticate_editor, except: [:index, :show, :preview_markdown]
   before_filter :set_task, only: [:show, :edit, :update, :reopen, :complete, :close]
 
   def index
@@ -65,6 +65,13 @@ class TasksController < ApplicationController
   def reopen
     @task.set_status "open", current_user
     redirect_to @task, notice: "Successfully re-opened task."
+  end
+
+  def preview_markdown
+    text = params[:task_description] || "no content"
+
+    markdown = AntcatMarkdown.render text
+    render json: markdown, content_type: 'text/html'
   end
 
   private

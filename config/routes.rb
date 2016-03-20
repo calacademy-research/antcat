@@ -137,6 +137,9 @@ AntCat::Application.routes.draw do
   end
 
   resources :tasks do
+    collection do
+      post :preview_markdown
+    end
     member do
       put :complete
       put :close

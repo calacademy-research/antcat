@@ -51,6 +51,17 @@ Given /(?:these|this) book references? exists?/ do |table|
   end
 end
 
+# HACK because I could not get it to work in any other way.
+Given /^there is a Giovanni reference$/ do
+  reference = create :article_reference,
+  author_names: [],
+  citation_year: '1809',
+  title: "Giovanni's Favorite Ants"
+
+  reference.update_column(:id, 7777)
+  reference.author_names << create(:author_name, name: 'Giovanni, S.')
+end
+
 Given(/(?:these|this) unknown references? exists?/) do |table|
   table.hashes.each do |hash|
     create_reference :unknown_reference, hash

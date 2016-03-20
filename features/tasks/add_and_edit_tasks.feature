@@ -95,3 +95,24 @@ Feature: Add and edit open tasks
 
     When I go to the catalog page for "Lasius"
     Then I should see "Related open tasks:"
+
+  Scenario: Using markdown
+    Given there is an open task "Merge 'Giovanni' authors"
+    And there is a Giovanni reference
+
+    When I go to the task page for "Merge 'Giovanni' authors"
+    And I follow "Edit"
+    And I fill in "task_description" with "Ref: %r7777"
+    And I press "Save"
+    Then I should see "Ref: Giovanni, 1809"
+
+  @javascript
+  Scenario: Previewing markdown
+    Given there is an open task "Merge 'Giovanni' authors"
+    And there is a Giovanni reference
+
+    When I go to the task page for "Merge 'Giovanni' authors"
+    And I follow "Edit"
+    And I fill in "task_description" with "Ref: %r7777"
+    And I follow "Preview"
+    Then I should see "Ref: Giovanni, 1809"
