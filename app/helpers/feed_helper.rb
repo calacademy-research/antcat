@@ -1,9 +1,7 @@
-# To be added: custom activity templates.
-
 module FeedHelper
 
   def format_activity activity
-    partial = "feed/activities/default"
+    partial = partial_for_activity activity
     render partial: partial, locals: { activity: activity }
   end
 
@@ -28,11 +26,29 @@ module FeedHelper
       destroy: "deleted",
     }[action.to_sym] || action.upcase
 
-    # upcase to avoid blwing up and make sure missing
-    # actions are readable but ugly.
+    # Default to the action name for missing actions (and upcase
+    # upcase to make sure that they are readable but ugly).
   end
 
   def trackabe_type_to_human type
     type.titleize.downcase
   end
+
+  private
+    # Returns the partial's full path like this:
+    #   there is a partial
+    #   named `trackable_type`? --> activity.trackable_type
+    #   else                    --> "default"
+    def partial_for_activity activity
+      partialized_name = activity.trackable_type.titleize.downcase
+      activities_path = "feed/activities/"
+      underscored_partial_path = "#{activities_path}_#{partialized_name}"
+
+      partial = if lookup_context.template_exists? underscored_partial_path
+                partialized_name
+              else
+                "default"
+              end
+      "#{activities_path}#{partial}"
+    end
 end

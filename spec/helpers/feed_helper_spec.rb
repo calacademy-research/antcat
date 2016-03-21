@@ -60,4 +60,21 @@ describe FeedHelper do
         .to eq "book reference"
     end
   end
+
+  describe "#partial_for_activity" do
+    describe "there's a partial matching `trackable_type`" do
+      it "returns that spaced and downcased" do
+        expect(helper.send :partial_for_activity, activity)
+          .to eq "feed/activities/journal"
+      end
+    end
+
+    describe "there's no partial matching `trackable_type`" do
+      it "returns the default template" do
+        activity = create :activity, trackable: (create :citation)
+        expect(helper.send :partial_for_activity, activity)
+          .to eq "feed/activities/default"
+      end
+    end
+  end
 end

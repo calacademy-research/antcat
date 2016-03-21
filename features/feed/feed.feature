@@ -14,7 +14,7 @@ Feature: Feed
     And I go to the activity feed
     Then I should see "Archibald added the journal"
 
-  Scenario: Added journal
+  Scenario: Edited journal
     When I edit a journal for the feed
     And I go to the activity feed
     Then I should see "Archibald edited the journal"

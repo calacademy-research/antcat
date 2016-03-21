@@ -1,5 +1,9 @@
 class TaxonHistoryItem < ActiveRecord::Base
   include UndoTracker
+
+  include Feed::Trackable
+  tracked on: :all
+
   belongs_to :taxon
 
   attr_accessible :taxon_id, :taxt, :position, :taxon
