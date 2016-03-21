@@ -82,6 +82,9 @@ AntCat::Application.routes.draw do
     resource :convert_to_subspecies, only: [:new, :create]
   end
 
+  # Shallow route for the show action for the feed
+  resources :taxon_history_items, only: [:show]
+
   resource :default_reference, only: [:update]
 
   get 'name_pickers/search'

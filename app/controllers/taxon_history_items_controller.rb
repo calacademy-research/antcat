@@ -3,6 +3,11 @@ class TaxonHistoryItemsController < ApplicationController
 
   before_filter :authenticate_editor
 
+  def show
+    @item = TaxonHistoryItem.find params[:id]
+    render 'history_items/show'
+  end
+
   def update
     item = TaxonHistoryItem.find params[:id]
     item.update_taxt_from_editable params[:taxt]

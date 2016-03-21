@@ -21,3 +21,8 @@ crumb :convert_to_species do |taxon|
   link "Convert to Species"
   parent :edit_taxon, taxon
 end
+
+crumb :taxon_history_item do |item|
+  link "History Item ##{item.id}"
+  parent :taxon_being_edited, item.taxon
+end
