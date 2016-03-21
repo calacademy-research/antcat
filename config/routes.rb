@@ -130,6 +130,7 @@ AntCat::Application.routes.draw do
   resources :antweb_data, only: [:index]
 
   get "panel", to: "editors_panels#index", as: "editors_panel"
+  resource :feed, only: [:show], controller: "feed"
 
   resources :tooltips do
     collection do

@@ -1,7 +1,10 @@
 class Journal < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
   include UndoTracker
-  
+
+  include Feed::Trackable
+  tracked on: :all
+
   validates :name, presence: true, allow_blank: false
   has_paper_trail meta: { change_id: :get_current_change_id }
 

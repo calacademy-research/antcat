@@ -72,6 +72,9 @@ module NavigationHelpers
     when /^the tooltips editing page$/
       "/tooltips"
 
+    when /^the activity feed$/
+      "/feed"
+
     when /^the open tasks page$/
       "/tasks"
     when /^the task (entry|page) for "([^"]*)"$/
