@@ -3,7 +3,7 @@ class Journal < ActiveRecord::Base
   include UndoTracker
 
   include Feed::Trackable
-  tracked on: :all
+  tracked on: :all, parameters: ->(journal) do { name: journal.name } end
 
   validates :name, presence: true, allow_blank: false
   has_paper_trail meta: { change_id: :get_current_change_id }
