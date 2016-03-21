@@ -8,14 +8,14 @@ describe FeedHelper do
   end
 
   describe "#link_activity_user" do
-    describe "with a valid user" do
+    context "with a valid user" do
       it "links the user" do
         expect(helper.link_activity_user activity)
           .to include activity.user.name
       end
     end
 
-    describe "without a valid user" do
+    context "without a valid user" do
       it "handles nil / 'system' activities" do
         system_activity = create :activity, user: nil
         expect(helper.link_activity_user system_activity)
@@ -25,7 +25,7 @@ describe FeedHelper do
   end
 
   describe "#link_trackable_if_exists" do
-    describe "with a valid trackable" do
+    context "with a valid trackable" do
       it "links the trackable" do
         trackable_id = activity.trackable_id
         expect(helper.link_trackable_if_exists activity, "label")
@@ -33,7 +33,7 @@ describe FeedHelper do
       end
     end
 
-    describe "without a valid trackable" do
+    context "without a valid trackable" do
       it "handles nil trackables" do
         activity_without_trackable = create :activity, trackable: nil
         expect(helper.link_trackable_if_exists activity_without_trackable, "label")
@@ -62,14 +62,22 @@ describe FeedHelper do
   end
 
   describe "#partial_for_activity" do
-    describe "there's a partial matching `trackable_type`" do
+    context "no `trackable_type`" do
+      it "returns the action" do
+        activity = create :activity, trackable: nil, action: "approved_all"
+        expect(helper.send :partial_for_activity, activity)
+          .to eq "feed/activities/approved_all"
+      end
+    end
+
+    context "there's a partial matching `trackable_type`" do
       it "returns that spaced and downcased" do
         expect(helper.send :partial_for_activity, activity)
           .to eq "feed/activities/journal"
       end
     end
 
-    describe "there's no partial matching `trackable_type`" do
+    context "there's no partial matching `trackable_type`" do
       it "returns the default template" do
         activity = create :activity, trackable: (create :citation)
         expect(helper.send :partial_for_activity, activity)

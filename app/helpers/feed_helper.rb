@@ -36,12 +36,15 @@ module FeedHelper
 
   private
     # Returns the partial's full path like this:
+    #   no `trackable_type`?    --> activity.action
     #   there is a partial
     #   named `trackable_type`? --> activity.trackable_type
     #   else                    --> "default"
     def partial_for_activity activity
-      partialized_name = activity.trackable_type.titleize.downcase
       activities_path = "feed/activities/"
+      return "#{activities_path}#{activity.action}" unless activity.trackable_type
+
+      partialized_name = activity.trackable_type.titleize.downcase
       underscored_partial_path = "#{activities_path}_#{partialized_name}"
 
       partial = if lookup_context.template_exists? underscored_partial_path
