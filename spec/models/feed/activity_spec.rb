@@ -2,7 +2,7 @@ require "spec_helper"
 
 Activity = Feed::Activity
 
-describe Feed::Activity do
+describe Feed::Activity, feed: true do
   describe ".create_activity_for_trackable" do
     context "globally enabled" do
       it "creates activities" do
@@ -17,7 +17,6 @@ describe Feed::Activity do
         Activity.enabled = false
         Activity.create_activity_for_trackable nil, nil
         expect(Activity.count).to eq 0
-        Activity.enabled = true
       end
     end
   end

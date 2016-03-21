@@ -35,6 +35,12 @@ After "@papertrail" do
   PaperTrail.enabled = false
 end
 
+Around "@feed" do |scenario, block|
+  Feed::Activity.with_tracking do
+    block.call
+  end
+end
+
 # Some drivers remembers the window size between tests, so always restore.
 Before "@responsive" do
   resize_window_to_device :desktop

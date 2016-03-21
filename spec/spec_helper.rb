@@ -39,6 +39,12 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  config.around :each, feed: true do |example|
+    Feed::Activity.enabled = true
+    example.run
+    Feed::Activity.enabled = false
+  end
+
   config.infer_spec_type_from_file_location!
   config.include Devise::TestHelpers, type: :controller
 
@@ -52,3 +58,5 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+Feed::Activity.enabled = false

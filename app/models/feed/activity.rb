@@ -1,7 +1,5 @@
 # Upcoming class methods:
 #   create_activity (without a trackable)
-#   without_tracking
-#   with_tracking
 
 class Feed::Activity < ActiveRecord::Base
   belongs_to :trackable, polymorphic: true
@@ -20,6 +18,22 @@ class Feed::Activity < ActiveRecord::Base
 
     def enabled?
       self.enabled != false
+    end
+
+    def without_tracking &block
+      self._with_or_without_tracking false, &block
+    end
+
+    def with_tracking &block
+      self._with_or_without_tracking true, &block
+    end
+
+    def _with_or_without_tracking value
+      before = enabled
+      self.enabled = value
+      yield
+    ensure
+      self.enabled = before
     end
   end
 end
