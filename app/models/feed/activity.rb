@@ -1,6 +1,3 @@
-# Upcoming class methods:
-#   create_activity (without a trackable)
-
 class Feed::Activity < ActiveRecord::Base
   belongs_to :trackable, polymorphic: true
   belongs_to :user
@@ -14,6 +11,10 @@ class Feed::Activity < ActiveRecord::Base
       return unless enabled?
       self.create! trackable: trackable, action: action,
         user: User.current_user, parameters: parameters
+    end
+
+    def create_activity action, parameters = {}
+      self.create_activity_for_trackable nil, action, parameters
     end
 
     def enabled?

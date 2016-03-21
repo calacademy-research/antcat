@@ -7,6 +7,9 @@ class Reference < ActiveRecord::Base
   include UndoTracker
   include ReferenceComparable
 
+  include Feed::Trackable
+  tracked
+
   attr_accessor :publisher_string
   attr_accessor :journal_name
   has_paper_trail meta: { change_id: :get_current_change_id }
@@ -137,10 +140,16 @@ class Reference < ActiveRecord::Base
   end
 
   def self.approve_all
-    Reference.where.not(review_state: "reviewed").find_each do |reference|
-      reference.review_state = 'reviewed'
-      reference.save!
+    count = Reference.where.not(review_state: "reviewed").count
+
+    Feed::Activity.without_tracking do
+      Reference.where.not(review_state: "reviewed").find_each do |reference|
+        reference.review_state = "reviewed"
+        reference.save!
+      end
     end
+
+    Feed::Activity.create_activity :approve_all_references, { count: count }
   end
 
   private

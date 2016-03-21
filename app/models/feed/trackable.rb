@@ -1,7 +1,13 @@
 # Usage:
-# In the model, include Feed::Trackable
-# and add `tracked on: :all` (for :create, :update, :destroy)
-# or `tracked on: [:create, :destroy]` for single hooks.
+# In the model, include Feed::Trackable and add:
+#
+# `tracked on: :all` (for :create, :update, :destroy)
+# `tracked on: [:create, :destroy]` (for those hooks)
+# `tracked` (no hooks, but mixes in #create_activity)
+#
+# To save additional parameters:
+# `tracked on: :all,
+#   parameters: ->(journal) do { name: journal.name } end`
 
 module Feed::Trackable
   extend ActiveSupport::Concern

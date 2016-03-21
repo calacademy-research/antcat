@@ -45,3 +45,12 @@ When /^I delete a taxon history item for the feed$/ do
   end
   item.destroy
 end
+
+# Reference
+When /^I create a bunch of references for the feed$/ do
+  Feed::Activity.without_tracking do
+    create :article_reference, review_state: "reviewing"
+    create :article_reference, review_state: "reviewing"
+    create :article_reference, review_state: "reviewed"
+  end
+end
