@@ -11,8 +11,6 @@ module TasksHelper
   end
 
   def task_icon status
-    css_classes = ["antcat_icon task"]
-    css_classes << status
-    content_tag :span, nil, class: css_classes
+    antcat_icon "task", status
   end
 end

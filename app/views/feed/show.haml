@@ -4,13 +4,15 @@
 -if @activities.empty?
   No activities.
 -else
-  %table
+  %table.feed
     %thead
       %tr
+        %th
         %th What
         %th When
     -@activities.each do |activity|
       %tr
+        %td.icon=activity_icon activity
         %td
           =link_activity_user activity
           =format_activity activity

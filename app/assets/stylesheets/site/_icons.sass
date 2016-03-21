@@ -8,6 +8,7 @@
 
   @extend .fa-fw
 
+  // tasks and feed
   &.open.task
     @extend .fa-plus-circle
     color: $color_green
@@ -15,3 +16,24 @@
   &.closed.task, &.completed.task
     @extend .fa-check-circle
     color: darkgrey
+
+  // feed
+  &.create
+    @extend .fa-plus-circle
+    color: $color_green
+
+  &.destroy
+    @extend .fa-minus-circle
+    color: $color_danger
+
+  &.approve_change, &.finish_reviewing, &.approve_all_references, &.approve_all_changes
+    @extend .fa-check-circle
+    color: $color_green
+
+  &.undo_change
+    @extend .fa-exclamation
+    color: $color_danger
+
+  &.restart_reviewing
+    @extend .fa-check-circle
+    color: $color_danger

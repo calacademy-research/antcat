@@ -34,6 +34,13 @@ module FeedHelper
     type.titleize.downcase
   end
 
+  def activity_icon activity
+    css_classes = []
+    css_classes << activity.trackable_type.underscore.downcase if activity.trackable_type
+    css_classes << activity.action if activity.action
+    antcat_icon css_classes
+  end
+
   private
     # Returns the partial's full path like this:
     #   no `trackable_type`?    --> activity.action
