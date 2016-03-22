@@ -6,7 +6,7 @@ Then /^I should see "([^"]*)" and no other feed items$/ do |text|
 end
 
 Then /^I should see (\d+) items? in the feed$/ do |expected_count|
-  actual_count = all("table.feed > tr").size
+  actual_count = all("table.feed > tbody tr").size
   expect(actual_count).to eq expected_count.to_i
 end
 

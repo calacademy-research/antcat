@@ -1,3 +1,7 @@
+# Re "@reference.create_activity": we must create the feed
+# activities here in the controller, otherwise every save
+# generates tons of feed items.
+
 class ReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [:index, :download, :autocomplete,
     :search_help, :show, :search, :endnote_export, :wikipedia_export, :latest_additions]
@@ -23,6 +27,7 @@ class ReferencesController < ApplicationController
   def create
     @reference = new_reference
     if save
+      @reference.create_activity :create
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully created.
         <strong>#{view_context.link_to 'Back to the index', references_path}</strong>
@@ -38,6 +43,7 @@ class ReferencesController < ApplicationController
     @reference = set_reference_type
 
     if save
+      @reference.create_activity :update
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully updated.
         <strong>#{view_context.link_to 'Back to the index', references_path}</strong>.
@@ -49,6 +55,7 @@ class ReferencesController < ApplicationController
 
   def destroy
     if @reference.destroy
+      @reference.create_activity :destroy
       redirect_to references_path, notice: 'Reference was successfully destroyed.'
     else
       if @reference.errors.present?

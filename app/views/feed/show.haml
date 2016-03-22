@@ -11,13 +11,14 @@
         %th What
         %th When
     -@activities.each do |activity|
-      %tr
-        %td.icon=activity_icon activity
-        %td
-          =link_activity_user activity
-          =format_activity activity
-        %td
-          =time_ago_in_words(activity.created_at)
-          ago
+      %tbody
+        %tr
+          %td.icon=activity_icon activity
+          %td
+            =link_activity_user activity
+            =format_activity activity
+          %td
+            =time_ago_in_words(activity.created_at)
+            ago
 
 =will_paginate @activities

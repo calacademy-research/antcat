@@ -3,6 +3,31 @@ Feature: Feed (references)
   Background:
     Given I log in as a catalog editor named "Archibald"
 
+  @javascript
+  Scenario: Added reference
+    When I go to the references page
+    And I follow "New"
+    And I fill in "reference_author_names_string" with "Ward, B.L.; Bolton, B."
+    And I fill in "reference_title" with "A reference title"
+    And I fill in "reference_citation_year" with "1981"
+    And I follow "Other"
+    And I fill in "reference_citation" with "Required"
+    And I press the "Save" button
+    And I go to the activity feed
+    Then I should see "Archibald added the reference Ward & Bolton, 1981" and no other feed items
+
+  @javascript
+  Scenario: Edited reference
+    Given there is a reference for the feed with state "reviewed"
+
+    When I go to the references page
+    And I follow first reference link
+    And I follow "Edit"
+    And I fill in "reference_title" with "A reference title"
+    And I press the "Save" button
+    And I go to the activity feed
+    Then I should see "Archibald edited the reference Giovanni, 1809" and no other feed items
+
   Scenario: Started reviewing reference
     Given there is a reference for the feed with state "none"
 
