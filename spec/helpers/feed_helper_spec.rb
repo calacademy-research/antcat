@@ -70,6 +70,15 @@ describe FeedHelper do
       end
     end
 
+    context "there's a partial matching `action`" do
+      it "returns the action" do
+        activity = create :activity, trackable: create_species,
+          action: "elevate_subspecies_to_species"
+        expect(helper.send :partial_for_activity, activity)
+          .to eq "feed/activities/actions/elevate_subspecies_to_species"
+      end
+    end
+
     context "there's a partial matching `trackable_type`" do
       it "returns that spaced and downcased" do
         expect(helper.send :partial_for_activity, activity)

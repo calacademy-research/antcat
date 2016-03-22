@@ -54,3 +54,17 @@ Feature: Feed (taxa)
     And I press "Delete?"
     And I go to the activity feed
     Then I should see "Archibald deleted the subfamily Antcatinae" and no other feed items
+
+  Scenario: Elevated subspecies to species
+    Given activity tracking is disabled
+      And the Formicidae family exists
+      And there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
+    And activity tracking is enabled
+
+    When I go to the catalog entry for "Solenopsis speccus subbus"
+      And I press "Edit"
+      And I will confirm on the next step
+      And I follow "Elevate to species"
+
+    When I go to the activity feed
+    Then I should see "Archibald elevated the subspecies Solenopsis speccus subbus to the rank of species (now Solenopsis subbus)" and no other feed items
