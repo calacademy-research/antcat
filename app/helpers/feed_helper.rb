@@ -25,6 +25,10 @@ module FeedHelper
       update: "edited",
       destroy: "deleted",
 
+      restart_reviewing: "restarted reviewing",
+      finish_reviewing: "finished reviewing",
+      start_reviewing: "started reviewing",
+
       complete_task: "completed",
       close_task: "closed",
       reopen_task: "re-opened",

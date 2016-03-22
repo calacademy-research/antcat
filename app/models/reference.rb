@@ -8,7 +8,9 @@ class Reference < ActiveRecord::Base
   include ReferenceComparable
 
   include Feed::Trackable
-  tracked
+  tracked parameters: ->(reference) do
+    { name: reference.decorate.key }
+  end
 
   attr_accessor :publisher_string
   attr_accessor :journal_name
@@ -144,12 +146,22 @@ class Reference < ActiveRecord::Base
 
     Feed::Activity.without_tracking do
       Reference.where.not(review_state: "reviewed").find_each do |reference|
-        reference.review_state = "reviewed"
-        reference.save!
+        reference.approve
       end
     end
 
     Feed::Activity.create_activity :approve_all_references, { count: count }
+  end
+
+  # TODO merge into Workflow
+  # Only for .approve_all, which approves all unreviewed
+  # references of any state (which Workflow doesn't allow).
+  def approve
+    review_state = "reviewed"
+    save!
+    Feed::Activity.with_tracking do
+      create_activity :finish_reviewing
+    end
   end
 
   private

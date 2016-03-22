@@ -15,4 +15,15 @@ class Reference < ActiveRecord::Base
     end
   end
 
+  def restart_reviewing
+    create_activity :restart_reviewing
+  end
+
+  def finish_reviewing
+    create_activity :finish_reviewing
+  end
+
+  def start_reviewing
+    create_activity :start_reviewing
+  end
 end
