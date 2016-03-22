@@ -3,7 +3,10 @@ module Feed::Actions::Destroy
 
   included do
     after_destroy do
-      create_activity :destroy
+      # FIX Currently required in tests.
+      unless Rails.env.test? && !Feed::Activity.enabled?
+        create_activity :destroy
+      end
     end
   end
 end

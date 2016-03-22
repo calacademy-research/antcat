@@ -3,7 +3,10 @@ module Feed::Actions::Update
 
   included do
     after_update do
-      create_activity :update
+      # FIX Currently required in tests.
+      unless Rails.env.test? && !Feed::Activity.enabled?
+        create_activity :update
+      end
     end
   end
 end

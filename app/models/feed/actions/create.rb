@@ -3,7 +3,10 @@ module Feed::Actions::Create
 
   included do
     after_create do
-      create_activity :create
+      # FIX Currently required in tests.
+      unless Rails.env.test? && !Feed::Activity.enabled?
+        create_activity :create
+      end
     end
   end
 end
