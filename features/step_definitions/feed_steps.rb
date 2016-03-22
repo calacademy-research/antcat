@@ -54,3 +54,10 @@ When /^I create a bunch of references for the feed$/ do
     create :article_reference, review_state: "reviewed"
   end
 end
+
+# Tooltip
+Given /^there is a tooltip for the feed$/ do
+  Feed::Activity.without_tracking do
+    Tooltip.create key: "authors", scope: "taxa", text: "Text"
+  end
+end
