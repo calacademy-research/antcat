@@ -1,0 +1,18 @@
+-@title = "Reference Section ##{@item.id}"
+-breadcrumb :reference_section, @item
+
+-# "Belongs to" duplicated from "history_items/show".
+%p
+  Belongs to
+  =@item.taxon.decorate.link_to_taxon + "."
+  Edit this item at the taxon's
+  =link_to "edit page.", edit_taxa_path(@item.taxon)
+
+%h5 Title taxt
+%p=Taxt.to_display_sentence @item.title_taxt.presence || "None"
+
+%h5 Subtitle taxt
+%p=Taxt.to_display_sentence @item.subtitle_taxt.presence || "None"
+
+%h5 References taxt
+%p=Taxt.to_string @item.references_taxt.presence || "None"

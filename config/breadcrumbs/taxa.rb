@@ -26,3 +26,8 @@ crumb :taxon_history_item do |item|
   link "History Item ##{item.id}"
   parent :taxon_being_edited, item.taxon
 end
+
+crumb :reference_section do |item|
+  link "Reference Section ##{item.id}"
+  parent :taxon_being_edited, item.taxon
+end
