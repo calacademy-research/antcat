@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
+  include Feed::Trackable
+  tracked on: :create,
+    parameters: ->(user) do { user_id: user.id } end
+
   devise :database_authenticatable, :recoverable, :registerable,
          :rememberable, :trackable, :validatable, :invitable
 
