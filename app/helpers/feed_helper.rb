@@ -24,6 +24,10 @@ module FeedHelper
     { create: "added",
       update: "edited",
       destroy: "deleted",
+
+      complete_task: "completed",
+      close_task: "closed",
+      reopen_task: "re-opened",
     }[action.to_sym] || action.upcase
 
     # Default to the action name for missing actions (and upcase

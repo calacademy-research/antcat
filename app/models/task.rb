@@ -1,5 +1,9 @@
 class Task < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
+
+  include Feed::Trackable
+  tracked on: :all, parameters: ->(task) do { title: task.title } end
+
   attr_reader :taxa_tokens
 
   belongs_to :adder, class_name: "User"
@@ -38,6 +42,12 @@ class Task < ActiveRecord::Base
   def set_status status, user
     self.status = status
     self.closer = status == "open" ? nil : user
-    save!
+    Feed::Activity.without_tracking { save! }
+
+    action =
+      { completed: "complete_task",
+        closed: "close_task",
+        open: "reopen_task" }[status.to_sym]
+    create_activity action
   end
 end
