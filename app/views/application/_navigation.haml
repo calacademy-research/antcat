@@ -20,10 +20,9 @@
         %ul.dropdown.menu{"data-dropdown-menu" => ""}
           -if user_signed_in?
             %li
-              =link_to(editors_panel_path) do
-                .label.has-tip.top{"aria-haspopup" => "true", "data-disable-hover" => "false", "data-tooltip" => "", title: "Unreviewed changes"}
-                  =Notification.pending_count(:all)
-            %li=link_to "Editor's Panel", editors_panel_path
+              =link_to editors_panel_path do
+                Editor's Panel
+                %span.notification.label=Notification.pending_count(:all)
           %li=link_to('References', references_path)
           %li=link_to('Changes', changes_path)
           %li=link_to('AntWeb', 'http://www.antweb.org/')
