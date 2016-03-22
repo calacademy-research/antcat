@@ -1,8 +1,5 @@
 @feed
-Feature: Feed (default template)
-  As an AntCat editor
-  I want to see what has changed in the database
-
+Feature: Feed (taxon history items)
   Background:
     Given I log in as a catalog editor named "Archibald"
 
