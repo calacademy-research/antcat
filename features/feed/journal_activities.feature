@@ -6,14 +6,14 @@ Feature: Feed (journals)
   Scenario: Added journal
     When I add a journal for the feed
     And I go to the activity feed
-    Then I should see "Archibald added the journal Archibald Bulletin"
+    Then I should see "Archibald added the journal Archibald Bulletin" and no other feed items
 
   Scenario: Edited journal
     When I edit a journal for the feed
     And I go to the activity feed
-    Then I should see "Archibald edited the journal New Journal Name"
+    Then I should see "Archibald edited the journal New Journal Name" and no other feed items
 
   Scenario: Deleted journal
     When I delete a journal for the feed
     And I go to the activity feed
-    Then I should see "Archibald deleted the journal Archibald Bulletin"
+    Then I should see "Archibald deleted the journal Archibald Bulletin" and no other feed items

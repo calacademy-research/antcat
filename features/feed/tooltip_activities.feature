@@ -12,7 +12,7 @@ Feature: Feed (tooltips)
     And I press "Create Tooltip"
 
     And I go to the activity feed
-    Then I should see "Archibald added the tooltip taxa.authors"
+    Then I should see "Archibald added the tooltip taxa.authors" and no other feed items
 
   Scenario: Edited tooltip
     Given there is a tooltip for the feed
@@ -22,7 +22,7 @@ Feature: Feed (tooltips)
     And I press "Update Tooltip"
 
     And I go to the activity feed
-    Then I should see "Archibald edited the tooltip taxa.authors"
+    Then I should see "Archibald edited the tooltip taxa.authors" and no other feed items
 
   Scenario: Deleted tooltip
     Given there is a tooltip for the feed
@@ -31,4 +31,4 @@ Feature: Feed (tooltips)
     And I follow "Destroy"
 
     And I go to the activity feed
-    Then I should see "Archibald deleted the tooltip taxa.authors"
+    Then I should see "Archibald deleted the tooltip taxa.authors" and no other feed items

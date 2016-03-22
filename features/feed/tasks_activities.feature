@@ -11,7 +11,7 @@ Feature: Feed (tasks)
     And I press "Save"
 
     When I go to the activity feed
-    Then I should see "Archibald added the task Valid?"
+    Then I should see "Archibald added the task Valid?" and no other feed items
 
   Scenario: Edited task
     Given there is an open task for the feed
@@ -23,7 +23,7 @@ Feature: Feed (tasks)
     And I press "Save"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the task Valid?"
+    Then I should see "Archibald edited the task Valid?" and no other feed items
 
   Scenario: Completed a task
     Given there is an open task for the feed
@@ -33,7 +33,7 @@ Feature: Feed (tasks)
     And I follow "Complete"
 
     When I go to the activity feed
-    Then I should see "Archibald completed the task Valid?"
+    Then I should see "Archibald completed the task Valid?" and no other feed items
 
   Scenario: Closed a task
     Given there is an open task for the feed
@@ -43,7 +43,7 @@ Feature: Feed (tasks)
     And I follow "Close"
 
     When I go to the activity feed
-    Then I should see "Archibald closed the task Valid?"
+    Then I should see "Archibald closed the task Valid?" and no other feed items
 
   Scenario: Re-opened a closed task
     Given there is a closed task for the feed
@@ -53,4 +53,4 @@ Feature: Feed (tasks)
     And I follow "Re-open"
 
     When I go to the activity feed
-    Then I should see "Archibald re-opened the task Valid?"
+    Then I should see "Archibald re-opened the task Valid?" and no other feed items

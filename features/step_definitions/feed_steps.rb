@@ -1,5 +1,14 @@
 # "for the feed" is basically namespacing.
-# TODO DRY
+
+Then /^I should see "([^"]*)" and no other feed items$/ do |text|
+  step %Q[I should see "#{text}"]
+  step %Q[I should see 1 item in the feed]
+end
+
+Then /^I should see (\d+) items? in the feed$/ do |expected_count|
+  actual_count = all("table.feed > tr").size
+  expect(actual_count).to eq expected_count.to_i
+end
 
 # Journal
 When /^I add a journal for the feed$/ do
