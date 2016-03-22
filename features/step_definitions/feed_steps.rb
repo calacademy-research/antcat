@@ -139,3 +139,28 @@ Given /^there are two unreviewed catalog changes for the feed$/ do
     step 'I save my changes'
   end
 end
+
+# ReferenceSection
+When /^I add a reference section for the feed$/ do
+  taxon = Feed::Activity.without_tracking { create_subfamily }
+
+  ReferenceSection.create title_taxt: "PALAEONTOLOGY",
+    references_taxt: "The Ants (amber checklist)", taxon: taxon
+end
+
+When /^I edit a reference section for the feed$/ do
+  section = Feed::Activity.without_tracking do
+    ReferenceSection.create title_taxt: "PALAEONTOLOGY",
+    references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
+  end
+  section.references_taxt = "The Ants (amber fossil checklist)"
+  section.save!
+end
+
+When /^I delete a reference section for the feed$/ do
+  section = Feed::Activity.without_tracking do
+    ReferenceSection.create title_taxt: "PALAEONTOLOGY",
+    references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
+  end
+  section.destroy
+end
