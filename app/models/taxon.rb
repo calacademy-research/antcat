@@ -9,6 +9,12 @@ class Taxon < ActiveRecord::Base
   include Taxa::Statistics
   include Taxa::Synonyms
 
+  include Feed::Trackable
+  tracked on: :create, parameters: ->(taxon) do
+    { rank: taxon.rank,
+      name: taxon.name_html_cache }
+  end
+
   class TaxonExists < StandardError; end
 
   self.table_name = :taxa

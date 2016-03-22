@@ -1,0 +1,5 @@
+=activity_action_to_verb activity.action
+the
+=activity.parameters[:rank]
+
+=link_trackable_if_exists activity, activity.parameters[:name].html_safe, catalog_path(activity.trackable_id)

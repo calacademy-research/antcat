@@ -27,12 +27,12 @@ class TaxaController < ApplicationController
     # This imitates the previous behavior we had when CatalogController#show was
     # responsible for both the index and show actions, and nil ids were silently
     # redirected to Formicidae (nil are not allowed by routes.rb any longer).
-    unless @taxon.id
-      redirect_to root_path, notice: 'Taxon was successfully created.'
-      return
+    flash[:notice] = "Taxon was successfully created."
+    if @taxon.id
+      redirect_to catalog_path(@taxon)
+    else
+      redirect_to root_path
     end
-
-    redirect_to catalog_path(@taxon), notice: 'Taxon was successfully created.'
 
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :new
@@ -48,12 +48,15 @@ class TaxaController < ApplicationController
 
     # See #create for the raison d'etre of this nil check.
     # Note: Tests pass without this snippets.
-    unless @taxon.id
-      redirect_to root_path, notice: 'Taxon was successfully updated.'
-      return
+    flash[:notice] = "Taxon was successfully updated."
+    if @taxon.id
+      @taxon.create_activity :update
+      redirect_to catalog_path(@taxon)
+    else
+      Feed::Activity.create_activity :custom,
+        parameters: { text: "updated an unknown taxon" }
+      redirect_to root_path
     end
-
-    redirect_to catalog_path(@taxon), notice: 'Taxon was successfully updated.'
 
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :edit

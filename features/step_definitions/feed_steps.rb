@@ -1,5 +1,13 @@
 # "for the feed" is basically namespacing.
 
+Given /^activity tracking is (enabled|disabled)$/ do |state|
+  new_state = case state
+              when "enabled" then true
+              when "disabled" then false
+              else raise end
+  Feed::Activity.enabled = new_state
+end
+
 Then /^I should see "([^"]*)" and no other feed items$/ do |text|
   step %Q[I should see "#{text}"]
   step %Q[I should see 1 item in the feed]
@@ -91,5 +99,14 @@ end
 Given /^there is a closed task for the feed$/ do
   Feed::Activity.without_tracking do
     create :closed_task, title: "Valid?"
+  end
+end
+
+# Taxon
+When /^I add a taxon for the feed$/ do
+  Feed::Activity.without_tracking do
+    step "the Formicidae family exists"
+    subfamily_name = create :subfamily_name, name: "Antcatinae"
+    create :subfamily, name: subfamily_name
   end
 end
