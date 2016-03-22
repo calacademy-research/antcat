@@ -66,7 +66,7 @@ describe FeedHelper do
       it "returns the action" do
         activity = create :activity, trackable: nil, action: "approved_all"
         expect(helper.send :partial_for_activity, activity)
-          .to eq "feed/activities/approved_all"
+          .to eq "feed/activities/actions/approved_all"
       end
     end
 

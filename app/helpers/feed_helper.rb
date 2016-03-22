@@ -5,8 +5,8 @@ module FeedHelper
     render partial: partial, locals: { activity: activity }
   end
 
-  # Activities are by default associated with the performing user,
-  # but in the console we have no current user.
+  # Activities are by default associated with the performing user, but
+  # in the console and other situations we may not have a current user.
   def link_activity_user activity
     return "[system]" unless activity.user
     activity.user.decorate.name_linking_to_email
@@ -54,22 +54,26 @@ module FeedHelper
 
   private
     # Returns the partial's full path like this:
-    #   no `trackable_type`?    --> activity.action
+    #   no `trackable_type`?    --> activity.action (actions subdir)
     #   there is a partial
     #   named `trackable_type`? --> activity.trackable_type
     #   else                    --> "default"
     def partial_for_activity activity
       activities_path = "feed/activities/"
-      return "#{activities_path}#{activity.action}" unless activity.trackable_type
+      return "#{activities_path}actions/#{activity.action}" unless activity.trackable_type
 
-      partialized_name = activity.trackable_type.titleize.downcase
-      underscored_partial_path = "#{activities_path}_#{partialized_name}"
+      partial_name = activity.trackable_type.titleize.downcase
+      partial_path = "#{activities_path}_#{partial_name}"
 
-      partial = if lookup_context.template_exists? underscored_partial_path
-                partialized_name
-              else
-                "default"
-              end
+      partial = if partial_exists? partial_path
+                  partial_name
+                else
+                  "default"
+                end
       "#{activities_path}#{partial}"
+    end
+
+    def partial_exists? path
+      lookup_context.template_exists? path
     end
 end
