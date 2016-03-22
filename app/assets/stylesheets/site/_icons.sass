@@ -6,34 +6,35 @@
   text-align: center
   display: inline-block
 
+  // spacer
   @extend .fa-fw
 
-  // tasks and feed
+  // tasks
   &.open.task
     @extend .fa-plus-circle
     color: $color_green
 
   &.closed.task, &.completed.task
-    @extend .fa-check-circle
+    @extend .fa-check
     color: darkgrey
 
   // feed
+  // create/add = green plus
   &.create
     @extend .fa-plus-circle
     color: $color_green
 
+  // delete = red minus
   &.destroy
     @extend .fa-minus-circle
     color: $color_danger
 
-  &.approve_change, &.finish_reviewing, &.approve_all_references, &.approve_all_changes
-    @extend .fa-check-circle
+  // "approving actions" = green check
+  &.approve_change, &.finish_reviewing, &.approve_all_references, &.approve_all_changes, &.complete_task, &.close_task
+    @extend .fa-check
     color: $color_green
 
-  &.undo_change
+  // mean actions = red exclamation mark
+  &.undo_change, &.reopen_task, &.restart_reviewing
     @extend .fa-exclamation
-    color: $color_danger
-
-  &.restart_reviewing
-    @extend .fa-check-circle
     color: $color_danger
