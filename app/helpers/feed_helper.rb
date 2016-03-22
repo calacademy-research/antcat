@@ -29,6 +29,9 @@ module FeedHelper
       finish_reviewing: "finished reviewing",
       start_reviewing: "started reviewing",
 
+      approve_change: "approved",
+      undo_change: "undid",
+
       complete_task: "completed",
       close_task: "closed",
       reopen_task: "re-opened",

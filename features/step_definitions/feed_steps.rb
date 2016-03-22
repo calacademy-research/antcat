@@ -14,8 +14,15 @@ Then /^I should see "([^"]*)" and no other feed items$/ do |text|
 end
 
 Then /^I should see (\d+) items? in the feed$/ do |expected_count|
-  actual_count = all("table.feed > tbody tr").size
-  expect(actual_count).to eq expected_count.to_i
+  expect(feed_items_count).to eq expected_count.to_i
+end
+
+Then /^I should see at least (\d+) items? in the feed$/ do |expected_count|
+  expect(feed_items_count).to be >= expected_count.to_i
+end
+
+def feed_items_count
+  all("table.feed > tbody tr").size
 end
 
 # Journal
@@ -108,5 +115,27 @@ When /^I add a taxon for the feed$/ do
     step "the Formicidae family exists"
     subfamily_name = create :subfamily_name, name: "Antcatinae"
     create :subfamily, name: subfamily_name
+  end
+end
+
+# Change
+Given /^there are two unreviewed catalog changes for the feed$/ do
+  Feed::Activity.without_tracking do
+    step 'the Formicidae family exists'
+    step 'there is a subfamily "Dorylinae"'
+    step 'there is a subfamily "Ponerinae"'
+
+    step 'I log in as a superadmin named "Archibald"'
+    step 'I go to the edit page for "Dorylinae"'
+    step   'I click the name field'
+    step     'I set the name to "Zorylinae"'
+    step     'I press "OK"'
+    step   'I save my changes'
+
+    step 'I go to the edit page for "Ponerinae"'
+    step   'I click the name field'
+    step     'I set the name to "Ponzerinae"'
+    step     'I press "OK"'
+    step 'I save my changes'
   end
 end

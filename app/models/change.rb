@@ -1,4 +1,7 @@
 class Change < ActiveRecord::Base
+  include Feed::Trackable
+  tracked
+
   belongs_to :approver, class_name: 'User'
   belongs_to :taxon, class_name: 'Taxon', foreign_key: 'user_changed_taxon_id'
   has_many :versions, class_name: 'PaperTrail::Version'
