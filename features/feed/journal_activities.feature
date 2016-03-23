@@ -11,7 +11,7 @@ Feature: Feed (journals)
   Scenario: Edited journal
     When I edit a journal for the feed
     And I go to the activity feed
-    Then I should see "Archibald edited the journal New Journal Name" and no other feed items
+    Then I should see "Archibald edited the journal New Journal Name (changed journal name from Archibald Bulletin)" and no other feed items
 
   Scenario: Deleted journal
     When I delete a journal for the feed

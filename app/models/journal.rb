@@ -3,7 +3,11 @@ class Journal < ActiveRecord::Base
   include UndoTracker
 
   include Feed::Trackable
-  tracked on: :all, parameters: ->(journal) do { name: journal.name } end
+  tracked on: :all, parameters: ->(journal) do
+    hash = { name: journal.name }
+    hash[:name_was] = journal.name_was if journal.name_changed?
+    hash
+  end
 
   validates :name, presence: true, allow_blank: false
   has_paper_trail meta: { change_id: :get_current_change_id }

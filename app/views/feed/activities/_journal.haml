@@ -2,3 +2,9 @@
 the journal
 %i
   =link_trackable_if_exists activity, activity.parameters[:name]
+
+-name_was = activity.parameters[:name_was]
+-if name_was
+  (changed journal name from
+  =succeed ")" do
+    %i=name_was
