@@ -46,6 +46,8 @@ class Species < SpeciesGroupTaxon
       new_name.save
     end
 
+    create_convert_species_to_subspecies_activity new_name
+
     self.update_columns name_id: new_name.id,
                         species_id: species.id,
                         name_cache: new_name.name,
@@ -53,4 +55,10 @@ class Species < SpeciesGroupTaxon
                         type: 'Subspecies'
   end
 
+  private
+    def create_convert_species_to_subspecies_activity new_name
+      create_activity :convert_species_to_subspecies,
+        { name_was: name_html_cache,
+          name: new_name.name_html }
+    end
 end
