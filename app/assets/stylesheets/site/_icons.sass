@@ -18,7 +18,7 @@
     @extend .fa-check
     color: darkgrey
 
-  // feed
+  // feed activities
   // create/add = green plus
   &.create
     @extend .fa-plus-circle
@@ -38,3 +38,15 @@
   &.undo_change, &.reopen_task, &.restart_reviewing
     @extend .fa-exclamation
     color: $color_danger
+
+  // fix colors because .synonym (site.sass) is !important
+  &.create.synonym
+    color: $color_green !important
+
+  &.destroy.synonym
+    color: $color_danger !important
+
+  // also used in feed (but not the left-most icon)
+  &.synonym_arrow
+    @extend .fa-long-arrow-right
+    color: #000
