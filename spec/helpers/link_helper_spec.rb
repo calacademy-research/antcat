@@ -134,4 +134,26 @@ describe LinkHelper do
       expect(helper.link_to_antweb(subspecies)).to eq("<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor rufous&project=worldants\">AntWeb</a>")
     end
   end
+
+  describe "#taxon_link_or_deleted_string" do
+    context "valid taxon" do
+      it "links" do
+        genus = create_genus "Atta"
+        expect(helper.taxon_link_or_deleted_string genus.id)
+          .to match /a href.*?Atta/
+      end
+    end
+
+    context "without a valid taxon" do
+      it "return the id and more" do
+        expect(helper.taxon_link_or_deleted_string 99999)
+          .to eq "#99999 [deleted]"
+      end
+
+      it "allows custom deleted_label" do
+        expect(helper.taxon_link_or_deleted_string 99999, "deleted")
+          .to eq "deleted"
+      end
+    end
+  end
 end

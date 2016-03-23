@@ -30,7 +30,7 @@ Feature: Feed (taxa)
       And I save my changes
 
     When I go to the activity feed
-    Then I should see "Archibald added the genus Atta" and no other feed items
+    Then I should see "Archibald added the genus Atta to the subfamily Formicinae" and no other feed items
 
   Scenario: Edited taxon
     Given I add a taxon for the feed
