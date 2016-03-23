@@ -85,6 +85,7 @@ AntCat::Application.routes.draw do
   # Shallow routes for the show action for the feed
   resources :taxon_history_items, only: [:show]
   resources :reference_sections, only: [:show]
+  resources :synonyms, only: [:show]
 
   resource :default_reference, only: [:update]
 

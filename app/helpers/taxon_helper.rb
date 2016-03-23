@@ -64,4 +64,13 @@ module TaxonHelper
         moments to check that this taxon isn't being referenced.
       MSG
   end
+
+  def taxon_link_or_deleted_string id
+    if Taxon.exists? id
+      Taxon.find(id).decorate.link_to_taxon
+    else
+      "##{id} [deleted]"
+    end
+  end
+
 end
