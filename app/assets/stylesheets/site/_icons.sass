@@ -6,10 +6,42 @@
   text-align: center
   display: inline-block
 
-  // spacer
-  @extend .fa-fw
+  @extend .fa-fw //spacer
 
-  // tasks
+table.feed
+  td.icon > .antcat_icon
+    // create/add = green plus
+    &.create
+      @extend .fa-plus-circle
+      color: $color_green
+
+    // delete = red minus
+    &.destroy
+      @extend .fa-minus-circle
+      color: $color_danger
+
+    // "approving actions" = green check
+    &.approve_change, &.finish_reviewing, &.approve_all_references, &.approve_all_changes, &.complete_task, &.close_task
+      @extend .fa-check
+      color: $color_green
+
+    // mean actions = red exclamation mark
+    &.undo_change, &.reopen_task, &.restart_reviewing
+      @extend .fa-exclamation
+      color: $color_danger
+
+    // fix colors because .synonym (site.sass) is !important
+    &.create.synonym
+      color: $color_green !important
+    &.destroy.synonym
+      color: $color_danger !important
+
+  .antcat_icon
+    &.synonym_arrow
+      @extend .fa-long-arrow-right
+      color: #000
+
+.antcat_icon
   &.open.task
     @extend .fa-plus-circle
     color: $color_green
@@ -17,36 +49,3 @@
   &.closed.task, &.completed.task
     @extend .fa-check
     color: darkgrey
-
-  // feed activities
-  // create/add = green plus
-  &.create
-    @extend .fa-plus-circle
-    color: $color_green
-
-  // delete = red minus
-  &.destroy
-    @extend .fa-minus-circle
-    color: $color_danger
-
-  // "approving actions" = green check
-  &.approve_change, &.finish_reviewing, &.approve_all_references, &.approve_all_changes, &.complete_task, &.close_task
-    @extend .fa-check
-    color: $color_green
-
-  // mean actions = red exclamation mark
-  &.undo_change, &.reopen_task, &.restart_reviewing
-    @extend .fa-exclamation
-    color: $color_danger
-
-  // fix colors because .synonym (site.sass) is !important
-  &.create.synonym
-    color: $color_green !important
-
-  &.destroy.synonym
-    color: $color_danger !important
-
-  // also used in feed (but not the left-most icon)
-  &.synonym_arrow
-    @extend .fa-long-arrow-right
-    color: #000
