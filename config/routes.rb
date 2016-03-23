@@ -82,11 +82,6 @@ AntCat::Application.routes.draw do
     resource :convert_to_subspecies, only: [:new, :create]
   end
 
-  # Shallow routes for the show action for the feed
-  resources :taxon_history_items, only: [:show]
-  resources :reference_sections, only: [:show]
-  resources :synonyms, only: [:show]
-
   resource :default_reference, only: [:update]
 
   get 'name_pickers/search'
@@ -132,7 +127,15 @@ AntCat::Application.routes.draw do
   resources :antweb_data, only: [:index]
 
   get "panel", to: "editors_panels#index", as: "editors_panel"
-  resource :feed, only: [:show], controller: "feed"
+
+  resource :feed, only: [:show], controller: "feed" do
+    resources :activities, only: [:destroy]
+  end
+
+  # Shallow routes for the show action for the feed
+  resources :taxon_history_items, only: [:show]
+  resources :reference_sections, only: [:show]
+  resources :synonyms, only: [:show]
 
   resources :tooltips do
     collection do

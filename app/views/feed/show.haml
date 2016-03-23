@@ -20,5 +20,7 @@
           %td
             =time_ago_in_words(activity.created_at)
             ago
+            -if user_is_superadmin?
+              =link_to "Delete", feed_activity_path(activity), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-delete btn-tiny"
 
 =will_paginate @activities
