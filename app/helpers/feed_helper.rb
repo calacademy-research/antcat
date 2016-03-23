@@ -73,7 +73,7 @@ module FeedHelper
       action_partial_name = activity.action
       action_partial_path = "#{activities_path}/actions/_#{action_partial_name}"
 
-      type_partial_name = activity.trackable_type.titleize.downcase
+      type_partial_name = activity.trackable_type.underscore
       type_partial_path = "#{activities_path}_#{type_partial_name}"
 
       partial = if partial_exists? action_partial_path

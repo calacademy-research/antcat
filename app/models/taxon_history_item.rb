@@ -2,7 +2,9 @@ class TaxonHistoryItem < ActiveRecord::Base
   include UndoTracker
 
   include Feed::Trackable
-  tracked on: :all
+  tracked on: :all, parameters: ->(item) do
+    { taxon_id: item.taxon_id }
+  end
 
   belongs_to :taxon
 
