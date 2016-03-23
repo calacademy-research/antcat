@@ -12,7 +12,9 @@ module FeedHelper
     activity.user.decorate.name_linking_to_email
   end
 
-  def link_trackable_if_exists activity, label, path: nil
+  def link_trackable_if_exists activity, label = nil, path: nil
+    label = "##{activity.trackable_id}" unless label
+
     if activity.trackable
       link_to label, path ? path : activity.trackable
     else

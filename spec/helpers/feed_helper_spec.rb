@@ -32,6 +32,12 @@ describe FeedHelper do
           .to eq %Q[<a href="/journals/#{trackable_id}">label</a>]
       end
 
+      it "defaults labels to the id" do
+        trackable_id = activity.trackable_id
+        expect(helper.link_trackable_if_exists activity)
+          .to eq %Q[<a href="/journals/#{trackable_id}">##{trackable_id}</a>]
+      end
+
       it "allows custom paths" do
         genus = create_genus
         activity = create :activity, trackable: genus
