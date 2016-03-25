@@ -23,3 +23,7 @@ Then /^the email should contain "([^"]*)"$/ do |text|
     step %Q[I should see "#{text}"]
   end
 end
+
+Given /^I have already posted 3 feedbacks in the last 5 minutes$/ do
+  3.times { FactoryGirl.create :feedback }
+end

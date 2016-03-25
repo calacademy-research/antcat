@@ -2,6 +2,7 @@
 $ ->
   buildErrorString = (errorString) ->
     errors = $.parseJSON errorString
+    return errors["rate_limited"] if "rate_limited" of errors
 
     message = ""
     for field, error_message of errors

@@ -1,7 +1,10 @@
 class FeedbackController < ApplicationController
+  include ActionView::Helpers::DateHelper
+
   def create
     @feedback = Feedback.new feedback_params
     @feedback.ip = request.remote_ip
+    render_unprocessable and return if maybe_rate_throttle
 
     if current_user
       @feedback.user = current_user
@@ -18,7 +21,7 @@ class FeedbackController < ApplicationController
         end
       else
         format.json do
-          render json: @feedback.errors, status: :unprocessable_entity
+          render_unprocessable
         end
       end
     end
@@ -27,6 +30,27 @@ class FeedbackController < ApplicationController
   private
     def set_feedback
       @feedback = Feedback.find(params[:id])
+    end
+
+    def maybe_rate_throttle
+      return if current_user # logged-in users are never throttled
+
+      max_feedbacks_in_timespan = 3
+      timespan = 5.minutes.ago
+
+      if @feedback.from_the_same_ip.recently_created(timespan)
+          .count >= max_feedbacks_in_timespan
+
+        @feedback.errors.add :rate_limited, <<-ERROR_MSG
+          you have already posted #{max_feedbacks_in_timespan} feedbacks in the last
+          #{time_ago_in_words Time.at(timespan)}. Thanks for that! Please wait for
+          a few minutes while we are trying to figure out if you are a bot...
+        ERROR_MSG
+      end
+    end
+
+    def render_unprocessable
+      render json: @feedback.errors, status: :unprocessable_entity
     end
 
     def feedback_success_callout
