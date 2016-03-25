@@ -14,6 +14,7 @@
 
 // app/assets/javascripts
 //= require debugging
+//= require feedback
 //= require site
 //= require spinner
 //= require taxa/taxa_autocompletion

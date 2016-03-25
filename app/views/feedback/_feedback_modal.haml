@@ -1,0 +1,57 @@
+:ruby
+  feedback_body = <<-MSG.squish
+    Thanks for helping us make AntCat better by replacing this message with your comments,
+    suggestions, and questions. You may also want to check out the AntCat Google group at
+    https://groups.google.com/forum/?fromgroups#!forum/antcat where we discuss the project.
+
+    Stan Blum
+    California Academy of Sciences
+    http://antcat.org
+  MSG
+
+#feedback_modal.reveal{"data-reveal" => ""}
+  %button.close-button{"aria-label" => "Close modal", "data-close" => "", type: "button"}
+    %span{"aria-hidden" => "true"} &times;
+
+  %h6#new_article
+  %p
+    Feedback and corrections are most welcomed.
+  %p
+    Use the below form or
+    =succeed "." do
+      =mail_to('sblum@calacademy.org', 'email us', subject: 'AntCat feedback', body: feedback_body)
+
+  %p#feedback_errors
+
+  =form_for(:feedback, url: feedback_index_path, remote: true, html: { id: "new_feedback" }) do |f|
+    -if current_user
+      .row
+        .medium-6.columns
+          =label_tag :name
+          =text_field_tag :name, current_user.name, disabled: true
+        .medium-6.columns
+          =label_tag :email
+          =text_field_tag :email, current_user.email, disabled: true
+    -else
+      .row
+        .medium-6.columns
+          =f.label :name
+          =f.text_field :name, placeholder: "Optional"
+        .medium-6.columns
+          =f.label :email
+          =f.text_field :email, placeholder: "Optional"
+
+    .row
+      .medium-12.columns
+        =f.label :comment
+        =f.text_area :comment, rows: 5
+    .row
+      .medium-12.columns
+        .input-group
+          %span.input-group-label Page: http://www.antcat.org/
+          -page_path = request.original_fullpath.gsub(/^\//, "")
+          =f.text_field :page, value: page_path, placeholder: "Optional", class: "input-group-field"
+
+    .row
+      .medium-12.columns
+        =button_tag "Send Feedback", class: "btn-save"
