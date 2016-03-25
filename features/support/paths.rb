@@ -104,6 +104,9 @@ module NavigationHelpers
     when /^the tooltips test page$/
       '/widget_tests/tooltips_test'
 
+    when /^the feedback mailer preview$/
+      '/emails/feedback_mailer_preview-feedback_email'
+
     else
       raise "#{page_name} not found"
     end
