@@ -58,6 +58,14 @@ After "@taxon_browser" do
   $taxon_browser_test_hack = false
 end
 
+Before "@no_travis" do
+  if ENV["TRAVIS"]
+    message = "scenario disabled on Travis CI"
+    $stdout.puts message.red
+    pending message
+  end
+end
+
 # From http://makandracards.com/makandra/1709-single-step-and-
 # slow-motion-for-cucumber-scenarios-using-javascript-selenium
 # Use with `@javascript` and `DRIVER=selenium --format pretty` for the full experience.

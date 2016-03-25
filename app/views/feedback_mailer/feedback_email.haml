@@ -1,0 +1,32 @@
+!!!
+%html
+  %head
+    %meta{content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %p
+      Feedback ID:
+      =@feedback.id
+
+    %p
+      Sent:
+      =@feedback.created_at
+
+    %p
+      From:
+      -if @user
+        =@user.decorate.name_linking_to_email
+        (registered AntCat user)
+      -else
+        =@feedback.name.presence || "[no name]"
+        =surround "<", ">" do
+          =@feedback.email.presence || "[no email]; IP #{@feedback.ip}"
+
+    -if @feedback.page
+      %p
+        Page:
+        -url = "http://antcat.org/#{@feedback.page}"
+        =link_to url, url
+
+    %p
+      Comment:
+      =simple_format @feedback.comment
