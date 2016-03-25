@@ -46,6 +46,7 @@ Feature: Feedback
     Then I should see "Message sent"
     And I should see "Thanks for helping us make AntCat better!"
 
+  @no_travis
   Scenario: Unregistered user submitting feedback
     When I click on the Feedback link
       And I fill in "feedback_comment" with "Great site!!!"
@@ -53,6 +54,7 @@ Feature: Feedback
       And I go to the feedback mailer preview
     Then the email should contain "From: [no name] <[no email];"
 
+  @no_travis
   Scenario: Registered user submitting feedback
     Given I log in as a catalog editor named "Archibald"
 
