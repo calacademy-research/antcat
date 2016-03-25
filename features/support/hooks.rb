@@ -61,7 +61,7 @@ end
 Before "@no_travis" do
   if ENV["TRAVIS"]
     message = "scenario disabled on Travis CI"
-    $stderr.puts message.red
+    $stdout.puts message.red
     pending message
   end
 end

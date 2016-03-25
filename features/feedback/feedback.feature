@@ -33,7 +33,7 @@ Feature: Feedback
   Scenario: Nothing except a comment is required
     When I click on the Feedback link
     And I press "Send Feedback"
-    Then I should see "Whoops, error. Is the comment field blank?"
+    Then I should see "Whoops, error: comment can't be blank"
 
     When I fill in "feedback_comment" with "Great site!!!"
     And I press "Send Feedback"
@@ -75,7 +75,7 @@ Feature: Feedback
   Scenario: Resetting the form after submit, but remember name/email
     When I click on the Feedback link
     And I press "Send Feedback"
-    Then I should see "Whoops, error. Is the comment field blank?"
+    Then I should see "Whoops, error: comment can't be blank"
 
     When I fill in "feedback_comment" with "Great site!!!"
     And I press "Send Feedback"
