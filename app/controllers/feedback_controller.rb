@@ -12,7 +12,8 @@ class FeedbackController < ApplicationController
     respond_to do |format|
       if @feedback.save
         format.json do
-          render json: {}, status: :created
+          json = { feedback_success_callout: feedback_success_callout }
+          render json: json, status: :created
         end
       else
         format.json do
@@ -25,6 +26,11 @@ class FeedbackController < ApplicationController
   private
     def set_feedback
       @feedback = Feedback.find(params[:id])
+    end
+
+    def feedback_success_callout
+      render_to_string partial: "feedback_success_callout",
+        locals: { feedback_id: @feedback.id }
     end
 
     def feedback_params
