@@ -7,6 +7,7 @@ ActiveAdmin.register Feedback do
     column :user
     column :name
     column :email
+    column :email_recipients
     column :ip
   end
 end
