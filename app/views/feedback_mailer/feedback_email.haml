@@ -27,7 +27,9 @@
 %hr
 %p
   Comment:
-  =simple_format feedback.comment
+  -# simple_format for converting double newlines to <br>
+  -# strip_tags for security reasons
+  =simple_format strip_tags(feedback.comment)
 %hr
 
 %p
