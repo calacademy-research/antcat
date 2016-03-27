@@ -3,9 +3,15 @@ class FeedbackMailer < ApplicationMailer
     @feedback = feedback
     @user = feedback.user
 
-    to = "sblum@calacademy.org" # FIX hardcoded
+    @feedback.update_attributes email_recipients: emails_with_names
 
     subject = "AntCat Feedback ##{feedback.id}"
-    mail to: to, subject: subject
+    mail to: @feedback.email_recipients, subject: subject
   end
+
+  private
+    def emails_with_names
+      User.feedback_emails_recipients.map(&:angle_bracketed_email)
+        .join(", ").presence || "sblum@calacademy.org"
+    end
 end

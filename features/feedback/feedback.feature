@@ -62,7 +62,7 @@ Feature: Feedback
       And I fill in "feedback_comment" with "Great site!!!"
       And I press "Send Feedback"
       And I go to the feedback mailer preview
-    Then the email should contain "From: Archibald (registered AntCat user)"
+    Then the email should contain "> (registered AntCat user)"
 
   Scenario: Page field defaults to the current URL
     Given there is a genus "Calyptites"

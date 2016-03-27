@@ -14,7 +14,7 @@
     %p
       From:
       -if @user
-        =@user.decorate.name_linking_to_email
+        =@user.angle_bracketed_email
         (registered AntCat user)
       -else
         =@feedback.name.presence || "[no name]"
@@ -27,6 +27,11 @@
         -url = "http://antcat.org/#{@feedback.page}"
         =link_to url, url
 
+    %hr
     %p
       Comment:
       =simple_format @feedback.comment
+    %hr
+
+    %p
+      %small To AntCat editors: to reply, manually replace 'no-reply@antcat.org' with the submitter's email (and reply to all so that other editors can follow the discussion and doesn't unknowingly reply to the same feedback).
