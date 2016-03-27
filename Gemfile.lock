@@ -188,6 +188,8 @@ GEM
       has_scope (~> 0.6.0.rc)
       railties (>= 3.2, < 5)
       responders
+    invisible_captcha (0.8.0)
+      rails
     jasmine-jquery-rails (2.0.3)
     jquery-rails (4.0.5)
       rails-dom-testing (~> 1.0)
@@ -410,6 +412,7 @@ DEPENDENCIES
   haml
   headless
   high_voltage
+  invisible_captcha
   jasmine-jquery-rails
   jquery-rails (> 4.0)
   jquery-ui-rails (> 5.0)

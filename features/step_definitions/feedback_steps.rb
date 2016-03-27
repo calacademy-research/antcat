@@ -27,3 +27,7 @@ end
 Given /^I have already posted 3 feedbacks in the last 5 minutes$/ do
   3.times { FactoryGirl.create :feedback }
 end
+
+Then /^I pretend to be a bot by filling in the invisible work email field$/ do
+  page.execute_script "$('#feedback_work_email').val('spammer@bots.ru');"
+end

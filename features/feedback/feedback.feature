@@ -98,3 +98,11 @@ Feature: Feedback
     And I fill in "feedback_comment" with "Great site!!!"
     And I press "Send Feedback"
     Then I should see "Message sent"
+
+  Scenario: Combating spambots with honeypots
+    When I click on the Feedback link
+    And I fill in "feedback_comment" with "buy rolex plz"
+    And I pretend to be a bot by filling in the invisible work email field
+    And I press "Send Feedback"
+    Then I should see "you're not a bot are you?"
+    And I should not see "Message sent"

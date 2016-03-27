@@ -1,6 +1,8 @@
 class FeedbackController < ApplicationController
   include ActionView::Helpers::DateHelper
 
+  invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
+
   def create
     @feedback = Feedback.new feedback_params
     @feedback.ip = request.remote_ip
@@ -28,8 +30,10 @@ class FeedbackController < ApplicationController
   end
 
   private
-    def set_feedback
-      @feedback = Feedback.find(params[:id])
+    def on_spam
+      @feedback = Feedback.new feedback_params
+      @feedback.errors.add :hmm, "you're not a bot are you? Feedback not sent. Email us?"
+      render_unprocessable
     end
 
     def maybe_rate_throttle
