@@ -1,37 +1,32 @@
-!!!
-%html
-  %head
-    %meta{content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-  %body
-    %p
-      Feedback ID:
-      =@feedback.id
+%p
+  Feedback ID:
+  =@feedback.id
 
-    %p
-      Sent:
-      =@feedback.created_at
+%p
+  Sent:
+  =@feedback.created_at
 
-    %p
-      From:
-      -if @user
-        =@user.angle_bracketed_email
-        (registered AntCat user)
-      -else
-        =@feedback.name.presence || "[no name]"
-        =surround "<", ">" do
-          =@feedback.email.presence || "[no email]; IP #{@feedback.ip}"
+%p
+  From:
+  -if @user
+    =@user.angle_bracketed_email
+    (registered AntCat user)
+  -else
+    =@feedback.name.presence || "[no name]"
+    =surround "<", ">" do
+      =@feedback.email.presence || "[no email]; IP #{@feedback.ip}"
 
-    -if @feedback.page
-      %p
-        Page:
-        -url = "http://antcat.org/#{@feedback.page}"
-        =link_to url, url
+-if @feedback.page
+  %p
+    Page:
+    -url = "http://antcat.org/#{@feedback.page}"
+    =link_to url, url
 
-    %hr
-    %p
-      Comment:
-      =simple_format @feedback.comment
-    %hr
+%hr
+%p
+  Comment:
+  =simple_format @feedback.comment
+%hr
 
-    %p
-      %small To AntCat editors: to reply, manually replace 'no-reply@antcat.org' with the submitter's email (and reply to all so that other editors can follow the discussion and doesn't unknowingly reply to the same feedback).
+%p
+  %small To AntCat editors: to reply, manually replace the sender's email (because it belongs to AntCat, not the submitter) with the submitter's email, and reply to all so that other editors can follow the discussion and doesn't unknowingly reply to the same feedback.
