@@ -1,7 +1,7 @@
 @javascript
 Feature: Feedback
   As an user or editor of AntCat
-  I want to sumit feedback and corrections
+  I want to submit feedback and corrections
   So that we can improve the catalog
 
   Background:

@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe FeedbackController do
 
+  describe '#index' do
+    # TODO
+  end
+
   describe '#create' do
     let(:json) do
       { format: "json", feedback: { comment: "Well done!" } }

@@ -72,6 +72,9 @@ module NavigationHelpers
     when /^the tooltips editing page$/
       "/tooltips"
 
+    when /^the feedback index$/
+      "/feedback"
+
     when /^the edit user page$/
       '/users/edit'
     when /^the forgot password page$/

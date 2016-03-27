@@ -31,3 +31,7 @@ end
 Then /^I pretend to be a bot by filling in the invisible work email field$/ do
   page.execute_script "$('#feedback_work_email').val('spammer@bots.ru');"
 end
+
+Given /^a visitor has submitted a feedback with the comment "Mad catalog!"$/ do
+  FactoryGirl.create :feedback, comment: "Mad catalog!"
+end

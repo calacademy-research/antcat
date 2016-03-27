@@ -128,7 +128,7 @@ AntCat::Application.routes.draw do
 
   resources :antweb_data, only: [:index]
 
-  resources :feedback, only: [:create]
+  resources :feedback, only: [:index, :create]
 
   get "panel", to: "editors_panels#index", as: "editors_panel"
 

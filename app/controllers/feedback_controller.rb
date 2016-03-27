@@ -1,7 +1,13 @@
 class FeedbackController < ApplicationController
   include ActionView::Helpers::DateHelper
 
+  before_filter :authenticate_editor, only: [:index]
+
   invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
+
+  def index
+    @feedbacks = Feedback.order(id: :desc).paginate(page: params[:page], per_page: 10)
+  end
 
   def create
     @feedback = Feedback.new feedback_params
