@@ -1,31 +1,33 @@
+-# TODO this is not tested very well
+
 %p
   Feedback ID:
-  =@feedback.id
+  =feedback.id
 
 %p
   Sent:
-  =@feedback.created_at
+  =feedback.created_at
 
 %p
   From:
-  -if @user
-    =@user.angle_bracketed_email
+  -if user = feedback.user
+    =user.angle_bracketed_email
     (registered AntCat user)
   -else
-    =@feedback.name.presence || "[no name]"
+    =feedback.name.presence || "[no name]"
     =surround "<", ">" do
-      =@feedback.email.presence || "[no email]; IP #{@feedback.ip}"
+      =feedback.email.presence || "[no email]; IP #{feedback.ip}"
 
--if @feedback.page
+-if feedback.page
   %p
     Page:
-    -url = "http://antcat.org/#{@feedback.page}"
+    -url = "http://antcat.org/#{feedback.page}"
     =link_to url, url
 
 %hr
 %p
   Comment:
-  =simple_format @feedback.comment
+  =simple_format feedback.comment
 %hr
 
 %p
