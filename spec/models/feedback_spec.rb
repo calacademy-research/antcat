@@ -1,8 +1,33 @@
 require 'spec_helper'
 
 describe Feedback do
+  describe "callbacks and validation" do
+    it { should validate_presence_of(:comment) }
 
-  it { should validate_presence_of(:comment) }
+    describe "#add_emails_recipients" do
+      it "has a default" do
+        feedback = FactoryGirl.create :feedback
+        expect(feedback.email_recipients).to eq "sblum@calacademy.org"
+      end
+
+      # TODO this should be mocked, but I'm not sure how to do that
+      it "asks User" do
+        FactoryGirl.create :editor, name: "Archibald",
+          email: "archibald@antcat.org", receive_feedback_emails: true
+        FactoryGirl.create :editor, name: "Batiatus",
+          email: "batiatus@antcat.org", receive_feedback_emails: true
+
+        FactoryGirl.create :editor, name: "Flint",
+          email: "flint@antcat.org"
+
+        feedback = FactoryGirl.create :feedback
+        expect(feedback.email_recipients).to eq <<-STR.squish
+          "Archibald" <archibald@antcat.org>,
+          "Batiatus" <batiatus@antcat.org>
+        STR
+      end
+    end
+  end
 
   describe "scopes" do
     describe "#recently_created" do
