@@ -12,7 +12,7 @@ class FeedbackMailer < ApplicationMailer
 
   private
     def emails_with_names
-      User.feedback_emails_recipients.map(&:angle_bracketed_email)
-        .join(", ").presence || "sblum@calacademy.org"
+      User.feedback_emails_recipients.as_angle_bracketed_emails
+        .presence || "sblum@calacademy.org"
     end
 end
