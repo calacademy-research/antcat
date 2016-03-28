@@ -75,7 +75,7 @@ bundle exec rake db:seed # contains tooltips
 
 ####Sample data
 ```bash
-bundle exec rake antcat:import_sample_data # imports sample data
+bundle exec rake antcat:db:import_sample_data # imports sample data
 ```
 
 ##Usage
