@@ -86,6 +86,9 @@ module NavigationHelpers
     when /^the users page$/
       '/users'
 
+    when /^the feedback index$/
+      '/feedback'
+
     when /^the reference field test page, opened to the first reference$/
       "/widget_tests/reference_field_test?id=#{Reference.first.id}"
     when /^the reference field test page/

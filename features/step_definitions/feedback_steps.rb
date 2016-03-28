@@ -35,3 +35,13 @@ end
 Given /^a visitor has submitted a feedback with the comment "Mad catalog!"$/ do
   FactoryGirl.create :feedback, comment: "Mad catalog!"
 end
+
+Given /^the editors Archibald and Batiatus \(but not Flint\) have enabled feedback email forwarding$/ do
+  FactoryGirl.create :editor, name: "Archibald",
+    email: "archibald@antcat.org", receive_feedback_emails: true
+  FactoryGirl.create :editor, name: "Batiatus",
+    email: "batiatus@antcat.org", receive_feedback_emails: true
+
+  FactoryGirl.create :editor, name: "Flint",
+    email: "flint@antcat.org"
+end
