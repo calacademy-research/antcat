@@ -109,23 +109,24 @@ Feature: Feedback
 
   Scenario: Forwarding emails to editors who have requested it
     Given the editors Archibald and Batiatus (but not Flint) have enabled feedback email forwarding
+    And I am logged in
 
     When I click on the Feedback link
       And I fill in "feedback_comment" with "Great site!!!"
       And I press "Send Feedback"
 
-    When I log in
-    And I go to the feedback index
+    When I go to the feedback index
     Then I should see "<archibald@antcat.org>"
     And I should see "<batiatus@antcat.org>"
     And I should not see "flint@antcat.org"
     And I should not see "sblum@calacademy.org"
 
   Scenario: Forward emails to a hardcoded email if no users have enabled forwarding
+    Given I am logged in
+
     When I click on the Feedback link
       And I fill in "feedback_comment" with "Great site!!!"
       And I press "Send Feedback"
 
-    When I log in
-    And I go to the feedback index
+    When I go to the feedback index
     Then I should see "sblum@calacademy.org"
