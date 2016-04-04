@@ -261,3 +261,24 @@ Feature: Edit reference
     #And I follow "Nested" in the first reference
     #And I press the "Save" button
     #Then I should see "nesting_reference can't be blank"
+
+  @javascript
+  Scenario: Cancelling edit after an error
+    Given I am logged in
+    And there are no references
+    And this dated reference exists
+      | authors   | year | title                    | citation      | created_at  | updated_at  |    doi |
+      | Forel, A. | 1874 | Les fourmis de la Suisse | Neue 26:1-452 | TODAYS_DATE | TODAYS_DATE |        |
+    And I go to the references page
+    When I follow first reference link
+    When I follow "Edit"
+    And I fill in "reference_title" with ""
+    And I press the "Save" button
+    Then I should see "Title can't be blank"
+    When I press "Cancel"
+    Then I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 "
+    When I follow "Edit"
+    Then I should not see any error messages
+    When I press the "Save" button
+    Then I should not see any error messages
+    And I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 "

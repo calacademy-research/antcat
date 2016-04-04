@@ -4,3 +4,7 @@
   - save_button_text = possible_homonym ? 'Save homonym' : 'Save'
   = button_tag type: 'submit', class: 'btn-save has-spinner' do
     = spinner_icon + save_button_text
+
+  - cancel_link = taxon.new_record? ? edit_taxa_path(params[:parent_id]) : catalog_path(taxon)
+
+  = link_to 'Cancel', cancel_link, class: 'btn-cancel'

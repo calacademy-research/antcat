@@ -19,6 +19,12 @@ Feature: Add reference
     And I press the "Save" button
     And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
 
+  Scenario: Adding a reference but then cancelling
+    When I follow "New"
+    And I fill in "reference_title" with "Mark Wilden"
+    And I press "Cancel"
+    Then I should be on the references page
+
   Scenario: Adding a book
     When I follow "New"
     And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
