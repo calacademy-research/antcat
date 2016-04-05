@@ -1,4 +1,3 @@
-
 module Formatters::AdvancedSearchFormatter
   include ApplicationHelper
 
@@ -38,23 +37,6 @@ module Formatters::AdvancedSearchFormatter
   def format_original_combination_status taxon
     string = 'see '.html_safe
     string << format_name(taxon.current_valid_taxon_including_synonyms)
-    string
-  end
-
-  def format_protonym taxon
-    reference = taxon.protonym.authorship.reference
-    string = ''.html_safe
-    string << reference.decorate.format
-
-    if show_document_link? && reference.decorate.format_reference_document_link.present?
-      string << ' ' << reference.decorate.format_reference_document_link
-    end
-
-    if show_goto_reference_link? && reference.decorate.goto_reference_link.present?
-      string << ' ' << reference.decorate.goto_reference_link
-    end
-    string << " DOI: " << reference.doi if reference.doi.present?
-    string << "   #{reference_id(reference)}" if reference_id(reference)
     string
   end
 

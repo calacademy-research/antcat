@@ -13,11 +13,9 @@ module Formatters::AdvancedSearchHtmlFormatter
     string.html_safe
   end
 
-  def show_document_link?
-    true
+  def format_protonym taxon
+    reference = taxon.protonym.authorship.reference
+    reference.decorate.format_inline_citation(expansion: true)
   end
 
-  def show_goto_reference_link?
-    true
-  end
 end
