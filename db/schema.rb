@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160320031635) do
+ActiveRecord::Schema.define(version: 20160406174416) do
+
+  create_table "activities", force: :cascade do |t|
+    t.integer  "trackable_id",   limit: 4
+    t.string   "trackable_type", limit: 255
+    t.integer  "user_id",        limit: 4
+    t.string   "action",         limit: 255
+    t.text     "parameters",     limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
+  add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -77,6 +90,37 @@ ActiveRecord::Schema.define(version: 20160320031635) do
   end
 
   add_index "citations", ["reference_id"], name: "index_authorships_on_reference_id", using: :btree
+
+  create_table "comments", force: :cascade do |t|
+    t.integer  "commentable_id",   limit: 4
+    t.string   "commentable_type", limit: 255
+    t.string   "title",            limit: 255
+    t.text     "body",             limit: 65535
+    t.string   "subject",          limit: 255
+    t.integer  "user_id",          limit: 4,     null: false
+    t.integer  "parent_id",        limit: 4
+    t.integer  "lft",              limit: 4
+    t.integer  "rgt",              limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "feedbacks", force: :cascade do |t|
+    t.integer  "user_id",          limit: 4
+    t.string   "email",            limit: 255
+    t.string   "name",             limit: 255
+    t.text     "comment",          limit: 65535
+    t.string   "ip",               limit: 255
+    t.string   "page",             limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "email_recipients", limit: 65535
+  end
+
+  add_index "feedbacks", ["user_id"], name: "index_feedbacks_on_user_id", using: :btree
 
   create_table "hol_data", force: :cascade do |t|
     t.integer "tnuid",                  limit: 4
@@ -414,30 +458,31 @@ ActiveRecord::Schema.define(version: 20160320031635) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "encrypted_password",     limit: 255, default: ""
-    t.string   "password_salt",          limit: 255, default: ""
-    t.string   "reset_password_token",   limit: 255
-    t.string   "remember_token",         limit: 255
+    t.string   "email",                   limit: 255, default: "",    null: false
+    t.string   "encrypted_password",      limit: 255, default: ""
+    t.string   "password_salt",           limit: 255, default: ""
+    t.string   "reset_password_token",    limit: 255
+    t.string   "remember_token",          limit: 255
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,   default: 0
+    t.integer  "sign_in_count",           limit: 4,   default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
+    t.string   "current_sign_in_ip",      limit: 255
+    t.string   "last_sign_in_ip",         limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "invitation_token",       limit: 255
+    t.string   "invitation_token",        limit: 255
     t.datetime "invitation_sent_at"
     t.datetime "reset_password_sent_at"
     t.boolean  "can_edit"
     t.datetime "invitation_accepted_at"
-    t.integer  "invitation_limit",       limit: 4
-    t.integer  "invited_by_id",          limit: 4
-    t.string   "invited_by_type",        limit: 255
-    t.string   "name",                   limit: 255
+    t.integer  "invitation_limit",        limit: 4
+    t.integer  "invited_by_id",           limit: 4
+    t.string   "invited_by_type",         limit: 255
+    t.string   "name",                    limit: 255
     t.datetime "invitation_created_at"
     t.boolean  "is_superadmin"
+    t.boolean  "receive_feedback_emails",             default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

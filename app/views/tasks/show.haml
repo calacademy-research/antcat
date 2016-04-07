@@ -26,11 +26,16 @@
     by
     =@task.closer.decorate.name_linking_to_email
 
-.callout
-  =markdown @task.description
+.row
+  .medium-9.columns
+    .callout
+      =markdown @task.description
 
--unless @task.taxa.empty?
-  .callout
-    Linked taxa:
-    -@task.taxa.each do |taxon|
-      =taxon.decorate.link_to_taxon
+  .medium-3.columns
+    -unless @task.taxa.empty?
+      .callout
+        Linked taxa:
+        -@task.taxa.each do |taxon|
+          =taxon.decorate.link_to_taxon
+
+=render partial: "comments/comments_area", locals: { commentable: @task, new_comment: @new_comment }

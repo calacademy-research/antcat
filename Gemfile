@@ -20,6 +20,7 @@ gem 'xml-simple'
 gem 'yui-compressor'
 
 gem 'activeadmin', '~> 1.0.0.pre2'
+gem 'acts_as_commentable_with_threading'
 gem 'acts_as_list'
 gem 'best_in_place', github: 'bernat/best_in_place'
 gem 'colorize'

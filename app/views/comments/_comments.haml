@@ -1,0 +1,17 @@
+-# loops over the root comments, and all their children recursively
+
+-comments.each do |comment|
+  .comment
+    %p
+      =comment.user.decorate.name_linking_to_email
+      commented
+      =time_ago_in_words(comment.created_at)
+      ago:
+    %p=comment.body
+    %p
+      %a.comment-reply-link{href: "#"} reply
+
+    .reply-form
+      =render partial: "comments/reply_form", locals: { comment: comment }
+
+    =render partial: "comments/comments", locals: { comments: comment.children }

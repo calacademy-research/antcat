@@ -14,6 +14,7 @@
 //= require jquery.tokeninput.min
 
 // app/assets/javascripts
+//= require comments
 //= require debugging
 //= require site
 //= require spinner

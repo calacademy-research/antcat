@@ -8,6 +8,7 @@ class TasksController < ApplicationController
   end
 
   def show
+    @new_comment = Comment.build_comment @task, current_user
   end
 
   def new

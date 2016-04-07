@@ -1,0 +1,5 @@
+%h6=pluralize(commentable.comment_threads.count, "comment")
+=render partial: "comments/form"
+
+.comments-container
+  =render partial: "comments/comments", locals: { comments: commentable.root_comments }
