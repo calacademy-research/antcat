@@ -46,7 +46,8 @@ class Subspecies < SpeciesGroupTaxon
   # and the others are handled there.
   def elevate_to_species
     raise NoSpeciesForSubspeciesError unless species
-    # Removed commented out code that looked very WIP
+    # Removed commented out code + comments that looked very WIP
+    # See 37064da56f47a530a388b268289a73cb24b93d75
 
     new_name_string = "#{species.genus.name} #{name.epithet}"
     new_name = SpeciesName.find_by_name new_name_string
@@ -60,6 +61,8 @@ class Subspecies < SpeciesGroupTaxon
       new_name.save
     end
 
+    create_elevate_to_species_activity new_name
+
     # writes directly to db, bypasses save. "update_attributes" operates in memory and
     # lets you use the "save" path
     self.update_columns name_id: new_name.id,
@@ -68,4 +71,11 @@ class Subspecies < SpeciesGroupTaxon
                         name_html_cache: new_name.name_html,
                         type: 'Species'
   end
+
+  private
+    def create_elevate_to_species_activity new_name
+      create_activity :elevate_subspecies_to_species,
+        { name_was: name_html_cache,
+          name: new_name.name_html }
+    end
 end

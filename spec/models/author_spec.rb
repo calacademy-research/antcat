@@ -54,4 +54,10 @@ describe Author do
     end
   end
 
+  describe "#get_author_names_for_feed_message" do
+    it "returns a string of author names" do
+      # TODO
+    end
+  end
+
 end

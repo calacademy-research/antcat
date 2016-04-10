@@ -38,7 +38,9 @@ def login_through_web_page
 end
 
 Given /^I log in$/ do
-  @user = FactoryGirl.create :user, can_edit: true
+  @user = Feed::Activity.without_tracking do
+    FactoryGirl.create :user, can_edit: true
+  end
   login_programmatically
 end
 
@@ -48,18 +50,24 @@ end
 
 Given /^I log in as a catalog editor(?: named "([^"]+)")?$/ do |name|
   name = "Quintus Batiatus" if name.blank?
-  @user = FactoryGirl.create :user, can_edit: true, name: name
+  @user = Feed::Activity.without_tracking do
+    FactoryGirl.create :user, can_edit: true, name: name
+  end
   login_programmatically
 end
 
 Given /^I log in as a superadmin(?: named "([^"]+)")?$/ do |name|
   name = "Quintus Batiatus" if name.blank?
-  @user = FactoryGirl.create :user, can_edit: true, is_superadmin: true, name: name
+  @user = Feed::Activity.without_tracking do
+    FactoryGirl.create :user, can_edit: true, is_superadmin: true, name: name
+  end
   login_programmatically
 end
 
 Given /^I log in as a bibliography editor$/ do
-  @user = FactoryGirl.create :user
+  @user = Feed::Activity.without_tracking do
+    FactoryGirl.create :user
+  end
   login_programmatically
 end
 

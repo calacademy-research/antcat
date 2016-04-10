@@ -1,6 +1,16 @@
 class Synonym < ActiveRecord::Base
   include UndoTracker
 
+  # NOTE no update hook; I *think* this is how synonyms are used
+  # throught out the app. We could just add the activityies from
+  # the controller to avoid spamming the feed, but we also want to list
+  # synonym relationships created/removed as a result of other events.
+  include Feed::Trackable
+  tracked on: [:create, :destroy], parameters: ->(synonym) do
+    { senior_synonym_id: synonym.senior_synonym_id,
+      junior_synonym_id: synonym.junior_synonym_id }
+  end
+
   attr_accessible :senior_synonym, :junior_synonym,:senior_synonym_id, :junior_synonym_id
 
   belongs_to :junior_synonym, class_name: 'Taxon'

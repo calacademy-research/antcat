@@ -42,6 +42,11 @@ end
     parent :tasks
   end
 
+crumb :feed do
+  link "Feed"
+  parent :editors_panel
+end
+
 crumb :edit_user do
   link "Edit User"
   parent :editors_panel

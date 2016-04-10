@@ -23,39 +23,48 @@ class ChangesController < ApplicationController
   end
 
   def approve_all
-    TaxonState.where(review_state: 'waiting').each do |approve_taxon_state|
-      Change.where(user_changed_taxon_id: approve_taxon_state.taxon_id).each do |approve_change|
-        approve_change approve_change
+    count = TaxonState.where(review_state: 'waiting').count
+
+    Feed::Activity.without_tracking do
+      TaxonState.where(review_state: 'waiting').each do |approve_taxon_state|
+        Change.where(user_changed_taxon_id: approve_taxon_state.taxon_id).each do |change|
+          approve_change change
+        end
       end
     end
+    Feed::Activity.create_activity :approve_all_changes, { count: count }
 
     redirect_to changes_path, notice: "Approved all changes."
   end
 
+  # TODO move to model
   def undo
     # Once you have the change id, find all future changes
     # that touch this same item set.
     # find all versions, and undo the change
     # Sort to undo changes most recent to oldest
-    clear_change
-    change_id_set = find_future_changes(@change)
-    versions = SortedSet.new
-    items = SortedSet.new
-    Taxon.transaction do
-      change_id_set.each do |undo_this_change_id|
-        begin
-          # could be already undone.
-          cur_change = Change.find(undo_this_change_id)
-        rescue ActiveRecord::RecordNotFound
-          next
+    Feed::Activity.without_tracking do
+      clear_change
+      change_id_set = find_future_changes(@change)
+      versions = SortedSet.new
+      items = SortedSet.new
+      Taxon.transaction do
+        change_id_set.each do |undo_this_change_id|
+          begin
+            # could be already undone.
+            cur_change = Change.find(undo_this_change_id)
+          rescue ActiveRecord::RecordNotFound
+            next
+          end
+          cur_change.versions.each do |cur_version|
+            versions.add(cur_version)
+          end
+          cur_change.delete
         end
-        cur_change.versions.each do |cur_version|
-          versions.add(cur_version)
-        end
-        cur_change.delete
+        undo_versions versions
       end
-      undo_versions versions
     end
+    @change.create_activity :undo_change
 
     json = { success: true }
     render json: json, content_type: 'text/html'
@@ -99,6 +108,7 @@ class ChangesController < ApplicationController
       @change = Change.find(params[:id])
     end
 
+    # TODO move to model
     def approve_change change
       taxon_id = change.user_changed_taxon_id
       taxon_state = TaxonState.find_by(taxon: taxon_id)
@@ -111,6 +121,10 @@ class ChangesController < ApplicationController
         # This case is for approving a delete
         taxon_state.review_state = "approved"
         taxon_state.save!
+      end
+
+      Feed::Activity.with_tracking do
+        change.create_activity :approve_change
       end
     end
 

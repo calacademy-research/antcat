@@ -11,8 +11,10 @@ class Author < ActiveRecord::Base
   end
 
   def self.merge authors
+    new_names_string = get_author_names_for_feed_message authors
+    the_one_author = authors.first
+
     transaction do
-      the_one_author = authors.first
       authors[1..-1].each do |author|
         author.names.each do |name|
           name.update_attribute :author, the_one_author
@@ -20,6 +22,19 @@ class Author < ActiveRecord::Base
         author.destroy
       end
     end
+
+    create_merge_authors_activity the_one_author, new_names_string
   end
 
+  private
+    def self.create_merge_authors_activity author, names_string
+      Feed::Activity.create_activity_for_trackable author,
+        :merge_authors, { names: names_string }
+    end
+
+    def self.get_author_names_for_feed_message authors
+      authors[1..-1].map do |author|
+        author.names.map(&:name)
+      end.flatten.join(", ")
+    end
 end

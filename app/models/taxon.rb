@@ -9,6 +9,9 @@ class Taxon < ActiveRecord::Base
   include Taxa::Statistics
   include Taxa::Synonyms
 
+  include Feed::Trackable
+  tracked on: :create, parameters: activity_parameters
+
   class TaxonExists < StandardError; end
 
   self.table_name = :taxa
@@ -141,4 +144,17 @@ class Taxon < ActiveRecord::Base
     parents.reverse
   end
 
+  private
+    def activity_parameters
+      ->(taxon) do
+        hash = { rank: taxon.rank,
+                 name: taxon.name_html_cache }
+
+        parent = taxon.parent
+        hash[:parent] = { rank: parent.rank,
+                          name: parent.name_html_cache,
+                          id: parent.id } if parent
+        hash
+      end
+    end
 end

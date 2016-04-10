@@ -1,6 +1,11 @@
 class Tooltip < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
+  include Feed::Trackable
+  tracked on: :all, parameters: ->(tooltip) do
+    { scope_and_key: "#{tooltip.scope}.#{tooltip.key}"}
+  end
+
   has_paper_trail
 
   default_scope { order(:key) }

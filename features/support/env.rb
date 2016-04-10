@@ -62,3 +62,5 @@ end
 Warden::Manager.serialize_from_session do |email|
   User.find_by_email email
 end
+
+Feed::Activity.enabled = false

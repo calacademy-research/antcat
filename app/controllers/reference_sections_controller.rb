@@ -1,6 +1,10 @@
 class ReferenceSectionsController < ApplicationController
   before_filter :authenticate_editor
 
+  def show
+    @item = ReferenceSection.find params[:id]
+  end
+
   def update
     item = ReferenceSection.find params[:id]
     title_taxt = Taxt.from_editable params[:title_taxt]
