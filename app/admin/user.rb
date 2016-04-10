@@ -1,5 +1,6 @@
 ActiveAdmin.register User do
-  permit_params :email, :can_edit, :is_superadmin, :password, :password_confirmation
+  permit_params :name, :email, :can_edit, :is_superadmin,
+    :password, :password_confirmation, :receive_feedback_emails
 
   index do
     selectable_column
@@ -10,6 +11,7 @@ ActiveAdmin.register User do
     column :is_superadmin
     column :current_sign_in_at
     column :sign_in_count
+    column :receive_feedback_emails
     column :created_at
     actions
   end
@@ -20,17 +22,30 @@ ActiveAdmin.register User do
   filter :is_superadmin
   filter :current_sign_in_at
   filter :sign_in_count
+  filter :receive_feedback_emails
   filter :created_at
 
   form do |f|
     f.inputs "User Details" do
+      f.input :name
       f.input :email
       f.input :can_edit
       f.input :is_superadmin
+      f.input :receive_feedback_emails
       f.input :password
       f.input :password_confirmation
     end
     f.actions
+  end
+
+  controller do
+    def update
+      if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
+        params[:user].delete("password")
+        params[:user].delete("password_confirmation")
+      end
+      super
+    end
   end
 
 end

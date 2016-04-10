@@ -101,6 +101,12 @@ Feature: Adding a taxon
     And the "taxon_type_taxt" field should contain "Notes"
     And the name button should contain "Atta"
 
+  Scenario: Cancelling
+    And I go to the edit page for "Formicinae"
+    And I follow "Add genus"
+    And I press "Cancel"
+    Then I should be on the edit page for "Formicinae"
+
   @search
   Scenario: Adding a species
     Given there is a genus "Eciton"

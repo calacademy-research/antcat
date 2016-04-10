@@ -5,12 +5,14 @@ module Formatters::AdvancedSearchTextFormatter
     taxon.name_cache
   end
 
-  def show_document_link?
-    false
-  end
+  def format_protonym taxon
+    reference = taxon.protonym.authorship.reference
 
-  def show_goto_reference_link?
-    false
+    string = ''.html_safe
+    string << reference.decorate.format
+    string << " DOI: " << reference.doi if reference.doi.present?
+    string << "   #{reference_id(reference)}" if reference_id(reference)
+    string
   end
 
   def italicize string

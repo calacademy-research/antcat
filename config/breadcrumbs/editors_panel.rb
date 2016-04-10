@@ -57,6 +57,11 @@ crumb :invite_people do
   parent :editors_panel
 end
 
+crumb :user_feedback do
+  link "User Feedback"
+  parent :editors_panel
+end
+
 crumb :lazy_links do
   link "Lazy Links"
   parent :editors_panel

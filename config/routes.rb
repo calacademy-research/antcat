@@ -1,6 +1,8 @@
 AntCat::Application.routes.draw do
 
+  mount RailsEmailPreview::Engine, at: 'emails'
   ActiveAdmin.routes(self)
+
   root to: 'catalog#index'
 
   resources :changes, only: [:show, :index] do
@@ -125,6 +127,8 @@ AntCat::Application.routes.draw do
   end
 
   resources :antweb_data, only: [:index]
+
+  resources :feedback, only: [:index, :create]
 
   get "panel", to: "editors_panels#index", as: "editors_panel"
 

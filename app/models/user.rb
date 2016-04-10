@@ -5,10 +5,13 @@ class User < ActiveRecord::Base
   tracked on: :create,
     parameters: ->(user) do { user_id: user.id } end
 
+  validates :name, presence: true
+
+  scope :feedback_emails_recipients, -> { where(receive_feedback_emails: true) }
+  scope :as_angle_bracketed_emails, -> { all.map(&:angle_bracketed_email).join(", ") }
+
   devise :database_authenticatable, :recoverable, :registerable,
          :rememberable, :trackable, :validatable, :invitable
-
-  validates :name, presence: true
 
   # For the feed. I'm not sure if this is thread-safe (and whether
   # that would be a problem), but *think* it is OK because:
@@ -22,6 +25,10 @@ class User < ActiveRecord::Base
 
   def can_review_changes?
     can_edit?
+  end
+
+  def angle_bracketed_email
+    %Q["#{name}" <#{email}>]
   end
 
 end

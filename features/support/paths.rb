@@ -81,6 +81,9 @@ module NavigationHelpers
       task = Task.find_by(title: $2)
       "/tasks/#{task.id}"
 
+    when /^the feedback index$/
+      "/feedback"
+
     when /^the edit user page$/
       '/users/edit'
     when /^the forgot password page$/
@@ -91,6 +94,9 @@ module NavigationHelpers
       '/users/sign_up'
     when /^the users page$/
       '/users'
+
+    when /^the feedback index$/
+      '/feedback'
 
     when /^the reference field test page, opened to the first reference$/
       "/widget_tests/reference_field_test?id=#{Reference.first.id}"
@@ -112,6 +118,9 @@ module NavigationHelpers
       '/widget_tests/name_field_test'
     when /^the tooltips test page$/
       '/widget_tests/tooltips_test'
+
+    when /^the feedback mailer preview$/
+      '/emails/feedback_mailer_preview-feedback_email'
 
     else
       raise "#{page_name} not found"

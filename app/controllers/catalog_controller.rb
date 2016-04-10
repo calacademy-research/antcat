@@ -54,7 +54,14 @@ class CatalogController < ApplicationController
       setup_non_standard_panels
     end
 
+    def include_all_genera_in_subfamily
+      if @taxon.is_a? Subfamily
+        params[:display] = "all_genera_in_subfamily"
+      end
+    end
+
     def setup_non_standard_panels
+      include_all_genera_in_subfamily if params[:display].blank?
       return unless params[:display]
 
       case params[:display]

@@ -33,8 +33,12 @@ class ApplicationController < ActionController::Base
     end
 
   private
+    # Save location so that we can redirect back to the previous page
+    # after signing in/out.
     def save_location
-      session[:user_return_to] = request.url unless request.url =~ %r{/users/}
+      unless request.xhr? || request.url =~ %r{/users/}
+        session[:user_return_to] = request.url
+      end
     end
 
     def set_user_for_feed
