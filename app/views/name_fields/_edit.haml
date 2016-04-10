@@ -1,5 +1,3 @@
--#Locals: name_string, default_name_string
-
 - default_name_string ||= nil
 
 .edit
@@ -9,14 +7,14 @@
         .nested_form{'data-action' => '/name_fields/find', 'data-method' => 'get'}
           %table
             %tr
-              %td
+              %td{colspan: 2}
                 %ul.error_messages
             %tr
+              %td.throbber= shared_spinner_icon
               %td
                 .controls
                   = text_field_tag :name_string, name_string
                   = hidden_field_tag :default_name_string, default_name_string
-                  %button.ui-priority-primary.submit OK
-                  %button.ui-priority-secondary.cancel Cancel
-                  = image_tag 'ui-anim_basic_16x16.gif', class: 'throbber'
+                  %button.submit.btn-normal OK
+                  %button.cancel.btn-cancel Cancel
                 .help

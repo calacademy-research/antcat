@@ -1,12 +1,10 @@
--#Locals: taxon
-
 - unless taxon.kind_of? SpeciesGroupTaxon
   .references_section.section
     .section_header.ui-widget-header.ui-corner-top
       .left
         References
       .right.references_section_buttons
-        %button.submit.ui-priority-primary.small_button Add
+        %button.submit.btn-tiny Add
       .clear
     .reference_sections.ui-dialog-content.ui-widget-content.ui-corner-bottom
       -taxon.reference_sections.each do |reference_section|

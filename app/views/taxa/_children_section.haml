@@ -1,13 +1,10 @@
--#Locals: taxon
-
 -unless taxon.is_a?(Family) || taxon.is_a?(Subspecies)
   .children_section.section
     .section_header.ui-widget-header.ui-corner-top
-      .left
-        Children
+      .left Children
       .clear
     .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
-      -Taxon.sort_by_status_and_name(taxon.children).each do |child|
+      -sort_by_status_and_name(taxon.children).each do |child|
         =child.decorate.link_to_taxon
         =raw "(" + child.decorate.taxon_status + ")"
         %br

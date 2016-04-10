@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe Exporters::Antweb::Exporter do
@@ -246,8 +245,8 @@ describe Exporters::Antweb::Exporter do
 
   describe "Sending other fields to AntWeb" do
     it "should send the biogeographic region" do
-      taxon = create_genus biogeographic_region: 'Malaya'
-      expect(@exporter.export_taxon(taxon)[19]).to eq('Malaya')
+      taxon = create_genus biogeographic_region: 'Neotropic'
+      expect(@exporter.export_taxon(taxon)[19]).to eq('Neotropic')
     end
     it "should send the locality" do
       taxon = create_genus protonym: FactoryGirl.create(:protonym, locality: 'Canada')
@@ -317,6 +316,23 @@ describe Exporters::Antweb::Exporter do
     it "should handle a subspecies without a species" do
       taxon = create_subspecies 'Atta betta kappa', genus: @genus, species: nil, subfamily: nil
       expect(@exporter.export_taxon(taxon)[23]).to eq('Atta')
+    end
+  end
+
+  describe "Test stubbed" do
+    let(:ponerinae) { create_subfamily "Ponerinae" }
+
+    it "'author date html' # [8]" do
+      reference = ponerinae.protonym.authorship.reference
+      author = reference.principal_author_last_name_cache
+      year = reference.citation_year
+      title = reference.title
+      journal_name = reference.journal.name
+      pagination = reference.pagination
+      volume = reference.series_volume_issue
+
+      expected = %Q[<span title="#{author}, B.L. #{year}. #{title}. #{journal_name} #{pagination}:#{volume}.">#{author}, #{year}</span>]
+      expect(@exporter.export_taxon(ponerinae)[8]).to eq expected
     end
   end
 end

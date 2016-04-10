@@ -1,5 +1,3 @@
-# coding: UTF-8
-
 ENV["RAILS_ENV"] ||= "test"
 require_relative '../../config/environment'
 
@@ -8,7 +6,6 @@ require 'factory_girl'
 require 'cucumber/rails'
 require 'cucumber/formatter/progress'
 require 'cucumber/rspec/doubles'
-require 'cucumber/api_steps'
 
 require 'capybara-screenshot/cucumber'
 require 'webmock/cucumber'
@@ -25,6 +22,11 @@ if ENV['HEADLESS'] == 'true'
   end
 end
 
+RSpec.configure do |config|
+  config.expect_with :rspec do |c|
+    c.syntax = [:should, :expect]
+  end
+end
 
 Capybara.javascript_driver = :webkit
 if ENV['DRIVER'] == 'selenium'

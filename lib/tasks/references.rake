@@ -1,4 +1,3 @@
-# coding: UTF-8
 namespace :references do
   desc 'Check URLs'
   task :check_urls => :environment do
@@ -6,7 +5,7 @@ namespace :references do
     references_with_documents_count = error_count = 0
     Reference.all.each do |reference|
       Progress.tally
-      next unless reference.document && reference.document.hosted_by_us?
+      next unless reference.document && reference.document.send(:hosted_by_us?)
       references_with_documents_count += 1
       begin
         reference.document.actual_url

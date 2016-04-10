@@ -1,26 +1,20 @@
--# Locals: taxon, change
 -change = change.decorate
 
-%div.change_header
-  -if change.change_type != 'delete' and not taxon.nil?
-    %div.change_description
-      %span.name= change.format_adder_name
-      %span.taxon= taxon.decorate.link_to_taxon
-      %span.edit_button= edit_button taxon
-      %span.undo_button= change.undo_button
-      %span.approve_button= change.approve_button
-      %span.time.right= change.format_created_at
-      %div.clear
+.callout
+  %h5.left
+    =change.format_adder_name
+    -if change.change_type != 'delete' && taxon
+      =taxon.decorate.link_to_taxon
+    -else
+      =format_taxon_name taxon.name
+  .right
+    -if user_can_edit?
+      =change.undo_button(taxon)
+      =change.approve_button(taxon)
+    =link_to change.format_created_at, change
+  .clear
 
-    -if change.approver
-      %div.change_status
-        %span.approver.left= change.format_approver_name
-        %span.approval_time.right= change.format_approved_at
-        %div.clear
-  -else
-    %div.change_description
-      %span.name= change.format_adder_name
-      %span.taxon= format_taxon_name taxon.name
-      %span.undo_button= change.undo_button
-      %span.approve_button.left= change.approve_button
-      %div.clear
+  -if change.approver
+    .left=change.format_approver_name
+    .right=change.format_approved_at
+    .clear

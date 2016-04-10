@@ -1,12 +1,11 @@
-# coding: UTF-8
-require 'references/reference_has_document'
-require 'references/reference_key'
-require 'references/reference_search'
-require 'references/reference_utility'
-require 'references/reference_workflow'
+require_dependency 'references/reference_has_document'
+require_dependency 'references/reference_search'
+require_dependency 'references/reference_utility'
+require_dependency 'references/reference_workflow'
 
 class Reference < ActiveRecord::Base
   include UndoTracker
+  include ReferenceComparable
 
   attr_accessor :publisher_string
   attr_accessor :journal_name
@@ -34,10 +33,9 @@ class Reference < ActiveRecord::Base
                   :doi
 
   before_save { |record| CleanNewlines::clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
+  before_destroy :check_not_referenced
 
-  # associations
   has_many :reference_author_names, -> { order :position }
-  has_many :groups, :through => :group_assets
 
   has_many :author_names,
            -> { order 'reference_author_names.position' },
@@ -48,22 +46,12 @@ class Reference < ActiveRecord::Base
   belongs_to :publisher
 
   def nestees
-    self.class.where nesting_reference_id: id
+    Reference.where(nesting_reference_id: id)
   end
 
-  # scopes
   scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
-  scope :with_principal_author_last_name, lambda { |last_name| where principal_author_last_name_cache: last_name }
-  scope :non_missing, -> { where('type IS NULL OR type != "MissingReference"') }
+  scope :with_principal_author_last_name, lambda { |last_name| where(principal_author_last_name_cache: last_name) }
 
-  # Other plugins and mixins
-  include ReferenceComparable
-
-  def author
-    principal_author_last_name
-  end
-
-  # validation and callbacks
   before_validation :set_year_from_citation_year, :strip_text_fields
   validates :title, presence: true, if: Proc.new { |record| record.class.requires_title }
 
@@ -74,17 +62,16 @@ class Reference < ActiveRecord::Base
   before_save :set_author_names_caches
   before_destroy :check_not_nested
 
-  # accessors
   def to_s
     "#{author_names_string} #{citation_year}. #{id}."
   end
 
-  def key
-    @key ||= ReferenceKey.new(self)
-  end
-
   def authors reload = false
     author_names(reload).map &:author
+  end
+
+  def author
+    principal_author_last_name
   end
 
   def author_names_string
@@ -99,19 +86,15 @@ class Reference < ActiveRecord::Base
     principal_author_last_name_cache
   end
 
+  # TODO we should probably have #year [int] and something
+  # like #non_standard_year [string] instead of this +
+  # #year + #citation_year.
   def short_citation_year
-    citation_year.gsub %r{ .*$}, ''
-  end
-
-  ## callbacks
-
-  # validation
-  def check_not_nested
-    nesting_reference = NestedReference.find_by_nesting_reference_id id
-    if nesting_reference
-      errors.add :base, "This reference can't be deleted because it's nested in #{nesting_reference}"
+    if citation_year.present?
+      citation_year.gsub %r{ .*$}, ''
+    else
+      "[no year]"
     end
-    nesting_reference.nil?
   end
 
   # update (including observed updates)
@@ -153,53 +136,30 @@ class Reference < ActiveRecord::Base
     end
   end
 
-  def to_class suffix = '', prefix = ''
-    class_name = self.class.name
-
-    unless ['Article', 'Book', 'Nested', 'Unknown', 'Missing']
-      .map { |e| e + 'Reference' }.include? class_name
-        raise "Don't know what kind of reference this is: #{inspect}"
+  def self.approve_all
+    Reference.where.not(review_state: "reviewed").find_each do |reference|
+      reference.review_state = 'reviewed'
+      reference.save!
     end
-
-    class_name = prefix + class_name + suffix
-    class_name.constantize
   end
 
-  ###############################################
-  def references options = {}
-    references = []
-    Taxt.taxt_fields.each do |klass, fields|
-      klass.send(:all).each do |record|
-        fields.each do |field|
-          next unless record[field]
-          if record[field] =~ /{ref #{id}}/
-            references << { table: klass.table_name, id: record[:id], field: field }
-            return true if options[:any?]
-          end
-        end
-      end
-    end
-
-    [Citation, Bolton::Match].each do |klass|
-      klass.where(reference_id: id).all.each do |record|
-        references << { table: klass.table_name, id: record[:id], field: :reference_id }
-        return true if options[:any?]
-      end
-    end
-    NestedReference.where(nesting_reference_id: id).all.each do |record|
-      references << { table: 'references', id: record[:id], field: :nesting_reference_id }
-      return true if options[:any?]
-    end
-    return false if options[:any?]
-    references
-  end
-
-  def any_references?
-    self.references any?: true
-  end
-
-  ###############################################
   private
+    def check_not_referenced
+      return true unless has_any_references?
+
+      # TODO list which items
+      errors.add :base, "This reference can't be deleted, as there are other references to it."
+      return false
+    end
+
+    def check_not_nested
+      nesting_reference = NestedReference.find_by_nesting_reference_id id
+      if nesting_reference
+        errors.add :base, "This reference can't be deleted because it's nested in #{nesting_reference}"
+      end
+      nesting_reference.nil?
+    end
+
     def strip_text_fields
       [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation].each do |field|
         value = self[field]
@@ -225,6 +185,40 @@ class Reference < ActiveRecord::Base
       first_author_name = author_names.first
       last_name = first_author_name && first_author_name.last_name
       return string, last_name
+    end
+
+    # Expensive method
+    def reference_references return_true_or_false: false
+      return_early = return_true_or_false
+
+      references = []
+      Taxt.taxt_fields.each do |klass, fields|
+        klass.send(:all).each do |record|
+          fields.each do |field|
+            next unless record[field]
+            if record[field] =~ /{ref #{id}}/
+              references << { table: klass.table_name, id: record[:id], field: field }
+              return true if return_early
+            end
+          end
+        end
+      end
+
+      Citation.where(reference_id: id).all.each do |record|
+        references << { table: Citation.table_name, id: record[:id], field: :reference_id }
+        return true if return_early
+      end
+
+      NestedReference.where(nesting_reference_id: id).all.each do |record|
+        references << { table: 'references', id: record[:id], field: :nesting_reference_id }
+        return true if return_early
+      end
+      return false if return_early
+      references
+    end
+
+    def has_any_references?
+      reference_references return_true_or_false: true
     end
 
     class DuplicateMatcher < ReferenceMatcher

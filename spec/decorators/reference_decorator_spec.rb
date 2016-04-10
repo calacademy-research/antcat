@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe ReferenceDecorator do
@@ -9,7 +8,7 @@ describe ReferenceDecorator do
   describe "PDF link formatting" do
     it "should create a link" do
       reference = FactoryGirl.create :reference
-      allow(reference).to receive(:downloadable_by?).and_return true
+      allow(reference).to receive(:downloadable?).and_return true
       allow(reference).to receive(:url).and_return 'example.com'
       expect(reference.decorate.format_reference_document_link).to eq('<a class="document_link" target="_blank" href="example.com">PDF</a>')
     end
@@ -227,7 +226,7 @@ describe ReferenceDecorator do
     describe "Escaping in the year" do
       it "should leave quotes (and italics) alone, but escape other HTML" do
         reference = FactoryGirl.create :unknown_reference, citation_year: '2010 ("2011")', author_names: [], citation: 'Ants', title: 'Tapinoma'
-        string = reference.decorate.format_year
+        string = reference.decorate.send :format_year
         expect(string).to eq '2010 ("2011")'
         expect(string).to be_html_safe
       end
@@ -236,7 +235,7 @@ describe ReferenceDecorator do
     describe "Escaping in the author names" do
       it "should not escape quotes and italics, should escape everything else" do
         reference = FactoryGirl.create :unknown_reference, author_names: [author_name], citation: 'Ants', title: 'Tapinoma', author_names_suffix: ' <i>et al.</i>'
-        string = reference.decorate.format_author_names
+        string = reference.decorate.send :format_author_names
         expect(string).to eq 'Forel, A. <i>et al.</i>'
         expect(string).to be_html_safe
       end
@@ -282,12 +281,12 @@ describe ReferenceDecorator do
 
   describe "italicizing" do
     it "should replace asterisks and bars with italics" do
-      string = nil_decorator.format_italics "|Hymenoptera| *Formicidae*".html_safe
+      string = nil_decorator.send :format_italics, "|Hymenoptera| *Formicidae*".html_safe
       expect(string).to eq("<i>Hymenoptera</i> <i>Formicidae</i>")
       expect(string).to be_html_safe
     end
     it "should raise if the string isn't html_safe already" do
-      expect { nil_decorator.format_italics 'roman' }.to raise_error
+      expect { nil_decorator.send :format_italics, 'roman' }.to raise_error
     end
   end
 
@@ -296,10 +295,10 @@ describe ReferenceDecorator do
       it "nonmissing references should defer to the key" do
         key = double
         reference = FactoryGirl.create :article_reference
-        expect(reference).to receive(:key).and_return key
-        expect(key).to receive(:to_link)
+        decorated = reference.decorate
+        expect(decorated).to receive(:to_link).and_return key
 
-        reference.decorate.format_inline_citation
+        decorated.format_inline_citation
       end
       it "should just output the citation for a MissingReference" do
         reference = FactoryGirl.create :missing_reference, citation: 'foo'
@@ -310,10 +309,10 @@ describe ReferenceDecorator do
       it "nonmissing references should defer to the key" do
         key = double
         reference = FactoryGirl.create :article_reference
-        expect(reference).to receive(:key).and_return key
-        expect(key).to receive(:to_s)
+        decorated = reference.decorate
+        expect(decorated).to receive(:format_author_last_names).and_return key
 
-        reference.decorate.format_inline_citation_without_links
+        decorated.format_inline_citation_without_links
       end
     end
   end

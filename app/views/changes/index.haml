@@ -1,15 +1,5 @@
--#Instance variables: @changes
-- @title = 'Changes'
-
-=enable_tooltips
-
-- content_for :head do
-  = javascript_include_tag 'optimal-select.min'
-
-%div.approve_all_button.right= approve_all_button
-
-%div= will_paginate @changes
+- @title = 'All Changes'
+- breadcrumb :all_changes
 
 = render @changes
-
-%div= will_paginate @changes
+= will_paginate @changes

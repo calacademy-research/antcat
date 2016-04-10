@@ -1,4 +1,3 @@
-# coding: UTF-8
 class DeferredGarbageCollection
 
   DEFERRED_GC_THRESHOLD = (ENV['DEFER_GC'] || 10.0).to_f

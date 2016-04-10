@@ -6,17 +6,8 @@ module TooltipHelper
     # Currently all tooltips are for editors only. Do not show to non-logged in users,
     # but let's be nice and show them to all logged in users, even if they are not editors.
     return unless current_user
-    content_for :head do
-      # TODO: This isn't working. Manually added to:
-      # views/authors/edit.haml
-      # views/changes/index.haml
-      # views/references/index.haml
-      # views/taxa/edit.haml
-      # views/tooltips/_form.haml
-      # views/tooltips/index.haml
-      javascript_include_tag 'optimal-select.min'
-      javascript_include_tag 'tooltips'
-    end
+    content_for(:head) { javascript_include_tag "tooltips/tooltips" }
+    content_for(:head) { javascript_include_tag "optimal-select.min" }
     content_for :head do
       "\n<!-- Tooltips are enabled on this page. -->".html_safe
     end
@@ -24,8 +15,7 @@ module TooltipHelper
 
   # Call in views to render hard-coded tooltips.
   # See explanation of key/scope in #parse_lookup_params
-  # Similar logic is duplicated in `tooltips.coffee` TODO fix?
-
+  # Similar logic is duplicated in `tooltips.coffee`
   def tooltip_icon key_param, scope: nil, disable_edit_link: false
     # key = parse_lookup_params key_param, scope: scope
     tooltip = Tooltip.find_by(key: key_param, scope: scope)
@@ -34,7 +24,6 @@ module TooltipHelper
     text =  if tooltip
               tooltip.try(:text) || "No tooltip text set. Click icon to edit."
             else
-              # TODO take into account `disable_edit_link`
               "Could not find tooltip with key '#{key_param}' with page scope '#{scope}'. Click icon to create."
             end
     tooltip_icon = image_tag 'help.png', class: 'help_icon tooltip', title: text
@@ -52,13 +41,18 @@ module TooltipHelper
     end
   end
 
+  def toggle_tooltip_helper_tooltips_button
+    verb = session[:show_missing_tooltips] ? "Hide" : "Show"
+    link_to "#{verb} tooltips helper",
+      toggle_tooltip_helper_tooltips_path, class: "btn-normal"
+  end
+
   private
     # Only returns true if we have a tooltip *and* its key is disabled, because we
     # want to notify editors about missing tooltips and encourage them to create them.
     def key_disabled? tooltip
       if tooltip && tooltip.key_disabled?
-        # TODO log this somewhere
-        puts "A tooltip with a disabled key was called in a view."
+        logger.info "A tooltip with a disabled key was called in a view."
         true
       end
     end
@@ -68,6 +62,5 @@ module TooltipHelper
     def new_populated_tooltip_link key
       new_tooltip_path key: key
     end
-
 
 end

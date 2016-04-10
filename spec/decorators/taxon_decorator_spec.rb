@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe TaxonDecorator do
@@ -88,23 +87,23 @@ describe TaxonDecorator do
     describe "Child lists" do
       it "should format a tribes list" do
         attini = create_tribe 'Attini', subfamily: subfamily
-        expect(decorator_helper.new(subfamily).send(:child_list, subfamily.tribes, true)).to eq(%{<div class="child_list"><span class="label">Tribe (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>})
+        expect(decorator_helper.new(subfamily).send(:child_list, subfamily.tribes, true)).to eq(%{<div class="child_list"><span class="caption">Tribe (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>})
       end
       it "should format a child list, specifying extinctness" do
         atta = create_genus 'Atta', subfamily: subfamily
-        expect(decorator_helper.new(subfamily).send(:child_list, Genus.all, true)).to eq(%{<div class="child_list"><span class="label">Genus (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>})
+        expect(decorator_helper.new(subfamily).send(:child_list, Genus.all, true)).to eq(%{<div class="child_list"><span class="caption">Genus (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>})
       end
       it "should format a genera list, not specifying extinctness" do
         atta = create_genus 'Atta', subfamily: subfamily
-        expect(decorator_helper.new(subfamily).send(:child_list, Genus.all, false)).to eq(%{<div class="child_list"><span class="label">Genus of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>})
+        expect(decorator_helper.new(subfamily).send(:child_list, Genus.all, false)).to eq(%{<div class="child_list"><span class="caption">Genus of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>})
       end
       it "should format an incertae sedis genera list" do
         genus = create_genus 'Atta', subfamily: subfamily, incertae_sedis_in: 'subfamily'
-        expect(decorator_helper.new(subfamily).send(:child_list, [genus], false, incertae_sedis_in: 'subfamily')).to eq(%{<div class="child_list"><span class="label">Genus <i>incertae sedis</i> in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>})
+        expect(decorator_helper.new(subfamily).send(:child_list, [genus], false, incertae_sedis_in: 'subfamily')).to eq(%{<div class="child_list"><span class="caption">Genus <i>incertae sedis</i> in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>})
       end
       it "should format a list of collective group names" do
         genus = create_genus 'Atta', subfamily: subfamily, status: 'collective group name'
-        expect(decorator_helper.new(subfamily).send(:collective_group_name_child_list)).to eq(%{<div class="child_list"><span class="label">Collective group name in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>})
+        expect(decorator_helper.new(subfamily).send(:collective_group_name_child_list)).to eq(%{<div class="child_list"><span class="caption">Collective group name in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>})
       end
     end
   end
@@ -201,7 +200,7 @@ describe TaxonDecorator do
 
   describe "Taxon link class methods" do
     describe "Creating a link from AntCat to a taxon on AntCat" do
-      it "should creat the link" do
+      it "should create the link" do
         genus = create_genus 'Atta'
         expect(genus.decorate.link_to_taxon).to eq(%{<a href="/catalog/#{genus.id}"><i>Atta</i></a>})
       end
@@ -252,4 +251,53 @@ describe TaxonDecorator do
       expect(junior.decorate.send(:format_senior_synonym)).to eq('')
     end
   end
+
+  describe "name_description" do
+    it "should handle a subfamily" do
+      subfamily = create_subfamily build_stubbed: true
+      expect(subfamily.decorate.name_description).to eq('subfamily')
+    end
+    it "should handle a genus" do
+      subfamily = create_subfamily build_stubbed: true
+      genus = create_genus subfamily: subfamily, tribe: nil
+      expect(genus.decorate.name_description).to eq("genus of #{subfamily.name}")
+    end
+    it "should handle a genus without a subfamily" do
+      genus = create_genus subfamily: nil, tribe: nil, build_stubbed: true
+      expect(genus.decorate.name_description).to eq("genus of (no subfamily)")
+    end
+    it "should handle a genus with a tribe" do
+      subfamily = create_subfamily
+      tribe = create_tribe subfamily: subfamily
+      genus = create_genus tribe: tribe, build_stubbed: true
+      expect(genus.decorate.name_description).to eq("genus of #{tribe.name}")
+    end
+    it "should handle a new genus" do
+      subfamily = create_subfamily build_stubbed: true
+      genus = FactoryGirl.build :genus, subfamily: subfamily, tribe: nil
+      expect(genus.decorate.name_description).to eq("new genus of #{subfamily.name}")
+    end
+    it "should handle a new species" do
+      genus = create_genus 'Atta'
+      species = FactoryGirl.build :species, genus: genus
+      expect(species.decorate.name_description).to eq("new species of <i>#{genus.name}</i>")
+    end
+    it "should handle a subspecies" do
+      genus = create_genus 'Atta'
+      species = FactoryGirl.build :species, genus: genus
+      subspecies = FactoryGirl.build :subspecies, species: species, genus: genus
+      expect(subspecies.decorate.name_description).to eq("new subspecies of <i>#{species.name}</i>")
+    end
+    it "should handle a subspecies without a species" do
+      genus = create_genus 'Atta'
+      subspecies = FactoryGirl.build :subspecies, genus: genus, species: nil
+      expect(subspecies.decorate.name_description).to eq("new subspecies of (no species)")
+    end
+    it "should be html_safe" do
+      subfamily = create_subfamily build_stubbed: true
+      genus = create_genus subfamily: subfamily, build_stubbed: true
+      expect(genus.decorate.name_description).to be_html_safe
+    end
+  end
+
 end

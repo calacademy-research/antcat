@@ -1,10 +1,4 @@
-# coding: UTF-8
 class MissingReference < Reference
-  attr_accessible :reason_missing
-
-  def key
-    MissingReferenceKey.new citation
-  end
 
   def self.find_replacements show_progress
     Progress.init show_progress, MissingReference.count
@@ -27,8 +21,8 @@ class MissingReference < Reference
 
   def self.replace_citation citation, replacement
     records_to_replace = MissingReference.where(citation: citation)
-    replacements = records_to_replace.all.inject [] do |replacements, reference|
-      replacements << { replace: reference.id, with: replacement.id }
+    replacements = records_to_replace.map do |reference|
+      { replace: reference.id, with: replacement.id }
     end
     replace_with_batch replacements
     destroy_found_missing_references records_to_replace
@@ -54,8 +48,7 @@ class MissingReference < Reference
 
   def find_replacement
     search_term = citation.gsub /,/, ''
-    results = Reference.where key_cache_no_commas: search_term
-    results.first
+    Reference.where(key_cache_no_commas: search_term).first
   end
 
 end

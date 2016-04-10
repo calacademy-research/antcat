@@ -1,107 +1,42 @@
-# coding: UTF-8
-
 module CatalogHelper
 
-  def make_catalog_search_results_columns items
-    column_count = 4
-    snake items, column_count
+  def taxon_browser_link taxon
+    classes = css_classes_for_rank(taxon)
+    classes << css_classes_for_status(taxon)
+    link_to taxon_label(taxon), catalog_path(taxon), class: classes
   end
 
-  def index_column_link rank, taxon, selected_taxon, parent_taxon, parameters = {}
-    parameters = parameters.dup
-    parameters.delete :id
-    parameters.delete :child
-    
-    if taxon == 'none'
-      parameters[:child] = 'none'
-      classes = 'valid'
-      classes << ' selected' if taxon == selected_taxon
-      if rank == :subfamily
-        id_string = ''
-        label = '(no subfamily)'
-      elsif rank == :tribe
-        id_string = "/#{parent_taxon.id}"
-        label = '(no tribe)'
-      end
+  def panel_header selected
+    if selected.is_a? Taxon
+      "#{selected.rank.capitalize}: #{taxon_breadcrumb_label selected}"
     else
-      id_string = "/#{taxon.id}"
-      label = taxon_label taxon
-      classes = taxon_css_classes taxon, selected: taxon == selected_taxon
-    end
-
-    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
-    link_to label, "/catalog#{id_string}#{parameters_string}", class: classes
+      selected[:title_for_panel]
+    end.html_safe
   end
 
-  def search_result_link item, parameters, search_query, st="bw"
-    parameters = parameters.dup
-    
-    css_class = item[:id].to_s == parameters[:id].to_s ? 'selected' : nil
-
-    parameters[:qq] = search_query
-    parameters[:id] = item[:id]
-    parameters[:st] = st
-    parameters.delete :child
-
-    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
-    link_to raw(item[:name]), "/catalog/search#{parameters_string}", class: css_class
+  def all_genera_link selected
+    extra_panel_link selected, "All genera", "all_genera_in_#{selected.rank}"
   end
 
-  def hide_link name, selected, parameters
-    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
-    link_to 'hide', "/catalog/hide_#{name}#{parameters_string}"
+  def incertae_sedis_link selected
+    return if selected.genera_incertae_sedis_in.empty?
+    extra_panel_link selected, "Incertae sedis", "incertae_sedis_in_#{selected.rank}"
   end
 
-  def hide_or_show_unavailable_subfamilies_link is_hiding_link, parameters
-    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
-    command = is_hiding_link ? 'hide' : 'show'
-    action = command.dup << '_unavailable_subfamilies'
-    text = command + ' unavailable'
-    link_to text, "/catalog/#{action}#{parameters_string}"
+  def toggle_valid_only_link
+    showing = session[:show_valid_only]
+    label = showing ? "show invalid" : "show valid only"
+    link_to label, catalog_options_path(valid_only: showing)
   end
 
-  def show_child_link name, selected, parameters
-    parameters_string = parameters.empty? ? '' : "?#{parameters.to_query}"
-    link_to "show #{name}", "/catalog/show_#{name}#{parameters_string}"
-  end
-
-  def snake_taxon_columns items
-    column_count = case items.count
-                   when 0..27  then 1
-                   when 27..52 then 2
-                   else             3
-                   end
-
-    css_class = 'taxon_item'
-    css_class << ' teensy' if column_count == 3
-    [snake(items, column_count), css_class]
-  end
-
-  def clear_search_results_link id
-    path = if id.present?
-             catalog_path id
-           else
-             root_path
-           end
-    link_to "Clear", path
-  end
-
-  def taxon_label_span taxon, options = {}
-    content_tag :span, class: taxon_css_classes(taxon, options) do
-      taxon_label(taxon, options).html_safe
+  def taxon_label_span taxon
+    content_tag :span, class: css_classes_for_rank(taxon) do
+      taxon_label(taxon).html_safe
     end
   end
 
-  def taxon_label taxon, options = {}
-    epithet_label taxon.name, taxon.fossil?, options
-  end
-
-  # never called; deprecated?
-  def name_label name, fossil, options = {}
-    raise "opsie name_label was called"
-    name = name.to_html_with_fossil fossil
-    name = name.upcase if options[:uppercase]
-    name
+  def taxon_label taxon
+    taxon.name.epithet_with_fossil_html taxon.fossil?
   end
 
   def protonym_label protonym
@@ -109,30 +44,69 @@ module CatalogHelper
   end
 
   def css_classes_for_rank taxon
-    [taxon.type.downcase, 'taxon', 'name']
+    [taxon.type.downcase, 'taxon', 'name'].sort
+  end
+
+  def open_panel? selected, self_and_parents
+    return true if disable_taxon_browser?
+
+    cookies[:close_inactive_panels] == "false" || # open if asked to do so
+    is_last_panel?(selected, self_and_parents) ||
+    selected.is_a?(Genus)        # always open genus panel
+  end
+
+  def show_taxon_browser?
+    return true if disable_taxon_browser?
+
+    # "Keep open" means "continue to be open", not "always open".
+    # If the browser is hidden, it stays hidden. Like this:
+    #
+    #                  keep_open_on  keep_open_off
+    # browser_hidden       HIDE          HIDE
+    # browser_visible      SHOW          HIDE
+    cookies[:show_browser] != "false" &&
+    cookies[:keep_taxon_browser_open] != "false"
+  end
+
+  # For disabling the taxon browser by default in test env.
+  # Hiding it and closing its panels would break loads of tests.
+  def disable_taxon_browser?
+    if Rails.env.test?
+      return true unless $taxon_browser_test_hack
+    end
   end
 
   private
-    def epithet_label name, fossil, options = {}
-      name = name.epithet_with_fossil_html fossil
-      name = name.upcase if options[:uppercase]
-      name
+    # HACK -ish
+    def is_last_panel? selected, self_and_parents
+      self_and_parents.last == selected ||  # last taxon in panel chain
+
+      # hack for "incertae sedis"/"all genera", which always is last
+      !selected.is_a?(Taxon) ||
+
+      selected.nil? ||           # no selected -> must be last
+      selected.is_a?(Species)    # species is always last
     end
 
-    def taxon_css_classes taxon, options = {}
-      css_classes = css_classes_for_rank taxon
-
-      unless options[:ignore_status]
-        css_classes << taxon.status.downcase.gsub(/ /, '_')
-        css_classes << 'nomen_nudum' if taxon.nomen_nudum?
-        css_classes << 'collective_group_name' if taxon.collective_group_name?
+    def extra_panel_link selected, label, param
+      css_class = if params[:display] == param
+                    "upcase selected"
+                  else
+                    "upcase white-label"
+                  end
+      content_tag :li do
+        content_tag :span, class: css_class do
+          link_to label, catalog_path(selected, display: param)
+        end
       end
-
-      css_classes << 'selected' if options[:selected]
-      css_classes.sort.join ' '
     end
 
-    def snake array, column_count
-      array.in_groups(column_count).transpose
+    def css_classes_for_status taxon
+      css_classes = []
+      css_classes << taxon.status.downcase.gsub(/ /, '_')
+      css_classes << 'nomen_nudum' if taxon.nomen_nudum?
+      css_classes << 'collective_group_name' if taxon.collective_group_name?
+      css_classes
     end
+
 end

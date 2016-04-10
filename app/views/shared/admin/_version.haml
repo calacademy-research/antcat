@@ -4,9 +4,8 @@
 -else
   %h3 Current version: #{@versions.size}
   -version = @versions.last
-  -whodunnit = User.find(version.whodunnit).email
   -created_at = version.created_at
-  %p Last edited by #{whodunnit} #{time_ago_in_words created_at} ago
+  %p Last edited #{time_ago_in_words created_at} ago
 
   -if @versions.size > 1
     -version_param = params[:version].try :to_i
@@ -14,9 +13,8 @@
     -if version_param
       %h3 Showing version #{version_param}
       -version = @versions[version_param]
-      -whodunnit = User.find(version.whodunnit).email
       -created_at = version.created_at
-      %p Created by #{whodunnit} #{time_ago_in_words created_at} ago
+      %p Created #{time_ago_in_words created_at} ago
       =link_to "Go to current version"
 
     -# Should we show the "Previous version" link? We let this bad boy decide.

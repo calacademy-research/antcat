@@ -1,0 +1,159 @@
+=enable_tooltips
+
+-content_for :head do
+  =javascript_include_tag 'references/edit_form_autocompletion', 'references/references'
+
+-reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
+-reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
+-selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
+
+=form_for reference.becomes(Reference) do |f|
+  =hidden_field_tag :selected_tab, selected_tab
+  =hidden_field_tag :possible_duplicate, possible_duplicate
+  =render 'shared/errors_for', resource: reference
+
+  .row
+    .medium-10.columns
+      =label_tag :reference_author_names_string do
+        Authors
+        =tooltip_icon :authors, scope: :references
+      =f.text_field :author_names_string
+    .medium-2.columns
+      =label_tag :reference_citation_year, 'Year'
+      =f.text_field :citation_year
+  .row
+    .medium-12.columns
+      =label_tag :reference_title do
+        Title
+        =tooltip_icon "references.title", scope: :references
+      =f.text_area :title, rows: 2
+
+  .row
+    .medium-12.columns
+      .tabs
+        %ul
+          %li
+            %a{href: "#tabs-article"}Article
+          %li
+            %a{href: "#tabs-book"}Book
+          %li
+            %a{href: "#tabs-nested"}Nested
+          %li
+            %a{href: "#tabs-unknown"}Other
+
+        #tabs-article
+          .row
+            .medium-3.columns
+              =label_tag :reference_journal_name do
+                Journal
+                =tooltip_icon "references.journal_name", scope: :references
+              =f.text_field :journal_name, value: reference.journal_name
+
+            .medium-3.columns
+              =label_tag :reference_series_volume_issue do
+                Series volume issue
+                =tooltip_icon "references.series_volume_issue", scope: :references
+              =f.text_field :series_volume_issue
+
+            .medium-3.columns.end
+              =label_tag :article_pagination do
+                Pagination
+                =tooltip_icon "references.journal_pagination", scope: :references
+              =text_field_tag :article_pagination, reference.pagination
+
+        #tabs-book
+          .row
+            .medium-3.columns
+              =label_tag :reference_publisher_string do
+                Publisher
+                =tooltip_icon "references.publisher", scope: :references
+              =f.text_field :publisher_string, value: reference.publisher_string
+
+            .medium-3.columns.end
+              =label_tag :book_pagination do
+                Pagination
+                =tooltip_icon "references.book_pagination", scope: :references
+              =text_field_tag :book_pagination, reference.pagination
+
+        #tabs-nested
+          .row
+            .medium-3.columns
+              =label_tag :reference_pages_in do
+                Pages in
+                =tooltip_icon "references.nested_pagination", scope: :references
+              =f.text_field :pages_in
+
+            .medium-3.columns.end
+              =label_tag :nesting_reference_id do
+                Nesting reference ID
+                =tooltip_icon "nesting_reference_id", scope: :references
+              =f.text_field :nesting_reference_id
+
+        #tabs-unknown
+          =label_tag :reference_citation, 'Citation'
+          =f.text_area :citation, rows: 2
+
+  .row
+    .medium-12.columns
+      =label_tag :reference_public_notes, 'Public notes'
+      =f.text_area :public_notes, rows: 2
+
+      =label_tag :reference_editor_notes do
+        Editor notes
+        =tooltip_icon "EdNote", scope: :references
+      =f.text_area :editor_notes, rows: 2
+  .row
+    .medium-12.columns
+      =label_tag :reference_taxonomic_notes do
+        Taxonomic notes
+        =tooltip_icon "TaxNote", scope: :references
+      =f.text_area :taxonomic_notes, rows: 2
+
+  .row
+    .medium-3.columns
+      =label_tag :reference_cite_code, 'Cite code'
+      =f.text_field :cite_code
+    .medium-3.columns
+      =label_tag :reference_doi do
+        DOI
+        =tooltip_icon "references.doi", scope: :references
+      =f.text_field :doi
+    .medium-3.columns
+      =label_tag :reference_possess, 'Possess'
+      =f.text_field :possess
+    .medium-3.columns
+      =label_tag :reference_date do
+        Date
+        =tooltip_icon "references.date", scope: :references
+      =f.text_field :date
+
+  %fieldset.fieldset
+    %legend
+      Reference document
+      =tooltip_icon "references.pdf.upload", scope: :references
+    =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
+      .row
+        .medium-6.columns.end
+          =document_form.file_field :file
+
+          =document_form.check_box :public
+          =label_tag :document_public do
+            Make PDF public?
+            =tooltip_icon "references.pdf.public", scope: :references
+
+          =label_tag :document_url do
+            Source URL
+            =tooltip_icon "references.source.url", scope: :references
+          =document_form.text_field :url
+
+  .row
+    .medium-12.columns
+      %button.submit.btn-save.has-spinner
+        -save_text = possible_duplicate ? 'Save Anyway' : 'Save'
+        =spinner_icon + save_text
+
+      -cancel_link = reference.new_record? ? references_path : reference_path(reference)
+      =link_to "Cancel", cancel_link, class: "btn-cancel"
+
+      =check_box_tag :make_default, true, !!params[:make_default]
+      =label_tag :make_default, 'Make default after save?'

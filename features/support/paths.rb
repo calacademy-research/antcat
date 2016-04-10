@@ -1,4 +1,3 @@
-# coding: UTF-8
 module NavigationHelpers
   def path_to page_name
     case page_name
@@ -15,6 +14,9 @@ module NavigationHelpers
     when /^the changes page$/
       '/changes'
 
+    when /^the unreviewed changes page$/
+      '/changes/unreviewed'
+
     when /^the missing reference edit page for "([^"]*)"$/
       reference = MissingReference.find_by_citation $1
       "/missing_references/#{reference.id}/edit"
@@ -23,13 +25,13 @@ module NavigationHelpers
       '/missing_references'
 
     when /^the advanced search page$/
-      advanced_search_path
+      catalog_search_path
 
     when /^the catalog (entry|page) for "([^"]*)"$/
       taxon = Taxon.find_by_name $2
       "/catalog/#{taxon.id}"
     when /^the catalog$/
-      catalog_path
+      root_path
 
     when /^the edit page for "(.*)"$/
       "/taxa/#{Taxon.find_by_name($1).id}/edit"
@@ -54,8 +56,6 @@ module NavigationHelpers
       latest_additions_references_path
     when /^the page for that reference$/
       reference_path(@reference || Reference.first)
-    when /^the Bolton references page$/
-      bolton_references_path
 
     when /^the "journals index" page$/
       journals_path
@@ -72,12 +72,22 @@ module NavigationHelpers
     when /^the tooltips editing page$/
       "/tooltips"
 
+    when /^the feedback index$/
+      "/feedback"
+
     when /^the edit user page$/
       '/users/edit'
     when /^the forgot password page$/
       '/users/password/new'
     when /^the login (page|form)$/
       '/users/sign_in'
+    when /^the sign ?up (page|form)$/
+      '/users/sign_up'
+    when /^the users page$/
+      '/users'
+
+    when /^the feedback index$/
+      '/feedback'
 
     when /^the reference field test page, opened to the first reference$/
       "/widget_tests/reference_field_test?id=#{Reference.first.id}"
@@ -97,6 +107,11 @@ module NavigationHelpers
       "/widget_tests/name_field_test?id=#{Name.first.id}"
     when /^the name field test page$/
       '/widget_tests/name_field_test'
+    when /^the tooltips test page$/
+      '/widget_tests/tooltips_test'
+
+    when /^the feedback mailer preview$/
+      '/emails/feedback_mailer_preview-feedback_email'
 
     else
       raise "#{page_name} not found"

@@ -5,8 +5,10 @@ Feature: Expanding reference keys
   I want to be able to click it and see the full reference
   So that I don't have to switch context to see the information I need
 
-  Scenario: Expanding a reference key in the catalog
+  Background:
     Given the Formicidae family exists
+
+  Scenario: Expanding a reference key in the catalog
     When I go to the catalog page for "Formicidae"
     Then I should see the reference key "Latreille, 1809"
       And I should not see the reference key expansion

@@ -6,6 +6,9 @@ Feature: Editing a taxon's homonym replaced by
   So people use AntCat
 
   Background:
+    # Formicidae is only explicitly required by 'Changing the homonym replaced by name'
+    # TODO leaving this here
+    Given the Formicidae family exists
     Given there is a genus "Atta"
     And I log in
 
@@ -73,4 +76,3 @@ Feature: Editing a taxon's homonym replaced by
     Then I should see "This must be the name of an existing taxon"
     When I press "OK"
     Then I should see "This must be the name of an existing taxon"
-

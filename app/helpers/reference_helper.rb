@@ -1,8 +1,9 @@
-# coding: UTF-8
 module ReferenceHelper
-  def approve_all_button
-    if $Milieu.user_is_superadmin? current_user
-      button 'Approve all', 'approve_all_button', class: 'approve_all'
-    end
+  def approve_all_references_button
+    return unless user_is_superadmin?
+
+    link_to 'Approve all', approve_all_references_path,
+      method: :put, class: "btn-destructive",
+      data: { confirm: "Mark all citations as reviewed? This operation cannot be undone!" }
   end
 end

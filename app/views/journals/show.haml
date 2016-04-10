@@ -1,0 +1,19 @@
+-@title = @journal.name
+-breadcrumb @journal
+
+-if user_can_edit?
+  .buttons_right=link_to "Edit journal name", edit_journal_path(@journal), class: "btn-edit"
+
+%h5
+  %em=@journal.name
+
+%table
+  %caption References using this journal
+  -@references.each do |reference|
+    %tr
+      %td
+        =reference.decorate.format
+        =reference.decorate.goto_reference_link target: nil
+  -if @references.empty?
+    %tr
+      %td None

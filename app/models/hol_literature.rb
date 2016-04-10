@@ -1,4 +1,3 @@
-# coding: UTF-8
 class HolLiterature < ActiveRecord::Base
   attr_accessible :tnuid,
                   :pub_id,

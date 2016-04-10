@@ -1,0 +1,34 @@
+-@title = "Lazy Links"
+-breadcrumb :lazy_links
+
+.row
+  .medium-4.columns
+    %h5 Valid taxa
+    %ul
+      %li=link_to "Family", catalog_path(Family.first)
+      %li=link_to "Subfamily", catalog_path(Subfamily.valid.first)
+      %li=link_to "Tribe", catalog_path(Tribe.valid.first)
+      %li=link_to "Genus", catalog_path(Genus.valid.first)
+      %li=link_to "Subgenus", catalog_path(Subgenus.valid.first)
+      %li=link_to "Species", catalog_path(Species.valid.first)
+      %li=link_to "Subspecies", catalog_path(Subspecies.valid.first)
+
+  .medium-4.columns
+    %h5 References
+    %ul
+      %li=link_to "ArticleReference", reference_path(ArticleReference.first)
+      %li=link_to "BookReference", reference_path(BookReference.first)
+      %li=link_to "NestedReference", reference_path(122100)
+      %li=link_to "^-- parent (NestedReference)", reference_path(122099)
+      %li=link_to "NestedReference", reference_path(142836)
+      %li=link_to "^-- parent (ArticleReference)", reference_path(142835)
+      %li=link_to "UnknownReference", reference_path(UnknownReference.first)
+  .medium-4.columns
+    %h5 Test pages
+    %ul
+      %li=link_to "name_popup", widget_tests_name_popup_test_path
+      %li=link_to "name_field", widget_tests_name_field_test_path
+      %li=link_to "reference_popup", widget_tests_reference_popup_test_path
+      %li=link_to "reference_field", widget_tests_reference_field_test_path
+      %li=link_to "taxt_editor", widget_tests_taxt_editor_test_path
+      %li=link_to "tooltips", widget_tests_tooltips_test_path

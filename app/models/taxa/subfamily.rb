@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Subfamily < Taxon
   belongs_to :family
   has_many :tribes
@@ -9,10 +8,17 @@ class Subfamily < Taxon
            -> { where(status: 'collective group name') },
             class_name: 'Genus'
 
-  def add_antweb_attributes attributes
-    attributes.merge subfamily: name.to_s
+  def parent
+    Family.first
   end
 
+  def parent= parent_taxon
+    self.family = parent_taxon
+  end
+
+  # TODO among other things, this is called when deleting a
+  # taxon + its children, and in that case it fails to take into
+  # account incertae sedis taxa (genera in this case).
   def children
     tribes
   end
@@ -21,4 +27,11 @@ class Subfamily < Taxon
     get_statistics [:tribes, :genera, :species, :subspecies]
   end
 
+  def all_displayable_genera
+    genera.displayable.ordered_by_name
+  end
+
+  def genera_incertae_sedis_in
+    genera.displayable.without_tribe.ordered_by_name
+  end
 end

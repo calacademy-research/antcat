@@ -1,5 +1,3 @@
--#Locals: references, reference, picker_type
-
 - references ||= nil
 - reference ||= nil
 - css_class = "antcat_reference_#{picker_type}"
@@ -21,23 +19,20 @@
     .expansion.nested_form
       %table
         %tr
-          %td.throbber= image_tag 'ui-anim_basic_16x16.gif'
+          %td.throbber= shared_spinner_icon
           %td.controls
             = hidden_field_tag 'reference_picker_id', reference.try(:id)
 
             .ok_cancel_controls
-              %button.ok.ui-priority-primary OK
-              %button.close.ui-priority-secondary Cancel
-
-            .add_controls
-              %button.add.ui-priority-primary Add
+              %button.ok.btn-normal OK
+              %button.close.btn-cancel Cancel
 
             .default_reference_controls
-              = render partial: 'references/default_reference'
+              = render partial: 'default_references/default_reference'
 
             .search_controls
               = text_field_tag 'q', params[:q], class: 'search_controls q'
-              %button.search_controls.go.ui-priority-primary Go
+              %button.search_controls.go.btn-search Go
             = will_paginate references if references
             .help_banner
               %span.help_banner_text

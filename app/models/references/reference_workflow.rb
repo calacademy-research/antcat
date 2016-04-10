@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Reference < ActiveRecord::Base
   include Workflow
 

@@ -1,4 +1,3 @@
-@dormant
 Feature: Editing a user
   As a user of AntCat
   I want to edit my password and email
@@ -8,21 +7,21 @@ Feature: Editing a user
   Scenario: Changing my password
     Given I am logged in
     When I go to the main page
-    And I follow "Mark Wilden"
+    And I follow the first "Mark Wilden"
     Then I should be on the edit user page
-    When I fill in "user_password" with "new password" within "#page_contents"
-    And I fill in "user_password_confirmation" with "new password" within "#page_contents"
-    And I fill in "user_current_password" with "secret" within "#page_contents"
+    When I fill in "user_password" with "new password"
+    And I fill in "user_password_confirmation" with "new password"
+    And I fill in "user_current_password" with "secret"
     And I press "Save"
     Then I should be on the main page
     And I should see "Your account has been updated"
   #Scenario: Logging in with changed password
-    When I follow "Logout"
+    When I follow the first "Logout"
     Then I should not see "Mark Wilden"
-    When I follow "Login"
+    When I follow the first "Login"
     And I fill in the email field with my email address
     And I fill in "user_password" with "new password"
-    And I press "Go" within "#login"
+    When I press the first "Login"
     Then I should be on the main page
     And I should see "Mark Wilden"
 
@@ -31,9 +30,9 @@ Feature: Editing a user
     When I go to the main page
     Then I should see "Mark Wilden"
     And I should not see "Brian Fisher"
-    When I follow "Mark Wilden"
-    And I fill in "user_name" with "Brian Fisher" within "#page_contents"
-    And I fill in "user_current_password" with "secret" within "#page_contents"
+    When I follow the first "Mark Wilden"
+    And I fill in "user_name" with "Brian Fisher"
+    And I fill in "user_current_password" with "secret"
     And I press "Save"
     Then I should be on the main page
     And I should see "Brian Fisher"
@@ -49,32 +48,35 @@ Feature: Editing a user
     When I go to the main page
     Then I should see "Logout"
 
-  Scenario: Superadmins should have access to active admin pages
+  Scenario: Superadmins should have access to Active Admin pages
     Given I log in as a superadmin
     When I go to the main page
-    Then I should see "Admin"
+    And I follow the first "Editor's Panel"
+    Then I should see "Admin Dashboard"
 
-  Scenario: regular users should have access to active admin pages
+  Scenario: Regular users should not have access to Active Admin pages
     Given I am logged in
     When I go to the main page
-    Then I should not see "Admin"
+    And I follow the first "Editor's Panel"
+    Then I should not see "Admin Dashboard"
 
-  Scenario: Admins to be able to go to the active admin pages
+  Scenario: Admins to be able to go to the Active Admin pages
     Given I log in as a superadmin
     When I go to the main page
-    Then I should see "Admin"
-    When I follow "Admin"
+    And I follow the first "Editor's Panel"
+    When I follow "Admin Dashboard"
     Then I should see "Dashboard"
 
-  Scenario: When admins logout, it should redirect to antcat root
+  Scenario: When admins logout, it should redirect to AntCat root
     Given I log in as a superadmin
     When I go to the main page
-    When I follow "Admin"
+    And I follow the first "Editor's Panel"
+    When I follow "Admin Dashboard"
     Then I should see "Dashboard"
-    When I follow "Logout"
+    When I follow the first "Logout"
     Then I should see "An Online Catalog of the Ants of the World"
 
-  Scenario: Non-admins should be bounced from admin pages to antcat root
+  Scenario: Non-admins should be bounced from admin pages to AntCat root
     Given I am logged in
     When I go to the useradmin page
     Then I should be on the main page
@@ -83,4 +85,3 @@ Feature: Editing a user
     Given I log in as a superadmin
     When I go to the useradmin page
     Then I should be on the useradmin page
-

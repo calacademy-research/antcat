@@ -1,4 +1,5 @@
-# coding: UTF-8
+include Exporters::Antweb::MonkeyPatchTaxon
+
 class Exporters::Antweb::Exporter
   def initialize show_progress = false
     Progress.init show_progress, Taxon.count
@@ -6,48 +7,53 @@ class Exporters::Antweb::Exporter
 
   def export_one id
     taxa = Taxon.find id
-    export_taxon taxa
+    puts export_taxon taxa
   end
 
   def export directory
     File.open("#{directory}/antcat.antweb.txt", 'w') do |file|
       file.puts header
-      get_taxa.each do |taxon|
-        begin
-          if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
-            row = export_taxon taxon
-            if row
-              if row[20]
-                row[20].delete!('\"')
-              end
-              row.each do |col|
-                if col.is_a? String
-                  col.delete!("\n")
-                  col.delete!("\r")
+
+      taxa_ids.each_slice(1000) do |chunk|
+        Taxon.where(id: chunk)
+          .order("field(taxa.id, #{chunk.join(',')})")
+          .joins(protonym: [{authorship: :reference}])
+          .each do |taxon|
+          begin
+            if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
+              row = export_taxon taxon
+              if row
+                if row[20]
+                  row[20].delete!('\"')
+                end
+                row.each do |col|
+                  if col.is_a? String
+                    col.delete!("\n")
+                    col.delete!("\r")
+                  end
                 end
               end
+              file.puts row.join("\t") if row
             end
-            file.puts row.join("\t") if row
+          rescue Exception => e
+            puts ("Fatal error exporting taxon id: #{taxon.id}")
+            puts e.message
+            puts e.backtrace.inspect
           end
-        rescue Exception => e
-          puts ("Fatal error exporting taxon id: #{taxon.id}")
-          puts e.message
-          puts e.backtrace.inspect
         end
       end
       Progress.show_results
     end
-
-    # row = export_taxon taxon
-    # file.puts row.join("\t") if row
   end
 
-  def get_taxa
-    Taxon.joins(protonym: [{authorship: :reference}]).order(:status).reverse
+  # For maintaining order, based on the old `#get_taxa`.
+  def taxa_ids
+    Taxon.joins(protonym: [{authorship: :reference}])
+      .order(:status).pluck(:id).reverse
   end
 
   def export_taxon taxon
-    puts ("Processing: #{taxon.id}")
+    puts "Processing: #{taxon.id}" if ENV['DEBUG']
     Progress.tally_and_show_progress 100
 
     reference = taxon.protonym.authorship.reference
@@ -87,9 +93,7 @@ class Exporters::Antweb::Exporter
       STDERR.puts "An error of type #{exception} happened, message is #{exception.message}"
       STDERR.puts exception.backtrace
       STDERR.puts "========================================================"
-
     end
-
   end
 
   def boolean_to_antweb boolean

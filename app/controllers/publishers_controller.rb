@@ -1,6 +1,5 @@
-# coding: UTF-8
 class PublishersController < ApplicationController
-  def index
+  def autocomplete
     render json: Publisher.search(params[:term])
   end
 end

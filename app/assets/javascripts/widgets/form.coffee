@@ -13,7 +13,7 @@ class AntCat.Form
     @options.button_container or= '> .buttons'
     @buttons = @element.find(@options.button_container); AntCat.check 'Form.initialize_buttons', '@buttons', @buttons
     @buttons
-      .find(':button, :submit').button().end()
+      .find(':button, :submit').end()
       .find('.submit')
         .off('click')
         .on('click', @submit).end()
@@ -55,11 +55,11 @@ class AntCat.Form
 
   start_throbbing: =>
     @buttons.find(button_selector).disable()
-    @element.find('img.throbber').show()
+    @element.find('.shared-spinner').show()
 
   stop_throbbing: =>
     @buttons.find(button_selector).undisable()
-    @element.find('img.throbber').hide()
+    @element.find('.shared-spinner').hide()
 
   enable_buttons: =>
     @buttons.find(button_selector).undisable()

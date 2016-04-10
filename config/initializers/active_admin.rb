@@ -4,7 +4,7 @@ ActiveAdmin.setup do |config|
   # Set the title that is displayed on the main layout
   # for each of the active admin pages.
   #
-  config.site_title = "Antcat (#{Rails.env})"
+  config.site_title = "AntCat (#{Rails.env})"
 
   # Set the link url for the title. For example, to take
   # users to your main site. Defaults to no link.
@@ -79,7 +79,7 @@ ActiveAdmin.setup do |config|
   # doesn't have access to Dashboard, he'll end up in a redirect loop.
   # Method provided here should be defined in application_controller.rb.
   # config.on_unauthorized_access = :access_denied
-  config.on_unauthorized_access = :root_redirect
+  config.on_unauthorized_access = :root_redirect_for_active_admin
 
 
   # == Current User

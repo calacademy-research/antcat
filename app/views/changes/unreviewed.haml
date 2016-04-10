@@ -1,0 +1,11 @@
+- @title = 'Unreviewed Changes'
+- breadcrumb :unreviewed_changes
+
+-if @changes.empty?
+  %p There are no unreviewed changes.
+-else
+  .buttons_right=approve_all_changes_button
+  .clear
+
+  =render @changes
+  =will_paginate @changes

@@ -1,4 +1,3 @@
-# coding: UTF-8
 module AnyBase
 
   def self.base_10_to_base_x number, digits

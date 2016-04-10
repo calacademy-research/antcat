@@ -43,6 +43,3 @@ Then(/^I should not see any tooltips next to the text "([^"]*)"$/) do |text|
   tooltip = find('*', text: /^#{text}$/).first('img.help_icon')
   expect(tooltip).to be nil
 end
-
-
-

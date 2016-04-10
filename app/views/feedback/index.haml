@@ -1,0 +1,19 @@
+-@title = "User Feedback"
+-breadcrumb :user_feedback
+
+%table.feedbacks
+  %thead
+    %tr
+      %th ID
+      %th Email
+      %th{width: "10%"} Recipients
+  -@feedbacks.each do |feedback|
+    %tr
+      %td
+        %strong ##{feedback.id}
+      %td
+        .callout
+          =render file: "feedback_mailer/feedback_email", locals: { feedback: feedback }
+      %td=feedback.email_recipients
+
+=will_paginate @feedbacks

@@ -41,9 +41,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @display_section.hide()
     @edit_section.show()
     @form().open()
-    @setup_search_selector()
-
-
 
   hide_form: =>
     @edit_section.hide()
@@ -54,7 +51,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @edit_section.is ':visible'
 
   start_throbbing: =>
-    @element.find('.throbber img').show()
+    @element.find('.throbber .shared-spinner').show()
     @element.find('> .expansion > .controls').disable()
 
   #---------------------------------
@@ -88,10 +85,6 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @expansion
       .find('.controls')
         .undisable()
-        .find(':button')
-         # .unbutton()
-          .button()
-          .end()
         .end()
 
       .find(':button.ok')
@@ -138,26 +131,10 @@ class AntCat.ReferencePicker extends AntCat.Panel
           false
         .end()
 
-    #@setup_search_selector()
     @enable_search_author_autocomplete()
 
   get_default_reference_string: =>
     @controls.find('#default_reference_string').val()
-
-  setup_search_selector: =>
-      @search_selector
-  #      .selectmenu('destroy')
-        .selectmenu(wrapperElement: "<span />")
-      .selectmenu()
-
-      .change =>
-          new_type = @search_selector.find('option:selected').text()
-          if new_type is 'Search for'
-            @disable_search_author_autocomplete()
-          else
-            @enable_search_author_autocomplete()
-          @textbox.focus()
-
 
   enable_controls: => @expansion.find('.controls').undisable()
   disable_controls: => @expansion.find('.controls').disable()
@@ -167,16 +144,9 @@ class AntCat.ReferencePicker extends AntCat.Panel
     @make_current @template.find('.reference'), true
 
   setup_references: =>
-    @element
-      .find('.reference').reference_panel(
-          on_form_open:  @on_reference_form_open
-          on_form_close: @on_reference_form_close
-          on_form_done:  @on_reference_form_done)
-        .end()
-
     if @search_results()
       @search_results()
-        .find(".reference .item_#{@id} div.display")
+        .find("#reference_#{@id}.reference div.display")
           .addClass('ui-selected')
           .end()
 
@@ -201,7 +171,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
   on_reference_form_close: => @enable_controls()
   on_reference_form_done: ($panel) =>
     id = $panel.data 'id'
-    $(".item_#{id}").each -> $(@).replaceWith $panel.clone()
+    $("reference_#{id}").each -> $(@).replaceWith $panel.clone()
     @setup_references()
 
   # 'current' is the reference panel at the top of the field, above the controls
@@ -210,14 +180,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
     $current_contents = @current.find '> tbody > tr > td'
     $new_contents = $panel.clone()
     $current_contents.html $new_contents
-    $new_current_reference = @current.find('.reference')
-    $new_current_reference
-      .find('div.display').removeClass('ui-selected ui-selectee').end()
-      .reference_panel(
-          on_form_open: @on_reference_form_open
-          on_form_close: @on_reference_form_close
-          on_form_done: @on_reference_form_done
-          edit: edit)
+
     @element.find('div.display').bind 'click', (event) => @handle_click(event); false
     @element.find('div.display').hover(@hover, @unhover)
     @element.removeClass 'has_no_current_reference'
@@ -257,7 +220,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
   clear_current: =>
     $('.ui-selected').removeClass('ui-selected')
     @current = @element.find '> .edit > table.current'
-    @current.find(".item_#{@id} .reference_item").replaceWith('<div class="reference"><table class="reference_table"><tr><td class="reference_item"><div class="display">(none)</div></td></tr></table></div>')
+    @current.find("reference_#{@id} .reference_item").replaceWith('<div class="reference"><table class="reference_table"><tr><td class="reference_item"><div class="display">(none)</div></td></tr></table></div>')
 
   # -----------------------------------------
   enable_search_author_autocomplete: =>
@@ -269,7 +232,7 @@ class AntCat.ReferencePicker extends AntCat.Panel
       source: (request, result_handler) ->
         search_term = AntCat.ReferencePicker.extract_author_search_term(@element.val(), $(@element).getSelection().start)
         if search_term.length >= 3
-          $.getJSON '/authors', term: search_term, result_handler
+          $.getJSON '/authors/autocomplete', term: search_term, result_handler
         else
           result_handler []
       # don't update the search textbox when the autocomplete item changes

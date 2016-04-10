@@ -1,4 +1,3 @@
-# coding: UTF-8
 require_relative '../config/environment.rb'
 
 four_epithet_names = Name.all.select do |name|

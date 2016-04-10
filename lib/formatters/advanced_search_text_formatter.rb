@@ -1,4 +1,3 @@
-# coding: UTF-8
 module Formatters::AdvancedSearchTextFormatter
   include Formatters::AdvancedSearchFormatter
 
@@ -6,18 +5,22 @@ module Formatters::AdvancedSearchTextFormatter
     taxon.name_cache
   end
 
-  def document_link _; end
+  def format_protonym taxon
+    reference = taxon.protonym.authorship.reference
 
-  def goto_reference_link _; end
+    string = ''.html_safe
+    string << reference.decorate.format
+    string << " DOI: " << reference.doi if reference.doi.present?
+    string << "   #{reference_id(reference)}" if reference_id(reference)
+    string
+  end
 
   def italicize string
     string
   end
 
   def reference_id reference
-    string = ''
-    string << " DOI: " << reference.doi if reference.doi and reference.doi.length > 0
-    string << "   #{reference.id}"
+    reference.id
   end
 
   def convert_to_text string

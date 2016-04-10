@@ -1,28 +1,34 @@
 -@title = "Edit Tooltips"
+-breadcrumb :tooltips
 
 =enable_tooltips
+
 -content_for :head do
-  = javascript_include_tag 'optimal-select.min'
-  = javascript_include_tag 'tooltips_edit_in_place'
+  = javascript_include_tag 'tooltips/edit_in_place'
+
+.buttons_right
+  =link_to 'New Tooltip', new_tooltip_path, class: "btn-new"
+  =toggle_tooltip_helper_tooltips_button
+  =link_to 'Help', "https://github.com/calacademy-research/antcat/wiki/Editing-tooltips", class: "btn-non-destructive"
 
 %table#tooltips
   %thead
     %tr
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Key
         =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Page scope
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Key enabled?
         =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Tooltip text
         =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Selector
         =tooltip_icon :selector, scope: :tooltips, disable_edit_link: false
-      %th{class: 'apply_tooltip'}
+      %th.apply_tooltip
         Selector enabled?
         =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
   %tbody
@@ -35,17 +41,6 @@
       -@grouped_tooltips.each do |namespace, tooltips|
         %tr.fake_subheader
           %td{colspan: 6}
-            %h3
+            %h6
               =if namespace.present? then namespace.capitalize else "No namespace" end
         =render tooltips
-
-%br/
-
-=link_to 'Help', page_path('help/editing_tooltips')
-|
-=link_to 'New Tooltip', new_tooltip_path
-|
-- if session[:show_missing_tooltips]
-  =link_to 'Hide tooltips helper', tooltips_path+'/toggle_tooltip_helper'
-- else
-  =link_to 'Show tooltips helper', tooltips_path+'/toggle_tooltip_helper'

@@ -78,7 +78,7 @@ class RemoveProtonymHtml < ActiveRecord::Migration
 
 
 
-    # todo: Final query to see if we have distinct protonym_names anyhwere after above query is run
+    # TODO: Final query to see if we have distinct protonym_names anyhwere after above query is run
 
   end
 

@@ -1,11 +1,8 @@
--#Locals: taxon
-
 .history_items_section.section
   .section_header.ui-widget-header.ui-corner-top
-    .left
-      History
+    .left History
     .right.history_items_section_buttons
-      %button.submit.ui-priority-primary.small_button Add
+      %button.submit.btn-tiny Add
     .clear
   .history_items.ui-dialog-content.ui-widget-content.ui-corner-bottom
     -taxon.history_items.each do |history_item|

@@ -1,4 +1,3 @@
-# coding: UTF-8
 class PublisherObserver < ActiveRecord::Observer
 
   def before_update publisher

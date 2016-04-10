@@ -2,10 +2,10 @@
 
 - content_for :head do
   = javascript_include_tag  'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
-  = javascript_include_tag  'widgets/reference_picker', 'widgets/reference_panel', 'widgets/reference_form'
+  = javascript_include_tag  'widgets/reference_picker'
   = javascript_include_tag  'widgets/name_popup', 'widgets/reference_popup', 'widgets/taxt_editor'
   = javascript_include_tag  'widget_tests/taxt_editor_test'
 
-- content_for :page_contents do
-  #taxt_editor
-    = render 'taxt_editors/show', name: 'name', value: ''
+#click_here_to_lose_focus Random element; see taxt_editor_steps.rb
+#taxt_editor
+  =render 'taxt_editors/show', name: 'name', value: ''

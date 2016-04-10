@@ -25,4 +25,12 @@ describe ChangeDecorator do
     end
   end
 
+  describe "#format_time_ago" do
+    let(:nil_decorator) { ChangeDecorator.new(nil) }
+    it "formats time" do
+      time = Time.now - 1.hour
+      expect(nil_decorator.send(:format_time_ago, time))
+        .to match(%r{<span>about 1 hour ago</span>})
+    end
+  end
 end

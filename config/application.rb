@@ -60,11 +60,17 @@ module AntCat
     # suppress deprecation warning
     config.active_record.raise_in_transactional_callbacks = true
     config.assets.enabled = true
-    #
-    # We were not reloading /lib properly (despite the above "autoload paths" invocation.)
-    # This voodoo does it.
-    #
-    config.eager_load_paths += ["#{Rails.root}/lib}"]
+
+    # For `rake notes`
+    config.annotations.register_extensions('sass') do |annotation|
+      %r{//\s*(#{annotation}):?\s*(.*?)$}
+    end
+    config.annotations.register_extensions('haml') do |annotation|
+      %r{-#\s*(#{annotation}):?\s*(.*?)$}
+    end
+    config.annotations.register_extensions('coffee') do |annotation|
+      %r(#\s*(#{annotation}):?\s*(.*?)$)
+    end
   end
 end
 

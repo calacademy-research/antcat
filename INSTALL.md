@@ -5,7 +5,7 @@ git clone https://github.com/calacademy/antcat.git
 cd antcat
 cp config/database.yml.example config/database.yml # edit database.yml
 cp config/server.yml.example config/server.yml
-cp config/secrets.yml.example config/secrets.yml #TODO this file does not exist in the main repo
+cp config/secrets.yml.example config/secrets.yml
 ```
 
 ###Install dependencies
@@ -78,7 +78,7 @@ bundle exec rake db:seed # contains tooltips
 bundle exec rake antcat:db:import_sample_data # imports sample data
 ```
 
-##Usage
+##Run site
 ```bash
 bundle exec rake sunspot:solr:start RAILS_ENV=development # start Solr
 bundle exec rails server # start the app
@@ -95,3 +95,10 @@ bundle exec rails server -b 0.0.0.0 # start the app
 ```
 
 Visit http://192.168.50.50:3000/
+
+##Run tests
+```bash
+bundle exec cucumber # feature/browser tests
+bundle exec rspec    # unit tests
+bundle exec teaspoon # JavaScript tests
+```

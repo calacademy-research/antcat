@@ -1,6 +1,5 @@
-# coding: UTF-8
-desc "Display nomen nudums"
-task nomen_nudums: :environment do
+desc "Display nomina nuda"
+task nomina_nuda: :environment do
 
   Taxon.ordered_by_name.where(status: 'nomen nudum').all.each do |taxon|
     havent_shown_name = true

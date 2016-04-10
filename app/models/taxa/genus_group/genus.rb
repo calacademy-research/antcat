@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Genus < GenusGroupTaxon
   belongs_to :tribe
   has_many :species
@@ -18,14 +17,14 @@ class Genus < GenusGroupTaxon
 
   def update_parent new_parent
     set_name_caches
-    case
-    when new_parent.kind_of?(Tribe)
+    case new_parent
+    when Tribe
       self.tribe = new_parent
       self.subfamily = new_parent.subfamily
-    when new_parent.kind_of?(Subfamily)
+    when Subfamily
       self.tribe = nil
       self.subfamily = new_parent
-    when new_parent.nil?
+    when nil
       self.tribe = nil
       self.subfamily = nil
     end
@@ -36,6 +35,10 @@ class Genus < GenusGroupTaxon
     get_statistics [:species, :subspecies]
   end
 
+  def parent
+    tribe || subfamily || Family.first
+  end
+
   def siblings
     tribe && tribe.genera.ordered_by_name ||
     subfamily && subfamily.genera.without_tribe.ordered_by_name ||
@@ -43,20 +46,14 @@ class Genus < GenusGroupTaxon
   end
 
   def species_group_descendants
-    Taxon.where(genus_id: id).where('taxa.type != ?', 'subgenus').includes(:name).order('names.epithet')
-  end
-
-  def add_antweb_attributes attributes
-    subfamily_name = subfamily && subfamily.name.to_s || 'incertae_sedis'
-    tribe_name = tribe && tribe.name.to_s
-    attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: name.to_s
+    Taxon.where(genus_id: id).where.not(type: 'Subgenus')
+      .includes(:name).order('names.epithet')
   end
 
   private
-
-  def update_descendants_subfamilies
-    self.species.each{ |s| s.subfamily = self.subfamily }
-    self.subspecies.each{ |s| s.subfamily = self.subfamily }
-  end
+    def update_descendants_subfamilies
+      self.species.each{ |s| s.subfamily = self.subfamily }
+      self.subspecies.each{ |s| s.subfamily = self.subfamily }
+    end
 
 end

@@ -1,0 +1,5 @@
+#breadcrumbs
+  .left=breadcrumbs display_single_fragment: true
+  -if content_for? :breadcrumbs_right
+    .right=yield :breadcrumbs_right
+  .clearfix

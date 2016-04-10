@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe Reference do
@@ -141,23 +140,6 @@ describe Reference do
       reference.title = nil
       expect(reference).not_to be_valid
     end
-
-    describe "Difference between Missing and UnmissingReferences" do
-      it "should require the year when it's Unmissing" do
-        reference = UnmissingReference.new title: 'foo'
-        reference.citation_year = nil
-        expect(reference).not_to be_valid
-        reference.citation_year = ''
-        expect(reference).not_to be_valid
-      end
-      it "should not require the year when it's Missing" do
-        reference = MissingReference.create title: 'foo'
-        reference.citation_year = nil
-        expect(reference).to be_valid
-        reference.citation_year = ''
-        expect(reference).to be_valid
-      end
-    end
   end
 
   describe "changing the citation year" do
@@ -175,6 +157,11 @@ describe Reference do
       reference.citation_year = '2010b'
       reference.save!
       expect(reference.year).to eq(2010)
+    end
+
+    it "handles nil years" do
+      reference = reference_factory author_name: 'Bolton', citation_year: nil
+      expect(reference.short_citation_year).to eq "[no year]"
     end
   end
 
@@ -268,15 +255,9 @@ describe Reference do
                                :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
       duplicate = ArticleReference.new :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
                            :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
+      expect(duplicate.errors).to be_empty
       expect(duplicate.check_for_duplicate).to be_truthy
       expect(duplicate.errors).not_to be_empty
-    end
-  end
-
-  describe "Key" do
-    it "has a key" do
-      reference = FactoryGirl.create :article_reference
-      reference.key
     end
   end
 
@@ -327,17 +308,15 @@ describe Reference do
       protonym = FactoryGirl.create :protonym, authorship: citation
       taxon = FactoryGirl.create :genus, protonym: protonym, type_taxt: "{ref #{reference.id}}", headline_notes_taxt: "{ref #{reference.id}}", genus_species_header_notes_taxt: "{ref #{reference.id}}"
       history_item = taxon.history_items.create! taxt: "{ref #{reference.id}}"
-      bolton_match = FactoryGirl.create :bolton_match, reference: reference
       reference_section = FactoryGirl.create :reference_section, title_taxt: "{ref #{reference.id}}", subtitle_taxt: "{ref #{reference.id}}", references_taxt: "{ref #{reference.id}}"
       nested_reference = FactoryGirl.create :nested_reference, nesting_reference: reference
-      results = reference.references
+      results = reference.send(:reference_references)
       expect(results).to match_array([
         {table: 'taxa',               id: taxon.id,             field: :type_taxt},
         {table: 'taxa',               id: taxon.id,             field: :headline_notes_taxt},
         {table: 'taxa',               id: taxon.id,             field: :genus_species_header_notes_taxt},
         {table: 'citations',          id: citation.id,          field: :notes_taxt},
         {table: 'citations',          id: citation.id,          field: :reference_id},
-        {table: 'bolton_matches',     id: bolton_match.id,      field: :reference_id},
         {table: 'reference_sections', id: reference_section.id, field: :title_taxt},
         {table: 'reference_sections', id: reference_section.id, field: :subtitle_taxt},
         {table: 'reference_sections', id: reference_section.id, field: :references_taxt},
@@ -348,7 +327,7 @@ describe Reference do
 
     describe "Any references?" do
       it "should return false if there are no references to this reference" do
-        expect(reference.any_references?).to be_falsey
+        expect(reference.send(:has_any_references?)).to be_falsey
       end
     end
   end

@@ -1,7 +1,9 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe AuthorName do
+
+  it { should validate_presence_of(:author) }
+
   let(:author) { Author.create! }
 
   it "has many references" do
@@ -11,17 +13,6 @@ describe AuthorName do
     author_name.references << reference
 
     expect(author_name.references.first).to eq(reference)
-  end
-
-  it "has an author" do
-    AuthorName.create! :author => author, :name => 'Fisher, B.L.', :author => author
-  end
-
-  it "must have an author" do
-    author_name = AuthorName.new :name => 'Ward, P. S.'
-    expect(author_name).not_to be_valid
-    author_name.author = FactoryGirl.create :author
-    expect(author_name).to be_valid
   end
 
   it "can't be blank" do

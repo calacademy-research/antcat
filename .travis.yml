@@ -16,5 +16,5 @@ before_script:
 
 script:
   - RAILS_ENV=test bundle exec rake db:create
-  - DRIVER=webkit bundle exec cucumber --tags ~@dormant
+  - DRIVER=webkit bundle exec cucumber
   - bundle exec rspec spec --tag ~pending

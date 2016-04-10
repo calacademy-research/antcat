@@ -1,4 +1,3 @@
-# coding: UTF-8
 class HolTaxonDatum < ActiveRecord::Base
 
   attr_accessible :tnuid,
@@ -24,5 +23,10 @@ class HolTaxonDatum < ActiveRecord::Base
                   :valid_tnuid,
                   :name,
                   :is_valid
+
+  # TODO move hol_id to the taxa table or migrate this to a boolean
+  def is_valid?
+    is_valid.downcase == 'valid'
+  end
 
 end

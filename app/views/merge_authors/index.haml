@@ -1,0 +1,12 @@
+- @title = 'Merge Authors'
+- breadcrumb :merge_authors
+
+- content_for :head do
+  = javascript_include_tag 'references/merge_authors'
+
+#merge_authors
+  -@panels.each do |panel|
+    =render 'panel', panels: @panels, panel: panel
+
+  -if @authors.count >= 2 && user_can_edit?
+    =render 'merge', panels: @panels, names: @names

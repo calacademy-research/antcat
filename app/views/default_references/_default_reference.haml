@@ -1,0 +1,9 @@
+- default_reference = DefaultReference.get session
+- default_reference ||= Reference.last if Rails.env.development?
+
+- if default_reference
+  = hidden_field_tag 'default_reference_id', default_reference.id
+  = hidden_field_tag 'default_reference_string', default_reference.decorate.format
+  = hidden_field_tag 'default_reference_key', default_reference.decorate.key
+  = hidden_field_tag 'default_reference_taxt', Taxt.to_editable_reference(default_reference)
+  %button.default_reference.btn-normal= default_reference.decorate.key

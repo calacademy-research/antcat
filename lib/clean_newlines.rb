@@ -1,4 +1,3 @@
-# coding: UTF-8
 module CleanNewlines
 
   # TODO move to a concern?

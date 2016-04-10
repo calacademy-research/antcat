@@ -1,25 +1,14 @@
-- @title = "#{@taxon.name.epithet}"
+-@title = "#{@taxon.name.epithet}"
+-breadcrumb @taxon
 
-- content_for :head do
-  -#= javascript_include_tag 'ext/jquery.spinner.js'
+-unless disable_taxon_browser?
+  -content_for :head do
+    =javascript_include_tag "taxon_browser/cookie_checkbox"
+    =javascript_include_tag "taxon_browser/taxon_browser"
+    =javascript_include_tag "taxon_browser/taxon_browser_toggler"
+#taxon_browser.callout{style: ("display: none" unless show_taxon_browser?)}
+  =render "taxon_browser", panels: @panels, self_and_parents: @self_and_parents
 
-#hide_all
-  &nbsp;
+#taxon_description=render "catalog/taxon", taxon: @taxon
 
-#catalog
-  = render 'catalog/taxon', taxon: @taxon
-  %div{:class => "delete-modal", :type => 'hidden', :id => "delete_message"}
-
-
-  #splitter
-
-  .index
-    -#This is the lower half of the table for browsing
-    = render   'rank', rank: :subfamily,items: @subfamilies,selected_item: @subfamily, parent: nil,       parameters: @parameters, options: {can_show_unavailable: true, show_none: 'none', hideable_child_name: 'tribes'}
-    - if session[:show_tribes] and @subfamily != 'none'
-      = render 'rank', rank: :tribe,    items: @tribes,     selected_item: @tribe,     parent: @subfamily,parameters: @parameters, options: {hideable_name: 'tribes', show_none: 'none'}
-    = render   'rank', rank: :genus,    items: @genera,     selected_item: @genus,     parent: nil,       parameters: @parameters, options: {hideable_child_name: 'subgenera'}
-    - if session[:show_subgenera]
-      = render'rank',  rank: :subgenus, items: @subgenera,  selected_item: @subgenus,  parent: nil,       parameters: @parameters, options: {hideable_name: 'subgenera'}
-    = render  'rank',  rank: :species,  items: @specieses,  selected_item: @species,   parent: nil,       parameters: @parameters, options: {}
-
+#delete_message.delete-modal{type: 'hidden'}

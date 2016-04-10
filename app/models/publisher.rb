@@ -1,4 +1,3 @@
-# coding: UTF-8
 class Publisher < ActiveRecord::Base
   include UndoTracker
 
@@ -6,21 +5,15 @@ class Publisher < ActiveRecord::Base
   validates_presence_of :name
   has_paper_trail meta: { change_id: :get_current_change_id }
 
-  attr_accessible :name, :place, :place_id
-
-  def self.import data
-    return unless data[:name].present?
-
-    place = Place.import data[:place]
-    publisher = find_or_create_by(name: data[:name], place_id: place.id)
-    raise unless publisher.valid?
-
-    publisher
+  def self.create_with_place(name:, place:)
+    return unless name.present?
+    place_record = Place.find_or_create_by!(name: place)
+    find_or_create_by!(name: name, place: place_record)
   end
 
-  def self.import_string string
+  def self.create_with_place_form_string string
     parts = Parsers::PublisherParser.parse string
-    import parts[:publisher] if parts
+    create_with_place parts[:publisher] if parts
   end
 
   def to_s

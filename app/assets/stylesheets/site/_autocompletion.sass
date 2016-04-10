@@ -1,0 +1,39 @@
+@import "colors"
+
+.tt-menu
+  background-color: #eee
+  z-index: 9999
+  color: #000
+
+.tt-suggestion
+  font-size: 90%
+  margin: 0
+
+.tt-suggestion.tt-cursor, .tt-suggestion:hover
+  color: #fff
+  background-color: $color_green
+  cursor: pointer
+
+.tt-dataset
+  p
+    border-top: 1px #ccc solid
+    padding: 3px
+  p:first-child
+    border-top: none
+
+.empty-message
+  padding: 5px 10px
+  text-align: center
+  font-size: 90%
+
+input.typeahead.tt-hint
+  height: 1.6rem
+
+// Reference search box
+#q
+  height: 1.6rem
+  margin-bottom: 0
+
+// Firefox tweak
+input.typeahead
+  padding: 0 !important

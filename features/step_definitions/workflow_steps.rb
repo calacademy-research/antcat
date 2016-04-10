@@ -1,8 +1,3 @@
-# coding: UTF-8
-When /^(?:that )?version tracking is (not)?enabled$/ do |is_not|
-  PaperTrail.enabled = !is_not
-end
-
 When /^the changes are approved$/ do
   TaxonState.update_all review_state: :approved
   Change.update_all approver_id: @user.id, approved_at: Time.now
@@ -13,13 +8,13 @@ Given /^there is a genus "([^"]*)" that's waiting for approval$/ do |name|
   genus.taxon_state.review_state = :waiting
   genus.save
   change = FactoryGirl.create :change, user_changed_taxon_id: genus.id
-  version = FactoryGirl.create :version, item_id: genus.id, whodunnit: 1, change_id: change.id
-  #FactoryGirl.create :transaction, paper_trail_version: version, change: change
+  whodunnit = User.first.id
+  version = FactoryGirl.create :version, item_id: genus.id, whodunnit: whodunnit, change_id: change.id
 end
 
 ####
 def should_see_in_changes selector, value
-  page.should have_css selector, text: value
+  page.should have_css "#{selector}-test-hook", text: value
 end
 
 Then /^I should see the name "(.*?)" in the changes$/ do |value|
@@ -27,11 +22,11 @@ Then /^I should see the name "(.*?)" in the changes$/ do |value|
 end
 Then(/^I should see the genus "(.*?)" in the changes$/) do |value|
   should_see_in_changes '.parent_rank', 'Genus'
-  page.should have_css '.parent', text: value
+  page.should have_css '.parent-test-hook', text: value
 end
 Then /^I should see the subfamily "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.parent_rank', 'Subfamily'
-  page.should have_css '.parent', text: value
+  page.should have_css '.parent-test-hook', text: value
 end
 Then /^I should see the status "(.*?)" in the changes$/ do |value|
   should_see_in_changes '.status', value
@@ -85,7 +80,6 @@ end
 #############################
 # editing
 When /^I add the genus "([^"]+)"?$/ do |genus_name|
-  mother = TaxonMother.new
   reference = FactoryGirl.create :article_reference
 
   taxon_params = HashWithIndifferentAccess.new(
@@ -118,13 +112,22 @@ When /^I add the genus "([^"]+)"?$/ do |genus_name|
   genus_params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Betta').id
   genus_params[:type_name_attributes] = {id: FactoryGirl.create(:species_name, name: 'Betta major').id}
 
-  taxon = mother.create_taxon Rank[:genus], create_subfamily
-  mother.save_taxon taxon, genus_params
+  taxon = mother_replacement_create_taxon Genus.new, create_subfamily
+  taxon.save_taxon(genus_params)
+
   taxon.last_change.versions.each do |version|
     version.update_attributes whodunnit: @user.id
   end
 end
 
-Then /I should not see any change history/ do
-  page.should_not have_css '.change_history'
+# from ex TaxonMother
+# TODO replace with factory?
+def mother_replacement_create_taxon taxon, parent
+  taxon.parent = parent
+  taxon.build_name
+  taxon.build_type_name
+  taxon.build_protonym
+  taxon.protonym.build_name
+  taxon.protonym.build_authorship
+  taxon
 end

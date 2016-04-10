@@ -1,4 +1,3 @@
-# coding: UTF-8
 namespace :hol do
   namespace :import do
     desc "Import HOL document URLs"

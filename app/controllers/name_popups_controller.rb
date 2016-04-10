@@ -1,4 +1,3 @@
-# coding: UTF-8
 class NamePopupsController < NamePickersController
 
   def show
@@ -61,4 +60,10 @@ class NamePopupsController < NamePickersController
     data[:success] = true
   end
 
+  private
+    def send_back_json hash
+      json = hash.to_json
+      json = '<textarea>' + json + '</textarea>' unless params[:picker].present? || params[:popup].present? || params[:field].present? || Rails.env.test?
+      render json: json, content_type: 'text/html'
+    end
 end

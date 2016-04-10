@@ -1,9 +1,11 @@
+# TODO cleanup and split this file
 require  'antcat_rake_utils'
 include AntCat::RakeUtils
 
 namespace :antcat do
   namespace :db do
 
+    # TODO allow editors to see the output of this in Active Admin.
     desc "Finds all tags, eg {ref 133005}, that are referred to but doesn't exist"
     task :broken_tags => :environment do
       
@@ -15,7 +17,7 @@ namespace :antcat do
         #?:             #TODO? Not sure what this is, but it looks like this "{? #{string}}"
       }
       def tags.keys_plus_empty_arrays
-        map { |tag, _| [tag, []] }.to_h 
+        map { |tag, _| [tag, []] }.to_h
       end
 
       puts "Searching... (in '#{Rails.env}' database)"
@@ -107,7 +109,14 @@ namespace :antcat do
 
       puts "Done."
     end
+  end
+end
 
+namespace :antcat do
+  namespace :db do
+
+    # Hopefully run-once code. 1) remove all redundant braces 2) makes sure we're
+    # not introducing new redundant braces 3) remove this code.
     desc "Find and repair double curly braces"
     task :double_braces => :environment do
       puts "Counting stray braces..."
@@ -143,5 +152,51 @@ namespace :antcat do
       puts "Done."
     end
 
+  end
+end
+
+namespace :antcat do
+  namespace :db do
+
+    # WIP
+    desc "Find tag by id, eg {ref 142238} --> `rake antcat:db:find_tagged_id[142238]`"
+    task :find_tagged_id, [:id] => [:environment] do |t, args|
+      id_to_find = args[:id]
+
+      abort "Query for ids like this: rake antcat:db:find_tagged_id[142238]" unless id_to_find
+
+      tags = {
+        ref: Reference,
+        nam: Name,
+        tax: Taxon,
+      }
+      def tags.keys_plus_empty_arrays
+        map { |tag, _| [tag, []] }.to_h
+      end
+
+      puts "Searching... (in '#{Rails.env}' database)"
+      matched_ids = tags.keys_plus_empty_arrays
+      models_with_taxts.each_field do |field, model|
+        tags.each_key do |tag|
+          model.where("#{field} LIKE '%{#{tag} #{id_to_find}}%'").find_each do |matched_obj|
+            puts "found: #{matched_obj.inspect}"
+          end
+        end
+      end
+
+      puts "Done."
+    end
+  end
+end
+
+namespace :antcat do
+  namespace :db do
+    desc "Moved from protonym.rb"
+    task :destroy_protonym_orphans => :environment do
+      orphans = Protonym.where("id NOT IN (SELECT protonym_id FROM taxa)")
+      orphans.each do |orphan|
+        orphan.destroy
+      end
+    end
   end
 end

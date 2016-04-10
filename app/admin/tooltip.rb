@@ -1,10 +1,10 @@
 ActiveAdmin.register Tooltip do
-  permit_params :key, :key_enabled, :text, :selector, :selector_enabled
+  permit_params :scope, :key, :key_enabled, :text, :selector, :selector_enabled
 
   index do
     selectable_column
     id_column
-    column :page_origin
+    column :scope
     column :key
     column :key_enabled
     column :text
@@ -13,7 +13,7 @@ ActiveAdmin.register Tooltip do
     actions
   end
 
-  filter :page_origin
+  filter :scope
   filter :key
   filter :key_enabled
   filter :text
@@ -22,7 +22,7 @@ ActiveAdmin.register Tooltip do
 
   form do |f|
     f.inputs "Tooltip Details" do
-      f.input :page_origin
+      f.input :scope
       f.input :key
       f.input :key_enabled
       f.input :text

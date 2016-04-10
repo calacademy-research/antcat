@@ -1,4 +1,3 @@
-# coding: UTF-8
 module Taxt
   extend ERB::Util
   extend ActionView::Helpers::TagHelper
@@ -21,27 +20,15 @@ module Taxt
       self.id = id
     end
   end
-  
-  class IdNotFound < StandardError; end
 
   ################################
-  def self.to_string taxt, user = nil, options = {}
-    decode taxt, user, options
+  def self.to_string taxt, options = {}
+    decode taxt, options
   end
 
-  def self.to_display_string taxt, user = nil, options = {}
-    options[:display] = true
-    to_string taxt, user, options
-  end
-
-  def self.to_sentence taxt, user, options = {}
-    string = decode taxt, user, options
+  def self.to_display_sentence taxt
+    string = to_string taxt, display: true
     add_period_if_necessary string
-  end
-
-  def self.to_display_sentence taxt, user, options = {}
-    options[:display] = true
-    to_sentence taxt, user, options
   end
 
   ################################
@@ -74,7 +61,7 @@ module Taxt
   end
 
   def self.to_editable_reference reference
-    to_editable_tag reference.id, reference.key.to_s, REFERENCE_TAG_TYPE
+    to_editable_tag reference.id, reference.decorate.key, REFERENCE_TAG_TYPE
   end
 
   def self.to_editable_taxon taxon
@@ -126,87 +113,6 @@ module Taxt
     return id, type_number
   end
 
-  ################################
-  def self.decode taxt, user = nil, options = {}
-    return '' unless taxt
-    taxt.gsub(/{ref (\d+)}/) do |whole_match|
-      decode_reference whole_match, $1, user, options
-    end.gsub(/{nam (\d+)}/) do |whole_match|
-      decode_name whole_match, $1
-    end.gsub(/{tax (\d+)}/) do |whole_match|
-      decode_taxon whole_match, $1, options
-    end.gsub(/{epi (\w+)}/) do |_|
-    end.html_safe
-  end
-
-  def self.decode_reference whole_match, reference_id_match, user, options
-    if options[:display]
-      reference = Reference.find(reference_id_match) rescue whole_match
-      reference.decorate.format_inline_citation_without_links rescue whole_match
-    else
-      reference = Reference.find(reference_id_match) rescue whole_match
-      reference.decorate.format_inline_citation options rescue whole_match
-    end
-  end
-
-  def self.decode_name whole_match, name_id_match
-    Name.find(name_id_match).to_html rescue whole_match
-  end
-
-  def self.decode_taxon whole_match, taxon_id_match, options
-    if options[:display]
-      Taxon.find(taxon_id_match).name.to_html
-    else
-      taxon = Taxon.find taxon_id_match
-      if $use_ant_web_formatter # TODO remove dependency on global variable
-        link_to_antcat_from_antweb taxon
-      else
-        link_to_taxon taxon
-      end
-    end
-  rescue
-    whole_match
-  end
-
-  def self.link_to_antcat_from_antweb taxon #TODO remove
-    link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
-  end
-
-  def self.link_to_taxon taxon #TODO remove
-    label = taxon.name.to_html_with_fossil(taxon.fossil?)
-    content_tag :a, label, href: %{/catalog/#{taxon.id}}
-  end
-
-  def self.decode_epithet epithet
-    italicize epithet
-  end
-
-  ################################
-  def self.encode_unparseable string
-    "{? #{string}}"
-  end
-
-  def self.encode_reference reference
-    "{ref #{reference.id}}"
-  end
-
-  def self.encode_taxon taxon
-    "{tax #{taxon.id}}"
-  end
-
-  ################################
-  def self.replace replace_what, replace_with
-    taxt_fields.each do |klass, fields|
-      klass.send(:all).each do |record|
-        fields.each do |field|
-          next unless record[field]
-          record[field] = record[field].gsub replace_what, replace_with
-        end
-        record.save!
-      end
-    end
-  end
-
   def self.taxt_fields
     [
         [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
@@ -216,4 +122,53 @@ module Taxt
     ]
   end
 
+  private
+    def self.decode taxt, options = {}
+      return '' unless taxt
+      taxt.gsub(/{ref (\d+)}/) do |whole_match|
+        decode_reference whole_match, $1, options
+      end.gsub(/{nam (\d+)}/) do |whole_match|
+        decode_name whole_match, $1
+      end.gsub(/{tax (\d+)}/) do |whole_match|
+        decode_taxon whole_match, $1, options
+      end.gsub(/{epi (\w+)}/) do |_|
+      end.html_safe
+    end
+
+    def self.decode_reference whole_match, reference_id_match, options
+      if options[:display]
+        reference = Reference.find(reference_id_match) rescue whole_match
+        reference.decorate.format_inline_citation_without_links rescue whole_match
+      elsif $use_ant_web_formatter # TODO nuke
+        # We never want to expand references when exporting to AntWeb.
+        reference = Reference.find(reference_id_match) rescue whole_match
+        reference.decorate.format_inline_citation expansion: false rescue whole_match
+      else
+        reference = Reference.find(reference_id_match) rescue whole_match
+        reference.decorate.format_inline_citation options rescue whole_match
+      end
+    end
+
+    def self.decode_name whole_match, name_id_match
+      Name.find(name_id_match).to_html rescue whole_match
+    end
+
+    def self.decode_taxon whole_match, taxon_id_match, options
+      if options[:display]
+        Taxon.find(taxon_id_match).name.to_html
+      else
+        taxon = Taxon.find taxon_id_match
+        if $use_ant_web_formatter # TODO remove dependency on global variable
+          link_to_antcat_from_antweb taxon
+        else
+          taxon.decorate.link_to_taxon
+        end
+      end
+    rescue
+      whole_match
+    end
+
+    def self.link_to_antcat_from_antweb taxon #TODO remove
+      link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
+    end
 end

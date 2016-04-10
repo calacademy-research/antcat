@@ -46,7 +46,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
     AntCat.NestedForm.create_form_from @element.find '.nested_form'
 
   start_throbbing: =>
-    @element.find('.throbber img').show()
+    @element.find('.shared-spinner').show()
     @element.find('> .controls').disable()
 
   submit: =>
@@ -76,7 +76,7 @@ class AntCat.NamePopup extends AntCat.NestedForm
   handle_application_error: (data) =>
     # an error means that the name the user entered doesn't exist
     # we ask if they want to add it
-    submit_button = @element.find('.controls .submit span')
+    submit_button = @element.find('.controls .submit')
     AntCat.check 'NamePopup.handle_application_error', '@submit_button', @submit_button
     submit_button.text('Add this name')
     @element.find('.error_messages').text data.error_message

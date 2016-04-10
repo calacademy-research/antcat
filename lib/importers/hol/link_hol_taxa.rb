@@ -457,7 +457,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     # Sometimes this is a subfamily name, or a genus name, but not a full species declaration.
     # If that's the case, we don't have a parent name to parse and worry about.
     #
-    if Rank[rank].index == Rank["Species"].index
+    if rank.to_s.downcase == "species"
       new_genus_parent = handle_missing_parent valid_antcat_taxon, hol_taxon, name_string
     end
     if new_genus_parent
@@ -566,12 +566,18 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
       return nil
     end
     genus_string = match[1]
-    parent_rank = Rank[valid_antcat_taxon].parent
+    parent_ranks = { subfamily:  "family",
+                     tribe:      "subfamily",
+                     genus:      "subfamily",
+                     subgenus:   "genus",
+                     species:    "genus",
+                     subspecies: "species" }
+    parent_rank = parent_ranks[valid_antcat_taxon.rank.to_sym]
 
     name=nil
     # How do we know if the genus is what's not matching? Do a search in genus for matching name?
     puts "Search  #{parent_rank} for #{genus_string}"
-    genera = parent_rank.to_class.where(name_cache: genus_string)
+    genera = parent_rank.to_s.capitalize.constantize.where(name_cache: genus_string)
 
     if genera.count == 0
       puts "  No #{parent_rank} found with name #{genus_string} - creating name and taxon record for new #{parent_rank} '#{genus_string}'"
@@ -600,11 +606,23 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
 
   end
 
+  # from ex TaxonMother
+  # Since the HOL importers are to be removed, I'm OK with this,
+  # but sorry nevertheless for this ugly chunk.
+  def mother_replacement_create_taxon rank, parent
+    taxon = rank.to_s.titlecase.constantize.new
+    taxon.parent = parent
+    taxon.build_name
+    taxon.build_type_name
+    taxon.build_protonym
+    taxon.protonym.build_name
+    taxon.protonym.build_authorship
+    taxon
+  end
 
   # Creates taxon,synonym (and any logic therein, derived from hol_Taxon.status),
   # taxon state, change  Takes name object and parent.
   def create_taxon valid_antcat_taxon, hol_taxon, name, rank, parent, hol_status
-    mother = TaxonMother.new
     puts " valid_antcat_taxon id: #{valid_antcat_taxon.id} rank: #{valid_antcat_taxon.rank} tnuid: #{hol_taxon.tnuid} name: #{name} rank #{rank} "
     if parent
       puts "parent name: #{parent.name} parent rank: #{parent.rank}"
@@ -613,7 +631,7 @@ class Importers::Hol::LinkHolTaxa < Importers::Hol::BaseUtils
     end
 
 
-    new_taxon = mother.create_taxon Rank[rank.to_s.capitalize], parent
+    new_taxon = mother_replacement_create_taxon rank, parent
 
     new_taxon.auto_generated = true
     new_taxon.origin = 'hol'

@@ -1,17 +1,18 @@
-- @title = 'Missing References'
+-@title = 'Missing References'
+-breadcrumb :missing_references
 
-- content_for :page_header do
-  #navigation_bar
-    .clear
-    .title.left= @title
+%table
+  %thead
+    %th Reference
+    -if user_can_edit?
+      %th Replace
+  -@missing_references.each do |missing_reference|
+    %tr
+      %td
+        =missing_reference.decorate.format_citation
+        =missing_reference.decorate.goto_reference_link
+      -if user_can_edit?
+        %td
+          -surrogate_missing_reference = MissingReference.find_by_citation missing_reference.citation
+          =link_to 'replace', edit_missing_reference_path(surrogate_missing_reference)
 
-#missing_references
-  - @missing_references.each do |missing_reference|
-    .missing_reference
-      %span
-        = missing_reference.decorate.format_citation
-        = missing_reference.decorate.goto_reference_link
-      - if user_can_edit?
-        - surrogate_missing_reference = MissingReference.find_by_citation missing_reference.citation
-        = link_to 'replace', edit_missing_reference_path(surrogate_missing_reference), class: 'replace_link'
-      %br

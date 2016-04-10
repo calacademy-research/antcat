@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Tooltip, type: :model do
+describe Tooltip do
 
   describe "versioning", versioning: true do
     let!(:tooltip) { FactoryGirl.create :tooltip, key: "references.authors" }

@@ -1,0 +1,61 @@
+=form_tag catalog_search_path, method: :get do
+  .row
+    .medium-3.columns
+      Rank
+      =select_tag :rank, rank_options_for_select(params[:rank])
+    .medium-3.columns
+      Described by
+      =text_field_tag :author_name, params[:author_name], id: "author_name-js-hook"
+    .medium-3.columns
+      Described year
+      =text_field_tag :year, params[:year]
+    .medium-3.columns
+      Biogeographic region
+      =select_tag :biogeographic_region, search_biogeographic_region_options_for_select(params[:biogeographic_region])
+
+  .row
+    .medium-6.columns
+      where
+      %b locality
+      contains
+      =text_field_tag :locality, params[:locality]
+    .medium-6.columns
+      where
+      %b verbatim type locality
+      contains
+      =text_field_tag :verbatim_type_locality, params[:verbatim_type_locality]
+
+  .row
+    .medium-6.columns
+      where
+      %b type specimen repository
+      contains
+      =text_field_tag :type_specimen_repository, params[:type_specimen_repository]
+    .medium-6.columns
+      where
+      %b type specimen code
+      contains
+      =text_field_tag :type_specimen_code, params[:type_specimen_code]
+
+  .row
+    .medium-6.columns
+      where
+      %b forms
+      contains
+      =text_field_tag :forms, params[:forms]
+    .medium-6.columns
+      where
+      %b genus
+      contains
+      =text_field_tag :genus, params[:genus]
+
+  .row
+    .medium-12.columns
+      =check_box_tag :valid_only
+      =label_tag 'Valid only?'
+
+      =button_tag type: 'submit', name: nil, class: 'btn-search has-spinner' do
+        =spinner_icon + "Go"
+
+      -if @taxa.present? && !@is_quick_search
+        =link_to 'Download (advanced search only)', "/catalog_search.txt?#{request.parameters.to_param}", class: "btn-download"

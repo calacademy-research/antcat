@@ -1,10 +1,6 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # The test environment is used exclusively to run your application's
-  # test suite. You never need to work with it otherwise. Remember that
-  # your test database is "scratch space" for the test suite and is wiped
-  # and recreated between test runs. Don't rely on the data there!
   config.cache_classes = true
 
   # Do not eager load code on boot. This avoids loading your whole application
@@ -39,14 +35,5 @@ Rails.application.configure do
 
   config.log_level = :info
   config.active_support.test_order = :sorted
-  
-  config.action_mailer.smtp_settings = {
-      address:              'smtp.gmail.com',
-      port:                 587,
-      domain:               'antcat.org',
-      user_name:            'academyantcat',
-      password:             'spq0ap11',
-      authentication:       'plain',
-      enable_starttls_auto: true  }
 
 end

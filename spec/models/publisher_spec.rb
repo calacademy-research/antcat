@@ -1,27 +1,51 @@
-# coding: UTF-8
 require 'spec_helper'
-# include RSpec::Rails::Mocks
-# include Rspec::Mocks::ExampleMethods
-include RSpec::Rails
+
 describe Publisher do
 
+  it { should validate_presence_of(:name) }
+  it { should belong_to(:place) }
 
-  describe "importing" do
-    it "should create and return the publisher" do
-      publisher = Publisher.import(:name => 'Wiley', :place => 'Chicago')
-      expect(publisher.name).to eq('Wiley')
-      expect(publisher.place.name).to eq('Chicago')
+  describe "factory methods" do
+    describe "#create_with_place" do
+      context "valid" do
+        it "creates and returns the publisher" do
+          publisher = Publisher.create_with_place(:name => 'Wiley', :place => 'Chicago')
+          expect(publisher.name).to eq('Wiley')
+          expect(publisher.place.name).to eq('Chicago')
+        end
+
+        it "reuses existing publishers" do
+          2.times {Publisher.create_with_place(:name => 'Wiley', :place => 'Chicago')}
+          expect(Publisher.count).to eq(1)
+        end
+      end
+
+      context "invalid" do
+        it "raises if name is supplied but no place" do
+          expect {Publisher.create_with_place(:name => 'Wiley')}.to raise_error(ArgumentError)
+        end
+        it "raises if place is invalid" do
+          expect { Publisher.create_with_place(name: "A Name", place: "") }.to raise_error(
+            ActiveRecord::RecordInvalid)
+        end
+        it "silently returns without raising if place is blank" do
+          expect(Publisher.create_with_place name: "", place: "A Place").to be nil
+          expect { Publisher.create_with_place name: "", place: "A Place" }.to_not raise_error(
+            ActiveRecord::RecordInvalid)
+        end
+      end
     end
 
-    it "should reuse an existing publisher" do
-      2.times {Publisher.import(:name => 'Wiley', :place => 'Chicago')}
-      expect(Publisher.count).to eq(1)
+    describe "#create_with_place_form_string" do
+      it "handles blank strings" do
+        expect(Publisher).not_to receive :create_with_place
+        Publisher.create_with_place_form_string ''
+      end
+      it "parses" do
+        expected = Publisher.create_with_place_form_string('New York: Houghton Mifflin')
+        expect(expected.to_s).to eq 'New York: Houghton Mifflin'
+      end
     end
-
-    it "should raise an error if name is supplied but no place" do
-      expect {Publisher.import(:name => 'Wiley')}.to raise_error
-    end
-
   end
 
   describe "searching" do
@@ -36,18 +60,6 @@ describe Publisher do
     end
   end
 
-  describe "importing a string" do
-    it "should handle a blank string" do
-      expect(Publisher).not_to receive :import
-      Publisher.import_string ''
-    end
-    it "should parse it correctly" do
-      publisher = mock_model Publisher
-      expect(Publisher).to receive(:import).with(:name => 'Houghton Mifflin', :place => 'New York').and_return publisher
-      expect(Publisher.import_string('New York: Houghton Mifflin')).to eq(publisher)
-    end
-  end
-
   describe "representing as a string" do
     it "format name and place" do
       expect(Publisher.create!(:name => "Wiley", :place => Place.create!(:name => 'New York')).to_s).to eq('New York: Wiley')
@@ -55,18 +67,6 @@ describe Publisher do
     it "should format correctly if there is no place" do
       expect(Publisher.create!(:name => "Wiley").to_s).to eq('Wiley')
     end
-  end
-
-  describe 'validation' do
-    it 'should require a name but not a place' do
-      expect(Publisher.new).not_to be_valid
-      expect(Publisher.new(:name => 'name')).to be_valid
-    end
-  end
-
-  it 'belongs to a Place' do
-    place = Place.create! :name => 'Bogota'
-    publisher = Publisher.new :name => 'Wiley', :place => place
   end
 
   describe "Versioning" do

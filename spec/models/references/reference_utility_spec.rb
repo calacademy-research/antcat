@@ -1,24 +1,6 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe Reference do
-
-  describe "replacing an author name" do
-    it "should change the author name" do
-      AuthorName.destroy_all
-      author = Author.create!
-      uppercase = AuthorName.create! :name => 'MacKay, W. P.', :author => author
-      lowercase = AuthorName.create! :name => 'Mackay, W. P.', :author => author
-
-      reference = FactoryGirl.create :reference, :author_names => [uppercase]
-      expect(reference.author_names_string).to eq('MacKay, W. P.')
-
-      reference.replace_author_name 'MacKay, W. P.', lowercase
-
-      expect(reference.reload.author_names_string).to eq('Mackay, W. P.')
-      expect(AuthorName.count).to eq(2)
-    end
-  end
 
   describe "importing PDF links" do
     it "should delegate to the right object" do

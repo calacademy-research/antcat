@@ -1,4 +1,3 @@
-# coding: UTF-8
 class JournalObserver < ActiveRecord::Observer
 
   def before_update journal

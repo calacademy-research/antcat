@@ -1,4 +1,3 @@
-# coding: UTF-8
 namespace :antwiki do
 
   desc "Compare AntWiki's file of valid taxa against AntCat"

@@ -6,10 +6,9 @@ Feature: Editing a taxon
   So people use AntCat
 
   Background:
-    Given version tracking is enabled
+    Given the Formicidae family exists
 
   Scenario: Editing a family's name
-    Given there is a family "Formicidae"
     And I log in
     When I go to the edit page for "Formicidae"
     And I click the name field
@@ -19,7 +18,6 @@ Feature: Editing a taxon
     Then I should see "Wildencidae" in the header
 
   Scenario: Trying to enter a blank name
-    Given there is a family "Formicidae"
     And I log in
     When I go to the edit page for "Formicidae"
     And I click the name field
@@ -46,7 +44,6 @@ Feature: Editing a taxon
     And I save my changes
     And I wait for a bit
     Then the name "major" genus "Atta" should not be auto generated
-
 
   Scenario: Setting a genus's name to an existing one
     Given there is a genus "Calyptites"
@@ -88,7 +85,7 @@ Feature: Editing a taxon
     And I log in
     When I go to the edit page for "Eciton"
     And I click the authorship field
-    And I search for the author "Fisher"
+    And in the reference picker, I search for the author "Fisher"
     And I click the first search result
     And I press "OK"
     Then the authorship field should contain "Fisher 2004. Ants. Psyche 3:3"
@@ -100,6 +97,8 @@ Feature: Editing a taxon
 
   @search
   Scenario: Supplying the authorship when there wasn't one before
+    Given PENDING: this state can (should?) never happen
+    # Artificially created in a step. If this happens we have bigger issues
     Given these references exist
       | authors | citation   | title | year | doi |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |     |
@@ -107,7 +106,7 @@ Feature: Editing a taxon
     And I log in
     And I go to the edit page for "Eciton"
     And I click the authorship field
-    And I search for the author "Fisher"
+    And in the reference picker, I search for the author "Fisher"
     And I click the first search result
     And I press "OK"
     And I save my changes

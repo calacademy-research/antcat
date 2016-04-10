@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe Exporters::Antweb::Exporter do
@@ -27,6 +26,19 @@ describe Exporters::Antweb::Exporter do
 
       genus.update_attribute :type_name, species.name
       item = genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
+
+      # for TaxonDecorator#references
+      a_reference = FactoryGirl.create :article_reference
+      a_tribe = FactoryGirl.create :tribe
+      a_reference_section = genus.reference_sections.create(
+        title_taxt: "Subfamily and tribe {tax #{a_tribe.id}}",
+        references_taxt: "{ref #{a_reference.id}}: 766 (diagnosis);")
+      ref_author = a_reference.principal_author_last_name_cache
+      ref_year = a_reference.citation_year
+      ref_title = a_reference.title
+      ref_journal_name = a_reference.journal.name
+      ref_pagination = a_reference.pagination
+      ref_volume = a_reference.series_volume_issue
 
       expect(formatter.new.send(:export_history, genus)).to eq(
         %{<div class="antcat_taxon">} +
@@ -62,11 +74,31 @@ describe Exporters::Antweb::Exporter do
 
           # taxonomic history
           %{<p><b>Taxonomic history</b></p>} +
-          %{<div class="history"><div class="history_item item_#{item.id}" data-id="#{item.id}">} +
+          %{<div class="history"><div class="history_item" data-id="#{item.id}">} +
             %{<table><tr><td style="font-size: 13px" class="history_item_body">} +
               %{Taxon: <a class="link_to_external_site" target="_blank" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.} +
             %{</td></tr></table>} +
           %{</div></div>} +
+
+          # references
+          %{<div class="reference_sections">} +
+            %{<div class="section">} +
+              %{<div class="title_taxt">Subfamily and tribe } +
+                %{<a class="link_to_external_site" target="_blank" href="http://www.antcat.org/catalog/#{a_tribe.id}">} +
+                  %{#{a_tribe.name_cache}} +
+                %{</a>} +
+              %{</div>} +
+              %{<div class="references_taxt">} +
+                %{<a target="_blank" title="#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}." href="http://antcat.org/references/#{a_reference.id}">} +
+                  %{#{ref_author}, #{ref_year}} +
+                %{</a> } +
+                %{<a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">} +
+                  %{10.10.1038/nphys1170} +
+                %{</a>} +
+                %{: 766 (diagnosis);} +
+              %{</div>} +
+            %{</div>} +
+          %{</div>} +
 
         %{</div>}
       )

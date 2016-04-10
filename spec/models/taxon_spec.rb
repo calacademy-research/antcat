@@ -1,4 +1,3 @@
-# coding: UTF-8
 require 'spec_helper'
 
 describe Taxon do
@@ -96,6 +95,25 @@ describe Taxon do
       myanmyrma = FactoryGirl.create :taxon, incertae_sedis_in: 'family'
       myanmyrma.reload
       expect(myanmyrma).to be_incertae_sedis_in('family')
+    end
+
+    describe "biogeographic_region" do
+      before do
+        @taxon = FactoryGirl.build :taxon
+        FactoryGirl.create :taxon_state, taxon_id: @taxon.id
+      end
+
+      it "allows only allowed regions" do
+        @taxon.biogeographic_region = "Australasia"
+        expect(@taxon.valid?).to be true
+        @taxon.biogeographic_region = "Ancient Egypt"
+        expect(@taxon.valid?).to be false
+      end
+
+      it "allows nil" do
+        @taxon.biogeographic_region = nil
+        expect(@taxon.valid?).to be true
+      end
     end
   end
 
@@ -333,11 +351,6 @@ describe Taxon do
       genus.save!
       expect(genus.reload.subfamily).to eq(subfamily)
     end
-    it "should be able to assign from an id" do
-      genus.parent = subfamily.id
-      genus.save!
-      expect(genus.reload.subfamily).to eq(subfamily)
-    end
     it "should give the parent of a family as nil" do
       family = FactoryGirl.create :family
       expect(family.parent).to be_nil
@@ -500,12 +513,6 @@ describe Taxon do
       Synonym.create! junior_synonym: taxon, senior_synonym: senior_synonym
 
       expect(taxon.current_valid_taxon_including_synonyms).to eq(senior_synonym_of_senior_synonym)
-    end
-    describe "Including the taxon itself" do
-      it "should return the taxon itself if no senior synonyms and no current_valid_taxon" do
-        taxon = create_genus
-        expect(taxon.current_valid_taxon_including_synonyms_and_self).to eq(taxon)
-      end
     end
   end
 

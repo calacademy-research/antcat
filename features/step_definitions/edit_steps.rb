@@ -1,4 +1,3 @@
-# coding: UTF-8
 When /^I save my changes$/ do
   step 'I press "Save"'
 end
@@ -80,28 +79,11 @@ Then /^the type specimen repository should be "([^"]*)"/ do |repository|
   step %{the "taxon_type_specimen_repository" field should contain "#{repository}"}
 end
 
-# type specimen code
-Then /I set the type specimen code to "([^"]*)"/ do |code|
-  step %{I fill in "taxon_type_specimen_code" with "#{code}"}
-end
-Then /^I should (not )?see the type specimen code/ do |should_not|
-  selector = should_not ? :should_not : :should
-  visible = should_not ? :false : :true
-  page.send selector, have_css('#taxon_type_specimen_code', visible: visible)
-end
-Then /^the type specimen code should be "([^"]*)"/ do |code|
-  step %{the "taxon_type_specimen_code" field should contain "#{code}"}
-end
-
 # type specimen URL
 Then /I set the type specimen URL to "([^"]*)"/ do |url|
   step %{I fill in "taxon_type_specimen_url" with "#{url}"}
 end
-Then /^I should (not )?see the type specimen URL/ do |should_not|
-  selector = should_not ? :should_not : :should
-  visible = should_not ? :false : :true
-  page.send selector, have_css('#taxon_type_specimen_url', visible: visible)
-end
+
 Then /^the type specimen URL should be "([^"]*)"/ do |url|
   step %{the "taxon_type_specimen_url" field should contain "#{url}"}
 end
@@ -118,36 +100,7 @@ Then /^I should not see the parent name field/ do
   page.should_not have_css "#parent_row"
 end
 
-### save duplicate
-When /^I should see an alert box/ do
-  text = page.driver.browser.switch_to.alert.text
-  a = page.driver.browser.switch_to.alert
-  if a.text == 'something'
-    a.dismiss
-  else
-    a.accept
-  end
-end
-
-When /^I submit the new species form/ do
-  find('#new_taxon').click();
-end
-
-### tribe name field
-When /I click the tribe name field/ do
-  find('#tribe_name_field .display_button').click
-end
-When /^I set the tribe name to "([^"]*)"$/ do |name|
-  step %{I fill in "name_string" with "#{name}"}
-end
-
-### current valid taxon field
-Then /^I should (not )?see the current valid taxon field$/ do |should_not|
-  selector = should_not ? :should_not : :should
-  visible = should_not ? :false : :true
-
-  find("#current_valid_taxon_row", visible: visible).send(selector, be_visible)
-end
+#### current valid taxon field
 When /the current valid taxon name should be "([^"]*)"$/ do |name|
   page.find('#current_valid_taxon_name_field div.display').text.should == name
 end
@@ -203,7 +156,6 @@ When /^I set the protonym name to "([^"]*)"$/ do |name|
 end
 
 # type name field
-
 When /I click the type name field/ do
   find('#type_name_field .display_button').click
 end
@@ -240,8 +192,6 @@ Then /^the history should be "(.*)"$/ do |history|
   page.first('.history_items .history_item_body').find('div.display').text.should =~ /#{history}\.?/
 end
 Then /^the history item field should be "(.*)"$/ do |history|
-#  page.find('.history_items .history_item_body:first div.edit textarea').text.should =~ /#{history}\.?/
-
   page.first('.history_items .history_item_body').find('div.edit textarea').text.should =~ /#{history}\.?/
 end
 Then /^the history should be empty$/ do
@@ -264,12 +214,17 @@ And /^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?
   taxon = Taxon.find_by_name taxon_name
   if tag_taxon_name
     tag_taxon = Taxon.find_by_name tag_taxon_name
-    taxt = Taxt.encode_taxon tag_taxon
+    taxt = encode_taxon tag_taxon
   else
     taxt = 'Tag'
   end
   taxon.history_items.create! taxt: taxt
 end
+
+def encode_taxon taxon
+  "{tax #{taxon.id}}"
+end
+
 When /^I add a history item "(.*?)"/ do |text|
   step %{I click the "Add History" button}
   step %{I edit the history item to "#{text}"}
@@ -284,12 +239,9 @@ end
 
 # references section
 Then /^the reference section should be "(.*)"$/ do |reference|
-#  page.find('.reference_sections .reference_section:first div.display').text.should =~ /#{reference}\.?/
-
   page.first('.reference_sections .reference_section').find('div.display').text.should =~ /#{reference}\.?/
 end
 When /^I click the reference section/ do
-  #find('.reference_sections .reference_section:first div.display').click
   first('.reference_sections .reference_section').find('div.display').click
 
 end
@@ -297,9 +249,7 @@ When /^I fill in the references field with "([^"]*)"$/ do |references|
   step %{I fill in "references_taxt" with "#{references}"}
 end
 When /^I save the reference section$/ do
-  #within '.reference_sections .reference_section:first' do
   within first('.reference_sections .reference_section') do
-
     step %{I press "Save"}
   end
 end

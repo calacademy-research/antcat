@@ -1,20 +1,19 @@
--# Locals: taxon
-
 -taxon = taxon.decorate
--height = session[:taxon_window_height]
 
-.antcat_taxon{'data-taxon-window-height' => height ? height : ""}
-  =taxon.header
-  -unless taxon.original_combination?
-    =taxon.statistics
-    =taxon.genus_species_header_notes_taxt
-    =taxon.headline
+.buttons_right=taxon.editor_buttons
 
-    -if taxon.history_items.present?
-      .history
-        -taxon.history_items.each do |history_item|
-          =Taxt.to_sentence history_item.taxt, current_user
+=taxon.header
 
-    =taxon.child_lists
-    =taxon.references
-    =taxon.change_history
+-unless taxon.original_combination?
+  =taxon.statistics
+  =taxon.genus_species_header_notes_taxt
+  =taxon.headline
+
+  -if taxon.history_items.present?
+    .history
+      -taxon.history_items.each do |history_item|
+        =add_period_if_necessary Taxt.to_string(history_item.taxt)
+
+  =taxon.child_lists
+  =taxon.references
+  =taxon.change_history

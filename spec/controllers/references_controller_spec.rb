@@ -18,14 +18,14 @@ describe ReferencesController do
     describe "search terms matching ids" do
       it "redirects to #show" do
         reference = reference_factory author_name: 'E.O. Wilson', id: 99999
-        get :index, q: reference.id
+        get :search, q: reference.id
         expect(response).to redirect_to reference_path(reference)
       end
 
       it "does not redirect unless the reference exists" do
         reference_factory author_name: 'E.O. Wilson', id: 88888
-        get :index, q: "11111"
-        expect(response).to render_template "index"
+        get :search, q: "11111"
+        expect(response).to render_template "search"
       end
     end
   end
@@ -36,8 +36,7 @@ describe ReferencesController do
       get :latest_additions
     end
 
-    it "renders its own template", pending: true do
-      pending "TODO implement this"
+    it "renders its own template" do
       response = get :latest_additions
       expect(response).to render_template "latest_additions"
     end
@@ -48,6 +47,10 @@ describe ReferencesController do
       before do
         editor = FactoryGirl.create :user, can_edit: true
         sign_in editor #TODO create/find helper method #sign_in_editor
+      end
+      it "renders its own template" do
+        response = get :latest_changes
+        expect(response).to render_template "latest_changes"
       end
       it "sorts by updated_at" do
         expect(Reference).to receive(:list_references).with hash_including order: :updated_at
@@ -81,7 +84,7 @@ describe ReferencesController do
         before do
           allow_any_instance_of(ReferenceDocument).to receive(:actual_url)
             .and_return "http://localhost/file.pdf"
-          allow_any_instance_of(ReferenceDocument).to receive(:downloadable_by?).and_return true
+          allow_any_instance_of(ReferenceDocument).to receive(:downloadable?).and_return true
         end
 
         it "redirects to the file" do
@@ -92,7 +95,7 @@ describe ReferencesController do
 
       context "without access" do
         before do
-          allow_any_instance_of(ReferenceDocument).to receive(:downloadable_by?).and_return false
+          allow_any_instance_of(ReferenceDocument).to receive(:downloadable?).and_return false
         end
 
         it "redirects to the file" do
@@ -146,7 +149,6 @@ describe ReferencesController do
 
       it "handles hyphens" do
         reference = reference_factory author_name: 'M.S. Abdul-Rassoul'
-        $stderr.puts "reference: #{reference}"
         Sunspot.commit
 
         get :autocomplete, q: "author:abdul-ras", format: :json
