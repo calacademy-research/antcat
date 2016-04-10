@@ -6,6 +6,8 @@ class Task < ActiveRecord::Base
 
   attr_reader :taxa_tokens
 
+  acts_as_commentable
+
   belongs_to :adder, class_name: "User"
   belongs_to :closer, class_name: "User"
 

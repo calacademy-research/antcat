@@ -130,6 +130,8 @@ AntCat::Application.routes.draw do
 
   resources :feedback, only: [:index, :create]
 
+  resources :comments
+
   get "panel", to: "editors_panels#index", as: "editors_panel"
 
   resource :feed, only: [:show], controller: "feed" do
