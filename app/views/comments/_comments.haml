@@ -11,7 +11,6 @@
     %p
       %a.comment-reply-link{href: "#"} reply
 
-    .reply-form
-      =render partial: "comments/reply_form", locals: { comment: comment }
+    =render partial: "comments/reply_form", locals: { comment: comment }
 
     =render partial: "comments/comments", locals: { comments: comment.children }
