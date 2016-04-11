@@ -107,7 +107,7 @@ class ReferencesController < ApplicationController
                     begin
                       Reference.author_search params[:author_q], params[:page]
                     rescue Citrus::ParseError
-                      flash[:warning] = unparsable_author_names_error_message
+                      flash.now.alert = unparsable_author_names_error_message
                       Reference.none.paginate page: 9999
                     end
                   else
