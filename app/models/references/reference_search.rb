@@ -35,6 +35,20 @@ class Reference < ActiveRecord::Base
     fulltext_search options
   end
 
+  def self.author_search author_names_query, page = nil
+    author_names = Parsers::AuthorParser.parse(author_names_query)[:names]
+    authors = Author.find_by_names author_names
+
+    query = select('`references`.*')
+      .joins(:author_names)
+      .joins('JOIN authors ON authors.id = author_names.author_id')
+      .where('authors.id IN (?)', authors)
+      .group('references.id')
+      .having("COUNT(`references`.id) = #{authors.length}")
+      .order(:author_names_string_cache, :citation_year)
+    query.paginate page: (page || 1)
+  end
+
   private
     # Accepts a string of keywords (the query) and returns a parsed hash;
     # non-matches are placed in `keywords_params[:keywords]`.

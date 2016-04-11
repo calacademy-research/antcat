@@ -1,5 +1,6 @@
 @import "colors"
 
+// Typeahead
 .tt-menu
   background-color: #eee
   z-index: 9999
@@ -27,13 +28,28 @@
   font-size: 90%
 
 input.typeahead.tt-hint
-  height: 1.6rem
+  height: 1.8rem
 
-// Reference search box
-#q
-  height: 1.6rem
-  margin-bottom: 0
+// jQuery UI
+.ui-menu
+  list-style: none
 
-// Firefox tweak
-input.typeahead
-  padding: 0 !important
+.ui-state-focus
+  background: $color_green !important
+
+.reference-search-form
+  #q, #author_q, #search_type
+    height: 1.8rem
+    margin-bottom: 0
+  #author_q, #search_type
+    width: 11rem
+  #author_q
+    display: none
+  #search_type
+    padding: 0 0.5rem
+
+  // Firefox tweaks
+  a, #search_type
+    vertical-align: top
+  input.typeahead, #author_q
+    padding: 0 0.5rem
