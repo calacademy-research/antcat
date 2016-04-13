@@ -5,8 +5,16 @@
     =reference.format_reference_document_link
     =reference.goto_reference_link target: nil
 
-    -# TODO make it more obvious that these are notes
-    %p.notes= reference.public_notes
+    -if reference.public_notes.present?
+      %p.notes
+        %span.note Notes:
+        =reference.public_notes
     -if user_can_edit?
-      %p.editor.notes= reference.editor_notes
-      %p.notes= reference.taxonomic_notes
+      -if reference.editor_notes.present?
+        %p.editor.notes
+          %span.note Editor notes:
+          =reference.editor_notes
+      -if reference.taxonomic_notes.present?
+        %p.notes
+          %span.note Taxonomic notes:
+          =reference.taxonomic_notes
