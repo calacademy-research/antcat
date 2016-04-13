@@ -111,17 +111,11 @@
 
   .row
     .medium-3.columns
-      =label_tag :reference_cite_code, 'Cite code'
-      =f.text_field :cite_code
-    .medium-3.columns
       =label_tag :reference_doi do
         DOI
         =tooltip_icon "references.doi", scope: :references
       =f.text_field :doi
-    .medium-3.columns
-      =label_tag :reference_possess, 'Possess'
-      =f.text_field :possess
-    .medium-3.columns
+    .medium-3.columns.end
       =label_tag :reference_date do
         Date
         =tooltip_icon "references.date", scope: :references
