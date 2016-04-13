@@ -61,6 +61,7 @@ Feature: Searching the catalog
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "author_name" with "Bolton"
+    And I uncheck valid only in the advanced search form
     And I press "Go" in the search section
     Then I should see "see Betta major"
 
@@ -78,6 +79,7 @@ Feature: Searching the catalog
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "author_name" with "Bolton"
+    And I uncheck valid only in the advanced search form
     And I press "Go" in the search section
     Then I should see "synonym of"
     And I should see "Betta minor"
