@@ -18,12 +18,6 @@ Then /^the (name|email|comment|page) field within the feedback form should conta
   expect(page.find("#feedback_#{field}").value).to include value
 end
 
-Then /^the email should contain "([^"]*)"$/ do |text|
-  within_frame(find("iframe")) do
-    step %Q[I should see "#{text}"]
-  end
-end
-
 Given /^I have already posted 3 feedbacks in the last 5 minutes$/ do
   3.times { FactoryGirl.create :feedback }
 end
