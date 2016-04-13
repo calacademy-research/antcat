@@ -1,5 +1,7 @@
 module Catalog
   class SearchController < ApplicationController
+    before_action :antweb_legacy_route, only: [:index]
+
     def index
       return unless params[:rank].present? # just render the template
 
@@ -32,6 +34,13 @@ module Catalog
     end
 
     private
+      def antweb_legacy_route
+        # "st" (starts_with) is not used any longer, so use it to find legacy URLs
+        if params[:st].present? && params[:qq].present?
+          redirect_to catalog_quick_search_path(qq: params[:qq], im_feeling_lucky: true)
+        end
+      end
+
       def advanced_search_taxa
         Taxa::Search.advanced_search(
           author_name:              params[:author_name],
