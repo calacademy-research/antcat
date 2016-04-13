@@ -31,6 +31,7 @@ class Taxa::Search
         params[:year].present? ||
         params[:biogeographic_region].present? ||
         params[:rank].present? && params[:rank] != 'All' ||
+        params[:name].present? ||
         params[:genus].present? ||
         params[:forms].present?
 
@@ -61,6 +62,11 @@ class Taxa::Search
 
     search_term = "%#{params[:type_specimen_code]}%"
     query = query.where('type_specimen_code LIKE ?', search_term) if params[:type_specimen_code].present?
+
+    if params[:name].present?
+      search_term = "%#{params[:name]}%"
+      query = query.where('taxa.name_cache LIKE ?', search_term)
+    end
 
     if params[:genus].present?
       query = query.joins('inner JOIN taxa as genera ON genera.id = taxa.genus_id')

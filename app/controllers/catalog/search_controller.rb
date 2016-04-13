@@ -48,6 +48,7 @@ module Catalog
           author_name:              params[:author_name],
           rank:                     params[:rank],
           year:                     params[:year],
+          name:                     params[:name],
           locality:                 params[:locality],
           valid_only:               params[:valid_only],
           verbatim_type_locality:   params[:verbatim_type_locality],

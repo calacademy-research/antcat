@@ -50,8 +50,15 @@
       =text_field_tag :genus, params[:genus]
 
   .row
+    .medium-6.columns.end
+      where
+      %b name
+      contains
+      =text_field_tag :name, params[:name]
+
+  .row
     .medium-12.columns
-      =check_box_tag :valid_only
+      =check_box_tag :valid_only, true, !!params[:valid_only]
       =label_tag 'Valid only?'
 
       =button_tag type: 'submit', name: nil, class: 'btn-search has-spinner' do
