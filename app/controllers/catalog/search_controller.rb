@@ -21,13 +21,15 @@ module Catalog
     end
 
     def quick_search
-      @taxa = Taxa::Search.find_name(params[:qq], params[:search_type])
-        .paginate(page: params[:page])
+      taxa = Taxa::Search.find_name(params[:qq], params[:search_type])
+      taxa = taxa.valid if params[:valid_only]
 
       # Single match --> redirect
-      if params[:im_feeling_lucky] && @taxa.count == 1
-        return redirect_to catalog_path(@taxa.first, qq: params[:qq])
+      if params[:im_feeling_lucky] && taxa.count == 1
+        return redirect_to catalog_path(taxa.first, qq: params[:qq])
       end
+
+      @taxa = taxa.paginate(page: params[:page])
 
       @is_quick_search = true
       render "index"

@@ -2,9 +2,12 @@
   .row
     .medium-3.columns
       =search_type_selector params[:search_type]
-    .medium-3.columns.end
+    .medium-3.columns
       .input-group
         =text_field_tag "qq", params[:qq], class: "input-group-field"
         .input-group-button
           =button_tag type: "submit", name: nil, class: "button has-spinner" do
             =spinner_icon + "Go"
+    .medium-3.columns.end
+      =check_box_tag :valid_only, true, !!params[:valid_only]
+      %label.middle Valid only?
