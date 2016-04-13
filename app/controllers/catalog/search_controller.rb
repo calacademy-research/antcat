@@ -22,7 +22,7 @@ module Catalog
 
     def quick_search
       taxa = Taxa::Search.find_name(params[:qq], params[:search_type])
-      taxa = taxa.valid if params[:valid_only] != "false"
+      taxa = taxa.valid if params[:valid_only]
 
       # Single match --> redirect
       if params[:im_feeling_lucky] && taxa.count == 1
@@ -39,10 +39,7 @@ module Catalog
       def antweb_legacy_route
         # "st" (starts_with) is not used any longer, so use it to find legacy URLs
         if params[:st].present? && params[:qq].present?
-          redirect_to catalog_quick_search_path(
-            qq: params[:qq],
-            im_feeling_lucky: true,
-            valid_only: false)
+          redirect_to catalog_quick_search_path(qq: params[:qq], im_feeling_lucky: true)
         end
       end
 
@@ -53,7 +50,7 @@ module Catalog
           year:                     params[:year],
           name:                     params[:name],
           locality:                 params[:locality],
-          valid_only:               params[:valid_only] != "false",
+          valid_only:               params[:valid_only],
           verbatim_type_locality:   params[:verbatim_type_locality],
           type_specimen_repository: params[:type_specimen_repository],
           type_specimen_code:       params[:type_specimen_code],

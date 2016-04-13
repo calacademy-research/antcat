@@ -40,8 +40,7 @@
 
   .row
     .medium-12.columns
-      =hidden_field_tag :valid_only, "false"
-      =check_box_tag :valid_only, true, (params[:valid_only].blank? || params[:valid_only] == "true")
+      =check_box_tag :valid_only, true, !!params[:valid_only]
       =label_tag 'Valid only?'
 
       =button_tag type: 'submit', name: nil, class: 'btn-search has-spinner' do
