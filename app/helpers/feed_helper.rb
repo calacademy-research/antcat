@@ -22,6 +22,7 @@ module FeedHelper
     end
   end
 
+  # TODO move non-general actions to the templates
   def activity_action_to_verb action
     { create: "added",
       update: "edited",
@@ -37,6 +38,9 @@ module FeedHelper
       complete_task: "completed",
       close_task: "closed",
       reopen_task: "re-opened",
+
+      close_feedback: "closed",
+      reopen_feedback: "re-opened",
     }[action.to_sym] || action.upcase
 
     # Default to the action name for missing actions (and upcase

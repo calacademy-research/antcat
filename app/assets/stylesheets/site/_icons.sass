@@ -21,12 +21,12 @@ table.feed
       color: $color_danger
 
     // "approving actions" = green check
-    &.approve_change, &.finish_reviewing, &.approve_all_references, &.approve_all_changes, &.complete_task, &.close_task
+    &.approve_change, &.finish_reviewing, &.approve_all_references, &.approve_all_changes, &.complete_task, &.close_task, &.close_feedback
       @extend .fa-check
       color: $color_green
 
     // mean actions = red exclamation mark
-    &.undo_change, &.reopen_task, &.restart_reviewing
+    &.undo_change, &.reopen_task, &.restart_reviewing, &.reopen_feedback
       @extend .fa-exclamation
       color: $color_danger
 
