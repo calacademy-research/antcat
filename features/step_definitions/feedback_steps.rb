@@ -32,8 +32,8 @@ Then /^I pretend to be a bot by filling in the invisible work email field$/ do
   page.execute_script "$('#feedback_work_email').val('spammer@bots.ru');"
 end
 
-Given /^a visitor has submitted a feedback with the comment "Mad catalog!"$/ do
-  FactoryGirl.create :feedback, comment: "Mad catalog!"
+Given /^a visitor has submitted a feedback with the comment "([^"]*)"$/ do |comment|
+  FactoryGirl.create :feedback, comment: comment
 end
 
 Given /^the editors Archibald and Batiatus \(but not Flint\) have enabled feedback email forwarding$/ do

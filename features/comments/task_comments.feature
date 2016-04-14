@@ -1,6 +1,7 @@
 Feature: Comment on tasks
   As an AntCat editor
   I want to comment on open tasks
+  So that editors can track issues
 
   Background:
     Given I log in as a catalog editor named "Batiatus"

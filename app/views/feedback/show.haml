@@ -7,3 +7,5 @@
 
 .callout
   =render file: "feedback_mailer/feedback_email", locals: { feedback: @feedback }
+
+=render partial: "comments/comments_area", locals: { commentable: @feedback, new_comment: @new_comment }
