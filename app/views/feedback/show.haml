@@ -1,6 +1,16 @@
 -@title = "Feedback ##{@feedback.id}"
 -breadcrumb :user_feedback_details, @feedback
 
+.buttons_right
+  -if @feedback.closed?
+    =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-destructive")
+  -else
+    =link_to("Close", close_feedback_path(@feedback), method: :put, class: "btn-destructive")
+
+%p
+  Status:
+  =@feedback.open? ? "open" : "closed"
+
 %p
   Sent to:
   =@feedback.email_recipients

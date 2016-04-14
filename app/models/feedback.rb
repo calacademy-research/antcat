@@ -14,6 +14,20 @@ class Feedback < ActiveRecord::Base
     Feedback.where(ip: ip)
   end
 
+  def closed?
+    !open?
+  end
+
+  def close
+    self.open = false
+    save!
+  end
+
+  def reopen
+    self.open = true
+    save!
+  end
+
   private
     def add_emails_recipients
       self.email_recipients = User.feedback_emails_recipients

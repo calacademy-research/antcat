@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160406174416) do
+ActiveRecord::Schema.define(version: 20160414044718) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(version: 20160406174416) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "email_recipients", limit: 65535
+    t.boolean  "open",                           default: true
   end
 
   add_index "feedbacks", ["user_id"], name: "index_feedbacks_on_user_id", using: :btree

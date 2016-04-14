@@ -128,7 +128,12 @@ AntCat::Application.routes.draw do
 
   resources :antweb_data, only: [:index]
 
-  resources :feedback, only: [:index, :show, :create]
+  resources :feedback, only: [:index, :show, :create] do
+    member do
+      put :close
+      put :reopen
+    end
+  end
 
   resources :comments
 

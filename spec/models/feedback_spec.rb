@@ -60,4 +60,39 @@ describe Feedback do
     end
   end
 
+  describe "open/closed" do
+    let(:open) { FactoryGirl.create :feedback }
+    let(:closed) { FactoryGirl.create :feedback, open: false }
+
+    describe "predicate methods" do
+      describe "#open?" do
+        it "knows" do
+          expect(open.open?).to be true
+          expect(closed.open?).to be false
+        end
+      end
+
+      describe "#closed?" do
+        it "knows" do
+          expect(open.closed?).to be false
+          expect(closed.closed?).to be true
+        end
+      end
+    end
+
+    describe "#close" do
+      it "closes the feedback item" do
+        open.close
+        expect(open.closed?).to be true
+      end
+    end
+
+    describe "#reopen" do
+      it "reopens the feedback item" do
+        closed.reopen
+        expect(closed.closed?).to be false
+      end
+    end
+  end
+
 end

@@ -36,6 +36,10 @@ Given /^a visitor has submitted a feedback with the comment "([^"]*)"$/ do |comm
   FactoryGirl.create :feedback, comment: comment
 end
 
+Given /^there is a closed feedback item with the comment "([^"]*)"$/ do |comment|
+  FactoryGirl.create :feedback, comment: comment, open: false
+end
+
 Given /^the editors Archibald and Batiatus \(but not Flint\) have enabled feedback email forwarding$/ do
   FactoryGirl.create :editor, name: "Archibald",
     email: "archibald@antcat.org", receive_feedback_emails: true
@@ -47,5 +51,5 @@ Given /^the editors Archibald and Batiatus \(but not Flint\) have enabled feedba
 end
 
 When /^follow the link of the first feedback$/ do
-  first("table.feedbacks a").click
+  first("table.feedbacks a", text: "Details").click
 end

@@ -2,7 +2,7 @@ class FeedbackController < ApplicationController
   include ActionView::Helpers::DateHelper
 
   before_filter :authenticate_editor, only: [:index]
-  before_filter :set_feedback, only: [:show]
+  before_filter :set_feedback, only: [:show, :close, :reopen]
 
   invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
 
@@ -38,6 +38,16 @@ class FeedbackController < ApplicationController
         end
       end
     end
+  end
+
+  def close
+    @feedback.close
+    redirect_to @feedback, notice: "Successfully closed feedback item."
+  end
+
+  def reopen
+    @feedback.reopen
+    redirect_to @feedback, notice: "Successfully re-opened feedback item."
   end
 
   private
