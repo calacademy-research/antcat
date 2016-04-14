@@ -12,6 +12,9 @@
   %li
     .label=@count[:unreviewed_catalog_changes]
     =link_to "Unreviewed catalog changes", unreviewed_changes_path
+  %li
+    .label=@count[:pending_user_feedbacks]
+    =link_to "Pending user feedback emails", feedback_index_path
 
 %h5 Other links
 %ul
@@ -19,7 +22,6 @@
   %li=link_to('Feed', feed_path) + " " + obligatory_beta_label
   %li=link_to 'Help pages wiki (hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
   %li=link_to 'Invite people to AntCat', new_user_invitation_path
-  %li=link_to 'User feedback emails', feedback_index_path
   %li=link_to 'Edit tooltips', tooltips_path
   %li=link_to 'Fix missing references', missing_references_path
   %li=link_to "Change password, update name/email", edit_user_registration_path

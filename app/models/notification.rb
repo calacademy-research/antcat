@@ -10,6 +10,8 @@ class Notification
       unreviewed_references.count
     when :unreviewed_catalog_changes
       unreviewed_catalog_changes.count
+    when :pending_user_feedbacks
+      pending_user_feedbacks.count
     when :all
       all_pending_actions_count
     end
@@ -28,9 +30,14 @@ class Notification
       Change.waiting
     end
 
+    def self.pending_user_feedbacks
+      Feedback.where(open: true)
+    end
+
     def self.all_pending_actions_count
       open_tasks.count +
       unreviewed_references.count +
-      unreviewed_catalog_changes.count
+      unreviewed_catalog_changes.count +
+      pending_user_feedbacks.count
     end
 end
