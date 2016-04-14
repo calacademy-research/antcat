@@ -36,7 +36,7 @@
 +foundation-tabs
 //+foundation-thumbnail
 +foundation-title-bar
-//+foundation-tooltip
+//+foundation-tooltip // Note: conflicts with jQuery's JS/CSS.
 +foundation-top-bar
 
 .pagination a, .pagination button
@@ -74,7 +74,7 @@
 button, .ui-widget button button
   @include normal-sized-button
 
-.btn-cancel, .btn-delete, .btn-destructive, .btn-download, .btn-edit, .btn-login, .btn-new, .btn-non-destructive, .btn-normal, .btn-save, .btn-search, .btn-undo
+.btn-cancel, .btn-delete, .btn-destructive, .btn-normal, .btn-edit, .btn-login, .btn-new, .btn-non-destructive, .btn-normal, .btn-save, .btn-search, .btn-undo
   @include normal-sized-button
 
 .btn-delete, .btn-destructive, .btn-undo
@@ -85,10 +85,9 @@ button, .ui-widget button button
   @include button-style(#fff, auto, #000)
 
 // TODO make smarter
-a.btn-cancel, a.btn-delete, a.btn-destructive, a.btn-download, a.btn-edit, a.btn-login, a.btn-new, a.btn-non-destructive, a.btn-normal, a.btn-save, a.btn-search, a.btn-undo
+a.btn-cancel, a.btn-delete, a.btn-destructive, a.btn-normal, a.btn-edit, a.btn-login, a.btn-new, a.btn-non-destructive, a.btn-normal, a.btn-save, a.btn-search, a.btn-undo
   padding: 0.55rem 0.75rem
   color: #fff !important
-
 
 a.btn-cancel
   color: #000 !important
@@ -99,3 +98,9 @@ a.btn-cancel
 
 button.close-button
   background-color: transparent
+
+// Advanced search form hack
+// The left margin disappears in prod, and I cannot reproduce in dev,
+// even after precompiling the assets. See #135.
+a.btn-download
+  margin-left: 0.3rem

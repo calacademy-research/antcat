@@ -47,4 +47,4 @@
         =spinner_icon + "Go"
 
       -if @taxa.present? && !@is_quick_search
-        =link_to 'Download (advanced search only)', "/catalog/search.txt?#{request.parameters.to_param}", class: "btn-download"
+        =link_to 'Download (advanced search only)', "/catalog/search.txt?#{request.parameters.to_param}", class: "btn-normal btn-download"
