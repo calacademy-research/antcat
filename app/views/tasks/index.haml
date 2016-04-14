@@ -23,7 +23,7 @@
       %tr.task{class: task.status}
         %td.icon=task_icon task.status
         %td=task.status.capitalize
-        %td=link_to task.title, task
-        %td=time_ago_in_words(task.created_at)
+        %td.grow=link_to task.title, task
+        %td.no-wrap=time_ago_in_words(task.created_at)
 
 =will_paginate @tasks
