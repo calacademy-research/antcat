@@ -6,7 +6,10 @@ class CommentsController < ApplicationController
 
     if @comment.save
       make_child_comment
-      redirect_to :back, notice: "Comment was successfully added."
+      redirect_to :back, notice: <<-MSG
+        <a href="#comment-#{@comment.id}">Comment</a>
+        was successfully added.
+      MSG
     else
       redirect_to :back, notice: "Something went wrong. Email us?"
     end
