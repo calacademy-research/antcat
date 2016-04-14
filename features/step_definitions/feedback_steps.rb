@@ -45,3 +45,7 @@ Given /^the editors Archibald and Batiatus \(but not Flint\) have enabled feedba
   FactoryGirl.create :editor, name: "Flint",
     email: "flint@antcat.org"
 end
+
+When /^follow the link of the first feedback$/ do
+  first("table.feedbacks a").click
+end

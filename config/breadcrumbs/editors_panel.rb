@@ -58,9 +58,14 @@ crumb :invite_people do
 end
 
 crumb :user_feedback do
-  link "User Feedback"
+  link "User Feedback", feedback_index_path
   parent :editors_panel
 end
+
+  crumb :user_feedback_details do |feedback|
+    link "Feedback ##{feedback.id}"
+    parent :user_feedback
+  end
 
 crumb :lazy_links do
   link "Lazy Links"

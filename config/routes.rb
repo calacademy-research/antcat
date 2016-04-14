@@ -128,7 +128,7 @@ AntCat::Application.routes.draw do
 
   resources :antweb_data, only: [:index]
 
-  resources :feedback, only: [:index, :create]
+  resources :feedback, only: [:index, :show, :create]
 
   resources :comments
 

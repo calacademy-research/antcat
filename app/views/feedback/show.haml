@@ -1,0 +1,9 @@
+-@title = "Feedback ##{@feedback.id}"
+-breadcrumb :user_feedback_details, @feedback
+
+%p
+  Sent to:
+  =@feedback.email_recipients
+
+.callout
+  =render file: "feedback_mailer/feedback_email", locals: { feedback: @feedback }

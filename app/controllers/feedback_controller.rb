@@ -2,11 +2,16 @@ class FeedbackController < ApplicationController
   include ActionView::Helpers::DateHelper
 
   before_filter :authenticate_editor, only: [:index]
+  before_filter :set_feedback, only: [:show]
 
   invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
 
   def index
     @feedbacks = Feedback.order(id: :desc).paginate(page: params[:page], per_page: 10)
+  end
+
+  def show
+    @new_comment = Comment.build_comment @feedback, current_user
   end
 
   def create
@@ -36,6 +41,10 @@ class FeedbackController < ApplicationController
   end
 
   private
+    def set_feedback
+      @feedback = Feedback.find(params[:id])
+    end
+
     def on_spam
       @feedback = Feedback.new feedback_params
       @feedback.errors.add :hmm, "you're not a bot are you? Feedback not sent. Email us?"
