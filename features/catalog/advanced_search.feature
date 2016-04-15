@@ -43,7 +43,7 @@ Feature: Searching the catalog
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "year" with "2010"
-    And I check "valid_only"
+    And I check valid only in the advanced search form
     And I press "Go" in the search section
     Then I should see "No results"
 

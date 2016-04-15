@@ -1,5 +1,7 @@
 module Catalog
   class SearchController < ApplicationController
+    before_action :antweb_legacy_route, only: [:index]
+
     def index
       return unless params[:rank].present? # just render the template
 
@@ -19,24 +21,34 @@ module Catalog
     end
 
     def quick_search
-      @taxa = Taxa::Search.find_name(params[:qq], params[:search_type])
-        .paginate(page: params[:page])
+      taxa = Taxa::Search.find_name(params[:qq], params[:search_type])
+      taxa = taxa.valid if params[:valid_only]
 
       # Single match --> redirect
-      if params[:im_feeling_lucky] && @taxa.count == 1
-        return redirect_to catalog_path(@taxa.first, qq: params[:qq])
+      if params[:im_feeling_lucky] && taxa.count == 1
+        return redirect_to catalog_path(taxa.first, qq: params[:qq])
       end
+
+      @taxa = taxa.paginate(page: params[:page])
 
       @is_quick_search = true
       render "index"
     end
 
     private
+      def antweb_legacy_route
+        # "st" (starts_with) is not used any longer, so use it to find legacy URLs
+        if params[:st].present? && params[:qq].present?
+          redirect_to catalog_quick_search_path(qq: params[:qq], im_feeling_lucky: true)
+        end
+      end
+
       def advanced_search_taxa
         Taxa::Search.advanced_search(
           author_name:              params[:author_name],
           rank:                     params[:rank],
           year:                     params[:year],
+          name:                     params[:name],
           locality:                 params[:locality],
           valid_only:               params[:valid_only],
           verbatim_type_locality:   params[:verbatim_type_locality],

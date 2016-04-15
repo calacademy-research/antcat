@@ -1,7 +1,9 @@
 -@title = 'Latest Additions'
 -breadcrumb :references_latest_additions
 
--# table.references is used in tests
+.buttons_right
+  =link_to "New", new_reference_path, class: "btn-new" if user_can_edit?
+
 %table.references
   %thead
     %th Reference

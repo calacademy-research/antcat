@@ -1,6 +1,5 @@
 AntCat::Application.routes.draw do
 
-  mount RailsEmailPreview::Engine, at: 'emails'
   ActiveAdmin.routes(self)
 
   root to: 'catalog#index'

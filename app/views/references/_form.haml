@@ -13,7 +13,7 @@
   =render 'shared/errors_for', resource: reference
 
   .row
-    .medium-10.columns
+    .medium-6.columns
       =label_tag :reference_author_names_string do
         Authors
         =tooltip_icon :authors, scope: :references
@@ -21,6 +21,18 @@
     .medium-2.columns
       =label_tag :reference_citation_year, 'Year'
       =f.text_field :citation_year
+
+    .medium-2.columns
+      =label_tag :reference_doi do
+        DOI
+        =tooltip_icon "references.doi", scope: :references
+      =f.text_field :doi
+    .medium-2.columns.end
+      =label_tag :reference_date do
+        Date
+        =tooltip_icon "references.date", scope: :references
+      =f.text_field :date
+
   .row
     .medium-12.columns
       =label_tag :reference_title do
@@ -94,38 +106,21 @@
           =f.text_area :citation, rows: 2
 
   .row
-    .medium-12.columns
+    .medium-4.columns
       =label_tag :reference_public_notes, 'Public notes'
       =f.text_area :public_notes, rows: 2
 
+    .medium-4.columns
       =label_tag :reference_editor_notes do
         Editor notes
         =tooltip_icon "EdNote", scope: :references
       =f.text_area :editor_notes, rows: 2
-  .row
-    .medium-12.columns
+
+    .medium-4.columns
       =label_tag :reference_taxonomic_notes do
         Taxonomic notes
         =tooltip_icon "TaxNote", scope: :references
       =f.text_area :taxonomic_notes, rows: 2
-
-  .row
-    .medium-3.columns
-      =label_tag :reference_cite_code, 'Cite code'
-      =f.text_field :cite_code
-    .medium-3.columns
-      =label_tag :reference_doi do
-        DOI
-        =tooltip_icon "references.doi", scope: :references
-      =f.text_field :doi
-    .medium-3.columns
-      =label_tag :reference_possess, 'Possess'
-      =f.text_field :possess
-    .medium-3.columns
-      =label_tag :reference_date do
-        Date
-        =tooltip_icon "references.date", scope: :references
-      =f.text_field :date
 
   %fieldset.fieldset
     %legend
@@ -133,7 +128,7 @@
       =tooltip_icon "references.pdf.upload", scope: :references
     =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
       .row
-        .medium-6.columns.end
+        .medium-3.columns
           =document_form.file_field :file
 
           =document_form.check_box :public
@@ -141,6 +136,7 @@
             Make PDF public?
             =tooltip_icon "references.pdf.public", scope: :references
 
+        .medium-6.columns.end
           =label_tag :document_url do
             Source URL
             =tooltip_icon "references.source.url", scope: :references

@@ -1,3 +1,5 @@
+// TODO something. This is also used for the reference form (author search only).
+
 function setupAuthorAutocomplete(selector) {
   if (AntCat.testing)
     return

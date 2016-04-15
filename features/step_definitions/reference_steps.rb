@@ -247,6 +247,16 @@ When /I fill in the references search box with "(.*?)"/ do |search_term|
   end
 end
 
+When /I fill in the references authors search box with "(.*?)"/ do |search_term|
+  within "#breadcrumbs" do
+    step %{I fill in "author_q" with "#{search_term}"}
+  end
+end
+
+When /I select author search from the search type selector/ do
+  select "author", from: "search_type"
+end
+
 When /I press "Go" by the references search box/ do
   within "#breadcrumbs" do
     step 'I press "Go"'
