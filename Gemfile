@@ -44,10 +44,6 @@ gem 'twitter-typeahead-rails'
 gem 'will_paginate'
 gem 'workflow'
 
-# HOL importer
-gem 'curb', require: 'curl'
-gem 'fuzzy-string-match'
-
 # Support deprecated
 gem 'protected_attributes' # attr_accesssible deprecated in rails 4.
 gem 'rails-observers' # observers deprecated in rails 4

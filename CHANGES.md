@@ -8,7 +8,7 @@ This is by no means a complete log -- most changes are only listed in the commit
 * [Dormant code] Removed COins-related code in [1dc77d](https://github.com/calacademy/antcat/commit/1dc77dc115053574aef75b7c481ccec63aa6ca3c)
 * [Dormant code] Removed Vlad in [64ada9](https://github.com/calacademy/antcat/commit/64ada9091bb6f11602b244d3ca48c24fdf393950), [c3881f](https://github.com/calacademy/antcat/commit/c3881f7fbdd24d643876b64cd5e80ffdbcad9761)
 * [Dormant code] Removed taxon_utility.rb in [49879a](https://github.com/calacademy/antcat/commit/49879a6b653d98e8015a52b0d7318cdcf46b0c08)
-* [Task completed] Removed HOL importers in TODO remove
+* [Task completed] Removed HOL importers in TODO add hash
 * [Dormant code / Task completed] Removed Bolton references-related code in [6e38e5](https://github.com/jonkerz/antcat/commit/6e38e57afd636827c8f9c5142b86a9f0893f2240)
 * Removed commented out code in [37064d](https://github.com/jonkerz/antcat/commit/37064da56f47a530a388b268289a73cb24b93d75)
 * [Hard to maintain] Removed 'edit references in place' feature in [604eee](https://github.com/jonkerz/antcat/commit/604eee89bc25abd9202c579989a5163a5dd6539e)

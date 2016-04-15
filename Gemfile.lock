@@ -18,9 +18,6 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
-    RubyInline (3.12.4)
-      ZenTest (~> 4.3)
-    ZenTest (4.11.0)
     actionmailer (4.2.6)
       actionpack (= 4.2.6)
       actionview (= 4.2.6)
@@ -136,7 +133,6 @@ GEM
       cucumber (>= 1.2.0)
       nokogiri (>= 1.5.0)
       rails (>= 3.0.0)
-    curb (0.8.8)
     daemons (1.2.3)
     database_cleaner (1.5.1)
     devise (3.5.2)
@@ -173,8 +169,6 @@ GEM
     foundation-rails (6.1.2.0)
       railties (>= 3.1.0)
       sass (>= 3.3.0, < 3.5)
-    fuzzy-string-match (0.9.7)
-      RubyInline (>= 3.8.6)
     gherkin3 (3.1.2)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
@@ -401,7 +395,6 @@ DEPENDENCIES
   coffee-rails
   colorize
   cucumber-rails
-  curb
   database_cleaner
   devise
   devise_invitable
@@ -411,7 +404,6 @@ DEPENDENCIES
   factory_girl_rails
   font-awesome-rails
   foundation-rails
-  fuzzy-string-match
   gretel
   haml-rails
   headless
