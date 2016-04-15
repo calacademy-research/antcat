@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414044718) do
+ActiveRecord::Schema.define(version: 20160415044632) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -410,6 +410,7 @@ ActiveRecord::Schema.define(version: 20160414044718) do
     t.boolean  "auto_generated",                                default: false
     t.string   "origin",                          limit: 255
     t.boolean  "display",                                       default: true
+    t.integer  "hol_id",                          limit: 4
   end
 
   add_index "taxa", ["current_valid_taxon_id"], name: "index_taxa_on_current_valid_taxon_id", using: :btree

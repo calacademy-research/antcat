@@ -1,3 +1,5 @@
+# TODO To be removed, see migration CopyHolIdToTaxon
+
 class HolTaxonDatum < ActiveRecord::Base
 
   attr_accessible :tnuid,

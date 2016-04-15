@@ -116,13 +116,15 @@ class Taxon < ActiveRecord::Base
   # it "should provide a link if there's one valid and one invalid hol_data entry"
   # it "should provide no link if there are two invalid entries"
   # it "should provide no link if there are two valid entries"
-  def hol_id
-    hol_data = HolTaxonDatum.where(antcat_taxon_id: id)
-
-    valids, invalids = hol_data.partition(&:is_valid?)
-    return valids.first.tnuid if valids.size == 1
-    return invalids.first.tnuid if invalids.size == 1
-  end
+  #
+  # TODO To be removed, see migration CopyHolIdToTaxon
+  #def hol_id
+  #  hol_data = HolTaxonDatum.where(antcat_taxon_id: id)
+  #
+  #  valids, invalids = hol_data.partition(&:is_valid?)
+  #  return valids.first.tnuid if valids.size == 1
+  #  return invalids.first.tnuid if invalids.size == 1
+  #end
 
   # TODO: this triggers a save in the Name model for some reason.
   def authorship_string
