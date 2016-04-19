@@ -1,5 +1,5 @@
 Given /^(?:this|these) references? exists?$/ do |table|
-  Reference.delete_all
+  Reference.delete_all # TODO probably remove
 
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
@@ -11,7 +11,7 @@ Given /^(?:this|these) references? exists?$/ do |table|
 end
 
 Given /^(?:this|these) dated references? exists?$/ do |table|
-  Reference.delete_all
+  Reference.delete_all # TODO probably remove
   table.map_column!('created_at') do |date|
     if date == 'TODAYS_DATE'
       date = Time.now.strftime("%Y-%m-%d")
@@ -265,4 +265,9 @@ end
 
 When /I hover the export button/ do
   find(".btn-normal", text: "Export").hover
+end
+
+Then /^nesting_reference_id should contain a valid reference id$/ do
+  id = find("#reference_nesting_reference_id").value
+  expect(Reference.exists? id).to be true
 end

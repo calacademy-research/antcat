@@ -19,6 +19,10 @@ class ReferencesController < ApplicationController
 
   def new
     @reference = Reference.new
+
+    if params[:nesting_reference_id]
+      build_nested_reference params[:nesting_reference_id], params[:citation_year]
+    end
   end
 
   def edit
@@ -204,6 +208,13 @@ class ReferencesController < ApplicationController
       end
     end
 
+    def build_nested_reference reference_id, citation_year
+      @reference = @reference.becomes NestedReference
+      @reference.citation_year = citation_year
+      @reference.pages_in = "Pp. XX-XX in:"
+      @reference.nesting_reference_id = reference_id
+    end
+
     def make_default_reference reference
       DefaultReference.set session, reference
     end
@@ -330,11 +341,5 @@ class ReferencesController < ApplicationController
 
     def set_reference
       @reference = Reference.find params[:id]
-    end
-
-    def reference_params
-      raise NotImplementedError
-      # TODO
-      #params.require(:reference).permit(:....)
     end
 end
