@@ -55,6 +55,29 @@ describe AntcatMarkdown do
                  %Q[<a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>\n]
       expect(AntcatMarkdown.render(markdown)).to eq expected
     end
+
+    it "formats task ids" do
+      task = create :task
+      markdown = "%task#{task.id}"
+
+      expected = %Q[<p><a href="/tasks/#{task.id}">task ##{task.id}</a></p>\n]
+      expect(AntcatMarkdown.render(markdown)).to eq expected
+    end
+
+    it "formats feedback ids" do
+      feedback = create :feedback
+      markdown = "%feedback#{feedback.id}"
+
+      expected = %Q[<p><a href="/feedback/#{feedback.id}">feedback ##{feedback.id}</a></p>\n]
+      expect(AntcatMarkdown.render(markdown)).to eq expected
+    end
+
+    it "formats GitHub links" do
+      markdown = "%github#{5}"
+
+      expected = %Q[<p><a href="https://github.com/calacademy-research/antcat/issues/5">GitHub #5</a></p>\n]
+      expect(AntcatMarkdown.render(markdown)).to eq expected
+    end
   end
 
   describe "#try_linking_taxon_id" do

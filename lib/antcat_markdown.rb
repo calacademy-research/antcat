@@ -1,6 +1,8 @@
 # Probably GitHub markdown (?) with some custom tags.
 
 class AntcatMarkdown < Redcarpet::Render::HTML
+  include Rails.application.routes.url_helpers
+  include ActionView::Helpers::UrlHelper
 
   def self.render text
     options = {
@@ -22,9 +24,13 @@ class AntcatMarkdown < Redcarpet::Render::HTML
   end
 
   def preprocess full_document
+    # TODO make smarter
     parsed = parse_taxon_ids full_document
     parsed = parse_reference_ids parsed
     parsed = parse_taxon_ids_list parsed
+    parsed = parse_task_ids parsed
+    parsed = parse_feedback_ids parsed
+    parsed = parse_github_ids parsed
     parsed
   end
 
@@ -32,7 +38,7 @@ class AntcatMarkdown < Redcarpet::Render::HTML
     # matches: %429349
     # renders: link to the taxon (Formica)
     def parse_taxon_ids full_document
-      full_document.gsub(/%t?(\d+)/) do
+      full_document.gsub(/%(\d+)/) do
         try_linking_taxon_id $1
       end
     end
@@ -60,6 +66,32 @@ class AntcatMarkdown < Redcarpet::Render::HTML
         ids.map do |id|
           try_linking_taxon_id id
         end.join(", ")
+      end
+    end
+
+    # matches: %task123
+    # renders: a link to the task (including non-existing)
+    def parse_task_ids full_document
+      full_document.gsub(/%task(\d+)/) do
+        link_to "task ##{$1}", task_path($1)
+      end
+    end
+
+    # matches: %feedback123
+    # renders: a link to the feedback (including non-existing)
+    def parse_feedback_ids full_document
+      full_document.gsub(/%feedback(\d+)/) do
+        link_to "feedback ##{$1}", feedback_path($1)
+      end
+    end
+
+    # matches: %github123
+    # renders: a link to the GitHub issue (including non-existing and PRs)
+    def parse_github_ids full_document
+      full_document.gsub(/%github(\d+)/) do
+        # Also works for PRs becuase GH figures that out.
+        url = "https://github.com/calacademy-research/antcat/issues/#{$1}"
+        link_to "GitHub ##{$1}", url
       end
     end
 
