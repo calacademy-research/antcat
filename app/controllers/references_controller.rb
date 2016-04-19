@@ -23,6 +23,10 @@ class ReferencesController < ApplicationController
     if params[:nesting_reference_id]
       build_nested_reference params[:nesting_reference_id], params[:citation_year]
     end
+
+    if params[:reference_to_copy]
+      copy_reference params[:reference_to_copy]
+    end
   end
 
   def edit
@@ -213,6 +217,40 @@ class ReferencesController < ApplicationController
       @reference.citation_year = citation_year
       @reference.pages_in = "Pp. XX-XX in:"
       @reference.nesting_reference_id = reference_id
+    end
+
+    def copy_reference reference_id
+      @reference_to_copy = Reference.find reference_id
+      @reference = @reference.becomes @reference_to_copy.class
+
+      # Basic fields and notes.
+      copy_fields :author_names_string,
+                  :citation_year,
+                  :title,
+                  :pagination,
+                  :public_notes,
+                  :editor_notes,
+                  :taxonomic_notes
+
+      case @reference_to_copy
+      when ArticleReference
+        copy_fields :series_volume_issue
+        @reference.journal_name = @reference_to_copy.journal.name
+      when BookReference
+        place = @reference_to_copy.publisher.place.name
+        publisher = @reference_to_copy.publisher.name
+        @reference.publisher_string = "#{place}: #{publisher}"
+      when NestedReference
+        copy_fields :pages_in, :nesting_reference_id
+      when UnknownReference
+        copy_fields :citation
+      end
+    end
+
+    def copy_fields *fields
+      fields.each do |field|
+        @reference.send "#{field}=".to_sym, @reference_to_copy.send(field)
+      end
     end
 
     def make_default_reference reference
