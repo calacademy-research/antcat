@@ -1,11 +1,21 @@
 -@title = "#{@taxon.name.epithet}"
 -breadcrumb @taxon
 
+-if user_is_superadmin?
+  -content_for :head do
+    =javascript_include_tag "superadmin_delete_button"
+
 -unless disable_taxon_browser?
   -content_for :head do
     =javascript_include_tag "taxon_browser/cookie_checkbox"
     =javascript_include_tag "taxon_browser/taxon_browser"
     =javascript_include_tag "taxon_browser/taxon_browser_toggler"
+
+.title.show-for-large
+  %h5.left An Online Catalog of the Ants of the World
+  .right by Barry Bolton
+  .clearfix
+
 #taxon_browser.callout{style: ("display: none" unless show_taxon_browser?)}
   =render "taxon_browser", panels: @panels, self_and_parents: @self_and_parents
 

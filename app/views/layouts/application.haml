@@ -23,17 +23,17 @@
     = favicon_link_tag
     = yield :head
 
-    %body
-      #page
-        =render "navigation"
-        =render "breadcrumbs"
-        =render "subnavigation"
+  %body
+    #page
+      =render "navigation"
+      =render "breadcrumbs"
+      =render "subnavigation"
 
-        #content
-          =render "shared/flash_messages"
-          .row
-            .small-12.columns
-              = content_for?(:page_contents) ? yield(:page_contents) : yield
+      #content
+        =render "shared/flash_messages"
+        .row
+          .small-12.columns
+            =yield
 
-        =render "footer"
-      =render "feedback/feedback_modal"
+      =render "footer"
+    =render "feedback/feedback_modal"
