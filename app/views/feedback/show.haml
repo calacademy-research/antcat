@@ -6,6 +6,8 @@
     =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-destructive")
   -else
     =link_to("Close", close_feedback_path(@feedback), method: :put, class: "btn-destructive")
+  -if user_is_superadmin?
+    =link_to "Delete", feedback_path(@feedback), method: :delete, data: { confirm: "Delete? Note that this is for deleting spam and ridiculous suggestions. Archiving closed items instead of deleting them is good for tracking submissions and submitters." }, class: "btn-delete"
 
 %p
   Status:

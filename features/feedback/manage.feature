@@ -31,3 +31,19 @@ Feature: Managing user feedback
     Then I should see "Successfully re-opened feedback item."
     And I should see "Status: open"
     And I should not see "Re-open"
+
+  Scenario: Deleting a feedback item
+    Given a visitor has submitted a feedback with the comment "buy r0lex spam"
+    And I log in as a superadmin
+
+    When I go to the feedback index
+    And follow the link of the first feedback
+    And I press "Delete"
+    Then I should see "Feedback item was successfully deleted."
+
+  Scenario: Only superadmins should be able to delete feedback
+    Given a visitor has submitted a feedback with the comment "Fix spelling"
+
+    When I go to the feedback index
+    And follow the link of the first feedback
+    Then I should not see "Delete"

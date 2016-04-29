@@ -1,8 +1,9 @@
 class FeedbackController < ApplicationController
   include ActionView::Helpers::DateHelper
 
-  before_filter :authenticate_editor, only: [:index]
-  before_filter :set_feedback, only: [:show, :close, :reopen]
+  before_filter :authenticate_superadmin, only: [:destroy]
+  before_filter :authenticate_editor, except: [:create]
+  before_filter :set_feedback, only: [:show, :destroy, :close, :reopen]
 
   invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
 
@@ -38,6 +39,11 @@ class FeedbackController < ApplicationController
         end
       end
     end
+  end
+
+  def destroy
+    @feedback.destroy
+    redirect_to feedback_index_path, notice: "Feedback item was successfully deleted."
   end
 
   def close

@@ -6,6 +6,7 @@ class Feedback < ActiveRecord::Base
   validates :comment, presence: true, length: { maximum: 10_000 }
 
   acts_as_commentable
+  has_paper_trail
 
   before_save :add_emails_recipients
 
