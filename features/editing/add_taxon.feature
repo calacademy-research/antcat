@@ -248,7 +248,7 @@ Feature: Adding a taxon
       Then I should be on the catalog page for "Dorylinae"
       And I should see "Dorylinae" in the protonym
     When I go to the catalog page for "Formicinae"
-    And I follow "Formicidae subfamiles"
+    And I follow "Formicidae subfamilies"
       Then I should see "Dorylinae" in the index
 
   @search
