@@ -1,41 +1,4 @@
 module CatalogHelper
-
-  def taxon_browser_link taxon
-    classes = css_classes_for_rank(taxon)
-    classes << css_classes_for_status(taxon)
-    link_to taxon_label(taxon), catalog_path(taxon), class: classes
-  end
-
-  def panel_header selected
-    if selected.is_a? Taxon
-      child_ranks = { family:    "subfamilies",
-                      subfamily: "tribes",
-                      tribe:     "genera",
-                      genus:     "species",
-                      subgenus:  "species",
-                      species:   "subspecies" }
-      child_rank = child_ranks[selected.rank.to_sym]
-      "#{taxon_breadcrumb_label selected} #{child_rank}"
-    else
-      selected[:title_for_panel]
-    end.html_safe
-  end
-
-  def all_genera_link selected
-    extra_panel_link selected, "All genera", "all_genera_in_#{selected.rank}"
-  end
-
-  def incertae_sedis_link selected
-    return if selected.genera_incertae_sedis_in.empty?
-    extra_panel_link selected, "Incertae sedis", "incertae_sedis_in_#{selected.rank}"
-  end
-
-  def toggle_valid_only_link
-    showing = session[:show_valid_only]
-    label = showing ? "show invalid" : "show valid only"
-    link_to label, catalog_options_path(valid_only: showing)
-  end
-
   def taxon_label_span taxon
     content_tag :span, class: css_classes_for_rank(taxon) do
       taxon_label(taxon).html_safe
@@ -54,24 +17,7 @@ module CatalogHelper
     [taxon.type.downcase, 'taxon', 'name'].sort
   end
 
-  def is_last_panel? panel, panels
-    panels.last == panel
-  end
-
   private
-    def extra_panel_link selected, label, param
-      css_class = if params[:display] == param
-                    "upcase selected"
-                  else
-                    "upcase white-label"
-                  end
-      content_tag :li do
-        content_tag :span, class: css_class do
-          link_to label, catalog_path(selected, display: param)
-        end
-      end
-    end
-
     def css_classes_for_status taxon
       css_classes = []
       css_classes << taxon.status.downcase.gsub(/ /, '_')
@@ -79,5 +25,4 @@ module CatalogHelper
       css_classes << 'collective_group_name' if taxon.collective_group_name?
       css_classes
     end
-
 end
