@@ -100,5 +100,4 @@ Visit http://192.168.50.50:3000/
 ```bash
 bundle exec cucumber # feature/browser tests
 bundle exec rspec    # unit tests
-bundle exec teaspoon # JavaScript tests
 ```

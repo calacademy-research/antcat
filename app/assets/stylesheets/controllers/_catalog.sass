@@ -14,23 +14,18 @@
         color: #fff
 
 #taxon_browser
+  .tabs-content
+    min-height: 115px
   .snaked
     -webkit-column-width: 10em
     -moz-column-width: 10em
     column-width: 10em
   .mr-scrollbary
-    max-height: 12rem
-    overflow-y: auto
+    height: 100%
   .upcase
     text-transform: uppercase
-
-#show_and_hide_menu
-  margin-bottom: 0.5rem
-  a
-    color: #fff
-  .label
-    margin-right: 0.5rem
-    margin-top: 0.2rem
+  li
+    box-sizing: border-box
 
 #taxon_description
   h4
@@ -107,20 +102,21 @@
 
 // equally space out elements
 #taxon_key
+  display: none
   width: 100%
   text-align: justify
-  padding-left: 1rem
-  padding-right: 1rem
 
   div
     display: inline-block
-    margin-top: 1em
+    margin-top: 0
     margin-bottom: -1em
 
   &:after
     content: ""
     width: 100%
     display: inline-block
+
+  margin-bottom: -1rem
 
 #linked_tasks
   margin-top: 0.5rem

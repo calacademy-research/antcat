@@ -43,7 +43,7 @@ Feature: Adding a taxon
       Then I should be on the catalog page for "Atta"
       And I should see "Eciton" in the protonym
     When I go to the catalog page for "Formicinae"
-    When I follow "All genera" in the subfamilies index
+    #When I follow "All genera" in the subfamilies index
       Then I should see "Atta" in the index
 
   # spurrious failure
@@ -248,6 +248,7 @@ Feature: Adding a taxon
       Then I should be on the catalog page for "Dorylinae"
       And I should see "Dorylinae" in the protonym
     When I go to the catalog page for "Formicinae"
+    And I follow "Formicidae subfamiles"
       Then I should see "Dorylinae" in the index
 
   @search
@@ -270,4 +271,5 @@ Feature: Adding a taxon
       Then I should be on the catalog page for "Dorylini"
       And I should see "Dorylini" in the protonym
     When I go to the catalog page for "Formicinae"
+    And I follow "Formicinae tribes"
       Then I should see "Dorylini" in the subfamilies index

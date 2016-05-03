@@ -1,24 +1,23 @@
 -@title = "#{@taxon.name.epithet}"
 -breadcrumb @taxon
 
--if user_is_superadmin?
-  -content_for :head do
+-content_for :head do
+  =stylesheet_link_tag "catalog_only"
+  =javascript_include_tag "catalog"
+  -if user_is_superadmin?
     =javascript_include_tag "superadmin_delete_button"
 
--unless disable_taxon_browser?
-  -content_for :head do
-    =javascript_include_tag "taxon_browser/cookie_checkbox"
-    =javascript_include_tag "taxon_browser/taxon_browser"
-    =javascript_include_tag "taxon_browser/taxon_browser_toggler"
+#taxon_description
+  .title.show-for-large
+    %h5.left An Online Catalog of the Ants of the World
+    .right by Barry Bolton
+    .clearfix
+  =render "catalog/taxon", taxon: @taxon
 
-.title.show-for-large
-  %h5.left An Online Catalog of the Ants of the World
-  .right by Barry Bolton
-  .clearfix
+#splitter
 
-#taxon_browser.callout{style: ("display: none" unless show_taxon_browser?)}
+#taxon_browser.callout
+  =render "taxon_key"
   =render "taxon_browser", panels: @panels, self_and_parents: @self_and_parents
-
-#taxon_description=render "catalog/taxon", taxon: @taxon
 
 #delete_message.delete-modal{type: 'hidden'}

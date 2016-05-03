@@ -25,7 +25,6 @@ class CatalogController < ApplicationController
       set_session
       set_taxon
       setup_panels
-      enable_taxon_toggler
     end
 
     # TODO reverse name, so that this is not needed
@@ -76,10 +75,6 @@ class CatalogController < ApplicationController
       children = children.valid if session[:show_valid_only]
       @panels << { selected: { title_for_panel: title },
                   children: children }
-    end
-
-    def enable_taxon_toggler
-      @display_taxon_toggler = true
     end
 
 end

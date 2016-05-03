@@ -168,7 +168,6 @@ Feature: Workflow
 
     When I go to the catalog page for "Formicidae"
     And I follow "Ancatinae" in the families index
-    And I follow "All genera" in the subfamilies index
     Then I should see "Antcatia"
     And I should see "Tactania"
 

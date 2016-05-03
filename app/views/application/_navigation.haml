@@ -29,10 +29,6 @@
 
       #desktop-lower-menu.top-bar-right
         %ul.menu
-          -if @display_taxon_toggler
-            %li
-              .button-group.desktop-toggler-parent
-                %a.button#desktop-toggler Hide Taxon Browser
           %li
             =form_tag catalog_quick_search_path, method: :get do
               .input-group
@@ -51,13 +47,6 @@
           %span.float-left
             %span.menu-icon{"data-toggle" => ""}
           =image_tag 'antcat_logo_small.png', data: { toggle: "" }
-
-      -if @display_taxon_toggler
-        .small-4.columns
-          %ul.menu.float-right
-            %li
-              %a.button#mobile-toggler Hide Taxon Browser
-              %a.button#tiny-toggler Browser
 
   #mobile-menu
     %ul.vertical.dropdown.menu{"data-dropdown-menu" => ""}

@@ -8,7 +8,14 @@ module CatalogHelper
 
   def panel_header selected
     if selected.is_a? Taxon
-      "#{selected.rank.capitalize}: #{taxon_breadcrumb_label selected}"
+      child_ranks = { family:    "subfamilies",
+                      subfamily: "tribes",
+                      tribe:     "genera",
+                      genus:     "species",
+                      subgenus:  "species",
+                      species:   "subspecies" }
+      child_rank = child_ranks[selected.rank.to_sym]
+      "#{taxon_breadcrumb_label selected} #{child_rank}"
     else
       selected[:title_for_panel]
     end.html_safe
@@ -47,47 +54,11 @@ module CatalogHelper
     [taxon.type.downcase, 'taxon', 'name'].sort
   end
 
-  def open_panel? selected, self_and_parents
-    return true if disable_taxon_browser?
-
-    cookies[:close_inactive_panels] == "false" || # open if asked to do so
-    is_last_panel?(selected, self_and_parents) ||
-    selected.is_a?(Genus)        # always open genus panel
-  end
-
-  def show_taxon_browser?
-    return true if disable_taxon_browser?
-
-    # "Keep open" means "continue to be open", not "always open".
-    # If the browser is hidden, it stays hidden. Like this:
-    #
-    #                  keep_open_on  keep_open_off
-    # browser_hidden       HIDE          HIDE
-    # browser_visible      SHOW          HIDE
-    cookies[:show_browser] != "false" &&
-    cookies[:keep_taxon_browser_open] != "false"
-  end
-
-  # For disabling the taxon browser by default in test env.
-  # Hiding it and closing its panels would break loads of tests.
-  def disable_taxon_browser?
-    if Rails.env.test?
-      return true unless $taxon_browser_test_hack
-    end
+  def is_last_panel? panel, panels
+    panels.last == panel
   end
 
   private
-    # HACK -ish
-    def is_last_panel? selected, self_and_parents
-      self_and_parents.last == selected ||  # last taxon in panel chain
-
-      # hack for "incertae sedis"/"all genera", which always is last
-      !selected.is_a?(Taxon) ||
-
-      selected.nil? ||           # no selected -> must be last
-      selected.is_a?(Species)    # species is always last
-    end
-
     def extra_panel_link selected, label, param
       css_class = if params[:display] == param
                     "upcase selected"

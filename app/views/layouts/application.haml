@@ -15,24 +15,27 @@
     = javascript_include_tag 'google_analytics'
     = javascript_include_tag 'application'
 
-    = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'foundation_and_overrides'
+    = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'jquery_overrides'
     = dev_css
 
     = favicon_link_tag
     = yield :head
 
-  %body
-    #page
-      =render "navigation"
-      =render "breadcrumbs"
-      =render "subnavigation"
+    %body
+      #header
+        =render "navigation"
+        =render "breadcrumbs"
+        =render "subnavigation"
 
       #content
         =render "shared/flash_messages"
-        .row
-          .small-12.columns
-            =yield
+        -if controller_name == "catalog"
+          =yield
+        -else
+          .row
+            .small-12.columns
+              =yield
 
-    =render "feedback/feedback_modal"
+      =render "feedback/feedback_modal"
