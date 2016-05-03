@@ -4,12 +4,6 @@
   .buttons_right
     =taxon.editor_buttons
 
-    -open_tasks = @taxon.tasks.open
-    -if open_tasks.present?
-      #linked_tasks.callout
-        %p Related open tasks:
-        =format_open_tasks open_tasks
-
 =taxon.header
 
 -unless taxon.original_combination?

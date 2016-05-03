@@ -1,18 +1,13 @@
 -content_for :head do
-  =javascript_include_tag "tasks/linked_taxa_token_field"
   =javascript_include_tag "tasks/preview_markdown"
 
 =form_for @task do |f|
   =render "shared/errors_for", resource: @task
   .row
-    .medium-6.columns
+    .medium-6.columns.end
       =f.label :title
       =f.text_field :title, { maxlength: 70, disabled: @task.archived? }
 
-    .medium-6.columns
-      #linked_taxa
-        =f.label :linked_taxa
-        =f.text_field :taxa_tokens, data: { load: @task.taxa.to_json(root: nil) }
   .row
     .medium-12.columns
       %ul#task-tabs.tabs{"data-tabs" => ""}

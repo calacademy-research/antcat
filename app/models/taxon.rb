@@ -64,8 +64,6 @@ class Taxon < ActiveRecord::Base
   has_many :senior_synonyms, through: :synonyms_as_junior
   has_many :history_items, -> { order 'position' }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order 'position' }, dependent: :destroy
-  has_many :task_references
-  has_many :tasks, through: :task_references
 
   scope :displayable, -> { where(display: true) }
   scope :valid, -> { where(status: 'valid') }

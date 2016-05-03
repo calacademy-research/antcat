@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160415044632) do
+ActiveRecord::Schema.define(version: 20160503220908) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -351,14 +351,6 @@ ActiveRecord::Schema.define(version: 20160415044632) do
   add_index "synonyms", ["junior_synonym_id", "senior_synonym_id"], name: "index_synonyms_on_junior_synonym_id_and_senior_synonym_id", using: :btree
   add_index "synonyms", ["junior_synonym_id"], name: "index_synonyms_on_junior_synonym_id", using: :btree
   add_index "synonyms", ["senior_synonym_id"], name: "index_synonyms_on_senior_synonym_id", using: :btree
-
-  create_table "task_references", force: :cascade do |t|
-    t.integer "task_id",  limit: 4
-    t.integer "taxon_id", limit: 4
-  end
-
-  add_index "task_references", ["task_id"], name: "index_task_references_on_task_id", using: :btree
-  add_index "task_references", ["taxon_id"], name: "index_task_references_on_taxon_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
     t.integer  "closer_id",   limit: 4

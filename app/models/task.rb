@@ -4,15 +4,10 @@ class Task < ActiveRecord::Base
   include Feed::Trackable
   tracked on: :all, parameters: ->(task) do { title: task.title } end
 
-  attr_reader :taxa_tokens
-
   acts_as_commentable
 
   belongs_to :adder, class_name: "User"
   belongs_to :closer, class_name: "User"
-
-  has_many :task_references
-  has_many :taxa, through: :task_references, source: :taxon
 
   validates :adder, presence: true
   validates :description, presence: true, allow_blank: false
@@ -27,10 +22,6 @@ class Task < ActiveRecord::Base
       CASE WHEN status = 'open' THEN (9999 + created_at)
       ELSE created_at END DESC
     SQL
-  end
-
-  def taxa_tokens=(ids)
-    self.taxa_ids = ids.split(",")
   end
 
   def open?

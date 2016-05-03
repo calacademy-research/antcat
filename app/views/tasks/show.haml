@@ -27,15 +27,8 @@
     =@task.closer.decorate.name_linking_to_email
 
 .row
-  .medium-9.columns
+  .medium-12.columns
     .callout
       =markdown @task.description
-
-  .medium-3.columns
-    -unless @task.taxa.empty?
-      .callout
-        Linked taxa:
-        -@task.taxa.each do |taxon|
-          =taxon.decorate.link_to_taxon
 
 =render partial: "comments/comments_area", locals: { commentable: @task, new_comment: @new_comment }
