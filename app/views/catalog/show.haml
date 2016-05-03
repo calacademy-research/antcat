@@ -12,6 +12,8 @@
     %h5.left An Online Catalog of the Ants of the World
     .right by Barry Bolton
     .clearfix
+  -if user_can_edit?
+    =render "editor_buttons", taxon: @taxon
   =render "catalog/taxon", taxon: @taxon
 
 #splitter

@@ -8,7 +8,6 @@
 # an improvement), but we still need (want) that encapsulation.
 
 class TaxonDecorator < ApplicationDecorator
-  include TaxonDecorator::EditorButtons
   delegate_all
 
   def link_to_taxon

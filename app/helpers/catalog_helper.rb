@@ -17,6 +17,27 @@ module CatalogHelper
     [taxon.type.downcase, 'taxon', 'name'].sort
   end
 
+  def link_to_edit_taxon taxon
+    if user_can_edit?
+      link_to "Edit", edit_taxa_path(taxon), class: "btn-edit"
+    end
+  end
+
+  def link_to_review_change taxon
+    return unless user_can_review_changes?
+
+    if taxon.can_be_reviewed? && taxon.latest_change
+      link_to 'Review change', "/changes/#{taxon.latest_change.id}", class: "btn-normal"
+    end
+  end
+
+  def link_to_delete_taxon taxon
+    return unless user_is_superadmin?
+
+    link_to 'Delete', "#", id: "delete_button", class: "btn-delete",
+      data: { 'delete-location' => taxa_path(taxon), "taxon-id" => taxon.id }
+  end
+
   private
     def css_classes_for_status taxon
       css_classes = []
