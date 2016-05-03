@@ -107,6 +107,20 @@ Feature: Adding a taxon
     And I press "Cancel"
     Then I should be on the edit page for "Formicinae"
 
+  Scenario: Show "Add species" link on genus catalog pages
+    Given there is a genus "Eciton"
+    When I go to the catalog page for "Eciton"
+    And I follow "Add species"
+    Then I should be on the new taxon page
+    And I should see "new species of "
+    And I should see "Eciton"
+    When I click the name field
+    Then the name field should contain "Eciton "
+
+  Scenario: Hide "Add species" link on subfamily catalog pages
+    When I go to the catalog page for "Formicinae"
+    Then I should not see "Add species"
+
   @search
   Scenario: Adding a species
     Given there is a genus "Eciton"
