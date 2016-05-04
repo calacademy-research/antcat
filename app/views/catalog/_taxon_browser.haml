@@ -30,4 +30,6 @@
           -# Exception for subfamilies only containing genera that are
           -# incertae sedis in that subfamily (that is Martialinae, #430173).
           -unless selected.try(:genera_incertae_sedis_in).present?
-            %li No valid child taxa
+            %li
+              No valid child taxa
+              =link_to "Show invalid?", catalog_options_path(valid_only: false)
