@@ -17,6 +17,15 @@ class TaxaController < ApplicationController
     @taxon = get_taxon_for_create
     save_taxon
 
+    flash[:notice] = "Taxon was successfully added."
+
+    show_add_another_species_link = @taxon.id && @taxon.is_a?(Species) && @taxon.genus
+    if show_add_another_species_link
+      link = view_context.link_to "Add another #{@taxon.genus.name_html_cache} species?".html_safe,
+        new_taxa_path(rank_to_create: "species", parent_id: @taxon.genus.id)
+      flash[:notice] += " <strong>#{link}</strong>".html_safe
+    end
+
     # Nil check to avoid showing 404 to the user and breaking the tests.
     # `change_parent.feature` fails without this, but it seems to work if the
     # steps are manually reproduced in the browser.
@@ -27,7 +36,6 @@ class TaxaController < ApplicationController
     # This imitates the previous behavior we had when CatalogController#show was
     # responsible for both the index and show actions, and nil ids were silently
     # redirected to Formicidae (nil are not allowed by routes.rb any longer).
-    flash[:notice] = "Taxon was successfully created."
     if @taxon.id
       redirect_to catalog_path(@taxon)
     else

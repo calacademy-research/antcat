@@ -144,6 +144,7 @@ Feature: Adding a taxon
     And I save my changes
     Then I should be on the catalog page for "Eciton major"
     And I should see "Eciton major" in the protonym
+    And I should see "Add another"
 
   @search
   Scenario: Adding a species to a subgenus
@@ -264,6 +265,7 @@ Feature: Adding a taxon
     When I go to the catalog page for "Formicinae"
     And I follow "Formicidae subfamilies"
       Then I should see "Dorylinae" in the index
+      And I should not see "Add another"
 
   @search
   Scenario: Adding a tribe
