@@ -6,7 +6,9 @@ module TaxonBrowserHelper
   end
 
   def panel_header selected
-    if selected.is_a? Taxon
+    if show_only_genus_name? selected
+      taxon_breadcrumb_label selected
+    elsif selected.is_a? Taxon
       child_ranks = { family:    "subfamilies",
                       subfamily: "tribes",
                       tribe:     "genera",
@@ -22,6 +24,10 @@ module TaxonBrowserHelper
 
   def all_genera_link selected
     extra_panel_link selected, "All genera", "all_genera_in_#{selected.rank}"
+  end
+
+  def all_taxa_link selected
+    extra_panel_link selected, "All taxa", "all_taxa_in_#{selected.rank}"
   end
 
   def incertae_sedis_link selected
@@ -51,5 +57,13 @@ module TaxonBrowserHelper
           link_to label, catalog_path(selected, display: param)
         end
       end
+    end
+
+    # For the "All taxa" special case, because
+    # this would be confusing/false:
+    # Formicidae ... Lasius species > All Lasius taxa
+    def show_only_genus_name? selected
+      selected.is_a?(Genus) &&
+      params[:display] == "all_taxa_in_genus"
     end
 end

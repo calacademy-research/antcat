@@ -45,6 +45,10 @@ class Genus < GenusGroupTaxon
     Genus.without_subfamily.ordered_by_name
   end
 
+  def all_displayable_child_taxa
+    Taxon.where(genus: self).displayable.ordered_by_epithet
+  end
+
   def species_group_descendants
     Taxon.where(genus_id: id).where.not(type: 'Subgenus')
       .includes(:name).order('names.epithet')

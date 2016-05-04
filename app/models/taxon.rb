@@ -70,6 +70,7 @@ class Taxon < ActiveRecord::Base
   scope :extant, -> { where(fossil: false) }
   scope :with_names, -> { joins(:name).readonly(false) }
   scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
+  scope :ordered_by_epithet, lambda { with_names.order('names.epithet').includes(:name) }
 
   accepts_nested_attributes_for :name, :protonym, :type_name
 

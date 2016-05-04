@@ -42,6 +42,7 @@ class CatalogController < ApplicationController
       @panels = @self_and_parents.reject do |taxon|
         # never show the subspecies panel (has no children)
         taxon.is_a?(Subspecies) ||
+
         # don't show species panel unless the species has subspecies
         (taxon.is_a?(Species) && taxon.children.empty?)
       end.map do |taxon|
@@ -68,8 +69,11 @@ class CatalogController < ApplicationController
         title = "Genera <i>incertae sedis</i> in #{@taxon.name_html_cache}"
         children = @taxon.genera_incertae_sedis_in
       when /^all_genera_in/
-        title = "All #{@taxon.name_cache} genera"
+        title = "All #{@taxon.name_html_cache} genera"
         children = @taxon.all_displayable_genera
+      when "all_taxa_in_genus"
+        title = "All #{@taxon.name_html_cache} taxa"
+        children = @taxon.all_displayable_child_taxa
       end
 
       children = children.valid if session[:show_valid_only]
