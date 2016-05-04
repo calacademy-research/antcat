@@ -1,4 +1,6 @@
 class EditorsPanelsController < ApplicationController
+  before_action :authenticate_editor
+
   def index
     @count = {
       open_tasks: Notification.pending_count(:open_tasks),

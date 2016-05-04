@@ -1,5 +1,5 @@
 class MergeAuthorsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :create_panels, :add_blank_panel_if_necessary]
+  before_filter :authenticate_editor, except: [:index, :create_panels, :add_blank_panel_if_necessary]
 
   def index
     create_panels
