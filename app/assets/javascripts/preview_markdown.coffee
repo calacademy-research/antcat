@@ -1,13 +1,16 @@
-$ ->
-  $("#preview_markdown_link").click (event) ->
+$.fn.previewMarkdownLink = (source, previewArea) ->
+  @click (event) ->
     event.preventDefault()
 
     $.ajax
-      url: '/tasks/preview_markdown'
+      url: '/preview_markdown'
       type: 'post'
-      data: task_description: $("#task_description").val()
+      data: text: $(source).val()
       dataType: 'html'
       success: (html) ->
-        $("#preview").html html
+        $(previewArea).html html
       error: ->
-        $("#preview").text "Error rendering preview"
+        $(previewArea).text "Error rendering preview"
+
+$ ->
+  $("#preview_link").previewMarkdownLink "#task_description", "#preview"

@@ -156,15 +156,14 @@ AntCat::Application.routes.draw do
   end
 
   resources :tasks do
-    collection do
-      post :preview_markdown
-    end
     member do
       put :complete
       put :close
       put :reopen
     end
   end
+
+  post :preview_markdown, to: "markdown#preview"
 
   # REST
   resources :taxon, controller: 'taxa', except: [:edit, :new, :update, :destroy]
