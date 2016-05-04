@@ -30,6 +30,11 @@ module TaxonBrowserHelper
     extra_panel_link selected, "All taxa", "all_taxa_in_#{selected.rank}"
   end
 
+  def subgenera_link selected
+    return if selected.displayable_subgenera.empty?
+    extra_panel_link selected, "Subgenera", "subgenera_in_#{selected.rank}"
+  end
+
   def incertae_sedis_link selected
     return if selected.genera_incertae_sedis_in.empty?
     extra_panel_link selected, "Incertae sedis", "incertae_sedis_in_#{selected.rank}"
@@ -59,11 +64,16 @@ module TaxonBrowserHelper
       end
     end
 
-    # For the "All taxa" special case, because
+    # For the "All taxa" and "Subgenera" special cases, because
     # this would be confusing/false:
-    # Formicidae ... Lasius species > All Lasius taxa
+    #   "Formicidae ... Lasius species > Lasius subgenera"
+    #   "Formicidae ... Lasius species > All Lasius taxa"
     def show_only_genus_name? selected
       selected.is_a?(Genus) &&
-      params[:display] == "all_taxa_in_genus"
+      params[:display].in?([
+        "all_taxa_in_genus",
+        "subgenera_in_genus",
+        "subgenera_in_parent_genus"
+      ])
     end
 end
