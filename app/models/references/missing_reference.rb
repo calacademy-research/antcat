@@ -30,6 +30,7 @@ class MissingReference < Reference
 
   def replace_citation_with replacement
     self.class.replace_citation citation, replacement
+    create_replace_missing_reference_activity replacement
   end
 
   def self.replace_all show_progress = false
@@ -51,4 +52,11 @@ class MissingReference < Reference
     Reference.where(key_cache_no_commas: search_term).first
   end
 
+  private
+    def create_replace_missing_reference_activity replacement
+      Feed::Activity.create_activity :replace_missing_reference,
+        { citation: citation,
+          reason_missing: reason_missing,
+          replacement_id: replacement.id }
+    end
 end

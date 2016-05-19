@@ -3,10 +3,6 @@
 
 class Reference < ActiveRecord::Base
 
-  def self.import_hol_document_urls show_progress = false
-    Importers::Hol::DocumentUrlImporter.new(show_progress).import
-  end
-
   def replace_with reference, options = {}
     Taxt.taxt_fields.each do |klass, fields|
       klass.send(:all).each do |record|

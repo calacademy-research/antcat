@@ -1,14 +1,4 @@
-# This decorator is mainly responsible for formatting the top part of catalog pages (via
-# app/views/catalog/_taxon.haml), but is also used elsewhere (eg lib/exporters/antweb/exporter.rb).
-# See the bottom of this file for some notes.
-#
-# December 2015: All "sub decorators" (such as ChildList, Headline) were originally intended
-# for isolating logical chunks into smaller units only while migrating all Formatters to
-# Decorators (refer to the change log for commit ids). The code is not terrible (and surely
-# an improvement), but we still need (want) that encapsulation.
-
 class TaxonDecorator < ApplicationDecorator
-  include TaxonDecorator::EditorButtons
   delegate_all
 
   def link_to_taxon
@@ -201,50 +191,3 @@ class TaxonDecorator < ApplicationDecorator
       ''
     end
 end
-
-# Example mentioned above. When ("if", heh) this becomes outdated and it takes more
-# than 1 minute to update, please remove. From Aneuretinae:
-#
-# ---------- edit_buttons ----------
-# Edit Delete
-#
-# ---------- header ----------
-# Aneuretinae Emery, 1913 valid
-#
-# ---------- statistics ----------
-# Extant: 1 valid tribe, 1 valid genus (1 unavailable misspelling), 1 valid species (1 synonym)
-# Fossil: 1 valid tribe, 8 valid genera, 11 valid species
-#
-# ----------genus_species_header_notes_taxt -------------------
-# # empty
-#
-# ---------- headline ----------
-# Aneuretini Emery, 1913a: 6. Type-genus: Aneuretus. AntWeb AntWiki
-#
-# ---------- taxon.history_items.each { ... } ----------
-# Aneuretinae as junior synonym of Dolichoderinae: Baroni Urbani, 1989: 147. Aneuretinae as ...
-#
-# ---------- child_lists ----------
-# Tribe (extant) of Aneuretinae: Aneuretini.
-# Tribe (extinct) of Aneuretinae: †Pityomyrmecini.
-# Genera (extinct) incertae sedis in Aneuretinae: †Burmomyrma, †Cananeuretus.
-#
-# ---------- references ----------
-# Subfamily references
-# Boudinot, 2015: 49 (male diagnosis, discussion of *fossil taxa)
-#
-# ---------- change_history ----------
-# Changed by Brendon E. Boudinot 9 months ago ...
-#
-#
-# Bonus method for highlighting the different sections.
-# Paste this beast dirtly into app/views/catalog/_taxon.haml:
-=begin
--def highlight_for_debug content, caption = nil
-  -content = caption.html_safe << content if caption
-  -random_border_color_style = "border: 3px solid ##{"%06x" % (rand * 0xffffff)}"
-  -content_tag :div, content, style: "#{random_border_color_style}"
-=end
-# ... and call like this:
-# =highlight_for_debug taxon.headline
-# =highlight_for_debug taxon.headline, "this is the headline" # optional

@@ -1,3 +1,7 @@
+# Re "@reference.create_activity": we must create the feed
+# activities here in the controller, otherwise every save
+# generates tons of feed items.
+
 class ReferencesController < ApplicationController
   before_filter :authenticate_editor, except: [:index, :download, :autocomplete,
     :search_help, :show, :search, :endnote_export, :wikipedia_export, :latest_additions]
@@ -15,6 +19,14 @@ class ReferencesController < ApplicationController
 
   def new
     @reference = Reference.new
+
+    if params[:nesting_reference_id]
+      build_nested_reference params[:nesting_reference_id], params[:citation_year]
+    end
+
+    if params[:reference_to_copy]
+      copy_reference params[:reference_to_copy]
+    end
   end
 
   def edit
@@ -23,6 +35,7 @@ class ReferencesController < ApplicationController
   def create
     @reference = new_reference
     if save
+      @reference.create_activity :create
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully created.
         <strong>#{view_context.link_to 'Back to the index', references_path}</strong>
@@ -38,6 +51,7 @@ class ReferencesController < ApplicationController
     @reference = set_reference_type
 
     if save
+      @reference.create_activity :update
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully updated.
         <strong>#{view_context.link_to 'Back to the index', references_path}</strong>.
@@ -49,6 +63,7 @@ class ReferencesController < ApplicationController
 
   def destroy
     if @reference.destroy
+      @reference.create_activity :destroy
       redirect_to references_path, notice: 'Reference was successfully destroyed.'
     else
       if @reference.errors.present?
@@ -197,6 +212,47 @@ class ReferencesController < ApplicationController
       end
     end
 
+    def build_nested_reference reference_id, citation_year
+      @reference = @reference.becomes NestedReference
+      @reference.citation_year = citation_year
+      @reference.pages_in = "Pp. XX-XX in:"
+      @reference.nesting_reference_id = reference_id
+    end
+
+    def copy_reference reference_id
+      @reference_to_copy = Reference.find reference_id
+      @reference = @reference.becomes @reference_to_copy.class
+
+      # Basic fields and notes.
+      copy_fields :author_names_string,
+                  :citation_year,
+                  :title,
+                  :pagination,
+                  :public_notes,
+                  :editor_notes,
+                  :taxonomic_notes
+
+      case @reference_to_copy
+      when ArticleReference
+        copy_fields :series_volume_issue
+        @reference.journal_name = @reference_to_copy.journal.name
+      when BookReference
+        place = @reference_to_copy.publisher.place.name
+        publisher = @reference_to_copy.publisher.name
+        @reference.publisher_string = "#{place}: #{publisher}"
+      when NestedReference
+        copy_fields :pages_in, :nesting_reference_id
+      when UnknownReference
+        copy_fields :citation
+      end
+    end
+
+    def copy_fields *fields
+      fields.each do |field|
+        @reference.send "#{field}=".to_sym, @reference_to_copy.send(field)
+      end
+    end
+
     def make_default_reference reference
       DefaultReference.set session, reference
     end
@@ -323,11 +379,5 @@ class ReferencesController < ApplicationController
 
     def set_reference
       @reference = Reference.find params[:id]
-    end
-
-    def reference_params
-      raise NotImplementedError
-      # TODO
-      #params.require(:reference).permit(:....)
     end
 end

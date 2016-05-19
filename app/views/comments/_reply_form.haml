@@ -1,0 +1,12 @@
+.reply-form
+  =form_for @new_comment do |f|
+    =f.hidden_field :commentable_id, value: @new_comment.commentable_id
+    =f.hidden_field :commentable_type, value: @new_comment.commentable_type
+    =f.hidden_field :comment_id, value: comment.id
+    .row
+      .small-6.columns.end
+        =f.text_area :body, placeholder: "Add reply here"
+    .row
+      .small-6.columns.end
+        =button_tag "Post Reply", class: "btn-normal"
+        %a.btn-cancel Cancel

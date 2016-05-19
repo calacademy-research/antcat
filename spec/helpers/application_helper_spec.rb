@@ -60,4 +60,32 @@ describe ApplicationHelper do
     end
   end
 
+  describe "#antcat_icon" do
+    it "formats" do
+      expect(helper.send :antcat_icon).to eq '<span class="antcat_icon"></span>'
+    end
+
+    describe "arguments" do
+      it "handles a single string" do
+        expect(icon_classes "task").to eq "antcat_icon task"
+      end
+
+      it "handles two strings" do
+        expect(icon_classes "task open").to eq "antcat_icon task open"
+      end
+
+      it "handles arrays" do
+        expect(icon_classes ["task open"]).to eq "antcat_icon task open"
+      end
+    end
+
+    def icon_classes *css_classes
+      extract_css_classes helper.send(:antcat_icon, *css_classes)
+    end
+
+    def extract_css_classes string
+      string.scan(/class="(.*?)"/).first.first
+    end
+  end
+
 end

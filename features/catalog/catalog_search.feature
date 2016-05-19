@@ -65,13 +65,6 @@ Feature: Searching the catalog
     And I press "Go" by the catalog search box
     Then I should see "Monomorium history"
 
-  Scenario: Finding a tribe when tribes are hidden
-    When I go to the catalog
-    And I follow "Dolichoderinae" in the index
-    And I fill in the catalog search box with "Dolichoderini"
-    And I press "Go" by the catalog search box
-    Then I should see "Dolichoderini" in the tribes index
-
   Scenario: Searching with spaces at beginning and/or end of query string
     When I go to the catalog
     When I fill in the catalog search box with " abruptus "

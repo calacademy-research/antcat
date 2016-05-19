@@ -24,13 +24,16 @@ module Taxa::Delete
   end
 
   def delete_taxon_and_children
-    Taxon.transaction do
-      change = setup_change self, :delete
-      delete_taxon_children self
+    Feed::Activity.without_tracking do
+      Taxon.transaction do
+        change = setup_change self, :delete
+        delete_taxon_children self
 
-      delete_with_state!
-      change.user_changed_taxon_id = id
+        delete_with_state!
+        change.user_changed_taxon_id = id
+      end
     end
+    create_activity :destroy
   end
 
   private

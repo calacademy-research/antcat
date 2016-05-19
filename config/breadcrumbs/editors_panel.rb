@@ -22,6 +22,31 @@ end
     parent :tooltips
   end
 
+crumb :tasks do
+  link "Open Tasks", tasks_path
+  parent :editors_panel
+end
+
+  crumb :task do |task|
+    link "Task ##{task.id}", task_path(task)
+    parent :tasks
+  end
+
+    crumb :edit_task do |task|
+      link "Edit"
+      parent :task, task
+    end
+
+  crumb :new_task do |task|
+    link "New"
+    parent :tasks
+  end
+
+crumb :feed do
+  link "Feed"
+  parent :editors_panel
+end
+
 crumb :edit_user do
   link "Edit User"
   parent :editors_panel
@@ -33,9 +58,14 @@ crumb :invite_people do
 end
 
 crumb :user_feedback do
-  link "User Feedback"
+  link "User Feedback", feedback_index_path
   parent :editors_panel
 end
+
+  crumb :user_feedback_details do |feedback|
+    link "Feedback ##{feedback.id}"
+    parent :user_feedback
+  end
 
 crumb :lazy_links do
   link "Lazy Links"

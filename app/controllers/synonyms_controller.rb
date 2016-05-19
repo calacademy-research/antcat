@@ -1,5 +1,9 @@
 class SynonymsController < ApplicationController
-  before_filter :authenticate_editor
+  before_filter :authenticate_editor, except: [:show]
+
+  def show
+    @synonym = Synonym.find(params[:id])
+  end
 
   def create
     taxon = Taxon.find params[:taxa_id]

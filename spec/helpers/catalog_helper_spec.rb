@@ -1,20 +1,6 @@
 require 'spec_helper'
 
 describe CatalogHelper do
-  describe "#taxon_browser_link" do
-    it "formats" do
-      taxon = FactoryGirl.create :genus
-      expect(helper.taxon_browser_link(taxon))
-        .to eq %[<a class="genus name taxon valid" href="/catalog/#{taxon.id}"><i>#{taxon.name}</i></a>]
-    end
-  end
-
-  # TODO add once the code is more stable
-  # describe "#panel_header selected"
-  # describe "#all_genera_link selected"
-  # describe "#incertae_sedis_link selected"
-  # describe "#toggle_valid_only_link"
-
   describe "labels" do
     let(:taxon) { FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta') }
 
@@ -39,5 +25,4 @@ describe CatalogHelper do
       # Not tested: "nomen_nudum"/"collective_group_name"
     end
   end
-
 end

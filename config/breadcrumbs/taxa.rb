@@ -21,3 +21,19 @@ crumb :convert_to_species do |taxon|
   link "Convert to Species"
   parent :edit_taxon, taxon
 end
+
+# Crumbs for the shallow routes for the feed
+crumb :taxon_history_item do |item|
+  link "History Item ##{item.id}"
+  parent :taxon_being_edited, item.taxon
+end
+
+crumb :reference_section do |item|
+  link "Reference Section ##{item.id}"
+  parent :taxon_being_edited, item.taxon
+end
+
+crumb :synonym_relationship do |synonym|
+  link "Synonym Relationship ##{synonym.id}"
+  parent :edit_catalog
+end

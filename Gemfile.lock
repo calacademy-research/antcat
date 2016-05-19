@@ -18,9 +18,6 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
-    RubyInline (3.12.4)
-      ZenTest (~> 4.3)
-    ZenTest (4.11.0)
     actionmailer (4.2.6)
       actionpack (= 4.2.6)
       actionview (= 4.2.6)
@@ -69,12 +66,18 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    acts_as_commentable_with_threading (2.0.1)
+      activerecord (>= 4.0)
+      activesupport (>= 4.0)
+      awesome_nested_set (>= 3.0)
     acts_as_list (0.7.2)
       activerecord (>= 3.0)
     addressable (2.3.8)
     arbre (1.0.3)
       activesupport (>= 3.0.0)
     arel (6.0.3)
+    awesome_nested_set (3.0.3)
+      activerecord (>= 4.0.0, < 5)
     aws-sdk (1.66.0)
       aws-sdk-v1 (= 1.66.0)
     aws-sdk-v1 (1.66.0)
@@ -130,7 +133,6 @@ GEM
       cucumber (>= 1.2.0)
       nokogiri (>= 1.5.0)
       rails (>= 3.0.0)
-    curb (0.8.8)
     daemons (1.2.3)
     database_cleaner (1.5.1)
     devise (3.5.2)
@@ -167,8 +169,6 @@ GEM
     foundation-rails (6.1.2.0)
       railties (>= 3.1.0)
       sass (>= 3.3.0, < 3.5)
-    fuzzy-string-match (0.9.7)
-      RubyInline (>= 3.8.6)
     gherkin3 (3.1.2)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
@@ -176,12 +176,23 @@ GEM
       rails (>= 3.2.0)
     haml (4.0.7)
       tilt
+    haml-rails (0.9.0)
+      actionpack (>= 4.0.1)
+      activesupport (>= 4.0.1)
+      haml (>= 4.0.6, < 5.0)
+      html2haml (>= 1.0.1)
+      railties (>= 4.0.1)
     has_scope (0.6.0)
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
     hashdiff (0.2.2)
     headless (2.2.0)
     high_voltage (2.4.0)
+    html2haml (2.0.0)
+      erubis (~> 2.7.0)
+      haml (~> 4.0.0)
+      nokogiri (~> 1.6.0)
+      ruby_parser (~> 3.5)
     i18n (0.7.0)
     inherited_resources (1.6.0)
       actionpack (>= 3.2, < 5)
@@ -190,7 +201,6 @@ GEM
       responders
     invisible_captcha (0.8.0)
       rails
-    jasmine-jquery-rails (2.0.3)
     jquery-rails (4.0.5)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
@@ -274,6 +284,7 @@ GEM
       activesupport (>= 3.0)
       i18n
       polyamorous (~> 1.2)
+    redcarpet (3.3.4)
     request_store (1.2.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
@@ -296,6 +307,8 @@ GEM
       rspec-mocks (~> 3.3.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
+    ruby_parser (3.8.1)
+      sexp_processor (~> 4.1)
     rubyzip (1.1.7)
     safe_yaml (1.0.4)
     sass (3.4.21)
@@ -310,6 +323,7 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
+    sexp_processor (4.7.0)
     shoulda-matchers (3.0.1)
       activesupport (>= 4.0.0)
     slop (3.6.0)
@@ -330,10 +344,6 @@ GEM
     sunspot_solr (2.2.0)
     sunspot_test (0.4.0)
       sunspot_rails (>= 1.2.1)
-    teaspoon (1.1.4)
-      railties (>= 3.2.5, < 5)
-    teaspoon-jasmine (2.3.4)
-      teaspoon (>= 1.0.0)
     thin (1.6.4)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
@@ -369,6 +379,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin (~> 1.0.0.pre2)
+  acts_as_commentable_with_threading
   acts_as_list
   aws-sdk (< 2.0)
   best_in_place!
@@ -379,7 +390,6 @@ DEPENDENCIES
   coffee-rails
   colorize
   cucumber-rails
-  curb
   database_cleaner
   devise
   devise_invitable
@@ -389,13 +399,11 @@ DEPENDENCIES
   factory_girl_rails
   font-awesome-rails
   foundation-rails
-  fuzzy-string-match
   gretel
-  haml
+  haml-rails
   headless
   high_voltage
   invisible_captcha
-  jasmine-jquery-rails
   jquery-rails (> 4.0)
   jquery-ui-rails (> 5.0)
   js_cookie_rails
@@ -411,6 +419,7 @@ DEPENDENCIES
   rails (~> 4.2)
   rails-observers
   rake (< 11.0)
+  redcarpet
   request_store
   rspec-core
   rspec-rails
@@ -421,7 +430,6 @@ DEPENDENCIES
   sunspot_rails
   sunspot_solr
   sunspot_test
-  teaspoon-jasmine
   thin
   twitter-typeahead-rails
   uglifier

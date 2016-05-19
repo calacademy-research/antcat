@@ -26,7 +26,7 @@ class MissingReferencesController < ApplicationController
     @reference.replace_citation_with @replacement
 
     redirect_to missing_references_path,
-      notice: "Probably replaced reference."
+      notice: "Probably replaced missing reference."
   end
 
   private

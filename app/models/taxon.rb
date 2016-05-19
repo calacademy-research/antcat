@@ -9,6 +9,9 @@ class Taxon < ActiveRecord::Base
   include Taxa::Statistics
   include Taxa::Synonyms
 
+  include Feed::Trackable
+  tracked on: :create, parameters: activity_parameters
+
   class TaxonExists < StandardError; end
 
   self.table_name = :taxa
@@ -67,6 +70,7 @@ class Taxon < ActiveRecord::Base
   scope :extant, -> { where(fossil: false) }
   scope :with_names, -> { joins(:name).readonly(false) }
   scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
+  scope :ordered_by_epithet, lambda { with_names.order('names.epithet').includes(:name) }
 
   accepts_nested_attributes_for :name, :protonym, :type_name
 
@@ -106,19 +110,6 @@ class Taxon < ActiveRecord::Base
     self.class.where(status: 'original combination', current_valid_taxon_id: id).first
   end
 
-  # it "should provide a link if there's a valid hol_data entry"
-  # it "should provide a link if there's one invalid hol_data entry"
-  # it "should provide a link if there's one valid and one invalid hol_data entry"
-  # it "should provide no link if there are two invalid entries"
-  # it "should provide no link if there are two valid entries"
-  def hol_id
-    hol_data = HolTaxonDatum.where(antcat_taxon_id: id)
-
-    valids, invalids = hol_data.partition(&:is_valid?)
-    return valids.first.tnuid if valids.size == 1
-    return invalids.first.tnuid if invalids.size == 1
-  end
-
   # TODO: this triggers a save in the Name model for some reason.
   def authorship_string
     string = protonym.authorship_string
@@ -139,4 +130,17 @@ class Taxon < ActiveRecord::Base
     parents.reverse
   end
 
+  private
+    def activity_parameters
+      ->(taxon) do
+        hash = { rank: taxon.rank,
+                 name: taxon.name_html_cache }
+
+        parent = taxon.parent
+        hash[:parent] = { rank: parent.rank,
+                          name: parent.name_html_cache,
+                          id: parent.id } if parent
+        hash
+      end
+    end
 end

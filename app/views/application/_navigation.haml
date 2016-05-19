@@ -7,13 +7,17 @@
     #desktop-menu
       #desktop-upper-menu.top-bar-right
         %ul.dropdown.menu{"data-dropdown-menu" => ""}
+          -if user_signed_in?
+            %li
+              =link_to editors_panel_path do
+                Editor's Panel
+                %span.notification.label=Notification.pending_count(:all)
           %li=link_to('References', references_path)
           %li=link_to('Changes', changes_path)
           %li=link_to('AntWeb', 'http://www.antweb.org/')
           %li=link_to('About', page_path('about'))
 
           -if user_signed_in?
-            %li=link_to "Editor's Panel", editors_panel_path
             %li=link_to(current_user.name || current_user.email, edit_user_registration_path)
             %li=link_to('Logout', destroy_user_session_path)
           -else
@@ -25,10 +29,6 @@
 
       #desktop-lower-menu.top-bar-right
         %ul.menu
-          -if @display_taxon_toggler
-            %li
-              .button-group.desktop-toggler-parent
-                %a.button#desktop-toggler Hide Taxon Browser
           %li
             =form_tag catalog_quick_search_path, method: :get do
               .input-group
@@ -48,16 +48,11 @@
             %span.menu-icon{"data-toggle" => ""}
           =image_tag 'antcat_logo_small.png', data: { toggle: "" }
 
-      -if @display_taxon_toggler
-        .small-4.columns
-          %ul.menu.float-right
-            %li
-              %a.button#mobile-toggler Hide Taxon Browser
-              %a.button#tiny-toggler Browser
-
   #mobile-menu
     %ul.vertical.dropdown.menu{"data-dropdown-menu" => ""}
       %li=link_to "Catalog", root_path
+      -if user_signed_in?
+        %li=link_to "Editor's Panel", editors_panel_path
       %li=link_to('References', references_path)
       %li=link_to('Changes', changes_path)
       %li=link_to('AntWeb', 'http://www.antweb.org/')

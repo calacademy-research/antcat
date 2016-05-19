@@ -5,15 +5,20 @@
   %thead
     %tr
       %th ID
+      %th Status
       %th Email
       %th{width: "10%"} Recipients
+      %th Comments
+      %th Link
   -@feedbacks.each do |feedback|
-    %tr
-      %td
-        %strong ##{feedback.id}
+    %tr{class: ("closed" if feedback.closed?)}
+      %td="##{feedback.id}"
+      %td=feedback.open? ? "Open" : "Closed"
       %td
         .callout
           =render file: "feedback_mailer/feedback_email", locals: { feedback: feedback }
       %td=feedback.email_recipients
+      %td.center-text=link_comments_section feedback
+      %td=link_to "Details", feedback_path(feedback), class: "btn-normal"
 
 =will_paginate @feedbacks

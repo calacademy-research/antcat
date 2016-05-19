@@ -1,19 +1,35 @@
-#show_and_hide_menu.row.collapse
-  .medium-6-columns.float-left
+%ul#taxon-browser-tabs.tabs{"data-tabs" => ""}
+  -panels.each_with_index do |panel, index|
+    %li.tabs-title{class: ("is-active" if is_last_panel? panel, panels)}
+      =link_to panel_header(panel[:selected]), "#panel-#{index}"
+
+  %li.tab-toggler
+    %span.label.secondary
+      =link_to "toggle legend", "#", id: "toggle_legend"
     %span.label.secondary=toggle_valid_only_link
-    %span.label.white-label.hide-for-large=link_to "full key", page_path('help/full_key')
-  .medium-6-columns.float-right
-    =check_box_tag :keep_taxon_browser_open, "999", false
-    =label_tag :keep_taxon_browser_open, "keep open"
 
-    =check_box_tag :close_inactive_panels, "999"
-    =label_tag :close_inactive_panels, "autoclose inactive panels"
+.tabs-content{"data-tabs-content" => "taxon-browser-tabs"}
+  -panels.each_with_index do |panel, index|
+    -selected = panel[:selected]
 
-%ul.accordion{"data-accordion" => "", "data-allow-all-closed" => "true", "data-multi-expand" => "true"}
-  -panels.each do |selected_and_children|
-    -selected = selected_and_children[:selected]
-    -children = selected_and_children[:children]
+    -css_classes = []
+    -css_classes << "is-active" if is_last_panel? panel, panels
+    -if selected.is_a? Taxon
+      -css_classes << "#{selected.rank.pluralize}-test-hook"
 
-    =render "rank", selected: selected, self_and_parents: self_and_parents, children: children
+    .tabs-panel{id: "panel-#{index}", class: css_classes}
+      %ul.snaked.no-bullet.mr-scrollbary
+        =render "rank_special_cases", selected: selected
 
-=render "taxon_key"
+        -panel[:children].each do |child_taxon|
+          %li{class: ("selected" if child_taxon.in? self_and_parents)}
+            =taxon_browser_link child_taxon
+
+        -# Notify users that they can toggle "show invalid".
+        -if panel[:children].empty?
+          -# Exception for subfamilies only containing genera that are
+          -# incertae sedis in that subfamily (that is Martialinae, #430173).
+          -unless selected.try(:genera_incertae_sedis_in).present?
+            %li
+              No valid child taxa
+              =link_to "Show invalid?", catalog_options_path(valid_only: false)

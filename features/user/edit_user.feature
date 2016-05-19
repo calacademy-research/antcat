@@ -68,7 +68,8 @@ Feature: Editing a user
     Then I should see "Dashboard"
 
   Scenario: When admins logout, it should redirect to AntCat root
-    Given I log in as a superadmin
+    Given the Formicidae family exists
+    And I log in as a superadmin
     When I go to the main page
     And I follow the first "Editor's Panel"
     When I follow "Admin Dashboard"

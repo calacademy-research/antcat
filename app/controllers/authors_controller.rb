@@ -1,11 +1,12 @@
 class AuthorsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :autocomplete]
+  before_filter :authenticate_editor, except: [:index, :autocomplete]
   layout "references"
 
   def index
     @authors = Author.sorted_by_name.paginate(page: params[:page], per_page: 60)
   end
 
+  # TODO does this do anything??
   def edit
     @author = Author.find params[:id]
   end

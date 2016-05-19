@@ -1,24 +1,49 @@
 -@title = "Editor's Panel"
 -breadcrumb :editors_panel
 
-%h5 Unreviewed changes
-%ul
-  %li=link_to "Unreviewed references", latest_additions_references_path
-  %li=link_to "Unreviewed catalog changes", unreviewed_changes_path
 
-%h5 Other links
-%ul
-  %li=link_to 'Help pages wiki (hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
-  %li=link_to 'Invite people to AntCat', new_user_invitation_path
-  %li=link_to 'User feedback emails', feedback_index_path
-  %li=link_to 'Edit tooltips', tooltips_path
-  %li=link_to 'Fix missing references', missing_references_path
-  %li=link_to "Change password, update name/email", edit_user_registration_path
-  -if user_is_superadmin?
-    %li=link_to "Admin Dashboard", admin_root_path
+.row
+  .large-3.medium-4.columns
+    %h5 Unreviewed changes
+    %ul.no-bullet
+      %li
+        .label=@count[:open_tasks]
+        =link_to "Open tasks", tasks_path
+      %li
+        .label=@count[:unreviewed_references]
+        =link_to "Unreviewed references", latest_additions_references_path
+      %li
+        .label=@count[:unreviewed_catalog_changes]
+        =link_to "Unreviewed catalog changes", unreviewed_changes_path
+      %li
+        .label=@count[:pending_user_feedbacks]
+        =link_to "Pending user feedback emails", feedback_index_path
+
+  .large-3.medium-4.columns
+    %h5 Misc. links
+    %ul
+      %li=link_to 'Help pages (wiki hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
+      -obligatory_beta_label = content_tag :span, "beta", class: "label"
+      %li=link_to('Activity feed', feed_path) + " " + obligatory_beta_label
+      %li=link_to 'Invite people to AntCat', new_user_invitation_path
+      %li=link_to "Change my password/name/email", edit_user_registration_path
+
+  .large-3.medium-4.columns
+    %h5 Advanced tools
+    %ul
+      %li=link_to 'Fix missing references', missing_references_path
+
+  .large-3.medium-4.columns
+    %h5 AntCat administration
+    %ul
+      %li=link_to 'Edit tooltips', tooltips_path
+      -if user_is_superadmin?
+        %li=link_to "Admin Dashboard", admin_root_path
 
 -if Rails.env.development?
-  %h5 dev-only links
-  %ul
-    %li=link_to "Lazy links", page_path("lazy_links")
-    %li=link_to "Toggle dev CSS", widget_tests_toggle_dev_css_path
+  .row{style: "margin-top: 3rem"}
+    .medium-12.columns
+      %h5 dev-only links
+      %ul
+        %li=link_to "Lazy links", page_path("lazy_links")
+        %li=link_to "Toggle dev CSS", widget_tests_toggle_dev_css_path

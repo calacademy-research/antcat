@@ -1,3 +1,5 @@
+# TODO To be removed, see migration CopyHolIdToTaxon
+
 class HolTaxonDatum < ActiveRecord::Base
 
   attr_accessible :tnuid,
@@ -25,6 +27,8 @@ class HolTaxonDatum < ActiveRecord::Base
                   :is_valid
 
   # TODO move hol_id to the taxa table or migrate this to a boolean
+  # DONE: copied hol_id to Taxon; this is still used in the migration.
+  # TODO remove this file
   def is_valid?
     is_valid.downcase == 'valid'
   end

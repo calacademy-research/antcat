@@ -1,0 +1,7 @@
+-# loops over the root comments and all their children
+
+-comments.each do |comment|
+  .comment.medium-6{id: "comment-#{comment.id}"}
+    =render partial: "comments/comment", locals: { comment: comment }
+    =render partial: "comments/reply_form", locals: { comment: comment }
+    =render partial: "comments/comments", locals: { comments: comment.children }

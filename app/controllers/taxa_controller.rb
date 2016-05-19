@@ -17,6 +17,15 @@ class TaxaController < ApplicationController
     @taxon = get_taxon_for_create
     save_taxon
 
+    flash[:notice] = "Taxon was successfully added."
+
+    show_add_another_species_link = @taxon.id && @taxon.is_a?(Species) && @taxon.genus
+    if show_add_another_species_link
+      link = view_context.link_to "Add another #{@taxon.genus.name_html_cache} species?".html_safe,
+        new_taxa_path(rank_to_create: "species", parent_id: @taxon.genus.id)
+      flash[:notice] += " <strong>#{link}</strong>".html_safe
+    end
+
     # Nil check to avoid showing 404 to the user and breaking the tests.
     # `change_parent.feature` fails without this, but it seems to work if the
     # steps are manually reproduced in the browser.
@@ -27,12 +36,11 @@ class TaxaController < ApplicationController
     # This imitates the previous behavior we had when CatalogController#show was
     # responsible for both the index and show actions, and nil ids were silently
     # redirected to Formicidae (nil are not allowed by routes.rb any longer).
-    unless @taxon.id
-      redirect_to root_path, notice: 'Taxon was successfully created.'
-      return
+    if @taxon.id
+      redirect_to catalog_path(@taxon)
+    else
+      redirect_to root_path
     end
-
-    redirect_to catalog_path(@taxon), notice: 'Taxon was successfully created.'
 
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :new
@@ -48,12 +56,15 @@ class TaxaController < ApplicationController
 
     # See #create for the raison d'etre of this nil check.
     # Note: Tests pass without this snippets.
-    unless @taxon.id
-      redirect_to root_path, notice: 'Taxon was successfully updated.'
-      return
+    flash[:notice] = "Taxon was successfully updated."
+    if @taxon.id
+      @taxon.create_activity :update
+      redirect_to catalog_path(@taxon)
+    else
+      Feed::Activity.create_activity :custom,
+        parameters: { text: "updated an unknown taxon" }
+      redirect_to root_path
     end
-
-    redirect_to catalog_path(@taxon), notice: 'Taxon was successfully updated.'
 
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :edit
@@ -129,11 +140,11 @@ class TaxaController < ApplicationController
     respond_to do |format|
       format.json do
         results = search_results.map do |taxon|
-          {
-            name: taxon.name_html_cache,
+          { name: taxon.name_html_cache,
+            name_html_cache: taxon.name_html_cache,
+            id: taxon.id,
             authorship: taxon.authorship_string,
-            search_query: taxon.name_cache
-          }
+            search_query: taxon.name_cache }
         end
         render json: results
       end

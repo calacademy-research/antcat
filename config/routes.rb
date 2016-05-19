@@ -127,9 +127,25 @@ AntCat::Application.routes.draw do
 
   resources :antweb_data, only: [:index]
 
-  resources :feedback, only: [:index, :create]
+  resources :feedback, only: [:index, :show, :create, :destroy] do
+    member do
+      put :close
+      put :reopen
+    end
+  end
+
+  resources :comments
 
   get "panel", to: "editors_panels#index", as: "editors_panel"
+
+  resource :feed, only: [:show], controller: "feed" do
+    resources :activities, only: [:destroy]
+  end
+
+  # Shallow routes for the show action for the feed
+  resources :taxon_history_items, only: [:show]
+  resources :reference_sections, only: [:show]
+  resources :synonyms, only: [:show]
 
   resources :tooltips do
     collection do
@@ -138,6 +154,16 @@ AntCat::Application.routes.draw do
       get :toggle_tooltip_helper
     end
   end
+
+  resources :tasks do
+    member do
+      put :complete
+      put :close
+      put :reopen
+    end
+  end
+
+  post :preview_markdown, to: "markdown#preview"
 
   # REST
   resources :taxon, controller: 'taxa', except: [:edit, :new, :update, :destroy]

@@ -13,6 +13,7 @@
 //= require jquery.form
 
 // app/assets/javascripts
+//= require comments
 //= require debugging
 //= require feedback
 //= require site

@@ -43,7 +43,7 @@ Feature: Adding a taxon
       Then I should be on the catalog page for "Atta"
       And I should see "Eciton" in the protonym
     When I go to the catalog page for "Formicinae"
-    When I follow "All genera" in the subfamilies index
+    #When I follow "All genera" in the subfamilies index
       Then I should see "Atta" in the index
 
   # spurrious failure
@@ -107,6 +107,20 @@ Feature: Adding a taxon
     And I press "Cancel"
     Then I should be on the edit page for "Formicinae"
 
+  Scenario: Show "Add species" link on genus catalog pages
+    Given there is a genus "Eciton"
+    When I go to the catalog page for "Eciton"
+    And I follow "Add species"
+    Then I should be on the new taxon page
+    And I should see "new species of "
+    And I should see "Eciton"
+    When I click the name field
+    Then the name field should contain "Eciton "
+
+  Scenario: Hide "Add species" link on subfamily catalog pages
+    When I go to the catalog page for "Formicinae"
+    Then I should not see "Add species"
+
   @search
   Scenario: Adding a species
     Given there is a genus "Eciton"
@@ -130,6 +144,7 @@ Feature: Adding a taxon
     And I save my changes
     Then I should be on the catalog page for "Eciton major"
     And I should see "Eciton major" in the protonym
+    And I should see "Add another"
 
   @search
   Scenario: Adding a species to a subgenus
@@ -248,7 +263,9 @@ Feature: Adding a taxon
       Then I should be on the catalog page for "Dorylinae"
       And I should see "Dorylinae" in the protonym
     When I go to the catalog page for "Formicinae"
+    And I follow "Formicidae subfamilies"
       Then I should see "Dorylinae" in the index
+      And I should not see "Add another"
 
   @search
   Scenario: Adding a tribe
@@ -270,4 +287,5 @@ Feature: Adding a taxon
       Then I should be on the catalog page for "Dorylini"
       And I should see "Dorylini" in the protonym
     When I go to the catalog page for "Formicinae"
+    And I follow "Formicinae tribes"
       Then I should see "Dorylini" in the subfamilies index

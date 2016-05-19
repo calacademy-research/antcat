@@ -15,8 +15,8 @@
     = javascript_include_tag 'google_analytics'
     = javascript_include_tag 'application'
 
-    = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'foundation_and_overrides'
+    = stylesheet_link_tag 'application'
     = stylesheet_link_tag 'jquery_overrides'
     = dev_css
 
@@ -24,16 +24,18 @@
     = yield :head
 
     %body
-      #page
+      #header
         =render "navigation"
         =render "breadcrumbs"
         =render "subnavigation"
 
-        #content
-          =render "shared/flash_messages"
+      #content
+        =render "shared/flash_messages"
+        -if controller_name == "catalog"
+          =yield
+        -else
           .row
             .small-12.columns
-              = content_for?(:page_contents) ? yield(:page_contents) : yield
+              =yield
 
-        =render "footer"
       =render "feedback/feedback_modal"

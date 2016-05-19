@@ -46,50 +46,17 @@ describe LinkHelper do
   end
 
   describe "Linking to HOL" do
-    it "should provide no link if there's no matching hol_data" do
+    it "should provide no link if there's hol_id" do
       expect(helper.link_to_hol(create_subfamily 'Dolichoderinae')).to be nil
     end
 
-    # we have one valid entry
-    it "should provide a link if there's a valid hol_data entry" do
+    it "should provide a link if there's a hol_id" do
       taxon = create_subfamily 'Dolichoderinae'
-      FactoryGirl.create :hol_taxon_datum, antcat_taxon_id: taxon.id, tnuid: 1234
+      taxon.hol_id = 1234
+      taxon.save!
       expect(helper.link_to_hol(taxon)).to eq (
         %{<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://hol.osu.edu/index.html?id=1234\">HOL</a>}
                                                   )
-    end
-
-    # we have one invalid entry
-    it "should provide a link if there's one invalid hol_data entry" do
-      taxon = create_subfamily 'Dolichoderinae'
-      FactoryGirl.create :hol_taxon_datum, antcat_taxon_id: taxon.id, tnuid: 1234, is_valid: 'Invalid'
-      expect(helper.link_to_hol(taxon)).to eq (
-        %{<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://hol.osu.edu/index.html?id=1234\">HOL</a>}
-                                                  )
-    end
-
-    # we have one valid entry and one invalid entry
-
-    it "should provide a link if there's one valid and one invalid hol_data entry" do
-      taxon = create_subfamily 'Dolichoderinae'
-      FactoryGirl.create :hol_taxon_datum, antcat_taxon_id: taxon.id, tnuid: 1234
-      FactoryGirl.create :hol_taxon_datum, antcat_taxon_id: taxon.id, tnuid: 1235, is_valid: 'Invalid'
-      expect(helper.link_to_hol(taxon)).to eq (
-             %{<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://hol.osu.edu/index.html?id=1234\">HOL</a>})
-    end
-
-    it "should provide no link if there are two invalid entries" do
-      taxon = create_subfamily 'Dolichoderinae'
-      FactoryGirl.create :hol_taxon_datum, antcat_taxon_id: taxon.id, tnuid: 1234, is_valid: 'Invalid'
-      FactoryGirl.create :hol_taxon_datum, antcat_taxon_id: taxon.id, tnuid: 1235, is_valid: 'Invalid'
-      expect(helper.link_to_hol(create_subfamily 'Dolichoderinae')).to be nil
-    end
-
-    it "should provide no link if there are two valid entries" do
-      taxon = create_subfamily 'Dolichoderinae'
-      FactoryGirl.create :hol_taxon_datum, antcat_taxon_id: taxon.id, tnuid: 1234, is_valid: 'Valid'
-      FactoryGirl.create :hol_taxon_datum, antcat_taxon_id: taxon.id, tnuid: 1235, is_valid: 'Valid'
-      expect(helper.link_to_hol(create_subfamily 'Dolichoderinae')).to be nil
     end
   end
 
@@ -132,6 +99,28 @@ describe LinkHelper do
       species = create_species 'Atta major', genus: genus
       subspecies = create_subspecies 'Atta major minor rufous', species: species, genus: genus
       expect(helper.link_to_antweb(subspecies)).to eq("<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor rufous&project=worldants\">AntWeb</a>")
+    end
+  end
+
+  describe "#taxon_link_or_deleted_string" do
+    context "valid taxon" do
+      it "links" do
+        genus = create_genus "Atta"
+        expect(helper.taxon_link_or_deleted_string genus.id)
+          .to match /a href.*?Atta/
+      end
+    end
+
+    context "without a valid taxon" do
+      it "return the id and more" do
+        expect(helper.taxon_link_or_deleted_string 99999)
+          .to eq "#99999 [deleted]"
+      end
+
+      it "allows custom deleted_label" do
+        expect(helper.taxon_link_or_deleted_string 99999, "deleted")
+          .to eq "deleted"
+      end
     end
   end
 end

@@ -2,15 +2,6 @@ require 'spec_helper'
 
 describe Reference do
 
-  describe "importing PDF links" do
-    it "should delegate to the right object" do
-      mock = double Importers::Hol::DocumentUrlImporter
-      expect(Importers::Hol::DocumentUrlImporter).to receive(:new).and_return mock
-      expect(mock).to receive(:import)
-      Reference.import_hol_document_urls
-    end
-  end
-
   describe "Replacement" do
     describe "Batch processing a number of replacements in one pass" do
       it "should replace all missing references" do

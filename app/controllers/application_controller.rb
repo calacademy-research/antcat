@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  before_filter :save_location
+  before_action :save_location, :set_user_for_feed
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   # CORS protection defeat - we're read only, so this is okay.
@@ -39,6 +39,10 @@ class ApplicationController < ActionController::Base
       unless request.xhr? || request.url =~ %r{/users/}
         session[:user_return_to] = request.url
       end
+    end
+
+    def set_user_for_feed
+      User.current_user = current_user
     end
 
     def cors_set_access_control_headers

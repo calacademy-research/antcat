@@ -1,0 +1,13 @@
+-trackable = activity.trackable
+
+-if trackable
+  =link_comment trackable, "commented"
+-else
+  commented
+on the
+
+-if trackable && trackable.commentable
+  =trackable.commentable_type.downcase
+  =link_to "##{trackable.commentable_id}", trackable.commentable
+-else
+  [deleted]

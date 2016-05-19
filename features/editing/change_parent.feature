@@ -242,6 +242,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "OK"
     And I wait for a bit
     When I save my changes
+    And I follow " tribes"
     Then I should be on the catalog page for "Atta"
     And "Ecitoni" should be selected in the subfamilies index
 
@@ -254,6 +255,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I set the parent name to "Ecitoninae"
     And I press "OK"
     When I save my changes
+    And I follow "Formicidae subfamilies"
     Then I should be on the catalog page for "Atta"
     And "Ecitoninae" should be selected in the families index
 

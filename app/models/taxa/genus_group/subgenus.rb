@@ -8,6 +8,7 @@ class Subgenus < GenusGroupTaxon
     genus
   end
 
+  # TODO not used
   def species_group_descendants
     Taxon.where(subgenus_id: id).where.not(type: 'Subgenus')
       .includes(:name).order('names.epithet')

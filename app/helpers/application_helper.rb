@@ -83,4 +83,10 @@ module ApplicationHelper
       stylesheet_link_tag "dev_env"
     end
   end
+
+  private
+    def antcat_icon *css_classes
+      content_tag :span, nil,
+        class: ["antcat_icon"].concat(Array.wrap css_classes)
+    end
 end

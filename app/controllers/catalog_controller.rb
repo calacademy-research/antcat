@@ -25,7 +25,6 @@ class CatalogController < ApplicationController
       set_session
       set_taxon
       setup_panels
-      enable_taxon_toggler
     end
 
     # TODO reverse name, so that this is not needed
@@ -43,8 +42,12 @@ class CatalogController < ApplicationController
       @panels = @self_and_parents.reject do |taxon|
         # never show the subspecies panel (has no children)
         taxon.is_a?(Subspecies) ||
+
         # don't show species panel unless the species has subspecies
-        (taxon.is_a?(Species) && taxon.children.empty?)
+        (taxon.is_a?(Species) && taxon.children.empty?) ||
+
+        # no subgenus panel (not part of the 'normal' rank hierarchy)
+        taxon.is_a?(Subgenus)
       end.map do |taxon|
         children = taxon.children.displayable.ordered_by_name
         children = children.valid if session[:show_valid_only]
@@ -62,6 +65,7 @@ class CatalogController < ApplicationController
 
     def setup_non_standard_panels
       include_all_genera_in_subfamily if params[:display].blank?
+      subgenera_special_case
       return unless params[:display]
 
       case params[:display]
@@ -69,8 +73,18 @@ class CatalogController < ApplicationController
         title = "Genera <i>incertae sedis</i> in #{@taxon.name_html_cache}"
         children = @taxon.genera_incertae_sedis_in
       when /^all_genera_in/
-        title = "All #{@taxon.name_cache} genera"
+        title = "All #{@taxon.name_html_cache} genera"
         children = @taxon.all_displayable_genera
+      when "all_taxa_in_genus"
+        title = "All #{@taxon.name_html_cache} taxa"
+        children = @taxon.displayable_child_taxa
+      when "subgenera_in_genus"
+        title = "#{@taxon.name_html_cache} subgenera"
+        children = @taxon.displayable_subgenera
+      when "subgenera_in_parent_genus"
+        # Works because [currently] all subgenera have parents.
+        title = "#{@taxon.parent.name_html_cache} subgenera"
+        children = @taxon.parent.displayable_subgenera
       end
 
       children = children.valid if session[:show_valid_only]
@@ -78,8 +92,10 @@ class CatalogController < ApplicationController
                   children: children }
     end
 
-    def enable_taxon_toggler
-      @display_taxon_toggler = true
+    # Enables the subgenera panel when subgenera are selected.
+    def subgenera_special_case
+      if @taxon.is_a? Subgenus
+        params[:display] = "subgenera_in_parent_genus"
+      end
     end
-
 end

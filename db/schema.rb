@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160327114326) do
+ActiveRecord::Schema.define(version: 20160503220908) do
+
+  create_table "activities", force: :cascade do |t|
+    t.integer  "trackable_id",   limit: 4
+    t.string   "trackable_type", limit: 255
+    t.integer  "user_id",        limit: 4
+    t.string   "action",         limit: 255
+    t.text     "parameters",     limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
+  add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
 
   create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -78,6 +91,23 @@ ActiveRecord::Schema.define(version: 20160327114326) do
 
   add_index "citations", ["reference_id"], name: "index_authorships_on_reference_id", using: :btree
 
+  create_table "comments", force: :cascade do |t|
+    t.integer  "commentable_id",   limit: 4
+    t.string   "commentable_type", limit: 255
+    t.string   "title",            limit: 255
+    t.text     "body",             limit: 65535
+    t.string   "subject",          limit: 255
+    t.integer  "user_id",          limit: 4,     null: false
+    t.integer  "parent_id",        limit: 4
+    t.integer  "lft",              limit: 4
+    t.integer  "rgt",              limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
   create_table "feedbacks", force: :cascade do |t|
     t.integer  "user_id",          limit: 4
     t.string   "email",            limit: 255
@@ -88,6 +118,7 @@ ActiveRecord::Schema.define(version: 20160327114326) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "email_recipients", limit: 65535
+    t.boolean  "open",                           default: true
   end
 
   add_index "feedbacks", ["user_id"], name: "index_feedbacks_on_user_id", using: :btree
@@ -321,6 +352,19 @@ ActiveRecord::Schema.define(version: 20160327114326) do
   add_index "synonyms", ["junior_synonym_id"], name: "index_synonyms_on_junior_synonym_id", using: :btree
   add_index "synonyms", ["senior_synonym_id"], name: "index_synonyms_on_senior_synonym_id", using: :btree
 
+  create_table "tasks", force: :cascade do |t|
+    t.integer  "closer_id",   limit: 4
+    t.integer  "adder_id",    limit: 4
+    t.string   "status",      limit: 255,   default: "open"
+    t.string   "title",       limit: 255
+    t.text     "description", limit: 65535
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
+  add_index "tasks", ["adder_id"], name: "index_tasks_on_adder_id", using: :btree
+  add_index "tasks", ["closer_id"], name: "index_tasks_on_closer_id", using: :btree
+
   create_table "taxa", force: :cascade do |t|
     t.string   "type",                            limit: 255
     t.datetime "created_at"
@@ -358,6 +402,7 @@ ActiveRecord::Schema.define(version: 20160327114326) do
     t.boolean  "auto_generated",                                default: false
     t.string   "origin",                          limit: 255
     t.boolean  "display",                                       default: true
+    t.integer  "hol_id",                          limit: 4
   end
 
   add_index "taxa", ["current_valid_taxon_id"], name: "index_taxa_on_current_valid_taxon_id", using: :btree

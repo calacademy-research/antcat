@@ -1,0 +1,10 @@
+-@title = "Synonym Relationship ##{@synonym.id}"
+-breadcrumb :synonym_relationship, @synonym
+
+%p
+  Senior synonym:
+  =taxon_link_or_deleted_string @synonym.senior_synonym_id
+
+%p
+  Junior synonym:
+  =taxon_link_or_deleted_string @synonym.junior_synonym_id

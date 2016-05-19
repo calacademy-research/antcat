@@ -1,0 +1,13 @@
+replaced the missing reference
+=activity.parameters[:citation]
+(reason missing:
+=succeed ")" do
+  =activity.parameters[:reason_missing] || "unknown"
+
+with
+-replacement_id = activity.parameters[:replacement_id]
+-if Reference.exists? replacement_id
+  -replacement = Reference.find(replacement_id)
+  =link_to replacement.decorate.key, reference_path(replacement)
+-else
+  [deleted reference]
