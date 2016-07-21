@@ -7,6 +7,5 @@ class AddAuthorshipString < ActiveRecord::Migration
     add_column :taxa, :authorship_string, :string
     add_column :taxa, :duplicate_type, :string
     add_column :taxa, :collision_merge_id, :integer
-
   end
 end

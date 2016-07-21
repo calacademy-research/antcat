@@ -34,6 +34,5 @@ class AddTaxaState < ActiveRecord::Migration
 
 
     drop_table :transactions
-
   end
 end

@@ -122,7 +122,6 @@ module NavigationHelpers
     else
       raise "#{page_name} not found"
     end
-
   end
 end
 

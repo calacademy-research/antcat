@@ -1,6 +1,5 @@
 class PostProcessImport < ActiveRecord::Migration
   def change
-
     # This makes the type
     execute 'update taxa
   join (

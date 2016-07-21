@@ -10,7 +10,5 @@ class AddRecordsToHolDetails < ActiveRecord::Migration
     add_column :hol_taxon_data, :start_page, :integer
     add_column :hol_taxon_data, :end_page, :integer
     add_column :hol_taxon_data, :antcat_protonym_id, :integer
-
-
   end
 end

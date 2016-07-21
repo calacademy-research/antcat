@@ -1,6 +1,5 @@
 class FixCurrentValid < ActiveRecord::Migration
   def change
-
     execute "update taxa
     set taxa.current_valid_taxon_id = null where current_valid_taxon_id = id"
 
@@ -30,9 +29,5 @@ class FixCurrentValid < ActiveRecord::Migration
     taxa.status != 'valid'"
     execute "update taxa
     set taxa.current_valid_taxon_id = null where current_valid_taxon_id = id"
-
-
-
-
   end
 end

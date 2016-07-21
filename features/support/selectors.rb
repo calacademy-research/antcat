@@ -71,7 +71,6 @@ module HtmlSelectorsHelpers
       else
         raise "Can't find mapping from \"#{locator}\" to a selector"
     end
-
   end
 end
 
