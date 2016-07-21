@@ -39,7 +39,7 @@ class Name < ActiveRecord::Base
   # Added in ac9a8a; refer to the change log for more commit ids.
   #
   # Irregular flag allows parsing of names that don't conform to naming standards so we can support bad spellings.
-  def self.parse string, irregular=false
+  def self.parse string, irregular = false
     words = string.split " "
 
     name_type = case words.size
