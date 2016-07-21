@@ -7,5 +7,3 @@ module PaperTrail
     attr_accessible :change_id
   end
 end
-
-

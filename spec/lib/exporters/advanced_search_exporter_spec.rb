@@ -23,4 +23,3 @@ describe Exporters::AdvancedSearchExporter do
   end
 
 end
-

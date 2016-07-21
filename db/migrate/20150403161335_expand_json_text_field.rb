@@ -6,5 +6,3 @@ class ExpandJsonTextField < ActiveRecord::Migration
   def down
   end
 end
-
-

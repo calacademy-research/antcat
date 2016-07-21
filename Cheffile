@@ -10,4 +10,3 @@ cookbook 'jetty', '~> 0.1.5'
 cookbook 'xvfb', '~> 2.0.0'
 cookbook 'curl', '~> 2.0.1'
 cookbook 'libqt4', '~> 0.1.0'
-

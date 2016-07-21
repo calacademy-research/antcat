@@ -25,4 +25,3 @@ namespace :references do
     MissingReference.replace_all true
   end
 end
-

@@ -76,4 +76,3 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
 
   end
 end
-

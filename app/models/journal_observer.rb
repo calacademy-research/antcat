@@ -5,4 +5,3 @@ class JournalObserver < ActiveRecord::Observer
     end
   end
 end
-

@@ -22,4 +22,3 @@ class HolData < ActiveRecord::Migration
     drop_table :hol_comparisons
   end
 end
-
