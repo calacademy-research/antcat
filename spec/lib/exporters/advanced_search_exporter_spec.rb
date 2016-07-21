@@ -4,9 +4,9 @@ describe Exporters::AdvancedSearchExporter do
   before do
     @reference = create :article_reference,
       title:              'Ants are my life',
-      author_names:       [create(:author_name, name:'Fred')],
+      author_names:       [create(:author_name, name: 'Fred')],
       journal:            (create :journal, name: 'Ants'),
-      series_volume_issue:'13',
+      series_volume_issue: '13',
       pagination:         '12',
       citation_year:      '2011d'
   end

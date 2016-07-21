@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Name do
 
   it "should have a name" do
-    expect(Name.new(name:'Name').name).to eq('Name')
+    expect(Name.new(name: 'Name').name).to eq('Name')
   end
 
   it "should format the fossil symbol" do
