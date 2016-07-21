@@ -64,5 +64,4 @@ class Genus < GenusGroupTaxon
       self.species.each{ |s| s.subfamily = self.subfamily }
       self.subspecies.each{ |s| s.subfamily = self.subfamily }
     end
-
 end

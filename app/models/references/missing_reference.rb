@@ -1,5 +1,4 @@
 class MissingReference < Reference
-
   def self.find_replacements show_progress
     Progress.init show_progress, MissingReference.count
     unfound_citations = []

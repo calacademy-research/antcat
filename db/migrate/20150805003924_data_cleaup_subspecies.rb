@@ -129,6 +129,4 @@ WHERE protonyms.id = taxa.protonym_id
       end
     end
   end
-
-
 end

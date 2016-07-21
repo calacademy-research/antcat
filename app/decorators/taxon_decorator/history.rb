@@ -50,5 +50,4 @@ class TaxonDecorator::History
         add_period_if_necessary detaxt item.taxt
       end
     end
-
 end

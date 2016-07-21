@@ -260,5 +260,4 @@ class TaxaController < ApplicationController
       taxon.protonym.build_authorship
       taxon
     end
-
 end

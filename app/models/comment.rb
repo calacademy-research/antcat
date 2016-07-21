@@ -12,5 +12,4 @@ class Comment < ActiveRecord::Base
   def self.build_comment commentable, user, body = ""
     new commentable: commentable, body: body, user: user
   end
-
 end

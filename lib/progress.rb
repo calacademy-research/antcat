@@ -6,7 +6,6 @@
 # Progress.show_results
 
 class Progress
-
   #################################################################################
   # initialization
 

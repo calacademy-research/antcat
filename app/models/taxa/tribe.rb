@@ -39,5 +39,4 @@ class Tribe < Taxon
         genus.subspecies.each { |s| s.subfamily = self.subfamily }
       end
     end
-
 end

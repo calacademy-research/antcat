@@ -24,5 +24,4 @@ class GenusGroupTaxon < Taxon
       self.tribe = parent_taxon
     end
   end
-
 end

@@ -1,5 +1,4 @@
 class CreateTransactionTable < ActiveRecord::Migration
-
   def change
     create_table :transactions do |t|
       t.integer :paper_trail_version_id
@@ -20,7 +19,4 @@ class CreateTransactionTable < ActiveRecord::Migration
 
     remove_column :changes, :paper_trail_version_id
   end
-
-
-
 end

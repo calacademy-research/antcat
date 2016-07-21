@@ -247,5 +247,4 @@ class Reference < ActiveRecord::Base
         0.5
       end
     end
-
 end

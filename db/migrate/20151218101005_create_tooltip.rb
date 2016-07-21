@@ -1,5 +1,4 @@
 class CreateTooltip < ActiveRecord::Migration
-
   def up
     create_table :tooltips do |t|
       t.string :key

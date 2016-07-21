@@ -9,6 +9,5 @@ module Api::V1
     def show
       super AuthorName
     end
-
   end
 end

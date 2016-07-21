@@ -193,5 +193,4 @@ class Taxa::SaveTaxon
         save_taxon_children child
       end
     end
-
 end

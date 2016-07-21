@@ -37,5 +37,4 @@ class MergeAuthorsController < ApplicationController
     index
     render :index
   end
-
 end

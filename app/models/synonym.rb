@@ -23,5 +23,4 @@ class Synonym < ActiveRecord::Base
     return synonyms.first unless synonyms.empty?
     Synonym.create! junior_synonym: junior, senior_synonym: senior
   end
-
 end

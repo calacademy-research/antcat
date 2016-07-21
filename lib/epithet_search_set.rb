@@ -1,5 +1,4 @@
 class EpithetSearchSet
-
   attr_reader :epithets
 
   def initialize epithet

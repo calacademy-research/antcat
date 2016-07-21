@@ -39,5 +39,4 @@ class Taxon < ActiveRecord::Base
     # it seems to be necessary to reload the association and get its last element
     versions(true).last
   end
-
 end

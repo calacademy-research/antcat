@@ -1,5 +1,4 @@
 class Taxa::Search
-
   def self.find_name name, search_type = nil
     return Taxon.none if name.blank?
 
@@ -87,5 +86,4 @@ class Taxa::Search
 
     query
   end
-
 end

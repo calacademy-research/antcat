@@ -29,5 +29,4 @@ class Exporters::TaxonList::Exporter
   def join *values
     values.join "\t"
   end
-
 end

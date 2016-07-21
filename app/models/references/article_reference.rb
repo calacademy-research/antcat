@@ -32,5 +32,4 @@ class ArticleReference < Reference
     def page_parts
       @page_parts ||= Parsers::ArticleCitationParser.get_page_parts pagination
     end
-
 end

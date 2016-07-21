@@ -23,5 +23,4 @@ class NestedReference < Reference
         comparison = Reference.find_by_id comparison.nesting_reference_id
       end
     end
-
 end

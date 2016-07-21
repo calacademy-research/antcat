@@ -100,5 +100,4 @@ class TooltipsController < ApplicationController
       params.require(:tooltip).permit(
         :key, :scope, :text, :key_enabled, :selector, :selector_enabled)
     end
-
 end

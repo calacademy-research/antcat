@@ -1,5 +1,4 @@
 class NameFieldsController < NamePickersController
-
   def find
     data = {}
 
@@ -103,5 +102,4 @@ class NameFieldsController < NamePickersController
     data[:submit_button_text] = 'Add this name'
     data[:error_message] = "Do you want to add the name #{name_string}? You can attach it to a taxon later, if desired."
   end
-
 end

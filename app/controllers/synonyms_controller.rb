@@ -79,5 +79,4 @@ class SynonymsController < ApplicationController
     json = { content: content, success: true, error_message: '' }
     render json: json, content_type: 'text/html'
   end
-
 end

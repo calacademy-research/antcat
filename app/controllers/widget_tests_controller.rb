@@ -1,6 +1,5 @@
 # TODO rename to TestsController?
 class WidgetTestsController < ApplicationController
-
   def name_popup_test
   end
 
@@ -28,5 +27,4 @@ class WidgetTestsController < ApplicationController
     session[:disable_dev_css] = !session[:disable_dev_css]
     redirect_to :back
   end
-
 end

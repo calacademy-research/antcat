@@ -1,5 +1,4 @@
 class NamePickersController < ApplicationController
-
   def search
     options = {}
     options[:taxa_only] = true if params[:taxa_only].present?
@@ -11,5 +10,4 @@ class NamePickersController < ApplicationController
       format.json { render json: Name.picklist_matching(params[:term], options) }
     end
   end
-
 end

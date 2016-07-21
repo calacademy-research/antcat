@@ -136,5 +136,4 @@ class TaxonDecorator::Headline
       return unless @taxon.headline_notes_taxt.present?
       detaxt @taxon.headline_notes_taxt
     end
-
 end

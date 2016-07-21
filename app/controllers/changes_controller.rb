@@ -190,5 +190,4 @@ class ChangesController < ApplicationController
       end
       change_ids
     end
-
 end

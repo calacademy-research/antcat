@@ -27,5 +27,4 @@ class ReferenceFormatterCache
     user = User.find_by_email 'sblum@calacademy.org'
     set reference, reference.decorate.format_inline_citation!, :inline_citation_cache
   end
-
 end

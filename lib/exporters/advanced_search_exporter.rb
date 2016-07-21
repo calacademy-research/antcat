@@ -7,5 +7,4 @@ class Exporters::AdvancedSearchExporter
       content << format(taxon)
     end
   end
-
 end

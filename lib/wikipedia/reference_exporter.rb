@@ -87,7 +87,6 @@ module Wikipedia
   # Looks like this: {{cite book |last= |first= |year= |title= |url=
   # |location= |publisher= |page= |isbn=}}
   class BookReference < ReferenceExporter
-
     def format
       location = @reference.publisher.place.name
       publisher = @reference.publisher.name

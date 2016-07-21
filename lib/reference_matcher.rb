@@ -1,5 +1,4 @@
 class ReferenceMatcher
-
   def match target
     candidates_for(target).inject([]) do |matches, candidate|
       if possible_match? target, candidate
@@ -29,5 +28,4 @@ class ReferenceMatcher
   def read_references target
     ::Reference.with_principal_author_last_name target
   end
-
 end

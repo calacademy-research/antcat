@@ -1,6 +1,5 @@
 module Api
   class ApiController < ApplicationController
-
     def index klass
 
       if params[:starts_at]
@@ -23,6 +22,5 @@ module Api
 
       render json: item, status: :ok
     end
-
   end
 end

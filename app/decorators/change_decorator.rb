@@ -95,5 +95,4 @@ class ChangeDecorator < Draper::Decorator
       return unless time
       helpers.content_tag :span, "#{helpers.time_ago_in_words time} ago"
     end
-
 end

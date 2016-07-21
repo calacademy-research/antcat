@@ -10,6 +10,5 @@ module Api::V1
     def show
       super Author
     end
-
   end
 end

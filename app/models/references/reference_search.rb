@@ -1,5 +1,4 @@
 class Reference < ActiveRecord::Base
-
   searchable do
     string  :type
     integer :year

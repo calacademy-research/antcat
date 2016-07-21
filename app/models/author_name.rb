@@ -41,5 +41,4 @@ class AuthorName < ActiveRecord::Base
     def name_parts
       @name_parts ||= Parsers::AuthorParser.get_name_parts name
     end
-
 end

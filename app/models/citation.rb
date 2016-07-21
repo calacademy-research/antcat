@@ -45,5 +45,4 @@ class Citation < ActiveRecord::Base
         string << " & " << names[-1]
       end
     end
-
 end

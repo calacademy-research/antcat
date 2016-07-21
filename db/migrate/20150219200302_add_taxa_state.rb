@@ -1,5 +1,4 @@
 class AddTaxaState < ActiveRecord::Migration
-
   def change
     create_table :taxon_states do |t|
       t.integer :taxon_id
@@ -37,5 +36,4 @@ class AddTaxaState < ActiveRecord::Migration
     drop_table :transactions
 
   end
-
 end

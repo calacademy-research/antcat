@@ -2,7 +2,6 @@
 # by application code, so could well be dead
 
 class Reference < ActiveRecord::Base
-
   def replace_with reference, options = {}
     Taxt.taxt_fields.each do |klass, fields|
       klass.send(:all).each do |record|
@@ -64,5 +63,4 @@ class Reference < ActiveRecord::Base
         .update_all(nesting_reference_id: replacement[:with])
     end
   end
-
 end

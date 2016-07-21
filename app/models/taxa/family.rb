@@ -43,5 +43,4 @@ class Family < Taxon
 
     statistics
   end
-
 end

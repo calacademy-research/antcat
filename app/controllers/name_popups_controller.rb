@@ -1,5 +1,4 @@
 class NamePopupsController < NamePickersController
-
   def show
     if params[:type].to_i == Taxt::TAXON_TAG_TYPE
       taxon = Taxon.find params[:id]

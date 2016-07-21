@@ -19,5 +19,4 @@ class ComparableReference
   def to_s
     "#{type}: #{author}, #{year}. #{title}. #{series_volume_issue}. #{pagination} #{doi}"
   end
-
 end

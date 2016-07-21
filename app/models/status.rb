@@ -1,5 +1,4 @@
 class Status
-
   def initialize hash
     @hash = hash
   end
@@ -59,5 +58,4 @@ class Status
       Status.new(label: status.first, plural_label: status.second)
     end
   end
-
 end
