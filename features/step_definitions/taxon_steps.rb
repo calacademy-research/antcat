@@ -175,7 +175,7 @@ Given /an imported species exists with a name of "(.*?)" and a genus of "(.*?)"/
   genus = Genus.find_by_name(parent_name) || create(:genus, name: create(:genus_name, name: parent_name))
   create :taxon_state, taxon_id: genus.id
   name = create :species_name, name: "#{parent_name} #{taxon_name}", auto_generated: true, origin: 'hol'
-  @species = create :species, name: name, genus: genus,  auto_generated: true, origin: 'hol'
+  @species = create :species, name: name, genus: genus, auto_generated: true, origin: 'hol'
 end
 
 Given /^species "(.*?)" exists in that subgenus$/ do |name|

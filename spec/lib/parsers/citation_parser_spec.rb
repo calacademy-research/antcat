@@ -36,7 +36,7 @@ describe Parsers::CitationParser do
   it "should handle a letter at the end of the year" do
     string = 'Espadaler 1989b: 121'
     expect(@parser.parse(string)).to be_truthy
-    expect(string).to  be_empty
+    expect(string).to be_empty
   end
 
   it "should handle a nested citation, and an author with two last names" do

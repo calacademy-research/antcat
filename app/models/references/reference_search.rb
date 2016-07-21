@@ -7,7 +7,7 @@ class Reference < ActiveRecord::Base
     text    :title
     text    :journal_name do journal.name if journal end
     text    :publisher_name do publisher.name if publisher end
-    text    :year_as_string  do year.to_s if year end # quick fix to make the year searchable as a keyword
+    text    :year_as_string do year.to_s if year end # quick fix to make the year searchable as a keyword
     text    :citation
     text    :cite_code
     text    :editor_notes

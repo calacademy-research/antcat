@@ -97,7 +97,7 @@ describe Reference do
           end
         end
 
-        describe 'Cite code', search: true  do
+        describe 'Cite code', search: true do
           it "should find a cite code that's doesn't look like a current year" do
             matching_reference = reference_factory(author_name: 'Hölldobler', cite_code: 'abcdef')
             unmatching_reference = reference_factory(author_name: 'Hölldobler', cite_code: 'fedcba')
@@ -162,7 +162,7 @@ describe Reference do
           end
         end
 
-        describe "Year and fulltext", search: true  do
+        describe "Year and fulltext", search: true do
           it "should work" do
             atta2004 = create :book_reference, title: 'Atta', citation_year: '2004'
             atta2003 = create :book_reference, title: 'Atta', citation_year: '2003'
@@ -178,11 +178,11 @@ describe Reference do
       it "should be able to sort by updated_at" do
         Reference.record_timestamps = false
         updated_yesterday = reference_factory(author_name: 'Fisher', citation_year: '1910b')
-        updated_yesterday.update_attribute(:updated_at,  Time.now.yesterday)
+        updated_yesterday.update_attribute(:updated_at, Time.now.yesterday)
         updated_last_week = reference_factory(author_name: 'Wheeler', citation_year: '1874')
-        updated_last_week.update_attribute(:updated_at,  1.week.ago)
+        updated_last_week.update_attribute(:updated_at, 1.week.ago)
         updated_today = reference_factory(author_name: 'Fisher', citation_year: '1910a')
-        updated_today.update_attribute(:updated_at,  Time.now)
+        updated_today.update_attribute(:updated_at, Time.now)
         Reference.record_timestamps = true
         Sunspot.commit
 
@@ -191,11 +191,11 @@ describe Reference do
       it "should be able to sort by created_at" do
         Reference.record_timestamps = false
         created_yesterday = reference_factory(author_name: 'Fisher', citation_year: '1910b')
-        created_yesterday.update_attribute(:created_at,  Time.now.yesterday)
+        created_yesterday.update_attribute(:created_at, Time.now.yesterday)
         created_last_week = reference_factory(author_name: 'Wheeler', citation_year: '1874')
-        created_last_week.update_attribute(:created_at,  1.week.ago)
+        created_last_week.update_attribute(:created_at, 1.week.ago)
         created_today = reference_factory(author_name: 'Fisher', citation_year: '1910a')
-        created_today.update_attribute(:created_at,  Time.now)
+        created_today.update_attribute(:created_at, Time.now)
         Reference.record_timestamps = true
         Sunspot.commit
 

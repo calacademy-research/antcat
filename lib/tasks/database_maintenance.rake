@@ -1,5 +1,5 @@
 # TODO cleanup and split this file
-require  'antcat_rake_utils'
+require 'antcat_rake_utils'
 include AntCat::RakeUtils
 
 namespace :antcat do

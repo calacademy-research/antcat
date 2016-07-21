@@ -164,7 +164,7 @@ describe Exporters::Antweb::Exporter do
     end
     it "should return nil if the taxon itself is valid. " do
       taxon = create_genus 'Atta'
-      expect(@exporter.export_taxon(taxon)[13]).to  be_nil
+      expect(@exporter.export_taxon(taxon)[13]).to be_nil
     end
   end
 

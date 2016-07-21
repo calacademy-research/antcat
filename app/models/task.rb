@@ -16,7 +16,7 @@ class Task < ActiveRecord::Base
 
   scope :open, -> { where(status: "open")._desc_date }
   scope :non_open, -> { where.not(status: "open")._desc_date }
-  scope :_desc_date, ->  { order(created_at: :desc) }
+  scope :_desc_date, -> { order(created_at: :desc) }
   scope :by_status_and_date, -> do
     order(<<-SQL.squish)
       CASE WHEN status = 'open' THEN (9999 + created_at)

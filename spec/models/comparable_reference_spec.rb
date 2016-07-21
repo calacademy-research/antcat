@@ -97,17 +97,17 @@ describe ComparableReference do
       end
       it "should match when the only difference is accents" do
         @rhs.title = 'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomia'
-        @lhs.title =   'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomía'
+        @lhs.title = 'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomía'
         expect(@lhs <=> @rhs).to eq(1.00)
       end
       it "should match when the only difference is case" do
         @rhs.title = 'Ants'
-        @lhs.title =   'ANTS'
+        @lhs.title = 'ANTS'
         expect(@lhs <=> @rhs).to eq(1.00)
       end
       it "should match when the only difference is punctuation" do
         @rhs.title = 'Sobre los caracteres morfólogicos de Goniomma, con algunas sugerencias sobre su taxonomia'
-        @lhs.title =   'Sobre los caracteres morfólogicos de *Goniomma*, con algunas sugerencias sobre su taxonomía'
+        @lhs.title = 'Sobre los caracteres morfólogicos de *Goniomma*, con algunas sugerencias sobre su taxonomía'
         expect(@lhs <=> @rhs).to eq(1.00)
       end
       it "should match when the only difference is in square brackets" do
