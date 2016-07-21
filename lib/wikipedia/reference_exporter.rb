@@ -51,7 +51,7 @@ module Wikipedia
   class ArticleReference < ReferenceExporter
     def format
       <<-TEMPLATE.squish
-        <ref name="#{reference_name}>{{cite journal
+        <ref name="#{reference_name}">{{cite journal
         #{author_params}
         |year=#{@reference.year}
         |title=#{title}
@@ -93,7 +93,7 @@ module Wikipedia
       publisher = @reference.publisher.name
 
       <<-TEMPLATE.squish
-        <ref name="#{reference_name}>{{cite book
+        <ref name="#{reference_name}">{{cite book
         #{author_params}
         |year=#{@reference.year}
         |title=#{title}
