@@ -51,7 +51,7 @@ class TaxonDecorator::Headline
       if not @taxon.type_name and taxt
         string = headline_type_taxt taxt
       else
-        return ''.html_safe if not @taxon.type_name
+        return ''.html_safe unless @taxon.type_name
         rank = @taxon.type_name.rank
         rank = 'genus' if rank == 'subgenus'
         string = "Type-#{rank}: ".html_safe
