@@ -136,16 +136,16 @@ class Name < ActiveRecord::Base
            options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
 
     rank_filter =
-        case
-          when options[:species_only] then
-            'AND taxa.type = "Species"'
-          when options[:genera_only] then
-            'AND taxa.type = "Genus"'
-          when options[:subfamilies_or_tribes_only] then
-            'AND (taxa.type = "Subfamily" OR taxa.type = "Tribe")'
-          else
-            ''
-        end
+      case
+      when options[:species_only] then
+        'AND taxa.type = "Species"'
+      when options[:genera_only] then
+        'AND taxa.type = "Genus"'
+      when options[:subfamilies_or_tribes_only] then
+        'AND (taxa.type = "Subfamily" OR taxa.type = "Tribe")'
+      else
+        ''
+      end
 
     # I do not see why the code beginning with Name.select can't be factored out, but it can't
     search_term = letters_in_name + '%'

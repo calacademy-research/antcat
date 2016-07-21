@@ -98,14 +98,14 @@ class Exporters::Antweb::Exporter
 
   def boolean_to_antweb boolean
     case boolean
-      when true then
-        'TRUE'
-      when false then
-        'FALSE'
-      when nil then
-        nil
-      else
-        raise
+    when true then
+      'TRUE'
+    when false then
+      'FALSE'
+    when nil then
+      nil
+    else
+      raise
     end
   end
 

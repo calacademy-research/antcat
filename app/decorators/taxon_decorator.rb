@@ -136,10 +136,10 @@ class TaxonDecorator < ApplicationDecorator
         string = "species of "
         parent = taxon.parent
         string << parent.name.to_html
-       when Subgenus
-         string = "subgenus of "
-         parent = taxon.parent
-         string << parent.name.to_html
+      when Subgenus
+        string = "subgenus of "
+        parent = taxon.parent
+        string << parent.name.to_html
       when Subspecies
         string = "subspecies of "
         parent = taxon.species

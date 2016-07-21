@@ -84,19 +84,19 @@ module Taxt
     editable_taxt.gsub /{((.*?)? )?([#{Regexp.escape EDITABLE_ID_DIGITS}]+)}/ do |string|
       id, type_number = id_from_editable $3
       case type_number
-        when REFERENCE_TAG_TYPE
-          raise ReferenceNotFound.new(string) unless Reference.find_by_id id
-          "{ref #{id}}"
-        when TAXON_TAG_TYPE
-          raise TaxonNotFound.new(string) unless Taxon.find id
-          "{tax #{id}}"
-        when NAME_TAG_TYPE
-          begin
-            Name.find id
-          rescue ActiveRecord::RecordNotFound
-            raise NameNotFound.new(string, id)
-          end
-          "{nam #{id}}"
+      when REFERENCE_TAG_TYPE
+        raise ReferenceNotFound.new(string) unless Reference.find_by_id id
+        "{ref #{id}}"
+      when TAXON_TAG_TYPE
+        raise TaxonNotFound.new(string) unless Taxon.find id
+        "{tax #{id}}"
+      when NAME_TAG_TYPE
+        begin
+          Name.find id
+        rescue ActiveRecord::RecordNotFound
+          raise NameNotFound.new(string, id)
+        end
+        "{nam #{id}}"
       end
     end
   end
