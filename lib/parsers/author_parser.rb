@@ -21,11 +21,11 @@ module Parsers::AuthorParser
     parts = {}
     return parts unless string.present?
     matches = string.match /(.*?), (.*)/
-    unless matches
-      parts[:last] = string
-    else
+    if matches
       parts[:last] = matches[1]
       parts[:first_and_initials] = matches[2]
+    else
+      parts[:last] = string
     end
     parts
   end
