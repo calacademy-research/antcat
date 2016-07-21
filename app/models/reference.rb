@@ -37,7 +37,7 @@ class Reference < ActiveRecord::Base
                   :review_state,
                   :doi
 
-  before_save { |record| CleanNewlines::clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
+  before_save { |record| CleanNewlines.clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
   before_destroy :check_not_referenced
 
   has_many :reference_author_names, -> { order :position }

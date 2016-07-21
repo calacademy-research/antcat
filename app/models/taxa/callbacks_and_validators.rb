@@ -9,7 +9,7 @@ module Taxa::CallbacksAndValidators
     validates :biogeographic_region,
       inclusion: { in: BiogeographicRegion::REGIONS, allow_blank: true }
     validate :check_url
-    before_save { |record| CleanNewlines::clean_newlines record, :headline_notes_taxt, :type_taxt }
+    before_save { |record| CleanNewlines.clean_newlines record, :headline_notes_taxt, :type_taxt }
     before_save :set_name_caches, :delete_synonyms
   end
 

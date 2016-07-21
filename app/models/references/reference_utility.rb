@@ -41,7 +41,7 @@ class Reference < ActiveRecord::Base
             field_contents = record[field]
             was_replaced = field_contents.gsub! /#{from}/, to
             if was_replaced
-              sanitized_contents = ActiveRecord::Base::sanitize field_contents
+              sanitized_contents = ActiveRecord::Base.sanitize field_contents
               # unknown why this is necessary
               connection.execute %{UPDATE #{klass.table_name} SET #{field} = #{sanitized_contents} WHERE id = #{record.id}}
             end
