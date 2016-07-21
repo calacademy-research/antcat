@@ -69,7 +69,6 @@ Devise.setup do |config|
   # Default: nil
   # config.invitation_limit = 5
 
-
   # The key to be used to check existing users when sending an invitation
   # config.invite_key = :email
 

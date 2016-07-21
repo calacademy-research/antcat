@@ -8,14 +8,7 @@ class AddTaxaState < ActiveRecord::Migration
     end
     execute "insert into taxon_states (taxon_id, review_state) select id, review_state from taxa;"
 
-
-
     add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx"
-
-
-
-
-
 
     remove_column :taxa, :review_state
 
@@ -30,8 +23,6 @@ class AddTaxaState < ActiveRecord::Migration
            and transactions.change_id = changes.id order by changes.id desc limit 1);"
 
     #Create some version history for this object so we can step it back
-
-
 
     drop_table :transactions
   end

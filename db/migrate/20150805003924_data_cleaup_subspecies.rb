@@ -1,8 +1,6 @@
 class DataCleaupSubspecies < ActiveRecord::Migration
       #  include Importers::Bolton::Catalog::Updater
 
-
-
       # 1) Subgenus in parens > remove subgenus
   #
   # Breaking this down into two steps:
@@ -15,12 +13,10 @@ class DataCleaupSubspecies < ActiveRecord::Migration
   #
   #                                      2) Subspecific ranks explicit (subsp., var., st., r.) > remove rank abbreviation
 
-
   linker = Importers::Hol::LinkHolTaxa.new
   mother = TaxonMother.new
 
   puts "Starting"
-
 
   query_string = 'SELECT
   taxa.*
@@ -28,8 +24,6 @@ FROM taxa, protonyms, names AS protonym_name
 WHERE protonyms.id = taxa.protonym_id
       AND protonyms.name_id = protonym_name.id
       AND instr(protonym_name.protonym_html, "(") != 0 '
-
-
 
   reg_exp = /[<\>i]*([a-zA-Z]+)[<\>\/i ]*\(([a-zA-Z]*)\)[<\/i>]* [<i>]*([a-z A-Z.]*)[<\/i>]*/
 
@@ -45,7 +39,6 @@ WHERE protonyms.id = taxa.protonym_id
   puts "results.count : #{results.count}"
   results.each do |taxon|
     puts "Taxa: #{taxon.id}"
-
 
     protonym_name = taxon.protonym.name
     # Double check that this condition still exists in the protonym
@@ -108,10 +101,8 @@ WHERE protonyms.id = taxa.protonym_id
           new_taxon.name_id = name.id
           new_taxon.protonym_id = protonym.id
 
-
           #new_taxon.type = valid_antcat_taxon.type
           new_taxon.type_name_id = 1
-
 
           taxon_state = TaxonState.new
           taxon_state.deleted = false

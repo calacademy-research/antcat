@@ -7,7 +7,6 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
   query_string = 'select taxa.* from taxa where instr(taxa.name_cache, ".") != 0'
   reg_exp = /([<a-zA-Z >\/]*)(\(([a-zA-Z]*)\)[<\/i>]* )(<i>)*([a-z A-Z.]*)(<\/i>)*/
 
-
   results = Taxon.find_by_sql(query_string)
   puts "results.count : #{results.count}"
   results.each do |taxon|
@@ -54,10 +53,8 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
       new_taxon.name_id = name.id
       new_taxon.protonym_id = taxon.protonym_id
 
-
       #new_taxon.type = valid_antcat_taxon.type
       new_taxon.type_name_id = 1
-
 
       taxon_state = TaxonState.new
       taxon_state.deleted = false

@@ -14,7 +14,6 @@ describe Api::V1::NamesController do
       species = create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
-
       get(:index, starts_at: protonym_name.id)
       expect(response.status).to eq(200)
       names = JSON.parse(response.body)
@@ -25,7 +24,6 @@ describe Api::V1::NamesController do
       get(:index, nil)
       expect(response.status).to eq(200)
       expect(response.body.to_s).to include("Atta")
-
 
       names = JSON.parse(response.body)
       expect(names.count).to eq(21)

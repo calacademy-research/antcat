@@ -61,7 +61,6 @@ where
 
     end
 
-
     Taxon.where(type: 'Subspecies', species_id: nil).each do |taxa|
 
       species_parents = Taxon.where(name_cache: taxa.name_cache.split(' ')[0...-1].join(' '))

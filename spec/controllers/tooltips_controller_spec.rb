@@ -153,5 +153,4 @@ describe TooltipsController do
     # TODO
   end
 
-
 end

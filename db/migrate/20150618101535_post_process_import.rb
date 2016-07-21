@@ -16,7 +16,6 @@ WHERE
   taxa.type != "Genus" AND  instr(name_cache,".") =0 and
   taxa.auto_generated=true'
 
-
     execute "ALTER TABLE hol_taxon_data CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci"
   end
 end

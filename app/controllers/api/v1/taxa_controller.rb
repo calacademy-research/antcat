@@ -7,11 +7,9 @@ module Api::V1
       super Taxon
     end
 
-
     def show
       super Taxon
     end
-
 
     def search
       q = params[:string] || ''

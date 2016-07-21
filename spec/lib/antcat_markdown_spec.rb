@@ -3,7 +3,6 @@ require "spec_helper"
 describe AntcatMarkdown do
   let(:dummy_parser) { AntcatMarkdown.new(no_even_a_stub: nil) }
 
-
   describe "render" do
     it "formats some basic markdown" do
       lasius_name = create :species_name, name: "Lasius"

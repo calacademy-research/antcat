@@ -5,7 +5,6 @@ module Api::V1
       render json: authors, status: :ok
     end
 
-
     def show
       super AuthorName
     end

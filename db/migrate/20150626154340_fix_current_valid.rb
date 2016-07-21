@@ -3,7 +3,6 @@ class FixCurrentValid < ActiveRecord::Migration
     execute "update taxa
     set taxa.current_valid_taxon_id = null where current_valid_taxon_id = id"
 
-
     execute "UPDATE
     taxa
     INNER JOIN
@@ -16,7 +15,6 @@ class FixCurrentValid < ActiveRecord::Migration
 
     execute "update taxa
     set taxa.current_valid_taxon_id = null where current_valid_taxon_id = id"
-
 
     execute "UPDATE
     taxa

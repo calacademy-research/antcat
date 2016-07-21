@@ -127,5 +127,4 @@ describe Subfamily do
 
   end
 
-
 end

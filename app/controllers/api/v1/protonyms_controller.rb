@@ -5,7 +5,6 @@ module Api::V1
       render json: protonyms, status: :ok
     end
 
-
     def show
       super Protonym
     end

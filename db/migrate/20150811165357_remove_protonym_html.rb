@@ -24,13 +24,10 @@ class RemoveProtonymHtml < ActiveRecord::Migration
 
   reg_exp = /[<\>i]*([a-zA-Z]+)([<\>\/i ]*\(([a-zA-Z]*)\)[<\/i>]* )*[<i>]*([a-z A-Z.]*)[<\/i>]*/
 
-
   results = Name.find_by_sql(query_string)
   puts "results.count : #{results.count}"
   results.each do |name|
     puts "Processing name: #{name.name} with protonym #{name.protonym_html}"
-
-
 
     # extract the string from the protonym's name "protonym_html" field
     # Strip html tags
@@ -74,9 +71,6 @@ class RemoveProtonymHtml < ActiveRecord::Migration
 
     end
     name.update_columns(protonym_html: nil)
-
-
-
 
     # TODO: Final query to see if we have distinct protonym_names anyhwere after above query is run
 

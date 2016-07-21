@@ -15,7 +15,6 @@ use Rack::Cors do
              expose: ['X-User-Authentication-Token', 'X-User-Id'],
              methods: [:get, :post, :options, :patch, :delete]
 
-
   end
 end
 run AntCat::Application

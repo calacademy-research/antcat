@@ -4,7 +4,6 @@ module Api::V1
       super Name
     end
 
-
     def show
       super Name
     end
