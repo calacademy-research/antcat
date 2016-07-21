@@ -150,7 +150,7 @@ class Reference < ActiveRecord::Base
       end
     end
 
-    Feed::Activity.create_activity :approve_all_references, { count: count }
+    Feed::Activity.create_activity :approve_all_references, count: count
   end
 
   # TODO merge into Workflow

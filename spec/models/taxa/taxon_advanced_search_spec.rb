@@ -5,7 +5,7 @@ describe Taxon do
   describe "Advanced search" do
     describe "When no meaningful search parameters are given" do
       it "should return an empty array" do
-        expect(Taxa::Search.advanced_search({year: ''})).to eq([])
+        expect(Taxa::Search.advanced_search(year: '')).to eq([])
       end
     end
     describe "Rank first described in given year" do

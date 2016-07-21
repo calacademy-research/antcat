@@ -42,7 +42,7 @@ describe Tribe do
     it "should include the number of genera" do
       tribe = create :tribe
       genus = create :genus, tribe: tribe
-      expect(tribe.statistics).to eq({extant: {genera: {'valid' => 1}}})
+      expect(tribe.statistics).to eq(extant: {genera: {'valid' => 1}})
     end
   end
 

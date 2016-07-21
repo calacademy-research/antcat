@@ -30,15 +30,15 @@ describe Reference do
       let(:reference) { create :reference }
 
       it "should return nothing if empty" do
-        expect(reference.parse_author_names_and_suffix('')) .to eq({author_names: [], author_names_suffix: nil})
+        expect(reference.parse_author_names_and_suffix('')) .to eq(author_names: [], author_names_suffix: nil)
       end
       it "should add an error and raise and exception if invalid" do
         expect {reference.parse_author_names_and_suffix('...asdf sdf dsfdsf')}.to raise_error ActiveRecord::RecordInvalid
-        expect(reference.errors.messages).to eq({author_names_string: ["couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"]})
+        expect(reference.errors.messages).to eq(author_names_string: ["couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"])
         expect(reference.author_names_string).to eq('...asdf sdf dsfdsf')
       end
       it "should return the author names and the suffix" do
-        expect(reference.parse_author_names_and_suffix('Fisher, B.; Bolton, B. (eds.)')).to eq({author_names: [AuthorName.find_by_name('Fisher, B.'), AuthorName.find_by_name('Bolton, B.')], author_names_suffix: ' (eds.)'})
+        expect(reference.parse_author_names_and_suffix('Fisher, B.; Bolton, B. (eds.)')).to eq(author_names: [AuthorName.find_by_name('Fisher, B.'), AuthorName.find_by_name('Bolton, B.')], author_names_suffix: ' (eds.)')
       end
     end
 

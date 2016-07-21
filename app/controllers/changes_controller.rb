@@ -32,7 +32,7 @@ class ChangesController < ApplicationController
         end
       end
     end
-    Feed::Activity.create_activity :approve_all_changes, { count: count }
+    Feed::Activity.create_activity :approve_all_changes, count: count
 
     redirect_to changes_path, notice: "Approved all changes."
   end

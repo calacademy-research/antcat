@@ -54,8 +54,8 @@ class MissingReference < Reference
   private
     def create_replace_missing_reference_activity replacement
       Feed::Activity.create_activity :replace_missing_reference,
-        { citation: citation,
-          reason_missing: reason_missing,
-          replacement_id: replacement.id }
+        citation: citation,
+        reason_missing: reason_missing,
+        replacement_id: replacement.id
     end
 end

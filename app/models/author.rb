@@ -29,7 +29,7 @@ class Author < ActiveRecord::Base
   private
     def self.create_merge_authors_activity author, names_string
       Feed::Activity.create_activity_for_trackable author,
-        :merge_authors, { names: names_string }
+        :merge_authors, names: names_string
     end
 
     def self.get_author_names_for_feed_message authors
