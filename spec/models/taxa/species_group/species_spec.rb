@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Species do
   before do
-    @reference = FactoryGirl.create :article_reference
+    @reference = create :article_reference
   end
 
   it "should have subspecies, which are its children" do
@@ -88,8 +88,8 @@ describe Species do
     end
 
     it "should handle when the new subspecies name exists, but just as the protonym of the new subspecies" do
-      subspecies_name = FactoryGirl.create :subspecies_name, name: 'Atta major minor'
-      taxon = create_species 'Atta minor', genus: genus, protonym: FactoryGirl.create(:protonym, name: subspecies_name)
+      subspecies_name = create :subspecies_name, name: 'Atta major minor'
+      taxon = create_species 'Atta minor', genus: genus, protonym: create(:protonym, name: subspecies_name)
       new_species = create_species 'Atta major', genus: genus
 
       taxon.become_subspecies_of new_species

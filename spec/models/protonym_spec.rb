@@ -6,8 +6,8 @@ describe Protonym do
 
   describe "Authorship" do
     it "has an authorship" do
-      authorship = FactoryGirl.create :citation
-      protonym = Protonym.create! name: FactoryGirl.create(:name, name: 'Protonym'), authorship: authorship
+      authorship = create :citation
+      protonym = Protonym.create! name: create(:name, name: 'Protonym'), authorship: authorship
       expect(Protonym.find(protonym.id).authorship).to eq(authorship)
     end
   end
@@ -66,7 +66,7 @@ describe Protonym do
 
   describe "Cascading delete" do
     it "should delete the citation when the protonym is deleted" do
-      protonym = FactoryGirl.create :protonym
+      protonym = create :protonym
       expect(Protonym.count).to eq(1)
       expect(Citation.count).to eq(1)
 
@@ -80,7 +80,7 @@ describe Protonym do
   describe "Versioning" do
     it "should record versions" do
       with_versioning do
-        protonym = FactoryGirl.create :protonym
+        protonym = create :protonym
         expect(protonym.versions.last.event).to eq('create')
       end
     end

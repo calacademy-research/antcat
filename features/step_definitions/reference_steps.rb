@@ -4,7 +4,7 @@ Given /^(?:this|these) references? exists?$/ do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
-    journal = FactoryGirl.create :journal, name: matches[1]
+    journal = create :journal, name: matches[1]
     hash.merge! journal: journal, series_volume_issue: matches[2], pagination: matches[3]
     create_reference :article_reference, hash
   end
@@ -34,7 +34,7 @@ Given /^(?:this|these) dated references? exists?$/ do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
-    journal = FactoryGirl.create :journal, name: matches[1]
+    journal = create :journal, name: matches[1]
     hash.merge! journal: journal, series_volume_issue: matches[2], pagination: matches[3]
     create_reference :article_reference, hash
   end
@@ -44,8 +44,8 @@ Given /(?:these|this) book references? exists?/ do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /([^:]+): (\w+), (.*)/
-    hash.merge! :publisher => FactoryGirl.create(:publisher, :name => matches[2],
-                                                 :place => FactoryGirl.create(:place, :name => matches[1])),
+    hash.merge! :publisher => create(:publisher, :name => matches[2],
+                                                 :place => create(:place, :name => matches[1])),
                 :pagination => matches[3]
     create_reference :book_reference, hash
   end
@@ -71,13 +71,13 @@ end
 def create_reference type, hash
   author = hash.delete('author')
   if author
-    author_names = [FactoryGirl.create(:author_name, :name => author)]
+    author_names = [create(:author_name, :name => author)]
   else
     authors = hash.delete('authors')
     author_names = Parsers::AuthorParser.parse(authors)[:names]
     author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
     author_names = author_names.inject([]) do |author_names, author_name|
-      author_name = AuthorName.find_by_name(author_name) || FactoryGirl.create(:author_name, :name => author_name)
+      author_name = AuthorName.find_by_name(author_name) || create(:author_name, :name => author_name)
       author_names << author_name
     end
   end
@@ -90,7 +90,7 @@ def create_reference type, hash
       hash[:year].to_s
     end
 
-  reference = FactoryGirl.create type, hash.merge(:author_names => author_names, :author_names_suffix => author_names_suffix)
+  reference = create type, hash.merge(:author_names => author_names, :author_names_suffix => author_names_suffix)
   @reference ||= reference
   set_timestamps reference, hash
   reference
@@ -104,7 +104,7 @@ end
 Given /the following entry nests it/ do |table|
   data = table.hashes.first
   @nestee_reference = @reference
-  @reference = NestedReference.create! :author_names => [FactoryGirl.create(:author_name, :name => data[:authors])],
+  @reference = NestedReference.create! :author_names => [create(:author_name, :name => data[:authors])],
                                        :citation_year => data[:year], :title => data[:title], :pages_in => data[:pages_in],
                                        nesting_reference: @nestee_reference
 end
@@ -183,15 +183,15 @@ Then /I should see a very long author names string/ do
 end
 
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
-  reference = FactoryGirl.create :unknown_reference, :title => 'Dolerichoderinae'
+  reference = create :unknown_reference, :title => 'Dolerichoderinae'
   reference.update_column :id, 50000
 end
 
 Given /^there is a missing reference(?: with citation "(.+)")?( in a protonym)?$/ do |citation, in_protonym|
   citation ||= 'Adventures among Ants'
-  missing_reference = FactoryGirl.create :missing_reference, citation: citation
+  missing_reference = create :missing_reference, citation: citation
   if in_protonym
-    FactoryGirl.create :protonym, authorship: FactoryGirl.create(:citation, reference: missing_reference)
+    create :protonym, authorship: create(:citation, reference: missing_reference)
   end
 end
 

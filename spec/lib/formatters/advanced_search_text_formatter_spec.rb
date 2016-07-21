@@ -11,9 +11,9 @@ describe Formatters::AdvancedSearchTextFormatter do
 
   describe "Formatting" do
     it "should format in text style, rather than HTML" do
-      latreille = FactoryGirl.create :author_name, name: 'Latreille, P. A.'
-      science = FactoryGirl.create :journal, name: 'Science'
-      reference = FactoryGirl.create :article_reference, author_names: [latreille], citation_year: '1809', title: "*Atta*", journal: science, series_volume_issue: '(1)', pagination: '3', doi: '123'
+      latreille = create :author_name, name: 'Latreille, P. A.'
+      science = create :journal, name: 'Science'
+      reference = create :article_reference, author_names: [latreille], citation_year: '1809', title: "*Atta*", journal: science, series_volume_issue: '(1)', pagination: '3', doi: '123'
       taxon = create_genus 'Atta', incertae_sedis_in: 'genus', nomen_nudum: true
       taxon.protonym.authorship.update_attributes reference: reference
       string = @formatter.format taxon

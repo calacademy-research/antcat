@@ -11,12 +11,12 @@ describe Taxon do
 
   describe "being a synonym of" do
     it "should not think it's a synonym of something when it's not" do
-      genus = FactoryGirl.create :genus
-      another_genus = FactoryGirl.create :genus
+      genus = create :genus
+      another_genus = create :genus
       expect(genus).not_to be_synonym_of another_genus
     end
     it "should think it's a synonym of something when it is" do
-      senior = FactoryGirl.create :genus
+      senior = create :genus
       junior = create_synonym senior
       expect(junior).to be_synonym_of senior
     end

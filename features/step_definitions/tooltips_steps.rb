@@ -16,7 +16,7 @@
 
 Given /^(?:these|this) tooltips? (?:also)? ?exists?$/ do |table|
   table.hashes.each do |hash|
-    FactoryGirl.create :tooltip, hash
+    create :tooltip, hash
   end
 end
 

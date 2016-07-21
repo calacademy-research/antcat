@@ -14,7 +14,7 @@ describe FeedbackController do
     context "valid feedback" do
       context "logged in" do
         it "sends emails" do
-          sign_in FactoryGirl.create(:editor)
+          sign_in create(:editor)
           expect { post :create, json }.to change { email_count }.by(1)
         end
       end
@@ -31,7 +31,7 @@ describe FeedbackController do
 
       context "logged in" do
         it "doesn't send emails" do
-          sign_in FactoryGirl.create(:editor)
+          sign_in create(:editor)
           expect { post :create, format: "json" }
            .to raise_error(ActionController::ParameterMissing)
 

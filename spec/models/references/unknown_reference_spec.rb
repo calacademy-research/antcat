@@ -7,7 +7,7 @@ describe UnknownReference do
 
   describe "validation" do
     before do
-      author_name = FactoryGirl.create :author_name
+      author_name = create :author_name
       @reference = UnknownReference.new :author_names => [author_name], :title => 'Title', :citation_year => '2010a',
         :citation => 'Citation'
     end
@@ -18,7 +18,7 @@ describe UnknownReference do
 
   describe "entering a newline in the citation" do
     it "should strip the newline" do
-      reference = FactoryGirl.create :unknown_reference
+      reference = create :unknown_reference
       reference.title = "A\nB"
       reference.citation = "A\nB"
       reference.save!

@@ -3,20 +3,20 @@ require 'spec_helper'
 describe PublisherObserver do
   describe "Invalidating the formatted reference cache" do
     it "should be asked to invalidate the cache when a change occurs" do
-      publisher = FactoryGirl.create :publisher, name: 'Barnes & Noble'
+      publisher = create :publisher, name: 'Barnes & Noble'
       expect_any_instance_of(PublisherObserver).to receive :before_update
       publisher.name = 'Istanbul'
       publisher.save!
     end
 
     it "should invalidate the cache for the references that use the publisher" do
-      publisher = FactoryGirl.create :publisher
+      publisher = create :publisher
       references = []
       (0..2).each do |i|
         if i < 2
-          references[i] = FactoryGirl.create :book_reference, publisher: publisher
+          references[i] = create :book_reference, publisher: publisher
         else
-          references[i] = FactoryGirl.create :book_reference
+          references[i] = create :book_reference
         end
         ReferenceFormatterCache.instance.populate references[i]
       end

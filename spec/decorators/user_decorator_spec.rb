@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UserDecorator do
   let(:user) do
-    FactoryGirl.create :user, name: "First Last", email: "email@example.com"
+    create :user, name: "First Last", email: "email@example.com"
   end
 
   describe "#name_linking_to_email" do

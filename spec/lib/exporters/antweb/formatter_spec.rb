@@ -11,13 +11,13 @@ describe Exporters::Antweb::Exporter do
 
   describe "formatting a genus" do
     it "should work" do
-      bolton = FactoryGirl.create :author
-      author_name = FactoryGirl.create :author_name, name: 'Bolton, B.', author: bolton
-      journal = FactoryGirl.create :journal, name: 'Psyche'
+      bolton = create :author
+      author_name = create :author_name, name: 'Bolton, B.', author: bolton
+      journal = create :journal, name: 'Psyche'
       reference = ArticleReference.new author_names: [author_name], title: 'Ants I have known', citation_year: '2010a',
         journal: journal, series_volume_issue: '1', pagination: '2'
       authorship = Citation.create! reference: reference, pages: '12'
-      name = FactoryGirl.create :genus_name, name: 'Atta'
+      name = create :genus_name, name: 'Atta'
       protonym = Protonym.create! name: name, authorship: authorship
       genus = create_genus name: name, protonym: protonym
       species = create_species 'Atta major', genus: genus
@@ -32,8 +32,8 @@ describe Exporters::Antweb::Exporter do
       item = genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
 
       # for TaxonDecorator#references
-      a_reference = FactoryGirl.create :article_reference
-      a_tribe = FactoryGirl.create :tribe
+      a_reference = create :article_reference
+      a_tribe = create :tribe
       a_reference_section = genus.reference_sections.create(
         title_taxt: "Subfamily and tribe {tax #{a_tribe.id}}",
         references_taxt: "{ref #{a_reference.id}}: 766 (diagnosis);")

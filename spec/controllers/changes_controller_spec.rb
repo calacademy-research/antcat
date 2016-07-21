@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ChangesController do
   describe "check that we can find and report the entire undo set" do
     it "should return a single taxon when no others would be deleted" do
-      adder = FactoryGirl.create :user, can_edit: true
+      adder = create :user, can_edit: true
       sign_in adder
       taxon = create_taxon_version_and_change(:waiting, adder, nil, 'this_genus')
       taxon.save
@@ -17,12 +17,12 @@ describe ChangesController do
     end
 
     it "should return multiple items when undoing an older change would hit newer changes" do
-      adder = FactoryGirl.create :user, can_edit: true
+      adder = create :user, can_edit: true
       sign_in adder
       taxon = create_taxon_version_and_change(:waiting, adder,nil,'Genus1')
       taxon.save
-      change = FactoryGirl.create :change, user_changed_taxon_id: taxon.id, change_type: "update"
-      version = FactoryGirl.create :version, item_id: taxon.id, whodunnit: adder.id, change_id: change.id
+      change = create :change, user_changed_taxon_id: taxon.id, change_type: "update"
+      version = create :version, item_id: taxon.id, whodunnit: adder.id, change_id: change.id
 
       taxon.status = 'homonym'
       taxon.save

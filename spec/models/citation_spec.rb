@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Citation do
 
   it "has a Reference" do
-    reference = FactoryGirl.create :reference
+    reference = create :reference
     citation = Citation.create! :reference => reference
     expect(citation.reload.reference).to eq(reference)
   end
@@ -17,7 +17,7 @@ describe Citation do
   describe "Versioning" do
     it "should record versions" do
       with_versioning do
-        citation = FactoryGirl.create :citation
+        citation = create :citation
         expect(citation.versions.last.event).to eq('create')
       end
     end
@@ -31,8 +31,8 @@ describe Citation do
     end
     it "should handle multiple authors" do
       reference = FactoryGirl.build_stubbed(:article_reference, author_names: [
-        FactoryGirl.create(:author_name, :name => 'Bolton, B.'),
-        FactoryGirl.create(:author_name, :name => 'Fisher, R.'),
+        create(:author_name, :name => 'Bolton, B.'),
+        create(:author_name, :name => 'Fisher, R.'),
       ], citation_year: '2001', year: '2001')
       citation = FactoryGirl.build_stubbed :citation, reference: reference
       expect(citation.authorship_string).to eq('Bolton & Fisher, 2001')

@@ -146,7 +146,7 @@ describe Name do
     end
 
     it "should prioritize names already associated with taxa" do
-      atta_name = FactoryGirl.create :name, name: 'Atta'
+      atta_name = create :name, name: 'Atta'
       taxon = create_genus 'Atta'
       results = Name.picklist_matching('Atta')
       expect(taxon.name_id).not_to eq(atta_name.id)
@@ -157,18 +157,18 @@ describe Name do
 
   describe "Duplicates" do
     it "should return the records with same name but different ID" do
-      first_atta_name = FactoryGirl.create :name, name: 'Atta'
-      second_atta_name = FactoryGirl.create :name, name: 'Atta'
-      not_atta_name = FactoryGirl.create :name, name: 'Notatta'
+      first_atta_name = create :name, name: 'Atta'
+      second_atta_name = create :name, name: 'Atta'
+      not_atta_name = create :name, name: 'Notatta'
       expect(Name.duplicates).to match_array([first_atta_name, second_atta_name])
     end
   end
 
   describe "Duplicates and references" do
     it "should return the references to the duplicate names" do
-      first_atta_name = FactoryGirl.create :name, name: 'Atta'
+      first_atta_name = create :name, name: 'Atta'
       first_atta = create_genus name: first_atta_name
-      second_atta_name = FactoryGirl.create :name, name: 'Atta'
+      second_atta_name = create :name, name: 'Atta'
       second_atta = create_genus name: second_atta_name
 
       results = Name.duplicates_with_references
@@ -189,7 +189,7 @@ describe Name do
   describe "References" do
     it "should return references in fields" do
       atta = create_genus 'Atta'
-      protonym = FactoryGirl.create :protonym, name: atta.name
+      protonym = create :protonym, name: atta.name
       atta.update_attribute :protonym, protonym
       atta.update_attribute :type_name, atta.name
       expect(atta.name.references).to match_array([
@@ -215,7 +215,7 @@ describe Name do
       # create an instance for each type of taxt
       Taxt.taxt_fields.each do |klass, fields|
         fields.each do |field|
-          FactoryGirl.create klass, field => "{nam #{name.id}}"
+          create klass, field => "{nam #{name.id}}"
         end
       end
       refs = name.send :references_in_taxt
@@ -337,7 +337,7 @@ describe Name do
 
   describe "find_by_name" do
     it "should prioritize names already associated with taxa" do
-      atta_name = FactoryGirl.create :name, name: 'Atta'
+      atta_name = create :name, name: 'Atta'
       taxon = create_genus 'Atta'
       expect(taxon.name).not_to eq(atta_name)
       expect(Name.find_by_name('Atta')).to eq(taxon.name)

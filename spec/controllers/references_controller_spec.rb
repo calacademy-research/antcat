@@ -9,7 +9,7 @@ describe ReferencesController do
       end
 
       it "returns everything" do
-        reference = FactoryGirl.create :reference
+        reference = create :reference
         get :index
         expect(Reference.list_references).to eq [reference]
       end
@@ -45,7 +45,7 @@ describe ReferencesController do
   describe "#latest_changes" do
     context "logged in" do
       before do
-        editor = FactoryGirl.create :user, can_edit: true
+        editor = create :user, can_edit: true
         sign_in editor #TODO create/find helper method #sign_in_editor
       end
       it "renders its own template" do
@@ -78,7 +78,7 @@ describe ReferencesController do
 
     describe "reference with a document" do
       before do
-        @reference_document = FactoryGirl.create :reference_document
+        @reference_document = create :reference_document
       end
       context "with full access" do
         before do

@@ -3,15 +3,14 @@ require 'spec_helper'
 describe Api::V1::TaxonHistoryItemsController do
   describe "getting data" do
     before do
-      @found_reference = FactoryGirl.create :article_reference
-      @missing_reference = FactoryGirl.create :missing_reference
+      @found_reference = create :article_reference
+      @missing_reference = create :missing_reference
       item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
       item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
       item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
       item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
       item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
       item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
-
     end
 
     it "gets all taxon history items greater than a given number" do
@@ -36,7 +35,6 @@ describe Api::V1::TaxonHistoryItemsController do
       get(:index, nil)
       expect(response.status).to eq(200)
       expect(response.body.to_s).to include("position")
-
 
       taxon_history_items=JSON.parse(response.body)
       expect(taxon_history_items.count).to eq(6)

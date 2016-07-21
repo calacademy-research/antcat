@@ -90,8 +90,8 @@ describe TaxonDecorator::Statistics do
     end
 
     it "should handle when there are no valid rank members" do
-      species = FactoryGirl.create :species
-      FactoryGirl.create :subspecies, :species => species, :status => 'synonym'
+      species = create :species
+      create :subspecies, :species => species, :status => 'synonym'
       expect(decorator_helper.statistics(:extant => {:subspecies => {'synonym' => 1}})).to eq("<p class=\"taxon_statistics\">(1 synonym)</p>")
     end
 

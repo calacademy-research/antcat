@@ -5,29 +5,29 @@ describe Taxon do
   describe "Fields and validations" do
     it "should require a name" do
       taxon = FactoryGirl.build(:taxon, name: nil)
-      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_valid
-      taxon = FactoryGirl.create :taxon, name: FactoryGirl.create(:name, name: 'Cerapachynae')
+      taxon = create :taxon, name: create(:name, name: 'Cerapachynae')
       expect(taxon.name.to_s).to eq('Cerapachynae')
       expect(taxon).to be_valid
     end
     it "should be (Rails) valid with a nil status" do
       taxon = FactoryGirl.build(:taxon)
-      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create :taxon_state, taxon_id: taxon.id
       expect(taxon).to be_valid
       taxon = FactoryGirl.build(:taxon, status: 'valid')
-      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create :taxon_state, taxon_id: taxon.id
       expect(taxon).to be_valid
     end
     it "when status 'valid', should not be invalid" do
       taxon = FactoryGirl.build :taxon
-      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create :taxon_state, taxon_id: taxon.id
 
       expect(taxon).not_to be_invalid
     end
     it "should be able to be unidentifiable" do
       taxon = FactoryGirl.build :taxon
-      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_unidentifiable
       taxon.update_attribute :status, 'unidentifiable'
       expect(taxon).to be_unidentifiable
@@ -35,7 +35,7 @@ describe Taxon do
     end
     it "should be able to be a collective group name" do
       taxon = FactoryGirl.build :taxon
-      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_collective_group_name
       taxon.update_attribute :status, 'collective group name'
       expect(taxon).to be_collective_group_name
@@ -43,7 +43,7 @@ describe Taxon do
     end
     it "should be able to be an ichnotaxon" do
       taxon = FactoryGirl.build :taxon
-      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_ichnotaxon
       taxon.update_attribute :ichnotaxon, true
       expect(taxon).to be_ichnotaxon
@@ -51,7 +51,7 @@ describe Taxon do
     end
     it "should be able to be unavailable" do
       taxon = FactoryGirl.build :taxon
-      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_unavailable
       expect(taxon).to be_available
       taxon.update_attribute :status, 'unavailable'
@@ -61,7 +61,7 @@ describe Taxon do
     end
     it "should be able to be excluded" do
       taxon = FactoryGirl.build :taxon
-      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_excluded_from_formicidae
       taxon.update_attribute :status, 'excluded from Formicidae'
       expect(taxon).to be_excluded_from_formicidae
@@ -69,7 +69,7 @@ describe Taxon do
     end
     it "should be able to be a fossil" do
       taxon = FactoryGirl.build :taxon
-      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_fossil
       expect(taxon.fossil).to eq(false)
       taxon.update_attribute :fossil, true
@@ -77,22 +77,22 @@ describe Taxon do
     end
 
     it "should be able to be a homonym of something else" do
-      neivamyrmex = FactoryGirl.create :taxon
-      FactoryGirl.create :taxon_state, taxon_id: neivamyrmex.id
+      neivamyrmex = create :taxon
+      create :taxon_state, taxon_id: neivamyrmex.id
 
-      acamatus = FactoryGirl.create :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
+      acamatus = create :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
       acamatus.reload
       expect(acamatus).to be_homonym
       expect(acamatus.homonym_replaced_by).to eq(neivamyrmex)
     end
     it "should be able to have an incertae_sedis_in" do
-      myanmyrma = FactoryGirl.create :taxon, incertae_sedis_in: 'family'
+      myanmyrma = create :taxon, incertae_sedis_in: 'family'
       myanmyrma.reload
       expect(myanmyrma.incertae_sedis_in).to eq('family')
       expect(myanmyrma).not_to be_invalid
     end
     it "should be able to say whether it is incertae sedis in a particular rank" do
-      myanmyrma = FactoryGirl.create :taxon, incertae_sedis_in: 'family'
+      myanmyrma = create :taxon, incertae_sedis_in: 'family'
       myanmyrma.reload
       expect(myanmyrma).to be_incertae_sedis_in('family')
     end
@@ -100,7 +100,7 @@ describe Taxon do
     describe "biogeographic_region" do
       before do
         @taxon = FactoryGirl.build :taxon
-        FactoryGirl.create :taxon_state, taxon_id: @taxon.id
+        create :taxon_state, taxon_id: @taxon.id
       end
 
       it "allows only allowed regions" do
@@ -119,20 +119,20 @@ describe Taxon do
 
   describe "Rank" do
     it "should return a lowercase version" do
-      expect(FactoryGirl.create(:subfamily).name.rank).to eq('subfamily')
+      expect(create(:subfamily).name.rank).to eq('subfamily')
     end
   end
 
   describe "Being a homonym replaced by something" do
     it "should not think it's a homonym replaced by something when it's not" do
-      genus = FactoryGirl.create :genus
-      another_genus = FactoryGirl.create :genus
+      genus = create :genus
+      another_genus = create :genus
       expect(genus).not_to be_homonym_replaced_by another_genus
       expect(genus.homonym_replaced).to be_nil
     end
     it "should think it's a homonym replaced by something when it is" do
-      replacement = FactoryGirl.create :genus
-      homonym = FactoryGirl.create :genus, homonym_replaced_by: replacement, status: 'homonym'
+      replacement = create :genus
+      homonym = create :genus, homonym_replaced_by: replacement, status: 'homonym'
       expect(homonym).to be_homonym_replaced_by replacement
       expect(replacement.homonym_replaced).to eq(homonym)
     end
@@ -142,11 +142,11 @@ describe Taxon do
     it "should have a protonym" do
       taxon = Family.new
       expect(taxon.protonym).to be_nil
-      taxon.build_protonym name: FactoryGirl.create(:name, name: 'Formicariae')
+      taxon.build_protonym name: create(:name, name: 'Formicariae')
     end
     # Changed this because synonyms, homonyms will use the same protonym
     it "should not destroy the protonym when the taxon it's attached to is destroyed, even if another taxon is using it" do
-      protonym = FactoryGirl.create :protonym
+      protonym = create :protonym
       atta = create_genus protonym: protonym
       eciton = create_genus protonym: protonym
       protonym_count = Protonym.count
@@ -157,21 +157,21 @@ describe Taxon do
 
   describe "Type name" do
     it "should have a type name" do
-      taxon = FactoryGirl.create :family
-      taxon.type_name = FactoryGirl.create(:family_name, name: 'Formicariae')
+      taxon = create :family
+      taxon.type_name = create(:family_name, name: 'Formicariae')
       taxon.save!
       taxon = Taxon.find taxon.id
       expect(taxon.type_name.to_s).to eq('Formicariae')
       expect(taxon.type_name.rank).to eq('family')
     end
     it "should not be required" do
-      taxon = FactoryGirl.create :family, type_name: nil
+      taxon = create :family, type_name: nil
       expect(taxon).to be_valid
     end
   end
 
   describe "Taxonomic history items" do
-    let(:taxon) { FactoryGirl.create :family }
+    let(:taxon) { create :family }
     it "should have some" do
       expect(taxon.history_items).to be_empty
       taxon.history_items.create! taxt: 'foo'
@@ -194,7 +194,7 @@ describe Taxon do
   end
 
   describe "Reference sections" do
-    let(:taxon) { FactoryGirl.create :family }
+    let(:taxon) { create :family }
 
     it "should have some" do
       expect(taxon.reference_sections).to be_empty
@@ -298,20 +298,20 @@ describe Taxon do
   end
 
   describe "Child list queries" do
-    let!(:subfamily) { FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Dolichoderinae') }
+    let!(:subfamily) { create :subfamily, name: create(:name, name: 'Dolichoderinae') }
 
     it "should find all genera for the taxon if there are no conditions" do
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), subfamily: subfamily
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Eciton'), subfamily: subfamily, fossil: true
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Aneuretus'), subfamily: subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      create :genus, name: create(:name, name: 'Atta'), subfamily: subfamily
+      create :genus, name: create(:name, name: 'Eciton'), subfamily: subfamily, fossil: true
+      create :genus, name: create(:name, name: 'Aneuretus'), subfamily: subfamily, fossil: true, incertae_sedis_in: 'subfamily'
       expect(subfamily.child_list_query(:genera).map(&:name).map(&:to_s).sort).to eq(['Aneuretus', 'Atta', 'Eciton'])
       expect(subfamily.child_list_query(:genera, fossil: true).map(&:name).map(&:to_s).sort).to eq(['Aneuretus', 'Eciton'])
       expect(subfamily.child_list_query(:genera, incertae_sedis_in: 'subfamily').map(&:name).map(&:to_s).sort).to eq(['Aneuretus'])
     end
     it "should not include invalid taxa" do
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), subfamily: subfamily, status: 'synonym'
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Eciton'), subfamily: subfamily, fossil: true
-      FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Aneuretus'), subfamily: subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      create :genus, name: create(:name, name: 'Atta'), subfamily: subfamily, status: 'synonym'
+      create :genus, name: create(:name, name: 'Eciton'), subfamily: subfamily, fossil: true
+      create :genus, name: create(:name, name: 'Aneuretus'), subfamily: subfamily, fossil: true, incertae_sedis_in: 'subfamily'
       expect(subfamily.child_list_query(:genera).map(&:name).map(&:to_s).sort).to eq(['Aneuretus', 'Eciton'])
     end
   end
@@ -321,7 +321,7 @@ describe Taxon do
       expect(Taxon.count).to be_zero
       expect(Protonym.count).to be_zero
 
-      genus = FactoryGirl.create :genus, tribe: nil, subfamily: nil
+      genus = create :genus, tribe: nil, subfamily: nil
       expect(Taxon.count).to eq(1)
       expect(Protonym.count).to eq(1)
 
@@ -333,7 +333,7 @@ describe Taxon do
       expect(Taxon.count).to be_zero
       expect(ReferenceSection.count).to be_zero
 
-      genus = FactoryGirl.create :genus, tribe: nil, subfamily: nil
+      genus = create :genus, tribe: nil, subfamily: nil
       genus.reference_sections.create! title_taxt: 'title', references_taxt: 'references'
       expect(ReferenceSection.count).to eq(1)
 
@@ -343,8 +343,8 @@ describe Taxon do
   end
 
   describe "Setting and getting parent virtual field" do
-    let(:genus) { FactoryGirl.create :genus }
-    let(:subfamily) { FactoryGirl.create :subfamily }
+    let(:genus) { create :genus }
+    let(:subfamily) { create :subfamily }
 
     it "should be able to assign from an object" do
       genus.parent = subfamily
@@ -352,7 +352,7 @@ describe Taxon do
       expect(genus.reload.subfamily).to eq(subfamily)
     end
     it "should give the parent of a family as nil" do
-      family = FactoryGirl.create :family
+      family = create :family
       expect(family.parent).to be_nil
     end
   end
@@ -411,25 +411,25 @@ describe Taxon do
   describe "Scopes" do
     describe "the 'valid' scope" do
       it "should only include valid taxa" do
-        subfamily = FactoryGirl.create :subfamily
-        replacement = FactoryGirl.create :genus, subfamily: subfamily
-        homonym = FactoryGirl.create :genus, homonym_replaced_by: replacement, status: 'homonym', subfamily: subfamily
+        subfamily = create :subfamily
+        replacement = create :genus, subfamily: subfamily
+        homonym = create :genus, homonym_replaced_by: replacement, status: 'homonym', subfamily: subfamily
         synonym = create_synonym replacement, subfamily: subfamily
         expect(subfamily.genera.valid).to eq([replacement])
       end
     end
     describe "the 'extant' scope" do
       it "should only include extant taxa" do
-        subfamily = FactoryGirl.create :subfamily
-        extant_genus = FactoryGirl.create :genus, subfamily: subfamily
-        FactoryGirl.create :genus, subfamily: subfamily, fossil: true
+        subfamily = create :subfamily
+        extant_genus = create :genus, subfamily: subfamily
+        create :genus, subfamily: subfamily, fossil: true
         expect(subfamily.genera.extant).to eq([extant_genus])
       end
     end
     describe "ordered by name" do
       it "should order by name" do
-        zymacros = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Zymacros')
-        atta = FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Atta')
+        zymacros = create :subfamily, name: create(:name, name: 'Zymacros')
+        atta = create :subfamily, name: create(:name, name: 'Atta')
         expect(Taxon.ordered_by_name).to eq([atta, zymacros])
       end
     end
@@ -454,7 +454,7 @@ describe Taxon do
   describe "Type specimen URL" do
     it "should make sure it has a protocol" do
       stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
-      taxon = FactoryGirl.create :species
+      taxon = create :species
       taxon.type_specimen_url = 'antcat.org/1.pdf'
       taxon.save!
       expect(taxon.reload.type_specimen_url).to eq('http://antcat.org/1.pdf')
@@ -463,13 +463,13 @@ describe Taxon do
     end
     it "should make sure it's a valid URL" do
       taxon = FactoryGirl.build :species, type_specimen_url: '*'
-      FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_valid
       expect(taxon.errors.full_messages).to match_array(['Type specimen url is not in a valid format'])
     end
     it "should make sure it exists" do
       stub_request(:any, 'http://antwiki.org/1.pdf').to_return body: 'Hello World!'
-      taxon = FactoryGirl.create :species, type_specimen_url: 'http://antwiki.org/1.pdf'
+      taxon = create :species, type_specimen_url: 'http://antwiki.org/1.pdf'
       expect(taxon).to be_valid
       stub_request(:any, 'http://antwiki.org/1.pdf').to_return body: 'Not Found', status: 404
       expect(taxon).not_to be_valid

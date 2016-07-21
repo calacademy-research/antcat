@@ -6,21 +6,21 @@ describe Feedback do
 
     describe "#add_emails_recipients" do
       it "has a default" do
-        feedback = FactoryGirl.create :feedback
+        feedback = create :feedback
         expect(feedback.email_recipients).to eq "sblum@calacademy.org"
       end
 
       # TODO this should be mocked, but I'm not sure how to do that
       it "asks User" do
-        FactoryGirl.create :editor, name: "Archibald",
+        create :editor, name: "Archibald",
           email: "archibald@antcat.org", receive_feedback_emails: true
-        FactoryGirl.create :editor, name: "Batiatus",
+        create :editor, name: "Batiatus",
           email: "batiatus@antcat.org", receive_feedback_emails: true
 
-        FactoryGirl.create :editor, name: "Flint",
+        create :editor, name: "Flint",
           email: "flint@antcat.org"
 
-        feedback = FactoryGirl.create :feedback
+        feedback = create :feedback
         expect(feedback.email_recipients).to eq <<-STR.squish
           "Archibald" <archibald@antcat.org>,
           "Batiatus" <batiatus@antcat.org>
@@ -32,9 +32,9 @@ describe Feedback do
   describe "scopes" do
     describe "#recently_created" do
       before do
-        FactoryGirl.create :feedback
-        FactoryGirl.create :feedback, created_at: (Time.now - 8.minutes)
-        FactoryGirl.create :feedback, created_at: (Time.now - 3.days)
+        create :feedback
+        create :feedback, created_at: (Time.now - 8.minutes)
+        create :feedback, created_at: (Time.now - 3.days)
       end
 
       it "defaults to 5 minutes" do
@@ -50,19 +50,19 @@ describe Feedback do
 
   describe "#from_the_same_ip" do
     before do
-      FactoryGirl.create :feedback
-      FactoryGirl.create :feedback, ip: "255.255.255.255"
+      create :feedback
+      create :feedback, ip: "255.255.255.255"
     end
 
     it "finds feedbacks from" do
-      feedback = FactoryGirl.create :feedback
+      feedback = create :feedback
       expect(feedback.from_the_same_ip.count).to eq 2
     end
   end
 
   describe "open/closed" do
-    let(:open) { FactoryGirl.create :feedback }
-    let(:closed) { FactoryGirl.create :feedback, open: false }
+    let(:open) { create :feedback }
+    let(:closed) { create :feedback, open: false }
 
     describe "predicate methods" do
       describe "#open?" do

@@ -7,7 +7,7 @@ describe ReferenceFormatterCache do
   end
   describe "Invalidating" do
     it "should do nothing if there's nothing in the cache" do
-      reference = FactoryGirl.create :article_reference
+      reference = create :article_reference
       expect(reference.formatted_cache).to be_nil
       expect(reference.inline_citation_cache).to be_nil
       ReferenceFormatterCache.instance.invalidate reference
@@ -15,7 +15,7 @@ describe ReferenceFormatterCache do
       expect(reference.inline_citation_cache).to be_nil
     end
     it "should set the cache to nil" do
-      reference = FactoryGirl.create :article_reference
+      reference = create :article_reference
       ReferenceFormatterCache.instance.populate reference
       expect(reference.formatted_cache).not_to be_nil
       expect(reference.inline_citation_cache).not_to be_nil
@@ -28,7 +28,7 @@ describe ReferenceFormatterCache do
   describe "Filling" do
     describe "Populating" do
       it "should call ReferenceFormatter to get the value" do
-        reference = FactoryGirl.create :article_reference
+        reference = create :article_reference
         expect(reference.formatted_cache).to be_nil
         expect(reference.inline_citation_cache).to be_nil
 
@@ -45,7 +45,7 @@ describe ReferenceFormatterCache do
     end
     describe "Setting/getting" do
       it "should get and set the right values" do
-        reference = FactoryGirl.create :article_reference
+        reference = create :article_reference
         ReferenceFormatterCache.instance.set reference, 'Cache', :formatted_cache
         expect(ReferenceFormatterCache.instance.get(reference, :formatted_cache)).to eq('Cache')
       end
@@ -54,16 +54,16 @@ describe ReferenceFormatterCache do
 
   describe "Handling a network" do
     it "should invalidate each member of the network" do
-      nesting_reference = FactoryGirl.create :article_reference
+      nesting_reference = create :article_reference
       ReferenceFormatterCache.instance.populate nesting_reference
       expect(ReferenceFormatterCache.instance.get(nesting_reference)).not_to be_nil
 
-      nested_reference = FactoryGirl.create :nested_reference, nesting_reference: nesting_reference
+      nested_reference = create :nested_reference, nesting_reference: nesting_reference
       ReferenceFormatterCache.instance.populate nested_reference
       expect(ReferenceFormatterCache.instance.get(nested_reference)).not_to be_nil
 
-      author_name = FactoryGirl.create :author_name
-      reference_author_name = FactoryGirl.create :reference_author_name, reference: nesting_reference, author_name: author_name
+      author_name = create :author_name
+      reference_author_name = create :reference_author_name, reference: nesting_reference, author_name: author_name
       reference_author_name.position = 4
       reference_author_name.save!
 

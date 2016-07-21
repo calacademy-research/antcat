@@ -141,7 +141,7 @@ describe Parsers::AuthorParser do
    end
 
    it "should handle a phrase that's known to be an author" do
-     FactoryGirl.create :author_name, :name => 'Anonymous', :verified => true
+     create :author_name, :name => 'Anonymous', :verified => true
      string = 'Anonymous'
      expect(@parser.parse!(string)[:names]).to eq(['Anonymous'])
      expect(string).to be_empty

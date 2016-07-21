@@ -28,7 +28,7 @@ describe Synonym do
   describe "Versioning" do
     it "should record versions" do
       with_versioning do
-        synonym = FactoryGirl.create :synonym
+        synonym = create :synonym
         expect(synonym.versions.last.event).to eq('create')
       end
     end

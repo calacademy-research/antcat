@@ -20,7 +20,7 @@ describe ApplicationController do
     end
 
     context "signed in as an editor" do
-      let!(:editor) { FactoryGirl.create :user, can_edit: true }
+      let!(:editor) { create :user, can_edit: true }
       before do
         sign_in editor
         get :index
@@ -39,7 +39,7 @@ describe ApplicationController do
     end
 
     context "signed in as a superadmin" do
-      let!(:superadmin) { FactoryGirl.create :user, is_superadmin: true }
+      let!(:superadmin) { create :user, is_superadmin: true }
       before do
         sign_in superadmin
         get :index
@@ -58,7 +58,7 @@ describe ApplicationController do
     end
 
     it "delegates to User" do
-      current_user = FactoryGirl.create :user, can_edit: true
+      current_user = create :user, can_edit: true
       allow(controller).to receive(:current_user).and_return current_user
       expect(current_user).to receive(:can_edit?)
       expect(controller).to receive(:authenticate_user!).and_return true

@@ -15,7 +15,6 @@ describe Api::V1::TaxaController do
 
       expect(response.body.to_s).to include("Atta")
       expect(parsed_species['species']['name_cache']).to eq("Atta minor maxus")
-
     end
 
     it "should search for a taxa" do
@@ -23,14 +22,12 @@ describe Api::V1::TaxaController do
       get(:search, {'string' => 'maxus'}, nil)
       expect(response.status).to eq(200)
       expect(response.body.to_s).to include("maxus")
-
     end
 
     it "should report when there are no search matches" do
       species = create_species 'Atta minor maxus'
       get(:search, {'string' => 'maxuus'}, nil)
       expect(response.status).to eq(404)
-
     end
 
     it "gets all taxa greater than a given number" do
@@ -55,7 +52,6 @@ describe Api::V1::TaxaController do
       get(:index, nil)
       expect(response.status).to eq(200)
       expect(response.body.to_s).to include("Atta")
-
 
       taxa=JSON.parse(response.body)
       expect(taxa.count).to eq(7)

@@ -14,7 +14,7 @@ describe Change do
     change = Change.new
     change.save!
     change.reload
-    FactoryGirl.create :version, item_id: genus.id, change_id: change.id
+    create :version, item_id: genus.id, change_id: change.id
 
     genus_version = genus.last_version
 
@@ -24,7 +24,7 @@ describe Change do
   it "has a user (the editor)", pending: true do
     pending "Not implemented change::user"
 
-    user = FactoryGirl.create :user
+    user = create :user
     genus = create_genus
 
     change = setup_version(genus.id, user)

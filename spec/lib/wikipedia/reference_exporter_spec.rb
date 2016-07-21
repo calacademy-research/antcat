@@ -2,14 +2,14 @@ require "spec_helper"
 
 describe Wikipedia::ReferenceExporter do
   let(:batiatus) do
-    FactoryGirl.create :author_name, name: "Batiatus, Q. L.",
-      author: FactoryGirl.create(:author)
+    create :author_name, name: "Batiatus, Q. L.",
+      author: create(:author)
   end
 
   describe "ArticleReference" do
     before do
-      journal = FactoryGirl.create :journal, name: "Zootaxa"
-      @reference = FactoryGirl.create :article_reference, journal: journal,
+      journal = create :journal, name: "Zootaxa"
+      @reference = create :article_reference, journal: journal,
         author_names: [batiatus], title: "*Formica* and Apples",
         pagination: "7-14", citation_year: "2000"
     end
@@ -27,9 +27,9 @@ describe Wikipedia::ReferenceExporter do
 
   describe "BookReference" do
     before do
-      glaber = FactoryGirl.create :author_name,
-        name: "Glaber, G. C.", author: FactoryGirl.create(:author)
-      @reference = FactoryGirl.create :book_reference,
+      glaber = create :author_name,
+        name: "Glaber, G. C.", author: create(:author)
+      @reference = create :book_reference,
         author_names: [batiatus, glaber], title: "*Formica* and Apples",
         pagination: "7-14", citation_year: "2000"
     end

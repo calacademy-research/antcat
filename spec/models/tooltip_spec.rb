@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Tooltip do
 
   describe "versioning", versioning: true do
-    let!(:tooltip) { FactoryGirl.create :tooltip, key: "references.authors" }
+    let!(:tooltip) { create :tooltip, key: "references.authors" }
 
     it 'keeps versions' do
       expect(tooltip.versions.last.event).to eq "create"
@@ -21,9 +21,9 @@ describe Tooltip do
 
   describe "scopes" do
     describe "default scope" do
-      let!(:z_tooltip) { FactoryGirl.create :tooltip, key: "zoo.message" }
-      let!(:a_tooltip) { FactoryGirl.create :tooltip, key: "all.zoo.message" }
-      let!(:b_tooltip) { FactoryGirl.create :tooltip, key: "books.message", key_enabled: false }
+      let!(:z_tooltip) { create :tooltip, key: "zoo.message" }
+      let!(:a_tooltip) { create :tooltip, key: "all.zoo.message" }
+      let!(:b_tooltip) { create :tooltip, key: "books.message", key_enabled: false }
 
       it "orders by ascending name" do
         expect(Tooltip.all).to eq [a_tooltip, b_tooltip, z_tooltip]
@@ -31,8 +31,8 @@ describe Tooltip do
     end
 
     describe ".enabled_keys" do
-      let!(:enabled) { FactoryGirl.create :tooltip, key_enabled: true }
-      let!(:disabled) { FactoryGirl.create :tooltip, key_enabled: false }
+      let!(:enabled) { create :tooltip, key_enabled: true }
+      let!(:disabled) { create :tooltip, key_enabled: false }
 
       it "only returns enabled keys" do
         expect(Tooltip.enabled_keys).to eq [enabled]
@@ -40,13 +40,13 @@ describe Tooltip do
     end
 
     describe ".enabled_selectors" do
-      let!(:enabled) { FactoryGirl.create :tooltip }
-      let!(:disabled) { FactoryGirl.create :tooltip, selector_enabled: false }
+      let!(:enabled) { create :tooltip }
+      let!(:disabled) { create :tooltip, selector_enabled: false }
       let!(:selector_enabled) do
-         FactoryGirl.create :tooltip, selector_enabled: true, selector: "#header"
+         create :tooltip, selector_enabled: true, selector: "#header"
       end
       let!(:selector_enabled_but_empty_selector) do
-         FactoryGirl.create :tooltip, selector_enabled: true, selector: ""
+         create :tooltip, selector_enabled: true, selector: ""
       end
 
       it "only returns enabled selectors" do
@@ -54,7 +54,7 @@ describe Tooltip do
       end
 
       it "handles nil" do
-         FactoryGirl.create :tooltip, selector_enabled: true
+         create :tooltip, selector_enabled: true
         expect(Tooltip.enabled_selectors).to eq [selector_enabled]
       end
     end

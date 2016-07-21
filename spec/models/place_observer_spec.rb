@@ -3,21 +3,21 @@ require 'spec_helper'
 describe PlaceObserver do
   describe "Invalidating the formatted reference cache" do
     it "should be asked to invalidate the cache when a change occurs" do
-      place = FactoryGirl.create :place, name: 'Constantinople'
+      place = create :place, name: 'Constantinople'
       expect_any_instance_of(PlaceObserver).to receive :before_update
       place.name = 'Istanbul'
       place.save!
     end
 
     it "should invalidate the cache for the references that use the place" do
-      place = FactoryGirl.create :place
-      publisher = FactoryGirl.create :publisher, place: place
+      place = create :place
+      publisher = create :publisher, place: place
       references = []
       (0..2).each do |i|
         if i < 2
-          references[i] = FactoryGirl.create :book_reference, publisher: publisher
+          references[i] = create :book_reference, publisher: publisher
         else
-          references[i] = FactoryGirl.create :book_reference
+          references[i] = create :book_reference
         end
         ReferenceFormatterCache.instance.populate references[i]
       end

@@ -6,8 +6,8 @@ describe MissingReference do
 
     describe "Replacing one missing reference" do
       before do
-        @found_reference = FactoryGirl.create :article_reference
-        @missing_reference = FactoryGirl.create :missing_reference
+        @found_reference = create :article_reference
+        @missing_reference = create :missing_reference
       end
       it "should replace references in taxt to the MissingReference to the found reference" do
         item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
@@ -31,11 +31,11 @@ describe MissingReference do
 
     describe "Replacing all occurences of a citation with another reference" do
       it "should replace both missing references with the same citation" do
-        first_reference = FactoryGirl.create :missing_reference, citation: 'Citation'
-        second_reference = FactoryGirl.create :missing_reference, citation: 'Citation'
+        first_reference = create :missing_reference, citation: 'Citation'
+        second_reference = create :missing_reference, citation: 'Citation'
         first_citation_occurrence = TaxonHistoryItem.create! taxt: "{ref #{first_reference.id}}"
         second_citation_occurrence = TaxonHistoryItem.create! taxt: "{ref #{second_reference.id}}"
-        nonmissing_reference = FactoryGirl.create :article_reference
+        nonmissing_reference = create :article_reference
 
         MissingReference.replace_citation 'Citation', nonmissing_reference
 
@@ -53,7 +53,7 @@ describe MissingReference do
 
   describe "Key" do
     it "has its own kind of decorator" do
-      reference = FactoryGirl.create :missing_reference
+      reference = create :missing_reference
       expect(reference.decorate).to be_kind_of MissingReferenceDecorator
     end
   end

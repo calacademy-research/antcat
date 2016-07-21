@@ -9,7 +9,6 @@ describe Api::V1::NamesController do
       expect(response.body.to_s).to include("Atta")
     end
 
-
     it "gets all author names keys" do
       create_taxon
       species = create_species 'Atta minor'

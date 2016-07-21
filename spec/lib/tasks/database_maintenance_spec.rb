@@ -7,7 +7,7 @@
 #      genus = create_genus
 #      original_protonym_count = Protonym.count
 #
-#      orphan_protonym = FactoryGirl.create :protonym
+#      orphan_protonym = create :protonym
 #      expect(Protonym.count).to eq(original_protonym_count + 1)
 #
 #      Protonym.destroy_orphans

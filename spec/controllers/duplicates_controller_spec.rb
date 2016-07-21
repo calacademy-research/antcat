@@ -6,7 +6,7 @@ describe DuplicatesController do
     it "Should find a secondary_junior_homonym match for same name", pending: true do
       pending ("Known to be broken - update to reflect current duplicates controller functinality")
 
-      @user = FactoryGirl.create :user
+      @user = create :user
       species_epithet = "species a"
       genus_a = create_genus "GA"
       species_a = create_species species_epithet, genus: genus_a, status: Status['original combination'].to_s
@@ -24,7 +24,7 @@ describe DuplicatesController do
     it "Should find a return_to_original match for same protonym", pending: true do
       pending ("Known to be broken - update to reflect current duplicates controller functinality")
 
-      @user = FactoryGirl.create :user
+      @user = create :user
       species_epithet = "species a"
       genus_a = create_genus "GA"
       species_a = create_species species_epithet, genus: genus_a, status: Status['original combination'].to_s
@@ -42,7 +42,7 @@ describe DuplicatesController do
     it "Should find no matches for same protonym distinct epithet", pending: true do
       pending ("Known to be broken - update to reflect current duplicates controller functinality")
 
-      @user = FactoryGirl.create :user
+      @user = create :user
       species_epithet = "species a"
       genus_a = create_genus "GA"
       species_a = create_species species_epithet, genus: genus_a, status: Status['original combination'].to_s

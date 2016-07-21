@@ -3,12 +3,12 @@ require 'spec_helper'
 describe Family do
   describe "Statistics" do
     it "should return the statistics for each status of each rank" do
-      family = FactoryGirl.create :family
-      subfamily = FactoryGirl.create :subfamily
-      tribe = FactoryGirl.create :tribe, subfamily: subfamily
-      genus = FactoryGirl.create :genus, :subfamily => subfamily, :tribe => tribe
-      FactoryGirl.create :genus, :subfamily => subfamily, :status => 'homonym', :tribe => tribe
-      2.times { FactoryGirl.create :subfamily, :fossil => true }
+      family = create :family
+      subfamily = create :subfamily
+      tribe = create :tribe, subfamily: subfamily
+      genus = create :genus, :subfamily => subfamily, :tribe => tribe
+      create :genus, :subfamily => subfamily, :status => 'homonym', :tribe => tribe
+      2.times { create :subfamily, :fossil => true }
       expect(family.statistics).to eq({
                                           :extant => {subfamilies: {'valid' => 1}, tribes: {'valid' => 1}, genera: {'valid' => 1, 'homonym' => 1}},
                                           :fossil => {subfamilies: {'valid' => 2}}
@@ -18,7 +18,7 @@ describe Family do
 
   describe "Label" do
     it "should be the family name" do
-      expect(FactoryGirl.create(:family, name: FactoryGirl.create(:name, name: 'Formicidae')).name.to_html).to eq('Formicidae')
+      expect(create(:family, name: create(:name, name: 'Formicidae')).name.to_html).to eq('Formicidae')
     end
   end
 

@@ -27,21 +27,21 @@ describe TaxonDecorator do
 
     describe "Protonym" do
       it "should format a family name in the protonym" do
-        protonym = FactoryGirl.create :protonym, name: FactoryGirl.create(:family_or_subfamily_name, name: 'Dolichoderinae')
+        protonym = create :protonym, name: create(:family_or_subfamily_name, name: 'Dolichoderinae')
         expect(decorator_helper.new(nil).send(:protonym_name, protonym)).to eq('<b><span class="protonym_name">Dolichoderinae</span></b>')
       end
       it "should format a genus name in the protonym" do
-        protonym = FactoryGirl.create :protonym, name: FactoryGirl.create(:genus_name, name: 'Atari')
+        protonym = create :protonym, name: create(:genus_name, name: 'Atari')
         expect(decorator_helper.new(nil).send(:protonym_name, protonym)).to eq('<b><span class="protonym_name"><i>Atari</i></span></b>')
       end
       it "should format a fossil" do
-        protonym = FactoryGirl.create :protonym, name: FactoryGirl.create(:genus_name, name: 'Atari'), fossil: true
+        protonym = create :protonym, name: create(:genus_name, name: 'Atari'), fossil: true
         expect(decorator_helper.new(nil).send(:protonym_name, protonym)).to eq('<b><span class="protonym_name"><i>&dagger;</i><i>Atari</i></span></b>')
       end
     end
 
     describe "Type" do
-      let(:species_name) { FactoryGirl.create :species_name, name: 'Atta major', epithet: 'major' }
+      let(:species_name) { create :species_name, name: 'Atta major', epithet: 'major' }
 
       it "should show the type taxon" do
         genus = create_genus 'Atta', type_name: species_name
@@ -53,7 +53,7 @@ describe TaxonDecorator do
       end
       it "should show the type taxon as a link, if the taxon for the name exists" do
         type = create_species 'Atta major'
-        genus = create_genus 'Atta', type_name: FactoryGirl.create(:species_name, name: 'Atta major')
+        genus = create_genus 'Atta', type_name: create(:species_name, name: 'Atta major')
         expect(decorator_helper.new(genus).send(:headline_type_name)).to eq(%Q{<a href="/catalog/#{type.id}"><i>Atta major</i></a>})
       end
     end
@@ -216,7 +216,7 @@ describe TaxonDecorator do
       expect(taxon.decorate.change_history).to be_nil
     end
     it "should show the adder for a waiting taxon" do
-      adder = FactoryGirl.create :user, can_edit: true
+      adder = create :user, can_edit: true
       taxon = create_taxon_version_and_change :waiting, adder
       change_history = taxon.decorate.change_history
       expect(change_history).to match(/Added by/)
@@ -224,8 +224,8 @@ describe TaxonDecorator do
       expect(change_history).to match(/less than a minute ago/)
     end
     it "should show the adder and the approver for an approved taxon" do
-      adder = FactoryGirl.create :user, can_edit: true
-      approver = FactoryGirl.create :user, can_edit: true
+      adder = create :user, can_edit: true
+      approver = create :user, can_edit: true
       taxon = create_taxon_version_and_change :waiting, adder
       taxon.taxon_state.review_state = :waiting
       change = Change.find taxon.last_change.id
@@ -274,23 +274,23 @@ describe TaxonDecorator do
     end
     it "should handle a new genus" do
       subfamily = create_subfamily build_stubbed: true
-      genus = FactoryGirl.build :genus, subfamily: subfamily, tribe: nil
+      genus = build :genus, subfamily: subfamily, tribe: nil
       expect(genus.decorate.name_description).to eq("new genus of #{subfamily.name}")
     end
     it "should handle a new species" do
       genus = create_genus 'Atta'
-      species = FactoryGirl.build :species, genus: genus
+      species = build :species, genus: genus
       expect(species.decorate.name_description).to eq("new species of <i>#{genus.name}</i>")
     end
     it "should handle a subspecies" do
       genus = create_genus 'Atta'
-      species = FactoryGirl.build :species, genus: genus
-      subspecies = FactoryGirl.build :subspecies, species: species, genus: genus
+      species = build :species, genus: genus
+      subspecies = build :subspecies, species: species, genus: genus
       expect(subspecies.decorate.name_description).to eq("new subspecies of <i>#{species.name}</i>")
     end
     it "should handle a subspecies without a species" do
       genus = create_genus 'Atta'
-      subspecies = FactoryGirl.build :subspecies, genus: genus, species: nil
+      subspecies = build :subspecies, genus: genus, species: nil
       expect(subspecies.decorate.name_description).to eq("new subspecies of (no species)")
     end
     it "should be html_safe" do

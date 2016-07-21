@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe CatalogHelper do
   describe "labels" do
-    let(:taxon) { FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta') }
+    let(:taxon) { create :genus, name: create(:name, name: 'Atta') }
 
     describe "#taxon_label_span" do
       it "should create a span based on the type of the taxon and its status" do

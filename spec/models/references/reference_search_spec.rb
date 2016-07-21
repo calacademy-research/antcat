@@ -5,14 +5,14 @@ describe Reference do
   before do
     Reference.delete_all
     # throw in a MissingReference to make sure it's not returned
-    FactoryGirl.create :missing_reference
+    create :missing_reference
   end
 
   describe "Searching (perform_search)" do
     describe "Search parameters" do
       describe "Searching for nothing", search: true do
         it "should return everything" do
-          reference = FactoryGirl.create :reference
+          reference = create :reference
           Sunspot.commit
           expect(Reference.list_references).to eq([reference])
         end
@@ -24,14 +24,14 @@ describe Reference do
         end
 
         it "should find the reference for a given author_name if it exists" do
-          bolton = FactoryGirl.create :author_name, name: "Bolton Barry"
+          bolton = create :author_name, name: "Bolton Barry"
           # Test fixed by creating the :author_name with `name: "Bolton Barry"`
           # Always succeeds if run with no other tests, but eg this fails:
           #   rspec spec/models/references/reference_*
           # Seems like we're having issues with tests not cleaning up between runs.
           # TODO fix?
-          reference = FactoryGirl.create :book_reference, author_names: [bolton]
-          FactoryGirl.create :book_reference, author_names: [FactoryGirl.create(:author_name, name: 'Fisher')]
+          reference = create :book_reference, author_names: [bolton]
+          create :book_reference, author_names: [create(:author_name, name: 'Fisher')]
 
           Sunspot.commit
 
@@ -41,21 +41,21 @@ describe Reference do
         it "should find the references for all aliases of a given author_name", pending: true do
           pending "broke when search method was refactored"
           # TODO find out where this is used
-          bolton = FactoryGirl.create :author
-          bolton_barry = FactoryGirl.create :author_name, author: bolton, name: 'Bolton, Barry'
-          bolton_b = FactoryGirl.create :author_name, author: bolton, name: 'Bolton, B.'
-          bolton_barry_reference = FactoryGirl.create :book_reference, :author_names => [bolton_barry], :title => '1', :pagination => '1'
-          bolton_b_reference = FactoryGirl.create :book_reference, :author_names => [bolton_b], :title => '2', :pagination => '2'
+          bolton = create :author
+          bolton_barry = create :author_name, author: bolton, name: 'Bolton, Barry'
+          bolton_b = create :author_name, author: bolton, name: 'Bolton, B.'
+          bolton_barry_reference = create :book_reference, :author_names => [bolton_barry], :title => '1', :pagination => '1'
+          bolton_b_reference = create :book_reference, :author_names => [bolton_b], :title => '2', :pagination => '2'
           expect(Reference.perform_search(:authors => [bolton]).map(&:id)).to match(
             [bolton_b_reference, bolton_barry_reference].map(&:id)
           )
         end
         it "should find the reference with both author names, but not just one" do
-          bolton = FactoryGirl.create :author_name, :name => 'Bolton'
-          fisher = FactoryGirl.create :author_name, :name => 'Fisher'
-          bolton_reference = FactoryGirl.create :reference, :author_names => [bolton]
-          fisher_reference = FactoryGirl.create :reference, :author_names => [fisher]
-          bolton_fisher_reference = FactoryGirl.create :reference, :author_names => [bolton,fisher]
+          bolton = create :author_name, :name => 'Bolton'
+          fisher = create :author_name, :name => 'Fisher'
+          bolton_reference = create :reference, :author_names => [bolton]
+          fisher_reference = create :reference, :author_names => [fisher]
+          bolton_fisher_reference = create :reference, :author_names => [bolton,fisher]
 
           Sunspot.commit
           expect(Reference.do_search(q: %q{author:"Bolton Fisher"})).to eq([bolton_fisher_reference])
@@ -113,7 +113,7 @@ describe Reference do
 
         describe 'Journal name', search: true do
           it 'should find something in journal name' do
-            journal = FactoryGirl.create :journal, :name => 'Journal'
+            journal = create :journal, :name => 'Journal'
             matching_reference = reference_factory(:author_name => 'Hölldobler', :journal => journal)
             unmatching_reference = reference_factory(:author_name => 'Hölldobler')
             Sunspot.commit
@@ -123,7 +123,7 @@ describe Reference do
 
         describe 'Publisher name', search: true do
           it 'should find something in publisher name' do
-            publisher = FactoryGirl.create :publisher, :name => 'Publisher'
+            publisher = create :publisher, :name => 'Publisher'
             matching_reference = reference_factory(:author_name => 'Hölldobler', :publisher => publisher)
             unmatching_reference = reference_factory(:author_name => 'Hölldobler')
             Sunspot.commit
@@ -164,9 +164,9 @@ describe Reference do
 
         describe "Year and fulltext", search: true  do
           it "should work" do
-            atta2004 = FactoryGirl.create :book_reference, :title => 'Atta', :citation_year => '2004'
-            atta2003 = FactoryGirl.create :book_reference, :title => 'Atta', :citation_year => '2003'
-            formica2004 = FactoryGirl.create :book_reference, :title => 'Formica', :citation_year => '2003'
+            atta2004 = create :book_reference, :title => 'Atta', :citation_year => '2004'
+            atta2003 = create :book_reference, :title => 'Atta', :citation_year => '2003'
+            formica2004 = create :book_reference, :title => 'Formica', :citation_year => '2003'
             Sunspot.commit
             expect(Reference.fulltext_search(keywords: 'atta', year: 2004)).to eq([atta2004])
           end
@@ -212,9 +212,9 @@ describe Reference do
           expect(Reference.list_references).to eq([fisher1910a, fisher1910b, wheeler1874])
         end
         it "should sort by multiple author_names using their order in each reference" do
-          a = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names])
-          m = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
-          v = FactoryGirl.create(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
+          a = create(:article_reference, :author_names => AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names])
+          m = create(:article_reference, :author_names => AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
+          v = create(:article_reference, :author_names => AuthorName.import_author_names_string("Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A.")[:author_names])
           Sunspot.commit
 
           expect(Reference.list_references).to eq([a, m, v])
@@ -224,20 +224,20 @@ describe Reference do
 
     describe "Filtering", search: true do
       it "should apply the :unknown :reference_type that's passed" do
-        known = FactoryGirl.create :article_reference
-        unknown = FactoryGirl.create :unknown_reference
+        known = create :article_reference
+        unknown = create :unknown_reference
         Sunspot.commit
         expect(Reference.fulltext_search(q: "bolton", reference_type: :unknown)).to eq([unknown])
       end
       it "should apply the :nomissing :reference_type that's passed" do
         expect(MissingReference.count).to be > 0
-        reference = FactoryGirl.create :article_reference
+        reference = create :article_reference
         Sunspot.commit
         expect(Reference.fulltext_search(q: 'bolton', reference_type: :nomissing)).to eq([reference])
       end
       it "should apply the :nested :reference_type that's passed" do
-        nested = FactoryGirl.create :nested_reference
-        unnested = FactoryGirl.create :unknown_reference
+        nested = create :nested_reference
+        unnested = create :unknown_reference
         Sunspot.commit
         expect(Reference.fulltext_search(q: 'bolton', reference_type: :nested)).to eq([nested])
       end
@@ -246,7 +246,7 @@ describe Reference do
 
   describe "Searching with Solr", search: true do
     it "should return an empty array if nothing is found for author_name" do
-      FactoryGirl.create :reference
+      create :reference
       Sunspot.commit
       expect(Reference.search {keywords 'foo'}.results).to be_empty
     end

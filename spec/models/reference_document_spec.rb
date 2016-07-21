@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ReferenceDocument do
   it "should make sure it has a protocol" do
     stub_request(:any, "http://antcat.org/1.pdf").to_return :body => "Hello World!"
-    document = FactoryGirl.create :reference_document
+    document = create :reference_document
     document.url = 'antcat.org/1.pdf'
     document.save!
     expect(document.reload.url).to eq('http://antcat.org/1.pdf')
@@ -44,7 +44,7 @@ describe ReferenceDocument do
   end
 
   it "should create the URL for an uploaded file so that it goes to our controller" do
-    document = FactoryGirl.create :reference_document
+    document = create :reference_document
     document.file_file_name = '1.pdf'
     document.host = 'antcat.org'
     expect(document.reload.url).to eq("http://antcat.org/documents/#{document.id}/1.pdf")
@@ -52,12 +52,12 @@ describe ReferenceDocument do
 
   describe "actual url" do
     it "simply be the url, if the document's not on Amazon" do
-      document = FactoryGirl.create :reference_document
+      document = create :reference_document
       document.update_attribute :url, 'foo'
       expect(document.reload.actual_url).to eq('foo')
     end
     #it "should go to Amazon, if necessary" do
-      #document = FactoryGirl.create :reference_document
+      #document = create :reference_document
       #document.file_file_name = '1.pdf'
       #document.host = 'antcat.org'
       #document.reload.actual_url.should match /http:\/\/s3\.amazonaws\.com\/antcat\/#{document.id}\/1\.pdf\?AWSAccessKeyId=/
@@ -113,7 +113,7 @@ describe ReferenceDocument do
   describe "Versioning" do
     it "should record versions" do
       with_versioning do
-        reference_document = FactoryGirl.create :reference_document
+        reference_document = create :reference_document
         expect(reference_document.versions.last.event).to eq('create')
       end
     end

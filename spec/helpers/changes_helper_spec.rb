@@ -8,7 +8,7 @@ describe ChangesHelper do
       expect(helper.format_attributes(genus)).to eq('Hong, <i>nomen nudum</i>')
     end
     it "should concatenate protonym attributes into a comma-separated list" do
-      protonym = FactoryGirl.create :protonym, sic: true, fossil: true
+      protonym = create :protonym, sic: true, fossil: true
       genus = create_genus protonym: protonym
       expect(helper.format_protonym_attributes(genus)).to eq('Fossil, <i>sic</i>')
     end

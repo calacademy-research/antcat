@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Reference do
-  let(:reference) { FactoryGirl.create :article_reference }
+  let(:reference) { create :article_reference }
 
   it "should start as 'none'" do
     expect(reference).to be_none

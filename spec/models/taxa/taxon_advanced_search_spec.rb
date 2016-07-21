@@ -86,22 +86,22 @@ describe Taxon do
       end
 
       it "should find the taxa for the author's references, even if he's not the principal author" do
-        reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Bolton'), FactoryGirl.create(:author_name, name: 'Fisher')], citation_year: '1977'
+        reference = create :article_reference, author_names: [create(:author_name, name: 'Bolton'), create(:author_name, name: 'Fisher')], citation_year: '1977'
         atta = create_genus
         atta.protonym.authorship.update_attributes! reference: reference
         expect(Taxa::Search.advanced_search(rank: 'All', author_name: 'Fisher').map(&:id)).to eq([atta.id])
       end
 
       it "should not crash if the author isn't found" do
-        reference = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Bolton')], citation_year: '1977'
+        reference = create :article_reference, author_names: [create(:author_name, name: 'Bolton')], citation_year: '1977'
         atta = create_genus
         atta.protonym.authorship.update_attributes! reference: reference
         expect(Taxa::Search.advanced_search(rank: 'All', author_name: 'Fisher')).to be_empty
       end
 
       it "should find the taxa for the author's references, even if he's nested inside the reference" do
-        nested_in = FactoryGirl.create :article_reference, author_names: [FactoryGirl.create(:author_name, name: 'Bolton')], year: 2010
-        reference = NestedReference.new title: 'Ants', author_names: [FactoryGirl.create(:author_name, name: 'Fisher')], year: 2011, nesting_reference: nested_in, pages_in: 'Pp 2 in:'
+        nested_in = create :article_reference, author_names: [create(:author_name, name: 'Bolton')], year: 2010
+        reference = NestedReference.new title: 'Ants', author_names: [create(:author_name, name: 'Fisher')], year: 2011, nesting_reference: nested_in, pages_in: 'Pp 2 in:'
         atta = create_genus
         atta.protonym.authorship.update_attributes! reference: reference
         expect(Taxa::Search.advanced_search(rank: 'All', author_name: 'Fisher').map(&:id)).to eq([atta.id])
@@ -109,15 +109,15 @@ describe Taxon do
       end
 
       it "should find the taxa for the author's references that are part of citations in the protonym, even under different names" do
-        barry_bolton = FactoryGirl.create :author
-        barry = FactoryGirl.create :author_name, name: 'Barry', author: barry_bolton
-        bolton = FactoryGirl.create :author_name, name: 'Bolton', author: barry_bolton
+        barry_bolton = create :author
+        barry = create :author_name, name: 'Barry', author: barry_bolton
+        bolton = create :author_name, name: 'Bolton', author: barry_bolton
 
-        barry_reference = FactoryGirl.create :article_reference, author_names: [barry], citation_year: '1977'
+        barry_reference = create :article_reference, author_names: [barry], citation_year: '1977'
         barry_atta = create_genus 'Barry_Atta'
         barry_atta.protonym.authorship.update_attributes! reference: barry_reference
 
-        bolton_reference = FactoryGirl.create :article_reference, author_names: [bolton], citation_year: '1977'
+        bolton_reference = create :article_reference, author_names: [bolton], citation_year: '1977'
         bolton_atta = create_genus 'Bolton_Atta'
         bolton_atta.protonym.authorship.update_attributes! reference: bolton_reference
 
@@ -125,15 +125,15 @@ describe Taxon do
       end
 
       it "should handle year + author name" do
-        barry_bolton = FactoryGirl.create :author
-        barry = FactoryGirl.create :author_name, name: 'Barry', author: barry_bolton
-        bolton = FactoryGirl.create :author_name, name: 'Bolton', author: barry_bolton
+        barry_bolton = create :author
+        barry = create :author_name, name: 'Barry', author: barry_bolton
+        bolton = create :author_name, name: 'Bolton', author: barry_bolton
 
-        barry_reference = FactoryGirl.create :article_reference, author_names: [barry], citation_year: '1977'
+        barry_reference = create :article_reference, author_names: [barry], citation_year: '1977'
         barry_atta = create_genus 'Barry_Atta'
         barry_atta.protonym.authorship.update_attributes! reference: barry_reference
 
-        bolton_reference = FactoryGirl.create :article_reference, author_names: [bolton], citation_year: '1987'
+        bolton_reference = create :article_reference, author_names: [bolton], citation_year: '1987'
         bolton_atta = create_genus 'Bolton_Atta'
         bolton_atta.protonym.authorship.update_attributes! reference: bolton_reference
 
@@ -144,8 +144,8 @@ describe Taxon do
 
     describe "Searching for locality" do
       before do
-        @indonesia = FactoryGirl.create :protonym, locality: 'Indonesia (Bhutan)'
-        @china = FactoryGirl.create :protonym, locality: 'China'
+        @indonesia = create :protonym, locality: 'Indonesia (Bhutan)'
+        @china = create :protonym, locality: 'China'
       end
       it "should only return taxa with that locality" do
         atta = create_genus protonym: @indonesia
@@ -233,12 +233,12 @@ describe Taxon do
 
     describe "Searching for forms" do
       it "should only return taxa with those forms" do
-        citation = FactoryGirl.create :citation, forms: 'w.q.'
-        protonym = FactoryGirl.create :protonym, authorship: citation
+        citation = create :citation, forms: 'w.q.'
+        protonym = create :protonym, authorship: citation
         atta = create_species protonym: protonym
 
-        citation = FactoryGirl.create :citation, forms: 'q.'
-        protonym = FactoryGirl.create :protonym, authorship: citation
+        citation = create :citation, forms: 'q.'
+        protonym = create :protonym, authorship: citation
         eciton = create_species protonym: protonym
 
         expect(Taxa::Search.advanced_search(rank: 'All', forms: 'w.').map(&:id)).to eq([atta.id])

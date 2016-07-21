@@ -3,37 +3,37 @@ require 'spec_helper'
 describe Genus do
   PaperTrail.enabled = true
   it "should have a tribe" do
-    attini = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: 'Attini'), :subfamily => FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: 'Myrmicinae'))
-    FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta'), :tribe => attini
+    attini = create :tribe, name: create(:name, name: 'Attini'), :subfamily => create(:subfamily, name: create(:name, name: 'Myrmicinae'))
+    create :genus, name: create(:name, name: 'Atta'), :tribe => attini
     expect(Genus.find_by_name('Atta').tribe).to eq(attini)
   end
 
   it "should have species, which are its children" do
-    atta = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta')
-    FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'robusta'), :genus => atta
-    FactoryGirl.create :species, name: FactoryGirl.create(:name, name: 'saltensis'), :genus => atta
+    atta = create :genus, name: create(:name, name: 'Atta')
+    create :species, name: create(:name, name: 'robusta'), :genus => atta
+    create :species, name: create(:name, name: 'saltensis'), :genus => atta
     atta = Genus.find_by_name('Atta')
     expect(atta.species.map(&:name).map(&:to_s)).to match_array(['robusta', 'saltensis'])
     expect(atta.children).to eq(atta.species)
   end
 
   it "should have subspecies" do
-    genus = FactoryGirl.create :genus
-    FactoryGirl.create :subspecies, genus: genus
+    genus = create :genus
+    create :subspecies, genus: genus
     expect(genus.subspecies.count).to eq(1)
   end
 
   it "should use the species's' genus, if nec." do
-    genus = FactoryGirl.create :genus
-    species = FactoryGirl.create :species, genus: genus
-    FactoryGirl.create :subspecies, species: species, genus: nil
+    genus = create :genus
+    species = create :species, genus: genus
+    create :subspecies, species: species, genus: nil
     expect(genus.subspecies.count).to eq(1)
   end
 
   it "should have subgenera" do
-    atta = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: 'Atta')
-    FactoryGirl.create :subgenus, name: FactoryGirl.create(:name, name: 'robusta'), :genus => atta
-    FactoryGirl.create :subgenus, name: FactoryGirl.create(:name, name: 'saltensis'), :genus => atta
+    atta = create :genus, name: create(:name, name: 'Atta')
+    create :subgenus, name: create(:name, name: 'robusta'), :genus => atta
+    create :subgenus, name: create(:name, name: 'saltensis'), :genus => atta
     atta = Genus.find_by_name('Atta')
     expect(atta.subgenera.map(&:name).map(&:to_s)).to match_array(['robusta', 'saltensis'])
   end
@@ -41,44 +41,44 @@ describe Genus do
   describe "Statistics" do
 
     it "should handle 0 children" do
-      genus = FactoryGirl.create :genus
+      genus = create :genus
       expect(genus.statistics).to eq({})
     end
 
     it "should handle 1 valid species" do
-      genus = FactoryGirl.create :genus
-      species = FactoryGirl.create :species, :genus => genus
+      genus = create :genus
+      species = create :species, :genus => genus
       expect(genus.statistics).to eq({:extant => {:species => {'valid' => 1}}})
     end
 
     it "should ignore original combinations" do
       genus = create_genus
-      FactoryGirl.create :species, genus: genus
-      FactoryGirl.create :species, status: 'original combination', genus: genus
+      create :species, genus: genus
+      create :species, status: 'original combination', genus: genus
       expect(genus.statistics).to eq({:extant => {:species => {'valid' => 1}}})
     end
 
     it "should handle 1 valid species and 2 synonyms" do
-      genus = FactoryGirl.create :genus
-      FactoryGirl.create :species, :genus => genus
-      2.times {FactoryGirl.create :species, :genus => genus, :status => 'synonym'}
+      genus = create :genus
+      create :species, :genus => genus
+      2.times {create :species, :genus => genus, :status => 'synonym'}
       expect(genus.statistics).to eq({:extant => {:species => {'valid' => 1, 'synonym' => 2}}})
     end
 
     it "should handle 1 valid species with 2 valid subspecies" do
-      genus = FactoryGirl.create :genus
-      species = FactoryGirl.create :species, genus: genus
-      2.times {FactoryGirl.create :subspecies, species: species, genus: genus}
+      genus = create :genus
+      species = create :species, genus: genus
+      2.times {create :subspecies, species: species, genus: genus}
       expect(genus.statistics).to eq({extant: {species: {'valid' => 1}, subspecies: {'valid' => 2}}})
     end
 
     it "should be able to differentiate extinct species and subspecies" do
-      genus = FactoryGirl.create :genus
-      species = FactoryGirl.create :species, genus: genus
-      fossil_species = FactoryGirl.create :species, genus: genus, fossil: true
-      FactoryGirl.create :subspecies, genus: genus, species: species, fossil: true
-      FactoryGirl.create :subspecies, genus: genus, species: species
-      FactoryGirl.create :subspecies, genus: genus, species: fossil_species, fossil: true
+      genus = create :genus
+      species = create :species, genus: genus
+      fossil_species = create :species, genus: genus, fossil: true
+      create :subspecies, genus: genus, species: species, fossil: true
+      create :subspecies, genus: genus, species: species
+      create :subspecies, genus: genus, species: fossil_species, fossil: true
       expect(genus.statistics).to eq({
         extant: {species: {'valid' => 1}, subspecies: {'valid' => 1}},
         fossil: {species: {'valid' => 1}, subspecies: {'valid' => 2}},
@@ -86,12 +86,12 @@ describe Genus do
     end
 
     it "should be able to differentiate extinct species and subspecies" do
-      genus = FactoryGirl.create :genus
-      species = FactoryGirl.create :species, genus: genus
-      fossil_species = FactoryGirl.create :species, genus: genus, fossil: true
-      FactoryGirl.create :subspecies, genus: genus, species: species, fossil: true
-      FactoryGirl.create :subspecies, genus: genus, species: species
-      FactoryGirl.create :subspecies, genus: genus, species: fossil_species, fossil: true
+      genus = create :genus
+      species = create :species, genus: genus
+      fossil_species = create :species, genus: genus, fossil: true
+      create :subspecies, genus: genus, species: species, fossil: true
+      create :subspecies, genus: genus, species: species
+      create :subspecies, genus: genus, species: fossil_species, fossil: true
       expect(genus.statistics).to eq({
         extant: {species: {'valid' => 1}, subspecies: {'valid' => 1}},
         fossil: {species: {'valid' => 1}, subspecies: {'valid' => 2}},
@@ -102,17 +102,17 @@ describe Genus do
 
   describe "Without subfamily" do
     it "should just return the genera with no subfamily" do
-      cariridris = FactoryGirl.create :genus, :subfamily => nil
-      atta = FactoryGirl.create :genus
+      cariridris = create :genus, :subfamily => nil
+      atta = create :genus
       expect(Genus.without_subfamily.all).to eq([cariridris])
     end
   end
 
   describe "Without tribe" do
     it "should just return the genera with no tribe" do
-      tribe = FactoryGirl.create :tribe
-      cariridris = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
-      atta = FactoryGirl.create :genus, :subfamily => tribe.subfamily, :tribe => nil
+      tribe = create :tribe
+      cariridris = create :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      atta = create :genus, :subfamily => tribe.subfamily, :tribe => nil
       expect(Genus.without_tribe.all).to eq([atta])
     end
   end
@@ -120,33 +120,33 @@ describe Genus do
   describe "Siblings" do
 
     it "should return itself when there are no others" do
-      FactoryGirl.create :genus
-      tribe = FactoryGirl.create :tribe
-      genus = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      create :genus
+      tribe = create :tribe
+      genus = create :genus, :tribe => tribe, :subfamily => tribe.subfamily
       expect(genus.siblings).to eq([genus])
     end
 
     it "should return itself and its tribe's other genera" do
-      FactoryGirl.create :genus
-      tribe = FactoryGirl.create :tribe
-      genus = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
-      another_genus = FactoryGirl.create :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      create :genus
+      tribe = create :tribe
+      genus = create :genus, :tribe => tribe, :subfamily => tribe.subfamily
+      another_genus = create :genus, :tribe => tribe, :subfamily => tribe.subfamily
       expect(genus.siblings).to match_array([genus, another_genus])
     end
 
     it "when there's no subfamily, should return all the genera with no subfamilies" do
-      FactoryGirl.create :genus
-      genus = FactoryGirl.create :genus, :subfamily => nil, :tribe => nil
-      another_genus = FactoryGirl.create :genus, :subfamily => nil, :tribe => nil
+      create :genus
+      genus = create :genus, :subfamily => nil, :tribe => nil
+      another_genus = create :genus, :subfamily => nil, :tribe => nil
       expect(genus.siblings).to match_array([genus, another_genus])
     end
 
     it "when there's no tribe, return the other genera in its subfamily without tribes" do
-      subfamily = FactoryGirl.create :subfamily
-      tribe = FactoryGirl.create :tribe, :subfamily => subfamily
-      FactoryGirl.create :genus, :tribe => tribe, :subfamily => subfamily
-      genus = FactoryGirl.create :genus, :subfamily => subfamily, :tribe => nil
-      another_genus = FactoryGirl.create :genus, :subfamily => subfamily, :tribe => nil
+      subfamily = create :subfamily
+      tribe = create :tribe, :subfamily => subfamily
+      create :genus, :tribe => tribe, :subfamily => subfamily
+      genus = create :genus, :subfamily => subfamily, :tribe => nil
+      another_genus = create :genus, :subfamily => subfamily, :tribe => nil
       expect(genus.siblings).to match_array([genus, another_genus])
     end
 
@@ -190,9 +190,9 @@ describe Genus do
 
   describe "Assiging the parent" do
     it "should assign to both tribe and subfamily when parent is a tribe" do
-      subfamily = FactoryGirl.create :subfamily
-      tribe = FactoryGirl.create :tribe, subfamily: subfamily
-      protonym = FactoryGirl.create :protonym
+      subfamily = create :subfamily
+      tribe = create :tribe, subfamily: subfamily
+      protonym = create :protonym
 
       genus = create_genus 'Aneuretus', protonym: protonym
 
@@ -204,9 +204,9 @@ describe Genus do
 
   describe "Updating the parent" do
     it "should assign to both tribe and subfamily when parent is a tribe" do
-      subfamily = FactoryGirl.create :subfamily
-      tribe = FactoryGirl.create :tribe, subfamily: subfamily
-      protonym = FactoryGirl.create :protonym
+      subfamily = create :subfamily
+      tribe = create :tribe, subfamily: subfamily
+      protonym = create :protonym
       genus = create_genus 'Aneuretus', protonym: protonym
 
       genus.update_parent tribe
@@ -214,16 +214,16 @@ describe Genus do
       expect(genus.subfamily).to eq(subfamily)
     end
     it "should assign the subfamily when the tribe is nil, and set the tribe to nil" do
-      subfamily = FactoryGirl.create :subfamily
-      tribe = FactoryGirl.create :tribe, subfamily: subfamily
+      subfamily = create :subfamily
+      tribe = create :tribe, subfamily: subfamily
       genus = create_genus tribe: tribe
       genus.update_parent subfamily
       expect(genus.tribe).to eq(nil)
       expect(genus.subfamily).to eq(subfamily)
     end
     it "should clear both subfamily and tribe when the new parent is nil" do
-      subfamily = FactoryGirl.create :subfamily
-      tribe = FactoryGirl.create :tribe, subfamily: subfamily
+      subfamily = create :subfamily
+      tribe = create :tribe, subfamily: subfamily
       genus = create_genus tribe: tribe
       genus.update_parent nil
       expect(genus.tribe).to eq(nil)
@@ -231,10 +231,10 @@ describe Genus do
     end
 
     it "should assign the subfamily of its descendants" do
-      subfamily = FactoryGirl.create :subfamily
-      tribe = FactoryGirl.create :tribe, subfamily: subfamily
-      new_subfamily = FactoryGirl.create :subfamily
-      new_tribe = FactoryGirl.create :tribe, subfamily: new_subfamily
+      subfamily = create :subfamily
+      tribe = create :tribe, subfamily: subfamily
+      new_subfamily = create :subfamily
+      new_tribe = create :tribe, subfamily: new_subfamily
       genus = create_genus tribe: tribe
       species = create_species genus: genus
       subspecies = create_subspecies species: species, genus: genus

@@ -3,16 +3,16 @@ require 'spec_helper'
 describe Author do
   it "has many names" do
     author = Author.create!
-    author.names << FactoryGirl.create(:author_name)
+    author.names << create(:author_name)
     expect(author.names.size).to eq(1)
   end
 
   describe "sorting by first author name" do
     it "should work" do
-      ward = FactoryGirl.create :author_name, :name => 'Ward'
-      fisher_b_l = FactoryGirl.create :author_name, :name => 'Fisher, B. L.'
-      fisher = FactoryGirl.create :author_name, :name => 'Fisher', :author => fisher_b_l.author
-      bolton = FactoryGirl.create :author_name, :name => 'Bolton'
+      ward = create :author_name, :name => 'Ward'
+      fisher_b_l = create :author_name, :name => 'Fisher, B. L.'
+      fisher = create :author_name, :name => 'Fisher', :author => fisher_b_l.author
+      bolton = create :author_name, :name => 'Bolton'
       expect(Author.sorted_by_name).to eq([bolton.author, fisher.author, ward.author])
     end
   end
@@ -22,16 +22,16 @@ describe Author do
       expect(Author.find_by_names([])).to eq([])
     end
     it "should find the authors for the names" do
-      bolton = FactoryGirl.create :author_name, :name => 'Bolton'
-      fisher = FactoryGirl.create :author_name, :name => 'Fisher'
+      bolton = create :author_name, :name => 'Bolton'
+      fisher = create :author_name, :name => 'Fisher'
       expect(Author.find_by_names(['Bolton', 'Fisher'])).to match_array([bolton.author, fisher.author])
     end
   end
 
   describe "Merging authors" do
     it "should make all the names of the passed in authors belong to the same author" do
-      first_bolton_author = FactoryGirl.create(:author_name, name: 'Bolton, B').author
-      second_bolton_author = FactoryGirl.create(:author_name, name: 'Bolton,B.').author
+      first_bolton_author = create(:author_name, name: 'Bolton, B').author
+      second_bolton_author = create(:author_name, name: 'Bolton,B.').author
       expect(Author.count).to eq(2)
       expect(AuthorName.count).to eq(2)
 
@@ -48,7 +48,7 @@ describe Author do
   describe "Versioning" do
     it "should record versions" do
       with_versioning do
-        author = FactoryGirl.create :author
+        author = create :author
         expect(author.versions.last.event).to eq('create')
       end
     end

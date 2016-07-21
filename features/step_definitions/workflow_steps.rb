@@ -7,9 +7,9 @@ Given /^there is a genus "([^"]*)" that's waiting for approval$/ do |name|
   genus = create_genus name
   genus.taxon_state.review_state = :waiting
   genus.save
-  change = FactoryGirl.create :change, user_changed_taxon_id: genus.id
+  change = create :change, user_changed_taxon_id: genus.id
   whodunnit = User.first.id
-  version = FactoryGirl.create :version, item_id: genus.id, whodunnit: whodunnit, change_id: change.id
+  version = create :version, item_id: genus.id, whodunnit: whodunnit, change_id: change.id
 end
 
 ####
@@ -80,7 +80,7 @@ end
 #############################
 # editing
 When /^I add the genus "([^"]+)"?$/ do |genus_name|
-  reference = FactoryGirl.create :article_reference
+  reference = create :article_reference
 
   taxon_params = HashWithIndifferentAccess.new(
       name_attributes: {id: ''},
@@ -108,9 +108,9 @@ When /^I add the genus "([^"]+)"?$/ do |genus_name|
       }
   )
   genus_params = taxon_params.deep_dup
-  genus_params[:name_attributes][:id] = FactoryGirl.create(:genus_name, name: genus_name).id
-  genus_params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Betta').id
-  genus_params[:type_name_attributes] = {id: FactoryGirl.create(:species_name, name: 'Betta major').id}
+  genus_params[:name_attributes][:id] = create(:genus_name, name: genus_name).id
+  genus_params[:protonym_attributes][:name_attributes][:id] = create(:genus_name, name: 'Betta').id
+  genus_params[:type_name_attributes] = {id: create(:species_name, name: 'Betta major').id}
 
   taxon = mother_replacement_create_taxon Genus.new, create_subfamily
   taxon.save_taxon(genus_params)

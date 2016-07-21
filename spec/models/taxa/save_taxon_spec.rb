@@ -7,7 +7,7 @@ describe Taxa::SaveTaxon do
 
   describe "Saving a new record, based on params from a form with nested attributes" do
     before do
-      @reference = FactoryGirl.create :article_reference
+      @reference = create :article_reference
       @taxon_params = HashWithIndifferentAccess.new(
         name_attributes:     {id: ''},
         status:              'valid',
@@ -34,17 +34,17 @@ describe Taxa::SaveTaxon do
         }
       )
       @genus_params = @taxon_params.deep_dup
-      @genus_params[:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Atta').id
-      @genus_params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:genus_name, name: 'Betta').id
-      @genus_params[:type_name_attributes] = {id: FactoryGirl.create(:species_name, name: 'Betta major').id}
+      @genus_params[:name_attributes][:id] = create(:genus_name, name: 'Atta').id
+      @genus_params[:protonym_attributes][:name_attributes][:id] = create(:genus_name, name: 'Betta').id
+      @genus_params[:type_name_attributes] = {id: create(:species_name, name: 'Betta major').id}
 
       @species_params = @taxon_params.deep_dup
-      @species_params[:name_attributes][:id] = FactoryGirl.create(:species_name, name: 'Atta major').id
-      @species_params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:species_name, name: 'Betta major').id
+      @species_params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
+      @species_params[:protonym_attributes][:name_attributes][:id] = create(:species_name, name: 'Betta major').id
 
       @subspecies_params = @taxon_params.deep_dup
-      @subspecies_params[:name_attributes][:id] = FactoryGirl.create(:subspecies_name, name: 'Atta major minor').id
-      @subspecies_params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:subspecies_name, name: 'Betta major minor').id
+      @subspecies_params[:name_attributes][:id] = create(:subspecies_name, name: 'Atta major minor').id
+      @subspecies_params[:protonym_attributes][:name_attributes][:id] = create(:subspecies_name, name: 'Betta major minor').id
     end
 
     it "saves a new genus" do
@@ -90,12 +90,12 @@ describe Taxa::SaveTaxon do
     end
 
     it "sets name, status and flag fields" do
-      headline_reference = FactoryGirl.create :article_reference
-      taxt_reference = FactoryGirl.create :article_reference
+      headline_reference = create :article_reference
+      taxt_reference = create :article_reference
       taxon = build_new_taxon_and_set_parent :species, create_genus
       params = @taxon_params.deep_dup
-      params[:name_attributes][:id] = FactoryGirl.create(:species_name, name: 'Atta major').id
-      params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:species_name, name: 'Betta major').id
+      params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
+      params[:protonym_attributes][:name_attributes][:id] = create(:species_name, name: 'Betta major').id
       params[:incertae_sedis_in] = 'genus'
       params[:nomen_nudum] = '1'
       params[:hong] = '1'
@@ -117,11 +117,11 @@ describe Taxa::SaveTaxon do
     end
 
     it "sets authorship taxt" do
-      reference = FactoryGirl.create :article_reference
+      reference = create :article_reference
       taxon = build_new_taxon_and_set_parent :species, create_genus
       params = @taxon_params.deep_dup
-      params[:name_attributes][:id] = FactoryGirl.create(:species_name, name: 'Atta major').id
-      params[:protonym_attributes][:name_attributes][:id] = FactoryGirl.create(:species_name, name: 'Betta major').id
+      params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
+      params[:protonym_attributes][:name_attributes][:id] = create(:species_name, name: 'Betta major').id
       params[:protonym_attributes][:authorship_attributes][:notes_taxt] = Taxt.to_editable "{ref #{reference.id}}"
 
       taxon.save_taxon params

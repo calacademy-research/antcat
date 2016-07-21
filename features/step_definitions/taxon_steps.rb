@@ -3,48 +3,48 @@ Given /^there is a family "Formicidae"$/ do
 end
 
 Given /^the Formicidae family exists$/ do
-  reference = FactoryGirl.create :article_reference,
-    author_names: [FactoryGirl.create(:author_name, name: 'Latreille, I.')],
+  reference = create :article_reference,
+    author_names: [create(:author_name, name: 'Latreille, I.')],
     citation_year: '1809',
     title: 'Ants'
 
-  protonym = FactoryGirl.create :protonym,
-    name: FactoryGirl.create(:family_or_subfamily_name, name: "Formicariae"),
-    authorship: FactoryGirl.create(:citation, reference: reference, pages: "124" )
+  protonym = create :protonym,
+    name: create(:family_or_subfamily_name, name: "Formicariae"),
+    authorship: create(:citation, reference: reference, pages: "124" )
 
-  family = FactoryGirl.create :family,
-    name: FactoryGirl.create(:family_name, name: "Formicidae"),
+  family = create :family,
+    name: create(:family_name, name: "Formicidae"),
     protonym: protonym,
-    type_name: FactoryGirl.create(:genus_name, name: "Formica"),
-    history_items: [FactoryGirl.create(:taxon_history_item)]
-  
-  FactoryGirl.create :taxon_state, taxon_id: family.id
+    type_name: create(:genus_name, name: "Formica"),
+    history_items: [create(:taxon_history_item)]
+
+  create :taxon_state, taxon_id: family.id
 end
 
 #############################
 # subfamily
 Given /there is a subfamily "([^"]*)" with taxonomic history "([^"]*)"$/ do |taxon_name, history|
-  name = FactoryGirl.create :subfamily_name, name: taxon_name
+  name = create :subfamily_name, name: taxon_name
   taxon = create_taxon_with_state(:subfamily, name)
   taxon.history_items.create! taxt: history
 end
 Given /there is a subfamily "([^"]*)" with a reference section "(.*?)"$/ do |taxon_name, references|
-  name = FactoryGirl.create :subfamily_name, name: taxon_name
+  name = create :subfamily_name, name: taxon_name
   taxon = create_taxon_with_state(:subfamily, name)
   taxon.reference_sections.create! references_taxt: references
 end
 Given /there is a subfamily "([^"]*)"$/ do |taxon_name|
-  name = FactoryGirl.create :subfamily_name, name: taxon_name
+  name = create :subfamily_name, name: taxon_name
   @subfamily = create_taxon_with_state(:subfamily, name)
 end
 
 Given /^subfamily "(.*?)" exists$/ do |name|
-  @subfamily = create_taxon_with_state(:subfamily, FactoryGirl.create(:subfamily_name, name: name))
+  @subfamily = create_taxon_with_state(:subfamily, create(:subfamily_name, name: name))
   @subfamily.history_items.create! taxt: "#{name} history"
 end
 Given /^the unavailable subfamily "(.*?)" exists$/ do |name|
-  @subfamily = FactoryGirl.create(:subfamily, status: 'unavailable', name: FactoryGirl.create(:subfamily_name, name: name))
-  FactoryGirl.create :taxon_state, taxon_id: @subfamily.id
+  @subfamily = create(:subfamily, status: 'unavailable', name: create(:subfamily_name, name: name))
+  create :taxon_state, taxon_id: @subfamily.id
   @subfamily
 end
 
@@ -55,16 +55,16 @@ Given /^there is a tribe "([^"]*)"$/ do |name|
 end
 Given /a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|
   subfamily = parent_name && (Subfamily.find_by_name(parent_name) ||
-      create_taxon_with_state(:subfamily, name: FactoryGirl.create(:name, name: parent_name)))
-  taxon = FactoryGirl.create :tribe, name: FactoryGirl.create(:name, name: taxon_name), subfamily: subfamily
-  FactoryGirl.create :taxon_state, taxon_id: taxon.id
+      create_taxon_with_state(:subfamily, name: create(:name, name: parent_name)))
+  taxon = create :tribe, name: create(:name, name: taxon_name), subfamily: subfamily
+  create :taxon_state, taxon_id: taxon.id
 
   history = 'none' unless history.present?
   taxon.history_items.create! taxt: history
 end
 Given /^tribe "(.*?)" exists in that subfamily$/ do |name|
-  @tribe = FactoryGirl.create :tribe, subfamily: @subfamily, name: FactoryGirl.create(:tribe_name, name: name)
-  FactoryGirl.create :taxon_state, taxon_id: @tribe.id
+  @tribe = create :tribe, subfamily: @subfamily, name: create(:tribe_name, name: name)
+  create :taxon_state, taxon_id: @tribe.id
   @tribe.history_items.create! taxt: "#{name} history"
 end
 
@@ -72,10 +72,10 @@ end
 # subgenus
 Given /^subgenus "(.*?)" exists in that genus$/ do |name|
   epithet = name.match(/\((.*?)\)/)[1]
-  name = FactoryGirl.create :subgenus_name, name: name, epithet: epithet
+  name = create :subgenus_name, name: name, epithet: epithet
 
-  @subgenus = FactoryGirl.create :subgenus, subfamily: @subfamily, tribe: @tribe, genus: @genus, name: name
-  FactoryGirl.create :taxon_state, taxon_id: @subgenus.id
+  @subgenus = create :subgenus, subfamily: @subfamily, tribe: @tribe, genus: @genus, name: name
+  create :taxon_state, taxon_id: @subgenus.id
   @subgenus.history_items.create! taxt: "#{name} history"
 end
 
@@ -94,7 +94,7 @@ Given /^there is a genus "([^"]*)" with protonym name "(.*?)"$/ do |name, proton
   genus.protonym.name = Name.find_by_name protonym_name if protonym_name
 end
 Given /^there is a genus "([^"]*)" without protonym authorship$/ do |name|
-  protonym = FactoryGirl.create :protonym
+  protonym = create :protonym
   genus = create_genus name, protonym: protonym
   genus.protonym.update_attribute :authorship, nil
 end
@@ -108,42 +108,42 @@ Given /^there is a genus "([^"]*)" that is incertae sedis in the subfamily$/ do 
 end
 Given /^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and a taxonomic history of "(.*?)")?(?: and a status of "(.*?)")?$/ do |taxon_name, parent_name, history, status|
   status ||= 'valid'
-  subfamily = parent_name && (Subfamily.find_by_name(parent_name) || FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: parent_name)))
-  FactoryGirl.create :taxon_state, taxon_id: subfamily.id
-  taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: taxon_name), subfamily: subfamily, tribe: nil, status: status
-  FactoryGirl.create :taxon_state, taxon_id: taxon.id
+  subfamily = parent_name && (Subfamily.find_by_name(parent_name) || create(:subfamily, name: create(:name, name: parent_name)))
+  create :taxon_state, taxon_id: subfamily.id
+  taxon = create :genus, name: create(:name, name: taxon_name), subfamily: subfamily, tribe: nil, status: status
+  create :taxon_state, taxon_id: taxon.id
   history = 'none' unless history.present?
   taxon.history_items.create! taxt: history
 end
 Given /^a non-displayable genus exists with a name of "(.*?)" and a subfamily of "(.*?)"$/ do |taxon_name, subfamily_name|
-  subfamily = (Subfamily.find_by_name(subfamily_name) || FactoryGirl.create(:subfamily, name: FactoryGirl.create(:name, name: subfamily_name)))
-  FactoryGirl.create :taxon_state, taxon_id: subfamily.id
-  taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: taxon_name), subfamily: subfamily, tribe: nil, status: 'valid', display: false
-  FactoryGirl.create :taxon_state, taxon_id: taxon.id
+  subfamily = (Subfamily.find_by_name(subfamily_name) || create(:subfamily, name: create(:name, name: subfamily_name)))
+  create :taxon_state, taxon_id: subfamily.id
+  taxon = create :genus, name: create(:name, name: taxon_name), subfamily: subfamily, tribe: nil, status: 'valid', display: false
+  create :taxon_state, taxon_id: taxon.id
 end
 Given /a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, history|
-  another_genus = FactoryGirl.create(:genus_name, name: taxon_name)
-  FactoryGirl.create :taxon_state, taxon_id: another_genus.id
-  genus = FactoryGirl.create :genus, name: another_genus, subfamily: nil, tribe: nil
-  FactoryGirl.create :taxon_state, taxon_id: genus.id
+  another_genus = create(:genus_name, name: taxon_name)
+  create :taxon_state, taxon_id: another_genus.id
+  genus = create :genus, name: another_genus, subfamily: nil, tribe: nil
+  create :taxon_state, taxon_id: genus.id
   history = 'none' unless history.present?
   genus.history_items.create! taxt: history
 end
 Given /a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |fossil, taxon_name, parent_name, history|
   tribe = Tribe.find_by_name(parent_name)
   history = 'none' unless history.present?
-  taxon = FactoryGirl.create :genus, name: FactoryGirl.create(:name, name: taxon_name), subfamily: tribe.subfamily, tribe: tribe, fossil: fossil.present?
-  FactoryGirl.create :taxon_state, taxon_id: taxon.id
+  taxon = create :genus, name: create(:name, name: taxon_name), subfamily: tribe.subfamily, tribe: tribe, fossil: fossil.present?
+  create :taxon_state, taxon_id: taxon.id
   taxon.history_items.create! taxt: history
 end
 Given /^genus "(.*?)" exists in that tribe$/ do |name|
-  @genus = FactoryGirl.create :genus, subfamily: @subfamily, tribe: @tribe, name: FactoryGirl.create(:genus_name, name: name)
-  FactoryGirl.create :taxon_state, taxon_id: @genus.id
+  @genus = create :genus, subfamily: @subfamily, tribe: @tribe, name: create(:genus_name, name: name)
+  create :taxon_state, taxon_id: @genus.id
   @genus.history_items.create! taxt: "#{name} history"
 end
 Given /^genus "(.*?)" exists in that subfamily/ do |name|
-  @genus = FactoryGirl.create :genus, subfamily: @subfamily, tribe: nil, name: FactoryGirl.create(:genus_name, name: name)
-  FactoryGirl.create :taxon_state, taxon_id: @genus.id
+  @genus = create :genus, subfamily: @subfamily, tribe: nil, name: create(:genus_name, name: name)
+  create :taxon_state, taxon_id: @genus.id
   @genus.history_items.create! taxt: "#{name} history"
 end
 Given /^there is a genus "([^"]*)" with "([^"]*)" name$/ do |name, gender|
@@ -163,29 +163,29 @@ Given /^there is a parentless subspecies "([^"]*)"$/ do |name|
 end
 
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|
-  genus = Genus.find_by_name(parent_name) || FactoryGirl.create(:genus, name: FactoryGirl.create(:genus_name, name: parent_name))
-  FactoryGirl.create :taxon_state, taxon_id: genus.id
-  @species = FactoryGirl.create :species, name: FactoryGirl.create(:species_name, name: "#{parent_name} #{taxon_name}"), genus: genus
-  FactoryGirl.create :taxon_state, taxon_id: @species.id
+  genus = Genus.find_by_name(parent_name) || create(:genus, name: create(:genus_name, name: parent_name))
+  create :taxon_state, taxon_id: genus.id
+  @species = create :species, name: create(:species_name, name: "#{parent_name} #{taxon_name}"), genus: genus
+  create :taxon_state, taxon_id: @species.id
   history = 'none' unless history.present?
   @species.history_items.create! taxt: history
 end
 
 Given /an imported species exists with a name of "(.*?)" and a genus of "(.*?)"/ do |taxon_name, parent_name|
-  genus = Genus.find_by_name(parent_name) || FactoryGirl.create(:genus, name: FactoryGirl.create(:genus_name, name: parent_name))
-  FactoryGirl.create :taxon_state, taxon_id: genus.id
-  name = FactoryGirl.create :species_name, name: "#{parent_name} #{taxon_name}", auto_generated: true, origin: 'hol'
-  @species = FactoryGirl.create :species, name: name, genus: genus,  auto_generated: true, origin: 'hol'
+  genus = Genus.find_by_name(parent_name) || create(:genus, name: create(:genus_name, name: parent_name))
+  create :taxon_state, taxon_id: genus.id
+  name = create :species_name, name: "#{parent_name} #{taxon_name}", auto_generated: true, origin: 'hol'
+  @species = create :species, name: name, genus: genus,  auto_generated: true, origin: 'hol'
 end
 
 Given /^species "(.*?)" exists in that subgenus$/ do |name|
-  @species = FactoryGirl.create :species, subfamily: @subfamily, genus: @genus, subgenus: @subgenus, name: FactoryGirl.create(:species_name, name: name)
-  FactoryGirl.create :taxon_state, taxon_id: @species.id
+  @species = create :species, subfamily: @subfamily, genus: @genus, subgenus: @subgenus, name: create(:species_name, name: name)
+  create :taxon_state, taxon_id: @species.id
   @species.history_items.create! taxt: "#{name} history"
 end
 Given /^species "(.*?)" exists in that genus$/ do |name|
-  @species = FactoryGirl.create :species, subfamily: @subfamily, genus: @genus, name: FactoryGirl.create(:species_name, name: name)
-  FactoryGirl.create :taxon_state, taxon_id: @species.id
+  @species = create :species, subfamily: @subfamily, genus: @genus, name: create(:species_name, name: name)
+  create :taxon_state, taxon_id: @species.id
   @species.history_items.create! taxt: "#{name} history"
 end
 Given /^there is an original species "([^"]*)" with genus "([^"]*)"$/ do |species_name, genus_name|
@@ -218,9 +218,9 @@ Given /^there is a species "([^"]*)"(?: described by "([^"]*)")? which is a juni
 end
 
 def make_author_of_taxon taxon, author_name
-  author = FactoryGirl.create :author
-  author_name = FactoryGirl.create :author_name, name: author_name, author: author
-  reference = FactoryGirl.create :article_reference, author_names: [author_name]
+  author = create :author
+  author_name = create :author_name, name: author_name, author: author
+  reference = create :article_reference, author_names: [author_name]
   taxon.protonym.authorship.update_attributes! reference: reference
 end
 
@@ -236,15 +236,15 @@ Given /^there is a subspecies "([^"]*)" without a species/ do |subspecies_name|
   create_subspecies subspecies_name, species: nil
 end
 Given /a subspecies exists for that species with a name of "(.*?)" and an epithet of "(.*?)" and a taxonomic history of "(.*?)"/ do |name, epithet, history|
-  subspecies = FactoryGirl.create :subspecies, name: FactoryGirl.create(:subspecies_name, name: name, epithet: epithet, epithets: epithet), species: @species, genus: @species.genus
-  FactoryGirl.create :taxon_state, taxon_id: subspecies.id
+  subspecies = create :subspecies, name: create(:subspecies_name, name: name, epithet: epithet, epithets: epithet), species: @species, genus: @species.genus
+  create :taxon_state, taxon_id: subspecies.id
   subspecies.save!
   history = 'none' unless history.present?
   subspecies.history_items.create! taxt: history
 end
 Given /^subspecies "(.*?)" exists in that species$/ do |name|
-  @subspecies = FactoryGirl.create :subspecies, subfamily: @subfamily, genus: @genus, species: @species, name: FactoryGirl.create(:subspecies_name, name: name)
-  FactoryGirl.create :taxon_state, taxon_id: @subspecies.id
+  @subspecies = create :subspecies, subfamily: @subfamily, genus: @genus, species: @species, name: create(:subspecies_name, name: name)
+  create :taxon_state, taxon_id: @subspecies.id
   @subspecies.save!
   @subspecies.history_items.create! taxt: "#{name} history"
 end

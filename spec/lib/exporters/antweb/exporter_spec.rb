@@ -200,9 +200,9 @@ describe Exporters::Antweb::Exporter do
 
   describe "Sending 'author_date_html' that includes the full reference in the rollover" do
     it "should do it" do
-      journal = FactoryGirl.create :journal, name: "Neue Denkschriften"
-      author_name = FactoryGirl.create :author_name, name: "Forel, A."
-      reference = FactoryGirl.create(:article_reference, author_names: [author_name],
+      journal = create :journal, name: "Neue Denkschriften"
+      author_name = create :author_name, name: "Forel, A."
+      reference = create(:article_reference, author_names: [author_name],
                                      citation_year: "1874",
                                      title: "Les fourmis de la Suisse",
                                      journal: journal, series_volume_issue: "26", pagination: "1-452")
@@ -236,7 +236,7 @@ describe Exporters::Antweb::Exporter do
     end
     it "should send nil if the protonym's reference is a MissingReference" do
       taxon = create_genus
-      taxon.protonym.authorship.reference = FactoryGirl.create :missing_reference
+      taxon.protonym.authorship.reference = create :missing_reference
       taxon.save!
       reference_id = @exporter.export_taxon(taxon)[18]
       expect(reference_id).to be_nil
@@ -249,7 +249,7 @@ describe Exporters::Antweb::Exporter do
       expect(@exporter.export_taxon(taxon)[19]).to eq('Neotropic')
     end
     it "should send the locality" do
-      taxon = create_genus protonym: FactoryGirl.create(:protonym, locality: 'Canada')
+      taxon = create_genus protonym: create(:protonym, locality: 'Canada')
       expect(@exporter.export_taxon(taxon)[20]).to eq('Canada')
     end
   end

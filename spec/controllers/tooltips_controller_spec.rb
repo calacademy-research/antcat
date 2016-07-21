@@ -8,14 +8,14 @@ describe TooltipsController do
 
   describe '#index' do
     context "signed in" do
-      let!(:no_namespace)         { FactoryGirl.create :tooltip, key: "no_namespace" }
-      let!(:references_authors)   { FactoryGirl.create :tooltip, key: "authors", scope: "references"}
-      let!(:references_title)     { FactoryGirl.create :tooltip, key: "title", scope: "references" }
-      let!(:references_new_title) { FactoryGirl.create :tooltip, key: "new.title", scope: "references" }
-      let!(:taxa_type_species)    { FactoryGirl.create :tooltip, key: "type_species", scope: "taxa" }
+      let!(:no_namespace)         { create :tooltip, key: "no_namespace" }
+      let!(:references_authors)   { create :tooltip, key: "authors", scope: "references"}
+      let!(:references_title)     { create :tooltip, key: "title", scope: "references" }
+      let!(:references_new_title) { create :tooltip, key: "new.title", scope: "references" }
+      let!(:taxa_type_species)    { create :tooltip, key: "type_species", scope: "taxa" }
 
       before do
-        editor = FactoryGirl.create :user, can_edit: true
+        editor = create :user, can_edit: true
         sign_in editor
       end
 
@@ -54,11 +54,11 @@ describe TooltipsController do
   end
 
   describe '#show' do
-    let(:tooltip) { FactoryGirl.create :tooltip }
+    let(:tooltip) { create :tooltip }
 
     context "signed in" do
       before do
-        editor = FactoryGirl.create :user, can_edit: true
+        editor = create :user, can_edit: true
         sign_in editor
 
         get :show, id: tooltip.id
@@ -80,11 +80,11 @@ describe TooltipsController do
   end
 
   describe '#edit' do
-    let(:tooltip) { FactoryGirl.create :tooltip }
+    let(:tooltip) { create :tooltip }
 
     context "signed in" do
       it 'redirects to the "show" action for the tooltip' do
-        editor = FactoryGirl.create :user, can_edit: true
+        editor = create :user, can_edit: true
         sign_in editor
 
         get :edit, id: tooltip.id
@@ -103,7 +103,7 @@ describe TooltipsController do
   describe '#create' do
     context "signed in" do
       before do
-        editor = FactoryGirl.create :user, can_edit: true
+        editor = create :user, can_edit: true
         sign_in editor
       end
 

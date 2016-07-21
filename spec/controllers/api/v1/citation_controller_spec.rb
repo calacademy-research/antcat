@@ -25,7 +25,6 @@ describe Api::V1::CitationsController do
       expect(response.status).to eq(200)
       expect(response.body.to_s).to include("pages")
 
-
       citations=JSON.parse(response.body)
       expect(citations.count).to eq(7)
     end

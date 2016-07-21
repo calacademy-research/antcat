@@ -81,7 +81,7 @@ FactoryGirl.define do
 
   factory :taxon do
     after :create do |taxon|
-      FactoryGirl.create(:taxon_state, taxon_id: taxon.id)
+      create(:taxon_state, taxon_id: taxon.id)
       taxon.touch_with_version
     end
     to_create { |instance| instance.save(validate: false) }
@@ -94,7 +94,7 @@ FactoryGirl.define do
 
   factory :family do
     after :create do |family|
-      FactoryGirl.create(:taxon_state, taxon_id: family.id)
+      create(:taxon_state, taxon_id: family.id)
       family.touch_with_version
     end
     to_create { |instance| instance.save(validate: false) }
@@ -107,7 +107,7 @@ FactoryGirl.define do
 
   factory :subfamily do
     after :create do |subfamily|
-      FactoryGirl.create(:taxon_state, taxon_id: subfamily.id)
+      create(:taxon_state, taxon_id: subfamily.id)
       subfamily.touch_with_version
     end
     to_create { |instance| instance.save(validate: false) }
@@ -120,7 +120,7 @@ FactoryGirl.define do
 
   factory :tribe do
     after :create do |tribe|
-      FactoryGirl.create(:taxon_state, taxon_id: tribe.id)
+      create(:taxon_state, taxon_id: tribe.id)
       tribe.touch_with_version
     end
     to_create { |instance| instance.save(validate: false) }
@@ -135,7 +135,7 @@ FactoryGirl.define do
   # Subtribe:s, so low-priority.
   factory :subtribe do
     after :create do |subtribe|
-      FactoryGirl.create(:taxon_state, taxon_id: subtribe.id)
+      create(:taxon_state, taxon_id: subtribe.id)
       subtribe.touch_with_version
     end
     to_create { |instance| instance.save(validate: false) }
@@ -148,7 +148,7 @@ FactoryGirl.define do
 
   factory :genus do
     after :create do |genus|
-      FactoryGirl.create(:taxon_state, taxon_id: genus.id)
+      create(:taxon_state, taxon_id: genus.id)
       genus.touch_with_version
     end
     to_create { |instance| instance.save(validate: false) }
@@ -162,7 +162,7 @@ FactoryGirl.define do
 
   factory :subgenus do
     after :create do |subgenus|
-      FactoryGirl.create(:taxon_state, taxon_id: subgenus.id)
+      create(:taxon_state, taxon_id: subgenus.id)
       subgenus.touch_with_version
     end
     to_create { |instance| instance.save(validate: false) }
@@ -175,7 +175,7 @@ FactoryGirl.define do
 
   factory :species_group_taxon do
     after :create do |species_group_taxon|
-      FactoryGirl.create(:taxon_state, taxon_id: species_group_taxon.id)
+      create(:taxon_state, taxon_id: species_group_taxon.id)
       species_group_taxon.touch_with_version
     end
     to_create { |instance| instance.save(validate: false) }
@@ -187,7 +187,7 @@ FactoryGirl.define do
 
   factory :species do
     after :create do |species|
-      FactoryGirl.create(:taxon_state, taxon_id: species.id)
+      create(:taxon_state, taxon_id: species.id)
       species.touch_with_version
     end
     to_create { |instance| instance.save(validate: false) }
@@ -199,7 +199,7 @@ FactoryGirl.define do
 
   factory :subspecies do
     after :create do |subspecies|
-      FactoryGirl.create(:taxon_state, taxon_id: subspecies.id)
+      create(:taxon_state, taxon_id: subspecies.id)
       subspecies.touch_with_version
     end
     to_create { |instance| instance.save(validate: false) }
@@ -246,7 +246,7 @@ end
 def create_taxon_object name_or_attributes, taxon_factory, name_factory, attributes = {}
   if name_or_attributes.kind_of? String
     name, epithet, epithets = get_name_parts name_or_attributes
-    attributes = attributes.reverse_merge name: FactoryGirl.create(name_factory, name: name, epithet: epithet, epithets: epithets), name_cache: name
+    attributes = attributes.reverse_merge name: create(name_factory, name: name, epithet: epithet, epithets: epithets), name_cache: name
   else
     attributes = name_or_attributes
   end
@@ -266,17 +266,17 @@ end
 
 def find_or_create_name name
   name, epithet, epithets = get_name_parts name
-  FactoryGirl.create :name, name: name, epithet: epithet, epithets: epithets
+  create :name, name: name, epithet: epithet, epithets: epithets
 end
 
 def create_species_name name
   name, epithet, epithets = get_name_parts name
-  FactoryGirl.create :species_name, name: name, epithet: epithet, epithets: epithets
+  create :species_name, name: name, epithet: epithet, epithets: epithets
 end
 
 def create_subspecies_name name
   name, epithet, epithets = get_name_parts name
-  FactoryGirl.create :subspecies_name, name: name, epithet: epithet, epithets: epithets
+  create :subspecies_name, name: name, epithet: epithet, epithets: epithets
 end
 
 def create_synonym senior, attributes = {}
@@ -286,19 +286,19 @@ def create_synonym senior, attributes = {}
 end
 
 def create_taxon_with_state taxon_type, name
-  taxon = FactoryGirl.create taxon_type, name: name
-  FactoryGirl.create :taxon_state, taxon_id: taxon.id
+  taxon = create taxon_type, name: name
+  create :taxon_state, taxon_id: taxon.id
   taxon.touch_with_version
   taxon
 end
 
 def create_taxon_version_and_change review_state, user = @user, approver = nil, genus_name = 'default_genus'
-  name = FactoryGirl.create :name, name: genus_name
-  taxon = FactoryGirl.create :genus, name: name
+  name = create :name, name: genus_name
+  taxon = create :genus, name: name
   taxon.taxon_state.review_state = review_state
 
-  change = FactoryGirl.create :change, user_changed_taxon_id: taxon.id, change_type: "create"
-  FactoryGirl.create :version, item_id: taxon.id, whodunnit: user.id, change_id: change.id
+  change = create :change, user_changed_taxon_id: taxon.id, change_type: "create"
+  create :version, item_id: taxon.id, whodunnit: user.id, change_id: change.id
 
   unless approver.nil?
     change.update_attributes! approver: approver, approved_at: Time.now if approver

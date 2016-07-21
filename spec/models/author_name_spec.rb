@@ -9,7 +9,7 @@ describe AuthorName do
   it "has many references" do
     author_name = AuthorName.create! :name => 'Fisher, B.L.', :author => author
 
-    reference = FactoryGirl.create(:reference)
+    reference = create(:reference)
     author_name.references << reference
 
     expect(author_name.references.first).to eq(reference)
@@ -17,7 +17,7 @@ describe AuthorName do
 
   it "can't be blank" do
     author_name = AuthorName.new
-    author_name.author = FactoryGirl.create :author
+    author_name.author = create :author
     author_name.name = nil
     expect(author_name).not_to be_valid
     author_name.name = ''
@@ -27,8 +27,8 @@ describe AuthorName do
   end
 
   it "can't be a duplicate" do
-    author_name = FactoryGirl.create :author_name, name: 'Bolton'
-    author_name.author = FactoryGirl.create :author
+    author_name = create :author_name, name: 'Bolton'
+    author_name.author = create :author
     author_name.save!
 
     author_name = FactoryGirl.build :author_name, name: 'Bolton'
@@ -56,8 +56,8 @@ describe AuthorName do
 
   describe "editing" do
     it "should update associated references when the name is changed" do
-      author_name = FactoryGirl.create :author_name, :name => 'Ward'
-      reference = FactoryGirl.create :reference, :author_names => [author_name]
+      author_name = create :author_name, :name => 'Ward'
+      reference = create :reference, :author_names => [author_name]
       author_name.update_attribute :name, 'Fisher'
       expect(Reference.find(reference.id).author_names_string).to eq('Fisher')
     end
@@ -121,7 +121,7 @@ describe AuthorName do
       ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
         AuthorName.create! :name => name, :author => author
       end
-      reference = FactoryGirl.create :reference, :author_names => [AuthorName.find_by_name('Most Recent')]
+      reference = create :reference, :author_names => [AuthorName.find_by_name('Most Recent')]
       ReferenceAuthorName.create! :created_at => Time.now - 5, :author_name => AuthorName.find_by_name('Recent'),
                                   :reference => reference
       ReferenceAuthorName.create! :created_at => Time.now - 10, :author_name => AuthorName.find_by_name('Old'),
@@ -156,7 +156,7 @@ describe AuthorName do
   describe "Versioning" do
     it "should record versions" do
       with_versioning do
-        author_name = FactoryGirl.create :author_name
+        author_name = create :author_name
         expect(author_name.versions.last.event).to eq('create')
       end
     end

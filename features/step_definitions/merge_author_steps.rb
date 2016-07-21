@@ -1,5 +1,5 @@
 Given /^the following names exist for an(?:other)? author$/ do |table|
-  @author = FactoryGirl.create :author
+  @author = create :author
   table.raw.each do |row|
     @author.names.create! name: row.first
   end

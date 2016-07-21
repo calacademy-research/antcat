@@ -9,16 +9,13 @@ describe Api::V1::ProtonymsController do
       expect(response.body.to_s).to include(taxon.id.to_s)
     end
 
-
     it "gets all protonyms" do
       create_taxon
       species = create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
-
       get(:index, nil)
       expect(response.status).to eq(200)
-
 
       author_names=JSON.parse(response.body)
       expect(author_names.count).to eq(7)

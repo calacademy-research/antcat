@@ -6,7 +6,7 @@ describe User do
 
   describe "scopes" do
     describe ".feedback_emails_recipients" do
-      let!(:user) { FactoryGirl.create :user, receive_feedback_emails: true }
+      let!(:user) { create :user, receive_feedback_emails: true }
 
       it "returns per the database" do
         expect(User.feedback_emails_recipients).to eq [user]
@@ -15,12 +15,12 @@ describe User do
 
     describe ".as_angle_bracketed_emails" do
       before do
-        FactoryGirl.create :editor, name: "Archibald",
+        create :editor, name: "Archibald",
           email: "archibald@antcat.org", receive_feedback_emails: true
-        FactoryGirl.create :editor, name: "Batiatus",
+        create :editor, name: "Batiatus",
           email: "batiatus@antcat.org", receive_feedback_emails: true
 
-        FactoryGirl.create :editor, name: "Flint",
+        create :editor, name: "Flint",
           email: "flint@antcat.org"
       end
 
@@ -61,7 +61,7 @@ describe User do
 
   describe "#angle_bracketed_email" do
     let(:user) do
-      FactoryGirl.create :user, name: "An Editor", email: "editor@example.com"
+      create :user, name: "An Editor", email: "editor@example.com"
     end
 
     it "builds a string suitable for emails" do

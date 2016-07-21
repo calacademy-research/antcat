@@ -3,17 +3,16 @@ require 'spec_helper'
 describe Api::V1::AuthorsController do
   describe "getting data" do
     it "fetches an author primary key" do
-      barry_bolton = FactoryGirl.create :author
-      bolton = FactoryGirl.create :author_name, name: 'Bolton', author: barry_bolton
+      barry_bolton = create :author
+      bolton = create :author_name, name: 'Bolton', author: barry_bolton
       get(:show, {'id' => bolton.id}, nil)
       expect(response.status).to eq(200)
       expect(response.body.to_s).to include(bolton.id.to_s)
     end
 
-
     it "gets all author primary keys" do
-      barry_bolton = FactoryGirl.create :author
-      second = FactoryGirl.create :author
+      barry_bolton = create :author
+      second = create :author
 
       get(:index, nil)
       expect(response.status).to eq(200)

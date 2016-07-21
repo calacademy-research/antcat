@@ -7,8 +7,8 @@ describe Taxon do
       expect(Taxon.find_by_name('sdfsdf')).to eq(nil)
     end
     it "should return one of the items if there are more than one (bad!)" do
-      name = FactoryGirl.create :genus_name, name: 'Monomorium'
-      2.times {FactoryGirl.create :genus, name: name}
+      name = create :genus_name, name: 'Monomorium'
+      2.times {create :genus, name: name}
       expect(Taxon.find_by_name('Monomorium').name.name).to eq('Monomorium')
     end
   end
@@ -31,10 +31,10 @@ describe Taxon do
 
   describe "Find name" do
     before do
-      FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Monomorium')
-      @monoceros = FactoryGirl.create :genus, name: FactoryGirl.create(:genus_name, name: 'Monoceros')
-      species_name = FactoryGirl.create(:species_name, name: 'Monoceros rufa', epithet: 'rufa')
-      @rufa = FactoryGirl.create :species, genus: @monoceros, name: species_name
+      create :genus, name: create(:genus_name, name: 'Monomorium')
+      @monoceros = create :genus, name: create(:genus_name, name: 'Monoceros')
+      species_name = create(:species_name, name: 'Monoceros rufa', epithet: 'rufa')
+      @rufa = create :species, genus: @monoceros, name: species_name
     end
     it "should return [] if nothing matches" do
       expect(Taxa::Search.find_name('sdfsdf')).to eq([])
@@ -63,9 +63,9 @@ describe Taxon do
       expect(results.size).to eq(6)
     end
     it "should sort results by name" do
-      FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepti')
-      FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepta')
-      FactoryGirl.create :subfamily, name: FactoryGirl.create(:name, name: 'Lepte')
+      create :subfamily, name: create(:name, name: 'Lepti')
+      create :subfamily, name: create(:name, name: 'Lepta')
+      create :subfamily, name: create(:name, name: 'Lepte')
       results = Taxa::Search.find_name 'Lept', 'beginning_with'
       expect(results.map(&:name).map(&:to_s)).to eq(['Lepta', 'Lepte', 'Lepti'])
     end
