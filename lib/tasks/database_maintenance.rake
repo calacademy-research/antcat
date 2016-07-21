@@ -56,7 +56,7 @@ namespace :antcat do
       end
 
       antcat_prompt "Search *any* version? (may take a while) [Y/n/q]" do
-        broken_ids.each_id do |id, tag |
+        broken_ids.each_id do |id, tag|
           PaperTrail::Version.where(item_id: id).each do |version|
             puts "Found #{tag} ##{id} (version id #{version.id}): #{version.reify}"
           end
