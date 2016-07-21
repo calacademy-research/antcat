@@ -19,9 +19,9 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
         puts "  Ditching: #{word}"
       else
         if austin.length > 1
-          austin = austin + " "
+          austin += " "
         end
-        austin = austin + word
+        austin += word
       end
     end
     puts "  rebuilt: '#{austin}'"
