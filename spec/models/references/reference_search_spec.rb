@@ -58,7 +58,7 @@ describe Reference do
           bolton_fisher_reference = create :reference, author_names: [bolton,fisher]
 
           Sunspot.commit
-          expect(Reference.do_search(q: %q{author:"Bolton Fisher"})).to eq([bolton_fisher_reference])
+          expect(Reference.do_search(q: 'author:"Bolton Fisher"')).to eq([bolton_fisher_reference])
         end
       end
 

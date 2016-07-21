@@ -10,7 +10,7 @@ end
 
 Then /^I should see "([^"]*)" and no other feed items$/ do |text|
   step %Q[I should see "#{text}"]
-  step %Q[I should see 1 item in the feed]
+  step "I should see 1 item in the feed"
 end
 
 Then /^I should see (\d+) items? in the feed$/ do |expected_count|

@@ -128,7 +128,7 @@ describe AntcatMarkdown do
     context "missing taxon" do
       it "renders an error message" do
         returned = dummy_parser.send :try_linking_taxon_id, "9999"
-        expect(returned).to eq %Q[<span class="broken-markdown-link"> could not find taxon with id 9999 </span>]
+        expect(returned).to eq '<span class="broken-markdown-link"> could not find taxon with id 9999 </span>'
       end
     end
   end
