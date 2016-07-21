@@ -52,7 +52,6 @@ class AntcatMarkdown < Redcarpet::Render::HTML
           reference = Reference.find($1)
           reference.decorate.to_link
         else
-          $1
           broken_markdown_link "reference", $1
         end
       end

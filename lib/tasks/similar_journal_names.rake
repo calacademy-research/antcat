@@ -5,7 +5,7 @@ namespace :antcat do
 
     desc "Find similar journal names; MIN_DISTANCE=0.975; FORMAT=[hacker|markdown]"
     task similar_journal_names: :environment do
-      MIN_DISTANCE = ENV["MIN_DISTANCE"].to_f || 0.975
+      MIN_DISTANCE = (ENV["MIN_DISTANCE"] || 0.975).to_f
       FORMAT = ENV["FORMAT"] || "hacker"
 
       FALSE_POSITIVES = {
