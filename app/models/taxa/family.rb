@@ -4,7 +4,7 @@ class Family < Taxon
   def parent
   end
 
-  def parent= parent_taxon
+  def parent= _parent_taxon
     raise "do you really want to change the parent of Formicidae?"
   end
 

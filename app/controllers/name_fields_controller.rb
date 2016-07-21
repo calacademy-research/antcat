@@ -71,7 +71,7 @@ class NameFieldsController < NamePickersController
     data[:id] = nil
   end
 
-  def tell_about_existing name, data
+  def tell_about_existing _name, data
     data[:success] = false
     data[:error_message] = "This name is in use by another taxon."
     data[:reason] = 'homonym'

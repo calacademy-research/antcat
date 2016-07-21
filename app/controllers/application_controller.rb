@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
     current_user.try(:id)
   end
 
-  def root_redirect_for_active_admin exception
+  def root_redirect_for_active_admin _exception
     redirect_to root_url
   end
 

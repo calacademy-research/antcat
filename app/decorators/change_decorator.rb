@@ -33,7 +33,7 @@ class ChangeDecorator < Draper::Decorator
     format_time_ago change.approved_at
   end
 
-  def undo_button taxon
+  def undo_button _taxon
     # TODO sort this out
     # This is the snippet that was moved here from ChangesHelper
     #   # This extra check (for change_type deleted) covers the case when we've deleted children

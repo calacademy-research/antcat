@@ -2,7 +2,7 @@
 # by application code, so could well be dead
 
 class Reference < ActiveRecord::Base
-  def replace_with reference, options = {}
+  def replace_with reference, _options = {}
     Taxt.taxt_fields.each do |klass, fields|
       klass.send(:all).each do |record|
         fields.each do |field|

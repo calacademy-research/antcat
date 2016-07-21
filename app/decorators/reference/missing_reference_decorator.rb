@@ -1,7 +1,7 @@
 class MissingReferenceDecorator < ReferenceDecorator
   delegate_all
 
-  def format_inline_citation options = {}
+  def format_inline_citation _options = {}
     make_html_safe reference.citation
   end
 

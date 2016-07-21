@@ -79,7 +79,7 @@ class Taxa::SaveTaxon
   end
 
   private
-    def update_elements params, taxon_to_update, status_string, change_id
+    def update_elements _params, taxon_to_update, status_string, _change_id
       taxon_to_update.status = status_string
       taxon_to_update.current_valid_taxon = @taxon
       TaxonHistoryItem.where(taxon_id: taxon_to_update.id).update_all(taxon_id: @taxon.id)
