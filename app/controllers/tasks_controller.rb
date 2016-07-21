@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
-  before_filter :authenticate_editor, except: [:index, :show]
-  before_filter :set_task, only: [:show, :edit, :update, :reopen, :complete, :close]
+  before_action :authenticate_editor, except: [:index, :show]
+  before_action :set_task, only: [:show, :edit, :update, :reopen, :complete, :close]
 
   def index
     @tasks = Task.by_status_and_date.paginate(page: params[:page])

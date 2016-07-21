@@ -1,5 +1,5 @@
 class ActivitiesController < ApplicationController
-  before_filter :authenticate_superadmin, only: [:destroy]
+  before_action :authenticate_superadmin, only: [:destroy]
   before_action :set_activity, only: [:destroy]
 
   def destroy

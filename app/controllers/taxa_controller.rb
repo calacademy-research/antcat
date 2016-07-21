@@ -1,11 +1,11 @@
 class TaxaController < ApplicationController
-  before_filter :authenticate_editor, except: [:autocomplete]
-  before_filter :authenticate_superadmin, only: [:destroy]
+  before_action :authenticate_editor, except: [:autocomplete]
+  before_action :authenticate_superadmin, only: [:destroy]
 
-  before_filter :redirect_by_parent_name_id, only: :new
+  before_action :redirect_by_parent_name_id, only: :new
 
-  before_filter :set_previous_combination, only: [:new, :create, :edit, :update]
-  before_filter :set_taxon, except: [:new, :create, :show, :autocomplete]
+  before_action :set_previous_combination, only: [:new, :create, :edit, :update]
+  before_action :set_taxon, except: [:new, :create, :show, :autocomplete]
 
   def new
     @taxon = get_taxon_for_create

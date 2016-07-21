@@ -1,5 +1,5 @@
 class SynonymsController < ApplicationController
-  before_filter :authenticate_editor, except: [:show]
+  before_action :authenticate_editor, except: [:show]
 
   def show
     @synonym = Synonym.find(params[:id])

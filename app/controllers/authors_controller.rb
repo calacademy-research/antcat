@@ -1,5 +1,5 @@
 class AuthorsController < ApplicationController
-  before_filter :authenticate_editor, except: [:index, :autocomplete]
+  before_action :authenticate_editor, except: [:index, :autocomplete]
   layout "references"
 
   def index

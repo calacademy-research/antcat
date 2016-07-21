@@ -6,9 +6,9 @@ class ApplicationController < ActionController::Base
 
   # CORS protection defeat - we're read only, so this is okay.
   # This kind of thing can't stand when we have a write level API
-  skip_before_filter :verify_authenticity_token
-  before_filter :cors_preflight_check
-  after_filter :cors_set_access_control_headers
+  skip_before_action :verify_authenticity_token
+  before_action :cors_preflight_check
+  after_action :cors_set_access_control_headers
   # end CORS
 
   delegate :can_edit?, :is_superadmin?, :can_review_changes?,

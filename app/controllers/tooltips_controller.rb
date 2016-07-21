@@ -1,7 +1,7 @@
 class TooltipsController < ApplicationController
   before_action :set_tooltip, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_editor
-  skip_before_filter :authenticate_editor, only: [:enabled_selectors]
+  before_action :authenticate_editor
+  skip_before_action :authenticate_editor, only: [:enabled_selectors]
 
   def index
     tooltips = Tooltip.all
