@@ -86,32 +86,32 @@ class Name < ActiveRecord::Base
       )
 
     when :genus
-        return GenusName.create!(
-          name: string,
-          name_html: i_tagify(string),
-          epithet: string, #is this used?
-          epithet_html: i_tagify(string) #is this used?
-          #protonym_html: i_tagify(string) #is this used?
-          # Note: GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }
-          # => all true except Aretidris because protonym_html is nil
-        )
+      return GenusName.create!(
+        name: string,
+        name_html: i_tagify(string),
+        epithet: string, #is this used?
+        epithet_html: i_tagify(string) #is this used?
+        #protonym_html: i_tagify(string) #is this used?
+        # Note: GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }
+        # => all true except Aretidris because protonym_html is nil
+      )
     when :tribe
-        return TribeName.create!(
-          name: string,
-          name_html: string,
-          epithet: string, #is this used?
-          epithet_html: string #is this used?
-          #protonym_html: string
-        )
+      return TribeName.create!(
+        name: string,
+        name_html: string,
+        epithet: string, #is this used?
+        epithet_html: string #is this used?
+        #protonym_html: string
+      )
     when :subfamily
-        return SubfamilyName.create!(
-          name: string,
-          name_html: string,
-          epithet: string, #is this used?
-          epithet_html: string #is this used?
-          #protonym_html: string #is this used?
-          # Note: SubfamilyName.all.map {|t| t.name == t.protonym_html }.uniq # => true
-        )
+      return SubfamilyName.create!(
+        name: string,
+        name_html: string,
+        epithet: string, #is this used?
+        epithet_html: string #is this used?
+        #protonym_html: string #is this used?
+        # Note: SubfamilyName.all.map {|t| t.name == t.protonym_html }.uniq # => true
+      )
     end
 
     if irregular

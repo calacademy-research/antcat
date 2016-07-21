@@ -44,7 +44,7 @@ class ReferenceDecorator < ApplicationDecorator
 
   def format_authorship_html
     helpers.content_tag(:span, title: format) do
-     format_author_last_names
+      format_author_last_names
     end
   end
 

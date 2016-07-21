@@ -162,11 +162,11 @@ describe Parsers::AuthorParser do
   end
 
   describe "parsing first name and initials and last name" do
-   it "should return an empty hash if the string is empty" do
-     ['', nil].each do |string|
-       expect(@parser.get_name_parts(string)).to eq({})
-     end
-   end
+    it "should return an empty hash if the string is empty" do
+      ['', nil].each do |string|
+        expect(@parser.get_name_parts(string)).to eq({})
+      end
+    end
    it "should simply return the name if there's only one word" do
      expect(@parser.get_name_parts('Bolton')).to eq({last: 'Bolton'})
    end

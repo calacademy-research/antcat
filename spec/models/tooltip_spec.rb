@@ -43,10 +43,10 @@ describe Tooltip do
       let!(:enabled) { create :tooltip }
       let!(:disabled) { create :tooltip, selector_enabled: false }
       let!(:selector_enabled) do
-         create :tooltip, selector_enabled: true, selector: "#header"
+        create :tooltip, selector_enabled: true, selector: "#header"
       end
       let!(:selector_enabled_but_empty_selector) do
-         create :tooltip, selector_enabled: true, selector: ""
+        create :tooltip, selector_enabled: true, selector: ""
       end
 
       it "only returns enabled selectors" do
@@ -54,7 +54,7 @@ describe Tooltip do
       end
 
       it "handles nil" do
-         create :tooltip, selector_enabled: true
+        create :tooltip, selector_enabled: true
         expect(Tooltip.enabled_selectors).to eq [selector_enabled]
       end
     end

@@ -1,5 +1,5 @@
 crumb :editors_panel do
- link "Editor's Panel", editors_panel_path
+  link "Editor's Panel", editors_panel_path
 end
 
 crumb :tooltips do
