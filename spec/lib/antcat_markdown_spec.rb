@@ -37,12 +37,25 @@ describe AntcatMarkdown do
       HTML
     end
 
-    it "formats reference ids" do
-      reference = create :article_reference
-      markdown = "%r#{reference.id}"
+    describe "reference ids" do
+      context "existing reference" do
+        it "links the reference" do
+          reference = create :article_reference
+          markdown = "%r#{reference.id}"
 
-      expected = "<p>#{reference.decorate.to_link}</p>\n"
-      expect(AntcatMarkdown.render(markdown)).to eq expected
+          expected = "<p>#{reference.decorate.to_link}</p>\n"
+          expect(AntcatMarkdown.render(markdown)).to eq expected
+        end
+      end
+
+      context "missing (non-existing) reference" do
+        it "renders an error message" do
+          markdown = "%r9999999"
+
+          expected = %Q[<p><span class="broken-markdown-link"> could not find reference with id 9999999 </span></p>\n]
+          expect(AntcatMarkdown.render(markdown)).to eq expected
+        end
+      end
     end
 
     it "formats lists of taxon ids" do
@@ -81,17 +94,21 @@ describe AntcatMarkdown do
   end
 
   describe "#try_linking_taxon_id" do
-    it "return the string if there's no taxon" do
-      returned = dummy_parser.send :try_linking_taxon_id, "9999"
-      expect(returned).to eq "9999"
+    context "existing taxon" do
+      it "links existing taxa" do
+        taxon = create :species
+        returned = dummy_parser.send(:try_linking_taxon_id, taxon.id.to_s)
+
+        expected = %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
+        expect(returned).to eq expected
+      end
     end
 
-    it "links existing taxa" do
-      taxon = create :species
-      returned = dummy_parser.send(:try_linking_taxon_id, taxon.id.to_s)
-
-      expected = %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
-      expect(returned).to eq expected
+    context "missing taxon" do
+      it "renders an error message" do
+        returned = dummy_parser.send :try_linking_taxon_id, "9999"
+        expect(returned).to eq %Q[<span class="broken-markdown-link"> could not find taxon with id 9999 </span>]
+      end
     end
   end
 end

@@ -52,6 +52,7 @@ class AntcatMarkdown < Redcarpet::Render::HTML
           reference.decorate.to_link
         else
           $1
+          broken_markdown_link "reference", $1
         end
       end
     end
@@ -101,7 +102,15 @@ class AntcatMarkdown < Redcarpet::Render::HTML
         taxon = Taxon.find(string)
         taxon.decorate.link_to_taxon
       else
-        string
+        broken_markdown_link "taxon", string
       end
+    end
+
+    def broken_markdown_link type, string
+      <<-HTML.squish
+        <span class="broken-markdown-link">
+          could not find #{type} with id #{string}
+        </span>
+      HTML
     end
 end
