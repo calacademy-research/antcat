@@ -27,6 +27,7 @@ class AntcatMarkdown < Redcarpet::Render::HTML
     # TODO make smarter
     parsed = parse_taxon_ids full_document
     parsed = parse_reference_ids parsed
+    parsed = parse_journal_ids parsed
     parsed = parse_taxon_ids_list parsed
     parsed = parse_task_ids parsed
     parsed = parse_feedback_ids parsed
@@ -53,6 +54,19 @@ class AntcatMarkdown < Redcarpet::Render::HTML
         else
           $1
           broken_markdown_link "reference", $1
+        end
+      end
+    end
+
+    # matches: %j123
+    # renders: link to the journal, with the journal's name as the title
+    def parse_journal_ids full_document
+      full_document.gsub(/%j(\d+)/) do
+        if Journal.exists? $1
+          journal = Journal.find($1)
+          link_to journal.name, journal_path(journal)
+        else
+          broken_markdown_link "journal", $1
         end
       end
     end

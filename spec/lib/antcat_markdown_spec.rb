@@ -58,6 +58,27 @@ describe AntcatMarkdown do
       end
     end
 
+    describe "journal ids" do
+      context "existing journal" do
+        it "links the journal" do
+          journal = create :journal, name: "Zootaxa"
+          markdown = "%j#{journal.id}"
+
+          expected = %Q[<p><a href="/journals/#{journal.id}">#{journal.name}</a></p>\n]
+          expect(AntcatMarkdown.render(markdown)).to eq expected
+        end
+      end
+
+      context "missing journal" do
+        it "renders an error message" do
+          markdown = "%j9999999"
+
+          expected = %Q[<p><span class="broken-markdown-link"> could not find journal with id 9999999 </span></p>\n]
+          expect(AntcatMarkdown.render(markdown)).to eq expected
+        end
+      end
+    end
+
     it "formats lists of taxon ids" do
       lasius_name = create :species_name, name: "Lasius"
       lasius = create :species, name: lasius_name
