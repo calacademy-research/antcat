@@ -54,9 +54,8 @@ describe LinkHelper do
       taxon = create_subfamily 'Dolichoderinae'
       taxon.hol_id = 1234
       taxon.save!
-      expect(helper.link_to_hol(taxon)).to eq 
-        %{<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://hol.osu.edu/index.html?id=1234\">HOL</a>}
-                                                  
+      expect(helper.link_to_hol(taxon)).to eq(
+        %{<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://hol.osu.edu/index.html?id=1234\">HOL</a>})
     end
   end
 
