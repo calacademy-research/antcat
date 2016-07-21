@@ -8,7 +8,6 @@ namespace :antcat do
     # TODO allow editors to see the output of this in Active Admin.
     desc "Finds all tags, eg {ref 133005}, that are referred to but doesn't exist"
     task :broken_tags => :environment do
-      
       tags = {
         ref: Reference,
         nam: Name,
@@ -40,9 +39,9 @@ namespace :antcat do
       matched_ids.each do |tag, ids|
         broken_ids[tag] = reject_existing tags[tag], ids
       end
-     
+
       puts "Found no broken tags." and next if broken_ids.all? &:empty?
-      
+
       broken_ids_statistics = broken_ids.map { |tag, ids| "#{ids.size} #{tag}(s)" }.to_sentence 
       antcat_prompt "Found #{broken_ids_statistics}. List which? [Y/n/q]" do
         broken_ids.each { |tag, ids| puts "#{tag}: #{ids}" }
@@ -77,7 +76,7 @@ namespace :antcat do
           Taxon            => 'id'
         }
         taxon_id_field.default = "id"
-        
+
         taxa_with_broken_ids = []
         models_with_taxts.each_field do |field, model|
           tags.each_key do |tag|
