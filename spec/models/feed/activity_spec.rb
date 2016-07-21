@@ -8,7 +8,7 @@ describe Feed::Activity, feed: true do
       it "creates activities" do
         expect do
           Activity.create_activity_for_trackable nil, nil
-        end.to change{ Activity.count }.by 1
+        end.to change { Activity.count }.by 1
       end
     end
 

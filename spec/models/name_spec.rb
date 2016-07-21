@@ -221,13 +221,13 @@ describe Name do
       refs = name.send :references_in_taxt
       # count the total referencing items
       expect(refs.length).to eq(
-        Taxt.taxt_fields.collect{ |klass, fields| fields.length }.inject(&:+)
+        Taxt.taxt_fields.collect { |klass, fields| fields.length }.inject(&:+)
       )
       # count the total referencing items of each type
       Taxt.taxt_fields.each do |klass, fields|
         fields.each do |field|
-          expect(refs.select{ |i| i[:table] == klass.table_name }.length).to eq(
-            Taxt.taxt_fields.detect{ |k, f| k == klass }[1].length
+          expect(refs.select { |i| i[:table] == klass.table_name }.length).to eq(
+            Taxt.taxt_fields.detect { |k, f| k == klass }[1].length
           )
         end
       end
