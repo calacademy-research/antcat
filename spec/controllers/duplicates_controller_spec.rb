@@ -4,7 +4,7 @@ describe DuplicatesController do
   describe "find a duplicate case" do
 
     it "Should find a secondary_junior_homonym match for same name", pending: true do
-      pending ("Known to be broken - update to reflect current duplicates controller functinality")
+      pending "Known to be broken - update to reflect current duplicates controller functinality"
 
       @user = create :user
       species_epithet = "species a"
@@ -22,7 +22,7 @@ describe DuplicatesController do
     end
 
     it "Should find a return_to_original match for same protonym", pending: true do
-      pending ("Known to be broken - update to reflect current duplicates controller functinality")
+      pending "Known to be broken - update to reflect current duplicates controller functinality"
 
       @user = create :user
       species_epithet = "species a"
@@ -40,7 +40,7 @@ describe DuplicatesController do
     end
 
     it "Should find no matches for same protonym distinct epithet", pending: true do
-      pending ("Known to be broken - update to reflect current duplicates controller functinality")
+      pending "Known to be broken - update to reflect current duplicates controller functinality"
 
       @user = create :user
       species_epithet = "species a"

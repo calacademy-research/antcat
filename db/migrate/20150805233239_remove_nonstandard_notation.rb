@@ -2,19 +2,19 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
   linker = Importers::Hol::LinkHolTaxa.new
   mother = TaxonMother.new
 
-  puts ("Starting")
+  puts "Starting"
 
   query_string ='select taxa.* from taxa where instr(taxa.name_cache, ".") != 0'
   reg_exp = /([<a-zA-Z >\/]*)(\(([a-zA-Z]*)\)[<\/i>]* )(<i>)*([a-z A-Z.]*)(<\/i>)*/
 
 
   results = Taxon.find_by_sql(query_string)
-  puts ("results.count : #{results.count}")
+  puts "results.count : #{results.count}"
   results.each do |taxon|
-    puts ("Taxa: #{taxon.id}")
+    puts "Taxa: #{taxon.id}"
     words = taxon.name_cache.split(" ")
     austin=""
-    puts ("Processing: '#{taxon.name_cache}'")
+    puts "Processing: '#{taxon.name_cache}'"
     words.each do |word|
       if word.index('.')
         puts "  Ditching: #{word}"
@@ -27,14 +27,14 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
     end
     puts "  rebuilt: '#{austin}'"
     candidate_taxon = Taxon.find_by_name austin
-    if (candidate_taxon)
-      puts ("  We found an existing #{candidate_taxon.name_cache}. no need to create one.")
+    if candidate_taxon
+      puts "  We found an existing #{candidate_taxon.name_cache}. no need to create one."
     else
-      puts ("  this is where we create a new taxon '#{austin}'")
-      puts ("  It is via  '#{taxon.name_cache}'")
+      puts "  this is where we create a new taxon '#{austin}'"
+      puts "  It is via  '#{taxon.name_cache}'"
       current_valid_taxon = linker.get_most_recent_antcat_taxon taxon.id, nil
 
-      puts ("  It would refer to '#{current_valid_taxon.name_cache}'")
+      puts "  It would refer to '#{current_valid_taxon.name_cache}'"
 
       # create
       name = linker.literal_find_or_create_name austin, true
@@ -42,7 +42,7 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
         name.origin='migration remove_nonstandard_notation'
         name.save
       end
-      puts ("  name_html: '#{name.name_html}' name id: '#{name.id}' name: '#{name.name}'")
+      puts "  name_html: '#{name.name_html}' name id: '#{name.id}' name: '#{name.name}'"
 
       new_taxon = mother.create_taxon Rank[taxon.rank], taxon.parent
       new_taxon.auto_generated = true
@@ -70,7 +70,7 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
       change.save!
 
       new_taxon.save!
-      puts ("  New taxon id: '#{new_taxon.id}'")
+      puts "  New taxon id: '#{new_taxon.id}'"
 
     end
 

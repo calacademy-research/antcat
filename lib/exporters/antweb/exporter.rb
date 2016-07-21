@@ -36,7 +36,7 @@ class Exporters::Antweb::Exporter
               file.puts row.join("\t") if row
             end
           rescue Exception => e
-            puts ("Fatal error exporting taxon id: #{taxon.id}")
+            puts "Fatal error exporting taxon id: #{taxon.id}"
             puts e.message
             puts e.backtrace.inspect
           end

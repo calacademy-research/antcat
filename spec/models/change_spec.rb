@@ -53,7 +53,7 @@ describe Change do
   end
 
   it "has a taxon", pending: true do
-    pending ("Not updated for new paper trail strategy")
+    pending "Not updated for new paper trail strategy"
 
     taxon = create_genus
     change = Change.new paper_trail_version: taxon.last_version

@@ -26,9 +26,9 @@ class RemoveProtonymHtml < ActiveRecord::Migration
 
 
   results = Name.find_by_sql(query_string)
-  puts ("results.count : #{results.count}")
+  puts "results.count : #{results.count}"
   results.each do |name|
-    puts ("Processing name: #{name.name} with protonym #{name.protonym_html}")
+    puts "Processing name: #{name.name} with protonym #{name.protonym_html}"
 
 
 
@@ -41,7 +41,7 @@ class RemoveProtonymHtml < ActiveRecord::Migration
       next
     end
     stripped = ActionView::Base.full_sanitizer.sanitize(name.protonym_html)
-    puts ("  Revised name we're checking: #{stripped} original: #{name.protonym_html}")
+    puts "  Revised name we're checking: #{stripped} original: #{name.protonym_html}"
     new_name_record = Name.find_by_name(stripped)
     #new_name_record = linker.find_or_create_name stripped
     if(new_name_record.nil?)
@@ -57,7 +57,7 @@ class RemoveProtonymHtml < ActiveRecord::Migration
       new_name_record.origin = 'migration'
       new_name_record.nonconforming_name = name.nonconforming_name
       new_name_record.save
-      puts ("  Made new name: #{new_name_record.id} with name #{new_name_record.name} and html: #{new_name_record.name_html}")
+      puts "  Made new name: #{new_name_record.id} with name #{new_name_record.name} and html: #{new_name_record.name_html}"
     end
 
     # Find all references to the old name id, and replace it with the new name id.
@@ -70,7 +70,7 @@ class RemoveProtonymHtml < ActiveRecord::Migration
     # find in protonym.
     Protonym.where(name_id: name.id).each do  |protonym|
       protonym.update_columns(name_id: new_name_record.id)
-      puts ("  Got a hit in protonym")
+      puts "  Got a hit in protonym"
 
     end
     name.update_columns(protonym_html: nil)
