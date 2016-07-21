@@ -96,7 +96,7 @@ describe Taxt do
           expect(Taxt.to_string("{ref sdf}")).to eq('{ref sdf}')
         end
         it "should not freak if the ref points to a reference that doesn't exist" do
-          expect {expect(Taxt.to_string("{ref 12345}")).to eq('{ref 12345}')}.not_to raise_error
+          expect { expect(Taxt.to_string("{ref 12345}")).to eq('{ref 12345}') }.not_to raise_error
           expect(Taxt.to_string("{ref 12345}")).to eq('{ref 12345}')
         end
         it "should handle a MissingReference" do

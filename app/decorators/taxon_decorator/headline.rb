@@ -128,7 +128,7 @@ class TaxonDecorator::Headline
 
     def locality locality
       return '' unless locality.present?
-      locality = locality.upcase.gsub(/\(.+?\)/) {|text| text.titlecase}
+      locality = locality.upcase.gsub(/\(.+?\)/) { |text| text.titlecase }
       add_period_if_necessary ' ' + locality
     end
 

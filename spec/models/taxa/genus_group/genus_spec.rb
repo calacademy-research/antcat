@@ -61,14 +61,14 @@ describe Genus do
     it "should handle 1 valid species and 2 synonyms" do
       genus = create :genus
       create :species, genus: genus
-      2.times {create :species, genus: genus, status: 'synonym'}
+      2.times { create :species, genus: genus, status: 'synonym' }
       expect(genus.statistics).to eq({extant: {species: {'valid' => 1, 'synonym' => 2}}})
     end
 
     it "should handle 1 valid species with 2 valid subspecies" do
       genus = create :genus
       species = create :species, genus: genus
-      2.times {create :subspecies, species: species, genus: genus}
+      2.times { create :subspecies, species: species, genus: genus }
       expect(genus.statistics).to eq({extant: {species: {'valid' => 1}, subspecies: {'valid' => 2}}})
     end
 

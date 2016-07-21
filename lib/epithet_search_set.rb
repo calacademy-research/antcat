@@ -41,7 +41,7 @@ class EpithetSearchSet
   def decline stem, endings
     endings_regexp = '(' + endings.join('|') + ')'
     return [] unless @epithet =~ /#{stem}#{endings_regexp}$/
-    endings.map {|ending| @epithet.gsub(/(#{stem})#{endings_regexp}$/, "\\1#{ending}")}
+    endings.map { |ending| @epithet.gsub(/(#{stem})#{endings_regexp}$/, "\\1#{ending}") }
   end
 
   ####################

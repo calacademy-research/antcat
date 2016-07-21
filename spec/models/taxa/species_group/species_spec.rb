@@ -44,7 +44,7 @@ describe Species do
     it "should handle 1 valid subspecies and 2 synonyms" do
       species = create_species
       create_subspecies species: species
-      2.times {create_subspecies species: species, status: 'synonym'}
+      2.times { create_subspecies species: species, status: 'synonym' }
       expect(species.statistics).to eq({extant: {subspecies: {'valid' => 1, 'synonym' => 2}}})
     end
 
@@ -84,7 +84,7 @@ describe Species do
       taxon = create_species 'Camponotus dallatorrei', genus: genus
       new_species = create_species 'Camponotus alii', genus: genus
       existing_subspecies = create_subspecies 'Atta alii dallatorrei', genus: genus
-      expect {taxon.become_subspecies_of new_species}.to raise_error Taxon::TaxonExists
+      expect { taxon.become_subspecies_of new_species }.to raise_error Taxon::TaxonExists
     end
 
     it "should handle when the new subspecies name exists, but just as the protonym of the new subspecies" do

@@ -26,7 +26,7 @@ class MergeAuthorsController < ApplicationController
   end
 
   def add_blank_panel_if_necessary
-    @panels << OpenStruct.new(term: '') unless @panels.find{|panel| !panel.author}
+    @panels << OpenStruct.new(term: '') unless @panels.find{ |panel| !panel.author }
   end
 
   def merge

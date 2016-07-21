@@ -248,13 +248,13 @@ describe Reference do
     it "should return an empty array if nothing is found for author_name" do
       create :reference
       Sunspot.commit
-      expect(Reference.search {keywords 'foo'}.results).to be_empty
+      expect(Reference.search { keywords 'foo' }.results).to be_empty
     end
     it "should find the reference for a given author_name if it exists" do
       reference = reference_factory(author_name: 'Ward')
       reference_factory(author_name: 'Fisher')
       Sunspot.commit
-      expect(Reference.search {keywords 'Ward'}.results).to eq([reference])
+      expect(Reference.search { keywords 'Ward' }.results).to eq([reference])
     end
     it "should return an empty array if nothing is found for a given year and author_name" do
       reference_factory(author_name: 'Bolton', citation_year: '2010')

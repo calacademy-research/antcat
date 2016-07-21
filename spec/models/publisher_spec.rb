@@ -15,14 +15,14 @@ describe Publisher do
         end
 
         it "reuses existing publishers" do
-          2.times {Publisher.create_with_place(name: 'Wiley', place: 'Chicago')}
+          2.times { Publisher.create_with_place(name: 'Wiley', place: 'Chicago') }
           expect(Publisher.count).to eq(1)
         end
       end
 
       context "invalid" do
         it "raises if name is supplied but no place" do
-          expect {Publisher.create_with_place(name: 'Wiley')}.to raise_error(ArgumentError)
+          expect { Publisher.create_with_place(name: 'Wiley') }.to raise_error(ArgumentError)
         end
         it "raises if place is invalid" do
           expect { Publisher.create_with_place(name: "A Name", place: "") }.to raise_error(

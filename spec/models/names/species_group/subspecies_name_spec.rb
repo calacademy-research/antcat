@@ -64,14 +64,14 @@ describe SubspeciesName do
       species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
       protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
 
-      expect {subspecies_name.change_parent species_name}.to raise_error
+      expect { subspecies_name.change_parent species_name }.to raise_error
     end
     it "should not raise an error if the new name already exists, but is an orphan" do
       orphan_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
       subspecies_name = SubspeciesName.create! name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
       species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
       protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
-      expect {subspecies_name.change_parent species_name}.not_to raise_error
+      expect { subspecies_name.change_parent species_name }.not_to raise_error
     end
   end
 

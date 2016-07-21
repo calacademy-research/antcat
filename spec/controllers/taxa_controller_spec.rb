@@ -16,8 +16,8 @@ describe TaxaController do
         get :autocomplete, q: "att", format: :json
         json = JSON.parse(response.body)
 
-        returned_search_queries = json.map {|taxon| taxon["search_query"] }.sort
-        expected_search_queries = [atta, attacus, ratta].map {|taxon| taxon.name_cache }.sort
+        returned_search_queries = json.map { |taxon| taxon["search_query"] }.sort
+        expected_search_queries = [atta, attacus, ratta].map { |taxon| taxon.name_cache }.sort
 
         expect(returned_search_queries).to eq expected_search_queries
         expect(returned_search_queries).to_not include nylanderia.name_cache

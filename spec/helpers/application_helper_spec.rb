@@ -56,7 +56,7 @@ describe ApplicationHelper do
       expect(string).to be_html_safe
     end
     it "should raise if unitalicize is called on an unsafe string" do
-      expect {helper.unitalicize('Attini <i>Atta major</i> r.')}.to raise_error
+      expect { helper.unitalicize('Attini <i>Atta major</i> r.') }.to raise_error
     end
   end
 

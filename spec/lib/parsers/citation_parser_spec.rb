@@ -6,7 +6,7 @@ describe Parsers::CitationParser do
   end
 
   it "should return an empty string if the string is empty" do
-    ['', nil].each {|string| expect(@parser.parse(string)).to be_nil}
+    ['', nil].each { |string| expect(@parser.parse(string)).to be_nil }
   end
 
   it "should handle an author + year" do

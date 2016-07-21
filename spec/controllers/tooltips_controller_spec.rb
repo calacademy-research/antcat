@@ -9,7 +9,7 @@ describe TooltipsController do
   describe '#index' do
     context "signed in" do
       let!(:no_namespace)         { create :tooltip, key: "no_namespace" }
-      let!(:references_authors)   { create :tooltip, key: "authors", scope: "references"}
+      let!(:references_authors)   { create :tooltip, key: "authors", scope: "references" }
       let!(:references_title)     { create :tooltip, key: "title", scope: "references" }
       let!(:references_new_title) { create :tooltip, key: "new.title", scope: "references" }
       let!(:taxa_type_species)    { create :tooltip, key: "type_species", scope: "taxa" }

@@ -142,7 +142,7 @@ describe Name do
       atta_minor = create_species 'Atta major'
       results = Name.picklist_matching('att', subfamilies_or_tribes_only: true)
       expect(results.size).to eq(2)
-      expect(results.map {|e| e[:name]}).to match_array(['Attinae', 'Attini'])
+      expect(results.map { |e| e[:name] }).to match_array(['Attinae', 'Attini'])
     end
 
     it "should prioritize names already associated with taxa" do

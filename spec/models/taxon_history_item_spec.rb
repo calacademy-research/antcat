@@ -19,7 +19,7 @@ describe TaxonHistoryItem do
   end
 
   describe "Updating taxt from editable taxt" do
-    let(:item) {create :taxon_history_item}
+    let(:item) { create :taxon_history_item }
 
     it "should not blow up on blank input but should be invalid and have errors" do
       item.update_taxt_from_editable ''

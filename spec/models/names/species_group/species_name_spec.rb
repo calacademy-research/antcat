@@ -32,14 +32,14 @@ describe SpeciesName do
       genus_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
       protonym_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
 
-      expect {species_name.change_parent genus_name}.to raise_error
+      expect { species_name.change_parent genus_name }.to raise_error
     end
     it "should not raise an error if the new name already exists, but is an orphan" do
       orphan_species_name = SpeciesName.create! name: 'Eciton minor', epithet: 'minor'
       species_name = SpeciesName.create! name: 'Atta minor', epithet: 'minor'
       genus_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
       protonym_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
-      expect {species_name.change_parent genus_name}.not_to raise_error
+      expect { species_name.change_parent genus_name }.not_to raise_error
     end
   end
 

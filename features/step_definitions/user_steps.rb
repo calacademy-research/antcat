@@ -1,5 +1,5 @@
 Given /this user exists/ do |table|
-  table.hashes.each {|hash| User.create! hash}
+  table.hashes.each { |hash| User.create! hash }
 end
 
 Given /^I fill in the email field with "([^"]+)"$/ do |string|

@@ -152,7 +152,7 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "should bail on a class it doesn't know about " do
-    expect {@formatter.format([String.new])}.to raise_error
+    expect { @formatter.format([String.new]) }.to raise_error
   end
 
   it "should format an unknown reference correctly" do

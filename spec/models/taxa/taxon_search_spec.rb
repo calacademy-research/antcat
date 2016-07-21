@@ -8,7 +8,7 @@ describe Taxon do
     end
     it "should return one of the items if there are more than one (bad!)" do
       name = create :genus_name, name: 'Monomorium'
-      2.times {create :genus, name: name}
+      2.times { create :genus, name: name }
       expect(Taxon.find_by_name('Monomorium').name.name).to eq('Monomorium')
     end
   end

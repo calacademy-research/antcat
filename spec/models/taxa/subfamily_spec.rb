@@ -70,14 +70,14 @@ describe Subfamily do
     it "should handle 1 valid genus and 2 synonyms" do
       subfamily = create :subfamily
       genus = create :genus, subfamily: subfamily
-      2.times {create :genus, subfamily: subfamily, status: 'synonym'}
+      2.times { create :genus, subfamily: subfamily, status: 'synonym' }
       expect(subfamily.statistics).to eq({extant: {genera: {'valid' => 1, 'synonym' => 2}}})
     end
 
     it "should handle 1 valid genus with 2 valid species" do
       subfamily = create :subfamily
       genus = create :genus, subfamily: subfamily
-      2.times {create :species, genus: genus, subfamily: subfamily}
+      2.times { create :species, genus: genus, subfamily: subfamily }
       expect(subfamily.statistics).to eq({extant: {genera: {'valid' => 1}, species: {'valid' => 2}}})
     end
 

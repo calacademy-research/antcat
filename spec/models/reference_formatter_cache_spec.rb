@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ReferenceFormatterCache do
   it "is a singleton" do
-    expect {ReferenceFormatterCache.new}.to raise_error
+    expect { ReferenceFormatterCache.new }.to raise_error
     expect(ReferenceFormatterCache.instance).to eq(ReferenceFormatterCache.instance)
   end
   describe "Invalidating" do
