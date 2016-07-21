@@ -76,11 +76,11 @@ end
 
 # Interact with form elements
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"$/ do |field, value|
-  fill_in(field, :with => value)
+  fill_in(field, with: value)
 end
 
 When /^(?:|I )select "([^"]*)" from "([^"]*)"$/ do |value, field|
-  select(value, :from => field)
+  select(value, from: field)
 end
 
 When /^(?:|I )check "([^"]*)"$/ do |field|
@@ -149,7 +149,7 @@ end
 
 Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
   with_scope location || 'the page' do
-    page.should have_css ".selected", :text => word
+    page.should have_css ".selected", text: word
   end
 end
 

@@ -7,7 +7,7 @@ namespace :antcat do
 
     # TODO allow editors to see the output of this in Active Admin.
     desc "Finds all tags, eg {ref 133005}, that are referred to but doesn't exist"
-    task :broken_tags => :environment do
+    task broken_tags: :environment do
       tags = {
         ref: Reference,
         nam: Name,
@@ -117,7 +117,7 @@ namespace :antcat do
     # Hopefully run-once code. 1) remove all redundant braces 2) makes sure we're
     # not introducing new redundant braces 3) remove this code.
     desc "Find and repair double curly braces"
-    task :double_braces => :environment do
+    task double_braces: :environment do
       puts "Counting stray braces..."
       count = 0
       models_with_taxts.each_field do |field, model|
@@ -191,7 +191,7 @@ end
 namespace :antcat do
   namespace :db do
     desc "Moved from protonym.rb"
-    task :destroy_protonym_orphans => :environment do
+    task destroy_protonym_orphans: :environment do
       orphans = Protonym.where("id NOT IN (SELECT protonym_id FROM taxa)")
       orphans.each do |orphan|
         orphan.destroy

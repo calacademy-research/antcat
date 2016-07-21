@@ -13,7 +13,7 @@ describe Parsers::PublisherParser do
 
     it "should parse it correctly" do
       expect(@parser.parse('New York: Houghton Mifflin')).to eq(
-        {:publisher => {:name => 'Houghton Mifflin', :place => 'New York'}}
+        {publisher: {name: 'Houghton Mifflin', place: 'New York'}}
       )
     end
 

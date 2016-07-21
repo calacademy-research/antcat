@@ -44,9 +44,9 @@ class Reference < ActiveRecord::Base
 
   has_many :author_names,
            -> { order 'reference_author_names.position' },
-           :through => :reference_author_names,
-           :after_add => :refresh_author_names_caches,
-           :after_remove => :refresh_author_names_caches
+           through: :reference_author_names,
+           after_add: :refresh_author_names_caches,
+           after_remove: :refresh_author_names_caches
   belongs_to :journal
   belongs_to :publisher
 

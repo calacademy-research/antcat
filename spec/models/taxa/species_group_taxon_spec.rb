@@ -14,7 +14,7 @@ describe SpeciesGroupTaxon do
 
   it "must have a genus" do
     taxon = FactoryGirl.build :species_group_taxon, genus: nil
-    taxon.save(:validate => false)
+    taxon.save(validate: false)
     create :taxon_state, taxon_id: taxon.id
 
     expect(taxon).not_to be_valid

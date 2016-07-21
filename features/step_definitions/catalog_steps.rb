@@ -1,6 +1,6 @@
 Then /^I should (not )?see the reference key "([^"]+)"$/ do |should_not, text|
   selector = should_not ? :should_not : :should
-  find(".reference_key", :text => text).send(selector, be_visible)
+  find(".reference_key", text: text).send(selector, be_visible)
 end
 
 Then /^I should (not )?see the reference key expansion$/ do |should_not|

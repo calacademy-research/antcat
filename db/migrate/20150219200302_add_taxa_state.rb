@@ -11,7 +11,7 @@ class AddTaxaState < ActiveRecord::Migration
 
 
 
-    add_index "taxon_states", ["taxon_id"], :name => "taxon_states_taxon_id_idx"
+    add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx"
 
 
 

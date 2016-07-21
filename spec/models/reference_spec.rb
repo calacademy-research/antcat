@@ -4,7 +4,7 @@ describe Reference do
   let(:author_names) { [create(:author_name)] }
 
   describe "Relationships" do
-    let(:reference) { Reference.create! :author_names => author_names, :title => 'asdf', :citation_year => '2010d' }
+    let(:reference) { Reference.create! author_names: author_names, title: 'asdf', citation_year: '2010d' }
 
     it "has many author_names" do
       expect(reference.author_names.first).to eq(author_names.first)
@@ -30,31 +30,31 @@ describe Reference do
       let(:reference) { create :reference }
 
       it "should return nothing if empty" do
-        expect(reference.parse_author_names_and_suffix('')) .to eq({:author_names => [], :author_names_suffix => nil})
+        expect(reference.parse_author_names_and_suffix('')) .to eq({author_names: [], author_names_suffix: nil})
       end
       it "should add an error and raise and exception if invalid" do
         expect {reference.parse_author_names_and_suffix('...asdf sdf dsfdsf')}.to raise_error ActiveRecord::RecordInvalid
-        expect(reference.errors.messages).to eq({:author_names_string => ["couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"]})
+        expect(reference.errors.messages).to eq({author_names_string: ["couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"]})
         expect(reference.author_names_string).to eq('...asdf sdf dsfdsf')
       end
       it "should return the author names and the suffix" do
-        expect(reference.parse_author_names_and_suffix('Fisher, B.; Bolton, B. (eds.)')).to eq({:author_names => [AuthorName.find_by_name('Fisher, B.'), AuthorName.find_by_name('Bolton, B.')], :author_names_suffix => ' (eds.)'})
+        expect(reference.parse_author_names_and_suffix('Fisher, B.; Bolton, B. (eds.)')).to eq({author_names: [AuthorName.find_by_name('Fisher, B.'), AuthorName.find_by_name('Bolton, B.')], author_names_suffix: ' (eds.)'})
       end
     end
 
     describe "formatting" do
       it "should consist of one author_name if that's all there is" do
-        reference = create(:reference, :author_names => [create(:author_name, :name => 'Fisher, B.L.')])
+        reference = create(:reference, author_names: [create(:author_name, name: 'Fisher, B.L.')])
         expect(reference.author_names_string).to eq('Fisher, B.L.')
       end
       it "should separate multiple author_names with semicolons" do
-        author_names = [create(:author_name, :name => 'Fisher, B.L.'), create(:author_name, :name => 'Ward, P.S.')]
-        reference = create(:reference, :author_names => author_names)
+        author_names = [create(:author_name, name: 'Fisher, B.L.'), create(:author_name, name: 'Ward, P.S.')]
+        reference = create(:reference, author_names: author_names)
         expect(reference.author_names_string).to eq('Fisher, B.L.; Ward, P.S.')
       end
       it "should include the author_names' suffix" do
-        author_names = [create(:author_name, :name => 'Fisher, B.L.'), create(:author_name, :name => 'Ward, P.S.')]
-        reference = Reference.create! :title => 'Ants', :citation_year => '2010', :author_names => author_names, :author_names_suffix => ' (eds.)'
+        author_names = [create(:author_name, name: 'Fisher, B.L.'), create(:author_name, name: 'Ward, P.S.')]
+        reference = Reference.create! title: 'Ants', citation_year: '2010', author_names: author_names, author_names_suffix: ' (eds.)'
         expect(reference.reload.author_names_string).to eq('Fisher, B.L.; Ward, P.S. (eds.)')
       end
       it "should be possible to read from and assign to, aliased to author_names_string_cache" do
@@ -65,8 +65,8 @@ describe Reference do
     end
 
     describe "updating, when things change" do
-      let(:reference) { create(:reference, :author_names => [create(:author_name, :name => 'Fisher, B.L.')]) }
-      let(:author_name) { create(:author_name, :name => 'Ward') }
+      let(:reference) { create(:reference, author_names: [create(:author_name, name: 'Fisher, B.L.')]) }
+      let(:author_name) { create(:author_name, name: 'Ward') }
 
       it "should update its author_names_string when an author_name is added" do
         reference.author_names << author_name
@@ -93,9 +93,9 @@ describe Reference do
 
     describe "maintaining its order" do
       it "should show the author_names in the order in which they were added to the reference" do
-        reference = create(:reference, :author_names => [create(:author_name, :name => 'Ward')])
-        wilden = create :author_name, :name => 'Wilden'
-        fisher = create :author_name, :name => 'Fisher'
+        reference = create(:reference, author_names: [create(:author_name, name: 'Ward')])
+        wilden = create :author_name, name: 'Wilden'
+        fisher = create :author_name, name: 'Fisher'
         reference.author_names << wilden
         reference.author_names << fisher
         expect(reference.author_names_string).to eq('Ward; Wilden; Fisher')
@@ -105,20 +105,20 @@ describe Reference do
   end
 
   describe "principal author last name" do
-    let(:ward) { create :author_name, :name => 'Ward, P.' }
-    let(:fisher) { create :author_name, :name => 'Fisher, B.' }
+    let(:ward) { create :author_name, name: 'Ward, P.' }
+    let(:fisher) { create :author_name, name: 'Fisher, B.' }
 
     it "should not freak out if there are no authors" do
-      reference = Reference.create! :title => 'title', :citation_year => '1993'
+      reference = Reference.create! title: 'title', citation_year: '1993'
       expect(reference.principal_author_last_name).to be_nil
     end
     it "should cache the last name of the principal author" do
-      reference = create :reference, :author_names => [ward, fisher]
+      reference = create :reference, author_names: [ward, fisher]
       expect(reference.principal_author_last_name).to eq('Ward')
     end
     it "should update its author_names_string when an author_name's name is changed" do
-      reference = create :reference, :author_names => [ward]
-      ward.update_attributes :name => 'Bolton, B.'
+      reference = create :reference, author_names: [ward]
+      ward.update_attributes name: 'Bolton, B.'
       expect(reference.reload.principal_author_last_name).to eq('Bolton')
     end
     it "should be possible to read from, aliased to principal_author_last_name_cache" do
@@ -130,7 +130,7 @@ describe Reference do
 
   describe "validations" do
     let!(:author_name) { create :author_name }
-    let(:reference) { Reference.new :author_names => [author_name], :title => 'title', :citation_year => '1910' }
+    let(:reference) { Reference.new author_names: [author_name], title: 'title', citation_year: '1910' }
 
     it "should be OK when all fields are present" do
       expect(reference).to be_valid
@@ -144,7 +144,7 @@ describe Reference do
 
   describe "changing the citation year" do
     it "should change the year" do
-      reference = create(:reference, :citation_year => '1910a')
+      reference = create(:reference, citation_year: '1910a')
       expect(reference.year).to eq(1910)
       reference.citation_year = '2010b'
       reference.save!
@@ -152,7 +152,7 @@ describe Reference do
     end
 
     it "should set the year to the stated year, if present" do
-      reference = create(:reference, :citation_year => '1910a ["1958"]')
+      reference = create(:reference, citation_year: '1910a ["1958"]')
       expect(reference.year).to eq(1958)
       reference.citation_year = '2010b'
       reference.save!
@@ -193,8 +193,8 @@ describe Reference do
 
   describe "long fields" do
     it "should not truncate long fields" do
-      Reference.create! :author_names => author_names, :editor_notes => 'e' * 1000, :citation => 'c' * 2000,
-        :public_notes => 'n' * 1500, :taxonomic_notes => 't' * 1700, :title => 't' * 1900, :citation_year => '2010'
+      Reference.create! author_names: author_names, editor_notes: 'e' * 1000, citation: 'c' * 2000,
+        public_notes: 'n' * 1500, taxonomic_notes: 't' * 1700, title: 't' * 1900, citation_year: '2010'
       reference = Reference.first
       expect(reference.citation.length).to eq(2000)
       expect(reference.editor_notes.length).to eq(1000)
@@ -206,12 +206,12 @@ describe Reference do
 
   describe "ordering by author_name" do
     it "should order by author_name" do
-      bolton = create :author_name, :name => 'Bolton'
-      ward = create :author_name, :name => 'Ward'
-      fisher = create :author_name, :name => 'Fisher'
-      bolton_reference = create :article_reference, :author_names => [bolton, ward]
-      ward_reference = create :article_reference, :author_names => [ward, bolton]
-      fisher_reference = create :article_reference, :author_names => [fisher, bolton]
+      bolton = create :author_name, name: 'Bolton'
+      ward = create :author_name, name: 'Ward'
+      fisher = create :author_name, name: 'Fisher'
+      bolton_reference = create :article_reference, author_names: [bolton, ward]
+      ward_reference = create :article_reference, author_names: [ward, bolton]
+      fisher_reference = create :article_reference, author_names: [fisher, bolton]
 
       expect(Reference.sorted_by_principal_author_last_name.map(&:id)).to eq([bolton_reference.id, fisher_reference.id, ward_reference.id])
     end
@@ -219,17 +219,17 @@ describe Reference do
 
   describe 'with principal author last name' do
     it 'should return references with a matching principal author last name' do
-      not_possible_reference = create :book_reference, :author_names => [create(:author_name, :name => 'Bolton, B.')]
-      possible_reference = create :article_reference, :author_names => [create(:author_name, :name => 'Ward, P. S.'), create(:author_name, :name => 'Fisher, B. L.')]
-      another_possible_reference = create :article_reference, :author_names => [create(:author_name, :name => 'Warden, J.')]
+      not_possible_reference = create :book_reference, author_names: [create(:author_name, name: 'Bolton, B.')]
+      possible_reference = create :article_reference, author_names: [create(:author_name, name: 'Ward, P. S.'), create(:author_name, name: 'Fisher, B. L.')]
+      another_possible_reference = create :article_reference, author_names: [create(:author_name, name: 'Warden, J.')]
       expect(Reference.with_principal_author_last_name('Ward')).to eq([possible_reference])
     end
   end
 
   describe 'implementing ReferenceComparable' do
     it 'should map all fields correctly' do
-      reference = ArticleReference.create! :author_names => [create(:author_name, :name => 'Fisher, B. L.')], :citation_year => '1981',
-        :title => 'Dolichoderinae', :journal => create(:journal), :series_volume_issue => '1(2)', :pagination => '22-54'
+      reference = ArticleReference.create! author_names: [create(:author_name, name: 'Fisher, B. L.')], citation_year: '1981',
+        title: 'Dolichoderinae', journal: create(:journal), series_volume_issue: '1(2)', pagination: '22-54'
       expect(reference.author).to eq('Fisher')
       expect(reference.year).to eq(1981)
       expect(reference.title).to eq('Dolichoderinae')
@@ -243,18 +243,18 @@ describe Reference do
     it "should allow a duplicate record to be saved" do
       journal = create :journal
       author = create :author_name
-      original = ArticleReference.create! :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
-                               :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
-      ArticleReference.create! :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
-                               :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
+      original = ArticleReference.create! author_names: [author], citation_year: '1981', title: 'Dolichoderinae',
+                               journal: journal, series_volume_issue: '1(2)', pagination: '22-54'
+      ArticleReference.create! author_names: [author], citation_year: '1981', title: 'Dolichoderinae',
+                               journal: journal, series_volume_issue: '1(2)', pagination: '22-54'
     end
     it "should check possible duplication and add to errors, if any found" do
       journal = create :journal
       author = create :author_name
-      original = ArticleReference.create! :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
-                               :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
-      duplicate = ArticleReference.new :author_names => [author], :citation_year => '1981', :title => 'Dolichoderinae',
-                           :journal => journal, :series_volume_issue => '1(2)', :pagination => '22-54'
+      original = ArticleReference.create! author_names: [author], citation_year: '1981', title: 'Dolichoderinae',
+                               journal: journal, series_volume_issue: '1(2)', pagination: '22-54'
+      duplicate = ArticleReference.new author_names: [author], citation_year: '1981', title: 'Dolichoderinae',
+                           journal: journal, series_volume_issue: '1(2)', pagination: '22-54'
       expect(duplicate.errors).to be_empty
       expect(duplicate.check_for_duplicate).to be_truthy
       expect(duplicate.errors).not_to be_empty
@@ -263,15 +263,15 @@ describe Reference do
 
   describe "Short citation year" do
     it "should be same as citation year if nothing extra" do
-      reference = create :article_reference, :citation_year => '1970'
+      reference = create :article_reference, citation_year: '1970'
       expect(reference.short_citation_year).to eq('1970')
     end
     it "should allow an ordinal letter" do
-      reference = create :article_reference, :citation_year => '1970a'
+      reference = create :article_reference, citation_year: '1970a'
       expect(reference.short_citation_year).to eq('1970a')
     end
     it "should be trimmed if there is something extra" do
-      reference = create :article_reference, :citation_year => '1970a ("1971")'
+      reference = create :article_reference, citation_year: '1970a ("1971")'
       expect(reference.short_citation_year).to eq('1970a')
     end
   end

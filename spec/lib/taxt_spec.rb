@@ -100,7 +100,7 @@ describe Taxt do
           expect(Taxt.to_string("{ref 12345}")).to eq('{ref 12345}')
         end
         it "should handle a MissingReference" do
-          reference = create :missing_reference, :citation => 'Latreille, 1809'
+          reference = create :missing_reference, citation: 'Latreille, 1809'
           expect(Taxt.to_string("{ref #{reference.id}}")).to eq('Latreille, 1809')
         end
         #it "should escape input" do

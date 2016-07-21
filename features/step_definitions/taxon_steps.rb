@@ -159,7 +159,7 @@ end
 Given /^there is a parentless subspecies "([^"]*)"$/ do |name|
   @subspecies = create_subspecies name
   @subspecies.species_id = nil
-  @subspecies.save!(:validate => false)
+  @subspecies.save!(validate: false)
 end
 
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|

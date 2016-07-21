@@ -4,7 +4,7 @@ class TaxonDecorator::Statistics
   include ApplicationHelper #pluralize_with_delimiters, count_and_status
 
   def statistics statistics, options = {}
-    options.reverse_merge! :include_invalid => true, :include_fossil => true
+    options.reverse_merge! include_invalid: true, include_fossil: true
     return '' unless statistics && statistics.present?
 
     strings = [:extant, :fossil].inject({}) do |strings, extant_or_fossil|

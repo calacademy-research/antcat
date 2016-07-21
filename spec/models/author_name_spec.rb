@@ -7,7 +7,7 @@ describe AuthorName do
   let(:author) { Author.create! }
 
   it "has many references" do
-    author_name = AuthorName.create! :name => 'Fisher, B.L.', :author => author
+    author_name = AuthorName.create! name: 'Fisher, B.L.', author: author
 
     reference = create(:reference)
     author_name.references << reference
@@ -56,8 +56,8 @@ describe AuthorName do
 
   describe "editing" do
     it "should update associated references when the name is changed" do
-      author_name = create :author_name, :name => 'Ward'
-      reference = create :reference, :author_names => [author_name]
+      author_name = create :author_name, name: 'Ward'
+      reference = create :reference, author_names: [author_name]
       author_name.update_attribute :name, 'Fisher'
       expect(Reference.find(reference.id).author_names_string).to eq('Fisher')
     end
@@ -65,7 +65,7 @@ describe AuthorName do
 
   describe "import_author_names_string" do
     it "should find or create authors with names in the string" do
-      AuthorName.create! :name => 'Bolton, B.', :author => author
+      AuthorName.create! name: 'Bolton, B.', author: author
       author_data = AuthorName.import_author_names_string('Ward, P.S.; Bolton, B.')
       expect(author_data[:author_names].first.name).to eq('Ward, P.S.')
       expect(author_data[:author_names].second.name).to eq('Bolton, B.')
@@ -102,16 +102,16 @@ describe AuthorName do
 
   describe "searching" do
     it "should find a prefix" do
-      AuthorName.create! :name => 'Bolton', :author => author
-      AuthorName.create! :name => 'Fisher', :author => author
+      AuthorName.create! name: 'Bolton', author: author
+      AuthorName.create! name: 'Fisher', author: author
       results = AuthorName.search('Bol')
       expect(results.count).to eq(1)
       expect(results.first).to eq('Bolton')
     end
 
     it "should find an internal string" do
-      AuthorName.create! :name => 'Bolton', :author => author
-      AuthorName.create! :name => 'Fisher', :author => author
+      AuthorName.create! name: 'Bolton', author: author
+      AuthorName.create! name: 'Fisher', author: author
       results = AuthorName.search('ol')
       expect(results.count).to eq(1)
       expect(results.first).to eq('Bolton')
@@ -119,35 +119,35 @@ describe AuthorName do
 
     it "should return authors in order of most recently used" do
       ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
-        AuthorName.create! :name => name, :author => author
+        AuthorName.create! name: name, author: author
       end
-      reference = create :reference, :author_names => [AuthorName.find_by_name('Most Recent')]
-      ReferenceAuthorName.create! :created_at => Time.now - 5, :author_name => AuthorName.find_by_name('Recent'),
-                                  :reference => reference
-      ReferenceAuthorName.create! :created_at => Time.now - 10, :author_name => AuthorName.find_by_name('Old'),
-                                  :reference => reference
+      reference = create :reference, author_names: [AuthorName.find_by_name('Most Recent')]
+      ReferenceAuthorName.create! created_at: Time.now - 5, author_name: AuthorName.find_by_name('Recent'),
+                                  reference: reference
+      ReferenceAuthorName.create! created_at: Time.now - 10, author_name: AuthorName.find_by_name('Old'),
+                                  reference: reference
       expect(AuthorName.search).to eq(['Most Recent', 'Recent', 'Old', 'Never Used'])
     end
   end
 
   describe "first and last name" do
     it "should simply return the name if there's only one word" do
-      author_name = AuthorName.new :name => 'Bolton'
+      author_name = AuthorName.new name: 'Bolton'
       expect(author_name.last_name).to eq('Bolton')
       expect(author_name.first_name_and_initials).to be_nil
     end
     it "should separate the words if there are multiple" do
-      author_name = AuthorName.new :name => 'Bolton, B.L.'
+      author_name = AuthorName.new name: 'Bolton, B.L.'
       expect(author_name.last_name).to eq('Bolton')
       expect(author_name.first_name_and_initials).to eq('B.L.')
     end
     it "should use all words if there is no comma" do
-      author_name = AuthorName.new :name => 'Royal Academy'
+      author_name = AuthorName.new name: 'Royal Academy'
       expect(author_name.last_name).to eq('Royal Academy')
       expect(author_name.first_name_and_initials).to be_nil
     end
     it "should use use all words before the comma if there are multiple" do
-      author_name = AuthorName.new :name => 'Baroni Urbani, C.'
+      author_name = AuthorName.new name: 'Baroni Urbani, C.'
       expect(author_name.last_name).to eq('Baroni Urbani')
       expect(author_name.first_name_and_initials).to eq('C.')
     end

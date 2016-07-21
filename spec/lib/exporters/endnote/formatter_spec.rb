@@ -7,11 +7,11 @@ describe Exporters::Endnote::Formatter do
 
   it "should format a book reference correctly" do
     reference = create :book_reference,
-      :author_names => [create(:author_name, :name => 'Bolton, B.')],
-      :title => 'Ants Are My Life',
-      :citation_year => '1933',
-      :publisher => create(:publisher, :name => 'Springer Verlag', :place => create(:place, :name => 'Dresden')),
-      :pagination => 'ix + 33pp.'
+      author_names: [create(:author_name, name: 'Bolton, B.')],
+      title: 'Ants Are My Life',
+      citation_year: '1933',
+      publisher: create(:publisher, name: 'Springer Verlag', place: create(:place, name: 'Dresden')),
+      pagination: 'ix + 33pp.'
     expect(@formatter.format([reference])).to eq(%{%0 Book
 %A Bolton, B.
 %D 1933
@@ -26,11 +26,11 @@ describe Exporters::Endnote::Formatter do
 
   it "should format multiple authors correctly" do
     reference = create :book_reference,
-      :author_names => [create(:author_name, :name => 'Bolton, B.'), create(:author_name, :name => 'Fisher, B.L.')],
-      :title => 'Ants Are My Life',
-      :citation_year => '1933',
-      :publisher => create(:publisher, :name => 'Springer Verlag', :place => create(:place, :name => 'Dresden')),
-      :pagination => 'ix + 33pp.'
+      author_names: [create(:author_name, name: 'Bolton, B.'), create(:author_name, name: 'Fisher, B.L.')],
+      title: 'Ants Are My Life',
+      citation_year: '1933',
+      publisher: create(:publisher, name: 'Springer Verlag', place: create(:place, name: 'Dresden')),
+      pagination: 'ix + 33pp.'
     expect(Exporters::Endnote::Formatter.format([reference])).to eq(%{%0 Book
 %A Bolton, B.
 %A Fisher, B.L.
@@ -46,11 +46,11 @@ describe Exporters::Endnote::Formatter do
 
   it "should not emit %A if there is no author" do
     reference = create :book_reference,
-      :author_names => [],
-      :title => 'Ants Are My Life',
-      :citation_year => '1933',
-      :publisher => create(:publisher, :name => 'Springer Verlag', :place => create(:place, :name => 'Dresden')),
-      :pagination => 'ix + 33pp.'
+      author_names: [],
+      title: 'Ants Are My Life',
+      citation_year: '1933',
+      publisher: create(:publisher, name: 'Springer Verlag', place: create(:place, name: 'Dresden')),
+      pagination: 'ix + 33pp.'
     expect(@formatter.format([reference])).to eq(%{%0 Book
 %D 1933
 %T Ants Are My Life
@@ -64,13 +64,13 @@ describe Exporters::Endnote::Formatter do
 
   it "should format a article reference correctly" do
     reference = create :article_reference,
-      :author_names => [create(:author_name, :name => 'MacKay, W.')],
-      :citation_year => '1941',
-      :title => 'A title',
-      :journal => create(:journal, :name => 'Psyche'),
-      :series_volume_issue => '1(2)',
-      :pagination => '3-4'
-    reference.create_document :url => 'http://antcat.org/article.pdf'
+      author_names: [create(:author_name, name: 'MacKay, W.')],
+      citation_year: '1941',
+      title: 'A title',
+      journal: create(:journal, name: 'Psyche'),
+      series_volume_issue: '1(2)',
+      pagination: '3-4'
+    reference.create_document url: 'http://antcat.org/article.pdf'
     string = @formatter.format([reference])
     expect(string).to eq(%{%0 Journal Article
 %A MacKay, W.
@@ -87,12 +87,12 @@ describe Exporters::Endnote::Formatter do
 
   it "should strip out the italics formatting" do
     reference = create :article_reference,
-      :author_names => [create(:author_name, :name => 'MacKay, W.')],
-      :citation_year => '1941',
-      :title => '*A title*',
-      :journal => create(:journal, :name => 'Psyche'),
-      :series_volume_issue => '1(2)',
-      :pagination => '3-4'
+      author_names: [create(:author_name, name: 'MacKay, W.')],
+      citation_year: '1941',
+      title: '*A title*',
+      journal: create(:journal, name: 'Psyche'),
+      series_volume_issue: '1(2)',
+      pagination: '3-4'
     expect(@formatter.format([reference])).to eq(%{%0 Journal Article
 %A MacKay, W.
 %D 1941
@@ -107,14 +107,14 @@ describe Exporters::Endnote::Formatter do
 
   it "should export public and taxonomic notes" do
     reference = create :article_reference,
-      :author_names => [create(:author_name, :name => 'MacKay, W.')],
-      :citation_year => '1941',
-      :title => '*A title*',
-      :journal => create(:journal, :name => 'Psyche'),
-      :series_volume_issue => '1(2)',
-      :pagination => '3-4',
-      :public_notes => 'Public notes.',
-      :taxonomic_notes => 'Taxonomic notes'
+      author_names: [create(:author_name, name: 'MacKay, W.')],
+      citation_year: '1941',
+      title: '*A title*',
+      journal: create(:journal, name: 'Psyche'),
+      series_volume_issue: '1(2)',
+      pagination: '3-4',
+      public_notes: 'Public notes.',
+      taxonomic_notes: 'Taxonomic notes'
     expect(@formatter.format([reference])).to eq(%{%0 Journal Article
 %A MacKay, W.
 %D 1941
@@ -131,14 +131,14 @@ describe Exporters::Endnote::Formatter do
 
   it "should not export blank public and taxonomic notes" do
     reference = create :article_reference,
-      :author_names => [create(:author_name, :name => 'MacKay, W.')],
-      :citation_year => '1941',
-      :title => '*A title*',
-      :journal => create(:journal, :name => 'Psyche'),
-      :series_volume_issue => '1(2)',
-      :pagination => '3-4',
-      :public_notes => '',
-      :taxonomic_notes => ''
+      author_names: [create(:author_name, name: 'MacKay, W.')],
+      citation_year: '1941',
+      title: '*A title*',
+      journal: create(:journal, name: 'Psyche'),
+      series_volume_issue: '1(2)',
+      pagination: '3-4',
+      public_notes: '',
+      taxonomic_notes: ''
     expect(@formatter.format([reference])).to eq(%{%0 Journal Article
 %A MacKay, W.
 %D 1941
@@ -157,10 +157,10 @@ describe Exporters::Endnote::Formatter do
 
   it "should format an unknown reference correctly" do
     reference = create :unknown_reference,
-      :author_names => [create(:author_name, :name => 'MacKay, W.')],
-      :citation_year => '1933',
-      :title => 'Another title',
-      :citation => 'Dresden'
+      author_names: [create(:author_name, name: 'MacKay, W.')],
+      citation_year: '1933',
+      title: 'Another title',
+      citation: 'Dresden'
     expect(@formatter.format([reference])).to eq(%{%0 Generic
 %A MacKay, W.
 %D 1933

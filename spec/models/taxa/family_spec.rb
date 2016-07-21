@@ -6,12 +6,12 @@ describe Family do
       family = create :family
       subfamily = create :subfamily
       tribe = create :tribe, subfamily: subfamily
-      genus = create :genus, :subfamily => subfamily, :tribe => tribe
-      create :genus, :subfamily => subfamily, :status => 'homonym', :tribe => tribe
-      2.times { create :subfamily, :fossil => true }
+      genus = create :genus, subfamily: subfamily, tribe: tribe
+      create :genus, subfamily: subfamily, status: 'homonym', tribe: tribe
+      2.times { create :subfamily, fossil: true }
       expect(family.statistics).to eq({
-                                          :extant => {subfamilies: {'valid' => 1}, tribes: {'valid' => 1}, genera: {'valid' => 1, 'homonym' => 1}},
-                                          :fossil => {subfamilies: {'valid' => 2}}
+                                          extant: {subfamilies: {'valid' => 1}, tribes: {'valid' => 1}, genera: {'valid' => 1, 'homonym' => 1}},
+                                          fossil: {subfamilies: {'valid' => 2}}
                                       })
     end
   end

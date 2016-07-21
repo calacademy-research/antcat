@@ -6,14 +6,14 @@ use Rack::Cors do
   allow do
     origins '*'
     resource '/swagger.yaml',
-             :headers => :any,
-             :expose => ['X-User-Authentication-Token', 'X-User-Id'],
-             :methods => [:get, :post, :options, :patch, :delete]
+             headers: :any,
+             expose: ['X-User-Authentication-Token', 'X-User-Id'],
+             methods: [:get, :post, :options, :patch, :delete]
 
     resource '/swagger-ui/*',
-             :headers => :any,
-             :expose => ['X-User-Authentication-Token', 'X-User-Id'],
-             :methods => [:get, :post, :options, :patch, :delete]
+             headers: :any,
+             expose: ['X-User-Authentication-Token', 'X-User-Id'],
+             methods: [:get, :post, :options, :patch, :delete]
 
 
   end

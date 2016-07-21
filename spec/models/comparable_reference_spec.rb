@@ -11,8 +11,8 @@ describe ComparableReference do
   describe "type mismatch" do
 
     it "should never consider references of different types similar in the least" do
-      lhs = ComparableReference.new :type => 'ArticleReference', :author => 'Fisher, B. L.', :title => 'Ants', :year => '1975'
-      rhs = ComparableReference.new :type => 'NestedReference', :author => 'Fisher, B. L.', :title => 'Ants', :year => '1975'
+      lhs = ComparableReference.new type: 'ArticleReference', author: 'Fisher, B. L.', title: 'Ants', year: '1975'
+      rhs = ComparableReference.new type: 'NestedReference', author: 'Fisher, B. L.', title: 'Ants', year: '1975'
       expect(lhs <=> rhs).to eq(0.00)
     end
 
@@ -21,8 +21,8 @@ describe ComparableReference do
   describe "author + year matching" do
     describe "when the author names don't match but the years do" do
       before do
-        @lhs = ComparableReference.new :year => 2010
-        @rhs = ComparableReference.new :year => 2010
+        @lhs = ComparableReference.new year: 2010
+        @rhs = ComparableReference.new year: 2010
       end
       it "should not match if the author name is different" do
         @lhs.author = 'Fisher'
@@ -37,8 +37,8 @@ describe ComparableReference do
     end
     describe 'when the author names match' do
       before do
-        @lhs = ComparableReference.new :title => 'A', :author => 'Fisher, B. L.'
-        @rhs = ComparableReference.new :title => 'B', :author => 'Fisher, B. L.'
+        @lhs = ComparableReference.new title: 'A', author: 'Fisher, B. L.'
+        @rhs = ComparableReference.new title: 'B', author: 'Fisher, B. L.'
       end
       it "should not match if the author name is the same but the year is different" do
         @lhs.year = '1970'
@@ -51,13 +51,13 @@ describe ComparableReference do
         expect(@lhs <=> @rhs).to eq(0.10)
       end
       it "should match if the author names differ by accentation" do
-        @lhs.update :author => 'Csösz', :year => '1979'
-        @rhs.update :author => 'Csősz', :year => '1980'
+        @lhs.update author: 'Csösz', year: '1979'
+        @rhs.update author: 'Csősz', year: '1980'
         expect(@lhs <=> @rhs).to eq(0.10)
       end
       it "should match if the author names differ by case" do
-        @lhs.update :author => 'MacKay', :year => '1979'
-        @rhs.update :author => 'Mackay', :year => '1980'
+        @lhs.update author: 'MacKay', year: '1979'
+        @rhs.update author: 'Mackay', year: '1980'
         expect(@lhs <=> @rhs).to eq(0.10)
       end
     end
@@ -65,13 +65,13 @@ describe ComparableReference do
 
   describe "title + year matching" do
     before do
-      @lhs = ComparableReference.new :author => 'Fisher, B. L.'
-      @rhs = ComparableReference.new :author => 'Fisher, B. L.'
+      @lhs = ComparableReference.new author: 'Fisher, B. L.'
+      @rhs = ComparableReference.new author: 'Fisher, B. L.'
     end
 
     it "should match with much less confidence if the author and title are the same but the year is not within 1" do
-      @lhs.update :title => 'Ants', :year => '1975'
-      @rhs.update :title => 'Ants', :year => '1971'
+      @lhs.update title: 'Ants', year: '1975'
+      @rhs.update title: 'Ants', year: '1971'
       expect(@lhs <=> @rhs).to eq(0.50)
     end
 
@@ -143,8 +143,8 @@ describe ComparableReference do
 
   describe 'matching book pagination with different titles' do
     before do
-      @lhs = ComparableReference.new :author => 'Fisher', :title => 'Myrmicinae', :type => 'BookReference', :pagination => '1-76'
-      @rhs = ComparableReference.new :author => 'Fisher', :title => 'Formica', :type => 'BookReference', :pagination => '1-76'
+      @lhs = ComparableReference.new author: 'Fisher', title: 'Myrmicinae', type: 'BookReference', pagination: '1-76'
+      @rhs = ComparableReference.new author: 'Fisher', title: 'Formica', type: 'BookReference', pagination: '1-76'
     end
     it 'should match with much less confidence when the year does not match' do
       @lhs.year = '1980'
@@ -160,8 +160,8 @@ describe ComparableReference do
 
   describe 'matching series/volume/issue + pagination with different titles' do
     before do
-      @lhs = ComparableReference.new :author => 'Fisher', :title => 'Myrmicinae', :type => 'ArticleReference'
-      @rhs = ComparableReference.new :author => 'Fisher', :title => 'Formica', :type => 'ArticleReference'
+      @lhs = ComparableReference.new author: 'Fisher', title: 'Myrmicinae', type: 'ArticleReference'
+      @rhs = ComparableReference.new author: 'Fisher', title: 'Formica', type: 'ArticleReference'
     end
     describe 'when the pagination matches' do
       before do
@@ -170,8 +170,8 @@ describe ComparableReference do
       end
       describe 'when the year does not match' do
         it 'should match with much less confidence' do
-          @lhs.update :year => '1980', :series_volume_issue => '(21) 4'
-          @rhs.update :year => '1990', :series_volume_issue => '(21) 4'
+          @lhs.update year: '1980', series_volume_issue: '(21) 4'
+          @rhs.update year: '1990', series_volume_issue: '(21) 4'
           expect(@lhs <=> @rhs).to eq(0.40)
         end
       end
@@ -221,8 +221,8 @@ describe ComparableReference do
 
   describe 'matching everything except the pagination' do
     it "should give it a 0.99" do
-      @lhs = ComparableReference.new :author => 'Fisher', :title => 'Myrmicinae', :type => 'ArticleReference', :pagination => '29-30', :series_volume_issue => '1', :year => '2002'
-      @rhs = ComparableReference.new :author => 'Fisher', :title => 'Myrmicinae', :type => 'ArticleReference', :pagination => '15-19', :series_volume_issue => '1', :year => '2002'
+      @lhs = ComparableReference.new author: 'Fisher', title: 'Myrmicinae', type: 'ArticleReference', pagination: '29-30', series_volume_issue: '1', year: '2002'
+      @rhs = ComparableReference.new author: 'Fisher', title: 'Myrmicinae', type: 'ArticleReference', pagination: '15-19', series_volume_issue: '1', year: '2002'
       expect(@lhs <=> @rhs).to eq(0.99)
     end
   end

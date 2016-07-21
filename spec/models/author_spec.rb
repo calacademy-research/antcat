@@ -9,10 +9,10 @@ describe Author do
 
   describe "sorting by first author name" do
     it "should work" do
-      ward = create :author_name, :name => 'Ward'
-      fisher_b_l = create :author_name, :name => 'Fisher, B. L.'
-      fisher = create :author_name, :name => 'Fisher', :author => fisher_b_l.author
-      bolton = create :author_name, :name => 'Bolton'
+      ward = create :author_name, name: 'Ward'
+      fisher_b_l = create :author_name, name: 'Fisher, B. L.'
+      fisher = create :author_name, name: 'Fisher', author: fisher_b_l.author
+      bolton = create :author_name, name: 'Bolton'
       expect(Author.sorted_by_name).to eq([bolton.author, fisher.author, ward.author])
     end
   end
@@ -22,8 +22,8 @@ describe Author do
       expect(Author.find_by_names([])).to eq([])
     end
     it "should find the authors for the names" do
-      bolton = create :author_name, :name => 'Bolton'
-      fisher = create :author_name, :name => 'Fisher'
+      bolton = create :author_name, name: 'Bolton'
+      fisher = create :author_name, name: 'Fisher'
       expect(Author.find_by_names(['Bolton', 'Fisher'])).to match_array([bolton.author, fisher.author])
     end
   end

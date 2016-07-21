@@ -192,7 +192,7 @@ describe TaxonDecorator do
     it "should not leave a comma at the end if only showing valid taxa", pending: true do
       pending "test after refactoring TaxonDecorator"
       genus = create_genus
-      expect(genus).to receive(:statistics).and_return :extant => {:species => {'valid' => 2}}
+      expect(genus).to receive(:statistics).and_return extant: {species: {'valid' => 2}}
       formatter = Formatters::TaxonFormatter.new genus
       expect(formatter.statistics(include_invalid: false)).to eq("<div class=\"statistics\"><p class=\"taxon_statistics\">2 species</p></div>")
     end

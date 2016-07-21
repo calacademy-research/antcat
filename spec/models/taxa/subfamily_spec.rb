@@ -4,8 +4,8 @@ describe Subfamily do
 
   it "should have tribes, which are its children" do
     subfamily = create :subfamily, name: create(:name, name: 'Myrmicinae')
-    create :tribe, name: create(:name, name: 'Attini'), :subfamily => subfamily
-    create :tribe, name: create(:name, name: 'Dacetini'), :subfamily => subfamily
+    create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily
+    create :tribe, name: create(:name, name: 'Dacetini'), subfamily: subfamily
     expect(subfamily.tribes.map(&:name).map(&:to_s)).to match_array(['Attini', 'Dacetini'])
     expect(subfamily.tribes).to eq(subfamily.children)
   end
@@ -27,8 +27,8 @@ describe Subfamily do
 
   it "should have species" do
     subfamily = create :subfamily
-    genus = create :genus, :subfamily => subfamily
-    species = create :species, :genus => genus
+    genus = create :genus, subfamily: subfamily
+    species = create :species, genus: genus
     expect(subfamily.species.size).to eq(1)
   end
 
@@ -63,27 +63,27 @@ describe Subfamily do
 
     it "should handle 1 valid genus" do
       subfamily = create :subfamily
-      genus = create :genus, :subfamily => subfamily
-      expect(subfamily.statistics).to eq({:extant => {:genera => {'valid' => 1}}})
+      genus = create :genus, subfamily: subfamily
+      expect(subfamily.statistics).to eq({extant: {genera: {'valid' => 1}}})
     end
 
     it "should handle 1 valid genus and 2 synonyms" do
       subfamily = create :subfamily
-      genus = create :genus, :subfamily => subfamily
-      2.times {create :genus, :subfamily => subfamily, :status => 'synonym'}
-      expect(subfamily.statistics).to eq({:extant => {:genera => {'valid' => 1, 'synonym' => 2}}})
+      genus = create :genus, subfamily: subfamily
+      2.times {create :genus, subfamily: subfamily, status: 'synonym'}
+      expect(subfamily.statistics).to eq({extant: {genera: {'valid' => 1, 'synonym' => 2}}})
     end
 
     it "should handle 1 valid genus with 2 valid species" do
       subfamily = create :subfamily
-      genus = create :genus, :subfamily => subfamily
-      2.times {create :species, :genus => genus, :subfamily => subfamily}
-      expect(subfamily.statistics).to eq({:extant => {:genera => {'valid' => 1}, :species => {'valid' => 2}}})
+      genus = create :genus, subfamily: subfamily
+      2.times {create :species, genus: genus, subfamily: subfamily}
+      expect(subfamily.statistics).to eq({extant: {genera: {'valid' => 1}, species: {'valid' => 2}}})
     end
 
     it "should handle 1 valid genus with 2 valid species, one of which has a subspecies" do
       subfamily = create :subfamily
-      genus = create :genus, :subfamily => subfamily
+      genus = create :genus, subfamily: subfamily
       create :species, genus: genus
       create :subspecies, genus: genus, species: create(:species, genus: genus)
       expect(subfamily.statistics).to eq({extant: {genera: {'valid' => 1}, species: {'valid' => 2}, subspecies: {'valid' => 1}}})
@@ -99,7 +99,7 @@ describe Subfamily do
       create :subspecies, genus: genus, species: create(:species, genus: genus), fossil: true
       expect(subfamily.statistics).to eq({
         extant: {genera: {'valid' => 1}, species: {'valid' => 3}, subspecies: {'valid' => 1}},
-        :fossil => {genera: {'valid' => 1}, species: {'valid' => 1}, subspecies: {'valid' => 1}},
+        fossil: {genera: {'valid' => 1}, species: {'valid' => 1}, subspecies: {'valid' => 1}},
       })
     end
 

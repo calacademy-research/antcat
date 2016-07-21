@@ -4,7 +4,7 @@ describe Citation do
 
   it "has a Reference" do
     reference = create :reference
-    citation = Citation.create! :reference => reference
+    citation = Citation.create! reference: reference
     expect(citation.reload.reference).to eq(reference)
   end
 
@@ -31,8 +31,8 @@ describe Citation do
     end
     it "should handle multiple authors" do
       reference = FactoryGirl.build_stubbed(:article_reference, author_names: [
-        create(:author_name, :name => 'Bolton, B.'),
-        create(:author_name, :name => 'Fisher, R.'),
+        create(:author_name, name: 'Bolton, B.'),
+        create(:author_name, name: 'Fisher, R.'),
       ], citation_year: '2001', year: '2001')
       citation = FactoryGirl.build_stubbed :citation, reference: reference
       expect(citation.authorship_string).to eq('Bolton & Fisher, 2001')

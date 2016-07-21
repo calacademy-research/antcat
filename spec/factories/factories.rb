@@ -10,7 +10,7 @@ FactoryGirl.define do
   end
 
   factory :citation do
-    reference :factory => :article_reference
+    reference factory: :article_reference
     pages '49'
   end
 
@@ -31,7 +31,7 @@ FactoryGirl.define do
 
   factory :antwiki_valid_taxon
 
-  factory :version, :class => PaperTrail::Version do
+  factory :version, class: PaperTrail::Version do
     item_type 'Taxon'
     event 'create'
     change_id 0

@@ -41,7 +41,7 @@ module AntCat
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.action_mailer.delivery_method = :sendmail
-    config.action_mailer.sendmail_settings = {:arguments => '-i'}
+    config.action_mailer.sendmail_settings = {arguments: '-i'}
     config.active_record.observers = [
         :author_name_observer,
         :journal_observer,

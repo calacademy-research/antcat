@@ -34,120 +34,120 @@ describe ReferenceDecorator do
 
   describe "formatting reference" do
     it "should format the reference" do
-      reference = create(:article_reference, :author_names => [author_name],
-                          :citation_year => "1874",
-                          :title => "Les fourmis de la Suisse",
-                          :journal => journal, :series_volume_issue => "26", :pagination => "1-452")
+      reference = create(:article_reference, author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse",
+                          journal: journal, series_volume_issue: "26", pagination: "1-452")
       string = reference.decorate.format
       expect(string).to be_html_safe
       expect(string).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should add a period after the title if none exists" do
-      reference = create(:article_reference, :author_names => [author_name],
-                          :citation_year => "1874",
-                          :title => "Les fourmis de la Suisse",
-                          :journal => journal, :series_volume_issue => "26", :pagination => "1-452")
+      reference = create(:article_reference, author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse",
+                          journal: journal, series_volume_issue: "26", pagination: "1-452")
       expect(reference.decorate.format).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should not add a period after the author_names' suffix" do
-      reference = create(:article_reference, :author_names => [author_name],
-                          :citation_year => "1874",
-                          :title => "Les fourmis de la Suisse",
-                          :journal => journal, :series_volume_issue => "26", :pagination => "1-452")
+      reference = create(:article_reference, author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse",
+                          journal: journal, series_volume_issue: "26", pagination: "1-452")
       reference.update_attribute :author_names_suffix, ' (ed.)'
       expect(reference.decorate.format).to eq('Forel, A. (ed.) 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should not add a period after the title if it ends with a question mark" do
-      reference = create(:article_reference, :author_names => [author_name],
-                          :citation_year => "1874",
-                          :title => "Les fourmis de la Suisse?",
-                          :journal => journal, :series_volume_issue => "26", :pagination => "1-452")
+      reference = create(:article_reference, author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse?",
+                          journal: journal, series_volume_issue: "26", pagination: "1-452")
       expect(reference.decorate.format).to eq('Forel, A. 1874. Les fourmis de la Suisse? Neue Denkschriften 26:1-452.')
     end
 
     it "should not add a period after the title if it ends with an exclamation mark" do
-      reference = create(:article_reference, :author_names => [author_name],
-                          :citation_year => "1874",
-                          :title => "Les fourmis de la Suisse!",
-                          :journal => journal, :series_volume_issue => "26", :pagination => "1-452")
+      reference = create(:article_reference, author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse!",
+                          journal: journal, series_volume_issue: "26", pagination: "1-452")
       expect(reference.decorate.format).to eq('Forel, A. 1874. Les fourmis de la Suisse! Neue Denkschriften 26:1-452.')
     end
 
     it "should not add a period after the title if there's already one" do
-      reference = create(:article_reference, :author_names => [author_name],
-                          :citation_year => "1874",
-                          :title => "Les fourmis de la Suisse.",
-                          :journal => journal, :series_volume_issue => "26", :pagination => "1-452")
+      reference = create(:article_reference, author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse.",
+                          journal: journal, series_volume_issue: "26", pagination: "1-452")
       expect(reference.decorate.format).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should add a period after the citation if none exists" do
-      reference = create(:article_reference, :author_names => [author_name],
-                          :citation_year => "1874",
-                          :title => "Les fourmis de la Suisse.",
-                          :journal => journal, :series_volume_issue => "26", :pagination => "1-452")
+      reference = create(:article_reference, author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse.",
+                          journal: journal, series_volume_issue: "26", pagination: "1-452")
       expect(reference.decorate.format).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should not add a period after the citation if there's already one" do
-      reference = create(:article_reference, :author_names => [author_name],
-                          :citation_year => "1874",
-                          :title => "Les fourmis de la Suisse.",
-                          :journal => journal, :series_volume_issue => "26", :pagination => "1-452.")
+      reference = create(:article_reference, author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse.",
+                          journal: journal, series_volume_issue: "26", pagination: "1-452.")
       expect(reference.decorate.format).to eq('Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.')
     end
 
     it "should separate the publisher and the pagination with a comma" do
       publisher = create :publisher
-      reference = create(:book_reference, :author_names => [author_name],
-                          :citation_year => "1874",
-                          :title => "Les fourmis de la Suisse.",
-                          :publisher => publisher, :pagination => "22 pp.")
+      reference = create(:book_reference, author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse.",
+                          publisher: publisher, pagination: "22 pp.")
       expect(reference.decorate.format).to eq('Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.')
     end
 
     it "should format an unknown reference" do
-      reference = create(:unknown_reference, :author_names => [author_name],
-                          :citation_year => "1874",
-                          :title => "Les fourmis de la Suisse.", :citation => 'New York')
+      reference = create(:unknown_reference, author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse.", citation: 'New York')
       expect(reference.decorate.format).to eq('Forel, A. 1874. Les fourmis de la Suisse. New York.')
     end
 
     it "should format a nested reference" do
       reference = create :book_reference,
-        :author_names => [create(:author_name, :name => 'Mayr, E.')],
-        :citation_year => '2010',
-        :title => 'Ants I have known',
-        :publisher => create(:publisher, :name => 'Wiley', :place => create(:place, :name => 'New York')),
-        :pagination => '32 pp.'
-      nested_reference = create :nested_reference, :nesting_reference => reference,
-        :author_names => [author_name], :title => 'Les fourmis de la Suisse',
-        :citation_year => '1874', :pages_in => 'Pp. 32-45 in'
+        author_names: [create(:author_name, name: 'Mayr, E.')],
+        citation_year: '2010',
+        title: 'Ants I have known',
+        publisher: create(:publisher, name: 'Wiley', place: create(:place, name: 'New York')),
+        pagination: '32 pp.'
+      nested_reference = create :nested_reference, nesting_reference: reference,
+        author_names: [author_name], title: 'Les fourmis de la Suisse',
+        citation_year: '1874', pages_in: 'Pp. 32-45 in'
       expect(nested_reference.decorate.format).to eq(
         'Forel, A. 1874. Les fourmis de la Suisse. Pp. 32-45 in Mayr, E. 2010. Ants I have known. New York: Wiley, 32 pp.'
       )
     end
 
     it "should format a citation_string correctly if the publisher doesn't have a place" do
-      publisher = Publisher.create! :name => "Wiley"
+      publisher = Publisher.create! name: "Wiley"
       reference = create(:book_reference,
-                          :author_names => [author_name],
-                          :citation_year => "1874",
-                          :title => "Les fourmis de la Suisse.",
-                          :publisher => publisher, :pagination => "22 pp.")
+                          author_names: [author_name],
+                          citation_year: "1874",
+                          title: "Les fourmis de la Suisse.",
+                          publisher: publisher, pagination: "22 pp.")
       expect(reference.decorate.format).to eq('Forel, A. 1874. Les fourmis de la Suisse. Wiley, 22 pp.')
     end
 
     describe "unsafe characters" do
-      let!(:author_names) { [create(:author_name, :name => 'Ward, P. S.')] }
-      let(:reference) { create :unknown_reference, :author_names => author_names,
-        :citation_year => "1874", :title => "Les fourmis de la Suisse.", :citation => '32 pp.' }
+      let!(:author_names) { [create(:author_name, name: 'Ward, P. S.')] }
+      let(:reference) { create :unknown_reference, author_names: author_names,
+        citation_year: "1874", title: "Les fourmis de la Suisse.", citation: '32 pp.' }
 
       it "should escape everything, but let italics through" do
-        reference.author_names = [create(:author_name, :name => '<script>')]
+        reference.author_names = [create(:author_name, name: '<script>')]
         expect(reference.decorate.format).to eq('&lt;script&gt; 1874. Les fourmis de la Suisse. 32 pp.')
       end
       it "should escape the citation year" do
@@ -168,49 +168,49 @@ describe ReferenceDecorator do
       end
 
       it "should escape the citation in an article reference" do
-        reference = create :article_reference, :title => 'Ants are my life', :author_names => author_names,
-          :journal => create(:journal, :name => '<script>'), :citation_year => '2010d', :series_volume_issue => '<', :pagination => '>'
+        reference = create :article_reference, title: 'Ants are my life', author_names: author_names,
+          journal: create(:journal, name: '<script>'), citation_year: '2010d', series_volume_issue: '<', pagination: '>'
         expect(reference.decorate.format).to eq('Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt;.')
       end
 
       it "should escape the citation in a book reference" do
-        reference = create :book_reference, :citation_year => '2010d', :title => 'Ants are my life', :author_names => author_names,
-          :publisher => create(:publisher, :name => '<', :place => create(:place, :name => '>')), :pagination => '>'
+        reference = create :book_reference, citation_year: '2010d', title: 'Ants are my life', author_names: author_names,
+          publisher: create(:publisher, name: '<', place: create(:place, name: '>')), pagination: '>'
         expect(reference.decorate.format).to eq('Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt;.')
       end
 
       it "should escape the citation in an unknown reference" do
-        reference = create :unknown_reference, :title => 'Ants are my life', :citation_year => '2010d', :author_names => author_names, :citation => '>'
+        reference = create :unknown_reference, title: 'Ants are my life', citation_year: '2010d', author_names: author_names, citation: '>'
         expect(reference.decorate.format).to eq('Ward, P. S. 2010d. Ants are my life. &gt;.')
       end
 
       it "should escape the citation in a nested reference" do
-        nested_reference = create :unknown_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => author_names
-        reference = create :nested_reference, :title => "Ants are my life", :citation_year => '2010d', :author_names => author_names, :pages_in => '>', :nesting_reference => nested_reference
+        nested_reference = create :unknown_reference, title: "Ants are my life", citation_year: '2010d', author_names: author_names
+        reference = create :nested_reference, title: "Ants are my life", citation_year: '2010d', author_names: author_names, pages_in: '>', nesting_reference: nested_reference
         expect(reference.decorate.format).to eq('Ward, P. S. 2010d. Ants are my life. &gt; Ward, P. S. 2010d. Ants are my life. New York.')
       end
     end
 
     describe "Italicizing title and citation" do
       it "should return an html_safe string" do
-        reference = create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
+        reference = create :unknown_reference, citation_year: '2010d', author_names: [], citation: '*Ants*', title: '*Tapinoma*'
         expect(reference.decorate.format).to be_html_safe
       end
       it "should italicize the title and citation" do
-        reference = create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '*Tapinoma*'
+        reference = create :unknown_reference, citation_year: '2010d', author_names: [], citation: '*Ants*', title: '*Tapinoma*'
         expect(reference.decorate.format).to eq("2010d. <i>Tapinoma</i>. <i>Ants</i>.")
       end
       it "should italicize the title even with two italicized words" do
-        reference = create :unknown_reference, :citation_year => '2010d',
-          :author_names => [], :citation => 'Ants', :title => 'Note on a new northern cutting ant, *Atta* *septentrionalis*.'
+        reference = create :unknown_reference, citation_year: '2010d',
+          author_names: [], citation: 'Ants', title: 'Note on a new northern cutting ant, *Atta* *septentrionalis*.'
         expect(reference.decorate.format).to eq("2010d. Note on a new northern cutting ant, <i>Atta</i> <i>septentrionalis</i>. Ants.")
       end
       it "should allow existing italics in title and citation" do
-        reference = create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '<i>Tapinoma</i>'
+        reference = create :unknown_reference, citation_year: '2010d', author_names: [], citation: '*Ants*', title: '<i>Tapinoma</i>'
         expect(reference.decorate.format).to eq("2010d. <i>Tapinoma</i>. <i>Ants</i>.")
       end
       it "should escape other HTML in title and citation" do
-        reference = create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => '*Ants*', :title => '<span>Tapinoma</span>'
+        reference = create :unknown_reference, citation_year: '2010d', author_names: [], citation: '*Ants*', title: '<span>Tapinoma</span>'
         expect(reference.decorate.format).to eq("2010d. &lt;span&gt;Tapinoma&lt;/span&gt;. <i>Ants</i>.")
       end
       it "should not escape et al. in citation" do
@@ -243,7 +243,7 @@ describe ReferenceDecorator do
   end
 
   it "should not have a space at the beginning when there are no authors" do
-    reference = create :unknown_reference, :citation_year => '2010d', :author_names => [], :citation => 'Ants', :title => 'Tapinoma'
+    reference = create :unknown_reference, citation_year: '2010d', author_names: [], citation: 'Ants', title: 'Tapinoma'
     expect(reference.decorate.format).to eq "2010d. Tapinoma. Ants."
   end
 
@@ -268,10 +268,10 @@ describe ReferenceDecorator do
     end
 
     def make date
-      @reference = create(:article_reference, :author_names => [author_name],
-                           :citation_year => "1874",
-                           :title => "Les fourmis de la Suisse.",
-                           :journal => journal, :series_volume_issue => "26", :pagination => "1-452.", :date => date)
+      @reference = create(:article_reference, author_names: [author_name],
+                           citation_year: "1874",
+                           title: "Les fourmis de la Suisse.",
+                           journal: journal, series_volume_issue: "26", pagination: "1-452.", date: date)
     end
 
     def check expected

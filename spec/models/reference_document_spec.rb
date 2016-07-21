@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ReferenceDocument do
   it "should make sure it has a protocol" do
-    stub_request(:any, "http://antcat.org/1.pdf").to_return :body => "Hello World!"
+    stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
     document = create :reference_document
     document.url = 'antcat.org/1.pdf'
     document.save!
@@ -12,33 +12,33 @@ describe ReferenceDocument do
   end
 
   it "should make sure it's a valid URL" do
-    document = ReferenceDocument.new :url => '*'
+    document = ReferenceDocument.new url: '*'
     expect(document).not_to be_valid
     expect(document.errors.full_messages).to match_array(['Url is not in a valid format'])
   end
 
   it "should accept a URL with spaces" do
-    stub_request(:any, "http://antwiki.org/a%20url").to_return :body => "Hello World!"
-    document = ReferenceDocument.new :url => 'http://antwiki.org/a url'
+    stub_request(:any, "http://antwiki.org/a%20url").to_return body: "Hello World!"
+    document = ReferenceDocument.new url: 'http://antwiki.org/a url'
     expect(document).to be_valid
   end
 
   it "don't check existence of URL when it's ours" do
-    document = ReferenceDocument.new :url => 'http://antcat.org/a.pdf'
+    document = ReferenceDocument.new url: 'http://antcat.org/a.pdf'
     expect(document).to be_valid
   end
 
   it "should make sure it's a valid URL with a path" do
-    document = ReferenceDocument.new :url => 'google.com'
+    document = ReferenceDocument.new url: 'google.com'
     expect(document).not_to be_valid
     expect(document.errors.full_messages).to match_array(['Url is not in a valid format'])
   end
 
   it "should make sure it exists" do
-    stub_request(:any, "http://antwiki.org/1.pdf").to_return :body => "Hello World!"
-    document = ReferenceDocument.create :url => 'http://antwiki.org/1.pdf'
+    stub_request(:any, "http://antwiki.org/1.pdf").to_return body: "Hello World!"
+    document = ReferenceDocument.create url: 'http://antwiki.org/1.pdf'
     expect(document).to be_valid
-    stub_request(:any, "http://antwiki.org/1.pdf").to_return :body => "Not Found", :status => 404
+    stub_request(:any, "http://antwiki.org/1.pdf").to_return body: "Not Found", status: 404
     expect(document).not_to be_valid
     expect(document.errors.full_messages).to match_array(['Url was not found'])
   end
@@ -98,13 +98,13 @@ describe ReferenceDocument do
     end
 
     it "should do nothing if the file isn't hosted by us" do
-      document = ReferenceDocument.new :url => 'foo'
+      document = ReferenceDocument.new url: 'foo'
       document.host = 'localhost'
       expect(document.url).to eq('foo')
     end
 
     it "should insert the host in the url if the file is hosted by us" do
-      document = ReferenceDocument.create! :file_file_name => 'foo'
+      document = ReferenceDocument.create! file_file_name: 'foo'
       document.host = 'localhost'
       expect(document.url).to eq("http://localhost/documents/#{document.id}/foo")
     end

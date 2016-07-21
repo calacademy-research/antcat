@@ -44,9 +44,9 @@ Given /(?:these|this) book references? exists?/ do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /([^:]+): (\w+), (.*)/
-    hash.merge! :publisher => create(:publisher, :name => matches[2],
-                                                 :place => create(:place, :name => matches[1])),
-                :pagination => matches[3]
+    hash.merge! publisher: create(:publisher, name: matches[2],
+                                                 place: create(:place, name: matches[1])),
+                pagination: matches[3]
     create_reference :book_reference, hash
   end
 end
@@ -71,13 +71,13 @@ end
 def create_reference type, hash
   author = hash.delete('author')
   if author
-    author_names = [create(:author_name, :name => author)]
+    author_names = [create(:author_name, name: author)]
   else
     authors = hash.delete('authors')
     author_names = Parsers::AuthorParser.parse(authors)[:names]
     author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
     author_names = author_names.inject([]) do |author_names, author_name|
-      author_name = AuthorName.find_by_name(author_name) || create(:author_name, :name => author_name)
+      author_name = AuthorName.find_by_name(author_name) || create(:author_name, name: author_name)
       author_names << author_name
     end
   end
@@ -90,7 +90,7 @@ def create_reference type, hash
       hash[:year].to_s
     end
 
-  reference = create type, hash.merge(:author_names => author_names, :author_names_suffix => author_names_suffix)
+  reference = create type, hash.merge(author_names: author_names, author_names_suffix: author_names_suffix)
   @reference ||= reference
   set_timestamps reference, hash
   reference
@@ -104,16 +104,16 @@ end
 Given /the following entry nests it/ do |table|
   data = table.hashes.first
   @nestee_reference = @reference
-  @reference = NestedReference.create! :author_names => [create(:author_name, :name => data[:authors])],
-                                       :citation_year => data[:year], :title => data[:title], :pages_in => data[:pages_in],
+  @reference = NestedReference.create! author_names: [create(:author_name, name: data[:authors])],
+                                       citation_year: data[:year], title: data[:title], pages_in: data[:pages_in],
                                        nesting_reference: @nestee_reference
 end
 
 Given /that the entry has a URL that's on our site( that is public)?/ do |is_public|
   @reference.update_attribute :document, ReferenceDocument.create!
-  @reference.document.update_attributes :url => "localhost/documents/#{@reference.document.id}/123.pdf",
-                                        :file_file_name => '123.pdf',
-                                        :public => is_public ? true : nil
+  @reference.document.update_attributes url: "localhost/documents/#{@reference.document.id}/123.pdf",
+                                        file_file_name: '123.pdf',
+                                        public: is_public ? true : nil
 end
 
 Given /that the entry has a URL that's not on our site/ do
@@ -124,9 +124,9 @@ end
 Then /I should see these entries (with a header )?in this order:/ do |with_header, entries|
   offset = with_header ? 1 : 0
   entries.hashes.each_with_index do |e, i|
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['entry']
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['date']
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", :text => e['review_state']
+    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['entry']
+    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['date']
+    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['review_state']
   end
 end
 
@@ -144,7 +144,7 @@ end
 Then /I should (not )?see a "PDF" link/ do |should_not|
   begin
     trace = ['Inside the I should(not) see a PDF step']
-    page_has_no_selector = page.has_no_selector?('a', :text => 'PDF')
+    page_has_no_selector = page.has_no_selector?('a', text: 'PDF')
     trace << 'after page.has_no_selector'
     unless page_has_no_selector and should_not
       trace << 'inside unless'
@@ -168,7 +168,7 @@ When /I fill in "([^"]*)" with a URL to a document that exists/ do |field|
 end
 
 When /I fill in "([^"]*)" with a URL to a document that doesn't exist/ do |field|
-  stub_request(:any, "google.com/foo").to_return :status => 404
+  stub_request(:any, "google.com/foo").to_return status: 404
   step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
@@ -183,7 +183,7 @@ Then /I should see a very long author names string/ do
 end
 
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
-  reference = create :unknown_reference, :title => 'Dolerichoderinae'
+  reference = create :unknown_reference, title: 'Dolerichoderinae'
   reference.update_column :id, 50000
 end
 
@@ -209,19 +209,19 @@ end
 
 # New references list
 When /^I click "(.*?)" on the Ward reference$/ do |button|
-  within find("tr", :text => 'Ward') do
+  within find("tr", text: 'Ward') do
     first(".btn-normal", text: button).click
   end
 end
 Then /^the review status on the Ward reference should change to "(.*?)"$/ do |status|
-  within find("tr", :text => 'Ward') do
+  within find("tr", text: 'Ward') do
     step %{I should see "#{status}"}
   end
 end
 Then /^it (#{SHOULD_OR_SHOULD_NOT}) show "(.*?)" as the default$/ do |should_selector, key|
   reference = find_reference_by_key key
   author = key.split(' ').first
-  within find("tr", :text => author) do
+  within find("tr", text: author) do
     step %{I #{should_selector} see "Default"}
   end
 end

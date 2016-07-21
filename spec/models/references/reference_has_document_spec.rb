@@ -17,7 +17,7 @@ describe Reference do
     end
 
     it "should delegate to its document" do
-      reference = create :reference, :document => create(:reference_document)
+      reference = create :reference, document: create(:reference_document)
       user = create :user
       expect(reference.document).to receive(:downloadable?)
       reference.downloadable?
@@ -29,15 +29,15 @@ describe Reference do
       expect(create(:reference).url).to be_nil
     end
     it "should delegate to its document" do
-      reference = create :reference, :document => create(:reference_document)
+      reference = create :reference, document: create(:reference_document)
       expect(reference.document).to receive(:url)
       reference.url
     end
 
     it "should make sure it exists" do
-      reference = create :reference, :year => 2001
-      stub_request(:any, "http://antwiki.org/1.pdf").to_return :body => "Not Found", :status => 404
-      expect {reference.document = ReferenceDocument.create :url => 'http://antwiki.org/1.pdf'}.to raise_error ActiveRecord::RecordNotSaved
+      reference = create :reference, year: 2001
+      stub_request(:any, "http://antwiki.org/1.pdf").to_return body: "Not Found", status: 404
+      expect {reference.document = ReferenceDocument.create url: 'http://antwiki.org/1.pdf'}.to raise_error ActiveRecord::RecordNotSaved
     end
 
   end
@@ -47,7 +47,7 @@ describe Reference do
       create(:reference).document_host = 'localhost'
     end
     it "should delegate to its document" do
-      reference = create :reference, :document => create(:reference_document)
+      reference = create :reference, document: create(:reference_document)
       expect(reference.document).to receive(:host=)
       reference.document_host = 'localhost'
     end

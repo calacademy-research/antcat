@@ -6,7 +6,7 @@ describe TaxonHistoryItem do
     expect(TaxonHistoryItem.new(taxt: '')).not_to be_valid
   end
   it "should have some taxt" do
-    item = TaxonHistoryItem.new :taxt => 'taxt'
+    item = TaxonHistoryItem.new taxt: 'taxt'
     expect(item).to be_valid
     item.save!
     item.reload
@@ -14,7 +14,7 @@ describe TaxonHistoryItem do
   end
   it "can belong to a taxon" do
     taxon = create :family
-    item = taxon.history_items.create! :taxt => 'foo'
+    item = taxon.history_items.create! taxt: 'foo'
     expect(item.reload.taxon).to eq(taxon)
   end
 

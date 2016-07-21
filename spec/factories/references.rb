@@ -78,6 +78,6 @@ def reference_factory attributes = {}
   name = attributes.delete :author_name
   author_name = AuthorName.find_by_name name
   author_name ||= create :author_name, name: name
-  reference = create(:reference, attributes.merge(:author_names => [author_name]))
+  reference = create(:reference, attributes.merge(author_names: [author_name]))
   reference
 end

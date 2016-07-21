@@ -145,7 +145,7 @@ class ChangesController < ApplicationController
             # because we validate on things like the genus being present, and if we're doing an entire change set,
             # it might not be!
             unless item.nil?
-              item.save! :validate => false
+              item.save! validate: false
             end
           rescue ActiveRecord::RecordInvalid => error
             puts "=========Reify failure: #{error} version item_type =  #{version.item_type}"

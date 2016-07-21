@@ -33,7 +33,7 @@ describe Parsers::AuthorParser do
    it "should parse a single author + author roles into a hash" do
      string = 'Fisher, B.L. (ed.)'
      result = @parser.parse! string
-     expect(result).to eq({:names => ['Fisher, B.L.'], :suffix => ' (ed.)'})
+     expect(result).to eq({names: ['Fisher, B.L.'], suffix: ' (ed.)'})
      expect(result[:suffix].class).to eq(String)
      expect(string).to eq('')
    end
@@ -46,7 +46,7 @@ describe Parsers::AuthorParser do
 
    it "should multiple authors with a role" do
      expect(@parser.parse("Breed, M. D.; Page, R. E. (eds.)")).to eq(
-       {:names => ['Breed, M. D.', 'Page, R. E.'], :suffix => ' (eds.)'}
+       {names: ['Breed, M. D.', 'Page, R. E.'], suffix: ' (eds.)'}
      )
    end
 
@@ -67,15 +67,15 @@ describe Parsers::AuthorParser do
    end
 
    it "should handle 'et al.' without a comma before it" do
-     expect(@parser.parse("Sanetra, M; Ward, P. et al.")).to eq({:names => ['Sanetra, M', 'Ward, P.'], :suffix => ' et al.'})
+     expect(@parser.parse("Sanetra, M; Ward, P. et al.")).to eq({names: ['Sanetra, M', 'Ward, P.'], suffix: ' et al.'})
    end
 
    it "should handle 'et al.' with a comma before it" do
-     expect(@parser.parse("Sanetra, M; Ward, P., et al.")).to eq({:names => ['Sanetra, M', 'Ward, P.'], :suffix => ', et al.'})
+     expect(@parser.parse("Sanetra, M; Ward, P., et al.")).to eq({names: ['Sanetra, M', 'Ward, P.'], suffix: ', et al.'})
    end
 
    it "should handle 'et al. (eds.)'" do
-     expect(@parser.parse("Sanetra, M; Ward, P., et al. (eds.)")).to eq({:names => ['Sanetra, M', 'Ward, P.'], :suffix => ', et al. (eds.)'})
+     expect(@parser.parse("Sanetra, M; Ward, P., et al. (eds.)")).to eq({names: ['Sanetra, M', 'Ward, P.'], suffix: ', et al. (eds.)'})
    end
 
    it "should strip the space after the suffix" do
@@ -141,7 +141,7 @@ describe Parsers::AuthorParser do
    end
 
    it "should handle a phrase that's known to be an author" do
-     create :author_name, :name => 'Anonymous', :verified => true
+     create :author_name, name: 'Anonymous', verified: true
      string = 'Anonymous'
      expect(@parser.parse!(string)[:names]).to eq(['Anonymous'])
      expect(string).to be_empty
@@ -152,11 +152,11 @@ describe Parsers::AuthorParser do
    end
 
    it "should handle a semicolon followed by a space at the end" do
-     expect(@parser.parse('Ward, P. S.; ')).to eq({:names => ['Ward, P. S.'], :suffix => nil})
+     expect(@parser.parse('Ward, P. S.; ')).to eq({names: ['Ward, P. S.'], suffix: nil})
    end
 
    it "should handle an authors list separated by ampersand" do
-     expect(@parser.parse('Espadaler & DuMerle')).to eq({:names => ['Espadaler', 'DuMerle'], :suffix => nil})
+     expect(@parser.parse('Espadaler & DuMerle')).to eq({names: ['Espadaler', 'DuMerle'], suffix: nil})
    end
 
   end
@@ -168,16 +168,16 @@ describe Parsers::AuthorParser do
      end
    end
    it "should simply return the name if there's only one word" do
-     expect(@parser.get_name_parts('Bolton')).to eq({:last => 'Bolton'})
+     expect(@parser.get_name_parts('Bolton')).to eq({last: 'Bolton'})
    end
    it "should separate the words if there are multiple" do
-     expect(@parser.get_name_parts('Bolton, B.L.')).to eq({:last => 'Bolton', :first_and_initials => 'B.L.'})
+     expect(@parser.get_name_parts('Bolton, B.L.')).to eq({last: 'Bolton', first_and_initials: 'B.L.'})
    end
    it "should use all words if there is no comma" do
-     expect(@parser.get_name_parts('Royal Academy')).to eq({:last => 'Royal Academy'})
+     expect(@parser.get_name_parts('Royal Academy')).to eq({last: 'Royal Academy'})
    end
    it "should use use all words before the comma if there are multiple" do
-     expect(@parser.get_name_parts('Baroni Urbani, C.')).to eq({:last => 'Baroni Urbani', :first_and_initials => 'C.'})
+     expect(@parser.get_name_parts('Baroni Urbani, C.')).to eq({last: 'Baroni Urbani', first_and_initials: 'C.'})
    end
   end
 

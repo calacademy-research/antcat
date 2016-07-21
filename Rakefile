@@ -18,22 +18,22 @@ unless Rails.env.production?
 
   task(:spec).clear 
   desc "Run normal specs"
-  task :spec => ['db:test:prepare', :normal_specs]
+  task spec: ['db:test:prepare', :normal_specs]
   namespace :spec do
     task(:all).clear 
     desc "Run all specs"
-    task :all => ['db:test:prepare', :all_specs]
+    task all: ['db:test:prepare', :all_specs]
   end
 
   task(:cucumber).clear 
   desc "Run current features"
-  task :cucumber => ['db:test:prepare', :current_features]
+  task cucumber: ['db:test:prepare', :current_features]
   namespace :cucumber do
     task(:all).clear 
     desc "Run all features"
-    task :all => ['db:test:prepare', :all_features]
+    task all: ['db:test:prepare', :all_features]
   end
 
   desc "Run all tests and features"
-  task :all => ['spec:all', 'cucumber:all']
+  task all: ['spec:all', 'cucumber:all']
 end

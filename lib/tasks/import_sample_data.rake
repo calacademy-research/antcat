@@ -1,7 +1,7 @@
 namespace :antcat do
   namespace :db do
     desc "Import sample data"
-    task :import_sample_data => [:environment] do
+    task import_sample_data: [:environment] do
       require 'factory_girl'
       require 'sunspot_test'
 
