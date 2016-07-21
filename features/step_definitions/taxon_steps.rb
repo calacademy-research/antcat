@@ -10,7 +10,7 @@ Given /^the Formicidae family exists$/ do
 
   protonym = create :protonym,
     name: create(:family_or_subfamily_name, name: "Formicariae"),
-    authorship: create(:citation, reference: reference, pages: "124" )
+    authorship: create(:citation, reference: reference, pages: "124")
 
   family = create :family,
     name: create(:family_name, name: "Formicidae"),

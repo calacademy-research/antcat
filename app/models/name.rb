@@ -22,7 +22,7 @@ class Name < ActiveRecord::Base
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)
     raise Taxon::TaxonExists if existing_names.any? { |name| not name.references.empty? }
-    update_attributes!( name: name_string,
+    update_attributes!(name: name_string,
                         name_html: italicize(name_string))
   end
 
