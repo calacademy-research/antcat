@@ -46,5 +46,4 @@ module Taxa::Synonyms
         ORDER BY name
       SQL
     end
-
 end

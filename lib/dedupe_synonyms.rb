@@ -1,5 +1,4 @@
 module DedupeSynonyms
-
   # TODO? make callable from rake task
   def self.dedupe
     duplicate_count = 0
@@ -17,5 +16,4 @@ module DedupeSynonyms
               end
     end
   end
-
 end

@@ -1,5 +1,4 @@
 module AnyBase
-
   def self.base_10_to_base_x number, digits
     result = ''
     base = digits.length
@@ -30,5 +29,4 @@ module AnyBase
     end while index >= 0
     result
   end
-
 end

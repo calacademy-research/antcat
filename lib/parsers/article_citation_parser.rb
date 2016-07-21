@@ -1,5 +1,4 @@
 module Parsers::ArticleCitationParser
-
   def self.get_series_volume_issue_parts string
     parts = {}
     return parts unless string
@@ -18,5 +17,4 @@ module Parsers::ArticleCitationParser
     parts[:end] = matches[2] if matches[2].present?
     parts
   end
-
 end

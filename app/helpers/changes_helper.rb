@@ -1,5 +1,4 @@
 module ChangesHelper
-
   def format_taxon_name name
     name.name_html.html_safe
   end
@@ -41,5 +40,4 @@ module ChangesHelper
       method: :put, class: "btn-destructive",
       data: { confirm: "Are you sure you want to approve all changes?" }
   end
-
 end

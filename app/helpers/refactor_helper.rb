@@ -27,7 +27,6 @@
 #      history.rb
 
 module RefactorHelper
-
   def link_to_taxon taxon
     if $use_ant_web_formatter
       link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
@@ -61,5 +60,4 @@ module RefactorHelper
       Taxt.to_string taxt
     end
   end
-
 end

@@ -17,5 +17,4 @@ module Formatters::AdvancedSearchHtmlFormatter
     reference = taxon.protonym.authorship.reference
     reference.decorate.format_inline_citation(expansion: true)
   end
-
 end

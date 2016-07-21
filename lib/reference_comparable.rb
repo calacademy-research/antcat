@@ -130,5 +130,4 @@ module ReferenceComparable
       end
       string
     end
-
 end

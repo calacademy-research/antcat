@@ -1,5 +1,4 @@
 module CleanNewlines
-
   # TODO move to a concern?
   def self.clean_newlines record, *text_attributes
     text_attributes.each do |text_attribute|
@@ -9,5 +8,4 @@ module CleanNewlines
       record[text_attribute] = cleaned_string
     end
   end
-
 end

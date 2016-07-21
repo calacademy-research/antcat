@@ -56,5 +56,4 @@ module Taxa::References
       end
       references
     end
-
 end

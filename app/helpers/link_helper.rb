@@ -54,5 +54,4 @@ module LinkHelper
     url << params.map { |key, value| value.to_query(key) }.compact * '&'
     link_to_external_site 'AntWeb', url.html_safe
   end
-
 end

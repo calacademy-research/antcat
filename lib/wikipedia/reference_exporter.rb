@@ -1,5 +1,4 @@
 module Wikipedia
-
   class ReferenceExporter
     def self.export reference
       "Wikipedia::#{reference.type}".constantize.new(reference).format
