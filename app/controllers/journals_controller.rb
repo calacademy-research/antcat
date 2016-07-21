@@ -1,6 +1,6 @@
 class JournalsController < ApplicationController
   before_filter :authenticate_editor, except: [:index, :show, :autocomplete]
-  before_filter :set_journal, only: [:show, :edit, :update]
+  before_filter :set_journal, only: [:show, :edit, :update, :destroy]
   layout "references"
 
   def index
@@ -8,7 +8,7 @@ class JournalsController < ApplicationController
   end
 
   def show
-    @references = Reference.sorted_by_principal_author_last_name.where(journal: @journal)
+    @references = @journal.references.sorted_by_principal_author_last_name
   end
 
   def new
@@ -37,6 +37,17 @@ class JournalsController < ApplicationController
     end
   end
 
+  def destroy
+    if @journal.destroy
+      redirect_to references_path, notice: "Journal was successfully destroyed."
+    else
+      if @journal.errors.present?
+        flash[:warning] = @journal.errors.full_messages.to_sentence
+      end
+      redirect_to @journal
+    end
+  end
+
   def autocomplete
     respond_to do |format|
       format.json { render json: Journal.search(params[:term]) }
@@ -47,7 +58,7 @@ class JournalsController < ApplicationController
     def set_journal
       @journal = Journal.find(params[:id])
     end
-    
+
     def journal_params
       params.require(:journal).permit(:name)
     end

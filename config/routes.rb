@@ -33,7 +33,7 @@ AntCat::Application.routes.draw do
   get 'catalog/:id' => 'catalog#show', as: :catalog
 
   get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
-  resources :journals, only: [:index, :show, :new, :create, :edit, :update] do
+  resources :journals do
     collection do
       get :autocomplete
     end

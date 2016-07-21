@@ -29,6 +29,24 @@ describe Journal do
     end
   end
 
+  describe "destroying" do
+    let!(:journal) { FactoryGirl.create :journal, name: "ABC" }
+
+    context "journal without references" do
+      it "should work" do
+        expect { journal.destroy }.to change { Journal.count }.from(1).to(0)
+      end
+    end
+
+    context "journal with a reference" do
+      it "should not work" do
+        FactoryGirl.create :article_reference, journal: journal
+        expect { journal.destroy }.not_to change { Journal.count }
+        expect(journal.errors[:base]).to eq ["cannot delete journal (not unused)"]
+      end
+    end
+  end
+
   describe "Versioning" do
     it "should record versions" do
       with_versioning do
