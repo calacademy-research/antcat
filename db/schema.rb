@@ -331,7 +331,7 @@ ActiveRecord::Schema.define(version: 20160721034349) do
     t.string   "doi",                              limit: 255
   end
 
-  add_index "references", ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: {"author_names_string_cache"=>255, "citation_year"=>nil}, using: :btree
+  add_index "references", ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: {"author_names_string_cache" => 255, "citation_year" => nil}, using: :btree
   add_index "references", ["created_at"], name: "references_created_at_idx", using: :btree
   add_index "references", ["id", "type"], name: "index_references_on_id_and_type", using: :btree
   add_index "references", ["journal_id"], name: "references_journal_id_idx", using: :btree

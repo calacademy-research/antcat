@@ -22,7 +22,7 @@ class DataCleaupSubspecies < ActiveRecord::Migration
   puts "Starting"
 
 
-  query_string ='SELECT
+  query_string = 'SELECT
   taxa.*
 FROM taxa, protonyms, names AS protonym_name
 WHERE protonyms.id = taxa.protonym_id
@@ -92,7 +92,7 @@ WHERE protonyms.id = taxa.protonym_id
           # create
           name = linker.literal_find_or_create_name candidate_for_creation_string
           if name.auto_generated
-            name.origin='migration - data cleanup subspecies'
+            name.origin = 'migration - data cleanup subspecies'
             name.save
           end
           protonym = Protonym.new
@@ -110,7 +110,7 @@ WHERE protonyms.id = taxa.protonym_id
 
 
           #new_taxon.type = valid_antcat_taxon.type
-          new_taxon.type_name_id=1
+          new_taxon.type_name_id = 1
 
 
           taxon_state = TaxonState.new

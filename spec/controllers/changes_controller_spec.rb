@@ -10,7 +10,7 @@ describe ChangesController do
       change_id = Change.all.first.id
 
       get :undo_items, id: change_id
-      changes=JSON.parse(response.body)
+      changes = JSON.parse(response.body)
       expect(changes.size).to eq(1)
       expect(changes[0]['name']).to eq('this_genus')
       expect(changes[0]['change_type']).to eq('create')
@@ -29,7 +29,7 @@ describe ChangesController do
       change_id = Change.all.first.id
 
       get :undo_items, id: change_id
-      changes=JSON.parse(response.body)
+      changes = JSON.parse(response.body)
 
       expect(changes.size).to eq(2)
       expect(changes[0]['name']).to eq('Genus1')

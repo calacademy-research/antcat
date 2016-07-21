@@ -231,7 +231,7 @@ class MigrationRollup < ActiveRecord::Migration
         t.string   "key_cache_no_commas"
       end
 
-      add_index "references", ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: {"author_names_string_cache"=>255, "citation_year"=>nil}
+      add_index "references", ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: {"author_names_string_cache" => 255, "citation_year" => nil}
       add_index "references", ["bolton_key_cache"], name: "index_references_on_bolton_citation_key"
       add_index "references", ["created_at"], name: "references_created_at_idx"
       add_index "references", ["journal_id"], name: "references_journal_id_idx"

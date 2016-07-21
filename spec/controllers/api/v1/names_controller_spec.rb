@@ -17,7 +17,7 @@ describe Api::V1::NamesController do
 
       get(:index, starts_at: protonym_name.id)
       expect(response.status).to eq(200)
-      names=JSON.parse(response.body)
+      names = JSON.parse(response.body)
       expect(names[0]['species_name']['id']).to eq(protonym_name.id)
 
       expect(names.count).to eq(1)
@@ -27,7 +27,7 @@ describe Api::V1::NamesController do
       expect(response.body.to_s).to include("Atta")
 
 
-      names=JSON.parse(response.body)
+      names = JSON.parse(response.body)
       expect(names.count).to eq(21)
     end
   end

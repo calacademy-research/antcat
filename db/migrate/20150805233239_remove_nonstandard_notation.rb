@@ -4,7 +4,7 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
 
   puts "Starting"
 
-  query_string ='select taxa.* from taxa where instr(taxa.name_cache, ".") != 0'
+  query_string = 'select taxa.* from taxa where instr(taxa.name_cache, ".") != 0'
   reg_exp = /([<a-zA-Z >\/]*)(\(([a-zA-Z]*)\)[<\/i>]* )(<i>)*([a-z A-Z.]*)(<\/i>)*/
 
 
@@ -13,7 +13,7 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
   results.each do |taxon|
     puts "Taxa: #{taxon.id}"
     words = taxon.name_cache.split(" ")
-    austin=""
+    austin = ""
     puts "Processing: '#{taxon.name_cache}'"
     words.each do |word|
       if word.index('.')
@@ -39,7 +39,7 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
       # create
       name = linker.literal_find_or_create_name austin, true
       if name.auto_generated
-        name.origin='migration remove_nonstandard_notation'
+        name.origin = 'migration remove_nonstandard_notation'
         name.save
       end
       puts "  name_html: '#{name.name_html}' name id: '#{name.id}' name: '#{name.name}'"
@@ -56,7 +56,7 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
 
 
       #new_taxon.type = valid_antcat_taxon.type
-      new_taxon.type_name_id=1
+      new_taxon.type_name_id = 1
 
 
       taxon_state = TaxonState.new

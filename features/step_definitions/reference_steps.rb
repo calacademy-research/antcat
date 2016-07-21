@@ -16,8 +16,8 @@ Given /^(?:this|these) dated references? exists?$/ do |table|
     if date == 'TODAYS_DATE'
       date = Time.now.strftime("%Y-%m-%d")
     elsif date == 'YESTERDAYS_DATE'
-      t=Time.now
-      yesterday=t-1.day
+      t = Time.now
+      yesterday = t - 1.day
 
       date = yesterday.strftime("%Y-%m-%d")
     end

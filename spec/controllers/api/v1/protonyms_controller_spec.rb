@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Api::V1::ProtonymsController do
   describe "getting data" do
     it "fetches a protonym" do
-      taxon=create_taxon
+      taxon = create_taxon
       get(:show, {'id' => taxon.protonym_id}, nil)
       expect(response.status).to eq(200)
       expect(response.body.to_s).to include(taxon.id.to_s)
@@ -17,7 +17,7 @@ describe Api::V1::ProtonymsController do
       get(:index, nil)
       expect(response.status).to eq(200)
 
-      author_names=JSON.parse(response.body)
+      author_names = JSON.parse(response.body)
       expect(author_names.count).to eq(7)
     end
   end

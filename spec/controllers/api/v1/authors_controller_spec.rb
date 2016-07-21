@@ -19,7 +19,7 @@ describe Api::V1::AuthorsController do
       expect(response.body.to_s).to include(barry_bolton.id.to_s)
       expect(response.body.to_s).to include(second.id.to_s)
 
-      authors=JSON.parse(response.body)
+      authors = JSON.parse(response.body)
       expect(authors.count).to eq(2)
     end
   end

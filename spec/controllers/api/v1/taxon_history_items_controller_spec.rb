@@ -21,7 +21,7 @@ describe Api::V1::TaxonHistoryItemsController do
       # Get index starting at four
       get(:index, starts_at: 4)
       expect(response.status).to eq(200)
-      taxon_history_item=JSON.parse(response.body)
+      taxon_history_item = JSON.parse(response.body)
       # since we want no ids less than 4, we should get a starting id at 4
       expect(taxon_history_item[0]['taxon_history_item']['id']).to eq(4)
       expect(taxon_history_item.count).to eq(3)
@@ -36,7 +36,7 @@ describe Api::V1::TaxonHistoryItemsController do
       expect(response.status).to eq(200)
       expect(response.body.to_s).to include("position")
 
-      taxon_history_items=JSON.parse(response.body)
+      taxon_history_items = JSON.parse(response.body)
       expect(taxon_history_items.count).to eq(6)
     end
   end

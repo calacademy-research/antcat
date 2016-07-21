@@ -11,7 +11,7 @@ describe Api::V1::TaxaController do
       # protonym_name = create_subspecies_name 'Eciton minor maxus'
       get(:show, {'id' => species.id}, nil)
       expect(response.status).to eq(200)
-      parsed_species=JSON.parse(response.body)
+      parsed_species = JSON.parse(response.body)
 
       expect(response.body.to_s).to include("Atta")
       expect(parsed_species['species']['name_cache']).to eq("Atta minor maxus")
@@ -39,7 +39,7 @@ describe Api::V1::TaxaController do
       # Get index
       get(:index, starts_at: species.id)
       expect(response.status).to eq(200)
-      taxa=JSON.parse(response.body)
+      taxa = JSON.parse(response.body)
       expect(taxa[0]['species']['id']).to eq(species.id)
       expect(taxa.count).to eq(1)
     end
@@ -53,7 +53,7 @@ describe Api::V1::TaxaController do
       expect(response.status).to eq(200)
       expect(response.body.to_s).to include("Atta")
 
-      taxa=JSON.parse(response.body)
+      taxa = JSON.parse(response.body)
       expect(taxa.count).to eq(7)
     end
 
