@@ -36,6 +36,7 @@ module AntCat
       # simpler code without yielding: model.where(id: ids).collect &:id
       filter_by_existence model, ids
     end
+
     def reject_existing model, ids
       filter_by_existence model, ids, reject_existing: true
     end
@@ -44,6 +45,7 @@ module AntCat
       regex = /(?<={#{Regexp.quote(tag.to_s)} )\d*?(?=})/
       string.scan(regex).map &:to_i
     end
+
     def find_all_tagged_ids model, column, tag
       ids = []
       tag = tag.to_s

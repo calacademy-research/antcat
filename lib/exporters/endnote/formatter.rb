@@ -48,6 +48,7 @@ class Exporters::Endnote::Formatter::Article < Exporters::Endnote::Formatter::Ba
   def kind
     'Journal Article'
   end
+
   def add_contents
     add 'J', @reference.journal.name
     add 'N', @reference.series_volume_issue
@@ -59,6 +60,7 @@ class Exporters::Endnote::Formatter::Book < Exporters::Endnote::Formatter::Base
   def kind
     'Book'
   end
+
   def add_contents
     add 'C', @reference.publisher.place.name
     add 'I', @reference.publisher.name
@@ -70,6 +72,7 @@ class Exporters::Endnote::Formatter::Unknown < Exporters::Endnote::Formatter::Ba
   def kind
     'Generic'
   end
+
   def add_contents
     add '1', @reference.citation
   end
