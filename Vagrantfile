@@ -45,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe 'curl::libcurl'
     chef.add_recipe 'libqt4'          # test dep
 
-    mysql_password = ENV['MYSQL_PASSWORD'] || 'lasius' 
+    mysql_password = ENV['MYSQL_PASSWORD'] || 'lasius'
     chef.json = {
         rvm: {
             rvmrc: {

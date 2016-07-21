@@ -16,20 +16,20 @@ unless Rails.env.production?
   end
   Cucumber::Rake::Task.new(:all_features)
 
-  task(:spec).clear 
+  task(:spec).clear
   desc "Run normal specs"
   task spec: ['db:test:prepare', :normal_specs]
   namespace :spec do
-    task(:all).clear 
+    task(:all).clear
     desc "Run all specs"
     task all: ['db:test:prepare', :all_specs]
   end
 
-  task(:cucumber).clear 
+  task(:cucumber).clear
   desc "Run current features"
   task cucumber: ['db:test:prepare', :current_features]
   namespace :cucumber do
-    task(:all).clear 
+    task(:all).clear
     desc "Run all features"
     task all: ['db:test:prepare', :all_features]
   end

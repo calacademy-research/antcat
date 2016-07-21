@@ -85,5 +85,5 @@ describe Protonym do
       end
     end
   end
-  
+
 end

@@ -18,7 +18,7 @@ class Tribe < Taxon
       update_descendants_subfamilies
     end
   end
-  
+
   def children
     genera
   end

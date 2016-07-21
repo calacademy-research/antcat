@@ -109,5 +109,5 @@ describe Species do
       expect(species.siblings).to match_array([species, another_species])
     end
   end
-  
+
 end

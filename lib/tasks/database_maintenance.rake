@@ -42,7 +42,7 @@ namespace :antcat do
 
       puts "Found no broken tags." and next if broken_ids.all? &:empty?
 
-      broken_ids_statistics = broken_ids.map { |tag, ids| "#{ids.size} #{tag}(s)" }.to_sentence 
+      broken_ids_statistics = broken_ids.map { |tag, ids| "#{ids.size} #{tag}(s)" }.to_sentence
       antcat_prompt "Found #{broken_ids_statistics}. List which? [Y/n/q]" do
         broken_ids.each { |tag, ids| puts "#{tag}: #{ids}" }
       end
@@ -127,8 +127,8 @@ namespace :antcat do
       puts "No matches found." and next if count.zero?
 
       antcat_prompt <<-MSG.squish, default: "q" do |answer|
-          Found #{count} redundant curly braces. Try to fix (under development)? 
-          Warning: descructive command. Current database is '#{Rails.env}'. 
+          Found #{count} redundant curly braces. Try to fix (under development)?
+          Warning: descructive command. Current database is '#{Rails.env}'.
           Enter 'yes' to continue [y/l/Q] (l=list only)
         MSG
 
