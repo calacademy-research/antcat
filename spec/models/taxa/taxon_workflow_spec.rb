@@ -35,9 +35,11 @@ describe Taxon do
       before do
         @taxon = create_taxon_version_and_change nil
       end
+
       it "should not allow it to be reviewed" do
         expect(@taxon.can_be_reviewed?).to be_falsey
       end
+
       it "should not allow it to be approved" do
         name = create :name, name: 'default_genus'
         another_taxon = create :genus, name: name
@@ -66,9 +68,11 @@ describe Taxon do
         create :version, item_id: @taxon.id, whodunnit: @changer.id, change_id: @change.id
         @change.update_attributes! approver: @changer, approved_at: Time.now
       end
+
       it "should allow it to be reviewed by a catalog editor" do
         expect(@taxon.can_be_reviewed?).to be true
       end
+
       it "should allow it to be approved by an approver" do
         expect(@taxon.can_be_approved_by?(@change, nil)).to be_falsey
         expect(@taxon.can_be_approved_by?(@change, @approver)).to be_truthy
@@ -81,13 +85,16 @@ describe Taxon do
         @approver = create :user, can_edit: true
         @taxon = create_taxon_version_and_change :approved, @editor, @approver
       end
+
       it "should have an approver and an approved_at" do
         expect(@taxon.approver).to eq @approver
         expect(@taxon.approved_at).to be_within(7.hours).of(Time.now)
       end
+
       it "should not allow it to be reviewed" do
         expect(@taxon.can_be_reviewed?).to be_falsey
       end
+
       it "should not allow it to be approved", pending: true do
         pending "was never tested"
 
@@ -102,11 +109,13 @@ describe Taxon do
     around do |example|
       with_versioning &example
     end
+
     describe "Last change" do
       it "should return nil if no Changes have been created for it" do
         taxon = create_genus
         expect(taxon.last_change).to be_nil
       end
+
       it "should return the Change, if any" do
         taxon = create_genus
 
@@ -114,6 +123,7 @@ describe Taxon do
         expect(taxon.last_change).to eq change
       end
     end
+
     describe "Last version" do
       it "should return the most recent Version" do
         adder = create :user, can_edit: true
@@ -146,7 +156,5 @@ describe Taxon do
   #
   #     expect(taxon.added_by).to eq adder
   #   end
-  #
   # end
-
 end

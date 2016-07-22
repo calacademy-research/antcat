@@ -81,5 +81,4 @@ describe Change do
       end
     end
   end
-
 end

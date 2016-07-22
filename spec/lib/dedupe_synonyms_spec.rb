@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe DedupeSynonyms do
-
   it "should delete one of duplicate synonyms" do
     senior = create_genus
     junior = create_genus
@@ -14,5 +13,4 @@ describe DedupeSynonyms do
     DedupeSynonyms.dedupe
     expect(Synonym.count).to eq 2
   end
-
 end

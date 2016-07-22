@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Reference do
-
   describe "document" do
     it "has a document" do
       reference = create :reference
@@ -28,6 +27,7 @@ describe Reference do
     it "should be nil if there is no document" do
       expect(create(:reference).url).to be_nil
     end
+
     it "should delegate to its document" do
       reference = create :reference, document: create(:reference_document)
       expect(reference.document).to receive :url
@@ -40,18 +40,17 @@ describe Reference do
       expect { reference.document = ReferenceDocument.create url: 'http://antwiki.org/1.pdf' }
         .to raise_error ActiveRecord::RecordNotSaved
     end
-
   end
 
   describe "setting the document host" do
     it "should not crash if there is no document" do
       create(:reference).document_host = 'localhost'
     end
+
     it "should delegate to its document" do
       reference = create :reference, document: create(:reference_document)
       expect(reference.document).to receive :host=
       reference.document_host = 'localhost'
     end
   end
-
 end

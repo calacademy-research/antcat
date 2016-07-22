@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Taxon do
-
   describe "References" do
     it "should have no references, if alone" do
       taxon = create_genus
@@ -16,6 +15,7 @@ describe Taxon do
           {table: 'taxa', field: :genus_id, id: species.id},
         ]
       end
+
       it "should have a reference if it's a taxon's subfamily" do
         genus = create_genus
         expect(genus.subfamily.references).to match_array [
@@ -34,12 +34,12 @@ describe Taxon do
           {table: 'taxa', field: :type_taxt, id: eciton.id},
         ]
       end
+
       it "should not return references in its own taxt" do
         eciton = create_genus 'Eciton'
         eciton.update_attribute :type_taxt, "{tax #{eciton.id}}"
         expect(eciton.references).to be_empty
       end
-
     end
 
     describe "Reference in its authorship taxt" do
@@ -77,5 +77,4 @@ describe Taxon do
       end
     end
   end
-
 end

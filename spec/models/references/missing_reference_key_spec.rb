@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "MissingReferenceDecorator formerly MissingReferenceKey" do
-
   describe "Link" do
     it "should simply output its citation" do
       reference = create :missing_reference, citation: "citation"
@@ -16,5 +15,4 @@ describe "MissingReferenceDecorator formerly MissingReferenceKey" do
       expect(reference.decorate.goto_reference_link).to be_nil
     end
   end
-
 end

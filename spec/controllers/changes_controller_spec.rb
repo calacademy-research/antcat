@@ -40,6 +40,5 @@ describe ChangesController do
       expect(changes[1]['name']).to eq 'Genus1'
       expect(changes[1]['change_type']).to eq 'update'
     end
-
   end
 end

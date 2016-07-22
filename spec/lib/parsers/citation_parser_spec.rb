@@ -50,5 +50,4 @@ describe Parsers::CitationParser do
     expect(@parser.parse(string)).to be_truthy
     expect(string).to eq '; see under *<i>pumilus</i>, above.'
   end
-
 end

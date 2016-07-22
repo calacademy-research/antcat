@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe DuplicatesController do
   describe "find a duplicate case" do
-
     it "Should find a secondary_junior_homonym match for same name", pending: true do
       pending "Known to be broken - update to reflect current duplicates controller functinality"
 
@@ -73,5 +72,4 @@ describe DuplicatesController do
       expect(response.status).to eq 204
     end
   end
-
 end

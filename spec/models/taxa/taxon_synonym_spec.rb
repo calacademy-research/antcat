@@ -15,6 +15,7 @@ describe Taxon do
       another_genus = create :genus
       expect(genus).not_to be_synonym_of another_genus
     end
+
     it "should think it's a synonym of something when it is" do
       senior = create :genus
       junior = create_synonym senior

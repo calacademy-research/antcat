@@ -48,10 +48,12 @@ describe ReferencesController do
         editor = create :user, can_edit: true
         sign_in editor #TODO create/find helper method #sign_in_editor
       end
+
       it "renders its own template" do
         response = get :latest_changes
         expect(response).to render_template "latest_changes"
       end
+
       it "sorts by updated_at" do
         expect(Reference).to receive(:list_references).with hash_including order: :updated_at
         get :latest_changes
@@ -80,6 +82,7 @@ describe ReferencesController do
       before do
         @reference_document = create :reference_document
       end
+
       context "with full access" do
         before do
           allow_any_instance_of(ReferenceDocument).to receive(:actual_url)
@@ -158,5 +161,4 @@ describe ReferencesController do
       end
     end
   end
-
 end

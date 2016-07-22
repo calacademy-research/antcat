@@ -14,5 +14,4 @@ describe TaxonBrowserHelper do
   # describe "#all_genera_link selected"
   # describe "#incertae_sedis_link selected"
   # describe "#toggle_valid_only_link"
-
 end

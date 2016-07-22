@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Name do
-
   it "should have a name" do
     expect(Name.new(name: 'Name').name).to eq 'Name'
   end
@@ -58,7 +57,6 @@ describe Name do
   end
 
   describe "Name picker list" do
-
     it "should return empty values if no match" do
       expect(Name.picklist_matching('ata')).to eq []
     end
@@ -158,7 +156,6 @@ describe Name do
       expect(taxon.name_id).not_to eq atta_name.id
       expect(results.first[:id]).to eq taxon.name_id
     end
-
   end
 
   describe "Duplicates" do
@@ -204,6 +201,7 @@ describe Name do
         {table: 'protonyms', field: :name_id, id: protonym.id},
       ]
     end
+
     it "should return references in taxt" do
       atta = create_genus 'Atta'
       eciton = create_genus 'Eciton'
@@ -249,6 +247,7 @@ describe Name do
         expect(version.event).to eq 'create'
       end
     end
+
     it "should record an update" do
       name = Name.create! name: 'Atta'
       with_versioning do
@@ -258,6 +257,7 @@ describe Name do
         expect(version.event).to eq 'update'
       end
     end
+
     it "should record a create" do
       name = Name.new name: 'Atta'
       with_versioning do
@@ -268,6 +268,7 @@ describe Name do
         expect(version.event).to eq 'create'
       end
     end
+
     it "should record an add followed by an update" do
       with_versioning do
         name = Name.create! name: 'Atta'
@@ -317,7 +318,6 @@ describe Name do
       name = SubspeciesName.new name: 'Acus major minor medium', name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
         epithet_html: '<i>medium</i>', epithets: 'major minor medium', protonym_html: '<i>Acus major minor medium</i>'
       expect(name).to be_quadrinomial
-
     end
   end
 
@@ -349,5 +349,4 @@ describe Name do
       expect(Name.find_by_name('Atta')).to eq taxon.name
     end
   end
-
 end

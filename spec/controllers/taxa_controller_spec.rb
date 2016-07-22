@@ -35,5 +35,4 @@ describe TaxaController do
       expect(taxon.protonym.authorship).not_to be_blank
     end
   end
-
 end

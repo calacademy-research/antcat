@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe FeedbackController do
-
   describe '#index' do
     # TODO
   end
@@ -49,7 +48,6 @@ describe FeedbackController do
       end
     end
   end
-
 end
 
 def email_count

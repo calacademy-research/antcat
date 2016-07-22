@@ -40,5 +40,4 @@ describe Family do
       expect(family.subfamilies).to eq [subfamily]
     end
   end
-
 end

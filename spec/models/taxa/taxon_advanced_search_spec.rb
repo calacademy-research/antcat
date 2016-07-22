@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe Taxon do
-
   describe "Advanced search" do
     describe "When no meaningful search parameters are given" do
       it "should return an empty array" do
         expect(Taxa::Search.advanced_search(year: '')).to eq []
       end
     end
+
     describe "Rank first described in given year" do
       it "should return the one match" do
         reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
@@ -22,6 +22,7 @@ describe Taxon do
         results = Taxa::Search.advanced_search rank: 'Genus', year: 1977, valid_only: true
         expect(results.map(&:id)).to match_array [atta.id, betta.id]
       end
+
       it "should honor the validity flag" do
         reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
         reference1988 = reference_factory author_name: 'Fisher', citation_year: '1988'
@@ -38,6 +39,7 @@ describe Taxon do
         results = Taxa::Search.advanced_search rank: 'Genus', year: 1977, valid_only: true
         expect(results.map(&:id)).to match_array [atta.id, betta.id]
       end
+
       it "should return all regardless of validity if that flag is false" do
         reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
         atta = create_genus
@@ -157,7 +159,6 @@ describe Taxon do
         results = Taxa::Search.advanced_search rank: 'All', author_name: 'Bolton', year: 1987
         expect(results.map(&:name_cache)).to match_array [bolton_atta.name_cache]
       end
-
     end
 
     describe "Searching for locality" do
@@ -165,6 +166,7 @@ describe Taxon do
         @indonesia = create :protonym, locality: 'Indonesia (Bhutan)'
         @china = create :protonym, locality: 'China'
       end
+
       it "should only return taxa with that locality" do
         atta = create_genus protonym: @indonesia
         eciton = create_genus protonym: @china
@@ -172,6 +174,7 @@ describe Taxon do
         results = Taxa::Search.advanced_search rank: 'All', locality: 'Indonesia'
         expect(results.map(&:id)).to eq [atta.id]
       end
+
       it "should return taxa with search term at the beginning" do
         atta = create_genus protonym: @indonesia
         eciton = create_genus protonym: @china
@@ -189,12 +192,14 @@ describe Taxon do
         results = Taxa::Search.advanced_search rank: 'All', verbatim_type_locality: 'San Pedro'
         expect(results.map(&:id)).to eq [eciton.id]
       end
+
       it "should not only return anything if nothing has that verbatim_type_locality" do
         atta = create_species
 
         results = Taxa::Search.advanced_search rank: 'All', verbatim_type_locality: 'San Pedro'
         expect(results.map(&:id)).to eq []
       end
+
       it "should do substring search" do
         atta = create_species verbatim_type_locality: 'Indonesia'
         eciton = create_species verbatim_type_locality: 'San Pedro'
@@ -212,12 +217,14 @@ describe Taxon do
         results = Taxa::Search.advanced_search rank: 'All', type_specimen_repository: 'DDI'
         expect(results.map(&:id)).to eq [eciton.id]
       end
+
       it "should return nothing if nothing has that type_specimen_repository" do
         atta = create_species
 
         results = Taxa::Search.advanced_search rank: 'All', type_specimen_repository: 'ISC'
         expect(results.map(&:id)).to eq []
       end
+
       it "should do substring search" do
         atta = create_species type_specimen_repository: 'III'
         eciton = create_species type_specimen_repository: 'ABCD'
@@ -235,12 +242,14 @@ describe Taxon do
         results = Taxa::Search.advanced_search rank: 'All', type_specimen_code: 'DDI'
         expect(results.map(&:id)).to eq [eciton.id]
       end
+
       it "should return nothing if nothing has that type_specimen_code" do
         atta = create_species
 
         results = Taxa::Search.advanced_search rank: 'All', type_specimen_code: 'ISC'
         expect(results.map(&:id)).to eq []
       end
+
       it "should do substring search" do
         atta = create_species type_specimen_code: 'III'
         eciton = create_species type_specimen_code: 'ABCD'
@@ -258,12 +267,14 @@ describe Taxon do
         results = Taxa::Search.advanced_search rank: 'All', biogeographic_region: 'Indomalaya'
         expect(results.map(&:id)).to eq [eciton.id]
       end
+
       it "should not only return anything if nothing has that biogeographic_region" do
         atta = create_species
 
         results = Taxa::Search.advanced_search rank: 'All', biogeographic_region: 'San Pedro'
         expect(results.map(&:id)).to eq []
       end
+
       it "should only return taxa with no biogeographic_region if that's what's specified" do
         atta = create_species biogeographic_region: 'Australasia'
         eciton = create_species
@@ -271,6 +282,7 @@ describe Taxon do
         results = Taxa::Search.advanced_search rank: 'Species', biogeographic_region: 'None'
         expect(results.map(&:id)).to eq [eciton.id]
       end
+
       it "should not do substring search" do
         atta = create_species biogeographic_region: 'Australasia'
 
@@ -292,6 +304,7 @@ describe Taxon do
         results = Taxa::Search.advanced_search rank: 'All', forms: 'w.'
         expect(results.map(&:id)).to eq [atta.id]
       end
+
       it "should return nothing if nothing has those forms" do
         atta = create_species
 
@@ -299,6 +312,5 @@ describe Taxon do
         expect(results.map(&:id)).to eq []
       end
     end
-
   end
 end

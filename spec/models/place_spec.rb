@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Place do
-
   it { should validate_presence_of(:name) }
 
   describe "Versioning" do
@@ -12,5 +11,4 @@ describe Place do
       end
     end
   end
-
 end

@@ -19,15 +19,19 @@ describe ReferenceDecorator do
     it "should not touch a string without HTML" do
       expect(nil_decorator.send(:make_html_safe, 'string')).to eq 'string'
     end
+
     it "should leave italics alone" do
       expect(nil_decorator.send(:make_html_safe, '<i>string</i>')).to eq '<i>string</i>'
     end
+
     it "should leave quotes alone" do
       expect(nil_decorator.send(:make_html_safe, '"string"')).to eq '"string"'
     end
+
     it "should return an html_safe string" do
       expect(nil_decorator.send(:make_html_safe, '"string"')).to be_html_safe
     end
+
     it "should escape other HTML" do
       expect(nil_decorator.send(:make_html_safe, '<script>danger</script>'))
         .to eq '&lt;script&gt;danger&lt;/script&gt;'
@@ -190,19 +194,23 @@ describe ReferenceDecorator do
         expect(reference.decorate.format)
           .to eq '&lt;script&gt; 1874. Les fourmis de la Suisse. 32 pp.'
       end
+
       it "should escape the citation year" do
         reference.update_attribute :citation_year, '<script>'
         expect(reference.decorate.format)
           .to eq 'Ward, P. S. &lt;script&gt;. Les fourmis de la Suisse. 32 pp.'
       end
+
       it "should escape the title" do
         reference.update_attribute :title, '<script>'
         expect(reference.decorate.format).to eq 'Ward, P. S. 1874. &lt;script&gt;. 32 pp.'
       end
+
       it "should escape the title but leave the italics alone" do
         reference.update_attribute :title, '*foo*<script>'
         expect(reference.decorate.format).to eq 'Ward, P. S. 1874. <i>foo</i>&lt;script&gt;. 32 pp.'
       end
+
       it "should escape the date" do
         reference.update_attribute :date, '1933>'
         expect(reference.decorate.format)
@@ -262,6 +270,7 @@ describe ReferenceDecorator do
           title: '*Tapinoma*'
         expect(reference.decorate.format).to be_html_safe
       end
+
       it "should italicize the title and citation" do
         reference = create :unknown_reference,
           citation_year: '2010d',
@@ -270,6 +279,7 @@ describe ReferenceDecorator do
           title: '*Tapinoma*'
         expect(reference.decorate.format).to eq "2010d. <i>Tapinoma</i>. <i>Ants</i>."
       end
+
       it "should italicize the title even with two italicized words" do
         reference = create :unknown_reference,
           citation_year: '2010d',
@@ -279,6 +289,7 @@ describe ReferenceDecorator do
         expect(reference.decorate.format)
           .to eq "2010d. Note on a new northern cutting ant, <i>Atta</i> <i>septentrionalis</i>. Ants."
       end
+
       it "should allow existing italics in title and citation" do
         reference = create :unknown_reference,
           citation_year: '2010d',
@@ -287,6 +298,7 @@ describe ReferenceDecorator do
           title: '<i>Tapinoma</i>'
         expect(reference.decorate.format).to eq "2010d. <i>Tapinoma</i>. <i>Ants</i>."
       end
+
       it "should escape other HTML in title and citation" do
         reference = create :unknown_reference,
           citation_year: '2010d',
@@ -296,6 +308,7 @@ describe ReferenceDecorator do
         expect(reference.decorate.format)
           .to eq "2010d. &lt;span&gt;Tapinoma&lt;/span&gt;. <i>Ants</i>."
       end
+
       it "should not escape et al. in citation" do
         reference = create :unknown_reference,
           author_names: [],
@@ -304,6 +317,7 @@ describe ReferenceDecorator do
           title: 'Tapinoma'
         expect(reference.decorate.format).to eq "2010. Tapinoma. Ants <i>et al.</i>."
       end
+
       it "should not escape et al. in citation for a missing reference" do
         reference = create :missing_reference,
           author_names: [],
@@ -355,22 +369,27 @@ describe ReferenceDecorator do
       make '20101213'
       check ' [2010-12-13]'
     end
+
     it "should handle years without months and days" do
       make '201012'
       check ' [2010-12]'
     end
+
     it "should handle years with months but without days" do
       make '2010'
       check ' [2010]'
     end
+
     it "should handle missing date" do
       make nil
       check ''
     end
+
     it "should handle missing date" do
       make ''
       check ''
     end
+
     it "should handle dates with other symbols/characters" do
       make '201012>'
       check ' [2010-12&gt;]'
@@ -399,6 +418,7 @@ describe ReferenceDecorator do
       expect(string).to eq "<i>Hymenoptera</i> <i>Formicidae</i>"
       expect(string).to be_html_safe
     end
+
     it "should raise if the string isn't html_safe already" do
       expect { nil_decorator.send :format_italics, 'roman' }.to raise_error
     end
@@ -414,11 +434,13 @@ describe ReferenceDecorator do
 
         decorated.format_inline_citation
       end
+
       it "should just output the citation for a MissingReference" do
         reference = create :missing_reference, citation: 'foo'
         expect(reference.decorate.format_inline_citation).to eq 'foo'
       end
     end
+
     describe "without links" do
       it "nonmissing references should defer to the key" do
         key = double
@@ -443,18 +465,22 @@ describe ReferenceDecorator do
         reference = create :reference, review_state: 'reviewed'
         expect(reference.decorate.format_review_state).to eq 'Reviewed'
       end
+
       it "handles 'reviewing'" do
         reference = create :reference, review_state: 'reviewing'
         expect(reference.decorate.format_review_state).to eq 'Being reviewed'
       end
+
       it "handles 'none'" do
         reference = create :reference, review_state: 'none'
         expect(reference.decorate.format_review_state).to eq ''
       end
+
       it "handles empty states" do
         reference = create :reference, review_state: ''
         expect(reference.decorate.format_review_state).to eq ''
       end
+
       it "handles nil" do
         reference = create :reference, review_state: nil
         expect(reference.decorate.format_review_state).to eq ''
@@ -498,6 +524,7 @@ describe ReferenceDecorator do
           expect(ReferenceFormatterCache.instance).not_to receive(:set)
           reference.decorate.format
         end
+
         it "should populate and set the cache when it's empty" do
           reference = create :article_reference
           expect(ReferenceFormatterCache.instance).to receive(:get).and_return nil
@@ -530,5 +557,4 @@ describe ReferenceDecorator do
       end
     end
   end
-
 end

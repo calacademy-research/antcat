@@ -26,5 +26,4 @@ describe Api::V1::AuthorNamesController do
       expect(author_names.count).to eq 2
     end
   end
-
 end

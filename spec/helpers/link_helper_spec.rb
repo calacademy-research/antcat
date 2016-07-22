@@ -7,11 +7,13 @@ describe LinkHelper do
         expect(helper.link('Atta', 'www.antcat.org/1', title: '1'))
           .to eq %{<a title="1" href="www.antcat.org/1">Atta</a>}
       end
+
       it "should escape the name" do
         expect(helper.link('<script>', 'www.antcat.org/1', title: '1'))
           .to eq %{<a title="1" href="www.antcat.org/1">&lt;script&gt;</a>}
       end
     end
+
     describe "link_to_external_site" do
       it "should make a link with the right class" do
         expect(helper.link_to_external_site('Atta', 'www.antcat.org/1'))
@@ -35,6 +37,7 @@ describe LinkHelper do
         %{<a class="link_to_external_site" target="_blank" href="http://www.antwiki.org/wiki/Dolichoderinae">AntWiki</a>}
       )
     end
+
     it "should link to a species" do
       expect(helper.link_to_antwiki(create_species 'Atta major')).to eq(
         %{<a class="link_to_external_site" target="_blank" href="http://www.antwiki.org/wiki/Atta_major">AntWiki</a>}
@@ -61,34 +64,41 @@ describe LinkHelper do
       subfamily = create_subfamily 'Attaichnae'
       expect(helper.link_to_antweb(subfamily)).to eq("<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://www.antweb.org/description.do?rank=subfamily&subfamily=attaichnae&project=worldants\">AntWeb</a>")
     end
+
     it "should output nothing for tribes" do
       tribe = create_tribe 'Attini'
       expect(helper.link_to_antweb(tribe)).to be_nil
     end
+
     it "should handle genera" do
       genus = create_genus 'Atta'
       expect(helper.link_to_antweb(genus)).to eq("<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://www.antweb.org/description.do?rank=genus&genus=atta&project=worldants\">AntWeb</a>")
     end
+
     it "should output nothing for subgenera" do
       genus = create_genus 'Atta'
       subgenus = create_subgenus 'Atta (Batta)', genus: genus
       expect(helper.link_to_antweb(subgenus)).to be_nil
     end
+
     it "should handle species" do
       genus = create_genus 'Atta'
       species = create_species 'Atta major', genus: genus
       expect(helper.link_to_antweb(species)).to eq("<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants\">AntWeb</a>")
     end
+
     it "should handle subspecies" do
       genus = create_genus 'Atta'
       species = create_species 'Atta major', genus: genus
       subspecies = create_subspecies 'Atta major minor', species: species, genus: genus
       expect(helper.link_to_antweb(subspecies)).to eq("<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor&project=worldants\">AntWeb</a>")
     end
+
     it "should just return nil for subspecies without species" do
       subspecies = create_subspecies 'Atta major minor', species: nil
       expect(helper.link_to_antweb(subspecies)).to be_nil
     end
+
     it "should handle quadrinomial subspecies", pending: true do
       pending "are there any valid quadrinomials?"
       genus = create_genus 'Atta'

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Protonym do
-
   it { should validate_presence_of(:authorship) }
 
   describe "Authorship" do
@@ -17,6 +16,7 @@ describe Protonym do
       protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
       expect(protonym.authorship_string).to be_nil
     end
+
     it "should delegate to the citation" do
       citation = FactoryGirl.build_stubbed :citation
       protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
@@ -30,6 +30,7 @@ describe Protonym do
       protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
       expect(protonym.authorship_html_string).to be_nil
     end
+
     it "should delegate to the citation" do
       citation = FactoryGirl.build_stubbed :citation
       protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
@@ -43,6 +44,7 @@ describe Protonym do
       protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
       expect(protonym.authorship_string).to be_nil
     end
+
     it "should delegate to the citation" do
       citation = FactoryGirl.build_stubbed :citation
       protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
@@ -56,6 +58,7 @@ describe Protonym do
       protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
       expect(protonym.year).to be_nil
     end
+
     it "should delegate to the citation" do
       citation = FactoryGirl.build_stubbed :citation
       protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
@@ -85,5 +88,4 @@ describe Protonym do
       end
     end
   end
-
 end

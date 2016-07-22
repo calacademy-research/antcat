@@ -32,5 +32,4 @@ describe PublisherObserver do
       expect(references[2].reload.formatted_cache).not_to be_nil
     end
   end
-
 end

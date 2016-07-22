@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe CleanNewlines do
-
   it "should remove newlines and linefeeds before saving" do
     taxon = create :genus, headline_notes_taxt: "Te\nxt"
     taxon.save!
@@ -32,5 +31,4 @@ describe CleanNewlines do
     taxon.save!
     expect(taxon.headline_notes_taxt).to be_empty
   end
-
 end

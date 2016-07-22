@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe ReferenceObserver do
-
   describe "Nested refererences" do
     describe "Formatted reference cache" do
       describe "Invalidating the cache" do
@@ -16,6 +15,7 @@ describe ReferenceObserver do
           expect(ReferenceFormatterCache.instance.get(nesting_reference)).to be_nil
           expect(ReferenceFormatterCache.instance.get(nestee)).to be_nil
         end
+
         it "should invalidate the cache for the reference that uses the reference document" do
           nesting_reference = create :article_reference
           nestee = create :nested_reference, nesting_reference: nesting_reference
@@ -30,5 +30,4 @@ describe ReferenceObserver do
       end
     end
   end
-
 end

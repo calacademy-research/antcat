@@ -175,5 +175,4 @@ describe Exporters::Endnote::Formatter do
     reference = create :nested_reference
     expect(@formatter.format([reference])).to eq "\n"
   end
-
 end

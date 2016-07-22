@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Tribe do
-
   it "should have a subfamily" do
     subfamily = create :subfamily, name: create(:name, name: 'Myrmicinae')
     create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily
@@ -32,7 +31,6 @@ describe Tribe do
   end
 
   describe "Siblings" do
-
     it "should return itself and its subfamily's other tribes" do
       create :tribe
       subfamily = create :subfamily
@@ -40,7 +38,6 @@ describe Tribe do
       another_tribe = create :tribe, subfamily: subfamily
       expect(tribe.siblings).to match_array [tribe, another_tribe]
     end
-
   end
 
   describe "Statistics" do
@@ -80,5 +77,4 @@ describe Tribe do
       expect(tribe.genera.first.subspecies.first.subfamily).to eq new_subfamily
     end
   end
-
 end

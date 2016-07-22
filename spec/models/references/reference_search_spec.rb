@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Reference do
-
   before do
     Reference.delete_all
     # throw in a MissingReference to make sure it's not returned
@@ -38,6 +37,7 @@ describe Reference do
           results = Reference.do_search q: "author:'#{bolton.name}'"
           expect(results).to eq [reference]
         end
+
         it "should find the references for all aliases of a given author_name", pending: true do
           pending "broke when search method was refactored"
           # TODO find out where this is used
@@ -50,6 +50,7 @@ describe Reference do
             [bolton_b_reference, bolton_barry_reference].map(&:id)
           )
         end
+
         it "should find the reference with both author names, but not just one" do
           bolton = create :author_name, name: 'Bolton'
           fisher = create :author_name, name: 'Fisher'
@@ -70,12 +71,14 @@ describe Reference do
             Sunspot.commit
             expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
           end
+
           it 'should find something in editor notes' do
             matching_reference = reference_factory author_name: 'Hölldobler', editor_notes: 'abcdef'
             unmatching_reference = reference_factory author_name: 'Hölldobler', editor_notes: 'fedcba'
             Sunspot.commit
             expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
           end
+
           it 'should find something in taxonomic notes' do
             matching_reference = reference_factory author_name: 'Hölldobler', taxonomic_notes: 'abcdef'
             unmatching_reference = reference_factory author_name: 'Hölldobler', taxonomic_notes: 'fedcba'
@@ -89,9 +92,11 @@ describe Reference do
             @reference = reference_factory author_name: 'Hölldobler'
             Sunspot.commit
           end
+
           it 'should work when diacritics are used in the search term' do
             expect(Reference.do_search(q: 'Hölldobler')).to eq [@reference]
           end
+
           it 'should work when diacritics are substituted with English letters' do
             expect(Reference.do_search(q: 'holldobler')).to eq [@reference]
           end
@@ -104,6 +109,7 @@ describe Reference do
             Sunspot.commit
             expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
           end
+
           it "should find a cite code that looks like a year, but not a current year" do
             matching_reference = reference_factory author_name: 'Hölldobler', cite_code: '1600'
             Sunspot.commit
@@ -149,12 +155,15 @@ describe Reference do
             reference_factory author_name: 'Bolton', citation_year: '1998'
             Sunspot.commit
           end
+
           it "should return an empty array if nothing is found for year" do
             expect(Reference.fulltext_search(keywords: '', start_year: 1992, end_year: 1993)).to be_empty
           end
+
           it "should find entries in between the start year and the end year (inclusive)" do
             expect(Reference.fulltext_search(keywords: '', start_year: 1995, end_year: 1996).map(&:year)).to match_array [1995, 1996]
           end
+
           it "should find references in the year of the end range, even if they have extra characters" do
             reference_factory author_name: 'Bolton', citation_year: '2004.'
             Sunspot.commit
@@ -188,6 +197,7 @@ describe Reference do
 
         expect(Reference.list_references(order: :updated_at)).to eq [updated_today, updated_yesterday, updated_last_week]
       end
+
       it "should be able to sort by created_at" do
         Reference.record_timestamps = false
         created_yesterday = reference_factory author_name: 'Fisher', citation_year: '1910b'
@@ -211,6 +221,7 @@ describe Reference do
 
           expect(Reference.list_references).to eq [fisher1910a, fisher1910b, wheeler1874]
         end
+
         it "should sort by multiple author_names using their order in each reference" do
           a = create(:article_reference, author_names: AuthorName.import_author_names_string('Abdalla, F. C.; Cruz-Landim, C. da.')[:author_names])
           m = create(:article_reference, author_names: AuthorName.import_author_names_string('Mueller, U. G.; Mikheyev, A. S.; Abbot, P.')[:author_names])
@@ -229,12 +240,14 @@ describe Reference do
         Sunspot.commit
         expect(Reference.fulltext_search(q: "bolton", reference_type: :unknown)).to eq [unknown]
       end
+
       it "should apply the :nomissing :reference_type that's passed" do
         expect(MissingReference.count).to be > 0
         reference = create :article_reference
         Sunspot.commit
         expect(Reference.fulltext_search(q: 'bolton', reference_type: :nomissing)).to eq [reference]
       end
+
       it "should apply the :nested :reference_type that's passed" do
         nested = create :nested_reference
         unnested = create :unknown_reference
@@ -250,12 +263,14 @@ describe Reference do
       Sunspot.commit
       expect(Reference.search { keywords 'foo' }.results).to be_empty
     end
+
     it "should find the reference for a given author_name if it exists" do
       reference = reference_factory author_name: 'Ward'
       reference_factory author_name: 'Fisher'
       Sunspot.commit
       expect(Reference.search { keywords 'Ward' }.results).to eq [reference]
     end
+
     it "should return an empty array if nothing is found for a given year and author_name" do
       reference_factory author_name: 'Bolton', citation_year: '2010'
       reference_factory author_name: 'Bolton', citation_year: '1995'
@@ -267,6 +282,7 @@ describe Reference do
         keywords 'Fisher'
       }.results).to be_empty
     end
+
     it "should return the one reference for a given year and author_name" do
       reference_factory author_name: 'Bolton', citation_year: '2010'
       reference_factory author_name: 'Bolton', citation_year: '1995'
@@ -279,6 +295,7 @@ describe Reference do
         keywords 'Fisher'
       }.results).to eq [reference]
     end
+
     it "should search citation year" do
       with_letter = reference_factory author_name: 'Bolton', citation_year: '2010b'
       reference_factory author_name: 'Bolton', citation_year: '2010'
@@ -295,16 +312,19 @@ describe Reference do
         expect(Reference).to receive(:fulltext_search).with hash_including(keywords: '', start_year: "1992", end_year: "1993")
         Reference.do_search q: 'year:1992-1993'
       end
+
       it "extract the starting year" do
         expect(Reference).to receive(:fulltext_search).with hash_including(keywords: '', year: "1992")
         Reference.do_search q: 'year:1992'
       end
+
       it "should convert the query string", pending: true do
         pending "downcasing/transliteration removed valid search results"
         # TODO config solr
         expect(Reference).to receive(:fulltext_search).with hash_including(keywords: 'andre')
         Reference.do_search q: 'André'
       end
+
       it "should distinguish between years and citation years" do
         expect(Reference).to receive(:fulltext_search).with hash_including(keywords: '1970a', year: "1970")
         Reference.do_search q: '1970a year:1970'
@@ -317,6 +337,7 @@ describe Reference do
         expect(Reference).to receive(:fulltext_search).with hash_excluding(page: 1)
         Reference.do_search q: 'bolton', format: :endnote_export
       end
+
       it "should paginate other formats" do
         expect(Reference).to receive(:fulltext_search).with hash_including(page: 1)
         Reference.do_search q: 'bolton'

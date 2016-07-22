@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe SpeciesGroupTaxon do
-
   it "can have a subfamily" do
     genus = create_genus 'Afropone'
     create :species_group_taxon, name: create(:name, name: 'championi'), genus: genus
@@ -44,5 +43,4 @@ describe SpeciesGroupTaxon do
     taxon = create :species_group_taxon, genus: genus, subfamily: nil
     expect(taxon.subfamily).to eq genus.subfamily
   end
-
 end

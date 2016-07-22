@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Journal do
-
   it { should validate_presence_of(:name) }
 
   describe "searching" do
@@ -55,5 +54,4 @@ describe Journal do
       end
     end
   end
-
 end

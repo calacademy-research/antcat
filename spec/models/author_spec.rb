@@ -21,6 +21,7 @@ describe Author do
     it "should handle an empty list" do
       expect(Author.find_by_names([])).to eq []
     end
+
     it "should find the authors for the names" do
       bolton = create :author_name, name: 'Bolton'
       fisher = create :author_name, name: 'Fisher'
@@ -60,5 +61,4 @@ describe Author do
       # TODO
     end
   end
-
 end

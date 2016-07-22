@@ -21,5 +21,4 @@ describe Exporters::AdvancedSearchExporter do
     exporter = Exporters::AdvancedSearchExporter.new
     expect(exporter.export(Subfamily.all).size).to eq 15
   end
-
 end

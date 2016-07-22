@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe TaxonDecorator do
-
   describe "Header formatting" do
     let(:decorator_helper) { TaxonDecorator::Header }
 
@@ -31,11 +30,13 @@ describe TaxonDecorator do
         expect(decorator_helper.new(nil).send(:protonym_name, protonym))
           .to eq '<b><span class="protonym_name">Dolichoderinae</span></b>'
       end
+
       it "should format a genus name in the protonym" do
         protonym = create :protonym, name: create(:genus_name, name: 'Atari')
         expect(decorator_helper.new(nil).send(:protonym_name, protonym))
           .to eq '<b><span class="protonym_name"><i>Atari</i></span></b>'
       end
+
       it "should format a fossil" do
         protonym = create :protonym, name: create(:genus_name, name: 'Atari'), fossil: true
         expect(decorator_helper.new(nil).send(:protonym_name, protonym))
@@ -51,11 +52,13 @@ describe TaxonDecorator do
         expect(decorator_helper.new(genus).send(:headline_type))
           .to eq %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span>}
       end
+
       it "should show the type taxon with extra Taxt" do
         genus = create_genus 'Atta', type_name: species_name, type_taxt: ', by monotypy'
         expect(decorator_helper.new(genus).send(:headline_type))
           .to eq %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>, by monotypy.</span>}
       end
+
       it "should show the type taxon as a link, if the taxon for the name exists" do
         type = create_species 'Atta major'
         genus = create_genus 'Atta',
@@ -72,6 +75,7 @@ describe TaxonDecorator do
         species = create_species 'Atta major', genus: genus, subfamily: subfamily
         expect(decorator_helper.new(species).send(:link_to_other_site)).to eq %{<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>}
       end
+
       it "should link to a subspecies" do
         subfamily = create_subfamily 'Dolichoderinae'
         genus = create_genus 'Atta', subfamily: subfamily
@@ -80,6 +84,7 @@ describe TaxonDecorator do
         expect(decorator_helper.new(species).send(:link_to_other_site))
           .to eq %{<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=nigrans&project=worldants">AntWeb</a>}
       end
+
       it "should link to an invalid taxon" do
         subfamily = create_subfamily 'Dolichoderinae', status: 'synonym'
         expect(decorator_helper.new(subfamily).send(:link_to_other_site)).not_to be_nil
@@ -97,18 +102,22 @@ describe TaxonDecorator do
         attini = create_tribe 'Attini', subfamily: subfamily
         expect(decorator_helper.new(subfamily).send(:child_list, subfamily.tribes, true)).to eq %{<div class="child_list"><span class="caption">Tribe (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>}
       end
+
       it "should format a child list, specifying extinctness" do
         atta = create_genus 'Atta', subfamily: subfamily
         expect(decorator_helper.new(subfamily).send(:child_list, Genus.all, true)).to eq %{<div class="child_list"><span class="caption">Genus (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
       end
+
       it "should format a genera list, not specifying extinctness" do
         atta = create_genus 'Atta', subfamily: subfamily
         expect(decorator_helper.new(subfamily).send(:child_list, Genus.all, false)).to eq %{<div class="child_list"><span class="caption">Genus of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
       end
+
       it "should format an incertae sedis genera list" do
         genus = create_genus 'Atta', subfamily: subfamily, incertae_sedis_in: 'subfamily'
         expect(decorator_helper.new(subfamily).send(:child_list, [genus], false, incertae_sedis_in: 'subfamily')).to eq %{<div class="child_list"><span class="caption">Genus <i>incertae sedis</i> in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
       end
+
       it "should format a list of collective group names" do
         genus = create_genus 'Atta', subfamily: subfamily, status: 'collective group name'
         expect(decorator_helper.new(subfamily).send(:collective_group_name_child_list)).to eq %{<div class="child_list"><span class="caption">Collective group name in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
@@ -123,10 +132,12 @@ describe TaxonDecorator do
       taxon = create_genus
       expect(decorator_helper.new(taxon).send(:status)).to eq 'valid'
     end
+
     it "should show the status if there is one" do
       taxon = create_genus status: 'homonym'
       expect(decorator_helper.new(taxon).send(:status)).to eq 'homonym'
     end
+
     it "should show one synonym" do
       senior_synonym = create_genus 'Atta'
       taxon = create_synonym senior_synonym
@@ -145,11 +156,13 @@ describe TaxonDecorator do
         result = decorator_helper.new(taxon).send :status
         expect(result).to eq %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
       end
+
       it "should handle a null current valid taxon with no synonyms" do
         taxon = create_genus status: 'synonym'
         result = decorator_helper.new(taxon).send :status
         expect(result).to eq %{junior synonym}
       end
+
       it "should handle a current valid taxon that's one of two 'senior synonyms'" do
         senior_synonym = create_genus 'Atta'
         senior_synonym.update_attribute :created_at, Time.now - 100
@@ -165,6 +178,7 @@ describe TaxonDecorator do
       taxon = create_genus status: 'synonym'
       expect(decorator_helper.new(taxon).send(:status)).to eq 'junior synonym'
     end
+
     it "should show where it is incertae sedis" do
       taxon = create_genus incertae_sedis_in: 'family'
       result = decorator_helper.new(taxon).send :status
@@ -182,6 +196,7 @@ describe TaxonDecorator do
       expect(Formatters::StatisticsFormatter).to receive(:statistics).with({extant: :foo}, {})
       formatter.statistics
     end
+
     it "should just return nil if there are no statistics", pending: true do
       pending "test after refactoring TaxonDecorator"
       subfamily = double
@@ -190,6 +205,7 @@ describe TaxonDecorator do
       expect(Formatters::StatisticsFormatter).not_to receive :statistics
       expect(formatter.statistics).to eq ''
     end
+
     it "should not leave a comma at the end if only showing valid taxa", pending: true do
       pending "test after refactoring TaxonDecorator"
       genus = create_genus
@@ -198,6 +214,7 @@ describe TaxonDecorator do
       expect(formatter.statistics(include_invalid: false))
         .to eq "<div class=\"statistics\"><p class=\"taxon_statistics\">2 species</p></div>"
     end
+
     it "should not leave a comma at the end if only showing valid taxa", pending: true do
       pending "test after refactoring TaxonDecorator"
       genus = create_genus
@@ -221,10 +238,12 @@ describe TaxonDecorator do
     around do |example|
       with_versioning &example
     end
+
     it "should show nothing for an old taxon" do
       taxon = create_genus
       expect(taxon.decorate.change_history).to be_nil
     end
+
     it "should show the adder for a waiting taxon" do
       adder = create :user, can_edit: true
       taxon = create_taxon_version_and_change :waiting, adder
@@ -233,6 +252,7 @@ describe TaxonDecorator do
       expect(change_history).to match /Mark Wilden/
       expect(change_history).to match /less than a minute ago/
     end
+
     it "should show the adder and the approver for an approved taxon" do
       adder = create :user, can_edit: true
       approver = create :user, can_edit: true
@@ -268,47 +288,54 @@ describe TaxonDecorator do
       subfamily = create_subfamily build_stubbed: true
       expect(subfamily.decorate.name_description).to eq 'subfamily'
     end
+
     it "should handle a genus" do
       subfamily = create_subfamily build_stubbed: true
       genus = create_genus subfamily: subfamily, tribe: nil
       expect(genus.decorate.name_description).to eq "genus of #{subfamily.name}"
     end
+
     it "should handle a genus without a subfamily" do
       genus = create_genus subfamily: nil, tribe: nil, build_stubbed: true
       expect(genus.decorate.name_description).to eq "genus of (no subfamily)"
     end
+
     it "should handle a genus with a tribe" do
       subfamily = create_subfamily
       tribe = create_tribe subfamily: subfamily
       genus = create_genus tribe: tribe, build_stubbed: true
       expect(genus.decorate.name_description).to eq "genus of #{tribe.name}"
     end
+
     it "should handle a new genus" do
       subfamily = create_subfamily build_stubbed: true
       genus = build :genus, subfamily: subfamily, tribe: nil
       expect(genus.decorate.name_description).to eq "new genus of #{subfamily.name}"
     end
+
     it "should handle a new species" do
       genus = create_genus 'Atta'
       species = build :species, genus: genus
       expect(species.decorate.name_description).to eq "new species of <i>#{genus.name}</i>"
     end
+
     it "should handle a subspecies" do
       genus = create_genus 'Atta'
       species = build :species, genus: genus
       subspecies = build :subspecies, species: species, genus: genus
       expect(subspecies.decorate.name_description).to eq "new subspecies of <i>#{species.name}</i>"
     end
+
     it "should handle a subspecies without a species" do
       genus = create_genus 'Atta'
       subspecies = build :subspecies, genus: genus, species: nil
       expect(subspecies.decorate.name_description).to eq "new subspecies of (no species)"
     end
+
     it "should be html_safe" do
       subfamily = create_subfamily build_stubbed: true
       genus = create_genus subfamily: subfamily, build_stubbed: true
       expect(genus.decorate.name_description).to be_html_safe
     end
   end
-
 end

@@ -4,7 +4,6 @@ require 'spec_helper'
 Taxa::Family = Family
 
 describe Taxa::SaveTaxon do
-
   describe "Saving a new record, based on params from a form with nested attributes" do
     before do
       @reference = create :article_reference
@@ -198,6 +197,7 @@ describe Taxa::SaveTaxon do
         expect(Change.count).to equal 1
         expect(Change.first[:change_type]).to eq 'update'
       end
+
       it "changes the review state after editing" do
         genus = create_genus
         with_versioning do
@@ -206,7 +206,6 @@ describe Taxa::SaveTaxon do
         expect(genus).not_to be_old
       end
     end
-
   end
 end
 

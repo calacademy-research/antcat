@@ -12,9 +12,11 @@ describe Reference do
     it "has many author_names" do
       expect(reference.author_names.first).to eq author_names.first
     end
+
     it "has many authors" do
       expect(reference.authors.first).to eq author_names.first.author
     end
+
     describe "Nested references" do
       let!(:nesting_reference) { create :reference }
       let(:nestee) { create :nested_reference, nesting_reference: nesting_reference }
@@ -22,6 +24,7 @@ describe Reference do
       it "can have a nesting_reference" do
         expect(nestee.nesting_reference).to eq nesting_reference
       end
+
       it "can have many nestees" do
         expect(nesting_reference.nestees).to match_array [nestee]
       end
@@ -36,11 +39,13 @@ describe Reference do
         expect(reference.parse_author_names_and_suffix(''))
           .to eq author_names: [], author_names_suffix: nil
       end
+
       it "should add an error and raise and exception if invalid" do
         expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }.to raise_error ActiveRecord::RecordInvalid
         expect(reference.errors.messages).to eq(author_names_string: ["couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"])
         expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
       end
+
       it "should return the author names and the suffix" do
         expect(reference.parse_author_names_and_suffix('Fisher, B.; Bolton, B. (eds.)')).to eq(author_names: [AuthorName.find_by_name('Fisher, B.'), AuthorName.find_by_name('Bolton, B.')], author_names_suffix: ' (eds.)')
       end
@@ -51,16 +56,19 @@ describe Reference do
         reference = create(:reference, author_names: [create(:author_name, name: 'Fisher, B.L.')])
         expect(reference.author_names_string).to eq 'Fisher, B.L.'
       end
+
       it "should separate multiple author_names with semicolons" do
         author_names = [create(:author_name, name: 'Fisher, B.L.'), create(:author_name, name: 'Ward, P.S.')]
         reference = create(:reference, author_names: author_names)
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
       end
+
       it "should include the author_names' suffix" do
         author_names = [create(:author_name, name: 'Fisher, B.L.'), create(:author_name, name: 'Ward, P.S.')]
         reference = Reference.create! title: 'Ants', citation_year: '2010', author_names: author_names, author_names_suffix: ' (eds.)'
         expect(reference.reload.author_names_string).to eq 'Fisher, B.L.; Ward, P.S. (eds.)'
       end
+
       it "should be possible to read from and assign to, aliased to author_names_string_cache" do
         reference = create :reference
         reference.author_names_string = 'foo'
@@ -76,18 +84,21 @@ describe Reference do
         reference.author_names << author_name
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward'
       end
+
       it "should update its author_names_string when an author_name is removed" do
         reference.author_names << author_name
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward'
         reference.author_names.delete author_name
         expect(reference.author_names_string).to eq 'Fisher, B.L.'
       end
+
       it "should update its author_names_string when an author_name's name is changed" do
         reference.author_names = [author_name]
         expect(reference.author_names_string).to eq 'Ward'
         author_name.update_attribute :name, 'Fisher'
         expect(reference.reload.author_names_string).to eq 'Fisher'
       end
+
       it "should update its author_names_string when the author_names_suffix changes" do
         reference.author_names_suffix = ' (eds.)'
         reference.save
@@ -105,7 +116,6 @@ describe Reference do
         expect(reference.author_names_string).to eq 'Ward; Wilden; Fisher'
       end
     end
-
   end
 
   describe "principal author last name" do
@@ -116,15 +126,18 @@ describe Reference do
       reference = Reference.create! title: 'title', citation_year: '1993'
       expect(reference.principal_author_last_name).to be_nil
     end
+
     it "should cache the last name of the principal author" do
       reference = create :reference, author_names: [ward, fisher]
       expect(reference.principal_author_last_name).to eq 'Ward'
     end
+
     it "should update its author_names_string when an author_name's name is changed" do
       reference = create :reference, author_names: [ward]
       ward.update_attributes name: 'Bolton, B.'
       expect(reference.reload.principal_author_last_name).to eq 'Bolton'
     end
+
     it "should be possible to read from, aliased to principal_author_last_name_cache" do
       reference = create :reference
       reference.principal_author_last_name_cache = 'foo'
@@ -183,11 +196,13 @@ describe Reference do
       expect(reference.editor_notes).to eq "A B"
       expect(reference.taxonomic_notes).to eq "A B"
     end
+
     it "should handle all sorts of newlines" do
       reference.title = "A\r\nB"
       reference.save!
       expect(reference.title).to eq "A B"
     end
+
     it "should completely remove newlines at the beginning and end" do
       reference.title = "\r\nA\r\nB\n\n"
       reference.save!
@@ -256,6 +271,7 @@ describe Reference do
         citation_year: '1981', title: 'Dolichoderinae',
         journal: journal, series_volume_issue: '1(2)', pagination: '22-54'
     end
+
     it "should check possible duplication and add to errors, if any found" do
       journal = create :journal
       author = create :author_name
@@ -274,10 +290,12 @@ describe Reference do
       reference = create :article_reference, citation_year: '1970'
       expect(reference.short_citation_year).to eq '1970'
     end
+
     it "should allow an ordinal letter" do
       reference = create :article_reference, citation_year: '1970a'
       expect(reference.short_citation_year).to eq '1970a'
     end
+
     it "should be trimmed if there is something extra" do
       reference = create :article_reference, citation_year: '1970a ("1971")'
       expect(reference.short_citation_year).to eq '1970a'
@@ -340,5 +358,4 @@ describe Reference do
       end
     end
   end
-
 end

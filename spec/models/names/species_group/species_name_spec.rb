@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe SpeciesName do
-
   describe "Changing the genus of a species name" do
     it "should replace the genus part of the name" do
       species_name = SpeciesName.new(
@@ -34,6 +33,7 @@ describe SpeciesName do
 
       expect { species_name.change_parent genus_name }.to raise_error
     end
+
     it "should not raise an error if the new name already exists, but is an orphan" do
       orphan_species_name = SpeciesName.create! name: 'Eciton minor', epithet: 'minor'
       species_name = SpeciesName.create! name: 'Atta minor', epithet: 'minor'
@@ -42,5 +42,4 @@ describe SpeciesName do
       expect { species_name.change_parent genus_name }.not_to raise_error
     end
   end
-
 end

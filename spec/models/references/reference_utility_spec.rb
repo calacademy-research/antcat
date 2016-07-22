@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Reference do
-
   describe "Replacement" do
     describe "Batch processing a number of replacements in one pass" do
       it "should replace all missing references" do
@@ -16,6 +15,7 @@ describe Reference do
 
         expect(taxon.reload.protonym.authorship.reference).to eq nonmissing_reference
       end
+
       it "should replace references in taxt to the MissingReference to the found reference" do
         found_reference = create :article_reference
         missing_reference = create :missing_reference, citation: 'Borowiec, 2010'
@@ -23,6 +23,7 @@ describe Reference do
         Reference.replace_with_batch [{replace: missing_reference.id, with: found_reference.id}]
         expect(item.reload.taxt).to eq "{ref #{found_reference.id}}"
       end
+
       it "should replace references in citations" do
         found_reference = create :article_reference
         missing_reference = create :missing_reference, citation: 'Borowiec, 2010'

@@ -70,22 +70,28 @@ describe ReferenceDocument do
     it "should not be downloadable if there is no url" do
       expect(ReferenceDocument.new).not_to be_downloadable
     end
+
     it "should be downloadable by anyone if we just have a URL, not a file name on S3" do
       expect(ReferenceDocument.new(url: 'foo')).to be_downloadable
     end
+
     it "should be downloadable by just anyone if we are hosting on S3" do
       expect(ReferenceDocument.new(url: 'foo', file_file_name: 'bar')).to be_downloadable
     end
+
     it "should be downloadable by a registered user if we are hosting on S3" do
       expect(ReferenceDocument.new(url: 'foo', file_file_name: 'bar')).to be_downloadable
     end
+
     it "should be downloadable by anyone if it's public" do
       document = ReferenceDocument.new(url: 'foo', file_file_name: 'bar', public: true)
       expect(document).to be_downloadable
     end
+
     it "should not be downloadable if it is on http://128.146.250.117" do
       expect(ReferenceDocument.new(url: 'http://128.146.250.117/pdfs/4096/4096.pdf')).not_to be_downloadable
     end
+
     it "should not consider antbase PDFs downloadable by anybody" do
       document = ReferenceDocument.new(url: 'http://antbase.org/ants/publications/4495/4495.pdf', file_file_name: 'bar')
       expect(document).not_to be_downloadable
@@ -120,5 +126,4 @@ describe ReferenceDocument do
       end
     end
   end
-
 end

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Status do
-
   describe "Status labels" do
     it "should return the singular and the plural for a status" do
       expect(Status['synonym'].to_s).to eq 'synonym'
@@ -18,5 +17,4 @@ describe Status do
       expect(Status.options_for_select.map(&:first).include?('nonsense')).to be_falsey
     end
   end
-
 end

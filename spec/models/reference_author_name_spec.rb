@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe ReferenceAuthorName do
-
   describe "Versioning" do
     it "should record versions" do
       with_versioning do
@@ -10,5 +9,4 @@ describe ReferenceAuthorName do
       end
     end
   end
-
 end

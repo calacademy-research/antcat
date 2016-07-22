@@ -31,6 +31,5 @@ describe AuthorNameObserver do
       expect(bolton_reference2.reload.formatted_cache).to be_nil
       expect(fisher_reference.reload.formatted_cache).not_to be_nil
     end
-
   end
 end

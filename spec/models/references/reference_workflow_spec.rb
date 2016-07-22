@@ -37,5 +37,4 @@ describe Reference do
     expect(reference.can_finish_reviewing?).to be_truthy
     expect(reference.can_restart_reviewing?).to be_falsey
   end
-
 end

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Publisher do
-
   it { should validate_presence_of(:name) }
   it { should belong_to(:place) }
 
@@ -25,10 +24,12 @@ describe Publisher do
           expect { Publisher.create_with_place(name: 'Wiley') }
             .to raise_error ArgumentError
         end
+
         it "raises if place is invalid" do
           expect { Publisher.create_with_place(name: "A Name", place: "") }
             .to raise_error ActiveRecord::RecordInvalid
         end
+
         it "silently returns without raising if place is blank" do
           expect(Publisher.create_with_place name: "", place: "A Place").to be nil
           expect { Publisher.create_with_place name: "", place: "A Place" }
@@ -42,6 +43,7 @@ describe Publisher do
         expect(Publisher).not_to receive :create_with_place
         Publisher.create_with_place_form_string ''
       end
+
       it "parses" do
         expected = Publisher.create_with_place_form_string 'New York: Houghton Mifflin'
         expect(expected.to_s).to eq 'New York: Houghton Mifflin'
@@ -55,6 +57,7 @@ describe Publisher do
       Publisher.create! name: 'Wiley', place: Place.create!(name: 'Toronto')
       expect(Publisher.search('chw')).to eq ['Chicago: Wiley']
     end
+
     it "should find a match even if there's no place" do
       Publisher.create! name: 'Wiley'
       expect(Publisher.search('w')).to eq ['Wiley']
@@ -65,6 +68,7 @@ describe Publisher do
     it "format name and place" do
       expect(Publisher.create!(name: "Wiley", place: Place.create!(name: 'New York')).to_s).to eq 'New York: Wiley'
     end
+
     it "should format correctly if there is no place" do
       expect(Publisher.create!(name: "Wiley").to_s).to eq 'Wiley'
     end
@@ -78,5 +82,4 @@ describe Publisher do
       end
     end
   end
-
 end

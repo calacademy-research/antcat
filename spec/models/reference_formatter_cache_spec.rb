@@ -5,6 +5,7 @@ describe ReferenceFormatterCache do
     expect { ReferenceFormatterCache.new }.to raise_error
     expect(ReferenceFormatterCache.instance).to eq ReferenceFormatterCache.instance
   end
+
   describe "Invalidating" do
     it "should do nothing if there's nothing in the cache" do
       reference = create :article_reference
@@ -14,6 +15,7 @@ describe ReferenceFormatterCache do
       expect(reference.formatted_cache).to be_nil
       expect(reference.inline_citation_cache).to be_nil
     end
+
     it "should set the cache to nil" do
       reference = create :article_reference
       ReferenceFormatterCache.instance.populate reference
@@ -43,6 +45,7 @@ describe ReferenceFormatterCache do
         expect(reference.inline_citation_cache).to eq inline_citation_cache_value
       end
     end
+
     describe "Setting/getting" do
       it "should get and set the right values" do
         reference = create :article_reference
@@ -71,5 +74,4 @@ describe ReferenceFormatterCache do
       expect(ReferenceFormatterCache.instance.get(nested_reference)).to be_nil
     end
   end
-
 end

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe AuthorName do
-
   it { should validate_presence_of(:author) }
 
   let(:author) { Author.create! }
@@ -141,16 +140,19 @@ describe AuthorName do
       expect(author_name.last_name).to eq 'Bolton'
       expect(author_name.first_name_and_initials).to be_nil
     end
+
     it "should separate the words if there are multiple" do
       author_name = AuthorName.new name: 'Bolton, B.L.'
       expect(author_name.last_name).to eq 'Bolton'
       expect(author_name.first_name_and_initials).to eq 'B.L.'
     end
+
     it "should use all words if there is no comma" do
       author_name = AuthorName.new name: 'Royal Academy'
       expect(author_name.last_name).to eq 'Royal Academy'
       expect(author_name.first_name_and_initials).to be_nil
     end
+
     it "should use use all words before the comma if there are multiple" do
       author_name = AuthorName.new name: 'Baroni Urbani, C.'
       expect(author_name.last_name).to eq 'Baroni Urbani'
@@ -166,5 +168,4 @@ describe AuthorName do
       end
     end
   end
-
 end

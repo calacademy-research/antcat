@@ -1,19 +1,19 @@
 require 'spec_helper'
 
 describe MissingReference do
-
   describe "Replacing" do
-
     describe "Replacing one missing reference" do
       before do
         @found_reference = create :article_reference
         @missing_reference = create :missing_reference
       end
+
       it "should replace references in taxt to the MissingReference to the found reference" do
         item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
         @missing_reference.replace_with @found_reference
         expect(item.reload.taxt).to eq "{ref #{@found_reference.id}}"
       end
+
       it "should not save records that don't contain the {ref}" do
         item = TaxonHistoryItem.create! taxt: "Just some taxt"
         item.reload
@@ -22,6 +22,7 @@ describe MissingReference do
         item.reload
         expect(item.updated_at).to eq updated_at
       end
+
       it "should replace references in citations" do
         citation = Citation.create! reference: @missing_reference
         @missing_reference.replace_with @found_reference
@@ -57,5 +58,4 @@ describe MissingReference do
       expect(reference.decorate).to be_kind_of MissingReferenceDecorator
     end
   end
-
 end

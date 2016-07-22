@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Synonym do
-
   it { should validate_presence_of(:junior_synonym) }
 
   describe "Finding and creating" do
@@ -9,6 +8,7 @@ describe Synonym do
       @junior = create_species
       @senior = create_species
     end
+
     it "should create the synonym if it doesn't exist" do
       Synonym.find_or_create @junior, @senior
       expect(Synonym.count).to eq 1
@@ -16,6 +16,7 @@ describe Synonym do
       synonym = Synonym.where(junior_synonym_id: @junior, senior_synonym_id: @senior)
       expect(synonym.count).to eq 1
     end
+
     it "should return the existing synonym" do
       Synonym.create! junior_synonym: @junior, senior_synonym: @senior
       expect(Synonym.count).to eq 1
@@ -39,5 +40,4 @@ describe Synonym do
       end
     end
   end
-
 end

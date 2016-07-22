@@ -5,6 +5,7 @@ describe TaxonHistoryItem do
     expect(TaxonHistoryItem.new).not_to be_valid
     expect(TaxonHistoryItem.new(taxt: '')).not_to be_valid
   end
+
   it "should have some taxt" do
     item = TaxonHistoryItem.new taxt: 'taxt'
     expect(item).to be_valid
@@ -12,6 +13,7 @@ describe TaxonHistoryItem do
     item.reload
     expect(item.taxt).to eq 'taxt'
   end
+
   it "can belong to a taxon" do
     taxon = create :family
     item = taxon.history_items.create! taxt: 'foo'
@@ -48,7 +50,6 @@ describe TaxonHistoryItem do
       item.update_taxt_from_editable '{123}'
       expect(item.errors).not_to be_empty
     end
-
   end
 
   describe "Versioning" do
@@ -59,5 +60,4 @@ describe TaxonHistoryItem do
       end
     end
   end
-
 end

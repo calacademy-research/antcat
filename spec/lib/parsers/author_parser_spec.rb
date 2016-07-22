@@ -12,12 +12,14 @@ describe Parsers::AuthorParser do
         expect(@parser.parse!(string)[:names]).to eq ['Fisher, B.L.']
         expect(string).to eq ''
       end
+
       it "should not modify the string if the bang version is not used" do
         string = 'Fisher, B.L.'
         expect(@parser.parse(string)[:names]).to eq ['Fisher, B.L.']
         expect(string).to eq 'Fisher, B.L.'
       end
     end
+
     it "should return an empty array if the string is empty" do
       ['', nil].each do |string|
         expect(@parser.parse(string)[:names]).to eq []
@@ -164,7 +166,6 @@ describe Parsers::AuthorParser do
    it "should handle an authors list separated by ampersand" do
      expect(@parser.parse('Espadaler & DuMerle')).to eq names: ['Espadaler', 'DuMerle'], suffix: nil
    end
-
   end
 
   describe "parsing first name and initials and last name" do
@@ -173,20 +174,23 @@ describe Parsers::AuthorParser do
         expect(@parser.get_name_parts(string)).to eq({})
       end
     end
+
    it "should simply return the name if there's only one word" do
      expect(@parser.get_name_parts('Bolton')).to eq last: 'Bolton'
    end
+
    it "should separate the words if there are multiple" do
      expect(@parser.get_name_parts('Bolton, B.L.'))
       .to eq last: 'Bolton', first_and_initials: 'B.L.'
    end
+
    it "should use all words if there is no comma" do
      expect(@parser.get_name_parts('Royal Academy')).to eq last: 'Royal Academy'
    end
+
    it "should use use all words before the comma if there are multiple" do
      expect(@parser.get_name_parts('Baroni Urbani, C.'))
       .to eq last: 'Baroni Urbani', first_and_initials: 'C.'
    end
   end
-
 end

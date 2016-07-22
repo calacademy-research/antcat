@@ -17,9 +17,9 @@ describe ReferenceDocumentObserver do
     ReferenceDocumentObserver.instance.before_update reference_document
     expect(reference.formatted_cache).to be_nil
   end
+
   it "shouldn't croak if there's no reference" do
     reference_document = create :reference_document
     ReferenceDocumentObserver.instance.before_update reference_document
   end
-
 end

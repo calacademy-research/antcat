@@ -41,7 +41,6 @@ describe Genus do
   end
 
   describe "Statistics" do
-
     it "should handle 0 children" do
       genus = create :genus
       expect(genus.statistics).to eq({})
@@ -103,7 +102,6 @@ describe Genus do
         fossil: {species: {'valid' => 1}, subspecies: {'valid' => 2}},
       )
     end
-
   end
 
   describe "Without subfamily" do
@@ -124,7 +122,6 @@ describe Genus do
   end
 
   describe "Siblings" do
-
     it "should return itself when there are no others" do
       create :genus
       tribe = create :tribe
@@ -155,20 +152,22 @@ describe Genus do
       another_genus = create :genus, subfamily: subfamily, tribe: nil
       expect(genus.siblings).to match_array [genus, another_genus]
     end
-
   end
 
   describe "Species group descendants" do
     before do
       @genus = create_genus
     end
+
     it "should return an empty array if there are none" do
       expect(@genus.species_group_descendants).to eq []
     end
+
     it "should return all the species" do
       species = create_species genus: @genus
       expect(@genus.species_group_descendants).to eq [species]
     end
+
     it "should return all the species and subspecies of the genus" do
       species = create_species genus: @genus
       subgenus = create_subgenus genus: @genus
@@ -183,11 +182,13 @@ describe Genus do
       genus = create_genus subfamily: nil, tribe: nil
       expect(genus.parent).to be_nil
     end
+
     it "should refer to the subfamily, if there is one" do
       subfamily = create_subfamily
       genus = create_genus subfamily: subfamily, tribe: nil
       expect(genus.parent).to eq subfamily
     end
+
     it "should refer to the tribe, if there is one" do
       tribe = create_tribe
       genus = create_genus subfamily: tribe.subfamily, tribe: tribe
@@ -220,6 +221,7 @@ describe Genus do
       expect(genus.tribe).to eq tribe
       expect(genus.subfamily).to eq subfamily
     end
+
     it "should assign the subfamily when the tribe is nil, and set the tribe to nil" do
       subfamily = create :subfamily
       tribe = create :tribe, subfamily: subfamily
@@ -228,6 +230,7 @@ describe Genus do
       expect(genus.tribe).to eq nil
       expect(genus.subfamily).to eq subfamily
     end
+
     it "should clear both subfamily and tribe when the new parent is nil" do
       subfamily = create :subfamily
       tribe = create :tribe, subfamily: subfamily

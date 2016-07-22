@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Reference do
-
   describe "References" do
     it "should have no references, if alone" do
       reference = create :article_reference
@@ -29,6 +28,5 @@ describe Reference do
         ]
       end
     end
-
   end
 end

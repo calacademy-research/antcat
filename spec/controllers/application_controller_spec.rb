@@ -11,6 +11,7 @@ describe ApplicationController do
   describe "Authorization" do
     context "not signed in" do
       before { get :index }
+
       it "defaults user right to nil" do
         expect(controller.user_can_edit?).to be nil
         expect(controller.user_is_superadmin?).to be nil
@@ -66,5 +67,4 @@ describe ApplicationController do
       controller.send :authenticate_editor
     end
   end
-
 end

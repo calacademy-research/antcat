@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Subfamily do
-
   it "should have tribes, which are its children" do
     subfamily = create :subfamily, name: create(:name, name: 'Myrmicinae')
     create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily
@@ -55,7 +54,6 @@ describe Subfamily do
   end
 
   describe "Statistics" do
-
     it "should handle 0 children" do
       subfamily = create :subfamily
       expect(subfamily.statistics).to eq({})
@@ -130,7 +128,5 @@ describe Subfamily do
 
       expect(subfamily.statistics).to eq extant: {tribes: {'valid' => 1}}
     end
-
   end
-
 end

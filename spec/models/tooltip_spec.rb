@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Tooltip do
-
   describe "versioning", versioning: true do
     let!(:tooltip) { create :tooltip, key: "references.authors" }
 
@@ -58,6 +57,5 @@ describe Tooltip do
         expect(Tooltip.enabled_selectors).to eq [selector_enabled]
       end
     end
-
   end
 end

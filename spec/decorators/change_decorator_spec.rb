@@ -27,6 +27,7 @@ describe ChangeDecorator do
 
   describe "#format_time_ago" do
     let(:nil_decorator) { ChangeDecorator.new nil }
+
     it "formats time" do
       time = Time.now - 1.hour
       expect(nil_decorator.send(:format_time_ago, time))

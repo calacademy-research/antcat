@@ -94,5 +94,4 @@ describe Feedback do
       end
     end
   end
-
 end

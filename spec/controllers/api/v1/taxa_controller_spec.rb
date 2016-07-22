@@ -58,6 +58,5 @@ describe Api::V1::TaxaController do
       taxa = JSON.parse response.body
       expect(taxa.count).to eq 7
     end
-
   end
 end

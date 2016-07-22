@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Taxon do
-
   describe "Fields and validations" do
     it "should require a name" do
       taxon = FactoryGirl.build :taxon, name: nil
@@ -11,6 +10,7 @@ describe Taxon do
       expect(taxon.name.to_s).to eq 'Cerapachynae'
       expect(taxon).to be_valid
     end
+
     it "should be (Rails) valid with a nil status" do
       taxon = FactoryGirl.build :taxon
       create :taxon_state, taxon_id: taxon.id
@@ -19,12 +19,14 @@ describe Taxon do
       create :taxon_state, taxon_id: taxon.id
       expect(taxon).to be_valid
     end
+
     it "when status 'valid', should not be invalid" do
       taxon = FactoryGirl.build :taxon
       create :taxon_state, taxon_id: taxon.id
 
       expect(taxon).not_to be_invalid
     end
+
     it "should be able to be unidentifiable" do
       taxon = FactoryGirl.build :taxon
       create :taxon_state, taxon_id: taxon.id
@@ -33,6 +35,7 @@ describe Taxon do
       expect(taxon).to be_unidentifiable
       expect(taxon).to be_invalid
     end
+
     it "should be able to be a collective group name" do
       taxon = FactoryGirl.build :taxon
       create :taxon_state, taxon_id: taxon.id
@@ -41,6 +44,7 @@ describe Taxon do
       expect(taxon).to be_collective_group_name
       expect(taxon).to be_invalid
     end
+
     it "should be able to be an ichnotaxon" do
       taxon = FactoryGirl.build :taxon
       create :taxon_state, taxon_id: taxon.id
@@ -49,6 +53,7 @@ describe Taxon do
       expect(taxon).to be_ichnotaxon
       expect(taxon).not_to be_invalid
     end
+
     it "should be able to be unavailable" do
       taxon = FactoryGirl.build :taxon
       create :taxon_state, taxon_id: taxon.id
@@ -59,6 +64,7 @@ describe Taxon do
       expect(taxon).not_to be_available
       expect(taxon).to be_invalid
     end
+
     it "should be able to be excluded" do
       taxon = FactoryGirl.build :taxon
       create :taxon_state, taxon_id: taxon.id
@@ -67,6 +73,7 @@ describe Taxon do
       expect(taxon).to be_excluded_from_formicidae
       expect(taxon).to be_invalid
     end
+
     it "should be able to be a fossil" do
       taxon = FactoryGirl.build :taxon
       create :taxon_state, taxon_id: taxon.id
@@ -85,12 +92,14 @@ describe Taxon do
       expect(acamatus).to be_homonym
       expect(acamatus.homonym_replaced_by).to eq neivamyrmex
     end
+
     it "should be able to have an incertae_sedis_in" do
       myanmyrma = create :taxon, incertae_sedis_in: 'family'
       myanmyrma.reload
       expect(myanmyrma.incertae_sedis_in).to eq 'family'
       expect(myanmyrma).not_to be_invalid
     end
+
     it "should be able to say whether it is incertae sedis in a particular rank" do
       myanmyrma = create :taxon, incertae_sedis_in: 'family'
       myanmyrma.reload
@@ -130,6 +139,7 @@ describe Taxon do
       expect(genus).not_to be_homonym_replaced_by another_genus
       expect(genus.homonym_replaced).to be_nil
     end
+
     it "should think it's a homonym replaced by something when it is" do
       replacement = create :genus
       homonym = create :genus, homonym_replaced_by: replacement, status: 'homonym'
@@ -144,6 +154,7 @@ describe Taxon do
       expect(taxon.protonym).to be_nil
       taxon.build_protonym name: create(:name, name: 'Formicariae')
     end
+
     # Changed this because synonyms, homonyms will use the same protonym
     it "should not destroy the protonym when the taxon it's attached to is destroyed, even if another taxon is using it" do
       protonym = create :protonym
@@ -164,6 +175,7 @@ describe Taxon do
       expect(taxon.type_name.to_s).to eq 'Formicariae'
       expect(taxon.type_name.rank).to eq 'family'
     end
+
     it "should not be required" do
       taxon = create :family, type_name: nil
       expect(taxon).to be_valid
@@ -172,17 +184,20 @@ describe Taxon do
 
   describe "Taxonomic history items" do
     let(:taxon) { create :family }
+
     it "should have some" do
       expect(taxon.history_items).to be_empty
       taxon.history_items.create! taxt: 'foo'
       expect(taxon.reload.history_items.map(&:taxt)).to eq ['foo']
     end
+
     it "should cascade to delete history items when it's deleted" do
       history_item = taxon.history_items.create! taxt: 'taxt'
       expect(TaxonHistoryItem.find_by_id(history_item.id)).not_to be_nil
       taxon.destroy
       expect(TaxonHistoryItem.find_by_id(history_item.id)).to be_nil
     end
+
     it "should show the items in the order in which they were added to the taxon" do
       taxon.history_items.create! taxt: '1'
       taxon.history_items.create! taxt: '2'
@@ -201,11 +216,13 @@ describe Taxon do
       taxon.reference_sections.create! references_taxt: 'foo'
       expect(taxon.reload.reference_sections.map(&:references_taxt)).to eq ['foo']
     end
+
     it "should cascade to delete the reference sections when it's deleted" do
       reference_section = taxon.reference_sections.create! references_taxt: 'foo'
       taxon.destroy
       expect(ReferenceSection.find_by_id(reference_section.id)).to be_nil
     end
+
     it "should show the items in the order in which they were added to the taxon" do
       taxon.reference_sections.create! references_taxt: '1'
       taxon.reference_sections.create! references_taxt: '2'
@@ -223,6 +240,7 @@ describe Taxon do
         expect(genus.protonym).to receive(:author_last_names_string).and_return 'Bolton'
         expect(genus.author_last_names_string).to eq 'Bolton'
       end
+
       it "should handle it if there simply isn't a protonym authorship" do
         species = create_species 'Atta minor maxus'
         protonym_name = create_subspecies_name 'Eciton minor maxus'
@@ -245,6 +263,7 @@ describe Taxon do
         expect(genus.protonym).to receive(:authorship_string).and_return 'Bolton 2005'
         expect(genus.authorship_string).to eq 'Bolton 2005'
       end
+
       it "should surround in parentheses, if a recombination in a different genus" do
         species = create_species 'Atta minor'
         protonym_name = create_species_name 'Eciton minor'
@@ -252,6 +271,7 @@ describe Taxon do
         allow(species.protonym).to receive(:authorship_string).and_return 'Bolton, 2005'
         expect(species.authorship_string).to eq '(Bolton, 2005)'
       end
+
       it "should not surround in parentheses, if the name simply differs" do
         species = create_species 'Atta minor maxus'
         protonym_name = create_subspecies_name 'Atta minor minus'
@@ -259,6 +279,7 @@ describe Taxon do
         expect(species.protonym).to receive(:authorship_string).and_return 'Bolton, 2005'
         expect(species.authorship_string).to eq 'Bolton, 2005'
       end
+
       it "should handle it if there simply isn't a protonym authorship" do
         species = create_species 'Atta minor maxus'
         protonym_name = create_subspecies_name 'Eciton minor maxus'
@@ -283,12 +304,14 @@ describe Taxon do
       expect(species.protonym).to receive(:name).and_return protonym_name
       expect(species).not_to be_recombination
     end
+
     it "should think it's a recombination if genus part of name is different than genus part of protonym" do
       species = create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
       expect(species.protonym).to receive(:name).and_return protonym_name
       expect(species).to be_recombination
     end
+
     it "should not think it's a recombination if genus part of name is same as genus part of protonym" do
       species = create_species 'Atta minor maxus'
       protonym_name = create_subspecies_name 'Atta minor minus'
@@ -308,6 +331,7 @@ describe Taxon do
       expect(subfamily.child_list_query(:genera, fossil: true).map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
       expect(subfamily.child_list_query(:genera, incertae_sedis_in: 'subfamily').map(&:name).map(&:to_s).sort).to eq ['Aneuretus']
     end
+
     it "should not include invalid taxa" do
       create :genus, name: create(:name, name: 'Atta'), subfamily: subfamily, status: 'synonym'
       create :genus, name: create(:name, name: 'Eciton'), subfamily: subfamily, fossil: true
@@ -329,6 +353,7 @@ describe Taxon do
       expect(Taxon.count).to be_zero
       expect(Protonym.count).to eq 1
     end
+
     it "should delete history and reference sections when the taxon is deleted" do
       expect(Taxon.count).to be_zero
       expect(ReferenceSection.count).to be_zero
@@ -351,6 +376,7 @@ describe Taxon do
       genus.save!
       expect(genus.reload.subfamily).to eq subfamily
     end
+
     it "should give the parent of a family as nil" do
       family = create :family
       expect(family.parent).to be_nil
@@ -421,6 +447,7 @@ describe Taxon do
         expect(subfamily.genera.valid).to eq [replacement]
       end
     end
+
     describe "the 'extant' scope" do
       it "should only include extant taxa" do
         subfamily = create :subfamily
@@ -429,6 +456,7 @@ describe Taxon do
         expect(subfamily.genera.extant).to eq [extant_genus]
       end
     end
+
     describe "ordered by name" do
       it "should order by name" do
         zymacros = create :subfamily, name: create(:name, name: 'Zymacros')
@@ -442,6 +470,7 @@ describe Taxon do
     it "should be nil if there was no recombining" do
       expect(create_genus.original_combination).to be_nil
     end
+
     it "is the protonym, otherwise" do
       original_combination = create_species 'Atta major'
       recombination = create_species 'Eciton major'
@@ -464,12 +493,14 @@ describe Taxon do
       taxon.save!
       expect(taxon.reload.type_specimen_url).to eq 'http://antcat.org/1.pdf'
     end
+
     it "should make sure it's a valid URL" do
       taxon = FactoryGirl.build :species, type_specimen_url: '*'
       create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_valid
       expect(taxon.errors.full_messages).to match_array ['Type specimen url is not in a valid format']
     end
+
     it "should make sure it exists" do
       stub_request(:any, 'http://antwiki.org/1.pdf').to_return body: 'Hello World!'
       taxon = create :species, type_specimen_url: 'http://antwiki.org/1.pdf'
@@ -486,13 +517,15 @@ describe Taxon do
       taxon = create_genus current_valid_taxon: current_valid_taxon
       expect(taxon.current_valid_taxon_including_synonyms).to eq current_valid_taxon
     end
+
     it "should return the senior synonym if it exists" do
       senior = create_genus
       current_valid_taxon = create_genus
       taxon = create_synonym senior, current_valid_taxon: current_valid_taxon
       expect(taxon.current_valid_taxon_including_synonyms).to eq senior
     end
-    it "should find the latest senior synonym that's valid" do
+
+   it "should find the latest senior synonym that's valid" do
       valid_senior = create_genus status: 'valid'
       invalid_senior = create_genus status: 'homonym'
       taxon = create_genus status: 'synonym'
@@ -500,6 +533,7 @@ describe Taxon do
       Synonym.create! senior_synonym: invalid_senior, junior_synonym: taxon
       expect(taxon.current_valid_taxon_including_synonyms).to eq valid_senior
     end
+
     it "should handle when no senior synonyms are valid" do
       invalid_senior = create_genus status: 'homonym'
       another_invalid_senior = create_genus status: 'homonym'
@@ -507,6 +541,7 @@ describe Taxon do
       Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: taxon
       expect(taxon.current_valid_taxon_including_synonyms).to be_nil
     end
+
     it "should handle when there's a synonym of a synonym" do
       senior_synonym_of_senior_synonym = create_genus
       senior_synonym = create_genus status: 'synonym'
@@ -518,5 +553,4 @@ describe Taxon do
       expect(taxon.current_valid_taxon_including_synonyms).to eq senior_synonym_of_senior_synonym
     end
   end
-
 end

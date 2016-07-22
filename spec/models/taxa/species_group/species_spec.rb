@@ -19,12 +19,14 @@ describe Species do
     it "should handle 0 children" do
       expect(create_species.statistics).to eq({})
     end
+
     it "should handle 1 valid subspecies" do
       species = create_species
       subspecies = create_subspecies species: species
       expect(species.statistics)
         .to eq extant: {subspecies: {'valid' => 1}}
     end
+
     it "should differentiate between extant and fossil subspecies" do
       species = create_species
       subspecies = create_subspecies species: species
@@ -34,6 +36,7 @@ describe Species do
         fossil: {subspecies: {'valid' => 1}},
       )
     end
+
     it "should differentiate between extant and fossil subspecies" do
       species = create_species
       subspecies = create_subspecies species: species
@@ -43,6 +46,7 @@ describe Species do
         fossil: {subspecies: {'valid' => 1}},
       )
     end
+
     it "should handle 1 valid subspecies and 2 synonyms" do
       species = create_species
       create_subspecies species: species
@@ -50,7 +54,6 @@ describe Species do
       expect(species.statistics)
         .to eq extant: {subspecies: {'valid' => 1, 'synonym' => 2}}
     end
-
   end
 
   describe "Becoming subspecies" do
@@ -100,7 +103,6 @@ describe Species do
       taxon = Subspecies.find taxon.id
       expect(taxon.name.name).to eq 'Atta major minor'
     end
-
   end
 
   describe "Siblings" do
@@ -112,5 +114,4 @@ describe Species do
       expect(species.siblings).to match_array [species, another_species]
     end
   end
-
 end

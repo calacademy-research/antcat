@@ -11,5 +11,4 @@ describe UserDecorator do
         .to eq '<a href="mailto:email@example.com">First Last</a>'
     end
   end
-
 end

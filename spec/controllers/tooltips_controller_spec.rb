@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe TooltipsController do
-
   # Note: Shoulda only checks if the filter is defined;
   # the matcher does not support :only, :except or `skip_before_filter`
   it { should use_before_filter(:authenticate_editor) }
@@ -49,6 +48,7 @@ describe TooltipsController do
 
     context "not signed in" do
       before { get :index }
+
       it { should redirect_to(new_user_session_path) } # TODO extract this to a helper
     end
   end
@@ -60,7 +60,6 @@ describe TooltipsController do
       before do
         editor = create :user, can_edit: true
         sign_in editor
-
         get :show, id: tooltip.id
       end
 
@@ -152,5 +151,4 @@ describe TooltipsController do
   describe '#destroy' do
     # TODO
   end
-
 end

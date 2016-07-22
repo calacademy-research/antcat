@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Citation do
-
   it "has a Reference" do
     reference = create :reference
     citation = Citation.create! reference: reference
@@ -29,6 +28,7 @@ describe Citation do
       citation = FactoryGirl.build_stubbed :citation, reference: reference
       expect(citation.authorship_string).to eq 'Bolton, 2001'
     end
+
     it "should handle multiple authors" do
       reference = FactoryGirl.build_stubbed :article_reference,
         author_names: [
@@ -39,6 +39,7 @@ describe Citation do
       citation = FactoryGirl.build_stubbed :citation, reference: reference
       expect(citation.authorship_string).to eq 'Bolton & Fisher, 2001'
     end
+
     it "should not include the year ordinal" do
       reference = reference_factory author_name: 'Bolton', citation_year: '1885g'
       citation = FactoryGirl.build_stubbed :citation, reference: reference
@@ -53,6 +54,7 @@ describe Citation do
       expect(citation.authorship_html_string).to eq 'XYZ'
     end
   end
+
   describe "Authors' last names string" do
     it "should show the authors' last names" do
       reference = reference_factory author_name: 'Bolton', citation_year: '2001'
@@ -74,5 +76,4 @@ describe Citation do
       expect(citation.year).to eq "[no year]"
     end
   end
-
 end

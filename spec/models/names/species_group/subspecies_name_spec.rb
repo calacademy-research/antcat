@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe SubspeciesName do
-
   describe "Name parts" do
     it "should know its species epithet" do
       name = SubspeciesName.new name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
@@ -34,6 +33,7 @@ describe SubspeciesName do
       expect(subspecies_name.epithet_html).to eq '<i>minor</i>'
       expect(subspecies_name.epithets).to eq 'niger minor'
     end
+
     it "should handle more than one subspecies epithet" do
       subspecies_name = SubspeciesName.new(
         name: 'Atta major minor medii',
@@ -57,6 +57,7 @@ describe SubspeciesName do
       expect(subspecies_name.epithet_html).to eq '<i>medii</i>'
       expect(subspecies_name.epithets).to eq 'niger minor medii'
     end
+
     it "should raise an error if the new name already exists for a different taxon" do
       existing_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
       subspecies = create_subspecies 'Eciton niger minor', name: existing_subspecies_name
@@ -66,6 +67,7 @@ describe SubspeciesName do
 
       expect { subspecies_name.change_parent species_name }.to raise_error
     end
+
     it "should not raise an error if the new name already exists, but is an orphan" do
       orphan_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
       subspecies_name = SubspeciesName.create! name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
@@ -82,5 +84,4 @@ describe SubspeciesName do
       expect(name.subspecies_epithets).to eq 'minor medium'
     end
   end
-
 end

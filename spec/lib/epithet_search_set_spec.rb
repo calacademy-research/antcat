@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe EpithetSearchSet do
-
   describe "Masculine-feminine-neuter" do
     describe "First declension" do
       it "should convert between these" do
@@ -15,6 +14,7 @@ describe EpithetSearchSet do
         expect(EpithetSearchSet.new('eugunii').epithets).to eq ['eugunii', 'euguniae', 'euguni']
       end
     end
+
     describe "First and second declension adjectives in -er" do
       it "should at least handle coniger" do
         expect(EpithetSearchSet.new('coniger').epithets)
@@ -25,6 +25,7 @@ describe EpithetSearchSet do
           .to eq ['conigerum', 'conigerus', 'conigera', 'coniger', 'conigaerum']
       end
     end
+
     describe "Third declension" do
       it "should convert between these" do
         expect(EpithetSearchSet.new('fatruele').epithets).to eq ['fatruele', 'fatruelis']
@@ -39,13 +40,16 @@ describe EpithetSearchSet do
       expect(EpithetSearchSet.new('lundi').epithets).to eq ['lundi', 'lundae', 'lundii']
       expect(EpithetSearchSet.new('lundae').epithets).to eq ['lundae', 'lundi']
     end
+
     it "should handle -e- and -ae-" do
       expect(EpithetSearchSet.new('letis').epithets).to eq ['letis', 'lete', 'laetis']
       expect(EpithetSearchSet.new('laetis').epithets).to eq ['laetis', 'laete', 'letis']
     end
+
     it "should handle -p- and -ph-" do
       expect(EpithetSearchSet.new('delpina').epithets).to eq ['delpina', 'delpinus', 'delpinum', 'delphina']
     end
+
     it "should handle -v- and -w-" do
       expect(EpithetSearchSet.new('acwabimans').epithets).to eq ['acwabimans', 'acvabimans']
       expect(EpithetSearchSet.new('acvabimans').epithets).to eq ['acvabimans', 'acwabimans']
@@ -59,5 +63,4 @@ describe EpithetSearchSet do
       expect(EpithetSearchSet.new('columbica').epithets).to eq ['columbica', 'colombica', 'columbicus', 'columbicum']
     end
   end
-
 end

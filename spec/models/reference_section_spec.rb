@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe ReferenceSection do
-
   describe "Versioning" do
     it "should record versions" do
       with_versioning do
@@ -10,5 +9,4 @@ describe ReferenceSection do
       end
     end
   end
-
 end

@@ -27,5 +27,4 @@ describe ReferenceMatcher do
     results = @matcher.match @target
     expect(results).to eq [{similarity: 0.10, target: @target, match: @match}]
   end
-
 end

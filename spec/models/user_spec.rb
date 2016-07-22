@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe User do
-
   it { should validate_presence_of(:name) }
 
   describe "scopes" do
@@ -68,5 +67,4 @@ describe User do
       expect(user.angle_bracketed_email).to eq '"An Editor" <editor@example.com>'
     end
   end
-
 end
