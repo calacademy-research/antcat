@@ -80,5 +80,5 @@ And /^I select "([^"]+)" from the biogeographic region selector$/ do |value|
 end
 
 When /^I check valid only in the advanced search form$/ do
-  find(:css, "#advanced_search input[type='checkbox']").set(true)
+  find(:css, "#advanced_search input[type='checkbox']").set true
 end

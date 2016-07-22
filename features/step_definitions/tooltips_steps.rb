@@ -21,7 +21,7 @@ Given /^(?:these|this) tooltips? (?:also)? ?exists?$/ do |table|
 end
 
 When(/^I hover the tooltip next to the element containing "([^"]*)"$/) do |text|
-  look_next_to_this = first('*', text: /^#{text}$/)
+  look_next_to_this = first '*', text: /^#{text}$/
   look_next_to_this.find('img[class~=tooltip]').hover
 end
 
@@ -35,11 +35,11 @@ Then /^I should (not )?see the tooltip text "([^"]*)"$/ do |should_not, text|
 end
 
 Then(/^I should not see any tooltips next to the element containing "([^"]*)"$/) do |text|
-  look_next_to_this = first('*', text: /^#{text}$/)
-  expect(look_next_to_this).to have_no_selector('.tooltip')
+  look_next_to_this = first '*', text: /^#{text}$/
+  expect(look_next_to_this).to have_no_selector '.tooltip'
 end
 
 Then(/^I should not see any tooltips next to the text "([^"]*)"$/) do |text|
-  tooltip = find('*', text: /^#{text}$/).first('img.help_icon')
+  tooltip = find('*', text: /^#{text}$/).first 'img.help_icon'
   expect(tooltip).to be nil
 end

@@ -1,5 +1,5 @@
 module HtmlSelectorsHelpers
-  def selector_for(locator)
+  def selector_for locator
     case locator
 
     when /the page/

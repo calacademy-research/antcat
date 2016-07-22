@@ -2,11 +2,11 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "pat
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "selectors"))
 
 module WithinHelpers
-  def with_scope(locator)
+  def with_scope locator
     locator ? within(*selector_for(locator)) { yield } : yield
   end
 end
-World(WithinHelpers)
+World WithinHelpers
 
 # Go to / be on
 When /^(?:|I )go to (.+)$/ do |page_name|
@@ -38,7 +38,7 @@ When /^(?:|I )press "([^"]*)"$/ do |button|
   elsif button == "Cancel"
     first('.btn-cancel').click
   else
-    click_button(button)
+    click_button button
   end
 end
 
@@ -51,7 +51,7 @@ When /^(?:|I )follow the first "([^"]*)"$/ do |link|
 end
 
 When /^(?:|I )follow "([^"]*)"$/ do |link|
-  click_link(link)
+  click_link link
 end
 
 When /^I press the "([^"]+)" button/ do |button|
@@ -76,23 +76,23 @@ end
 
 # Interact with form elements
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"$/ do |field, value|
-  fill_in(field, with: value)
+  fill_in field, with: value
 end
 
 When /^(?:|I )select "([^"]*)" from "([^"]*)"$/ do |value, field|
-  select(value, from: field)
+  select value, from: field
 end
 
 When /^(?:|I )check "([^"]*)"$/ do |field|
-  check(field)
+  check field
 end
 
 When /^(?:|I )uncheck "([^"]*)"$/ do |field|
-  uncheck(field)
+  uncheck field
 end
 
 When /^(?:|I )choose "([^"]*)"$/ do |field|
-  choose(field)
+  choose field
 end
 
 # I should see/contain/selected ...
@@ -114,12 +114,12 @@ end
 
 Then /^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/ do |field, parent, value|
   with_scope(parent) do
-    field = find_field(field)
+    field = find_field field
     field_value = (field.tag_name == 'textarea') ? field.text : field.value
     if field_value.respond_to? :should
       field_value.should =~ /#{value}/
     else
-      assert_match(/#{value}/, field_value)
+      assert_match /#{value}/, field_value
     end
   end
 end
@@ -160,8 +160,8 @@ end
 # Misc
 Given 'I will confirm on the next step' do
   begin
-    evaluate_script("window.alert = function(msg) { return true; }")
-    evaluate_script("window.confirm = function(msg) { return true; }")
+    evaluate_script "window.alert = function(msg) { return true; }"
+    evaluate_script "window.confirm = function(msg) { return true; }"
   rescue Capybara::NotSupportedByDriverError
   end
 end

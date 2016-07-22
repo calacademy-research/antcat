@@ -83,29 +83,29 @@ When /^I add the genus "([^"]+)"?$/ do |genus_name|
   reference = create :article_reference
 
   taxon_params = HashWithIndifferentAccess.new(
+    name_attributes: {id: ''},
+    status: 'valid',
+    incertae_sedis_in: '',
+    fossil: '0',
+    nomen_nudum: '0',
+    unresolved_homonym: '0',
+    ichnotaxon: '0',
+    hong: '0',
+    headline_notes_taxt: '',
+    current_valid_taxon_name_attributes: {id: ''},
+    homonym_replaced_by_name_attributes: {id: ''},
+    protonym_attributes: {
       name_attributes: {id: ''},
-      status: 'valid',
-      incertae_sedis_in: '',
       fossil: '0',
-      nomen_nudum: '0',
-      unresolved_homonym: '0',
-      ichnotaxon: '0',
-      hong: '0',
-      headline_notes_taxt: '',
-      current_valid_taxon_name_attributes: {id: ''},
-      homonym_replaced_by_name_attributes: {id: ''},
-      protonym_attributes: {
-          name_attributes: {id: ''},
-          fossil: '0',
-          sic: '0',
-          locality: '',
-          authorship_attributes: {
-              reference_attributes: {id: reference.id},
-              pages: '',
-              forms: '',
-              notes_taxt: '',
-          },
-      }
+      sic: '0',
+      locality: '',
+      authorship_attributes: {
+        reference_attributes: {id: reference.id},
+        pages: '',
+        forms: '',
+        notes_taxt: '',
+      },
+    }
   )
   genus_params = taxon_params.deep_dup
   genus_params[:name_attributes][:id] = create(:genus_name, name: genus_name).id
@@ -113,7 +113,7 @@ When /^I add the genus "([^"]+)"?$/ do |genus_name|
   genus_params[:type_name_attributes] = {id: create(:species_name, name: 'Betta major').id}
 
   taxon = mother_replacement_create_taxon Genus.new, create_subfamily
-  taxon.save_taxon(genus_params)
+  taxon.save_taxon genus_params
 
   taxon.last_change.versions.each do |version|
     version.update_attributes whodunnit: @user.id

@@ -14,19 +14,19 @@ Given /^(?:this|these) dated references? exists?$/ do |table|
   Reference.delete_all # TODO probably remove
   table.map_column!('created_at') do |date|
     if date == 'TODAYS_DATE'
-      date = Time.now.strftime("%Y-%m-%d")
+      date = Time.now.strftime "%Y-%m-%d"
     elsif date == 'YESTERDAYS_DATE'
       t = Time.now
       yesterday = t - 1.day
 
-      date = yesterday.strftime("%Y-%m-%d")
+      date = yesterday.strftime "%Y-%m-%d"
     end
     date
   end
 
   table.map_column!('updated_at') do |date|
     if date == 'TODAYS_DATE'
-      date = Time.now.strftime("%Y-%m-%d")
+      date = Time.now.strftime "%Y-%m-%d"
     end
     date
   end
@@ -58,7 +58,7 @@ Given /^there is a Giovanni reference$/ do
   citation_year: '1809',
   title: "Giovanni's Favorite Ants"
 
-  reference.update_column(:id, 7777)
+  reference.update_column :id, 7777
   reference.author_names << create(:author_name, name: 'Giovanni, S.')
 end
 
@@ -69,11 +69,11 @@ Given(/(?:these|this) unknown references? exists?/) do |table|
 end
 
 def create_reference type, hash
-  author = hash.delete('author')
+  author = hash.delete 'author'
   if author
     author_names = [create(:author_name, name: author)]
   else
-    authors = hash.delete('authors')
+    authors = hash.delete 'authors'
     author_names = Parsers::AuthorParser.parse(authors)[:names]
     author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
     author_names = author_names.inject([]) do |author_names, author_name|
@@ -144,7 +144,7 @@ end
 Then /I should (not )?see a "PDF" link/ do |should_not|
   begin
     trace = ['Inside the I should(not) see a PDF step']
-    page_has_no_selector = page.has_no_selector?('a', text: 'PDF')
+    page_has_no_selector = page.has_no_selector? 'a', text: 'PDF'
     trace << 'after page.has_no_selector'
     unless page_has_no_selector and should_not
       trace << 'inside unless'
@@ -227,7 +227,7 @@ Then /^it (#{SHOULD_OR_SHOULD_NOT}) show "(.*?)" as the default$/ do |should_sel
 end
 
 def find_reference_by_key key
-  parts = key.split(' ')
+  parts = key.split ' '
   last_name = parts[0]
   year = parts[1]
   Reference.where(principal_author_last_name_cache: last_name, year: year.to_i).first

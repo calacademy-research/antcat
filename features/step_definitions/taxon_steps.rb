@@ -25,25 +25,25 @@ end
 # subfamily
 Given /there is a subfamily "([^"]*)" with taxonomic history "([^"]*)"$/ do |taxon_name, history|
   name = create :subfamily_name, name: taxon_name
-  taxon = create_taxon_with_state(:subfamily, name)
+  taxon = create_taxon_with_state :subfamily, name
   taxon.history_items.create! taxt: history
 end
 Given /there is a subfamily "([^"]*)" with a reference section "(.*?)"$/ do |taxon_name, references|
   name = create :subfamily_name, name: taxon_name
-  taxon = create_taxon_with_state(:subfamily, name)
+  taxon = create_taxon_with_state :subfamily, name
   taxon.reference_sections.create! references_taxt: references
 end
 Given /there is a subfamily "([^"]*)"$/ do |taxon_name|
   name = create :subfamily_name, name: taxon_name
-  @subfamily = create_taxon_with_state(:subfamily, name)
+  @subfamily = create_taxon_with_state :subfamily, name
 end
 
 Given /^subfamily "(.*?)" exists$/ do |name|
-  @subfamily = create_taxon_with_state(:subfamily, create(:subfamily_name, name: name))
+  @subfamily = create_taxon_with_state :subfamily, create(:subfamily_name, name: name)
   @subfamily.history_items.create! taxt: "#{name} history"
 end
 Given /^the unavailable subfamily "(.*?)" exists$/ do |name|
-  @subfamily = create(:subfamily, status: 'unavailable', name: create(:subfamily_name, name: name))
+  @subfamily = create :subfamily, status: 'unavailable', name: create(:subfamily_name, name: name)
   create :taxon_state, taxon_id: @subfamily.id
   @subfamily
 end
@@ -122,7 +122,7 @@ Given /^a non-displayable genus exists with a name of "(.*?)" and a subfamily of
   create :taxon_state, taxon_id: taxon.id
 end
 Given /a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, history|
-  another_genus = create(:genus_name, name: taxon_name)
+  another_genus = create :genus_name, name: taxon_name
   create :taxon_state, taxon_id: another_genus.id
   genus = create :genus, name: another_genus, subfamily: nil, tribe: nil
   create :taxon_state, taxon_id: genus.id
@@ -159,7 +159,7 @@ end
 Given /^there is a parentless subspecies "([^"]*)"$/ do |name|
   @subspecies = create_subspecies name
   @subspecies.species_id = nil
-  @subspecies.save!(validate: false)
+  @subspecies.save! validate: false
 end
 
 Given /a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/ do |taxon_name, parent_name, history|
