@@ -1,5 +1,4 @@
 $ ->
-
   new AntCat.NamePopup $('#popup'),
     field: false,
     on_success: (data) ->

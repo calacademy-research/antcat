@@ -1,5 +1,4 @@
 class AntCat.AjaxForm extends AntCat.Form
-
   submit: =>
     @start_throbbing()
     @form().ajaxSubmit
@@ -40,4 +39,3 @@ class AntCat.AjaxForm extends AntCat.Form
   stop_throbbing: =>
     @buttons.find(':button, :input[type=submit]').undisable()
     @element.find('.shared-spinner').hide()
-

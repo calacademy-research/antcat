@@ -11,7 +11,6 @@ function setupCloseLinks() {
   });
 }
 
-
 function setupAuthorAutocomplete() {
   if (AntCat.testing)
     return;

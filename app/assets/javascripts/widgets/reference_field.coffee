@@ -1,5 +1,4 @@
 class AntCat.ReferenceField extends AntCat.ReferencePicker
-
   constructor: (@parent_element, @options = {}) ->
     @options.click_on_display = true
     @value_id = @options.value_id
