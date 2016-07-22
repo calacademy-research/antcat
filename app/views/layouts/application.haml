@@ -1,27 +1,27 @@
 !!!
 %html{xmlns: 'http://www.w3.org/1999/xhtml', 'xml:lang' => 'en', lang: 'en'}
   %head
-    %title= make_title @title
+    %title=make_title @title
     %meta{'http-equiv' => "content-type", content: "text/html;charset=UTF-8"}
     %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
 
-    = csrf_meta_tag
+    =csrf_meta_tag
 
     :javascript
       window.AntCat = {}
       AntCat.user_can_edit = #{!!user_can_edit?}
       AntCat.testing = #{Rails.env.test?}
 
-    = javascript_include_tag 'google_analytics'
-    = javascript_include_tag 'application'
+    =javascript_include_tag 'google_analytics'
+    =javascript_include_tag 'application'
 
-    = stylesheet_link_tag 'foundation_and_overrides'
-    = stylesheet_link_tag 'application'
-    = stylesheet_link_tag 'jquery_overrides'
-    = dev_css
+    =stylesheet_link_tag 'foundation_and_overrides'
+    =stylesheet_link_tag 'application'
+    =stylesheet_link_tag 'jquery_overrides'
+    =dev_css
 
-    = favicon_link_tag
-    = yield :head
+    =favicon_link_tag
+    =yield :head
 
     %body
       #header

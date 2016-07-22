@@ -1,10 +1,10 @@
-- default_name_string ||= nil
-- gender ||= 'unknown'
+-default_name_string ||= nil
+-gender ||= 'unknown'
 
 %tr.name_row
-  = form.fields_for :name do |name_form|
-    - if name_form.object.new_record?
-      = hidden_field_tag 'taxon[name_attributes][id]'
+  =form.fields_for :name do |name_form|
+    -if name_form.object.new_record?
+      =hidden_field_tag 'taxon[name_attributes][id]'
 
     %td.caption.top_aligned
       =name_form.label :name do
@@ -14,10 +14,10 @@
       %table.name_and_gender
         %tr
           %td#name_field
-            = render 'name_fields/panel', name_string: taxon.name.try(:name),
+            =render 'name_fields/panel', name_string: taxon.name.try(:name),
                                           default_name_string: default_name_string && "#{default_name_string} "
-          - if taxon.name.kind_of? GenusGroupName
+          -if taxon.name.kind_of? GenusGroupName
             %td#gender_field
-              = name_form.label :gender
-              = name_form.select :gender, [ [ 'unknown', nil ], 'masculine', 'feminine', 'neuter' ]
-      .name_description= taxon.decorate.name_description
+              =name_form.label :gender
+              =name_form.select :gender, [ [ 'unknown', nil ], 'masculine', 'feminine', 'neuter' ]
+      .name_description=taxon.decorate.name_description

@@ -1,32 +1,32 @@
-- css_classes = []
-- css_classes << "blank" if panel == panels.last
-- css_classes << "half_width" if panel != panels.last && panels.count > 2
+-css_classes = []
+-css_classes << "blank" if panel == panels.last
+-css_classes << "half_width" if panel != panels.last && panels.count > 2
 
 .author_panel.panel{class: css_classes}
   .search
-    = form_tag merge_authors_path, method: :get do
+    =form_tag merge_authors_path, method: :get do
       .left
-        - panels.each do |a_panel|
-          = hidden_field_tag 'term', panel.term
-          - if a_panel != panel
-            = hidden_field_tag 'terms[]', a_panel.term
-          - else
-            - label = 'Choose '
-            - label << 'another ' if panel == panels.last && panels.count > 1
-            - label << 'author'
-            = label_tag 'terms[]', label
-            = text_field_tag 'terms[]', panel.term
-            = submit_tag 'Go', class: "btn-search"
+        -panels.each do |a_panel|
+          =hidden_field_tag 'term', panel.term
+          -if a_panel != panel
+            =hidden_field_tag 'terms[]', a_panel.term
+          -else
+            -label = 'Choose '
+            -label << 'another ' if panel == panels.last && panels.count > 1
+            -label << 'author'
+            =label_tag 'terms[]', label
+            =text_field_tag 'terms[]', panel.term
+            =submit_tag 'Go', class: "btn-search"
       .right
-        = link_to 'close', {}, class: 'close_link' if panel != panels.last
+        =link_to 'close', {}, class: 'close_link' if panel != panels.last
       .clear
 
-  - if panel.term.present?
+  -if panel.term.present?
     .search_results
-      - if panel.already_open
+      -if panel.already_open
         %span.none This author is open in another panel.
-      - elsif panel.author
-        = render 'author', author: panel.author
-      - else
+      -elsif panel.author
+        =render 'author', author: panel.author
+      -else
         %span.none No results found. Please select from the list after typing characters in the name.
 

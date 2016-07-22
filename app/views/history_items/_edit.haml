@@ -1,14 +1,14 @@
 .edit.ui-widget-content
-  - url = "/taxa/#{item.taxon.id}/taxon_history_items/#{item.id}"
-  - method = item.persisted? ? 'put' : 'post'
+  -url = "/taxa/#{item.taxon.id}/taxon_history_items/#{item.id}"
+  -method = item.persisted? ? 'put' : 'post'
   .nested_form{'data-action' => url, 'data-method' => method}
-    = render 'shared/errors_for', resource: item
+    =render 'shared/errors_for', resource: item
 
     .taxt_editor
-      = render 'taxt_editors/show', name: 'taxt', value: Taxt.to_editable(item.taxt)
+      =render 'taxt_editors/show', name: 'taxt', value: Taxt.to_editable(item.taxt)
 
     .buttons
       %button.submit.btn-save Save
       %button.cancel.btn-cancel Cancel
-      - if item.persisted?
+      -if item.persisted?
         %button.delete.btn-delete Delete

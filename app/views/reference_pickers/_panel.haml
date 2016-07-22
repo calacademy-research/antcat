@@ -1,4 +1,4 @@
-- if reference
+-if reference
   -taxt = Taxt.to_editable_reference reference
   -reference_id = reference.id
   -css_id = "reference_#{reference_id}"
@@ -9,4 +9,4 @@
   %table.reference_table
     %tr
       %td.reference_item
-        = render 'reference_popups/display', reference: reference if !reference || !reference.new_record? && reference.errors.empty?
+        =render 'reference_popups/display', reference: reference if !reference || !reference.new_record? && reference.errors.empty?

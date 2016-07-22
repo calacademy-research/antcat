@@ -4,7 +4,7 @@
       -references = author_name.references
       .name
         =author_name.name
-        %span.count= count_and_noun references, 'reference'
+        %span.count=count_and_noun references, 'reference'
       -if references.present?
         .references
           -references.each do |reference|

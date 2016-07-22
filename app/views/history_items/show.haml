@@ -14,7 +14,7 @@
     -if version
       %h5 Selected old version (#{@item.versions[version-1].created_at})
       .callout
-        = Taxt.to_string @item.versions[version].reify.taxt
+        =Taxt.to_string @item.versions[version].reify.taxt
     -else
       %h5 Current version
       .callout

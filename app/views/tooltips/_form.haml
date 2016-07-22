@@ -10,8 +10,8 @@
       $("#advanced_options").slideToggle("slow")
 
 =form_for @tooltip do |f|
-  = hidden_field_tag 'referral', @referral
-  = render 'shared/errors_for', resource: @tooltip
+  =hidden_field_tag 'referral', @referral
+  =render 'shared/errors_for', resource: @tooltip
   .row
     .medium-6.columns
       =f.label :key do

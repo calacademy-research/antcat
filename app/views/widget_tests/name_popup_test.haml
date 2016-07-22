@@ -1,10 +1,10 @@
-- @title = 'Name Popup Test'
+-@title = 'Name Popup Test'
 
-- content_for :head do
-  = javascript_include_tag  'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
-  = javascript_include_tag  'widgets/name_popup'
-  = javascript_include_tag  'widget_tests/name_popup_test'
+-content_for :head do
+  =javascript_include_tag 'widgets/panel', 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
+  =javascript_include_tag 'widgets/name_popup'
+  =javascript_include_tag 'widget_tests/name_popup_test'
 
 #popup
-  = render 'name_popups/show'
+  =render 'name_popups/show'
 #results

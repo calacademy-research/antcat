@@ -9,7 +9,7 @@
     %th Email
   -@users.each do |user|
     %tr
-      %td= user.id
-      %td= user.can_edit? ? 'Yes' : ''
-      %td= user.decorate.name_linking_to_email
-      %td= user.email
+      %td=user.id
+      %td=user.can_edit? ? 'Yes' : ''
+      %td=user.decorate.name_linking_to_email
+      %td=user.email
