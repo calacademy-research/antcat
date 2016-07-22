@@ -16,7 +16,7 @@ describe ReferenceMatcher do
   it "should match an obvious match" do
     expect(@target).to receive(:<=>).and_return 0.10
     results = @matcher.match @target
-    expect(results).to eq([{similarity: 0.10, target: @target, match: @match}])
+    expect(results).to eq [{similarity: 0.10, target: @target, match: @match}]
   end
 
   it "should handle an author last name with an apostrophe in it (regression)" do
@@ -25,7 +25,7 @@ describe ReferenceMatcher do
     expect(@target).to receive(:<=>).and_return 0.10
 
     results = @matcher.match @target
-    expect(results).to eq([{similarity: 0.10, target: @target, match: @match}])
+    expect(results).to eq [{similarity: 0.10, target: @target, match: @match}]
   end
 
 end

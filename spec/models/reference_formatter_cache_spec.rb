@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ReferenceFormatterCache do
   it "is a singleton" do
     expect { ReferenceFormatterCache.new }.to raise_error
-    expect(ReferenceFormatterCache.instance).to eq(ReferenceFormatterCache.instance)
+    expect(ReferenceFormatterCache.instance).to eq ReferenceFormatterCache.instance
   end
   describe "Invalidating" do
     it "should do nothing if there's nothing in the cache" do
@@ -36,18 +36,18 @@ describe ReferenceFormatterCache do
         formatted_cache_value = decorated.format!
         inline_citation_cache_value = decorated.format_inline_citation!
 
-        expect(reference.formatted_cache).to eq(formatted_cache_value)
+        expect(reference.formatted_cache).to eq formatted_cache_value
         expect(reference.inline_citation_cache).to be_nil
         ReferenceFormatterCache.instance.populate reference
-        expect(reference.formatted_cache).to eq(formatted_cache_value)
-        expect(reference.inline_citation_cache).to eq(inline_citation_cache_value)
+        expect(reference.formatted_cache).to eq formatted_cache_value
+        expect(reference.inline_citation_cache).to eq inline_citation_cache_value
       end
     end
     describe "Setting/getting" do
       it "should get and set the right values" do
         reference = create :article_reference
         ReferenceFormatterCache.instance.set reference, 'Cache', :formatted_cache
-        expect(ReferenceFormatterCache.instance.get(reference, :formatted_cache)).to eq('Cache')
+        expect(ReferenceFormatterCache.instance.get(reference, :formatted_cache)).to eq 'Cache'
       end
     end
   end

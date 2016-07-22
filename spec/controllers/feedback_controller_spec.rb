@@ -42,7 +42,7 @@ describe FeedbackController do
       context "not logged in" do
         it "doesn't send emails" do
           expect { post :create, format: "json" }
-           .to raise_error(ActionController::ParameterMissing)
+           .to raise_error ActionController::ParameterMissing
 
           expect(email_count).to eq before_email_count
         end

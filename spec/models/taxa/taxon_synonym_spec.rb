@@ -26,10 +26,10 @@ describe Taxon do
     senior = create_genus 'Atta'
     junior = create_genus 'Eciton'
     Synonym.create! junior_synonym: junior, senior_synonym: senior
-    expect(senior.junior_synonyms.count).to eq(1)
-    expect(senior.senior_synonyms.count).to eq(0)
-    expect(junior.senior_synonyms.count).to eq(1)
-    expect(junior.junior_synonyms.count).to eq(0)
+    expect(senior.junior_synonyms.count).to eq 1
+    expect(senior.senior_synonyms.count).to eq 0
+    expect(junior.senior_synonyms.count).to eq 1
+    expect(junior.junior_synonyms.count).to eq 0
   end
 
   describe "Reversing synonymy" do
@@ -45,22 +45,23 @@ describe Taxon do
       attaboi.extend TaxonSynonymsMonkeyPatch
       attaboi.become_junior_synonym_of atta
       atta.reload; attaboi.reload
-      expect(attaboi.status).to eq('synonym')
+      expect(attaboi.status).to eq 'synonym'
       expect(attaboi).to be_synonym_of atta
-      expect(atta.status).to eq('valid')
+      expect(atta.status).to eq 'valid'
       expect(atta).not_to be_synonym_of attaboi
     end
 
     it "should not create duplicate synonym in case of synonym cycle" do
       atta = create_genus 'Atta', status: 'synonym'
       attaboi = create_genus 'Attaboi', status: 'synonym'
+
       Synonym.create! junior_synonym: atta, senior_synonym: attaboi
       Synonym.create! junior_synonym: attaboi, senior_synonym: atta
-      expect(Synonym.count).to eq(2)
+      expect(Synonym.count).to eq 2
 
       atta.extend TaxonSynonymsMonkeyPatch
       atta.become_junior_synonym_of attaboi
-      expect(Synonym.count).to eq(1)
+      expect(Synonym.count).to eq 1
       expect(atta).to be_synonym_of attaboi
       expect(attaboi).not_to be_synonym_of atta
     end
@@ -93,14 +94,14 @@ describe Taxon do
       atta.extend TaxonSynonymsMonkeyPatch
       atta.become_junior_synonym_of eciton
       expect(atta).to be_synonym
-      expect(atta.senior_synonyms.size).to eq(1)
-      expect(eciton.junior_synonyms.size).to eq(1)
+      expect(atta.senior_synonyms.size).to eq 1
+      expect(eciton.junior_synonyms.size).to eq 1
 
       atta.update_attribute :status, 'valid'
 
       expect(atta).not_to be_synonym
-      expect(atta.senior_synonyms.size).to eq(0)
-      expect(eciton.junior_synonyms.size).to eq(0)
+      expect(atta.senior_synonyms.size).to eq 0
+      expect(eciton.junior_synonyms.size).to eq 0
     end
   end
 
@@ -111,10 +112,10 @@ describe Taxon do
       eciton.extend TaxonSynonymsMonkeyPatch
       eciton.become_junior_synonym_of atta
       results = atta.junior_synonyms_with_names
-      expect(results.size).to eq(1)
+      expect(results.size).to eq 1
       record = results.first
-      expect(record['id']).to eq(Synonym.find_by_junior_synonym_id(eciton.id).id)
-      expect(record['name']).to eq(eciton.name.to_html)
+      expect(record['id']).to eq Synonym.find_by_junior_synonym_id(eciton.id).id
+      expect(record['name']).to eq eciton.name.to_html
     end
   end
 
@@ -125,10 +126,10 @@ describe Taxon do
       eciton.extend TaxonSynonymsMonkeyPatch
       eciton.become_junior_synonym_of atta
       results = eciton.senior_synonyms_with_names
-      expect(results.size).to eq(1)
+      expect(results.size).to eq 1
       record = results.first
-      expect(record['id']).to eq(Synonym.find_by_senior_synonym_id(atta.id).id)
-      expect(record['name']).to eq(atta.name.to_html)
+      expect(record['id']).to eq Synonym.find_by_senior_synonym_id(atta.id).id
+      expect(record['name']).to eq atta.name.to_html
     end
   end
 end

@@ -5,7 +5,7 @@ describe "MissingReferenceDecorator formerly MissingReferenceKey" do
   describe "Link" do
     it "should simply output its citation" do
       reference = create :missing_reference, citation: "citation"
-      expect(reference.decorate.to_link).to eq('citation')
+      expect(reference.decorate.to_link).to eq 'citation'
     end
   end
 

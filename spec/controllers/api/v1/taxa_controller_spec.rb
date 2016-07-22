@@ -9,25 +9,26 @@ describe Api::V1::TaxaController do
       # nylanderia = create_genus 'Nylanderia'
       species = create_species 'Atta minor maxus'
       # protonym_name = create_subspecies_name 'Eciton minor maxus'
-      get(:show, {'id' => species.id}, nil)
-      expect(response.status).to eq(200)
-      parsed_species = JSON.parse(response.body)
 
-      expect(response.body.to_s).to include("Atta")
-      expect(parsed_species['species']['name_cache']).to eq("Atta minor maxus")
+      get :show, {'id' => species.id}, nil
+      expect(response.status).to eq 200
+      parsed_species = JSON.parse response.body
+
+      expect(response.body.to_s).to include "Atta"
+      expect(parsed_species['species']['name_cache']).to eq "Atta minor maxus"
     end
 
     it "should search for a taxa" do
       species = create_species 'Atta minor maxus'
-      get(:search, {'string' => 'maxus'}, nil)
-      expect(response.status).to eq(200)
-      expect(response.body.to_s).to include("maxus")
+      get :search, {'string' => 'maxus'}, nil
+      expect(response.status).to eq 200
+      expect(response.body.to_s).to include "maxus"
     end
 
     it "should report when there are no search matches" do
       species = create_species 'Atta minor maxus'
-      get(:search, {'string' => 'maxuus'}, nil)
-      expect(response.status).to eq(404)
+      get :search, {'string' => 'maxuus'}, nil
+      expect(response.status).to eq 404
     end
 
     it "gets all taxa greater than a given number" do
@@ -37,11 +38,12 @@ describe Api::V1::TaxaController do
       protonym_name = create_species_name 'Eciton minor'
 
       # Get index
-      get(:index, starts_at: species.id)
-      expect(response.status).to eq(200)
-      taxa = JSON.parse(response.body)
-      expect(taxa[0]['species']['id']).to eq(species.id)
-      expect(taxa.count).to eq(1)
+      get :index, starts_at: species.id
+      expect(response.status).to eq 200
+
+      taxa = JSON.parse response.body
+      expect(taxa[0]['species']['id']).to eq species.id
+      expect(taxa.count).to eq 1
     end
 
     it "gets all taxa" do
@@ -49,12 +51,12 @@ describe Api::V1::TaxaController do
       species = create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
-      get(:index, nil)
-      expect(response.status).to eq(200)
-      expect(response.body.to_s).to include("Atta")
+      get :index, nil
+      expect(response.status).to eq 200
+      expect(response.body.to_s).to include "Atta"
 
-      taxa = JSON.parse(response.body)
-      expect(taxa.count).to eq(7)
+      taxa = JSON.parse response.body
+      expect(taxa.count).to eq 7
     end
 
   end

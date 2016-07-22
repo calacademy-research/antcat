@@ -6,15 +6,15 @@ describe ReferenceDocument do
     document = create :reference_document
     document.url = 'antcat.org/1.pdf'
     document.save!
-    expect(document.reload.url).to eq('http://antcat.org/1.pdf')
+    expect(document.reload.url).to eq 'http://antcat.org/1.pdf'
     document.save!
-    expect(document.reload.url).to eq('http://antcat.org/1.pdf')
+    expect(document.reload.url).to eq 'http://antcat.org/1.pdf'
   end
 
   it "should make sure it's a valid URL" do
     document = ReferenceDocument.new url: '*'
     expect(document).not_to be_valid
-    expect(document.errors.full_messages).to match_array(['Url is not in a valid format'])
+    expect(document.errors.full_messages).to match_array ['Url is not in a valid format']
   end
 
   it "should accept a URL with spaces" do
@@ -31,30 +31,32 @@ describe ReferenceDocument do
   it "should make sure it's a valid URL with a path" do
     document = ReferenceDocument.new url: 'google.com'
     expect(document).not_to be_valid
-    expect(document.errors.full_messages).to match_array(['Url is not in a valid format'])
+    expect(document.errors.full_messages)
+      .to match_array ['Url is not in a valid format']
   end
 
   it "should make sure it exists" do
-    stub_request(:any, "http://antwiki.org/1.pdf").to_return body: "Hello World!"
+    stub_request(:any, "http://antwiki.org/1.pdf")
+      .to_return body: "Hello World!"
     document = ReferenceDocument.create url: 'http://antwiki.org/1.pdf'
     expect(document).to be_valid
     stub_request(:any, "http://antwiki.org/1.pdf").to_return body: "Not Found", status: 404
     expect(document).not_to be_valid
-    expect(document.errors.full_messages).to match_array(['Url was not found'])
+    expect(document.errors.full_messages).to match_array ['Url was not found']
   end
 
   it "should create the URL for an uploaded file so that it goes to our controller" do
     document = create :reference_document
     document.file_file_name = '1.pdf'
     document.host = 'antcat.org'
-    expect(document.reload.url).to eq("http://antcat.org/documents/#{document.id}/1.pdf")
+    expect(document.reload.url).to eq "http://antcat.org/documents/#{document.id}/1.pdf"
   end
 
   describe "actual url" do
     it "simply be the url, if the document's not on Amazon" do
       document = create :reference_document
       document.update_attribute :url, 'foo'
-      expect(document.reload.actual_url).to eq('foo')
+      expect(document.reload.actual_url).to eq 'foo'
     end
     #it "should go to Amazon, if necessary" do
       #document = create :reference_document
@@ -100,13 +102,13 @@ describe ReferenceDocument do
     it "should do nothing if the file isn't hosted by us" do
       document = ReferenceDocument.new url: 'foo'
       document.host = 'localhost'
-      expect(document.url).to eq('foo')
+      expect(document.url).to eq 'foo'
     end
 
     it "should insert the host in the url if the file is hosted by us" do
       document = ReferenceDocument.create! file_file_name: 'foo'
       document.host = 'localhost'
-      expect(document.url).to eq("http://localhost/documents/#{document.id}/foo")
+      expect(document.url).to eq "http://localhost/documents/#{document.id}/foo"
     end
   end
 
@@ -114,7 +116,7 @@ describe ReferenceDocument do
     it "should record versions" do
       with_versioning do
         reference_document = create :reference_document
-        expect(reference_document.versions.last.event).to eq('create')
+        expect(reference_document.versions.last.event).to eq 'create'
       end
     end
   end

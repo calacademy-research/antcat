@@ -18,10 +18,10 @@ describe SpeciesName do
 
       species_name.change_parent genus_name
 
-      expect(species_name.name).to eq('Eciton major')
-      expect(species_name.name_html).to eq('<i>Eciton major</i>')
-      expect(species_name.epithet).to eq('major')
-      expect(species_name.epithet_html).to eq('<i>major</i>')
+      expect(species_name.name).to eq 'Eciton major'
+      expect(species_name.name_html).to eq '<i>Eciton major</i>'
+      expect(species_name.epithet).to eq 'major'
+      expect(species_name.epithet_html).to eq '<i>major</i>'
     end
 
     it "should raise an error if the new name already exists for a different taxon" do

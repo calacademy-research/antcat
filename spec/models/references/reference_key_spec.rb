@@ -10,27 +10,35 @@ describe "ReferenceDecorator formerly ReferenceKey" do
 
   describe "Representing as a string" do
     it "should be blank if a new record" do
-      expect(BookReference.new.decorate.key).to eq('')
+      expect(BookReference.new.decorate.key).to eq ''
     end
     it "Citation year with extra" do
       reference = create :article_reference, author_names: [@bolton], citation_year: '1970a ("1971")'
-      expect(reference.decorate.key).to eq('Bolton, 1970a')
+      expect(reference.decorate.key).to eq 'Bolton, 1970a'
     end
     it "No authors" do
-      reference = create :article_reference, author_names: [], citation_year: '1970a'
-      expect(reference.decorate.key).to eq('[no authors], 1970a')
+      reference = create :article_reference,
+        author_names: [],
+        citation_year: '1970a'
+      expect(reference.decorate.key).to eq '[no authors], 1970a'
     end
     it "One author" do
-      reference = create :article_reference, author_names: [@bolton], citation_year: '1970a'
-      expect(reference.decorate.key).to eq('Bolton, 1970a')
+      reference = create :article_reference,
+        author_names: [@bolton],
+        citation_year: '1970a'
+      expect(reference.decorate.key).to eq 'Bolton, 1970a'
     end
     it "Two authors" do
-      reference = create :article_reference, author_names: [@bolton, @fisher], citation_year: '1970a'
-      expect(reference.decorate.key).to eq('Bolton & Fisher, 1970a')
+      reference = create :article_reference,
+        author_names: [@bolton, @fisher],
+        citation_year: '1970a'
+      expect(reference.decorate.key).to eq 'Bolton & Fisher, 1970a'
     end
     it "Three authors" do
-      reference = create :article_reference, author_names: [@bolton, @fisher, @ward], citation_year: '1970a'
-      expect(reference.decorate.key).to eq('Bolton, Fisher & Ward, 1970a')
+      reference = create :article_reference,
+        author_names: [@bolton, @fisher, @ward],
+        citation_year: '1970a'
+      expect(reference.decorate.key).to eq 'Bolton, Fisher & Ward, 1970a'
     end
   end
 

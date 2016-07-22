@@ -10,16 +10,14 @@ describe FeedHelper do
   describe "#link_activity_user" do
     context "with a valid user" do
       it "links the user" do
-        expect(helper.link_activity_user activity)
-          .to include activity.user.name
+        expect(helper.link_activity_user activity).to include activity.user.name
       end
     end
 
     context "without a valid user" do
       it "handles nil / 'system' activities" do
         system_activity = create :activity, user: nil
-        expect(helper.link_activity_user system_activity)
-          .to include "[system]"
+        expect(helper.link_activity_user system_activity).to include "[system]"
       end
     end
   end
@@ -60,20 +58,17 @@ describe FeedHelper do
 
   describe "#activity_action_to_verb" do
     it "past participle-ifies defined actions" do
-      expect(helper.activity_action_to_verb "create")
-        .to eq "added"
+      expect(helper.activity_action_to_verb "create").to eq "added"
     end
 
     it "uglifies missing actions" do
-      expect(helper.activity_action_to_verb "bake_a_cake")
-        .to eq "BAKE_A_CAKE"
+      expect(helper.activity_action_to_verb "bake_a_cake").to eq "BAKE_A_CAKE"
     end
   end
 
   describe "#trackabe_type_to_human" do
     it "converts camelcase to spaced downcased" do
-      expect(helper.trackabe_type_to_human "BookReference")
-        .to eq "book reference"
+      expect(helper.trackabe_type_to_human "BookReference").to eq "book reference"
     end
   end
 
@@ -104,7 +99,7 @@ describe FeedHelper do
 
     context "there's no partial matching `trackable_type`" do
       it "returns the default template" do
-        activity = create :activity, trackable: (create :citation)
+        activity = create :activity, trackable: create(:citation)
         expect(helper.send :partial_for_activity, activity)
           .to eq "feed/activities/default"
       end

@@ -4,8 +4,8 @@ describe Status do
 
   describe "Status labels" do
     it "should return the singular and the plural for a status" do
-      expect(Status['synonym'].to_s).to eq('synonym')
-      expect(Status['synonym'].to_s(:plural)).to eq('synonyms')
+      expect(Status['synonym'].to_s).to eq 'synonym'
+      expect(Status['synonym'].to_s(:plural)).to eq 'synonyms'
     end
   end
 

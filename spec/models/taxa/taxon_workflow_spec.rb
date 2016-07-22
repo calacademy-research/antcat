@@ -16,6 +16,7 @@ describe Taxon do
     taxon = create_taxon_version_and_change :waiting, adder
     expect(taxon).to be_waiting
     expect(taxon.can_approve?).to be_truthy
+
     taxon.approve!
     expect(taxon).to be_approved
     expect(taxon).not_to be_waiting
@@ -81,7 +82,7 @@ describe Taxon do
         @taxon = create_taxon_version_and_change :approved, @editor, @approver
       end
       it "should have an approver and an approved_at" do
-        expect(@taxon.approver).to eq(@approver)
+        expect(@taxon.approver).to eq @approver
         expect(@taxon.approved_at).to be_within(7.hours).of(Time.now)
       end
       it "should not allow it to be reviewed" do
@@ -110,7 +111,7 @@ describe Taxon do
         taxon = create_genus
 
         change = setup_version taxon.id
-        expect(taxon.last_change).to eq(change)
+        expect(taxon.last_change).to eq change
       end
     end
     describe "Last version" do
@@ -121,7 +122,7 @@ describe Taxon do
         genus = taxon
         last_version = genus.last_version
         genus.reload
-        expect(last_version).to eq(genus.versions(true).last)
+        expect(last_version).to eq genus.versions(true).last
       end
     end
   end
@@ -141,9 +142,9 @@ describe Taxon do
   #     taxon.update_attributes! incertae_sedis_in: 'genus'
   #     taxon.last_version.update_attributes! whodunnit: editor
   #     taxon.save!
-  #     setup_version(taxon.id, adder)
+  #     setup_version taxon.id, adder
   #
-  #     expect(taxon.added_by).to eq(adder)
+  #     expect(taxon.added_by).to eq adder
   #   end
   #
   # end

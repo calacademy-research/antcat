@@ -5,7 +5,7 @@ describe Exporters::Antweb::Exporter do
 
   describe "Taxon" do
     it "should work" do
-      formatter.new.send(:export_history, create_genus)
+      formatter.new.send :export_history, create_genus
     end
   end
 
@@ -14,7 +14,8 @@ describe Exporters::Antweb::Exporter do
       bolton = create :author
       author_name = create :author_name, name: 'Bolton, B.', author: bolton
       journal = create :journal, name: 'Psyche'
-      reference = ArticleReference.new author_names: [author_name], title: 'Ants I have known', citation_year: '2010a',
+      reference = ArticleReference.new author_names: [author_name],
+        title: 'Ants I have known', citation_year: '2010a',
         journal: journal, series_volume_issue: '1', pagination: '2'
       authorship = Citation.create! reference: reference, pages: '12'
       name = create :genus_name, name: 'Atta'

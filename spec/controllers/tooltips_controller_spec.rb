@@ -22,7 +22,7 @@ describe TooltipsController do
       describe "grouping" do
         before do
           get :index
-          @grouped = assigns(:grouped_tooltips)
+          @grouped = assigns :grouped_tooltips
         end
 
         it "creates keys for each namespace" do

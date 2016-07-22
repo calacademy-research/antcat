@@ -12,9 +12,8 @@ describe Parsers::PublisherParser do
     end
 
     it "should parse it correctly" do
-      expect(@parser.parse('New York: Houghton Mifflin')).to eq(
-        publisher: {name: 'Houghton Mifflin', place: 'New York'}
-      )
+      expect(@parser.parse('New York: Houghton Mifflin'))
+        .to eq publisher: {name: 'Houghton Mifflin', place: 'New York'}
     end
 
     it "should not consider a single digit as a place" do

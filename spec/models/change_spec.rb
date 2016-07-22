@@ -18,7 +18,7 @@ describe Change do
 
     genus_version = genus.last_version
 
-    expect(change.versions.first).to eq(genus_version)
+    expect(change.versions.first).to eq genus_version
   end
 
   it "has a user (the editor)", pending: true do
@@ -27,29 +27,29 @@ describe Change do
     user = create :user
     genus = create_genus
 
-    change = setup_version(genus.id, user)
+    change = setup_version genus.id, user
 
     genus.last_version.update_attributes whodunnit: user.id
 
-    expect(change.user).to eq(user)
+    expect(change.user).to eq user
   end
 
   it "should be able to be reified after being created", pending: true do
     pending "Not implemented change::user"
 
     genus = create_genus
-    change = setup_version(genus.id)
+    change = setup_version genus.id
     taxon = change.reify
-    expect(taxon).to eq(genus)
-    expect(taxon.class).to eq(Genus)
+    expect(taxon).to eq genus
+    expect(taxon.class).to eq Genus
 
     genus.update_attributes name_cache: 'Atta'
 
-    change = setup_version(genus.id)
+    change = setup_version genus.id
 
     taxon = change.reify
-    expect(taxon).to eq(genus)
-    expect(taxon.class).to eq(Genus)
+    expect(taxon).to eq genus
+    expect(taxon.class).to eq Genus
   end
 
   it "has a taxon", pending: true do
@@ -57,7 +57,7 @@ describe Change do
 
     taxon = create_genus
     change = Change.new paper_trail_version: taxon.last_version
-    expect(change.taxon).to eq(taxon)
+    expect(change.taxon).to eq taxon
   end
 
   describe "Scopes" do

@@ -54,9 +54,9 @@ describe Taxa::SaveTaxon do
       params[:type_taxt] = ''
       taxon.save_taxon params
       taxon.reload
-      expect(taxon.name.name).to eq('Atta')
-      expect(taxon.protonym.name.name).to eq('Betta')
-      expect(taxon.type_name.name).to eq('Betta major')
+      expect(taxon.name.name).to eq 'Atta'
+      expect(taxon.protonym.name.name).to eq 'Betta'
+      expect(taxon.type_name.name).to eq 'Betta major'
     end
 
     it "sets the new taxon's state" do
@@ -76,8 +76,8 @@ describe Taxa::SaveTaxon do
       params = @species_params.deep_dup
       taxon.save_taxon params
       taxon.reload
-      expect(taxon.name.name).to eq('Atta major')
-      expect(taxon.protonym.name.name).to eq('Betta major')
+      expect(taxon.name.name).to eq 'Atta major'
+      expect(taxon.protonym.name.name).to eq 'Betta major'
     end
 
     it "saves a new subspecies" do
@@ -85,8 +85,8 @@ describe Taxa::SaveTaxon do
       params = @subspecies_params
       taxon.save_taxon params
       taxon.reload
-      expect(taxon.name.name).to eq('Atta major minor')
-      expect(taxon.protonym.name.name).to eq('Betta major minor')
+      expect(taxon.name.name).to eq 'Atta major minor'
+      expect(taxon.protonym.name.name).to eq 'Betta major minor'
     end
 
     it "sets name, status and flag fields" do
@@ -112,8 +112,8 @@ describe Taxa::SaveTaxon do
       expect(taxon).to be_hong
       expect(taxon).to be_unresolved_homonym
       expect(taxon).to be_ichnotaxon
-      expect(taxon.headline_notes_taxt).to eq("{ref #{headline_reference.id}}")
-      expect(taxon.type_taxt).to eq("{ref #{taxt_reference.id}}")
+      expect(taxon.headline_notes_taxt).to eq "{ref #{headline_reference.id}}"
+      expect(taxon.type_taxt).to eq "{ref #{taxt_reference.id}}"
     end
 
     it "sets authorship taxt" do
@@ -127,7 +127,7 @@ describe Taxa::SaveTaxon do
       taxon.save_taxon params
 
       taxon.reload
-      expect(taxon.protonym.authorship.notes_taxt).to eq("{ref #{reference.id}}")
+      expect(taxon.protonym.authorship.notes_taxt).to eq "{ref #{reference.id}}"
     end
 
     it "sets homonym replaced by" do
@@ -140,7 +140,7 @@ describe Taxa::SaveTaxon do
 
       taxon.reload
 
-      expect(taxon.homonym_replaced_by).to eq(replacement_homonym)
+      expect(taxon.homonym_replaced_by).to eq replacement_homonym
     end
 
     it "sets current valid taxon" do
@@ -151,7 +151,7 @@ describe Taxa::SaveTaxon do
 
       taxon.save_taxon params
       taxon.reload
-      expect(taxon.current_valid_taxon).to eq(current_valid_taxon)
+      expect(taxon.current_valid_taxon).to eq current_valid_taxon
     end
 
     it "allows name gender to be set when updating a taxon" do
@@ -164,15 +164,15 @@ describe Taxa::SaveTaxon do
       params[:name_attributes][:gender] = 'masculine'
       taxon.save_taxon params
       taxon.reload
-      expect(taxon.name.gender).to eq('masculine')
+      expect(taxon.name.gender).to eq 'masculine'
     end
 
     it "allows name gender to be unset when updating a taxon" do
       taxon = build_new_taxon_and_set_parent :genus, create_subfamily
       params = @genus_params.deep_dup
       taxon.save_taxon params
-      taxon.name.update_column(:gender, 'masculine')
-      expect(taxon.name.gender).to eq('masculine')
+      taxon.name.update_column :gender, 'masculine'
+      expect(taxon.name.gender).to eq 'masculine'
       params = @genus_params.deep_dup
       params[:name_attributes][:gender] = ''
       taxon.save_taxon params
@@ -186,7 +186,7 @@ describe Taxa::SaveTaxon do
           taxon = build_new_taxon_and_set_parent :species, create_genus
           taxon.save_taxon @genus_params
           change = Change.first
-          expect(change.user_changed_taxon_id).to eq(taxon.last_version.item_id)
+          expect(change.user_changed_taxon_id).to eq taxon.last_version.item_id
         end
       end
 

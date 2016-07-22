@@ -18,7 +18,7 @@ describe Parsers::CitationParser do
   it "should stop after the year" do
     string = 'Santschi, 1936 (<b>unavailable name</b>);'
     expect(@parser.parse(string)).to be_truthy
-    expect(string).to eq('(<b>unavailable name</b>);')
+    expect(string).to eq '(<b>unavailable name</b>);'
   end
 
   it "should handle multiple authors" do
@@ -48,7 +48,7 @@ describe Parsers::CitationParser do
   it "should handle a page number" do
     string = 'Wheeler, W.M. 1915h: 142; see under *<i>pumilus</i>, above.'
     expect(@parser.parse(string)).to be_truthy
-    expect(string).to eq('; see under *<i>pumilus</i>, above.')
+    expect(string).to eq '; see under *<i>pumilus</i>, above.'
   end
 
 end

@@ -59,13 +59,13 @@ describe Task do
 
     it "open to closed" do
       open = create :task
-      open.set_status(:closed, user)
+      open.set_status :closed, user
       expect(open.status).to eq "closed"
     end
 
     it "closed to open" do
       closed = create :closed_task
-      closed.set_status(:open, user)
+      closed.set_status :open, user
       expect(closed.status).to eq "open"
     end
   end

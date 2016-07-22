@@ -14,7 +14,7 @@ describe "Parsers::CommonGrammar" do
   end
 
   it "should recognize et al." do
-    @parser.parse('<i>et al.</i>', root: :et_al)
+    @parser.parse '<i>et al.</i>', root: :et_al
   end
 
 end

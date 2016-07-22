@@ -12,7 +12,7 @@ describe MissingReference do
       it "should replace references in taxt to the MissingReference to the found reference" do
         item = TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}"
         @missing_reference.replace_with @found_reference
-        expect(item.reload.taxt).to eq("{ref #{@found_reference.id}}")
+        expect(item.reload.taxt).to eq "{ref #{@found_reference.id}}"
       end
       it "should not save records that don't contain the {ref}" do
         item = TaxonHistoryItem.create! taxt: "Just some taxt"
@@ -20,12 +20,12 @@ describe MissingReference do
         updated_at = item.updated_at
         @missing_reference.replace_with @found_reference
         item.reload
-        expect(item.updated_at).to eq(updated_at)
+        expect(item.updated_at).to eq updated_at
       end
       it "should replace references in citations" do
         citation = Citation.create! reference: @missing_reference
         @missing_reference.replace_with @found_reference
-        expect(citation.reload.reference).to eq(@found_reference)
+        expect(citation.reload.reference).to eq @found_reference
       end
     end
 
@@ -39,8 +39,8 @@ describe MissingReference do
 
         MissingReference.replace_citation 'Citation', nonmissing_reference
 
-        expect(first_citation_occurrence.reload.taxt).to eq("{ref #{nonmissing_reference.id}}")
-        expect(second_citation_occurrence.reload.taxt).to eq("{ref #{nonmissing_reference.id}}")
+        expect(first_citation_occurrence.reload.taxt).to eq "{ref #{nonmissing_reference.id}}"
+        expect(second_citation_occurrence.reload.taxt).to eq "{ref #{nonmissing_reference.id}}"
       end
     end
   end

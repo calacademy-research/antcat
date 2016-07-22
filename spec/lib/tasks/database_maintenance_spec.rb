@@ -12,7 +12,7 @@
 #
 #      Protonym.destroy_orphans
 #
-#      expect(Protonym.count).to eq(original_protonym_count)
-#      expect(Protonym.all).not_to include(orphan_protonym)
+#      expect(Protonym.count).to eq original_protonym_count
+#      expect(Protonym.all).not_to include orphan_protonym
 #    end
 #  end

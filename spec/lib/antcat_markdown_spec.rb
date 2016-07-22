@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe AntcatMarkdown do
-  let(:dummy_parser) { AntcatMarkdown.new(no_even_a_stub: nil) }
+  let(:dummy_parser) { AntcatMarkdown.new no_even_a_stub: nil }
 
   describe "render" do
     it "formats some basic markdown" do
@@ -117,7 +117,7 @@ describe AntcatMarkdown do
     context "existing taxon" do
       it "links existing taxa" do
         taxon = create :species
-        returned = dummy_parser.send(:try_linking_taxon_id, taxon.id.to_s)
+        returned = dummy_parser.send :try_linking_taxon_id, taxon.id.to_s
 
         expected = %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
         expect(returned).to eq expected

@@ -8,8 +8,11 @@ describe NestedReference do
 
   describe "Validation" do
     before do
-      @reference = NestedReference.new title: 'asdf', author_names: [create(:author_name)], citation_year: '2010',
-        nesting_reference: create(:reference), pages_in: 'Pp 2 in:'
+      @reference = NestedReference.new title: 'asdf',
+        author_names: [create(:author_name)],
+        citation_year: '2010',
+        nesting_reference: create(:reference),
+        pages_in: 'Pp 2 in:'
     end
     it "should be valid with the attributes given above" do
       expect(@reference).to be_valid
@@ -36,14 +39,17 @@ describe NestedReference do
     it "can have a nesting_reference" do
       nesting_reference = create :reference
       nestee = create :nested_reference, nesting_reference: nesting_reference
-      expect(nestee.nesting_reference).to eq(nesting_reference)
+      expect(nestee.nesting_reference).to eq nesting_reference
     end
   end
 
   describe "Deletion" do
     it "should not be possible to delete a nestee" do
-      reference = NestedReference.create! title: 'asdf', author_names: [create(:author_name)], citation_year: '2010',
-        nesting_reference: create(:reference), pages_in: 'Pp 2 in:'
+      reference = NestedReference.create! title: 'asdf',
+        author_names: [create(:author_name)],
+        citation_year: '2010',
+        nesting_reference: create(:reference),
+        pages_in: 'Pp 2 in:'
       expect(reference.nesting_reference.destroy).to be_falsey
     end
   end

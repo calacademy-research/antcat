@@ -9,7 +9,7 @@ describe CatalogController do
     describe "handle non-existing family" do
       context "family exists" do
         before do
-          create(:family)
+          create :family
           get :index
         end
         it { should render_template('show') }
@@ -23,15 +23,15 @@ describe CatalogController do
 
   describe 'GET #show' do
     describe "RecordNotFound" do
-      before { create(:family) }
+      before { create :family }
       it "raises on taxon not found (=404 in prod)" do
-        expect { get :show, id: 99999 }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { get :show, id: 99999 }.to raise_error ActiveRecord::RecordNotFound
       end
     end
   end
 
   describe "valid_only toggler" do
-    let!(:taxon) { create(:family) }
+    let!(:taxon) { create :family }
     before { @request.env["HTTP_REFERER"] = "http://antcat.org" }
 
     describe "toggles the session" do

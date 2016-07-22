@@ -4,21 +4,18 @@ describe LinkHelper do
   describe "Link creation" do
     describe "link" do
       it "should make a link to a new tab" do
-        expect(helper.link('Atta', 'www.antcat.org/1', title: '1')).to eq(
-          %{<a title="1" href="www.antcat.org/1">Atta</a>}
-        )
+        expect(helper.link('Atta', 'www.antcat.org/1', title: '1'))
+          .to eq %{<a title="1" href="www.antcat.org/1">Atta</a>}
       end
       it "should escape the name" do
-        expect(helper.link('<script>', 'www.antcat.org/1', title: '1')).to eq(
-          %{<a title="1" href="www.antcat.org/1">&lt;script&gt;</a>}
-        )
+        expect(helper.link('<script>', 'www.antcat.org/1', title: '1'))
+          .to eq %{<a title="1" href="www.antcat.org/1">&lt;script&gt;</a>}
       end
     end
     describe "link_to_external_site" do
       it "should make a link with the right class" do
-        expect(helper.link_to_external_site('Atta', 'www.antcat.org/1')).to eq(
-          %{<a class="link_to_external_site" target="_blank" href="www.antcat.org/1">Atta</a>}
-        )
+        expect(helper.link_to_external_site('Atta', 'www.antcat.org/1'))
+          .to eq %{<a class="link_to_external_site" target="_blank" href="www.antcat.org/1">Atta</a>}
       end
     end
   end
@@ -105,20 +102,17 @@ describe LinkHelper do
     context "valid taxon" do
       it "links" do
         genus = create_genus "Atta"
-        expect(helper.taxon_link_or_deleted_string genus.id)
-          .to match /a href.*?Atta/
+        expect(helper.taxon_link_or_deleted_string genus.id).to match /a href.*?Atta/
       end
     end
 
     context "without a valid taxon" do
       it "return the id and more" do
-        expect(helper.taxon_link_or_deleted_string 99999)
-          .to eq "#99999 [deleted]"
+        expect(helper.taxon_link_or_deleted_string 99999).to eq "#99999 [deleted]"
       end
 
       it "allows custom deleted_label" do
-        expect(helper.taxon_link_or_deleted_string 99999, "deleted")
-          .to eq "deleted"
+        expect(helper.taxon_link_or_deleted_string 99999, "deleted").to eq "deleted"
       end
     end
   end

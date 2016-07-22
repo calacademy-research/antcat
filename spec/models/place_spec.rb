@@ -8,7 +8,7 @@ describe Place do
     it "should record versions" do
       with_versioning do
         place = create :place
-        expect(place.versions.last.event).to eq('create')
+        expect(place.versions.last.event).to eq 'create'
       end
     end
   end

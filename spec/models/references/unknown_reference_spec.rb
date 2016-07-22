@@ -22,8 +22,8 @@ describe UnknownReference do
       reference.title = "A\nB"
       reference.citation = "A\nB"
       reference.save!
-      expect(reference.title).to eq("A B")
-      expect(reference.citation).to eq("A B")
+      expect(reference.title).to eq "A B"
+      expect(reference.citation).to eq "A B"
     end
   end
 

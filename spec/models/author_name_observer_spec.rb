@@ -12,6 +12,7 @@ describe AuthorNameObserver do
     it "should invalidate the cache for all references that use the data" do
       bolton = create :author_name, name: 'Bolton'
       fisher = create :author_name, name: 'Fisher'
+
       fisher_reference = create :article_reference, author_names: [fisher]
       ReferenceFormatterCache.instance.populate fisher_reference
       expect(fisher_reference.reload.formatted_cache).not_to be_nil

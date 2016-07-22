@@ -71,7 +71,7 @@ describe Exporters::Endnote::Formatter do
       series_volume_issue: '1(2)',
       pagination: '3-4'
     reference.create_document url: 'http://antcat.org/article.pdf'
-    string = @formatter.format([reference])
+    string = @formatter.format [reference]
     expect(string).to eq(%{%0 Journal Article
 %A MacKay, W.
 %D 1941
@@ -173,7 +173,7 @@ describe Exporters::Endnote::Formatter do
 
   it "should not output nested references" do
     reference = create :nested_reference
-    expect(@formatter.format([reference])).to eq("\n")
+    expect(@formatter.format([reference])).to eq "\n"
   end
 
 end
