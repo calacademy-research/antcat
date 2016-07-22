@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     :user_can_review_changes?, :user_can_approve_changes?
 
   def user_for_paper_trail
-    current_user.try(:id)
+    current_user.try :id
   end
 
   def root_redirect_for_active_admin _exception

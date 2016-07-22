@@ -1,6 +1,6 @@
 AntCat::Application.routes.draw do
 
-  ActiveAdmin.routes(self)
+  ActiveAdmin.routes self
 
   root to: 'catalog#index'
 

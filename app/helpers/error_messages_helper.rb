@@ -19,7 +19,7 @@ module ErrorMessagesHelper
 
   module FormBuilderAdditions
     def error_messages options = {}
-      @template.error_messages_for(@object, options)
+      @template.error_messages_for @object, options
     end
   end
 end

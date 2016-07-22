@@ -53,7 +53,7 @@ class EpithetSearchSet
     epithets = []
     consonants = "(?:[#{CONSONANTS}][ei]?|qu)"
     epithets << @epithet.gsub(/(#{consonants})e(#{consonants})/) do |string|
-      if ['ter', 'del'].include?(string)
+      if ['ter', 'del'].include? string
         string
       else
         $1 + 'ae' + $2

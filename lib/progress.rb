@@ -141,13 +141,13 @@ class Progress
 
   def self.progress_message
     if @total_count
-      count = "#{processed_count}/#{@total_count}".rjust(12)
-      rate = self.rate.rjust(10)
-      time_left = self.time_left.rjust(11)
+      count = "#{processed_count}/#{@total_count}".rjust 12
+      rate = self.rate.rjust 10
+      time_left = self.time_left.rjust 11
       "#{count} #{rate} #{time_left}"
     else
-      count = "#{processed_count}".rjust(8)
-      rate = self.rate.rjust(9)
+      count = "#{processed_count}".rjust 8
+      rate = self.rate.rjust 9
       "#{count} #{rate}"
     end
   end

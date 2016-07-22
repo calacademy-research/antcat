@@ -28,6 +28,7 @@ class Reference < ActiveRecord::Base
     Progress.init show_progress
     Progress.puts "#{batch.size} replacements to make"
     return unless batch.present?
+
     Taxt.taxt_fields.each do |klass, fields|
       Progress.init show_progress, klass.send(:count)
       Progress.puts "Updating #{klass}..."

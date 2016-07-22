@@ -23,16 +23,16 @@ class Taxa::Search
     params[:biogeographic_region] = '' if params[:biogeographic_region] == 'Any'
 
     return Taxon.none unless params[:author_name].present? ||
-        params[:locality].present? ||
-        params[:verbatim_type_locality].present? ||
-        params[:type_specimen_repository].present? ||
-        params[:type_specimen_code].present? ||
-        params[:year].present? ||
-        params[:biogeographic_region].present? ||
-        params[:rank].present? && params[:rank] != 'All' ||
-        params[:name].present? ||
-        params[:genus].present? ||
-        params[:forms].present?
+      params[:locality].present? ||
+      params[:verbatim_type_locality].present? ||
+      params[:type_specimen_repository].present? ||
+      params[:type_specimen_code].present? ||
+      params[:year].present? ||
+      params[:biogeographic_region].present? ||
+      params[:rank].present? && params[:rank] != 'All' ||
+      params[:name].present? ||
+      params[:genus].present? ||
+      params[:forms].present?
 
     query = Taxon.joins(protonym: [{authorship: :reference}])
     query = query.where(type: params[:rank]) unless params[:rank] == 'All'

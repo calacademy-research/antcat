@@ -42,13 +42,12 @@ class AuthorNamesController < ApplicationController
   private
     def render_json(author_name, is_new:)
       json = {
-          isNew: is_new,
-          content: render_to_string(partial: 'author_names/panel', locals: { author_name: author_name }),
-          id: author_name.id,
-          success: author_name.errors.empty?
+        isNew: is_new,
+        content: render_to_string(partial: 'author_names/panel', locals: { author_name: author_name }),
+        id: author_name.id,
+        success: author_name.errors.empty?
       }
 
       render json: json, content_type: 'text/html'
     end
-
 end

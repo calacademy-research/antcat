@@ -38,8 +38,8 @@ module ReferenceComparable
       title = self.title.dup
       return 1.00 if normalize_title!(other_title) == normalize_title!(title)
 
-      remove_bracketed_phrases!(other_title)
-      remove_bracketed_phrases!(title)
+      remove_bracketed_phrases! other_title
+      remove_bracketed_phrases! title
       return unless other_title.present? and title.present?
       return 0.95 if other_title == title
 
@@ -53,7 +53,7 @@ module ReferenceComparable
         rhs.pagination.present? && pagination.present? && rhs.pagination == pagination
 
       return 0.90 if normalize_series_volume_issue(rhs.series_volume_issue) ==
-                   normalize_series_volume_issue(series_volume_issue)
+        normalize_series_volume_issue(series_volume_issue)
     end
 
     def match_book rhs

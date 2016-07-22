@@ -16,7 +16,7 @@ module Taxt
     attr_accessor :id
 
     def initialize message = nil, id = nil
-      super(message)
+      super message
       self.id = id
     end
   end
@@ -115,10 +115,10 @@ module Taxt
 
   def self.taxt_fields
     [
-        [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-        [Citation, [:notes_taxt]],
-        [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
-        [TaxonHistoryItem, [:taxt]]
+      [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+      [Citation, [:notes_taxt]],
+      [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
+      [TaxonHistoryItem, [:taxt]]
     ]
   end
 

@@ -77,8 +77,8 @@ module Wikipedia
       # also convert "pipes" to italics per ReferenceDecorator#format_italics.
       def convert_to_wikipedia_italics string
         string
-          .gsub(/\*(.*?)\*/, "''\1''")
-          .gsub(/\|(.*?)\|/, "''\1''")
+          .gsub(/\*(.*?)\*/, %q[''\1''])
+          .gsub(/\|(.*?)\|/, %q[''\1''])
       end
   end
 
