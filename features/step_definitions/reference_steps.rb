@@ -76,7 +76,7 @@ def create_reference type, hash
     authors = hash.delete 'authors'
     author_names = Parsers::AuthorParser.parse(authors)[:names]
     author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
-    author_names = author_names.inject([]) do |author_names, author_name|
+    author_names = author_names.reduce([]) do |author_names, author_name|
       author_name = AuthorName.find_by_name(author_name) || create(:author_name, name: author_name)
       author_names << author_name
     end
@@ -172,7 +172,7 @@ When /I fill in "([^"]*)" with a URL to a document that doesn't exist/ do |field
   step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
-very_long_author_names_string = (0...26).inject([]) { |a, n| a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A." }.join('; ')
+very_long_author_names_string = (0...26).reduce([]) { |a, n| a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A." }.join('; ')
 
 When /I fill in "reference_author_names_string" with a very long author names string/ do
   step %{I fill in "reference_author_names_string" with "#{very_long_author_names_string}"}

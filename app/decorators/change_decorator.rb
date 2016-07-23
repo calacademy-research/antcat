@@ -40,7 +40,7 @@ class ChangeDecorator < Draper::Decorator
     #   # in a change that only shows the parent being deleted.
     #   unless current_user.nil?
     #     if  (!change[:change_type] == 'delete' && taxon.can_be_edited_by?(current_user)) or current_user.can_edit
-    #       if change.versions.length > 0
+    #       if change.versions.size > 0
     #         button 'Undo', 'undo_button', 'data-undo-id' => change.id, class: 'undo_button_' + change.id.to_s
     #       end
     #     end

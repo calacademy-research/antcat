@@ -148,7 +148,7 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     def format_date input # TODO? store denormalized value in the database
-      return input if input.length < 4
+      return input if input.size < 4
 
       match = input.match /(.*?)(\d{4,8})(.*)/
       prefix = match[1]

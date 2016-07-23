@@ -7,10 +7,10 @@ class TaxonDecorator::Statistics
     options.reverse_merge! include_invalid: true, include_fossil: true
     return '' unless statistics && statistics.present?
 
-    strings = [:extant, :fossil].inject({}) do |strings, extant_or_fossil|
+    strings = [:extant, :fossil].reduce({}) do |strings, extant_or_fossil|
       extant_or_fossil_statistics = statistics[extant_or_fossil]
       if extant_or_fossil_statistics
-        string = [:subfamilies, :tribes, :genera, :species, :subspecies].inject([]) do |rank_strings, rank|
+        string = [:subfamilies, :tribes, :genera, :species, :subspecies].reduce([]) do |rank_strings, rank|
           string = rank_statistics(extant_or_fossil_statistics, rank, options[:include_invalid])
           rank_strings << string if string.present?
           rank_strings

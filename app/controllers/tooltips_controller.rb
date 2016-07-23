@@ -29,7 +29,7 @@ class TooltipsController < ApplicationController
   def create
     @tooltip = Tooltip.new(tooltip_params)
     if @tooltip.save
-      if params[:referral] && params[:referral].length > 0
+      if params[:referral] && params[:referral].size > 0
         redirect_to params[:referral] # joe dis broke
       else
         redirect_to tooltip_path(@tooltip), notice: 'Tooltip was successfully created.'
@@ -42,7 +42,7 @@ class TooltipsController < ApplicationController
   def update
     respond_to do |format|
       if @tooltip.update_attributes tooltip_params
-        if params[:referral] && params[:referral].length > 0
+        if params[:referral] && params[:referral].size > 0
           redirect_to params[:referral]
           return
         end

@@ -14,7 +14,7 @@ class TaxonDecorator::History
     return unless @taxon.history_items.present?
 
     history_content = content_tag :div, class: 'history' do
-      @taxon.history_items.inject(''.html_safe) do |content, item|
+      @taxon.history_items.reduce(''.html_safe) do |content, item|
         content << history_item(item)
       end
     end

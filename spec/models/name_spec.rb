@@ -246,7 +246,7 @@ describe Name do
       refs = name.send :references_in_taxt
       # count the total referencing items
       expect(refs.length).to eq(
-        Taxt.taxt_fields.collect { |klass, fields| fields.length }.inject(&:+)
+        Taxt.taxt_fields.map { |klass, fields| fields.length }.reduce(&:+)
       )
       # count the total referencing items of each type
       Taxt.taxt_fields.each do |klass, fields|

@@ -1,7 +1,7 @@
 module AnyBase
   def self.base_10_to_base_x number, digits
     result = ''
-    base = digits.length
+    base = digits.size
 
     begin
       digit = number % base
@@ -14,9 +14,9 @@ module AnyBase
 
   def self.base_x_to_base_10 number, digits
     result = 0
-    base = digits.length
+    base = digits.size
     multiplier = 1
-    index = number.length - 1
+    index = number.size - 1
     raise unless index >= 0
 
     begin

@@ -18,7 +18,7 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
       if word.index('.')
         puts "  Ditching: #{word}"
       else
-        if austin.length > 1
+        if austin.size > 1
           austin += " "
         end
         austin += word

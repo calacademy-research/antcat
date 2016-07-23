@@ -43,7 +43,7 @@ class Reference < ActiveRecord::Base
       .joins('JOIN authors ON authors.id = author_names.author_id')
       .where('authors.id IN (?)', authors)
       .group('references.id')
-      .having("COUNT(`references`.id) = #{authors.length}")
+      .having("COUNT(`references`.id) = #{authors.size}")
       .order(:author_names_string_cache, :citation_year)
     query.paginate page: (page || 1)
   end
