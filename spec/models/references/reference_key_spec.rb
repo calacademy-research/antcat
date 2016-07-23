@@ -14,7 +14,9 @@ describe "ReferenceDecorator formerly ReferenceKey" do
     end
 
     it "Citation year with extra" do
-      reference = create :article_reference, author_names: [@bolton], citation_year: '1970a ("1971")'
+      reference = create :article_reference,
+        author_names: [@bolton],
+        citation_year: '1970a ("1971")'
       expect(reference.decorate.key).to eq 'Bolton, 1970a'
     end
 

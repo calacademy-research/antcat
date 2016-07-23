@@ -12,15 +12,15 @@ describe Taxon do
         genus = create_genus
         species = create_species genus: genus
         expect(genus.references).to match_array [
-          {table: 'taxa', field: :genus_id, id: species.id},
+          { table: 'taxa', field: :genus_id, id: species.id }
         ]
       end
 
       it "should have a reference if it's a taxon's subfamily" do
         genus = create_genus
         expect(genus.subfamily.references).to match_array [
-          {table: 'taxa', field: :subfamily_id, id: genus.id},
-          {table: 'taxa', field: :subfamily_id, id: genus.tribe.id},
+          { table: 'taxa', field: :subfamily_id, id: genus.id },
+          { table: 'taxa', field: :subfamily_id, id: genus.tribe.id }
         ]
       end
     end
@@ -31,7 +31,7 @@ describe Taxon do
         eciton = create_genus 'Eciton'
         eciton.update_attribute :type_taxt, "{tax #{atta.id}}"
         expect(atta.references).to match_array [
-          {table: 'taxa', field: :type_taxt, id: eciton.id},
+          { table: 'taxa', field: :type_taxt, id: eciton.id }
         ]
       end
 
@@ -57,10 +57,10 @@ describe Taxon do
         eciton.extend TaxonSynonymsMonkeyPatch
         eciton.become_junior_synonym_of atta
         expect(atta.references).to match_array [
-          {table: 'synonyms', field: :senior_synonym_id, id: eciton.id},
+          { table: 'synonyms', field: :senior_synonym_id, id: eciton.id }
         ]
         expect(eciton.references).to match_array [
-          {table: 'synonyms', field: :junior_synonym_id, id: atta.id},
+          { table: 'synonyms', field: :junior_synonym_id, id: atta.id }
         ]
       end
     end
@@ -73,7 +73,7 @@ describe Taxon do
       eciton.update_attribute :type_taxt, "{tax #{atta.id}}"
       eciton.update_attribute :homonym_replaced_by, atta
       expect(atta.nontaxt_references).to match_array [
-        {table: 'taxa', field: :homonym_replaced_by_id, id: eciton.id},
+        { table: 'taxa', field: :homonym_replaced_by_id, id: eciton.id }
       ]
     end
   end

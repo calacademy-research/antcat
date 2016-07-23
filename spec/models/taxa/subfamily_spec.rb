@@ -89,22 +89,12 @@ describe Subfamily do
       create :species, genus: genus
       create :subspecies, genus: genus, species: create(:species, genus: genus)
 
-      expect(subfamily.statistics)
-        .to eq extant: {genera: {'valid' => 1}, species: {'valid' => 2}, subspecies: {'valid' => 1}}
-    end
-
-    it "differentiates between extinct genera, species and subspecies" do
-      subfamily = create :subfamily
-      genus = create :genus, subfamily: subfamily
-      create :genus, subfamily: subfamily, fossil: true
-      create :species, genus: genus
-      create :species, genus: genus, fossil: true
-      create :subspecies, genus: genus, species: create(:species, genus: genus)
-      create :subspecies, genus: genus, species: create(:species, genus: genus), fossil: true
-
       expect(subfamily.statistics).to eq(
-        extant: {genera: {'valid' => 1}, species: {'valid' => 3}, subspecies: {'valid' => 1}},
-        fossil: {genera: {'valid' => 1}, species: {'valid' => 1}, subspecies: {'valid' => 1}},
+        extant: {
+          genera: { 'valid' => 1 },
+          species: { 'valid' => 2 },
+          subspecies: { 'valid' => 1 }
+        }
       )
     end
 
@@ -118,10 +108,20 @@ describe Subfamily do
       create :subspecies, genus: genus, species: create(:species, genus: genus), fossil: true
 
       expect(subfamily.statistics).to eq(
-        extant: {genera: {'valid' => 1}, species: {'valid' => 3}, subspecies: {'valid' => 1}},
-        fossil: {genera: {'valid' => 1}, species: {'valid' => 1}, subspecies: {'valid' => 1}},
+        extant: {
+          genera: { 'valid' => 1 },
+          species: { 'valid' => 3 },
+          subspecies: { 'valid' => 1 }
+        },
+        fossil: {
+          genera: { 'valid' => 1 },
+          species: { 'valid' => 1 },
+          subspecies: { 'valid' => 1 }
+        }
       )
     end
+
+    # removed duplicate
 
     it "can count tribes" do
       subfamily = create :subfamily

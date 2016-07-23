@@ -43,7 +43,8 @@ describe Reference do
       expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }
         .to raise_error ActiveRecord::RecordInvalid
 
-      error_message = "couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
+      error_message = "couldn't be parsed. Please post a message on " \
+        "http://groups.google.com/group/antcat/, and we'll fix it!"
       expect(reference.errors.messages).to eq author_names_string: [error_message]
       expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
     end
@@ -60,19 +61,29 @@ describe Reference do
   describe "#author_names_string" do
     describe "formatting" do
       it "consists of one author_name if that's all there is" do
-        reference = create(:reference, author_names: [create(:author_name, name: 'Fisher, B.L.')])
+        reference = create :reference,
+          author_names: [create(:author_name, name: 'Fisher, B.L.')]
         expect(reference.author_names_string).to eq 'Fisher, B.L.'
       end
 
       it "separates multiple author_names with semicolons" do
-        author_names = [create(:author_name, name: 'Fisher, B.L.'), create(:author_name, name: 'Ward, P.S.')]
+        author_names = [
+          create(:author_name, name: 'Fisher, B.L.'),
+          create(:author_name, name: 'Ward, P.S.')
+        ]
         reference = create(:reference, author_names: author_names)
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
       end
 
       it "includes the author_names' suffix" do
-        author_names = [create(:author_name, name: 'Fisher, B.L.'), create(:author_name, name: 'Ward, P.S.')]
-        reference = Reference.create! title: 'Ants', citation_year: '2010', author_names: author_names, author_names_suffix: ' (eds.)'
+        author_names = [
+          create(:author_name, name: 'Fisher, B.L.'),
+          create(:author_name, name: 'Ward, P.S.')
+        ]
+        reference = Reference.create! title: 'Ants',
+          citation_year: '2010',
+          author_names: author_names,
+          author_names_suffix: ' (eds.)'
         expect(reference.reload.author_names_string).to eq 'Fisher, B.L.; Ward, P.S. (eds.)'
       end
 
@@ -84,8 +95,11 @@ describe Reference do
     end
 
     describe "updating, when things change" do
-      let(:reference) { create(:reference, author_names: [create(:author_name, name: 'Fisher, B.L.')]) }
-      let(:author_name) { create(:author_name, name: 'Ward') }
+      let(:reference) do
+        create :reference,
+          author_names: [create(:author_name, name: 'Fisher, B.L.')]
+      end
+      let(:author_name) { create :author_name, name: 'Ward' }
 
       it "updates its author_names_string when an author_name is added" do
         reference.author_names << author_name
@@ -115,7 +129,7 @@ describe Reference do
 
     describe "maintaining its order" do
       it "maintains the order in which they were added to the reference" do
-        reference = create(:reference, author_names: [create(:author_name, name: 'Ward')])
+        reference = create :reference, author_names: [create(:author_name, name: 'Ward')]
         wilden = create :author_name, name: 'Wilden'
         fisher = create :author_name, name: 'Fisher'
         reference.author_names << wilden
@@ -155,7 +169,10 @@ describe Reference do
 
   describe "validations" do
     let!(:author_name) { create :author_name }
-    let(:reference) { Reference.new author_names: [author_name], title: 'title', citation_year: '1910' }
+    let(:reference) do
+      Reference.new author_names: [author_name],
+        title: 'title', citation_year: '1910'
+    end
 
     it "should be OK when all fields are present" do
       expect(reference).to be_valid
@@ -221,15 +238,20 @@ describe Reference do
 
   describe "long fields" do
     it "doesn't truncate long fields" do
-      Reference.create! author_names: author_names, editor_notes: 'e' * 1000, citation: 'c' * 2000,
-        public_notes: 'n' * 1500, taxonomic_notes: 't' * 1700, title: 't' * 1900, citation_year: '2010'
+      Reference.create! author_names: author_names,
+        editor_notes: 'e' * 1000,
+        citation: 'c' * 2000,
+        public_notes: 'n' * 1500,
+        taxonomic_notes: 't' * 1700,
+        title: 't' * 1900,
+        citation_year: '2010'
       reference = Reference.first
 
-      expect(reference.citation.length).to eq 2000
-      expect(reference.editor_notes.length).to eq 1000
-      expect(reference.public_notes.length).to eq 1500
-      expect(reference.taxonomic_notes.length).to eq 1700
-      expect(reference.title.length).to eq 1900
+      expect(reference.citation.size).to eq 2000
+      expect(reference.editor_notes.size).to eq 1000
+      expect(reference.public_notes.size).to eq 1500
+      expect(reference.taxonomic_notes.size).to eq 1700
+      expect(reference.title.size).to eq 1900
     end
   end
 
@@ -266,8 +288,14 @@ describe Reference do
 
   describe 'implementing ReferenceComparable' do
     it 'maps all fields correctly' do
-      reference = ArticleReference.create! author_names: [create(:author_name, name: 'Fisher, B. L.')], citation_year: '1981',
-        title: 'Dolichoderinae', journal: create(:journal), series_volume_issue: '1(2)', pagination: '22-54'
+      author_name = create :author_name, name: 'Fisher, B. L.'
+      reference = ArticleReference.create! author_names: [author_name],
+        citation_year: '1981',
+        title: 'Dolichoderinae',
+        journal: create(:journal),
+        series_volume_issue: '1(2)',
+        pagination: '22-54'
+
       expect(reference.author).to eq 'Fisher'
       expect(reference.year).to eq 1981
       expect(reference.title).to eq 'Dolichoderinae'
@@ -292,10 +320,18 @@ describe Reference do
     it "checks possible duplication and add to errors, if any found" do
       journal = create :journal
       author = create :author_name
-      original = ArticleReference.create! author_names: [author], citation_year: '1981', title: 'Dolichoderinae',
-        journal: journal, series_volume_issue: '1(2)', pagination: '22-54'
-      duplicate = ArticleReference.new author_names: [author], citation_year: '1981', title: 'Dolichoderinae',
-        journal: journal, series_volume_issue: '1(2)', pagination: '22-54'
+      original = ArticleReference.create! author_names: [author],
+        citation_year: '1981',
+        title: 'Dolichoderinae',
+        journal: journal,
+        series_volume_issue: '1(2)',
+        pagination: '22-54'
+      duplicate = ArticleReference.new author_names: [author],
+        citation_year: '1981',
+        title: 'Dolichoderinae',
+        journal: journal,
+        series_volume_issue: '1(2)',
+        pagination: '22-54'
       expect(duplicate.errors).to be_empty
       expect(duplicate.check_for_duplicate).to be_truthy
       expect(duplicate.errors).not_to be_empty

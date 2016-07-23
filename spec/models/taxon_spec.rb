@@ -158,13 +158,15 @@ describe Taxon do
     end
 
     # Changed this because synonyms, homonyms will use the same protonym
-    it "doesn't destroy the protonym when the taxon it's attached to is destroyed, even if another taxon is using it" do
-      protonym = create :protonym
-      atta = create_genus protonym: protonym
-      eciton = create_genus protonym: protonym
-      protonym_count = Protonym.count
-      atta.destroy
-      expect(Protonym.count).to eq protonym_count
+    context "when the taxon it's attached to is destroyed, even if another taxon is using it" do
+      it "doesn't destroy the protonym" do
+        protonym = create :protonym
+        atta = create_genus protonym: protonym
+        eciton = create_genus protonym: protonym
+        protonym_count = Protonym.count
+        atta.destroy
+        expect(Protonym.count).to eq protonym_count
+      end
     end
   end
 
@@ -353,17 +355,33 @@ describe Taxon do
         subfamily: subfamily,
         fossil: true, incertae_sedis_in: 'subfamily'
 
-      expect(subfamily.child_list_query(:genera).map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Atta', 'Eciton']
-      expect(subfamily.child_list_query(:genera, fossil: true).map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
-      expect(subfamily.child_list_query(:genera, incertae_sedis_in: 'subfamily').map(&:name).map(&:to_s).sort).to eq ['Aneuretus']
+      results = subfamily.child_list_query :genera
+      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Atta', 'Eciton']
+
+      results = subfamily.child_list_query :genera, fossil: true
+      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
+
+      results = subfamily.child_list_query :genera, incertae_sedis_in: 'subfamily'
+      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus']
     end
 
     it "doesn't include invalid taxa" do
-      create :genus, name: create(:name, name: 'Atta'), subfamily: subfamily, status: 'synonym'
-      create :genus, name: create(:name, name: 'Eciton'), subfamily: subfamily, fossil: true
-      create :genus, name: create(:name, name: 'Aneuretus'), subfamily: subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      create :genus,
+        name: create(:name, name: 'Atta'),
+        subfamily: subfamily,
+        status: 'synonym'
+      create :genus,
+        name: create(:name, name: 'Eciton'),
+        subfamily: subfamily,
+        fossil: true
+      create :genus,
+        name: create(:name, name: 'Aneuretus'),
+        subfamily: subfamily,
+        fossil: true,
+        incertae_sedis_in: 'subfamily'
 
-      expect(subfamily.child_list_query(:genera).map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
+      results = subfamily.child_list_query :genera
+      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
     end
   end
 
@@ -417,42 +435,41 @@ describe Taxon do
   end
 
   describe "#update_parent" do
-    before do
-      @atta = create_genus 'Atta'
-      @eciton = create_genus 'Eciton'
-      @old_parent = create_species 'Atta major', genus: @atta
-      @new_parent = create_species 'Eciton nigrus', genus: @eciton
+    let!(:atta) { create_genus 'Atta' }
+    let!(:eciton) { create_genus 'Eciton' }
+    let!(:old_parent) { create_species 'Atta major', genus: atta }
+    let!(:new_parent) { create_species 'Eciton nigrus', genus: eciton }
 
-      subspecies_name = create_subspecies_name 'Atta major medius minor'
-     # subspecies_name.update_attribute :protonym_html, '<i>Atta major medius minor</i>'
-      @subspecies = create_subspecies name: subspecies_name, species: @old_parent
+    let!(:subspecies) do
+      create_subspecies name: create_subspecies_name('Atta major medius minor'),
+        species: old_parent
     end
 
     it "does nothing if the parent doesn't actually change" do
-      @subspecies.update_parent @old_parent
-      expect(@subspecies.species).to eq @old_parent
-      expect(@subspecies.name.name).to eq 'Atta major medius minor'
+      subspecies.update_parent old_parent
+      expect(subspecies.species).to eq old_parent
+      expect(subspecies.name.name).to eq 'Atta major medius minor'
     end
 
     it "changes the species of a subspecies" do
-      @subspecies.update_parent @new_parent
-      expect(@subspecies.species).to eq @new_parent
+      subspecies.update_parent new_parent
+      expect(subspecies.species).to eq new_parent
     end
 
     it "changes the genus of a subspecies" do
-      @subspecies.update_parent @new_parent
-      expect(@subspecies.species).to eq @new_parent
-      expect(@subspecies.genus).to eq @new_parent.genus
+      subspecies.update_parent new_parent
+      expect(subspecies.species).to eq new_parent
+      expect(subspecies.genus).to eq new_parent.genus
     end
 
     it "changes the subfamily of a subspecies" do
-      @subspecies.update_parent @new_parent
-      expect(@subspecies.subfamily).to eq @new_parent.subfamily
+      subspecies.update_parent new_parent
+      expect(subspecies.subfamily).to eq new_parent.subfamily
     end
 
     it "changes the name, etc., of a subspecies" do
-      @subspecies.update_parent @new_parent
-      name = @subspecies.name
+      subspecies.update_parent new_parent
+      name = subspecies.name
       expect(name.name).to eq 'Eciton nigrus medius minor'
       expect(name.name_html).to eq '<i>Eciton nigrus medius minor</i>'
       expect(name.epithet).to eq 'minor'
@@ -461,13 +478,13 @@ describe Taxon do
     end
 
     it "changes the cached name, etc., of a subspecies" do
-      @subspecies.update_parent @new_parent
-      expect(@subspecies.name_cache).to eq 'Eciton nigrus medius minor'
-      expect(@subspecies.name_html_cache).to eq '<i>Eciton nigrus medius minor</i>'
+      subspecies.update_parent new_parent
+      expect(subspecies.name_cache).to eq 'Eciton nigrus medius minor'
+      expect(subspecies.name_html_cache).to eq '<i>Eciton nigrus medius minor</i>'
     end
   end
 
-  describe "Scopes" do
+  describe "scopes" do
     describe "scope.valid" do
       it "only includes valid taxa" do
         subfamily = create :subfamily
@@ -533,7 +550,8 @@ describe Taxon do
       taxon = FactoryGirl.build :species, type_specimen_url: '*'
       create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_valid
-      expect(taxon.errors.full_messages).to match_array ['Type specimen url is not in a valid format']
+      expect(taxon.errors.full_messages)
+        .to match_array ['Type specimen url is not in a valid format']
     end
 
     it "should make sure it exists" do

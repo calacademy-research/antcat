@@ -329,24 +329,28 @@ describe Reference do
   describe "Do search" do
     describe "Searching for text and/or years" do
       it "extracts the starting and ending years" do
-        expect(Reference).to receive(:fulltext_search).with hash_including(keywords: '', start_year: "1992", end_year: "1993")
+        expect(Reference).to receive(:fulltext_search)
+          .with hash_including(keywords: '', start_year: "1992", end_year: "1993")
         Reference.do_search q: 'year:1992-1993'
       end
 
       it "extracts the starting year" do
-        expect(Reference).to receive(:fulltext_search).with hash_including(keywords: '', year: "1992")
+        expect(Reference).to receive(:fulltext_search)
+          .with hash_including(keywords: '', year: "1992")
         Reference.do_search q: 'year:1992'
       end
 
       it "converts the query string", pending: true do
         pending "downcasing/transliteration removed valid search results"
         # TODO config solr
-        expect(Reference).to receive(:fulltext_search).with hash_including(keywords: 'andre')
+        expect(Reference).to receive(:fulltext_search)
+          .with hash_including(keywords: 'andre')
         Reference.do_search q: 'André'
       end
 
       it "can distinguish between years and citation years" do
-        expect(Reference).to receive(:fulltext_search).with hash_including(keywords: '1970a', year: "1970")
+        expect(Reference).to receive(:fulltext_search)
+          .with hash_including(keywords: '1970a', year: "1970")
         Reference.do_search q: '1970a year:1970'
       end
     end
@@ -365,9 +369,12 @@ describe Reference do
     end
 
     describe "Filtering unknown reference types" do
-      it "returns only unknown reference types if a type:unknown is passed as the search term" do
-        expect(Reference).to receive(:fulltext_search).with hash_including(keywords: 'Monroe', reference_type: :unknown)
-        Reference.do_search q: 'Monroe type:unknown'
+      context "when type:unknown is passed as the search term" do
+        it "returns only references of type unknown" do
+          expect(Reference).to receive(:fulltext_search)
+            .with hash_including(keywords: 'Monroe', reference_type: :unknown)
+          Reference.do_search q: 'Monroe type:unknown'
+        end
       end
     end
   end

@@ -38,8 +38,8 @@ describe AuthorName do
 
   describe "#import" do
     it "creates and returns the authors" do
-      results = AuthorName.import(['Fisher, B.L.', 'Wheeler, W.M.']).map(&:name)
-      expect(results).to match_array ['Fisher, B.L.', 'Wheeler, W.M.']
+      results = AuthorName.import ['Fisher, B.L.', 'Wheeler, W.M.']
+      expect(results.map(&:name)).to match_array ['Fisher, B.L.', 'Wheeler, W.M.']
     end
 
     it "reuses existing authors" do

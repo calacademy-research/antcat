@@ -17,7 +17,10 @@ describe AnyBase do
   end
 
   it "should base_10_to_base_x to and from the base we want to use" do
-    expect(AnyBase.base_10_to_base_x(126798, %{0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz$-_.+!*'(),)-=~`!})).to eq 'KP3'
-    expect(AnyBase.base_x_to_base_10('KP3', %{0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz$-_.+!*'(),)-=~`!})).to eq 126798
+    digits = %{0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz$-_.+!*'(),)-=~`!}
+    expect(AnyBase.base_10_to_base_x(126798, digits)).to eq 'KP3'
+
+    digits = %{0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz$-_.+!*'(),)-=~`!}
+    expect(AnyBase.base_x_to_base_10('KP3', digits)).to eq 126798
   end
 end

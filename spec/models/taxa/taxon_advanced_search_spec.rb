@@ -2,42 +2,38 @@ require 'spec_helper'
 
 describe Taxon do
   describe "#advanced_search" do
-    describe "When no meaningful search parameters are given" do
+    context "when no meaningful search parameters are given" do
       it "returns an empty array" do
         expect(Taxa::Search.advanced_search(year: '')).to eq []
       end
     end
 
     describe "Rank first described in given year" do
-      it "returns the one match" do
-        reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
-        reference1988 = reference_factory author_name: 'Fisher', citation_year: '1988'
-        atta = create_genus
-        atta.protonym.authorship.update_attributes! reference: reference1977
-        betta = create_genus
-        betta.protonym.authorship.update_attributes! reference: reference1977
-        gamma = create_genus
-        gamma.protonym.authorship.update_attributes! reference: reference1988
+      describe "shared setup..." do
+        before do
+          @reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
+          reference1988 = reference_factory author_name: 'Fisher', citation_year: '1988'
+          @atta = create_genus
+          @atta.protonym.authorship.update_attributes! reference: @reference1977
+          @betta = create_genus
+          @betta.protonym.authorship.update_attributes! reference: @reference1977
+          gamma = create_genus
+          gamma.protonym.authorship.update_attributes! reference: reference1988
+        end
 
-        results = Taxa::Search.advanced_search rank: 'Genus', year: 1977, valid_only: true
-        expect(results.map(&:id)).to match_array [atta.id, betta.id]
-      end
+        it "returns the one match" do
+          results = Taxa::Search.advanced_search rank: 'Genus', year: 1977, valid_only: true
+          expect(results.map(&:id)).to match_array [@atta.id, @betta.id]
+        end
 
-      it "honors the validity flag" do
-        reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
-        reference1988 = reference_factory author_name: 'Fisher', citation_year: '1988'
-        atta = create_genus
-        atta.protonym.authorship.update_attributes! reference: reference1977
-        betta = create_genus
-        betta.protonym.authorship.update_attributes! reference: reference1977
-        gamma = create_genus
-        gamma.protonym.authorship.update_attributes! reference: reference1988
-        delta = create_genus
-        delta.protonym.authorship.update_attributes! reference: reference1977
-        delta.update_attributes! status: 'synonym'
+        it "honors the validity flag" do
+          delta = create_genus
+          delta.protonym.authorship.update_attributes! reference: @reference1977
+          delta.update_attributes! status: 'synonym'
 
-        results = Taxa::Search.advanced_search rank: 'Genus', year: 1977, valid_only: true
-        expect(results.map(&:id)).to match_array [atta.id, betta.id]
+          results = Taxa::Search.advanced_search rank: 'Genus', year: 1977, valid_only: true
+          expect(results.map(&:id)).to match_array [@atta.id, @betta.id]
+        end
       end
 
       it "returns all regardless of validity if that flag is false" do
@@ -139,59 +135,48 @@ describe Taxon do
         expect(bolton_results.map(&:id)).to be_empty
       end
 
-      it "finds the taxa for the author's references that are part of citations in the protonym, even under different names" do
-        barry_bolton = create :author
-        barry = create :author_name, name: 'Barry', author: barry_bolton
-        bolton = create :author_name, name: 'Bolton', author: barry_bolton
+      describe "shared setup..." do
+        before do
+          barry_bolton = create :author
+          barry = create :author_name, name: 'Barry', author: barry_bolton
+          bolton = create :author_name, name: 'Bolton', author: barry_bolton
 
-        barry_reference = create :article_reference, author_names: [barry], citation_year: '1977'
-        barry_atta = create_genus 'Barry_Atta'
-        barry_atta.protonym.authorship.update_attributes! reference: barry_reference
+          barry_reference = create :article_reference, author_names: [barry], citation_year: '1977'
+          @barry_atta = create_genus 'Barry_Atta'
+          @barry_atta.protonym.authorship.update_attributes! reference: barry_reference
 
-        bolton_reference = create :article_reference, author_names: [bolton], citation_year: '1977'
-        bolton_atta = create_genus 'Bolton_Atta'
-        bolton_atta.protonym.authorship.update_attributes! reference: bolton_reference
+          @bolton_reference = create :article_reference, author_names: [bolton], citation_year: '1977'
+          @bolton_atta = create_genus 'Bolton_Atta'
+          @bolton_atta.protonym.authorship.update_attributes! reference: @bolton_reference
+        end
 
-        results = Taxa::Search.advanced_search rank: 'All', author_name: 'Bolton'
-        expect(results.map(&:name_cache)).to match_array [barry_atta.name_cache, bolton_atta.name_cache]
-      end
+        it "finds the taxa for the author's references that are part of citations in the protonym, even under different names" do
+          results = Taxa::Search.advanced_search rank: 'All', author_name: 'Bolton'
+          expect(results.map(&:name_cache)).to match_array [@barry_atta.name_cache, @bolton_atta.name_cache]
+        end
 
-      it "handles year + author name" do
-        barry_bolton = create :author
-        barry = create :author_name, name: 'Barry', author: barry_bolton
-        bolton = create :author_name, name: 'Bolton', author: barry_bolton
+        it "handles year + author name" do
+          @bolton_reference.citation_year = 1987
+          @bolton_reference.save!
 
-        barry_reference = create :article_reference, author_names: [barry], citation_year: '1977'
-        barry_atta = create_genus 'Barry_Atta'
-        barry_atta.protonym.authorship.update_attributes! reference: barry_reference
-
-        bolton_reference = create :article_reference, author_names: [bolton], citation_year: '1987'
-        bolton_atta = create_genus 'Bolton_Atta'
-        bolton_atta.protonym.authorship.update_attributes! reference: bolton_reference
-
-        results = Taxa::Search.advanced_search rank: 'All', author_name: 'Bolton', year: 1987
-        expect(results.map(&:name_cache)).to match_array [bolton_atta.name_cache]
+          results = Taxa::Search.advanced_search rank: 'All', author_name: 'Bolton', year: 1987
+          expect(results.map(&:name_cache)).to match_array [@bolton_atta.name_cache]
+        end
       end
     end
 
     describe "Searching for locality" do
-      before do
-        @indonesia = create :protonym, locality: 'Indonesia (Bhutan)'
-        @china = create :protonym, locality: 'China'
-      end
+      let!(:indonesia) { create :protonym, locality: 'Indonesia (Bhutan)' }
+      let!(:china) { create :protonym, locality: 'China' }
+      let!(:atta) { create_genus protonym: indonesia }
+      let!(:eciton) { create_genus protonym: china }
 
       it "only returns taxa with that locality" do
-        atta = create_genus protonym: @indonesia
-        eciton = create_genus protonym: @china
-
         results = Taxa::Search.advanced_search rank: 'All', locality: 'Indonesia'
         expect(results.map(&:id)).to eq [atta.id]
       end
 
       it "returns taxa with search term at the beginning" do
-        atta = create_genus protonym: @indonesia
-        eciton = create_genus protonym: @china
-
         results = Taxa::Search.advanced_search rank: 'All', locality: 'Indonesia'
         expect(results.map(&:id)).to eq [atta.id]
       end

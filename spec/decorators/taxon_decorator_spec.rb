@@ -14,9 +14,9 @@ describe TaxonDecorator do
         major = create_subspecies name: major_name, species: rufa, genus: rufa.genus
 
         expect(decorator_helper.new(major).send(:header_name)).to eq(
-          %{<a href=\"/catalog/#{formica.id}\"><i>Formica</i></a> } +
-          %{<a href=\"/catalog/#{rufa.id}\"><i>rufa</i></a> } +
-          %{<a href=\"/catalog/#{major.id}\"><i>pratensis major</i></a>}
+          %{<a href="/catalog/#{formica.id}"><i>Formica</i></a> } +
+          %{<a href="/catalog/#{rufa.id}"><i>rufa</i></a> } +
+          %{<a href="/catalog/#{major.id}"><i>pratensis major</i></a>}
         )
       end
     end
@@ -222,7 +222,7 @@ describe TaxonDecorator do
       expect(genus).to receive(:statistics).and_return extant: {species: {'valid' => 2}}
       formatter = Formatters::TaxonFormatter.new genus
       expect(formatter.statistics(include_invalid: false))
-        .to eq "<div class=\"statistics\"><p class=\"taxon_statistics\">2 species</p></div>"
+        .to eq '<div class="statistics"><p class="taxon_statistics">2 species</p></div>'
     end
 
     it "doesn't leave a comma at the end if only showing valid taxa", pending: true do
@@ -231,7 +231,7 @@ describe TaxonDecorator do
       expect(genus).to receive(:statistics).and_return extant: {species: {'valid' => 2}}
       formatter = Formatters::TaxonFormatter.new genus
       expect(formatter.statistics(include_invalid: false))
-        .to eq "<div class=\"statistics\"><p class=\"taxon_statistics\">2 species</p></div>"
+        .to eq '<div class="statistics"><p class="taxon_statistics">2 species</p></div>'
     end
   end
 

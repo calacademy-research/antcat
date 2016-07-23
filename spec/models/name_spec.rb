@@ -115,9 +115,23 @@ describe Name do
       acanthognathus.update_attributes name_html: '<i>Acanthognathus laevigatus</i>'
 
       expect(Name.picklist_matching('atta')).to eq [
-        {id: atta.id, name: 'Atta', label: '<b><i>Atta</i></b>', value: atta.name},
-        {id: acanthognathus.id, name: 'Acanthognathus laevigatus', label: '<b><i>Acanthognathus laevigatus</i></b>', value: acanthognathus.name},
-        {id: acropyga.id, name: 'Acropyga dubitata', label: '<b><i>Acropyga dubitata</i></b>', value: acropyga.name},
+        {
+          id: atta.id,
+          name: 'Atta',
+          label: '<b><i>Atta</i></b>',
+          value: atta.name
+        },
+        {
+          id: acanthognathus.id,
+          name: 'Acanthognathus laevigatus',
+          label: '<b><i>Acanthognathus laevigatus</i></b>',
+          value: acanthognathus.name},
+        {
+          id: acropyga.id,
+          name: 'Acropyga dubitata',
+          label: '<b><i>Acropyga dubitata</i></b>',
+          value: acropyga.name
+        }
       ]
     end
 

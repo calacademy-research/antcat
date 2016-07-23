@@ -89,8 +89,14 @@ describe Genus do
       create :subspecies, genus: genus, species: fossil_species, fossil: true
 
       expect(genus.statistics).to eq(
-        extant: {species: {'valid' => 1}, subspecies: {'valid' => 1}},
-        fossil: {species: {'valid' => 1}, subspecies: {'valid' => 2}},
+        extant: {
+          species: { 'valid' => 1 },
+          subspecies: {'valid' => 1 }
+        },
+        fossil: {
+          species: { 'valid' => 1 },
+          subspecies: { 'valid' => 2 }
+        }
       )
     end
 
@@ -103,8 +109,14 @@ describe Genus do
       create :subspecies, genus: genus, species: fossil_species, fossil: true
 
       expect(genus.statistics).to eq(
-        extant: {species: {'valid' => 1}, subspecies: {'valid' => 1}},
-        fossil: {species: {'valid' => 1}, subspecies: {'valid' => 2}},
+        extant: {
+          species: { 'valid' => 1 },
+          subspecies: { 'valid' => 1 }
+        },
+        fossil: {
+          species: { 'valid' => 1 },
+          subspecies: { 'valid' => 2 }
+        }
       )
     end
   end

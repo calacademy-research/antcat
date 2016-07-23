@@ -34,8 +34,12 @@ describe Species do
       create_subspecies species: species, fossil: true
 
       expect(species.statistics).to eq(
-        extant: {subspecies: {'valid' => 1}},
-        fossil: {subspecies: {'valid' => 1}},
+        extant: {
+          subspecies: { 'valid' => 1 }
+        },
+        fossil: {
+          subspecies: { 'valid' => 1 }
+        }
       )
     end
 
@@ -45,8 +49,12 @@ describe Species do
       create_subspecies species: species, fossil: true
 
       expect(species.statistics).to eq(
-        extant: {subspecies: {'valid' => 1}},
-        fossil: {subspecies: {'valid' => 1}},
+        extant: {
+          subspecies: { 'valid' => 1 }
+        },
+        fossil: {
+          subspecies: { 'valid' => 1 }
+        }
       )
     end
 
@@ -55,7 +63,11 @@ describe Species do
       create_subspecies species: species
       2.times { create_subspecies species: species, status: 'synonym' }
 
-      expect(species.statistics).to eq extant: {subspecies: {'valid' => 1, 'synonym' => 2}}
+      expect(species.statistics).to eq(
+        extant: {
+          subspecies: { 'valid' => 1, 'synonym' => 2 }
+        }
+      )
     end
   end
 

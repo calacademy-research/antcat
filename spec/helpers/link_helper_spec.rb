@@ -5,19 +5,19 @@ describe LinkHelper do
     describe "#link" do
       it "makes a link to a new tab" do
         expect(helper.link('Atta', 'www.antcat.org/1', title: '1'))
-          .to eq %{<a title="1" href="www.antcat.org/1">Atta</a>}
+          .to eq '<a title="1" href="www.antcat.org/1">Atta</a>'
       end
 
       it "escapes the name" do
         expect(helper.link('<script>', 'www.antcat.org/1', title: '1'))
-          .to eq %{<a title="1" href="www.antcat.org/1">&lt;script&gt;</a>}
+          .to eq '<a title="1" href="www.antcat.org/1">&lt;script&gt;</a>'
       end
     end
 
     describe "#link_to_external_site" do
       it "makes a link with the right class" do
         expect(helper.link_to_external_site('Atta', 'www.antcat.org/1'))
-          .to eq %{<a class="link_to_external_site" target="_blank" href="www.antcat.org/1">Atta</a>}
+          .to eq '<a class="link_to_external_site" target="_blank" href="www.antcat.org/1">Atta</a>'
       end
     end
   end
@@ -35,13 +35,13 @@ describe LinkHelper do
   describe "#link_to_antwiki" do
     it "can link subfamilies" do
       expect(helper.link_to_antwiki(create_subfamily 'Dolichoderinae')).to eq(
-        %{<a class="link_to_external_site" target="_blank" href="http://www.antwiki.org/wiki/Dolichoderinae">AntWiki</a>}
+        '<a class="link_to_external_site" target="_blank" href="http://www.antwiki.org/wiki/Dolichoderinae">AntWiki</a>'
       )
     end
 
     it "can link to species" do
       expect(helper.link_to_antwiki(create_species 'Atta major')).to eq(
-        %{<a class="link_to_external_site" target="_blank" href="http://www.antwiki.org/wiki/Atta_major">AntWiki</a>}
+        '<a class="link_to_external_site" target="_blank" href="http://www.antwiki.org/wiki/Atta_major">AntWiki</a>'
       )
     end
   end
@@ -60,7 +60,8 @@ describe LinkHelper do
         taxon.save!
 
         expect(helper.link_to_hol(taxon)).to eq(
-          %{<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://hol.osu.edu/index.html?id=1234\">HOL</a>})
+          '<a class="link_to_external_site" target="_blank" href="http://hol.osu.edu/index.html?id=1234">HOL</a>'
+        )
       end
     end
   end
@@ -69,7 +70,7 @@ describe LinkHelper do
     it "handles subfamilies" do
       subfamily = create_subfamily 'Attaichnae'
       expect(helper.link_to_antweb(subfamily))
-        .to eq "<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://www.antweb.org/description.do?rank=subfamily&subfamily=attaichnae&project=worldants\">AntWeb</a>"
+        .to eq '<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=subfamily&subfamily=attaichnae&project=worldants">AntWeb</a>'
     end
 
     it "outputs nothing for tribes" do
@@ -80,7 +81,7 @@ describe LinkHelper do
     it "handles genera" do
       genus = create_genus 'Atta'
       expect(helper.link_to_antweb(genus))
-        .to eq "<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://www.antweb.org/description.do?rank=genus&genus=atta&project=worldants\">AntWeb</a>"
+        .to eq '<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=genus&genus=atta&project=worldants">AntWeb</a>'
     end
 
     it "outputs nothing for subgenera" do
@@ -93,7 +94,7 @@ describe LinkHelper do
       genus = create_genus 'Atta'
       species = create_species 'Atta major', genus: genus
       expect(helper.link_to_antweb(species))
-        .to eq "<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants\">AntWeb</a>"
+        .to eq '<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>'
     end
 
     it "handles subspecies" do
@@ -101,7 +102,7 @@ describe LinkHelper do
       species = create_species 'Atta major', genus: genus
       subspecies = create_subspecies 'Atta major minor', species: species, genus: genus
       expect(helper.link_to_antweb(subspecies))
-        .to eq "<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor&project=worldants\">AntWeb</a>"
+        .to eq '<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor&project=worldants">AntWeb</a>'
     end
 
     it "just returns nil for subspecies without species" do
@@ -115,7 +116,7 @@ describe LinkHelper do
       species = create_species 'Atta major', genus: genus
       subspecies = create_subspecies 'Atta major minor rufous', species: species, genus: genus
       expect(helper.link_to_antweb(subspecies))
-        .to eq "<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor rufous&project=worldants\">AntWeb</a>"
+        .to eq '<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor rufous&project=worldants">AntWeb</a>'
     end
   end
 

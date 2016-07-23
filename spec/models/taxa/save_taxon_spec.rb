@@ -8,24 +8,24 @@ describe Taxa::SaveTaxon do
     before do
       @reference = create :article_reference
       @taxon_params = HashWithIndifferentAccess.new(
-        name_attributes:     {id: ''},
+        name_attributes:     { id: '' },
         status:              'valid',
         incertae_sedis_in:   '',
         fossil:              '0',
         nomen_nudum:         '0',
-        current_valid_taxon_name_attributes: {id: ''},
+        current_valid_taxon_name_attributes: { id: '' },
         unresolved_homonym:  '0',
         ichnotaxon:          '0',
         hong:                '0',
         headline_notes_taxt: '',
-        homonym_replaced_by_name_attributes: {id: ''},
+        homonym_replaced_by_name_attributes: { id: '' },
         protonym_attributes: {
-          name_attributes:  {id: ''},
+          name_attributes:  { id: ''},
           fossil:           '0',
           sic:              '0',
           locality:         '',
           authorship_attributes: {
-            reference_attributes: {id: @reference.id},
+            reference_attributes: { id: @reference.id },
             pages: '',
             forms: '',
             notes_taxt: '',

@@ -82,7 +82,7 @@ class NameFieldsController < NamePickersController
     data[:id] = name.id
     data[:reason] = 'homonym'
     data[:submit_button_text] = 'Save homonym'
-    data[:error_message] = "This name is in use by another taxon. To create a homonym, click \"Save homonym\"."
+    data[:error_message] = 'This name is in use by another taxon. To create a homonym, click "Save homonym".'
   end
 
   def accept_success name, data

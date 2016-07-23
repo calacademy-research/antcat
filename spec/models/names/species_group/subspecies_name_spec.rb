@@ -62,9 +62,11 @@ describe SubspeciesName do
     context "name already exists" do
       context "name is used by a different taxon" do
         it "raises" do
-          existing_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
+          existing_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor',
+            epithet: 'minor', epithets: 'niger minor'
           subspecies = create_subspecies 'Eciton niger minor', name: existing_subspecies_name
-          subspecies_name = SubspeciesName.create! name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
+          subspecies_name = SubspeciesName.create! name: 'Atta major minor',
+            epithet: 'minor', epithets: 'major minor'
           species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
           protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
 
@@ -74,8 +76,10 @@ describe SubspeciesName do
 
       context "name is an orphan" do
         it "doesn't raise" do
-          orphan_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
-          subspecies_name = SubspeciesName.create! name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
+          orphan_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor',
+            epithet: 'minor', epithets: 'niger minor'
+          subspecies_name = SubspeciesName.create! name: 'Atta major minor',
+            epithet: 'minor', epithets: 'major minor'
           species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
           protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
 
