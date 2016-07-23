@@ -21,7 +21,7 @@ describe Api::V1::CitationsController do
       species = create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
-      get :index, nil
+      get :index
       expect(response.status).to eq 200
       expect(response.body.to_s).to include "pages"
 

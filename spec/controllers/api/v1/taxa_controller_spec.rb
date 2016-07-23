@@ -10,7 +10,7 @@ describe Api::V1::TaxaController do
       species = create_species 'Atta minor maxus'
       # protonym_name = create_subspecies_name 'Eciton minor maxus'
 
-      get :show, {'id' => species.id}, nil
+      get :show, id: species.id
       expect(response.status).to eq 200
       parsed_species = JSON.parse response.body
 

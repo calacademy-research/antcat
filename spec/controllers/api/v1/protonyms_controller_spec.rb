@@ -5,7 +5,7 @@ describe Api::V1::ProtonymsController do
     it "fetches a protonym" do
       taxon = create_taxon
 
-      get :show, {'id' => taxon.protonym_id}, nil
+      get :show, id: taxon.protonym_id
       expect(response.status).to eq 200
       expect(response.body.to_s).to include taxon.id.to_s
     end
@@ -15,7 +15,7 @@ describe Api::V1::ProtonymsController do
       species = create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
-      get :index, nil
+      get :index
       expect(response.status).to eq 200
 
       author_names = JSON.parse response.body

@@ -6,7 +6,7 @@ describe Api::V1::AuthorNamesController do
       barry_bolton = create :author
       bolton = create :author_name, name: 'Bolton', author: barry_bolton
 
-      get :show, {'id' => '1'}, nil
+      get :show, id: 1
       expect(response.status).to eq 200
       expect(response.body.to_s).to include "Bolton"
     end
@@ -17,7 +17,7 @@ describe Api::V1::AuthorNamesController do
       bolton = create :author_name, name: 'Bolton', author: barry_bolton
       bolton = create :author_name, name: 'Fisher', author: second
 
-      get :index, nil
+      get :index
       expect(response.status).to eq 200
       expect(response.body.to_s).to include "Bolton"
       expect(response.body.to_s).to include "Fisher"

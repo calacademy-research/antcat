@@ -5,7 +5,7 @@ describe Api::V1::NamesController do
     it "fetches a name" do
       taxon = create_taxon
 
-      get :show, {'id' => taxon.name_id}, nil
+      get :show, id: taxon.name_id
       expect(response.status).to eq 200
       expect(response.body.to_s).to include "Atta"
     end
@@ -22,7 +22,7 @@ describe Api::V1::NamesController do
 
       expect(names.count).to eq 1
 
-      get :index, nil
+      get :index
       expect(response.status).to eq 200
       expect(response.body.to_s).to include "Atta"
 
