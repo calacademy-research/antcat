@@ -56,8 +56,8 @@ describe Reference do
         it "finds the reference with both author names, but not just one" do
           bolton = create :author_name, name: 'Bolton'
           fisher = create :author_name, name: 'Fisher'
-          bolton_reference = create :reference, author_names: [bolton]
-          fisher_reference = create :reference, author_names: [fisher]
+          create :reference, author_names: [bolton]
+          create :reference, author_names: [fisher]
           bolton_fisher_reference = create :reference, author_names: [bolton,fisher]
 
           Sunspot.commit

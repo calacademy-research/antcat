@@ -27,7 +27,7 @@ describe SpeciesName do
       context "name is used by a different taxon" do
         it "raises" do
           existing_species_name = SpeciesName.create! name: 'Eciton major', epithet: 'major'
-          species = create_species 'Eciton major', name: existing_species_name
+          create_species 'Eciton major', name: existing_species_name
 
           species_name = SpeciesName.create! name: 'Atta major', epithet: 'major'
           genus_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'

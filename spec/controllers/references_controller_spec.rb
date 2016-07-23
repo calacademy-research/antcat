@@ -141,7 +141,7 @@ describe ReferencesController do
 
     describe "author queries not wrapped in quotes" do
       it "handles queries containing non-English characters" do
-        reference = reference_factory author_name: 'Bert Hölldobler'
+        reference_factory author_name: 'Bert Hölldobler'
         Sunspot.commit
 
         get :autocomplete, q: "author:höll", format: :json
@@ -151,7 +151,7 @@ describe ReferencesController do
       end
 
       it "handles hyphens" do
-        reference = reference_factory author_name: 'M.S. Abdul-Rassoul'
+        reference_factory author_name: 'M.S. Abdul-Rassoul'
         Sunspot.commit
 
         get :autocomplete, q: "author:abdul-ras", format: :json

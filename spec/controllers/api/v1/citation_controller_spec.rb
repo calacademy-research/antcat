@@ -18,7 +18,7 @@ describe Api::V1::CitationsController do
 
     it "gets all citations" do
       create_taxon
-      species = create_species 'Atta minor'
+      create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
       get :index

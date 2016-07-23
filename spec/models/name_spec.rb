@@ -136,8 +136,8 @@ describe Name do
     end
 
     it "requires the first letter to match either the name or the epithet" do
-      dubitata = find_or_create_name 'Acropyga dubitata'
-      indubitata = find_or_create_name 'Acropyga indubitata'
+      find_or_create_name 'Acropyga dubitata'
+      find_or_create_name 'Acropyga indubitata'
 
       results = Name.picklist_matching 'dubitata'
       expect(results.size).to eq 1
@@ -145,8 +145,8 @@ describe Name do
     end
 
     it "only returns names attached to taxa, if that option is sent" do
-      atta = create_genus 'Atta'
-      atta_nudum = find_or_create_name 'Attanuda'
+      create_genus 'Atta'
+      find_or_create_name 'Attanuda'
 
       results = Name.picklist_matching 'atta', taxa_only: true
       expect(results.size).to eq 1
@@ -154,8 +154,8 @@ describe Name do
     end
 
     it "only returns names attached to species, if that option is sent" do
-      atta = create_genus 'Atta'
-      atta_minor = create_species 'Atta major'
+      create_genus 'Atta'
+      create_species 'Atta major'
 
       results = Name.picklist_matching 'atta', species_only: true
       expect(results.size).to eq 1
@@ -163,8 +163,8 @@ describe Name do
     end
 
     it "only returns names attached to genera, if that option is sent" do
-      atta = create_genus 'Atta'
-      atta_minor = create_species 'Atta major'
+      create_genus 'Atta'
+      create_species 'Atta major'
 
       results = Name.picklist_matching 'atta', genera_only: true
       expect(results.size).to eq 1
@@ -174,8 +174,8 @@ describe Name do
     it "only returns names attached to subfamilies or tribes, if that option is sent" do
       subfamily = create_subfamily 'Attinae'
       tribe = create_tribe 'Attini'
-      atta = create_genus 'Atta', tribe: tribe, subfamily: subfamily
-      atta_minor = create_species 'Atta major'
+      create_genus 'Atta', tribe: tribe, subfamily: subfamily
+      create_species 'Atta major'
 
       results = Name.picklist_matching 'att', subfamilies_or_tribes_only: true
       expect(results.size).to eq 2
@@ -196,7 +196,8 @@ describe Name do
     it "returns the records with same name but different ID" do
       first_atta_name = create :name, name: 'Atta'
       second_atta_name = create :name, name: 'Atta'
-      not_atta_name = create :name, name: 'Notatta'
+      create :name, name: 'Notatta'
+
       expect(Name.duplicates).to match_array [first_atta_name, second_atta_name]
     end
   end
@@ -209,7 +210,6 @@ describe Name do
       second_atta = create_genus name: second_atta_name
 
       results = Name.duplicates_with_references
-
       expect(results).to eq(
         'Atta' => {
           first_atta_name.id => [

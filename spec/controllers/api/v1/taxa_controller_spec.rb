@@ -19,14 +19,16 @@ describe Api::V1::TaxaController do
     end
 
     it "should search for a taxa" do
-      species = create_species 'Atta minor maxus'
+      create_species 'Atta minor maxus'
+
       get :search, {'string' => 'maxus'}, nil
       expect(response.status).to eq 200
       expect(response.body.to_s).to include "maxus"
     end
 
     it "should report when there are no search matches" do
-      species = create_species 'Atta minor maxus'
+      create_species 'Atta minor maxus'
+
       get :search, {'string' => 'maxuus'}, nil
       expect(response.status).to eq 404
     end
@@ -48,7 +50,7 @@ describe Api::V1::TaxaController do
 
     it "gets all taxa" do
       create_taxon
-      species = create_species 'Atta minor'
+      create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
       get :index, nil

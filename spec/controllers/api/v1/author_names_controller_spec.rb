@@ -4,7 +4,7 @@ describe Api::V1::AuthorNamesController do
   describe "getting data" do
     it "fetches an author name" do
       barry_bolton = create :author
-      bolton = create :author_name, name: 'Bolton', author: barry_bolton
+      create :author_name, name: 'Bolton', author: barry_bolton
 
       get :show, id: 1
       expect(response.status).to eq 200
@@ -14,8 +14,8 @@ describe Api::V1::AuthorNamesController do
     it "gets all author names keys" do
       barry_bolton = create :author
       second = create :author
-      bolton = create :author_name, name: 'Bolton', author: barry_bolton
-      bolton = create :author_name, name: 'Fisher', author: second
+      create :author_name, name: 'Bolton', author: barry_bolton
+      create :author_name, name: 'Fisher', author: second
 
       get :index
       expect(response.status).to eq 200

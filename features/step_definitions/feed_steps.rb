@@ -73,7 +73,7 @@ end
 # Reference
 Given /^there is a reference for the feed with state "(.*?)"$/ do |state|
   Feed::Activity.without_tracking do
-    reference = create :article_reference,
+    create :article_reference,
       author_names: [create(:author_name, name: 'Giovanni, S.')],
       citation_year: '1809',
       title: "Giovanni's Favorite Ants",

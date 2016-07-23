@@ -6,7 +6,8 @@ describe AntcatMarkdown do
   describe "render" do
     it "formats some basic markdown" do
       lasius_name = create :species_name, name: "Lasius"
-      lasius = create :species, name: lasius_name
+      create :species, name: lasius_name
+
       markdown = <<-MARKDOWN
 ###Header
 * A list item
@@ -85,7 +86,7 @@ describe AntcatMarkdown do
       markdown = "%tl[#{lasius.id}, #{lasius.id}]"
 
       expected = %Q[<p><a href="/catalog/#{lasius.id}"><i>Lasius</i></a>, ] +
-                 %Q[<a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>\n]
+        %Q[<a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>\n]
       expect(AntcatMarkdown.render(markdown)).to eq expected
     end
 

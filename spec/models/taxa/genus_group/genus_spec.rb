@@ -51,9 +51,9 @@ describe Genus do
 
     it "handles 1 valid species" do
       genus = create :genus
-      species = create :species, genus: genus
+      create :species, genus: genus
 
-      expect(genus.statistics).to eq extant: {species: {'valid' => 1}}
+      expect(genus.statistics).to eq extant: { species: { 'valid' => 1 } }
     end
 
     it "ignores original combinations" do
@@ -61,7 +61,7 @@ describe Genus do
       create :species, genus: genus
       create :species, status: 'original combination', genus: genus
 
-      expect(genus.statistics).to eq extant: {species: {'valid' => 1}}
+      expect(genus.statistics).to eq extant: { species: { 'valid' => 1 } }
     end
 
     it "handles 1 valid species and 2 synonyms" do
@@ -69,7 +69,11 @@ describe Genus do
       create :species, genus: genus
       2.times { create :species, genus: genus, status: 'synonym' }
 
-      expect(genus.statistics).to eq extant: {species: {'valid' => 1, 'synonym' => 2}}
+      expect(genus.statistics).to eq(
+        extant: {
+          species: { 'valid' => 1, 'synonym' => 2 }
+        }
+      )
     end
 
     it "handles 1 valid species with 2 valid subspecies" do
@@ -124,7 +128,7 @@ describe Genus do
   describe "#without_subfamily" do
     it "returns genera with no subfamily" do
       cariridris = create :genus, subfamily: nil
-      atta = create :genus
+      create :genus
 
       expect(Genus.without_subfamily.all).to eq [cariridris]
     end
@@ -133,7 +137,7 @@ describe Genus do
   describe "#without_tribe" do
     it "returns genera with no tribe" do
       tribe = create :tribe
-      cariridris = create :genus, tribe: tribe, subfamily: tribe.subfamily
+      create :genus, tribe: tribe, subfamily: tribe.subfamily
       atta = create :genus, subfamily: tribe.subfamily, tribe: nil
 
       expect(Genus.without_tribe.all).to eq [atta]
@@ -193,7 +197,7 @@ describe Genus do
 
     it "returns all the species and subspecies of the genus" do
       species = create_species genus: @genus
-      subgenus = create_subgenus genus: @genus
+      create_subgenus genus: @genus
       subspecies = create_subspecies genus: @genus, species: species
 
       expect(@genus.species_group_descendants).to match_array [species, subspecies]
@@ -273,7 +277,7 @@ describe Genus do
       new_tribe = create :tribe, subfamily: new_subfamily
       genus = create_genus tribe: tribe
       species = create_species genus: genus
-      subspecies = create_subspecies species: species, genus: genus
+      create_subspecies species: species, genus: genus
 
       # test the initial subfamilies
       expect(genus.subfamily).to eq subfamily

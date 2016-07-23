@@ -27,7 +27,7 @@ describe Subfamily do
   it "can have species" do
     subfamily = create :subfamily
     genus = create :genus, subfamily: subfamily
-    species = create :species, genus: genus
+    create :species, genus: genus
     expect(subfamily.species.size).to eq 1
   end
 
@@ -35,7 +35,7 @@ describe Subfamily do
     subfamily = create :subfamily
     genus = create :genus, subfamily: subfamily
     species = create :species, genus: genus
-    subspecies = create :subspecies, genus: genus, species: species
+    create :subspecies, genus: genus, species: species
     expect(subfamily.subspecies.size).to eq 1
   end
 
@@ -62,14 +62,14 @@ describe Subfamily do
 
     it "handles 1 valid genus" do
       subfamily = create :subfamily
-      genus = create :genus, subfamily: subfamily
+      create :genus, subfamily: subfamily
 
       expect(subfamily.statistics).to eq extant: {genera: {'valid' => 1}}
     end
 
     it "handles 1 valid genus and 2 synonyms" do
       subfamily = create :subfamily
-      genus = create :genus, subfamily: subfamily
+      create :genus, subfamily: subfamily
       2.times { create :genus, subfamily: subfamily, status: 'synonym' }
 
       expect(subfamily.statistics).to eq extant: {genera: {'valid' => 1, 'synonym' => 2}}
@@ -121,13 +121,11 @@ describe Subfamily do
       )
     end
 
-    # removed duplicate
-
     it "can count tribes" do
       subfamily = create :subfamily
-      tribe = create :tribe, subfamily: subfamily
+      create :tribe, subfamily: subfamily
 
-      expect(subfamily.statistics).to eq extant: {tribes: {'valid' => 1}}
+      expect(subfamily.statistics).to eq extant: { tribes: { 'valid' => 1 } }
     end
   end
 end

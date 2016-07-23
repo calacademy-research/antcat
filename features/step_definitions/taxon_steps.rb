@@ -82,7 +82,7 @@ end
 #############################
 # genus
 Given /^there is a genus "([^"]*)"$/ do |name|
-  genus = create_genus name
+  create_genus name
 end
 
 Given /^there is a genus "([^"]*)" with taxonomic history "(.*?)"$/ do |name, history|
@@ -251,7 +251,7 @@ end
 Given /^there is a subspecies "([^"]*)" which is a subspecies of "([^"]*)" in the genus "([^"]*)"/ do |subspecies, species, genus|
   genus = create_genus genus
   species = create_species species, genus: genus
-  subspecies = create_subspecies subspecies, species: species, genus: genus
+  create_subspecies subspecies, species: species, genus: genus
 end
 
 ##################################################

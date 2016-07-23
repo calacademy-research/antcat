@@ -10,7 +10,7 @@ describe Api::V1::TaxonHistoryItemsController do
 
     it "gets all taxon history items greater than a given number" do
       create_taxon
-      species = create_species 'Atta minor'
+      create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
       # Get index starting at four
@@ -25,7 +25,7 @@ describe Api::V1::TaxonHistoryItemsController do
 
     it "gets all taxon_history_items" do
       create_taxon
-      species = create_species 'Atta minor'
+      create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
       get :index

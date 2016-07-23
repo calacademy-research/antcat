@@ -22,7 +22,7 @@ describe ChangesController do
       taxon = create_taxon_version_and_change :waiting, adder, nil, 'Genus1'
       taxon.save
       change = create :change, user_changed_taxon_id: taxon.id, change_type: "update"
-      version = create :version, item_id: taxon.id, whodunnit: adder.id, change_id: change.id
+      create :version, item_id: taxon.id, whodunnit: adder.id, change_id: change.id
 
       taxon.status = 'homonym'
       taxon.save

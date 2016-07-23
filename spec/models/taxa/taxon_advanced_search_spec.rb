@@ -184,7 +184,7 @@ describe Taxon do
 
     describe "Searching for verbatim type locality" do
       it "only returns taxa with that verbatim_type_locality" do
-        atta = create_species verbatim_type_locality: 'Indonesia'
+        create_species verbatim_type_locality: 'Indonesia'
         eciton = create_species verbatim_type_locality: 'San Pedro'
 
         results = Taxa::Search.advanced_search rank: 'All', verbatim_type_locality: 'San Pedro'
@@ -192,14 +192,14 @@ describe Taxon do
       end
 
       it "should not only return anything if nothing has that verbatim_type_locality" do
-        atta = create_species
+        create_species
 
         results = Taxa::Search.advanced_search rank: 'All', verbatim_type_locality: 'San Pedro'
         expect(results.map(&:id)).to eq []
       end
 
       it "should do substring search" do
-        atta = create_species verbatim_type_locality: 'Indonesia'
+        create_species verbatim_type_locality: 'Indonesia'
         eciton = create_species verbatim_type_locality: 'San Pedro'
 
         results = Taxa::Search.advanced_search rank: 'All', verbatim_type_locality: 'Pedro'
@@ -209,7 +209,7 @@ describe Taxon do
 
     describe "Searching for type specimen repository" do
       it "only returns taxa with that type specimen repository" do
-        atta = create_species type_specimen_repository: 'IDD'
+        create_species type_specimen_repository: 'IDD'
         eciton = create_species type_specimen_repository: 'DDI'
 
         results = Taxa::Search.advanced_search rank: 'All', type_specimen_repository: 'DDI'
@@ -217,14 +217,14 @@ describe Taxon do
       end
 
       it "returns nothing if nothing has that type_specimen_repository" do
-        atta = create_species
+        create_species
 
         results = Taxa::Search.advanced_search rank: 'All', type_specimen_repository: 'ISC'
         expect(results.map(&:id)).to eq []
       end
 
       it "should do substring search" do
-        atta = create_species type_specimen_repository: 'III'
+        create_species type_specimen_repository: 'III'
         eciton = create_species type_specimen_repository: 'ABCD'
 
         results = Taxa::Search.advanced_search rank: 'All', type_specimen_repository: 'BC'
@@ -234,7 +234,7 @@ describe Taxon do
 
     describe "Searching for type specimen code" do
       it "only returns taxa with that type specimen code" do
-        atta = create_species type_specimen_code: 'IDD'
+        create_species type_specimen_code: 'IDD'
         eciton = create_species type_specimen_code: 'DDI'
 
         results = Taxa::Search.advanced_search rank: 'All', type_specimen_code: 'DDI'
@@ -242,14 +242,14 @@ describe Taxon do
       end
 
       it "returns nothing if nothing has that type_specimen_code" do
-        atta = create_species
+        create_species
 
         results = Taxa::Search.advanced_search rank: 'All', type_specimen_code: 'ISC'
         expect(results.map(&:id)).to eq []
       end
 
       it "should do substring search" do
-        atta = create_species type_specimen_code: 'III'
+        create_species type_specimen_code: 'III'
         eciton = create_species type_specimen_code: 'ABCD'
 
         results = Taxa::Search.advanced_search rank: 'All', type_specimen_code: 'BC'
@@ -259,7 +259,7 @@ describe Taxon do
 
     describe "Searching for biogeographic region" do
       it "only returns taxa with that biogeographic_region" do
-        atta = create_species biogeographic_region: 'Australasia'
+        create_species biogeographic_region: 'Australasia'
         eciton = create_species biogeographic_region: 'Indomalaya'
 
         results = Taxa::Search.advanced_search rank: 'All', biogeographic_region: 'Indomalaya'
@@ -267,14 +267,14 @@ describe Taxon do
       end
 
       it "not only returns anything if nothing has that biogeographic_region" do
-        atta = create_species
+        create_species
 
         results = Taxa::Search.advanced_search rank: 'All', biogeographic_region: 'San Pedro'
         expect(results.map(&:id)).to eq []
       end
 
       it "only returns taxa with no biogeographic_region if that's what's specified" do
-        atta = create_species biogeographic_region: 'Australasia'
+        create_species biogeographic_region: 'Australasia'
         eciton = create_species
 
         results = Taxa::Search.advanced_search rank: 'Species', biogeographic_region: 'None'

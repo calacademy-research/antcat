@@ -163,9 +163,8 @@ describe Taxon do
         protonym = create :protonym
         atta = create_genus protonym: protonym
         eciton = create_genus protonym: protonym
-        protonym_count = Protonym.count
-        atta.destroy
-        expect(Protonym.count).to eq protonym_count
+
+        expect { atta.destroy }.not_to change { Protonym.count }
       end
     end
   end
@@ -493,7 +492,7 @@ describe Taxon do
           homonym_replaced_by: replacement,
           status: 'homonym',
           subfamily: subfamily
-        synonym = create_synonym replacement, subfamily: subfamily
+        create_synonym replacement, subfamily: subfamily
 
         expect(subfamily.genera.valid).to eq [replacement]
       end

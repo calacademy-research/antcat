@@ -14,7 +14,6 @@ describe Reference do
     context "with a document" do
       it "delegates to its document" do
         reference = create :reference, document: create(:reference_document)
-        user = create :user
 
         expect(reference.document).to receive :downloadable?
         reference.downloadable?

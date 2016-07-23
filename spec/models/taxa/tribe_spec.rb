@@ -48,9 +48,9 @@ describe Tribe do
   describe "#statistics" do
     it "includes the number of genera" do
       tribe = create :tribe
-      genus = create :genus, tribe: tribe
+      create :genus, tribe: tribe
 
-      expect(tribe.statistics).to eq extant: {genera: {'valid' => 1}}
+      expect(tribe.statistics).to eq extant: { genera: { 'valid' => 1 } }
     end
   end
 
@@ -70,7 +70,7 @@ describe Tribe do
       tribe = create :tribe, subfamily: subfamily
       genus = create_genus tribe: tribe
       species = create_species genus: genus
-      subspecies = create_subspecies species: species, genus: genus
+      create_subspecies species: species, genus: genus
 
       # test the initial subfamilies
       expect(tribe.subfamily).to eq subfamily

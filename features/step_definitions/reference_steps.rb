@@ -219,7 +219,7 @@ Then /^the review status on the Ward reference should change to "(.*?)"$/ do |st
   end
 end
 Then /^it (#{SHOULD_OR_SHOULD_NOT}) show "(.*?)" as the default$/ do |should_selector, key|
-  reference = find_reference_by_key key
+  reference = find_reference_by_key key # TODO Does this do anything?
   author = key.split(' ').first
   within find("tr", text: author) do
     step %{I #{should_selector} see "Default"}

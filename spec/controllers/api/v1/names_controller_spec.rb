@@ -12,7 +12,7 @@ describe Api::V1::NamesController do
 
     it "gets all author names keys" do
       create_taxon
-      species = create_species 'Atta minor'
+      create_species 'Atta minor'
       protonym_name = create_species_name 'Eciton minor'
 
       get :index, starts_at: protonym_name.id
