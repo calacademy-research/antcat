@@ -34,5 +34,4 @@ describe Feed::Activity, feed: true do
       expect(Activity.enabled?).to be true
     end
   end
-
 end

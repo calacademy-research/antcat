@@ -10,7 +10,7 @@ describe ReferenceDocumentObserver do
     end
   end
 
-  it "should invalidate the cache for the reference that uses the reference document" do
+  it "invalidates the cache for the reference that uses the reference document" do
     reference = create :article_reference
     reference_document = create :reference_document, reference: reference
     ReferenceFormatterCache.instance.populate reference

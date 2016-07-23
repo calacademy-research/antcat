@@ -9,7 +9,7 @@ describe PlaceObserver do
       place.save!
     end
 
-    it "should invalidate the cache for the references that use the place" do
+    it "invalidates the cache for the references that use the place" do
       place = create :place
       publisher = create :publisher, place: place
       references = []

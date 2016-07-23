@@ -34,7 +34,7 @@ describe Change do
     expect(change.user).to eq user
   end
 
-  it "should be able to be reified after being created", pending: true do
+  it "can be reified after being created", pending: true do
     pending "Not implemented change::user"
 
     genus = create_genus
@@ -60,8 +60,8 @@ describe Change do
     expect(change.taxon).to eq taxon
   end
 
-  describe "Scopes" do
-    describe "#waiting" do
+  describe "scopes" do
+    describe "scope.waiting" do
       it "returns unreviewed changes" do
         item = create_genus
         item.taxon_state.update_attributes review_state: 'waiting'

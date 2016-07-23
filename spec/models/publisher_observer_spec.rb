@@ -9,7 +9,7 @@ describe PublisherObserver do
       publisher.save!
     end
 
-    it "should invalidate the cache for the references that use the publisher" do
+    it "invalidates the cache for the references that use the publisher" do
       publisher = create :publisher
       references = []
       (0..2).each do |i|

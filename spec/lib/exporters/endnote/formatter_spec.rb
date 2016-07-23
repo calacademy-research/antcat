@@ -5,7 +5,7 @@ describe Exporters::Endnote::Formatter do
     @formatter = Exporters::Endnote::Formatter
   end
 
-  it "should format a book reference correctly" do
+  it "formats a book reference correctly" do
     reference = create :book_reference,
       author_names: [create(:author_name, name: 'Bolton, B.')],
       title: 'Ants Are My Life',
@@ -24,7 +24,7 @@ describe Exporters::Endnote::Formatter do
 })
   end
 
-  it "should format multiple authors correctly" do
+  it "formats multiple authors correctly" do
     reference = create :book_reference,
       author_names: [create(:author_name, name: 'Bolton, B.'), create(:author_name, name: 'Fisher, B.L.')],
       title: 'Ants Are My Life',
@@ -44,7 +44,7 @@ describe Exporters::Endnote::Formatter do
 })
   end
 
-  it "should not emit %A if there is no author" do
+  it "doesn't emit %A if there is no author" do
     reference = create :book_reference,
       author_names: [],
       title: 'Ants Are My Life',
@@ -62,7 +62,7 @@ describe Exporters::Endnote::Formatter do
 })
   end
 
-  it "should format a article reference correctly" do
+  it "formats a article reference correctly" do
     reference = create :article_reference,
       author_names: [create(:author_name, name: 'MacKay, W.')],
       citation_year: '1941',
@@ -85,7 +85,7 @@ describe Exporters::Endnote::Formatter do
 })
   end
 
-  it "should strip out the italics formatting" do
+  it "strips out the italics formatting" do
     reference = create :article_reference,
       author_names: [create(:author_name, name: 'MacKay, W.')],
       citation_year: '1941',
@@ -105,7 +105,7 @@ describe Exporters::Endnote::Formatter do
 })
   end
 
-  it "should export public and taxonomic notes" do
+  it "exports public and taxonomic notes" do
     reference = create :article_reference,
       author_names: [create(:author_name, name: 'MacKay, W.')],
       citation_year: '1941',
@@ -129,7 +129,7 @@ describe Exporters::Endnote::Formatter do
 })
   end
 
-  it "should not export blank public and taxonomic notes" do
+  it "doesn't export blank public and taxonomic notes" do
     reference = create :article_reference,
       author_names: [create(:author_name, name: 'MacKay, W.')],
       citation_year: '1941',
@@ -151,11 +151,11 @@ describe Exporters::Endnote::Formatter do
 })
   end
 
-  it "should bail on a class it doesn't know about " do
+  it "bails on a class it doesn't know about " do
     expect { @formatter.format([String.new]) }.to raise_error
   end
 
-  it "should format an unknown reference correctly" do
+  it "formats an unknown reference correctly" do
     reference = create :unknown_reference,
       author_names: [create(:author_name, name: 'MacKay, W.')],
       citation_year: '1933',
@@ -171,7 +171,7 @@ describe Exporters::Endnote::Formatter do
 })
   end
 
-  it "should not output nested references" do
+  it "doesn't output nested references" do
     reference = create :nested_reference
     expect(@formatter.format([reference])).to eq "\n"
   end

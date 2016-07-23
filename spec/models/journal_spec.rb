@@ -3,19 +3,19 @@ require 'spec_helper'
 describe Journal do
   it { should validate_presence_of(:name) }
 
-  describe "searching" do
+  describe ".search" do
     it "should do fuzzy matching of journal names" do
       create :journal, name: 'American Bibliographic Proceedings'
       create :journal, name: 'Playboy'
       expect(Journal.search('ABP')).to eq ['American Bibliographic Proceedings']
     end
 
-    it "should require matching the first letter" do
+    it "requires matching the first letter" do
       create :journal, name: 'ABC'
       expect(Journal.search('BC')).to eq []
     end
 
-    it "should return results in order of most used" do
+    it "returns results in order of most used" do
       ['Most Used', 'Never Used', 'Occasionally Used', 'Rarely Used'].each do |name|
         create :journal, name: name
       end
@@ -28,7 +28,7 @@ describe Journal do
     end
   end
 
-  describe "destroying" do
+  describe "#destroy" do
     let!(:journal) { create :journal, name: "ABC" }
 
     context "journal without references" do
@@ -46,8 +46,8 @@ describe Journal do
     end
   end
 
-  describe "Versioning" do
-    it "should record versions" do
+  describe "versioning" do
+    it "records versions" do
       with_versioning do
         journal = create :journal
         expect(journal.versions.last.event).to eq 'create'

@@ -1,37 +1,37 @@
 require 'spec_helper'
 
 describe Taxon do
-  describe "Find by name" do
-    it "should return nil if nothing matches" do
+  describe ".find_by_name" do
+    it "returns nil if nothing matches" do
       expect(Taxon.find_by_name('sdfsdf')).to eq nil
     end
 
-    it "should return one of the items if there are more than one (bad!)" do
+    it "returns one of the items if there are more than one (bad!)" do
       name = create :genus_name, name: 'Monomorium'
       2.times { create :genus, name: name }
       expect(Taxon.find_by_name('Monomorium').name.name).to eq 'Monomorium'
     end
   end
 
-  describe "Find an epithet in a genus" do
-    it "should return nil if nothing matches" do
+  describe "#find_epithet_in_genus" do
+    it "returns nil if nothing matches" do
       expect(Taxa::Utility.find_epithet_in_genus('sdfsdf', create_genus)).to eq nil
     end
 
-    it "should return the one item" do
+    it "returns the one item" do
       species = create_species 'Atta serratula'
       expect(Taxa::Utility.find_epithet_in_genus('serratula', species.genus)).to eq [species]
     end
 
-    describe "Finding mandatory spelling changes" do
-      it "should find -a when asked to find -us" do
+    context "mandatory spelling changes" do
+      it "finds -a when asked to find -us" do
         species = create_species 'Atta serratula'
         expect(Taxa::Utility.find_epithet_in_genus('serratulus', species.genus)).to eq [species]
       end
     end
   end
 
-  describe "Find name" do
+  describe "#find_name" do
     before do
       create :genus, name: create(:genus_name, name: 'Monomorium')
       @monoceros = create :genus, name: create(:genus_name, name: 'Monoceros')
@@ -39,11 +39,11 @@ describe Taxon do
       @rufa = create :species, genus: @monoceros, name: species_name
     end
 
-    it "should return [] if nothing matches" do
+    it "returns [] if nothing matches" do
       expect(Taxa::Search.find_name('sdfsdf')).to eq []
     end
 
-    it "should return an exact match" do
+    it "returns an exact matches" do
       expect(Taxa::Search.find_name('Monomorium').first.name.to_s).to eq 'Monomorium'
     end
 
@@ -55,7 +55,7 @@ describe Taxon do
       expect(Taxa::Search.find_name('iu', 'containing').first.name.to_s).to eq 'Monomorium'
     end
 
-    it "should return multiple matches" do
+    it "returns multiple matches" do
       results = Taxa::Search.find_name 'Mono', 'containing'
       expect(results.size).to eq 2
     end
@@ -72,7 +72,7 @@ describe Taxon do
       expect(results.size).to eq 6
     end
 
-    it "should sort results by name" do
+    it "sorts results by name" do
       create :subfamily, name: create(:name, name: 'Lepti')
       create :subfamily, name: create(:name, name: 'Lepta')
       create :subfamily, name: create(:name, name: 'Lepte')
@@ -82,17 +82,17 @@ describe Taxon do
     end
 
     describe "Finding full species name" do
-      it "should search for full species name" do
+      it "searches for full species names" do
         results = Taxa::Search.find_name 'Monoceros rufa '
         expect(results.first).to eq @rufa
       end
 
-      it "should search for whole name, even when using beginning with, even with trailing space" do
+      it "searches for whole names, even when using beginning with, even with trailing space" do
         results = Taxa::Search.find_name 'Monoceros rufa ', 'beginning_with'
         expect(results.first).to eq @rufa
       end
 
-      it "should search for partial species name" do
+      it "searches for partial species names" do
         results = Taxa::Search.find_name 'Monoceros ruf', 'beginning_with'
         expect(results.first).to eq @rufa
       end

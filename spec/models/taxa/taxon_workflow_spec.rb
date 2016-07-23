@@ -110,13 +110,13 @@ describe Taxon do
       with_versioning &example
     end
 
-    describe "Last change" do
-      it "should return nil if no Changes have been created for it" do
+    describe "#last_change" do
+      it "returns nil if no Changes have been created for it" do
         taxon = create_genus
         expect(taxon.last_change).to be_nil
       end
 
-      it "should return the Change, if any" do
+      it "returns the Change, if any" do
         taxon = create_genus
 
         change = setup_version taxon.id
@@ -124,12 +124,11 @@ describe Taxon do
       end
     end
 
-    describe "Last version" do
-      it "should return the most recent Version" do
+    describe "#last_version" do
+      it "returns the most recent Version" do
         adder = create :user, can_edit: true
+        genus = create_taxon_version_and_change :waiting, adder
 
-        taxon = create_taxon_version_and_change :waiting, adder
-        genus = taxon
         last_version = genus.last_version
         genus.reload
         expect(last_version).to eq genus.versions(true).last

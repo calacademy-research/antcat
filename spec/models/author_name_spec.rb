@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe AuthorName do
   it { should validate_presence_of(:author) }
-
   let(:author) { Author.create! }
 
   it "has many references" do
@@ -22,7 +21,6 @@ describe AuthorName do
     expect(author_name).not_to be_valid
 
     author_name.name = ''
-
     expect(author_name).not_to be_valid
 
     author_name.name = 'Bolton, B.'
@@ -38,26 +36,26 @@ describe AuthorName do
     expect(author_name).not_to be_valid
   end
 
-  describe "importing" do
-    it "should create and return the authors" do
+  describe "#import" do
+    it "creates and returns the authors" do
       results = AuthorName.import(['Fisher, B.L.', 'Wheeler, W.M.']).map(&:name)
       expect(results).to match_array ['Fisher, B.L.', 'Wheeler, W.M.']
     end
 
-    it "should reuse existing authors" do
+    it "reuses existing authors" do
       AuthorName.import ['Fisher, B.L.', 'Wheeler, W.M.']
       AuthorName.import ['Fisher, B.L.', 'Wheeler, W.M.']
       expect(AuthorName.count).to eq 2
     end
 
-    it "should respect case" do
+    it "is case sensitive" do
       AuthorName.import ['Mackay, W. M.', 'MacKay, W. M.']
       expect(AuthorName.count).to eq 2
     end
   end
 
   describe "editing" do
-    it "should update associated references when the name is changed" do
+    it "updates associated references when the name is changed" do
       author_name = create :author_name, name: 'Ward'
       reference = create :reference, author_names: [author_name]
       author_name.update_attribute :name, 'Fisher'
@@ -65,8 +63,8 @@ describe AuthorName do
     end
   end
 
-  describe "import_author_names_string" do
-    it "should find or create authors with names in the string" do
+  describe "#import_author_names_string" do
+    it "finds or creates authors with names in the string" do
       AuthorName.create! name: 'Bolton, B.', author: author
       author_data = AuthorName.import_author_names_string 'Ward, P.S.; Bolton, B.'
       expect(author_data[:author_names].first.name).to eq 'Ward, P.S.'
@@ -75,26 +73,26 @@ describe AuthorName do
       expect(AuthorName.count).to eq 2
     end
 
-    it "should return the authors suffix" do
+    it "returns the authors suffix" do
       author_data = AuthorName.import_author_names_string 'Ward, P.S.; Bolton, B. (eds.)'
       expect(author_data[:author_names].first.name).to eq 'Ward, P.S.'
       expect(author_data[:author_names].second.name).to eq 'Bolton, B.'
       expect(author_data[:author_names_suffix]).to eq ' (eds.)'
     end
 
-    it "should handle the Andres" do
+    it "handles 'the Andres'" do
       author_data = AuthorName.import_author_names_string 'Andre, Edm.; Andre, Ern.'
       expect(author_data[:author_names].first.name).to eq 'Andre, Edm.'
       expect(author_data[:author_names].second.name).to eq 'Andre, Ern.'
     end
 
-    it "should not just crap out when the input is invalid" do
+    it "handles invalid input" do
       author_data = AuthorName.import_author_names_string ' ; '
       expect(author_data[:author_names]).to eq []
       expect(author_data[:author_names_suffix]).to be_nil
     end
 
-   it "should handle a semicolon followed by a space at the end" do
+   it "handles a semicolon followed by a space at the end" do
      author_data = AuthorName.import_author_names_string 'Ward, P. S.; '
      expect(author_data[:author_names].size).to eq 1
      expect(author_data[:author_names].first.name).to eq 'Ward, P. S.'
@@ -102,24 +100,26 @@ describe AuthorName do
    end
   end
 
-  describe "searching" do
-    it "should find a prefix" do
+  describe "#search" do
+    it "matches by prefix" do
       AuthorName.create! name: 'Bolton', author: author
       AuthorName.create! name: 'Fisher', author: author
+
       results = AuthorName.search 'Bol'
       expect(results.count).to eq 1
       expect(results.first).to eq 'Bolton'
     end
 
-    it "should find an internal string" do
+    it "matches substrings" do
       AuthorName.create! name: 'Bolton', author: author
       AuthorName.create! name: 'Fisher', author: author
+
       results = AuthorName.search 'ol'
       expect(results.count).to eq 1
       expect(results.first).to eq 'Bolton'
     end
 
-    it "should return authors in order of most recently used" do
+    it "returns authors in order of most recently used" do
       ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
         AuthorName.create! name: name, author: author
       end
@@ -130,38 +130,39 @@ describe AuthorName do
       ReferenceAuthorName.create! created_at: Time.now - 10,
         author_name: AuthorName.find_by_name('Old'),
         reference: reference
+
       expect(AuthorName.search).to eq ['Most Recent', 'Recent', 'Old', 'Never Used']
     end
   end
 
-  describe "first and last name" do
-    it "should simply return the name if there's only one word" do
+  describe "#last_name and #first_name_and_initials" do
+    it "simply returns the name if there's only one word" do
       author_name = AuthorName.new name: 'Bolton'
       expect(author_name.last_name).to eq 'Bolton'
       expect(author_name.first_name_and_initials).to be_nil
     end
 
-    it "should separate the words if there are multiple" do
+    it "separates the words if there are multiple" do
       author_name = AuthorName.new name: 'Bolton, B.L.'
       expect(author_name.last_name).to eq 'Bolton'
       expect(author_name.first_name_and_initials).to eq 'B.L.'
     end
 
-    it "should use all words if there is no comma" do
+    it "uses all words if there is no comma" do
       author_name = AuthorName.new name: 'Royal Academy'
       expect(author_name.last_name).to eq 'Royal Academy'
       expect(author_name.first_name_and_initials).to be_nil
     end
 
-    it "should use use all words before the comma if there are multiple" do
+    it "uses all words before the comma if there are multiple" do
       author_name = AuthorName.new name: 'Baroni Urbani, C.'
       expect(author_name.last_name).to eq 'Baroni Urbani'
       expect(author_name.first_name_and_initials).to eq 'C.'
     end
   end
 
-  describe "Versioning" do
-    it "should record versions" do
+  describe "versioning" do
+    it "records versions" do
       with_versioning do
         author_name = create :author_name
         expect(author_name.versions.last.event).to eq 'create'

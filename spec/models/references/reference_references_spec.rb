@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Reference do
-  describe "References" do
+  describe "#reference_references" do
     it "should have no references, if alone" do
       reference = create :article_reference
       expect(reference.send(:reference_references).size).to eq 0
@@ -19,7 +19,7 @@ describe Reference do
     end
 
     describe "References in taxt" do
-      it "should return references in taxt" do
+      it "returns references in taxt" do
         reference = create :article_reference
         eciton = create_genus 'Eciton'
         eciton.update_attribute :type_taxt, "{ref #{reference.id}}"

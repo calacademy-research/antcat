@@ -4,34 +4,37 @@ describe Author do
   it "has many names" do
     author = Author.create!
     author.names << create(:author_name)
+
     expect(author.names.size).to eq 1
   end
 
-  describe "sorting by first author name" do
-    it "should work" do
+  describe "scopes.sorted_by_name" do
+    it "sorts by first author name" do
       ward = create :author_name, name: 'Ward'
       fisher_b_l = create :author_name, name: 'Fisher, B. L.'
       fisher = create :author_name, name: 'Fisher', author: fisher_b_l.author
       bolton = create :author_name, name: 'Bolton'
+
       expect(Author.sorted_by_name).to eq [bolton.author, fisher.author, ward.author]
     end
   end
 
-  describe "converting a list of author names to authors" do
-    it "should handle an empty list" do
-      expect(Author.find_by_names([])).to eq []
-    end
-
-    it "should find the authors for the names" do
+  describe ".find_by_names" do
+    it "converts a list of author names to author objects" do
       bolton = create :author_name, name: 'Bolton'
       fisher = create :author_name, name: 'Fisher'
-      expect(Author.find_by_names(['Bolton', 'Fisher']))
-        .to match_array [bolton.author, fisher.author]
+
+      results = Author.find_by_names ['Bolton', 'Fisher']
+      expect(results).to match_array [bolton.author, fisher.author]
+    end
+
+    it "handles empty lists" do
+      expect(Author.find_by_names([])).to eq []
     end
   end
 
-  describe "Merging authors" do
-    it "should make all the names of the passed in authors belong to the same author" do
+  describe ".merge" do
+    it "makes all the names of the passed in authors belong to the same author" do
       first_bolton_author = create(:author_name, name: 'Bolton, B').author
       second_bolton_author = create(:author_name, name: 'Bolton,B.').author
       expect(Author.count).to eq 2
@@ -47,8 +50,8 @@ describe Author do
     end
   end
 
-  describe "Versioning" do
-    it "should record versions" do
+  describe "versioning" do
+    it "records versions" do
       with_versioning do
         author = create :author
         expect(author.versions.last.event).to eq 'create'
@@ -56,7 +59,7 @@ describe Author do
     end
   end
 
-  describe "#get_author_names_for_feed_message" do
+  describe ".get_author_names_for_feed_message" do
     it "returns a string of author names" do
       # TODO
     end

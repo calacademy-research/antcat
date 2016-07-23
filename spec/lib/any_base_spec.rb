@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe AnyBase do
-  it "should convert to and from base 10" do
+  it "converts to and from base 10" do
     expect(AnyBase.base_10_to_base_x(23, '0123456789')).to eq '23'
     expect(AnyBase.base_x_to_base_10('23', '0123456789')).to eq 23
   end

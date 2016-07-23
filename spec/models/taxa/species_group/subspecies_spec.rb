@@ -42,10 +42,11 @@ describe Subspecies do
     expect(subspecies.genus).to eq genus
   end
 
-  describe "Updating the parent" do
-    it "should set all the parent fields" do
+  describe "#update_parent" do
+    it "sets all the parent fields" do
       subspecies = create_subspecies 'Atta beta kappa'
       species = create_species
+
       subspecies.update_parent species
       expect(subspecies.species).to eq species
       expect(subspecies.genus).to eq species.genus
@@ -54,24 +55,29 @@ describe Subspecies do
     end
   end
 
-  describe "The genus is the parent if there's no species" do
-    it "should return the genus" do
+  #ZZZ
+  describe "#parent" do
+    context "without a species" do
+    it "returns the genus" do
       genus = create_genus
       taxon = create_subspecies genus: genus, species: nil
+
       expect(taxon.parent).to eq genus
+    end
     end
   end
 
-  describe "Elevating to species" do
-    it "should turn the record into a Species" do
+  describe "#elevate_to_species" do
+    it "turns the record into a Species" do
       taxon = create_subspecies 'Atta major colobopsis'
       expect(taxon).to be_kind_of Subspecies
+
       taxon.elevate_to_species
       taxon = Species.find taxon.id
       expect(taxon).to be_kind_of Species
     end
 
-    it "should form the new species name from the epithet" do
+    it "forms the new species name from the epithet" do
       species = create_species 'Atta major', genus: genus
       subspecies_name = SubspeciesName.create!(
         name:           'Atta major colobopsis',
@@ -83,6 +89,7 @@ describe Subspecies do
       )
       taxon = create_subspecies name: subspecies_name,
         genus: genus, species: species
+
       taxon.elevate_to_species
       taxon = Species.find taxon.id
       expect(taxon.name.name).to eq 'Atta colobopsis'
@@ -92,7 +99,7 @@ describe Subspecies do
       expect(taxon.name.epithets).to be_nil
     end
 
-    it "should create the new species name, if necessary" do
+    it "creates a new species name, if necessary" do
       species = create_species 'Atta major', genus: genus
       subspecies_name = SubspeciesName.create!(
         name:           'Atta major colobopsis',
@@ -102,14 +109,14 @@ describe Subspecies do
         epithets:       'major colobopsis',
         protonym_html:  '<i>Atta major colobopsis</i>',
       )
-      taxon = create_subspecies name: subspecies_name,
-        genus: genus, species: species
+      taxon = create_subspecies name: subspecies_name, genus: genus, species: species
       name_count = Name.count
+
       taxon.elevate_to_species
       expect(Name.count).to eq(name_count + 1)
     end
 
-    it "should find an existing species name, if possible" do
+    it "reuses existing species name, if possible" do
       species = create_species 'Atta colobopsis', genus: genus
       subspecies_name = SubspeciesName.create!(
         name:           'Atta major colobopsis',
@@ -119,14 +126,14 @@ describe Subspecies do
         epithets:       'major colobopsis',
         protonym_html:  '<i>Atta major colobopsis</i>',
       )
-      taxon = create_subspecies name: subspecies_name,
-        genus: genus, species: species
+      taxon = create_subspecies name: subspecies_name, genus: genus, species: species
+
       taxon.elevate_to_species
       taxon = Species.find taxon.id
       expect(taxon.name).to eq species.name
     end
 
-    it "should not crash and burn if the species already exists" do
+    it "doesn't crash and burn if the species already exists" do
       species = create_species 'Atta major', genus: genus
       subspecies_name = SubspeciesName.create!(
         name:           'Atta batta major',
@@ -137,6 +144,7 @@ describe Subspecies do
         protonym_html:  '<i>Atta batta major</i>',
       )
       taxon = create_subspecies name: subspecies_name, species: species
+
       expect { taxon.elevate_to_species }.not_to raise_error
     end
   end

@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe DedupeReferenceSections do
-  it "should destroy duplicate reference section" do
+  #ZZZ
+  describe ".dedupe" do
+  it "destroys duplicate reference section" do
     taxon = create_genus
     taxon.reference_sections.create references_taxt: 'Taxt', position: 2
     taxon.reference_sections.create references_taxt: 'Taxt', position: 1
@@ -17,5 +19,6 @@ describe DedupeReferenceSections do
     expect(taxon.reference_sections.map do |reference_section|
       [reference_section.position, reference_section.references_taxt]
     end).to match_array [[1, 'Taxt'], [3, 'Not taxt']]
+  end
   end
 end

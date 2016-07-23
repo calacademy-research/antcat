@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe AuthorNameObserver do
   describe "Invalidating the formatted cache" do
-    it "should invalidate the cache when a change occurs" do
+    it "invalidates the cache when a change occurs" do
       bolton = create :author_name, name: 'Bolton'
       expect_any_instance_of(AuthorNameObserver).to receive :after_update
       bolton.name = 'Fisher'
       bolton.save!
     end
 
-    it "should invalidate the cache for all references that use the data" do
+    it "invalidates the cache for all references that use the data" do
       bolton = create :author_name, name: 'Bolton'
       fisher = create :author_name, name: 'Fisher'
 

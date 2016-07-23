@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Taxon do
-  it "should be able to be a synonym" do
+  it "can be a synonym" do
     taxon = FactoryGirl.build :taxon
     expect(taxon).not_to be_synonym
     taxon.update_attribute :status, 'synonym'
@@ -9,7 +9,7 @@ describe Taxon do
     expect(taxon).to be_invalid
   end
 
-  describe "being a synonym of" do
+  describe "#synonym_of?" do
     it "should not think it's a synonym of something when it's not" do
       genus = create :genus
       another_genus = create :genus
@@ -27,6 +27,7 @@ describe Taxon do
     senior = create_genus 'Atta'
     junior = create_genus 'Eciton'
     Synonym.create! junior_synonym: junior, senior_synonym: senior
+
     expect(senior.junior_synonyms.count).to eq 1
     expect(senior.senior_synonyms.count).to eq 0
     expect(junior.senior_synonyms.count).to eq 1
@@ -52,7 +53,7 @@ describe Taxon do
       expect(atta).not_to be_synonym_of attaboi
     end
 
-    it "should not create duplicate synonym in case of synonym cycle" do
+    it "doesn't create duplicate synonym in case of synonym cycle" do
       atta = create_genus 'Atta', status: 'synonym'
       attaboi = create_genus 'Attaboi', status: 'synonym'
 
@@ -69,7 +70,7 @@ describe Taxon do
   end
 
   describe "Removing synonymy" do
-    it "should remove all synonymies for the taxon" do
+    it "removes all synonymies for the taxon" do
       atta = create_genus 'Atta'
       attaboi = create_genus 'Attaboi'
       attaboi.extend TaxonSynonymsMonkeyPatch
@@ -89,7 +90,7 @@ describe Taxon do
   end
 
   describe "Deleting synonyms when status changed" do
-    it "should delete synonyms when the status changes from 'synonym'" do
+    it "deletes synonyms when the status changes from 'synonym'" do
       atta = create_genus
       eciton = create_genus
       atta.extend TaxonSynonymsMonkeyPatch
@@ -106,8 +107,8 @@ describe Taxon do
     end
   end
 
-  describe "Junior synonyms with names" do
-    it "should work" do
+  describe "#junior_synonyms_with_names" do
+    it "works" do
       atta = create_genus 'Atta'
       eciton = create_genus 'Eciton'
       eciton.extend TaxonSynonymsMonkeyPatch
@@ -120,8 +121,8 @@ describe Taxon do
     end
   end
 
-  describe "Senior synonyms with names" do
-    it "should work" do
+  describe "#senior_synonyms_with_names" do
+    it "work" do
       atta = create_genus 'Atta'
       eciton = create_genus 'Eciton'
       eciton.extend TaxonSynonymsMonkeyPatch

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ChangesController do
   describe "check that we can find and report the entire undo set" do
-    it "should return a single taxon when no others would be deleted" do
+    it "returns a single taxon when no others would be deleted" do
       adder = create :user, can_edit: true
       sign_in adder
       taxon = create_taxon_version_and_change :waiting, adder, nil, 'this_genus'
@@ -16,7 +16,7 @@ describe ChangesController do
       expect(changes[0]['change_type']).to eq 'create'
     end
 
-    it "should return multiple items when undoing an older change would hit newer changes" do
+    it "returns multiple items when undoing an older change would hit newer changes" do
       adder = create :user, can_edit: true
       sign_in adder
       taxon = create_taxon_version_and_change :waiting, adder, nil, 'Genus1'

@@ -9,7 +9,7 @@ describe JournalObserver do
       journal.save!
     end
 
-    it "should invalidate the cache for the references that use the journal" do
+    it "invalidates the cache for the references that use the journal" do
       journal = create :journal
       references = []
       (0..2).each do |i|

@@ -5,7 +5,7 @@ describe Publisher do
   it { should belong_to(:place) }
 
   describe "factory methods" do
-    describe "#create_with_place" do
+    describe ".create_with_place" do
       context "valid" do
         it "creates and returns the publisher" do
           publisher = Publisher.create_with_place name: 'Wiley', place: 'Chicago'
@@ -38,7 +38,7 @@ describe Publisher do
       end
     end
 
-    describe "#create_with_place_form_string" do
+    describe ".create_with_place_form_string" do
       it "handles blank strings" do
         expect(Publisher).not_to receive :create_with_place
         Publisher.create_with_place_form_string ''
@@ -51,7 +51,7 @@ describe Publisher do
     end
   end
 
-  describe "searching" do
+  describe ".search" do
     it "should do fuzzy matching of name/place combinations" do
       Publisher.create! name: 'Wiley', place: Place.create!(name: 'Chicago')
       Publisher.create! name: 'Wiley', place: Place.create!(name: 'Toronto')
@@ -64,18 +64,20 @@ describe Publisher do
     end
   end
 
-  describe "representing as a string" do
+  describe "#to_s" do
     it "format name and place" do
-      expect(Publisher.create!(name: "Wiley", place: Place.create!(name: 'New York')).to_s).to eq 'New York: Wiley'
+      publisher = Publisher.create! name: "Wiley", place: Place.create!(name: 'New York')
+      expect(publisher.to_s).to eq 'New York: Wiley'
     end
 
-    it "should format correctly if there is no place" do
-      expect(Publisher.create!(name: "Wiley").to_s).to eq 'Wiley'
+    it "formats correctly even if there is no place" do
+      publisher = Publisher.create! name: "Wiley"
+      expect(publisher.to_s).to eq 'Wiley'
     end
   end
 
-  describe "Versioning" do
-    it "should record versions" do
+  describe "versioning" do
+    it "records versions" do
       with_versioning do
         publisher = create :publisher
         expect(publisher.versions.last.event).to eq 'create'

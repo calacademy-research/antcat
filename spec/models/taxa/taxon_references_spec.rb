@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Taxon do
-  describe "References" do
+  describe "#references" do
     it "should have no references, if alone" do
       taxon = create_genus
       expect(taxon.references.size).to eq 0
@@ -26,7 +26,7 @@ describe Taxon do
     end
 
     describe "references in taxt" do
-      it "should return references in taxt" do
+      it "returns references in taxt" do
         atta = create_genus 'Atta'
         eciton = create_genus 'Eciton'
         eciton.update_attribute :type_taxt, "{tax #{atta.id}}"
@@ -35,7 +35,7 @@ describe Taxon do
         ]
       end
 
-      it "should not return references in its own taxt" do
+      it "doesn't return references in its own taxt" do
         eciton = create_genus 'Eciton'
         eciton.update_attribute :type_taxt, "{tax #{eciton.id}}"
         expect(eciton.references).to be_empty
@@ -64,9 +64,10 @@ describe Taxon do
         ]
       end
     end
-
-    describe "Nontaxt references" do
-      it "should return only nontaxt references" do
+  end
+    #ZZZ unindent
+    describe "#nontaxt_references" do
+      it "returns only nontaxt references" do
         atta = create_genus 'Atta'
         eciton = create_genus 'Eciton'
         eciton.update_attribute :type_taxt, "{tax #{atta.id}}"
@@ -76,5 +77,4 @@ describe Taxon do
         ]
       end
     end
-  end
 end

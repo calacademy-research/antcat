@@ -8,13 +8,12 @@ describe "Parsers::CommonGrammar" do
   end
 
   describe "parsing a year" do
-    it "should not consider a five digit number a year" do
+    it "doesn't consider a five digit number a year" do
       expect { @parser.parse('18345', root: :year, consume: false) }.to raise_error Citrus::ParseError
     end
   end
 
-  it "should recognize et al." do
+  it "recognizes et al." do
     @parser.parse '<i>et al.</i>', root: :et_al
   end
-
 end

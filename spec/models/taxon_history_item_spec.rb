@@ -20,7 +20,7 @@ describe TaxonHistoryItem do
     expect(item.reload.taxon).to eq taxon
   end
 
-  describe "Updating taxt from editable taxt" do
+  describe "#update_taxt_from_editable" do
     let(:item) { create :taxon_history_item }
 
     it "should not blow up on blank input but should be invalid and have errors" do
@@ -30,12 +30,12 @@ describe TaxonHistoryItem do
       expect(item).not_to be_valid
     end
 
-    it "should pass non-tags straight through" do
+    it "passes non-tags straight through" do
       item.update_taxt_from_editable 'abc'
       expect(item.reload.taxt).to eq 'abc'
     end
 
-    it "should convert from editable tags to tags" do
+    it "converts from editable tags to tags" do
       reference = create :article_reference
       other_reference = create :article_reference
       editable_key = Taxt.id_for_editable reference.id, 1
@@ -52,8 +52,8 @@ describe TaxonHistoryItem do
     end
   end
 
-  describe "Versioning" do
-    it "should record versions" do
+  describe "versioning" do
+    it "records versions" do
       with_versioning do
         history_item = create :taxon_history_item
         expect(history_item.versions.last.event).to eq 'create'

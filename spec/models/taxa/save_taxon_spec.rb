@@ -133,12 +133,10 @@ describe Taxa::SaveTaxon do
       taxon = build_new_taxon_and_set_parent :species, create_genus
       params = @species_params.deep_dup
       replacement_homonym = create_genus
+
       params[:homonym_replaced_by_name_attributes][:id] = replacement_homonym.name.id
-
       taxon.save_taxon params
-
       taxon.reload
-
       expect(taxon.homonym_replaced_by).to eq replacement_homonym
     end
 
@@ -146,8 +144,8 @@ describe Taxa::SaveTaxon do
       taxon = build_new_taxon_and_set_parent :species, create_genus
       params = @species_params.deep_dup
       current_valid_taxon = create_genus
-      params[:current_valid_taxon_name_attributes][:id] = current_valid_taxon.name.id
 
+      params[:current_valid_taxon_name_attributes][:id] = current_valid_taxon.name.id
       taxon.save_taxon params
       taxon.reload
       expect(taxon.current_valid_taxon).to eq current_valid_taxon
@@ -159,6 +157,7 @@ describe Taxa::SaveTaxon do
       taxon.save_taxon params
       taxon.reload
       expect(taxon.name.gender).to be_nil
+
       params = @genus_params.deep_dup
       params[:name_attributes][:gender] = 'masculine'
       taxon.save_taxon params
@@ -172,6 +171,7 @@ describe Taxa::SaveTaxon do
       taxon.save_taxon params
       taxon.name.update_column :gender, 'masculine'
       expect(taxon.name.gender).to eq 'masculine'
+
       params = @genus_params.deep_dup
       params[:name_attributes][:gender] = ''
       taxon.save_taxon params

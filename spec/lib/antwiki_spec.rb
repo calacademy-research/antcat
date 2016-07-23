@@ -2,7 +2,7 @@
 
 #describe Antwiki do
   #describe "comparing its valid taxa to ours" do
-    #it "should report a missing taxon" do
+    #it "reports a missing taxon" do
       #genus = create_genus 'Atta'
       #antwiki_genus = create :antwiki_valid_taxon, name: 'Atta'
       #another_antwiki_genus = create :antwiki_valid_taxon, name: 'Eciton'
@@ -13,7 +13,7 @@
       #AntwikiValidTaxon.where("result IS NULL").count.should == 1
     #end
 
-    #it "should report a taxon that's found, but is invalid" do
+    #it "reports a taxon that's found, but is invalid" do
       #genus = create_genus 'Atta', status: 'synonym'
       #antwiki_genus = create :antwiki_valid_taxon, name: 'Atta'
       #results = Antwiki.compare_valid
@@ -21,7 +21,7 @@
       #AntwikiValidTaxon.where("result = 'synonym'").count.should == 1
     #end
 
-    #it "should report a taxon that's not found, but probably because it's new" do
+    #it "reports a taxon that's not found, but probably because it's new" do
       #old_antwiki_genus = create :antwiki_valid_taxon, name: 'Atta', year: '1900'
       #new_antwiki_genus = create :antwiki_valid_taxon, name: 'Eciton', year: '2013'
       #results = Antwiki.compare_valid

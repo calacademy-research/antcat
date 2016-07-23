@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Parsers::ArticleCitationParser do
-  describe "parsing fields from series_volume_issue" do
+  # parsing fields from series_volume_issue
+  describe "#get_series_volume_issue_parts" do
     it "can parse out volume and issue" do
       expect(Parsers::ArticleCitationParser.get_series_volume_issue_parts("92(32)"))
         .to eq volume: '92', issue: '32'
@@ -18,13 +19,14 @@ describe Parsers::ArticleCitationParser do
     end
   end
 
-  describe "parsing fields from pagination" do
-    it "should parse beginning and ending page numbers" do
+  # parsing fields from pagination
+  describe "#get_page_parts" do
+    it "can parse beginning and ending page numbers" do
       expect(Parsers::ArticleCitationParser.get_page_parts('163-181'))
         .to eq start: '163', end: '181'
     end
 
-    it "should parse just a single page number" do
+    it "can parse just a single page number" do
       expect(Parsers::ArticleCitationParser.get_page_parts('8'))
         .to eq start: '8'
     end

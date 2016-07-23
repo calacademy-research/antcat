@@ -10,14 +10,14 @@ describe ReferenceAuthorNameObserver do
     reference_author_name.save!
   end
 
-  it "should invalidate the cache for the reference involved when a reference_author_name is added" do
+  it "invalidates the cache for the reference involved when a reference_author_name is added" do
     reference = create :article_reference
     ReferenceFormatterCache.instance.populate reference
     reference.reference_author_names.create! position: 1, author_name: create(:author_name)
     expect(ReferenceFormatterCache.instance.get(reference)).to be_nil
   end
 
-  it "should invalidate the cache for the reference involved when a reference_author_name is changed" do
+  it "invalidates the cache for the reference involved when a reference_author_name is changed" do
     reference = create :article_reference
     reference.reference_author_names.create! position: 1, author_name: create(:author_name)
     ReferenceFormatterCache.instance.populate reference
@@ -25,7 +25,7 @@ describe ReferenceAuthorNameObserver do
     expect(ReferenceFormatterCache.instance.get(reference)).to be_nil
   end
 
-  it "should invalidate the cache for the reference involved when a reference_author_name is deleted" do
+  it "invalidates the cache for the reference involved when a reference_author_name is deleted" do
     reference = create :article_reference
     reference.reference_author_names.create! position: 1, author_name: create(:author_name)
     ReferenceFormatterCache.instance.populate reference

@@ -3,7 +3,7 @@
 #  # Moved from spec/models/protonym_spec.rb
 #  # TODO worth maintaining?
 #  describe "Orphans" do
-#    it "should delete the orphaned protonym(s) when the taxon is deleted" do
+#    it "deletes the orphaned protonym(s) when the taxon is deleted" do
 #      genus = create_genus
 #      original_protonym_count = Protonym.count
 #

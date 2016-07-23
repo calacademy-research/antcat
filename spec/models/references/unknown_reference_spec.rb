@@ -7,8 +7,8 @@ describe UnknownReference do
   describe "validation" do
     before do
       author_name = create :author_name
-      @reference = UnknownReference.new author_names: [author_name], title: 'Title', citation_year: '2010a',
-        citation: 'Citation'
+      @reference = UnknownReference.new author_names: [author_name],
+        title: 'Title', citation_year: '2010a', citation: 'Citation'
     end
 
     it "should be be valid the way I set it up" do
@@ -17,11 +17,12 @@ describe UnknownReference do
   end
 
   describe "entering a newline in the citation" do
-    it "should strip the newline" do
+    it "strips the newline" do
       reference = create :unknown_reference
       reference.title = "A\nB"
       reference.citation = "A\nB"
       reference.save!
+
       expect(reference.title).to eq "A B"
       expect(reference.citation).to eq "A B"
     end

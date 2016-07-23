@@ -15,7 +15,7 @@ describe UsersController do
     end
 
     context "not signed in" do
-      it "return nil without blowing up" do
+      it "returns nil without blowing up" do
         get :index
         expect(User.current_user).to eq nil
       end

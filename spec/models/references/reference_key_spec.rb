@@ -7,8 +7,9 @@ describe "ReferenceDecorator formerly ReferenceKey" do
     @ward = create :author_name, name: 'Ward, P.S.'
   end
 
-  describe "Representing as a string" do
-    it "should be blank if a new record" do
+  # Representing as a string
+  describe "#key" do
+    it "is blank if a new record" do
       expect(BookReference.new.decorate.key).to eq ''
     end
 
@@ -46,15 +47,21 @@ describe "ReferenceDecorator formerly ReferenceKey" do
     end
   end
 
-  describe "Link" do
+  describe "#to_link" do
     before do
       @latreille = create :author_name, name: 'Latreille, P. A.'
       science = create :journal, name: 'Science'
-      @reference = create :article_reference, author_names: [@latreille], citation_year: '1809', title: "*Atta*", journal: science, series_volume_issue: '(1)', pagination: '3'
+      @reference = create :article_reference,
+        author_names: [@latreille],
+        citation_year: '1809',
+        title: "*Atta*",
+        journal: science,
+        series_volume_issue: '(1)',
+        pagination: '3'
       allow(@reference).to receive(:url).and_return 'example.com'
     end
 
-    it "should create a link to the reference" do
+    it "creates a link to the reference" do
       allow(@reference).to receive(:downloadable?).and_return true
       expect(@reference.decorate.to_link).to eq(
         %{<span class="reference_key_and_expansion">} +
@@ -71,7 +78,7 @@ describe "ReferenceDecorator formerly ReferenceKey" do
       )
     end
 
-    it "should create a link to the reference without the PDF link if the user isn't logged in" do
+    it "creates a link to the reference without the PDF link if the user isn't logged in" do
       allow(@reference).to receive(:downloadable?).and_return false
       expect(@reference.decorate.to_link).to eq(
         %{<span class="reference_key_and_expansion">} +
@@ -85,8 +92,10 @@ describe "ReferenceDecorator formerly ReferenceKey" do
       )
     end
 
-    describe "When expansion is not desired" do
-      it "should not include the PDF link, if not available to the user" do
+    #ZZZ
+    context "when expansion is not desired" do
+      context "PDF is not available to the user" do
+      it "doesn't include the PDF link" do
         allow(@reference).to receive(:downloadable?).and_return false
         expect(@reference.decorate.to_link(expansion: false)).to eq(
           %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
@@ -95,8 +104,10 @@ describe "ReferenceDecorator formerly ReferenceKey" do
           %{href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>}
         )
       end
+      end
 
-      it "should include the PDF link, if available to the user" do
+      context "PDF is available to the user" do
+      it "includes the PDF link" do
         allow(@reference).to receive(:downloadable?).and_return true
         expect(@reference.decorate.to_link(expansion: false)).to eq(
           %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
@@ -105,10 +116,11 @@ describe "ReferenceDecorator formerly ReferenceKey" do
           %{ <a class="document_link" target="_blank" href="example.com">PDF</a>}
         )
       end
+      end
     end
 
     describe "Handling quotes in the title" do
-      it "should escape them" do
+      it "escapes them" do
         @reference = create :unknown_reference, author_names: [@latreille], citation_year: '1809', title: '"Atta"'
         expect(@reference.decorate.to_link(expansion: false)).to eq(
           %{<a target="_blank" title="Latreille, P. A. 1809. "Atta". New York." href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>}

@@ -12,22 +12,22 @@ describe Subgenus do
     expect(colobopsis.reload.genus.name.to_s).to eq 'Camponotus'
   end
 
-  describe "Statistics" do
+  describe "#statistics" do
     it "should have none" do
       expect(create(:subgenus).statistics).to be_nil
     end
   end
 
-  describe "Species group descendants" do
+  describe "#species_group_descendants" do
     before do
       @subgenus = create_subgenus 'Subdolichoderus'
     end
 
-    it "should return an empty array if there are none" do
+    it "returns an empty array if there are none" do
       expect(@subgenus.species_group_descendants).to eq []
     end
 
-    it "should return all the species" do
+    it "returns all the species" do
       species = create_species subgenus: @subgenus
       expect(@subgenus.species_group_descendants).to eq [species]
     end

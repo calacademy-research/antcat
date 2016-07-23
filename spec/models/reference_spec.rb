@@ -31,39 +31,47 @@ describe Reference do
     end
   end
 
-  describe "author_names_string" do
-    describe "parsing" do
+    #ZZZ
+    describe "#parse_author_names_and_suffix" do
       let(:reference) { create :reference }
 
-      it "should return nothing if empty" do
+      it "returns nothing if empty" do
         expect(reference.parse_author_names_and_suffix(''))
           .to eq author_names: [], author_names_suffix: nil
       end
 
-      it "should add an error and raise and exception if invalid" do
-        expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }.to raise_error ActiveRecord::RecordInvalid
-        expect(reference.errors.messages).to eq(author_names_string: ["couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"])
+      it "adds an error and raise and exception if invalid" do
+        expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }
+          .to raise_error ActiveRecord::RecordInvalid
+
+        error_message = "couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
+        expect(reference.errors.messages).to eq author_names_string: [error_message]
         expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
       end
 
-      it "should return the author names and the suffix" do
-        expect(reference.parse_author_names_and_suffix('Fisher, B.; Bolton, B. (eds.)')).to eq(author_names: [AuthorName.find_by_name('Fisher, B.'), AuthorName.find_by_name('Bolton, B.')], author_names_suffix: ' (eds.)')
+      it "returns the author names and the suffix" do
+        results = reference.parse_author_names_and_suffix 'Fisher, B.; Bolton, B. (eds.)'
+        fisher = AuthorName.find_by_name 'Fisher, B.'
+        bolton = AuthorName.find_by_name 'Bolton, B.'
+
+        expect(results).to eq author_names: [fisher, bolton], author_names_suffix: ' (eds.)'
       end
     end
 
+  describe "#author_names_string" do
     describe "formatting" do
-      it "should consist of one author_name if that's all there is" do
+      it "consists of one author_name if that's all there is" do
         reference = create(:reference, author_names: [create(:author_name, name: 'Fisher, B.L.')])
         expect(reference.author_names_string).to eq 'Fisher, B.L.'
       end
 
-      it "should separate multiple author_names with semicolons" do
+      it "separates multiple author_names with semicolons" do
         author_names = [create(:author_name, name: 'Fisher, B.L.'), create(:author_name, name: 'Ward, P.S.')]
         reference = create(:reference, author_names: author_names)
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
       end
 
-      it "should include the author_names' suffix" do
+      it "includes the author_names' suffix" do
         author_names = [create(:author_name, name: 'Fisher, B.L.'), create(:author_name, name: 'Ward, P.S.')]
         reference = Reference.create! title: 'Ants', citation_year: '2010', author_names: author_names, author_names_suffix: ' (eds.)'
         expect(reference.reload.author_names_string).to eq 'Fisher, B.L.; Ward, P.S. (eds.)'
@@ -80,26 +88,26 @@ describe Reference do
       let(:reference) { create(:reference, author_names: [create(:author_name, name: 'Fisher, B.L.')]) }
       let(:author_name) { create(:author_name, name: 'Ward') }
 
-      it "should update its author_names_string when an author_name is added" do
+      it "updates its author_names_string when an author_name is added" do
         reference.author_names << author_name
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward'
       end
 
-      it "should update its author_names_string when an author_name is removed" do
+      it "updates its author_names_string when an author_name is removed" do
         reference.author_names << author_name
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward'
         reference.author_names.delete author_name
         expect(reference.author_names_string).to eq 'Fisher, B.L.'
       end
 
-      it "should update its author_names_string when an author_name's name is changed" do
+      it "updates its author_names_string when an author_name's name is changed" do
         reference.author_names = [author_name]
         expect(reference.author_names_string).to eq 'Ward'
         author_name.update_attribute :name, 'Fisher'
         expect(reference.reload.author_names_string).to eq 'Fisher'
       end
 
-      it "should update its author_names_string when the author_names_suffix changes" do
+      it "updates its author_names_string when the author_names_suffix changes" do
         reference.author_names_suffix = ' (eds.)'
         reference.save
         expect(reference.reload.author_names_string).to eq 'Fisher, B.L. (eds.)'
@@ -107,18 +115,19 @@ describe Reference do
     end
 
     describe "maintaining its order" do
-      it "should show the author_names in the order in which they were added to the reference" do
+      it "maintains the order in which they were added to the reference" do
         reference = create(:reference, author_names: [create(:author_name, name: 'Ward')])
         wilden = create :author_name, name: 'Wilden'
         fisher = create :author_name, name: 'Fisher'
         reference.author_names << wilden
         reference.author_names << fisher
+
         expect(reference.author_names_string).to eq 'Ward; Wilden; Fisher'
       end
     end
   end
 
-  describe "principal author last name" do
+  describe "#principal_author_last_name" do
     let(:ward) { create :author_name, name: 'Ward, P.' }
     let(:fisher) { create :author_name, name: 'Fisher, B.' }
 
@@ -127,12 +136,12 @@ describe Reference do
       expect(reference.principal_author_last_name).to be_nil
     end
 
-    it "should cache the last name of the principal author" do
+    it "caches the last name of the principal author" do
       reference = create :reference, author_names: [ward, fisher]
       expect(reference.principal_author_last_name).to eq 'Ward'
     end
 
-    it "should update its author_names_string when an author_name's name is changed" do
+    it "updates its author_names_string when an author_name's name is changed" do
       reference = create :reference, author_names: [ward]
       ward.update_attributes name: 'Bolton, B.'
       expect(reference.reload.principal_author_last_name).to eq 'Bolton'
@@ -160,7 +169,7 @@ describe Reference do
   end
 
   describe "changing the citation year" do
-    it "should change the year" do
+    it "changes the year" do
       reference = create :reference, citation_year: '1910a'
       expect(reference.year).to eq 1910
       reference.citation_year = '2010b'
@@ -168,7 +177,7 @@ describe Reference do
       expect(reference.year).to eq 2010
     end
 
-    it "should set the year to the stated year, if present" do
+    it "sets the year to the stated year, if present" do
       reference = create :reference, citation_year: '1910a ["1958"]'
       expect(reference.year).to eq 1958
       reference.citation_year = '2010b'
@@ -185,25 +194,26 @@ describe Reference do
   describe "entering a newline in the title, public_notes, editor_notes or taxonomic_notes" do
     let(:reference) { create :reference }
 
-    it "should strip the newline" do
+    it "strips the newline" do
       reference.title = "A\nB"
       reference.public_notes = "A\nB"
       reference.editor_notes = "A\nB"
       reference.taxonomic_notes = "A\nB"
       reference.save!
+
       expect(reference.title).to eq "A B"
       expect(reference.public_notes).to eq "A B"
       expect(reference.editor_notes).to eq "A B"
       expect(reference.taxonomic_notes).to eq "A B"
     end
 
-    it "should handle all sorts of newlines" do
+    it "handles all sorts of newlines" do
       reference.title = "A\r\nB"
       reference.save!
       expect(reference.title).to eq "A B"
     end
 
-    it "should completely remove newlines at the beginning and end" do
+    it "removes newlines at the beginning and end" do
       reference.title = "\r\nA\r\nB\n\n"
       reference.save!
       expect(reference.title).to eq "A B"
@@ -211,10 +221,11 @@ describe Reference do
   end
 
   describe "long fields" do
-    it "should not truncate long fields" do
+    it "doesn't truncate long fields" do
       Reference.create! author_names: author_names, editor_notes: 'e' * 1000, citation: 'c' * 2000,
         public_notes: 'n' * 1500, taxonomic_notes: 't' * 1700, title: 't' * 1900, citation_year: '2010'
       reference = Reference.first
+
       expect(reference.citation.length).to eq 2000
       expect(reference.editor_notes.length).to eq 1000
       expect(reference.public_notes.length).to eq 1500
@@ -223,8 +234,8 @@ describe Reference do
     end
   end
 
-  describe "ordering by author_name" do
-    it "should order by author_name" do
+  describe "scope.sorted_by_principal_author_last_name" do
+    it "orders by author_name" do
       bolton = create :author_name, name: 'Bolton'
       ward = create :author_name, name: 'Ward'
       fisher = create :author_name, name: 'Fisher'
@@ -232,23 +243,30 @@ describe Reference do
       ward_reference = create :article_reference, author_names: [ward, bolton]
       fisher_reference = create :article_reference, author_names: [fisher, bolton]
 
-      expect(Reference.sorted_by_principal_author_last_name.map(&:id))
-        .to eq [bolton_reference.id, fisher_reference.id, ward_reference.id]
+      results = Reference.sorted_by_principal_author_last_name
+      expect(results.map(&:id)).to eq [bolton_reference.id, fisher_reference.id, ward_reference.id]
     end
   end
 
-  describe 'with principal author last name' do
-    it 'should return references with a matching principal author last name' do
-      not_possible_reference = create :book_reference, author_names: [create(:author_name, name: 'Bolton, B.')]
-      possible_reference = create :article_reference, author_names: [create(:author_name, name: 'Ward, P. S.'), create(:author_name, name: 'Fisher, B. L.')]
-      another_possible_reference = create :article_reference, author_names: [create(:author_name, name: 'Warden, J.')]
-      expect(Reference.with_principal_author_last_name('Ward'))
-        .to eq [possible_reference]
+  describe 'scope.with_principal_author_last_name' do
+    it 'returns references with a matching principal author last name' do
+      not_possible_reference = create :book_reference,
+        author_names: [create(:author_name, name: 'Bolton, B.')]
+      possible_reference = create :article_reference,
+        author_names: [
+          create(:author_name, name: 'Ward, P. S.'),
+          create(:author_name, name: 'Fisher, B. L.')
+        ]
+      another_possible_reference = create :article_reference,
+        author_names: [create(:author_name, name: 'Warden, J.')]
+
+      results = Reference.with_principal_author_last_name 'Ward'
+      expect(results).to eq [possible_reference]
     end
   end
 
   describe 'implementing ReferenceComparable' do
-    it 'should map all fields correctly' do
+    it 'maps all fields correctly' do
       reference = ArticleReference.create! author_names: [create(:author_name, name: 'Fisher, B. L.')], citation_year: '1981',
         title: 'Dolichoderinae', journal: create(:journal), series_volume_issue: '1(2)', pagination: '22-54'
       expect(reference.author).to eq 'Fisher'
@@ -261,7 +279,7 @@ describe Reference do
   end
 
   describe "duplicate checking" do
-    it "should allow a duplicate record to be saved" do
+    it "allows a duplicate record to be saved" do
       journal = create :journal
       author = create :author_name
       original = ArticleReference.create! author_names: [author],
@@ -272,7 +290,7 @@ describe Reference do
         journal: journal, series_volume_issue: '1(2)', pagination: '22-54'
     end
 
-    it "should check possible duplication and add to errors, if any found" do
+    it "checks possible duplication and add to errors, if any found" do
       journal = create :journal
       author = create :author_name
       original = ArticleReference.create! author_names: [author], citation_year: '1981', title: 'Dolichoderinae',
@@ -285,25 +303,66 @@ describe Reference do
     end
   end
 
-  describe "Short citation year" do
-    it "should be same as citation year if nothing extra" do
+  describe "#short_citation_year" do
+    it "is the same as citation year if nothing extra" do
       reference = create :article_reference, citation_year: '1970'
       expect(reference.short_citation_year).to eq '1970'
     end
 
-    it "should allow an ordinal letter" do
+    it "allows an ordinal letter" do
       reference = create :article_reference, citation_year: '1970a'
       expect(reference.short_citation_year).to eq '1970a'
     end
 
-    it "should be trimmed if there is something extra" do
+    it "is trimmed if there is something extra" do
       reference = create :article_reference, citation_year: '1970a ("1971")'
       expect(reference.short_citation_year).to eq '1970a'
     end
   end
 
-  describe "Versioning" do
-    it "should record events and allow restoring a prior version" do
+  # References to a reference
+  describe "#reference_references" do
+    let(:reference) { create :article_reference }
+
+    it "recognizes various uses of this reference in taxt" do
+      citation = create :citation, reference: reference, notes_taxt: "{ref #{reference.id}}"
+      protonym = create :protonym, authorship: citation
+      taxon = create :genus,
+        protonym: protonym,
+        type_taxt: "{ref #{reference.id}}",
+        headline_notes_taxt: "{ref #{reference.id}}",
+        genus_species_header_notes_taxt: "{ref #{reference.id}}"
+      history_item = taxon.history_items.create! taxt: "{ref #{reference.id}}"
+      reference_section = create :reference_section,
+        title_taxt: "{ref #{reference.id}}",
+        subtitle_taxt: "{ref #{reference.id}}",
+        references_taxt: "{ref #{reference.id}}"
+      nested_reference = create :nested_reference, nesting_reference: reference
+
+      results = reference.send :reference_references
+      expect(results).to match_array [
+        {table: 'taxa',               id: taxon.id,             field: :type_taxt},
+        {table: 'taxa',               id: taxon.id,             field: :headline_notes_taxt},
+        {table: 'taxa',               id: taxon.id,             field: :genus_species_header_notes_taxt},
+        {table: 'citations',          id: citation.id,          field: :notes_taxt},
+        {table: 'citations',          id: citation.id,          field: :reference_id},
+        {table: 'reference_sections', id: reference_section.id, field: :title_taxt},
+        {table: 'reference_sections', id: reference_section.id, field: :subtitle_taxt},
+        {table: 'reference_sections', id: reference_section.id, field: :references_taxt},
+        {table: 'references',         id: nested_reference.id,  field: :nesting_reference_id},
+        {table: 'taxon_history_items',id: history_item.id,      field: :taxt},
+      ]
+    end
+
+    describe "#has_any_references?" do
+      it "returns false if there are no references to this reference" do
+        expect(reference.send(:has_any_references?)).to be_falsey
+      end
+    end
+  end
+
+  describe "versioning" do
+    it "records events and can restore prior versions" do
       with_versioning do
         reference = UnknownReference.create! title: 'title',
           citation_year: '2010', citation: 'citation'
@@ -323,38 +382,6 @@ describe Reference do
         expect(reference.title).to eq 'title'
         reference.save!
         expect(reference.title).to eq 'title'
-      end
-    end
-  end
-
-  describe "References to a reference" do
-    let(:reference) { create :article_reference }
-
-    it "should recognize various uses of this reference in taxt" do
-      citation = create :citation, reference: reference, notes_taxt: "{ref #{reference.id}}"
-      protonym = create :protonym, authorship: citation
-      taxon = create :genus, protonym: protonym, type_taxt: "{ref #{reference.id}}", headline_notes_taxt: "{ref #{reference.id}}", genus_species_header_notes_taxt: "{ref #{reference.id}}"
-      history_item = taxon.history_items.create! taxt: "{ref #{reference.id}}"
-      reference_section = create :reference_section, title_taxt: "{ref #{reference.id}}", subtitle_taxt: "{ref #{reference.id}}", references_taxt: "{ref #{reference.id}}"
-      nested_reference = create :nested_reference, nesting_reference: reference
-      results = reference.send :reference_references
-      expect(results).to match_array [
-        {table: 'taxa',               id: taxon.id,             field: :type_taxt},
-        {table: 'taxa',               id: taxon.id,             field: :headline_notes_taxt},
-        {table: 'taxa',               id: taxon.id,             field: :genus_species_header_notes_taxt},
-        {table: 'citations',          id: citation.id,          field: :notes_taxt},
-        {table: 'citations',          id: citation.id,          field: :reference_id},
-        {table: 'reference_sections', id: reference_section.id, field: :title_taxt},
-        {table: 'reference_sections', id: reference_section.id, field: :subtitle_taxt},
-        {table: 'reference_sections', id: reference_section.id, field: :references_taxt},
-        {table: 'references',         id: nested_reference.id,  field: :nesting_reference_id},
-        {table: 'taxon_history_items',id: history_item.id,      field: :taxt},
-      ]
-    end
-
-    describe "Any references?" do
-      it "should return false if there are no references to this reference" do
-        expect(reference.send(:has_any_references?)).to be_falsey
       end
     end
   end

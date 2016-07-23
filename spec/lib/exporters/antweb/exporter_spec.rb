@@ -46,7 +46,7 @@ describe Exporters::Antweb::Exporter do
         .and_return '<span title="Bolton. Ants>Bolton, 1970</span>'
     end
 
-    it "should export a subfamily" do
+    it "can export a subfamily" do
       create_genus subfamily: @ponerinae, tribe: nil
       allow(@ponerinae).to receive(:authorship_string).and_return 'Bolton, 2011'
       allow(@ponerinae).to receive(:author_last_names_string).and_return 'Bolton'
@@ -58,7 +58,7 @@ describe Exporters::Antweb::Exporter do
       ]
     end
 
-    it "should export fossil taxa" do
+    it "can export fossil taxa" do
       create_genus subfamily: @ponerinae, tribe: nil
       fossil = create_genus 'Atta', subfamily: @ponerinae, tribe: nil, fossil: true
       allow(@ponerinae).to receive(:authorship_string).and_return 'Bolton, 2011'
@@ -79,7 +79,7 @@ describe Exporters::Antweb::Exporter do
       ]
     end
 
-    it "should export a genus" do
+    it "can export a genus" do
       dacetini = create_tribe 'Dacetini', subfamily: @ponerinae
       acanthognathus = create_genus 'Acanothognathus', subfamily: @ponerinae, tribe: dacetini
       allow(acanthognathus).to receive(:authorship_string).and_return 'Bolton, 2011'
@@ -92,7 +92,7 @@ describe Exporters::Antweb::Exporter do
       ]
     end
 
-    it "should export a genus without a tribe" do
+    it "can export a genus without a tribe" do
       acanthognathus = create_genus 'Acanothognathus', subfamily: @ponerinae, tribe: nil
       allow(acanthognathus).to receive(:authorship_string).and_return 'Bolton, 2011'
       allow(acanthognathus).to receive(:author_last_names_string).and_return 'Bolton'
@@ -104,7 +104,7 @@ describe Exporters::Antweb::Exporter do
       ]
     end
 
-    it "should export a genus without a subfamily as being in 'incertae_sedis'" do
+    it "can export a genus without a subfamily as being in 'incertae_sedis'" do
       acanthognathus = create_genus 'Acanothognathus', tribe: nil, subfamily: nil
       allow(acanthognathus).to receive(:authorship_string).and_return 'Fisher, 2013'
       allow(acanthognathus).to receive(:author_last_names_string).and_return 'Fisher'
@@ -117,7 +117,7 @@ describe Exporters::Antweb::Exporter do
     end
 
     describe "Exporting species" do
-      it "should export one correctly" do
+      it "exports one correctly" do
         atta = create_genus 'Atta', tribe: @attini
         species = create_species 'Atta robustus', genus: atta
         allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
@@ -130,7 +130,7 @@ describe Exporters::Antweb::Exporter do
         ]
       end
 
-      it "should export a species without a tribe" do
+      it "can export a species without a tribe" do
         atta = create_genus 'Atta', subfamily: @ponerinae, tribe: nil
         species = create_species 'Atta robustus', genus: atta
         allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
@@ -143,7 +143,7 @@ describe Exporters::Antweb::Exporter do
         ]
       end
 
-      it "should export a species without a subfamily as being in the 'incertae sedis' subfamily" do
+      it "exports a species without a subfamily as being in the 'incertae sedis' subfamily" do
         atta = create_genus 'Atta', subfamily: nil, tribe: nil
         species = create_species 'Atta robustus', genus: atta
         allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
@@ -158,7 +158,7 @@ describe Exporters::Antweb::Exporter do
     end
 
     describe "Exporting subspecies" do
-      it "should export one correctly" do
+      it "exports one correctly" do
         atta = create_genus 'Atta', subfamily: @ponerinae, tribe: @attini
         species = create_species 'Atta robustus', subfamily: @ponerinae, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', subfamily: @ponerinae, genus: atta, species: species
@@ -172,7 +172,7 @@ describe Exporters::Antweb::Exporter do
         ]
       end
 
-      it "should export a subspecies without a tribe" do
+      it "can export a subspecies without a tribe" do
         atta = create_genus 'Atta', subfamily: @ponerinae, tribe: nil
         species = create_species 'Atta robustus', subfamily: @ponerinae, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', genus: atta, species: species
@@ -186,7 +186,7 @@ describe Exporters::Antweb::Exporter do
         ]
       end
 
-      it "should export a subspecies without a subfamily as being in the 'incertae sedis' subfamily" do
+      it "exports a subspecies without a subfamily as being in the 'incertae sedis' subfamily" do
         atta = create_genus 'Atta', subfamily: nil, tribe: nil
         species = create_species 'Atta robustus', subfamily: nil, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', subfamily: nil, genus: atta, species: species
@@ -203,14 +203,14 @@ describe Exporters::Antweb::Exporter do
   end
 
   describe "Current valid name" do
-    it "should export the current valid name of the taxon" do
+    it "exports the current valid name of the taxon" do
       taxon = create_genus
       old = create_genus
       taxon.update_attributes! current_valid_taxon_id: old.id
       expect(@exporter.export_taxon(taxon)[13]).to end_with old.name.name
     end
 
-    it "should look at synonyms if there isn't a current_valid_taxon" do
+    it "looks at synonyms if there isn't a current_valid_taxon" do
       genus = create_genus
       senior_synonym = create_species 'Eciton major', genus: genus
       junior_synonym = create_species 'Atta major', genus: genus, status: 'synonym'
@@ -218,27 +218,27 @@ describe Exporters::Antweb::Exporter do
       expect(@exporter.export_taxon(junior_synonym)[13]).to end_with 'Eciton major'
     end
 
-    it "should return nil if the taxon itself is valid. " do
+    it "returns nil if the taxon itself is valid. " do
       taxon = create_genus 'Atta'
       expect(@exporter.export_taxon(taxon)[13]).to be_nil
     end
   end
 
   describe "Sending all taxa - not just valid" do
-    it "should export a junior synonym" do
+    it "can export a junior synonym" do
       taxon = create_genus status: 'original combination'
       results = @exporter.export_taxon taxon
       expect(results).not_to be_nil
       expect(results[11]).to eq 'original combination'
     end
 
-    it "should export a Tribe" do
+    it "can export a Tribe" do
       taxon = create_tribe
       results = @exporter.export_taxon taxon
       expect(results).not_to be_nil
     end
 
-    it "should export a Subgenus" do
+    it "can export a Subgenus" do
       taxon = create_subgenus 'Atta (Boyo)'
       results = @exporter.export_taxon taxon
       expect(results[4]).to eq 'Boyo'
@@ -246,12 +246,12 @@ describe Exporters::Antweb::Exporter do
   end
 
   describe "Sending 'was original combination' so that AntWeb knows when to use parentheses around authorship" do
-    it "should send TRUE or FALSE" do
+    it "sends TRUE or FALSE" do
       taxon = create_genus status: 'original combination'
       expect(@exporter.export_taxon(taxon)[14]).to eq 'TRUE'
     end
 
-    it "should send TRUE or FALSE" do
+    it "sends TRUE or FALSE" do
       taxon = create_genus
       expect(@exporter.export_taxon(taxon)[14]).to eq 'FALSE'
     end
@@ -291,13 +291,13 @@ describe Exporters::Antweb::Exporter do
   end
 
   describe "Reference ID" do
-    it "should send the protonym's reference ID" do
+    it "sends the protonym's reference ID" do
       taxon = create_genus
       reference_id = @exporter.export_taxon(taxon)[18]
       expect(reference_id).to eq taxon.protonym.authorship.reference.id
     end
 
-    it "should send nil if the protonym's reference is a MissingReference" do
+    it "sends nil if the protonym's reference is a MissingReference" do
       taxon = create_genus
       taxon.protonym.authorship.reference = create :missing_reference
       taxon.save!
@@ -307,19 +307,19 @@ describe Exporters::Antweb::Exporter do
   end
 
   describe "Sending other fields to AntWeb" do
-    it "should send the biogeographic region" do
+    it "sends the biogeographic region" do
       taxon = create_genus biogeographic_region: 'Neotropic'
       expect(@exporter.export_taxon(taxon)[19]).to eq 'Neotropic'
     end
 
-    it "should send the locality" do
+    it "sends the locality" do
       taxon = create_genus protonym: create(:protonym, locality: 'Canada')
       expect(@exporter.export_taxon(taxon)[20]).to eq 'Canada'
     end
   end
 
   describe "Current valid rank" do
-    it "should send the right value for each class" do
+    it "sends the right value for each class" do
       expect(@exporter.export_taxon(create_subfamily)[21]).to eq 'Subfamily'
       expect(@exporter.export_taxon(create_genus)[21]).to eq 'Genus'
       expect(@exporter.export_taxon(create_subgenus)[21]).to eq 'Subgenus'
@@ -337,39 +337,39 @@ describe Exporters::Antweb::Exporter do
       @species = create_species 'Atta betta', genus: @genus, subfamily: @subfamily
     end
 
-    it "should not punt on a subfamily's family" do
+    it "sdoesn't punt on a subfamily's family" do
       taxon = create_subfamily
       expect(@exporter.export_taxon(taxon)[23]).to eq 'Formicidae'
     end
 
-    it "should handle a taxon's subfamily" do
+    it "handles a taxon's subfamily" do
       taxon = create_tribe subfamily: @subfamily
       expect(@exporter.export_taxon(taxon)[23]).to eq 'Dolichoderinae'
     end
 
-    it "should not skip over tribe and return the subfamily" do
+    it "doesn't skip over tribe and return the subfamily" do
       taxon = create_genus tribe: @tribe
       expect(@exporter.export_taxon(taxon)[23]).to eq 'Attini'
     end
 
-    it "should return the subfamily only if there's no tribe" do
+    it "returns the subfamily only if there's no tribe" do
       taxon = create_genus subfamily: @subfamily, tribe: nil
       expect(@exporter.export_taxon(taxon)[23]).to eq 'Dolichoderinae'
     end
 
-    #  Commented out because this relies on importers with bad ideas.
+    # Commented out because this relies on importers with bad ideas.
     # Importers are doomed.
-    # it "should skip over subgenus and return the genus" do
+    # it "skips over subgenus and return the genus" do
     #   taxon = create_species genus: @genus, subgenus: @subgenus
     #   expect(@exporter.export_taxon(taxon)[23]).to eq 'Atta'
     # end
 
-    it "should handle a taxon's species" do
+    it "handles a taxon's species" do
       taxon = create_subspecies 'Atta betta cappa', species: @species, genus: @genus, subfamily: @subfamily
       expect(@exporter.export_taxon(taxon)[23]).to eq 'Atta betta'
     end
 
-    it "should handle a synonym" do
+    it "handles a synonym" do
       senior = create_genus 'Eciton', subfamily: @subfamily
       junior = create_genus 'Atta', subfamily: @subfamily, current_valid_taxon: senior
       taxon = create_species genus: junior
@@ -377,12 +377,12 @@ describe Exporters::Antweb::Exporter do
       expect(@exporter.export_taxon(taxon)[23]).to eq 'Eciton'
     end
 
-    it "should handle a genus without a subfamily" do
+    it "handles a genus without a subfamily" do
       taxon = create_genus 'Acanothognathus', tribe: nil, subfamily: nil
       expect(@exporter.export_taxon(taxon)[23]).to eq 'Formicidae'
     end
 
-    it "should handle a subspecies without a species" do
+    it "handles a subspecies without a species" do
       taxon = create_subspecies 'Atta betta kappa', genus: @genus, species: nil, subfamily: nil
       expect(@exporter.export_taxon(taxon)[23]).to eq 'Atta'
     end

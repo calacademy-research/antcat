@@ -5,7 +5,7 @@ describe Exporters::TaxonList::Exporter do
     @exporter = Exporters::TaxonList::Exporter.new
   end
 
-  it "should write its output to the right file" do
+  it "writes its output to the right file" do
     expect(File).to receive(:open).with 'data/output/antcat_taxon_list.txt', 'w'
     @exporter.export
   end
@@ -36,7 +36,6 @@ describe Exporters::TaxonList::Exporter do
         expect(@exporter).to receive(:write).with(@file, "Fisher, B.L.\t" + "2013\t" + '3').ordered
         @exporter.export
       end
-
     end
   end
 end

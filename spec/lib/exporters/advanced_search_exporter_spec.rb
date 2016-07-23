@@ -11,7 +11,7 @@ describe Exporters::AdvancedSearchExporter do
       citation_year: '2011d'
   end
 
-  it "should format the number of taxa passed in", pending: true do
+  it "formats the number of taxa passed in", pending: true do
     pending "This appears to be doing exactly what is expected. check the original to see what this text should be."
     Subfamily.destroy_all
     5.times do

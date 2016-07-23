@@ -23,13 +23,13 @@ describe ArticleReference do
   end
 
   describe "parsing fields from pagination" do
-    it "should parse beginning and ending page numbers" do
+    it "parses beginning and ending page numbers" do
       reference = create :article_reference, pagination: '163-181'
       expect(reference.start_page).to eq '163'
       expect(reference.end_page).to eq '181'
     end
 
-    it "should parse just a single page number" do
+    it "parses just a single page number" do
       reference = create :article_reference, pagination: "8"
       expect(reference.start_page).to eq '8'
       expect(reference.end_page).to be_nil
@@ -48,7 +48,7 @@ describe ArticleReference do
         journal: journal, series_volume_issue: '1', pagination: '2'
     end
 
-    it "should be valid the way I just set it up" do
+    it "is valid the way I just set it up" do
       expect(@reference).to be_valid
     end
   end
