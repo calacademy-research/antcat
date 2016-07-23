@@ -31,32 +31,31 @@ describe Reference do
     end
   end
 
-    #ZZZ
-    describe "#parse_author_names_and_suffix" do
-      let(:reference) { create :reference }
+  describe "#parse_author_names_and_suffix" do
+    let(:reference) { create :reference }
 
-      it "returns nothing if empty" do
-        expect(reference.parse_author_names_and_suffix(''))
-          .to eq author_names: [], author_names_suffix: nil
-      end
-
-      it "adds an error and raise and exception if invalid" do
-        expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }
-          .to raise_error ActiveRecord::RecordInvalid
-
-        error_message = "couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
-        expect(reference.errors.messages).to eq author_names_string: [error_message]
-        expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
-      end
-
-      it "returns the author names and the suffix" do
-        results = reference.parse_author_names_and_suffix 'Fisher, B.; Bolton, B. (eds.)'
-        fisher = AuthorName.find_by_name 'Fisher, B.'
-        bolton = AuthorName.find_by_name 'Bolton, B.'
-
-        expect(results).to eq author_names: [fisher, bolton], author_names_suffix: ' (eds.)'
-      end
+    it "returns nothing if empty" do
+      expect(reference.parse_author_names_and_suffix(''))
+        .to eq author_names: [], author_names_suffix: nil
     end
+
+    it "adds an error and raise and exception if invalid" do
+      expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }
+        .to raise_error ActiveRecord::RecordInvalid
+
+      error_message = "couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
+      expect(reference.errors.messages).to eq author_names_string: [error_message]
+      expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
+    end
+
+    it "returns the author names and the suffix" do
+      results = reference.parse_author_names_and_suffix 'Fisher, B.; Bolton, B. (eds.)'
+      fisher = AuthorName.find_by_name 'Fisher, B.'
+      bolton = AuthorName.find_by_name 'Bolton, B.'
+
+      expect(results).to eq author_names: [fisher, bolton], author_names_suffix: ' (eds.)'
+    end
+  end
 
   describe "#author_names_string" do
     describe "formatting" do

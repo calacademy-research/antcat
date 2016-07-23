@@ -92,30 +92,29 @@ describe "ReferenceDecorator formerly ReferenceKey" do
       )
     end
 
-    #ZZZ
     context "when expansion is not desired" do
       context "PDF is not available to the user" do
-      it "doesn't include the PDF link" do
-        allow(@reference).to receive(:downloadable?).and_return false
-        expect(@reference.decorate.to_link(expansion: false)).to eq(
-          %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
-          %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
-          %{ <a class="document_link" target="_blank" } +
-          %{href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>}
-        )
-      end
+        it "doesn't include the PDF link" do
+          allow(@reference).to receive(:downloadable?).and_return false
+          expect(@reference.decorate.to_link(expansion: false)).to eq(
+            %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
+            %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
+            %{ <a class="document_link" target="_blank" } +
+            %{href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>}
+          )
+        end
       end
 
       context "PDF is available to the user" do
-      it "includes the PDF link" do
-        allow(@reference).to receive(:downloadable?).and_return true
-        expect(@reference.decorate.to_link(expansion: false)).to eq(
-          %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
-          %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
-          %{ <a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>} +
-          %{ <a class="document_link" target="_blank" href="example.com">PDF</a>}
-        )
-      end
+        it "includes the PDF link" do
+          allow(@reference).to receive(:downloadable?).and_return true
+          expect(@reference.decorate.to_link(expansion: false)).to eq(
+            %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
+            %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
+            %{ <a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>} +
+            %{ <a class="document_link" target="_blank" href="example.com">PDF</a>}
+          )
+        end
       end
     end
 

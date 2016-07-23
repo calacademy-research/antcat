@@ -59,30 +59,29 @@ describe SubspeciesName do
       expect(subspecies_name.epithets).to eq 'niger minor medii'
     end
 
-    #ZZZ
     context "name already exists" do
-    context "name is used by a different taxon" do
-    it "raises" do
-      existing_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
-      subspecies = create_subspecies 'Eciton niger minor', name: existing_subspecies_name
-      subspecies_name = SubspeciesName.create! name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
-      species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
-      protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
+      context "name is used by a different taxon" do
+        it "raises" do
+          existing_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
+          subspecies = create_subspecies 'Eciton niger minor', name: existing_subspecies_name
+          subspecies_name = SubspeciesName.create! name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
+          species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
+          protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
 
-      expect { subspecies_name.change_parent species_name }.to raise_error
-    end
-    end
+          expect { subspecies_name.change_parent species_name }.to raise_error
+        end
+      end
 
-    context "name is an orphan" do
-    it "doesn't raise" do
-      orphan_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
-      subspecies_name = SubspeciesName.create! name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
-      species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
-      protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
+      context "name is an orphan" do
+        it "doesn't raise" do
+          orphan_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor', epithet: 'minor', epithets: 'niger minor'
+          subspecies_name = SubspeciesName.create! name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
+          species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
+          protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
 
-      expect { subspecies_name.change_parent species_name }.not_to raise_error
-    end
-    end
+          expect { subspecies_name.change_parent species_name }.not_to raise_error
+        end
+      end
     end
   end
 

@@ -23,31 +23,30 @@ describe SpeciesName do
       expect(species_name.epithet_html).to eq '<i>major</i>'
     end
 
-    #ZZZ
     context "name already exists" do
-    context "name is used by a different taxon" do
-    it "raises" do
-      existing_species_name = SpeciesName.create! name: 'Eciton major', epithet: 'major'
-      species = create_species 'Eciton major', name: existing_species_name
+      context "name is used by a different taxon" do
+        it "raises" do
+          existing_species_name = SpeciesName.create! name: 'Eciton major', epithet: 'major'
+          species = create_species 'Eciton major', name: existing_species_name
 
-      species_name = SpeciesName.create! name: 'Atta major', epithet: 'major'
-      genus_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
-      protonym_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
+          species_name = SpeciesName.create! name: 'Atta major', epithet: 'major'
+          genus_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
+          protonym_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
 
-      expect { species_name.change_parent genus_name }.to raise_error
-    end
-    end
+          expect { species_name.change_parent genus_name }.to raise_error
+        end
+      end
 
-    context "name is an orphan" do
-    it "doesn't raise" do
-      orphan_species_name = SpeciesName.create! name: 'Eciton minor', epithet: 'minor'
-      species_name = SpeciesName.create! name: 'Atta minor', epithet: 'minor'
-      genus_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
-      protonym_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
+      context "name is an orphan" do
+        it "doesn't raise" do
+          orphan_species_name = SpeciesName.create! name: 'Eciton minor', epithet: 'minor'
+          species_name = SpeciesName.create! name: 'Atta minor', epithet: 'minor'
+          genus_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
+          protonym_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
 
-      expect { species_name.change_parent genus_name }.not_to raise_error
-    end
-    end
+          expect { species_name.change_parent genus_name }.not_to raise_error
+        end
+      end
     end
   end
 end

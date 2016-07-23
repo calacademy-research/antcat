@@ -47,22 +47,21 @@ describe LinkHelper do
   end
 
   describe "#link_to_hol" do
-    #ZZZ
     context "without a #hol_id" do
-    it "doesn't link" do
-      expect(helper.link_to_hol(create_subfamily 'Dolichoderinae')).to be nil
-    end
+      it "doesn't link" do
+        expect(helper.link_to_hol(create_subfamily 'Dolichoderinae')).to be nil
+      end
     end
 
     context "with a #hol_id" do
-    it "links" do
-      taxon = create_subfamily 'Dolichoderinae'
-      taxon.hol_id = 1234
-      taxon.save!
+      it "links" do
+        taxon = create_subfamily 'Dolichoderinae'
+        taxon.hol_id = 1234
+        taxon.save!
 
-      expect(helper.link_to_hol(taxon)).to eq(
-        %{<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://hol.osu.edu/index.html?id=1234\">HOL</a>})
-    end
+        expect(helper.link_to_hol(taxon)).to eq(
+          %{<a class=\"link_to_external_site\" target=\"_blank\" href=\"http://hol.osu.edu/index.html?id=1234\">HOL</a>})
+      end
     end
   end
 

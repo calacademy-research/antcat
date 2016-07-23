@@ -11,21 +11,20 @@ describe Reference do
   end
 
   describe "#downloadable?" do
-    #ZZZ
     context "with a document" do
-    it "delegates to its document" do
-      reference = create :reference, document: create(:reference_document)
-      user = create :user
+      it "delegates to its document" do
+        reference = create :reference, document: create(:reference_document)
+        user = create :user
 
-      expect(reference.document).to receive :downloadable?
-      reference.downloadable?
-    end
+        expect(reference.document).to receive :downloadable?
+        reference.downloadable?
+      end
     end
 
     context "without a document" do
-    it "returns false" do
-      expect(create(:reference)).not_to be_downloadable
-    end
+      it "returns false" do
+        expect(create(:reference)).not_to be_downloadable
+      end
     end
   end
 

@@ -48,28 +48,27 @@ describe TaxonDecorator do
     describe "types" do
       let(:species_name) { create :species_name, name: 'Atta major', epithet: 'major' }
 
-      #ZZZ
       describe "#headline_type" do
-      it "shows the type taxon" do
-        genus = create_genus 'Atta', type_name: species_name
-        expect(decorator_helper.new(genus).send(:headline_type))
-          .to eq %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span>}
-      end
+        it "shows the type taxon" do
+          genus = create_genus 'Atta', type_name: species_name
+          expect(decorator_helper.new(genus).send(:headline_type))
+            .to eq %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span>}
+        end
 
-      it "shows the type taxon with extra Taxt" do
-        genus = create_genus 'Atta', type_name: species_name, type_taxt: ', by monotypy'
-        expect(decorator_helper.new(genus).send(:headline_type))
-          .to eq %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>, by monotypy.</span>}
-      end
+        it "shows the type taxon with extra Taxt" do
+          genus = create_genus 'Atta', type_name: species_name, type_taxt: ', by monotypy'
+          expect(decorator_helper.new(genus).send(:headline_type))
+            .to eq %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>, by monotypy.</span>}
+        end
       end
 
       describe "#headline_type_name" do
-      it "shows the type taxon as a link, if the taxon for the name exists" do
-        type = create_species 'Atta major'
-        genus = create_genus 'Atta', type_name: create(:species_name, name: 'Atta major')
-        expect(decorator_helper.new(genus).send(:headline_type_name))
-          .to eq %Q{<a href="/catalog/#{type.id}"><i>Atta major</i></a>}
-      end
+        it "shows the type taxon as a link, if the taxon for the name exists" do
+          type = create_species 'Atta major'
+          genus = create_genus 'Atta', type_name: create(:species_name, name: 'Atta major')
+          expect(decorator_helper.new(genus).send(:headline_type_name))
+            .to eq %Q{<a href="/catalog/#{type.id}"><i>Atta major</i></a>}
+        end
       end
     end
 
@@ -237,11 +236,10 @@ describe TaxonDecorator do
   end
 
   describe "#link_to_taxon" do
-    #ZZZ
-      it "creates the link" do
-        genus = create_genus 'Atta'
-        expect(genus.decorate.link_to_taxon).to eq %{<a href="/catalog/#{genus.id}"><i>Atta</i></a>}
-      end
+    it "creates the link" do
+      genus = create_genus 'Atta'
+      expect(genus.decorate.link_to_taxon).to eq %{<a href="/catalog/#{genus.id}"><i>Atta</i></a>}
+    end
   end
 
   describe "#change_history" do
@@ -286,15 +284,14 @@ describe TaxonDecorator do
   describe "#format_senior_synonym" do
     let(:decorator_helper) { TaxonDecorator::Header }
 
-    #ZZZ
     context "when the senior synonym is itself invalid" do
-    it "returns an empty string" do
-      invalid_senior = create_genus 'Atta', status: 'synonym'
-      junior = create_genus 'Eciton', status: 'synonym'
-      Synonym.create! junior_synonym: junior,
-        senior_synonym: invalid_senior
-      expect(junior.decorate.send(:format_senior_synonym)).to eq ''
-    end
+      it "returns an empty string" do
+        invalid_senior = create_genus 'Atta', status: 'synonym'
+        junior = create_genus 'Eciton', status: 'synonym'
+        Synonym.create! junior_synonym: junior,
+          senior_synonym: invalid_senior
+        expect(junior.decorate.send(:format_senior_synonym)).to eq ''
+      end
     end
   end
 

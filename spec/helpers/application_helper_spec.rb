@@ -44,31 +44,30 @@ describe ApplicationHelper do
   end
 
   describe "italicization" do
-    #ZZZ
     describe "#italicize" do
-    it "adds <i> tags" do
-      string = helper.italicize 'Atta'
-      expect(string).to eq '<i>Atta</i>'
-      expect(string).to be_html_safe
-    end
+      it "adds <i> tags" do
+        string = helper.italicize 'Atta'
+        expect(string).to eq '<i>Atta</i>'
+        expect(string).to be_html_safe
+      end
     end
 
     describe "#unitalicize" do
-    it "removes <i> tags" do
-      string = helper.unitalicize('Attini <i>Atta major</i> r.'.html_safe)
-      expect(string).to eq 'Attini Atta major r.'
-      expect(string).to be_html_safe
-    end
+      it "removes <i> tags" do
+        string = helper.unitalicize('Attini <i>Atta major</i> r.'.html_safe)
+        expect(string).to eq 'Attini Atta major r.'
+        expect(string).to be_html_safe
+      end
 
-    it "handles multiple <i> tags" do
-      string = helper.unitalicize('Attini <i>Atta</i> <i>major</i> r.'.html_safe)
-      expect(string).to eq 'Attini Atta major r.'
-      expect(string).to be_html_safe
-    end
+      it "handles multiple <i> tags" do
+        string = helper.unitalicize('Attini <i>Atta</i> <i>major</i> r.'.html_safe)
+        expect(string).to eq 'Attini Atta major r.'
+        expect(string).to be_html_safe
+      end
 
-    it "raises if called on unsafe strings" do
-      expect { helper.unitalicize('Attini <i>Atta major</i> r.') }.to raise_error
-    end
+      it "raises if called on unsafe strings" do
+        expect { helper.unitalicize('Attini <i>Atta major</i> r.') }.to raise_error
+      end
     end
   end
 

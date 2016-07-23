@@ -55,15 +55,14 @@ describe Subspecies do
     end
   end
 
-  #ZZZ
   describe "#parent" do
     context "without a species" do
-    it "returns the genus" do
-      genus = create_genus
-      taxon = create_subspecies genus: genus, species: nil
+      it "returns the genus" do
+        genus = create_genus
+        taxon = create_subspecies genus: genus, species: nil
 
-      expect(taxon.parent).to eq genus
-    end
+        expect(taxon.parent).to eq genus
+      end
     end
   end
 

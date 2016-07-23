@@ -126,7 +126,7 @@ describe Taxon do
     end
   end
 
-  #ZZZ remove?
+  #TODO remove?
   describe "Rank" do
     it "should return a lowercase version" do
       expect(create(:subfamily).name.rank).to eq 'subfamily'
@@ -268,16 +268,15 @@ describe Taxon do
         expect(genus.authorship_string).to eq 'Bolton 2005'
       end
 
-      #ZZZ
       context "when a recombination in a different genus" do
-      it "surrounds it in parentheses" do
-        species = create_species 'Atta minor'
-        protonym_name = create_species_name 'Eciton minor'
-        allow(species.protonym).to receive(:name).and_return protonym_name
-        allow(species.protonym).to receive(:authorship_string).and_return 'Bolton, 2005'
+        it "surrounds it in parentheses" do
+          species = create_species 'Atta minor'
+          protonym_name = create_species_name 'Eciton minor'
+          allow(species.protonym).to receive(:name).and_return protonym_name
+          allow(species.protonym).to receive(:authorship_string).and_return 'Bolton, 2005'
 
-        expect(species.authorship_string).to eq '(Bolton, 2005)'
-      end
+          expect(species.authorship_string).to eq '(Bolton, 2005)'
+        end
       end
 
       it "should not surround in parentheses, if the name simply differs" do
@@ -308,35 +307,34 @@ describe Taxon do
   end
 
   describe "#recombination?" do
-    #ZZZ
     context "name is same as protonym" do
-    it "it is not a recombination" do
-      species = create_species 'Atta major'
-      protonym_name = create_species_name 'Atta major'
+      it "it is not a recombination" do
+        species = create_species 'Atta major'
+        protonym_name = create_species_name 'Atta major'
 
-      expect(species.protonym).to receive(:name).and_return protonym_name
-      expect(species).not_to be_recombination
-    end
+        expect(species.protonym).to receive(:name).and_return protonym_name
+        expect(species).not_to be_recombination
+      end
     end
 
     context "genus part of name is different than genus part of protonym" do
-    it "it is a recombination" do
-      species = create_species 'Atta minor'
-      protonym_name = create_species_name 'Eciton minor'
+      it "it is a recombination" do
+        species = create_species 'Atta minor'
+        protonym_name = create_species_name 'Eciton minor'
 
-      expect(species.protonym).to receive(:name).and_return protonym_name
-      expect(species).to be_recombination
-    end
+        expect(species.protonym).to receive(:name).and_return protonym_name
+        expect(species).to be_recombination
+      end
     end
 
     context "genus part of name is same as genus part of protonym" do
-    it "it is not a recombination" do
-      species = create_species 'Atta minor maxus'
-      protonym_name = create_subspecies_name 'Atta minor minus'
+      it "it is not a recombination" do
+        species = create_species 'Atta minor maxus'
+        protonym_name = create_subspecies_name 'Atta minor minus'
 
-      expect(species.protonym).to receive(:name).and_return protonym_name
-      expect(species).not_to be_recombination
-    end
+        expect(species.protonym).to receive(:name).and_return protonym_name
+        expect(species).not_to be_recombination
+      end
     end
   end
 
@@ -400,13 +398,12 @@ describe Taxon do
     let(:genus) { create :genus }
     let(:subfamily) { create :subfamily }
 
-    #ZZZ
     describe "#parent=" do
-    it "can be assigned from an object" do
-      genus.parent = subfamily
-      genus.save!
-      expect(genus.reload.subfamily).to eq subfamily
-    end
+      it "can be assigned from an object" do
+        genus.parent = subfamily
+        genus.save!
+        expect(genus.reload.subfamily).to eq subfamily
+      end
     end
 
     describe "#parent" do

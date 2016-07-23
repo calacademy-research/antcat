@@ -65,16 +65,16 @@ describe Taxon do
       end
     end
   end
-    #ZZZ unindent
-    describe "#nontaxt_references" do
-      it "returns only nontaxt references" do
-        atta = create_genus 'Atta'
-        eciton = create_genus 'Eciton'
-        eciton.update_attribute :type_taxt, "{tax #{atta.id}}"
-        eciton.update_attribute :homonym_replaced_by, atta
-        expect(atta.nontaxt_references).to match_array [
-          {table: 'taxa', field: :homonym_replaced_by_id, id: eciton.id},
-        ]
-      end
+
+  describe "#nontaxt_references" do
+    it "returns only nontaxt references" do
+      atta = create_genus 'Atta'
+      eciton = create_genus 'Eciton'
+      eciton.update_attribute :type_taxt, "{tax #{atta.id}}"
+      eciton.update_attribute :homonym_replaced_by, atta
+      expect(atta.nontaxt_references).to match_array [
+        {table: 'taxa', field: :homonym_replaced_by_id, id: eciton.id},
+      ]
     end
+  end
 end

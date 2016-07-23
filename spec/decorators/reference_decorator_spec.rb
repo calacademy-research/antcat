@@ -420,11 +420,10 @@ describe ReferenceDecorator do
       expect(string).to be_html_safe
     end
 
-    #ZZZ
     context "string isn't html_safe" do
-    it "raises" do
-      expect { nil_decorator.send :format_italics, 'roman' }.to raise_error
-    end
+      it "raises" do
+        expect { nil_decorator.send :format_italics, 'roman' }.to raise_error
+      end
     end
   end
 
@@ -465,31 +464,30 @@ describe ReferenceDecorator do
 
   # returns the display string for a review status
   describe "#format_review_state" do
-    #ZZZ unindent
-      it "handles 'reviewed'" do
-        reference = create :reference, review_state: 'reviewed'
-        expect(reference.decorate.format_review_state).to eq 'Reviewed'
-      end
+    it "handles 'reviewed'" do
+      reference = create :reference, review_state: 'reviewed'
+      expect(reference.decorate.format_review_state).to eq 'Reviewed'
+    end
 
-      it "handles 'reviewing'" do
-        reference = create :reference, review_state: 'reviewing'
-        expect(reference.decorate.format_review_state).to eq 'Being reviewed'
-      end
+    it "handles 'reviewing'" do
+      reference = create :reference, review_state: 'reviewing'
+      expect(reference.decorate.format_review_state).to eq 'Being reviewed'
+    end
 
-      it "handles 'none'" do
-        reference = create :reference, review_state: 'none'
-        expect(reference.decorate.format_review_state).to eq ''
-      end
+    it "handles 'none'" do
+      reference = create :reference, review_state: 'none'
+      expect(reference.decorate.format_review_state).to eq ''
+    end
 
-      it "handles empty states" do
-        reference = create :reference, review_state: ''
-        expect(reference.decorate.format_review_state).to eq ''
-      end
+    it "handles empty states" do
+      reference = create :reference, review_state: ''
+      expect(reference.decorate.format_review_state).to eq ''
+    end
 
-      it "handles nil" do
-        reference = create :reference, review_state: nil
-        expect(reference.decorate.format_review_state).to eq ''
-      end
+    it "handles nil" do
+      reference = create :reference, review_state: nil
+      expect(reference.decorate.format_review_state).to eq ''
+    end
   end
 
   describe "A regression where a string should've been duped" do

@@ -222,13 +222,12 @@ describe ComparableReference do
           expect(@lhs <=> @rhs).to eq 0.90
         end
 
-        #ZZZ
         context "when the series/volume/issue has a space after the series, but the space separates words" do
-        it "doesn't match the series_volume_issue" do
-          @lhs.series_volume_issue = '21 4'
-          @rhs.series_volume_issue = '214'
-          expect(@lhs <=> @rhs).to eq 0.10
-        end
+          it "doesn't match the series_volume_issue" do
+            @lhs.series_volume_issue = '21 4'
+            @rhs.series_volume_issue = '214'
+            expect(@lhs <=> @rhs).to eq 0.10
+          end
         end
 
         it "matches if the only difference is that rhs includes the year" do
