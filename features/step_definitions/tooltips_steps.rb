@@ -14,7 +14,7 @@
 #    <p>Text</p><tooltip/>
 # here <tooltip/> is next to the element containing "Text"
 
-Given /^(?:these|this) tooltips? (?:also)? ?exists?$/ do |table|
+Given(/^(?:these|this) tooltips? (?:also)? ?exists?$/) do |table|
   table.hashes.each do |hash|
     create :tooltip, hash
   end
@@ -29,7 +29,7 @@ When(/^I hover the tooltip next to the text "([^"]*)"$/) do |text|
   find('*', text: /^#{text}$/).first('img.help_icon').hover
 end
 
-Then /^I should (not )?see the tooltip text "([^"]*)"$/ do |should_not, text|
+Then(/^I should (not )?see the tooltip text "([^"]*)"$/) do |should_not, text|
   selector = should_not ? :should_not : :should
   page.send selector, have_css('.ui-tooltip', visible: true, text: text)
 end

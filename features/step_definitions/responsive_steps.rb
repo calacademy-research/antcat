@@ -1,13 +1,13 @@
-When /^I resize the browser window to (mobile|tablet|desktop)$/ do |device|
+When(/^I resize the browser window to (mobile|tablet|desktop)$/) do |device|
   resize_window_to_device device
 end
 
-Then /^I should see the desktop layout$/ do
+Then(/^I should see the desktop layout$/) do
   page.should have_css("#desktop-only", visible: true)
   page.should have_no_css("#mobile-only", visible: true)
 end
 
-Then /^I should see the mobile layout$/ do
+Then(/^I should see the mobile layout$/) do
   page.should have_css("#mobile-only", visible: true)
   page.should have_no_css("#desktop-only", visible: true)
 end

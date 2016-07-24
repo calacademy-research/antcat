@@ -9,11 +9,11 @@ end
 World WithinHelpers
 
 # Go to / be on
-When /^(?:|I )go to (.+)$/ do |page_name|
+When(/^(?:|I )go to (.+)$/) do |page_name|
   visit path_to(page_name)
 end
 
-Then /^(?:|I )should be on (.+)$/ do |page_name|
+Then(/^(?:|I )should be on (.+)$/) do |page_name|
   current_path = URI.parse(current_url).path
   if current_path.respond_to? :should
     current_path.should == path_to(page_name)
@@ -23,7 +23,7 @@ Then /^(?:|I )should be on (.+)$/ do |page_name|
 end
 
 # Click/press
-When /^(?:|I )press "([^"]*)"$/ do |button|
+When(/^(?:|I )press "([^"]*)"$/) do |button|
   # TODO treat buttons and "button link" the same
   if button == "Edit"
     first('.btn-edit').click
@@ -42,61 +42,61 @@ When /^(?:|I )press "([^"]*)"$/ do |button|
   end
 end
 
-When /^(?:|I )press the first "([^"]*)"$/ do |button|
+When(/^(?:|I )press the first "([^"]*)"$/) do |button|
   first(:button, button).click
 end
 
-When /^(?:|I )follow the first "([^"]*)"$/ do |link|
+When(/^(?:|I )follow the first "([^"]*)"$/) do |link|
   first(:link, link).click
 end
 
-When /^(?:|I )follow "([^"]*)"$/ do |link|
+When(/^(?:|I )follow "([^"]*)"$/) do |link|
   click_link link
 end
 
-When /^I press the "([^"]+)" button/ do |button|
+When(/^I press the "([^"]+)" button/) do |button|
   click_button button
 end
 
-When /^I click "([^"]*)"$/ do |selector|
+When(/^I click "([^"]*)"$/) do |selector|
   find(selector).click
 end
 
-And /I follow "(.*?)" (?:with)?in (.*)$/ do |link, location|
+And(/I follow "(.*?)" (?:with)?in (.*)$/) do |link, location|
   with_scope location do
     step %{I follow "#{link}"}
   end
 end
 
-And /I press "(.*?)" (?:with)?in (.*)$/ do |button, location|
+And(/I press "(.*?)" (?:with)?in (.*)$/) do |button, location|
   with_scope location do
     step %{I press "#{button}"}
   end
 end
 
 # Interact with form elements
-When /^(?:|I )fill in "([^"]*)" with "([^"]*)"$/ do |field, value|
+When(/^(?:|I )fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, with: value
 end
 
-When /^(?:|I )select "([^"]*)" from "([^"]*)"$/ do |value, field|
+When(/^(?:|I )select "([^"]*)" from "([^"]*)"$/) do |value, field|
   select value, from: field
 end
 
-When /^(?:|I )check "([^"]*)"$/ do |field|
+When(/^(?:|I )check "([^"]*)"$/) do |field|
   check field
 end
 
-When /^(?:|I )uncheck "([^"]*)"$/ do |field|
+When(/^(?:|I )uncheck "([^"]*)"$/) do |field|
   uncheck field
 end
 
-When /^(?:|I )choose "([^"]*)"$/ do |field|
+When(/^(?:|I )choose "([^"]*)"$/) do |field|
   choose field
 end
 
 # I should see/contain/selected ...
-Then /^(?:|I )should see "([^"]*)"$/ do |text|
+Then(/^(?:|I )should see "([^"]*)"$/) do |text|
   if page.respond_to? :should
     page.should have_content(text)
   else
@@ -104,7 +104,7 @@ Then /^(?:|I )should see "([^"]*)"$/ do |text|
   end
 end
 
-Then /^(?:|I )should not see "([^"]*)"$/ do |text|
+Then(/^(?:|I )should not see "([^"]*)"$/) do |text|
   if page.respond_to? :should
     page.should have_no_content(text)
   else
@@ -112,7 +112,7 @@ Then /^(?:|I )should not see "([^"]*)"$/ do |text|
   end
 end
 
-Then /^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/ do |field, parent, value|
+Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |field, parent, value|
   with_scope(parent) do
     field = find_field field
     field_value = (field.tag_name == 'textarea') ? field.text : field.value
@@ -124,7 +124,7 @@ Then /^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/ do |field
   end
 end
 
-Then /^I (#{SHOULD_OR_SHOULD_NOT}) see an? "([^"]*)" button$/ do |should_selector, button|
+Then(/^I (#{SHOULD_OR_SHOULD_NOT}) see an? "([^"]*)" button$/) do |should_selector, button|
   # TODO treat buttons and "button link" the same
   if button == "Edit"
     page.send(should_selector.to_sym, have_css("a.btn-edit"))
@@ -133,11 +133,11 @@ Then /^I (#{SHOULD_OR_SHOULD_NOT}) see an? "([^"]*)" button$/ do |should_selecto
   end
 end
 
-Then /^I should see a link "([^"]*)"$/ do |link|
+Then(/^I should see a link "([^"]*)"$/) do |link|
   page.should have_css 'a', text: link
 end
 
-Then /I should (not )?see "(.*?)" (?:with)?in (.*)$/ do |do_not, contents, location|
+Then(/I should (not )?see "(.*?)" (?:with)?in (.*)$/) do |do_not, contents, location|
   with_scope location do
     step %{I should #{do_not}see "#{contents}"}
   end
@@ -147,7 +147,7 @@ Then(/^I should see "([^"]*)" selected in "([^"]*)"$/) do |value, select|
   expect(page).to have_select(select, selected: value)
 end
 
-Then /^"([^"]+)" should be selected(?: in (.*))?$/ do |word, location|
+Then(/^"([^"]+)" should be selected(?: in (.*))?$/) do |word, location|
   with_scope location || 'the page' do
     page.should have_css ".selected", text: word
   end
@@ -166,32 +166,32 @@ Given 'I will confirm on the next step' do
   end
 end
 
-When /I wait for a bit(?: more)?/ do
+When(/I wait for a bit(?: more)?/) do
   sleep 1
 end
 
-Then /^the page title should have "([^"]*)" in it$/ do |title|
+Then(/^the page title should have "([^"]*)" in it$/) do |title|
   page.title.should have_content(title)
 end
 
-Given /that URL "([^"]*)" exists/ do |link|
+Given(/that URL "([^"]*)" exists/) do |link|
   stub_request :any, link
 end
 
-When /^I reload the page$/ do
+When(/^I reload the page$/) do
   visit current_path
 end
 
-Then "I should not see any error messages" do
+Then("I should not see any error messages") do
   page.should_not have_css '.error_messages li'
 end
 
-When /^I follow "([^"]*)" inside the breadcrumb$/ do |link|
+When(/^I follow "([^"]*)" inside the breadcrumb$/) do |link|
   within "#breadcrumbs" do
     step %{I follow "#{link}"}
   end
 end
 
-Then /I should see "([^"]*)" italicized/ do |italicized_text|
+Then(/I should see "([^"]*)" italicized/) do |italicized_text|
   page.should have_css('i', text: italicized_text)
 end

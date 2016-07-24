@@ -1,21 +1,21 @@
-Given /this user exists/ do |table|
+Given(/this user exists/) do |table|
   table.hashes.each { |hash| User.create! hash }
 end
 
-Given /^I fill in the email field with "([^"]+)"$/ do |string|
+Given(/^I fill in the email field with "([^"]+)"$/) do |string|
   step %{I fill in "user_email" with "#{string}"}
 end
 
-Given /^I fill in the email field with my email address$/ do
+Given(/^I fill in the email field with my email address$/) do
   user = User.find_by_name 'Mark Wilden'
   step %{I fill in "user_email" with "#{user.email}"}
 end
 
-Given /^I fill in the password field with "([^"]+)"$/ do |string|
+Given(/^I fill in the password field with "([^"]+)"$/) do |string|
   step %{I fill in "user_password" with "#{string}"}
 end
 
-Given /^I press the first "([^"]+)" to log in$/ do |string|
+Given(/^I press the first "([^"]+)" to log in$/) do |string|
   step %{I press the first "#{string}"}
 end
 
@@ -37,7 +37,7 @@ def login_through_web_page
   step %{I press "Go" within "#login"}
 end
 
-Given /^I log in$/ do
+Given(/^I log in$/) do
   @user = Feed::Activity.without_tracking do
     create :user, can_edit: true
   end
@@ -48,7 +48,7 @@ Given 'I am logged in' do
   step 'I log in'
 end
 
-Given /^I log in as a catalog editor(?: named "([^"]+)")?$/ do |name|
+Given(/^I log in as a catalog editor(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
   @user = Feed::Activity.without_tracking do
     create :user, can_edit: true, name: name
@@ -56,7 +56,7 @@ Given /^I log in as a catalog editor(?: named "([^"]+)")?$/ do |name|
   login_programmatically
 end
 
-Given /^I log in as a superadmin(?: named "([^"]+)")?$/ do |name|
+Given(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
   @user = Feed::Activity.without_tracking do
     create :user, can_edit: true, is_superadmin: true, name: name
@@ -64,14 +64,14 @@ Given /^I log in as a superadmin(?: named "([^"]+)")?$/ do |name|
   login_programmatically
 end
 
-Given /^I log in as a bibliography editor$/ do
+Given(/^I log in as a bibliography editor$/) do
   @user = Feed::Activity.without_tracking do
     create :user
   end
   login_programmatically
 end
 
-Given /^there should be a mailto link to the email of "([^"]+)"$/ do |user_name|
+Given(/^there should be a mailto link to the email of "([^"]+)"$/) do |user_name|
   # Problems with this are caused by having @ or : in the target of the search
   #user_email = User.find_by_name(user_name).email
   #page.should have_css user_email

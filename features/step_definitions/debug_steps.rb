@@ -1,20 +1,20 @@
-And /^(?:I debug|DEBUG)$/ do
+And(/^(?:I debug|DEBUG)$/) do
   debugger
 end
 
-And /^(?:I screenshot|SCREEN|SHOT)$/ do
+And(/^(?:I screenshot|SCREEN|SHOT)$/) do
   screenshot_and_save_page
 end
 
-And /^(?:I pry|PRY)/ do
+And(/^(?:I pry|PRY)/) do
   binding.pry
 end
 
-And /^(?:I pause|PAUSE)$/ do
+And(/^(?:I pause|PAUSE)$/) do
   print "Paused. Hit enter to continue."
   STDIN.getc
 end
 
-Given /^PENDING/ do
+Given(/^PENDING/) do
   pending
 end
