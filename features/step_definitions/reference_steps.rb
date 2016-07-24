@@ -195,11 +195,11 @@ Given(/^there is a missing reference(?: with citation "(.+)")?( in a protonym)?$
   end
 end
 
-And(/^I click the replacement field$/) do
+When(/^I click the replacement field$/) do
   step %{I click "#replacement_id_field .display_button"}
 end
 
-And(/^I should not see the missing reference$/) do
+Then(/^I should not see the missing reference$/) do
   step 'I should not see "Adventures among Ants"'
 end
 
@@ -235,12 +235,12 @@ def find_reference_by_key key
   Reference.where(principal_author_last_name_cache: last_name, year: year.to_i).first
 end
 
-And(/^the default reference is "([^"]*)"$/) do |key|
+Given(/^the default reference is "([^"]*)"$/) do |key|
   reference = find_reference_by_key key
   DefaultReference.stub(:get).and_return reference
 end
 
-And(/^there is no default reference$/) do
+Given(/^there is no default reference$/) do
   DefaultReference.stub(:get).and_return nil
 end
 

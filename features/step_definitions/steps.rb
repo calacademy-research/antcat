@@ -62,13 +62,13 @@ When(/^I click "([^"]*)"$/) do |selector|
   find(selector).click
 end
 
-And(/I follow "(.*?)" (?:with)?in (.*)$/) do |link, location|
+When(/I follow "(.*?)" (?:with)?in (.*)$/) do |link, location|
   with_scope location do
     step %{I follow "#{link}"}
   end
 end
 
-And(/I press "(.*?)" (?:with)?in (.*)$/) do |button, location|
+When(/I press "(.*?)" (?:with)?in (.*)$/) do |button, location|
   with_scope location do
     step %{I press "#{button}"}
   end
@@ -158,7 +158,7 @@ Then(/^"([^"]*)" should be checked$/) do |checkbox|
 end
 
 # Misc
-Given 'I will confirm on the next step' do
+And('I will confirm on the next step') do
   begin
     evaluate_script "window.alert = function(msg) { return true; }"
     evaluate_script "window.confirm = function(msg) { return true; }"

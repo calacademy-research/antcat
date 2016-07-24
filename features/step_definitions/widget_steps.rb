@@ -7,7 +7,7 @@ When(/^in the reference picker, I search for the authors? "([^"]*)"$/) do |autho
 end
 
 # Reference field
-And(/^I click the reference field$/) do
+When(/^I click the reference field$/) do
   sleep 2
   step %{I click ".display_button"}
   sleep 2

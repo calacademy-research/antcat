@@ -1,4 +1,4 @@
-Given(/^I click "edit" in the first row$/) do
+When(/^I click "edit" in the first row$/) do
   first('#content table a').click
 end
 

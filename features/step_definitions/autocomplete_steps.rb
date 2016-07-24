@@ -4,7 +4,7 @@ Then(/^I (#{SHOULD_OR_SHOULD_NOT}) see the following autocomplete suggestions:$/
   end
 end
 
-Then(/^I click the first autocomplete suggestion$/) do
+When(/^I click the first autocomplete suggestion$/) do
   first('.tt-suggestion').click
 end
 

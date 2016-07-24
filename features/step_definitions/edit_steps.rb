@@ -17,7 +17,7 @@ end
 
 # fields section
 ### name field
-And(/^I click the name field$/) do
+When(/^I click the name field$/) do
   step %{I click "#name_field .display_button"}
 end
 
@@ -39,7 +39,7 @@ When(/^the name button should contain "([^"]*)"$/) do |name|
 end
 
 # gender
-Then(/I set the name gender to "([^"]*)"/) do |gender|
+When(/I set the name gender to "([^"]*)"/) do |gender|
   step %{I select "#{gender}" from "taxon_name_attributes_gender"}
 end
 
@@ -57,7 +57,7 @@ Then(/^I should (not )?see the biogeographic region$/) do |should_not|
 end
 
 # verbatim type locality
-Then(/I set the verbatim type locality to "([^"]*)"/) do |locality|
+When(/I set the verbatim type locality to "([^"]*)"/) do |locality|
   step %{I fill in "taxon_verbatim_type_locality" with "San Pedro, CA"}
 end
 
@@ -73,7 +73,7 @@ Then(/^the verbatim type locality should be "([^"]*)"/) do |locality|
 end
 
 # type specimen repository
-Then(/I set the type specimen repository to "([^"]*)"/) do |repository|
+When(/I set the type specimen repository to "([^"]*)"/) do |repository|
   step %{I fill in "taxon_type_specimen_repository" with "#{repository}"}
 end
 
@@ -88,7 +88,7 @@ Then(/^the type specimen repository should be "([^"]*)"/) do |repository|
 end
 
 # type specimen URL
-Then(/I set the type specimen URL to "([^"]*)"/) do |url|
+When(/I set the type specimen URL to "([^"]*)"/) do |url|
   step %{I fill in "taxon_type_specimen_url" with "#{url}"}
 end
 
@@ -110,7 +110,7 @@ Then(/^I should not see the parent name field/) do
 end
 
 #### current valid taxon field
-When(/the current valid taxon name should be "([^"]*)"$/) do |name|
+Then(/the current valid taxon name should be "([^"]*)"$/) do |name|
   page.find('#current_valid_taxon_name_field div.display').text.should == name
 end
 
@@ -127,7 +127,7 @@ Then(/the status should be "([^"]*)"/) do |status|
   page.should have_css "select#taxon_status option[selected=selected][value=#{status}]"
 end
 
-Then(/I set the status to "([^"]*)"/) do |status|
+When(/I set the status to "([^"]*)"/) do |status|
   step %{I select "#{status}" from "taxon_status"}
 end
 
@@ -138,7 +138,7 @@ Then(/^I should (not )?see the homonym replaced by field$/) do |should_not|
   find("#homonym_replaced_by_row", visible: visible).send(selector, be_visible)
 end
 
-When(/the homonym replaced by name should be "([^"]*)"$/) do |name|
+Then(/the homonym replaced by name should be "([^"]*)"$/) do |name|
   page.find('#homonym_replaced_by_name_field div.display').text.should == name
 end
 
@@ -151,7 +151,7 @@ When(/^I set the homonym replaced by name to "([^"]*)"$/) do |name|
 end
 
 ### authorship
-And(/^I click the authorship field$/) do
+When(/^I click the authorship field$/) do
   sleep 1
   step %{I click "#authorship_field .display_button"}
 end
@@ -165,7 +165,7 @@ When(/I click the protonym name field/) do
   find('#protonym_name_field .display_button').click
 end
 
-When(/^the protonym name field should contain "([^"]*)"$/) do |name|
+Then(/^the protonym name field should contain "([^"]*)"$/) do |name|
   find('#name_string').value.should == name
 end
 
@@ -184,7 +184,7 @@ When(/^I set the type name to "([^"]*)"$/) do |name|
   end
 end
 
-When(/^the type name field should contain "([^"]*)"$/) do |name|
+Then(/^the type name field should contain "([^"]*)"$/) do |name|
   find('#name_string').value.should == name
 end
 
@@ -193,7 +193,7 @@ When(/I click the new species field/) do
   find('#new_species_id_field .display_button').click
 end
 
-When(/^the new species field should contain "([^"]*)"$/) do |name|
+Then(/^the new species field should contain "([^"]*)"$/) do |name|
   find('#name_string').value.should == name
 end
 
@@ -240,7 +240,7 @@ Then(/^I should (not )?see the "Delete" button for the history item$/) do |shoul
   page.send selector, have_css('button.delete', visible: visible)
 end
 
-And(/^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?/) do |taxon_name, tag_taxon_name|
+When(/^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?/) do |taxon_name, tag_taxon_name|
   taxon = Taxon.find_by_name taxon_name
   if tag_taxon_name
     tag_taxon = Taxon.find_by_name tag_taxon_name
@@ -261,7 +261,7 @@ When(/^I add a history item "(.*?)"/) do |text|
   step %{I save the history item}
 end
 
-Then(/^I add a reference section "(.*?)"/) do |text|
+When(/^I add a reference section "(.*?)"/) do |text|
   step %{I click the "Add" reference section button}
   step %{I fill in the references field with "#{text}"}
   step %{I save the reference section}

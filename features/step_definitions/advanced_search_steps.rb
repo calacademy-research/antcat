@@ -78,11 +78,11 @@ Then(/^I should see the species described in (\d+)$/) do |year|
   step %{I should see "#{year}"}
 end
 
-And(/^I select "([^"]+)" from the rank selector$/) do |value|
+When(/^I select "([^"]+)" from the rank selector$/) do |value|
   step %{I select "#{value}" from "rank"}
 end
 
-And(/^I select "([^"]+)" from the biogeographic region selector$/) do |value|
+When(/^I select "([^"]+)" from the biogeographic region selector$/) do |value|
   step %{I select "#{value}" from "biogeographic_region"}
 end
 
