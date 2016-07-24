@@ -124,12 +124,14 @@ Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |fiel
   end
 end
 
-Then(/^I (#{SHOULD_OR_SHOULD_NOT}) see an? "([^"]*)" button$/) do |should_selector, button|
+Then(/^I (should|should not) see an? "([^"]*)" button$/) do |should_selector, button|
   # TODO treat buttons and "button link" the same
+  should_selector = should_selector.tr(" ", "_").to_sym
+
   if button == "Edit"
-    page.send(should_selector.to_sym, have_css("a.btn-edit"))
+    page.send(should_selector, have_css("a.btn-edit"))
   else
-    page.send(should_selector.to_sym, have_css("input[value='#{button}']"))
+    page.send(should_selector, have_css("input[value='#{button}']"))
   end
 end
 

@@ -231,10 +231,10 @@ Then(/^the review status on the Ward reference should change to "(.*?)"$/) do |s
   end
 end
 
-Then(/^it (#{SHOULD_OR_SHOULD_NOT}) show "(.*?)" as the default$/) do |should_selector, key|
+Then(/^it should (not )?show "(.*?)" as the default$/) do |should_selector, key|
   author = key.split(' ').first
   within find("tr", text: author) do
-    step %{I #{should_selector} see "Default"}
+    step %{I should #{should_selector}see "Default"}
   end
 end
 
