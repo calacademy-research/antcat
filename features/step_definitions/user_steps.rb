@@ -22,26 +22,27 @@ end
 Given('I am not logged in') do
 end
 
-def login_programmatically
-  login_as @user
+def login_programmatically user
+  login_as user
   # TODO move to individual scenarios. Many scenarios bypassed the main page
   # by directly visiting other paths.
   step 'I go to the main page'
 end
 
+# TODO not used
 def login_through_web_page
   step 'I go to the main page'
   click_link "Login"
-  step %{I fill in "user_email" with "#{@user.email}"}
-  step %{I fill in "user_password" with "#{@user.password}"}
+  step %{I fill in "user_email" with "#{user.email}"}
+  step %{I fill in "user_password" with "#{user.password}"}
   step %{I press "Go" within "#login"}
 end
 
 When(/^I log in$/) do
-  @user = Feed::Activity.without_tracking do
+  user = Feed::Activity.without_tracking do
     create :user, can_edit: true
   end
-  login_programmatically
+  login_programmatically user
 end
 
 Given('I am logged in') do
@@ -50,25 +51,25 @@ end
 
 When(/^I log in as a catalog editor(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
-  @user = Feed::Activity.without_tracking do
+  user = Feed::Activity.without_tracking do
     create :user, can_edit: true, name: name
   end
-  login_programmatically
+  login_programmatically user
 end
 
 When(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
-  @user = Feed::Activity.without_tracking do
+  user = Feed::Activity.without_tracking do
     create :user, can_edit: true, is_superadmin: true, name: name
   end
-  login_programmatically
+  login_programmatically user
 end
 
 When(/^I log in as a bibliography editor$/) do
-  @user = Feed::Activity.without_tracking do
+  user = Feed::Activity.without_tracking do
     create :user
   end
-  login_programmatically
+  login_programmatically user
 end
 
 Then(/^there should be a mailto link to the email of "([^"]+)"$/) do |user_name|

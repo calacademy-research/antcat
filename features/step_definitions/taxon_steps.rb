@@ -163,9 +163,9 @@ Given(/^there is a species "([^"]*)"$/) do |name|
 end
 
 Given(/^there is a parentless subspecies "([^"]*)"$/) do |name|
-  @subspecies = create_subspecies name
-  @subspecies.species_id = nil
-  @subspecies.save! validate: false
+  subspecies = create_subspecies name
+  subspecies.species_id = nil
+  subspecies.save! validate: false
 end
 
 Given(/a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/) do |taxon_name, parent_name, history|
@@ -250,8 +250,8 @@ Given(/a subspecies exists for that species with a name of "(.*?)" and an epithe
 end
 
 Given(/^subspecies "(.*?)" exists in that species$/) do |name|
-  @subspecies = create :subspecies, subfamily: @subfamily, genus: @genus, species: @species, name: create(:subspecies_name, name: name)
-  @subspecies.history_items.create! taxt: "#{name} history"
+  subspecies = create :subspecies, subfamily: @subfamily, genus: @genus, species: @species, name: create(:subspecies_name, name: name)
+  subspecies.history_items.create! taxt: "#{name} history"
 end
 
 Given(/^there is a subspecies "([^"]*)" which is a subspecies of "([^"]*)" in the genus "([^"]*)"/) do |subspecies, species, genus|

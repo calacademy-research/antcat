@@ -1,6 +1,6 @@
 When(/^the changes are approved$/) do
   TaxonState.update_all review_state: :approved
-  Change.update_all approver_id: @user.id, approved_at: Time.now
+  Change.update_all approver_id: User.first.id, approved_at: Time.now
 end
 
 Given(/^there is a genus "([^"]*)" that's waiting for approval$/) do |name|
@@ -133,7 +133,7 @@ When(/^I add the genus "([^"]+)"?$/) do |genus_name|
   taxon.save_taxon genus_params
 
   taxon.last_change.versions.each do |version|
-    version.update_attributes whodunnit: @user.id
+    version.update_attributes whodunnit: User.first.id
   end
 end
 
