@@ -7,6 +7,7 @@ Feature: Feedback
   Background:
     Given I go to the catalog
 
+  @no_travis
   Scenario: Showing/hiding the feedback form
     Then I should not see the feedback form
 
@@ -16,6 +17,7 @@ Feature: Feedback
     When I close the feedback form
     Then I should not see the feedback form
 
+  @no_travis
   Scenario: Remember entered values when toggling show/hide
     When I click on the Feedback link
       And I fill in "feedback_name" with "Archibald"

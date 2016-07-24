@@ -3,6 +3,7 @@ Feature: Feed (synonyms)
   Background:
     Given I log in as a catalog editor named "Archibald"
 
+  @no_travis
   Scenario: Added synonym
     Given activity tracking is disabled
       And there is a species "Atta major"
@@ -17,6 +18,7 @@ Feature: Feed (synonyms)
     Then I should see "Archibald added the synonym relationship Atta minor (junior synonym)" and no other feed items
     And I should see "Atta major (senior synonym)"
 
+  @no_travis
   Scenario: Deleted synonym
     Given activity tracking is disabled
       And there is a species "Atta major" which is a junior synonym of "Eciton minor"

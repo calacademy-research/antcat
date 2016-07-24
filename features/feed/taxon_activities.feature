@@ -66,6 +66,7 @@ Feature: Feed (taxa)
     And I go to the activity feed
     Then I should see "Archibald elevated the subspecies Solenopsis speccus subbus to the rank of species (now Solenopsis subbus)" and no other feed items
 
+  @no_travis
   Scenario: Converted species to subspecies
     Given activity tracking is disabled
       And there is a species "Camponotus dallatorei" with genus "Camponotus"
