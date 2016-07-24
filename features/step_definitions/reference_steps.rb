@@ -1,10 +1,12 @@
+Given(/^there are no references$/) do
+  Reference.delete_all
+end
+
 Given(/^(?:this|these) references? exists?$/) do |table|
-  Reference.delete_all # TODO probably remove
   create_references_from_table table
 end
 
 Given(/^(?:this|these) dated references? exists?$/) do |table|
-  Reference.delete_all # TODO probably remove
   table.map_column!('created_at') do |date|
     if date == 'TODAYS_DATE'
       date = Time.now.strftime "%Y-%m-%d"
@@ -112,12 +114,12 @@ end
 
 Given(/the following entry nests it/) do |table|
   data = table.hashes.first
-  @nestee_reference = @reference
+  nestee_reference = @reference
   @reference = NestedReference.create! title: data[:title],
     author_names: [create(:author_name, name: data[:authors])],
     citation_year: data[:year],
     pages_in: data[:pages_in],
-    nesting_reference: @nestee_reference
+    nesting_reference: nestee_reference
 end
 
 Given(/that the entry has a URL that's on our site( that is public)?/) do |is_public|

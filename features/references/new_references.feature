@@ -5,9 +5,9 @@ Feature: Seeing what's new
 
   Background:
     Given these references exist
-      | authors    | citation   | created_at | title             | created_at | updated_at | year | review_state |
-      | Ward, P.   | Psyche 5:3 | today      | Ward's World      | 2010-2-2   | 2010-1-1   | 2010 |              |
-      | Bolton, B. | Psyche 4:2 | yesterday  | Bolton's Bulletin | 2010-1-1   | 2010-2-2   | 2010 | reviewing    |
+      | authors    | citation   | title             | created_at | updated_at | year | review_state |
+      | Ward, P.   | Psyche 5:3 | Ward's World      | 2010-2-2   | 2010-1-1   | 2010 |              |
+      | Bolton, B. | Psyche 4:2 | Bolton's Bulletin | 2010-1-1   | 2010-2-2   | 2010 | reviewing    |
 
   Scenario: See features in order of addition
     Given I am logged in
@@ -53,22 +53,14 @@ Feature: Seeing what's new
 
   Scenario: Seeing the default reference button on the new references page
     Given I am logged in
-    And these references exist
-      | author     | title          | year | citation   |
-      | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
-      | Fisher, B. | Ants Monthly   | 1995 | Science 3:4|
     And the default reference is "Ward 2010"
 
     When I go to the new references page
     Then it should show "Ward 2010" as the default
-    And it should not show "Fisher 1995" as the default
+    And it should not show "Bolton 1995" as the default
 
   Scenario: Changing the default reference button on the new references page
     Given I am logged in
-    And these references exist
-      | author     | title          | year | citation   |
-      | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
-      | Fisher, B. | Ants Monthly   | 1995 | Science 3:4|
     And there is no default reference
 
     When I go to the new references page

@@ -2,6 +2,7 @@
 Feature: Reference popup
   Background:
     Given the Formicidae family exists
+    And there are no references
     And these references exist
       | authors                | year | citation_year | title              | citation   |
       | Fisher, B.             | 1995 | 1995b         | Fisher's book      | Ants 1:1-2 |
