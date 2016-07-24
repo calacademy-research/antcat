@@ -1,12 +1,12 @@
 @javascript
 Feature: Reference field
   Background:
-    Given these dated references exist
-      | authors                | year | citation_year | title              | citation   | created_at  | updated_at  |
-      | Fisher, B.             | 1995 | 1995b         | Fisher's book      | Ants 1:1-2 | TODAYS_DATE | TODAYS_DATE |
-      | Bolton, B.             | 2010 | 2010 ("2011") | Bolton's book      | Ants 2:1-2 | TODAYS_DATE | TODAYS_DATE |
-      | Fisher, B.; Bolton, B. | 1995 | 1995b         | Fisher Bolton book | Ants 1:1-2 | TODAYS_DATE | TODAYS_DATE |
-      | Hölldobler, B.         | 1995 | 1995b         | Bert's book        | Ants 1:1-2 | TODAYS_DATE | TODAYS_DATE |
+    Given these references exist
+      | authors                | year | citation_year | title              | citation   |
+      | Fisher, B.             | 1995 | 1995b         | Fisher's book      | Ants 1:1-2 |
+      | Bolton, B.             | 2010 | 2010 ("2011") | Bolton's book      | Ants 2:1-2 |
+      | Fisher, B.; Bolton, B. | 1995 | 1995b         | Fisher Bolton book | Ants 1:1-2 |
+      | Hölldobler, B.         | 1995 | 1995b         | Bert's book        | Ants 1:1-2 |
 
   Scenario: Seeing the field
     When I go to the reference field test page, opened to the first reference

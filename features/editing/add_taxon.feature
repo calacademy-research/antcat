@@ -8,9 +8,9 @@ Feature: Adding a taxon
   Background:
     Given the Formicidae family exists
     And I am logged in
-    And these dated references exist
-      | authors | citation   | title | year | created_at  | updated_at  |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 | TODAYS_DATE | TODAYS_DATE |
+    And these references exist
+      | authors | citation   | title | year |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
 
   # spurrious failures
