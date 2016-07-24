@@ -285,13 +285,6 @@ def create_synonym senior, attributes = {}
   junior
 end
 
-def create_taxon_with_state taxon_type, name
-  taxon = create taxon_type, name: name
-  create :taxon_state, taxon_id: taxon.id
-  taxon.touch_with_version
-  taxon
-end
-
 def create_taxon_version_and_change review_state, user = @user, approver = nil, genus_name = 'default_genus'
   name = create :name, name: genus_name
   taxon = create :genus, name: name

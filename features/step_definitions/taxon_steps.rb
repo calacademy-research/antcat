@@ -23,23 +23,24 @@ end
 # subfamily
 Given(/there is a subfamily "([^"]*)" with taxonomic history "([^"]*)"$/) do |taxon_name, history|
   name = create :subfamily_name, name: taxon_name
-  taxon = create_taxon_with_state :subfamily, name
+  taxon = create :subfamily, name: name
   taxon.history_items.create! taxt: history
 end
 
 Given(/there is a subfamily "([^"]*)" with a reference section "(.*?)"$/) do |taxon_name, references|
   name = create :subfamily_name, name: taxon_name
-  taxon = create_taxon_with_state :subfamily, name
+  taxon = create :subfamily, name: name
   taxon.reference_sections.create! references_taxt: references
 end
 
 Given(/there is a subfamily "([^"]*)"$/) do |taxon_name|
   name = create :subfamily_name, name: taxon_name
-  @subfamily = create_taxon_with_state :subfamily, name
+  @subfamily = create :subfamily, name: name
 end
 
-Given(/^subfamily "(.*?)" exists$/) do |name|
-  @subfamily = create_taxon_with_state :subfamily, create(:subfamily_name, name: name)
+Given(/^subfamily "(.*?)" exists$/) do |taxon_name|
+  name = create :subfamily_name, name: taxon_name
+  @subfamily = create :subfamily, name: name
   @subfamily.history_items.create! taxt: "#{name} history"
 end
 
@@ -56,7 +57,7 @@ end
 
 Given(/a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/) do |taxon_name, parent_name, history|
   subfamily = parent_name && (Subfamily.find_by_name(parent_name) ||
-    create_taxon_with_state(:subfamily, name: create(:name, name: parent_name)))
+    create(:subfamily, name: create(:name, name: parent_name)))
   taxon = create :tribe, name: create(:name, name: taxon_name), subfamily: subfamily
 
   history = 'none' unless history.present?
