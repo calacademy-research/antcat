@@ -15,7 +15,6 @@ Feature: Search references for authors
   Scenario: Searching for one author only (keyword search)
     When I fill in the references search box with "author:'Bolton, B.'"
     And I press "Go" by the references search box
-
     Then I should see "Anthill"
     And I should see "Ants of North America"
     And I should not see "Formis"
@@ -23,7 +22,6 @@ Feature: Search references for authors
   Scenario: Searching for one author only (keyword search)
     When I fill in the references search box with "author:'Bolton, B.'"
     And I press "Go" by the references search box
-
     Then I should see "Anthill"
     And I should see "Ants of North America"
     And I should not see "Formis"
@@ -32,7 +30,6 @@ Feature: Search references for authors
     When I select author search from the search type selector
     And I fill in the references authors search box with "Bolton, B.; Fisher, B."
     And I press "Go" by the references search box
-
     Then I should see "Anthill"
     And I should not see "Ants of North America"
     And I should not see "Formis"

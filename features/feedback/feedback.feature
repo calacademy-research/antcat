@@ -9,6 +9,7 @@ Feature: Feedback
 
   Scenario: Showing/hiding the feedback form
     Then I should not see the feedback form
+
     When I click on the Feedback link
     Then I should see the feedback form
 
@@ -22,8 +23,7 @@ Feature: Feedback
       And I fill in "feedback_comment" with "Great site!!!"
       And I fill in "feedback_page" with "catalog/123"
       And I close the feedback form
-
-    When I click on the Feedback link
+    And I click on the Feedback link
     Then I should see the feedback form
       And the name field within the feedback form should contain "Archibald"
       And the email field within the feedback form should contain "archie@antcat.org"
@@ -90,7 +90,7 @@ Feature: Feedback
     And I should not see "Message sent"
 
   Scenario: Registered users are not throttled
-    Given I log in
+    Given I am logged in
     And I have already posted 3 feedbacks in the last 5 minutes
 
     When I click on the Feedback link
@@ -113,8 +113,7 @@ Feature: Feedback
     When I click on the Feedback link
       And I fill in "feedback_comment" with "Great site!!!"
       And I press "Send Feedback"
-
-    When I go to the feedback index
+    And I go to the feedback index
     Then I should see "<archibald@antcat.org>"
     And I should see "<batiatus@antcat.org>"
     And I should not see "flint@antcat.org"
@@ -126,6 +125,5 @@ Feature: Feedback
     When I click on the Feedback link
       And I fill in "feedback_comment" with "Great site!!!"
       And I press "Send Feedback"
-
-    When I go to the feedback index
+    And I go to the feedback index
     Then I should see "sblum@calacademy.org"

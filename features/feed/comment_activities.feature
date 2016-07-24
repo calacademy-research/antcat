@@ -11,5 +11,5 @@ Feature: Feed (comments)
       And follow the link of the first feedback
       And I write a new comment "Fixed."
       And I press "Post Comment"
-      And I go to the activity feed
+    And I go to the activity feed
     Then I should see "Archibald commented on the feedback #"

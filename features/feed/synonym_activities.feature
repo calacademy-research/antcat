@@ -13,8 +13,7 @@ Feature: Feed (synonyms)
       And I press "Add" in the junior synonyms section
       And I fill in the junior synonym name with "Atta minor"
       And I save the synonym
-
-    When I go to the activity feed
+    And I go to the activity feed
     Then I should see "Archibald added the synonym relationship Atta minor (junior synonym)" and no other feed items
     And I should see "Atta major (senior synonym)"
 
@@ -26,7 +25,6 @@ Feature: Feed (synonyms)
     When I go to the edit page for "Eciton minor"
       And I will confirm on the next step
       And I click "Delete" beside the first junior synonym
-
-    When I go to the activity feed
+    And I go to the activity feed
     Then I should see "Archibald deleted the synonym relationship Atta major (junior synonym)" and no other feed items
     And I should see "Eciton minor (senior synonym)"

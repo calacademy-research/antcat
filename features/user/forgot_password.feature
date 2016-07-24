@@ -4,6 +4,7 @@ Feature: Forgot password
 
   Scenario: Visiting the forgot password page
     Given I am not logged in
+
     When I go to the main page
     And I follow the first "Login"
     And I follow "Forgot password"
@@ -12,7 +13,8 @@ Feature: Forgot password
   Scenario: Visiting the forgot password page after a failed login attempt
     Given PENDING: JS login disabled
     Given I am not logged in
-    * I go to the main page
+
+    When I go to the main page
     * I follow the first "Login"
     * I fill in the email field with "email@example.com"
     * I fill in the password field with "asd;fljl;jsdfljsdfj"

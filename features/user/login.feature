@@ -11,7 +11,8 @@ Feature: Logging in
   @javascript
   Scenario: Logging in successfully from the login page
     Given I am not logged in
-    * I go to the login page
+
+    When I go to the login page
     * I fill in the email field with "email@example.com"
     * I fill in the password field with "secret"
     * I press "Login"
@@ -21,7 +22,8 @@ Feature: Logging in
   Scenario: Logging in successfully from the main page
     Given PENDING: JS login disabled
     Given I am not logged in
-    * I go to the main page
+
+    When I go to the main page
     * I follow "Login"
     * I fill in the email field with "email@example.com"
     * I fill in the password field with "secret"
@@ -31,7 +33,8 @@ Feature: Logging in
   @javascript
   Scenario: Logging in unsuccessfully
     Given I am not logged in
-    * I go to the main page
+
+    When I go to the main page
     * I follow "Login"
     * I fill in the email field with "email@example.com"
     * I fill in the password field with "asd;fljl;jsdfljsdfj"
@@ -40,7 +43,8 @@ Feature: Logging in
 
   Scenario: Returning to previous page
     Given I am not logged in
-    * I go to the references page
+
+    When I go to the references page
     * I follow the first "Login"
     * I fill in the email field with "email@example.com"
     * I fill in the password field with "secret"

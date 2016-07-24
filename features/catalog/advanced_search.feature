@@ -21,6 +21,7 @@ Feature: Searching the catalog
   Scenario: Searching when one result
     Given there is a species described in 2010
     And there is a species described in 2011
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "year" with "2010"
@@ -30,6 +31,7 @@ Feature: Searching the catalog
 
   Scenario: Searching for subfamilies
     Given there is a subfamily described in 2010
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I select "Subfamilies" from the rank selector
@@ -40,6 +42,7 @@ Feature: Searching the catalog
 
   Scenario: Searching for an invalid taxon
     Given there is an invalid species described in 2010
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "year" with "2010"
@@ -49,6 +52,7 @@ Feature: Searching the catalog
 
   Scenario: Searching for an author's descriptions
     Given there is a species described in 2010 by "Bolton"
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "author_name" with "Bolton"
@@ -58,6 +62,7 @@ Feature: Searching the catalog
 
   Scenario: Finding an original combination
     Given there is an original combination of "Atta major" described by "Bolton" which was moved to "Betta major"
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "author_name" with "Bolton"
@@ -65,8 +70,9 @@ Feature: Searching the catalog
     Then I should see "see Betta major"
 
   Scenario: Finding a genus
-    And there is a species "Atta major" with genus "Atta"
+    Given there is a species "Atta major" with genus "Atta"
     And there is a species "Ophthalmopone major" with genus "Ophthalmopone"
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "genus" with "Atta"
@@ -75,6 +81,7 @@ Feature: Searching the catalog
 
   Scenario: Finding a junior synonym
     Given there is a species "Atta major" described by "Bolton" which is a junior synonym of "Betta minor"
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "author_name" with "Bolton"
@@ -93,6 +100,7 @@ Feature: Searching the catalog
   Scenario: Searching for locality
     Given there is a genus located in "Africa"
     And there is a genus located in "Zimbabwe"
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "locality" with "Africa"
@@ -103,6 +111,7 @@ Feature: Searching the catalog
   Scenario: Searching for verbatim type locality
     Given there is a species with verbatim type locality "Africa"
     And there is a species with verbatim type locality "Zimbabwe"
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "verbatim_type_locality" with "Africa"
@@ -113,6 +122,7 @@ Feature: Searching the catalog
   Scenario: Searching for type specimen repository
     Given there is a species with type specimen repository "CZN"
     And there is a species with type specimen repository "IAD"
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "type_specimen_repository" with "CZN"
@@ -123,6 +133,7 @@ Feature: Searching the catalog
   Scenario: Searching for type specimen code
     Given there is a species with type specimen code "1234"
     And there is a species with type specimen code "4321"
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "type_specimen_code" with "1234"
@@ -134,6 +145,7 @@ Feature: Searching the catalog
     Given there is a species with biogeographic region "Malagasy"
     And there is a species with biogeographic region "Afrotropic"
     And there is a species with biogeographic region "Afrotropic"
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I select "Afrotropic" from the biogeographic region selector
@@ -145,6 +157,7 @@ Feature: Searching the catalog
     Given there is a species with biogeographic region "Malagasy"
     And there is a species with biogeographic region "Afrotropic"
     And there is a genus located in "Africa"
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I select "Any" from the biogeographic region selector
@@ -156,6 +169,7 @@ Feature: Searching the catalog
     Given there is a species with biogeographic region "Malagasy"
     And there is a species with biogeographic region "Afrotropic"
     And there is a species located in "Africa"
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I select "Species" from the rank selector
@@ -167,6 +181,7 @@ Feature: Searching the catalog
   Scenario: Searching for a form
     Given there is a species with forms "w.q."
     And there is a species with forms "q."
+
     When I go to the catalog
     And I follow the first "Advanced Search"
     And I fill in "forms" with "w."

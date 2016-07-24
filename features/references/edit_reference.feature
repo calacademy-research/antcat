@@ -5,6 +5,7 @@ Feature: Edit reference
 
   Scenario: Not logged in
     Given I am not logged in
+
     When I go to the references page
     Then I should not see "New"
 
@@ -13,14 +14,15 @@ Feature: Edit reference
     Given these dated references exist
       | authors | citation   | cite_code | created_at  | date     | possess | title | updated_at  | year |
       | authors | Psyche 5:3 | CiteCode  | TODAYS_DATE | 20100712 | Possess | title | TODAYS_DATE | 2010 |
-    When I log in
-    And I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
-    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
+    And I am logged in
+
+    When I go to the references page
+    And I follow first reference link
+    And I follow "Edit"
+    And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "Ant Title"
     And I press the "Save" button
-    And I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
+    Then I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
   @javascript
   Scenario: Change a reference's year
@@ -28,9 +30,10 @@ Feature: Edit reference
     And these dated references exist
       | authors      | title | citation   | year | created_at  | updated_at  |
       | Aho, B.L.    | Ants  | Psyche 6:4 | 2010 | TODAYS_DATE | TODAYS_DATE |
+
     When I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
+    And I follow first reference link
+    And I follow "Edit"
     And I fill in "reference_citation_year" with "1910a"
     And I press the "Save" button
     Then I should see "Aho, B.L. 1910a"
@@ -41,9 +44,10 @@ Feature: Edit reference
     And these dated references exist
       | authors    | title | citation   | year | created_at  | updated_at  |
       | Fisher, B. | Ants  | Psyche 6:4 | 2010 | TODAYS_DATE | TODAYS_DATE |
+
     When I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
+    And I follow first reference link
+    And I follow "Edit"
     And I follow "Book"
     And I fill in "reference_publisher_string" with "New York: Wiley"
     And I fill in "book_pagination" with "22 pp."
@@ -56,9 +60,10 @@ Feature: Edit reference
     And these book references exist
       | authors    | title | citation                | year |
       | Fisher, B. | Ants  | New York: Wiley, 22 pp. | 2010 |
+
     When I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
+    And I follow first reference link
+    And I follow "Edit"
     And I fill in "reference_publisher_string" with "New York: Harcourt"
     And I press the "Save" button
     Then I should see "Fisher, B. 2010. Ants. New York: Harcourt, 22 pp."
@@ -69,9 +74,10 @@ Feature: Edit reference
     And this unknown reference exists
       | authors    | title | citation | year |
       | Fisher, B. | Ants  | New York | 2010 |
+
     When I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
+    And I follow first reference link
+    And I follow "Edit"
     And I fill in "reference_citation" with "New Jersey"
     And I press the "Save" button
     Then I should see "Fisher, B. 2010. Ants. New Jersey."
@@ -82,16 +88,17 @@ Feature: Edit reference
     And these book references exist
       | authors    | citation                | year | citation_year | title |
       | Aho, P.S.  | New York: Wiley, 36 pp. | 2010 | 2010a         | Ants  |
+
     When I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
-    When I fill in "reference_author_names_string" with ""
+    And I follow first reference link
+    And I follow "Edit"
+    And I fill in "reference_author_names_string" with ""
     And I fill in "reference_title" with ""
     And I fill in "reference_citation_year" with ""
     And I fill in "reference_publisher_string" with ""
     And I fill in "book_pagination" with ""
     And I press the "Save" button
-    And I should see "Year can't be blank"
+    Then I should see "Year can't be blank"
     And I should see "Title can't be blank"
     And I should see "Publisher can't be blank"
     And I should see "Pagination can't be blank"
@@ -102,17 +109,18 @@ Feature: Edit reference
     And these dated references exist
       | authors    | citation   | year | citation_year | title | created_at  | updated_at  |
       | Aho, P.S.  | Psyche 1:2 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |
+
     When I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
-    When I fill in "reference_author_names_string" with ""
+    And I follow first reference link
+    And I follow "Edit"
+    And I fill in "reference_author_names_string" with ""
     And I fill in "reference_title" with ""
     And I fill in "reference_citation_year" with ""
     And I fill in "reference_journal_name" with ""
     And I fill in "reference_series_volume_issue" with ""
     And I fill in "article_pagination" with ""
     And I press the "Save" button
-    And I should see "Title can't be blank"
+    Then I should see "Title can't be blank"
     And I should see "Year can't be blank"
     And I should see "Journal can't be blank"
     And I should see "Series volume issue can't be blank"
@@ -124,16 +132,17 @@ Feature: Edit reference
     And these unknown references exist
       | authors   | citation | year | citation_year | title |
       | Aho, P.S. | New York | 2010 | 2010a         | Ants  |
+
     When I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
+    And I follow first reference link
+    And I follow "Edit"
     And I follow "Other"
-    When I fill in "reference_author_names_string" with ""
+    And I fill in "reference_author_names_string" with ""
     And I fill in "reference_title" with ""
     And I fill in "reference_citation_year" with ""
     And I fill in "reference_citation" with ""
     And I press the "Save" button
-    And I should see "Title can't be blank"
+    Then I should see "Title can't be blank"
     And I should see "Year can't be blank"
     And I should see "Citation can't be blank"
 
@@ -143,9 +152,10 @@ Feature: Edit reference
     And these dated references exist
       | authors    | citation   | year | citation_year | title | created_at  | updated_at  |
       | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |
+
     When I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
+    And I follow first reference link
+    And I follow "Edit"
     And I fill in "reference_document_attributes_url" with a URL to a document that exists
     And I press the "Save" button
     Then I should see a "PDF" link
@@ -172,10 +182,11 @@ Feature: Edit reference
     And these dated references exist
       | authors    | citation   | year | citation_year | title | created_at  | updated_at  |
       | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |
+
     When I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
-    When I fill in "reference_author_names_string" with "Ward, P.S. (ed.)"
+    And I follow first reference link
+    And I follow "Edit"
+    And I fill in "reference_author_names_string" with "Ward, P.S. (ed.)"
     And I press the "Save" button
     Then I should see "Ward, P.S. (ed.)"
 
@@ -185,6 +196,7 @@ Feature: Edit reference
     And these dated references exist
       | authors          | citation   | year | citation_year | title | created_at  | updated_at  |
       | Ward, P.S. (ed.) | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |
+
     When I go to the references page
     Then I should see "Ward, P.S. (ed.)"
     When I follow first reference link
@@ -199,12 +211,13 @@ Feature: Edit reference
     And these dated references exist
       | authors    | citation   | year | citation_year | title | created_at  | updated_at  |
       | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |
+
     When I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
-    When I fill in "reference_document_attributes_url" with a URL to a document that doesn't exist in the first reference
+    And I follow first reference link
+    And I follow "Edit"
+    And I fill in "reference_document_attributes_url" with a URL to a document that doesn't exist in the first reference
     And I press the "Save" button
-    And I should see "Document url was not found"
+    Then I should see "Document url was not found"
 
   @javascript
   Scenario: Edit a nested reference
@@ -215,10 +228,12 @@ Feature: Edit reference
     And the following entry nests it
       | authors    | title            | year | pages_in | created_at  | updated_at  |
       | Bolton, B. | Ants are my life | 2001 | In:      | TODAYS_DATE | TODAYS_DATE |
+
     When I go to the references page
     Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"
+
     When I follow first reference link
-    When I follow "Edit"
+    And I follow "Edit"
     And I fill in "reference_pages_in" with "Pp. 32 in:"
     And I press the "Save" button
     Then I should see "Bolton, B. 2001. Ants are my life. Pp. 32 in: Ward, P.S. 2001. Ants. Psyche 5:3"
@@ -232,10 +247,12 @@ Feature: Edit reference
     And the following entry nests it
       | authors    | title            | year | pages_in | created_at  | updated_at  |
       | Bolton, B. | Ants are my life | 2001 | In:      | TODAYS_DATE | TODAYS_DATE |
+
     When I go to the references page
     Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"
+
     When I follow first reference link
-    When I follow "Edit"
+    And I follow "Edit"
     And I fill in "reference_nesting_reference_id" with its own ID
     And I press the "Save" button
     Then I should see "Nesting reference can't point to itself"
@@ -269,16 +286,20 @@ Feature: Edit reference
     And this dated reference exists
       | authors   | year | title                    | citation      | created_at  | updated_at  |
       | Forel, A. | 1874 | Les fourmis de la Suisse | Neue 26:1-452 | TODAYS_DATE | TODAYS_DATE |
-    And I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
+
+    When I go to the references page
+    And I follow first reference link
+    And I follow "Edit"
     And I fill in "reference_title" with ""
     And I press the "Save" button
     Then I should see "Title can't be blank"
+
     When I press "Cancel"
     Then I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 "
+
     When I follow "Edit"
     Then I should not see any error messages
+
     When I press the "Save" button
     Then I should not see any error messages
     And I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 "

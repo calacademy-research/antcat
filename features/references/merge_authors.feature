@@ -18,11 +18,11 @@ Feature: Merging authors
     Then I should not see "Bolton, B." in the author panel
 
   Scenario: Searching for an author
-    * I search for "Bolton, B." in the author panel
-    * I should see "Bolton, B." in the author panel
-    * I should see "Bolton,B." in the author panel
-    * I should see "Annals of Ants" in the author panel
-    * I should see "More ants" in the author panel
+    When I search for "Bolton, B." in the author panel
+    Then I should see "Bolton, B." in the author panel
+    And I should see "Bolton,B." in the author panel
+    And I should see "Annals of Ants" in the author panel
+    And I should see "More ants" in the author panel
 
   Scenario: Searching for an author that isn't found
     When I search for "asdf" in the author panel
@@ -42,13 +42,15 @@ Feature: Merging authors
 
   Scenario: Closing a panel
     Given I search for "Bolton, B." in the author panel
-    And I search for "Fisher, B." in another author panel
-    When I close the first author panel
+
+    When I search for "Fisher, B." in another author panel
+    And I close the first author panel
     Then I should see "Fisher, B." in the first author panel
-    But I should not see "Bolton, B."
+    And I should not see "Bolton, B."
 
   Scenario: Merging
     Given I am logged in
+
     When I go to the Merge Authors page
     And I search for "Bolton, B." in the author panel
     And I search for "Fisher, B." in another author panel

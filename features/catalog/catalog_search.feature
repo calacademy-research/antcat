@@ -5,6 +5,7 @@ Feature: Searching the catalog
 
   Background:
     Given the Formicidae family exists
+
     And subfamily "Dolichoderinae" exists
     And tribe "Dolichoderini" exists in that subfamily
     And genus "Dolichoderus" exists in that tribe

@@ -11,6 +11,7 @@ Feature: Seeing what's new
 
   Scenario: See features in order of addition
     Given I am logged in
+
     When I go to the references page
     And I follow "Latest Additions"
     Then I should see these entries with a header in this order:
@@ -20,12 +21,14 @@ Feature: Seeing what's new
 
   Scenario: Start reviewing
     Given I am logged in
+
     When I go to the new references page
     And I click "Start reviewing" on the Ward reference
     Then the review status on the Ward reference should change to "Being reviewed"
 
   Scenario: Stop reviewing
     Given I am logged in
+
     When I go to the new references page
     And I click "Start reviewing" on the Ward reference
     And I go to the new references page
@@ -34,6 +37,7 @@ Feature: Seeing what's new
 
   Scenario: Restart reviewing
     Given I am logged in
+
     When I go to the new references page
     And I click "Start reviewing" on the Ward reference
     And I click "Finish reviewing" on the Ward reference
@@ -43,6 +47,7 @@ Feature: Seeing what's new
 
   Scenario: Not a logged-in catalog editor
     Given I log in as a bibliography editor
+
     When I go to the new references page
     Then I should not see a "Start reviewing" button
 
@@ -52,7 +57,8 @@ Feature: Seeing what's new
       | author     | title          | year | citation   |
       | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
       | Fisher, B. | Ants Monthly   | 1995 | Science 3:4|
-    Given the default reference is "Ward 2010"
+    And the default reference is "Ward 2010"
+
     When I go to the new references page
     Then it should show "Ward 2010" as the default
     And it should not show "Fisher 1995" as the default
@@ -64,6 +70,7 @@ Feature: Seeing what's new
       | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
       | Fisher, B. | Ants Monthly   | 1995 | Science 3:4|
     And there is no default reference
+
     When I go to the new references page
     And I click "Make default" on the Ward reference
     Given the default reference is "Ward 2010"

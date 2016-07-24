@@ -16,6 +16,5 @@ Feature: Feed (merge authors)
       And I search for "Bolton, B." in the author panel
       And I search for "Fisher, B." in another author panel
       And I merge the authors
-
-    When I go to the activity feed
+    And I go to the activity feed
     Then I should see "Archibald merged the author(s) Fisher, B. into author #" and no other feed items

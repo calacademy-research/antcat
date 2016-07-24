@@ -21,7 +21,7 @@ Feature: Feed (feedback)
     When I go to the feedback index
       And follow the link of the first feedback
       And I follow "Close"
-      And I go to the activity feed
+    And I go to the activity feed
     Then I should see "Archibald closed the feedback item #"
 
   Scenario: Re-opened a closed feedback item
@@ -31,7 +31,7 @@ Feature: Feed (feedback)
     When I go to the feedback index
       And follow the link of the first feedback
       And I follow "Re-open"
-      And I go to the activity feed
+    And I go to the activity feed
     Then I should see "Archibald re-opened the feedback item #"
 
   Scenario: Deleted feedback

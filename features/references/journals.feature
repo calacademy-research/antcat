@@ -26,7 +26,6 @@ Feature: Editing journals
     And I follow "Journals"
     Then I should see "Science"
 
-
   Scenario: Deleting an unused journal
     Given I am logged in
     And a journal exists with a name of "Psyche"

@@ -9,7 +9,7 @@ Feature: Workflow
     # Formicidae is only explicitly required by 'Changing a taxon and seeing it on ...'
     # TODO leaving this here
     Given the Formicidae family exists
-    Given these references exist
+    And these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
@@ -35,17 +35,21 @@ Feature: Workflow
     Then I should see "This taxon has been changed; changes awaiting approval"
     # Should you really see "Formicinae" in the *changes* at this step?
     #* I should see the name "Formicinae" in the changes
+
     When I go to the changes page
     Then I should see "Formicinae"
     And I should see "Mark Wilden changed Formicinae"
     * I should see the notes "asdfgh" in the changes
+
     When I follow "Undo"
     Then I should see "This undo will roll back the following changes"
     And I should see "Formicinae"
     And I should see "changed by Mark Wilden"
+
     When I press "Undo!"
     Then I should not see "Formicinae"
     And I should not see "asdfgh"
+
     When I go to the catalog page for "Formicinae"
     Then I should not see "asdfgh"
 
@@ -68,11 +72,12 @@ Feature: Workflow
     And I set the parent name to "Becton"
     And I press "OK"
     Then I should see "Would you like to create a new combination under this parent?"
+
     When I press "Yes, create new combination"
-    When I save my changes
+    And I save my changes
     And I go to the changes page
     Then I should see the genus "Becton" in the changes
-    * I should see the name "major" in the changes
+    And I should see the name "major" in the changes
 
     # Change parent from B -> C
     When I go to the edit page for "Becton major"
@@ -80,24 +85,28 @@ Feature: Workflow
     And I set the parent name to "Chatsworth"
     And I press "OK"
     Then I should see "Would you like to create a new combination under this parent?"
+
     When I press "Yes, create new combination"
     Then the name button should contain "Chatsworth major"
-    When I save my changes
 
+    When I save my changes
     # We are now on the catalog page after doing A -> B -> C
     Then I should be on the catalog page for "Chatsworth major"
     And the name in the header should be "Chatsworth major"
+
     When I go to the catalog page for "Atta major"
     Then I should see "see Chatsworth major"
+
     When I go to the catalog page for "Becton major"
     Then I should see "an obsolete combination of Chatsworth major"
 
     When I go to the changes page
     And I click "[data-undo-id='2']"
     Then I should see "This undo will roll back the following changes"
+
     When I press "Undo!"
-    * I should see the genus "Becton" in the changes
-    * I should see the name "major" in the changes
+    Then I should see the genus "Becton" in the changes
+    And I should see the name "major" in the changes
     And I should not see "Chatsworth"
 
     When I go to the catalog page for "Becton major"
@@ -106,9 +115,10 @@ Feature: Workflow
     When I go to the changes page
     Then I click "[data-undo-id='1']"
     Then I should see "This undo will roll back the following changes"
+
     When I press "Undo!"
-    * I should not see "Becton"
-    * I should not see "major"
+    Then I should not see "Becton"
+    And I should not see "major"
     And I should not see "Chatsworth"
 
     When I go to the catalog page for "Atta major"
@@ -125,11 +135,12 @@ Feature: Workflow
     And I set the parent name to "Becton"
     And I press "OK"
     Then I should see "Would you like to create a new combination under this parent?"
+
     When I press "Yes, create new combination"
-    When I save my changes
+    And I save my changes
     And I go to the changes page
     Then I should see the genus "Becton" in the changes
-    * I should see the name "major" in the changes
+    And I should see the name "major" in the changes
 
     # Change parent from B -> C
     When I go to the edit page for "Becton major"
@@ -137,16 +148,18 @@ Feature: Workflow
     And I set the parent name to "Chatsworth"
     And I press "OK"
     Then I should see "Would you like to create a new combination under this parent?"
+
     When I press "Yes, create new combination"
     Then the name button should contain "Chatsworth major"
-    When I save my changes
 
-    When I go to the changes page
-    When I click "[data-undo-id='1']"
+    When I save my changes
+    And I go to the changes page
+    And I click "[data-undo-id='1']"
     Then I should see "This undo will roll back the following changes"
+
     When I press "Undo!"
-    * I should not see "Becton"
-    * I should not see "major"
+    Then I should not see "Becton"
+    And I should not see "major"
     And I should not see "Chatsworth"
 
     When I go to the catalog page for "Atta major"
@@ -175,6 +188,7 @@ Feature: Workflow
     And I press "Delete?"
     And I go to the catalog page for "Formicidae"
     Then I should not see "Ancatinae"
+
     When I follow "All genera"
     Then I should not see "Antcatia"
     And I should not see "Tactania"
@@ -182,9 +196,9 @@ Feature: Workflow
     When I go to the changes page
     And I click "[data-undo-id='1']"
     And I press "Undo!"
-
     And I go to the catalog page for "Formicidae"
     Then I should see "Ancatinae"
+
     When I follow "All genera"
     Then I should see "Antcatia"
     And I should see "Tactania"

@@ -70,6 +70,7 @@ Feature: Searching references
       | 2010 | 2010c         | authors | title2 | Ants 32:1-2 |
       | 2011 | 2011d         | authors | title3 | Ants 33:1-2 |
       | 2012 | 2012e         | authors | title4 | Ants 34:1-2 |
+
     When I go to the references page
     And I fill in the references search box with "year:2010-2011"
     And I press "Go" by the references search box
@@ -86,6 +87,7 @@ Feature: Searching references
       | Fisher, B. | 1810 | 1810b         | title6 | Ants 12:1-2 |
       | Bolton, B. | 1810 | 1810e         | title7 | Ants 13:1-2 |
       | Bolton, B. | 1895 | 1895d         | title8 | Ants 14:1-2 |
+
     When I go to the references page
     And I fill in the references search box with "fisher year:1895-1895"
     And I press "Go" by the references search box
@@ -96,12 +98,14 @@ Feature: Searching references
 
   Scenario: Searching by ID
     Given there is a reference with ID 50000 for Dolerichoderinae
+
     When I go to the references page
     And I fill in the references search box with "50000"
     And I press "Go" by the references search box
     Then I should see "Dolerichoderinae"
+
     When I go to the references page
-    When I fill in the references search box with "10000"
+    And I fill in the references search box with "10000"
     And I press "Go" by the references search box
     Then I should not see "Dolerichoderinae"
 
@@ -111,9 +115,11 @@ Feature: Searching references
       | authors    | year | citation_year | title  | citation    | cite_code |
       | Fisher, B. | 1895 | 1895a         | title5 | Ants 11:1-2 | 96-1984   |
       | Fisher, B. | 1895 | 1895a         | title6 | Ants 11:2-3 | 97-9321   |
+
     When I go to the references page
     Then I should see "Ants 11:1-2"
     And I should see "Ants 11:2-3"
+
     When I fill in the references search box with "96-1984"
     And I press "Go" by the references search box
     Then I should see "Ants 11:1-2"
@@ -127,9 +133,11 @@ Feature: Searching references
     And this unknown reference exists
       | authors    | year | title   | citation       |
       | Bolton, B. | 2001 | Unknown | Science 11:1-2 |
+
     When I go to the references page
     Then I should see "Known"
     And I should see "Unknown"
+
     When I fill in the references search box with "type:unknown"
     And I press "Go" by the references search box
     Then I should not see "Known"
@@ -151,6 +159,7 @@ Feature: Searching references
       | authors    | year | citation_year | title                  | citation      |
       | Fisher, B. | 1995 | 1995          | Anthill                | Ants 1:1-2    |
       | Bolton, B. | 1895 | 1895a         | Fisher's Favorite Ants | Psyche 11:1-2 |
+
     When I go to the references page
     And I fill in the references search box with "author:fish"
     Then I should see the following autocomplete suggestions:
@@ -164,6 +173,7 @@ Feature: Searching references
       | authors    | year | citation_year | title                  | citation      |
       | Fisher, B. | 1995 | 1995          | Anthill                | Ants 1:1-2    |
       | Bolton, B. | 1895 | 1895a         | Fisher's Favorite Ants | Psyche 11:1-2 |
+
     When I go to the references page
     And I fill in the references search box with "Author: fish"
     Then I should see the following autocomplete suggestions:
@@ -178,5 +188,5 @@ Feature: Searching references
     Then I should see the following autocomplete suggestions:
       | Anthill |
 
-    Then I click the first autocomplete suggestion
-    And the search box should contain "author:'Fisher, B.'"
+    When I click the first autocomplete suggestion
+    Then the search box should contain "author:'Fisher, B.'"

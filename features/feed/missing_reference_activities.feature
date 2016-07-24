@@ -20,6 +20,5 @@ Feature: Feed (missing references)
       And I press "OK"
       And I will confirm on the next step
       And I press "Replace"
-
-    When I go to the activity feed
+    And I go to the activity feed
     Then I should see "Archibald replaced the missing reference Bolton, 1970 (reason missing: unknown) with Fisher, 2004" and no other feed items

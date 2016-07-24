@@ -73,7 +73,7 @@ Feature: Copy reference
     And I follow first reference link
 
     When I follow "Copy"
-    And the "reference_document_attributes_url" field should contain ""
+    Then the "reference_document_attributes_url" field should contain ""
 
   Scenario: Copy a reference with a date
     Given this reference exist
