@@ -2,12 +2,13 @@ require 'spec_helper'
 
 describe Subgenus do
   it "must have a genus" do
-    colobopsis = FactoryGirl.build :subgenus, name: create(:name, name: 'Colobopsis'), genus: nil
-    create :taxon_state, taxon_id: colobopsis.id
+    colobopsis = create :subgenus, name: create(:name, name: 'Colobopsis')
+    expect(colobopsis).to be_valid
 
+    colobopsis.genus = nil
     expect(colobopsis).not_to be_valid
-    colobopsis.genus = create :genus, name: create(:name, name: 'Camponotus')
 
+    colobopsis.genus = create :genus, name: create(:name, name: 'Camponotus')
     colobopsis.save!
     expect(colobopsis.reload.genus.name.to_s).to eq 'Camponotus'
   end

@@ -12,11 +12,13 @@ describe SpeciesGroupTaxon do
   end
 
   it "must have a genus" do
-    taxon = FactoryGirl.build :species_group_taxon, genus: nil
-    taxon.save validate: false
-    create :taxon_state, taxon_id: taxon.id
+    taxon = create :species_group_taxon
+    expect(taxon).to be_valid
 
+    taxon.genus = nil
+    taxon.save validate: false
     expect(taxon).not_to be_valid
+
     genus = create_genus
     taxon.update_attributes genus: genus
     taxon = SpeciesGroupTaxon.find taxon.id
@@ -31,10 +33,11 @@ describe SpeciesGroupTaxon do
   end
 
   it "doesn't have to have a subgenus" do
-    sgt = FactoryGirl.build :species_group_taxon, subgenus: nil
-    create :taxon_state, taxon_id: sgt.id
+    taxon = create :species_group_taxon
+    expect(taxon).to be_valid
 
-    expect(sgt).to be_valid
+    taxon.subgenus = nil
+    expect(taxon).to be_valid
   end
 
   it "has its subfamily set from its genus" do

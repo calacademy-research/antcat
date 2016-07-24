@@ -3,34 +3,29 @@ require 'spec_helper'
 describe Taxon do
   describe "Fields and validations" do
     it "requires a name" do
-      taxon = FactoryGirl.build :taxon, name: nil
-      create :taxon_state, taxon_id: taxon.id
-      expect(taxon).not_to be_valid
-      taxon = create :taxon, name: create(:name, name: 'Cerapachynae')
-      expect(taxon.name.to_s).to eq 'Cerapachynae'
+      taxon = create :taxon
       expect(taxon).to be_valid
+
+      taxon.name = nil
+      expect(taxon).not_to be_valid
     end
 
     it "is (Rails) valid with a nil status" do
-      taxon = FactoryGirl.build :taxon
-      create :taxon_state, taxon_id: taxon.id
-      expect(taxon).to be_valid
-      taxon = FactoryGirl.build :taxon, status: 'valid'
-      create :taxon_state, taxon_id: taxon.id
+      taxon = create :taxon
+      taxon.status = nil
       expect(taxon).to be_valid
     end
 
     it "when status 'valid', should not be invalid" do
-      taxon = FactoryGirl.build :taxon
-      create :taxon_state, taxon_id: taxon.id
-
+      taxon = create :taxon
+      taxon.status = "valid"
       expect(taxon).not_to be_invalid
     end
 
     it "can be unidentifiable" do
       taxon = FactoryGirl.build :taxon
-      create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_unidentifiable
+
       taxon.update_attribute :status, 'unidentifiable'
       expect(taxon).to be_unidentifiable
       expect(taxon).to be_invalid
@@ -38,8 +33,8 @@ describe Taxon do
 
     it "can be a collective group name" do
       taxon = FactoryGirl.build :taxon
-      create :taxon_state, taxon_id: taxon.id
       expect(taxon).not_to be_collective_group_name
+
       taxon.update_attribute :status, 'collective group name'
       expect(taxon).to be_collective_group_name
       expect(taxon).to be_invalid
@@ -47,7 +42,7 @@ describe Taxon do
 
     it "can be an ichnotaxon" do
       taxon = FactoryGirl.build :taxon
-      create :taxon_state, taxon_id: taxon.id
+
       expect(taxon).not_to be_ichnotaxon
       taxon.update_attribute :ichnotaxon, true
       expect(taxon).to be_ichnotaxon
@@ -56,7 +51,7 @@ describe Taxon do
 
     it "can be unavailable" do
       taxon = FactoryGirl.build :taxon
-      create :taxon_state, taxon_id: taxon.id
+
       expect(taxon).not_to be_unavailable
       expect(taxon).to be_available
       taxon.update_attribute :status, 'unavailable'
@@ -67,7 +62,7 @@ describe Taxon do
 
     it "can be excluded from Formicidae" do
       taxon = FactoryGirl.build :taxon
-      create :taxon_state, taxon_id: taxon.id
+
       expect(taxon).not_to be_excluded_from_formicidae
       taxon.update_attribute :status, 'excluded from Formicidae'
       expect(taxon).to be_excluded_from_formicidae
@@ -76,7 +71,7 @@ describe Taxon do
 
     it "can be a fossil" do
       taxon = FactoryGirl.build :taxon
-      create :taxon_state, taxon_id: taxon.id
+
       expect(taxon).not_to be_fossil
       expect(taxon.fossil).to eq false
       taxon.update_attribute :fossil, true
@@ -85,7 +80,6 @@ describe Taxon do
 
     it "can be a homonym of something else" do
       neivamyrmex = create :taxon
-      create :taxon_state, taxon_id: neivamyrmex.id
 
       acamatus = create :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
       acamatus.reload
@@ -108,8 +102,7 @@ describe Taxon do
 
     describe "#biogeographic_region" do
       before do
-        @taxon = FactoryGirl.build :taxon
-        create :taxon_state, taxon_id: @taxon.id
+        @taxon = create :species
       end
 
       it "allows only allowed regions" do
@@ -546,8 +539,8 @@ describe Taxon do
     end
 
     it "should make sure it's a valid URL" do
-      taxon = FactoryGirl.build :species, type_specimen_url: '*'
-      create :taxon_state, taxon_id: taxon.id
+      taxon = create :species
+      taxon.type_specimen_url = '*'
       expect(taxon).not_to be_valid
       expect(taxon.errors.full_messages)
         .to match_array ['Type specimen url is not in a valid format']

@@ -14,9 +14,12 @@ describe Subspecies do
   end
 
   it "must have a genus" do
-    subspecies = create_subspecies 'Atta major colobopsis',
-      genus: nil, species: nil, build: true
-    create :taxon_state, taxon_id: subspecies.id
+    subspecies = create_subspecies 'Atta major colobopsis'
+    expect(subspecies).to be_valid
+
+    subspecies.genus = nil
+    # TODO this fails without `subspecies.species = nil`
+    subspecies.species = nil
 
     expect(subspecies).not_to be_valid
   end
