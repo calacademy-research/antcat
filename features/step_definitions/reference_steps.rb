@@ -1,13 +1,6 @@
 Given(/^(?:this|these) references? exists?$/) do |table|
   Reference.delete_all # TODO probably remove
-
-  table.hashes.each do |hash|
-    citation = hash.delete 'citation'
-    matches = citation.match /(\w+) (\d+):([\d\-]+)/
-    journal = create :journal, name: matches[1]
-    hash.merge! journal: journal, series_volume_issue: matches[2], pagination: matches[3]
-    create_reference :article_reference, hash
-  end
+  create_references_from_table table
 end
 
 Given(/^(?:this|these) dated references? exists?$/) do |table|
@@ -31,11 +24,25 @@ Given(/^(?:this|these) dated references? exists?$/) do |table|
     date
   end
 
+  create_references_from_table table
+end
+
+def create_references_from_table table
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
     journal = create :journal, name: matches[1]
-    hash.merge! journal: journal, series_volume_issue: matches[2], pagination: matches[3]
+
+    # Not sure why this is required, but we have to do it to avoid having to
+    # add empty doi fields in the Cucumber data tables. Perhaps because
+    # Cucumber's "doi" hash key conflicts with FactoryGirl's :doi symbol?
+    doi = hash.delete "doi"
+
+    hash.merge! journal: journal,
+      series_volume_issue: matches[2],
+      pagination: matches[3],
+      doi: doi
+
     create_reference :article_reference, hash
   end
 end

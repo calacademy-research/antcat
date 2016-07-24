@@ -54,8 +54,8 @@ Feature: Copy reference
 
   Scenario: Copy an unknown reference
     Given this unknown reference exist
-      | authors    | citation | year | citation_year | title | doi |
-      | Ward, P.S. | New York | 2010 | 2010a         | Ants  |     |
+      | authors    | citation | year | citation_year | title |
+      | Ward, P.S. | New York | 2010 | 2010a         | Ants  |
     And I go to the references page
     And I follow first reference link
 

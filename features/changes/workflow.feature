@@ -4,8 +4,8 @@ Feature: Workflow
     Given the Formicidae family exists
     Given I log in as a catalog editor named "Mark Wilden"
     And these references exist
-      | authors | citation   | title | year |  doi |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |      |
+      | authors | citation   | title | year |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
     And there is a genus "Eciton"
 

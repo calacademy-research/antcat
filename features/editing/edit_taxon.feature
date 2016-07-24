@@ -79,8 +79,8 @@ Feature: Editing a taxon
   @search
   Scenario: Changing the authorship
     Given these references exist
-      | authors | citation   | title | year | doi |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |          |
+      | authors | citation   | title | year |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |
     Given there is a genus "Eciton"
     And I log in
     When I go to the edit page for "Eciton"
@@ -100,8 +100,8 @@ Feature: Editing a taxon
     Given PENDING: this state can (should?) never happen
     # Artificially created in a step. If this happens we have bigger issues
     Given these references exist
-      | authors | citation   | title | year | doi |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |     |
+      | authors | citation   | title | year |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |
     Given there is a genus "Eciton" without protonym authorship
     And I log in
     And I go to the edit page for "Eciton"

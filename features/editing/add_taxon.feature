@@ -11,8 +11,8 @@ Feature: Adding a taxon
     Given the Formicidae family exists
     Given I log in
     And these dated references exist
-      | authors | citation   | title | year |  created_at | updated_at | doi |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |   TODAYS_DATE | TODAYS_DATE |  |
+      | authors | citation   | title | year | created_at  | updated_at  |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 | TODAYS_DATE | TODAYS_DATE |
     And there is a subfamily "Formicinae"
 
   # spurrious failures

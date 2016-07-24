@@ -11,8 +11,8 @@ Feature: Edit reference
   @javascript
   Scenario: Edit a reference
     Given these dated references exist
-      | authors | citation   | cite_code | created_at  | date     | possess | title | updated_at  | year | doi |
-      | authors | Psyche 5:3 | CiteCode  | TODAYS_DATE | 20100712 | Possess | title | TODAYS_DATE | 2010 |     |
+      | authors | citation   | cite_code | created_at  | date     | possess | title | updated_at  | year |
+      | authors | Psyche 5:3 | CiteCode  | TODAYS_DATE | 20100712 | Possess | title | TODAYS_DATE | 2010 |
     When I log in
     And I go to the references page
     When I follow first reference link
@@ -26,8 +26,8 @@ Feature: Edit reference
   Scenario: Change a reference's year
     Given I am logged in
     And these dated references exist
-      | authors      | title | citation   | year | created_at  | updated_at  | doi |
-      | Aho, B.L.    | Ants  | Psyche 6:4 | 2010 | TODAYS_DATE | TODAYS_DATE |     |
+      | authors      | title | citation   | year | created_at  | updated_at  |
+      | Aho, B.L.    | Ants  | Psyche 6:4 | 2010 | TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
     When I follow first reference link
     When I follow "Edit"
@@ -39,8 +39,8 @@ Feature: Edit reference
   Scenario: Change a reference's type
     Given I am logged in
     And these dated references exist
-      | authors    | title | citation   | year | created_at  | updated_at  |  doi |
-      | Fisher, B. | Ants  | Psyche 6:4 | 2010 | TODAYS_DATE | TODAYS_DATE |      |
+      | authors    | title | citation   | year | created_at  | updated_at  |
+      | Fisher, B. | Ants  | Psyche 6:4 | 2010 | TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
     When I follow first reference link
     When I follow "Edit"
@@ -54,8 +54,8 @@ Feature: Edit reference
   Scenario: See the correct tab initially
     Given I am logged in
     And these book references exist
-      | authors    | title | citation                | year |    doi |
-      | Fisher, B. | Ants  | New York: Wiley, 22 pp. | 2010 |        |
+      | authors    | title | citation                | year |
+      | Fisher, B. | Ants  | New York: Wiley, 22 pp. | 2010 |
     When I go to the references page
     When I follow first reference link
     When I follow "Edit"
@@ -67,8 +67,8 @@ Feature: Edit reference
   Scenario: See the correct tab initially
     Given I am logged in
     And this unknown reference exists
-      | authors    | title | citation | year |     doi |
-      | Fisher, B. | Ants  | New York | 2010 |         |
+      | authors    | title | citation | year |
+      | Fisher, B. | Ants  | New York | 2010 |
     When I go to the references page
     When I follow first reference link
     When I follow "Edit"
@@ -80,8 +80,8 @@ Feature: Edit reference
   Scenario: Clearing a book reference's fields
     Given I am logged in
     And these book references exist
-      | authors    | citation                | year | citation_year | title |    doi |
-      | Aho, P.S.  | New York: Wiley, 36 pp. | 2010 | 2010a         | Ants  |        |
+      | authors    | citation                | year | citation_year | title |
+      | Aho, P.S.  | New York: Wiley, 36 pp. | 2010 | 2010a         | Ants  |
     When I go to the references page
     When I follow first reference link
     When I follow "Edit"
@@ -100,8 +100,8 @@ Feature: Edit reference
   Scenario: Clearing an article reference's fields
     Given I am logged in
     And these dated references exist
-      | authors    | citation   | year | citation_year | title | created_at  | updated_at  |     doi |
-      | Aho, P.S.  | Psyche 1:2 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |         |
+      | authors    | citation   | year | citation_year | title | created_at  | updated_at  |
+      | Aho, P.S.  | Psyche 1:2 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
     When I follow first reference link
     When I follow "Edit"
@@ -122,8 +122,8 @@ Feature: Edit reference
   Scenario: Clearing an unknown reference's fields
     Given I am logged in
     And these unknown references exist
-      | authors   | citation | year | citation_year | title | doi |
-      | Aho, P.S. | New York | 2010 | 2010a         | Ants  |       |
+      | authors   | citation | year | citation_year | title |
+      | Aho, P.S. | New York | 2010 | 2010a         | Ants  |
     When I go to the references page
     When I follow first reference link
     When I follow "Edit"
@@ -141,8 +141,8 @@ Feature: Edit reference
   Scenario: Specifying the document URL
     Given I am logged in
     And these dated references exist
-      | authors    | citation   | year | citation_year | title | created_at  | updated_at  |   doi |
-      | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |       |
+      | authors    | citation   | year | citation_year | title | created_at  | updated_at  |
+      | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
     When I follow first reference link
     When I follow "Edit"
@@ -170,8 +170,8 @@ Feature: Edit reference
   Scenario: Adding the authors' role
     Given I am logged in
     And these dated references exist
-      | authors    | citation   | year | citation_year | title | created_at  | updated_at  |    doi |
-      | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |       |
+      | authors    | citation   | year | citation_year | title | created_at  | updated_at  |
+      | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
     When I follow first reference link
     When I follow "Edit"
@@ -183,8 +183,8 @@ Feature: Edit reference
   Scenario: Removing the authors' role
     Given I am logged in
     And these dated references exist
-      | authors          | citation   | year | citation_year | title | created_at  | updated_at  |   doi |
-      | Ward, P.S. (ed.) | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |       |
+      | authors          | citation   | year | citation_year | title | created_at  | updated_at  |
+      | Ward, P.S. (ed.) | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
     Then I should see "Ward, P.S. (ed.)"
     When I follow first reference link
@@ -197,8 +197,8 @@ Feature: Edit reference
   Scenario: Specifying the document URL when it doesn't exist
     Given I am logged in
     And these dated references exist
-      | authors    | citation   | year | citation_year | title | created_at  | updated_at  |   doi |
-      | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |       |
+      | authors    | citation   | year | citation_year | title | created_at  | updated_at  |
+      | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  | TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
     When I follow first reference link
     When I follow "Edit"
@@ -210,11 +210,11 @@ Feature: Edit reference
   Scenario: Edit a nested reference
     Given I am logged in
     And these dated references exist
-      | authors    | citation   | year | title | created_at  | updated_at  |     doi |
-      | Ward, P.S. | Psyche 5:3 | 2001 | Ants  | TODAYS_DATE | TODAYS_DATE |         |
+      | authors    | citation   | year | title | created_at  | updated_at  |
+      | Ward, P.S. | Psyche 5:3 | 2001 | Ants  | TODAYS_DATE | TODAYS_DATE |
     And the following entry nests it
-      | authors    | title            | year | pages_in | created_at  | updated_at  |    doi |
-      | Bolton, B. | Ants are my life | 2001 | In:      | TODAYS_DATE | TODAYS_DATE |        |
+      | authors    | title            | year | pages_in | created_at  | updated_at  |
+      | Bolton, B. | Ants are my life | 2001 | In:      | TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
     Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"
     When I follow first reference link
@@ -227,11 +227,11 @@ Feature: Edit reference
   Scenario: Edit a nested reference and changing its nestee to itself
     Given I am logged in
     And these dated references exist
-      | authors    | citation   | year | title | created_at  | updated_at  |     doi |
-      | Ward, P.S. | Psyche 5:3 | 2001 | Ants  | TODAYS_DATE | TODAYS_DATE |         |
+      | authors    | citation   | year | title | created_at  | updated_at  |
+      | Ward, P.S. | Psyche 5:3 | 2001 | Ants  | TODAYS_DATE | TODAYS_DATE |
     And the following entry nests it
-      | authors    | title            | year | pages_in | created_at  | updated_at  |    doi |
-      | Bolton, B. | Ants are my life | 2001 | In:      | TODAYS_DATE | TODAYS_DATE |       |
+      | authors    | title            | year | pages_in | created_at  | updated_at  |
+      | Bolton, B. | Ants are my life | 2001 | In:      | TODAYS_DATE | TODAYS_DATE |
     When I go to the references page
     Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"
     When I follow first reference link
@@ -267,8 +267,8 @@ Feature: Edit reference
     Given I am logged in
     And there are no references
     And this dated reference exists
-      | authors   | year | title                    | citation      | created_at  | updated_at  |    doi |
-      | Forel, A. | 1874 | Les fourmis de la Suisse | Neue 26:1-452 | TODAYS_DATE | TODAYS_DATE |        |
+      | authors   | year | title                    | citation      | created_at  | updated_at  |
+      | Forel, A. | 1874 | Les fourmis de la Suisse | Neue 26:1-452 | TODAYS_DATE | TODAYS_DATE |
     And I go to the references page
     When I follow first reference link
     When I follow "Edit"
