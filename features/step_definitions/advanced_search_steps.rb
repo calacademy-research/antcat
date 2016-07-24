@@ -40,27 +40,33 @@ Given /^there is a genus located in "([^"]+)"$/ do |locality|
   genus = create :genus, protonym: protonym
   create :taxon_state, taxon_id: genus.id
 end
+
 Given /^there is a species located in "([^"]+)"$/ do |locality|
   protonym = create :protonym, locality: locality
   species = create :species, protonym: protonym
   create :taxon_state, taxon_id: species.id
 end
+
 Given /^there is a species with verbatim type locality "([^"]+)"$/ do |locality|
   species = create :species, verbatim_type_locality: locality
   create :taxon_state, taxon_id: species.id
 end
+
 Given /^there is a species with type specimen repository "([^"]+)"$/ do |repository|
   species = create :species, type_specimen_repository: repository
   create :taxon_state, taxon_id: species.id
 end
+
 Given /^there is a species with type specimen code "([^"]+)"$/ do |code|
   species = create :species, type_specimen_code: code
   create :taxon_state, taxon_id: species.id
 end
+
 Given /^there is a species with biogeographic region "([^"]+)"$/ do |biogeographic_region|
   species = create :species, biogeographic_region: biogeographic_region
   create :taxon_state, taxon_id: species.id
 end
+
 Given /^there is a species with forms "([^"]+)"$/ do |forms|
   citation = create :citation, forms: forms
   protonym = create :protonym, authorship: citation
@@ -75,6 +81,7 @@ end
 And /^I select "([^"]+)" from the rank selector$/ do |value|
   step %{I select "#{value}" from "rank"}
 end
+
 And /^I select "([^"]+)" from the biogeographic region selector$/ do |value|
   step %{I select "#{value}" from "biogeographic_region"}
 end

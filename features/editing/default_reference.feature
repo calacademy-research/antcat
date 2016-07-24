@@ -2,7 +2,6 @@
 
 @javascript
 Feature: Using the default reference
-
   Background:
     Given I am logged in
     And these references exist

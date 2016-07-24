@@ -1,6 +1,5 @@
 @javascript
 Feature: Reference popup
-
   Background:
     # Formicidae is only explicitly required by 'Selecting a reference from search results'
     # TODO leaving this here

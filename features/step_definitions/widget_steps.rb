@@ -24,15 +24,19 @@ end
 When /I click the allow_blank name field/ do
   step %{I click "#test_allow_blank_name_field .display_button"}
 end
+
 When /I click the new_or_homonym field/ do
   step %{I click "#test_new_or_homonym_name_field .display_button"}
 end
+
 When /the default_name_string field should contain "([^"]*)"/ do |name|
   find('#test_default_name_string_name_field #name_string').value.should == name
 end
+
 When /I click the default_name_string field/ do
   step %{I click "#test_default_name_string_name_field .display_button"}
 end
+
 When /I click the test name field/ do
   step %{I click "#test_name_field .display_button"}
 end
@@ -43,6 +47,7 @@ Then /^I should (not )?see the name popup edit interface$/ do |should_not|
   visible = should_not ? :false : :true
   find('#popup .controls', visible: visible).send(selector, be_visible)
 end
+
 Then /^I should (not )?see the name popup$/ do |should_not|
   selector = should_not ? :should_not : :should
   visible = should_not ? :false : :true
@@ -55,16 +60,19 @@ Then /in the results section I should see the editable taxt for the name "([^"]*
     step %{I should see "#{Taxt.to_editable_name(Name.find_by_name(text))}"}
   end
 end
+
 Then /in the results section I should see the id for "([^"]*)"/ do |text|
   within "#results" do
     step %{I should see "#{Name.find_by_name(text).id}"}
   end
 end
+
 Then /in the results section I should see the id for the name "([^"]*)"/ do |text|
   within "#results" do
     step %{I should see "#{Name.find_by_name(text).id}"}
   end
 end
+
 Then /in the results section I should see the editable taxt for "([^"]*)"/ do |text|
   within "#results" do
     step %{I should see "#{Taxt.to_editable_taxon(Taxon.find_by_name(text))}"}

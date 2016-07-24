@@ -1,6 +1,5 @@
 @javascript
 Feature: Name field
-
   Scenario: Find typed taxon
     Given there is a genus "Atta"
     When I go to the name field test page

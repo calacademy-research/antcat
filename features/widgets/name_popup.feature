@@ -1,6 +1,5 @@
 @javascript
 Feature: Name popup
-
   Scenario: Blank name
     When I go to the name popup test page
     And I press "OK"

@@ -213,11 +213,13 @@ When /^I click "(.*?)" on the Ward reference$/ do |button|
     first(".btn-normal", text: button).click
   end
 end
+
 Then /^the review status on the Ward reference should change to "(.*?)"$/ do |status|
   within find("tr", text: 'Ward') do
     step %{I should see "#{status}"}
   end
 end
+
 Then /^it (#{SHOULD_OR_SHOULD_NOT}) show "(.*?)" as the default$/ do |should_selector, key|
   reference = find_reference_by_key key # TODO Does this do anything?
   author = key.split(' ').first
@@ -237,6 +239,7 @@ And /^the default reference is "([^"]*)"$/ do |key|
   reference = find_reference_by_key key
   DefaultReference.stub(:get).and_return reference
 end
+
 And /^there is no default reference$/ do
   DefaultReference.stub(:get).and_return nil
 end

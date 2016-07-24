@@ -1,5 +1,4 @@
 Feature: Replace missing references
-
   Scenario: Not logged in
     Given there is a missing reference with citation "Bolton, 1970" in a protonym
     When I go to the missing references page

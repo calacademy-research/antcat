@@ -1,6 +1,5 @@
 @javascript
 Feature: Reference field
-
   Background:
     Given these dated references exist
       | authors                | year | citation_year | title              | citation   | created_at  | updated_at  |  doi |
