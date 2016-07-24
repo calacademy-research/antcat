@@ -152,7 +152,6 @@ end
 
 ### authorship
 When(/^I click the authorship field$/) do
-  sleep 1
   step %{I click "#authorship_field .display_button"}
 end
 

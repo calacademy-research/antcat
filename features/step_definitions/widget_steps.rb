@@ -1,16 +1,12 @@
 # Search
 When(/^in the reference picker, I search for the authors? "([^"]*)"$/) do |authors|
   step %{I fill in the reference picker search box with "author:'#{authors}'"}
-  sleep 1
   step %{I press "Go" by the reference picker search box}
-  sleep 4
 end
 
 # Reference field
 When(/^I click the reference field$/) do
-  sleep 2
   step %{I click ".display_button"}
-  sleep 2
 end
 
 # Reference popup

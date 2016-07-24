@@ -1,9 +1,8 @@
 When(/^I click the first search result$/) do
-  first('.search_results .reference_table').click
+  find('.search_results .reference_table', match: :first).click
 end
 
 Then(/^the authorship field should contain the reference by (\w+)$/) do |author|
-  sleep 5
   page.find('#authorship_field .display').text.should =~ /#{author}.*/
 end
 
