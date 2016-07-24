@@ -1,8 +1,6 @@
 @javascript
 Feature: Reference popup
   Background:
-    # Formicidae is only explicitly required by 'Selecting a reference from search results'
-    # TODO leaving this here
     Given the Formicidae family exists
     And these references exist
       | authors                | year | citation_year | title              | citation   |

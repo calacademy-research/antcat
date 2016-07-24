@@ -51,9 +51,11 @@ Given(/(?:these|this) book references? exists?/) do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /([^:]+): (\w+), (.*)/
-    hash.merge! publisher: create(:publisher, name: matches[2],
-                                                 place: create(:place, name: matches[1])),
-                pagination: matches[3]
+
+    publisher = create :publisher,
+      name: matches[2],
+      place: create(:place, name: matches[1])
+    hash.merge! publisher: publisher, pagination: matches[3]
     create_reference :book_reference, hash
   end
 end
@@ -61,9 +63,9 @@ end
 # HACK because I could not get it to work in any other way.
 Given(/^there is a Giovanni reference$/) do
   reference = create :article_reference,
-  author_names: [],
-  citation_year: '1809',
-  title: "Giovanni's Favorite Ants"
+    author_names: [],
+    citation_year: '1809',
+    title: "Giovanni's Favorite Ants"
 
   reference.update_column :id, 7777
   reference.author_names << create(:author_name, name: 'Giovanni, S.')
@@ -111,16 +113,18 @@ end
 Given(/the following entry nests it/) do |table|
   data = table.hashes.first
   @nestee_reference = @reference
-  @reference = NestedReference.create! author_names: [create(:author_name, name: data[:authors])],
-                                       citation_year: data[:year], title: data[:title], pages_in: data[:pages_in],
-                                       nesting_reference: @nestee_reference
+  @reference = NestedReference.create! title: data[:title],
+    author_names: [create(:author_name, name: data[:authors])],
+    citation_year: data[:year],
+    pages_in: data[:pages_in],
+    nesting_reference: @nestee_reference
 end
 
 Given(/that the entry has a URL that's on our site( that is public)?/) do |is_public|
   @reference.update_attribute :document, ReferenceDocument.create!
-  @reference.document.update_attributes url: "localhost/documents/#{@reference.document.id}/123.pdf",
-                                        file_file_name: '123.pdf',
-                                        public: is_public ? true : nil
+  @reference.document.update_attributes file_file_name: '123.pdf',
+    url: "localhost/documents/#{@reference.document.id}/123.pdf",
+    public: is_public ? true : nil
 end
 
 Given(/that the entry has a URL that's not on our site/) do
@@ -228,7 +232,6 @@ Then(/^the review status on the Ward reference should change to "(.*?)"$/) do |s
 end
 
 Then(/^it (#{SHOULD_OR_SHOULD_NOT}) show "(.*?)" as the default$/) do |should_selector, key|
-  reference = find_reference_by_key key # TODO Does this do anything?
   author = key.split(' ').first
   within find("tr", text: author) do
     step %{I #{should_selector} see "Default"}

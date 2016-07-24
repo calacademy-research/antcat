@@ -58,7 +58,7 @@ end
 
 Given(/a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/) do |taxon_name, parent_name, history|
   subfamily = parent_name && (Subfamily.find_by_name(parent_name) ||
-      create_taxon_with_state(:subfamily, name: create(:name, name: parent_name)))
+    create_taxon_with_state(:subfamily, name: create(:name, name: parent_name)))
   taxon = create :tribe, name: create(:name, name: taxon_name), subfamily: subfamily
   create :taxon_state, taxon_id: taxon.id
 

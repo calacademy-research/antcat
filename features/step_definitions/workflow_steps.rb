@@ -12,7 +12,6 @@ Given(/^there is a genus "([^"]*)" that's waiting for approval$/) do |name|
   create :version, item_id: genus.id, whodunnit: whodunnit, change_id: change.id
 end
 
-####
 def should_see_in_changes selector, value
   page.should have_css "#{selector}-test-hook", text: value
 end
@@ -101,7 +100,7 @@ When(/^I add the genus "([^"]+)"?$/) do |genus_name|
   reference = create :article_reference
 
   taxon_params = HashWithIndifferentAccess.new(
-    name_attributes: {id: ''},
+    name_attributes: { id: '' },
     status: 'valid',
     incertae_sedis_in: '',
     fossil: '0',
@@ -110,25 +109,25 @@ When(/^I add the genus "([^"]+)"?$/) do |genus_name|
     ichnotaxon: '0',
     hong: '0',
     headline_notes_taxt: '',
-    current_valid_taxon_name_attributes: {id: ''},
-    homonym_replaced_by_name_attributes: {id: ''},
+    current_valid_taxon_name_attributes: { id: '' },
+    homonym_replaced_by_name_attributes: { id: '' },
     protonym_attributes: {
-      name_attributes: {id: ''},
+      name_attributes: { id: '' },
       fossil: '0',
       sic: '0',
       locality: '',
       authorship_attributes: {
-        reference_attributes: {id: reference.id},
+        reference_attributes: { id: reference.id },
         pages: '',
         forms: '',
-        notes_taxt: '',
-      },
+        notes_taxt: ''
+      }
     }
   )
   genus_params = taxon_params.deep_dup
   genus_params[:name_attributes][:id] = create(:genus_name, name: genus_name).id
   genus_params[:protonym_attributes][:name_attributes][:id] = create(:genus_name, name: 'Betta').id
-  genus_params[:type_name_attributes] = {id: create(:species_name, name: 'Betta major').id}
+  genus_params[:type_name_attributes] = { id: create(:species_name, name: 'Betta major').id }
 
   taxon = mother_replacement_create_taxon Genus.new, create_subfamily
   taxon.save_taxon genus_params

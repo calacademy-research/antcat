@@ -40,8 +40,7 @@ Given(/^the editors Archibald and Batiatus \(but not Flint\) have enabled feedba
   create :editor, name: "Batiatus",
     email: "batiatus@antcat.org", receive_feedback_emails: true
 
-  create :editor, name: "Flint",
-    email: "flint@antcat.org"
+  create :editor, name: "Flint", email: "flint@antcat.org"
 end
 
 When(/^follow the link of the first feedback$/) do

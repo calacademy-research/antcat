@@ -24,7 +24,6 @@ Then(/^the widget results should be the ID for "([^"]*)"$/) do |key|
 end
 
 Then(/^the widget results should be the taxt for "Fisher 1995"$/) do
-  reference = find_reference_by_key 'Fisher 1995'  # TODO Does this do anything?
   step %{the widget results should be "{Fisher, 1995b v}"}
 end
 

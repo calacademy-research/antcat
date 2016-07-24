@@ -30,7 +30,6 @@ Then(/^I should still see the name field$/) do
 end
 
 When(/^the name field should contain "([^"]*)"$/) do |name|
-  #page.find('#name_field .display_button').text().should == name
   page.find('#name_string').value().should == name
 end
 

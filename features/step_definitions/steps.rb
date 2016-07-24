@@ -95,7 +95,7 @@ When(/^(?:|I )choose "([^"]*)"$/) do |field|
   choose field
 end
 
-# I should see/contain/selected ...
+# "I should see/contain/selected ..."
 Then(/^(?:|I )should see "([^"]*)"$/) do |text|
   if page.respond_to? :should
     page.should have_content(text)

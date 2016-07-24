@@ -6,8 +6,6 @@ Feature: Adding a taxon
   So people use AntCat
 
   Background:
-    # Formicidae is only explicitly required by 'Adding a subfamily'
-    # TODO leaving this here
     Given the Formicidae family exists
     And I am logged in
     And these dated references exist

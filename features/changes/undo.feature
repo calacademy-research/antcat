@@ -6,8 +6,6 @@ Feature: Workflow
   so mistakes can be repaired
 
   Background:
-    # Formicidae is only explicitly required by 'Changing a taxon and seeing it on ...'
-    # TODO leaving this here
     Given the Formicidae family exists
     And these references exist
       | authors | citation   | title | year |

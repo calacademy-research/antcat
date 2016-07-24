@@ -7,7 +7,7 @@ Then(/^I should (not )?see the reference key expansion$/) do |should_not|
   selector = should_not ? :should_not : :should
   visible = should_not ? :false : :true
 
-  find(".reference_key_expansion",visible: visible).send(selector, be_visible)
+  find(".reference_key_expansion", visible: visible).send(selector, be_visible)
 end
 
 When(/^I click the reference key$/) do
