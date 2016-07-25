@@ -13,5 +13,5 @@ When(/^I edit the author name to "([^"]*)"$/) do |name|
 end
 
 When(/^I save the author name$/) do
-  page.find('.author_names button.submit').click
+  find('.author_names button.submit').click
 end

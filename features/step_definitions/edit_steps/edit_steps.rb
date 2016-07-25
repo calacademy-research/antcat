@@ -26,15 +26,15 @@ When(/^I set the name to "([^"]*)"$/) do |name|
 end
 
 Then(/^I should still see the name field$/) do
-  page.find('#name_field .edit').should be_visible
+  find('#name_field .edit').should be_visible
 end
 
 When(/^the name field should contain "([^"]*)"$/) do |name|
-  page.find('#name_string').value().should == name
+  find('#name_string').value.should == name
 end
 
 When(/^the name button should contain "([^"]*)"$/) do |name|
-  page.find('#name_field .display_button').text().should == name
+  find('#name_field .display_button').text.should == name
 end
 
 # gender
@@ -110,7 +110,7 @@ end
 
 #### current valid taxon field
 Then(/the current valid taxon name should be "([^"]*)"$/) do |name|
-  page.find('#current_valid_taxon_name_field div.display').text.should == name
+  find('#current_valid_taxon_name_field div.display').text.should == name
 end
 
 When(/I click the current valid taxon name field/) do
@@ -138,7 +138,7 @@ Then(/^I should (not )?see the homonym replaced by field$/) do |should_not|
 end
 
 Then(/the homonym replaced by name should be "([^"]*)"$/) do |name|
-  page.find('#homonym_replaced_by_name_field div.display').text.should == name
+  find('#homonym_replaced_by_name_field div.display').text.should == name
 end
 
 When(/I click the homonym replaced by name field/) do

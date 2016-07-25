@@ -1,5 +1,5 @@
 Then(/^the reference section should be "(.*)"$/) do |reference|
-  page.first('.reference_sections .reference_section')
+  first('.reference_sections .reference_section')
     .find('div.display').text.should =~ /#{reference}\.?/
 end
 

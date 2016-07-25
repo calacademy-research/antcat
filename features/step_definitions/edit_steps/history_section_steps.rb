@@ -9,12 +9,12 @@ When(/^I click the history item$/) do
 end
 
 Then(/^the history should be "(.*)"$/) do |history|
-  page.first('.history_items .history_item_body')
+  first('.history_items .history_item_body')
     .find('div.display').text.should =~ /#{history}\.?/
 end
 
 Then(/^the history item field should be "(.*)"$/) do |history|
-  page.first('.history_items .history_item_body')
+  first('.history_items .history_item_body')
     .find('div.edit textarea').text.should =~ /#{history}\.?/
 end
 

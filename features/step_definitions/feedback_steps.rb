@@ -26,7 +26,7 @@ Then(/^I should ?(not)? see the feedback form$/) do |should_or_not|
 end
 
 Then(/^the (name|email|comment|page) field within the feedback form should contain "([^"]*)"$/) do |field, value|
-  expect(page.find("#feedback_#{field}").value).to include value
+  expect(find("#feedback_#{field}").value).to include value
 end
 
 Given(/^I have already posted 3 feedbacks in the last 5 minutes$/) do
