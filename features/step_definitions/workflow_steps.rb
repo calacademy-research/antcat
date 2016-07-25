@@ -94,8 +94,6 @@ Then(/^I should see a reference section "(.*?)" in the changes$/) do |value|
   should_see_in_changes '.references_taxt', value
 end
 
-#############################
-# editing
 When(/^I add the genus "([^"]+)"?$/) do |genus_name|
   reference = create :article_reference
 

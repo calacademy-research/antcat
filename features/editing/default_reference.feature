@@ -1,5 +1,3 @@
-# Randomly fails.
-
 @javascript
 Feature: Using the default reference
   Background:

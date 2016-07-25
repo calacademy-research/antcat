@@ -40,10 +40,10 @@ Feature: View bibliography
 
     When I go to the references page
     Then I should see these entries with a header in this order:
-      | entry                                                         |
-      | Forel, A. 1874. Les fourmis de la Suisse. Neue 26:10          |
-      | Wheeler, W. M. 1910a. Small artificial ant-nests. Psyche 1:1  |
-      | Wheeler, W. M. 1910b. Ants. Psyche 2:2                        |
+      | entry                                                        |
+      | Forel, A. 1874. Les fourmis de la Suisse. Neue 26:10         |
+      | Wheeler, W. M. 1910a. Small artificial ant-nests. Psyche 1:1 |
+      | Wheeler, W. M. 1910b. Ants. Psyche 2:2                       |
 
   Scenario: Viewing an entry with a URL to a document on our site, but the user isn't logged in
     Given these references exist

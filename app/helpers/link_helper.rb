@@ -48,7 +48,7 @@ module LinkHelper
                     raise "Don't know how to link #{taxon} to AntWeb"
                   end
 
-    params.merge! project: "worldants"
+    params[:project] = "worldants"
 
     # Rails' .to_param sorts the params, this one doesn't
     url << params.map { |key, value| value.to_query(key) }.compact * '&'

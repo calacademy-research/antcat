@@ -378,7 +378,7 @@ describe Taxon do
   end
 
   describe "Cascading delete" do
-    it "dowsn't delete the protonym when the taxon is deleted" do
+    it "doesn't delete the protonym when the taxon is deleted" do
       expect(Taxon.count).to be_zero
       expect(Protonym.count).to be_zero
 

@@ -26,10 +26,10 @@ Feature: Workflow
 
   Scenario: Changing a taxon and seeing it on the Changes page, undoing it
     When I go to the catalog page for "Formicinae"
-    * I press "Edit"
-    * I fill in "taxon_headline_notes_taxt" with "asdfgh"
-    * I save my changes
-    * I go to the catalog page for "Formicinae"
+    And I press "Edit"
+    And I fill in "taxon_headline_notes_taxt" with "asdfgh"
+    And I save my changes
+    And I go to the catalog page for "Formicinae"
     Then I should see "This taxon has been changed; changes awaiting approval"
     # Should you really see "Formicinae" in the *changes* at this step?
     #* I should see the name "Formicinae" in the changes
@@ -37,7 +37,7 @@ Feature: Workflow
     When I go to the changes page
     Then I should see "Formicinae"
     And I should see "Mark Wilden changed Formicinae"
-    * I should see the notes "asdfgh" in the changes
+    And I should see the notes "asdfgh" in the changes
 
     When I follow "Undo"
     Then I should see "This undo will roll back the following changes"

@@ -45,7 +45,9 @@ Given(/^subfamily "(.*?)" exists$/) do |taxon_name|
 end
 
 Given(/^the unavailable subfamily "(.*?)" exists$/) do |name|
-  @subfamily = create :subfamily, status: 'unavailable', name: create(:subfamily_name, name: name)
+  @subfamily = create :subfamily,
+    status: 'unavailable',
+    name: create(:subfamily_name, name: name)
   @subfamily
 end
 
@@ -56,16 +58,20 @@ Given(/^there is a tribe "([^"]*)"$/) do |name|
 end
 
 Given(/a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: and a taxonomic history of "(.*?)")?/) do |taxon_name, parent_name, history|
-  subfamily = parent_name && (Subfamily.find_by_name(parent_name) ||
-    create(:subfamily, name: create(:name, name: parent_name)))
-  taxon = create :tribe, name: create(:name, name: taxon_name), subfamily: subfamily
+  subfamily = Subfamily.find_by_name parent_name
+  subfamily ||= create :subfamily, name: create(:name, name: parent_name)
+  taxon = create :tribe,
+    name: create(:name, name: taxon_name),
+    subfamily: subfamily
 
   history = 'none' unless history.present?
   taxon.history_items.create! taxt: history
 end
 
 Given(/^tribe "(.*?)" exists in that subfamily$/) do |name|
-  @tribe = create :tribe, subfamily: @subfamily, name: create(:tribe_name, name: name)
+  @tribe = create :tribe,
+    subfamily: @subfamily,
+    name: create(:tribe_name, name: name)
   @tribe.history_items.create! taxt: "#{name} history"
 end
 
@@ -75,7 +81,11 @@ Given(/^subgenus "(.*?)" exists in that genus$/) do |name|
   epithet = name.match(/\((.*?)\)/)[1]
   name = create :subgenus_name, name: name, epithet: epithet
 
-  @subgenus = create :subgenus, subfamily: @subfamily, tribe: @tribe, genus: @genus, name: name
+  @subgenus = create :subgenus,
+    subfamily: @subfamily,
+    tribe: @tribe,
+    genus: @genus,
+    name: name
   @subgenus.history_items.create! taxt: "#{name} history"
 end
 
@@ -113,16 +123,28 @@ end
 
 Given(/^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and a taxonomic history of "(.*?)")?(?: and a status of "(.*?)")?$/) do |taxon_name, parent_name, history, status|
   status ||= 'valid'
-  subfamily = parent_name && (Subfamily.find_by_name(parent_name) || create(:subfamily, name: create(:name, name: parent_name)))
+  subfamily = Subfamily.find_by_name parent_name
+  subfamily ||= create :subfamily, name: create(:name, name: parent_name)
 
-  taxon = create :genus, name: create(:name, name: taxon_name), subfamily: subfamily, tribe: nil, status: status
+  taxon = create :genus,
+    name: create(:name, name: taxon_name),
+    subfamily: subfamily,
+    tribe: nil,
+    status: status
+
   history = 'none' unless history.present?
   taxon.history_items.create! taxt: history
 end
 
 Given(/^a non-displayable genus exists with a name of "(.*?)" and a subfamily of "(.*?)"$/) do |taxon_name, subfamily_name|
-  subfamily = (Subfamily.find_by_name(subfamily_name) || create(:subfamily, name: create(:name, name: subfamily_name)))
-  create :genus, name: create(:name, name: taxon_name), subfamily: subfamily, tribe: nil, status: 'valid', display: false
+  subfamily = Subfamily.find_by_name subfamily_name
+  subfamily ||= create :subfamily, name: create(:name, name: subfamily_name)
+  create :genus,
+    name: create(:name, name: taxon_name),
+    subfamily: subfamily,
+    tribe: nil,
+    status: 'valid',
+    display: false
 end
 
 Given(/a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/) do |taxon_name, history|
@@ -134,20 +156,30 @@ Given(/a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic
 end
 
 Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"(?: and a taxonomic history of "(.*?)")?/) do |fossil, taxon_name, parent_name, history|
-  tribe = Tribe.find_by_name(parent_name)
-  taxon = create :genus, name: create(:name, name: taxon_name), subfamily: tribe.subfamily, tribe: tribe, fossil: fossil.present?
+  tribe = Tribe.find_by_name parent_name
+  taxon = create :genus,
+    name: create(:name, name: taxon_name),
+    subfamily: tribe.subfamily,
+    tribe: tribe,
+    fossil: fossil.present?
 
   history = 'none' unless history.present?
   taxon.history_items.create! taxt: history
 end
 
 Given(/^genus "(.*?)" exists in that tribe$/) do |name|
-  @genus = create :genus, subfamily: @subfamily, tribe: @tribe, name: create(:genus_name, name: name)
+  @genus = create :genus,
+    subfamily: @subfamily,
+    tribe: @tribe,
+    name: create(:genus_name, name: name)
   @genus.history_items.create! taxt: "#{name} history"
 end
 
 Given(/^genus "(.*?)" exists in that subfamily/) do |name|
-  @genus = create :genus, subfamily: @subfamily, tribe: nil, name: create(:genus_name, name: name)
+  @genus = create :genus,
+    subfamily: @subfamily,
+    tribe: nil,
+    name: create(:genus_name, name: name)
   @genus.history_items.create! taxt: "#{name} history"
 end
 
@@ -169,39 +201,65 @@ Given(/^there is a parentless subspecies "([^"]*)"$/) do |name|
 end
 
 Given(/a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/) do |taxon_name, parent_name, history|
-  genus = Genus.find_by_name(parent_name) || create(:genus, name: create(:genus_name, name: parent_name))
-  @species = create :species, name: create(:species_name, name: "#{parent_name} #{taxon_name}"), genus: genus
+  genus = Genus.find_by_name parent_name
+  genus ||= create :genus, name: create(:genus_name, name: parent_name)
+  @species = create :species,
+    name: create(:species_name, name: "#{parent_name} #{taxon_name}"),
+    genus: genus
   history = 'none' unless history.present?
   @species.history_items.create! taxt: history
 end
 
 Given(/an imported species exists with a name of "(.*?)" and a genus of "(.*?)"/) do |taxon_name, parent_name|
-  genus = Genus.find_by_name(parent_name) || create(:genus, name: create(:genus_name, name: parent_name))
-  name = create :species_name, name: "#{parent_name} #{taxon_name}", auto_generated: true, origin: 'hol'
-  @species = create :species, name: name, genus: genus, auto_generated: true, origin: 'hol'
+  genus = Genus.find_by_name parent_name
+  genus ||= create :genus, name: create(:genus_name, name: parent_name)
+  name = create :species_name,
+    name: "#{parent_name} #{taxon_name}",
+    auto_generated: true,
+    origin: 'hol'
+  @species = create :species,
+    name: name,
+    genus: genus,
+    auto_generated: true,
+    origin: 'hol'
 end
 
 Given(/^species "(.*?)" exists in that subgenus$/) do |name|
-  @species = create :species, subfamily: @subfamily, genus: @genus, subgenus: @subgenus, name: create(:species_name, name: name)
+  @species = create :species,
+    subfamily: @subfamily,
+    genus: @genus,
+    subgenus: @subgenus,
+    name: create(:species_name, name: name)
   @species.history_items.create! taxt: "#{name} history"
 end
 
 Given(/^species "(.*?)" exists in that genus$/) do |name|
-  @species = create :species, subfamily: @subfamily, genus: @genus, name: create(:species_name, name: name)
+  @species = create :species,
+    subfamily: @subfamily,
+    genus: @genus,
+    name: create(:species_name, name: name)
   @species.history_items.create! taxt: "#{name} history"
 end
 
 Given(/^there is an original species "([^"]*)" with genus "([^"]*)"$/) do |species_name, genus_name|
   genus = create_genus genus_name
-  create_species species_name, genus: genus, status: Status['original combination'].to_s
+  create_species species_name,
+    genus: genus,
+    status: Status['original combination'].to_s
 end
 
 Given(/^there is species "([^"]*)" and another species "([^"]*)" shared between protonym genus "([^"]*)" and later genus "([^"]*)"$/) do
 |protonym_species_name, valid_species_name, protonym_genus_name, valid_genus_name|
   proto_genus = create_genus protonym_genus_name
-  proto_species = create_species protonym_species_name, genus: proto_genus, status: Status['original combination'].to_s
+  proto_species = create_species protonym_species_name,
+    genus: proto_genus,
+    status: Status['original combination'].to_s
   later_genus = create_genus valid_genus_name
-  create_species valid_species_name, genus: later_genus, status: Status['valid'].to_s, protonym_id: proto_species.id
+
+  create_species valid_species_name,
+    genus: later_genus,
+    status: Status['valid'].to_s,
+    protonym_id: proto_species.id
 end
 
 Given(/^there is a species "([^"]*)" with genus "([^"]*)"$/) do |species_name, genus_name|
@@ -244,13 +302,24 @@ Given(/^there is a subspecies "([^"]*)" without a species/) do |subspecies_name|
 end
 
 Given(/a subspecies exists for that species with a name of "(.*?)" and an epithet of "(.*?)" and a taxonomic history of "(.*?)"/) do |name, epithet, history|
-  subspecies = create :subspecies, name: create(:subspecies_name, name: name, epithet: epithet, epithets: epithet), species: @species, genus: @species.genus
+  subspecies_name = create :subspecies_name,
+    name: name,
+    epithet: epithet,
+    epithets: epithet
+  subspecies = create :subspecies,
+    name: subspecies_name,
+    species: @species,
+    genus: @species.genus
   history = 'none' unless history.present?
   subspecies.history_items.create! taxt: history
 end
 
 Given(/^subspecies "(.*?)" exists in that species$/) do |name|
-  subspecies = create :subspecies, subfamily: @subfamily, genus: @genus, species: @species, name: create(:subspecies_name, name: name)
+  subspecies = create :subspecies,
+    subfamily: @subfamily,
+    genus: @genus,
+    species: @species,
+    name: create(:subspecies_name, name: name)
   subspecies.history_items.create! taxt: "#{name} history"
 end
 
@@ -266,6 +335,6 @@ Given(/^there is a species name "([^"]*)"$/) do |name|
   find_or_create_name name
 end
 
-Then(/^The taxon mouseover should contain "(.*?)"$/) do |arg1|
-  find('.reference_key')['title'].should have_content(arg1)
+Then(/^The taxon mouseover should contain "(.*?)"$/) do |text|
+  find('.reference_key')['title'].should have_content(text)
 end

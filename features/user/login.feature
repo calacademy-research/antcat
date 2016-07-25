@@ -13,9 +13,9 @@ Feature: Logging in
     Given I am not logged in
 
     When I go to the login page
-    * I fill in the email field with "email@example.com"
-    * I fill in the password field with "secret"
-    * I press "Login"
+    And I fill in the email field with "email@example.com"
+    And I fill in the password field with "secret"
+    And I press "Login"
     Then I should be on the main page
 
   @javascript
@@ -24,10 +24,10 @@ Feature: Logging in
     Given I am not logged in
 
     When I go to the main page
-    * I follow "Login"
-    * I fill in the email field with "email@example.com"
-    * I fill in the password field with "secret"
-    * I press the first "Go" to log in
+    And I follow "Login"
+    And I fill in the email field with "email@example.com"
+    And I fill in the password field with "secret"
+    And I press the first "Go" to log in
     Then I should be on the main page
 
   @javascript
@@ -35,18 +35,18 @@ Feature: Logging in
     Given I am not logged in
 
     When I go to the main page
-    * I follow "Login"
-    * I fill in the email field with "email@example.com"
-    * I fill in the password field with "asd;fljl;jsdfljsdfj"
-    * I press "Login"
+    And I follow "Login"
+    And I fill in the email field with "email@example.com"
+    And I fill in the password field with "asd;fljl;jsdfljsdfj"
+    And I press "Login"
     Then I should be on the login page
 
   Scenario: Returning to previous page
     Given I am not logged in
 
     When I go to the references page
-    * I follow the first "Login"
-    * I fill in the email field with "email@example.com"
-    * I fill in the password field with "secret"
-    * I press "Login"
+    And I follow the first "Login"
+    And I fill in the email field with "email@example.com"
+    And I fill in the password field with "secret"
+    And I press "Login"
     Then I should be on the references page

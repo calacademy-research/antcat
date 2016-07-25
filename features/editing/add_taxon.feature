@@ -13,7 +13,6 @@ Feature: Adding a taxon
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
 
-  # spurrious failures
   @search
   Scenario: Adding a genus
     Given there is a genus "Eciton"
@@ -46,10 +45,8 @@ Feature: Adding a taxon
     And I should see "Eciton" in the protonym
 
     When I go to the catalog page for "Formicinae"
-    #And I follow "All genera" in the subfamilies index
     Then I should see "Atta" in the index
 
-  # spurrious failure
   @search
   Scenario: Adding a genus which has a tribe
     Given tribe "Ecitonini" exists in that subfamily

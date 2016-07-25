@@ -4,7 +4,6 @@ Feature: Feed (tooltips)
     Given I log in as a catalog editor named "Archibald"
 
   Scenario: Added tooltip
-    # Create activity
     When I go to the tooltips editing page
       And I follow "New Tooltip"
       And I fill in "tooltip[key]" with "authors"

@@ -211,11 +211,13 @@ When(/^I click the history item$/) do
 end
 
 Then(/^the history should be "(.*)"$/) do |history|
-  page.first('.history_items .history_item_body').find('div.display').text.should =~ /#{history}\.?/
+  page.first('.history_items .history_item_body')
+    .find('div.display').text.should =~ /#{history}\.?/
 end
 
 Then(/^the history item field should be "(.*)"$/) do |history|
-  page.first('.history_items .history_item_body').find('div.edit textarea').text.should =~ /#{history}\.?/
+  page.first('.history_items .history_item_body')
+    .find('div.edit textarea').text.should =~ /#{history}\.?/
 end
 
 Then(/^the history should be empty$/) do
@@ -267,7 +269,8 @@ end
 
 # references section
 Then(/^the reference section should be "(.*)"$/) do |reference|
-  page.first('.reference_sections .reference_section').find('div.display').text.should =~ /#{reference}\.?/
+  page.first('.reference_sections .reference_section')
+    .find('div.display').text.should =~ /#{reference}\.?/
 end
 
 When(/^I click the reference section/) do
