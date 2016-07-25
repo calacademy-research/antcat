@@ -3,33 +3,6 @@ Given(/^there are no references$/) do
 end
 
 Given(/^(?:this|these) references? exists?$/) do |table|
-  create_references_from_table table
-end
-
-Given(/^(?:this|these) dated references? exists?$/) do |table|
-  table.map_column!('created_at') do |date|
-    if date == 'TODAYS_DATE'
-      date = Time.now.strftime "%Y-%m-%d"
-    elsif date == 'YESTERDAYS_DATE'
-      t = Time.now
-      yesterday = t - 1.day
-
-      date = yesterday.strftime "%Y-%m-%d"
-    end
-    date
-  end
-
-  table.map_column!('updated_at') do |date|
-    if date == 'TODAYS_DATE'
-      date = Time.now.strftime "%Y-%m-%d"
-    end
-    date
-  end
-
-  create_references_from_table table
-end
-
-def create_references_from_table table
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
@@ -143,8 +116,6 @@ Then(/I should see these entries (with a header )?in this order:/) do |with_head
   end
 end
 
-##################
-
 When(/^I follow first reference link$/) do
   first('a.goto_reference_link').click
 end
@@ -216,10 +187,6 @@ Then(/^I should not see the missing reference$/) do
   step 'I should not see "Adventures among Ants"'
 end
 
-Given(/there are no references/) do
-  Reference.delete_all
-end
-
 # New references list
 When(/^I click "(.*?)" on the Ward reference$/) do |button|
   within find("tr", text: 'Ward') do
@@ -244,7 +211,7 @@ def find_reference_by_key key
   parts = key.split ' '
   last_name = parts[0]
   year = parts[1]
-  Reference.where(principal_author_last_name_cache: last_name, year: year.to_i).first
+  Reference.find_by(principal_author_last_name_cache: last_name, year: year.to_i)
 end
 
 Given(/^the default reference is "([^"]*)"$/) do |key|
