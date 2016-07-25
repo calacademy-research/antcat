@@ -3,7 +3,18 @@ When(/^I click on the Feedback link$/) do
 end
 
 When(/^I close the feedback form$/) do
-  find("#feedback_modal .close-button").click
+  begin
+    find("#feedback_modal .close-button").click
+  rescue Capybara::Webkit::ClickFailed
+    # Sometimes the close button is rendered outside of the screen.
+    # So far I've only seen this is tests.
+    $stdout.puts "Could not click on the modal's close button, clicking outside of it instead.".red
+    click_outside_of_modal
+  end
+end
+
+def click_outside_of_modal
+  find(".reveal-overlay").click
 end
 
 Then(/^I should ?(not)? see the feedback form$/) do |should_or_not|
