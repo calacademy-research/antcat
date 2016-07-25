@@ -74,3 +74,8 @@ Then(/in the results section I should see the editable taxt for "([^"]*)"/) do |
     step %{I should see "#{Taxt.to_editable_taxon(Taxon.find_by_name(text))}"}
   end
 end
+
+# Misc
+Given(/^there is a species name "([^"]*)"$/) do |name|
+  find_or_create_name name
+end
