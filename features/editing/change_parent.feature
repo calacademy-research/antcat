@@ -233,8 +233,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     And the name in the header should be "Eciton nigra minor"
 
   Scenario: Parent field not visible for the family
-    Given there is a family "Formicidae"
-
     When I go to the edit page for "Formicidae"
     Then I should not see the parent name field
 

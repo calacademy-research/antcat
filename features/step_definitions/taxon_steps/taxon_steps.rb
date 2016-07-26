@@ -1,8 +1,4 @@
 # Family
-Given(/^there is a family "Formicidae"$/) do
-  create_family
-end
-
 Given(/^the Formicidae family exists$/) do
   reference = create :article_reference,
     author_names: [create(:author_name, name: 'Latreille, I.')],

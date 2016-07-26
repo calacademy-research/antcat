@@ -15,11 +15,7 @@ end
 
 Then(/^(?:|I )should be on (.+)$/) do |page_name|
   current_path = URI.parse(current_url).path
-  if current_path.respond_to? :should
-    current_path.should == path_to(page_name)
-  else
-    assert_equal path_to(page_name), current_path
-  end
+  current_path.should == path_to(page_name)
 end
 
 # Click/press
@@ -97,30 +93,18 @@ end
 
 # "I should see/contain/selected ..."
 Then(/^(?:|I )should see "([^"]*)"$/) do |text|
-  if page.respond_to? :should
-    page.should have_content(text)
-  else
-    assert page.has_content?(text)
-  end
+  page.should have_content(text)
 end
 
 Then(/^(?:|I )should not see "([^"]*)"$/) do |text|
-  if page.respond_to? :should
-    page.should have_no_content(text)
-  else
-    assert page.has_no_content?(text)
-  end
+  page.should have_no_content(text)
 end
 
 Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |field, parent, value|
   with_scope(parent) do
     field = find_field field
     field_value = (field.tag_name == 'textarea') ? field.text : field.value
-    if field_value.respond_to? :should
-      field_value.should =~ /#{value}/
-    else
-      assert_match /#{value}/, field_value
-    end
+    field_value.should =~ /#{value}/
   end
 end
 
