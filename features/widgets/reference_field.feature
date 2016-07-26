@@ -12,15 +12,15 @@ Feature: Reference field
     When I go to the reference field test page, opened to the first reference
     Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2 "
 
-  # There's a problem getting the search type selector to pick the right one
-  #Scenario: Searching
-    #When I go to the reference field test page
-    #And I click the reference field
-    #And I search for "bolton"
-    #Then I should see "Bolton's book"
-    #* I should see "Fisher Bolton book"
-    #* I should not see "Bert's book"
-    #* I should not see "Fisher's book"
+  @search
+  Scenario: Searching
+    When I go to the reference field test page
+    And I click the reference field
+    And in the reference picker, I search for the author "bolton"
+    Then I should see "Bolton's book"
+    And I should see "Fisher Bolton book"
+    And I should not see "Bert's book"
+    And I should not see "Fisher's book"
 
   @search
   Scenario: Setting a reference when there wasn't one before

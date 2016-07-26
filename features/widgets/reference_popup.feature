@@ -26,14 +26,14 @@ Feature: Reference popup
     When I press "OK"
     Then the widget results should be the taxt for "Fisher 1995"
 
-  # There's a problem getting the search type selector to pick the right one
-  #Scenario: Searching
-  #  When I go to the reference popup widget test page
-  #  And I search for "bolton"
-  #  Then I should see "Bolton's book"
-  #  * I should see "Fisher Bolton book"
-  #  * I should not see "Bert's book"
-  #  * I should not see "Fisher's book"
+  @search
+  Scenario: Searching
+    When I go to the reference popup widget test page
+    And in the reference picker, I search for the author "bolton"
+    Then I should see "Bolton's book"
+    And I should see "Fisher Bolton book"
+    And I should not see "Bert's book"
+    And I should not see "Fisher's book"
 
   @search
   Scenario: Cancelling when there's already a reference (regression)

@@ -1,6 +1,9 @@
-Then(/^I should (not )?see the reference key "([^"]+)"$/) do |should_not, text|
-  selector = should_not ? :should_not : :should
-  find(".reference_key", text: text).send(selector, be_visible)
+Then(/^I should ?(not)? see the reference key "([^"]+)"$/) do |should_not, text|
+  if should_not == "not"
+    expect(page).to have_no_css(".reference_key", text: text)
+  else
+    expect(page).to have_css(".reference_key", text: text)
+  end
 end
 
 Then(/^I should (not )?see the reference key expansion$/) do |should_not|

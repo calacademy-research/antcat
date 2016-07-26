@@ -15,8 +15,8 @@ Feature: Expanding reference keys
 
     When I click the reference key
     Then I should see the reference key expansion
-    # Randomly produces "Unable to find css [...]"
-      #And I should not see the reference key "Latreille, 1809"
+      And I should not see the reference key "Latreille, 1809"
+
     When I click the reference key expansion
-    #Then I should see the reference key "Latreille, 1809"
-      #And I should not see the reference key expansion
+    Then I should see the reference key "Latreille, 1809"
+      And I should not see the reference key expansion

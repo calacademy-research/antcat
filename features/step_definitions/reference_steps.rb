@@ -253,3 +253,9 @@ Then(/^nesting_reference_id should contain a valid reference id$/) do
   id = find("#reference_nesting_reference_id").value
   expect(Reference.exists? id).to be true
 end
+
+Given(/^there is a taxon with that reference as its protonym's reference$/) do
+  taxon = create_genus
+  taxon.protonym.authorship.reference = @reference
+  taxon.protonym.authorship.save!
+end

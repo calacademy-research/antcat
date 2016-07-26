@@ -50,8 +50,10 @@ Feature: Feedback
     When I click on the Feedback link
       And I fill in "feedback_comment" with "Great site!!!"
       And I press "Send Feedback"
-      And I log in as a catalog editor
-      And I go to the feedback index
+    Then I should see "Message sent"
+
+    When I log in as a catalog editor
+    And I go to the feedback index
     Then I should see "From: [no name] <[no email];"
 
   Scenario: Registered user submitting feedback
@@ -60,7 +62,9 @@ Feature: Feedback
     When I click on the Feedback link
       And I fill in "feedback_comment" with "Great site!!!"
       And I press "Send Feedback"
-      And I go to the feedback index
+    Then I should see "Message sent"
+
+    When I go to the feedback index
     Then I should see "> (registered AntCat user)"
 
   Scenario: Page field defaults to the current URL
