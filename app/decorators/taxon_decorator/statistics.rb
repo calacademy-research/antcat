@@ -3,15 +3,19 @@ class TaxonDecorator::Statistics
   include ActionView::Context
   include ApplicationHelper #pluralize_with_delimiters, count_and_status
 
-  def statistics statistics, options = {}
-    options.reverse_merge! include_invalid: true, include_fossil: true
-    return '' unless statistics && statistics.present?
+  # TODO: Push include_invalid/include_fossil to the taxa models.
+  # This method is cheap, but Taxon#statistics is very slow and it always
+  # fetches all statistics and then this method removes invalid/fossil taxa.
+  # This is an issue because the main page always runs Taxon#statistics
+  # on the Formicidae taxon, and that takes ~700 ms in dev.
+  def statistics statistics, include_invalid: true, include_fossil: true
+    return '' unless statistics.present?
 
     strings = [:extant, :fossil].reduce({}) do |strings, extant_or_fossil|
       extant_or_fossil_statistics = statistics[extant_or_fossil]
       if extant_or_fossil_statistics
         string = [:subfamilies, :tribes, :genera, :species, :subspecies].reduce([]) do |rank_strings, rank|
-          string = rank_statistics(extant_or_fossil_statistics, rank, options[:include_invalid])
+          string = rank_statistics(extant_or_fossil_statistics, rank, include_invalid)
           rank_strings << string if string.present?
           rank_strings
         end.join ', '
@@ -20,13 +24,13 @@ class TaxonDecorator::Statistics
       strings
     end
 
-    strings = if strings[:extant] && strings[:fossil] && options[:include_fossil]
+    strings = if strings[:extant] && strings[:fossil] && include_fossil
                 strings[:extant].insert 0, 'Extant: '
                 strings[:fossil].insert 0, 'Fossil: '
                 [strings[:extant], strings[:fossil]]
               elsif strings[:extant]
                 [strings[:extant]]
-              elsif options[:include_fossil]
+              elsif include_fossil
                 ['Fossil: ' + strings[:fossil]]
               else
                 []
