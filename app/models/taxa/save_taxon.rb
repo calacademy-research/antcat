@@ -156,7 +156,7 @@ class Taxa::SaveTaxon
         return
       end
       # Why do we hit this case?
-      unless attributes.nil?
+      if attributes
         attributes[:type_name_id] = attributes.delete :id
         @taxon.attributes = attributes
       end

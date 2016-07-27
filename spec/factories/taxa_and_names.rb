@@ -293,7 +293,7 @@ def create_taxon_version_and_change review_state, user = @user, approver = nil, 
   change = create :change, user_changed_taxon_id: taxon.id, change_type: "create"
   create :version, item_id: taxon.id, whodunnit: user.id, change_id: change.id
 
-  unless approver.nil?
+  if approver
     change.update_attributes! approver: approver, approved_at: Time.now if approver
   end
 

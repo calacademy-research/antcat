@@ -63,7 +63,7 @@ AntCat::Application.routes.draw do
   end
   resources :missing_references, only: [:index, :edit, :update]
 
-  resources :taxa do
+  resources :taxa, except: [:index, :show] do
     collection do
       get :autocomplete
     end
@@ -134,7 +134,7 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :comments
+  resources :comments, only: [:create]
 
   get "panel", to: "editors_panels#index", as: "editors_panel"
 
@@ -165,9 +165,6 @@ AntCat::Application.routes.draw do
 
   post :preview_markdown, to: "markdown#preview"
 
-  # REST
-  resources :taxon, controller: 'taxa', except: [:edit, :new, :update, :destroy]
-
   unless Rails.env.production?
     namespace :widget_tests do
       get :name_popup_test
@@ -179,5 +176,4 @@ AntCat::Application.routes.draw do
       get :toggle_dev_css
     end
   end
-
 end

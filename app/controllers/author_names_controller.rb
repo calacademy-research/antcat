@@ -33,7 +33,7 @@ class AuthorNamesController < ApplicationController
     author_name = AuthorName.find params[:id]
     author_name.delete
     # Remove the author if there are no more author names that reference it
-    if AuthorName.find_by_author_id(params[:author_id]).nil?
+    unless AuthorName.find_by_author_id params[:author_id]
       author.delete
     end
     render json: nil

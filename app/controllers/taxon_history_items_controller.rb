@@ -38,5 +38,4 @@ class TaxonHistoryItemsController < ApplicationController
 
       render json: json
     end
-
 end

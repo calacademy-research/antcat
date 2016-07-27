@@ -57,7 +57,6 @@ class Reference < ActiveRecord::Base
 
   def self.update_fields batch
     batch.each do |replacement|
-      # Previously looped over [Citation, Bolton::Match].each ...
       Citation.where(reference_id: replacement[:replace])
         .update_all(reference_id: replacement[:with])
       NestedReference.where(nesting_reference_id: replacement[:replace])

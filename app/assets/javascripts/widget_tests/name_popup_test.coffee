@@ -1,6 +1,6 @@
 $ ->
   new AntCat.NamePopup $('#popup'),
-    field: false,
+    field: false
     on_success: (data) ->
       $('#results').text data.id + ' ' + data.taxt
     on_cancel: ->

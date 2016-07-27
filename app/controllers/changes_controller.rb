@@ -138,13 +138,13 @@ class ChangesController < ApplicationController
           item.delete
         else
           item = version.reify
-          if item.nil?
+          unless item
             raise "failed to reify version: #{version.id} referencing change: #{version.change_id}"
           end
           begin
             # because we validate on things like the genus being present, and if we're doing an entire change set,
             # it might not be!
-            unless item.nil?
+            if item
               item.save! validate: false
             end
           rescue ActiveRecord::RecordInvalid => error

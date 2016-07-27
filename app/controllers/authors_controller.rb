@@ -6,7 +6,6 @@ class AuthorsController < ApplicationController
     @authors = Author.sorted_by_name.paginate(page: params[:page], per_page: 60)
   end
 
-  # TODO does this do anything??
   def edit
     @author = Author.find params[:id]
   end
