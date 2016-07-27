@@ -11,14 +11,14 @@ class TaxonHistoryItemsController < ApplicationController
   def update
     item = TaxonHistoryItem.find params[:id]
     item.update_taxt_from_editable params[:taxt]
-    render_json item, is_new: false
+    render_json item
   end
 
   def create
     taxon = Taxon.find params[:taxa_id]
     setup_change taxon, :create
     item = TaxonHistoryItem.create_taxt_from_editable taxon, params[:taxt]
-    render_json item, is_new: true
+    render_json item
   end
 
   def destroy
@@ -29,9 +29,8 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   private
-    def render_json(item, is_new:)
+    def render_json item
       json = {
-        isNew: is_new,
         content: render_to_string(partial: 'history_items/panel', locals: { item: item }),
         id: item.id,
         success: item.errors.empty?
