@@ -1,5 +1,9 @@
 #catalog-controller
   #taxon_browser
+    overflow: scroll
+    overflow-x: hidden
+    height: auto
+
     .tabs-content
       min-height: 115px
     .snaked
@@ -12,8 +16,31 @@
       text-transform: uppercase
     li
       box-sizing: border-box
+    .tab-toggler
+      float: right
+      a
+        color: #fff
+      .label
+        margin-right: 0.5rem
+        margin-top: 0.5rem
+    .tabs-panel
+      padding-bottom: 0
+
+  #splitter
+    background-color: #eee
+    background-repeat: no-repeat
+    background-position: 50%
+    background-image: image_url("horizontal.png")
+    height: 0.4rem
+    width: 100%
+    cursor: row-resize
+    z-index: 900
 
   #taxon_description
+    overflow: scroll
+    overflow-x: hidden
+    padding: 0 1rem 1rem 1rem
+
     h4
       font-weight: bold
 
