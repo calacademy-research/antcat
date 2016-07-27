@@ -46,24 +46,18 @@ class TaxonDecorator::Statistics
       statistics = statistics[rank]
       return unless statistics
 
-      statistics_strings = []
-      string = valid_statistics statistics, rank, include_invalid
-      statistics_strings << string if string.present?
+      strings = []
+      strings << valid_statistics(statistics, rank, include_invalid)
+      strings << invalid_statistics(statistics) if include_invalid
 
-      if include_invalid
-        string = invalid_statistics statistics
-        statistics_strings << string if string.present?
-      end
-
-      statistics_strings.join ' '
+      strings.compact.join ' '
     end
 
     def valid_statistics statistics, rank, include_invalid
-      string = ''
-      if statistics['valid']
-        string << rank_status_count(rank, 'valid', statistics['valid'], include_invalid)
-        statistics.delete 'valid'
-      end
+      return unless statistics['valid']
+
+      string = rank_status_count(rank, 'valid', statistics['valid'], include_invalid)
+      statistics.delete 'valid'
       string
     end
 
@@ -79,17 +73,17 @@ class TaxonDecorator::Statistics
       if status_strings.present?
         "(#{status_strings.join(', ')})"
       else
-        ''
+        nil
       end
     end
 
     def rank_status_count rank, status, count, label_statuses = true
-      if label_statuses
-        options = if status == 'valid' then :nil else :plural end
-        count_and_status = pluralize_with_delimiters count, status, Status[status].to_s(options)
-      else
-        count_and_status = number_with_delimiter count
-      end
+      count_and_status =
+        if label_statuses
+          pluralize_with_delimiters count, status, Status[status].to_s(:plural)
+        else
+          number_with_delimiter count
+        end
 
       if status == 'valid'
         # we must first singularize because rank may already be pluralized

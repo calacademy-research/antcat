@@ -21,7 +21,6 @@ module Taxt
     end
   end
 
-  ################################
   def self.to_string taxt, options = {}
     decode taxt, options
   end
@@ -31,7 +30,6 @@ module Taxt
     add_period_if_necessary string
   end
 
-  ################################
   def self.to_editable taxt
     return '' unless taxt
     taxt = taxt.dup
@@ -76,6 +74,7 @@ module Taxt
     editable_id = id_for_editable id, type
     "{#{text} #{editable_id}}"
   end
+  private_class_method :to_editable_tag
 
   # this value is duplicated in taxt_editor.coffee
   EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ}
@@ -104,6 +103,7 @@ module Taxt
   def self.id_for_editable id, type_number
     AnyBase.base_10_to_base_x(id.to_i * 10 + type_number, EDITABLE_ID_DIGITS).reverse
   end
+  private_class_method :id_for_editable
 
   # this code is duplicated in taxt_editor.coffee
   def self.id_from_editable editable_id
@@ -112,6 +112,7 @@ module Taxt
     type_number = number % 10
     return id, type_number
   end
+  private_class_method :id_from_editable
 
   def self.taxt_fields
     [
@@ -122,6 +123,7 @@ module Taxt
     ]
   end
 
+  # Note: `private` doesn't work on class methods, but it reveals intent.
   private
     def self.decode taxt, options = {}
       return '' unless taxt
