@@ -62,7 +62,6 @@ Feature: Editing tooltips
     And I hover the tooltip next to the text "Hardcoded"
     Then I should see the tooltip text "Text used in the tooltip"
 
-  # Randomly fails when the whole suite in run.
   @javascript
   Scenario: Editing a selector-based tooltip
     Given this tooltip exists
@@ -72,7 +71,6 @@ Feature: Editing tooltips
     When I go to the tooltips test page
     Then I should not see the tooltip text "Typo oops"
 
-    # Attempt to fix spurious failures
     And I wait for a bit
     And I wait for a bit
     And I wait for a bit
@@ -113,7 +111,6 @@ Feature: Editing tooltips
     And I go to the tooltips test page
     Then I should not see any tooltips next to the text "Hardcoded"
 
-  # Randomly fails when the whole suite in run.
   @javascript
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
@@ -123,7 +120,6 @@ Feature: Editing tooltips
     When I go to the tooltips test page
     And I wait for a bit
 
-    # Attempt to fix spurious failures
     And I wait for a bit
     And I wait for a bit
     When I hover the tooltip next to the element containing "Hook"

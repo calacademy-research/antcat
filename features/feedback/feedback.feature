@@ -115,9 +115,11 @@ Feature: Feedback
     And I am logged in
 
     When I click on the Feedback link
-      And I fill in "feedback_comment" with "Great site!!!"
-      And I press "Send Feedback"
-    And I go to the feedback index
+    And I fill in "feedback_comment" with "Great site!!!"
+    And I press "Send Feedback"
+    Then I should see "Message sent"
+
+    When I go to the feedback index
     Then I should see "<archibald@antcat.org>"
     And I should see "<batiatus@antcat.org>"
     And I should not see "flint@antcat.org"
@@ -127,7 +129,9 @@ Feature: Feedback
     Given I am logged in
 
     When I click on the Feedback link
-      And I fill in "feedback_comment" with "Great site!!!"
-      And I press "Send Feedback"
-    And I go to the feedback index
+    And I fill in "feedback_comment" with "Great site!!!"
+    And I press "Send Feedback"
+    Then I should see "Message sent"
+
+    When I go to the feedback index
     Then I should see "sblum@calacademy.org"

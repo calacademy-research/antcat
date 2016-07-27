@@ -66,7 +66,6 @@ Feature: Feed (taxa)
     And I go to the activity feed
     Then I should see "Archibald elevated the subspecies Solenopsis speccus subbus to the rank of species (now Solenopsis subbus)" and no other feed items
 
-  @no_travis
   Scenario: Converted species to subspecies
     Given activity tracking is disabled
       And there is a species "Camponotus dallatorei" with genus "Camponotus"
@@ -79,5 +78,7 @@ Feature: Feed (taxa)
       And I set the new species field to "Camponotus alii"
       And I press "OK"
       And I press "Convert"
-    And I go to the activity feed
+    Then I should be on the catalog page for "Camponotus alii dallatorei"
+
+    When I go to the activity feed
     Then I should see "Archibald converted the species Camponotus dallatorei to a subspecies (now Camponotus alii dallatorei)" and no other feed items
