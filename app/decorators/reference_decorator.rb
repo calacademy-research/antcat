@@ -109,7 +109,7 @@ class ReferenceDecorator < ApplicationDecorator
       class: :goto_reference_link, target: target
   end
 
-  def to_link(expansion: true)
+  def to_link expansion: true
     reference_key_string = format_author_last_names
     reference_string = format
     if expansion

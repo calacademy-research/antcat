@@ -67,14 +67,14 @@ class ChangesController < ApplicationController
     @change.create_activity :undo_change
 
     json = { success: true }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
 
   def destroy
     raise NotImplementedError
 
     json = { success: true }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
 
   # return information about all the taxa that would be hit if we were to

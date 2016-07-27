@@ -36,7 +36,7 @@ class ReferenceSectionsController < ApplicationController
     item = ReferenceSection.find params[:id]
     item.destroy
     json = { success: true }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
 
   private
@@ -46,7 +46,7 @@ class ReferenceSectionsController < ApplicationController
         id: item.id,
         success: item.errors.empty?
       }
-      render json: json, content_type: 'text/html'
+      render json: json
     end
 
 end

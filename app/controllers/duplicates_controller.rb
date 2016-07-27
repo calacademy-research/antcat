@@ -14,7 +14,7 @@ class DuplicatesController < TaxaController
     # This check shouldn't be valid; there's nothing wrong with
     # a conflict in a subspecies parent, for example.
     # if @rank_to_create != "species"
-    #   render :nothing => true, status: :no_content
+    #   render nothing: true, status: :no_content
     #   return
     # end
     current_taxon = Taxon.find(params[:current_taxon_id])

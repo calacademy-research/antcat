@@ -25,7 +25,7 @@ class TaxonHistoryItemsController < ApplicationController
     item = TaxonHistoryItem.find params[:id]
     item.destroy
     json = { success: true }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
 
   private
@@ -36,7 +36,7 @@ class TaxonHistoryItemsController < ApplicationController
         success: item.errors.empty?
       }
 
-      render json: json, content_type: 'text/html'
+      render json: json
     end
 
 end

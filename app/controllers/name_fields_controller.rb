@@ -54,52 +54,53 @@ class NameFieldsController < NamePickersController
     end
 
     data[:content] = render_to_string(partial: 'name_fields/panel', locals: { name_string: name_string })
-    render json: data, content_type: 'text/html'
+    render json: data
   end
 
   # TODO joe - this is probably where we should handle the cases currently done in
   # a combination of duplicatescontroller and name_field.coffee
 
-  def add_name name_string, data
-    name = Name.parse name_string
-    data[:success] = true
-    data[:id] = name.id
-  end
+  private
+    def add_name name_string, data
+      name = Name.parse name_string
+      data[:success] = true
+      data[:id] = name.id
+    end
 
-  def clear_name data
-    data[:success] = true
-    data[:id] = nil
-  end
+    def clear_name data
+      data[:success] = true
+      data[:id] = nil
+    end
 
-  def tell_about_existing _name, data
-    data[:success] = false
-    data[:error_message] = "This name is in use by another taxon."
-    data[:reason] = 'homonym'
-  end
+    def tell_about_existing _name, data
+      data[:success] = false
+      data[:error_message] = "This name is in use by another taxon."
+      data[:reason] = 'homonym'
+    end
 
-  def ask_about_homonym name, data
-    data[:success] = false
-    data[:id] = name.id
-    data[:reason] = 'homonym'
-    data[:submit_button_text] = 'Save homonym'
-    data[:error_message] = 'This name is in use by another taxon. To create a homonym, click "Save homonym".'
-  end
+    def ask_about_homonym name, data
+      data[:success] = false
+      data[:id] = name.id
+      data[:reason] = 'homonym'
+      data[:submit_button_text] = 'Save homonym'
+      data[:error_message] = 'This name is in use by another taxon. To create a homonym, click "Save homonym".'
+    end
 
-  def accept_success name, data
-    data[:success] = true
-    data[:id] = name.id
-  end
+    def accept_success name, data
+      data[:success] = true
+      data[:id] = name.id
+    end
 
-  def tell_existing_required data
-    data[:success] = false
-    data[:error_message] = 'This must be the name of an existing taxon'
-    data[:reason] = 'not found'
-  end
+    def tell_existing_required data
+      data[:success] = false
+      data[:error_message] = 'This must be the name of an existing taxon'
+      data[:reason] = 'not found'
+    end
 
-  def ask_about_adding name_string, data
-    data[:success] = false
-    data[:reason] = 'not found'
-    data[:submit_button_text] = 'Add this name'
-    data[:error_message] = "Do you want to add the name #{name_string}? You can attach it to a taxon later, if desired."
-  end
+    def ask_about_adding name_string, data
+      data[:success] = false
+      data[:reason] = 'not found'
+      data[:submit_button_text] = 'Add this name'
+      data[:error_message] = "Do you want to add the name #{name_string}? You can attach it to a taxon later, if desired."
+    end
 end

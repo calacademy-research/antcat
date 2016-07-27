@@ -36,7 +36,7 @@ class AuthorNamesController < ApplicationController
     if AuthorName.find_by_author_id(params[:author_id]).nil?
       author.delete
     end
-    render json: nil, content_type: 'text/html'
+    render json: nil
   end
 
   private
@@ -47,6 +47,6 @@ class AuthorNamesController < ApplicationController
         success: author_name.errors.empty?
       }
 
-      render json: json, content_type: 'text/html'
+      render json: json
     end
 end

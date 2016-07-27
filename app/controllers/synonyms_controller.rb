@@ -34,7 +34,7 @@ class SynonymsController < ApplicationController
       else
         synonym = Synonym.create! senior_synonym_id: senior.id, junior_synonym_id: junior.id
         synonym.touch_with_version
-        synonym
+
         synonyms = if is_junior
                      taxon.junior_synonyms_with_names
                    else
@@ -50,15 +50,15 @@ class SynonymsController < ApplicationController
         taxon: taxon, title: title, synonyms: synonyms, junior_or_senior: junior_or_senior
       }),
       success: error_message.blank?,
-      error_message: error_message,
+      error_message: error_message
     }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
 
   def destroy
     Synonym.find(params[:id]).destroy
     json = { success: true }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
 
   def reverse_synonymy
@@ -78,6 +78,6 @@ class SynonymsController < ApplicationController
       locals: { taxon: taxon }
     )
     json = { content: content, success: true, error_message: '' }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
 end
