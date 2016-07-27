@@ -79,7 +79,6 @@ Feature: Workflow
     And I will confirm on the next step
     And I press "Approve"
     Then I should not see "Approve[^d]"
-    # TODO fix ugly regex hack
     And I should see "Stan Blum approved"
 
     When I go to the catalog page for "Atta"
@@ -97,7 +96,6 @@ Feature: Workflow
     When I press "Approve all"
     And I go to the unreviewed changes page
     Then I should not see "Approve[^d]"
-    # TODO fix ugly regex hack
 
   Scenario: Should not see approve all if not superadmin
     When I go to the unreviewed changes page
@@ -174,7 +172,6 @@ Feature: Workflow
     And I will confirm on the next step
     And I press "Approve"
     Then I should not see "Approve[^d]"
-    # TODO fix ugly regex hack
     And I should see "Stan Blum approved"
     And there should be a mailto link to the email of "Stan Blum"
     And there should be a mailto link to the email of "Mark Wilden"

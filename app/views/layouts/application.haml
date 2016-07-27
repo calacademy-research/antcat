@@ -23,7 +23,7 @@
     =favicon_link_tag
     =yield :head
 
-    %body
+    %body{id: "#{params[:controller].tr("/", "_")}-controller"}
       #header
         =render "navigation"
         =render "breadcrumbs"

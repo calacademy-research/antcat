@@ -1,78 +1,74 @@
-#merge_authors
-  .panel
-    border: thin solid black
-    width: 48%
-    background: lighten(#98FB98, 10%)
-    margin: 4px
-    margin-bottom: 8px
-
-  .merge
-    text-align: center
-    width: 96%
-    padding: 8px
-    form
-      margin-top: 4px
-      margin-bottom: 4px
-      input
-        font-size: 14px
-    border-bottom: thin solid black
-    .help
-      padding-top: 6px
-      text-align: left
-      font-size: 12px
-      font-style: italic
-      .name
-        font-size: 12px
-        font-weight: bold
-        font-style: normal
-
-  .author_panel
-    float: left
-
-    &.blank
+#merge_authors-controller
+  #merge_authors
+    .panel
+      border: thin solid black
       width: 48%
+      background: lighten(#98FB98, 10%)
+      margin: 4px
+      margin-bottom: 8px
 
-    &.half_width
-      width: 48%
-
-    .search
-      padding: 4px
-
-      .close_link
-        font-size: 11px
-
-    .search_results
-      background: white
-      padding: 4px
-      border-top: thin solid black
-
-      .none
+    .merge
+      text-align: center
+      width: 96%
+      padding: 8px
+      form
+        margin-top: 4px
+        margin-bottom: 4px
+        input
+          font-size: 14px
+      border-bottom: thin solid black
+      .help
+        padding-top: 6px
+        text-align: left
         font-size: 12px
+        font-style: italic
+        .name
+          font-size: 12px
+          font-weight: bold
+          font-style: normal
 
-      .author
+    .author_panel
+      float: left
+      &.blank
+        width: 48%
+      &.half_width
+        width: 48%
 
-        .author_name
-          .name
-            padding-bottom: 2px
-            font-weight: bold
-            .count
-              font-weight: normal
-              font-size: 12px
-              font-style: italic
-              margin-left: 6px
+      .search
+        padding: 4px
+        .close_link
+          font-size: 11px
 
-          .references
-            border: thin solid grey
-            padding: 2px
-            margin-bottom: 4px
-            max-height: 100px
-            overflow: auto
+      .search_results
+        background: white
+        padding: 4px
+        border-top: thin solid black
+        .none
+          font-size: 12px
 
-            .reference
-              font-size: 11px
-              text-indent: -6px
-              margin-left: 6px
-              a
+        .author
+          .author_name
+            .name
+              padding-bottom: 2px
+              font-weight: bold
+              .count
+                font-weight: normal
+                font-size: 12px
+                font-style: italic
+                margin-left: 6px
+
+            .references
+              border: thin solid grey
+              padding: 2px
+              margin-bottom: 4px
+              max-height: 100px
+              overflow: auto
+
+              .reference
                 font-size: 11px
-                .genus_or_species
+                text-indent: -6px
+                margin-left: 6px
+                a
                   font-size: 11px
+                  .genus_or_species
+                    font-size: 11px

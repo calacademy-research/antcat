@@ -1,21 +1,22 @@
 @import "colors"
 
-form.edit_author
-  .display:hover
-    background-color: $color_current_being_edited_background
-    cursor: pointer
+#authors-controller
+  form.edit_author
+    .display:hover
+      background-color: $color_current_being_edited_background
+      cursor: pointer
 
-  .author_names_section
-    .author_name
-      .edit
-        display: none
-        .buttons
-          .delete
-            margin-left: 1rem
+    .author_names_section
+      .author_name
+        .edit
+          display: none
+          .buttons
+            .delete
+              margin-left: 1rem
 
-  .buttons_section
-    form
-      display: inline-block
+    .buttons_section
+      form
+        display: inline-block
 
-  .author_name_template
-    display: none
+    .author_name_template
+      display: none

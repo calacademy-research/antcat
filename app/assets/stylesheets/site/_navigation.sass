@@ -1,66 +1,67 @@
 @import "colors"
 
-.top-bar
-  white-space: nowrap !important
-  .top-bar-title
-    color: #fff !important
-    margin-left: 0 !important
-  .menu > li > a
-    color: #fff !important
+#header
+  .top-bar
+    white-space: nowrap !important
+    .top-bar-title
+      color: #fff !important
+      margin-left: 0 !important
+    .menu > li > a
+      color: #fff !important
 
-#desktop-only
-  #desktop-logo
-    padding-top: 3rem
+  #desktop-only
+    #desktop-logo
+      padding-top: 3rem
 
-  #desktop-menu
-    padding-top: 4rem
+    #desktop-menu
+      padding-top: 4rem
 
-    #desktop-upper-menu
-      position: absolute
-      right: 0
-      top: 1rem
-      .notification.label
-        margin-top: -5px
-        margin-left: 5px
-        a
-          color: #fff !important
+      #desktop-upper-menu
+        position: absolute
+        right: 0
+        top: 1rem
+        .notification.label
+          margin-top: -5px
+          margin-left: 5px
+          a
+            color: #fff !important
 
-    #desktop-lower-menu
-      .expandable-catalog-search
-        width: 130px
-        transition: all .5s
-        // fix background after typeahead messes it up
-        background-color: #fff !important
-        &:focus
-          width: 250px
-      .centered-text
-        text-align: center
-      .without-top-padding
-        padding-top: 0 !important
+      #desktop-lower-menu
+        .expandable-catalog-search
+          width: 130px
+          transition: all .5s
+          // fix background after typeahead messes it up
+          background-color: #fff !important
+          &:focus
+            width: 250px
+        .centered-text
+          text-align: center
+        .without-top-padding
+          padding-top: 0 !important
 
-#mobile-only
-  #mobile-menu
-    background-color: #262C3A
+  #mobile-only
+    #mobile-menu
+      background-color: #262C3A
+      a
+        color: #fff
+    #mobile-logo
+      > span
+        padding-right: 1rem
+
+  #breadcrumbs
+    padding: 0.4rem 1rem
+    color: #fff
+    background: $color_green
     a
       color: #fff
-  #mobile-logo
-    > span
-      padding-right: 1rem
 
-#breadcrumbs
-  padding: 0.4rem 1rem
-  color: #fff
-  background: $color_green
-  a
+    // Firefox tweak
+    button
+      vertical-align: top
+
+  #subnavigation
+    padding: 0.4rem 1rem
     color: #fff
-
-  // Firefox tweak
-  button
-    vertical-align: top
-
-#subnavigation
-  padding: 0.4rem 1rem
-  color: #fff
-  background: $color_light_green
-  a
-    color: #fff
+    background: $color_light_green
+    a
+      color: #fff
