@@ -1,12 +1,10 @@
-.author
-  -author.names.each do |author_name|
-    .author_name
-      -references = author_name.references
-      .name
-        =author_name.name
-        %span.count=count_and_noun references, 'reference'
-      -if references.present?
-        .references
-          -references.each do |reference|
-            .reference
-              =link_to reference.decorate.format, reference_path(reference), target: '_blank'
+-author.names.each do |author_name|
+  -references = author_name.references
+  .name
+    =author_name.name
+    %span.count=count_and_noun references, 'reference'
+  -if references.present?
+    .callout.references
+      -references.each do |reference|
+        .reference
+          =link_to reference.decorate.format, reference_path(reference), target: '_blank'

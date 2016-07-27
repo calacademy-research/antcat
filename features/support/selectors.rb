@@ -30,13 +30,13 @@ module HtmlSelectorsHelpers
       "#advanced_search"
 
     when /the author panel/, /the first author panel/
-      ".author_panel:first-of-type"
+      find ".author_panel", match: :first
     when /the last author panel/
-      ".author_panel:last-of-type"
+      all(".author_panel").last
     when /the second author panel/
-      ".author_panel:nth-of-type(2)"
+      all(".author_panel")[1]
     when /another author panel/
-      ".author_panel:last-of-type"
+      all(".author_panel").last
 
     when /the search box/
       "#q"
