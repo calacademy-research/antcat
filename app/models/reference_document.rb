@@ -77,6 +77,6 @@ class ReferenceDocument < ActiveRecord::Base
     end
 
     def s3_url
-      file.expiring_url(10)
+      file.expiring_url 1.day.to_i # seconds
     end
 end
