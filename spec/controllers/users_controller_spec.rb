@@ -3,7 +3,7 @@ require "spec_helper"
 describe UsersController do
   # Testing cross-cutting concern here
   describe "ApplicationController#set_user_for_feed" do
-    let(:user) { FactoryGirl.create :user }
+    let(:user) { create :user }
 
     context "signed in" do
       before { sign_in user }
@@ -15,7 +15,7 @@ describe UsersController do
     end
 
     context "not signed in" do
-      it "return nil without blowing up" do
+      it "returns nil without blowing up" do
         get :index
         expect(User.current_user).to eq nil
       end

@@ -1,7 +1,7 @@
 class TooltipsController < ApplicationController
   before_action :set_tooltip, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_editor
-  skip_before_filter :authenticate_editor, only: [:enabled_selectors]
+  before_action :authenticate_editor
+  skip_before_action :authenticate_editor, only: [:enabled_selectors]
 
   def index
     tooltips = Tooltip.all
@@ -29,8 +29,8 @@ class TooltipsController < ApplicationController
   def create
     @tooltip = Tooltip.new(tooltip_params)
     if @tooltip.save
-      if params[:referral] && params[:referral].length > 0
-        redirect_to params[:referral]     # joe dis broke
+      if params[:referral] && params[:referral].size > 0
+        redirect_to params[:referral] # joe dis broke
       else
         redirect_to tooltip_path(@tooltip), notice: 'Tooltip was successfully created.'
       end
@@ -42,7 +42,7 @@ class TooltipsController < ApplicationController
   def update
     respond_to do |format|
       if @tooltip.update_attributes tooltip_params
-        if params[:referral] && params[:referral].length > 0
+        if params[:referral] && params[:referral].size > 0
           redirect_to params[:referral]
           return
         end
@@ -100,5 +100,4 @@ class TooltipsController < ApplicationController
       params.require(:tooltip).permit(
         :key, :scope, :text, :key_enabled, :selector, :selector_enabled)
     end
-
 end

@@ -1,5 +1,4 @@
 class AntCat.ReferencePicker extends AntCat.Panel
-
   constructor: (@parent_element, @options = {}) ->
     super @parent_element.find('> .antcat_reference_picker'), @options
 

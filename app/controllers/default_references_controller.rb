@@ -1,5 +1,4 @@
 class DefaultReferencesController < ApplicationController
-
   def update
     DefaultReference.set session, Reference.find(params[:id])
     if request.xhr?
@@ -8,5 +7,4 @@ class DefaultReferencesController < ApplicationController
       redirect_to latest_additions_references_path
     end
   end
-
 end

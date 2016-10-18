@@ -13,5 +13,4 @@ class Reference < ActiveRecord::Base
   def document_host= host
     document.host = host if document
   end
-
 end

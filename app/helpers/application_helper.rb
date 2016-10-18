@@ -11,7 +11,7 @@ module ApplicationHelper
 
   def make_link_menu *items
     content_tag :span do |content|
-      items.flatten.inject(''.html_safe) do |string, item|
+      items.flatten.reduce(''.html_safe) do |string, item|
         string << ' | '.html_safe unless string.empty?
         string << item
       end

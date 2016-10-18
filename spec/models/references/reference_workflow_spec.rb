@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Reference do
-  let(:reference) { FactoryGirl.create :article_reference }
+  let(:reference) { create :article_reference }
 
-  it "should start as 'none'" do
+  it "starts as 'none'" do
     expect(reference).to be_none
     expect(reference.can_start_reviewing?).to be_truthy
     expect(reference.can_finish_reviewing?).to be_falsey
@@ -37,5 +37,4 @@ describe Reference do
     expect(reference.can_finish_reviewing?).to be_truthy
     expect(reference.can_restart_reviewing?).to be_falsey
   end
-
 end

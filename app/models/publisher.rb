@@ -23,9 +23,8 @@ class Publisher < ActiveRecord::Base
 
   def self.search term
     search_expression = '%' + term.split('').join('%') + '%'
-    joins('LEFT OUTER JOIN places ON place_id = places.id').
-      where("CONCAT(COALESCE(places.name, ''), ':', publishers.name) LIKE ?", search_expression).
-      map(&:to_s)
+    joins('LEFT OUTER JOIN places ON place_id = places.id')
+      .where("CONCAT(COALESCE(places.name, ''), ':', publishers.name) LIKE ?", search_expression)
+      .map(&:to_s)
   end
-
 end

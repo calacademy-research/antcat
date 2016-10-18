@@ -5,6 +5,7 @@ Feature: Working with authors and their names
       | Bolton,B.  |
     And the following names exist for another author
       | Fisher, B. |
+
     When I go to the authors page
     Then I should see "Bolton, B.; Bolton,B."
     And I should see "Fisher, B."
@@ -16,16 +17,19 @@ Feature: Working with authors and their names
       | Bolton,B.  |
     And the following names exist for another author
       | Fisher, B. |
-    Given I am logged in
+    And I am logged in
+
     When I go to the authors page
     Then I should see "Bolton, B.; Bolton,B."
     And I should see "Fisher, B."
+
     When I click "edit" in the first row
     Then I should be on the author edit page for "Bolton, B."
 
   Scenario: Attempting to access edit page without being logged in
     Given the following names exist for an author
       | Bolton, B. |
+
     When I go to the author edit page for "Bolton, B."
     Then I should be on the login page
 
@@ -33,6 +37,7 @@ Feature: Working with authors and their names
     Given the following names exist for an author
       | Bolton, B. |
     And I am logged in
+
     When I go to the authors page
     And I follow "Merge Authors"
     Then I should be on the Merge Authors page
@@ -41,7 +46,8 @@ Feature: Working with authors and their names
   Scenario: Adding an author name
     Given the following names exist for an author
       | Bolton, B. |
-    Given I am logged in
+    And I am logged in
+
     When I go to the author edit page for "Bolton, B."
     And I click the "Add Author Name" button
     And I edit the author name to "Fisher, B."
@@ -54,7 +60,8 @@ Feature: Working with authors and their names
   Scenario: Entering an existing author name
     Given the following names exist for an author
       | Bolton, B. |
-    Given I am logged in
+    And I am logged in
+
     When I go to the author edit page for "Bolton, B."
     And I click the "Add Author Name" button
     And I edit the author name to "Bolton, B."

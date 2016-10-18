@@ -16,12 +16,11 @@ module Taxt
     attr_accessor :id
 
     def initialize message = nil, id = nil
-      super(message)
+      super message
       self.id = id
     end
   end
 
-  ################################
   def self.to_string taxt, options = {}
     decode taxt, options
   end
@@ -31,7 +30,6 @@ module Taxt
     add_period_if_necessary string
   end
 
-  ################################
   def self.to_editable taxt
     return '' unless taxt
     taxt = taxt.dup
@@ -76,6 +74,7 @@ module Taxt
     editable_id = id_for_editable id, type
     "{#{text} #{editable_id}}"
   end
+  private_class_method :to_editable_tag
 
   # this value is duplicated in taxt_editor.coffee
   EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ}
@@ -84,19 +83,19 @@ module Taxt
     editable_taxt.gsub /{((.*?)? )?([#{Regexp.escape EDITABLE_ID_DIGITS}]+)}/ do |string|
       id, type_number = id_from_editable $3
       case type_number
-        when REFERENCE_TAG_TYPE
-          raise ReferenceNotFound.new(string) unless Reference.find_by_id id
-          "{ref #{id}}"
-        when TAXON_TAG_TYPE
-          raise TaxonNotFound.new(string) unless Taxon.find id
-          "{tax #{id}}"
-        when NAME_TAG_TYPE
-          begin
-            Name.find id
-          rescue ActiveRecord::RecordNotFound
-            raise NameNotFound.new(string, id)
-          end
-          "{nam #{id}}"
+      when REFERENCE_TAG_TYPE
+        raise ReferenceNotFound.new(string) unless Reference.find_by_id id
+        "{ref #{id}}"
+      when TAXON_TAG_TYPE
+        raise TaxonNotFound.new(string) unless Taxon.find id
+        "{tax #{id}}"
+      when NAME_TAG_TYPE
+        begin
+          Name.find id
+        rescue ActiveRecord::RecordNotFound
+          raise NameNotFound.new(string, id)
+        end
+        "{nam #{id}}"
       end
     end
   end
@@ -104,6 +103,7 @@ module Taxt
   def self.id_for_editable id, type_number
     AnyBase.base_10_to_base_x(id.to_i * 10 + type_number, EDITABLE_ID_DIGITS).reverse
   end
+  private_class_method :id_for_editable
 
   # this code is duplicated in taxt_editor.coffee
   def self.id_from_editable editable_id
@@ -112,16 +112,18 @@ module Taxt
     type_number = number % 10
     return id, type_number
   end
+  private_class_method :id_from_editable
 
   def self.taxt_fields
     [
-        [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-        [Citation, [:notes_taxt]],
-        [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
-        [TaxonHistoryItem, [:taxt]]
+      [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+      [Citation, [:notes_taxt]],
+      [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
+      [TaxonHistoryItem, [:taxt]]
     ]
   end
 
+  # Note: `private` doesn't work on class methods, but it reveals intent.
   private
     def self.decode taxt, options = {}
       return '' unless taxt

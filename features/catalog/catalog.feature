@@ -101,12 +101,14 @@ Feature: Using the catalog
     And I follow "All genera" in the subfamilies index
     And I follow "Dolichoderus"
     Then I should see "abruptus" in the index
+
     When I follow "abruptus"
     Then I should see "minor" in the index
 
   Scenario: Showing the "no tribe" tribe
     Given PENDING
     Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
+
     When I go to the catalog
     And I follow "Dolichoderinae" in the index
     And I follow "Incertae sedis" in the subfamilies index
@@ -119,6 +121,7 @@ Feature: Using the catalog
   Scenario: Not showing non-displayable taxa
     Given PENDING: there is code for this, just not activated
     Given a non-displayable genus exists with a name of "Lasius" and a subfamily of "Dolichoderinae"
+
     When I go to the catalog
     And I follow "Dolichoderinae" in the index
     Then I should not see "Lasius" in the genera index

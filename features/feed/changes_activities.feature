@@ -11,12 +11,12 @@ Feature: Feed (changes)
     And I log in as a superadmin named "Archibald"
 
     When I go to the catalog page for "Formicidae"
-    And I follow "Ancatinae" in the families index
-    And I press "Delete"
-    And I press "Delete?"
-    And I go to the changes page
-    And I click "[data-undo-id='1']"
-    And I press "Undo!"
+      And I follow "Ancatinae" in the families index
+      And I press "Delete"
+      And I press "Delete?"
+      And I go to the changes page
+      And I click "[data-undo-id='1']"
+      And I press "Undo!"
     And I go to the activity feed
     Then I should see "Archibald undid the change"
     And I should see 2 item in the feed
@@ -25,8 +25,8 @@ Feature: Feed (changes)
     Given there are two unreviewed catalog changes for the feed
 
     When I go to the changes page
-    And I follow "Unreviewed Changes"
-    And I press "Approve all"
+      And I follow "Unreviewed Changes"
+      And I press "Approve all"
     And I go to the activity feed
     Then I should see "Archibald approved all unreviewed catalog changes (2 in total)."
     And I should see "Archibald approved the change"

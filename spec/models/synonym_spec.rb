@@ -1,37 +1,45 @@
 require 'spec_helper'
 
 describe Synonym do
-
   it { should validate_presence_of(:junior_synonym) }
 
-  describe "Finding and creating" do
-    before do
-      @junior = create_species
-      @senior = create_species
-    end
-    it "should create the synonym if it doesn't exist" do
-      Synonym.find_or_create @junior, @senior
-      expect(Synonym.count).to eq(1)
-      expect(Synonym.where(junior_synonym_id: @junior, senior_synonym_id: @senior).count).to eq(1)
-    end
-    it "should return the existing synonym" do
-      Synonym.create! junior_synonym: @junior, senior_synonym: @senior
-      expect(Synonym.count).to eq(1)
-      expect(Synonym.where(junior_synonym_id: @junior, senior_synonym_id: @senior).count).to eq(1)
+  describe "#find_or_create" do
+    let!(:junior) { create_species }
+    let!(:senior) { create_species }
 
-      Synonym.find_or_create @junior, @senior
-      expect(Synonym.count).to eq(1)
-      expect(Synonym.where(junior_synonym_id: @junior, senior_synonym_id: @senior).count).to eq(1)
-    end
-  end
+    context "synonym exists" do
+      it "returns the existing synonym" do
+        Synonym.create! junior_synonym: junior, senior_synonym: senior
+        expect(Synonym.count).to eq 1
 
-  describe "Versioning" do
-    it "should record versions" do
-      with_versioning do
-        synonym = FactoryGirl.create :synonym
-        expect(synonym.versions.last.event).to eq('create')
+        synonym = Synonym.where(junior_synonym_id: junior, senior_synonym_id: senior)
+        expect(synonym.count).to eq 1
+
+        Synonym.find_or_create junior, senior
+        expect(Synonym.count).to eq 1
+
+        synonym = Synonym.where(junior_synonym_id: junior, senior_synonym_id: senior)
+        expect(synonym.count).to eq 1
+      end
+    end
+
+    context "synonym doesn't exist" do
+      it "creates it" do
+        Synonym.find_or_create junior, senior
+        expect(Synonym.count).to eq 1
+
+        synonym = Synonym.where(junior_synonym_id: junior, senior_synonym_id: senior)
+        expect(synonym.count).to eq 1
       end
     end
   end
 
+  describe "versioning" do
+    it "records versions" do
+      with_versioning do
+        synonym = create :synonym
+        expect(synonym.versions.last.event).to eq 'create'
+      end
+    end
+  end
 end

@@ -1,5 +1,4 @@
 class Reference < ActiveRecord::Base
-
   searchable do
     string  :type
     integer :year
@@ -8,7 +7,7 @@ class Reference < ActiveRecord::Base
     text    :title
     text    :journal_name do journal.name if journal end
     text    :publisher_name do publisher.name if publisher end
-    text    :year_as_string  do year.to_s if year end # quick fix to make the year searchable as a keyword
+    text    :year_as_string do year.to_s if year end # quick fix to make the year searchable as a keyword
     text    :citation
     text    :cite_code
     text    :editor_notes
@@ -44,7 +43,7 @@ class Reference < ActiveRecord::Base
       .joins('JOIN authors ON authors.id = author_names.author_id')
       .where('authors.id IN (?)', authors)
       .group('references.id')
-      .having("COUNT(`references`.id) = #{authors.length}")
+      .having("COUNT(`references`.id) = #{authors.size}")
       .order(:author_names_string_cache, :citation_year)
     query.paginate page: (page || 1)
   end

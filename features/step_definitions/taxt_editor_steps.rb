@@ -1,6 +1,6 @@
-Then /^the taxt editor should contain the editable taxt for "(.*?)"$/ do |key|
+Then(/^the taxt editor should contain the editable taxt for "(.*?)"$/) do |key|
   reference = find_reference_by_key key
-  page.find('#name').value.strip.should == Taxt.to_editable_reference(reference)
+  find('#name').value.strip.should == Taxt.to_editable_reference(reference)
 end
 
 # Seems like we need this now. Tests likely passed without this earlier
@@ -12,7 +12,7 @@ end
 # code was removed.
 #
 # What this actually does: unfocus textarea and focus again.
-And /^I hack the taxt editor in test env$/ do
+And(/^I hack the taxt editor in test env$/) do
   find("#click_here_to_lose_focus").click
   find(".taxt_edit_box").click
 end

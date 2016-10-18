@@ -1,5 +1,4 @@
 class AddTaxaState < ActiveRecord::Migration
-
   def change
     create_table :taxon_states do |t|
       t.integer :taxon_id
@@ -9,14 +8,7 @@ class AddTaxaState < ActiveRecord::Migration
     end
     execute "insert into taxon_states (taxon_id, review_state) select id, review_state from taxa;"
 
-
-
-    add_index "taxon_states", ["taxon_id"], :name => "taxon_states_taxon_id_idx"
-
-
-
-
-
+    add_index "taxon_states", ["taxon_id"], name: "taxon_states_taxon_id_idx"
 
     remove_column :taxa, :review_state
 
@@ -32,10 +24,6 @@ class AddTaxaState < ActiveRecord::Migration
 
     #Create some version history for this object so we can step it back
 
-
-
     drop_table :transactions
-
   end
-
 end

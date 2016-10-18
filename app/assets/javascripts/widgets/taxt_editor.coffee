@@ -156,7 +156,7 @@ class AntCat.TaxtEditor
   replace_simulation_with_text_area: =>
     @element.find('.antcat_taxt_simulation').remove()
     @control.show()
- 
+
   handle_name_popup_result: (data) =>
     @handle_popup_result data.taxt
 

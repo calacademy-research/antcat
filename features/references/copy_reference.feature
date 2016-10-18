@@ -54,8 +54,8 @@ Feature: Copy reference
 
   Scenario: Copy an unknown reference
     Given this unknown reference exist
-      | authors    | citation | year | citation_year | title | doi |
-      | Ward, P.S. | New York | 2010 | 2010a         | Ants  |     |
+      | authors    | citation | year | citation_year | title |
+      | Ward, P.S. | New York | 2010 | 2010a         | Ants  |
     And I go to the references page
     And I follow first reference link
 
@@ -73,7 +73,7 @@ Feature: Copy reference
     And I follow first reference link
 
     When I follow "Copy"
-    And the "reference_document_attributes_url" field should contain ""
+    Then the "reference_document_attributes_url" field should contain ""
 
   Scenario: Copy a reference with a date
     Given this reference exist

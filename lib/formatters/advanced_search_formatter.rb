@@ -83,5 +83,4 @@ module Formatters::AdvancedSearchFormatter
     string.gsub!('</i>', '')
     string.html_safe
   end
-
 end

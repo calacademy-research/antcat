@@ -9,8 +9,8 @@ describe Formatters::AdvancedSearchFormatter do
     @formatter = FormattersAdvancedSearchFormatterTestClass.new
   end
 
-  describe "Formatting type localities (regression)" do
-    it "should not crash" do
+  describe "#format_type_localities" do
+    it "doesn't crash (regression)" do
       taxon = create_genus verbatim_type_locality: 'Verbatim type locality'
       @formatter.format_type_localities taxon
     end

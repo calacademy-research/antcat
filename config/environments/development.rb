@@ -51,5 +51,5 @@ Rails.application.configure do
       user_name:            Rails.application.secrets.email_user_name,
       password:             Rails.application.secrets.email_password,
       authentication:       Rails.application.secrets.email_authentication,
-      enable_starttls_auto: Rails.application.secrets.email_enable_starttls_auto  }
+      enable_starttls_auto: Rails.application.secrets.email_enable_starttls_auto }
 end

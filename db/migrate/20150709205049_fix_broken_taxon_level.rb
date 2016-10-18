@@ -52,7 +52,7 @@ where
         taxa.type = "Subspecies"
         taxa.save!
       else
-        puts ("Got a bad number of matches for #{taxa.name_cache.split(' ')[0...-1].join(' ')}: #{species_parents.count}. Taxa id: #{taxa.id} name: #{taxa.name_cache}")
+        puts "Got a bad number of matches for #{taxa.name_cache.split(' ')[0...-1].join(' ')}: #{species_parents.count}. Taxa id: #{taxa.id} name: #{taxa.name_cache}"
         # Should we do this? probably.
         taxa.type = "Subspecies"
         taxa.save!
@@ -60,7 +60,6 @@ where
       end
 
     end
-
 
     Taxon.where(type: 'Subspecies', species_id: nil).each do |taxa|
 
@@ -72,11 +71,9 @@ where
         taxa.type = "Subspecies"
         taxa.save!
       else
-        puts ("big clean - bad match #{taxa.name_cache.split(' ')[0...-1].join(' ')}: #{species_parents.count}. Taxa id: #{taxa.id} name: #{taxa.name_cache}")
+        puts "big clean - bad match #{taxa.name_cache.split(' ')[0...-1].join(' ')}: #{species_parents.count}. Taxa id: #{taxa.id} name: #{taxa.name_cache}"
       end
 
     end
-
   end
 end
-

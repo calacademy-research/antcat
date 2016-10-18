@@ -1,6 +1,6 @@
 namespace :references do
   desc 'Check URLs'
-  task :check_urls => :environment do
+  task check_urls: :environment do
     Progress.init
     references_with_documents_count = error_count = 0
     Reference.all.each do |reference|
@@ -25,4 +25,3 @@ namespace :references do
     MissingReference.replace_all true
   end
 end
-

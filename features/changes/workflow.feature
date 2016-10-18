@@ -2,10 +2,10 @@
 Feature: Workflow
   Background:
     Given the Formicidae family exists
-    Given I log in as a catalog editor named "Mark Wilden"
+    And I log in as a catalog editor named "Mark Wilden"
     And these references exist
-      | authors | citation   | title | year |  doi |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |      |
+      | authors | citation   | title | year |
+      | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
     And there is a genus "Eciton"
 
@@ -44,8 +44,9 @@ Feature: Workflow
     * I add a reference section "Reference section"
     * I go to the catalog page for "Atta"
     Then I should see "This taxon has been changed; changes awaiting approval"
+
     When I press "Review change"
-    * I should see the name "Atta" in the changes
+    Then I should see the name "Atta" in the changes
     * I should see the subfamily "Formicinae" in the changes
     * I should see the status "valid" in the changes
     * I should see the incertae sedis status of "subfamily" in the changes
@@ -64,6 +65,7 @@ Feature: Workflow
     * I should see the type notes "Type notes" in the changes
     * I should see a history item "History item" in the changes
     * I should see a reference section "Reference section" in the changes
+
     When I follow "Atta"
     Then I should be on the catalog page for "Atta"
 
@@ -71,27 +73,29 @@ Feature: Workflow
     When I add the genus "Atta"
     And I go to the catalog page for "Atta"
     Then I should see "Added by Mark Wilden" in the change history
+
     When I log in as a catalog editor named "Stan Blum"
-    When I go to the changes page
+    And I go to the changes page
     And I will confirm on the next step
     And I press "Approve"
     Then I should not see "Approve[^d]"
-    # TODO fix ugly regex hack
     And I should see "Stan Blum approved"
+
     When I go to the catalog page for "Atta"
     Then I should see "approved by Stan Blum"
 
   Scenario: Approving all changes
-    When I add the genus "Atta"
+    Given I add the genus "Atta"
     And I add the genus "Batta"
+
     When I log in as a superadmin named "Stan Blum"
-    When I go to the unreviewed changes page
+    And I go to the unreviewed changes page
     Then I should see "Approve all"
-    And I will confirm on the next step
-    And I press "Approve all"
-    When I go to the unreviewed changes page
+
+    Given I will confirm on the next step
+    When I press "Approve all"
+    And I go to the unreviewed changes page
     Then I should not see "Approve[^d]"
-    # TODO fix ugly regex hack
 
   Scenario: Should not see approve all if not superadmin
     When I go to the unreviewed changes page
@@ -102,15 +106,17 @@ Feature: Workflow
     When I add the genus "Atta"
     And I go to the changes page
     Then I should see "Mark Wilden added"
+
     When I log in as a catalog editor named "Stan Blum"
     And I go to the changes page
     And I follow "Atta"
     And I press "Edit"
     And I select "genus" from "taxon_incertae_sedis_in"
     And I save my changes
-    When I press "Review change"
+    And I press "Review change"
     Then I should see the incertae sedis status of "genus" in the changes
     And I should see "Stan Blum changed"
+
     When I log in as a catalog editor named "Mark Wilden"
     And I go to the changes page
     Given I will confirm on the next step
@@ -118,6 +124,7 @@ Feature: Workflow
     # TODO fix. Works because "first" is implied, used to say
     # this:  And I press the first "Approve"
     Then I should see "Mark Wilden approved"
+
     When I go to the catalog page for "Atta"
     Then I should see "approved by Mark Wilden"
 
@@ -125,12 +132,14 @@ Feature: Workflow
     When I add the genus "Atta"
     And I go to the catalog page for "Atta"
     Then I should see "Added by Mark Wilden" in the change history
+
     When I go to the changes page
     Then I should not see an "Approve" button
 
   @javascript @search
   Scenario: Editing a taxon - modified, not added
-    And I log in
+    Given I am logged in
+
     When I go to the edit page for "Formicidae"
     And I click the name field
     And I set the name to "Wildencidae"
@@ -147,25 +156,28 @@ Feature: Workflow
     Then I should see "Wildencidae" in the header
     And I should see "Changed by Mark Wilden"
     And I should see "This taxon has been changed; changes awaiting approval"
-    And I go to the changes page
-    And I should see "Mark Wilden changed Wildencidae"
+
+    When I go to the changes page
+    Then I should see "Mark Wilden changed Wildencidae"
 
   Scenario: People's names linked to their email
-    When I add the genus "Atta"
-    And I go to the changes page
+    Given I add the genus "Atta"
+
+    When I go to the changes page
     Then I should see "Mark Wilden added"
     And there should be a mailto link to the email of "Mark Wilden"
+
     When I log in as a catalog editor named "Stan Blum"
-    When I go to the changes page
+    And I go to the changes page
     And I will confirm on the next step
     And I press "Approve"
     Then I should not see "Approve[^d]"
-    # TODO fix ugly regex hack
     And I should see "Stan Blum approved"
     And there should be a mailto link to the email of "Stan Blum"
     And there should be a mailto link to the email of "Mark Wilden"
+
     When I go to the catalog page for "Atta"
     Then I should see "Added by Mark Wilden"
     And there should be a mailto link to the email of "Mark Wilden"
-    Then I should see "approved by Stan Blum"
+    And I should see "approved by Stan Blum"
     And there should be a mailto link to the email of "Stan Blum"

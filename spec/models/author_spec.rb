@@ -3,61 +3,65 @@ require 'spec_helper'
 describe Author do
   it "has many names" do
     author = Author.create!
-    author.names << FactoryGirl.create(:author_name)
-    expect(author.names.size).to eq(1)
+    author.names << create(:author_name)
+
+    expect(author.names.size).to eq 1
   end
 
-  describe "sorting by first author name" do
-    it "should work" do
-      ward = FactoryGirl.create :author_name, :name => 'Ward'
-      fisher_b_l = FactoryGirl.create :author_name, :name => 'Fisher, B. L.'
-      fisher = FactoryGirl.create :author_name, :name => 'Fisher', :author => fisher_b_l.author
-      bolton = FactoryGirl.create :author_name, :name => 'Bolton'
-      expect(Author.sorted_by_name).to eq([bolton.author, fisher.author, ward.author])
+  describe "scopes.sorted_by_name" do
+    it "sorts by first author name" do
+      ward = create :author_name, name: 'Ward'
+      fisher_b_l = create :author_name, name: 'Fisher, B. L.'
+      fisher = create :author_name, name: 'Fisher', author: fisher_b_l.author
+      bolton = create :author_name, name: 'Bolton'
+
+      expect(Author.sorted_by_name).to eq [bolton.author, fisher.author, ward.author]
     end
   end
 
-  describe "converting a list of author names to authors" do
-    it "should handle an empty list" do
-      expect(Author.find_by_names([])).to eq([])
+  describe ".find_by_names" do
+    it "converts a list of author names to author objects" do
+      bolton = create :author_name, name: 'Bolton'
+      fisher = create :author_name, name: 'Fisher'
+
+      results = Author.find_by_names ['Bolton', 'Fisher']
+      expect(results).to match_array [bolton.author, fisher.author]
     end
-    it "should find the authors for the names" do
-      bolton = FactoryGirl.create :author_name, :name => 'Bolton'
-      fisher = FactoryGirl.create :author_name, :name => 'Fisher'
-      expect(Author.find_by_names(['Bolton', 'Fisher'])).to match_array([bolton.author, fisher.author])
+
+    it "handles empty lists" do
+      expect(Author.find_by_names([])).to eq []
     end
   end
 
-  describe "Merging authors" do
-    it "should make all the names of the passed in authors belong to the same author" do
-      first_bolton_author = FactoryGirl.create(:author_name, name: 'Bolton, B').author
-      second_bolton_author = FactoryGirl.create(:author_name, name: 'Bolton,B.').author
-      expect(Author.count).to eq(2)
-      expect(AuthorName.count).to eq(2)
+  describe ".merge" do
+    it "makes all the names of the passed in authors belong to the same author" do
+      first_bolton_author = create(:author_name, name: 'Bolton, B').author
+      second_bolton_author = create(:author_name, name: 'Bolton,B.').author
+      expect(Author.count).to eq 2
+      expect(AuthorName.count).to eq 2
 
       all_names = (first_bolton_author.names + second_bolton_author.names).uniq.sort
 
       Author.merge [first_bolton_author, second_bolton_author]
-      expect(all_names.all?{|name| name.author == first_bolton_author}).to be_truthy
+      expect(all_names.all? { |name| name.author == first_bolton_author }).to be_truthy
 
-      expect(Author.count).to eq(1)
-      expect(AuthorName.count).to eq(2)
+      expect(Author.count).to eq 1
+      expect(AuthorName.count).to eq 2
     end
   end
 
-  describe "Versioning" do
-    it "should record versions" do
+  describe "versioning" do
+    it "records versions" do
       with_versioning do
-        author = FactoryGirl.create :author
-        expect(author.versions.last.event).to eq('create')
+        author = create :author
+        expect(author.versions.last.event).to eq 'create'
       end
     end
   end
 
-  describe "#get_author_names_for_feed_message" do
+  describe ".get_author_names_for_feed_message" do
     it "returns a string of author names" do
       # TODO
     end
   end
-
 end

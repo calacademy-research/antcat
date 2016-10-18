@@ -16,10 +16,8 @@ class HolData < ActiveRecord::Migration
       t.boolean :many_antcat_references
       t.boolean :many_hol_references
 
-
     end
 
     drop_table :hol_comparisons
   end
 end
-

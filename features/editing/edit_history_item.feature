@@ -9,17 +9,19 @@ Feature: Editing a history item
     Given the Formicidae family exists
     And there is a subfamily "Dolichoderinae" with taxonomic history "Taxonomic history"
     And there is a genus "Atta"
-    And I log in
+    And I am logged in
 
   Scenario: Editing a history item
     When I go to the edit page for "Formicidae"
     Then the history should be "Taxonomic history"
+
     When I click the history item
     And I edit the history item to "(none)"
     And I save the history item
     Then I should not see "Taxonomic history"
     And I wait for a bit
-    Then the history should be "(none)"
+    And the history should be "(none)"
+
     When I click the history item
     Then the history item field should be "(none)"
 
@@ -28,15 +30,17 @@ Feature: Editing a history item
     And I click the history item
     And I edit the history item to "(none)"
     And I save the history item
-    When I save my changes
+    And I save my changes
     And I wait for a bit
     Then I should be on the catalog page for "Formicidae"
 
   # This doesn't work because of inserting a {
   #Scenario: Editing a history item to include a reference
     #Given there is a reference for "Bolton, 2005"
-    #And I go to the edit page for "Formicidae"
+
+    #When I go to the edit page for "Formicidae"
     #Then I should not see "Bolton, 2005"
+
     #When I click the history item
     #And I edit the history item to include that reference
     #And I save my changes
@@ -50,6 +54,7 @@ Feature: Editing a history item
     And I edit the history item to "(none)"
     And I cancel the history item's changes
     Then the history should be "Taxonomic history."
+
     When I click the history item
     Then the history item field should be "Taxonomic history"
 
@@ -72,6 +77,7 @@ Feature: Editing a history item
   Scenario: Adding a history item
     When I go to the edit page for "Atta"
     Then the history should be empty
+
     When I click the "Add History" button
     Then I should not see the "Delete" button for the history item
     And I edit the history item to "Abc"
@@ -82,6 +88,7 @@ Feature: Editing a history item
   Scenario: Adding a history item with blank taxt
     When I go to the edit page for "Atta"
     Then the history should be empty
+
     When I click the "Add History" button
     And I save the history item
     Then I should see "Taxt can't be blank"
@@ -89,17 +96,21 @@ Feature: Editing a history item
   Scenario: Adding a history item, but cancelling
     When I go to the edit page for "Atta"
     Then the history should be empty
+
     When I click the "Add History" button
     And I cancel the history item's changes
     Then the history should be empty
 
   Scenario: Deleting a history item
     Given there is a genus "Eciton" with taxonomic history "Eciton history"
+
     When I go to the edit page for "Eciton"
     Then I should see "Eciton history"
+
     When I click the history item
     Then I should see the "Delete" button for the history item
-    And I will confirm on the next step
-    And I delete the history item
+
+    Given I will confirm on the next step
+    When I delete the history item
     Then I should be on the edit page for "Eciton"
     And the history should be empty

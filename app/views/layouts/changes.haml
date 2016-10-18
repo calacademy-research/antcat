@@ -2,7 +2,7 @@
 -@subnav << link_to('All Changes', changes_path)
 -@subnav << link_to('Unreviewed Changes', unreviewed_changes_path)
 
-- content_for :head do
-  = javascript_include_tag  'changes'
+-content_for :head do
+  =javascript_include_tag 'changes'
 
-= render file: 'layouts/application'
+=render file: 'layouts/application'

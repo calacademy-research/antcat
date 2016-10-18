@@ -6,56 +6,61 @@ Feature: Editing a taxon's homonym replaced by
   So people use AntCat
 
   Background:
-    # Formicidae is only explicitly required by 'Changing the homonym replaced by name'
-    # TODO leaving this here
     Given the Formicidae family exists
-    Given there is a genus "Atta"
-    And I log in
+    And there is a genus "Atta"
+    And I am logged in
 
   Scenario: Changing the homonym replaced by name
     Given there is a genus "Eciton"
+
     When I go to the edit page for "Atta"
     And I set the status to "homonym"
     And I click the homonym replaced by name field
     And I set the homonym replaced by name to "Eciton"
     And I press "OK"
-    When I save my changes
+    And I save my changes
     Then I should see "Eciton" in the header
 
   Scenario: Homonym replaced by field visibility
     Given there is a genus "Eciton"
+
     When I go to the edit page for "Atta"
     Then I should not see the homonym replaced by field
+
     When I set the status to "homonym"
     Then I should see the homonym replaced by field
 
   Scenario: Setting the homonym replaced by name doesn't affect status
     Given there is a genus "Eciton"
+
     When I go to the edit page for "Atta"
     Then the status should be "valid"
+
     When I set the status to "homonym"
     And I click the homonym replaced by name field
     And I set the homonym replaced by name to "Eciton"
     And I press "OK"
-    When I set the status to "valid"
-    When I save my changes
+    And I set the status to "valid"
+    And I save my changes
     And I go to the edit page for "Atta"
     Then the status should be "valid"
 
   Scenario: The homonym replaced by can be cleared
     Given there is a genus "Eciton"
+
     When I go to the edit page for "Atta"
     And I set the status to "homonym"
     Then the homonym replaced by name should be "(none)"
+
     When I click the homonym replaced by name field
     And I set the homonym replaced by name to "Eciton"
     And I press "OK"
     And I save my changes
     And I go to the edit page for "Atta"
-    When I click the homonym replaced by name field
+    And I click the homonym replaced by name field
     And I set the homonym replaced by name to ""
     And I press "OK"
-    When I save my changes
+    And I save my changes
     And I go to the edit page for "Atta"
     Then the homonym replaced by name should be "(none)"
 
@@ -74,5 +79,6 @@ Feature: Editing a taxon's homonym replaced by
     And I set the homonym replaced by name to "Eciton"
     And I press "OK"
     Then I should see "This must be the name of an existing taxon"
+
     When I press "OK"
     Then I should see "This must be the name of an existing taxon"

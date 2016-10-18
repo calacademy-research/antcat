@@ -1,9 +1,9 @@
 class FeedbackController < ApplicationController
   include ActionView::Helpers::DateHelper
 
-  before_filter :authenticate_superadmin, only: [:destroy]
-  before_filter :authenticate_editor, except: [:create]
-  before_filter :set_feedback, only: [:show, :destroy, :close, :reopen]
+  before_action :authenticate_superadmin, only: [:destroy]
+  before_action :authenticate_editor, except: [:create]
+  before_action :set_feedback, only: [:show, :destroy, :close, :reopen]
 
   invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
 

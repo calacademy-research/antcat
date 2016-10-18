@@ -2,15 +2,14 @@ Citrus.load "#{__dir__}/common_grammar", force: true unless defined? Parsers::Co
 Citrus.load "#{__dir__}/author_grammar", force: true unless defined? Parsers::AuthorGrammar
 
 module Parsers::AuthorParser
-
   def self.parse! string
-    return {:names => []} unless string.present?
+    return {names: []} unless string.present?
 
-    match = Parsers::AuthorGrammar.parse(string, :consume => false)
+    match = Parsers::AuthorGrammar.parse(string, consume: false)
     result = match.value
     string.gsub! /#{Regexp.escape match}/, ''
 
-    {:names => result[:names], :suffix => result[:suffix]}
+    {names: result[:names], suffix: result[:suffix]}
   end
 
   def self.parse string
@@ -22,13 +21,12 @@ module Parsers::AuthorParser
     parts = {}
     return parts unless string.present?
     matches = string.match /(.*?), (.*)/
-    unless matches
-      parts[:last] = string
-    else
+    if matches
       parts[:last] = matches[1]
       parts[:first_and_initials] = matches[2]
+    else
+      parts[:last] = string
     end
     parts
   end
-
 end

@@ -72,5 +72,4 @@ module TaxonHelper
       deleted_label || "##{id} [deleted]"
     end
   end
-
 end

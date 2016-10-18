@@ -25,7 +25,7 @@ class Taxon < ActiveRecord::Base
   # Returns the ID of the most recent change that touches this taxon.
   # TODO: Fix these duplicates once the tests pass
   def last_change
-    Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon' ).last
+    Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').last
   end
 
   # Returns the ID of the most recent change that touches this taxon.
@@ -39,5 +39,4 @@ class Taxon < ActiveRecord::Base
     # it seems to be necessary to reload the association and get its last element
     versions(true).last
   end
-
 end

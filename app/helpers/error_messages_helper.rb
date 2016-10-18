@@ -8,7 +8,7 @@ module ErrorMessagesHelper
 
     messages = objects.compact.map { |o| o.errors.full_messages }.flatten
     unless messages.empty?
-      content_tag(:div, :class => "error_messages") do
+      content_tag(:div, class: "error_messages") do
         list_items = messages.map { |msg| content_tag(:li, msg) }
         content_tag(:h2, options[:header_message]) +
                          content_tag(:p, options[:message]) +
@@ -19,7 +19,7 @@ module ErrorMessagesHelper
 
   module FormBuilderAdditions
     def error_messages options = {}
-      @template.error_messages_for(@object, options)
+      @template.error_messages_for @object, options
     end
   end
 end

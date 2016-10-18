@@ -11,38 +11,42 @@ Feature: Logging in
   @javascript
   Scenario: Logging in successfully from the login page
     Given I am not logged in
-    * I go to the login page
-    * I fill in the email field with "email@example.com"
-    * I fill in the password field with "secret"
-    * I press "Login"
+
+    When I go to the login page
+    And I fill in the email field with "email@example.com"
+    And I fill in the password field with "secret"
+    And I press "Login"
     Then I should be on the main page
 
   @javascript
   Scenario: Logging in successfully from the main page
     Given PENDING: JS login disabled
     Given I am not logged in
-    * I go to the main page
-    * I follow "Login"
-    * I fill in the email field with "email@example.com"
-    * I fill in the password field with "secret"
-    * I press the first "Go" to log in
+
+    When I go to the main page
+    And I follow "Login"
+    And I fill in the email field with "email@example.com"
+    And I fill in the password field with "secret"
+    And I press the first "Go" to log in
     Then I should be on the main page
 
   @javascript
   Scenario: Logging in unsuccessfully
     Given I am not logged in
-    * I go to the main page
-    * I follow "Login"
-    * I fill in the email field with "email@example.com"
-    * I fill in the password field with "asd;fljl;jsdfljsdfj"
-    * I press "Login"
+
+    When I go to the main page
+    And I follow "Login"
+    And I fill in the email field with "email@example.com"
+    And I fill in the password field with "asd;fljl;jsdfljsdfj"
+    And I press "Login"
     Then I should be on the login page
 
   Scenario: Returning to previous page
     Given I am not logged in
-    * I go to the references page
-    * I follow the first "Login"
-    * I fill in the email field with "email@example.com"
-    * I fill in the password field with "secret"
-    * I press "Login"
+
+    When I go to the references page
+    And I follow the first "Login"
+    And I fill in the email field with "email@example.com"
+    And I fill in the password field with "secret"
+    And I press "Login"
     Then I should be on the references page

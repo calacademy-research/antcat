@@ -3,13 +3,10 @@ module Api::V1
     def index
       authors = Author.all
       render json: authors, status: :ok
-
     end
-
 
     def show
       super Author
     end
-
   end
 end

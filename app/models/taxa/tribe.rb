@@ -18,7 +18,7 @@ class Tribe < Taxon
       update_descendants_subfamilies
     end
   end
-  
+
   def children
     genera
   end
@@ -39,5 +39,4 @@ class Tribe < Taxon
         genus.subspecies.each { |s| s.subfamily = self.subfamily }
       end
     end
-
 end

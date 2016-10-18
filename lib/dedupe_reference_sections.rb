@@ -1,5 +1,4 @@
 module DedupeReferenceSections
-
   # TODO? make callable from rake task
   def self.dedupe
     ReferenceSection.all.each do |reference_section|

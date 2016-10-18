@@ -3,7 +3,6 @@
 module Workflow
   module ExternalTable
     module InstanceMethods
-
       def load_workflow_state
         # If this throws an error in testing, it's very likely that there's no associated
         # taxon_state.
@@ -41,6 +40,5 @@ module Workflow
       klass.send :include, InstanceMethods
       klass.extend ClassMethods
     end
-
   end
 end

@@ -1,34 +1,33 @@
 require 'spec_helper'
 
 describe TooltipsController do
-
   # Note: Shoulda only checks if the filter is defined;
   # the matcher does not support :only, :except or `skip_before_filter`
   it { should use_before_filter(:authenticate_editor) }
 
   describe '#index' do
     context "signed in" do
-      let!(:no_namespace)         { FactoryGirl.create :tooltip, key: "no_namespace" }
-      let!(:references_authors)   { FactoryGirl.create :tooltip, key: "authors", scope: "references"}
-      let!(:references_title)     { FactoryGirl.create :tooltip, key: "title", scope: "references" }
-      let!(:references_new_title) { FactoryGirl.create :tooltip, key: "new.title", scope: "references" }
-      let!(:taxa_type_species)    { FactoryGirl.create :tooltip, key: "type_species", scope: "taxa" }
+      let!(:no_namespace)         { create :tooltip, key: "no_namespace" }
+      let!(:references_authors)   { create :tooltip, key: "authors", scope: "references" }
+      let!(:references_title)     { create :tooltip, key: "title", scope: "references" }
+      let!(:references_new_title) { create :tooltip, key: "new.title", scope: "references" }
+      let!(:taxa_type_species)    { create :tooltip, key: "type_species", scope: "taxa" }
 
       before do
-        editor = FactoryGirl.create :user, can_edit: true
+        editor = create :user, can_edit: true
         sign_in editor
       end
 
       describe "grouping" do
         before do
           get :index
-          @grouped = assigns(:grouped_tooltips)
+          @grouped = assigns :grouped_tooltips
         end
 
         it "creates keys for each namespace" do
-          expect(@grouped.has_key? nil).to be true
-          expect(@grouped.has_key? "references").to be true
-          expect(@grouped.has_key? "taxa").to be true
+          expect(@grouped.key? nil).to be true
+          expect(@grouped.key? "references").to be true
+          expect(@grouped.key? "taxa").to be true
         end
 
         it "groups keys without namespaces in the 'nil' bucket" do
@@ -49,18 +48,18 @@ describe TooltipsController do
 
     context "not signed in" do
       before { get :index }
+
       it { should redirect_to(new_user_session_path) } # TODO extract this to a helper
     end
   end
 
   describe '#show' do
-    let(:tooltip) { FactoryGirl.create :tooltip }
+    let(:tooltip) { create :tooltip }
 
     context "signed in" do
       before do
-        editor = FactoryGirl.create :user, can_edit: true
+        editor = create :user, can_edit: true
         sign_in editor
-
         get :show, id: tooltip.id
       end
 
@@ -80,11 +79,11 @@ describe TooltipsController do
   end
 
   describe '#edit' do
-    let(:tooltip) { FactoryGirl.create :tooltip }
+    let(:tooltip) { create :tooltip }
 
     context "signed in" do
       it 'redirects to the "show" action for the tooltip' do
-        editor = FactoryGirl.create :user, can_edit: true
+        editor = create :user, can_edit: true
         sign_in editor
 
         get :edit, id: tooltip.id
@@ -103,7 +102,7 @@ describe TooltipsController do
   describe '#create' do
     context "signed in" do
       before do
-        editor = FactoryGirl.create :user, can_edit: true
+        editor = create :user, can_edit: true
         sign_in editor
       end
 
@@ -152,6 +151,4 @@ describe TooltipsController do
   describe '#destroy' do
     # TODO
   end
-
-
 end

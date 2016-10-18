@@ -1,13 +1,13 @@
 require "spec_helper"
 
 describe AntcatMarkdown do
-  let(:dummy_parser) { AntcatMarkdown.new(no_even_a_stub: nil) }
-
+  let(:dummy_parser) { AntcatMarkdown.new no_even_a_stub: nil }
 
   describe "render" do
     it "formats some basic markdown" do
       lasius_name = create :species_name, name: "Lasius"
-      lasius = create :species, name: lasius_name
+      create :species, name: lasius_name
+
       markdown = <<-MARKDOWN
 ###Header
 * A list item
@@ -86,7 +86,7 @@ describe AntcatMarkdown do
       markdown = "%tl[#{lasius.id}, #{lasius.id}]"
 
       expected = %Q[<p><a href="/catalog/#{lasius.id}"><i>Lasius</i></a>, ] +
-                 %Q[<a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>\n]
+        %Q[<a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>\n]
       expect(AntcatMarkdown.render(markdown)).to eq expected
     end
 
@@ -118,7 +118,7 @@ describe AntcatMarkdown do
     context "existing taxon" do
       it "links existing taxa" do
         taxon = create :species
-        returned = dummy_parser.send(:try_linking_taxon_id, taxon.id.to_s)
+        returned = dummy_parser.send :try_linking_taxon_id, taxon.id.to_s
 
         expected = %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
         expect(returned).to eq expected
@@ -128,7 +128,7 @@ describe AntcatMarkdown do
     context "missing taxon" do
       it "renders an error message" do
         returned = dummy_parser.send :try_linking_taxon_id, "9999"
-        expect(returned).to eq %Q[<span class="broken-markdown-link"> could not find taxon with id 9999 </span>]
+        expect(returned).to eq '<span class="broken-markdown-link"> could not find taxon with id 9999 </span>'
       end
     end
   end

@@ -28,16 +28,16 @@ class AntCat.UndoButton extends AntCat.ChangeButton
     @element.append($(@create_impacted_taxa_contents(data)))
     dialog_box = $("#dialog-undo-impacted-taxa")
     dialog_box.dialog
-      resizable: true,
-      height: 180,
-      width: 720,
-      modal: true,
+      resizable: true
+      height: 180
+      width: 720
+      modal: true
       buttons:
         "Undo!": (a) =>
           $.ajax
-            url: "/changes/#{change_id}/undo",
-            type: 'put',
-            dataType: 'json',
+            url: "/changes/#{change_id}/undo"
+            type: 'put'
+            dataType: 'json'
             success: (data) => window.location = '/changes'
             error: (xhr) => debugger
         Cancel: () =>
@@ -47,12 +47,12 @@ class AntCat.UndoButton extends AntCat.ChangeButton
     change_id = @element.data('undo-id')
     url = "/changes/#{change_id}/undo_items"
     $.ajax
-      url: url,
-      type: 'get',
-      dataType: 'json',
+      url: url
+      type: 'get'
+      dataType: 'json'
       success: (data) =>
         @create_impacted_taxa_dialog(data, change_id)
-      async: false,
+      async: false
       error: (xhr) => debugger
 
 $ ->

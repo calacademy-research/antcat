@@ -1,5 +1,4 @@
 class ReferencePickersController < ApplicationController
-
   def show
     reference = Reference.find params[:id] if params[:id].present?
 
@@ -11,5 +10,4 @@ class ReferencePickersController < ApplicationController
     render partial: "reference_#{picker_type}s/show",
       locals: { references: references, reference: reference }
   end
-
 end

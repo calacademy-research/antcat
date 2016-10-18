@@ -3,9 +3,8 @@ class Exporters::AdvancedSearchExporter
 
   def export taxa
     return unless taxa
-    taxa.inject('') do |content, taxon|
+    taxa.reduce('') do |content, taxon|
       content << format(taxon)
     end
   end
-
 end

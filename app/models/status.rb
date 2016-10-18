@@ -1,5 +1,4 @@
 class Status
-
   def initialize hash
     @hash = hash
   end
@@ -55,9 +54,8 @@ class Status
       ['unavailable misspelling',   'unavailable misspelling'],
       ['nonconforming synonym',     'nonconforming synonym'],
       ['unavailable uncategorized', 'unavailable uncategorized']
-    ].map do |status|
-      Status.new(label: status.first, plural_label: status.second)
+    ].map do |label, plural_label|
+      Status.new label: label, plural_label: plural_label
     end
   end
-
 end

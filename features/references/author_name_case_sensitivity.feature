@@ -13,14 +13,16 @@ Feature: Author name case-sensitivity
     And an author name exists with a name of "MACKAY"
     And an author name exists with a name of "mackay"
     And I go to the references page
+
     When I follow first reference link
-    When I follow "Edit"
-    When I fill in "reference_author_names_string" with "MACKAY"
+    And I follow "Edit"
+    And I fill in "reference_author_names_string" with "MACKAY"
     And I press the "Save" button
     Then I should see "MACKAY"
-    And I go to the references page
-    When I follow first reference link
-    When I follow "Edit"
+
+    When I go to the references page
+    And I follow first reference link
+    And I follow "Edit"
     And I fill in "reference_author_names_string" with "mackay"
     And I press the "Save" button
     Then I should see "mackay"

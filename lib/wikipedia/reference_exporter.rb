@@ -1,5 +1,4 @@
 module Wikipedia
-
   class ReferenceExporter
     def self.export reference
       "Wikipedia::#{reference.type}".constantize.new(reference).format
@@ -87,7 +86,6 @@ module Wikipedia
   # Looks like this: {{cite book |last= |first= |year= |title= |url=
   # |location= |publisher= |page= |isbn=}}
   class BookReference < ReferenceExporter
-
     def format
       location = @reference.publisher.place.name
       publisher = @reference.publisher.name
@@ -116,8 +114,8 @@ module Wikipedia
 
       def remove_italics string
         string
-          .gsub(/\*(.*?)\*/, %q[\1])
-          .gsub(/\|(.*?)\|/, %q[\1]) # See Wikipedia::ArticleReference#title.
+          .gsub(/\*(.*?)\*/, '\1')
+          .gsub(/\|(.*?)\|/, '\1') # See Wikipedia::ArticleReference#title.
       end
   end
 end

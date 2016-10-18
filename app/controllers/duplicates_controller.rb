@@ -4,7 +4,7 @@
 # species epithet.
 
 class DuplicatesController < TaxaController
-  before_filter :authenticate_editor
+  before_action :authenticate_editor
 
   # Takes requires parent_id (target parent)and previous_combination_id
   # returns all matching taxa that could conflict with this naming.
@@ -14,7 +14,7 @@ class DuplicatesController < TaxaController
     # This check shouldn't be valid; there's nothing wrong with
     # a conflict in a subspecies parent, for example.
     # if @rank_to_create != "species"
-    #   render :nothing => true, status: :no_content
+    #   render nothing: true, status: :no_content
     #   return
     # end
     current_taxon = Taxon.find(params[:current_taxon_id])
@@ -52,5 +52,4 @@ class DuplicatesController < TaxaController
       name_conflict_taxa = Taxon.where name_id: params[:new_parent_name_id]
       render json: name_conflict_taxa, status: :ok
     end
-
 end

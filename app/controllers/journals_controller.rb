@@ -1,6 +1,6 @@
 class JournalsController < ApplicationController
-  before_filter :authenticate_editor, except: [:index, :show, :autocomplete]
-  before_filter :set_journal, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_editor, except: [:index, :show, :autocomplete]
+  before_action :set_journal, only: [:show, :edit, :update, :destroy]
   layout "references"
 
   def index
@@ -62,5 +62,4 @@ class JournalsController < ApplicationController
     def journal_params
       params.require(:journal).permit(:name)
     end
-
 end

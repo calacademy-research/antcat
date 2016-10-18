@@ -15,7 +15,8 @@ class SpeciesGroupTaxon < Taxon
     genus_epithet != protonym_genus_epithet
   end
 
-  def set_subfamily
-    self.subfamily = genus.subfamily if genus && genus.subfamily
-  end
+  private
+    def set_subfamily
+      self.subfamily = genus.subfamily if genus && genus.subfamily
+    end
 end

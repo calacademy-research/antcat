@@ -1,14 +1,14 @@
 class AddAutogenIndicators < ActiveRecord::Migration
   def change
-    add_column :taxa, :auto_generated, :boolean, :default => false
-    add_column :names, :auto_generated, :boolean, :default => false
-    add_column :citations, :auto_generated, :boolean, :default => false
-    add_column :references, :auto_generated, :boolean, :default => false
-    add_column :journals, :auto_generated, :boolean, :default => false
-    add_column :author_names, :auto_generated, :boolean, :default => false
-    add_column :protonyms, :auto_generated, :boolean, :default => false
-    add_column :reference_author_names, :auto_generated, :boolean, :default => false
-    add_column :synonyms, :auto_generated, :boolean, :default => false
+    add_column :taxa, :auto_generated, :boolean, default: false
+    add_column :names, :auto_generated, :boolean, default: false
+    add_column :citations, :auto_generated, :boolean, default: false
+    add_column :references, :auto_generated, :boolean, default: false
+    add_column :journals, :auto_generated, :boolean, default: false
+    add_column :author_names, :auto_generated, :boolean, default: false
+    add_column :protonyms, :auto_generated, :boolean, default: false
+    add_column :reference_author_names, :auto_generated, :boolean, default: false
+    add_column :synonyms, :auto_generated, :boolean, default: false
 
     add_column :taxa, :origin, :string
     add_column :names, :origin, :string

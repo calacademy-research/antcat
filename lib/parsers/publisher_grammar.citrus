@@ -3,7 +3,12 @@ grammar Parsers::PublisherGrammar
 
   rule publisher
     (publisher_place ':' s publisher_name) {
-      {:publisher => {:name => publisher_name.to_s, :place => publisher_place.to_s}}
+      {
+        publisher: {
+          name: publisher_name.to_s,
+          place: publisher_place.to_s
+        }
+      }
     }
   end
 

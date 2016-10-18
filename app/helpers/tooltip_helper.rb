@@ -1,5 +1,4 @@
 module TooltipHelper
-
   # Includes the code that transforms the tooltip elements (both hard-coded and
   # selector-based) from <xzy class="tooltip" title="text"/> into tooltips.
   def enable_tooltips
@@ -62,5 +61,4 @@ module TooltipHelper
     def new_populated_tooltip_link key
       new_tooltip_path key: key
     end
-
 end

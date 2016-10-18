@@ -9,8 +9,9 @@ Feature: Delete reference
       | authors    | citation   | year | title |
       | Fisher, B. | Psyche 2:1 | year | title |
     And I am logged in
+
     When I go to the references page
-    When I follow first reference link
+    And I follow first reference link
     And I press "Delete"
     Then I should see "Reference was successfully destroyed"
 

@@ -26,5 +26,4 @@ module Formatters::AdvancedSearchTextFormatter
   def convert_to_text string
     unitalicize string.html_safe
   end
-
 end

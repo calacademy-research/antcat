@@ -1,6 +1,6 @@
 class MissingReferencesController < ApplicationController
-  before_filter :authenticate_editor, except: [:index]
-  before_filter :set_reference, only: [:edit, :update]
+  before_action :authenticate_editor, except: [:index]
+  before_action :set_reference, only: [:edit, :update]
   layout "references"
 
   def index

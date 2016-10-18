@@ -1,4 +1,4 @@
-- default_name_string ||= nil
+-default_name_string ||= nil
 
 .edit
   %table
@@ -10,11 +10,11 @@
               %td{colspan: 2}
                 %ul.error_messages
             %tr
-              %td.throbber= shared_spinner_icon
+              %td.throbber=shared_spinner_icon
               %td
                 .controls
-                  = text_field_tag :name_string, name_string
-                  = hidden_field_tag :default_name_string, default_name_string
+                  =text_field_tag :name_string, name_string
+                  =hidden_field_tag :default_name_string, default_name_string
                   %button.submit.btn-normal OK
                   %button.cancel.btn-cancel Cancel
                 .help

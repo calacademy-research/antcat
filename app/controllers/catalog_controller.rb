@@ -1,6 +1,6 @@
 class CatalogController < ApplicationController
-  before_filter :handle_family_not_found, only: [:index]
-  before_filter :setup_catalog, only: [:index, :show]
+  before_action :handle_family_not_found, only: [:index]
+  before_action :setup_catalog, only: [:index, :show]
 
   def index
     render 'show'

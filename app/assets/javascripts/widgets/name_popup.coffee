@@ -1,5 +1,4 @@
 class AntCat.NamePopup extends AntCat.NestedForm
-
   constructor: (@parent_element, @options = {}) ->
     @options.field = false
 

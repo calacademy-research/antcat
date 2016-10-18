@@ -1,5 +1,5 @@
 # TODO cleanup and split this file
-require  'antcat_rake_utils'
+require 'antcat_rake_utils'
 include AntCat::RakeUtils
 
 namespace :antcat do
@@ -7,7 +7,7 @@ namespace :antcat do
 
     # TODO allow editors to see the output of this in Active Admin.
     desc "Finds all tags, eg {ref 133005}, that are referred to but doesn't exist"
-    task :broken_tags => :environment do
+    task broken_tags: :environment do
       tags = {
         ref: Reference,
         nam: Name,
@@ -42,7 +42,7 @@ namespace :antcat do
 
       puts "Found no broken tags." and next if broken_ids.all? &:empty?
 
-      broken_ids_statistics = broken_ids.map { |tag, ids| "#{ids.size} #{tag}(s)" }.to_sentence 
+      broken_ids_statistics = broken_ids.map { |tag, ids| "#{ids.size} #{tag}(s)" }.to_sentence
       antcat_prompt "Found #{broken_ids_statistics}. List which? [Y/n/q]" do
         broken_ids.each { |tag, ids| puts "#{tag}: #{ids}" }
       end
@@ -56,7 +56,7 @@ namespace :antcat do
       end
 
       antcat_prompt "Search *any* version? (may take a while) [Y/n/q]" do
-        broken_ids.each_id do |id, tag |
+        broken_ids.each_id do |id, tag|
           PaperTrail::Version.where(item_id: id).each do |version|
             puts "Found #{tag} ##{id} (version id #{version.id}): #{version.reify}"
           end
@@ -117,7 +117,7 @@ namespace :antcat do
     # Hopefully run-once code. 1) remove all redundant braces 2) makes sure we're
     # not introducing new redundant braces 3) remove this code.
     desc "Find and repair double curly braces"
-    task :double_braces => :environment do
+    task double_braces: :environment do
       puts "Counting stray braces..."
       count = 0
       models_with_taxts.each_field do |field, model|
@@ -127,8 +127,8 @@ namespace :antcat do
       puts "No matches found." and next if count.zero?
 
       antcat_prompt <<-MSG.squish, default: "q" do |answer|
-          Found #{count} redundant curly braces. Try to fix (under development)? 
-          Warning: descructive command. Current database is '#{Rails.env}'. 
+          Found #{count} redundant curly braces. Try to fix (under development)?
+          Warning: descructive command. Current database is '#{Rails.env}'.
           Enter 'yes' to continue [y/l/Q] (l=list only)
         MSG
 
@@ -191,7 +191,7 @@ end
 namespace :antcat do
   namespace :db do
     desc "Moved from protonym.rb"
-    task :destroy_protonym_orphans => :environment do
+    task destroy_protonym_orphans: :environment do
       orphans = Protonym.where("id NOT IN (SELECT protonym_id FROM taxa)")
       orphans.each do |orphan|
         orphan.destroy

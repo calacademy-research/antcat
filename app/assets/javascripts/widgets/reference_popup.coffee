@@ -1,5 +1,4 @@
 class AntCat.ReferencePopup extends AntCat.ReferencePicker
-
   _post_constructor: (@element, @options) =>
     AntCat.check 'ReferencePopup._post_constructor', '@element', @element
     if @options.id

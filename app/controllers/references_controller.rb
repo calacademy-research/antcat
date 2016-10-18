@@ -3,12 +3,12 @@
 # generates tons of feed items.
 
 class ReferencesController < ApplicationController
-  before_filter :authenticate_editor, except: [:index, :download, :autocomplete,
+  before_action :authenticate_editor, except: [:index, :download, :autocomplete,
     :search_help, :show, :search, :endnote_export, :wikipedia_export, :latest_additions]
-  before_filter :authenticate_superadmin, only: [:approve_all]
-  before_filter :set_reference, only: [:show, :edit, :update, :destroy,
+  before_action :authenticate_superadmin, only: [:approve_all]
+  before_action :set_reference, only: [:show, :edit, :update, :destroy,
     :start_reviewing, :finish_reviewing, :restart_reviewing, :wikipedia_export]
-  before_filter :redirect_if_search_matches_id, only: [:search]
+  before_action :redirect_if_search_matches_id, only: [:search]
 
   def index
     @references = Reference.list_references params

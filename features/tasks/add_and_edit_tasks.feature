@@ -41,6 +41,7 @@ Feature: Add and edit open tasks
 
   Scenario: Completing a task
     Given there is an open task "Fix typo"
+
     When I go to the open tasks page
     Then I should see the open task "Fix typo"
 
@@ -53,6 +54,7 @@ Feature: Add and edit open tasks
 
   Scenario: Re-opening a closed task
     Given there is a closed task "Add taxa from Aldous 2007"
+
     When I go to the open tasks page
     Then I should see "There are currently no open tasks."
     And I should see the closed task "Add taxa from Aldous 2007"

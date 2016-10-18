@@ -24,5 +24,4 @@ class TaxonHistoryItem < ActiveRecord::Base
   rescue Taxt::ReferenceNotFound => e
     errors.add :base, "The reference '#{e}' could not be found. Was the ID changed?"
   end
-
 end

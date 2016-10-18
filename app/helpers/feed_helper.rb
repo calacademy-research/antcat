@@ -1,5 +1,4 @@
 module FeedHelper
-
   def format_activity activity
     partial = partial_for_activity activity
     render partial: partial, locals: { activity: activity }

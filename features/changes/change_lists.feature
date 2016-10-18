@@ -1,6 +1,6 @@
 Feature: Changes Lists
   Background:
-    Given I log in
+    Given I am logged in
 
   Scenario: No changes
     When I go to the changes page

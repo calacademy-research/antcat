@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe FeedbackController do
-
   describe '#index' do
     # TODO
   end
@@ -14,7 +13,7 @@ describe FeedbackController do
     context "valid feedback" do
       context "logged in" do
         it "sends emails" do
-          sign_in FactoryGirl.create(:editor)
+          sign_in create(:editor)
           expect { post :create, json }.to change { email_count }.by(1)
         end
       end
@@ -31,7 +30,7 @@ describe FeedbackController do
 
       context "logged in" do
         it "doesn't send emails" do
-          sign_in FactoryGirl.create(:editor)
+          sign_in create(:editor)
           expect { post :create, format: "json" }
            .to raise_error(ActionController::ParameterMissing)
 
@@ -42,14 +41,13 @@ describe FeedbackController do
       context "not logged in" do
         it "doesn't send emails" do
           expect { post :create, format: "json" }
-           .to raise_error(ActionController::ParameterMissing)
+           .to raise_error ActionController::ParameterMissing
 
           expect(email_count).to eq before_email_count
         end
       end
     end
   end
-
 end
 
 def email_count

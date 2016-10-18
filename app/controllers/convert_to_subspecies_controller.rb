@@ -1,6 +1,6 @@
 class ConvertToSubspeciesController < ApplicationController
-  before_filter :authenticate_editor
-  before_filter :set_taxon, only: [:new, :create]
+  before_action :authenticate_editor
+  before_action :set_taxon, only: [:new, :create]
 
   def new
     @default_name_string = @taxon.genus.name.name + ' '

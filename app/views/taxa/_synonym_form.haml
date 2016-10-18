@@ -1,10 +1,10 @@
-- url = "/taxa/#{taxon.id}/synonyms?#{junior_or_senior}=1"
+-url = "/taxa/#{taxon.id}/synonyms?#{junior_or_senior}=1"
 .nested_form.edit.ui-corner-all{'data-action' => url, 'data-method' => 'post'}
 
   %ul.error_messages
     %li#error_message
 
-  = text_field_tag :name
+  =text_field_tag :name
   %span.buttons
     %button.submit.btn-save Save
     %button.cancel.btn-cancel Cancel

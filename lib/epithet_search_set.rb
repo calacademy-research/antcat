@@ -1,5 +1,4 @@
 class EpithetSearchSet
-
   attr_reader :epithets
 
   def initialize epithet
@@ -42,7 +41,7 @@ class EpithetSearchSet
   def decline stem, endings
     endings_regexp = '(' + endings.join('|') + ')'
     return [] unless @epithet =~ /#{stem}#{endings_regexp}$/
-    endings.map {|ending| @epithet.gsub(/(#{stem})#{endings_regexp}$/, "\\1#{ending}")}
+    endings.map { |ending| @epithet.gsub(/(#{stem})#{endings_regexp}$/, "\\1#{ending}") }
   end
 
   ####################
@@ -54,7 +53,7 @@ class EpithetSearchSet
     epithets = []
     consonants = "(?:[#{CONSONANTS}][ei]?|qu)"
     epithets << @epithet.gsub(/(#{consonants})e(#{consonants})/) do |string|
-      if ['ter', 'del'].include?(string)
+      if ['ter', 'del'].include? string
         string
       else
         $1 + 'ae' + $2

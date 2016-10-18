@@ -7,7 +7,7 @@ describe Task do
   it { should validate_length_of(:title).is_at_most(70) }
 
   describe "scopes" do
-    describe "open and non_open" do
+    describe "scope.open and scope.non_open" do
       let!(:open) { create :task }
       let!(:also_open) { create :task }
       let!(:completed) { create :completed_task }
@@ -22,7 +22,7 @@ describe Task do
       end
     end
 
-    describe "by_status_and_date" do
+    describe "scope.by_status_and_date" do
       let!(:first) { create :task, created_at: Time.now + 10.days }
       let!(:second) { create :task }
       let!(:third) { create :completed_task, created_at: Time.now + 7.days }
@@ -59,13 +59,13 @@ describe Task do
 
     it "open to closed" do
       open = create :task
-      open.set_status(:closed, user)
+      open.set_status :closed, user
       expect(open.status).to eq "closed"
     end
 
     it "closed to open" do
       closed = create :closed_task
-      closed.set_status(:open, user)
+      closed.set_status :open, user
       expect(closed.status).to eq "open"
     end
   end

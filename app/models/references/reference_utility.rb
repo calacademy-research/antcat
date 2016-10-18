@@ -2,8 +2,7 @@
 # by application code, so could well be dead
 
 class Reference < ActiveRecord::Base
-
-  def replace_with reference, options = {}
+  def replace_with reference, _options = {}
     Taxt.taxt_fields.each do |klass, fields|
       klass.send(:all).each do |record|
         fields.each do |field|
@@ -29,6 +28,7 @@ class Reference < ActiveRecord::Base
     Progress.init show_progress
     Progress.puts "#{batch.size} replacements to make"
     return unless batch.present?
+
     Taxt.taxt_fields.each do |klass, fields|
       Progress.init show_progress, klass.send(:count)
       Progress.puts "Updating #{klass}..."
@@ -42,7 +42,7 @@ class Reference < ActiveRecord::Base
             field_contents = record[field]
             was_replaced = field_contents.gsub! /#{from}/, to
             if was_replaced
-              sanitized_contents = ActiveRecord::Base::sanitize field_contents
+              sanitized_contents = ActiveRecord::Base.sanitize field_contents
               # unknown why this is necessary
               connection.execute %{UPDATE #{klass.table_name} SET #{field} = #{sanitized_contents} WHERE id = #{record.id}}
             end
@@ -57,12 +57,10 @@ class Reference < ActiveRecord::Base
 
   def self.update_fields batch
     batch.each do |replacement|
-      # Previously looped over [Citation, Bolton::Match].each ...
       Citation.where(reference_id: replacement[:replace])
         .update_all(reference_id: replacement[:with])
       NestedReference.where(nesting_reference_id: replacement[:replace])
         .update_all(nesting_reference_id: replacement[:with])
     end
   end
-
 end

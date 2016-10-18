@@ -1,7 +1,6 @@
 # TODO To be removed, see migration CopyHolIdToTaxon
 
 class HolTaxonDatum < ActiveRecord::Base
-
   attr_accessible :tnuid,
                   :json,
                   :author_last_name,
@@ -32,5 +31,4 @@ class HolTaxonDatum < ActiveRecord::Base
   def is_valid?
     is_valid.downcase == 'valid'
   end
-
 end

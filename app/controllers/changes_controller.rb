@@ -1,9 +1,9 @@
 class ChangesController < ApplicationController
   include UndoTracker
 
-  before_filter :authenticate_editor, except: [:index, :show, :unreviewed]
-  before_filter :authenticate_superadmin, only: [:approve_all]
-  before_filter :set_change, only: [:show, :approve, :undo,
+  before_action :authenticate_editor, except: [:index, :show, :unreviewed]
+  before_action :authenticate_superadmin, only: [:approve_all]
+  before_action :set_change, only: [:show, :approve, :undo,
     :destroy, :undo_items]
 
   def index
@@ -32,7 +32,7 @@ class ChangesController < ApplicationController
         end
       end
     end
-    Feed::Activity.create_activity :approve_all_changes, { count: count }
+    Feed::Activity.create_activity :approve_all_changes, count: count
 
     redirect_to changes_path, notice: "Approved all changes."
   end
@@ -67,14 +67,14 @@ class ChangesController < ApplicationController
     @change.create_activity :undo_change
 
     json = { success: true }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
 
   def destroy
     raise NotImplementedError
 
     json = { success: true }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
 
   # return information about all the taxa that would be hit if we were to
@@ -138,14 +138,14 @@ class ChangesController < ApplicationController
           item.delete
         else
           item = version.reify
-          if item.nil?
+          unless item
             raise "failed to reify version: #{version.id} referencing change: #{version.change_id}"
           end
           begin
             # because we validate on things like the genus being present, and if we're doing an entire change set,
             # it might not be!
-            unless item.nil?
-              item.save! :validate => false
+            if item
+              item.save! validate: false
             end
           rescue ActiveRecord::RecordInvalid => error
             puts "=========Reify failure: #{error} version item_type =  #{version.item_type}"
@@ -190,5 +190,4 @@ class ChangesController < ApplicationController
       end
       change_ids
     end
-
 end

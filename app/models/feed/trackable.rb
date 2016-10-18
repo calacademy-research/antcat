@@ -35,5 +35,4 @@ module Feed::Trackable
   def create_activity action, parameters = activity_parameters.call(self)
     Feed::Activity.create_activity_for_trackable self, action, parameters
   end
-
 end

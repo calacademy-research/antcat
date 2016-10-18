@@ -30,5 +30,4 @@ class User < ActiveRecord::Base
   def angle_bracketed_email
     %Q["#{name}" <#{email}>]
   end
-
 end

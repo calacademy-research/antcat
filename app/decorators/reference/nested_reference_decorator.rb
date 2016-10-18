@@ -5,5 +5,4 @@ class NestedReferenceDecorator < ReferenceDecorator
     citation = "#{h reference.pages_in} #{reference.nesting_reference.decorate.format}"
     format_italics citation.html_safe
   end
-
 end

@@ -37,16 +37,16 @@ class Reference < ActiveRecord::Base
                   :review_state,
                   :doi
 
-  before_save { |record| CleanNewlines::clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
+  before_save { |record| CleanNewlines.clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
   before_destroy :check_not_referenced
 
   has_many :reference_author_names, -> { order :position }
 
   has_many :author_names,
            -> { order 'reference_author_names.position' },
-           :through => :reference_author_names,
-           :after_add => :refresh_author_names_caches,
-           :after_remove => :refresh_author_names_caches
+           through: :reference_author_names,
+           after_add: :refresh_author_names_caches,
+           after_remove: :refresh_author_names_caches
   belongs_to :journal
   belongs_to :publisher
 
@@ -150,7 +150,7 @@ class Reference < ActiveRecord::Base
       end
     end
 
-    Feed::Activity.create_activity :approve_all_references, { count: count }
+    Feed::Activity.create_activity :approve_all_references, count: count
   end
 
   # TODO merge into Workflow
@@ -247,5 +247,4 @@ class Reference < ActiveRecord::Base
         0.5
       end
     end
-
 end

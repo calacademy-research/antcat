@@ -37,7 +37,7 @@ class TaxonDecorator < ApplicationDecorator
   def references
     return unless taxon.reference_sections.present?
     helpers.content_tag :div, class: 'reference_sections' do
-      taxon.reference_sections.inject(''.html_safe) do |content, section|
+      taxon.reference_sections.reduce(''.html_safe) do |content, section|
         content << reference_section(section)
       end
     end
@@ -136,10 +136,10 @@ class TaxonDecorator < ApplicationDecorator
         string = "species of "
         parent = taxon.parent
         string << parent.name.to_html
-       when Subgenus
-         string = "subgenus of "
-         parent = taxon.parent
-         string << parent.name.to_html
+      when Subgenus
+        string = "subgenus of "
+        parent = taxon.parent
+        string << parent.name.to_html
       when Subspecies
         string = "subspecies of "
         parent = taxon.species
@@ -163,7 +163,7 @@ class TaxonDecorator < ApplicationDecorator
   private
     def reference_section section
       helpers.content_tag :div, class: 'section' do
-        [:title_taxt, :subtitle_taxt, :references_taxt].inject(''.html_safe) do |content, field|
+        [:title_taxt, :subtitle_taxt, :references_taxt].reduce(''.html_safe) do |content, field|
           if section[field].present?
             content << helpers.content_tag(:div, detaxt(section[field]), class: field)
           end

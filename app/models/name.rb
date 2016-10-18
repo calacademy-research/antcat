@@ -22,7 +22,7 @@ class Name < ActiveRecord::Base
   def change name_string
     existing_names = Name.where('id != ?', id).find_all_by_name(name_string)
     raise Taxon::TaxonExists if existing_names.any? { |name| not name.references.empty? }
-    update_attributes!( name: name_string,
+    update_attributes!(name: name_string,
                         name_html: italicize(name_string))
   end
 
@@ -39,7 +39,7 @@ class Name < ActiveRecord::Base
   # Added in ac9a8a; refer to the change log for more commit ids.
   #
   # Irregular flag allows parsing of names that don't conform to naming standards so we can support bad spellings.
-  def self.parse string, irregular=false
+  def self.parse string, irregular = false
     words = string.split " "
 
     name_type = case words.size
@@ -86,32 +86,32 @@ class Name < ActiveRecord::Base
       )
 
     when :genus
-        return GenusName.create!(
-          name: string,
-          name_html: i_tagify(string),
-          epithet: string, #is this used?
-          epithet_html: i_tagify(string) #is this used?
-          #protonym_html: i_tagify(string) #is this used?
-          # Note: GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }
-          # => all true except Aretidris because protonym_html is nil
-        )
+      return GenusName.create!(
+        name: string,
+        name_html: i_tagify(string),
+        epithet: string, #is this used?
+        epithet_html: i_tagify(string) #is this used?
+        #protonym_html: i_tagify(string) #is this used?
+        # Note: GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }
+        # => all true except Aretidris because protonym_html is nil
+      )
     when :tribe
-        return TribeName.create!(
-          name: string,
-          name_html: string,
-          epithet: string, #is this used?
-          epithet_html: string #is this used?
-          #protonym_html: string
-        )
+      return TribeName.create!(
+        name: string,
+        name_html: string,
+        epithet: string, #is this used?
+        epithet_html: string #is this used?
+        #protonym_html: string
+      )
     when :subfamily
-        return SubfamilyName.create!(
-          name: string,
-          name_html: string,
-          epithet: string, #is this used?
-          epithet_html: string #is this used?
-          #protonym_html: string #is this used?
-          # Note: SubfamilyName.all.map {|t| t.name == t.protonym_html }.uniq # => true
-        )
+      return SubfamilyName.create!(
+        name: string,
+        name_html: string,
+        epithet: string, #is this used?
+        epithet_html: string #is this used?
+        #protonym_html: string #is this used?
+        # Note: SubfamilyName.all.map {|t| t.name == t.protonym_html }.uniq # => true
+      )
     end
 
     if irregular
@@ -136,39 +136,39 @@ class Name < ActiveRecord::Base
            options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
 
     rank_filter =
-        case
-          when options[:species_only] then
-            'AND taxa.type = "Species"'
-          when options[:genera_only] then
-            'AND taxa.type = "Genus"'
-          when options[:subfamilies_or_tribes_only] then
-            'AND (taxa.type = "Subfamily" OR taxa.type = "Tribe")'
-          else
-            ''
-        end
+      case
+      when options[:species_only] then
+        'AND taxa.type = "Species"'
+      when options[:genera_only] then
+        'AND taxa.type = "Genus"'
+      when options[:subfamilies_or_tribes_only] then
+        'AND (taxa.type = "Subfamily" OR taxa.type = "Tribe")'
+      else
+        ''
+      end
 
     # I do not see why the code beginning with Name.select can't be factored out, but it can't
     search_term = letters_in_name + '%'
     prefix_matches =
-        Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
-            joins("#{join} taxa ON taxa.name_id = names.id").
-            where("name LIKE '#{search_term}' #{rank_filter}").
-            order('taxon_id DESC').
-            order(:name)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id')
+        .joins("#{join} taxa ON taxa.name_id = names.id")
+        .where("name LIKE '#{search_term}' #{rank_filter}")
+        .order('taxon_id DESC')
+        .order(:name)
 
     search_term = letters_in_name.split('').join('%') + '%'
     epithet_matches =
-        Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
-            joins("#{join} taxa ON taxa.name_id = names.id").
-            where("epithet LIKE '#{search_term}' #{rank_filter}").
-            order(:epithet)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id')
+        .joins("#{join} taxa ON taxa.name_id = names.id")
+        .where("epithet LIKE '#{search_term}' #{rank_filter}")
+        .order(:epithet)
 
     search_term = letters_in_name.split('').join('%') + '%'
     first_then_any_letter_matches =
-        Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
-            joins("#{join} taxa ON taxa.name_id = names.id").
-            where("name LIKE '#{search_term}' #{rank_filter}").
-            order(:name)
+        Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id')
+            .joins("#{join} taxa ON taxa.name_id = names.id")
+            .where("name LIKE '#{search_term}' #{rank_filter}")
+            .order(:name)
 
     [picklist_matching_format(prefix_matches),
      picklist_matching_format(epithet_matches),

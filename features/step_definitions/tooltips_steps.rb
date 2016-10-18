@@ -14,14 +14,14 @@
 #    <p>Text</p><tooltip/>
 # here <tooltip/> is next to the element containing "Text"
 
-Given /^(?:these|this) tooltips? (?:also)? ?exists?$/ do |table|
+Given(/^(?:these|this) tooltips? (?:also)? ?exists?$/) do |table|
   table.hashes.each do |hash|
-    FactoryGirl.create :tooltip, hash
+    create :tooltip, hash
   end
 end
 
 When(/^I hover the tooltip next to the element containing "([^"]*)"$/) do |text|
-  look_next_to_this = first('*', text: /^#{text}$/)
+  look_next_to_this = first '*', text: /^#{text}$/
   look_next_to_this.find('img[class~=tooltip]').hover
 end
 
@@ -29,17 +29,17 @@ When(/^I hover the tooltip next to the text "([^"]*)"$/) do |text|
   find('*', text: /^#{text}$/).first('img.help_icon').hover
 end
 
-Then /^I should (not )?see the tooltip text "([^"]*)"$/ do |should_not, text|
+Then(/^I should (not )?see the tooltip text "([^"]*)"$/) do |should_not, text|
   selector = should_not ? :should_not : :should
   page.send selector, have_css('.ui-tooltip', visible: true, text: text)
 end
 
 Then(/^I should not see any tooltips next to the element containing "([^"]*)"$/) do |text|
-  look_next_to_this = first('*', text: /^#{text}$/)
-  expect(look_next_to_this).to have_no_selector('.tooltip')
+  look_next_to_this = first '*', text: /^#{text}$/
+  expect(look_next_to_this).to have_no_selector '.tooltip'
 end
 
 Then(/^I should not see any tooltips next to the text "([^"]*)"$/) do |text|
-  tooltip = find('*', text: /^#{text}$/).first('img.help_icon')
+  tooltip = find('*', text: /^#{text}$/).first 'img.help_icon'
   expect(tooltip).to be nil
 end

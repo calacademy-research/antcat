@@ -109,5 +109,4 @@ class TaxonDecorator::Header
         "This taxon has been changed; changes awaiting approval"
       end
     end
-
 end

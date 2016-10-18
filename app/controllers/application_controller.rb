@@ -6,9 +6,9 @@ class ApplicationController < ActionController::Base
 
   # CORS protection defeat - we're read only, so this is okay.
   # This kind of thing can't stand when we have a write level API
-  skip_before_filter :verify_authenticity_token
-  before_filter :cors_preflight_check
-  after_filter :cors_set_access_control_headers
+  skip_before_action :verify_authenticity_token
+  before_action :cors_preflight_check
+  after_action :cors_set_access_control_headers
   # end CORS
 
   delegate :can_edit?, :is_superadmin?, :can_review_changes?,
@@ -18,10 +18,10 @@ class ApplicationController < ActionController::Base
     :user_can_review_changes?, :user_can_approve_changes?
 
   def user_for_paper_trail
-    current_user.try(:id)
+    current_user.try :id
   end
 
-  def root_redirect_for_active_admin exception
+  def root_redirect_for_active_admin _exception
     redirect_to root_url
   end
 
@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
         headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
         headers['Access-Control-Max-Age'] = '1728000'
 
-        render :text => '', :content_type => 'text/plain'
+        render text: '', content_type: 'text/plain'
       end
     end
 

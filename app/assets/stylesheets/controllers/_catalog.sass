@@ -1,119 +1,128 @@
-@import "colors"
+#catalog-controller
+  #taxon_browser
+    overflow: scroll
+    overflow-x: hidden
+    height: auto
 
-.reference_key_and_expansion
-  &:hover
-    cursor: pointer
-
-  .reference_key_expansion
-    display: none
-
-    .reference_key_expansion_text
-      background: $color_pale_green
-      &:hover
-        background: $color_light_green
+    .tabs-content
+      min-height: 115px
+    .snaked
+      -webkit-column-width: 10em
+      -moz-column-width: 10em
+      column-width: 10em
+    .mr-scrollbary
+      height: 100%
+    .upcase
+      text-transform: uppercase
+    li
+      box-sizing: border-box
+    .tab-toggler
+      float: right
+      a
         color: #fff
+      .label
+        margin-right: 0.5rem
+        margin-top: 0.5rem
+    .tabs-panel
+      padding-bottom: 0
 
-#taxon_browser
-  .tabs-content
-    min-height: 115px
-  .snaked
-    -webkit-column-width: 10em
-    -moz-column-width: 10em
-    column-width: 10em
-  .mr-scrollbary
-    height: 100%
-  .upcase
-    text-transform: uppercase
-  li
-    box-sizing: border-box
-
-#taxon_description
-  h4
-    font-weight: bold
-
-  .link_to_external_site
-    font-weight: bold
-    font-variant: small-caps
-    font-size: 15px
-
-  .header
-    .name
-      color: black !important
-      font-size: 18px
-      font-weight: bold
-
-    .authorship
-      font-size: 15px
-      margin-left: 6px
-
-    .status, .gender
-      font-size: 15px
-      margin-left: 6px
-
-    .review_state
-      margin-left: 8px
-      font-style: italic
-      color: red
-
-    .see
-      margin-left: 6px
-
-  .statistics
-    font-style: italic
-    margin-bottom: 6px
-    font-size: 14px
-    line-height: 1.1
-
-  .headline
-    margin-bottom: 4px
-    .epithet
-      font-weight: bold
-      font-style: italic
-    .name
-      font-weight: bold
-
-  .history
-    font-size: 15px
-    padding-left: 0
-    line-height: 1.2
-    .history_item
-      table
-        border-spacing: 0
-
-  .child_lists
-    font-size: 15px
-    .caption
-      font-weight: bold
-
-  .reference_sections
-    font-size: 15px
-    .section
-      .title_taxt
-        padding-top: 6px
-        font-weight: bold
-      .subtitle_taxt
-        padding-top: 6px
-      .title_taxt + .subtitle_taxt
-        padding-top: 0
-
-  .change_history
-    font-size: 13px
-    font-style: italic
-
-// equally space out elements
-#taxon_key
-  display: none
-  width: 100%
-  text-align: justify
-
-  div
-    display: inline-block
-    margin-top: 0
-    margin-bottom: -1em
-
-  &:after
-    content: ""
+  #splitter
+    background-color: #eee
+    background-repeat: no-repeat
+    background-position: 50%
+    background-image: image_url("horizontal.png")
+    height: 0.4rem
     width: 100%
-    display: inline-block
+    cursor: row-resize
+    z-index: 900
 
-  margin-bottom: -1rem
+  #taxon_description
+    overflow: scroll
+    overflow-x: hidden
+    padding: 0 1rem 1rem 1rem
+
+    h4
+      font-weight: bold
+
+    .link_to_external_site
+      font-weight: bold
+      font-variant: small-caps
+      font-size: 15px
+
+    .header
+      .name
+        color: black !important
+        font-size: 18px
+        font-weight: bold
+      .authorship
+        font-size: 15px
+        margin-left: 6px
+      .status, .gender
+        font-size: 15px
+        margin-left: 6px
+      .review_state
+        margin-left: 8px
+        font-style: italic
+        color: red
+      .see
+        margin-left: 6px
+
+    .statistics
+      font-style: italic
+      margin-bottom: 6px
+      font-size: 14px
+      line-height: 1.1
+
+    .headline
+      margin-bottom: 4px
+      .epithet
+        font-weight: bold
+        font-style: italic
+      .name
+        font-weight: bold
+
+    .history
+      font-size: 15px
+      padding-left: 0
+      line-height: 1.2
+      .history_item
+        table
+          border-spacing: 0
+
+    .child_lists
+      font-size: 15px
+      .caption
+        font-weight: bold
+
+    .reference_sections
+      font-size: 15px
+      .section
+        .title_taxt
+          padding-top: 6px
+          font-weight: bold
+        .subtitle_taxt
+          padding-top: 6px
+        .title_taxt + .subtitle_taxt
+          padding-top: 0
+
+    .change_history
+      font-size: 13px
+      font-style: italic
+
+  // equally space out elements
+  #taxon_key
+    display: none
+    width: 100%
+    text-align: justify
+
+    div
+      display: inline-block
+      margin-top: 0
+      margin-bottom: -1em
+
+    &:after
+      content: ""
+      width: 100%
+      display: inline-block
+
+    margin-bottom: -1rem

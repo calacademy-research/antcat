@@ -7,12 +7,12 @@ class AuthorNamesController < ApplicationController
     begin
       author_name.save!
     rescue ActiveRecord::RecordInvalid => invalid
-      err = { 'error' => "Name already exists" }
-      render json: err, status: :conflict
+      error = { error: "Name already exists" }
+      render json: error, status: :conflict
       return
     end
 
-    render_json author_name, is_new: false
+    render_json author_name
   end
 
   def create
@@ -22,7 +22,7 @@ class AuthorNamesController < ApplicationController
     if author_name.errors.empty?
       author_name.touch_with_version
     end
-    render_json author_name, is_new: true
+    render_json author_name
   end
 
   # From URL: : "/authors/11282/author_names/194557"
@@ -33,22 +33,20 @@ class AuthorNamesController < ApplicationController
     author_name = AuthorName.find params[:id]
     author_name.delete
     # Remove the author if there are no more author names that reference it
-    if AuthorName.find_by_author_id(params[:author_id]).nil?
+    unless AuthorName.find_by_author_id params[:author_id]
       author.delete
     end
-    render json: nil, content_type: 'text/html'
+    render json: nil
   end
 
   private
-    def render_json(author_name, is_new:)
+    def render_json author_name
       json = {
-          isNew: is_new,
-          content: render_to_string(partial: 'author_names/panel', locals: { author_name: author_name }),
-          id: author_name.id,
-          success: author_name.errors.empty?
+        content: render_to_string(partial: 'author_names/panel', locals: { author_name: author_name }),
+        id: author_name.id,
+        success: author_name.errors.empty?
       }
 
-      render json: json, content_type: 'text/html'
+      render json: json
     end
-
 end

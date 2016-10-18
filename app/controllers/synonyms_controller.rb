@@ -1,5 +1,5 @@
 class SynonymsController < ApplicationController
-  before_filter :authenticate_editor, except: [:show]
+  before_action :authenticate_editor, except: [:show]
 
   def show
     @synonym = Synonym.find(params[:id])
@@ -27,18 +27,19 @@ class SynonymsController < ApplicationController
         title = 'Senior synonyms'
         junior_or_senior = 'senior'
       end
+
       if Synonym.find_by_senior_synonym_id_and_junior_synonym_id(senior.id, junior.id) or
          Synonym.find_by_senior_synonym_id_and_junior_synonym_id(junior.id, senior.id)
         error_message = 'This taxon is already a synonym'
       else
         synonym = Synonym.create! senior_synonym_id: senior.id, junior_synonym_id: junior.id
         synonym.touch_with_version
-        synonym
-        if is_junior
-          synonyms = taxon.junior_synonyms_with_names
-        else
-          synonyms = taxon.senior_synonyms_with_names
-        end
+
+        synonyms = if is_junior
+                     taxon.junior_synonyms_with_names
+                   else
+                     taxon.senior_synonyms_with_names
+                   end
       end
     else
       error_message = 'Taxon not found'
@@ -49,15 +50,15 @@ class SynonymsController < ApplicationController
         taxon: taxon, title: title, synonyms: synonyms, junior_or_senior: junior_or_senior
       }),
       success: error_message.blank?,
-      error_message: error_message,
+      error_message: error_message
     }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
 
   def destroy
     Synonym.find(params[:id]).destroy
     json = { success: true }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
 
   def reverse_synonymy
@@ -77,7 +78,6 @@ class SynonymsController < ApplicationController
       locals: { taxon: taxon }
     )
     json = { content: content, success: true, error_message: '' }
-    render json: json, content_type: 'text/html'
+    render json: json
   end
-
 end

@@ -79,7 +79,7 @@ class Taxa::SaveTaxon
   end
 
   private
-    def update_elements params, taxon_to_update, status_string, change_id
+    def update_elements _params, taxon_to_update, status_string, _change_id
       taxon_to_update.status = status_string
       taxon_to_update.current_valid_taxon = @taxon
       TaxonHistoryItem.where(taxon_id: taxon_to_update.id).update_all(taxon_id: @taxon.id)
@@ -156,7 +156,7 @@ class Taxa::SaveTaxon
         return
       end
       # Why do we hit this case?
-      if !attributes.nil?
+      if attributes
         attributes[:type_name_id] = attributes.delete :id
         @taxon.attributes = attributes
       end
@@ -193,5 +193,4 @@ class Taxa::SaveTaxon
         save_taxon_children child
       end
     end
-
 end

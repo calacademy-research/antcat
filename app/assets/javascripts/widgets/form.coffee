@@ -1,5 +1,4 @@
 class AntCat.Form
-
   constructor: (@element, @options = {}) ->
     AntCat.check 'Form', '@element', @element
     @element.addClass 'antcat_form'

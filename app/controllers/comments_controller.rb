@@ -32,5 +32,4 @@ class CommentsController < ApplicationController
       params.require(:comment).permit :body, :commentable_id,
         :commentable_type, :comment_id
     end
-
 end

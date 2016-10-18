@@ -49,21 +49,19 @@ Feature: Editing tooltips
     And I hover the tooltip next to the text "Hardcoded"
     Then I should see the tooltip text "Could not find tooltip with key 'hardcoded'"
 
-    Then I go to the tooltips editing page
+    When I go to the tooltips editing page
     And I follow "New Tooltip"
-    And I fill in "tooltip[key]" with "hardcoded"
-    And I fill in "tooltip[scope]" with "widget_tests"
-    And I fill in "tooltip[text]" with "Text used in the tooltip"
-    And I follow "Hide/show advanced"
-    And I check "tooltip[key_enabled]"
-    Then I press "Create Tooltip"
+      And I fill in "tooltip[key]" with "hardcoded"
+      And I fill in "tooltip[scope]" with "widget_tests"
+      And I fill in "tooltip[text]" with "Text used in the tooltip"
+      And I follow "Hide/show advanced"
+      And I check "tooltip[key_enabled]"
+    And I press "Create Tooltip"
     And I wait for a bit
-
-    Then I go to the tooltips test page
-    When I hover the tooltip next to the text "Hardcoded"
+    And I go to the tooltips test page
+    And I hover the tooltip next to the text "Hardcoded"
     Then I should see the tooltip text "Text used in the tooltip"
 
-  # Randomly fails when the whole suite in run.
   @javascript
   Scenario: Editing a selector-based tooltip
     Given this tooltip exists
@@ -73,20 +71,18 @@ Feature: Editing tooltips
     When I go to the tooltips test page
     Then I should not see the tooltip text "Typo oops"
 
-    # Attempt to fix spurious failures
     And I wait for a bit
     And I wait for a bit
     And I wait for a bit
+
     When I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "Typo oops"
 
-    Then I go to the tooltips editing page
+    When I go to the tooltips editing page
     And I follow "whatever"
-
-    Then I fill in "tooltip[text]" with "A title"
+    And I fill in "tooltip[text]" with "A title"
     And I press "Update Tooltip"
-
-    When I go to the tooltips test page
+    And I go to the tooltips test page
     And I wait for a bit
     Then I should not see the tooltip text "Typo oops"
     And I should not see the tooltip text "A title"
@@ -106,18 +102,15 @@ Feature: Editing tooltips
     When I hover the tooltip next to the text "Hardcoded"
     Then I should see the tooltip text "Is enabled"
 
-    Then I go to the tooltips editing page
-    And I follow "hardcoded"
-
-    And I follow "Hide/show advanced"
-    Then I uncheck "tooltip[key_enabled]"
+    When I go to the tooltips editing page
+      And I follow "hardcoded"
+      And I follow "Hide/show advanced"
+      And I uncheck "tooltip[key_enabled]"
     And I press "Update Tooltip"
     And I wait for a bit
-
-    When I go to the tooltips test page
+    And I go to the tooltips test page
     Then I should not see any tooltips next to the text "Hardcoded"
 
-  # Randomly fails when the whole suite in run.
   @javascript
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
@@ -127,22 +120,19 @@ Feature: Editing tooltips
     When I go to the tooltips test page
     And I wait for a bit
 
-    # Attempt to fix spurious failures
     And I wait for a bit
     And I wait for a bit
     When I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "A title"
 
-    Then I go to the tooltips editing page
+    When I go to the tooltips editing page
     And I wait for a bit
     And I follow "whatever"
-
     And I follow "Hide/show advanced"
-    Then I uncheck "tooltip[selector_enabled]"
+    And I uncheck "tooltip[selector_enabled]"
     And I press "Update Tooltip"
     And I wait for a bit
-
-    Then I go to the tooltips test page
+    And I go to the tooltips test page
     Then I should not see any tooltips next to the element containing "Hook"
 
   @javascript
@@ -151,17 +141,16 @@ Feature: Editing tooltips
     And I hover the tooltip next to the text "Tooltip text"
     Then I should see the tooltip text "Could not find tooltip with key 'text'"
 
-    Then I follow "New Tooltip"
+    When I follow "New Tooltip"
     And I fill in "tooltip[key]" with "text"
     And I follow "Hide/show advanced"
     And I check "tooltip[key_enabled]"
     And I fill in "tooltip[scope]" with "tooltips2"
     And I fill in "tooltip[text]" with "Text used in the tooltip"
-    Then I press "Create Tooltip"
+    And I press "Create Tooltip"
     And I wait for a bit
-
-    Then I go to the tooltips editing page
-    When I hover the tooltip next to the text "Tooltip text"
+    And I go to the tooltips editing page
+    And I hover the tooltip next to the text "Tooltip text"
     Then I should not see the tooltip text "Text used in the tooltip"
 
   @javascript
@@ -169,5 +158,6 @@ Feature: Editing tooltips
     When I go to the tooltips editing page
     And I follow "Show tooltips helper"
     Then I should see "Hide tooltips helper"
-    And I follow "Hide tooltips helper"
+
+    When I follow "Hide tooltips helper"
     Then I should see "Show tooltips helper"

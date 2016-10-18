@@ -11,7 +11,7 @@ end
 
 desc "Enumerate all annotations (use notes:optimize, :fixme, :todo, :hack or :wip)"
 task :notes do
-  SourceAnnotationExtractor.enumerate("OPTIMIZE|FIXME|TODO|HACK|WIP", tag: true)
+  SourceAnnotationExtractor.enumerate "OPTIMIZE|FIXME|TODO|HACK|WIP", tag: true
 end
 
 namespace :notes do

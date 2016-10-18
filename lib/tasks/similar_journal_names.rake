@@ -126,7 +126,6 @@ namespace :antcat do
         "Transactions of the Entomological Society of London" => [
         "Transactions of the Entomological Society of New South Wales"],
 
-
         "Transactions of the American Entomological Society" => [
         "Transactions of the American Entomological Society, Suppl. Vol."],
 

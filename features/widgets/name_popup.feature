@@ -1,6 +1,5 @@
 @javascript
 Feature: Name popup
-
   Scenario: Blank name
     When I go to the name popup test page
     And I press "OK"
@@ -9,6 +8,7 @@ Feature: Name popup
 
   Scenario: Find typed taxon
     Given there is a genus "Atta"
+
     When I go to the name popup test page
     And I fill in "name_string" with "Atta"
     And I press "OK"
@@ -17,6 +17,7 @@ Feature: Name popup
 
   Scenario: Find typed name
     Given there is a species name "Eciton major"
+
     When I go to the name popup test page
     And I fill in "name_string" with "Eciton major"
     And I press "OK"
@@ -28,7 +29,8 @@ Feature: Name popup
     And I fill in "name_string" with "Atta wildensis"
     And I press "OK"
     Then I should see "Do you want to add the name Atta wildensis? You can attach it to a taxon later, if desired."
-    And I press "Add this name"
+
+    When I press "Add this name"
     And I wait for a bit
     Then in the results section I should see the id for the name "Atta wildensis"
     And in the results section I should see the editable taxt for the name "Atta wildensis"
@@ -36,8 +38,10 @@ Feature: Name popup
   Scenario: Entering a new name, but cancelling instead of adding it
     When I go to the name popup test page
     Then I should see the name popup edit interface
-    And I fill in "name_string" with "Atta wildensis"
+
+    When I fill in "name_string" with "Atta wildensis"
     And I press "OK"
     Then I should see "Do you want to add the name Atta wildensis? You can attach it to a taxon later, if desired."
-    And I press "Cancel"
+
+    When I press "Cancel"
     Then I should see the name popup edit interface

@@ -10,7 +10,7 @@ FactoryGirl.define do
   end
 
   factory :citation do
-    reference :factory => :article_reference
+    reference factory: :article_reference
     pages '49'
   end
 
@@ -31,7 +31,7 @@ FactoryGirl.define do
 
   factory :antwiki_valid_taxon
 
-  factory :version, :class => PaperTrail::Version do
+  factory :version, class: PaperTrail::Version do
     item_type 'Taxon'
     event 'create'
     change_id 0
@@ -53,9 +53,14 @@ FactoryGirl.define do
   end
 end
 
-def setup_version taxon_id, whodunnit=nil
-  change = FactoryGirl.create :change, user_changed_taxon_id: taxon_id
+def setup_version taxon_id, whodunnit = nil
+  change = create :change, user_changed_taxon_id: taxon_id
 
-  FactoryGirl.create :version, item_id: taxon_id, event: 'create', item_type: 'Taxon', change_id: change.id, whodunnit: whodunnit.nil? ? nil : whodunnit.id
+  create :version,
+    item_id: taxon_id,
+    event: 'create',
+    item_type: 'Taxon',
+    change_id: change.id,
+    whodunnit: whodunnit.try(:id)
   change
 end

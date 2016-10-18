@@ -44,7 +44,7 @@ class ReferenceDecorator < ApplicationDecorator
 
   def format_authorship_html
     helpers.content_tag(:span, title: format) do
-     format_author_last_names
+      format_author_last_names
     end
   end
 
@@ -109,7 +109,7 @@ class ReferenceDecorator < ApplicationDecorator
       class: :goto_reference_link, target: target
   end
 
-  def to_link(expansion: true)
+  def to_link expansion: true
     reference_key_string = format_author_last_names
     reference_string = format
     if expansion
@@ -148,7 +148,7 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     def format_date input # TODO? store denormalized value in the database
-      return input if input.length < 4
+      return input if input.size < 4
 
       match = input.match /(.*?)(\d{4,8})(.*)/
       prefix = match[1]
@@ -241,5 +241,4 @@ class ReferenceDecorator < ApplicationDecorator
     def format_title
       format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
     end
-
 end

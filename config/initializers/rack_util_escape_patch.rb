@@ -4,7 +4,7 @@
 
 module Rack
   module Utils
-    def escape(s)
+    def escape s
       URI.encode_www_form_component(s)
     end
   end

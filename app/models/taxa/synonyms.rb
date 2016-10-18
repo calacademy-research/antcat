@@ -13,7 +13,7 @@ module Taxa::Synonyms
   def find_most_recent_valid_senior_synonym
     return unless senior_synonyms
     senior_synonyms.order(created_at: :desc).each do |senior_synonym|
-      return senior_synonym if !senior_synonym.invalid?
+      return senior_synonym unless senior_synonym.invalid?
       return nil unless senior_synonym.synonym?
       return senior_synonym.find_most_recent_valid_senior_synonym
     end
@@ -46,5 +46,4 @@ module Taxa::Synonyms
         ORDER BY name
       SQL
     end
-
 end

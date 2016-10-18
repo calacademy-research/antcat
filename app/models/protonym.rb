@@ -15,5 +15,4 @@ class Protonym < ActiveRecord::Base
   # but protonym_spec.rb uses `build_stubbed`, so we need it for the moment.
   delegate :authorship_string, :authorship_html_string, :author_last_names_string, :year,
     to: :authorship, allow_nil: true
-
 end

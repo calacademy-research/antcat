@@ -8,7 +8,6 @@
 # 6. "ALTER TABLE antwiki_valid_taxa ADD column id int(10) PRIMARY KEY AUTO_INCREMENT;"
 
 module Antwiki
-
   def self.compare_valid show_progress = false
     Progress.new_init show_progress: show_progress, total_count: 14498
     AntwikiValidTaxon.update_all result: nil
@@ -29,5 +28,4 @@ module Antwiki
     Progress.show_results
     pp AntwikiValidTaxon.group(:result).count if show_progress
   end
-
 end

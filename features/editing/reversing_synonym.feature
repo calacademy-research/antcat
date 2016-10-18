@@ -9,8 +9,10 @@ Feature: Reversing synonymy
   Scenario: Reversing synonym from the senior side
     Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
     And I am logged in
+
     When I go to the edit page for "Solenopsis wagneri"
     Then I should see "Solenopsis invicta" in the junior synonyms section
+
     Given I will confirm on the next step
     When I click "Reverse synonymy" beside the first junior synonym
     Then I should not see "Solenopsis invicta" in the junior synonyms section
@@ -19,9 +21,11 @@ Feature: Reversing synonymy
   Scenario: Reversing synonym from the junior side
     Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
     And I am logged in
+
     When I go to the edit page for "Solenopsis invicta"
     Then I should see "Solenopsis wagneri" in the senior synonyms section
+
     Given I will confirm on the next step
     When I click "Reverse synonymy" beside the first senior synonym
     Then I should not see "Solenopsis wagneri" in the senior synonyms section
-    Then I should see "Solenopsis wagneri" in the junior synonyms section
+    And I should see "Solenopsis wagneri" in the junior synonyms section

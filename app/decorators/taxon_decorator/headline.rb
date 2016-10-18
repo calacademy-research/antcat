@@ -51,7 +51,7 @@ class TaxonDecorator::Headline
       if not @taxon.type_name and taxt
         string = headline_type_taxt taxt
       else
-        return ''.html_safe if not @taxon.type_name
+        return ''.html_safe unless @taxon.type_name
         rank = @taxon.type_name.rank
         rank = 'genus' if rank == 'subgenus'
         string = "Type-#{rank}: ".html_safe
@@ -128,7 +128,7 @@ class TaxonDecorator::Headline
 
     def locality locality
       return '' unless locality.present?
-      locality = locality.upcase.gsub(/\(.+?\)/) {|text| text.titlecase}
+      locality = locality.upcase.gsub(/\(.+?\)/) { |text| text.titlecase }
       add_period_if_necessary ' ' + locality
     end
 
@@ -136,5 +136,4 @@ class TaxonDecorator::Headline
       return unless @taxon.headline_notes_taxt.present?
       detaxt @taxon.headline_notes_taxt
     end
-
 end

@@ -22,5 +22,4 @@ class Tooltip < ActiveRecord::Base
   def key_disabled?
     !key_enabled?
   end
-
 end

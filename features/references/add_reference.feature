@@ -17,7 +17,7 @@ Feature: Add reference
     And I fill in "article_pagination" with "1"
     And I fill in "reference_citation_year" with "1992"
     And I press the "Save" button
-    And I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
+    Then I should see "Ward, B.L.; Bolton, B. 1992. Between Pacific Tides. Ants 2:1."
 
   Scenario: Adding a reference but then cancelling
     When I follow "New"
@@ -34,7 +34,7 @@ Feature: Add reference
     And I fill in "reference_publisher_string" with "New York:Houghton Mifflin"
     And I fill in "book_pagination" with "32 pp."
     And I press the "Save" button
-    And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin, 32 pp."
+    Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin, 32 pp."
 
   Scenario: Adding an article
     When I follow "New"
@@ -45,12 +45,13 @@ Feature: Add reference
     And I fill in "reference_series_volume_issue" with "1"
     And I fill in "article_pagination" with "2"
     And I press the "Save" button
-    And I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
+    Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
 
   Scenario: Adding a nested reference
     Given these references exist
       | author     | title          | year | citation   |
       | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
+
     When I follow "New"
     And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "A reference title"
@@ -75,6 +76,7 @@ Feature: Add reference
     When I follow "New"
     And I fill in "reference_author_names_string" with "Fisher, B.L."
     And I press the "Save" button
+
     Then I should see "Year can't be blank"
     And I should see "Title can't be blank"
     And I should see "Journal can't be blank"
@@ -87,9 +89,10 @@ Feature: Add reference
     And I fill in "reference_journal_name" with "Ant Journal"
     And I fill in "article_pagination" with "2"
     And I press the "Save" button
-    And the "reference_title" field should contain "A reference title"
-    And I follow "Article"
-    And the "reference_journal_name" field should contain "Ant Journal"
+    Then the "reference_title" field should contain "A reference title"
+
+    When I follow "Article"
+    Then the "reference_journal_name" field should contain "Ant Journal"
     And the "article_pagination" field should contain "2"
 
   Scenario: Leaving other fields blank when adding a book reference
@@ -97,7 +100,7 @@ Feature: Add reference
     And I follow "Book"
     And I fill in "reference_author_names_string" with "Fisher, B.L."
     And I press the "Save" button
-    And I should see "Year can't be blank"
+    Then I should see "Year can't be blank"
     And I should see "Title can't be blank"
     And I should see "Publisher can't be blank"
     And I should see "Pagination can't be blank"
@@ -109,9 +112,10 @@ Feature: Add reference
     And I fill in "reference_publisher_string" with "Capua: House of Batiatus"
     And I fill in "book_pagination" with "2"
     And I press the "Save" button
-    And the "reference_title" field should contain "A reference title"
-    And I follow "Book"
-    And the "reference_publisher_string" field should contain "Capua: House of Batiatus"
+    Then the "reference_title" field should contain "A reference title"
+
+    When I follow "Book"
+    Then the "reference_publisher_string" field should contain "Capua: House of Batiatus"
     And the "book_pagination" field should contain "2"
 
   Scenario: Leaving other fields blank when adding a nested reference
@@ -119,20 +123,20 @@ Feature: Add reference
     And I follow "Nested"
     And I fill in "reference_author_names_string" with "Fisher, B.L."
     And I press the "Save" button
-    And I should see "Year can't be blank"
+    Then I should see "Year can't be blank"
     And I should see "Pages in can't be blank"
     And I should see "Nesting reference can't be blank"
 
   Scenario: Adding a reference with authors' role
     When I follow "New"
-    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B. (eds.)"
+    And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B. (eds.)"
     And I fill in "reference_title" with "A reference title"
     And I fill in "reference_citation_year" with "1981"
     And I fill in "reference_journal_name" with "Ant Journal"
     And I fill in "reference_series_volume_issue" with "1"
     And I fill in "article_pagination" with "2"
     And I press the "Save" button
-    And I should see "Ward, B.L.; Bolton, B. (eds.) 1981. A reference title. Ant Journal 1:2"
+    Then I should see "Ward, B.L.; Bolton, B. (eds.) 1981. A reference title. Ant Journal 1:2"
 
   Scenario: Adding a nested reference with a nonexistent nestee
     When I follow "New"
@@ -177,8 +181,9 @@ Feature: Add reference
     And I press the "Save" button
     Then I should see "Journal can't be blank"
     And the "reference_title" field should contain "A reference title"
-    And I follow "Article"
-    And the "reference_journal_name" field should contain ""
+
+    When I follow "Article"
+    Then the "reference_journal_name" field should contain ""
     And the "article_pagination" field should contain "1"
 
   Scenario: Unparseable publisher string
@@ -191,8 +196,9 @@ Feature: Add reference
     And I fill in "reference_citation_year" with "1981"
     And I press the "Save" button
     Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'."
-    And I follow "Book"
-    And the "reference_title" field should contain "A reference title"
+
+    When I follow "Book"
+    Then the "reference_title" field should contain "A reference title"
     And the "reference_publisher_string" field should contain "Pensoft, Sophia"
     And the "book_pagination" field should contain "1"
 

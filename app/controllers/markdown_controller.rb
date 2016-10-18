@@ -3,6 +3,6 @@ class MarkdownController < ApplicationController
     text = params[:text] || "no content"
 
     markdown = AntcatMarkdown.render text
-    render json: markdown, content_type: 'text/html'
+    render json: markdown
   end
 end

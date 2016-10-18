@@ -81,7 +81,6 @@ ActiveAdmin.setup do |config|
   # config.on_unauthorized_access = :access_denied
   config.on_unauthorized_access = :root_redirect_for_active_admin
 
-
   # == Current User
   #
   # Active Admin will associate actions with the current
@@ -123,7 +122,6 @@ ActiveAdmin.setup do |config|
   #
   # You can completely disable comments:
   config.comments = false
-
 
   #
   # You can disable the menu item for the comments index page:

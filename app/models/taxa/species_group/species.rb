@@ -36,7 +36,7 @@ class Species < SpeciesGroupTaxon
     end
 
     new_name = SubspeciesName.find_by_name new_name_string
-    if new_name.nil?
+    unless new_name
       new_name = SubspeciesName.new
       new_name.update_attributes name: new_name_string,
                                  name_html: italicize(new_name_string),
@@ -58,7 +58,7 @@ class Species < SpeciesGroupTaxon
   private
     def create_convert_species_to_subspecies_activity new_name
       create_activity :convert_species_to_subspecies,
-        { name_was: name_html_cache,
-          name: new_name.name_html }
+        name_was: name_html_cache,
+        name: new_name.name_html
     end
 end

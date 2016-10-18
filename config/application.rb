@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require File.expand_path '../boot', __FILE__
 
 require 'rails/all'
 
@@ -25,7 +25,7 @@ end
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(*Rails.groups)
+Bundler.require *Rails.groups
 
 module AntCat
   class Application < Rails::Application
@@ -41,7 +41,7 @@ module AntCat
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.action_mailer.delivery_method = :sendmail
-    config.action_mailer.sendmail_settings = {:arguments => '-i'}
+    config.action_mailer.sendmail_settings = {arguments: '-i'}
     config.active_record.observers = [
         :author_name_observer,
         :journal_observer,

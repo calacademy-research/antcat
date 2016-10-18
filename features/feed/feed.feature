@@ -25,4 +25,4 @@ Feature: Feed
 
     When I go to the activity feed
     Then I should see 1 item in the feed
-    Then I should not see "Delete"
+    And I should not see "Delete"

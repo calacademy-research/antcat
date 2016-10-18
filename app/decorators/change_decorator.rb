@@ -33,14 +33,14 @@ class ChangeDecorator < Draper::Decorator
     format_time_ago change.approved_at
   end
 
-  def undo_button taxon
+  def undo_button _taxon
     # TODO sort this out
     # This is the snippet that was moved here from ChangesHelper
     #   # This extra check (for change_type deleted) covers the case when we've deleted children
     #   # in a change that only shows the parent being deleted.
     #   unless current_user.nil?
     #     if  (!change[:change_type] == 'delete' && taxon.can_be_edited_by?(current_user)) or current_user.can_edit
-    #       if change.versions.length > 0
+    #       if change.versions.size > 0
     #         button 'Undo', 'undo_button', 'data-undo-id' => change.id, class: 'undo_button_' + change.id.to_s
     #       end
     #     end
@@ -95,5 +95,4 @@ class ChangeDecorator < Draper::Decorator
       return unless time
       helpers.content_tag :span, "#{helpers.time_ago_in_words time} ago"
     end
-
 end

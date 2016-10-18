@@ -1,27 +1,26 @@
 @javascript
 Feature: Reference field
-
   Background:
-    Given these dated references exist
-      | authors                | year | citation_year | title              | citation   | created_at  | updated_at  |  doi |
-      | Fisher, B.             | 1995 | 1995b         | Fisher's book      | Ants 1:1-2 | TODAYS_DATE | TODAYS_DATE |      |
-      | Bolton, B.             | 2010 | 2010 ("2011") | Bolton's book      | Ants 2:1-2 | TODAYS_DATE | TODAYS_DATE |      |
-      | Fisher, B.; Bolton, B. | 1995 | 1995b         | Fisher Bolton book | Ants 1:1-2 | TODAYS_DATE | TODAYS_DATE |      |
-      | Hölldobler, B.         | 1995 | 1995b         | Bert's book        | Ants 1:1-2 | TODAYS_DATE | TODAYS_DATE |      |
+    Given these references exist
+      | authors                | year | citation_year | title              | citation   |
+      | Fisher, B.             | 1995 | 1995b         | Fisher's book      | Ants 1:1-2 |
+      | Bolton, B.             | 2010 | 2010 ("2011") | Bolton's book      | Ants 2:1-2 |
+      | Fisher, B.; Bolton, B. | 1995 | 1995b         | Fisher Bolton book | Ants 1:1-2 |
+      | Hölldobler, B.         | 1995 | 1995b         | Bert's book        | Ants 1:1-2 |
 
   Scenario: Seeing the field
     When I go to the reference field test page, opened to the first reference
     Then I should see "Fisher, B. 1995b. Fisher's book. Ants 1:1-2 "
 
-  # There's a problem getting the search type selector to pick the right one
-  #Scenario: Searching
-    #When I go to the reference field test page
-    #And I click the reference field
-    #And I search for "bolton"
-    #Then I should see "Bolton's book"
-    #* I should see "Fisher Bolton book"
-    #* I should not see "Bert's book"
-    #* I should not see "Fisher's book"
+  @search
+  Scenario: Searching
+    When I go to the reference field test page
+    And I click the reference field
+    And in the reference picker, I search for the author "bolton"
+    Then I should see "Bolton's book"
+    And I should see "Fisher Bolton book"
+    And I should not see "Bert's book"
+    And I should not see "Fisher's book"
 
   @search
   Scenario: Setting a reference when there wasn't one before

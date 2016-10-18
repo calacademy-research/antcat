@@ -17,11 +17,10 @@ class NestedReference < Reference
       comparison = self
       while comparison && comparison.nesting_reference_id
         if comparison.nesting_reference_id == id
-          errors.add(:nesting_reference_id, "can't point to itself")
+          errors.add :nesting_reference_id, "can't point to itself"
           break
         end
         comparison = Reference.find_by_id comparison.nesting_reference_id
       end
     end
-
 end

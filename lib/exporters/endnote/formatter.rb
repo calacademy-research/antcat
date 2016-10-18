@@ -1,15 +1,16 @@
 class Exporters::Endnote::Formatter
   def self.format references
     references.map do |reference|
-      klass = case reference
-      when ArticleReference then Exporters::Endnote::Formatter::Article
-      when BookReference then Exporters::Endnote::Formatter::Book
-      when NestedReference then Exporters::Endnote::Formatter::Nested
-      when UnknownReference then Exporters::Endnote::Formatter::Unknown
-      else raise "Don't know what kind of reference this is: #{reference.inspect}"
-      end
+      klass =
+        case reference
+        when ArticleReference then Exporters::Endnote::Formatter::Article
+        when BookReference then Exporters::Endnote::Formatter::Book
+        when NestedReference then Exporters::Endnote::Formatter::Nested
+        when UnknownReference then Exporters::Endnote::Formatter::Unknown
+        else raise "Don't know what kind of reference this is: #{reference.inspect}"
+        end
       klass.new(reference).format
-    end.select{ |string| string.present? }.join("\n") + "\n"
+    end.select { |string| string.present? }.join("\n") + "\n"
   end
 end
 
@@ -48,6 +49,7 @@ class Exporters::Endnote::Formatter::Article < Exporters::Endnote::Formatter::Ba
   def kind
     'Journal Article'
   end
+
   def add_contents
     add 'J', @reference.journal.name
     add 'N', @reference.series_volume_issue
@@ -59,6 +61,7 @@ class Exporters::Endnote::Formatter::Book < Exporters::Endnote::Formatter::Base
   def kind
     'Book'
   end
+
   def add_contents
     add 'C', @reference.publisher.place.name
     add 'I', @reference.publisher.name
@@ -70,6 +73,7 @@ class Exporters::Endnote::Formatter::Unknown < Exporters::Endnote::Formatter::Ba
   def kind
     'Generic'
   end
+
   def add_contents
     add '1', @reference.citation
   end
