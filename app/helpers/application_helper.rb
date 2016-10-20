@@ -27,6 +27,7 @@ module ApplicationHelper
     "#{number_with_delimiter(count)} #{word}"
   end
 
+  # TODO move to MergeAuthorsHelper, or nuke and replace with `pluralize_with_delimiters`
   def count_and_noun collection, noun
     quantity = collection.present? ? collection.count.to_s : 'no'
     noun << 's' unless collection.count == 1

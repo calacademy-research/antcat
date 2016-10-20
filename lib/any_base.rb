@@ -1,3 +1,14 @@
+# I'm not 100% *why* this is used, probably for a reason.
+#
+# It has to do with editing taxt items; for example,
+# `TaxonHistoryItem.find(239855).taxt` is stored in the database as
+# "{tax 429161} in Camponotinae, {tax 429240}: {ref 125017}: 206.",
+# but it looks like this in the taxt editor:
+# "{Lasius 81as} in Camponotinae, {Camponotini sEas}: {Forel, 1886h dopf}: 206."
+#
+# Showing the parsed names is obviously useful, but I'm less sure why the ids are
+# converted to base_x. It's a good mystery, nevertheless.
+
 module AnyBase
   def self.base_10_to_base_x number, digits
     result = ''

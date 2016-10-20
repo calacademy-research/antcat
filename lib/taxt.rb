@@ -21,10 +21,14 @@ module Taxt
     end
   end
 
+  # Parses "example {tax 429361}"
+  # into   "example <a href=\"/catalog/429361\">Melophorini</a>"
   def self.to_string taxt, options = {}
     decode taxt, options
   end
 
+  # Parses "example {tax 429361}"
+  # into   "example Melophorini"
   def self.to_display_sentence taxt
     string = to_string taxt, display: true
     add_period_if_necessary string

@@ -1,3 +1,5 @@
+# Must be manually called. Possibly not used any longer.
+
 require_relative '../config/environment.rb'
 
 four_epithet_names = Name.all.select do |name|

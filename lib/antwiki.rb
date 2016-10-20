@@ -1,3 +1,5 @@
+# Database maintenance code, must be called manually. Possibly not used any longer.
+
 # To get data from AntWiki to compare with AntCat:
 #
 # 1. Download http://ants.csiro.au/Ant_Wiki/images/9/9e/AntWiki_Valid_Species.txt

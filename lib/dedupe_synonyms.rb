@@ -1,5 +1,8 @@
+# I believe this is a database maintenance script that must be called manually.
+# Possibly not used any longer.
+# TODO? make callable from rake task
+
 module DedupeSynonyms
-  # TODO? make callable from rake task
   def self.dedupe
     duplicate_count = 0
     synonyms = Synonym.all.to_a

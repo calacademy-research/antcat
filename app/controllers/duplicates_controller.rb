@@ -1,12 +1,12 @@
 # Controller to handle the duplicates cases -
-# cases where a species move from one genus to anohter - starting off in
+# cases where a species move from one genus to another - starting off in
 # genus A, moving to genus B, and then back to A, while retaining the same
 # species epithet.
 
 class DuplicatesController < TaxaController
   before_action :authenticate_editor
 
-  # Takes requires parent_id (target parent)and previous_combination_id
+  # Takes requires parent_id (target parent) and previous_combination_id
   # returns all matching taxa that could conflict with this naming.
   def show
     return find_name_duplicates_only if params['match_name_only'] == "true"

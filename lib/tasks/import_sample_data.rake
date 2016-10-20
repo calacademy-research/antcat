@@ -1,3 +1,11 @@
+# Not used in production or even in dev.
+#
+# Useful if you want to locally experiment with the code after cloning the git repo.
+# Import the sample data by running `bundle exec rake antcat:db:import_sample_data`.
+#
+# If you want to develop locally with real data, please contact AntCat
+# to request a database dump.
+
 namespace :antcat do
   namespace :db do
     desc "Import sample data"

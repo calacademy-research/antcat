@@ -1,4 +1,7 @@
 # Probably GitHub markdown (?) with some custom tags.
+# Known issue: if "%<any digit>" appears in, say, a URL, it gets converted
+# to a taxon link. It's currently not possible to escape strings that
+# shouldn't be parsed.
 
 class AntcatMarkdown < Redcarpet::Render::HTML
   include Rails.application.routes.url_helpers

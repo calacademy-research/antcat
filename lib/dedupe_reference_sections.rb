@@ -1,5 +1,8 @@
+# I believe this is a database maintenance script that must be called manually.
+# Possibly not used any longer.
+# TODO? make callable from rake task
+
 module DedupeReferenceSections
-  # TODO? make callable from rake task
   def self.dedupe
     ReferenceSection.all.each do |reference_section|
       ReferenceSection.where('references_taxt = ? AND position > ?',

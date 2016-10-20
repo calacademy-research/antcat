@@ -1,3 +1,6 @@
+# Where "references" refers to something like "items referring to this taxon",
+# or "incoming links"; not "academic references".
+
 module Taxa::References
   extend ActiveSupport::Concern
 

@@ -1,3 +1,4 @@
+# Dev only. Includes more types of annotation in addition the customary "TODO".
 # Based on http://crypt.codemancers.com/posts/
 # 2013-07-12-redefine-rake-routes-to-add-your-own-custom-tag-in-Rails/
 

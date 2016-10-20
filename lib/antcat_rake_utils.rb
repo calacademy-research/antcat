@@ -1,3 +1,5 @@
+# Belongs in lib/tasks, but placed here because Rails' autoloading didn't play nice.
+
 module AntCat
   module RakeUtils
     Hash.class_eval do
@@ -17,6 +19,7 @@ module AntCat
     end
 
     def models_with_taxts
+      # model / field(s)
       models = {
         ReferenceSection => ['references_taxt',
                              'title_taxt',

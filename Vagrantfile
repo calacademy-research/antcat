@@ -1,5 +1,9 @@
 VAGRANTFILE_API_VERSION = "2"
 
+# Note: this has never been used in production. Use it to quickly set up
+# a dev environment, or just study it (and the Cheffile) to figure out
+# which dependencies are required.
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "precise64"
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"

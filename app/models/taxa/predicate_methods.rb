@@ -22,7 +22,6 @@ module Taxa::PredicateMethods
     homonym_replaced_by == taxon
   end
 
-  # statuses, fossil
   def unavailable?
     status == 'unavailable'
   end
