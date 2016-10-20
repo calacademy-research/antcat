@@ -1,6 +1,8 @@
 -@title = 'Missing References'
 -breadcrumb :missing_references
 
+%p Warning: only use this if you know what you're doing. The GUI does not show where the missing references are used. Once replaced, the action cannot be undone. That a missing reference was replaced is logged in the feed, but this does not mean the changes in the database are properly logged, and the item in the feed log cannot be used in any meaningful way to undo the action.
+
 %table
   %thead
     %th Reference
@@ -15,4 +17,3 @@
         %td
           -surrogate_missing_reference = MissingReference.find_by_citation missing_reference.citation
           =link_to 'replace', edit_missing_reference_path(surrogate_missing_reference)
-

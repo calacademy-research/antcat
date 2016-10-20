@@ -1,4 +1,4 @@
--# TODO list where it's used
+-# TODO list where the missing reference is used
 -# TODO some kind of log
 
 -@title = "Fix Missing Reference"
@@ -25,5 +25,5 @@
           =hidden_field_tag "replacement_id"
           =render "reference_fields/show"
 
-      =button_tag type: 'submit', class: 'btn-destructive has-spinner', data: { confirm: "Do you want to replace this reference? It can take a minute or two." } do
+      =button_tag type: 'submit', class: 'btn-destructive has-spinner', data: { confirm: "Do you want to replace this reference? It can take a minute or two. Warning: this action cannot be undone." } do
         =spinner_icon + "Replace"
