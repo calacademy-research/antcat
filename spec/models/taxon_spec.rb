@@ -116,6 +116,12 @@ describe Taxon do
         @taxon.biogeographic_region = nil
         expect(@taxon.valid?).to be true
       end
+
+      it "nilifies blank strings on save" do
+        @taxon.biogeographic_region = ""
+        @taxon.save
+        expect(@taxon.biogeographic_region).to be nil
+      end
     end
   end
 
