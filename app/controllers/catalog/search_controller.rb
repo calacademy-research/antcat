@@ -3,7 +3,9 @@ module Catalog
     before_action :antweb_legacy_route, only: [:index]
 
     def index
-      return unless params[:rank].present? # just render the template
+      # A blank params[:rank] means the user has not searched yet,
+      # so just render the form.
+      return unless params[:rank].present?
 
       @taxa = advanced_search_taxa
       @is_author_search = is_author_search?

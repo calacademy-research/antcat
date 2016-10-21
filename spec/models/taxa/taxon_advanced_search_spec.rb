@@ -22,7 +22,7 @@ describe Taxon do
         end
 
         it "returns the one match" do
-          results = Taxa::Search.advanced_search rank: 'Genus', year: 1977, valid_only: true
+          results = Taxa::Search.advanced_search rank: 'Genus', year: "1977", valid_only: true
           expect(results.map(&:id)).to match_array [@atta.id, @betta.id]
         end
 
@@ -31,7 +31,7 @@ describe Taxon do
           delta.protonym.authorship.update_attributes! reference: @reference1977
           delta.update_attributes! status: 'synonym'
 
-          results = Taxa::Search.advanced_search rank: 'Genus', year: 1977, valid_only: true
+          results = Taxa::Search.advanced_search rank: 'Genus', year: "1977", valid_only: true
           expect(results.map(&:id)).to match_array [@atta.id, @betta.id]
         end
       end
@@ -42,7 +42,7 @@ describe Taxon do
         atta.protonym.authorship.update_attributes! reference: reference1977
         atta.update_attributes! status: 'synonym'
 
-        results = Taxa::Search.advanced_search rank: 'Genus', year: 1977, valid_only: false
+        results = Taxa::Search.advanced_search rank: 'Genus', year: "1977", valid_only: false
         expect(results.map(&:id)).to match_array [atta.id]
       end
 
@@ -62,12 +62,12 @@ describe Taxon do
         end
 
         it "returns just the requested rank, if asked" do
-          expect(Taxa::Search.advanced_search(rank: 'Subfamily', year: 1977).map(&:id)).to match_array [@subfamily.id]
-          expect(Taxa::Search.advanced_search(rank: 'Tribe', year: 1977).map(&:id)).to match_array [@tribe.id]
-          expect(Taxa::Search.advanced_search(rank: 'Genus', year: 1977).map(&:id)).to match_array [@genus.id]
-          expect(Taxa::Search.advanced_search(rank: 'Subgenus', year: 1977).map(&:id)).to match_array [@subgenus.id]
-          expect(Taxa::Search.advanced_search(rank: 'Species', year: 1977).map(&:id)).to match_array [@species.id]
-          expect(Taxa::Search.advanced_search(rank: 'Subspecies', year: 1977).map(&:id)).to match_array [@subspecies.id]
+          expect(Taxa::Search.advanced_search(rank: 'Subfamily', year: "1977").map(&:id)).to match_array [@subfamily.id]
+          expect(Taxa::Search.advanced_search(rank: 'Tribe', year: "1977").map(&:id)).to match_array [@tribe.id]
+          expect(Taxa::Search.advanced_search(rank: 'Genus', year: "1977").map(&:id)).to match_array [@genus.id]
+          expect(Taxa::Search.advanced_search(rank: 'Subgenus', year: "1977").map(&:id)).to match_array [@subgenus.id]
+          expect(Taxa::Search.advanced_search(rank: 'Species', year: "1977").map(&:id)).to match_array [@species.id]
+          expect(Taxa::Search.advanced_search(rank: 'Subspecies', year: "1977").map(&:id)).to match_array [@subspecies.id]
         end
 
         it "returns just the requested rank, even without any other parameters" do
@@ -119,10 +119,10 @@ describe Taxon do
       it "finds the taxa for the author's references, even if he's nested inside the reference" do
         nested_in = create :article_reference,
           author_names: [create(:author_name, name: 'Bolton')],
-          year: 2010
+          year: "2010"
         reference = NestedReference.new title: 'Ants',
           author_names: [create(:author_name, name: 'Fisher')],
-          year: 2011,
+          year: "2011",
           nesting_reference: nested_in,
           pages_in: 'Pp 2 in:'
         atta = create_genus
@@ -159,7 +159,7 @@ describe Taxon do
           @bolton_reference.citation_year = 1987
           @bolton_reference.save!
 
-          results = Taxa::Search.advanced_search rank: 'All', author_name: 'Bolton', year: 1987
+          results = Taxa::Search.advanced_search rank: 'All', author_name: 'Bolton', year: "1987"
           expect(results.map(&:name_cache)).to match_array [@bolton_atta.name_cache]
         end
       end

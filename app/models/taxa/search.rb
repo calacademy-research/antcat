@@ -48,7 +48,18 @@ class Taxa::Search
         .joins('JOIN author_names ON author_names.id = reference_author_names.author_name_id')
     end
 
-    query = query.where('references.year = ?', params[:year]) if params[:year].present?
+    if params[:year].present?
+      year = params[:year]
+
+      if year =~ /^\d{4,}$/
+        query = query.where('references.year = ?', year)
+      else
+        matches = year.match /^(?<start_year>\d{4})-(?<end_year>\d{4})$/
+        if matches.present?
+          query = query.where('references.year BETWEEN ? AND ?', matches[:start_year], matches[:end_year])
+        end
+      end
+    end
 
     search_term = "%#{params[:locality]}%"
     query = query.where('protonyms.locality LIKE ?', search_term) if params[:locality].present?

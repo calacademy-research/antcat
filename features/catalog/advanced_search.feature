@@ -156,6 +156,25 @@ Feature: Searching the catalog
     Then I should see "1 result"
     And I should see "w." within the search results
 
+  Scenario: Searching for 'described in' (range)
+    Given there is a species described in 2010
+    And there is a species described in 2011
+    And there is a species described in 2012
+
+    When I fill in "year" with "2010-2011"
+    And I press "Go" in the search section
+    Then I should see "2 result"
+    And I should see the species described in 2010
+    And I should see the species described in 2011
+
+  Scenario: Searching for 'described in' (malformatted range)
+    Given there is a species described in 2010
+    And there is a species described in 2011
+
+    When I fill in "year" with "2000-1900"
+    And I press "Go" in the search section
+    Then I should see "No results"
+
   Scenario: Download search results
     Given there is a species described in 2010
 
