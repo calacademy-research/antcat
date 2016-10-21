@@ -1,7 +1,4 @@
 # Probably GitHub markdown (?) with some custom tags.
-# Known issue: if "%<any digit>" appears in, say, a URL, it gets converted
-# to a taxon link. It's currently not possible to escape strings that
-# shouldn't be parsed.
 
 class AntcatMarkdown < Redcarpet::Render::HTML
   include Rails.application.routes.url_helpers
@@ -39,10 +36,10 @@ class AntcatMarkdown < Redcarpet::Render::HTML
   end
 
   private
-    # matches: %429349
+    # matches: %t429349
     # renders: link to the taxon (Formica)
     def parse_taxon_ids full_document
-      full_document.gsub(/%(\d+)/) do
+      full_document.gsub(/%t(\d+)/) do
         try_linking_taxon_id $1
       end
     end

@@ -30,7 +30,7 @@ describe AntcatMarkdown do
       lasius_name = create :species_name, name: "Lasius"
       lasius = create :species, name: lasius_name
 
-      markdown = "%#{lasius.id}"
+      markdown = "%t#{lasius.id}"
 
       expect(AntcatMarkdown.render(markdown)).to eq <<-HTML
 <p><a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>
