@@ -155,3 +155,11 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     Then I should see "1 result"
     And I should see "w." within the search results
+
+  Scenario: Download search results
+    Given there is a species described in 2010
+
+    When I fill in "year" with "2010"
+    And I press "Go" in the search section
+    And I follow "Download (advanced search only)"
+    Then I should get a download with the filename "all-2010.txt"

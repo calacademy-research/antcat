@@ -78,3 +78,7 @@ end
 When(/^I check valid only in the advanced search form$/) do
   find(:css, "#advanced_search input[type='checkbox']").set true
 end
+
+Then(/^I should get a download with the filename "([^\"]*)"$/) do |filename|
+  expect(page.response_headers['Content-Disposition']).to include("filename=\"#{filename}\"")
+end
