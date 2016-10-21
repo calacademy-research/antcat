@@ -86,8 +86,13 @@ class Taxa::Search
     end
 
     search_term = params[:biogeographic_region]
+    # HACK, see app/models/biogeographic_region.rb
+    # TODO remove
+    if search_term.in? ["Palaearctic", "Palearctic"]
+      search_term = ["Palaearctic", "Palearctic"]
+    end
     if search_term == 'None'
-      query = query.where biogeographic_region: nil
+      query = query.where(biogeographic_region: ["", nil])
     elsif search_term.present?
       query = query.where(biogeographic_region: search_term)
     end
