@@ -14,7 +14,8 @@ class AntcatMarkdown < Redcarpet::Render::HTML
     extensions = {
       autolink: true,
       superscript: true,
-      disable_indented_code_blocks: true
+      disable_indented_code_blocks: true,
+      tables: true
     }
 
     renderer = AntcatMarkdown.new options
