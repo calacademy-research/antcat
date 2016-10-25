@@ -5,25 +5,19 @@ module NavigationHelpers
     when /^the main page$/
       root_path
 
+    # Admin
     when /^the admin page$/
-      root_path + "admin"
-
+      "/admin"
     when /^the useradmin page$/
-      root_path + "admin/users"
+      "/admin/users"
 
+    # Changes
     when /^the changes page$/
       '/changes'
-
     when /^the unreviewed changes page$/
       '/changes/unreviewed'
 
-    when /^the missing reference edit page for "([^"]*)"$/
-      reference = MissingReference.find_by_citation $1
-      "/missing_references/#{reference.id}/edit"
-
-    when /^the missing references page$/
-      '/missing_references'
-
+    # Catalog
     when /^the advanced search page$/
       catalog_search_path
 
@@ -33,23 +27,22 @@ module NavigationHelpers
     when /^the catalog$/
       root_path
 
+    # Editing (catalog)
     when /^the edit page for "(.*)"$/
       "/taxa/#{Taxon.find_by_name($1).id}/edit"
-
     when /^the new taxon page$/
       "/taxa/new"
-
     when /^the create taxon page$/
       '/taxa'
 
     when /^the "Convert to subspecies" page for "([^"]*)"$/
       taxon = Taxon.find_by_name $1
       "/taxa/#{taxon.id}/convert_to_subspecies"
-
     when /^the new "Convert to subspecies" page for "([^"]*)"$/
       taxon = Taxon.find_by_name $1
       "/taxa/#{taxon.id}/convert_to_subspecies/new"
 
+    # References, authors, etc
     when /^the references page$/
       references_path
     when /^the new references page$/
@@ -57,23 +50,28 @@ module NavigationHelpers
     when /^the page for that reference$/
       reference_path(@reference || Reference.first)
 
-    when /^the "journals index" page$/
+    when /^the missing references page$/
+      '/missing_references'
+    when /^the missing reference edit page for "([^"]*)"$/
+      reference = MissingReference.find_by_citation $1
+      "/missing_references/#{reference.id}/edit"
+
+    when /^the merge authors page$/
+      merge_authors_path
+    when /^the authors page$/
+      authors_path
+    when /^the author edit page for "(.*)"$/
+      "/authors/#{Author.find_by_names($1).first.id}/edit"
+
+    when /^the journals index page$/
       journals_path
 
+    # Editor's Panel
     when /^the Editor's Panel page$/
       "/panel"
 
     when /^the comments page$/
       "/comments"
-
-    when /^the Merge Authors page$/
-      merge_authors_path
-
-    when /^the authors page$/
-      authors_path
-
-    when /^the author edit page for "(.*)"$/
-      "/authors/#{Author.find_by_names($1).first.id}/edit"
 
     when /^the tooltips editing page$/
       "/tooltips"
@@ -90,6 +88,7 @@ module NavigationHelpers
     when /^the feedback index$/
       "/feedback"
 
+    # User
     when /^the edit user page$/
       '/users/edit'
     when /^the forgot password page$/
@@ -98,14 +97,13 @@ module NavigationHelpers
       '/users/sign_in'
     when /^the sign ?up (page|form)$/
       '/users/sign_up'
+
     when /^the users page$/
       '/users'
     when /^the user emails list$/
       '/users/emails'
 
-    when /^the feedback index$/
-      '/feedback'
-
+    # Widget test pages
     when /^the reference field test page, opened to the first reference$/
       "/widget_tests/reference_field_test?id=#{Reference.first.id}"
     when /^the reference field test page/

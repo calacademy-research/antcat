@@ -8,7 +8,7 @@ Feature: Editing journals
 
     When I go to the references page
     And I follow "Journals"
-    Then I should be on the "journals index" page
+    Then I should be on the journals index page
 
   Scenario: Edit a journal's name
     Given I am logged in
@@ -43,7 +43,7 @@ Feature: Editing journals
   Scenario: Edit a journal name without logging in
     Given a journal exists with a name of "Psyche"
 
-    When I go to the "journals index" page
+    When I go to the journals index page
     And I follow "Psyche"
     Then I should not see "Edit journal name"
     And I should not see "Delete"

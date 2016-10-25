@@ -40,7 +40,7 @@ Feature: Working with authors and their names
 
     When I go to the authors page
     And I follow "Merge Authors"
-    Then I should be on the Merge Authors page
+    Then I should be on the merge authors page
 
   @javascript
   Scenario: Adding an author name
