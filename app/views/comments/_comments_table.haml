@@ -41,5 +41,5 @@
               =truncate comment.body, length: 200, omission: "... (continued)"
 
           %td.no-wrap
-            =time_ago_in_words(comment.created_at)
+            =time_ago_in_words comment.created_at
             ago

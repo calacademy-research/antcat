@@ -45,6 +45,11 @@
 
 .row.margin-top
   .large-12.columns
+    %h5 Most recent activity (#{link_to("see more", feed_path)})
+    =render "feed/activities_table", activities: @recent_activities
+
+.row.margin-top
+  .large-12.columns
     %h5 Most recent comments (#{link_to("see more", comments_path)})
     =render "comments/comments_table", comments: @recent_comments
 

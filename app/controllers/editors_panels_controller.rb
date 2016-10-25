@@ -9,6 +9,7 @@ class EditorsPanelsController < ApplicationController
       pending_user_feedbacks: Notification.pending_count(:pending_user_feedbacks),
     }
 
+    @recent_activities = Feed::Activity.most_recent 5
     @recent_comments = Comment.most_recent 5
   end
 end
