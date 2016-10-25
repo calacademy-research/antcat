@@ -11,17 +11,17 @@
             %li
               =link_to editors_panel_path do
                 Editor's Panel
-                %span.notification.label=Notification.pending_count(:all)
-          %li=link_to('References', references_path)
-          %li=link_to('Changes', changes_path)
-          %li=link_to('AntWeb', 'http://www.antweb.org/')
-          %li=link_to('About', page_path('about'))
+                %span.notification.label=Notification.pending_count :all
+          %li=link_to 'References', references_path
+          %li=link_to 'Changes', changes_path
+          %li=link_to 'AntWeb', 'http://www.antweb.org/'
+          %li=link_to 'About', page_path('about')
 
           -if user_signed_in?
             %li=link_to(current_user.name || current_user.email, edit_user_registration_path)
-            %li=link_to('Logout', destroy_user_session_path)
+            %li=link_to 'Logout', destroy_user_session_path
           -else
-            %li=link_to('Login', new_user_session_path)
+            %li=link_to 'Login', new_user_session_path
           %li
             %a{"data-open" => "feedback_modal"}
               Feedback
@@ -37,7 +37,7 @@
                 .input-group-button
                   =button_tag type: 'submit', name: nil, class: 'button has-spinner' do
                     =spinner_icon + "Go"
-          %li.centered-text=link_to('Advanced<br> Search'.html_safe, catalog_search_path, class: "without-top-padding")
+          %li.centered-text=link_to 'Advanced<br> Search'.html_safe, catalog_search_path, class: "without-top-padding"
 
 #mobile-only.hide-for-large
   .top-bar
@@ -53,20 +53,20 @@
       %li=link_to "Catalog", root_path
       -if user_signed_in?
         %li=link_to "Editor's Panel", editors_panel_path
-      %li=link_to('References', references_path)
-      %li=link_to('Changes', changes_path)
-      %li=link_to('AntWeb', 'http://www.antweb.org/')
-      %li=link_to('About', page_path('about'))
+      %li=link_to 'References', references_path
+      %li=link_to 'Changes', changes_path
+      %li=link_to 'AntWeb', 'http://www.antweb.org/'
+      %li=link_to 'About', page_path('about')
 
       -if user_signed_in?
         %li=link_to "Editor's Panel", editors_panel_path
-        %li=link_to(current_user.name || current_user.email, edit_user_registration_path)
-        %li=link_to('Logout', destroy_user_session_path)
+        %li=link_to current_user.name || current_user.email, edit_user_registration_path
+        %li=link_to 'Logout', destroy_user_session_path
       -else
-        %li=link_to('Login', new_user_session_path)
+        %li=link_to 'Login', new_user_session_path
       %li
         %a{"data-open" => "feedback_modal"} Feedback
-      %li=link_to('Advanced Search', catalog_search_path)
+      %li=link_to 'Advanced Search', catalog_search_path
 
       %li.has-form
         =form_tag catalog_quick_search_path, method: :get do

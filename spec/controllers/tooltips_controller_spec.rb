@@ -3,7 +3,7 @@ require 'spec_helper'
 describe TooltipsController do
   # Note: Shoulda only checks if the filter is defined;
   # the matcher does not support :only, :except or `skip_before_filter`
-  it { should use_before_filter(:authenticate_editor) }
+  it { should use_before_filter :authenticate_editor }
 
   describe '#index' do
     context "signed in" do
@@ -13,10 +13,7 @@ describe TooltipsController do
       let!(:references_new_title) { create :tooltip, key: "new.title", scope: "references" }
       let!(:taxa_type_species)    { create :tooltip, key: "type_species", scope: "taxa" }
 
-      before do
-        editor = create :user, can_edit: true
-        sign_in editor
-      end
+      before { sign_in create :editor }
 
       describe "grouping" do
         before do
@@ -49,7 +46,7 @@ describe TooltipsController do
     context "not signed in" do
       before { get :index }
 
-      it { should redirect_to(new_user_session_path) } # TODO extract this to a helper
+      it { should redirect_to new_user_session_path } # TODO extract this to a helper
     end
   end
 
@@ -58,12 +55,11 @@ describe TooltipsController do
 
     context "signed in" do
       before do
-        editor = create :user, can_edit: true
-        sign_in editor
+        sign_in create :editor
         get :show, id: tooltip.id
       end
 
-      it { should render_template(:show) }
+      it { should render_template :show }
     end
 
     context "not signed in" do
@@ -82,10 +78,9 @@ describe TooltipsController do
     let(:tooltip) { create :tooltip }
 
     context "signed in" do
-      it 'redirects to the "show" action for the tooltip' do
-        editor = create :user, can_edit: true
-        sign_in editor
+      before { sign_in create :editor }
 
+      it 'redirects to the "show" action for the tooltip' do
         get :edit, id: tooltip.id
         expect(response).to redirect_to tooltip
       end
@@ -101,40 +96,31 @@ describe TooltipsController do
 
   describe '#create' do
     context "signed in" do
-      before do
-        editor = create :user, can_edit: true
-        sign_in editor
-      end
+      before { sign_in create :editor }
 
       context 'with valid attributes' do
-        before do
-          post :create, tooltip: { key: "references.authors" }
-        end
+        before { post :create, tooltip: { key: "references.authors" } }
 
         it 'creates the tooltips' do
           expect(Tooltip.count).to eq 1
         end
 
-        it { should redirect_to(Tooltip.first) }
+        it { should redirect_to Tooltip.first }
       end
 
       context 'with invalid attributes' do
-        before do
-          post :create, tooltip: { key: nil }
-        end
+        before { post :create, tooltip: { key: nil } }
 
         it 'does not create the tooltips' do
           expect(Tooltip.count).to eq 0
         end
 
-        it { should render_template(:new) }
+        it { should render_template :new }
       end
     end
 
     context 'not signed in' do
-      before do
-        post :create, tooltip: { key: "references.authors" }
-      end
+      before { post :create, tooltip: { key: "references.authors" } }
 
       it 'does not create the tooltips' do
         expect(Tooltip.count).to eq 0

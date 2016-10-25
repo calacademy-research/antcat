@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe TaxaController do
-  before do
-    @controller = TaxaController.new
-  end
+  before { @controller = TaxaController.new }
 
   describe "autocompleting" do
     describe "#format_autosuggest_keywords" do

@@ -23,7 +23,6 @@ describe ReferencesController do
       end
 
       it "does not redirect unless the reference exists" do
-        reference_factory author_name: 'E.O. Wilson', id: 88888
         get :search, q: "11111"
         expect(response).to render_template "search"
       end
@@ -72,16 +71,13 @@ describe ReferencesController do
   describe "#download" do
     describe "reference without a document" do
       it "raises an error" do
-        expect {
-          get :download, id: 99999, file_name: "not_even_stubbed.pdf"
-        }.to raise_error ActiveRecord::RecordNotFound
+        expect { get :download, id: 99999, file_name: "not_even_stubbed.pdf" }
+          .to raise_error ActiveRecord::RecordNotFound
       end
     end
 
     describe "reference with a document" do
-      before do
-        @reference_document = create :reference_document
-      end
+      let!(:reference_document) { create :reference_document }
 
       context "with full access" do
         before do
@@ -91,8 +87,8 @@ describe ReferencesController do
         end
 
         it "redirects to the file" do
-          response = get :download, id: @reference_document.id, file_name: "not_even_stubbed.pdf"
-          expect(response).to redirect_to @reference_document.actual_url
+          response = get :download, id: reference_document.id, file_name: "not_even_stubbed.pdf"
+          expect(response).to redirect_to reference_document.actual_url
         end
       end
 
@@ -102,7 +98,7 @@ describe ReferencesController do
         end
 
         it "redirects to the file" do
-          response = get :download, id: @reference_document.id, file_name: "not_even_stubbed.pdf"
+          response = get :download, id: reference_document.id, file_name: "not_even_stubbed.pdf"
           expect(response.response_code).to eq 401
         end
       end
@@ -131,8 +127,9 @@ describe ReferencesController do
     end
 
     describe "#format_autosuggest_keywords" do
+      let!(:reference) { reference_factory author_name: 'E.O. Wilson' }
+
       it "replaces the typed author with the suggested author" do
-        reference = reference_factory author_name: 'E.O. Wilson'
         keyword_params = { author: "wil" }
         search_query = controller.send :format_autosuggest_keywords, reference, keyword_params
         expect(search_query).to eq "author:'E.O. Wilson'"
