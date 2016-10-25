@@ -13,22 +13,13 @@ Feature: Logging in
     Given I am not logged in
 
     When I go to the login page
-    And I fill in the email field with "email@example.com"
+    Then I should not see "Logout"
+
+    When I fill in the email field with "email@example.com"
     And I fill in the password field with "secret"
     And I press "Login"
     Then I should be on the main page
-
-  @javascript
-  Scenario: Logging in successfully from the main page
-    Given PENDING: JS login disabled
-    Given I am not logged in
-
-    When I go to the main page
-    And I follow "Login"
-    And I fill in the email field with "email@example.com"
-    And I fill in the password field with "secret"
-    And I press the first "Go" to log in
-    Then I should be on the main page
+    And I should see "Logout"
 
   @javascript
   Scenario: Logging in unsuccessfully

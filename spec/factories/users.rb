@@ -9,5 +9,6 @@ FactoryGirl.define do
     name 'Brian Fisher'
     sequence(:email) { |n| "brian#{n}@example.com" }
     password 'secret'
+    can_edit true
   end
 end

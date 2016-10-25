@@ -1,4 +1,4 @@
-Given(/this user exists/) do |table|
+Given(/(?:this|these) users? exists/) do |table|
   table.hashes.each { |hash| User.create! hash }
 end
 
@@ -65,6 +65,7 @@ When(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
   login_programmatically user
 end
 
+# TODO this is the same as a (non-editor) user -- remove
 When(/^I log in as a bibliography editor$/) do
   user = Feed::Activity.without_tracking do
     create :user
