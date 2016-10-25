@@ -365,6 +365,8 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unread (0.7.1)
+      activerecord (>= 3)
     warden (1.2.3)
       rack (>= 1.0)
     webmock (1.22.2)
@@ -439,6 +441,7 @@ DEPENDENCIES
   thin
   twitter-typeahead-rails
   uglifier
+  unread
   webmock
   will_paginate
   workflow

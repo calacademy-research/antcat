@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161022044112) do
+ActiveRecord::Schema.define(version: 20161025131718) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -260,6 +260,16 @@ ActiveRecord::Schema.define(version: 20161022044112) do
 
   add_index "publishers", ["name"], name: "publishers_name_idx", using: :btree
   add_index "publishers", ["place_id"], name: "publishers_place_id_idx", using: :btree
+
+  create_table "read_marks", force: :cascade do |t|
+    t.integer  "readable_id",   limit: 4
+    t.string   "readable_type", limit: 255, null: false
+    t.integer  "reader_id",     limit: 4
+    t.string   "reader_type",   limit: 255, null: false
+    t.datetime "timestamp"
+  end
+
+  add_index "read_marks", ["reader_id", "reader_type", "readable_type", "readable_id"], name: "read_marks_reader_readable_index", using: :btree
 
   create_table "reference_author_names", force: :cascade do |t|
     t.integer  "author_name_id", limit: 4
