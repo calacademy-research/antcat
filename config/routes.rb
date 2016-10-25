@@ -98,7 +98,11 @@ AntCat::Application.routes.draw do
   resource :duplicates, only: [:show, :create]
 
   devise_for :users, controllers: { invitations: 'users/invitations' }
-  resources :users, only: [:index]
+  resources :users, only: [:index] do
+    collection do
+      get :emails
+    end
+  end
 
   scope module: 'api' do
     namespace :v1 do

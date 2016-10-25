@@ -26,6 +26,10 @@
       %li=link_to('Activity feed', feed_path) + " " + obligatory_beta_label
       %li=link_to 'Invite people to AntCat', new_user_invitation_path
       %li=link_to "Change my password/name/email", edit_user_registration_path
+      %li
+        =link_to "List of users", users_path
+        =surround "(", ")" do
+          =link_to "email users", emails_users_path
 
   .large-3.medium-4.columns
     %h5 Advanced tools

@@ -94,6 +94,8 @@ module NavigationHelpers
       '/users/sign_up'
     when /^the users page$/
       '/users'
+    when /^the user emails list$/
+      '/users/emails'
 
     when /^the feedback index$/
       '/feedback'

@@ -4,6 +4,35 @@ describe User do
   it { should validate_presence_of(:name) }
 
   describe "scopes" do
+    describe "scope.ordered_by_name" do
+      before do
+        create :user, name: "Anderson"
+        create :user, name: "Zanderson"
+        create :editor, name: "Banderson"
+      end
+
+      it "knows the alphabet" do
+        expect(User.ordered_by_name.pluck :name).to eq %w( Anderson Banderson Zanderson )
+      end
+    end
+
+    describe "editors and non-editors" do
+      let!(:user) { create :user }
+      let!(:editor) { create :editor }
+
+      describe "scope.editors" do
+        it "returns editors" do
+          expect(User.editors).to eq [editor]
+        end
+      end
+
+      describe "scope.non_editors" do
+        it "returns non-editors" do
+          expect(User.editors).to eq [editor]
+        end
+      end
+    end
+
     describe "scope.feedback_emails_recipients" do
       let!(:user) { create :user, receive_feedback_emails: true }
 
@@ -14,13 +43,11 @@ describe User do
 
     describe "scope.as_angle_bracketed_emails" do
       before do
-        create :editor, name: "Archibald",
+        create :user, name: "Archibald",
           email: "archibald@antcat.org", receive_feedback_emails: true
-        create :editor, name: "Batiatus",
+        create :user, name: "Batiatus",
           email: "batiatus@antcat.org", receive_feedback_emails: true
-
-        create :editor, name: "Flint",
-          email: "flint@antcat.org"
+        create :user, name: "Flint", email: "flint@antcat.org"
       end
 
       it "returns all user's #angle_bracketed_email" do
@@ -60,11 +87,11 @@ describe User do
 
   describe "#angle_bracketed_email" do
     let(:user) do
-      create :user, name: "An Editor", email: "editor@example.com"
+      create :user, name: "A User", email: "user@example.com"
     end
 
     it "builds a string suitable for emails" do
-      expect(user.angle_bracketed_email).to eq '"An Editor" <editor@example.com>'
+      expect(user.angle_bracketed_email).to eq '"A User" <user@example.com>'
     end
   end
 end
