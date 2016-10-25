@@ -47,6 +47,11 @@ crumb :feed do
   parent :editors_panel
 end
 
+crumb :comments do
+  link "Comments"
+  parent :editors_panel
+end
+
 crumb :edit_user do
   link "Edit User"
   parent :editors_panel

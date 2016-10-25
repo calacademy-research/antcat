@@ -1,0 +1,45 @@
+-include_head ||= false
+
+-if comments.empty?
+  No comments.
+-else
+  %table
+    -if include_head
+      %thead
+        %tr
+          %th What
+          %th When
+    -comments.each do |comment|
+      %tbody
+        %tr
+          %td
+            -# "User Name"
+            =comment.user.decorate.name_linking_to_email
+
+            -# "commented on" (comment linked if commented object still exists)
+            -commentable = comment.commentable
+            -if commentable
+              =link_comment comment, "commented"
+            -else
+              commented
+            on the
+
+            -# "the <object type> <id or title>:" (object linked if still exists)
+            -commentable_type = comment.commentable_type
+            -if commentable
+              =commentable_type.underscore.humanize.downcase
+              -link_title = if commentable_type.in? ["SiteNotice", "Task"]
+                -commentable.title
+              -else
+                -"##{commentable.id}"
+              =link_to "#{link_title}:", commentable
+            -else
+              [deleted]:
+
+            -# '"comment body"'
+            =surround '"' do
+              =truncate comment.body, length: 200, omission: "... (continued)"
+
+          %td.no-wrap
+            =time_ago_in_words(comment.created_at)
+            ago

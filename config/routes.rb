@@ -138,7 +138,7 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :comments, only: [:create]
+  resources :comments, only: [:index, :create]
 
   get "panel", to: "editors_panels#index", as: "editors_panel"
 

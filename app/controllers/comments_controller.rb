@@ -1,6 +1,10 @@
 class CommentsController < ApplicationController
   before_action :authenticate_editor
 
+  def index
+    @comments = Comment.order_by_date.paginate(page: params[:page])
+  end
+
   def create
     @comment = Comment.build_comment commentable, current_user, comment_params[:body]
 

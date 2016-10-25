@@ -60,6 +60,12 @@ module NavigationHelpers
     when /^the "journals index" page$/
       journals_path
 
+    when /^the Editor's Panel page$/
+      "/panel"
+
+    when /^the comments page$/
+      "/comments"
+
     when /^the Merge Authors page$/
       merge_authors_path
 

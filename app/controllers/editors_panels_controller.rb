@@ -8,5 +8,7 @@ class EditorsPanelsController < ApplicationController
       unreviewed_catalog_changes: Notification.pending_count(:unreviewed_catalog_changes),
       pending_user_feedbacks: Notification.pending_count(:pending_user_feedbacks),
     }
+
+    @recent_comments = Comment.most_recent 5
   end
 end

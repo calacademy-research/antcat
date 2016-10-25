@@ -1,0 +1,6 @@
+-@title = "Comments"
+-breadcrumb :comments
+
+=render "comments_table", comments: @comments, include_head: true
+
+=will_paginate @comments
