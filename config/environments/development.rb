@@ -18,11 +18,12 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
   config.action_dispatch.best_standards_support = :builtin
-  config.action_mailer.default_url_options = {host: 'antcat.local'}
+  config.action_mailer.default_url_options = { host: 'antcat.local' }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
   config.log_level = :info
+  # config.log_level = :debug # Change to this to show SQL queries in the log.
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load

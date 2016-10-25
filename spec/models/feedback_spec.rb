@@ -16,9 +16,7 @@ describe Feedback do
           email: "archibald@antcat.org", receive_feedback_emails: true
         create :editor, name: "Batiatus",
           email: "batiatus@antcat.org", receive_feedback_emails: true
-
-        create :editor, name: "Flint",
-          email: "flint@antcat.org"
+        create :editor, name: "Flint", email: "flint@antcat.org"
 
         feedback = create :feedback
         expect(feedback.email_recipients).to eq <<-STR.squish

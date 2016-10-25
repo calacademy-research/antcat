@@ -58,17 +58,24 @@ module FeedHelper
   end
 
   private
-    # TODO improve this mess
     # Returns the partial's full path like this:
-    #   no `trackable_type`?    --> "actions/action"
+    # 1) The activity has no `#trackable_type`? --> `actions/_<action>`
+    #    This happens when there's no trackable tied to the activity,
+    #    for example the action "approve_all_changes".
     #
-    #   there is a partial
-    #   named `action`?         --> "actions/action"
+    # 2) There is a partial named `actions/_<action>.haml`? --> use that
     #
-    #   there is a partial
-    #   named `trackable_type`? --> "trackable_type"
+    # 3) There is a partial named `_<trackable_type>.haml`? --> use that
     #
-    #   else                    --> "default"
+    # 4) Else --> `_default.haml`
+    #
+    # TODO probably change to this:
+    # 1) Activites with non-default actions (ie not create/update/destroy)
+    #    --> `actions/_<action>.haml` (assume the template exists)
+    #
+    # 2) Else, just render --> "_<trackable_type>.haml"
+    #
+    # 3) Catch `ActionView::MissingTemplate` in `#format_activity` --> `_default.haml`
     def partial_for_activity activity
       activities_path = "feed/activities/"
       return "#{activities_path}actions/#{activity.action}" unless activity.trackable_type

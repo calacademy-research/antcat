@@ -1,4 +1,5 @@
 # Probably GitHub markdown (?) with some custom tags.
+require "redcarpet/render_strip"
 
 class AntcatMarkdown < Redcarpet::Render::HTML
   include Rails.application.routes.url_helpers
@@ -8,20 +9,29 @@ class AntcatMarkdown < Redcarpet::Render::HTML
     options = {
       hard_wrap: true,
       space_after_headers: true,
-      fenced_code_blocks: true
+      fenced_code_blocks: true,
+      underline: false,
     }
 
     extensions = {
       autolink: true,
       superscript: true,
       disable_indented_code_blocks: true,
-      tables: true
+      tables: true,
+      underline: false,
+      no_intra_emphasis: true,
     }
 
     renderer = AntcatMarkdown.new options
-    markdown = Redcarpet::Markdown.new renderer, extensions
+    markdowner = Redcarpet::Markdown.new renderer, extensions
 
-    markdown.render(text).html_safe
+    markdowner.render(text).html_safe
+  end
+
+  def self.strip text
+    rendered = Redcarpet::Render::StripDown
+    markdowner = Redcarpet::Markdown.new rendered
+    markdowner.render text
   end
 
   def preprocess full_document

@@ -114,6 +114,12 @@ describe AntcatMarkdown do
     end
   end
 
+  describe ".strip" do
+    it "strips markdown" do
+      expect(AntcatMarkdown.strip "**bold**").to eq "bold\n"
+    end
+  end
+
   describe "#try_linking_taxon_id" do
     context "existing taxon" do
       it "links existing taxa" do

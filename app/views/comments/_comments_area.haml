@@ -1,7 +1,7 @@
 %a{name: "comments"}
 
-%h6=pluralize(commentable.comment_threads.count, "comment")
+%h6.margin-top=pluralize(commentable.comment_threads.count, "comment")
 =render partial: "comments/form"
 
-.comments-container
+.comments-container.margin-bottom
   =render partial: "comments/comments", locals: { comments: commentable.root_comments }
