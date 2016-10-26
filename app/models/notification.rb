@@ -1,8 +1,10 @@
 # More a helper than a proper model.
-# TODO figure out how to organize this.
+# TODO figure out how to organize this, and improve performance.
 
 class Notification
-  def self.pending_count action
+  # Ugg, we have to keep track of `current_user` due to `SiteNotice.unread_by`.
+  # TODO figure out a better method.
+  def self.pending_count action, user = nil
     case action
     when :open_tasks
       open_tasks.count
@@ -12,8 +14,10 @@ class Notification
       unreviewed_catalog_changes.count
     when :pending_user_feedbacks
       pending_user_feedbacks.count
+    when :unread_site_notices
+      unread_site_notices(user).count
     when :all
-      all_pending_actions_count
+      all_pending_actions_count user
     end
   end
 
@@ -34,10 +38,15 @@ class Notification
       Feedback.where(open: true)
     end
 
-    def self.all_pending_actions_count
+    def self.unread_site_notices user
+      SiteNotice.unread_by user
+    end
+
+    def self.all_pending_actions_count user = nil
       open_tasks.count +
       unreviewed_references.count +
       unreviewed_catalog_changes.count +
-      pending_user_feedbacks.count
+      pending_user_feedbacks.count +
+      unread_site_notices(user).count
     end
 end

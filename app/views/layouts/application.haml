@@ -30,6 +30,7 @@
         =render "subnavigation"
 
       #content
+        =render "site_notices/unread_site_notices_flash_message.haml"
         =render "shared/flash_messages"
         -if controller_name == "catalog"
           =yield

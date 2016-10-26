@@ -51,6 +51,12 @@ FactoryGirl.define do
     sequence(:key) { |n| "test.key#{n}" }
     sequence(:text) { |n| "Tooltip text #{n}" }
   end
+
+  factory :site_notice do
+    title "Site notice title"
+    message "Site notice message"
+    association :user, factory: :user
+  end
 end
 
 def setup_version taxon_id, whodunnit = nil

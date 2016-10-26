@@ -7,7 +7,12 @@
 on the
 
 -if trackable && trackable.commentable
-  =trackable.commentable_type.downcase
-  =link_to "##{trackable.commentable_id}", trackable.commentable
+  =trackable.commentable_type.underscore.humanize.downcase
+
+  -if trackable.commentable_type.in? ["SiteNotice", "Task"]
+    -link_title = trackable.commentable.title
+  -else
+    -link_title = "##{trackable.commentable_id}"
+  =link_to "#{link_title}", trackable.commentable
 -else
   [deleted]

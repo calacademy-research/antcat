@@ -146,6 +146,13 @@ AntCat::Application.routes.draw do
     resources :activities, only: [:destroy]
   end
 
+  resources :site_notices do
+    collection do
+      post :mark_all_as_read
+      post :dismiss
+    end
+  end
+
   # Shallow routes for the show action for the feed
   resources :taxon_history_items, only: [:show]
   resources :reference_sections, only: [:show]

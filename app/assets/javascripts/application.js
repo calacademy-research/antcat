@@ -19,6 +19,7 @@
 //= require site
 //= require spinner
 //= require taxa/taxa_autocompletion
+//= require unread_site_notices_flash_message
 
 // gems
 //= require twitter/typeahead

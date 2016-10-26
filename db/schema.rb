@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025131718) do
+ActiveRecord::Schema.define(version: 20161025132249) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -349,6 +349,16 @@ ActiveRecord::Schema.define(version: 20161025131718) do
   add_index "references", ["publisher_id"], name: "references_publisher_id_idx", using: :btree
   add_index "references", ["updated_at"], name: "references_updated_at_idx", using: :btree
 
+  create_table "site_notices", force: :cascade do |t|
+    t.string   "title",      limit: 255
+    t.text     "message",    limit: 65535
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "site_notices", ["user_id"], name: "index_site_notices_on_user_id", using: :btree
+
   create_table "synonyms", force: :cascade do |t|
     t.integer  "senior_synonym_id", limit: 4
     t.integer  "junior_synonym_id", limit: 4
@@ -510,4 +520,5 @@ ActiveRecord::Schema.define(version: 20161025131718) do
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   add_index "versions", ["whodunnit"], name: "index_versions_on_whodunnit", using: :btree
 
+  add_foreign_key "site_notices", "users"
 end

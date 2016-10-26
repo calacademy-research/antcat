@@ -24,6 +24,8 @@ end
 
 def login_programmatically user
   login_as user
+  @user = user
+
   # TODO move to individual scenarios. Many scenarios bypassed the main page
   # by directly visiting other paths.
   step 'I go to the main page'
@@ -71,6 +73,11 @@ When(/^I log in as a bibliography editor$/) do
     create :user
   end
   login_programmatically user
+end
+
+When(/^I log out and log in again$/) do
+  step 'I follow the first "Logout"'
+  login_programmatically @user
 end
 
 Then(/^there should be a mailto link to the email of "([^"]+)"$/) do |user_name|

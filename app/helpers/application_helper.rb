@@ -52,6 +52,14 @@ module ApplicationHelper
     string.html_safe
   end
 
+  def beta_label
+    content_tag :span, "beta", class: "label"
+  end
+
+  def new_label
+    content_tag :span, "new!", class: "label"
+  end
+
   # First attempt at creating a spinner that works on all elements.
   # Add .has-spinner to the button/link/element and call this method inside that element.
   # To be improved once all buttons are more consistently formatted site-wide.
@@ -85,6 +93,7 @@ module ApplicationHelper
     end
   end
 
+  # Hmm cannot remember why private..
   private
     def antcat_icon *css_classes
       content_tag :span, nil,

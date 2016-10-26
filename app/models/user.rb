@@ -2,8 +2,9 @@ class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
   include Feed::Trackable
-  tracked on: :create,
-    parameters: ->(user) do { user_id: user.id } end
+  tracked on: :create, parameters: ->(user) do { user_id: user.id } end
+
+  acts_as_reader
 
   validates :name, presence: true
 

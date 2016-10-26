@@ -156,6 +156,10 @@ When(/I wait for a bit(?: more)?/) do
   sleep 1
 end
 
+Given(/^RESET SESSION$/) do
+  Capybara.reset_sessions!
+end
+
 Then(/^the page title should have "([^"]*)" in it$/) do |title|
   page.title.should have_content(title)
 end

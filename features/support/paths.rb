@@ -73,6 +73,9 @@ module NavigationHelpers
     when /^the comments page$/
       "/comments"
 
+    when /^the site notices page$/
+      "/site_notices"
+
     when /^the tooltips editing page$/
       "/tooltips"
 

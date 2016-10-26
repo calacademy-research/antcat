@@ -11,7 +11,7 @@
             %li
               =link_to editors_panel_path do
                 Editor's Panel
-                %span.notification.label=Notification.pending_count :all
+                %span.notification.label=Notification.pending_count :all, current_user
           %li=link_to 'References', references_path
           %li=link_to 'Changes', changes_path
           %li=link_to 'AntWeb', 'http://www.antweb.org/'
@@ -23,9 +23,7 @@
           -else
             %li=link_to 'Login', new_user_session_path
           %li
-            %a{"data-open" => "feedback_modal"}
-              Feedback
-              %span.label new!
+            %a{"data-open" => "feedback_modal"} Feedback
 
       #desktop-lower-menu.top-bar-right
         %ul.menu
