@@ -26,6 +26,6 @@
         %td=task.status.capitalize
         %td.grow=link_to task.title, task
         %td.center-text=link_comments_section task
-        %td.no-wrap=time_ago_in_words(task.created_at)
+        %td.no-wrap=time_ago_in_words task.created_at
 
 =will_paginate @tasks

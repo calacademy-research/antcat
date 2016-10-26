@@ -168,7 +168,6 @@ AntCat::Application.routes.draw do
 
   resources :tasks do
     member do
-      put :complete
       put :close
       put :reopen
     end

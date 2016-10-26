@@ -1,3 +1,8 @@
+# TODO completely remove the status "completed".
+# The button has already been removed from the GUI and most places in the
+# code, but it's still in the database (to be migrated) and some views, etc.
+# Better because less complicated.
+
 class Task < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 

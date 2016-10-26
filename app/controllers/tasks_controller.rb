@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :authenticate_editor, except: [:index, :show]
-  before_action :set_task, only: [:show, :edit, :update, :reopen, :complete, :close]
+  before_action :set_task, only: [:show, :edit, :update, :reopen, :close]
 
   def index
     @tasks = Task.by_status_and_date.paginate(page: params[:page])
@@ -41,14 +41,6 @@ class TasksController < ApplicationController
     else
       render action: "edit"
     end
-  end
-
-  def complete
-    @task.set_status "completed", current_user
-    redirect_to @task, notice: <<-MSG
-      Successfully marked task as completed.
-      <strong>#{view_context.link_to 'Back to the index', tasks_path}</strong>.
-    MSG
   end
 
   def close

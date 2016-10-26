@@ -14,7 +14,6 @@
     -if @task.archived?
       =link_to("Re-open", reopen_task_path(@task), method: :put, class: "btn-destructive")
     -else
-      =link_to("Complete", complete_task_path(@task), method: :put, class: "btn-normal")
       =link_to("Close", close_task_path(@task), method: :put, class: "btn-destructive")
       =link_to("Edit", edit_task_path(@task), class: "btn-normal")
 .clear
