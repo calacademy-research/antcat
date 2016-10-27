@@ -17,29 +17,11 @@ describe Formatters::AdvancedSearchHtmlFormatter do
       taxon = create_genus 'Atta', incertae_sedis_in: 'genus', nomen_nudum: true
       taxon.protonym.authorship.update_attributes reference: reference
 
-      actual = formatter.format taxon
-      expect(actual).to eq(
-        %{<a href="/catalog/#{taxon.id}">} +
-           %{<i>Atta</i>} +
-        %{</a> } +
-        %{<i>incertae sedis</i> in genus, <i>nomen nudum</i>\n} +
-        %{<span class="reference_key_and_expansion">} +
-          %{<a class="reference_key" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">} +
-              %{Latreille, 1809} +
-            %{</a>} +
-            %{<span class="reference_key_expansion">} +
-            %{<span class="reference_key_expansion_text" title="Latreille, 1809">} +
-                %{Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.} +
-              %{</span> } +
-            %{<a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">} +
-                %{10.10.1038/nphys1170} +
-              %{</a> } +
-            %{<a class="goto_reference_link" target="_blank" href="/references/#{reference.id}">} +
-              "#{reference.id}" +
-            %{</a>} +
-          %{</span>} +
-        %{</span>\n\n}
-      )
+      actual = formatter.format_status_reference(taxon)
+      expect(actual).to eq "<i>incertae sedis</i> in genus, <i>nomen nudum</i>"
+
+      actual = formatter.format_type_localities(taxon)
+      expect(actual).to eq ""
     end
   end
 end
