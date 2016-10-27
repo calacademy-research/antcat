@@ -10,37 +10,29 @@ class Taxa::Search
 
     query = case search_type
             when 'matching'
-              query.where(["names.#{column} = ?", name])
+              query.where("names.#{column} = ?", name)
             when 'beginning_with'
-              query.where(["names.#{column} LIKE ?", name + '%'])
+              query.where("names.#{column} LIKE ?", name + '%')
             when 'containing'
-              query.where(["names.#{column} LIKE ?", '%' + name + '%'])
+              query.where("names.#{column} LIKE ?", '%' + name + '%')
             end
     query.all
   end
 
   def self.advanced_search params
     params[:biogeographic_region] = '' if params[:biogeographic_region] == 'Any'
+    params[:rank] = '' if params[:rank] == 'All'
 
-    return Taxon.none unless params[:author_name].present? ||
-      params[:locality].present? ||
-      params[:verbatim_type_locality].present? ||
-      params[:type_specimen_repository].present? ||
-      params[:type_specimen_code].present? ||
-      params[:year].present? ||
-      params[:biogeographic_region].present? ||
-      params[:rank].present? && params[:rank] != 'All' ||
-      params[:name].present? ||
-      params[:genus].present? ||
-      params[:forms].present?
+    params.delete_if { |_key, value| value.blank? }
+    return Taxon.none if params.blank?
 
-    query = Taxon.joins(protonym: [{authorship: :reference}])
-    query = query.where(type: params[:rank]) unless params[:rank] == 'All'
-    query = query.where(status: 'valid') if params[:valid_only].present?
-    query = query.order(:name_cache)
+    query = Taxon.joins(protonym: [{ authorship: :reference }]).order(:name_cache)
+
+    query = query.where(type: params[:rank]) if params[:rank]
+    query = query.where(status: 'valid') if params[:valid_only]
 
     if params[:author_name].present?
-      author_name = AuthorName.find_by_name(params[:author_name])
+      author_name = AuthorName.find_by(name: params[:author_name])
       return Taxon.none unless author_name.present?
       query = query
         .where('reference_author_names.author_name_id' => author_name.author.names)
@@ -48,7 +40,7 @@ class Taxa::Search
         .joins('JOIN author_names ON author_names.id = reference_author_names.author_name_id')
     end
 
-    if params[:year].present?
+    if params[:year]
       year = params[:year]
 
       if year =~ /^\d{4,}$/
@@ -62,23 +54,21 @@ class Taxa::Search
     end
 
     search_term = "%#{params[:locality]}%"
-    query = query.where('protonyms.locality LIKE ?', search_term) if params[:locality].present?
+    query = query.where('protonyms.locality LIKE ?', search_term) if params[:locality]
 
     search_term = "%#{params[:verbatim_type_locality]}%"
-    query = query.where('verbatim_type_locality LIKE ?', search_term) if params[:verbatim_type_locality].present?
+    query = query.where('verbatim_type_locality LIKE ?', search_term) if params[:verbatim_type_locality]
 
     search_term = "%#{params[:type_specimen_repository]}%"
-    query = query.where('type_specimen_repository LIKE ?', search_term) if params[:type_specimen_repository].present?
+    query = query.where('type_specimen_repository LIKE ?', search_term) if params[:type_specimen_repository]
 
     search_term = "%#{params[:type_specimen_code]}%"
-    query = query.where('type_specimen_code LIKE ?', search_term) if params[:type_specimen_code].present?
+    query = query.where('type_specimen_code LIKE ?', search_term) if params[:type_specimen_code]
 
-    if params[:name].present?
-      search_term = "%#{params[:name]}%"
-      query = query.where('taxa.name_cache LIKE ?', search_term)
-    end
+    search_term = "%#{params[:name]}%"
+    query = query.where('taxa.name_cache LIKE ?', search_term) if params[:name]
 
-    if params[:genus].present?
+    if params[:genus]
       query = query.joins('inner JOIN taxa as genera ON genera.id = taxa.genus_id')
       query = query.joins('inner JOIN names as genus_names ON  genera.name_id = genus_names.id')
       search_term = "%#{params[:genus]}%"
@@ -88,12 +78,12 @@ class Taxa::Search
     search_term = params[:biogeographic_region]
     if search_term == 'None'
       query = query.where(biogeographic_region: nil)
-    elsif search_term.present?
+    elsif search_term
       query = query.where(biogeographic_region: search_term)
     end
 
     search_term = "%#{params[:forms]}%"
-    query = query.where('forms LIKE ?', search_term) if params[:forms].present?
+    query = query.where('forms LIKE ?', search_term) if params[:forms]
 
     query
   end
