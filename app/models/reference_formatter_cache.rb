@@ -13,6 +13,10 @@ class ReferenceFormatterCache
   end
 
   def get reference, field = :formatted_cache
+    # Wrapped in a `#find` call to make sure the reference is reloaded.
+    # May only be required to pass tests.
+    # TODO investigate removing it, because it adds an additional SQL query.
+    # We want this instead: `reference.send field`
     Reference.find(reference.id).send field
   end
 
@@ -22,9 +26,34 @@ class ReferenceFormatterCache
     value
   end
 
-  def populate reference # is this used outside of specs? #TODO find out
+  def invalidate_all
+    puts "Invalidating all reference caches, this till take a few minutes."
+
+    references = Reference
+    Progress.new_init show_progress: true, total_count: references.count, show_errors: true
+    references.find_each do |reference|
+      Progress.tally_and_show_progress 100
+      invalidate reference
+    end
+    Progress.show_results
+  end
+
+  def regenerate_all
+    puts "Regenerating all reference caches, this will take MANY minutes, depending"
+    puts "on how many caches already are up-to-date."
+
+    references = Reference.all
+    Progress.new_init show_progress: true, total_count: references.count, show_errors: true
+    references.each do |reference|
+      Progress.tally_and_show_progress 100
+      regenerate reference
+    end
+    Progress.show_results
+  end
+
+  def regenerate reference
     set reference, reference.decorate.format!, :formatted_cache
-    user = User.find_by_email 'sblum@calacademy.org'
     set reference, reference.decorate.format_inline_citation!, :inline_citation_cache
   end
+  alias_method :populate, :regenerate
 end

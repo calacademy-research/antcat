@@ -1,8 +1,3 @@
-# From Formatters::ReferenceFormatter:
-#    Note: this references ReferenceFormatterCache.
-#    Most of these routines are only hit if there's a change in the content, at which
-#    point it's reformatted and saved in references::formatted_cache.
-
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the h method
   delegate_all
@@ -61,16 +56,16 @@ class ReferenceDecorator < ApplicationDecorator
     end
   end
 
-  # See header note about cache
   def format
-    string = ReferenceFormatterCache.instance.get reference, :formatted_cache
-    return string.html_safe if string
-    string = format!
-    ReferenceFormatterCache.instance.set reference, string, :formatted_cache
-    string
+    cached = ReferenceFormatterCache.instance.get reference, :formatted_cache
+    return cached.html_safe if cached
+
+    # Not cached. Generate, update cache, and return that.
+    generated = format!
+    ReferenceFormatterCache.instance.set reference, generated, :formatted_cache
+    generated
   end
 
-  # See header note about cache
   def format!
     string = format_author_names.dup
     string << ' ' unless string.empty?
@@ -81,19 +76,16 @@ class ReferenceDecorator < ApplicationDecorator
     string
   end
 
+  # TODO it may be safe to remove `options` now that the AntWeb exception
+  # has been extracted into `#format_inline_citation_without_expansion`.
   def format_inline_citation options = {}
-    # TODO: `using_cache` as a global setting?
-    using_cache = false
-    if using_cache
-      string = ReferenceFormatterCache.instance.get reference, :inline_citation_cache
-      return string.html_safe if string
-    end
+    cached = ReferenceFormatterCache.instance.get reference, :inline_citation_cache
+    return cached.html_safe if cached
 
-    string = format_inline_citation! options
-    if using_cache
-      ReferenceFormatterCache.instance.set reference, string, :inline_citation_cache
-    end
-    string
+    # Inline citation not cached. Generate, update cache, and return that.
+    generated = format_inline_citation! options
+    ReferenceFormatterCache.instance.set reference, generated, :inline_citation_cache
+    generated
   end
 
   def format_inline_citation! options = {}
@@ -102,6 +94,11 @@ class ReferenceDecorator < ApplicationDecorator
 
   def format_inline_citation_without_links
     format_author_last_names
+  end
+
+  # Only used for the AntWeb export.
+  def format_inline_citation_without_expansion
+    format_inline_citation! expansion: false
   end
 
   def goto_reference_link target: '_blank'
