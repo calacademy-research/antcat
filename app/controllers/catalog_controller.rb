@@ -1,5 +1,11 @@
 class CatalogController < ApplicationController
-  before_action :handle_family_not_found, only: [:index]
+  unless Rails.env.production?
+    # Avoid blowing up if there's no family. Useful in test and dev.
+    before_action only: [:index] do
+      render 'family_not_found' unless Family.exists?
+      false
+    end
+  end
   before_action :setup_catalog, only: [:index, :show]
 
   def index
@@ -16,11 +22,6 @@ class CatalogController < ApplicationController
   end
 
   private
-    # Avoid blowing up if there's no family. Useful in test and dev.
-    def handle_family_not_found
-      render 'family_not_found' and return unless Family.first
-    end
-
     def setup_catalog
       set_session
       set_taxon
