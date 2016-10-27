@@ -13,8 +13,7 @@ class ChangeDecorator < Draper::Decorator
   end
 
   def format_approver_name
-    name = format_approved_by
-    "#{name} approved this change".html_safe
+    "#{format_approved_by} approved this change".html_safe
   end
 
   def format_changed_by
