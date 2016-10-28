@@ -9,7 +9,7 @@ describe ReferencesController do
       end
 
       it "returns everything" do
-        reference = create :reference
+        reference = create :article_reference
         get :index
         expect(Reference.list_references).to eq [reference]
       end

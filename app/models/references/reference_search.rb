@@ -109,20 +109,20 @@ class Reference < ActiveRecord::Base
       reference_type = options[:reference_type] || :nomissing
 
       query = if options[:order]
-                order("#{options[:order]} DESC")
+                order(options[:order] => :desc)
               else
-                order('author_names_string_cache, citation_year')
+                order(:author_names_string_cache, :citation_year)
               end
 
       query = case reference_type
               when :unknown
-                query.where('type == "UnknownReference"')
+                query.where(type: "UnknownReference")
               when :nested
-                query.where('type == "NestedReference"')
+                query.where(type: "NestedReference")
               when :missing
-                query.where('type == "MissingReference"')
+                query.where(type: "MissingReference")
               when :nomissing
-                query.where('type != "MissingReference" OR type IS NULL')
+                query.where.not(type: "MissingReference")
               end
 
       page = options[:page] || 1

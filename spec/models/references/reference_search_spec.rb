@@ -11,7 +11,7 @@ describe Reference do
     describe "Search parameters" do
       describe "#list_references", search: true do
         it "returns all references" do
-          reference = create :reference
+          reference = create :article_reference
           Sunspot.commit
 
           expect(Reference.list_references).to eq [reference]
@@ -197,11 +197,16 @@ describe Reference do
     describe "Sorting" do
       it "can sort by updated_at" do
         Reference.record_timestamps = false
-        updated_yesterday = reference_factory author_name: 'Fisher', citation_year: '1910b'
+        updated_yesterday = reference_factory author_name: 'Fisher',
+          citation_year: '1910b', fix_type: :article_reference
         updated_yesterday.update_attribute :updated_at, Time.now.yesterday
-        updated_last_week = reference_factory author_name: 'Wheeler', citation_year: '1874'
+
+        updated_last_week = reference_factory author_name: 'Wheeler',
+          citation_year: '1874', fix_type: :article_reference
         updated_last_week.update_attribute :updated_at, 1.week.ago
-        updated_today = reference_factory author_name: 'Fisher', citation_year: '1910a'
+
+        updated_today = reference_factory author_name: 'Fisher',
+          citation_year: '1910a', fix_type: :article_reference
         updated_today.update_attribute :updated_at, Time.now
         Reference.record_timestamps = true
         Sunspot.commit
@@ -211,12 +216,18 @@ describe Reference do
 
       it "can sort by created_at" do
         Reference.record_timestamps = false
-        created_yesterday = reference_factory author_name: 'Fisher', citation_year: '1910b'
+        created_yesterday = reference_factory author_name: 'Fisher',
+          citation_year: '1910b', fix_type: :article_reference
         created_yesterday.update_attribute :created_at, Time.now.yesterday
-        created_last_week = reference_factory author_name: 'Wheeler', citation_year: '1874'
+
+        created_last_week = reference_factory author_name: 'Wheeler',
+          citation_year: '1874', fix_type: :article_reference
         created_last_week.update_attribute :created_at, 1.week.ago
-        created_today = reference_factory author_name: 'Fisher', citation_year: '1910a'
+
+        created_today = reference_factory author_name: 'Fisher',
+          citation_year: '1910a', fix_type: :article_reference
         created_today.update_attribute :created_at, Time.now
+
         Reference.record_timestamps = true
         Sunspot.commit
 
@@ -225,9 +236,12 @@ describe Reference do
 
       describe "Default sort order" do
         it "sorts by author_name plus year plus letter" do
-          fisher1910b = reference_factory author_name: 'Fisher', citation_year: '1910b'
-          wheeler1874 = reference_factory author_name: 'Wheeler', citation_year: '1874'
-          fisher1910a = reference_factory author_name: 'Fisher', citation_year: '1910a'
+          fisher1910b = reference_factory author_name: 'Fisher',
+            citation_year: '1910b', fix_type: :article_reference
+          wheeler1874 = reference_factory author_name: 'Wheeler',
+            citation_year: '1874', fix_type: :article_reference
+          fisher1910a = reference_factory author_name: 'Fisher',
+            citation_year: '1910a', fix_type: :article_reference
           Sunspot.commit
 
           expect(Reference.list_references).to eq [fisher1910a, fisher1910b, wheeler1874]
