@@ -1,23 +1,11 @@
 require 'spec_helper'
 
 describe Reference do
-  before do
-    Reference.delete_all
-    # throw in a MissingReference to make sure it's not returned
-    create :missing_reference
-  end
+  # Throw in a MissingReference to make sure it's not returned.
+  before { create :missing_reference }
 
   describe "Searching (perform_search)" do
     describe "Search parameters" do
-      describe "#list_references", search: true do
-        it "returns all references" do
-          reference = create :article_reference
-          Sunspot.commit
-
-          expect(Reference.list_references).to eq [reference]
-        end
-      end
-
       describe "Authors", search: true do
         it "returns an empty array if nothing is found for the author names" do
           expect(Reference.do_search(q: "author:Balou")).to be_empty
@@ -194,75 +182,6 @@ describe Reference do
       end
     end
 
-    describe "Sorting" do
-      it "can sort by updated_at" do
-        Reference.record_timestamps = false
-        updated_yesterday = reference_factory author_name: 'Fisher',
-          citation_year: '1910b', fix_type: :article_reference
-        updated_yesterday.update_attribute :updated_at, Time.now.yesterday
-
-        updated_last_week = reference_factory author_name: 'Wheeler',
-          citation_year: '1874', fix_type: :article_reference
-        updated_last_week.update_attribute :updated_at, 1.week.ago
-
-        updated_today = reference_factory author_name: 'Fisher',
-          citation_year: '1910a', fix_type: :article_reference
-        updated_today.update_attribute :updated_at, Time.now
-        Reference.record_timestamps = true
-        Sunspot.commit
-
-        expect(Reference.list_references(order: :updated_at)).to eq [updated_today, updated_yesterday, updated_last_week]
-      end
-
-      it "can sort by created_at" do
-        Reference.record_timestamps = false
-        created_yesterday = reference_factory author_name: 'Fisher',
-          citation_year: '1910b', fix_type: :article_reference
-        created_yesterday.update_attribute :created_at, Time.now.yesterday
-
-        created_last_week = reference_factory author_name: 'Wheeler',
-          citation_year: '1874', fix_type: :article_reference
-        created_last_week.update_attribute :created_at, 1.week.ago
-
-        created_today = reference_factory author_name: 'Fisher',
-          citation_year: '1910a', fix_type: :article_reference
-        created_today.update_attribute :created_at, Time.now
-
-        Reference.record_timestamps = true
-        Sunspot.commit
-
-        expect(Reference.list_references(order: :created_at)).to eq [created_today, created_yesterday, created_last_week]
-      end
-
-      describe "Default sort order" do
-        it "sorts by author_name plus year plus letter" do
-          fisher1910b = reference_factory author_name: 'Fisher',
-            citation_year: '1910b', fix_type: :article_reference
-          wheeler1874 = reference_factory author_name: 'Wheeler',
-            citation_year: '1874', fix_type: :article_reference
-          fisher1910a = reference_factory author_name: 'Fisher',
-            citation_year: '1910a', fix_type: :article_reference
-          Sunspot.commit
-
-          expect(Reference.list_references).to eq [fisher1910a, fisher1910b, wheeler1874]
-        end
-
-        it "sorts by multiple author_names using their order in each reference" do
-          a = reference_from_author_string 'Abdalla, F. C.; Cruz-Landim, C. da.'
-          m = reference_from_author_string 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.'
-          v = reference_from_author_string "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A."
-          Sunspot.commit
-
-          expect(Reference.list_references).to eq [a, m, v]
-        end
-
-        def reference_from_author_string string
-          author_names = AuthorName.import_author_names_string(string)[:author_names]
-          create :article_reference, author_names: author_names
-        end
-      end
-    end
-
     describe "Filtering", search: true do
       it "applies the :unknown :reference_type that's passed" do
         known = create :article_reference
@@ -395,6 +314,83 @@ describe Reference do
 end
 
 describe Reference do
+  describe "#list_references" do
+    before { create :missing_reference }
+
+    it "returns all references" do
+      reference = create :article_reference
+      expect(Reference.list_references).to eq [reference]
+    end
+
+    describe "Sorting" do
+      it "can sort by updated_at" do
+        Reference.record_timestamps = false
+        updated_yesterday = reference_factory author_name: 'Fisher',
+          citation_year: '1910b', fix_type: :article_reference
+        updated_yesterday.update_attribute :updated_at, Time.now.yesterday
+
+        updated_last_week = reference_factory author_name: 'Wheeler',
+          citation_year: '1874', fix_type: :article_reference
+        updated_last_week.update_attribute :updated_at, 1.week.ago
+
+        updated_today = reference_factory author_name: 'Fisher',
+          citation_year: '1910a', fix_type: :article_reference
+        updated_today.update_attribute :updated_at, Time.now
+        Reference.record_timestamps = true
+
+        expect(Reference.list_references(order: :updated_at))
+          .to eq [updated_today, updated_yesterday, updated_last_week]
+      end
+
+      it "can sort by created_at" do
+        Reference.record_timestamps = false
+        created_yesterday = reference_factory author_name: 'Fisher',
+          citation_year: '1910b', fix_type: :article_reference
+        created_yesterday.update_attribute :created_at, Time.now.yesterday
+
+        created_last_week = reference_factory author_name: 'Wheeler',
+          citation_year: '1874', fix_type: :article_reference
+        created_last_week.update_attribute :created_at, 1.week.ago
+
+        created_today = reference_factory author_name: 'Fisher',
+          citation_year: '1910a', fix_type: :article_reference
+        created_today.update_attribute :created_at, Time.now
+
+        Reference.record_timestamps = true
+
+        expect(Reference.list_references(order: :created_at))
+          .to eq [created_today, created_yesterday, created_last_week]
+      end
+
+      describe "Default sort order" do
+        it "sorts by author_name plus year plus letter" do
+          fisher1910b = reference_factory author_name: 'Fisher',
+            citation_year: '1910b', fix_type: :article_reference
+          wheeler1874 = reference_factory author_name: 'Wheeler',
+            citation_year: '1874', fix_type: :article_reference
+          fisher1910a = reference_factory author_name: 'Fisher',
+            citation_year: '1910a', fix_type: :article_reference
+
+          expect(Reference.list_references)
+            .to eq [fisher1910a, fisher1910b, wheeler1874]
+        end
+
+        it "sorts by multiple author_names using their order in each reference" do
+          a = reference_from_author_string 'Abdalla, F. C.; Cruz-Landim, C. da.'
+          m = reference_from_author_string 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.'
+          v = reference_from_author_string "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A."
+
+          expect(Reference.list_references).to eq [a, m, v]
+        end
+
+        def reference_from_author_string string
+          author_names = AuthorName.import_author_names_string(string)[:author_names]
+          create :article_reference, author_names: author_names
+        end
+      end
+    end
+  end
+
   describe "#extract_keyword_params" do
     it "doesn't modify the orginal search term" do
       q = "Bolton 2003"
