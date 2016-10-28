@@ -17,7 +17,7 @@ class Taxa::Search
             when 'containing'
               query.where("names.#{column} LIKE ?", '%' + name + '%')
             end
-    query
+    query.includes(:name, protonym: { authorship: :reference })
   end
 
   def self.advanced_search params
@@ -86,6 +86,6 @@ class Taxa::Search
     search_term = "%#{params[:forms]}%"
     query = query.where('forms LIKE ?', search_term) if params[:forms]
 
-    query
+    query.includes(:name, protonym: { authorship: :reference })
   end
 end

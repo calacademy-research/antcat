@@ -126,7 +126,7 @@ class Reference < ActiveRecord::Base
               end
 
       page = options[:page] || 1
-      query.paginate(page: page)
+      query.includes(:document).paginate(page: page)
     end
 
     def self.list_all_references_for_endnote
