@@ -4,7 +4,7 @@ describe User do
   it { should validate_presence_of(:name) }
 
   describe "scopes" do
-    describe "scope.ordered_by_name" do
+    describe "scope.order_by_name" do
       before do
         create :user, name: "Anderson"
         create :user, name: "Zanderson"
@@ -12,7 +12,7 @@ describe User do
       end
 
       it "knows the alphabet" do
-        expect(User.ordered_by_name.pluck :name).to eq %w( Anderson Banderson Zanderson )
+        expect(User.order_by_name.pluck :name).to eq %w( Anderson Banderson Zanderson )
       end
     end
 

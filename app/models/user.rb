@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true
 
-  scope :ordered_by_name, -> { order(:name) }
+  scope :order_by_name, -> { order(:name) }
   scope :editors, -> { where(can_edit: true) }
   scope :non_editors, -> { where(can_edit: [false, nil]) } # TODO only allow true/false?
   scope :feedback_emails_recipients, -> { where(receive_feedback_emails: true) }

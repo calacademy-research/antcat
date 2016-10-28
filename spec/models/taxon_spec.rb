@@ -338,51 +338,6 @@ describe Taxon do
     end
   end
 
-  describe "#child_list_query" do
-    let!(:subfamily) { create :subfamily, name: create(:name, name: 'Dolichoderinae') }
-
-    it "finds all genera for the taxon if there are no conditions" do
-      create :genus,
-        name: create(:name, name: 'Atta'),
-        subfamily: subfamily
-      create :genus,
-        name: create(:name, name: 'Eciton'),
-        subfamily: subfamily, fossil: true
-      create :genus,
-        name: create(:name, name: 'Aneuretus'),
-        subfamily: subfamily,
-        fossil: true, incertae_sedis_in: 'subfamily'
-
-      results = subfamily.child_list_query :genera
-      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Atta', 'Eciton']
-
-      results = subfamily.child_list_query :genera, fossil: true
-      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
-
-      results = subfamily.child_list_query :genera, incertae_sedis_in: 'subfamily'
-      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus']
-    end
-
-    it "doesn't include invalid taxa" do
-      create :genus,
-        name: create(:name, name: 'Atta'),
-        subfamily: subfamily,
-        status: 'synonym'
-      create :genus,
-        name: create(:name, name: 'Eciton'),
-        subfamily: subfamily,
-        fossil: true
-      create :genus,
-        name: create(:name, name: 'Aneuretus'),
-        subfamily: subfamily,
-        fossil: true,
-        incertae_sedis_in: 'subfamily'
-
-      results = subfamily.child_list_query :genera
-      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
-    end
-  end
-
   describe "Cascading delete" do
     it "doesn't delete the protonym when the taxon is deleted" do
       expect(Taxon.count).to be_zero

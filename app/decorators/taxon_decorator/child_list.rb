@@ -43,12 +43,22 @@ class TaxonDecorator::ChildList
     def child_list_fossil_pairs children_selector, conditions = {}
       extant_conditions = conditions.merge fossil: false
       extinct_conditions = conditions.merge fossil: true
-      extinct = @taxon.child_list_query children_selector, extinct_conditions
-      extant = @taxon.child_list_query children_selector, extant_conditions
+      extinct = child_list_query children_selector, extinct_conditions
+      extant = child_list_query children_selector, extant_conditions
       specify_extinct_or_extant = extinct.present?
 
       child_list(extant, specify_extinct_or_extant, extant_conditions) +
       child_list(extinct, specify_extinct_or_extant, extinct_conditions)
+    end
+
+    def child_list_query children_selector, conditions = {}
+      children = @taxon.send children_selector
+      children = children.where(fossil: !!conditions[:fossil]) if conditions.key? :fossil
+      incertae_sedis_in = conditions[:incertae_sedis_in]
+      children = children.where(incertae_sedis_in: incertae_sedis_in) if incertae_sedis_in
+      children = children.where(hong: !!conditions[:hong]) if conditions.key? :hong
+      children = children.where(status: 'valid')
+      children.includes(:name).order(:name_cache)
     end
 
     def child_list children, specify_extinct_or_extant, conditions = {}
@@ -58,9 +68,9 @@ class TaxonDecorator::ChildList
       label << 'Hong (2002) ' if conditions[:hong]
 
       if conditions[:collective_group_names]
-        label << Status['collective group name'].to_s(children.count).humanize
+        label << Status['collective group name'].to_s(children.size).humanize
       else
-        label << children.first.rank.pluralize(children.count).titleize
+        label << children.first.rank.pluralize(children.size).titleize
       end
 
       if specify_extinct_or_extant
