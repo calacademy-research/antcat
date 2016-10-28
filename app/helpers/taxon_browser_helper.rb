@@ -36,13 +36,13 @@ module TaxonBrowserHelper
   # Only shown if the taxon is a genus with subgenera
   # For example Lasius, http://localhost:3000/catalog/429161)
   def subgenera_link selected
-    return if selected.displayable_subgenera.empty?
+    return unless selected.displayable_subgenera.exists?
     extra_panel_link selected, "Subgenera", "subgenera_in_#{selected.rank}"
   end
 
   # Only for Formicidae/subfamilies.
   def incertae_sedis_link selected
-    return if selected.genera_incertae_sedis_in.empty?
+    return unless selected.genera_incertae_sedis_in.exists?
     extra_panel_link selected, "Incertae sedis", "incertae_sedis_in_#{selected.rank}"
   end
 

@@ -45,7 +45,7 @@ class CatalogController < ApplicationController
         taxon.is_a?(Subspecies) ||
 
         # don't show species panel unless the species has subspecies
-        (taxon.is_a?(Species) && taxon.children.empty?) ||
+        (taxon.is_a?(Species) && !taxon.children.exists?) ||
 
         # no subgenus panel (not part of the 'normal' rank hierarchy)
         taxon.is_a?(Subgenus)

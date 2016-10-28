@@ -11,7 +11,7 @@ module SiteNoticesHelper
 
   def user_has_unread_site_notices? user
     return unless user.try :can_edit?
-    SiteNotice.unread_by(user).present?
+    SiteNotice.unread_by(user).exists?
   end
 
   private
