@@ -181,26 +181,24 @@ describe Genus do
     end
   end
 
-  describe "#species_group_descendants" do
-    before do
-      @genus = create_genus
-    end
+  describe "#descendants" do
+    let!(:genus) { create_genus }
 
     it "returns an empty array if there are none" do
-      expect(@genus.species_group_descendants).to eq []
+      expect(genus.descendants).to eq []
     end
 
     it "returns all the species" do
-      species = create_species genus: @genus
-      expect(@genus.species_group_descendants).to eq [species]
+      species = create_species genus: genus
+      expect(genus.descendants).to eq [species]
     end
 
-    it "returns all the species and subspecies of the genus" do
-      species = create_species genus: @genus
-      create_subgenus genus: @genus
-      subspecies = create_subspecies genus: @genus, species: species
+    it "returns all the species, subspecies and subgenera of the genus" do
+      species = create_species genus: genus
+      subgenus = create_subgenus genus: genus
+      subspecies = create_subspecies genus: genus, species: species
 
-      expect(@genus.species_group_descendants).to match_array [species, subspecies]
+      expect(genus.descendants).to match_array [species, subgenus, subspecies]
     end
   end
 
