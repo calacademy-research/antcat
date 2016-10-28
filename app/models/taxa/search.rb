@@ -1,13 +1,14 @@
 class Taxa::Search
-  def self.find_name name, search_type = nil
+  def self.quick_search name, search_type: nil, valid_only: false
     return Taxon.none if name.blank?
 
     search_type ||= "beginning_with"
-
+    valid_only = false if valid_only.blank?
     name = name.dup.strip
-    query = Taxon.ordered_by_name
     column = name.split(' ').size > 1 ? 'name' : 'epithet'
 
+    query = Taxon.ordered_by_name
+    query = query.valid if valid_only
     query = case search_type
             when 'matching'
               query.where("names.#{column} = ?", name)
@@ -16,7 +17,7 @@ class Taxa::Search
             when 'containing'
               query.where("names.#{column} LIKE ?", '%' + name + '%')
             end
-    query.all
+    query
   end
 
   def self.advanced_search params
