@@ -41,14 +41,20 @@ class CatalogController < ApplicationController
       @self_and_parents = @taxon.self_and_parents
 
       @panels = @self_and_parents.reject do |taxon|
-        # never show the subspecies panel (has no children)
+        # Never show the subspecies panel (has no children).
         taxon.is_a?(Subspecies) ||
 
-        # don't show species panel unless the species has subspecies
+        # Don't show species panel unless the species has subspecies.
         (taxon.is_a?(Species) && !taxon.children.exists?) ||
 
-        # no subgenus panel (not part of the 'normal' rank hierarchy)
+        # No subgenus panel (not part of the 'normal' rank hierarchy).
         taxon.is_a?(Subgenus)
+
+        # Panels of subfamilies, tribes and genera without any children at
+        # all could also be excluded here, to avoid showing empty panels.
+        # However, that can only happen to invalid taxa (all valid taxa of
+        # these ranks have children unless the database is incomplete), so
+        # it makes more sense to just show "No valid child taxa".
       end.map do |taxon|
         children = taxon.children.displayable.ordered_by_name
         children = children.valid if session[:show_valid_only]

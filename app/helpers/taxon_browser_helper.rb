@@ -56,7 +56,22 @@ module TaxonBrowserHelper
     panels.last == panel
   end
 
+  def notify_about_no_valid_children? children, taxon
+    children.empty? && !is_a_subfamily_with_valid_genera_incertae_sedis?(taxon)
+  end
+
+  def already_showing_invalid_taxa?
+    !session[:show_valid_only]
+  end
+
   private
+    # Exception for subfamilies *only* containing genera that are
+    # incertae sedis in that subfamily (that is Martialinae, #430173).
+    def is_a_subfamily_with_valid_genera_incertae_sedis? taxon
+      return unless taxon.is_a? Subfamily
+      taxon.genera_incertae_sedis_in.valid.exists?
+    end
+
     def extra_panel_link selected, label, param
       css_class = if params[:display] == param
                     "upcase selected"
