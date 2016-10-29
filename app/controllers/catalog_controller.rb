@@ -21,6 +21,24 @@ class CatalogController < ApplicationController
     redirect_to :back
   end
 
+  def autocomplete
+    q = params[:q] || ''
+    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
+
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |taxon|
+          { name: taxon.name_html_cache,
+            name_html_cache: taxon.name_html_cache,
+            id: taxon.id,
+            authorship: taxon.authorship_string,
+            search_query: taxon.name_cache }
+        end
+        render json: results
+      end
+    end
+  end
+
   private
     def setup_catalog
       set_session

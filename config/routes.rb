@@ -26,6 +26,7 @@ AntCat::Application.routes.draw do
   post '/merge_authors/merge', to: 'merge_authors#merge'
 
   namespace :catalog do
+    get :autocomplete
     get :options
     get "search", to: "search#index"
     get "search/quick_search", to: "search#quick_search", as: "quick_search"
@@ -64,9 +65,6 @@ AntCat::Application.routes.draw do
   resources :missing_references, only: [:index, :edit, :update]
 
   resources :taxa, except: [:index, :show] do
-    collection do
-      get :autocomplete
-    end
     member do
       get :delete_impact_list
       get :update_parent # TODO change to put

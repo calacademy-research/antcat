@@ -3,7 +3,7 @@ $ ->
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('taxa')
     queryTokenizer: Bloodhound.tokenizers.whitespace
     remote:
-      url: '/taxa/autocomplete?q=%QUERY'
+      url: '/catalog/autocomplete?q=%QUERY'
       wildcard: '%QUERY'
 
   taxa.initialize()

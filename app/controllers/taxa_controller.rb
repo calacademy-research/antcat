@@ -1,11 +1,12 @@
+# This controller handles editing by logged in editors.
+# `CatalogController` is responsible for showing taxon pages to users.
+
 class TaxaController < ApplicationController
-  before_action :authenticate_editor, except: [:autocomplete]
+  before_action :authenticate_editor
   before_action :authenticate_superadmin, only: [:destroy]
-
   before_action :redirect_by_parent_name_id, only: :new
-
   before_action :set_previous_combination, only: [:new, :create, :edit, :update]
-  before_action :set_taxon, except: [:new, :create, :show, :autocomplete]
+  before_action :set_taxon, except: [:new, :create, :show]
 
   def new
     @taxon = get_taxon_for_create
@@ -131,24 +132,6 @@ class TaxaController < ApplicationController
   def delete_impact_list
     taxon_array = @taxon.delete_impact_list
     render json: taxon_array, status: :ok
-  end
-
-  def autocomplete
-    q = params[:q] || ''
-    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
-
-    respond_to do |format|
-      format.json do
-        results = search_results.map do |taxon|
-          { name: taxon.name_html_cache,
-            name_html_cache: taxon.name_html_cache,
-            id: taxon.id,
-            authorship: taxon.authorship_string,
-            search_query: taxon.name_cache }
-        end
-        render json: results
-      end
-    end
   end
 
   private
