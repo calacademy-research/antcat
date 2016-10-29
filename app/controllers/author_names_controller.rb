@@ -2,7 +2,7 @@ class AuthorNamesController < ApplicationController
   before_filter :authenticate_editor
 
   def update
-    author_name = AuthorName.find params[:id]
+    author_name = AuthorName.find(params[:id])
     author_name.name = params[:author_name]
     begin
       author_name.save!
@@ -16,7 +16,7 @@ class AuthorNamesController < ApplicationController
   end
 
   def create
-    author = Author.find params[:author_id]
+    author = Author.find(params[:author_id])
 
     author_name = AuthorName.create author: author, name: params[:author_name]
     if author_name.errors.empty?
@@ -29,11 +29,11 @@ class AuthorNamesController < ApplicationController
   # Params are "author_id"(11282) and "id" (194557) (The latter links to author_names)
 
   def destroy
-    author = Author.find params[:author_id]
-    author_name = AuthorName.find params[:id]
+    author = Author.find(params[:author_id])
+    author_name = AuthorName.find(params[:id])
     author_name.delete
     # Remove the author if there are no more author names that reference it
-    unless AuthorName.find_by_author_id params[:author_id]
+    unless AuthorName.find_by(author_id: params[:author_id])
       author.delete
     end
     render json: nil

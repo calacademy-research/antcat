@@ -46,8 +46,7 @@ class Taxon < ActiveRecord::Base
   attr_accessor :authorship_string, :duplicate_type, :parent_name,
     :current_valid_taxon_name, :homonym_replaced_by_name
 
-  delegate :authorship_html_string, :author_last_names_string, :year,
-    to: :protonym
+  delegate :authorship_html_string, :author_last_names_string, :year, to: :protonym
 
   belongs_to :name
   belongs_to :protonym, -> { includes :authorship }
@@ -77,19 +76,20 @@ class Taxon < ActiveRecord::Base
     Taxa::SaveTaxon.new(self).save_taxon(params, previous_combination)
   end
 
-  # Deprecated: Many of the callers probably do not expect
-  # that the first match is picked.
-  def self.find_by_name name
-    logger.info <<-MSG.squish
-      AntCat: `Taxon.find_by_name` is deprecated. Use `Taxon.find_first_by_name`
-      [not recommended] or `Taxon.where(name_cache:)` instead."
-    MSG
-    find_first_by_name name
-  end
-
+  # Avoid this method. Issues:
+  # It conflicts with dynamic finder methods with the same names (they should be avoided too).
+  # It searches in `taxa.name_cache`, not `names.name`.
+  # It silently returns the first match if there's more than 1.
+  #
+  # More stuff:
+  # `Taxon.where(name_cache: "Acamathus").count` returns two matches
+  # `Taxon.find_by_name("Acamathus")` returns a single item
+  # `Taxon.find_by_sql("SELECT * FROM taxa GROUP BY name_cache HAVING COUNT(*) > 1").count` = 857
+  # Other methods clashing with dynamic finders: `Author.find_by_names`, `Name.find_by_name`.
+  #
   # TODO probably add index to `taxa.name_cache` due to
   # `Taxon.find_by_name @taxon.type_name.to_s` in `TaxonDecorator::Headline`
-  def self.find_first_by_name name
+  def self.find_by_name name
     find_by(name_cache: name)
   end
 

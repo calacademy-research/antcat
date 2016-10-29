@@ -53,7 +53,7 @@ module NavigationHelpers
     when /^the missing references page$/
       '/missing_references'
     when /^the missing reference edit page for "([^"]*)"$/
-      reference = MissingReference.find_by_citation $1
+      reference = MissingReference.find_by(citation: $1)
       "/missing_references/#{reference.id}/edit"
 
     when /^the merge authors page$/

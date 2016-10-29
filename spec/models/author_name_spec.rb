@@ -123,12 +123,12 @@ describe AuthorName do
       ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
         AuthorName.create! name: name, author: author
       end
-      reference = create :reference, author_names: [AuthorName.find_by_name('Most Recent')]
+      reference = create :reference, author_names: [AuthorName.find_by(name: 'Most Recent')]
       ReferenceAuthorName.create! created_at: Time.now - 5,
-        author_name: AuthorName.find_by_name('Recent'),
+        author_name: AuthorName.find_by(name: 'Recent'),
         reference: reference
       ReferenceAuthorName.create! created_at: Time.now - 10,
-        author_name: AuthorName.find_by_name('Old'),
+        author_name: AuthorName.find_by(name: 'Old'),
         reference: reference
 
       expect(AuthorName.search).to eq ['Most Recent', 'Recent', 'Old', 'Never Used']

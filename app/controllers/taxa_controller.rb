@@ -223,7 +223,7 @@ class TaxaController < ApplicationController
     def redirect_by_parent_name_id
       return unless params[:parent_name_id]
 
-      if parent = Taxon.find_by_name_id(params[:parent_name_id])
+      if parent = Taxon.find_by(name_id: params[:parent_name_id])
         hash = {
           parent_id: parent.id,
           rank_to_create: params[:rank_to_create],

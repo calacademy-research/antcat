@@ -19,10 +19,10 @@ describe Journal do
       ['Most Used', 'Never Used', 'Occasionally Used', 'Rarely Used'].each do |name|
         create :journal, name: name
       end
-      2.times { create :article_reference, journal: Journal.find_by_name('Rarely Used') }
-      3.times { create :article_reference, journal: Journal.find_by_name('Occasionally Used') }
-      4.times { create :article_reference, journal: Journal.find_by_name('Most Used') }
-      0.times { create :article_reference, journal: Journal.find_by_name('Never Used') }
+      2.times { create :article_reference, journal: Journal.find_by(name: 'Rarely Used') }
+      3.times { create :article_reference, journal: Journal.find_by(name: 'Occasionally Used') }
+      4.times { create :article_reference, journal: Journal.find_by(name: 'Most Used') }
+      0.times { create :article_reference, journal: Journal.find_by(name: 'Never Used') }
 
       expect(Journal.search).to eq ['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used']
     end

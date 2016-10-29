@@ -116,7 +116,7 @@ describe Taxon do
       results = atta.junior_synonyms_with_names
       expect(results.size).to eq 1
       record = results.first
-      expect(record['id']).to eq Synonym.find_by_junior_synonym_id(eciton.id).id
+      expect(record['id']).to eq Synonym.find_by(junior_synonym_id: eciton.id).id
       expect(record['name']).to eq eciton.name.to_html
     end
   end
@@ -130,7 +130,7 @@ describe Taxon do
       results = eciton.senior_synonyms_with_names
       expect(results.size).to eq 1
       record = results.first
-      expect(record['id']).to eq Synonym.find_by_senior_synonym_id(atta.id).id
+      expect(record['id']).to eq Synonym.find_by(senior_synonym_id: atta.id).id
       expect(record['name']).to eq atta.name.to_html
     end
   end

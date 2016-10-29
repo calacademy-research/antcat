@@ -61,7 +61,7 @@ def create_reference type, hash
     author_names = Parsers::AuthorParser.parse(authors)[:names]
     author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
     author_names = author_names.reduce([]) do |author_names, author_name|
-      author_name = AuthorName.find_by_name(author_name) || create(:author_name, name: author_name)
+      author_name = AuthorName.find_by(name: author_name) || create(:author_name, name: author_name)
       author_names << author_name
     end
   end
@@ -121,7 +121,7 @@ When(/^I follow first reference link$/) do
 end
 
 When(/I fill in "reference_nesting_reference_id" with the ID for "(.*?)"$/) do |title|
-  reference = Reference.find_by_title title
+  reference = Reference.find_by(title: title)
   step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""
 end
 

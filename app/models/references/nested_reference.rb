@@ -10,7 +10,8 @@ class NestedReference < Reference
 
   private
     def validate_nested_reference_exists
-      errors.add(:nesting_reference_id, 'does not exist') if nesting_reference_id && !Reference.find_by_id(nesting_reference_id)
+      nested_reference_exists = nesting_reference_id && Reference.find_by(id: nesting_reference_id)
+      errors.add(:nesting_reference_id, 'does not exist') unless nested_reference_exists
     end
 
     def validate_nested_reference_doesnt_point_to_itself
@@ -20,7 +21,7 @@ class NestedReference < Reference
           errors.add :nesting_reference_id, "can't point to itself"
           break
         end
-        comparison = Reference.find_by_id comparison.nesting_reference_id
+        comparison = Reference.find_by(id: comparison.nesting_reference_id)
       end
     end
 end

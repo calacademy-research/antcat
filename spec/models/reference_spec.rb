@@ -51,8 +51,8 @@ describe Reference do
 
     it "returns the author names and the suffix" do
       results = reference.parse_author_names_and_suffix 'Fisher, B.; Bolton, B. (eds.)'
-      fisher = AuthorName.find_by_name 'Fisher, B.'
-      bolton = AuthorName.find_by_name 'Bolton, B.'
+      fisher = AuthorName.find_by(name: 'Fisher, B.')
+      bolton = AuthorName.find_by(name: 'Bolton, B.')
 
       expect(results).to eq author_names: [fisher, bolton], author_names_suffix: ' (eds.)'
     end

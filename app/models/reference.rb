@@ -174,7 +174,7 @@ class Reference < ActiveRecord::Base
     end
 
     def check_not_nested
-      nesting_reference = NestedReference.find_by_nesting_reference_id id
+      nesting_reference = NestedReference.find_by(nesting_reference_id: id)
       if nesting_reference
         errors.add :base, "This reference can't be deleted because it's nested in #{nesting_reference}"
       end

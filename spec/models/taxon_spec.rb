@@ -196,9 +196,9 @@ describe Taxon do
 
     it "cascades to delete history items when it's deleted" do
       history_item = taxon.history_items.create! taxt: 'taxt'
-      expect(TaxonHistoryItem.find_by_id(history_item.id)).not_to be_nil
+      expect(TaxonHistoryItem.find_by(id: history_item.id)).not_to be_nil
       taxon.destroy
-      expect(TaxonHistoryItem.find_by_id(history_item.id)).to be_nil
+      expect(TaxonHistoryItem.find_by(id: history_item.id)).to be_nil
     end
 
     it "shows the items in the order in which they were added to the taxon" do
@@ -223,7 +223,7 @@ describe Taxon do
     it "cascades to delete the reference sections when it's deleted" do
       reference_section = taxon.reference_sections.create! references_taxt: 'foo'
       taxon.destroy
-      expect(ReferenceSection.find_by_id(reference_section.id)).to be_nil
+      expect(ReferenceSection.find_by(id: reference_section.id)).to be_nil
     end
 
     it "shows the items in the order in which they were added to the taxon" do
