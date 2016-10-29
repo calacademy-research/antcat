@@ -1,24 +1,4 @@
 class Taxa::Utility
-  # TODO probably safe to move to Genus
-  # target_epithet is a string, genus is an object
-  def self.find_epithet_in_genus target_epithet, genus
-    Name.make_epithet_set(target_epithet).each do |epithet|
-      results = Taxon.joins(:name).where(genus: genus)
-        .where("names.epithet = ?", epithet)
-      return results unless results.empty?
-    end
-    nil
-  end
-
-  def self.find_subspecies_in_genus target_subspecies, genus
-    Name.make_epithet_set(target_subspecies).each do |epithet|
-      results = Taxon.joins(:name).where(genus: genus)
-        .where("names.epithet = ?", epithet)
-      return results unless results.empty?
-    end
-    nil
-  end
-
   def self.inherit_attributes_for_new_combination new_comb, old_comb, new_comb_parent
     new_comb.name =
       if new_comb_parent.is_a? Species

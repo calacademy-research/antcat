@@ -288,4 +288,23 @@ describe Genus do
       expect(genus.subspecies.first.subfamily).to eq new_subfamily
     end
   end
+
+  describe "#find_epithet_in_genus" do
+    it "returns nil if nothing matches" do
+      genus = create_genus
+      expect(genus.find_epithet_in_genus 'sdfsdf').to eq nil
+    end
+
+    it "returns the one item" do
+      species = create_species 'Atta serratula'
+      expect(species.genus.find_epithet_in_genus 'serratula').to eq [species]
+    end
+
+    context "mandatory spelling changes" do
+      it "finds -a when asked to find -us" do
+        species = create_species 'Atta serratula'
+        expect(species.genus.find_epithet_in_genus 'serratulus').to eq [species]
+      end
+    end
+  end
 end

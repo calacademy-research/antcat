@@ -57,6 +57,27 @@ class Genus < GenusGroupTaxon
     Subgenus.where(genus: self).displayable
   end
 
+  def find_epithet_in_genus target_epithet_string
+    Name.make_epithet_set(target_epithet_string).each do |epithet|
+      results = Taxon.joins(:name).where(genus: self)
+        .where("names.epithet = ?", epithet)
+      return results unless results.empty?
+    end
+    nil
+  end
+
+  # TODO this is the same as `#find_epithet_in_genus`.
+  # Found this in the git history:
+  # results = with_names.where(['genus_id = ? AND epithet = ? and type="SubspeciesName"', genus.id, epithet])
+  def find_subspecies_in_genus target_subspecies_string
+    Name.make_epithet_set(target_subspecies_string).each do |epithet|
+      results = Taxon.joins(:name).where(genus: self)
+        .where("names.epithet = ?", epithet)
+      return results unless results.empty?
+    end
+    nil
+  end
+
   private
     def update_descendants_subfamilies
       self.species.each { |s| s.subfamily = self.subfamily }

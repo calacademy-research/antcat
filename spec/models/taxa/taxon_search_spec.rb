@@ -13,24 +13,6 @@ describe Taxon do
     end
   end
 
-  describe "#find_epithet_in_genus" do
-    it "returns nil if nothing matches" do
-      expect(Taxa::Utility.find_epithet_in_genus('sdfsdf', create_genus)).to eq nil
-    end
-
-    it "returns the one item" do
-      species = create_species 'Atta serratula'
-      expect(Taxa::Utility.find_epithet_in_genus('serratula', species.genus)).to eq [species]
-    end
-
-    context "mandatory spelling changes" do
-      it "finds -a when asked to find -us" do
-        species = create_species 'Atta serratula'
-        expect(Taxa::Utility.find_epithet_in_genus('serratulus', species.genus)).to eq [species]
-      end
-    end
-  end
-
   describe ".quick_search" do
     before do
       create :genus, name: create(:genus_name, name: 'Monomorium')

@@ -18,12 +18,12 @@ class DuplicatesController < TaxaController
     #   return
     # end
     current_taxon = Taxon.find(params[:current_taxon_id])
-    new_parent = Taxon.find_by_name_id(params[:new_parent_name_id])
+    new_parent = Taxon.find_by(name_id: params[:new_parent_name_id])
     if current_taxon.is_a? Subspecies
       # searching for genus / subspecies for conflict.
-      options = Taxa::Utility.find_subspecies_in_genus current_taxon.name.epithet, new_parent.parent
+      options = new_parent.parent.find_subspecies_in_genus(current_taxon.name.epithet)
     else
-      options = Taxa::Utility.find_epithet_in_genus current_taxon.name.epithet, new_parent
+      options = new_parent.find_epithet_in_genus(current_taxon.name.epithet)
     end
     render nothing: true, status: :no_content and return unless options
 
