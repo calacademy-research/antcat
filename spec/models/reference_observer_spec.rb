@@ -13,6 +13,9 @@ describe ReferenceObserver do
           nesting_reference.title = 'Title'
           nesting_reference.save!
 
+          nesting_reference.reload
+          nestee.reload
+
           expect(ReferenceFormatterCache.instance.get(nesting_reference)).to be_nil
           expect(ReferenceFormatterCache.instance.get(nestee)).to be_nil
         end
@@ -25,6 +28,7 @@ describe ReferenceObserver do
           ReferenceFormatterCache.instance.populate reference
           ReferenceFormatterCache.instance.invalidate reference
           ReferenceObserver.instance.before_update reference
+          reference.reload
 
           expect(reference.formatted_cache).to be_nil
           expect(ReferenceFormatterCache.instance.get(reference)).to be_nil

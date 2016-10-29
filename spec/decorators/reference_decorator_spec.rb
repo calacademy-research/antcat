@@ -554,7 +554,10 @@ describe ReferenceDecorator do
           reference = create :article_reference
           expect(ReferenceFormatterCache.instance.get(reference, :formatted_cache)).to be_nil
           expect(ReferenceFormatterCache.instance.get(reference, :inline_citation_cache)).to be_nil
+
           reference.decorate.format_inline_citation
+          reference.reload
+
           expect(ReferenceFormatterCache.instance.get(reference, :formatted_cache)).not_to be_nil
           expect(ReferenceFormatterCache.instance.get(reference, :inline_citation_cache)).to be_nil
         end

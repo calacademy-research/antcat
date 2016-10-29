@@ -55,6 +55,8 @@ describe ReferenceFormatterCache do
       it "gets and sets the right values" do
         reference = create :article_reference
         ReferenceFormatterCache.instance.set reference, 'Cache', :formatted_cache
+        reference.reload
+
         expect(ReferenceFormatterCache.instance.get(reference, :formatted_cache)).to eq 'Cache'
       end
     end
@@ -64,16 +66,20 @@ describe ReferenceFormatterCache do
     it "invalidates each member of the network" do
       nesting_reference = create :article_reference
       ReferenceFormatterCache.instance.populate nesting_reference
+      nesting_reference.reload
       expect(ReferenceFormatterCache.instance.get(nesting_reference)).not_to be_nil
 
       nested_reference = create :nested_reference, nesting_reference: nesting_reference
       ReferenceFormatterCache.instance.populate nested_reference
+      nested_reference.reload
       expect(ReferenceFormatterCache.instance.get(nested_reference)).not_to be_nil
 
       author_name = create :author_name
       reference_author_name = create :reference_author_name, reference: nesting_reference, author_name: author_name
       reference_author_name.position = 4
       reference_author_name.save!
+      nesting_reference.reload
+      nested_reference.reload
 
       expect(ReferenceFormatterCache.instance.get(nesting_reference)).to be_nil
       expect(ReferenceFormatterCache.instance.get(nested_reference)).to be_nil

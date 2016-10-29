@@ -14,6 +14,8 @@ describe ReferenceAuthorNameObserver do
     reference = create :article_reference
     ReferenceFormatterCache.instance.populate reference
     reference.reference_author_names.create! position: 1, author_name: create(:author_name)
+    reference.reload
+
     expect(ReferenceFormatterCache.instance.get(reference)).to be_nil
   end
 
@@ -22,6 +24,8 @@ describe ReferenceAuthorNameObserver do
     reference.reference_author_names.create! position: 1, author_name: create(:author_name)
     ReferenceFormatterCache.instance.populate reference
     reference.reference_author_names.first.update_attribute :position, 1000
+    reference.reload
+
     expect(ReferenceFormatterCache.instance.get(reference)).to be_nil
   end
 
@@ -30,6 +34,8 @@ describe ReferenceAuthorNameObserver do
     reference.reference_author_names.create! position: 1, author_name: create(:author_name)
     ReferenceFormatterCache.instance.populate reference
     reference.reference_author_names.first.destroy
+    reference.reload
+
     expect(ReferenceFormatterCache.instance.get(reference)).to be_nil
   end
 end
