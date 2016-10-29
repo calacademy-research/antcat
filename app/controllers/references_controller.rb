@@ -148,7 +148,8 @@ class ReferencesController < ApplicationController
     searching = params[:q].present?
 
     references =  if id
-                    Reference.where(id: id) # where and not find because we need to return an array
+                    # `where` and not `find` because we need to return an array.
+                    Reference.where(id: id)
                   elsif searching
                     Reference.do_search params.merge endnote_export: true
                   else
@@ -342,7 +343,8 @@ class ReferencesController < ApplicationController
 
     def clear_document_params_if_necessary
       return unless params[:reference][:document_attributes]
-      params[:reference][:document_attributes][:id] = nil unless params[:reference][:document_attributes][:url].present?
+      return unless params[:reference][:document_attributes][:url].present?
+      params[:reference][:document_attributes][:id] = nil
     end
 
     def new_reference
@@ -358,7 +360,7 @@ class ReferencesController < ApplicationController
       selected_tab = params[:selected_tab]
       selected_tab = 'Unknown' if selected_tab == 'Other'
       type = "#{selected_tab}Reference".constantize
-      reference = @reference.becomes(type)
+      reference = @reference.becomes type
       reference.type = type
       reference
     end

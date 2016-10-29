@@ -28,8 +28,8 @@ class SynonymsController < ApplicationController
         junior_or_senior = 'senior'
       end
 
-      if Synonym.find_by_senior_synonym_id_and_junior_synonym_id(senior.id, junior.id) or
-         Synonym.find_by_senior_synonym_id_and_junior_synonym_id(junior.id, senior.id)
+      if Synonym.find_by(senior_synonym_id: senior.id, junior_synonym_id: junior.id) or
+         Synonym.find_by(senior_synonym_id: junior.id, junior_synonym_id: senior.id)
         error_message = 'This taxon is already a synonym'
       else
         synonym = Synonym.create! senior_synonym_id: senior.id, junior_synonym_id: junior.id
@@ -57,8 +57,7 @@ class SynonymsController < ApplicationController
 
   def destroy
     Synonym.find(params[:id]).destroy
-    json = { success: true }
-    render json: json
+    render json: { success: true }
   end
 
   def reverse_synonymy
@@ -73,10 +72,8 @@ class SynonymsController < ApplicationController
     synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
     synonym.touch_with_version
 
-    content = render_to_string(
-      partial: 'taxa/junior_and_senior_synonyms_section',
+    content = render_to_string partial: 'taxa/junior_and_senior_synonyms_section',
       locals: { taxon: taxon }
-    )
     json = { content: content, success: true, error_message: '' }
     render json: json
   end

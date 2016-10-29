@@ -188,6 +188,7 @@ class TaxaController < ApplicationController
 
     # TODO looks like this isn't tested
     def create_new_usages_for_subspecies
+      # TODO probably use `valid` on `children`.
       @previous_combination.children.select { |t| t.status == 'valid' }.each do |t|
         new_child = Subspecies.new
 

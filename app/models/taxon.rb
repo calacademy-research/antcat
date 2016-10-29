@@ -61,8 +61,8 @@ class Taxon < ActiveRecord::Base
   has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
   has_many :junior_synonyms, through: :synonyms_as_senior
   has_many :senior_synonyms, through: :synonyms_as_junior
-  has_many :history_items, -> { order 'position' }, class_name: 'TaxonHistoryItem', dependent: :destroy
-  has_many :reference_sections, -> { order 'position' }, dependent: :destroy
+  has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
+  has_many :reference_sections, -> { order(:position) }, dependent: :destroy
 
   scope :displayable, -> { where(display: true) }
   scope :valid, -> { where(status: 'valid') }

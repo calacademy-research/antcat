@@ -1,8 +1,10 @@
 class Author < ActiveRecord::Base
   include UndoTracker
 
-  has_many :names, -> { order :name }, class_name: 'AuthorName'
-  scope :sorted_by_name, -> { select('authors.id').joins(:names).group('authors.id').order('name') }
+  has_many :names, -> { order(:name) }, class_name: 'AuthorName'
+  scope :sorted_by_name, -> do
+    select('authors.id').joins(:names).group('authors.id').order('name')
+  end
 
   has_paper_trail meta: { change_id: :get_current_change_id }
 
@@ -33,6 +35,7 @@ class Author < ActiveRecord::Base
         :merge_authors, names: names_string
     end
 
+    # TODO move to `FeedHelper`.
     def self.get_author_names_for_feed_message authors
       authors[1..-1].map do |author|
         author.names.map(&:name)

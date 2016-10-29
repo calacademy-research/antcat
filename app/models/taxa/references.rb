@@ -30,10 +30,18 @@ module Taxa::References
     def references_in_synonyms
       references = []
       synonyms_as_senior.each do |synonym|
-        references << { table: 'synonyms', field: :senior_synonym_id, id: synonym.junior_synonym_id }
+        references << {
+          table: 'synonyms',
+          field: :senior_synonym_id,
+          id: synonym.junior_synonym_id
+        }
       end
       synonyms_as_junior.each do |synonym|
-        references << { table: 'synonyms', field: :junior_synonym_id, id: synonym.senior_synonym_id }
+        references << {
+          table: 'synonyms',
+          field: :junior_synonym_id,
+          id: synonym.senior_synonym_id
+        }
       end
       references
     end

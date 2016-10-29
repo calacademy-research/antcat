@@ -10,11 +10,10 @@ class ReferenceSectionsController < ApplicationController
     title_taxt = Taxt.from_editable params[:title_taxt]
     subtitle_taxt = Taxt.from_editable params[:subtitle_taxt]
     references_taxt = Taxt.from_editable params[:references_taxt]
-    item.update_attributes(
-      title_taxt: title_taxt,
+    item.update_attributes title_taxt: title_taxt,
       subtitle_taxt: subtitle_taxt,
       references_taxt: references_taxt
-    )
+
     render_json item
   end
 
@@ -23,20 +22,18 @@ class ReferenceSectionsController < ApplicationController
     title_taxt = Taxt.from_editable params[:title_taxt]
     subtitle_taxt = Taxt.from_editable params[:subtitle_taxt]
     references_taxt = Taxt.from_editable params[:references_taxt]
-    item = ReferenceSection.create(
-      taxon: taxon,
+    item = ReferenceSection.create taxon: taxon,
       title_taxt: title_taxt,
       subtitle_taxt: subtitle_taxt,
       references_taxt: references_taxt
-    )
+
     render_json item
   end
 
   def destroy
     item = ReferenceSection.find params[:id]
     item.destroy
-    json = { success: true }
-    render json: json
+    render json: { success: true }
   end
 
   private
@@ -49,4 +46,5 @@ class ReferenceSectionsController < ApplicationController
       render json: json
     end
 
+    # TODO create `def set_reference_section`
 end
