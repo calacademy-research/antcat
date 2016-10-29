@@ -11,7 +11,7 @@ class Feedback < ActiveRecord::Base
   before_save :add_emails_recipients
 
   scope :recently_created, ->(time_ago = 5.minutes.ago) {
-    where('created_at >= :time_ago', time_ago: time_ago)
+    where('created_at >= ?', time_ago)
   }
 
   def from_the_same_ip

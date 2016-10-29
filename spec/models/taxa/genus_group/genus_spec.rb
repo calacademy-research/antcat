@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Genus do
-  PaperTrail.enabled = true
   it "can have a tribe" do
     attini = create :tribe,
       name: create(:name, name: 'Attini'),

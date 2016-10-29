@@ -63,6 +63,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    # Before actions.
     def authenticate_editor
       authenticate_user! && user_can_edit?
     end
