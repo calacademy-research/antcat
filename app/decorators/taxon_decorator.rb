@@ -31,7 +31,9 @@ class TaxonDecorator < ApplicationDecorator
 
   def genus_species_header_notes_taxt
     return unless taxon.genus_species_header_notes_taxt.present?
-    helpers.content_tag :div, detaxt(taxon.genus_species_header_notes_taxt), class: 'genus_species_header_notes_taxt'
+    helpers.content_tag :div,
+      detaxt(taxon.genus_species_header_notes_taxt),
+      class: 'genus_species_header_notes_taxt'
   end
 
   def references
@@ -49,12 +51,11 @@ class TaxonDecorator < ApplicationDecorator
     return unless change
 
     helpers.content_tag :span, class: 'change_history' do
-      content = ''.html_safe
-      if change.change_type == 'create'
-        content << "Added by"
-      else
-        content << "Changed by"
-      end
+      content = if change.change_type == 'create'
+                  "Added by"
+                else
+                  "Changed by"
+                end.html_safe
       content << " #{change.decorate.format_changed_by} ".html_safe
       content << change.decorate.format_created_at.html_safe
 
@@ -80,40 +81,30 @@ class TaxonDecorator < ApplicationDecorator
     # appear as tags. That's how CSS does its coloring.
     labels = []
     labels << "<i>incertae sedis</i> in #{taxon.incertae_sedis_in}" if taxon.incertae_sedis_in
-    if taxon.homonym? && taxon.homonym_replaced_by
-      labels << "homonym replaced by #{taxon.homonym_replaced_by.decorate.link_to_taxon}"
-    elsif taxon.unidentifiable?
-      labels << 'unidentifiable'
-    elsif taxon.unresolved_homonym?
-      labels << "unresolved junior homonym"
-    elsif taxon.nomen_nudum?
-      labels << "<i>nomen nudum</i>"
-    elsif taxon.synonym?
-      label = 'junior synonym'
-      label << format_senior_synonym
-      labels << label
-    elsif taxon.obsolete_combination?
-      label = 'an obsolete combination of '
-      label << format_valid_combination
-      labels << label
-    elsif taxon.unavailable_misspelling?
-      label = 'a misspelling of '
-      label << format_valid_combination
-      labels << label
-    elsif taxon.unavailable_uncategorized?
-      label = 'see '
-      label << format_valid_combination
-      labels << label
-    elsif taxon.nonconfirming_synonym?
-      label = 'a non standard form of '
-      label << format_valid_combination
-      labels << label
-    elsif taxon.invalid?
-      label = Status[taxon].to_s.dup
-      labels << label
-    else
-      labels << 'valid'
-    end
+
+    labels << if taxon.homonym? && taxon.homonym_replaced_by
+                "homonym replaced by #{taxon.homonym_replaced_by.decorate.link_to_taxon}"
+              elsif taxon.unidentifiable?
+                "unidentifiable"
+              elsif taxon.unresolved_homonym?
+                "unresolved junior homonym"
+              elsif taxon.nomen_nudum?
+                "<i>nomen nudum</i>"
+              elsif taxon.synonym?
+                "junior synonym#{format_senior_synonym}"
+              elsif taxon.obsolete_combination?
+                "an obsolete combination of #{format_valid_combination}"
+              elsif taxon.unavailable_misspelling?
+                "a misspelling of #{format_valid_combination}"
+              elsif taxon.unavailable_uncategorized?
+                "see #{format_valid_combination}"
+              elsif taxon.nonconfirming_synonym?
+                "a non standard form of #{format_valid_combination}"
+              elsif taxon.invalid?
+                Status[taxon].to_s.dup
+              else
+                "valid"
+              end
 
     labels << 'ichnotaxon' if taxon.ichnotaxon?
     labels.join(', ').html_safe
@@ -123,27 +114,22 @@ class TaxonDecorator < ApplicationDecorator
     string =
       case taxon
       when Subfamily
-        'subfamily'
+        "subfamily"
       when Tribe
-        string = "tribe of "
         parent = taxon.subfamily
-        string << (parent ? parent.name.to_html : '(no subfamily)')
+        "tribe of " << (parent ? parent.name.to_html : '(no subfamily)')
       when Genus
-        string = "genus of "
         parent = taxon.tribe ? taxon.tribe : taxon.subfamily
-        string << (parent ? parent.name.to_html : '(no subfamily)')
+        "genus of " << (parent ? parent.name.to_html : '(no subfamily)')
       when Species
-        string = "species of "
         parent = taxon.parent
-        string << parent.name.to_html
+        "species of " << parent.name.to_html
       when Subgenus
-        string = "subgenus of "
         parent = taxon.parent
-        string << parent.name.to_html
+        "subgenus of " << parent.name.to_html
       when Subspecies
-        string = "subspecies of "
         parent = taxon.species
-        string << (parent ? parent.name.to_html : '(no species)')
+        "subspecies of " << (parent ? parent.name.to_html : '(no species)')
       else
         ''
       end
