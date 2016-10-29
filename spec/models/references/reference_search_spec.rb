@@ -211,7 +211,7 @@ describe Reference do
       create :reference
       Sunspot.commit
 
-      expect(Reference.search { keywords 'foo' }.results).to be_empty
+      expect(Reference.solr_search { keywords 'foo' }.results).to be_empty
     end
 
     it "finds the reference for a given author_name if it exists" do
@@ -219,7 +219,7 @@ describe Reference do
       reference_factory author_name: 'Fisher'
       Sunspot.commit
 
-      expect(Reference.search { keywords 'Ward' }.results).to eq [reference]
+      expect(Reference.solr_search { keywords 'Ward' }.results).to eq [reference]
     end
 
     it "returns an empty array if nothing is found for a given year and author_name" do
@@ -229,7 +229,7 @@ describe Reference do
       reference_factory author_name: 'Fisher', citation_year: '1996'
       Sunspot.commit
 
-      expect(Reference.search {
+      expect(Reference.solr_search {
         with(:year).between(2012..2013)
         keywords 'Fisher'
       }.results).to be_empty
@@ -242,7 +242,7 @@ describe Reference do
       reference = reference_factory author_name: 'Fisher', citation_year: '1996'
       Sunspot.commit
 
-      expect(Reference.search {
+      expect(Reference.solr_search {
         with(:year).between(1996..1996)
         keywords 'Fisher'
       }.results).to eq [reference]
@@ -253,7 +253,7 @@ describe Reference do
       reference_factory author_name: 'Bolton', citation_year: '2010'
       Sunspot.commit
 
-      expect(Reference.search {
+      expect(Reference.solr_search {
         keywords '2010b'
       }.results).to eq [with_letter]
     end

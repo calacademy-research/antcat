@@ -20,10 +20,6 @@ class Reference < ActiveRecord::Base
     # TODO: Test searching for doi, see if that works?
   end
 
-  def self.search &block
-    Sunspot.search Reference, &block
-  end
-
   def self.do_search options = {}
     options[:page] ||= 1
     search_query = if options[:q].present? then options[:q].dup else "" end
@@ -48,9 +44,11 @@ class Reference < ActiveRecord::Base
     query.paginate page: (page || 1)
   end
 
+  # TODO add `private_class_method :xxx`
   private
     # Accepts a string of keywords (the query) and returns a parsed hash;
     # non-matches are placed in `keywords_params[:keywords]`.
+    # TODO make not private (also used in `ReferencesController`)
     def self.extract_keyword_params keyword_string
       keywords_params = {}
       # Array of arrays used to compile regexes: [["keyword", "regex_as_string"]].
@@ -152,7 +150,8 @@ class Reference < ActiveRecord::Base
       search_keywords.gsub! /-|:/, ' ' # TODO fix in solr
       author.gsub!(/-|:/, ' ') if author # TODO fix in solr
 
-      search {
+      # Calling `.solr_search` because `.search` is a Ransack method (bundled by ActiveAdmin).
+      Reference.solr_search(include: [:document]) do
         keywords search_keywords
 
         if author
@@ -190,6 +189,6 @@ class Reference < ActiveRecord::Base
 
         order_by :author_names_string
         order_by :citation_year
-      }.results
+      end.results
     end
 end

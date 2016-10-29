@@ -26,6 +26,7 @@ class Author < ActiveRecord::Base
     create_merge_authors_activity the_one_author, new_names_string
   end
 
+  # TODO add `private_class_method :xxx`
   private
     def self.create_merge_authors_activity author, names_string
       Feed::Activity.create_activity_for_trackable author,

@@ -124,6 +124,7 @@ module Taxt
   end
 
   # Note: `private` doesn't work on class methods, but it reveals intent.
+  # TODO add `private_class_method :xxx`
   private
     def self.decode taxt, options = {}
       return '' unless taxt
