@@ -23,3 +23,14 @@ $ ->
       suggestion: (taxon) -> '<p>' + taxon.name + '<br><small>' + taxon.authorship + '</small></p>'
 
   $('input.typeahead-taxa-js-hook').typeahead options, dataSet
+
+  # Press Enter to submit header search box form with selected suggestion.
+  $('#desktop-lower-menu').on 'keyup', (e) ->
+    if e.which == 13
+      e.preventDefault()
+      selectables = $('input.typeahead-taxa-js-hook')
+        .siblings(".tt-dropdown-menu").find(".tt-suggestion")
+      if selectables.length > 0
+        $(selectables[0]).trigger('click')
+      else
+        $("#header_search_button").trigger('click')
