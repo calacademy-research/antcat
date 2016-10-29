@@ -461,11 +461,12 @@ describe Taxon do
       end
     end
 
-    describe "scope.ordered_by_name" do
+    describe "scope.order_by_name_cache" do
+      let!(:zymacros) { create :subfamily, name: create(:name, name: 'Zymacros') }
+      let!(:atta) { create :subfamily, name: create(:name, name: 'Atta') }
+
       it "orders by name" do
-        zymacros = create :subfamily, name: create(:name, name: 'Zymacros')
-        atta = create :subfamily, name: create(:name, name: 'Atta')
-        expect(Taxon.ordered_by_name).to eq [atta, zymacros]
+        expect(Taxon.order_by_name_cache).to eq [atta, zymacros]
       end
     end
   end

@@ -1,7 +1,7 @@
 %ul#taxon-browser-tabs.tabs{"data-tabs" => ""}
   -panels.each_with_index do |panel, index|
     %li.tabs-title{class: ("is-active" if is_last_panel? panel, panels)}
-      =link_to panel_header(panel[:selected]), "#panel-#{index}"
+      =link_to panel_header_title(panel[:selected]), "#panel-#{index}"
 
   %li.tab-toggler
     %span.label.secondary
@@ -11,7 +11,9 @@
 .tabs-content{"data-tabs-content" => "taxon-browser-tabs"}
   -panels.each_with_index do |panel, index|
     -selected = panel[:selected]
+    -# TOD rename to selected_in_panel
 
+    -# TODO create helper method
     -css_classes = []
     -css_classes << "is-active" if is_last_panel? panel, panels
     -if selected.is_a? Taxon
@@ -21,7 +23,7 @@
       %ul.snaked.no-bullet.mr-scrollbary
         =render "rank_special_cases", selected: selected
 
-        -children = panel[:children]
+        -children = sorted_children_for_panel selected, panel[:children]
         -children.each do |child_taxon|
           %li{class: ("selected" if child_taxon.in? self_and_parents)}
             =taxon_browser_link child_taxon

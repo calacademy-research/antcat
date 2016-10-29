@@ -68,9 +68,8 @@ class Taxon < ActiveRecord::Base
   scope :displayable, -> { where(display: true) }
   scope :valid, -> { where(status: 'valid') }
   scope :extant, -> { where(fossil: false) }
-  scope :with_names, -> { joins(:name).readonly(false) }
-  scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
-  scope :ordered_by_epithet, lambda { with_names.order('names.epithet').includes(:name) }
+  scope :order_by_joined_epithet, -> { joins(:name).order('names.epithet') }
+  scope :order_by_name_cache, -> { order(:name_cache) }
 
   accepts_nested_attributes_for :name, :protonym, :type_name
 
@@ -88,8 +87,10 @@ class Taxon < ActiveRecord::Base
     find_first_by_name name
   end
 
+  # TODO probably add index to `taxa.name_cache` due to
+  # `Taxon.find_by_name @taxon.type_name.to_s` in `TaxonDecorator::Headline`
   def self.find_first_by_name name
-    where(name_cache: name).first
+    find_by(name_cache: name)
   end
 
   def update_parent new_parent
@@ -104,6 +105,7 @@ class Taxon < ActiveRecord::Base
     self.type.downcase
   end
 
+  # TODO only used in `Exporters::Antweb::Exporter`? move maybe
   # The original_combination accessor returns the taxon with 'original combination'
   # status whose 'current valid taxon' points to us.
   def original_combination

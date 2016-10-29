@@ -7,7 +7,7 @@ class Taxa::Search
     name = name.dup.strip
     column = name.split(' ').size > 1 ? 'name' : 'epithet'
 
-    query = Taxon.ordered_by_name
+    query = Taxon.joins(:name).order_by_name_cache
     query = query.valid if valid_only
     query = case search_type
             when 'matching'
@@ -27,7 +27,7 @@ class Taxa::Search
     params.delete_if { |_key, value| value.blank? }
     return Taxon.none if params.blank?
 
-    query = Taxon.joins(protonym: [{ authorship: :reference }]).order(:name_cache)
+    query = Taxon.joins(protonym: [{ authorship: :reference }]).order_by_name_cache
 
     query = query.where(type: params[:rank]) if params[:rank]
     query = query.where(status: 'valid') if params[:valid_only]

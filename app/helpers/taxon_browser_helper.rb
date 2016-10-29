@@ -1,11 +1,15 @@
 module TaxonBrowserHelper
+  # TODO move the "selected" CSS class logic to here.
   def taxon_browser_link taxon
     classes = css_classes_for_rank(taxon)
     classes << css_classes_for_status(taxon)
     link_to taxon_label(taxon), catalog_path(taxon), class: classes
   end
 
-  def panel_header selected
+  # If `selected` is a taxon: <name> <immediate child rank in plural>.
+  # So, family --> "Formicidae subfamilies"
+  # But no taxon --> we have a non-standard panel.
+  def panel_header_title selected
     if show_only_genus_name? selected
       taxon_breadcrumb_label selected
     elsif selected.is_a? Taxon
@@ -56,6 +60,16 @@ module TaxonBrowserHelper
     panels.last == panel
   end
 
+  # Collections containing taxa of a single rank can be sorted by `#.name_cache`,
+  # but mixed collections (such as the "ALL TAXA" link) must be sorted by `names.epithet`.
+  def sorted_children_for_panel selected, children
+    if params[:display] == "all_taxa_in_genus" && selected.try(:key?, :title_for_panel)
+      children.order_by_joined_epithet
+    else
+      children.order_by_name_cache
+    end.includes(:name)
+  end
+
   def notify_about_no_valid_children? children, taxon
     children.empty? && !is_a_subfamily_with_valid_genera_incertae_sedis?(taxon)
   end
@@ -72,6 +86,7 @@ module TaxonBrowserHelper
       taxon.genera_incertae_sedis_in.valid.exists?
     end
 
+    # Rename non_standard_panel_link
     def extra_panel_link selected, label, param
       css_class = if params[:display] == param
                     "upcase selected"

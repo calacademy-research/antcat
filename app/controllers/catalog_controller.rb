@@ -56,7 +56,7 @@ class CatalogController < ApplicationController
         # these ranks have children unless the database is incomplete), so
         # it makes more sense to just show "No valid child taxa".
       end.map do |taxon|
-        children = taxon.children.displayable.ordered_by_name
+        children = taxon.children.displayable
         children = children.valid if session[:show_valid_only]
         { selected: taxon, children: children }
       end

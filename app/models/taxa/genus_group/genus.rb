@@ -40,21 +40,21 @@ class Genus < GenusGroupTaxon
   end
 
   def siblings
-    tribe && tribe.genera.ordered_by_name ||
-    subfamily && subfamily.genera.without_tribe.ordered_by_name ||
-    Genus.without_subfamily.ordered_by_name
+    tribe && tribe.genera ||
+    subfamily && subfamily.genera.without_tribe ||
+    Genus.without_subfamily
   end
 
   def displayable_child_taxa
-    descendants.displayable.ordered_by_epithet
-  end
-
-  def displayable_subgenera
-    Subgenus.where(genus: self).displayable.ordered_by_epithet
+    descendants.displayable
   end
 
   def descendants
     Taxon.where(genus: self)
+  end
+
+  def displayable_subgenera
+    Subgenus.where(genus: self).displayable
   end
 
   private

@@ -1,7 +1,7 @@
 desc "Display nomina nuda"
 task nomina_nuda: :environment do
 
-  Taxon.ordered_by_name.where(status: 'nomen nudum').all.each do |taxon|
+  Taxon.order_by_name_cache.where(status: 'nomen nudum').all.each do |taxon|
     havent_shown_name = true
     puts_blank_line = false
     taxon.history_items.each do |history|
