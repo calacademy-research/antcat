@@ -70,6 +70,7 @@ AntCat::Application.routes.draw do
       get :update_parent # TODO change to put
       put :elevate_to_species
       delete :destroy_unreferenced
+      get :show_children
     end
     resources :taxon_history_items, only: [:update, :create, :destroy]
     resources :reference_sections, only: [:update, :create, :destroy]

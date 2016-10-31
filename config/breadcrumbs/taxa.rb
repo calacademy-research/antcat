@@ -17,6 +17,11 @@ crumb :edit_taxon do |taxon|
   parent :taxon_being_edited, taxon
 end
 
+  crumb :edit_taxon_show_children do |taxon|
+    link "Show Children"
+    parent :edit_taxon, taxon
+  end
+
 crumb :convert_to_species do |taxon|
   link "Convert to Species"
   parent :edit_taxon, taxon

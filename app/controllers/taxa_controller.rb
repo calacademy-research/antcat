@@ -134,6 +134,11 @@ class TaxaController < ApplicationController
     render json: taxon_array, status: :ok
   end
 
+  # Show children on another page for performance reasons.
+  # Example of a very slow page: http://localhost:3000/taxa/429244/edit
+  def show_children
+  end
+
   private
     def set_previous_combination
       return unless params[:previous_combination_id].present?
