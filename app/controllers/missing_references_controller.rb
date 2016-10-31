@@ -8,7 +8,7 @@ class MissingReferencesController < ApplicationController
       .where("references.type = 'MissingReference'")
       .uniq.pluck('references.id')
 
-    @missing_references = MissingReference.find(ids).sort_by(&:citation)
+    @missing_references = MissingReference.where(id: ids).order(:citation)
   end
 
   def edit
