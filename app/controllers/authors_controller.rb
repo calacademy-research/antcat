@@ -3,7 +3,7 @@ class AuthorsController < ApplicationController
   layout "references"
 
   def index
-    @authors = Author.sorted_by_name.includes(:names).paginate(page: params[:page], per_page: 60)
+    @authors = Author.sorted_by_name.paginate(page: params[:page], per_page: 60)
   end
 
   def edit
