@@ -4,10 +4,10 @@ describe Reference do
   let(:author_names) { [create(:author_name)] }
 
   describe "Relationships" do
-    let(:reference) {
+    let(:reference) do
       Reference.create! author_names: author_names,
         title: 'asdf', citation_year: '2010d'
-    }
+    end
 
     it "has many author_names" do
       expect(reference.author_names.first).to eq author_names.first
@@ -40,8 +40,9 @@ describe Reference do
     end
 
     it "adds an error and raise and exception if invalid" do
-      expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }
-        .to raise_error ActiveRecord::RecordInvalid
+      expect {
+        reference.parse_author_names_and_suffix('...asdf sdf dsfdsf')
+      }.to raise_error ActiveRecord::RecordInvalid
 
       error_message = "couldn't be parsed. Please post a message on " \
         "http://groups.google.com/group/antcat/, and we'll fix it!"
@@ -306,32 +307,23 @@ describe Reference do
   end
 
   describe "duplicate checking" do
+    let(:reference_params) do
+        { author_names: [create(:author_name)],
+          citation_year: '1981',
+          title: 'Dolichoderinae',
+          journal: create(:journal),
+          series_volume_issue: '1(2)',
+          pagination: '22-54' }
+    end
+    let!(:original) { ArticleReference.create! reference_params }
+
     it "allows a duplicate record to be saved" do
-      journal = create :journal
-      author = create :author_name
-      original = ArticleReference.create! author_names: [author],
-        citation_year: '1981', title: 'Dolichoderinae',
-        journal: journal, series_volume_issue: '1(2)', pagination: '22-54'
-      ArticleReference.create! author_names: [author],
-        citation_year: '1981', title: 'Dolichoderinae',
-        journal: journal, series_volume_issue: '1(2)', pagination: '22-54'
+      expect { ArticleReference.create! reference_params }.to_not raise_error
     end
 
     it "checks possible duplication and add to errors, if any found" do
-      journal = create :journal
-      author = create :author_name
-      original = ArticleReference.create! author_names: [author],
-        citation_year: '1981',
-        title: 'Dolichoderinae',
-        journal: journal,
-        series_volume_issue: '1(2)',
-        pagination: '22-54'
-      duplicate = ArticleReference.new author_names: [author],
-        citation_year: '1981',
-        title: 'Dolichoderinae',
-        journal: journal,
-        series_volume_issue: '1(2)',
-        pagination: '22-54'
+      duplicate = ArticleReference.create! reference_params
+
       expect(duplicate.errors).to be_empty
       expect(duplicate.check_for_duplicate).to be_truthy
       expect(duplicate.errors).not_to be_empty
