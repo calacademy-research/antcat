@@ -1,7 +1,9 @@
 class @CatalogSplitter
   # In the order they appear on the HTML.
-  CONTENT = "#content"
   HEADER = "#header"
+  CONTENT = "#content" # Everything except the header and feedback modal is nested here.
+
+  # These three from `catalog/show.haml` are siblings (ie not nested).
   TAXON_DESCRIPTION = "#taxon_description"
   SPLITTER = "#splitter"
   TAXON_BROWSER = "#taxon_browser"
@@ -9,19 +11,21 @@ class @CatalogSplitter
   constructor: ->
     @setDefaultHeights()
 
-    # Callback on window resize.
+    # Run `@setDefaultHeights` callback on window resize.
     $(window).resize @setDefaultHeights
 
+    # Make splitter draggable and set callback on stop dragging.
     $(SPLITTER).draggable axis: "y", stop: @onSplitterChange
 
+    @setDefaultHeights()
+
   setDefaultHeights: =>
-    # Set #content container height...
     @setHeight CONTENT, @heightOf(window) - @heightOf(HEADER)
 
-    # Split content div equally on smaller screens.
-    if @heightOf(CONTENT) < 600
-      half = (@heightOf(CONTENT) - @heightOf(SPLITTER)) / 2
-      @setHeight TAXON_BROWSER, half
+    # Don't allow the taxon browser to take up more than half of the content.
+    half_content_size = (@heightOf(CONTENT) - @heightOf(SPLITTER)) / 2
+    if @heightOf(TAXON_BROWSER) > half_content_size
+      @setHeight TAXON_BROWSER, half_content_size
 
     # If theres space below the taxon description, this pushes
     # down the taxon browser to the bottom. If there's no space,
@@ -40,7 +44,7 @@ class @CatalogSplitter
 
   onSplitterChange: =>
     top = $(SPLITTER).position().top
-    $(SPLITTER).css "top", 0 # Hackish
+    $(SPLITTER).css "top", 0 # HACKish
     @setTaxonDescriptionHeight top - @heightOf(HEADER)
 
   setTaxonDescriptionHeight: (height) =>
@@ -56,7 +60,7 @@ class @CatalogSplitter
     @setHeight TAXON_DESCRIPTION, height
     @autosize TAXON_BROWSER
 
-  heightOf: (element) -> $(element).outerHeight()
+  heightOf: (element) -> $(element).outerHeight true
 
   setHeight: (element, height) -> $(element).outerHeight height
 
