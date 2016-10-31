@@ -17,7 +17,8 @@
             =render 'name_fields/panel', name_string: taxon.name.try(:name),
                                           default_name_string: default_name_string && "#{default_name_string} "
           -if taxon.name.kind_of? GenusGroupName
-            %td#gender_field
+            %td
               =name_form.label :gender
+            %td#gender_field
               =name_form.select :gender, [ [ 'unknown', nil ], 'masculine', 'feminine', 'neuter' ]
       .name_description=taxon.decorate.name_description

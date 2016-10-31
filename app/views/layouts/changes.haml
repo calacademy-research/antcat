@@ -3,6 +3,7 @@
 -@subnav << link_to('Unreviewed Changes', unreviewed_changes_path)
 
 -content_for :head do
-  =javascript_include_tag 'changes'
+  -if user_can_edit?
+    =javascript_include_tag 'changes'
 
 =render file: 'layouts/application'

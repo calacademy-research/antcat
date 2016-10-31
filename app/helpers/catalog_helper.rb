@@ -39,7 +39,7 @@ module CatalogHelper
     end
   end
 
-  def link_to_delete_taxon taxon
+  def link_to_superadmin_delete_taxon taxon
     return unless user_is_superadmin?
 
     link_to 'Delete', "#", id: "delete_button", class: "btn-delete",
