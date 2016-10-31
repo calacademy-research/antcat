@@ -212,8 +212,6 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    js_cookie_rails (1.0.1)
-      railties (>= 3.1)
     json (1.8.3)
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
@@ -414,7 +412,6 @@ DEPENDENCIES
   invisible_captcha
   jquery-rails (> 4.0)
   jquery-ui-rails (> 5.0)
-  js_cookie_rails
   launchy
   mysql2
   paper_trail!
