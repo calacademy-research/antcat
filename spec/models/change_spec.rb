@@ -5,9 +5,7 @@ describe Change do
     @was_enabled = PaperTrail.enabled?
     PaperTrail.enabled = true
   end
-  after do
-    PaperTrail.enabled = @was_enabled
-  end
+  after { PaperTrail.enabled = @was_enabled }
 
   it "has a version" do
     genus = create_genus

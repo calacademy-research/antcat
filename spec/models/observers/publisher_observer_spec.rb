@@ -1,29 +1,23 @@
 require 'spec_helper'
 
 describe PublisherObserver do
+  let(:publisher) { create :publisher, name: 'Barnes & Noble' }
+
   describe "Invalidating the formatted reference cache" do
     it "should be asked to invalidate the cache when a change occurs" do
-      publisher = create :publisher, name: 'Barnes & Noble'
       expect_any_instance_of(PublisherObserver).to receive :before_update
       publisher.name = 'Istanbul'
       publisher.save!
     end
 
     it "invalidates the cache for the references that use the publisher" do
-      publisher = create :publisher
-      references = []
-      (0..2).each do |i|
-        if i < 2
-          references[i] = create :book_reference, publisher: publisher
-        else
-          references[i] = create :book_reference
-        end
-        ReferenceFormatterCache.instance.populate references[i]
-      end
-
-      expect(references[0].formatted_cache).not_to be_nil
-      expect(references[1].formatted_cache).not_to be_nil
-      expect(references[2].formatted_cache).not_to be_nil
+      references = [
+        create(:book_reference, publisher: publisher),
+        create(:book_reference, publisher: publisher),
+        create(:book_reference)
+      ]
+      references.each { |reference| ReferenceFormatterCache.instance.populate reference }
+      references.each { |reference| expect(reference.formatted_cache).not_to be_nil }
 
       PublisherObserver.instance.before_update publisher
 

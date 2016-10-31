@@ -39,6 +39,7 @@ describe ReferenceDecorator do
     end
   end
 
+  #TODO DRY
   describe "#format" do
     it "formats the reference" do
       reference = create :article_reference,

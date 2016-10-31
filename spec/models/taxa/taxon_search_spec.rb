@@ -14,12 +14,12 @@ describe Taxon do
   end
 
   describe ".quick_search" do
-    before do
-      create :genus, name: create(:genus_name, name: 'Monomorium')
-      @monoceros = create :genus, name: create(:genus_name, name: 'Monoceros')
-      species_name = create :species_name, name: 'Monoceros rufa', epithet: 'rufa'
-      @rufa = create :species, genus: @monoceros, name: species_name
+    let!(:rufa) do
+      create :species,
+        genus: create(:genus, name: create(:genus_name, name: 'Monoceros')),
+        name: create(:species_name, name: 'Monoceros rufa', epithet: 'rufa')
     end
+    before { create :genus, name: create(:genus_name, name: 'Monomorium') }
 
     it "returns [] if nothing matches" do
       results = Taxa::Search.quick_search 'sdfsdf'
@@ -59,9 +59,9 @@ describe Taxon do
     end
 
     it "sorts results by name" do
-      create :subfamily, name: create(:name, name: 'Lepti')
-      create :subfamily, name: create(:name, name: 'Lepta')
-      create :subfamily, name: create(:name, name: 'Lepte')
+      %w(Lepti Lepta Lepte).each do |name|
+        create :subfamily, name: create(:name, name: name)
+      end
 
       results = Taxa::Search.quick_search 'Lept', search_type: 'beginning_with'
       expect(results.map(&:name).map(&:to_s)).to eq ['Lepta', 'Lepte', 'Lepti']
@@ -70,17 +70,17 @@ describe Taxon do
     describe "Finding full species name" do
       it "searches for full species names" do
         results = Taxa::Search.quick_search 'Monoceros rufa '
-        expect(results.first).to eq @rufa
+        expect(results.first).to eq rufa
       end
 
       it "searches for whole names, even when using beginning with, even with trailing space" do
         results = Taxa::Search.quick_search 'Monoceros rufa ', search_type: 'beginning_with'
-        expect(results.first).to eq @rufa
+        expect(results.first).to eq rufa
       end
 
       it "searches for partial species names" do
         results = Taxa::Search.quick_search 'Monoceros ruf', search_type: 'beginning_with'
-        expect(results.first).to eq @rufa
+        expect(results.first).to eq rufa
       end
     end
   end

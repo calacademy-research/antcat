@@ -378,69 +378,72 @@ describe Taxon do
     end
 
     describe "#parent" do
-    context "when the taxon is a Family" do
-    it "returns nil" do
-      family = create :family
-      expect(family.parent).to be_nil
-    end
-    end
+      context "when the taxon is a Family" do
+        it "returns nil" do
+          family = create :family
+          expect(family.parent).to be_nil
+        end
+      end
     end
   end
 
   describe "#update_parent" do
-    let!(:atta) { create_genus 'Atta' }
-    let!(:eciton) { create_genus 'Eciton' }
-    let!(:old_parent) { create_species 'Atta major', genus: atta }
-    let!(:new_parent) { create_species 'Eciton nigrus', genus: eciton }
-
-    let!(:subspecies) do
+    let(:old_parent) { create_species 'Atta major', genus:(create_genus 'Atta') }
+    let(:new_parent) { create_species 'Eciton nigrus', genus: create_genus('Eciton') }
+    let(:subspecies) do
       create_subspecies name: create_subspecies_name('Atta major medius minor'),
         species: old_parent
     end
 
-    it "does nothing if the parent doesn't actually change" do
-      subspecies.update_parent old_parent
+    it "test factories" do
       expect(subspecies.species).to eq old_parent
-      expect(subspecies.name.name).to eq 'Atta major medius minor'
     end
 
-    it "changes the species of a subspecies" do
-      subspecies.update_parent new_parent
-      expect(subspecies.species).to eq new_parent
+    context "new parent is same as old aprent" do
+      it "does nothing if the parent doesn't actually change" do
+        subspecies.update_parent old_parent
+        expect(subspecies.species).to eq old_parent
+        expect(subspecies.name.name).to eq 'Atta major medius minor'
+      end
     end
 
-    it "changes the genus of a subspecies" do
-      subspecies.update_parent new_parent
-      expect(subspecies.species).to eq new_parent
-      expect(subspecies.genus).to eq new_parent.genus
-    end
+    context "new parent is not same as old aprent" do
+      before { subspecies.update_parent new_parent }
 
-    it "changes the subfamily of a subspecies" do
-      subspecies.update_parent new_parent
-      expect(subspecies.subfamily).to eq new_parent.subfamily
-    end
+      it "changes the species of a subspecies" do
+        expect(subspecies.species).to eq new_parent
+      end
 
-    it "changes the name, etc., of a subspecies" do
-      subspecies.update_parent new_parent
-      name = subspecies.name
-      expect(name.name).to eq 'Eciton nigrus medius minor'
-      expect(name.name_html).to eq '<i>Eciton nigrus medius minor</i>'
-      expect(name.epithet).to eq 'minor'
-      expect(name.epithet_html).to eq '<i>minor</i>'
-      expect(name.epithets).to eq 'nigrus medius minor'
-    end
+      it "changes the genus of a subspecies" do
+        expect(subspecies.species).to eq new_parent
+        expect(subspecies.genus).to eq new_parent.genus
+      end
 
-    it "changes the cached name, etc., of a subspecies" do
-      subspecies.update_parent new_parent
-      expect(subspecies.name_cache).to eq 'Eciton nigrus medius minor'
-      expect(subspecies.name_html_cache).to eq '<i>Eciton nigrus medius minor</i>'
+      it "changes the subfamily of a subspecies" do
+        expect(subspecies.subfamily).to eq new_parent.subfamily
+      end
+
+      it "changes the name, etc., of a subspecies" do
+        name = subspecies.name
+        expect(name.name).to eq 'Eciton nigrus medius minor'
+        expect(name.name_html).to eq '<i>Eciton nigrus medius minor</i>'
+        expect(name.epithet).to eq 'minor'
+        expect(name.epithet_html).to eq '<i>minor</i>'
+        expect(name.epithets).to eq 'nigrus medius minor'
+      end
+
+      it "changes the cached name, etc., of a subspecies" do
+        expect(subspecies.name_cache).to eq 'Eciton nigrus medius minor'
+        expect(subspecies.name_html_cache).to eq '<i>Eciton nigrus medius minor</i>'
+      end
     end
   end
 
   describe "scopes" do
+    let(:subfamily) { create :subfamily }
+
     describe "scope.valid" do
       it "only includes valid taxa" do
-        subfamily = create :subfamily
         replacement = create :genus, subfamily: subfamily
         homonym = create :genus,
           homonym_replaced_by: replacement,
@@ -454,9 +457,9 @@ describe Taxon do
 
     describe "scope.extant" do
       it "only includes extant taxa" do
-        subfamily = create :subfamily
         extant_genus = create :genus, subfamily: subfamily
         create :genus, subfamily: subfamily, fossil: true
+
         expect(subfamily.genera.extant).to eq [extant_genus]
       end
     end
@@ -504,8 +507,9 @@ describe Taxon do
       taxon = create :species
       taxon.type_specimen_url = '*'
       expect(taxon).not_to be_valid
-      expect(taxon.errors.full_messages)
-        .to match_array ['Type specimen url is not in a valid format']
+
+      expected_error = 'Type specimen url is not in a valid format'
+      expect(taxon.errors.full_messages).to match_array [expected_error]
     end
 
     it "should make sure it exists" do

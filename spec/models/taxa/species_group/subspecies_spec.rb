@@ -31,7 +31,6 @@ describe Subspecies do
   end
 
   it "has its genus assigned from its species, if there is one" do
-    genus = create_genus
     species = create_species genus: genus
     subspecies = create_subspecies 'Atta major colobopsis',
       genus: nil, species: species
@@ -39,7 +38,6 @@ describe Subspecies do
   end
 
   it "does not have its genus assigned from its species, if there is not one" do
-    genus = create_genus
     subspecies = create_subspecies 'Atta major colobopsis',
       genus: genus, species: nil
     expect(subspecies.genus).to eq genus
@@ -61,9 +59,7 @@ describe Subspecies do
   describe "#parent" do
     context "without a species" do
       it "returns the genus" do
-        genus = create_genus
         taxon = create_subspecies genus: genus, species: nil
-
         expect(taxon.parent).to eq genus
       end
     end

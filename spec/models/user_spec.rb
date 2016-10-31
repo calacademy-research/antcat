@@ -86,9 +86,7 @@ describe User do
   end
 
   describe "#angle_bracketed_email" do
-    let(:user) do
-      create :user, name: "A User", email: "user@example.com"
-    end
+    let(:user) { create :user, name: "A User", email: "user@example.com" }
 
     it "builds a string suitable for emails" do
       expect(user.angle_bracketed_email).to eq '"A User" <user@example.com>'

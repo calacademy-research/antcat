@@ -2,8 +2,7 @@ require "spec_helper"
 
 describe Wikipedia::ReferenceExporter do
   let(:batiatus) do
-    create :author_name, name: "Batiatus, Q. L.",
-      author: create(:author)
+    create :author_name, name: "Batiatus, Q. L.", author: create(:author)
   end
 
   describe "ArticleReference" do

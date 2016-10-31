@@ -213,11 +213,11 @@ describe Name do
       expect(results).to eq(
         'Atta' => {
           first_atta_name.id => [
-            {table: 'taxa', field: :name_id, id: first_atta.id},
+            { table: 'taxa', field: :name_id, id: first_atta.id },
           ],
           second_atta_name.id => [
-            {table: 'taxa', field: :name_id, id: second_atta.id},
-          ],
+            { table: 'taxa', field: :name_id, id: second_atta.id },
+          ]
         }
       )
     end
@@ -231,9 +231,9 @@ describe Name do
       atta.update_attribute :type_name, atta.name
 
       expect(atta.name.references).to match_array [
-        {table: 'taxa', field: :name_id, id: atta.id},
-        {table: 'taxa', field: :type_name_id, id: atta.id},
-        {table: 'protonyms', field: :name_id, id: protonym.id},
+        { table: 'taxa', field: :name_id, id: atta.id },
+        { table: 'taxa', field: :type_name_id, id: atta.id },
+        { table: 'protonyms', field: :name_id, id: protonym.id },
       ]
     end
 
@@ -242,8 +242,8 @@ describe Name do
       eciton = create_genus 'Eciton'
       eciton.update_attribute :type_taxt, "{nam #{atta.name.id}}"
       expect(atta.name.references).to match_array [
-        {table: 'taxa', field: :name_id, id: atta.id},
-        {table: 'taxa', field: :type_taxt, id: eciton.id},
+        { table: 'taxa', field: :name_id, id: atta.id },
+        { table: 'taxa', field: :type_taxt, id: eciton.id },
       ]
     end
   end
@@ -251,18 +251,21 @@ describe Name do
   describe "#references_in_taxt" do
     it "returns instances that reference this name" do
       name = Name.create! name: 'Atta'
-      # create an instance for each type of taxt
+
+      # Create an instance for each type of taxt.
       Taxt.taxt_fields.each do |klass, fields|
         fields.each do |field|
           create klass, field => "{nam #{name.id}}"
         end
       end
+
+      # Count the total referencing items.
       refs = name.send :references_in_taxt
-      # count the total referencing items
       expect(refs.length).to eq(
         Taxt.taxt_fields.map { |klass, fields| fields.length }.reduce(&:+)
       )
-      # count the total referencing items of each type
+
+      # Count the total referencing items of each type.
       Taxt.taxt_fields.each do |klass, fields|
         fields.each do |field|
           expect(refs.select { |i| i[:table] == klass.table_name }.length).to eq(
@@ -296,7 +299,7 @@ describe Name do
     it "records a create" do
       name = Name.new name: 'Atta'
       with_versioning do
-        name['name'] = 'Eciton'
+        name.name = 'Eciton'
         name.save!
         versions = name.versions
         version = versions.last
@@ -310,7 +313,7 @@ describe Name do
         version = name.versions(true).last
         expect(version.event).to eq 'create'
 
-        name['name'] = 'Eciton'
+        name.name = 'Eciton'
         name.save!
 
         versions = name.versions true

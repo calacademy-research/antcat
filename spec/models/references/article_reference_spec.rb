@@ -41,15 +41,12 @@ describe ArticleReference do
   it { should validate_presence_of(:journal) }
 
   describe "validation" do
-    before do
-      author_name = create :author_name
-      journal = create :journal
-      @reference = ArticleReference.new author_names: [author_name], title: 'Title', citation_year: '2010a',
-        journal: journal, series_volume_issue: '1', pagination: '2'
-    end
-
     it "is valid the way I just set it up" do
-      expect(@reference).to be_valid
+      reference = ArticleReference.new author_names: [create(:author_name)],
+        title: 'Title', citation_year: '2010a',
+        journal: create(:journal), series_volume_issue: '1', pagination: '2'
+
+      expect(reference).to be_valid
     end
   end
 end
