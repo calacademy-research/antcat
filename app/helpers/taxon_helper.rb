@@ -37,14 +37,14 @@ module TaxonHelper
     return unless taxon.kind_of? Subfamily
 
     link_to "Add tribe", new_taxa_path(rank_to_create: 'tribe', parent_id: taxon.id),
-    class: "btn-new"
+      class: "btn-new"
   end
 
   def convert_to_subspecies_button taxon
     return unless taxon.kind_of? Species
 
     link_to 'Convert to subspecies', new_taxa_convert_to_subspecies_path(taxon),
-    class: "btn-new"
+      class: "btn-new"
   end
 
   def elevate_to_species_button taxon
@@ -57,7 +57,7 @@ module TaxonHelper
   end
 
   def delete_unreferenced_taxon_button taxon
-    return unless taxon.nontaxt_references.empty? # TODO check taxt references
+    return if taxon.any_nontaxt_references?
 
     link_to 'Delete', destroy_unreferenced_taxa_path(taxon), method: :delete,
       class: "btn-delete", data: { confirm: <<-MSG.squish }
