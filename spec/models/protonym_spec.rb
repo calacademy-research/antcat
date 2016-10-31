@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Protonym do
-  it { should validate_presence_of(:authorship) }
+  it { should be_versioned }
+  it { should validate_presence_of :authorship }
 
   describe "#authorship" do
     it "has an authorship" do
@@ -83,15 +84,6 @@ describe Protonym do
         protonym.destroy
         expect(Protonym.count).to be_zero
         expect(Citation.count).to be_zero
-      end
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        protonym = create :protonym
-        expect(protonym.versions.last.event).to eq 'create'
       end
     end
   end

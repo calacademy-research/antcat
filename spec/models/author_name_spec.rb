@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe AuthorName do
-  it { should validate_presence_of(:author) }
+  it { should be_versioned }
+  it { should validate_presence_of :author }
+
   let(:author) { Author.create! }
 
   it "has many references" do
@@ -158,15 +160,6 @@ describe AuthorName do
       author_name = AuthorName.new name: 'Baroni Urbani, C.'
       expect(author_name.last_name).to eq 'Baroni Urbani'
       expect(author_name.first_name_and_initials).to eq 'C.'
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        author_name = create :author_name
-        expect(author_name.versions.last.event).to eq 'create'
-      end
     end
   end
 end

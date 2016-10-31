@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe Publisher do
-  it { should validate_presence_of(:name) }
-  it { should belong_to(:place) }
+  it { should be_versioned }
+  it { should validate_presence_of :name }
+  it { should belong_to :place }
 
   describe "factory methods" do
     describe ".create_with_place" do
@@ -73,15 +74,6 @@ describe Publisher do
     it "formats correctly even if there is no place" do
       publisher = Publisher.create! name: "Wiley"
       expect(publisher.to_s).to eq 'Wiley'
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        publisher = create :publisher
-        expect(publisher.versions.last.event).to eq 'create'
-      end
     end
   end
 end

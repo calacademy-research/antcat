@@ -291,11 +291,7 @@ describe TaxonDecorator do
     end
   end
 
-  describe "#change_history" do
-    around do |example|
-      with_versioning &example
-    end
-
+  describe "#change_history", versioning: true do
     it "shows nothing for old taxa" do
       taxon = create_genus
       expect(taxon.decorate.change_history).to be_nil

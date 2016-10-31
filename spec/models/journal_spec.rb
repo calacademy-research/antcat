@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Journal do
-  it { should validate_presence_of(:name) }
+  it { should be_versioned }
+  it { should validate_presence_of :name }
 
   describe ".search" do
     it "should do fuzzy matching of journal names" do
@@ -42,15 +43,6 @@ describe Journal do
         create :article_reference, journal: journal
         expect { journal.destroy }.not_to change { Journal.count }
         expect(journal.errors[:base]).to eq ["cannot delete journal (not unused)"]
-      end
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        journal = create :journal
-        expect(journal.versions.last.event).to eq 'create'
       end
     end
   end

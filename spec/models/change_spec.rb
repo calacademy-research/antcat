@@ -1,12 +1,6 @@
 require 'spec_helper'
 
-describe Change do
-  before do
-    @was_enabled = PaperTrail.enabled?
-    PaperTrail.enabled = true
-  end
-  after { PaperTrail.enabled = @was_enabled }
-
+describe Change, versioning: true do
   it "has a version" do
     genus = create_genus
     change = Change.new
@@ -24,9 +18,7 @@ describe Change do
 
     user = create :user
     genus = create_genus
-
     change = setup_version genus.id, user
-
     genus.last_version.update_attributes whodunnit: user.id
 
     expect(change.user).to eq user

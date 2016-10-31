@@ -20,8 +20,7 @@ describe Taxon do
     expect(taxon).not_to be_waiting
   end
 
-  describe "Authorization" do
-    around { |example| with_versioning &example }
+  describe "Authorization", versioning: true do
     let(:editor) { create :editor }
     let(:user) { create :user }
     let(:approver) { create :editor }
@@ -93,18 +92,15 @@ describe Taxon do
     end
   end
 
-  describe "Last change and version" do
-    around { |example| with_versioning &example }
-
+  describe "Last change and version", versioning: true do
     describe "#last_change" do
+      let(:taxon) { create_genus }
+
       it "returns nil if no Changes have been created for it" do
-        taxon = create_genus
         expect(taxon.last_change).to be_nil
       end
 
       it "returns the Change, if any" do
-        taxon = create_genus
-
         change = setup_version taxon.id
         expect(taxon.last_change).to eq change
       end
@@ -123,9 +119,6 @@ describe Taxon do
 
   # We no longer support "Added by" display.
   # describe "Added by" do
-  #   around do |example|
-  #     with_versioning &example
-  #   end
   #   it "should return the User who added the record, not a subsequent editor" do
   #     taxon = create_taxon_version_and_change :waiting, adder
   #

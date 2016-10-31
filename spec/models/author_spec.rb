@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Author do
+  it { should be_versioned }
+
   it "has many names" do
     author = Author.create!
     author.names << create(:author_name)
@@ -47,15 +49,6 @@ describe Author do
 
       expect(Author.count).to eq 1
       expect(AuthorName.count).to eq 2
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        author = create :author
-        expect(author.versions.last.event).to eq 'create'
-      end
     end
   end
 

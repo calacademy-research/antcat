@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe ReferenceDocument do
+  it { should be_versioned }
+
   it "should make sure it has a protocol" do
     stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
     document = create :reference_document
@@ -115,15 +117,6 @@ describe ReferenceDocument do
       document = ReferenceDocument.create! file_file_name: 'foo'
       document.host = 'localhost'
       expect(document.url).to eq "http://localhost/documents/#{document.id}/foo"
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        reference_document = create :reference_document
-        expect(reference_document.versions.last.event).to eq 'create'
-      end
     end
   end
 end

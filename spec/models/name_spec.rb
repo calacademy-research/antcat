@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Name do
+  it { should be_versioned }
+
   it "should have a name" do
     expect(Name.new(name: 'Name').name).to eq 'Name'
   end
@@ -276,54 +278,19 @@ describe Name do
     end
   end
 
-  describe "versioning" do
-    it "records an add" do
-      with_versioning do
-        name = Name.create! name: 'Atta'
-        versions = name.versions
-        version = versions.last
-        expect(version.event).to eq 'create'
-      end
-    end
-
-    it "records an update" do
-      name = Name.create! name: 'Atta'
-      with_versioning do
-        name.update_attribute :name, 'Eciton'
-        versions = name.versions
-        version = versions.last
-        expect(version.event).to eq 'update'
-      end
-    end
-
-    it "records a create" do
-      name = Name.new name: 'Atta'
-      with_versioning do
-        name.name = 'Eciton'
-        name.save!
-        versions = name.versions
-        version = versions.last
-        expect(version.event).to eq 'create'
-      end
-    end
-
+  describe "versioning", versioning: true do
     it "records an add followed by an update" do
-      with_versioning do
-        name = Name.create! name: 'Atta'
-        version = name.versions(true).last
-        expect(version.event).to eq 'create'
+      name = Name.create! name: 'Atta'
+      version = name.versions(true).last
+      expect(version.event).to eq 'create'
 
-        name.name = 'Eciton'
-        name.save!
+      name.name = 'Eciton'
+      name.save!
 
-        versions = name.versions true
-        expect(name.versions.count).to eq 2
-
-        version = versions.first
-        expect(version.event).to eq 'create'
-        version = versions.last
-        expect(version.event).to eq 'update'
-      end
+      versions = name.versions true
+      expect(name.versions.count).to eq 2
+      expect(versions.first.event).to eq 'create'
+      expect(versions.last.event).to eq 'update'
     end
   end
 

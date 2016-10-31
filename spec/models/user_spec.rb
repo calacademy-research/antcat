@@ -1,14 +1,12 @@
 require 'spec_helper'
 
 describe User do
-  it { should validate_presence_of(:name) }
+  it { should validate_presence_of :name }
 
   describe "scopes" do
     describe "scope.order_by_name" do
       before do
-        create :user, name: "Anderson"
-        create :user, name: "Zanderson"
-        create :editor, name: "Banderson"
+        %w(Anderson Zanderson Banderson).each { |name| create :user, name: name }
       end
 
       it "knows the alphabet" do

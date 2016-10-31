@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Reference do
+  it { should be_versioned }
+
   let(:an_author_name) { create :author_name }
   let(:fisher) { create :author_name, name: 'Fisher' }
   let(:fisher_bl) { create :author_name, name: 'Fisher, B.L.' }
@@ -362,28 +364,26 @@ describe Reference do
     end
   end
 
-  describe "versioning" do
+  describe "versioning", versioning: true do
     it "records events and can restore prior versions" do
-      with_versioning do
-        reference = UnknownReference.create! title: 'title',
-          citation_year: '2010', citation: 'citation'
+      reference = UnknownReference.create! title: 'title',
+        citation_year: '2010', citation: 'citation'
 
-        versions = reference.versions
-        version = versions.last
-        expect(version.event).to eq 'create'
+      versions = reference.versions
+      version = versions.last
+      expect(version.event).to eq 'create'
 
-        reference.title = 'new title'
-        reference.save!
+      reference.title = 'new title'
+      reference.save!
 
-        versions = reference.versions true
-        version = versions.last
-        expect(version.event).to eq 'update'
+      versions = reference.versions true
+      version = versions.last
+      expect(version.event).to eq 'update'
 
-        reference = version.reify
-        expect(reference.title).to eq 'title'
-        reference.save!
-        expect(reference.title).to eq 'title'
-      end
+      reference = version.reify
+      expect(reference.title).to eq 'title'
+      reference.save!
+      expect(reference.title).to eq 'title'
     end
   end
 end

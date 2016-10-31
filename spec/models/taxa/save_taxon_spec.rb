@@ -181,28 +181,24 @@ describe Taxa::SaveTaxon do
 
     describe "Creating a Change" do
       it "creates a Change pointing to the version of Taxon when added" do
-        with_versioning do
-          taxon = build_new_taxon_and_set_parent :species, create_genus
-          taxon.save_taxon @genus_params
-          change = Change.first
-          expect(change.user_changed_taxon_id).to eq taxon.last_version.item_id
-        end
+        taxon = build_new_taxon_and_set_parent :species, create_genus
+        with_versioning { taxon.save_taxon @genus_params }
+        change = Change.first
+        expect(change.user_changed_taxon_id).to eq taxon.last_version.item_id
       end
 
       it "creates a Change for an edit" do
         genus = create_genus
-        with_versioning do
-          genus.save_taxon @genus_params
-        end
+        with_versioning { genus.save_taxon @genus_params }
+
         expect(Change.count).to equal 1
-        expect(Change.first[:change_type]).to eq 'update'
+        expect(Change.first.change_type).to eq 'update'
       end
 
       it "changes the review state after editing" do
         genus = create_genus
-        with_versioning do
-          genus.save_taxon @genus_params
-        end
+        with_versioning { genus.save_taxon @genus_params }
+
         expect(genus).not_to be_old
       end
     end
