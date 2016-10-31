@@ -87,74 +87,81 @@ Rails.application.configure do
       authentication:       Rails.application.secrets.email_authentication,
       enable_starttls_auto: Rails.application.secrets.email_enable_starttls_auto }
 
-  #         ___________         __
-  #         \_   _____/__  ____/  |_____________
-  #          |    __)_\  \/  /\   __\_  __ \__  \
-  #          |        \>    <  |  |  |  | \// __ \_
-  #         /_______  /__/\_ \ |__|  |__|  (____  /
-  #     _________   \/      \/   __             \/  __
-  #     \_   ___ \  ____   _____/  |_  ____   _____/  |_
-  #     /    \  \/ /  _ \ /    \   __\/ __ \ /    \   __\
-  #     \     \___(  <_> )   |  \  | \  ___/|   |  \  |
-  #      \______  /\____/|___|  /__|  \___  >___|  /__|
-  #             \/            \/          \/     \/
+=begin
+            ___________         __
+            \_   _____/__  ____/  |_____________
+             |    __)_\  \/  /\   __\_  __ \__  \
+             |        \>    <  |  |  |  | \// __ \_
+            /_______  /__/\_ \ |__|  |__|  (____  /
+        _________   \/      \/   __             \/  __
+        \_   ___ \  ____   _____/  |_  ____   _____/  |_
+        /    \  \/ /  _ \ /    \   __\/ __ \ /    \   __\
+        \     \___(  <_> )   |  \  | \  ___/|   |  \  |
+         \______  /\____/|___|  /__|  \___  >___|  /__|
+                \/            \/          \/     \/
 
   #############################################################################
-  # Simulate production env locally for debugging/profiling
+  # Simulate production locally for debugging/profiling
   #############################################################################
-  # Uncomment these lines:
-  #   config.cache_classes = false
-  #   config.serve_static_files = true
-  #   config.assets.debug = false
-  #   config.log_level = :debug
-  #
-  # Precompile assets: `rake assets:precompile`
-  # (you may also want to `rake assets:clobber` if SHTF)
-  #
-  # Run server: `rails s -e production`
-  #
-  # To see the log, run `tail -f log/production.log`, or uncomment the next line:
-  #   ActiveRecord::Base.logger = Logger.new STDOUT
+
+    Uncomment these lines:
+=end
+    # config.cache_classes = false
+    # config.serve_static_files = true
+    # config.assets.debug = false
+    # config.log_level = :debug
+    ## See log in console (or run `tail -f log/production.log`)
+    # ActiveRecord::Base.logger = Logger.new STDOUT
+=begin
+    Precompile assets: `rake assets:precompile`
+    (you may also want to `rake assets:clobber` if SHTF)
+
+    Run server: `rails s -e production`
 
   #############################################################################
-  # Profile using Rack MiniProfiler (also works in production)
+  # Profile with New Relic
   #############################################################################
-  # Add to `Gemfile`:
-  #   gem 'rack-mini-profiler', require: false
-  #   gem 'flamegraph' # optional
-  #   gem 'stackprof' # optional
-  #
-  # Add this to `ApplicationController`:
-  #   before_action do
-  #     if current_user.try :is_superadmin? # <-- Tweak if used in prod.
-  #       Rack::MiniProfiler.authorize_request
-  #     end
-  #   end
-  #
-  # Uncomment this (or add it to `config/initializers/rack_profiler.rb`):
-  #   require 'rack-mini-profiler'
-  #   Rack::MiniProfilerRails.initialize! Rails.application
-  #
-  # Reload any page and look in the top left corner.
-  #
-  # Versions used when writing this:
-  #   gem 'rack-mini-profiler', '0.10.1', require: false
-  #   gem 'flamegraph', '0.9.5'
-  #   gem 'stackprof', '0.2.10'
+
+    Uncomment gem in `Gemfile`.
+
+    Set license_key (account required) and app_name in `config/newrelic.yml`.
+
+    Visit `http://localhost:3000/newrelic`.
+
+  #############################################################################
+  # Profile using Rack MiniProfiler
+  #############################################################################
+
+    Uncomment gem(s) in `Gemfile`.
+
+    Add this to `ApplicationController`:
+      before_action do
+        if current_user.try :is_superadmin? # <-- Tweak if used in prod.
+          Rack::MiniProfiler.authorize_request
+        end
+      end
+
+    Uncomment this (or add it to `config/initializers/rack_profiler.rb`):
+=end
+    # require 'rack-mini-profiler'
+    # Rack::MiniProfilerRails.initialize! Rails.application
+=begin
+    Reload any page and look in the top left corner.
 
   #############################################################################
   # Find N+1 queries using Bullet
   #############################################################################
-  # Add to `Gemfile`: gem 'bullet', '4.14.7'
-  #
-  # Add to `Application` in `config/application.rb`:
-  #   config.after_initialize do
-  #     Bullet.enable = true
-  #     Bullet.console = true # JavaScript console
-  #     Bullet.add_footer = true
-  #   end
-  #
-  # Reload any page and look if there's anything in the footer.
-  #
-  # Version used when writing this: gem 'bullet', '4.14.7'
+
+    Uncomment gem in `Gemfile`.
+
+    Add to `Application` in `config/application.rb`:
+      config.after_initialize do
+        Bullet.enable = true
+        Bullet.console = true # JavaScript console
+        Bullet.add_footer = true
+      end
+
+    Reload any page and look if there's anything in the footer.
+
+=end
 end

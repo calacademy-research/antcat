@@ -79,3 +79,15 @@ group :test do
   gem 'shoulda-matchers'
   gem 'webmock'
 end
+
+#####################################################
+# Profiling gems kept uncommented here because lazy.
+# See notes in `config/environments/production.rb`.
+# gem 'bullet'
+#
+# gem 'newrelic_rpm'
+#
+# gem 'rack-mini-profiler', require: false
+# gem 'flamegraph' # for rmp, optional
+# gem 'stackprof' # for rmp, optional
+#####################################################
