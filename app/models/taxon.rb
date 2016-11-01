@@ -86,9 +86,6 @@ class Taxon < ActiveRecord::Base
   # `Taxon.find_by_name("Acamathus")` returns a single item
   # `Taxon.find_by_sql("SELECT * FROM taxa GROUP BY name_cache HAVING COUNT(*) > 1").count` = 857
   # Other methods clashing with dynamic finders: `Author.find_by_names`, `Name.find_by_name`.
-  #
-  # TODO probably add index to `taxa.name_cache` due to
-  # `Taxon.find_by_name @taxon.type_name.to_s` in `TaxonDecorator::Headline`
   def self.find_by_name name
     find_by(name_cache: name)
   end
