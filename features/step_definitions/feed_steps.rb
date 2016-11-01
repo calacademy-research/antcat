@@ -1,5 +1,3 @@
-# "for the feed" is basically namespacing.
-
 Given(/^activity tracking is (enabled|disabled)$/) do |state|
   new_state = case state
               when "enabled" then true
@@ -27,6 +25,7 @@ end
 
 # Journal
 When(/^I add a journal for the feed$/) do
+  set_last_user_as_user_for_feed
   Journal.create name: "Archibald Bulletin"
 end
 
@@ -34,6 +33,8 @@ When(/^I edit a journal for the feed$/) do
   journal = Feed::Activity.without_tracking do
     Journal.create name: "Archibald Bulletin"
   end
+
+  set_last_user_as_user_for_feed
   journal.name = "New Journal Name"
   journal.save!
 end
@@ -42,6 +43,8 @@ When(/^I delete a journal for the feed$/) do
   journal = Feed::Activity.without_tracking do
     Journal.create name: "Archibald Bulletin"
   end
+
+  set_last_user_as_user_for_feed
   journal.destroy
 end
 
@@ -49,6 +52,7 @@ end
 When(/^I add a taxon history item for the feed$/) do
   taxon = Feed::Activity.without_tracking { create_subfamily }
 
+  set_last_user_as_user_for_feed
   TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}",
     taxon: taxon
 end
@@ -58,6 +62,8 @@ When(/^I edit a taxon history item for the feed$/) do
     TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}",
       taxon: create_subfamily
   end
+
+  set_last_user_as_user_for_feed
   item.taxt = "as a genus: {ref 123}"
   item.save!
 end
@@ -67,6 +73,8 @@ When(/^I delete a taxon history item for the feed$/) do
     TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}",
       taxon: create_subfamily
   end
+
+  set_last_user_as_user_for_feed
   item.destroy
 end
 
@@ -114,6 +122,8 @@ When(/^I add a taxon for the feed$/) do
   Feed::Activity.without_tracking do
     step "the Formicidae family exists"
     subfamily_name = create :subfamily_name, name: "Antcatinae"
+
+    set_last_user_as_user_for_feed
     create :subfamily, name: subfamily_name
   end
 end
@@ -144,6 +154,7 @@ end
 When(/^I add a reference section for the feed$/) do
   taxon = Feed::Activity.without_tracking { create_subfamily }
 
+  set_last_user_as_user_for_feed
   ReferenceSection.create title_taxt: "PALAEONTOLOGY",
     references_taxt: "The Ants (amber checklist)", taxon: taxon
 end
@@ -153,6 +164,8 @@ When(/^I edit a reference section for the feed$/) do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
     references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
   end
+
+  set_last_user_as_user_for_feed
   section.references_taxt = "The Ants (amber fossil checklist)"
   section.save!
 end
@@ -162,5 +175,12 @@ When(/^I delete a reference section for the feed$/) do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
     references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
   end
+
+  set_last_user_as_user_for_feed
   section.destroy
+end
+
+# Cheating because Cucumber runs another thread.
+def set_last_user_as_user_for_feed
+  User.current = User.last
 end
