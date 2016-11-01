@@ -12,5 +12,11 @@
         =add_period_if_necessary Taxt.to_string(history_item.taxt)
 
   =taxon.child_lists
-  =taxon.references
-  =taxon.change_history
+
+  -# Special case because the root view pulls in too much data.
+  -if action_name == "index"
+    %br
+    =link_to "Formicidae family references", catalog_path(429011)
+  -else
+    =taxon.references
+    =taxon.change_history
