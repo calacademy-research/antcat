@@ -31,8 +31,8 @@ class Genus < GenusGroupTaxon
     update_descendants_subfamilies
   end
 
-  def statistics
-    get_statistics [:species, :subspecies]
+  def statistics valid_only: false
+    get_statistics [:species, :subspecies], valid_only: valid_only
   end
 
   def parent

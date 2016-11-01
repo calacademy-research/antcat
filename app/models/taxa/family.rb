@@ -28,7 +28,7 @@ class Family < Taxon
     Subfamily.all
   end
 
-  def statistics
+  def statistics valid_only: false
     statistics = {}
 
     { subfamilies: Subfamily,
@@ -37,7 +37,11 @@ class Family < Taxon
       species: Species,
       subspecies: Subspecies
     }.each do |rank, klass|
-      count = klass.group(:fossil, :status).count
+      count = if valid_only
+                klass.valid
+              else
+                klass
+              end.group(:fossil, :status).count
       self.class.massage_count count, rank, statistics
     end
 

@@ -14,11 +14,16 @@ module Taxa::Statistics
   end
 
   protected
-    def get_statistics ranks
+    def get_statistics ranks, valid_only: false
       statistics = {}
       ranks.each do |rank|
-        count = send(rank).group('fossil', 'status').count
-        delete_original_combinations count
+        count = if valid_only
+                  send(rank).valid
+                else
+                  send(rank)
+                end.group('fossil', 'status').count
+        delete_original_combinations count unless valid_only
+
         self.class.massage_count count, rank, statistics
       end
       statistics

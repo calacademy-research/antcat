@@ -8,5 +8,5 @@ class Subgenus < GenusGroupTaxon
     genus
   end
 
-  def statistics; end
+  def statistics valid_only: false; end
 end

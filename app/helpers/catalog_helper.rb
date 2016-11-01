@@ -46,6 +46,10 @@ module CatalogHelper
       data: { 'delete-location' => taxa_path(taxon), "taxon-id" => taxon.id }
   end
 
+  def show_full_statistics? taxon
+    taxon.invalid? || params[:include_full_statistics].present?
+  end
+
   private
     def css_classes_for_status taxon
       css_classes = []

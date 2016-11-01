@@ -36,15 +36,15 @@ module TaxonHelper
   def add_tribe_button taxon
     return unless taxon.kind_of? Subfamily
 
-    link_to "Add tribe", new_taxa_path(rank_to_create: 'tribe', parent_id: taxon.id),
-      class: "btn-new"
+    url = new_taxa_path rank_to_create: 'tribe', parent_id: taxon.id
+    link_to "Add tribe", url, class: "btn-new"
   end
 
   def convert_to_subspecies_button taxon
     return unless taxon.kind_of? Species
 
-    link_to 'Convert to subspecies', new_taxa_convert_to_subspecies_path(taxon),
-      class: "btn-new"
+    url = new_taxa_convert_to_subspecies_path taxon
+    link_to 'Convert to subspecies', url, class: "btn-new"
   end
 
   def elevate_to_species_button taxon

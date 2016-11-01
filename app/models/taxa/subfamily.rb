@@ -23,8 +23,8 @@ class Subfamily < Taxon
     tribes
   end
 
-  def statistics
-    get_statistics [:tribes, :genera, :species, :subspecies]
+  def statistics valid_only: false
+    get_statistics [:tribes, :genera, :species, :subspecies], valid_only: valid_only
   end
 
   def all_displayable_genera

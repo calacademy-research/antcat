@@ -2,7 +2,7 @@
 =taxon.header
 
 -unless taxon.original_combination?
-  =taxon.statistics
+  =render "statistics", taxon: taxon
   =taxon.genus_species_header_notes_taxt
   =taxon.headline
 

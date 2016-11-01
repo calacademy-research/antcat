@@ -25,8 +25,8 @@ class Species < SpeciesGroupTaxon
     subspecies
   end
 
-  def statistics
-    get_statistics [:subspecies]
+  def statistics valid_only: false
+    get_statistics [:subspecies], valid_only: valid_only
   end
 
   def become_subspecies_of species
