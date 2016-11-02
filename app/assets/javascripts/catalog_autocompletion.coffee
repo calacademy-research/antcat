@@ -22,15 +22,8 @@ $ ->
       empty: '<div class="empty-message">No results</div>'
       suggestion: (taxon) -> '<p>' + taxon.name + '<br><small>' + taxon.authorship + '</small></p>'
 
-  $('input.typeahead-taxa-js-hook').typeahead options, dataSet
-
-  # Press Enter to submit header search box form with selected suggestion.
-  $('#desktop-lower-menu').on 'keyup', (e) ->
-    if e.which == 13
-      e.preventDefault()
-      selectables = $('input.typeahead-taxa-js-hook')
-        .siblings(".tt-dropdown-menu").find(".tt-suggestion")
-      if selectables.length > 0
-        $(selectables[0]).trigger('click')
-      else
-        $("#header_search_button").trigger('click')
+  $('input.typeahead-taxa-js-hook').typeahead(options, dataSet)
+    .on 'typeahead:selected', (e) ->
+      # To make clicking on a suggestion or pressing Enter submit the form.
+      $("#header_search_button").addClass "disabled"
+      e.target.form.submit()

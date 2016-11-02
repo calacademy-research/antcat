@@ -23,7 +23,8 @@ class CatalogController < ApplicationController
 
   def autocomplete
     q = params[:q] || ''
-    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
+    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%")
+      .includes(:name, protonym: { authorship: :reference }).take(10)
 
     respond_to do |format|
       format.json do
