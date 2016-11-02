@@ -536,7 +536,17 @@ describe Taxon do
       expect(taxon.current_valid_taxon_including_synonyms).to eq senior
     end
 
-   it "finds the latest senior synonym that's valid" do
+    # Fails a lot. This test case is the arch enemy of AntCat's RSpec testing team.
+    #
+    # Changing `order(created_at: :desc)` to `order(id: :desc)` in
+    # `#find_most_recent_valid_senior_synonym` *should* return the synonyms
+    # in the same/intended order without risk of shuffling objects created
+    # the same second. However, that makes the test fail 100%, which brings
+    # me to belive that the test doesn't randomly fail -- it randomly passes.
+    #
+    # Use this for debugging:
+    # `for i in {1..3}; do rspec ./spec/models/taxon_spec.rb:549 ; done`
+    it "finds the latest senior synonym that's valid" do
       valid_senior = create_genus status: 'valid'
       invalid_senior = create_genus status: 'homonym'
       taxon = create_genus status: 'synonym'

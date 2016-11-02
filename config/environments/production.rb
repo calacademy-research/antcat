@@ -124,7 +124,10 @@ Rails.application.configure do
 
     Uncomment gem in `Gemfile`.
 
-    Set license_key (account required) and app_name in `config/newrelic.yml`.
+    Production only:
+      New Relic is free to use in development (as defined by `RAILS_ENV`), but
+      requires an account in production. So, make sure `license_key` and
+      `app_name` are set in `config/newrelic.yml`.
 
     Visit `http://localhost:3000/newrelic`.
 
