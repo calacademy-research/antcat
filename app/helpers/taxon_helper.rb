@@ -2,16 +2,17 @@ module TaxonHelper
   def sort_by_status_and_name taxa
     taxa.sort do |a, b|
       if a.status == b.status
-        a.name.name <=> b.name.name # name ascending
+        a.name_cache <=> b.name_cache # name ascending
       else
         b.status <=> a.status # status descending
       end
     end
   end
 
+  # This is for the edit taxa form. Advanced search uses another.
   def biogeographic_region_options_for_select value = nil
     options_for_select([[nil, nil]], value) <<
-    options_for_select(BiogeographicRegion::REGIONS, value)
+      options_for_select(BiogeographicRegion::REGIONS, value)
   end
 
   def add_taxon_button taxon, collision_resolution
@@ -35,15 +36,15 @@ module TaxonHelper
   def add_tribe_button taxon
     return unless taxon.kind_of? Subfamily
 
-    link_to "Add tribe", new_taxa_path(rank_to_create: 'tribe', parent_id: taxon.id),
-    class: "btn-new"
+    url = new_taxa_path rank_to_create: 'tribe', parent_id: taxon.id
+    link_to "Add tribe", url, class: "btn-new"
   end
 
   def convert_to_subspecies_button taxon
     return unless taxon.kind_of? Species
 
-    link_to 'Convert to subspecies', new_taxa_convert_to_subspecies_path(taxon),
-    class: "btn-new"
+    url = new_taxa_convert_to_subspecies_path taxon
+    link_to 'Convert to subspecies', url, class: "btn-new"
   end
 
   def elevate_to_species_button taxon
@@ -56,7 +57,7 @@ module TaxonHelper
   end
 
   def delete_unreferenced_taxon_button taxon
-    return unless taxon.nontaxt_references.empty? # TODO check taxt references
+    return if taxon.any_nontaxt_references?
 
     link_to 'Delete', destroy_unreferenced_taxa_path(taxon), method: :delete,
       class: "btn-delete", data: { confirm: <<-MSG.squish }

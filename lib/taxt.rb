@@ -88,17 +88,13 @@ module Taxt
       id, type_number = id_from_editable $3
       case type_number
       when REFERENCE_TAG_TYPE
-        raise ReferenceNotFound.new(string) unless Reference.find_by_id id
+        raise ReferenceNotFound.new(string) unless Reference.find_by(id: id)
         "{ref #{id}}"
       when TAXON_TAG_TYPE
-        raise TaxonNotFound.new(string) unless Taxon.find id
+        raise TaxonNotFound.new(string) unless Taxon.find_by(id: id)
         "{tax #{id}}"
       when NAME_TAG_TYPE
-        begin
-          Name.find id
-        rescue ActiveRecord::RecordNotFound
-          raise NameNotFound.new(string, id)
-        end
+        raise NameNotFound.new(string, id) unless Name.find_by(id: id)
         "{nam #{id}}"
       end
     end
@@ -128,6 +124,7 @@ module Taxt
   end
 
   # Note: `private` doesn't work on class methods, but it reveals intent.
+  # TODO add `private_class_method :xxx`
   private
     def self.decode taxt, options = {}
       return '' unless taxt
@@ -148,7 +145,7 @@ module Taxt
       elsif $use_ant_web_formatter # TODO nuke
         # We never want to expand references when exporting to AntWeb.
         reference = Reference.find(reference_id_match) rescue whole_match
-        reference.decorate.format_inline_citation expansion: false rescue whole_match
+        reference.decorate.format_inline_citation_without_expansion rescue whole_match
       else
         reference = Reference.find(reference_id_match) rescue whole_match
         reference.decorate.format_inline_citation options rescue whole_match

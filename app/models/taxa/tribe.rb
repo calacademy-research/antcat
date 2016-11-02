@@ -23,8 +23,8 @@ class Tribe < Taxon
     genera
   end
 
-  def statistics
-    get_statistics [:genera]
+  def statistics valid_only: false
+    get_statistics [:genera], valid_only: valid_only
   end
 
   def siblings

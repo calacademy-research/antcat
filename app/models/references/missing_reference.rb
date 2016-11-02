@@ -41,9 +41,7 @@ class MissingReference < Reference
 
   def self.destroy_found_missing_references records_to_destroy
     Progress.puts "#{records_to_destroy.count} MissingReferences to delete"
-    records_to_destroy.each do |id|
-      find(id.id).destroy
-    end
+    records_to_destroy.each { |id| find(id.id).destroy }
   end
 
   def find_replacement

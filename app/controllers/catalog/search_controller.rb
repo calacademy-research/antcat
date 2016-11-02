@@ -23,10 +23,12 @@ module Catalog
     end
 
     def quick_search
-      taxa = Taxa::Search.find_name(params[:qq], params[:search_type])
-      taxa = taxa.valid if params[:valid_only]
+      taxa = Taxa::Search.quick_search params[:qq],
+        search_type: params[:search_type],
+        valid_only: params[:valid_only]
 
-      # Single match --> redirect
+      # If user searched from the search box in the header, and
+      # theres a single match --> redirect to match.
       if params[:im_feeling_lucky] && taxa.count == 1
         return redirect_to catalog_path(taxa.first, qq: params[:qq])
       end
@@ -66,7 +68,7 @@ module Catalog
       end
 
       def no_matching_authors? name
-        AuthorName.find_by_name(name).nil?
+        AuthorName.find_by(name: name).nil?
       end
 
       def download_filename

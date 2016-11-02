@@ -46,8 +46,7 @@ class Taxon < ActiveRecord::Base
   attr_accessor :authorship_string, :duplicate_type, :parent_name,
     :current_valid_taxon_name, :homonym_replaced_by_name
 
-  delegate :authorship_html_string, :author_last_names_string, :year,
-    to: :protonym
+  delegate :authorship_html_string, :author_last_names_string, :year, to: :protonym
 
   belongs_to :name
   belongs_to :protonym, -> { includes :authorship }
@@ -62,15 +61,14 @@ class Taxon < ActiveRecord::Base
   has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
   has_many :junior_synonyms, through: :synonyms_as_senior
   has_many :senior_synonyms, through: :synonyms_as_junior
-  has_many :history_items, -> { order 'position' }, class_name: 'TaxonHistoryItem', dependent: :destroy
-  has_many :reference_sections, -> { order 'position' }, dependent: :destroy
+  has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
+  has_many :reference_sections, -> { order(:position) }, dependent: :destroy
 
   scope :displayable, -> { where(display: true) }
   scope :valid, -> { where(status: 'valid') }
   scope :extant, -> { where(fossil: false) }
-  scope :with_names, -> { joins(:name).readonly(false) }
-  scope :ordered_by_name, lambda { with_names.order('names.name').includes(:name) }
-  scope :ordered_by_epithet, lambda { with_names.order('names.epithet').includes(:name) }
+  scope :order_by_joined_epithet, -> { joins(:name).order('names.epithet') }
+  scope :order_by_name_cache, -> { order(:name_cache) }
 
   accepts_nested_attributes_for :name, :protonym, :type_name
 
@@ -78,18 +76,18 @@ class Taxon < ActiveRecord::Base
     Taxa::SaveTaxon.new(self).save_taxon(params, previous_combination)
   end
 
-  # Deprecated: Many of the callers probably do not expect
-  # that the first match is picked.
+  # Avoid this method. Issues:
+  # It conflicts with dynamic finder methods with the same names (they should be avoided too).
+  # It searches in `taxa.name_cache`, not `names.name`.
+  # It silently returns the first match if there's more than 1.
+  #
+  # More stuff:
+  # `Taxon.where(name_cache: "Acamathus").count` returns two matches
+  # `Taxon.find_by_name("Acamathus")` returns a single item
+  # `Taxon.find_by_sql("SELECT * FROM taxa GROUP BY name_cache HAVING COUNT(*) > 1").count` = 857
+  # Other methods clashing with dynamic finders: `Author.find_by_names`, `Name.find_by_name`.
   def self.find_by_name name
-    logger.info <<-MSG.squish
-      AntCat: `Taxon.find_by_name` is deprecated. Use `Taxon.find_first_by_name`
-      [not recommended] or `Taxon.where(name_cache:)` instead."
-    MSG
-    find_first_by_name name
-  end
-
-  def self.find_first_by_name name
-    where(name_cache: name).first
+    find_by(name_cache: name)
   end
 
   def update_parent new_parent
@@ -104,6 +102,7 @@ class Taxon < ActiveRecord::Base
     self.type.downcase
   end
 
+  # TODO only used in `Exporters::Antweb::Exporter`? move maybe
   # The original_combination accessor returns the taxon with 'original combination'
   # status whose 'current valid taxon' points to us.
   def original_combination

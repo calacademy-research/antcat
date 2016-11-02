@@ -1,3 +1,5 @@
+# TODO not sure if this is used, at least the `Milieu` class is long gone.
+#
 # This is used to identify the server (machine) to the Milieu class
 # Legal values: local, production
 # On Engine Yard (production) this file goes in /data/antcat/shared/config

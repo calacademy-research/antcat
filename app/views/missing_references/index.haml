@@ -15,5 +15,5 @@
         =missing_reference.decorate.goto_reference_link
       -if user_can_edit?
         %td
-          -surrogate_missing_reference = MissingReference.find_by_citation missing_reference.citation
+          -surrogate_missing_reference = MissingReference.find_by(citation: missing_reference.citation)
           =link_to 'replace', edit_missing_reference_path(surrogate_missing_reference)

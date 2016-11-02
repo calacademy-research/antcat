@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe Subfamily do
+  let(:subfamily) { create :subfamily, name: create(:subfamily_name, name: 'Dolichoderinae') }
+
   it "can have tribes, which are its children" do
-    subfamily = create :subfamily, name: create(:name, name: 'Myrmicinae')
     create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily
     create :tribe, name: create(:name, name: 'Dacetini'), subfamily: subfamily
     expect(subfamily.tribes.map(&:name).map(&:to_s)).to match_array ['Attini', 'Dacetini']
@@ -10,96 +11,87 @@ describe Subfamily do
   end
 
   it "can have collective group names" do
-    subfamily = create_subfamily
     collective_group_name = create_genus status: 'collective group name', subfamily: subfamily
     create_genus subfamily: subfamily
     expect(subfamily.reload.collective_group_names).to eq [collective_group_name]
   end
 
   it "can have genera" do
-    myrmicinae = create :subfamily, name: create(:name, name: 'Myrmicinae')
-    dacetini = create :tribe, name: create(:name, name: 'Dacetini'), subfamily: myrmicinae
-    create_genus 'Atta', subfamily: myrmicinae, tribe: create_tribe('Attini', subfamily: myrmicinae)
-    create_genus 'Acanthognathus', subfamily: myrmicinae, tribe: dacetini
-    expect(myrmicinae.genera.map(&:name).map(&:to_s)).to match_array ['Atta', 'Acanthognathus']
+    dacetini = create :tribe, name: create(:name, name: 'Dacetini'), subfamily: subfamily
+    create_genus 'Atta', subfamily: subfamily, tribe: create_tribe('Attini', subfamily: subfamily)
+    create_genus 'Acanthognathus', subfamily: subfamily, tribe: dacetini
+    expect(subfamily.genera.map(&:name).map(&:to_s)).to match_array ['Atta', 'Acanthognathus']
   end
 
-  it "can have species" do
-    subfamily = create :subfamily
-    genus = create :genus, subfamily: subfamily
-    create :species, genus: genus
-    expect(subfamily.species.size).to eq 1
-  end
+  describe "shared setup" do
+    let!(:genus) { create :genus, subfamily: subfamily }
+    let!(:species) { create :species, genus: genus }
 
-  it "can have subspecies" do
-    subfamily = create :subfamily
-    genus = create :genus, subfamily: subfamily
-    species = create :species, genus: genus
-    create :subspecies, genus: genus, species: species
-    expect(subfamily.subspecies.size).to eq 1
+    it "can have species" do
+      expect(subfamily.species.size).to eq 1
+    end
+
+    it "can have subspecies" do
+      create :subspecies, genus: genus, species: species
+      expect(subfamily.subspecies.size).to eq 1
+    end
   end
 
   describe "#name" do
     it "is just the name" do
-      taxon = create :subfamily, name: create(:name, name: 'Dolichoderinae')
-      expect(taxon.name.to_s).to eq 'Dolichoderinae'
+      expect(subfamily.name.to_s).to eq 'Dolichoderinae'
     end
   end
 
   # TODO belongs to Name
   describe "Label" do
     it "is just the name" do
-      taxon = create :subfamily, name: create(:name, name: 'Dolichoderinae')
-      expect(taxon.name.to_html).to eq 'Dolichoderinae'
+      expect(subfamily.name.to_html).to eq 'Dolichoderinae'
     end
   end
 
   describe "#statistics" do
     it "handles 0 children" do
-      subfamily = create :subfamily
       expect(subfamily.statistics).to eq({})
     end
 
     it "handles 1 valid genus" do
-      subfamily = create :subfamily
       create :genus, subfamily: subfamily
-
-      expect(subfamily.statistics).to eq extant: {genera: {'valid' => 1}}
+      expect(subfamily.statistics).to eq extant: { genera: { 'valid' => 1 } }
     end
 
     it "handles 1 valid genus and 2 synonyms" do
-      subfamily = create :subfamily
       create :genus, subfamily: subfamily
       2.times { create :genus, subfamily: subfamily, status: 'synonym' }
 
-      expect(subfamily.statistics).to eq extant: {genera: {'valid' => 1, 'synonym' => 2}}
+      expect(subfamily.statistics).to eq extant: {
+        genera: { 'valid' => 1, 'synonym' => 2}
+      }
     end
 
     it "handles 1 valid genus with 2 valid species" do
-      subfamily = create :subfamily
       genus = create :genus, subfamily: subfamily
       2.times { create :species, genus: genus, subfamily: subfamily }
 
-      expect(subfamily.statistics).to eq extant: {genera: {'valid' => 1}, species: {'valid' => 2}}
+      expect(subfamily.statistics).to eq extant: {
+        genera: { 'valid' => 1 },
+        species: { 'valid' => 2 }
+      }
     end
 
     it "handles 1 valid genus with 2 valid species, one of which has a subspecies" do
-      subfamily = create :subfamily
       genus = create :genus, subfamily: subfamily
       create :species, genus: genus
       create :subspecies, genus: genus, species: create(:species, genus: genus)
 
-      expect(subfamily.statistics).to eq(
-        extant: {
-          genera: { 'valid' => 1 },
-          species: { 'valid' => 2 },
-          subspecies: { 'valid' => 1 }
-        }
-      )
+      expect(subfamily.statistics).to eq extant: {
+        genera: { 'valid' => 1 },
+        species: { 'valid' => 2 },
+        subspecies: { 'valid' => 1 }
+      }
     end
 
     it "differentiates between extinct genera, species and subspecies" do
-      subfamily = create :subfamily
       genus = create :genus, subfamily: subfamily
       create :genus, subfamily: subfamily, fossil: true
       create :species, genus: genus
@@ -122,9 +114,7 @@ describe Subfamily do
     end
 
     it "can count tribes" do
-      subfamily = create :subfamily
       create :tribe, subfamily: subfamily
-
       expect(subfamily.statistics).to eq extant: { tribes: { 'valid' => 1 } }
     end
   end

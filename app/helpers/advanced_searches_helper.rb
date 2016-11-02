@@ -17,6 +17,6 @@ module AdvancedSearchesHelper
     extra_options = [["Any", ""], ["None", "None"]]
 
     options_for_select(extra_options, value) <<
-    options_for_select(BiogeographicRegion::REGIONS, value)
+      options_for_select(BiogeographicRegion::REGIONS, value)
   end
 end

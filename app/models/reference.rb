@@ -8,9 +8,7 @@ class Reference < ActiveRecord::Base
   include ReferenceComparable
 
   include Feed::Trackable
-  tracked parameters: ->(reference) do
-    { name: reference.decorate.key }
-  end
+  tracked parameters: ->(reference) do { name: reference.decorate.key } end
 
   attr_accessor :publisher_string
   attr_accessor :journal_name
@@ -40,10 +38,9 @@ class Reference < ActiveRecord::Base
   before_save { |record| CleanNewlines.clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
   before_destroy :check_not_referenced
 
-  has_many :reference_author_names, -> { order :position }
-
+  has_many :reference_author_names, -> { order(:position) }
   has_many :author_names,
-           -> { order 'reference_author_names.position' },
+           -> { order('reference_author_names.position') },
            through: :reference_author_names,
            after_add: :refresh_author_names_caches,
            after_remove: :refresh_author_names_caches
@@ -174,7 +171,7 @@ class Reference < ActiveRecord::Base
     end
 
     def check_not_nested
-      nesting_reference = NestedReference.find_by_nesting_reference_id id
+      nesting_reference = NestedReference.find_by(nesting_reference_id: id)
       if nesting_reference
         errors.add :base, "This reference can't be deleted because it's nested in #{nesting_reference}"
       end

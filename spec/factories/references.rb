@@ -74,10 +74,16 @@ FactoryGirl.define do
   end
 end
 
+# TODO this method allows creating references without a type.
 def reference_factory attributes = {}
   name = attributes.delete :author_name
-  author_name = AuthorName.find_by_name name
+  author_name = AuthorName.find_by(name: name)
   author_name ||= create :author_name, name: name
-  reference = create(:reference, attributes.merge(author_names: [author_name]))
-  reference
+
+  fix_type = attributes.delete :fix_type
+  if fix_type
+    create fix_type, attributes.merge(author_names: [author_name])
+  else
+    create :reference, attributes.merge(author_names: [author_name])
+  end
 end

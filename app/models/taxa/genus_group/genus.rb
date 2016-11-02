@@ -31,8 +31,8 @@ class Genus < GenusGroupTaxon
     update_descendants_subfamilies
   end
 
-  def statistics
-    get_statistics [:species, :subspecies]
+  def statistics valid_only: false
+    get_statistics [:species, :subspecies], valid_only: valid_only
   end
 
   def parent
@@ -40,23 +40,42 @@ class Genus < GenusGroupTaxon
   end
 
   def siblings
-    tribe && tribe.genera.ordered_by_name ||
-    subfamily && subfamily.genera.without_tribe.ordered_by_name ||
-    Genus.without_subfamily.ordered_by_name
+    tribe && tribe.genera ||
+    subfamily && subfamily.genera.without_tribe ||
+    Genus.without_subfamily
   end
 
   def displayable_child_taxa
-    Taxon.where(genus: self).displayable.ordered_by_epithet
+    descendants.displayable
+  end
+
+  def descendants
+    Taxon.where(genus: self)
   end
 
   def displayable_subgenera
-    Subgenus.where(genus: self).displayable.ordered_by_epithet
+    Subgenus.where(genus: self).displayable
   end
 
-  # TODO not used
-  def species_group_descendants
-    Taxon.where(genus_id: id).where.not(type: 'Subgenus')
-      .includes(:name).order('names.epithet')
+  def find_epithet_in_genus target_epithet_string
+    Name.make_epithet_set(target_epithet_string).each do |epithet|
+      results = Taxon.joins(:name).where(genus: self)
+        .where("names.epithet = ?", epithet)
+      return results unless results.empty?
+    end
+    nil
+  end
+
+  # TODO this is the same as `#find_epithet_in_genus`.
+  # Found this in the git history:
+  # results = with_names.where(['genus_id = ? AND epithet = ? and type="SubspeciesName"', genus.id, epithet])
+  def find_subspecies_in_genus target_subspecies_string
+    Name.make_epithet_set(target_subspecies_string).each do |epithet|
+      results = Taxon.joins(:name).where(genus: self)
+        .where("names.epithet = ?", epithet)
+      return results unless results.empty?
+    end
+    nil
   end
 
   private

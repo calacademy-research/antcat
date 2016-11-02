@@ -7,7 +7,7 @@ When(/^I fill in the email field with "([^"]+)"$/) do |string|
 end
 
 When(/^I fill in the email field with my email address$/) do
-  user = User.find_by_name 'Mark Wilden'
+  user = User.find_by(name: 'Mark Wilden')
   step %{I fill in "user_email" with "#{user.email}"}
 end
 
@@ -82,6 +82,6 @@ end
 
 Then(/^there should be a mailto link to the email of "([^"]+)"$/) do |user_name|
   # Problems with this are caused by having @ or : in the target of the search
-  #user_email = User.find_by_name(user_name).email
+  #user_email = User.find_by(name: user_name).email
   #page.should have_css user_email
 end

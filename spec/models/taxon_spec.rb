@@ -196,9 +196,9 @@ describe Taxon do
 
     it "cascades to delete history items when it's deleted" do
       history_item = taxon.history_items.create! taxt: 'taxt'
-      expect(TaxonHistoryItem.find_by_id(history_item.id)).not_to be_nil
+      expect(TaxonHistoryItem.find_by(id: history_item.id)).not_to be_nil
       taxon.destroy
-      expect(TaxonHistoryItem.find_by_id(history_item.id)).to be_nil
+      expect(TaxonHistoryItem.find_by(id: history_item.id)).to be_nil
     end
 
     it "shows the items in the order in which they were added to the taxon" do
@@ -223,7 +223,7 @@ describe Taxon do
     it "cascades to delete the reference sections when it's deleted" do
       reference_section = taxon.reference_sections.create! references_taxt: 'foo'
       taxon.destroy
-      expect(ReferenceSection.find_by_id(reference_section.id)).to be_nil
+      expect(ReferenceSection.find_by(id: reference_section.id)).to be_nil
     end
 
     it "shows the items in the order in which they were added to the taxon" do
@@ -338,51 +338,6 @@ describe Taxon do
     end
   end
 
-  describe "#child_list_query" do
-    let!(:subfamily) { create :subfamily, name: create(:name, name: 'Dolichoderinae') }
-
-    it "finds all genera for the taxon if there are no conditions" do
-      create :genus,
-        name: create(:name, name: 'Atta'),
-        subfamily: subfamily
-      create :genus,
-        name: create(:name, name: 'Eciton'),
-        subfamily: subfamily, fossil: true
-      create :genus,
-        name: create(:name, name: 'Aneuretus'),
-        subfamily: subfamily,
-        fossil: true, incertae_sedis_in: 'subfamily'
-
-      results = subfamily.child_list_query :genera
-      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Atta', 'Eciton']
-
-      results = subfamily.child_list_query :genera, fossil: true
-      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
-
-      results = subfamily.child_list_query :genera, incertae_sedis_in: 'subfamily'
-      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus']
-    end
-
-    it "doesn't include invalid taxa" do
-      create :genus,
-        name: create(:name, name: 'Atta'),
-        subfamily: subfamily,
-        status: 'synonym'
-      create :genus,
-        name: create(:name, name: 'Eciton'),
-        subfamily: subfamily,
-        fossil: true
-      create :genus,
-        name: create(:name, name: 'Aneuretus'),
-        subfamily: subfamily,
-        fossil: true,
-        incertae_sedis_in: 'subfamily'
-
-      results = subfamily.child_list_query :genera
-      expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
-    end
-  end
-
   describe "Cascading delete" do
     it "doesn't delete the protonym when the taxon is deleted" do
       expect(Taxon.count).to be_zero
@@ -423,69 +378,72 @@ describe Taxon do
     end
 
     describe "#parent" do
-    context "when the taxon is a Family" do
-    it "returns nil" do
-      family = create :family
-      expect(family.parent).to be_nil
-    end
-    end
+      context "when the taxon is a Family" do
+        it "returns nil" do
+          family = create :family
+          expect(family.parent).to be_nil
+        end
+      end
     end
   end
 
   describe "#update_parent" do
-    let!(:atta) { create_genus 'Atta' }
-    let!(:eciton) { create_genus 'Eciton' }
-    let!(:old_parent) { create_species 'Atta major', genus: atta }
-    let!(:new_parent) { create_species 'Eciton nigrus', genus: eciton }
-
-    let!(:subspecies) do
+    let(:old_parent) { create_species 'Atta major', genus:(create_genus 'Atta') }
+    let(:new_parent) { create_species 'Eciton nigrus', genus: create_genus('Eciton') }
+    let(:subspecies) do
       create_subspecies name: create_subspecies_name('Atta major medius minor'),
         species: old_parent
     end
 
-    it "does nothing if the parent doesn't actually change" do
-      subspecies.update_parent old_parent
+    it "test factories" do
       expect(subspecies.species).to eq old_parent
-      expect(subspecies.name.name).to eq 'Atta major medius minor'
     end
 
-    it "changes the species of a subspecies" do
-      subspecies.update_parent new_parent
-      expect(subspecies.species).to eq new_parent
+    context "new parent is same as old aprent" do
+      it "does nothing if the parent doesn't actually change" do
+        subspecies.update_parent old_parent
+        expect(subspecies.species).to eq old_parent
+        expect(subspecies.name.name).to eq 'Atta major medius minor'
+      end
     end
 
-    it "changes the genus of a subspecies" do
-      subspecies.update_parent new_parent
-      expect(subspecies.species).to eq new_parent
-      expect(subspecies.genus).to eq new_parent.genus
-    end
+    context "new parent is not same as old aprent" do
+      before { subspecies.update_parent new_parent }
 
-    it "changes the subfamily of a subspecies" do
-      subspecies.update_parent new_parent
-      expect(subspecies.subfamily).to eq new_parent.subfamily
-    end
+      it "changes the species of a subspecies" do
+        expect(subspecies.species).to eq new_parent
+      end
 
-    it "changes the name, etc., of a subspecies" do
-      subspecies.update_parent new_parent
-      name = subspecies.name
-      expect(name.name).to eq 'Eciton nigrus medius minor'
-      expect(name.name_html).to eq '<i>Eciton nigrus medius minor</i>'
-      expect(name.epithet).to eq 'minor'
-      expect(name.epithet_html).to eq '<i>minor</i>'
-      expect(name.epithets).to eq 'nigrus medius minor'
-    end
+      it "changes the genus of a subspecies" do
+        expect(subspecies.species).to eq new_parent
+        expect(subspecies.genus).to eq new_parent.genus
+      end
 
-    it "changes the cached name, etc., of a subspecies" do
-      subspecies.update_parent new_parent
-      expect(subspecies.name_cache).to eq 'Eciton nigrus medius minor'
-      expect(subspecies.name_html_cache).to eq '<i>Eciton nigrus medius minor</i>'
+      it "changes the subfamily of a subspecies" do
+        expect(subspecies.subfamily).to eq new_parent.subfamily
+      end
+
+      it "changes the name, etc., of a subspecies" do
+        name = subspecies.name
+        expect(name.name).to eq 'Eciton nigrus medius minor'
+        expect(name.name_html).to eq '<i>Eciton nigrus medius minor</i>'
+        expect(name.epithet).to eq 'minor'
+        expect(name.epithet_html).to eq '<i>minor</i>'
+        expect(name.epithets).to eq 'nigrus medius minor'
+      end
+
+      it "changes the cached name, etc., of a subspecies" do
+        expect(subspecies.name_cache).to eq 'Eciton nigrus medius minor'
+        expect(subspecies.name_html_cache).to eq '<i>Eciton nigrus medius minor</i>'
+      end
     end
   end
 
   describe "scopes" do
+    let(:subfamily) { create :subfamily }
+
     describe "scope.valid" do
       it "only includes valid taxa" do
-        subfamily = create :subfamily
         replacement = create :genus, subfamily: subfamily
         homonym = create :genus,
           homonym_replaced_by: replacement,
@@ -499,18 +457,19 @@ describe Taxon do
 
     describe "scope.extant" do
       it "only includes extant taxa" do
-        subfamily = create :subfamily
         extant_genus = create :genus, subfamily: subfamily
         create :genus, subfamily: subfamily, fossil: true
+
         expect(subfamily.genera.extant).to eq [extant_genus]
       end
     end
 
-    describe "scope.ordered_by_name" do
+    describe "scope.order_by_name_cache" do
+      let!(:zymacros) { create :subfamily, name: create(:name, name: 'Zymacros') }
+      let!(:atta) { create :subfamily, name: create(:name, name: 'Atta') }
+
       it "orders by name" do
-        zymacros = create :subfamily, name: create(:name, name: 'Zymacros')
-        atta = create :subfamily, name: create(:name, name: 'Atta')
-        expect(Taxon.ordered_by_name).to eq [atta, zymacros]
+        expect(Taxon.order_by_name_cache).to eq [atta, zymacros]
       end
     end
   end
@@ -548,8 +507,9 @@ describe Taxon do
       taxon = create :species
       taxon.type_specimen_url = '*'
       expect(taxon).not_to be_valid
-      expect(taxon.errors.full_messages)
-        .to match_array ['Type specimen url is not in a valid format']
+
+      expected_error = 'Type specimen url is not in a valid format'
+      expect(taxon.errors.full_messages).to match_array [expected_error]
     end
 
     it "should make sure it exists" do
@@ -576,7 +536,17 @@ describe Taxon do
       expect(taxon.current_valid_taxon_including_synonyms).to eq senior
     end
 
-   it "finds the latest senior synonym that's valid" do
+    # Fails a lot. This test case is the arch enemy of AntCat's RSpec testing team.
+    #
+    # Changing `order(created_at: :desc)` to `order(id: :desc)` in
+    # `#find_most_recent_valid_senior_synonym` *should* return the synonyms
+    # in the same/intended order without risk of shuffling objects created
+    # the same second. However, that makes the test fail 100%, which brings
+    # me to belive that the test doesn't randomly fail -- it randomly passes.
+    #
+    # Use this for debugging:
+    # `for i in {1..3}; do rspec ./spec/models/taxon_spec.rb:549 ; done`
+    it "finds the latest senior synonym that's valid" do
       valid_senior = create_genus status: 'valid'
       invalid_senior = create_genus status: 'homonym'
       taxon = create_genus status: 'synonym'

@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Synonym do
-  it { should validate_presence_of(:junior_synonym) }
+  it { should be_versioned }
+  it { should validate_presence_of :junior_synonym }
 
   describe "#find_or_create" do
     let!(:junior) { create_species }
@@ -30,15 +31,6 @@ describe Synonym do
 
         synonym = Synonym.where(junior_synonym_id: junior, senior_synonym_id: senior)
         expect(synonym.count).to eq 1
-      end
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        synonym = create :synonym
-        expect(synonym.versions.last.event).to eq 'create'
       end
     end
   end

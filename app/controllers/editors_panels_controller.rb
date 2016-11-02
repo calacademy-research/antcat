@@ -3,11 +3,11 @@ class EditorsPanelsController < ApplicationController
 
   def index
     @count = {
-      open_tasks: Notification.pending_count(:open_tasks),
-      unreviewed_references: Notification.pending_count(:unreviewed_references),
-      unreviewed_catalog_changes: Notification.pending_count(:unreviewed_catalog_changes),
-      pending_user_feedbacks: Notification.pending_count(:pending_user_feedbacks),
-      unread_site_notices: Notification.pending_count(:unread_site_notices, current_user),
+      open_tasks: Notification.open_tasks.count,
+      unreviewed_references: Notification.unreviewed_references.count,
+      unreviewed_catalog_changes: Notification.unreviewed_catalog_changes.count,
+      pending_user_feedbacks: Notification.pending_user_feedbacks.count,
+      unread_site_notices: Notification.unread_site_notices(current_user).count,
     }
 
     @recent_activities = Feed::Activity.most_recent 5

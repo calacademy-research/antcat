@@ -15,7 +15,7 @@ class Feed::Activity < ActiveRecord::Base
     def create_activity_for_trackable trackable, action, parameters = {}
       return unless enabled?
       self.create! trackable: trackable, action: action,
-        user: User.current_user, parameters: parameters
+        user: User.current, parameters: parameters
     end
 
     def create_activity action, parameters = {}

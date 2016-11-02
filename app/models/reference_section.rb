@@ -2,9 +2,7 @@ class ReferenceSection < ActiveRecord::Base
   include UndoTracker
 
   include Feed::Trackable
-  tracked on: :all, parameters: ->(item) do
-    { taxon_id: item.taxon_id }
-  end
+  tracked on: :all, parameters: ->(item) do { taxon_id: item.taxon_id } end
 
   belongs_to :taxon
   acts_as_list scope: :taxon

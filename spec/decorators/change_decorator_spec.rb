@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe ChangeDecorator do
-  let(:user) do
-    create :user, name: "First Last", email: "email@example.com"
-  end
+  let(:user) { create :user, name: "First Last", email: "email@example.com" }
 
   describe "#format_adder_name" do
     it "formats the adder's name" do

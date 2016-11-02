@@ -13,7 +13,7 @@
 -method = @taxon.new_record? ? 'post' : 'put'
 =form_for @taxon, as: :taxon, url: url, method: method, html: {class: 'taxon_form ui-widget'} do |form|
 
-  -#These fields are used to pass pre-caulculated data to javascript
+  -# These fields are used to pass pre-caulculated data to JavasScript,
   -# and they're magically appended to the POST.
   =hidden_field_tag 'current_taxon_id', @taxon.id
   =hidden_field_tag 'rank_to_create', params[:rank_to_create]
@@ -29,21 +29,21 @@
   =render 'shared/errors_for', resource: @taxon
 
   .fields_section.section.ui-widget-content.ui-corner-all
-    =render 'name_status_flags_section',         taxon: @taxon, form: form, default_name_string: @default_name_string
-    =render 'protonym_section',                  taxon: @taxon, form: form
-    =render 'type_section',                      taxon: @taxon, form: form
+    =render 'name_status_flags_section', taxon: @taxon, form: form, default_name_string: @default_name_string
+    =render 'protonym_section',          taxon: @taxon, form: form
+    =render 'type_section',              taxon: @taxon, form: form
 
-    -#Passed to the buttons widget (javascript) to control how the buttons look and behave. Populated
-    -#by the taxa_controller.
+    -# Passed to the buttons widget (JavaScript) to control how the buttons look and behave.
+    -# Populated by `TaxaController`.
     .buttons_section
-      -# TODO @possible_homonym is not declared anywhere
+      -# TODO `@possible_homonym` is not declared anywhere.
       =render 'buttons_save_section', taxon: @taxon, possible_homonym: @possible_homonym
       -unless @taxon.new_record?
         =render 'buttons_taxon_operations', taxon: @taxon, collision_resolution: @collision_resolution
 
   -unless @taxon.new_record?
     =render 'history_items_section',               taxon: @taxon
-    =render 'children_section',                    taxon: @taxon
+    =render 'children_section',                    taxon: @taxon, max_number: 50
     =render 'junior_and_senior_synonyms_section',  taxon: @taxon
     =render 'references_section',                  taxon: @taxon
 

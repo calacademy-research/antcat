@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe Species do
-  before do
-    @reference = create :article_reference
-  end
-
   it "can have subspecies, which are its children" do
     species = create_species 'Atta chilensis'
     create_subspecies 'Atta chilensis robusta', species: species
@@ -25,11 +21,9 @@ describe Species do
       species = create_species
       create_subspecies species: species
 
-      expect(species.statistics).to eq(
-        extant: {
-          subspecies: { 'valid' => 1 }
-        }
-      )
+      expect(species.statistics).to eq extant: {
+        subspecies: { 'valid' => 1 }
+      }
     end
 
     it "differentiates between extant and fossil subspecies" do
@@ -67,11 +61,9 @@ describe Species do
       create_subspecies species: species
       2.times { create_subspecies species: species, status: 'synonym' }
 
-      expect(species.statistics).to eq(
-        extant: {
-          subspecies: { 'valid' => 1, 'synonym' => 2 }
-        }
-      )
+      expect(species.statistics).to eq extant: {
+        subspecies: { 'valid' => 1, 'synonym' => 2 }
+      }
     end
   end
 

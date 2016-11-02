@@ -1,11 +1,15 @@
 module TaxonBrowserHelper
+  # TODO move the "selected" CSS class logic to here.
   def taxon_browser_link taxon
     classes = css_classes_for_rank(taxon)
     classes << css_classes_for_status(taxon)
     link_to taxon_label(taxon), catalog_path(taxon), class: classes
   end
 
-  def panel_header selected
+  # If `selected` is a taxon: <name> <immediate child rank in plural>.
+  # So, family --> "Formicidae subfamilies"
+  # But no taxon --> we have a non-standard panel.
+  def panel_header_title selected
     if show_only_genus_name? selected
       taxon_breadcrumb_label selected
     elsif selected.is_a? Taxon
@@ -36,13 +40,13 @@ module TaxonBrowserHelper
   # Only shown if the taxon is a genus with subgenera
   # For example Lasius, http://localhost:3000/catalog/429161)
   def subgenera_link selected
-    return if selected.displayable_subgenera.empty?
+    return unless selected.displayable_subgenera.exists?
     extra_panel_link selected, "Subgenera", "subgenera_in_#{selected.rank}"
   end
 
   # Only for Formicidae/subfamilies.
   def incertae_sedis_link selected
-    return if selected.genera_incertae_sedis_in.empty?
+    return unless selected.genera_incertae_sedis_in.exists?
     extra_panel_link selected, "Incertae sedis", "incertae_sedis_in_#{selected.rank}"
   end
 
@@ -56,7 +60,33 @@ module TaxonBrowserHelper
     panels.last == panel
   end
 
+  # Collections containing taxa of a single rank can be sorted by `#.name_cache`,
+  # but mixed collections (such as the "ALL TAXA" link) must be sorted by `names.epithet`.
+  def sorted_children_for_panel selected, children
+    if params[:display] == "all_taxa_in_genus" && selected.try(:key?, :title_for_panel)
+      children.order_by_joined_epithet
+    else
+      children.order_by_name_cache
+    end.includes(:name)
+  end
+
+  def notify_about_no_valid_children? children, taxon
+    children.empty? && !is_a_subfamily_with_valid_genera_incertae_sedis?(taxon)
+  end
+
+  def already_showing_invalid_taxa?
+    !session[:show_valid_only]
+  end
+
   private
+    # Exception for subfamilies *only* containing genera that are
+    # incertae sedis in that subfamily (that is Martialinae, #430173).
+    def is_a_subfamily_with_valid_genera_incertae_sedis? taxon
+      return unless taxon.is_a? Subfamily
+      taxon.genera_incertae_sedis_in.valid.exists?
+    end
+
+    # Rename non_standard_panel_link
     def extra_panel_link selected, label, param
       css_class = if params[:display] == param
                     "upcase selected"

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Feedback do
   describe "callbacks and validation" do
-    it { should validate_presence_of(:comment) }
+    it { should validate_presence_of :comment }
 
     describe "#add_emails_recipients" do
       it "has a default" do

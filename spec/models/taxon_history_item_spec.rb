@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe TaxonHistoryItem do
+  it { should be_versioned }
+
   it "can't be blank" do
     expect(TaxonHistoryItem.new).not_to be_valid
     expect(TaxonHistoryItem.new(taxt: '')).not_to be_valid
@@ -49,15 +51,6 @@ describe TaxonHistoryItem do
       expect(item.errors).to be_empty
       item.update_taxt_from_editable '{123}'
       expect(item.errors).not_to be_empty
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        history_item = create :taxon_history_item
-        expect(history_item.versions.last.event).to eq 'create'
-      end
     end
   end
 end

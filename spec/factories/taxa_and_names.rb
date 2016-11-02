@@ -244,12 +244,14 @@ def create_subspecies name_or_attributes = 'Atta major minor', attributes = {}
 end
 
 def create_taxon_object name_or_attributes, taxon_factory, name_factory, attributes = {}
-  if name_or_attributes.kind_of? String
-    name, epithet, epithets = get_name_parts name_or_attributes
-    attributes = attributes.reverse_merge name: create(name_factory, name: name, epithet: epithet, epithets: epithets), name_cache: name
-  else
-    attributes = name_or_attributes
-  end
+  attributes =
+    if name_or_attributes.kind_of? String
+      name, epithet, epithets = get_name_parts name_or_attributes
+      name_object = create name_factory, name: name, epithet: epithet, epithets: epithets
+      attributes.reverse_merge name: name_object, name_cache: name
+    else
+      name_or_attributes
+    end
 
   build_stubbed = attributes.delete :build_stubbed
   build = attributes.delete :build
@@ -294,7 +296,7 @@ def create_taxon_version_and_change review_state, user = @user, approver = nil, 
   create :version, item_id: taxon.id, whodunnit: user.id, change_id: change.id
 
   if approver
-    change.update_attributes! approver: approver, approved_at: Time.now if approver
+    change.update_attributes! approver: approver, approved_at: Time.now
   end
 
   taxon

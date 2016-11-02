@@ -1,18 +1,16 @@
 require 'spec_helper'
 
 describe User do
-  it { should validate_presence_of(:name) }
+  it { should validate_presence_of :name }
 
   describe "scopes" do
-    describe "scope.ordered_by_name" do
+    describe "scope.order_by_name" do
       before do
-        create :user, name: "Anderson"
-        create :user, name: "Zanderson"
-        create :editor, name: "Banderson"
+        %w(Anderson Zanderson Banderson).each { |name| create :user, name: name }
       end
 
       it "knows the alphabet" do
-        expect(User.ordered_by_name.pluck :name).to eq %w( Anderson Banderson Zanderson )
+        expect(User.order_by_name.pluck :name).to eq %w( Anderson Banderson Zanderson )
       end
     end
 
@@ -86,9 +84,7 @@ describe User do
   end
 
   describe "#angle_bracketed_email" do
-    let(:user) do
-      create :user, name: "A User", email: "user@example.com"
-    end
+    let(:user) { create :user, name: "A User", email: "user@example.com" }
 
     it "builds a string suitable for emails" do
       expect(user.angle_bracketed_email).to eq '"A User" <user@example.com>'

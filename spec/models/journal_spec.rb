@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Journal do
-  it { should validate_presence_of(:name) }
+  it { should be_versioned }
+  it { should validate_presence_of :name }
 
   describe ".search" do
     it "should do fuzzy matching of journal names" do
@@ -19,10 +20,10 @@ describe Journal do
       ['Most Used', 'Never Used', 'Occasionally Used', 'Rarely Used'].each do |name|
         create :journal, name: name
       end
-      2.times { create :article_reference, journal: Journal.find_by_name('Rarely Used') }
-      3.times { create :article_reference, journal: Journal.find_by_name('Occasionally Used') }
-      4.times { create :article_reference, journal: Journal.find_by_name('Most Used') }
-      0.times { create :article_reference, journal: Journal.find_by_name('Never Used') }
+      2.times { create :article_reference, journal: Journal.find_by(name: 'Rarely Used') }
+      3.times { create :article_reference, journal: Journal.find_by(name: 'Occasionally Used') }
+      4.times { create :article_reference, journal: Journal.find_by(name: 'Most Used') }
+      0.times { create :article_reference, journal: Journal.find_by(name: 'Never Used') }
 
       expect(Journal.search).to eq ['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used']
     end
@@ -42,15 +43,6 @@ describe Journal do
         create :article_reference, journal: journal
         expect { journal.destroy }.not_to change { Journal.count }
         expect(journal.errors[:base]).to eq ["cannot delete journal (not unused)"]
-      end
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        journal = create :journal
-        expect(journal.versions.last.event).to eq 'create'
       end
     end
   end

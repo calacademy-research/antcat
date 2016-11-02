@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025132249) do
+ActiveRecord::Schema.define(version: 20161102012231) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -431,6 +431,7 @@ ActiveRecord::Schema.define(version: 20161025132249) do
   add_index "taxa", ["homonym_replaced_by_id"], name: "index_taxa_on_homonym_replaced_by_id", using: :btree
   add_index "taxa", ["homonym_replaced_by_id"], name: "taxa_homonym_resolved_to_id_index", using: :btree
   add_index "taxa", ["id", "type"], name: "taxa_id_and_type_idx", using: :btree
+  add_index "taxa", ["name_cache"], name: "index_taxa_on_name_cache", using: :btree
   add_index "taxa", ["name_id"], name: "taxa_name_id_idx", using: :btree
   add_index "taxa", ["protonym_id"], name: "index_taxa_on_protonym_id", using: :btree
   add_index "taxa", ["species_id"], name: "taxa_species_id_index", using: :btree
@@ -517,6 +518,7 @@ ActiveRecord::Schema.define(version: 20161025132249) do
 
   add_index "versions", ["change_id"], name: "index_versions_on_change_id", using: :btree
   add_index "versions", ["event"], name: "index_versions_on_event", using: :btree
+  add_index "versions", ["item_id"], name: "index_versions_on_item_id", using: :btree
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   add_index "versions", ["whodunnit"], name: "index_versions_on_whodunnit", using: :btree
 

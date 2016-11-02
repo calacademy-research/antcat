@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Citation do
+  it { should be_versioned }
+
   it "has a Reference" do
     reference = create :reference
     citation = Citation.create! reference: reference
@@ -12,15 +14,6 @@ describe Citation do
     citation = Citation.create
     expect(citation.reference).to be_nil
     expect(citation).not_to be_valid
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        citation = create :citation
-        expect(citation.versions.last.event).to eq 'create'
-      end
-    end
   end
 
   describe "#authorship_string" do

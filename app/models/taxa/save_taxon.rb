@@ -115,7 +115,7 @@ class Taxa::SaveTaxon
 
     def update_parent attributes
       return unless attributes
-      @taxon.update_parent Taxon.find_by_name_id attributes[:id]
+      @taxon.update_parent Taxon.find_by(name_id: attributes[:id])
     rescue Taxon::TaxonExists
       @taxon.errors[:base] = "This name is in use by another taxon"
       raise
@@ -123,13 +123,13 @@ class Taxa::SaveTaxon
 
     def update_homonym_replaced_by attributes
       replacement_id = attributes[:id]
-      replacement = replacement_id.present? ? Taxon.find_by_name_id(replacement_id) : nil
+      replacement = replacement_id.present? ? Taxon.find_by(name_id: replacement_id) : nil
       @taxon.homonym_replaced_by = replacement
     end
 
     def update_current_valid_taxon attributes
       replacement_id = attributes[:id]
-      replacement = replacement_id.present? ? Taxon.find_by_name_id(replacement_id) : nil
+      replacement = replacement_id.present? ? Taxon.find_by(name_id: replacement_id) : nil
       @taxon.current_valid_taxon = replacement
     end
 

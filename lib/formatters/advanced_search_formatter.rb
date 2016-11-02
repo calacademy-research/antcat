@@ -1,18 +1,6 @@
 module Formatters::AdvancedSearchFormatter
   include ApplicationHelper
 
-  def format taxon
-    string = convert_to_text(format_name taxon)
-    status = format_status_reference(taxon).html_safe
-    string << convert_to_text(' ' + status) if status.present?
-    type_localities = format_type_localities(taxon)
-    string << convert_to_text(' ' + type_localities) if type_localities.present?
-    string << "\n"
-    protonym = convert_to_text(format_protonym taxon)
-    string << protonym if protonym.present?
-    string << "\n\n"
-  end
-
   def format_status_reference taxon
     return format_original_combination_status taxon if taxon.original_combination?
     labels = []
@@ -65,22 +53,8 @@ module Formatters::AdvancedSearchFormatter
     string
   end
 
-  def format_forms taxon
-    return unless taxon.protonym.authorship.forms.present?
-    string = 'Forms: '
-    string << add_period_if_necessary(taxon.protonym.authorship.forms)
-  end
-
   def senior_synonym_list taxon
     return '' if taxon.senior_synonyms.empty?
     ' of ' << taxon.senior_synonyms.map { |e| format_name(e) }.join(', ')
-  end
-
-  def unitalicize string
-    raise "Can't unitalicize an unsafe string" unless string.html_safe?
-    string = string.dup
-    string.gsub!('<i>', '')
-    string.gsub!('</i>', '')
-    string.html_safe
   end
 end

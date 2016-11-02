@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
     end
 
     def set_user_for_feed
-      User.current_user = current_user
+      User.current = current_user
     end
 
     def cors_set_access_control_headers
@@ -63,6 +63,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    # Before actions.
     def authenticate_editor
       authenticate_user! && user_can_edit?
     end

@@ -10,6 +10,7 @@ module Taxa::Synonyms
     current_valid_taxon
   end
 
+  # Spec randomly fails, see notes in spec file.
   def find_most_recent_valid_senior_synonym
     return unless senior_synonyms
     senior_synonyms.order(created_at: :desc).each do |senior_synonym|

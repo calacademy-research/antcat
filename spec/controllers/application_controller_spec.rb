@@ -67,4 +67,24 @@ describe ApplicationController do
       controller.send :authenticate_editor
     end
   end
+
+  describe "#set_user_for_feed" do
+    let(:user) { create :user }
+
+    context "signed in" do
+      before { sign_in user }
+
+      it "sets the current user" do
+        get :index
+        expect(User.current).to eq user
+      end
+    end
+
+    context "not signed in" do
+      it "returns nil without blowing up" do
+        get :index
+        expect(User.current).to eq nil
+      end
+    end
+  end
 end

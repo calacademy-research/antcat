@@ -13,50 +13,36 @@ describe Taxon do
     end
   end
 
-  describe "#find_epithet_in_genus" do
-    it "returns nil if nothing matches" do
-      expect(Taxa::Utility.find_epithet_in_genus('sdfsdf', create_genus)).to eq nil
+  describe ".quick_search" do
+    let!(:rufa) do
+      create :species,
+        genus: create(:genus, name: create(:genus_name, name: 'Monoceros')),
+        name: create(:species_name, name: 'Monoceros rufa', epithet: 'rufa')
     end
-
-    it "returns the one item" do
-      species = create_species 'Atta serratula'
-      expect(Taxa::Utility.find_epithet_in_genus('serratula', species.genus)).to eq [species]
-    end
-
-    context "mandatory spelling changes" do
-      it "finds -a when asked to find -us" do
-        species = create_species 'Atta serratula'
-        expect(Taxa::Utility.find_epithet_in_genus('serratulus', species.genus)).to eq [species]
-      end
-    end
-  end
-
-  describe "#find_name" do
-    before do
-      create :genus, name: create(:genus_name, name: 'Monomorium')
-      @monoceros = create :genus, name: create(:genus_name, name: 'Monoceros')
-      species_name = create :species_name, name: 'Monoceros rufa', epithet: 'rufa'
-      @rufa = create :species, genus: @monoceros, name: species_name
-    end
+    before { create :genus, name: create(:genus_name, name: 'Monomorium') }
 
     it "returns [] if nothing matches" do
-      expect(Taxa::Search.find_name('sdfsdf')).to eq []
+      results = Taxa::Search.quick_search 'sdfsdf'
+      expect(results).to eq []
     end
 
     it "returns an exact matches" do
-      expect(Taxa::Search.find_name('Monomorium').first.name.to_s).to eq 'Monomorium'
+      results = Taxa::Search.quick_search 'Monomorium'
+      expect(results.first.name.to_s).to eq 'Monomorium'
     end
 
     it "should return a prefix match" do
-      expect(Taxa::Search.find_name('Monomor', 'beginning_with').first.name.to_s).to eq 'Monomorium'
+      results = Taxa::Search.quick_search 'Monomor', search_type: 'beginning_with'
+      expect(results.first.name.to_s).to eq 'Monomorium'
     end
 
     it "should return a substring match" do
-      expect(Taxa::Search.find_name('iu', 'containing').first.name.to_s).to eq 'Monomorium'
+      results = Taxa::Search.quick_search 'iu', search_type: 'containing'
+      expect(results.first.name.to_s).to eq 'Monomorium'
     end
 
     it "returns multiple matches" do
-      results = Taxa::Search.find_name 'Mono', 'containing'
+      results = Taxa::Search.quick_search 'Mono', search_type: 'containing'
       expect(results.size).to eq 2
     end
 
@@ -68,33 +54,33 @@ describe Taxon do
       create_species 'Lepto4'
       create_subspecies 'Lepto5'
 
-      results = Taxa::Search.find_name 'Lepto', 'beginning_with'
+      results = Taxa::Search.quick_search 'Lepto', search_type: 'beginning_with'
       expect(results.size).to eq 6
     end
 
     it "sorts results by name" do
-      create :subfamily, name: create(:name, name: 'Lepti')
-      create :subfamily, name: create(:name, name: 'Lepta')
-      create :subfamily, name: create(:name, name: 'Lepte')
+      %w(Lepti Lepta Lepte).each do |name|
+        create :subfamily, name: create(:name, name: name)
+      end
 
-      results = Taxa::Search.find_name 'Lept', 'beginning_with'
+      results = Taxa::Search.quick_search 'Lept', search_type: 'beginning_with'
       expect(results.map(&:name).map(&:to_s)).to eq ['Lepta', 'Lepte', 'Lepti']
     end
 
     describe "Finding full species name" do
       it "searches for full species names" do
-        results = Taxa::Search.find_name 'Monoceros rufa '
-        expect(results.first).to eq @rufa
+        results = Taxa::Search.quick_search 'Monoceros rufa '
+        expect(results.first).to eq rufa
       end
 
       it "searches for whole names, even when using beginning with, even with trailing space" do
-        results = Taxa::Search.find_name 'Monoceros rufa ', 'beginning_with'
-        expect(results.first).to eq @rufa
+        results = Taxa::Search.quick_search 'Monoceros rufa ', search_type: 'beginning_with'
+        expect(results.first).to eq rufa
       end
 
       it "searches for partial species names" do
-        results = Taxa::Search.find_name 'Monoceros ruf', 'beginning_with'
-        expect(results.first).to eq @rufa
+        results = Taxa::Search.quick_search 'Monoceros ruf', search_type: 'beginning_with'
+        expect(results.first).to eq rufa
       end
     end
   end

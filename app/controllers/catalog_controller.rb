@@ -1,5 +1,11 @@
 class CatalogController < ApplicationController
-  before_action :handle_family_not_found, only: [:index]
+  unless Rails.env.production?
+    # Avoid blowing up if there's no family. Useful in test and dev.
+    before_action only: [:index] do
+      render 'family_not_found' unless Family.exists?
+      false
+    end
+  end
   before_action :setup_catalog, only: [:index, :show]
 
   def index
@@ -15,12 +21,26 @@ class CatalogController < ApplicationController
     redirect_to :back
   end
 
-  private
-    # Avoid blowing up if there's no family. Useful in test and dev.
-    def handle_family_not_found
-      render 'family_not_found' and return unless Family.first
-    end
+  def autocomplete
+    q = params[:q] || ''
+    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%")
+      .includes(:name, protonym: { authorship: :reference }).take(10)
 
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |taxon|
+          { name: taxon.name_html_cache,
+            name_html_cache: taxon.name_html_cache,
+            id: taxon.id,
+            authorship: taxon.authorship_string,
+            search_query: taxon.name_cache }
+        end
+        render json: results
+      end
+    end
+  end
+
+  private
     def setup_catalog
       set_session
       set_taxon
@@ -40,16 +60,22 @@ class CatalogController < ApplicationController
       @self_and_parents = @taxon.self_and_parents
 
       @panels = @self_and_parents.reject do |taxon|
-        # never show the subspecies panel (has no children)
+        # Never show the subspecies panel (has no children).
         taxon.is_a?(Subspecies) ||
 
-        # don't show species panel unless the species has subspecies
-        (taxon.is_a?(Species) && taxon.children.empty?) ||
+        # Don't show species panel unless the species has subspecies.
+        (taxon.is_a?(Species) && !taxon.children.exists?) ||
 
-        # no subgenus panel (not part of the 'normal' rank hierarchy)
+        # No subgenus panel (not part of the 'normal' rank hierarchy).
         taxon.is_a?(Subgenus)
+
+        # Panels of subfamilies, tribes and genera without any children at
+        # all could also be excluded here, to avoid showing empty panels.
+        # However, that can only happen to invalid taxa (all valid taxa of
+        # these ranks have children unless the database is incomplete), so
+        # it makes more sense to just show "No valid child taxa".
       end.map do |taxon|
-        children = taxon.children.displayable.ordered_by_name
+        children = taxon.children.displayable
         children = children.valid if session[:show_valid_only]
         { selected: taxon, children: children }
       end

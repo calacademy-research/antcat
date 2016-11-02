@@ -11,14 +11,28 @@ module Taxa::References
     references.concat references_in_synonyms
   end
 
+  # Not used.
   def nontaxt_references
     references omit_taxt: true
   end
 
+  def any_nontaxt_references?
+    return true if any_references_in_taxa?
+    references_in_synonyms.present? # Less important, not optimized.
+  end
+
   private
+    def any_references_in_taxa?
+      [:subfamily_id, :tribe_id, :genus_id, :subgenus_id, :species_id,
+       :homonym_replaced_by_id, :current_valid_taxon_id].each do |field|
+        return true if Taxon.where(field => id).exists?
+      end
+      false
+    end
+
     def references_in_taxa
       references = []
-      [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,:species_id,
+      [:subfamily_id, :tribe_id, :genus_id, :subgenus_id, :species_id,
        :homonym_replaced_by_id, :current_valid_taxon_id].each do |field|
         Taxon.where(field => id).each do |taxon|
           references << { table: 'taxa', field: field, id: taxon.id }
@@ -30,10 +44,18 @@ module Taxa::References
     def references_in_synonyms
       references = []
       synonyms_as_senior.each do |synonym|
-        references << { table: 'synonyms', field: :senior_synonym_id, id: synonym.junior_synonym_id }
+        references << {
+          table: 'synonyms',
+          field: :senior_synonym_id,
+          id: synonym.junior_synonym_id
+        }
       end
       synonyms_as_junior.each do |synonym|
-        references << { table: 'synonyms', field: :junior_synonym_id, id: synonym.senior_synonym_id }
+        references << {
+          table: 'synonyms',
+          field: :junior_synonym_id,
+          id: synonym.senior_synonym_id
+        }
       end
       references
     end

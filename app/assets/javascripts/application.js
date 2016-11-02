@@ -1,27 +1,28 @@
 // gems
 //= require jquery
 //= require jquery_ujs
-//= require foundation
+//= require foundation.core
+//= require foundation.accordion
+//= require foundation.dropdown
+//= require foundation.responsiveMenu
+//= require foundation.responsiveToggle
+//= require foundation.reveal
+//= require foundation.tabs
+//= require foundation.util.box
+//= require foundation.util.mediaQuery
+//= require foundation.util.triggers
 //= require jquery-ui/core
 //= require jquery-ui/autocomplete
 //= require jquery-ui/dialog
 //= require jquery-ui/tabs
 //= require jquery-ui/tooltip
 
-// vendor/assets/javascripts
-//= require jquery.a-tools-1.5.2
-//= require jquery.form
-
 // app/assets/javascripts
-//= require comments
+//= require catalog_autocompletion
 //= require debugging
 //= require feedback
 //= require site
 //= require spinner
-//= require taxa/taxa_autocompletion
-//= require unread_site_notices_flash_message
 
 // gems
 //= require twitter/typeahead
-//= require best_in_place
-//= require js.cookie
