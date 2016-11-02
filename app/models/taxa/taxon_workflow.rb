@@ -17,9 +17,13 @@ class Taxon < ActiveRecord::Base
     waiting?
   end
 
-  def can_be_approved_by? change, user
+  # Allow optional `changed_by` for performance reasons.
+  def can_be_approved_by? change, user, changed_by = nil
     return unless user && change
-    user != change.changed_by && waiting? && user.can_approve_changes?
+    return unless waiting? && user.can_approve_changes?
+
+    changed_by ||= change.changed_by
+    user != changed_by
   end
 
   # Returns the ID of the most recent change that touches this taxon.

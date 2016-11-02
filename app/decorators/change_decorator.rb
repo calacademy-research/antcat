@@ -1,14 +1,14 @@
 class ChangeDecorator < Draper::Decorator
   delegate_all
 
-  def format_adder_name
+  def format_adder_name name = nil
     user_verb = case change.change_type
                 when "create" then "added"
                 when "delete" then "deleted"
                 else               "changed"
                 end
 
-     name = format_changed_by
+     name ||= format_changed_by
     "#{name} #{user_verb}".html_safe
   end
 
@@ -62,19 +62,16 @@ class ChangeDecorator < Draper::Decorator
     helpers.link_to "Undo", "#", class: "btn-undo", data: { 'undo-id' => change.id }
   end
 
-  def approve_button taxon
+  def approve_button taxon, changed_by: nil
     return unless helpers.user_can_edit?
-
-    taxon_id = change.user_changed_taxon_id
-    taxon_state = TaxonState.find_by(taxon: taxon_id)
-    return if taxon_state.review_state == "approved"
+    return if taxon.taxon_state.review_state == "approved"
 
     # TODO clarify this; does the nil check mean that editors are allowed
     # to approve their own changes if the taxon has no taxon_state?
     #
     # Editors can approve taxa with no associated taxon_state. The GUI probably
     # does not allow for this to happen, just an additional check (?).
-    if taxon.taxon_state.nil? || taxon.can_be_approved_by?(change, helpers.current_user)
+    if taxon.taxon_state.nil? || taxon.can_be_approved_by?(change, helpers.current_user, changed_by)
       helpers.link_to 'Approve', helpers.approve_change_path(change),
         method: :put, class: "btn-normal",
         data: { confirm: "Are you sure you want to approve this change?" }

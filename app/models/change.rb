@@ -30,32 +30,26 @@ class Change < ActiveRecord::Base
     user_id ? User.find(user_id) : nil
   end
 
-  # TODO Expensive call; move to a field?
-  # This is hit from the haml; it returns the user ID of
-  # the person who made the change.
+  # TODO probably move `changed_by` to a field in this model.
+  # Returns the user of the person who made the change. Expensive method.
   def changed_by
-    # Adding user qualifier partly because of tests (setup doesn't have a "user" logged in),
-    # in any case, it remains correct, because all versions for a given change have the same
-    # user. Also may cover historical cases?
-    usered_versions = PaperTrail::Version.where(<<-SQL.squish)
-      change_id = #{self.id} AND whodunnit IS NOT NULL
-    SQL
-    version = usered_versions.first
-    return User.find(version.whodunnit.to_i) if version
-
-    # backwards compatibility
-    version = PaperTrail::Version.find_by_sql(<<-SQL.squish).first
-      SELECT * FROM versions
-      WHERE item_id = '#{user_changed_taxon_id}'
-      AND whodunnit IS NOT NULL
-      ORDER BY id DESC
-    SQL
-    user_id = version.whodunnit
-
-    return User.find(user_id.to_i)
+    whodunnit_via_change_id || whodunnit_via_user_changed_taxon_id
   end
 
   private
+    def whodunnit_via_change_id
+      version = PaperTrail::Version.where(change_id: id)
+        .where.not(whodunnit: nil).first
+      version.try :user
+    end
+
+    # Backwards compatibility, possibly covers other cases too.
+    def whodunnit_via_user_changed_taxon_id
+      version = PaperTrail::Version.where(item_id: user_changed_taxon_id)
+        .where.not(whodunnit: nil).last
+      version.try :user
+    end
+
     # Deletes don't store any object info, so you can't show what it used to look like.
     # used to pull an example of the way it once was.
     def get_most_recent_valid_taxon_version

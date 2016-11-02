@@ -7,12 +7,9 @@
     %tr
       %th Name
       %td.name-test-hook=format_taxon_name taxon.name
-
     %tr
-      -#Special case - we ONLY see this if we ever modify family Formicidae
-      -#taxon.name has a special case for family that return nil; I'm scared of breaking the universe
-      -#if I change that behaviour.
-      -if taxon.rank == 'family'
+      -# Special case since family Formicidae has no parent.
+      -if taxon.is_a? Family
         %th.parent_rank-test-hook Order
         %td.parent-test-hook Hymenoptera
       -else
@@ -58,20 +55,17 @@
           %th Attributes
           %td.protonym_attributes-test-hook=attributes
 
+      -authorship = protonym.authorship
       %tr
-        -authorship = protonym.authorship
         %th Authorship
         %td.authorship_reference-test-hook
           =authorship.reference.decorate.format
-
       %tr
         %th Page
         %td.page-test-hook=authorship.pages
-
       %tr
         %th Forms
         %td.forms-test-hook=authorship.forms
-
       %tr
         %th Locality
         %td.locality-test-hook=protonym.locality
