@@ -29,12 +29,20 @@ Then(/^I should still see the name field$/) do
   find('#name_field .edit').should be_visible
 end
 
-When(/^the name field should contain "([^"]*)"$/) do |name|
+Then(/^the name field should contain "([^"]*)"$/) do |name|
   find('#name_string').value.should == name
 end
 
-When(/^the name button should contain "([^"]*)"$/) do |name|
+# Try adding this (waiting finder) if the JS driver clicks on "OK" and
+# then navigates to a different page before the JS has had time to execute.
+# TODO probably include this in other steps so that it's always run.
+Then(/^the name button should contain "([^"]*)"$/) do |name|
   find('#name_field .display_button').text.should == name
+end
+
+# Same as above for the convert to subspecies page.
+Then(/^the target name button should contain "([^"]*)"$/) do |name|
+  find('#new_species_id_field .display_button').text.should == name
 end
 
 # gender
