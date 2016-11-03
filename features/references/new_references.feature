@@ -46,7 +46,7 @@ Feature: Seeing what's new
     Then the review status on the Ward reference should change to "Being reviewed"
 
   Scenario: Not a logged-in catalog editor
-    Given I log in as a bibliography editor
+    Given I log in as a user (not editor)
 
     When I go to the new references page
     Then I should not see a "Start reviewing" button

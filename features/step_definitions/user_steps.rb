@@ -1,3 +1,6 @@
+# TODO probably remove all those `Feed::Activity.without_tracking` (the feed
+# is disabled by default in tests) and create new steps in `feed_steps.rb`.
+
 Given(/(?:this|these) users? exists/) do |table|
   table.hashes.each { |hash| User.create! hash }
 end
@@ -23,6 +26,8 @@ def login_through_web_page
   step %{I press "Go" within "#login"}
 end
 
+# TODO change to "I log in as an editor" because we want to
+# open registration to non-editors in the future.
 When(/^I log in$/) do
   user = Feed::Activity.without_tracking { create :editor }
   login_programmatically user
@@ -32,6 +37,17 @@ Given('I am logged in') do
   step 'I log in'
 end
 
+When(/^I log in as a user (not editor)$/) do
+  user = Feed::Activity.without_tracking { create :user }
+  login_programmatically user
+end
+
+# "catalog editor" and "editor" are the same. There used to be -- at least
+# in Cucumber tests -- a user role called "bibliography editor" that really
+# meant a registered non-editor user. They may have had special privileges in
+# the past, or perhaps the feature was never implemented. At any rate, there's
+# no such thing at the moment, but we may want to add something similar.
+# TODO investigate adding/reinstating a "bibliography editor" user role.
 When(/^I log in as a catalog editor(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
   user = Feed::Activity.without_tracking do
@@ -45,12 +61,6 @@ When(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
   user = Feed::Activity.without_tracking do
     create :user, can_edit: true, is_superadmin: true, name: name
   end
-  login_programmatically user
-end
-
-# TODO this is the same as a (non-editor) user -- remove
-When(/^I log in as a bibliography editor$/) do
-  user = Feed::Activity.without_tracking { create :user }
   login_programmatically user
 end
 
