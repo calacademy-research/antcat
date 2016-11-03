@@ -55,7 +55,7 @@ class TaxonDecorator < ApplicationDecorator
 
   def change_history
     return if taxon.old?
-    change = taxon.latest_change
+    change = taxon.last_change
     return unless change
 
     helpers.content_tag :span, class: 'change_history' do

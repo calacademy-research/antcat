@@ -34,8 +34,8 @@ module CatalogHelper
   def link_to_review_change taxon
     return unless user_can_review_changes?
 
-    if taxon.can_be_reviewed? && taxon.latest_change
-      link_to 'Review change', "/changes/#{taxon.latest_change.id}", class: "btn-normal"
+    if taxon.can_be_reviewed? && taxon.last_change
+      link_to 'Review change', "/changes/#{taxon.last_change.id}", class: "btn-normal"
     end
   end
 
