@@ -1,14 +1,20 @@
 class ChangeDecorator < Draper::Decorator
   delegate_all
 
-  def format_adder_name name = nil
+  # Accepts optional `user` for performance reasons.
+  def format_adder_name user = nil
     user_verb = case change.change_type
                 when "create" then "added"
                 when "delete" then "deleted"
                 else               "changed"
                 end
 
-     name ||= format_changed_by
+    name = if user
+             format_username user
+           else
+             format_changed_by
+           end
+
     "#{name} #{user_verb}".html_safe
   end
 
@@ -80,11 +86,8 @@ class ChangeDecorator < Draper::Decorator
 
   private
     def format_username user
-      if user
-        user.decorate.name_linking_to_email
-      else
-        "Someone"
-      end
+      return "Someone" unless user # Sometimes we get here with a nil user.
+      user.decorate.name_linking_to_email
     end
 
     def format_time_ago time

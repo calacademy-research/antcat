@@ -3,7 +3,7 @@
 
 .callout
   %h5.left
-    =change.format_adder_name changed_by.name
+    =change.format_adder_name changed_by
     -if change.change_type != 'delete' && taxon
       =taxon.decorate.link_to_taxon
     -else

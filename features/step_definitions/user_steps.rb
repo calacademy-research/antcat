@@ -2,29 +2,12 @@ Given(/(?:this|these) users? exists/) do |table|
   table.hashes.each { |hash| User.create! hash }
 end
 
-When(/^I fill in the email field with "([^"]+)"$/) do |string|
-  step %{I fill in "user_email" with "#{string}"}
-end
-
-When(/^I fill in the email field with my email address$/) do
-  user = User.find_by(name: 'Brian Fisher')
-  step %{I fill in "user_email" with "#{user.email}"}
-end
-
-When(/^I fill in the password field with "([^"]+)"$/) do |string|
-  step %{I fill in "user_password" with "#{string}"}
-end
-
-When(/^I press the first "([^"]+)" to log in$/) do |string|
-  step %{I press the first "#{string}"}
-end
-
 Given('I am not logged in') do
 end
 
 def login_programmatically user
   login_as user
-  @user = user
+  @user = user # Add as instance variable to make it available for other steps.
 
   # TODO move to individual scenarios. Many scenarios bypassed the main page
   # by directly visiting other paths.
@@ -41,9 +24,7 @@ def login_through_web_page
 end
 
 When(/^I log in$/) do
-  user = Feed::Activity.without_tracking do
-    create :editor
-  end
+  user = Feed::Activity.without_tracking { create :editor }
   login_programmatically user
 end
 
@@ -69,13 +50,37 @@ end
 
 # TODO this is the same as a (non-editor) user -- remove
 When(/^I log in as a bibliography editor$/) do
-  user = Feed::Activity.without_tracking do
-    create :user
-  end
+  user = Feed::Activity.without_tracking { create :user }
   login_programmatically user
 end
 
 When(/^I log out and log in again$/) do
-  step 'I follow the first "Logout"'
+  step 'I log out'
   login_programmatically @user
+end
+
+When(/^I log out$/) do
+  step 'I follow the first "Logout"'
+end
+
+When(/^I fill in the email field with "([^"]+)"$/) do |string|
+  step %{I fill in "user_email" with "#{string}"}
+end
+
+When(/^I fill in the email field with my email address$/) do
+  user = User.find_by(name: 'Brian Fisher') # TODO something. Harcoded.
+  step %{I fill in "user_email" with "#{user.email}"}
+end
+
+When(/^I fill in the password field with "([^"]+)"$/) do |string|
+  step %{I fill in "user_password" with "#{string}"}
+end
+
+When(/^I press the first "([^"]+)" to log in$/) do |string|
+  step %{I press the first "#{string}"}
+end
+
+Then(/^there should be a mailto link to the email of "([^"]+)"$/) do |name|
+  email = User.find_by(name: name).email
+  find :css, "a[href='mailto:#{email}']"
 end
