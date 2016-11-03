@@ -88,6 +88,7 @@ class TaxonDecorator::Header
       string
     end
 
+    # TODO see LinkHelper#link.
     def header_link taxon, label
       link label, %{/catalog/#{taxon.id}}
     end

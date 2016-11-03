@@ -172,16 +172,17 @@ class TaxonDecorator < ApplicationDecorator
     end
 
     def format_senior_synonym
-      if current_valid_taxon = taxon.current_valid_taxon_including_synonyms
-        return ' of current valid taxon ' << current_valid_taxon.decorate.link_to_taxon
-      end
-      ''
+      current_valid_taxon = taxon.current_valid_taxon_including_synonyms
+      return '' unless current_valid_taxon
+
+      ' of current valid taxon ' << current_valid_taxon.decorate.link_to_taxon
     end
 
+    # TODO handle nil differently or we may end up with eg "a misspelling of ".
     def format_valid_combination
-      if current_valid_taxon = taxon.current_valid_taxon_including_synonyms
-        return current_valid_taxon.decorate.link_to_taxon
-      end
-      ''
+      current_valid_taxon = taxon.current_valid_taxon_including_synonyms
+      return '' unless current_valid_taxon
+
+      current_valid_taxon.decorate.link_to_taxon
     end
 end

@@ -1,5 +1,9 @@
+# Many methods here are prefixed "format_" to avoid clashing with the objects's
+# methods, or because they were named so in the old `ReferenceFormatter`
+# Slightly ugly but I'm not sure what to do now.
+
 class ReferenceDecorator < ApplicationDecorator
-  include ERB::Util # for the h method
+  include ERB::Util # for the `h` method
   delegate_all
 
   def key
@@ -26,14 +30,8 @@ class ReferenceDecorator < ApplicationDecorator
     format_italics h reference.taxonomic_notes
   end
 
+  # TODO rename as it also links DOIs, not just reference documents.
   def format_reference_document_link
-    pdf_link = if reference.downloadable?
-                 helpers.link 'PDF', reference.url, class: 'document_link', target: '_blank'
-               else
-                 ''
-               end
-
-    doi_link = format_doi_link
     [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
   end
 
@@ -47,12 +45,9 @@ class ReferenceDecorator < ApplicationDecorator
     review_state = reference.review_state
 
     case review_state
-    when 'reviewing'
-      'Being reviewed'
-    when 'none' || nil
-      ''
-    else
-      review_state.capitalize
+    when 'reviewing' then 'Being reviewed'
+    when 'none', nil then ''
+    else                  review_state.capitalize
     end
   end
 
@@ -101,6 +96,7 @@ class ReferenceDecorator < ApplicationDecorator
     format_inline_citation! expansion: false
   end
 
+  # TODO see LinkHelper#link.
   def goto_reference_link target: '_blank'
     helpers.link reference.id, helpers.reference_path(reference),
       class: :goto_reference_link, target: target
@@ -163,10 +159,17 @@ class ReferenceDecorator < ApplicationDecorator
       prefix + date + suffix
     end
 
-    def format_doi_link
+    # TODO see LinkHelper#link.
+    def doi_link
       return unless reference.doi.present?
       helpers.link reference.doi, create_link_from_doi(reference.doi),
         class: 'document_link', target: '_blank'
+    end
+
+    # TODO see LinkHelper#link.
+    def pdf_link
+      return unless reference.downloadable?
+      helpers.link 'PDF', reference.url, class: 'document_link', target: '_blank'
     end
 
     # transform "10.11646/zootaxa.4029.1.1" --> "http://dx.doi.org/10.11646/zootaxa.4029.1.1"
@@ -174,6 +177,7 @@ class ReferenceDecorator < ApplicationDecorator
       "http://dx.doi.org/" + doi
     end
 
+    # TODO see LinkHelper#link.
     def to_link_with_expansion reference_key_string, reference_string
       helpers.content_tag :span, class: :reference_key_and_expansion do
         content = helpers.link reference_key_string, '#',
@@ -190,6 +194,7 @@ class ReferenceDecorator < ApplicationDecorator
       end
     end
 
+    # TODO see LinkHelper#link.
     def to_link_without_expansion reference_key_string, reference_string
       content = []
       content << helpers.link(reference_key_string,

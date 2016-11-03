@@ -1,6 +1,13 @@
 module LinkHelper
   include ActionView::Helpers::UrlHelper
 
+  # TODO something. We kind of do not want this, I think, because:
+  # * It's non-standard and confusing.
+  # * No one likes `target: '_blank'`.
+  # * The name is hard to grep (search for "LinkHelper#link.")
+  #
+  # But it will be hard to remove because loads of tests have to be
+  # be rewritten and it's also used for the AntWeb export.
   def link contents, href, options = {}
     link_to contents, href,
       class:  options[:class],

@@ -96,6 +96,7 @@ class TaxonDecorator::Headline
       string << '"'
     end
 
+    # TODO see LinkHelper#link.
     def headline_type_specimen
       string = ''.html_safe
       if @taxon.type_specimen_repository.present?

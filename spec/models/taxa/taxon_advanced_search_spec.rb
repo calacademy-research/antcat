@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# TODO change to `describe Taxa::Search do` and rename file.
 describe Taxon do
   describe "#advanced_search" do
     context "when no meaningful search parameters are given" do
