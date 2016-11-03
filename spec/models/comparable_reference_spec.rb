@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ComparableReference do
   describe "#initialization" do
-    it "should be initializable with nothing" do
+    it "is initializable with nothing" do
       ComparableReference.new
     end
   end

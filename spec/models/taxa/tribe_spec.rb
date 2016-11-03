@@ -17,12 +17,12 @@ describe Tribe do
     expect(tribe.children).to eq tribe.genera
   end
 
-  it "should have as its full name just its name" do
+  it "has its full name just its name" do
     expect(tribe.name.to_s).to eq 'Attini'
   end
 
   # TODO belongs to Name
-  it "should have as its label, just its name" do
+  it "has its name as its label" do
     expect(tribe.name.to_html).to eq 'Attini'
   end
 

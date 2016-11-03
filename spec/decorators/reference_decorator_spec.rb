@@ -17,24 +17,28 @@ describe ReferenceDecorator do
   end
 
   describe "#make_html_safe" do
+    def make_html_safe string
+      nil_decorator.send :make_html_safe, string
+    end
+
     it "doesn't touch a string without HTML" do
-      expect(nil_decorator.send(:make_html_safe, 'string')).to eq 'string'
+      expect(make_html_safe 'string').to eq 'string'
     end
 
     it "leaves italics alone" do
-      expect(nil_decorator.send(:make_html_safe, '<i>string</i>')).to eq '<i>string</i>'
+      expect(make_html_safe '<i>string</i>').to eq '<i>string</i>'
     end
 
     it "leaves quotes alone" do
-      expect(nil_decorator.send(:make_html_safe, '"string"')).to eq '"string"'
+      expect(make_html_safe '"string"').to eq '"string"'
     end
 
     it "returns an html_safe string" do
-      expect(nil_decorator.send(:make_html_safe, '"string"')).to be_html_safe
+      expect(make_html_safe '"string"').to be_html_safe
     end
 
     it "escapes other HTML" do
-      expect(nil_decorator.send(:make_html_safe, '<script>danger</script>'))
+      expect(make_html_safe '<script>danger</script>')
         .to eq '&lt;script&gt;danger&lt;/script&gt;'
     end
   end
@@ -188,8 +192,10 @@ describe ReferenceDecorator do
 
     context "with unsafe characters" do
       let!(:author_names) { [create(:author_name, name: 'Ward, P. S.')] }
-      let(:reference) { create :unknown_reference, author_names: author_names,
-        citation_year: "1874", title: "Les fourmis de la Suisse.", citation: '32 pp.' }
+      let(:reference) do
+        create :unknown_reference, author_names: author_names,
+          citation_year: "1874", title: "Les fourmis de la Suisse.", citation: '32 pp.'
+      end
 
       it "escapes everything, buts let italics through" do
         reference.author_names = [create(:author_name, name: '<script>')]
@@ -344,7 +350,7 @@ describe ReferenceDecorator do
     end
 
     describe "#format_author_names" do
-      it "doesn't escape quotes and italics, should escape everything else" do
+      it "escapes everything except quotes and italics" do
         reference = create :unknown_reference,
           author_names: [author_name],
           citation: 'Ants',
@@ -357,13 +363,15 @@ describe ReferenceDecorator do
     end
   end
 
-  it "doesn't have a space at the beginning when there are no authors" do
-    reference = create :unknown_reference,
-      citation_year: '2010d',
-      author_names: [],
-      citation: 'Ants',
-      title: 'Tapinoma'
-    expect(reference.decorate.format).to eq "2010d. Tapinoma. Ants."
+  context "when there are no authors" do
+    it "doesn't have a space at the beginning" do
+      reference = create :unknown_reference,
+        citation_year: '2010d',
+        author_names: [],
+        citation: 'Ants',
+        title: 'Tapinoma'
+      expect(reference.decorate.format).to eq "2010d. Tapinoma. Ants."
+    end
   end
 
   describe "formatting the date" do
@@ -382,12 +390,12 @@ describe ReferenceDecorator do
       check ' [2010]'
     end
 
-    it "handles missing date" do
+    it "handles nil dates" do
       make nil
       check ''
     end
 
-    it "handle missing date" do
+    it "handle missing dates" do
       make ''
       check ''
     end
@@ -429,8 +437,8 @@ describe ReferenceDecorator do
   end
 
   describe "#format_inline_citation" do
-    context "with links" do
-      it "defers nonmissing references to the key" do
+    context "nonmissing references" do
+      it "defers to the key" do
         key = double
         reference = create :article_reference
         decorated = reference.decorate
@@ -438,15 +446,19 @@ describe ReferenceDecorator do
 
         decorated.format_inline_citation
       end
+    end
 
-      it "just outputs the citation for a MissingReference" do
+    context "a MissingReference" do
+      it "just outputs the citation" do
         reference = create :missing_reference, citation: 'foo'
         expect(reference.decorate.format_inline_citation).to eq 'foo'
       end
     end
+  end
 
-    context "without links" do
-      it "nonmissing references should defer to the key" do
+  describe "#format_inline_citation_without_links" do
+    context "nonmissing references" do
+      it "defers to the key" do
         key = double
         reference = create :article_reference
         decorated = reference.decorate
@@ -491,30 +503,32 @@ describe ReferenceDecorator do
     end
   end
 
-  describe "A regression where a string should've been duped" do
-    it "really should have been duped" do
+  describe "shared setup" do
+    let(:reference) do
       journal = create :journal, name: 'Ants'
-      reference = create :article_reference,
+      create :article_reference,
         author_names: [author_name], citation_year: '1874', title: 'Format',
         journal: journal, series_volume_issue: '1:1', pagination: '2'
-      expect(reference.decorate.format).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
     end
-  end
 
-  describe "#format_authorship_html" do
-    it "formats references into HTML, with rollover" do
-      journal = create :journal, name: 'Ants'
-      reference = create :article_reference,
-        author_names: [author_name], citation_year: '1874', title: 'Format',
-        journal: journal, series_volume_issue: '1:1', pagination: '2'
-      expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2.">Forel, 1874</span>'
-      expect(reference.decorate.format_authorship_html).to be === expected
+    describe "A regression where a string should've been duped" do
+      it "really should have been duped" do
+        expect(reference.decorate.format).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
+      end
+    end
+
+    describe "#format_authorship_html" do
+      it "formats references into HTML, with rollover" do
+        expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2.">Forel, 1874</span>'
+        expect(reference.decorate.format_authorship_html).to be === expected
+      end
     end
   end
 
   describe "Using ReferenceFormatterCache" do
+    let(:reference) { create :article_reference }
+
     it "returns an html_safe string from the cache" do
-      reference = create :article_reference
       ReferenceFormatterCache.instance.populate reference
       expect(reference.decorate.format).to be_html_safe
     end
@@ -522,14 +536,12 @@ describe ReferenceDecorator do
     describe "#format vs. #format!" do
       describe "#format" do
         it "reads from the cache" do
-          reference = create :article_reference
           expect(ReferenceFormatterCache.instance).to receive(:get).and_return 'Cache'
           expect(ReferenceFormatterCache.instance).not_to receive(:set)
           reference.decorate.format
         end
 
         it "populates and set the cache when it's empty" do
-          reference = create :article_reference
           expect(ReferenceFormatterCache.instance).to receive(:get).and_return nil
           expect_any_instance_of(ReferenceDecorator).to receive(:format!).and_return 'Cache'
           expect(ReferenceFormatterCache.instance).to receive(:set).with(reference, 'Cache', :formatted_cache)
@@ -539,7 +551,6 @@ describe ReferenceDecorator do
 
       describe "#format!" do
         it "doesn't touch the cache" do
-          reference = create :article_reference
           expect(ReferenceFormatterCache.instance).not_to receive(:get)
           expect(ReferenceFormatterCache.instance).not_to receive(:set)
           reference.decorate.format!
@@ -552,7 +563,6 @@ describe ReferenceDecorator do
         it "doesn't set the cache if there's no current user", pending: true do
           pending "deprecated"
 
-          reference = create :article_reference
           expect(ReferenceFormatterCache.instance.get(reference, :formatted_cache)).to be_nil
           expect(ReferenceFormatterCache.instance.get(reference, :inline_citation_cache)).to be_nil
 

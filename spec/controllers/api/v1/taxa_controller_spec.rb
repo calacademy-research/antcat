@@ -26,7 +26,7 @@ describe Api::V1::TaxaController do
       expect(response.body.to_s).to include "maxus"
     end
 
-    it "should report when there are no search matches" do
+    it "reports when there are no search matches" do
       create_species 'Atta minor maxus'
 
       get :search, {'string' => 'maxuus'}, nil

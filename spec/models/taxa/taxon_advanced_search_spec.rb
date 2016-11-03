@@ -183,25 +183,22 @@ describe Taxon do
     end
 
     describe "Searching for verbatim type locality" do
-      it "only returns taxa with that verbatim_type_locality" do
-        create_species verbatim_type_locality: 'Indonesia'
-        eciton = create_species verbatim_type_locality: 'San Pedro'
+      let!(:eciton) { create_species verbatim_type_locality: 'San Pedro' }
+      let!(:indonesian_ant) { create_species verbatim_type_locality: 'Indonesia' }
 
+      it "only returns taxa with that verbatim_type_locality" do
         results = Taxa::Search.advanced_search rank: 'All', verbatim_type_locality: 'San Pedro'
         expect(results.map(&:id)).to eq [eciton.id]
       end
 
-      it "should not only return anything if nothing has that verbatim_type_locality" do
-        create_species
-
-        results = Taxa::Search.advanced_search rank: 'All', verbatim_type_locality: 'San Pedro'
-        expect(results.map(&:id)).to eq []
+      context "when no taxa has that verbatim_type_locality" do
+        it "returns nothing" do
+          results = Taxa::Search.advanced_search rank: 'All', verbatim_type_locality: 'The Bronx'
+          expect(results.map(&:id)).to eq []
+        end
       end
 
-      it "should do substring search" do
-        create_species verbatim_type_locality: 'Indonesia'
-        eciton = create_species verbatim_type_locality: 'San Pedro'
-
+      it "matches substrings" do
         results = Taxa::Search.advanced_search rank: 'All', verbatim_type_locality: 'Pedro'
         expect(results.map(&:id)).to eq [eciton.id]
       end
@@ -223,7 +220,7 @@ describe Taxon do
         expect(results.map(&:id)).to eq []
       end
 
-      it "should do substring search" do
+      it "matches substrings" do
         create_species type_specimen_repository: 'III'
         eciton = create_species type_specimen_repository: 'ABCD'
 
@@ -248,7 +245,7 @@ describe Taxon do
         expect(results.map(&:id)).to eq []
       end
 
-      it "should do substring search" do
+      it "matches substrings" do
         create_species type_specimen_code: 'III'
         eciton = create_species type_specimen_code: 'ABCD'
 
@@ -281,7 +278,7 @@ describe Taxon do
         expect(results.map(&:id)).to eq [eciton.id]
       end
 
-      it "should not do substring search" do
+      it "doesn't match substrings" do
         atta = create_species biogeographic_region: 'Australasia'
 
         results = Taxa::Search.advanced_search rank: 'All', biogeographic_region: 'Aust'

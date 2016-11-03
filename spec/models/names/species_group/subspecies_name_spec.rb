@@ -10,6 +10,7 @@ describe SubspeciesName do
     end
   end
 
+  # TODO DRY
   # Changing the species of a subspecies name
   describe "#change_parent" do
     it "replaces the species part of the name and fix all the other parts, too" do

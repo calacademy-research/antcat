@@ -4,19 +4,19 @@ describe Taxon do
   describe "#references" do
     let!(:atta) { create_genus 'Atta' }
 
-    it "should have no references, if alone" do
+    it "has no references, if alone" do
       expect(atta.references.size).to eq 0
     end
 
     describe "references in Taxon fields" do
-      it "should have a reference if it's a taxon's genus" do
+      it "has a reference if it's a taxon's genus" do
         species = create_species genus: atta
         expect(atta.references).to match_array [
           { table: 'taxa', field: :genus_id, id: species.id }
         ]
       end
 
-      it "should have a reference if it's a taxon's subfamily" do
+      it "has a reference if it's a taxon's subfamily" do
         expect(atta.subfamily.references).to match_array [
           { table: 'taxa', field: :subfamily_id, id: atta.id },
           { table: 'taxa', field: :subfamily_id, id: atta.tribe.id }
@@ -41,14 +41,14 @@ describe Taxon do
     end
 
     describe "Reference in its authorship taxt" do
-      it "should not consider this an external reference" do
+      it "doesn't consider this an external reference" do
         atta.protonym.authorship.update_attribute :notes_taxt, "{tax #{atta.id}}"
         expect(atta.references).to be_empty
       end
     end
 
     describe "references as synonym" do
-      it "should work" do
+      it "works" do
         eciton = create_genus 'Eciton'
         eciton.extend TaxonSynonymsMonkeyPatch
         eciton.become_junior_synonym_of atta

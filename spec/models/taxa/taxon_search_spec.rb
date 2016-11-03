@@ -26,17 +26,17 @@ describe Taxon do
       expect(results).to eq []
     end
 
-    it "returns an exact matches" do
+    it "returns exact matches" do
       results = Taxa::Search.quick_search 'Monomorium'
       expect(results.first.name.to_s).to eq 'Monomorium'
     end
 
-    it "should return a prefix match" do
+    it "can search by prefix" do
       results = Taxa::Search.quick_search 'Monomor', search_type: 'beginning_with'
       expect(results.first.name.to_s).to eq 'Monomorium'
     end
 
-    it "should return a substring match" do
+    it "matches substrings" do
       results = Taxa::Search.quick_search 'iu', search_type: 'containing'
       expect(results.first.name.to_s).to eq 'Monomorium'
     end
@@ -46,7 +46,7 @@ describe Taxon do
       expect(results.size).to eq 2
     end
 
-    it "should not return anything but subfamilies, tribes, genera, subgenera, species,and subspecies" do
+    it "only returns subfamilies, tribes, genera, subgenera, species, and subspecies" do
       create_subfamily 'Lepto'
       create_tribe 'Lepto1'
       create_genus 'Lepto2'

@@ -7,9 +7,9 @@ describe ReferenceFormatterCache do
   end
 
   describe "#invalidate" do
-    it "should do nothing if there's nothing in the cache" do
-      reference = create :article_reference
+    let(:reference) { create :article_reference }
 
+    it "does nothing if there's nothing in the cache" do
       expect(reference.formatted_cache).to be_nil
       expect(reference.inline_citation_cache).to be_nil
 
@@ -19,8 +19,6 @@ describe ReferenceFormatterCache do
     end
 
     it "sets the cache to nil" do
-      reference = create :article_reference
-
       ReferenceFormatterCache.instance.populate reference
       expect(reference.formatted_cache).not_to be_nil
       expect(reference.inline_citation_cache).not_to be_nil

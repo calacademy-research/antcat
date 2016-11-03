@@ -3,8 +3,10 @@ require 'spec_helper'
 describe Reference do
   # Batch processing a number of replacements in one pass
   describe "#replace_with_batch" do
+    let(:missing_reference) { create :missing_reference, citation: 'Borowiec, 2010' }
+    let(:found_reference) { create :article_reference }
+
     it "replaces all missing references" do
-      missing_reference = create :missing_reference, citation: 'Borowiec, 2010'
       protonym = create :protonym, authorship: create(:citation, reference: missing_reference)
       taxon = create_genus protonym: protonym
 
@@ -17,8 +19,6 @@ describe Reference do
     end
 
     it "replaces references in taxt to the MissingReference to the found reference" do
-      found_reference = create :article_reference
-      missing_reference = create :missing_reference, citation: 'Borowiec, 2010'
       item = TaxonHistoryItem.create! taxt: "{ref #{missing_reference.id}}"
 
       Reference.replace_with_batch [{replace: missing_reference.id, with: found_reference.id}]
@@ -26,8 +26,6 @@ describe Reference do
     end
 
     it "replaces references in citations" do
-      found_reference = create :article_reference
-      missing_reference = create :missing_reference, citation: 'Borowiec, 2010'
       citation = Citation.create! reference: missing_reference
 
       Reference.replace_with_batch [{replace: missing_reference.id, with: found_reference.id}]

@@ -134,7 +134,7 @@ describe Reference do
   end
 
   describe "#principal_author_last_name" do
-    it "should not freak out if there are no authors" do
+    it "doesn't freak out if there are no authors" do
       reference = Reference.create! title: 'title', citation_year: '1993'
       expect(reference.principal_author_last_name).to be_nil
     end
@@ -163,11 +163,11 @@ describe Reference do
         title: 'title', citation_year: '1910'
     end
 
-    it "should be OK when all fields are present" do
+    it "valid when all fields are present" do
       expect(reference).to be_valid
     end
 
-    it "should not be OK when the title is missing" do
+    it "is not valid when the title is missing" do
       reference.title = nil
       expect(reference).not_to be_valid
     end

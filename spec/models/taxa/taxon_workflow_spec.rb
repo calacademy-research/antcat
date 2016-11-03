@@ -28,11 +28,11 @@ describe Taxon do
     context "An old record" do
       let!(:taxon) { create_taxon_version_and_change nil, user }
 
-      it "should not allow it to be reviewed" do
+      it "cannot be reviewed" do
         expect(taxon.can_be_reviewed?).to be_falsey
       end
 
-      it "should not allow it to be approved" do
+      it "cannot be approved" do
         another_taxon = create :genus
         another_taxon.taxon_state.review_state = :old
 
@@ -73,7 +73,7 @@ describe Taxon do
     context "An approved record" do
       let(:taxon) { create_taxon_version_and_change :approved, editor, approver }
 
-      it "should have an approver and an approved_at" do
+      it "has an approver and an approved_at" do
         expect(taxon.approver).to eq approver
         expect(taxon.approved_at).to be_within(7.hours).of Time.now
       end
@@ -117,7 +117,7 @@ describe Taxon do
 
   # We no longer support "Added by" display.
   # describe "Added by" do
-  #   it "should return the User who added the record, not a subsequent editor" do
+  #   it "returns the user who added the record, not a subsequent editor" do
   #     taxon = create_taxon_version_and_change :waiting, adder
   #
   #     setup_version taxon.id, adder

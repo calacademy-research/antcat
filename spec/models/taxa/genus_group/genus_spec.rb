@@ -144,19 +144,23 @@ describe Genus do
       expect(genus.siblings).to match_array [genus, another_genus]
     end
 
-    it "when there's no subfamily, should return all the genera with no subfamilies" do
-      genus = create :genus, subfamily: nil, tribe: nil
-      another_genus = create :genus, subfamily: nil, tribe: nil
+    context "when there's no subfamily" do
+      it "returns all the genera with no subfamilies" do
+        genus = create :genus, subfamily: nil, tribe: nil
+        another_genus = create :genus, subfamily: nil, tribe: nil
 
-      expect(genus.siblings).to match_array [genus, another_genus]
+        expect(genus.siblings).to match_array [genus, another_genus]
+      end
     end
 
-    it "when there's no tribe, return the other genera in its subfamily without tribes" do
-      create :genus, tribe: tribe, subfamily: subfamily
-      genus = create :genus, subfamily: subfamily, tribe: nil
-      another_genus = create :genus, subfamily: subfamily, tribe: nil
+    context "when there's no tribe" do
+      it "returns the other genera in its subfamily without tribes" do
+        create :genus, tribe: tribe, subfamily: subfamily
+        genus = create :genus, subfamily: subfamily, tribe: nil
+        another_genus = create :genus, subfamily: subfamily, tribe: nil
 
-      expect(genus.siblings).to match_array [genus, another_genus]
+        expect(genus.siblings).to match_array [genus, another_genus]
+      end
     end
   end
 

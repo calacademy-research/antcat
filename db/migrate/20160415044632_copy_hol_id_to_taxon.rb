@@ -41,11 +41,11 @@ class CopyHolIdToTaxon < ActiveRecord::Migration
   end
 
   # Based on Taxon#hol_id (uncommented method when this was added):
-  #  # it "should provide a link if there's a valid hol_data entry"
-  #  # it "should provide a link if there's one invalid hol_data entry"
-  #  # it "should provide a link if there's one valid and one invalid hol_data entry"
-  #  # it "should provide no link if there are two invalid entries"
-  #  # it "should provide no link if there are two valid entries"
+  #  # it "provides a link if there's a valid hol_data entry"
+  #  # it "provides a link if there's one invalid hol_data entry"
+  #  # it "provides a link if there's one valid and one invalid hol_data entry"
+  #  # it "provides no link if there are two invalid entries"
+  #  # it "provides no link if there are two valid entries"
   def extract_hol_id taxon
     hol_data = HolTaxonDatum.where(antcat_taxon_id: taxon.id)
 

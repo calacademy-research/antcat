@@ -68,7 +68,7 @@ describe Name do
       expect(Name.picklist_matching('ata')).to eq []
     end
 
-    it "should find one prefix match" do
+    it "can find one prefix match" do
       name = find_or_create_name 'Atta'
       name.update_attributes name_html:  '<i>Atta</i>'
 
@@ -78,7 +78,7 @@ describe Name do
       ]
     end
 
-    it "should find one fuzzy match" do
+    it "can find one fuzzy match" do
       name = find_or_create_name 'Gesomyrmex'
       name.update_attributes name_html:  '<i>Gesomyrmex</i>'
 
@@ -341,7 +341,7 @@ describe Name do
   end
 
   describe "indexing" do
-    it "subspecies names should work as expected" do
+    it "subspecies names works as expected" do
       name = SubspeciesName.new name: 'Acus major minor medium',
         name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
         epithet_html: '<i>medium</i>', epithets: 'major minor medium',
@@ -354,7 +354,7 @@ describe Name do
       expect(name_split[3]).to eq 'medium'
     end
 
-    it "genus name should work as expected" do
+    it "genus names works as expected" do
       name = GenusName.new name: 'Acus',
         name_html: '<i>Acus</i>', epithet: 'Acus',
         epithet_html: '<i>Acus</i>', epithets: nil,

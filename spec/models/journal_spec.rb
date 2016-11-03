@@ -5,7 +5,7 @@ describe Journal do
   it { should validate_presence_of :name }
 
   describe ".search" do
-    it "should do fuzzy matching of journal names" do
+    it "fuzzy matches journal names" do
       create :journal, name: 'American Bibliographic Proceedings'
       create :journal, name: 'Playboy'
       expect(Journal.search('ABP')).to eq ['American Bibliographic Proceedings']
@@ -33,13 +33,13 @@ describe Journal do
     let!(:journal) { create :journal, name: "ABC" }
 
     context "journal without references" do
-      it "should work" do
+      it "works" do
         expect { journal.destroy }.to change { Journal.count }.from(1).to(0)
       end
     end
 
     context "journal with a reference" do
-      it "should not work" do
+      it "doesn't work" do
         create :article_reference, journal: journal
         expect { journal.destroy }.not_to change { Journal.count }
         expect(journal.errors[:base]).to eq ["cannot delete journal (not unused)"]

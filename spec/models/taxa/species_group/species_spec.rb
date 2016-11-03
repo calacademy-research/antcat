@@ -32,12 +32,8 @@ describe Species do
       create_subspecies species: species, fossil: true
 
       expect(species.statistics).to eq(
-        extant: {
-          subspecies: { 'valid' => 1 }
-        },
-        fossil: {
-          subspecies: { 'valid' => 1 }
-        }
+        extant: { subspecies: { 'valid' => 1 } },
+        fossil: { subspecies: { 'valid' => 1 } }
       )
     end
 
@@ -47,12 +43,8 @@ describe Species do
       create_subspecies species: species, fossil: true
 
       expect(species.statistics).to eq(
-        extant: {
-          subspecies: { 'valid' => 1 }
-        },
-        fossil: {
-          subspecies: { 'valid' => 1 }
-        }
+        extant: { subspecies: { 'valid' => 1 } },
+        fossil: { subspecies: { 'valid' => 1 } }
       )
     end
 
@@ -96,22 +88,26 @@ describe Species do
       expect(taxon.subfamily).to eq new_species.subfamily
     end
 
-    it "should handle when the new subspecies exists" do
-      taxon = create_species 'Camponotus dallatorrei', genus: genus
-      new_species = create_species 'Camponotus alii', genus: genus
-      existing_subspecies = create_subspecies 'Atta alii dallatorrei', genus: genus
+    context "when the new subspecies exists" do
+      it "handles it" do
+        taxon = create_species 'Camponotus dallatorrei', genus: genus
+        new_species = create_species 'Camponotus alii', genus: genus
+        existing_subspecies = create_subspecies 'Atta alii dallatorrei', genus: genus
 
-      expect { taxon.become_subspecies_of new_species }.to raise_error Taxon::TaxonExists
+        expect { taxon.become_subspecies_of new_species }.to raise_error Taxon::TaxonExists
+      end
     end
 
-    it "should handle when the new subspecies name exists, but just as the protonym of the new subspecies" do
-      subspecies_name = create :subspecies_name, name: 'Atta major minor'
-      taxon = create_species 'Atta minor', genus: genus, protonym: create(:protonym, name: subspecies_name)
-      new_species = create_species 'Atta major', genus: genus
+    context "when the new subspecies name exists, but just as the protonym of the new subspecies" do
+      it "handles it" do
+        protonym = create :protonym, name: create(:subspecies_name, name: 'Atta major minor')
+        taxon = create_species 'Atta minor', genus: genus, protonym: protonym
+        new_species = create_species 'Atta major', genus: genus
 
-      taxon.become_subspecies_of new_species
-      taxon = Subspecies.find taxon.id
-      expect(taxon.name.name).to eq 'Atta major minor'
+        taxon.become_subspecies_of new_species
+        taxon = Subspecies.find taxon.id
+        expect(taxon.name.name).to eq 'Atta major minor'
+      end
     end
   end
 

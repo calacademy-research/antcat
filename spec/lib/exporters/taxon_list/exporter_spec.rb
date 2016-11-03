@@ -25,7 +25,7 @@ describe Exporters::TaxonList::Exporter do
     end
 
     describe "Outputting taxa" do
-      it "should work" do
+      it "works" do
         fisher = create :author_name, name: 'Fisher, B.L.'
         bolton = create :author_name, name: 'Bolton, B.'
         3.times { |i| create_taxon fisher, '2013' }

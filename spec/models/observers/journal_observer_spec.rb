@@ -3,19 +3,18 @@ require 'spec_helper'
 describe JournalObserver do
   let(:journal) { create :journal, name: 'Science' }
 
-  describe "Invalidating the formatted reference cache" do
-    it "should be asked to invalidate the cache when a change occurs" do
+  context "when a journal is changed" do
+    it "is notified" do
       expect_any_instance_of(JournalObserver).to receive :before_update
       journal.name = 'Nature'
       journal.save!
     end
 
     it "invalidates the cache for the references that use the journal" do
-      references = [
-        create(:book_reference, journal: journal),
-        create(:book_reference, journal: journal),
-        create(:book_reference)
-      ]
+      references = [ create(:book_reference, journal: journal),
+                     create(:book_reference, journal: journal),
+                     create(:book_reference) ]
+
       references.each { |reference| ReferenceFormatterCache.instance.populate reference }
       references.each { |reference| expect(reference.formatted_cache).not_to be_nil }
 

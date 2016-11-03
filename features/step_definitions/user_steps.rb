@@ -7,7 +7,7 @@ When(/^I fill in the email field with "([^"]+)"$/) do |string|
 end
 
 When(/^I fill in the email field with my email address$/) do
-  user = User.find_by(name: 'Mark Wilden')
+  user = User.find_by(name: 'Brian Fisher')
   step %{I fill in "user_email" with "#{user.email}"}
 end
 
@@ -42,7 +42,7 @@ end
 
 When(/^I log in$/) do
   user = Feed::Activity.without_tracking do
-    create :user, can_edit: true
+    create :editor
   end
   login_programmatically user
 end
@@ -54,7 +54,7 @@ end
 When(/^I log in as a catalog editor(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
   user = Feed::Activity.without_tracking do
-    create :user, can_edit: true, name: name
+    create :editor, name: name
   end
   login_programmatically user
 end
@@ -78,10 +78,4 @@ end
 When(/^I log out and log in again$/) do
   step 'I follow the first "Logout"'
   login_programmatically @user
-end
-
-Then(/^there should be a mailto link to the email of "([^"]+)"$/) do |user_name|
-  # Problems with this are caused by having @ or : in the target of the search
-  #user_email = User.find_by(name: user_name).email
-  #page.should have_css user_email
 end

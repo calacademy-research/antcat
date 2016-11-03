@@ -15,7 +15,7 @@ describe Subgenus do
   end
 
   describe "#statistics" do
-    it "should have none" do
+    it "has none" do
       expect(colobopsis.statistics).to be_nil
     end
   end

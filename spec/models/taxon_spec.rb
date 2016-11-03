@@ -16,10 +16,12 @@ describe Taxon do
       expect(taxon).to be_valid
     end
 
-    it "when status 'valid', should not be invalid" do
-      taxon = create :taxon
-      taxon.status = "valid"
-      expect(taxon).not_to be_invalid
+    context "when status 'valid'" do
+      it "is not invalid" do
+        taxon = create :taxon
+        taxon.status = "valid"
+        expect(taxon).not_to be_invalid
+      end
     end
 
     it "can be unidentifiable" do
@@ -127,7 +129,7 @@ describe Taxon do
 
   #TODO remove?
   describe "Rank" do
-    it "should return a lowercase version" do
+    it "returns a lowercase version" do
       expect(create(:subfamily).name.rank).to eq 'subfamily'
     end
   end
@@ -150,7 +152,7 @@ describe Taxon do
   end
 
   describe "#protonym" do
-    it "should have a protonym" do
+    it "can have a protonym" do
       taxon = Family.new
       expect(taxon.protonym).to be_nil
       taxon.build_protonym name: create(:name, name: 'Formicariae')
@@ -202,12 +204,11 @@ describe Taxon do
     end
 
     it "shows the items in the order in which they were added to the taxon" do
-      taxon.history_items.create! taxt: '1'
-      taxon.history_items.create! taxt: '2'
-      taxon.history_items.create! taxt: '3'
-      expect(taxon.history_items.map(&:taxt)).to eq ['1','2','3']
+      3.times { |number| taxon.history_items.create! taxt: "#{number}" }
+
+      expect(taxon.history_items.map(&:taxt)).to eq ['0','1','2']
       taxon.history_items.first.move_to_bottom
-      expect(taxon.history_items(true).map(&:taxt)).to eq ['2','3','1']
+      expect(taxon.history_items(true).map(&:taxt)).to eq ['1','2','0']
     end
   end
 
@@ -227,12 +228,13 @@ describe Taxon do
     end
 
     it "shows the items in the order in which they were added to the taxon" do
-      taxon.reference_sections.create! references_taxt: '1'
-      taxon.reference_sections.create! references_taxt: '2'
-      taxon.reference_sections.create! references_taxt: '3'
-      expect(taxon.reference_sections.map(&:references_taxt)).to eq ['1','2','3']
+      3.times do |number|
+        taxon.reference_sections.create! references_taxt: "#{number}"
+      end
+
+      expect(taxon.reference_sections.map(&:references_taxt)).to eq ['0','1','2']
       taxon.reference_sections.first.move_to_bottom
-      expect(taxon.reference_sections(true).map(&:references_taxt)).to eq ['2','3','1']
+      expect(taxon.reference_sections(true).map(&:references_taxt)).to eq ['1','2','0']
     end
   end
 
@@ -244,12 +246,14 @@ describe Taxon do
         expect(genus.author_last_names_string).to eq 'Bolton'
       end
 
-      it "should handle it if there simply isn't a protonym authorship" do
-        species = create_species 'Atta minor maxus'
-        protonym_name = create_subspecies_name 'Eciton minor maxus'
+      context "when there isn't a protonym authorship" do
+        it "handles it" do
+          species = create_species 'Atta minor maxus'
+          protonym_name = create_subspecies_name 'Eciton minor maxus'
 
-        expect(species.protonym).to receive(:author_last_names_string).and_return nil
-        expect(species.author_last_names_string).to be_nil
+          expect(species.protonym).to receive(:author_last_names_string).and_return nil
+          expect(species.author_last_names_string).to be_nil
+        end
       end
     end
 
@@ -279,7 +283,7 @@ describe Taxon do
         end
       end
 
-      it "should not surround in parentheses, if the name simply differs" do
+      it "doesn't surround in parentheses, if the name simply differs" do
         species = create_species 'Atta minor maxus'
         protonym_name = create_subspecies_name 'Atta minor minus'
 
@@ -288,12 +292,14 @@ describe Taxon do
         expect(species.authorship_string).to eq 'Bolton, 2005'
       end
 
-      it "should handle it if there simply isn't a protonym authorship" do
-        species = create_species 'Atta minor maxus'
-        protonym_name = create_subspecies_name 'Eciton minor maxus'
+      context "when there isn't a protonym authorship" do
+        it "handles it" do
+          species = create_species 'Atta minor maxus'
+          protonym_name = create_subspecies_name 'Eciton minor maxus'
 
-        expect(species.protonym).to receive(:authorship_string).and_return nil
-        expect(species.authorship_string).to be_nil
+          expect(species.protonym).to receive(:authorship_string).and_return nil
+          expect(species.authorship_string).to be_nil
+        end
       end
     end
 
@@ -388,7 +394,7 @@ describe Taxon do
   end
 
   describe "#update_parent" do
-    let(:old_parent) { create_species 'Atta major', genus:(create_genus 'Atta') }
+    let(:old_parent) { create_species 'Atta major', genus: create_genus('Atta') }
     let(:new_parent) { create_species 'Eciton nigrus', genus: create_genus('Eciton') }
     let(:subspecies) do
       create_subspecies name: create_subspecies_name('Atta major medius minor'),
@@ -493,7 +499,7 @@ describe Taxon do
   end
 
   describe "#type_specimen_url" do
-    it "should make sure it has a protocol" do
+    it "makes sure it has a protocol" do
       stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
       taxon = create :species
       taxon.type_specimen_url = 'antcat.org/1.pdf'
@@ -503,7 +509,7 @@ describe Taxon do
       expect(taxon.reload.type_specimen_url).to eq 'http://antcat.org/1.pdf'
     end
 
-    it "should make sure it's a valid URL" do
+    it "validates the URL" do
       taxon = create :species
       taxon.type_specimen_url = '*'
       expect(taxon).not_to be_valid
@@ -512,7 +518,7 @@ describe Taxon do
       expect(taxon.errors.full_messages).to match_array [expected_error]
     end
 
-    it "should make sure it exists" do
+    it "validates that the URL exists" do
       stub_request(:any, 'http://antwiki.org/1.pdf').to_return body: 'Hello World!'
       taxon = create :species, type_specimen_url: 'http://antwiki.org/1.pdf'
       expect(taxon).to be_valid

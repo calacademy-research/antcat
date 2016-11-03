@@ -4,7 +4,7 @@ describe Reference do
   # Throw in a MissingReference to make sure it's not returned.
   before { create :missing_reference }
 
-  describe "Searching (perform_search)" do
+  describe ".do_search, .perform_search, and .fulltext_search" do
     describe "Search parameters" do
       describe "Authors", search: true do
         it "returns an empty array if nothing is found for the author names" do
@@ -13,14 +13,8 @@ describe Reference do
 
         it "finds the reference for a given author_name if it exists" do
           bolton = create :author_name, name: "Bolton Barry"
-          # Test fixed by creating the :author_name with `name: "Bolton Barry"`
-          # Always succeeds if run with no other tests, but eg this fails:
-          #   rspec spec/models/references/reference_*
-          # Seems like we're having issues with tests not cleaning up between runs.
-          # TODO fix?
           reference = create :book_reference, author_names: [bolton]
           create :book_reference, author_names: [create(:author_name, name: 'Fisher')]
-
           Sunspot.commit
 
           results = Reference.do_search q: "author:'#{bolton.name}'"
@@ -46,9 +40,9 @@ describe Reference do
           fisher = create :author_name, name: 'Fisher'
           create :reference, author_names: [bolton]
           create :reference, author_names: [fisher]
-          bolton_fisher_reference = create :reference, author_names: [bolton,fisher]
-
+          bolton_fisher_reference = create :reference, author_names: [bolton, fisher]
           Sunspot.commit
+
           expect(Reference.do_search(q: 'author:"Bolton Fisher"')).to eq [bolton_fisher_reference]
         end
       end
@@ -57,7 +51,7 @@ describe Reference do
         describe 'Notes' do
           it 'searches in public notes' do
             matching_reference = reference_factory author_name: 'Hölldobler', public_notes: 'abcdef'
-            unmatching_reference = reference_factory author_name: 'Hölldobler', public_notes: 'fedcba'
+            reference_factory author_name: 'Hölldobler', public_notes: 'fedcba' # unmatching_reference
             Sunspot.commit
 
             expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
@@ -65,7 +59,7 @@ describe Reference do
 
           it 'searches in editor notes' do
             matching_reference = reference_factory author_name: 'Hölldobler', editor_notes: 'abcdef'
-            unmatching_reference = reference_factory author_name: 'Hölldobler', editor_notes: 'fedcba'
+            reference_factory author_name: 'Hölldobler', editor_notes: 'fedcba' # unmatching_reference
             Sunspot.commit
 
             expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
@@ -73,31 +67,30 @@ describe Reference do
 
           it 'searches in taxonomic notes' do
             matching_reference = reference_factory author_name: 'Hölldobler', taxonomic_notes: 'abcdef'
-            unmatching_reference = reference_factory author_name: 'Hölldobler', taxonomic_notes: 'fedcba'
+            reference_factory author_name: 'Hölldobler', taxonomic_notes: 'fedcba' # unmatching_reference
             Sunspot.commit
+
             expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
           end
         end
 
         describe 'Author names', search: true do
-          before do
-            @reference = reference_factory author_name: 'Hölldobler'
-            Sunspot.commit
-          end
+          let!(:reference) { reference_factory author_name: 'Hölldobler' }
+          before { Sunspot.commit }
 
           it 'handles diacritics in the search term' do
-            expect(Reference.do_search(q: 'Hölldobler')).to eq [@reference]
+            expect(Reference.do_search(q: 'Hölldobler')).to eq [reference]
           end
 
           it 'substitutes diacritics with English letters' do
-            expect(Reference.do_search(q: 'holldobler')).to eq [@reference]
+            expect(Reference.do_search(q: 'holldobler')).to eq [reference]
           end
         end
 
         describe 'Cite code', search: true do
           it "finds cite codes that's doesn't look like a current year" do
             matching_reference = reference_factory author_name: 'Hölldobler', cite_code: 'abcdef'
-            unmatching_reference = reference_factory author_name: 'Hölldobler', cite_code: 'fedcba'
+            reference_factory author_name: 'Hölldobler', cite_code: 'fedcba' # unmatching_reference
             Sunspot.commit
 
             expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
@@ -113,9 +106,9 @@ describe Reference do
 
         describe 'Journal name', search: true do
           it 'searches journal names' do
-            journal = create :journal, name: 'Journal'
-            matching_reference = reference_factory author_name: 'Hölldobler', journal: journal
-            unmatching_reference = reference_factory author_name: 'Hölldobler'
+            matching_reference = reference_factory author_name: 'Hölldobler',
+              journal: create(:journal, name: 'Journal')
+            reference_factory author_name: 'Hölldobler' # unmatching_reference
             Sunspot.commit
 
             expect(Reference.do_search(q: 'journal')).to eq [matching_reference]
@@ -124,9 +117,9 @@ describe Reference do
 
         describe 'Publisher name', search: true do
           it 'searches publisher names' do
-            publisher = create :publisher, name: 'Publisher'
-            matching_reference = reference_factory author_name: 'Hölldobler', publisher: publisher
-            unmatching_reference = reference_factory author_name: 'Hölldobler'
+            matching_reference = reference_factory author_name: 'Hölldobler',
+              publisher: create(:publisher, name: 'Publisher')
+            reference_factory author_name: 'Hölldobler' # unmatching_reference
             Sunspot.commit
 
             expect(Reference.do_search(q: 'Publisher')).to eq [matching_reference]
@@ -154,23 +147,26 @@ describe Reference do
           end
 
           it "returns an empty array if nothing is found for year" do
-            expect(Reference.fulltext_search(keywords: '', start_year: 1992, end_year: 1993)).to be_empty
+            results = Reference.fulltext_search keywords: '', start_year: 1992, end_year: 1993
+            expect(results).to be_empty
           end
 
           it "finds entries in between the start year and the end year (inclusive)" do
-            expect(Reference.fulltext_search(keywords: '', start_year: 1995, end_year: 1996).map(&:year)).to match_array [1995, 1996]
+            results = Reference.fulltext_search keywords: '', start_year: 1995, end_year: 1996
+            expect(results.map(&:year)).to match_array [1995, 1996]
           end
 
           it "finds references in the year of the end range, even if they have extra characters" do
             reference_factory author_name: 'Bolton', citation_year: '2004.'
             Sunspot.commit
 
-            expect(Reference.fulltext_search(keywords: '', year: 2004).map(&:year)).to match_array [2004]
+            results = Reference.fulltext_search keywords: '', year: 2004
+            expect(results.map(&:year)).to match_array [2004]
           end
         end
 
         describe "Year and fulltext", search: true do
-          it "should work" do
+          it "works" do
             atta2004 = create :book_reference, title: 'Atta', citation_year: '2004'
             atta2003 = create :book_reference, title: 'Atta', citation_year: '2003'
             formica2004 = create :book_reference, title: 'Formica', citation_year: '2003'
@@ -184,9 +180,10 @@ describe Reference do
 
     describe "Filtering", search: true do
       it "applies the :unknown :reference_type that's passed" do
-        known = create :article_reference
         unknown = create :unknown_reference
+        create :article_reference # known
         Sunspot.commit
+
         expect(Reference.fulltext_search(q: "bolton", reference_type: :unknown)).to eq [unknown]
       end
 
@@ -199,14 +196,15 @@ describe Reference do
 
       it "applies the :nested :reference_type that's passed" do
         nested = create :nested_reference
-        unnested = create :unknown_reference
+        create :unknown_reference # unnested
         Sunspot.commit
+
         expect(Reference.fulltext_search(q: 'bolton', reference_type: :nested)).to eq [nested]
       end
     end
   end
 
-  describe "Searching with Solr", search: true do
+  describe ".solr_search", search: true do
     it "returns an empty array if nothing is found for author_name" do
       create :reference
       Sunspot.commit
@@ -259,7 +257,7 @@ describe Reference do
     end
   end
 
-  describe "Do search" do
+  describe ".do_search" do
     describe "Searching for text and/or years" do
       it "extracts the starting and ending years" do
         expect(Reference).to receive(:fulltext_search)

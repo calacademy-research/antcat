@@ -21,7 +21,7 @@ describe ApplicationController do
     end
 
     context "signed in as an editor" do
-      let!(:editor) { create :user, can_edit: true }
+      let!(:editor) { create :editor }
       before do
         sign_in editor
         get :index
@@ -59,7 +59,7 @@ describe ApplicationController do
     end
 
     it "delegates to User" do
-      current_user = create :user, can_edit: true
+      current_user = create :editor
       allow(controller).to receive(:current_user).and_return current_user
 
       expect(current_user).to receive :can_edit?

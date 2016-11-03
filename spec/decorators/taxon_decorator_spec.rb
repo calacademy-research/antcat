@@ -298,18 +298,18 @@ describe TaxonDecorator do
     end
 
     it "shows the adder for waiting taxa" do
-      adder = create :user, can_edit: true
+      adder = create :editor
       taxon = create_taxon_version_and_change :waiting, adder
 
       change_history = taxon.decorate.change_history
       expect(change_history).to match /Added by/
-      expect(change_history).to match /Mark Wilden/
+      expect(change_history).to match /Brian Fisher/
       expect(change_history).to match /less than a minute ago/
     end
 
     it "shows the adder and the approver for approved taxa" do
-      adder = create :user, can_edit: true
-      approver = create :user, can_edit: true
+      adder = create :editor
+      approver = create :editor
       taxon = create_taxon_version_and_change :waiting, adder
       taxon.taxon_state.review_state = :waiting
       change = Change.find taxon.last_change.id
@@ -389,7 +389,7 @@ describe TaxonDecorator do
       expect(subspecies.decorate.name_description).to eq "new subspecies of (no species)"
     end
 
-    it "should be html_safe" do
+    it "is html_safe" do
       subfamily = create_subfamily build_stubbed: true
       genus = create_genus subfamily: subfamily, build_stubbed: true
       expect(genus.decorate.name_description).to be_html_safe

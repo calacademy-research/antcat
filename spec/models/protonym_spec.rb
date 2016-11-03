@@ -14,9 +14,11 @@ describe Protonym do
   end
 
   describe "#authorship_string" do
-    it "should handle it if there is no citation" do
-      protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
-      expect(protonym.authorship_string).to be_nil
+    context "there is no citation" do
+      it "handles it" do
+        protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
+        expect(protonym.authorship_string).to be_nil
+      end
     end
 
     it "delegates to the citation" do
@@ -29,9 +31,11 @@ describe Protonym do
   end
 
   describe "#authorship_html_string" do
-    it "should handle it if there is no citation" do
-      protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
-      expect(protonym.authorship_html_string).to be_nil
+    context "there is no citation" do
+      it "handles it" do
+        protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
+        expect(protonym.authorship_html_string).to be_nil
+      end
     end
 
     it "delegates to the citation" do
@@ -44,9 +48,11 @@ describe Protonym do
   end
 
   describe "#author_last_names_string" do
-    it "should handle it if there is no citation" do
-      protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
-      expect(protonym.author_last_names_string).to be_nil
+    context "there is no citation" do
+      it "handles it" do
+        protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
+        expect(protonym.author_last_names_string).to be_nil
+      end
     end
 
     it "delegates to the citation" do
@@ -59,9 +65,11 @@ describe Protonym do
   end
 
   describe "#year" do
-    it "should handle it if there is no citation" do
-      protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
-      expect(protonym.year).to be_nil
+    context "there is no citation" do
+      it "handles it" do
+        protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
+        expect(protonym.year).to be_nil
+      end
     end
 
     it "delegates to the citation" do

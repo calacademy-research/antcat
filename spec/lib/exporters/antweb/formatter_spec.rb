@@ -4,13 +4,13 @@ describe Exporters::Antweb::Exporter do
   let(:formatter) { Exporters::Antweb::Exporter }
 
   describe "Taxon" do
-    it "should work" do
+    it "works" do
       formatter.new.send :export_history, create_genus
     end
   end
 
   describe "formatting a genus" do
-    it "should work" do
+    it "works" do
       bolton = create :author
       author_name = create :author_name, name: 'Bolton, B.', author: bolton
       journal = create :journal, name: 'Psyche'

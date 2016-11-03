@@ -154,11 +154,11 @@ Feature: Workflow
     And I press "OK"
     And I press "Save" within ".buttons_section"
     Then I should see "Wildencidae" in the header
-    And I should see "Changed by Mark Wilden"
+    And I should see "Changed by Brian Fisher"
     And I should see "This taxon has been changed; changes awaiting approval"
 
     When I go to the changes page
-    Then I should see "Mark Wilden changed Wildencidae"
+    Then I should see "Brian Fisher changed Wildencidae"
 
   Scenario: People's names linked to their email
     Given I add the genus "Atta"

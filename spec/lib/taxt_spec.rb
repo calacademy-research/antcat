@@ -15,13 +15,13 @@ describe Taxt do
           expect(Taxt.to_editable("{ref #{reference.id}}")).to eq "{Fisher, 1922 #{editable_key}}"
         end
 
-        it "handles a missing reference" do
+        it "handles missing references" do
           reference = create :missing_reference, citation: 'Fisher, 2011'
           editable_key = Taxt.send :id_for_editable, reference.id, 1
           expect(Taxt.to_editable("{ref #{reference.id}}")).to eq "{Fisher, 2011 #{editable_key}}"
         end
 
-        it "handles a reference we don't even know is missing" do
+        it "handles references we don't even know are missing" do
           expect(Taxt.to_editable("{ref 123}")).to eq "{Rt}"
         end
       end

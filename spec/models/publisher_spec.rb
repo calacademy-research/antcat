@@ -53,13 +53,13 @@ describe Publisher do
   end
 
   describe ".search" do
-    it "should do fuzzy matching of name/place combinations" do
+    it "fuzzy matches name/place combinations" do
       Publisher.create! name: 'Wiley', place: Place.create!(name: 'Chicago')
       Publisher.create! name: 'Wiley', place: Place.create!(name: 'Toronto')
       expect(Publisher.search('chw')).to eq ['Chicago: Wiley']
     end
 
-    it "should find a match even if there's no place" do
+    it "can find a match even if there's no place" do
       Publisher.create! name: 'Wiley'
       expect(Publisher.search('w')).to eq ['Wiley']
     end

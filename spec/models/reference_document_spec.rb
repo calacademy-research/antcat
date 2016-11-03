@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ReferenceDocument do
   it { should be_versioned }
 
-  it "should make sure it has a protocol" do
+  it "makes sure it has a protocol" do
     stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
     document = create :reference_document
     document.url = 'antcat.org/1.pdf'
@@ -13,7 +13,7 @@ describe ReferenceDocument do
     expect(document.reload.url).to eq 'http://antcat.org/1.pdf'
   end
 
-  it "should make sure it's a valid URL" do
+  it "validates the URL" do
     document = ReferenceDocument.new url: '*'
     expect(document).not_to be_valid
     expect(document.errors.full_messages).to match_array ['Url is not in a valid format']
@@ -25,18 +25,18 @@ describe ReferenceDocument do
     expect(document).to be_valid
   end
 
-  it "don't check existence of URL when it's ours" do
+  it "doesn't check existence of URL when it's ours" do
     document = ReferenceDocument.new url: 'http://antcat.org/a.pdf'
     expect(document).to be_valid
   end
 
-  it "should make sure it's a valid URL with a path" do
+  it "validates the URL's path" do
     document = ReferenceDocument.new url: 'google.com'
     expect(document).not_to be_valid
     expect(document.errors.full_messages).to match_array ['Url is not in a valid format']
   end
 
-  it "should make sure it exists" do
+  it "validates that the URL exists" do
     stub_request(:any, "http://antwiki.org/1.pdf").to_return body: "Hello World!"
     document = ReferenceDocument.create url: 'http://antwiki.org/1.pdf'
     expect(document).to be_valid
@@ -67,7 +67,7 @@ describe ReferenceDocument do
   end
 
   describe "#downloadable?" do
-    it "should not be downloadable if there is no url" do
+    it "is not downloadable if there is no url" do
       expect(ReferenceDocument.new).not_to be_downloadable
     end
 
@@ -88,12 +88,12 @@ describe ReferenceDocument do
       expect(document).to be_downloadable
     end
 
-    it "should not be downloadable if it is on http://128.146.250.117" do
+    it "is not downloadable if it is on http://128.146.250.117" do
       document = ReferenceDocument.new url: 'http://128.146.250.117/pdfs/4096/4096.pdf'
       expect(document).not_to be_downloadable
     end
 
-    it "should not consider antbase PDFs downloadable by anybody" do
+    it "doesn't consider antbase PDFs downloadable by anybody" do
       url = 'http://antbase.org/ants/publications/4495/4495.pdf'
       document = ReferenceDocument.new url: url, file_file_name: 'bar'
       expect(document).not_to be_downloadable
@@ -101,13 +101,13 @@ describe ReferenceDocument do
   end
 
   describe "#host=" do
-    it "should do nothing if there is not file" do
+    it "does nothing if there is no file" do
       document = ReferenceDocument.new
       document.host = 'localhost'
       expect(document.url).to be_nil
     end
 
-    it "should do nothing if the file isn't hosted by us" do
+    it "does nothing if the file isn't hosted by us" do
       document = ReferenceDocument.new url: 'foo'
       document.host = 'localhost'
       expect(document.url).to eq 'foo'

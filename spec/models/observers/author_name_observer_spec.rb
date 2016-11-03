@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe AuthorNameObserver do
-  describe "Invalidating the formatted cache" do
-    let(:bolton) { create :author_name, name: 'Bolton' }
+  let(:bolton) { create :author_name, name: 'Bolton' }
 
-    it "invalidates the cache when a change occurs" do
+  context "when an author name is changed" do
+    it "is notified" do
       expect_any_instance_of(AuthorNameObserver).to receive :after_update
       bolton.name = 'Fisher'
       bolton.save!

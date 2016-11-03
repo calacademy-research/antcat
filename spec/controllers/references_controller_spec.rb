@@ -44,7 +44,7 @@ describe ReferencesController do
   describe "#latest_changes" do
     context "logged in" do
       before do
-        editor = create :user, can_edit: true
+        editor = create :editor
         sign_in editor #TODO create/find helper method #sign_in_editor
       end
 

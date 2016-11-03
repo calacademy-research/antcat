@@ -66,7 +66,8 @@ describe LinkHelper do
     end
   end
 
-  describe "creating a link from a site to AntWeb" do
+  # Creating a link from a site to AntWeb.
+  describe "#link_to_antweb" do
     it "handles subfamilies" do
       subfamily = create_subfamily 'Attaichnae'
       expect(helper.link_to_antweb(subfamily))
@@ -85,14 +86,12 @@ describe LinkHelper do
     end
 
     it "outputs nothing for subgenera" do
-      genus = create_genus 'Atta'
-      subgenus = create_subgenus 'Atta (Batta)', genus: genus
+      subgenus = create_subgenus 'Atta (Batta)', genus: create_genus('Atta')
       expect(helper.link_to_antweb(subgenus)).to be_nil
     end
 
     it "handles species" do
-      genus = create_genus 'Atta'
-      species = create_species 'Atta major', genus: genus
+      species = create_species 'Atta major', genus: create_genus('Atta')
       expect(helper.link_to_antweb(species))
         .to eq '<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>'
     end

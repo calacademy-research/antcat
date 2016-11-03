@@ -1,21 +1,21 @@
 require 'spec_helper'
 
 describe "ReferenceDecorator formerly ReferenceKey" do
-  before do
-    @bolton = create :author_name, name: 'Bolton, B.'
-    @fisher = create :author_name, name: 'Fisher, B.'
-    @ward = create :author_name, name: 'Ward, P.S.'
-  end
+  let(:bolton) { create :author_name, name: 'Bolton, B.' }
+  let(:fisher) { create :author_name, name: 'Fisher, B.' }
+  let(:ward) { create :author_name, name: 'Ward, P.S.' }
 
   # Representing as a string
   describe "#key" do
-    it "is blank if a new record" do
-      expect(BookReference.new.decorate.key).to eq ''
+    context "a new record" do
+      it "is blank" do
+        expect(BookReference.new.decorate.key).to eq ''
+      end
     end
 
     it "Citation year with extra" do
       reference = create :article_reference,
-        author_names: [@bolton],
+        author_names: [bolton],
         citation_year: '1970a ("1971")'
       expect(reference.decorate.key).to eq 'Bolton, 1970a'
     end
@@ -29,32 +29,32 @@ describe "ReferenceDecorator formerly ReferenceKey" do
 
     it "One author" do
       reference = create :article_reference,
-        author_names: [@bolton],
+        author_names: [bolton],
         citation_year: '1970a'
       expect(reference.decorate.key).to eq 'Bolton, 1970a'
     end
 
     it "Two authors" do
       reference = create :article_reference,
-        author_names: [@bolton, @fisher],
+        author_names: [bolton, fisher],
         citation_year: '1970a'
       expect(reference.decorate.key).to eq 'Bolton & Fisher, 1970a'
     end
 
     it "Three authors" do
       reference = create :article_reference,
-        author_names: [@bolton, @fisher, @ward],
+        author_names: [bolton, fisher, ward],
         citation_year: '1970a'
       expect(reference.decorate.key).to eq 'Bolton, Fisher & Ward, 1970a'
     end
   end
 
   describe "#to_link" do
+    let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
     before do
-      @latreille = create :author_name, name: 'Latreille, P. A.'
       science = create :journal, name: 'Science'
       @reference = create :article_reference,
-        author_names: [@latreille],
+        author_names: [latreille],
         citation_year: '1809',
         title: "*Atta*",
         journal: science,
@@ -121,10 +121,14 @@ describe "ReferenceDecorator formerly ReferenceKey" do
     end
 
     describe "Handling quotes in the title" do
+      let(:reference) do
+        create :unknown_reference, author_names: [latreille],
+          citation_year: '1809', title: '"Atta"'
+      end
+
       it "escapes them" do
-        @reference = create :unknown_reference, author_names: [@latreille], citation_year: '1809', title: '"Atta"'
-        expect(@reference.decorate.to_link(expansion: false)).to eq(
-          %{<a target="_blank" title="Latreille, P. A. 1809. "Atta". New York." href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>}
+        expect(reference.decorate.to_link(expansion: false)).to eq(
+          %{<a target="_blank" title="Latreille, P. A. 1809. "Atta". New York." href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>}
         )
       end
     end
