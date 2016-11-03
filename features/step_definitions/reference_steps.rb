@@ -47,24 +47,23 @@ Given(/^there is a Giovanni reference$/) do
 end
 
 Given(/(?:these|this) unknown references? exists?/) do |table|
-  table.hashes.each do |hash|
-    create_reference :unknown_reference, hash
-  end
+  table.hashes.each { |hash| create_reference :unknown_reference, hash }
 end
 
 def create_reference type, hash
   author = hash.delete 'author'
-  if author
-    author_names = [create(:author_name, name: author)]
-  else
-    authors = hash.delete 'authors'
-    author_names = Parsers::AuthorParser.parse(authors)[:names]
-    author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
-    author_names = author_names.reduce([]) do |author_names, author_name|
-      author_name = AuthorName.find_by(name: author_name) || create(:author_name, name: author_name)
-      author_names << author_name
+  author_names =
+    if author
+      [create(:author_name, name: author)]
+    else
+      authors = hash.delete 'authors'
+      parsed_author_names = Parsers::AuthorParser.parse(authors)[:names]
+      author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
+      parsed_author_names.reduce([]) do |author_names, author_name|
+        author_name = AuthorName.find_by(name: author_name) || create(:author_name, name: author_name)
+        author_names << author_name
+      end
     end
-  end
 
   hash[:year] = hash.delete('year').to_i
   hash[:citation_year] =
@@ -110,9 +109,9 @@ end
 Then(/I should see these entries (with a header )?in this order:/) do |with_header, entries|
   offset = with_header ? 1 : 0
   entries.hashes.each_with_index do |e, i|
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['entry']
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['date']
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['review_state']
+    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['entry']
+    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['date']
+    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['review_state']
   end
 end
 
@@ -156,7 +155,11 @@ When(/I fill in "([^"]*)" with a URL to a document that doesn't exist/) do |fiel
   step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
-very_long_author_names_string = (0...26).reduce([]) { |a, n| a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A." }.join('; ')
+def very_long_author_names_string
+  (0...26).reduce([]) do |a, n|
+    a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A."
+  end.join('; ')
+end
 
 When(/I fill in "reference_author_names_string" with a very long author names string/) do
   step %{I fill in "reference_author_names_string" with "#{very_long_author_names_string}"}

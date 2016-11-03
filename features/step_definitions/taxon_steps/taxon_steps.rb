@@ -9,7 +9,7 @@ Given(/^the Formicidae family exists$/) do
     name: create(:family_or_subfamily_name, name: "Formicariae"),
     authorship: create(:citation, reference: reference, pages: "124")
 
-  family = create :family,
+  create :family,
     name: create(:family_name, name: "Formicidae"),
     protonym: protonym,
     type_name: create(:genus_name, name: "Formica"),
@@ -31,5 +31,6 @@ end
 
 # Misc
 Then(/^the taxon mouseover should contain "(.*?)"$/) do |text|
-  find('.reference_key')['title'].should have_content(text)
+  element = find '.reference_key'
+  expect(element['title']).to have_content text
 end

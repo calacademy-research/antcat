@@ -37,17 +37,6 @@ describe Species do
       )
     end
 
-    it "differentiates between extant and fossil subspecies" do
-      species = create_species
-      create_subspecies species: species
-      create_subspecies species: species, fossil: true
-
-      expect(species.statistics).to eq(
-        extant: { subspecies: { 'valid' => 1 } },
-        fossil: { subspecies: { 'valid' => 1 } }
-      )
-    end
-
     it "handles 1 valid subspecies and 2 synonyms" do
       species = create_species
       create_subspecies species: species

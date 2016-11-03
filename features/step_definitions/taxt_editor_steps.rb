@@ -1,6 +1,7 @@
 Then(/^the taxt editor should contain the editable taxt for "(.*?)"$/) do |key|
   reference = find_reference_by_key key
-  find('#name').value.strip.should == Taxt.to_editable_reference(reference)
+  element = find '#name'
+  expect(element.value.strip).to eq Taxt.to_editable_reference(reference)
 end
 
 # Seems like we need this now. Tests likely passed without this earlier

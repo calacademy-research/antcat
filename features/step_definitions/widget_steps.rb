@@ -26,7 +26,8 @@ When(/I click the new_or_homonym field/) do
 end
 
 When(/the default_name_string field should contain "([^"]*)"/) do |name|
-  find('#test_default_name_string_name_field #name_string').value.should == name
+  element = find '#test_default_name_string_name_field #name_string'
+  expect(element.value).to eq name
 end
 
 When(/I click the default_name_string field/) do

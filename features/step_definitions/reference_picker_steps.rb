@@ -3,19 +3,20 @@ When(/^I click the first search result$/) do
 end
 
 Then(/^the authorship field should contain the reference by (\w+)$/) do |author|
-  find('#authorship_field .display').text.should =~ /#{author}.*/
+  element = find '#authorship_field .display'
+  expect(element.text).to match /#{author}.*/
 end
 
 Then(/^the authorship field should contain "([^"]*)"$/) do |contents|
-  page.should have_css '#authorship_field .display', text: contents
+  expect(page).to have_css '#authorship_field .display', text: contents
 end
 
 Then(/^the current reference should be "([^"]*)"$/) do |contents|
-  page.should have_css '#popup .current .display', text: contents
+  expect(page).to have_css '#popup .current .display', text: contents
 end
 
 Then(/^the widget results should be "([^"]*)"$/) do |contents|
-  page.should have_css '#results', text: contents
+  expect(page).to have_css '#results', text: contents
 end
 
 Then(/^the widget results should be the ID for "([^"]*)"$/) do |key|
@@ -28,7 +29,7 @@ Then(/^the widget results should be the taxt for "Fisher 1995"$/) do
 end
 
 Then(/^I should not see the default reference button$/) do
-  page.should_not have_css('button.default_reference')
+  expect(page).to_not have_css 'button.default_reference'
 end
 
 When(/I fill in the reference picker search box with "(.*?)"/) do |search_term|

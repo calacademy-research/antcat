@@ -3,7 +3,7 @@ class Tooltip < ActiveRecord::Base
 
   include Feed::Trackable
   tracked on: :all, parameters: ->(tooltip) do
-    { scope_and_key: "#{tooltip.scope}.#{tooltip.key}"}
+    { scope_and_key: "#{tooltip.scope}.#{tooltip.key}" }
   end
 
   has_paper_trail

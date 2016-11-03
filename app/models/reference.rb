@@ -129,9 +129,9 @@ class Reference < ActiveRecord::Base
   end
 
   def self.citation_year_to_year citation_year
-    if citation_year.blank?
-      nil
-    elsif match = citation_year.match(/\["(\d{4})"\]/)
+    return if citation_year.blank?
+
+    if match = citation_year.match(/\["(\d{4})"\]/)
       match[1]
     else
       citation_year.to_i

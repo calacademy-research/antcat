@@ -180,7 +180,8 @@ When(/^I delete a reference section for the feed$/) do
   section.destroy
 end
 
-# Cheating because Cucumber runs another thread.
+# Cheating because Cucumber runs another thread so we cannot access the request's
+# `RequestStore`. This is OK as long as there are tests that doesn't cheat.
 def set_last_user_as_user_for_feed
   User.current = User.last
 end

@@ -211,39 +211,43 @@ FactoryGirl.define do
   end
 end
 
+# TODO probably remove and use this name for `#create_taxon_object`.
+def create_taxon name_or_attributes = 'Atta', attributes = {}
+  create_taxon_object name_or_attributes, :genus, attributes
+end
+
 def create_family
-  create_taxon_object 'Formicidae', :family, :family_name
+  create_taxon_object 'Formicidae', :family
 end
 
 def create_subfamily name_or_attributes = 'Dolichoderinae', attributes = {}
-  create_taxon_object name_or_attributes, :subfamily, :subfamily_name, attributes
+  create_taxon_object name_or_attributes, :subfamily, attributes
 end
 
 def create_tribe name_or_attributes = 'Attini', attributes = {}
-  create_taxon_object name_or_attributes, :tribe, :tribe_name, attributes
-end
-
-def create_taxon name_or_attributes = 'Atta', attributes = {}
-  create_taxon_object name_or_attributes, :genus, :genus_name, attributes
+  create_taxon_object name_or_attributes, :tribe, attributes
 end
 
 def create_genus name_or_attributes = 'Atta', attributes = {}
-  create_taxon_object name_or_attributes, :genus, :genus_name, attributes
+  create_taxon_object name_or_attributes, :genus, attributes
 end
 
 def create_subgenus name_or_attributes = 'Atta (Subatta)', attributes = {}
-  create_taxon_object name_or_attributes, :subgenus, :subgenus_name, attributes
+  create_taxon_object name_or_attributes, :subgenus, attributes
 end
 
 def create_species name_or_attributes = 'Atta major', attributes = {}
-  create_taxon_object name_or_attributes, :species, :species_name, attributes
+  create_taxon_object name_or_attributes, :species, attributes
 end
 
 def create_subspecies name_or_attributes = 'Atta major minor', attributes = {}
-  create_taxon_object name_or_attributes, :subspecies, :subspecies_name, attributes
+  create_taxon_object name_or_attributes, :subspecies, attributes
 end
 
-def create_taxon_object name_or_attributes, taxon_factory, name_factory, attributes = {}
+def create_taxon_object name_or_attributes, rank, attributes = {}
+  taxon_factory = rank
+  name_factory = "#{rank}_name".to_sym
+
   attributes =
     if name_or_attributes.kind_of? String
       name, epithet, epithets = get_name_parts name_or_attributes

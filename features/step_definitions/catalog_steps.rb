@@ -1,8 +1,8 @@
 Then(/^I should ?(not)? see the reference key "([^"]+)"$/) do |should_not, text|
   if should_not == "not"
-    expect(page).to have_no_css(".reference_key", text: text)
+    expect(page).to have_no_css ".reference_key", text: text
   else
-    expect(page).to have_css(".reference_key", text: text)
+    expect(page).to have_css ".reference_key", text: text
   end
 end
 
@@ -22,11 +22,11 @@ When(/^I click the reference key expansion$/) do
 end
 
 Then(/^I should see the catalog entry for "([^"]*)"$/) do |taxon|
-  page.should have_css('.header .taxon', text: taxon)
+  expect(page).to have_css '.header .taxon', text: taxon
 end
 
 Then(/^the name in the header should be "([^"]*)"/) do |name|
-  page.should have_css('.header .taxon', text: name)
+  expect(page).to have_css '.header .taxon', text: name
 end
 
 When(/I fill in the catalog search box with "(.*?)"/) do |search_term|
@@ -41,5 +41,5 @@ When(/I press "Go" by the catalog search box/) do
 end
 
 Then("I should not see any search results") do
-  page.should_not have_css "#search_results"
+  expect(page).to_not have_css "#search_results"
 end
