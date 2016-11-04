@@ -1,4 +1,3 @@
-@javascript
 Feature: Copy reference
   As Phil Ward
   I want to add new references using existing reference data
@@ -64,6 +63,7 @@ Feature: Copy reference
     And the "reference_citation_year" field should contain "2010a"
     And the "reference_citation" field should contain "New York"
 
+  @javascript
   Scenario: Copy a reference with a document
     Given this reference exist
       | authors    | title          | citation | year |
@@ -75,6 +75,7 @@ Feature: Copy reference
     When I follow "Copy"
     Then the "reference_document_attributes_url" field should contain ""
 
+  @javascript
   Scenario: Copy a reference with a date
     Given this reference exist
       | authors    | title          | citation | year | cite_code | date     |

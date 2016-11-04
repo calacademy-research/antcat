@@ -1,31 +1,6 @@
-# We're having issues with production code enabling PaperTrail
-# even when if it is globally disabled in the test env. Once enabled it
-# stays enabled, which spills over into unrelated tests.
-After do
-  PaperTrail.enabled = false
-end
-
-# putting `require 'paper_trail/frameworks/cucumber'` inside support/env.rb and
-#   config.after_initialize do
-#     PaperTrail.enabled = false
-#   end
-# inside environments/test.rb is supposed to help, but it doesn't.
-#
-# Code for trying to find out what causes PaperTrail to become enabled.
-# Uncomment if you enjoy colors and non-deterministic systems.
-# Before do
-#   if PaperTrail.enabled?
-#     $stderr.puts "Before scenario: PaperTrail enabled".yellow
-#   else
-#     $stderr.puts "Before scenario: PaperTrail disabled".blue
-#   end
-# end
-# AfterStep  do
-#   if PaperTrail.enabled?
-#     PaperTrail.enabled = false
-#     $stderr.puts "After step: PaperTrail was enabled; disabled it".red
-#   end
-# end
+# Disable PaperTrail a lot.
+Before { PaperTrail.enabled = false }
+After { PaperTrail.enabled = false }
 
 Before "@papertrail" do
   PaperTrail.enabled = true

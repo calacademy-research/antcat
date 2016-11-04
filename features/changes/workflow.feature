@@ -1,10 +1,10 @@
-@papertrail
+# We don't have to use `@papertrail` when we create (cheat) versions in steps.
+
 Feature: Workflow
   Background:
-    Given the Formicidae family exists
-    And I log in as a catalog editor named "Mark Wilden"
+    Given I log in as a catalog editor named "Mark Wilden"
 
-  @javascript @search
+  @javascript @search @papertrail
   Scenario: Adding a taxon and seeing it on the Changes page
     Given this reference exist
       | authors | citation   | title | year |
@@ -106,7 +106,7 @@ Feature: Workflow
     Then I should not see "Approve all"
     And I should not see "There are no unreviewed changes."
 
-  @javascript
+  @javascript @papertrail
   Scenario: Another editor editing a change that's waiting for approval
     When I add the genus "Atta"
     And I go to the changes page
@@ -141,9 +141,10 @@ Feature: Workflow
     When I go to the changes page
     Then I should not see an "Approve" button
 
-  @javascript
+  @javascript @papertrail
   Scenario: Editing a taxon - modified, not added
-    Given there is a genus "Eciton"
+    Given the Formicidae family exists
+    And there is a genus "Eciton"
 
     When I go to the edit page for "Formicidae"
     And I click the name field

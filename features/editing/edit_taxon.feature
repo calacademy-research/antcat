@@ -5,11 +5,9 @@ Feature: Editing a taxon
   So that information is kept accurate
   So people use AntCat
 
-  Background:
-    Given the Formicidae family exists
-
   Scenario: Editing a family's name
-    Given I am logged in
+    Given the Formicidae family exists
+    And I am logged in
 
     When I go to the edit page for "Formicidae"
     And I click the name field
@@ -19,7 +17,8 @@ Feature: Editing a taxon
     Then I should see "Wildencidae" in the header
 
   Scenario: Trying to enter a blank name
-    Given I am logged in
+    Given the Formicidae family exists
+    And I am logged in
 
     When I go to the edit page for "Formicidae"
     And I click the name field

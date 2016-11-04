@@ -13,7 +13,7 @@ Given(/^there is a genus "([^"]*)" that's waiting for approval$/) do |name|
 
   # A version is created automatically if PaperTrail is enabled (tag `@papertrail`),
   # but we're having issues creating changes and attaching changes to versions.
-  # Use this to attach existing versions to a change:
+  # Use this to attach a change to existing versions:
   # PaperTrail::Version.where(item_id: genus.id, item_type: "Taxon").each do |version|
   #   version.update_columns change_id: change.id, whodunnit: whodunnit
   # end

@@ -6,7 +6,7 @@ Given(/^the Formicidae family exists$/) do
     title: 'Ants'
 
   protonym = create :protonym,
-    name: create(:family_or_subfamily_name, name: "Formicariae"),
+    name: create(:subfamily_name, name: "Formicariae"),
     authorship: create(:citation, reference: reference, pages: "124")
 
   create :family,

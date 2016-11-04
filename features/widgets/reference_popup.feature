@@ -22,7 +22,6 @@ Feature: Reference popup
     And in the reference picker, I search for the author "Fisher, B."
     And I click the first search result
     Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2"
-
     When I press "OK"
     Then the widget results should be the taxt for "Fisher 1995"
 
@@ -37,8 +36,6 @@ Feature: Reference popup
 
   @search
   Scenario: Cancelling when there's already a reference (regression)
-    Given I am logged in
-
     When I go to the reference popup widget test page, opened to the first reference
     Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2"
 
@@ -51,8 +48,6 @@ Feature: Reference popup
 
   @search
   Scenario: Cancelling when there's not already a reference (regression)
-    Given I am logged in
-
     When I go to the reference popup widget test page
     Then the current reference should be "(none)"
 

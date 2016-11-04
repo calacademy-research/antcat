@@ -6,12 +6,11 @@ Feature: Editing a history item
   So people use AntCat
 
   Background:
-    Given the Formicidae family exists
-    And there is a subfamily "Dolichoderinae" with taxonomic history "Taxonomic history"
-    And there is a genus "Atta"
     And I am logged in
 
   Scenario: Editing a history item
+    Given the Formicidae family exists
+
     When I go to the edit page for "Formicidae"
     Then the history should be "Taxonomic history"
 
@@ -26,6 +25,8 @@ Feature: Editing a history item
     Then the history item field should be "(none)"
 
   Scenario: Saving the fields after editing history (regression)
+    Given the Formicidae family exists
+
     When I go to the edit page for "Formicidae"
     And I click the history item
     And I edit the history item to "(none)"
@@ -49,6 +50,8 @@ Feature: Editing a history item
   # This test isn't accurate, as it reports the wrong contents
   # of the history item field
   Scenario: Editing a history item, but cancelling
+    Given the Formicidae family exists
+
     When I go to the edit page for "Formicidae"
     And I click the history item
     And I edit the history item to "(none)"
@@ -59,6 +62,8 @@ Feature: Editing a history item
     Then the history item field should be "Taxonomic history"
 
   Scenario: Editing an item so it's blank
+    Given the Formicidae family exists
+
     When I go to the edit page for "Formicidae"
     And I click the history item
     And I edit the history item to ""
@@ -75,6 +80,8 @@ Feature: Editing a history item
     #Then I should see the name popup
 
   Scenario: Adding a history item
+    Given there is a genus "Atta"
+
     When I go to the edit page for "Atta"
     Then the history should be empty
 
@@ -86,6 +93,8 @@ Feature: Editing a history item
     Then the history should be "Abc"
 
   Scenario: Adding a history item with blank taxt
+    Given there is a genus "Atta"
+
     When I go to the edit page for "Atta"
     Then the history should be empty
 
@@ -94,6 +103,8 @@ Feature: Editing a history item
     Then I should see "Taxt can't be blank"
 
   Scenario: Adding a history item, but cancelling
+    Given there is a genus "Atta"
+
     When I go to the edit page for "Atta"
     Then the history should be empty
 

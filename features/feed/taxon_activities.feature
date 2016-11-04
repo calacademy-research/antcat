@@ -6,7 +6,6 @@ Feature: Feed (taxa)
   @search
   Scenario: Added taxon
     Given activity tracking is disabled
-      And the Formicidae family exists
       And there is a subfamily "Formicinae"
       And there is a genus "Eciton"
     And activity tracking is enabled
@@ -46,8 +45,7 @@ Feature: Feed (taxa)
     Given I add a taxon for the feed
     And I log in as a superadmin named "Archibald"
 
-    When I go to the catalog page for "Formicidae"
-      And I follow "Antcatinae" in the families index
+    When I go to the catalog page for "Antcatinae"
       And I press "Delete"
       And I press "Delete?"
     And I go to the activity feed
@@ -55,7 +53,6 @@ Feature: Feed (taxa)
 
   Scenario: Elevated subspecies to species
     Given activity tracking is disabled
-      And the Formicidae family exists
       And there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
     And activity tracking is enabled
 

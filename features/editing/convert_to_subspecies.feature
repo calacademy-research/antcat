@@ -4,8 +4,7 @@ Feature: Converting a species to a subspecies
   So the data is correct
 
   Background:
-    Given the Formicidae family exists
-    And I am logged in
+    Given I am logged in
 
   @javascript
   Scenario: Converting a species to a subspecies

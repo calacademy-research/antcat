@@ -6,8 +6,7 @@ Feature: Workflow
   so mistakes can be repaired
 
   Background:
-    Given the Formicidae family exists
-    And these references exist
+    Given these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
@@ -171,7 +170,8 @@ Feature: Workflow
   # FIX: currently doesn't work with incertae sedis taxa, which
   # is why we need to nest the genera in a tribe in this test.
   Scenario: Deleting a subfamily with genera and undoing the change
-    Given I log in as a superadmin
+    Given the Formicidae family exists
+    And I log in as a superadmin
     And there is a subfamily "Ancatinae"
     And tribe "Antcatini" exists in that subfamily
     And genus "Antcatia" exists in that tribe

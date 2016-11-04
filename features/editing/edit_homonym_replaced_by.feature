@@ -6,8 +6,7 @@ Feature: Editing a taxon's homonym replaced by
   So people use AntCat
 
   Background:
-    Given the Formicidae family exists
-    And there is a genus "Atta"
+    Given there is a genus "Atta"
     And I am logged in
 
   Scenario: Changing the homonym replaced by name

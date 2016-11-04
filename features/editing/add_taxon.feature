@@ -1,4 +1,3 @@
-@javascript
 Feature: Adding a taxon
   As an editor of AntCat
   I want to add taxa
@@ -6,14 +5,13 @@ Feature: Adding a taxon
   So people use AntCat
 
   Background:
-    Given the Formicidae family exists
-    And I am logged in
+    Given I am logged in
     And these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
 
-  @search
+  @search @javascript
   Scenario: Adding a genus
     Given there is a genus "Eciton"
 
@@ -47,7 +45,7 @@ Feature: Adding a taxon
     When I go to the catalog page for "Formicinae"
     Then I should see "Atta" in the index
 
-  @search
+  @search @javascript
   Scenario: Adding a genus which has a tribe
     Given tribe "Ecitonini" exists in that subfamily
 
@@ -72,6 +70,7 @@ Feature: Adding a taxon
 
     Then I should be on the catalog page for "Eciton"
 
+  @javascript
   Scenario: Adding a genus without setting authorship reference
     Given there is a genus "Eciton"
 
@@ -92,6 +91,7 @@ Feature: Adding a taxon
     And I save my changes
     Then I should see "Protonym authorship reference can't be blank"
 
+  @javascript
   Scenario: Having an error, but leave fields as user entered them
     When I go to the edit page for "Formicinae"
     And I follow "Add genus"
@@ -105,7 +105,10 @@ Feature: Adding a taxon
     And the "taxon_type_taxt" field should contain "Notes"
     And the name button should contain "Atta"
 
+  @javascript
   Scenario: Cancelling
+    Given there is a subfamily "Formicinae"
+
     When I go to the edit page for "Formicinae"
     And I follow "Add genus"
     And I press "Cancel"
@@ -117,17 +120,15 @@ Feature: Adding a taxon
     When I go to the catalog page for "Eciton"
     And I follow "Add species"
     Then I should be on the new taxon page
-    And I should see "new species of "
-    And I should see "Eciton"
-
-    When I click the name field
-    Then the name field should contain "Eciton "
+    And I should see "new species of Eciton"
 
   Scenario: Hide "Add species" link on subfamily catalog pages
+    Given there is a subfamily "Formicinae"
+
     When I go to the catalog page for "Formicinae"
     Then I should not see "Add species"
 
-  @search
+  @search @javascript
   Scenario: Adding a species
     Given there is a genus "Eciton"
 
@@ -135,8 +136,7 @@ Feature: Adding a taxon
     And I press "Edit"
     And I follow "Add species"
     Then I should be on the new taxon page
-    And I should see "new species of "
-    And I should see "Eciton"
+    And I should see "new species of Eciton"
 
     When I click the name field
     Then the name field should contain "Eciton "
@@ -155,7 +155,7 @@ Feature: Adding a taxon
     And I should see "Eciton major" in the protonym
     And I should see "Add another"
 
-  @search
+  @search @javascript
   Scenario: Adding a species to a subgenus
     Given subfamily "Dolichoderinae" exists
     And tribe "Dolichoderini" exists in that subfamily
@@ -186,7 +186,7 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Dolichoderus (Subdolichoderus) major"
     And I should see "Dolichoderus (Subdolichoderus) major" in the protonym
 
-  @search
+  @search @javascript
   Scenario: Using a genus's type-species for the name of a species
     When I go to the catalog page for "Formicinae"
     And I press "Edit"
@@ -226,7 +226,7 @@ Feature: Adding a taxon
     Then I should be on the catalog page for "Atta major"
     And I should see "Atta major" in the protonym
 
-  @search
+  @search @javascript
   Scenario: Adding a subspecies
     Given there is a species "Eciton major" with genus "Eciton"
 
@@ -253,8 +253,10 @@ Feature: Adding a taxon
     And I should see "infra" in the index
     And I should see "Eciton major infra" in the protonym
 
-  @search
+  @search @javascript
   Scenario: Adding a subfamily
+    Given the Formicidae family exists
+
     When I go to the main page
       And I press "Edit"
       And I follow "Add subfamily"
@@ -286,7 +288,7 @@ Feature: Adding a taxon
       Then I should see "Dorylinae" in the index
       And I should not see "Add another"
 
-  @search
+  @search @javascript
   Scenario: Adding a tribe
     When I go to the catalog page for "Formicinae"
       And I press "Edit"

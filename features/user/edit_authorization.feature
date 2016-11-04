@@ -1,7 +1,4 @@
 Feature: Editing a taxon with authorization constraints
-  Background:
-    Given the Formicidae family exists
-
   Scenario: Trying to edit without being logged in
     Given there is a genus "Calyptites"
 
