@@ -128,9 +128,6 @@ class Reference < ActiveRecord::Base
     end
 
     def self.list_all_references_for_endnote
-      # Not very pretty but this is actually a single SQL query (page takes a couple of seconds load),
-      # which is better than making ~50000 queries (takes minutes). TODO refactor into the Sunspot
-      # search method after figuring out how to make it ':include' related fields and handle pagination
       joins(:author_names)
         .includes(:journal, :author_names, :document, [{publisher: :place}])
         .where.not(type: 'MissingReference').all

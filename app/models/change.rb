@@ -3,6 +3,7 @@ class Change < ActiveRecord::Base
   tracked
 
   belongs_to :approver, class_name: 'User'
+  # TODO rename to `taxon_id`.
   belongs_to :taxon, class_name: 'Taxon', foreign_key: 'user_changed_taxon_id'
   has_many :versions, class_name: 'PaperTrail::Version'
 

@@ -1,13 +1,11 @@
 class TaxonDecorator::Statistics
   include ActionView::Helpers
   include ActionView::Context
-  include ApplicationHelper #pluralize_with_delimiters, count_and_status
+  include ApplicationHelper # For #pluralize_with_delimiters and #count_and_status.
 
   # TODO: Push include_invalid/include_fossil to the taxa models.
   # This method is cheap, but Taxon#statistics is very slow and it always
   # fetches all statistics and then this method removes invalid/fossil taxa.
-  # This is an issue because the main page always runs Taxon#statistics
-  # on the Formicidae taxon, and that takes ~700 ms in dev.
   def statistics statistics, include_invalid: true, include_fossil: true
     return '' unless statistics.present?
 
