@@ -2,16 +2,15 @@ class TaxonHistoryItemsController < ApplicationController
   include UndoTracker
 
   before_filter :authenticate_editor
+  before_action :set_taxon_history_item, only: [:show, :update, :destroy]
 
   def show
-    @item = TaxonHistoryItem.find params[:id]
     render 'history_items/show'
   end
 
   def update
-    item = TaxonHistoryItem.find params[:id]
-    item.update_taxt_from_editable params[:taxt]
-    render_json item
+    @item.update_taxt_from_editable params[:taxt]
+    render_json @item
   end
 
   def create
@@ -22,12 +21,15 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def destroy
-    item = TaxonHistoryItem.find params[:id]
-    item.destroy
+    @item.destroy
     render json: { success: true }
   end
 
   private
+    def set_taxon_history_item
+      @item = TaxonHistoryItem.find params[:id]
+    end
+
     def render_json item
       json = {
         content: render_to_string(partial: 'history_items/panel', locals: { item: item }),
