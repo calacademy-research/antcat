@@ -27,7 +27,7 @@ describe TaxonDecorator do
 
     describe "#protonym_name" do
       it "formats a family name in the protonym" do
-        protonym = create :protonym, name: create(:family_or_subfamily_name, name: 'Dolichoderinae')
+        protonym = create :protonym, name: create(:subfamily_name, name: 'Dolichoderinae')
         expect(decorator_helper.new(nil).send(:protonym_name, protonym))
           .to eq '<b><span class="protonym_name">Dolichoderinae</span></b>'
       end

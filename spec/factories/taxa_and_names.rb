@@ -1,3 +1,11 @@
+# TODO this creates too many objects and it seems to create new associations
+# even when it's passed existing objects.
+#
+# Creating a taxon of a lower rank creates all the taxa above it as specified
+# by the factories. This also create objects for their dependencies, such
+# as the protonym, which in turn creates a new citation --> another reference
+# --> another author --> etc etc = many objects.
+
 FactoryGirl.define do
   factory :name do
     sequence(:name) { |n| raise }
@@ -6,15 +14,8 @@ FactoryGirl.define do
     epithet_html { name_html }
   end
 
-  factory :family_or_subfamily_name do
-    name 'FamilyOrSubfamily'
-    name_html { name }
-    epithet { name }
-    epithet_html { name_html }
-  end
-
   factory :family_name do
-    name 'Family'
+    name 'Formicidae'
     name_html { name }
     epithet { name }
     epithet_html { name_html }
