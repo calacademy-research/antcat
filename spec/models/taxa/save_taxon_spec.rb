@@ -5,52 +5,13 @@ Taxa::Family = Family
 
 describe Taxa::SaveTaxon do
   describe "Saving a new record, based on params from a form with nested attributes" do
-    before do
-      @reference = create :article_reference
-      @taxon_params = HashWithIndifferentAccess.new(
-        name_attributes:     { id: '' },
-        status:              'valid',
-        incertae_sedis_in:   '',
-        fossil:              '0',
-        nomen_nudum:         '0',
-        current_valid_taxon_name_attributes: { id: '' },
-        unresolved_homonym:  '0',
-        ichnotaxon:          '0',
-        hong:                '0',
-        headline_notes_taxt: '',
-        homonym_replaced_by_name_attributes: { id: '' },
-        protonym_attributes: {
-          name_attributes:  { id: ''},
-          fossil:           '0',
-          sic:              '0',
-          locality:         '',
-          authorship_attributes: {
-            reference_attributes: { id: @reference.id },
-            pages: '',
-            forms: '',
-            notes_taxt: '',
-          },
-        }
-      )
-      @genus_params = @taxon_params.deep_dup
-      @genus_params[:name_attributes][:id] = create(:genus_name, name: 'Atta').id
-      @genus_params[:protonym_attributes][:name_attributes][:id] = create(:genus_name, name: 'Betta').id
-      @genus_params[:type_name_attributes] = {id: create(:species_name, name: 'Betta major').id}
-
-      @species_params = @taxon_params.deep_dup
-      @species_params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
-      @species_params[:protonym_attributes][:name_attributes][:id] = create(:species_name, name: 'Betta major').id
-
-      @subspecies_params = @taxon_params.deep_dup
-      @subspecies_params[:name_attributes][:id] = create(:subspecies_name, name: 'Atta major minor').id
-      @subspecies_params[:protonym_attributes][:name_attributes][:id] = create(:subspecies_name, name: 'Betta major minor').id
-    end
-
     it "saves a new genus" do
       taxon = build_new_taxon_and_set_parent :genus, create_subfamily
-      params = @genus_params.deep_dup
+      params = genus_params
+
       params[:type_fossil] = 0
       params[:type_taxt] = ''
+
       taxon.save_taxon params
       taxon.reload
       expect(taxon.name.name).to eq 'Atta'
@@ -60,7 +21,8 @@ describe Taxa::SaveTaxon do
 
     it "sets the new taxon's state" do
       taxon = build_new_taxon_and_set_parent :genus, create_subfamily
-      params = @genus_params.deep_dup
+      params = genus_params
+
       params[:type_fossil] = 0
       params[:type_taxt] = ''
       taxon.save_taxon params
@@ -72,7 +34,8 @@ describe Taxa::SaveTaxon do
 
     it "saves a new species" do
       taxon = build_new_taxon_and_set_parent :genus, create_subfamily
-      params = @species_params.deep_dup
+      params = species_params
+
       taxon.save_taxon params
       taxon.reload
       expect(taxon.name.name).to eq 'Atta major'
@@ -81,7 +44,8 @@ describe Taxa::SaveTaxon do
 
     it "saves a new subspecies" do
       taxon = build_new_taxon_and_set_parent :subspecies, create_species
-      params = @subspecies_params
+      params = subspecies_params
+
       taxon.save_taxon params
       taxon.reload
       expect(taxon.name.name).to eq 'Atta major minor'
@@ -92,7 +56,8 @@ describe Taxa::SaveTaxon do
       headline_reference = create :article_reference
       taxt_reference = create :article_reference
       taxon = build_new_taxon_and_set_parent :species, create_genus
-      params = @taxon_params.deep_dup
+
+      params = taxon_params.deep_dup
       params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
       params[:protonym_attributes][:name_attributes][:id] = create(:species_name, name: 'Betta major').id
       params[:incertae_sedis_in] = 'genus'
@@ -118,7 +83,8 @@ describe Taxa::SaveTaxon do
     it "sets authorship taxt" do
       reference = create :article_reference
       taxon = build_new_taxon_and_set_parent :species, create_genus
-      params = @taxon_params.deep_dup
+      params = taxon_params
+
       params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
       params[:protonym_attributes][:name_attributes][:id] = create(:species_name, name: 'Betta major').id
       params[:protonym_attributes][:authorship_attributes][:notes_taxt] = Taxt.to_editable "{ref #{reference.id}}"
@@ -131,7 +97,7 @@ describe Taxa::SaveTaxon do
 
     it "sets homonym replaced by" do
       taxon = build_new_taxon_and_set_parent :species, create_genus
-      params = @species_params.deep_dup
+      params = species_params
       replacement_homonym = create_genus
 
       params[:homonym_replaced_by_name_attributes][:id] = replacement_homonym.name.id
@@ -142,7 +108,7 @@ describe Taxa::SaveTaxon do
 
     it "sets current valid taxon" do
       taxon = build_new_taxon_and_set_parent :species, create_genus
-      params = @species_params.deep_dup
+      params = species_params
       current_valid_taxon = create_genus
 
       params[:current_valid_taxon_name_attributes][:id] = current_valid_taxon.name.id
@@ -153,26 +119,30 @@ describe Taxa::SaveTaxon do
 
     it "allows name gender to be set when updating a taxon" do
       taxon = build_new_taxon_and_set_parent :genus, create_subfamily
-      params = @genus_params.deep_dup
-      taxon.save_taxon params
+
+      # Must do this, probably so that a new genus isn't created.
+      @genus_params = genus_params.deep_dup
+
+      params_without_gender = @genus_params.deep_dup
+      taxon.save_taxon params_without_gender
       taxon.reload
       expect(taxon.name.gender).to be_nil
 
-      params = @genus_params.deep_dup
-      params[:name_attributes][:gender] = 'masculine'
-      taxon.save_taxon params
+      params_with_gender = @genus_params.deep_dup
+      params_with_gender[:name_attributes][:gender] = 'masculine'
+      taxon.save_taxon params_with_gender
       taxon.reload
       expect(taxon.name.gender).to eq 'masculine'
     end
 
     it "allows name gender to be unset when updating a taxon" do
       taxon = build_new_taxon_and_set_parent :genus, create_subfamily
-      params = @genus_params.deep_dup
+      params = genus_params
       taxon.save_taxon params
       taxon.name.update_column :gender, 'masculine'
       expect(taxon.name.gender).to eq 'masculine'
 
-      params = @genus_params.deep_dup
+      params = genus_params
       params[:name_attributes][:gender] = ''
       taxon.save_taxon params
       taxon.reload
@@ -180,26 +150,31 @@ describe Taxa::SaveTaxon do
     end
 
     describe "Creating a Change" do
-      it "creates a Change pointing to the version of Taxon when added" do
-        taxon = build_new_taxon_and_set_parent :species, create_genus
-        with_versioning { taxon.save_taxon @genus_params }
-        change = Change.first
-        expect(change.user_changed_taxon_id).to eq taxon.last_version.item_id
+      context "when a taxon is added" do
+        it "creates a Change pointing to the version of Taxon" do
+          taxon = build_new_taxon_and_set_parent :species, create_genus
+          with_versioning { taxon.save_taxon genus_params }
+          change = Change.first
+          expect(change.user_changed_taxon_id).to eq taxon.last_version.item_id
+        end
       end
 
-      it "creates a Change for an edit" do
-        genus = create_genus
-        with_versioning { genus.save_taxon @genus_params }
+      context "when a taxon is edited" do
+        let(:genus) { create_genus }
 
-        expect(Change.count).to equal 1
-        expect(Change.first.change_type).to eq 'update'
-      end
+        it "creates a Change for an edit" do
+          with_versioning { genus.save_taxon genus_params }
 
-      it "changes the review state after editing" do
-        genus = create_genus
-        with_versioning { genus.save_taxon @genus_params }
+          expect(Change.count).to equal 1
+          expect(Change.first.change_type).to eq 'update'
+        end
 
-        expect(genus).not_to be_old
+        it "changes the review state" do
+          expect(genus).to be_old
+          with_versioning { genus.save_taxon genus_params }
+
+          expect(genus).not_to be_old
+        end
       end
     end
   end
@@ -215,4 +190,55 @@ def build_new_taxon_and_set_parent rank, parent
   taxon.protonym.build_authorship
   taxon.parent = parent
   taxon
+end
+
+def taxon_params
+  reference = create :article_reference
+  HashWithIndifferentAccess.new(
+    name_attributes:     { id: '' },
+    status:              'valid',
+    incertae_sedis_in:   '',
+    fossil:              '0',
+    nomen_nudum:         '0',
+    current_valid_taxon_name_attributes: { id: '' },
+    unresolved_homonym:  '0',
+    ichnotaxon:          '0',
+    hong:                '0',
+    headline_notes_taxt: '',
+    homonym_replaced_by_name_attributes: { id: '' },
+    protonym_attributes: {
+      name_attributes:  { id: '' },
+      fossil:           '0',
+      sic:              '0',
+      locality:         '',
+      authorship_attributes: {
+        reference_attributes: { id: reference.id },
+        pages: '',
+        forms: '',
+        notes_taxt: '',
+      },
+    }
+  ).deep_dup
+end
+
+def genus_params
+  params = taxon_params
+  params[:name_attributes][:id] = create(:genus_name, name: 'Atta').id
+  params[:protonym_attributes][:name_attributes][:id] = create(:genus_name, name: 'Betta').id
+  params[:type_name_attributes] = { id: create(:species_name, name: 'Betta major').id }
+  params.deep_dup
+end
+
+def species_params
+  params = taxon_params
+  params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
+  params[:protonym_attributes][:name_attributes][:id] = create(:species_name, name: 'Betta major').id
+  params.deep_dup
+end
+
+def subspecies_params
+  params = taxon_params
+  params[:name_attributes][:id] = create(:subspecies_name, name: 'Atta major minor').id
+  params[:protonym_attributes][:name_attributes][:id] = create(:subspecies_name, name: 'Betta major minor').id
+  params.deep_dup
 end
