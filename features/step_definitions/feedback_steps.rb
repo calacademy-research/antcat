@@ -38,7 +38,7 @@ Then(/^I pretend to be a bot by filling in the invisible work email field$/) do
 end
 
 Given(/^a visitor has submitted a feedback with the comment "([^"]*)"$/) do |comment|
-  set_last_user_as_user_for_feed
+  cheat_and_set_user_for_feed
   create :feedback, comment: comment
 end
 
