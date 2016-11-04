@@ -9,7 +9,7 @@ Given('I am not logged in') do
 end
 
 def login_programmatically user
-  login_as user
+  login_as user, scope: :user, run_callbacks: false
   @user = user # Add as instance variable to make it available for other steps.
 
   # TODO move to individual scenarios. Many scenarios bypassed the main page
