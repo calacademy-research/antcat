@@ -27,7 +27,6 @@ class Taxon < ActiveRecord::Base
   end
 
   # Returns the ID of the most recent change that touches this taxon.
-  # TODO: Fix these duplicates once the tests pass
   def last_change
     Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
   end
