@@ -12,6 +12,11 @@ crumb :users do
   parent :antcat
 end
 
+  crumb :user do |user|
+    link user.name, user_path(user)
+    parent :users
+  end
+
   crumb :user_emails do
     link "User Emails"
     parent :users

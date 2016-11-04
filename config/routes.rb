@@ -97,7 +97,7 @@ AntCat::Application.routes.draw do
   resource :duplicates, only: [:show, :create]
 
   devise_for :users, controllers: { invitations: 'users/invitations' }
-  resources :users, only: [:index] do
+  resources :users, only: [:index, :show] do
     collection do
       get :emails
     end

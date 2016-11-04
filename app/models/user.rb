@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true
 
+  has_many :comments
+  has_many :activities, class_name: "Feed::Activity"
+
   scope :order_by_name, -> { order(:name) }
   scope :editors, -> { where(can_edit: true) }
   scope :non_editors, -> { where(can_edit: [false, nil]) } # TODO only allow true/false?

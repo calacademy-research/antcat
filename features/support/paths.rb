@@ -92,6 +92,9 @@ module NavigationHelpers
       "/feedback"
 
     # User
+    when /^the user page for "([^"]*)"$/
+      user = User.find_by name: $1
+      "/users/#{user.id}"
     when /^the edit user page$/
       '/users/edit'
     when /^the forgot password page$/

@@ -37,7 +37,7 @@ Given('I am logged in') do
   step 'I log in'
 end
 
-When(/^I log in as a user (not editor)$/) do
+When(/^I log in as a user \(not editor\)$/) do
   user = Feed::Activity.without_tracking { create :user }
   login_programmatically user
 end
@@ -92,5 +92,15 @@ end
 
 Then(/^there should be a mailto link to the email of "([^"]+)"$/) do |name|
   email = User.find_by(name: name).email
-  find :css, "a[href='mailto:#{email}']"
+  within first('#content') do
+    find :css, "a[href='mailto:#{email}']"
+  end
+end
+
+Then(/^I should see a link to the user page for "([^"]*)"$/) do |name|
+  user = User.find_by name: name
+
+  within first('#content table') do
+    expect(page).to have_link name, href: user_path(user)
+  end
 end
