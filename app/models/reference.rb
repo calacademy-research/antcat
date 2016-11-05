@@ -29,7 +29,7 @@ class Reference < ActiveRecord::Base
   validates :title, presence: true, if: Proc.new { |record| record.class.requires_title }
 
   before_validation :set_year_from_citation_year, :strip_text_fields
-  before_save { |record| CleanNewlines.clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
+  before_save { CleanNewlines.clean_newlines self, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
   before_save :set_author_names_caches
   before_destroy :check_not_referenced, :check_not_nested
 

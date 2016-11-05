@@ -6,7 +6,7 @@ class ReferenceSection < ActiveRecord::Base
 
   belongs_to :taxon
 
-  before_save { |record| CleanNewlines.clean_newlines record, :subtitle_taxt, :references_taxt }
+  before_save { CleanNewlines.clean_newlines self, :subtitle_taxt, :references_taxt }
 
   acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: :get_current_change_id }

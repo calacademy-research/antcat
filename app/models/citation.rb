@@ -10,7 +10,7 @@ class Citation < ActiveRecord::Base
   # per `validates :reference, presence: true`.
   # TODO delegate in a smarter way to avoid duplicating Reference.
 
-  before_save { |record| CleanNewlines.clean_newlines record, :notes_taxt }
+  before_save { CleanNewlines.clean_newlines self, :notes_taxt }
 
   has_paper_trail meta: { change_id: :get_current_change_id }
 
