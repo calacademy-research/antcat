@@ -21,7 +21,7 @@ class Taxon < ActiveRecord::Base
     :display, :fossil, :headline_notes_taxt, :hong, :ichnotaxon, :id, :incertae_sedis_in,
     :name, :name_id, :nomen_nudum, :origin, :protonym, :status, :type_fossil, :type_name,
     :type_name_id, :type_specimen_code, :type_specimen_repository, :type_specimen_url,
-    :type_taxt, :unresolved_homonym, :verbatim_type_locality,
+    :type_taxt, :unresolved_homonym, :verbatim_type_locality
 
   # `#origin`: if it's generated, where did it come from? string (e.g.: 'hol')
   # `#display`: if false, won't show in the taxon browser. Used for misspellings and such.

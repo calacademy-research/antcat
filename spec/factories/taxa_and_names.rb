@@ -81,134 +81,91 @@ FactoryGirl.define do
   end
 
   factory :taxon do
-    after :create do |taxon|
-      create :taxon_state, taxon_id: taxon.id
-      taxon.touch_with_version
-    end
-    to_create { |instance| instance.save validate: false }
-
     association :name, factory: :genus_name
     association :type_name, factory: :species_name
     protonym
     status 'valid'
+    taxon_state
   end
 
   factory :family do
-    after :create do |family|
-      create :taxon_state, taxon_id: family.id
-      family.touch_with_version
-    end
-    to_create { |instance| instance.save validate: false }
-
     association :name, factory: :family_name
     association :type_name, factory: :genus_name
     protonym
     status 'valid'
+    taxon_state
   end
 
   factory :subfamily do
-    after :create do |subfamily|
-      create :taxon_state, taxon_id: subfamily.id
-      subfamily.touch_with_version
-    end
-    to_create { |instance| instance.save validate: false }
-
     association :name, factory: :subfamily_name
     association :type_name, factory: :genus_name
     protonym
     status 'valid'
+    taxon_state
   end
 
   factory :tribe do
-    after :create do |tribe|
-      create :taxon_state, taxon_id: tribe.id
-      tribe.touch_with_version
-    end
-    to_create { |instance| instance.save validate: false }
     association :name, factory: :tribe_name
     association :type_name, factory: :genus_name
     subfamily
     protonym
     status 'valid'
+    taxon_state
   end
 
   # FIX? Broken. The are 8 SubtribeName:s in the prod db, but no
   # Subtribe:s, so low-priority.
   factory :subtribe do
-    after :create do |subtribe|
-      create :taxon_state, taxon_id: subtribe.id
-      subtribe.touch_with_version
-    end
-    to_create { |instance| instance.save validate: false }
     association :name, factory: :subtribe_name
     association :type_name, factory: :genus_name
     subfamily
     protonym
     status 'valid'
+    taxon_state
   end
 
   factory :genus do
-    after :create do |genus|
-      create :taxon_state, taxon_id: genus.id
-      genus.touch_with_version
-    end
-    to_create { |instance| instance.save validate: false }
     association :name, factory: :genus_name
     association :type_name, factory: :species_name
     tribe
     subfamily { |a| a.tribe && a.tribe.subfamily }
     protonym
     status 'valid'
+    taxon_state
   end
 
   factory :subgenus do
-    after :create do |subgenus|
-      create :taxon_state, taxon_id: subgenus.id
-      subgenus.touch_with_version
-    end
-    to_create { |instance| instance.save validate: false }
     association :name, factory: :subgenus_name
     association :type_name, factory: :species_name
     genus
     protonym
     status 'valid'
+    taxon_state
   end
 
   factory :species_group_taxon do
-    after :create do |species_group_taxon|
-      create :taxon_state, taxon_id: species_group_taxon.id
-      species_group_taxon.touch_with_version
-    end
-    to_create { |instance| instance.save validate: false }
     association :name, factory: :species_name
     genus
     protonym
     status 'valid'
+    taxon_state
   end
 
   factory :species do
-    after :create do |species|
-      create :taxon_state, taxon_id: species.id
-      species.touch_with_version
-    end
-    to_create { |instance| instance.save validate: false }
     association :name, factory: :species_name
     genus
     protonym
     status 'valid'
+    taxon_state
   end
 
   factory :subspecies do
-    after :create do |subspecies|
-      create :taxon_state, taxon_id: subspecies.id
-      subspecies.touch_with_version
-    end
-    to_create { |instance| instance.save validate: false }
     association :name, factory: :species_name
     species
     genus
     protonym
     status 'valid'
+    taxon_state
   end
 end
 

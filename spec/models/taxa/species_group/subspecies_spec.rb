@@ -34,6 +34,9 @@ describe Subspecies do
     species = create_species genus: genus
     subspecies = create_subspecies 'Atta major colobopsis',
       genus: nil, species: species
+
+    subspecies.save # Trigger callbacks. TODO fix factories.
+
     expect(subspecies.genus).to eq genus
   end
 
