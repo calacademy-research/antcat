@@ -4,9 +4,12 @@ class Subspecies < SpeciesGroupTaxon
 
   class NoSpeciesForSubspeciesError < StandardError; end
 
-  belongs_to :species
-  before_validation :set_genus
   attr_accessible :subfamily, :genus, :name, :protonym, :species, :type, :type_name_id
+
+  belongs_to :species
+
+  before_validation :set_genus
+
   has_paper_trail meta: { change_id: :get_current_change_id }
 
   def update_parent new_parent

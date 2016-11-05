@@ -1,18 +1,19 @@
 class Feedback < ActiveRecord::Base
   include Feed::Trackable
-  tracked on: [:create, :destroy]
 
   belongs_to :user
-  validates :comment, presence: true, length: { maximum: 10_000 }
 
-  acts_as_commentable
-  has_paper_trail
+  validates :comment, presence: true, length: { maximum: 10_000 }
 
   before_save :add_emails_recipients
 
   scope :recently_created, ->(time_ago = 5.minutes.ago) {
     where('created_at >= ?', time_ago)
   }
+
+  acts_as_commentable
+  has_paper_trail
+  tracked on: [:create, :destroy]
 
   def from_the_same_ip
     Feedback.where(ip: ip)

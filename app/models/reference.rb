@@ -6,13 +6,9 @@ require_dependency 'references/reference_workflow'
 class Reference < ActiveRecord::Base
   include UndoTracker
   include ReferenceComparable
-
   include Feed::Trackable
-  tracked parameters: ->(reference) do { name: reference.decorate.key } end
 
-  attr_accessor :publisher_string
-  attr_accessor :journal_name
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  attr_accessor :journal_name, :publisher_string
 
   attr_accessible :citation_year,
                   :title,
@@ -35,8 +31,8 @@ class Reference < ActiveRecord::Base
                   :review_state,
                   :doi
 
-  before_save { |record| CleanNewlines.clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
-  before_destroy :check_not_referenced
+  belongs_to :journal
+  belongs_to :publisher
 
   has_many :reference_author_names, -> { order(:position) }
   has_many :author_names,
@@ -44,25 +40,27 @@ class Reference < ActiveRecord::Base
            through: :reference_author_names,
            after_add: :refresh_author_names_caches,
            after_remove: :refresh_author_names_caches
-  belongs_to :journal
-  belongs_to :publisher
 
-  def nestees
-    Reference.where(nesting_reference_id: id)
-  end
+  validates :title, presence: true, if: Proc.new { |record| record.class.requires_title }
+
+  before_validation :set_year_from_citation_year, :strip_text_fields
+  before_save { |record| CleanNewlines.clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
+  before_save :set_author_names_caches
+  before_destroy :check_not_referenced, :check_not_nested
 
   scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
   scope :with_principal_author_last_name, lambda { |last_name| where(principal_author_last_name_cache: last_name) }
 
-  before_validation :set_year_from_citation_year, :strip_text_fields
-  validates :title, presence: true, if: Proc.new { |record| record.class.requires_title }
+  has_paper_trail meta: { change_id: :get_current_change_id }
+  tracked parameters: ->(reference) do { name: reference.decorate.key } end
 
   def self.requires_title
     true
   end
 
-  before_save :set_author_names_caches
-  before_destroy :check_not_nested
+  def nestees
+    Reference.where(nesting_reference_id: id)
+  end
 
   def to_s
     "#{author_names_string} #{citation_year}. #{id}."

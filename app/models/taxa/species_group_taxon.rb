@@ -1,13 +1,16 @@
-# Note: This is the superclass of Species and Subspecies, not
+# Note: This is the superclass of Species and Subspecies, not to
 # be confused with "species group" as used in taxonomy.
 
 class SpeciesGroupTaxon < Taxon
+  attr_accessible :genus, :subfamily, :subfamily_id, :type_name_id
+
   belongs_to :subfamily
   belongs_to :genus
-  validates :genus, presence: true
   belongs_to :subgenus
+
+  validates :genus, presence: true
+
   before_create :set_subfamily
-  attr_accessible :genus, :subfamily, :subfamily_id, :type_name_id
 
   def recombination?
     genus_epithet = name.genus_epithet

@@ -2,6 +2,7 @@ class Author < ActiveRecord::Base
   include UndoTracker
 
   has_many :names, -> { order(:name) }, class_name: 'AuthorName'
+
   scope :sorted_by_name, -> do
     select('authors.id').joins(:names).group('authors.id').order('name')
   end

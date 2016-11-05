@@ -1,14 +1,16 @@
 class Change < ActiveRecord::Base
   include Feed::Trackable
-  tracked
 
   belongs_to :approver, class_name: 'User'
   # TODO rename to `taxon_id`.
   belongs_to :taxon, class_name: 'Taxon', foreign_key: 'user_changed_taxon_id'
+
   has_many :versions, class_name: 'PaperTrail::Version'
 
   scope :waiting, -> { joins_taxon_states.where("taxon_states.review_state = 'waiting'") }
   scope :joins_taxon_states, -> { joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id') }
+
+  tracked
 
   def get_most_recent_valid_taxon
     return taxon if taxon

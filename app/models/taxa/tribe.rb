@@ -1,7 +1,9 @@
 class Tribe < Taxon
-  belongs_to :subfamily
-  has_many :genera
   attr_accessible :name, :protonym, :subfamily, :type_name
+
+  belongs_to :subfamily
+
+  has_many :genera
 
   def parent
     subfamily

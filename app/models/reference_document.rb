@@ -1,6 +1,14 @@
 class ReferenceDocument < ActiveRecord::Base
   include UndoTracker
 
+  attr_accessible :url, :file_file_name, :public, :file
+
+  belongs_to :reference
+
+  validate :check_url
+
+  before_validation :add_protocol_to_url
+
   has_attached_file :file,
                     url: ':s3_domain_url',
                     path: ':id/:filename',
@@ -9,16 +17,9 @@ class ReferenceDocument < ActiveRecord::Base
                     s3_credentials: (Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/') + 's3.yml',
                     s3_permissions: 'authenticated-read',
                     s3_protocol: 'http'
-  has_paper_trail meta: { change_id: :get_current_change_id }
-
-  do_not_validate_attachment_file_type :pdf
-
-  before_validation :add_protocol_to_url
-  belongs_to :reference
-  validate :check_url
   before_post_process :transliterate_file_name
-
-  attr_accessible :url, :file_file_name, :public, :file
+  do_not_validate_attachment_file_type :pdf
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   def pdf
     true

@@ -2,10 +2,6 @@ class Name < ActiveRecord::Base
   include UndoTracker
   include Formatters::RefactorFormatter
 
-  validates :name, presence: true
-  after_save :set_taxon_caches
-  has_paper_trail meta: { change_id: :get_current_change_id }
-
   attr_accessible :name,
                   :name_html,
                   :epithet,
@@ -16,6 +12,12 @@ class Name < ActiveRecord::Base
                   :epithet_html,
                   :gender,
                   :nonconforming_name
+
+  validates :name, presence: true
+
+  after_save :set_taxon_caches
+
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   def change name_string
     existing_names = Name.where.not(id: id).where(name: name_string)

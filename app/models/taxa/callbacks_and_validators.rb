@@ -2,13 +2,14 @@ module Taxa::CallbacksAndValidators
   extend ActiveSupport::Concern
 
   included do
-    before_validation :add_protocol_to_type_speciment_url
-    before_validation :nilify_biogeographic_region_if_blank
     validates :name, presence: true
     validates :protonym, presence: true
     validates :biogeographic_region,
       inclusion: { in: BiogeographicRegion::REGIONS, allow_nil: true }
     validate :check_url
+
+    before_validation :add_protocol_to_type_speciment_url
+    before_validation :nilify_biogeographic_region_if_blank
     before_save { |record| CleanNewlines.clean_newlines record, :headline_notes_taxt, :type_taxt }
     before_save :set_name_caches, :delete_synonyms
   end

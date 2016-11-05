@@ -1,6 +1,7 @@
 class Taxon < ActiveRecord::Base
   include Workflow
   include Workflow::ExternalTable
+
   has_one :taxon_state
 
   workflow do

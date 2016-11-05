@@ -8,14 +8,14 @@ class Taxon < ActiveRecord::Base
   include Taxa::References
   include Taxa::Statistics
   include Taxa::Synonyms
-
   include Feed::Trackable
-  tracked on: :create, parameters: activity_parameters
 
   class TaxonExists < StandardError; end
 
   self.table_name = :taxa
-  has_paper_trail meta: { change_id: :get_current_change_id }
+
+  attr_accessor :authorship_string, :duplicate_type, :parent_name,
+    :current_valid_taxon_name, :homonym_replaced_by_name
 
   attr_accessible :name_id,
                   :status,
@@ -40,13 +40,8 @@ class Taxon < ActiveRecord::Base
                   :type_name,
                   :id,
                   :auto_generated,
-                  :origin, #if it's generated, where did it come from? string (e.g.: 'hol')
+                  :origin, # if it's generated, where did it come from? string (e.g.: 'hol')
                   :display # if false, won't show in the taxon browser. Used for misspellings and such.
-
-  attr_accessor :authorship_string, :duplicate_type, :parent_name,
-    :current_valid_taxon_name, :homonym_replaced_by_name
-
-  delegate :authorship_html_string, :author_last_names_string, :year, to: :protonym
 
   belongs_to :name
   belongs_to :protonym, -> { includes :authorship }
@@ -59,7 +54,6 @@ class Taxon < ActiveRecord::Base
   has_many :taxa, class_name: "Taxon", foreign_key: :genus_id # Only `genus_id`?
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
-
   # Synonyms
   has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
   has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
@@ -81,6 +75,9 @@ class Taxon < ActiveRecord::Base
   scope :order_by_name_cache, -> { order(:name_cache) }
 
   accepts_nested_attributes_for :name, :protonym, :type_name
+  delegate :authorship_html_string, :author_last_names_string, :year, to: :protonym
+  has_paper_trail meta: { change_id: :get_current_change_id }
+  tracked on: :create, parameters: activity_parameters
 
   def save_taxon params, previous_combination = nil
     Taxa::SaveTaxon.new(self).save_taxon(params, previous_combination)

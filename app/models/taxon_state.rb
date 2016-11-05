@@ -1,6 +1,7 @@
 class TaxonState < ActiveRecord::Base
   include UndoTracker
-  has_paper_trail
 
   belongs_to :taxon
+
+  has_paper_trail
 end

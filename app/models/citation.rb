@@ -1,17 +1,18 @@
 class Citation < ActiveRecord::Base
   include UndoTracker
 
+  attr_accessible :pages, :forms, :id, :reference_id, :reference, :notes_taxt
+
   belongs_to :reference
 
   validates :reference, presence: true
-  has_paper_trail meta: { change_id: :get_current_change_id }
-  attr_accessible :pages, :forms, :id, :reference_id, :reference, :notes_taxt
-
-  before_save { |record| CleanNewlines.clean_newlines record, :notes_taxt }
-
   # FIX? the reference nil check is probably not needed outside of tests,
   # per `validates :reference, presence: true`.
   # TODO delegate in a smarter way to avoid duplicating Reference.
+
+  before_save { |record| CleanNewlines.clean_newlines record, :notes_taxt }
+
+  has_paper_trail meta: { change_id: :get_current_change_id }
 
   def authorship_string
     reference and "#{author_names_string}, #{year}"

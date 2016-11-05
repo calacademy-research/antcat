@@ -2,7 +2,9 @@ class Publisher < ActiveRecord::Base
   include UndoTracker
 
   belongs_to :place
+
   validates_presence_of :name
+
   has_paper_trail meta: { change_id: :get_current_change_id }
 
   def self.create_with_place(name:, place:)

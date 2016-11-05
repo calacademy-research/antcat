@@ -5,11 +5,7 @@
 
 class Task < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-
   include Feed::Trackable
-  tracked on: :all, parameters: ->(task) do { title: task.title } end
-
-  acts_as_commentable
 
   belongs_to :adder, class_name: "User"
   belongs_to :closer, class_name: "User"
@@ -28,6 +24,9 @@ class Task < ActiveRecord::Base
       ELSE created_at END DESC
     SQL
   end
+
+  acts_as_commentable
+  tracked on: :all, parameters: ->(task) do { title: task.title } end
 
   def open?
     status == "open"

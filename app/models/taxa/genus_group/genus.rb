@@ -1,11 +1,4 @@
 class Genus < GenusGroupTaxon
-  belongs_to :tribe
-  has_many :species
-  has_many :subspecies
-  has_many :subgenera
-
-  scope :without_subfamily, -> { where(subfamily_id: nil) }
-  scope :without_tribe, -> { where(tribe_id: nil) }
   attr_accessible :name,
                   :protonym,
                   :subfamily,
@@ -14,6 +7,15 @@ class Genus < GenusGroupTaxon
                   :current_valid_taxon_id,
                   :current_valid_taxon,
                   :homonym_replaced_by
+
+  belongs_to :tribe
+
+  has_many :species
+  has_many :subspecies
+  has_many :subgenera
+
+  scope :without_subfamily, -> { where(subfamily_id: nil) }
+  scope :without_tribe, -> { where(tribe_id: nil) }
 
   def update_parent new_parent
     set_name_caches

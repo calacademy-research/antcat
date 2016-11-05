@@ -1,17 +1,18 @@
 class TaxonHistoryItem < ActiveRecord::Base
   include UndoTracker
-
   include Feed::Trackable
-  tracked on: :all, parameters: ->(item) do
-    { taxon_id: item.taxon_id }
-  end
+
+  attr_accessible :taxon_id, :taxt, :position, :taxon
 
   belongs_to :taxon
 
-  attr_accessible :taxon_id, :taxt, :position, :taxon
-  acts_as_list scope: :taxon
   validates_presence_of :taxt
+
+  acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: :get_current_change_id }
+  tracked on: :all, parameters: ->(item) do
+    { taxon_id: item.taxon_id }
+  end
 
   def update_taxt_from_editable editable_taxt
     update_attributes taxt: Taxt.from_editable(editable_taxt)

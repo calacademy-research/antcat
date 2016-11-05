@@ -1,15 +1,11 @@
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-
   include Feed::Trackable
-  tracked on: :create, parameters: ->(user) do { user_id: user.id } end
-
-  acts_as_reader
-
-  validates :name, presence: true
 
   has_many :comments
   has_many :activities, class_name: "Feed::Activity"
+
+  validates :name, presence: true
 
   scope :order_by_name, -> { order(:name) }
   scope :editors, -> { where(can_edit: true) }
@@ -17,8 +13,10 @@ class User < ActiveRecord::Base
   scope :feedback_emails_recipients, -> { where(receive_feedback_emails: true) }
   scope :as_angle_bracketed_emails, -> { all.map(&:angle_bracketed_email).join(", ") }
 
+  acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,
          :rememberable, :trackable, :validatable, :invitable
+  tracked on: :create, parameters: ->(user) do { user_id: user.id } end
 
   def self.current
     RequestStore.store[:current_user]
