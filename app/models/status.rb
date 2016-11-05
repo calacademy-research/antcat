@@ -5,7 +5,7 @@ class Status
 
   def to_s *options
     numeric_argument = options.find { |option| option.kind_of? Numeric }
-    options << :plural if numeric_argument && numeric_argument > 1 #hmm
+    options << :plural if numeric_argument && numeric_argument > 1
 
     if options.include?(:plural)
       @hash[:plural_label]

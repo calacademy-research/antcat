@@ -10,26 +10,11 @@ class Reference < ActiveRecord::Base
 
   attr_accessor :journal_name, :publisher_string
 
-  attr_accessible :citation_year,
-                  :title,
-                  :journal_name,
-                  :series_volume_issue,
-                  :publisher_string,
-                  :pages_in,
-                  :nesting_reference_id,
-                  :citation,
-                  :document_attributes,
-                  :public_notes,
-                  :editor_notes,
-                  :taxonomic_notes,
-                  :cite_code,
-                  :possess,
-                  :date,
-                  :author_names,
-                  :author_names_suffix,
-                  :pagination,
-                  :review_state,
-                  :doi
+  attr_accessible :author_names, :author_names_suffix, :citation, :citation_year,
+    :cite_code, :date, :document_attributes, :doi, :editor_notes, :journal_name,
+    :nesting_reference_id, :pages_in, :pagination, :possess, :public_notes,
+    :publisher_string, :review_state, :series_volume_issue, :taxonomic_notes,
+    :title
 
   belongs_to :journal
   belongs_to :publisher

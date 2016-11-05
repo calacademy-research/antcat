@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,
-         :rememberable, :trackable, :validatable, :invitable
+    :rememberable, :trackable, :validatable, :invitable
   tracked on: :create, parameters: ->(user) do { user_id: user.id } end
 
   def self.current

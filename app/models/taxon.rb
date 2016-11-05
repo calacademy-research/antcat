@@ -17,31 +17,14 @@ class Taxon < ActiveRecord::Base
   attr_accessor :authorship_string, :duplicate_type, :parent_name,
     :current_valid_taxon_name, :homonym_replaced_by_name
 
-  attr_accessible :name_id,
-                  :status,
-                  :incertae_sedis_in,
-                  :fossil,
-                  :nomen_nudum,
-                  :unresolved_homonym,
-                  :ichnotaxon,
-                  :hong,
-                  :headline_notes_taxt,
-                  :biogeographic_region,
-                  :verbatim_type_locality,
-                  :type_specimen_repository,
-                  :type_specimen_code,
-                  :type_specimen_url,
-                  :type_fossil,
-                  :type_taxt,
-                  :type_name_id,
-                  :collision_merge_id,
-                  :name,
-                  :protonym,
-                  :type_name,
-                  :id,
-                  :auto_generated,
-                  :origin, # if it's generated, where did it come from? string (e.g.: 'hol')
-                  :display # if false, won't show in the taxon browser. Used for misspellings and such.
+  attr_accessible :auto_generated, :biogeographic_region, :collision_merge_id,
+    :display, :fossil, :headline_notes_taxt, :hong, :ichnotaxon, :id, :incertae_sedis_in,
+    :name, :name_id, :nomen_nudum, :origin, :protonym, :status, :type_fossil, :type_name,
+    :type_name_id, :type_specimen_code, :type_specimen_repository, :type_specimen_url,
+    :type_taxt, :unresolved_homonym, :verbatim_type_locality,
+
+  # `#origin`: if it's generated, where did it come from? string (e.g.: 'hol')
+  # `#display`: if false, won't show in the taxon browser. Used for misspellings and such.
 
   belongs_to :name
   belongs_to :protonym, -> { includes :authorship }

@@ -10,13 +10,13 @@ class ReferenceDocument < ActiveRecord::Base
   before_validation :add_protocol_to_url
 
   has_attached_file :file,
-                    url: ':s3_domain_url',
-                    path: ':id/:filename',
-                    bucket: 'antcat',
-                    storage: :s3,
-                    s3_credentials: (Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/') + 's3.yml',
-                    s3_permissions: 'authenticated-read',
-                    s3_protocol: 'http'
+    url: ':s3_domain_url',
+    path: ':id/:filename',
+    bucket: 'antcat',
+    storage: :s3,
+    s3_credentials: (Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/') + 's3.yml', # TODO move to `secrets.yml`
+    s3_permissions: 'authenticated-read',
+    s3_protocol: 'http'
   before_post_process :transliterate_file_name
   do_not_validate_attachment_file_type :pdf
   has_paper_trail meta: { change_id: :get_current_change_id }

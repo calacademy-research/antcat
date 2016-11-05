@@ -2,16 +2,8 @@ class Name < ActiveRecord::Base
   include UndoTracker
   include Formatters::RefactorFormatter
 
-  attr_accessible :name,
-                  :name_html,
-                  :epithet,
-                  :epithet_html,
-                  :epithets,
-                  :type,
-                  :epithet,
-                  :epithet_html,
-                  :gender,
-                  :nonconforming_name
+  attr_accessible :epithet, :epithet, :epithet_html, :epithet_html, :epithets,
+    :gender, :name, :name_html, :nonconforming_name, :type
 
   validates :name, presence: true
 
