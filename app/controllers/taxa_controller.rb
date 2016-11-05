@@ -164,6 +164,7 @@ class TaxaController < ApplicationController
           taxon.status = Status['homonym'].to_s
         else
           taxon.collision_merge_id = collision_resolution
+          # TODO `original_combination` is never used.
           original_combination = Taxon.find(collision_resolution)
           Taxa::Utility.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
         end
@@ -177,11 +178,14 @@ class TaxaController < ApplicationController
     end
 
     def save_taxon
-      # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
+      # `collision_resolution` will be the taxon ID of the preferred taxon or "homonym".
       collision_resolution = params[:collision_resolution]
       if collision_resolution.blank? || collision_resolution == 'homonym'
+        # We get here when 1) there's no `collision_resolution` (the normal case),
+        # or 2) the the editor has confirmed that we are creating a homonym.
         @taxon.save_taxon(params[:taxon], @previous_combination)
       else
+        # TODO I believe this is where we lose track of `@taxon.id` (see nil check in `#create`)
         original_combination = Taxon.find(collision_resolution)
         original_combination.save_taxon(params[:taxon], @previous_combination)
       end
@@ -208,6 +212,7 @@ class TaxaController < ApplicationController
       end
     end
 
+    # TODO move to view/helper?
     def reset_epithet
       case @taxon
       when Family then @taxon.name.to_s
@@ -220,6 +225,7 @@ class TaxaController < ApplicationController
       @taxon.protonym.authorship.reference ||= DefaultReference.get session
     end
 
+    # TODO move to view/helper?
     def default_name_string
       return unless @taxon.kind_of? SpeciesGroupTaxon
       parent = Taxon.find(params[:parent_id])

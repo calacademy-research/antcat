@@ -2,6 +2,8 @@ class Taxa::Utility
   # TODO probably return `new_comb` instead of just modifying in place.
   # No:  inherit_attributes_for_new_combination(taxon, @previous_combination, parent)
   # Yes: taxon = inherit_attributes_for_new_combination(@previous_combination, parent)
+  # Or:  move to `SpeciesGroupTaxon`?
+  # So:  taxon.inherit_attributes_for_new_combination(@previous_combination, parent)
   def self.inherit_attributes_for_new_combination new_comb, old_comb, new_comb_parent
     new_comb.name =
       if new_comb_parent.is_a? Species
