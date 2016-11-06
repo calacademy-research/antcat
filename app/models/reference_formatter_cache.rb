@@ -18,6 +18,7 @@ class ReferenceFormatterCache
   end
 
   # TODO probably do not default to a field.
+  # Maybe just remove?
   def get reference, field = :formatted_cache
     reference.send field # YOLO committed the faster version
 

@@ -72,11 +72,11 @@ class ReferenceDecorator < ApplicationDecorator
 
   # TODO it may be safe to remove `options` now that the AntWeb exception
   # has been extracted into `#format_inline_citation_without_expansion`.
-  def format_inline_citation options = {}
+  def format_inline_citation
     cached = reference.cached :inline_citation_cache
     return cached.html_safe if cached
 
-    generated = format_inline_citation! options
+    generated = format_inline_citation!
     reference.set_cache generated, :inline_citation_cache
     generated
   end
@@ -90,6 +90,12 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   # Only used for the AntWeb export.
+  # TODOs:
+  # * Rename
+  # * call `to_link expansion: false` directly.
+  # * Remove options from `format_inline_citation! options = {}`
+  # * Replace all `format_inline_citation!` --> `to_link expansion: false`
+  # * Rename `to_link`
   def format_inline_citation_without_expansion
     format_inline_citation! expansion: false
   end

@@ -5,11 +5,10 @@
 #
 # TODO remove.
 #
-# [January 2016]: this module is included in:
+# [November 2016]: this module is included in:
 #   app/decorators/taxon_decorator/child_list.rb
 #   app/decorators/taxon_decorator/header.rb
 #   app/decorators/taxon_decorator/headline.rb
-#   app/decorators/taxon_decorator/history.rb
 #
 # Calls to individual methods:
 #   #link_to_taxon
@@ -21,10 +20,6 @@
 #
 #   #link_to_reference
 #      headline.rb
-#
-#   #detaxt
-#      headline.rb
-#      history.rb
 
 module RefactorHelper
   def link_to_taxon taxon
@@ -49,15 +44,6 @@ module RefactorHelper
       reference.decorate.to_link expansion: false
     else
       reference.decorate.to_link
-    end
-  end
-
-  def detaxt taxt
-    return '' unless taxt.present?
-    if $use_ant_web_formatter
-      Taxt.to_string taxt, expansion: false
-    else
-      Taxt.to_string taxt
     end
   end
 end

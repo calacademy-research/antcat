@@ -1,3 +1,5 @@
+# TODO probably convert to proper class (PORO).
+
 module Taxt
   extend ERB::Util
   extend ActionView::Helpers::TagHelper
@@ -24,6 +26,7 @@ module Taxt
   # Parses "example {tax 429361}"
   # into   "example <a href=\"/catalog/429361\">Melophorini</a>"
   def self.to_string taxt, options = {}
+    return '' unless taxt.present?
     decode taxt, options
   end
 
@@ -114,6 +117,7 @@ module Taxt
   end
   private_class_method :id_from_editable
 
+  # TODO convert to a constant
   def self.taxt_fields
     [
       [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
@@ -143,12 +147,14 @@ module Taxt
         reference = Reference.find(reference_id_match) rescue whole_match
         reference.decorate.format_inline_citation_without_links rescue whole_match
       elsif $use_ant_web_formatter # TODO nuke
+        # This means `options[:expansion] == false`?
         # We never want to expand references when exporting to AntWeb.
         reference = Reference.find(reference_id_match) rescue whole_match
         reference.decorate.format_inline_citation_without_expansion rescue whole_match
       else
+        # This means options is empty? Which means `options[:expansion] == true`?
         reference = Reference.find(reference_id_match) rescue whole_match
-        reference.decorate.format_inline_citation options rescue whole_match
+        reference.decorate.format_inline_citation rescue whole_match
       end
     end
 
