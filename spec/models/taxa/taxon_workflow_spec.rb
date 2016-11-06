@@ -99,7 +99,7 @@ describe Taxon do
       end
 
       it "returns the Change, if any" do
-        change = setup_version taxon.id
+        change = setup_version taxon
         expect(taxon.last_change).to eq change
       end
     end
@@ -120,12 +120,12 @@ describe Taxon do
   #   it "returns the user who added the record, not a subsequent editor" do
   #     taxon = create_taxon_version_and_change :waiting, adder
   #
-  #     setup_version taxon.id, adder
+  #     setup_version taxon, adder
   #
   #     taxon.update_attributes! incertae_sedis_in: 'genus'
   #     taxon.last_version.update_attributes! whodunnit: editor
   #     taxon.save!
-  #     setup_version taxon.id, adder
+  #     setup_version taxon, adder
   #
   #     expect(taxon.added_by).to eq adder
   #   end

@@ -18,10 +18,4 @@ class Synonym < ActiveRecord::Base
     { senior_synonym_id: synonym.senior_synonym_id,
       junior_synonym_id: synonym.junior_synonym_id }
   end
-
-  def self.find_or_create junior, senior
-    synonyms = Synonym.where(junior_synonym_id: junior, senior_synonym_id: senior)
-    return synonyms.first unless synonyms.empty?
-    Synonym.create! junior_synonym: junior, senior_synonym: senior
-  end
 end

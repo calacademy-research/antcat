@@ -55,11 +55,11 @@ FactoryGirl.define do
   end
 end
 
-def setup_version taxon_id, whodunnit = nil
-  change = create :change, user_changed_taxon_id: taxon_id
+def setup_version taxon, whodunnit = nil
+  change = create :change, user_changed_taxon_id: taxon.id
 
   create :version,
-    item_id: taxon_id,
+    item_id: taxon.id,
     event: 'create',
     item_type: 'Taxon',
     change_id: change.id,
