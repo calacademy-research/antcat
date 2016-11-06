@@ -52,12 +52,11 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format
-    cached = ReferenceFormatterCache.instance.get reference, :formatted_cache
+    cached = reference.cached :formatted_cache
     return cached.html_safe if cached
 
-    # Not cached. Generate, update cache, and return that.
     generated = format!
-    ReferenceFormatterCache.instance.set reference, generated, :formatted_cache
+    reference.set_cache generated, :formatted_cache
     generated
   end
 
@@ -74,12 +73,11 @@ class ReferenceDecorator < ApplicationDecorator
   # TODO it may be safe to remove `options` now that the AntWeb exception
   # has been extracted into `#format_inline_citation_without_expansion`.
   def format_inline_citation options = {}
-    cached = ReferenceFormatterCache.instance.get reference, :inline_citation_cache
+    cached = reference.cached :inline_citation_cache
     return cached.html_safe if cached
 
-    # Inline citation not cached. Generate, update cache, and return that.
     generated = format_inline_citation! options
-    ReferenceFormatterCache.instance.set reference, generated, :inline_citation_cache
+    reference.set_cache generated, :inline_citation_cache
     generated
   end
 

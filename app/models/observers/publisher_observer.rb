@@ -1,5 +1,5 @@
 class PublisherObserver < ActiveRecord::Observer
   def before_update publisher
-    publisher.references.each &:invalidate
+    publisher.references.each &:invalidate_cache
   end
 end

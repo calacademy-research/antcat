@@ -1,15 +1,23 @@
 class ReferenceFormatterCache
   include Singleton
 
+  # Extend with Forwardable to avoid typing `ReferenceFormatterCache.instance...`
+  # I-N-S-T-A-N-C-E. Too many letters. Lazy, yes, but it also looks better.
+  class << self
+    extend Forwardable
+    def_delegators :instance, :invalidate, :get, :set
+  end
+
   def invalidate reference
     return unless reference.formatted_cache?
     unless reference.new_record?
       set reference, nil, :formatted_cache
       set reference, nil, :inline_citation_cache
     end
-    reference.nestees.each { |nestee| invalidate nestee }
+    reference.nestees.each &:invalidate_cache
   end
 
+  # TODO probably do not default to a field.
   def get reference, field = :formatted_cache
     reference.send field # YOLO committed the faster version
 
@@ -30,6 +38,15 @@ class ReferenceFormatterCache
     value
   end
 
+  # Used in tests. Can also be manually invoked in prod/dev.
+  def regenerate reference
+    set reference, reference.decorate.format!, :formatted_cache
+    set reference, reference.decorate.format_inline_citation!, :inline_citation_cache
+  end
+  alias_method :populate, :regenerate
+
+  # `#invalidate_all` and `regenerate_all` are not called from any code.
+  # Use them in migrations or in the console (prod/dev/test).
   def invalidate_all
     puts "Invalidating all reference caches, this till take a few minutes."
 
@@ -54,10 +71,4 @@ class ReferenceFormatterCache
     end
     Progress.show_results
   end
-
-  def regenerate reference
-    set reference, reference.decorate.format!, :formatted_cache
-    set reference, reference.decorate.format_inline_citation!, :inline_citation_cache
-  end
-  alias_method :populate, :regenerate
 end
