@@ -3,7 +3,7 @@
 
 class Reference < ActiveRecord::Base
   def replace_with reference, _options = {}
-    Taxt.taxt_fields.each do |klass, fields|
+    Taxt::TAXT_FIELDS.each do |klass, fields|
       klass.send(:all).each do |record|
         fields.each do |field|
           next unless record[field]
@@ -17,7 +17,7 @@ class Reference < ActiveRecord::Base
 
   def self.get_total_records_to_update
     total = 0
-    Taxt.taxt_fields.each do |klass, fields|
+    Taxt::TAXT_FIELDS.each do |klass, fields|
       total += klass.count
     end
     total
@@ -29,7 +29,7 @@ class Reference < ActiveRecord::Base
     Progress.puts "#{batch.size} replacements to make"
     return unless batch.present?
 
-    Taxt.taxt_fields.each do |klass, fields|
+    Taxt::TAXT_FIELDS.each do |klass, fields|
       Progress.init show_progress, klass.send(:count)
       Progress.puts "Updating #{klass}..."
       klass.send(:all).each do |record|

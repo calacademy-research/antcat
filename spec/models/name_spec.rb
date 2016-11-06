@@ -124,7 +124,7 @@ describe Name do
       name = Name.create! name: 'Atta'
 
       # Create an instance for each type of taxt.
-      Taxt.taxt_fields.each do |klass, fields|
+      Taxt::TAXT_FIELDS.each do |klass, fields|
         fields.each do |field|
           create klass, field => "{nam #{name.id}}"
         end
@@ -133,14 +133,14 @@ describe Name do
       # Count the total referencing items.
       refs = name.send :references_in_taxt
       expect(refs.length).to eq(
-        Taxt.taxt_fields.map { |klass, fields| fields.length }.reduce(&:+)
+        Taxt::TAXT_FIELDS.map { |klass, fields| fields.length }.reduce(&:+)
       )
 
       # Count the total referencing items of each type.
-      Taxt.taxt_fields.each do |klass, fields|
+      Taxt::TAXT_FIELDS.each do |klass, fields|
         fields.each do |field|
           expect(refs.select { |i| i[:table] == klass.table_name }.length).to eq(
-            Taxt.taxt_fields.detect { |k, f| k == klass }[1].length
+            Taxt::TAXT_FIELDS.detect { |k, f| k == klass }[1].length
           )
         end
       end

@@ -62,7 +62,7 @@ module Taxa::References
 
     def references_in_taxt
       references = []
-      Taxt.taxt_fields.each do |klass, fields|
+      Taxt::TAXT_FIELDS.each do |klass, fields|
         klass.send(:all).each do |record|
           # don't include the taxt in this or child records
           next if klass == Taxon && record.id == id

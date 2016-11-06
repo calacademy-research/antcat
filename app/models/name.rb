@@ -222,7 +222,7 @@ class Name < ApplicationRecord
 
     def references_in_taxt
       references = []
-      Taxt.taxt_fields.each do |klass, fields|
+      Taxt::TAXT_FIELDS.each do |klass, fields|
         table = klass.arel_table
         fields.each do |field|
           klass.where(table[field].matches("%{nam #{id}}%")).each do |record|

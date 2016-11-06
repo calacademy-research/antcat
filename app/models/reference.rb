@@ -209,7 +209,7 @@ class Reference < ActiveRecord::Base
       return_early = return_true_or_false
 
       references = []
-      Taxt.taxt_fields.each do |klass, fields|
+      Taxt::TAXT_FIELDS.each do |klass, fields|
         klass.send(:all).each do |record|
           fields.each do |field|
             next unless record[field]

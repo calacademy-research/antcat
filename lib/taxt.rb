@@ -1,4 +1,4 @@
-# TODO probably convert to proper class (PORO).
+# TODO probably create a model-ish wrapper.
 
 module Taxt
   extend ERB::Util
@@ -9,6 +9,16 @@ module Taxt
   REFERENCE_TAG_TYPE = 1
   TAXON_TAG_TYPE = 2
   NAME_TAG_TYPE = 3
+
+  # this value is duplicated in taxt_editor.coffee
+  EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ}
+
+  TAXT_FIELDS = [
+    [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+    [Citation, [:notes_taxt]],
+    [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
+    [TaxonHistoryItem, [:taxt]]
+  ]
 
   class ReferenceNotFound < StandardError; end
 
@@ -83,9 +93,6 @@ module Taxt
   end
   private_class_method :to_editable_tag
 
-  # this value is duplicated in taxt_editor.coffee
-  EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ}
-
   def self.from_editable editable_taxt
     editable_taxt.gsub /{((.*?)? )?([#{Regexp.escape EDITABLE_ID_DIGITS}]+)}/ do |string|
       id, type_number = id_from_editable $3
@@ -116,16 +123,6 @@ module Taxt
     return id, type_number
   end
   private_class_method :id_from_editable
-
-  # TODO convert to a constant
-  def self.taxt_fields
-    [
-      [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
-      [Citation, [:notes_taxt]],
-      [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
-      [TaxonHistoryItem, [:taxt]]
-    ]
-  end
 
   # Note: `private` doesn't work on class methods, but it reveals intent.
   # TODO add `private_class_method :xxx`
