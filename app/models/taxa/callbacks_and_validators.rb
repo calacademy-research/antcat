@@ -11,11 +11,13 @@ module Taxa::CallbacksAndValidators
     before_validation :add_protocol_to_type_speciment_url
     before_validation :nilify_biogeographic_region_if_blank
 
+    before_create :build_default_taxon_state
     before_save { CleanNewlines.clean_newlines self, :headline_notes_taxt, :type_taxt }
     before_save :set_name_caches, :delete_synonyms
 
     # Additional callbacks for when `#save_initiator` is true (must be set manually).
     before_save { remove_auto_generated if save_initiator }
+    before_save { set_taxon_state_to_waiting if save_initiator }
   end
 
   private
@@ -66,5 +68,13 @@ module Taxa::CallbacksAndValidators
         synonym.auto_generated = false
         synonym.save
       end
+    end
+
+    def build_default_taxon_state
+      build_taxon_state review_state: :waiting unless taxon_state
+    end
+
+    def set_taxon_state_to_waiting
+      taxon_state.review_state = :waiting
     end
 end

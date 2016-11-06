@@ -6,7 +6,7 @@ xdescribe Taxon do
 end
 
 describe "callbacks" do
-  xdescribe "#build_default_taxon_state and #set_taxon_state_to_waiting" do
+  describe "#build_default_taxon_state and #set_taxon_state_to_waiting" do
     context "when creating a taxon" do
       let(:taxon) { build_minimal_family }
 
@@ -56,6 +56,7 @@ describe "callbacks" do
 
       context "it not `save_initiator`" do
         it "doesn't change the review state" do
+          expect(taxon).to be_old
           taxon.save
           expect(taxon).to be_old
         end
@@ -63,7 +64,7 @@ describe "callbacks" do
     end
   end
 
-  xdescribe "#remove_auto_generated" do
+  describe "#remove_auto_generated" do
     context "a generated taxon" do
       it "removes 'auto_generated' flags from things" do
         # Setup.

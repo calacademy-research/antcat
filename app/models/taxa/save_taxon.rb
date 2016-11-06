@@ -44,14 +44,6 @@ class Taxa::SaveTaxon
       update_type_name           params.delete :type_name_attributes
       update_name_status_flags   params
 
-      # TODO move `taxon_state` stuff to a callback.
-      if @taxon.new_record?
-        @taxon.taxon_state = TaxonState.new
-        @taxon.taxon_state.deleted = false # TODO default to "false" in db.
-        @taxon.taxon_state.id = @taxon.id
-      end
-      @taxon.taxon_state.review_state = :waiting
-
       # we might want to get smarter about this
       change_type = if @taxon.new_record? then :create else :update end
       change = setup_change @taxon, change_type
