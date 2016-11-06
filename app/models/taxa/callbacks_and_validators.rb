@@ -10,8 +10,12 @@ module Taxa::CallbacksAndValidators
 
     before_validation :add_protocol_to_type_speciment_url
     before_validation :nilify_biogeographic_region_if_blank
+
     before_save { CleanNewlines.clean_newlines self, :headline_notes_taxt, :type_taxt }
     before_save :set_name_caches, :delete_synonyms
+
+    # Additional callbacks for when `#save_initiator` is true (must be set manually).
+    before_save { remove_auto_generated if save_initiator }
   end
 
   private
@@ -42,5 +46,25 @@ module Taxa::CallbacksAndValidators
       errors.add :type_specimen_url, 'was not found' unless (200..399).include? response_code
     rescue SocketError, URI::InvalidURIError, ArgumentError
       errors.add :type_specimen_url, 'is not in a valid format'
+    end
+
+    def remove_auto_generated
+      self.auto_generated = false
+
+      name = self.name
+      if name.auto_generated
+        name.auto_generated = false
+        name.save
+      end
+
+      junior_synonyms_objects.where(auto_generated: true).each do |synonym|
+        synonym.auto_generated = false
+        synonym.save
+      end
+
+      senior_synonyms_objects.where(auto_generated: true).each do |synonym|
+        synonym.auto_generated = false
+        synonym.save
+      end
     end
 end

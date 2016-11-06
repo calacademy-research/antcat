@@ -16,7 +16,7 @@ class Taxon < ActiveRecord::Base
 
   # The Ruby method, convenient when we want to store temporary values.
   attr_accessor :authorship_string, :duplicate_type, :parent_name,
-    :current_valid_taxon_name, :homonym_replaced_by_name
+    :current_valid_taxon_name, :homonym_replaced_by_name, :save_initiator
 
   # Rails method to protect from mass-assignment.
   attr_accessible :auto_generated, :biogeographic_region, :collision_merge_id,

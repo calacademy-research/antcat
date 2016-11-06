@@ -33,6 +33,8 @@ class Taxa::SaveTaxon
 
   # `previous_combination` will be a pointer to a species or subspecies if non-nil.
   def save_from_form params, previous_combination = nil
+    @taxon.save_initiator = true
+
     Taxon.transaction do
       update_name                params.delete :name_attributes
       update_parent              params.delete :parent_name_attributes
@@ -53,8 +55,6 @@ class Taxa::SaveTaxon
       # we might want to get smarter about this
       change_type = if @taxon.new_record? then :create else :update end
       change = setup_change @taxon, change_type
-
-      remove_auto_generated if @taxon.auto_generated
 
       @taxon.save!
 
@@ -161,26 +161,6 @@ class Taxa::SaveTaxon
       @taxon.headline_notes_taxt = Taxt.from_editable attributes.delete :headline_notes_taxt
       if attributes[:type_taxt]
         @taxon.type_taxt = Taxt.from_editable attributes.delete :type_taxt
-      end
-    end
-
-    # TODO move to callback.
-    def remove_auto_generated
-      @taxon.auto_generated = false
-      name = @taxon.name
-      if name.auto_generated
-        name.auto_generated = false
-        name.save
-      end
-
-      @taxon.junior_synonyms_objects.where(auto_generated: true).each do |synonym|
-        synonym.auto_generated = false
-        synonym.save
-      end
-
-      @taxon.senior_synonyms_objects.where(auto_generated: true).each do |synonym|
-        synonym.auto_generated = false
-        synonym.save
       end
     end
 
