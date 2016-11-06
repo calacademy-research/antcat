@@ -70,7 +70,7 @@ class ChangeDecorator < Draper::Decorator
 
   def approve_button taxon, changed_by: nil
     return unless helpers.user_can_edit?
-    return if taxon.taxon_state.review_state == "approved"
+    return if taxon.approved?
 
     # TODO clarify this; does the nil check mean that editors are allowed
     # to approve their own changes if the taxon has no taxon_state?

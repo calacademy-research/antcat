@@ -50,14 +50,12 @@ class Taxa::SaveTaxon
 
       @taxon.save!
 
-      # paper_trail is dumb. When a new object is created, it has no "object".
+      # PaperTrail is dumb. When a new object is created, it has no "object".
       # So, if you undo the first change, and try to reify the previous one,
       # you end up with no object! touch_with_version gives us one, but
       # Just for the taxa, not the protonym or other changable objects.
       # TODO move to an `after_create` callback.
-      if change_type == :create
-        @taxon.touch_with_version
-      end
+      @taxon.touch_with_version if change_type == :create
 
       # TODO: The below may not be being used
       # `UndoTracker#setup_change` already does this, but it looks like

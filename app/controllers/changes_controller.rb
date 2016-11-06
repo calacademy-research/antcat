@@ -26,8 +26,8 @@ class ChangesController < ApplicationController
     count = TaxonState.where(review_state: 'waiting').count
 
     Feed::Activity.without_tracking do
-      TaxonState.where(review_state: 'waiting').each do |approve_taxon_state|
-        Change.where(user_changed_taxon_id: approve_taxon_state.taxon_id).each do |change|
+      TaxonState.where(review_state: 'waiting').each do |taxon_state|
+        Change.where(user_changed_taxon_id: taxon_state.taxon_id).each do |change|
           approve_change change
         end
       end
@@ -45,21 +45,19 @@ class ChangesController < ApplicationController
     # Sort to undo changes most recent to oldest
     Feed::Activity.without_tracking do
       clear_change
-      change_id_set = find_future_changes(@change)
-      versions = SortedSet.new
-      items = SortedSet.new
+      change_id_set = find_future_changes @change
+      versions = SortedSet[]
+      items = SortedSet[]
       Taxon.transaction do
         change_id_set.each do |undo_this_change_id|
           begin
             # could be already undone.
-            cur_change = Change.find(undo_this_change_id)
+            current_change = Change.find undo_this_change_id
           rescue ActiveRecord::RecordNotFound
             next
           end
-          cur_change.versions.each do |cur_version|
-            versions.add(cur_version)
-          end
-          cur_change.delete
+          versions.merge current_change.versions
+          current_change.delete
         end
         undo_versions versions
       end
@@ -80,23 +78,23 @@ class ChangesController < ApplicationController
   # return information about all the taxa that would be hit if we were to
   # hit "undo". Includes current taxon. For display.
   def undo_items
-    change_id_set = find_future_changes(@change)
+    change_id_set = find_future_changes @change
     changes = []
-    change_id_set.each do |cur_change_id|
+    change_id_set.each do |current_change_id|
       begin
         # could be already undone.
-        cur_change = Change.find(cur_change_id)
+        current_change = Change.find current_change_id
       rescue ActiveRecord::RecordNotFound
         next
       end
       # Could get cute and report exactly what was changed about any given taxon
       # For now, just report a change to the taxon in question.
-      cur_taxon = cur_change.get_most_recent_valid_taxon
-      cur_user = cur_change.changed_by
-      changes.append(name: cur_taxon.name.to_s,
-                     change_type: cur_change.change_type,
-                     change_timestamp: cur_change.created_at.strftime("%B %d, %Y"),
-                     user_name: cur_user.name)
+      current_taxon = current_change.get_most_recent_valid_taxon
+      current_user = current_change.changed_by
+      changes.append name: current_taxon.name.to_s,
+                     change_type: current_change.change_type,
+                     change_timestamp: current_change.created_at.strftime("%B %d, %Y"),
+                     user_name: current_user.name
       # This would be a good place to warn from if we find that we can't undo
       # something about a taxa.
     end
@@ -105,7 +103,7 @@ class ChangesController < ApplicationController
 
   private
     def set_change
-      @change = Change.find(params[:id])
+      @change = Change.find params[:id]
     end
 
     # TODO move to model
@@ -116,25 +114,24 @@ class ChangesController < ApplicationController
 
       if change.taxon
         change.taxon.approve!
-        change.update_attributes! approver_id: current_user.id, approved_at: Time.now
+        change.update_attributes! approver: current_user, approved_at: Time.now
       else
         # This case is for approving a delete
+        # TODO? approving deletions doesn't set `approver` or `approved_at`.
         taxon_state.review_state = "approved"
         taxon_state.save!
       end
 
-      Feed::Activity.with_tracking do
-        change.create_activity :approve_change
-      end
+      Feed::Activity.with_tracking { change.create_activity :approve_change }
     end
 
     # Note that because of schema change, we can't do this for changes that don't
     # have an extracted taxon_state.
     def undo_versions versions
       versions.reverse_each do |version|
-        if 'create' == version.event
+        if version.event == 'create'
           klass = version.item_type.constantize
-          item = klass.find(version.item_id)
+          item = klass.find version.item_id
           item.delete
         else
           item = version.reify
@@ -144,9 +141,7 @@ class ChangesController < ApplicationController
           begin
             # because we validate on things like the genus being present, and if we're doing an entire change set,
             # it might not be!
-            if item
-              item.save! validate: false
-            end
+            item.save! validate: false if item
           rescue ActiveRecord::RecordInvalid => error
             puts "=========Reify failure: #{error} version item_type =  #{version.item_type}"
             raise error
@@ -161,12 +156,12 @@ class ChangesController < ApplicationController
     def get_future_change_ids version
       new_version = version.next
       change_id = version.change_id
-      return SortedSet.new unless change_id
+      return SortedSet[] unless change_id
 
       if new_version
-        SortedSet.new([change_id]).merge get_future_change_ids(new_version)
+        SortedSet[change_id].merge get_future_change_ids(new_version)
       else
-        SortedSet.new([change_id])
+        SortedSet[change_id]
       end
     end
 
@@ -183,10 +178,9 @@ class ChangesController < ApplicationController
       #   if there is a "future" version of this version, recurse above loop.
       # sort and return the change record list.
       # because we need to go through papertrail's version
-      change_ids = SortedSet.new
-      change_ids.add(change.id)
+      change_ids = SortedSet[change.id]
       change.versions.each do |version|
-        change_ids.merge(get_future_change_ids(version))
+        change_ids.merge get_future_change_ids(version)
       end
       change_ids
     end

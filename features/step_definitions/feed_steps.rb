@@ -129,8 +129,10 @@ end
 
 # Change
 Given(/^there are two unreviewed catalog changes for the feed$/) do
-  step %{there is a genus "Cactusia" that's waiting for approval}
-  step %{there is a genus "Camelia" that's waiting for approval}
+  Feed::Activity.without_tracking do
+    step %{there is a genus "Cactusia" that's waiting for approval}
+    step %{there is a genus "Camelia" that's waiting for approval}
+  end
 end
 
 # ReferenceSection
