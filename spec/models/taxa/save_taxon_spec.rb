@@ -196,14 +196,14 @@ describe Taxa::SaveTaxon do
         it "saves the children" do
           # Save these:
           expect_any_instance_of(Genus).to receive(:save!).and_call_original
-          # SOON: expect_any_instance_of(Genus).to receive(:save_children).and_call_original
+          expect_any_instance_of(Genus).to receive(:save_children).and_call_original
 
           expect_any_instance_of(Species).to receive(:save).and_call_original
-          # SOON: expect_any_instance_of(Species).to receive(:save_children).and_call_original
+          expect_any_instance_of(Species).to receive(:save_children).and_call_original
 
           # Should not be saved:
           [Family, Subfamily, Tribe].each do |klass|
-            # SOON: expect_any_instance_of(klass).to_not receive(:save_children).and_call_original
+            expect_any_instance_of(klass).to_not receive(:save_children).and_call_original
             expect_any_instance_of(klass).to_not receive(:save).and_call_original
           end
 

@@ -18,6 +18,18 @@ module Taxa::CallbacksAndValidators
     # Additional callbacks for when `#save_initiator` is true (must be set manually).
     before_save { remove_auto_generated if save_initiator }
     before_save { set_taxon_state_to_waiting if save_initiator }
+    before_save { save_children if save_initiator }
+  end
+
+  # Recursively save children, presumably to trigger callbacks and create
+  # PaperTrail versions. Formicidae is excluded, probably for performance reasons?
+  def save_children
+    return if is_a? Family
+
+    children.each do |child|
+      child.save
+      child.save_children
+    end
   end
 
   private

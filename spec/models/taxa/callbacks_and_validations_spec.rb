@@ -106,7 +106,7 @@ describe "callbacks" do
     end
   end
 
-  xdescribe "#save_children" do
+  describe "#save_children" do
     let!(:species) { create :species }
     let!(:genus) { Taxon.find species.genus.id }
     let!(:tribe) { Taxon.find genus.tribe.id }

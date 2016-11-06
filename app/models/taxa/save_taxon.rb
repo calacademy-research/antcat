@@ -66,8 +66,6 @@ class Taxa::SaveTaxon
       end
 
       handle_previous_combination previous_combination if previous_combination
-
-      save_taxon_children @taxon
     end
   end
 
@@ -242,16 +240,5 @@ class Taxa::SaveTaxon
       taxon_to_update.senior_synonyms_objects.update_all junior_synonym_id: @taxon.id
 
       taxon_to_update.save
-    end
-
-    # Recursively saves children, presumably to trigger callbacks and create
-    # PaperTrail versions. Do not include Formicidae (performance reasons?).
-    def save_taxon_children taxon
-      return if taxon.is_a? Family
-
-      taxon.children.each do |child|
-        child.save
-        save_taxon_children child
-      end
     end
 end
