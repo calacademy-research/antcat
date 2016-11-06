@@ -47,6 +47,10 @@ class Reference < ActiveRecord::Base
     "#{author_names_string} #{citation_year}. #{id}."
   end
 
+  def invalidate
+    ReferenceFormatterCache.instance.invalidate self
+  end
+
   def authors reload = false
     author_names(reload).map &:author
   end

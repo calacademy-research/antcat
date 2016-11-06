@@ -8,9 +8,7 @@ class ComparableReference
   end
 
   def update hash
-    hash.each do |key, value|
-      send "#{key}=", value
-    end
+    hash.each { |key, value| send "#{key}=", value }
   end
 
   def id
