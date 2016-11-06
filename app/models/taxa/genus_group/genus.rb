@@ -37,8 +37,8 @@ class Genus < GenusGroupTaxon
 
   def siblings
     tribe && tribe.genera ||
-    subfamily && subfamily.genera.without_tribe ||
-    Genus.without_subfamily
+      subfamily && subfamily.genera.without_tribe ||
+      Genus.without_subfamily
   end
 
   def displayable_child_taxa

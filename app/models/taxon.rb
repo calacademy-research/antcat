@@ -62,8 +62,8 @@ class Taxon < ActiveRecord::Base
   has_paper_trail meta: { change_id: :get_current_change_id }
   tracked on: :create, parameters: activity_parameters
 
-  def save_taxon params, previous_combination = nil
-    Taxa::SaveTaxon.new(self).save_taxon(params, previous_combination)
+  def save_from_form params, previous_combination = nil
+    Taxa::SaveTaxon.new(self).save_from_form(params, previous_combination)
   end
 
   # Avoid this method. Issues:

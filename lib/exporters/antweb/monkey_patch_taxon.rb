@@ -1,4 +1,4 @@
-# Moved from the main classes. Re-opening the classes here is OK --
+# HACK: Moved from the main classes. Re-opening the classes here is OK because
 # we do not want all this in the main code.
 
 # To make sure all classes are already loaded

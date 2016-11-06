@@ -3,4 +3,8 @@ class Subtribe < Taxon
     # probably tribe...
     raise NotImplementedError, "currently we have no subtribes"
   end
+
+  def children
+    raise NotImplementedError
+  end
 end

@@ -1,7 +1,7 @@
 # Note: some of the comments here may be incorrect, as I'm still trying to
 # understand what's going on.
 #
-# `#save_taxon` (the only public method) is responsible for, in -ish this order:
+# `#save_from_form` (the only public method) is responsible for, in -ish this order:
 #   1) Parse the `params` to prepare them for ActiveRecord's `#save`.
 #   2) Update the `TaxonState`, or create it.
 #   3) Create a `Change`.
@@ -18,7 +18,7 @@
 #      genus, this makes sure that all the species' subspecies also are updated
 #      so they belong to that genus.
 #
-# `#save_taxon` expects `params` as they are formatted by the 'edit taxa form',
+# `#save_from_form` expects `params` as they are formatted by the 'edit taxa form',
 # which is why we have code such as `params[:name_attributes][:id]` that must be
 # parsed/modified up. Also, the `params` are not "pure", as in it's more like the
 # method expects `params` from the form + changes JavaScripts made to them +
@@ -31,9 +31,8 @@ class Taxa::SaveTaxon
     @taxon = taxon
   end
 
-  # TODO possibly rename.
   # `previous_combination` will be a pointer to a species or subspecies if non-nil.
-  def save_taxon params, previous_combination = nil
+  def save_from_form params, previous_combination = nil
     Taxon.transaction do
       update_name                params.delete :name_attributes
       update_parent              params.delete :parent_name_attributes

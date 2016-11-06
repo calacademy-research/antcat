@@ -152,7 +152,7 @@ class TaxaController < ApplicationController
     def get_taxon_for_create
       parent = Taxon.find(params[:parent_id])
 
-      taxon = build_new_taxon(params[:rank_to_create])
+      taxon = build_new_taxon params[:rank_to_create]
       taxon.parent = parent
 
       # Radio button case - we got duplicates, and the user picked one
@@ -183,11 +183,11 @@ class TaxaController < ApplicationController
       if collision_resolution.blank? || collision_resolution == 'homonym'
         # We get here when 1) there's no `collision_resolution` (the normal case),
         # or 2) the the editor has confirmed that we are creating a homonym.
-        @taxon.save_taxon(params[:taxon], @previous_combination)
+        @taxon.save_from_form params[:taxon], @previous_combination
       else
         # TODO I believe this is where we lose track of `@taxon.id` (see nil check in `#create`)
         original_combination = Taxon.find(collision_resolution)
-        original_combination.save_taxon(params[:taxon], @previous_combination)
+        original_combination.save_from_form params[:taxon], @previous_combination
       end
 
       if @previous_combination.is_a?(Species) && @previous_combination.children.any?
@@ -208,7 +208,7 @@ class TaxaController < ApplicationController
 
         Taxa::Utility.inherit_attributes_for_new_combination(new_child, t, @taxon)
 
-        new_child.save_taxon(Taxa::Utility.attributes_for_new_usage(new_child, t), t)
+        new_child.save_from_form Taxa::Utility.attributes_for_new_usage(new_child, t), t
       end
     end
 

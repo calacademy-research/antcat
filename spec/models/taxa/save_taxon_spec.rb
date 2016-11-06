@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-# Extra madness because RSpec had problems finding our classes
+# HACK: extra madness because RSpec had problems finding our classes.
 Taxa::Family = Family
 
 describe Taxa::SaveTaxon do
@@ -12,7 +12,7 @@ describe Taxa::SaveTaxon do
       params[:type_fossil] = 0
       params[:type_taxt] = ''
 
-      taxon.save_taxon params
+      taxon.save_from_form params
       taxon.reload
       expect(taxon.name.name).to eq 'Atta'
       expect(taxon.protonym.name.name).to eq 'Betta'
@@ -25,7 +25,7 @@ describe Taxa::SaveTaxon do
 
       params[:type_fossil] = 0
       params[:type_taxt] = ''
-      taxon.save_taxon params
+      taxon.save_from_form params
       taxon.reload
 
       expect(taxon).to be_waiting
@@ -36,7 +36,7 @@ describe Taxa::SaveTaxon do
       taxon = build_new_taxon_and_set_parent :genus, create_subfamily
       params = species_params
 
-      taxon.save_taxon params
+      taxon.save_from_form params
       taxon.reload
       expect(taxon.name.name).to eq 'Atta major'
       expect(taxon.protonym.name.name).to eq 'Betta major'
@@ -46,7 +46,7 @@ describe Taxa::SaveTaxon do
       taxon = build_new_taxon_and_set_parent :subspecies, create_species
       params = subspecies_params
 
-      taxon.save_taxon params
+      taxon.save_from_form params
       taxon.reload
       expect(taxon.name.name).to eq 'Atta major minor'
       expect(taxon.protonym.name.name).to eq 'Betta major minor'
@@ -57,7 +57,7 @@ describe Taxa::SaveTaxon do
       taxt_reference = create :article_reference
       taxon = build_new_taxon_and_set_parent :species, create_genus
 
-      params = taxon_params.deep_dup
+      params = taxon_params
       params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
       params[:protonym_attributes][:name_attributes][:id] = create(:species_name, name: 'Betta major').id
       params[:incertae_sedis_in] = 'genus'
@@ -68,7 +68,7 @@ describe Taxa::SaveTaxon do
       params[:headline_notes_taxt] = Taxt.to_editable "{ref #{headline_reference.id}}"
       params[:type_taxt] = Taxt.to_editable "{ref #{taxt_reference.id}}"
 
-      taxon.save_taxon params
+      taxon.save_from_form params
 
       taxon.reload
       expect(taxon).to be_incertae_sedis_in 'genus'
@@ -89,7 +89,7 @@ describe Taxa::SaveTaxon do
       params[:protonym_attributes][:name_attributes][:id] = create(:species_name, name: 'Betta major').id
       params[:protonym_attributes][:authorship_attributes][:notes_taxt] = Taxt.to_editable "{ref #{reference.id}}"
 
-      taxon.save_taxon params
+      taxon.save_from_form params
 
       taxon.reload
       expect(taxon.protonym.authorship.notes_taxt).to eq "{ref #{reference.id}}"
@@ -101,7 +101,7 @@ describe Taxa::SaveTaxon do
       replacement_homonym = create_genus
 
       params[:homonym_replaced_by_name_attributes][:id] = replacement_homonym.name.id
-      taxon.save_taxon params
+      taxon.save_from_form params
       taxon.reload
       expect(taxon.homonym_replaced_by).to eq replacement_homonym
     end
@@ -112,7 +112,7 @@ describe Taxa::SaveTaxon do
       current_valid_taxon = create_genus
 
       params[:current_valid_taxon_name_attributes][:id] = current_valid_taxon.name.id
-      taxon.save_taxon params
+      taxon.save_from_form params
       taxon.reload
       expect(taxon.current_valid_taxon).to eq current_valid_taxon
     end
@@ -124,13 +124,13 @@ describe Taxa::SaveTaxon do
       @genus_params = genus_params.deep_dup
 
       params_without_gender = @genus_params.deep_dup
-      taxon.save_taxon params_without_gender
+      taxon.save_from_form params_without_gender
       taxon.reload
       expect(taxon.name.gender).to be_nil
 
       params_with_gender = @genus_params.deep_dup
       params_with_gender[:name_attributes][:gender] = 'masculine'
-      taxon.save_taxon params_with_gender
+      taxon.save_from_form params_with_gender
       taxon.reload
       expect(taxon.name.gender).to eq 'masculine'
     end
@@ -138,13 +138,13 @@ describe Taxa::SaveTaxon do
     it "allows name gender to be unset when updating a taxon" do
       taxon = build_new_taxon_and_set_parent :genus, create_subfamily
       params = genus_params
-      taxon.save_taxon params
+      taxon.save_from_form params
       taxon.name.update_column :gender, 'masculine'
       expect(taxon.name.gender).to eq 'masculine'
 
       params = genus_params
       params[:name_attributes][:gender] = ''
-      taxon.save_taxon params
+      taxon.save_from_form params
       taxon.reload
       expect(taxon.name.gender).to be_nil
     end
@@ -153,7 +153,7 @@ describe Taxa::SaveTaxon do
       context "when a taxon is added" do
         it "creates a Change pointing to the version of Taxon" do
           taxon = build_new_taxon_and_set_parent :species, create_genus
-          with_versioning { taxon.save_taxon genus_params }
+          with_versioning { taxon.save_from_form genus_params }
           change = Change.first
           expect(change.user_changed_taxon_id).to eq taxon.last_version.item_id
         end
@@ -163,15 +163,19 @@ describe Taxa::SaveTaxon do
         let(:genus) { create_genus }
 
         it "creates a Change for an edit" do
-          with_versioning { genus.save_taxon genus_params }
+          with_versioning { genus.save_from_form genus_params }
 
           expect(Change.count).to equal 1
           expect(Change.first.change_type).to eq 'update'
         end
 
         it "changes the review state" do
+          # Pretend it's old and confirm.
+          genus.taxon_state.update_columns review_state: :old
+          genus.reload
           expect(genus).to be_old
-          with_versioning { genus.save_taxon genus_params }
+
+          with_versioning { genus.save_from_form genus_params }
 
           expect(genus).not_to be_old
         end
@@ -180,7 +184,7 @@ describe Taxa::SaveTaxon do
   end
 end
 
-# custom method to avoid interference from the factories
+# Mimics `TaxaController#build_new_taxon` to avoid interference from the factories.
 def build_new_taxon_and_set_parent rank, parent
   taxon = "#{rank}".titlecase.constantize.new
   taxon.build_name
