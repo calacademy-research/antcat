@@ -28,7 +28,7 @@ class MissingReference < Reference
   end
 
   def replace_citation_with replacement
-    self.class.replace_citation citation, replacement
+    MissingReference.replace_citation citation, replacement
     create_replace_missing_reference_activity replacement
   end
 

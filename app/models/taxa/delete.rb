@@ -3,7 +3,6 @@ module Taxa::Delete
 
   def delete_with_state!
     Taxon.transaction do
-      taxon_state = self.taxon_state
       # Bit of a hack; this is a new table which may lack the depth of other tables.
       # Creation doesn't add a record, so you can't "step back to" a valid version.
       # doing touch_with_version (creeate a fallback point) in the migration makes an

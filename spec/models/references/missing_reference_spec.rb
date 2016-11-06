@@ -31,14 +31,13 @@ describe MissingReference do
 
     # Replacing all occurences of a citation with another reference
     describe ".replace_citation" do
-      let!(:first_citation_occurrence) do
-        first_reference = create :missing_reference, citation: 'Citation'
-        TaxonHistoryItem.create! taxt: "{ref #{first_reference.id}}"
+      def missing_reference_with_taxt
+        reference = create :missing_reference, citation: 'Citation'
+        TaxonHistoryItem.create! taxt: "{ref #{reference.id}}"
       end
-      let!(:second_citation_occurrence) do
-        second_reference = create :missing_reference, citation: 'Citation'
-        TaxonHistoryItem.create! taxt: "{ref #{second_reference.id}}"
-      end
+
+      let!(:first_citation_occurrence) { missing_reference_with_taxt }
+      let!(:second_citation_occurrence) { missing_reference_with_taxt }
       let(:nonmissing_reference) { create :article_reference }
 
       it "replaces both missing references with the same citation" do

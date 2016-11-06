@@ -8,7 +8,7 @@ class ReferenceFormatterCache
       set reference, nil, :inline_citation_cache
     end
     Reference.where("nesting_reference_id = ?", reference.id).each do |nestee|
-      self.class.instance.invalidate nestee
+      invalidate nestee
     end
   end
 

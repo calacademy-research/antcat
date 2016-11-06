@@ -83,15 +83,16 @@ class Taxon < ActiveRecord::Base
   end
 
   def update_parent new_parent
-    return if self.parent == new_parent
-    self.name.change_parent new_parent.name
+    return if parent == new_parent
+
+    name.change_parent new_parent.name
     set_name_caches
     self.parent = new_parent
     self.subfamily = new_parent.subfamily
   end
 
   def rank
-    self.type.downcase
+    type.downcase
   end
 
   # TODO only used in `Exporters::Antweb::Exporter`? move maybe

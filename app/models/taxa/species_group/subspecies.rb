@@ -15,17 +15,14 @@ class Subspecies < SpeciesGroupTaxon
   def update_parent new_parent
     # TODO Joe - somewhere, we need to check and pop up for the homonym case if there are multiple possibles.
     super
-    if defined? new_parent.genus
-      self.genus = new_parent.genus
-    end
-    if defined? new_parent.subgenus
-      self.subgenus = new_parent.subgenus
-    end
+    self.genus = new_parent.genus if new_parent.genus
+    self.subgenus = new_parent.subgenus if new_parent.subgenus
     self.species = new_parent
   end
 
   def set_genus
-    self.genus = species.genus if species and not genus
+    return if genus
+    self.genus = species.genus if species
   end
 
   def statistics valid_only: false; end
@@ -68,11 +65,11 @@ class Subspecies < SpeciesGroupTaxon
 
     # writes directly to db, bypasses save. "update_attributes" operates in memory and
     # lets you use the "save" path
-    self.update_columns name_id: new_name.id,
-                        species_id: nil,
-                        name_cache: new_name.name,
-                        name_html_cache: new_name.name_html,
-                        type: 'Species'
+    update_columns name_id: new_name.id,
+                   species_id: nil,
+                   name_cache: new_name.name,
+                   name_html_cache: new_name.name_html,
+                   type: 'Species'
   end
 
   private

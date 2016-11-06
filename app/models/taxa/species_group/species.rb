@@ -49,11 +49,11 @@ class Species < SpeciesGroupTaxon
 
     create_convert_species_to_subspecies_activity new_name
 
-    self.update_columns name_id: new_name.id,
-                        species_id: species.id,
-                        name_cache: new_name.name,
-                        name_html_cache: new_name.name_html,
-                        type: 'Subspecies'
+    update_columns name_id: new_name.id,
+                   species_id: species.id,
+                   name_cache: new_name.name,
+                   name_html_cache: new_name.name_html,
+                   type: 'Subspecies'
   end
 
   private
