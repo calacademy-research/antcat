@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-xdescribe Taxon do
+describe Taxon do
   it { should validate_presence_of :name }
   it { should validate_presence_of :protonym }
 end

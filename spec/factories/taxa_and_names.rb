@@ -85,7 +85,6 @@ FactoryGirl.define do
     association :type_name, factory: :species_name
     protonym
     status 'valid'
-    taxon_state
   end
 
   factory :family do
@@ -93,7 +92,6 @@ FactoryGirl.define do
     association :type_name, factory: :genus_name
     protonym
     status 'valid'
-    taxon_state
   end
 
   factory :subfamily do
@@ -101,7 +99,6 @@ FactoryGirl.define do
     association :type_name, factory: :genus_name
     protonym
     status 'valid'
-    taxon_state
   end
 
   factory :tribe do
@@ -110,7 +107,6 @@ FactoryGirl.define do
     subfamily
     protonym
     status 'valid'
-    taxon_state
   end
 
   # FIX? Broken. The are 8 SubtribeName:s in the prod db, but no
@@ -121,7 +117,6 @@ FactoryGirl.define do
     subfamily
     protonym
     status 'valid'
-    taxon_state
   end
 
   factory :genus do
@@ -131,7 +126,6 @@ FactoryGirl.define do
     subfamily { |a| a.tribe && a.tribe.subfamily }
     protonym
     status 'valid'
-    taxon_state
   end
 
   factory :subgenus do
@@ -140,7 +134,6 @@ FactoryGirl.define do
     genus
     protonym
     status 'valid'
-    taxon_state
   end
 
   factory :species_group_taxon do
@@ -148,7 +141,6 @@ FactoryGirl.define do
     genus
     protonym
     status 'valid'
-    taxon_state
   end
 
   factory :species do
@@ -156,7 +148,6 @@ FactoryGirl.define do
     genus
     protonym
     status 'valid'
-    taxon_state
   end
 
   factory :subspecies do
@@ -165,7 +156,6 @@ FactoryGirl.define do
     genus
     protonym
     status 'valid'
-    taxon_state
   end
 end
 
