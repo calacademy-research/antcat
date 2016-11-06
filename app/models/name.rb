@@ -121,58 +121,21 @@ class Name < ApplicationRecord
   end
 
   def self.picklist_matching letters_in_name, options = {}
-    join = options[:taxa_only] ||
-           options[:species_only] ||
-           options[:genera_only] ||
-           options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+    join = picklist_join options
+    rank = picklist_rank_filter options
 
-    rank_filter =
-      case
-      when options[:species_only] then
-        'AND taxa.type = "Species"'
-      when options[:genera_only] then
-        'AND taxa.type = "Genus"'
-      when options[:subfamilies_or_tribes_only] then
-        'AND (taxa.type = "Subfamily" OR taxa.type = "Tribe")'
-      else
-        ''
-      end
-
-    # I do not see why the code beginning with Name.select can't be factored out, but it can't
     search_term = letters_in_name + '%'
-    prefix_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id')
-        .joins("#{join} taxa ON taxa.name_id = names.id")
-        .where("name LIKE '#{search_term}' #{rank_filter}")
-        .order('taxon_id DESC')
-        .order(:name)
+    prefix_matches = picklist_query("name", search_term, join, rank).order('taxon_id DESC').order(:name)
 
     search_term = letters_in_name.split('').join('%') + '%'
-    epithet_matches =
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id')
-        .joins("#{join} taxa ON taxa.name_id = names.id")
-        .where("epithet LIKE '#{search_term}' #{rank_filter}")
-        .order(:epithet)
+    epithet_matches = picklist_query("epithet", search_term, join, rank).order(:epithet)
 
     search_term = letters_in_name.split('').join('%') + '%'
-    first_then_any_letter_matches =
-        Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id')
-            .joins("#{join} taxa ON taxa.name_id = names.id")
-            .where("name LIKE '#{search_term}' #{rank_filter}")
-            .order(:name)
+    first_then_any_letter_matches = picklist_query("name", search_term, join, rank).order(:name)
 
-    [picklist_matching_format(prefix_matches),
-     picklist_matching_format(epithet_matches),
-     picklist_matching_format(first_then_any_letter_matches),
-    ].flatten.uniq { |item| item[:name] }[0, 100]
-  end
-
-  def self.picklist_matching_format matches
-    matches.map do |e|
-      result = { id: e.id.to_i, name: e.name, label: "<b>#{e.name_html}</b>", value: e.name }
-      result[:taxon_id] = e.taxon_id.to_i if e.taxon_id
-      result
-    end
+    [prefix_matches, epithet_matches, first_then_any_letter_matches]
+      .map { |matches| picklist_matching_format matches }
+      .flatten.uniq { |item| item[:name] }[0, 100]
   end
 
   def to_s
@@ -285,5 +248,40 @@ class Name < ApplicationRecord
         end
       end
       references
+    end
+
+    # TODO wrap all picklist methods in a class.
+    def self.picklist_query name_field, search_term, join, rank
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id')
+        .joins("#{join} taxa ON taxa.name_id = names.id")
+        .where("#{name_field} LIKE '#{search_term}' #{rank}")
+    end
+
+    def self.picklist_join options
+      options[:taxa_only] ||
+      options[:species_only] ||
+      options[:genera_only] ||
+      options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+    end
+
+    def self.picklist_rank_filter options
+      case
+      when options[:species_only]
+        'AND taxa.type = "Species"'
+      when options[:genera_only]
+        'AND taxa.type = "Genus"'
+      when options[:subfamilies_or_tribes_only]
+        'AND (taxa.type = "Subfamily" OR taxa.type = "Tribe")'
+      else
+        ''
+      end
+    end
+
+    def self.picklist_matching_format matches
+      matches.map do |e|
+        result = { id: e.id.to_i, name: e.name, label: "<b>#{e.name_html}</b>", value: e.name }
+        result[:taxon_id] = e.taxon_id.to_i if e.taxon_id
+        result
+      end
     end
 end
