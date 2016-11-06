@@ -1,4 +1,4 @@
-class Synonym < ActiveRecord::Base
+class Synonym < ApplicationRecord
   include UndoTracker
   include Feed::Trackable
 
@@ -8,6 +8,8 @@ class Synonym < ActiveRecord::Base
   belongs_to :senior_synonym, class_name: 'Taxon' # in the process of fixing up, an incomplete Synonym can be created
 
   validates :junior_synonym, presence: true
+
+  scope :auto_generated, -> { where(auto_generated: true) }
 
   has_paper_trail meta: { change_id: :get_current_change_id }
   # NOTE no update hook; I *think* this is how synonyms are used

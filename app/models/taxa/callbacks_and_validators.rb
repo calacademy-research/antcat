@@ -26,10 +26,8 @@ module Taxa::CallbacksAndValidators
   def save_children
     return if is_a? Family
 
-    children.each do |child|
-      child.save
-      child.save_children
-    end
+    children.each &:save
+    children.each &:save_children
   end
 
   private
@@ -65,21 +63,10 @@ module Taxa::CallbacksAndValidators
     def remove_auto_generated
       self.auto_generated = false
 
-      name = self.name
-      if name.auto_generated
-        name.auto_generated = false
-        name.save
-      end
+      name.make_not_auto_generated!
 
-      junior_synonyms_objects.where(auto_generated: true).each do |synonym|
-        synonym.auto_generated = false
-        synonym.save
-      end
-
-      senior_synonyms_objects.where(auto_generated: true).each do |synonym|
-        synonym.auto_generated = false
-        synonym.save
-      end
+      junior_synonyms_objects.auto_generated.each &:make_not_auto_generated!
+      senior_synonyms_objects.auto_generated.each &:make_not_auto_generated!
     end
 
     def build_default_taxon_state

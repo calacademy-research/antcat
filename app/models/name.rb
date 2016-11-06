@@ -1,4 +1,4 @@
-class Name < ActiveRecord::Base
+class Name < ApplicationRecord
   include UndoTracker
   include Formatters::RefactorFormatter
 
