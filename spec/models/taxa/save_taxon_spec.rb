@@ -154,8 +154,8 @@ describe Taxa::SaveTaxon do
         it "creates a Change pointing to the version of Taxon" do
           taxon = build_new_taxon_and_set_parent :species, create_genus
           with_versioning { taxon.save_from_form genus_params }
-          change = Change.first
-          expect(change.user_changed_taxon_id).to eq taxon.last_version.item_id
+
+          expect(Change.first.user_changed_taxon_id).to eq taxon.last_version.item_id
         end
       end
 
@@ -163,6 +163,8 @@ describe Taxa::SaveTaxon do
         let(:genus) { create_genus }
 
         it "creates a Change for an edit" do
+          expect(Change.count).to equal 0
+
           with_versioning { genus.save_from_form genus_params }
 
           expect(Change.count).to equal 1
@@ -170,7 +172,6 @@ describe Taxa::SaveTaxon do
         end
 
         it "changes the review state" do
-          # Pretend it's old and confirm.
           genus.taxon_state.update_columns review_state: :old
           genus.reload
           expect(genus).to be_old
@@ -179,6 +180,68 @@ describe Taxa::SaveTaxon do
 
           expect(genus).not_to be_old
         end
+      end
+    end
+  end
+
+  # Will be mainly tested in `callbacks_and_validations_spec.rb` once refactored.
+  describe "stuff from Taxa::CallbacksAndValidators" do
+    describe "Taxon#save_children" do
+      let!(:species) { create :species }
+      let!(:genus) { Taxon.find species.genus.id }
+      let!(:tribe) { Taxon.find genus.tribe.id }
+      let!(:subfamily) { Taxon.find species.subfamily.id }
+
+      context "taxon is the `save_initiator`" do
+        it "saves the children" do
+          # Save these:
+          expect_any_instance_of(Genus).to receive(:save!).and_call_original
+          # SOON: expect_any_instance_of(Genus).to receive(:save_children).and_call_original
+
+          expect_any_instance_of(Species).to receive(:save).and_call_original
+          # SOON: expect_any_instance_of(Species).to receive(:save_children).and_call_original
+
+          # Should not be saved:
+          [Family, Subfamily, Tribe].each do |klass|
+            # SOON: expect_any_instance_of(klass).to_not receive(:save_children).and_call_original
+            expect_any_instance_of(klass).to_not receive(:save).and_call_original
+          end
+
+          genus.save_from_form genus_params
+        end
+      end
+    end
+
+    describe "Taxon#remove_auto_generated" do
+      it "removes 'auto_generated' flags from things" do
+        genus = create_genus
+        another_genus = create_genus
+        synonym = Synonym.create! senior_synonym: genus, junior_synonym: another_genus
+
+        actors = [genus, genus.name, synonym]
+
+        mark_as_auto_generated actors
+
+        genus.save_from_form genus_params
+        actors.each &:reload
+
+        expect(genus).to_not be_auto_generated
+        expect(synonym).to_not be_auto_generated
+        expect(genus.name).to_not be_auto_generated
+      end
+    end
+
+    context "#set_taxon_state_to_waiting" do
+      let(:genus) { create_genus }
+
+      it "changes the review state" do
+        genus.taxon_state.update_columns review_state: :old
+        genus.reload
+        expect(genus).to be_old
+
+        with_versioning { genus.save_from_form genus_params }
+
+        expect(genus).not_to be_old
       end
     end
   end

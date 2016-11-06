@@ -27,16 +27,10 @@ class TaxaController < ApplicationController
       flash[:notice] += " <strong>#{link}</strong>".html_safe
     end
 
-    # Nil check to avoid showing 404 to the user and breaking the tests.
+    # Nil check to avoid showing 404 to the user and breaking the tests
+    # when we loose track of `@taxon`.
     # `change_parent.feature` fails without this, but it seems to work if the
     # steps are manually reproduced in the browser.
-    #
-    # The reason @taxon may be nil is has to do with saves made in TaxonMother
-    # without updating the local instance variable.
-    #
-    # This imitates the previous behavior we had when CatalogController#show was
-    # responsible for both the index and show actions, and nil ids were silently
-    # redirected to Formicidae (nil are not allowed by routes.rb any longer).
     if @taxon.id
       redirect_to catalog_path(@taxon)
     else
@@ -55,8 +49,7 @@ class TaxaController < ApplicationController
     @reset_epithet = reset_epithet
     save_taxon
 
-    # See #create for the raison d'etre of this nil check.
-    # Note: Tests pass without this snippets.
+    # Same issue as in `#create`, but tests pass without this check.
     flash[:notice] = "Taxon was successfully updated."
     if @taxon.id
       @taxon.create_activity :update
@@ -82,8 +75,8 @@ class TaxaController < ApplicationController
     end
   end
 
-  # "Light version" of #destroy (which is for superadmins only). This method
-  # allows editors to delete a taxon if there are no [non-taxt] references to it.
+  # "Light version" of `#destroy` (which is for superadmins only). A button to this
+  # method is shown when there are no non-taxt references to the current taxon.
   def destroy_unreferenced
     references = @taxon.references
     if references.empty?
