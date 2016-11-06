@@ -12,25 +12,11 @@ class Change < ActiveRecord::Base
 
   tracked
 
-  def get_most_recent_valid_taxon
+  def most_recent_valid_taxon
     return taxon if taxon
 
-    version = get_most_recent_valid_taxon_version
+    version = most_recent_valid_taxon_version
     version.reify
-  end
-
-  # Return the taxon associated with this change, or null if there isn't one.
-  def most_recent_valid_taxon_version
-    raise NotImplementedError
-  end
-
-  def user
-    # If this looks for a "User" object in a test, check that you're writing
-    # the id and not the user object in factorygirl.
-    raise NotImplementedError
-
-    user_id = get_user_versions(id).whodunnit
-    user_id ? User.find(user_id) : nil
   end
 
   # TODO probably move `changed_by` to a field in this model.
@@ -41,8 +27,7 @@ class Change < ActiveRecord::Base
 
   private
     def whodunnit_via_change_id
-      version = PaperTrail::Version.where(change_id: id)
-        .where.not(whodunnit: nil).first
+      version = versions.where.not(whodunnit: nil).first
       version.try :user
     end
 
@@ -55,13 +40,10 @@ class Change < ActiveRecord::Base
 
     # Deletes don't store any object info, so you can't show what it used to look like.
     # used to pull an example of the way it once was.
-    def get_most_recent_valid_taxon_version
+    def most_recent_valid_taxon_version
       # "Destroy" events don't have populated data fields.
-      versions.each do |version|
-        if version.item_type == 'Taxon' && !version.object.nil? && 'destroy' != version.event
-          return version
-        end
-      end
+      version = versions.where(item_type: "Taxon").where.not(object: nil, event: "destroy").first
+      return version if version
 
       # This change didn't happen to touch taxon. Go ahead and search for the most recent
       # version of this taxon that has object information
@@ -72,11 +54,5 @@ class Change < ActiveRecord::Base
         ORDER BY id DESC
       SQL
       version
-    end
-
-    def get_user_versions change_id
-      PaperTrail::Version.find_by_sql(<<-SQL.squish)
-        SELECT * FROM versions WHERE change_id  = '#{change_id}'
-      SQL
     end
 end
