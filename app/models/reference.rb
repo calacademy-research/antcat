@@ -20,11 +20,11 @@ class Reference < ActiveRecord::Base
   belongs_to :publisher
 
   has_many :reference_author_names, -> { order(:position) }
-  has_many :author_names,
-           -> { order('reference_author_names.position') },
+  has_many :author_names, -> { order('reference_author_names.position') },
            through: :reference_author_names,
            after_add: :refresh_author_names_caches,
            after_remove: :refresh_author_names_caches
+  has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id"
 
   validates :title, presence: true, if: Proc.new { |record| record.class.requires_title }
 
@@ -41,10 +41,6 @@ class Reference < ActiveRecord::Base
 
   def self.requires_title
     true
-  end
-
-  def nestees
-    Reference.where(nesting_reference_id: id)
   end
 
   def to_s
@@ -122,6 +118,7 @@ class Reference < ActiveRecord::Base
   end
 
   def self.approve_all
+    # TODO create scope.
     count = Reference.where.not(review_state: "reviewed").count
 
     Feed::Activity.without_tracking do
@@ -137,11 +134,9 @@ class Reference < ActiveRecord::Base
   # Only for .approve_all, which approves all unreviewed
   # references of any state (which Workflow doesn't allow).
   def approve
-    review_state = "reviewed"
+    self.review_state = "reviewed"
     save!
-    Feed::Activity.with_tracking do
-      create_activity :finish_reviewing
-    end
+    Feed::Activity.with_tracking { create_activity :finish_reviewing }
   end
 
   private
