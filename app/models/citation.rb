@@ -1,3 +1,5 @@
+# TODO. All method in this class: DRY and w.r.t. `ReferenceDecorator`.
+
 class Citation < ActiveRecord::Base
   include UndoTracker
 
@@ -18,6 +20,8 @@ class Citation < ActiveRecord::Base
     reference and "#{author_names_string}, #{year}"
   end
 
+  # TODO only caller of `ReferenceDecorator#format_authorship_html`.
+  # TODO HTML probably do not belong here.
   def authorship_html_string
     reference and reference.decorate.format_authorship_html
   end

@@ -41,7 +41,7 @@ module RefactorHelper
 
   def link_to_reference reference
     if $use_ant_web_formatter
-      reference.decorate.to_link expansion: false
+      reference.decorate.format_inline_citation_for_antweb
     else
       reference.decorate.to_link
     end

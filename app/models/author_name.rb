@@ -21,6 +21,7 @@ class AuthorName < ActiveRecord::Base
     name_parts[:first_and_initials]
   end
 
+  # TODO rename.
   def self.import data
     data.map do |name|
       all.where(name: name).find { |possible_name| possible_name.name == name } ||

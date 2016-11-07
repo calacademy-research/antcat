@@ -1,13 +1,17 @@
 # TODO something. Less methods. Method names.
+# TODO investigate using views.
 
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the `h` method
   delegate_all
 
+  # TODO yet another "FALNs" -- probably remove.
+  # TODO maybe use this one and deprecate the others.
   def key
     format_author_last_names
   end
 
+  # TODO all these could be inlined in a view.
   def created_at
     format_timestamp reference.created_at
   end
@@ -33,6 +37,8 @@ class ReferenceDecorator < ApplicationDecorator
     [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
   end
 
+  # TODO another "FALNs".
+  # TODO only called in `Citation#authorship_html_string`.
   def format_authorship_html
     helpers.content_tag(:span, title: format) do
       format_author_last_names
@@ -49,10 +55,16 @@ class ReferenceDecorator < ApplicationDecorator
     end
   end
 
+  # TODO remove.
   def format_ctrl_f
     format
   end
 
+  # A.k.a. "FORMAT IT AS TEXT" -- Cached version!
+  # Formats the reference as plaintext (with the exception of <i> tags).
+  #
+  # DB column: `references.formatted_cache`.
+  # TODO rename to mirror DB column: `formatted`.
   def format
     cached = reference.formatted_cache
     return cached.html_safe if cached
@@ -62,6 +74,10 @@ class ReferenceDecorator < ApplicationDecorator
     generated
   end
 
+  # A.k.a. "FORMAT IT AS TEXT" -- Generate-it version!
+  #
+  # TODO rename to `generate_formatted` (maybe "_cache").
+  # TODO make private.
   def format!
     string = format_author_names.dup
     string << ' ' unless string.empty?
@@ -72,6 +88,11 @@ class ReferenceDecorator < ApplicationDecorator
     string
   end
 
+  # A.k.a. "FORMATTED WITH HTML" -- Cached version!
+  # Formats the reference with HTML, CSS, etc.
+  #
+  # DB column: `references.inline_citation_cache`.
+  # TODO rename to mirror DB column: `inline_citation`.
   def format_inline_citation
     cached = reference.inline_citation_cache
     return cached.html_safe if cached
@@ -81,23 +102,43 @@ class ReferenceDecorator < ApplicationDecorator
     generated
   end
 
+  # A.k.a. "FORMATTED WITH HTML" -- Generate-it version!
+  #
+  # TODO rename to `generate_inline_citation` (maybe "_cache").
+  # TODO make private.
+  def format_inline_citation!
+    # This doesn't exists and we do not want it...
+    # Will be created under another name.
+  end
+
+  # Only used in `Taxt#decode_reference`. It's the options[:display] one.
+  # TODO yet another "FALNs" -- do something.
+  # TODO Rename to avoid confusing it with *everything*.
   def format_inline_citation_without_links
     format_author_last_names
   end
 
-  def format_inline_citation_without_expansion
+  # Only used for the AntWeb export. Never cached.
+  # TODO delegate to `to_link_without_expansion`.
+  # TODO Maybe rename, but keep "antweb".
+  def format_inline_citation_for_antweb
     to_link expansion: false
   end
 
   # TODO see LinkHelper#link.
+  # TODO maybe remove? "target: '_blank'" sucks and the CSS class is not used.
   def goto_reference_link target: '_blank'
     helpers.link reference.id, helpers.reference_path(reference),
-      class: :goto_reference_link, target: target
+      class: "goto_reference_link", target: target
   end
 
+  # TODO remove in favor of duplication in the two "to_link_with/without_expansion".
+  # TODO change callers to `to_link_with_expansion` (most) or
+  #      `to_link_without_expansion` (only a few).
   def to_link expansion: true
-    reference_key_string = format_author_last_names
+    reference_key_string = format_author_last_names # Another "FALNs".
     reference_string = format
+
     if expansion
       to_link_with_expansion reference_key_string, reference_string
     else
@@ -105,11 +146,44 @@ class ReferenceDecorator < ApplicationDecorator
     end
   end
 
+  # TODO see LinkHelper#link.
+  # TODO probably rename.
+  # TODO Keep but duplicate code from `to_link`.
+  def to_link_with_expansion reference_key_string, reference_string
+    helpers.content_tag :span, class: "reference_key_and_expansion" do
+      content = helpers.link reference_key_string, '#',
+                     title: make_to_link_title(reference_string),
+                     class: "reference_key"
+
+      content << helpers.content_tag(:span, class: "reference_key_expansion") do
+        inner_content = []
+        inner_content << reference_key_expansion_text(reference_string, reference_key_string)
+        inner_content << format_reference_document_link
+        inner_content << goto_reference_link
+        inner_content.reject(&:blank?).join(' ').html_safe
+      end
+    end
+  end
+
+  # TODO see LinkHelper#link.
+  # TODO probably rename.
+  # TODO Keep but duplicate code from `to_link`.
+  def to_link_without_expansion reference_key_string, reference_string
+    content = []
+    content << helpers.link(reference_key_string,
+                    "http://antcat.org/references/#{reference.id}",
+                    title: make_to_link_title(reference_string),
+                    target: '_blank')
+    content << format_reference_document_link
+    content.reject(&:blank?).join(' ').html_safe
+  end
+
   private
     def format_timestamp timestamp
       timestamp.strftime '%Y-%m-%d'
     end
 
+    # TODO try to move somewhere more general, even if it's only used here.
     def make_html_safe string
       string = string.dup
       quote_code = 'xdjvs4'
@@ -125,6 +199,7 @@ class ReferenceDecorator < ApplicationDecorator
       string.html_safe
     end
 
+    # TODO try to move somewhere more general, even if it's only used here.
     def format_italics string
       return unless string
       raise "Can't call format_italics on an unsafe string" unless string.html_safe?
@@ -133,6 +208,7 @@ class ReferenceDecorator < ApplicationDecorator
       string.html_safe
     end
 
+    # TODO rename?
     def format_date input # TODO? store denormalized value in the database
       return input if input.size < 4
 
@@ -170,47 +246,22 @@ class ReferenceDecorator < ApplicationDecorator
       "http://dx.doi.org/" + doi
     end
 
-    # TODO see LinkHelper#link.
-    def to_link_with_expansion reference_key_string, reference_string
-      helpers.content_tag :span, class: :reference_key_and_expansion do
-        content = helpers.link reference_key_string, '#',
-                       title: make_to_link_title(reference_string),
-                       class: :reference_key
-
-        content << helpers.content_tag(:span, class: :reference_key_expansion) do
-          inner_content = []
-          inner_content << reference_key_expansion_text(reference_string, reference_key_string)
-          inner_content << format_reference_document_link
-          inner_content << goto_reference_link
-          inner_content.reject(&:blank?).join(' ').html_safe
-        end
-      end
-    end
-
-    # TODO see LinkHelper#link.
-    def to_link_without_expansion reference_key_string, reference_string
-      content = []
-      content << helpers.link(reference_key_string,
-                      "http://antcat.org/references/#{reference.id}",
-                      title: make_to_link_title(reference_string),
-                      target: '_blank')
-      content << format_reference_document_link
-      content.reject(&:blank?).join(' ').html_safe
-    end
-
     def make_to_link_title string
       helpers.unitalicize string
     end
 
+    # TODO rename so it's more clear that it's used in `to_link_with_expansion`.
     def reference_key_expansion_text reference_string, reference_key_string
       helpers.content_tag :span, reference_string,
-        class: :reference_key_expansion_text,
+        class: "reference_key_expansion_text",
         title: reference_key_string
     end
 
+    # Note: `references.author_names_string_cache` may also be useful.
+    # The original "FALNs".
+    # TODO this also includes the citation year, and initials, not just last names.
     def format_author_last_names
       return '' unless reference.id
-
       names = reference.author_names.map &:last_name
       case names.size
       when 0
@@ -225,14 +276,17 @@ class ReferenceDecorator < ApplicationDecorator
       end << ', ' << reference.short_citation_year
     end
 
+    # TODO try to remove in favor of direct attribute access.
     def format_author_names
       make_html_safe reference.author_names_string
     end
 
+    # TODO try to remove in favor of direct attribute access.
     def format_year
       make_html_safe reference.citation_year if reference.citation_year?
     end
 
+    # TODO try to remove in favor of direct attribute access.
     def format_title
       format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
     end

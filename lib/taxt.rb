@@ -147,7 +147,7 @@ module Taxt
         # This means `options[:expansion] == false`?
         # We never want to expand references when exporting to AntWeb.
         reference = Reference.find(reference_id_match) rescue whole_match
-        reference.decorate.format_inline_citation_without_expansion rescue whole_match
+        reference.decorate.format_inline_citation_for_antweb rescue whole_match
       else
         # This means options is empty? Which means `options[:expansion] == true`?
         reference = Reference.find(reference_id_match) rescue whole_match

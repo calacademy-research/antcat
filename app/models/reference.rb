@@ -50,6 +50,7 @@ class Reference < ApplicationRecord
     "#{author_names_string} #{citation_year}. #{id}."
   end
 
+  # TODO make it more obvious which cache (also `set_cache`).
   def invalidate_cache
     ReferenceFormatterCache.invalidate self
   end
@@ -90,6 +91,8 @@ class Reference < ApplicationRecord
   end
 
   # update (including observed updates)
+  # TODO does this duplicate `set_author_names_caches`?
+  # There's also ` author_names_string=` which sets `author_names_string_cache`.
   def refresh_author_names_caches(*)
     string, principal_author_last_name = make_author_names_caches
     update_attribute :author_names_string_cache, string
@@ -206,6 +209,7 @@ class Reference < ApplicationRecord
       end
     end
 
+    # TODO does this duplicate `refresh_author_names_caches`?
     def set_author_names_caches(*)
       self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
     end
