@@ -513,7 +513,7 @@ describe ReferenceDecorator do
 
     describe "A regression where a string should've been duped" do
       it "really should have been duped" do
-        expect(reference.decorate.format_ctrl_f).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
+        expect(reference.decorate.format).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
       end
     end
 
@@ -530,7 +530,7 @@ describe ReferenceDecorator do
 
     it "returns an html_safe string from the cache" do
       ReferenceFormatterCache.populate reference
-      expect(reference.decorate.format_ctrl_f).to be_html_safe
+      expect(reference.decorate.format).to be_html_safe
     end
   end
 end

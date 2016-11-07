@@ -55,11 +55,6 @@ class ReferenceDecorator < ApplicationDecorator
     end
   end
 
-  # TODO remove.
-  def format_ctrl_f
-    format
-  end
-
   # A.k.a. "FORMAT IT AS TEXT" -- Cached version!
   # Formats the reference as plaintext (with the exception of <i> tags).
   #
@@ -118,11 +113,10 @@ class ReferenceDecorator < ApplicationDecorator
     format_author_last_names
   end
 
-  # Only used for the AntWeb export. Never cached.
-  # TODO delegate to `to_link_without_expansion`.
+  # Note: Only used for the AntWeb export. Never cached.
   # TODO Maybe rename, but keep "antweb".
   def format_inline_citation_for_antweb
-    to_link expansion: false
+    to_link_without_expansion
   end
 
   # TODO see LinkHelper#link.
@@ -132,24 +126,18 @@ class ReferenceDecorator < ApplicationDecorator
       class: "goto_reference_link", target: target
   end
 
-  # TODO remove in favor of duplication in the two "to_link_with/without_expansion".
-  # TODO change callers to `to_link_with_expansion` (most) or
-  #      `to_link_without_expansion` (only a few).
-  def to_link expansion: true
-    reference_key_string = format_author_last_names # Another "FALNs".
-    reference_string = format
-
-    if expansion
-      to_link_with_expansion reference_key_string, reference_string
-    else
-      to_link_without_expansion reference_key_string, reference_string
-    end
+  # TODO change callers to `to_link_with_expansion`
+  def to_link
+    to_link_with_expansion
   end
 
   # TODO see LinkHelper#link.
   # TODO probably rename.
-  # TODO Keep but duplicate code from `to_link`.
-  def to_link_with_expansion reference_key_string, reference_string
+  # TODO Keep.
+  def to_link_with_expansion
+    reference_key_string = format_author_last_names # Another "FALNs".
+    reference_string = format
+
     helpers.content_tag :span, class: "reference_key_and_expansion" do
       content = helpers.link reference_key_string, '#',
                      title: make_to_link_title(reference_string),
@@ -167,8 +155,11 @@ class ReferenceDecorator < ApplicationDecorator
 
   # TODO see LinkHelper#link.
   # TODO probably rename.
-  # TODO Keep but duplicate code from `to_link`.
-  def to_link_without_expansion reference_key_string, reference_string
+  # TODO Keep.
+  def to_link_without_expansion
+    reference_key_string ||= format_author_last_names # Another "FALNs".
+    reference_string ||= format
+
     content = []
     content << helpers.link(reference_key_string,
                     "http://antcat.org/references/#{reference.id}",
