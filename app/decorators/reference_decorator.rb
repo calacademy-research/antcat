@@ -110,13 +110,10 @@ class ReferenceDecorator < ApplicationDecorator
   # TODO probably rename.
   # TODO Keep.
   def to_link_without_expansion
-    reference_keey_string = keey
-    reference_string = formatted
-
     content = []
-    content << helpers.link(reference_keey_string,
+    content << helpers.link(keey,
                     "http://antcat.org/references/#{reference.id}",
-                    title: make_to_link_title(reference_string),
+                    title: make_to_link_title(formatted),
                     target: '_blank')
     content << format_reference_document_link
     content.reject(&:blank?).join(' ').html_safe
@@ -137,17 +134,14 @@ class ReferenceDecorator < ApplicationDecorator
     # TODO see LinkHelper#link.
     # A.k.a. "FORMATTED WITH HTML" -- Generate-it version!
     def generate_inline_citation
-      reference_keey_string = format_author_last_names # Another "FALNs".
-      reference_string = formatted
-
       helpers.content_tag :span, class: "reference_keey_and_expansion" do
-        content = helpers.link reference_keey_string, '#',
-                       title: make_to_link_title(reference_string),
+        content = helpers.link keey, '#',
+                       title: make_to_link_title(formatted),
                        class: "reference_keey"
 
         content << helpers.content_tag(:span, class: "reference_keey_expansion") do
           inner_content = []
-          inner_content << inline_citation_reference_keey_expansion_text(reference_string, reference_keey_string)
+          inner_content << inline_citation_reference_keey_expansion_text
           inner_content << format_reference_document_link
           inner_content << goto_reference_link
           inner_content.reject(&:blank?).join(' ').html_safe
@@ -155,10 +149,10 @@ class ReferenceDecorator < ApplicationDecorator
       end
     end
 
-    def inline_citation_reference_keey_expansion_text reference_string, reference_keey_string
-      helpers.content_tag :span, reference_string,
+    def inline_citation_reference_keey_expansion_text
+      helpers.content_tag :span, formatted,
         class: "reference_keey_expansion_text",
-        title: reference_keey_string
+        title: keey
     end
 
     def format_timestamp timestamp
