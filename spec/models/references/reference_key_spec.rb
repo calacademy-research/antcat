@@ -100,7 +100,7 @@ describe "ReferenceDecorator" do
       context "PDF is not available to the user" do
         it "doesn't include the PDF link" do
           allow(@reference).to receive(:downloadable?).and_return false
-          expect(@reference.decorate.to_link_without_expansion).to eq(
+          expect(@reference.decorate.antweb_version_of_inline_citation).to eq(
             %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
             %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
             %{ <a class="document_link" target="_blank" } +
@@ -112,7 +112,7 @@ describe "ReferenceDecorator" do
       context "PDF is available to the user" do
         it "includes the PDF link" do
           allow(@reference).to receive(:downloadable?).and_return true
-          expect(@reference.decorate.to_link_without_expansion).to eq(
+          expect(@reference.decorate.antweb_version_of_inline_citation).to eq(
             %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
             %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
             %{ <a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>} +
@@ -129,7 +129,7 @@ describe "ReferenceDecorator" do
       end
 
       it "escapes them" do
-        expect(reference.decorate.to_link_without_expansion).to eq(
+        expect(reference.decorate.antweb_version_of_inline_citation).to eq(
           %{<a target="_blank" title="Latreille, P. A. 1809. "Atta". New York." href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>}
         )
       end

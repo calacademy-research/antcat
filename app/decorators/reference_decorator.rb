@@ -94,22 +94,8 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   # Note: Only used for the AntWeb export. Never cached.
-  # TODO Maybe rename, but keep "antweb".
-  def format_inline_citation_for_antweb
-    to_link_without_expansion
-  end
-
   # TODO see LinkHelper#link.
-  # TODO maybe remove? "target: '_blank'" sucks and the CSS class is not used.
-  def goto_reference_link target: '_blank'
-    helpers.link reference.id, helpers.reference_path(reference),
-      class: "goto_reference_link", target: target
-  end
-
-  # TODO see LinkHelper#link.
-  # TODO probably rename.
-  # TODO Keep.
-  def to_link_without_expansion
+  def antweb_version_of_inline_citation
     content = []
     content << helpers.link(keey,
                     "http://antcat.org/references/#{reference.id}",
@@ -117,6 +103,13 @@ class ReferenceDecorator < ApplicationDecorator
                     target: '_blank')
     content << format_reference_document_link
     content.reject(&:blank?).join(' ').html_safe
+  end
+
+  # TODO see LinkHelper#link.
+  # TODO maybe remove? "target: '_blank'" sucks and the CSS class is not used.
+  def goto_reference_link target: '_blank'
+    helpers.link reference.id, helpers.reference_path(reference),
+      class: "goto_reference_link", target: target
   end
 
   private
