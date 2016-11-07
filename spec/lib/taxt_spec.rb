@@ -91,26 +91,6 @@ describe Taxt do
 
     describe "Reference" do
       describe "Linked" do
-        # Uncommented because randomly fails/succeeds.
-        #it "can format a ref", pending: true do
-        #  pending "broke for some mysterious reason"
-        #  # `expect(Reference).to receive(:find).with(reference.id.to_s)`
-        #  # --> expected: ("14") got: (14)
-        #  #
-        #  # Easy peasy, let's just remove that `.to_s`:
-        #  # `expect(Reference).to receive(:find).with(reference.id)`
-        #  # --> expected: (14) got: ("14")
-        #  #
-        #  # Hmmm...
-
-        #  reference = create :article_reference
-        #  decorated = reference.decorate
-        #  expect(Reference).to receive(:find).with(reference.id.to_s).and_return reference
-        #  expect(reference).to receive(:decorate).and_return decorated
-        #  expect(decorated).to receive(:to_link).and_return 'foo'
-        #  expect(Taxt.to_string("{ref #{reference.id}}")).to eq 'foo'
-        #end
-
         it "doesn't freak if the ref is malformed" do
           expect(Taxt.to_string("{ref sdf}")).to eq '{ref sdf}'
         end

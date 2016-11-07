@@ -3,9 +3,9 @@ require 'spec_helper'
 describe "MissingReferenceDecorator formerly MissingReferenceKey" do
   let(:reference) { create :missing_reference, citation: "citation" }
 
-  describe "#to_link" do
+  describe "#to_link_with_expansion" do
     it "simply outputs its citation" do
-      expect(reference.decorate.to_link).to eq 'citation'
+      expect(reference.decorate.to_link_with_expansion).to eq 'citation'
     end
   end
 

@@ -79,7 +79,7 @@ class ReferenceDecorator < ApplicationDecorator
     cached = reference.inline_citation_cache
     return cached.html_safe if cached
 
-    generated = to_link
+    generated = to_link_with_expansion
     reference.set_cache generated, :inline_citation_cache
     generated
   end
@@ -111,11 +111,6 @@ class ReferenceDecorator < ApplicationDecorator
   def goto_reference_link target: '_blank'
     helpers.link reference.id, helpers.reference_path(reference),
       class: "goto_reference_link", target: target
-  end
-
-  # TODO change callers to `to_link_with_expansion`
-  def to_link
-    to_link_with_expansion
   end
 
   # TODO see LinkHelper#link.

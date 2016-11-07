@@ -442,7 +442,7 @@ describe ReferenceDecorator do
         key = double
         reference = create :article_reference
         decorated = reference.decorate
-        expect(decorated).to receive(:to_link).and_return key
+        expect(decorated).to receive(:to_link_with_expansion).and_return key
 
         decorated.format_inline_citation
       end

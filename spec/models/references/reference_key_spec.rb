@@ -53,7 +53,7 @@ describe "ReferenceDecorator formerly ReferenceKey" do
     end
   end
 
-  describe "#to_link" do
+  describe "#to_link_with_expansion" do
     let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
     before do
       science = create :journal, name: 'Science'
@@ -69,7 +69,7 @@ describe "ReferenceDecorator formerly ReferenceKey" do
 
     it "creates a link to the reference" do
       allow(@reference).to receive(:downloadable?).and_return true
-      expect(@reference.decorate.to_link).to eq(
+      expect(@reference.decorate.to_link_with_expansion).to eq(
         %{<span class="reference_key_and_expansion">} +
           %{<a class="reference_key" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
           %{<span class="reference_key_expansion">} +
@@ -86,7 +86,7 @@ describe "ReferenceDecorator formerly ReferenceKey" do
 
     it "creates a link to the reference without the PDF link if the user isn't logged in" do
       allow(@reference).to receive(:downloadable?).and_return false
-      expect(@reference.decorate.to_link).to eq(
+      expect(@reference.decorate.to_link_with_expansion).to eq(
         %{<span class="reference_key_and_expansion">} +
           %{<a class="reference_key" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
           %{<span class="reference_key_expansion">} +
