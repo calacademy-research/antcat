@@ -38,7 +38,7 @@ describe ReferenceFormatterCache do
         expect(reference.inline_citation_cache).to be_nil
 
         decorated = reference.decorate
-        formatted_cache_value = decorated.format!
+        formatted_cache_value = decorated.send :generate_formatted
         inline_citation_cache_value = decorated.to_link
 
         expect(reference.formatted_cache).to eq formatted_cache_value

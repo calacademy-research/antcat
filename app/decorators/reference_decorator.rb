@@ -64,24 +64,11 @@ class ReferenceDecorator < ApplicationDecorator
     cached = reference.formatted_cache
     return cached.html_safe if cached
 
-    generated = format!
+    generated = generate_formatted
     reference.set_cache generated, :formatted_cache
     generated
   end
 
-  # A.k.a. "FORMAT IT AS TEXT" -- Generate-it version!
-  #
-  # TODO rename to `generate_formatted` (maybe "_cache").
-  # TODO make private.
-  def format!
-    string = format_author_names.dup
-    string << ' ' unless string.empty?
-    string << format_year << '. '
-    string << format_title << ' '
-    string << format_citation
-    string << " [#{format_date(reference.date)}]" if reference.date?
-    string
-  end
 
   # A.k.a. "FORMATTED WITH HTML" -- Cached version!
   # Formats the reference with HTML, CSS, etc.
@@ -170,6 +157,17 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   private
+    # A.k.a. "FORMAT IT AS TEXT" -- Generate-it version!
+    def generate_formatted
+      string = format_author_names.dup
+      string << ' ' unless string.empty?
+      string << format_year << '. '
+      string << format_title << ' '
+      string << format_citation
+      string << " [#{format_date(reference.date)}]" if reference.date?
+      string
+    end
+
     def format_timestamp timestamp
       timestamp.strftime '%Y-%m-%d'
     end
