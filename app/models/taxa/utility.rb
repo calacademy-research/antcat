@@ -5,14 +5,7 @@ class Taxa::Utility
   # Or:  move to `SpeciesGroupTaxon`?
   # So:  taxon.inherit_attributes_for_new_combination(@previous_combination, parent)
   def self.inherit_attributes_for_new_combination new_comb, old_comb, new_comb_parent
-    new_comb.name =
-      if new_comb_parent.is_a? Species
-        Name.parse [ new_comb_parent.name.genus_epithet,
-                     new_comb_parent.name.species_epithet,
-                     old_comb.name.epithet ].join(' ')
-      else
-        Name.parse [ new_comb_parent.name.genus_epithet, old_comb.name.species_epithet ].join(' ')
-      end
+    new_comb.name = name_for_new_comb old_comb, new_comb_parent
 
     new_comb.protonym = old_comb.protonym
     new_comb.verbatim_type_locality = old_comb.verbatim_type_locality
@@ -20,6 +13,16 @@ class Taxa::Utility
     new_comb.type_specimen_repository = old_comb.type_specimen_repository
     new_comb.type_specimen_code = old_comb.type_specimen_code
     new_comb.type_specimen_url = old_comb.type_specimen_url
+  end
+
+  def self.name_for_new_comb old_comb, new_comb_parent
+    if new_comb_parent.is_a? Species
+      Name.parse [ new_comb_parent.name.genus_epithet,
+                   new_comb_parent.name.species_epithet,
+                   old_comb.name.epithet ].join(' ')
+    else
+      Name.parse [ new_comb_parent.name.genus_epithet, old_comb.name.species_epithet ].join(' ')
+    end
   end
 
   def self.attributes_for_new_usage new_comb, old_comb

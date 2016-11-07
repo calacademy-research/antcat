@@ -247,18 +247,6 @@ describe Taxa::SaveTaxon do
   end
 end
 
-# Mimics `TaxaController#build_new_taxon` to avoid interference from the factories.
-def build_new_taxon_and_set_parent rank, parent
-  taxon = "#{rank}".titlecase.constantize.new
-  taxon.build_name
-  taxon.build_type_name
-  taxon.build_protonym
-  taxon.protonym.build_name
-  taxon.protonym.build_authorship
-  taxon.parent = parent
-  taxon
-end
-
 def taxon_params
   reference = create :article_reference
   HashWithIndifferentAccess.new(

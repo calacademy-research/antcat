@@ -259,6 +259,23 @@ def create_taxon_version_and_change review_state, user = @user, approver = nil, 
   taxon
 end
 
+# Mimics `TaxaController#build_new_taxon` to avoid interference from the factories.
+def build_new_taxon rank
+  taxon = "#{rank}".titlecase.constantize.new
+  taxon.build_name
+  taxon.build_type_name
+  taxon.build_protonym
+  taxon.protonym.build_name
+  taxon.protonym.build_authorship
+  taxon
+end
+
+def build_new_taxon_and_set_parent rank, parent
+  taxon = build_new_taxon rank
+  taxon.parent = parent
+  taxon
+end
+
 # New set of light factories because FactoryGirl does too much and some factories are bugged.
 # TODO refactor and merge.
 def build_minimal_family
