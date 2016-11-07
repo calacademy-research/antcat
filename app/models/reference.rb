@@ -206,13 +206,17 @@ class Reference < ApplicationRecord
     end
 
     def set_year_from_citation_year
-      return if citation_year.blank?
+      self.year = year_from_citation_year citation_year
+    end
 
-      self.year = if match = citation_year.match(/\["(\d{4})"\]/)
-                    match[1]
-                  else
-                    citation_year.to_i
-                  end
+    def year_from_citation_year citation_year
+      return if citation_year.blank? # Sets `self.year` to nil.
+
+      if match = citation_year.match(/\["(\d{4})"\]/)
+        match[1]
+      else
+        citation_year.to_i
+      end
     end
 
     def set_author_names_caches(*)
