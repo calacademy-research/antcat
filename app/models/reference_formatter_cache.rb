@@ -16,8 +16,7 @@ class ReferenceFormatterCache
     reference.nestees.each &:invalidate_cache
   end
 
-  # TODO remove default field.
-  def set reference, value, field = :formatted_cache
+  def set reference, value, field
     return value if reference.send(field) == value
     reference.update_column field, value
     value

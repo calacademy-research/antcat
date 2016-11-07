@@ -54,12 +54,8 @@ class Reference < ApplicationRecord
     ReferenceFormatterCache.invalidate self
   end
 
-  def set_cache value, field = nil
-    if field
-      ReferenceFormatterCache.set self, value, field
-    else
-      ReferenceFormatterCache.set self, value
-    end
+  def set_cache value, field
+    ReferenceFormatterCache.set self, value, field
   end
 
   def authors reload = false
