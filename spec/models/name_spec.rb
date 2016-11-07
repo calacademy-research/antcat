@@ -125,9 +125,7 @@ describe Name do
 
       # Create an instance for each type of taxt.
       Taxt::TAXT_FIELDS.each do |klass, fields|
-        fields.each do |field|
-          create klass, field => "{nam #{name.id}}"
-        end
+        fields.each { |field| create klass, field => "{nam #{name.id}}" }
       end
 
       # Count the total referencing items.

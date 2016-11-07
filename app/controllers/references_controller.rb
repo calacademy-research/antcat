@@ -22,9 +22,7 @@ class ReferencesController < ApplicationController
 
     if params[:nesting_reference_id]
       build_nested_reference params[:nesting_reference_id], params[:citation_year]
-    end
-
-    if params[:reference_to_copy]
+    elsif params[:reference_to_copy]
       reference_to_copy = Reference.find params[:reference_to_copy]
       @reference = reference_to_copy.new_from_copy
     end

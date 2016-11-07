@@ -28,7 +28,7 @@ class Reference < ApplicationRecord
            after_remove: :refresh_author_names_caches
   has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id"
 
-  validates :title, presence: true, if: Proc.new { |record| record.class.requires_title }
+  validates :title, presence: true, if: -> { self.class.requires_title }
 
   before_validation :set_year_from_citation_year, :strip_text_fields
   before_save { CleanNewlines.clean_newlines self, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
@@ -36,7 +36,7 @@ class Reference < ApplicationRecord
   before_destroy :check_not_referenced, :check_not_nested
 
   scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
-  scope :with_principal_author_last_name, lambda { |last_name| where(principal_author_last_name_cache: last_name) }
+  scope :with_principal_author_last_name, ->(last_name) { where(principal_author_last_name_cache: last_name) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
   has_paper_trail meta: { change_id: :get_current_change_id }
@@ -131,23 +131,9 @@ class Reference < ApplicationRecord
     true
   end
 
-  def self.citation_year_to_year citation_year
-    return if citation_year.blank?
-
-    if match = citation_year.match(/\["(\d{4})"\]/)
-      match[1]
-    else
-      citation_year.to_i
-    end
-  end
-
   def self.approve_all
     count = Reference.unreviewed.count
-
-    Feed::Activity.without_tracking do
-      Reference.unreviewed.find_each &:approve
-    end
-
+    Feed::Activity.without_tracking { Reference.unreviewed.find_each &:approve }
     Feed::Activity.create_activity :approve_all_references, count: count
   end
 
@@ -180,7 +166,7 @@ class Reference < ApplicationRecord
                      :editor_notes,
                      :taxonomic_notes ]
 
-    # The two virtual fields.
+    # The two virtual attributes.
     if is_a? BookReference
       new_reference.publisher_string = "#{publisher.place.name}: #{publisher.name}"
     end
@@ -192,19 +178,19 @@ class Reference < ApplicationRecord
 
   private
     def check_not_referenced
-      return true unless has_any_references?
+      return unless has_any_references?
 
       # TODO list which items
       errors.add :base, "This reference can't be deleted, as there are other references to it."
-      return false
+      false
     end
 
     def check_not_nested
-      nesting_reference = NestedReference.find_by(nesting_reference_id: id)
-      if nesting_reference
-        errors.add :base, "This reference can't be deleted because it's nested in #{nesting_reference}"
+      if nestees.exists?
+        errors.add :base, "This reference can't be deleted because it's nested in #{nestees.first.id}"
+        return false
       end
-      nesting_reference.nil?
+      true
     end
 
     # TODO duplicates `CleanNewlines`?
@@ -220,7 +206,13 @@ class Reference < ApplicationRecord
     end
 
     def set_year_from_citation_year
-      self.year = self.class.citation_year_to_year citation_year
+      return if citation_year.blank?
+
+      self.year = if match = citation_year.match(/\["(\d{4})"\]/)
+                    match[1]
+                  else
+                    citation_year.to_i
+                  end
     end
 
     def set_author_names_caches(*)
@@ -232,7 +224,8 @@ class Reference < ApplicationRecord
       string << author_names_suffix if author_names_suffix.present?
       first_author_name = author_names.first
       last_name = first_author_name && first_author_name.last_name
-      return string, last_name
+
+      [string, last_name]
     end
 
     # Expensive method
@@ -241,28 +234,33 @@ class Reference < ApplicationRecord
 
       references = []
       Taxt::TAXT_FIELDS.each do |klass, fields|
-        klass.send(:all).each do |record|
+        klass.send(:all).find_each do |record|
           fields.each do |field|
             next unless record[field]
             if record[field] =~ /{ref #{id}}/
-              references << { table: klass.table_name, id: record[:id], field: field }
+              references << table_ref(klass.table_name, record.id, field)
               return true if return_early
             end
           end
         end
       end
 
-      Citation.where(reference_id: id).all.each do |record|
-        references << { table: Citation.table_name, id: record[:id], field: :reference_id }
+      Citation.where(reference: self).find_each do |record|
+        references << table_ref(Citation.table_name, record.id, :reference_id)
         return true if return_early
       end
 
-      NestedReference.where(nesting_reference_id: id).all.each do |record|
-        references << { table: 'references', id: record[:id], field: :nesting_reference_id }
+      nestees.find_each do |record|
+        references << table_ref('references', record.id, :nesting_reference_id)
         return true if return_early
       end
       return false if return_early
       references
+    end
+
+    # Note: different order as compared to other `table_ref`s.
+    def table_ref table, id, field
+      { table: table, id: id, field: field }
     end
 
     def has_any_references?

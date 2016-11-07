@@ -10,9 +10,7 @@ class TaxonHistoryItem < ActiveRecord::Base
 
   acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: :get_current_change_id }
-  tracked on: :all, parameters: ->(item) do
-    { taxon_id: item.taxon_id }
-  end
+  tracked on: :all, parameters: ->(item) do { taxon_id: item.taxon_id } end
 
   def update_taxt_from_editable editable_taxt
     update_attributes taxt: Taxt.from_editable(editable_taxt)

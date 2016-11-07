@@ -19,12 +19,13 @@ class DuplicatesController < TaxaController
     # end
     current_taxon = Taxon.find(params[:current_taxon_id])
     new_parent = Taxon.find_by(name_id: params[:new_parent_name_id])
-    if current_taxon.is_a? Subspecies
-      # searching for genus / subspecies for conflict.
-      options = new_parent.parent.find_subspecies_in_genus(current_taxon.name.epithet)
-    else
-      options = new_parent.find_epithet_in_genus(current_taxon.name.epithet)
-    end
+
+    # Searching for genus / subspecies for conflict.
+    options = if current_taxon.is_a? Subspecies
+                new_parent.parent.find_subspecies_in_genus(current_taxon.name.epithet)
+              else
+                new_parent.find_epithet_in_genus(current_taxon.name.epithet)
+              end
     render nothing: true, status: :no_content and return unless options
 
     # This code to pass these some other way, and remove these two columns from the taxa db entry

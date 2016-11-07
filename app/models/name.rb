@@ -20,103 +20,87 @@ class Name < ApplicationRecord
     update_attributes! name: name_string, name_html: italicize(name_string)
   end
 
+  # TODO maybe raise?
   def change_parent _; end
 
   def quadrinomial?
     name.split(' ').size == 4
   end
 
-  # Feel free to refactor this. It was written to replace code that 1) made some initial
-  # parsing using Citrus 2) dynamically called `name_class.parse_words(words)` depending on
-  # what Citrus returned 3) which initiated [depending on subclass] a long call chain involving
-  # importer methods that we really had to remove.
-  # Added in ac9a8a; refer to the change log for more commit ids.
-  #
-  # Irregular flag allows parsing of names that don't conform to naming standards so we can support bad spellings.
+  # TODO improve.
+  # Irregular flag allows parsing of names that don't conform to naming
+  # standards so we can support bad spellings.
   def self.parse string, irregular = false
     words = string.split " "
 
     name_type = case words.size
-                when 1 then :genus_or_tribe_subfamily
-                when 2 then :species
-                when 3 then :subspecies
+                when 1    then :genus_or_tribe_subfamily
+                when 2    then :species
+                when 3    then :subspecies
                 when 4..5 then :subspecies_with_two_epithets
                 end
 
     if name_type == :genus_or_tribe_subfamily
       name_type = case string
                   when /inae$/ then :subfamily
-                  when /idae$/ then :subfamily # actually a family name, but let's rewrite the old
-                                               # method before changing the behavior; edge case anyway
-                  when /ini$/ then :tribe
-                  else :genus end
+                  when /idae$/ then :subfamily # actually a family suffix
+                  when /ini$/  then :tribe
+                  else               :genus
+                  end
     end
 
     case name_type
     when :subspecies
-      return SubspeciesName.create!(
-        name: string,
-        name_html: i_tagify(string),
-        epithet: words.third,
-        epithet_html: i_tagify(words.third),
-        epithets: [words.second, words.third].join(' ')
-      )
+      return SubspeciesName.create! name: string,
+                                    name_html: i_tagify(string),
+                                    epithet: words.third,
+                                    epithet_html: i_tagify(words.third),
+                                    epithets: [words.second, words.third].join(' ')
 
     when :subspecies_with_two_epithets
-      return SubspeciesName.create!(
-        name: string,
-        name_html: i_tagify(string),
-        epithet: words.last,
-        epithet_html: i_tagify(words.last),
-        epithets: words[1..-1].join(' ')
-      )
-
+      return SubspeciesName.create! name: string,
+                                    name_html: i_tagify(string),
+                                    epithet: words.last,
+                                    epithet_html: i_tagify(words.last),
+                                    epithets: words[1..-1].join(' ')
     when :species
-      return SpeciesName.create!(
-        name: string,
-        name_html: i_tagify(string),
-        epithet: words.second, #is this used?
-        epithet_html: i_tagify(words.second) #is this used?
-      )
+      return SpeciesName.create! name: string,
+                                 name_html: i_tagify(string),
+                                 epithet: words.second,
+                                 epithet_html: i_tagify(words.second)
 
+    # Note: GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }
+    # => all true except Aretidris because protonym_html is nil
     when :genus
-      return GenusName.create!(
-        name: string,
-        name_html: i_tagify(string),
-        epithet: string, #is this used?
-        epithet_html: i_tagify(string) #is this used?
-        #protonym_html: i_tagify(string) #is this used?
-        # Note: GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }
-        # => all true except Aretidris because protonym_html is nil
-      )
+      return GenusName.create! name: string,
+                               name_html: i_tagify(string),
+                               epithet: string,
+                               epithet_html: i_tagify(string)
+                               #protonym_html: i_tagify(string) #is this used?
+
     when :tribe
-      return TribeName.create!(
-        name: string,
-        name_html: string,
-        epithet: string, #is this used?
-        epithet_html: string #is this used?
-        #protonym_html: string
-      )
+      return TribeName.create! name: string,
+                               name_html: string,
+                               epithet: string,
+                               epithet_html: string
+                               #protonym_html: string #is this used?
+
+    # Note: SubfamilyName.all.map {|t| t.name == t.protonym_html }.uniq # => true
     when :subfamily
-      return SubfamilyName.create!(
-        name: string,
-        name_html: string,
-        epithet: string, #is this used?
-        epithet_html: string #is this used?
-        #protonym_html: string #is this used?
-        # Note: SubfamilyName.all.map {|t| t.name == t.protonym_html }.uniq # => true
-      )
+      return SubfamilyName.create! name: string,
+                                   name_html: string,
+                                   epithet: string,
+                                   epithet_html: string
+                                   #protonym_html: string #is this used?
     end
 
     if irregular
-      return SpeciesName.create!(
-        name: string,
-        name_html: i_tagify(string),
-        epithet: words.second,
-        epithet_html: i_tagify(words.second)
-      )
+      return SpeciesName.create! name: string,
+                                 name_html: i_tagify(string),
+                                 epithet: words.second,
+                                 epithet_html: i_tagify(words.second)
     end
-    raise "No Name subclass wanted the string: #{string}" # from the original method
+    raise "No Name subclass wanted the string: #{string}"
   end
 
   def self.i_tagify string
@@ -169,6 +153,7 @@ class Name < ApplicationRecord
   def self.duplicates_with_references options = {}
     results = {}
     dupes = duplicates
+
     Progress.new_init show_progress: options[:show_progress], total_count: dupes.size, show_errors: true
     dupes.each do |duplicate|
       Progress.puts duplicate.name
@@ -177,6 +162,7 @@ class Name < ApplicationRecord
       results[duplicate.name][duplicate.id] = duplicate.references
     end
     Progress.show_results
+
     results
   end
 
@@ -207,19 +193,19 @@ class Name < ApplicationRecord
 
     def references_to_taxon_name
       Taxon.where(name: self).map do |taxon|
-        { table: 'taxa', field: :name_id, id: taxon.id }
+        table_ref 'taxa', :name_id, taxon.id
       end
     end
 
     def references_to_taxon_type_name
       Taxon.where(type_name: self).map do |taxon|
-        { table: 'taxa', field: :type_name_id, id: taxon.id }
+        table_ref 'taxa', :type_name_id, taxon.id
       end
     end
 
     def references_to_protonym_name
       Protonym.where(name: self).map do |protonym|
-        { table: 'protonyms', field: :name_id, id: protonym.id }
+        table_ref 'protonyms', :name_id, protonym.id
       end
     end
 
@@ -231,11 +217,15 @@ class Name < ApplicationRecord
           klass.where(table[field].matches("%{nam #{id}}%")).each do |record|
             next unless record[field]
             if record[field] =~ /{nam #{id}}/
-              references << { table: klass.table_name, field: field, id: record[:id] }
+              references << table_ref(klass.table_name, field, record.id)
             end
           end
         end
       end
       references
+    end
+
+    def table_ref table, field, id
+      { table: table, field: field, id: id }
     end
 end

@@ -34,9 +34,7 @@ class FeedbackController < ApplicationController
           render json: json, status: :created
         end
       else
-        format.json do
-          render_unprocessable
-        end
+        format.json { render_unprocessable }
       end
     end
   end
