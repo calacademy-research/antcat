@@ -16,22 +16,7 @@ class ReferenceFormatterCache
     reference.nestees.each &:invalidate_cache
   end
 
-  # TODO probably do not default to a field.
-  # Maybe just remove?
-  def get reference, field = :formatted_cache
-    reference.send field # YOLO committed the faster version
-
-    # TODO reinstante if issue occurs, else, remove.
-    # This method previosuly caintained this:
-    ##################################################################
-    # Wrapped in a `#find` call to make sure the reference is reloaded.
-    # May only be required to pass tests.
-    # TODO investigate removing it, because it adds an additional SQL query.
-    # We want this instead: `reference.send field`
-    #Reference.find(reference.id).send field
-    ##################################################################
-  end
-
+  # TODO remove default field.
   def set reference, value, field = :formatted_cache
     return value if reference.send(field) == value
     reference.update_column field, value

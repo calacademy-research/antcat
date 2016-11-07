@@ -16,8 +16,8 @@ describe ReferenceObserver do
         nestee.reload
 
         # TODO check that is wasn't nil all the time.
-        expect(ReferenceFormatterCache.instance.get(nesting_reference)).to be_nil
-        expect(ReferenceFormatterCache.instance.get(nestee)).to be_nil
+        expect(nesting_reference.formatted_cache).to be_nil
+        expect(nestee.formatted_cache).to be_nil
       end
     end
   end
@@ -33,7 +33,6 @@ describe ReferenceObserver do
 
       # TODO check that is wasn't nil all the time.
       expect(reference.formatted_cache).to be_nil
-      expect(ReferenceFormatterCache.instance.get(reference)).to be_nil
     end
   end
 end

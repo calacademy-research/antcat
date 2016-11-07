@@ -49,8 +49,12 @@ class ReferenceDecorator < ApplicationDecorator
     end
   end
 
+  def format_ctrl_f
+    format
+  end
+
   def format
-    cached = reference.cached :formatted_cache
+    cached = reference.formatted_cache
     return cached.html_safe if cached
 
     generated = format!
@@ -69,7 +73,7 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_inline_citation
-    cached = reference.cached :inline_citation_cache
+    cached = reference.inline_citation_cache
     return cached.html_safe if cached
 
     generated = to_link

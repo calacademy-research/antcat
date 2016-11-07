@@ -19,7 +19,7 @@ describe ReferenceAuthorNameObserver do
       reference.reload
 
       # TODO check that is wasn't nil all the time.
-      expect(ReferenceFormatterCache.instance.get(reference)).to be_nil
+      expect(reference.formatted_cache).to be_nil
     end
 
     context "when a reference_author_name is added" do
@@ -29,7 +29,7 @@ describe ReferenceAuthorNameObserver do
         reference.reload
 
         # TODO check that is wasn't nil all the time.
-        expect(ReferenceFormatterCache.instance.get(reference)).to be_nil
+        expect(reference.formatted_cache).to be_nil
       end
     end
 
@@ -41,7 +41,7 @@ describe ReferenceAuthorNameObserver do
         reference.reload
 
         # TODO check that is wasn't nil all the time.
-        expect(ReferenceFormatterCache.instance.get(reference)).to be_nil
+        expect(reference.formatted_cache).to be_nil
       end
     end
   end

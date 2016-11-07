@@ -55,7 +55,7 @@ describe ReferenceFormatterCache do
         ReferenceFormatterCache.instance.set reference, 'Cache', :formatted_cache
         reference.reload
 
-        expect(ReferenceFormatterCache.instance.get(reference, :formatted_cache)).to eq 'Cache'
+        expect(reference.formatted_cache).to eq 'Cache'
       end
     end
   end
@@ -65,12 +65,12 @@ describe ReferenceFormatterCache do
       nesting_reference = create :article_reference
       ReferenceFormatterCache.instance.populate nesting_reference
       nesting_reference.reload
-      expect(ReferenceFormatterCache.instance.get(nesting_reference)).not_to be_nil
+      expect(nesting_reference.formatted_cache).not_to be_nil
 
       nested_reference = create :nested_reference, nesting_reference: nesting_reference
       ReferenceFormatterCache.instance.populate nested_reference
       nested_reference.reload
-      expect(ReferenceFormatterCache.instance.get(nested_reference)).not_to be_nil
+      expect(nested_reference.formatted_cache).not_to be_nil
 
       author_name = create :author_name
       reference_author_name = create :reference_author_name, reference: nesting_reference, author_name: author_name
@@ -79,8 +79,8 @@ describe ReferenceFormatterCache do
       nesting_reference.reload
       nested_reference.reload
 
-      expect(ReferenceFormatterCache.instance.get(nesting_reference)).to be_nil
-      expect(ReferenceFormatterCache.instance.get(nested_reference)).to be_nil
+      expect(nesting_reference.formatted_cache).to be_nil
+      expect(nested_reference.formatted_cache).to be_nil
     end
   end
 end

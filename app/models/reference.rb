@@ -50,17 +50,8 @@ class Reference < ApplicationRecord
     "#{author_names_string} #{citation_year}. #{id}."
   end
 
-  # TODO move caching methods to a concern.
   def invalidate_cache
     ReferenceFormatterCache.invalidate self
-  end
-
-  def cached field = nil
-    if field
-      ReferenceFormatterCache.get self, field
-    else
-      ReferenceFormatterCache.get self
-    end
   end
 
   def set_cache value, field = nil

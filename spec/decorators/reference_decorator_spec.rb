@@ -513,7 +513,7 @@ describe ReferenceDecorator do
 
     describe "A regression where a string should've been duped" do
       it "really should have been duped" do
-        expect(reference.decorate.format).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
+        expect(reference.decorate.format_ctrl_f).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
       end
     end
 
@@ -530,49 +530,7 @@ describe ReferenceDecorator do
 
     it "returns an html_safe string from the cache" do
       ReferenceFormatterCache.instance.populate reference
-      expect(reference.decorate.format).to be_html_safe
-    end
-
-    describe "#format vs. #format!" do
-      describe "#format" do
-        it "reads from the cache" do
-          expect(ReferenceFormatterCache.instance).to receive(:get).and_return 'Cache'
-          expect(ReferenceFormatterCache.instance).not_to receive(:set)
-          reference.decorate.format
-        end
-
-        it "populates and set the cache when it's empty" do
-          expect(ReferenceFormatterCache.instance).to receive(:get).and_return nil
-          expect_any_instance_of(ReferenceDecorator).to receive(:format!).and_return 'Cache'
-          expect(ReferenceFormatterCache.instance).to receive(:set).with(reference, 'Cache', :formatted_cache)
-          reference.decorate.format
-        end
-      end
-
-      describe "#format!" do
-        it "doesn't touch the cache" do
-          expect(ReferenceFormatterCache.instance).not_to receive(:get)
-          expect(ReferenceFormatterCache.instance).not_to receive(:set)
-          reference.decorate.format!
-        end
-      end
-    end
-
-    describe "Inline citation cache" do
-      describe "Current user" do
-        it "doesn't set the cache if there's no current user", pending: true do
-          pending "deprecated"
-
-          expect(ReferenceFormatterCache.instance.get(reference, :formatted_cache)).to be_nil
-          expect(ReferenceFormatterCache.instance.get(reference, :inline_citation_cache)).to be_nil
-
-          reference.decorate.format_inline_citation
-          reference.reload
-
-          expect(ReferenceFormatterCache.instance.get(reference, :formatted_cache)).not_to be_nil
-          expect(ReferenceFormatterCache.instance.get(reference, :inline_citation_cache)).to be_nil
-        end
-      end
+      expect(reference.decorate.format_ctrl_f).to be_html_safe
     end
   end
 end
