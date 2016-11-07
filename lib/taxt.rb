@@ -142,7 +142,7 @@ module Taxt
     def self.decode_reference whole_match, reference_id_match, options
       if options[:display]
         reference = Reference.find(reference_id_match) rescue whole_match
-        reference.decorate.format_inline_citation_without_links rescue whole_match
+        reference.decorate.keey rescue whole_match
       elsif $use_ant_web_formatter # TODO nuke
         # This means `options[:expansion] == false`?
         # We never want to expand references when exporting to AntWeb.

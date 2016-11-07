@@ -6,7 +6,6 @@ class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the `h` method
   delegate_all
 
-  # TODO yet another "FALNs" -- probably remove.
   def key
     raise "use 'keey' (not a joke)"
   end
@@ -94,13 +93,6 @@ class ReferenceDecorator < ApplicationDecorator
     generated
   end
 
-  # Only used in `Taxt#decode_reference`. It's the options[:display] one.
-  # TODO yet another "FALNs" -- do something.
-  # TODO Rename to avoid confusing it with *everything*.
-  def format_inline_citation_without_links
-    format_author_last_names
-  end
-
   # Note: Only used for the AntWeb export. Never cached.
   # TODO Maybe rename, but keep "antweb".
   def format_inline_citation_for_antweb
@@ -155,7 +147,7 @@ class ReferenceDecorator < ApplicationDecorator
 
         content << helpers.content_tag(:span, class: "reference_keey_expansion") do
           inner_content = []
-          inner_content << reference_keey_expansion_text(reference_string, reference_keey_string)
+          inner_content << inline_citation_reference_keey_expansion_text(reference_string, reference_keey_string)
           inner_content << format_reference_document_link
           inner_content << goto_reference_link
           inner_content.reject(&:blank?).join(' ').html_safe
@@ -163,8 +155,7 @@ class ReferenceDecorator < ApplicationDecorator
       end
     end
 
-    # TODO rename so it's more clear that it's used in `generate_inline_citation`.
-    def reference_keey_expansion_text reference_string, reference_keey_string
+    def inline_citation_reference_keey_expansion_text reference_string, reference_keey_string
       helpers.content_tag :span, reference_string,
         class: "reference_keey_expansion_text",
         title: reference_keey_string
