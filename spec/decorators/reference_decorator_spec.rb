@@ -44,7 +44,7 @@ describe ReferenceDecorator do
   end
 
   #TODO DRY
-  describe "#format" do
+  describe "#formatted" do
     it "formats the reference" do
       reference = create :article_reference,
         author_names: [author_name],
@@ -53,7 +53,7 @@ describe ReferenceDecorator do
         journal: journal,
         series_volume_issue: "26",
         pagination: "1-452"
-      string = reference.decorate.format
+      string = reference.decorate.formatted
       expect(string).to be_html_safe
       expect(string).to eq 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
@@ -66,7 +66,7 @@ describe ReferenceDecorator do
         journal: journal,
         series_volume_issue: "26",
         pagination: "1-452"
-      expect(reference.decorate.format)
+      expect(reference.decorate.formatted)
         .to eq 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
@@ -79,7 +79,7 @@ describe ReferenceDecorator do
         series_volume_issue: "26",
         pagination: "1-452"
       reference.update_attribute :author_names_suffix, ' (ed.)'
-      expect(reference.decorate.format)
+      expect(reference.decorate.formatted)
         .to eq 'Forel, A. (ed.) 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
@@ -91,7 +91,7 @@ describe ReferenceDecorator do
         journal: journal,
         series_volume_issue: "26",
         pagination: "1-452"
-      expect(reference.decorate.format)
+      expect(reference.decorate.formatted)
         .to eq 'Forel, A. 1874. Les fourmis de la Suisse? Neue Denkschriften 26:1-452.'
     end
 
@@ -103,7 +103,7 @@ describe ReferenceDecorator do
         journal: journal,
         series_volume_issue: "26",
         pagination: "1-452"
-      expect(reference.decorate.format)
+      expect(reference.decorate.formatted)
         .to eq 'Forel, A. 1874. Les fourmis de la Suisse! Neue Denkschriften 26:1-452.'
     end
 
@@ -115,7 +115,7 @@ describe ReferenceDecorator do
         journal: journal,
         series_volume_issue: "26",
         pagination: "1-452"
-      expect(reference.decorate.format)
+      expect(reference.decorate.formatted)
         .to eq 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
@@ -127,7 +127,7 @@ describe ReferenceDecorator do
         journal: journal,
         series_volume_issue: "26",
         pagination: "1-452"
-      expect(reference.decorate.format)
+      expect(reference.decorate.formatted)
         .to eq 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
@@ -139,7 +139,7 @@ describe ReferenceDecorator do
         journal: journal,
         series_volume_issue: "26",
         pagination: "1-452."
-      expect(reference.decorate.format)
+      expect(reference.decorate.formatted)
         .to eq 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
@@ -150,7 +150,7 @@ describe ReferenceDecorator do
         citation_year: "1874",
         title: "Les fourmis de la Suisse.",
         publisher: publisher, pagination: "22 pp."
-      expect(reference.decorate.format)
+      expect(reference.decorate.formatted)
         .to eq 'Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.'
     end
 
@@ -160,7 +160,7 @@ describe ReferenceDecorator do
         citation_year: "1874",
         title: "Les fourmis de la Suisse.",
         citation: 'New York'
-      expect(reference.decorate.format).to eq 'Forel, A. 1874. Les fourmis de la Suisse. New York.'
+      expect(reference.decorate.formatted).to eq 'Forel, A. 1874. Les fourmis de la Suisse. New York.'
     end
 
     it "formats nested references" do
@@ -173,7 +173,7 @@ describe ReferenceDecorator do
       nested_reference = create :nested_reference, nesting_reference: reference,
         author_names: [author_name], title: 'Les fourmis de la Suisse',
         citation_year: '1874', pages_in: 'Pp. 32-45 in'
-      expect(nested_reference.decorate.format).to eq(
+      expect(nested_reference.decorate.formatted).to eq(
         'Forel, A. 1874. Les fourmis de la Suisse. Pp. 32-45 in Mayr, E. 2010. Ants I have known. New York: Wiley, 32 pp.'
       )
     end
@@ -186,7 +186,7 @@ describe ReferenceDecorator do
         title: "Les fourmis de la Suisse.",
         publisher: publisher,
         pagination: "22 pp."
-      expect(reference.decorate.format)
+      expect(reference.decorate.formatted)
         .to eq 'Forel, A. 1874. Les fourmis de la Suisse. Wiley, 22 pp.'
     end
 
@@ -199,29 +199,29 @@ describe ReferenceDecorator do
 
       it "escapes everything, buts let italics through" do
         reference.author_names = [create(:author_name, name: '<script>')]
-        expect(reference.decorate.format)
+        expect(reference.decorate.formatted)
           .to eq '&lt;script&gt; 1874. Les fourmis de la Suisse. 32 pp.'
       end
 
       it "escapes the citation year" do
         reference.update_attribute :citation_year, '<script>'
-        expect(reference.decorate.format)
+        expect(reference.decorate.formatted)
           .to eq 'Ward, P. S. &lt;script&gt;. Les fourmis de la Suisse. 32 pp.'
       end
 
       it "escapes the title" do
         reference.update_attribute :title, '<script>'
-        expect(reference.decorate.format).to eq 'Ward, P. S. 1874. &lt;script&gt;. 32 pp.'
+        expect(reference.decorate.formatted).to eq 'Ward, P. S. 1874. &lt;script&gt;. 32 pp.'
       end
 
       it "escapes the title but leave the italics alone" do
         reference.update_attribute :title, '*foo*<script>'
-        expect(reference.decorate.format).to eq 'Ward, P. S. 1874. <i>foo</i>&lt;script&gt;. 32 pp.'
+        expect(reference.decorate.formatted).to eq 'Ward, P. S. 1874. <i>foo</i>&lt;script&gt;. 32 pp.'
       end
 
       it "escapes the date" do
         reference.update_attribute :date, '1933>'
-        expect(reference.decorate.format)
+        expect(reference.decorate.formatted)
           .to eq 'Ward, P. S. 1874. Les fourmis de la Suisse. 32 pp. [1933&gt;]'
       end
 
@@ -229,7 +229,7 @@ describe ReferenceDecorator do
         reference = create :article_reference,
           title: 'Ants are my life', author_names: author_names,
           journal: create(:journal, name: '<script>'), citation_year: '2010d', series_volume_issue: '<', pagination: '>'
-        expect(reference.decorate.format)
+        expect(reference.decorate.formatted)
           .to eq 'Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt;.'
       end
 
@@ -240,7 +240,7 @@ describe ReferenceDecorator do
           author_names: author_names,
           publisher: create(:publisher, name: '<', place: create(:place, name: '>')),
           pagination: '>'
-        expect(reference.decorate.format)
+        expect(reference.decorate.formatted)
           .to eq 'Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt;.'
       end
 
@@ -250,7 +250,7 @@ describe ReferenceDecorator do
           citation_year: '2010d',
           author_names: author_names,
           citation: '>'
-        expect(reference.decorate.format).to eq 'Ward, P. S. 2010d. Ants are my life. &gt;.'
+        expect(reference.decorate.formatted).to eq 'Ward, P. S. 2010d. Ants are my life. &gt;.'
       end
 
       it "escapes the citation in a nested reference" do
@@ -264,7 +264,7 @@ describe ReferenceDecorator do
           author_names: author_names,
           pages_in: '>',
           nesting_reference: nested_reference
-        expect(reference.decorate.format)
+        expect(reference.decorate.formatted)
           .to eq 'Ward, P. S. 2010d. Ants are my life. &gt; Ward, P. S. 2010d. Ants are my life. New York.'
       end
     end
@@ -276,7 +276,7 @@ describe ReferenceDecorator do
           author_names: [],
           citation: '*Ants*',
           title: '*Tapinoma*'
-        expect(reference.decorate.format).to be_html_safe
+        expect(reference.decorate.formatted).to be_html_safe
       end
 
       it "italicizes the title and citation" do
@@ -285,7 +285,7 @@ describe ReferenceDecorator do
           author_names: [],
           citation: '*Ants*',
           title: '*Tapinoma*'
-        expect(reference.decorate.format).to eq "2010d. <i>Tapinoma</i>. <i>Ants</i>."
+        expect(reference.decorate.formatted).to eq "2010d. <i>Tapinoma</i>. <i>Ants</i>."
       end
 
       it "italicizes the title even with two italicized words" do
@@ -294,7 +294,7 @@ describe ReferenceDecorator do
           author_names: [],
           citation: 'Ants',
           title: 'Note on a new northern cutting ant, *Atta* *septentrionalis*.'
-        expect(reference.decorate.format)
+        expect(reference.decorate.formatted)
           .to eq "2010d. Note on a new northern cutting ant, <i>Atta</i> <i>septentrionalis</i>. Ants."
       end
 
@@ -304,7 +304,7 @@ describe ReferenceDecorator do
           author_names: [],
           citation: '*Ants*',
           title: '<i>Tapinoma</i>'
-        expect(reference.decorate.format).to eq "2010d. <i>Tapinoma</i>. <i>Ants</i>."
+        expect(reference.decorate.formatted).to eq "2010d. <i>Tapinoma</i>. <i>Ants</i>."
       end
 
       it "escapes other HTML in title and citation" do
@@ -313,7 +313,7 @@ describe ReferenceDecorator do
           author_names: [],
           citation: '*Ants*',
           title: '<span>Tapinoma</span>'
-        expect(reference.decorate.format)
+        expect(reference.decorate.formatted)
           .to eq "2010d. &lt;span&gt;Tapinoma&lt;/span&gt;. <i>Ants</i>."
       end
 
@@ -323,7 +323,7 @@ describe ReferenceDecorator do
           citation_year: '2010',
           citation: 'Ants <i>et al.</i>',
           title: 'Tapinoma'
-        expect(reference.decorate.format).to eq "2010. Tapinoma. Ants <i>et al.</i>."
+        expect(reference.decorate.formatted).to eq "2010. Tapinoma. Ants <i>et al.</i>."
       end
 
       it "doesn't escape et al. in citation for a missing reference" do
@@ -332,7 +332,7 @@ describe ReferenceDecorator do
           citation_year: '2010',
           citation: 'Ants <i>et al.</i>',
           title: 'Tapinoma'
-        expect(reference.decorate.format).to eq "2010. Tapinoma. Ants <i>et al.</i>"
+        expect(reference.decorate.formatted).to eq "2010. Tapinoma. Ants <i>et al.</i>"
       end
     end
 
@@ -370,7 +370,7 @@ describe ReferenceDecorator do
         author_names: [],
         citation: 'Ants',
         title: 'Tapinoma'
-      expect(reference.decorate.format).to eq "2010d. Tapinoma. Ants."
+      expect(reference.decorate.formatted).to eq "2010d. Tapinoma. Ants."
     end
   end
 
@@ -417,7 +417,7 @@ describe ReferenceDecorator do
     end
 
     def check expected
-      expect(@reference.decorate.format)
+      expect(@reference.decorate.formatted)
         .to eq "Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.#{expected}"
     end
   end
@@ -513,7 +513,7 @@ describe ReferenceDecorator do
 
     describe "A regression where a string should've been duped" do
       it "really should have been duped" do
-        expect(reference.decorate.format).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
+        expect(reference.decorate.formatted).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
       end
     end
 
@@ -530,7 +530,7 @@ describe ReferenceDecorator do
 
     it "returns an html_safe string from the cache" do
       ReferenceFormatterCache.populate reference
-      expect(reference.decorate.format).to be_html_safe
+      expect(reference.decorate.formatted).to be_html_safe
     end
   end
 end

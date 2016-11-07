@@ -24,8 +24,8 @@ class ReferenceFormatterCache
 
   # Used in tests. Can also be manually invoked in prod/dev.
   def regenerate reference
-    set reference, reference.decorate.send :generate_formatted, :formatted_cache
-    set reference, reference.decorate.to_link_with_expansion :inline_citation_cache
+    set reference, reference.decorate.send(:generate_formatted), :formatted_cache
+    set reference, reference.decorate.to_link_with_expansion, :inline_citation_cache
   end
   alias_method :populate, :regenerate
 

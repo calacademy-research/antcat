@@ -21,7 +21,7 @@ module Formatters::AdvancedSearchTextFormatter
     reference = taxon.protonym.authorship.reference
 
     string = ''.html_safe
-    string << reference.decorate.format
+    string << reference.decorate.formatted
     string << " DOI: " << reference.doi if reference.doi.present?
     string << "   #{reference.id}"
     string

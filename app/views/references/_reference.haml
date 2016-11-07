@@ -1,7 +1,7 @@
 -if !reference.new_record? && reference.errors.empty?
   .reference
     -reference = reference.decorate
-    =reference.format
+    =reference.formatted
     =reference.format_reference_document_link
     =reference.goto_reference_link target: nil
 

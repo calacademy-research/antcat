@@ -59,8 +59,7 @@ class ReferenceDecorator < ApplicationDecorator
   # Formats the reference as plaintext (with the exception of <i> tags).
   #
   # DB column: `references.formatted_cache`.
-  # TODO rename to mirror DB column: `formatted`.
-  def format
+  def formatted
     cached = reference.formatted_cache
     return cached.html_safe if cached
 
@@ -68,7 +67,6 @@ class ReferenceDecorator < ApplicationDecorator
     reference.set_cache generated, :formatted_cache
     generated
   end
-
 
   # A.k.a. "FORMATTED WITH HTML" -- Cached version!
   # Formats the reference with HTML, CSS, etc.

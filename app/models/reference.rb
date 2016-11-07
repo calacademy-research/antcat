@@ -117,7 +117,7 @@ class Reference < ApplicationRecord
     return unless duplicates.present?
 
     duplicate = Reference.find duplicates.first[:match].id
-    errors.add :base, "This may be a duplicate of #{duplicate.decorate.format} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
+    errors.add :base, "This may be a duplicate of #{duplicate.decorate.formatted} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
     true
   end
 
