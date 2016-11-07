@@ -155,13 +155,13 @@ class TaxaController < ApplicationController
           taxon.collision_merge_id = collision_resolution
           # TODO `original_combination` is never used.
           original_combination = Taxon.find(collision_resolution)
-          Taxa::Utility.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
+          original_combination.inherit_attributes_for_new_combination @previous_combination, parent
         end
       end
 
       # TODO move to Taxa::HandlePreviousCombination?
       if @previous_combination
-        Taxa::Utility.inherit_attributes_for_new_combination(taxon, @previous_combination, parent)
+        taxon.inherit_attributes_for_new_combination @previous_combination, parent
       end
 
       taxon
@@ -195,8 +195,7 @@ class TaxaController < ApplicationController
         new_child.build_type_name
         new_child.parent = @taxon
 
-        Taxa::Utility.inherit_attributes_for_new_combination(new_child, t, @taxon)
-
+        new_child.inherit_attributes_for_new_combination t, @taxon
         new_child.save_from_form Taxa::Utility.attributes_for_new_usage(new_child, t), t
       end
     end

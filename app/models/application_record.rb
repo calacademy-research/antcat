@@ -1,5 +1,3 @@
-# Currently only subclassed by a couple of models.
-
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
@@ -12,4 +10,11 @@ class ApplicationRecord < ActiveRecord::Base
     self.auto_generated = false
     save
   end
+
+  private
+    def copy_attributes_from from_object, *attributes_to_copy
+      attributes_to_copy.each do |attribute|
+        send "#{attribute}=".to_sym, from_object.send(attribute)
+      end
+    end
 end

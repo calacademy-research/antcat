@@ -1,6 +1,8 @@
+# TODO avoid `require`.
+
 require_dependency 'taxon_workflow'
 
-class Taxon < ActiveRecord::Base
+class Taxon < ApplicationRecord
   include UndoTracker
   include Taxa::CallbacksAndValidators
   include Taxa::Delete

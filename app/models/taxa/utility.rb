@@ -1,13 +1,5 @@
 class Taxa::Utility
-  # TODO update callers and remove.
-  def self.inherit_attributes_for_new_combination new_comb, old_comb, new_comb_parent
-    new_comb.inherit_attributes_for_new_combination old_comb, new_comb_parent
-  end
-
-  def self.name_for_new_comb old_comb, new_comb_parent
-    old_comb.send :name_for_new_comb, old_comb, new_comb_parent
-  end
-
+  # TODO move somewhere.
   def self.attributes_for_new_usage new_comb, old_comb
     name_id = new_comb.name ? new_comb.name.id : old_comb.name.id
     homonym_replaced_by_name_id = old_comb.homonym_replaced_by ? old_comb.homonym_replaced_by.name_id : nil
