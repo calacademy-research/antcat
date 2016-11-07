@@ -9,10 +9,6 @@ class MissingReferenceDecorator < ReferenceDecorator
     make_html_safe reference.citation
   end
 
-  def to_link_with_expansion
-    citation.html_safe
-  end
-
   def key
     reference.citation
   end

@@ -43,7 +43,7 @@ module RefactorHelper
     if $use_ant_web_formatter
       reference.decorate.format_inline_citation_for_antweb
     else
-      reference.decorate.to_link_with_expansion
+      reference.decorate.inline_citation
     end
   end
 end

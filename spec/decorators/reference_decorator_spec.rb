@@ -437,17 +437,6 @@ describe ReferenceDecorator do
   end
 
   describe "#inline_citation" do
-    context "nonmissing references" do
-      it "defers to the key" do
-        key = double
-        reference = create :article_reference
-        decorated = reference.decorate
-        expect(decorated).to receive(:to_link_with_expansion).and_return key
-
-        decorated.inline_citation
-      end
-    end
-
     context "a MissingReference" do
       it "just outputs the citation" do
         reference = create :missing_reference, citation: 'foo'

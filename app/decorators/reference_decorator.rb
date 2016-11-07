@@ -40,7 +40,7 @@ class ReferenceDecorator < ApplicationDecorator
   # TODO another "FALNs".
   # TODO only called in `Citation#authorship_html_string`.
   def format_authorship_html
-    helpers.content_tag(:span, title: format) do
+    helpers.content_tag(:span, title: formatted) do
       format_author_last_names
     end
   end
@@ -76,7 +76,7 @@ class ReferenceDecorator < ApplicationDecorator
     cached = reference.inline_citation_cache
     return cached.html_safe if cached
 
-    generated = to_link_with_expansion
+    generated = generate_inline_citation
     reference.set_cache generated, :inline_citation_cache
     generated
   end
@@ -99,28 +99,6 @@ class ReferenceDecorator < ApplicationDecorator
   def goto_reference_link target: '_blank'
     helpers.link reference.id, helpers.reference_path(reference),
       class: "goto_reference_link", target: target
-  end
-
-  # TODO see LinkHelper#link.
-  # TODO probably rename.
-  # TODO Keep.
-  def to_link_with_expansion
-    reference_key_string = format_author_last_names # Another "FALNs".
-    reference_string = formatted
-
-    helpers.content_tag :span, class: "reference_key_and_expansion" do
-      content = helpers.link reference_key_string, '#',
-                     title: make_to_link_title(reference_string),
-                     class: "reference_key"
-
-      content << helpers.content_tag(:span, class: "reference_key_expansion") do
-        inner_content = []
-        inner_content << reference_key_expansion_text(reference_string, reference_key_string)
-        inner_content << format_reference_document_link
-        inner_content << goto_reference_link
-        inner_content.reject(&:blank?).join(' ').html_safe
-      end
-    end
   end
 
   # TODO see LinkHelper#link.
@@ -151,9 +129,33 @@ class ReferenceDecorator < ApplicationDecorator
       string
     end
 
+
+    # TODO see LinkHelper#link.
     # A.k.a. "FORMATTED WITH HTML" -- Generate-it version!
     def generate_inline_citation
-      # TODO
+      reference_key_string = format_author_last_names # Another "FALNs".
+      reference_string = formatted
+
+      helpers.content_tag :span, class: "reference_key_and_expansion" do
+        content = helpers.link reference_key_string, '#',
+                       title: make_to_link_title(reference_string),
+                       class: "reference_key"
+
+        content << helpers.content_tag(:span, class: "reference_key_expansion") do
+          inner_content = []
+          inner_content << reference_key_expansion_text(reference_string, reference_key_string)
+          inner_content << format_reference_document_link
+          inner_content << goto_reference_link
+          inner_content.reject(&:blank?).join(' ').html_safe
+        end
+      end
+    end
+
+    # TODO rename so it's more clear that it's used in `generate_inline_citation`.
+    def reference_key_expansion_text reference_string, reference_key_string
+      helpers.content_tag :span, reference_string,
+        class: "reference_key_expansion_text",
+        title: reference_key_string
     end
 
     def format_timestamp timestamp
@@ -225,13 +227,6 @@ class ReferenceDecorator < ApplicationDecorator
 
     def make_to_link_title string
       helpers.unitalicize string
-    end
-
-    # TODO rename so it's more clear that it's used in `to_link_with_expansion`.
-    def reference_key_expansion_text reference_string, reference_key_string
-      helpers.content_tag :span, reference_string,
-        class: "reference_key_expansion_text",
-        title: reference_key_string
     end
 
     # Note: `references.author_names_string_cache` may also be useful.
