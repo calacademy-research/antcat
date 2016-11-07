@@ -9,7 +9,7 @@ class Notification
   end
 
   def self.unreviewed_references
-    Reference.where.not(review_state: "reviewed")
+    Reference.unreviewed
   end
 
   def self.unreviewed_catalog_changes
@@ -17,9 +17,10 @@ class Notification
   end
 
   def self.pending_user_feedbacks
-    Feedback.where(open: true)
+    Feedback.pending
   end
 
+  # TODO ask user?
   def self.unread_site_notices user = nil
     return SiteNotice.none unless user
     SiteNotice.unread_by user

@@ -34,6 +34,7 @@ class ReferencesController < ApplicationController
 
   def create
     @reference = new_reference
+
     if save
       @reference.create_activity :create
       redirect_to reference_path(@reference), notice: <<-MSG
@@ -82,6 +83,7 @@ class ReferencesController < ApplicationController
     end
   end
 
+  # TODO handle error, if any. Also in `#finish_reviewing` and `#restart_reviewing`.
   def start_reviewing
     @reference.start_reviewing!
     make_default_reference @reference
@@ -99,15 +101,15 @@ class ReferencesController < ApplicationController
     redirect_to latest_additions_references_path
   end
 
+  # TODO handle error, if any.
   def approve_all
     Reference.approve_all
     redirect_to latest_changes_references_path, notice: "Approved all references."
   end
 
   def search
-    unless params[:q].present? || params[:author_q].present?
-      return redirect_to action: :index
-    end
+    user_is_searching = params[:q].present? || params[:author_q].present?
+    return redirect_to action: :index unless user_is_searching
 
     unparsable_author_names_error_message = <<-MSG
       Could not parse author names. Start by typing a name, wait for a while
@@ -220,6 +222,7 @@ class ReferencesController < ApplicationController
       @reference.nesting_reference_id = reference_id
     end
 
+    # TODO probably move to model.
     def copy_reference reference_id
       @reference_to_copy = Reference.find reference_id
       @reference = @reference.becomes @reference_to_copy.class

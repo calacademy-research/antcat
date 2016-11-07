@@ -543,7 +543,7 @@ describe Taxon do
     # `#find_most_recent_valid_senior_synonym` *should* return the synonyms
     # in the same/intended order without risk of shuffling objects created
     # the same second. However, that makes the test fail 100%, which brings
-    # me to belive that the test doesn't randomly fail -- it randomly passes.
+    # me to believe that the test doesn't randomly fail -- it randomly passes.
     #
     # Use this for debugging:
     # `for i in {1..3}; do rspec ./spec/models/taxon_spec.rb:549 ; done`

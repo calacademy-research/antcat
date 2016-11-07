@@ -7,6 +7,7 @@ class Feedback < ActiveRecord::Base
 
   before_save :add_emails_recipients
 
+  scope :pending, -> { where(open: true) }
   scope :recently_created, ->(time_ago = 5.minutes.ago) {
     where('created_at >= ?', time_ago)
   }
@@ -36,6 +37,7 @@ class Feedback < ActiveRecord::Base
   end
 
   private
+    # Default to Stan's email in case no other editors want to receive these.
     def add_emails_recipients
       self.email_recipients = User.feedback_emails_recipients
         .as_angle_bracketed_emails.presence || "sblum@calacademy.org"

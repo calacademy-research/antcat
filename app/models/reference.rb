@@ -35,6 +35,7 @@ class Reference < ActiveRecord::Base
 
   scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
   scope :with_principal_author_last_name, lambda { |last_name| where(principal_author_last_name_cache: last_name) }
+  scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
   has_paper_trail meta: { change_id: :get_current_change_id }
   tracked parameters: ->(reference) do { name: reference.decorate.key } end

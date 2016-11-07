@@ -62,7 +62,7 @@ module AntCat
     config.assets.enabled = true
 
     # Add additional extensions/regexes for `rake notes`.
-    # I belive we have to do this manually because most files use
+    # I believe we have to do this manually because most files use
     # extensions such as `.haml` as compared to `.html.haml`.
     if Rails.env.development?
       # So in Sass files, look for lines matching:

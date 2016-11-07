@@ -1,3 +1,7 @@
+# TODO use this for validating `Taxon#status`.
+# Possibly also override `Taxon#status=" so we can set it like this
+# `taxon.status = :homonym` instead of `taxon.status = Status['homonym'].to_s`.
+
 class Status
   def initialize hash
     @hash = hash

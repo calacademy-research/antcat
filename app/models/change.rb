@@ -14,17 +14,17 @@ class Change < ActiveRecord::Base
   tracked
 
   def self.approve_all user
-    count = TaxonState.where(review_state: 'waiting').count
+    count = TaxonState.waiting.count
 
     Feed::Activity.without_tracking do
-      # TODO add scope
-      TaxonState.where(review_state: 'waiting').each do |taxon_state|
+      TaxonState.waiting.each do |taxon_state|
         # TODO maybe something like `TaxonState#approve_related_changes`?
         Change.where(user_changed_taxon_id: taxon_state.taxon_id).each do |change|
           change.approve user
         end
       end
     end
+
     Feed::Activity.create_activity :approve_all_changes, count: count
   end
 
@@ -47,6 +47,8 @@ class Change < ActiveRecord::Base
     Feed::Activity.with_tracking { create_activity :approve_change }
   end
 
+  # TODO probably rename local `versions` now that we're in the model
+  # that has a `versions` scope.
   # Once you have the change id, find all future changes that touch this
   # same item set. Find all versions, and undo the change.
   # Sort to undo changes most recent to oldest.
@@ -56,14 +58,13 @@ class Change < ActiveRecord::Base
       change_id_set = find_future_changes
       versions = SortedSet[]
       items = SortedSet[]
+
       Taxon.transaction do
         change_id_set.each do |undo_this_change_id|
-          begin
-            # could be already undone.
-            current_change = Change.find undo_this_change_id
-          rescue ActiveRecord::RecordNotFound
-            next
-          end
+          # Could be already undone.
+          current_change = Change.find_by id: undo_this_change_id
+          next unless current_change
+
           versions.merge current_change.versions
           current_change.delete
         end
@@ -79,12 +80,10 @@ class Change < ActiveRecord::Base
     changes = []
     change_id_set = find_future_changes
     change_id_set.each do |current_change_id|
-      begin
-        # could be already undone.
-        current_change = Change.find current_change_id
-      rescue ActiveRecord::RecordNotFound
-        next
-      end
+      # Could be already undone.
+      #current_change = Change.find current_change_id
+      current_change = Change.find_by id: current_change_id
+      next unless current_change
 
       # Could get cute and report exactly what was changed about any given taxon
       # For now, just report a change to the taxon in question.
@@ -94,6 +93,7 @@ class Change < ActiveRecord::Base
                      change_type: current_change.change_type,
                      change_timestamp: current_change.created_at.strftime("%B %d, %Y"),
                      user_name: current_user.name
+
       # This would be a good place to warn from if we find that we can't undo
       # something about a taxa.
     end
@@ -150,23 +150,31 @@ class Change < ActiveRecord::Base
     def undo_versions versions
       versions.reverse_each do |version|
         if version.event == 'create'
-          klass = version.item_type.constantize
-          item = klass.find version.item_id
-          item.delete
+          undo_create_event_version version
         else
-          item = version.reify
-          unless item
-            raise "failed to reify version: #{version.id} referencing change: #{version.change_id}"
-          end
-          begin
-            # because we validate on things like the genus being present, and if we're doing an entire change set,
-            # it might not be!
-            item.save! validate: false if item
-          rescue ActiveRecord::RecordInvalid => error
-            puts "=========Reify failure: #{error} version item_type =  #{version.item_type}"
-            raise error
-          end
+          undo_delete_event_version version
         end
+      end
+    end
+
+    def undo_create_event_version version
+      klass = version.item_type.constantize
+      item = klass.find version.item_id
+      item.delete
+    end
+
+    def undo_delete_event_version version
+      item = version.reify
+      unless item
+        raise "failed to reify version: #{version.id} referencing change: #{version.change_id}"
+      end
+      begin
+        # because we validate on things like the genus being present, and if we're doing an entire change set,
+        # it might not be!
+        item.save! validate: false if item
+      rescue ActiveRecord::RecordInvalid => error
+        puts "=========Reify failure: #{error} version item_type =  #{version.item_type}"
+        raise error
       end
     end
 
@@ -199,9 +207,7 @@ class Change < ActiveRecord::Base
       # sort and return the change record list.
       # because we need to go through papertrail's version
       change_ids = SortedSet[id]
-      versions.each do |version|
-        change_ids.merge get_future_change_ids(version)
-      end
+      versions.each { |version| change_ids.merge get_future_change_ids(version) }
       change_ids
     end
 end

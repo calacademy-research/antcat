@@ -13,7 +13,7 @@ class Taxa::HandlePreviousCombination
   def handle_it! previous_combination
     # Find all taxa that list `previous_combination.id` as
     # `current_valid_taxon_id`, and update them.
-    Taxon.where(current_valid_taxon_id: previous_combination.id).each do |taxon_to_update|
+    Taxon.where(current_valid_taxon: previous_combination).each do |taxon_to_update|
       update_elements taxon_to_update, status_string_for_crazy(taxon_to_update)
     end
 

@@ -12,10 +12,9 @@ class Synonym < ApplicationRecord
   scope :auto_generated, -> { where(auto_generated: true) }
 
   has_paper_trail meta: { change_id: :get_current_change_id }
-  # NOTE no update hook; I *think* this is how synonyms are used
-  # throught out the app. We could just add the activityies from
-  # the controller to avoid spamming the feed, but we also want to list
-  # synonym relationships created/removed as a result of other events.
+  # NOTE no update hook. Much code that updates synonym relationships simply
+  # destroys the syononym object and creates a new one. But there's also code that
+  # updates existing synonym relationships, so maybe add that here?
   tracked on: [:create, :destroy], parameters: ->(synonym) do
     { senior_synonym_id: synonym.senior_synonym_id,
       junior_synonym_id: synonym.junior_synonym_id }

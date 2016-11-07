@@ -126,8 +126,7 @@ class Taxon < ActiveRecord::Base
   private
     def activity_parameters
       ->(taxon) do
-        hash = { rank: taxon.rank,
-                 name: taxon.name_html_cache }
+        hash = { rank: taxon.rank, name: taxon.name_html_cache }
 
         parent = taxon.parent
         hash[:parent] = { rank: parent.rank,
