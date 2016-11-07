@@ -13,6 +13,6 @@ module Formatters::AdvancedSearchHtmlFormatter
 
   def format_protonym taxon
     reference = taxon.protonym.authorship.reference
-    reference.decorate.format_inline_citation
+    reference.decorate.inline_citation
   end
 end

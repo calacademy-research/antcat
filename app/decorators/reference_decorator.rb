@@ -72,23 +72,13 @@ class ReferenceDecorator < ApplicationDecorator
   # Formats the reference with HTML, CSS, etc.
   #
   # DB column: `references.inline_citation_cache`.
-  # TODO rename to mirror DB column: `inline_citation`.
-  def format_inline_citation
+  def inline_citation
     cached = reference.inline_citation_cache
     return cached.html_safe if cached
 
     generated = to_link_with_expansion
     reference.set_cache generated, :inline_citation_cache
     generated
-  end
-
-  # A.k.a. "FORMATTED WITH HTML" -- Generate-it version!
-  #
-  # TODO rename to `generate_inline_citation` (maybe "_cache").
-  # TODO make private.
-  def format_inline_citation!
-    # This doesn't exists and we do not want it...
-    # Will be created under another name.
   end
 
   # Only used in `Taxt#decode_reference`. It's the options[:display] one.
@@ -116,7 +106,7 @@ class ReferenceDecorator < ApplicationDecorator
   # TODO Keep.
   def to_link_with_expansion
     reference_key_string = format_author_last_names # Another "FALNs".
-    reference_string = format
+    reference_string = formatted
 
     helpers.content_tag :span, class: "reference_key_and_expansion" do
       content = helpers.link reference_key_string, '#',
@@ -138,7 +128,7 @@ class ReferenceDecorator < ApplicationDecorator
   # TODO Keep.
   def to_link_without_expansion
     reference_key_string ||= format_author_last_names # Another "FALNs".
-    reference_string ||= format
+    reference_string ||= formatted
 
     content = []
     content << helpers.link(reference_key_string,
@@ -159,6 +149,11 @@ class ReferenceDecorator < ApplicationDecorator
       string << format_citation
       string << " [#{format_date(reference.date)}]" if reference.date?
       string
+    end
+
+    # A.k.a. "FORMATTED WITH HTML" -- Generate-it version!
+    def generate_inline_citation
+      # TODO
     end
 
     def format_timestamp timestamp

@@ -151,7 +151,7 @@ module Taxt
       else
         # This means options is empty? Which means `options[:expansion] == true`?
         reference = Reference.find(reference_id_match) rescue whole_match
-        reference.decorate.format_inline_citation rescue whole_match
+        reference.decorate.inline_citation rescue whole_match
       end
     end
 

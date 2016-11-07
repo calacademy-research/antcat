@@ -436,7 +436,7 @@ describe ReferenceDecorator do
     end
   end
 
-  describe "#format_inline_citation" do
+  describe "#inline_citation" do
     context "nonmissing references" do
       it "defers to the key" do
         key = double
@@ -444,14 +444,14 @@ describe ReferenceDecorator do
         decorated = reference.decorate
         expect(decorated).to receive(:to_link_with_expansion).and_return key
 
-        decorated.format_inline_citation
+        decorated.inline_citation
       end
     end
 
     context "a MissingReference" do
       it "just outputs the citation" do
         reference = create :missing_reference, citation: 'foo'
-        expect(reference.decorate.format_inline_citation).to eq 'foo'
+        expect(reference.decorate.inline_citation).to eq 'foo'
       end
     end
   end
