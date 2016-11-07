@@ -1,9 +1,11 @@
+# TODO avoid `require`.
+
 require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_search'
 require_dependency 'references/reference_utility'
 require_dependency 'references/reference_workflow'
 
-class Reference < ActiveRecord::Base
+class Reference < ApplicationRecord
   include UndoTracker
   include ReferenceComparable
   include Feed::Trackable
@@ -107,7 +109,7 @@ class Reference < ActiveRecord::Base
     update_attribute :principal_author_last_name_cache, principal_author_last_name
   end
 
-  ## utility
+  # TODO move to a callback.
   # Called by controller to parse an input string for author names and suffix
   # Returns hash of parse result, or adds to the reference's errors and raises
   def parse_author_names_and_suffix author_names_string
@@ -140,13 +142,10 @@ class Reference < ActiveRecord::Base
   end
 
   def self.approve_all
-    # TODO create scope.
-    count = Reference.where.not(review_state: "reviewed").count
+    count = Reference.unreviewed.count
 
     Feed::Activity.without_tracking do
-      Reference.where.not(review_state: "reviewed").find_each do |reference|
-        reference.approve
-      end
+      Reference.unreviewed.find_each &:approve
     end
 
     Feed::Activity.create_activity :approve_all_references, count: count
@@ -159,6 +158,36 @@ class Reference < ActiveRecord::Base
     self.review_state = "reviewed"
     save!
     Feed::Activity.with_tracking { create_activity :finish_reviewing }
+  end
+
+  def new_from_copy
+    new_reference = self.class.new # Build correct type.
+
+    # Type-specific fields.
+    to_copy = case self
+              when ArticleReference then [:series_volume_issue]
+              when NestedReference  then [:pages_in, :nesting_reference_id]
+              when UnknownReference then [:citation]
+              else                       []
+              end
+
+    # Basic fields and notes.
+    to_copy.concat [ :author_names_string,
+                     :citation_year,
+                     :title,
+                     :pagination,
+                     :public_notes,
+                     :editor_notes,
+                     :taxonomic_notes ]
+
+    # The two virtual fields.
+    if is_a? BookReference
+      new_reference.publisher_string = "#{publisher.place.name}: #{publisher.name}"
+    end
+    new_reference.journal_name = journal.name if is_a? ArticleReference
+
+    copy_attributes_to new_reference, *to_copy
+    new_reference
   end
 
   private
@@ -178,6 +207,7 @@ class Reference < ActiveRecord::Base
       nesting_reference.nil?
     end
 
+    # TODO duplicates `CleanNewlines`?
     def strip_text_fields
       [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation].each do |field|
         value = self[field]

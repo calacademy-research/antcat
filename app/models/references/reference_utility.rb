@@ -1,7 +1,7 @@
 # These are methods used either now or at one time by Rake tasks, not
 # by application code, so could well be dead
 
-class Reference < ActiveRecord::Base
+class Reference < ApplicationRecord
   def replace_with reference, _options = {}
     Taxt::TAXT_FIELDS.each do |klass, fields|
       klass.send(:all).each do |record|

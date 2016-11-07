@@ -245,8 +245,6 @@ describe Reference do
   end
 
   describe "scope.sorted_by_principal_author_last_name" do
-
-
     it "orders by author_name" do
       bolton_reference = create :article_reference, author_names: [bolton_b, ward_ps]
       ward_reference = create :article_reference, author_names: [ward_ps, bolton_b]
