@@ -15,7 +15,7 @@ describe JournalObserver do
                      create(:book_reference, journal: journal),
                      create(:book_reference) ]
 
-      references.each { |reference| ReferenceFormatterCache.instance.populate reference }
+      references.each { |reference| ReferenceFormatterCache.populate reference }
       references.each { |reference| expect(reference.formatted_cache).not_to be_nil }
 
       JournalObserver.instance.before_update journal

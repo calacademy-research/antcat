@@ -14,7 +14,7 @@ describe ReferenceAuthorNameObserver do
 
     it "invalidates the cache for the reference involved" do
       reference.reference_author_names.create! position: 1, author_name: create(:author_name)
-      ReferenceFormatterCache.instance.populate reference
+      ReferenceFormatterCache.populate reference
       reference.reference_author_names.first.update_attribute :position, 1000
       reference.reload
 
@@ -24,7 +24,7 @@ describe ReferenceAuthorNameObserver do
 
     context "when a reference_author_name is added" do
       it "invalidates the cache for the reference involved" do
-        ReferenceFormatterCache.instance.populate reference
+        ReferenceFormatterCache.populate reference
         reference.reference_author_names.create! position: 1, author_name: create(:author_name)
         reference.reload
 
@@ -36,7 +36,7 @@ describe ReferenceAuthorNameObserver do
     context "when a reference_author_name is deleted" do
       it "invalidates the cache for the reference involved " do
         reference.reference_author_names.create! position: 1, author_name: create(:author_name)
-        ReferenceFormatterCache.instance.populate reference
+        ReferenceFormatterCache.populate reference
         reference.reference_author_names.first.destroy
         reference.reload
 

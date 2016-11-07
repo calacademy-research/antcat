@@ -13,17 +13,17 @@ describe ReferenceFormatterCache do
       expect(reference.formatted_cache).to be_nil
       expect(reference.inline_citation_cache).to be_nil
 
-      ReferenceFormatterCache.instance.invalidate reference
+      ReferenceFormatterCache.invalidate reference
       expect(reference.formatted_cache).to be_nil
       expect(reference.inline_citation_cache).to be_nil
     end
 
     it "sets the cache to nil" do
-      ReferenceFormatterCache.instance.populate reference
+      ReferenceFormatterCache.populate reference
       expect(reference.formatted_cache).not_to be_nil
       expect(reference.inline_citation_cache).not_to be_nil
 
-      ReferenceFormatterCache.instance.invalidate reference
+      ReferenceFormatterCache.invalidate reference
       expect(reference.formatted_cache).to be_nil
       expect(reference.inline_citation_cache).to be_nil
     end
@@ -43,7 +43,7 @@ describe ReferenceFormatterCache do
 
         expect(reference.formatted_cache).to eq formatted_cache_value
         expect(reference.inline_citation_cache).to be_nil
-        ReferenceFormatterCache.instance.populate reference
+        ReferenceFormatterCache.populate reference
         expect(reference.formatted_cache).to eq formatted_cache_value
         expect(reference.inline_citation_cache).to eq inline_citation_cache_value
       end
@@ -52,7 +52,7 @@ describe ReferenceFormatterCache do
     describe "#get and #set" do
       it "gets and sets the right values" do
         reference = create :article_reference
-        ReferenceFormatterCache.instance.set reference, 'Cache', :formatted_cache
+        ReferenceFormatterCache.set reference, 'Cache', :formatted_cache
         reference.reload
 
         expect(reference.formatted_cache).to eq 'Cache'
@@ -63,12 +63,12 @@ describe ReferenceFormatterCache do
   describe "Handling a network" do
     it "invalidates each member of the network" do
       nesting_reference = create :article_reference
-      ReferenceFormatterCache.instance.populate nesting_reference
+      ReferenceFormatterCache.populate nesting_reference
       nesting_reference.reload
       expect(nesting_reference.formatted_cache).not_to be_nil
 
       nested_reference = create :nested_reference, nesting_reference: nesting_reference
-      ReferenceFormatterCache.instance.populate nested_reference
+      ReferenceFormatterCache.populate nested_reference
       nested_reference.reload
       expect(nested_reference.formatted_cache).not_to be_nil
 

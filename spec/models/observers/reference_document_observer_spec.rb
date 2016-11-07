@@ -12,7 +12,7 @@ describe ReferenceDocumentObserver do
     it "invalidates the cache for the reference that uses the reference document" do
       reference = create :article_reference
       reference_document = create :reference_document, reference: reference
-      ReferenceFormatterCache.instance.populate reference
+      ReferenceFormatterCache.populate reference
       ReferenceDocumentObserver.instance.before_update reference_document
 
       # TODO check that is wasn't nil all the time.

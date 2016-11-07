@@ -14,15 +14,15 @@ describe AuthorNameObserver do
       fisher = create :author_name, name: 'Fisher'
 
       fisher_reference = create :article_reference, author_names: [fisher]
-      ReferenceFormatterCache.instance.populate fisher_reference
+      ReferenceFormatterCache.populate fisher_reference
       expect(fisher_reference.reload.formatted_cache).not_to be_nil
 
       bolton_reference1 = create :article_reference, author_names: [bolton]
-      ReferenceFormatterCache.instance.populate bolton_reference1
+      ReferenceFormatterCache.populate bolton_reference1
       expect(bolton_reference1.reload.formatted_cache).not_to be_nil
 
       bolton_reference2 = create :article_reference, author_names: [bolton]
-      ReferenceFormatterCache.instance.populate bolton_reference2
+      ReferenceFormatterCache.populate bolton_reference2
       expect(bolton_reference2.reload.formatted_cache).not_to be_nil
 
       AuthorNameObserver.instance.after_update bolton

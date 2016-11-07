@@ -6,9 +6,9 @@ describe ReferenceObserver do
       it "invalidates the cache for it and the nestee" do
         nesting_reference = create :article_reference
         nesting_reference.title = 'title'
-        ReferenceFormatterCache.instance.populate nesting_reference
+        ReferenceFormatterCache.populate nesting_reference
         nestee = create :nested_reference, nesting_reference: nesting_reference
-        ReferenceFormatterCache.instance.populate nestee
+        ReferenceFormatterCache.populate nestee
         nesting_reference.title = 'Title'
         nesting_reference.save!
 
@@ -26,8 +26,8 @@ describe ReferenceObserver do
     it "invalidates the cache for the document's reference" do
       reference = create :article_reference
       reference_document = create :reference_document, reference: reference
-      ReferenceFormatterCache.instance.populate reference
-      ReferenceFormatterCache.instance.invalidate reference
+      ReferenceFormatterCache.populate reference
+      ReferenceFormatterCache.invalidate reference
       ReferenceObserver.instance.before_update reference
       reference.reload
 

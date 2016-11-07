@@ -4,7 +4,7 @@ class ReferenceFormatterCache
   # Extend with Forwardable to avoid typing `ReferenceFormatterCache.instance`
   class << self
     extend Forwardable
-    def_delegators :instance, :invalidate, :get, :set
+    def_delegators :instance, :invalidate, :get, :set, :populate, :set
   end
 
   def invalidate reference

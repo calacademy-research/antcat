@@ -529,7 +529,7 @@ describe ReferenceDecorator do
     let(:reference) { create :article_reference }
 
     it "returns an html_safe string from the cache" do
-      ReferenceFormatterCache.instance.populate reference
+      ReferenceFormatterCache.populate reference
       expect(reference.decorate.format_ctrl_f).to be_html_safe
     end
   end
