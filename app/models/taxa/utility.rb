@@ -7,22 +7,33 @@ class Taxa::Utility
   def self.inherit_attributes_for_new_combination new_comb, old_comb, new_comb_parent
     new_comb.name = name_for_new_comb old_comb, new_comb_parent
 
-    new_comb.protonym = old_comb.protonym
-    new_comb.verbatim_type_locality = old_comb.verbatim_type_locality
-    new_comb.biogeographic_region = old_comb.biogeographic_region
-    new_comb.type_specimen_repository = old_comb.type_specimen_repository
-    new_comb.type_specimen_code = old_comb.type_specimen_code
-    new_comb.type_specimen_url = old_comb.type_specimen_url
+    attributes = [:protonym, :verbatim_type_locality, :biogeographic_region,
+      :type_specimen_repository, :type_specimen_code, :type_specimen_url]
+
+    attributes.each do |attribute|
+      old_comb_value = old_comb.send attribute
+      new_comb.send "#{attribute}=", old_comb_value
+    end
   end
 
   def self.name_for_new_comb old_comb, new_comb_parent
-    if new_comb_parent.is_a? Species
-      Name.parse [ new_comb_parent.name.genus_epithet,
-                   new_comb_parent.name.species_epithet,
-                   old_comb.name.epithet ].join(' ')
-    else
-      Name.parse [ new_comb_parent.name.genus_epithet, old_comb.name.species_epithet ].join(' ')
+    raise unless valid_rank_combination? old_comb, new_comb_parent
+
+    name_parts = [new_comb_parent.name.genus_epithet]
+    case new_comb_parent
+    when Species then name_parts << new_comb_parent.name.species_epithet <<
+                                    old_comb.name.epithet
+    when Genus   then name_parts << old_comb.name.species_epithet
+    else              raise "we should never get here"
     end
+
+    Name.parse name_parts.join(' ')
+  end
+
+  # TODO repurpose for `.inherit_attributes_for_new_combination`.
+  def self.valid_rank_combination? old_comb, new_comb_parent
+    old_comb.is_a?(Species) && new_comb_parent.is_a?(Genus) ||
+      old_comb.is_a?(Subspecies) && new_comb_parent.is_a?(Species)
   end
 
   def self.attributes_for_new_usage new_comb, old_comb

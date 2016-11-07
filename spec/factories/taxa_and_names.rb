@@ -261,7 +261,9 @@ end
 
 # Mimics `TaxaController#build_new_taxon` to avoid interference from the factories.
 def build_new_taxon rank
-  taxon = "#{rank}".titlecase.constantize.new
+  taxon_class = "#{rank}".titlecase.constantize
+
+  taxon = taxon_class.new
   taxon.build_name
   taxon.build_type_name
   taxon.build_protonym

@@ -30,6 +30,23 @@ describe Taxa::Utility do
     it "doesn't copy irrelevant fields`" do
       # TODO
     end
+
+    it "sets name" do
+      expect(new_comb.name.name).to be_blank
+      Taxa::Utility.inherit_attributes_for_new_combination new_comb, old_comb, new_comb_parent
+      expect(new_comb.name.name).to be_present
+    end
+
+    it "raises on invalid rank combinations" do
+      new_comb = create_species
+      old_comb = create_species
+      invalid_new_comb_parent = create_subfamily
+
+      expect do
+        Taxa::Utility.inherit_attributes_for_new_combination new_comb,
+          old_comb, invalid_new_comb_parent
+      end.to raise_error
+    end
   end
 
   describe ".name_for_new_comb" do

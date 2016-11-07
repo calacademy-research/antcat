@@ -1,3 +1,6 @@
+# All `Name` subclasses are for taxa. `AuthorName`s are used for references.
+# TODO add `self.abstract_class = true`? Many specs will break.
+
 class Name < ApplicationRecord
   include UndoTracker
   include Formatters::RefactorFormatter

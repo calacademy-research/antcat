@@ -94,19 +94,15 @@ class TaxaController < ApplicationController
 
   # TODO move logic to model?
   def update_parent
-    new_parent = Taxon.find(params[:new_parent_id])
+    new_parent = Taxon.find params[:new_parent_id]
     case new_parent
-    when Species
-      @taxon.species = new_parent
-    when Genus
-      @taxon.genus = new_parent
-    when Subgenus
-      @taxon.subgenus = new_parent
-    when Subfamily
-      @taxon.subfamily = new_parent
-    when Family
-      @taxon.family = new_parent
+    when Species   then @taxon.species = new_parent
+    when Genus     then @taxon.genus = new_parent
+    when Subgenus  then @taxon.subgenus = new_parent
+    when Subfamily then @taxon.subfamily = new_parent
+    when Family    then @taxon.family = new_parent
     end
+
     @taxon.save!
     redirect_to edit_taxa_path(@taxon)
   end
@@ -163,6 +159,7 @@ class TaxaController < ApplicationController
         end
       end
 
+      # TODO move to Taxa::HandlePreviousCombination?
       if @previous_combination
         Taxa::Utility.inherit_attributes_for_new_combination(taxon, @previous_combination, parent)
       end
@@ -207,9 +204,9 @@ class TaxaController < ApplicationController
     # TODO move to view/helper?
     def reset_epithet
       case @taxon
-      when Family then @taxon.name.to_s
+      when Family  then @taxon.name.to_s
       when Species then @taxon.name.genus_epithet
-      else ""
+      else              ""
       end
     end
 
@@ -238,8 +235,13 @@ class TaxaController < ApplicationController
       end
     end
 
+    # TODO move to model?
+    # This builds a `Name` without subclassing, not eg a `SpeciesName`,
+    # but it seems to work OK.
     def build_new_taxon rank
-      taxon = "#{rank}".titlecase.constantize.new
+      taxon_class = "#{rank}".titlecase.constantize
+
+      taxon = taxon_class.new
       taxon.build_name
       taxon.build_type_name
       taxon.build_protonym

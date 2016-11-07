@@ -84,6 +84,7 @@ class ReferencesController < ApplicationController
   end
 
   # TODO handle error, if any. Also in `#finish_reviewing` and `#restart_reviewing`.
+  # TODO allow JSON requests.
   def start_reviewing
     @reference.start_reviewing!
     make_default_reference @reference
@@ -261,6 +262,7 @@ class ReferencesController < ApplicationController
       DefaultReference.set session, reference
     end
 
+    # TODO probably extract to another infamous class.
     def save
       Reference.transaction do
         clear_document_params_if_necessary
@@ -277,6 +279,7 @@ class ReferencesController < ApplicationController
         # before validating, so we need to manually raise here.
         raise ActiveRecord::Rollback if @reference.errors.present?
 
+        # TODO maybe move to a callback, but maybe not.
         unless params[:possible_duplicate].present?
           if @reference.check_for_duplicate
             @possible_duplicate = true
@@ -297,8 +300,8 @@ class ReferencesController < ApplicationController
       params[:reference][:pagination] =
         case @reference
         when ArticleReference then params[:article_pagination]
-        when BookReference then params[:book_pagination]
-        else nil
+        when BookReference    then params[:book_pagination]
+        else                       nil
         end
     end
 
