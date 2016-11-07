@@ -17,72 +17,59 @@ FactoryGirl.define do
     name_html { name }
     epithet { name }
     epithet_html { name_html }
-  end
 
-  factory :family_name do
-    name 'Formicidae'
-    name_html { name }
-    epithet { name }
-    epithet_html { name_html }
-  end
+    factory :family_name, class: FamilyName do
+      name 'Formicidae'
+    end
 
-  factory :subfamily_name do
-    sequence(:name) { |n| "Subfamily#{n}" }
-    name_html { name }
-    epithet { name }
-    epithet_html { name_html }
-  end
+    factory :subfamily_name, class: SubfamilyName do
+      sequence(:name) { |n| "Subfamily#{n}" }
+    end
 
-  factory :tribe_name do
-    sequence(:name) { |n| "Tribe#{n}" }
-    name_html { name }
-    epithet { name }
-    epithet_html { name_html }
-  end
+    factory :tribe_name, class: TribeName do
+      sequence(:name) { |n| "Tribe#{n}" }
+    end
 
-  factory :subtribe_name do
-    sequence(:name) { |n| "Subtribe#{n}" }
-    name_html { name }
-    epithet { name }
-    epithet_html { name_html }
-  end
+    factory :subtribe_name, class: SubtribeName do
+      sequence(:name) { |n| "Subtribe#{n}" }
+    end
 
-  factory :genus_name do
-    sequence(:name) { |n| "Genus#{n}" }
-    name_html { "<i>#{name}</i>" }
-    epithet { name }
-    epithet_html { "<i>#{name}</i>" }
-  end
+    factory :genus_name, class: GenusName do
+      sequence(:name) { |n| "Genus#{n}" }
+      name_html { "<i>#{name}</i>" }
+      epithet_html { "<i>#{name}</i>" }
+    end
 
-  # TODO possibly broken
-  # from prod db
-  # Subgenus.first.name.name_html # "<i>Lasius</i> <i>(Acanthomyops)</i>"
-  #
-  # from
-  # $rails console test --sandbox
-  # SunspotTest.stub
-  # FactoryGirl.create :subgenus
-  # Subgenus.first.name.name_html # "<i>Atta</i> <i>(Atta (Subgenus2))</i>"
-  factory :subgenus_name do
-    sequence(:name) { |n| "Atta (Subgenus#{n})" }
-    name_html { "<i>Atta</i> <i>(#{name})</i>" }
-    epithet { name.split(' ').last }
-    epithet_html { "<i>#{epithet}</i>" }
-  end
+    # TODO possibly broken
+    # from prod db
+    # Subgenus.first.name.name_html # "<i>Lasius</i> <i>(Acanthomyops)</i>"
+    #
+    # from
+    # $rails console test --sandbox
+    # SunspotTest.stub
+    # FactoryGirl.create :subgenus
+    # Subgenus.first.name.name_html # "<i>Atta</i> <i>(Atta (Subgenus2))</i>"
+    factory :subgenus_name, class: SubgenusName do
+      sequence(:name) { |n| "Atta (Subgenus#{n})" }
+      name_html { "<i>Atta</i> <i>(#{name})</i>" }
+      epithet { name.split(' ').last }
+      epithet_html { "<i>#{epithet}</i>" }
+    end
 
-  factory :species_name do
-    sequence(:name) { |n| "Atta species#{n}" }
-    name_html { "<i>#{name}</i>" }
-    epithet { name.split(' ').last }
-    epithet_html { "<i>#{epithet}</i>" }
-  end
+    factory :species_name, class: SpeciesName do
+      sequence(:name) { |n| "Atta species#{n}" }
+      name_html { "<i>#{name}</i>" }
+      epithet { name.split(' ').last }
+      epithet_html { "<i>#{epithet}</i>" }
+    end
 
-  factory :subspecies_name do
-    sequence(:name) { |n| "Atta species subspecies#{n}" }
-    name_html { "<i>#{name}</i>" }
-    epithet { name.split(' ').last }
-    epithets { name.split(' ')[-2..-1].join(' ') }
-    epithet_html { "<i>#{epithet}</i>" }
+    factory :subspecies_name, class: SubspeciesName do
+      sequence(:name) { |n| "Atta species subspecies#{n}" }
+      name_html { "<i>#{name}</i>" }
+      epithet { name.split(' ').last }
+      epithets { name.split(' ')[-2..-1].join(' ') }
+      epithet_html { "<i>#{epithet}</i>" }
+    end
   end
 
   factory :taxon do
@@ -90,77 +77,59 @@ FactoryGirl.define do
     association :type_name, factory: :species_name
     protonym
     status 'valid'
-  end
 
-  factory :family do
-    association :name, factory: :family_name
-    association :type_name, factory: :genus_name
-    protonym
-    status 'valid'
-  end
+    factory :family, class: Family do
+      association :name, factory: :family_name
+      association :type_name, factory: :genus_name
+    end
 
-  factory :subfamily do
-    association :name, factory: :subfamily_name
-    association :type_name, factory: :genus_name
-    protonym
-    status 'valid'
-  end
+    factory :subfamily, class: Subfamily do
+      association :name, factory: :subfamily_name
+      association :type_name, factory: :genus_name
+    end
 
-  factory :tribe do
-    association :name, factory: :tribe_name
-    association :type_name, factory: :genus_name
-    subfamily
-    protonym
-    status 'valid'
-  end
+    factory :tribe, class: Tribe do
+      association :name, factory: :tribe_name
+      association :type_name, factory: :genus_name
+      subfamily
+    end
 
-  # FIX? Broken. The are 8 SubtribeName:s in the prod db, but no
-  # Subtribe:s, so low-priority.
-  factory :subtribe do
-    association :name, factory: :subtribe_name
-    association :type_name, factory: :genus_name
-    subfamily
-    protonym
-    status 'valid'
-  end
+    # FIX? Broken. The are 8 SubtribeName:s in the prod db, but no
+    # Subtribe:s, so low-priority.
+    factory :subtribe, class: Subtribe do
+      association :name, factory: :subtribe_name
+      association :type_name, factory: :genus_name
+      subfamily
+    end
 
-  factory :genus do
-    association :name, factory: :genus_name
-    association :type_name, factory: :species_name
-    tribe
-    subfamily { |a| a.tribe && a.tribe.subfamily }
-    protonym
-    status 'valid'
-  end
+    factory :genus, class: Genus do
+      association :name, factory: :genus_name
+      association :type_name, factory: :species_name
+      tribe
+      subfamily { |a| a.tribe && a.tribe.subfamily }
+    end
 
-  factory :subgenus do
-    association :name, factory: :subgenus_name
-    association :type_name, factory: :species_name
-    genus
-    protonym
-    status 'valid'
-  end
+    factory :subgenus, class: Subgenus do
+      association :name, factory: :subgenus_name
+      association :type_name, factory: :species_name
+      genus
+    end
 
-  factory :species_group_taxon do
-    association :name, factory: :species_name
-    genus
-    protonym
-    status 'valid'
-  end
+    factory :species_group_taxon, class: SpeciesGroupTaxon do
+      association :name, factory: :species_name
+      genus
+    end
 
-  factory :species do
-    association :name, factory: :species_name
-    genus
-    protonym
-    status 'valid'
-  end
+    factory :species, class: Species do
+      association :name, factory: :species_name
+      genus
+    end
 
-  factory :subspecies do
-    association :name, factory: :species_name
-    species
-    genus
-    protonym
-    status 'valid'
+    factory :subspecies, class: Subspecies do
+      association :name, factory: :species_name
+      species
+      genus
+    end
   end
 end
 

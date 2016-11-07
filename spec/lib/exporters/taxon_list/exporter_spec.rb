@@ -17,7 +17,7 @@ describe Exporters::TaxonList::Exporter do
     end
 
     def create_taxon author_name, year
-      reference = create(:article_reference, citation_year: year, author_names: [author_name])
+      reference = create :article_reference, citation_year: year, author_names: [author_name]
       authorship = create :citation, reference: reference
       name = create :species_name
       protonym = create :protonym, authorship: authorship, name: name
