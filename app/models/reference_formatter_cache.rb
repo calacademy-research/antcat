@@ -1,8 +1,7 @@
 class ReferenceFormatterCache
   include Singleton
 
-  # Extend with Forwardable to avoid typing `ReferenceFormatterCache.instance...`
-  # I-N-S-T-A-N-C-E. Too many letters. Lazy, yes, but it also looks better.
+  # Extend with Forwardable to avoid typing `ReferenceFormatterCache.instance`
   class << self
     extend Forwardable
     def_delegators :instance, :invalidate, :get, :set
@@ -42,7 +41,7 @@ class ReferenceFormatterCache
   # Used in tests. Can also be manually invoked in prod/dev.
   def regenerate reference
     set reference, reference.decorate.format!, :formatted_cache
-    set reference, reference.decorate.format_inline_citation!, :inline_citation_cache
+    set reference, reference.decorate.to_link, :inline_citation_cache
   end
   alias_method :populate, :regenerate
 

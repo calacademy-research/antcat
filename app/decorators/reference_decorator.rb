@@ -1,6 +1,4 @@
-# Many methods here are prefixed "format_" to avoid clashing with the objects's
-# methods, or because they were named so in the old `ReferenceFormatter`
-# Slightly ugly but I'm not sure what to do now.
+# TODO something. Less methods. Method names.
 
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the `h` method
@@ -70,34 +68,21 @@ class ReferenceDecorator < ApplicationDecorator
     string
   end
 
-  # TODO it may be safe to remove `options` now that the AntWeb exception
-  # has been extracted into `#format_inline_citation_without_expansion`.
   def format_inline_citation
     cached = reference.cached :inline_citation_cache
     return cached.html_safe if cached
 
-    generated = format_inline_citation!
+    generated = to_link
     reference.set_cache generated, :inline_citation_cache
     generated
-  end
-
-  def format_inline_citation! options = {}
-    to_link options
   end
 
   def format_inline_citation_without_links
     format_author_last_names
   end
 
-  # Only used for the AntWeb export.
-  # TODOs:
-  # * Rename
-  # * call `to_link expansion: false` directly.
-  # * Remove options from `format_inline_citation! options = {}`
-  # * Replace all `format_inline_citation!` --> `to_link expansion: false`
-  # * Rename `to_link`
   def format_inline_citation_without_expansion
-    format_inline_citation! expansion: false
+    to_link expansion: false
   end
 
   # TODO see LinkHelper#link.
