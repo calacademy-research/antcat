@@ -38,14 +38,13 @@ describe ReferenceFormatterCache do
         expect(reference.inline_citation_cache).to be_nil
 
         decorated = reference.decorate
-        formatted_cache_value = decorated.send :generate_formatted
-        inline_citation_cache_value = decorated.inline_citation
+        generated_formatted_cache = decorated.send :generate_formatted
+        generated_inline_citation_cache = decorated.send :generate_inline_citation
 
-        expect(reference.formatted_cache).to eq formatted_cache_value
-        expect(reference.inline_citation_cache).to be_nil
         ReferenceFormatterCache.populate reference
-        expect(reference.formatted_cache).to eq formatted_cache_value
-        expect(reference.inline_citation_cache).to eq inline_citation_cache_value
+
+        expect(reference.formatted_cache).to eq generated_formatted_cache
+        expect(reference.inline_citation_cache).to eq generated_inline_citation_cache
       end
     end
 

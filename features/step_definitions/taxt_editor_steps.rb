@@ -1,5 +1,5 @@
-Then(/^the taxt editor should contain the editable taxt for "(.*?)"$/) do |key|
-  reference = find_reference_by_key key
+Then(/^the taxt editor should contain the editable taxt for "(.*?)"$/) do |keey|
+  reference = find_reference_by_keey keey
   element = find '#name'
   expect(element.value.strip).to eq Taxt.to_editable_reference(reference)
 end

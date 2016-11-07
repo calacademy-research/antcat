@@ -445,19 +445,6 @@ describe ReferenceDecorator do
     end
   end
 
-  describe "#format_inline_citation_without_links" do
-    context "nonmissing references" do
-      it "defers to the key" do
-        key = double
-        reference = create :article_reference
-        decorated = reference.decorate
-        expect(decorated).to receive(:format_author_last_names).and_return key
-
-        decorated.format_inline_citation_without_links
-      end
-    end
-  end
-
   describe "#format_timestamp" do
     it "uses a short format" do
       expect(nil_decorator.send(:format_timestamp, Time.parse('2001-1-2'))).to eq '2001-01-02'

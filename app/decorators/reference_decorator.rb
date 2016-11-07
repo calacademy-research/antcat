@@ -1,13 +1,26 @@
 # TODO something. Less methods. Method names.
 # TODO investigate using views.
+# TODO use less decorators in general.
 
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the `h` method
   delegate_all
 
   # TODO yet another "FALNs" -- probably remove.
-  # TODO maybe use this one and deprecate the others.
   def key
+    raise "use 'keey' (not a joke)"
+  end
+
+  # New! "THE KEEY" -- Stupid Name Because Useful(tm).
+  #
+  # TODO trying to consolidate all "FALNs" here.
+  # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978"
+  # "key" is impossible to grep for, and a word with too many meanings.
+  # Variations of "last author names" or "ref_key" are doomed to fail.
+  # So, "keey". Obviously, do not show this spelling to users or use
+  # it in filesnames or the database.
+  # See also `references.key_cache`.
+  def keey
     format_author_last_names
   end
 
@@ -105,11 +118,11 @@ class ReferenceDecorator < ApplicationDecorator
   # TODO probably rename.
   # TODO Keep.
   def to_link_without_expansion
-    reference_key_string ||= format_author_last_names # Another "FALNs".
-    reference_string ||= formatted
+    reference_keey_string = keey
+    reference_string = formatted
 
     content = []
-    content << helpers.link(reference_key_string,
+    content << helpers.link(reference_keey_string,
                     "http://antcat.org/references/#{reference.id}",
                     title: make_to_link_title(reference_string),
                     target: '_blank')
@@ -129,21 +142,20 @@ class ReferenceDecorator < ApplicationDecorator
       string
     end
 
-
     # TODO see LinkHelper#link.
     # A.k.a. "FORMATTED WITH HTML" -- Generate-it version!
     def generate_inline_citation
-      reference_key_string = format_author_last_names # Another "FALNs".
+      reference_keey_string = format_author_last_names # Another "FALNs".
       reference_string = formatted
 
-      helpers.content_tag :span, class: "reference_key_and_expansion" do
-        content = helpers.link reference_key_string, '#',
+      helpers.content_tag :span, class: "reference_keey_and_expansion" do
+        content = helpers.link reference_keey_string, '#',
                        title: make_to_link_title(reference_string),
-                       class: "reference_key"
+                       class: "reference_keey"
 
-        content << helpers.content_tag(:span, class: "reference_key_expansion") do
+        content << helpers.content_tag(:span, class: "reference_keey_expansion") do
           inner_content = []
-          inner_content << reference_key_expansion_text(reference_string, reference_key_string)
+          inner_content << reference_keey_expansion_text(reference_string, reference_keey_string)
           inner_content << format_reference_document_link
           inner_content << goto_reference_link
           inner_content.reject(&:blank?).join(' ').html_safe
@@ -152,10 +164,10 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     # TODO rename so it's more clear that it's used in `generate_inline_citation`.
-    def reference_key_expansion_text reference_string, reference_key_string
+    def reference_keey_expansion_text reference_string, reference_keey_string
       helpers.content_tag :span, reference_string,
-        class: "reference_key_expansion_text",
-        title: reference_key_string
+        class: "reference_keey_expansion_text",
+        title: reference_keey_string
     end
 
     def format_timestamp timestamp
@@ -231,7 +243,8 @@ class ReferenceDecorator < ApplicationDecorator
 
     # Note: `references.author_names_string_cache` may also be useful.
     # The original "FALNs".
-    # TODO this also includes the citation year, and initials, not just last names.
+    # TODO this also includes the citation year, not just last names.
+    # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978"
     def format_author_last_names
       return '' unless reference.id
       names = reference.author_names.map &:last_name
@@ -248,6 +261,7 @@ class ReferenceDecorator < ApplicationDecorator
       end << ', ' << reference.short_citation_year
     end
 
+    # Looks like: "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
     # TODO try to remove in favor of direct attribute access.
     def format_author_names
       make_html_safe reference.author_names_string

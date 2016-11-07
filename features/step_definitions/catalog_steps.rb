@@ -1,8 +1,8 @@
 Then(/^I should ?(not)? see the reference key "([^"]+)"$/) do |should_not, text|
   if should_not == "not"
-    expect(page).to have_no_css ".reference_key", text: text
+    expect(page).to have_no_css ".reference_keey", text: text
   else
-    expect(page).to have_css ".reference_key", text: text
+    expect(page).to have_css ".reference_keey", text: text
   end
 end
 
@@ -10,15 +10,15 @@ Then(/^I should (not )?see the reference key expansion$/) do |should_not|
   selector = should_not ? :should_not : :should
   visible = should_not ? :false : :true
 
-  find(".reference_key_expansion", visible: visible).send(selector, be_visible)
+  find(".reference_keey_expansion", visible: visible).send(selector, be_visible)
 end
 
 When(/^I click the reference key$/) do
-  find(".reference_key").click
+  find(".reference_keey").click
 end
 
 When(/^I click the reference key expansion$/) do
-  find(".reference_key_expansion").click
+  find(".reference_keey_expansion").click
 end
 
 Then(/^I should see the catalog entry for "([^"]*)"$/) do |taxon|

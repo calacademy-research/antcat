@@ -19,8 +19,8 @@ Then(/^the widget results should be "([^"]*)"$/) do |contents|
   expect(page).to have_css '#results', text: contents
 end
 
-Then(/^the widget results should be the ID for "([^"]*)"$/) do |key|
-  reference = find_reference_by_key key
+Then(/^the widget results should be the ID for "([^"]*)"$/) do |keey|
+  reference = find_reference_by_keey keey
   step %{the widget results should be "#{reference.id}"}
 end
 

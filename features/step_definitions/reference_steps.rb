@@ -10,7 +10,7 @@ Given(/^(?:this|these) references? exists?$/) do |table|
 
     # Not sure why this is required, but we have to do it to avoid having to
     # add empty doi fields in the Cucumber data tables. Perhaps because
-    # Cucumber's "doi" hash key conflicts with FactoryGirl's :doi symbol?
+    # Cucumber's "doi" hash keey conflicts with FactoryGirl's :doi symbol?
     doi = hash.delete "doi"
 
     hash.merge! journal: journal,
@@ -203,22 +203,22 @@ Then(/^the review status on the Ward reference should change to "(.*?)"$/) do |s
   end
 end
 
-Then(/^it should (not )?show "(.*?)" as the default$/) do |should_selector, key|
-  author = key.split(' ').first
+Then(/^it should (not )?show "(.*?)" as the default$/) do |should_selector, keey|
+  author = keey.split(' ').first
   within find("tr", text: author) do
     step %{I should #{should_selector}see "Default"}
   end
 end
 
-def find_reference_by_key key
-  parts = key.split ' '
+def find_reference_by_keey keey
+  parts = keey.split ' '
   last_name = parts[0]
   year = parts[1]
   Reference.find_by(principal_author_last_name_cache: last_name, year: year.to_i)
 end
 
-Given(/^the default reference is "([^"]*)"$/) do |key|
-  reference = find_reference_by_key key
+Given(/^the default reference is "([^"]*)"$/) do |keey|
+  reference = find_reference_by_keey keey
   DefaultReference.stub(:get).and_return reference
 end
 

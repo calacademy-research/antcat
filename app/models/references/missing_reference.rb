@@ -44,6 +44,8 @@ class MissingReference < Reference
     records_to_destroy.each { |id| find(id.id).destroy }
   end
 
+  # TODO remove? `references.key_cache_no_commas` was removed in
+  # `20140116210057_rename_nester.rb`.
   def find_replacement
     search_term = citation.gsub /,/, ''
     Reference.where(key_cache_no_commas: search_term).first

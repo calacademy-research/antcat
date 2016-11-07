@@ -5,20 +5,20 @@ describe Taxt do
     describe ".to_editable" do
       context "References" do
         it "uses the inline citation format followed by the id, with type number" do
-          decorated = double 'key'
+          decorated = double 'keey'
           reference = double 'reference', id: 36
           expect(reference).to receive(:decorate).and_return decorated
-          expect(decorated).to receive(:key).and_return 'Fisher, 1922'
+          expect(decorated).to receive(:keey).and_return 'Fisher, 1922'
           expect(Reference).to receive(:find).and_return reference
-          editable_key = Taxt.send :id_for_editable, reference.id, 1
+          editable_keey = Taxt.send :id_for_editable, reference.id, 1
 
-          expect(Taxt.to_editable("{ref #{reference.id}}")).to eq "{Fisher, 1922 #{editable_key}}"
+          expect(Taxt.to_editable("{ref #{reference.id}}")).to eq "{Fisher, 1922 #{editable_keey}}"
         end
 
         it "handles missing references" do
           reference = create :missing_reference, citation: 'Fisher, 2011'
-          editable_key = Taxt.send :id_for_editable, reference.id, 1
-          expect(Taxt.to_editable("{ref #{reference.id}}")).to eq "{Fisher, 2011 #{editable_key}}"
+          editable_keey = Taxt.send :id_for_editable, reference.id, 1
+          expect(Taxt.to_editable("{ref #{reference.id}}")).to eq "{Fisher, 2011 #{editable_keey}}"
         end
 
         it "handles references we don't even know are missing" do
@@ -29,16 +29,16 @@ describe Taxt do
       context "Taxa" do
         it "uses the taxon's name followed by its id" do
           genus = create_genus 'Atta'
-          editable_key = Taxt.send :id_for_editable, genus.id, 2
-          expect(Taxt.to_editable("{tax #{genus.id}}")).to eq "{Atta #{editable_key}}"
+          editable_keey = Taxt.send :id_for_editable, genus.id, 2
+          expect(Taxt.to_editable("{tax #{genus.id}}")).to eq "{Atta #{editable_keey}}"
         end
       end
 
       context "Names" do
         it "uses the name followed by its id" do
           genus = create_genus 'Atta'
-          editable_key = Taxt.send :id_for_editable, genus.name.id, 3
-          expect(Taxt.to_editable("{nam #{genus.name.id}}")).to eq "{Atta #{editable_key}}"
+          editable_keey = Taxt.send :id_for_editable, genus.name.id, 3
+          expect(Taxt.to_editable("{nam #{genus.name.id}}")).to eq "{Atta #{editable_keey}}"
         end
       end
     end
@@ -47,17 +47,17 @@ describe Taxt do
       describe "{ref}" do
         it "uses the inline citation format followed by the id" do
           reference = create :article_reference
-          editable_key = Taxt.send :id_for_editable, reference.id, 1
-          expect(Taxt.from_editable("{Fisher, 1922 #{editable_key}}")).to eq "{ref #{reference.id}}"
+          editable_keey = Taxt.send :id_for_editable, reference.id, 1
+          expect(Taxt.from_editable("{Fisher, 1922 #{editable_keey}}")).to eq "{ref #{reference.id}}"
         end
 
         it "handles more than one reference" do
           reference = create :article_reference
           other_reference = create :article_reference
-          editable_key = Taxt.send :id_for_editable, reference.id, 1
-          other_editable_key = Taxt.send :id_for_editable, other_reference.id, 1
+          editable_keey = Taxt.send :id_for_editable, reference.id, 1
+          other_editable_keey = Taxt.send :id_for_editable, other_reference.id, 1
 
-          results = Taxt.from_editable "{Fisher, 1922 #{editable_key}}, also {Bolton, 1970 #{other_editable_key}}"
+          results = Taxt.from_editable "{Fisher, 1922 #{editable_keey}}, also {Bolton, 1970 #{other_editable_keey}}"
           expect(results).to eq "{ref #{reference.id}}, also {ref #{other_reference.id}}"
         end
       end
@@ -65,8 +65,8 @@ describe Taxt do
       context "Taxa" do
         it "uses the taxon's name followed by its id" do
           genus = create_genus 'Atta'
-          editable_key = Taxt.send :id_for_editable, genus.id, 2
-          expect(Taxt.from_editable("{Atta #{editable_key}}")).to eq "{tax #{genus.id}}"
+          editable_keey = Taxt.send :id_for_editable, genus.id, 2
+          expect(Taxt.from_editable("{Atta #{editable_keey}}")).to eq "{tax #{genus.id}}"
         end
       end
     end

@@ -31,6 +31,6 @@ end
 
 # Misc
 Then(/^the taxon mouseover should contain "(.*?)"$/) do |text|
-  element = find '.reference_key'
+  element = find '.reference_keey'
   expect(element['title']).to have_content text
 end

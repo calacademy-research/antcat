@@ -9,7 +9,7 @@ class MissingReferenceDecorator < ReferenceDecorator
     make_html_safe reference.citation
   end
 
-  def key
+  def keey
     reference.citation
   end
 

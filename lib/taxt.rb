@@ -76,7 +76,7 @@ module Taxt
   end
 
   def self.to_editable_reference reference
-    to_editable_tag reference.id, reference.decorate.key, REFERENCE_TAG_TYPE
+    to_editable_tag reference.id, reference.decorate.keey, REFERENCE_TAG_TYPE
   end
 
   def self.to_editable_taxon taxon

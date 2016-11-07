@@ -1,55 +1,53 @@
+# TODO move file.
+
 require 'spec_helper'
 
-describe "ReferenceDecorator formerly ReferenceKey" do
+describe "ReferenceDecorator" do
   let(:bolton) { create :author_name, name: 'Bolton, B.' }
   let(:fisher) { create :author_name, name: 'Fisher, B.' }
   let(:ward) { create :author_name, name: 'Ward, P.S.' }
 
-  # Representing as a string
   describe "#key" do
-    context "a new record" do
-      it "is blank" do
-        # TODO
-        skip """broke after removing
-        `return '' unless reference.id` from `ReferenceDecorator#format_author_last_names`
-        I cannot see why this would be useful, so probably remove."""
-        expect(BookReference.new.decorate.key).to eq ''
+      it "raises because it's impossible to search for it" do
+        expect { BookReference.new.decorate.key }.to raise_error
       end
-    end
+  end
 
+  # Representing as a string
+  describe "#keey" do
     it "Citation year with extra" do
       reference = create :article_reference,
         author_names: [bolton],
         citation_year: '1970a ("1971")'
-      expect(reference.decorate.key).to eq 'Bolton, 1970a'
+      expect(reference.decorate.keey).to eq 'Bolton, 1970a'
     end
 
     it "No authors" do
       reference = create :article_reference,
         author_names: [],
         citation_year: '1970a'
-      expect(reference.decorate.key).to eq '[no authors], 1970a'
+      expect(reference.decorate.keey).to eq '[no authors], 1970a'
     end
 
     it "One author" do
       reference = create :article_reference,
         author_names: [bolton],
         citation_year: '1970a'
-      expect(reference.decorate.key).to eq 'Bolton, 1970a'
+      expect(reference.decorate.keey).to eq 'Bolton, 1970a'
     end
 
     it "Two authors" do
       reference = create :article_reference,
         author_names: [bolton, fisher],
         citation_year: '1970a'
-      expect(reference.decorate.key).to eq 'Bolton & Fisher, 1970a'
+      expect(reference.decorate.keey).to eq 'Bolton & Fisher, 1970a'
     end
 
     it "Three authors" do
       reference = create :article_reference,
         author_names: [bolton, fisher, ward],
         citation_year: '1970a'
-      expect(reference.decorate.key).to eq 'Bolton, Fisher & Ward, 1970a'
+      expect(reference.decorate.keey).to eq 'Bolton, Fisher & Ward, 1970a'
     end
   end
 
@@ -70,10 +68,10 @@ describe "ReferenceDecorator formerly ReferenceKey" do
     it "creates a link to the reference" do
       allow(@reference).to receive(:downloadable?).and_return true
       expect(@reference.decorate.inline_citation).to eq(
-        %{<span class="reference_key_and_expansion">} +
-          %{<a class="reference_key" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
-          %{<span class="reference_key_expansion">} +
-            %{<span class="reference_key_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
+        %{<span class="reference_keey_and_expansion">} +
+          %{<a class="reference_keey" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
+          %{<span class="reference_keey_expansion">} +
+            %{<span class="reference_keey_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
             %{ } +
             %{<a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
             %{<a class="document_link" target="_blank" href="example.com">PDF</a>} +
@@ -87,10 +85,10 @@ describe "ReferenceDecorator formerly ReferenceKey" do
     it "creates a link to the reference without the PDF link if the user isn't logged in" do
       allow(@reference).to receive(:downloadable?).and_return false
       expect(@reference.decorate.inline_citation).to eq(
-        %{<span class="reference_key_and_expansion">} +
-          %{<a class="reference_key" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
-          %{<span class="reference_key_expansion">} +
-            %{<span class="reference_key_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span> } +
+        %{<span class="reference_keey_and_expansion">} +
+          %{<a class="reference_keey" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
+          %{<span class="reference_keey_expansion">} +
+            %{<span class="reference_keey_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span> } +
             %{<a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
             %{<a class="goto_reference_link" target="_blank" href="/references/#{@reference.id}">#{@reference.id}</a>} +
           %{</span>} +

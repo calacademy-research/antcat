@@ -40,7 +40,7 @@ class Reference < ApplicationRecord
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
   has_paper_trail meta: { change_id: :get_current_change_id }
-  tracked parameters: ->(reference) do { name: reference.decorate.key } end
+  tracked parameters: ->(reference) do { name: reference.decorate.keey } end
 
   def self.requires_title
     true

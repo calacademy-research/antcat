@@ -1,6 +1,6 @@
 $ ->
   $(document).foundation()
-  setup_reference_keys()
+  setup_reference_keeys()
 
 #_something seems to override this method when it's named
 # enable - it doesn't get called
@@ -10,10 +10,10 @@ $.fn.undisable = ->
 $.fn.disable = ->
   @.addClass('ui-state-disabled').attr('disabled', 'true')
 
-setup_reference_keys = ->
-  $('.reference_key, .reference_key_expansion_text').on 'click', ->
-    $(@).closest('.reference_key_and_expansion')
-      .find('.reference_key, .reference_key_expansion')
+setup_reference_keeys = ->
+  $('.reference_keey, .reference_keey_expansion_text').on 'click', ->
+    $(@).closest('.reference_keey_and_expansion')
+      .find('.reference_keey, .reference_keey_expansion')
       .toggle()
     false
 
