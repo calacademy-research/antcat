@@ -47,12 +47,6 @@ class Reference < ApplicationRecord
     true
   end
 
-  # TODO possibly unused or only used in tests.
-  def to_s
-    raise "reference.to_s"
-    "#{author_names_string} #{citation_year}. #{id}."
-  end
-
   # TODO make it more obvious which cache (also `set_cache`).
   def invalidate_cache
     ReferenceFormatterCache.invalidate self
@@ -63,8 +57,14 @@ class Reference < ApplicationRecord
   end
 
   # TODO what is this?
+  # TODO probably remove, seems like it isn't used except in:
+  # `expect(reference.authors.first).to eq an_author_name.author`
   def authors reload = false
     raise "authors reload = true" if reload
+    raise "authors reload = false" unless reload
+
+    raise "extra much if we get here..."
+
     author_names(reload).map &:author
   end
 
@@ -83,6 +83,10 @@ class Reference < ApplicationRecord
     self.author_names_string_cache = string
   end
 
+  # Possibly only used for sorting. The principal author is decided
+  # by generated all author name and picking the first, and that order
+  # is presumably decided by `reference_author_names.position`.
+  # Not sure if it would make sense to use this in any other way.
   def principal_author_last_name
     principal_author_last_name_cache
   end

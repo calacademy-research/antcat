@@ -13,8 +13,6 @@ Reference#principal_author_last_name_cache
 Reference#reference_author_names
 Reference#author_names_suffix
 Reference#author_names
-Reference#to_s
-ReferenceDecorator#format_author_names
 ReferenceDecorator#keey
 ReferenceDecorator#format_author_last_names
 ReferenceDecorator#format_authorship_html
@@ -36,7 +34,34 @@ In Protonym:
 So, we're back in Citation which means we're sometimes back in
 Reference and sometimes in ReferenceDecorator.
 
+---------------
+
+Examples from `r = Reference.first`
+
+r.author_names # AuthorName CollectionProxy
+
+r.key_cache # "Abdul-Rassoul, Dawah & Othman, 1978"
+
+r.decorate.keey # "Abdul-Rassoul, Dawah & Othman, 1978"
+
+r.decorate.send :format_author_last_names # same as `r.decorate.keey`
+
+r.author_names_string_cache # "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
+
+r.author_names_string # same as `r.author_names_string_cache`
+
+r.authors # Array of `Author`s
+
+r.reference_author_names # ReferenceAuthorName CollectionProxy
+
+r.principal_author_last_name # "Abdul-Rassoul"; possibly only used for sorting.
+
+r.author # same as `r.principal_author_last_name`
+
+r.author_names_suffix # nil; probably non-nil for things like ", Jr."
+
 =end
+
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the `h` method
   delegate_all
