@@ -19,9 +19,4 @@ namespace :references do
     Progress.show_count references_with_documents_count, Progress.processed_count, "with documents"
     Progress.show_count error_count, references_with_documents_count, "of those with documents, not found"
   end
-
-  desc 'Replace MissingReferences'
-  task replace_missing: :environment do
-    MissingReference.replace_all true
-  end
 end

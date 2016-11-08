@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161108051405) do
+ActiveRecord::Schema.define(version: 20161108150446) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -257,7 +257,6 @@ ActiveRecord::Schema.define(version: 20161108051405) do
     t.string   "author_names_suffix",              limit: 255
     t.string   "principal_author_last_name_cache", limit: 255
     t.string   "reason_missing",                   limit: 255
-    t.string   "key_cache",                        limit: 255
     t.string   "review_state",                     limit: 255
     t.text     "formatted_cache",                  limit: 65535
     t.text     "inline_citation_cache",            limit: 65535

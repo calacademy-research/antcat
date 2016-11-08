@@ -50,12 +50,6 @@ module NavigationHelpers
     when /^the page for that reference$/
       reference_path(@reference || Reference.first)
 
-    when /^the missing references page$/
-      '/missing_references'
-    when /^the missing reference edit page for "([^"]*)"$/
-      reference = MissingReference.find_by(citation: $1)
-      "/missing_references/#{reference.id}/edit"
-
     when /^the merge authors page$/
       merge_authors_path
     when /^the authors page$/

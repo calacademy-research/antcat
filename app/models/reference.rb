@@ -2,7 +2,6 @@
 
 require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_search'
-require_dependency 'references/reference_utility'
 require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord

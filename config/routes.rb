@@ -62,7 +62,6 @@ AntCat::Application.routes.draw do
       get :wikipedia_export
     end
   end
-  resources :missing_references, only: [:index, :edit, :update]
 
   resources :taxa, except: [:index, :show] do
     member do

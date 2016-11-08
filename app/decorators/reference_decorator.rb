@@ -40,9 +40,6 @@ Examples from `r = Reference.first`
 
 r.author_names # AuthorName CollectionProxy
 
-# TODO remove key_cache
-r.key_cache # "Abdul-Rassoul, Dawah & Othman, 1978"
-
 r.decorate.keey # "Abdul-Rassoul, Dawah & Othman, 1978"
 
 r.author_names_string_cache # "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
@@ -79,8 +76,6 @@ class ReferenceDecorator < ApplicationDecorator
   # Variations of "last author names" or "ref_key" are doomed to fail.
   # So, "keey". Obviously, do not show this spelling to users or use
   # it in filesnames or the database.
-  #
-  # See also `references.key_cache`.
   #
   # Note 1: this the new name of `#format_author_last_names` (the original "FALNs").
   # Note 2: `references.author_names_string_cache` may also be useful.
