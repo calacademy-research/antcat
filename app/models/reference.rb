@@ -56,20 +56,9 @@ class Reference < ApplicationRecord
     ReferenceFormatterCache.set self, value, field
   end
 
-  # TODO what is this?
-  # TODO probably remove, seems like it isn't used except in:
-  # `expect(reference.authors.first).to eq an_author_name.author`
-  def authors reload = false
-    raise "authors reload = true" if reload
-    raise "authors reload = false" unless reload
-
-    raise "extra much if we get here..."
-
-    author_names(reload).map &:author
-  end
-
   # TODO remove in favor of just using `principal_author_last_name`?
   def author
+    $stdout.puts "Reference#author".red
     principal_author_last_name
   end
 

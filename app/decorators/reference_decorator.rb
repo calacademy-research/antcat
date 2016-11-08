@@ -84,9 +84,6 @@ class ReferenceDecorator < ApplicationDecorator
   # Note 2: `references.author_names_string_cache` may also be useful.
   # Note 3: very similar to `Citation#author_names_string` (which doesn't include year).
   def keey
-    # TODO remove this check.
-    return '' unless reference.id
-
     names = reference.author_names.map &:last_name
     case names.size
     when 0

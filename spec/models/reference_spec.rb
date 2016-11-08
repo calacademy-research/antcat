@@ -19,10 +19,6 @@ describe Reference do
       expect(reference.author_names.first).to eq an_author_name
     end
 
-    it "has many authors" do
-      expect(reference.authors.first).to eq an_author_name.author
-    end
-
     describe "Nested references" do
       let!(:nesting_reference) { create :reference }
       let(:nestee) { create :nested_reference, nesting_reference: nesting_reference }
