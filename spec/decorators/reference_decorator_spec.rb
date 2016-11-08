@@ -8,7 +8,7 @@ describe ReferenceDecorator do
   # PDF link formatting
   describe "#format_reference_document_link" do
     it "creates a link" do
-      reference = create :reference
+      reference = build_stubbed :reference
       allow(reference).to receive(:downloadable?).and_return true
       allow(reference).to receive(:url).and_return 'example.com'
       expect(reference.decorate.format_reference_document_link)
@@ -419,31 +419,33 @@ describe ReferenceDecorator do
     end
   end
 
-  # returns the display string for a review status
+  # Returns the display string for a review status.
   describe "#format_review_state" do
+    let(:reference) { build_stubbed :article_reference }
+
     it "handles 'reviewed'" do
-      reference = create :reference, review_state: 'reviewed'
-      expect(reference.decorate.format_review_state).to eq 'Reviewed'
+      reference.review_state = 'reviewed'
+      expect(reference).to have_formatted_review_state 'Reviewed'
     end
 
     it "handles 'reviewing'" do
-      reference = create :reference, review_state: 'reviewing'
-      expect(reference.decorate.format_review_state).to eq 'Being reviewed'
+      reference.review_state = 'reviewing'
+      expect(reference).to have_formatted_review_state 'Being reviewed'
     end
 
     it "handles 'none'" do
-      reference = create :reference, review_state: 'none'
-      expect(reference.decorate.format_review_state).to eq ''
+      reference.review_state = 'none'
+      expect(reference).to have_formatted_review_state ''
     end
 
     it "handles empty states" do
-      reference = create :reference, review_state: ''
-      expect(reference.decorate.format_review_state).to eq ''
+      reference.review_state = ''
+      expect(reference).to have_formatted_review_state ''
     end
 
     it "handles nil" do
-      reference = create :reference, review_state: nil
-      expect(reference.decorate.format_review_state).to eq ''
+      reference.review_state = nil
+      expect(reference).to have_formatted_review_state ''
     end
   end
 

@@ -20,6 +20,7 @@ class FeedbackController < ApplicationController
     @feedback.ip = request.remote_ip
     render_unprocessable and return if maybe_rate_throttle
 
+    # We're including the current name and email, or the index may lie in the future.
     if current_user
       @feedback.user = current_user
       @feedback.name = current_user.name
@@ -56,7 +57,7 @@ class FeedbackController < ApplicationController
 
   private
     def set_feedback
-      @feedback = Feedback.find(params[:id])
+      @feedback = Feedback.find params[:id]
     end
 
     def on_spam
@@ -65,11 +66,12 @@ class FeedbackController < ApplicationController
       render_unprocessable
     end
 
+    # TODO maybe move to model as `@feedback.same_ip_has_already_sent_too_many?`.
     def maybe_rate_throttle
-      return if current_user # logged-in users are never throttled
+      return if current_user # Logged-in users are never throttled.
 
-      max_feedbacks_in_timespan = 3
       timespan = 5.minutes.ago
+      max_feedbacks_in_timespan = 3
 
       if @feedback.from_the_same_ip.recently_created(timespan)
           .count >= max_feedbacks_in_timespan
@@ -91,12 +93,12 @@ class FeedbackController < ApplicationController
         locals: { feedback_id: @feedback.id }
     end
 
+    # TODO move to a callback.
     def send_feedback_email
       FeedbackMailer.feedback_email(@feedback).deliver_now
     end
 
     def feedback_params
-      params.require(:feedback)
-        .permit :comment, :name, :email, :user, :page
+      params.require(:feedback).permit :comment, :name, :email, :user, :page
     end
 end
