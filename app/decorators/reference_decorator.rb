@@ -14,7 +14,6 @@ Reference#reference_author_names
 Reference#author_names_suffix
 Reference#author_names
 ReferenceDecorator#keey
-ReferenceDecorator#format_author_last_names
 ReferenceDecorator#format_authorship_html
 Citation#authorship_string
 Citation#authorship_html_string
@@ -44,8 +43,6 @@ r.key_cache # "Abdul-Rassoul, Dawah & Othman, 1978"
 
 r.decorate.keey # "Abdul-Rassoul, Dawah & Othman, 1978"
 
-r.decorate.send :format_author_last_names # same as `r.decorate.keey`
-
 r.author_names_string_cache # "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
 
 r.author_names_string # same as `r.author_names_string_cache`
@@ -73,14 +70,35 @@ class ReferenceDecorator < ApplicationDecorator
   # New! "THE KEEY" -- Stupid Name Because Useful(tm).
   #
   # TODO trying to consolidate all "FALNs" here.
+  #
   # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978"
+  #
   # "key" is impossible to grep for, and a word with too many meanings.
   # Variations of "last author names" or "ref_key" are doomed to fail.
   # So, "keey". Obviously, do not show this spelling to users or use
   # it in filesnames or the database.
+  #
   # See also `references.key_cache`.
+  #
+  # Note 1: this the new name of `#format_author_last_names` (the original "FALNs").
+  # Note 2: `references.author_names_string_cache` may also be useful.
+  # Note 3: very similar to `Citation#author_names_string` (which doesn't include year).
   def keey
-    format_author_last_names
+    # TODO remove this check.
+    return '' unless reference.id
+
+    names = reference.author_names.map &:last_name
+    case names.size
+    when 0
+      '[no authors]'
+    when 1
+      "#{names.first}"
+    when 2
+      "#{names.first} & #{names.second}"
+    else
+      string = names[0..-2].join ', '
+      string << " & " << names[-1]
+    end << ', ' << reference.short_citation_year
   end
 
   # TODO inline.
@@ -113,11 +131,10 @@ class ReferenceDecorator < ApplicationDecorator
     [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
   end
 
-  # TODO another "FALNs".
   # TODO only called in `Citation#authorship_html_string`.
   def format_authorship_html
     helpers.content_tag(:span, title: formatted) do
-      format_author_last_names
+      keey
     end
   end
 
@@ -276,26 +293,6 @@ class ReferenceDecorator < ApplicationDecorator
 
     def make_to_link_title string
       helpers.unitalicize string
-    end
-
-    # Note: `references.author_names_string_cache` may also be useful.
-    # The original "FALNs".
-    # TODO this also includes the citation year, not just last names.
-    # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978"
-    def format_author_last_names
-      return '' unless reference.id
-      names = reference.author_names.map &:last_name
-      case names.size
-      when 0
-        '[no authors]'
-      when 1
-        "#{names.first}"
-      when 2
-        "#{names.first} & #{names.second}"
-      else
-        string = names[0..-2].join ', '
-        string << " & " << names[-1]
-      end << ', ' << reference.short_citation_year
     end
 
     # TODO try to remove in favor of direct attribute access.
