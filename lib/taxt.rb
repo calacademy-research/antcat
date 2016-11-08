@@ -5,12 +5,10 @@ module Taxt
   extend ActionView::Helpers::TagHelper
   extend ApplicationHelper
 
-  # These values are duplicated in taxt_editor.coffee
+  # These values are duplicated in `taxt_editor.coffee`.
   REFERENCE_TAG_TYPE = 1
   TAXON_TAG_TYPE = 2
   NAME_TAG_TYPE = 3
-
-  # this value is duplicated in taxt_editor.coffee
   EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ}
 
   TAXT_FIELDS = [
@@ -22,8 +20,10 @@ module Taxt
 
   class ReferenceNotFound < StandardError; end
 
+  # TODO inline?
   class TaxonNotFound < StandardError; end
 
+  # TODO inline?
   class NameNotFound < StandardError
     attr_accessor :id
 
@@ -120,7 +120,7 @@ module Taxt
     number = AnyBase.base_x_to_base_10(editable_id.reverse, EDITABLE_ID_DIGITS)
     id = number / 10
     type_number = number % 10
-    return id, type_number
+    [id, type_number]
   end
   private_class_method :id_from_editable
 
@@ -147,7 +147,7 @@ module Taxt
         # This means `options[:expansion] == false`?
         # We never want to expand references when exporting to AntWeb.
         reference = Reference.find(reference_id_match) rescue whole_match
-        reference.decorate.format_inline_citation_for_antweb rescue whole_match
+        reference.decorate.antweb_version_of_inline_citation rescue whole_match
       else
         # This means options is empty? Which means `options[:expansion] == true`?
         reference = Reference.find(reference_id_match) rescue whole_match

@@ -16,6 +16,7 @@ class Citation < ActiveRecord::Base
 
   has_paper_trail meta: { change_id: :get_current_change_id }
 
+  # TODO Ruby's `and` keyword is evil.
   def authorship_string
     reference and "#{author_names_string}, #{year}"
   end

@@ -34,7 +34,7 @@ module LinkHelper
   end
 
   def link_to_antweb taxon
-    return if [Family, Tribe, Subgenus].include? taxon.class
+    return if taxon.class.in? [Family, Tribe, Subgenus]
 
     url = "http://www.antweb.org/description.do?"
     params = { rank: taxon.class.to_s.downcase }

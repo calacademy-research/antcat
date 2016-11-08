@@ -10,6 +10,7 @@ class Reference < ApplicationRecord
   include ReferenceComparable
   include Feed::Trackable
 
+  # Virtual attributes used in `RefrencesController`.
   attr_accessor :journal_name, :publisher_string
 
   attr_accessible :author_names, :author_names_suffix, :citation, :citation_year,
@@ -46,7 +47,9 @@ class Reference < ApplicationRecord
     true
   end
 
+  # TODO possibly unused or only used in tests.
   def to_s
+    raise "reference.to_s"
     "#{author_names_string} #{citation_year}. #{id}."
   end
 
@@ -59,14 +62,19 @@ class Reference < ApplicationRecord
     ReferenceFormatterCache.set self, value, field
   end
 
+  # TODO what is this?
   def authors reload = false
+    raise "authors reload = true" if reload
     author_names(reload).map &:author
   end
 
+  # TODO remove in favor of just using `principal_author_last_name`?
   def author
     principal_author_last_name
   end
 
+  # TODO something. "_cache" vs not.
+  # Looks like: "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.".
   def author_names_string
     author_names_string_cache
   end

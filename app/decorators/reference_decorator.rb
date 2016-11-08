@@ -2,6 +2,41 @@
 # TODO investigate using views.
 # TODO use less decorators in general.
 
+=begin
+Notes
+
+DRY these:
+Reference#author_names_string
+Reference#author_names_string_cache
+Reference#principal_author_last_name
+Reference#principal_author_last_name_cache
+Reference#reference_author_names
+Reference#author_names_suffix
+Reference#author_names
+Reference#to_s
+ReferenceDecorator#format_author_names
+ReferenceDecorator#keey
+ReferenceDecorator#format_author_last_names
+ReferenceDecorator#format_authorship_html
+Citation#authorship_string
+Citation#authorship_html_string
+Citation#author_last_names_string
+Citation#author_names_string
+
+Similar but a slightly different thing, sometimes, probably:
+Taxon#authorship_string x 2
+
+In Taxon:
+`delegate :authorship_html_string, :author_last_names_string, :year, to: :protonym`
+
+In Protonym:
+`delegate :authorship_string, :authorship_html_string, :author_last_names_string, :year,
+  to: :authorship` + `belongs_to :authorship, class_name: 'Citation'`
+
+So, we're back in Citation which means we're sometimes back in
+Reference and sometimes in ReferenceDecorator.
+
+=end
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the `h` method
   delegate_all
@@ -23,23 +58,27 @@ class ReferenceDecorator < ApplicationDecorator
     format_author_last_names
   end
 
-  # TODO all these could be inlined in a view.
+  # TODO inline.
   def created_at
     format_timestamp reference.created_at
   end
 
+  # TODO inline.
   def updated_at
     format_timestamp reference.updated_at
   end
 
+  # TODO inline.
   def public_notes
     format_italics h reference.public_notes
   end
 
+  # TODO inline.
   def editor_notes
     format_italics h reference.editor_notes
   end
 
+  # TODO inline.
   def taxonomic_notes
     format_italics h reference.taxonomic_notes
   end
@@ -115,9 +154,9 @@ class ReferenceDecorator < ApplicationDecorator
   private
     # A.k.a. "FORMAT IT AS TEXT" -- Generate-it version!
     def generate_formatted
-      string = format_author_names.dup
+      string = make_html_safe(reference.author_names_string.dup)
       string << ' ' unless string.empty?
-      string << format_year << '. '
+      string << make_html_safe(reference.citation_year) << '. '
       string << format_title << ' '
       string << format_citation
       string << " [#{format_date(reference.date)}]" if reference.date?
@@ -200,7 +239,7 @@ class ReferenceDecorator < ApplicationDecorator
     # TODO see LinkHelper#link.
     def doi_link
       return unless reference.doi.present?
-      helpers.link reference.doi, create_link_from_doi(reference.doi),
+      helpers.link reference.doi, ("http://dx.doi.org/" + doi),
         class: 'document_link', target: '_blank'
     end
 
@@ -208,11 +247,6 @@ class ReferenceDecorator < ApplicationDecorator
     def pdf_link
       return unless reference.downloadable?
       helpers.link 'PDF', reference.url, class: 'document_link', target: '_blank'
-    end
-
-    # transform "10.11646/zootaxa.4029.1.1" --> "http://dx.doi.org/10.11646/zootaxa.4029.1.1"
-    def create_link_from_doi doi
-      "http://dx.doi.org/" + doi
     end
 
     def make_to_link_title string
@@ -237,17 +271,6 @@ class ReferenceDecorator < ApplicationDecorator
         string = names[0..-2].join ', '
         string << " & " << names[-1]
       end << ', ' << reference.short_citation_year
-    end
-
-    # Looks like: "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
-    # TODO try to remove in favor of direct attribute access.
-    def format_author_names
-      make_html_safe reference.author_names_string
-    end
-
-    # TODO try to remove in favor of direct attribute access.
-    def format_year
-      make_html_safe reference.citation_year if reference.citation_year?
     end
 
     # TODO try to remove in favor of direct attribute access.

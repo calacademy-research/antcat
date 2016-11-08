@@ -335,32 +335,6 @@ describe ReferenceDecorator do
         expect(reference.decorate.formatted).to eq "2010. Tapinoma. Ants <i>et al.</i>"
       end
     end
-
-    describe "#format_year" do
-      it "leaves quotes (and italics) alone, but escapes other HTML" do
-        reference = create :unknown_reference,
-          citation_year: '2010 ("2011")',
-          author_names: [],
-          citation: 'Ants',
-          title: 'Tapinoma'
-        string = reference.decorate.send :format_year
-        expect(string).to eq '2010 ("2011")'
-        expect(string).to be_html_safe
-      end
-    end
-
-    describe "#format_author_names" do
-      it "escapes everything except quotes and italics" do
-        reference = create :unknown_reference,
-          author_names: [author_name],
-          citation: 'Ants',
-          title: 'Tapinoma',
-          author_names_suffix: ' <i>et al.</i>'
-        string = reference.decorate.send :format_author_names
-        expect(string).to eq 'Forel, A. <i>et al.</i>'
-        expect(string).to be_html_safe
-      end
-    end
   end
 
   context "when there are no authors" do
