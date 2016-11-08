@@ -42,17 +42,6 @@ describe Citation do
     end
   end
 
-  describe "#authorship_html_string" do
-    it "shows the author and year" do
-      citation = FactoryGirl.build_stubbed :citation
-      expect_any_instance_of(ReferenceDecorator)
-        .to receive(:format_authorship_html)
-        .and_return 'XYZ'
-
-      expect(citation.authorship_html_string).to eq 'XYZ'
-    end
-  end
-
   describe "#author_last_names_string" do
     it "shows the authors' last names" do
       reference = reference_factory author_name: 'Bolton', citation_year: '2001'

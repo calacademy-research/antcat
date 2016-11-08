@@ -1,3 +1,5 @@
+include ActionView::Helpers::TagHelper # For `#content_tag`.
+include ActionView::Context # For `#content_tag`.
 include Exporters::Antweb::MonkeyPatchTaxon
 
 class Exporters::Antweb::Exporter
@@ -68,7 +70,7 @@ class Exporters::Antweb::Exporter
         fossil?:                taxon.fossil,
         history:                export_history(taxon),
         author_date:            taxon.authorship_string,
-        author_date_html:       taxon.authorship_html_string,
+        author_date_html:       authorship_html_string(taxon),
         original_combination?:  taxon.original_combination?,
         original_combination:   taxon.original_combination.try(:name).try(:name),
         authors:                taxon.author_last_names_string,
@@ -170,9 +172,17 @@ class Exporters::Antweb::Exporter
       nil
     end
 
-    # Included down here because they're only used in `#export_history`.
-    include ActionView::Helpers::TagHelper # For `#content_tag`.
-    include ActionView::Context # For `#content_tag`.
+    def authorship_html_string taxon
+      reference = taxon.try(:protonym).try(:authorship).try(:reference)
+      return unless reference
+
+      formatted = reference.decorate.formatted
+      keey = reference.decorate.keey
+
+      content_tag(:span, title: formatted) do
+        keey
+      end
+    end
 
     def export_history taxon
       $use_ant_web_formatter = true # TODO remove

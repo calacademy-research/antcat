@@ -15,20 +15,18 @@ Reference#reference_author_names
 Reference#author_names_suffix
 Reference#author_names
 ReferenceDecorator#keey
-ReferenceDecorator#format_authorship_html
-Citation#authorship_string
-Citation#authorship_html_string
-Citation#author_last_names_string
-Citation#author_names_string
+Citation#authorship_string        --> reference.decorate.keey_without_letters_in_year
+Citation#author_last_names_string --> reference.decorate.authors_for_keey
+Citation#year                     --> reference.decorate.year_or_no_year
 
 Similar but a slightly different thing, sometimes, probably:
 Taxon#authorship_string x 2
 
 In Taxon:
-`delegate :authorship_html_string, :author_last_names_string, :year, to: :protonym`
+`delegate :author_last_names_string, :year, to: :protonym`
 
 In Protonym:
-`delegate :authorship_string, :authorship_html_string, :author_last_names_string, :year,
+`delegate :authorship_string, :author_last_names_string, :year,
   to: :authorship` + `belongs_to :authorship, class_name: 'Citation'`
 
 So, we're back in Citation which means we're sometimes back in
@@ -79,7 +77,6 @@ class ReferenceDecorator < ApplicationDecorator
   #
   # Note 1: this the new name of `#format_author_last_names` (the original "FALNs").
   # Note 2: `references.author_names_string_cache` may also be useful.
-  # Note 3: very similar to `Citation#author_names_string` (which doesn't include year).
   # TODO move to `Reference`.
   def keey
     authors_for_keey << ', ' << reference.short_citation_year
@@ -130,13 +127,6 @@ class ReferenceDecorator < ApplicationDecorator
   # TODO rename as it also links DOIs, not just reference documents.
   def format_reference_document_link
     [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
-  end
-
-  # TODO only called in `Citation#authorship_html_string`.
-  def format_authorship_html
-    helpers.content_tag(:span, title: formatted) do
-      keey
-    end
   end
 
   def format_review_state

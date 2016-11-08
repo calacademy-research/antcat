@@ -297,14 +297,6 @@ describe Taxon do
         end
       end
     end
-
-    describe "#authorship_html_string" do
-      it "delegates to the protonym" do
-        taxon = create_genus
-        expect(taxon.protonym).to receive(:authorship_html_string).and_return 'XYZ'
-        expect(taxon.authorship_html_string).to eq %{XYZ}
-      end
-    end
   end
 
   describe "#recombination?" do

@@ -17,6 +17,6 @@ class Protonym < ActiveRecord::Base
   # TODO? `allow_nil` should not be needed per `validates :authorship, presence: true`,
   # but protonym_spec.rb uses `build_stubbed`, so we need it for the moment.
   # TODO try to remove `allow_nil`. It may however be required in `Taxon`.
-  delegate :authorship_string, :authorship_html_string, :author_last_names_string, :year,
+  delegate :authorship_string, :author_last_names_string, :year,
     to: :authorship, allow_nil: true
 end

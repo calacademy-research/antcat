@@ -1,11 +1,53 @@
 require 'spec_helper'
 
 describe Exporters::Antweb::Exporter do
-  let(:formatter) { Exporters::Antweb::Exporter.new }
+  let(:exporter) { Exporters::Antweb::Exporter.new }
+
+  describe "#authorship_html_string" do
+    let(:taxon) { create_genus }
+    let(:reference) do
+      journal = create :journal, name: 'Ants'
+      author_name = create :author_name, name: "Forel, A."
+      create :article_reference,
+        author_names: [author_name], citation_year: '1874', title: 'Format',
+        journal: journal, series_volume_issue: '1:1', pagination: '2'
+    end
+
+    it "formats references into HTML, with rollover" do
+      taxon.protonym.authorship.reference = reference
+      expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2.">Forel, 1874</span>'
+      expect(exporter.send :authorship_html_string, taxon).to eq expected
+    end
+
+    context "something is missing" do
+      it "handles missing protonyms" do
+        taxon = FactoryGirl.build_stubbed :genus, protonym: nil
+        expect(taxon.protonym).to be nil
+        expect(exporter.send :authorship_html_string, taxon).to be nil
+      end
+
+      it "handles missing protonym authorships" do
+        protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
+        taxon = FactoryGirl.build_stubbed :genus, protonym: protonym
+
+        expect(taxon.protonym).to_not be nil
+        expect(exporter.send :authorship_html_string, taxon).to be nil
+      end
+
+      it "handles missing authorship references" do
+        authorship = FactoryGirl.build_stubbed :citation, reference: nil
+        protonym = FactoryGirl.build_stubbed :protonym, authorship: authorship
+        taxon = FactoryGirl.build_stubbed :genus, protonym: protonym
+
+        expect(taxon.protonym.authorship).to_not be nil
+        expect(exporter.send :authorship_html_string, taxon).to be nil
+      end
+    end
+  end
 
   describe "#export_history" do
     it "doesn't blow up" do
-      formatter.send :export_history, create_genus
+      exporter.send :export_history, create_genus
     end
 
     context "a genus" do
@@ -54,7 +96,7 @@ describe Exporters::Antweb::Exporter do
         ref_pagination = a_reference.pagination
         ref_volume = a_reference.series_volume_issue
 
-        results = formatter.send :export_history, genus
+        results = exporter.send :export_history, genus
         expect(results).to eq(
           %{<div class="antcat_taxon">} +
 

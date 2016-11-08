@@ -46,8 +46,9 @@ describe Exporters::Antweb::Exporter do
     before do
       @ponerinae = create_subfamily 'Ponerinae'
       @attini = create_tribe 'Attini', subfamily: @ponerinae
-      allow_any_instance_of(ReferenceDecorator)
-        .to receive(:format_authorship_html)
+
+      allow_any_instance_of(Exporters::Antweb::Exporter)
+        .to receive(:authorship_html_string)
         .and_return '<span title="Bolton. Ants>Bolton, 1970</span>'
     end
 
@@ -304,28 +305,31 @@ describe Exporters::Antweb::Exporter do
   end
 
   describe "Original combination" do
+    before do
+      @original_combination = create_species 'Atta major'
+      @recombination = create_species 'Eciton major'
+      @original_combination.status = 'original combination'
+      @original_combination.current_valid_taxon = @recombination
+      @recombination.protonym.name = @original_combination.name
+      @original_combination.save!
+      @recombination.save!
+    end
+
     it "is the protonym, otherwise" do
-      original_combination = create_species 'Atta major'
-      recombination = create_species 'Eciton major'
-      original_combination.status = 'original combination'
-      original_combination.current_valid_taxon = recombination
-      recombination.protonym.name = original_combination.name
-      original_combination.save!
-      recombination.save!
-      string = @exporter.send(:export_taxon, recombination)[15]
-      expect(string).to eq original_combination.name.name
+      string = @exporter.send(:export_taxon, @recombination)[15]
+      expect(string).to eq @original_combination.name.name
     end
   end
 
   describe "Reference ID" do
+    let!(:taxon) { create_genus }
+
     it "sends the protonym's reference ID" do
-      taxon = create_genus
       reference_id = @exporter.send(:export_taxon, taxon)[18]
       expect(reference_id).to eq taxon.protonym.authorship.reference.id
     end
 
     it "sends nil if the protonym's reference is a MissingReference" do
-      taxon = create_genus
       taxon.protonym.authorship.reference = create :missing_reference
       taxon.save!
       reference_id = @exporter.send(:export_taxon, taxon)[18]

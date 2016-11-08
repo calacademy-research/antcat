@@ -18,12 +18,6 @@ class Citation < ActiveRecord::Base
     reference.decorate.keey_without_letters_in_year
   end
 
-  # TODO only caller of `ReferenceDecorator#format_authorship_html`.
-  # TODO HTML probably do not belong here.
-  def authorship_html_string
-    reference.decorate.format_authorship_html
-  end
-
   # TODO rename / remove.
   def author_last_names_string
     reference.decorate.authors_for_keey

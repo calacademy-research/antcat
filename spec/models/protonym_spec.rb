@@ -30,23 +30,6 @@ describe Protonym do
     end
   end
 
-  describe "#authorship_html_string" do
-    context "there is no citation" do
-      it "handles it" do
-        protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
-        expect(protonym.authorship_html_string).to be_nil
-      end
-    end
-
-    it "delegates to the citation" do
-      citation = FactoryGirl.build_stubbed :citation
-      protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
-
-      expect(citation).to receive(:authorship_html_string).and_return 'XYZ'
-      expect(protonym.authorship_html_string).to eq 'XYZ'
-    end
-  end
-
   describe "#author_last_names_string" do
     context "there is no citation" do
       it "handles it" do

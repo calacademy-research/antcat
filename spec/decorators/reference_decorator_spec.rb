@@ -447,7 +447,7 @@ describe ReferenceDecorator do
     end
   end
 
-  describe "shared setup" do
+  describe "a regression where a string should've been duped" do
     let(:reference) do
       journal = create :journal, name: 'Ants'
       create :article_reference,
@@ -455,17 +455,8 @@ describe ReferenceDecorator do
         journal: journal, series_volume_issue: '1:1', pagination: '2'
     end
 
-    describe "A regression where a string should've been duped" do
-      it "really should have been duped" do
-        expect(reference.decorate.formatted).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
-      end
-    end
-
-    describe "#format_authorship_html" do
-      it "formats references into HTML, with rollover" do
-        expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2.">Forel, 1874</span>'
-        expect(reference.decorate.format_authorship_html).to be === expected
-      end
+    it "really should have been duped" do
+      expect(reference.decorate.formatted).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
     end
   end
 
