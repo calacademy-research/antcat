@@ -24,8 +24,8 @@ Then(/^the widget results should be the ID for "([^"]*)"$/) do |keey|
   step %{the widget results should be "#{reference.id}"}
 end
 
-Then(/^the widget results should be the taxt for "Fisher 1995"$/) do
-  step %{the widget results should be "{Fisher, 1995b v}"}
+Then(/^the widget results should be the taxt for Fisher 1995$/) do
+  step %{the widget results should be "{Fisher, 1995b l}"}
 end
 
 Then(/^I should not see the default reference button$/) do
