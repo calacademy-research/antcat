@@ -108,7 +108,7 @@ class Reference < ApplicationRecord
   end
 
   def check_for_duplicate
-    duplicates = DuplicateMatcher.new.match self
+    duplicates = ReferenceMatcher.new(min_similarity: 0.5).match self
     return unless duplicates.present?
 
     duplicate = Reference.find duplicates.first[:match].id
@@ -255,12 +255,5 @@ class Reference < ApplicationRecord
 
     def has_any_references?
       reference_references return_true_or_false: true
-    end
-
-    # TODO remove polymorphism unless it's used anywhere else.
-    class DuplicateMatcher < ReferenceMatcher
-      def min_similarity
-        0.5
-      end
     end
 end

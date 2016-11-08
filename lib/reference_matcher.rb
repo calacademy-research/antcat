@@ -1,4 +1,10 @@
 class ReferenceMatcher
+  attr_accessor :min_similarity
+
+  def initialize min_similarity: 0.01
+    self.min_similarity = min_similarity
+  end
+
   def match target
     candidates_for(target).reduce([]) do |matches, candidate|
       if possible_match? target, candidate
@@ -11,10 +17,6 @@ class ReferenceMatcher
 
   def possible_match? target, candidate
     target.id != candidate.id
-  end
-
-  def min_similarity
-    0.01
   end
 
   # TODO see if we can avoid using instance variables.
