@@ -419,12 +419,6 @@ describe ReferenceDecorator do
     end
   end
 
-  describe "#format_timestamp" do
-    it "uses a short format" do
-      expect(nil_decorator.send(:format_timestamp, Time.parse('2001-1-2'))).to eq '2001-01-02'
-    end
-  end
-
   # returns the display string for a review status
   describe "#format_review_state" do
     it "handles 'reviewed'" do

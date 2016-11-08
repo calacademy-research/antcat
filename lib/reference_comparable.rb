@@ -1,14 +1,14 @@
 module ReferenceComparable
   # requires that the client have:
-  #   type, author, title
+  #   type, principal_author_last_name_cache, title
   # compares using these fields:
-  #   type, author, title, year, pagination, series_volume_issue
+  #   type, principal_author_last_name_cache, title, year, pagination, series_volume_issue
   # ignores:
   #   :journal, :place, :publisher
 
   def <=> rhs
     return 0.00 unless type == rhs.type
-    return 0.00 unless normalize_author(principal_author_last_name) == normalize_author(rhs.principal_author_last_name)
+    return 0.00 unless normalize_author(principal_author_last_name_cache) == normalize_author(rhs.principal_author_last_name_cache)
 
     result = match_title(rhs) || match_article(rhs) || match_book(rhs)
     year_matches = year_matches? rhs
@@ -47,6 +47,7 @@ module ReferenceComparable
       return 1.00 if remove_punctuation!(other_title) == remove_punctuation!(title)
     end
 
+    # TODO use `#is_a?`
     def match_article rhs
       return unless rhs.type == 'ArticleReference' && type == 'ArticleReference' &&
         rhs.series_volume_issue.present? && series_volume_issue.present? &&
@@ -56,6 +57,7 @@ module ReferenceComparable
         normalize_series_volume_issue(series_volume_issue)
     end
 
+    # TODO use `#is_a?`
     def match_book rhs
       return unless rhs.type == 'BookReference' && type == 'BookReference' &&
         rhs.pagination.present? && pagination.present?

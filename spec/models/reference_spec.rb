@@ -276,7 +276,7 @@ describe Reference do
 
     describe 'implementing ReferenceComparable' do
       it 'maps all fields correctly' do
-        expect(original.author).to eq 'Fisher'
+        expect(original.principal_author_last_name_cache).to eq 'Fisher'
         expect(original.year).to eq 1981
         expect(original.title).to eq 'Dolichoderinae'
         expect(original.type).to eq 'ArticleReference'

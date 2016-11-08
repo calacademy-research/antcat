@@ -19,8 +19,8 @@ class ReferenceMatcher
 
   # TODO see if we can avoid using instance variables.
   def candidates_for target
-    if target.principal_author_last_name != @target_author
-      @target_author = target.principal_author_last_name
+    if target.principal_author_last_name_cache != @target_author
+      @target_author = target.principal_author_last_name_cache
       @candidates = read_references @target_author
     end
     @candidates || []

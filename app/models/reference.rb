@@ -56,14 +56,6 @@ class Reference < ApplicationRecord
     ReferenceFormatterCache.set self, value, field
   end
 
-  # TODO remove in favor of just using `principal_author_last_name`?
-  # TODO it looks like `ReferenceMatcher` and `ReferenceComparable`
-  # are the ones calling this.
-  def author
-    $stdout.puts "Reference#author".red
-    raise
-  end
-
   # TODO something. "_cache" vs not.
   # Looks like: "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.".
   def author_names_string
