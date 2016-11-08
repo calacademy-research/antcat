@@ -44,152 +44,152 @@ class Exporters::Antweb::Exporter
     end
   end
 
-  private # TODO indent
-  def taxa_ids
-    Taxon.joins(protonym: [{ authorship: :reference }])
-      .order(:status).pluck(:id).reverse
-  end
+  private
+    def taxa_ids
+      Taxon.joins(protonym: [{ authorship: :reference }])
+        .order(:status).pluck(:id).reverse
+    end
 
-  def export_taxon taxon
-    puts "Processing: #{taxon.id}" if ENV['DEBUG']
-    Progress.tally_and_show_progress 100
+    def export_taxon taxon
+      puts "Processing: #{taxon.id}" if ENV['DEBUG']
+      Progress.tally_and_show_progress 100
 
-    reference = taxon.protonym.authorship.reference
-    reference_id = reference.kind_of?(MissingReference) ? nil : reference.id
+      reference = taxon.protonym.authorship.reference
+      reference_id = reference.kind_of?(MissingReference) ? nil : reference.id
 
-    parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon ? taxon.parent.current_valid_taxon : taxon.parent)
-    parent_name = parent_taxon.try(:name).try(:name)
-    parent_name ||= 'Formicidae'
+      parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon ? taxon.parent.current_valid_taxon : taxon.parent)
+      parent_name = parent_taxon.try(:name).try(:name)
+      parent_name ||= 'Formicidae'
 
-    attributes = {
-      antcat_id:              taxon.id,
-      status:                 taxon.status,
-      available?:             !taxon.invalid?,
-      fossil?:                taxon.fossil,
-      history:                export_history(taxon),
-      author_date:            taxon.authorship_string,
-      author_date_html:       taxon.authorship_html_string,
-      original_combination?:  taxon.original_combination?,
-      original_combination:   taxon.original_combination.try(:name).try(:name),
-      authors:                taxon.author_last_names_string,
-      year:                   taxon.year && taxon.year.to_s,
-      reference_id:           reference_id,
-      biogeographic_region:   taxon.biogeographic_region,
-      locality:               taxon.protonym.locality,
-      rank:                   taxon.class.to_s,
-      hol_id:                 taxon.hol_id,
-      parent:                 parent_name,
-    }
+      attributes = {
+        antcat_id:              taxon.id,
+        status:                 taxon.status,
+        available?:             !taxon.invalid?,
+        fossil?:                taxon.fossil,
+        history:                export_history(taxon),
+        author_date:            taxon.authorship_string,
+        author_date_html:       taxon.authorship_html_string,
+        original_combination?:  taxon.original_combination?,
+        original_combination:   taxon.original_combination.try(:name).try(:name),
+        authors:                taxon.author_last_names_string,
+        year:                   taxon.year && taxon.year.to_s,
+        reference_id:           reference_id,
+        biogeographic_region:   taxon.biogeographic_region,
+        locality:               taxon.protonym.locality,
+        rank:                   taxon.class.to_s,
+        hol_id:                 taxon.hol_id,
+        parent:                 parent_name,
+      }
 
-    attributes[:current_valid_name] =
-      if taxon.current_valid_taxon_including_synonyms
-        taxon.current_valid_taxon_including_synonyms.name.to_s
-      else
-        nil
+      attributes[:current_valid_name] =
+        if taxon.current_valid_taxon_including_synonyms
+          taxon.current_valid_taxon_including_synonyms.name.to_s
+        else
+          nil
+        end
+
+      begin
+        convert_to_antweb_array taxon.add_antweb_attributes(attributes)
+      rescue Exception => exception
+        STDERR.puts "========================#{taxon.id}================================"
+        STDERR.puts "An error of type #{exception} happened, message is #{exception.message}"
+        STDERR.puts exception.backtrace
+        STDERR.puts "========================================================"
       end
-
-    begin
-      convert_to_antweb_array taxon.add_antweb_attributes(attributes)
-    rescue Exception => exception
-      STDERR.puts "========================#{taxon.id}================================"
-      STDERR.puts "An error of type #{exception} happened, message is #{exception.message}"
-      STDERR.puts exception.backtrace
-      STDERR.puts "========================================================"
     end
-  end
 
-  def boolean_to_antweb boolean
-    case boolean
-    when true  then 'TRUE'
-    when false then 'FALSE'
-    when nil   then nil
-    else            raise
-    end
-  end
-
-  def header
-    "antcat id\t"                + #  [0]
-    "subfamily\t"                + #  [1]
-    "tribe\t"                    + #  [2]
-    "genus\t"                    + #  [3]
-    "subgenus\t"                 + #  [4]
-    "species\t"                  + #  [5]
-    "subspecies\t"               + #  [6]
-    "author date\t"              + #  [7]
-    "author date html\t"         + #  [8]
-    "authors\t"                  + #  [9]
-    "year\t"                     + # [10]
-    "status\t"                   + # [11]
-    "available\t"                + # [12]
-    "current valid name\t"       + # [13]
-    "original combination\t"     + # [14]
-    "was original combination\t" + # [15]
-    "fossil\t"                   + # [16]
-    "taxonomic history html\t"   + # [17]
-    "reference id\t"             + # [18]
-    "bioregion\t"                + # [19]
-    "country\t"                  + # [20]
-    "current valid rank\t"       + # [21]
-    "hol id\t"                   + # [22]
-    "current valid parent"         # [23]
-  end
-
-  def convert_to_antweb_array values
-    [
-      values[:antcat_id],
-      values[:subfamily],
-      values[:tribe],
-      values[:genus],
-      values[:subgenus],
-      values[:species],
-      values[:subspecies],
-      values[:author_date],
-      values[:author_date_html],
-      values[:authors],
-      values[:year],
-      values[:status],
-      boolean_to_antweb(values[:available?]),
-      add_subfamily_to_current_valid(values[:subfamily], values[:current_valid_name]),
-      boolean_to_antweb(values[:original_combination?]),
-      values[:original_combination],
-      boolean_to_antweb(values[:fossil?]),
-      values[:history],
-      values[:reference_id],
-      values[:biogeographic_region],
-      values[:locality],
-      values[:rank],
-      values[:hol_id],
-      values[:parent],
-    ]
-  end
-
-  def add_subfamily_to_current_valid subfamily, current_valid_name
-    if current_valid_name
-      return subfamily.to_s + current_valid_name.to_s
-    end
-    nil
-  end
-
-  # Included down here because they're only used in `#export_history`.
-  include ActionView::Helpers::TagHelper # For `#content_tag`.
-  include ActionView::Context # For `#content_tag`.
-
-  def export_history taxon
-    $use_ant_web_formatter = true # TODO remove
-
-    begin
-      taxon = taxon.decorate
-      return content_tag :div, class: 'antcat_taxon' do
-        content = ''.html_safe
-        content << taxon.statistics(include_invalid: false)
-        content << taxon.genus_species_header_notes_taxt
-        content << taxon.headline
-        content << taxon.history
-        content << taxon.child_lists
-        content << taxon.references
+    def boolean_to_antweb boolean
+      case boolean
+      when true  then 'TRUE'
+      when false then 'FALSE'
+      when nil   then nil
+      else            raise
       end
-    ensure
-      $use_ant_web_formatter = false
     end
-  end
+
+    def header
+      "antcat id\t"                + #  [0]
+      "subfamily\t"                + #  [1]
+      "tribe\t"                    + #  [2]
+      "genus\t"                    + #  [3]
+      "subgenus\t"                 + #  [4]
+      "species\t"                  + #  [5]
+      "subspecies\t"               + #  [6]
+      "author date\t"              + #  [7]
+      "author date html\t"         + #  [8]
+      "authors\t"                  + #  [9]
+      "year\t"                     + # [10]
+      "status\t"                   + # [11]
+      "available\t"                + # [12]
+      "current valid name\t"       + # [13]
+      "original combination\t"     + # [14]
+      "was original combination\t" + # [15]
+      "fossil\t"                   + # [16]
+      "taxonomic history html\t"   + # [17]
+      "reference id\t"             + # [18]
+      "bioregion\t"                + # [19]
+      "country\t"                  + # [20]
+      "current valid rank\t"       + # [21]
+      "hol id\t"                   + # [22]
+      "current valid parent"         # [23]
+    end
+
+    def convert_to_antweb_array values
+      [
+        values[:antcat_id],
+        values[:subfamily],
+        values[:tribe],
+        values[:genus],
+        values[:subgenus],
+        values[:species],
+        values[:subspecies],
+        values[:author_date],
+        values[:author_date_html],
+        values[:authors],
+        values[:year],
+        values[:status],
+        boolean_to_antweb(values[:available?]),
+        add_subfamily_to_current_valid(values[:subfamily], values[:current_valid_name]),
+        boolean_to_antweb(values[:original_combination?]),
+        values[:original_combination],
+        boolean_to_antweb(values[:fossil?]),
+        values[:history],
+        values[:reference_id],
+        values[:biogeographic_region],
+        values[:locality],
+        values[:rank],
+        values[:hol_id],
+        values[:parent],
+      ]
+    end
+
+    def add_subfamily_to_current_valid subfamily, current_valid_name
+      if current_valid_name
+        return subfamily.to_s + current_valid_name.to_s
+      end
+      nil
+    end
+
+    # Included down here because they're only used in `#export_history`.
+    include ActionView::Helpers::TagHelper # For `#content_tag`.
+    include ActionView::Context # For `#content_tag`.
+
+    def export_history taxon
+      $use_ant_web_formatter = true # TODO remove
+
+      begin
+        taxon = taxon.decorate
+        return content_tag :div, class: 'antcat_taxon' do
+          content = ''.html_safe
+          content << taxon.statistics(include_invalid: false)
+          content << taxon.genus_species_header_notes_taxt
+          content << taxon.headline
+          content << taxon.history
+          content << taxon.child_lists
+          content << taxon.references
+        end
+      ensure
+        $use_ant_web_formatter = false
+      end
+    end
 end
