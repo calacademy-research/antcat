@@ -20,6 +20,10 @@ class Taxon < ApplicationRecord
   attr_accessor :authorship_string, :duplicate_type, :parent_name,
     :current_valid_taxon_name, :homonym_replaced_by_name, :save_initiator
 
+  # TODO remove `authorship_string`, `duplicate_type`.
+  # `save_initiator`: setting to true enables additional callbacks for that taxon only.
+  # `parent_name`: unknown, mysterious.
+
   # Rails method to protect from mass-assignment.
   attr_accessible :auto_generated, :biogeographic_region, :collision_merge_id,
     :display, :fossil, :headline_notes_taxt, :hong, :ichnotaxon, :id, :incertae_sedis_in,
@@ -27,8 +31,8 @@ class Taxon < ApplicationRecord
     :type_name_id, :type_specimen_code, :type_specimen_repository, :type_specimen_url,
     :type_taxt, :unresolved_homonym, :verbatim_type_locality
 
-  # `#origin`: if it's generated, where did it come from? string (e.g.: 'hol')
-  # `#display`: if false, won't show in the taxon browser. Used for misspellings and such.
+  # `origin`: if it's generated, where did it come from? string (e.g.: 'hol')
+  # `display`: if false, won't show in the taxon browser. Used for misspellings and such.
 
   belongs_to :name
   belongs_to :protonym, -> { includes :authorship }
@@ -62,9 +66,11 @@ class Taxon < ApplicationRecord
   scope :order_by_name_cache, -> { order(:name_cache) }
 
   accepts_nested_attributes_for :name, :protonym, :type_name
-  delegate :authorship_html_string, :author_last_names_string, :year, to: :protonym
   has_paper_trail meta: { change_id: :get_current_change_id }
   tracked on: :create, parameters: activity_parameters
+
+  # TODO investigate using `delegate :year, to: "protonym.citation.reference.year"` etc.
+  delegate :authorship_html_string, :author_last_names_string, :year, to: :protonym
 
   def save_from_form params, previous_combination = nil
     Taxa::SaveTaxon.new(self).save_from_form(params, previous_combination)

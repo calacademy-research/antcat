@@ -34,10 +34,4 @@ class Citation < ActiveRecord::Base
     $stdout.puts "someone called Citation#year".blue
     reference.decorate.year_or_no_year
   end
-
-  private
-    # TODO identical to the first part of #keey
-    def author_names_string
-      raise "ayyyy rayyyyyzzz"
-    end
 end

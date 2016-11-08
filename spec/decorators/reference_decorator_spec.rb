@@ -369,7 +369,7 @@ describe ReferenceDecorator do
       check ''
     end
 
-    it "handle missing dates" do
+    it "handles missing dates" do
       make ''
       check ''
     end
