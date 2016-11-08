@@ -37,9 +37,9 @@ describe Task do
   end
 
   describe "predicate methods" do
-    let(:open) { create :task }
-    let(:completed) { create :completed_task }
-    let(:closed) { create :closed_task }
+    let(:open) { build_stubbed :task }
+    let(:completed) { build_stubbed :completed_task }
+    let(:closed) { build_stubbed :closed_task }
 
     it "#open?" do
       expect(open.open?).to be true

@@ -16,14 +16,14 @@ describe Protonym do
   describe "#authorship_string" do
     context "there is no citation" do
       it "handles it" do
-        protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
+        protonym = build_stubbed :protonym, authorship: nil
         expect(protonym.authorship_string).to be_nil
       end
     end
 
     it "delegates to the citation" do
-      citation = FactoryGirl.build_stubbed :citation
-      protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
+      citation = build_stubbed :citation
+      protonym = build_stubbed :protonym, authorship: citation
 
       expect(citation).to receive(:authorship_string).and_return 'Bolton 2005'
       expect(protonym.authorship_string).to eq 'Bolton 2005'
@@ -33,14 +33,14 @@ describe Protonym do
   describe "#author_last_names_string" do
     context "there is no citation" do
       it "handles it" do
-        protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
+        protonym = build_stubbed :protonym, authorship: nil
         expect(protonym.author_last_names_string).to be_nil
       end
     end
 
     it "delegates to the citation" do
-      citation = FactoryGirl.build_stubbed :citation
-      protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
+      citation = build_stubbed :citation
+      protonym = build_stubbed :protonym, authorship: citation
 
       expect(citation).to receive(:author_last_names_string).and_return 'Bolton'
       expect(protonym.author_last_names_string).to eq 'Bolton'
@@ -50,14 +50,14 @@ describe Protonym do
   describe "#year" do
     context "there is no citation" do
       it "handles it" do
-        protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
+        protonym = build_stubbed :protonym, authorship: nil
         expect(protonym.year).to be_nil
       end
     end
 
     it "delegates to the citation" do
-      citation = FactoryGirl.build_stubbed :citation
-      protonym = FactoryGirl.build_stubbed :protonym, authorship: citation
+      citation = build_stubbed :citation
+      protonym = build_stubbed :protonym, authorship: citation
 
       expect(citation).to receive(:year).and_return '2010'
       expect(protonym.year).to eq '2010'

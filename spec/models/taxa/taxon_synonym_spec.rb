@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Taxon do
   it "can be a synonym" do
-    taxon = FactoryGirl.build :taxon
+    taxon = build :taxon
     expect(taxon).not_to be_synonym
     taxon.update_attribute :status, 'synonym'
     expect(taxon).to be_synonym

@@ -27,7 +27,7 @@ describe Family do
   # TODO belongs to Name
   describe "Label" do
     it "is the family name" do
-      family = create :family, name: create(:name, name: 'Formicidae')
+      family = build_stubbed :family, name: build_stubbed(:name, name: 'Formicidae')
       expect(family.name.to_html).to eq 'Formicidae'
     end
   end

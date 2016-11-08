@@ -34,7 +34,7 @@ describe Reference do
   end
 
   describe "#parse_author_names_and_suffix" do
-    let(:reference) { create :reference }
+    let(:reference) { build_stubbed :reference }
 
     it "returns nothing if empty" do
       expect(reference.parse_author_names_and_suffix(''))
@@ -64,12 +64,12 @@ describe Reference do
   describe "#author_names_string" do
     describe "formatting" do
       it "consists of one author_name if that's all there is" do
-        reference = create :reference, author_names: [fisher_bl]
+        reference = build_stubbed :reference, author_names: [fisher_bl]
         expect(reference.author_names_string).to eq 'Fisher, B.L.'
       end
 
       it "separates multiple author_names with semicolons" do
-        reference = create :reference, author_names: [fisher_bl, ward_ps]
+        reference = build_stubbed :reference, author_names: [fisher_bl, ward_ps]
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
       end
 
@@ -82,7 +82,7 @@ describe Reference do
       end
 
       it "should be possible to read from and assign to, aliased to author_names_string_cache" do
-        reference = create :reference
+        reference = build_stubbed :reference
         reference.author_names_string = 'foo'
         expect(reference.author_names_string).to eq 'foo'
       end
@@ -302,17 +302,17 @@ describe Reference do
 
   describe "#short_citation_year" do
     it "is the same as citation year if nothing extra" do
-      reference = create :article_reference, citation_year: '1970'
+      reference = build_stubbed :article_reference, citation_year: '1970'
       expect(reference.short_citation_year).to eq '1970'
     end
 
     it "allows an ordinal letter" do
-      reference = create :article_reference, citation_year: '1970a'
+      reference = build_stubbed :article_reference, citation_year: '1970a'
       expect(reference.short_citation_year).to eq '1970a'
     end
 
     it "is trimmed if there is something extra" do
-      reference = create :article_reference, citation_year: '1970a ("1971")'
+      reference = build_stubbed :article_reference, citation_year: '1970a ("1971")'
       expect(reference.short_citation_year).to eq '1970a'
     end
   end
@@ -355,29 +355,6 @@ describe Reference do
       it "returns false if there are no references to this reference" do
         expect(reference.send(:has_any_references?)).to be_falsey
       end
-    end
-  end
-
-  describe "versioning", versioning: true do
-    it "records events and can restore prior versions" do
-      reference = UnknownReference.create! title: 'title',
-        citation_year: '2010', citation: 'citation'
-
-      versions = reference.versions
-      version = versions.last
-      expect(version.event).to eq 'create'
-
-      reference.title = 'new title'
-      reference.save!
-
-      versions = reference.versions true
-      version = versions.last
-      expect(version.event).to eq 'update'
-
-      reference = version.reify
-      expect(reference.title).to eq 'title'
-      reference.save!
-      expect(reference.title).to eq 'title'
     end
   end
 end

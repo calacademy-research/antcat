@@ -58,12 +58,6 @@ describe ReferenceDocument do
       document.update_attribute :url, 'foo'
       expect(document.reload.actual_url).to eq 'foo'
     end
-    #it "should go to Amazon, if necessary" do
-      #document = create :reference_document
-      #document.file_file_name = '1.pdf'
-      #document.host = 'antcat.org'
-      #document.reload.actual_url.should match /http:\/\/s3\.amazonaws\.com\/antcat\/#{document.id}\/1\.pdf\?AWSAccessKeyId=/
-    #end
   end
 
   describe "#downloadable?" do

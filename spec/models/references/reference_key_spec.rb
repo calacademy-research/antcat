@@ -3,9 +3,9 @@
 require 'spec_helper'
 
 describe "ReferenceDecorator" do
-  let(:bolton) { create :author_name, name: 'Bolton, B.' }
-  let(:fisher) { create :author_name, name: 'Fisher, B.' }
-  let(:ward) { create :author_name, name: 'Ward, P.S.' }
+  let(:bolton) { build_stubbed :author_name, name: 'Bolton, B.' }
+  let(:fisher) { build_stubbed :author_name, name: 'Fisher, B.' }
+  let(:ward) { build_stubbed :author_name, name: 'Ward, P.S.' }
 
   describe "#key" do
       it "raises because it's impossible to search for it" do
@@ -16,35 +16,35 @@ describe "ReferenceDecorator" do
   # Representing as a string
   describe "#keey" do
     it "Citation year with extra" do
-      reference = create :article_reference,
+      reference = build_stubbed :article_reference,
         author_names: [bolton],
         citation_year: '1970a ("1971")'
       expect(reference.decorate.keey).to eq 'Bolton, 1970a'
     end
 
     it "No authors" do
-      reference = create :article_reference,
+      reference = build_stubbed :article_reference,
         author_names: [],
         citation_year: '1970a'
       expect(reference.decorate.keey).to eq '[no authors], 1970a'
     end
 
     it "One author" do
-      reference = create :article_reference,
+      reference = build_stubbed :article_reference,
         author_names: [bolton],
         citation_year: '1970a'
       expect(reference.decorate.keey).to eq 'Bolton, 1970a'
     end
 
     it "Two authors" do
-      reference = create :article_reference,
+      reference = build_stubbed :article_reference,
         author_names: [bolton, fisher],
         citation_year: '1970a'
       expect(reference.decorate.keey).to eq 'Bolton & Fisher, 1970a'
     end
 
     it "Three authors" do
-      reference = create :article_reference,
+      reference = build_stubbed :article_reference,
         author_names: [bolton, fisher, ward],
         citation_year: '1970a'
       expect(reference.decorate.keey).to eq 'Bolton, Fisher & Ward, 1970a'

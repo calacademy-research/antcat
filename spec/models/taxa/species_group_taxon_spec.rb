@@ -8,7 +8,7 @@ describe SpeciesGroupTaxon do
   end
 
   it "doesn't have to have a subfamily" do
-    expect(create(:species_group_taxon, subfamily: nil)).to be_valid
+    expect(build_stubbed(:species_group_taxon, subfamily: nil)).to be_valid
   end
 
   it "must have a genus" do
@@ -49,7 +49,7 @@ describe SpeciesGroupTaxon do
   end
 
   describe "#inherit_attributes_for_new_combination" do
-    let(:new_comb_parent) { create_genus "Atta" }
+    let(:new_comb_parent) { build_stubbed :genus }
     let(:new_comb) { build_new_taxon :species }
     let(:old_comb) do
       stub_request(:any, "http://antcat.org/1.pdf").to_return body: "not 404"

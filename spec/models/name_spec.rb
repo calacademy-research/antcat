@@ -145,22 +145,6 @@ describe Name do
     end
   end
 
-  describe "versioning", versioning: true do
-    it "records an add followed by an update" do
-      name = Name.create! name: 'Atta'
-      version = name.versions(true).last
-      expect(version.event).to eq 'create'
-
-      name.name = 'Eciton'
-      name.save!
-
-      versions = name.versions true
-      expect(name.versions.count).to eq 2
-      expect(versions.first.event).to eq 'create'
-      expect(versions.last.event).to eq 'update'
-    end
-  end
-
   describe "#quadrinomial?" do
     it "just considers quadrinomials quadrinomials - nothing else" do
       name = SubfamilyName.new name: 'Acidinae',

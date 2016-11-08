@@ -21,23 +21,23 @@ describe Exporters::Antweb::Exporter do
 
     context "something is missing" do
       it "handles missing protonyms" do
-        taxon = FactoryGirl.build_stubbed :genus, protonym: nil
+        taxon = build_stubbed :genus, protonym: nil
         expect(taxon.protonym).to be nil
         expect(exporter.send :authorship_html_string, taxon).to be nil
       end
 
       it "handles missing protonym authorships" do
-        protonym = FactoryGirl.build_stubbed :protonym, authorship: nil
-        taxon = FactoryGirl.build_stubbed :genus, protonym: protonym
+        protonym = build_stubbed :protonym, authorship: nil
+        taxon = build_stubbed :genus, protonym: protonym
 
         expect(taxon.protonym).to_not be nil
         expect(exporter.send :authorship_html_string, taxon).to be nil
       end
 
       it "handles missing authorship references" do
-        authorship = FactoryGirl.build_stubbed :citation, reference: nil
-        protonym = FactoryGirl.build_stubbed :protonym, authorship: authorship
-        taxon = FactoryGirl.build_stubbed :genus, protonym: protonym
+        authorship = build_stubbed :citation, reference: nil
+        protonym = build_stubbed :protonym, authorship: authorship
+        taxon = build_stubbed :genus, protonym: protonym
 
         expect(taxon.protonym.authorship).to_not be nil
         expect(exporter.send :authorship_html_string, taxon).to be nil

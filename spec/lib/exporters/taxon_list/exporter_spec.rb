@@ -1,13 +1,11 @@
 require 'spec_helper'
 
 describe Exporters::TaxonList::Exporter do
-  before do
-    @exporter = Exporters::TaxonList::Exporter.new
-  end
+  let(:exporter) { Exporters::TaxonList::Exporter.new }
 
   it "writes its output to the right file" do
     expect(File).to receive(:open).with 'data/output/antcat_taxon_list.txt', 'w'
-    @exporter.export
+    exporter.export
   end
 
   describe "Exporting" do
@@ -31,10 +29,10 @@ describe Exporters::TaxonList::Exporter do
         3.times { |i| create_taxon fisher, '2013' }
         2.times { |i| create_taxon fisher, '2011' }
         1.times { |i| create_taxon bolton, '2000' }
-        expect(@exporter).to receive(:write).with(@file, "Bolton, B.\t" + "2000\t" + '1').ordered
-        expect(@exporter).to receive(:write).with(@file, "Fisher, B.L.\t" + "2011\t" + '2').ordered
-        expect(@exporter).to receive(:write).with(@file, "Fisher, B.L.\t" + "2013\t" + '3').ordered
-        @exporter.export
+        expect(exporter).to receive(:write).with(@file, "Bolton, B.\t" + "2000\t" + '1').ordered
+        expect(exporter).to receive(:write).with(@file, "Fisher, B.L.\t" + "2011\t" + '2').ordered
+        expect(exporter).to receive(:write).with(@file, "Fisher, B.L.\t" + "2013\t" + '3').ordered
+        exporter.export
       end
     end
   end

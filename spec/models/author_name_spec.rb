@@ -34,7 +34,7 @@ describe AuthorName do
     author_name.author = create :author
     author_name.save!
 
-    author_name = FactoryGirl.build :author_name, name: 'Bolton'
+    author_name = build :author_name, name: 'Bolton'
     expect(author_name).not_to be_valid
   end
 

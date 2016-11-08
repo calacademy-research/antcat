@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe ChangeDecorator do
-  let(:user) { create :user, name: "First Last", email: "email@example.com" }
+  let(:user) { build_stubbed :user, name: "First Last", email: "email@example.com" }
 
   describe "#format_adder_name" do
     it "formats the adder's name" do
-      change = create :change, approver: user, change_type: "create"
+      change = build_stubbed :change, approver: user, change_type: "create"
       allow(change).to receive(:changed_by).and_return user
 
       string = change.decorate.format_adder_name
@@ -16,7 +16,7 @@ describe ChangeDecorator do
 
   describe "#format_approver_name" do
     it "formats the approver's name" do
-      change = create :change, approver: user
+      change = build_stubbed :change, approver: user
       string = change.decorate.format_approver_name
       expect(string).to match /First Last/
       expect(string).to match /approved this change/

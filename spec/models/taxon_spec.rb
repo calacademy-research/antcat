@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Taxon do
   describe "Fields and validations" do
     it "requires a name" do
-      taxon = create :taxon
+      taxon = build_stubbed :taxon
       expect(taxon).to be_valid
 
       taxon.name = nil
@@ -19,34 +19,32 @@ describe Taxon do
 
     context "when status 'valid'" do
       it "is not invalid" do
-        taxon = create :taxon
+        taxon = build_stubbed :taxon
         taxon.status = "valid"
         expect(taxon).not_to be_invalid
       end
     end
 
     describe "shared setup" do
-      let(:taxon) { FactoryGirl.build :taxon }
+      let(:taxon) { build_stubbed :taxon }
 
       it "can be unidentifiable" do
         expect(taxon).not_to be_unidentifiable
-
-        taxon.update_attribute :status, 'unidentifiable'
+        taxon.status = 'unidentifiable'
         expect(taxon).to be_unidentifiable
         expect(taxon).to be_invalid
       end
 
       it "can be a collective group name" do
         expect(taxon).not_to be_collective_group_name
-
-        taxon.update_attribute :status, 'collective group name'
+        taxon.status = 'collective group name'
         expect(taxon).to be_collective_group_name
         expect(taxon).to be_invalid
       end
 
       it "can be an ichnotaxon" do
         expect(taxon).not_to be_ichnotaxon
-        taxon.update_attribute :ichnotaxon, true
+        taxon.ichnotaxon = true
         expect(taxon).to be_ichnotaxon
         expect(taxon).not_to be_invalid
       end
@@ -54,7 +52,7 @@ describe Taxon do
       it "can be unavailable" do
         expect(taxon).not_to be_unavailable
         expect(taxon).to be_available
-        taxon.update_attribute :status, 'unavailable'
+        taxon.status = 'unavailable'
         expect(taxon).to be_unavailable
         expect(taxon).not_to be_available
         expect(taxon).to be_invalid
@@ -62,7 +60,7 @@ describe Taxon do
 
       it "can be excluded from Formicidae" do
         expect(taxon).not_to be_excluded_from_formicidae
-        taxon.update_attribute :status, 'excluded from Formicidae'
+        taxon.status = 'excluded from Formicidae'
         expect(taxon).to be_excluded_from_formicidae
         expect(taxon).to be_invalid
       end
@@ -70,54 +68,52 @@ describe Taxon do
       it "can be a fossil" do
         expect(taxon).not_to be_fossil
         expect(taxon.fossil).to eq false
-        taxon.update_attribute :fossil, true
+        taxon.fossil = true
         expect(taxon).to be_fossil
       end
     end
 
     it "can be a homonym of something else" do
-      neivamyrmex = create :taxon
+      neivamyrmex = build_stubbed :taxon
+      acamatus = build_stubbed :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
 
-      acamatus = create :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
-      acamatus.reload
       expect(acamatus).to be_homonym
       expect(acamatus.homonym_replaced_by).to eq neivamyrmex
     end
 
     it "can have an incertae_sedis_in" do
-      myanmyrma = create :taxon, incertae_sedis_in: 'family'
-      myanmyrma.reload
+      myanmyrma = build_stubbed :taxon, incertae_sedis_in: 'family'
       expect(myanmyrma.incertae_sedis_in).to eq 'family'
       expect(myanmyrma).not_to be_invalid
     end
 
     it "can say whether it is incertae sedis in a particular rank" do
-      myanmyrma = create :taxon, incertae_sedis_in: 'family'
-      myanmyrma.reload
+      myanmyrma = build_stubbed :taxon, incertae_sedis_in: 'family'
       expect(myanmyrma).to be_incertae_sedis_in 'family'
     end
 
     describe "#biogeographic_region" do
-      before do
-        @taxon = create :species
-      end
+      let(:taxon) { build_stubbed :species }
 
       it "allows only allowed regions" do
-        @taxon.biogeographic_region = "Australasia"
-        expect(@taxon.valid?).to be true
-        @taxon.biogeographic_region = "Ancient Egypt"
-        expect(@taxon.valid?).to be false
+        taxon.biogeographic_region = "Australasia"
+        expect(taxon.valid?).to be true
+
+        taxon.biogeographic_region = "Ancient Egypt"
+        expect(taxon.valid?).to be false
       end
 
       it "allows nil" do
-        @taxon.biogeographic_region = nil
-        expect(@taxon.valid?).to be true
+        taxon.biogeographic_region = nil
+        expect(taxon.valid?).to be true
       end
 
       it "nilifies blank strings on save" do
-        @taxon.biogeographic_region = ""
-        @taxon.save
-        expect(@taxon.biogeographic_region).to be nil
+        taxon = create :species
+        taxon.biogeographic_region = ""
+        taxon.save
+
+        expect(taxon.biogeographic_region).to be nil
       end
     end
   end
@@ -125,14 +121,15 @@ describe Taxon do
   #TODO remove?
   describe "Rank" do
     it "returns a lowercase version" do
-      expect(create(:subfamily).name.rank).to eq 'subfamily'
+      taxon = build_stubbed :subfamily
+      expect(taxon.name.rank).to eq 'subfamily'
     end
   end
 
   describe "Being a homonym replaced by something" do
     it "should not think it's a homonym replaced by something when it's not" do
-      genus = create :genus
-      another_genus = create :genus
+      genus = build_stubbed :genus
+      another_genus = build_stubbed :genus
 
       expect(genus).not_to be_homonym_replaced_by another_genus
       expect(genus.homonym_replaced).to be_nil
@@ -151,6 +148,7 @@ describe Taxon do
       taxon = Family.new
       expect(taxon.protonym).to be_nil
       taxon.build_protonym name: create(:name, name: 'Formicariae')
+      expect(taxon.protonym).to_not be_nil
     end
 
     # Changed this because synonyms, homonyms will use the same protonym
@@ -236,15 +234,14 @@ describe Taxon do
   describe "Other attributes" do
     describe "#author_last_names_string" do
       it "delegates to the protonym" do
-        genus = create_genus
+        genus = build_stubbed :genus
         expect(genus.protonym).to receive(:author_last_names_string).and_return 'Bolton'
         expect(genus.author_last_names_string).to eq 'Bolton'
       end
 
       context "when there isn't a protonym authorship" do
         it "handles it" do
-          species = create_species 'Atta minor maxus'
-          protonym_name = create_subspecies_name 'Eciton minor maxus'
+          species = build_stubbed :species
 
           expect(species.protonym).to receive(:author_last_names_string).and_return nil
           expect(species.author_last_names_string).to be_nil
@@ -254,7 +251,7 @@ describe Taxon do
 
     describe "#year" do
       it "delegates to the protonym" do
-        genus = create_genus
+        genus = build_stubbed :genus
         expect(genus.protonym).to receive(:year).and_return '2001'
         expect(genus.year).to eq '2001'
       end
@@ -262,7 +259,7 @@ describe Taxon do
 
     describe "#authorship_string" do
       it "delegates to the protonym" do
-        genus = create_genus
+        genus = build_stubbed :genus
         expect(genus.protonym).to receive(:authorship_string).and_return 'Bolton 2005'
         expect(genus.authorship_string).to eq 'Bolton 2005'
       end
@@ -469,7 +466,8 @@ describe Taxon do
 
   describe "#original_combination" do
     it "is nil if there was no recombining" do
-      expect(create_genus.original_combination).to be_nil
+      genus = build_stubbed :genus
+      expect(genus.original_combination).to be_nil
     end
 
     it "is the protonym, otherwise" do

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe UserDecorator do
-  let(:user) { create :user, name: "First Last", email: "email@example.com" }
+  let(:user) { build_stubbed :user, name: "First Last", email: "email@example.com" }
 
   describe "#name_linking_to_email" do
     it "formats email and name" do

@@ -22,14 +22,14 @@ describe Reference do
 
     context "without a document" do
       it "returns false" do
-        expect(create(:reference)).not_to be_downloadable
+        expect(build_stubbed(:reference)).not_to be_downloadable
       end
     end
   end
 
   describe "#url" do
     it "is be nil if there is no document" do
-      expect(create(:reference).url).to be_nil
+      expect(build_stubbed(:reference).url).to be_nil
     end
 
     it "delegates to its document" do
@@ -50,7 +50,7 @@ describe Reference do
 
   describe "#document_host=" do
     it "doesn't crash if there is no document" do
-      create(:reference).document_host = 'localhost'
+      build_stubbed(:reference).document_host = 'localhost'
     end
 
     it "delegates to its document" do
