@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161102012231) do
+ActiveRecord::Schema.define(version: 20161108051405) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -122,81 +122,6 @@ ActiveRecord::Schema.define(version: 20161102012231) do
   end
 
   add_index "feedbacks", ["user_id"], name: "index_feedbacks_on_user_id", using: :btree
-
-  create_table "hol_data", force: :cascade do |t|
-    t.integer "tnuid",                  limit: 4
-    t.integer "tnid",                   limit: 4
-    t.string  "name",                   limit: 255
-    t.string  "lsid",                   limit: 255
-    t.string  "author",                 limit: 255
-    t.string  "rank",                   limit: 255
-    t.string  "status",                 limit: 255
-    t.string  "is_valid",               limit: 255
-    t.boolean "fossil"
-    t.integer "num_spms",               limit: 4
-    t.boolean "many_antcat_references"
-    t.boolean "many_hol_references"
-  end
-
-  add_index "hol_data", ["tnuid"], name: "hol_data_tnuid_idx", using: :btree
-
-  create_table "hol_literature_pages", force: :cascade do |t|
-    t.integer "literatures_id", limit: 4
-    t.string  "url",            limit: 255
-    t.string  "page",           limit: 255
-  end
-
-  create_table "hol_literatures", force: :cascade do |t|
-    t.integer "tnuid",     limit: 4
-    t.integer "pub_id",    limit: 4
-    t.string  "taxon",     limit: 255
-    t.string  "name",      limit: 255
-    t.string  "describer", limit: 255
-    t.string  "rank",      limit: 255
-    t.string  "year",      limit: 255
-    t.string  "month",     limit: 255
-    t.string  "comments",  limit: 255
-    t.string  "full_pdf",  limit: 255
-    t.string  "pages",     limit: 255
-    t.string  "public",    limit: 255
-    t.string  "author",    limit: 255
-  end
-
-  create_table "hol_synonyms", force: :cascade do |t|
-    t.integer "tnuid",      limit: 4
-    t.integer "synonym_id", limit: 4
-    t.text    "json",       limit: 4294967295
-  end
-
-  create_table "hol_taxon_data", force: :cascade do |t|
-    t.integer "tnuid",               limit: 4
-    t.text    "json",                limit: 4294967295
-    t.string  "author_last_name",    limit: 255
-    t.integer "antcat_author_id",    limit: 4
-    t.string  "journal_name",        limit: 255
-    t.integer "hol_journal_id",      limit: 4
-    t.integer "antcat_journal_id",   limit: 4
-    t.integer "year",                limit: 4
-    t.integer "hol_pub_id",          limit: 4
-    t.integer "start_page",          limit: 4
-    t.integer "end_page",            limit: 4
-    t.integer "antcat_protonym_id",  limit: 4
-    t.integer "antcat_reference_id", limit: 4
-    t.integer "antcat_name_id",      limit: 4
-    t.integer "antcat_citation_id",  limit: 4
-    t.string  "rank",                limit: 255
-    t.string  "rel_type",            limit: 255
-    t.boolean "fossil"
-    t.string  "status",              limit: 255
-    t.integer "antcat_taxon_id",     limit: 4
-    t.integer "valid_tnuid",         limit: 4
-    t.string  "name",                limit: 255
-    t.string  "is_valid",            limit: 255
-  end
-
-  add_index "hol_taxon_data", ["antcat_name_id"], name: "hol_taxon_data_antcat_name_id_idx", using: :btree
-  add_index "hol_taxon_data", ["antcat_taxon_id"], name: "hol_taxon_data_antcat_taxon_id_idx", using: :btree
-  add_index "hol_taxon_data", ["tnuid"], name: "hol_taxon_data_tnuid_idx", using: :btree
 
   create_table "journals", force: :cascade do |t|
     t.string   "name",           limit: 255
