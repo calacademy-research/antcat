@@ -26,10 +26,8 @@ describe Citation do
 
     it "handles multiple authors" do
       reference = FactoryGirl.build_stubbed :article_reference,
-        author_names: [
-          create(:author_name, name: 'Bolton, B.'),
-          create(:author_name, name: 'Fisher, R.'),
-        ],
+        author_names: [ create(:author_name, name: 'Bolton, B.'),
+                        create(:author_name, name: 'Fisher, R.')],
         citation_year: '2001', year: '2001'
       citation = FactoryGirl.build_stubbed :citation, reference: reference
 

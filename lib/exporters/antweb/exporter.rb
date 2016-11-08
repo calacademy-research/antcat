@@ -23,9 +23,7 @@ class Exporters::Antweb::Exporter
             if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
               row = export_taxon taxon
               if row
-                if row[20]
-                  row[20].delete!('\"')
-                end
+                row[20].delete!('\"') if row[20]
                 row.each do |col|
                   if col.is_a? String
                     col.delete!("\n")
@@ -46,9 +44,9 @@ class Exporters::Antweb::Exporter
     end
   end
 
-  # For maintaining order, based on the old `#get_taxa`.
+  private # TODO indent
   def taxa_ids
-    Taxon.joins(protonym: [{authorship: :reference}])
+    Taxon.joins(protonym: [{ authorship: :reference }])
       .order(:status).pluck(:id).reverse
   end
 
@@ -64,28 +62,32 @@ class Exporters::Antweb::Exporter
     parent_name ||= 'Formicidae'
 
     attributes = {
-      antcat_id: taxon.id,
-      status: taxon.status,
-      available?: !taxon.invalid?,
-      fossil?: taxon.fossil,
-      history: export_history(taxon),
-      author_date: taxon.authorship_string,
-      author_date_html: taxon.authorship_html_string,
-      original_combination?: taxon.original_combination?,
-      original_combination: taxon.original_combination.try(:name).try(:name),
-      authors: taxon.author_last_names_string,
-      year: taxon.year && taxon.year.to_s,
-      reference_id: reference_id,
-      biogeographic_region: taxon.biogeographic_region,
-      locality: taxon.protonym.locality,
-      rank: taxon.class.to_s,
-      hol_id: taxon.hol_id,
-      parent: parent_name,
+      antcat_id:              taxon.id,
+      status:                 taxon.status,
+      available?:             !taxon.invalid?,
+      fossil?:                taxon.fossil,
+      history:                export_history(taxon),
+      author_date:            taxon.authorship_string,
+      author_date_html:       taxon.authorship_html_string,
+      original_combination?:  taxon.original_combination?,
+      original_combination:   taxon.original_combination.try(:name).try(:name),
+      authors:                taxon.author_last_names_string,
+      year:                   taxon.year && taxon.year.to_s,
+      reference_id:           reference_id,
+      biogeographic_region:   taxon.biogeographic_region,
+      locality:               taxon.protonym.locality,
+      rank:                   taxon.class.to_s,
+      hol_id:                 taxon.hol_id,
+      parent:                 parent_name,
     }
-    attributes.merge! current_valid_name: nil
-    if taxon.current_valid_taxon_including_synonyms
-      attributes.merge! current_valid_name: taxon.current_valid_taxon_including_synonyms.name.to_s
-    end
+
+    attributes[:current_valid_name] =
+      if taxon.current_valid_taxon_including_synonyms
+        taxon.current_valid_taxon_including_synonyms.name.to_s
+      else
+        nil
+      end
+
     begin
       convert_to_antweb_array taxon.add_antweb_attributes(attributes)
     rescue Exception => exception
@@ -98,38 +100,38 @@ class Exporters::Antweb::Exporter
 
   def boolean_to_antweb boolean
     case boolean
-    when true then 'TRUE'
+    when true  then 'TRUE'
     when false then 'FALSE'
-    when nil then nil
-    else raise
+    when nil   then nil
+    else            raise
     end
   end
 
   def header
-    "antcat id\t" + # [0]
-      "subfamily\t" + # [1]
-      "tribe\t" + # [2]
-      "genus\t" + # [3]
-      "subgenus\t" + # [4]
-      "species\t" + # [5]
-      "subspecies\t" + # [6]
-      "author date\t" + # [7]
-      "author date html\t" + # [8]
-      "authors\t" + # [9]
-      "year\t" + # [10]
-      "status\t" + # [11]
-      "available\t" + # [12]
-      "current valid name\t" + # [13]
-      "original combination\t" + # [14]
-      "was original combination\t" + # [15]
-      "fossil\t" + # [16]
-      "taxonomic history html\t" + # [17]
-      "reference id\t" + # [18]
-      "bioregion\t" + # [19]
-      "country\t" + # [20]
-      "current valid rank\t" + # [21]
-      "hol id\t" + # [22]
-      "current valid parent" # [23]
+    "antcat id\t"                + #  [0]
+    "subfamily\t"                + #  [1]
+    "tribe\t"                    + #  [2]
+    "genus\t"                    + #  [3]
+    "subgenus\t"                 + #  [4]
+    "species\t"                  + #  [5]
+    "subspecies\t"               + #  [6]
+    "author date\t"              + #  [7]
+    "author date html\t"         + #  [8]
+    "authors\t"                  + #  [9]
+    "year\t"                     + # [10]
+    "status\t"                   + # [11]
+    "available\t"                + # [12]
+    "current valid name\t"       + # [13]
+    "original combination\t"     + # [14]
+    "was original combination\t" + # [15]
+    "fossil\t"                   + # [16]
+    "taxonomic history html\t"   + # [17]
+    "reference id\t"             + # [18]
+    "bioregion\t"                + # [19]
+    "country\t"                  + # [20]
+    "current valid rank\t"       + # [21]
+    "hol id\t"                   + # [22]
+    "current valid parent"         # [23]
   end
 
   def convert_to_antweb_array values
@@ -168,12 +170,13 @@ class Exporters::Antweb::Exporter
     nil
   end
 
-  private
-  include ActionView::Helpers::TagHelper # content_tag
-  include ActionView::Context # content_tag
+  # Included down here because they're only used in `#export_history`.
+  include ActionView::Helpers::TagHelper # For `#content_tag`.
+  include ActionView::Context # For `#content_tag`.
 
   def export_history taxon
     $use_ant_web_formatter = true # TODO remove
+
     begin
       taxon = taxon.decorate
       return content_tag :div, class: 'antcat_taxon' do
