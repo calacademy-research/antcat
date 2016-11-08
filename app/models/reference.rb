@@ -57,6 +57,8 @@ class Reference < ApplicationRecord
   end
 
   # TODO remove in favor of just using `principal_author_last_name`?
+  # TODO it looks like `ReferenceMatcher` and `ReferenceComparable`
+  # are the ones calling this.
   def author
     $stdout.puts "Reference#author".red
     principal_author_last_name
@@ -263,6 +265,7 @@ class Reference < ApplicationRecord
       reference_references return_true_or_false: true
     end
 
+    # TODO remove polymorphism unless it's used anywhere else.
     class DuplicateMatcher < ReferenceMatcher
       def min_similarity
         0.5

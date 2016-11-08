@@ -13,4 +13,4 @@ By no means a complete log. See also https://github.com/calacademy-research/antc
 * Removed commented out code in [37064d](https://github.com/calacademy/antcat/commit/37064da56f47a530a388b268289a73cb24b93d75)
 * [Hard to maintain] Removed 'edit references in place' feature in [604eee](https://github.com/calacademy/antcat/commit/604eee89bc25abd9202c579989a5163a5dd6539e)
 * [Hard to maintain / edge-case / possibly introduces copy/paste errors] Removed 'copy reference' feature in [786d60](https://github.com/calacademy/antcat/commit/786d60b0d4e8395816e6a65b7248d2ef91c3897b)
-* [Task completed] Removed HOL database tables; data was migrated to `Taxon` in 529c73b2f8b03173647b5c5325a31890e1a2dfc5. We can use any 2016 db dump from before November 8 if we need to recreate. Related issues: #98, #108. TODO add hash.
+* [Task completed] Removed HOL database tables in 62091524b8bdb956f6730f1f9893bc57ab06cfc0; data was migrated to `Taxon` in 529c73b2f8b03173647b5c5325a31890e1a2dfc5. We can use any 2016 db dump from before November 8 if we need to recreate. Related issues: #98.

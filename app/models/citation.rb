@@ -17,6 +17,7 @@ class Citation < ActiveRecord::Base
   has_paper_trail meta: { change_id: :get_current_change_id }
 
   # TODO Ruby's `and` keyword is evil.
+  # TODO probably same as #keey.
   def authorship_string
     reference and "#{author_names_string}, #{year}"
   end
@@ -27,6 +28,7 @@ class Citation < ActiveRecord::Base
     reference and reference.decorate.format_authorship_html
   end
 
+  # TODO rename / remove.
   def author_last_names_string
     reference and "#{author_names_string}"
   end
@@ -37,6 +39,7 @@ class Citation < ActiveRecord::Base
   end
 
   private
+    # TODO identical to the first part of #keey
     def author_names_string
       names = reference.author_names.map &:last_name
       case names.size

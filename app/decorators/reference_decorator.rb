@@ -83,6 +83,7 @@ class ReferenceDecorator < ApplicationDecorator
   # Note 1: this the new name of `#format_author_last_names` (the original "FALNs").
   # Note 2: `references.author_names_string_cache` may also be useful.
   # Note 3: very similar to `Citation#author_names_string` (which doesn't include year).
+  # TODO move to `Reference`.
   def keey
     names = reference.author_names.map &:last_name
     case names.size

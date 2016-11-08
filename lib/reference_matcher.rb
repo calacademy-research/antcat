@@ -17,6 +17,7 @@ class ReferenceMatcher
     0.01
   end
 
+  # TODO see if we can avoid using instance variables.
   def candidates_for target
     if target.author != @target_author
       @target_author = target.author

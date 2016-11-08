@@ -1179,7 +1179,7 @@ definitions:
 
 
   ReferenceAuthorName:
-    description: reference authorn name - table to associate references with author names
+    description: reference author name - table to associate references with author names
     type: object
     properties:
       id:

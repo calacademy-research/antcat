@@ -1,3 +1,7 @@
+# TODO remove this whole thing? Possibly not actively used by editors,
+# and since `key_cache` isn't updated, this feature doesn't work as intended,
+# and the intended usage was pretty dangerous to begin with.
+
 class MissingReference < Reference
   def self.find_replacements show_progress
     Progress.init show_progress, MissingReference.count
