@@ -111,6 +111,7 @@ module ReferenceComparable
     def remove_parenthesized_taxon_names! string
       match = string.match(/ \(.+?\)/)
       return string unless match
+
       possible_taxon_names = match.to_s.strip.gsub(/[(),:]/, '').split(/[ ]/)
       any_taxon_names = possible_taxon_names.any? do |word|
         ['Formicidae', 'Hymenoptera'].include? word
@@ -126,8 +127,12 @@ module ReferenceComparable
     end
 
     def replace_roman_numerals! string
-      [['i', 1], ['ii', 2], ['iii', 3], ['iv', 4], ['v', 5], ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
-      ].each do |roman, arabic|
+      roman_numerals = [
+        ['i',  1], ['ii',  2], ['iii',  3], ['iv', 4], ['v',  5],
+        ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
+      ]
+
+      roman_numerals.each do |roman, arabic|
         string.gsub! /\b#{roman}\b/, arabic.to_s
       end
       string

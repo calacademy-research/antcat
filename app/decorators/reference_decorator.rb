@@ -1,6 +1,7 @@
 # TODO something. Less methods. Method names.
 # TODO investigate using views.
 # TODO use less decorators in general.
+# TODO consider renaming the db fields once the code is more stable.
 
 =begin
 Notes
@@ -39,6 +40,7 @@ Examples from `r = Reference.first`
 
 r.author_names # AuthorName CollectionProxy
 
+# TODO remove key_cache
 r.key_cache # "Abdul-Rassoul, Dawah & Othman, 1978"
 
 r.decorate.keey # "Abdul-Rassoul, Dawah & Othman, 1978"
@@ -53,7 +55,7 @@ r.reference_author_names # ReferenceAuthorName CollectionProxy
 
 r.principal_author_last_name # "Abdul-Rassoul"; possibly only used for sorting.
 
-r.author # same as `r.principal_author_last_name`
+r.principal_author_last_name_cache # The real (db) attribute of `r.principal_author_last_name`
 
 r.author_names_suffix # nil; probably non-nil for things like ", Jr."
 
@@ -85,6 +87,16 @@ class ReferenceDecorator < ApplicationDecorator
   # Note 3: very similar to `Citation#author_names_string` (which doesn't include year).
   # TODO move to `Reference`.
   def keey
+    authors_for_keey << ', ' << reference.short_citation_year
+  end
+
+  # normal keey: "Bolton, 1885g"
+  # this:        "Bolton, 1885"
+  def keey_without_letters_in_year
+    authors_for_keey << ', ' << year_or_no_year
+  end
+
+  def authors_for_keey
     names = reference.author_names.map &:last_name
     case names.size
     when 0
@@ -96,7 +108,13 @@ class ReferenceDecorator < ApplicationDecorator
     else
       string = names[0..-2].join ', '
       string << " & " << names[-1]
-    end << ', ' << reference.short_citation_year
+    end
+  end
+
+  # TODO find proper name.
+  def year_or_no_year
+    return "[no year]" if reference.year.blank?
+    reference.year.to_s
   end
 
   # TODO inline.
@@ -283,4 +301,7 @@ class ReferenceDecorator < ApplicationDecorator
     def format_title
       format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
     end
+
+    # TODO STUFF TO BE MOVED/REFACTORED/ETC BELOW THIS LINE
+
 end

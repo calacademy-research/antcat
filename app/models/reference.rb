@@ -77,6 +77,7 @@ class Reference < ApplicationRecord
   # TODO we should probably have #year [int] and something
   # like #non_standard_year [string] instead of this +
   # #year + #citation_year.
+  # TODO what is this used for?
   def short_citation_year
     if citation_year.present?
       citation_year.gsub %r{ .*$}, ''
