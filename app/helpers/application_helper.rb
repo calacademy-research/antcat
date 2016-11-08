@@ -93,6 +93,12 @@ module ApplicationHelper
     end
   end
 
+  # Moved from `ReferenceDecorator#format_timestamp`.
+  # TODO something.
+  def a_timestamp_formatter timestamp
+      timestamp.strftime '%Y-%m-%d'
+  end
+
   # Hmm cannot remember why private..
   private
     def antcat_icon *css_classes

@@ -99,16 +99,6 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   # TODO inline.
-  def created_at
-    format_timestamp reference.created_at
-  end
-
-  # TODO inline.
-  def updated_at
-    format_timestamp reference.updated_at
-  end
-
-  # TODO inline.
   def public_notes
     format_italics h reference.public_notes
   end
@@ -224,10 +214,6 @@ class ReferenceDecorator < ApplicationDecorator
       helpers.content_tag :span, formatted,
         class: "reference_keey_expansion_text",
         title: keey
-    end
-
-    def format_timestamp timestamp
-      timestamp.strftime '%Y-%m-%d'
     end
 
     # TODO try to move somewhere more general, even if it's only used here.
