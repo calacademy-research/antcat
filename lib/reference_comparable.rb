@@ -8,7 +8,7 @@ module ReferenceComparable
 
   def <=> rhs
     return 0.00 unless type == rhs.type
-    return 0.00 unless normalize_author(author) == normalize_author(rhs.author)
+    return 0.00 unless normalize_author(principal_author_last_name) == normalize_author(rhs.principal_author_last_name)
 
     result = match_title(rhs) || match_article(rhs) || match_book(rhs)
     year_matches = year_matches? rhs

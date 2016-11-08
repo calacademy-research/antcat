@@ -61,7 +61,7 @@ class Reference < ApplicationRecord
   # are the ones calling this.
   def author
     $stdout.puts "Reference#author".red
-    principal_author_last_name
+    raise
   end
 
   # TODO something. "_cache" vs not.
