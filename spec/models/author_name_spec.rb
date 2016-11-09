@@ -3,31 +3,10 @@ require 'spec_helper'
 describe AuthorName do
   it { should be_versioned }
   it { should validate_presence_of :author }
+  it { should validate_presence_of :name }
+  it { should have_many :references }
 
   let(:author) { Author.create! }
-
-  it "has many references" do
-    author_name = AuthorName.create! name: 'Fisher, B.L.', author: author
-
-    reference = create :reference
-    author_name.references << reference
-
-    expect(author_name.references.first).to eq reference
-  end
-
-  it "can't be blank" do
-    author_name = AuthorName.new
-    author_name.author = create :author
-
-    author_name.name = nil
-    expect(author_name).not_to be_valid
-
-    author_name.name = ''
-    expect(author_name).not_to be_valid
-
-    author_name.name = 'Bolton, B.'
-    expect(author_name).to be_valid
-  end
 
   it "can't be a duplicate" do
     author_name = create :author_name, name: 'Bolton'

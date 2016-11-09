@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SubspeciesName do
-  describe "Name parts" do
+  describe "#name_parts" do
     it "knows its species epithet" do
       name = SubspeciesName.new name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
       expect(name.genus_epithet).to eq 'Atta'

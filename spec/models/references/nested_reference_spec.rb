@@ -4,6 +4,7 @@ describe NestedReference do
   it { should validate_presence_of :year }
   it { should validate_presence_of :pages_in }
   it { should validate_presence_of :nesting_reference }
+  it { should allow_value(nil).for :title }
 
   describe "Validation" do
     context "shared setup" do
@@ -16,11 +17,6 @@ describe NestedReference do
       end
 
       it "is valid with the attributes given above" do
-        expect(reference).to be_valid
-      end
-
-      it "is valid without a title" do
-        reference.title = nil
         expect(reference).to be_valid
       end
 

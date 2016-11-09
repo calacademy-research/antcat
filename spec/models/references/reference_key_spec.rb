@@ -8,9 +8,9 @@ describe "ReferenceDecorator" do
   let(:ward) { build_stubbed :author_name, name: 'Ward, P.S.' }
 
   describe "#key" do
-      it "raises because it's impossible to search for it" do
-        expect { BookReference.new.decorate.key }.to raise_error
-      end
+    it "raises because it's impossible to search for it" do
+      expect { BookReference.new.decorate.key }.to raise_error
+    end
   end
 
   # Representing as a string

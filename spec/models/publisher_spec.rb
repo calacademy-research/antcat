@@ -65,6 +65,7 @@ describe Publisher do
     end
   end
 
+  # TODO used only in specs?
   describe "#to_s" do
     it "format name and place" do
       publisher = Publisher.create! name: "Wiley", place: Place.create!(name: 'New York')

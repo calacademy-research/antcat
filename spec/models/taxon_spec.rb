@@ -1,22 +1,16 @@
 require 'spec_helper'
 
 describe Taxon do
-  describe "Fields and validations" do
-    it "requires a name" do
-      taxon = build_stubbed :taxon
-      expect(taxon).to be_valid
+  it { should validate_presence_of :name }
+  it { should belong_to :protonym }
+  it { should allow_value(nil).for :type_name }
+  it { should allow_value(nil).for :status } # shouls probably not be...
+  it { should allow_value(nil).for :biogeographic_region }
+  it { should have_many :history_items }
+  it { should have_many :reference_sections }
 
-      taxon.name = nil
-      expect(taxon).not_to be_valid
-    end
-
-    # TODO it probably should not be, but adding validation now may break many tests.
-    it "is (Rails) valid with a nil status" do
-      taxon = create :taxon
-      taxon.status = nil
-      expect(taxon).to be_valid
-    end
-
+  # TODO move to new spec for `Taxa::PredicateMethods`.
+  describe "predicate methods" do
     context "when status 'valid'" do
       it "is not invalid" do
         taxon = build_stubbed :taxon
@@ -103,11 +97,6 @@ describe Taxon do
         expect(taxon.valid?).to be false
       end
 
-      it "allows nil" do
-        taxon.biogeographic_region = nil
-        expect(taxon.valid?).to be true
-      end
-
       it "nilifies blank strings on save" do
         taxon = create :species
         taxon.biogeographic_region = ""
@@ -144,13 +133,6 @@ describe Taxon do
   end
 
   describe "#protonym" do
-    it "can have a protonym" do
-      taxon = Family.new
-      expect(taxon.protonym).to be_nil
-      taxon.build_protonym name: create(:name, name: 'Formicariae')
-      expect(taxon.protonym).to_not be_nil
-    end
-
     # Changed this because synonyms, homonyms will use the same protonym
     context "when the taxon it's attached to is destroyed, even if another taxon is using it" do
       it "doesn't destroy the protonym" do
@@ -173,21 +155,10 @@ describe Taxon do
       expect(taxon.type_name.to_s).to eq 'Formicariae'
       expect(taxon.type_name.rank).to eq 'family'
     end
-
-    it "is not required" do
-      taxon = create :family, type_name: nil
-      expect(taxon).to be_valid
-    end
   end
 
   describe "#history_items" do
     let(:taxon) { create :family }
-
-    it "can have some" do
-      expect(taxon.history_items).to be_empty
-      taxon.history_items.create! taxt: 'foo'
-      expect(taxon.reload.history_items.map(&:taxt)).to eq ['foo']
-    end
 
     it "cascades to delete history items when it's deleted" do
       history_item = taxon.history_items.create! taxt: 'taxt'
@@ -207,12 +178,6 @@ describe Taxon do
 
   describe "#reference_sections" do
     let(:taxon) { create :family }
-
-    it "can have some" do
-      expect(taxon.reference_sections).to be_empty
-      taxon.reference_sections.create! references_taxt: 'foo'
-      expect(taxon.reload.reference_sections.map(&:references_taxt)).to eq ['foo']
-    end
 
     it "cascades to delete the reference sections when it's deleted" do
       reference_section = taxon.reference_sections.create! references_taxt: 'foo'

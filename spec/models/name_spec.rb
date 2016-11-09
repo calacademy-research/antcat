@@ -2,10 +2,7 @@ require 'spec_helper'
 
 describe Name do
   it { should be_versioned }
-
-  it "should have a name" do
-    expect(Name.new(name: 'Name').name).to eq 'Name'
-  end
+  it { should validate_presence_of :name }
 
   describe "#epithet_with_fossil_html" do
     it "formats the fossil symbol" do

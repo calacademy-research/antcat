@@ -2,26 +2,18 @@ require 'spec_helper'
 
 describe Subspecies do
   let(:genus) { create_genus 'Atta' }
+  it { should validate_presence_of :genus }
 
-  it "has no statistics" do
-    expect(Subspecies.new.statistics).to be_nil
+  describe "#statistics" do
+    it "has no statistics" do
+      expect(Subspecies.new.statistics).to be_nil
+    end
   end
 
   it "does not have to have a species (before being fixed up, e.g.)" do
     subspecies = create_subspecies 'Atta major colobopsis',
       genus: genus, species: nil
     expect(subspecies).to be_valid
-  end
-
-  it "must have a genus" do
-    subspecies = create_subspecies 'Atta major colobopsis'
-    expect(subspecies).to be_valid
-
-    subspecies.genus = nil
-    # TODO this fails without `subspecies.species = nil`
-    subspecies.species = nil
-
-    expect(subspecies).not_to be_valid
   end
 
   it "has its subfamily assigned from its genus" do
@@ -34,7 +26,6 @@ describe Subspecies do
     species = create_species genus: genus
     subspecies = create_subspecies 'Atta major colobopsis',
       genus: nil, species: species
-
     subspecies.save # Trigger callbacks. TODO fix factories.
 
     expect(subspecies.genus).to eq genus

@@ -5,16 +5,6 @@ describe ArticleReference do
   it { should validate_presence_of :series_volume_issue }
   it { should validate_presence_of :journal }
 
-  describe "validation" do
-    it "is valid the way I just set it up" do
-      reference = ArticleReference.new author_names: [create(:author_name)],
-        title: 'Title', citation_year: '2010a',
-        journal: create(:journal), series_volume_issue: '1', pagination: '2'
-
-      expect(reference).to be_valid
-    end
-  end
-
   describe "parsing fields from series_volume_issue" do
     it "can extract volume and issue" do
       reference = build_stubbed :article_reference, series_volume_issue: "92(32)"

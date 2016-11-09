@@ -4,14 +4,6 @@ describe UnknownReference do
   it { should validate_presence_of :year }
   it { should validate_presence_of :citation }
 
-  describe "validation" do
-    it "is valid the way I set it up" do
-      reference = UnknownReference.new author_names: [create(:author_name)],
-        title: 'Title', citation_year: '2010a', citation: 'Citation'
-      expect(reference).to be_valid
-    end
-  end
-
   describe "entering a newline in the citation" do
     it "strips the newline" do
       reference = create :unknown_reference

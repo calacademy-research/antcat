@@ -2,13 +2,7 @@ require 'spec_helper'
 
 describe Author do
   it { should be_versioned }
-
-  it "has many names" do
-    author = Author.create!
-    author.names << create(:author_name)
-
-    expect(author.names.size).to eq 1
-  end
+  it { should have_many :names }
 
   describe "scopes.sorted_by_name" do
     it "sorts by first author name" do

@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe Reference do
   it { should be_versioned }
+  it { should have_many :author_names }
+  it { should validate_presence_of :title }
 
   let(:an_author_name) { create :author_name }
   let(:fisher) { create :author_name, name: 'Fisher' }
@@ -10,15 +12,6 @@ describe Reference do
   let(:bolton_b) { create :author_name, name: 'Bolton, B.' }
 
   describe "Relationships" do
-    let(:reference) do
-      Reference.create! author_names: [an_author_name],
-        title: 'asdf', citation_year: '2010d'
-    end
-
-    it "has many author_names" do
-      expect(reference.author_names.first).to eq an_author_name
-    end
-
     describe "Nested references" do
       let!(:nesting_reference) { create :reference }
       let(:nestee) { create :nested_reference, nesting_reference: nesting_reference }
@@ -150,22 +143,6 @@ describe Reference do
       reference = create :reference
       reference.principal_author_last_name_cache = 'foo'
       expect(reference.principal_author_last_name).to eq 'foo'
-    end
-  end
-
-  describe "validations" do
-    let(:reference) do
-      Reference.new author_names: [an_author_name],
-        title: 'title', citation_year: '1910'
-    end
-
-    it "valid when all fields are present" do
-      expect(reference).to be_valid
-    end
-
-    it "is not valid when the title is missing" do
-      reference.title = nil
-      expect(reference).not_to be_valid
     end
   end
 
