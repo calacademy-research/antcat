@@ -217,26 +217,28 @@ describe Reference do
     end
   end
 
-  describe "scope.sorted_by_principal_author_last_name" do
-    it "orders by author_name" do
-      bolton_reference = create :article_reference, author_names: [bolton_b, ward_ps]
-      ward_reference = create :article_reference, author_names: [ward_ps, bolton_b]
-      fisher_reference = create :article_reference, author_names: [fisher_bl, bolton_b]
+  describe "scopes" do
+    describe ".sorted_by_principal_author_last_name" do
+      it "orders by author_name" do
+        bolton_reference = create :article_reference, author_names: [bolton_b, ward_ps]
+        ward_reference = create :article_reference, author_names: [ward_ps, bolton_b]
+        fisher_reference = create :article_reference, author_names: [fisher_bl, bolton_b]
 
-      results = Reference.sorted_by_principal_author_last_name
-      expect(results.map(&:id)).to eq [bolton_reference.id, fisher_reference.id, ward_reference.id]
+        results = Reference.sorted_by_principal_author_last_name
+        expect(results.map(&:id)).to eq [bolton_reference.id, fisher_reference.id, ward_reference.id]
+      end
     end
-  end
 
-  describe 'scope.with_principal_author_last_name' do
-    it 'returns references with a matching principal author last name' do
-      create :book_reference, author_names: [bolton_b] # not possible reference
-      possible_reference = create :article_reference, author_names: [ward_ps, fisher_bl]
-      # another possible reference
-      create :article_reference, author_names: [create(:author_name, name: 'Warden, J.')]
+    describe '.with_principal_author_last_name' do
+      it 'returns references with a matching principal author last name' do
+        create :book_reference, author_names: [bolton_b] # not possible reference
+        possible_reference = create :article_reference, author_names: [ward_ps, fisher_bl]
+        # another possible reference
+        create :article_reference, author_names: [create(:author_name, name: 'Warden, J.')]
 
-      results = Reference.with_principal_author_last_name 'Ward'
-      expect(results).to eq [possible_reference]
+        results = Reference.with_principal_author_last_name 'Ward'
+        expect(results).to eq [possible_reference]
+      end
     end
   end
 

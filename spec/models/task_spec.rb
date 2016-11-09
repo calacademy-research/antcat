@@ -7,7 +7,7 @@ describe Task do
   it { should validate_length_of(:title).is_at_most 70 }
 
   describe "scopes" do
-    describe "scope.open and scope.non_open" do
+    describe ".open and .non_open" do
       let!(:open) { create :task }
       let!(:also_open) { create :task }
       let!(:completed) { create :completed_task }
@@ -22,7 +22,7 @@ describe Task do
       end
     end
 
-    describe "scope.by_status_and_date" do
+    describe ".by_status_and_date" do
       let!(:first) { create :task, created_at: Time.now + 10.days }
       let!(:second) { create :task }
       let!(:third) { create :completed_task, created_at: Time.now + 7.days }

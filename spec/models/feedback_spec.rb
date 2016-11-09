@@ -28,7 +28,7 @@ describe Feedback do
   end
 
   describe "scopes" do
-    describe "scope.recently_created" do
+    describe ".recently_created" do
       before do
         create :feedback
         create :feedback, created_at: (Time.now - 8.minutes)

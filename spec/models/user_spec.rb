@@ -4,7 +4,7 @@ describe User do
   it { should validate_presence_of :name }
 
   describe "scopes" do
-    describe "scope.order_by_name" do
+    describe ".order_by_name" do
       before do
         %w(Anderson Zanderson Banderson).each { |name| create :user, name: name }
       end
@@ -18,20 +18,20 @@ describe User do
       let!(:user) { create :user }
       let!(:editor) { create :editor }
 
-      describe "scope.editors" do
+      describe ".editors" do
         it "returns editors" do
           expect(User.editors).to eq [editor]
         end
       end
 
-      describe "scope.non_editors" do
+      describe ".non_editors" do
         it "returns non-editors" do
           expect(User.editors).to eq [editor]
         end
       end
     end
 
-    describe "scope.feedback_emails_recipients" do
+    describe ".feedback_emails_recipients" do
       let!(:user) { create :user, receive_feedback_emails: true }
 
       it "returns per the database" do
@@ -39,7 +39,7 @@ describe User do
       end
     end
 
-    describe "scope.as_angle_bracketed_emails" do
+    describe ".as_angle_bracketed_emails" do
       before do
         create :user, name: "Archibald",
           email: "archibald@antcat.org", receive_feedback_emails: true

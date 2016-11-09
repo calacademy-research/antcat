@@ -86,6 +86,7 @@ describe Taxon do
 
   describe "#incertae_sedis_in" do
     let(:myanmyrma) { build_stubbed :taxon, incertae_sedis_in: 'family' }
+
     it "can have an incertae_sedis_in" do
       expect(myanmyrma.incertae_sedis_in).to eq 'family'
       expect(myanmyrma).not_to be_invalid

@@ -22,7 +22,7 @@ describe Tooltip do
       end
     end
 
-    describe "scope.enabled_keys" do
+    describe ".enabled_keys" do
       let!(:enabled) { create :tooltip, key_enabled: true }
       let!(:disabled) { create :tooltip, key_enabled: false }
 
@@ -31,7 +31,7 @@ describe Tooltip do
       end
     end
 
-    describe "scope.enabled_selectors" do
+    describe ".enabled_selectors" do
       let!(:enabled) { create :tooltip }
       let!(:disabled) { create :tooltip, selector_enabled: false }
       let!(:selector_enabled) do

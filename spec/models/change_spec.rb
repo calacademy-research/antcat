@@ -17,7 +17,7 @@ describe Change, versioning: true do
   end
 
   describe "scopes" do
-    describe "scope.waiting" do
+    describe ".waiting" do
       before do
         genus_1 = create_genus
         genus_1.taxon_state.update_attributes review_state: 'waiting'
