@@ -20,10 +20,10 @@ module ApplicationHelper
 
   def pluralize_with_delimiters count, singular, plural = nil
     word = if count == 1
-      singular
-    else
-      plural || singular.pluralize
-    end
+             singular
+           else
+             plural || singular.pluralize
+           end
     "#{number_with_delimiter(count)} #{word}"
   end
 
@@ -74,12 +74,9 @@ module ApplicationHelper
 
   def foundation_class_for flash_type
     case flash_type.to_sym
-    when :success, :notice
-      "primary"
-    when :error, :alert, :warning
-      "alert"
-    else
-      "secondary"
+    when :success, :notice        then "primary"
+    when :error, :alert, :warning then "alert"
+    else                               "secondary"
     end
   end
 
@@ -96,7 +93,7 @@ module ApplicationHelper
   # Moved from `ReferenceDecorator#format_timestamp`.
   # TODO something.
   def a_timestamp_formatter timestamp
-      timestamp.strftime '%Y-%m-%d'
+    timestamp.strftime '%Y-%m-%d'
   end
 
   # Hmm cannot remember why private..

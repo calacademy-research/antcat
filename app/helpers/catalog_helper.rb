@@ -1,3 +1,6 @@
+# TODO maybe less checking of user rights?
+# TODO possibly DRY buttons helpers that may be duplicated elsewhere.
+
 module CatalogHelper
   def taxon_label_span taxon
     content_tag :span, class: css_classes_for_rank(taxon) do
@@ -13,6 +16,7 @@ module CatalogHelper
     protonym.name.protonym_with_fossil_html protonym.fossil
   end
 
+  # Sorted to make test pass
   def css_classes_for_rank taxon
     [taxon.type.downcase, 'taxon', 'name'].sort
   end
@@ -23,6 +27,7 @@ module CatalogHelper
     end
   end
 
+  # TODO maybe make it possible to add (incertae sedis) species/genera.
   def link_to_add_new_species taxon
     return unless user_can_edit? && taxon.is_a?(Genus)
 
