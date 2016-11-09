@@ -70,7 +70,7 @@ class Taxon < ApplicationRecord
   tracked on: :create, parameters: activity_parameters
 
   # TODO investigate using `delegate :year, to: "protonym.citation.reference.year"` etc.
-  delegate :author_last_names_string, :year, to: :protonym
+  delegate :year, to: :protonym
 
   def save_from_form params, previous_combination = nil
     Taxa::SaveTaxon.new(self).save_from_form(params, previous_combination)

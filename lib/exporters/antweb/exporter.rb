@@ -73,7 +73,7 @@ class Exporters::Antweb::Exporter
         author_date_html:       authorship_html_string(taxon),
         original_combination?:  taxon.original_combination?,
         original_combination:   original_combination(taxon).try(:name).try(:name),
-        authors:                taxon.author_last_names_string,
+        authors:                author_last_names_string(taxon),
         year:                   taxon.year && taxon.year.to_s,
         reference_id:           reference_id,
         biogeographic_region:   taxon.biogeographic_region,
@@ -167,7 +167,16 @@ class Exporters::Antweb::Exporter
 
     def add_subfamily_to_current_valid subfamily, current_valid_name
       return unless current_valid_name
-      subfamily.to_s + current_valid_name.to_s
+      "#{subfamily} #{current_valid_name}"
+    end
+
+    # TODO investigate using `delegate :reference, to: "protonym.citation.reference"` etc.
+    # TODO rename.
+    def author_last_names_string taxon
+      reference = taxon.try(:protonym).try(:authorship).try(:reference)
+      return unless reference
+
+      reference.decorate.authors_for_keey
     end
 
     def authorship_html_string taxon
@@ -177,8 +186,7 @@ class Exporters::Antweb::Exporter
       formatted = reference.decorate.formatted
       keey = reference.decorate.keey
 
-      content_tag(:span, title: formatted) do
-        keey
+      content_tag(:span, title: formatted) { keey }
       end
     end
 

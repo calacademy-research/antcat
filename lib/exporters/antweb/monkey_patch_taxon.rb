@@ -1,5 +1,7 @@
 # HACK: Moved from the main classes. Re-opening the classes here is OK because
 # we do not want all this in the main code.
+#
+# TODO remove monkey patch without adding it to the models.
 
 # To make sure all classes are already loaded
 [Family, Subfamily, Tribe, Genus, Subgenus, Species, Subspecies]

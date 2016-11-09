@@ -43,6 +43,12 @@ describe Exporters::Antweb::Exporter do
   end
 
   describe "exporting one taxon" do
+    # "allow_author_last_names_string_for_and_return"
+    def allow_ALNS_for taxon, value
+      allow(@exporter).to receive(:author_last_names_string)
+        .with(taxon).and_return value
+    end
+
     before do
       @ponerinae = create_subfamily 'Ponerinae'
       @attini = create_tribe 'Attini', subfamily: @ponerinae
@@ -56,7 +62,7 @@ describe Exporters::Antweb::Exporter do
       create_genus subfamily: @ponerinae, tribe: nil
 
       allow(@ponerinae).to receive(:authorship_string).and_return 'Bolton, 2011'
-      allow(@ponerinae).to receive(:author_last_names_string).and_return 'Bolton'
+      allow_ALNS_for @ponerinae, 'Bolton'
       allow(@ponerinae).to receive(:year).and_return 2001
 
       expect(@exporter.send(:export_taxon, @ponerinae)[0..17]).to eq [
@@ -69,11 +75,13 @@ describe Exporters::Antweb::Exporter do
     it "can export fossil taxa" do
       create_genus subfamily: @ponerinae, tribe: nil
       fossil = create_genus 'Atta', subfamily: @ponerinae, tribe: nil, fossil: true
+
       allow(@ponerinae).to receive(:authorship_string).and_return 'Bolton, 2011'
-      allow(@ponerinae).to receive(:author_last_names_string).and_return 'Bolton'
+      allow_ALNS_for @ponerinae, 'Bolton'
       allow(@ponerinae).to receive(:year).and_return 2001
+
       allow(fossil).to receive(:authorship_string).and_return 'Fisher, 2013'
-      allow(fossil).to receive(:author_last_names_string).and_return 'Fisher'
+      allow_ALNS_for fossil, 'Fisher'
       allow(fossil).to receive(:year).and_return 2001
 
       expect(@exporter.send(:export_taxon, @ponerinae)[0..17]).to eq [
@@ -94,7 +102,7 @@ describe Exporters::Antweb::Exporter do
       acanthognathus = create_genus 'Acanothognathus', subfamily: @ponerinae, tribe: dacetini
 
       allow(acanthognathus).to receive(:authorship_string).and_return 'Bolton, 2011'
-      allow(acanthognathus).to receive(:author_last_names_string).and_return 'Bolton'
+      allow_ALNS_for acanthognathus, 'Bolton'
       allow(acanthognathus).to receive(:year).and_return 2001
 
       expect(@exporter.send(:export_taxon, acanthognathus)[0..17]).to eq [
@@ -108,7 +116,7 @@ describe Exporters::Antweb::Exporter do
       acanthognathus = create_genus 'Acanothognathus', subfamily: @ponerinae, tribe: nil
 
       allow(acanthognathus).to receive(:authorship_string).and_return 'Bolton, 2011'
-      allow(acanthognathus).to receive(:author_last_names_string).and_return 'Bolton'
+      allow_ALNS_for acanthognathus, 'Bolton'
       allow(acanthognathus).to receive(:year).and_return 2001
 
       expect(@exporter.send(:export_taxon, acanthognathus)[0..17]).to eq [
@@ -122,7 +130,7 @@ describe Exporters::Antweb::Exporter do
       acanthognathus = create_genus 'Acanothognathus', tribe: nil, subfamily: nil
 
       allow(acanthognathus).to receive(:authorship_string).and_return 'Fisher, 2013'
-      allow(acanthognathus).to receive(:author_last_names_string).and_return 'Fisher'
+      allow_ALNS_for acanthognathus, 'Fisher'
       allow(acanthognathus).to receive(:year).and_return 2001
 
       expect(@exporter.send(:export_taxon, acanthognathus)[0..17]).to eq [
@@ -138,7 +146,7 @@ describe Exporters::Antweb::Exporter do
         species = create_species 'Atta robustus', genus: atta
 
         allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
-        allow(species).to receive(:author_last_names_string).and_return 'Bolton'
+        allow_ALNS_for species, 'Bolton'
         allow(species).to receive(:year).and_return 2001
 
         expect(@exporter.send(:export_taxon, species)[0..17]).to eq [
@@ -153,7 +161,7 @@ describe Exporters::Antweb::Exporter do
         species = create_species 'Atta robustus', genus: atta
 
         allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
-        allow(species).to receive(:author_last_names_string).and_return 'Bolton'
+        allow_ALNS_for species, 'Bolton'
         allow(species).to receive(:year).and_return 2001
 
         expect(@exporter.send(:export_taxon, species)[0..17]).to eq [
@@ -168,7 +176,7 @@ describe Exporters::Antweb::Exporter do
         species = create_species 'Atta robustus', genus: atta
 
         allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
-        allow(species).to receive(:author_last_names_string).and_return 'Bolton'
+        allow_ALNS_for species, 'Bolton'
         allow(species).to receive(:year).and_return 2001
 
         expect(@exporter.send(:export_taxon, species)[0..17]).to eq [
@@ -186,7 +194,7 @@ describe Exporters::Antweb::Exporter do
         subspecies = create_subspecies 'Atta robustus emeryii', subfamily: @ponerinae, genus: atta, species: species
 
         allow(subspecies).to receive(:authorship_string).and_return 'Bolton, 2011'
-        allow(subspecies).to receive(:author_last_names_string).and_return 'Bolton'
+        allow_ALNS_for subspecies, 'Bolton'
         allow(subspecies).to receive(:year).and_return 2001
 
         expect(@exporter.send(:export_taxon, subspecies)[0..17]).to eq [
@@ -202,7 +210,7 @@ describe Exporters::Antweb::Exporter do
         subspecies = create_subspecies 'Atta robustus emeryii', genus: atta, species: species
 
         allow(subspecies).to receive(:authorship_string).and_return 'Bolton, 2011'
-        allow(subspecies).to receive(:author_last_names_string).and_return 'Bolton'
+        allow_ALNS_for subspecies, 'Bolton'
         allow(subspecies).to receive(:year).and_return 2001
 
         expect(@exporter.send(:export_taxon, subspecies)[0..17]).to eq [
@@ -218,7 +226,7 @@ describe Exporters::Antweb::Exporter do
         subspecies = create_subspecies 'Atta robustus emeryii', subfamily: nil, genus: atta, species: species
 
         allow(subspecies).to receive(:authorship_string).and_return 'Bolton, 2011'
-        allow(subspecies).to receive(:author_last_names_string).and_return 'Bolton'
+        allow_ALNS_for subspecies, 'Bolton'
         allow(subspecies).to receive(:year).and_return 2001
 
         expect(@exporter.send(:export_taxon, subspecies)[0..17]).to eq [

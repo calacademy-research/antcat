@@ -42,15 +42,6 @@ describe Citation do
     end
   end
 
-  describe "#author_last_names_string" do
-    it "shows the authors' last names" do
-      reference = reference_factory author_name: 'Bolton', citation_year: '2001'
-      citation = build_stubbed :citation, reference: reference
-
-      expect(citation.author_last_names_string).to eq 'Bolton'
-    end
-  end
-
   describe "#year" do
     it "shows the year" do
       reference = reference_factory author_name: 'Bolton', citation_year: '2001'

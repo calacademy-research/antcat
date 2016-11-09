@@ -3,6 +3,23 @@ require 'spec_helper'
 describe Exporters::Antweb::Exporter do
   let(:exporter) { Exporters::Antweb::Exporter.new }
 
+  describe "#author_last_names_string" do
+    it "delegates" do
+      genus = build_stubbed :genus
+      expect_any_instance_of(ReferenceDecorator)
+        .to receive(:authors_for_keey).and_return 'Bolton'
+
+      expect(exporter.send :author_last_names_string, genus).to eq 'Bolton'
+    end
+
+    context "there is no protonym" do
+      it "handles it" do
+        genus = build_stubbed :genus, protonym: nil
+        expect(exporter.send :author_last_names_string, genus).to be_nil
+      end
+    end
+  end
+
   describe "#original_combination" do
     it "is nil if there was no recombining" do
       genus = build_stubbed :genus

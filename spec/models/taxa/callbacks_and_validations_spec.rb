@@ -106,6 +106,7 @@ describe "callbacks" do
     end
   end
 
+  # TODO improve "expect_any_instance_of" etc.
   describe "#save_children" do
     let!(:species) { create :species }
     let!(:genus) { Taxon.find species.genus.id }

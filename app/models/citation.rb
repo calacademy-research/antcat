@@ -1,4 +1,4 @@
-# TODO `authorship_string`, `author_last_names_string`, `year´:
+# TODO `authorship_string`, `year´:
 #   1) find proper name to use in `ReferenceDecorator`, 2) consider moving
 #   all/some of them to `Reference`, 3) give methods here matching names.
 #
@@ -33,11 +33,6 @@ class Citation < ActiveRecord::Base
   def authorship_string
     return unless reference
     reference.decorate.keey_without_letters_in_year
-  end
-
-  def author_last_names_string
-    return unless reference
-    reference.decorate.authors_for_keey
   end
 
   def year

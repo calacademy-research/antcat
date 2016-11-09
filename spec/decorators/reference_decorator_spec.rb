@@ -5,7 +5,6 @@ describe ReferenceDecorator do
   let(:journal) { create :journal, name: "Neue Denkschriften" }
   let(:author_name) { create :author_name, name: "Forel, A." }
 
-  # PDF link formatting
   describe "#format_reference_document_link" do
     it "creates a link" do
       reference = build_stubbed :reference
@@ -14,6 +13,10 @@ describe ReferenceDecorator do
       expect(reference.decorate.format_reference_document_link)
         .to eq '<a class="document_link" target="_blank" href="example.com">PDF</a>'
     end
+  end
+
+  describe "#keey" do
+    # TODO test this and all other methods not already tested.
   end
 
   describe "#make_html_safe" do

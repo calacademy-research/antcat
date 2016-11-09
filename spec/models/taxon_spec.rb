@@ -232,23 +232,6 @@ describe Taxon do
   end
 
   describe "Other attributes" do
-    describe "#author_last_names_string" do
-      it "delegates to the protonym" do
-        genus = build_stubbed :genus
-        expect(genus.protonym).to receive(:author_last_names_string).and_return 'Bolton'
-        expect(genus.author_last_names_string).to eq 'Bolton'
-      end
-
-      context "when there isn't a protonym authorship" do
-        it "handles it" do
-          species = build_stubbed :species
-
-          expect(species.protonym).to receive(:author_last_names_string).and_return nil
-          expect(species.author_last_names_string).to be_nil
-        end
-      end
-    end
-
     describe "#year" do
       it "delegates to the protonym" do
         genus = build_stubbed :genus

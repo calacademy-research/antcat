@@ -236,17 +236,16 @@ Reference#author_names_suffix
 Reference#author_names
 ReferenceDecorator#keey
 Citation#authorship_string        --> reference.decorate.keey_without_letters_in_year
-Citation#author_last_names_string --> reference.decorate.authors_for_keey
 Citation#year                     --> reference.decorate.year_or_no_year
 
 Similar but a slightly different thing, sometimes, probably:
 Taxon#authorship_string x 2
 
 In Taxon:
-`delegate :author_last_names_string, :year, to: :protonym`
+`delegate :year, to: :protonym`
 
 In Protonym:
-`delegate :authorship_string, :author_last_names_string, :year,
+`delegate :authorship_string, :year,
   to: :authorship` + `belongs_to :authorship, class_name: 'Citation'`
 
 So, we're back in Citation which means we're sometimes back in
