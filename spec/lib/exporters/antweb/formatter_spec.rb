@@ -3,6 +3,25 @@ require 'spec_helper'
 describe Exporters::Antweb::Exporter do
   let(:exporter) { Exporters::Antweb::Exporter.new }
 
+  describe "#original_combination" do
+    it "is nil if there was no recombining" do
+      genus = build_stubbed :genus
+      expect(exporter.send :original_combination, genus).to be_nil
+    end
+
+    it "is the protonym, otherwise" do
+      original_combination = create_species 'Atta major'
+      recombination = create_species 'Eciton major'
+      original_combination.status = 'original combination'
+      original_combination.current_valid_taxon = recombination
+      recombination.protonym.name = original_combination.name
+      original_combination.save!
+      recombination.save!
+
+      expect(exporter.send :original_combination, recombination).to eq original_combination
+    end
+  end
+
   describe "#authorship_html_string" do
     let(:taxon) { create_genus }
     let(:reference) do

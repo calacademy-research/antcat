@@ -72,7 +72,7 @@ class Exporters::Antweb::Exporter
         author_date:            taxon.authorship_string,
         author_date_html:       authorship_html_string(taxon),
         original_combination?:  taxon.original_combination?,
-        original_combination:   taxon.original_combination.try(:name).try(:name),
+        original_combination:   original_combination(taxon).try(:name).try(:name),
         authors:                taxon.author_last_names_string,
         year:                   taxon.year && taxon.year.to_s,
         reference_id:           reference_id,
@@ -166,10 +166,8 @@ class Exporters::Antweb::Exporter
     end
 
     def add_subfamily_to_current_valid subfamily, current_valid_name
-      if current_valid_name
-        return subfamily.to_s + current_valid_name.to_s
-      end
-      nil
+      return unless current_valid_name
+      subfamily.to_s + current_valid_name.to_s
     end
 
     def authorship_html_string taxon
@@ -182,6 +180,12 @@ class Exporters::Antweb::Exporter
       content_tag(:span, title: formatted) do
         keey
       end
+    end
+
+    # The original_combination accessor returns the taxon with 'original combination'
+    # status whose 'current valid taxon' points to us.
+    def original_combination taxon
+      taxon.class.where(status: 'original combination', current_valid_taxon_id: taxon.id).first
     end
 
     def export_history taxon

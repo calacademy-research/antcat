@@ -103,13 +103,6 @@ class Taxon < ApplicationRecord
     type.downcase
   end
 
-  # TODO only used in `Exporters::Antweb::Exporter`? move maybe
-  # The original_combination accessor returns the taxon with 'original combination'
-  # status whose 'current valid taxon' points to us.
-  def original_combination
-    self.class.where(status: 'original combination', current_valid_taxon_id: id).first
-  end
-
   def authorship_string
     string = protonym.authorship_string
     if string && recombination?

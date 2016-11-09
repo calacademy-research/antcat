@@ -464,25 +464,6 @@ describe Taxon do
     end
   end
 
-  describe "#original_combination" do
-    it "is nil if there was no recombining" do
-      genus = build_stubbed :genus
-      expect(genus.original_combination).to be_nil
-    end
-
-    it "is the protonym, otherwise" do
-      original_combination = create_species 'Atta major'
-      recombination = create_species 'Eciton major'
-      original_combination.status = 'original combination'
-      original_combination.current_valid_taxon = recombination
-      recombination.protonym.name = original_combination.name
-      original_combination.save!
-      recombination.save!
-
-      expect(recombination.original_combination).to eq original_combination
-    end
-  end
-
   describe "#type_specimen_url" do
     it "makes sure it has a protocol" do
       stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
