@@ -1,3 +1,13 @@
+# TODO fix this issue in the database.
+# All protonyms have authorships: # `Protonym.where(authorship: nil).count` # 0
+# New protonyms cannot be created without a reference,
+# but there are 16 of them in the db.
+#
+# Protonym.count                                         # 24512
+# joined = Protonym.joins(authorship: :reference)
+# joined.where("references.year IS NOT NULL").count      # 24496
+# joined.where("references.year IS NULL").count          # 16
+
 class Protonym < ActiveRecord::Base
   include UndoTracker
 
@@ -13,9 +23,4 @@ class Protonym < ActiveRecord::Base
 
   accepts_nested_attributes_for :name, :authorship
   has_paper_trail meta: { change_id: :get_current_change_id }
-
-  # TODO? `allow_nil` should not be needed per `validates :authorship, presence: true`,
-  # but protonym_spec.rb uses `build_stubbed`, so we need it for the moment.
-  # TODO try to remove `allow_nil`. It may however be required in `Taxon`.
-  delegate :year, to: :authorship, allow_nil: true
 end

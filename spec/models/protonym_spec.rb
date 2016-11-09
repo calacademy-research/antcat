@@ -13,23 +13,6 @@ describe Protonym do
     end
   end
 
-  describe "#year" do
-    context "there is no citation" do
-      it "handles it" do
-        protonym = build_stubbed :protonym, authorship: nil
-        expect(protonym.year).to be_nil
-      end
-    end
-
-    it "delegates to the citation" do
-      citation = build_stubbed :citation
-      protonym = build_stubbed :protonym, authorship: citation
-
-      expect(citation).to receive(:year).and_return '2010'
-      expect(protonym.year).to eq '2010'
-    end
-  end
-
   describe "#destroy" do
     describe "Cascading delete" do
       it "deletes the citation when the protonym is deleted" do

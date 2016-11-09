@@ -16,21 +16,23 @@ class Taxon < ApplicationRecord
 
   self.table_name = :taxa
 
-  # The Ruby method, convenient when we want to store temporary values.
-  attr_accessor :duplicate_type, :parent_name,
-    :current_valid_taxon_name, :homonym_replaced_by_name, :save_initiator
+  # `attr_accessor` (Ruby built-in): convenient when we want to store temporary values.
+  # These are used in the edit taxa form / `TaxaController`
+  attr_accessor :parent_name, :current_valid_taxon_name, :homonym_replaced_by_name,
+    :duplicate_type
 
-  # `duplicate_type`: used in `DuplicatesController` and `name_field.coffee`.
-  # `parent_name`: unknown, mysterious.
-  # `save_initiator`: setting to true enables additional callbacks for that taxon only.
+  # Set to true enable additional callbacks for this taxon only. Used in relation
+  # to `TaxaController`, but can be used in the console/anywhere as well.
+  attr_accessor :save_initiator
 
-  # Rails method to protect from mass-assignment. You can ignore these.
+  # `attr_accessible` (Rails method): to protect from mass-assignment. You can ignore these.
   attr_accessible :auto_generated, :biogeographic_region, :collision_merge_id,
     :display, :fossil, :headline_notes_taxt, :hong, :ichnotaxon, :id, :incertae_sedis_in,
     :name, :name_id, :nomen_nudum, :origin, :protonym, :status, :type_fossil, :type_name,
     :type_name_id, :type_specimen_code, :type_specimen_repository, :type_specimen_url,
     :type_taxt, :unresolved_homonym, :verbatim_type_locality
 
+  # TODO maybe explain more of these. Here or elsewhere.
   # `origin`: if it's generated, where did it come from? string (e.g.: 'hol')
   # `display`: if false, won't show in the taxon browser. Used for misspellings and such.
 
@@ -69,9 +71,6 @@ class Taxon < ApplicationRecord
   has_paper_trail meta: { change_id: :get_current_change_id }
   tracked on: :create, parameters: activity_parameters
 
-  # TODO investigate using `delegate :year, to: "protonym.citation.reference.year"` etc.
-  delegate :year, to: :protonym
-
   def save_from_form params, previous_combination = nil
     Taxa::SaveTaxon.new(self).save_from_form(params, previous_combination)
   end
@@ -101,6 +100,13 @@ class Taxon < ApplicationRecord
 
   def rank
     type.downcase
+  end
+
+  def year
+    reference = protonym.try(:authorship).try(:reference)
+    return unless reference
+
+    reference.decorate.year_or_no_year
   end
 
   # TODO create `#authorship_reference`.

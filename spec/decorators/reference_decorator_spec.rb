@@ -19,7 +19,24 @@ describe ReferenceDecorator do
     # TODO test this and all other methods not already tested.
   end
 
-  # TODO moved here from `citation_spec.rb`. May become useful later.
+  # TODO moved here from `citation_spec.rb`.
+  xdescribe "#year or Reference#year or wherever this method will be defined" do
+    it "shows the year" do
+      reference = reference_factory author_name: 'Bolton', citation_year: '2001'
+      citation = build_stubbed :citation, reference: reference
+
+      expect(citation.year).to eq '2001'
+    end
+
+    it "handles nil years" do
+      reference = reference_factory author_name: 'Bolton', citation_year: nil
+      citation = build_stubbed :citation, reference: reference
+
+      expect(citation.year).to eq "[no year]"
+    end
+  end
+
+  # TODO moved here from `citation_spec.rb`.
   xdescribe "#keey_without_letters_in_year" do
     it "shows the author and year" do
       reference = reference_factory author_name: 'Bolton', citation_year: '2001'

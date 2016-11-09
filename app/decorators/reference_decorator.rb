@@ -235,7 +235,6 @@ Reference#reference_author_names
 Reference#author_names_suffix
 Reference#author_names
 ReferenceDecorator#keey
-Citation#year                     --> reference.decorate.year_or_no_year
 
 Taxon#authorship_string
 
