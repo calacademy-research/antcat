@@ -19,7 +19,7 @@ module TaxonHelper
       options_for_select(BiogeographicRegion::REGIONS, value)
   end
 
-  def add_taxon_button taxon, collision_resolution
+  def add_child_button taxon
     child_ranks = { family:    "subfamily",
                     subfamily: "genus",
                     tribe:     "genus",
@@ -30,10 +30,7 @@ module TaxonHelper
     rank_to_add = child_ranks[taxon.rank.to_sym]
     return unless rank_to_add.present?
 
-    # Hopefully not needed, but leaving this extra check here to be on the safe side
-    collision_resolution = nil if collision_resolution.blank?
-
-    url = new_taxa_path rank_to_create: rank_to_add, parent_id: taxon.id, collision_resolution: collision_resolution
+    url = new_taxa_path rank_to_create: rank_to_add, parent_id: taxon.id
     link_to "Add #{rank_to_add}", url, class: "btn-new"
   end
 

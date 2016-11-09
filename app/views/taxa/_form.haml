@@ -39,7 +39,7 @@
       -# TODO `@possible_homonym` is not declared anywhere.
       =render 'buttons_save_section', taxon: @taxon, possible_homonym: @possible_homonym
       -unless @taxon.new_record?
-        =render 'buttons_taxon_operations', taxon: @taxon, collision_resolution: @collision_resolution
+        =render 'buttons_taxon_operations', taxon: @taxon
 
   -unless @taxon.new_record?
     =render 'history_items_section',               taxon: @taxon
