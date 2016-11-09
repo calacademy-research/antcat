@@ -162,4 +162,20 @@ describe Exporters::Antweb::Exporter do
       end
     end
   end
+
+  describe "caching" do
+    let(:reference) { create :article_reference }
+
+    # Slightly stupid test case but just to be sure...
+    it "doesn't use `references.inline_citation_cache`" do
+      # Trigger inline_citation_cache, AntCat variant.
+      ReferenceFormatterCache.populate reference
+      expect(reference.inline_citation_cache).to_not include "antcat.org"
+
+      # Make sure we're getting the AntWeb version. This actually hits
+      # `references.formatted_cache` as opposed to `references.inline_citation`.
+      antweb_version = reference.decorate.antweb_version_of_inline_citation
+      expect(antweb_version).to include "antcat.org"
+    end
+  end
 end

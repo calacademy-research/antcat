@@ -1,5 +1,7 @@
+# TODO try to not make this depend on JavaScript.
+
 class MergeAuthorsController < ApplicationController
-  before_action :authenticate_editor, except: [:index, :create_panels, :add_blank_panel_if_necessary]
+  before_action :authenticate_editor, except: [:index]
 
   def index
     create_panels

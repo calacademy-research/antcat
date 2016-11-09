@@ -1,61 +1,3 @@
-# TODO something. Less methods. Method names.
-# TODO investigate using views.
-# TODO use less decorators in general.
-# TODO consider renaming the db fields once the code is more stable.
-
-=begin
-Notes
-
-DRY these:
-Reference#author_names_string
-Reference#author_names_string_cache
-Reference#principal_author_last_name
-Reference#principal_author_last_name_cache
-Reference#reference_author_names
-Reference#author_names_suffix
-Reference#author_names
-ReferenceDecorator#keey
-Citation#authorship_string        --> reference.decorate.keey_without_letters_in_year
-Citation#author_last_names_string --> reference.decorate.authors_for_keey
-Citation#year                     --> reference.decorate.year_or_no_year
-
-Similar but a slightly different thing, sometimes, probably:
-Taxon#authorship_string x 2
-
-In Taxon:
-`delegate :author_last_names_string, :year, to: :protonym`
-
-In Protonym:
-`delegate :authorship_string, :author_last_names_string, :year,
-  to: :authorship` + `belongs_to :authorship, class_name: 'Citation'`
-
-So, we're back in Citation which means we're sometimes back in
-Reference and sometimes in ReferenceDecorator.
-
----------------
-
-Examples from `r = Reference.first`
-
-r.author_names # AuthorName CollectionProxy
-
-r.decorate.keey # "Abdul-Rassoul, Dawah & Othman, 1978"
-
-r.author_names_string_cache # "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
-
-r.author_names_string # same as `r.author_names_string_cache`
-
-r.authors # Array of `Author`s
-
-r.reference_author_names # ReferenceAuthorName CollectionProxy
-
-r.principal_author_last_name # "Abdul-Rassoul"; possibly only used for sorting.
-
-r.principal_author_last_name_cache # The real (db) attribute of `r.principal_author_last_name`
-
-r.author_names_suffix # nil; probably non-nil for things like ", Jr."
-
-=end
-
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the `h` method
   delegate_all
@@ -64,9 +6,8 @@ class ReferenceDecorator < ApplicationDecorator
     raise "use 'keey' (not a joke)"
   end
 
-  # New! "THE KEEY" -- Stupid Name Because Useful(tm).
-  #
-  # TODO trying to consolidate all "FALNs" here.
+  # TODO move to `Reference`.
+  # "THE KEEY" -- Stupid Name Because Useful(tm).
   #
   # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978"
   #
@@ -75,9 +16,7 @@ class ReferenceDecorator < ApplicationDecorator
   # So, "keey". Obviously, do not show this spelling to users or use
   # it in filesnames or the database.
   #
-  # Note 1: this the new name of `#format_author_last_names` (the original "FALNs").
-  # Note 2: `references.author_names_string_cache` may also be useful.
-  # TODO move to `Reference`.
+  # Note: `references.author_names_string_cache` may also be useful?
   def keey
     authors_for_keey << ', ' << reference.short_citation_year
   end
@@ -139,53 +78,46 @@ class ReferenceDecorator < ApplicationDecorator
     end
   end
 
-  # A.k.a. "FORMAT IT AS TEXT" -- Cached version!
+  # A.k.a. "FORMAT AS TEXT" + cached or recached
   # Formats the reference as plaintext (with the exception of <i> tags).
-  #
   # DB column: `references.formatted_cache`.
   def formatted
     cached = reference.formatted_cache
     return cached.html_safe if cached
 
-    generated = generate_formatted
-    reference.set_cache generated, :formatted_cache
-    generated
+    reference.set_cache generate_formatted, :formatted_cache
   end
 
-  # A.k.a. "FORMATTED WITH HTML" -- Cached version!
+  # A.k.a. "FORMAT WITH HTML" + cached or recached
   # Formats the reference with HTML, CSS, etc.
-  #
   # DB column: `references.inline_citation_cache`.
   def inline_citation
     cached = reference.inline_citation_cache
     return cached.html_safe if cached
 
-    generated = generate_inline_citation
-    reference.set_cache generated, :inline_citation_cache
-    generated
+    reference.set_cache generate_inline_citation, :inline_citation_cache
   end
 
-  # Note: Only used for the AntWeb export. Never cached.
+  # Note: Only used for the AntWeb export.
   # TODO see LinkHelper#link.
   def antweb_version_of_inline_citation
-    content = []
-    content << helpers.link(keey,
-                    "http://antcat.org/references/#{reference.id}",
-                    title: make_to_link_title(formatted),
-                    target: '_blank')
+    # Hardcoded, or we must set `host` + use `reference_url(reference)`.
+    url = "http://antcat.org/references/#{reference.id}"
+    link = helpers.link keey, url, title: make_to_link_title(formatted), target: '_blank'
+
+    content = [link]
     content << format_reference_document_link
     content.reject(&:blank?).join(' ').html_safe
   end
 
   # TODO see LinkHelper#link.
-  # TODO maybe remove? "target: '_blank'" sucks and the CSS class is not used.
+  # TODO remove? "target: '_blank'" sucks and the CSS is not used (unsure about AntWeb).
   def goto_reference_link target: '_blank'
     helpers.link reference.id, helpers.reference_path(reference),
       class: "goto_reference_link", target: target
   end
 
   private
-    # A.k.a. "FORMAT IT AS TEXT" -- Generate-it version!
     def generate_formatted
       string = make_html_safe(reference.author_names_string.dup)
       string << ' ' unless string.empty?
@@ -197,13 +129,12 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     # TODO see LinkHelper#link.
-    # A.k.a. "FORMATTED WITH HTML" -- Generate-it version!
     def generate_inline_citation
       helpers.content_tag :span, class: "reference_keey_and_expansion" do
-        content = helpers.link keey, '#',
-                       title: make_to_link_title(formatted),
-                       class: "reference_keey"
+        link = helpers.link keey, '#', title: make_to_link_title(formatted),
+          class: "reference_keey"
 
+        content = link
         content << helpers.content_tag(:span, class: "reference_keey_expansion") do
           inner_content = []
           inner_content << inline_citation_reference_keey_expansion_text
@@ -216,11 +147,11 @@ class ReferenceDecorator < ApplicationDecorator
 
     def inline_citation_reference_keey_expansion_text
       helpers.content_tag :span, formatted,
-        class: "reference_keey_expansion_text",
-        title: keey
+        class: "reference_keey_expansion_text", title: keey
     end
 
     # TODO try to move somewhere more general, even if it's only used here.
+    # TODO see if there's Rails version of this.
     def make_html_safe string
       string = string.dup
       quote_code = 'xdjvs4'
@@ -246,7 +177,8 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     # TODO rename?
-    def format_date input # TODO? store denormalized value in the database
+    # TODO? store denormalized value in the database
+    def format_date input
       return input if input.size < 4
 
       match = input.match /(.*?)(\d{4,8})(.*)/
@@ -282,11 +214,64 @@ class ReferenceDecorator < ApplicationDecorator
       helpers.unitalicize string
     end
 
-    # TODO try to remove in favor of direct attribute access.
     def format_title
       format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
     end
-
-    # TODO STUFF TO BE MOVED/REFACTORED/ETC BELOW THIS LINE
-
 end
+
+# TODO investigate using views.
+# TODO use less decorators in general.
+# TODO consider renaming the db fields once the code is more stable.
+
+=begin
+Notes
+
+DRY these:
+Reference#author_names_string
+Reference#author_names_string_cache
+Reference#principal_author_last_name
+Reference#principal_author_last_name_cache
+Reference#reference_author_names
+Reference#author_names_suffix
+Reference#author_names
+ReferenceDecorator#keey
+Citation#authorship_string        --> reference.decorate.keey_without_letters_in_year
+Citation#author_last_names_string --> reference.decorate.authors_for_keey
+Citation#year                     --> reference.decorate.year_or_no_year
+
+Similar but a slightly different thing, sometimes, probably:
+Taxon#authorship_string x 2
+
+In Taxon:
+`delegate :author_last_names_string, :year, to: :protonym`
+
+In Protonym:
+`delegate :authorship_string, :author_last_names_string, :year,
+  to: :authorship` + `belongs_to :authorship, class_name: 'Citation'`
+
+So, we're back in Citation which means we're sometimes back in
+Reference and sometimes in ReferenceDecorator.
+
+---------------
+                                    # Example from `r = Reference.first`
+
+# OK / a different thing.
+r.authors                           # Array of `Author`s
+r.author_names                      # AuthorName CollectionProxy
+r.reference_author_names            # ReferenceAuthorName CollectionProxy
+r.author_names_suffix               # nil; probably non-nil for things like ", Jr."
+
+# Similar
+r.decorate.keey                     # "Abdul-Rassoul, Dawah & Othman, 1978"
+r.author_names_string_cache         # "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
+r.author_names_string               # delegates to `r.author_names_string_cache`
+r.decorate...... more
+
+# Possibly only used for sorting.
+r.principal_author_last_name_cache  # The real (db) attribute of `r.principal_author_last_name`
+r.principal_author_last_name        # "Abdul-Rassoul"; possibly only used for sorting.
+
+# Other similar metods
+Probably.
+
+=end
