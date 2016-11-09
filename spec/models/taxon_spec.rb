@@ -4,106 +4,28 @@ describe Taxon do
   it { should validate_presence_of :name }
   it { should belong_to :protonym }
   it { should allow_value(nil).for :type_name }
-  it { should allow_value(nil).for :status } # shouls probably not be...
+  it { should allow_value(nil).for :status } # should probably not...
   it { should allow_value(nil).for :biogeographic_region }
   it { should have_many :history_items }
   it { should have_many :reference_sections }
 
-  # TODO move to new spec for `Taxa::PredicateMethods`.
-  describe "predicate methods" do
-    context "when status 'valid'" do
-      it "is not invalid" do
-        taxon = build_stubbed :taxon
-        taxon.status = "valid"
-        expect(taxon).not_to be_invalid
-      end
+  describe "#biogeographic_region" do
+    let(:taxon) { build_stubbed :species }
+
+    it "allows only allowed regions" do
+      taxon.biogeographic_region = "Australasia"
+      expect(taxon.valid?).to be true
+
+      taxon.biogeographic_region = "Ancient Egypt"
+      expect(taxon.valid?).to be false
     end
 
-    describe "shared setup" do
-      let(:taxon) { build_stubbed :taxon }
+    it "nilifies blank strings on save" do
+      taxon = create :species
+      taxon.biogeographic_region = ""
+      taxon.save
 
-      it "can be unidentifiable" do
-        expect(taxon).not_to be_unidentifiable
-        taxon.status = 'unidentifiable'
-        expect(taxon).to be_unidentifiable
-        expect(taxon).to be_invalid
-      end
-
-      it "can be a collective group name" do
-        expect(taxon).not_to be_collective_group_name
-        taxon.status = 'collective group name'
-        expect(taxon).to be_collective_group_name
-        expect(taxon).to be_invalid
-      end
-
-      it "can be an ichnotaxon" do
-        expect(taxon).not_to be_ichnotaxon
-        taxon.ichnotaxon = true
-        expect(taxon).to be_ichnotaxon
-        expect(taxon).not_to be_invalid
-      end
-
-      it "can be unavailable" do
-        expect(taxon).not_to be_unavailable
-        expect(taxon).to be_available
-        taxon.status = 'unavailable'
-        expect(taxon).to be_unavailable
-        expect(taxon).not_to be_available
-        expect(taxon).to be_invalid
-      end
-
-      it "can be excluded from Formicidae" do
-        expect(taxon).not_to be_excluded_from_formicidae
-        taxon.status = 'excluded from Formicidae'
-        expect(taxon).to be_excluded_from_formicidae
-        expect(taxon).to be_invalid
-      end
-
-      it "can be a fossil" do
-        expect(taxon).not_to be_fossil
-        expect(taxon.fossil).to eq false
-        taxon.fossil = true
-        expect(taxon).to be_fossil
-      end
-    end
-
-    it "can be a homonym of something else" do
-      neivamyrmex = build_stubbed :taxon
-      acamatus = build_stubbed :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
-
-      expect(acamatus).to be_homonym
-      expect(acamatus.homonym_replaced_by).to eq neivamyrmex
-    end
-
-    it "can have an incertae_sedis_in" do
-      myanmyrma = build_stubbed :taxon, incertae_sedis_in: 'family'
-      expect(myanmyrma.incertae_sedis_in).to eq 'family'
-      expect(myanmyrma).not_to be_invalid
-    end
-
-    it "can say whether it is incertae sedis in a particular rank" do
-      myanmyrma = build_stubbed :taxon, incertae_sedis_in: 'family'
-      expect(myanmyrma).to be_incertae_sedis_in 'family'
-    end
-
-    describe "#biogeographic_region" do
-      let(:taxon) { build_stubbed :species }
-
-      it "allows only allowed regions" do
-        taxon.biogeographic_region = "Australasia"
-        expect(taxon.valid?).to be true
-
-        taxon.biogeographic_region = "Ancient Egypt"
-        expect(taxon.valid?).to be false
-      end
-
-      it "nilifies blank strings on save" do
-        taxon = create :species
-        taxon.biogeographic_region = ""
-        taxon.save
-
-        expect(taxon.biogeographic_region).to be nil
-      end
+      expect(taxon.biogeographic_region).to be nil
     end
   end
 
@@ -115,7 +37,15 @@ describe Taxon do
     end
   end
 
-  describe "Being a homonym replaced by something" do
+  describe "#homonym_replaced_by" do
+    it "can be a homonym of something else" do
+      neivamyrmex = build_stubbed :taxon
+      acamatus = build_stubbed :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
+
+      expect(acamatus).to be_homonym
+      expect(acamatus.homonym_replaced_by).to eq neivamyrmex
+    end
+
     it "should not think it's a homonym replaced by something when it's not" do
       genus = build_stubbed :genus
       another_genus = build_stubbed :genus
@@ -239,38 +169,6 @@ describe Taxon do
     end
   end
 
-  describe "#recombination?" do
-    context "name is same as protonym" do
-      it "it is not a recombination" do
-        species = create_species 'Atta major'
-        protonym_name = create_species_name 'Atta major'
-
-        expect(species.protonym).to receive(:name).and_return protonym_name
-        expect(species).not_to be_recombination
-      end
-    end
-
-    context "genus part of name is different than genus part of protonym" do
-      it "it is a recombination" do
-        species = create_species 'Atta minor'
-        protonym_name = create_species_name 'Eciton minor'
-
-        expect(species.protonym).to receive(:name).and_return protonym_name
-        expect(species).to be_recombination
-      end
-    end
-
-    context "genus part of name is same as genus part of protonym" do
-      it "it is not a recombination" do
-        species = create_species 'Atta minor maxus'
-        protonym_name = create_subspecies_name 'Atta minor minus'
-
-        expect(species.protonym).to receive(:name).and_return protonym_name
-        expect(species).not_to be_recombination
-      end
-    end
-  end
-
   describe "Cascading delete" do
     it "doesn't delete the protonym when the taxon is deleted" do
       expect(Taxon.count).to be_zero
@@ -298,7 +196,7 @@ describe Taxon do
     end
   end
 
-  describe "Setting and getting parent virtual field" do
+  describe "#parent and #parent=" do
     let(:genus) { create :genus }
     let(:subfamily) { create :subfamily }
 
@@ -375,7 +273,7 @@ describe Taxon do
   describe "scopes" do
     let(:subfamily) { create :subfamily }
 
-    describe "scope.valid" do
+    describe ".valid" do
       it "only includes valid taxa" do
         replacement = create :genus, subfamily: subfamily
         homonym = create :genus,
@@ -388,7 +286,7 @@ describe Taxon do
       end
     end
 
-    describe "scope.extant" do
+    describe ".extant" do
       it "only includes extant taxa" do
         extant_genus = create :genus, subfamily: subfamily
         create :genus, subfamily: subfamily, fossil: true
@@ -397,7 +295,7 @@ describe Taxon do
       end
     end
 
-    describe "scope.order_by_name_cache" do
+    describe ".order_by_name_cache" do
       let!(:zymacros) { create :subfamily, name: create(:name, name: 'Zymacros') }
       let!(:atta) { create :subfamily, name: create(:name, name: 'Atta') }
 
