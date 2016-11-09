@@ -7,8 +7,7 @@ describe Genus do
   let(:genus_with_tribe) { create :genus, name: create(:genus_name, name: 'Atta'), tribe: tribe }
 
   it "can have a tribe" do
-    expect(genus_with_tribe.tribe).to eq tribe # trigger FactoryGirl
-    expect(Genus.find_by_name('Atta').tribe).to eq tribe
+    should have_one :tribe
   end
 
   it "can have species, which are its children" do

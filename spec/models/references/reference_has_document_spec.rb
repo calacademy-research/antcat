@@ -1,14 +1,7 @@
 require 'spec_helper'
 
 describe Reference do
-  describe "document" do
-    it "has a document" do
-      reference = create :reference
-      expect(reference.document).to be_nil
-      reference.create_document
-      expect(reference.document).not_to be_nil
-    end
-  end
+  it { should have_one :document }
 
   describe "#downloadable?" do
     context "with a document" do

@@ -8,6 +8,7 @@ describe Taxon do
   it { should allow_value(nil).for :biogeographic_region }
   it { should have_many :history_items }
   it { should have_many :reference_sections }
+  it { should belong_to :type_name }
 
   describe "#biogeographic_region" do
     let(:taxon) { build_stubbed :species }
@@ -72,18 +73,6 @@ describe Taxon do
 
         expect { atta.destroy }.not_to change { Protonym.count }
       end
-    end
-  end
-
-  describe "#type_name" do
-    it "can have a type name" do
-      taxon = create :family
-      taxon.type_name = create :family_name, name: 'Formicariae'
-      taxon.save!
-      taxon = Taxon.find taxon.id
-
-      expect(taxon.type_name.to_s).to eq 'Formicariae'
-      expect(taxon.type_name.rank).to eq 'family'
     end
   end
 

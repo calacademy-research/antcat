@@ -3,12 +3,7 @@ require 'spec_helper'
 describe TaxonHistoryItem do
   it { should be_versioned }
   it { should validate_presence_of :taxt }
-
-  it "can belong to a taxon" do
-    taxon = create :family
-    item = taxon.history_items.create! taxt: 'foo'
-    expect(item.reload.taxon).to eq taxon
-  end
+  it { should belong_to :taxon }
 
   describe "#update_taxt_from_editable" do
     let(:item) { create :taxon_history_item }

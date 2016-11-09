@@ -169,30 +169,6 @@ describe Name do
     end
   end
 
-  describe "indexing" do
-    it "subspecies names works as expected" do
-      name = SubspeciesName.new name: 'Acus major minor medium',
-        epithet: 'medium', epithets: 'major minor medium'
-
-      name_split = name.to_s.split
-
-      expect(name_split[0]).to eq 'Acus'
-      expect(name_split[1]).to eq 'major'
-      expect(name_split[2]).to eq 'minor'
-      expect(name_split[3]).to eq 'medium'
-    end
-
-    it "genus names works as expected" do
-      name = GenusName.new name: 'Acus', epithet: 'Acus', epithets: nil
-      name_split = name.to_s.split
-
-      expect(name_split[0]).to eq 'Acus'
-      expect(name_split[1]).to be_nil
-      expect(name_split[2]).to be_nil
-      expect(name_split[3]).to be_nil
-    end
-  end
-
   describe ".find_by_name" do
     it "prioritizes names already associated with taxa" do
       atta_name = create :name, name: 'Atta'
