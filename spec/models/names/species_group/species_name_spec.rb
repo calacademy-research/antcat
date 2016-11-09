@@ -4,23 +4,12 @@ describe SpeciesName do
   # Changing the genus of a species name
   describe "#change_parent" do
     it "replaces the genus part of the name" do
-      species_name = SpeciesName.new(
-        name: 'Atta major',
-        name_html: '<i>Atta major</i>',
-        epithet: 'major',
-        epithet_html: '<i>major</i>')
-
-      genus_name = GenusName.new(
-        name: 'Eciton',
-        name_html: '<i>Eciton</i>',
-        epithet: 'niger',
-        epithet_html: '<i>niger</i>')
-
+      species_name = SpeciesName.new name: 'Atta major', epithet: 'major'
+      genus_name = GenusName.new name: 'Eciton', epithet: 'niger'
       species_name.change_parent genus_name
+
       expect(species_name.name).to eq 'Eciton major'
-      expect(species_name.name_html).to eq '<i>Eciton major</i>'
       expect(species_name.epithet).to eq 'major'
-      expect(species_name.epithet_html).to eq '<i>major</i>'
     end
 
     context "name already exists" do

@@ -22,7 +22,7 @@ describe Name do
     end
   end
 
-  describe "Updating taxon cache" do
+  describe "#set_taxon_caches" do
     before do
       @atta = find_or_create_name 'Atta'
       @atta.update_attribute :name_html, '<i>Atta</i>'
@@ -84,7 +84,7 @@ describe Name do
             { table: 'taxa', field: :name_id, id: first_atta.id },
           ],
           second_atta_name.id => [
-            { table: 'taxa', field: :name_id, id: second_atta.id },
+            { table: 'taxa', field: :name_id, id: second_atta.id }
           ]
         }
       )
@@ -101,7 +101,7 @@ describe Name do
       expect(atta.name.references).to match_array [
         { table: 'taxa', field: :name_id, id: atta.id },
         { table: 'taxa', field: :type_name_id, id: atta.id },
-        { table: 'protonyms', field: :name_id, id: protonym.id },
+        { table: 'protonyms', field: :name_id, id: protonym.id }
       ]
     end
 
@@ -111,7 +111,7 @@ describe Name do
       eciton.update_attribute :type_taxt, "{nam #{atta.name.id}}"
       expect(atta.name.references).to match_array [
         { table: 'taxa', field: :name_id, id: atta.id },
-        { table: 'taxa', field: :type_taxt, id: eciton.id },
+        { table: 'taxa', field: :type_taxt, id: eciton.id }
       ]
     end
   end
@@ -144,46 +144,27 @@ describe Name do
 
   describe "#quadrinomial?" do
     it "just considers quadrinomials quadrinomials - nothing else" do
-      name = SubfamilyName.new name: 'Acidinae',
-      qname_html: 'Acidinae', epithet: 'Acidinae',
-        epithet_html: 'Acidinae', epithets: nil,
-        protonym_html: 'Acidinae'
+      name = SubfamilyName.new name: 'Acidinae', epithet: 'Acidinae', epithets: nil
       expect(name).not_to be_quadrinomial
 
-      name = TribeName.new name: 'Acidini',
-        name_html: 'Acidini', epithet: 'Acidini',
-        epithet_html: 'Acidini', epithets: nil,
-        protonym_html: 'Acidini'
+      name = TribeName.new name: 'Acidini', epithet: 'Acidini', epithets: nil
       expect(name).not_to be_quadrinomial
 
-      name = GenusName.new name: 'Acus',
-        name_html: '<i>Acus</i>', epithet: 'Acus',
-        epithet_html: '<i>Acus</i>', epithets: nil,
-        protonym_html: '<i>Acus</i>'
+      name = GenusName.new name: 'Acus', epithet: 'Acus', epithets: nil
       expect(name).not_to be_quadrinomial
 
-      name = SubgenusName.new name: 'Acus (Rex)',
-        name_html: '<i>Acus (Rex)</i>', epithet: 'Rex',
-        epithet_html: '<i>Rex</i>', epithets: nil,
-        protonym_html: '<i>Acus (Rex)</i>'
+      name = SubgenusName.new name: 'Acus (Rex)', epithet: 'Rex', epithets: nil
       expect(name).not_to be_quadrinomial
 
-      name = SpeciesName.new name: 'Acus major',
-        name_html: '<i>Acus major</i>', epithet: 'major',
-        epithet_html: '<i>major</i>', epithets: 'major',
-        protonym_html: '<i>Acus major</i>'
+      name = SpeciesName.new name: 'Acus major', epithet: 'major', epithets: 'major'
       expect(name).not_to be_quadrinomial
 
       name = SubspeciesName.new name: 'Acus major minor',
-        name_html: '<i>Acus major minor</i>', epithet: 'major minor',
-        epithet_html: '<i>major minor</i>', epithets: 'major minor',
-        protonym_html: '<i>Acus major minor</i>'
+        epithet: 'major minor', epithets: 'major minor'
       expect(name).not_to be_quadrinomial
 
       name = SubspeciesName.new name: 'Acus major minor medium',
-        name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
-        epithet_html: '<i>medium</i>', epithets: 'major minor medium',
-        protonym_html: '<i>Acus major minor medium</i>'
+        epithet: 'medium', epithets: 'major minor medium'
       expect(name).to be_quadrinomial
     end
   end
@@ -191,9 +172,8 @@ describe Name do
   describe "indexing" do
     it "subspecies names works as expected" do
       name = SubspeciesName.new name: 'Acus major minor medium',
-        name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
-        epithet_html: '<i>medium</i>', epithets: 'major minor medium',
-        protonym_html: '<i>Acus major minor medium</i>'
+        epithet: 'medium', epithets: 'major minor medium'
+
       name_split = name.to_s.split
 
       expect(name_split[0]).to eq 'Acus'
@@ -203,10 +183,7 @@ describe Name do
     end
 
     it "genus names works as expected" do
-      name = GenusName.new name: 'Acus',
-        name_html: '<i>Acus</i>', epithet: 'Acus',
-        epithet_html: '<i>Acus</i>', epithets: nil,
-        protonym_html: '<i>Acus</i>'
+      name = GenusName.new name: 'Acus', epithet: 'Acus', epithets: nil
       name_split = name.to_s.split
 
       expect(name_split[0]).to eq 'Acus'
