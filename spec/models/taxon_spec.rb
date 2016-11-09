@@ -10,6 +10,18 @@ describe Taxon do
   it { should have_many :reference_sections }
   it { should belong_to :type_name }
 
+  describe ".find_by_name" do
+    it "returns nil if nothing matches" do
+      expect(Taxon.find_by_name('sdfsdf')).to eq nil
+    end
+
+    it "returns one of the items if there are more than one (bad!)" do
+      name = create :genus_name, name: 'Monomorium'
+      2.times { create :genus, name: name }
+      expect(Taxon.find_by_name('Monomorium').name.name).to eq 'Monomorium'
+    end
+  end
+
   describe "#biogeographic_region" do
     let(:taxon) { build_stubbed :species }
 
