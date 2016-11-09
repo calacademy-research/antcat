@@ -1,4 +1,4 @@
-# TODO `authorship_string`, `year´:
+# TODO `year´:
 #   1) find proper name to use in `ReferenceDecorator`, 2) consider moving
 #   all/some of them to `Reference`, 3) give methods here matching names.
 #
@@ -29,11 +29,6 @@ class Citation < ActiveRecord::Base
   before_save { CleanNewlines.clean_newlines self, :notes_taxt }
 
   has_paper_trail meta: { change_id: :get_current_change_id }
-
-  def authorship_string
-    return unless reference
-    reference.decorate.keey_without_letters_in_year
-  end
 
   def year
     return unless reference

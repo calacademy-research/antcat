@@ -231,51 +231,54 @@ describe Taxon do
     end
   end
 
-  describe "Other attributes" do
-    describe "#year" do
-      it "delegates to the protonym" do
-        genus = build_stubbed :genus
-        expect(genus.protonym).to receive(:year).and_return '2001'
-        expect(genus.year).to eq '2001'
+  describe "#authorship_string" do
+    it "delegates to the protonym" do
+      genus = build_stubbed :genus
+      expect_any_instance_of(ReferenceDecorator)
+        .to receive(:keey_without_letters_in_year).and_return 'Bolton 2005'
+
+      expect(genus.authorship_string).to eq 'Bolton 2005'
+    end
+
+    context "when a recombination in a different genus" do
+      it "surrounds it in parentheses" do
+        species = create_species 'Atta minor'
+        protonym_name = create_species_name 'Eciton minor'
+
+        expect_any_instance_of(ReferenceDecorator)
+          .to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
+
+        expect(species.authorship_string).to eq '(Bolton, 2005)'
       end
     end
 
-    describe "#authorship_string" do
-      it "delegates to the protonym" do
-        genus = build_stubbed :genus
-        expect(genus.protonym).to receive(:authorship_string).and_return 'Bolton 2005'
-        expect(genus.authorship_string).to eq 'Bolton 2005'
-      end
+    it "doesn't surround in parentheses, if the name simply differs" do
+      species = create_species 'Atta minor maxus'
+      protonym_name = create_subspecies_name 'Atta minor minus'
 
-      context "when a recombination in a different genus" do
-        it "surrounds it in parentheses" do
-          species = create_species 'Atta minor'
-          protonym_name = create_species_name 'Eciton minor'
-          allow(species.protonym).to receive(:name).and_return protonym_name
-          allow(species.protonym).to receive(:authorship_string).and_return 'Bolton, 2005'
+      expect_any_instance_of(ReferenceDecorator)
+        .to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
 
-          expect(species.authorship_string).to eq '(Bolton, 2005)'
-        end
-      end
+      expect(species.protonym).to receive(:name).and_return protonym_name
+      expect(species.authorship_string).to eq 'Bolton, 2005'
+    end
 
-      it "doesn't surround in parentheses, if the name simply differs" do
+    context "when there isn't a protonym authorship" do
+      it "handles it" do
         species = create_species 'Atta minor maxus'
-        protonym_name = create_subspecies_name 'Atta minor minus'
+        protonym_name = create_subspecies_name 'Eciton minor maxus'
 
-        expect(species.protonym).to receive(:name).and_return protonym_name
-        expect(species.protonym).to receive(:authorship_string).and_return 'Bolton, 2005'
-        expect(species.authorship_string).to eq 'Bolton, 2005'
+        expect(species.protonym).to receive(:authorship).and_return nil
+        expect(species.authorship_string).to be_nil
       end
+    end
+  end
 
-      context "when there isn't a protonym authorship" do
-        it "handles it" do
-          species = create_species 'Atta minor maxus'
-          protonym_name = create_subspecies_name 'Eciton minor maxus'
-
-          expect(species.protonym).to receive(:authorship_string).and_return nil
-          expect(species.authorship_string).to be_nil
-        end
-      end
+  describe "#year" do
+    it "delegates to the protonym" do
+      genus = build_stubbed :genus
+      expect(genus.protonym).to receive(:year).and_return '2001'
+      expect(genus.year).to eq '2001'
     end
   end
 

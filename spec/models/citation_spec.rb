@@ -16,32 +16,6 @@ describe Citation do
     expect(citation).not_to be_valid
   end
 
-  describe "#authorship_string" do
-    it "shows the author and year" do
-      reference = reference_factory author_name: 'Bolton', citation_year: '2001'
-      citation = build_stubbed :citation, reference: reference
-
-      expect(citation.authorship_string).to eq 'Bolton, 2001'
-    end
-
-    it "handles multiple authors" do
-      reference = build_stubbed :article_reference,
-        author_names: [ create(:author_name, name: 'Bolton, B.'),
-                        create(:author_name, name: 'Fisher, R.')],
-        citation_year: '2001', year: '2001'
-      citation = build_stubbed :citation, reference: reference
-
-      expect(citation.authorship_string).to eq 'Bolton & Fisher, 2001'
-    end
-
-    it "doesn't include the year ordinal" do
-      reference = reference_factory author_name: 'Bolton', citation_year: '1885g'
-      citation = build_stubbed :citation, reference: reference
-
-      expect(citation.authorship_string).to eq 'Bolton, 1885'
-    end
-  end
-
   describe "#year" do
     it "shows the year" do
       reference = reference_factory author_name: 'Bolton', citation_year: '2001'

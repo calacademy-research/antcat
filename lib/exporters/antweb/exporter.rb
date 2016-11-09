@@ -187,7 +187,6 @@ class Exporters::Antweb::Exporter
       keey = reference.decorate.keey
 
       content_tag(:span, title: formatted) { keey }
-      end
     end
 
     # The original_combination accessor returns the taxon with 'original combination'

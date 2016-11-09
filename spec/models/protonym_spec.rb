@@ -13,23 +13,6 @@ describe Protonym do
     end
   end
 
-  describe "#authorship_string" do
-    context "there is no citation" do
-      it "handles it" do
-        protonym = build_stubbed :protonym, authorship: nil
-        expect(protonym.authorship_string).to be_nil
-      end
-    end
-
-    it "delegates to the citation" do
-      citation = build_stubbed :citation
-      protonym = build_stubbed :protonym, authorship: citation
-
-      expect(citation).to receive(:authorship_string).and_return 'Bolton 2005'
-      expect(protonym.authorship_string).to eq 'Bolton 2005'
-    end
-  end
-
   describe "#year" do
     context "there is no citation" do
       it "handles it" do

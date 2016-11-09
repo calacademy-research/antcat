@@ -235,21 +235,13 @@ Reference#reference_author_names
 Reference#author_names_suffix
 Reference#author_names
 ReferenceDecorator#keey
-Citation#authorship_string        --> reference.decorate.keey_without_letters_in_year
 Citation#year                     --> reference.decorate.year_or_no_year
 
-Similar but a slightly different thing, sometimes, probably:
-Taxon#authorship_string x 2
+Taxon#authorship_string
 
-In Taxon:
-`delegate :year, to: :protonym`
+In Taxon: `delegate :year, to: :protonym`
 
-In Protonym:
-`delegate :authorship_string, :year,
-  to: :authorship` + `belongs_to :authorship, class_name: 'Citation'`
-
-So, we're back in Citation which means we're sometimes back in
-Reference and sometimes in ReferenceDecorator.
+In Protonym: `delegate :year, to: :authorship`
 
 ---------------
                                     # Example from `r = Reference.first`

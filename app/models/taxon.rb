@@ -103,8 +103,13 @@ class Taxon < ApplicationRecord
     type.downcase
   end
 
+  # TODO create `#authorship_reference`.
   def authorship_string
-    string = protonym.authorship_string
+    reference = protonym.try(:authorship).try(:reference)
+    return unless reference
+
+    string = reference.decorate.keey_without_letters_in_year
+
     if string && recombination?
       string = '(' + string + ')'
     end
