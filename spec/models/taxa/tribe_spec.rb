@@ -17,15 +17,6 @@ describe Tribe do
     expect(tribe.children).to eq tribe.genera
   end
 
-  it "has its full name just its name" do
-    expect(tribe.name.to_s).to eq 'Attini'
-  end
-
-  # TODO belongs to Name
-  it "has its name as its label" do
-    expect(tribe.name.to_html).to eq 'Attini'
-  end
-
   describe "#siblings" do
     it "returns itself and its subfamily's other tribes" do
       another_tribe = create :tribe, subfamily: subfamily

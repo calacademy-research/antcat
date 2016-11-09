@@ -82,20 +82,6 @@ describe "ReferenceDecorator" do
       )
     end
 
-    it "creates a link to the reference without the PDF link if the user isn't logged in" do
-      allow(@reference).to receive(:downloadable?).and_return false
-      expect(@reference.decorate.inline_citation).to eq(
-        %{<span class="reference_keey_and_expansion">} +
-          %{<a class="reference_keey" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
-          %{<span class="reference_keey_expansion">} +
-            %{<span class="reference_keey_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span> } +
-            %{<a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
-            %{<a class="goto_reference_link" target="_blank" href="/references/#{@reference.id}">#{@reference.id}</a>} +
-          %{</span>} +
-        %{</span>}
-      )
-    end
-
     context "when expansion is not desired" do
       context "PDF is not available to the user" do
         it "doesn't include the PDF link" do

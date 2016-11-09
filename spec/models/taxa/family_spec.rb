@@ -24,14 +24,6 @@ describe Family do
     end
   end
 
-  # TODO belongs to Name
-  describe "Label" do
-    it "is the family name" do
-      family = build_stubbed :family, name: build_stubbed(:name, name: 'Formicidae')
-      expect(family.name.to_html).to eq 'Formicidae'
-    end
-  end
-
   describe "#genera" do
     it "includes genera without subfamilies" do
       genus_without_subfamily = create_genus subfamily: nil

@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe TooltipsController do
-  # Note: Shoulda only checks if the filter is defined;
-  # the matcher does not support :only, :except or `skip_before_filter`
-  it { should use_before_filter :authenticate_editor }
-
   describe '#index' do
     context "signed in" do
       let!(:no_namespace)         { create :tooltip, key: "no_namespace" }

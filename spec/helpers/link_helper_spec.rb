@@ -66,7 +66,6 @@ describe LinkHelper do
     end
   end
 
-  # Creating a link from a site to AntWeb.
   describe "#link_to_antweb" do
     it "handles subfamilies" do
       subfamily = create_subfamily 'Attaichnae'

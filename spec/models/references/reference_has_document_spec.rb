@@ -34,7 +34,6 @@ describe Reference do
 
     it "delegates to its document" do
       reference = create :reference, document: create(:reference_document)
-
       expect(reference.document).to receive :url
       reference.url
     end

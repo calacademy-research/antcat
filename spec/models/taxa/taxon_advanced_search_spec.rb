@@ -94,10 +94,8 @@ describe Taxon do
 
       it "finds the taxa for the author's references, even if he's not the principal author" do
         reference = create :article_reference,
-          author_names: [
-            create(:author_name, name: 'Bolton'),
-            create(:author_name, name: 'Fisher')
-          ],
+          author_names: [ create(:author_name, name: 'Bolton'),
+                          create(:author_name, name: 'Fisher') ],
           citation_year: '1977'
         atta = create_genus
         atta.protonym.authorship.update_attributes! reference: reference

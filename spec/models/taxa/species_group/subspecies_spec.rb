@@ -71,7 +71,6 @@ describe Subspecies do
       expect(taxon).to be_kind_of Species
     end
 
-    # TODO replace `SubspeciesName.create!``with factory.
     it "forms the new species name from the epithet" do
       species = create_species 'Atta major', genus: genus
       subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',

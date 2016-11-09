@@ -37,19 +37,6 @@ describe Subfamily do
     end
   end
 
-  describe "#name" do
-    it "is just the name" do
-      expect(subfamily.name.to_s).to eq 'Dolichoderinae'
-    end
-  end
-
-  # TODO belongs to Name
-  describe "Label" do
-    it "is just the name" do
-      expect(subfamily.name.to_html).to eq 'Dolichoderinae'
-    end
-  end
-
   describe "#statistics" do
     it "handles 0 children" do
       expect(subfamily.statistics).to eq({})

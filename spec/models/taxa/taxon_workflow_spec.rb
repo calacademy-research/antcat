@@ -3,13 +3,6 @@ require 'spec_helper'
 describe Taxon do
   let(:adder) { create :editor }
 
-  it "starts as 'old', and stays there" do
-    taxon = create_taxon_version_and_change :old, adder
-
-    expect(taxon).to be_old
-    expect(taxon.can_approve?).to be_falsey
-  end
-
   it "can transition from waiting to approved" do
     taxon = create_taxon_version_and_change :waiting, adder
     expect(taxon).to be_waiting
@@ -114,20 +107,4 @@ describe Taxon do
       end
     end
   end
-
-  # We no longer support "Added by" display.
-  # describe "Added by" do
-  #   it "returns the user who added the record, not a subsequent editor" do
-  #     taxon = create_taxon_version_and_change :waiting, adder
-  #
-  #     setup_version taxon, adder
-  #
-  #     taxon.update_attributes! incertae_sedis_in: 'genus'
-  #     taxon.last_version.update_attributes! whodunnit: editor
-  #     taxon.save!
-  #     setup_version taxon, adder
-  #
-  #     expect(taxon.added_by).to eq adder
-  #   end
-  # end
 end

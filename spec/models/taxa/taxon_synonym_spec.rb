@@ -107,31 +107,32 @@ describe Taxon do
     end
   end
 
-  describe "#junior_synonyms_with_names" do
-    it "works" do
-      atta = create_genus 'Atta'
-      eciton = create_genus 'Eciton'
-      eciton.extend TaxonSynonymsMonkeyPatch
-      eciton.become_junior_synonym_of atta
-      results = atta.junior_synonyms_with_names
-      expect(results.size).to eq 1
-      record = results.first
-      expect(record['id']).to eq Synonym.find_by(junior_synonym_id: eciton.id).id
-      expect(record['name']).to eq eciton.name.to_html
+  describe "with_names" do
+    before do
+      @atta = create_genus 'Atta'
+      @eciton = create_genus 'Eciton'
+      @eciton.extend TaxonSynonymsMonkeyPatch
+      @eciton.become_junior_synonym_of @atta
     end
-  end
 
-  describe "#senior_synonyms_with_names" do
-    it "work" do
-      atta = create_genus 'Atta'
-      eciton = create_genus 'Eciton'
-      eciton.extend TaxonSynonymsMonkeyPatch
-      eciton.become_junior_synonym_of atta
-      results = eciton.senior_synonyms_with_names
-      expect(results.size).to eq 1
-      record = results.first
-      expect(record['id']).to eq Synonym.find_by(senior_synonym_id: atta.id).id
-      expect(record['name']).to eq atta.name.to_html
+    describe "#junior_synonyms_with_names" do
+      it "works" do
+        results = @atta.junior_synonyms_with_names
+        expect(results.size).to eq 1
+        record = results.first
+        expect(record['id']).to eq Synonym.find_by(junior_synonym_id: @eciton.id).id
+        expect(record['name']).to eq @eciton.name.to_html
+      end
+    end
+
+    describe "#senior_synonyms_with_names" do
+      it "works" do
+        results = @eciton.senior_synonyms_with_names
+        expect(results.size).to eq 1
+        record = results.first
+        expect(record['id']).to eq Synonym.find_by(senior_synonym_id: @atta.id).id
+        expect(record['name']).to eq @atta.name.to_html
+      end
     end
   end
 end

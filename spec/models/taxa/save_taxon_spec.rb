@@ -164,9 +164,7 @@ describe Taxa::SaveTaxon do
 
         it "creates a Change for an edit" do
           expect(Change.count).to equal 0
-
           with_versioning { genus.save_from_form genus_params }
-
           expect(Change.count).to equal 1
           expect(Change.first.change_type).to eq 'update'
         end
@@ -175,9 +173,7 @@ describe Taxa::SaveTaxon do
           genus.taxon_state.update_columns review_state: :old
           genus.reload
           expect(genus).to be_old
-
           with_versioning { genus.save_from_form genus_params }
-
           expect(genus).not_to be_old
         end
       end
