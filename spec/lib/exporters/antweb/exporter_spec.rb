@@ -1,13 +1,10 @@
-# TODO too much untested stubs.
+# TODO too much untested stubs. Some specs here have no idea if they are broken.
 
 require 'spec_helper'
 
 describe Exporters::Antweb::Exporter do
   before do
     @exporter = Exporters::Antweb::Exporter.new
-
-    # Note: some specs here have no idea if they are broken, since
-    # `#export_history` is tested once (in `formatter_spec.rb`).
     allow(@exporter).to receive(:export_history).and_return 'history'
   end
 
@@ -49,6 +46,10 @@ describe Exporters::Antweb::Exporter do
         .with(taxon).and_return value
     end
 
+    def allow_year_for taxon, value
+      allow(@exporter).to receive(:year).with(taxon).and_return value
+    end
+
     before do
       @ponerinae = create_subfamily 'Ponerinae'
       @attini = create_tribe 'Attini', subfamily: @ponerinae
@@ -63,7 +64,7 @@ describe Exporters::Antweb::Exporter do
 
       allow(@ponerinae).to receive(:authorship_string).and_return 'Bolton, 2011'
       allow_ALNS_for @ponerinae, 'Bolton'
-      allow(@ponerinae).to receive(:year).and_return 2001
+      allow_year_for @ponerinae, 2001
 
       expect(@exporter.send(:export_taxon, @ponerinae)[0..17]).to eq [
         @ponerinae.id, 'Ponerinae', nil, nil, nil, nil, nil,
@@ -78,11 +79,11 @@ describe Exporters::Antweb::Exporter do
 
       allow(@ponerinae).to receive(:authorship_string).and_return 'Bolton, 2011'
       allow_ALNS_for @ponerinae, 'Bolton'
-      allow(@ponerinae).to receive(:year).and_return 2001
+      allow_year_for @ponerinae, 2001
 
       allow(fossil).to receive(:authorship_string).and_return 'Fisher, 2013'
       allow_ALNS_for fossil, 'Fisher'
-      allow(fossil).to receive(:year).and_return 2001
+      allow_year_for fossil, 2001
 
       expect(@exporter.send(:export_taxon, @ponerinae)[0..17]).to eq [
         @ponerinae.id, 'Ponerinae', nil, nil, nil, nil, nil,
@@ -103,7 +104,7 @@ describe Exporters::Antweb::Exporter do
 
       allow(acanthognathus).to receive(:authorship_string).and_return 'Bolton, 2011'
       allow_ALNS_for acanthognathus, 'Bolton'
-      allow(acanthognathus).to receive(:year).and_return 2001
+      allow_year_for acanthognathus, 2001
 
       expect(@exporter.send(:export_taxon, acanthognathus)[0..17]).to eq [
         acanthognathus.id, 'Ponerinae', 'Dacetini', 'Acanothognathus', nil, nil, nil,
@@ -117,7 +118,7 @@ describe Exporters::Antweb::Exporter do
 
       allow(acanthognathus).to receive(:authorship_string).and_return 'Bolton, 2011'
       allow_ALNS_for acanthognathus, 'Bolton'
-      allow(acanthognathus).to receive(:year).and_return 2001
+      allow_year_for acanthognathus, 2001
 
       expect(@exporter.send(:export_taxon, acanthognathus)[0..17]).to eq [
         acanthognathus.id, 'Ponerinae', nil, 'Acanothognathus', nil, nil, nil,
@@ -131,7 +132,7 @@ describe Exporters::Antweb::Exporter do
 
       allow(acanthognathus).to receive(:authorship_string).and_return 'Fisher, 2013'
       allow_ALNS_for acanthognathus, 'Fisher'
-      allow(acanthognathus).to receive(:year).and_return 2001
+      allow_year_for acanthognathus, 2001
 
       expect(@exporter.send(:export_taxon, acanthognathus)[0..17]).to eq [
         acanthognathus.id, 'incertae_sedis', nil, 'Acanothognathus', nil, nil, nil,
@@ -147,7 +148,7 @@ describe Exporters::Antweb::Exporter do
 
         allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
         allow_ALNS_for species, 'Bolton'
-        allow(species).to receive(:year).and_return 2001
+        allow_year_for species, 2001
 
         expect(@exporter.send(:export_taxon, species)[0..17]).to eq [
           species.id, 'Ponerinae', 'Attini', 'Atta', nil, 'robustus', nil,
@@ -162,7 +163,7 @@ describe Exporters::Antweb::Exporter do
 
         allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
         allow_ALNS_for species, 'Bolton'
-        allow(species).to receive(:year).and_return 2001
+        allow_year_for species, 2001
 
         expect(@exporter.send(:export_taxon, species)[0..17]).to eq [
           species.id, 'Ponerinae', nil, 'Atta', nil, 'robustus', nil,
@@ -177,7 +178,7 @@ describe Exporters::Antweb::Exporter do
 
         allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
         allow_ALNS_for species, 'Bolton'
-        allow(species).to receive(:year).and_return 2001
+        allow_year_for species, 2001
 
         expect(@exporter.send(:export_taxon, species)[0..17]).to eq [
           species.id, 'incertae_sedis', nil, 'Atta', nil, 'robustus', nil,
@@ -195,7 +196,7 @@ describe Exporters::Antweb::Exporter do
 
         allow(subspecies).to receive(:authorship_string).and_return 'Bolton, 2011'
         allow_ALNS_for subspecies, 'Bolton'
-        allow(subspecies).to receive(:year).and_return 2001
+        allow_year_for subspecies, 2001
 
         expect(@exporter.send(:export_taxon, subspecies)[0..17]).to eq [
           subspecies.id, 'Ponerinae', 'Attini', 'Atta', nil, 'robustus', 'emeryii',
@@ -211,7 +212,7 @@ describe Exporters::Antweb::Exporter do
 
         allow(subspecies).to receive(:authorship_string).and_return 'Bolton, 2011'
         allow_ALNS_for subspecies, 'Bolton'
-        allow(subspecies).to receive(:year).and_return 2001
+        allow_year_for subspecies, 2001
 
         expect(@exporter.send(:export_taxon, subspecies)[0..17]).to eq [
           subspecies.id, 'Ponerinae', nil, 'Atta', nil, 'robustus', 'emeryii',
@@ -227,7 +228,7 @@ describe Exporters::Antweb::Exporter do
 
         allow(subspecies).to receive(:authorship_string).and_return 'Bolton, 2011'
         allow_ALNS_for subspecies, 'Bolton'
-        allow(subspecies).to receive(:year).and_return 2001
+        allow_year_for subspecies, 2001
 
         expect(@exporter.send(:export_taxon, subspecies)[0..17]).to eq [
           subspecies.id, 'incertae_sedis', nil, 'Atta', nil, 'robustus', 'emeryii',

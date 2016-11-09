@@ -274,14 +274,6 @@ describe Taxon do
     end
   end
 
-  describe "#year" do
-    it "delegates to the protonym" do
-      genus = build_stubbed :genus
-      expect(genus.protonym).to receive(:year).and_return '2001'
-      expect(genus.year).to eq '2001'
-    end
-  end
-
   describe "#recombination?" do
     context "name is same as protonym" do
       it "it is not a recombination" do

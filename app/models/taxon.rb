@@ -102,20 +102,11 @@ class Taxon < ApplicationRecord
     type.downcase
   end
 
-  def year
-    reference = protonym.try(:authorship).try(:reference)
-    return unless reference
-
-    reference.decorate.year_or_no_year
-  end
-
-  # TODO create `#authorship_reference`.
+  # TODO rename.
   def authorship_string
-    reference = protonym.try(:authorship).try(:reference)
-    return unless reference
+    return unless authorship_reference
 
-    string = reference.decorate.keey_without_letters_in_year
-
+    string = authorship_reference.decorate.keey_without_letters_in_year
     if string && recombination?
       string = '(' + string + ')'
     end
@@ -134,6 +125,10 @@ class Taxon < ApplicationRecord
   end
 
   private
+    def authorship_reference
+      protonym.try(:authorship).try(:reference)
+    end
+
     def activity_parameters
       ->(taxon) do
         hash = { rank: taxon.rank, name: taxon.name_html_cache }

@@ -74,7 +74,7 @@ class Exporters::Antweb::Exporter
         original_combination?:  taxon.original_combination?,
         original_combination:   original_combination(taxon).try(:name).try(:name),
         authors:                author_last_names_string(taxon),
-        year:                   taxon.year && taxon.year.to_s,
+        year:                   year(taxon) && year(taxon).to_s,
         reference_id:           reference_id,
         biogeographic_region:   taxon.biogeographic_region,
         locality:               taxon.protonym.locality,
@@ -170,23 +170,30 @@ class Exporters::Antweb::Exporter
       "#{subfamily} #{current_valid_name}"
     end
 
-    # TODO investigate using `delegate :reference, to: "protonym.citation.reference"` etc.
     # TODO rename.
     def author_last_names_string taxon
-      reference = taxon.try(:protonym).try(:authorship).try(:reference)
+      reference = taxon.send :authorship_reference
       return unless reference
 
       reference.decorate.authors_for_keey
     end
 
     def authorship_html_string taxon
-      reference = taxon.try(:protonym).try(:authorship).try(:reference)
+      reference = taxon.send :authorship_reference
       return unless reference
 
       formatted = reference.decorate.formatted
       keey = reference.decorate.keey
 
       content_tag(:span, title: formatted) { keey }
+    end
+
+    # TODO rename.
+    def year taxon
+      reference = taxon.send :authorship_reference
+      return unless reference
+
+      reference.decorate.year_or_no_year
     end
 
     # The original_combination accessor returns the taxon with 'original combination'
