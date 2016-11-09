@@ -17,14 +17,14 @@ class Taxon < ApplicationRecord
   self.table_name = :taxa
 
   # The Ruby method, convenient when we want to store temporary values.
-  attr_accessor :authorship_string, :duplicate_type, :parent_name,
+  attr_accessor :duplicate_type, :parent_name,
     :current_valid_taxon_name, :homonym_replaced_by_name, :save_initiator
 
-  # TODO remove `authorship_string`, `duplicate_type`.
-  # `save_initiator`: setting to true enables additional callbacks for that taxon only.
+  # `duplicate_type`: used in `DuplicatesController` and `name_field.coffee`.
   # `parent_name`: unknown, mysterious.
+  # `save_initiator`: setting to true enables additional callbacks for that taxon only.
 
-  # Rails method to protect from mass-assignment.
+  # Rails method to protect from mass-assignment. You can ignore these.
   attr_accessible :auto_generated, :biogeographic_region, :collision_merge_id,
     :display, :fossil, :headline_notes_taxt, :hong, :ichnotaxon, :id, :incertae_sedis_in,
     :name, :name_id, :nomen_nudum, :origin, :protonym, :status, :type_fossil, :type_name,
@@ -110,8 +110,6 @@ class Taxon < ApplicationRecord
     self.class.where(status: 'original combination', current_valid_taxon_id: id).first
   end
 
-  # TODO: this triggers a save in the Name model for some reason.
-  # TODO? this clashes with `attr_accessor :authorship_string`.
   def authorship_string
     string = protonym.authorship_string
     if string && recombination?

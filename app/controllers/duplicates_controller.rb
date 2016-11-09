@@ -8,6 +8,7 @@ class DuplicatesController < TaxaController
 
   # Takes requires parent_id (target parent) and previous_combination_id
   # returns all matching taxa that could conflict with this naming.
+  # TODO probably rename action; "show" implies an object/view.
   def show
     return find_name_duplicates_only if params['match_name_only'] == "true"
 
@@ -30,9 +31,6 @@ class DuplicatesController < TaxaController
 
     # This code to pass these some other way, and remove these two columns from the taxa db entry
     options.each do |option|
-      # TODO: Joe calls to protonym.authorship_string trigger a save somehow
-      option.authorship_string = option.protonym.authorship_string
-
       # TODO: joe check page number case?
       # Used to pop up the correct dialog box content in the name_field.coffee widget
       # in the case of "return to original" - give the option of actually returning to
@@ -45,7 +43,8 @@ class DuplicatesController < TaxaController
                               end
     end
 
-    render json: options.to_json(methods: [:authorship_string, :duplicate_type]), status: :ok
+    json = options.to_json methods: [:authorship_string, :duplicate_type]
+    render json: json, status: :ok
   end
 
   private
