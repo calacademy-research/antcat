@@ -1,7 +1,7 @@
 Then(/^the taxt editor should contain the editable taxt for "(.*?)"$/) do |keey|
   reference = find_reference_by_keey keey
   element = find '#name'
-  expect(element.value.strip).to eq TaxtConverter.to_editable_reference(reference)
+  expect(element.value.strip).to eq TaxtIdTranslator.to_editable_reference(reference)
 end
 
 # Seems like we need this now. Tests likely passed without this earlier

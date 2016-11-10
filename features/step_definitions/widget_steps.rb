@@ -72,7 +72,7 @@ end
 
 Then(/in the results section I should see the editable taxt for "([^"]*)"/) do |text|
   within "#results" do
-    step %{I should see "#{TaxtConverter.to_editable_taxon(Taxon.find_by_name(text))}"}
+    step %{I should see "#{TaxtIdTranslator.to_editable_taxon(Taxon.find_by_name(text))}"}
   end
 end
 

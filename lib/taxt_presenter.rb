@@ -42,6 +42,7 @@ class TaxtPresenter
       @taxt.html_safe
     end
 
+    # TODO investigate using a `each
     # References, "{ref 123}".
     def parse_refs!
       @taxt.gsub!(/{ref (\d+)}/) do
