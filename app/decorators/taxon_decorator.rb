@@ -40,7 +40,7 @@ class TaxonDecorator < ApplicationDecorator
   def genus_species_header_notes_taxt
     return unless taxon.genus_species_header_notes_taxt.present?
     helpers.content_tag :div,
-      Taxt.to_string(taxon.genus_species_header_notes_taxt),
+      TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html,
       class: 'genus_species_header_notes_taxt'
   end
 
@@ -159,7 +159,7 @@ class TaxonDecorator < ApplicationDecorator
       helpers.content_tag :div, class: 'section' do
         [:title_taxt, :subtitle_taxt, :references_taxt].reduce(''.html_safe) do |content, field|
           if section[field].present?
-            content << helpers.content_tag(:div, Taxt.to_string(section[field]), class: field)
+            content << helpers.content_tag(:div, TaxtPresenter[section[field]].to_html, class: field)
           end
           content
         end

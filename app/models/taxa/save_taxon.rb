@@ -96,7 +96,7 @@ class Taxa::SaveTaxon
       return if attributes[:reference_id].blank? and @taxon.protonym.authorship.reference.blank?
 
       if attributes[:notes_taxt]
-        @taxon.protonym.authorship.notes_taxt = Taxt.from_editable attributes.delete :notes_taxt
+        @taxon.protonym.authorship.notes_taxt = TaxtConverter[attributes.delete :notes_taxt].from_editor_format
       end
       @taxon.protonym.authorship.attributes = attributes
     end
@@ -124,9 +124,9 @@ class Taxa::SaveTaxon
       attributes[:incertae_sedis_in] = nil unless attributes[:incertae_sedis_in].present?
 
       @taxon.attributes = attributes
-      @taxon.headline_notes_taxt = Taxt.from_editable attributes.delete :headline_notes_taxt
+      @taxon.headline_notes_taxt = TaxtConverter[attributes.delete :headline_notes_taxt].from_editor_format
       if attributes[:type_taxt]
-        @taxon.type_taxt = Taxt.from_editable attributes.delete :type_taxt
+        @taxon.type_taxt = TaxtConverter[attributes.delete :type_taxt].from_editor_format
       end
     end
 end

@@ -56,4 +56,4 @@
       %tr
         %td.caption.top_aligned=form.label :type_taxt, 'Notes'
         %td#type_taxt_editor.taxt_editor
-          =render 'taxt_editors/show', name: 'taxon[type_taxt]', value: Taxt.to_editable(taxon.type_taxt)
+          =render 'taxt_editors/show', name: 'taxon[type_taxt]', value: TaxtConverter[taxon.type_taxt].to_editor_format

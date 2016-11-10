@@ -45,7 +45,7 @@ class TaxonDecorator::History
 
     def history_item_body item
       content_tag :td, history_item_body_attributes.merge(class: 'history_item_body') do
-        add_period_if_necessary Taxt.to_string(item.taxt)
+        add_period_if_necessary TaxtPresenter[item.taxt].to_html
       end
     end
 end

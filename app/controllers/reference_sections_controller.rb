@@ -35,9 +35,9 @@ class ReferenceSectionsController < ApplicationController
     end
 
     def taxts_from_params
-      title_taxt = Taxt.from_editable params[:title_taxt]
-      subtitle_taxt = Taxt.from_editable params[:subtitle_taxt]
-      references_taxt = Taxt.from_editable params[:references_taxt]
+      title_taxt = TaxtConverter[params[:title_taxt]].from_editor_format
+      subtitle_taxt = TaxtConverter[params[:subtitle_taxt]].from_editor_format
+      references_taxt = TaxtConverter[params[:references_taxt]].from_editor_format
 
       [title_taxt, subtitle_taxt, references_taxt]
     end

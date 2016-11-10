@@ -81,7 +81,7 @@ class TaxonDecorator::Headline
     end
 
     def headline_type_taxt taxt
-      add_period_if_necessary Taxt.to_string(taxt)
+      add_period_if_necessary TaxtPresenter[taxt].to_html
     end
 
     def headline_biogeographic_region
@@ -123,7 +123,7 @@ class TaxonDecorator::Headline
       string = link_to_reference(authorship.reference)
       string << ": #{authorship.pages}" if authorship.pages.present?
       string << " (#{authorship.forms})" if authorship.forms.present?
-      string << ' ' << Taxt.to_string(authorship.notes_taxt) if authorship.notes_taxt
+      string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html if authorship.notes_taxt
       content_tag :span, string, class: :authorship
     end
 
@@ -135,6 +135,6 @@ class TaxonDecorator::Headline
 
     def headline_notes
       return unless @taxon.headline_notes_taxt.present?
-      Taxt.to_string @taxon.headline_notes_taxt
+      TaxtPresenter[@taxon.headline_notes_taxt].to_html
     end
 end

@@ -30,7 +30,7 @@ module ChangesHelper
   end
 
   def format_taxt taxt
-    Taxt.to_string taxt
+    TaxtPresenter[taxt].to_html
   end
 
   def approve_all_changes_button

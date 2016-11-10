@@ -5,5 +5,5 @@
   =hidden_field_tag 'default_reference_id', default_reference.id
   =hidden_field_tag 'default_reference_string', default_reference.decorate.formatted
   =hidden_field_tag 'default_reference_keey', default_reference.decorate.keey
-  =hidden_field_tag 'default_reference_taxt', Taxt.to_editable_reference(default_reference)
+  =hidden_field_tag 'default_reference_taxt', TaxtConverter.to_editable_reference(default_reference)
   %button.default_reference.btn-normal=default_reference.decorate.keey

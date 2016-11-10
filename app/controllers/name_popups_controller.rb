@@ -1,6 +1,6 @@
 class NamePopupsController < NamePickersController
   def show
-    if params[:type].to_i == Taxt::TAXON_TAG_TYPE
+    if params[:type].to_i == TaxtConverter::TAXON_TAG_TYPE
       taxon = Taxon.find params[:id]
       name = taxon.name
       id = taxon.id
@@ -36,7 +36,7 @@ class NamePopupsController < NamePickersController
       name = Name.parse name_string
       data[:id] = name.id
       data[:name] = name.name
-      data[:taxt] = Taxt.to_editable_name name
+      data[:taxt] = TaxtConverter.to_editable_name name
       data[:success] = true
     end
 
@@ -51,9 +51,9 @@ class NamePopupsController < NamePickersController
       taxon = Taxon.find_by_name data[:name]
       if taxon
         data[:taxon_id] = taxon.id
-        data[:taxt] = Taxt.to_editable_taxon taxon
+        data[:taxt] = TaxtConverter.to_editable_taxon taxon
       else
-        data[:taxt] = Taxt.to_editable_name name
+        data[:taxt] = TaxtConverter.to_editable_name name
       end
       data[:success] = true
     end

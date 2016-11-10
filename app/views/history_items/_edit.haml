@@ -5,7 +5,7 @@
     =render 'shared/errors_for', resource: item
 
     .taxt_editor
-      =render 'taxt_editors/show', name: 'taxt', value: Taxt.to_editable(item.taxt)
+      =render 'taxt_editors/show', name: 'taxt', value: TaxtConverter[item.taxt].to_editor_format
 
     .buttons
       %button.submit.btn-save Save
