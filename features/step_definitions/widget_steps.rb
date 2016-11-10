@@ -54,7 +54,7 @@ end
 # Results section
 Then(/in the results section I should see the editable taxt for the name "([^"]*)"/) do |text|
   within "#results" do
-    step %{I should see "#{TaxtConverter.to_editable_name(Name.find_by_name(text))}"}
+    step %{I should see "#{TaxtIdTranslator.to_editable_name(Name.find_by_name(text))}"}
   end
 end
 

@@ -16,9 +16,16 @@ class TaxtConverter
     return "" unless @taxt
     taxt = @taxt.dup
 
+    # Take all "{ref 123}" matches...
     taxt.gsub! /{ref (\d+)}/ do |ref|
+      # ...generate a jumbled id: '122097, 1' --> "fDhf"
       editable_id = TaxtIdTranslator.id_for_editable $1, TaxtIdTranslator::REFERENCE_TAG_TYPE
-      TaxtIdTranslator.to_editable_reference Reference.find($1) rescue "{#{editable_id}}"
+
+      # ...find the reference via the id...
+      reference = Reference.find($1) rescue "{#{editable_id}}"
+
+      # ...use that reference to generate a readable label + jumbled id.
+      TaxtIdTranslator.to_editable_reference reference rescue "{#{editable_id}}"
     end
 
     taxt.gsub! /{tax (\d+)}/ do |tax|
