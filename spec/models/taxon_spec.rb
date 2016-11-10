@@ -363,7 +363,7 @@ describe Taxon do
     #
     # TODO semi-disabled by Russian roulette, sorry!!!!
     # Bad test practices, but this case has broken too many builds.
-    it "finds the latest senior synonym that's valid" do
+    it "finds the latest senior synonym that's valid (this spec fails a lot)" do
       if Random.rand(1..6) == 6
         valid_senior = create_genus status: 'valid'
         invalid_senior = create_genus status: 'homonym'

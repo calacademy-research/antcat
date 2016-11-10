@@ -18,18 +18,27 @@ describe TaxtPresenter do
   end
 
   describe "#to_html" do
-    #it "escapes its input" do
-      #string = TaxtPresenter['<script>'].to_html
-      #string.should == '&lt;script&gt;'
-      #string.should be_html_safe
-    #end
+    describe "escaping input" do
+      xit "escapes its input" do
+        parsed = TaxtPresenter['<script>'].to_html
+        expect(parsed).to eq '&lt;script&gt;'
+        expect(parsed).to be_html_safe
+      end
+
+      it "doesn't escape already escaped input" do
+        reference = create :missing_reference, citation: 'Latreille, 1809 <script>'
+        expected = 'Latreille, 1809 &lt;script&gt;'
+        expect(reference.decorate.inline_citation).to eq expected
+        expect(TaxtPresenter["{ref #{reference.id}}"].to_html).to eq expected
+      end
+    end
 
     it "handles nil" do
       expect(TaxtPresenter[nil].to_html).to eq ''
     end
 
     context "references" do
-      context "when the ref is malformed" do
+      context "when the ref tag is malformed" do
         it "doesn't freak" do
           expect(TaxtPresenter["{ref sdf}"].to_html).to eq '{ref sdf}'
         end
@@ -41,15 +50,10 @@ describe TaxtPresenter do
         end
       end
 
-      it "handles a MissingReference" do
+      it "handles missing references" do
         reference = create :missing_reference, citation: 'Latreille, 1809'
         expect(TaxtPresenter["{ref #{reference.id}}"].to_html).to eq 'Latreille, 1809'
       end
-
-      #it "escapes input" do
-        #reference = create :missing_reference, citation: 'Latreille, 1809 <script>'
-        #TaxtPresenter["{ref #{reference.id}}"].to_html.should == 'Latreille, 1809 &lt;script&gt;'
-      #end
     end
 
     context "names" do
