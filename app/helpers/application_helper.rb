@@ -35,7 +35,7 @@ module ApplicationHelper
   end
 
   def add_period_if_necessary string
-    return unless string.present?
+    return "" unless string.present?
     return string + '.' unless string[-1..-1] =~ /[.!?]/
     string
   end

@@ -119,12 +119,12 @@ class TaxonDecorator::Headline
     end
 
     def headline_authorship authorship
-      return '' unless authorship && authorship.reference
+      return '' unless authorship.try :reference
       string = link_to_reference(authorship.reference)
       string << ": #{authorship.pages}" if authorship.pages.present?
       string << " (#{authorship.forms})" if authorship.forms.present?
       string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html if authorship.notes_taxt
-      content_tag :span, string, class: :authorship
+      content_tag :span, string, class: "authorship"
     end
 
     def locality locality

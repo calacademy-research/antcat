@@ -96,7 +96,7 @@ describe TaxtPresenter do
     let(:taxt) { "{tax #{create(:family).id}}" }
 
     it "uses a different link formatter" do
-      expect(TaxtPresenter[taxt].to_antweb).to match /antcat\.org/
+      expect(TaxtPresenter[taxt].to_antweb).to match "antcat.org"
     end
 
     describe "the `$use_ant_web_formatter` quirk" do
@@ -105,13 +105,13 @@ describe TaxtPresenter do
 
       it "***confirm test setup***" do
         $use_ant_web_formatter = nil
-        expect(TaxtPresenter[taxt].to_html).to_not match /antcat\.org/
+        expect(TaxtPresenter[taxt].to_html).to_not match "antcat.org"
       end
 
       it "makes all formatters behave like #to_antweb" do
-        expect(TaxtPresenter[taxt].to_html).to match /antcat\.org/
-        expect(TaxtPresenter[taxt].to_text).to match /antcat\.org/
-        expect(TaxtPresenter[taxt].to_antweb).to match /antcat\.org/
+        expect(TaxtPresenter[taxt].to_html).to match "antcat.org"
+        expect(TaxtPresenter[taxt].to_text).to match "antcat.org"
+        expect(TaxtPresenter[taxt].to_antweb).to match "antcat.org"
       end
     end
   end

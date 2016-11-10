@@ -22,16 +22,6 @@ describe LinkHelper do
     end
   end
 
-  # Creating a link from another site to a taxon on AntCat
-  describe "#link_to_antcat" do
-    it "creates the link" do
-      genus = create_genus
-      expect(helper.link_to_antcat(genus)).to eq(
-        %{<a class="link_to_external_site" target="_blank" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>}
-      )
-    end
-  end
-
   describe "#link_to_antwiki" do
     it "can link subfamilies" do
       expect(helper.link_to_antwiki(create_subfamily 'Dolichoderinae')).to eq(

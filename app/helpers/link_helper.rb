@@ -19,10 +19,6 @@ module LinkHelper
     link label, url, class: 'link_to_external_site', target: '_blank'
   end
 
-  def link_to_antcat taxon, label = 'AntCat'
-    link_to_external_site label, "http://www.antcat.org/catalog/#{taxon.id}"
-  end
-
   def link_to_antwiki taxon
     page_title = taxon.name.to_s.gsub(/ /, '_')
     link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"

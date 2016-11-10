@@ -24,16 +24,15 @@
 module RefactorHelper
   def link_to_taxon taxon
     if $use_ant_web_formatter
-      link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
+      Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
     else
-      label = taxon.name.to_html_with_fossil(taxon.fossil?)
-      content_tag :a, label, href: %{/catalog/#{taxon.id}}
+      taxon.decorate.link_to_taxon
     end
   end
 
   def link_to_other_site
     if $use_ant_web_formatter
-      link_to_antcat @taxon
+      Exporters::Antweb::Exporter.antcat_taxon_link @taxon
     else
       link_to_antweb @taxon
     end

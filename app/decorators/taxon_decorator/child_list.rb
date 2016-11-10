@@ -102,8 +102,6 @@ class TaxonDecorator::ChildList
     end
 
     def child_list_items children
-      children.map do |child|
-        link_to_taxon(child)
-      end.join(', ').html_safe
+      children.map { |child| link_to_taxon(child) }.join(', ').html_safe
     end
 end

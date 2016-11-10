@@ -2,9 +2,7 @@
 # such as "hey {ref 123}") to something that can be read.
 
 class TaxtPresenter
-  include ERB::Util
-  include ActionView::Helpers::TagHelper
-  include ApplicationHelper
+  include ApplicationHelper # For `#add_period_if_necessary`.
 
   def initialize taxt_from_db
     @taxt = taxt_from_db.try :dup
@@ -21,6 +19,7 @@ class TaxtPresenter
   # into   "example Melophorini"
   def to_text
     parsed = parse :to_text
+    # TODO see if we can push `add_period_if_necessary` to the consumer.
     add_period_if_necessary parsed
   end
 
@@ -76,14 +75,9 @@ class TaxtPresenter
         case @format
         when :to_html   then taxon.decorate.link_to_taxon
         when :to_text   then taxon.name.to_html
-        when :to_antweb then link_to_antcat_from_antweb taxon
+        when :to_antweb then Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
         end
       end
-    end
-
-    # TODO remove.
-    def link_to_antcat_from_antweb taxon
-      link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
     end
 
     def maybe_enable_antweb_quirk

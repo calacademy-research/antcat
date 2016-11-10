@@ -220,4 +220,14 @@ class Exporters::Antweb::Exporter
         $use_ant_web_formatter = false
       end
     end
+
+    def self.antcat_taxon_link taxon, label = "AntCat"
+      url = "http://www.antcat.org/catalog/#{taxon.id}"
+      %Q[<a class="link_to_external_site" target="_blank" href="#{url}">#{label}</a>].html_safe
+    end
+
+    def self.antcat_taxon_link_with_name taxon
+      label = taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
+      antcat_taxon_link taxon, label
+    end
 end
