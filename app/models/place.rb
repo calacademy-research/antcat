@@ -1,3 +1,5 @@
+# TODO `remove_column :places, :verified`, or rename to `auto_generated`.
+
 class Place < ActiveRecord::Base
   include UndoTracker
 

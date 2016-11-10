@@ -69,6 +69,8 @@ class ConvertToSubspeciesController < ApplicationController
     # TODO remove after tweaking the factories
     # The factories create two "Camponotus" genera, so we need to fool them.
     def trick_factories_hack
-      Rails.env.test? && "#{@new_species.genus.name}" == "#{@taxon.genus.name}"
+      return unless Rails.env.test?
+      $stdout.puts "trick_factories_hack".red
+      "#{@new_species.genus.name}" == "#{@taxon.genus.name}"
     end
 end

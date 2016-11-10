@@ -1,3 +1,5 @@
+# TODO `remove_column :author_names, :verified`, or rename to `auto_generated`.
+
 class AuthorName < ActiveRecord::Base
   include UndoTracker
 
