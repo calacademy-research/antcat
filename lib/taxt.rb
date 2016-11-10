@@ -12,11 +12,6 @@
 #   `.to_editable_reference
 #   `.to_editable_taxon
 #   `.to_editable_name name
-#
-#   Also haven't changed, but private, so please ignore.
-#   `Taxt.to_editable_tag`
-#   `Taxt.id_for_editable`
-#   `Taxt.id_from_editable`
 
 module Taxt
   TAXT_FIELDS = [

@@ -1,97 +1,92 @@
 # This class is for parsing taxts in the "database format" (strings
 # such as "hey {ref 123}") to something that can be read.
 
-# TODO remove rescues.
-
 class TaxtPresenter
   include ERB::Util
   include ActionView::Helpers::TagHelper
   include ApplicationHelper
 
   def initialize taxt_from_db
-    @taxt = taxt_from_db
-    @options = {}
+    @taxt = taxt_from_db.try :dup
   end
   class << self; alias_method :[], :new end
 
   # Parses "example {tax 429361}"
   # into   "example <a href=\"/catalog/429361\">Melophorini</a>"
   def to_html
-    decode
+    parse :to_html
   end
 
   # Parses "example {tax 429361}"
   # into   "example Melophorini"
   def to_text
-    @options[:display] = true
-    string = decode
-    add_period_if_necessary string
+    parsed = parse :to_text
+    add_period_if_necessary parsed
   end
 
-  # TODO coming soon, or not very soon!
-  def to_antweb_export
-    raise NotImplementedError
-    @format = :antweb_export
-    decode
+  # Not used, because we're still relying on `$use_ant_web_formatter`.
+  def to_antweb
+    parse :to_antweb
   end
 
   private
-    # TODO rename.
-    def decode
+    def parse format
       return '' unless @taxt.present?
 
-      @taxt.gsub!(/{ref (\d+)}/) do |whole_match|
-        decode_reference whole_match, $1
-      end
+      @format = format
+      maybe_enable_antweb_quirk
 
-      @taxt.gsub!(/{nam (\d+)}/) do |whole_match|
-        decode_name whole_match, $1
-      end
-
-      @taxt.gsub!(/{tax (\d+)}/) do |whole_match|
-        decode_taxon whole_match, $1
-      end
-
-      @taxt.gsub!(/{epi (\w+)}/) do |_|
-      end
+      parse_refs!
+      parse_nams!
+      parse_taxs!
 
       @taxt.html_safe
     end
 
-    def decode_reference whole_match, reference_id_match
-      if @options[:display]
-        reference = Reference.find(reference_id_match) rescue whole_match
-        reference.decorate.keey rescue whole_match
-      elsif $use_ant_web_formatter
-        reference = Reference.find(reference_id_match) rescue whole_match
-        reference.decorate.antweb_version_of_inline_citation rescue whole_match
-      else
-        reference = Reference.find(reference_id_match) rescue whole_match
-        reference.decorate.inline_citation rescue whole_match
-      end
-    end
+    # References, "{ref 123}".
+    def parse_refs!
+      @taxt.gsub!(/{ref (\d+)}/) do
+        reference = Reference.find_by id: $1
+        return $1 unless reference
 
-    def decode_name whole_match, name_id_match
-      Name.find(name_id_match).to_html rescue whole_match
-    end
-
-    def decode_taxon whole_match, taxon_id_match
-      if @options[:display]
-        Taxon.find(taxon_id_match).name.to_html
-      else
-        taxon = Taxon.find taxon_id_match
-        if $use_ant_web_formatter
-          link_to_antcat_from_antweb taxon
-        else
-          taxon.decorate.link_to_taxon
+        case @format
+        when :to_html   then reference.decorate.inline_citation
+        when :to_text   then reference.decorate.keey
+        when :to_antweb then reference.decorate.antweb_version_of_inline_citation
         end
       end
-    rescue
-      whole_match
+    end
+
+    # Names, "{nam 123}".
+    def parse_nams!
+      @taxt.gsub!(/{nam (\d+)}/) do
+        name = Name.find_by id: $1
+        return $1 unless name
+
+        name.to_html
+      end
+    end
+
+    # Taxa, "{tax 123}".
+    def parse_taxs!
+      @taxt.gsub!(/{tax (\d+)}/) do
+        taxon = Taxon.find_by id: $1
+        return $1 unless taxon
+
+        case @format
+        when :to_html   then taxon.decorate.link_to_taxon
+        when :to_text   then taxon.name.to_html
+        when :to_antweb then link_to_antcat_from_antweb taxon
+        end
+      end
     end
 
     # TODO remove.
     def link_to_antcat_from_antweb taxon
       link_to_antcat taxon, taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
+    end
+
+    def maybe_enable_antweb_quirk
+      @format = :to_antweb if $use_ant_web_formatter
     end
 end

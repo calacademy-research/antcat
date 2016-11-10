@@ -88,14 +88,27 @@ describe TaxtPresenter do
     end
   end
 
-  describe "#to_antweb_export" do
-    before { $use_ant_web_formatter = true }
-    after { $use_ant_web_formatter = nil }
+  describe "#to_antweb" do
+    let(:taxt) { "{tax #{create(:family).id}}" }
 
     it "uses a different link formatter" do
-      taxt = "{tax #{create(:family).id}}"
-      expect_any_instance_of(TaxtPresenter).to receive(:link_to_antcat_from_antweb).and_call_original
-      TaxtPresenter[taxt].to_html
+      expect(TaxtPresenter[taxt].to_antweb).to match /antcat\.org/
+    end
+
+    describe "the `$use_ant_web_formatter` quirk" do
+      before { $use_ant_web_formatter = true }
+      after { $use_ant_web_formatter = nil }
+
+      it "***confirm test setup***" do
+        $use_ant_web_formatter = nil
+        expect(TaxtPresenter[taxt].to_html).to_not match /antcat\.org/
+      end
+
+      it "makes all formatters behave like #to_antweb" do
+        expect(TaxtPresenter[taxt].to_html).to match /antcat\.org/
+        expect(TaxtPresenter[taxt].to_text).to match /antcat\.org/
+        expect(TaxtPresenter[taxt].to_antweb).to match /antcat\.org/
+      end
     end
   end
 end
