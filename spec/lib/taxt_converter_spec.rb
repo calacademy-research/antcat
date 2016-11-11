@@ -6,18 +6,20 @@ describe TaxtConverter do
       it "uses the inline citation format followed by the id, with type number" do
         decorated = double 'keey'
         reference = double 'reference', id: 36
-        expect(reference).to receive(:decorate).and_return decorated
-        expect(decorated).to receive(:keey).and_return 'Fisher, 1922'
+        expect(reference).to receive(:keey).and_return 'Fisher, 1922'
         expect(Reference).to receive(:find_by).and_return reference
-        editable_keey = TaxtIdTranslator.send :jumble_id, reference.id, 1
+        jumbled_id = TaxtIdTranslator.send :jumble_id, reference.id, 1
 
-        expect(TaxtConverter["{ref #{reference.id}}"].to_editor_format).to eq "{Fisher, 1922 #{editable_keey}}"
+        results = TaxtConverter["{ref #{reference.id}}"].to_editor_format
+        expect(results).to eq "{Fisher, 1922 #{jumbled_id}}"
       end
 
       it "handles missing references" do
         reference = create :missing_reference, citation: 'Fisher, 2011'
-        editable_keey = TaxtIdTranslator.send :jumble_id, reference.id, 1
-        expect(TaxtConverter["{ref #{reference.id}}"].to_editor_format).to eq "{Fisher, 2011 #{editable_keey}}"
+        jumbled_id = TaxtIdTranslator.send :jumble_id, reference.id, 1
+
+        results = TaxtConverter["{ref #{reference.id}}"].to_editor_format
+        expect(results).to eq "{Fisher, 2011 #{jumbled_id}}"
       end
 
       it "handles references we don't even know are missing" do
@@ -28,16 +30,20 @@ describe TaxtConverter do
     context "taxa" do
       it "uses the taxon's name followed by its id" do
         genus = create_genus 'Atta'
-        editable_keey = TaxtIdTranslator.send :jumble_id, genus.id, 2
-        expect(TaxtConverter["{tax #{genus.id}}"].to_editor_format).to eq "{Atta #{editable_keey}}"
+        jumbled_id = TaxtIdTranslator.send :jumble_id, genus.id, 2
+
+        results = TaxtConverter["{tax #{genus.id}}"].to_editor_format
+        expect(results).to eq "{Atta #{jumbled_id}}"
       end
     end
 
     context "names" do
       it "uses the name followed by its id" do
         genus = create_genus 'Atta'
-        editable_keey = TaxtIdTranslator.send :jumble_id, genus.name.id, 3
-        expect(TaxtConverter["{nam #{genus.name.id}}"].to_editor_format).to eq "{Atta #{editable_keey}}"
+        jumbled_id = TaxtIdTranslator.send :jumble_id, genus.name.id, 3
+
+        results = TaxtConverter["{nam #{genus.name.id}}"].to_editor_format
+        expect(results).to eq "{Atta #{jumbled_id}}"
       end
     end
   end
@@ -46,17 +52,19 @@ describe TaxtConverter do
     context "references" do
       it "uses the inline citation format followed by the id" do
         reference = create :article_reference
-        editable_keey = TaxtIdTranslator.send :jumble_id, reference.id, 1
-        expect(TaxtConverter["{Fisher, 1922 #{editable_keey}}"].from_editor_format).to eq "{ref #{reference.id}}"
+        jumbled_id = TaxtIdTranslator.send :jumble_id, reference.id, 1
+
+        results = TaxtConverter["{Fisher, 1922 #{jumbled_id}}"].from_editor_format
+        expect(results).to eq "{ref #{reference.id}}"
       end
 
       it "handles more than one reference" do
         reference = create :article_reference
         other_reference = create :article_reference
-        editable_keey = TaxtIdTranslator.send :jumble_id, reference.id, 1
-        other_editable_keey = TaxtIdTranslator.send :jumble_id, other_reference.id, 1
+        jumbled_id = TaxtIdTranslator.send :jumble_id, reference.id, 1
+        other_jumbled_id = TaxtIdTranslator.send :jumble_id, other_reference.id, 1
 
-        taxt = "{Fisher, 1922 #{editable_keey}}, also {Bolton, 1970 #{other_editable_keey}}"
+        taxt = "{Fisher, 1922 #{jumbled_id}}, also {Bolton, 1970 #{other_jumbled_id}}"
         results = TaxtConverter[taxt].from_editor_format
         expect(results).to eq "{ref #{reference.id}}, also {ref #{other_reference.id}}"
       end
@@ -65,8 +73,10 @@ describe TaxtConverter do
     context "taxa" do
       it "uses the taxon's name followed by its id" do
         genus = create_genus 'Atta'
-        editable_keey = TaxtIdTranslator.send :jumble_id, genus.id, 2
-        expect(TaxtConverter["{Atta #{editable_keey}}"].from_editor_format).to eq "{tax #{genus.id}}"
+        jumbled_id = TaxtIdTranslator.send :jumble_id, genus.id, 2
+
+        results = TaxtConverter["{Atta #{jumbled_id}}"].from_editor_format
+        expect(results).to eq "{tax #{genus.id}}"
       end
     end
   end

@@ -11,6 +11,6 @@ with
 -replacement_id = activity.parameters[:replacement_id]
 -if Reference.exists? replacement_id
   -replacement = Reference.find(replacement_id)
-  =link_to replacement.decorate.keey, reference_path(replacement)
+  =link_to replacement.keey, reference_path(replacement)
 -else
   [deleted reference]

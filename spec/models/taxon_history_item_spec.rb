@@ -25,10 +25,10 @@ describe TaxonHistoryItem do
     it "converts from editable tags to tags" do
       reference = create :article_reference
       other_reference = create :article_reference
-      editable_keey = TaxtIdTranslator.send :jumble_id, reference.id, 1
-      other_editable_keey = TaxtIdTranslator.send :jumble_id, other_reference.id, 1
+      jumbled_id = TaxtIdTranslator.send :jumble_id, reference.id, 1
+      other_jumbled_id = TaxtIdTranslator.send :jumble_id, other_reference.id, 1
 
-      item.update_taxt_from_editable %{{Fisher, 1922 #{editable_keey}}, also {Bolton, 1970 #{other_editable_keey}}}
+      item.update_taxt_from_editable %{{Fisher, 1922 #{jumbled_id}}, also {Bolton, 1970 #{other_jumbled_id}}}
       expect(item.reload.taxt).to eq "{ref #{reference.id}}, also {ref #{other_reference.id}}"
     end
 

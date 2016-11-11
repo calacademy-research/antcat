@@ -9,10 +9,6 @@ class MissingReferenceDecorator < ReferenceDecorator
     make_html_safe reference.citation
   end
 
-  def keey
-    reference.citation
-  end
-
   def format_reference_document_link; end
 
   def goto_reference_link target: nil; end

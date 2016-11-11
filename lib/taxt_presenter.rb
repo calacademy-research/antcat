@@ -51,7 +51,7 @@ class TaxtPresenter
 
         case @format
         when :to_html   then reference.decorate.inline_citation
-        when :to_text   then reference.decorate.keey
+        when :to_text   then reference.keey
         when :to_antweb then reference.decorate.antweb_version_of_inline_citation
         end
       end

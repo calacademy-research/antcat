@@ -1,4 +1,5 @@
 # TODO avoid `require`.
+# TODO consider moving callbacks and validators to a concern.
 
 require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_search'
@@ -40,7 +41,7 @@ class Reference < ApplicationRecord
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
   has_paper_trail meta: { change_id: :get_current_change_id }
-  tracked parameters: ->(reference) do { name: reference.decorate.keey } end
+  tracked parameters: ->(reference) do { name: reference.keey } end
 
   def self.requires_title
     true
@@ -160,6 +161,56 @@ class Reference < ApplicationRecord
     new_reference
   end
 
+  ### Methods currently in quarantine ###
+  # Moved here from `ReferenceDecorator`, to be refactored/DRYed where possible.
+
+  def key
+    raise "use 'keey' (not a joke)"
+  end
+
+  # "THE KEEY" -- Stupid Name Because Useful(tm).
+  #
+  # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978"
+  #
+  # "key" is impossible to grep for, and a word with too many meanings.
+  # Variations of "last author names" or "ref_key" are doomed to fail.
+  # So, "keey". Obviously, do not show this spelling to users or use
+  # it in filesnames or the database.
+  #
+  # Note: `references.author_names_string_cache` may also be useful?
+  def keey
+    authors_for_keey << ', ' << short_citation_year
+  end
+
+  # normal keey: "Bolton, 1885g"
+  # this:        "Bolton, 1885"
+  def keey_without_letters_in_year
+    authors_for_keey << ', ' << year_or_no_year
+  end
+
+  def authors_for_keey
+    names = author_names.map &:last_name
+    case names.size
+    when 0
+      '[no authors]'
+    when 1
+      "#{names.first}"
+    when 2
+      "#{names.first} & #{names.second}"
+    else
+      string = names[0..-2].join ', '
+      string << " & " << names[-1]
+    end
+  end
+
+  # TODO find proper name.
+  def year_or_no_year
+    return "[no year]" if year.blank?
+    year.to_s
+  end
+
+  ### end quarantine ###
+
   private
     def check_not_referenced
       return unless has_any_references?
@@ -170,16 +221,16 @@ class Reference < ApplicationRecord
     end
 
     def check_not_nested
-      if nestees.exists?
-        errors.add :base, "This reference can't be deleted because it's nested in #{nestees.first.id}"
-        return false
-      end
-      true
+      return unless nestees.exists?
+
+      errors.add :base, "This reference can't be deleted because it's nested in #{nestees.first.id}"
+      false
     end
 
     # TODO duplicates `CleanNewlines`?
     def strip_text_fields
-      [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation].each do |field|
+      fields = [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation]
+      fields.each do |field|
         value = self[field]
         next unless value.present?
         value.gsub! /(\n|\r|\n\r|\r\n)/, ' '
@@ -217,7 +268,9 @@ class Reference < ApplicationRecord
       [string, last_name]
     end
 
-    # Expensive method
+    # Expensive method.
+    # TODO consider moving all "references to this item" such as this and
+    #  `Taxa::References` to a new class.
     def reference_references return_true_or_false: false
       return_early = return_true_or_false
 
@@ -256,3 +309,45 @@ class Reference < ApplicationRecord
       reference_references return_true_or_false: true
     end
 end
+
+=begin
+Notes
+
+Investigate these:
+Reference#author_names_string
+Reference#author_names_string_cache
+Reference#principal_author_last_name
+Reference#principal_author_last_name_cache
+Reference#reference_author_names
+Reference#author_names_suffix
+Reference#author_names
+
+Taxon#authorship_string
+
+In Taxon: `delegate :year, to: :protonym`
+
+In Protonym: `delegate :year, to: :authorship`
+
+---------------
+                                    # Example from `r = Reference.first`
+
+# OK / a different thing.
+r.authors                           # Array of `Author`s
+r.author_names                      # AuthorName CollectionProxy
+r.reference_author_names            # ReferenceAuthorName CollectionProxy
+r.author_names_suffix               # nil; probably non-nil for things like ", Jr."
+
+# Similar
+r.keey                              # "Abdul-Rassoul, Dawah & Othman, 1978"
+r.author_names_string_cache         # "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
+r.author_names_string               # delegates to `r.author_names_string_cache`
+r.decorate...... more
+
+# Possibly only used for sorting.
+r.principal_author_last_name_cache  # The real (db) attribute of `r.principal_author_last_name`
+r.principal_author_last_name        # "Abdul-Rassoul"; possibly only used for sorting.
+
+# Other similar metods
+Probably.
+
+=end

@@ -130,7 +130,7 @@ describe Taxon do
   describe "#authorship_string" do
     it "delegates to the protonym" do
       genus = build_stubbed :genus
-      expect_any_instance_of(ReferenceDecorator)
+      expect_any_instance_of(Reference)
         .to receive(:keey_without_letters_in_year).and_return 'Bolton 2005'
 
       expect(genus.authorship_string).to eq 'Bolton 2005'
@@ -141,7 +141,7 @@ describe Taxon do
         species = create_species 'Atta minor'
         protonym_name = create_species_name 'Eciton minor'
 
-        expect_any_instance_of(ReferenceDecorator)
+        expect_any_instance_of(Reference)
           .to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
 
         expect(species.authorship_string).to eq '(Bolton, 2005)'
@@ -152,7 +152,7 @@ describe Taxon do
       species = create_species 'Atta minor maxus'
       protonym_name = create_subspecies_name 'Atta minor minus'
 
-      expect_any_instance_of(ReferenceDecorator)
+      expect_any_instance_of(Reference)
         .to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
 
       expect(species.protonym).to receive(:name).and_return protonym_name

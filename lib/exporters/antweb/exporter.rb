@@ -175,7 +175,7 @@ class Exporters::Antweb::Exporter
       reference = taxon.send :authorship_reference
       return unless reference
 
-      reference.decorate.authors_for_keey
+      reference.authors_for_keey
     end
 
     def authorship_html_string taxon
@@ -183,7 +183,7 @@ class Exporters::Antweb::Exporter
       return unless reference
 
       formatted = reference.decorate.formatted
-      keey = reference.decorate.keey
+      keey = reference.keey
 
       content_tag(:span, title: formatted) { keey }
     end
@@ -193,7 +193,7 @@ class Exporters::Antweb::Exporter
       reference = taxon.send :authorship_reference
       return unless reference
 
-      reference.decorate.year_or_no_year
+      reference.year_or_no_year
     end
 
     # The original_combination accessor returns the taxon with 'original combination'

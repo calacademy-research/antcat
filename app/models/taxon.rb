@@ -106,7 +106,7 @@ class Taxon < ApplicationRecord
   def authorship_string
     return unless authorship_reference
 
-    string = authorship_reference.decorate.keey_without_letters_in_year
+    string = authorship_reference.keey_without_letters_in_year
     if string && recombination?
       string = '(' + string + ')'
     end

@@ -6,7 +6,7 @@ describe Exporters::Antweb::Exporter do
   describe "#author_last_names_string" do
     it "delegates" do
       genus = build_stubbed :genus
-      expect_any_instance_of(ReferenceDecorator)
+      expect_any_instance_of(Reference)
         .to receive(:authors_for_keey).and_return 'Bolton'
 
       expect(exporter.send :author_last_names_string, genus).to eq 'Bolton'

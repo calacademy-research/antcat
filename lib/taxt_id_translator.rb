@@ -11,7 +11,7 @@ class TaxtIdTranslator
   # this whole thing before dealing with that.
   # ex `to_editable_reference`
   def self.to_editor_ref_tag reference
-    to_editor_tag reference.id, reference.decorate.keey, REFERENCE_TAG_TYPE
+    to_editor_tag reference.id, reference.keey, REFERENCE_TAG_TYPE
   end
 
   # ex `to_editable_taxon`

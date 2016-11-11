@@ -1,52 +1,10 @@
+# TODO investigate using views.
+# TODO use less decorators in general.
+# TODO consider renaming the db fields once the code is more stable.
+
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the `h` method
   delegate_all
-
-  def key
-    raise "use 'keey' (not a joke)"
-  end
-
-  # TODO move to `Reference`.
-  # "THE KEEY" -- Stupid Name Because Useful(tm).
-  #
-  # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978"
-  #
-  # "key" is impossible to grep for, and a word with too many meanings.
-  # Variations of "last author names" or "ref_key" are doomed to fail.
-  # So, "keey". Obviously, do not show this spelling to users or use
-  # it in filesnames or the database.
-  #
-  # Note: `references.author_names_string_cache` may also be useful?
-  def keey
-    authors_for_keey << ', ' << reference.short_citation_year
-  end
-
-  # normal keey: "Bolton, 1885g"
-  # this:        "Bolton, 1885"
-  def keey_without_letters_in_year
-    authors_for_keey << ', ' << year_or_no_year
-  end
-
-  def authors_for_keey
-    names = reference.author_names.map &:last_name
-    case names.size
-    when 0
-      '[no authors]'
-    when 1
-      "#{names.first}"
-    when 2
-      "#{names.first} & #{names.second}"
-    else
-      string = names[0..-2].join ', '
-      string << " & " << names[-1]
-    end
-  end
-
-  # TODO find proper name.
-  def year_or_no_year
-    return "[no year]" if reference.year.blank?
-    reference.year.to_s
-  end
 
   # TODO inline.
   def public_notes
@@ -99,11 +57,13 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   # Note: Only used for the AntWeb export.
+  # TODO move to `Exporters::Antweb::Exporter`.
   # TODO see LinkHelper#link.
   def antweb_version_of_inline_citation
     # Hardcoded, or we must set `host` + use `reference_url(reference)`.
     url = "http://antcat.org/references/#{reference.id}"
-    link = helpers.link keey, url, title: make_to_link_title(formatted), target: '_blank'
+    link = helpers.link reference.keey,
+      url, title: make_to_link_title(formatted), target: '_blank'
 
     content = [link]
     content << format_reference_document_link
@@ -131,8 +91,8 @@ class ReferenceDecorator < ApplicationDecorator
     # TODO see LinkHelper#link.
     def generate_inline_citation
       helpers.content_tag :span, class: "reference_keey_and_expansion" do
-        link = helpers.link keey, '#', title: make_to_link_title(formatted),
-          class: "reference_keey"
+        link = helpers.link reference.keey, '#',
+          title: make_to_link_title(formatted), class: "reference_keey"
 
         content = link
         content << helpers.content_tag(:span, class: "reference_keey_expansion") do
@@ -147,7 +107,7 @@ class ReferenceDecorator < ApplicationDecorator
 
     def inline_citation_reference_keey_expansion_text
       helpers.content_tag :span, formatted,
-        class: "reference_keey_expansion_text", title: keey
+        class: "reference_keey_expansion_text", title: reference.keey
     end
 
     # TODO try to move somewhere more general, even if it's only used here.
@@ -218,50 +178,3 @@ class ReferenceDecorator < ApplicationDecorator
       format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
     end
 end
-
-# TODO investigate using views.
-# TODO use less decorators in general.
-# TODO consider renaming the db fields once the code is more stable.
-
-=begin
-Notes
-
-DRY these:
-Reference#author_names_string
-Reference#author_names_string_cache
-Reference#principal_author_last_name
-Reference#principal_author_last_name_cache
-Reference#reference_author_names
-Reference#author_names_suffix
-Reference#author_names
-ReferenceDecorator#keey
-
-Taxon#authorship_string
-
-In Taxon: `delegate :year, to: :protonym`
-
-In Protonym: `delegate :year, to: :authorship`
-
----------------
-                                    # Example from `r = Reference.first`
-
-# OK / a different thing.
-r.authors                           # Array of `Author`s
-r.author_names                      # AuthorName CollectionProxy
-r.reference_author_names            # ReferenceAuthorName CollectionProxy
-r.author_names_suffix               # nil; probably non-nil for things like ", Jr."
-
-# Similar
-r.decorate.keey                     # "Abdul-Rassoul, Dawah & Othman, 1978"
-r.author_names_string_cache         # "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
-r.author_names_string               # delegates to `r.author_names_string_cache`
-r.decorate...... more
-
-# Possibly only used for sorting.
-r.principal_author_last_name_cache  # The real (db) attribute of `r.principal_author_last_name`
-r.principal_author_last_name        # "Abdul-Rassoul"; possibly only used for sorting.
-
-# Other similar metods
-Probably.
-
-=end

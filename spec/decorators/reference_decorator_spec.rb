@@ -37,6 +37,7 @@ describe ReferenceDecorator do
   end
 
   # TODO moved here from `citation_spec.rb`.
+  # TODO move to wherever `#authorship_string` is tested.
   xdescribe "#keey_without_letters_in_year" do
     it "shows the author and year" do
       reference = reference_factory author_name: 'Bolton', citation_year: '2001'
@@ -436,54 +437,6 @@ end
 
 # From ex `references/reference_key_spec.rb`
 describe "ReferenceDecorator" do
-  let(:bolton) { build_stubbed :author_name, name: 'Bolton, B.' }
-  let(:fisher) { build_stubbed :author_name, name: 'Fisher, B.' }
-  let(:ward) { build_stubbed :author_name, name: 'Ward, P.S.' }
-
-  describe "#key" do
-    it "raises because it's impossible to search for it" do
-      expect { BookReference.new.decorate.key }.to raise_error
-    end
-  end
-
-  # Representing as a string
-  describe "#keey" do
-    it "Citation year with extra" do
-      reference = build_stubbed :article_reference,
-        author_names: [bolton],
-        citation_year: '1970a ("1971")'
-      expect(reference.decorate.keey).to eq 'Bolton, 1970a'
-    end
-
-    it "No authors" do
-      reference = build_stubbed :article_reference,
-        author_names: [],
-        citation_year: '1970a'
-      expect(reference.decorate.keey).to eq '[no authors], 1970a'
-    end
-
-    it "One author" do
-      reference = build_stubbed :article_reference,
-        author_names: [bolton],
-        citation_year: '1970a'
-      expect(reference.decorate.keey).to eq 'Bolton, 1970a'
-    end
-
-    it "Two authors" do
-      reference = build_stubbed :article_reference,
-        author_names: [bolton, fisher],
-        citation_year: '1970a'
-      expect(reference.decorate.keey).to eq 'Bolton & Fisher, 1970a'
-    end
-
-    it "Three authors" do
-      reference = build_stubbed :article_reference,
-        author_names: [bolton, fisher, ward],
-        citation_year: '1970a'
-      expect(reference.decorate.keey).to eq 'Bolton, Fisher & Ward, 1970a'
-    end
-  end
-
   describe "#inline_citation" do
     let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
     before do
