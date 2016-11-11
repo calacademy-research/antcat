@@ -1,3 +1,5 @@
+# TODO move most code to somehere else and call it from here.
+
 desc "Show duplicate names and their references"
 task show_duplicate_names_with_references: :environment do
   duplicates = Name.duplicates_with_references show_progress: true

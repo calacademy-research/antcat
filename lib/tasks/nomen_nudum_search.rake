@@ -1,3 +1,5 @@
+# TODO move most code to somewhere else and call it from here.
+
 desc "Display nomina nuda"
 task nomina_nuda: :environment do
 
