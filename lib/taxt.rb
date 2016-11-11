@@ -7,11 +7,6 @@
 # Code related to editing in the JS taxt editor have been moved to `TaxtConverter`:
 #   `Taxt.to_editable`   --> `TaxtConverter.to_editor_format`
 #   `Taxt.from_editable` --> `TaxtConverter.from_editor_format`
-#
-#   The names of these haven't changed:
-#   `.to_editable_reference
-#   `.to_editable_taxon
-#   `.to_editable_name name
 
 module Taxt
   TAXT_FIELDS = [

@@ -1,56 +1,52 @@
-# This class is for "translating" object ids jumbled strings.
-# TODO merge `AnyBase` into this class.
+# This class is for "translating" object ids to jumbled strings (in base 62).
 
 class TaxtIdTranslator
   # These values are duplicated in `taxt_editor.coffee`.
   REFERENCE_TAG_TYPE = 1
   TAXON_TAG_TYPE = 2
   NAME_TAG_TYPE = 3
-  EDITABLE_ID_DIGITS = %{abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ}
+  JUMBLED_ID_DIGITS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-  # Hm, move the "label" part of these back to TaxtConverter?
-
-  # 1) def TaxtIdTranslator[reference].to_jumbled_reference_id
-  # 2) def TaxtIdTranslator[reference].jumble_id_for_editor
-  def self.to_editable_reference reference
-    to_editable_tag reference.id, reference.decorate.keey, REFERENCE_TAG_TYPE
+  # The "label" part of these does not belong here, but we should probably remake
+  # this whole thing before dealing with that.
+  # ex `to_editable_reference`
+  def self.to_editor_ref_tag reference
+    to_editor_tag reference.id, reference.decorate.keey, REFERENCE_TAG_TYPE
   end
 
-  # 1) def TaxtIdTranslator[taxon].to_jumbled_taxon_id
-  # 2) def TaxtIdTranslator[taxon].jumble_id_for_editor
-  def self.to_editable_taxon taxon
-    to_editable_tag taxon.id, taxon.name, TAXON_TAG_TYPE
+  # ex `to_editable_taxon`
+  def self.to_editor_tax_tag taxon
+    to_editor_tag taxon.id, taxon.name, TAXON_TAG_TYPE
   end
 
-  # 1) def TaxtIdTranslator[name].to_jumbled_name_id
-  # 2) def TaxtIdTranslator[name].jumble_id_for_editor
-  def self.to_editable_name name
-    to_editable_tag name.id, name.name, NAME_TAG_TYPE
+  # ex `to_editable_name`
+  def self.to_editor_nam_tag name
+    to_editor_tag name.id, name.name, NAME_TAG_TYPE
   end
 
-  # These can be called from outside this file, but please don't.
+  # These can be called from outside this file, but please avoid.
   private
-    def self.to_editable_tag id, text, type
-      editable_id = id_for_editable id, type
-      "{#{text} #{editable_id}}"
+    # ex `to_editable_tag`
+    def self.to_editor_tag id, text, type
+      jumbled_id = jumble_id id, type
+      "{#{text} #{jumbled_id}}"
     end
 
-    # New working name: `jumble_id_for_editor`
-    def self.id_for_editable id, type_number
-      jumble_any_number(id.to_i * 10 + type_number, EDITABLE_ID_DIGITS).reverse
+    # ex `id_for_editable`
+    def self.jumble_id id, type_number
+      base_10_to_base_x(id.to_i * 10 + type_number, JUMBLED_ID_DIGITS).reverse
     end
 
     # This code is duplicated in `taxt_editor.coffee`.
-    # New working name: `id_and_type_number_from_jumbled_id_string`
-    def self.id_from_editable editable_id
-      number = unjumble_any_number editable_id.reverse, EDITABLE_ID_DIGITS
+    # ex `id_from_editable`
+    def self.unjumble_id_and_type jumbled_id
+      number = base_x_to_base_10 jumbled_id.reverse, JUMBLED_ID_DIGITS
       id = number / 10
       type_number = number % 10
       [id, type_number]
     end
 
-    # ex `base_10_to_base_x`
-    def self.jumble_any_number number, digits
+    def self.base_10_to_base_x number, digits
       result = ''
       base = digits.size
 
@@ -63,8 +59,7 @@ class TaxtIdTranslator
       result
     end
 
-    # ex `base_x_to_base_10`
-    def self.unjumble_any_number number, digits
+    def self.base_x_to_base_10 number, digits
       result = 0
       base = digits.size
       multiplier = 1
@@ -98,5 +93,8 @@ end
 # I guess it's to make sure "{<string> <string>}" can always be converted
 # back to the correct type. But in that case showing "{tax Camponotini 429240}"
 # in the taxt editor would be more intuitive, so, it's still mysterious.
+#
+# Part III:
+# Ok, so maybe we should just remove this whole jumbling thing?
 #
 # To be continued...

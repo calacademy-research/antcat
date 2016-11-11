@@ -37,7 +37,7 @@ class NamePopupsController < NamePickersController
       name = Name.parse name_string
       data[:id] = name.id
       data[:name] = name.name
-      data[:taxt] = TaxtIdTranslator.to_editable_name name
+      data[:taxt] = TaxtIdTranslator.to_editor_nam_tag name
       data[:success] = true
     end
 
@@ -52,9 +52,9 @@ class NamePopupsController < NamePickersController
       taxon = Taxon.find_by_name data[:name]
       if taxon
         data[:taxon_id] = taxon.id
-        data[:taxt] = TaxtIdTranslator.to_editable_taxon taxon
+        data[:taxt] = TaxtIdTranslator.to_editor_tax_tag taxon
       else
-        data[:taxt] = TaxtIdTranslator.to_editable_name name
+        data[:taxt] = TaxtIdTranslator.to_editor_nam_tag name
       end
       data[:success] = true
     end

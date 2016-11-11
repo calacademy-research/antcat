@@ -10,32 +10,37 @@ class TaxtConverter
   end
   class << self; alias_method :[], :new end
 
-  # TODO remove rescues.
-  # TODO this method used to do `if taxt =~ /{tax/` before gsubing. Investigate performance.
+  # If we cannot find the reference/taxon/name, we must still jumble the id
+  # or things will happen.
   def to_editor_format
     return "" unless @taxt
     taxt = @taxt.dup
 
-    # Take all "{ref 123}" matches...
-    taxt.gsub! /{ref (\d+)}/ do |ref|
-      # ...generate a jumbled id: '122097, 1' --> "fDhf"
-      editable_id = TaxtIdTranslator.id_for_editable $1, TaxtIdTranslator::REFERENCE_TAG_TYPE
-
-      # ...find the reference via the id...
-      reference = Reference.find($1) rescue "{#{editable_id}}"
-
-      # ...use that reference to generate a readable label + jumbled id.
-      TaxtIdTranslator.to_editable_reference reference rescue "{#{editable_id}}"
+    taxt.gsub! /{ref (\d+)}/ do |match|
+      if reference = Reference.find_by(id: $1)
+        TaxtIdTranslator.to_editor_ref_tag reference
+      else
+        jumbled_id = TaxtIdTranslator.jumble_id $1, TaxtIdTranslator::REFERENCE_TAG_TYPE
+        "{#{jumbled_id}}"
+      end
     end
 
-    taxt.gsub! /{tax (\d+)}/ do |tax|
-      editable_id = TaxtIdTranslator.id_for_editable $1, TaxtIdTranslator::TAXON_TAG_TYPE
-      TaxtIdTranslator.to_editable_taxon Taxon.find($1) rescue "{#{editable_id}}"
+    taxt.gsub! /{tax (\d+)}/ do |match|
+      if taxon = Taxon.find_by(id: $1)
+        TaxtIdTranslator.to_editor_tax_tag taxon
+      else
+        jumbled_id = TaxtIdTranslator.jumble_id $1, TaxtIdTranslator::TAXON_TAG_TYPE
+        "{#{jumbled_id}}"
+      end
     end
 
-    taxt.gsub! /{nam (\d+)}/ do |nam|
-      editable_id = TaxtIdTranslator.id_for_editable $1, TaxtIdTranslator::NAME_TAG_TYPE
-      TaxtIdTranslator.to_editable_name Name.find($1) rescue "{#{editable_id}}"
+    taxt.gsub! /{nam (\d+)}/ do |match|
+      if name = Name.find_by(id: $1)
+        TaxtIdTranslator.to_editor_nam_tag name
+      else
+        jumbled_id = TaxtIdTranslator.jumble_id $1, TaxtIdTranslator::NAME_TAG_TYPE
+        "{#{jumbled_id}}"
+      end
     end
 
     taxt
@@ -46,8 +51,8 @@ class TaxtConverter
     return "" unless @taxt
     taxt = @taxt.dup
 
-    taxt.gsub /{((.*?)? )?([#{Regexp.escape TaxtIdTranslator::EDITABLE_ID_DIGITS}]+)}/ do |string|
-      id, type_number = TaxtIdTranslator.id_from_editable $3
+    taxt.gsub /{((.*?)? )?([#{Regexp.escape TaxtIdTranslator::JUMBLED_ID_DIGITS}]+)}/ do |string|
+      id, type_number = TaxtIdTranslator.unjumble_id_and_type $3
       case type_number
       when TaxtIdTranslator::REFERENCE_TAG_TYPE
         raise ReferenceNotFound.new(string) unless Reference.find_by(id: id)
