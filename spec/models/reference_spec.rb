@@ -14,13 +14,14 @@ describe Reference do
   describe "Relationships" do
     describe "Nested references" do
       let!(:nesting_reference) { create :reference }
-      let(:nestee) { create :nested_reference, nesting_reference: nesting_reference }
+      let!(:nestee) { create :nested_reference, nesting_reference: nesting_reference }
 
       it "can have a nesting_reference" do
         expect(nestee.nesting_reference).to eq nesting_reference
       end
 
       it "can have many nestees" do
+        nesting_reference.reload
         expect(nesting_reference.nestees).to match_array [nestee]
       end
     end

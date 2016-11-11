@@ -8,13 +8,14 @@ class ReferenceFormatterCache
   end
 
   def invalidate reference
-    return unless reference.formatted_cache?
-    unless reference.new_record?
-      set reference, nil, :formatted_cache
-      set reference, nil, :inline_citation_cache
-    end
-    reference.nestees.each &:invalidate_cache
+    return if reference.new_record?
+
+    reference.update_column :formatted_cache, nil
+    reference.update_column :inline_citation_cache, nil
+    reference.nestees.each &:invalidate_caches
   end
+
+  # TODO possibly reinstate `#get` unless it's only required in specs.
 
   def set reference, value, field
     return value if reference.send(field) == value

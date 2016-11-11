@@ -46,8 +46,7 @@ class Reference < ApplicationRecord
     true
   end
 
-  # TODO make it more obvious which cache (also `set_cache`).
-  def invalidate_cache
+  def invalidate_caches
     ReferenceFormatterCache.invalidate self
   end
 

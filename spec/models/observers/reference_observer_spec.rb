@@ -1,22 +1,30 @@
 require 'spec_helper'
 
 describe ReferenceObserver do
-  describe "nested refererences" do
-    context "when a nesting_reference is changed" do
-      it "invalidates the cache for it and the nestee" do
-        nesting_reference = create :article_reference
-        nesting_reference.title = 'title'
-        ReferenceFormatterCache.populate nesting_reference
-        nestee = create :nested_reference, nesting_reference: nesting_reference
-        ReferenceFormatterCache.populate nestee
-        nesting_reference.title = 'Title'
-        nesting_reference.save!
+  let(:reference) { create :article_reference }
 
-        nesting_reference.reload
+  describe "nested references" do
+    context "when a nesting_reference is changed" do
+      it "invalidates the cache for itself and its nestees" do
+        # Setup.
+        nestee = create :nested_reference, nesting_reference: reference
+
+        reference.reload
+        nestee.reload
+        ReferenceFormatterCache.populate reference
+        ReferenceFormatterCache.populate nestee
+        expect(reference.formatted_cache).to_not be_nil
+        expect(nestee.formatted_cache).to_not be_nil
+
+        # Act and test.
+        reference.title = 'New Title'
+        reference.save!
+
+        # Need to reload in spec, or we get the old values.
+        reference.reload
         nestee.reload
 
-        # TODO check that is wasn't nil all the time.
-        expect(nesting_reference.formatted_cache).to be_nil
+        expect(reference.formatted_cache).to be_nil
         expect(nestee.formatted_cache).to be_nil
       end
     end
@@ -24,14 +32,15 @@ describe ReferenceObserver do
 
   context "when a reference document is changed" do
     it "invalidates the cache for the document's reference" do
-      reference = create :article_reference
+      # Setup.
       reference_document = create :reference_document, reference: reference
+      reference.reload
       ReferenceFormatterCache.populate reference
-      ReferenceFormatterCache.invalidate reference
+      expect(reference.formatted_cache).to_not be_nil
+
+      # Act and test.
       ReferenceObserver.instance.before_update reference
       reference.reload
-
-      # TODO check that is wasn't nil all the time.
       expect(reference.formatted_cache).to be_nil
     end
   end
