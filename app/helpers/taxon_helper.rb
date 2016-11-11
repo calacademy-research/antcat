@@ -75,4 +75,12 @@ module TaxonHelper
       deleted_label || "##{id} [deleted]"
     end
   end
+
+  def reset_epithet taxon
+    case taxon
+    when Family  then taxon.name.to_s
+    when Species then taxon.name.genus_epithet
+    else              ""
+    end
+  end
 end

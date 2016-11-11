@@ -42,11 +42,9 @@ class TaxaController < ApplicationController
   end
 
   def edit
-    @reset_epithet = reset_epithet
   end
 
   def update
-    @reset_epithet = reset_epithet
     save_taxon
 
     # Same issue as in `#create`, but tests pass without this check.
@@ -197,15 +195,6 @@ class TaxaController < ApplicationController
 
         new_child.inherit_attributes_for_new_combination t, @taxon
         new_child.save_from_form Taxa::Utility.attributes_for_new_usage(new_child, t), t
-      end
-    end
-
-    # TODO move to view/helper?
-    def reset_epithet
-      case @taxon
-      when Family  then @taxon.name.to_s
-      when Species then @taxon.name.genus_epithet
-      else              ""
       end
     end
 
