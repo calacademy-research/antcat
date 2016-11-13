@@ -19,8 +19,8 @@ Ant taxonomy database -- http://antcat.org/
 ##Installation
 See [INSTALL.md](INSTALL.md)
 
-##Contributing
-Contributions welcome!
+
+Contributions welcome! Please see [the wiki page](https://github.com/calacademy-research/antcat/wiki/Contributing).
 
 ##Commit history notes
 See [CHANGES.md](CHANGES.md)
