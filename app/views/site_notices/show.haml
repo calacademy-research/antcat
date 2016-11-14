@@ -4,7 +4,7 @@
 .left
   %h5=@site_notice.title
   Added by
-  =@site_notice.user.decorate.name_linking_to_email
+  =@site_notice.user.decorate.user_page_link
   =time_ago_in_words(@site_notice.created_at)
 
 -if user_can_edit?

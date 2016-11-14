@@ -6,7 +6,7 @@
     =task_icon @task.status
     =@task.title
   Added by
-  =@task.adder.decorate.name_linking_to_email
+  =@task.adder.decorate.user_page_link
   =time_ago_in_words(@task.created_at)
 
 -if user_can_edit?
@@ -23,7 +23,7 @@
     Marked as
     =@task.status
     by
-    =@task.closer.decorate.name_linking_to_email
+    =@task.closer.decorate.user_page_link
 
 .row
   .medium-12.columns

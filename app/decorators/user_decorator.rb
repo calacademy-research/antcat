@@ -7,7 +7,7 @@ class UserDecorator < Draper::Decorator
     helpers.link_to user.name, "mailto:#{user.email}"
   end
 
-  def name_linking_to_userpage
+  def user_page_link
     helpers.link_to user.name, helpers.user_path(user)
   end
 end

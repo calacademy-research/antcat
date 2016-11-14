@@ -167,7 +167,7 @@ Feature: Workflow
 
     When I go to the changes page
     Then I should see "Mark Wilden added"
-    And there should be a mailto link to the email of "Mark Wilden"
+    And I should see a link to the user page for "Mark Wilden"
 
     When I log in as a catalog editor named "Stan Blum"
     And I go to the changes page
@@ -175,11 +175,11 @@ Feature: Workflow
     And I press "Approve"
     Then I should not see "Approve[^d]"
     And I should see "Stan Blum approved"
-    And there should be a mailto link to the email of "Stan Blum"
-    And there should be a mailto link to the email of "Mark Wilden"
+    And I should see a link to the user page for "Stan Blum"
+    And I should see a link to the user page for "Mark Wilden"
 
     When I go to the catalog page for "Atta"
     Then I should see "Added by Mark Wilden"
-    And there should be a mailto link to the email of "Mark Wilden"
+    And I should see a link to the user page for "Mark Wilden"
     And I should see "approved by Stan Blum"
-    And there should be a mailto link to the email of "Stan Blum"
+    And I should see a link to the user page for "Stan Blum"

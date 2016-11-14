@@ -9,4 +9,11 @@ describe UserDecorator do
         .to eq '<a href="mailto:email@example.com">First Last</a>'
     end
   end
+
+  describe "#user_page_link" do
+    it "link the name to the user page" do
+      expect(user.decorate.user_page_link)
+        .to eq %{<a href="/users/#{user.id}">First Last</a>}
+    end
+  end
 end

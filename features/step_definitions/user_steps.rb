@@ -100,7 +100,7 @@ end
 Then(/^I should see a link to the user page for "([^"]*)"$/) do |name|
   user = User.find_by name: name
 
-  within first('#content table') do
+  within first('#content') do
     expect(page).to have_link name, href: user_path(user)
   end
 end
