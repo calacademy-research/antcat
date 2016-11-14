@@ -16,7 +16,7 @@
 
           -if user_signed_in?
             -# TODO link user page instead.
-            %li=link_to(current_user.name || current_user.email, edit_user_registration_path)
+            %li=current_user.decorate.user_page_link
             %li=link_to 'Logout', destroy_user_session_path
           -else
             %li=link_to 'Login', new_user_session_path
@@ -57,7 +57,7 @@
       -if user_signed_in?
         %li=link_to "Editor's Panel", editors_panel_path
         -# TODO link user page instead.
-        %li=link_to current_user.name || current_user.email, edit_user_registration_path
+        %li=current_user.decorate.user_page_link
         %li=link_to 'Logout', destroy_user_session_path
       -else
         %li=link_to 'Login', new_user_session_path

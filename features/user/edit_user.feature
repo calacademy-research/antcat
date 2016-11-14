@@ -9,6 +9,7 @@ Feature: Editing a user
 
     When I go to the main page
     And I follow the first "Brian Fisher"
+    And I follow "Change my password/name/email"
     Then I should be on the edit user page
 
     When I fill in "user_password" with "new password"
@@ -37,6 +38,7 @@ Feature: Editing a user
     And I should not see "Mark Wilden"
 
     When I follow the first "Brian Fisher"
+    And I follow "Change my password/name/email"
     And I fill in "user_name" with "Mark Wilden"
     And I fill in "user_current_password" with "secret"
     And I press "Save"
