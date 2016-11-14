@@ -11,7 +11,7 @@ Feature: Wikipedia tools
   Scenario: Generating a species list
     Then I should see "==Species=="
     And I should see "''[[Atta cephalotes]]'' <small>"
-    And I should see "†''Atta mexicana'' <small>"
+    And I should see "†''[[Atta mexicana]]'' <small>"
 
   Scenario: Generating a citation template
     Then I should see "==Species=="

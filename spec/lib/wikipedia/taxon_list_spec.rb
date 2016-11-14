@@ -19,7 +19,7 @@ describe Wikipedia::TaxonList do
       expect(results).to include "diversity_link = #Species"
       expect(results).to include "==Species=="
       expect(results).to include "* ''[[Atta cephalotes]]'' <small>"
-      expect(results).to include "* †''Atta mexicana'' <small>"
+      expect(results).to include "* †''[[Atta mexicana]]'' <small>"
     end
   end
 end

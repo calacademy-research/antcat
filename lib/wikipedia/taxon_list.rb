@@ -62,7 +62,7 @@ module Wikipedia
 
       # "==Species== ..."
       def list_header
-        "==#{@children_rank.to_s.capitalize}==\n{{div col|25em}}\n"
+        "==#{@children_rank.to_s.capitalize}==\n{{div col||25em}}\n"
       end
 
       def list_footer
@@ -96,8 +96,8 @@ module Wikipedia
       end
 
       def wikilink_child? child
-        # Don't link fossil species per WP:PALEO.
-        return if child.fossil && child.is_a?(Species)
+        # Don't link species in fossil genera per WP:PALEO.
+        return if @taxon.fossil? && child.is_a?(Species)
 
         # Don't link subspecies (we should not have article on these).
         return if child.is_a? Subspecies

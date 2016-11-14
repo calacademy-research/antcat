@@ -9,17 +9,17 @@
       For
       =link_to wikipedia_link, wikipedia_link
 
-    %p
-      Journal and book references can be exported from the reference's details
-      page (click on the linked ID number on catalog page to get there).
-
-    %h6 AntCat citation template
+    %h5=link_to "AntCat citation template", "https://en.wikipedia.org/wiki/Template:AntCat"
     .callout
       =preserve do
         %pre
           =Wikipedia::CiteTemplate.with_ref_tag @taxon
 
-    %h6 Author citation
+    %p
+      Journal and book references can be exported from the reference's details
+      page (click on the linked ID number on catalog page to get there).
+
+    %h5 Author citation
     .callout
       =preserve do
         %pre.wrapped
@@ -27,7 +27,7 @@
           =Wikipedia::ReferenceExporter.export(@authorship_reference)
 
     -if @taxon.class.in? [Family, Subfamily, Tribe, Genus]
-      %h6 List of children
+      %h5 List of children
       .callout
         =preserve do
           %pre
