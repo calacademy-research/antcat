@@ -16,6 +16,11 @@ end
     end
   end
 
+  crumb :wikipedia_tools do |taxon|
+    link "Wikipedia tools"
+    parent taxon
+  end
+
 crumb :catalog_search do
   link "Search"
   parent :catalog

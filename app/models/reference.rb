@@ -324,10 +324,6 @@ Reference#author_names
 
 Taxon#authorship_string
 
-In Taxon: `delegate :year, to: :protonym`
-
-In Protonym: `delegate :year, to: :authorship`
-
 ---------------
                                     # Example from `r = Reference.first`
 

@@ -32,6 +32,7 @@ AntCat::Application.routes.draw do
     get "search/quick_search", to: "search#quick_search", as: "quick_search"
   end
   get 'catalog/:id' => 'catalog#show', as: :catalog
+  get 'catalog/:id/wikipedia' => 'catalog#wikipedia_tools'
 
   get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
   resources :journals do

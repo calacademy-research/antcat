@@ -124,7 +124,7 @@ class Taxon < ApplicationRecord
     type.downcase
   end
 
-  # TODO rename.
+  # TODO rename. Candidate name: `author_citation`.
   def authorship_string
     return unless authorship_reference
 

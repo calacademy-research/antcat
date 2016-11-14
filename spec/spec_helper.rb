@@ -50,6 +50,9 @@ RSpec.configure do |config|
 
   # To avoid typing `FactoryGirl.create` all the time (use `create`).
   config.include FactoryGirl::Syntax::Methods
+
+  # For `#travel_to` etc.
+  config.include ActiveSupport::Testing::TimeHelpers
 end
 
 Shoulda::Matchers.configure do |config|

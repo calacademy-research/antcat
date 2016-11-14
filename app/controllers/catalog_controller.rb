@@ -40,6 +40,12 @@ class CatalogController < ApplicationController
     end
   end
 
+  # Secret page. Append "/wikipedia" after the taxon id.
+  def wikipedia_tools
+    @taxon = Taxon.find params[:id]
+    @authorship_reference = @taxon.send :authorship_reference
+  end
+
   private
     def setup_catalog
       set_session

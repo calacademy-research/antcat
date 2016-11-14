@@ -55,4 +55,4 @@ end
 __END__
 description:
   "Note: Valid species in genera classified as collective group name is not a data
-  issue. Is has to do with how CGNs are stored in the database, please ignore."
+  issue. It has to do with how CGNs are stored in the database, please ignore."
