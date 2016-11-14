@@ -11,9 +11,11 @@ module DevMonkeyPatches::Object
     define_method(method_name) { klass.send field }
   end
 
-  # Find taxon by name.
-  def dev_dev_taxon name
-    matches = Taxon.where(name_cache: name)
+  # Find taxon by name or id.
+  def dev_dev_taxon name_or_id
+    return Taxon.find(name_or_id) if name_or_id.kind_of? Numeric
+
+    matches = Taxon.where(name_cache: name_or_id)
     case matches.size
     when 0 then nil
     when 1 then matches.first

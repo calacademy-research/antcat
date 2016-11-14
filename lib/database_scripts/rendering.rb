@@ -47,9 +47,13 @@ module DatabaseScripts::Rendering
     output = cached_results.to_json
 
     if defined? no_database_issues_on_on
-      return "Found no database issues" if output == no_database_issues_on_on
+      return no_database_issues if output == no_database_issues_on_on
     end
 
     output
+  end
+
+  def no_database_issues
+    "Found no database issues"
   end
 end
