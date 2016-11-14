@@ -1,20 +1,6 @@
 require "spec_helper"
 
 describe SiteNoticesHelper do
-  describe "#format_blurb" do
-    it "strips markdown (delegates)" do
-      markdown = "should be delegated"
-      expect(AntcatMarkdown).to receive(:strip).with markdown
-      helper.format_blurb markdown
-    end
-
-    it "truncates" do
-      long_string = "pizza time" * 50
-      result = helper.format_blurb long_string
-      expect(result.size).to eq 200
-    end
-  end
-
   describe "#most_recent_site_notice_already_dismissed?" do
     def dismissed? last_dismissed_id
       helper.send :most_recent_site_notice_already_dismissed?, last_dismissed_id

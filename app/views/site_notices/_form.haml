@@ -11,6 +11,11 @@
       =f.text_field :title, { maxlength: 70 }
 
   .row
+    .medium-6.columns.end
+      =f.label :blurb
+      =f.text_field :blurb, { maxlength: 255, placeholder: "Optional short description used in the 'Unread site notices' box." }
+
+  .row
     .medium-12.columns
       %ul#task-tabs.tabs{"data-tabs" => ""}
         %li.tabs-title.is-active

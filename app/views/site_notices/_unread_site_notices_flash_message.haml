@@ -19,8 +19,8 @@
             %br
             =link_comments_section site_notice, " comments"
           %br
-          %p
-            =truncate site_notice.message, length: 200, omission: "... (continued)"
+          -if site_notice.blurb.present?
+            %p=site_notice.blurb
           %hr
         %button.close-button{"aria-label" => "Dismiss alert", "data-close" => "", type: "button"}
           %span{"aria-hidden" => "true"} &times;

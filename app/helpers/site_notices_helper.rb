@@ -1,10 +1,8 @@
 module SiteNoticesHelper
-  def format_blurb markdown
-    stripped = strip_markdown markdown
-    truncate stripped, length: 200, omission: "... (continued)"
-  end
-
   def show_unread_site_notices?
+    # Don't show on catalog pages because it doesn't work well with the fixed layout.
+    return if controller_name == "catalog"
+
     user_has_unread_site_notices?(current_user) &&
       !most_recent_site_notice_already_dismissed?(session[:last_dismissed_site_notice_id])
   end

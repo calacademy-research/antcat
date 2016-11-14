@@ -49,7 +49,7 @@ Feature: Site notices
     Then I should not see any unread site notices
 
     When I log out and log in again
-    And I reload the page
+    And I go to the users page
     Then I should see an unread site notice
 
   @javascript
