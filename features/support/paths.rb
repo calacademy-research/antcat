@@ -67,6 +67,9 @@ module NavigationHelpers
     when /^the comments page$/
       "/comments"
 
+    when /^the database scripts page$/
+      "/database_scripts"
+
     when /^the site notices page$/
       "/site_notices"
 

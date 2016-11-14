@@ -42,6 +42,7 @@
       %li=link_to 'Edit tooltips', tooltips_path
       -if user_is_superadmin?
         %li=link_to "Admin Dashboard", admin_root_path
+      %li=link_to('Database scripts', database_scripts_path) + " " + beta_label + " " +  new_label
 
 .row.margin-top
   .large-12.columns

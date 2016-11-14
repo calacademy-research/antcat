@@ -66,3 +66,11 @@ def setup_version taxon, whodunnit = nil
     whodunnit: whodunnit.try(:id)
   change
 end
+
+class DatabaseTestScript
+  include DatabaseScripts::DatabaseScript
+
+  def results
+    Reference.all
+  end
+end

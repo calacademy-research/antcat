@@ -1,0 +1,18 @@
+-@title = @script.title
+-breadcrumb :database_script, @script
+
+.callout
+  %h4.left=@script.title
+  .right=format_database_script_tags @script.tags
+  .clear
+  %p.left=markdown @script.description
+  %p.right
+    Show source:
+    =link_to "current (antcat.org)", source_database_script_path(@script)
+    ,
+    =database_script_github_link @script
+  .clear
+
+.callout=@script.timed_render
+
+%small.right Script runtime: #{@script.timed_render_duration} seconds

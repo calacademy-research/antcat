@@ -92,6 +92,21 @@ end
     parent :site_notices
   end
 
+crumb :database_scripts do
+  link "Database Scripts", database_scripts_path
+  parent :editors_panel
+end
+
+  crumb :database_script do |script|
+    link script.title, database_script_path(script)
+    parent :database_scripts
+  end
+
+    crumb :show_database_script_source do |script|
+      link "Show Source"
+      parent :database_script, script
+    end
+
 crumb :lazy_links do
   link "Lazy Links"
   parent :editors_panel

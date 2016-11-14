@@ -173,6 +173,12 @@ AntCat::Application.routes.draw do
 
   post :preview_markdown, to: "markdown#preview"
 
+  resources :database_scripts, only: [:index, :show] do
+    member do
+      get :source
+    end
+  end
+
   unless Rails.env.production?
     namespace :widget_tests do
       get :name_popup_test

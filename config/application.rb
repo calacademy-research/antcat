@@ -55,6 +55,8 @@ module AntCat
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
     config.autoload_paths += Dir["#{config.root}/app/models/**/"]
     config.autoload_paths += Dir["#{config.root}/app/decorators/**/"]
+    config.autoload_paths += Dir["#{config.root}/lib/database_scripts/**/"]
+    config.autoload_paths += Dir["#{config.root}/lib/database_scripts/scripts/**/"]
 
     config.action_dispatch.cookies_serializer = :hybrid
     # suppress deprecation warning

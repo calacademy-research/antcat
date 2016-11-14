@@ -66,6 +66,27 @@ class Taxon < ApplicationRecord
   scope :extant, -> { where(fossil: false) }
   scope :order_by_joined_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name_cache, -> { order(:name_cache) }
+  # For making conditional queries on self-referential `Taxon` associations.
+  #
+  # `#includes` and `#joins` are really hard to use because `Taxon` is a STI
+  # model with self-referential associations; it's name is irregular in plural,
+  # and some of its associations have irregular plurals or singulars.
+  #
+  # Example usage:
+  # Say we want something like this (which doesn't work):
+  #   `Species.joins(:genera).where(fossil: false, genus: { fossil: true })`
+  #
+  # Then use this:
+  #   `Species.self_join_on(:genus)
+  #      .where(fossil: false, taxa_self_join_alias: { fossil: true })`
+  scope :self_join_on, -> (model) {
+    joins(<<-SQL.squish)
+      LEFT OUTER JOIN `taxa` `taxa_self_join_alias`
+        ON `taxa`.`#{model}_id` = `taxa_self_join_alias`.`id`
+      SQL
+  }
+  scope :ranks, -> (*ranks) { where(type: ranks) }
+  scope :exclude_ranks, -> (*ranks) { where.not(type: ranks) }
 
   accepts_nested_attributes_for :name, :protonym, :type_name
   has_paper_trail meta: { change_id: :get_current_change_id }
@@ -89,6 +110,7 @@ class Taxon < ApplicationRecord
     find_by(name_cache: name)
   end
 
+  # TODO see if we can push this down to the subclasses.
   def update_parent new_parent
     return if parent == new_parent
 

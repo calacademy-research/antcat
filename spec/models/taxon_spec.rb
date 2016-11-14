@@ -296,6 +296,65 @@ describe Taxon do
       end
     end
 
+    describe "scope.self_join_on" do
+      let!(:atta) { create_genus "Atta", fossil: true }
+      let!(:atta_major) { create_species "Atta major", genus: atta }
+
+      it "handles self-referential condition" do
+        extant_with_fossil_parent = Taxon.self_join_on(:genus)
+          .where(fossil: false, taxa_self_join_alias: { fossil: true })
+        expect(extant_with_fossil_parent.count).to eq 1
+        expect(extant_with_fossil_parent.first).to eq atta_major
+
+        # Make sure test case isn't playing tricks with us.
+        atta.update_columns fossil: false
+        expect(extant_with_fossil_parent.count).to eq 0
+      end
+    end
+
+    describe "ranks and exclude ranks" do
+      before do
+        create :subfamily
+        create :genus
+        create :species
+        create :subspecies
+      end
+
+      def unique_ranks query
+        query.uniq.pluck(:type).sort
+      end
+
+      describe ".ranks" do
+        it "only returns taxa of the specified types" do
+          actual = unique_ranks Taxon.ranks(Species, Genus)
+          expect(actual.sort).to eq ["Genus", "Species"]
+        end
+
+        it "handles symbols" do
+          actual = unique_ranks Taxon.ranks(:species, :Genus)
+          expect(actual).to eq ["Genus", "Species"]
+        end
+
+        it "handles strings" do
+          actual = unique_ranks Taxon.ranks("Species", "genus")
+          expect(actual).to eq ["Genus", "Species"]
+        end
+
+        it "handles single items" do
+          actual = unique_ranks Taxon.ranks("Species")
+          expect(actual).to eq ["Species"]
+        end
+      end
+
+      describe ".exclude_ranks" do
+        it "excludes taxa of the specified types" do
+          actual = unique_ranks Taxon.exclude_ranks(Species, Genus)
+          expected = unique_ranks(Taxon) - ["Species", "Genus"]
+          expect(actual).to eq expected
+        end
+      end
+    end
+
     describe ".order_by_name_cache" do
       let!(:zymacros) { create :subfamily, name: create(:name, name: 'Zymacros') }
       let!(:atta) { create :subfamily, name: create(:name, name: 'Atta') }
