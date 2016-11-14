@@ -25,7 +25,7 @@ describe DatabaseScripts::DatabaseScript do
     it "doesn't require a description" do
       allow(script).to receive(:results).and_return [species]
       expect(script.as_taxon_table).to match "<table><thead>\n<tr>\n<th>Taxon"
-      expect(script.as_taxon_table).to match "<i>Atta species1</i></a>"
+      expect(script.as_taxon_table).to match "<i>Atta species"
     end
   end
 

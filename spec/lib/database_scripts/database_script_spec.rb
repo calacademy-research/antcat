@@ -46,7 +46,7 @@ describe DatabaseScripts::DatabaseScript do
 
     describe "#description" do
       it "can have a description" do
-        expect(script.description).to eq "From %github71."
+        expect(script.description).to match "From %github71."
       end
 
       it "doesn't require a description" do
