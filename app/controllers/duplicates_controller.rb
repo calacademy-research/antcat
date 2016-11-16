@@ -10,7 +10,7 @@ class DuplicatesController < TaxaController
   # returns all matching taxa that could conflict with this naming.
   # TODO probably rename action; "show" implies an object/view.
   def show
-    return find_name_duplicates_only if params['match_name_only'] == "true"
+    return find_name_duplicates_only if params[:match_name_only] == "true"
 
     # This check shouldn't be valid; there's nothing wrong with
     # a conflict in a subspecies parent, for example.

@@ -20,7 +20,7 @@ module LinkHelper
   end
 
   def link_to_antwiki taxon
-    page_title = taxon.name.to_s.gsub(/ /, '_')
+    page_title = taxon.name.to_s.tr(" ", '_')
     link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
   end
 

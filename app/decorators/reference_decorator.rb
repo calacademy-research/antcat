@@ -6,17 +6,14 @@ class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # for the `h` method
   delegate_all
 
-  # TODO inline.
   def public_notes
     format_italics h reference.public_notes
   end
 
-  # TODO inline.
   def editor_notes
     format_italics h reference.editor_notes
   end
 
-  # TODO inline.
   def taxonomic_notes
     format_italics h reference.taxonomic_notes
   end
@@ -72,6 +69,7 @@ class ReferenceDecorator < ApplicationDecorator
 
   # TODO see LinkHelper#link.
   # TODO remove? "target: '_blank'" sucks and the CSS is not used (unsure about AntWeb).
+  # TODO remove class "goto_reference_link"
   def goto_reference_link target: '_blank'
     helpers.link reference.id, helpers.reference_path(reference),
       class: "goto_reference_link", target: target

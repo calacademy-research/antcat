@@ -11,9 +11,11 @@ class ApplicationController < ActionController::Base
   after_action :cors_set_access_control_headers
   # end CORS
 
+  # This makes it possible to call eg `user_is_superadmin?` in any controller.
   delegate :can_edit?, :is_superadmin?, :can_review_changes?,
     :can_approve_changes?, to: :current_user, prefix: 'user', allow_nil: true
 
+  # This makes the above delegations available in views.
   helper_method :user_can_edit?, :user_is_superadmin?,
     :user_can_review_changes?, :user_can_approve_changes?
 

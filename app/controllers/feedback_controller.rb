@@ -66,7 +66,7 @@ class FeedbackController < ApplicationController
       render_unprocessable
     end
 
-    # TODO maybe move to model as `@feedback.same_ip_has_already_sent_too_many?`.
+    # TODO be more generous. Throttling is only for combating spam.
     def maybe_rate_throttle
       return if current_user # Logged-in users are never throttled.
 

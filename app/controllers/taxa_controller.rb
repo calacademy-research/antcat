@@ -1,6 +1,9 @@
 # This controller handles editing by logged in editors.
 # `CatalogController` is responsible for showing taxon pages to users.
 
+# TODO extract more code from here into `Taxa::SaveTaxon`, and rename
+# that class to make it more obvious that it's a form object.
+
 class TaxaController < ApplicationController
   before_action :authenticate_editor
   before_action :authenticate_superadmin, only: [:destroy]

@@ -58,7 +58,10 @@ class TaxonDecorator::Header
         # As of March 2016 there are 9 subspecies without a genus,
         # `Subspecies.where(genus: nil).count`,
         # and question marks are better than unrescued error + 404.
-        # Same issue as in Exporters::Antweb::MonkeyPatchTaxon::Subspecies
+        # Similar to the issue in Exporters::Antweb::MonkeyPatchTaxon::Subspecies
+        #
+        # Update November 2016: the issue has been fixed in the database;
+        # make sure it cannot happen again and remove this.
         string << "???"
       end
 

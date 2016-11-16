@@ -183,7 +183,7 @@ describe Taxa::SaveTaxon do
     end
   end
 
-  # Will be mainly tested in `callbacks_and_validations_spec.rb` once refactored.
+  # Mainly tested in `callbacks_and_validations_spec.rb`.
   describe "stuff from Taxa::CallbacksAndValidators" do
     describe "Taxon#save_children" do
       let!(:species) { create :species }

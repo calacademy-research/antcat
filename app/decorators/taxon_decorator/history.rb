@@ -37,14 +37,14 @@ class TaxonDecorator::History
 
     def history_item_body_attributes
       if $use_ant_web_formatter
-        { style: 'font-size: 13px' }
+        { style: 'font-size: 13px' } # TODO this belongs in AntWeb's CSS files.
       else
         {}
-      end
+      end.merge(class: 'history_item_body')
     end
 
     def history_item_body item
-      content_tag :td, history_item_body_attributes.merge(class: 'history_item_body') do
+      content_tag :td, history_item_body_attributes do
         add_period_if_necessary TaxtPresenter[item.taxt].to_html
       end
     end

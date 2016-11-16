@@ -1,8 +1,4 @@
-# This is a relic from migrating all Formatters to Decorators. Adding global variables
-# is not something I (jonk) think is a Good Idea(tm), but it made rafactoring so much easier
-# and $use_ant_web_formatter only enabled in 'lib/exporters/antweb/exporter.rb', which is
-# run on a machine separate from production.
-#
+# This is a relic from migrating all Formatters to Decorators.
 # TODO remove.
 #
 # [November 2016]: this module is included in:
@@ -38,6 +34,7 @@ module RefactorHelper
     end
   end
 
+  # TODO rename
   def link_to_reference reference
     if $use_ant_web_formatter
       reference.decorate.antweb_version_of_inline_citation
