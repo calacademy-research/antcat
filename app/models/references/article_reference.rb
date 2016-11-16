@@ -1,8 +1,9 @@
 class ArticleReference < Reference
+  attr_accessible :year, :journal, :doi
+
   belongs_to :journal
 
   validates_presence_of :year, :journal, :series_volume_issue, :pagination
-  attr_accessible :year, :journal, :doi
 
   def start_page
     page_parts[:start]

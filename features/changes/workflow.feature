@@ -1,16 +1,17 @@
-@papertrail
+# We don't have to use `@papertrail` when we create (cheat) versions in steps.
+
 Feature: Workflow
   Background:
-    Given the Formicidae family exists
-    And I log in as a catalog editor named "Mark Wilden"
-    And these references exist
+    Given I log in as a catalog editor named "Mark Wilden"
+
+  @javascript @search @papertrail
+  Scenario: Adding a taxon and seeing it on the Changes page
+    Given this reference exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
     And there is a genus "Eciton"
 
-  @javascript @search
-  Scenario: Adding a taxon and seeing it on the Changes page
     When I go to the catalog page for "Formicinae"
     * I press "Edit"
     * I follow "Add genus"
@@ -70,8 +71,9 @@ Feature: Workflow
     Then I should be on the catalog page for "Atta"
 
   Scenario: Approving a change
-    When I add the genus "Atta"
-    And I go to the catalog page for "Atta"
+    Given I add the genus "Atta"
+
+    When I go to the catalog page for "Atta"
     Then I should see "Added by Mark Wilden" in the change history
 
     When I log in as a catalog editor named "Stan Blum"
@@ -98,10 +100,13 @@ Feature: Workflow
     Then I should not see "Approve[^d]"
 
   Scenario: Should not see approve all if not superadmin
+    Given I add the genus "Atta"
+
     When I go to the unreviewed changes page
     Then I should not see "Approve all"
+    And I should not see "There are no unreviewed changes."
 
-  @javascript
+  @javascript @papertrail
   Scenario: Another editor editing a change that's waiting for approval
     When I add the genus "Atta"
     And I go to the changes page
@@ -136,9 +141,10 @@ Feature: Workflow
     When I go to the changes page
     Then I should not see an "Approve" button
 
-  @javascript @search
+  @javascript @papertrail
   Scenario: Editing a taxon - modified, not added
-    Given I am logged in
+    Given the Formicidae family exists
+    And there is a genus "Eciton"
 
     When I go to the edit page for "Formicidae"
     And I click the name field
@@ -147,10 +153,6 @@ Feature: Workflow
     And I click the protonym name field
     And I set the protonym name to "Eciton"
     And I click "#taxon_protonym_attributes_sic"
-    And I press "OK"
-    And I click the authorship field
-    And in the reference picker, I search for the author "Fisher"
-    And I click the first search result
     And I press "OK"
     And I press "Save" within ".buttons_section"
     Then I should see "Wildencidae" in the header
@@ -165,7 +167,7 @@ Feature: Workflow
 
     When I go to the changes page
     Then I should see "Mark Wilden added"
-    And there should be a mailto link to the email of "Mark Wilden"
+    And I should see a link to the user page for "Mark Wilden"
 
     When I log in as a catalog editor named "Stan Blum"
     And I go to the changes page
@@ -173,11 +175,11 @@ Feature: Workflow
     And I press "Approve"
     Then I should not see "Approve[^d]"
     And I should see "Stan Blum approved"
-    And there should be a mailto link to the email of "Stan Blum"
-    And there should be a mailto link to the email of "Mark Wilden"
+    And I should see a link to the user page for "Stan Blum"
+    And I should see a link to the user page for "Mark Wilden"
 
     When I go to the catalog page for "Atta"
     Then I should see "Added by Mark Wilden"
-    And there should be a mailto link to the email of "Mark Wilden"
+    And I should see a link to the user page for "Mark Wilden"
     And I should see "approved by Stan Blum"
-    And there should be a mailto link to the email of "Stan Blum"
+    And I should see a link to the user page for "Stan Blum"

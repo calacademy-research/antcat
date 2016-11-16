@@ -55,21 +55,29 @@ module AntCat
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
     config.autoload_paths += Dir["#{config.root}/app/models/**/"]
     config.autoload_paths += Dir["#{config.root}/app/decorators/**/"]
+    config.autoload_paths += Dir["#{config.root}/lib/database_scripts/**/"]
+    config.autoload_paths += Dir["#{config.root}/lib/database_scripts/scripts/**/"]
 
     config.action_dispatch.cookies_serializer = :hybrid
     # suppress deprecation warning
     config.active_record.raise_in_transactional_callbacks = true
     config.assets.enabled = true
 
-    # For `rake notes`
-    config.annotations.register_extensions('sass') do |annotation|
-      %r{//\s*(#{annotation}):?\s*(.*?)$}
-    end
-    config.annotations.register_extensions('haml') do |annotation|
-      %r{-#\s*(#{annotation}):?\s*(.*?)$}
-    end
-    config.annotations.register_extensions('coffee') do |annotation|
-      %r(#\s*(#{annotation}):?\s*(.*?)$)
+    # Add additional extensions/regexes for `rake notes`.
+    # I believe we have to do this manually because most files use
+    # extensions such as `.haml` as compared to `.html.haml`.
+    if Rails.env.development?
+      # So in Sass files, look for lines matching:
+      # `<optional whitespace> // TODO change font`
+      config.annotations.register_extensions('sass') do |tag|
+        %r{//\s*(#{tag}):?\s*(.*?)$}
+      end
+      config.annotations.register_extensions('haml') do |tag|
+        %r{-#\s*(#{tag}):?\s*(.*?)$}
+      end
+      config.annotations.register_extensions('coffee') do |tag|
+        %r(#\s*(#{tag}):?\s*(.*?)$)
+      end
     end
   end
 end

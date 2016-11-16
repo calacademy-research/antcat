@@ -26,15 +26,27 @@ When(/^I set the name to "([^"]*)"$/) do |name|
 end
 
 Then(/^I should still see the name field$/) do
-  find('#name_field .edit').should be_visible
+  element = find '#name_field .edit'
+  expect(element).to be_visible
 end
 
-When(/^the name field should contain "([^"]*)"$/) do |name|
-  find('#name_string').value.should == name
+Then(/^the name field should contain "([^"]*)"$/) do |name|
+  element = find '#name_string'
+  expect(element.value).to eq name
 end
 
-When(/^the name button should contain "([^"]*)"$/) do |name|
-  find('#name_field .display_button').text.should == name
+# Try adding this (waiting finder) if the JS driver clicks on "OK" and
+# then navigates to a different page before the JS has had time to execute.
+# TODO probably include this in other steps so that it's always run.
+Then(/^the name button should contain "([^"]*)"$/) do |name|
+  element = find '#name_field .display_button'
+  expect(element.text).to eq name
+end
+
+# Same as above for the convert to subspecies page.
+Then(/^the target name button should contain "([^"]*)"$/) do |name|
+  element = find '#new_species_id_field .display_button'
+  expect(element.text).to eq name
 end
 
 # gender
@@ -105,12 +117,13 @@ When(/^I set the parent name to "([^"]*)"$/) do |name|
 end
 
 Then(/^I should not see the parent name field/) do
-  page.should_not have_css "#parent_row"
+  expect(page).to_not have_css "#parent_row"
 end
 
 #### current valid taxon field
 Then(/the current valid taxon name should be "([^"]*)"$/) do |name|
-  find('#current_valid_taxon_name_field div.display').text.should == name
+  element = find '#current_valid_taxon_name_field div.display'
+  expect(element.text).to eq name
 end
 
 When(/I click the current valid taxon name field/) do
@@ -123,7 +136,7 @@ end
 
 # status
 Then(/the status should be "([^"]*)"/) do |status|
-  page.should have_css "select#taxon_status option[selected=selected][value=#{status}]"
+  expect(page).to have_css "select#taxon_status option[selected=selected][value=#{status}]"
 end
 
 When(/I set the status to "([^"]*)"/) do |status|
@@ -138,7 +151,8 @@ Then(/^I should (not )?see the homonym replaced by field$/) do |should_not|
 end
 
 Then(/the homonym replaced by name should be "([^"]*)"$/) do |name|
-  find('#homonym_replaced_by_name_field div.display').text.should == name
+  element = find '#homonym_replaced_by_name_field div.display'
+  expect(element.text).to eq name
 end
 
 When(/I click the homonym replaced by name field/) do
@@ -164,7 +178,8 @@ When(/I click the protonym name field/) do
 end
 
 Then(/^the protonym name field should contain "([^"]*)"$/) do |name|
-  find('#name_string').value.should == name
+  element = find '#name_string'
+  expect(element.value).to eq name
 end
 
 When(/^I set the protonym name to "([^"]*)"$/) do |name|
@@ -183,7 +198,8 @@ When(/^I set the type name to "([^"]*)"$/) do |name|
 end
 
 Then(/^the type name field should contain "([^"]*)"$/) do |name|
-  find('#name_string').value.should == name
+  element = find '#name_string'
+  expect(element.value).to eq name
 end
 
 # convert species to subspecies
@@ -192,7 +208,8 @@ When(/I click the new species field/) do
 end
 
 Then(/^the new species field should contain "([^"]*)"$/) do |name|
-  find('#name_string').value.should == name
+  element = find '#name_string'
+  expect(element.value).to eq name
 end
 
 When(/^I set the new species field to "([^"]*)"$/) do |name|
@@ -201,8 +218,7 @@ end
 
 # auto_generated
 Then(/^the name "(.*?)" genus "(.*?)" should not be auto generated$/) do |species, genus|
-  taxon = Taxon.find_by_name_cache genus + " " + species
-  taxon.auto_generated.should be_falsey
-  name = taxon.name
-  name.auto_generated.should be_falsey
+  taxon = Taxon.find_by name_cache: "#{genus} #{species}"
+  expect(taxon.auto_generated).to be_falsey
+  expect(taxon.name.auto_generated).to be_falsey
 end

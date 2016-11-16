@@ -26,11 +26,13 @@ AntCat::Application.routes.draw do
   post '/merge_authors/merge', to: 'merge_authors#merge'
 
   namespace :catalog do
+    get :autocomplete
     get :options
     get "search", to: "search#index"
     get "search/quick_search", to: "search#quick_search", as: "quick_search"
   end
   get 'catalog/:id' => 'catalog#show', as: :catalog
+  get 'catalog/:id/wikipedia' => 'catalog#wikipedia_tools'
 
   get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
   resources :journals do
@@ -61,17 +63,14 @@ AntCat::Application.routes.draw do
       get :wikipedia_export
     end
   end
-  resources :missing_references, only: [:index, :edit, :update]
 
   resources :taxa, except: [:index, :show] do
-    collection do
-      get :autocomplete
-    end
     member do
       get :delete_impact_list
       get :update_parent # TODO change to put
       put :elevate_to_species
       delete :destroy_unreferenced
+      get :show_children
     end
     resources :taxon_history_items, only: [:update, :create, :destroy]
     resources :reference_sections, only: [:update, :create, :destroy]
@@ -98,7 +97,7 @@ AntCat::Application.routes.draw do
   resource :duplicates, only: [:show, :create]
 
   devise_for :users, controllers: { invitations: 'users/invitations' }
-  resources :users, only: [:index] do
+  resources :users, only: [:index, :show] do
     collection do
       get :emails
     end
@@ -140,10 +139,18 @@ AntCat::Application.routes.draw do
 
   resources :comments, only: [:index, :create]
 
+  # TODO nest more Editor's Panel-ish pages under this (tasks, site notices, etc).
   get "panel", to: "editors_panels#index", as: "editors_panel"
 
   resource :feed, only: [:show], controller: "feed" do
     resources :activities, only: [:destroy]
+  end
+
+  resources :site_notices do
+    collection do
+      post :mark_all_as_read
+      post :dismiss
+    end
   end
 
   # Shallow routes for the show action for the feed
@@ -161,13 +168,18 @@ AntCat::Application.routes.draw do
 
   resources :tasks do
     member do
-      put :complete
       put :close
       put :reopen
     end
   end
 
   post :preview_markdown, to: "markdown#preview"
+
+  resources :database_scripts, only: [:index, :show] do
+    member do
+      get :source
+    end
+  end
 
   unless Rails.env.production?
     namespace :widget_tests do

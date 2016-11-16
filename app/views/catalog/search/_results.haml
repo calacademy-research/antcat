@@ -6,7 +6,7 @@
       No results found.
 -else
   %table
-    %caption=pluralize_with_delimiters(taxa.count, 'result')
+    %caption=pluralize_with_delimiters taxa.count, 'result'
     -taxa.each do |taxon|
       =render 'result', taxon: taxon
 

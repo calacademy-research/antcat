@@ -1,6 +1,6 @@
 Then(/^the reference section should be "(.*)"$/) do |reference|
-  first('.reference_sections .reference_section')
-    .find('div.display').text.should =~ /#{reference}\.?/
+  element = first('.reference_sections .reference_section').find 'div.display'
+  expect(element.text).to match /#{reference}\.?/
 end
 
 When(/^I click the reference section/) do
@@ -24,7 +24,7 @@ When(/^I delete the reference section$/) do
 end
 
 Then(/^the reference section should be empty$/) do
-  page.should_not have_css '.reference_sections .reference_section'
+  expect(page).to_not have_css '.reference_sections .reference_section'
 end
 
 When(/^I cancel the reference section's changes$/) do

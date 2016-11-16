@@ -1,18 +1,9 @@
 require 'spec_helper'
 
 describe Taxon do
-  it "starts as 'old', and stays there" do
-    adder = create :user, can_edit: true
+  let(:adder) { create :editor }
 
-    taxon = create_taxon_version_and_change :old, adder
-
-    expect(taxon).to be_old
-    expect(taxon.can_approve?).to be_falsey
-  end
-
-  it "should be able to transition from waiting to approved" do
-    adder = create :user, can_edit: true
-
+  it "can transition from waiting to approved" do
     taxon = create_taxon_version_and_change :waiting, adder
     expect(taxon).to be_waiting
     expect(taxon.can_approve?).to be_truthy
@@ -22,111 +13,92 @@ describe Taxon do
     expect(taxon).not_to be_waiting
   end
 
-  describe "Authorization" do
-    around do |example|
-      with_versioning &example
-    end
-    before do
-      @editor = create :user, can_edit: true
-      @user = create :user
-    end
+  describe "Authorization", versioning: true do
+    let(:editor) { create :editor }
+    let(:user) { create :user }
+    let(:approver) { create :editor }
 
-    describe "An old record" do
-      before do
-        @taxon = create_taxon_version_and_change nil
+    context "An old record" do
+      let!(:taxon) { create_taxon_version_and_change nil, user }
+
+      it "cannot be reviewed" do
+        expect(taxon.can_be_reviewed?).to be_falsey
       end
 
-      it "should not allow it to be reviewed" do
-        expect(@taxon.can_be_reviewed?).to be_falsey
-      end
-
-      it "should not allow it to be approved" do
-        name = create :name, name: 'default_genus'
-        another_taxon = create :genus, name: name
+      it "cannot be approved" do
+        another_taxon = create :genus
         another_taxon.taxon_state.review_state = :old
 
-        change = create :change, user_changed_taxon_id: another_taxon.id, change_type: "create"
-        create :version, item_id: another_taxon.id, whodunnit: @user.id, change_id: change.id
-        change.update_attributes! approver: @user, approved_at: Time.now
+        change = create :change, user_changed_taxon_id: another_taxon.id,
+          change_type: "create", approver: user, approved_at: Time.now
+        create :version, item: another_taxon, whodunnit: user.id, change_id: change.id
 
-        expect(@taxon.can_be_approved_by?(change, nil)).to be_falsey
-        expect(@taxon.can_be_approved_by?(change, @editor)).to be_falsey
-        expect(@taxon.can_be_approved_by?(change, @user)).to be_falsey
+        expect(taxon.can_be_approved_by?(change, nil)).to be_falsey
+        expect(taxon.can_be_approved_by?(change, editor)).to be_falsey
+        expect(taxon.can_be_approved_by?(change, user)).to be_falsey
       end
     end
 
-    describe "A waiting record" do
+    context "A waiting record" do
+      let(:taxon) { create :genus }
+      let(:change) do
+        create :change, user_changed_taxon_id: taxon.id,
+          change_type: "create", approver: approver, approved_at: Time.now
+      end
+
       before do
-        @changer = create :user, can_edit: true
-        @approver = create :user, can_edit: true
-
-        name = create :name, name: 'default_genus'
-        @taxon = create :genus, name: name
-        @taxon.taxon_state.review_state = :waiting
-
-        @change = create :change, user_changed_taxon_id: @taxon.id, change_type: "create"
-        create :version, item_id: @taxon.id, whodunnit: @changer.id, change_id: @change.id
-        @change.update_attributes! approver: @changer, approved_at: Time.now
+        taxon.taxon_state.review_state = :waiting
+        changer = create :editor
+        create :version, item: taxon, whodunnit: changer.id, change_id: change.id
       end
 
-      it "should allow it to be reviewed by a catalog editor" do
-        expect(@taxon.can_be_reviewed?).to be true
+      it "can be reviewed by a catalog editor" do
+        expect(taxon.can_be_reviewed?).to be true
       end
 
-      it "should allow it to be approved by an approver" do
-        expect(@taxon.can_be_approved_by?(@change, nil)).to be_falsey
-        expect(@taxon.can_be_approved_by?(@change, @approver)).to be_truthy
-        expect(@taxon.can_be_approved_by?(@change, @user)).to be_falsey
+      it "can be approved by an approver" do
+        expect(taxon.can_be_approved_by?(change, nil)).to be_falsey
+        expect(taxon.can_be_approved_by?(change, approver)).to be_truthy
+        expect(taxon.can_be_approved_by?(change, user)).to be_falsey
       end
     end
 
-    describe "An approved record" do
-      before do
-        @approver = create :user, can_edit: true
-        @taxon = create_taxon_version_and_change :approved, @editor, @approver
+    context "An approved record" do
+      let(:taxon) { create_taxon_version_and_change :approved, editor, approver }
+
+      it "has an approver and an approved_at" do
+        expect(taxon.approver).to eq approver
+        expect(taxon.approved_at).to be_within(7.hours).of Time.now
       end
 
-      it "should have an approver and an approved_at" do
-        expect(@taxon.approver).to eq @approver
-        expect(@taxon.approved_at).to be_within(7.hours).of(Time.now)
+      it "cannot be reviewed" do
+        expect(taxon.can_be_reviewed?).to be_falsey
       end
 
-      it "should not allow it to be reviewed" do
-        expect(@taxon.can_be_reviewed?).to be_falsey
-      end
-
-      it "should not allow it to be approved", pending: true do
-        pending "was never tested"
-
-        expect(@taxon.can_be_approved_by?(change, nil)).to be_falsey
-        expect(@taxon.can_be_approved_by?(change, @editor)).to be_falsey
-        expect(@taxon.can_be_approved_by?(change, @user)).to be_falsey
+      it "cannot be approved" do
+        expect(taxon.can_be_approved_by?(change, nil)).to be_falsey
+        expect(taxon.can_be_approved_by?(change, editor)).to be_falsey
+        expect(taxon.can_be_approved_by?(change, user)).to be_falsey
       end
     end
   end
 
-  describe "Last change and version" do
-    around do |example|
-      with_versioning &example
-    end
-
+  describe "Last change and version", versioning: true do
     describe "#last_change" do
+      let(:taxon) { create_genus }
+
       it "returns nil if no Changes have been created for it" do
-        taxon = create_genus
         expect(taxon.last_change).to be_nil
       end
 
       it "returns the Change, if any" do
-        taxon = create_genus
-
-        change = setup_version taxon.id
+        change = setup_version taxon
         expect(taxon.last_change).to eq change
       end
     end
 
     describe "#last_version" do
       it "returns the most recent Version" do
-        adder = create :user, can_edit: true
         genus = create_taxon_version_and_change :waiting, adder
 
         last_version = genus.last_version
@@ -135,25 +107,4 @@ describe Taxon do
       end
     end
   end
-
-  # We no longer support "Added by" display.
-  # describe "Added by" do
-  #   around do |example|
-  #     with_versioning &example
-  #   end
-  #   it "should return the User who added the record, not a subsequent editor" do
-  #     adder = create :user
-  #     editor = create :user
-  #     taxon = create_taxon_version_and_change :waiting, adder
-  #
-  #     setup_version taxon.id, adder
-  #
-  #     taxon.update_attributes! incertae_sedis_in: 'genus'
-  #     taxon.last_version.update_attributes! whodunnit: editor
-  #     taxon.save!
-  #     setup_version taxon.id, adder
-  #
-  #     expect(taxon.added_by).to eq adder
-  #   end
-  # end
 end

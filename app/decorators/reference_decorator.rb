@@ -1,23 +1,10 @@
-# From Formatters::ReferenceFormatter:
-#    Note: this references ReferenceFormatterCache.
-#    Most of these routines are only hit if there's a change in the content, at which
-#    point it's reformatted and saved in references::formatted_cache.
+# TODO investigate using views.
+# TODO use less decorators in general.
+# TODO consider renaming the db fields once the code is more stable.
 
 class ReferenceDecorator < ApplicationDecorator
-  include ERB::Util # for the h method
+  include ERB::Util # for the `h` method
   delegate_all
-
-  def key
-    format_author_last_names
-  end
-
-  def created_at
-    format_timestamp reference.created_at
-  end
-
-  def updated_at
-    format_timestamp reference.updated_at
-  end
 
   def public_notes
     format_italics h reference.public_notes
@@ -31,100 +18,95 @@ class ReferenceDecorator < ApplicationDecorator
     format_italics h reference.taxonomic_notes
   end
 
+  # TODO rename as it also links DOIs, not just reference documents.
   def format_reference_document_link
-    pdf_link = if reference.downloadable?
-                 helpers.link 'PDF', reference.url, class: 'document_link', target: '_blank'
-               else
-                 ''
-               end
-
-    doi_link = format_doi_link
     [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
-  end
-
-  def format_authorship_html
-    helpers.content_tag(:span, title: format) do
-      format_author_last_names
-    end
   end
 
   def format_review_state
     review_state = reference.review_state
 
     case review_state
-    when 'reviewing'
-      'Being reviewed'
-    when 'none' || nil
-      ''
-    else
-      review_state.capitalize
+    when 'reviewing' then 'Being reviewed'
+    when 'none', nil then ''
+    else                  review_state.capitalize
     end
   end
 
-  # See header note about cache
-  def format
-    string = ReferenceFormatterCache.instance.get reference, :formatted_cache
-    return string.html_safe if string
-    string = format!
-    ReferenceFormatterCache.instance.set reference, string, :formatted_cache
-    string
+  # A.k.a. "FORMAT AS TEXT" + cached or recached
+  # Formats the reference as plaintext (with the exception of <i> tags).
+  # DB column: `references.formatted_cache`.
+  def formatted
+    cached = reference.formatted_cache
+    return cached.html_safe if cached
+
+    reference.set_cache generate_formatted, :formatted_cache
   end
 
-  # See header note about cache
-  def format!
-    string = format_author_names.dup
-    string << ' ' unless string.empty?
-    string << format_year << '. '
-    string << format_title << ' '
-    string << format_citation
-    string << " [#{format_date(reference.date)}]" if reference.date?
-    string
+  # A.k.a. "FORMAT WITH HTML" + cached or recached
+  # Formats the reference with HTML, CSS, etc.
+  # DB column: `references.inline_citation_cache`.
+  def inline_citation
+    cached = reference.inline_citation_cache
+    return cached.html_safe if cached
+
+    reference.set_cache generate_inline_citation, :inline_citation_cache
   end
 
-  def format_inline_citation options = {}
-    # TODO: `using_cache` as a global setting?
-    using_cache = false
-    if using_cache
-      string = ReferenceFormatterCache.instance.get reference, :inline_citation_cache
-      return string.html_safe if string
-    end
+  # Note: Only used for the AntWeb export.
+  # TODO move to `Exporters::Antweb::Exporter`.
+  def antweb_version_of_inline_citation
+    # Hardcoded, or we must set `host` + use `reference_url(reference)`.
+    url = "http://antcat.org/references/#{reference.id}"
+    link = helpers.link_to reference.keey,
+      url, title: make_to_link_title(formatted)
 
-    string = format_inline_citation! options
-    if using_cache
-      ReferenceFormatterCache.instance.set reference, string, :inline_citation_cache
-    end
-    string
+    content = [link]
+    content << format_reference_document_link
+    content.reject(&:blank?).join(' ').html_safe
   end
 
-  def format_inline_citation! options = {}
-    to_link options
-  end
-
-  def format_inline_citation_without_links
-    format_author_last_names
-  end
-
-  def goto_reference_link target: '_blank'
-    helpers.link reference.id, helpers.reference_path(reference),
-      class: :goto_reference_link, target: target
-  end
-
-  def to_link expansion: true
-    reference_key_string = format_author_last_names
-    reference_string = format
-    if expansion
-      to_link_with_expansion reference_key_string, reference_string
-    else
-      to_link_without_expansion reference_key_string, reference_string
-    end
+  def link_to_reference
+    helpers.link_to reference.id, helpers.reference_path(reference)
   end
 
   private
-    def format_timestamp timestamp
-      timestamp.strftime '%Y-%m-%d'
+    def generate_formatted
+      string = make_html_safe(reference.author_names_string.dup)
+      string << ' ' unless string.empty?
+      string << make_html_safe(reference.citation_year) << '. '
+      string << format_title << ' '
+      string << format_citation
+      string << " [#{format_date(reference.date)}]" if reference.date?
+      string
     end
 
+    def generate_inline_citation
+      helpers.content_tag :span, class: "reference_keey_and_expansion" do
+        link = helpers.link_to reference.keey, '#',
+          title: make_to_link_title(formatted), class: "reference_keey"
+
+        content = link
+        content << helpers.content_tag(:span, class: "reference_keey_expansion") do
+          inner_content = []
+          inner_content << inline_citation_reference_keey_expansion_text
+          inner_content << format_reference_document_link
+          inner_content << link_to_reference
+          inner_content.reject(&:blank?).join(' ').html_safe
+        end
+      end
+    end
+
+    def inline_citation_reference_keey_expansion_text
+      helpers.content_tag :span, formatted,
+        class: "reference_keey_expansion_text", title: reference.keey
+    end
+
+    # TODO try to move somewhere more general, even if it's only used here.
+    # TODO see if there's Rails version of this.
     def make_html_safe string
+      return ''.html_safe if string.blank?
+
       string = string.dup
       quote_code = 'xdjvs4'
       begin_italics_code = '2rjsd4'
@@ -139,6 +121,7 @@ class ReferenceDecorator < ApplicationDecorator
       string.html_safe
     end
 
+    # TODO try to move somewhere more general, even if it's only used here.
     def format_italics string
       return unless string
       raise "Can't call format_italics on an unsafe string" unless string.html_safe?
@@ -147,7 +130,9 @@ class ReferenceDecorator < ApplicationDecorator
       string.html_safe
     end
 
-    def format_date input # TODO? store denormalized value in the database
+    # TODO rename?
+    # TODO? store denormalized value in the database
+    def format_date input
       return input if input.size < 4
 
       match = input.match /(.*?)(\d{4,8})(.*)/
@@ -166,76 +151,19 @@ class ReferenceDecorator < ApplicationDecorator
       prefix + date + suffix
     end
 
-    def format_doi_link
+    def doi_link
       return unless reference.doi.present?
-      helpers.link reference.doi, create_link_from_doi(reference.doi),
-        class: 'document_link', target: '_blank'
+      helpers.link_to reference.doi, ("http://dx.doi.org/" + doi),
+        class: 'document_link'
     end
 
-    # transform "10.11646/zootaxa.4029.1.1" --> "http://dx.doi.org/10.11646/zootaxa.4029.1.1"
-    def create_link_from_doi doi
-      "http://dx.doi.org/" + doi
-    end
-
-    def to_link_with_expansion reference_key_string, reference_string
-      helpers.content_tag :span, class: :reference_key_and_expansion do
-        content = helpers.link reference_key_string, '#',
-                       title: make_to_link_title(reference_string),
-                       class: :reference_key
-
-        content << helpers.content_tag(:span, class: :reference_key_expansion) do
-          inner_content = []
-          inner_content << reference_key_expansion_text(reference_string, reference_key_string)
-          inner_content << format_reference_document_link
-          inner_content << goto_reference_link
-          inner_content.reject(&:blank?).join(' ').html_safe
-        end
-      end
-    end
-
-    def to_link_without_expansion reference_key_string, reference_string
-      content = []
-      content << helpers.link(reference_key_string,
-                      "http://antcat.org/references/#{reference.id}",
-                      title: make_to_link_title(reference_string),
-                      target: '_blank')
-      content << format_reference_document_link
-      content.reject(&:blank?).join(' ').html_safe
+    def pdf_link
+      return unless reference.downloadable?
+      helpers.link_to 'PDF', reference.url, class: 'document_link'
     end
 
     def make_to_link_title string
       helpers.unitalicize string
-    end
-
-    def reference_key_expansion_text reference_string, reference_key_string
-      helpers.content_tag :span, reference_string,
-        class: :reference_key_expansion_text,
-        title: reference_key_string
-    end
-
-    def format_author_last_names
-      return '' unless reference.id
-
-      names = reference.author_names.map &:last_name
-      case names.size
-      when 0
-        '[no authors]'
-      when 1
-        "#{names.first}"
-      when 2
-        "#{names.first} & #{names.second}"
-      else
-        string = names[0..-2].join ', '
-        string << " & " << names[-1]
-      end << ', ' << reference.short_citation_year
-    end
-
-    def format_author_names
-      make_html_safe reference.author_names_string
-    end
-
-    def format_year
-      make_html_safe reference.citation_year if reference.citation_year?
     end
 
     def format_title

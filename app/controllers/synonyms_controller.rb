@@ -1,8 +1,8 @@
 class SynonymsController < ApplicationController
   before_action :authenticate_editor, except: [:show]
+  before_action :set_synonym, only: [:show, :destroy, :reverse_synonymy]
 
   def show
-    @synonym = Synonym.find(params[:id])
   end
 
   def create
@@ -28,8 +28,8 @@ class SynonymsController < ApplicationController
         junior_or_senior = 'senior'
       end
 
-      if Synonym.find_by_senior_synonym_id_and_junior_synonym_id(senior.id, junior.id) or
-         Synonym.find_by_senior_synonym_id_and_junior_synonym_id(junior.id, senior.id)
+      if Synonym.find_by(senior_synonym_id: senior.id, junior_synonym_id: junior.id) or
+         Synonym.find_by(senior_synonym_id: junior.id, junior_synonym_id: senior.id)
         error_message = 'This taxon is already a synonym'
       else
         synonym = Synonym.create! senior_synonym_id: senior.id, junior_synonym_id: junior.id
@@ -56,28 +56,29 @@ class SynonymsController < ApplicationController
   end
 
   def destroy
-    Synonym.find(params[:id]).destroy
-    json = { success: true }
-    render json: json
+    @synonym.destroy
+    render json: { success: true }
   end
 
   def reverse_synonymy
-    synonym = Synonym.find params[:id]
     taxon = Taxon.find params[:taxa_id]
 
-    new_junior = synonym.senior_synonym
-    new_senior = synonym.junior_synonym
+    new_junior = @synonym.senior_synonym
+    new_senior = @synonym.junior_synonym
 
     Synonym.where(junior_synonym_id: new_junior, senior_synonym_id: new_senior).destroy_all
     Synonym.where(senior_synonym_id: new_junior, junior_synonym_id: new_senior).destroy_all
-    synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
-    synonym.touch_with_version
+    @synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
+    @synonym.touch_with_version
 
-    content = render_to_string(
-      partial: 'taxa/junior_and_senior_synonyms_section',
+    content = render_to_string partial: 'taxa/junior_and_senior_synonyms_section',
       locals: { taxon: taxon }
-    )
     json = { content: content, success: true, error_message: '' }
     render json: json
   end
+
+  private
+    def set_synonym
+      @synonym = Synonym.find params[:id]
+    end
 end

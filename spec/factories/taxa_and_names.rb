@@ -1,255 +1,178 @@
+# TODOs:
+# * Factories creates too many objects and they seem to create new associations
+#   even when passed existing objects.
+#
+#   Creating a taxon of a lower rank creates all the taxa above it as specified
+#   by the factories. This also create objects for their dependencies, such
+#   as the protonym, which in turn creates a new citation --> another reference
+#   --> another author --> etc etc = many objects.
+#
+# * Investigate if using (tested) fixtures makes sense for the most-often created objects.
+#
+# * Investigate reusing more objects, such as always reusing the protonym and journal.
+
 FactoryGirl.define do
   factory :name do
     sequence(:name) { |n| raise }
     name_html { name }
     epithet { name }
     epithet_html { name_html }
-  end
 
-  factory :family_or_subfamily_name do
-    name 'FamilyOrSubfamily'
-    name_html { name }
-    epithet { name }
-    epithet_html { name_html }
-  end
+    factory :family_name, class: FamilyName do
+      name 'Formicidae'
+    end
 
-  factory :family_name do
-    name 'Family'
-    name_html { name }
-    epithet { name }
-    epithet_html { name_html }
-  end
+    factory :subfamily_name, class: SubfamilyName do
+      sequence(:name) { |n| "Subfamily#{n}" }
+    end
 
-  factory :subfamily_name do
-    sequence(:name) { |n| "Subfamily#{n}" }
-    name_html { name }
-    epithet { name }
-    epithet_html { name_html }
-  end
+    factory :tribe_name, class: TribeName do
+      sequence(:name) { |n| "Tribe#{n}" }
+    end
 
-  factory :tribe_name do
-    sequence(:name) { |n| "Tribe#{n}" }
-    name_html { name }
-    epithet { name }
-    epithet_html { name_html }
-  end
+    factory :subtribe_name, class: SubtribeName do
+      sequence(:name) { |n| "Subtribe#{n}" }
+    end
 
-  factory :subtribe_name do
-    sequence(:name) { |n| "Subtribe#{n}" }
-    name_html { name }
-    epithet { name }
-    epithet_html { name_html }
-  end
+    factory :genus_name, class: GenusName do
+      sequence(:name) { |n| "Genus#{n}" }
+      name_html { "<i>#{name}</i>" }
+      epithet_html { "<i>#{name}</i>" }
+    end
 
-  factory :genus_name do
-    sequence(:name) { |n| "Genus#{n}" }
-    name_html { "<i>#{name}</i>" }
-    epithet { name }
-    epithet_html { "<i>#{name}</i>" }
-  end
+    # TODO possibly broken
+    # from prod db
+    # Subgenus.first.name.name_html # "<i>Lasius</i> <i>(Acanthomyops)</i>"
+    #
+    # from
+    # $rails console test --sandbox
+    # SunspotTest.stub
+    # FactoryGirl.create :subgenus
+    # Subgenus.first.name.name_html # "<i>Atta</i> <i>(Atta (Subgenus2))</i>"
+    factory :subgenus_name, class: SubgenusName do
+      sequence(:name) { |n| "Atta (Subgenus#{n})" }
+      name_html { "<i>Atta</i> <i>(#{name})</i>" }
+      epithet { name.split(' ').last }
+      epithet_html { "<i>#{epithet}</i>" }
+    end
 
-  # TODO possibly broken
-  # from prod db
-  # Subgenus.first.name.name_html # "<i>Lasius</i> <i>(Acanthomyops)</i>"
-  #
-  # from
-  # $rails console test --sandbox
-  # SunspotTest.stub
-  # FactoryGirl.create :subgenus
-  # Subgenus.first.name.name_html # "<i>Atta</i> <i>(Atta (Subgenus2))</i>"
-  factory :subgenus_name do
-    sequence(:name) { |n| "Atta (Subgenus#{n})" }
-    name_html { "<i>Atta</i> <i>(#{name})</i>" }
-    epithet { name.split(' ').last }
-    epithet_html { "<i>#{epithet}</i>" }
-  end
+    factory :species_name, class: SpeciesName do
+      sequence(:name) { |n| "Atta species#{n}" }
+      name_html { "<i>#{name}</i>" }
+      epithet { name.split(' ').last }
+      epithet_html { "<i>#{epithet}</i>" }
+    end
 
-  factory :species_name do
-    sequence(:name) { |n| "Atta species#{n}" }
-    name_html { "<i>#{name}</i>" }
-    epithet { name.split(' ').last }
-    epithet_html { "<i>#{epithet}</i>" }
-  end
-
-  factory :subspecies_name do
-    sequence(:name) { |n| "Atta species subspecies#{n}" }
-    name_html { "<i>#{name}</i>" }
-    epithet { name.split(' ').last }
-    epithets { name.split(' ')[-2..-1].join(' ') }
-    epithet_html { "<i>#{epithet}</i>" }
+    factory :subspecies_name, class: SubspeciesName do
+      sequence(:name) { |n| "Atta species subspecies#{n}" }
+      name_html { "<i>#{name}</i>" }
+      epithet { name.split(' ').last }
+      epithets { name.split(' ')[-2..-1].join(' ') }
+      epithet_html { "<i>#{epithet}</i>" }
+    end
   end
 
   factory :taxon do
-    after :create do |taxon|
-      create :taxon_state, taxon_id: taxon.id
-      taxon.touch_with_version
-    end
-    to_create { |instance| instance.save validate: false }
-
     association :name, factory: :genus_name
     association :type_name, factory: :species_name
     protonym
     status 'valid'
-  end
 
-  factory :family do
-    after :create do |family|
-      create :taxon_state, taxon_id: family.id
-      family.touch_with_version
+    factory :family, class: Family do
+      association :name, factory: :family_name
+      association :type_name, factory: :genus_name
     end
-    to_create { |instance| instance.save validate: false }
 
-    association :name, factory: :family_name
-    association :type_name, factory: :genus_name
-    protonym
-    status 'valid'
-  end
-
-  factory :subfamily do
-    after :create do |subfamily|
-      create :taxon_state, taxon_id: subfamily.id
-      subfamily.touch_with_version
+    factory :subfamily, class: Subfamily do
+      association :name, factory: :subfamily_name
+      association :type_name, factory: :genus_name
     end
-    to_create { |instance| instance.save validate: false }
 
-    association :name, factory: :subfamily_name
-    association :type_name, factory: :genus_name
-    protonym
-    status 'valid'
-  end
-
-  factory :tribe do
-    after :create do |tribe|
-      create :taxon_state, taxon_id: tribe.id
-      tribe.touch_with_version
+    factory :tribe, class: Tribe do
+      association :name, factory: :tribe_name
+      association :type_name, factory: :genus_name
+      subfamily
     end
-    to_create { |instance| instance.save validate: false }
-    association :name, factory: :tribe_name
-    association :type_name, factory: :genus_name
-    subfamily
-    protonym
-    status 'valid'
-  end
 
-  # FIX? Broken. The are 8 SubtribeName:s in the prod db, but no
-  # Subtribe:s, so low-priority.
-  factory :subtribe do
-    after :create do |subtribe|
-      create :taxon_state, taxon_id: subtribe.id
-      subtribe.touch_with_version
+    # FIX? Broken. The are 8 SubtribeName:s in the prod db, but no
+    # Subtribe:s, so low-priority.
+    factory :subtribe, class: Subtribe do
+      association :name, factory: :subtribe_name
+      association :type_name, factory: :genus_name
+      subfamily
     end
-    to_create { |instance| instance.save validate: false }
-    association :name, factory: :subtribe_name
-    association :type_name, factory: :genus_name
-    subfamily
-    protonym
-    status 'valid'
-  end
 
-  factory :genus do
-    after :create do |genus|
-      create :taxon_state, taxon_id: genus.id
-      genus.touch_with_version
+    factory :genus, class: Genus do
+      association :name, factory: :genus_name
+      association :type_name, factory: :species_name
+      tribe
+      subfamily { |a| a.tribe && a.tribe.subfamily }
     end
-    to_create { |instance| instance.save validate: false }
-    association :name, factory: :genus_name
-    association :type_name, factory: :species_name
-    tribe
-    subfamily { |a| a.tribe && a.tribe.subfamily }
-    protonym
-    status 'valid'
-  end
 
-  factory :subgenus do
-    after :create do |subgenus|
-      create :taxon_state, taxon_id: subgenus.id
-      subgenus.touch_with_version
+    factory :subgenus, class: Subgenus do
+      association :name, factory: :subgenus_name
+      association :type_name, factory: :species_name
+      genus
     end
-    to_create { |instance| instance.save validate: false }
-    association :name, factory: :subgenus_name
-    association :type_name, factory: :species_name
-    genus
-    protonym
-    status 'valid'
-  end
 
-  factory :species_group_taxon do
-    after :create do |species_group_taxon|
-      create :taxon_state, taxon_id: species_group_taxon.id
-      species_group_taxon.touch_with_version
+    factory :species_group_taxon, class: SpeciesGroupTaxon do
+      association :name, factory: :species_name
+      genus
     end
-    to_create { |instance| instance.save validate: false }
-    association :name, factory: :species_name
-    genus
-    protonym
-    status 'valid'
-  end
 
-  factory :species do
-    after :create do |species|
-      create :taxon_state, taxon_id: species.id
-      species.touch_with_version
+    factory :species, class: Species do
+      association :name, factory: :species_name
+      genus
     end
-    to_create { |instance| instance.save validate: false }
-    association :name, factory: :species_name
-    genus
-    protonym
-    status 'valid'
-  end
 
-  factory :subspecies do
-    after :create do |subspecies|
-      create :taxon_state, taxon_id: subspecies.id
-      subspecies.touch_with_version
+    factory :subspecies, class: Subspecies do
+      association :name, factory: :species_name
+      species
+      genus
     end
-    to_create { |instance| instance.save validate: false }
-    association :name, factory: :species_name
-    species
-    genus
-    protonym
-    status 'valid'
   end
 end
 
 def create_family
-  create_taxon_object 'Formicidae', :family, :family_name
+  _create_taxon 'Formicidae', :family
 end
 
 def create_subfamily name_or_attributes = 'Dolichoderinae', attributes = {}
-  create_taxon_object name_or_attributes, :subfamily, :subfamily_name, attributes
+  _create_taxon name_or_attributes, :subfamily, attributes
 end
 
 def create_tribe name_or_attributes = 'Attini', attributes = {}
-  create_taxon_object name_or_attributes, :tribe, :tribe_name, attributes
-end
-
-def create_taxon name_or_attributes = 'Atta', attributes = {}
-  create_taxon_object name_or_attributes, :genus, :genus_name, attributes
+  _create_taxon name_or_attributes, :tribe, attributes
 end
 
 def create_genus name_or_attributes = 'Atta', attributes = {}
-  create_taxon_object name_or_attributes, :genus, :genus_name, attributes
+  _create_taxon name_or_attributes, :genus, attributes
 end
 
 def create_subgenus name_or_attributes = 'Atta (Subatta)', attributes = {}
-  create_taxon_object name_or_attributes, :subgenus, :subgenus_name, attributes
+  _create_taxon name_or_attributes, :subgenus, attributes
 end
 
 def create_species name_or_attributes = 'Atta major', attributes = {}
-  create_taxon_object name_or_attributes, :species, :species_name, attributes
+  _create_taxon name_or_attributes, :species, attributes
 end
 
 def create_subspecies name_or_attributes = 'Atta major minor', attributes = {}
-  create_taxon_object name_or_attributes, :subspecies, :subspecies_name, attributes
+  _create_taxon name_or_attributes, :subspecies, attributes
 end
 
-def create_taxon_object name_or_attributes, taxon_factory, name_factory, attributes = {}
-  if name_or_attributes.kind_of? String
-    name, epithet, epithets = get_name_parts name_or_attributes
-    attributes = attributes.reverse_merge name: create(name_factory, name: name, epithet: epithet, epithets: epithets), name_cache: name
-  else
-    attributes = name_or_attributes
-  end
+def _create_taxon name_or_attributes, rank, attributes = {}
+  taxon_factory = rank
+  name_factory = "#{rank}_name".to_sym
+
+  attributes =
+    if name_or_attributes.kind_of? String
+      name, epithet, epithets = get_name_parts name_or_attributes
+      name_object = create name_factory, name: name, epithet: epithet, epithets: epithets
+      attributes.reverse_merge name: name_object, name_cache: name
+    else
+      name_or_attributes
+    end
 
   build_stubbed = attributes.delete :build_stubbed
   build = attributes.delete :build
@@ -294,8 +217,83 @@ def create_taxon_version_and_change review_state, user = @user, approver = nil, 
   create :version, item_id: taxon.id, whodunnit: user.id, change_id: change.id
 
   if approver
-    change.update_attributes! approver: approver, approved_at: Time.now if approver
+    change.update_attributes! approver: approver, approved_at: Time.now
   end
 
   taxon
+end
+
+# Mimics `TaxaController#build_new_taxon` to avoid interference from the factories.
+def build_new_taxon rank
+  taxon_class = "#{rank}".titlecase.constantize
+
+  taxon = taxon_class.new
+  taxon.build_name
+  taxon.build_type_name
+  taxon.build_protonym
+  taxon.protonym.build_name
+  taxon.protonym.build_authorship
+  taxon
+end
+
+def build_new_taxon_and_set_parent rank, parent
+  taxon = build_new_taxon rank
+  taxon.parent = parent
+  taxon
+end
+
+# New set of light factories because FactoryGirl does too much and some factories are bugged.
+# TODO refactor and merge.
+def build_minimal_family
+  name = FamilyName.new name: "Formicidae"
+  protonym = Protonym.first || minimal_protonym
+  Family.new name: name, protonym: protonym
+end
+
+def minimal_family
+  build_minimal_family.tap &:save
+end
+
+def minimal_subfamily
+  name = SubfamilyName.new name: "Minimalinae"
+  protonym = Protonym.first || minimal_protonym
+  Subfamily.new(name: name, protonym: protonym).tap &:save
+end
+
+def minimal_protonym
+  reference = UnknownReference.new citation: "book", citation_year: 2000, title: "Ants plz"
+  citation = Citation.new reference: reference
+  name = Name.new name: "name"
+
+  Protonym.new name: name, authorship: citation
+end
+
+def an_old_taxon
+  taxon = minimal_family
+  taxon.taxon_state.update_columns review_state: :old
+  taxon.reload
+  taxon
+end
+
+def old_family_and_subfamily
+  family = an_old_taxon
+
+  subfamily = minimal_subfamily
+  subfamily.family = family
+  subfamily.save
+  subfamily.taxon_state.update_columns review_state: :old
+  subfamily.reload
+
+  # Confirm.
+  expect(family).to be_old
+  expect(subfamily.family).to eq family
+  expect(subfamily).to be_old
+
+  [family, subfamily]
+end
+
+def mark_as_auto_generated objects
+  Array.wrap(objects)
+    .each { |object| object.update_columns auto_generated: true }
+    .each { |object| expect(object).to be_auto_generated }
 end

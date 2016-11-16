@@ -5,11 +5,9 @@ Feature: Editing a taxon
   So that information is kept accurate
   So people use AntCat
 
-  Background:
-    Given the Formicidae family exists
-
   Scenario: Editing a family's name
-    Given I am logged in
+    Given the Formicidae family exists
+    And I am logged in
 
     When I go to the edit page for "Formicidae"
     And I click the name field
@@ -19,7 +17,8 @@ Feature: Editing a taxon
     Then I should see "Wildencidae" in the header
 
   Scenario: Trying to enter a blank name
-    Given I am logged in
+    Given the Formicidae family exists
+    And I am logged in
 
     When I go to the edit page for "Formicidae"
     And I click the name field
@@ -106,24 +105,6 @@ Feature: Editing a taxon
     And I save my changes
     Then the taxon mouseover should contain "Fisher 2004. Ants. Psyche 3:3"
     And I should see "Authorship notes" in the headline
-
-  @search
-  Scenario: Supplying the authorship when there wasn't one before
-    Given PENDING: this state can (should?) never happen
-    # Artificially created in a step. If this happens we have bigger issues
-    And these references exist
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
-    And there is a genus "Eciton" without protonym authorship
-    And I am logged in
-
-    When I go to the edit page for "Eciton"
-    And I click the authorship field
-    And in the reference picker, I search for the author "Fisher"
-    And I click the first search result
-    And I press "OK"
-    And I save my changes
-    Then the taxon mouseover should contain "Fisher 2004. Ants. Psyche 3:3 "
 
   Scenario: Changing the authorship but cancelling
     Given there is a genus "Eciton"

@@ -3,8 +3,7 @@ require 'spec_helper'
 describe Api::V1::AuthorNamesController do
   describe "getting data" do
     it "fetches an author name" do
-      barry_bolton = create :author
-      create :author_name, name: 'Bolton', author: barry_bolton
+      create :author_name, name: 'Bolton'
 
       get :show, id: 1
       expect(response.status).to eq 200
@@ -12,10 +11,8 @@ describe Api::V1::AuthorNamesController do
     end
 
     it "gets all author names keys" do
-      barry_bolton = create :author
-      second = create :author
-      create :author_name, name: 'Bolton', author: barry_bolton
-      create :author_name, name: 'Fisher', author: second
+      create :author_name, name: 'Bolton'
+      create :author_name, name: 'Fisher'
 
       get :index
       expect(response.status).to eq 200

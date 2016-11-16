@@ -1,14 +1,14 @@
 module ReferenceComparable
   # requires that the client have:
-  #   type, author, title
+  #   type, principal_author_last_name_cache, title
   # compares using these fields:
-  #   type, author, title, year, pagination, series_volume_issue
+  #   type, principal_author_last_name_cache, title, year, pagination, series_volume_issue
   # ignores:
   #   :journal, :place, :publisher
 
   def <=> rhs
     return 0.00 unless type == rhs.type
-    return 0.00 unless normalize_author(author) == normalize_author(rhs.author)
+    return 0.00 unless normalize_author(principal_author_last_name_cache) == normalize_author(rhs.principal_author_last_name_cache)
 
     result = match_title(rhs) || match_article(rhs) || match_book(rhs)
     year_matches = year_matches? rhs
@@ -47,6 +47,7 @@ module ReferenceComparable
       return 1.00 if remove_punctuation!(other_title) == remove_punctuation!(title)
     end
 
+    # TODO use `#is_a?`
     def match_article rhs
       return unless rhs.type == 'ArticleReference' && type == 'ArticleReference' &&
         rhs.series_volume_issue.present? && series_volume_issue.present? &&
@@ -56,6 +57,7 @@ module ReferenceComparable
         normalize_series_volume_issue(series_volume_issue)
     end
 
+    # TODO use `#is_a?`
     def match_book rhs
       return unless rhs.type == 'BookReference' && type == 'BookReference' &&
         rhs.pagination.present? && pagination.present?
@@ -109,6 +111,7 @@ module ReferenceComparable
     def remove_parenthesized_taxon_names! string
       match = string.match(/ \(.+?\)/)
       return string unless match
+
       possible_taxon_names = match.to_s.strip.gsub(/[(),:]/, '').split(/[ ]/)
       any_taxon_names = possible_taxon_names.any? do |word|
         ['Formicidae', 'Hymenoptera'].include? word
@@ -124,8 +127,12 @@ module ReferenceComparable
     end
 
     def replace_roman_numerals! string
-      [['i', 1], ['ii', 2], ['iii', 3], ['iv', 4], ['v', 5], ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
-      ].each do |roman, arabic|
+      roman_numerals = [
+        ['i',  1], ['ii',  2], ['iii',  3], ['iv', 4], ['v',  5],
+        ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
+      ]
+
+      roman_numerals.each do |roman, arabic|
         string.gsub! /\b#{roman}\b/, arabic.to_s
       end
       string

@@ -22,10 +22,9 @@ class ReferencesController < ApplicationController
 
     if params[:nesting_reference_id]
       build_nested_reference params[:nesting_reference_id], params[:citation_year]
-    end
-
-    if params[:reference_to_copy]
-      copy_reference params[:reference_to_copy]
+    elsif params[:reference_to_copy]
+      reference_to_copy = Reference.find params[:reference_to_copy]
+      @reference = reference_to_copy.new_from_copy
     end
   end
 
@@ -34,6 +33,7 @@ class ReferencesController < ApplicationController
 
   def create
     @reference = new_reference
+
     if save
       @reference.create_activity :create
       redirect_to reference_path(@reference), notice: <<-MSG
@@ -82,6 +82,8 @@ class ReferencesController < ApplicationController
     end
   end
 
+  # TODO handle error, if any. Also in `#finish_reviewing` and `#restart_reviewing`.
+  # TODO allow JSON requests.
   def start_reviewing
     @reference.start_reviewing!
     make_default_reference @reference
@@ -99,15 +101,15 @@ class ReferencesController < ApplicationController
     redirect_to latest_additions_references_path
   end
 
+  # TODO handle error, if any.
   def approve_all
     Reference.approve_all
     redirect_to latest_changes_references_path, notice: "Approved all references."
   end
 
   def search
-    unless params[:q].present? || params[:author_q].present?
-      return redirect_to action: :index
-    end
+    user_is_searching = params[:q].present? || params[:author_q].present?
+    return redirect_to action: :index unless user_is_searching
 
     unparsable_author_names_error_message = <<-MSG
       Could not parse author names. Start by typing a name, wait for a while
@@ -148,7 +150,8 @@ class ReferencesController < ApplicationController
     searching = params[:q].present?
 
     references =  if id
-                    Reference.where(id: id) # where and not find because we need to return an array
+                    # `where` and not `find` because we need to return an array.
+                    Reference.where(id: id)
                   elsif searching
                     Reference.do_search params.merge endnote_export: true
                   else
@@ -219,44 +222,11 @@ class ReferencesController < ApplicationController
       @reference.nesting_reference_id = reference_id
     end
 
-    def copy_reference reference_id
-      @reference_to_copy = Reference.find reference_id
-      @reference = @reference.becomes @reference_to_copy.class
-
-      # Basic fields and notes.
-      copy_fields :author_names_string,
-                  :citation_year,
-                  :title,
-                  :pagination,
-                  :public_notes,
-                  :editor_notes,
-                  :taxonomic_notes
-
-      case @reference_to_copy
-      when ArticleReference
-        copy_fields :series_volume_issue
-        @reference.journal_name = @reference_to_copy.journal.name
-      when BookReference
-        place = @reference_to_copy.publisher.place.name
-        publisher = @reference_to_copy.publisher.name
-        @reference.publisher_string = "#{place}: #{publisher}"
-      when NestedReference
-        copy_fields :pages_in, :nesting_reference_id
-      when UnknownReference
-        copy_fields :citation
-      end
-    end
-
-    def copy_fields *fields
-      fields.each do |field|
-        @reference.send "#{field}=".to_sym, @reference_to_copy.send(field)
-      end
-    end
-
     def make_default_reference reference
       DefaultReference.set session, reference
     end
 
+    # TODO probably extract to another infamous class.
     def save
       Reference.transaction do
         clear_document_params_if_necessary
@@ -273,6 +243,7 @@ class ReferencesController < ApplicationController
         # before validating, so we need to manually raise here.
         raise ActiveRecord::Rollback if @reference.errors.present?
 
+        # TODO maybe move to a callback, but maybe not.
         unless params[:possible_duplicate].present?
           if @reference.check_for_duplicate
             @possible_duplicate = true
@@ -293,8 +264,8 @@ class ReferencesController < ApplicationController
       params[:reference][:pagination] =
         case @reference
         when ArticleReference then params[:article_pagination]
-        when BookReference then params[:book_pagination]
-        else nil
+        when BookReference    then params[:book_pagination]
+        else                       nil
         end
     end
 
@@ -342,7 +313,8 @@ class ReferencesController < ApplicationController
 
     def clear_document_params_if_necessary
       return unless params[:reference][:document_attributes]
-      params[:reference][:document_attributes][:id] = nil unless params[:reference][:document_attributes][:url].present?
+      return unless params[:reference][:document_attributes][:url].present?
+      params[:reference][:document_attributes][:id] = nil
     end
 
     def new_reference
@@ -358,7 +330,7 @@ class ReferencesController < ApplicationController
       selected_tab = params[:selected_tab]
       selected_tab = 'Unknown' if selected_tab == 'Other'
       type = "#{selected_tab}Reference".constantize
-      reference = @reference.becomes(type)
+      reference = @reference.becomes type
       reference.type = type
       reference
     end

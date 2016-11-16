@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe MergeAuthorsHelper do
-  # Formatting a list, with conjunction
   describe "#conjuncted_list" do
     it "handles two items" do
       result = helper.conjuncted_list ['a', 'b'], 'item'

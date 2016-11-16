@@ -1,3 +1,7 @@
+# TODO use this for validating `Taxon#status`.
+# Possibly also override `Taxon#status=" so we can set it like this
+# `taxon.status = :homonym` instead of `taxon.status = Status['homonym'].to_s`.
+
 class Status
   def initialize hash
     @hash = hash
@@ -5,7 +9,7 @@ class Status
 
   def to_s *options
     numeric_argument = options.find { |option| option.kind_of? Numeric }
-    options << :plural if numeric_argument && numeric_argument > 1 #hmm
+    options << :plural if numeric_argument && numeric_argument > 1
 
     if options.include?(:plural)
       @hash[:plural_label]

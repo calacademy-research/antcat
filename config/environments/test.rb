@@ -33,7 +33,10 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  config.log_level = :info
+  config.log_level = :fatal
   config.active_support.test_order = :sorted
-
+  # TODO run tests in random order.
+  # Tests should be run in random order to flush out bugs, but:
+  # 1) We're not ready for that (too many failures)
+  # 2) RSpec ignores `test_order = :random` (use `rspec --order rand` instead)
 end

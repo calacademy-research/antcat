@@ -1,38 +1,19 @@
 require 'spec_helper'
 
 describe AuthorName do
-  it { should validate_presence_of(:author) }
+  it { should be_versioned }
+  it { should validate_presence_of :author }
+  it { should validate_presence_of :name }
+  it { should have_many :references }
+
   let(:author) { Author.create! }
-
-  it "has many references" do
-    author_name = AuthorName.create! name: 'Fisher, B.L.', author: author
-
-    reference = create :reference
-    author_name.references << reference
-
-    expect(author_name.references.first).to eq reference
-  end
-
-  it "can't be blank" do
-    author_name = AuthorName.new
-    author_name.author = create :author
-
-    author_name.name = nil
-    expect(author_name).not_to be_valid
-
-    author_name.name = ''
-    expect(author_name).not_to be_valid
-
-    author_name.name = 'Bolton, B.'
-    expect(author_name).to be_valid
-  end
 
   it "can't be a duplicate" do
     author_name = create :author_name, name: 'Bolton'
     author_name.author = create :author
     author_name.save!
 
-    author_name = FactoryGirl.build :author_name, name: 'Bolton'
+    author_name = build :author_name, name: 'Bolton'
     expect(author_name).not_to be_valid
   end
 
@@ -123,12 +104,12 @@ describe AuthorName do
       ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
         AuthorName.create! name: name, author: author
       end
-      reference = create :reference, author_names: [AuthorName.find_by_name('Most Recent')]
+      reference = create :reference, author_names: [AuthorName.find_by(name: 'Most Recent')]
       ReferenceAuthorName.create! created_at: Time.now - 5,
-        author_name: AuthorName.find_by_name('Recent'),
+        author_name: AuthorName.find_by(name: 'Recent'),
         reference: reference
       ReferenceAuthorName.create! created_at: Time.now - 10,
-        author_name: AuthorName.find_by_name('Old'),
+        author_name: AuthorName.find_by(name: 'Old'),
         reference: reference
 
       expect(AuthorName.search).to eq ['Most Recent', 'Recent', 'Old', 'Never Used']
@@ -158,15 +139,6 @@ describe AuthorName do
       author_name = AuthorName.new name: 'Baroni Urbani, C.'
       expect(author_name.last_name).to eq 'Baroni Urbani'
       expect(author_name.first_name_and_initials).to eq 'C.'
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        author_name = create :author_name
-        expect(author_name.versions.last.event).to eq 'create'
-      end
     end
   end
 end

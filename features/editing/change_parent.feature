@@ -6,8 +6,7 @@ Feature: Changing parent genus, species, tribe or subfamily
   So people use AntCat
 
   Background:
-    Given the Formicidae family exists
-    And I am logged in
+    Given I am logged in
 
   Scenario: Changing a species's genus
     Given there is a genus "Atta"
@@ -233,6 +232,8 @@ Feature: Changing parent genus, species, tribe or subfamily
     And the name in the header should be "Eciton nigra minor"
 
   Scenario: Parent field not visible for the family
+    Given the Formicidae family exists
+
     When I go to the edit page for "Formicidae"
     Then I should not see the parent name field
 
@@ -274,7 +275,8 @@ Feature: Changing parent genus, species, tribe or subfamily
     And "Ecitoni" should be selected in the subfamilies index
 
   Scenario: Changing a genus's subfamily
-    Given there is a subfamily "Attininae"
+    Given the Formicidae family exists
+    And there is a subfamily "Attininae"
     And genus "Atta" exists in that subfamily
     And there is a subfamily "Ecitoninae"
 

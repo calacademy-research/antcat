@@ -50,12 +50,6 @@ module NavigationHelpers
     when /^the page for that reference$/
       reference_path(@reference || Reference.first)
 
-    when /^the missing references page$/
-      '/missing_references'
-    when /^the missing reference edit page for "([^"]*)"$/
-      reference = MissingReference.find_by_citation $1
-      "/missing_references/#{reference.id}/edit"
-
     when /^the merge authors page$/
       merge_authors_path
     when /^the authors page$/
@@ -73,6 +67,12 @@ module NavigationHelpers
     when /^the comments page$/
       "/comments"
 
+    when /^the database scripts page$/
+      "/database_scripts"
+
+    when /^the site notices page$/
+      "/site_notices"
+
     when /^the tooltips editing page$/
       "/tooltips"
 
@@ -89,6 +89,9 @@ module NavigationHelpers
       "/feedback"
 
     # User
+    when /^the user page for "([^"]*)"$/
+      user = User.find_by name: $1
+      "/users/#{user.id}"
     when /^the edit user page$/
       '/users/edit'
     when /^the forgot password page$/

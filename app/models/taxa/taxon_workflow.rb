@@ -1,6 +1,7 @@
-class Taxon < ActiveRecord::Base
+class Taxon < ApplicationRecord
   include Workflow
   include Workflow::ExternalTable
+
   has_one :taxon_state
 
   workflow do
@@ -17,22 +18,18 @@ class Taxon < ActiveRecord::Base
     waiting?
   end
 
-  def can_be_approved_by? change, user
+  # Allow optional `changed_by` for performance reasons.
+  def can_be_approved_by? change, user, changed_by = nil
     return unless user && change
-    user != change.changed_by && waiting? && user.can_approve_changes?
+    return unless waiting? && user.can_approve_changes?
+
+    changed_by ||= change.changed_by
+    user != changed_by
   end
 
   # Returns the ID of the most recent change that touches this taxon.
-  # TODO: Fix these duplicates once the tests pass
   def last_change
-    Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').last
-  end
-
-  # Returns the ID of the most recent change that touches this taxon.
-  # Query that looks at all transactions and picks the latest one
-  # used for review change link
-  def latest_change
-    Change.joins(:versions).where('versions.item_id = ? AND versions.item_type = ?', id, 'Taxon').last
+    Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
   end
 
   def last_version

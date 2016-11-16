@@ -1,36 +1,34 @@
 require 'spec_helper'
 
 describe NestedReference do
-  it { should validate_presence_of(:year) }
-  it { should validate_presence_of(:pages_in) }
-  it { should validate_presence_of(:nesting_reference) }
+  it { should validate_presence_of :year }
+  it { should validate_presence_of :pages_in }
+  it { should validate_presence_of :nesting_reference }
+  it { should allow_value(nil).for :title }
 
   describe "Validation" do
-    before do
-      @reference = NestedReference.new title: 'asdf',
-        author_names: [create(:author_name)],
-        citation_year: '2010',
-        nesting_reference: create(:reference),
-        pages_in: 'Pp 2 in:'
-    end
+    context "shared setup" do
+      let(:reference) do
+        NestedReference.new title: 'asdf',
+          author_names: [create(:author_name)],
+          citation_year: '2010',
+          nesting_reference: create(:reference),
+          pages_in: 'Pp 2 in:'
+      end
 
-    it "is valid with the attributes given above" do
-      expect(@reference).to be_valid
-    end
+      it "is valid with the attributes given above" do
+        expect(reference).to be_valid
+      end
 
-    it "is valid without a title" do
-      @reference.title = nil
-      expect(@reference).to be_valid
-    end
+      it "refers to an existing reference" do
+        reference.nesting_reference_id = 232434
+        expect(reference).not_to be_valid
+      end
 
-    it "refers to an existing reference" do
-      @reference.nesting_reference_id = 232434
-      expect(@reference).not_to be_valid
-    end
-
-    it "cannot point to itself" do
-      @reference.nesting_reference_id = @reference.id
-      expect(@reference).not_to be_valid
+      it "cannot point to itself" do
+        reference.nesting_reference_id = reference.id
+        expect(reference).not_to be_valid
+      end
     end
 
     it "cannot point to something that points to itself" do

@@ -1,3 +1,5 @@
+# TODO move most code to somewhere else and call it from here.
+
 require "fuzzystringmatch"
 
 namespace :antcat do

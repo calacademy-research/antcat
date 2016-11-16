@@ -7,10 +7,9 @@ $.fn.previewMarkdownLink = (source, previewArea) ->
       type: 'post'
       data: text: $(source).val()
       dataType: 'html'
-      success: (html) ->
-        $(previewArea).html html
-      error: ->
-        $(previewArea).text "Error rendering preview"
+      success: (html) -> $(previewArea).html html
+      error: -> $(previewArea).text "Error rendering preview"
 
 $ ->
-  $("#preview_link").previewMarkdownLink "#task_description", "#preview"
+  $("#task_preview_link").previewMarkdownLink "#task_description", "#preview"
+  $("#site_notice_preview_link").previewMarkdownLink "#site_notice_message", "#preview"

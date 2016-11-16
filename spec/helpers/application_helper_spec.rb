@@ -11,7 +11,7 @@ describe ApplicationHelper do
       expect(result).to eq '<span>a | b</span>'
     end
 
-    it "should always be html safe" do
+    it "is always html safe" do
       expect(helper.make_link_menu('a'.html_safe, 'b'.html_safe)).to be_html_safe
       expect(helper.make_link_menu(['a'.html_safe, 'b'])).to be_html_safe
     end
@@ -68,6 +68,12 @@ describe ApplicationHelper do
       it "raises if called on unsafe strings" do
         expect { helper.unitalicize('Attini <i>Atta major</i> r.') }.to raise_error
       end
+    end
+  end
+
+  describe "#a_timestamp_formatter" do
+    it "uses a short format" do
+      expect(helper.send :a_timestamp_formatter, Time.parse('2001-1-2')).to eq '2001-01-02'
     end
   end
 

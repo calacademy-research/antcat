@@ -7,7 +7,6 @@ Given(/^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/) d
   end
 
   taxon = create_species
-
   taxon.update_attributes! status: 'synonym' if invalid
   taxon.protonym.authorship.update_attributes! reference: reference
 end
@@ -80,5 +79,6 @@ When(/^I check valid only in the advanced search form$/) do
 end
 
 Then(/^I should get a download with the filename "([^\"]*)"$/) do |filename|
-  expect(page.response_headers['Content-Disposition']).to include("filename=\"#{filename}\"")
+  content_disposition = page.response_headers['Content-Disposition']
+  expect(content_disposition).to include "filename=\"#{filename}\""
 end

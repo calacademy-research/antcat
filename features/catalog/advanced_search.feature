@@ -4,8 +4,7 @@ Feature: Searching the catalog
   So that I can find taxa with their parents and siblings
 
   Background:
-    Given the Formicidae family exists
-    And I go to the catalog
+    Given I go to the catalog
     And I follow the first "Advanced Search"
 
   Scenario: Searching when not logged in

@@ -13,23 +13,18 @@ module Taxa::Statistics
     end
   end
 
-  def child_list_query children_selector, conditions = {}
-    children = send children_selector
-    children = children.where(fossil: !!conditions[:fossil]) if conditions.key? :fossil
-    incertae_sedis_in = conditions[:incertae_sedis_in]
-    children = children.where(incertae_sedis_in: incertae_sedis_in) if incertae_sedis_in
-    children = children.where(hong: !!conditions[:hong]) if conditions.key? :hong
-    children = children.where(status: 'valid')
-    children = children.ordered_by_name
-    children
-  end
-
   protected
-    def get_statistics ranks
+    # TODO this is really slow; figure out how to add database indexes for this.
+    def get_statistics ranks, valid_only: false
       statistics = {}
       ranks.each do |rank|
-        count = send(rank).group('fossil', 'status').count
-        delete_original_combinations count
+        count = if valid_only
+                  send(rank).valid
+                else
+                  send(rank)
+                end.group('fossil', 'status').count
+        delete_original_combinations count unless valid_only
+
         self.class.massage_count count, rank, statistics
       end
       statistics

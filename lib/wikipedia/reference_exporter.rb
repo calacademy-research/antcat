@@ -1,7 +1,15 @@
+# Class for exporting references to Wikipedia citation templates.
+#
+# Supported reference types:
+#   `ArticleReference` --> https://en.wikipedia.org/wiki/Template:Cite_journal
+#   `BookReference`    --> https://en.wikipedia.org/wiki/Template:Cite_book
+
 module Wikipedia
   class ReferenceExporter
     def self.export reference
-      "Wikipedia::#{reference.type}".constantize.new(reference).format
+      formatter = "Wikipedia::#{reference.type}".safe_constantize
+      return "<<<cannot export references of type #{reference.type}>>>" unless formatter
+      formatter.new(reference).format
     end
 
     def initialize reference
@@ -32,12 +40,9 @@ module Wikipedia
         names = @reference.author_names.map &:last_name
         ref_names =
           case names.size
-          when 1
-            "#{names.first}"
-          when 2
-            "#{names.first}_&_#{names.second}"
-          else
-            "#{names.first}_et_al"
+          when 1 then "#{names.first}"
+          when 2 then "#{names.first}_&_#{names.second}"
+          else        "#{names.first}_et_al"
           end
 
         ref_names.tr(' ', '_') << "_#{@reference.year}"

@@ -14,7 +14,7 @@
         %li.tabs-title.is-active
           =link_to "Description", "#description"
         %li.tabs-title
-          =link_to "Preview", "#preview", id: "preview_link"
+          =link_to "Preview", "#preview", id: "task_preview_link"
         %li.tabs-title
           =link_to "Formatting Help", "#formatting_help"
 
@@ -25,6 +25,6 @@
         #preview.tabs-panel
 
         #formatting_help.tabs-panel
-          =render "markdown_formatting_help"
+          =render "shared/markdown_formatting_help"
 
   =button_tag "Save", class: "btn-save" unless @task.archived?

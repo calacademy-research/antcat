@@ -16,8 +16,6 @@ schemes: [http]
 consumes: [application/json]
 produces: [application/json]
 
-
-
 paths:
   /taxa/{id}:
     get:
@@ -153,7 +151,6 @@ paths:
             $ref: '#/definitions/Author'
         "404":
           description: Record not found
-
 
   /author_names/{id}:
     get:
@@ -674,8 +671,6 @@ paths:
         "404":
           description: Record not found
 
-
-
 definitions:
   Taxa:
     description: Abridged taxa records
@@ -806,9 +801,6 @@ definitions:
           display:
             type: boolean
             description: True if it should be shown in the taxon browser. If false, it will still show in searches.
-
-
-
 
   Author:
     description: Author primary key IDs
@@ -952,8 +944,6 @@ definitions:
         format: date-time
         description: Automatically generated timestamp for most recent update
 
-
-
   Citation:
     description: Citation
     type: object
@@ -1015,8 +1005,6 @@ definitions:
         type: string
         format: date-time
         description: Automatically generated timestamp for most recent update
-
-
 
   Journal:
     description: Journal
@@ -1142,11 +1130,7 @@ definitions:
         type: string
       principal_author_last_name_cache:
         type: string
-      bolton_key_cache:
-        type: string
       reason_missing:
-        type: string
-      key_cache:
         type: string
       review_state:
         type: string
@@ -1175,11 +1159,8 @@ definitions:
         format: date-time
         description: Automatically generated timestamp for most recent update
 
-
-
-
   ReferenceAuthorName:
-    description: reference authorn name - table to associate references with author names
+    description: reference author name - table to associate references with author names
     type: object
     properties:
       id:

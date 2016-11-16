@@ -6,12 +6,11 @@ Feature: Editing references sections
   So people use AntCat
 
   Background:
-    Given the Formicidae family exists
-    And there is a subfamily "Dolichoderinae" with a reference section "Original reference"
-    And there is a genus "Atta"
-    And I am logged in
+    Given I am logged in
 
   Scenario: Editing a reference section
+    Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
+
     When I go to the edit page for "Dolichoderinae"
     Then the reference section should be "Original reference"
 
@@ -23,6 +22,8 @@ Feature: Editing references sections
     And the reference section should be "(none)"
 
   Scenario: Editing a reference section, but cancelling
+    Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
+
     When I go to the edit page for "Dolichoderinae"
     And I click the reference section
     And I fill in the references field with "(none)"
@@ -30,6 +31,8 @@ Feature: Editing references sections
     Then the reference section should be "Original reference"
 
   Scenario: Adding a reference section
+    Given there is a genus "Atta"
+
     When I go to the edit page for "Atta"
     Then the reference section should be empty
 
@@ -42,12 +45,16 @@ Feature: Editing references sections
     Then the reference section should be "New reference"
 
   Scenario: Adding a reference section, but cancelling
+    Given there is a genus "Atta"
+
     When I go to the edit page for "Atta"
     And I click the "Add" reference section button
     And I cancel the reference section's changes
     Then the reference section should be empty
 
   Scenario: Deleting a reference section
+    Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
+
     When I go to the edit page for "Dolichoderinae"
     And I click the reference section
     Then I should see the "Delete" button for the reference section

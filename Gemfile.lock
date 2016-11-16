@@ -212,8 +212,6 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    js_cookie_rails (1.0.1)
-      railties (>= 3.1)
     json (1.8.3)
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
@@ -293,6 +291,7 @@ GEM
     request_store (1.2.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    rouge (2.0.6)
     rsolr (1.0.13)
       builder (>= 2.1.2)
     rspec-core (3.3.2)
@@ -365,6 +364,8 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unread (0.7.1)
+      activerecord (>= 3)
     warden (1.2.3)
       rack (>= 1.0)
     webmock (1.22.2)
@@ -412,7 +413,6 @@ DEPENDENCIES
   invisible_captcha
   jquery-rails (> 4.0)
   jquery-ui-rails (> 5.0)
-  js_cookie_rails
   launchy
   mysql2
   paper_trail!
@@ -427,6 +427,7 @@ DEPENDENCIES
   rake (< 11.0)
   redcarpet
   request_store
+  rouge
   rspec-core
   rspec-rails
   sass-rails
@@ -439,6 +440,7 @@ DEPENDENCIES
   thin
   twitter-typeahead-rails
   uglifier
+  unread
   webmock
   will_paginate
   workflow

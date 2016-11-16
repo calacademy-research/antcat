@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161022044112) do
+ActiveRecord::Schema.define(version: 20161114180252) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -123,81 +123,6 @@ ActiveRecord::Schema.define(version: 20161022044112) do
 
   add_index "feedbacks", ["user_id"], name: "index_feedbacks_on_user_id", using: :btree
 
-  create_table "hol_data", force: :cascade do |t|
-    t.integer "tnuid",                  limit: 4
-    t.integer "tnid",                   limit: 4
-    t.string  "name",                   limit: 255
-    t.string  "lsid",                   limit: 255
-    t.string  "author",                 limit: 255
-    t.string  "rank",                   limit: 255
-    t.string  "status",                 limit: 255
-    t.string  "is_valid",               limit: 255
-    t.boolean "fossil"
-    t.integer "num_spms",               limit: 4
-    t.boolean "many_antcat_references"
-    t.boolean "many_hol_references"
-  end
-
-  add_index "hol_data", ["tnuid"], name: "hol_data_tnuid_idx", using: :btree
-
-  create_table "hol_literature_pages", force: :cascade do |t|
-    t.integer "literatures_id", limit: 4
-    t.string  "url",            limit: 255
-    t.string  "page",           limit: 255
-  end
-
-  create_table "hol_literatures", force: :cascade do |t|
-    t.integer "tnuid",     limit: 4
-    t.integer "pub_id",    limit: 4
-    t.string  "taxon",     limit: 255
-    t.string  "name",      limit: 255
-    t.string  "describer", limit: 255
-    t.string  "rank",      limit: 255
-    t.string  "year",      limit: 255
-    t.string  "month",     limit: 255
-    t.string  "comments",  limit: 255
-    t.string  "full_pdf",  limit: 255
-    t.string  "pages",     limit: 255
-    t.string  "public",    limit: 255
-    t.string  "author",    limit: 255
-  end
-
-  create_table "hol_synonyms", force: :cascade do |t|
-    t.integer "tnuid",      limit: 4
-    t.integer "synonym_id", limit: 4
-    t.text    "json",       limit: 4294967295
-  end
-
-  create_table "hol_taxon_data", force: :cascade do |t|
-    t.integer "tnuid",               limit: 4
-    t.text    "json",                limit: 4294967295
-    t.string  "author_last_name",    limit: 255
-    t.integer "antcat_author_id",    limit: 4
-    t.string  "journal_name",        limit: 255
-    t.integer "hol_journal_id",      limit: 4
-    t.integer "antcat_journal_id",   limit: 4
-    t.integer "year",                limit: 4
-    t.integer "hol_pub_id",          limit: 4
-    t.integer "start_page",          limit: 4
-    t.integer "end_page",            limit: 4
-    t.integer "antcat_protonym_id",  limit: 4
-    t.integer "antcat_reference_id", limit: 4
-    t.integer "antcat_name_id",      limit: 4
-    t.integer "antcat_citation_id",  limit: 4
-    t.string  "rank",                limit: 255
-    t.string  "rel_type",            limit: 255
-    t.boolean "fossil"
-    t.string  "status",              limit: 255
-    t.integer "antcat_taxon_id",     limit: 4
-    t.integer "valid_tnuid",         limit: 4
-    t.string  "name",                limit: 255
-    t.string  "is_valid",            limit: 255
-  end
-
-  add_index "hol_taxon_data", ["antcat_name_id"], name: "hol_taxon_data_antcat_name_id_idx", using: :btree
-  add_index "hol_taxon_data", ["antcat_taxon_id"], name: "hol_taxon_data_antcat_taxon_id_idx", using: :btree
-  add_index "hol_taxon_data", ["tnuid"], name: "hol_taxon_data_tnuid_idx", using: :btree
-
   create_table "journals", force: :cascade do |t|
     t.string   "name",           limit: 255
     t.datetime "created_at"
@@ -261,6 +186,16 @@ ActiveRecord::Schema.define(version: 20161022044112) do
   add_index "publishers", ["name"], name: "publishers_name_idx", using: :btree
   add_index "publishers", ["place_id"], name: "publishers_place_id_idx", using: :btree
 
+  create_table "read_marks", force: :cascade do |t|
+    t.integer  "readable_id",   limit: 4
+    t.string   "readable_type", limit: 255, null: false
+    t.integer  "reader_id",     limit: 4
+    t.string   "reader_type",   limit: 255, null: false
+    t.datetime "timestamp"
+  end
+
+  add_index "read_marks", ["reader_id", "reader_type", "readable_type", "readable_id"], name: "read_marks_reader_readable_index", using: :btree
+
   create_table "reference_author_names", force: :cascade do |t|
     t.integer  "author_name_id", limit: 4
     t.integer  "reference_id",   limit: 4
@@ -322,7 +257,6 @@ ActiveRecord::Schema.define(version: 20161022044112) do
     t.string   "author_names_suffix",              limit: 255
     t.string   "principal_author_last_name_cache", limit: 255
     t.string   "reason_missing",                   limit: 255
-    t.string   "key_cache",                        limit: 255
     t.string   "review_state",                     limit: 255
     t.text     "formatted_cache",                  limit: 65535
     t.text     "inline_citation_cache",            limit: 65535
@@ -338,6 +272,17 @@ ActiveRecord::Schema.define(version: 20161022044112) do
   add_index "references", ["nesting_reference_id"], name: "references_nested_reference_id_idx", using: :btree
   add_index "references", ["publisher_id"], name: "references_publisher_id_idx", using: :btree
   add_index "references", ["updated_at"], name: "references_updated_at_idx", using: :btree
+
+  create_table "site_notices", force: :cascade do |t|
+    t.string   "title",      limit: 255
+    t.text     "message",    limit: 65535
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.string   "blurb",      limit: 255
+  end
+
+  add_index "site_notices", ["user_id"], name: "index_site_notices_on_user_id", using: :btree
 
   create_table "synonyms", force: :cascade do |t|
     t.integer  "senior_synonym_id", limit: 4
@@ -411,6 +356,7 @@ ActiveRecord::Schema.define(version: 20161022044112) do
   add_index "taxa", ["homonym_replaced_by_id"], name: "index_taxa_on_homonym_replaced_by_id", using: :btree
   add_index "taxa", ["homonym_replaced_by_id"], name: "taxa_homonym_resolved_to_id_index", using: :btree
   add_index "taxa", ["id", "type"], name: "taxa_id_and_type_idx", using: :btree
+  add_index "taxa", ["name_cache"], name: "index_taxa_on_name_cache", using: :btree
   add_index "taxa", ["name_id"], name: "taxa_name_id_idx", using: :btree
   add_index "taxa", ["protonym_id"], name: "index_taxa_on_protonym_id", using: :btree
   add_index "taxa", ["species_id"], name: "taxa_species_id_index", using: :btree
@@ -497,7 +443,9 @@ ActiveRecord::Schema.define(version: 20161022044112) do
 
   add_index "versions", ["change_id"], name: "index_versions_on_change_id", using: :btree
   add_index "versions", ["event"], name: "index_versions_on_event", using: :btree
+  add_index "versions", ["item_id"], name: "index_versions_on_item_id", using: :btree
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   add_index "versions", ["whodunnit"], name: "index_versions_on_whodunnit", using: :btree
 
+  add_foreign_key "site_notices", "users"
 end

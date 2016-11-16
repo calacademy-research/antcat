@@ -1,11 +1,15 @@
+# This controller handles editing by logged in editors.
+# `CatalogController` is responsible for showing taxon pages to users.
+
+# TODO extract more code from here into `Taxa::SaveTaxon`, and rename
+# that class to make it more obvious that it's a form object.
+
 class TaxaController < ApplicationController
-  before_action :authenticate_editor, except: [:autocomplete]
+  before_action :authenticate_editor
   before_action :authenticate_superadmin, only: [:destroy]
-
   before_action :redirect_by_parent_name_id, only: :new
-
   before_action :set_previous_combination, only: [:new, :create, :edit, :update]
-  before_action :set_taxon, except: [:new, :create, :show, :autocomplete]
+  before_action :set_taxon, except: [:new, :create, :show]
 
   def new
     @taxon = get_taxon_for_create
@@ -26,16 +30,10 @@ class TaxaController < ApplicationController
       flash[:notice] += " <strong>#{link}</strong>".html_safe
     end
 
-    # Nil check to avoid showing 404 to the user and breaking the tests.
+    # Nil check to avoid showing 404 to the user and breaking the tests
+    # when we loose track of `@taxon`.
     # `change_parent.feature` fails without this, but it seems to work if the
     # steps are manually reproduced in the browser.
-    #
-    # The reason @taxon may be nil is has to do with saves made in TaxonMother
-    # without updating the local instance variable.
-    #
-    # This imitates the previous behavior we had when CatalogController#show was
-    # responsible for both the index and show actions, and nil ids were silently
-    # redirected to Formicidae (nil are not allowed by routes.rb any longer).
     if @taxon.id
       redirect_to catalog_path(@taxon)
     else
@@ -47,15 +45,12 @@ class TaxaController < ApplicationController
   end
 
   def edit
-    @reset_epithet = reset_epithet
   end
 
   def update
-    @reset_epithet = reset_epithet
     save_taxon
 
-    # See #create for the raison d'etre of this nil check.
-    # Note: Tests pass without this snippets.
+    # Same issue as in `#create`, but tests pass without this check.
     flash[:notice] = "Taxon was successfully updated."
     if @taxon.id
       @taxon.create_activity :update
@@ -81,8 +76,8 @@ class TaxaController < ApplicationController
     end
   end
 
-  # "Light version" of #destroy (which is for superadmins only). This method
-  # allows editors to delete a taxon if there are no [non-taxt] references to it.
+  # "Light version" of `#destroy` (which is for superadmins only). A button to this
+  # method is shown when there are no non-taxt references to the current taxon.
   def destroy_unreferenced
     references = @taxon.references
     if references.empty?
@@ -100,19 +95,15 @@ class TaxaController < ApplicationController
 
   # TODO move logic to model?
   def update_parent
-    new_parent = Taxon.find(params[:new_parent_id])
+    new_parent = Taxon.find params[:new_parent_id]
     case new_parent
-    when Species
-      @taxon.species = new_parent
-    when Genus
-      @taxon.genus = new_parent
-    when Subgenus
-      @taxon.subgenus = new_parent
-    when Subfamily
-      @taxon.subfamily = new_parent
-    when Family
-      @taxon.family = new_parent
+    when Species   then @taxon.species = new_parent
+    when Genus     then @taxon.genus = new_parent
+    when Subgenus  then @taxon.subgenus = new_parent
+    when Subfamily then @taxon.subfamily = new_parent
+    when Family    then @taxon.family = new_parent
     end
+
     @taxon.save!
     redirect_to edit_taxa_path(@taxon)
   end
@@ -133,22 +124,9 @@ class TaxaController < ApplicationController
     render json: taxon_array, status: :ok
   end
 
-  def autocomplete
-    q = params[:q] || ''
-    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
-
-    respond_to do |format|
-      format.json do
-        results = search_results.map do |taxon|
-          { name: taxon.name_html_cache,
-            name_html_cache: taxon.name_html_cache,
-            id: taxon.id,
-            authorship: taxon.authorship_string,
-            search_query: taxon.name_cache }
-        end
-        render json: results
-      end
-    end
+  # Show children on another page for performance reasons.
+  # Example of a very slow page: http://localhost:3000/taxa/429244/edit
+  def show_children
   end
 
   private
@@ -164,7 +142,7 @@ class TaxaController < ApplicationController
     def get_taxon_for_create
       parent = Taxon.find(params[:parent_id])
 
-      taxon = build_new_taxon(params[:rank_to_create])
+      taxon = build_new_taxon params[:rank_to_create]
       taxon.parent = parent
 
       # Radio button case - we got duplicates, and the user picked one
@@ -176,26 +154,31 @@ class TaxaController < ApplicationController
           taxon.status = Status['homonym'].to_s
         else
           taxon.collision_merge_id = collision_resolution
+          # TODO `original_combination` is never used.
           original_combination = Taxon.find(collision_resolution)
-          Taxa::Utility.inherit_attributes_for_new_combination(original_combination, @previous_combination, parent)
+          original_combination.inherit_attributes_for_new_combination @previous_combination, parent
         end
       end
 
+      # TODO move to Taxa::HandlePreviousCombination?
       if @previous_combination
-        Taxa::Utility.inherit_attributes_for_new_combination(taxon, @previous_combination, parent)
+        taxon.inherit_attributes_for_new_combination @previous_combination, parent
       end
 
       taxon
     end
 
     def save_taxon
-      # collision_resolution will be the taxon ID number of the preferred taxon or "homonym"
+      # `collision_resolution` will be the taxon ID of the preferred taxon or "homonym".
       collision_resolution = params[:collision_resolution]
       if collision_resolution.blank? || collision_resolution == 'homonym'
-        @taxon.save_taxon(params[:taxon], @previous_combination)
+        # We get here when 1) there's no `collision_resolution` (the normal case),
+        # or 2) the the editor has confirmed that we are creating a homonym.
+        @taxon.save_from_form params[:taxon], @previous_combination
       else
+        # TODO I believe this is where we lose track of `@taxon.id` (see nil check in `#create`)
         original_combination = Taxon.find(collision_resolution)
-        original_combination.save_taxon(params[:taxon], @previous_combination)
+        original_combination.save_from_form params[:taxon], @previous_combination
       end
 
       if @previous_combination.is_a?(Species) && @previous_combination.children.any?
@@ -205,7 +188,7 @@ class TaxaController < ApplicationController
 
     # TODO looks like this isn't tested
     def create_new_usages_for_subspecies
-      @previous_combination.children.select { |t| t.status == 'valid' }.each do |t|
+      @previous_combination.children.valid.each do |t|
         new_child = Subspecies.new
 
         # Only building type_name because all other will be copied from 't'.
@@ -213,17 +196,8 @@ class TaxaController < ApplicationController
         new_child.build_type_name
         new_child.parent = @taxon
 
-        Taxa::Utility.inherit_attributes_for_new_combination(new_child, t, @taxon)
-
-        new_child.save_taxon(Taxa::Utility.attributes_for_new_usage(new_child, t), t)
-      end
-    end
-
-    def reset_epithet
-      case @taxon
-      when Family then @taxon.name.to_s
-      when Species then @taxon.name.genus_epithet
-      else ""
+        new_child.inherit_attributes_for_new_combination t, @taxon
+        new_child.save_from_form Taxa::Utility.attributes_for_new_usage(new_child, t), t
       end
     end
 
@@ -231,6 +205,7 @@ class TaxaController < ApplicationController
       @taxon.protonym.authorship.reference ||= DefaultReference.get session
     end
 
+    # TODO move to view/helper?
     def default_name_string
       return unless @taxon.kind_of? SpeciesGroupTaxon
       parent = Taxon.find(params[:parent_id])
@@ -240,7 +215,7 @@ class TaxaController < ApplicationController
     def redirect_by_parent_name_id
       return unless params[:parent_name_id]
 
-      if parent = Taxon.find_by_name_id(params[:parent_name_id])
+      if parent = Taxon.find_by(name_id: params[:parent_name_id])
         hash = {
           parent_id: parent.id,
           rank_to_create: params[:rank_to_create],
@@ -251,8 +226,13 @@ class TaxaController < ApplicationController
       end
     end
 
+    # TODO move to model?
+    # This builds a `Name` without subclassing, not eg a `SpeciesName`,
+    # but it seems to work OK.
     def build_new_taxon rank
-      taxon = "#{rank}".titlecase.constantize.new
+      taxon_class = "#{rank}".titlecase.constantize
+
+      taxon = taxon_class.new
       taxon.build_name
       taxon.build_type_name
       taxon.build_protonym

@@ -47,24 +47,23 @@ Given(/^there is a Giovanni reference$/) do
 end
 
 Given(/(?:these|this) unknown references? exists?/) do |table|
-  table.hashes.each do |hash|
-    create_reference :unknown_reference, hash
-  end
+  table.hashes.each { |hash| create_reference :unknown_reference, hash }
 end
 
 def create_reference type, hash
   author = hash.delete 'author'
-  if author
-    author_names = [create(:author_name, name: author)]
-  else
-    authors = hash.delete 'authors'
-    author_names = Parsers::AuthorParser.parse(authors)[:names]
-    author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
-    author_names = author_names.reduce([]) do |author_names, author_name|
-      author_name = AuthorName.find_by_name(author_name) || create(:author_name, name: author_name)
-      author_names << author_name
+  author_names =
+    if author
+      [create(:author_name, name: author)]
+    else
+      authors = hash.delete 'authors'
+      parsed_author_names = Parsers::AuthorParser.parse(authors)[:names]
+      author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
+      parsed_author_names.reduce([]) do |author_names, author_name|
+        author_name = AuthorName.find_by(name: author_name) || create(:author_name, name: author_name)
+        author_names << author_name
+      end
     end
-  end
 
   hash[:year] = hash.delete('year').to_i
   hash[:citation_year] =
@@ -110,18 +109,18 @@ end
 Then(/I should see these entries (with a header )?in this order:/) do |with_header, entries|
   offset = with_header ? 1 : 0
   entries.hashes.each_with_index do |e, i|
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['entry']
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['date']
-    page.should have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['review_state']
+    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['entry']
+    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['date']
+    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['review_state']
   end
 end
 
 When(/^I follow first reference link$/) do
-  first('a.goto_reference_link').click
+  first('.reference').all('a').last.click
 end
 
 When(/I fill in "reference_nesting_reference_id" with the ID for "(.*?)"$/) do |title|
-  reference = Reference.find_by_title title
+  reference = Reference.find_by(title: title)
   step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""
 end
 
@@ -156,7 +155,11 @@ When(/I fill in "([^"]*)" with a URL to a document that doesn't exist/) do |fiel
   step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
-very_long_author_names_string = (0...26).reduce([]) { |a, n| a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A." }.join('; ')
+def very_long_author_names_string
+  (0...26).reduce([]) do |a, n|
+    a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A."
+  end.join('; ')
+end
 
 When(/I fill in "reference_author_names_string" with a very long author names string/) do
   step %{I fill in "reference_author_names_string" with "#{very_long_author_names_string}"}
@@ -200,22 +203,22 @@ Then(/^the review status on the Ward reference should change to "(.*?)"$/) do |s
   end
 end
 
-Then(/^it should (not )?show "(.*?)" as the default$/) do |should_selector, key|
-  author = key.split(' ').first
+Then(/^it should (not )?show "(.*?)" as the default$/) do |should_selector, keey|
+  author = keey.split(' ').first
   within find("tr", text: author) do
     step %{I should #{should_selector}see "Default"}
   end
 end
 
-def find_reference_by_key key
-  parts = key.split ' '
+def find_reference_by_keey keey
+  parts = keey.split ' '
   last_name = parts[0]
   year = parts[1]
   Reference.find_by(principal_author_last_name_cache: last_name, year: year.to_i)
 end
 
-Given(/^the default reference is "([^"]*)"$/) do |key|
-  reference = find_reference_by_key key
+Given(/^the default reference is "([^"]*)"$/) do |keey|
+  reference = find_reference_by_keey keey
   DefaultReference.stub(:get).and_return reference
 end
 
@@ -258,4 +261,12 @@ Given(/^there is a taxon with that reference as its protonym's reference$/) do
   taxon = create_genus
   taxon.protonym.authorship.reference = @reference
   taxon.protonym.authorship.save!
+end
+
+# HACK to avoid testing with JavaScript enabled.
+Then(/^the "(.*?)" tab should be selected$/) do |tab_name|
+  selected_tab_value = find("input#selected_tab").value.to_i
+  selected_tab_name = %w(Article Book Nested Other)[selected_tab_value]
+
+  expect(selected_tab_name).to eq tab_name
 end

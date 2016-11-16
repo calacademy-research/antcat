@@ -1,3 +1,5 @@
+// TODO create helper?
+
 @import "font-awesome"
 @import "colors"
 
@@ -42,10 +44,14 @@ table.feed
       color: #000
 
 .antcat_icon
+  &.read
+    @extend .fa-check
+    color: $color_green
+
   &.open.task
     @extend .fa-plus-circle
     color: $color_green
 
-  &.closed.task, &.completed.task
+  &.closed.task, &.completed.task, &.unread
     @extend .fa-check
     color: darkgrey

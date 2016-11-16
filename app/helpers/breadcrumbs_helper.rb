@@ -4,7 +4,7 @@ module BreadcrumbsHelper
     link_to label, catalog_path(taxon)
   end
 
-  # TODO move
+  # TODO move. Also used in `TaxonBrowserHelper`.
   def taxon_breadcrumb_label taxon
     string = ''.html_safe
     string << '&dagger;'.html_safe if taxon.fossil

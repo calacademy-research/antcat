@@ -1,26 +1,30 @@
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-
   include Feed::Trackable
-  tracked on: :create,
-    parameters: ->(user) do { user_id: user.id } end
+
+  has_many :comments
+  has_many :activities, class_name: "Feed::Activity"
 
   validates :name, presence: true
 
-  scope :ordered_by_name, -> { order(:name) }
+  scope :order_by_name, -> { order(:name) }
   scope :editors, -> { where(can_edit: true) }
   scope :non_editors, -> { where(can_edit: [false, nil]) } # TODO only allow true/false?
   scope :feedback_emails_recipients, -> { where(receive_feedback_emails: true) }
   scope :as_angle_bracketed_emails, -> { all.map(&:angle_bracketed_email).join(", ") }
 
+  acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,
-         :rememberable, :trackable, :validatable, :invitable
+    :rememberable, :trackable, :validatable, :invitable
+  tracked on: :create, parameters: ->(user) do { user_id: user.id } end
 
-  # For the feed. I'm not sure if this is thread-safe (and whether
-  # that would be a problem), but *think* it is OK because:
-  # 1) it's set in a single operation, 2) the variable is only
-  # set in one place, 3) and always set to the same value or nil.
-  mattr_accessor :current_user
+  def self.current
+    RequestStore.store[:current_user]
+  end
+
+  def self.current=(user)
+    RequestStore.store[:current_user] = user
+  end
 
   def can_approve_changes?
     can_edit?

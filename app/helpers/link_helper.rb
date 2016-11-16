@@ -1,23 +1,10 @@
 module LinkHelper
-  include ActionView::Helpers::UrlHelper
-
-  def link contents, href, options = {}
-    link_to contents, href,
-      class:  options[:class],
-      target: options[:target],
-      title:  options[:title]
-  end
-
   def link_to_external_site label, url
-    link label, url, class: 'link_to_external_site', target: '_blank'
-  end
-
-  def link_to_antcat taxon, label = 'AntCat'
-    link_to_external_site label, "http://www.antcat.org/catalog/#{taxon.id}"
+    link_to label, url, class: 'link_to_external_site'
   end
 
   def link_to_antwiki taxon
-    page_title = taxon.name.to_s.gsub(/ /, '_')
+    page_title = taxon.name.to_s.tr(" ", '_')
     link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
   end
 
@@ -27,7 +14,7 @@ module LinkHelper
   end
 
   def link_to_antweb taxon
-    return if [Family, Tribe, Subgenus].include? taxon.class
+    return if taxon.class.in? [Family, Tribe, Subgenus]
 
     url = "http://www.antweb.org/description.do?"
     params = { rank: taxon.class.to_s.downcase }

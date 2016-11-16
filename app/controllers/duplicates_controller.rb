@@ -8,8 +8,9 @@ class DuplicatesController < TaxaController
 
   # Takes requires parent_id (target parent) and previous_combination_id
   # returns all matching taxa that could conflict with this naming.
+  # TODO probably rename action; "show" implies an object/view.
   def show
-    return find_name_duplicates_only if params['match_name_only'] == "true"
+    return find_name_duplicates_only if params[:match_name_only] == "true"
 
     # This check shouldn't be valid; there's nothing wrong with
     # a conflict in a subspecies parent, for example.
@@ -18,20 +19,18 @@ class DuplicatesController < TaxaController
     #   return
     # end
     current_taxon = Taxon.find(params[:current_taxon_id])
-    new_parent = Taxon.find_by_name_id(params[:new_parent_name_id])
-    if current_taxon.is_a? Subspecies
-      # searching for genus / subspecies for conflict.
-      options = Taxa::Utility.find_subspecies_in_genus current_taxon.name.epithet, new_parent.parent
-    else
-      options = Taxa::Utility.find_epithet_in_genus current_taxon.name.epithet, new_parent
-    end
+    new_parent = Taxon.find_by(name_id: params[:new_parent_name_id])
+
+    # Searching for genus / subspecies for conflict.
+    options = if current_taxon.is_a? Subspecies
+                new_parent.parent.find_subspecies_in_genus(current_taxon.name.epithet)
+              else
+                new_parent.find_epithet_in_genus(current_taxon.name.epithet)
+              end
     render nothing: true, status: :no_content and return unless options
 
     # This code to pass these some other way, and remove these two columns from the taxa db entry
     options.each do |option|
-      # TODO: Joe calls to protonym.authorship_string trigger a save somehow
-      option.authorship_string = option.protonym.authorship_string
-
       # TODO: joe check page number case?
       # Used to pop up the correct dialog box content in the name_field.coffee widget
       # in the case of "return to original" - give the option of actually returning to
@@ -44,7 +43,8 @@ class DuplicatesController < TaxaController
                               end
     end
 
-    render json: options.to_json(methods: [:authorship_string, :duplicate_type]), status: :ok
+    json = options.to_json methods: [:authorship_string, :duplicate_type]
+    render json: json, status: :ok
   end
 
   private

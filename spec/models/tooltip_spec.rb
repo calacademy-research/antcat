@@ -1,22 +1,15 @@
 require 'spec_helper'
 
 describe Tooltip do
-  describe "versioning", versioning: true do
-    let!(:tooltip) { create :tooltip, key: "references.authors" }
+  it { should be_versioned }
 
-    it 'keeps versions' do
-      expect(tooltip.versions.last.event).to eq "create"
-      tooltip.update_attributes! key: "oops.typo"
-      expect(tooltip.versions.last.event).to eq "update"
-      expect(tooltip).to have_a_version_with key: "references.authors"
-    end
+  describe "#key" do
+    it { should validate_uniqueness_of :key }
+    it { should validate_presence_of :key }
+    it { should allow_value('name-space._key1:').for :key }
+    it { should_not allow_value('^namespace').for :key }
+    it { should_not allow_value('nämespace').for :key }
   end
-
-  it { should validate_uniqueness_of(:key) }
-  it { should validate_presence_of(:key) }
-  it { should allow_value('name-space._key1:').for(:key) }
-  it { should_not allow_value('^namespace').for(:key) }
-  it { should_not allow_value('nämespace').for(:key) }
 
   describe "scopes" do
     describe "default scope" do
@@ -29,7 +22,7 @@ describe Tooltip do
       end
     end
 
-    describe "scope.enabled_keys" do
+    describe ".enabled_keys" do
       let!(:enabled) { create :tooltip, key_enabled: true }
       let!(:disabled) { create :tooltip, key_enabled: false }
 
@@ -38,7 +31,7 @@ describe Tooltip do
       end
     end
 
-    describe "scope.enabled_selectors" do
+    describe ".enabled_selectors" do
       let!(:enabled) { create :tooltip }
       let!(:disabled) { create :tooltip, selector_enabled: false }
       let!(:selector_enabled) do

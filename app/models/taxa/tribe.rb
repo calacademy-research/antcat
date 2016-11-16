@@ -1,7 +1,9 @@
 class Tribe < Taxon
-  belongs_to :subfamily
-  has_many :genera
   attr_accessible :name, :protonym, :subfamily, :type_name
+
+  belongs_to :subfamily
+
+  has_many :genera
 
   def parent
     subfamily
@@ -23,8 +25,8 @@ class Tribe < Taxon
     genera
   end
 
-  def statistics
-    get_statistics [:genera]
+  def statistics valid_only: false
+    get_statistics [:genera], valid_only: valid_only
   end
 
   def siblings
@@ -33,10 +35,10 @@ class Tribe < Taxon
 
   private
     def update_descendants_subfamilies
-      self.genera.each do |genus|
-        genus.subfamily = self.subfamily
-        genus.species.each { |s| s.subfamily = self.subfamily }
-        genus.subspecies.each { |s| s.subfamily = self.subfamily }
+      genera.each do |genus|
+        genus.subfamily = subfamily
+        genus.species.each { |s| s.subfamily = subfamily }
+        genus.subspecies.each { |s| s.subfamily = subfamily }
       end
     end
 end

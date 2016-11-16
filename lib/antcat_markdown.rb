@@ -61,7 +61,7 @@ class AntcatMarkdown < Redcarpet::Render::HTML
       full_document.gsub(/%r(\d+)/) do
         if Reference.exists? $1
           reference = Reference.find($1)
-          reference.decorate.to_link
+          reference.decorate.inline_citation
         else
           broken_markdown_link "reference", $1
         end

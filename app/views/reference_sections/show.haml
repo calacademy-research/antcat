@@ -9,10 +9,10 @@
   =link_to "edit page.", edit_taxa_path(@item.taxon)
 
 %h5 Title taxt
-%p=Taxt.to_display_sentence @item.title_taxt.presence || "None"
+%p=TaxtPresenter[@item.title_taxt].to_text.presence || "None"
 
 %h5 Subtitle taxt
-%p=Taxt.to_display_sentence @item.subtitle_taxt.presence || "None"
+%p=TaxtPresenter[@item.subtitle_taxt].to_text.presence || "None"
 
 %h5 References taxt
-%p=Taxt.to_string @item.references_taxt.presence || "None"
+%p=TaxtPresenter[@item.references_taxt].to_html.presence || "None"

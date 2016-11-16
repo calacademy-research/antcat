@@ -1,0 +1,34 @@
+-@title = "Wikipedia tools"
+-breadcrumb :wikipedia_tools, @taxon
+
+-wikipedia_link = "https://en.wikipedia.org/wiki/#{@taxon.name_cache}"
+
+.row
+  .small-12.columns
+    %p
+      For
+      =link_to wikipedia_link, wikipedia_link
+
+    %h5=link_to "AntCat citation template", "https://en.wikipedia.org/wiki/Template:AntCat"
+    .callout
+      =preserve do
+        %pre
+          =Wikipedia::CiteTemplate.with_ref_tag @taxon
+
+    %p
+      Journal and book references can be exported from the reference's details
+      page (click on the linked ID number on catalog page to get there).
+
+    %h5 Author citation
+    .callout
+      =preserve do
+        %pre.wrapped
+          authority = #{@taxon.authorship_string}
+          =Wikipedia::ReferenceExporter.export(@authorship_reference)
+
+    -if @taxon.class.in? [Family, Subfamily, Tribe, Genus]
+      %h5 List of children
+      .callout
+        =preserve do
+          %pre
+            =Wikipedia::TaxonList.new(@taxon).children

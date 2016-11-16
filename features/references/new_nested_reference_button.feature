@@ -1,4 +1,3 @@
-@javascript
 Feature: Add new nested reference button
   As an editor
   I want to add new nested references from the parent reference

@@ -14,11 +14,11 @@
     -if version
       %h5 Selected old version (#{@item.versions[version-1].created_at})
       .callout
-        =Taxt.to_string @item.versions[version].reify.taxt
+        =TaxtConverter[@item.versions[version].reify.taxt].to_html
     -else
       %h5 Current version
       .callout
-        =Taxt.to_string @item.taxt
+        =TaxtConverter[@item.taxt].to_html
 
   -@versions = @item.versions
   -total_versions = @versions.count

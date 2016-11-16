@@ -2,15 +2,32 @@ module Taxa::CallbacksAndValidators
   extend ActiveSupport::Concern
 
   included do
-    before_validation :add_protocol_to_type_speciment_url
-    before_validation :nilify_biogeographic_region_if_blank
     validates :name, presence: true
     validates :protonym, presence: true
     validates :biogeographic_region,
       inclusion: { in: BiogeographicRegion::REGIONS, allow_nil: true }
     validate :check_url
-    before_save { |record| CleanNewlines.clean_newlines record, :headline_notes_taxt, :type_taxt }
+
+    before_validation :add_protocol_to_type_speciment_url
+    before_validation :nilify_biogeographic_region_if_blank
+
+    before_create :build_default_taxon_state
+    before_save { CleanNewlines.clean_newlines self, :headline_notes_taxt, :type_taxt }
     before_save :set_name_caches, :delete_synonyms
+
+    # Additional callbacks for when `#save_initiator` is true (must be set manually).
+    before_save { remove_auto_generated if save_initiator }
+    before_save { set_taxon_state_to_waiting if save_initiator }
+    before_save { save_children if save_initiator }
+  end
+
+  # Recursively save children, presumably to trigger callbacks and create
+  # PaperTrail versions. Formicidae is excluded, probably for performance reasons?
+  def save_children
+    return if is_a? Family
+
+    children.each &:save
+    children.each &:save_children
   end
 
   private
@@ -41,5 +58,22 @@ module Taxa::CallbacksAndValidators
       errors.add :type_specimen_url, 'was not found' unless (200..399).include? response_code
     rescue SocketError, URI::InvalidURIError, ArgumentError
       errors.add :type_specimen_url, 'is not in a valid format'
+    end
+
+    def remove_auto_generated
+      self.auto_generated = false
+
+      name.make_not_auto_generated!
+
+      junior_synonyms_objects.auto_generated.each &:make_not_auto_generated!
+      senior_synonyms_objects.auto_generated.each &:make_not_auto_generated!
+    end
+
+    def build_default_taxon_state
+      build_taxon_state review_state: :waiting unless taxon_state
+    end
+
+    def set_taxon_state_to_waiting
+      taxon_state.review_state = :waiting
     end
 end

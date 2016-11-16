@@ -6,7 +6,9 @@ module TooltipHelper
     # but let's be nice and show them to all logged in users, even if they are not editors.
     return unless current_user
     content_for(:head) { javascript_include_tag "tooltips/tooltips" }
-    content_for(:head) { javascript_include_tag "optimal-select.min" }
+    if session[:show_missing_tooltips]
+      content_for(:head) { javascript_include_tag "optimal-select.min" }
+    end
     content_for :head do
       "\n<!-- Tooltips are enabled on this page. -->".html_safe
     end

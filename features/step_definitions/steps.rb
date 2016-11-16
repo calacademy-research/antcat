@@ -15,7 +15,7 @@ end
 
 Then(/^(?:|I )should be on (.+)$/) do |page_name|
   current_path = URI.parse(current_url).path
-  current_path.should == path_to(page_name)
+  expect(current_path).to eq path_to(page_name)
 end
 
 # Click/press
@@ -93,18 +93,18 @@ end
 
 # "I should see/contain/selected ..."
 Then(/^(?:|I )should see "([^"]*)"$/) do |text|
-  page.should have_content(text)
+  expect(page).to have_content text
 end
 
 Then(/^(?:|I )should not see "([^"]*)"$/) do |text|
-  page.should have_no_content(text)
+  expect(page).to have_no_content text
 end
 
 Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |field, parent, value|
   with_scope(parent) do
     field = find_field field
     field_value = (field.tag_name == 'textarea') ? field.text : field.value
-    field_value.should =~ /#{value}/
+    expect(field_value).to match /#{value}/
   end
 end
 
@@ -113,14 +113,14 @@ Then(/^I (should|should not) see an? "([^"]*)" button$/) do |should_selector, bu
   should_selector = should_selector.tr(" ", "_").to_sym
 
   if button == "Edit"
-    page.send(should_selector, have_css("a.btn-edit"))
+    page.send should_selector, have_css("a.btn-edit")
   else
-    page.send(should_selector, have_css("input[value='#{button}']"))
+    page.send should_selector, have_css("input[value='#{button}']")
   end
 end
 
 Then(/^I should see a link "([^"]*)"$/) do |link|
-  page.should have_css 'a', text: link
+  expect(page).to have_css 'a', text: link
 end
 
 Then(/I should (not )?see "(.*?)" (?:with)?in (.*)$/) do |do_not, contents, location|
@@ -130,17 +130,18 @@ Then(/I should (not )?see "(.*?)" (?:with)?in (.*)$/) do |do_not, contents, loca
 end
 
 Then(/^I should see "([^"]*)" selected in "([^"]*)"$/) do |value, select|
-  expect(page).to have_select(select, selected: value)
+  expect(page).to have_select select, selected: value
 end
 
 Then(/^"([^"]+)" should be selected(?: in (.*))?$/) do |word, location|
   with_scope location || 'the page' do
-    page.should have_css ".selected", text: word
+    expect(page).to have_css ".selected", text: word
   end
 end
 
-Then(/^"([^"]*)" should be checked$/) do |checkbox|
-  expect(find("##{checkbox}")).to be_checked
+Then(/^"([^"]*)" should be checked$/) do |checkbox_id|
+  checkbox = find "##{checkbox_id}"
+  expect(checkbox).to be_checked
 end
 
 # Misc
@@ -156,8 +157,12 @@ When(/I wait for a bit(?: more)?/) do
   sleep 1
 end
 
+Given(/^RESET SESSION$/) do
+  Capybara.reset_sessions!
+end
+
 Then(/^the page title should have "([^"]*)" in it$/) do |title|
-  page.title.should have_content(title)
+  expect(page.title).to have_content title
 end
 
 Given(/that URL "([^"]*)" exists/) do |link|
@@ -169,7 +174,7 @@ When(/^I reload the page$/) do
 end
 
 Then("I should not see any error messages") do
-  page.should_not have_css '.error_messages li'
+  expect(page).to_not have_css '.error_messages li'
 end
 
 When(/^I follow "([^"]*)" inside the breadcrumb$/) do |link|
@@ -179,5 +184,5 @@ When(/^I follow "([^"]*)" inside the breadcrumb$/) do |link|
 end
 
 Then(/I should see "([^"]*)" italicized/) do |italicized_text|
-  page.should have_css('i', text: italicized_text)
+  expect(page).to have_css 'i', text: italicized_text
 end

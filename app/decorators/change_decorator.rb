@@ -1,20 +1,25 @@
 class ChangeDecorator < Draper::Decorator
   delegate_all
 
-  def format_adder_name
+  # Accepts optional `user` for performance reasons.
+  def format_adder_name user = nil
     user_verb = case change.change_type
                 when "create" then "added"
                 when "delete" then "deleted"
                 else               "changed"
                 end
 
-     name = format_changed_by
+    name = if user
+             format_username user
+           else
+             format_changed_by
+           end
+
     "#{name} #{user_verb}".html_safe
   end
 
   def format_approver_name
-    name = format_approved_by
-    "#{name} approved this change".html_safe
+    "#{format_approved_by} approved this change".html_safe
   end
 
   def format_changed_by
@@ -63,19 +68,16 @@ class ChangeDecorator < Draper::Decorator
     helpers.link_to "Undo", "#", class: "btn-undo", data: { 'undo-id' => change.id }
   end
 
-  def approve_button taxon
+  def approve_button taxon, changed_by: nil
     return unless helpers.user_can_edit?
-
-    taxon_id = change.user_changed_taxon_id
-    taxon_state = TaxonState.find_by(taxon: taxon_id)
-    return if taxon_state.review_state == "approved"
+    return if taxon.approved?
 
     # TODO clarify this; does the nil check mean that editors are allowed
     # to approve their own changes if the taxon has no taxon_state?
     #
     # Editors can approve taxa with no associated taxon_state. The GUI probably
     # does not allow for this to happen, just an additional check (?).
-    if taxon.taxon_state.nil? || taxon.can_be_approved_by?(change, helpers.current_user)
+    if taxon.taxon_state.nil? || taxon.can_be_approved_by?(change, helpers.current_user, changed_by)
       helpers.link_to 'Approve', helpers.approve_change_path(change),
         method: :put, class: "btn-normal",
         data: { confirm: "Are you sure you want to approve this change?" }
@@ -84,11 +86,8 @@ class ChangeDecorator < Draper::Decorator
 
   private
     def format_username user
-      if user
-        user.decorate.name_linking_to_email
-      else
-        "Someone"
-      end
+      return "Someone" unless user # Sometimes we get here with a nil user.
+      user.decorate.user_page_link
     end
 
     def format_time_ago time

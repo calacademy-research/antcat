@@ -1,30 +1,57 @@
 class ReferenceFormatterCache
   include Singleton
 
+  # Extend with Forwardable to avoid typing `ReferenceFormatterCache.instance`
+  class << self
+    extend Forwardable
+    def_delegators :instance, :invalidate, :get, :set, :populate, :set
+  end
+
   def invalidate reference
-    return unless reference.formatted_cache?
-    unless reference.new_record?
-      set reference, nil, :formatted_cache
-      set reference, nil, :inline_citation_cache
-    end
-    Reference.where("nesting_reference_id = ?", reference.id).each do |nestee|
-      self.class.instance.invalidate nestee
-    end
+    return if reference.new_record?
+
+    reference.update_column :formatted_cache, nil
+    reference.update_column :inline_citation_cache, nil
+    reference.nestees.each &:invalidate_caches
   end
 
-  def get reference, field = :formatted_cache
-    Reference.find(reference.id).send field
-  end
+  # TODO possibly reinstate `#get` unless it's only required in specs.
 
-  def set reference, value, field = :formatted_cache
+  def set reference, value, field
     return value if reference.send(field) == value
     reference.update_column field, value
     value
   end
 
-  def populate reference # is this used outside of specs? #TODO find out
-    set reference, reference.decorate.format!, :formatted_cache
-    user = User.find_by_email 'sblum@calacademy.org'
-    set reference, reference.decorate.format_inline_citation!, :inline_citation_cache
+  # Used in tests. Can also be manually invoked in prod/dev.
+  def regenerate reference
+    set reference, reference.decorate.send(:generate_formatted), :formatted_cache
+    set reference, reference.decorate.send(:generate_inline_citation), :inline_citation_cache
+  end
+  alias_method :populate, :regenerate
+
+  # `#invalidate_all` and `#regenerate_all` are used in migrations and Rake tasks.
+  def invalidate_all
+    puts "Invalidating all reference caches...".yellow
+
+    Reference.update_all formatted_cache: nil, inline_citation_cache: nil
+
+    puts "Invalidating all reference caches done.".green
+  end
+
+  def regenerate_all
+    puts <<-MESSAGE.squish.yellow
+      Regenerating all reference caches, this will take MANY minutes, depending
+      on how many caches already are up-to-date.
+    MESSAGE
+
+    Progress.new_init show_progress: true, total_count: Reference.count, show_errors: true
+    Reference.find_each do |reference|
+      Progress.tally_and_show_progress 100
+      regenerate reference
+    end
+    Progress.show_results
+
+    puts "Regenerating all reference caches done.".green
   end
 end

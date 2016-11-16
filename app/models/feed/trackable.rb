@@ -12,6 +12,10 @@
 module Feed::Trackable
   extend ActiveSupport::Concern
 
+  # TODO investigate using an instance variable instead so
+  # `tracked on: :all, parameters: ->(task) do { title: task.title } end`
+  #  would become
+  # `tracked on: :all, parameters: -> do { title: self.title } end`
   included do
     class_attribute :activity_parameters
   end

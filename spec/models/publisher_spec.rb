@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe Publisher do
-  it { should validate_presence_of(:name) }
-  it { should belong_to(:place) }
+  it { should be_versioned }
+  it { should validate_presence_of :name }
+  it { should belong_to :place }
 
   describe "factory methods" do
     describe ".create_with_place" do
@@ -52,18 +53,19 @@ describe Publisher do
   end
 
   describe ".search" do
-    it "should do fuzzy matching of name/place combinations" do
+    it "fuzzy matches name/place combinations" do
       Publisher.create! name: 'Wiley', place: Place.create!(name: 'Chicago')
       Publisher.create! name: 'Wiley', place: Place.create!(name: 'Toronto')
       expect(Publisher.search('chw')).to eq ['Chicago: Wiley']
     end
 
-    it "should find a match even if there's no place" do
+    it "can find a match even if there's no place" do
       Publisher.create! name: 'Wiley'
       expect(Publisher.search('w')).to eq ['Wiley']
     end
   end
 
+  # TODO used only in specs?
   describe "#to_s" do
     it "format name and place" do
       publisher = Publisher.create! name: "Wiley", place: Place.create!(name: 'New York')
@@ -73,15 +75,6 @@ describe Publisher do
     it "formats correctly even if there is no place" do
       publisher = Publisher.create! name: "Wiley"
       expect(publisher.to_s).to eq 'Wiley'
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        publisher = create :publisher
-        expect(publisher.versions.last.event).to eq 'create'
-      end
     end
   end
 end

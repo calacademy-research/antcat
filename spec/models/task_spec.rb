@@ -1,13 +1,13 @@
 require "spec_helper"
 
 describe Task do
-  it { should validate_presence_of(:title) }
-  it { should validate_presence_of(:description) }
+  it { should validate_presence_of :title }
+  it { should validate_presence_of :description }
   it { should validate_inclusion_of(:status).in_array %w(open closed completed) }
-  it { should validate_length_of(:title).is_at_most(70) }
+  it { should validate_length_of(:title).is_at_most 70 }
 
   describe "scopes" do
-    describe "scope.open and scope.non_open" do
+    describe ".open and .non_open" do
       let!(:open) { create :task }
       let!(:also_open) { create :task }
       let!(:completed) { create :completed_task }
@@ -22,7 +22,7 @@ describe Task do
       end
     end
 
-    describe "scope.by_status_and_date" do
+    describe ".by_status_and_date" do
       let!(:first) { create :task, created_at: Time.now + 10.days }
       let!(:second) { create :task }
       let!(:third) { create :completed_task, created_at: Time.now + 7.days }
@@ -37,9 +37,9 @@ describe Task do
   end
 
   describe "predicate methods" do
-    let(:open) { create :task }
-    let(:completed) { create :completed_task }
-    let(:closed) { create :closed_task }
+    let(:open) { build_stubbed :task }
+    let(:completed) { build_stubbed :completed_task }
+    let(:closed) { build_stubbed :closed_task }
 
     it "#open?" do
       expect(open.open?).to be true

@@ -35,12 +35,13 @@ gem 'high_voltage'
 gem 'invisible_captcha'
 gem 'jquery-rails', '> 4.0'
 gem 'jquery-ui-rails', '> 5.0'
-gem 'js_cookie_rails'
 gem 'paper_trail', git: "https://github.com/airblade/paper_trail.git", tag: 'v4.0.0.beta2'
 gem 'paperclip'
 gem 'redcarpet'
+gem 'rouge'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
+gem 'unread'
 gem 'twitter-typeahead-rails'
 gem 'will_paginate'
 gem 'workflow'
@@ -78,3 +79,15 @@ group :test do
   gem 'shoulda-matchers'
   gem 'webmock'
 end
+
+#####################################################
+# Profiling gems kept uncommented here because lazy.
+# See notes in `config/environments/production.rb`.
+# gem 'bullet'
+#
+# gem 'newrelic_rpm'
+#
+# gem 'rack-mini-profiler', require: false
+# gem 'flamegraph' # for rmp, optional
+# gem 'stackprof' # for rmp, optional
+#####################################################

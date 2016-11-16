@@ -21,7 +21,7 @@ namespace :antcat do
       abort 'Aborting.' unless STDIN.gets.chomp == "y"
 
       puts "Creating taxa..."
-      antcatidae = create_taxon_object 'Antcatidae', :family, :family_name
+      antcatidae = _create_taxon 'Antcatidae', :family
 
       antcatinae = create_subfamily 'Antcatinae'
       antcatini = create_tribe 'Antcatini', subfamily: antcatinae

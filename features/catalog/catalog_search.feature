@@ -4,8 +4,7 @@ Feature: Searching the catalog
   So that I can find taxa with their parents and siblings
 
   Background:
-    Given the Formicidae family exists
-    And subfamily "Dolichoderinae" exists
+    Given subfamily "Dolichoderinae" exists
     And tribe "Dolichoderini" exists in that subfamily
     And genus "Dolichoderus" exists in that tribe
     And species "Dolichoderus major" exists in that genus

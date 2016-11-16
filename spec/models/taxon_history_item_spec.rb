@@ -1,33 +1,20 @@
 require 'spec_helper'
 
 describe TaxonHistoryItem do
-  it "can't be blank" do
-    expect(TaxonHistoryItem.new).not_to be_valid
-    expect(TaxonHistoryItem.new(taxt: '')).not_to be_valid
-  end
-
-  it "should have some taxt" do
-    item = TaxonHistoryItem.new taxt: 'taxt'
-    expect(item).to be_valid
-    item.save!
-    item.reload
-    expect(item.taxt).to eq 'taxt'
-  end
-
-  it "can belong to a taxon" do
-    taxon = create :family
-    item = taxon.history_items.create! taxt: 'foo'
-    expect(item.reload.taxon).to eq taxon
-  end
+  it { should be_versioned }
+  it { should validate_presence_of :taxt }
+  it { should belong_to :taxon }
 
   describe "#update_taxt_from_editable" do
     let(:item) { create :taxon_history_item }
 
-    it "should not blow up on blank input but should be invalid and have errors" do
-      item.update_taxt_from_editable ''
-      expect(item.errors).not_to be_empty
-      expect(item.taxt).to eq ''
-      expect(item).not_to be_valid
+    context "on blank input" do
+      it "is invalid and has errors without blowing up" do
+        item.update_taxt_from_editable ''
+        expect(item.errors).not_to be_empty
+        expect(item.taxt).to eq ''
+        expect(item).not_to be_valid
+      end
     end
 
     it "passes non-tags straight through" do
@@ -38,26 +25,17 @@ describe TaxonHistoryItem do
     it "converts from editable tags to tags" do
       reference = create :article_reference
       other_reference = create :article_reference
-      editable_key = Taxt.send :id_for_editable, reference.id, 1
-      other_editable_key = Taxt.send :id_for_editable, other_reference.id, 1
+      jumbled_id = TaxtIdTranslator.send :jumble_id, reference.id, 1
+      other_jumbled_id = TaxtIdTranslator.send :jumble_id, other_reference.id, 1
 
-      item.update_taxt_from_editable %{{Fisher, 1922 #{editable_key}}, also {Bolton, 1970 #{other_editable_key}}}
+      item.update_taxt_from_editable %{{Fisher, 1922 #{jumbled_id}}, also {Bolton, 1970 #{other_jumbled_id}}}
       expect(item.reload.taxt).to eq "{ref #{reference.id}}, also {ref #{other_reference.id}}"
     end
 
-    it "should have errors if a reference isn't found" do
+    it "has errors if a reference isn't found" do
       expect(item.errors).to be_empty
       item.update_taxt_from_editable '{123}'
       expect(item.errors).not_to be_empty
-    end
-  end
-
-  describe "versioning" do
-    it "records versions" do
-      with_versioning do
-        history_item = create :taxon_history_item
-        expect(history_item.versions.last.event).to eq 'create'
-      end
     end
   end
 end

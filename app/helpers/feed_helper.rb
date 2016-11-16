@@ -8,7 +8,7 @@ module FeedHelper
   # in the console and other situations we may not have a current user.
   def link_activity_user activity
     return "[system]" unless activity.user
-    activity.user.decorate.name_linking_to_email
+    activity.user.decorate.user_page_link
   end
 
   def link_trackable_if_exists activity, label = nil, path: nil

@@ -1,6 +1,10 @@
 @javascript
-Feature: Export Reference to Wikipedia
-  Scenario: Article reference
+Feature: Export references to Wikipedia
+  As an editor of Wikipedia
+  I want generate wiki-formatted citation templates
+  So that it's easier to add references to Wikipedia articles
+
+  Scenario: Exporting an article reference
     Given this reference exists
       | authors    | year | citation_year | title     | citation |
       | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 |
@@ -11,7 +15,7 @@ Feature: Export Reference to Wikipedia
     And I follow "Wikipedia"
     Then I should see "{{cite journal"
 
-  Scenario: Book reference
+  Scenario: Exporting a book reference
     Given this book reference exists
       | authors    | year | title | citation                |
       | Bolton, B. | 2010 | Ants  | New York: Wiley, 23 pp. |

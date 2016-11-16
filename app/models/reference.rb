@@ -1,84 +1,62 @@
+# TODO avoid `require`.
+# TODO consider moving callbacks and validators to a concern.
+
 require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_search'
-require_dependency 'references/reference_utility'
 require_dependency 'references/reference_workflow'
 
-class Reference < ActiveRecord::Base
+class Reference < ApplicationRecord
   include UndoTracker
   include ReferenceComparable
-
   include Feed::Trackable
-  tracked parameters: ->(reference) do
-    { name: reference.decorate.key }
-  end
 
-  attr_accessor :publisher_string
-  attr_accessor :journal_name
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  # Virtual attributes used in `RefrencesController`.
+  attr_accessor :journal_name, :publisher_string
 
-  attr_accessible :citation_year,
-                  :title,
-                  :journal_name,
-                  :series_volume_issue,
-                  :publisher_string,
-                  :pages_in,
-                  :nesting_reference_id,
-                  :citation,
-                  :document_attributes,
-                  :public_notes,
-                  :editor_notes,
-                  :taxonomic_notes,
-                  :cite_code,
-                  :possess,
-                  :date,
-                  :author_names,
-                  :author_names_suffix,
-                  :pagination,
-                  :review_state,
-                  :doi
+  attr_accessible :author_names, :author_names_suffix, :citation, :citation_year,
+    :cite_code, :date, :document_attributes, :doi, :editor_notes, :journal_name,
+    :nesting_reference_id, :pages_in, :pagination, :possess, :public_notes,
+    :publisher_string, :review_state, :series_volume_issue, :taxonomic_notes,
+    :title
 
-  before_save { |record| CleanNewlines.clean_newlines record, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
-  before_destroy :check_not_referenced
-
-  has_many :reference_author_names, -> { order :position }
-
-  has_many :author_names,
-           -> { order 'reference_author_names.position' },
-           through: :reference_author_names,
-           after_add: :refresh_author_names_caches,
-           after_remove: :refresh_author_names_caches
   belongs_to :journal
   belongs_to :publisher
 
-  def nestees
-    Reference.where(nesting_reference_id: id)
-  end
+  has_many :reference_author_names, -> { order(:position) }
+  has_many :author_names, -> { order('reference_author_names.position') },
+           through: :reference_author_names,
+           after_add: :refresh_author_names_caches,
+           after_remove: :refresh_author_names_caches
+  has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id"
 
-  scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
-  scope :with_principal_author_last_name, lambda { |last_name| where(principal_author_last_name_cache: last_name) }
+  validates :title, presence: true, if: -> { self.class.requires_title }
 
   before_validation :set_year_from_citation_year, :strip_text_fields
-  validates :title, presence: true, if: Proc.new { |record| record.class.requires_title }
+  before_save { CleanNewlines.clean_newlines self, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
+  before_save :set_author_names_caches
+  before_destroy :check_not_referenced, :check_not_nested
+
+  scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
+  scope :with_principal_author_last_name, ->(last_name) { where(principal_author_last_name_cache: last_name) }
+  scope :unreviewed, -> { where.not(review_state: "reviewed") }
+
+  has_paper_trail meta: { change_id: :get_current_change_id }
+  tracked parameters: ->(reference) do { name: reference.keey } end
 
   def self.requires_title
     true
   end
 
-  before_save :set_author_names_caches
-  before_destroy :check_not_nested
-
-  def to_s
-    "#{author_names_string} #{citation_year}. #{id}."
+  def invalidate_caches
+    ReferenceFormatterCache.invalidate self
   end
 
-  def authors reload = false
-    author_names(reload).map &:author
+  def set_cache value, field
+    ReferenceFormatterCache.set self, value, field
   end
 
-  def author
-    principal_author_last_name
-  end
-
+  # TODO something. "_cache" vs not.
+  # Looks like: "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.".
   def author_names_string
     author_names_string_cache
   end
@@ -87,6 +65,10 @@ class Reference < ActiveRecord::Base
     self.author_names_string_cache = string
   end
 
+  # Possibly only used for sorting. The principal author is decided
+  # by generated all author name and picking the first, and that order
+  # is presumably decided by `reference_author_names.position`.
+  # Not sure if it would make sense to use this in any other way.
   def principal_author_last_name
     principal_author_last_name_cache
   end
@@ -94,6 +76,7 @@ class Reference < ActiveRecord::Base
   # TODO we should probably have #year [int] and something
   # like #non_standard_year [string] instead of this +
   # #year + #citation_year.
+  # TODO what is this used for?
   def short_citation_year
     if citation_year.present?
       citation_year.gsub %r{ .*$}, ''
@@ -103,13 +86,15 @@ class Reference < ActiveRecord::Base
   end
 
   # update (including observed updates)
+  # TODO does this duplicate `set_author_names_caches`?
+  # There's also ` author_names_string=` which sets `author_names_string_cache`.
   def refresh_author_names_caches(*)
     string, principal_author_last_name = make_author_names_caches
     update_attribute :author_names_string_cache, string
     update_attribute :principal_author_last_name_cache, principal_author_last_name
   end
 
-  ## utility
+  # TODO move to a callback.
   # Called by controller to parse an input string for author names and suffix
   # Returns hash of parse result, or adds to the reference's errors and raises
   def parse_author_names_and_suffix author_names_string
@@ -123,33 +108,17 @@ class Reference < ActiveRecord::Base
   end
 
   def check_for_duplicate
-    duplicates = DuplicateMatcher.new.match self
+    duplicates = ReferenceMatcher.new(min_similarity: 0.5).match self
     return unless duplicates.present?
 
     duplicate = Reference.find duplicates.first[:match].id
-    errors.add :base, "This may be a duplicate of #{duplicate.decorate.format} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
+    errors.add :base, "This may be a duplicate of #{duplicate.decorate.formatted} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
     true
   end
 
-  def self.citation_year_to_year citation_year
-    if citation_year.blank?
-      nil
-    elsif match = citation_year.match(/\["(\d{4})"\]/)
-      match[1]
-    else
-      citation_year.to_i
-    end
-  end
-
   def self.approve_all
-    count = Reference.where.not(review_state: "reviewed").count
-
-    Feed::Activity.without_tracking do
-      Reference.where.not(review_state: "reviewed").find_each do |reference|
-        reference.approve
-      end
-    end
-
+    count = Reference.unreviewed.count
+    Feed::Activity.without_tracking { Reference.unreviewed.find_each &:approve }
     Feed::Activity.create_activity :approve_all_references, count: count
   end
 
@@ -157,32 +126,111 @@ class Reference < ActiveRecord::Base
   # Only for .approve_all, which approves all unreviewed
   # references of any state (which Workflow doesn't allow).
   def approve
-    review_state = "reviewed"
+    self.review_state = "reviewed"
     save!
-    Feed::Activity.with_tracking do
-      create_activity :finish_reviewing
+    Feed::Activity.with_tracking { create_activity :finish_reviewing }
+  end
+
+  def new_from_copy
+    new_reference = self.class.new # Build correct type.
+
+    # Type-specific fields.
+    to_copy = case self
+              when ArticleReference then [:series_volume_issue]
+              when NestedReference  then [:pages_in, :nesting_reference_id]
+              when UnknownReference then [:citation]
+              else                       []
+              end
+
+    # Basic fields and notes.
+    to_copy.concat [ :author_names_string,
+                     :citation_year,
+                     :title,
+                     :pagination,
+                     :public_notes,
+                     :editor_notes,
+                     :taxonomic_notes ]
+
+    # The two virtual attributes.
+    if is_a? BookReference
+      new_reference.publisher_string = "#{publisher.place.name}: #{publisher.name}"
+    end
+    new_reference.journal_name = journal.name if is_a? ArticleReference
+
+    copy_attributes_to new_reference, *to_copy
+    new_reference
+  end
+
+  ### Methods currently in quarantine ###
+  # Moved here from `ReferenceDecorator`, to be refactored/DRYed where possible.
+
+  def key
+    raise "use 'keey' (not a joke)"
+  end
+
+  # "THE KEEY" -- Stupid Name Because Useful(tm).
+  #
+  # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978"
+  #
+  # "key" is impossible to grep for, and a word with too many meanings.
+  # Variations of "last author names" or "ref_key" are doomed to fail.
+  # So, "keey". Obviously, do not show this spelling to users or use
+  # it in filesnames or the database.
+  #
+  # Note: `references.author_names_string_cache` may also be useful?
+  def keey
+    authors_for_keey << ', ' << short_citation_year
+  end
+
+  # normal keey: "Bolton, 1885g"
+  # this:        "Bolton, 1885"
+  def keey_without_letters_in_year
+    authors_for_keey << ', ' << year_or_no_year
+  end
+
+  def authors_for_keey
+    names = author_names.map &:last_name
+    case names.size
+    when 0
+      '[no authors]'
+    when 1
+      "#{names.first}"
+    when 2
+      "#{names.first} & #{names.second}"
+    else
+      string = names[0..-2].join ', '
+      string << " & " << names[-1]
     end
   end
 
+  # TODO find proper name.
+  def year_or_no_year
+    return "[no year]" if year.blank?
+    year.to_s
+  end
+
+  ### end quarantine ###
+
   private
     def check_not_referenced
-      return true unless has_any_references?
+      return unless has_any_references?
 
       # TODO list which items
       errors.add :base, "This reference can't be deleted, as there are other references to it."
-      return false
+      false
     end
 
     def check_not_nested
-      nesting_reference = NestedReference.find_by_nesting_reference_id id
-      if nesting_reference
-        errors.add :base, "This reference can't be deleted because it's nested in #{nesting_reference}"
-      end
-      nesting_reference.nil?
+      return unless nestees.exists?
+
+      errors.add :base, "This reference can't be deleted because it's nested in #{nestees.first.id}"
+      false
     end
 
+    # TODO duplicates `CleanNewlines`?
     def strip_text_fields
-      [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation].each do |field|
+      fields = [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation]
+      fields.each do |field|
         value = self[field]
         next unless value.present?
         value.gsub! /(\n|\r|\n\r|\r\n)/, ' '
@@ -193,9 +241,20 @@ class Reference < ActiveRecord::Base
     end
 
     def set_year_from_citation_year
-      self.year = self.class.citation_year_to_year citation_year
+      self.year = year_from_citation_year citation_year
     end
 
+    def year_from_citation_year citation_year
+      return if citation_year.blank? # Sets `self.year` to nil.
+
+      if match = citation_year.match(/\["(\d{4})"\]/)
+        match[1]
+      else
+        citation_year.to_i
+      end
+    end
+
+    # TODO does this duplicate `refresh_author_names_caches`?
     def set_author_names_caches(*)
       self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
     end
@@ -205,46 +264,86 @@ class Reference < ActiveRecord::Base
       string << author_names_suffix if author_names_suffix.present?
       first_author_name = author_names.first
       last_name = first_author_name && first_author_name.last_name
-      return string, last_name
+
+      [string, last_name]
     end
 
-    # Expensive method
+    # Expensive method.
+    # TODO consider moving all "references to this item" such as this and
+    #  `Taxa::References` to a new class.
     def reference_references return_true_or_false: false
       return_early = return_true_or_false
 
       references = []
-      Taxt.taxt_fields.each do |klass, fields|
-        klass.send(:all).each do |record|
+      Taxt::TAXT_FIELDS.each do |klass, fields|
+        klass.send(:all).find_each do |record|
           fields.each do |field|
             next unless record[field]
             if record[field] =~ /{ref #{id}}/
-              references << { table: klass.table_name, id: record[:id], field: field }
+              references << table_ref(klass.table_name, record.id, field)
               return true if return_early
             end
           end
         end
       end
 
-      Citation.where(reference_id: id).all.each do |record|
-        references << { table: Citation.table_name, id: record[:id], field: :reference_id }
+      Citation.where(reference: self).find_each do |record|
+        references << table_ref(Citation.table_name, record.id, :reference_id)
         return true if return_early
       end
 
-      NestedReference.where(nesting_reference_id: id).all.each do |record|
-        references << { table: 'references', id: record[:id], field: :nesting_reference_id }
+      nestees.find_each do |record|
+        references << table_ref('references', record.id, :nesting_reference_id)
         return true if return_early
       end
       return false if return_early
       references
     end
 
+    # Note: different order as compared to other `table_ref`s.
+    def table_ref table, id, field
+      { table: table, id: id, field: field }
+    end
+
     def has_any_references?
       reference_references return_true_or_false: true
     end
-
-    class DuplicateMatcher < ReferenceMatcher
-      def min_similarity
-        0.5
-      end
-    end
 end
+
+=begin
+Notes
+
+Investigate these:
+Reference#author_names_string
+Reference#author_names_string_cache
+Reference#principal_author_last_name
+Reference#principal_author_last_name_cache
+Reference#reference_author_names
+Reference#author_names_suffix
+Reference#author_names
+
+Taxon#authorship_string
+
+---------------
+                                    # Example from `r = Reference.first`
+
+# OK / a different thing.
+r.authors                           # Array of `Author`s
+r.author_names                      # AuthorName CollectionProxy
+r.reference_author_names            # ReferenceAuthorName CollectionProxy
+r.author_names_suffix               # nil; probably non-nil for things like ", Jr."
+
+# Similar
+r.keey                              # "Abdul-Rassoul, Dawah & Othman, 1978"
+r.author_names_string_cache         # "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
+r.author_names_string               # delegates to `r.author_names_string_cache`
+r.decorate...... more
+
+# Possibly only used for sorting.
+r.principal_author_last_name_cache  # The real (db) attribute of `r.principal_author_last_name`
+r.principal_author_last_name        # "Abdul-Rassoul"; possibly only used for sorting.
+
+# Other similar metods
+Probably.
+
+=end

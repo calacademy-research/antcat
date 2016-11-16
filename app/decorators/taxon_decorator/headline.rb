@@ -81,12 +81,12 @@ class TaxonDecorator::Headline
     end
 
     def headline_type_taxt taxt
-      add_period_if_necessary(detaxt taxt)
+      add_period_if_necessary TaxtPresenter[taxt].to_html
     end
 
     def headline_biogeographic_region
       return '' if @taxon.biogeographic_region.blank?
-      add_period_if_necessary(@taxon.biogeographic_region)
+      add_period_if_necessary @taxon.biogeographic_region
     end
 
     def headline_verbatim_type_locality
@@ -108,7 +108,7 @@ class TaxonDecorator::Headline
       if @taxon.type_specimen_url.present?
         string << ' ' unless string.empty?
         s = @taxon.type_specimen_url
-        string << link(s, s, target: '_blank')
+        string << link_to(s, s)
       end
       string.html_safe
     end
@@ -118,12 +118,12 @@ class TaxonDecorator::Headline
     end
 
     def headline_authorship authorship
-      return '' unless authorship && authorship.reference
+      return '' unless authorship.try :reference
       string = link_to_reference(authorship.reference)
       string << ": #{authorship.pages}" if authorship.pages.present?
       string << " (#{authorship.forms})" if authorship.forms.present?
-      string << ' ' << detaxt(authorship.notes_taxt) if authorship.notes_taxt
-      content_tag :span, string, class: :authorship
+      string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html if authorship.notes_taxt
+      content_tag :span, string, class: "authorship"
     end
 
     def locality locality
@@ -134,6 +134,6 @@ class TaxonDecorator::Headline
 
     def headline_notes
       return unless @taxon.headline_notes_taxt.present?
-      detaxt @taxon.headline_notes_taxt
+      TaxtPresenter[@taxon.headline_notes_taxt].to_html
     end
 end

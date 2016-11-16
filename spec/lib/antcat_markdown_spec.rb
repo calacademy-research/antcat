@@ -43,7 +43,7 @@ describe AntcatMarkdown do
           reference = create :article_reference
           markdown = "%r#{reference.id}"
 
-          expected = "<p>#{reference.decorate.to_link}</p>\n"
+          expected = "<p>#{reference.decorate.inline_citation}</p>\n"
           expect(AntcatMarkdown.render(markdown)).to eq expected
         end
       end

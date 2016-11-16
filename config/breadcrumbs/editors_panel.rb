@@ -72,6 +72,41 @@ end
     parent :user_feedback
   end
 
+crumb :site_notices do
+  link "Site Notices", site_notices_path
+  parent :editors_panel
+end
+
+  crumb :site_notice do |site_notice|
+    link site_notice.title, site_notice_path(site_notice)
+    parent :site_notices
+  end
+
+    crumb :edit_site_notice do |site_notice|
+      link "Edit"
+      parent :site_notice, site_notice
+    end
+
+  crumb :new_site_notice do |site_notice|
+    link "New"
+    parent :site_notices
+  end
+
+crumb :database_scripts do
+  link "Database Scripts", database_scripts_path
+  parent :editors_panel
+end
+
+  crumb :database_script do |script|
+    link script.title, database_script_path(script)
+    parent :database_scripts
+  end
+
+    crumb :show_database_script_source do |script|
+      link "Show Source"
+      parent :database_script, script
+    end
+
 crumb :lazy_links do
   link "Lazy Links"
   parent :editors_panel

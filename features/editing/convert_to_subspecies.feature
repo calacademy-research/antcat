@@ -4,13 +4,12 @@ Feature: Converting a species to a subspecies
   So the data is correct
 
   Background:
-    Given the Formicidae family exists
+    Given I am logged in
 
   @javascript
   Scenario: Converting a species to a subspecies
     Given there is a species "Camponotus dallatorei" with genus "Camponotus"
     And there is a species "Camponotus alii" with genus "Camponotus"
-    And I am logged in
 
     When I go to the edit page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
@@ -21,7 +20,9 @@ Feature: Converting a species to a subspecies
 
     When I set the new species field to "Camponotus alii"
     And I press "OK"
-    And I press "Convert"
+    Then the target name button should contain "Camponotus alii"
+
+    When I press "Convert"
     Then I should be on the catalog page for "Camponotus alii dallatorei"
 
     When I go to the edit page for "Camponotus alii dallatorei"
@@ -32,35 +33,36 @@ Feature: Converting a species to a subspecies
     Given there is a subspecies "Camponotus alii dallatorei" with genus "Camponotus" and no species
     And there is a species "Camponotus dallatorei" with genus "Camponotus"
     And there is a species "Camponotus alii" with genus "Camponotus"
-    And I am logged in
 
     When I go to the edit page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
     And I click the new species field
     And I set the new species field to "Camponotus alii"
     And I press "OK"
-    And I press "Convert"
+    Then the target name button should contain "Camponotus alii"
+
+    When I press "Convert"
     Then I should see "The subspecies 'Camponotus alii dallatorei' already exists."
 
   @javascript
   Scenario: Converting a species to a subspecies when the species has subspecies
     Given there is a species "Camponotus alii"
     And there is a subspecies "Camponotus alii major" which is a subspecies of "Camponotus alii"
-    And I am logged in
 
     When I go to the edit page for "Camponotus alii"
     And I follow "Convert to subspecies"
     And I click the new species field
     And I set the new species field to "Camponotus alii"
     And I press "OK"
-    And I press "Convert"
+    Then the target name button should contain "Camponotus alii"
+
+    When I press "Convert"
     Then I should see "This species has subspecies of its own"
 
   @javascript
   Scenario: Leaving the species blank
     Given there is a species "Camponotus dallatorei" with genus "Camponotus"
     And there is a species "Camponotus alii" with genus "Camponotus"
-    And I am logged in
 
     When I go to the edit page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
@@ -69,7 +71,6 @@ Feature: Converting a species to a subspecies
 
   Scenario: Only show button if showing a species
     Given there is a subspecies "Camponotus dallatorei alii"
-    And I am logged in
 
     When I go to the edit page for "Camponotus dallatorei alii"
     Then I should not see "Convert to subspecies"

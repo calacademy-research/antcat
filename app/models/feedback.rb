@@ -1,18 +1,20 @@
 class Feedback < ActiveRecord::Base
   include Feed::Trackable
-  tracked on: [:create, :destroy]
 
   belongs_to :user
-  validates :comment, presence: true, length: { maximum: 10_000 }
 
-  acts_as_commentable
-  has_paper_trail
+  validates :comment, presence: true, length: { maximum: 10_000 }
 
   before_save :add_emails_recipients
 
+  scope :pending, -> { where(open: true) }
   scope :recently_created, ->(time_ago = 5.minutes.ago) {
-    where('created_at >= :time_ago', time_ago: time_ago)
+    where('created_at >= ?', time_ago)
   }
+
+  acts_as_commentable
+  has_paper_trail
+  tracked on: [:create, :destroy]
 
   def from_the_same_ip
     Feedback.where(ip: ip)
@@ -35,6 +37,7 @@ class Feedback < ActiveRecord::Base
   end
 
   private
+    # Default to Stan's email in case no other editors want to receive these.
     def add_emails_recipients
       self.email_recipients = User.feedback_emails_recipients
         .as_angle_bracketed_emails.presence || "sblum@calacademy.org"

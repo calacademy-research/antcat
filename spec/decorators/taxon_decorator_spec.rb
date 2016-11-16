@@ -27,7 +27,7 @@ describe TaxonDecorator do
 
     describe "#protonym_name" do
       it "formats a family name in the protonym" do
-        protonym = create :protonym, name: create(:family_or_subfamily_name, name: 'Dolichoderinae')
+        protonym = create :protonym, name: create(:subfamily_name, name: 'Dolichoderinae')
         expect(decorator_helper.new(nil).send(:protonym_name, protonym))
           .to eq '<b><span class="protonym_name">Dolichoderinae</span></b>'
       end
@@ -77,7 +77,7 @@ describe TaxonDecorator do
         subfamily = create_subfamily 'Dolichoderinae'
         genus = create_genus 'Atta', subfamily: subfamily
         species = create_species 'Atta major', genus: genus, subfamily: subfamily
-        expect(decorator_helper.new(species).send(:link_to_other_site)).to eq %{<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>}
+        expect(decorator_helper.new(species).send(:link_to_other_site)).to eq %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>}
       end
 
       it "links to subspecies" do
@@ -86,7 +86,7 @@ describe TaxonDecorator do
         species = create_species 'Atta major', genus: genus, subfamily: subfamily
         species = create_subspecies 'Atta major nigrans', species: species, genus: genus, subfamily: subfamily
         expect(decorator_helper.new(species).send(:link_to_other_site))
-          .to eq %{<a class="link_to_external_site" target="_blank" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=nigrans&project=worldants">AntWeb</a>}
+          .to eq %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=nigrans&project=worldants">AntWeb</a>}
       end
 
       it "links to invalid taxa" do
@@ -131,6 +131,55 @@ describe TaxonDecorator do
         genus = create_genus 'Atta', subfamily: subfamily, status: 'collective group name'
         expect(decorator_helper.new(subfamily).send(:collective_group_name_child_list))
           .to eq %{<div class="child_list"><span class="caption">Collective group name in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
+      end
+    end
+
+    describe "#child_list_query" do
+      let!(:subfamily) { create :subfamily, name: create(:name, name: 'Dolichoderinae') }
+
+      it "finds all genera for the taxon if there are no conditions" do
+        create :genus,
+          name: create(:name, name: 'Atta'),
+          subfamily: subfamily
+        create :genus,
+          name: create(:name, name: 'Eciton'),
+          subfamily: subfamily, fossil: true
+        create :genus,
+          name: create(:name, name: 'Aneuretus'),
+          subfamily: subfamily,
+          fossil: true, incertae_sedis_in: 'subfamily'
+
+        #results = subfamily.child_list_query :genera
+        results = decorator_helper.new(subfamily).send :child_list_query, :genera
+        expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Atta', 'Eciton']
+
+        #results = subfamily.child_list_query :genera, fossil: true
+        results = decorator_helper.new(subfamily).send :child_list_query, :genera, fossil: true
+        expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
+
+        #results = subfamily.child_list_query :genera, incertae_sedis_in: 'subfamily'
+        results = decorator_helper.new(subfamily).send :child_list_query, :genera, incertae_sedis_in: 'subfamily'
+        expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus']
+      end
+
+      it "doesn't include invalid taxa" do
+        create :genus,
+          name: create(:name, name: 'Atta'),
+          subfamily: subfamily,
+          status: 'synonym'
+        create :genus,
+          name: create(:name, name: 'Eciton'),
+          subfamily: subfamily,
+          fossil: true
+        create :genus,
+          name: create(:name, name: 'Aneuretus'),
+          subfamily: subfamily,
+          fossil: true,
+          incertae_sedis_in: 'subfamily'
+
+        #results = subfamily.child_list_query :genera
+        results = decorator_helper.new(subfamily).send :child_list_query, :genera
+        expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
       end
     end
   end
@@ -242,29 +291,25 @@ describe TaxonDecorator do
     end
   end
 
-  describe "#change_history" do
-    around do |example|
-      with_versioning &example
-    end
-
+  describe "#change_history", versioning: true do
     it "shows nothing for old taxa" do
       taxon = create_genus
       expect(taxon.decorate.change_history).to be_nil
     end
 
     it "shows the adder for waiting taxa" do
-      adder = create :user, can_edit: true
+      adder = create :editor
       taxon = create_taxon_version_and_change :waiting, adder
 
       change_history = taxon.decorate.change_history
       expect(change_history).to match /Added by/
-      expect(change_history).to match /Mark Wilden/
+      expect(change_history).to match /Brian Fisher/
       expect(change_history).to match /less than a minute ago/
     end
 
     it "shows the adder and the approver for approved taxa" do
-      adder = create :user, can_edit: true
-      approver = create :user, can_edit: true
+      adder = create :editor
+      approver = create :editor
       taxon = create_taxon_version_and_change :waiting, adder
       taxon.taxon_state.review_state = :waiting
       change = Change.find taxon.last_change.id
@@ -344,7 +389,7 @@ describe TaxonDecorator do
       expect(subspecies.decorate.name_description).to eq "new subspecies of (no species)"
     end
 
-    it "should be html_safe" do
+    it "is html_safe" do
       subfamily = create_subfamily build_stubbed: true
       genus = create_genus subfamily: subfamily, build_stubbed: true
       expect(genus.decorate.name_description).to be_html_safe

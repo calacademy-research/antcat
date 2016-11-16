@@ -1,3 +1,6 @@
+# TODO maybe less checking of user rights?
+# TODO possibly DRY buttons helpers that may be duplicated elsewhere.
+
 module CatalogHelper
   def taxon_label_span taxon
     content_tag :span, class: css_classes_for_rank(taxon) do
@@ -13,6 +16,7 @@ module CatalogHelper
     protonym.name.protonym_with_fossil_html protonym.fossil
   end
 
+  # Sorted to make test pass
   def css_classes_for_rank taxon
     [taxon.type.downcase, 'taxon', 'name'].sort
   end
@@ -23,6 +27,7 @@ module CatalogHelper
     end
   end
 
+  # TODO maybe make it possible to add (incertae sedis) species/genera.
   def link_to_add_new_species taxon
     return unless user_can_edit? && taxon.is_a?(Genus)
 
@@ -34,16 +39,20 @@ module CatalogHelper
   def link_to_review_change taxon
     return unless user_can_review_changes?
 
-    if taxon.can_be_reviewed? && taxon.latest_change
-      link_to 'Review change', "/changes/#{taxon.latest_change.id}", class: "btn-normal"
+    if taxon.can_be_reviewed? && taxon.last_change
+      link_to 'Review change', "/changes/#{taxon.last_change.id}", class: "btn-normal"
     end
   end
 
-  def link_to_delete_taxon taxon
+  def link_to_superadmin_delete_taxon taxon
     return unless user_is_superadmin?
 
     link_to 'Delete', "#", id: "delete_button", class: "btn-delete",
       data: { 'delete-location' => taxa_path(taxon), "taxon-id" => taxon.id }
+  end
+
+  def show_full_statistics? taxon
+    taxon.invalid? || params[:include_full_statistics].present?
   end
 
   private

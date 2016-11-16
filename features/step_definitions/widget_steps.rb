@@ -26,7 +26,8 @@ When(/I click the new_or_homonym field/) do
 end
 
 When(/the default_name_string field should contain "([^"]*)"/) do |name|
-  find('#test_default_name_string_name_field #name_string').value.should == name
+  element = find '#test_default_name_string_name_field #name_string'
+  expect(element.value).to eq name
 end
 
 When(/I click the default_name_string field/) do
@@ -53,7 +54,7 @@ end
 # Results section
 Then(/in the results section I should see the editable taxt for the name "([^"]*)"/) do |text|
   within "#results" do
-    step %{I should see "#{Taxt.to_editable_name(Name.find_by_name(text))}"}
+    step %{I should see "#{TaxtIdTranslator.to_editor_nam_tag(Name.find_by_name(text))}"}
   end
 end
 
@@ -71,7 +72,7 @@ end
 
 Then(/in the results section I should see the editable taxt for "([^"]*)"/) do |text|
   within "#results" do
-    step %{I should see "#{Taxt.to_editable_taxon(Taxon.find_by_name(text))}"}
+    step %{I should see "#{TaxtIdTranslator.to_editor_tax_tag(Taxon.find_by_name(text))}"}
   end
 end
 

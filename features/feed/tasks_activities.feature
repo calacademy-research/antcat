@@ -23,15 +23,6 @@ Feature: Feed (tasks)
     And I go to the activity feed
     Then I should see "Archibald edited the task Valid?" and no other feed items
 
-  Scenario: Completed a task
-    Given there is an open task for the feed
-
-    When I go to the open tasks page
-      And I follow "Valid?"
-      And I follow "Complete"
-    And I go to the activity feed
-    Then I should see "Archibald completed the task Valid?" and no other feed items
-
   Scenario: Closed a task
     Given there is an open task for the feed
 

@@ -1,15 +1,18 @@
 class ComparableReference
   include ReferenceComparable
-  attr_accessor :author, :year, :title, :type, :series_volume_issue, :pagination
+
+  # NOTE `:principal_author_last_name_cache` used to be `:author`, which pointed
+  # to `principal_author_last_name` which pointed to the proper attribute
+  # `principal_author_last_name_cache`.
+  attr_accessor :principal_author_last_name_cache, :year, :title, :type,
+    :series_volume_issue, :pagination
 
   def initialize hash = {}
     update hash
   end
 
   def update hash
-    hash.each do |key, value|
-      send "#{key}=", value
-    end
+    hash.each { |key, value| send "#{key}=", value }
   end
 
   def id

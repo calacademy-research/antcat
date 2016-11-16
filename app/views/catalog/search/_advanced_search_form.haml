@@ -46,5 +46,5 @@
       =button_tag type: 'submit', name: nil, class: 'btn-search has-spinner' do
         =spinner_icon + "Go"
 
-      -if @taxa.present? && !@is_quick_search
+      -if !@is_quick_search && @taxa.present?
         =link_to 'Download (advanced search only)', "/catalog/search.txt?#{request.parameters.to_param}", class: "btn-normal btn-download"

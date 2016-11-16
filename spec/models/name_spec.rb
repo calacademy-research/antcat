@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe Name do
-  it "should have a name" do
-    expect(Name.new(name: 'Name').name).to eq 'Name'
-  end
+  it { should be_versioned }
+  it { should validate_presence_of :name }
 
   describe "#epithet_with_fossil_html" do
     it "formats the fossil symbol" do
@@ -23,7 +22,7 @@ describe Name do
     end
   end
 
-  describe "Updating taxon cache" do
+  describe "#set_taxon_caches" do
     before do
       @atta = find_or_create_name 'Atta'
       @atta.update_attribute :name_html, '<i>Atta</i>'
@@ -61,137 +60,6 @@ describe Name do
     end
   end
 
-  describe ".picklist_matching" do
-    it "returns empty values if no match" do
-      expect(Name.picklist_matching('ata')).to eq []
-    end
-
-    it "should find one prefix match" do
-      name = find_or_create_name 'Atta'
-      name.update_attributes name_html:  '<i>Atta</i>'
-
-      expect(Name.picklist_matching('att')).to eq [
-        id: name.id, name: name.name,
-        label: '<b><i>Atta</i></b>', value: name.name
-      ]
-    end
-
-    it "should find one fuzzy match" do
-      name = find_or_create_name 'Gesomyrmex'
-      name.update_attributes name_html:  '<i>Gesomyrmex</i>'
-
-      expect(Name.picklist_matching('gyx')).to eq [
-        id: name.id, name: name.name,
-        label: '<b><i>Gesomyrmex</i></b>', value: name.name
-      ]
-    end
-
-    it "returns the taxon_id, if there is one" do
-      bothroponera = find_or_create_name 'Bothroponera'
-      bothroponera.update_attributes name_html: '<i>Bothroponera</i>'
-      brachyponera = create_genus 'Brachyponera'
-
-      expect(Name.picklist_matching('bera')).to eq [
-        { id: bothroponera.id,
-          name: bothroponera.name,
-          label: '<b><i>Bothroponera</i></b>',
-          value: bothroponera.name },
-        { id: brachyponera.name.id,
-          name: brachyponera.name.name,
-          label: '<b><i>Brachyponera</i></b>',
-          taxon_id: brachyponera.id,
-          value: brachyponera.name.name },
-      ]
-    end
-
-    it "puts prefix matches at the beginning" do
-      acropyga = find_or_create_name 'Acropyga dubitata'
-      acropyga.update_attributes name_html: '<i>Acropyga dubitata</i>'
-
-      atta = find_or_create_name 'Atta'
-      atta.update_attribute :name_html, "<i>Atta</i>"
-
-      acanthognathus = find_or_create_name 'Acanthognathus laevigatus'
-      acanthognathus.update_attributes name_html: '<i>Acanthognathus laevigatus</i>'
-
-      expect(Name.picklist_matching('atta')).to eq [
-        {
-          id: atta.id,
-          name: 'Atta',
-          label: '<b><i>Atta</i></b>',
-          value: atta.name
-        },
-        {
-          id: acanthognathus.id,
-          name: 'Acanthognathus laevigatus',
-          label: '<b><i>Acanthognathus laevigatus</i></b>',
-          value: acanthognathus.name},
-        {
-          id: acropyga.id,
-          name: 'Acropyga dubitata',
-          label: '<b><i>Acropyga dubitata</i></b>',
-          value: acropyga.name
-        }
-      ]
-    end
-
-    it "requires the first letter to match either the name or the epithet" do
-      find_or_create_name 'Acropyga dubitata'
-      find_or_create_name 'Acropyga indubitata'
-
-      results = Name.picklist_matching 'dubitata'
-      expect(results.size).to eq 1
-      expect(results.first[:name]).to eq 'Acropyga dubitata'
-    end
-
-    it "only returns names attached to taxa, if that option is sent" do
-      create_genus 'Atta'
-      find_or_create_name 'Attanuda'
-
-      results = Name.picklist_matching 'atta', taxa_only: true
-      expect(results.size).to eq 1
-      expect(results.first[:name]).to eq 'Atta'
-    end
-
-    it "only returns names attached to species, if that option is sent" do
-      create_genus 'Atta'
-      create_species 'Atta major'
-
-      results = Name.picklist_matching 'atta', species_only: true
-      expect(results.size).to eq 1
-      expect(results.first[:name]).to eq 'Atta major'
-    end
-
-    it "only returns names attached to genera, if that option is sent" do
-      create_genus 'Atta'
-      create_species 'Atta major'
-
-      results = Name.picklist_matching 'atta', genera_only: true
-      expect(results.size).to eq 1
-      expect(results.first[:name]).to eq 'Atta'
-    end
-
-    it "only returns names attached to subfamilies or tribes, if that option is sent" do
-      subfamily = create_subfamily 'Attinae'
-      tribe = create_tribe 'Attini'
-      create_genus 'Atta', tribe: tribe, subfamily: subfamily
-      create_species 'Atta major'
-
-      results = Name.picklist_matching 'att', subfamilies_or_tribes_only: true
-      expect(results.size).to eq 2
-      expect(results.map { |e| e[:name] }).to match_array ['Attinae', 'Attini']
-    end
-
-    it "prioritizes names already associated with taxa" do
-      atta_name = create :name, name: 'Atta'
-      taxon = create_genus 'Atta'
-
-      results = Name.picklist_matching 'Atta'
-      expect(taxon.name_id).not_to eq atta_name.id
-      expect(results.first[:id]).to eq taxon.name_id
-    end
-  end
-
   describe ".duplicates" do
     it "returns the records with same name but different ID" do
       first_atta_name = create :name, name: 'Atta'
@@ -213,11 +81,11 @@ describe Name do
       expect(results).to eq(
         'Atta' => {
           first_atta_name.id => [
-            {table: 'taxa', field: :name_id, id: first_atta.id},
+            { table: 'taxa', field: :name_id, id: first_atta.id },
           ],
           second_atta_name.id => [
-            {table: 'taxa', field: :name_id, id: second_atta.id},
-          ],
+            { table: 'taxa', field: :name_id, id: second_atta.id }
+          ]
         }
       )
     end
@@ -231,9 +99,9 @@ describe Name do
       atta.update_attribute :type_name, atta.name
 
       expect(atta.name.references).to match_array [
-        {table: 'taxa', field: :name_id, id: atta.id},
-        {table: 'taxa', field: :type_name_id, id: atta.id},
-        {table: 'protonyms', field: :name_id, id: protonym.id},
+        { table: 'taxa', field: :name_id, id: atta.id },
+        { table: 'taxa', field: :type_name_id, id: atta.id },
+        { table: 'protonyms', field: :name_id, id: protonym.id }
       ]
     end
 
@@ -242,8 +110,8 @@ describe Name do
       eciton = create_genus 'Eciton'
       eciton.update_attribute :type_taxt, "{nam #{atta.name.id}}"
       expect(atta.name.references).to match_array [
-        {table: 'taxa', field: :name_id, id: atta.id},
-        {table: 'taxa', field: :type_taxt, id: eciton.id},
+        { table: 'taxa', field: :name_id, id: atta.id },
+        { table: 'taxa', field: :type_taxt, id: eciton.id }
       ]
     end
   end
@@ -251,150 +119,53 @@ describe Name do
   describe "#references_in_taxt" do
     it "returns instances that reference this name" do
       name = Name.create! name: 'Atta'
-      # create an instance for each type of taxt
-      Taxt.taxt_fields.each do |klass, fields|
-        fields.each do |field|
-          create klass, field => "{nam #{name.id}}"
-        end
+
+      # Create an instance for each type of taxt.
+      Taxt::TAXT_FIELDS.each do |klass, fields|
+        fields.each { |field| create klass, field => "{nam #{name.id}}" }
       end
+
+      # Count the total referencing items.
       refs = name.send :references_in_taxt
-      # count the total referencing items
       expect(refs.length).to eq(
-        Taxt.taxt_fields.map { |klass, fields| fields.length }.reduce(&:+)
+        Taxt::TAXT_FIELDS.map { |klass, fields| fields.length }.reduce(&:+)
       )
-      # count the total referencing items of each type
-      Taxt.taxt_fields.each do |klass, fields|
+
+      # Count the total referencing items of each type.
+      Taxt::TAXT_FIELDS.each do |klass, fields|
         fields.each do |field|
           expect(refs.select { |i| i[:table] == klass.table_name }.length).to eq(
-            Taxt.taxt_fields.detect { |k, f| k == klass }[1].length
+            Taxt::TAXT_FIELDS.detect { |k, f| k == klass }[1].length
           )
         end
       end
     end
   end
 
-  describe "versioning" do
-    it "records an add" do
-      with_versioning do
-        name = Name.create! name: 'Atta'
-        versions = name.versions
-        version = versions.last
-        expect(version.event).to eq 'create'
-      end
-    end
-
-    it "records an update" do
-      name = Name.create! name: 'Atta'
-      with_versioning do
-        name.update_attribute :name, 'Eciton'
-        versions = name.versions
-        version = versions.last
-        expect(version.event).to eq 'update'
-      end
-    end
-
-    it "records a create" do
-      name = Name.new name: 'Atta'
-      with_versioning do
-        name['name'] = 'Eciton'
-        name.save!
-        versions = name.versions
-        version = versions.last
-        expect(version.event).to eq 'create'
-      end
-    end
-
-    it "records an add followed by an update" do
-      with_versioning do
-        name = Name.create! name: 'Atta'
-        version = name.versions(true).last
-        expect(version.event).to eq 'create'
-
-        name['name'] = 'Eciton'
-        name.save!
-
-        versions = name.versions true
-        expect(name.versions.count).to eq 2
-
-        version = versions.first
-        expect(version.event).to eq 'create'
-        version = versions.last
-        expect(version.event).to eq 'update'
-      end
-    end
-  end
-
   describe "#quadrinomial?" do
     it "just considers quadrinomials quadrinomials - nothing else" do
-      name = SubfamilyName.new name: 'Acidinae',
-      qname_html: 'Acidinae', epithet: 'Acidinae',
-        epithet_html: 'Acidinae', epithets: nil,
-        protonym_html: 'Acidinae'
+      name = SubfamilyName.new name: 'Acidinae', epithet: 'Acidinae', epithets: nil
       expect(name).not_to be_quadrinomial
 
-      name = TribeName.new name: 'Acidini',
-        name_html: 'Acidini', epithet: 'Acidini',
-        epithet_html: 'Acidini', epithets: nil,
-        protonym_html: 'Acidini'
+      name = TribeName.new name: 'Acidini', epithet: 'Acidini', epithets: nil
       expect(name).not_to be_quadrinomial
 
-      name = GenusName.new name: 'Acus',
-        name_html: '<i>Acus</i>', epithet: 'Acus',
-        epithet_html: '<i>Acus</i>', epithets: nil,
-        protonym_html: '<i>Acus</i>'
+      name = GenusName.new name: 'Acus', epithet: 'Acus', epithets: nil
       expect(name).not_to be_quadrinomial
 
-      name = SubgenusName.new name: 'Acus (Rex)',
-        name_html: '<i>Acus (Rex)</i>', epithet: 'Rex',
-        epithet_html: '<i>Rex</i>', epithets: nil,
-        protonym_html: '<i>Acus (Rex)</i>'
+      name = SubgenusName.new name: 'Acus (Rex)', epithet: 'Rex', epithets: nil
       expect(name).not_to be_quadrinomial
 
-      name = SpeciesName.new name: 'Acus major',
-        name_html: '<i>Acus major</i>', epithet: 'major',
-        epithet_html: '<i>major</i>', epithets: 'major',
-        protonym_html: '<i>Acus major</i>'
+      name = SpeciesName.new name: 'Acus major', epithet: 'major', epithets: 'major'
       expect(name).not_to be_quadrinomial
 
       name = SubspeciesName.new name: 'Acus major minor',
-        name_html: '<i>Acus major minor</i>', epithet: 'major minor',
-        epithet_html: '<i>major minor</i>', epithets: 'major minor',
-        protonym_html: '<i>Acus major minor</i>'
+        epithet: 'major minor', epithets: 'major minor'
       expect(name).not_to be_quadrinomial
 
       name = SubspeciesName.new name: 'Acus major minor medium',
-        name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
-        epithet_html: '<i>medium</i>', epithets: 'major minor medium',
-        protonym_html: '<i>Acus major minor medium</i>'
+        epithet: 'medium', epithets: 'major minor medium'
       expect(name).to be_quadrinomial
-    end
-  end
-
-  describe "indexing" do
-    it "subspecies names should work as expected" do
-      name = SubspeciesName.new name: 'Acus major minor medium',
-        name_html: '<i>Acus major minor medium</i>', epithet: 'medium',
-        epithet_html: '<i>medium</i>', epithets: 'major minor medium',
-        protonym_html: '<i>Acus major minor medium</i>'
-      name_split = name.to_s.split
-
-      expect(name_split[0]).to eq 'Acus'
-      expect(name_split[1]).to eq 'major'
-      expect(name_split[2]).to eq 'minor'
-      expect(name_split[3]).to eq 'medium'
-    end
-
-    it "genus name should work as expected" do
-      name = GenusName.new name: 'Acus',
-        name_html: '<i>Acus</i>', epithet: 'Acus',
-        epithet_html: '<i>Acus</i>', epithets: nil,
-        protonym_html: '<i>Acus</i>'
-      name_split = name.to_s.split
-
-      expect(name_split[0]).to eq 'Acus'
-      expect(name_split[1]).to be_nil
-      expect(name_split[2]).to be_nil
-      expect(name_split[3]).to be_nil
     end
   end
 

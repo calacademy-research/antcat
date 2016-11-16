@@ -20,10 +20,10 @@ module ApplicationHelper
 
   def pluralize_with_delimiters count, singular, plural = nil
     word = if count == 1
-      singular
-    else
-      plural || singular.pluralize
-    end
+             singular
+           else
+             plural || singular.pluralize
+           end
     "#{number_with_delimiter(count)} #{word}"
   end
 
@@ -35,7 +35,7 @@ module ApplicationHelper
   end
 
   def add_period_if_necessary string
-    return unless string.present?
+    return "".html_safe unless string.present?
     return string + '.' unless string[-1..-1] =~ /[.!?]/
     string
   end
@@ -52,6 +52,14 @@ module ApplicationHelper
     string.html_safe
   end
 
+  def beta_label
+    content_tag :span, "beta", class: "label"
+  end
+
+  def new_label
+    content_tag :span, "new!", class: "label"
+  end
+
   # First attempt at creating a spinner that works on all elements.
   # Add .has-spinner to the button/link/element and call this method inside that element.
   # To be improved once all buttons are more consistently formatted site-wide.
@@ -66,12 +74,9 @@ module ApplicationHelper
 
   def foundation_class_for flash_type
     case flash_type.to_sym
-    when :success, :notice
-      "primary"
-    when :error, :alert, :warning
-      "alert"
-    else
-      "secondary"
+    when :success, :notice        then "primary"
+    when :error, :alert, :warning then "alert"
+    else                               "secondary"
     end
   end
 
@@ -85,6 +90,13 @@ module ApplicationHelper
     end
   end
 
+  # Moved from `ReferenceDecorator#format_timestamp`.
+  # TODO something.
+  def a_timestamp_formatter timestamp
+    timestamp.strftime '%Y-%m-%d'
+  end
+
+  # Hmm cannot remember why private..
   private
     def antcat_icon *css_classes
       content_tag :span, nil,

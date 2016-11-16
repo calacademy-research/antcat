@@ -5,9 +5,7 @@ class TooltipsController < ApplicationController
 
   def index
     tooltips = Tooltip.all
-    @grouped_tooltips = tooltips.group_by do |tooltip|
-      tooltip.scope
-    end
+    @grouped_tooltips = tooltips.group_by(&:scope)
   end
 
   def show
@@ -15,10 +13,10 @@ class TooltipsController < ApplicationController
   end
 
   def new
-    @tooltip = Tooltip.new(params.permit(:selector))
+    @tooltip = Tooltip.new params.permit(:selector)
     @tooltip.selector_enabled = true
     @tooltip.key = params[:key]
-    @tooltip[:scope] = get_page_from_url(request.referer)
+    @tooltip.scope = get_page_from_url request.referer
     @referral = request.referer
   end
 
@@ -27,7 +25,7 @@ class TooltipsController < ApplicationController
   end
 
   def create
-    @tooltip = Tooltip.new(tooltip_params)
+    @tooltip = Tooltip.new tooltip_params
     if @tooltip.save
       if params[:referral] && params[:referral].size > 0
         redirect_to params[:referral] # joe dis broke
@@ -65,7 +63,7 @@ class TooltipsController < ApplicationController
   end
 
   def enabled_selectors
-    scope = get_page_from_url(request.referer)
+    scope = get_page_from_url request.referer
     json = Tooltip.enabled_selectors.where(scope: scope).pluck(:selector, :text, :id)
     render json: json
   end
@@ -75,11 +73,7 @@ class TooltipsController < ApplicationController
   end
 
   def toggle_tooltip_helper
-    if session[:show_missing_tooltips]
-      session[:show_missing_tooltips] = false
-    else
-      session[:show_missing_tooltips] = true
-    end
+    session[:show_missing_tooltips] = !session[:show_missing_tooltips]
     redirect_to tooltips_path
   end
 
@@ -97,7 +91,7 @@ class TooltipsController < ApplicationController
     end
 
     def tooltip_params
-      params.require(:tooltip).permit(
-        :key, :scope, :text, :key_enabled, :selector, :selector_enabled)
+      params.require(:tooltip).permit :key, :scope, :text,
+        :key_enabled, :selector, :selector_enabled
     end
 end

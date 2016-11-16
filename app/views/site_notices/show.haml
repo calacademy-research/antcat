@@ -1,0 +1,28 @@
+-@title = "Site Notice #{@site_notice.title}"
+-breadcrumb :site_notice, @site_notice
+
+.left
+  %h5=@site_notice.title
+  Added by
+  =@site_notice.user.decorate.user_page_link
+  =time_ago_in_words(@site_notice.created_at)
+
+-if user_can_edit?
+  .buttons_right
+    =link_to("Edit", edit_site_notice_path(@site_notice), class: "btn-normal")
+    -if user_is_superadmin?
+      =link_to "Delete", site_notice_path(@site_notice), method: :delete, data: { confirm: "Delete? This removes the site notice from the archive." }, class: "btn-delete"
+.clear
+
+-if @site_notice.blurb.present?
+  .row
+    .medium-12.columns
+      .callout
+        %p=@site_notice.blurb
+
+.row
+  .medium-12.columns
+    .callout
+      =markdown @site_notice.message
+
+=render partial: "comments/comments_area", locals: { commentable: @site_notice, new_comment: @new_comment }

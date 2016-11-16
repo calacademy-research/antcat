@@ -28,7 +28,7 @@ class ConvertToSubspeciesController < ApplicationController
       render :new and return
     end
 
-    @new_species = Taxon.find_by_name_id params[:new_species_id]
+    @new_species = Taxon.find_by(name_id: params[:new_species_id])
 
     unless @new_species.kind_of? Species
       @taxon.errors.add :base, "The new parent must be of rank species."
@@ -69,6 +69,8 @@ class ConvertToSubspeciesController < ApplicationController
     # TODO remove after tweaking the factories
     # The factories create two "Camponotus" genera, so we need to fool them.
     def trick_factories_hack
-      Rails.env.test? && "#{@new_species.genus.name}" == "#{@taxon.genus.name}"
+      return unless Rails.env.test?
+      $stdout.puts "trick_factories_hack".red
+      "#{@new_species.genus.name}" == "#{@taxon.genus.name}"
     end
 end

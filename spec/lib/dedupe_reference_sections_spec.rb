@@ -15,9 +15,11 @@ describe DedupeReferenceSections do
 
       taxon.reload
       expect(taxon.reference_sections.count).to eq 2
-      expect(taxon.reference_sections.map do |reference_section|
+
+      results = taxon.reference_sections.map do |reference_section|
         [reference_section.position, reference_section.references_taxt]
-      end).to match_array [[1, 'Taxt'], [3, 'Not taxt']]
+      end
+      expect(results).to match_array [[1, 'Taxt'], [3, 'Not taxt']]
     end
   end
 end

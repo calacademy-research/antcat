@@ -1,3 +1,6 @@
+# TODO maybe merge `ReferencePopupsController` and `ReferenceFieldsController`
+# into this controller.
+
 class ReferencePickersController < ApplicationController
   def show
     reference = Reference.find params[:id] if params[:id].present?

@@ -1,4 +1,5 @@
 FactoryGirl.define do
+  # TODO default to "waiting" because that's the new deal.
   factory :taxon_state do
     review_state 'old'
     deleted 0
@@ -38,11 +39,6 @@ FactoryGirl.define do
     association :whodunnit, factory: :user
   end
 
-  factory :transaction do
-    association :paper_trail_version, factory: :version
-    association :change
-  end
-
   factory :change do
     change_type "create"
   end
@@ -51,16 +47,30 @@ FactoryGirl.define do
     sequence(:key) { |n| "test.key#{n}" }
     sequence(:text) { |n| "Tooltip text #{n}" }
   end
+
+  factory :site_notice do
+    title "Site notice title"
+    message "Site notice message"
+    association :user, factory: :user
+  end
 end
 
-def setup_version taxon_id, whodunnit = nil
-  change = create :change, user_changed_taxon_id: taxon_id
+def setup_version taxon, whodunnit = nil
+  change = create :change, user_changed_taxon_id: taxon.id
 
   create :version,
-    item_id: taxon_id,
+    item_id: taxon.id,
     event: 'create',
     item_type: 'Taxon',
     change_id: change.id,
     whodunnit: whodunnit.try(:id)
   change
+end
+
+class DatabaseTestScript
+  include DatabaseScripts::DatabaseScript
+
+  def results
+    Reference.all
+  end
 end

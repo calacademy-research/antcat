@@ -42,16 +42,6 @@ crumb :references_latest_changes do
   parent :references
 end
 
-crumb :missing_references do
-  link "Missing References", missing_references_path
-  parent :references
-end
-
-  crumb :show_and_fix_missing_reference do |reference|
-    link "Show/Fix Missing Reference ##{reference.id}"
-    parent :missing_references
-  end
-
 crumb :journals do
   link "Journals", journals_path
   parent :references

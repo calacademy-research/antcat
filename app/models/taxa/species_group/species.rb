@@ -1,8 +1,9 @@
 class Species < SpeciesGroupTaxon
   include Formatters::RefactorFormatter
 
-  has_many :subspecies
   attr_accessible :name, :protonym, :genus, :current_valid_taxon, :homonym_replaced_by, :type
+
+  has_many :subspecies
 
   def parent
     subgenus || genus
@@ -25,8 +26,8 @@ class Species < SpeciesGroupTaxon
     subspecies
   end
 
-  def statistics
-    get_statistics [:subspecies]
+  def statistics valid_only: false
+    get_statistics [:subspecies], valid_only: valid_only
   end
 
   def become_subspecies_of species
@@ -48,11 +49,11 @@ class Species < SpeciesGroupTaxon
 
     create_convert_species_to_subspecies_activity new_name
 
-    self.update_columns name_id: new_name.id,
-                        species_id: species.id,
-                        name_cache: new_name.name,
-                        name_html_cache: new_name.name_html,
-                        type: 'Subspecies'
+    update_columns name_id: new_name.id,
+                   species_id: species.id,
+                   name_cache: new_name.name,
+                   name_html_cache: new_name.name_html,
+                   type: 'Subspecies'
   end
 
   private

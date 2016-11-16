@@ -1,4 +1,4 @@
-# Note: This is the superclass of Genus and Subgenus, not
+# Note: This is the superclass of Genus and Subgenus, not to
 # be confused with "genus group" as used in taxonomy.
 
 class GenusGroupTaxon < Taxon

@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe Species do
-  before do
-    @reference = create :article_reference
-  end
-
   it "can have subspecies, which are its children" do
     species = create_species 'Atta chilensis'
     create_subspecies 'Atta chilensis robusta', species: species
@@ -25,11 +21,9 @@ describe Species do
       species = create_species
       create_subspecies species: species
 
-      expect(species.statistics).to eq(
-        extant: {
-          subspecies: { 'valid' => 1 }
-        }
-      )
+      expect(species.statistics).to eq extant: {
+        subspecies: { 'valid' => 1 }
+      }
     end
 
     it "differentiates between extant and fossil subspecies" do
@@ -38,27 +32,8 @@ describe Species do
       create_subspecies species: species, fossil: true
 
       expect(species.statistics).to eq(
-        extant: {
-          subspecies: { 'valid' => 1 }
-        },
-        fossil: {
-          subspecies: { 'valid' => 1 }
-        }
-      )
-    end
-
-    it "differentiates between extant and fossil subspecies" do
-      species = create_species
-      create_subspecies species: species
-      create_subspecies species: species, fossil: true
-
-      expect(species.statistics).to eq(
-        extant: {
-          subspecies: { 'valid' => 1 }
-        },
-        fossil: {
-          subspecies: { 'valid' => 1 }
-        }
+        extant: { subspecies: { 'valid' => 1 } },
+        fossil: { subspecies: { 'valid' => 1 } }
       )
     end
 
@@ -67,11 +42,9 @@ describe Species do
       create_subspecies species: species
       2.times { create_subspecies species: species, status: 'synonym' }
 
-      expect(species.statistics).to eq(
-        extant: {
-          subspecies: { 'valid' => 1, 'synonym' => 2 }
-        }
-      )
+      expect(species.statistics).to eq extant: {
+        subspecies: { 'valid' => 1, 'synonym' => 2 }
+      }
     end
   end
 
@@ -104,22 +77,26 @@ describe Species do
       expect(taxon.subfamily).to eq new_species.subfamily
     end
 
-    it "should handle when the new subspecies exists" do
-      taxon = create_species 'Camponotus dallatorrei', genus: genus
-      new_species = create_species 'Camponotus alii', genus: genus
-      existing_subspecies = create_subspecies 'Atta alii dallatorrei', genus: genus
+    context "when the new subspecies exists" do
+      it "handles it" do
+        taxon = create_species 'Camponotus dallatorrei', genus: genus
+        new_species = create_species 'Camponotus alii', genus: genus
+        existing_subspecies = create_subspecies 'Atta alii dallatorrei', genus: genus
 
-      expect { taxon.become_subspecies_of new_species }.to raise_error Taxon::TaxonExists
+        expect { taxon.become_subspecies_of new_species }.to raise_error Taxon::TaxonExists
+      end
     end
 
-    it "should handle when the new subspecies name exists, but just as the protonym of the new subspecies" do
-      subspecies_name = create :subspecies_name, name: 'Atta major minor'
-      taxon = create_species 'Atta minor', genus: genus, protonym: create(:protonym, name: subspecies_name)
-      new_species = create_species 'Atta major', genus: genus
+    context "when the new subspecies name exists, but just as the protonym of the new subspecies" do
+      it "handles it" do
+        protonym = create :protonym, name: create(:subspecies_name, name: 'Atta major minor')
+        taxon = create_species 'Atta minor', genus: genus, protonym: protonym
+        new_species = create_species 'Atta major', genus: genus
 
-      taxon.become_subspecies_of new_species
-      taxon = Subspecies.find taxon.id
-      expect(taxon.name.name).to eq 'Atta major minor'
+        taxon.become_subspecies_of new_species
+        taxon = Subspecies.find taxon.id
+        expect(taxon.name.name).to eq 'Atta major minor'
+      end
     end
   end
 

@@ -11,9 +11,7 @@ describe TaxonDecorator::Statistics do
 
     it "uses commas in numbers" do
       statistics = {
-        extant: {
-          genera: { 'valid' => 2_000 }
-        }
+        extant: { genera: { 'valid' => 2_000 } }
       }
       expect(decorator_helper.statistics(statistics))
         .to eq '<p class="taxon_statistics">2,000 valid genera</p>'
@@ -21,9 +19,7 @@ describe TaxonDecorator::Statistics do
 
     it "uses commas in numbers when not showing invalid" do
       statistics = {
-        extant: {
-          genera: { 'valid' => 2_000 }
-        }
+        extant: { genera: { 'valid' => 2_000 } }
       }
       expect(decorator_helper.statistics(statistics, include_invalid: false))
         .to eq '<p class="taxon_statistics">2,000 genera</p>'
@@ -63,9 +59,7 @@ describe TaxonDecorator::Statistics do
 
     it "handles just fossil statistics" do
       statistics = {
-        fossil: {
-          subfamilies: { 'valid' => 2 }
-        }
+        fossil: { subfamilies: { 'valid' => 2 } }
       }
       expect(decorator_helper.statistics(statistics))
         .to eq '<p class="taxon_statistics">Fossil: 2 valid subfamilies</p>'
@@ -105,9 +99,7 @@ describe TaxonDecorator::Statistics do
 
     it "handles just fossil statistics" do
       statistics = {
-        fossil: {
-          subfamilies: { 'valid' => 2 }
-        }
+        fossil: { subfamilies: { 'valid' => 2 } }
       }
       expect(decorator_helper.statistics(statistics))
         .to eq '<p class="taxon_statistics">Fossil: 2 valid subfamilies</p>'
@@ -127,9 +119,7 @@ describe TaxonDecorator::Statistics do
 
     it "handles tribes" do
       statistics = {
-        extant: {
-          tribes: { 'valid' => 1 }
-        }
+        extant: { tribes: { 'valid' => 1 } }
       }
       expect(decorator_helper.statistics(statistics))
         .to eq '<p class="taxon_statistics">1 valid tribe</p>'
@@ -148,9 +138,7 @@ describe TaxonDecorator::Statistics do
 
     it "uses the singular for genus" do
       statistics = {
-        extant: {
-          genera: { 'valid' => 1 }
-        }
+        extant: { genera: { 'valid' => 1 } }
       }
       expect(decorator_helper.statistics(statistics))
         .to eq '<p class="taxon_statistics">1 valid genus</p>'
@@ -158,9 +146,7 @@ describe TaxonDecorator::Statistics do
 
     it "formats a genus's statistics correctly" do
       statistics = {
-        extant: {
-          species: { 'valid' => 1 }
-        }
+        extant: { species: { 'valid' => 1 } }
       }
       expect(decorator_helper.statistics(statistics))
         .to eq '<p class="taxon_statistics">1 valid species</p>'
@@ -168,9 +154,7 @@ describe TaxonDecorator::Statistics do
 
     it "formats a species's statistics correctly" do
       statistics = {
-        extant: {
-          subspecies: { 'valid' => 1 }
-        }
+        extant: { subspecies: { 'valid' => 1 } }
       }
       expect(decorator_helper.statistics(statistics))
         .to eq '<p class="taxon_statistics">1 valid subspecies</p>'
@@ -181,9 +165,7 @@ describe TaxonDecorator::Statistics do
       create :subspecies, species: species, status: 'synonym'
 
       statistics = {
-        extant: {
-          subspecies: { 'synonym' => 1 }
-        }
+        extant: { subspecies: { 'synonym' => 1 } }
       }
       expect(decorator_helper.statistics(statistics))
         .to eq '<p class="taxon_statistics">(1 synonym)</p>'
@@ -220,9 +202,7 @@ describe TaxonDecorator::Statistics do
 
     it "doesn't leave a trailing comma" do
       statistics = {
-        extant: {
-          species: { 'valid' => 2 }
-        }
+        extant: { species: { 'valid' => 2 } }
       }
       expect(decorator_helper.statistics(statistics, include_fossil: false, include_invalid: false))
         .to eq '<p class="taxon_statistics">2 species</p>'
@@ -230,9 +210,7 @@ describe TaxonDecorator::Statistics do
 
     it "doesn't leave a trailing comma" do
       statistics = {
-        extant: {
-          species: { 'valid' => 2 }
-        }
+        extant: { species: { 'valid' => 2 } }
       }
       expect(decorator_helper.statistics(statistics, include_fossil: false, include_invalid: false))
         .to eq '<p class="taxon_statistics">2 species</p>'

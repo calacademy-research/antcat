@@ -1,3 +1,6 @@
+# TODO extra curricular: create an RSpec matcher for this, eg
+# `expect(Citation).to clean_newlines_on :notes_taxt`
+
 module CleanNewlines
   # TODO move to a concern?
   def self.clean_newlines record, *text_attributes

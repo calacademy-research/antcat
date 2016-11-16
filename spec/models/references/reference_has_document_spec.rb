@@ -1,14 +1,7 @@
 require 'spec_helper'
 
 describe Reference do
-  describe "document" do
-    it "has a document" do
-      reference = create :reference
-      expect(reference.document).to be_nil
-      reference.create_document
-      expect(reference.document).not_to be_nil
-    end
-  end
+  it { should have_one :document }
 
   describe "#downloadable?" do
     context "with a document" do
@@ -22,19 +15,18 @@ describe Reference do
 
     context "without a document" do
       it "returns false" do
-        expect(create(:reference)).not_to be_downloadable
+        expect(build_stubbed(:reference)).not_to be_downloadable
       end
     end
   end
 
   describe "#url" do
     it "is be nil if there is no document" do
-      expect(create(:reference).url).to be_nil
+      expect(build_stubbed(:reference).url).to be_nil
     end
 
     it "delegates to its document" do
       reference = create :reference, document: create(:reference_document)
-
       expect(reference.document).to receive :url
       reference.url
     end
@@ -50,7 +42,7 @@ describe Reference do
 
   describe "#document_host=" do
     it "doesn't crash if there is no document" do
-      create(:reference).document_host = 'localhost'
+      build_stubbed(:reference).document_host = 'localhost'
     end
 
     it "delegates to its document" do

@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe CatalogController do
-  it { should use_before_action(:handle_family_not_found) }
-  it { should use_before_action(:setup_catalog) }
+  it { should use_before_action :setup_catalog }
 
   describe 'GET #index' do
     describe "handle non-existing family" do
@@ -40,7 +39,7 @@ describe CatalogController do
     describe "toggles the session" do
       before { get :options, valid_only: "true" }
 
-      it { should set_session[:show_valid_only].to(true) }
+      it { should set_session[:show_valid_only].to true }
     end
 
     describe "toggles back" do
@@ -49,7 +48,25 @@ describe CatalogController do
         get :options, valid_only: "false"
       end
 
-      it { should set_session[:show_valid_only].to(false) }
+      it { should set_session[:show_valid_only].to false }
+    end
+  end
+
+  describe "#autocomplete" do
+    it "works" do
+      atta = create_genus 'Atta'
+      attacus = create_genus 'Attacus'
+      ratta = create_genus 'Ratta'
+      nylanderia = create_genus 'Nylanderia'
+
+      get :autocomplete, q: "att", format: :json
+      json = JSON.parse response.body
+
+      actual = json.map { |taxon| taxon["search_query"] }.sort
+      expected = [atta, attacus, ratta].map(&:name_cache).sort
+
+      expect(actual).to eq expected
+      expect(actual).to_not include nylanderia.name_cache
     end
   end
 end

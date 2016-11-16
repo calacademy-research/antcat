@@ -1,0 +1,29 @@
+-@title = @user.name
+-breadcrumb :user, @user
+
+-if current_user == @user
+  .buttons_right
+    =link_to "Change my password/name/email", edit_user_registration_path, class: "btn-normal"
+%p
+  %strong Name:
+  =@user.name
+%p
+  %strong Email:
+  =link_to @user.email, "mailto:#{@user.email}"
+%p
+  %strong Editor:
+  =@user.can_edit? ? 'Yes' : 'No'
+
+.row.margin-top
+  .large-12.columns
+    %h5
+      #{@user.name}'s most
+      =link_to "recent activity", feed_path
+    =render "feed/activities_table", activities: @recent_user_activities
+
+.row.margin-top
+  .large-12.columns
+    %h5
+      #{@user.name}'s most
+      =link_to "recent comments", comments_path
+    =render "comments/comments_table", comments: @recent_user_comments

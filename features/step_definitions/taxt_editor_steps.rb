@@ -1,6 +1,7 @@
-Then(/^the taxt editor should contain the editable taxt for "(.*?)"$/) do |key|
-  reference = find_reference_by_key key
-  find('#name').value.strip.should == Taxt.to_editable_reference(reference)
+Then(/^the taxt editor should contain the editable taxt for "(.*?)"$/) do |keey|
+  reference = find_reference_by_keey keey
+  element = find '#name'
+  expect(element.value.strip).to eq TaxtIdTranslator.to_editor_ref_tag(reference)
 end
 
 # Seems like we need this now. Tests likely passed without this earlier

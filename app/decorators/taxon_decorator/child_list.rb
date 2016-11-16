@@ -15,6 +15,7 @@ class TaxonDecorator::ChildList
       content << child_lists_for_rank(rank)
     end
     content << collective_group_name_child_list
+
     return unless content.present?
 
     content_tag :div, class: 'child_lists' do
@@ -43,12 +44,26 @@ class TaxonDecorator::ChildList
     def child_list_fossil_pairs children_selector, conditions = {}
       extant_conditions = conditions.merge fossil: false
       extinct_conditions = conditions.merge fossil: true
-      extinct = @taxon.child_list_query children_selector, extinct_conditions
-      extant = @taxon.child_list_query children_selector, extant_conditions
+
+      extinct = child_list_query children_selector, extinct_conditions
+      extant = child_list_query children_selector, extant_conditions
+
       specify_extinct_or_extant = extinct.present?
 
       child_list(extant, specify_extinct_or_extant, extant_conditions) +
       child_list(extinct, specify_extinct_or_extant, extinct_conditions)
+    end
+
+    def child_list_query children_selector, conditions = {}
+      incertae_sedis_in = conditions[:incertae_sedis_in]
+
+      children = @taxon.send children_selector
+
+      children = children.where(fossil: !!conditions[:fossil]) if conditions.key? :fossil
+      children = children.where(incertae_sedis_in: incertae_sedis_in) if incertae_sedis_in
+      children = children.where(hong: !!conditions[:hong]) if conditions.key? :hong
+
+      children.valid.includes(:name).order_by_name_cache
     end
 
     def child_list children, specify_extinct_or_extant, conditions = {}
@@ -58,9 +73,9 @@ class TaxonDecorator::ChildList
       label << 'Hong (2002) ' if conditions[:hong]
 
       if conditions[:collective_group_names]
-        label << Status['collective group name'].to_s(children.count).humanize
+        label << Status['collective group name'].to_s(children.size).humanize
       else
-        label << children.first.rank.pluralize(children.count).titleize
+        label << children.first.rank.pluralize(children.size).titleize
       end
 
       if specify_extinct_or_extant
@@ -77,9 +92,9 @@ class TaxonDecorator::ChildList
 
       label << taxon_label_span(@taxon)
 
-      content_tag :div, class: :child_list do
+      content_tag :div, class: 'child_list' do
         content = ''.html_safe
-        content << content_tag(:span, label, class: :caption)
+        content << content_tag(:span, label, class: 'caption')
         content << ': '
         content << child_list_items(children)
         content << '.'
@@ -87,8 +102,6 @@ class TaxonDecorator::ChildList
     end
 
     def child_list_items children
-      children.map do |child|
-        link_to_taxon(child)
-      end.join(', ').html_safe
+      children.map { |child| link_to_taxon(child) }.join(', ').html_safe
     end
 end

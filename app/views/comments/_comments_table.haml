@@ -14,7 +14,7 @@
         %tr
           %td
             -# "User Name"
-            =comment.user.decorate.name_linking_to_email
+            =comment.user.decorate.user_page_link
 
             -# "commented on" (comment linked if commented object still exists)
             -commentable = comment.commentable
@@ -41,5 +41,5 @@
               =truncate comment.body, length: 200, omission: "... (continued)"
 
           %td.no-wrap
-            =time_ago_in_words(comment.created_at)
+            =time_ago_in_words comment.created_at
             ago

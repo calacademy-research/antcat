@@ -9,7 +9,7 @@
   .display
     -if picker_type == 'field'
       %button.display_button
-        =reference && reference.id ? reference.decorate.format : '(none)'
+        =reference && reference.id ? reference.decorate.formatted : '(none)'
 
   .edit
     %table.references.current

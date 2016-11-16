@@ -1,8 +1,6 @@
 Given(/^the following names exist for an(?:other)? author$/) do |table|
   author = create :author
-  table.raw.each do |row|
-    author.names.create! name: row.first
-  end
+  table.raw.each { |row| author.names.create! name: row.first }
 end
 
 When(/I fill in "([^"]+)" in (the (?:(?:first|last|another) )?author panel) with "(.*?)"/) do |field, parent, search_term|

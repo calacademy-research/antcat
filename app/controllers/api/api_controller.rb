@@ -6,7 +6,6 @@ module Api
         items = klass.where('id >= ?', starts_at.to_i).order('id asc').limit('100')
       else
         items = klass.all.order('id asc').limit('100')
-
       end
       render json: items, status: :ok
     end

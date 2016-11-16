@@ -4,28 +4,28 @@ class Subspecies < SpeciesGroupTaxon
 
   class NoSpeciesForSubspeciesError < StandardError; end
 
-  belongs_to :species
-  before_validation :set_genus
   attr_accessible :subfamily, :genus, :name, :protonym, :species, :type, :type_name_id
+
+  belongs_to :species
+
+  before_validation :set_genus
+
   has_paper_trail meta: { change_id: :get_current_change_id }
 
   def update_parent new_parent
     # TODO Joe - somewhere, we need to check and pop up for the homonym case if there are multiple possibles.
     super
-    if defined? new_parent.genus
-      self.genus = new_parent.genus
-    end
-    if defined? new_parent.subgenus
-      self.subgenus = new_parent.subgenus
-    end
+    self.genus = new_parent.genus if new_parent.genus
+    self.subgenus = new_parent.subgenus if new_parent.subgenus
     self.species = new_parent
   end
 
   def set_genus
-    self.genus = species.genus if species and not genus
+    return if genus
+    self.genus = species.genus if species
   end
 
-  def statistics; end
+  def statistics valid_only: false; end
 
   def parent= parent_taxon
     if parent_taxon.is_a? Subgenus
@@ -65,11 +65,11 @@ class Subspecies < SpeciesGroupTaxon
 
     # writes directly to db, bypasses save. "update_attributes" operates in memory and
     # lets you use the "save" path
-    self.update_columns name_id: new_name.id,
-                        species_id: nil,
-                        name_cache: new_name.name,
-                        name_html_cache: new_name.name_html,
-                        type: 'Species'
+    update_columns name_id: new_name.id,
+                   species_id: nil,
+                   name_cache: new_name.name,
+                   name_html_cache: new_name.name_html,
+                   type: 'Species'
   end
 
   private

@@ -39,19 +39,6 @@ Feature: Add and edit open tasks
     Then I should see "Restore deleted genera"
     And I should not see "Restore deleted species"
 
-  Scenario: Completing a task
-    Given there is an open task "Fix typo"
-
-    When I go to the open tasks page
-    Then I should see the open task "Fix typo"
-
-    When I follow "Fix typo"
-    And I follow "Complete"
-    Then I should see "Successfully marked task as completed"
-
-    When I go to the open tasks page
-    Then I should see the completed task "Fix typo"
-
   Scenario: Re-opening a closed task
     Given there is a closed task "Add taxa from Aldous 2007"
 

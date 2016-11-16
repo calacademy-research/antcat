@@ -15,6 +15,10 @@ And(/^(?:I pause|PAUSE)$/) do
   STDIN.getc
 end
 
+And(/^(?:I wait|WAIT|)$/) do
+  sleep 1
+end
+
 Given(/^PENDING/) do
   pending
 end

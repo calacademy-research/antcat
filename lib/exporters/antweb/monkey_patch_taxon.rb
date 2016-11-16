@@ -1,5 +1,7 @@
-# Moved from the main classes. Re-opening the classes here is OK --
+# HACK: Moved from the main classes. Re-opening the classes here is OK because
 # we do not want all this in the main code.
+#
+# TODO remove monkey patch without adding it to the models.
 
 # To make sure all classes are already loaded
 [Family, Subfamily, Tribe, Genus, Subgenus, Species, Subspecies]
@@ -64,7 +66,8 @@ module Exporters::Antweb::MonkeyPatchTaxon
     def add_antweb_attributes attributes
       # TODO calling methods on nil genera here is the reason for
       # "undefined method `subfamily' for nil:NilClass".
-      # Same issue as TaxonDecorator::Header#in header_name_for_taxon,
+      # Similar to the issue in `TaxonDecorator::Header#header_name_for_taxon`,
+      # but this still errors out because it's calling `genus.subfamily`.
       subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
       tribe_name = genus.tribe && genus.tribe.name.to_s
 

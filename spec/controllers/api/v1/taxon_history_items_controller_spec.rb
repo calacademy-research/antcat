@@ -3,16 +3,10 @@ require 'spec_helper'
 describe Api::V1::TaxonHistoryItemsController do
   describe "getting data" do
     before do
-      @found_reference = create :article_reference
-      @missing_reference = create :missing_reference
-      6.times { TaxonHistoryItem.create! taxt: "{ref #{@missing_reference.id}}" }
+      6.times { TaxonHistoryItem.create! taxt: "{ref 999" }
     end
 
     it "gets all taxon history items greater than a given number" do
-      create_taxon
-      create_species 'Atta minor'
-      protonym_name = create_species_name 'Eciton minor'
-
       # Get index starting at four
       get :index, starts_at: 4
       expect(response.status).to eq 200
@@ -24,10 +18,6 @@ describe Api::V1::TaxonHistoryItemsController do
     end
 
     it "gets all taxon_history_items" do
-      create_taxon
-      create_species 'Atta minor'
-      protonym_name = create_species_name 'Eciton minor'
-
       get :index
       expect(response.status).to eq 200
       expect(response.body.to_s).to include "position"

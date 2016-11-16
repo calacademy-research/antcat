@@ -21,14 +21,14 @@ describe ApplicationController do
     end
 
     context "signed in as an editor" do
-      let!(:editor) { create :user, can_edit: true }
+      let!(:editor) { create :editor }
       before do
         sign_in editor
         get :index
       end
 
       it "assigns the current_user" do
-        expect(assigns(:current_user)).to eq editor
+        expect(assigns :current_user).to eq editor
       end
 
       it "knows what editors are allow to do" do
@@ -47,7 +47,7 @@ describe ApplicationController do
       end
 
       it "assigns the current_user" do
-        expect(assigns(:current_user)).to eq superadmin
+        expect(assigns :current_user).to eq superadmin
       end
 
       it "knows what superadmins are allow to do" do
@@ -59,12 +59,32 @@ describe ApplicationController do
     end
 
     it "delegates to User" do
-      current_user = create :user, can_edit: true
+      current_user = create :editor
       allow(controller).to receive(:current_user).and_return current_user
 
       expect(current_user).to receive :can_edit?
       expect(controller).to receive(:authenticate_user!).and_return true
       controller.send :authenticate_editor
+    end
+  end
+
+  describe "#set_user_for_feed" do
+    let(:user) { create :user }
+
+    context "signed in" do
+      before { sign_in user }
+
+      it "sets the current user" do
+        get :index
+        expect(User.current).to eq user
+      end
+    end
+
+    context "not signed in" do
+      it "returns nil without blowing up" do
+        get :index
+        expect(User.current).to eq nil
+      end
     end
   end
 end

@@ -15,8 +15,8 @@
   -@references.each do |reference|
     %tr
       %td
-        =reference.decorate.format
-        =reference.decorate.goto_reference_link target: nil
+        =reference.decorate.formatted
+        =reference.decorate.link_to_reference
   -if @references.empty?
     %tr
       %td None

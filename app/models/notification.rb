@@ -1,43 +1,28 @@
 # More a helper than a proper model.
-# TODO figure out how to organize this.
+# TODO figure out how to organize this, and improve performance.
+# See the git log for `.all_pending_actions_count` code that was
+# removed for performance reasons.
 
 class Notification
-  def self.pending_count action
-    case action
-    when :open_tasks
-      open_tasks.count
-    when :unreviewed_references
-      unreviewed_references.count
-    when :unreviewed_catalog_changes
-      unreviewed_catalog_changes.count
-    when :pending_user_feedbacks
-      pending_user_feedbacks.count
-    when :all
-      all_pending_actions_count
-    end
+  def self.open_tasks
+    Task.open
   end
 
-  private
-    def self.open_tasks
-      Task.open
-    end
+  def self.unreviewed_references
+    Reference.unreviewed
+  end
 
-    def self.unreviewed_references
-      Reference.where.not(review_state: "reviewed")
-    end
+  def self.unreviewed_catalog_changes
+    Change.waiting
+  end
 
-    def self.unreviewed_catalog_changes
-      Change.waiting
-    end
+  def self.pending_user_feedbacks
+    Feedback.pending
+  end
 
-    def self.pending_user_feedbacks
-      Feedback.where(open: true)
-    end
-
-    def self.all_pending_actions_count
-      open_tasks.count +
-      unreviewed_references.count +
-      unreviewed_catalog_changes.count +
-      pending_user_feedbacks.count
-    end
+  # TODO ask user?
+  def self.unread_site_notices user = nil
+    return SiteNotice.none unless user
+    SiteNotice.unread_by user
+  end
 end

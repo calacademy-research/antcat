@@ -7,4 +7,4 @@
     .callout.references
       -references.each do |reference|
         .reference
-          =link_to reference.decorate.format, reference_path(reference), target: '_blank'
+          =link_to reference.decorate.formatted, reference_path(reference)

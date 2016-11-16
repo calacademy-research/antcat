@@ -28,8 +28,7 @@ Feature: Editing a taxon with authorization constraints
     Then I should see "Dashboard"
 
   Scenario: When admins logout, it should redirect to AntCat root
-    Given the Formicidae family exists
-    And I log in as a superadmin
+    Given I log in as a superadmin
 
     When I go to the main page
     And I follow the first "Editor's Panel"
@@ -37,7 +36,7 @@ Feature: Editing a taxon with authorization constraints
     Then I should see "Dashboard"
 
     When I follow the first "Logout"
-    Then I should see "An Online Catalog of the Ants of the World"
+    Then I should be on the main page
 
   Scenario: Non-admins should be bounced from admin pages to AntCat root
     Given I am logged in

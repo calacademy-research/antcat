@@ -9,17 +9,17 @@ When(/^I click the history item$/) do
 end
 
 Then(/^the history should be "(.*)"$/) do |history|
-  first('.history_items .history_item_body')
-    .find('div.display').text.should =~ /#{history}\.?/
+  element = first('.history_items .history_item_body').find 'div.display'
+  expect(element.text).to match /#{history}\.?/
 end
 
 Then(/^the history item field should be "(.*)"$/) do |history|
-  first('.history_items .history_item_body')
-    .find('div.edit textarea').text.should =~ /#{history}\.?/
+  element = first('.history_items .history_item_body').find 'div.edit textarea'
+  expect(element.text).to match /#{history}\.?/
 end
 
 Then(/^the history should be empty$/) do
-  page.should_not have_css '.history_items .history_item'
+  expect(page).to_not have_css '.history_items .history_item'
 end
 
 When(/^I click the "Add History" button$/) do
@@ -40,12 +40,12 @@ end
 
 When(/^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?/) do |taxon_name, tag_taxon_name|
   taxon = Taxon.find_by_name taxon_name
-  if tag_taxon_name
-    tag_taxon = Taxon.find_by_name tag_taxon_name
-    taxt = encode_taxon tag_taxon
-  else
-    taxt = 'Tag'
-  end
+  taxt =  if tag_taxon_name
+            tag_taxon = Taxon.find_by_name tag_taxon_name
+            encode_taxon tag_taxon
+          else
+            'Tag'
+          end
   taxon.history_items.create! taxt: taxt
 end
 

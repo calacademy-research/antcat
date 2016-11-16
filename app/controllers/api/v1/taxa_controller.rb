@@ -1,4 +1,3 @@
-# coding: UTF-8
 # rest endpoint - get taxa/[id]
 
 module Api::V1

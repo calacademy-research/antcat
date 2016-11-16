@@ -12,8 +12,3 @@ Feature: Browse recent comments
     When I go to the comments page
     Then I should see "Batiatus commented on the task Typos:"
     And I should see "Cool"
-
-  Scenario: See most recent comments on the Editor's Panel
-    When I go to the Editor's Panel page
-    Then I should see "Most recent comments"
-    And I should see "No comments."
