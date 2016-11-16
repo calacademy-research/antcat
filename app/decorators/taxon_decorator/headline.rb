@@ -96,7 +96,6 @@ class TaxonDecorator::Headline
       string << '"'
     end
 
-    # TODO see LinkHelper#link.
     def headline_type_specimen
       string = ''.html_safe
       if @taxon.type_specimen_repository.present?
@@ -109,7 +108,7 @@ class TaxonDecorator::Headline
       if @taxon.type_specimen_url.present?
         string << ' ' unless string.empty?
         s = @taxon.type_specimen_url
-        string << link(s, s, target: '_blank')
+        string << link_to(s, s)
       end
       string.html_safe
     end

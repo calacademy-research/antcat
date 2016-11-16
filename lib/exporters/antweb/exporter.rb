@@ -223,7 +223,7 @@ class Exporters::Antweb::Exporter
 
     def self.antcat_taxon_link taxon, label = "AntCat"
       url = "http://www.antcat.org/catalog/#{taxon.id}"
-      %Q[<a class="link_to_external_site" target="_blank" href="#{url}">#{label}</a>].html_safe
+      %Q[<a class="link_to_external_site" href="#{url}">#{label}</a>].html_safe
     end
 
     def self.antcat_taxon_link_with_name taxon

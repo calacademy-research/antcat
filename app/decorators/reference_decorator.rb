@@ -55,24 +55,19 @@ class ReferenceDecorator < ApplicationDecorator
 
   # Note: Only used for the AntWeb export.
   # TODO move to `Exporters::Antweb::Exporter`.
-  # TODO see LinkHelper#link.
   def antweb_version_of_inline_citation
     # Hardcoded, or we must set `host` + use `reference_url(reference)`.
     url = "http://antcat.org/references/#{reference.id}"
-    link = helpers.link reference.keey,
-      url, title: make_to_link_title(formatted), target: '_blank'
+    link = helpers.link_to reference.keey,
+      url, title: make_to_link_title(formatted)
 
     content = [link]
     content << format_reference_document_link
     content.reject(&:blank?).join(' ').html_safe
   end
 
-  # TODO see LinkHelper#link.
-  # TODO remove? "target: '_blank'" sucks and the CSS is not used (unsure about AntWeb).
-  # TODO remove class "goto_reference_link"
-  def goto_reference_link target: '_blank'
-    helpers.link reference.id, helpers.reference_path(reference),
-      class: "goto_reference_link", target: target
+  def link_to_reference
+    helpers.link_to reference.id, helpers.reference_path(reference)
   end
 
   private
@@ -86,10 +81,9 @@ class ReferenceDecorator < ApplicationDecorator
       string
     end
 
-    # TODO see LinkHelper#link.
     def generate_inline_citation
       helpers.content_tag :span, class: "reference_keey_and_expansion" do
-        link = helpers.link reference.keey, '#',
+        link = helpers.link_to reference.keey, '#',
           title: make_to_link_title(formatted), class: "reference_keey"
 
         content = link
@@ -97,7 +91,7 @@ class ReferenceDecorator < ApplicationDecorator
           inner_content = []
           inner_content << inline_citation_reference_keey_expansion_text
           inner_content << format_reference_document_link
-          inner_content << goto_reference_link
+          inner_content << link_to_reference
           inner_content.reject(&:blank?).join(' ').html_safe
         end
       end
@@ -155,17 +149,15 @@ class ReferenceDecorator < ApplicationDecorator
       prefix + date + suffix
     end
 
-    # TODO see LinkHelper#link.
     def doi_link
       return unless reference.doi.present?
-      helpers.link reference.doi, ("http://dx.doi.org/" + doi),
-        class: 'document_link', target: '_blank'
+      helpers.link_to reference.doi, ("http://dx.doi.org/" + doi),
+        class: 'document_link'
     end
 
-    # TODO see LinkHelper#link.
     def pdf_link
       return unless reference.downloadable?
-      helpers.link 'PDF', reference.url, class: 'document_link', target: '_blank'
+      helpers.link_to 'PDF', reference.url, class: 'document_link'
     end
 
     def make_to_link_title string

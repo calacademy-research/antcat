@@ -1,5 +1,6 @@
 class TaxonDecorator::Header
   include ERB::Util
+  include ActionView::Helpers::UrlHelper # For `#link_to`.
   include ActionView::Helpers::TagHelper
   include ActionView::Context
   include ApplicationHelper
@@ -89,9 +90,8 @@ class TaxonDecorator::Header
       string
     end
 
-    # TODO see LinkHelper#link.
     def header_link taxon, label
-      link label, %{/catalog/#{taxon.id}}
+      link_to label, "/catalog/#{taxon.id}"
     end
 
     def non_species_group_header_link taxon

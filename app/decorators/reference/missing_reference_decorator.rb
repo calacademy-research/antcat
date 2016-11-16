@@ -11,5 +11,5 @@ class MissingReferenceDecorator < ReferenceDecorator
 
   def format_reference_document_link; end
 
-  def goto_reference_link target: nil; end
+  def link_to_reference; end
 end

@@ -116,7 +116,7 @@ Then(/I should see these entries (with a header )?in this order:/) do |with_head
 end
 
 When(/^I follow first reference link$/) do
-  first('a.goto_reference_link').click
+  first('.reference').all('a').last.click
 end
 
 When(/I fill in "reference_nesting_reference_id" with the ID for "(.*?)"$/) do |title|

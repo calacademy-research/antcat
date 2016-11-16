@@ -11,7 +11,7 @@ describe ReferenceDecorator do
       allow(reference).to receive(:downloadable?).and_return true
       allow(reference).to receive(:url).and_return 'example.com'
       expect(reference.decorate.format_reference_document_link)
-        .to eq '<a class="document_link" target="_blank" href="example.com">PDF</a>'
+        .to eq '<a class="document_link" href="example.com">PDF</a>'
     end
   end
 
@@ -455,14 +455,14 @@ describe "ReferenceDecorator" do
       allow(@reference).to receive(:downloadable?).and_return true
       expect(@reference.decorate.inline_citation).to eq(
         %{<span class="reference_keey_and_expansion">} +
-          %{<a class="reference_keey" title="Latreille, P. A. 1809. Atta. Science (1):3." href="#">Latreille, 1809</a>} +
+          %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." class="reference_keey" href="#">Latreille, 1809</a>} +
           %{<span class="reference_keey_expansion">} +
             %{<span class="reference_keey_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
             %{ } +
-            %{<a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
-            %{<a class="document_link" target="_blank" href="example.com">PDF</a>} +
+            %{<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
+            %{<a class="document_link" href="example.com">PDF</a>} +
             %{ } +
-            %{<a class="goto_reference_link" target="_blank" href="/references/#{@reference.id}">#{@reference.id}</a>} +
+            %{<a href="/references/#{@reference.id}">#{@reference.id}</a>} +
           %{</span>} +
         %{</span>}
       )
@@ -473,9 +473,9 @@ describe "ReferenceDecorator" do
         it "doesn't include the PDF link" do
           allow(@reference).to receive(:downloadable?).and_return false
           expect(@reference.decorate.antweb_version_of_inline_citation).to eq(
-            %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
+            %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
             %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
-            %{ <a class="document_link" target="_blank" } +
+            %{ <a class="document_link" } +
             %{href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>}
           )
         end
@@ -485,10 +485,10 @@ describe "ReferenceDecorator" do
         it "includes the PDF link" do
           allow(@reference).to receive(:downloadable?).and_return true
           expect(@reference.decorate.antweb_version_of_inline_citation).to eq(
-            %{<a target="_blank" title="Latreille, P. A. 1809. Atta. Science (1):3." } +
+            %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
             %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
-            %{ <a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>} +
-            %{ <a class="document_link" target="_blank" href="example.com">PDF</a>}
+            %{ <a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>} +
+            %{ <a class="document_link" href="example.com">PDF</a>}
           )
         end
       end
@@ -502,7 +502,7 @@ describe "ReferenceDecorator" do
 
       it "escapes them" do
         expect(reference.decorate.antweb_version_of_inline_citation).to eq(
-          %{<a target="_blank" title="Latreille, P. A. 1809. "Atta". New York." href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>}
+          %{<a title="Latreille, P. A. 1809. "Atta". New York." href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>}
         )
       end
     end
@@ -516,7 +516,7 @@ describe "MissingReferenceDecorator formerly MissingReferenceKey" do
   describe "Unapplicable methods" do
     it "just returns nil from them" do
       expect(reference.decorate.format_reference_document_link).to be_nil
-      expect(reference.decorate.goto_reference_link).to be_nil
+      expect(reference.decorate.link_to_reference).to be_nil
     end
   end
 end

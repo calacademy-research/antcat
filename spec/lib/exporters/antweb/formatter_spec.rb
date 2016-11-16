@@ -148,20 +148,20 @@ describe Exporters::Antweb::Exporter do
 
               # authorship
               %{<span class="authorship">} +
-                %{<a target="_blank" title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{should_see_this_reference_id}">Bolton, 2010a</a>} +
+                %{<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{should_see_this_reference_id}">Bolton, 2010a</a>} +
                 %{: 12} +
               %{</span>} +
               %{. } +
 
               # type
-              %{<span class="type">Type-species: <a class="link_to_external_site" target="_blank" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span>} +
+              %{<span class="type">Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span>} +
               %{ } +
               # links
-              %{<a class="link_to_external_site" target="_blank" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>} +
+              %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>} +
               %{ } +
-              %{<a class="link_to_external_site" target="_blank" href="http://www.antwiki.org/wiki/Atta">AntWiki</a>} +
+              %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta">AntWiki</a>} +
               %{ } +
-              %{<a class="link_to_external_site" target="_blank" href="http://hol.osu.edu/index.html?id=9999">HOL</a>} +
+              %{<a class="link_to_external_site" href="http://hol.osu.edu/index.html?id=9999">HOL</a>} +
 
             %{</div>} +
 
@@ -169,7 +169,7 @@ describe Exporters::Antweb::Exporter do
             %{<p><b>Taxonomic history</b></p>} +
             %{<div class="history"><div class="history_item" data-id="#{history_item.id}">} +
               %{<table><tr><td style="font-size: 13px" class="history_item_body">} +
-                %{Taxon: <a class="link_to_external_site" target="_blank" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.} +
+                %{Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.} +
               %{</td></tr></table>} +
             %{</div></div>} +
 
@@ -177,15 +177,15 @@ describe Exporters::Antweb::Exporter do
             %{<div class="reference_sections">} +
               %{<div class="section">} +
                 %{<div class="title_taxt">Subfamily and tribe } +
-                  %{<a class="link_to_external_site" target="_blank" href="http://www.antcat.org/catalog/#{a_tribe.id}">} +
+                  %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{a_tribe.id}">} +
                     %{#{a_tribe.name_cache}} +
                   %{</a>} +
                 %{</div>} +
                 %{<div class="references_taxt">} +
-                  %{<a target="_blank" title="#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}." href="http://antcat.org/references/#{a_reference.id}">} +
+                  %{<a title="#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}." href="http://antcat.org/references/#{a_reference.id}">} +
                     %{#{ref_author}, #{ref_year}} +
                   %{</a> } +
-                  %{<a class="document_link" target="_blank" href="http://dx.doi.org/10.10.1038/nphys1170">} +
+                  %{<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170">} +
                     %{10.10.1038/nphys1170} +
                   %{</a>} +
                   %{: 766 (diagnosis);} +
@@ -234,7 +234,7 @@ describe Exporters::Antweb::Exporter do
       let(:link) { exporter.class.antcat_taxon_link_with_name taxon }
       it "includes 'antcat.org' in the url" do
         expect(link).to eq <<-HTML.squish
-          <a class="link_to_external_site" target="_blank"
+          <a class="link_to_external_site"
           href="http://www.antcat.org/catalog/#{taxon.id}">Formicidae</a>
         HTML
       end
