@@ -30,20 +30,13 @@ class ReferenceFormatterCache
   end
   alias_method :populate, :regenerate
 
-  # `#invalidate_all` and `#regenerate_all` are used in Rake tasks,
-  # but can also be called directly in prod/dev/test.
+  # `#invalidate_all` and `#regenerate_all` are used in migrations and Rake tasks.
   def invalidate_all
-    puts "Invalidating all reference caches, this will take a few minutes.".yellow
+    puts "Invalidating all reference caches...".yellow
 
-    references = Reference
-    Progress.new_init show_progress: true, total_count: references.count, show_errors: true
-    references.find_each do |reference|
-      Progress.tally_and_show_progress 100
-      invalidate reference
-    end
-    Progress.show_results
+    Reference.update_all formatted_cache: nil, inline_citation_cache: nil
 
-    puts "Done.".green
+    puts "Invalidating all reference caches done.".green
   end
 
   def regenerate_all
@@ -52,14 +45,13 @@ class ReferenceFormatterCache
       on how many caches already are up-to-date.
     MESSAGE
 
-    references = Reference.all
-    Progress.new_init show_progress: true, total_count: references.count, show_errors: true
-    references.each do |reference|
+    Progress.new_init show_progress: true, total_count: Reference.count, show_errors: true
+    Reference.find_each do |reference|
       Progress.tally_and_show_progress 100
       regenerate reference
     end
     Progress.show_results
 
-    puts "Done.".green
+    puts "Regenerating all reference caches done.".green
   end
 end

@@ -1,3 +1,5 @@
+# TODO investigate replacing with a gem.
+
 # Progress.init show_progress, total_items
 # Progress.puts 'Importing...'
 # ...

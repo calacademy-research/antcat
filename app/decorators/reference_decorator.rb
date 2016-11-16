@@ -105,6 +105,8 @@ class ReferenceDecorator < ApplicationDecorator
     # TODO try to move somewhere more general, even if it's only used here.
     # TODO see if there's Rails version of this.
     def make_html_safe string
+      return ''.html_safe if string.blank?
+
       string = string.dup
       quote_code = 'xdjvs4'
       begin_italics_code = '2rjsd4'
