@@ -7,6 +7,8 @@
     #desktop-menu
       #desktop-upper-menu.top-bar-right
         %ul.dropdown.menu{"data-dropdown-menu" => ""}
+          -if Rails.env.development?
+            %li.dev-only=link_to_current_page_on_live_site
           -if user_signed_in?
             %li=link_to "Editor's Panel", editors_panel_path
           %li=link_to 'References', references_path
