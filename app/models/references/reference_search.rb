@@ -44,6 +44,17 @@ class Reference < ApplicationRecord
     query.paginate page: (page || 1)
   end
 
+  # Fulltext search, but not all fields.
+  def self.fulltext_search_light search_keywords
+    Reference.solr_search do
+      keywords search_keywords do
+        fields(:title, :author_names_string, :citation_year)
+      end
+
+      paginate page: 1, per_page: 10
+    end.results
+  end
+
   # TODO add `private_class_method :xxx`
   private
     # Accepts a string of keywords (the query) and returns a parsed hash;

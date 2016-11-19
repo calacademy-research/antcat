@@ -29,6 +29,15 @@ $.fn.select = -> @.addClass 'ui-selecting'
 
 AntCat.deselect = -> $('.ui-selecting').removeClass('ui-selecting')
 
+# For at.js
+AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
+  regexp = new RegExp(flag + '([A-Za-z0-9_ \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
+  match = regexp.exec(subtext)
+  if match
+    match[2] || match[1]
+  else
+    null
+
 AntCat.currentUUID = 1
 AntCat.UUID = ->
   AntCat.currentUUID++

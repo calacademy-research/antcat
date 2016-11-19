@@ -1,5 +1,6 @@
 -content_for :head do
   =javascript_include_tag "preview_markdown"
+  =javascript_include_tag "input_has_linkables"
 
 =form_for @task do |f|
   =render "shared/errors_for", resource: @task
@@ -11,6 +12,6 @@
   .row
     .medium-12.columns
       =f.text_area :description, cols: 80, rows: 15, disabled: @task.archived?,
-        data: { previewable: true, previewable_title: "Description" }
+        data: { has_linkables: true, previewable: true, previewable_title: "Description" }
 
   =button_tag "Save", class: "btn-save" unless @task.archived?

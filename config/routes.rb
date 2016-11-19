@@ -50,6 +50,7 @@ AntCat::Application.routes.draw do
       get :search
       get :search_help
       get :autocomplete
+      get :linkable_autocomplete
       get :latest_additions
       get :latest_changes
       get :endnote_export

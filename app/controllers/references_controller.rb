@@ -172,6 +172,33 @@ class ReferencesController < ApplicationController
     render plain: Wikipedia::ReferenceExporter.export(@reference)
   end
 
+  # For at.js
+  def linkable_autocomplete
+    search_query = params[:q] || ''
+
+    # See if we have an exact ID match.
+    search_results =  if search_query =~ /^\d{6} ?$/
+                        id_matches_q = Reference.find_by id: search_query
+                        [id_matches_q] if id_matches_q
+                      end
+    search_results ||= Reference.fulltext_search_light search_query
+
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |reference|
+          {
+            id: reference.id,
+            title: reference.decorate.send(:format_title), # TODO make `format_title` public.
+            author: reference.author_names_string,
+            year: reference.citation_year,
+          }
+        end
+
+        render json: results
+      end
+    end
+  end
+
   def autocomplete
     search_query = params[:q] || ''
 
