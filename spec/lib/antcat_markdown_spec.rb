@@ -79,17 +79,6 @@ describe AntcatMarkdown do
       end
     end
 
-    it "formats lists of taxon ids" do
-      lasius_name = create :species_name, name: "Lasius"
-      lasius = create :species, name: lasius_name
-
-      markdown = "%tl[#{lasius.id}, #{lasius.id}]"
-
-      expected = %Q[<p><a href="/catalog/#{lasius.id}"><i>Lasius</i></a>, ] +
-        %Q[<a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>\n]
-      expect(AntcatMarkdown.render(markdown)).to eq expected
-    end
-
     it "formats task ids" do
       task = create :task
       markdown = "%task#{task.id}"

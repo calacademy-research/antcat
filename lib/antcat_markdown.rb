@@ -39,7 +39,6 @@ class AntcatMarkdown < Redcarpet::Render::HTML
     parsed = parse_taxon_ids full_document
     parsed = parse_reference_ids parsed
     parsed = parse_journal_ids parsed
-    parsed = parse_taxon_ids_list parsed
     parsed = parse_task_ids parsed
     parsed = parse_feedback_ids parsed
     parsed = parse_github_ids parsed
@@ -78,19 +77,6 @@ class AntcatMarkdown < Redcarpet::Render::HTML
         else
           broken_markdown_link "journal", $1
         end
-      end
-    end
-
-    # matches: %tl[497190, 497191, 497192]
-    # renders: links to the taxa, separated by comma
-    def parse_taxon_ids_list full_document
-      full_document.gsub(/%tl\[(.*?)\]/) do
-        ids_string = $1
-        ids = ids_string.gsub(" ", "").split(",")
-
-        ids.map do |id|
-          try_linking_taxon_id id
-        end.join(", ")
       end
     end
 
