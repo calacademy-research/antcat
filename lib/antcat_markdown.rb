@@ -42,6 +42,7 @@ class AntcatMarkdown < Redcarpet::Render::HTML
     parsed = parse_task_ids parsed
     parsed = parse_feedback_ids parsed
     parsed = parse_github_ids parsed
+    parsed = parse_user_ids parsed
     parsed
   end
 
@@ -103,6 +104,19 @@ class AntcatMarkdown < Redcarpet::Render::HTML
         # Also works for PRs becuase GH figures that out.
         url = "https://github.com/calacademy-research/antcat/issues/#{$1}"
         link_to "GitHub ##{$1}", url
+      end
+    end
+
+    # matches: %user123
+    # renders: a link to the user's user page.
+    def parse_user_ids full_document
+      full_document.gsub(/@user(\d+)/) do
+        if User.exists? $1
+          user = User.find($1)
+          user.decorate.ping_user_link
+        else
+          broken_markdown_link "user", $1
+        end
       end
     end
 

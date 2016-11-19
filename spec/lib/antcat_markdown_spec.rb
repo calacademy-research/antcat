@@ -96,10 +96,19 @@ describe AntcatMarkdown do
     end
 
     it "formats GitHub links" do
-      markdown = "%github#{5}"
+      markdown = "%github5"
 
       expected = %Q[<p><a href="https://github.com/calacademy-research/antcat/issues/5">GitHub #5</a></p>\n]
       expect(AntcatMarkdown.render(markdown)).to eq expected
+    end
+
+    it "formats user links" do
+      user = create :user
+      markdown = "@user#{user.id}"
+
+      results = AntcatMarkdown.render markdown
+      expect(results).to include user.name
+      expect(results).to include "users/#{user.id}"
     end
   end
 
