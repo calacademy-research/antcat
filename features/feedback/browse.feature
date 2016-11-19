@@ -12,7 +12,7 @@ Feature: Browse Feedback
     And I am logged in
 
     When I go to the feedback index
-    Then I should see "From: [no name] <[no email]; IP 127.0.0.1>"
+    Then I should see "[no name] <[no email]; IP 127.0.0.1> submitted:"
     And I should see "Mad catalog!"
 
   Scenario: Displaying a single feedback item

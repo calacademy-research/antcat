@@ -1,4 +1,5 @@
 -# TODO this is not tested very well
+-# TODO probably remove.
 
 %p
   Feedback ID:
@@ -27,8 +28,8 @@
 %hr
 %p
   Comment:
-  -# simple_format for converting double newlines to <br>
-  -# strip_tags for security reasons
+  -# `simple_format` converts double newlines to `<br>`.
+  -# `strip_tags` is for security reasons.
   =simple_format strip_tags(feedback.comment)
 %hr
 

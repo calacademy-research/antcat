@@ -54,7 +54,7 @@ Feature: Feedback
 
     When I log in as a catalog editor
     And I go to the feedback index
-    Then I should see "From: [no name] <[no email];"
+    Then I should see "[no name] <[no email];"
 
   Scenario: Registered user submitting feedback
     Given I log in as a catalog editor named "Archibald"
@@ -65,7 +65,7 @@ Feature: Feedback
     Then I should see "Message sent"
 
     When I go to the feedback index
-    Then I should see "> (registered AntCat user)"
+    Then I should see "Archibald submitted:"
 
   Scenario: Page field defaults to the current URL
     Given there is a genus "Calyptites"
@@ -120,6 +120,7 @@ Feature: Feedback
     Then I should see "Message sent"
 
     When I go to the feedback index
+    And follow the link of the first feedback
     Then I should see "<archibald@antcat.org>"
     And I should see "<batiatus@antcat.org>"
     And I should not see "flint@antcat.org"
@@ -134,4 +135,5 @@ Feature: Feedback
     Then I should see "Message sent"
 
     When I go to the feedback index
+    And follow the link of the first feedback
     Then I should see "sblum@calacademy.org"

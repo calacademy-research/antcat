@@ -6,18 +6,21 @@
     %tr
       %th ID
       %th Status
-      %th Email
-      %th{width: "10%"} Recipients
+      %th Submitter/message
       %th Comments
       %th Link
   -@feedbacks.each do |feedback|
     %tr{class: ("closed" if feedback.closed?)}
-      %td="##{feedback.id}"
-      %td=feedback.open? ? "Open" : "Closed"
+      %td=link_to "##{feedback.id}", feedback_path(feedback)
+      -if feedback.open?
+        %td Open
+      -else
+        %td.gray Closed
       %td
+        =format_submitter_name feedback
+        submitted:
         .callout
-          =render file: "feedback_mailer/feedback_email", locals: { feedback: feedback }
-      %td=feedback.email_recipients
+          =simple_format strip_tags(feedback.comment)
       %td.center-text=link_comments_section feedback
       %td=link_to "Details", feedback_path(feedback), class: "btn-normal"
 
