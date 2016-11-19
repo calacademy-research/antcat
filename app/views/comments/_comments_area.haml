@@ -1,3 +1,8 @@
+-# Renders form for posting new comment + all current comments.
+
+-content_for :head do
+  =javascript_include_tag "preview_markdown"
+
 %a{name: "comments"}
 
 %h6.margin-top=pluralize(commentable.comment_threads.count, "comment")
