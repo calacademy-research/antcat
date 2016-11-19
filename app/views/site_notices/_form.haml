@@ -1,5 +1,3 @@
--# TODO investigate DRY-ing up in respect to `tasks/_form.haml`
-
 -content_for :head do
   =javascript_include_tag "preview_markdown"
 
@@ -17,21 +15,7 @@
 
   .row
     .medium-12.columns
-      %ul#task-tabs.tabs{"data-tabs" => ""}
-        %li.tabs-title.is-active
-          =link_to "Message", "#description"
-        %li.tabs-title
-          =link_to "Preview", "#preview", id: "site_notice_preview_link"
-        %li.tabs-title
-          =link_to "Formatting Help", "#formatting_help"
-
-      .tabs-content{"data-tabs-content" => "task-tabs"}
-        #description.tabs-panel.is-active
-          =f.text_area :message, cols: 80, rows: 15
-
-        #preview.tabs-panel
-
-        #formatting_help.tabs-panel
-          =render "shared/markdown_formatting_help"
+      =f.text_area :message, cols: 80, rows: 15,
+        data: { previewable: true, previewable_title: "Message" }
 
   =button_tag "Save", class: "btn-save"

@@ -28,3 +28,7 @@ $.fn.find_topmost = (selector) ->
 $.fn.select = -> @.addClass 'ui-selecting'
 
 AntCat.deselect = -> $('.ui-selecting').removeClass('ui-selecting')
+
+AntCat.currentUUID = 1
+AntCat.UUID = ->
+  AntCat.currentUUID++
