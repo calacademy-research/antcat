@@ -23,7 +23,14 @@ class CatalogController < ApplicationController
 
   def autocomplete
     q = params[:q] || ''
-    search_results = Taxon.where("name_cache LIKE ?", "%#{q}%")
+
+    # See if we have an exact ID match.
+    search_results = if q =~ /^\d{6} ?$/
+                       id_matches_q = Taxon.find_by id: q
+                       [id_matches_q] if id_matches_q
+                     end
+
+    search_results ||= Taxon.where("name_cache LIKE ?", "%#{q}%")
       .includes(:name, protonym: { authorship: :reference }).take(10)
 
     respond_to do |format|
