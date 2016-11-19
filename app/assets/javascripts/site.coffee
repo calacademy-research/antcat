@@ -1,6 +1,6 @@
 $ ->
   $(document).foundation()
-  setup_reference_keeys()
+  AntCat.setup_reference_keeys()
 
 #_something seems to override this method when it's named
 # enable - it doesn't get called
@@ -10,7 +10,10 @@ $.fn.undisable = ->
 $.fn.disable = ->
   @.addClass('ui-state-disabled').attr('disabled', 'true')
 
-setup_reference_keeys = ->
+# Defined on `AntCat` to make it possible to re-trigger after generating
+# markown preview of references (in `preview_markdown.coffee`).
+# TODO maybe rename. Working name: `AntCat.make_reference_keeys_expandable`.
+AntCat.setup_reference_keeys = ->
   $('.reference_keey, .reference_keey_expansion_text').on 'click', ->
     $(@).closest('.reference_keey_and_expansion')
       .find('.reference_keey, .reference_keey_expansion')

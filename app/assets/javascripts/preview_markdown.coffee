@@ -7,7 +7,9 @@ $.fn.previewMarkdownLink = (source, previewArea) ->
       type: 'post'
       data: text: $(source).val()
       dataType: 'html'
-      success: (html) -> $(previewArea).html html
+      success: (html) ->
+        $(previewArea).html html
+        AntCat.setup_reference_keeys() # Re-trigger to make references expandable.
       error: -> $(previewArea).text "Error rendering preview"
 
 $ ->
