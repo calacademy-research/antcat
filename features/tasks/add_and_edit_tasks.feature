@@ -59,7 +59,7 @@ Feature: Add and edit open tasks
 
     When I go to the task page for "Merge 'Giovanni' authors"
     And I follow "Edit"
-    And I fill in "task_description" with "Ref: %r7777"
+    And I fill in "task_description" with "Ref: %reference7777"
     And I press "Save"
     Then I should see "Ref: Giovanni, 1809"
 
@@ -70,6 +70,6 @@ Feature: Add and edit open tasks
 
     When I go to the task page for "Merge 'Giovanni' authors"
     And I follow "Edit"
-    And I fill in "task_description" with "Ref: %r7777"
+    And I fill in "task_description" with "Ref: %reference7777"
     And I follow "Preview"
     Then I should see "Ref: Giovanni, 1809"

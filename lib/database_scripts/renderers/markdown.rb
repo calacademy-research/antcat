@@ -4,6 +4,6 @@ module DatabaseScripts::Renderers::Markdown
   end
 
   def markdown_taxon_link taxon
-    "%t#{taxon.id}"
+    "%taxon#{taxon.id}"
   end
 end

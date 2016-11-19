@@ -49,7 +49,7 @@ class AntcatMarkdown < Redcarpet::Render::HTML
     # matches: %t429349
     # renders: link to the taxon (Formica)
     def parse_taxon_ids full_document
-      full_document.gsub(/%t(\d+)/) do
+      full_document.gsub(/%taxon(\d+)/) do
         try_linking_taxon_id $1
       end
     end
@@ -57,7 +57,7 @@ class AntcatMarkdown < Redcarpet::Render::HTML
     # matches: %r130628
     # renders: referece as used in the catalog (Abdalla & Cruz-Landim, 2001)
     def parse_reference_ids full_document
-      full_document.gsub(/%r(\d+)/) do
+      full_document.gsub(/%reference?(\d+)/) do
         if Reference.exists? $1
           reference = Reference.find($1)
           reference.decorate.inline_citation
@@ -67,10 +67,10 @@ class AntcatMarkdown < Redcarpet::Render::HTML
       end
     end
 
-    # matches: %j123
+    # matches: %journal_123
     # renders: link to the journal, with the journal's name as the title
     def parse_journal_ids full_document
-      full_document.gsub(/%j(\d+)/) do
+      full_document.gsub(/%journal(\d+)/) do
         if Journal.exists? $1
           journal = Journal.find($1)
           link_to journal.name, journal_path(journal)
