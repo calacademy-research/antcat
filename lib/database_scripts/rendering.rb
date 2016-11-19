@@ -38,7 +38,7 @@ module DatabaseScripts::Rendering
   def as_reference_list
     list = ""
     cached_results.each do |reference|
-      list << "* %refrence#{reference.id}\n"
+      list << "* %reference#{reference.id}\n"
     end
     markdown list
   end

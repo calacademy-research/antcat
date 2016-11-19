@@ -67,10 +67,14 @@ class Reference < ApplicationRecord
         ["year",   '(?<start_year>\d{4})-(?<end_year>\d{4})'],             # year:2003-2015
         ["year",   '(\d{4})'],                                             # year:2003
         ["type",   '(?<reference_type>nested|unknown|nomissing|missing)'], # type:nested
+        ["title",  '"(.*?)"'],                                             # title:"Iceland"
+        ["title",  '\'(.*?)\''],                                           # title:'Iceland'
+        ["title",  '([^ ]+)'], # **                                        # title:Iceland
         ["author", '"(.*?)"'],                                             # author:"Barry Bolton"
         ["author", '\'(.*?)\''],                                           # author:'Barry Bolton'
-        ["author", '([^ ]+)'] # stops matching at space or end of string   # author:Bolton
+        ["author", '([^ ]+)'] # **                                         # author:Bolton
       ]
+      # ** = stops matching at space or end of string
 
       regexes.each do |keyword, regex|
         match = keyword_string.match /#{keyword}: ?#{regex}/i
@@ -113,14 +117,10 @@ class Reference < ApplicationRecord
               end
 
       query = case reference_type
-              when :unknown
-                query.where(type: "UnknownReference")
-              when :nested
-                query.where(type: "NestedReference")
-              when :missing
-                query.where(type: "MissingReference")
-              when :nomissing
-                query.where.not(type: "MissingReference")
+              when :unknown   then query.where(type: "UnknownReference")
+              when :nested    then query.where(type: "NestedReference")
+              when :missing   then query.where(type: "MissingReference")
+              when :nomissing then query.where.not(type: "MissingReference")
               end
 
       page = options[:page] || 1
@@ -140,6 +140,7 @@ class Reference < ApplicationRecord
       start_year      = options[:start_year]
       end_year        = options[:end_year]
       author          = options[:author]
+      title           = options[:title]
       search_keywords = options[:keywords] || ""
 
       substrings_to_remove = ['<i>', '</i>', '\*'] # TODO move to solr conf?
@@ -150,6 +151,12 @@ class Reference < ApplicationRecord
       # Calling `.solr_search` because `.search` is a Ransack method (bundled by ActiveAdmin).
       Reference.solr_search(include: [:document]) do
         keywords search_keywords
+
+        if title
+          keywords title do
+            fields(:title)
+          end
+        end
 
         if author
           keywords author do
@@ -166,16 +173,11 @@ class Reference < ApplicationRecord
         end
 
         case options[:reference_type]
-        when :unknown
-          with :type, 'UnknownReference'
-        when :nested
-          with :type, 'NestedReference'
-        when :missing
-          with :type, 'MissingReference'
-        when :nomissing
-          without :type, 'MissingReference'
-        else
-          without :type, 'MissingReference'
+        when :unknown   then with    :type, 'UnknownReference'
+        when :nested    then with    :type, 'NestedReference'
+        when :missing   then with    :type, 'MissingReference'
+        when :nomissing then without :type, 'MissingReference'
+        else                 without :type, 'MissingReference'
         end
 
         if options[:endnote_export]
