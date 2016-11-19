@@ -21,8 +21,7 @@ replacePreviewableWithPreviewArea = (previewable) ->
   previewLink = previewable.closest(".preview-area").find ".preview_link-#{uuid}"
   previewLink.previewMarkdownLink previewable, "#preview-#{uuid}"
 
-  # Coming back soon!
-  # setupFormattingHelp previewable, uuid
+  setupFormattingHelp previewable, uuid
 
 createPreviewArea = (previewable, uuid) ->
   title = previewable.data("previewable-title") || "Text"
@@ -64,6 +63,15 @@ $.fn.previewMarkdownLink = (previewable, previewArea) ->
         $(previewArea).html html
         AntCat.setup_reference_keeys() # Re-trigger to make references expandable.
       error: -> $(previewArea).text "Error rendering preview"
+
+setupFormattingHelp = (previewable, uuid) ->
+  $("#show_formatting_help-#{uuid}").click ->
+    formatting_help = $("#formatting_help-#{uuid}")
+
+    # Load markdown formatting help page via AJAX on demand.
+    if formatting_help.is ':empty'
+      formatting_help.html "Loading..."
+      formatting_help.html $("<div>").load("/formatting_help")
 
 # Currently not used.
 $.fn.makeNotPreviewable = ->
