@@ -77,6 +77,7 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'selenium-webdriver', '>= 2.48' # works with firefox as of v34
+  gem 'chromedriver-helper'
   gem 'shoulda-matchers'
   gem 'webmock'
 end
