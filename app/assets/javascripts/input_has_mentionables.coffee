@@ -15,6 +15,8 @@ $ ->
         if AntCat.cached_mentionables?
           return callback AntCat.cached_mentionables
 
+        AntCat.showPreviewAreaSpinner()
         $.getJSON "/users/mentionables.json", (data) ->
           AntCat.cached_mentionables = data
+          AntCat.hidePreviewAreaSpinner()
           callback data

@@ -26,6 +26,7 @@ replacePreviewableWithPreviewArea = (previewable) ->
 createPreviewArea = (previewable, uuid) ->
   title = previewable.data("previewable-title") || "Text"
 
+  # Spinner CSS duplicated from `ApplicationHelper#shared_spinner_icon`.
   """
   <div class="preview-area">
     <ul class='tabs' data-tabs='' id='tabs-#{uuid}'>
@@ -37,6 +38,9 @@ createPreviewArea = (previewable, uuid) ->
       </li>
       <li class='tabs-title'>
         <a id="show_formatting_help-#{uuid}" href="#formatting_help-#{uuid}">Formatting Help</a>
+      </li>
+      <li class='tabs-title right'>
+        <a><span class='shared-spinner'><i class='fa fa-refresh fa-spin'></i></span></a>
       </li>
     </ul>
     <div class='tabs-content' data-tabs-content='tabs-#{uuid}'>
@@ -53,6 +57,7 @@ $.fn.previewMarkdownLink = (previewable, previewArea) ->
     event.preventDefault()
 
     $(previewArea).html "Loading preview... dot dot dot..."
+    AntCat.showPreviewAreaSpinner()
 
     $.ajax
       url: '/markdown/preview'
@@ -62,6 +67,7 @@ $.fn.previewMarkdownLink = (previewable, previewArea) ->
       success: (html) ->
         $(previewArea).html html
         AntCat.make_reference_keeys_expandable previewArea # Re-trigger to make references expandable.
+        AntCat.hidePreviewAreaSpinner() # Only hide on success.
       error: -> $(previewArea).text "Error rendering preview"
 
 setupFormattingHelp = (previewable, uuid) ->
@@ -70,8 +76,10 @@ setupFormattingHelp = (previewable, uuid) ->
 
     # Load markdown formatting help page via AJAX on demand.
     if formatting_help.is ':empty'
+      AntCat.showPreviewAreaSpinner()
       formatting_help.html "Loading..."
-      formatting_help.html $("<div>").load("/markdown/formatting_help.json")
+      formatting_help.html $("<div>").load "/markdown/formatting_help.json", ->
+        AntCat.hidePreviewAreaSpinner()
 
       # Add additional message if previewable has "linkables" (such as `%taxon`).
       if previewable.data "has-linkables"
@@ -98,6 +106,11 @@ $.fn.makeNotPreviewable = ->
   previewArea = previewable.closest(".preview-area")
   previewable.insertAfter previewArea
   previewArea.remove()
+
+# TODO global, *uhh*, but "ok".
+PREVIEW_AREA_SPINNER = ".preview-area .shared-spinner"
+AntCat.showPreviewAreaSpinner = -> $(PREVIEW_AREA_SPINNER).show()
+AntCat.hidePreviewAreaSpinner = -> $(PREVIEW_AREA_SPINNER).hide()
 
 $ ->
   $('*[data-previewable="true"]').makePreviewable()
