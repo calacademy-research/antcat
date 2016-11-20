@@ -73,6 +73,25 @@ setupFormattingHelp = (previewable, uuid) ->
       formatting_help.html "Loading..."
       formatting_help.html $("<div>").load("/formatting_help")
 
+      # Add additional message if previewable has "linkables" (such as `%taxon`).
+      if previewable.data "has-linkables"
+        formatting_help.prepend """<p>
+          Autocompletion is enabled for <code>%taxon</code> and
+          <code>%reference</code> markdown links in this textarea.
+
+          Start typing <code>%t</code> or <code>%r</code> followed by a search term
+          (without a space before the search term), and select one of the suggestions.
+          </p>"""
+
+      # Add additional message if previewable has "mentionables" (ping users).
+      if previewable.data "has-mentionables"
+        formatting_help.prepend """<p>
+          Mentionables are enabled for this textarea. Type <code>@</code>
+          followed by another user's name or email, and select a user.
+          NOTE: this *doesn't* send a notification to the user after saving
+          this form, but that is on the roadmap.
+          </p>"""
+
 # Currently not used.
 $.fn.makeNotPreviewable = ->
   previewable = @

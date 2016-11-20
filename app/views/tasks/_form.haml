@@ -1,6 +1,7 @@
 -content_for :head do
   =javascript_include_tag "preview_markdown"
   =javascript_include_tag "input_has_linkables"
+  =javascript_include_tag "input_has_mentionables"
 
 =form_for @task do |f|
   =render "shared/errors_for", resource: @task
