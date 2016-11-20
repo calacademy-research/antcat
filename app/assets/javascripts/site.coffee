@@ -1,6 +1,6 @@
 $ ->
   $(document).foundation()
-  AntCat.setup_reference_keeys()
+  AntCat.make_reference_keeys_expandable document
 
 #_something seems to override this method when it's named
 # enable - it doesn't get called
@@ -11,10 +11,14 @@ $.fn.disable = ->
   @.addClass('ui-state-disabled').attr('disabled', 'true')
 
 # Defined on `AntCat` to make it possible to re-trigger after generating
-# markown preview of references (in `preview_markdown.coffee`).
-# TODO maybe rename. Working name: `AntCat.make_reference_keeys_expandable`.
-AntCat.setup_reference_keeys = ->
-  $('.reference_keey, .reference_keey_expansion_text').on 'click', ->
+# markdown preview of references (in `preview_markdown.coffee`).
+#
+# The `element` qualifier is because each time we setup the
+# same elements more than once, they alternate between working and not.
+# Reference keys already in the DOM should not be touched after making
+# references in the markdown preview expandable.
+AntCat.make_reference_keeys_expandable = (element) ->
+  $(element).find('.reference_keey, .reference_keey_expansion_text').on 'click', ->
     $(@).closest('.reference_keey_and_expansion')
       .find('.reference_keey, .reference_keey_expansion')
       .toggle()

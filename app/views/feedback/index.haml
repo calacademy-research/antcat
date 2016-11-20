@@ -18,7 +18,7 @@
         %td.gray Closed
       %td
         =format_submitter_name feedback
-        submitted:
+        submitted (#{time_ago_in_words(feedback.created_at)} ago):
         .callout
           =simple_format strip_tags(feedback.comment)
       %td.center-text=link_comments_section feedback

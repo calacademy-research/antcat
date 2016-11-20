@@ -61,7 +61,7 @@ $.fn.previewMarkdownLink = (previewable, previewArea) ->
       dataType: 'html'
       success: (html) ->
         $(previewArea).html html
-        AntCat.setup_reference_keeys() # Re-trigger to make references expandable.
+        AntCat.make_reference_keeys_expandable previewArea # Re-trigger to make references expandable.
       error: -> $(previewArea).text "Error rendering preview"
 
 setupFormattingHelp = (previewable, uuid) ->
