@@ -8,7 +8,9 @@ class JournalsController < ApplicationController
   end
 
   def show
-    @references = @journal.references.sorted_by_principal_author_last_name
+    @references = @journal.references
+      .sorted_by_principal_author_last_name
+      .paginate(page: params[:page])
   end
 
   def new
