@@ -65,7 +65,7 @@ Feature: Feedback
     Then I should see "Message sent"
 
     When I go to the feedback index
-    Then I should see "Archibald submitted:"
+    Then I should see "Archibald submitted"
 
   Scenario: Page field defaults to the current URL
     Given there is a genus "Calyptites"
