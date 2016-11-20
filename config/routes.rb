@@ -101,6 +101,7 @@ AntCat::Application.routes.draw do
   resources :users, only: [:index, :show] do
     collection do
       get :emails
+      get :mentionables
     end
   end
 

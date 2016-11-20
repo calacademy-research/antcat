@@ -17,6 +17,6 @@
   .row
     .medium-12.columns
       =f.text_area :message, cols: 80, rows: 15,
-        data: { has_linkables: true, previewable: true, previewable_title: "Message" }
+        data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Message" }
 
   =button_tag "Save", class: "btn-save"

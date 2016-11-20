@@ -37,4 +37,9 @@ class User < ActiveRecord::Base
   def angle_bracketed_email
     %Q["#{name}" <#{email}>]
   end
+
+  # For at.js.
+  def mentionable_search_key
+    "#{id} #{name} #{email}"
+  end
 end

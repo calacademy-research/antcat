@@ -12,6 +12,6 @@
   .row
     .medium-12.columns
       =f.text_area :description, cols: 80, rows: 15, disabled: @task.archived?,
-        data: { has_linkables: true, previewable: true, previewable_title: "Description" }
+        data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Description" }
 
   =button_tag "Save", class: "btn-save" unless @task.archived?
