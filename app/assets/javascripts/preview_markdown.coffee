@@ -55,7 +55,7 @@ $.fn.previewMarkdownLink = (previewable, previewArea) ->
     $(previewArea).html "Loading preview... dot dot dot..."
 
     $.ajax
-      url: '/preview_markdown'
+      url: '/markdown/preview'
       type: 'post'
       data: text: previewable.val()
       dataType: 'html'
@@ -71,7 +71,7 @@ setupFormattingHelp = (previewable, uuid) ->
     # Load markdown formatting help page via AJAX on demand.
     if formatting_help.is ':empty'
       formatting_help.html "Loading..."
-      formatting_help.html $("<div>").load("/formatting_help")
+      formatting_help.html $("<div>").load("/markdown/formatting_help.json")
 
       # Add additional message if previewable has "linkables" (such as `%taxon`).
       if previewable.data "has-linkables"

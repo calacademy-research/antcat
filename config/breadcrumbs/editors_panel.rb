@@ -107,6 +107,11 @@ end
       parent :database_script, script
     end
 
+crumb :markdown_formatting_help do
+  link "Markdown Formatting Help"
+  parent :editors_panel
+end
+
 crumb :lazy_links do
   link "Lazy Links"
   parent :editors_panel

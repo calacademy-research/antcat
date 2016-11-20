@@ -175,8 +175,10 @@ AntCat::Application.routes.draw do
     end
   end
 
-  post :preview_markdown, to: "markdown#preview"
-  get :formatting_help, to: "markdown#formatting_help"
+  namespace :markdown do
+    get :formatting_help, to: :formatting_help
+    post :preview, to: :preview
+  end
 
   resources :database_scripts, only: [:index, :show] do
     member do
