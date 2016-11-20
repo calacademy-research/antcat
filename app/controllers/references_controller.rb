@@ -366,6 +366,7 @@ class ReferencesController < ApplicationController
       replaced = []
       replaced << keyword_params[:keywords] || ''
       replaced << "author:'#{reference.author_names_string}'" if keyword_params[:author]
+      replaced << "title:'#{reference.title}'" if keyword_params[:title]
       replaced << "year:#{keyword_params[:year]}" if keyword_params[:year]
 
       start_year = keyword_params[:start_year]

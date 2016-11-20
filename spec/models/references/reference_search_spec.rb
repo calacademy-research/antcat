@@ -202,6 +202,17 @@ describe Reference do
         expect(Reference.fulltext_search(q: 'bolton', reference_type: :nested)).to eq [nested]
       end
     end
+
+    describe "replacing some characters to make search work", search: true do
+      it "handles this reference with asterixes and a hyphen" do
+        title = '*Camponotus piceus* (Leach, 1825), decouverte Viroin-Hermeton'
+        reference = create :article_reference, title: title
+        Sunspot.commit
+
+        results = Reference.fulltext_search title: title
+        expect(results).to eq [reference]
+      end
+    end
   end
 
   describe ".solr_search", search: true do

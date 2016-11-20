@@ -154,10 +154,13 @@ class Reference < ApplicationRecord
       title           = options[:title]
       search_keywords = options[:keywords] || ""
 
-      substrings_to_remove = ['<i>', '</i>', '\*'] # TODO move to solr conf?
+      # TODO very ugly to make some queries work. Fix in Solr.
+      substrings_to_remove = ['<i>', '</i>', '\*'] # Titles may contain these.
       substrings_to_remove.each { |substring| search_keywords.gsub! /#{substring}/, '' }
-      search_keywords.gsub! /-|:/, ' ' # TODO fix in solr
-      author.gsub!(/-|:/, ' ') if author # TODO fix in solr
+      # Hyphens, asterixes and colons makes Solr go bananas.
+      search_keywords.gsub! /-|:/, ' '
+      title.gsub!(/-|:|\*/, ' ') if title
+      author.gsub!(/-|:/, ' ') if author
 
       # Calling `.solr_search` because `.search` is a Ransack method (bundled by ActiveAdmin).
       Reference.solr_search(include: [:document]) do
