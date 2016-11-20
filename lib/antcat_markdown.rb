@@ -20,6 +20,7 @@ class AntcatMarkdown < Redcarpet::Render::HTML
       tables: true,
       underline: false,
       no_intra_emphasis: true,
+      strikethrough: true,
     }
 
     renderer = AntcatMarkdown.new options

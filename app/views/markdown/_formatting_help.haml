@@ -42,7 +42,53 @@
         %code @user1
       %td=markdown "@user1"
 
-%p
-  See
-  =link_to "Markdown-Cheatsheet (@GitHub)", "https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
-  for general markdown formatting help.
+%table
+  %caption
+    Basic markdown (see
+    =link_to "this page", "https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
+    for more formatting help)
+  %thead
+    %tr
+      %th What
+      %th Code
+      %th Output
+  %tbody
+    %tr
+      %td Bold
+      %td
+        %code **bold**
+      %td=markdown "**bold**"
+    %tr
+      %td Italics
+      %td
+        %code *italics*
+      %td=markdown "*italics*"
+    %tr
+      %td Strikethrough
+      %td
+        %code ~~strikethrough~~
+      %td=markdown "~~strikethrough~~"
+    %tr
+      %td Quotation
+      %td
+        %code > quotation
+      %td=markdown "> quotation"
+    %tr
+      %td Lists
+      %td
+        %code * first item
+        %br
+        %code * second item
+      %td=markdown "* first item\n* second item"
+    %tr
+      %td Link (automatic)
+      %td
+        %code www.antcat.org
+        %br
+        %code http://antcat.org
+      %td=markdown "www.antcat.org\nhttp://antcat.org"
+    %tr
+      %td Link (custom title)
+      %td
+        %code [AntCat](http://www.antcat.org)
+      %td=markdown "[AntCat](http://www.antcat.org)"
