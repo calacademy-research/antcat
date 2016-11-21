@@ -178,8 +178,9 @@ AntCat::Application.routes.draw do
   end
 
   namespace :markdown do
-    get :formatting_help, action: :formatting_help
     post :preview, action: :preview
+    get :formatting_help
+    get :symbols_explanations
   end
 
   resources :database_scripts, only: [:index, :show] do

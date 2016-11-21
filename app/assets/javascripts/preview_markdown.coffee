@@ -21,7 +21,9 @@ replacePreviewableWithPreviewArea = (previewable) ->
   previewLink = previewable.closest(".preview-area").find ".preview_link-#{uuid}"
   previewLink.previewMarkdownLink previewable, "#preview-#{uuid}"
 
+  # Setup help links.
   setupFormattingHelp previewable, uuid
+  setupSymbolsExplanations previewable, uuid
 
   # jQuery plugin. "You have unsaved changes, leave form, ok??".
   $(".preview-area").parents("form").areYouSure()
@@ -43,6 +45,12 @@ createPreviewArea = (previewable, uuid) ->
         <a id="show_formatting_help-#{uuid}" href="#formatting_help-#{uuid}">Formatting Help</a>
       </li>
       <li class='tabs-title right'>
+        <a href="#symbols-explanations-#{uuid}" id="symbols-explanations-link-#{uuid}"
+          title="Click for more info">
+          Enabled: <code id="symbols-explanations-labels-#{uuid}"></code>
+        </a>
+      </li>
+      <li class='tabs-title right'>
         <a><span class='shared-spinner'><i class='fa fa-refresh fa-spin'></i></span></a>
       </li>
     </ul>
@@ -50,6 +58,7 @@ createPreviewArea = (previewable, uuid) ->
       <div class='tabs-panel is-active' id='previewable-#{uuid}'></div>
       <div class='tabs-panel' id='preview-#{uuid}'></div>
       <div class='tabs-panel' id='formatting_help-#{uuid}'></div>
+      <div class='tabs-panel' id='symbols-explanations-#{uuid}'></div>
     </div>
   </div>
   """
@@ -73,35 +82,34 @@ $.fn.previewMarkdownLink = (previewable, previewArea) ->
         AntCat.hidePreviewAreaSpinner() # Only hide on success.
       error: -> $(previewArea).text "Error rendering preview"
 
+# Load markdown formatting help page via AJAX on demand.
 setupFormattingHelp = (previewable, uuid) ->
   $("#show_formatting_help-#{uuid}").click ->
     formatting_help = $("#formatting_help-#{uuid}")
 
-    # Load markdown formatting help page via AJAX on demand.
     if formatting_help.is ':empty'
       AntCat.showPreviewAreaSpinner()
       formatting_help.html "Loading..."
       formatting_help.html $("<div>").load "/markdown/formatting_help.json", ->
         AntCat.hidePreviewAreaSpinner()
 
-      # Add additional message if previewable has "linkables" (such as `%taxon`).
-      if previewable.data "has-linkables"
-        formatting_help.prepend """<p>
-          Autocompletion is enabled for <code>%taxon</code> and
-          <code>%reference</code> markdown links in this textarea.
+# Show symbols of enabled features in the upper right corner.
+# Will most often look like this: `Enabled: md %tr @`.
+# Clickong on the label shows explanations for them.
+setupSymbolsExplanations = (previewable, uuid) ->
+  label = "md" # Markdown is always enabled if we get here.
+  label += " %tr" if previewable.data "has-linkables"
+  label += " @" if previewable.data "has-mentionables"
+  $("#symbols-explanations-labels-#{uuid}").html label
 
-          Start typing <code>%t</code> or <code>%r</code> followed by a search term
-          (without a space before the search term), and select one of the suggestions.
-          </p>"""
-
-      # Add additional message if previewable has "mentionables" (ping users).
-      if previewable.data "has-mentionables"
-        formatting_help.prepend """<p>
-          Mentionables are enabled for this textarea. Type <code>@</code>
-          followed by another user's name or email, and select a user.
-          NOTE: this *doesn't* send a notification to the user after saving
-          this form, but that is on the roadmap.
-          </p>"""
+  # Load symbols explanations via AJAX on demand.
+  $("#symbols-explanations-link-#{uuid}").click ->
+    symbolsExplanations = $("#symbols-explanations-#{uuid}")
+    if symbolsExplanations.is ':empty'
+      AntCat.showPreviewAreaSpinner()
+      symbolsExplanations.html "Loading..."
+      symbolsExplanations.html $("<div>").load "/markdown/symbols_explanations.json", ->
+        AntCat.hidePreviewAreaSpinner()
 
 # Currently not used.
 $.fn.makeNotPreviewable = ->

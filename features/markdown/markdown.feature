@@ -18,3 +18,8 @@ Feature: Markdown
 
     When I follow "Formatting Help"
     Then I should see "AntCat-specific markdown"
+
+  @javascript
+  Scenario: See symbols of enabled features in the upper right corner
+    Given I am on a page with a textarea with markdown preview and autocompletion
+    Then I should see "Enabled: md %tr @"

@@ -12,4 +12,10 @@ class MarkdownController < ApplicationController
       format.html { render "formatting_help" }
     end
   end
+
+  def symbols_explanations
+    respond_to do |format|
+      format.json { render partial: "symbols_explanations" }
+    end
+  end
 end
