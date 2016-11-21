@@ -72,6 +72,8 @@ module NavigationHelpers
 
     when /^the site notices page$/
       "/site_notices"
+    when /^the new site notice form$/
+      "/site_notices/new"
 
     when /^the tooltips editing page$/
       "/tooltips"
@@ -84,6 +86,8 @@ module NavigationHelpers
     when /^the task (entry|page) for "([^"]*)"$/
       task = Task.find_by(title: $2)
       "/tasks/#{task.id}"
+    when /^the new task form$/
+      "/tasks/new"
 
     when /^the feedback index$/
       "/feedback"

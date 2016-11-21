@@ -36,6 +36,7 @@ Given(/(?:these|this) book references? exists?/) do |table|
 end
 
 # HACK because I could not get it to work in any other way.
+# Special cases because we want specific IDs.
 Given(/^there is a Giovanni reference$/) do
   reference = create :article_reference,
     author_names: [],
@@ -44,6 +45,16 @@ Given(/^there is a Giovanni reference$/) do
 
   reference.update_column :id, 7777
   reference.author_names << create(:author_name, name: 'Giovanni, S.')
+end
+
+Given(/^there is a reference by Giovanni's brother$/) do
+  reference = create :article_reference,
+    author_names: [],
+    citation_year: '1800',
+    title: "Giovanni's Brother's Favorite Ants"
+
+  reference.update_column :id, 7778
+  reference.author_names << create(:author_name, name: 'Giovanni, J.')
 end
 
 Given(/(?:these|this) unknown references? exists?/) do |table|
