@@ -40,6 +40,7 @@ AntCat::Application.routes.draw do
   resources :journals do
     collection do
       get :autocomplete
+      get :linkable_autocomplete
     end
   end
 
@@ -135,6 +136,9 @@ AntCat::Application.routes.draw do
   resources :antweb_data, only: [:index]
 
   resources :feedback, only: [:index, :show, :create, :destroy] do
+    collection do
+      get :autocomplete
+    end
     member do
       put :close
       put :reopen
@@ -171,6 +175,9 @@ AntCat::Application.routes.draw do
   end
 
   resources :tasks do
+    collection do
+      get :autocomplete
+    end
     member do
       put :close
       put :reopen

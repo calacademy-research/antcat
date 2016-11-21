@@ -92,13 +92,14 @@ setupFormattingHelp = (previewable, uuid) ->
       formatting_help.html "Loading..."
       formatting_help.html $("<div>").load "/markdown/formatting_help.json", ->
         AntCat.hidePreviewAreaSpinner()
+        AntCat.make_reference_keeys_expandable formatting_help
 
 # Show symbols of enabled features in the upper right corner.
 # Will most often look like this: `Enabled: md %tr @`.
 # Clickong on the label shows explanations for them.
 setupSymbolsExplanations = (previewable, uuid) ->
   label = "md" # Markdown is always enabled if we get here.
-  label += " %tr" if previewable.data "has-linkables"
+  label += " %trjif" if previewable.data "has-linkables"
   label += " @" if previewable.data "has-mentionables"
   $("#symbols-explanations-labels-#{uuid}").html label
 

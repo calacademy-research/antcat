@@ -1,6 +1,6 @@
 Feature: Markdown
   Background:
-    Given I log in as a catalog editor named "Archibald"
+    Given I log in as a catalog editor
 
   Scenario: Using markdown
     Given there is an open task "Merge 'Giovanni' authors"
@@ -13,13 +13,14 @@ Feature: Markdown
     Then I should see "See: Giovanni, 1809"
 
   @javascript
-  Scenario: See the formatting help
+  Scenario: See formatting help and symbols of enabled features (right corner)
     Given I am on a page with a textarea with markdown preview and autocompletion
+    Then I should see "Enabled: md %trjif @"
+    And I should not see "What these symbols means"
+    And I should not see "AntCat-specific markdown"
+
+    When I follow "Enabled"
+    Then I should see "What these symbols means"
 
     When I follow "Formatting Help"
     Then I should see "AntCat-specific markdown"
-
-  @javascript
-  Scenario: See symbols of enabled features in the upper right corner
-    Given I am on a page with a textarea with markdown preview and autocompletion
-    Then I should see "Enabled: md %tr @"

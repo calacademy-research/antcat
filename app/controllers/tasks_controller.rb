@@ -56,6 +56,27 @@ class TasksController < ApplicationController
     redirect_to @task, notice: "Successfully re-opened task."
   end
 
+  def autocomplete
+    q = params[:q] || ''
+
+    # See if we have an exact ID match.
+    search_results = if q =~ /^\d+ ?$/
+                       id_matches_q = Task.find_by id: q
+                       [id_matches_q] if id_matches_q
+                     end
+
+    search_results ||= Task.where("title LIKE ?", "%#{q}%")
+
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |task|
+          { id: task.id, title: task.title, status: task.status }
+        end
+        render json: results
+      end
+    end
+  end
+
   private
     def set_task
       @task = Task.find(params[:id])

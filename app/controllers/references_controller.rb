@@ -172,7 +172,7 @@ class ReferencesController < ApplicationController
     render plain: Wikipedia::ReferenceExporter.export(@reference)
   end
 
-  # For at.js
+  # For at.js. Not as advanced as `#autocomplete`.
   def linkable_autocomplete
     search_query = params[:q] || ''
 
@@ -186,12 +186,11 @@ class ReferencesController < ApplicationController
     respond_to do |format|
       format.json do
         results = search_results.map do |reference|
-          {
-            id: reference.id,
-            title: reference.decorate.send(:format_title), # TODO make `format_title` public.
+          # TODO make `format_title` public to avoid `send`.
+          { id: reference.id,
             author: reference.author_names_string,
             year: reference.citation_year,
-          }
+            title: reference.decorate.send(:format_title) }
         end
 
         render json: results

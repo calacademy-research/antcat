@@ -25,7 +25,7 @@ $ ->
             AntCat.hidePreviewAreaSpinner()
             callback(data)
 
-        # Disabled because evil.
+        # Disable `sorter`.
         sorter: (query, items, searchKey) -> items
 
     .atwho
@@ -43,5 +43,59 @@ $ ->
             AntCat.hidePreviewAreaSpinner()
             callback(data)
 
-        # Disabled because evil.
+        # Disable `sorter`.
+        sorter: (query, items, searchKey) -> items
+
+    .atwho
+      at: '%i'
+      limit: 10
+      delay: 300
+      insertTpl: '%task${id}'
+      displayTpl: '<li><small>#${id}</small> ${title} <small>${status}</small></li>'
+      callbacks:
+        matcher: AntCat.allowSpacesWhileAutocompleting
+
+        remoteFilter: (query, callback) ->
+          AntCat.showPreviewAreaSpinner()
+          $.getJSON '/tasks/autocomplete.json', q: query, (data) ->
+            AntCat.hidePreviewAreaSpinner()
+            callback(data)
+
+        # Disable `sorter`.
+        sorter: (query, items, searchKey) -> items
+
+    .atwho
+      at: '%j'
+      limit: 10
+      delay: 300
+      insertTpl: '%journal${id}'
+      displayTpl: '<li><small>#${id}</small> ${name}</li>'
+      callbacks:
+        matcher: AntCat.allowSpacesWhileAutocompleting
+
+        remoteFilter: (query, callback) ->
+          AntCat.showPreviewAreaSpinner()
+          $.getJSON '/journals/linkable_autocomplete.json', q: query, (data) ->
+            AntCat.hidePreviewAreaSpinner()
+            callback(data)
+
+        # Disable `sorter`.
+        sorter: (query, items, searchKey) -> items
+
+    .atwho
+      at: '%f'
+      limit: 10
+      delay: 300
+      insertTpl: '%feedback${id}'
+      displayTpl: '<li><small>#${id}</small> ${date} <small>${status}</small></li>'
+      callbacks:
+        matcher: AntCat.allowSpacesWhileAutocompleting
+
+        remoteFilter: (query, callback) ->
+          AntCat.showPreviewAreaSpinner()
+          $.getJSON '/feedback/autocomplete.json', q: query, (data) ->
+            AntCat.hidePreviewAreaSpinner()
+            callback(data)
+
+        # Disable `sorter`.
         sorter: (query, items, searchKey) -> items

@@ -1,6 +1,6 @@
 Feature: Features with markdown and autocompletion
   Background:
-    Given I log in as a catalog editor named "Archibald"
+    Given I log in as a catalog editor
 
   Scenario: Site notices
     When I go to the new site notice form

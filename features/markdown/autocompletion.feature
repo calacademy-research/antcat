@@ -13,8 +13,7 @@ Feature: Markdown autocompletion
     Then I should see "Giovanni's Favorite Ants"
     And I should see "Giovanni's Brother's Favorite Ants"
 
-    When I fill in "task_description" with "%rsomething_to_clear_the_suggestions"
-    And I clear the markdown textarea
+    When I clear the markdown textarea
     Then I should not see "Favorite Ants"
 
     When I fill in "task_description" with "%rbro"
@@ -23,6 +22,7 @@ Feature: Markdown autocompletion
 
   Scenario: Taxa markdown autocompletion
     Given there is a genus "Eciton"
+    And there is a genus "Atta"
     And I am on a page with a textarea with markdown preview and autocompletion
 
     When I fill in "task_description" with "%tec"
@@ -37,3 +37,25 @@ Feature: Markdown autocompletion
     When I fill in "task_description" with "@arch"
     And I click the suggestion containing "Archibald"
     Then the markdown textarea should contain a markdown link to Archibald's user page
+
+  # Testing multiple at the same time because JS tests are painfully slow.
+  Scenario: Journal, task and feedback markdown autocompletion
+    Given a journal exists with a name of "Ant Science 2000"
+    And there is a closed task "Cleanup synonyms"
+    And a visitor has submitted a feedback
+    And I am on a page with a textarea with markdown preview and autocompletion
+
+    # Journal
+    When I fill in "task_description" with "%jsci"
+    And I click the suggestion containing "Science"
+    Then the markdown textarea should contain "%journal"
+
+    # Task
+    When I fill in "task_description" with "%icle"
+    And I click the suggestion containing "Cleanup"
+    Then the markdown textarea should contain "%task"
+
+    # Feedback
+    When I fill in "task_description" with "%f"
+    And I click the suggestion containing "open"
+    Then the markdown textarea should contain "%feedback"

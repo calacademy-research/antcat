@@ -34,6 +34,7 @@ Then(/^the markdown textarea should contain a markdown link to Eciton$/) do
 end
 
 When(/^I clear the markdown textarea$/) do
+  step %{I fill in "task_description" with "%rsomething_to_clear_the_suggestions"}
   markdown_textarea.set ""
 end
 
@@ -41,6 +42,14 @@ Then(/^there should be a textarea with markdown and autocompletion$/) do
   find "textarea[data-previewable]"
   find "textarea[data-has-mentionables]"
   find "textarea[data-has-linkables]"
+end
+
+When(/^I fill in the markdown textarea with markdown links for the above$/) do
+  markdown_textarea.set <<-TEXT.squish
+    %journal#{Journal.first.id}
+    %task#{Task.first.id}
+    %feedback#{Feedback.first.id}
+  TEXT
 end
 
 def markdown_textarea

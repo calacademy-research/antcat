@@ -55,6 +55,30 @@ class FeedbackController < ApplicationController
     redirect_to @feedback, notice: "Successfully re-opened feedback item."
   end
 
+  def autocomplete
+    q = params[:q] || ''
+
+    # See if we have an exact ID match.
+    search_results = if q =~ /^\d+ ?$/
+                       id_matches_q = Feedback.find_by id: q
+                       [id_matches_q] if id_matches_q
+                     end
+
+    search_results ||= Feedback.where("id LIKE ?", "%#{q}%").order(id: :desc)
+
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |feedback|
+          # Show less data on purpose for privacy reasons.
+          { id: feedback.id,
+            date: (feedback.created_at.strftime '%Y-%m-%d %H:%M'),
+            status: (feedback.open? ? "open" : "closed") }
+        end
+        render json: results
+      end
+    end
+  end
+
   private
     def set_feedback
       @feedback = Feedback.find params[:id]
