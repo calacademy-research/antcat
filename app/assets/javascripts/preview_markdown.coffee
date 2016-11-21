@@ -23,6 +23,9 @@ replacePreviewableWithPreviewArea = (previewable) ->
 
   setupFormattingHelp previewable, uuid
 
+  # jQuery plugin. "You have unsaved changes, leave form, ok??".
+  $(".preview-area").parents("form").areYouSure()
+
 createPreviewArea = (previewable, uuid) ->
   title = previewable.data("previewable-title") || "Text"
 

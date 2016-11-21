@@ -30,3 +30,6 @@
 
 // gems
 //= require twitter/typeahead
+
+// vendor
+//= require jquery.are-you-sure
