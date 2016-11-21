@@ -25,3 +25,7 @@ Feature: Database scripts
 
     When I follow "current (antcat.org)"
     Then I should see "class DatabaseScripts::Scripts::SubspeciesWithoutSpecies"
+
+  Scenario: Clicking on all scripts just to see if the page renders
+    When I open all database scripts and browse their sources
+    Then I should have browsed at least 5 database scripts
