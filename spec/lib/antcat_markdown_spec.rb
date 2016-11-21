@@ -64,7 +64,7 @@ describe AntcatMarkdown do
           journal = create :journal, name: "Zootaxa"
           markdown = "%journal#{journal.id}"
 
-          expected = %Q[<p><a href="/journals/#{journal.id}">#{journal.name}</a></p>\n]
+          expected = %Q[<p><a href="/journals/#{journal.id}"><i>#{journal.name}</i></a></p>\n]
           expect(AntcatMarkdown.render(markdown)).to eq expected
         end
       end
@@ -83,7 +83,7 @@ describe AntcatMarkdown do
       task = create :task
       markdown = "%task#{task.id}"
 
-      expected = %Q[<p><a href="/tasks/#{task.id}">task ##{task.id}</a></p>\n]
+      expected = %Q[<p><a href="/tasks/#{task.id}">task ##{task.id} (Check synonyms)</a></p>\n]
       expect(AntcatMarkdown.render(markdown)).to eq expected
     end
 

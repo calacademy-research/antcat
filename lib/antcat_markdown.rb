@@ -36,30 +36,29 @@ class AntcatMarkdown < Redcarpet::Render::HTML
   end
 
   def preprocess full_document
-    # TODO make smarter
-    parsed = parse_taxon_ids full_document
-    parsed = parse_reference_ids parsed
-    parsed = parse_journal_ids parsed
-    parsed = parse_task_ids parsed
-    parsed = parse_feedback_ids parsed
-    parsed = parse_github_ids parsed
-    parsed = parse_user_ids parsed
-    parsed
+    parse_taxon_ids! full_document
+    parse_reference_ids! full_document
+    parse_journal_ids! full_document
+    parse_task_ids! full_document
+    parse_feedback_ids! full_document
+    parse_github_ids! full_document
+    parse_user_ids! full_document
+    full_document
   end
 
   private
     # matches: %taxon429349
     # renders: link to the taxon (Formica)
-    def parse_taxon_ids full_document
-      full_document.gsub(/%taxon(\d+)/) do
+    def parse_taxon_ids! full_document
+      full_document.gsub!(/%taxon(\d+)/) do
         try_linking_taxon_id $1
       end
     end
 
     # matches: %reference130628
     # renders: referece as used in the catalog (Abdalla & Cruz-Landim, 2001)
-    def parse_reference_ids full_document
-      full_document.gsub(/%reference?(\d+)/) do
+    def parse_reference_ids! full_document
+      full_document.gsub!(/%reference?(\d+)/) do
         if Reference.exists? $1
           reference = Reference.find($1)
           reference.decorate.inline_citation
@@ -71,8 +70,8 @@ class AntcatMarkdown < Redcarpet::Render::HTML
 
     # matches: %journal123
     # renders: link to the journal, with the journal's name as the title
-    def parse_journal_ids full_document
-      full_document.gsub(/%journal(\d+)/) do
+    def parse_journal_ids! full_document
+      full_document.gsub!(/%journal(\d+)/) do
         if Journal.exists? $1
           journal = Journal.find($1)
           link_to "<i>#{journal.name}</i>".html_safe, journal_path(journal)
@@ -84,8 +83,8 @@ class AntcatMarkdown < Redcarpet::Render::HTML
 
     # matches: %task123
     # renders: a link to the task
-    def parse_task_ids full_document
-      full_document.gsub(/%task(\d+)/) do
+    def parse_task_ids! full_document
+      full_document.gsub!(/%task(\d+)/) do
         if Task.exists? $1
           task = Task.find($1)
           link_to "task ##{$1} (#{task.title})", task_path($1)
@@ -97,16 +96,16 @@ class AntcatMarkdown < Redcarpet::Render::HTML
 
     # matches: %feedback123
     # renders: a link to the feedback (including non-existing)
-    def parse_feedback_ids full_document
-      full_document.gsub(/%feedback(\d+)/) do
+    def parse_feedback_ids! full_document
+      full_document.gsub!(/%feedback(\d+)/) do
         link_to "feedback ##{$1}", feedback_path($1)
       end
     end
 
     # matches: %github123
     # renders: a link to the GitHub issue (including non-existing and PRs)
-    def parse_github_ids full_document
-      full_document.gsub(/%github(\d+)/) do
+    def parse_github_ids! full_document
+      full_document.gsub!(/%github(\d+)/) do
         # Also works for PRs becuase GH figures that out.
         url = "https://github.com/calacademy-research/antcat/issues/#{$1}"
         link_to "GitHub ##{$1}", url
@@ -115,8 +114,8 @@ class AntcatMarkdown < Redcarpet::Render::HTML
 
     # matches: %user123
     # renders: a link to the user's user page.
-    def parse_user_ids full_document
-      full_document.gsub(/@user(\d+)/) do
+    def parse_user_ids! full_document
+      full_document.gsub!(/@user(\d+)/) do
         if User.exists? $1
           user = User.find($1)
           user.decorate.ping_user_link
