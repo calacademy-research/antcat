@@ -30,7 +30,8 @@ module DevMonkeyPatches
   end
 
   def self.enable!
-    DevMonkeyPatches.enabled_notice
+    # Allow suppressing notice. Currently only for a database script I'm experimenting with.
+    DevMonkeyPatches.enabled_notice unless ENV["SUPPRESS_DEV_MONKEY_PATCHES_NOTICE"]
 
     DevMonkeyPatches::Object.patch!
     DevMonkeyPatches::Rails.patch!
