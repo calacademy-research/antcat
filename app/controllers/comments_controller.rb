@@ -10,7 +10,9 @@ class CommentsController < ApplicationController
 
     if @comment.save
       make_child_comment
-      redirect_to :back, notice: <<-MSG
+
+      highlighted_comment_url = "#{request.referer}#comment-#{@comment.id}"
+      redirect_to highlighted_comment_url, notice: <<-MSG
         <a href="#comment-#{@comment.id}">Comment</a>
         was successfully added.
       MSG
