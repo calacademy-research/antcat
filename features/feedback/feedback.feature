@@ -119,8 +119,7 @@ Feature: Feedback
     And I press "Send Feedback"
     Then I should see "Message sent"
 
-    When I go to the feedback index
-    And follow the link of the first feedback
+    When I go to the most recent feedback item
     Then I should see "<archibald@antcat.org>"
     And I should see "<batiatus@antcat.org>"
     And I should not see "flint@antcat.org"
@@ -134,6 +133,5 @@ Feature: Feedback
     And I press "Send Feedback"
     Then I should see "Message sent"
 
-    When I go to the feedback index
-    And follow the link of the first feedback
+    When I go to the most recent feedback item
     Then I should see "sblum@calacademy.org"

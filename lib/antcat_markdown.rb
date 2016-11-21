@@ -48,7 +48,7 @@ class AntcatMarkdown < Redcarpet::Render::HTML
   end
 
   private
-    # matches: %t429349
+    # matches: %taxon429349
     # renders: link to the taxon (Formica)
     def parse_taxon_ids full_document
       full_document.gsub(/%taxon(\d+)/) do
@@ -56,7 +56,7 @@ class AntcatMarkdown < Redcarpet::Render::HTML
       end
     end
 
-    # matches: %r130628
+    # matches: %reference130628
     # renders: referece as used in the catalog (Abdalla & Cruz-Landim, 2001)
     def parse_reference_ids full_document
       full_document.gsub(/%reference?(\d+)/) do
@@ -69,13 +69,13 @@ class AntcatMarkdown < Redcarpet::Render::HTML
       end
     end
 
-    # matches: %journal_123
+    # matches: %journal123
     # renders: link to the journal, with the journal's name as the title
     def parse_journal_ids full_document
       full_document.gsub(/%journal(\d+)/) do
         if Journal.exists? $1
           journal = Journal.find($1)
-          link_to journal.name, journal_path(journal)
+          link_to "<i>#{journal.name}</i>".html_safe, journal_path(journal)
         else
           broken_markdown_link "journal", $1
         end
@@ -83,10 +83,15 @@ class AntcatMarkdown < Redcarpet::Render::HTML
     end
 
     # matches: %task123
-    # renders: a link to the task (including non-existing)
+    # renders: a link to the task
     def parse_task_ids full_document
       full_document.gsub(/%task(\d+)/) do
-        link_to "task ##{$1}", task_path($1)
+        if Task.exists? $1
+          task = Task.find($1)
+          link_to "task ##{$1} (#{task.title})", task_path($1)
+        else
+          broken_markdown_link "task", $1
+        end
       end
     end
 

@@ -42,8 +42,16 @@ Given(/^a visitor has submitted a feedback with the comment "([^"]*)"$/) do |com
   create :feedback, comment: comment
 end
 
+Given(/^a visitor has submitted a feedback$/) do
+  step %{a visitor has submitted a feedback with the comment "Cool."}
+end
+
 Given(/^there is a closed feedback item with the comment "([^"]*)"$/) do |comment|
   create :feedback, comment: comment, open: false
+end
+
+Given(/^there is a (?:closed )?feedback item$/) do
+  step %{there is a closed feedback item with the comment "Cool."}
 end
 
 Given(/^the editors Archibald and Batiatus \(but not Flint\) have enabled feedback email forwarding$/) do

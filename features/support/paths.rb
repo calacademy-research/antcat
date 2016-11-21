@@ -91,6 +91,8 @@ module NavigationHelpers
 
     when /^the feedback index$/
       "/feedback"
+    when /^the most recent feedback item$/
+      "/feedback/#{Feedback.last.id}"
 
     # User
     when /^the user page for "([^"]*)"$/

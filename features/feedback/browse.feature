@@ -19,7 +19,6 @@ Feature: Browse Feedback
     Given a visitor has submitted a feedback with the comment "Mad catalog!"
     And I am logged in
 
-    When I go to the feedback index
-    And follow the link of the first feedback
+    When I go to the most recent feedback item
     Then I should see "From: [no name] <[no email]; IP 127.0.0.1>"
     And I should see "Mad catalog!"
