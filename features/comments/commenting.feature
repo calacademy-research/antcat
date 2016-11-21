@@ -1,19 +1,17 @@
-Feature: Comment on user feedback
-  As an AntCat editor
-  I want to comment on user feedback
-  So that editors can track issues
-
+Feature: Commenting
   Background:
     Given I log in as a catalog editor named "Batiatus"
-    And a visitor has submitted a feedback with the comment "Fix spelling"
-    And I go to the feedback index
-    And follow the link of the first feedback
+    And a visitor has submitted a feedback
+    And I go to the most recent feedback item
 
-  Scenario: Commenting on an open task
+  # JavaScript is required for the dirty hack in "... see my comment highlighted ..."
+  @javascript
+  Scenario: Leaving a comment
     When I write a new comment "Fixed, closing issue."
     And I press "Post Comment"
     Then I should see "Comment was successfully added"
     And I should see "Fixed, closing issue."
+    And I should see my comment highlighted in the comments section
 
   @javascript
   Scenario: Replying to a comment
