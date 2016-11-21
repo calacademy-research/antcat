@@ -6,7 +6,7 @@ class DatabaseScripts::Scripts::<%= class_name %>
   end
 
   # When this method isn't implemented, the code tries to figure out
-  # how to render `results` based on its class.
+  # how to render `#results` based on its class.
   def render
     # as_table do
     #   header :subspecies, :status
@@ -16,5 +16,9 @@ class DatabaseScripts::Scripts::<%= class_name %>
 end
 
 __END__
-description: Script description; optional, defaults to the humanized class name
-tags: [example-tag] # optional
+# The end data will be parsed as YAML, so hashtag comments are OK here.
+description: Optional script description.
+tags: [example-tag]
+
+# Tags are optional, and some have special meanings.
+# See `DatabaseScriptsHelper#format_database_script_tags`.
