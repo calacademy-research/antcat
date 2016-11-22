@@ -1,3 +1,5 @@
+# Included in production as well, called in many places.
+
 $ ->
   AntCat.log = (message) ->
     unless typeof console == 'undefined'

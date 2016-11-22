@@ -1,3 +1,6 @@
+# This is only included on pages where tooltips
+# can appear (via `TooltipHelper#enable_tooltips`).
+
 $ ->
   $.ajax '/tooltips/enabled_selectors', success: (data) -> # uses request origin to restrict returned items
     tooltipsToInsert = data
