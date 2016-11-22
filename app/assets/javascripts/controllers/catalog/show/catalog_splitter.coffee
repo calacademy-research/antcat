@@ -1,8 +1,4 @@
 $ ->
-  $("#toggle_legend").click (event) ->
-    event.preventDefault()
-    $("#taxon_key").slideToggle()
-
   new CatalogSplitter()
 
 class @CatalogSplitter

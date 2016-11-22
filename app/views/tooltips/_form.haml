@@ -4,13 +4,6 @@
   -# TODO probably remove.
   =javascript_include_tag 'controllers/tooltips/form/generate_selector_test_string'
 
--# TODO use `toggle_show_hide.coffee`.
-:coffee
-  $ ->
-    $("#toggle_advanced_options").click (event) ->
-      event.preventDefault()
-      $("#advanced_options").slideToggle("slow")
-
 =form_for @tooltip do |f|
   =hidden_field_tag 'referral', @referral
   =render 'shared/errors_for', resource: @tooltip
@@ -36,7 +29,7 @@
 
   .row
     .medium-6.columns
-      %fieldset.fieldset#advanced_options{style: "display: none"}
+      %fieldset.fieldset{data: { show_hide_toggable_id: "advanced_options" }}
         %legend Advanced options
         %p
           =f.label :selector do
@@ -64,5 +57,5 @@
   .row
     .medium-6.columns
       .actions
-        =link_to "Hide/show advanced", "#", id: "toggle_advanced_options", class: "btn-non-destructive"
+        =link_to "Hide/show advanced", "#", class: "btn-non-destructive", data: { show_hide_toggler_for: "advanced_options" }
         =f.submit class: "btn-save"

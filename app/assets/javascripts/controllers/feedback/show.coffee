@@ -1,8 +1,11 @@
 $ ->
-  for_email = $("textarea#formatted_for_email")
+  forEmail = $("textarea#formatted_for_email")
 
   # Set height or the textarea will be like 3 rows in height.
-  for_email.height for_email[0].scrollHeight
+  # Ugly because we can only get height if it's visible.
+  forEmail.parent().show()
+  forEmail.height forEmail[0].scrollHeight
+  forEmail.parent().hide()
 
   # Be generous and select the content for the user.
-  for_email.on "mouseup", -> $(this)[0].select()
+  forEmail.on "mouseup", -> $(this)[0].select()

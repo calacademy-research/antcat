@@ -3,7 +3,6 @@
 
 -content_for :head do
   =javascript_include_tag "controllers/feedback/show"
-  =javascript_include_tag "show_hide_toggler"
 
 .buttons_right
   =link_to "Hide/show formatted for email", "#", class: "btn-non-destructive", data: { show_hide_toggler_for: "for_email" }

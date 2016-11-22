@@ -26,6 +26,7 @@
 //= require all_pages/debugging
 //= require all_pages/feedback_modal
 //= require all_pages/global
+//= require all_pages/show_hide_toggler
 //= require all_pages/spinner
 
 // gems
