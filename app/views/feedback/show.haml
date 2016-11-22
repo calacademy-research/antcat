@@ -1,6 +1,10 @@
 -@title = "Feedback ##{@feedback.id}"
 -breadcrumb :user_feedback_details, @feedback
 
+-content_for :head do
+  =javascript_include_tag "controllers/feedbacks/show"
+  =javascript_include_tag "toggle_show_hide"
+
 .buttons_right
   -if @feedback.closed?
     =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-destructive")
@@ -17,7 +21,19 @@
   Sent to:
   =@feedback.email_recipients
 
-.callout
-  =render file: "feedback_mailer/feedback_email", locals: { feedback: @feedback }
+%p
+  Page:
+  -url = "http://antcat.org/#{@feedback.page}"
+  =link_to url, url
+
+=render "feedback", feedback: @feedback
+
+=link_to "Hide/show formatted for email", "#", class: "btn-non-destructive", data: { show_hide_toggler_for: "for_email" }
+
+-# Wrapped in a div, because without it toggling is laggy (???).
+%div{data: { show_hide_toggable_id: "for_email" }}
+  =preserve do
+    %textarea#formatted_for_email
+      =format_feedback_for_pre @feedback
 
 =render partial: "comments/comments_area", locals: { commentable: @feedback, new_comment: @new_comment }

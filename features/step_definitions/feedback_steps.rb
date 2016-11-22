@@ -63,6 +63,8 @@ Given(/^the editors Archibald and Batiatus \(but not Flint\) have enabled feedba
   create :editor, name: "Flint", email: "flint@antcat.org"
 end
 
-When(/^follow the link of the first feedback$/) do
-  first("table.feedbacks a", text: "Details").click
+# Expecting on content of textareas is not very easy, so check visibility instead.
+Then(/^I should (not )?see the feedback formatted for email$/) do |should_not|
+  visible = should_not ? false : true
+  find_by_id "formatted_for_email", visible: visible
 end

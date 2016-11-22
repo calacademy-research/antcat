@@ -1,0 +1,5 @@
+=format_submitter_name feedback
+submitted (#{time_ago_in_words(feedback.created_at)} ago):
+
+.callout{class: ("gray" if feedback.closed?)}
+  =simple_format strip_tags(feedback.comment)
