@@ -10,24 +10,24 @@ Feature: Managing user feedback
     Given a visitor has submitted a feedback
 
     When I go to the most recent feedback item
-    Then I should see "Status: open"
+    Then I should see "This feedback item is still open"
     And I should not see "Re-open"
 
     When I follow "Close"
     Then I should see "Successfully closed feedback item."
     And I should see "Re-open"
-    And I should see "Status: closed"
+    And I should not see "This feedback item is still open"
 
   Scenario: Re-opening a closed feedback item
     Given there is a closed feedback item
 
     When I go to the most recent feedback item
     Then I should see "Re-open"
-    And I should see "Status: closed"
+    And I should not see "This feedback item is still open"
 
     When I follow "Re-open"
     Then I should see "Successfully re-opened feedback item."
-    And I should see "Status: open"
+    And I should see "This feedback item is still open"
     And I should not see "Re-open"
 
   Scenario: Deleting a feedback item

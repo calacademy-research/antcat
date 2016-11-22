@@ -29,7 +29,7 @@ Feature: Browse Feedback
     Given I am logged in
 
     When I go to the most recent feedback item
-    Then I should not see the feedback formatted for email
+    Then I should not see "Formatted for email"
 
     When I follow "Hide/show formatted for email"
-    Then I should see the feedback formatted for email
+    Then I should see "Formatted for email"

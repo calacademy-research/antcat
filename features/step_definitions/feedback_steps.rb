@@ -53,9 +53,3 @@ end
 Given(/^there is a (?:closed )?feedback item$/) do
   step %{there is a closed feedback item with the comment "Cool."}
 end
-
-# Expecting on content of textareas is not very easy, so check visibility instead.
-Then(/^I should (not )?see the feedback formatted for email$/) do |should_not|
-  visible = should_not ? false : true
-  find_by_id "formatted_for_email", visible: visible
-end
