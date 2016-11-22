@@ -1,6 +1,6 @@
 # This makes all textareas with `data-previewable="true"` previewable.
 # Can also be invoked manually, as is the case with textareas for
-# posting comment replies (not the non-dynamic main comment box).
+# posting comment replies (not the main comment box visible by default).
 #
 # "Previewable" means markdown in the textarea can be previewed (rendered
 # server-side as HTML and return to the client).
@@ -12,26 +12,19 @@
 $ ->
   $('textarea[data-previewable="true"]').makePreviewable()
 
-# Use UUID so multiple textareas on the same page can be previewable.
-UUID = ->
-  @currentUUID ||= 1
-  currentUUID++
+  setupGlobalLoadingSpinnerTriggers()
 
-PREVIEW_AREA_SPINNER = ".preview-area .shared-spinner"
-showSpinner = -> $(PREVIEW_AREA_SPINNER).show()
-hideSpinner = -> $(PREVIEW_AREA_SPINNER).hide()
-
-# Make global so at.js can trigger the loading spinner.
-window.MDPreview ||= {}
-MDPreview.showSpinner = showSpinner
-MDPreview.hideSpinner = hideSpinner
+# Makes *any* preview areas show the spinner, but that's OK.
+ANY_PREVIEW_AREA_SPINNER = ".preview-area .shared-spinner"
+showSpinner = -> $(ANY_PREVIEW_AREA_SPINNER).show()
+hideSpinner = -> $(ANY_PREVIEW_AREA_SPINNER).hide()
 
 $.fn.makePreviewable = ->
   previewable = @
-  # Return if previewable already is "previewable".
+  # Return if textarea already is "previewable".
   return if previewable.parent().hasClass "tabs-panel"
 
-  replacePreviewableWithPreviewArea previewable
+  wrapPreviewableInsidePreviewArea previewable
 
 # Currently not used.
 $.fn.makeNotPreviewable = ->
@@ -40,7 +33,7 @@ $.fn.makeNotPreviewable = ->
   previewable.insertAfter previewArea
   previewArea.remove()
 
-replacePreviewableWithPreviewArea = (previewable) ->
+wrapPreviewableInsidePreviewArea = (previewable) ->
   uuid = UUID()
 
   # Create new preview area (tabs) and insert after previewable (textarea).
@@ -49,37 +42,44 @@ replacePreviewableWithPreviewArea = (previewable) ->
   new Foundation.Tabs $("#tabs-#{uuid}")
 
   # Move previewable inside the preview area.
-  previewable.detach().appendTo "#previewable-#{uuid}"
+  previewable.detach().appendTo "#previewable-tab-#{uuid}"
 
   # Make preview link work.
-  previewLink = previewable.closest(".preview-area").find ".preview_link-#{uuid}"
-  previewLink.previewMarkdownLink previewable, "#preview-#{uuid}"
+  setupPreviewLink previewable, uuid
 
   # Setup help links.
   setupFormattingHelp previewable, uuid
   setupSymbolsExplanations previewable, uuid
 
   # jQuery plugin. "You have unsaved changes, leave form, ok??".
-  $(".preview-area").parents("form").areYouSure()
+  $("#preview-area-#{uuid}").parents("form").areYouSure()
 
+# Use UUID so multiple textareas on the same page can be previewable.
+UUID = ->
+  @currentUUID ||= 1
+  currentUUID++
+
+# We need this ridiculous amount of unique IDs because Foundation
+# Tabs requires it. https://foundation.zurb.com/sites/docs/tabs.html
+# TODO probably do not use Foundation.
 createPreviewArea = (previewable, uuid) ->
   title = previewable.data("previewable-title") || "Text"
 
   # Spinner CSS duplicated from `ApplicationHelper#shared_spinner_icon`.
   """
-  <div class="preview-area">
+  <div id="preview-area-#{uuid}" class="preview-area">
     <ul class='tabs' data-tabs='' id='tabs-#{uuid}'>
       <li class='tabs-title is-active'>
-        <a href="#previewable-#{uuid}">#{title}</a>
+        <a href="#previewable-tab-#{uuid}">#{title}</a>
       </li>
       <li class='tabs-title'>
-        <a class="preview_link-#{uuid}" href="#preview-#{uuid}">Preview</a>
+        <a class="preview-link" href="#preview-tab-#{uuid}">Preview</a>
       </li>
       <li class='tabs-title'>
-        <a id="show_formatting_help-#{uuid}" href="#formatting_help-#{uuid}">Formatting Help</a>
+        <a id="show-formatting-help-#{uuid}" href="#formatting-help-tab-#{uuid}">Formatting Help</a>
       </li>
       <li class='tabs-title right'>
-        <a href="#symbols-explanations-#{uuid}" id="symbols-explanations-link-#{uuid}"
+        <a href="#symbols-explanations-tab-#{uuid}" id="symbols-explanations-link-#{uuid}"
           title="Click for more info">
           Enabled: <code id="symbols-explanations-labels-#{uuid}"></code>
         </a>
@@ -89,17 +89,19 @@ createPreviewArea = (previewable, uuid) ->
       </li>
     </ul>
     <div class='tabs-content' data-tabs-content='tabs-#{uuid}'>
-      <div class='tabs-panel is-active' id='previewable-#{uuid}'></div>
-      <div class='tabs-panel' id='preview-#{uuid}'></div>
-      <div class='tabs-panel' id='formatting_help-#{uuid}'></div>
-      <div class='tabs-panel' id='symbols-explanations-#{uuid}'></div>
+      <div class='tabs-panel is-active' id='previewable-tab-#{uuid}'></div>
+      <div class='tabs-panel' id='preview-tab-#{uuid}'></div>
+      <div class='tabs-panel' id='formatting-help-tab-#{uuid}'></div>
+      <div class='tabs-panel' id='symbols-explanations-tab-#{uuid}'></div>
     </div>
   </div>
   """
 
-# TODO doesn't have to be a jQuery function.
-$.fn.previewMarkdownLink = (previewable, previewArea) ->
-  @click (event) ->
+setupPreviewLink = (previewable, uuid) ->
+  previewArea = "#preview-tab-#{uuid}"
+  previewLink = previewable.closest(".preview-area").find ".preview-link"
+
+  previewLink.click (event) ->
     event.preventDefault()
 
     $(previewArea).html "Loading preview... dot dot dot..."
@@ -116,32 +118,42 @@ $.fn.previewMarkdownLink = (previewable, previewArea) ->
         hideSpinner() # Only hide on success.
       error: -> $(previewArea).text "Error rendering preview"
 
-# Load markdown formatting help page via AJAX on demand.
+# Load markdown formatting help page via AJAX on demand. Mostly becasue
+# it's so much easier to format it in HAML rather than JavaScript.
 setupFormattingHelp = (previewable, uuid) ->
-  $("#show_formatting_help-#{uuid}").click ->
-    formatting_help = $("#formatting_help-#{uuid}")
+  $("#show-formatting-help-#{uuid}").click ->
+    formattingHelp = $("#formatting-help-tab-#{uuid}")
 
-    if formatting_help.is ':empty'
+    if formattingHelp.is ':empty'
       showSpinner()
-      formatting_help.html "Loading..."
-      formatting_help.html $("<div>").load "/markdown/formatting_help.json", ->
+      formattingHelp.html "Loading..."
+      formattingHelp.html $("<div>").load "/markdown/formatting_help.json", ->
         hideSpinner()
-        AntCat.make_reference_keeys_expandable formatting_help
+        AntCat.make_reference_keeys_expandable formattingHelp
 
 # Show symbols of enabled features in the upper right corner.
 # Will most often look like this: `Enabled: md %trjif @`.
-# Clickong on the label shows explanations for them.
+# Clicking on the label shows explanations for them.
+#
+# It always includes at least "md", because markdown is always enabled if we
+# get here. It can tell if autocompletions for "linkables" and user
+# "mentionables" are enabled by looking at the textarea's data attributes.
 setupSymbolsExplanations = (previewable, uuid) ->
-  label = "md" # Markdown is always enabled if we get here.
+  label = "md"
   label += " %trjif" if previewable.data "has-linkables"
   label += " @" if previewable.data "has-mentionables"
   $("#symbols-explanations-labels-#{uuid}").html label
 
-  # Load symbols explanations via AJAX on demand.
+  # Load symbols explanations via AJAX on demand. Also, HAML > HTML +JS.
   $("#symbols-explanations-link-#{uuid}").click ->
-    symbolsExplanations = $("#symbols-explanations-#{uuid}")
+    symbolsExplanations = $("#symbols-explanations-tab-#{uuid}")
     if symbolsExplanations.is ':empty'
       showSpinner()
       symbolsExplanations.html "Loading..."
       symbolsExplanations.html $("<div>").load "/markdown/symbols_explanations.json", ->
         hideSpinner()
+
+setupGlobalLoadingSpinnerTriggers = ->
+  window.MDPreview =
+    showSpinner: showSpinner
+    hideSpinner: hideSpinner
