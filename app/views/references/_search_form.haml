@@ -1,7 +1,7 @@
 -content_for :head do
-  =javascript_include_tag 'references/references_autocompletion'
-  =javascript_include_tag 'references/edit_form_autocompletion'
-  =javascript_include_tag 'references/search_form_author_autocompletion'
+  =javascript_include_tag 'controllers/references/search_form/all_fields_autocompletion'
+  =javascript_include_tag 'controllers/references/authors_autocompletion'
+  =javascript_include_tag 'controllers/references/search_form/autocompletion_switcher'
 
 =form_tag search_references_path, method: :get, class: "reference-search-form" do
   =select_tag "search_type", options_for_select([["Search all fields", "all"], ["Search by author(s)", "author"]], params[:search_type])

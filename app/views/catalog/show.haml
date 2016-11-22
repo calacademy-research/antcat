@@ -3,9 +3,9 @@
 
 -content_for :head do
   =stylesheet_link_tag "catalog_only"
-  =javascript_include_tag "catalog"
+  =javascript_include_tag "controllers/catalog/show/catalog_splitter"
   -if user_is_superadmin?
-    =javascript_include_tag "superadmin_delete_button"
+    =javascript_include_tag "controllers/catalog/show/superadmin_delete_button"
 
 #taxon_description
   .title.show-for-large

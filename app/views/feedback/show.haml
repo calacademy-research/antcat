@@ -2,8 +2,8 @@
 -breadcrumb :user_feedback_details, @feedback
 
 -content_for :head do
-  =javascript_include_tag "controllers/feedbacks/show"
-  =javascript_include_tag "toggle_show_hide"
+  =javascript_include_tag "controllers/feedback/show"
+  =javascript_include_tag "show_hide_toggler"
 
 .buttons_right
   =link_to "Hide/show formatted for email", "#", class: "btn-non-destructive", data: { show_hide_toggler_for: "for_email" }

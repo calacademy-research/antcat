@@ -7,7 +7,7 @@
   =javascript_include_tag 'widgets/reference_field'
   =javascript_include_tag 'widgets/name_field'
   =javascript_include_tag 'widgets/reference_popup', 'widgets/name_popup', 'widgets/taxt_editor'
-  =javascript_include_tag 'taxa/taxa', 'taxa/parent_section', 'taxa/current_valid_taxon_section', 'taxa/history_items_section', 'taxa/synonyms_section', 'taxa/references_section', 'taxa/homonym_replaced_by_section'
+  =javascript_include_tag 'controllers/taxa/form', 'controllers/taxa/parent_section', 'controllers/taxa/current_valid_taxon_section', 'controllers/taxa/history_items_section', 'controllers/taxa/synonyms_section', 'controllers/taxa/references_section', 'controllers/taxa/homonym_replaced_by_section'
 
 -url = @taxon.new_record? ?  '/taxa': "/taxa/#{@taxon.id}"
 -method = @taxon.new_record? ? 'post' : 'put'

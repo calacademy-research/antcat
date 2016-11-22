@@ -22,11 +22,11 @@
 //= require jquery.atwho
 
 // app/assets/javascripts
-//= require catalog_autocompletion
-//= require debugging
-//= require feedback
-//= require site
-//= require spinner
+//= require all_pages/catalog_autocompletion
+//= require all_pages/debugging
+//= require all_pages/feedback_modal
+//= require all_pages/global
+//= require all_pages/spinner
 
 // gems
 //= require twitter/typeahead
