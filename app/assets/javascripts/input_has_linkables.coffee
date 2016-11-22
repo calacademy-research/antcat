@@ -20,9 +20,9 @@ $ ->
         matcher: AntCat.allowSpacesWhileAutocompleting
 
         remoteFilter: (query, callback) ->
-          AntCat.showPreviewAreaSpinner()
+          MDPreview.showSpinner()
           $.getJSON '/catalog/autocomplete.json', q: query, (data) ->
-            AntCat.hidePreviewAreaSpinner()
+            MDPreview.hideSpinner()
             callback(data)
 
         # Disable `sorter`.
@@ -38,9 +38,9 @@ $ ->
         matcher: AntCat.allowSpacesWhileAutocompleting
 
         remoteFilter: (query, callback) ->
-          AntCat.showPreviewAreaSpinner()
+          MDPreview.showSpinner()
           $.getJSON '/references/linkable_autocomplete.json', q: query, (data) ->
-            AntCat.hidePreviewAreaSpinner()
+            MDPreview.hideSpinner()
             callback(data)
 
         # Disable `sorter`.
@@ -56,9 +56,9 @@ $ ->
         matcher: AntCat.allowSpacesWhileAutocompleting
 
         remoteFilter: (query, callback) ->
-          AntCat.showPreviewAreaSpinner()
+          MDPreview.showSpinner()
           $.getJSON '/tasks/autocomplete.json', q: query, (data) ->
-            AntCat.hidePreviewAreaSpinner()
+            MDPreview.hideSpinner()
             callback(data)
 
         # Disable `sorter`.
@@ -74,9 +74,9 @@ $ ->
         matcher: AntCat.allowSpacesWhileAutocompleting
 
         remoteFilter: (query, callback) ->
-          AntCat.showPreviewAreaSpinner()
+          MDPreview.showSpinner()
           $.getJSON '/journals/linkable_autocomplete.json', q: query, (data) ->
-            AntCat.hidePreviewAreaSpinner()
+            MDPreview.hideSpinner()
             callback(data)
 
         # Disable `sorter`.
@@ -92,9 +92,9 @@ $ ->
         matcher: AntCat.allowSpacesWhileAutocompleting
 
         remoteFilter: (query, callback) ->
-          AntCat.showPreviewAreaSpinner()
+          MDPreview.showSpinner()
           $.getJSON '/feedback/autocomplete.json', q: query, (data) ->
-            AntCat.hidePreviewAreaSpinner()
+            MDPreview.hideSpinner()
             callback(data)
 
         # Disable `sorter`.

@@ -12,10 +12,19 @@
 $ ->
   $('textarea[data-previewable="true"]').makePreviewable()
 
-# TODO global, *uhh*, but "ok".
+# Use UUID so multiple textareas on the same page can be previewable.
+UUID = ->
+  @currentUUID ||= 1
+  currentUUID++
+
 PREVIEW_AREA_SPINNER = ".preview-area .shared-spinner"
-AntCat.showPreviewAreaSpinner = -> $(PREVIEW_AREA_SPINNER).show()
-AntCat.hidePreviewAreaSpinner = -> $(PREVIEW_AREA_SPINNER).hide()
+showSpinner = -> $(PREVIEW_AREA_SPINNER).show()
+hideSpinner = -> $(PREVIEW_AREA_SPINNER).hide()
+
+# Make global so at.js can trigger the loading spinner.
+window.MDPreview ||= {}
+MDPreview.showSpinner = showSpinner
+MDPreview.hideSpinner = hideSpinner
 
 $.fn.makePreviewable = ->
   previewable = @
@@ -32,8 +41,7 @@ $.fn.makeNotPreviewable = ->
   previewArea.remove()
 
 replacePreviewableWithPreviewArea = (previewable) ->
-  # Create UUID so multiple textareas on the same page can be previewable.
-  uuid = AntCat.UUID()
+  uuid = UUID()
 
   # Create new preview area (tabs) and insert after previewable (textarea).
   previewArea = createPreviewArea previewable, uuid
@@ -95,7 +103,7 @@ $.fn.previewMarkdownLink = (previewable, previewArea) ->
     event.preventDefault()
 
     $(previewArea).html "Loading preview... dot dot dot..."
-    AntCat.showPreviewAreaSpinner()
+    showSpinner()
 
     $.ajax
       url: '/markdown/preview'
@@ -105,7 +113,7 @@ $.fn.previewMarkdownLink = (previewable, previewArea) ->
       success: (html) ->
         $(previewArea).html html
         AntCat.make_reference_keeys_expandable previewArea # Re-trigger to make references expandable.
-        AntCat.hidePreviewAreaSpinner() # Only hide on success.
+        hideSpinner() # Only hide on success.
       error: -> $(previewArea).text "Error rendering preview"
 
 # Load markdown formatting help page via AJAX on demand.
@@ -114,10 +122,10 @@ setupFormattingHelp = (previewable, uuid) ->
     formatting_help = $("#formatting_help-#{uuid}")
 
     if formatting_help.is ':empty'
-      AntCat.showPreviewAreaSpinner()
+      showSpinner()
       formatting_help.html "Loading..."
       formatting_help.html $("<div>").load "/markdown/formatting_help.json", ->
-        AntCat.hidePreviewAreaSpinner()
+        hideSpinner()
         AntCat.make_reference_keeys_expandable formatting_help
 
 # Show symbols of enabled features in the upper right corner.
@@ -133,7 +141,7 @@ setupSymbolsExplanations = (previewable, uuid) ->
   $("#symbols-explanations-link-#{uuid}").click ->
     symbolsExplanations = $("#symbols-explanations-#{uuid}")
     if symbolsExplanations.is ':empty'
-      AntCat.showPreviewAreaSpinner()
+      showSpinner()
       symbolsExplanations.html "Loading..."
       symbolsExplanations.html $("<div>").load "/markdown/symbols_explanations.json", ->
-        AntCat.hidePreviewAreaSpinner()
+        hideSpinner()

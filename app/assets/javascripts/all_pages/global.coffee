@@ -41,7 +41,3 @@ AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
     match[2] || match[1]
   else
     null
-
-AntCat.currentUUID = 1
-AntCat.UUID = ->
-  AntCat.currentUUID++
