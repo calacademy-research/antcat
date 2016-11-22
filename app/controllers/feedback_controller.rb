@@ -20,7 +20,6 @@ class FeedbackController < ApplicationController
     @feedback.ip = request.remote_ip
     render_unprocessable and return if maybe_rate_throttle
 
-    # We're including the current name and email, or the index may lie in the future.
     if current_user
       @feedback.user = current_user
       @feedback.name = current_user.name
@@ -29,7 +28,6 @@ class FeedbackController < ApplicationController
 
     respond_to do |format|
       if @feedback.save
-        send_feedback_email
         format.json do
           json = { feedback_success_callout: feedback_success_callout }
           render json: json, status: :created
@@ -115,11 +113,6 @@ class FeedbackController < ApplicationController
     def feedback_success_callout
       render_to_string partial: "feedback_success_callout",
         locals: { feedback_id: @feedback.id }
-    end
-
-    # TODO move to a callback.
-    def send_feedback_email
-      FeedbackMailer.feedback_email(@feedback).deliver_now
     end
 
     def feedback_params

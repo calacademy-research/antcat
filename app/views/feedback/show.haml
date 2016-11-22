@@ -18,10 +18,6 @@
   =@feedback.open? ? "open" : "closed"
 
 %p
-  Sent to:
-  =@feedback.email_recipients
-
-%p
   Page:
   -url = "http://antcat.org/#{@feedback.page}"
   =link_to url, url

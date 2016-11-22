@@ -54,15 +54,6 @@ Given(/^there is a (?:closed )?feedback item$/) do
   step %{there is a closed feedback item with the comment "Cool."}
 end
 
-Given(/^the editors Archibald and Batiatus \(but not Flint\) have enabled feedback email forwarding$/) do
-  create :editor, name: "Archibald",
-    email: "archibald@antcat.org", receive_feedback_emails: true
-  create :editor, name: "Batiatus",
-    email: "batiatus@antcat.org", receive_feedback_emails: true
-
-  create :editor, name: "Flint", email: "flint@antcat.org"
-end
-
 # Expecting on content of textareas is not very easy, so check visibility instead.
 Then(/^I should (not )?see the feedback formatted for email$/) do |should_not|
   visible = should_not ? false : true
