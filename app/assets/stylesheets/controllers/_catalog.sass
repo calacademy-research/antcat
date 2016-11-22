@@ -26,6 +26,21 @@
     .tabs-panel
       padding-bottom: 0
 
+    // Equally space out elements.
+    #taxon_key
+      display: none
+      width: 100%
+      text-align: justify
+      div
+        display: inline-block
+        margin-top: 0
+        margin-bottom: -1em
+      &:after
+        content: ""
+        width: 100%
+        display: inline-block
+      margin-bottom: -1rem
+
   #splitter
     background-color: #eee
     background-repeat: no-repeat
@@ -108,21 +123,3 @@
     .change_history
       font-size: 13px
       font-style: italic
-
-  // equally space out elements
-  #taxon_key
-    display: none
-    width: 100%
-    text-align: justify
-
-    div
-      display: inline-block
-      margin-top: 0
-      margin-bottom: -1em
-
-    &:after
-      content: ""
-      width: 100%
-      display: inline-block
-
-    margin-bottom: -1rem
