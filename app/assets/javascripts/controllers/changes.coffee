@@ -1,3 +1,6 @@
+$ ->
+  $('.btn-undo').each -> new AntCat.UndoButton($(this))
+
 class AntCat.ChangeButton
   constructor: (@element) ->
     self = @
@@ -54,6 +57,3 @@ class AntCat.UndoButton extends AntCat.ChangeButton
         @create_impacted_taxa_dialog(data, change_id)
       async: false
       error: (xhr) => debugger
-
-$ ->
-  $('.btn-undo').each -> new AntCat.UndoButton($(this))

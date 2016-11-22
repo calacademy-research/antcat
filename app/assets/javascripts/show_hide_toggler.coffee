@@ -6,6 +6,10 @@
 # On the element that should work as a toggler:
 #   Set `data-show-hide-toggler-for="example"`
 
+$ ->
+  hideToggleables()
+  $('*[data-show-hide-toggler-for]').makeShowHideToggler()
+
 # This is for the element that toggles the other element.
 $.fn.makeShowHideToggler = ->
   toggleable_id = @data "show-hide-toggler-for"
@@ -17,7 +21,3 @@ $.fn.makeShowHideToggler = ->
 
 # Start out with all toggleables hidden.
 hideToggleables = -> $("*[data-show-hide-toggable-id]").hide()
-
-$ ->
-  hideToggleables()
-  $('*[data-show-hide-toggler-for]').makeShowHideToggler()

@@ -1,3 +1,10 @@
+$ ->
+  $("#toggle_legend").click (event) ->
+    event.preventDefault()
+    $("#taxon_key").slideToggle()
+
+  new CatalogSplitter()
+
 class @CatalogSplitter
   # In the order they appear on the HTML.
   HEADER = "#header"
@@ -63,10 +70,3 @@ class @CatalogSplitter
   heightOf: (element) -> $(element).outerHeight true
 
   setHeight: (element, height) -> $(element).outerHeight height
-
-$ ->
-  $("#toggle_legend").click (event) ->
-    event.preventDefault()
-    $("#taxon_key").slideToggle()
-
-  new CatalogSplitter()

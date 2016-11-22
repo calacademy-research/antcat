@@ -1,9 +1,35 @@
+# This makes all textareas with `data-previewable="true"` previewable.
+# Can also be invoked manually, as is the case with textareas for
+# posting comment replies (not the non-dynamic main comment box).
+#
+# "Previewable" means markdown in the textarea can be previewed (rendered
+# server-side as HTML and return to the client).
+#
+# Code for inline autocompletion of users/taxa/references etc is
+# independent of anything here, with the exception of setting up the
+# "Enabled features" symbols in the textarea's upper right corner.
+
+$ ->
+  $('textarea[data-previewable="true"]').makePreviewable()
+
+# TODO global, *uhh*, but "ok".
+PREVIEW_AREA_SPINNER = ".preview-area .shared-spinner"
+AntCat.showPreviewAreaSpinner = -> $(PREVIEW_AREA_SPINNER).show()
+AntCat.hidePreviewAreaSpinner = -> $(PREVIEW_AREA_SPINNER).hide()
+
 $.fn.makePreviewable = ->
   previewable = @
   # Return if previewable already is "previewable".
   return if previewable.parent().hasClass "tabs-panel"
 
   replacePreviewableWithPreviewArea previewable
+
+# Currently not used.
+$.fn.makeNotPreviewable = ->
+  previewable = @
+  previewArea = previewable.closest(".preview-area")
+  previewable.insertAfter previewArea
+  previewArea.remove()
 
 replacePreviewableWithPreviewArea = (previewable) ->
   # Create UUID so multiple textareas on the same page can be previewable.
@@ -95,7 +121,7 @@ setupFormattingHelp = (previewable, uuid) ->
         AntCat.make_reference_keeys_expandable formatting_help
 
 # Show symbols of enabled features in the upper right corner.
-# Will most often look like this: `Enabled: md %tr @`.
+# Will most often look like this: `Enabled: md %trjif @`.
 # Clickong on the label shows explanations for them.
 setupSymbolsExplanations = (previewable, uuid) ->
   label = "md" # Markdown is always enabled if we get here.
@@ -111,18 +137,3 @@ setupSymbolsExplanations = (previewable, uuid) ->
       symbolsExplanations.html "Loading..."
       symbolsExplanations.html $("<div>").load "/markdown/symbols_explanations.json", ->
         AntCat.hidePreviewAreaSpinner()
-
-# Currently not used.
-$.fn.makeNotPreviewable = ->
-  previewable = @
-  previewArea = previewable.closest(".preview-area")
-  previewable.insertAfter previewArea
-  previewArea.remove()
-
-# TODO global, *uhh*, but "ok".
-PREVIEW_AREA_SPINNER = ".preview-area .shared-spinner"
-AntCat.showPreviewAreaSpinner = -> $(PREVIEW_AREA_SPINNER).show()
-AntCat.hidePreviewAreaSpinner = -> $(PREVIEW_AREA_SPINNER).hide()
-
-$ ->
-  $('*[data-previewable="true"]').makePreviewable()

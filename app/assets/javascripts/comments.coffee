@@ -1,4 +1,7 @@
 $ ->
+  setupCommentsReplyLinks()
+
+setupCommentsReplyLinks = ->
   $(".comment-reply-link").click (event) ->
     event.preventDefault()
 

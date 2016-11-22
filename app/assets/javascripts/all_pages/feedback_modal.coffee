@@ -1,18 +1,9 @@
-# Feedback modal
+# The Feedback modal is included on all pages.
+
 $ ->
-  buildErrorString = (errorString) ->
-    errors = $.parseJSON errorString
-    return errors["rate_limited"] if "rate_limited" of errors
+  setupFeedbackModal()
 
-    message = ""
-    for field, error_message of errors
-      message += "#{field} #{error_message}"
-    message
-
-  renderErrors = (html) ->
-    $("#feedback_errors").html """<p style="color: red">
-      Whoops, error: #{html}</p>"""
-
+setupFeedbackModal = ->
   $("#new_feedback").on("ajax:success", (e, data, status, xhr) ->
     # Close form and add success notice.
     $("#feedback_modal").foundation "close"
@@ -28,3 +19,16 @@ $ ->
       renderErrors errors
     catch
       renderErrors "unknown error"
+
+  buildErrorString = (errorString) ->
+    errors = $.parseJSON errorString
+    return errors["rate_limited"] if "rate_limited" of errors
+
+    message = ""
+    for field, error_message of errors
+      message += "#{field} #{error_message}"
+    message
+
+  renderErrors = (html) ->
+    $("#feedback_errors").html """<p style="color: red">
+      Whoops, error: #{html}</p>"""
