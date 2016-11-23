@@ -28,7 +28,7 @@ crumb :tasks do
 end
 
   crumb :task do |task|
-    link "Task ##{task.id}", task_path(task)
+    link "##{task.id}: #{task.title}", task_path(task)
     parent :tasks
   end
 
