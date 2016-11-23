@@ -70,6 +70,10 @@ class ReferenceDecorator < ApplicationDecorator
     helpers.link_to reference.id, helpers.reference_path(reference)
   end
 
+  def format_title
+    format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
+  end
+
   private
     def generate_formatted
       string = make_html_safe(reference.author_names_string.dup)
@@ -164,9 +168,5 @@ class ReferenceDecorator < ApplicationDecorator
 
     def make_to_link_title string
       helpers.unitalicize string
-    end
-
-    def format_title
-      format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
     end
 end

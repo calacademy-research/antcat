@@ -186,11 +186,10 @@ class ReferencesController < ApplicationController
     respond_to do |format|
       format.json do
         results = search_results.map do |reference|
-          # TODO make `format_title` public to avoid `send`.
           { id: reference.id,
             author: reference.author_names_string,
             year: reference.citation_year,
-            title: reference.decorate.send(:format_title) }
+            title: reference.decorate.format_title }
         end
 
         render json: results

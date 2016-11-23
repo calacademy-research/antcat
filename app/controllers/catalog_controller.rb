@@ -38,9 +38,7 @@ class CatalogController < ApplicationController
         results = search_results.map do |taxon|
           { id: taxon.id,
             name: taxon.name_html_cache,
-            name_html_cache: taxon.name_html_cache,
-            authorship: taxon.authorship_string,
-            search_query: taxon.name_cache }
+            authorship_string: taxon.authorship_string }
         end
         render json: results
       end

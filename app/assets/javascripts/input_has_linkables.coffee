@@ -26,12 +26,11 @@ reuseCallbacks = (url) ->
 setupLinkables = =>
   $('[data-has-linkables]')
     .atwho
-    .atwho
       at: '%t'
       limit: 10
       delay: 300
       insertTpl: '%taxon${id}'
-      displayTpl: '<li><small>#${id}</small> ${name} <small>${authorship}</small></li>'
+      displayTpl: '<li><small>#${id}</small> ${name} <small>${authorship_string}</small></li>'
       callbacks: reuseCallbacks "/catalog/autocomplete.json"
 
     .atwho
