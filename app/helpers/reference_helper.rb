@@ -7,7 +7,7 @@ module ReferenceHelper
       data: { confirm: "Mark all citations as reviewed? This operation cannot be undone!" }
   end
 
-  def references_subnavigation
+  def references_subnavigation_links
     links = []
     links << link_to('All References', references_path)
     links << link_to('Latest Additions', latest_additions_references_path)

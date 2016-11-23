@@ -41,7 +41,7 @@ module ChangesHelper
       data: { confirm: "Are you sure you want to approve all changes?" }
   end
 
-  def changes_subnavigation
+  def changes_subnavigation_links
     [
       link_to('All Changes', changes_path),
       link_to('Unreviewed Changes', unreviewed_changes_path)

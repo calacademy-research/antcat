@@ -1,7 +1,8 @@
--@subnav = changes_subnavigation
-
 -content_for :head do
   -if user_can_edit?
     =javascript_include_tag 'controllers/changes'
+
+-content_for :subnavigation do
+  =subnavigation_menu changes_subnavigation_links
 
 =render file: 'layouts/application'

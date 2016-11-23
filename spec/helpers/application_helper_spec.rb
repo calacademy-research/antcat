@@ -1,22 +1,6 @@
-# This spec used to contain tests for user authorization. The helper methods
-# are now creating using `helper_method` in the ApplicationController, and
-# I do not know how to test that from here.
-
 require 'spec_helper'
 
 describe ApplicationHelper do
-  describe '#make_link_menu' do
-    it "puts bars between the items and is html safe" do
-      result = helper.make_link_menu ['a', 'b']
-      expect(result).to eq '<span>a | b</span>'
-    end
-
-    it "is always html safe" do
-      expect(helper.make_link_menu('a'.html_safe, 'b'.html_safe)).to be_html_safe
-      expect(helper.make_link_menu(['a'.html_safe, 'b'])).to be_html_safe
-    end
-  end
-
   describe "#count_and_noun" do
     it "formats a count with a noun" do
       expect(helper.count_and_noun(['1'], 'reference')).to eq '1 reference'

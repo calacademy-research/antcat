@@ -9,4 +9,14 @@ module DevHelper
   def current_url_on_live_site
     "http://antcat.org/#{request.path}"
   end
+
+  # dev-specific CSS. Disable by suffixing the url with ?no_dev_css=pizza,
+  # or toggling on/off from the Editor's Panel.
+  def maybe_dev_css
+    return unless Rails.env.development?
+
+    unless params[:no_dev_css] || session[:no_dev_css]
+      stylesheet_link_tag "dev_env"
+    end
+  end
 end
