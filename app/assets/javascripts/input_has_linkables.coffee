@@ -9,6 +9,9 @@
 # TODO DRY the loading spinner, delay, etc.
 
 $ ->
+  setupLinkables()
+
+setupLinkables = ->
   $('[data-has-linkables]')
     .atwho
       at: '%t'
@@ -20,10 +23,10 @@ $ ->
         matcher: AntCat.allowSpacesWhileAutocompleting
 
         remoteFilter: (query, callback) ->
-          MDPreview.showSpinner()
-          $.getJSON '/catalog/autocomplete.json', q: query, (data) ->
-            MDPreview.hideSpinner()
-            callback(data)
+          MDPreview.showSpinner this
+          $.getJSON '/catalog/autocomplete.json', q: query, (data) =>
+            MDPreview.hideSpinner this
+            callback data
 
         # Disable `sorter`.
         sorter: (query, items, searchKey) -> items
@@ -38,10 +41,10 @@ $ ->
         matcher: AntCat.allowSpacesWhileAutocompleting
 
         remoteFilter: (query, callback) ->
-          MDPreview.showSpinner()
+          MDPreview.showSpinner this
           $.getJSON '/references/linkable_autocomplete.json', q: query, (data) ->
-            MDPreview.hideSpinner()
-            callback(data)
+            MDPreview.hideSpinner this
+            callback data
 
         # Disable `sorter`.
         sorter: (query, items, searchKey) -> items
@@ -56,10 +59,10 @@ $ ->
         matcher: AntCat.allowSpacesWhileAutocompleting
 
         remoteFilter: (query, callback) ->
-          MDPreview.showSpinner()
+          MDPreview.showSpinner this
           $.getJSON '/tasks/autocomplete.json', q: query, (data) ->
-            MDPreview.hideSpinner()
-            callback(data)
+            MDPreview.hideSpinner this
+            callback data
 
         # Disable `sorter`.
         sorter: (query, items, searchKey) -> items
@@ -74,10 +77,10 @@ $ ->
         matcher: AntCat.allowSpacesWhileAutocompleting
 
         remoteFilter: (query, callback) ->
-          MDPreview.showSpinner()
+          MDPreview.showSpinner this
           $.getJSON '/journals/linkable_autocomplete.json', q: query, (data) ->
-            MDPreview.hideSpinner()
-            callback(data)
+            MDPreview.hideSpinner this
+            callback data
 
         # Disable `sorter`.
         sorter: (query, items, searchKey) -> items
@@ -92,10 +95,10 @@ $ ->
         matcher: AntCat.allowSpacesWhileAutocompleting
 
         remoteFilter: (query, callback) ->
-          MDPreview.showSpinner()
+          MDPreview.showSpinner this
           $.getJSON '/feedback/autocomplete.json', q: query, (data) ->
-            MDPreview.hideSpinner()
-            callback(data)
+            MDPreview.hideSpinner this
+            callback data
 
         # Disable `sorter`.
         sorter: (query, items, searchKey) -> items

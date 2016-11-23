@@ -1,6 +1,9 @@
 # This adds autocompletion for users to textareas with `data-has-mentionables`.
 
 $ ->
+  setupMentionables()
+
+setupMentionables = ->
   $("[data-has-mentionables]").atwho
     at: "@"
     searchKey: "mentionable_search_key"
@@ -15,8 +18,8 @@ $ ->
         if AntCat.cached_mentionables?
           return callback AntCat.cached_mentionables
 
-        MDPreview.showSpinner()
+        MDPreview.showSpinner this
         $.getJSON "/users/mentionables.json", (data) ->
           AntCat.cached_mentionables = data
-          MDPreview.hideSpinner()
+          MDPreview.hideSpinner this
           callback data

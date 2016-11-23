@@ -11,27 +11,12 @@
 
 $ ->
   $("textarea[data-previewable]").makePreviewable()
-  setupGlobalLoadingSpinnerTriggers()
-
-# Makes *all* preview areas show the spinner, but that's OK.
-ANY_PREVIEW_AREA_SPINNER = ".preview-area .shared-spinner"
-showSpinner = -> $(ANY_PREVIEW_AREA_SPINNER).show()
-hideSpinner = -> $(ANY_PREVIEW_AREA_SPINNER).hide()
-
-# Use UUIDs so multiple textareas on the same page can be previewable.
-window.currentUUID ||= 1
-GetUUID = -> currentUUID++
-
-# Global because we want at.js to be able to trigger it.
-setupGlobalLoadingSpinnerTriggers = ->
-  window.MDPreview =
-    showSpinner: showSpinner
-    hideSpinner: hideSpinner
+  setupLoadingSpinnerTriggersForAtJS()
 
 $.fn.makePreviewable = -> new MakePreviewable this
 
-# All methods in this class are "private", but prefixing all
-# with underscores was just too ugly.
+# All methods in this class except the constructor are "private",
+# but prefixing all with underscores was just too ugly.
 class MakePreviewable
   TEXTAREA = "textarea"
   PREVIEW  = "preview"
@@ -41,20 +26,24 @@ class MakePreviewable
   constructor: (@textarea) ->
     return if @isAlreadyPreviewable()
 
-    @uuid = GetUUID()
+    @uuid = @getUUID()
 
     @wrapInPreviewArea()
     @setupPreviewLink()
     @setSymbolsLabel()
     @makeHelpTabsLoadableOnDemand()
-    @enableAreYouSure()
+    #@enableAreYouSure()
 
   isAlreadyPreviewable: -> @textarea.parent().hasClass "tabs-panel"
 
+  getUUID: ->
+    window.currentUUID ||= 1
+    currentUUID++
+
   # Very internal helpers.
-  tab: (name) -> $(@tabId name)
-  tabId: (name) -> "##{@unprefixedTabId name}"
-  unprefixedTabId: (name) -> "#{name}-tab-#{@uuid}"
+  tab: (name) -> $(@tabId name)                     # jQuery element
+  tabId: (name) -> "##{@unprefixedTabId name}"      # "#preview-tab-123"
+  unprefixedTabId: (name) -> "#{name}-tab-#{@uuid}" # "preview-tab-123"
 
   # Helpers for finding links to the tabs.
   previewLink: -> $("a[href='#{@tabId PREVIEW}']")
@@ -111,7 +100,7 @@ class MakePreviewable
     @previewLink().click (event) =>
       event.preventDefault()
       tab.html "Loading preview... dot dot dot..."
-      showSpinner()
+      @showSpinner()
 
       $.ajax
         url: "/markdown/preview"
@@ -122,7 +111,7 @@ class MakePreviewable
           tab.html html
           # Re-trigger to make references expandable.
           AntCat.make_reference_keeys_expandable tab
-          hideSpinner() # Only hide on success.
+          @hideSpinner() # Only hide on success.
         error: -> tab.text "Error rendering preview"
 
   # Show symbols of enabled features in the upper right corner.
@@ -149,9 +138,9 @@ class MakePreviewable
 
       @helpLink().click =>
         if tab.is ":empty"
-          showSpinner()
-          tab.load url, ->
-            hideSpinner()
+          @showSpinner()
+          tab.load url, =>
+            @hideSpinner()
             AntCat.make_reference_keeys_expandable tab
 
     setupSymbolsExplanations = =>
@@ -160,8 +149,8 @@ class MakePreviewable
 
       @symbolsLink().click =>
         if tab.is ":empty"
-          showSpinner()
-          tab.load url, -> hideSpinner()
+          @showSpinner()
+          tab.load url, => @hideSpinner()
 
     setupFormattingHelp()
     setupSymbolsExplanations()
@@ -170,3 +159,19 @@ class MakePreviewable
   enableAreYouSure: ->
     previewArea = @textarea.closest ".preview-area"
     previewArea.parents("form").areYouSure()
+
+  spinner: -> @textarea.closest(".preview-area").find ".shared-spinner"
+  showSpinner: -> @spinner().show()
+  hideSpinner: -> @spinner().hide()
+
+# Global to make it callable by at.js.
+# This may be very *not* performant...
+setupLoadingSpinnerTriggersForAtJS = ->
+  # `object` is "something" that was passed by at.js.
+  findSpinner = (object) ->
+    textarea = object.$inputor
+    textarea.closest(".preview-area").find ".shared-spinner"
+
+  window.MDPreview =
+    showSpinner: (object) -> findSpinner(object).show()
+    hideSpinner: (object) -> findSpinner(object).hide()
