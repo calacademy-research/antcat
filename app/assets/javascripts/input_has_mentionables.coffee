@@ -19,7 +19,7 @@ setupMentionables = ->
           return callback AntCat.cached_mentionables
 
         MDPreview.showSpinner this
-        $.getJSON "/users/mentionables.json", (data) ->
+        $.getJSON "/users/mentionables.json", (data) =>
           AntCat.cached_mentionables = data
           MDPreview.hideSpinner this
           callback data

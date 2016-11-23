@@ -11,25 +11,28 @@
 $ ->
   setupLinkables()
 
-setupLinkables = ->
+reuseCallbacks = (url) ->
+  matcher: AntCat.allowSpacesWhileAutocompleting
+
+  remoteFilter: (query, callback) ->
+    MDPreview.showSpinner this
+    $.getJSON url, q: query, (data) =>
+      MDPreview.hideSpinner this
+      callback data
+
+  # Disable `sorter`.
+  sorter: (query, items, searchKey) -> items
+
+setupLinkables = =>
   $('[data-has-linkables]')
+    .atwho
     .atwho
       at: '%t'
       limit: 10
       delay: 300
       insertTpl: '%taxon${id}'
       displayTpl: '<li><small>#${id}</small> ${name} <small>${authorship}</small></li>'
-      callbacks:
-        matcher: AntCat.allowSpacesWhileAutocompleting
-
-        remoteFilter: (query, callback) ->
-          MDPreview.showSpinner this
-          $.getJSON '/catalog/autocomplete.json', q: query, (data) =>
-            MDPreview.hideSpinner this
-            callback data
-
-        # Disable `sorter`.
-        sorter: (query, items, searchKey) -> items
+      callbacks: reuseCallbacks "/catalog/autocomplete.json"
 
     .atwho
       at: '%r'
@@ -37,17 +40,7 @@ setupLinkables = ->
       delay: 300
       insertTpl: '%reference${id}'
       displayTpl: '<li><small>#${id}</small> ${author} (${year}) <small>${title}</small></li>'
-      callbacks:
-        matcher: AntCat.allowSpacesWhileAutocompleting
-
-        remoteFilter: (query, callback) ->
-          MDPreview.showSpinner this
-          $.getJSON '/references/linkable_autocomplete.json', q: query, (data) ->
-            MDPreview.hideSpinner this
-            callback data
-
-        # Disable `sorter`.
-        sorter: (query, items, searchKey) -> items
+      callbacks: reuseCallbacks "/references/linkable_autocomplete.json"
 
     .atwho
       at: '%i'
@@ -55,17 +48,7 @@ setupLinkables = ->
       delay: 300
       insertTpl: '%task${id}'
       displayTpl: '<li><small>#${id}</small> ${title} <small>${status}</small></li>'
-      callbacks:
-        matcher: AntCat.allowSpacesWhileAutocompleting
-
-        remoteFilter: (query, callback) ->
-          MDPreview.showSpinner this
-          $.getJSON '/tasks/autocomplete.json', q: query, (data) ->
-            MDPreview.hideSpinner this
-            callback data
-
-        # Disable `sorter`.
-        sorter: (query, items, searchKey) -> items
+      callbacks: reuseCallbacks "/tasks/autocomplete.json"
 
     .atwho
       at: '%j'
@@ -73,17 +56,7 @@ setupLinkables = ->
       delay: 300
       insertTpl: '%journal${id}'
       displayTpl: '<li><small>#${id}</small> ${name}</li>'
-      callbacks:
-        matcher: AntCat.allowSpacesWhileAutocompleting
-
-        remoteFilter: (query, callback) ->
-          MDPreview.showSpinner this
-          $.getJSON '/journals/linkable_autocomplete.json', q: query, (data) ->
-            MDPreview.hideSpinner this
-            callback data
-
-        # Disable `sorter`.
-        sorter: (query, items, searchKey) -> items
+      callbacks: reuseCallbacks "/journals/linkable_autocomplete.json"
 
     .atwho
       at: '%f'
@@ -91,14 +64,4 @@ setupLinkables = ->
       delay: 300
       insertTpl: '%feedback${id}'
       displayTpl: '<li><small>#${id}</small> ${date} <small>${status}</small></li>'
-      callbacks:
-        matcher: AntCat.allowSpacesWhileAutocompleting
-
-        remoteFilter: (query, callback) ->
-          MDPreview.showSpinner this
-          $.getJSON '/feedback/autocomplete.json', q: query, (data) ->
-            MDPreview.hideSpinner this
-            callback data
-
-        # Disable `sorter`.
-        sorter: (query, items, searchKey) -> items
+      callbacks: reuseCallbacks "/feedback/autocomplete.json"
