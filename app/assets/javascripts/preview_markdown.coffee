@@ -30,13 +30,6 @@ setupGlobalLoadingSpinnerTriggers = ->
 
 $.fn.makePreviewable = -> new MakePreviewable this
 
-# Currently not used.
-$.fn.makeNotPreviewable = ->
-  textarea = @
-  previewArea = textarea.closest ".preview-area"
-  textarea.insertAfter previewArea
-  previewArea.remove()
-
 # All methods in this class are "private", but prefixing all
 # with underscores was just too ugly.
 class MakePreviewable
