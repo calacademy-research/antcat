@@ -177,6 +177,50 @@ describe "callbacks" do
   end
 
   describe "#delete_synonyms" do
-    # TODO
+    let(:senior) { create_genus 'Atta' }
+    let(:junior) { create_genus 'Eciton', status: "synonym" }
+    before { Synonym.create! junior_synonym: junior, senior_synonym: senior }
+
+    it "*confirm test setup*" do
+      expect(junior.status).to eq "synonym"
+      expect(senior.junior_synonyms.count).to eq 1
+      expect(junior.senior_synonyms.count).to eq 1
+    end
+
+    describe "saving a taxon" do
+      context "with the status 'synonym'" do
+        context "status was not changed" do
+          it "doesn't destroy any synonyms" do
+            junior.fossil = true
+
+            expect { junior.save! }.to_not change { Synonym.count }
+            expect(senior.junior_synonyms.count).to eq 1
+            expect(junior.senior_synonyms.count).to eq 1
+          end
+        end
+
+        context "status was changed from 'synonym'" do
+          it "destroys all synonyms where it's the junior" do
+            junior.status = "valid"
+
+            expect { junior.save! }.to change { Synonym.count }.by -1
+            expect(senior.junior_synonyms.count).to eq 0
+            expect(junior.senior_synonyms.count).to eq 0
+          end
+        end
+      end
+
+      context "that doesn't have the status 'synonym'" do
+        context "status was changed" do
+          it "doesn't destroy any synonyms" do
+            senior.status = "homonym"
+
+            expect { senior.save! }.to_not change { Synonym.count }
+            expect(senior.junior_synonyms.count).to eq 1
+            expect(junior.senior_synonyms.count).to eq 1
+          end
+        end
+      end
+    end
   end
 end
