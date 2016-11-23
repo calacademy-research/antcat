@@ -7,7 +7,7 @@ module DevHelper
   end
 
   def current_url_on_live_site
-    "http://antcat.org/#{request.path}"
+    "http://antcat.org#{request.path}"
   end
 
   # dev-specific CSS. Disable by suffixing the url with ?no_dev_css=pizza,

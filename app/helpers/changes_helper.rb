@@ -3,10 +3,6 @@ module ChangesHelper
     name.name_html.html_safe
   end
 
-  def format_status status
-    Status[status].to_s
-  end
-
   def format_attributes taxon
     string = []
     string << 'Fossil' if taxon.fossil?
@@ -23,14 +19,6 @@ module ChangesHelper
     string << 'Fossil' if protonym.fossil?
     string << '<i>sic</i>' if protonym.sic?
     string.join(', ').html_safe
-  end
-
-  def format_type_attributes taxon
-    if taxon.type_fossil? then 'Fossil' else '' end.html_safe
-  end
-
-  def format_taxt taxt
-    TaxtPresenter[taxt].to_html
   end
 
   def approve_all_changes_button

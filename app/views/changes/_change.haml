@@ -22,7 +22,7 @@
           %td.parent_not_found Parent not found in the database
     %tr
       %th Status
-      %td.status-test-hook=format_status taxon.status
+      %td.status-test-hook=Status[taxon.status].to_s
 
     -if taxon.incertae_sedis_in.present?
       %tr
@@ -38,7 +38,7 @@
     -if taxon.headline_notes_taxt.present?
       %tr
         %th Notes
-        %td.notes-test-hook=format_taxt taxon.headline_notes_taxt
+        %td.notes-test-hook=TaxtPresenter[taxon.headline_notes_taxt].to_html
 
   -protonym = taxon.protonym
   -if protonym
@@ -75,7 +75,7 @@
         %tr
           %th Notes
           %td.authorship_notes-test-hook
-            =format_taxt authorship_notes
+            =TaxtPresenter[authorship_notes].to_html
 
   -if taxon.type_name.present?
     %table
@@ -86,16 +86,15 @@
         %td.type_name-test-hook
           =format_taxon_name taxon.type_name
 
-      -attributes = format_type_attributes taxon
-      -if attributes.present?
+      -if taxon.type_fossil?
         %tr
           %th Attributes
-          %td.type_attributes-test-hook=attributes
+          %td.type_attributes-test-hook Fossil
 
       -if taxon.type_taxt.present?
         %tr
           %th Notes
-          %td.type_notes-test-hook=format_taxt taxon.type_taxt
+          %td.type_notes-test-hook=TaxtPresenter[taxon.type_taxt].to_html
 
   =render 'history_items', taxon: taxon
   =render 'reference_sections', taxon: taxon

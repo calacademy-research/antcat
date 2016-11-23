@@ -1,6 +1,6 @@
 # We don't have to use `@papertrail` when we create (cheat) versions in steps.
 
-Feature: Workflow
+Feature: Changes
   Background:
     Given I log in as a catalog editor named "Mark Wilden"
 

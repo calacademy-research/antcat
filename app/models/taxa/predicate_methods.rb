@@ -34,6 +34,7 @@ module Taxa::PredicateMethods
     status != 'valid'
   end
 
+  # Unused.
   def excluded_from_formicidae?
     status == 'excluded from Formicidae'
   end
@@ -68,11 +69,12 @@ module Taxa::PredicateMethods
 
   # A status of 'original combination' means that the taxon/name is a placeholder
   # for the original name of the species under the original genus.
-  # The original_combination? predicate checks that.
+  # The `#original_combination?` predicate checks that.
   def original_combination?
     status == 'original combination'
   end
 
+  # Overridden in `SpeciesGroupTaxon` (only species and subspecies can be recombinations)
   def recombination?
     false
   end
