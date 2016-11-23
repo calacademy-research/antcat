@@ -62,8 +62,8 @@ describe CatalogController do
       get :autocomplete, q: "att", format: :json
       json = JSON.parse response.body
 
-      actual = json.map { |taxon| taxon["search_query"] }.sort
-      expected = [atta, attacus, ratta].map(&:name_cache).sort
+      actual = json.map { |taxon| taxon["name"] }.sort
+      expected = [atta, attacus, ratta].map(&:name_html_cache).sort
 
       expect(actual).to eq expected
       expect(actual).to_not include nylanderia.name_cache

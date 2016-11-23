@@ -1,6 +1,4 @@
--@subnav = []
--@subnav << link_to('All Changes', changes_path)
--@subnav << link_to('Unreviewed Changes', unreviewed_changes_path)
+-@subnav = changes_subnavigation
 
 -content_for :head do
   -if user_can_edit?

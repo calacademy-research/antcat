@@ -40,4 +40,11 @@ module ChangesHelper
       method: :put, class: "btn-destructive",
       data: { confirm: "Are you sure you want to approve all changes?" }
   end
+
+  def changes_subnavigation
+    [
+      link_to('All Changes', changes_path),
+      link_to('Unreviewed Changes', unreviewed_changes_path)
+    ]
+  end
 end

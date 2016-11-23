@@ -15,8 +15,11 @@ class CatalogController < ApplicationController
   def show
   end
 
+  # This is basically "def toggle_show_valid_only", because that is
+  # currently the only "option". Maybe rename.
   def options
-    # params[:valid_only] is only for making the URL more intuitive
+    # The param in "catalog/options?valid_only=false" doesn't do anything,
+    # it's only for making the URL more intuitive to users.
     session[:show_valid_only] = !session[:show_valid_only]
     redirect_to :back
   end

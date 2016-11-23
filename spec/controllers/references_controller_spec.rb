@@ -43,10 +43,7 @@ describe ReferencesController do
 
   describe "#latest_changes" do
     context "logged in" do
-      before do
-        editor = create :editor
-        sign_in editor #TODO create/find helper method #sign_in_editor
-      end
+      before { sign_in create(:editor) }
 
       it "renders its own template" do
         response = get :latest_changes

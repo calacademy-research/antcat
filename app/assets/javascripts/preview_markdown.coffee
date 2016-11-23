@@ -32,7 +32,7 @@ class MakePreviewable
     @setupPreviewLink()
     @setSymbolsLabel()
     @makeHelpTabsLoadableOnDemand()
-    #@enableAreYouSure()
+    @enableAreYouSure()
 
   isAlreadyPreviewable: -> @textarea.parent().hasClass "tabs-panel"
 

@@ -1,12 +1,4 @@
 # This adds some autocompletions to textareas with `data-has-linkables`.
-#
-# The default `sorter` implementation is evil because is removes good matches
-# for no good reason (imo). So, if the search query isn't a substring of
-# the field defined by `searchKey` (`name` by default), the matches that we
-# already know are good are *removed* -- not sorted last. This makes little sense
-# for our remote data, and I do not know how to disable it.
-#
-# TODO DRY the loading spinner, delay, etc.
 
 $ ->
   setupLinkables()
@@ -21,6 +13,11 @@ reuseCallbacks = (url) ->
       callback data
 
   # Disable `sorter`.
+  # The default implementation is evil (imo) because is removes good matches
+  # for no good reason (imo). So, if the search query isn't a substring of
+  # the field defined by `searchKey` (`name` by default), the matches that we
+  # already know are good are *removed* -- not sorted last. This makes little sense
+  # for our remote data, and I do not know how to disable it.
   sorter: (query, items, searchKey) -> items
 
 setupLinkables = =>

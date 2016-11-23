@@ -1,7 +1,3 @@
-# Re "@reference.create_activity": we must create the feed
-# activities here in the controller, otherwise every save
-# generates tons of feed items.
-
 class ReferencesController < ApplicationController
   before_action :authenticate_editor, except: [:index, :download, :autocomplete,
     :search_help, :show, :search, :endnote_export, :wikipedia_export, :latest_additions]
@@ -31,6 +27,8 @@ class ReferencesController < ApplicationController
   def edit
   end
 
+  # We manually create activities for the feed in `#create, #update and #destroy`,
+  # or we may end up with tons of activities instead of one.
   def create
     @reference = new_reference
 
@@ -149,14 +147,17 @@ class ReferencesController < ApplicationController
     id = params[:id]
     searching = params[:q].present?
 
-    references =  if id
-                    # `where` and not `find` because we need to return an array.
-                    Reference.where(id: id)
-                  elsif searching
-                    Reference.do_search params.merge endnote_export: true
-                  else
-                    Reference.list_all_references_for_endnote
-                  end
+    references =
+      if id
+        # `where` and not `find` because we need to return an array.
+        Reference.where(id: id)
+      elsif searching
+        Reference.do_search params.merge endnote_export: true
+      else
+        # I believe it's not possible to get here from the GUI, but the route
+        # is not disabled. http://localhost:3000/references/endnote_export
+        Reference.list_all_references_for_endnote
+      end
 
     render plain: Exporters::Endnote::Formatter.format(references)
 
@@ -164,7 +165,8 @@ class ReferencesController < ApplicationController
       render plain: <<-MSG.squish
         Looks like something went wrong.
         Exporting missing references is not supported.
-        If you tried to export a list of references, try to filter the query with "type:nomissing".
+        If you tried to export a list of references,
+        try to filter the query with "type:nomissing".
       MSG
   end
 
@@ -176,6 +178,7 @@ class ReferencesController < ApplicationController
   def linkable_autocomplete
     search_query = params[:q] || ''
 
+    # TODO create concern? There's similar logic in other controllers.
     # See if we have an exact ID match.
     search_results =  if search_query =~ /^\d{6} ?$/
                         id_matches_q = Reference.find_by id: search_query
@@ -201,12 +204,12 @@ class ReferencesController < ApplicationController
     search_query = params[:q] || ''
 
     search_options = {}
-    keyword_params = Reference.send(:extract_keyword_params, search_query)
+    keyword_params = Reference.extract_keyword_params search_query
 
     search_options[:reference_type] = :nomissing
     search_options[:items_per_page] = 5
     search_options.merge! keyword_params
-    search_results = Reference.send(:fulltext_search, search_options)
+    search_results = Reference.fulltext_search search_options
 
     respond_to do |format|
       format.json do
