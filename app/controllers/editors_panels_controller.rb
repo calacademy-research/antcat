@@ -2,15 +2,25 @@ class EditorsPanelsController < ApplicationController
   before_action :authenticate_editor
 
   def index
-    @count = {
-      open_tasks: Notification.open_tasks.count,
-      unreviewed_references: Notification.unreviewed_references.count,
-      unreviewed_catalog_changes: Notification.unreviewed_catalog_changes.count,
-      pending_user_feedbacks: Notification.pending_user_feedbacks.count,
-      unread_site_notices: Notification.unread_site_notices(current_user).count,
-    }
-
+    @count = unreviewed_changes_counts
     @recent_activities = Feed::Activity.most_recent 5
     @recent_comments = Comment.most_recent 5
   end
+
+  private
+    # Unreviewed/pending/open/etc.
+    def unreviewed_changes_counts
+      {
+        open_tasks:                 Task.open.count,
+        unreviewed_references:      Reference.unreviewed.count,
+        unreviewed_catalog_changes: Change.waiting.count,
+        pending_user_feedbacks:     Feedback.pending.count,
+        unread_site_notices:        unread_site_notices_count,
+      }
+    end
+
+    def unread_site_notices_count
+      return 0 unless current_user
+      SiteNotice.unread_by(current_user).count
+    end
 end

@@ -251,6 +251,15 @@ describe Reference do
         expect(results).to eq [possible_reference]
       end
     end
+
+    describe ".unreviewed_references" do
+      it "returns unreviewed references" do
+        unreviewed = create :article_reference, review_state: "reviewing"
+        create :article_reference, review_state: "reviewed"
+
+        expect(Reference.unreviewed).to eq [unreviewed]
+      end
+    end
   end
 
   describe "shared setup" do
