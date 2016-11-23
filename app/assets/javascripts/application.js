@@ -19,7 +19,7 @@
 //= require jquery-ui/tabs
 //= require jquery-ui/tooltip
 
-//= require jquery.atwho
+//= require twitter/typeahead
 
 // app/assets/javascripts
 //= require all_pages/catalog_autocompletion
@@ -28,9 +28,3 @@
 //= require all_pages/global
 //= require all_pages/show_hide_toggler
 //= require all_pages/spinner
-
-// gems
-//= require twitter/typeahead
-
-// vendor
-//= require jquery.are-you-sure

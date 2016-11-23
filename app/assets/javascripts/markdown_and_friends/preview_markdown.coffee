@@ -10,8 +10,8 @@
 # "Enabled features" symbols in the textarea's upper right corner.
 
 $ ->
-  $("textarea[data-previewable]").makePreviewable()
-  setupLoadingSpinnerTriggersForAtJS()
+  $("textarea[data-previewable]").each -> $(this).makePreviewable()
+  makeLoadingSpinnersAvailableForAtJs()
 
 $.fn.makePreviewable = -> new MakePreviewable this
 
@@ -166,7 +166,7 @@ class MakePreviewable
 
 # Global to make it callable by at.js.
 # This may be very *not* performant...
-setupLoadingSpinnerTriggersForAtJS = ->
+makeLoadingSpinnersAvailableForAtJs = ->
   # `object` is "something" that was passed by at.js.
   findSpinner = (object) ->
     textarea = object.$inputor
