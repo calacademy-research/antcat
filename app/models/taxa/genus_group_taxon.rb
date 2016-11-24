@@ -2,7 +2,7 @@
 # be confused with "genus group" as used in taxonomy.
 
 class GenusGroupTaxon < Taxon
-  include Formatters::RefactorFormatter
+  include Formatters::ItalicsHelper
 
   belongs_to :subfamily
   belongs_to :tribe

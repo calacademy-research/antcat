@@ -1,5 +1,4 @@
 class Subspecies < SpeciesGroupTaxon
-  include Formatters::RefactorFormatter
   include UndoTracker
 
   class NoSpeciesForSubspeciesError < StandardError; end
