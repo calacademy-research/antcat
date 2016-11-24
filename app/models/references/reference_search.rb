@@ -1,3 +1,5 @@
+# TODO extract into a new class instead of reopening the main class.
+
 class Reference < ApplicationRecord
   searchable do
     string  :type

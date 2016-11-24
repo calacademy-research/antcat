@@ -25,9 +25,7 @@ module Taxa::Delete
       Taxon.transaction do
         change = setup_change self, :delete
         delete_taxon_children self
-
         delete_with_state!
-        change.user_changed_taxon_id = id
       end
     end
     create_activity :destroy

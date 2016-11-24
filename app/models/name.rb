@@ -1,5 +1,6 @@
-# All `Name` subclasses are for taxa. `AuthorName`s are used for references.
-# TODO add `self.abstract_class = true`? Many specs will break.
+# All `Name` subclasses are for taxa; `AuthorName`s are used for references;
+# `ReferenceAuthorName` is used for ??????.
+
 # TODO generate HTML in callbacks in the subclasses, not manually in `Names::Parser`.
 
 class Name < ApplicationRecord

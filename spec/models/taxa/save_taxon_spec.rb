@@ -156,8 +156,11 @@ describe Taxa::SaveTaxon do
       context "when a taxon is added" do
         it "creates a Change pointing to the version of Taxon" do
           taxon = build_new_taxon_and_set_parent :species, create_genus
+          expect(Change.count).to eq 0
+
           with_versioning { taxon.save_from_form genus_params }
 
+          expect(Change.count).to eq 1
           expect(Change.first.user_changed_taxon_id).to eq taxon.last_version.item_id
         end
       end
