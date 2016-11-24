@@ -12,6 +12,9 @@ class Taxa::SaveTaxon
     @taxon.save_initiator = true
 
     Taxon.transaction do
+      # There is no `UndoTracker#get_current_change_id` at this point, so if
+      # anything in the "update_*" methods triggers a save for any reason,
+      # the versions' `change_id`s will be nil.
       update_name                params.delete :name_attributes
       update_parent              params.delete :parent_name_attributes
       update_current_valid_taxon params.delete :current_valid_taxon_name_attributes
@@ -20,14 +23,10 @@ class Taxa::SaveTaxon
       update_type_name           params.delete :type_name_attributes
       update_name_status_flags   params
 
-      # we might want to get smarter about this
-      change_type = if @taxon.new_record? then :create else :update end
-
       # Different setup because non-persisted objects have no IDs,
       # so we must update the change after saving `@taxon`.
-      case change_type
-      when :create
-        change = setup_change @taxon, change_type
+      if @taxon.new_record?
+        change = setup_change @taxon, :create
         @taxon.save!
 
         # PaperTrail is dumb. When a new object is created, it has no "object".
@@ -45,8 +44,8 @@ class Taxa::SaveTaxon
         @taxon.touch_with_version
 
         change.update user_changed_taxon_id: @taxon.id
-      when :update
-        setup_change @taxon, change_type
+      else
+        setup_change @taxon, :update
         @taxon.save!
       end
 
