@@ -17,7 +17,7 @@
             =time_ago_in_words(site_notice.created_at)
             ago
             %br
-            =link_comments_section site_notice, " comments"
+            =link_comments_section site_notice
           %br
           -if site_notice.blurb.present?
             %p=site_notice.blurb

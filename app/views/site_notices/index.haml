@@ -27,7 +27,7 @@
           -read_status = site_notice.unread?(current_user) ? "unread" : "read"
           =antcat_icon read_status
           =read_status
-        %td.center-text=link_comments_section site_notice
+        %td.no-wrap=link_comments_section site_notice
         %td.no-wrap
           =time_ago_in_words site_notice.created_at
           ago

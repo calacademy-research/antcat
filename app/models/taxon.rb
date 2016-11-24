@@ -134,6 +134,7 @@ class Taxon < ApplicationRecord
     string
   end
 
+  # Used in the taxon browser.
   def self_and_parents
     parents = []
     current_taxon = self
@@ -142,6 +143,8 @@ class Taxon < ApplicationRecord
       parents << current_taxon
       current_taxon = current_taxon.parent
     end
+
+    # Reversed to put Formicidae in the first panel and itself in last.
     parents.reverse
   end
 
