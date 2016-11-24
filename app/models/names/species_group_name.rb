@@ -1,6 +1,4 @@
 class SpeciesGroupName < Name
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
-
   def genus_epithet
     words[0]
   end

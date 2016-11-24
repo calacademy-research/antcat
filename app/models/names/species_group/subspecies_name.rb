@@ -1,6 +1,4 @@
 class SubspeciesName < SpeciesGroupName
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
-
   def subspecies_epithets
     words[2..-1].join ' '
   end
