@@ -34,7 +34,7 @@ class NamePopupsController < NamePickersController
     end
 
     def add_name name_string, data
-      name = Name.parse name_string
+      name = Names::Parser.create_name_from_string! name_string
       data[:id] = name.id
       data[:name] = name.name
       data[:taxt] = TaxtIdTranslator.to_editor_nam_tag name

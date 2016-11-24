@@ -1,5 +1,6 @@
 # All `Name` subclasses are for taxa. `AuthorName`s are used for references.
 # TODO add `self.abstract_class = true`? Many specs will break.
+# TODO generate HTML in callbacks in the subclasses, not manually in `Names::Parser`.
 
 class Name < ApplicationRecord
   include UndoTracker
@@ -25,93 +26,6 @@ class Name < ApplicationRecord
 
   def quadrinomial?
     name.split(' ').size == 4
-  end
-
-  # TODO
-  # Alternative 1: improve
-  #   * HTML should be generated in callbacks in the subclasses, not manually.
-  #   * Probably `remove_column :names, :protonym_html`.
-  #   * Rename and extract into a new class.
-  # Alternative 2: completely remove
-  #   * ??????
-  #
-  # Irregular flag allows parsing of names that don't conform to naming
-  # standards so we can support bad spellings.
-  def self.parse string, irregular = false
-    words = string.split " "
-
-    name_type = case words.size
-                when 1    then :genus_or_tribe_subfamily
-                when 2    then :species
-                when 3    then :subspecies
-                when 4..5 then :subspecies_with_two_epithets
-                end
-
-    if name_type == :genus_or_tribe_subfamily
-      name_type = case string
-                  when /inae$/ then :subfamily
-                  when /idae$/ then :subfamily # actually a family suffix
-                  when /ini$/  then :tribe
-                  else               :genus
-                  end
-    end
-
-    case name_type
-    when :subspecies
-      return SubspeciesName.create! name: string,
-                                    name_html: i_tagify(string),
-                                    epithet: words.third,
-                                    epithet_html: i_tagify(words.third),
-                                    epithets: [words.second, words.third].join(' ')
-
-    when :subspecies_with_two_epithets
-      return SubspeciesName.create! name: string,
-                                    name_html: i_tagify(string),
-                                    epithet: words.last,
-                                    epithet_html: i_tagify(words.last),
-                                    epithets: words[1..-1].join(' ')
-    when :species
-      return SpeciesName.create! name: string,
-                                 name_html: i_tagify(string),
-                                 epithet: words.second,
-                                 epithet_html: i_tagify(words.second)
-
-    # Note: GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }
-    # => all true except Aretidris because protonym_html is nil
-    when :genus
-      return GenusName.create! name: string,
-                               name_html: i_tagify(string),
-                               epithet: string,
-                               epithet_html: i_tagify(string)
-                               #protonym_html: i_tagify(string) #is this used?
-
-    when :tribe
-      return TribeName.create! name: string,
-                               name_html: string,
-                               epithet: string,
-                               epithet_html: string
-                               #protonym_html: string #is this used?
-
-    # Note: SubfamilyName.all.map {|t| t.name == t.protonym_html }.uniq # => true
-    when :subfamily
-      return SubfamilyName.create! name: string,
-                                   name_html: string,
-                                   epithet: string,
-                                   epithet_html: string
-                                   #protonym_html: string #is this used?
-    end
-
-    if irregular
-      return SpeciesName.create! name: string,
-                                 name_html: i_tagify(string),
-                                 epithet: words.second,
-                                 epithet_html: i_tagify(words.second)
-    end
-    raise "No Name subclass wanted the string: #{string}"
-  end
-
-  def self.i_tagify string
-    "<i>#{string}</i>"
   end
 
   def self.picklist_matching letters_in_name, options = {}

@@ -27,7 +27,7 @@ class SpeciesGroupName < Name
     else                            raise "we should never get here"
     end
 
-    Name.parse name_parts.join(' ')
+    Names::Parser.create_name_from_string! name_parts.join(' ')
   end
 
   private
