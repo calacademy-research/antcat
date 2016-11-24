@@ -1,7 +1,6 @@
 module CommentsHelper
   def link_comments_section commentable
-    count = commentable.comments_count
-    label = "#{count} #{"comment".pluralize(count)}"
+    label = pluralize commentable.comments_count, "comment"
     link_to label, url_for(commentable) + "#comments"
   end
 

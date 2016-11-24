@@ -1,5 +1,3 @@
-require 'protected_attributes'
-
 PaperTrail::Rails::Engine.eager_load!
 
 module PaperTrail
