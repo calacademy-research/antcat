@@ -9,6 +9,8 @@
 #   * ??????
 
 class Names::Parser
+  extend Formatters::ItalicsHelper
+
   # Irregular flag allows parsing of names that don't conform to naming
   # standards so we can support bad spellings.
   def self.create_name_from_string! string, irregular = false
@@ -33,31 +35,31 @@ class Names::Parser
     case name_type
     when :subspecies
       return SubspeciesName.create! name: string,
-                                    name_html: i_tagify(string),
+                                    name_html: italicize(string),
                                     epithet: words.third,
-                                    epithet_html: i_tagify(words.third),
+                                    epithet_html: italicize(words.third),
                                     epithets: [words.second, words.third].join(' ')
 
     when :subspecies_with_two_epithets
       return SubspeciesName.create! name: string,
-                                    name_html: i_tagify(string),
+                                    name_html: italicize(string),
                                     epithet: words.last,
-                                    epithet_html: i_tagify(words.last),
+                                    epithet_html: italicize(words.last),
                                     epithets: words[1..-1].join(' ')
     when :species
       return SpeciesName.create! name: string,
-                                 name_html: i_tagify(string),
+                                 name_html: italicize(string),
                                  epithet: words.second,
-                                 epithet_html: i_tagify(words.second)
+                                 epithet_html: italicize(words.second)
 
     # Note: GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }
     # => all true except Aretidris because protonym_html is nil
     when :genus
       return GenusName.create! name: string,
-                               name_html: i_tagify(string),
+                               name_html: italicize(string),
                                epithet: string,
-                               epithet_html: i_tagify(string)
-                               #protonym_html: i_tagify(string) #is this used?
+                               epithet_html: italicize(string)
+                               #protonym_html: italicize(string) #is this used?
 
     when :tribe
       return TribeName.create! name: string,
@@ -77,14 +79,10 @@ class Names::Parser
 
     if irregular
       return SpeciesName.create! name: string,
-                                 name_html: i_tagify(string),
+                                 name_html: italicize(string),
                                  epithet: words.second,
-                                 epithet_html: i_tagify(words.second)
+                                 epithet_html: italicize(words.second)
     end
-    raise "No Name subclass wanted the string: #{string}"
-  end
-
-  def self.i_tagify string
-    "<i>#{string}</i>"
+    raise "No `Name` subclass wanted the string: #{string}"
   end
 end
