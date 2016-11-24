@@ -1,3 +1,5 @@
+# TODO probably make this a statis class.
+
 class ReferenceFormatterCache
   include Singleton
 

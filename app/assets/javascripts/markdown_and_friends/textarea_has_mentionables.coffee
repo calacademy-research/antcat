@@ -7,8 +7,8 @@ setupMentionables = ->
   $("[data-has-mentionables]").atwho
     at: "@"
     searchKey: "mentionable_search_key"
-    insertTpl: "${atwho-at}user${id}"
-    displayTpl: '<li data-id="${id}"><small>#${id}</small> ${name} <small>${email}</small></li>'
+    insertTpl: "@user${id}"
+    displayTpl: '<li><small>#${id}</small> ${name} <small>${email}</small></li>'
     callbacks:
       matcher: AntCat.allowSpacesWhileAutocompleting
 

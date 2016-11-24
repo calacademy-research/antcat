@@ -13,24 +13,24 @@ class Feed::Activity < ActiveRecord::Base
   class << self
     def create_activity_for_trackable trackable, action, parameters = {}
       return unless enabled?
-      self.create! trackable: trackable, action: action,
+      create! trackable: trackable, action: action,
         user: User.current, parameters: parameters
     end
 
     def create_activity action, parameters = {}
-      self.create_activity_for_trackable nil, action, parameters
+      create_activity_for_trackable nil, action, parameters
     end
 
     def enabled?
-      self.enabled != false
+      enabled != false
     end
 
     def without_tracking &block
-      self._with_or_without_tracking false, &block
+      _with_or_without_tracking false, &block
     end
 
     def with_tracking &block
-      self._with_or_without_tracking true, &block
+      _with_or_without_tracking true, &block
     end
 
     def _with_or_without_tracking value
