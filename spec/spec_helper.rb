@@ -1,3 +1,5 @@
+# TODO extra curricular: split this into "spec_helper.rb" and "rails_helper.rb".
+
 require 'devise'
 require 'sunspot_test/rspec'
 

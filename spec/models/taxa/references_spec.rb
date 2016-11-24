@@ -50,8 +50,8 @@ describe Taxon do
     describe "references as synonym" do
       it "works" do
         eciton = create_genus 'Eciton'
-        eciton.extend TaxonSynonymsMonkeyPatch
-        eciton.become_junior_synonym_of atta
+        # Previously `eciton.become_junior_synonym_of atta`
+        Synonym.create! junior_synonym: eciton, senior_synonym: atta
 
         expect(atta.references).to match_array [
           { table: 'synonyms', field: :senior_synonym_id, id: eciton.id }
