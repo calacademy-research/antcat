@@ -4,7 +4,6 @@
 # TODO generate HTML in callbacks in the subclasses, not manually in `Names::Parser`.
 
 class Name < ApplicationRecord
-  include UndoTracker
   include Formatters::ItalicsHelper
 
   attr_accessible :epithet, :epithet, :epithet_html, :epithet_html, :epithets,
@@ -14,7 +13,7 @@ class Name < ApplicationRecord
 
   after_save :set_taxon_caches
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
   def change name_string
     existing_names = Name.where.not(id: id).where(name: name_string)

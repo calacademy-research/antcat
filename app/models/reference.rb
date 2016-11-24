@@ -6,7 +6,6 @@ require_dependency 'references/reference_search'
 require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord
-  include UndoTracker
   include ReferenceComparable
   include Feed::Trackable
 
@@ -40,7 +39,7 @@ class Reference < ApplicationRecord
   scope :with_principal_author_last_name, ->(last_name) { where(principal_author_last_name_cache: last_name) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked parameters: ->(reference) do { name: reference.keey } end
 
   def self.requires_title

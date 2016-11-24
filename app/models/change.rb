@@ -1,6 +1,5 @@
 class Change < ActiveRecord::Base
   include Feed::Trackable
-  include UndoTracker
 
   belongs_to :approver, class_name: 'User'
   # TODO rename to `taxon_id`.
@@ -54,7 +53,7 @@ class Change < ActiveRecord::Base
   # Sort to undo changes most recent to oldest.
   def undo
     Feed::Activity.without_tracking do
-      clear_change
+      UndoTracker.clear_change
       change_id_set = find_future_changes
       versions = SortedSet[]
       items = SortedSet[]

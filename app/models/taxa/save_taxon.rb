@@ -1,8 +1,6 @@
 # This class is responsible for saving taxa from `TaxaController` (from the edit form).
 
 class Taxa::SaveTaxon
-  include UndoTracker
-
   def initialize taxon
     @taxon = taxon
   end
@@ -26,7 +24,7 @@ class Taxa::SaveTaxon
       # Different setup because non-persisted objects have no IDs,
       # so we must update the change after saving `@taxon`.
       if @taxon.new_record?
-        change = setup_change @taxon, :create
+        change = UndoTracker.setup_change @taxon, :create
         @taxon.save!
 
         # PaperTrail is dumb. When a new object is created, it has no "object".
@@ -45,7 +43,7 @@ class Taxa::SaveTaxon
 
         change.update user_changed_taxon_id: @taxon.id
       else
-        setup_change @taxon, :update
+        UndoTracker.setup_change @taxon, :update
         @taxon.save!
       end
 

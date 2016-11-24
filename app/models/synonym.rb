@@ -1,5 +1,4 @@
 class Synonym < ApplicationRecord
-  include UndoTracker
   include Feed::Trackable
 
   attr_accessible :senior_synonym, :junior_synonym,:senior_synonym_id, :junior_synonym_id
@@ -11,7 +10,7 @@ class Synonym < ApplicationRecord
 
   scope :auto_generated, -> { where(auto_generated: true) }
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   # NOTE no update hook. Much code that updates synonym relationships simply
   # destroys the syononym object and creates a new one. But there's also code that
   # updates existing synonym relationships, so maybe add that here?

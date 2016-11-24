@@ -1,6 +1,4 @@
 class Subspecies < SpeciesGroupTaxon
-  include UndoTracker
-
   class NoSpeciesForSubspeciesError < StandardError; end
 
   attr_accessible :subfamily, :genus, :name, :protonym, :species, :type, :type_name_id
@@ -9,7 +7,7 @@ class Subspecies < SpeciesGroupTaxon
 
   before_validation :set_genus
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
   def update_parent new_parent
     # TODO Joe - somewhere, we need to check and pop up for the homonym case if there are multiple possibles.

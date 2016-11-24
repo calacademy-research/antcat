@@ -1,6 +1,5 @@
 class Journal < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-  include UndoTracker
   include Feed::Trackable
 
   has_many :references
@@ -9,7 +8,7 @@ class Journal < ActiveRecord::Base
 
   before_destroy :check_not_used
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked on: :all, parameters: ->(journal) do
     hash = { name: journal.name }
     hash[:name_was] = journal.name_was if journal.name_changed?

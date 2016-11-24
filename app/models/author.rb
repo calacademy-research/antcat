@@ -1,13 +1,11 @@
 class Author < ActiveRecord::Base
-  include UndoTracker
-
   has_many :names, -> { order(:name) }, class_name: 'AuthorName'
 
   scope :sorted_by_name, -> do
     select('authors.id').joins(:names).group('authors.id').order('name')
   end
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
   def self.find_by_names names
     Author.joins(:names).where('name IN (?)', names).group('authors.id').to_a

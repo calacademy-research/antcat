@@ -9,8 +9,6 @@
 # joined.where("references.year IS NULL").count          # 16
 
 class Protonym < ActiveRecord::Base
-  include UndoTracker
-
   attr_accessible :fossil, :sic, :locality, :id, :name_id, :name, :authorship, :taxon
 
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
@@ -22,5 +20,5 @@ class Protonym < ActiveRecord::Base
   validates :name, presence: true
 
   accepts_nested_attributes_for :name, :authorship
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 end

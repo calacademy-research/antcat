@@ -1,8 +1,6 @@
 # TODO `remove_column :author_names, :verified`, or rename to `auto_generated`.
 
 class AuthorName < ActiveRecord::Base
-  include UndoTracker
-
   attr_accessible :name, :author, :author_id
 
   belongs_to :author
@@ -13,7 +11,7 @@ class AuthorName < ActiveRecord::Base
   validates :author, :name, presence: true
   validates :name, uniqueness: true
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
   def last_name
     name_parts[:last]

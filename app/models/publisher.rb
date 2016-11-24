@@ -1,13 +1,11 @@
 class Publisher < ActiveRecord::Base
-  include UndoTracker
-
   belongs_to :place
 
   has_many :references
 
   validates_presence_of :name
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
   def self.create_with_place(name:, place:)
     return unless name.present?

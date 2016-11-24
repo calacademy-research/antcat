@@ -1,6 +1,4 @@
 class TaxonHistoryItemsController < ApplicationController
-  include UndoTracker
-
   before_filter :authenticate_editor
   before_action :set_taxon_history_item, only: [:show, :update, :destroy]
 
@@ -15,7 +13,7 @@ class TaxonHistoryItemsController < ApplicationController
 
   def create
     taxon = Taxon.find params[:taxa_id]
-    setup_change taxon, :create
+    UndoTracker.setup_change taxon, :create
     item = TaxonHistoryItem.create_taxt_from_editable taxon, params[:taxt]
     render_json item
   end

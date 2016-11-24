@@ -3,7 +3,6 @@
 require_dependency 'taxon_workflow'
 
 class Taxon < ApplicationRecord
-  include UndoTracker
   include Taxa::CallbacksAndValidators
   include Taxa::Delete
   include Taxa::PredicateMethods
@@ -89,7 +88,7 @@ class Taxon < ApplicationRecord
   scope :exclude_ranks, -> (*ranks) { where.not(type: ranks) }
 
   accepts_nested_attributes_for :name, :protonym, :type_name
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked on: :create, parameters: activity_parameters
 
   def save_from_form params, previous_combination = nil
