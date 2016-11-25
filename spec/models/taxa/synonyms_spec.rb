@@ -76,7 +76,7 @@ describe Taxon do
       expect(attaboi).to be_synonym
       expect(attaboi.senior_synonyms.all.include?(atta)).to be_truthy
 
-      attaboi.become_not_junior_synonym_of atta
+      become_not_junior_synonym_of attaboi, atta
 
       expect(atta.junior_synonyms.all.include?(attaboi)).to be_falsey
       expect(atta).not_to be_synonym
