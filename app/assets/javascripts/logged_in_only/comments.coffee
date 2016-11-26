@@ -5,13 +5,14 @@ setupCommentsReplyLinks = ->
   $(".comment-reply-link").click (event) ->
     event.preventDefault()
 
-    replyForm = closestReplyForm this
+    replyForm = replyFormFor $(event.target)
     replyForm.show()
-    replyForm.find(".previewable").makePreviewable()
+    replyForm.find("textarea").makePreviewable()
 
   $(".reply-form .btn-cancel").click (event) ->
     event.preventDefault()
-    closestReplyForm(this).hide()
-    # We could destroy the preview area here, but we don't have to (code in git).
+    $(event.target).parents(".reply-form").hide()
 
-closestReplyForm = (element) -> $(element).closest(".comment").find ".reply-form"
+replyFormFor = (element) ->
+  forComment = element.data "open-reply-form-for-comment"
+  $(".reply-form[data-reply-form-for-comment='#{forComment}']")

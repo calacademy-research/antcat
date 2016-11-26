@@ -99,13 +99,19 @@ class MakePreviewable
 
     @previewLink().click (event) =>
       event.preventDefault()
+
+      toParse = @textarea.val()
+      if toParse is ""
+        tab.html "No content. Try this: <code>%taxon429161</code>."
+        return
+
       tab.html "Loading preview... dot dot dot..."
       @showSpinner()
 
       $.ajax
         url: "/markdown/preview"
         type: "post"
-        data: text: @textarea.val()
+        data: text: toParse
         dataType: "html"
         success: (html) =>
           tab.html html

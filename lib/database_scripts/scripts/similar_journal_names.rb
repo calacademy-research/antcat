@@ -31,8 +31,7 @@ class DatabaseScripts::Scripts::SimilarJournalNames
   private
     def check_similarity first
       @journal_names.each do |second|
-        distance = @jarow.getDistance first, second
-        next unless distance > MIN_DISTANCE
+        next unless distance(first, second) > MIN_DISTANCE
         next if false_positive? first, second
 
         @results << [first, second]

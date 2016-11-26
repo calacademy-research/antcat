@@ -1,8 +1,15 @@
 %p
-  =comment.user.decorate.user_page_link
-  commented
-  =time_ago_in_words(comment.created_at)
-  ago:
+  -# Anchor link to scroll down to comment by id.
+  -# Wrapped in a `span` because we only want to hightlight a small area.
+  %span.highlight-comment-anchor{id: "comment-#{comment.id}"}
+    =comment.user.decorate.user_page_link
+    commented
+    =time_ago_in_words comment.created_at
+    ago:
+    %br
+
 %p=markdown comment.body
+
 %p
-  %a.comment-reply-link{href: "#"} reply
+  %a.comment-reply-link{href: "#", data: { open_reply_form_for_comment: comment.id } }
+    reply
