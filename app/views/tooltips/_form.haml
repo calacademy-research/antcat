@@ -1,9 +1,5 @@
 =enable_tooltips
 
--content_for :head do
-  -# TODO probably remove.
-  =javascript_include_tag 'controllers/tooltips/form/generate_selector_test_string'
-
 .buttons_right
   =link_to "Hide/show advanced", "#", class: "btn-non-destructive", data: { show_hide_toggler_for: "advanced_options" }
 
@@ -34,12 +30,6 @@
           =f.label :key_enabled do
             Key enabled
             =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-
-        %p
-          -# For letting editors test the selector, hooked into by jQuery.
-          =button_tag "Test Selector", type: "button", id: "test_selector_button", class: "btn-non-destructive"
-          %p#test_selector_notice
-          %pre#test_selector_snippet
 
   .row
     .medium-6.columns
