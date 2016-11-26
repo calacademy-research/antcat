@@ -1,13 +1,8 @@
 %tr
-  %td
-    =link_to tooltip.key, tooltip_path(tooltip)
-  %td
-    =tooltip.scope
-  %td
-    =tooltip.key_enabled ? "yes" : "no"
-  %td
-    =best_in_place tooltip, :text, as: :textarea, ok_button: 'Save', cancel_button: 'Cancel'
+  %td=link_to tooltip.key, tooltip_path(tooltip)
+  %td=tooltip.scope
+  %td=tooltip.key_enabled ? "yes" : "no"
+  %td=tooltip.text
   %td
     %code=tooltip.selector
-  %td
-    =tooltip.selector_enabled ? "yes" : "no"
+  %td=tooltip.selector_enabled ? "yes" : "no"

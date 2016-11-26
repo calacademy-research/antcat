@@ -15,7 +15,7 @@ module CommentsHelper
   end
 
   def truncated_comment_for_tables comment
-    truncated = truncate comment.body, length: 50, omission: "... (continued)"
+    truncated = truncate comment.body, length: 80, separator: " "
     stripped = strip_tags truncated
     antcat_markdown_only(stripped).html_safe
   end
