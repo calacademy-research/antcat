@@ -57,8 +57,8 @@ crumb :edit_user do
   parent :editors_panel
 end
 
-crumb :invite_people do
-  link "Invite People"
+crumb :invite_users do
+  link "Invite Users"
   parent :editors_panel
 end
 

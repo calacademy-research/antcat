@@ -37,11 +37,6 @@ crumb :forgot_password do
   parent :antcat
 end
 
-crumb :invitee_create_account do
-  link "Create Account"
-  parent :antcat
-end
-
 crumb :change_password do
   link "Change Password"
   parent :antcat

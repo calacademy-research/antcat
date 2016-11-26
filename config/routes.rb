@@ -100,7 +100,7 @@ AntCat::Application.routes.draw do
   resource :reference_popup, only: [:show]
   resource :duplicates, only: [:show, :create]
 
-  devise_for :users, controllers: { invitations: 'users/invitations' }
+  devise_for :users
   resources :users, only: [:index, :show] do
     collection do
       get :emails
@@ -149,6 +149,7 @@ AntCat::Application.routes.draw do
 
   # TODO nest more Editor's Panel-ish pages under this (tasks, site notices, etc).
   get "panel", to: "editors_panels#index", as: "editors_panel"
+  get "panel/invite_users", to: "editors_panels#invite_users", as: "invite_users"
   get :notifications, to: "notifications#index"
 
   resource :feed, only: [:show], controller: "feed" do

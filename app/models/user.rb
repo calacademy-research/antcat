@@ -1,3 +1,5 @@
+# TODO column for `devise :invitable` can be removed from the db.
+
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
   include Feed::Trackable
@@ -17,7 +19,7 @@ class User < ActiveRecord::Base
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,
-    :rememberable, :trackable, :validatable, :invitable
+    :rememberable, :trackable, :validatable
   tracked on: :create, parameters: ->(user) do { user_id: user.id } end
 
   def self.current

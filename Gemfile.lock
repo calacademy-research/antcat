@@ -150,9 +150,6 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
-    devise_invitable (1.5.3)
-      actionmailer (>= 3.2.6, < 5)
-      devise (>= 3.2.0)
     diff-lcs (1.2.5)
     draper (2.1.0)
       actionpack (>= 3.0)
@@ -406,7 +403,6 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   devise
-  devise_invitable
   diff-lcs
   draper
   ey_config

@@ -7,6 +7,9 @@ class EditorsPanelsController < ApplicationController
     @recent_comments = Comment.most_recent 5
   end
 
+  def invite_users
+  end
+
   private
     # Unreviewed/pending/open/etc.
     def unreviewed_changes_counts
