@@ -1,7 +1,44 @@
+# TODO rename
+#   `exporter_spec.rb` --> `exporter_export_taxon_spec.rb`
+#   this file          --> `exporter_spec.rb`
+
+# Specs here test stuff except `#export_taxon`, which is tested in another file
+# because reasons and because both specs are pretty long.
+
 require 'spec_helper'
 
 describe Exporters::Antweb::Exporter do
   let(:exporter) { Exporters::Antweb::Exporter.new }
+
+  describe "#header" do
+    it "should be the same as the code" do
+      expected = "antcat id\t" +
+                 "subfamily\t" +
+                 "tribe\t" +
+                 "genus\t" +
+                 "subgenus\t" +
+                 "species\t" +
+                 "subspecies\t" +
+                 "author date\t" +
+                 "author date html\t" +
+                 "authors\t" +
+                 "year\t" +
+                 "status\t" +
+                 "available\t" +
+                 "current valid name\t" +
+                 "original combination\t" +
+                 "was original combination\t" +
+                 "fossil\t" +
+                 "taxonomic history html\t" +
+                 "reference id\t" +
+                 "bioregion\t" +
+                 "country\t" +
+                 "current valid rank\t" +
+                 "hol id\t" +
+                 "current valid parent"
+      expect(exporter.send :header).to eq expected
+    end
+  end
 
   describe "#author_last_names_string" do
     it "delegates" do
@@ -103,10 +140,8 @@ describe Exporters::Antweb::Exporter do
         authorship = Citation.create! reference: reference, pages: '12'
         protonym = Protonym.create! name: shared_name, authorship: authorship
 
-        # Genus.
+        # Genus and species.
         @genus = create_genus name: shared_name, protonym: protonym, hol_id: 9999
-
-        # Species.
         @species = create_species 'Atta major', genus: @genus, hol_id: 1234
       end
 
@@ -232,6 +267,7 @@ describe Exporters::Antweb::Exporter do
 
     describe ".antcat_taxon_link" do
       let(:link) { exporter.class.antcat_taxon_link_with_name taxon }
+
       it "includes 'antcat.org' in the url" do
         expect(link).to eq <<-HTML.squish
           <a class="link_to_external_site"

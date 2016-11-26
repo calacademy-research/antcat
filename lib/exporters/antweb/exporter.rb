@@ -1,3 +1,5 @@
+# Export via `rake antweb:export`.
+
 include ActionView::Helpers::TagHelper # For `#content_tag`.
 include ActionView::Context # For `#content_tag`.
 include Exporters::Antweb::MonkeyPatchTaxon
