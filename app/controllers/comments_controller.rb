@@ -7,16 +7,16 @@ class CommentsController < ApplicationController
 
   def create
     @comment = Comment.build_comment commentable, current_user, comment_params[:body]
+    @comment.set_parent_to = comment_params[:comment_id]
 
     if @comment.save
-      make_child_comment
-
       highlighted_comment_url = "#{request.referer}#comment-#{@comment.id}"
       redirect_to highlighted_comment_url, notice: <<-MSG
         <a href="#comment-#{@comment.id}">Comment</a>
         was successfully added.
       MSG
     else
+      # TODO add proper error messages.
       redirect_to :back, notice: "Something went wrong. Email us?"
     end
   end
@@ -25,13 +25,6 @@ class CommentsController < ApplicationController
     def commentable
       comment_params[:commentable_type].constantize
         .find comment_params[:commentable_id]
-    end
-
-    def make_child_comment
-      return "" if comment_params[:comment_id].blank?
-
-      parent_comment = Comment.find comment_params[:comment_id]
-      @comment.move_to_child_of parent_comment
     end
 
     def comment_params

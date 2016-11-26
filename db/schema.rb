@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161114180252) do
+ActiveRecord::Schema.define(version: 20161124055256) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -151,6 +151,21 @@ ActiveRecord::Schema.define(version: 20161114180252) do
 
   add_index "names", ["id", "type"], name: "index_names_on_id_and_type", using: :btree
   add_index "names", ["name"], name: "name_name_index", using: :btree
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer  "user_id",       limit: 4,                   null: false
+    t.integer  "notifier_id",   limit: 4
+    t.integer  "attached_id",   limit: 4
+    t.string   "attached_type", limit: 255
+    t.boolean  "seen",                      default: false, null: false
+    t.string   "reason",        limit: 255,                 null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+  end
+
+  add_index "notifications", ["attached_type", "attached_id"], name: "index_notifications_on_attached_type_and_attached_id", using: :btree
+  add_index "notifications", ["notifier_id"], name: "index_notifications_on_notifier_id", using: :btree
+  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
 
   create_table "places", force: :cascade do |t|
     t.string   "name",       limit: 255

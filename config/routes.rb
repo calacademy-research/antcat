@@ -149,6 +149,7 @@ AntCat::Application.routes.draw do
 
   # TODO nest more Editor's Panel-ish pages under this (tasks, site notices, etc).
   get "panel", to: "editors_panels#index", as: "editors_panel"
+  get :notifications, to: "notifications#index"
 
   resource :feed, only: [:show], controller: "feed" do
     resources :activities, only: [:destroy]

@@ -10,6 +10,7 @@
           -if Rails.env.development?
             %li.dev-only=link_to_current_page_on_live_site
           -if user_signed_in?
+            =render "unseen_notifications_badge"
             %li=link_to "Editor's Panel", editors_panel_path
           %li=link_to 'References', references_path
           %li=link_to 'Changes', changes_path
@@ -44,6 +45,7 @@
           %span.float-left
             %span.menu-icon{"data-toggle" => ""}
           =image_tag 'antcat_logo_small.png', data: { toggle: "" }
+      =render "unseen_notifications_badge"
 
   #mobile-menu
     %ul.vertical.dropdown.menu{"data-dropdown-menu" => ""}

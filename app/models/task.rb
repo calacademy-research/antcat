@@ -6,6 +6,7 @@
 class Task < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
   include Feed::Trackable
+  include SendsNotifications
 
   belongs_to :adder, class_name: "User"
   belongs_to :closer, class_name: "User"
@@ -26,6 +27,8 @@ class Task < ActiveRecord::Base
   end
 
   acts_as_commentable
+  enable_user_notifications_for :description
+  has_paper_trail
   tracked on: :all, parameters: ->(task) do { title: task.title } end
 
   def open?
@@ -46,5 +49,10 @@ class Task < ActiveRecord::Base
         closed: "close_task",
         open: "reopen_task" }[status.to_sym]
     create_activity action
+  end
+
+  # Read-only alias for `Comment#notify_commentable_creator`.
+  def user
+    adder
   end
 end

@@ -107,6 +107,11 @@ end
       parent :database_script, script
     end
 
+crumb :notifications do
+  link "My Notifications"
+  parent :editors_panel
+end
+
 crumb :markdown_formatting_help do
   link "Markdown Formatting Help"
   parent :editors_panel

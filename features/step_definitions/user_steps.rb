@@ -33,6 +33,11 @@ When(/^I log in$/) do
   login_programmatically user
 end
 
+When(/^I log in as "([^"]+)"$/) do |name|
+  user = User.find_by name: name
+  login_programmatically user
+end
+
 Given('I am logged in') do
   step 'I log in'
 end
@@ -40,6 +45,11 @@ end
 When(/^I log in as a user \(not editor\)$/) do
   user = Feed::Activity.without_tracking { create :user }
   login_programmatically user
+end
+
+Given(/^there is a user(?: named "([^"]+)")?$/) do |name|
+  name = "Quintus Batiatus" if name.blank?
+  create :editor, name: name
 end
 
 # "catalog editor" and "editor" are the same. There used to be -- at least
@@ -50,7 +60,8 @@ end
 # TODO investigate adding/reinstating a "bibliography editor" user role.
 When(/^I log in as a catalog editor(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
-  user = Feed::Activity.without_tracking do
+  user = User.find_by name: name
+  user ||= Feed::Activity.without_tracking do
     create :editor, name: name
   end
   login_programmatically user

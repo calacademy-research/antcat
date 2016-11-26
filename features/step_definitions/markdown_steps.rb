@@ -1,6 +1,13 @@
+# TODO DRY w.r.t `notifications_steps.rb`.
+
 Given(/^I am on a page with a textarea with markdown preview and autocompletion$/) do
   step %{I go to the open tasks page}
   step %{I follow "New"}
+end
+
+When(/^I fill in "(.*?)" with "(.*?)" followed by the user id of "(.*?)"$/) do |textarea, text, name|
+  user = User.find_by name: name
+  step %{I fill in "#{textarea}" with "#{text}#{user.id}"}
 end
 
 When(/^I fill in the markdown textarea with "@user" followed by my user id$/) do

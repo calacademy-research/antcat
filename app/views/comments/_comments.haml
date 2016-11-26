@@ -1,5 +1,5 @@
--# `comments` initially holds the `root_comments`, which are
--# looped over together with all their children.
+-# `comments` initially holds the `root_comments`,
+-# which are looped over together with all their children.
 -#
 -# Kept in its own partial because it recursively renders itself.
 
@@ -8,3 +8,7 @@
     =render "comments/comment", comment: comment
     =render "comments/reply_form", comment: comment
     =render "comments/comments", comments: comment.children
+
+  -# Draw a pretty ruler between root comments.
+  -unless comment.is_a_reply?
+    %hr

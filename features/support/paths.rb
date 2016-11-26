@@ -67,6 +67,9 @@ module NavigationHelpers
     when /^the comments page$/
       "/comments"
 
+    when /^my notifications page$/
+      "/notifications"
+
     when /^the database scripts page$/
       "/database_scripts"
 
@@ -86,6 +89,8 @@ module NavigationHelpers
     when /^the task (entry|page) for "([^"]*)"$/
       task = Task.find_by(title: $2)
       "/tasks/#{task.id}"
+    when /^the most recent task$/
+      "/tasks/#{Task.last.id}"
     when /^the new task form$/
       "/tasks/new"
 

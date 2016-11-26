@@ -3,6 +3,7 @@
 
 .row
   .large-3.medium-4.columns
+    -# TODO probably inline `@count`.
     %h5 Unreviewed changes
     %ul.no-bullet
       %li
@@ -35,7 +36,12 @@
       %li=link_to "Markdown formatting help", markdown_formatting_help_path
 
   .large-3.medium-4.columns
-    -# empty
+    -if current_user
+      %h5 My account
+      %ul
+        %li
+          .label=current_user.unseen_notifications.count
+          =link_to "My Notifications", notifications_path
 
   .large-3.medium-4.columns
     %h5 AntCat administration

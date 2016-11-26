@@ -1,6 +1,7 @@
 require "spec_helper"
 
 describe Task do
+  it { should be_versioned }
   it { should validate_presence_of :title }
   it { should validate_presence_of :description }
   it { should validate_inclusion_of(:status).in_array %w(open closed completed) }

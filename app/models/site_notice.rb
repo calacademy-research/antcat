@@ -1,6 +1,7 @@
 class SiteNotice < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
   include Feed::Trackable
+  include SendsNotifications
 
   belongs_to :user
 
@@ -16,4 +17,5 @@ class SiteNotice < ActiveRecord::Base
   tracked on: :all, parameters: ->(site_notice) do
     { title: site_notice.title }
   end
+  enable_user_notifications_for :message
 end

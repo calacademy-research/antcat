@@ -38,7 +38,7 @@
 
             -# '"comment body"'
             =surround '"' do
-              =truncate comment.body, length: 200, omission: "... (continued)"
+              =truncated_comment_for_tables comment
 
           %td.no-wrap
             =time_ago_in_words comment.created_at

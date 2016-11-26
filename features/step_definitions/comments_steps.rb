@@ -9,6 +9,7 @@ end
 Given('Batiatus has commented "Cool" on a task with the title "Typos"') do
   task = create :task, title: "Typos"
   batiatus = User.find_by(name: "Batiatus")
+  User.current = batiatus # HACK
   Comment.build_comment(task, batiatus, "Cool").save!
 end
 

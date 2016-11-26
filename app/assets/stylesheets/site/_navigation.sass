@@ -8,6 +8,9 @@
       margin-left: 0 !important
     .menu > li > a
       color: #fff !important
+    // Restore mouse pointer for links in labels.
+    li.unseen-notifications > a > span
+      cursor: pointer
 
   #desktop-only
     #desktop-logo
@@ -20,11 +23,6 @@
         position: absolute
         right: 0
         top: 1rem
-        .notification.label
-          margin-top: -5px
-          margin-left: 5px
-          a
-            color: #fff !important
 
       #desktop-lower-menu
         .expandable-catalog-search
@@ -47,6 +45,12 @@
     #mobile-logo
       > span
         padding-right: 1rem
+
+    li.unseen-notifications
+      list-style: none
+      float: right
+      a
+        color: #fff !important
 
   #breadcrumbs
     padding: 0.4rem 1rem

@@ -2,8 +2,10 @@ class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
   include Feed::Trackable
 
-  has_many :comments
   has_many :activities, class_name: "Feed::Activity"
+  has_many :comments
+  has_many :notifications, -> { order(id: :desc) }
+  has_many :unseen_notifications, -> { unseen }, class_name: "Notification"
 
   validates :name, presence: true
 
@@ -38,8 +40,27 @@ class User < ActiveRecord::Base
     %Q["#{name}" <#{email}>]
   end
 
+  def notify_because(reason, attached:, notifier:)
+    return if notifier == self
+    return if already_notified_for_attached_by_user? attached, notifier
+
+    Notification.create! user: self, reason: reason, attached: attached, notifier: notifier
+  end
+
+  def mark_unseen_notifications_as_seen
+    unseen_notifications.update_all seen: true
+  end
+
   # For at.js.
   def mentionable_search_key
     "#{id} #{name} #{email}"
   end
+
+  private
+    # To avoid sending repeated notifications eg when a task description that
+    # already mentions a user is edited and saved again. Will be more useful
+    # when/if comments become editable.
+    def already_notified_for_attached_by_user? attached, mentioner
+      notifications.where(notifier: mentioner, attached: attached).exists?
+    end
 end

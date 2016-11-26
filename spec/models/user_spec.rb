@@ -90,4 +90,50 @@ describe User do
       expect(user.angle_bracketed_email).to eq '"A User" <user@example.com>'
     end
   end
+
+  describe "#notify_because" do
+    let(:user) { create :user }
+    let(:notifier) { create :user }
+    let(:task) { create :task }
+
+    context "user and notifier are the same" do
+      it "doesn't create a notification" do
+        expect do
+          user.notify_because :mentioned_in_thing, attached: task, notifier: user
+        end.to_not change { Notification.count }
+      end
+    end
+
+    context "user has already been notified for that attached/notifier combination" do
+      it "doesn't create a notification" do
+        user.notify_because :mentioned_in_thing, attached: task, notifier: notifier
+
+        expect do
+          user.notify_because :mentioned_in_thing, attached: task, notifier: notifier
+        end.to_not change { Notification.count }
+      end
+    end
+
+    it "*test the above shaky examples that may fail for other reasons*" do
+      expect do
+        user.notify_because :mentioned_in_thing, attached: task, notifier: notifier
+      end.to change { Notification.count }.by 1
+    end
+  end
+
+  describe "#already_notified_for_attached_by_user?" do
+    let(:user) { create :user }
+    let(:notifier) { create :user }
+    let(:task) { create :task }
+
+    it "can tell" do
+      notified = user.send :already_notified_for_attached_by_user?, task, notifier
+      expect(notified).to be_falsey
+
+      user.notify_because :mentioned_in_thing, attached: task, notifier: notifier
+
+      notified_now_then = user.send :already_notified_for_attached_by_user?, task, notifier
+      expect(notified_now_then).to be true
+    end
+  end
 end

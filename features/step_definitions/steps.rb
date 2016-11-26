@@ -186,3 +186,9 @@ end
 Then(/I should see "([^"]*)" italicized/) do |italicized_text|
   expect(page).to have_css 'i', text: italicized_text
 end
+
+# HACK to prevent the driver from navigating away
+# from the page before completing the request.
+And(/^I wait for the "success" message$/) do
+  step 'I should see "uccess"' # "[Ss]uccess(fully)?"
+end
