@@ -113,50 +113,6 @@ namespace :antcat do
   end
 end
 
-# TODO run in a migration.
-namespace :antcat do
-  namespace :db do
-
-    # Hopefully run-once code. 1) remove all redundant braces 2) makes sure we're
-    # not introducing new redundant braces 3) remove this code.
-    desc "Find and repair double curly braces"
-    task double_braces: :environment do
-      puts "Counting stray braces..."
-      count = 0
-      models_with_taxts.each_field do |field, model|
-        count += model.where("#{field} LIKE '%}}%'").count
-      end
-
-      puts "No matches found." and next if count.zero?
-
-      antcat_prompt <<-MSG.squish, default: "q" do |answer|
-          Found #{count} redundant curly braces. Try to fix (under development)?
-          Warning: descructive command. Current database is '#{Rails.env}'.
-          Enter 'yes' to continue [y/l/Q] (l=list only)
-        MSG
-
-        models_with_taxts.each_field do |field, model|
-          model.where("#{field} LIKE '%}}%'").find_each do |matched_obj|
-            if answer == "yes"
-              # TODO investigate how this affects Change
-              # So, there are 3341 redundant curly braces in the 5 November 2015
-              # db dump. We do not want do spam the change log with 3k "changes",
-              # and we do not want to corrupt the the Version table. Solution = ??????
-              matched_obj.send("#{field}=", matched_obj.send(field).gsub(/\}\}/, "}"))
-              matched_obj.save!
-            elsif answer == "l"
-              puts "matched_obj.id: #{matched_obj.id}. #{model}.#{field}: #{matched_obj.send field}."
-            end
-          end
-        end
-      end
-
-      puts "Done."
-    end
-
-  end
-end
-
 namespace :antcat do
   namespace :db do
 

@@ -1,9 +1,9 @@
+# TODO move relevant examples (most) to `antcat_markdown_utils_spec.rb`.
+
 require "spec_helper"
 
 describe AntcatMarkdown do
-  let(:dummy_parser) { AntcatMarkdown.new no_even_a_stub: nil }
-
-  describe "render" do
+  describe ".render" do
     it "formats some basic markdown" do
       lasius_name = create :species_name, name: "Lasius"
       create :species, name: lasius_name
@@ -115,25 +115,6 @@ describe AntcatMarkdown do
   describe ".strip" do
     it "strips markdown" do
       expect(AntcatMarkdown.strip "**bold**").to eq "bold\n"
-    end
-  end
-
-  describe "#try_linking_taxon_id" do
-    context "existing taxon" do
-      it "links existing taxa" do
-        taxon = create :species
-        returned = dummy_parser.send :try_linking_taxon_id, taxon.id.to_s
-
-        expected = %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
-        expect(returned).to eq expected
-      end
-    end
-
-    context "missing taxon" do
-      it "renders an error message" do
-        returned = dummy_parser.send :try_linking_taxon_id, "9999"
-        expect(returned).to eq '<span class="broken-markdown-link"> could not find taxon with id 9999 </span>'
-      end
     end
   end
 end
