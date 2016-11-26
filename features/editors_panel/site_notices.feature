@@ -5,6 +5,16 @@ Feature: Site notices
     And there is a site notice I haven't read yet
     And I go to the journals index page
 
+  Scenario: Adding a site notice
+    When I go to the site notices page
+    And I follow "New"
+    And I fill in "site_notice_title" with "New AntCat features"
+    And I fill in "site_notice_blurb" with "Many!"
+    And I fill in "site_notice_message" with "You would not believe it!"
+    And I press "Save"
+    Then I should see "Successfully created site notice"
+    And I should see "Added by Batiatus"
+
   Scenario: Reading a notice marks it as read
     When I go to the users page
     Then I should see an unread site notice

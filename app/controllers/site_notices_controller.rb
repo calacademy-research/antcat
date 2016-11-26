@@ -1,3 +1,6 @@
+# TODO probably remove the big 'unread site notices' box and just add a badge
+# in the header, similar to the (soon) "new notifications" feature.
+
 class SiteNoticesController < ApplicationController
   before_action :authenticate_editor
   before_action :authenticate_superadmin, only: [:destroy]
