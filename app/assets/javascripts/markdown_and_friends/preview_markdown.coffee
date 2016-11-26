@@ -32,7 +32,6 @@ class MakePreviewable
     @setupPreviewLink()
     @setSymbolsLabel()
     @makeHelpTabsLoadableOnDemand()
-    @enableAreYouSure()
 
   isAlreadyPreviewable: -> @textarea.parent().hasClass "tabs-panel"
 
@@ -160,11 +159,6 @@ class MakePreviewable
 
     setupFormattingHelp()
     setupSymbolsExplanations()
-
-  # jQuery plugin. "You have unsaved changes, leave form, ok??".
-  enableAreYouSure: ->
-    previewArea = @textarea.closest ".preview-area"
-    previewArea.parents("form").areYouSure()
 
   spinner: -> @textarea.closest(".preview-area").find ".shared-spinner"
   showSpinner: -> @spinner().show()
