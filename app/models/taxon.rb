@@ -134,6 +134,10 @@ class Taxon < ApplicationRecord
     string
   end
 
+  def authorship_reference
+    protonym.try(:authorship).try(:reference)
+  end
+
   # Used in the taxon browser.
   def self_and_parents
     parents = []
@@ -149,10 +153,6 @@ class Taxon < ApplicationRecord
   end
 
   private
-    def authorship_reference
-      protonym.try(:authorship).try(:reference)
-    end
-
     def activity_parameters
       ->(taxon) do
         hash = { rank: taxon.rank, name: taxon.name_html_cache }

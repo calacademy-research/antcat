@@ -1,18 +1,23 @@
 class CatalogController < ApplicationController
+  before_action :set_taxon, only: [:show, :wikipedia_tools]
+
+  # Avoid blowing up if there's no family. Useful in test and dev.
   unless Rails.env.production?
-    # Avoid blowing up if there's no family. Useful in test and dev.
     before_action only: [:index] do
       render 'family_not_found' unless Family.exists?
       false
     end
   end
-  before_action :setup_catalog, only: [:index, :show]
 
   def index
+    @taxon = Family.first
+
+    setup_panels
     render 'show'
   end
 
   def show
+    setup_panels
   end
 
   # This is basically "def toggle_show_invalid", because that is
@@ -22,6 +27,10 @@ class CatalogController < ApplicationController
     # it's only for making the URL more intuitive to users.
     session[:show_invalid] = !session[:show_invalid]
     redirect_to :back
+  end
+
+  # Secret page. Append "/wikipedia" after the taxon id.
+  def wikipedia_tools
   end
 
   def autocomplete
@@ -48,26 +57,38 @@ class CatalogController < ApplicationController
     end
   end
 
-  # Secret page. Append "/wikipedia" after the taxon id.
-  def wikipedia_tools
-    @taxon = Taxon.find params[:id]
-    @authorship_reference = @taxon.send :authorship_reference
-  end
-
   private
-    def setup_catalog
-      set_taxon
-      setup_panels
-    end
-
     def set_taxon
-      @taxon = params[:id] ? Taxon.find(params[:id]) : Family.first
+      @taxon = Taxon.find params[:id]
     end
 
     def setup_panels
+      # After `#main_progression_panels`, `@panels` will contain at most as many
+      # items as there are in `@self_and_parents`.
+      #
+      # Each panel is a hash consisting of two keys:
+      # * `selected`, which is the taxon that should be selected in that tab,
+      #    where "selected" means it will be used for the panel title and
+      #    highlighted in the taxon browser list.
+      # * `children`, which are the taxa to show in the taxon browser list.
+      @panels = main_progression_panels
+
+      # Maybe add additional last tab. The `selected` key will not be a taxon,
+      # but a hash like `{ title_for_panel: "All Myrmicinae genera" }`.
+      extra_panel = non_standard_panel
+      @panels << extra_panel if extra_panel
+    end
+
+    # The "main progression", from the lowest rank and up is: Subspecies ->
+    # Species -> Genus -> Tribe -> Subfamily -> Family.
+    # See https://github.com/calacademy-research/antcat/wiki/For-developers
+    def main_progression_panels
+      # `@self_and_parents` may look like this: `[formicidae, myrmicinae,
+      # attini, atta, atta_colombica, atta_colombica_subspecius]`.
       @self_and_parents = @taxon.self_and_parents
 
-      @panels = @self_and_parents.reject do |taxon|
+      # We do not want to include all ranks in the panels.
+      @self_and_parents.reject do |taxon|
         # Never show the subspecies panel (has no children).
         taxon.is_a?(Subspecies) ||
 
@@ -87,19 +108,12 @@ class CatalogController < ApplicationController
         children = children.valid unless session[:show_invalid]
         { selected: taxon, children: children }
       end
-
-      setup_non_standard_panels
     end
 
-    def include_all_genera_in_subfamily
-      if @taxon.is_a? Subfamily
-        params[:display] = "all_genera_in_subfamily"
-      end
-    end
-
-    def setup_non_standard_panels
+    # TODO improve and comment.
+    def non_standard_panel
       include_all_genera_in_subfamily if params[:display].blank?
-      subgenera_special_case
+      subgenera_special_case # Overrides `#include_all_genera_in_subfamily`.
       return unless params[:display]
 
       case params[:display]
@@ -122,14 +136,18 @@ class CatalogController < ApplicationController
       end
 
       children = children.valid unless session[:show_invalid]
-      @panels << { selected: { title_for_panel: title },
-                  children: children }
+      { selected: { title_for_panel: title }, children: children }
+    end
+
+    def include_all_genera_in_subfamily
+      return unless @taxon.is_a? Subfamily
+      params[:display] = "all_genera_in_subfamily"
     end
 
     # Enables the subgenera panel when subgenera are selected.
+    # Special case because subgenera are outside of the main progression.
     def subgenera_special_case
-      if @taxon.is_a? Subgenus
-        params[:display] = "subgenera_in_parent_genus"
-      end
+      return unless @taxon.is_a? Subgenus
+      params[:display] = "subgenera_in_parent_genus"
     end
 end
