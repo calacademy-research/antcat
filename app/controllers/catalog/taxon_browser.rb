@@ -22,6 +22,10 @@ module Catalog
       @show_invalid
     end
 
+    def selected_in_panel? taxon
+      taxon.in? @self_and_parents
+    end
+
     private
       def setup_panels
         @panels = []
@@ -62,20 +66,20 @@ module Catalog
 
         case @display
         when /^incertae_sedis_in/
-          title = "Genera <i>incertae sedis</i> in #{@the_taxon.name_html_cache}"
+          title = "Genera <i>incertae sedis</i> in #{@the_taxon.taxon_label}"
           children = @the_taxon.genera_incertae_sedis_in
         when /^all_genera_in/
-          title = "All #{@the_taxon.name_html_cache} genera"
+          title = "All #{@the_taxon.taxon_label} genera"
           children = @the_taxon.all_displayable_genera
         when "all_taxa_in_genus"
-          title = "All #{@the_taxon.name_html_cache} taxa"
+          title = "All #{@the_taxon.taxon_label} taxa"
           children = @the_taxon.displayable_child_taxa
         when "subgenera_in_genus"
-          title = "#{@the_taxon.name_html_cache} subgenera"
+          title = "#{@the_taxon.taxon_label} subgenera"
           children = @the_taxon.displayable_subgenera
         when "subgenera_in_parent_genus"
           # Works because [currently] all subgenera have parents.
-          title = "#{@the_taxon.parent.name_html_cache} subgenera"
+          title = "#{@the_taxon.parent.taxon_label} subgenera"
           children = @the_taxon.parent.displayable_subgenera
         end
 
@@ -99,7 +103,7 @@ end
 
 class TaxonBrowserPanel
   attr_accessor :taxon # TODO move to `StandardPanel`.
-  delegate :display, :self_and_parents, :panels, to: :@taxon_browser
+  delegate :display, :panels, :selected_in_panel?, to: :@taxon_browser
 
   def initialize children, taxon_browser
     @taxon_browser = taxon_browser
@@ -113,8 +117,7 @@ class TaxonBrowserPanel
 
   def each_child
     sorted_children.each do |child|
-      is_selected = child.in? self_and_parents
-      yield child, is_selected
+      yield child, selected_in_panel?(child)
     end
   end
 
@@ -161,30 +164,11 @@ class StandardPanel < TaxonBrowserPanel
   end
 
   def title
-    return taxon_label if show_only_genus_name?
-    "#{taxon_label} #{childrens_rank}".html_safe
-  end
-
-  def id
-    "panel-#{@taxon.id}"
+    return @taxon.taxon_label if show_only_genus_name?
+    "#{@taxon.taxon_label} #{@taxon.childrens_rank_in_words}".html_safe
   end
 
   private
-    def taxon_label
-      string = ''.html_safe
-      string << '&dagger;'.html_safe if @taxon.fossil
-      string << @taxon.name_html_cache.html_safe
-    end
-
-    def childrens_rank
-      { family:    "subfamilies",
-        subfamily: "tribes",
-        tribe:     "genera",
-        genus:     "species",
-        subgenus:  "species",
-        species:   "subspecies" }[@taxon.rank.to_sym]
-    end
-
     # For the "All taxa" and "Subgenera" special cases, because
     # this would be confusing/false:
     #   "Formicidae ... Lasius species > Lasius subgenera"
@@ -205,9 +189,5 @@ class SpecialPanel < TaxonBrowserPanel
 
   def title
     @title
-  end
-
-  def id
-    "panel-special-panel"
   end
 end

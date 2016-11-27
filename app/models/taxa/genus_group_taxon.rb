@@ -11,6 +11,10 @@ class GenusGroupTaxon < Taxon
     species
   end
 
+  def childrens_rank_in_words
+    "species"
+  end
+
   def label
     italicize name
   end

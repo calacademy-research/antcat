@@ -33,6 +33,7 @@ class Subspecies < SpeciesGroupTaxon
     species || genus
   end
 
+  # TODO remove?
   def children
     Subspecies.none
   end

@@ -124,6 +124,10 @@ class Taxon < ApplicationRecord
     type.downcase
   end
 
+  def taxon_label
+    name.epithet_with_fossil_html fossil?
+  end
+
   # TODO rename. Candidate name: `author_citation`.
   def authorship_string
     return unless authorship_reference

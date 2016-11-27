@@ -1,7 +1,8 @@
 %ul#taxon-browser-tabs.tabs{"data-tabs" => ""}
   -@taxon_browser.panels.each do |panel|
     %li.tabs-title{class: ("is-active" if panel.open?)}
-      =link_to panel.title, "##{panel.id}"
+      -# Foudation Tabs requires unique IDs for each tabs. We can use anything.
+      =link_to panel.title, "##{panel.object_id}"
 
   %li.tab-toggler
     %span.label.secondary
@@ -10,7 +11,7 @@
 
 .tabs-content{"data-tabs-content" => "taxon-browser-tabs"}
   -@taxon_browser.panels.each do |panel|
-    .tabs-panel{id: panel.id, class: panel.content_css}
+    .tabs-panel{id: panel.object_id, class: panel.content_css}
       %ul.snaked.no-bullet.mr-scrollbary
         =extra_panel_links_for_selected panel.taxon
 

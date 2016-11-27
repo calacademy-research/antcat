@@ -20,6 +20,10 @@ class Family < Taxon
     subfamilies
   end
 
+  def childrens_rank_in_words
+    "subfamilies"
+  end
+
   def genera
     Genus.without_subfamily
   end

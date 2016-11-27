@@ -4,12 +4,8 @@
 module CatalogHelper
   def taxon_label_span taxon
     content_tag :span, class: css_classes_for_rank(taxon) do
-      taxon_label(taxon).html_safe
+      taxon.taxon_label
     end
-  end
-
-  def taxon_label taxon
-    taxon.name.epithet_with_fossil_html taxon.fossil?
   end
 
   def protonym_label protonym
