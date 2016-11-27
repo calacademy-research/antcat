@@ -14,7 +14,6 @@ class User < ActiveRecord::Base
   scope :order_by_name, -> { order(:name) }
   scope :editors, -> { where(can_edit: true) }
   scope :non_editors, -> { where(can_edit: [false, nil]) } # TODO only allow true/false?
-  scope :feedback_emails_recipients, -> { where(receive_feedback_emails: true) }
   scope :as_angle_bracketed_emails, -> { all.map(&:angle_bracketed_email).join(", ") }
 
   acts_as_reader
