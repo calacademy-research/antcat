@@ -15,12 +15,12 @@ class CatalogController < ApplicationController
   def show
   end
 
-  # This is basically "def toggle_show_valid_only", because that is
+  # This is basically "def toggle_show_invalid", because that is
   # currently the only "option". Maybe rename.
   def options
-    # The param in "catalog/options?valid_only=false" doesn't do anything,
+    # The param in "catalog/options?show_invalid=true" doesn't do anything,
     # it's only for making the URL more intuitive to users.
-    session[:show_valid_only] = !session[:show_valid_only]
+    session[:show_invalid] = !session[:show_invalid]
     redirect_to :back
   end
 
@@ -56,14 +56,8 @@ class CatalogController < ApplicationController
 
   private
     def setup_catalog
-      set_session
       set_taxon
       setup_panels
-    end
-
-    # TODO reverse name, so that this is not needed
-    def set_session
-      session[:show_valid_only] = true if session[:show_valid_only].nil?
     end
 
     def set_taxon
@@ -90,7 +84,7 @@ class CatalogController < ApplicationController
         # it makes more sense to just show "No valid child taxa".
       end.map do |taxon|
         children = taxon.children.displayable
-        children = children.valid if session[:show_valid_only]
+        children = children.valid unless session[:show_invalid]
         { selected: taxon, children: children }
       end
 
@@ -127,7 +121,7 @@ class CatalogController < ApplicationController
         children = @taxon.parent.displayable_subgenera
       end
 
-      children = children.valid if session[:show_valid_only]
+      children = children.valid unless session[:show_invalid]
       @panels << { selected: { title_for_panel: title },
                   children: children }
     end

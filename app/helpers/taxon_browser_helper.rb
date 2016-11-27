@@ -51,7 +51,8 @@ module TaxonBrowserHelper
   end
 
   def toggle_valid_only_link
-    showing = session[:show_valid_only]
+    showing = !session[:show_invalid]
+
     label = showing ? "show invalid" : "show valid only"
     link_to label, catalog_options_path(valid_only: showing)
   end
@@ -75,7 +76,7 @@ module TaxonBrowserHelper
   end
 
   def already_showing_invalid_taxa?
-    !session[:show_valid_only]
+    session[:show_invalid]
   end
 
   private

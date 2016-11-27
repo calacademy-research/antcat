@@ -313,10 +313,11 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "This must be the name of an existing taxon"
 
   # Fix a subspecies with no species record as a normal editor
-  # Pick a name that has no duplicates. It should have simple dialogs and then warp to a page that has the fix.
+  # Pick a name that has no duplicates.
+  # It should have simple dialogs and then warp to a page that has the fix.
   Scenario: Merging back when we have the same protonym
     Given there is a species "Atta major" with genus "Atta"
-    And there is a parentless subspecies "Atta major minor"
+    And there is a subspecies "Atta major minor" without a species
 
     When I go to the edit page for "Atta major minor"
     Then I should see "subspecies of (no species)"

@@ -37,36 +37,32 @@ describe CatalogController do
     before { @request.env["HTTP_REFERER"] = "http://antcat.org" }
 
     describe "toggles the session" do
-      before { get :options, valid_only: "true" }
+      before { get :options, show_invalid: "true" }
 
-      it { should set_session[:show_valid_only].to true }
+      it { should set_session[:show_invalid].to true }
     end
 
     describe "toggles back" do
       before do
-        get :options, valid_only: "true"
-        get :options, valid_only: "false"
+        get :options, show_invalid: "true"
+        get :options, show_invalid: "false"
       end
 
-      it { should set_session[:show_valid_only].to false }
+      it { should set_session[:show_invalid].to false }
     end
   end
 
   describe "#autocomplete" do
     it "works" do
-      atta = create_genus 'Atta'
-      attacus = create_genus 'Attacus'
-      ratta = create_genus 'Ratta'
-      nylanderia = create_genus 'Nylanderia'
+      create_genus 'Atta'
+      create_genus 'Ratta'
+      create_genus 'Nylanderia'
 
       get :autocomplete, q: "att", format: :json
       json = JSON.parse response.body
 
-      actual = json.map { |taxon| taxon["name"] }.sort
-      expected = [atta, attacus, ratta].map(&:name_html_cache).sort
-
-      expect(actual).to eq expected
-      expect(actual).to_not include nylanderia.name_cache
+      results = json.map { |taxon| taxon["name"] }.sort
+      expect(results).to eq ["<i>Atta</i>", "<i>Ratta</i>"]
     end
   end
 end
