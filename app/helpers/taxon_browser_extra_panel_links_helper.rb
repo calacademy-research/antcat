@@ -5,12 +5,11 @@ module TaxonBrowserExtraPanelLinksHelper
   def extra_panel_links_for_selected selected
     links = []
 
-    if selected.is_a?(Family) || selected.is_a?(Subfamily)
+    case selected
+    when Family, Subfamily
       links << all_genera_link(selected)
       links << incertae_sedis_link(selected)
-    end
-
-    if selected.is_a?(Genus)
+    when Genus
       links << all_taxa_link(selected)
       links << subgenera_link(selected)
     end
@@ -52,7 +51,7 @@ module TaxonBrowserExtraPanelLinksHelper
     end
 
     def extra_panel_link_css param
-      return "upcase selected" if params[:display] == param
+      return "upcase selected" if @taxon_browser.display == param
       "upcase white-label"
     end
 end
