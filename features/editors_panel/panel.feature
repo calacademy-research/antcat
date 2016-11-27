@@ -11,7 +11,7 @@ Feature: Editor's Panel
     And I should see "Batiatus added the journal Archibald Bulletin"
 
   Scenario: See most recent comments
-    Given Batiatus has commented "Cool" on a taissuesk with the title "Typos"
+    Given Batiatus has commented "Cool" on an issue with the title "Typos"
 
     When I go to the Editor's Panel page
     Then I should see "Most recent comments"

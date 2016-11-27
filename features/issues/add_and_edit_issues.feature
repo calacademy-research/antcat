@@ -52,24 +52,3 @@ Feature: Add and edit open issues
 
     When I go to the open issues page
     Then I should see the open issue "Add taxa from Aldous 2007"
-
-  Scenario: Using markdown
-    Given there is an open issue "Merge 'Giovanni' authors"
-    And there is a Giovanni reference
-
-    When I go to the issue page for "Merge 'Giovanni' authors"
-    And I follow "Edit"
-    And I fill in "issue_description" with "Ref: %reference7777"
-    And I press "Save"
-    Then I should see "Ref: Giovanni, 1809"
-
-  @javascript
-  Scenario: Previewing markdown
-    Given there is an open issue "Merge 'Giovanni' authors"
-    And there is a Giovanni reference
-
-    When I go to the issue page for "Merge 'Giovanni' authors"
-    And I follow "Edit"
-    And I fill in "issue_description" with "Ref: %reference7777"
-    And I follow "Preview"
-    Then I should see "Ref: Giovanni, 1809"
