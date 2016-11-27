@@ -7,8 +7,8 @@
     %h5 Unreviewed changes
     %ul.no-bullet
       %li
-        .label=@count[:open_tasks]
-        =link_to "Open tasks", tasks_path
+        .label=@count[:open_issues]
+        =link_to "Open issues", issues_path
       %li
         .label=@count[:unreviewed_references]
         =link_to "Unreviewed references", latest_additions_references_path

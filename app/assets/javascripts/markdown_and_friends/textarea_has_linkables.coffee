@@ -42,9 +42,9 @@ setupLinkables = =>
       at: '%i'
       limit: 10
       delay: 300
-      insertTpl: '%task${id}'
+      insertTpl: '%issue${id}'
       displayTpl: '<li><small>#${id}</small> ${title} <small>${status}</small></li>'
-      callbacks: reuseCallbacks "/tasks/autocomplete.json"
+      callbacks: reuseCallbacks "/issues/autocomplete.json"
 
     .atwho
       at: '%j'

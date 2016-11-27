@@ -79,11 +79,11 @@ describe AntcatMarkdown do
       end
     end
 
-    it "formats task ids" do
-      task = create :task
-      markdown = "%task#{task.id}"
+    it "formats issue ids" do
+      issue = create :issue
+      markdown = "%issue#{issue.id}"
 
-      expected = %Q[<p><a href="/tasks/#{task.id}">task ##{task.id} (Check synonyms)</a></p>\n]
+      expected = %Q[<p><a href="/issues/#{issue.id}">issue ##{issue.id} (Check synonyms)</a></p>\n]
       expect(AntcatMarkdown.render(markdown)).to eq expected
     end
 

@@ -90,7 +90,7 @@ class Comment < ActiveRecord::Base
 
     # TODO move somewhere.
     def notify_creator?
-      return unless commentable.class.in? [Task, SiteNotice, Feedback]
+      return unless commentable.class.in? [Issue, SiteNotice, Feedback]
       return if commentable.is_a?(Feedback) && commentable.user.blank?
       true
     end

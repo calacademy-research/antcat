@@ -11,17 +11,17 @@ Feature: Editor's Panel
     And I should see "Batiatus added the journal Archibald Bulletin"
 
   Scenario: See most recent comments
-    Given Batiatus has commented "Cool" on a task with the title "Typos"
+    Given Batiatus has commented "Cool" on a taissuesk with the title "Typos"
 
     When I go to the Editor's Panel page
     Then I should see "Most recent comments"
-    And I should see "Batiatus commented on the task Typos:"
+    And I should see "Batiatus commented on the issue Typos:"
 
   Scenario: See number of unreviewed changes
     Given a visitor has submitted a feedback with the comment "Fix spelling"
-    And Batiatus has commented "Cool" on a task with the title "Typos"
+    And Batiatus has commented "Cool" on an issue with the title "Typos"
 
     When I go to the Editor's Panel page
-    Then I should see "1 Open tasks"
+    Then I should see "1 Open issues"
     And I should see "0 Unreviewed references"
     And I should see "1 Pending user feedback emails"

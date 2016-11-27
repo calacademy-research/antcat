@@ -1,6 +1,6 @@
 Given(/^I have (?:an|another) unseen notification$/) do
   Notification.create! reason: :mentioned_in_thing,
-    attached: create(:task),
+    attached: create(:issue),
     user: User.find_by(name: "Archibald"),
     notifier: create(:user)
 end
@@ -13,8 +13,8 @@ Then(/^I should see (\d+) unread notifications?/) do |expected_count|
   all "table.notifications .antcat_icon.unseen", count: expected_count.to_i
 end
 
-Given(/^there is an open task "([^"]*)" created by "([^"]*)"$/) do |title, name|
-  create :task, title: title, adder: User.find_by(name: name)
+Given(/^there is an open issue "([^"]*)" created by "([^"]*)"$/) do |title, name|
+  create :issue, title: title, adder: User.find_by(name: name)
 end
 
 When(/^I write a new comment <at Batiatus's id> "([^"]*)"$/) do |text|

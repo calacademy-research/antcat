@@ -24,8 +24,8 @@ Feature: User page
     And I should see "Batiatus added the journal Archibald Bulletin"
 
   Scenario: See user's most recent comments
-    Given Batiatus has commented "Cool" on a task with the title "Typos"
+    Given Batiatus has commented "Cool" on an issue with the title "Typos"
 
     When I go to the user page for "Batiatus"
     Then I should see "Batiatus's most recent comments"
-    And I should see "Batiatus commented on the task Typos:"
+    And I should see "Batiatus commented on the issue Typos:"

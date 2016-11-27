@@ -104,16 +104,16 @@ Given(/^there is a tooltip for the feed$/) do
   end
 end
 
-# Task
-Given(/^there is an open task for the feed$/) do
+# Issue
+Given(/^there is an open issue for the feed$/) do
   Feed::Activity.without_tracking do
-    create :open_task, title: "Valid?"
+    create :open_issue, title: "Valid?"
   end
 end
 
-Given(/^there is a closed task for the feed$/) do
+Given(/^there is a closed issue for the feed$/) do
   Feed::Activity.without_tracking do
-    create :closed_task, title: "Valid?"
+    create :closed_issue, title: "Valid?"
   end
 end
 

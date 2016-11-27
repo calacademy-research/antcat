@@ -20,7 +20,7 @@ module NotificationsHelper
 
   def thing_link_label thing
     case thing
-    when Task       then "#{thing.title}"
+    when Issue      then "#{thing.title}"
     when SiteNotice then "#{thing.title}"
     when Feedback   then "feedback ##{thing.id}"
     end

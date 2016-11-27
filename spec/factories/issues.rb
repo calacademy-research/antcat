@@ -1,16 +1,16 @@
 FactoryGirl.define do
-  factory :task, aliases: [:open_task] do
+  factory :issue, aliases: [:open_issue] do
     association :adder, factory: :user
     status "open"
     title "Check synonyms"
     description "Joffre's brother told me these were synonyms."
 
-    factory :completed_task do
+    factory :completed_issue do
       status "completed"
       association :closer, factory: :user
     end
 
-    factory :closed_task do
+    factory :closed_issue do
       status "closed"
       association :closer, factory: :user
     end

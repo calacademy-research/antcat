@@ -1,15 +1,15 @@
 Feature: Features with comments
   As an AntCat editor
-  I want to comment on open tasks, user feedbacks and site notices
+  I want to comment on open issues, user feedbacks and site notices
   So that editors can track issues
 
   Background:
     Given I log in as a catalog editor named "Batiatus"
 
-  Scenario: Commenting on open tasks
-    Given there is an open task "Fix spelling"
+  Scenario: Commenting on open issues
+    Given there is an open issue "Fix spelling"
 
-    When I go to the open tasks page
+    When I go to the open issues page
     And I follow "Fix spelling"
     Then I should see a comments section
 

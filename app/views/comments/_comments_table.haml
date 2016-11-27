@@ -28,7 +28,7 @@
             -commentable_type = comment.commentable_type
             -if commentable
               =commentable_type.underscore.humanize.downcase
-              -link_title = if commentable_type.in? ["SiteNotice", "Task"]
+              -link_title = if commentable_type.in? ["SiteNotice", "Task", "Issue"]
                 -commentable.title
               -else
                 -"##{commentable.id}"

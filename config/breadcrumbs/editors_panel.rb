@@ -22,24 +22,24 @@ end
     parent :tooltips
   end
 
-crumb :tasks do
-  link "Open Tasks", tasks_path
+crumb :issues do
+  link "Open Issues", issues_path
   parent :editors_panel
 end
 
-  crumb :task do |task|
-    link "##{task.id}: #{task.title}", task_path(task)
-    parent :tasks
+  crumb :issue do |issue|
+    link "##{issue.id}: #{issue.title}", issue_path(issue)
+    parent :issues
   end
 
-    crumb :edit_task do |task|
+    crumb :edit_issue do |issue|
       link "Edit"
-      parent :task, task
+      parent :issue, issue
     end
 
-  crumb :new_task do |task|
+  crumb :new_issue do |issue|
     link "New"
-    parent :tasks
+    parent :issues
   end
 
 crumb :feed do

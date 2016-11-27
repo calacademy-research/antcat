@@ -147,7 +147,7 @@ AntCat::Application.routes.draw do
 
   resources :comments, only: [:index, :create]
 
-  # TODO nest more Editor's Panel-ish pages under this (tasks, site notices, etc).
+  # TODO nest more Editor's Panel-ish pages under this (issues, site notices, etc).
   get "panel", to: "editors_panels#index", as: "editors_panel"
   get "panel/invite_users", to: "editors_panels#invite_users", as: "invite_users"
   get :notifications, to: "notifications#index"
@@ -176,7 +176,7 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :tasks do
+  resources :issues do
     collection do
       get :autocomplete
     end

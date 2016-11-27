@@ -1,6 +1,6 @@
 class Notification < ActiveRecord::Base
   # "mentioned_in_thing" means something other than a comment. For example
-  # in the description of a task or in the message of a site notice.
+  # in the description of an issue or in the message of a site notice.
   REASONS = %w( was_replied_to
                 mentioned_in_comment
                 mentioned_in_thing

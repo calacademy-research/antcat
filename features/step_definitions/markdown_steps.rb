@@ -1,7 +1,7 @@
 # TODO DRY w.r.t `notifications_steps.rb`.
 
 Given(/^I am on a page with a textarea with markdown preview and autocompletion$/) do
-  step %{I go to the open tasks page}
+  step %{I go to the open issues page}
   step %{I follow "New"}
 end
 
@@ -12,12 +12,12 @@ end
 
 When(/^I fill in the markdown textarea with "@user" followed by my user id$/) do
   user = User.last
-  step %{I fill in "task_description" with "@user#{user.id}"}
+  step %{I fill in "issue_description" with "@user#{user.id}"}
 end
 
 When(/^I fill in the markdown textarea with "@taxon" followed by Eciton's id$/) do
   eciton = Taxon.find_by name_cache: "Eciton"
-  step %{I fill in "task_description" with "%taxon#{eciton.id}"}
+  step %{I fill in "issue_description" with "%taxon#{eciton.id}"}
 end
 
 # HACK because the below selects the wrong suggestion (which is hidden).
@@ -41,7 +41,7 @@ Then(/^the markdown textarea should contain a markdown link to Eciton$/) do
 end
 
 When(/^I clear the markdown textarea$/) do
-  step %{I fill in "task_description" with "%rsomething_to_clear_the_suggestions"}
+  step %{I fill in "issue_description" with "%rsomething_to_clear_the_suggestions"}
   markdown_textarea.set ""
 end
 
@@ -54,7 +54,7 @@ end
 When(/^I fill in the markdown textarea with markdown links for the above$/) do
   markdown_textarea.set <<-TEXT.squish
     %journal#{Journal.first.id}
-    %task#{Task.first.id}
+    %issue#{Issue.first.id}
     %feedback#{Feedback.first.id}
   TEXT
 end

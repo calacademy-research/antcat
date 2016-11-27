@@ -10,7 +10,7 @@ class UndoTracker
 
   # Maybe https://github.com/calacademy-research/antcat/issues/164 is related to not
   # clearing the RequestStore? `:current_change_id` is only cleared in `Change#undo`,
-  # which is why versions of models such as `Feedback` and `Task` may have
+  # which is why versions of models such as `Feedback` and `Issue` may have
   # `change_id`s (they should not).
   def self.clear_change
     RequestStore.store[:current_change_id] = nil

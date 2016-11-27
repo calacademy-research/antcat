@@ -84,15 +84,15 @@ module NavigationHelpers
     when /^the activity feed$/
       "/feed"
 
-    when /^the open tasks page$/
-      "/tasks"
-    when /^the task (entry|page) for "([^"]*)"$/
-      task = Task.find_by(title: $2)
-      "/tasks/#{task.id}"
-    when /^the most recent task$/
-      "/tasks/#{Task.last.id}"
-    when /^the new task form$/
-      "/tasks/new"
+    when /^the open issues page$/
+      "/issues"
+    when /^the issue (entry|page) for "([^"]*)"$/
+      issue = Issue.find_by(title: $2)
+      "/issues/#{issue.id}"
+    when /^the most recent issue$/
+      "/issues/#{Issue.last.id}"
+    when /^the new issue form$/
+      "/issues/new"
 
     when /^the feedback index$/
       "/feedback"

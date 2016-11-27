@@ -7,7 +7,7 @@ Feature: Preview markdown
     Given there is a Giovanni reference
     And I am on a page with a textarea with markdown preview and autocompletion
 
-    When I fill in "task_description" with "See: %reference7777"
+    When I fill in "issue_description" with "See: %reference7777"
     And I follow "Preview"
     Then I should see "See: Giovanni, 1809"
 
@@ -32,9 +32,9 @@ Feature: Preview markdown
     Then I should see a link to the user page for "Archibald"
 
   # Testing multiple at the same time because JS tests are painfully slow.
-  Scenario: Previewing journal, task and feedback markdown
+  Scenario: Previewing journal, issue and feedback markdown
     Given a journal exists with a name of "Ant Science 2000"
-    And there is a closed task "Cleanup synonyms"
+    And there is a closed issue "Cleanup synonyms"
     And a visitor has submitted a feedback
     And I am on a page with a textarea with markdown preview and autocompletion
 

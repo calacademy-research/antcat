@@ -3,7 +3,7 @@
 # code, but it's still in the database (to be migrated) and some views, etc.
 # Better because less complicated.
 
-class Task < ActiveRecord::Base
+class Issue < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
   include Feed::Trackable
   include SendsNotifications
@@ -29,7 +29,7 @@ class Task < ActiveRecord::Base
   acts_as_commentable
   enable_user_notifications_for :description
   has_paper_trail
-  tracked on: :all, parameters: ->(task) do { title: task.title } end
+  tracked on: :all, parameters: ->(issue) do { title: issue.title } end
 
   def open?
     status == "open"

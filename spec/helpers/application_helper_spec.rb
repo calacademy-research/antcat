@@ -68,15 +68,15 @@ describe ApplicationHelper do
 
     describe "arguments" do
       it "handles a single string" do
-        expect(icon_classes "task").to eq "antcat_icon task"
+        expect(icon_classes "issue").to eq "antcat_icon issue"
       end
 
       it "handles two strings" do
-        expect(icon_classes "task open").to eq "antcat_icon task open"
+        expect(icon_classes "issue open").to eq "antcat_icon issue open"
       end
 
       it "handles arrays" do
-        expect(icon_classes ["task open"]).to eq "antcat_icon task open"
+        expect(icon_classes ["issue open"]).to eq "antcat_icon issue open"
       end
     end
 

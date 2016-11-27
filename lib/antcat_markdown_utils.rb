@@ -22,7 +22,7 @@ class AntcatMarkdownUtils
     parse_taxon_ids!
     parse_reference_ids!
     parse_journal_ids!
-    parse_task_ids!
+    parse_issue_ids!
     parse_feedback_ids!
     parse_github_ids!
     parse_user_ids!
@@ -65,15 +65,15 @@ class AntcatMarkdownUtils
       end
     end
 
-    # Matches: %task123
-    # Renders: a link to the task.
-    def parse_task_ids!
-      @full_document.gsub!(/%task(\d+)/) do
-        if Task.exists? $1
-          task = Task.find($1)
-          link_to "task ##{$1} (#{task.title})", task_path($1)
+    # Matches: %issue123
+    # Renders: a link to the issue.
+    def parse_issue_ids!
+      @full_document.gsub!(/%issue(\d+)/) do
+        if Issue.exists? $1
+          issue = Issue.find($1)
+          link_to "issue ##{$1} (#{issue.title})", issue_path($1)
         else
-          broken_markdown_link "task", $1
+          broken_markdown_link "issue", $1
         end
       end
     end

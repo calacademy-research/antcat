@@ -6,8 +6,8 @@ Feature: Features with markdown and autocompletion
     When I go to the new site notice form
     Then there should be a textarea with markdown and autocompletion
 
-  Scenario: Tasks
-    When I go to the new task form
+  Scenario: Issues
+    When I go to the new issue form
     Then there should be a textarea with markdown and autocompletion
 
   Scenario: Comments

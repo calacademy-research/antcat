@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161124055256) do
+ActiveRecord::Schema.define(version: 20161126130546) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -122,6 +122,19 @@ ActiveRecord::Schema.define(version: 20161124055256) do
   end
 
   add_index "feedbacks", ["user_id"], name: "index_feedbacks_on_user_id", using: :btree
+
+  create_table "issues", force: :cascade do |t|
+    t.integer  "closer_id",   limit: 4
+    t.integer  "adder_id",    limit: 4
+    t.string   "status",      limit: 255,   default: "open"
+    t.string   "title",       limit: 255
+    t.text     "description", limit: 65535
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
+  add_index "issues", ["adder_id"], name: "index_issues_on_adder_id", using: :btree
+  add_index "issues", ["closer_id"], name: "index_issues_on_closer_id", using: :btree
 
   create_table "journals", force: :cascade do |t|
     t.string   "name",           limit: 255
@@ -311,19 +324,6 @@ ActiveRecord::Schema.define(version: 20161124055256) do
   add_index "synonyms", ["junior_synonym_id", "senior_synonym_id"], name: "index_synonyms_on_junior_synonym_id_and_senior_synonym_id", using: :btree
   add_index "synonyms", ["junior_synonym_id"], name: "index_synonyms_on_junior_synonym_id", using: :btree
   add_index "synonyms", ["senior_synonym_id"], name: "index_synonyms_on_senior_synonym_id", using: :btree
-
-  create_table "tasks", force: :cascade do |t|
-    t.integer  "closer_id",   limit: 4
-    t.integer  "adder_id",    limit: 4
-    t.string   "status",      limit: 255,   default: "open"
-    t.string   "title",       limit: 255
-    t.text     "description", limit: 65535
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
-  end
-
-  add_index "tasks", ["adder_id"], name: "index_tasks_on_adder_id", using: :btree
-  add_index "tasks", ["closer_id"], name: "index_tasks_on_closer_id", using: :btree
 
   create_table "taxa", force: :cascade do |t|
     t.string   "type",                            limit: 255
