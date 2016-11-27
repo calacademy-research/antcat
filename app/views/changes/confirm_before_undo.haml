@@ -1,0 +1,15 @@
+-@title = "Confirm before undo"
+-breadcrumb :confirm_before_undo_change, @change
+
+%h5 This undo will roll back the following changes:
+%ul
+-@undo_items.each do |undo_item|
+  %li
+    =undo_item[:name]
+    =format_change_type_verb undo_item[:change_type]
+    by
+    =undo_item[:user_name]
+    on
+    =undo_item[:change_timestamp]
+
+=link_to "Undo!", undo_change_path(@change), method: :put, class: "btn-undo"

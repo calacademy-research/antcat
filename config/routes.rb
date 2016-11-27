@@ -14,7 +14,7 @@ AntCat::Application.routes.draw do
     member do
       put :approve
       put :undo
-      get :undo_items
+      get :confirm_before_undo
     end
   end
 

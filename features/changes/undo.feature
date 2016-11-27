@@ -38,12 +38,12 @@ Feature: Workflow
     And I should see "Mark Wilden changed Formicinae"
     And I should see the notes "asdfgh" in the changes
 
-    When I follow "Undo"
+    When I follow "Undo..."
     Then I should see "This undo will roll back the following changes"
     And I should see "Formicinae"
     And I should see "changed by Mark Wilden"
 
-    When I press "Undo!"
+    When I follow "Undo!"
     Then I should not see "Formicinae"
     And I should not see "asdfgh"
 
@@ -98,10 +98,10 @@ Feature: Workflow
     Then I should see "an obsolete combination of Chatsworth major"
 
     When I go to the changes page
-    And I click "[data-undo-id='2']"
+    And I follow the first "Undo..."
     Then I should see "This undo will roll back the following changes"
 
-    When I press "Undo!"
+    When I follow "Undo!"
     Then I should see the genus "Becton" in the changes
     And I should see the name "major" in the changes
     And I should not see "Chatsworth"
@@ -110,10 +110,10 @@ Feature: Workflow
     Then I should see "Becton major" in the header
 
     When I go to the changes page
-    Then I click "[data-undo-id='1']"
+    And I follow the first "Undo..."
     Then I should see "This undo will roll back the following changes"
 
-    When I press "Undo!"
+    When I follow "Undo!"
     Then I should not see "Becton"
     And I should not see "major"
     And I should not see "Chatsworth"
@@ -151,10 +151,10 @@ Feature: Workflow
 
     When I save my changes
     And I go to the changes page
-    And I click "[data-undo-id='1']"
+    And I follow the second "Undo..."
     Then I should see "This undo will roll back the following changes"
 
-    When I press "Undo!"
+    When I follow "Undo!"
     Then I should not see "Becton"
     And I should not see "major"
     And I should not see "Chatsworth"
@@ -192,8 +192,8 @@ Feature: Workflow
     And I should not see "Tactania"
 
     When I go to the changes page
-    And I click "[data-undo-id='1']"
-    And I press "Undo!"
+    And I follow the first "Undo..."
+    And I follow "Undo!"
     And I go to the catalog page for "Formicidae"
     Then I should see "Ancatinae"
 

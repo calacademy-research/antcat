@@ -74,7 +74,7 @@ class Change < ActiveRecord::Base
     create_activity :undo_change
   end
 
-  # TOTO maybe move back some of this to the controller.
+  # TODO return as ActiveRecord instead of hash.
   def undo_items
     changes = []
     change_id_set = find_future_changes

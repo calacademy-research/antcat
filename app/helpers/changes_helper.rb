@@ -21,6 +21,11 @@ module ChangesHelper
     string.join(', ').html_safe
   end
 
+  def confirm_before_undo_button change
+    return unless user_can_edit?
+    link_to 'Undo...', confirm_before_undo_change_path(change), class: "btn-undo"
+  end
+
   def approve_all_changes_button
     return unless user_is_superadmin?
 
@@ -34,5 +39,14 @@ module ChangesHelper
       link_to('All Changes', changes_path),
       link_to('Unreviewed Changes', unreviewed_changes_path)
     ]
+  end
+
+  # TODO copy-pasted from `ChangesDecorator`.
+  def format_change_type_verb change_type
+    case change_type
+    when "create" then "added"
+    when "delete" then "deleted"
+    else               "changed"
+    end
   end
 end

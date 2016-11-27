@@ -46,6 +46,10 @@ When(/^(?:|I )follow the first "([^"]*)"$/) do |link|
   first(:link, link).click
 end
 
+When(/^(?:|I )follow the second "([^"]*)"$/) do |link|
+  all(:link, link)[1].click
+end
+
 When(/^(?:|I )follow "([^"]*)"$/) do |link|
   click_link link
 end
