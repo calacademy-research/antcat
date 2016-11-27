@@ -22,7 +22,7 @@
 
     .tabs-panel{id: "panel-#{index}", class: css_classes}
       %ul.snaked.no-bullet.mr-scrollbary
-        =render "rank_special_cases", selected: selected
+        =extra_panel_links_for_selected selected
 
         -children = sorted_children_for_panel selected, panel[:children]
         -children.each do |child_taxon|

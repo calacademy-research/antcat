@@ -83,12 +83,10 @@ class CatalogController < ApplicationController
     # Species -> Genus -> Tribe -> Subfamily -> Family.
     # See https://github.com/calacademy-research/antcat/wiki/For-developers
     def main_progression_panels
-      # `@self_and_parents` may look like this: `[formicidae, myrmicinae,
-      # attini, atta, atta_colombica, atta_colombica_subspecius]`.
-      @self_and_parents = @taxon.self_and_parents
+      @self_and_parents = self_and_parents
 
       # We do not want to include all ranks in the panels.
-      @self_and_parents.reject do |taxon|
+      self_and_parents.reject do |taxon|
         # Never show the subspecies panel (has no children).
         taxon.is_a?(Subspecies) ||
 
@@ -149,5 +147,20 @@ class CatalogController < ApplicationController
     def subgenera_special_case
       return unless @taxon.is_a? Subgenus
       params[:display] = "subgenera_in_parent_genus"
+    end
+
+    # `#self_and_parents` may look like this: `[formicidae, myrmicinae,
+    # attini, atta, atta_colombica, atta_colombica_subspecius]`.
+    def self_and_parents
+      parents = []
+      current_taxon = @taxon
+
+      while current_taxon
+        parents << current_taxon
+        current_taxon = current_taxon.parent
+      end
+
+      # Reversed to put Formicidae in the first panel and itself in last.
+      parents.reverse
     end
 end
