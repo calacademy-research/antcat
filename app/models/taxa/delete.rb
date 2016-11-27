@@ -1,3 +1,5 @@
+# TODO add `before_destroy :check_not_referenced`, but allow suppressing it.
+
 module Taxa::Delete
   extend ActiveSupport::Concern
 

@@ -31,6 +31,7 @@ class Taxon < ApplicationRecord
     :type_name_id, :type_specimen_code, :type_specimen_repository, :type_specimen_url,
     :type_taxt, :unresolved_homonym, :verbatim_type_locality
 
+  # TODO remove column `:collision_merge_id` (not used, all nil).
   # TODO maybe explain more of these. Here or elsewhere.
   # `origin`: if it's generated, where did it come from? string (e.g.: 'hol')
   # `display`: if false, won't show in the taxon browser. Used for misspellings and such.

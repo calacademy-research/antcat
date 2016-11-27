@@ -6,7 +6,7 @@
 
 class TaxaController < ApplicationController
   before_action :authenticate_editor
-  before_action :authenticate_superadmin, only: [:destroy]
+  before_action :authenticate_superadmin, only: [:destroy, :confirm_before_delete]
   before_action :redirect_by_parent_name_id, only: :new
   before_action :set_previous_combination, only: [:new, :create, :edit, :update]
   before_action :set_taxon, except: [:new, :create, :show]
@@ -65,15 +65,16 @@ class TaxaController < ApplicationController
     render :edit
   end
 
+  # Return all the taxa that would be deleted if we delete this
+  # particular ID, inclusive. Same as children, really.
+  def confirm_before_delete
+    @delete_impact_list = @taxon.delete_impact_list
+    render "confirm_before_delete"
+  end
+
   def destroy
     @taxon.delete_taxon_and_children
-
-    flash[:notice] = "Taxon was successfully deleted."
-
-    respond_to do |format|
-      format.html { redirect_to root_url }
-      format.json { head :no_content }
-    end
+    redirect_to root_path, notice: "Taxon was successfully deleted."
   end
 
   # "Light version" of `#destroy` (which is for superadmins only). A button to this
@@ -115,13 +116,6 @@ class TaxaController < ApplicationController
     end
     @taxon.elevate_to_species
     redirect_to catalog_path(@taxon), notice: "Subspecies was successfully elevated to a species."
-  end
-
-  # Return all the taxa that would be deleted if we delete this
-  # particular ID, inclusive. Same as children, really.
-  def delete_impact_list
-    taxon_array = @taxon.delete_impact_list
-    render json: taxon_array, status: :ok
   end
 
   # Show children on another page for performance reasons.

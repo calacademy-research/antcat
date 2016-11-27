@@ -1,9 +1,9 @@
-@feed @javascript
+@feed
 Feature: Feed (taxa)
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @search
+  @javascript @search
   Scenario: Added taxon
     Given activity tracking is disabled
       And there is a subfamily "Formicinae"
@@ -30,6 +30,7 @@ Feature: Feed (taxa)
     And I go to the activity feed
     Then I should see "Archibald added the genus Atta to the subfamily Formicinae" and no other feed items
 
+  @javascript
   Scenario: Edited taxon
     Given I add a taxon for the feed
 
@@ -46,11 +47,12 @@ Feature: Feed (taxa)
     And I log in as a superadmin named "Archibald"
 
     When I go to the catalog page for "Antcatinae"
-      And I press "Delete"
-      And I press "Delete?"
+      And I follow "Delete..."
+      And I follow "Confirm and delete"
     And I go to the activity feed
     Then I should see "Archibald deleted the subfamily Antcatinae" and no other feed items
 
+  @javascript
   Scenario: Elevated subspecies to species
     Given activity tracking is disabled
       And there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
@@ -63,6 +65,7 @@ Feature: Feed (taxa)
     And I go to the activity feed
     Then I should see "Archibald elevated the subspecies Solenopsis speccus subbus to the rank of species (now Solenopsis subbus)" and no other feed items
 
+  @javascript
   Scenario: Converted species to subspecies
     Given activity tracking is disabled
       And there is a species "Camponotus dallatorei" with genus "Camponotus"

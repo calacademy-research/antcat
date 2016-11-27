@@ -7,10 +7,10 @@ module Taxa::References
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id]
 
-  def references options = {}
+  def references omit_taxt: false
     references = []
     references.concat references_in_taxa
-    references.concat references_in_taxt unless options[:omit_taxt]
+    references.concat references_in_taxt unless omit_taxt
     references.concat references_in_synonyms
   end
 

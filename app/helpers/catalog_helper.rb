@@ -44,11 +44,9 @@ module CatalogHelper
     end
   end
 
-  def link_to_superadmin_delete_taxon taxon
+  def confirm_before_superadmin_delete_button taxon
     return unless user_is_superadmin?
-
-    link_to 'Delete', "#", id: "delete_button", class: "btn-delete",
-      data: { 'delete-location' => taxa_path(taxon), "taxon-id" => taxon.id }
+    link_to 'Delete...', confirm_before_delete_taxa_path(taxon), class: "btn-delete"
   end
 
   def show_full_statistics? taxon

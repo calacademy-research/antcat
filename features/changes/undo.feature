@@ -1,4 +1,4 @@
-@javascript @papertrail
+@papertrail
 Feature: Workflow
   As an editor of AntCat
   I want to change a taxon's parent
@@ -23,6 +23,7 @@ Feature: Workflow
   # undo first change to species b
   # see what happens!
 
+  @javascript
   Scenario: Changing a taxon and seeing it on the Changes page, undoing it
     When I go to the catalog page for "Formicinae"
     And I press "Edit"
@@ -58,6 +59,7 @@ Feature: Workflow
   #  this where we undo the most recent and then there is one,
   # then the next most recent and there are none, and we're back to baseline.
 
+  @javascript
   Scenario: Changing a species's genus twice by using the helper link, undo twice
     Given there is an original species "Atta major" with genus "Atta"
     And there is a genus "Becton"
@@ -121,6 +123,7 @@ Feature: Workflow
     When I go to the catalog page for "Atta major"
     Then I should see "Atta major" in the header
 
+  @javascript
   Scenario: Changing a species's genus twice by using the helper link, undo oldest, restored to original condition.
     Given there is an original species "Atta major" with genus "Atta"
     And there is a genus "Becton"
@@ -182,8 +185,8 @@ Feature: Workflow
     Then I should see "Antcatia"
     And I should see "Tactania"
 
-    When I press "Delete"
-    And I press "Delete?"
+    When I follow "Delete..."
+    And I follow "Confirm and delete"
     And I go to the catalog page for "Formicidae"
     Then I should not see "Ancatinae"
 

@@ -71,6 +71,7 @@ AntCat::Application.routes.draw do
   resources :taxa, except: [:index, :show] do
     member do
       get :delete_impact_list
+      get :confirm_before_delete
       get :update_parent # TODO change to put
       put :elevate_to_species
       delete :destroy_unreferenced

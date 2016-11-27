@@ -4,8 +4,6 @@
 -content_for :head do
   =stylesheet_link_tag "catalog_only"
   =javascript_include_tag "controllers/catalog/show/catalog_splitter"
-  -if user_is_superadmin?
-    =javascript_include_tag "controllers/catalog/show/superadmin_delete_button"
 
 #taxon_description
   .title.show-for-large
@@ -21,5 +19,3 @@
 #taxon_browser.callout
   =render "taxon_key"
   =render "taxon_browser", panels: @panels, self_and_parents: @self_and_parents
-
-#delete_message.delete-modal{type: 'hidden'}

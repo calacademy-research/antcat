@@ -80,7 +80,6 @@ class Change < ActiveRecord::Base
     change_id_set = find_future_changes
     change_id_set.each do |current_change_id|
       # Could be already undone.
-      #current_change = Change.find current_change_id
       current_change = Change.find_by id: current_change_id
       next unless current_change
 
