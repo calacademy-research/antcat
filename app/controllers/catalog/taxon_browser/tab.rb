@@ -1,6 +1,17 @@
+# TODO convert to a module?
+# TODO rename `@children`?
+# TODO rename `@tab_taxon`?
+
+# Abstract class subclassed by the other two tab types.
+#
+# * `@children` are all the taxa shown when the tab is active.
+# * `@tab_taxon` is the "owner" or "parent" of the taxa in the tab.
+# * `@taxon` -- there's no such thing here!
+
 module Catalog::TaxonBrowser
   class Tab
     attr_accessor :tab_taxon
+
     delegate :display, :selected_in_tab?, :tab_open?,
       :show_invalid?, to: :@taxon_browser
 

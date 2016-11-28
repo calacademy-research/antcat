@@ -1,9 +1,12 @@
+# A `TaxonTab` requires a taxon for which `#children` returns something.
+# It formats the title of the tab, prepares the list of children,
+# and some bonus stuff.
+
 module Catalog::TaxonBrowser
   class TaxonTab < Tab
     def initialize tab_taxon, taxon_browser
       @tab_taxon = tab_taxon
-      children = tab_taxon.children.displayable
-      super children, taxon_browser
+      super tab_taxon.children.displayable, taxon_browser
     end
 
     def title

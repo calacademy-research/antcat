@@ -1,6 +1,10 @@
+# TODO rename `@display`?
+
+# This class is responsibe for preparing all tabs for `_taxon_browser.haml`.
+
 module Catalog::TaxonBrowser
   class Browser
-    attr_accessor :tabs, :display
+    attr_reader :tabs, :display
 
     def initialize taxon, show_invalid, display
       @taxon = taxon
@@ -15,7 +19,7 @@ module Catalog::TaxonBrowser
     end
 
     def selected_in_tab? taxon
-      taxon.in? selected_in_tabs
+      taxon.in? taxon_and_ancestors
     end
 
     def tab_open? tab
@@ -44,7 +48,7 @@ module Catalog::TaxonBrowser
       # See https://github.com/calacademy-research/antcat/wiki/For-developers
       def taxa_for_tabs
         # We do not want to include all ranks in the tabs.
-        selected_in_tabs.reject do |taxon|
+        taxon_and_ancestors.reject do |taxon|
           # Never show the [children of] subspecies tab (has no children).
           taxon.is_a?(Subspecies) ||
 
@@ -56,21 +60,19 @@ module Catalog::TaxonBrowser
         end
       end
 
-      def selected_in_tabs
-        @selected_in_tabs ||= taxon_and_parents
-      end
+      def taxon_and_ancestors
+        return @_taxon_and_ancestors if defined? @_taxon_and_ancestors
 
-      def taxon_and_parents
-        parents = []
+        @_taxon_and_ancestors = []
         current_taxon = @taxon
 
         while current_taxon
-          parents << current_taxon
+          @_taxon_and_ancestors << current_taxon
           current_taxon = current_taxon.parent
         end
 
         # Reversed to put Formicidae in the first tab and itself in last.
-        parents.reverse
+        @_taxon_and_ancestors.reverse
       end
   end
 end

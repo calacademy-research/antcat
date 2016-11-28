@@ -15,6 +15,7 @@ module TaxonBrowserHelper
     end
   end
 
+  # TODO try to move part of this to `Catalog::TaxonBrowser`.
   # Some taxon tabs should have links to extra tabs.
   def links_to_extra_tabs selected
     links = []

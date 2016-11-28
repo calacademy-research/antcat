@@ -12,12 +12,12 @@ class CatalogController < ApplicationController
   def index
     @taxon = Family.first
 
-    taxon_browser
+    setup_taxon_browser
     render 'show'
   end
 
   def show
-    taxon_browser
+    setup_taxon_browser
   end
 
   def show_valid_only
@@ -63,7 +63,7 @@ class CatalogController < ApplicationController
       @taxon = Taxon.find params[:id]
     end
 
-    def taxon_browser
+    def setup_taxon_browser
       @taxon_browser = Catalog::TaxonBrowser::Browser.new @taxon,
         session[:show_invalid], params[:display].try(:to_sym)
     end
