@@ -20,12 +20,13 @@ class CatalogController < ApplicationController
     taxon_browser
   end
 
-  # This is basically "def toggle_show_invalid", because that is
-  # currently the only "option". Maybe rename.
-  def options
-    # The param in "catalog/options?show_invalid=true" doesn't do anything,
-    # it's only for making the URL more intuitive to users.
-    session[:show_invalid] = !session[:show_invalid]
+  def show_valid_only
+    session[:show_invalid] = false
+    redirect_to :back
+  end
+
+  def show_invalid
+    session[:show_invalid] = true
     redirect_to :back
   end
 

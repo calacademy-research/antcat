@@ -7,7 +7,7 @@ module Catalog::TaxonBrowser
     def initialize children, taxon_browser
       @taxon_browser = taxon_browser
       @children = children
-      @children = children.valid if show_invalid?
+      @children = children.valid unless show_invalid?
     end
 
     def each_child

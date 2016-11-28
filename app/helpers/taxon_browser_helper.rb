@@ -5,16 +5,18 @@ module TaxonBrowserHelper
     link_to taxon.taxon_label, catalog_path(taxon), class: classes
   end
 
-  def toggle_valid_only_link
-    showing = !session[:show_invalid]
+  def toggle_invalid_or_valid_only_link label = nil
+    showin_invalid = @taxon_browser.show_invalid?
 
-    label = showing ? "show invalid" : "show valid only"
-    link_to label, catalog_options_path(valid_only: showing)
+    if showin_invalid
+      link_to (label.presence || "show valid only"), catalog_show_valid_only_path
+    else
+      link_to (label.presence || "show invalid"), catalog_show_invalid_path
+    end
   end
 
-  # Some taxon browser tabs have extra links which
-  # only are applicable to some ranks.
-  def extra_tab_links selected
+  # Some taxon tabs should have links to extra tabs.
+  def links_to_extra_tabs selected
     links = []
 
     case selected

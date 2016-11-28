@@ -7,13 +7,13 @@
   %li.tab-toggler
     %span.label.secondary
       =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon_key" }
-    %span.label.secondary=toggle_valid_only_link
+    %span.label.secondary=toggle_invalid_or_valid_only_link
 
 .tabs-content{"data-tabs-content" => "taxon-browser-tabs"}
   -@taxon_browser.tabs.each do |tab|
     .tabs-panel{id: tab.object_id, class: ("is-active" if tab.open?)}
       %ul.snaked.no-bullet.mr-scrollbary
-        =extra_tab_links tab.tab_taxon
+        =links_to_extra_tabs tab.tab_taxon
 
         -tab.each_child do |child, is_selected|
           %li{class: ("selected" if is_selected)}
@@ -25,4 +25,4 @@
         -if tab.notify_about_no_valid_children?
           %li No valid child taxa
           -unless @taxon_browser.show_invalid? # Link unless already showing invalid.
-            %li=link_to "Show invalid?", catalog_options_path(valid_only: false)
+            %li=toggle_invalid_or_valid_only_link "Show invalid?"

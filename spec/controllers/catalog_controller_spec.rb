@@ -2,26 +2,23 @@ require 'spec_helper'
 
 describe CatalogController do
   describe 'GET #index' do
-    describe "handle non-existing family" do
-      context "family exists" do
-        before do
-          create :family
-          get :index
-        end
-
-        it { should render_template('show') }
+    context "family exists" do
+      before do
+        create :family
+        get :index
       end
 
-      context "without a family existing in the database" do
-        before { get :index }
+      it { should render_template('show') }
+    end
 
-        it { should render_template('family_not_found') }
-      end
+    context "without a family existing in the database" do
+      before { get :index }
+      it { should render_template('family_not_found') }
     end
   end
 
   describe 'GET #show' do
-    describe "RecordNotFound" do
+    context "RecordNotFound" do
       before { create :family }
 
       it "raises on taxon not found (=404 in prod)" do
@@ -30,22 +27,17 @@ describe CatalogController do
     end
   end
 
-  describe "valid_only toggler" do
+  describe "#show_valid_only and #show_invalid" do
     let!(:taxon) { create :family }
     before { @request.env["HTTP_REFERER"] = "http://antcat.org" }
 
-    describe "toggles the session" do
-      before { get :options, show_invalid: "true" }
-
+    describe "#show_invalid" do
+      before { get :show_invalid }
       it { should set_session[:show_invalid].to true }
     end
 
-    describe "toggles back" do
-      before do
-        get :options, show_invalid: "true"
-        get :options, show_invalid: "false"
-      end
-
+    describe "#show_valid_only" do
+      before { get :show_valid_only }
       it { should set_session[:show_invalid].to false }
     end
   end

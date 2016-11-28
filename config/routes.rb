@@ -29,7 +29,8 @@ AntCat::Application.routes.draw do
 
   namespace :catalog do
     get :autocomplete
-    get :options
+    get :show_invalid
+    get :show_valid_only
     get "search", to: "search#index"
     get "search/quick_search", to: "search#quick_search", as: "quick_search"
   end
