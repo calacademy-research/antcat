@@ -24,5 +24,5 @@
         -# "show invalid", or that the taxon is an invalid subfamily/tribe/genus.
         -if tab.notify_about_no_valid_children?
           %li No valid child taxa
-          -unless already_showing_invalid_taxa?
+          -unless @taxon_browser.show_invalid? # Link unless already showing invalid.
             %li=link_to "Show invalid?", catalog_options_path(valid_only: false)

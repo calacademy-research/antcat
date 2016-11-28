@@ -2,10 +2,10 @@ module Catalog
   class TaxonBrowser
     attr_accessor :tabs, :display
 
-    def initialize taxon, show_invalid, display_param
+    def initialize taxon, show_invalid, display
       @taxon = taxon
       @show_invalid = show_invalid
-      @display = default_or_display display_param
+      @display = default_or_display display
 
       setup_tabs
     end
@@ -27,15 +27,15 @@ module Catalog
         case @taxon
         when Subfamily then :all_genera_in_subfamily if display.blank?
         when Subgenus  then :subgenera_in_parent_genus
-        end || display.try(:to_sym)
+        end || display
       end
 
       def setup_tabs
         @tabs = taxa_for_tabs.map do |taxon|
-          TaxonTab.new(taxon, self)
+          TaxonTab.new taxon, self
         end
 
-        extra_tab = ExtraTab.create @taxon, @display, self
+        extra_tab = ExtraTab.create @taxon, self
         @tabs << extra_tab if extra_tab
       end
 
@@ -77,16 +77,13 @@ end
 
 class TaxonBrowserTab
   attr_accessor :tab_taxon
-  delegate :display, :selected_in_tab?, :tab_open?, :show_invalid?,
-    to: :@taxon_browser
+  delegate :display, :selected_in_tab?, :tab_open?,
+    :show_invalid?, to: :@taxon_browser
 
   def initialize children, taxon_browser
     @taxon_browser = taxon_browser
-    @children = if show_invalid?
-                  children
-                else
-                  children.valid
-                end
+    @children = children
+    @children = children.valid if show_invalid?
   end
 
   def each_child
@@ -141,12 +138,12 @@ class TaxonTab < TaxonBrowserTab
 end
 
 class ExtraTab < TaxonBrowserTab
-  def self.create taxon, display, taxon_browser
-    return unless display
+  def self.create taxon, taxon_browser
+    return unless taxon_browser.display
 
     label = taxon.taxon_label
 
-    title, children = case display
+    title, children = case taxon_browser.display
       when :incertae_sedis_in_family, :incertae_sedis_in_subfamily
         [ "Genera <i>incertae sedis</i> in #{label}",
           taxon.genera_incertae_sedis_in ]

@@ -63,7 +63,7 @@ class CatalogController < ApplicationController
     end
 
     def taxon_browser
-      @taxon_browser = Catalog::TaxonBrowser.new @taxon, session[:show_invalid],
-        params[:display]
+      @taxon_browser = Catalog::TaxonBrowser.new @taxon,
+        session[:show_invalid], params[:display].try(:to_sym)
     end
 end
