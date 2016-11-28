@@ -13,7 +13,7 @@
   -@taxon_browser.tabs.each do |tab|
     .tabs-panel{id: tab.object_id, class: ("is-active" if tab.open?)}
       %ul.snaked.no-bullet.mr-scrollbary
-        =extra_panel_links_for_selected tab.tab_taxon
+        =extra_tab_links tab.tab_taxon
 
         -tab.each_child do |child, is_selected|
           %li{class: ("selected" if is_selected)}
