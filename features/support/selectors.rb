@@ -22,7 +22,8 @@ module HtmlSelectorsHelpers
     when /the index/
       "#taxon_browser"
     when /the (\w*) index/
-      "#taxon_browser .#{$1}-test-hook"
+      tab_title_target = find(:link, $1)[:href]
+      tab_title_target
     when /the content/
       "#taxon_description"
     when /the change history/

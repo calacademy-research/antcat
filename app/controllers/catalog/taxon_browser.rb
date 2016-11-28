@@ -26,11 +26,14 @@ module Catalog
       taxon.in? @self_and_parents
     end
 
+    def panel_open? panel
+      panels.last == panel
+    end
+
     private
       def setup_panels
-        @panels = []
-        main_progression_taxa.each do |taxon|
-          @panels << StandardPanel.new(taxon, self)
+        @panels = main_progression_taxa.map do |taxon|
+          StandardPanel.new(taxon, self)
         end
 
         extra_panel = non_standard_panel
@@ -103,7 +106,7 @@ end
 
 class TaxonBrowserPanel
   attr_accessor :taxon # TODO move to `StandardPanel`.
-  delegate :display, :panels, :selected_in_panel?, to: :@taxon_browser
+  delegate :display, :selected_in_panel?, :panel_open?, to: :@taxon_browser
 
   def initialize children, taxon_browser
     @taxon_browser = taxon_browser
@@ -122,14 +125,7 @@ class TaxonBrowserPanel
   end
 
   def open?
-    panels.last == self
-  end
-
-  def content_css
-    css_classes = []
-    css_classes << "is-active" if open?
-    css_classes << "#{@taxon.rank.pluralize}-test-hook" if @taxon.is_a? Taxon
-    css_classes
+    panel_open? self
   end
 
   def notify_about_no_valid_children?
@@ -144,8 +140,7 @@ class TaxonBrowserPanel
       @taxon.genera_incertae_sedis_in.valid.exists?
     end
 
-    # Collections containing taxa of a single rank can be sorted by `#.name_cache`,
-    # but mixed collections (such as the "ALL TAXA" link) must be sorted by `names.epithet`.
+    # "All taxa" (in genus) children must be sorted by `names.epithet`.
     def sorted_children
       if display == "all_taxa_in_genus"
         @children.order_by_joined_epithet
