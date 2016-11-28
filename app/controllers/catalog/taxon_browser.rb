@@ -1,62 +1,61 @@
 module Catalog
   class TaxonBrowser
-    attr_accessor :panels, :self_and_parents, :display
+    attr_accessor :tabs, :display
 
-    def initialize the_taxon, show_invalid, display_param
-      @the_taxon = the_taxon
+    def initialize taxon, show_invalid, display_param
+      @taxon = taxon
       @show_invalid = show_invalid
-      @display =  case the_taxon
+      @display =  case taxon
                   when Subfamily
-                    "all_genera_in_subfamily"
+                    "all_genera_in_subfamily" # TODO only if blank.
                   when Subgenus
                     "subgenera_in_parent_genus"
                   else
                     display_param
                   end
 
-      @self_and_parents = self_and_parents_secret
-      setup_panels
+      setup_tabs
     end
 
     def show_invalid?
       @show_invalid
     end
 
-    def selected_in_panel? taxon
-      taxon.in? @self_and_parents
+    def selected_in_tab? taxon
+      taxon.in? selected_in_tabs
     end
 
-    def panel_open? panel
-      panels.last == panel
+    def tab_open? tab
+      @tabs.last == tab
     end
 
     private
-      def setup_panels
-        @panels = main_progression_taxa.map do |taxon|
-          StandardPanel.new(taxon, self)
+      def setup_tabs
+        @tabs = taxa_for_tabs.map do |taxon|
+          TaxonTab.new(taxon, self)
         end
 
-        extra_panel = non_standard_panel
-        @panels << extra_panel if extra_panel
+        extra_tab = non_standard_tab
+        @tabs << extra_tab if extra_tab
       end
 
       # The "main progression", from the lowest rank and up is: Subspecies ->
       # Species -> Genus -> Tribe -> Subfamily -> Family.
       # See https://github.com/calacademy-research/antcat/wiki/For-developers
-      def main_progression_taxa
-        # We do not want to include all ranks in the panels.
-        self_and_parents.reject do |taxon|
-          # Never show the subspecies panel (has no children).
+      def taxa_for_tabs
+        # We do not want to include all ranks in the tabs.
+        selected_in_tabs.reject do |taxon|
+          # Never show the [children of] subspecies tab (has no children).
           taxon.is_a?(Subspecies) ||
 
-          # Don't show species panel unless the species has subspecies.
+          # Don't show [children of] species tab unless the species has subspecies.
           (taxon.is_a?(Species) && !taxon.children.exists?) ||
 
-          # No subgenus panel (not part of the 'normal' rank hierarchy).
+          # No [children of] subgenus tab (not part of the 'normal' rank hierarchy).
           taxon.is_a?(Subgenus)
 
-          # Panels of subfamilies, tribes and genera without any children at
-          # all could also be excluded here, to avoid showing empty panels.
+          # Tabs of subfamilies, tribes and genera without any children at
+          # all could also be excluded here, to avoid showing empty tabs.
           # However, that can only happen to invalid taxa (all valid taxa of
           # these ranks have children unless the database is incomplete), so
           # it makes more sense to just show "No valid child taxa".
@@ -64,54 +63,59 @@ module Catalog
       end
 
       # TODO improve.
-      def non_standard_panel
+      def non_standard_tab
         return unless @display
 
         case @display
         when /^incertae_sedis_in/
-          title = "Genera <i>incertae sedis</i> in #{@the_taxon.taxon_label}"
-          children = @the_taxon.genera_incertae_sedis_in
+          title = "Genera <i>incertae sedis</i> in #{@taxon.taxon_label}"
+          children = @taxon.genera_incertae_sedis_in
         when /^all_genera_in/
-          title = "All #{@the_taxon.taxon_label} genera"
-          children = @the_taxon.all_displayable_genera
+          title = "All #{@taxon.taxon_label} genera"
+          children = @taxon.all_displayable_genera
         when "all_taxa_in_genus"
-          title = "All #{@the_taxon.taxon_label} taxa"
-          children = @the_taxon.displayable_child_taxa
+          title = "All #{@taxon.taxon_label} taxa"
+          children = @taxon.displayable_child_taxa
         when "subgenera_in_genus"
-          title = "#{@the_taxon.taxon_label} subgenera"
-          children = @the_taxon.displayable_subgenera
+          title = "#{@taxon.taxon_label} subgenera"
+          children = @taxon.displayable_subgenera
         when "subgenera_in_parent_genus"
           # Works because [currently] all subgenera have parents.
-          title = "#{@the_taxon.parent.taxon_label} subgenera"
-          children = @the_taxon.parent.displayable_subgenera
+          title = "#{@taxon.parent.taxon_label} subgenera"
+          children = @taxon.parent.displayable_subgenera
         end
 
-        SpecialPanel.new title.html_safe, children, self
+        ExtraTab.new title.html_safe, children, self
       end
 
-      def self_and_parents_secret
+      def selected_in_tabs
+        @selected_in_tabs ||= taxon_and_parents
+      end
+
+      def taxon_and_parents
         parents = []
-        current_taxon = @the_taxon
+        current_taxon = @taxon
 
         while current_taxon
           parents << current_taxon
           current_taxon = current_taxon.parent
         end
 
-        # Reversed to put Formicidae in the first panel and itself in last.
+        # Reversed to put Formicidae in the first tab and itself in last.
         parents.reverse
       end
   end
 end
 
-class TaxonBrowserPanel
-  attr_accessor :taxon # TODO move to `StandardPanel`.
-  delegate :display, :selected_in_panel?, :panel_open?, to: :@taxon_browser
+class TaxonBrowserTab
+  attr_accessor :tab_taxon
+  delegate :display, :selected_in_tab?, :tab_open?, :show_invalid?,
+    to: :@taxon_browser
 
   def initialize children, taxon_browser
     @taxon_browser = taxon_browser
 
-    @children = if @taxon_browser.show_invalid?
+    @children = if show_invalid?
                   children
                 else
                   children.valid
@@ -120,12 +124,12 @@ class TaxonBrowserPanel
 
   def each_child
     sorted_children.each do |child|
-      yield child, selected_in_panel?(child)
+      yield child, selected_in_tab?(child)
     end
   end
 
   def open?
-    panel_open? self
+    tab_open? self
   end
 
   def notify_about_no_valid_children?
@@ -136,8 +140,8 @@ class TaxonBrowserPanel
     # Exception for subfamilies *only* containing genera that are
     # incertae sedis in that subfamily (that is Martialinae, #430173).
     def is_a_subfamily_with_valid_genera_incertae_sedis?
-      return unless @taxon.is_a? Subfamily
-      @taxon.genera_incertae_sedis_in.valid.exists?
+      return unless @tab_taxon.is_a? Subfamily
+      @tab_taxon.genera_incertae_sedis_in.valid.exists?
     end
 
     # "All taxa" (in genus) children must be sorted by `names.epithet`.
@@ -150,17 +154,17 @@ class TaxonBrowserPanel
     end
 end
 
-class StandardPanel < TaxonBrowserPanel
-  def initialize taxon, taxon_browser
-    @taxon = taxon
+class TaxonTab < TaxonBrowserTab
+  def initialize tab_taxon, taxon_browser
+    @tab_taxon = tab_taxon
 
-    children = taxon.children.displayable
+    children = tab_taxon.children.displayable
     super children, taxon_browser
   end
 
   def title
-    return @taxon.taxon_label if show_only_genus_name?
-    "#{@taxon.taxon_label} #{@taxon.childrens_rank_in_words}".html_safe
+    return @tab_taxon.taxon_label if show_only_genus_name?
+    "#{@tab_taxon.taxon_label} #{@tab_taxon.childrens_rank_in_words}".html_safe
   end
 
   private
@@ -169,14 +173,14 @@ class StandardPanel < TaxonBrowserPanel
     #   "Formicidae ... Lasius species > Lasius subgenera"
     #   "Formicidae ... Lasius species > All Lasius taxa"
     def show_only_genus_name?
-      return unless @taxon.is_a? Genus
+      return unless @tab_taxon.is_a? Genus
       display.in? %w( all_taxa_in_genus
                       subgenera_in_genus
                       subgenera_in_parent_genus )
     end
 end
 
-class SpecialPanel < TaxonBrowserPanel
+class ExtraTab < TaxonBrowserTab
   def initialize title, children, taxon_browser
     super children, taxon_browser
     @title = title

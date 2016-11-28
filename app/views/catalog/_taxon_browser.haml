@@ -1,8 +1,8 @@
 %ul#taxon-browser-tabs.tabs{"data-tabs" => ""}
-  -@taxon_browser.panels.each do |panel|
-    %li.tabs-title{class: ("is-active" if panel.open?)}
+  -@taxon_browser.tabs.each do |tab|
+    %li.tabs-title{class: ("is-active" if tab.open?)}
       -# Foundation Tabs requires unique IDs for each tabs. We can use anything.
-      =link_to panel.title, "##{panel.object_id}"
+      =link_to tab.title, "##{tab.object_id}"
 
   %li.tab-toggler
     %span.label.secondary
@@ -10,19 +10,19 @@
     %span.label.secondary=toggle_valid_only_link
 
 .tabs-content{"data-tabs-content" => "taxon-browser-tabs"}
-  -@taxon_browser.panels.each do |panel|
-    .tabs-panel{id: panel.object_id, class: ("is-active" if panel.open?)}
+  -@taxon_browser.tabs.each do |tab|
+    .tabs-panel{id: tab.object_id, class: ("is-active" if tab.open?)}
       %ul.snaked.no-bullet.mr-scrollbary
-        =extra_panel_links_for_selected panel.taxon
+        =extra_panel_links_for_selected tab.tab_taxon
 
-        -panel.each_child do |child, is_selected|
+        -tab.each_child do |child, is_selected|
           %li{class: ("selected" if is_selected)}
             =taxon_browser_link child
 
         -# It's possible that `children` is empty at this point. Most likely
         -# that means there are invalid children that can be seen by toggling
         -# "show invalid", or that the taxon is an invalid subfamily/tribe/genus.
-        -if panel.notify_about_no_valid_children?
+        -if tab.notify_about_no_valid_children?
           %li No valid child taxa
           -unless already_showing_invalid_taxa?
             %li=link_to "Show invalid?", catalog_options_path(valid_only: false)
