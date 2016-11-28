@@ -312,4 +312,4 @@ Feature: Adding a taxon
 
     When I go to the catalog page for "Formicinae"
     And I follow "Formicinae tribes"
-    Then I should see "Dorylini" in the subfamilies index
+    Then I should see "Tribe of Formicinae: Dorylini"

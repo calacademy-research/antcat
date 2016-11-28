@@ -272,7 +272,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I save my changes
     And I follow " tribes"
     Then I should be on the catalog page for "Atta"
-    And "Ecitoni" should be selected in the subfamilies index
+    And "Ecitoni" should be selected
 
   Scenario: Changing a genus's subfamily
     Given the Formicidae family exists
@@ -287,7 +287,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I save my changes
     And I follow "Formicidae subfamilies"
     Then I should be on the catalog page for "Atta"
-    And "Ecitoninae" should be selected in the families index
+    And "Ecitoninae" should be selected
 
   Scenario: Setting a genus's parent to blank
     Given PENDING: TODO selected only works for the incertae sedis / all genera links themselves, not child taxa
