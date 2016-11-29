@@ -23,10 +23,6 @@ class AntCat.TaxonForm extends AntCat.Form
     @initialize_fields_section()
     @initialize_parent_section()
     @initialize_current_valid_taxon_section()
-    @initialize_history_section()
-    @initialize_junior_and_senior_synonyms_section()
-    @initialize_references_section()
-    @initialize_current_valid_taxon_section()
     @initialize_homonym_replaced_by_section()
     @initialize_events()
     @original_submit = null
@@ -42,16 +38,6 @@ class AntCat.TaxonForm extends AntCat.Form
       new AntCat.TypeNameField $('#type_name_field'), protonym_field, value_id: 'taxon_type_name_attributes_id', parent_form: @, allow_blank: true
       new AntCat.TaxtEditor $('#type_taxt_editor'), parent_buttons: '.buttons_section'
     new AntCat.ReferenceField $('#authorship_field'), parent_form: @, value_id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
-
-  initialize_history_section: =>
-    new AntCat.HistoryItemsSection @element.find('.history_items_section'), parent_form: @
-
-  initialize_junior_and_senior_synonyms_section: =>
-    new AntCat.SynonymsSection @element.find('.junior_synonyms_section'), parent_form: @
-    new AntCat.SynonymsSection @element.find('.senior_synonyms_section'), parent_form: @
-
-  initialize_references_section: =>
-    new AntCat.ReferencesSection @element.find('.references_section'), parent_form: @
 
   initialize_parent_section: =>
     options = {}
@@ -81,10 +67,6 @@ class AntCat.TaxonForm extends AntCat.Form
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
 
-  taxon_id: =>
-    match = @form().attr('action').match /\d+/
-    match and match[0]
-
   taxon_rank: =>
     $('#taxon_rank').val()
 
@@ -95,15 +77,5 @@ class AntCat.TaxonForm extends AntCat.Form
       @homonym_replaced_by_name_row.hide()
 
   ###### client functions
-  replace_junior_and_senior_synonyms_section: (content) =>
-    $('.junior_and_senior_synonyms_section').replaceWith content
-    @initialize_junior_and_senior_synonyms_section()
-
-  add_history_item_panel: ($panel) =>
-    @element.find('.history_items').append $panel
-
-  add_reference_panel: ($panel) =>
-    @element.find('.reference_sections').append $panel
-
   on_form_open: =>
     super
