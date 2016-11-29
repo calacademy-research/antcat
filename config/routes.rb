@@ -70,14 +70,16 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :taxa, except: [:index, :show] do
+  resources :taxa, only: [:new, :create, :edit, :update] do
     member do
-      get :delete_impact_list
-      get :confirm_before_delete
-      get :update_parent # TODO change to put
-      put :elevate_to_species
-      delete :destroy_unreferenced
-      get :show_children
+      controller :taxa_grab_bag do
+        put :elevate_to_species
+        get :show_children
+        get :confirm_before_delete
+        delete :destroy
+        delete :destroy_unreferenced
+        get :update_parent # TODO change to put
+      end
     end
     resources :taxon_history_items, only: [:update, :create, :destroy]
     resources :reference_sections, only: [:update, :create, :destroy]
