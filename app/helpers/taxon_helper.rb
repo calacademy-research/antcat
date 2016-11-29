@@ -83,4 +83,10 @@ module TaxonHelper
     else              ""
     end
   end
+
+  def default_name_string taxon
+    return unless taxon.kind_of? SpeciesGroupTaxon
+    parent = Taxon.find params[:parent_id]
+    parent.name.name
+  end
 end

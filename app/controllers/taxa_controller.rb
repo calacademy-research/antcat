@@ -13,7 +13,6 @@ class TaxaController < ApplicationController
 
   def new
     @taxon = get_taxon_for_create
-    @default_name_string = default_name_string
     set_authorship_reference
   end
 
@@ -109,6 +108,7 @@ class TaxaController < ApplicationController
     redirect_to edit_taxa_path(@taxon)
   end
 
+  # TODO move to a new controller.
   def elevate_to_species
     unless @taxon.kind_of? Subspecies
       redirect_to edit_taxa_path(@taxon), notice: "Not a subspecies"
@@ -197,13 +197,6 @@ class TaxaController < ApplicationController
 
     def set_authorship_reference
       @taxon.protonym.authorship.reference ||= DefaultReference.get session
-    end
-
-    # TODO move to view/helper?
-    def default_name_string
-      return unless @taxon.kind_of? SpeciesGroupTaxon
-      parent = Taxon.find(params[:parent_id])
-      parent.name.name
     end
 
     def redirect_by_parent_name_id
