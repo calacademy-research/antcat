@@ -5,27 +5,6 @@ Feature: Editing a taxon
   So that information is kept accurate
   So people use AntCat
 
-  Scenario: Editing a family's name
-    Given the Formicidae family exists
-    And I am logged in
-
-    When I go to the edit page for "Formicidae"
-    And I click the name field
-    And I set the name to "Wildencidae"
-    And I press "OK"
-    And I save my changes
-    Then I should see "Wildencidae" in the header
-
-  Scenario: Trying to enter a blank name
-    Given the Formicidae family exists
-    And I am logged in
-
-    When I go to the edit page for "Formicidae"
-    And I click the name field
-    And I set the name to ""
-    And I press "OK"
-    Then I should still see the name field
-
   Scenario: Editing a species
     Given a species exists with a name of "major" and a genus of "Atta"
     And I am logged in
@@ -50,20 +29,6 @@ Feature: Editing a taxon
     And I wait for a bit
     Then the name "major" genus "Atta" should not be auto generated
 
-  Scenario: Setting a genus's name to an existing one
-    Given there is a genus "Calyptites"
-    And there is a genus "Atta"
-    And I am logged in
-
-    When I go to the edit page for "Atta"
-    And I click the name field
-    And I set the name to "Calyptites"
-    And I press "OK"
-    Then I should see "This name is in use by another taxon. To create a homonym, click"
-
-    When I press "Save homonym"
-    Then I should not see "This name is in use by another taxon. To create a homonym, click"
-
   Scenario: Cancelling
     Given there is a genus "Calyptites"
     And I am logged in
@@ -72,18 +37,6 @@ Feature: Editing a taxon
     And I select "subfamily" from "taxon_incertae_sedis_in"
     And I press "Cancel"
     Then I should not see "incertae sedis" in the header
-
-  Scenario: Changing the protonym name
-    Given there is a genus "Atta" with protonym name "Atta"
-    And there is a genus "Eciton"
-    And I am logged in
-
-    When I go to the edit page for "Atta"
-    And I click the protonym name field
-    And I set the protonym name to "Eciton"
-    And I press "OK"
-    And I save my changes
-    Then I should see "Eciton" in the headline
 
   @search
   Scenario: Changing the authorship
@@ -114,45 +67,6 @@ Feature: Editing a taxon
     And I click the authorship field
     And I press "Cancel"
     Then I should be on the edit page for "Eciton"
-
-  Scenario: Changing the type name
-    Given there is a genus "Atta" with type name "Atta major"
-    And there is a species "Atta major"
-    And there is a species "Atta minor"
-    And I am logged in
-
-    When I go to the edit page for "Atta"
-    And I click the type name field
-    And I set the type name to "Atta minor"
-    And I press "OK"
-    And I save my changes
-    Then I should see "Atta minor" in the headline
-
-  Scenario: Setting the type name after it was blank
-    Given there is a genus "Atta"
-    And there is a species "Atta major"
-    And I am logged in
-
-    When I go to the edit page for "Atta"
-    And I click the type name field
-    And I set the type name to "Atta major"
-    And I press "OK"
-    And I save my changes
-    Then I should see "Atta major" in the headline
-
-  Scenario: Clearing the type name
-    Given there is a genus "Atta" with type name "Atta major"
-    And I am logged in
-
-    When I go to the catalog page for "Atta"
-    Then I should not see "Atta major" in the headline
-
-    When I press "Edit"
-    And I click the type name field
-    And I set the type name to ""
-    And I press "OK"
-    And I save my changes
-    Then I should not see "Atta major" in the headline
 
   Scenario: Changing incertae sedis
     Given there is a genus "Atta" that is incertae sedis in the subfamily
@@ -283,18 +197,3 @@ Feature: Editing a taxon
     And I select "" from "taxon_biogeographic_region"
     And I save my changes
     Then I should not see "Malagasy"
-
-  Scenario: Changing current valid name
-    Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
-    And I am logged in
-
-    When I go to the edit page for "Atta major"
-    And I click the current valid taxon name field
-    And I set the current valid taxon name to "Eciton minor"
-    And I press "OK"
-    And I save my changes
-    And I press "Edit"
-    Then the current valid taxon name should be "Eciton minor"
-
-    When I save my changes
-    Then I should see "synonym of current valid taxon Eciton minor"
