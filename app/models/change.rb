@@ -86,11 +86,10 @@ class Change < ActiveRecord::Base
       # Could get cute and report exactly what was changed about any given taxon
       # For now, just report a change to the taxon in question.
       current_taxon = current_change.most_recent_valid_taxon
-      current_user = current_change.changed_by
-      changes.append name: current_taxon.name.to_s,
-                     change_type: current_change.change_type,
-                     change_timestamp: current_change.created_at.strftime("%B %d, %Y"),
-                     user_name: current_user.name
+      changes << { taxon: current_taxon,
+                   change_type: current_change.change_type,
+                   date: current_change.created_at.strftime("%B %d, %Y"),
+                   user: current_change.changed_by }
 
       # This would be a good place to warn from if we find that we can't undo
       # something about a taxa.

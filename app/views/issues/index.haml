@@ -26,6 +26,9 @@
         %td=issue.status.capitalize
         %td.grow=link_to issue.title, issue
         %td.no-wrap=link_comments_section issue
-        %td.no-wrap=time_ago_in_words issue.created_at
+        %td.no-wrap
+          =time_ago_in_words issue.created_at
+          ago by
+          =issue.adder.decorate.user_page_link
 
 =will_paginate @issues

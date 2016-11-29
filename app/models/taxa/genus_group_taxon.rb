@@ -2,8 +2,6 @@
 # be confused with "genus group" as used in taxonomy.
 
 class GenusGroupTaxon < Taxon
-  include Formatters::ItalicsHelper
-
   belongs_to :subfamily
   belongs_to :tribe
 
@@ -13,10 +11,6 @@ class GenusGroupTaxon < Taxon
 
   def childrens_rank_in_words
     "species"
-  end
-
-  def label
-    italicize name
   end
 
   def parent= parent_taxon

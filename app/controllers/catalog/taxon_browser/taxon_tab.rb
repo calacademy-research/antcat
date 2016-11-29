@@ -1,6 +1,4 @@
 # A `TaxonTab` requires a taxon for which `#children` returns something.
-# It formats the title of the tab, prepares the list of children,
-# and some bonus stuff.
 
 module Catalog::TaxonBrowser
   class TaxonTab < Tab
@@ -10,8 +8,8 @@ module Catalog::TaxonBrowser
     end
 
     def title
-      return @tab_taxon.label if show_only_genus_name?
-      "#{@tab_taxon.label} #{@tab_taxon.childrens_rank_in_words}".html_safe
+      return @tab_taxon.name_with_fossil if show_only_genus_name?
+      "#{@tab_taxon.name_with_fossil} #{@tab_taxon.childrens_rank_in_words}".html_safe
     end
 
     def notify_about_no_valid_taxa?
@@ -26,7 +24,7 @@ module Catalog::TaxonBrowser
         @tab_taxon.genera_incertae_sedis_in.valid.exists?
       end
 
-      # Tweak for the [species of] genus tab to change eg
+      # Tweak for the [species in] genus tab title to change eg
       # "Lasius species > Lasius subgenera" to "Lasius > Lasius subgenera".
       def show_only_genus_name?
         return unless @tab_taxon.is_a? Genus

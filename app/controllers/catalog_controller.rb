@@ -20,6 +20,7 @@ class CatalogController < ApplicationController
     setup_taxon_browser
   end
 
+  # TODO use cookies instead of session.
   def show_valid_only
     session[:show_invalid] = false
     redirect_to :back
@@ -50,7 +51,8 @@ class CatalogController < ApplicationController
       format.json do
         results = search_results.map do |taxon|
           { id: taxon.id,
-            name: taxon.name_html_cache,
+            name: taxon.name_cache,
+            name_html: taxon.name_html_cache,
             authorship_string: taxon.authorship_string }
         end
         render json: results

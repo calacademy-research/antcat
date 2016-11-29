@@ -4,7 +4,7 @@
 module CatalogHelper
   def taxon_label_span taxon
     content_tag :span, class: css_classes_for_rank(taxon) do
-      taxon.label
+      taxon.taxon_label
     end
   end
 

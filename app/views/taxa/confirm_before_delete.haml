@@ -4,9 +4,6 @@
 %p
   Only superadmins can perform this action, as it can be used to delete taxa with references to them. This is what makes it different from the delete button in the 'edit taxon' form, which can be used by any editor for unreferenced taxa. "References" in this case means synonyms, other taxa pointing to it, and taxt items referring to the taxon. Checking that a taxon is unreferenced is only done for the <em>principal taxon</em>, that is, children may still have references to them (which would break).
 
-%p
-  Note that there is very little test coverage for this feature, and I belive that there are cases where undoing deletion changes may seem to work, but without restoring all items.
-
 %h5 Confirming would delete following taxa
 %table
   %thead

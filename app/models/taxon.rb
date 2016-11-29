@@ -124,9 +124,15 @@ class Taxon < ApplicationRecord
     type.downcase
   end
 
-  def label
+  ### Methods placed under observation for refactoring ###
+  def taxon_label
     name.epithet_with_fossil_html fossil?
   end
+
+  def name_with_fossil
+    name.to_html_with_fossil fossil?
+  end
+  ### End observatory ###
 
   # TODO rename. Candidate name: `author_citation`.
   def authorship_string

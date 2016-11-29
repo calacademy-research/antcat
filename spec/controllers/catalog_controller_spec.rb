@@ -52,7 +52,7 @@ describe CatalogController do
       json = JSON.parse response.body
 
       results = json.map { |taxon| taxon["name"] }.sort
-      expect(results).to eq ["<i>Atta</i>", "<i>Ratta</i>"]
+      expect(results).to eq ["Atta", "Ratta"]
     end
   end
 end

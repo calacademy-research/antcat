@@ -37,7 +37,6 @@ class Name < ApplicationRecord
     name
   end
 
-  # TODO probably just access `#name_html`.
   def to_html
     name_html
   end

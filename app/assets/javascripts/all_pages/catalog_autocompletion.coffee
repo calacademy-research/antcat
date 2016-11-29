@@ -16,12 +16,12 @@ $ ->
   dataSet =
     name: 'taxa'
     limit: Infinity # bug in typeahead.js v0.11.1; limited on server-side anyway
-    displayKey: 'search_query'
+    displayKey: 'name'
     source: taxa.ttAdapter()
     templates:
       empty: '<div class="empty-message">No results</div>'
       suggestion: (taxon) ->
-        "<p>#{taxon.name}<br><small>#{taxon.authorship_string}</small></p>"
+        "<p>#{taxon.name_html}<br><small>#{taxon.authorship_string}</small></p>"
 
   $('input.typeahead-taxa-js-hook').typeahead(options, dataSet)
     .on 'typeahead:selected', (e) ->
