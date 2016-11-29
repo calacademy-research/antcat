@@ -3,12 +3,12 @@
 
 module Catalog::TaxonBrowser
   class ExtraTab < Tab
-    def self.create taxon, taxon_browser
-      return unless taxon_browser.display.present?
+    def self.create taxon, display, taxon_browser
+      return unless display.present?
 
       name_html = taxon.name_with_fossil
 
-      title, taxa = case taxon_browser.display
+      title, taxa = case display
         when :incertae_sedis_in_family, :incertae_sedis_in_subfamily
           [ "Genera <i>incertae sedis</i> in #{name_html}",
             taxon.genera_incertae_sedis_in ]
@@ -42,6 +42,10 @@ module Catalog::TaxonBrowser
     def initialize title, taxa, taxon_browser
       super taxa, taxon_browser
       @title = title.html_safe
+    end
+
+    def id
+      "extra-tab"
     end
 
     def title

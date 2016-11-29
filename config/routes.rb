@@ -36,6 +36,7 @@ AntCat::Application.routes.draw do
   end
   get 'catalog/:id' => 'catalog#show', as: :catalog
   get 'catalog/:id/wikipedia' => 'catalog#wikipedia_tools'
+  get 'catalog/:id/tab/:tab_id' => 'catalog#tab', as: :catalog_tab
 
   get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
   resources :journals do

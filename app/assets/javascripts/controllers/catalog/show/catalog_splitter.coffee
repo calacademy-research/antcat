@@ -1,5 +1,8 @@
 $ ->
-  new CatalogSplitter()
+  catalogSplitter = new CatalogSplitter()
+
+  window.unborkTaxonBrowserScrollbars = ->
+    catalogSplitter.unborkTaxonBrowserScrollbars()
 
 class @CatalogSplitter
   # In the order they appear on the HTML.
@@ -62,6 +65,9 @@ class @CatalogSplitter
     height = checkHeightConstraints height
     @setHeight TAXON_DESCRIPTION, height
     @autosize TAXON_BROWSER
+
+  # Call this to unbork. You know it's borked if there's no scrollbars.
+  unborkTaxonBrowserScrollbars: -> @autosize TAXON_BROWSER
 
   heightOf: (element) -> $(element).outerHeight true
 

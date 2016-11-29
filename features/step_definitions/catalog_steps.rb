@@ -43,3 +43,9 @@ end
 Then("I should not see any search results") do
   expect(page).to_not have_css "#search_results"
 end
+
+Given(/^the maximum number of taxa to load in each tab is (\d+)$/) do |number|
+  allow_any_instance_of(Catalog::TaxonBrowser::Browser)
+    .to receive(:max_taxa_to_load)
+    .and_return number.to_i
+end

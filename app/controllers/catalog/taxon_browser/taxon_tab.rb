@@ -7,6 +7,10 @@ module Catalog::TaxonBrowser
       super tab_taxon.children.displayable, taxon_browser
     end
 
+    def id
+      "tab-taxon-#{@tab_taxon.id}"
+    end
+
     def title
       return @tab_taxon.name_with_fossil if show_only_genus_name?
       "#{@tab_taxon.name_with_fossil} #{@tab_taxon.childrens_rank_in_words}".html_safe

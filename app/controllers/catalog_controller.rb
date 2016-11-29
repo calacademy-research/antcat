@@ -1,5 +1,5 @@
 class CatalogController < ApplicationController
-  before_action :set_taxon, only: [:show, :wikipedia_tools]
+  before_action :set_taxon, only: [:show, :tab, :wikipedia_tools]
 
   # Avoid blowing up if there's no family. Useful in test and dev.
   unless Rails.env.production?
@@ -18,6 +18,17 @@ class CatalogController < ApplicationController
 
   def show
     setup_taxon_browser
+  end
+
+  def tab
+    respond_to do |format|
+      format.json do
+        setup_taxon_browser
+
+        tab = @taxon_browser.tab_by_id params[:tab_id]
+        render partial: "taxon_browser_tab_taxa", locals: { tab: tab, cap: false }
+      end
+    end
   end
 
   # TODO use cookies instead of session.

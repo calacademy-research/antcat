@@ -11,7 +11,7 @@ module Catalog::TaxonBrowser
     attr_accessor :tab_taxon
 
     delegate :display, :selected_in_tab?, :tab_open?,
-      :show_invalid?, to: :@taxon_browser
+      :show_invalid?, :max_taxa_to_load, to: :@taxon_browser
 
     def initialize taxa, taxon_browser
       @taxon_browser = taxon_browser
@@ -19,8 +19,22 @@ module Catalog::TaxonBrowser
       @taxa = taxa.valid unless show_invalid?
     end
 
-    def each_taxon
-      sorted_taxa.includes(:name).each do |taxon|
+    def to_param
+      id
+    end
+
+    def taxa_count
+      @taxa.count
+    end
+
+    def too_many_taxa_to_load?
+      taxa_count > max_taxa_to_load
+    end
+
+    def each_taxon cap: false
+      limit = max_taxa_to_load if cap
+
+      sorted_taxa.limit(limit).includes(:name).each do |taxon|
         yield taxon, selected_in_tab?(taxon)
       end
     end

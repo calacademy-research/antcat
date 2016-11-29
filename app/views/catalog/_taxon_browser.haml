@@ -1,23 +1,27 @@
 %ul#taxon-browser-tabs.tabs{"data-tabs" => ""}
   -@taxon_browser.tabs.each do |tab|
     %li.tabs-title{class: ("is-active" if tab.open?)}
-      -# Foundation Tabs requires unique IDs for each tabs.
-      =link_to tab.title, "##{tab.object_id}"
+      =link_to tab.title, "##{tab.id}"
 
   %li.tab-toggler
+    =shared_spinner_icon
     %span.label.secondary
       =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon_key" }
     %span.label.secondary=toggle_invalid_or_valid_only_link
 
 .tabs-content{"data-tabs-content" => "taxon-browser-tabs"}
   -@taxon_browser.tabs.each do |tab|
-    .tabs-panel{id: tab.object_id, class: ("is-active" if tab.open?)}
+    .tabs-panel{id: tab.id, class: ("is-active" if tab.open?)}
+      -if tab.too_many_taxa_to_load?
+        %p.remove-after-loading-full-tab
+          Showing #{@taxon_browser.max_taxa_to_load} of #{tab.taxa_count} taxa
+          =load_tab_button @taxon, tab
+
       %ul.snaked.no-bullet.mr-scrollbary
         =links_to_extra_tabs tab.tab_taxon
 
-        -tab.each_taxon do |taxon, is_selected|
-          %li{class: ("selected" if is_selected)}
-            =taxon_browser_link taxon
+        .section-that-can-be-capped
+          =render "taxon_browser_tab_taxa", tab: tab, cap: true
 
         -# It's possible that `taxa` is empty at this point. Most likely
         -# that means there are invalid children that can be seen by toggling

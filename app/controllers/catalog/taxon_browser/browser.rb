@@ -1,5 +1,3 @@
-# TODO rename `@display`?
-
 # This class is responsibe for preparing all tabs for `_taxon_browser.haml`.
 
 module Catalog::TaxonBrowser
@@ -12,6 +10,14 @@ module Catalog::TaxonBrowser
       @display = default_or_display display
 
       setup_tabs
+    end
+
+    def max_taxa_to_load
+      500
+    end
+
+    def tab_by_id id
+      tabs.find { |tab| tab.id == id }
     end
 
     def show_invalid?
@@ -39,7 +45,7 @@ module Catalog::TaxonBrowser
           TaxonTab.new taxon, self
         end
 
-        extra_tab = ExtraTab.create @taxon, self
+        extra_tab = ExtraTab.create @taxon, @display, self
         @tabs << extra_tab if extra_tab
       end
 
@@ -60,6 +66,7 @@ module Catalog::TaxonBrowser
         end
       end
 
+      # Can be moved to `Taxon` if we find other uses for it.
       def taxon_and_ancestors
         return @_taxon_and_ancestors if defined? @_taxon_and_ancestors
 

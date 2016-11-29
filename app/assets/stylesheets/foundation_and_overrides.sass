@@ -83,11 +83,14 @@
 button, .ui-widget button button
   @include normal-sized-button
 
-.btn-cancel, .btn-white, .btn-delete, .btn-destructive, .btn-normal, .btn-edit, .btn-login, .btn-new, .btn-non-destructive, .btn-normal, .btn-save, .btn-search, .btn-undo,  .btn-dangerous
+.btn-cancel, .btn-white, .btn-delete, .btn-destructive, .btn-normal, .btn-edit, .btn-login, .btn-new, .btn-non-destructive, .btn-normal, .btn-save, .btn-search, .btn-undo, .btn-dangerous, .btn-pretty
   @include normal-sized-button
 
 .btn-delete, .btn-destructive, .btn-undo, .btn-dangerous
   @include button-style($alert-color, auto, auto)
+
+.btn-pretty
+  @include button-style($color_pretty, auto, auto)
 
 .btn-cancel, .btn-white
   border: 1px solid #000
