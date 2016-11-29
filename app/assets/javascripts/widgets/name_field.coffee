@@ -400,7 +400,7 @@ class AntCat.NameField extends AntCat.Panel
   # does synchronus ajax query
   # against the duplicates controller. The results appear in this.duplicates
   check_for_duplicates: (new_parent_name_id) =>
-    url = "/duplicates?current_taxon_id=" +
+    url = "/taxa/find_duplicates?current_taxon_id=" +
         @current_taxon_id() +
         "&new_parent_name_id=" +
         new_parent_name_id +
@@ -419,11 +419,10 @@ class AntCat.NameField extends AntCat.Panel
   # against the duplicates controller. The results appear in this.duplicates
   # Misnomer; it may return only one, which is fine.
   check_for_duplicates_nospecies: (new_parent_name_id) =>
-    url = "/duplicates?current_taxon_id=" +
+    url = "/taxa/find_name_duplicates_only?current_taxon_id=" +
         @current_taxon_id() +
         "&new_parent_name_id=" +
-        new_parent_name_id +
-        "&match_name_only=true"
+        new_parent_name_id
 
     $.ajax
       url: url

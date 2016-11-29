@@ -81,6 +81,12 @@ AntCat::Application.routes.draw do
         get :update_parent # TODO change to put
       end
     end
+    collection do
+      controller :duplicates do
+        get :find_duplicates
+        get :find_name_duplicates_only
+      end
+    end
     resources :taxon_history_items, only: [:update, :create, :destroy]
     resources :reference_sections, only: [:update, :create, :destroy]
     resources :synonyms, only: [:create, :destroy] do
@@ -103,7 +109,6 @@ AntCat::Application.routes.draw do
 
   resource :reference_field, only: [:show]
   resource :reference_popup, only: [:show]
-  resource :duplicates, only: [:show, :create]
 
   devise_for :users
   resources :users, only: [:index, :show] do
