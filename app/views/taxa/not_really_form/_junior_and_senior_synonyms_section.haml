@@ -1,0 +1,13 @@
+.junior_and_senior_synonyms_section.section
+  .section_header.ui-widget-header.ui-corner-top
+    .left
+      Synonyms
+    .clear
+  .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+    .container.left
+      .junior_synonyms_section
+        =render 'taxa/not_really_form/synonyms_section', taxon: taxon, title: 'Junior synonyms', synonyms: taxon.junior_synonyms_with_names, junior_or_senior: 'junior'
+    .container.right
+      .senior_synonyms_section
+        =render 'taxa/not_really_form/synonyms_section', taxon: taxon, title: 'Senior synonyms', synonyms: taxon.senior_synonyms_with_names, junior_or_senior: 'senior'
+    .clear

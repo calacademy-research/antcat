@@ -34,22 +34,19 @@
   =render 'shared/errors_for', resource: @taxon
 
   .fields_section.section.ui-widget-content.ui-corner-all
-    =render 'name_status_flags_section', taxon: @taxon, form: form, default_name_string: @default_name_string
-    =render 'protonym_section',          taxon: @taxon, form: form
-    =render 'type_section',              taxon: @taxon, form: form
+    =render 'taxa/form/name_status_flags_section', taxon: @taxon, form: form, default_name_string: @default_name_string
+    =render 'taxa/form/protonym_section',          taxon: @taxon, form: form
+    =render 'taxa/form/type_section',              taxon: @taxon, form: form
 
     .buttons_section
       -# TODO `@possible_homonym` is not declared anywhere.
-      =render 'buttons_save_section', taxon: @taxon, possible_homonym: @possible_homonym
+      =render 'taxa/form/buttons_save_section', taxon: @taxon, possible_homonym: @possible_homonym
       -unless @taxon.new_record?
-        =render 'buttons_taxon_operations', taxon: @taxon
+        =render 'taxa/form/buttons_taxon_operations', taxon: @taxon
 
   -# These should be moved to outside of the form, but that will require a lot
   -# of effort because the JavaScripts are tightly coupled to `AntCat.TaxonForm`.
   -unless @taxon.new_record?
-    =render 'history_items_section',               taxon: @taxon
-    =render 'children_section',                    taxon: @taxon, max_number: 50
-    =render 'junior_and_senior_synonyms_section',  taxon: @taxon
-    =render 'references_section',                  taxon: @taxon
+    =render 'not_really_form', taxon: @taxon
 
 #duplicate_message.ui-icon.ui-icon-alert.duplicate-modal

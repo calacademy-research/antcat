@@ -46,7 +46,7 @@ class SynonymsController < ApplicationController
     end
 
     json = {
-      content: render_to_string(partial: 'taxa/synonyms_section', locals: {
+      content: render_to_string(partial: 'taxa/not_really_form/synonyms_section', locals: {
         taxon: taxon, title: title, synonyms: synonyms, junior_or_senior: junior_or_senior
       }),
       success: error_message.blank?,
@@ -71,7 +71,7 @@ class SynonymsController < ApplicationController
     @synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
     @synonym.touch_with_version
 
-    content = render_to_string partial: 'taxa/junior_and_senior_synonyms_section',
+    content = render_to_string partial: 'taxa/not_really_form/junior_and_senior_synonyms_section',
       locals: { taxon: taxon }
     json = { content: content, success: true, error_message: '' }
     render json: json
