@@ -10,18 +10,16 @@ module Catalog::TaxonBrowser
     def self.create taxon, taxon_browser
       return unless taxon_browser.display
 
-      label = taxon.taxon_label
-
-      title, children = case taxon_browser.display
+      title, taxa = case taxon_browser.display
         when :incertae_sedis_in_family, :incertae_sedis_in_subfamily
-          [ "Genera <i>incertae sedis</i> in #{label}",
+          [ "Genera <i>incertae sedis</i> in #{taxon.label}",
             taxon.genera_incertae_sedis_in ]
 
         when :all_genera_in_family, :all_genera_in_subfamily
-          [ "All #{label} genera", taxon.all_displayable_genera ]
+          [ "All #{taxon.label} genera", taxon.all_displayable_genera ]
 
         when :all_taxa_in_genus
-          [ "All #{label} taxa", taxon.displayable_child_taxa ]
+          [ "All #{taxon.label} taxa", taxon.displayable_child_taxa ]
 
         # Special case because:
         #   1) A genus' children are its species.
@@ -31,23 +29,23 @@ module Catalog::TaxonBrowser
         # from which the "Subgenus" link was followed from (which is also the
         # same as `@taxon` in catalog controller).
         when :subgenera_in_genus
-          [ "#{label} subgenera", taxon.displayable_subgenera ]
+          [ "#{taxon.label} subgenera", taxon.displayable_subgenera ]
 
         # Like above, but `@taxon` (catalog controller) in this case
         # is the subgenus.
         when :subgenera_in_parent_genus
-          [ "#{taxon.genus.taxon_label} subgenera",
+          [ "#{taxon.genus.label} subgenera",
             taxon.genus.displayable_subgenera ]
 
         else
           raise # It's not possible to get here by following links.
         end
 
-      new title, children, taxon_browser
+      new title, taxa, taxon_browser
     end
 
-    def initialize title, children, taxon_browser
-      super children, taxon_browser
+    def initialize title, taxa, taxon_browser
+      super taxa, taxon_browser
       @title = title.html_safe
     end
 
@@ -55,14 +53,14 @@ module Catalog::TaxonBrowser
       @title
     end
 
-    def notify_about_no_valid_children?
+    def notify_about_no_valid_taxa?
       false
     end
 
     private
-      def sorted_children
+      def sorted_taxa
         # Sorted by epithet which is used for the link labels.
-        return @children.order_by_joined_epithet if display == :all_taxa_in_genus
+        return @taxa.order_by_joined_epithet if display == :all_taxa_in_genus
         super
       end
   end

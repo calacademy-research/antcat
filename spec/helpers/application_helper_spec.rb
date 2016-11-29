@@ -63,7 +63,7 @@ describe ApplicationHelper do
 
   describe "#antcat_icon" do
     it "formats" do
-      expect(helper.send :antcat_icon).to eq '<span class="antcat_icon"></span>'
+      expect(helper.antcat_icon).to eq '<span class="antcat_icon"></span>'
     end
 
     describe "arguments" do
@@ -81,7 +81,7 @@ describe ApplicationHelper do
     end
 
     def icon_classes *css_classes
-      extract_css_classes helper.send(:antcat_icon, *css_classes)
+      extract_css_classes helper.antcat_icon(*css_classes)
     end
 
     def extract_css_classes string

@@ -4,7 +4,7 @@
 module CatalogHelper
   def taxon_label_span taxon
     content_tag :span, class: css_classes_for_rank(taxon) do
-      taxon.taxon_label
+      taxon.label
     end
   end
 
@@ -13,6 +13,7 @@ module CatalogHelper
   end
 
   # Sorted to make test pass
+  # TODO fix.
   def css_classes_for_rank taxon
     [taxon.type.downcase, 'taxon', 'name'].sort
   end

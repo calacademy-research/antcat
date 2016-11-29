@@ -69,10 +69,8 @@ module ApplicationHelper
     timestamp.strftime '%Y-%m-%d'
   end
 
-  # Hmm cannot remember why private..
-  private
-    def antcat_icon *css_classes
-      content_tag :span, nil,
-        class: ["antcat_icon"].concat(Array.wrap css_classes)
-    end
+  def antcat_icon *css_classes
+    content_tag :span, nil,
+      class: ["antcat_icon"].concat(Array.wrap css_classes)
+  end
 end

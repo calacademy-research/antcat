@@ -10,12 +10,12 @@ module Catalog::TaxonBrowser
     end
 
     def title
-      return @tab_taxon.taxon_label if show_only_genus_name?
-      "#{@tab_taxon.taxon_label} #{@tab_taxon.childrens_rank_in_words}".html_safe
+      return @tab_taxon.label if show_only_genus_name?
+      "#{@tab_taxon.label} #{@tab_taxon.childrens_rank_in_words}".html_safe
     end
 
-    def notify_about_no_valid_children?
-      @children.empty? && !is_a_subfamily_with_valid_genera_incertae_sedis?
+    def notify_about_no_valid_taxa?
+      @taxa.empty? && !is_a_subfamily_with_valid_genera_incertae_sedis?
     end
 
     private

@@ -124,7 +124,7 @@ class Taxon < ApplicationRecord
     type.downcase
   end
 
-  def taxon_label
+  def label
     name.epithet_with_fossil_html fossil?
   end
 

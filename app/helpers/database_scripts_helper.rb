@@ -3,7 +3,7 @@ module DatabaseScriptsHelper
     tags.map do |tag|
       css_class = case tag
                   when "slow"      then "warning-label"
-                  when "very-slow" then "bold-warning-label"
+                  when "very-slow" then "warning-label"
                   when "new!"      then "label"
                   else                  "white-label"
                   end

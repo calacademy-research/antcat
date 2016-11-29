@@ -1,7 +1,7 @@
 %ul#taxon-browser-tabs.tabs{"data-tabs" => ""}
   -@taxon_browser.tabs.each do |tab|
     %li.tabs-title{class: ("is-active" if tab.open?)}
-      -# Foundation Tabs requires unique IDs for each tabs. We can use anything.
+      -# Foundation Tabs requires unique IDs for each tabs.
       =link_to tab.title, "##{tab.object_id}"
 
   %li.tab-toggler
@@ -15,14 +15,14 @@
       %ul.snaked.no-bullet.mr-scrollbary
         =links_to_extra_tabs tab.tab_taxon
 
-        -tab.each_child do |child, is_selected|
+        -tab.each_taxon do |taxon, is_selected|
           %li{class: ("selected" if is_selected)}
-            =taxon_browser_link child
+            =taxon_browser_link taxon
 
-        -# It's possible that `children` is empty at this point. Most likely
+        -# It's possible that `taxa` is empty at this point. Most likely
         -# that means there are invalid children that can be seen by toggling
         -# "show invalid", or that the taxon is an invalid subfamily/tribe/genus.
-        -if tab.notify_about_no_valid_children?
+        -if tab.notify_about_no_valid_taxa?
           %li No valid child taxa
           -unless @taxon_browser.show_invalid? # Link unless already showing invalid.
             %li=toggle_invalid_or_valid_only_link "Show invalid?"

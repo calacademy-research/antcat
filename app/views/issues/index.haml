@@ -22,7 +22,7 @@
   %tbody
     -@issues.each do |issue|
       %tr.issue{class: issue.status}
-        %td.icon=issue_icon issue.status
+        %td.icon=antcat_icon "issue", issue.status
         %td=issue.status.capitalize
         %td.grow=link_to issue.title, issue
         %td.no-wrap=link_comments_section issue

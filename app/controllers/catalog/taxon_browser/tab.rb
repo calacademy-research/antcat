@@ -1,10 +1,8 @@
 # TODO convert to a module?
-# TODO rename `@children`?
-# TODO rename `@tab_taxon`?
 
 # Abstract class subclassed by the other two tab types.
 #
-# * `@children` are all the taxa shown when the tab is active.
+# * `@taxa` are all the taxa shown when the tab is active.
 # * `@tab_taxon` is the "owner" or "parent" of the taxa in the tab.
 # * `@taxon` -- there's no such thing here!
 
@@ -15,15 +13,15 @@ module Catalog::TaxonBrowser
     delegate :display, :selected_in_tab?, :tab_open?,
       :show_invalid?, to: :@taxon_browser
 
-    def initialize children, taxon_browser
+    def initialize taxa, taxon_browser
       @taxon_browser = taxon_browser
-      @children = children
-      @children = children.valid unless show_invalid?
+      @taxa = taxa
+      @taxa = taxa.valid unless show_invalid?
     end
 
-    def each_child
-      sorted_children.includes(:name).each do |child|
-        yield child, selected_in_tab?(child)
+    def each_taxon
+      sorted_taxa.includes(:name).each do |taxon|
+        yield taxon, selected_in_tab?(taxon)
       end
     end
 
@@ -32,8 +30,8 @@ module Catalog::TaxonBrowser
     end
 
     private
-      def sorted_children
-        @children.order_by_name_cache
+      def sorted_taxa
+        @taxa.order_by_name_cache
       end
   end
 end
