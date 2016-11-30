@@ -2,6 +2,8 @@ $ ->
   $(document).foundation()
   AntCat.make_reference_keeys_expandable document
 
+  enableInlineExpansions()
+
 #_something seems to override this method when it's named
 # enable - it doesn't get called
 $.fn.undisable = ->
@@ -23,6 +25,13 @@ AntCat.make_reference_keeys_expandable = (element) ->
       .find('.reference_keey, .reference_keey_expansion')
       .toggle()
     false
+
+# Used by `FeedHelper#inline_expandable`.
+# TODO should be merge with `AntCat.make_reference_keeys_expandable`, but
+# that requires a migration for invalidating reference caches.
+enableInlineExpansions = ->
+  $(".expandable").on "click", (event) ->
+    $(this).find(".show-when-expanded, .hide-when-expanded").toggle()
 
 # find just the topmost elements that match - don't drill down into them
 $.fn.find_topmost = (selector) ->

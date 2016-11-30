@@ -165,6 +165,10 @@ When(/^I delete a reference section for the feed$/) do
   section.destroy
 end
 
+When(/^I click on Show more$/) do
+  find("a", text: "Show more").click
+end
+
 # General note about RequestStore
 # The gem is all good, but it makes testing harder.
 #

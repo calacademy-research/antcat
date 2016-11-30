@@ -1,4 +1,17 @@
 module FeedHelper
+  def inline_expandable &block
+    show_more = content_tag :a, class: "hide-when-expanded" do
+                  content_tag :small, "Show more"
+                end
+    hidden =  content_tag :span, class: "show-when-expanded" do
+                yield
+              end
+
+    content_tag :span, class: "expandable" do
+      show_more + hidden
+    end
+  end
+
   def format_activity activity
     partial = partial_for_activity activity
     render partial: partial, locals: { activity: activity }

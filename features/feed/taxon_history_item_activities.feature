@@ -33,3 +33,7 @@ Feature: Feed (taxon history items)
 
     When I go to the activity feed
     Then I should see "Archibald reordered the history items of Orderia" and no other feed items
+    And I should not see "Order was changed from"
+
+    When I click on Show more
+    Then I should see "Order was changed from"
