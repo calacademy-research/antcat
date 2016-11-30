@@ -4,7 +4,6 @@ $ ->
 # These elements are from the view.
 SORTABLE =       ".history_items"
 SORTABLE_ITEM =  ".history_item"
-REORDER_BUTTON = "#start-reordering-history-items"
 
 # Internal only.
 # We're using a random class to check if the element already is
@@ -12,14 +11,16 @@ REORDER_BUTTON = "#start-reordering-history-items"
 IS_SORTABLE = "is-sortable-made-up-class"
 
 setupReorderButton = ->
-  $(REORDER_BUTTON).on "click", ->
+  $(AntCat.BUTTONS.REORDER_HISTORY_ITEMS).on "click", ->
     if $(SORTABLE).hasClass IS_SORTABLE
       disableReordering()
     else
       startReordering()
 
 startReordering = ->
-  $(REORDER_BUTTON).addClass "disabled"
+  $(AntCat.BUTTONS.REORDER_HISTORY_ITEMS).disableButton()
+  $(AntCat.BUTTONS.ADD_HISTORY_ITEM).disableButton()
+  $(AntCat.BUTTONS.SAVE_TAXON_FORM).disable()
 
   do makeSortable = ->
     $(SORTABLE).addClass IS_SORTABLE
@@ -52,7 +53,9 @@ disableReordering = ->
 
   do destroyReorderingControls = -> $("#reorder-history-items-controls").remove()
 
-  $(REORDER_BUTTON).removeClass "disabled"
+  $(AntCat.BUTTONS.REORDER_HISTORY_ITEMS).enableButton()
+  $(AntCat.BUTTONS.ADD_HISTORY_ITEM).enableButton()
+  $(AntCat.BUTTONS.SAVE_TAXON_FORM).undisable()
 
 saveNewOrder = ->
   taxonId = $(SORTABLE).data "taxon-id"

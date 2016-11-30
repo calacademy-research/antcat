@@ -1,4 +1,5 @@
 #= require controllers/taxa/not_really_form/not_really_form
+#= require controllers/taxa/not_really_form/not_really_form_global_variables
 
 #= require controllers/taxa/not_really_form/history_items_section
 #= require controllers/taxa/not_really_form/references_section

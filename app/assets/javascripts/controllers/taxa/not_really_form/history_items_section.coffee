@@ -39,6 +39,9 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
   on_form_open: =>
     @options.on_form_open() if @options.on_form_open
     @element.find('textarea').focus()
+
+    $(AntCat.BUTTONS.ADD_HISTORY_ITEM).disableButton()
+    $(AntCat.BUTTONS.REORDER_HISTORY_ITEMS).disableButton()
     super
 
   @add_history_item: (form) =>
@@ -60,6 +63,10 @@ class AntCat.HistoryItemForm extends AntCat.NestedForm
     super
     @buttons.find('.delete').off('click').on('click', @delete)
 
+  enableOtherButtonsAgain: ->
+    $(AntCat.BUTTONS.ADD_HISTORY_ITEM).enableButton()
+    $(AntCat.BUTTONS.REORDER_HISTORY_ITEMS).enableButton()
+
   delete: =>
     return false unless confirm 'Do you want to delete this history item?'
     @start_throbbing()
@@ -68,12 +75,18 @@ class AntCat.HistoryItemForm extends AntCat.NestedForm
     @close()
     @options.on_delete() if @options.on_delete
     @element.closest('.history_item').remove()
+
+    @enableOtherButtonsAgain()
     false
 
   cancel: =>
     $('.added_history_item').remove()
+
+    @enableOtherButtonsAgain()
     super
 
   close: =>
     $('.added_history_item').removeClass('.added_history_item')
+
+    @enableOtherButtonsAgain()
     super

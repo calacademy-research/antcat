@@ -4,13 +4,14 @@ $ ->
 
   enableInlineExpansions()
 
-#_something seems to override this method when it's named
-# enable - it doesn't get called
-$.fn.undisable = ->
-  @.removeClass('ui-state-disabled').removeAttr('disabled')
+# Something seems to override this method when
+# it's named "enable" - it doesn't get called.
+$.fn.undisable = -> @.removeClass('ui-state-disabled').removeAttr('disabled')
+$.fn.disable = -> @.addClass('ui-state-disabled').attr('disabled', 'true')
 
-$.fn.disable = ->
-  @.addClass('ui-state-disabled').attr('disabled', 'true')
+# Like above, but without user jQuery UI classes.
+$.fn.enableButton = -> @removeClass "disabled"
+$.fn.disableButton = -> @addClass "disabled"
 
 # Defined on `AntCat` to make it possible to re-trigger after generating
 # markdown preview of references (in `preview_markdown.coffee`).
