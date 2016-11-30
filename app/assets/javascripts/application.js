@@ -16,6 +16,7 @@
 //= require jquery-ui/core
 //= require jquery-ui/autocomplete
 //= require jquery-ui/dialog
+//= require jquery-ui/sortable
 //= require jquery-ui/tabs
 //= require jquery-ui/tooltip
 

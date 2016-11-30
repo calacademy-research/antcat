@@ -7,6 +7,7 @@ class Taxon < ApplicationRecord
   include Taxa::Delete
   include Taxa::PredicateMethods
   include Taxa::References
+  include Taxa::ReorderHistoryItems
   include Taxa::Statistics
   include Taxa::Synonyms
   include Feed::Trackable

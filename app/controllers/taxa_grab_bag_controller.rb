@@ -50,6 +50,14 @@ class TaxaGrabBagController < ApplicationController
   def show_children
   end
 
+  def reorder_history_items
+    if @taxon.reorder_history_items params[:taxon_history_item]
+      render json: { success: true }
+    else
+      render json: @taxon.errors, status: :unprocessable_entity
+    end
+  end
+
   # TODO move logic to model?
   def update_parent
     new_parent = Taxon.find params[:new_parent_id]

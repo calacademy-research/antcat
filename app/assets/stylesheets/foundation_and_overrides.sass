@@ -98,7 +98,7 @@ button, .ui-widget button button
 
 // TODO "non-destructive" and "destructive" doesn't really make sense.
 // TODO make smarter
-a.btn-cancel, a.btn-white, a.btn-delete, a.btn-destructive, a.btn-normal, a.btn-edit, a.btn-login, a.btn-new, a.btn-non-destructive, a.btn-normal, a.btn-save, a.btn-search, a.btn-undo .btn-dangerous
+a.btn-cancel, a.btn-white, a.btn-delete, a.btn-destructive, a.btn-normal, a.btn-edit, a.btn-login, a.btn-new, a.btn-non-destructive, a.btn-normal, a.btn-save, a.btn-search, a.btn-undo .btn-dangerous, .btn-pretty
   padding: 0.55rem 0.75rem
   color: #fff !important
 
@@ -108,6 +108,12 @@ a.btn-cancel, a.btn-white
 .btn-tiny
   padding: 0.1rem 0.3rem !important
   font-size: rem-calc(12) !important
+  // Remove border added by ".button" (which is required by ".disabled").
+  border: 0
+
+// Restore borders on white buttons (removed above).
+.btn-tiny.btn-cancel
+  border: 1px #000 solid
 
 button.close-button
   background-color: transparent

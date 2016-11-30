@@ -1,4 +1,5 @@
-.history_item.antcat_panel{'data-id' => item.id}
+-# `id` is used for sorting/reordering by jQuery UI sortable.
+.history_item.antcat_panel{'data-id' => item.id, id: "taxon_history_item_#{item.id}"}
   %table
     %tr
       %td.history_item_body

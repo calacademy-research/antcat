@@ -78,6 +78,7 @@ AntCat::Application.routes.draw do
         get :confirm_before_delete
         delete :destroy
         delete :destroy_unreferenced
+        post :reorder_history_items
         get :update_parent # TODO change to put
       end
     end
