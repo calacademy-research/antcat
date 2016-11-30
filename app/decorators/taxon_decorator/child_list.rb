@@ -18,9 +18,7 @@ class TaxonDecorator::ChildList
 
     return unless content.present?
 
-    content_tag :div, class: 'child_lists' do
-      content
-    end
+    content_tag :div, content, class: 'child_lists'
   end
 
   private

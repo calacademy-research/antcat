@@ -46,6 +46,7 @@ class TaxonDecorator < ApplicationDecorator
 
   def references
     return unless taxon.reference_sections.present?
+
     helpers.content_tag :div, class: 'reference_sections' do
       taxon.reference_sections.reduce(''.html_safe) do |content, section|
         content << reference_section(section)
