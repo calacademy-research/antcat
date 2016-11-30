@@ -17,12 +17,12 @@ table.feed
   td.icon > .antcat_icon
     // create/add = green plus
     &.create
-      @extend .fa-plus-circle
+      @extend .fa-plus
       color: $color_green
 
     // delete = red minus
     &.destroy
-      @extend .fa-minus-circle
+      @extend .fa-minus
       color: $color_danger
 
     // "approving actions" = green check
@@ -40,6 +40,10 @@ table.feed
       color: $color_green !important
     &.destroy.synonym
       color: $color_danger !important
+
+    &.create.comment
+      @extend .fa-comment-o
+      font-weight: bold
 
   .antcat_icon
     &.synonym_arrow

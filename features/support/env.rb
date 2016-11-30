@@ -14,7 +14,7 @@ require 'capybara-screenshot/cucumber'
 require 'webmock/cucumber'
 require 'sunspot_test/cucumber'
 
-if ENV['HEADLESS'] == 'true'
+if ENV['HEADLESS']
   require 'headless'
 
   headless = Headless.new
