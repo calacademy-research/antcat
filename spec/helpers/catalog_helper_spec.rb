@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe CatalogHelper do
+  # Moved to `TaxonDecorator::ChildList`.
   describe "labels" do
     let(:taxon) { create :genus, name: create(:name, name: 'Atta') }
 
-    describe "#taxon_label_span" do
+    xdescribe "#taxon_label_span" do
       it "creates a span based on the type of the taxon and its status" do
         result = helper.taxon_label_span taxon
         expect(result).to eq '<span class="genus name taxon">Atta</span>'
@@ -12,17 +13,10 @@ describe CatalogHelper do
       end
     end
 
-    describe "#css_classes_for_rank" do
+    xdescribe "#css_classes_for_rank" do
       it 'returns the right ones' do
         expect(helper.css_classes_for_rank(taxon)).to match_array ['genus', 'taxon', 'name']
       end
-    end
-
-    describe "#css_classes_for_status" do
-      it "returns the correct classes" do
-        expect(helper.send(:css_classes_for_status, taxon)).to match_array ["valid"]
-      end
-      # Not tested: "nomen_nudum"/"collective_group_name"
     end
   end
 end

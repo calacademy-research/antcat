@@ -1,7 +1,6 @@
 module TaxonBrowserHelper
   def taxon_browser_link taxon
-    classes = css_classes_for_rank(taxon)
-    classes << css_classes_for_status(taxon)
+    classes = css_classes_for_status(taxon) << taxon.rank
     link_to taxon.taxon_label, catalog_path(taxon), class: classes
   end
 
@@ -63,5 +62,13 @@ module TaxonBrowserHelper
           link_to label, catalog_path(selected, display: param)
         end
       end
+    end
+
+    def css_classes_for_status taxon
+      css_classes = []
+      css_classes << taxon.status.downcase.gsub(/ /, '_')
+      css_classes << 'nomen_nudum' if taxon.nomen_nudum?
+      css_classes << 'collective_group_name' if taxon.collective_group_name?
+      css_classes
     end
 end

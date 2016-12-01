@@ -88,7 +88,7 @@ class TaxonDecorator::ChildList
         label << ' of '
       end
 
-      label << taxon_label_span(@taxon)
+      label << taxon_label_span
 
       content_tag :div, class: 'child_list' do
         content = ''.html_safe
@@ -97,6 +97,18 @@ class TaxonDecorator::ChildList
         content << child_list_items(children)
         content << '.'
       end
+    end
+
+    def taxon_label_span
+      content_tag :span, class: css_classes_for_rank do
+        @taxon.taxon_label
+      end
+    end
+
+    # Sorted to make test pass
+    # TODO fix -- wait... no -- remove it!
+    def css_classes_for_rank
+      [@taxon.rank, 'taxon', 'name'].sort
     end
 
     def child_list_items children

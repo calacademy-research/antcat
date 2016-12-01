@@ -2,19 +2,6 @@
 # TODO possibly DRY buttons helpers that may be duplicated elsewhere.
 
 module CatalogHelper
-  # TODO maybe move this and `#css_classes_for_rank` to `TaxonDecorator::ChildList`.
-  def taxon_label_span taxon
-    content_tag :span, class: css_classes_for_rank(taxon) do
-      taxon.taxon_label
-    end
-  end
-
-  # Sorted to make test pass
-  # TODO fix.
-  def css_classes_for_rank taxon
-    [taxon.type.downcase, 'taxon', 'name'].sort
-  end
-
   def link_to_edit_taxon taxon
     if user_can_edit?
       link_to "Edit", edit_taxa_path(taxon), class: "btn-normal"
@@ -46,13 +33,4 @@ module CatalogHelper
   def show_full_statistics? taxon
     taxon.invalid? || params[:include_full_statistics].present?
   end
-
-  private
-    def css_classes_for_status taxon
-      css_classes = []
-      css_classes << taxon.status.downcase.gsub(/ /, '_')
-      css_classes << 'nomen_nudum' if taxon.nomen_nudum?
-      css_classes << 'collective_group_name' if taxon.collective_group_name?
-      css_classes
-    end
 end
