@@ -114,7 +114,10 @@ class TaxonDecorator::Headline
     end
 
     def protonym_name protonym
-      content_tag :b, content_tag(:span, protonym_label(protonym), class: 'protonym_name')
+      content = content_tag :span, class: 'protonym_name' do
+        protonym.name.protonym_with_fossil_html protonym.fossil
+      end
+      content_tag :b, content
     end
 
     def headline_authorship authorship

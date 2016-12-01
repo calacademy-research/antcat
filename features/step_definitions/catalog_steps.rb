@@ -22,11 +22,11 @@ When(/^I click the reference key expansion$/) do
 end
 
 Then(/^I should see the catalog entry for "([^"]*)"$/) do |taxon|
-  expect(page).to have_css '.header .taxon', text: taxon
+  step %{the name in the header should be "#{taxon}"}
 end
 
 Then(/^the name in the header should be "([^"]*)"/) do |name|
-  expect(page).to have_css '.header .taxon', text: name
+  expect(page).to have_css '.header .name', text: name
 end
 
 When(/I fill in the catalog search box with "(.*?)"/) do |search_term|

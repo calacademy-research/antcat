@@ -2,14 +2,11 @@
 # TODO possibly DRY buttons helpers that may be duplicated elsewhere.
 
 module CatalogHelper
+  # TODO maybe move this and `#css_classes_for_rank` to `TaxonDecorator::ChildList`.
   def taxon_label_span taxon
     content_tag :span, class: css_classes_for_rank(taxon) do
       taxon.taxon_label
     end
-  end
-
-  def protonym_label protonym
-    protonym.name.protonym_with_fossil_html protonym.fossil
   end
 
   # Sorted to make test pass
