@@ -202,8 +202,8 @@ describe Exporters::Antweb::Exporter do
 
             # taxonomic history
             %{<p><b>Taxonomic history</b></p>} +
-            %{<div class="history"><div class="history_item" data-id="#{history_item.id}">} +
-              %{<table><tr><td style="font-size: 13px" class="history_item_body">} +
+            %{<div class="history"><div class="history_item">} +
+              %{<table><tr><td class="history_item_body" style="font-size: 13px">} +
                 %{Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.} +
               %{</td></tr></table>} +
             %{</div></div>} +

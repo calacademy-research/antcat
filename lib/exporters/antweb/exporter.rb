@@ -185,9 +185,7 @@ class Exporters::Antweb::Exporter
       return unless reference
 
       formatted = reference.decorate.formatted
-      keey = reference.keey
-
-      content_tag(:span, title: formatted) { keey }
+      content_tag :span, reference.keey, title: formatted
     end
 
     # TODO rename.

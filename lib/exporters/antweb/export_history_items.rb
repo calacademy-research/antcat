@@ -17,16 +17,12 @@ class Exporters::Antweb::ExportHistoryItems
       end
     end
 
-    if $use_ant_web_formatter
-      return '<p><b>Taxonomic history</b></p>'.html_safe + history_content
-    else
-      return history_content
-    end
+    '<p><b>Taxonomic history</b></p>'.html_safe + history_content
   end
 
   private
     def history_item item
-      content_tag :div, class: "history_item", 'data-id' => item.id do
+      content_tag :div, class: "history_item" do
         content_tag :table do
           content_tag :tr do
             history_item_body item
@@ -35,16 +31,8 @@ class Exporters::Antweb::ExportHistoryItems
       end
     end
 
-    def history_item_body_attributes
-      if $use_ant_web_formatter
-        { style: 'font-size: 13px' } # TODO this belongs in AntWeb's CSS files.
-      else
-        {}
-      end.merge(class: 'history_item_body')
-    end
-
     def history_item_body item
-      content_tag :td, history_item_body_attributes do
+      content_tag :td, class: 'history_item_body', style: 'font-size: 13px' do
         add_period_if_necessary TaxtPresenter[item.taxt].to_html
       end
     end
