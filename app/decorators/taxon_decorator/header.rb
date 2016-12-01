@@ -6,8 +6,6 @@ class TaxonDecorator::Header
   include ApplicationHelper
   include CatalogHelper
 
-  include RefactorHelper
-
   def initialize taxon
     @taxon = taxon
   end
@@ -24,7 +22,6 @@ class TaxonDecorator::Header
     def second_part
       return original_combination_second_part if @taxon.original_combination?
       stardard_second_part
-      end
     end
 
     def stardard_second_part

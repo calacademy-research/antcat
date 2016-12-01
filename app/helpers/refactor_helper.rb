@@ -3,7 +3,6 @@
 #
 # [November 2016]: this module is included in:
 #   app/decorators/taxon_decorator/child_list.rb
-#   app/decorators/taxon_decorator/header.rb
 #   app/decorators/taxon_decorator/headline.rb
 #
 # Calls to individual methods:
