@@ -8,7 +8,7 @@ Feature: Elevating subspecies to species
     And I am logged in
 
     When I go to the catalog entry for "Solenopsis speccus subbus"
-    And I press "Edit"
+    And I follow "Edit"
     Given I will confirm on the next step
     And I follow "Elevate to species"
     Then I should see "Subspecies was successfully elevated to a species."
@@ -22,7 +22,7 @@ Feature: Elevating subspecies to species
     And I am logged in
 
     When I go to the catalog entry for "Atta"
-    And I press "Edit"
+    And I follow "Edit"
     Then I should not see "Elevate to species"
 
   Scenario: Elevating to species when the species name exists
@@ -31,7 +31,7 @@ Feature: Elevating subspecies to species
     And I am logged in
 
     When I go to the catalog entry for "Solenopsis speccus subbus"
-    And I press "Edit"
+    And I follow "Edit"
     Given I will confirm on the next step
     And I follow "Elevate to species"
     Then I should see "Subspecies was successfully elevated to a species."

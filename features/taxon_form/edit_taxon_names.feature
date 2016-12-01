@@ -95,7 +95,7 @@ Feature: Editing a taxon's name, protonym name, or type name
     And I set the current valid taxon name to "Eciton minor"
     And I press "OK"
     And I save my changes
-    And I press "Edit"
+    And I follow "Edit"
     Then the current valid taxon name should be "Eciton minor"
 
     When I save my changes

@@ -35,7 +35,7 @@ Feature: Managing user feedback
     And I log in as a superadmin
 
     When I go to the most recent feedback item
-    And I press "Delete"
+    And I follow "Delete"
     Then I should see "Feedback item was successfully deleted."
 
   Scenario: Only superadmins should be able to delete feedback

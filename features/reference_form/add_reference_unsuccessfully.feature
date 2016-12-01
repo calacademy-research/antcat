@@ -7,7 +7,7 @@ Feature: Add reference unsuccessfully
   Scenario: Adding a reference but then cancelling
     When I follow "New"
     And I fill in "reference_title" with "Mark Wilden"
-    And I press "Cancel"
+    And I follow "Cancel"
     Then I should be on the references page
 
   Scenario: Leaving other fields blank when adding an article reference

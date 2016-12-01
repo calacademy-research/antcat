@@ -58,7 +58,7 @@ Feature: Feed (references)
     When I create a bunch of references for the feed
       And I go to the references page
       And I follow "Latest Changes"
-      And I press "Approve all"
+      And I follow "Approve all"
     And I go to the activity feed
     Then I should see "Archibald approved all unreviewed references (2 in total)."
     And I should see 3 items in the feed

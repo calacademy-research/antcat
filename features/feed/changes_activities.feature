@@ -23,7 +23,7 @@ Feature: Feed (changes)
     And there are two unreviewed catalog changes for the feed
 
     When I go to the unreviewed changes page
-    And I press "Approve all"
+    And I follow "Approve all"
     And I go to the activity feed
     Then I should see "Archibald approved all unreviewed catalog changes"
     # Should be the below but something is not working in the steps.

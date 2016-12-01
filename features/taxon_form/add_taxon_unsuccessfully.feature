@@ -48,7 +48,7 @@ Feature: Adding a taxon unsuccessfully
 
     When I go to the edit page for "Formicinae"
     And I follow "Add genus"
-    And I press "Cancel"
+    And I follow "Cancel"
     Then I should be on the edit page for "Formicinae"
 
   Scenario: Show "Add species" link on genus catalog pages

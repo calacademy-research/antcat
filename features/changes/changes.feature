@@ -95,7 +95,7 @@ Feature: Changes
     Then I should see "Approve all"
 
     Given I will confirm on the next step
-    When I press "Approve all"
+    When I follow "Approve all"
     And I go to the unreviewed changes page
     Then I should not see "Approve[^d]"
 

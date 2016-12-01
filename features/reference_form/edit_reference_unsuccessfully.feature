@@ -139,7 +139,7 @@ Feature: Edit reference unsuccessfully
     And I press the "Save" button
     Then I should see "Title can't be blank"
 
-    When I press "Cancel"
+    When I follow "Cancel"
     Then I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 "
 
     When I follow "Edit"

@@ -35,7 +35,7 @@ Feature: Editing a taxon
 
     When I go to the edit page for "Calyptites"
     And I select "subfamily" from "taxon_incertae_sedis_in"
-    And I press "Cancel"
+    And I follow "Cancel"
     Then I should not see "incertae sedis" in the header
 
   @search
@@ -113,7 +113,7 @@ Feature: Editing a taxon
     Then I should be on the catalog page for "Atta major"
     And I should see "San Pedro"
 
-    When I press "Edit"
+    When I follow "Edit"
     Then the verbatim type locality should be "San Pedro"
 
   Scenario: Don't see verbatim type locality field for genus-group name
@@ -136,7 +136,7 @@ Feature: Editing a taxon
     Then I should be on the catalog page for "Atta major"
     And I should see "CZN"
 
-    When I press "Edit"
+    When I follow "Edit"
     Then the type specimen repository should be "CZN"
 
   Scenario: Don't see verbatim type locality field for genus-group name
@@ -160,7 +160,7 @@ Feature: Editing a taxon
     Then I should be on the catalog page for "Atta major"
     And I should see a link "www.antweb.com/"
 
-    When I press "Edit"
+    When I follow "Edit"
     Then the type specimen URL should be "www.antweb.com/"
 
   Scenario: Changing biogeographic region
@@ -173,7 +173,7 @@ Feature: Editing a taxon
     Then I should be on the catalog page for "Atta major"
     And I should see "Malagasy"
 
-    When I press "Edit"
+    When I follow "Edit"
     Then I should see "Malagasy" selected in "taxon_biogeographic_region"
 
   Scenario: Don't see biogeographic region field for genus-group name
@@ -193,7 +193,7 @@ Feature: Editing a taxon
     When I go to the edit page for "Atta major"
     And I select "Malagasy" from "taxon_biogeographic_region"
     And I save my changes
-    And I press "Edit"
+    And I follow "Edit"
     And I select "" from "taxon_biogeographic_region"
     And I save my changes
     Then I should not see "Malagasy"

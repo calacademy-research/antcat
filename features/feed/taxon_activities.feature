@@ -59,7 +59,7 @@ Feature: Feed (taxa)
     And activity tracking is enabled
 
     When I go to the catalog entry for "Solenopsis speccus subbus"
-      And I press "Edit"
+      And I follow "Edit"
       And I will confirm on the next step
       And I follow "Elevate to species"
     And I go to the activity feed

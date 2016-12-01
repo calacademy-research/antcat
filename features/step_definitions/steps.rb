@@ -20,22 +20,7 @@ end
 
 # Click/press
 When(/^(?:|I )press "([^"]*)"$/) do |button|
-  # TODO treat buttons and "button link" the same
-  if button == "Edit"
-    first('.btn-normal').click
-  elsif button == "Review change"
-    first('.btn-normal').click
-  elsif button == "Approve"
-    first('.btn-normal').click
-  elsif button == "Approve all"
-    first('.btn-saves-warning').click
-  elsif button == "Delete"
-    first('.btn-delete').click
-  elsif button == "Cancel"
-    first('.btn-cancel').click
-  else
-    click_button button
-  end
+  click_button button
 end
 
 When(/^(?:|I )press the first "([^"]*)"$/) do |button|
