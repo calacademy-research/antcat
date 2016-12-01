@@ -125,4 +125,35 @@ module TaxonHelper
     string = "new #{string}" if taxon.new_record?
     string.html_safe
   end
+
+  def taxon_change_history taxon
+    return if taxon.old?
+    change = taxon.last_change
+    return unless change
+
+    content_tag :span, class: 'change_history' do
+      content = if change.change_type == 'create'
+                  "Added by"
+                else
+                  "Changed by"
+                end.html_safe
+      content << " #{change.decorate.format_changed_by} ".html_safe
+      content << change.decorate.format_created_at.html_safe
+
+      if taxon.approved?
+        # I don't fully understand this case;
+        # it appears that somehow, we're able to generate "changes" without affiliated
+        # taxon_states. not clear to me how this happens or whether this should be allowed.
+        # Workaround: If the taxon_state is showing "approved", go get the most recent change
+        # that has a noted approval.
+        approved_change = Change.where(<<-SQL.squish, change.user_changed_taxon_id).last
+          user_changed_taxon_id = ? AND approved_at IS NOT NULL
+        SQL
+        content << "; approved by #{approved_change.decorate.format_approver_name} ".html_safe
+        content << approved_change.decorate.format_approved_at.html_safe
+      end
+
+      content
+    end
+  end
 end

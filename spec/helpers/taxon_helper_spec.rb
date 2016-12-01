@@ -72,4 +72,39 @@ describe TaxonHelper do
       expect(helper.taxon_name_description genus).to be_html_safe
     end
   end
+
+  describe "#taxon_change_history", versioning: true do
+    it "shows nothing for old taxa" do
+      taxon = create_genus
+      expect(helper.taxon_change_history taxon).to be_nil
+    end
+
+    it "shows the adder for waiting taxa" do
+      adder = create :editor
+      taxon = create_taxon_version_and_change :waiting, adder
+
+      change_history = helper.taxon_change_history taxon
+      expect(change_history).to match /Added by/
+      expect(change_history).to match /Brian Fisher/
+      expect(change_history).to match /less than a minute ago/
+    end
+
+    it "shows the adder and the approver for approved taxa" do
+      adder = create :editor
+      approver = create :editor
+      taxon = create_taxon_version_and_change :waiting, adder
+      taxon.taxon_state.review_state = :waiting
+      change = Change.find taxon.last_change.id
+      change.update_attributes! approver: approver, approved_at: Time.now
+      taxon.approve!
+
+      change_history = helper.taxon_change_history taxon
+      expect(change_history).to match /Added by/
+      expect(change_history).to match /#{adder.name}/
+      expect(change_history).to match /less than a minute ago/
+      expect(change_history).to match /approved by/
+      expect(change_history).to match /#{approver.name}/
+      expect(change_history).to match /less than a minute ago/
+    end
+  end
 end
