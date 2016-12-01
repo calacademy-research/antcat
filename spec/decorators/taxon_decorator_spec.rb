@@ -29,19 +29,19 @@ describe TaxonDecorator do
       it "formats a family name in the protonym" do
         protonym = create :protonym, name: create(:subfamily_name, name: 'Dolichoderinae')
         expect(decorator_helper.new(nil).send(:protonym_name, protonym))
-          .to eq '<b><span class="protonym_name">Dolichoderinae</span></b>'
+          .to eq '<b><span>Dolichoderinae</span></b>'
       end
 
       it "formats a genus name in the protonym" do
         protonym = create :protonym, name: create(:genus_name, name: 'Atari')
         expect(decorator_helper.new(nil).send(:protonym_name, protonym))
-          .to eq '<b><span class="protonym_name"><i>Atari</i></span></b>'
+          .to eq '<b><span><i>Atari</i></span></b>'
       end
 
       it "formats a fossil" do
         protonym = create :protonym, name: create(:genus_name, name: 'Atari'), fossil: true
         expect(decorator_helper.new(nil).send(:protonym_name, protonym))
-          .to eq '<b><span class="protonym_name"><i>&dagger;</i><i>Atari</i></span></b>'
+          .to eq '<b><span><i>&dagger;</i><i>Atari</i></span></b>'
       end
     end
 
@@ -52,13 +52,13 @@ describe TaxonDecorator do
         it "shows the type taxon" do
           genus = create_genus 'Atta', type_name: species_name
           expect(decorator_helper.new(genus).send(:headline_type))
-            .to eq %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>.</span>}
+            .to eq %{<span>Type-species: <span><i>Atta major</i></span>.</span>}
         end
 
         it "shows the type taxon with extra Taxt" do
           genus = create_genus 'Atta', type_name: species_name, type_taxt: ', by monotypy'
           expect(decorator_helper.new(genus).send(:headline_type))
-            .to eq %{<span class="type">Type-species: <span class="species taxon"><i>Atta major</i></span>, by monotypy.</span>}
+            .to eq %{<span>Type-species: <span><i>Atta major</i></span>, by monotypy.</span>}
         end
       end
 
@@ -104,25 +104,25 @@ describe TaxonDecorator do
       it "formats a tribes list" do
         attini = create_tribe 'Attini', subfamily: subfamily
         expect(decorator_helper.new(subfamily).send(:child_list, subfamily.tribes, true))
-          .to eq %{<div class="child_list"><span class="caption">Tribe (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>}
+          .to eq %{<div><span class="caption">Tribe (extant) of <span>Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>}
       end
 
       it "formats a child list, specifying extinctness" do
         atta = create_genus 'Atta', subfamily: subfamily
         expect(decorator_helper.new(subfamily).send(:child_list, Genus.all, true))
-          .to eq %{<div class="child_list"><span class="caption">Genus (extant) of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
+          .to eq %{<div><span class="caption">Genus (extant) of <span>Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
       end
 
       it "formats a genera list, not specifying extinctness" do
         atta = create_genus 'Atta', subfamily: subfamily
         expect(decorator_helper.new(subfamily).send(:child_list, Genus.all, false))
-          .to eq %{<div class="child_list"><span class="caption">Genus of <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
+          .to eq %{<div><span class="caption">Genus of <span>Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
       end
 
       it "formats an incertae sedis genera list" do
         genus = create_genus 'Atta', subfamily: subfamily, incertae_sedis_in: 'subfamily'
         expect(decorator_helper.new(subfamily).send(:child_list, [genus], false, incertae_sedis_in: 'subfamily'))
-          .to eq %{<div class="child_list"><span class="caption">Genus <i>incertae sedis</i> in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
+          .to eq %{<div><span class="caption">Genus <i>incertae sedis</i> in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
       end
     end
 
@@ -130,7 +130,7 @@ describe TaxonDecorator do
       it "formats a list of collective group names" do
         genus = create_genus 'Atta', subfamily: subfamily, status: 'collective group name'
         expect(decorator_helper.new(subfamily).send(:collective_group_name_child_list))
-          .to eq %{<div class="child_list"><span class="caption">Collective group name in <span class="name subfamily taxon">Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
+          .to eq %{<div><span class="caption">Collective group name in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
       end
     end
 

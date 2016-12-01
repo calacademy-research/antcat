@@ -2,7 +2,7 @@
   =form_tag merge_authors_merge_path do
     -panels.each do |panel|
       =hidden_field_tag 'terms[]', panel.term
-    %p.centered
+    %p.center-text
       =button_tag 'Merge these authors', type: "submit", data: { confirm: 'Do you want to merge these authors?' }, class: "btn-saves-warning"
   .help
     -string = conjuncted_list names, 'name'

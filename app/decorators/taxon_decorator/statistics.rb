@@ -35,7 +35,7 @@ class TaxonDecorator::Statistics
               end
 
     strings.map do |string|
-      content_tag :p, string, class: 'taxon_statistics'
+      content_tag :p, string
     end.join.html_safe
   end
 

@@ -173,23 +173,23 @@ describe Exporters::Antweb::Exporter do
 
             # statistics
             %{<div class="statistics">} +
-              %{<p class="taxon_statistics">1 species</p>} +
+              %{<p>1 species</p>} +
             %{</div>} +
 
             # headline
             %{<div class="headline">} +
               # protonym
-              %{<b><span class="protonym_name"><i>Atta</i></span></b> } +
+              %{<b><span><i>Atta</i></span></b> } +
 
               # authorship
-              %{<span class="authorship">} +
+              %{<span>} +
                 %{<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{should_see_this_reference_id}">Bolton, 2010a</a>} +
                 %{: 12} +
               %{</span>} +
               %{. } +
 
               # type
-              %{<span class="type">Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span>} +
+              %{<span>Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span>} +
               %{ } +
               # links
               %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>} +
@@ -220,7 +220,7 @@ describe Exporters::Antweb::Exporter do
                   %{<a title="#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}." href="http://antcat.org/references/#{a_reference.id}">} +
                     %{#{ref_author}, #{ref_year}} +
                   %{</a> } +
-                  %{<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170">} +
+                  %{<a href="http://dx.doi.org/10.10.1038/nphys1170">} +
                     %{10.10.1038/nphys1170} +
                   %{</a>} +
                   %{: 766 (diagnosis);} +

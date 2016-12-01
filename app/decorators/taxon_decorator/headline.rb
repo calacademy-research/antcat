@@ -58,7 +58,7 @@ class TaxonDecorator::Headline
         string << headline_type_name + headline_type_taxt(taxt)
         string
       end
-      content_tag :span, class: 'type' do
+      content_tag :span do
         add_period_if_necessary string
       end
     end
@@ -74,10 +74,8 @@ class TaxonDecorator::Headline
     end
 
     def headline_type_name_no_link type_name, fossil
-      rank = type_name.rank
-      rank = 'genus' if rank == 'subgenus'
       name = type_name.to_html_with_fossil fossil
-      content_tag :span, name, class: "#{rank} taxon"
+      content_tag :span, name
     end
 
     def headline_type_taxt taxt
@@ -114,7 +112,7 @@ class TaxonDecorator::Headline
     end
 
     def protonym_name protonym
-      content = content_tag :span, class: 'protonym_name' do
+      content = content_tag :span do
         protonym.name.protonym_with_fossil_html protonym.fossil
       end
       content_tag :b, content
@@ -126,7 +124,7 @@ class TaxonDecorator::Headline
       string << ": #{authorship.pages}" if authorship.pages.present?
       string << " (#{authorship.forms})" if authorship.forms.present?
       string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html if authorship.notes_taxt
-      content_tag :span, string, class: "authorship"
+      content_tag :span, string
     end
 
     def locality locality

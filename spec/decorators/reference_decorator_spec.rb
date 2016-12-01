@@ -11,7 +11,7 @@ describe ReferenceDecorator do
       allow(reference).to receive(:downloadable?).and_return true
       allow(reference).to receive(:url).and_return 'example.com'
       expect(reference.decorate.format_reference_document_link)
-        .to eq '<a class="document_link" href="example.com">PDF</a>'
+        .to eq '<a href="example.com">PDF</a>'
     end
   end
 
@@ -459,8 +459,8 @@ describe "ReferenceDecorator" do
           %{<span class="reference_keey_expansion">} +
             %{<span class="reference_keey_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
             %{ } +
-            %{<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
-            %{<a class="document_link" href="example.com">PDF</a>} +
+            %{<a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
+            %{<a href="example.com">PDF</a>} +
             %{ } +
             %{<a href="/references/#{@reference.id}">#{@reference.id}</a>} +
           %{</span>} +
@@ -475,8 +475,7 @@ describe "ReferenceDecorator" do
           expect(@reference.decorate.antweb_version_of_inline_citation).to eq(
             %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
             %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
-            %{ <a class="document_link" } +
-            %{href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>}
+            %{ <a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>}
           )
         end
       end
@@ -487,8 +486,8 @@ describe "ReferenceDecorator" do
           expect(@reference.decorate.antweb_version_of_inline_citation).to eq(
             %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
             %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
-            %{ <a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>} +
-            %{ <a class="document_link" href="example.com">PDF</a>}
+            %{ <a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>} +
+            %{ <a href="example.com">PDF</a>}
           )
         end
       end

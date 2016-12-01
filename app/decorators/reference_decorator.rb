@@ -157,13 +157,12 @@ class ReferenceDecorator < ApplicationDecorator
 
     def doi_link
       return unless reference.doi.present?
-      helpers.link_to reference.doi, ("http://dx.doi.org/" + doi),
-        class: 'document_link'
+      helpers.link_to reference.doi, ("http://dx.doi.org/" + doi)
     end
 
     def pdf_link
       return unless reference.downloadable?
-      helpers.link_to 'PDF', reference.url, class: 'document_link'
+      helpers.link_to 'PDF', reference.url
     end
 
     def make_to_link_title string

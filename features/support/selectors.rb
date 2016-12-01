@@ -10,7 +10,7 @@ module HtmlSelectorsHelpers
       "html > body"
 
     when /the protonym/
-      "#taxon_description .protonym_name"
+      "#taxon_description .headline > b > span"
     when /the type name/
       "#taxon_description .type"
     when /^the junior synonyms section$/
