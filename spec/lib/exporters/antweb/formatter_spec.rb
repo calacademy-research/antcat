@@ -232,6 +232,14 @@ describe Exporters::Antweb::Exporter do
         )
       end
     end
+
+    it "handles italics in missing references (regression)" do
+      # TODO
+      # Confirm that `ReferenceDecorator#antweb_version_of_inline_citation`
+      # doesn't return "Brady, Schultz, &lt;i&gt;et al.&lt;/i&gt; 2006",
+      # which happens with missing references unless we call "html_safe"
+      # on this line: `link = helpers.link_to reference.keey.html_safe,`.
+    end
   end
 
   describe "caching" do

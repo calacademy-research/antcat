@@ -58,7 +58,7 @@ class ReferenceDecorator < ApplicationDecorator
   def antweb_version_of_inline_citation
     # Hardcoded, or we must set `host` + use `reference_url(reference)`.
     url = "http://antcat.org/references/#{reference.id}"
-    link = helpers.link_to reference.keey,
+    link = helpers.link_to reference.keey.html_safe,
       url, title: make_to_link_title(formatted)
 
     content = [link]
