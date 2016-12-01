@@ -214,13 +214,17 @@ class Exporters::Antweb::Exporter
           content << taxon.statistics(include_invalid: false)
           content << taxon.genus_species_header_notes_taxt
           content << taxon.headline
-          content << taxon.history
+          content << export_history_items(taxon)
           content << taxon.child_lists
           content << taxon.references
         end
       ensure
         $use_ant_web_formatter = false
       end
+    end
+
+    def export_history_items taxon
+      Exporters::Antweb::ExportHistoryItems.new(taxon).history
     end
 
     def self.antcat_taxon_link taxon, label = "AntCat"

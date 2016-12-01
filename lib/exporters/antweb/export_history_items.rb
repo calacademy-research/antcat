@@ -1,4 +1,4 @@
-class TaxonDecorator::History
+class Exporters::Antweb::ExportHistoryItems
   include ERB::Util
   include ActionView::Helpers::TagHelper
   include ActionView::Context

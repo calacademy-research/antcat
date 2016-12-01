@@ -33,10 +33,6 @@ class TaxonDecorator < ApplicationDecorator
     TaxonDecorator::ChildList.new(taxon).child_lists
   end
 
-  def history
-    TaxonDecorator::History.new(taxon).history
-  end
-
   def genus_species_header_notes_taxt
     return unless taxon.genus_species_header_notes_taxt.present?
     helpers.content_tag :div,
