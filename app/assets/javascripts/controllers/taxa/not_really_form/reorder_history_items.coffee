@@ -35,7 +35,7 @@ startReordering = ->
     $(SORTABLE).prepend $ """
       <div id="reorder-history-items-controls" class="callout center-text">
         Drag and drop history items to reorder them.
-        <a id="save-reordered-history-items" class="btn-save btn-tiny disabled button">
+        <a id="save-reordered-history-items" class="btn-saves btn-tiny disabled button">
           Save new order
         </a>
         <a id="cancel-history-item-reordering" class="btn-cancel btn-tiny">Cancel</a>

@@ -20,7 +20,7 @@ module CatalogHelper
 
   def link_to_edit_taxon taxon
     if user_can_edit?
-      link_to "Edit", edit_taxa_path(taxon), class: "btn-edit"
+      link_to "Edit", edit_taxa_path(taxon), class: "btn-normal"
     end
   end
 
@@ -30,7 +30,7 @@ module CatalogHelper
 
     link_to "Add species",
       new_taxa_path(rank_to_create: "species", parent_id: taxon.id),
-      class: "btn-new"
+      class: "btn-normal"
   end
 
   def link_to_review_change taxon

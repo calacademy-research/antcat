@@ -31,21 +31,21 @@ module TaxonHelper
     return unless rank_to_add.present?
 
     url = new_taxa_path rank_to_create: rank_to_add, parent_id: taxon.id
-    link_to "Add #{rank_to_add}", url, class: "btn-new"
+    link_to "Add #{rank_to_add}", url, class: "btn-normal"
   end
 
   def add_tribe_button taxon
     return unless taxon.is_a? Subfamily
 
     url = new_taxa_path rank_to_create: 'tribe', parent_id: taxon.id
-    link_to "Add tribe", url, class: "btn-new"
+    link_to "Add tribe", url, class: "btn-normal"
   end
 
   def convert_to_subspecies_button taxon
     return unless taxon.is_a? Species
 
     url = new_taxa_convert_to_subspecies_path taxon
-    link_to 'Convert to subspecies', url, class: "btn-new"
+    link_to 'Convert to subspecies', url, class: "btn-normal"
   end
 
   def elevate_to_species_button taxon

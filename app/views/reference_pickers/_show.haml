@@ -33,7 +33,7 @@
 
             .search_controls
               =text_field_tag 'q', params[:q], class: 'search_controls q'
-              %button.search_controls.go.btn-search Go
+              %button.search_controls.go.btn-normal Go
             =will_paginate references if references
             .help_banner
               %span.help_banner_text

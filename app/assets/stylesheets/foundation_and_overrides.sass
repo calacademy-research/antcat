@@ -93,23 +93,21 @@ button, .ui-widget button button
 // | Green | Everything else, "ok whatever"   | .btn-normal
 //  ---------------------------------------------------------------------------
 
-// TODO remove btn-search, btn-edit, btn-new, .btn-download
-// TODO merge .btn-save --> .btn-saves
-.btn-cancel, .btn-white, .btn-delete, .btn-saves-warning, .btn-normal, .btn-edit, .btn-new, .btn-normal, .btn-save, .btn-saves, .btn-search
+.btn-normal, .btn-saves, .btn-saves-warning, .btn-delete, .btn-cancel, .btn-white
   @include normal-sized-button
 
-.btn-delete, .btn-saves-warning
-  @include button-style($alert-color, auto, auto)
-
-.btn-save, .btn-saves
+.btn-saves
   @include button-style($color_pretty, auto, auto)
+
+.btn-saves-warning, .btn-delete
+  @include button-style($alert-color, auto, auto)
 
 .btn-cancel, .btn-white
   border: 1px solid #000
   @include button-style(#fff, auto, #000)
 
-// TODO make smarter
-a.btn-cancel, a.btn-white, a.btn-delete, a.btn-normal, a.btn-edit, a.btn-new, a.btn-normal, a.btn-save, a.btn-saves, a.btn-saves-warning, a.btn-search
+// Make button styles work for links too.
+a.btn-normal, a.btn-saves, a.btn-saves-warning, a.btn-delete, a.btn-cancel, a.btn-white
   padding: 0.55rem 0.75rem
   color: #fff !important
 
@@ -128,12 +126,6 @@ a.btn-cancel, a.btn-white
 
 button.close-button
   background-color: transparent
-
-// Advanced search form hack
-// The left margin disappears in prod, and I cannot reproduce in dev,
-// even after precompiling the assets. See #135.
-a.btn-download
-  margin-left: 0.3rem
 
 .tabs-title
   a

@@ -11,9 +11,9 @@ Feature: Deleting a taxon
     Given a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
 
     When I go to the catalog page for "Atta"
-    And I press "Edit"
+    And I follow "Edit"
     And I will confirm on the next step
-    And I press "Delete"
+    And I follow "Delete"
     Then I should be on the catalog page for "Dolichoderinae"
     And I should see "Taxon was successfully deleted"
 
@@ -22,9 +22,9 @@ Feature: Deleting a taxon
 
     When I go to the catalog page for "Atta"
     And I add a history item to "Dolichoderinae"
-    And I press "Edit"
+    And I follow "Edit"
     And I will confirm on the next step
-    And I press "Delete"
+    And I follow "Delete"
     Then I should be on the catalog page for "Dolichoderinae"
     And I should see "Taxon was successfully deleted"
 
@@ -34,8 +34,8 @@ Feature: Deleting a taxon
     And I add a history item to "Eciton" that includes a tag for "Atta"
 
     When I go to the catalog page for "Atta"
-    And I press "Edit"
+    And I follow "Edit"
     And I will confirm on the next step
-    And I press "Delete"
+    And I follow "Delete"
     Then I should see "Other taxa refer to this taxon, so it can't be deleted. "
     And I should not see "Taxon was successfully deleted"

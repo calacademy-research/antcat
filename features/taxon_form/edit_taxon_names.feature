@@ -79,7 +79,7 @@ Feature: Editing a taxon's name, protonym name, or type name
     When I go to the catalog page for "Atta"
     Then I should not see "Atta major" in the headline
 
-    When I press "Edit"
+    When I follow "Edit"
     And I click the type name field
     And I set the type name to ""
     And I press "OK"

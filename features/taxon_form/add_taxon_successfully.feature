@@ -81,7 +81,7 @@ Feature: Adding a taxon successfully
     Given there is a genus "Eciton"
 
     When I go to the catalog page for "Eciton"
-    And I press "Edit"
+    And I follow "Edit"
     And I follow "Add species"
     Then I should be on the new taxon page
     And I should see "new species of Eciton"
@@ -112,7 +112,7 @@ Feature: Adding a taxon successfully
     And subgenus "Dolichoderus (Subdolichoderus)" exists in that genus
 
     When I go to the catalog page for "Dolichoderus (Subdolichoderus)"
-    And I press "Edit"
+    And I follow "Edit"
     And I follow "Add species"
     Then I should be on the new taxon page
     And I should see "new species of "
@@ -137,7 +137,7 @@ Feature: Adding a taxon successfully
   @search @javascript
   Scenario: Using a genus's type-species for the name of a species
     When I go to the catalog page for "Formicinae"
-    And I press "Edit"
+    And I follow "Edit"
     And I follow "Add genus"
     And I click the name field
       And I set the name to "Atta"
@@ -157,7 +157,7 @@ Feature: Adding a taxon successfully
     And I wait for a bit
     And the changes are approved
     And I go to the catalog page for "Atta"
-    And I press "Edit"
+    And I follow "Edit"
     And I follow "Add species"
     When I click the name field
       And I set the name to "Atta major"

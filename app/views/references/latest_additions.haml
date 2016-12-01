@@ -2,7 +2,7 @@
 -breadcrumb :references_latest_additions
 
 .buttons_right
-  =link_to "New", new_reference_path, class: "btn-new" if user_can_edit?
+  =link_to "New", new_reference_path, class: "btn-normal" if user_can_edit?
 
 %table.references
   %thead

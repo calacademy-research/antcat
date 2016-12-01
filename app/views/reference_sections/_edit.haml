@@ -16,7 +16,7 @@
         %td.taxt_editor=render 'taxt_editors/show', name: 'references_taxt',value: TaxtConverter[item.references_taxt].to_editor_format
 
     .buttons
-      %button.submit.btn-save Save
+      %button.submit.btn-saves Save
       %button.cancel.btn-cancel Cancel
       -if item.persisted?
         %button.delete.btn-delete Delete

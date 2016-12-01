@@ -13,7 +13,7 @@ Feature: Changes
     And there is a genus "Eciton"
 
     When I go to the catalog page for "Formicinae"
-    * I press "Edit"
+    * I follow "Edit"
     * I follow "Add genus"
     * I click the name field
     * I set the name to "Atta"
@@ -40,13 +40,13 @@ Feature: Changes
     * I click "#taxon_protonym_attributes_fossil"
     * I fill in "taxon_type_taxt" with "Type notes"
     * I save my changes
-    * I press "Edit"
+    * I follow "Edit"
     * I add a history item "History item"
     * I add a reference section "Reference section"
     * I go to the catalog page for "Atta"
     Then I should see "This taxon has been changed; changes awaiting approval"
 
-    When I press "Review change"
+    When I follow "Review change"
     Then I should see the name "Atta" in the changes
     * I should see the subfamily "Formicinae" in the changes
     * I should see the status "valid" in the changes
@@ -115,10 +115,10 @@ Feature: Changes
     When I log in as a catalog editor named "Stan Blum"
     And I go to the changes page
     And I follow "Atta"
-    And I press "Edit"
+    And I follow "Edit"
     And I select "genus" from "taxon_incertae_sedis_in"
     And I save my changes
-    And I press "Review change"
+    And I follow "Review change"
     Then I should see the incertae sedis status of "genus" in the changes
     And I should see "Stan Blum changed"
 
