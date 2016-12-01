@@ -1,7 +1,8 @@
--taxon = taxon.decorate
-=taxon.header
+=render "taxon_description_header", taxon: taxon
 
 -unless taxon.original_combination?
+  -taxon = taxon.decorate
+
   =render "statistics", taxon: taxon
   =taxon.genus_species_header_notes_taxt
   =taxon.headline

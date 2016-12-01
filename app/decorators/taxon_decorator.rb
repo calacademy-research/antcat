@@ -9,8 +9,8 @@ class TaxonDecorator < ApplicationDecorator
     helpers.link_to label, helpers.catalog_path(taxon)
   end
 
-  def header
-    TaxonDecorator::Header.new(taxon).header
+  def header_name
+    TaxonDecorator::Header.new(taxon).header_name
   end
 
   # Currently accepts very confusing arguments.

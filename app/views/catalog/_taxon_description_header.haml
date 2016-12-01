@@ -1,0 +1,12 @@
+.header
+  %span.taxon.name=taxon.decorate.header_name
+  -if taxon.original_combination? && taxon.current_valid_taxon
+    %span.see see
+    %span=taxon.current_valid_taxon.decorate.header_name
+  -else
+    %span.authorship=taxon.authorship_string
+    %span.status=taxon.decorate.taxon_status
+    %span.gender=@taxon.name.gender
+    %span.review_state
+      -if taxon.waiting?
+        This taxon has been changed; changes awaiting approval
