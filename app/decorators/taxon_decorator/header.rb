@@ -13,33 +13,36 @@ class TaxonDecorator::Header
   end
 
   def header
-    return original_combination_header if @taxon.original_combination?
-    normal_header
+    content = ''.html_safe
+    content << content_tag(:span, header_name, class: css_classes_for_rank(@taxon))
+    content << second_part
+
+    content_tag :div, content, class: 'header'
   end
 
   private
-    def normal_header
-      content_tag :div, class: 'header' do
-        content = ''.html_safe
-        content << content_tag(:span, header_name, class: css_classes_for_rank(@taxon))
-        content << content_tag(:span, header_authorship, class: "authorship")
-        content << content_tag(:span, status, class: "status")
-        content << content_tag(:span, gender, class: "gender")
-        content << content_tag(:span, review_state, class: "review_state")
-        content
+    def second_part
+      return original_combination_second_part if @taxon.original_combination?
+      stardard_second_part
       end
     end
 
-    def original_combination_header
-      content_tag :div, class: 'header' do
-        content = ''.html_safe
-        content << content_tag(:span, header_name, class: css_classes_for_rank(@taxon))
-        if @taxon.current_valid_taxon
-          content << content_tag(:span, " see ", class: 'see')
-          content << content_tag(:span, header_name_for_taxon(@taxon.current_valid_taxon))
-        end
-        content
+    def stardard_second_part
+      content = ''.html_safe
+      content << content_tag(:span, header_authorship, class: "authorship")
+      content << content_tag(:span, status, class: "status")
+      content << content_tag(:span, gender, class: "gender")
+      content << content_tag(:span, review_state, class: "review_state")
+      content
+    end
+
+    def original_combination_second_part
+      content = ''.html_safe
+      if @taxon.current_valid_taxon
+        content << content_tag(:span, " see ", class: 'see')
+        content << content_tag(:span, header_name_for_taxon(@taxon.current_valid_taxon))
       end
+      content
     end
 
     def header_name
