@@ -10,9 +10,9 @@
 -if user_can_edit?
   .buttons_right
     -if @issue.archived?
-      =link_to("Re-open", reopen_issue_path(@issue), method: :put, class: "btn-destructive")
+      =link_to("Re-open", reopen_issue_path(@issue), method: :put, class: "btn-saves-warning")
     -else
-      =link_to("Close", close_issue_path(@issue), method: :put, class: "btn-destructive")
+      =link_to("Close", close_issue_path(@issue), method: :put, class: "btn-saves")
       =link_to("Edit", edit_issue_path(@issue), class: "btn-normal")
 .clear
 

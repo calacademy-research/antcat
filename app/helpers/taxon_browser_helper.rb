@@ -17,7 +17,7 @@ module TaxonBrowserHelper
 
   def load_tab_button taxon, tab
     link_to "Load all?", catalog_tab_path(taxon, tab),
-      class: "btn-pretty btn-tiny load-tab", data: { tab_id: tab.id }
+      class: "btn-normal btn-tiny load-tab", data: { tab_id: tab.id }
   end
 
   # TODO try to move part of this to `Catalog::TaxonBrowser`.

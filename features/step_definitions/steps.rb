@@ -28,7 +28,7 @@ When(/^(?:|I )press "([^"]*)"$/) do |button|
   elsif button == "Approve"
     first('.btn-normal').click
   elsif button == "Approve all"
-    first('.btn-destructive').click
+    first('.btn-saves-warning').click
   elsif button == "Delete"
     first('.btn-delete').click
   elsif button == "Cancel"

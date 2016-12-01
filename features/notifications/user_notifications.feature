@@ -134,7 +134,7 @@ Feature: User notifications
     And I follow "New"
     And I fill in "site_notice_title" with "New AntCat features"
     And I fill in "site_notice_message" with "@user" followed by the user id of "Batiatus"
-    And I press "Save"
+    And I press "Publish"
     And I wait for the "success" message
 
     # Confirm Batiatus was notified.

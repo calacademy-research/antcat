@@ -23,14 +23,14 @@ module ChangesHelper
 
   def confirm_before_undo_button change
     return unless user_can_edit?
-    link_to 'Undo...', confirm_before_undo_change_path(change), class: "btn-undo"
+    link_to 'Undo...', confirm_before_undo_change_path(change), class: "btn-saves-warning"
   end
 
   def approve_all_changes_button
     return unless user_is_superadmin?
 
     link_to 'Approve all', approve_all_changes_path,
-      method: :put, class: "btn-destructive",
+      method: :put, class: "btn-saves-warning",
       data: { confirm: "Are you sure you want to approve all changes?" }
   end
 

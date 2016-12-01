@@ -79,7 +79,7 @@ Feature: Changes
     When I log in as a catalog editor named "Stan Blum"
     And I go to the changes page
     And I will confirm on the next step
-    And I press "Approve"
+    And I follow "Approve"
     Then I should not see "Approve[^d]"
     And I should see "Stan Blum approved"
 
@@ -125,9 +125,7 @@ Feature: Changes
     When I log in as a catalog editor named "Mark Wilden"
     And I go to the changes page
     Given I will confirm on the next step
-    And I press "Approve"
-    # TODO fix. Works because "first" is implied, used to say
-    # this:  And I press the first "Approve"
+    And I follow "Approve"
     Then I should see "Mark Wilden approved"
 
     When I go to the catalog page for "Atta"
@@ -172,7 +170,7 @@ Feature: Changes
     When I log in as a catalog editor named "Stan Blum"
     And I go to the changes page
     And I will confirm on the next step
-    And I press "Approve"
+    And I follow "Approve"
     Then I should not see "Approve[^d]"
     And I should see "Stan Blum approved"
     And I should see a link to the user page for "Stan Blum"

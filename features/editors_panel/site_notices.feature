@@ -11,7 +11,7 @@ Feature: Site notices
     And I fill in "site_notice_title" with "New AntCat features"
     And I fill in "site_notice_blurb" with "Many!"
     And I fill in "site_notice_message" with "You would not believe it!"
-    And I press "Save"
+    And I press "Publish"
     Then I should see "Successfully created site notice"
     And I should see "Added by Batiatus"
 

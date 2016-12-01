@@ -3,7 +3,7 @@ module ReferenceHelper
     return unless user_is_superadmin?
 
     link_to 'Approve all', approve_all_references_path,
-      method: :put, class: "btn-destructive",
+      method: :put, class: "btn-saves-warning",
       data: { confirm: "Mark all citations as reviewed? This operation cannot be undone!" }
   end
 

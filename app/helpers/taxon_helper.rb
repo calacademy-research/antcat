@@ -53,7 +53,7 @@ module TaxonHelper
 
     message = "Are you sure you want to elevate this subspecies to species?"
     link_to 'Elevate to species', elevate_to_species_taxa_path(taxon),
-      method: :put, class: "btn-new", data: { confirm: message }
+      method: :put, class: "btn-saves", data: { confirm: message }
   end
 
   def delete_unreferenced_taxon_button taxon

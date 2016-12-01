@@ -204,7 +204,7 @@ end
 # New references list
 When(/^I click "(.*?)" on the Ward reference$/) do |button|
   within find("tr", text: 'Ward') do
-    first(".btn-normal", text: button).click
+    step %{I follow "#{button}"}
   end
 end
 
