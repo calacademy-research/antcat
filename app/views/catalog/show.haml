@@ -13,7 +13,11 @@
     .clearfix
   -if user_can_edit?
     =render "editor_buttons", taxon: @taxon
-  =render "taxon_description", taxon: @taxon
+
+  -if @taxon.original_combination?
+    =render "original_combination", taxon: @taxon
+  -else
+    =render "taxon_description", taxon: @taxon
 
 #splitter
 
