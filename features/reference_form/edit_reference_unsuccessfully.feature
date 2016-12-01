@@ -20,7 +20,7 @@ Feature: Edit reference unsuccessfully
     And I fill in "reference_citation_year" with ""
     And I fill in "reference_publisher_string" with ""
     And I fill in "book_pagination" with ""
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Year can't be blank"
     And I should see "Title can't be blank"
     And I should see "Publisher can't be blank"
@@ -42,7 +42,7 @@ Feature: Edit reference unsuccessfully
     And I fill in "reference_journal_name" with ""
     And I fill in "reference_series_volume_issue" with ""
     And I fill in "article_pagination" with ""
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Title can't be blank"
     And I should see "Year can't be blank"
     And I should see "Journal can't be blank"
@@ -64,7 +64,7 @@ Feature: Edit reference unsuccessfully
     And I fill in "reference_title" with ""
     And I fill in "reference_citation_year" with ""
     And I fill in "reference_citation" with ""
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Title can't be blank"
     And I should see "Year can't be blank"
     And I should see "Citation can't be blank"
@@ -80,7 +80,7 @@ Feature: Edit reference unsuccessfully
     And I follow first reference link
     And I follow "Edit"
     And I fill in "reference_document_attributes_url" with a URL to a document that doesn't exist in the first reference
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Document url was not found"
 
   @javascript
@@ -99,7 +99,7 @@ Feature: Edit reference unsuccessfully
     When I follow first reference link
     And I follow "Edit"
     And I fill in "reference_nesting_reference_id" with its own ID
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Nesting reference can't point to itself"
 
   #Scenario: Edit a nested reference to remove its nestedness, delete the nestee, go back to the first one and set it as nested
@@ -116,12 +116,12 @@ Feature: Edit reference unsuccessfully
     #And I fill in "reference_journal_name" with "Ant Journal" in the first reference
     #And I fill in "reference_series_volume_issue" with "1" in the first reference
     #And I fill in "article_pagination" with "2" in the first reference
-    #And I press the "Save" button
+    #And I press "Save"
     #And I will confirm on the next step
     #And I delete "Ward"
     #And I edit "Bolton"
     #And I follow "Nested" in the first reference
-    #And I press the "Save" button
+    #And I press "Save"
     #Then I should see "nesting_reference can't be blank"
 
   @javascript
@@ -136,7 +136,7 @@ Feature: Edit reference unsuccessfully
     And I follow first reference link
     And I follow "Edit"
     And I fill in "reference_title" with ""
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Title can't be blank"
 
     When I follow "Cancel"
@@ -145,6 +145,6 @@ Feature: Edit reference unsuccessfully
     When I follow "Edit"
     Then I should not see any error messages
 
-    When I press the "Save" button
+    When I press "Save"
     Then I should not see any error messages
     And I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452 "

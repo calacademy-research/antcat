@@ -29,7 +29,7 @@ end
 
 When(/^I cancel the reference section's changes$/) do
   within first('.reference_sections .reference_section') do
-    step %{I press the "Cancel" button}
+    step %{I press "Cancel"}
   end
 end
 

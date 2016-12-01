@@ -18,7 +18,7 @@ Feature: Checking for duplicates during data entry
     And I fill in "reference_citation_year" with "2010"
     And I fill in "reference_journal_name" with "Psyche"
     And I fill in "article_pagination" with "1"
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "This may be a duplicate of Ward, P. 2010. Ants. Psyche 6:1 "
 
     When I press "Save Anyway"
@@ -40,7 +40,7 @@ Feature: Checking for duplicates during data entry
     And I fill in "reference_author_names_string" with "Ward, P."
     And I fill in "reference_title" with "Ants"
     And I fill in "reference_series_volume_issue" with "6:1"
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "This may be a duplicate of Ward, P. 2010. Ants. Psyche 6:1 "
 
     When I press "Save Anyway"

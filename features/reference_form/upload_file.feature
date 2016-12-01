@@ -15,6 +15,6 @@ Feature: Upload a file
     And I follow "Edit"
     And I fill in "reference_title" with "My Life with the Ants"
     And I fill in "reference_document_attributes_url" with ""
-    And I press the "Save" button
+    And I press "Save"
     And I wait for a bit
     Then I should not see a "PDF" link

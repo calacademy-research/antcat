@@ -15,7 +15,7 @@ Feature: Edit reference successfully
     And I follow "Edit"
     And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "Ant Title"
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
 
   @javascript
@@ -29,7 +29,7 @@ Feature: Edit reference successfully
     And I follow first reference link
     And I follow "Edit"
     And I fill in "reference_citation_year" with "1910a"
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Aho, B.L. 1910a"
 
   @javascript
@@ -45,7 +45,7 @@ Feature: Edit reference successfully
     And I follow "Book"
     And I fill in "reference_publisher_string" with "New York: Wiley"
     And I fill in "book_pagination" with "22 pp."
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
 
   @javascript
@@ -59,7 +59,7 @@ Feature: Edit reference successfully
     And I follow first reference link
     And I follow "Edit"
     And I fill in "reference_publisher_string" with "New York: Harcourt"
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Fisher, B. 2010. Ants. New York: Harcourt, 22 pp."
 
   @javascript
@@ -73,7 +73,7 @@ Feature: Edit reference successfully
     And I follow first reference link
     And I follow "Edit"
     And I fill in "reference_citation" with "New Jersey"
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Fisher, B. 2010. Ants. New Jersey."
 
   @javascript
@@ -87,7 +87,7 @@ Feature: Edit reference successfully
     And I follow first reference link
     And I follow "Edit"
     And I fill in "reference_document_attributes_url" with a URL to a document that exists
-    And I press the "Save" button
+    And I press "Save"
     Then I should see a "PDF" link
 
   #Scenario: Setting a document's publicness
@@ -101,7 +101,7 @@ Feature: Edit reference successfully
     #And I go to the references page
     #And I follow "edit" in the first reference
     #And I check "reference_document_attributes_public" in the first reference
-    #And I press the "Save" button
+    #And I press "Save"
     #And I log out
     #And I go to the references page
     #Then I should see a "PDF" link
@@ -117,7 +117,7 @@ Feature: Edit reference successfully
     And I follow first reference link
     And I follow "Edit"
     And I fill in "reference_author_names_string" with "Ward, P.S. (ed.)"
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Ward, P.S. (ed.)"
 
   @javascript
@@ -132,7 +132,7 @@ Feature: Edit reference successfully
     When I follow first reference link
     When I follow "Edit"
     When I fill in "reference_author_names_string" with "Ward, P.S."
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Ward, P.S."
 
   @javascript
@@ -151,5 +151,5 @@ Feature: Edit reference successfully
     When I follow first reference link
     And I follow "Edit"
     And I fill in "reference_pages_in" with "Pp. 32 in:"
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "Bolton, B. 2001. Ants are my life. Pp. 32 in: Ward, P.S. 2001. Ants. Psyche 5:3"

@@ -17,13 +17,13 @@ Feature: Author name case-sensitivity
     When I follow first reference link
     And I follow "Edit"
     And I fill in "reference_author_names_string" with "MACKAY"
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "MACKAY"
 
     When I go to the references page
     And I follow first reference link
     And I follow "Edit"
     And I fill in "reference_author_names_string" with "mackay"
-    And I press the "Save" button
+    And I press "Save"
     Then I should see "mackay"
 

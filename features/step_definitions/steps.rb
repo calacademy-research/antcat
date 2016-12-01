@@ -39,10 +39,6 @@ When(/^(?:|I )follow "([^"]*)"$/) do |link|
   click_link link
 end
 
-When(/^I press the "([^"]+)" button/) do |button|
-  click_button button
-end
-
 When(/^I click "([^"]*)"$/) do |selector|
   find(selector).click
 end

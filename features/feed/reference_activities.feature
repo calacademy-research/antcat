@@ -12,7 +12,7 @@ Feature: Feed (references)
       And I fill in "reference_citation_year" with "1981"
       And I follow "Other"
       And I fill in "reference_citation" with "Required"
-      And I press the "Save" button
+      And I press "Save"
     And I go to the activity feed
     Then I should see "Archibald added the reference Ward & Bolton, 1981" and no other feed items
 
@@ -24,7 +24,7 @@ Feature: Feed (references)
       And I follow first reference link
       And I follow "Edit"
       And I fill in "reference_title" with "A reference title"
-      And I press the "Save" button
+      And I press "Save"
     And I go to the activity feed
     Then I should see "Archibald edited the reference Giovanni, 1809" and no other feed items
 
