@@ -13,7 +13,7 @@ describe TaxonDecorator do
           epithets: 'rufa pratensis major'
         major = create_subspecies name: major_name, species: rufa, genus: rufa.genus
 
-        expect(decorator_helper.new(major).send(:header_name)).to eq(
+        expect(decorator_helper.new(major).send(:header_name, major)).to eq(
           %{<a href="/catalog/#{formica.id}"><i>Formica</i></a> } +
           %{<a href="/catalog/#{rufa.id}"><i>rufa</i></a> } +
           %{<a href="/catalog/#{major.id}"><i>pratensis major</i></a>}
@@ -184,23 +184,21 @@ describe TaxonDecorator do
     end
   end
 
-  describe "#status" do
-    let(:decorator_helper) { TaxonDecorator::Header }
-
+  describe "#taxon_status" do
     it "returns 'valid' if the status is valid" do
       taxon = create_genus
-      expect(decorator_helper.new(taxon).send(:status)).to eq 'valid'
+      expect(taxon.decorate.taxon_status).to eq 'valid'
     end
 
     it "shows the status if there is one" do
       taxon = create_genus status: 'homonym'
-      expect(decorator_helper.new(taxon).send(:status)).to eq 'homonym'
+      expect(taxon.decorate.taxon_status).to eq 'homonym'
     end
 
     it "shows one synonym" do
       senior_synonym = create_genus 'Atta'
       taxon = create_synonym senior_synonym
-      result = decorator_helper.new(taxon).send :status
+      result = taxon.decorate.taxon_status
       expect(result).to eq %{junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
       expect(result).to be_html_safe
     end
@@ -212,13 +210,13 @@ describe TaxonDecorator do
         other_senior_synonym = create_genus 'Eciton'
         taxon = create_synonym senior_synonym
         Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
-        result = decorator_helper.new(taxon).send :status
+        result = taxon.decorate.taxon_status
         expect(result).to eq %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
       end
 
       it "handles a null current valid taxon with no synonyms" do
         taxon = create_genus status: 'synonym'
-        result = decorator_helper.new(taxon).send :status
+        result = taxon.decorate.taxon_status
         expect(result).to eq %{junior synonym}
       end
 
@@ -228,19 +226,19 @@ describe TaxonDecorator do
         other_senior_synonym = create_genus 'Eciton'
         taxon = create_synonym senior_synonym, current_valid_taxon: other_senior_synonym
         Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
-        result = decorator_helper.new(taxon).send :status
+        result = taxon.decorate.taxon_status
         expect(result).to eq %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
       end
     end
 
     it "doesn't freak out if the senior synonym hasn't been set yet" do
       taxon = create_genus status: 'synonym'
-      expect(decorator_helper.new(taxon).send(:status)).to eq 'junior synonym'
+      expect(taxon.decorate.taxon_status).to eq 'junior synonym'
     end
 
     it "shows where it is incertae sedis" do
       taxon = create_genus incertae_sedis_in: 'family'
-      result = decorator_helper.new(taxon).send :status
+      result = taxon.decorate.taxon_status
       expect(result).to eq '<i>incertae sedis</i> in family, valid'
       expect(result).to be_html_safe
     end
@@ -292,8 +290,6 @@ describe TaxonDecorator do
   end
 
   describe "#format_senior_synonym" do
-    let(:decorator_helper) { TaxonDecorator::Header }
-
     context "when the senior synonym is itself invalid" do
       it "returns an empty string" do
         invalid_senior = create_genus 'Atta', status: 'synonym'

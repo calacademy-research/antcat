@@ -2,7 +2,10 @@ class TaxonDecorator < ApplicationDecorator
   delegate_all
 
   def link_to_taxon
-    label = taxon.name.to_html_with_fossil(taxon.fossil?)
+    link_to_taxon_with_label taxon.name_with_fossil
+  end
+
+  def link_to_taxon_with_label label
     helpers.link_to label, helpers.catalog_path(taxon)
   end
 
