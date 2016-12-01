@@ -89,4 +89,40 @@ module TaxonHelper
     parent = Taxon.find params[:parent_id]
     parent.name.name
   end
+
+  def taxon_name_description taxon
+    string =
+      case taxon
+      when Subfamily
+        "subfamily"
+      when Tribe
+        parent = taxon.subfamily
+        "tribe of " << (parent ? parent.name.to_html : '(no subfamily)')
+      when Genus
+        parent = taxon.tribe ? taxon.tribe : taxon.subfamily
+        "genus of " << (parent ? parent.name.to_html : '(no subfamily)')
+      when Species
+        parent = taxon.parent
+        "species of " << parent.name.to_html
+      when Subgenus
+        parent = taxon.parent
+        "subgenus of " << parent.name.to_html
+      when Subspecies
+        parent = taxon.species
+        "subspecies of " << (parent ? parent.name.to_html : '(no species)')
+      else
+        ''
+      end
+
+    # TODO: Joe test this case
+    if taxon[:unresolved_homonym] == true && taxon.new_record?
+      string = " secondary junior homonym of #{string}"
+    elsif !taxon[:collision_merge_id].nil? && taxon.new_record?
+      target_taxon = Taxon.find_by(id: taxon[:collision_merge_id])
+      string = " merge back into original #{target_taxon.name_html_cache}"
+    end
+
+    string = "new #{string}" if taxon.new_record?
+    string.html_safe
+  end
 end
