@@ -74,7 +74,7 @@ Feature: Changes
     Then I should not see "Approve all"
     And I should not see "There are no unreviewed changes."
 
-  @javascript @papertrail
+  @papertrail
   Scenario: Another editor editing a change that's waiting for approval
     When I add the genus "Atta"
     And I go to the changes page
@@ -85,7 +85,7 @@ Feature: Changes
     And I follow "Atta"
     And I follow "Edit"
     And I select "genus" from "taxon_incertae_sedis_in"
-    And I save my changes
+    And I save the taxon form
     And I follow "Review change"
     Then I should see "Stan Blum changed"
 
@@ -106,23 +106,20 @@ Feature: Changes
     When I go to the changes page
     Then I should not see an "Approve" button
 
-  @javascript @papertrail
+  @papertrail
   Scenario: Editing a taxon - modified, not added
-    Given the Formicidae family exists
-    And there is a genus "Eciton"
+    Given there is a genus "Eciton"
 
-    When I go to the edit page for "Formicidae"
-    And I click the name field
-    And I set the name to "Wildencidae"
-    And I press "OK"
-    And I click the protonym name field
-    And I set the protonym name to "Eciton"
-    And I click "#taxon_protonym_attributes_sic"
-    And I press "OK"
-    And I press "Save" within ".buttons_section"
-    Then I should see "Wildencidae" in the header
+    When I go to the catalog page for "Eciton"
+    # We want this next step after tweaking the factories.
+    # Then I should not see "This taxon has been changed"
+    And I should not see "Changed by Mark Wilden"
+
+    When I go to the edit page for "Eciton"
+    And I select "genus" from "taxon_incertae_sedis_in"
+    And I save the taxon form
+    Then I should see "This taxon has been changed"
     And I should see "Changed by Mark Wilden"
-    And I should see "This taxon has been changed; changes awaiting approval"
 
     When I go to the changes page
-    Then I should see "Mark Wilden changed Wildencidae"
+    Then I should see "Mark Wilden changed Eciton"
