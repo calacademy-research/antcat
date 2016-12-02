@@ -42,10 +42,10 @@ module Catalog::TaxonBrowser
 
       def setup_tabs
         @tabs = taxa_for_tabs.map do |taxon|
-          TaxonTab.new taxon, self
+          Tabs::TaxonTab.new taxon, self
         end
 
-        extra_tab = ExtraTab.create @taxon, @display, self
+        extra_tab = Tabs::ExtraTab.create @taxon, @display, self
         @tabs << extra_tab if extra_tab
       end
 

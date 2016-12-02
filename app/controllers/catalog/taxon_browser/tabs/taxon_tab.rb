@@ -1,7 +1,7 @@
 # A `TaxonTab` requires a taxon for which `#children` returns something.
 
-module Catalog::TaxonBrowser
-  class TaxonTab < Tab
+module Catalog::TaxonBrowser::Tabs
+  class TaxonTab < Catalog::TaxonBrowser::Tab
     def initialize tab_taxon, taxon_browser
       @tab_taxon = tab_taxon
       super tab_taxon.children.displayable, taxon_browser
