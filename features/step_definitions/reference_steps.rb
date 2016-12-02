@@ -193,10 +193,6 @@ Given(/^there is a missing reference(?: with citation "(.+)")?( in a protonym)?$
   end
 end
 
-When(/^I click the replacement field$/) do
-  step %{I click "#replacement_id_field .display_button"}
-end
-
 Then(/^I should not see the missing reference$/) do
   step 'I should not see "Adventures among Ants"'
 end
