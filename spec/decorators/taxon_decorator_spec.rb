@@ -4,7 +4,7 @@ describe TaxonDecorator do
   describe "Header formatting" do
     let(:decorator_helper) { TaxonDecorator::Header }
 
-    describe "#header_name" do
+    describe "#link_each_epithet" do
       it "formats a subspecies with > 3 epithets" do
         formica = create_genus 'Formica'
         rufa = create_species 'rufa', genus: formica
@@ -13,7 +13,7 @@ describe TaxonDecorator do
           epithets: 'rufa pratensis major'
         major = create_subspecies name: major_name, species: rufa, genus: rufa.genus
 
-        expect(decorator_helper.new(major).send(:header_name)).to eq(
+        expect(decorator_helper.new(major).send(:link_each_epithet)).to eq(
           %{<a href="/catalog/#{formica.id}"><i>Formica</i></a> } +
           %{<a href="/catalog/#{rufa.id}"><i>rufa</i></a> } +
           %{<a href="/catalog/#{major.id}"><i>pratensis major</i></a>}
