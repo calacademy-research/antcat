@@ -34,4 +34,13 @@ class AntcatMarkdown < Redcarpet::Render::HTML
   def preprocess full_document
     AntcatMarkdownUtils.parse_antcat_hooks full_document
   end
+
+  def table header, body
+    <<-HTML
+      <table class="tablesorter">
+        <thead>#{header}</thead>
+        <tbody>#{body}</tbody>
+      </table>
+    HTML
+  end
 end
