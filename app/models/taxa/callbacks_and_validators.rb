@@ -83,5 +83,6 @@ module Taxa::CallbacksAndValidators
 
     def set_taxon_state_to_waiting
       taxon_state.review_state = :waiting
+      taxon_state.save
     end
 end

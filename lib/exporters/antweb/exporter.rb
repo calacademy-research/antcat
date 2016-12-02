@@ -231,7 +231,6 @@ class Exporters::Antweb::Exporter
     end
 
     def self.antcat_taxon_link_with_name taxon
-      label = taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
-      antcat_taxon_link taxon, label
+      antcat_taxon_link taxon, taxon.name_with_fossil
     end
 end
