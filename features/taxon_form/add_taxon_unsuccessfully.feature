@@ -27,7 +27,6 @@ Feature: Adding a taxon unsuccessfully
     And I save my changes
     Then I should see "Protonym authorship reference can't be blank"
 
-
   @javascript
   Scenario: Having an error, but leave fields as user entered them
     When I go to the edit page for "Formicinae"
@@ -42,10 +41,7 @@ Feature: Adding a taxon unsuccessfully
     And the "taxon_type_taxt" field should contain "Notes"
     And the name button should contain "Atta"
 
-  @javascript
   Scenario: Cancelling
-    Given there is a subfamily "Formicinae"
-
     When I go to the edit page for "Formicinae"
     And I follow "Add genus"
     And I follow "Cancel"

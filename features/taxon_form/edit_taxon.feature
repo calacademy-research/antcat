@@ -1,50 +1,46 @@
-@javascript
 Feature: Editing a taxon
   As an editor of AntCat
   I want to edit taxa
   So that information is kept accurate
   So people use AntCat
 
+  Background:
+    Given I am logged in
+
   Scenario: Editing a species
     Given a species exists with a name of "major" and a genus of "Atta"
-    And I am logged in
 
     When I go to the catalog page for "Atta major"
     Then I should see "Atta major" in the header
 
     When I go to the edit page for "Atta major"
-    And I save my changes
-    And I wait for a bit
+    And I save the taxon form
     Then I should see "Atta major" in the header
 
   Scenario: Edit an imported species and flip its state from auto gen
     Given an imported species exists with a name of "major" and a genus of "Atta"
-    And I am logged in
 
     When I go to the catalog page for "Atta major"
     Then I should see "Atta major" in the header
 
     When I go to the edit page for "Atta major"
-    And I save my changes
-    And I wait for a bit
+    And I save the taxon form
     Then the name "major" genus "Atta" should not be auto generated
 
   Scenario: Cancelling
     Given there is a genus "Calyptites"
-    And I am logged in
 
     When I go to the edit page for "Calyptites"
     And I select "subfamily" from "taxon_incertae_sedis_in"
     And I follow "Cancel"
     Then I should not see "incertae sedis" in the header
 
-  @search
+  @search @javascript
   Scenario: Changing the authorship
     Given these references exist
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a genus "Eciton"
-    And I am logged in
 
     When I go to the edit page for "Eciton"
     And I click the authorship field
@@ -59,43 +55,32 @@ Feature: Editing a taxon
     Then the taxon mouseover should contain "Fisher 2004. Ants. Psyche 3:3"
     And I should see "Authorship notes" in the headline
 
-  Scenario: Changing the authorship but cancelling
-    Given there is a genus "Eciton"
-    And I am logged in
-
-    When I go to the edit page for "Eciton"
-    And I click the authorship field
-    And I press "Cancel"
-    Then I should be on the edit page for "Eciton"
-
   Scenario: Changing incertae sedis
     Given there is a genus "Atta" that is incertae sedis in the subfamily
-    And I log in
+
     When  I go to the catalog page for "Atta"
     Then I should see "incertae sedis in subfamily"
 
     When I go to the edit page for "Atta"
     And I select "(none)" from "taxon_incertae_sedis_in"
-    And I save my changes
+    And I save the taxon form
     Then I should be on the catalog page for "Atta"
     And I should not see "incertae sedis in subfamily"
 
   Scenario: Changing gender of genus-group name
     Given there is a genus "Atta" with "masculine" name
-    And I am logged in
 
     When I go to the catalog page for "Atta"
     Then I should see "masculine"
 
     When I go to the edit page for "Atta"
     And I set the name gender to "neuter"
-    And I save my changes
+    And I save the taxon form
     Then I should be on the catalog page for "Atta"
     And I should see "neuter"
 
   Scenario: Don't see gender field for species-group names
     Given a species exists with a name of "major" and a genus of "Atta"
-    And I am logged in
 
     When I go to the edit page for "Atta major"
     Then I should not see the gender menu
@@ -105,11 +90,10 @@ Feature: Editing a taxon
 
   Scenario: Changing verbatim type locality
     Given a species exists with a name of "major" and a genus of "Atta"
-    And I am logged in
 
     When I go to the edit page for "Atta major"
     And I set the verbatim type locality to "San Pedro"
-    And I save my changes
+    And I save the taxon form
     Then I should be on the catalog page for "Atta major"
     And I should see "San Pedro"
 
@@ -118,7 +102,6 @@ Feature: Editing a taxon
 
   Scenario: Don't see verbatim type locality field for genus-group name
     Given a species exists with a name of "major" and a genus of "Atta"
-    And I am logged in
 
     When I go to the edit page for "Atta"
     Then I should not see the verbatim type locality
@@ -128,11 +111,10 @@ Feature: Editing a taxon
 
   Scenario: Changing type specimen repository
     Given a species exists with a name of "major" and a genus of "Atta"
-    And I am logged in
 
     When I go to the edit page for "Atta major"
     And I set the type specimen repository to "CZN"
-    And I save my changes
+    And I save the taxon form
     Then I should be on the catalog page for "Atta major"
     And I should see "CZN"
 
@@ -141,7 +123,6 @@ Feature: Editing a taxon
 
   Scenario: Don't see verbatim type locality field for genus-group name
     Given a species exists with a name of "major" and a genus of "Atta"
-    And I am logged in
 
     When I go to the edit page for "Atta"
     Then I should not see the type specimen repository
@@ -152,11 +133,10 @@ Feature: Editing a taxon
   Scenario: Changing type specimen URL
     Given a species exists with a name of "major" and a genus of "Atta"
     And that URL "www.antweb.com" exists
-    And I am logged in
 
     When I go to the edit page for "Atta major"
     And I set the type specimen URL to "www.antweb.com/"
-    And I save my changes
+    And I save the taxon form
     Then I should be on the catalog page for "Atta major"
     And I should see a link "www.antweb.com/"
 
@@ -165,11 +145,10 @@ Feature: Editing a taxon
 
   Scenario: Changing biogeographic region
     Given a species exists with a name of "major" and a genus of "Atta"
-    And I am logged in
 
     When I go to the edit page for "Atta major"
     And I select "Malagasy" from "taxon_biogeographic_region"
-    And I save my changes
+    And I save the taxon form
     Then I should be on the catalog page for "Atta major"
     And I should see "Malagasy"
 
@@ -178,7 +157,6 @@ Feature: Editing a taxon
 
   Scenario: Don't see biogeographic region field for genus-group name
     Given a species exists with a name of "major" and a genus of "Atta"
-    And I am logged in
 
     When I go to the edit page for "Atta"
     Then I should not see the biogeographic region
@@ -188,12 +166,13 @@ Feature: Editing a taxon
 
   Scenario: Clearing the biogeographic_region
     Given a species exists with a name of "major" and a genus of "Atta"
-    And I am logged in
 
     When I go to the edit page for "Atta major"
     And I select "Malagasy" from "taxon_biogeographic_region"
-    And I save my changes
-    And I follow "Edit"
+    And I save the taxon form
+    Then I should see "Malagasy"
+
+    When I follow "Edit"
     And I select "" from "taxon_biogeographic_region"
-    And I save my changes
+    And I save the taxon form
     Then I should not see "Malagasy"

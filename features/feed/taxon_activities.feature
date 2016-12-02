@@ -30,17 +30,13 @@ Feature: Feed (taxa)
     And I go to the activity feed
     Then I should see "Archibald added the genus Atta to the subfamily Formicinae" and no other feed items
 
-  @javascript
   Scenario: Edited taxon
     Given I add a taxon for the feed
 
     When I go to the edit page for "Antcatinae"
-      And I click the name field
-        And I set the name to "Tactaninae"
-        And I press "OK"
-      And I save my changes
+    And I save the taxon form
     And I go to the activity feed
-    Then I should see "Archibald edited the subfamily Tactaninae" and no other feed items
+    Then I should see "Archibald edited the subfamily Antcatinae" and no other feed items
 
   Scenario: Deleted taxon
     Given I add a taxon for the feed
@@ -52,7 +48,6 @@ Feature: Feed (taxa)
     And I go to the activity feed
     Then I should see "Archibald deleted the subfamily Antcatinae" and no other feed items
 
-  @javascript
   Scenario: Elevated subspecies to species
     Given activity tracking is disabled
       And there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"

@@ -1,4 +1,3 @@
-@javascript
 Feature: Add reference unsuccessfully
   Background:
     Given I am logged in
@@ -10,6 +9,7 @@ Feature: Add reference unsuccessfully
     And I follow "Cancel"
     Then I should be on the references page
 
+  @javascript
   Scenario: Leaving other fields blank when adding an article reference
     When I follow "New"
     And I fill in "reference_author_names_string" with "Fisher, B.L."
@@ -21,6 +21,7 @@ Feature: Add reference unsuccessfully
     And I should see "Series volume issue can't be blank"
     And I should see "Pagination can't be blank"
 
+  @javascript
   Scenario: Leaving a required field blank should not affect other fields (article)
     When I follow "New"
     And I fill in "reference_title" with "A reference title"
@@ -33,6 +34,7 @@ Feature: Add reference unsuccessfully
     Then the "reference_journal_name" field should contain "Ant Journal"
     And the "article_pagination" field should contain "2"
 
+  @javascript
   Scenario: Leaving other fields blank when adding a book reference
     When I follow "New"
     And I follow "Book"
@@ -43,6 +45,7 @@ Feature: Add reference unsuccessfully
     And I should see "Publisher can't be blank"
     And I should see "Pagination can't be blank"
 
+  @javascript
   Scenario: Leaving a required field blank should not affect other fields (book)
     When I follow "New"
     And I follow "Book"
@@ -56,6 +59,7 @@ Feature: Add reference unsuccessfully
     Then the "reference_publisher_string" field should contain "Capua: House of Batiatus"
     And the "book_pagination" field should contain "2"
 
+  @javascript
   Scenario: Leaving other fields blank when adding a nested reference
     When I follow "New"
     And I follow "Nested"
@@ -65,13 +69,10 @@ Feature: Add reference unsuccessfully
     And I should see "Pages in can't be blank"
     And I should see "Nesting reference can't be blank"
 
+  @javascript
   Scenario: Adding a nested reference with a nonexistent nestee
     When I follow "New"
-    And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
-    And I fill in "reference_title" with "A reference title"
-    And I fill in "reference_citation_year" with "1981"
     And I follow "Nested"
-    And I fill in "reference_pages_in" with "Pp. 32-33 in:"
     And I fill in "reference_nesting_reference_id" with "123123"
     And I press "Save"
     Then I should see "Nesting reference does not exist"
@@ -79,27 +80,18 @@ Feature: Add reference unsuccessfully
   Scenario: Empty author string (with separator)
     When I follow "New"
     And I fill in "reference_author_names_string" with " ; "
-    And I fill in "reference_title" with "A reference title"
-    And I fill in "reference_journal_name" with "Ants"
-    And I fill in "reference_series_volume_issue" with "2"
-    And I fill in "article_pagination" with "1"
-    And I fill in "reference_citation_year" with "1981"
     And I press "Save"
-    Then I should see "Author names string couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
+    Then I should see "Author names string couldn't be parsed."
 
-  Scenario: Unparseable author string
+  Scenario: Unparseable author string (and maintain already filled in fields)
     When I follow "New"
     And I fill in "reference_author_names_string" with "...asdf sdf dsfdsf"
-    And I fill in "reference_title" with "A reference title"
-    And I fill in "reference_journal_name" with "Ants"
-    And I fill in "reference_series_volume_issue" with "2"
-    And I fill in "article_pagination" with "1"
-    And I fill in "reference_citation_year" with "1981"
     And I press "Save"
-    Then I should see "Author names string couldn't be parsed. Please post a message on http://groups.google.com/group/antcat/, and we'll fix it!"
+    Then I should see "Author names string couldn't be parsed."
     And the "reference_author_names_string" field should contain "asdf"
 
-  Scenario: Unparseable (blank) journal name
+  @javascript
+  Scenario: Unparseable (blank) journal name (and maintain already filled in fields)
     When I follow "New"
     And I fill in "reference_title" with "A reference title"
     And I follow "Article"
@@ -113,14 +105,13 @@ Feature: Add reference unsuccessfully
     Then the "reference_journal_name" field should contain ""
     And the "article_pagination" field should contain "1"
 
-  Scenario: Unparseable publisher string
+  @javascript
+  Scenario: Unparseable publisher string (and maintain already filled in fields)
     When I follow "New"
-    And I fill in "reference_author_names_string" with "Ward, B.L"
     And I fill in "reference_title" with "A reference title"
     And I follow "Book"
     And I fill in "reference_publisher_string" with "Pensoft, Sophia"
     And I fill in "book_pagination" with "1"
-    And I fill in "reference_citation_year" with "1981"
     And I press "Save"
     Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'."
 
