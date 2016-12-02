@@ -126,25 +126,3 @@ Feature: Changes
 
     When I go to the changes page
     Then I should see "Mark Wilden changed Wildencidae"
-
-  Scenario: People's names linked to their email
-    Given I add the genus "Atta"
-
-    When I go to the changes page
-    Then I should see "Mark Wilden added"
-    And I should see a link to the user page for "Mark Wilden"
-
-    When I log in as a catalog editor named "Stan Blum"
-    And I go to the changes page
-    And I will confirm on the next step
-    And I follow "Approve"
-    Then I should not see "Approve[^d]"
-    And I should see "Stan Blum approved"
-    And I should see a link to the user page for "Stan Blum"
-    And I should see a link to the user page for "Mark Wilden"
-
-    When I go to the catalog page for "Atta"
-    Then I should see "Added by Mark Wilden"
-    And I should see a link to the user page for "Mark Wilden"
-    And I should see "approved by Stan Blum"
-    And I should see a link to the user page for "Stan Blum"
