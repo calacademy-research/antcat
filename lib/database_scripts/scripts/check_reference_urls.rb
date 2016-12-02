@@ -27,4 +27,4 @@ end
 
 __END__
 description: Experimentally capturing output from Rake tasks.
-tags: [dev-only, very-slow, rake-task]
+tags: [dev-only, very-slow, rake-task, new!]
