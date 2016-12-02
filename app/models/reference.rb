@@ -190,12 +190,9 @@ class Reference < ApplicationRecord
   def authors_for_keey
     names = author_names.map &:last_name
     case names.size
-    when 0
-      '[no authors]'
-    when 1
-      "#{names.first}"
-    when 2
-      "#{names.first} & #{names.second}"
+    when 0 then '[no authors]'
+    when 1 then "#{names.first}"
+    when 2 then "#{names.first} & #{names.second}"
     else
       string = names[0..-2].join ', '
       string << " & " << names[-1]
@@ -308,41 +305,3 @@ class Reference < ApplicationRecord
       reference_references return_true_or_false: true
     end
 end
-
-=begin
-Notes
-
-Investigate these:
-Reference#author_names_string
-Reference#author_names_string_cache
-Reference#principal_author_last_name
-Reference#principal_author_last_name_cache
-Reference#reference_author_names
-Reference#author_names_suffix
-Reference#author_names
-
-Taxon#authorship_string
-
----------------
-                                    # Example from `r = Reference.first`
-
-# OK / a different thing.
-r.authors                           # Array of `Author`s
-r.author_names                      # AuthorName CollectionProxy
-r.reference_author_names            # ReferenceAuthorName CollectionProxy
-r.author_names_suffix               # nil; probably non-nil for things like ", Jr."
-
-# Similar
-r.keey                              # "Abdul-Rassoul, Dawah & Othman, 1978"
-r.author_names_string_cache         # "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
-r.author_names_string               # delegates to `r.author_names_string_cache`
-r.decorate...... more
-
-# Possibly only used for sorting.
-r.principal_author_last_name_cache  # The real (db) attribute of `r.principal_author_last_name`
-r.principal_author_last_name        # "Abdul-Rassoul"; possibly only used for sorting.
-
-# Other similar metods
-Probably.
-
-=end
