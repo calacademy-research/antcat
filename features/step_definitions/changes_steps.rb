@@ -24,83 +24,10 @@ When(/^I add the genus "([^"]+)"?$/) do |name|
 end
 
 Then(/^I should see the name "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.name', value
+  expect(page).to have_css '.name-test-hook', text: value
 end
 
 Then(/^I should see the genus "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.parent_rank', 'Genus'
+  expect(page).to have_css '.parent_rank-test-hook', text: 'Genus'
   expect(page).to have_css '.parent-test-hook', text: value
-end
-
-Then(/^I should see the subfamily "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.parent_rank', 'Subfamily'
-  expect(page).to have_css '.parent-test-hook', text: value
-end
-
-Then(/^I should see the status "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.status', value
-end
-
-Then(/^I should see the incertae sedis status of "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.incertae_sedis', value
-end
-
-Then(/^I should see the attribute "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.attributes', value
-end
-
-Then(/^I should see the notes "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.notes', value
-end
-
-Then(/^I should see the protonym name "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.protonym_name', value
-end
-
-Then(/^I should see the protonym attribute "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.protonym_attributes', value
-end
-
-Then(/^I should see the authorship reference "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.authorship_reference', value
-end
-
-Then(/^I should see the page "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.page', value
-end
-
-Then(/^I should see the forms "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.forms', value
-end
-
-Then(/^I should see the locality "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.locality', value
-end
-
-Then(/^I should see the authorship notes "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.authorship_notes', value
-end
-
-Then(/^I should see the type name "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.type_name', value
-end
-
-Then(/^I should see the type attribute "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.type_attributes', value
-end
-
-Then(/^I should see the type notes "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.type_notes', value
-end
-
-Then(/^I should see a history item "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.history_item', value
-end
-
-Then(/^I should see a reference section "(.*?)" in the changes$/) do |value|
-  should_see_in_changes '.references_taxt', value
-end
-
-def should_see_in_changes selector, value
-  expect(page).to have_css "#{selector}-test-hook", text: value
 end

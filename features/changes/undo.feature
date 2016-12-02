@@ -31,13 +31,11 @@ Feature: Workflow
     And I save my changes
     And I go to the catalog page for "Formicinae"
     Then I should see "This taxon has been changed; changes awaiting approval"
-    # Should you really see "Formicinae" in the *changes* at this step?
-    #And I should see the name "Formicinae" in the changes
+    And I should see "asdfgh"
 
     When I go to the changes page
-    Then I should see "Formicinae"
-    And I should see "Mark Wilden changed Formicinae"
-    And I should see the notes "asdfgh" in the changes
+    Then I should see "Mark Wilden changed Formicinae"
+    And I should see "asdfgh"
 
     When I follow "Undo..."
     Then I should see "This undo will roll back the following changes"
