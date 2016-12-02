@@ -49,8 +49,8 @@ Feature: Using the catalog
 #
 #  Scenario: Selecting a genus without a subfamily
 #    When I go to the catalog
-#    * I follow "(no subfamily)"
-#    * I follow "Atta" in the index
+#    And I follow "(no subfamily)"
+#    And I follow "Atta" in the index
 #    Then "(no subfamily)" should be selected
 #    And "Atta" should be selected
 #    And I should see "Atta history"

@@ -32,7 +32,7 @@ Feature: Workflow
     And I go to the catalog page for "Formicinae"
     Then I should see "This taxon has been changed; changes awaiting approval"
     # Should you really see "Formicinae" in the *changes* at this step?
-    #* I should see the name "Formicinae" in the changes
+    #And I should see the name "Formicinae" in the changes
 
     When I go to the changes page
     Then I should see "Formicinae"
