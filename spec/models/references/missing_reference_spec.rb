@@ -6,6 +6,10 @@ describe MissingReference do
   describe "#keey" do
     let(:reference) { build_stubbed :missing_reference, citation: "citation" }
 
+    it "is html_safe" do
+      expect(reference.keey).to be_html_safe
+    end
+
     context "no citation_year" do
       before { reference.citation_year = nil }
 

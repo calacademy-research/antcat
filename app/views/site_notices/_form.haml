@@ -1,21 +1,28 @@
 -content_for :head do
   =javascript_include_tag "markdown_and_friends"
 
-=form_for @site_notice do |f|
-  =render "shared/errors_for", resource: @site_notice
-  .row
-    .medium-6.columns.end
-      =f.label :title
-      =f.text_field :title, { maxlength: 70 }
+.row
+  .medium-8.columns
+    =form_for @site_notice do |f|
+      =render "shared/errors_for", resource: @site_notice
+      .row
+        .medium-8.columns.end
+          =f.label :title
+          =f.text_field :title, { maxlength: 70 }
 
-  .row
-    .medium-6.columns.end
-      =f.label :blurb
-      =f.text_field :blurb, { maxlength: 255, placeholder: "Optional short description used in the 'Unread site notices' box." }
+      .row
+        .medium-8.columns.end
+          =f.label :blurb
+          =f.text_field :blurb, { maxlength: 255, placeholder: "Optional short description used in the 'Unread site notices' box." }
 
-  .row
-    .medium-12.columns
-      =f.text_area :message, cols: 80, rows: 15,
-        data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Message" }
+      .row
+        .medium-12.columns
+          =f.text_area :message, rows: 10,
+            data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Message" }
 
-  =button_tag "Publish", class: "btn-saves"
+      =button_tag "Publish", class: "btn-saves"
+
+  .medium-4.columns
+    .callout
+      %h6 Help
+      %p After creating a site notice, all logged-in users will see the message in an "Unread site notices" pop-up. Notices can not be unpublished, but edited existing notices does not trigger new notifications. All editors have the user rights for creating new notices.
