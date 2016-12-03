@@ -26,7 +26,7 @@
     %h5 Misc. links
     %ul
       %li=link_to 'Help pages (wiki hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
-      %li=link_to 'Activity feed', feed_path
+      %li=link_to 'Activity feed', activities_path
       %li=link_to 'Invite people to AntCat', invite_users_path
       %li=link_to "Change my password/name/email", edit_user_registration_path
       %li
@@ -53,8 +53,8 @@
 
 .row.margin-top
   .large-12.columns
-    %h5 Most recent activity (#{link_to("see more", feed_path)})
-    =render "feed/activities_table", activities: @recent_activities
+    %h5 Most recent activity (#{link_to("see more", activities_path)})
+    =render "activities/table", activities: @recent_activities
 
 .row.margin-top
   .large-12.columns

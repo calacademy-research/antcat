@@ -42,8 +42,8 @@ end
     parent :issues
   end
 
-crumb :feed do
-  link "Feed"
+crumb :activity_feed do
+  link "Activity Feed"
   parent :editors_panel
 end
 

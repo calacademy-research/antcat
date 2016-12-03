@@ -20,7 +20,7 @@ Then(/^I should see at least (\d+) items? in the feed$/) do |expected_count|
 end
 
 def feed_items_count
-  all("table.feed > tbody tr").size
+  all("table.activities > tbody tr").size
 end
 
 # Journal
@@ -167,6 +167,23 @@ end
 
 When(/^I click on Show more$/) do
   find("a", text: "Show more").click
+end
+
+Given(/^the activities are paginated with (\d+) per page$/) do |per_page|
+  Feed::Activity.per_page = per_page.to_i
+end
+
+Given(/^there are (\d+) activity items$/) do |number|
+  number.to_i.times { create :activity }
+end
+
+Then(/^the query string should (not )?contain "([^"]*)"$/) do |should_not, contain|
+  match = page.current_url[contain]
+  if should_not
+    expect(match).to be nil
+  else
+    expect(match).to be_truthy
+  end
 end
 
 # General note about RequestStore

@@ -82,7 +82,7 @@ module NavigationHelpers
       "/tooltips"
 
     when /^the activity feed$/
-      "/feed"
+      "/activities"
 
     when /^the open issues page$/
       "/issues"

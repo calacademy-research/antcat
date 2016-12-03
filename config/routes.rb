@@ -163,9 +163,7 @@ AntCat::Application.routes.draw do
   get "panel/invite_users", to: "editors_panels#invite_users", as: "invite_users"
   get :notifications, to: "notifications#index"
 
-  resource :feed, only: [:show], controller: "feed" do
-    resources :activities, only: [:destroy]
-  end
+  resources :activities, only: [:index, :show, :destroy]
 
   resources :site_notices do
     collection do
@@ -174,7 +172,7 @@ AntCat::Application.routes.draw do
     end
   end
 
-  # Shallow routes for the show action for the feed
+  # Shallow routes for the show action for the activity feed.
   resources :taxon_history_items, only: [:show]
   resources :reference_sections, only: [:show]
   resources :synonyms, only: [:show]

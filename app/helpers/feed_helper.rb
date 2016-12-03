@@ -1,4 +1,11 @@
+# TODO rename anything feed --> activity.
+
 module FeedHelper
+  def highlight_activity_link activity
+    url = activities_path id: activity.id, anchor: "activity-#{activity.id}"
+    link_to "(link)", url
+  end
+
   def inline_expandable &block
     show_more = content_tag :a, class: "hide-when-expanded" do
                   content_tag :small, "Show more"
