@@ -40,7 +40,10 @@ class TaxonDecorator::Header
 
     def genus_link_or_blank_string taxon
       return "".html_safe unless taxon.genus
-      taxon.genus.decorate.link_to_taxon << " "
+
+      # Link name of the genus, but add dagger per to taxon's fossil status.
+      label = taxon.genus.name.to_html_with_fossil @taxon.fossil?
+      taxon.genus.decorate.link_to_taxon_with_label label.html_safe << " "
     end
 
     def header_link taxon, label
