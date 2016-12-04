@@ -52,6 +52,11 @@ crumb :comments do
   parent :editors_panel
 end
 
+  crumb :edit_comment do |comment|
+    link "Edit Comment ##{comment.id}"
+    parent :comments
+  end
+
 crumb :edit_user do
   link "Edit User"
   parent :editors_panel

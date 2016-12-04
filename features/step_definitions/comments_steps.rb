@@ -24,3 +24,7 @@ Then(/^I should see my comment highlighted in the comments section$/) do
   url_via_javascript = page.evaluate_script "window.location.href"
   expect(url_via_javascript).to include "#comment-"
 end
+
+When(/^I hover the comment$/) do
+  find(".highlight-comment-anchor").hover
+end

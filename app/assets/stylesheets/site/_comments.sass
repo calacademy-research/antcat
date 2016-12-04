@@ -17,6 +17,13 @@
     .reply-form
       display: none
 
+    // TODO DRY all ".show-on-hover".
+    .show-on-hover
+      display: none
+
+    &:hover .show-on-hover
+      display: inline
+
   // Trickery to highlight comments. It works for mysterious reasons, but
   // something like this: the anchor tag in the URL ("#comment-123") finds
   // the comment because it's wrapped in a div with the id "comment-123;

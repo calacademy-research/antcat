@@ -156,7 +156,7 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :comments, only: [:index, :create]
+  resources :comments, only: [:index, :create, :edit, :update]
 
   # TODO nest more Editor's Panel-ish pages under this (issues, site notices, etc).
   get "panel", to: "editors_panels#index", as: "editors_panel"

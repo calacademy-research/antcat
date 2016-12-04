@@ -58,9 +58,8 @@ class User < ActiveRecord::Base
   end
 
   private
-    # To avoid sending repeated notifications eg when an issue description that
-    # already mentions a user is edited and saved again. Will be more useful
-    # when/if comments become editable.
+    # To avoid sending repeated notifications eg when a comment that
+    # already mentions a user is edited and saved again.
     def already_notified_for_attached_by_user? attached, mentioner
       notifications.where(notifier: mentioner, attached: attached).exists?
     end
