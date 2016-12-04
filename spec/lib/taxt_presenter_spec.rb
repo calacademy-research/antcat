@@ -37,7 +37,7 @@ describe TaxtPresenter do
       expect(TaxtPresenter[nil].to_html).to eq ''
     end
 
-    context "references" do
+    describe "ref tags (references)" do
       context "when the ref tag is malformed" do
         it "doesn't freak" do
           expect(TaxtPresenter["{ref sdf}"].to_html).to eq '{ref sdf}'
@@ -45,8 +45,9 @@ describe TaxtPresenter do
       end
 
       context "when the ref points to a reference that doesn't exist" do
-        it "doesn't freak" do
-          expect(TaxtPresenter["{ref 12345}"].to_html).to eq '{ref 12345}'
+        it "adds a warning" do
+          results = TaxtPresenter["{ref 999}"].to_html
+          expect(results).to match "CANNOT FIND REFERENCE WITH ID 999"
         end
       end
 
@@ -56,20 +57,21 @@ describe TaxtPresenter do
       end
     end
 
-    context "names" do
+    describe "nam tags (names)" do
       it "returns the HTML version of the name" do
         name = create :subspecies_name, name_html: '<i>Atta major minor</i>'
         expect(TaxtPresenter["{nam #{name.id}}"].to_html).to eq '<i>Atta major minor</i>'
       end
 
       context "when the name can't be found" do
-        it "doesn't freak" do
-          expect(TaxtPresenter["{nam 12345}"].to_html).to eq '{nam 12345}'
+        it "adds a warning" do
+          results = TaxtPresenter["{nam 999}"].to_html
+          expect(results).to match "CANNOT FIND NAME WITH ID 999"
         end
       end
     end
 
-    describe "taxa" do
+    describe "tax tags (taxa)" do
       it "uses the HTML version of the taxon's name" do
         genus = create_genus name: create(:genus_name, name_html: '<i>Atta</i>')
         expect(TaxtPresenter["{tax #{genus.id}}"].to_html)
@@ -85,8 +87,9 @@ describe TaxtPresenter do
       end
 
       context "when the taxon can't be found" do
-        it "doesn't freak" do
-          expect(TaxtPresenter["{tax 12345}"].to_html).to eq '{tax 12345}'
+        it "adds a warning" do
+          results = TaxtPresenter["{tax 999}"].to_html
+          expect(results).to match "CANNOT FIND TAXON WITH ID 999"
         end
       end
     end

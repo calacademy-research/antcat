@@ -84,7 +84,7 @@ class TaxtPresenter
           when :to_antweb then Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
           end
         else
-          warn_about_non_existing_id "REFERENCE", $1
+          warn_about_non_existing_id "TAXON", $1
         end
       end
     end
