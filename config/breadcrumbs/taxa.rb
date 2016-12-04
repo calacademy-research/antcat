@@ -8,7 +8,11 @@ crumb :new_taxon do
 end
 
 crumb :taxon_being_edited do |taxon|
-  link "#{taxon.name.epithet} (##{taxon.id})", catalog_path(taxon)
+  if taxon
+    link "#{taxon.name_html_cache} (##{taxon.id})".html_safe, catalog_path(taxon)
+  else
+    link "[deleted]"
+  end
   parent :edit_catalog
 end
 

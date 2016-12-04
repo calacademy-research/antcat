@@ -6,9 +6,9 @@ module FeedHelper
     link_to "(link)", url
   end
 
-  def inline_expandable &block
-    show_more = content_tag :a, class: "hide-when-expanded" do
-                  content_tag :small, "Show more"
+  def inline_expandable label = "Show more", &block
+    show_more = content_tag :a, class: "hide-when-expanded gray" do
+                  content_tag :small, label
                 end
     hidden =  content_tag :span, class: "show-when-expanded" do
                 yield
