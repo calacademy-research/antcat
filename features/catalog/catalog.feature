@@ -126,3 +126,11 @@ Feature: Using the catalog
     And I follow "Dolichoderinae" in the index
     Then I should not see "Lasius" in the genera index
     And I should see "Brownerus" in the genera index
+
+  Scenario: Displaying items containing broken taxt links
+    Given there is a genus "Atta"
+    And Atta has a history section item with two linked references, of which one does not exists
+
+    When I go to the catalog page for "Atta"
+    Then I should see "Batiatus, 2000"
+    And I should see "CANNOT FIND REFERENCE WITH ID 99999"

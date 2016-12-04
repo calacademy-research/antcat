@@ -49,3 +49,12 @@ Given(/^the maximum number of taxa to load in each tab is (\d+)$/) do |number|
     .to receive(:max_taxa_to_load)
     .and_return number.to_i
 end
+
+Given(/^Atta has a history section item with two linked references, of which one does not exists$/) do
+  reference = create :article_reference, citation_year: 2000,
+    author_names: [create(:author_name, name: "Batiatus, Q.")]
+  taxt = "{ref #{reference.id}}; {ref 99999}"
+
+  taxon = Taxon.find_by name_cache: "Atta"
+  taxon.reference_sections << ReferenceSection.create!(references_taxt: taxt)
+end
