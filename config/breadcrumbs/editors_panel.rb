@@ -47,6 +47,11 @@ crumb :activity_feed do
   parent :editors_panel
 end
 
+  crumb :activity_item do |activity_id|
+    link "Activity Item ##{activity_id}"
+    parent :activity_feed
+  end
+
 crumb :comments do
   link "Comments"
   parent :editors_panel
