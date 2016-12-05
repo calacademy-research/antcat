@@ -41,7 +41,7 @@ Feature: View bibliography
     Then I should see a "PDF" link
 
   Scenario: Viewing an entry with a URL to a document that's not on our site, and the user isn't logged in
-    Given these references exist
+    Given this reference exists
       | authors    | year | citation_year | title     | citation | cite_code | possess |
       | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       | PSW     |
     And that the entry has a URL that's not on our site

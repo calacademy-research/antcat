@@ -3,7 +3,7 @@ Feature: Site notices
     Given RESET SESSION
     And I log in as a catalog editor named "Batiatus"
     And there is a site notice I haven't read yet
-    And I go to the journals index page
+    And I go to the users page
 
   Scenario: Adding a site notice
     When I go to the site notices page

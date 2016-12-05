@@ -127,7 +127,7 @@ Feature: Searching references
 
   @search
   Scenario: Seeing just "other" references (not article, book, etc.)
-    Given these references exists
+    Given this reference exists
       | authors    | year | citation_year | title | citation      |
       | Fisher, B. | 1895 | 1895a         | Known | Psyche 11:1-2 |
     And this unknown reference exists

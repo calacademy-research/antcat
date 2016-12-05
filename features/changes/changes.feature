@@ -42,7 +42,7 @@ Feature: Changes
     Given I add the genus "Atta"
 
     When I go to the catalog page for "Atta"
-    Then I should see "Added by Mark Wilden" in the change history
+    Then I should see "Added by Mark Wilden"
 
     When I log in as a catalog editor named "Stan Blum"
     And I go to the changes page
@@ -101,7 +101,7 @@ Feature: Changes
   Scenario: Trying to approve one's own change
     When I add the genus "Atta"
     And I go to the catalog page for "Atta"
-    Then I should see "Added by Mark Wilden" in the change history
+    Then I should see "Added by Mark Wilden"
 
     When I go to the changes page
     Then I should not see an "Approve" button

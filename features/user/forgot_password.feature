@@ -8,4 +8,4 @@ Feature: Forgot password
     When I go to the main page
     And I follow the first "Login"
     And I follow "Forgot password"
-    Then I should be on the forgot password page
+    Then I should see "Send me reset password instructions"

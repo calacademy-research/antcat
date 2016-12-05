@@ -59,9 +59,6 @@ module NavigationHelpers
     when /^the author edit page for "(.*)"$/
       "/authors/#{Author.find_by_names($1).first.id}/edit"
 
-    when /^the journals index page$/
-      journals_path
-
     # Editor's Panel
     when /^the comments page$/
       "/comments"
@@ -74,8 +71,6 @@ module NavigationHelpers
 
     when /^the site notices page$/
       "/site_notices"
-    when /^the new site notice form$/
-      "/site_notices/new"
 
     when /^the tooltips editing page$/
       "/tooltips"
@@ -85,12 +80,12 @@ module NavigationHelpers
 
     when /^the open issues page$/
       "/issues"
-    when /^the issue (entry|page) for "([^"]*)"$/
-      issue = Issue.find_by(title: $2)
+    when /^the issue page for "([^"]*)"$/
+      issue = Issue.find_by(title: $1)
       "/issues/#{issue.id}"
     when /^the most recent issue$/
       "/issues/#{Issue.last.id}"
-    when /^the new issue form$/
+    when /^the new issue page$/
       "/issues/new"
 
     when /^the feedback index$/
@@ -102,13 +97,9 @@ module NavigationHelpers
     when /^the user page for "([^"]*)"$/
       user = User.find_by name: $1
       "/users/#{user.id}"
-    when /^the edit user page$/
-      '/users/edit'
-    when /^the forgot password page$/
-      '/users/password/new'
-    when /^the login (page|form)$/
+    when /^the login page$/
       '/users/sign_in'
-    when /^the sign ?up (page|form)$/
+    when /^the sign up page$/
       '/users/sign_up'
 
     when /^the users page$/

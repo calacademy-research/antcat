@@ -3,11 +3,12 @@ Feature: Features with markdown and autocompletion
     Given I log in as a catalog editor
 
   Scenario: Site notices
-    When I go to the new site notice form
+    When I go to the site notices page
+    And I follow "New"
     Then there should be a textarea with markdown and autocompletion
 
   Scenario: Issues
-    When I go to the new issue form
+    When I go to the new issue page
     Then there should be a textarea with markdown and autocompletion
 
   Scenario: Comments

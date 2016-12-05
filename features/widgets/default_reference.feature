@@ -2,7 +2,7 @@
 Feature: Using the default reference
   Background:
     Given I am logged in
-    And these references exist
+    And this reference exists
       | author     | title          | year | citation   |
       | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
 

@@ -24,10 +24,8 @@ module HtmlSelectorsHelpers
     when /the (\w*) index/
       tab_title_target = find(:link, $1)[:href]
       tab_title_target
-    when /the content/
+    when /the taxon description/
       "#taxon_description"
-    when /the change history/
-      "#taxon_description .change_history"
 
     when /the search results/
       "table"
@@ -46,9 +44,6 @@ module HtmlSelectorsHelpers
     when /the search box/
       "#q"
 
-    when /the duplicate dialog box/
-      ".dialog_duplicate"
-
     when /the catalog search box/
       "#qq"
 
@@ -66,9 +61,6 @@ module HtmlSelectorsHelpers
 
     when /the new_or_homonym name field/
       '#test_new_or_homonym_name_field .display'
-
-    when /the first row of author names/
-      '#content table > tr:first'
 
     when /the users list/
       '#content table'

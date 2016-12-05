@@ -116,7 +116,7 @@ Feature: User notifications
 
   Scenario: Mentioning users in "things" (issue description)
     # Mention Batiatus in the description of an issue.
-    When I go to the new issue form
+    When I go to the new issue page
     And I fill in "issue_title" with "Resolve homonyms"
     And I fill in "issue_description" with "@user" followed by the user id of "Batiatus"
     And I press "Save"
