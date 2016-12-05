@@ -12,9 +12,12 @@
 =taxon.decorate.headline
 
 -if taxon.history_items.present?
-  .history
+  %ul.history
     -taxon.history_items.each do |history_item|
-      =add_period_if_necessary TaxtPresenter[history_item.taxt].to_html
+      %li
+        =add_period_if_necessary TaxtPresenter[history_item.taxt].to_html
+        -if current_user
+          %small.show-on-hover=link_to "##{history_item.id}", taxon_history_item_path(history_item), class: "gray"
 
 =taxon.decorate.child_lists
 
