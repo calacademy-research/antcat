@@ -9,7 +9,7 @@ Feature: Working with authors and their names
     When I go to the authors page
     Then I should see "Bolton, B.; Bolton,B."
     And I should see "Fisher, B."
-    And I should not see "edit" in the first row of author names
+    And I should not see "Edit"
 
   Scenario: Seeing all the authors with their names
     Given the following names exist for an author
@@ -23,9 +23,6 @@ Feature: Working with authors and their names
     Then I should see "Bolton, B.; Bolton,B."
     And I should see "Fisher, B."
 
-    When I click "edit" in the first row
-    Then I should be on the author edit page for "Bolton, B."
-
   Scenario: Attempting to access edit page without being logged in
     Given the following names exist for an author
       | Bolton, B. |
@@ -33,6 +30,7 @@ Feature: Working with authors and their names
     When I go to the author edit page for "Bolton, B."
     Then I should be on the login page
 
+  # TODO remove as it only tests the subnavigation link that's on all reference pages.
   Scenario: Going to Merge Authors from Edit Author
     Given the following names exist for an author
       | Bolton, B. |
@@ -43,13 +41,13 @@ Feature: Working with authors and their names
     Then I should be on the merge authors page
 
   @javascript
-  Scenario: Adding an author name
+  Scenario: Adding an alternative spelling of an author name
     Given the following names exist for an author
       | Bolton, B. |
     And I am logged in
 
     When I go to the author edit page for "Bolton, B."
-    And I click the "Add Author Name" button
+    And I press "Add alternative spelling"
     And I edit the author name to "Fisher, B."
     And I save the author name
     And I wait for a bit
@@ -63,7 +61,7 @@ Feature: Working with authors and their names
     And I am logged in
 
     When I go to the author edit page for "Bolton, B."
-    And I click the "Add Author Name" button
+    And I press "Add alternative spelling"
     And I edit the author name to "Bolton, B."
     And I save the author name
     Then I should see "Name has already been taken"

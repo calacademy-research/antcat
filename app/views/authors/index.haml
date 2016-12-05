@@ -5,11 +5,11 @@
   %thead
     %th Author Names
     -if user_can_edit?
-      %th Edit
+      %th
   -@authors.each do |author|
     %tr
       %td=author.names.map(&:name).join('; ')
       -if user_can_edit?
-        %td=link_to 'edit', edit_author_path(author)
+        %td=link_to 'Edit', edit_author_path(author), class: "btn-normal"
 
 =will_paginate @authors

@@ -17,7 +17,7 @@
       -else
         %td.gray Closed
       %td=render "feedback", feedback: feedback
-      %td.center-text=link_comments_section feedback
+      %td.center-text.no-wrap=link_comments_section feedback
       %td=link_to "Details", feedback_path(feedback), class: "btn-normal"
 
 =will_paginate @feedbacks
