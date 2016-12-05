@@ -39,6 +39,9 @@
         -else
           .row
             .small-12.columns
-              =yield
+              -if content_for? :application
+                =yield :application
+              -else
+                =yield
 
       =render "feedback/feedback_modal"

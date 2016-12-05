@@ -1,0 +1,33 @@
+-current         = comparer.current
+-selected        = comparer.selected
+-revisions       = comparer.revisions
+-html_split_diff = comparer.html_split_diff
+
+-content_for :head do
+  =stylesheet_link_tag "diffy"
+
+-content_for :application do
+  .row
+    .medium-9.columns
+      %h5
+        -if current.persisted?
+          Current version
+        -else
+          Version before item was deleted
+        %small=current.created_at
+      .callout.primary=render_revision_with_rescue current
+
+      -if selected
+        %h5.margin-top
+          Selected old revision
+          %small=selected.created_at
+        .callout.alert=render_revision_with_rescue selected
+
+        =render "compare_revisions/difference_between_revisions", diff: html_split_diff
+
+    .medium-3.columns
+      .callout
+        =render "compare_revisions/belongs_to", current: current
+        =render "compare_revisions/revisions_navigation_links", revisions: revisions, current: current
+
+=render file: "layouts/application"

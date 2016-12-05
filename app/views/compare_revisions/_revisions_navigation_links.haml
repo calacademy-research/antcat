@@ -1,0 +1,12 @@
+%h6 Compare revisions
+-if revisions.empty?
+  %p This item does not have any previous revisions.
+-else
+  %ul
+    %li
+      -if current.persisted?
+        =link_to "Current version"
+      -else
+        =link_to "Version before item was deleted"
+    -revisions.reverse_each do |revision|
+      %li=link_to "Revision as of #{time_ago_in_words(revision.created_at)} ago", selected_id: revision.id

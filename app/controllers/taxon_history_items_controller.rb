@@ -1,9 +1,10 @@
 class TaxonHistoryItemsController < ApplicationController
   before_filter :authenticate_editor
-  before_action :set_taxon_history_item, only: [:show, :update, :destroy]
+  before_action :set_taxon_history_item, only: [:update, :destroy]
 
   def show
-    render 'history_items/show'
+    @comparer =
+      TaxonHistoryItem.revision_comparer_for params[:id], params[:selected_id]
   end
 
   def update

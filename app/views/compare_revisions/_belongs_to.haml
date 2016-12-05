@@ -1,0 +1,21 @@
+-# Currently only for items with a `taxon_id`.
+
+-if current.respond_to? :taxon_id
+  %p
+    This item
+
+    -if current.persisted?
+      belongs to
+    -else
+      has been deleted; it belonged to
+
+    -if current.taxon
+      =current.taxon.decorate.link_to_taxon + "."
+    -else
+      the now deleted taxon
+      =surround "#", "." do
+        =current.taxon_id
+
+    -if current.persisted?
+      Edit this item at the taxon's
+      =link_to "edit page.", edit_taxa_path(current.taxon)

@@ -5,7 +5,7 @@ gem 'rails', '~> 4.2'
 
 gem 'citrus', '2.4.1'
 gem 'coffee-rails'
-gem 'diff-lcs'
+gem 'diff-lcs' # TODO maybe not used any longer.
 gem 'haml-rails'
 gem 'mysql2'
 gem 'quiet_assets'
@@ -24,10 +24,11 @@ gem 'acts_as_commentable_with_threading'
 gem 'acts_as_list'
 gem 'colorize'
 gem 'devise'
+gem 'diffy', require: false
 gem 'draper'
 gem 'font-awesome-rails'
 gem 'foundation-rails'
-gem 'fuzzy-string-match'
+gem 'fuzzy-string-match' # TODO require where used.
 gem 'gretel'
 gem 'high_voltage'
 gem 'invisible_captcha'
@@ -51,10 +52,10 @@ gem 'rails-observers' # observers deprecated in rails 4
 
 # Production
 # TODO create :production group?
-gem 'aws-sdk', '< 2.0'
 # Version locked because of bug when fetching s3 hosted PDF:
 #   uninitialized constant Paperclip::Storage::S3::AWS
 #   test with: http://antcat.org/documents/6308/ward_2014_annu_rev_ecol_evol_syst_phylogeny_and_evolution_of_ants.pdf
+gem 'aws-sdk', '< 2.0'
 gem 'ey_config'
 
 group :development, :test do

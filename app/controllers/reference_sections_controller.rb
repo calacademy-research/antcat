@@ -1,8 +1,10 @@
 class ReferenceSectionsController < ApplicationController
   before_action :authenticate_editor
-  before_action :set_reference_section, only: [:show, :update, :destroy]
+  before_action :set_reference_section, only: [:update, :destroy]
 
   def show
+    @comparer =
+      ReferenceSection.revision_comparer_for params[:id], params[:selected_id]
   end
 
   def update
