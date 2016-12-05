@@ -207,6 +207,11 @@ AntCat::Application.routes.draw do
     end
   end
 
+  namespace :beta_and_such do
+    get :all_versions
+    get :show_version
+  end
+
   unless Rails.env.production?
     namespace :widget_tests do
       get :name_popup_test
