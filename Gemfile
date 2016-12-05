@@ -5,7 +5,6 @@ gem 'rails', '~> 4.2'
 
 gem 'citrus', '2.4.1'
 gem 'coffee-rails'
-gem 'diff-lcs' # TODO maybe not used any longer.
 gem 'haml-rails'
 gem 'mysql2'
 gem 'quiet_assets'
@@ -28,7 +27,7 @@ gem 'diffy', require: false
 gem 'draper'
 gem 'font-awesome-rails'
 gem 'foundation-rails'
-gem 'fuzzy-string-match' # TODO require where used.
+gem 'fuzzy-string-match', require: false
 gem 'gretel'
 gem 'high_voltage'
 gem 'invisible_captcha'

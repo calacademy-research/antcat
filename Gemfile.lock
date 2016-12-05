@@ -395,7 +395,6 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   devise
-  diff-lcs
   diffy
   draper
   ey_config
