@@ -1,4 +1,4 @@
-Feature: Reviewing features
+Feature: Latest Changes (reviewing features)
   As an editor of AntCat
   I want to see recently changed references
   So that I can review, fix and monitor them

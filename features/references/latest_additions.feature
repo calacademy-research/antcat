@@ -1,4 +1,4 @@
-Feature: Seeing what's new
+Feature: Latest Additions (seeing what's new)
   As a user of AntCat
   I want to see recently added references
   So I can keep up with the state of the literature
@@ -22,49 +22,49 @@ Feature: Seeing what's new
   Scenario: Start reviewing
     Given I am logged in
 
-    When I go to the new references page
+    When I go to the latest reference additions page
     And I click "Start reviewing" on the Ward reference
     Then the review status on the Ward reference should change to "Being reviewed"
 
   Scenario: Stop reviewing
     Given I am logged in
 
-    When I go to the new references page
+    When I go to the latest reference additions page
     And I click "Start reviewing" on the Ward reference
-    And I go to the new references page
+    And I go to the latest reference additions page
     And I click "Finish reviewing" on the Ward reference
     Then the review status on the Ward reference should change to "Reviewed"
 
   Scenario: Restart reviewing
     Given I am logged in
 
-    When I go to the new references page
+    When I go to the latest reference additions page
     And I click "Start reviewing" on the Ward reference
     And I click "Finish reviewing" on the Ward reference
     And I click "Restart reviewing" on the Ward reference
-    And I go to the new references page
+    And I go to the latest reference additions page
     Then the review status on the Ward reference should change to "Being reviewed"
 
   Scenario: Not a logged-in catalog editor
     Given I log in as a user (not editor)
 
-    When I go to the new references page
+    When I go to the latest reference additions page
     Then I should not see a "Start reviewing" button
 
-  Scenario: Seeing the default reference button on the new references page
+  Scenario: Seeing the default reference button on the latest reference additions page
     Given I am logged in
     And the default reference is "Ward 2010"
 
-    When I go to the new references page
+    When I go to the latest reference additions page
     Then it should show "Ward 2010" as the default
     And it should not show "Bolton 1995" as the default
 
-  Scenario: Changing the default reference button on the new references page
+  Scenario: Changing the default reference button on the latest reference additions page
     Given I am logged in
     And there is no default reference
 
-    When I go to the new references page
+    When I go to the latest reference additions page
     And I click "Make default" on the Ward reference
     Given the default reference is "Ward 2010"
-    And I go to the new references page
+    And I go to the latest reference additions page
     Then it should show "Ward 2010" as the default

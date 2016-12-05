@@ -45,7 +45,7 @@ module NavigationHelpers
     # References, authors, etc
     when /^the references page$/
       references_path
-    when /^the new references page$/
+    when /^the latest reference additions page$/
       latest_additions_references_path
     when /^the page for that reference$/
       reference_path(@reference || Reference.first)

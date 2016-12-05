@@ -29,7 +29,7 @@ Feature: Feed (references)
   Scenario: Started reviewing reference
     Given there is a reference for the feed with state "none"
 
-    When I go to the new references page
+    When I go to the latest reference additions page
       And I follow "Start reviewing"
     And I go to the activity feed
     Then I should see "Archibald started reviewing the reference Giovanni, 1809" and no other feed items
@@ -37,7 +37,7 @@ Feature: Feed (references)
   Scenario: Finished reviewing reference
     Given there is a reference for the feed with state "reviewing"
 
-    When I go to the new references page
+    When I go to the latest reference additions page
       And I follow "Finish reviewing"
     And I go to the activity feed
     Then I should see "Archibald finished reviewing the reference Giovanni, 1809" and no other feed items
@@ -45,7 +45,7 @@ Feature: Feed (references)
   Scenario: Restarted reviewing reference
     Given there is a reference for the feed with state "reviewed"
 
-    When I go to the new references page
+    When I go to the latest reference additions page
       And I follow "Restart reviewing"
     And I go to the activity feed
     Then I should see "Archibald restarted reviewing the reference Giovanni, 1809" and no other feed items

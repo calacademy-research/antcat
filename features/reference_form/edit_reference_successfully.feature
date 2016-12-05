@@ -20,8 +20,8 @@ Feature: Edit reference successfully
   Scenario: Change a reference's year
     Given I am logged in
     And this reference exists
-      | authors      | title | citation   | year |
-      | Aho, B.L.    | Ants  | Psyche 6:4 | 2010 |
+      | authors   | title | citation   | year |
+      | Aho, B.L. | Ants  | Psyche 6:4 | 2010 |
 
     When I go to the edit page for the most recent reference
     And I fill in "reference_citation_year" with "1910a"
@@ -31,7 +31,7 @@ Feature: Edit reference successfully
   @javascript
   Scenario: Change a reference's type
     Given I am logged in
-    And these references exist
+    And this reference exists
       | authors    | title | citation   | year |
       | Fisher, B. | Ants  | Psyche 6:4 | 2010 |
 
