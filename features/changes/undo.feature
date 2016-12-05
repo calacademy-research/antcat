@@ -6,7 +6,7 @@ Feature: Workflow
   so mistakes can be repaired
 
   Background:
-    Given these references exist
+    Given this reference exists
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"

@@ -19,7 +19,7 @@ Feature: Editing a user
     Then I should be on the main page
     And I should see "Your account has been updated"
 
-  #Scenario: Logging in with changed password
+    # Logging in with changed password.
     When I follow the first "Logout"
     Then I should not see "Brian Fisher"
 

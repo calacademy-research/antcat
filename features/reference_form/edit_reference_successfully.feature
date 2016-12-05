@@ -3,12 +3,14 @@ Feature: Edit reference successfully
   I want to change previously entered references
   So that I can fix mistakes
 
+  Background:
+    Given I am logged in
+
   @javascript
   Scenario: Edit a reference
     Given this reference exists
       | authors | citation   | cite_code | date     | possess | title | year |
       | authors | Psyche 5:3 | CiteCode  | 20100712 | Possess | title | 2010 |
-    And I am logged in
 
     When I go to the edit page for the most recent reference
     And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
@@ -18,8 +20,7 @@ Feature: Edit reference successfully
 
   @javascript
   Scenario: Change a reference's year
-    Given I am logged in
-    And this reference exists
+    Given this reference exists
       | authors   | title | citation   | year |
       | Aho, B.L. | Ants  | Psyche 6:4 | 2010 |
 
@@ -30,8 +31,7 @@ Feature: Edit reference successfully
 
   @javascript
   Scenario: Change a reference's type
-    Given I am logged in
-    And this reference exists
+    Given this reference exists
       | authors    | title | citation   | year |
       | Fisher, B. | Ants  | Psyche 6:4 | 2010 |
 
@@ -43,9 +43,8 @@ Feature: Edit reference successfully
     Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
 
   @javascript
-  Scenario: See the correct tab initially
-    Given I am logged in
-    And these book references exist
+  Scenario: See the correct tab initially (book reference)
+    Given these book references exist
       | authors    | title | citation                | year |
       | Fisher, B. | Ants  | New York: Wiley, 22 pp. | 2010 |
 
@@ -55,9 +54,8 @@ Feature: Edit reference successfully
     Then I should see "Fisher, B. 2010. Ants. New York: Harcourt, 22 pp."
 
   @javascript
-  Scenario: See the correct tab initially
-    Given I am logged in
-    And this unknown reference exists
+  Scenario: See the correct tab initially (unknown reference)
+    Given this unknown reference exists
       | authors    | title | citation | year |
       | Fisher, B. | Ants  | New York | 2010 |
 
@@ -68,8 +66,7 @@ Feature: Edit reference successfully
 
   @javascript
   Scenario: Specifying the document URL
-    Given I am logged in
-    And these references exist
+    Given this reference exists
       | authors    | citation   | year | citation_year | title |
       | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  |
 
@@ -79,7 +76,7 @@ Feature: Edit reference successfully
     Then I should see a "PDF" link
 
   #Scenario: Setting a document's publicness
-    #Given these references exist
+    #Given this reference exists
       #| authors    | year | citation_year | title     | citation |
       #| Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 |
     #And that the entry has a URL that's on our site
@@ -96,8 +93,7 @@ Feature: Edit reference successfully
 
   @javascript
   Scenario: Adding the authors' role
-    Given I am logged in
-    And these references exist
+    Given this reference exists
       | authors    | citation   | year | citation_year | title |
       | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  |
 
@@ -108,8 +104,7 @@ Feature: Edit reference successfully
 
   @javascript
   Scenario: Removing the authors' role
-    Given I am logged in
-    And these references exist
+    Given this reference exists
       | authors          | citation   | year | citation_year | title |
       | Ward, P.S. (ed.) | Psyche 1:1 | 2010 | 2010a         | Ants  |
 
@@ -122,8 +117,7 @@ Feature: Edit reference successfully
 
   @javascript
   Scenario: Edit a nested reference
-    Given I am logged in
-    And these references exist
+    Given this reference exists
       | authors    | citation   | year | title |
       | Ward, P.S. | Psyche 5:3 | 2001 | Ants  |
     And the following entry nests it

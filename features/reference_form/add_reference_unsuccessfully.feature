@@ -2,17 +2,16 @@ Feature: Add reference unsuccessfully
   Background:
     Given I am logged in
     And I go to the references page
+    And I follow "New"
 
   Scenario: Adding a reference but then cancelling
-    When I follow "New"
-    And I fill in "reference_title" with "Mark Wilden"
+    When I fill in "reference_title" with "Mark Wilden"
     And I follow "Cancel"
     Then I should be on the references page
 
   @javascript
   Scenario: Leaving other fields blank when adding an article reference
-    When I follow "New"
-    And I fill in "reference_author_names_string" with "Fisher, B.L."
+    When I fill in "reference_author_names_string" with "Fisher, B.L."
     And I press "Save"
 
     Then I should see "Year can't be blank"
@@ -23,8 +22,7 @@ Feature: Add reference unsuccessfully
 
   @javascript
   Scenario: Leaving a required field blank should not affect other fields (article)
-    When I follow "New"
-    And I fill in "reference_title" with "A reference title"
+    When I fill in "reference_title" with "A reference title"
     And I fill in "reference_journal_name" with "Ant Journal"
     And I fill in "article_pagination" with "2"
     And I press "Save"
@@ -36,8 +34,7 @@ Feature: Add reference unsuccessfully
 
   @javascript
   Scenario: Leaving other fields blank when adding a book reference
-    When I follow "New"
-    And I follow "Book"
+    When I follow "Book"
     And I fill in "reference_author_names_string" with "Fisher, B.L."
     And I press "Save"
     Then I should see "Year can't be blank"
@@ -47,8 +44,7 @@ Feature: Add reference unsuccessfully
 
   @javascript
   Scenario: Leaving a required field blank should not affect other fields (book)
-    When I follow "New"
-    And I follow "Book"
+    When I follow "Book"
     And I fill in "reference_title" with "A reference title"
     And I fill in "reference_publisher_string" with "Capua: House of Batiatus"
     And I fill in "book_pagination" with "2"
@@ -61,8 +57,7 @@ Feature: Add reference unsuccessfully
 
   @javascript
   Scenario: Leaving other fields blank when adding a nested reference
-    When I follow "New"
-    And I follow "Nested"
+    When I follow "Nested"
     And I fill in "reference_author_names_string" with "Fisher, B.L."
     And I press "Save"
     Then I should see "Year can't be blank"
@@ -71,29 +66,25 @@ Feature: Add reference unsuccessfully
 
   @javascript
   Scenario: Adding a nested reference with a nonexistent nestee
-    When I follow "New"
-    And I follow "Nested"
+    When I follow "Nested"
     And I fill in "reference_nesting_reference_id" with "123123"
     And I press "Save"
     Then I should see "Nesting reference does not exist"
 
   Scenario: Empty author string (with separator)
-    When I follow "New"
-    And I fill in "reference_author_names_string" with " ; "
+    When I fill in "reference_author_names_string" with " ; "
     And I press "Save"
     Then I should see "Author names string couldn't be parsed."
 
   Scenario: Unparseable author string (and maintain already filled in fields)
-    When I follow "New"
-    And I fill in "reference_author_names_string" with "...asdf sdf dsfdsf"
+    When I fill in "reference_author_names_string" with "...asdf sdf dsfdsf"
     And I press "Save"
     Then I should see "Author names string couldn't be parsed."
     And the "reference_author_names_string" field should contain "asdf"
 
   @javascript
   Scenario: Unparseable (blank) journal name (and maintain already filled in fields)
-    When I follow "New"
-    And I fill in "reference_title" with "A reference title"
+    When I fill in "reference_title" with "A reference title"
     And I follow "Article"
     And I fill in "reference_journal_name" with ""
     And I fill in "article_pagination" with "1"
@@ -107,8 +98,7 @@ Feature: Add reference unsuccessfully
 
   @javascript
   Scenario: Unparseable publisher string (and maintain already filled in fields)
-    When I follow "New"
-    And I fill in "reference_title" with "A reference title"
+    When I fill in "reference_title" with "A reference title"
     And I follow "Book"
     And I fill in "reference_publisher_string" with "Pensoft, Sophia"
     And I fill in "book_pagination" with "1"

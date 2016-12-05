@@ -1,7 +1,7 @@
 Feature: Adding a taxon unsuccessfully
   Background:
     Given I am logged in
-    And these references exist
+    And this reference exists
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
@@ -36,8 +36,7 @@ Feature: Adding a taxon unsuccessfully
       And I press "OK"
     And I fill in "taxon_type_taxt" with "Notes"
     And I save my changes
-    Then I should be on the create taxon page
-    And I should see "Protonym name name can't be blank"
+    Then I should see "Protonym name name can't be blank"
     And the "taxon_type_taxt" field should contain "Notes"
     And the name button should contain "Atta"
 

@@ -32,8 +32,6 @@ module NavigationHelpers
       "/taxa/#{Taxon.find_by_name($1).id}/edit"
     when /^the new taxon page$/
       "/taxa/new"
-    when /^the create taxon page$/
-      '/taxa'
 
     when /^the "Convert to subspecies" page for "([^"]*)"$/
       taxon = Taxon.find_by_name $1
@@ -65,9 +63,6 @@ module NavigationHelpers
       journals_path
 
     # Editor's Panel
-    when /^the Editor's Panel page$/
-      "/panel"
-
     when /^the comments page$/
       "/comments"
 
