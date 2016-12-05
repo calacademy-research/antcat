@@ -20,9 +20,7 @@ Feature: Feed (references)
   Scenario: Edited reference
     Given there is a reference for the feed with state "reviewed"
 
-    When I go to the references page
-      And I follow first reference link
-      And I follow "Edit"
+    When I go to the edit page for the most recent reference
       And I fill in "reference_title" with "A reference title"
       And I press "Save"
     And I go to the activity feed

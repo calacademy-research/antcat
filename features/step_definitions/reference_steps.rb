@@ -126,10 +126,6 @@ Then(/I should see these entries (with a header )?in this order:/) do |with_head
   end
 end
 
-When(/^I follow first reference link$/) do
-  first('.reference').all('a').last.click
-end
-
 When(/I fill in "reference_nesting_reference_id" with the ID for "(.*?)"$/) do |title|
   reference = Reference.find_by(title: title)
   step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""

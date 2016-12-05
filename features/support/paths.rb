@@ -49,6 +49,10 @@ module NavigationHelpers
       latest_additions_references_path
     when /^the page for that reference$/
       reference_path(@reference || Reference.first)
+    when /^the page of the most recent reference$/
+      reference_path(Reference.last)
+    when /^the edit page for the most recent reference$/
+      edit_reference_path(Reference.last)
 
     when /^the merge authors page$/
       merge_authors_path

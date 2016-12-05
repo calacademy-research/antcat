@@ -42,7 +42,7 @@ Feature: Add reference
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
 
   Scenario: Adding a nested reference
-    Given these references exist
+    Given this reference exists
       | author     | title          | year | citation   |
       | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
 

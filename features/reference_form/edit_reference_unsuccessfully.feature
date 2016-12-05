@@ -8,13 +8,11 @@ Feature: Edit reference unsuccessfully
   @javascript
   Scenario: Clearing a book reference's fields
     Given I am logged in
-    And these book references exist
+    And this book reference exists
       | authors    | citation                | year | citation_year | title |
       | Aho, P.S.  | New York: Wiley, 36 pp. | 2010 | 2010a         | Ants  |
 
-    When I go to the references page
-    And I follow first reference link
-    And I follow "Edit"
+    When I go to the edit page for the most recent reference
     And I fill in "reference_author_names_string" with ""
     And I fill in "reference_title" with ""
     And I fill in "reference_citation_year" with ""
@@ -29,13 +27,11 @@ Feature: Edit reference unsuccessfully
   @javascript
   Scenario: Clearing an article reference's fields
     Given I am logged in
-    And these references exist
+    And this reference exists
       | authors    | citation   | year | citation_year | title |
       | Aho, P.S.  | Psyche 1:2 | 2010 | 2010a         | Ants  |
 
-    When I go to the references page
-    And I follow first reference link
-    And I follow "Edit"
+    When I go to the edit page for the most recent reference
     And I fill in "reference_author_names_string" with ""
     And I fill in "reference_title" with ""
     And I fill in "reference_citation_year" with ""
@@ -52,13 +48,11 @@ Feature: Edit reference unsuccessfully
   @javascript
   Scenario: Clearing an unknown reference's fields
     Given I am logged in
-    And these unknown references exist
+    And this unknown reference exists
       | authors   | citation | year | citation_year | title |
       | Aho, P.S. | New York | 2010 | 2010a         | Ants  |
 
-    When I go to the references page
-    And I follow first reference link
-    And I follow "Edit"
+    When I go to the edit page for the most recent reference
     And I follow "Other"
     And I fill in "reference_author_names_string" with ""
     And I fill in "reference_title" with ""
@@ -72,13 +66,11 @@ Feature: Edit reference unsuccessfully
   @javascript
   Scenario: Specifying the document URL when it doesn't exist
     Given I am logged in
-    And these references exist
+    And this reference exists
       | authors    | citation   | year | citation_year | title |
       | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  |
 
-    When I go to the references page
-    And I follow first reference link
-    And I follow "Edit"
+    When I go to the edit page for the most recent reference
     And I fill in "reference_document_attributes_url" with a URL to a document that doesn't exist in the first reference
     And I press "Save"
     Then I should see "Document url was not found"
@@ -86,18 +78,14 @@ Feature: Edit reference unsuccessfully
   @javascript
   Scenario: Edit a nested reference and changing its nestee to itself
     Given I am logged in
-    And these references exist
+    And this reference exists
       | authors    | citation   | year | title |
       | Ward, P.S. | Psyche 5:3 | 2001 | Ants  |
     And the following entry nests it
       | authors    | title            | year | pages_in |
       | Bolton, B. | Ants are my life | 2001 | In:      |
 
-    When I go to the references page
-    Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"
-
-    When I follow first reference link
-    And I follow "Edit"
+    When I go to the edit page for the most recent reference
     And I fill in "reference_nesting_reference_id" with its own ID
     And I press "Save"
     Then I should see "Nesting reference can't point to itself"
@@ -132,9 +120,7 @@ Feature: Edit reference unsuccessfully
       | authors   | year | title                    | citation      |
       | Forel, A. | 1874 | Les fourmis de la Suisse | Neue 26:1-452 |
 
-    When I go to the references page
-    And I follow first reference link
-    And I follow "Edit"
+    When I go to the edit page for the most recent reference
     And I fill in "reference_title" with ""
     And I press "Save"
     Then I should see "Title can't be blank"
