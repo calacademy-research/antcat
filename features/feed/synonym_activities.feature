@@ -16,8 +16,8 @@ Feature: Feed (synonyms)
     Then I should see "Atta minor" in the junior synonyms section
 
     When I go to the activity feed
-    Then I should see "Archibald added the synonym relationship Atta minor (junior synonym)" and no other feed items
-    And I should see "Atta major (senior synonym)"
+    Then I should see "Archibald added the synonym relationship Atta minor (junior)" and no other feed items
+    And I should see "Atta major (senior)"
 
   Scenario: Deleted synonym
     Given activity tracking is disabled
@@ -29,5 +29,5 @@ Feature: Feed (synonyms)
       And I click "Delete" beside the first junior synonym
       And I wait for a bit
     And I go to the activity feed
-    Then I should see "Archibald deleted the synonym relationship Atta major (junior synonym)" and no other feed items
-    And I should see "Eciton minor (senior synonym)"
+    Then I should see "Archibald deleted the synonym relationship Atta major (junior)" and no other feed items
+    And I should see "Eciton minor (senior)"

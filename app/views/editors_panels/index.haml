@@ -24,32 +24,38 @@
 
   .large-3.medium-4.columns
     %h5 Misc. links
-    %ul
-      %li=link_to 'Help pages (wiki hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
+    %ul.no-bullet
       %li=link_to 'Activity feed', activities_path
-      %li=link_to 'Invite people to AntCat', invite_users_path
-      %li=link_to "Change my password/name/email", edit_user_registration_path
+      %li=link_to 'Help pages (wiki hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
       %li
         =link_to "List of users", users_path
         =surround "(", ")" do
           =link_to "email users", emails_users_path
+      %li=link_to 'Invite people to AntCat', invite_users_path
       %li=link_to "Markdown formatting help", markdown_formatting_help_path
 
   .large-3.medium-4.columns
     -if current_user
       %h5 My account
-      %ul
+      %ul.no-bullet
         %li
           .label=current_user.unseen_notifications.count
-          =link_to "My Notifications", notifications_path
+          =link_to "My notifications", notifications_path
+        %li=link_to "Change my password/name/email", edit_user_registration_path
+        %li=link_to "My user page", user_path(current_user)
 
   .large-3.medium-4.columns
     %h5 AntCat administration
-    %ul
+    %ul.no-bullet
       %li=link_to 'Edit tooltips', tooltips_path
       -if user_is_superadmin?
-        %li=link_to "Admin Dashboard", admin_root_path
-      %li=link_to('Database scripts', database_scripts_path) + " " + beta_label
+        %li=link_to "Admin dashboard", admin_root_path
+        %li
+          =link_to "PaperTrail versions", beta_and_such_all_versions_path
+          =new_label
+      %li
+        =link_to 'Database scripts', database_scripts_path
+        =beta_label
 
 .row.margin-top
   .large-12.columns

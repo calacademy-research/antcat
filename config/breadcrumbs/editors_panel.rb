@@ -23,7 +23,7 @@ end
   end
 
 crumb :issues do
-  link "Open Issues", issues_path
+  link "Issues", issues_path
   parent :editors_panel
 end
 
@@ -129,5 +129,10 @@ end
 
 crumb :lazy_links do
   link "Lazy Links"
+  parent :editors_panel
+end
+
+crumb :beta_and_such do
+  link "Beta and such (testing, debugging)"
   parent :editors_panel
 end

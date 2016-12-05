@@ -134,7 +134,7 @@ class MakePreviewable
     @symbolsLink().html "Enabled: <code>#{label}</code>"
 
   # Load markdown formatting help and symbols explanation pages via AJAX
-  # on demand. Mostly becasue it's so much easier to format it in HAML
+  # on demand. Mostly because it's so much easier to format it in HAML
   # rather than JavaScript.
   makeHelpTabsLoadableOnDemand: ->
     setupFormattingHelp = =>

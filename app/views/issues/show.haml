@@ -5,15 +5,15 @@
   %h5=@issue.title
   Added by
   =@issue.adder.decorate.user_page_link
-  =time_ago_in_words(@issue.created_at)
+  =time_ago_in_words @issue.created_at
 
 -if user_can_edit?
   .buttons_right
     -if @issue.archived?
-      =link_to("Re-open", reopen_issue_path(@issue), method: :put, class: "btn-saves-warning")
+      =link_to "Re-open", reopen_issue_path(@issue), method: :put, class: "btn-saves-warning"
     -else
-      =link_to("Close", close_issue_path(@issue), method: :put, class: "btn-saves")
-      =link_to("Edit", edit_issue_path(@issue), class: "btn-normal")
+      =link_to "Close", close_issue_path(@issue), method: :put, class: "btn-saves"
+    =link_to "Edit", edit_issue_path(@issue), class: "btn-normal"
 .clear
 
 -if @issue.archived?

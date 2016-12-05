@@ -1,5 +1,6 @@
 # TODO avoid `require`.
 # TODO consider moving callbacks and validators to a concern.
+# TODO exclude caches from PaperTrail.
 
 require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_search'
