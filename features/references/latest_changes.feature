@@ -7,11 +7,6 @@ Feature: Latest Changes (reviewing features)
     When I go to the references page
     Then I should not see "Latest Changes"
 
-  Scenario: Logged in
-    When I log in
-    And I go to the references page
-    Then I should see "Latest Changes"
-
   Scenario: See features in reverse chronological order
     Given these references exist
       | authors    | citation   | title             | created_at | updated_at | year |

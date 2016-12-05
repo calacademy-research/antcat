@@ -22,29 +22,6 @@ Feature: View bibliography
     Then I should see "Azteca trigona" italicized
     And I should see "defense" italicized
 
-  Scenario: Dangerous text
-    Given this reference exists
-      | title               | authors | citation | year | public_notes |
-      | <script><i>Ants</i> | authors | Ants 3:3 | year | {<html>}     |
-
-    When I go to the references page
-    Then I should see "<script>"
-    And I should see "<html>"
-
-  Scenario: Viewing more than one entry, sorted by author + date (including slug)
-    Given these references exist
-      | authors        | year | citation_year | title                      | citation   |
-      | Wheeler, W. M. | 1910 | 1910b         | Ants                       | Psyche 2:2 |
-      | Forel, A.      | 1874 | 1874          | Les fourmis de la Suisse   | Neue 26:10 |
-      | Wheeler, W. M. | 1910 | 1910a         | Small artificial ant-nests | Psyche 1:1 |
-
-    When I go to the references page
-    Then I should see these entries with a header in this order:
-      | entry                                                        |
-      | Forel, A. 1874. Les fourmis de la Suisse. Neue 26:10         |
-      | Wheeler, W. M. 1910a. Small artificial ant-nests. Psyche 1:1 |
-      | Wheeler, W. M. 1910b. Ants. Psyche 2:2                       |
-
   Scenario: Viewing an entry with a URL to a document on our site, but the user isn't logged in
     Given this reference exists
       | authors    | year | citation_year | title     | citation | cite_code | possess | date     |

@@ -1,5 +1,5 @@
 Feature: Latest Additions (seeing what's new)
-  As a user of AntCat
+  As an editor of AntCat
   I want to see recently added references
   So I can keep up with the state of the literature
 
@@ -8,6 +8,12 @@ Feature: Latest Additions (seeing what's new)
       | authors    | citation   | title             | created_at | updated_at | year | review_state |
       | Ward, P.   | Psyche 5:3 | Ward's World      | 2010-2-2   | 2010-1-1   | 2010 |              |
       | Bolton, B. | Psyche 4:2 | Bolton's Bulletin | 2010-1-1   | 2010-2-2   | 2010 | reviewing    |
+
+  Scenario: Logged in (but not as a catalog editor)
+    Given I log in as a user (not editor)
+
+    When I go to the latest reference additions page
+    Then I should not see a "Start reviewing" button
 
   Scenario: See features in order of addition
     Given I am logged in
@@ -44,20 +50,6 @@ Feature: Latest Additions (seeing what's new)
     And I click "Restart reviewing" on the Ward reference
     And I go to the latest reference additions page
     Then the review status on the Ward reference should change to "Being reviewed"
-
-  Scenario: Not a logged-in catalog editor
-    Given I log in as a user (not editor)
-
-    When I go to the latest reference additions page
-    Then I should not see a "Start reviewing" button
-
-  Scenario: Seeing the default reference button on the latest reference additions page
-    Given I am logged in
-    And the default reference is "Ward 2010"
-
-    When I go to the latest reference additions page
-    Then it should show "Ward 2010" as the default
-    And it should not show "Bolton 1995" as the default
 
   Scenario: Changing the default reference button on the latest reference additions page
     Given I am logged in
