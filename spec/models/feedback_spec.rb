@@ -28,7 +28,7 @@ describe Feedback do
       create :feedback, ip: "255.255.255.255"
     end
 
-    it "finds feedbacks from" do
+    it "finds feedbacks from the same IP" do
       feedback = create :feedback
       expect(feedback.from_the_same_ip.count).to eq 2
     end

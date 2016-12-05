@@ -4,7 +4,7 @@ class IssuesController < ApplicationController
 
   def index
     @issues = Issue.by_status_and_date.paginate(page: params[:page])
-    @open_issues_count = Issue.open.count
+    @open_issues_count = Issue.open_count
   end
 
   def show

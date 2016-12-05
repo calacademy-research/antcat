@@ -7,7 +7,13 @@ class Feedback < ActiveRecord::Base
 
   validates :comment, presence: true, length: { maximum: 10_000 }
 
-  scope :pending, -> { where(open: true) }
+  scope :pending_count, -> { where(open: true).count }
+  scope :by_status_and_date, -> do
+    order(<<-SQL.squish)
+      CASE WHEN open = TRUE THEN (9999 + created_at)
+      ELSE created_at END DESC
+    SQL
+  end
   scope :recently_created, ->(time_ago = 5.minutes.ago) {
     where('created_at >= ?', time_ago)
   }

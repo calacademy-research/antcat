@@ -8,21 +8,6 @@ describe Issue do
   it { should validate_length_of(:title).is_at_most 70 }
 
   describe "scopes" do
-    describe ".open and .non_open" do
-      let!(:open) { create :issue }
-      let!(:also_open) { create :issue }
-      let!(:completed) { create :completed_issue }
-      let!(:closed) { create :closed_issue }
-
-      it "open returns open issues" do
-        expect(Issue.open).to eq [open, also_open]
-      end
-
-      it "non_open returns completed and closed issues" do
-        expect(Issue.non_open).to eq [completed, closed]
-      end
-    end
-
     describe ".by_status_and_date" do
       let!(:first) { create :issue, created_at: Time.now + 10.days }
       let!(:second) { create :issue }

@@ -8,7 +8,7 @@ class FeedbackController < ApplicationController
   invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
 
   def index
-    @feedbacks = Feedback.order(id: :desc).paginate(page: params[:page], per_page: 10)
+    @feedbacks = Feedback.by_status_and_date.paginate(page: params[:page], per_page: 10)
   end
 
   def show

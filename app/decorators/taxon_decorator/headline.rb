@@ -120,10 +120,10 @@ class TaxonDecorator::Headline
 
     def headline_authorship authorship
       return '' unless authorship.try :reference
-      string = link_to_reference(authorship.reference)
+      string = link_to_reference authorship.reference
       string << ": #{authorship.pages}" if authorship.pages.present?
       string << " (#{authorship.forms})" if authorship.forms.present?
-      string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html if authorship.notes_taxt
+      string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html if authorship.notes_taxt.present?
       content_tag :span, string
     end
 
