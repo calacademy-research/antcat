@@ -3,16 +3,11 @@ Feature: Latest Changes (reviewing features)
   I want to see recently changed references
   So that I can review, fix and monitor them
 
-  Scenario: Not logged in
-    When I go to the references page
-    Then I should not see "Latest Changes"
-
   Scenario: See features in reverse chronological order
     Given these references exist
       | authors    | citation   | title             | created_at | updated_at | year |
       | Ward, P.   | Psyche 5:3 | Ward's World      | 2010-2-2   | 2012-2-2   | 2010 |
       | Bolton, B. | Psyche 4:2 | Bolton's Bulletin | 2010-1-1   | 2012-1-1   | 2010 |
-    And I am logged in
 
     When I go to the references page
     And I follow "Latest Changes"

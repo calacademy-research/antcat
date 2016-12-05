@@ -1,6 +1,7 @@
 class ReferencesController < ApplicationController
   before_action :authenticate_editor, except: [:index, :download, :autocomplete,
-    :search_help, :show, :search, :endnote_export, :wikipedia_export, :latest_additions]
+    :search_help, :show, :search, :endnote_export, :wikipedia_export, :latest_additions,
+    :latest_changes]
   before_action :authenticate_superadmin, only: [:approve_all]
   before_action :set_reference, only: [:show, :edit, :update, :destroy,
     :start_reviewing, :finish_reviewing, :restart_reviewing, :wikipedia_export]

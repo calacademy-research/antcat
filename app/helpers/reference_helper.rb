@@ -11,10 +11,9 @@ module ReferenceHelper
     links = []
     links << link_to('All References', references_path)
     links << link_to('Latest Additions', latest_additions_references_path)
+    links << link_to('Latest Changes', latest_changes_references_path)
 
     if user_can_edit?
-      links << link_to('Latest Changes', latest_changes_references_path)
-
       # TODO probably allow anyone to export search results.
       if show_export_search_results_to_endnote?
         links << link_to('Export to EndNote', endnote_export_references_path(q: params[:q]))
