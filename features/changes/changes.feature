@@ -103,7 +103,7 @@ Feature: Changes
     Then I should see "Added by Mark Wilden"
 
     When I go to the changes page
-    Then I should not see an "Approve" button
+    Then I should not see "Approve"
 
   @papertrail
   Scenario: Editing a taxon - modified, not added

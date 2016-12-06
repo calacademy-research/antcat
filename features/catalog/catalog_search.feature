@@ -15,10 +15,9 @@ Feature: Searching the catalog
     Then I should see "No results found."
 
   Scenario: Searching when only one result
-    When I fill in the catalog search box with "abruptus"
+    When I fill in the catalog search box with "Dolichoderini"
     And I press "Go" by the catalog search box
-    Then I should see "abruptus history"
-    And I should not see any search results
+    Then I should be on the catalog page for "Dolichoderini"
 
   Scenario: Searching when more than one result
     When I fill in the catalog search box with "doli"

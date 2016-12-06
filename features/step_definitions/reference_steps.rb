@@ -98,13 +98,7 @@ def create_reference type, hash
 
   reference = create type, hash.merge(author_names: author_names, author_names_suffix: author_names_suffix)
   @reference ||= reference
-  set_timestamps reference, hash
   reference
-end
-
-def set_timestamps reference, hash
-  reference.update_column :updated_at, hash[:updated_at] if hash[:updated_at]
-  reference.update_column :created_at, hash[:created_at] if hash[:created_at]
 end
 
 Given(/the following entry nests it/) do |table|

@@ -8,6 +8,11 @@ When(/^I save the taxon form$/) do
   find("#save-taxon-form").click
 end
 
+Then(/^I (should|should not) see an Edit button$/) do |should_selector|
+  should_selector = should_selector.tr(" ", "_").to_sym
+  page.send should_selector, have_css("a.btn-normal", text: "Edit")
+end
+
 # section
 When(/^I save the (\w+)(?: item)?$/) do |section|
   step %{I press the #{section} item "Save" button}

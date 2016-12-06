@@ -93,17 +93,6 @@ Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |fiel
   end
 end
 
-Then(/^I (should|should not) see an? "([^"]*)" button$/) do |should_selector, button|
-  # TODO treat buttons and "button link" the same
-  should_selector = should_selector.tr(" ", "_").to_sym
-
-  if button == "Edit"
-    page.send should_selector, have_css("a.btn-normal")
-  else
-    page.send should_selector, have_css("input[value='#{button}']")
-  end
-end
-
 Then(/^I should see a link "([^"]*)"$/) do |link|
   expect(page).to have_css 'a', text: link
 end

@@ -10,7 +10,7 @@ Feature: Editing a taxon with authorization constraints
     And I log in as a user (not editor)
 
     When I go to the catalog page for "Calyptites"
-    Then I should not see a "Edit" button
+    Then I should not see an Edit button
     And I should not see "Delete"
 
   Scenario: Trying to edit a taxon that's waiting for approval
@@ -18,7 +18,7 @@ Feature: Editing a taxon with authorization constraints
     And there is a genus "Calyptites" that's waiting for approval
 
     When I go to the catalog page for "Calyptites"
-    Then I should see an "Edit" button
+    Then I should see an Edit button
     And I should see "Review change"
     And I should not see "Delete"
 
@@ -27,7 +27,7 @@ Feature: Editing a taxon with authorization constraints
     And I log in as a superadmin
 
     When I go to the catalog page for "Calyptites"
-    Then I should see an "Edit" button
+    Then I should see an Edit button
     And I should see "Delete"
 
   Scenario: Trying to edit a taxon that's waiting for approval
@@ -35,5 +35,5 @@ Feature: Editing a taxon with authorization constraints
     And there is a genus "Calyptites" that's waiting for approval
 
     When I go to the catalog page for "Calyptites"
-    Then I should see an "Edit" button
+    Then I should see an Edit button
     And I should see "Review change"
