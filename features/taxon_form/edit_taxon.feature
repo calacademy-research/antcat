@@ -92,56 +92,56 @@ Feature: Editing a taxon
     Given a species exists with a name of "major" and a genus of "Atta"
 
     When I go to the edit page for "Atta major"
-    And I set the verbatim type locality to "San Pedro"
+    And I fill in "taxon_verbatim_type_locality" with "San Pedro, CA"
     And I save the taxon form
     Then I should be on the catalog page for "Atta major"
     And I should see "San Pedro"
 
     When I follow "Edit"
-    Then the verbatim type locality should be "San Pedro"
+    Then I should see "San Pedro"
 
   Scenario: Don't see verbatim type locality field for genus-group name
     Given a species exists with a name of "major" and a genus of "Atta"
 
     When I go to the edit page for "Atta"
-    Then I should not see the verbatim type locality
+    Then I should not see "Verbatim type locality"
 
     When I go to the edit page for "Atta major"
-    Then I should see the verbatim type locality
+    Then I should see "Verbatim type locality"
 
   Scenario: Changing type specimen repository
     Given a species exists with a name of "major" and a genus of "Atta"
 
     When I go to the edit page for "Atta major"
-    And I set the type specimen repository to "CZN"
+    And I fill in "taxon_type_specimen_repository" with "CZN"
     And I save the taxon form
     Then I should be on the catalog page for "Atta major"
     And I should see "CZN"
 
     When I follow "Edit"
-    Then the type specimen repository should be "CZN"
+    Then the "taxon_type_specimen_repository" field should contain "CZN"
 
   Scenario: Don't see verbatim type locality field for genus-group name
     Given a species exists with a name of "major" and a genus of "Atta"
 
     When I go to the edit page for "Atta"
-    Then I should not see the type specimen repository
+    Then I should not see "Type specimen repository"
 
     When I go to the edit page for "Atta major"
-    Then I should see the type specimen repository
+    Then I should see "Type specimen repository"
 
   Scenario: Changing type specimen URL
     Given a species exists with a name of "major" and a genus of "Atta"
     And that URL "www.antweb.com" exists
 
     When I go to the edit page for "Atta major"
-    And I set the type specimen URL to "www.antweb.com/"
+    And I fill in "taxon_type_specimen_url" with "www.antweb.com/"
     And I save the taxon form
     Then I should be on the catalog page for "Atta major"
     And I should see a link "www.antweb.com/"
 
     When I follow "Edit"
-    Then the type specimen URL should be "www.antweb.com/"
+    Then the "taxon_type_specimen_url" field should contain "www.antweb.com/"
 
   Scenario: Changing biogeographic region
     Given a species exists with a name of "major" and a genus of "Atta"
@@ -159,10 +159,10 @@ Feature: Editing a taxon
     Given a species exists with a name of "major" and a genus of "Atta"
 
     When I go to the edit page for "Atta"
-    Then I should not see the biogeographic region
+    Then I should not see "Biogeographic region"
 
     When I go to the edit page for "Atta major"
-    Then I should see the biogeographic region
+    Then I should see "Biogeographic region"
 
   Scenario: Clearing the biogeographic_region
     Given a species exists with a name of "major" and a genus of "Atta"
