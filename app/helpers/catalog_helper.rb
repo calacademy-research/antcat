@@ -8,15 +8,6 @@ module CatalogHelper
     end
   end
 
-  # TODO maybe make it possible to add (incertae sedis) species/genera.
-  def link_to_add_new_species taxon
-    return unless user_can_edit? && taxon.is_a?(Genus)
-
-    link_to "Add species",
-      new_taxa_path(rank_to_create: "species", parent_id: taxon.id),
-      class: "btn-normal"
-  end
-
   def link_to_review_change taxon
     return unless user_can_review_changes?
 

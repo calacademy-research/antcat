@@ -20,6 +20,8 @@ module TaxonHelper
   end
 
   def add_child_button taxon
+    return unless user_can_edit?
+
     child_ranks = { family:    "subfamily",
                     subfamily: "genus",
                     tribe:     "genus",
@@ -35,7 +37,7 @@ module TaxonHelper
   end
 
   def add_tribe_button taxon
-    return unless taxon.is_a? Subfamily
+    return unless user_can_edit? && taxon.is_a?(Subfamily)
 
     url = new_taxa_path rank_to_create: 'tribe', parent_id: taxon.id
     link_to "Add tribe", url, class: "btn-normal"

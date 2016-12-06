@@ -16,7 +16,6 @@ Feature: Adding a taxon successfully
     Given there is a genus "Eciton"
 
     When I go to the catalog page for "Formicinae"
-      And I follow "Edit"
       And I follow "Add genus"
     Then I should be on the new taxon page
 
@@ -50,7 +49,6 @@ Feature: Adding a taxon successfully
     Given tribe "Ecitonini" exists in that subfamily
 
     When I go to the catalog page for "Ecitonini"
-      And I follow "Edit"
       And I follow "Add genus"
       And I click the name field
       And I set the name to "Eciton"
@@ -81,7 +79,6 @@ Feature: Adding a taxon successfully
     Given there is a genus "Eciton"
 
     When I go to the catalog page for "Eciton"
-    And I follow "Edit"
     And I follow "Add species"
     Then I should be on the new taxon page
     And I should see "new species of Eciton"
@@ -112,7 +109,6 @@ Feature: Adding a taxon successfully
     And subgenus "Dolichoderus (Subdolichoderus)" exists in that genus
 
     When I go to the catalog page for "Dolichoderus (Subdolichoderus)"
-    And I follow "Edit"
     And I follow "Add species"
     Then I should be on the new taxon page
     And I should see "new species of "
@@ -137,7 +133,6 @@ Feature: Adding a taxon successfully
   @search @javascript
   Scenario: Using a genus's type-species for the name of a species
     When I go to the catalog page for "Formicinae"
-    And I follow "Edit"
     And I follow "Add genus"
     And I click the name field
       And I set the name to "Atta"
@@ -157,7 +152,6 @@ Feature: Adding a taxon successfully
     And I wait for a bit
     And the changes are approved
     And I go to the catalog page for "Atta"
-    And I follow "Edit"
     And I follow "Add species"
     When I click the name field
       And I set the name to "Atta major"
@@ -179,7 +173,6 @@ Feature: Adding a taxon successfully
     Given there is a species "Eciton major" with genus "Eciton"
 
     When I go to the catalog page for "Eciton major"
-    And I follow "Edit"
     And I follow "Add subspecies"
     Then I should be on the new taxon page
     And I should see "new subspecies of Eciton major"
@@ -206,7 +199,6 @@ Feature: Adding a taxon successfully
     Given the Formicidae family exists
 
     When I go to the main page
-      And I follow "Edit"
       And I follow "Add subfamily"
     Then I should be on the new taxon page
 
@@ -239,7 +231,6 @@ Feature: Adding a taxon successfully
   @search @javascript
   Scenario: Adding a tribe
     When I go to the catalog page for "Formicinae"
-      And I follow "Edit"
       And I follow "Add tribe"
     Then I should be on the new taxon page
 
