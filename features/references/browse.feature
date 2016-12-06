@@ -72,13 +72,13 @@ Feature: View bibliography
 
   Scenario: Viewing a missing reference
     Given this reference exists
-      | authors    | year | citation_year | title     | citation |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 |
+      | authors    | year | title     | citation |
+      | Ward, P.S. | 2010 | Ant Facts | Ants 1:1 |
     And there is a missing reference
 
     When I go to the references page
     Then I should not see the missing reference
-    And I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1 "
+    And I should see "Ward, P.S. 2010. Ant Facts. Ants 1:1 "
 
   Scenario: Not logged in
     Given this reference exists

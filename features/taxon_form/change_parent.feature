@@ -134,7 +134,6 @@ Feature: Changing parent genus, species, tribe or subfamily
   Scenario: Detecting a possible secondary homonym when there is a subspecies name conflict
     Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
     And there is a subspecies "Atta betus subbus" which is a subspecies of "Atta betus" in the genus "Atta"
-    And I am logged in
 
     When I go to the edit page for "Solenopsis speccus subbus"
     And I click the parent name field
@@ -157,7 +156,6 @@ Feature: Changing parent genus, species, tribe or subfamily
   #Scenario: Change a subspecies to a species should error gracefully
   #  Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
   #  Given there is a genus "Atta"
-  #  And I am logged in
   #  When I go to the edit page for "Solenopsis speccus subbus"
   #  And I click the parent name field
   #  And I set the parent name to "Atta"

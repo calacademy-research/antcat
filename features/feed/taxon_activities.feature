@@ -53,8 +53,7 @@ Feature: Feed (taxa)
       And there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
     And activity tracking is enabled
 
-    When I go to the catalog entry for "Solenopsis speccus subbus"
-      And I follow "Edit"
+    When I go to the edit page for "Solenopsis speccus subbus"
       And I will confirm on the next step
       And I follow "Elevate to species"
     And I go to the activity feed

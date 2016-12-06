@@ -25,8 +25,7 @@ Feature: Workflow
 
   @javascript
   Scenario: Changing a taxon and seeing it on the Changes page, undoing it
-    When I go to the catalog page for "Formicinae"
-    And I follow "Edit"
+    When I go to the edit page for "Formicinae"
     And I fill in "taxon_headline_notes_taxt" with "asdfgh"
     And I save my changes
     And I go to the catalog page for "Formicinae"

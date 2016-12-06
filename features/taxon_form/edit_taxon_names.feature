@@ -1,8 +1,10 @@
 @javascript
 Feature: Editing a taxon's name, protonym name, or type name
+  Background:
+    Given I am logged in
+
   Scenario: Editing a family's name
     Given the Formicidae family exists
-    And I am logged in
 
     When I go to the edit page for "Formicidae"
     And I click the name field
@@ -13,7 +15,6 @@ Feature: Editing a taxon's name, protonym name, or type name
 
   Scenario: Trying to enter a blank name
     Given the Formicidae family exists
-    And I am logged in
 
     When I go to the edit page for "Formicidae"
     And I click the name field
@@ -24,7 +25,6 @@ Feature: Editing a taxon's name, protonym name, or type name
   Scenario: Setting a genus's name to an existing one
     Given there is a genus "Calyptites"
     And there is a genus "Atta"
-    And I am logged in
 
     When I go to the edit page for "Atta"
     And I click the name field
@@ -38,7 +38,6 @@ Feature: Editing a taxon's name, protonym name, or type name
   Scenario: Changing the protonym name
     Given there is a genus "Atta" with protonym name "Atta"
     And there is a genus "Eciton"
-    And I am logged in
 
     When I go to the edit page for "Atta"
     And I click the protonym name field
@@ -51,7 +50,6 @@ Feature: Editing a taxon's name, protonym name, or type name
     Given there is a genus "Atta" with type name "Atta major"
     And there is a species "Atta major"
     And there is a species "Atta minor"
-    And I am logged in
 
     When I go to the edit page for "Atta"
     And I click the type name field
@@ -63,7 +61,6 @@ Feature: Editing a taxon's name, protonym name, or type name
   Scenario: Setting the type name after it was blank
     Given there is a genus "Atta"
     And there is a species "Atta major"
-    And I am logged in
 
     When I go to the edit page for "Atta"
     And I click the type name field
@@ -74,7 +71,6 @@ Feature: Editing a taxon's name, protonym name, or type name
 
   Scenario: Clearing the type name
     Given there is a genus "Atta" with type name "Atta major"
-    And I am logged in
 
     When I go to the catalog page for "Atta"
     Then I should not see "Atta major" in the headline
@@ -88,7 +84,6 @@ Feature: Editing a taxon's name, protonym name, or type name
 
   Scenario: Changing current valid name
     Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
-    And I am logged in
 
     When I go to the edit page for "Atta major"
     And I click the current valid taxon name field

@@ -6,10 +6,11 @@ Feature: Reversing synonymy
   Because the relationship was incorrectly parsed
   And we want it to be correct
 
-  Scenario: Reversing synonym from the senior side
+  Background:
     Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
     And I am logged in
 
+  Scenario: Reversing synonym from the senior side
     When I go to the edit page for "Solenopsis wagneri"
     Then I should see "Solenopsis invicta" in the junior synonyms section
 
@@ -19,9 +20,6 @@ Feature: Reversing synonymy
     And I should see "Solenopsis invicta" in the senior synonyms section
 
   Scenario: Reversing synonym from the junior side
-    Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
-    And I am logged in
-
     When I go to the edit page for "Solenopsis invicta"
     Then I should see "Solenopsis wagneri" in the senior synonyms section
 
