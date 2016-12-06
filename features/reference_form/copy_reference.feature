@@ -35,9 +35,7 @@ Feature: Copy reference
     And the "reference_publisher_string" field should contain "New York: Wiley"
 
   Scenario: Copy a nested reference
-    Given this reference exist
-      | authors    | title          | citation | year |
-      | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910 |
+    Given there is an article reference
     And the following entry nests it
       | authors      | title          | year | pages_in |
       | Aardvark, A. | Dolichoderinae | 2011 | In:      |
@@ -64,9 +62,7 @@ Feature: Copy reference
 
   @javascript
   Scenario: Copy a reference with a document
-    Given this reference exist
-      | authors    | title          | citation | year |
-      | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910 |
+    Given there is a reference
     And that the entry has a URL that's on our site
     And I go to the page for that reference
 

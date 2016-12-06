@@ -5,10 +5,9 @@ Feature: Elevating subspecies to species
 
   Background:
     Given I am logged in
+    And there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
 
   Scenario: Elevating subspecies to species
-    Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
-
     When I go to the edit page for "Solenopsis speccus subbus"
     And I will confirm on the next step
     And I follow "Elevate to species"
@@ -25,8 +24,7 @@ Feature: Elevating subspecies to species
     Then I should not see "Elevate to species"
 
   Scenario: Elevating to species when the species name exists
-    Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
-    And there is a species "Solenopsis subbus"
+    Given there is a species "Solenopsis subbus"
 
     When I go to the edit page for "Solenopsis speccus subbus"
     And I will confirm on the next step

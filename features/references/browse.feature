@@ -5,11 +5,11 @@ Feature: View bibliography
 
   Scenario: View one entry
     Given this reference exists
-      | authors    | year | citation_year | title     | citation | date     | public_notes | editor_notes   |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 20100712 | Public notes | Editor's notes |
+      | authors    | year | title     | citation | public_notes | editor_notes   |
+      | Ward, P.S. | 2010 | Ant Facts | Ants 1:1 | Public notes | Editor's notes |
 
     When I go to the references page
-    Then I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1"
+    Then I should see "Ward, P.S. 2010. Ant Facts. Ants 1:1"
     And I should see "Public notes"
     And I should not see "Editor's notes"
 
@@ -23,36 +23,28 @@ Feature: View bibliography
     And I should see "defense" italicized
 
   Scenario: Viewing an entry with a URL to a document on our site, but the user isn't logged in
-    Given this reference exists
-      | authors    | year | citation_year | title     | citation | date     |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 20100712 |
+    Given there is a reference
     And that the entry has a URL that's on our site
 
     When I go to the references page
     Then I should see a "PDF" link
 
   Scenario: Viewing an entry with a URL to a document on our site, the user isn't logged in, but it's public
-    Given this reference exists
-      | authors    | year | citation_year | title     | citation | date     |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 20100712 |
+    Given there is a reference
     And that the entry has a URL that's on our site that is public
 
     When I go to the references page
     Then I should see a "PDF" link
 
   Scenario: Viewing an entry with a URL to a document that's not on our site, and the user isn't logged in
-    Given this reference exists
-      | authors    | year | citation_year | title     | citation |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 |
+    Given there is a reference
     And that the entry has a URL that's not on our site
 
     When I go to the references page
     Then I should see a "PDF" link
 
   Scenario: Viewing an entry with a URL to a document on our site, but the user is logged in
-    Given this reference exists
-      | authors    | year | citation_year | title     | citation |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 |
+    Given there is a reference
     And that the entry has a URL that's on our site
     And I am logged in
 
@@ -60,9 +52,7 @@ Feature: View bibliography
     Then I should see a "PDF" link
 
   Scenario: Viewing an entry with a URL to a document that's not on our site, and the user is logged in
-    Given this reference exists
-      | authors    | year | citation_year | title     | citation |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 |
+    Given there is a reference
     And that the entry has a URL that's not on our site
     And I am logged in
 

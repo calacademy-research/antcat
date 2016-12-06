@@ -9,8 +9,8 @@ Feature: Edit reference successfully
   @javascript
   Scenario: Edit a reference
     Given this reference exists
-      | authors | citation   | date     | title | year |
-      | authors | Psyche 5:3 | 20100712 | title | 2010 |
+      | authors | citation   | title | year |
+      | authors | Psyche 5:3 | title | 2010 |
 
     When I go to the edit page for the most recent reference
     And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
@@ -66,9 +66,7 @@ Feature: Edit reference successfully
 
   @javascript
   Scenario: Specifying the document URL
-    Given this reference exists
-      | authors    | citation   | year | citation_year | title |
-      | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  |
+    Given there is a reference
 
     When I go to the edit page for the most recent reference
     And I fill in "reference_document_attributes_url" with a URL to a document that exists
@@ -76,9 +74,7 @@ Feature: Edit reference successfully
     Then I should see a "PDF" link
 
   #Scenario: Setting a document's publicness
-    #Given this reference exists
-      #| authors    | year | citation_year | title     | citation |
-      #| Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 |
+    #Given there is a reference
     #And that the entry has a URL that's on our site
     #When I go to the references page
     #Then I should see a "PDF" link
@@ -93,9 +89,7 @@ Feature: Edit reference successfully
 
   @javascript
   Scenario: Adding the authors' role
-    Given this reference exists
-      | authors    | citation   | year | citation_year | title |
-      | Ward, P.S. | Psyche 1:1 | 2010 | 2010a         | Ants  |
+    Given there is a reference
 
     When I go to the edit page for the most recent reference
     And I fill in "reference_author_names_string" with "Ward, P.S. (ed.)"
@@ -105,8 +99,8 @@ Feature: Edit reference successfully
   @javascript
   Scenario: Removing the authors' role
     Given this reference exists
-      | authors          | citation   | year | citation_year | title |
-      | Ward, P.S. (ed.) | Psyche 1:1 | 2010 | 2010a         | Ants  |
+      | authors          | citation   | year | title |
+      | Ward, P.S. (ed.) | Psyche 1:1 | 2010 | Ants  |
 
     When I go to the references page
     Then I should see "Ward, P.S. (ed.)"

@@ -6,9 +6,7 @@ Feature: Delete reference
 
   Background:
     Given I am logged in
-    And this reference exists
-      | authors    | citation   | year | title |
-      | Fisher, B. | Psyche 2:1 | year | title |
+    And there is a reference
 
   Scenario: Delete a reference
     When I go to the page for that reference

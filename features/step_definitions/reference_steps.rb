@@ -2,6 +2,22 @@ Given(/^there are no references$/) do
   Reference.delete_all
 end
 
+Given(/^there is a reference$/) do
+  @reference = create :article_reference
+end
+
+Given(/^there is an article reference$/) do
+  @reference = create :article_reference
+end
+
+Given(/^there is a book reference$/) do
+  @reference = create :book_reference
+end
+
+Given(/^there is an unknown reference$/) do
+  @reference = create :unknown_reference
+end
+
 Given(/^(?:this|these) references? exists?$/) do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'

@@ -7,8 +7,8 @@ Feature: Checking for duplicates during data entry
   Background:
     Given I am logged in
     And this reference exists
-      | authors    | citation   | title | year |
-      | Ward, P.   | Psyche 6:1 | Ants  | 2010 |
+      | authors  | citation   | title | year |
+      | Ward, P. | Psyche 6:1 | Ants  | 2010 |
 
   Scenario: Adding a duplicate reference, but saving it anyway
     When I go to the references page

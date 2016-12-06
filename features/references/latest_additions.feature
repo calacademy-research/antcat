@@ -4,9 +4,7 @@ Feature: Latest Additions (seeing what's new)
   So I can keep up with the state of the literature
 
   Background:
-    Given this reference exists
-      | authors    | citation   | title        |
-      | Ward, P.   | Psyche 5:3 | Ward's World |
+    Given there is a reference
     And I am logged in
     And I go to the latest reference additions page
 

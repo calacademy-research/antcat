@@ -6,9 +6,7 @@ Feature: Author name case-sensitivity
 
   Scenario: Using the name that was entered
     Given I am logged in
-    And this reference exists
-      | author     | title          | year | citation   |
-      | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
+    And there is a reference
     And an author name exists with a name of "Mackay"
     And an author name exists with a name of "MACKAY"
     And an author name exists with a name of "mackay"
