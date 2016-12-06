@@ -1,6 +1,6 @@
 require "fuzzystringmatch"
 
-class DatabaseScripts::Scripts::SimilarJournalNames
+class DatabaseScripts::Scripts::PossiblyDuplicatedJournalNames
   include DatabaseScripts::DatabaseScript
 
   MIN_DISTANCE = 0.975
@@ -92,6 +92,9 @@ class DatabaseScripts::Scripts::SimilarJournalNames
         "Australian Journal of Entomology" => [
         "Australian Journal of Zoology"],
 
+        "Belgian Journal of Entomology" => [
+        "Belgian Journal of Zoology"],
+
         "Boletim da Sociedade Portuguesa de Entomologia" => [
         "Boletim da Sociedade Portuguesa de Entomologia. Suplemento"],
 
@@ -110,6 +113,9 @@ class DatabaseScripts::Scripts::SimilarJournalNames
 
         "Bulletin of Miscellaneous Information. Royal Botanic Gardens, Kew" => [
         "Bulletin of Miscellaneous Information. Royal Botanic Gardens, Kew. Additional Series"],
+
+        "Conservation Biology" => [
+        "Conservation Ecology"],
 
         "Evolutionary Biology" => [
         "Evolutionary Ecology"],
@@ -192,4 +198,5 @@ class DatabaseScripts::Scripts::SimilarJournalNames
 end
 
 __END__
+description: Additional false positives (see the script's source) can be added on request.
 tags: [slow, new!]
