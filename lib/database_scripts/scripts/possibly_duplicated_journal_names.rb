@@ -198,5 +198,8 @@ class DatabaseScripts::Scripts::PossiblyDuplicatedJournalNames
 end
 
 __END__
-description: Additional false positives (see the script's source) can be added on request.
-tags: [slow, new!]
+description: >
+  Additional false positives (see the script's source)
+  can be added to the exclusion list on request.
+
+tags: [new!, slow]
