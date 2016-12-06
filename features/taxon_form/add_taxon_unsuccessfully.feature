@@ -1,29 +1,11 @@
 Feature: Adding a taxon unsuccessfully
   Background:
     Given I am logged in
-    And this reference exists
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
 
-  @javascript
   Scenario: Adding a genus without setting authorship reference
-    Given there is a genus "Eciton"
-
     When I go to the edit page for "Formicinae"
     And I follow "Add genus"
-    Then I should be on the new taxon page
-
-    When I click the name field
-      And I set the name to "Atta"
-      And I press "OK"
-    And I click the protonym name field
-      And I set the protonym name to "Eciton"
-      And I press "OK"
-    And I click the type name field
-      And I set the type name to "Atta major"
-      And I press "OK"
-    And I press "Add this name"
     And I save my changes
     Then I should see "Protonym authorship reference can't be blank"
 

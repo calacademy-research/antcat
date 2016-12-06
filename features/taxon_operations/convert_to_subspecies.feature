@@ -59,7 +59,6 @@ Feature: Converting a species to a subspecies
     When I press "Convert"
     Then I should see "This species has subspecies of its own"
 
-  @javascript
   Scenario: Leaving the species blank
     Given there is a species "Camponotus dallatorei" with genus "Camponotus"
     And there is a species "Camponotus alii" with genus "Camponotus"

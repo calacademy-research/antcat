@@ -1,8 +1,4 @@
 Feature: Searching the catalog
-  As a user of AntCat
-  I want to search the catalog in index view
-  So that I can find taxa with their parents and siblings
-
   Background:
     Given subfamily "Dolichoderinae" exists
     And tribe "Dolichoderini" exists in that subfamily
@@ -49,16 +45,14 @@ Feature: Searching the catalog
   Scenario: Finding a genus without a subfamily or a tribe
     Given a genus exists with a name of "Monomorium" and no subfamily and a taxonomic history of "Monomorium history"
 
-    When I go to the catalog
-    And I fill in the catalog search box with "Monomorium"
+    When I fill in the catalog search box with "Monomorium"
     And I press "Go" by the catalog search box
     Then I should see "Monomorium history"
 
   Scenario: Finding a genus without a tribe but with a subfamily
     Given a genus exists with a name of "Monomorium" and a subfamily of "Dolichoderinae" and a taxonomic history of "Monomorium history"
 
-    When I go to the catalog
-    And I fill in the catalog search box with "Monomorium"
+    When I fill in the catalog search box with "Monomorium"
     And I press "Go" by the catalog search box
     Then I should see "Monomorium history"
 
