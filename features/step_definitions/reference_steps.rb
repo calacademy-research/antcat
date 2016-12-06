@@ -117,15 +117,6 @@ Given(/that the entry has a URL that's not on our site/) do
   @reference.document.update_attribute :url, 'google.com/foo'
 end
 
-Then(/I should see these entries (with a header )?in this order:/) do |with_header, entries|
-  offset = with_header ? 1 : 0
-  entries.hashes.each_with_index do |e, i|
-    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['entry']
-    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['date']
-    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['review_state']
-  end
-end
-
 When(/I fill in "reference_nesting_reference_id" with the ID for "(.*?)"$/) do |title|
   reference = Reference.find_by(title: title)
   step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""
@@ -194,25 +185,6 @@ Then(/^I should not see the missing reference$/) do
 end
 
 # New references list
-When(/^I click "(.*?)" on the Ward reference$/) do |button|
-  within find("tr", text: 'Ward') do
-    step %{I follow "#{button}"}
-  end
-end
-
-Then(/^the review status on the Ward reference should change to "(.*?)"$/) do |status|
-  within find("tr", text: 'Ward') do
-    step %{I should see "#{status}"}
-  end
-end
-
-Then(/^it should (not )?show "(.*?)" as the default$/) do |should_selector, keey|
-  author = keey.split(' ').first
-  within find("tr", text: author) do
-    step %{I should #{should_selector}see "Default"}
-  end
-end
-
 def find_reference_by_keey keey
   parts = keey.split ' '
   last_name = parts[0]
