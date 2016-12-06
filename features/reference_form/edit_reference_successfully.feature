@@ -44,7 +44,7 @@ Feature: Edit reference successfully
 
   @javascript
   Scenario: See the correct tab initially (book reference)
-    Given these book references exist
+    Given thsi book reference exists
       | authors    | title | citation                | year |
       | Fisher, B. | Ants  | New York: Wiley, 22 pp. | 2010 |
 

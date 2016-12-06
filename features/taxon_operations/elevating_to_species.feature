@@ -18,9 +18,7 @@ Feature: Elevating subspecies to species
     Then I should see "species of Solenopsis"
 
   Scenario: Only show button if showing a subspecies
-    Given there is a species "Atta"
-
-    When I go to the edit page for "Atta"
+    When I go to the edit page for "Solenopsis"
     Then I should not see "Elevate to species"
 
   Scenario: Elevating to species when the species name exists

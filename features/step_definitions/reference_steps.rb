@@ -1,7 +1,3 @@
-Given(/^there are no references$/) do
-  Reference.delete_all
-end
-
 Given(/^there is a reference$/) do
   @reference = create :article_reference
 end
