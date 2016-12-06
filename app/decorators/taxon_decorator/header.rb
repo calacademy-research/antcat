@@ -35,7 +35,18 @@ class TaxonDecorator::Header
     # Display literally, but link genus if there is one.
     def nonconforming_name_header_link taxon
       string = genus_link_or_blank_string taxon
-      string << header_link(taxon, italicize(taxon.name.epithets))
+
+      epithets = taxon.name.epithets
+
+      # Extra check since `Name#epithets` may be nil even when there is an `#epithet`.
+      # I believe there's a TODO somewhere saying that `#epithets` shuld be set in a callback.
+      #
+      # See http://localhost:3000/catalog/478122 for an example.
+      #   It used to say: "Pheidole Forel, 1886 see Pheidole guilelmimuelleri"
+      #   Instead of:     "Pheidole guilelmi Forel, 1886 see Pheidole guilelmimuelleri"
+      epithets = taxon.name.epithet if epithets.blank?
+
+      string << header_link(taxon, italicize(epithets))
     end
 
     def genus_link_or_blank_string taxon
