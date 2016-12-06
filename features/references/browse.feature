@@ -5,8 +5,8 @@ Feature: View bibliography
 
   Scenario: View one entry
     Given this reference exists
-      | authors    | year | citation_year | title     | citation | cite_code | possess | date     | public_notes | editor_notes   |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 | Public notes | Editor's notes |
+      | authors    | year | citation_year | title     | citation | date     | public_notes | editor_notes   |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 20100712 | Public notes | Editor's notes |
 
     When I go to the references page
     Then I should see "Ward, P.S. 2010d. Ant Facts. Ants 1:1"
@@ -24,8 +24,8 @@ Feature: View bibliography
 
   Scenario: Viewing an entry with a URL to a document on our site, but the user isn't logged in
     Given this reference exists
-      | authors    | year | citation_year | title     | citation | cite_code | possess | date     |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       | PSW     | 20100712 |
+      | authors    | year | citation_year | title     | citation | date     |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 20100712 |
     And that the entry has a URL that's on our site
 
     When I go to the references page
@@ -42,8 +42,8 @@ Feature: View bibliography
 
   Scenario: Viewing an entry with a URL to a document that's not on our site, and the user isn't logged in
     Given this reference exists
-      | authors    | year | citation_year | title     | citation | cite_code | possess |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       | PSW     |
+      | authors    | year | citation_year | title     | citation |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 |
     And that the entry has a URL that's not on our site
 
     When I go to the references page
@@ -51,8 +51,8 @@ Feature: View bibliography
 
   Scenario: Viewing an entry with a URL to a document on our site, but the user is logged in
     Given this reference exists
-      | authors    | year | citation_year | title     | citation | cite_code |
-      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 | 232       |
+      | authors    | year | citation_year | title     | citation |
+      | Ward, P.S. | 2010 | 2010d         | Ant Facts | Ants 1:1 |
     And that the entry has a URL that's on our site
     And I am logged in
 

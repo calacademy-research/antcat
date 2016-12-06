@@ -9,8 +9,8 @@ Feature: Edit reference successfully
   @javascript
   Scenario: Edit a reference
     Given this reference exists
-      | authors | citation   | cite_code | date     | possess | title | year |
-      | authors | Psyche 5:3 | CiteCode  | 20100712 | Possess | title | 2010 |
+      | authors | citation   | date     | title | year |
+      | authors | Psyche 5:3 | 20100712 | title | 2010 |
 
     When I go to the edit page for the most recent reference
     And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."

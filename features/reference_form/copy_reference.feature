@@ -76,8 +76,8 @@ Feature: Copy reference
   @javascript
   Scenario: Copy a reference with a date
     Given this reference exist
-      | authors    | title          | citation | year | cite_code | date     |
-      | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910 | ABCD      | 19900101 |
+      | authors    | title          | citation | year | date     |
+      | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910 | 19900101 |
     And that the entry has a URL that's on our site
     And I go to the page for that reference
 

@@ -87,23 +87,6 @@ describe Reference do
           end
         end
 
-        describe 'Cite code', search: true do
-          it "finds cite codes that's doesn't look like a current year" do
-            matching_reference = reference_factory author_name: 'Hölldobler', cite_code: 'abcdef'
-            reference_factory author_name: 'Hölldobler', cite_code: 'fedcba' # unmatching_reference
-            Sunspot.commit
-
-            expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
-          end
-
-          it "finds cite codes that looks like a year, but not a current year" do
-            matching_reference = reference_factory author_name: 'Hölldobler', cite_code: '1600'
-            Sunspot.commit
-
-            expect(Reference.do_search(q: '1600')).to eq [matching_reference]
-          end
-        end
-
         describe 'Journal name', search: true do
           it 'searches journal names' do
             matching_reference = reference_factory author_name: 'Hölldobler',
