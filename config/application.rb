@@ -20,15 +20,15 @@ module AntCat
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.action_mailer.delivery_method = :sendmail
-    config.action_mailer.sendmail_settings = {arguments: '-i'}
+    config.action_mailer.sendmail_settings = { arguments: '-i' }
     config.active_record.observers = [
-        :author_name_observer,
-        :journal_observer,
-        :place_observer,
-        :publisher_observer,
-        :reference_author_name_observer,
-        :reference_document_observer,
-        :reference_observer,
+      :author_name_observer,
+      :journal_observer,
+      :place_observer,
+      :publisher_observer,
+      :reference_author_name_observer,
+      :reference_document_observer,
+      :reference_observer,
     ]
 
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
@@ -41,23 +41,6 @@ module AntCat
     # suppress deprecation warning
     config.active_record.raise_in_transactional_callbacks = true
     config.assets.enabled = true
-
-    # Add additional extensions/regexes for `rake notes`.
-    # I believe we have to do this manually because most files use
-    # extensions such as `.haml` as compared to `.html.haml`.
-    if Rails.env.development?
-      # So in Sass files, look for lines matching:
-      # `<optional whitespace> // TODO change font`
-      config.annotations.register_extensions('sass') do |tag|
-        %r{//\s*(#{tag}):?\s*(.*?)$}
-      end
-      config.annotations.register_extensions('haml') do |tag|
-        %r{-#\s*(#{tag}):?\s*(.*?)$}
-      end
-      config.annotations.register_extensions('coffee') do |tag|
-        %r(#\s*(#{tag}):?\s*(.*?)$)
-      end
-    end
   end
 end
 
