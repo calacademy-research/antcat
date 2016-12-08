@@ -35,10 +35,9 @@ class AntcatMarkdown < Redcarpet::Render::HTML
     AntcatMarkdownUtils.parse_antcat_hooks full_document
   end
 
-  # Adds the ".tablesorter" class to make tables sortable, otherwise the same.
   def table header, body
     <<-HTML
-      <table class="tablesorter">
+      <table class="tablesorter hover margin-top">
         <thead>#{header}</thead>
         <tbody>#{body}</tbody>
       </table>

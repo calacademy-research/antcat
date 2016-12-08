@@ -19,7 +19,7 @@
 =render "feedback", feedback: @feedback
 
 %div{data: { show_hide_toggable_id: "for_email" }}
-  %h6 Formatted for email (replies)
+  %h6 Formatted for email replies
   =preserve do
     %textarea#formatted_for_email
       =format_feedback_for_email @feedback

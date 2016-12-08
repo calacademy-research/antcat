@@ -8,7 +8,7 @@
       %th Status
       %th Submitter/message
       %th Comments
-      %th Link
+      %th
   -@feedbacks.each do |feedback|
     %tr{class: ("closed" if feedback.closed?)}
       %td=link_to "##{feedback.id}", feedback_path(feedback)

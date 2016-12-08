@@ -2,7 +2,12 @@
 -breadcrumb :issue, @issue
 
 .left
-  %h5=@issue.title
+  %h5
+    -if @issue.archived?
+      Closed issue:
+    -else
+      Open issue:
+    =@issue.title
   Added by
   =@issue.adder.decorate.user_page_link
   =time_ago_in_words @issue.created_at

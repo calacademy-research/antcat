@@ -2,5 +2,14 @@
   table.feedbacks
     td
       vertical-align: top
-    tr.closed p
+
+    // Prevent Foundation from making backgrounds gray,
+    // because that makes open feedbacks look closed.
+    tr:nth-of-type(even)
+      background-color: #fff !important
+
+    tr.closed
+      background-color: #f1f1f1 !important
+
+    tr.closed, tr.closed p
       color: darkgrey
