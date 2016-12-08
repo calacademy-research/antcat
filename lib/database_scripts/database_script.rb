@@ -52,6 +52,10 @@ module DatabaseScripts::DatabaseScript
     filename_without_extension
   end
 
+  def cache_key
+    "db_scripts/#{filename_without_extension}"
+  end
+
   protected
     def sql sql
       ActiveRecord::Base.connection.exec_query sql

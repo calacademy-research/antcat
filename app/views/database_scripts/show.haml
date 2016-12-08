@@ -4,18 +4,27 @@
 -content_for :head do
   =javascript_include_tag "sortable_tables"
 
-.callout
-  %h4.left=@script.title
-  .right=format_database_script_tags @script.tags
-  .clear
-  %p.left=markdown @script.description
-  %p.right
+.row
+  .medium-8.columns
+    %h5=@script.title
+    %p=markdown @script.description
+
+  .medium-4.columns
     Show source:
-    =link_to "current (antcat.org)", source_database_script_path(@script)
-    ,
+    =succeed "," do
+      =link_to "current (antcat.org)", source_database_script_path(@script)
     =database_script_github_link @script
-  .clear
+    %br
+    Results generated
+    =time_ago_in_words @cached_at
+    ago
+    =link_to "Regenerate", regenerate_database_script_path(@script), class: "btn-normal btn-tiny"
 
-.callout=@script.timed_render
+.callout=@cached_render
 
-%small.right Script runtime: #{@script.timed_render_duration} seconds
+%small.right
+  -duration = @script.timed_render_duration
+  -if duration
+    Script runtime: #{duration} seconds
+  -else
+    Script runtime: [used cache]
