@@ -22,4 +22,4 @@ class DatabaseScripts::Scripts::ExtantTaxaInFossilGenera
 end
 
 __END__
-tags: [slow-ish]
+topic_areas: [catalog]

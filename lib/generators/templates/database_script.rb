@@ -17,8 +17,9 @@ end
 
 __END__
 # The end data will be parsed as YAML, so hashtag comments are OK here.
-description: Optional script description.
-tags: [example-tag]
-
+description: >
+  Optional script description; parsed as **markdown**.
+tags: [new!, example-tag]
 # Tags are optional, and some have special meanings.
 # See `DatabaseScriptsHelper#format_database_script_tags`.
+topic_areas: [catalog, references... see the script index page]

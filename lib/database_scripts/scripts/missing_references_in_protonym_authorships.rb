@@ -42,3 +42,4 @@ description: >
   for a replacement using AntCat's reference search form.
 
 tags: [new!]
+topic_areas: [catalog, references]

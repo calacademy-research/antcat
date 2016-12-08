@@ -88,3 +88,4 @@ end
 __END__
 description: Version 0.1 of this script. Read-only.
 tags: [slow]
+topic_areas: [catalog]

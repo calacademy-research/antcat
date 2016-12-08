@@ -1,5 +1,5 @@
 # Abstract base class (mixin).
-# See also `rails generate database_script <name_of_script>`.
+# Use `rails generate database_script <name_of_script>` to generate new scripts.
 
 module DatabaseScripts::DatabaseScript
   include Rendering
@@ -36,6 +36,10 @@ module DatabaseScripts::DatabaseScript
 
   def tags
     end_data[:tags] || []
+  end
+
+  def topic_areas
+    end_data[:topic_areas] || []
   end
 
   # Filename is generated from the script's class name, so presumably safe.

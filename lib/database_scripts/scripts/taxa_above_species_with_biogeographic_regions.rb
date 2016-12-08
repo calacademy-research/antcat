@@ -13,3 +13,6 @@ class DatabaseScripts::Scripts::TaxaAboveSpeciesWithBiogeographicRegions
     end
   end
 end
+
+__END__
+topic_areas: [catalog]

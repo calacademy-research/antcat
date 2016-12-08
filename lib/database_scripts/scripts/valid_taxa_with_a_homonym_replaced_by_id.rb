@@ -18,3 +18,6 @@ class DatabaseScripts::Scripts::ValidTaxaWithAHomonymReplacedById
     end
   end
 end
+
+__END__
+topic_areas: [catalog]
