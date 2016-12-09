@@ -10,7 +10,7 @@ class TaxonHistoryItem < ActiveRecord::Base
 
   acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
-  tracked on: :all, parameters: ->(item) do { taxon_id: item.taxon_id } end
+  tracked on: :all, parameters: proc { { taxon_id: taxon_id } }
 
   def self.create_taxt_from_editable taxon, editable_taxt
     TaxonHistoryItem.create taxon: taxon, taxt: TaxtConverter[editable_taxt].from_editor_format

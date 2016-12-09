@@ -14,8 +14,6 @@ class SiteNotice < ActiveRecord::Base
   acts_as_commentable
   acts_as_readable on: :created_at
   has_paper_trail
-  tracked on: :all, parameters: ->(site_notice) do
-    { title: site_notice.title }
-  end
+  tracked on: :all, parameters: proc { { title: title } }
   enable_user_notifications_for :message
 end

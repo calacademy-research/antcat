@@ -91,7 +91,12 @@ class Taxon < ApplicationRecord
 
   accepts_nested_attributes_for :name, :protonym, :type_name
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
-  tracked on: :create, parameters: activity_parameters
+  tracked on: :create, parameters: proc {
+    parent_params = { rank: parent.rank,
+                      name: parent.name_html_cache,
+                      id:   parent.id } if parent
+    { rank: rank, name: name_html_cache, parent: parent_params }
+  }
 
   def save_from_form params, previous_combination = nil
     Taxa::SaveTaxon.new(self).save_from_form(params, previous_combination)
@@ -149,17 +154,4 @@ class Taxon < ApplicationRecord
   def authorship_reference
     protonym.try(:authorship).try(:reference)
   end
-
-  private
-    def activity_parameters
-      ->(taxon) do
-        hash = { rank: taxon.rank, name: taxon.name_html_cache }
-
-        parent = taxon.parent
-        hash[:parent] = { rank: parent.rank,
-                          name: parent.name_html_cache,
-                          id: parent.id } if parent
-        hash
-      end
-    end
 end

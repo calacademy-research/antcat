@@ -6,16 +6,11 @@
 # `tracked` (no hooks, but mixes in #create_activity)
 #
 # To save additional parameters:
-# `tracked on: :all,
-#   parameters: ->(journal) do { name: journal.name } end`
+# `tracked on: :all, parameters: proc { { name: name } }`
 
 module Feed::Trackable
   extend ActiveSupport::Concern
 
-  # TODO investigate using an instance variable instead so
-  # `tracked on: :all, parameters: ->(issue) do { title: issue.title } end`
-  #  would become
-  # `tracked on: :all, parameters: -> do { title: self.title } end`
   included do
     class_attribute :activity_parameters
   end
@@ -36,7 +31,8 @@ module Feed::Trackable
     end
   end
 
-  def create_activity action, parameters = activity_parameters.call(self)
+  def create_activity action, parameters = nil
+    parameters ||= instance_eval &activity_parameters
     Feed::Activity.create_activity_for_trackable self, action, parameters
   end
 end

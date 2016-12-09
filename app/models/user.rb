@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,
     :rememberable, :trackable, :validatable
-  tracked on: :create, parameters: ->(user) do { user_id: user.id } end
+  tracked on: :create, parameters: proc { { user_id: id } }
 
   def self.current
     RequestStore.store[:current_user]

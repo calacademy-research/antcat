@@ -14,9 +14,7 @@ class Tooltip < ActiveRecord::Base
   end
 
   has_paper_trail
-  tracked on: :all, parameters: ->(tooltip) do
-    { scope_and_key: "#{tooltip.scope}.#{tooltip.key}" }
-  end
+  tracked on: :all, parameters: proc { { scope_and_key: "#{scope}.#{key}" } }
 
   def key_disabled?
     !key_enabled?

@@ -14,8 +14,7 @@ class Synonym < ApplicationRecord
   # NOTE no update hook. Much code that updates synonym relationships simply
   # destroys the syononym object and creates a new one. But there's also code that
   # updates existing synonym relationships, so maybe add that here?
-  tracked on: [:create, :destroy], parameters: ->(synonym) do
-    { senior_synonym_id: synonym.senior_synonym_id,
-      junior_synonym_id: synonym.junior_synonym_id }
-  end
+  tracked on: [:create, :destroy], parameters: proc {
+    { senior_synonym_id: senior_synonym_id, junior_synonym_id: junior_synonym_id }
+  }
 end

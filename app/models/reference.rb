@@ -41,7 +41,7 @@ class Reference < ApplicationRecord
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
-  tracked parameters: ->(reference) do { name: reference.keey } end
+  tracked parameters: proc { { name: keey } }
 
   def self.requires_title
     true

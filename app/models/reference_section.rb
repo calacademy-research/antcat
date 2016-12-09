@@ -10,5 +10,5 @@ class ReferenceSection < ActiveRecord::Base
 
   acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
-  tracked on: :all, parameters: ->(item) do { taxon_id: item.taxon_id } end
+  tracked on: :all, parameters: proc { { taxon_id: taxon_id } }
 end

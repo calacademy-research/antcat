@@ -27,7 +27,7 @@ class Issue < ActiveRecord::Base
   acts_as_commentable
   enable_user_notifications_for :description
   has_paper_trail
-  tracked on: :all, parameters: ->(issue) do { title: issue.title } end
+  tracked on: :all, parameters: proc { { title: title } }
 
   def open?
     status == "open"
