@@ -16,13 +16,13 @@
           Current version
         -else
           Version before item was deleted
-        %small=current.created_at
+        %small=current.updated_at
       .callout.primary=render_revision_with_rescue current
 
       -if selected
         %h5.margin-top
           Selected old revision
-          %small=selected.created_at
+          %small=selected.updated_at
         .callout.alert=render_revision_with_rescue selected
 
         =render "compare_revisions/difference_between_revisions", diff: html_split_diff
