@@ -10,7 +10,7 @@ class Change < ActiveRecord::Base
   scope :waiting, -> { joins_taxon_states.where("taxon_states.review_state = 'waiting'") }
   scope :joins_taxon_states, -> { joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id') }
 
-  tracked
+  tracked on: :mixin_create_activity_only
 
   def self.approve_all user
     count = TaxonState.waiting.count
