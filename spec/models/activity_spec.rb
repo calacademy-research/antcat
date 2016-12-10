@@ -11,8 +11,9 @@ describe Activity, feed: true do
     end
 
     context "feed is globally disabled" do
+      before { Feed.enabled = false }
+
       it "doesn't create activities" do
-        Feed.enabled = false
         Activity.create_for_trackable nil, nil
         expect(Activity.count).to eq 0
       end
