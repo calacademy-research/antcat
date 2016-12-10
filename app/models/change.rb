@@ -1,5 +1,5 @@
 class Change < ActiveRecord::Base
-  include Feed::Trackable
+  include Trackable
 
   belongs_to :approver, class_name: 'User'
   # TODO rename to `taxon_id`.
@@ -15,7 +15,7 @@ class Change < ActiveRecord::Base
   def self.approve_all user
     count = TaxonState.waiting.count
 
-    Feed::Activity.without_tracking do
+    Feed.without_tracking do
       TaxonState.waiting.each do |taxon_state|
         # TODO maybe something like `TaxonState#approve_related_changes`?
         Change.where(user_changed_taxon_id: taxon_state.taxon_id).each do |change|
@@ -24,7 +24,7 @@ class Change < ActiveRecord::Base
       end
     end
 
-    Feed::Activity.create_activity :approve_all_changes, count: count
+    Activity.create_without_trackable :approve_all_changes, count: count
   end
 
   def approve user = nil
@@ -43,7 +43,7 @@ class Change < ActiveRecord::Base
       taxon_state.save!
     end
 
-    Feed::Activity.with_tracking { create_activity :approve_change }
+    Feed.with_tracking { create_activity :approve_change }
   end
 
   # TODO probably rename local `versions` now that we're in the model
@@ -52,7 +52,7 @@ class Change < ActiveRecord::Base
   # same item set. Find all versions, and undo the change.
   # Sort to undo changes most recent to oldest.
   def undo
-    Feed::Activity.without_tracking do
+    Feed.without_tracking do
       UndoTracker.clear_change
       change_id_set = find_future_changes
       versions = SortedSet[]

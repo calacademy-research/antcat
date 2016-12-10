@@ -2,9 +2,9 @@
 
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-  include Feed::Trackable
+  include Trackable
 
-  has_many :activities, class_name: "Feed::Activity"
+  has_many :activities
   has_many :comments
   has_many :notifications, -> { order(id: :desc) }
   has_many :unseen_notifications, -> { unseen }, class_name: "Notification"

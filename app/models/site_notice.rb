@@ -1,6 +1,6 @@
 class SiteNotice < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-  include Feed::Trackable
+  include Trackable
   include SendsNotifications
 
   belongs_to :user

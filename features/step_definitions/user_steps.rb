@@ -1,4 +1,4 @@
-# TODO probably remove all those `Feed::Activity.without_tracking` (the feed
+# TODO probably remove all those `Feed.without_tracking` (the feed
 # is disabled by default in tests) and create new steps in `feed_steps.rb`.
 
 Given(/(?:this|these) users? exists/) do |table|
@@ -29,7 +29,7 @@ end
 # TODO change to "I log in as an editor" because we want to
 # open registration to non-editors in the future.
 When(/^I log in$/) do
-  user = Feed::Activity.without_tracking { create :editor }
+  user = Feed.without_tracking { create :editor }
   login_programmatically user
 end
 
@@ -43,7 +43,7 @@ Given('I am logged in') do
 end
 
 When(/^I log in as a user \(not editor\)$/) do
-  user = Feed::Activity.without_tracking { create :user }
+  user = Feed.without_tracking { create :user }
   login_programmatically user
 end
 
@@ -61,7 +61,7 @@ end
 When(/^I log in as a catalog editor(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
   user = User.find_by name: name
-  user ||= Feed::Activity.without_tracking do
+  user ||= Feed.without_tracking do
     create :editor, name: name
   end
   login_programmatically user
@@ -69,7 +69,7 @@ end
 
 When(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
-  user = Feed::Activity.without_tracking do
+  user = Feed.without_tracking do
     create :user, can_edit: true, is_superadmin: true, name: name
   end
   login_programmatically user

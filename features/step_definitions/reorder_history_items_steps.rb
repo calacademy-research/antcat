@@ -1,5 +1,5 @@
 Given(/^there is a genus Orderia with the history items "AAA", "BBB" and "CCC"$/) do
-  Feed::Activity.without_tracking do
+  Feed.without_tracking do
     taxon = create_genus "Orderia"
     taxon.history_items.create! taxt: "AAA"
     taxon.history_items.create! taxt: "BBB"

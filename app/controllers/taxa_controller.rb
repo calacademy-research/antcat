@@ -58,7 +58,7 @@ class TaxaController < ApplicationController
       @taxon.create_activity :update
       redirect_to catalog_path(@taxon)
     else
-      Feed::Activity.create_activity :custom,
+      Activity.create_without_trackable :custom,
         parameters: { text: "updated an unknown taxon" }
       redirect_to root_path
     end

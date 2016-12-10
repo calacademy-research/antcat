@@ -27,9 +27,9 @@ RSpec.configure do |config|
   end
 
   config.around :each, feed: true do |example|
-    Feed::Activity.enabled = true
+    Feed.enabled = true
     example.run
-    Feed::Activity.enabled = false
+    Feed.enabled = false
   end
 
   config.infer_spec_type_from_file_location!

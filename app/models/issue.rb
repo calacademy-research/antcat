@@ -5,7 +5,7 @@
 
 class Issue < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-  include Feed::Trackable
+  include Trackable
   include SendsNotifications
 
   belongs_to :adder, class_name: "User"
@@ -40,7 +40,7 @@ class Issue < ActiveRecord::Base
   def set_status status, user
     self.status = status
     self.closer = status == "open" ? nil : user
-    Feed::Activity.without_tracking { save! }
+    Feed.without_tracking { save! }
 
     action =
       { completed: "complete_task",

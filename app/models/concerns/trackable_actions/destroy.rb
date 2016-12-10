@@ -1,10 +1,10 @@
-module Feed::Actions::Destroy
+module TrackableActions::Destroy
   extend ActiveSupport::Concern
 
   included do
     after_destroy do
       # FIX Currently required in tests.
-      unless Rails.env.test? && !Feed::Activity.enabled?
+      unless Rails.env.test? && !Feed.enabled?
         create_activity :destroy
       end
     end

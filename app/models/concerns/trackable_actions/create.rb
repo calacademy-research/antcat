@@ -1,10 +1,10 @@
-module Feed::Actions::Create
+module TrackableActions::Create
   extend ActiveSupport::Concern
 
   included do
     after_create do
       # FIX Currently required in tests.
-      unless Rails.env.test? && !Feed::Activity.enabled?
+      unless Rails.env.test? && !Feed.enabled?
         create_activity :create
       end
     end

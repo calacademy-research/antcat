@@ -8,7 +8,7 @@ require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord
   include ReferenceComparable
-  include Feed::Trackable
+  include Trackable
 
   # Virtual attributes used in `RefrencesController`.
   attr_accessor :journal_name, :publisher_string
@@ -118,8 +118,8 @@ class Reference < ApplicationRecord
 
   def self.approve_all
     count = Reference.unreviewed.count
-    Feed::Activity.without_tracking { Reference.unreviewed.find_each &:approve }
-    Feed::Activity.create_activity :approve_all_references, count: count
+    Feed.without_tracking { Reference.unreviewed.find_each &:approve }
+    Activity.create_without_trackable :approve_all_references, count: count
   end
 
   # TODO merge into Workflow
@@ -128,7 +128,7 @@ class Reference < ApplicationRecord
   def approve
     self.review_state = "reviewed"
     save!
-    Feed::Activity.with_tracking { create_activity :finish_reviewing }
+    Feed.with_tracking { create_activity :finish_reviewing }
   end
 
   def new_from_copy

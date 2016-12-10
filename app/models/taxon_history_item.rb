@@ -1,5 +1,5 @@
 class TaxonHistoryItem < ActiveRecord::Base
-  include Feed::Trackable
+  include Trackable
   include RevisionsCanBeCompared
 
   attr_accessible :taxon_id, :taxt, :position, :taxon

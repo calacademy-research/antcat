@@ -3,7 +3,7 @@ class EditorsPanelsController < ApplicationController
 
   def index
     @count = unreviewed_changes_counts
-    @recent_activities = Feed::Activity.most_recent 5
+    @recent_activities = Activity.most_recent 5
     @recent_comments = Comment.most_recent 5
   end
 

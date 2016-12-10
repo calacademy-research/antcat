@@ -8,6 +8,6 @@ require 'paper_trail/frameworks/rspec'
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-Feed::Activity.enabled = false
+Feed.enabled = false
 
 # TODO extra curricular: split this and support files into spec_helper/rails_helper.

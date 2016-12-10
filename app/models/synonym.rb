@@ -1,5 +1,5 @@
 class Synonym < ApplicationRecord
-  include Feed::Trackable
+  include Trackable
 
   attr_accessible :senior_synonym, :junior_synonym,:senior_synonym_id, :junior_synonym_id
 

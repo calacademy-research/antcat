@@ -23,7 +23,7 @@ module Taxa::Delete
   end
 
   def delete_taxon_and_children
-    Feed::Activity.without_tracking do
+    Feed.without_tracking do
       Taxon.transaction do
         UndoTracker.setup_change self, :delete
         delete_taxon_children self

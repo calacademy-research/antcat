@@ -1,7 +1,7 @@
 # TODO remove `feedbacks.email_recipients`.
 
 class Feedback < ActiveRecord::Base
-  include Feed::Trackable
+  include Trackable
 
   belongs_to :user
 

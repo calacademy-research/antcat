@@ -3,7 +3,7 @@ module Taxa::ReorderHistoryItems
     return unless reordered_ids_valid? reordered_ids
 
     previous_ids = history_items.pluck :id
-    Feed::Activity.without_tracking do
+    Feed.without_tracking do
       reordered_ids.each_with_index do |id, index|
         item = TaxonHistoryItem.find id
         item.update_attributes position: (index + 1)

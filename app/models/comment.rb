@@ -1,5 +1,5 @@
 class Comment < ActiveRecord::Base
-  include Feed::Trackable
+  include Trackable
 
   attr_accessor :set_parent_to
 

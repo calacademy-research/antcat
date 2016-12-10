@@ -13,7 +13,7 @@ class RemoveDoubleCurlyBracesFromTaxts < ActiveRecord::Migration
   def up
     puts "double_braces_count before: #{double_braces_count}".red
 
-    Feed::Activity.without_tracking do
+    Feed.without_tracking do
       remove_double_braces
     end
 

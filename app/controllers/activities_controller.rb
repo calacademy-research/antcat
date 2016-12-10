@@ -3,7 +3,7 @@ class ActivitiesController < ApplicationController
   before_action :set_activity, only: [:destroy]
 
   def index
-    @activities = Feed::Activity.ids_desc.include_associations.paginate(page: page)
+    @activities = Activity.ids_desc.include_associations.paginate(page: page)
   end
 
   def destroy
@@ -21,12 +21,12 @@ class ActivitiesController < ApplicationController
     def page
       return params[:page] unless params[:id]
 
-      activity = Feed::Activity.find params[:id]
+      activity = Activity.find params[:id]
       # `@page` is to make the delete button return to the previous page.
       @page = activity.pagination_page
     end
 
     def set_activity
-      @activity = Feed::Activity.find(params[:id])
+      @activity = Activity.find(params[:id])
     end
 end

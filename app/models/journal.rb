@@ -1,6 +1,6 @@
 class Journal < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-  include Feed::Trackable
+  include Trackable
 
   has_many :references
 

@@ -1,5 +1,5 @@
 class ReferenceSection < ActiveRecord::Base
-  include Feed::Trackable
+  include Trackable
   include RevisionsCanBeCompared
 
   attr_accessible :taxon_id, :title_taxt, :subtitle_taxt, :references_taxt,:position, :taxon

@@ -1,6 +1,6 @@
 class Tooltip < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-  include Feed::Trackable
+  include Trackable
 
   default_scope { order(:key) } # TODO probably remove, default scope are possibly evil.
 

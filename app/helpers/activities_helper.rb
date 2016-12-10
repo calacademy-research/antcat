@@ -1,6 +1,6 @@
 # TODO rename anything feed --> activity.
 
-module FeedHelper
+module ActivitiesHelper
   def highlight_activity_link activity
     url = activities_path id: activity.id, anchor: "activity-#{activity.id}"
     link_to "(link)", url

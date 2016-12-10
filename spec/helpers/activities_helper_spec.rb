@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe FeedHelper do
+describe ActivitiesHelper do
   let(:activity) { create :activity }
 
   describe "#format_activity" do

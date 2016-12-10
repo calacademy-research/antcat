@@ -77,4 +77,4 @@ Warden.test_mode!
 Warden::Manager.serialize_into_session { |user| user.email }
 Warden::Manager.serialize_from_session { |email| User.find_by(email: email) }
 
-Feed::Activity.enabled = false
+Feed.enabled = false
