@@ -9,29 +9,34 @@ module HtmlSelectorsHelpers
     when /the page/
       "html > body"
 
-    when /the protonym/
-      "#taxon_description .headline > b > span"
-    when /the type name/
-      "#taxon_description .type"
-    when /^the junior synonyms section$/
-      '.junior_synonyms_section'
-    when /^the senior synonyms section$/
-      '.senior_synonyms_section'
-
-    # TODO rename
-    when /the index/
+    # Catalog.
+    when /the index/ # TODO rename
       "#taxon_browser"
     when /the (\w*) index/
       tab_title_target = find(:link, $1)[:href]
       tab_title_target
     when /the taxon description/
       "#taxon_description"
+    when /the protonym/
+      "#taxon_description .headline > b > span"
+    when /the type name/
+      "#taxon_description .type"
+    when /the header/
+      "div.header"
+    when /the headline/
+      '.headline'
 
+    # Catalog search.
+    when /the search box/
+      "#q"
+    when /the catalog search box/
+      "#qq"
     when /the search results/
       "table"
     when /the search section/
       "#advanced_search"
 
+    # Merge authors.
     when /the author panel/, /the first author panel/
       find ".author_panel", match: :first
     when /the last author panel/
@@ -41,27 +46,21 @@ module HtmlSelectorsHelpers
     when /another author panel/
       all(".author_panel").last
 
-    when /the search box/
-      "#q"
+    # Editing.
+    when /^the junior synonyms section$/
+      '.junior_synonyms_section'
+    when /^the senior synonyms section$/
+      '.senior_synonyms_section'
 
-    when /the catalog search box/
-      "#qq"
-
-    when /the header/
-      "div.header"
-
-    when /the headline/
-      '.headline'
-
+    # Test pages.
     when /the name field/
       '#test_name_field .display'
-
     when /the allow_blank name field/
       '#test_allow_blank_name_field .display'
-
     when /the new_or_homonym name field/
       '#test_new_or_homonym_name_field .display'
 
+    # Users.
     when /the users list/
       '#content table'
 
