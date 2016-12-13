@@ -86,5 +86,5 @@ end
 
 Given(/^there is a genus "([^"]*)" with "([^"]*)" name$/) do |name, gender|
   genus = create_genus name
-  genus.name.update_attributes! gender: gender
+  genus.name.update! gender: gender
 end

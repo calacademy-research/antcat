@@ -49,17 +49,17 @@ class Subspecies < SpeciesGroupTaxon
     new_name = SpeciesName.find_by_name new_name_string
     unless new_name
       new_name = SpeciesName.new
-      new_name.update_attributes name: new_name_string,
-                                 name_html: italicize(new_name_string),
-                                 epithet: name.epithet,
-                                 epithet_html: name.epithet_html,
-                                 epithets: nil
+      new_name.update name: new_name_string,
+                      name_html: italicize(new_name_string),
+                      epithet: name.epithet,
+                      epithet_html: name.epithet_html,
+                      epithets: nil
       new_name.save
     end
 
     create_elevate_to_species_activity new_name
 
-    # writes directly to db, bypasses save. "update_attributes" operates in memory and
+    # writes directly to db, bypasses save. "update" operates in memory and
     # lets you use the "save" path
     update_columns name_id: new_name.id,
                    species_id: nil,

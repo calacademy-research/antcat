@@ -113,7 +113,7 @@ end
 
 Given(/that the entry has a URL that's on our site( that is public)?/) do |is_public|
   @reference.update_attribute :document, ReferenceDocument.create!
-  @reference.document.update_attributes file_file_name: '123.pdf',
+  @reference.document.update file_file_name: '123.pdf',
     url: "localhost/documents/#{@reference.document.id}/123.pdf",
     public: is_public ? true : nil
 end

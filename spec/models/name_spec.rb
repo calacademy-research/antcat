@@ -43,7 +43,7 @@ describe Name do
       taxon = create_genus name: @atta
       expect(taxon.name_cache).to eq 'Atta'
       expect(taxon.name_html_cache).to eq '<i>Atta</i>'
-      @atta.update_attributes name: 'Betta', name_html: '<i>Betta</i>'
+      @atta.update name: 'Betta', name_html: '<i>Betta</i>'
       taxon.reload
       expect(taxon.name_cache).to eq 'Betta'
       expect(taxon.name_html_cache).to eq '<i>Betta</i>'

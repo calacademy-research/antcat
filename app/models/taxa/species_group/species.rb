@@ -42,11 +42,11 @@ class Species < SpeciesGroupTaxon
     new_name = SubspeciesName.find_by_name new_name_string
     unless new_name
       new_name = SubspeciesName.new
-      new_name.update_attributes name: new_name_string,
-                                 name_html: italicize(new_name_string),
-                                 epithet: name.epithet,
-                                 epithet_html: name.epithet_html,
-                                 epithets: "#{species.name.epithet} #{name.epithet}"
+      new_name.update name: new_name_string,
+                      name_html: italicize(new_name_string),
+                      epithet: name.epithet,
+                      epithet_html: name.epithet_html,
+                      epithets: "#{species.name.epithet} #{name.epithet}"
       new_name.save
     end
 

@@ -214,7 +214,7 @@ describe Exporters::Antweb::Exporter do
     it "exports the current valid name of the taxon" do
       taxon = create_genus
       old = create_genus
-      taxon.update_attributes! current_valid_taxon_id: old.id
+      taxon.update! current_valid_taxon_id: old.id
       expect(export_taxon(taxon)[13]).to end_with old.name.name
     end
 

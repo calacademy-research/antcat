@@ -34,7 +34,7 @@ class Change < ActiveRecord::Base
 
     if taxon
       taxon.approve!
-      update_attributes! approver: user, approved_at: Time.now
+      update! approver: user, approved_at: Time.now
       # TODO change all `Time.now` etc to `Time.zone.now`.
     else
       # This case is for approving a delete

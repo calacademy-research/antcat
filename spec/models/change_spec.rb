@@ -20,18 +20,18 @@ describe Change, versioning: true do
     describe ".waiting" do
       before do
         genus_1 = create_genus
-        genus_1.taxon_state.update_attributes review_state: 'waiting'
+        genus_1.taxon_state.update review_state: 'waiting'
         @unreviewed_change = setup_version genus_1
 
         genus_2 = create_genus
-        genus_2.taxon_state.update_attributes review_state: 'approved'
+        genus_2.taxon_state.update review_state: 'approved'
         approved_earlier_change = setup_version genus_2
-        approved_earlier_change.update_attributes approved_at: (Date.today - 7)
+        approved_earlier_change.update approved_at: (Date.today - 7)
 
         genus_2 = create_genus
-        genus_2.taxon_state.update_attributes review_state: 'approved'
+        genus_2.taxon_state.update review_state: 'approved'
         approved_later_change = setup_version genus_2
-        approved_later_change.update_attributes approved_at: (Date.today + 7)
+        approved_later_change.update approved_at: (Date.today + 7)
       end
 
       it "returns unreviewed changes" do

@@ -21,7 +21,7 @@ class TaxonHistoryItem < ActiveRecord::Base
   # TODO create new concern or proper class.
   # Error handling, updating, etc, should be the same for taxts in other classes too.
   def update_taxt_from_editable editable_taxt
-    update_attributes taxt: TaxtConverter[editable_taxt].from_editor_format
+    update taxt: TaxtConverter[editable_taxt].from_editor_format
   rescue TaxtConverter::ReferenceNotFound => e
     errors.add :base, "The reference '#{e}' could not be found. Was the ID changed?"
   end

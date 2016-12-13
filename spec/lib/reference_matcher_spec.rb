@@ -20,7 +20,7 @@ describe ReferenceMatcher do
   end
 
   it "handles an author last name with an apostrophe in it (regression)" do
-    @match.update_attributes author_names: [create(:author_name, name: "Arnol'di, G.")]
+    @match.update author_names: [create(:author_name, name: "Arnol'di, G.")]
     @target.principal_author_last_name_cache = "Arnol'di"
     expect(@target).to receive(:<=>).and_return 0.10
 

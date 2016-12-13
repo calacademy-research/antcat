@@ -16,7 +16,7 @@ describe Formatters::AdvancedSearchTextFormatter do
         title: "*Atta*", journal: science,
         series_volume_issue: '(1)', pagination: '3', doi: '123'
       taxon = create_genus 'Atta', incertae_sedis_in: 'genus', nomen_nudum: true
-      taxon.protonym.authorship.update_attributes reference: reference
+      taxon.protonym.authorship.update reference: reference
 
       string = formatter.format taxon
       expect(string).to eq "Atta incertae sedis in genus, nomen nudum\n" \

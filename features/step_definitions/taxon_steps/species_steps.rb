@@ -86,5 +86,5 @@ def make_author_of_taxon taxon, author_name
   author = create :author
   author_name = create :author_name, name: author_name, author: author
   reference = create :article_reference, author_names: [author_name]
-  taxon.protonym.authorship.update_attributes! reference: reference
+  taxon.protonym.authorship.update! reference: reference
 end

@@ -145,7 +145,7 @@ describe Reference do
     context "when an author_name's name is changed" do
       it "updates its author_names_string" do
         reference = create :reference, author_names: [ward_ps]
-        ward_ps.update_attributes name: 'Bolton, B.'
+        ward_ps.update name: 'Bolton, B.'
         expect(reference.reload.principal_author_last_name).to eq 'Bolton'
       end
     end

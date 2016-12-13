@@ -18,7 +18,7 @@ class Name < ApplicationRecord
   def change name_string
     existing_names = Name.where.not(id: id).where(name: name_string)
     raise Taxon::TaxonExists if existing_names.any? { |name| not name.references.empty? }
-    update_attributes! name: name_string, name_html: italicize(name_string)
+    update! name: name_string, name_html: italicize(name_string)
   end
 
   # TODO maybe raise?

@@ -38,7 +38,7 @@ class TooltipsController < ApplicationController
   end
 
   def update
-    if @tooltip.update_attributes tooltip_params
+    if @tooltip.update tooltip_params
       if params[:referral] && params[:referral].size > 0
         redirect_to params[:referral]
         return

@@ -6,7 +6,7 @@ module Taxa::ReorderHistoryItems
     Feed.without_tracking do
       reordered_ids.each_with_index do |id, index|
         item = TaxonHistoryItem.find id
-        item.update_attributes position: (index + 1)
+        item.update position: (index + 1)
       end
     end
 

@@ -7,8 +7,8 @@ Given(/^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/) d
   end
 
   taxon = create_species
-  taxon.update_attributes! status: 'synonym' if invalid
-  taxon.protonym.authorship.update_attributes! reference: reference
+  taxon.update! status: 'synonym' if invalid
+  taxon.protonym.authorship.update! reference: reference
 end
 
 Given(/^there is an original combination of "([^"]+)" described by "([^"]+)" which was moved to "([^"]+)"$/) do |original_combination, author, current_valid_taxon|
@@ -19,15 +19,15 @@ Given(/^there is an original combination of "([^"]+)" described by "([^"]+)" whi
 
   betta_major = create_species 'Betta major'
   atta_major = create_species 'Atta major', status: 'original combination', current_valid_taxon: atta_major
-  atta_major.protonym.authorship.update_attributes! reference: reference
-  atta_major.update_attributes current_valid_taxon: betta_major
-  betta_major.protonym.authorship.update_attributes! reference: reference
+  atta_major.protonym.authorship.update! reference: reference
+  atta_major.update current_valid_taxon: betta_major
+  betta_major.protonym.authorship.update! reference: reference
 end
 
 Given(/^there is a subfamily described in (\d+)/) do |year|
   taxon = create :subfamily
   reference = create :article_reference, citation_year: year
-  taxon.protonym.authorship.update_attributes! reference: reference
+  taxon.protonym.authorship.update! reference: reference
 end
 
 Given(/^there is a genus located in "([^"]+)"$/) do |locality|

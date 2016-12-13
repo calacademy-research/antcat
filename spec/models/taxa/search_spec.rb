@@ -86,11 +86,11 @@ describe Taxon do
           @reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
           reference1988 = reference_factory author_name: 'Fisher', citation_year: '1988'
           @atta = create_genus
-          @atta.protonym.authorship.update_attributes! reference: @reference1977
+          @atta.protonym.authorship.update! reference: @reference1977
           @betta = create_genus
-          @betta.protonym.authorship.update_attributes! reference: @reference1977
+          @betta.protonym.authorship.update! reference: @reference1977
           gamma = create_genus
-          gamma.protonym.authorship.update_attributes! reference: reference1988
+          gamma.protonym.authorship.update! reference: reference1988
         end
 
         it "returns the one match" do
@@ -100,8 +100,8 @@ describe Taxon do
 
         it "honors the validity flag" do
           delta = create_genus
-          delta.protonym.authorship.update_attributes! reference: @reference1977
-          delta.update_attributes! status: 'synonym'
+          delta.protonym.authorship.update! reference: @reference1977
+          delta.update! status: 'synonym'
 
           results = Taxa::Search.advanced_search rank: 'Genus', year: "1977", valid_only: true
           expect(results.map(&:id)).to match_array [@atta.id, @betta.id]
@@ -111,8 +111,8 @@ describe Taxon do
       it "returns all regardless of validity if that flag is false" do
         reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
         atta = create_genus
-        atta.protonym.authorship.update_attributes! reference: reference1977
-        atta.update_attributes! status: 'synonym'
+        atta.protonym.authorship.update! reference: reference1977
+        atta.update! status: 'synonym'
 
         results = Taxa::Search.advanced_search rank: 'Genus', year: "1977", valid_only: false
         expect(results.map(&:id)).to match_array [atta.id]
@@ -129,7 +129,7 @@ describe Taxon do
           taxa << @subspecies = create_subspecies('Atta major minor', species: @species, genus: @genus)
           reference = reference_factory author_name: 'Bolton', citation_year: '1977'
           taxa.each do |taxon|
-            taxon.protonym.authorship.update_attributes! reference: reference
+            taxon.protonym.authorship.update! reference: reference
           end
         end
 
@@ -157,7 +157,7 @@ describe Taxon do
       it "finds the taxa for the author's references that are part of citations in the protonym" do
         reference = reference_factory author_name: 'Bolton', citation_year: '1977'
         atta = create_genus
-        atta.protonym.authorship.update_attributes! reference: reference
+        atta.protonym.authorship.update! reference: reference
 
         results = Taxa::Search.advanced_search rank: 'All', author_name: 'Bolton'
         expect(results.map(&:id)).to eq [atta.id]
@@ -169,7 +169,7 @@ describe Taxon do
                           create(:author_name, name: 'Fisher') ],
           citation_year: '1977'
         atta = create_genus
-        atta.protonym.authorship.update_attributes! reference: reference
+        atta.protonym.authorship.update! reference: reference
 
         results = Taxa::Search.advanced_search rank: 'All', author_name: 'Fisher'
         expect(results.map(&:id)).to eq [atta.id]
@@ -180,7 +180,7 @@ describe Taxon do
           author_names: [create(:author_name, name: 'Bolton')],
           citation_year: '1977'
         atta = create_genus
-        atta.protonym.authorship.update_attributes! reference: reference
+        atta.protonym.authorship.update! reference: reference
 
         results = Taxa::Search.advanced_search rank: 'All', author_name: 'Fisher'
         expect(results).to be_empty
@@ -196,7 +196,7 @@ describe Taxon do
           nesting_reference: nested_in,
           pages_in: 'Pp 2 in:'
         atta = create_genus
-        atta.protonym.authorship.update_attributes! reference: reference
+        atta.protonym.authorship.update! reference: reference
 
         fisher_results = Taxa::Search.advanced_search rank: 'All', author_name: 'Fisher'
         expect(fisher_results.map(&:id)).to eq [atta.id]
@@ -213,11 +213,11 @@ describe Taxon do
 
           barry_reference = create :article_reference, author_names: [barry], citation_year: '1977'
           @barry_atta = create_genus 'Barry_Atta'
-          @barry_atta.protonym.authorship.update_attributes! reference: barry_reference
+          @barry_atta.protonym.authorship.update! reference: barry_reference
 
           @bolton_reference = create :article_reference, author_names: [bolton], citation_year: '1977'
           @bolton_atta = create_genus 'Bolton_Atta'
-          @bolton_atta.protonym.authorship.update_attributes! reference: @bolton_reference
+          @bolton_atta.protonym.authorship.update! reference: @bolton_reference
         end
 
         it "finds the taxa for the author's references that are part of citations in the protonym, even under different names" do

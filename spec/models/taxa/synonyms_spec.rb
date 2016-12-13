@@ -139,11 +139,11 @@ def become_junior_synonym_of junior, senior
   Synonym.where(junior_synonym: senior, senior_synonym: junior).destroy_all
   Synonym.where(senior_synonym: senior, junior_synonym: junior).destroy_all
   Synonym.create! junior_synonym: junior, senior_synonym: senior
-  senior.update_attributes! status: 'valid'
-  junior.update_attributes! status: 'synonym'
+  senior.update! status: 'valid'
+  junior.update! status: 'synonym'
 end
 
 def become_not_junior_synonym_of junior, senior
   Synonym.where(junior_synonym: junior, senior_synonym: senior).destroy_all
-  junior.update_attributes! status: 'valid' if junior.senior_synonyms.empty?
+  junior.update! status: 'valid' if junior.senior_synonyms.empty?
 end
