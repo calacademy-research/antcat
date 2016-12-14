@@ -3,8 +3,8 @@ class TaxonHistoryItemsController < ApplicationController
   before_action :set_taxon_history_item, only: [:update, :destroy]
 
   def show
-    @comparer =
-      TaxonHistoryItem.revision_comparer_for params[:id], params[:selected_id]
+    @comparer = TaxonHistoryItem.revision_comparer_for params[:id],
+      params[:selected_id], params[:diff_with_id]
   end
 
   def update

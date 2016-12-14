@@ -3,6 +3,12 @@ Then(/^the reference section should be "(.*)"$/) do |reference|
   expect(element.text).to match /#{reference}\.?/
 end
 
+When(/^I add a reference section "(.*?)"/) do |text|
+  step %{I click the "Add" reference section button}
+  step %{I fill in the references field with "#{text}"}
+  step %{I save the reference section}
+end
+
 When(/^I click the reference section/) do
   first('.reference_sections .reference_section').find('div.display').click
 end

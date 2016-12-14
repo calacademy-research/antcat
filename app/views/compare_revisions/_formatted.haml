@@ -1,0 +1,24 @@
+-# This is for showing selected/diff_wiff as formatted in the catalog.
+
+%div{data: (collapse_formatted ? { show_hide_toggable_id: "formatted"} : {}) }
+  %h5
+    -if selected
+      Revision as of
+      =l selected.updated_at, format: :time_and_pretty
+    -else
+      -if most_recent.persisted?
+        Current version
+      -else
+        Version before item was deleted
+      %small=most_recent.updated_at
+
+  .callout{class: (looking_at_an_old_revision? ? "make-red" : "make-green")}
+    =render_revision_with_rescue selected || most_recent
+
+  -if diff_with
+    %h5.margin-top
+      Revision as of
+      =l diff_with.updated_at, format: :time_and_pretty
+      (older)
+    .callout.make-red.margin-bottom
+      =render_revision_with_rescue diff_with

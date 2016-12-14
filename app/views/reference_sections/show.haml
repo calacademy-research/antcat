@@ -1,4 +1,4 @@
--@title = "Reference Section ##{@comparer.current.id}"
--breadcrumb :reference_section, @comparer.current
+-@title = "Reference Section ##{@comparer.most_recent.id}"
+-breadcrumb :reference_section, @comparer.most_recent
 
 =render file: "compare_revisions/show", locals: { comparer: @comparer }

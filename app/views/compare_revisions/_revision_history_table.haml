@@ -1,0 +1,44 @@
+%h5 Revision history
+
+-if revisions.empty?
+  %p This item does not have any previous revisions.
+-else
+  =form_tag request.original_url, method: :get, enforce_utf8: false do
+    %table.revisions
+      %thead
+        %tr
+          %th.center-text{colspan: 4} Compare with...
+          %th Date
+          %th User
+      %tbody
+        -# The `most_recent` revision is special, as it's not in `revisions`.
+        -# It will be either the current object, or a reified instance of
+        -# what it looked like before it was deleted.
+        %tr{class: ("make-green" if most_recent_selected?)}
+          %td.shrink cur
+          %td.shrink=link_to "prev", diff_with_id: revisions.first.id
+          %td.shrink
+          %td.shrink=radio_button_tag :selected_id, "", most_recent_selected?
+          %td.shrink=render "compare_revisions/revision_info_date", revision: most_recent
+          %td=render "compare_revisions/revision_info_user", revision: most_recent
+
+        -revisions.each_with_index do |revision, index|
+          %tr{class: revision_css(revision)}
+            -previous = revisions[index + 1] unless index == revisions.size - 1
+            %td=link_to "cur", diff_with_id: revision.id
+            %td
+              -# Only link "prev" if there's a previous revision.
+              -if previous
+                =link_to "prev", diff_with_id: previous.id, selected_id: revision.id
+              -else
+                prev
+
+            %td=radio_button_tag :diff_with_id, revision.id, revision_in_param?(revision, :diff_with_id)
+            %td
+              -# Only show the right radio option if there's a previous revision.
+              -if previous
+                =radio_button_tag :selected_id, revision.id, revision_in_param?(revision, :selected_id)
+            %td=render "compare_revisions/revision_info_date", revision: revision
+            %td=render "compare_revisions/revision_info_user", revision: revision
+
+    =button_tag "Compare selected revisions", name: nil, class: "btn-normal"

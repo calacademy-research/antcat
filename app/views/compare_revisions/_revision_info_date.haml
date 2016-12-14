@@ -1,0 +1,13 @@
+-# This is for the revision history table and split diff. Looks like this:
+-# "07:45 12 December 2016<link to revision> (about 19 hours ago)"
+
+-if revision.is_a? PaperTrail::Version
+  -date = revision.reify.updated_at
+  -link_selected_id = revision.id
+-else
+  -date = revision.updated_at
+  -link_selected_id = nil
+
+=link_to l(date, format: :time_and_pretty), selected_id: link_selected_id
+
+(#{time_ago_in_words(date)} ago)

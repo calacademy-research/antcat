@@ -64,6 +64,11 @@ module HtmlSelectorsHelpers
     when /the users list/
       '#content table'
 
+    when /the left side of the diff/
+      all(".callout .diff")[0]
+    when /the right side of the diff/
+      all(".callout .diff")[1]
+
     when /"(.+)"/
       $1
 

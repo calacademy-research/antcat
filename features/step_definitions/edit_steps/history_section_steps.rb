@@ -59,8 +59,11 @@ When(/^I add a history item "(.*?)"/) do |text|
   step %{I save the history item}
 end
 
-When(/^I add a reference section "(.*?)"/) do |text|
-  step %{I click the "Add" reference section button}
-  step %{I fill in the references field with "#{text}"}
-  step %{I save the reference section}
+When(/^I update the history item to say "([^"]*)"$/) do |text|
+  steps %{
+    And I click the history item
+    And I edit the history item to "#{text}"
+    And I save the history item
+    And I wait for a bit
+  }
 end
