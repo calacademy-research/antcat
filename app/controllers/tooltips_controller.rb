@@ -4,8 +4,7 @@ class TooltipsController < ApplicationController
   skip_before_action :authenticate_editor, only: [:enabled_selectors]
 
   def index
-    tooltips = Tooltip.all
-    @grouped_tooltips = tooltips.group_by(&:scope)
+    @grouped_tooltips = Tooltip.order(:key).group_by(&:scope)
   end
 
   def show

@@ -12,16 +12,6 @@ describe Tooltip do
   end
 
   describe "scopes" do
-    describe "default scope" do
-      let!(:z_tooltip) { create :tooltip, key: "zoo.message" }
-      let!(:a_tooltip) { create :tooltip, key: "all.zoo.message" }
-      let!(:b_tooltip) { create :tooltip, key: "books.message", key_enabled: false }
-
-      it "orders by ascending name" do
-        expect(Tooltip.all).to eq [a_tooltip, b_tooltip, z_tooltip]
-      end
-    end
-
     describe ".enabled_keys" do
       let!(:enabled) { create :tooltip, key_enabled: true }
       let!(:disabled) { create :tooltip, key_enabled: false }

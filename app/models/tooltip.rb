@@ -2,8 +2,6 @@ class Tooltip < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
   include Trackable
 
-  default_scope { order(:key) } # TODO probably remove, default scope are possibly evil.
-
   validates :key, presence: true, uniqueness: true,
     format: { with: /\A[a-zA-Z0-9._:\-]+\z/,
       message: "can only contain alphanumeric characters and '.-_:'" }
