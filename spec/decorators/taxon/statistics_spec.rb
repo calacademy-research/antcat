@@ -65,46 +65,6 @@ describe TaxonDecorator::Statistics do
         .to eq '<p>Fossil: 2 valid subfamilies</p>'
     end
 
-    it "handles both extant and fossil statistics" do
-      statistics = {
-        extant: {
-          subfamilies: { 'valid' => 1 },
-          genera: { 'valid' => 2, 'synonym' => 1, 'homonym' => 2 },
-          species: { 'valid' => 1 }
-        },
-        fossil: {
-          subfamilies: { 'valid' => 2 }
-        }
-      }
-      expect(decorator_helper.statistics(statistics))
-        .to eq '<p>Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>' +
-          '<p>Fossil: 2 valid subfamilies</p>'
-    end
-
-    it "can exclude fossil statistics" do
-      statistics = {
-        extant: {
-          subfamilies: { 'valid' => 1 },
-          genera: { 'valid' => 2, 'synonym' => 1, 'homonym' => 2 },
-          species: { 'valid' => 1 }
-        },
-        fossil: {
-          subfamilies: { 'valid' => 2 }
-        }
-      }
-      expect(decorator_helper.statistics(statistics, include_fossil: false)).to eq(
-        '<p>1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>'
-      )
-    end
-
-    it "handles just fossil statistics" do
-      statistics = {
-        fossil: { subfamilies: { 'valid' => 2 } }
-      }
-      expect(decorator_helper.statistics(statistics))
-        .to eq '<p>Fossil: 2 valid subfamilies</p>'
-    end
-
     it "formats the family's statistics correctly" do
       statistics = {
         extant: {
@@ -190,22 +150,13 @@ describe TaxonDecorator::Statistics do
     it "leaves out invalid status if desired" do
       statistics = {
         extant: {
-          genera: { 'valid' => 1, 'homonym' => 2
-          },
+          genera: { 'valid' => 1, 'homonym' => 2 },
           species: { 'valid' => 2 },
           subspecies: { 'valid' => 3}
         }
       }
       expect(decorator_helper.statistics(statistics, include_invalid: false))
         .to eq '<p>1 genus, 2 species, 3 subspecies</p>'
-    end
-
-    it "doesn't leave a trailing comma" do
-      statistics = {
-        extant: { species: { 'valid' => 2 } }
-      }
-      expect(decorator_helper.statistics(statistics, include_fossil: false, include_invalid: false))
-        .to eq '<p>2 species</p>'
     end
 
     it "doesn't leave a trailing comma" do

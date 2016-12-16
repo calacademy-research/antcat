@@ -74,12 +74,6 @@ describe Reference do
           author_names_suffix: ' (eds.)'
         expect(reference.reload.author_names_string).to eq 'Fisher, B.L.; Ward, P.S. (eds.)'
       end
-
-      it "should be possible to read from and assign to, aliased to author_names_string_cache" do
-        reference = build_stubbed :reference
-        reference.author_names_string = 'foo'
-        expect(reference.author_names_string).to eq 'foo'
-      end
     end
 
     describe "updating, when things change" do

@@ -95,25 +95,6 @@ describe Genus do
         }
       )
     end
-
-    it "can differentiate extinct species and subspecies" do
-      species = create :species, genus: genus
-      fossil_species = create :species, genus: genus, fossil: true
-      create :subspecies, genus: genus, species: species, fossil: true
-      create :subspecies, genus: genus, species: species
-      create :subspecies, genus: genus, species: fossil_species, fossil: true
-
-      expect(genus.statistics).to eq(
-        extant: {
-          species: { 'valid' => 1 },
-          subspecies: { 'valid' => 1 }
-        },
-        fossil: {
-          species: { 'valid' => 1 },
-          subspecies: { 'valid' => 2 }
-        }
-      )
-    end
   end
 
   describe "#without_subfamily" do

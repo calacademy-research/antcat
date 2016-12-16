@@ -48,19 +48,9 @@ describe Exporters::Antweb::Exporter do
       create_genus subfamily: @ponerinae, tribe: nil
       fossil = create_genus 'Atta', subfamily: @ponerinae, tribe: nil, fossil: true
 
-      allow(@ponerinae).to receive(:authorship_string).and_return 'Bolton, 2011'
-      allow_ALNS_for @ponerinae, 'Bolton'
-      allow_year_for @ponerinae, 2001
-
       allow(fossil).to receive(:authorship_string).and_return 'Fisher, 2013'
       allow_ALNS_for fossil, 'Fisher'
       allow_year_for fossil, 2001
-
-      expect(export_taxon(@ponerinae)[0..17]).to eq [
-        @ponerinae.id, 'Ponerinae', nil, nil, nil, nil, nil,
-        'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-        'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'
-      ]
 
       expect(export_taxon(fossil)[0..17]).to eq [
         fossil.id, 'Ponerinae', nil, 'Atta', nil, nil, nil,
