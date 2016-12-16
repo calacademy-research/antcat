@@ -7,28 +7,28 @@ describe NestedReference do
   it { should allow_value(nil).for :title }
 
   describe "Validation" do
-    context "shared setup" do
-      let(:reference) do
-        NestedReference.new title: 'asdf',
-          author_names: [create(:author_name)],
-          citation_year: '2010',
-          nesting_reference: create(:reference),
-          pages_in: 'Pp 2 in:'
-      end
+    it "is valid with these attributes" do
+      reference = NestedReference.new title: 'asdf',
+        author_names: [create(:author_name)],
+        citation_year: '2010',
+        nesting_reference: create(:reference),
+        pages_in: 'Pp 2 in:'
 
-      it "is valid with the attributes given above" do
-        expect(reference).to be_valid
-      end
+      expect(reference).to be_valid
+    end
 
-      it "refers to an existing reference" do
-        reference.nesting_reference_id = 232434
-        expect(reference).not_to be_valid
-      end
+    it "refers to an existing reference" do
+      reference = create :nested_reference
 
-      it "cannot point to itself" do
-        reference.nesting_reference_id = reference.id
-        expect(reference).not_to be_valid
-      end
+      reference.nesting_reference_id = 232434
+      expect(reference).not_to be_valid
+    end
+
+    it "cannot point to itself" do
+      reference = create :nested_reference
+
+      reference.nesting_reference_id = reference.id
+      expect(reference).not_to be_valid
     end
 
     it "cannot point to something that points to itself" do
@@ -49,13 +49,9 @@ describe NestedReference do
   end
 
   describe "#destroy" do
-    it "should not be possible to delete a nestee" do
-      reference = NestedReference.create! title: 'asdf',
-        author_names: [create(:author_name)],
-        citation_year: '2010',
-        nesting_reference: create(:reference),
-        pages_in: 'Pp 2 in:'
+    let(:reference) { create :nested_reference }
 
+    it "should not be possible to delete a nestee" do
       expect(reference.nesting_reference.destroy).to be_falsey
     end
   end

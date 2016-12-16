@@ -39,17 +39,4 @@ describe TooltipsController do
       end
     end
   end
-
-  describe '#show' do
-    let(:tooltip) { create :tooltip }
-
-    context "signed in" do
-      before do
-        sign_in create :editor
-        get :show, id: tooltip.id
-      end
-
-      it { should render_template :show }
-    end
-  end
 end

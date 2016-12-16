@@ -315,45 +315,6 @@ describe Reference do
     end
 
     describe "Sorting" do
-      it "can sort by updated_at" do
-        Reference.record_timestamps = false
-        updated_yesterday = reference_factory author_name: 'Fisher',
-          citation_year: '1910b', fix_type: :article_reference
-        updated_yesterday.update_attribute :updated_at, Time.now.yesterday
-
-        updated_last_week = reference_factory author_name: 'Wheeler',
-          citation_year: '1874', fix_type: :article_reference
-        updated_last_week.update_attribute :updated_at, 1.week.ago
-
-        updated_today = reference_factory author_name: 'Fisher',
-          citation_year: '1910a', fix_type: :article_reference
-        updated_today.update_attribute :updated_at, Time.now
-        Reference.record_timestamps = true
-
-        expect(Reference.list_references(order: :updated_at))
-          .to eq [updated_today, updated_yesterday, updated_last_week]
-      end
-
-      it "can sort by created_at" do
-        Reference.record_timestamps = false
-        created_yesterday = reference_factory author_name: 'Fisher',
-          citation_year: '1910b', fix_type: :article_reference
-        created_yesterday.update_attribute :created_at, Time.now.yesterday
-
-        created_last_week = reference_factory author_name: 'Wheeler',
-          citation_year: '1874', fix_type: :article_reference
-        created_last_week.update_attribute :created_at, 1.week.ago
-
-        created_today = reference_factory author_name: 'Fisher',
-          citation_year: '1910a', fix_type: :article_reference
-        created_today.update_attribute :created_at, Time.now
-
-        Reference.record_timestamps = true
-
-        expect(Reference.list_references(order: :created_at))
-          .to eq [created_today, created_yesterday, created_last_week]
-      end
-
       describe "Default sort order" do
         it "sorts by author_name plus year plus letter" do
           fisher1910b = reference_factory author_name: 'Fisher',

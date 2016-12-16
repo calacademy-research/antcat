@@ -25,36 +25,31 @@ describe TaxonDecorator::Statistics do
         .to eq '<p>2,000 genera</p>'
     end
 
-    it "handles both extant and fossil statistics" do
-      statistics = {
-        extant: {
-          subfamilies: { 'valid' => 1 },
-          genera: { 'valid' => 2, 'synonym' => 1, 'homonym' => 2 },
-          species: { 'valid' => 1 }
-        },
-        fossil: {
-          subfamilies: { 'valid' => 2 }
+    describe "extant and fossil statistics" do
+      let(:statistics) do
+        {
+          extant: {
+            subfamilies: { 'valid' => 1 },
+            genera: { 'valid' => 2, 'synonym' => 1, 'homonym' => 2 },
+            species: { 'valid' => 1 }
+          },
+          fossil: {
+            subfamilies: { 'valid' => 2 }
+          }
         }
-      }
-      expect(decorator_helper.statistics(statistics))
-        .to eq '<p>Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>' +
-          '<p>Fossil: 2 valid subfamilies</p>'
-    end
+      end
 
-    it "can exclude fossil statistics" do
-      statistics = {
-        extant: {
-          subfamilies: { 'valid' => 1 },
-          genera: { 'valid' => 2, 'synonym' => 1, 'homonym' => 2 },
-          species: { 'valid' => 1 }
-        },
-        fossil: {
-          subfamilies: { 'valid' => 2 }
-        }
-      }
-      expect(decorator_helper.statistics(statistics, include_fossil: false)).to eq(
-        '<p>1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>'
-      )
+      it "handles both extant and fossil statistics" do
+        expect(decorator_helper.statistics(statistics))
+          .to eq '<p>Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>' +
+            '<p>Fossil: 2 valid subfamilies</p>'
+      end
+
+      it "can exclude fossil statistics" do
+        expect(decorator_helper.statistics(statistics, include_fossil: false)).to eq(
+          '<p>1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>'
+        )
+      end
     end
 
     it "handles just fossil statistics" do

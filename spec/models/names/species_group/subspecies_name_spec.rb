@@ -76,18 +76,4 @@ describe SubspeciesName do
       expect(name.subspecies_epithets).to eq 'minor medium'
     end
   end
-
-  describe "indexing" do
-    it "subspecies names works as expected" do
-      name = SubspeciesName.new name: 'Acus major minor medium',
-        epithet: 'medium', epithets: 'major minor medium'
-
-      name_split = name.to_s.split
-
-      expect(name_split[0]).to eq 'Acus'
-      expect(name_split[1]).to eq 'major'
-      expect(name_split[2]).to eq 'minor'
-      expect(name_split[3]).to eq 'medium'
-    end
-  end
 end
