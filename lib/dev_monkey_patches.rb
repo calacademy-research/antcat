@@ -38,9 +38,6 @@ module DevMonkeyPatches
   end
 
   def self.enabled_notice
-    # Allow suppressing. Currently only for a database script I'm experimenting with.
-    return if ENV["SUPPRESS_DEV_MONKEY_PATCHES_NOTICE"]
-
     $stdout.puts "Monkey patched `Object` and some Rails classes in `DevMonkeyPatches`.".yellow
     $stdout.puts "That's OK, ".green + "it's enabled in dev only by default. " +
       "See `lib/dev_monkey_patches.rb` for more info.".light_blue
