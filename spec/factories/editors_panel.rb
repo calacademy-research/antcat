@@ -5,6 +5,17 @@ FactoryGirl.define do
     action "create"
   end
 
+  factory :comment do
+    body "A comment"
+    user
+    association :commentable, factory: :issue
+
+    factory :reply do
+      association :parent, factory: :comment
+      body "OK, makes sense"
+    end
+  end
+
   factory :feedback do
     ip "127.0.0.1"
     comment "Great catalog!"
