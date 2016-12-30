@@ -1,3 +1,5 @@
+# Interface-ish for comparing references. Currently not used (December 2016).
+
 class ComparableReference
   include ReferenceComparable
 

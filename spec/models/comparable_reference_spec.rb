@@ -1,3 +1,6 @@
+# The filename `comparable_reference_spec.rb` is slightly misleading since
+# most examples here test `ReferenceComparable` rather than `ComparableReference`.
+
 require 'spec_helper'
 
 describe ComparableReference do
