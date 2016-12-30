@@ -15,11 +15,6 @@ class Subspecies < SpeciesGroupTaxon
     self.species = new_parent
   end
 
-  def set_genus
-    return if genus
-    self.genus = species.genus if species
-  end
-
   def statistics valid_only: false; end
 
   def parent= parent_taxon
@@ -69,6 +64,11 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   private
+    def set_genus
+      return if genus
+      self.genus = species.genus if species
+    end
+
     def create_elevate_to_species_activity new_name
       create_activity :elevate_subspecies_to_species,
         name_was: name_html_cache,

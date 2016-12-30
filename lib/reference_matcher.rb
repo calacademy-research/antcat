@@ -15,20 +15,21 @@ class ReferenceMatcher
     end
   end
 
-  def possible_match? target, candidate
-    target.id != candidate.id
-  end
-
-  # TODO see if we can avoid using instance variables.
-  def candidates_for target
-    if target.principal_author_last_name_cache != @target_author
-      @target_author = target.principal_author_last_name_cache
-      @candidates = read_references @target_author
+  private
+    def possible_match? target, candidate
+      target.id != candidate.id
     end
-    @candidates || []
-  end
 
-  def read_references target
-    ::Reference.with_principal_author_last_name target
-  end
+    # TODO see if we can avoid using instance variables.
+    def candidates_for target
+      if target.principal_author_last_name_cache != @target_author
+        @target_author = target.principal_author_last_name_cache
+        @candidates = read_references @target_author
+      end
+      @candidates || []
+    end
+
+    def read_references target
+      ::Reference.with_principal_author_last_name target
+    end
 end
