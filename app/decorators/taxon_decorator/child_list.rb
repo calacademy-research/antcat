@@ -67,6 +67,17 @@ class TaxonDecorator::ChildList
     def child_list children, specify_extinct_or_extant, conditions = {}
       return ''.html_safe unless children.present?
 
+      label = child_list_label children, specify_extinct_or_extant, conditions
+      content_tag :div do
+        content = ''.html_safe
+        content << content_tag(:span, label, class: 'caption')
+        content << ': '
+        content << child_list_items(children)
+        content << '.'
+      end
+    end
+
+    def child_list_label children, specify_extinct_or_extant, conditions
       label = ''.html_safe
       label << 'Hong (2002) ' if conditions[:hong]
 
@@ -89,14 +100,6 @@ class TaxonDecorator::ChildList
       end
 
       label << content_tag(:span, @taxon.taxon_label)
-
-      content_tag :div do
-        content = ''.html_safe
-        content << content_tag(:span, label, class: 'caption')
-        content << ': '
-        content << child_list_items(children)
-        content << '.'
-      end
     end
 
     def child_list_items children

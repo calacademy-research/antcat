@@ -5,11 +5,12 @@ class MissingReferenceDecorator < ReferenceDecorator
     make_html_safe reference.citation
   end
 
-  def format_citation
-    make_html_safe reference.citation
-  end
-
   def format_reference_document_link; end
 
   def link_to_reference; end
+
+  private
+    def format_citation
+      make_html_safe reference.citation
+    end
 end
