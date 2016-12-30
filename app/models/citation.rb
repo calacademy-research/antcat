@@ -4,6 +4,8 @@
 # `protonyms.authorship_id` in any case.
 
 class Citation < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   attr_accessible :pages, :forms, :id, :reference_id, :reference, :notes_taxt
 
   belongs_to :reference

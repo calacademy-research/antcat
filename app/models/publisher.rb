@@ -1,4 +1,6 @@
 class Publisher < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   belongs_to :place
 
   has_many :references

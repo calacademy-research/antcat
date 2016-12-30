@@ -1,6 +1,7 @@
 # TODO remove `feedbacks.email_recipients`.
 
 class Feedback < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
   include Trackable
 
   belongs_to :user

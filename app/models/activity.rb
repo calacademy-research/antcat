@@ -1,4 +1,6 @@
 class Activity < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   self.per_page = 30
 
   belongs_to :trackable, polymorphic: true
