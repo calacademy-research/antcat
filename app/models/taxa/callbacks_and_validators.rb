@@ -28,7 +28,7 @@ module Taxa::CallbacksAndValidators
   # Recursively save children, presumably to trigger callbacks and create
   # PaperTrail versions. Formicidae is excluded, probably for performance reasons?
   def save_children
-    return if is_a? Family
+    return if is_a? ::Family
 
     children.each &:save
     children.each &:save_children

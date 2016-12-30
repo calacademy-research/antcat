@@ -277,7 +277,7 @@ class Reference < ApplicationRecord
           fields.each do |field|
             next unless record[field]
             if record[field] =~ /{ref #{id}}/
-              references << table_ref(klass.table_name, record.id, field)
+              references << table_ref(klass.table_name, field, record.id)
               return true if return_early
             end
           end
@@ -285,21 +285,20 @@ class Reference < ApplicationRecord
       end
 
       Citation.where(reference: self).find_each do |record|
-        references << table_ref(Citation.table_name, record.id, :reference_id)
+        references << table_ref(Citation.table_name, :reference_id, record.id)
         return true if return_early
       end
 
       nestees.find_each do |record|
-        references << table_ref('references', record.id, :nesting_reference_id)
+        references << table_ref('references', :nesting_reference_id, record.id)
         return true if return_early
       end
       return false if return_early
       references
     end
 
-    # Note: different order as compared to other `table_ref`s.
-    def table_ref table, id, field
-      { table: table, id: id, field: field }
+    def table_ref table, field, id
+      { table: table, field: field, id: id }
     end
 
     def has_any_references?

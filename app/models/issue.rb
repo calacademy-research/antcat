@@ -17,12 +17,7 @@ class Issue < ActiveRecord::Base
   validates_inclusion_of :status, in: %w(open closed completed)
 
   scope :open_count, -> { where(status: "open").count }
-  scope :by_status_and_date, -> do
-    order(<<-SQL.squish)
-      CASE WHEN status = 'open' THEN (9999 + created_at)
-      ELSE created_at END DESC
-    SQL
-  end
+  scope :by_status_and_date, -> { order(status: :desc, created_at: :desc) }
 
   acts_as_commentable
   enable_user_notifications_for :description

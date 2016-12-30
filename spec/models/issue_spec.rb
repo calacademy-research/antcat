@@ -9,15 +9,24 @@ describe Issue do
 
   describe "scopes" do
     describe ".by_status_and_date" do
-      let!(:first) { create :issue, created_at: Time.now + 10.days }
-      let!(:second) { create :issue }
-      let!(:third) { create :completed_issue, created_at: Time.now + 7.days }
-      let!(:fourth) { create :closed_issue, created_at: Time.now + 3.days }
-      let!(:fifth) { create :completed_issue, created_at: Time.now - 10.days }
+      let!(:expected_order) do
+        travel_to Time.new(2010)
+        fourth = create :closed_issue
+
+        travel_to Time.new(2015)
+        second = create :open_issue
+
+        travel_to Time.new(2017)
+        first = create :open_issue
+
+        travel_to Time.new(2016)
+        third = create :closed_issue
+
+        [first, second, third, fourth]
+      end
 
       it "orders open issue first, then by creation date" do
-        expect(Issue.by_status_and_date)
-          .to eq [first, second, third, fourth, fifth]
+        expect(Issue.by_status_and_date).to eq expected_order
       end
     end
   end

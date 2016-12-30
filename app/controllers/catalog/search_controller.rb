@@ -39,9 +39,11 @@ module Catalog
     end
 
     private
-      # TODO see if it's safe to remove this now.
+      # AntWeb's "View in AntCat" links are hardcoded to use the now
+      # deprecated param "st" (starts_with). Links look like this:
+      # http://www.antcat.org/catalog/search?st=m&qq=Agroecomyrmecinae&commit=Go
+      # (from https://www.antweb.org/images.do?subfamily=agroecomyrmecinae)
       def antweb_legacy_route
-        # "st" (starts_with) is not used any longer, so use it to find legacy URLs
         if params[:st].present? && params[:qq].present?
           redirect_to catalog_quick_search_path(qq: params[:qq], im_feeling_lucky: true)
         end
