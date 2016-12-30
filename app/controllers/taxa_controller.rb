@@ -143,6 +143,7 @@ class TaxaController < ApplicationController
       @taxon.protonym.authorship.reference ||= DefaultReference.get session
     end
 
+    # TODO something.
     def redirect_by_parent_name_id
       return unless params[:parent_name_id]
 

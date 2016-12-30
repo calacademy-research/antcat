@@ -18,6 +18,7 @@ class Publisher < ActiveRecord::Base
     create_with_place parts[:publisher] if parts
   end
 
+  # TODO rename (hard to see where it's called from).
   def to_s
     string = place.present? ? "#{place.name}: " : ''
     string << name

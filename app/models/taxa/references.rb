@@ -14,7 +14,7 @@ module Taxa::References
     references.concat references_in_synonyms
   end
 
-  # Not used.
+  # TODO not used (December 2016).
   def nontaxt_references
     references omit_taxt: true
   end

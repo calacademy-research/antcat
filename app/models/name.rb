@@ -24,6 +24,7 @@ class Name < ApplicationRecord
   # TODO maybe raise?
   def change_parent _; end
 
+  # Only used in specs.
   def quadrinomial?
     name.split(' ').size == 4
   end
@@ -92,6 +93,7 @@ class Name < ApplicationRecord
     references_in_fields.concat(references_in_taxt)
   end
 
+  # TODO rename to avoid confusing this with [Rails'] dynamic finder methods.
   def self.find_by_name string
     Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false)
       .where(name: string).order('taxa.id DESC').order(:name).first
