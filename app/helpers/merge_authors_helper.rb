@@ -1,7 +1,6 @@
 module MergeAuthorsHelper
-  def conjuncted_list items, css_class
-    items.flatten.uniq.map do |item|
-      content_tag :span, item, class: css_class
-    end.sort.to_sentence(last_word_connector: " and ").html_safe
+  def author_names_sentence names
+    names.sort.map { |item| content_tag :span, item }
+      .to_sentence.html_safe
   end
 end
