@@ -1,9 +1,18 @@
 -@title = "Database Scripts"
 -breadcrumb :database_scripts
 
-%h5 Scripts
-%ul
-  -@scripts.each do |script|
-    %li
-      =link_to script.title, database_script_path(script)
-      =format_database_script_tags script.tags
+-content_for :head do
+  =javascript_include_tag "sortable_tables"
+
+%table.tablesorter
+  %thead
+    %tr
+      %th Topic area
+      %th Script
+      %th Tags
+  %tbody
+    -@scripts.each do |script|
+      %tr
+        %td.shrink=script.topic_areas.join(", ").capitalize
+        %td=link_to script.title, database_script_path(script)
+        %td=format_database_script_tags script.tags

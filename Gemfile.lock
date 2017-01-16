@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/bernat/best_in_place.git
-  revision: 57b525e487cd6ba10467b47d8bf8907c645f6917
-  specs:
-    best_in_place (3.1.0)
-      actionpack (>= 3.2)
-      railties (>= 3.2)
-
-GIT
   remote: https://github.com/airblade/paper_trail.git
   revision: fbd08dbbceda1a7357b5a7f45bb2ca8d09acc600
   tag: v4.0.0.beta2
@@ -78,6 +70,8 @@ GEM
     addressable (2.3.8)
     arbre (1.0.3)
       activesupport (>= 3.0.0)
+    archive-zip (0.7.0)
+      io-like (~> 0.3.0)
     arel (6.0.3)
     awesome_nested_set (3.0.3)
       activerecord (>= 4.0.0, < 5)
@@ -105,6 +99,9 @@ GEM
       json
     childprocess (0.5.7)
       ffi (~> 1.0, >= 1.0.11)
+    chromedriver-helper (1.0.0)
+      archive-zip (~> 0.7.0)
+      nokogiri (~> 1.6)
     citrus (2.4.1)
     climate_control (0.0.3)
       activesupport (>= 3.0)
@@ -145,10 +142,8 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
-    devise_invitable (1.5.3)
-      actionmailer (>= 3.2.6, < 5)
-      devise (>= 3.2.0)
     diff-lcs (1.2.5)
+    diffy (3.1.0)
     draper (2.1.0)
       actionpack (>= 3.0)
       activemodel (>= 3.0)
@@ -206,6 +201,8 @@ GEM
       responders
     invisible_captcha (0.8.0)
       rails
+    io-like (0.3.0)
+    jquery-atwho-rails (1.3.2)
     jquery-rails (4.0.5)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
@@ -388,18 +385,17 @@ DEPENDENCIES
   acts_as_commentable_with_threading
   acts_as_list
   aws-sdk (< 2.0)
-  best_in_place!
   capybara (>= 2.2.0)
   capybara-screenshot
   capybara-webkit
+  chromedriver-helper
   citrus (= 2.4.1)
   coffee-rails
   colorize
   cucumber-rails
   database_cleaner
   devise
-  devise_invitable
-  diff-lcs
+  diffy
   draper
   ey_config
   factory_girl_rails
@@ -411,6 +407,7 @@ DEPENDENCIES
   headless
   high_voltage
   invisible_captcha
+  jquery-atwho-rails
   jquery-rails (> 4.0)
   jquery-ui-rails (> 5.0)
   launchy

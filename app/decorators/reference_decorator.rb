@@ -58,7 +58,7 @@ class ReferenceDecorator < ApplicationDecorator
   def antweb_version_of_inline_citation
     # Hardcoded, or we must set `host` + use `reference_url(reference)`.
     url = "http://antcat.org/references/#{reference.id}"
-    link = helpers.link_to reference.keey,
+    link = helpers.link_to reference.keey.html_safe,
       url, title: make_to_link_title(formatted)
 
     content = [link]
@@ -68,6 +68,10 @@ class ReferenceDecorator < ApplicationDecorator
 
   def link_to_reference
     helpers.link_to reference.id, helpers.reference_path(reference)
+  end
+
+  def format_title
+    format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
   end
 
   private
@@ -153,20 +157,15 @@ class ReferenceDecorator < ApplicationDecorator
 
     def doi_link
       return unless reference.doi.present?
-      helpers.link_to reference.doi, ("http://dx.doi.org/" + doi),
-        class: 'document_link'
+      helpers.link_to reference.doi, ("http://dx.doi.org/" + doi)
     end
 
     def pdf_link
       return unless reference.downloadable?
-      helpers.link_to 'PDF', reference.url, class: 'document_link'
+      helpers.link_to 'PDF', reference.url
     end
 
     def make_to_link_title string
       helpers.unitalicize string
-    end
-
-    def format_title
-      format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
     end
 end

@@ -1,0 +1,26 @@
+-@title = "My Notifications"
+-breadcrumb :notifications
+
+-if @notifications.empty?
+  No notifications.
+-else
+  %table.notifications
+    %thead
+      %tr
+        %th
+        %th Who/what
+        %th When
+    %tbody
+      -@notifications.each do |notification|
+        %tr
+          -# There is no "unseen" icon, but it's used in tests.
+          %td.icon=antcat_icon (notification.seen? ? "seen" : "unseen")
+          %td.no-wrap
+            =notification.notifier.decorate.user_page_link
+            -# TODO maybe convert to a helper.
+            =render notification.reason, notification: notification
+          %td.no-wrap
+            =time_ago_in_words notification.created_at
+            ago
+
+=will_paginate @notifications

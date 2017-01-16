@@ -1,12 +1,28 @@
+// For the search box in the breadcrumb, which is included
+// in all views using the references layout.
+.reference-search-form
+  #q, #author_q, #search_type
+    height: 1.8rem
+    margin-bottom: 0
+  #author_q, #search_type
+    width: 11rem
+  #author_q
+    display: none
+  #search_type
+    padding: 0 0.5rem
+  // Firefox tweaks
+  a, #search_type
+    vertical-align: top
+  input.typeahead, #author_q
+    padding: 0 0.5rem
+
 #references-controller
   table.references
     tr
       padding-bottom: 0
-
     p.notes
       margin-left: 1rem
       margin-bottom: 0
-
     td.no-wrap-align-top
       vertical-align: top
       white-space: nowrap

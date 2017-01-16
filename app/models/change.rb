@@ -1,6 +1,6 @@
 class Change < ActiveRecord::Base
-  include Feed::Trackable
-  include UndoTracker
+  include ActiveModel::ForbiddenAttributesProtection
+  include Trackable
 
   belongs_to :approver, class_name: 'User'
   # TODO rename to `taxon_id`.
@@ -11,12 +11,12 @@ class Change < ActiveRecord::Base
   scope :waiting, -> { joins_taxon_states.where("taxon_states.review_state = 'waiting'") }
   scope :joins_taxon_states, -> { joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id') }
 
-  tracked
+  tracked on: :mixin_create_activity_only
 
   def self.approve_all user
     count = TaxonState.waiting.count
 
-    Feed::Activity.without_tracking do
+    Feed.without_tracking do
       TaxonState.waiting.each do |taxon_state|
         # TODO maybe something like `TaxonState#approve_related_changes`?
         Change.where(user_changed_taxon_id: taxon_state.taxon_id).each do |change|
@@ -25,7 +25,7 @@ class Change < ActiveRecord::Base
       end
     end
 
-    Feed::Activity.create_activity :approve_all_changes, count: count
+    Activity.create_without_trackable :approve_all_changes, count: count
   end
 
   def approve user = nil
@@ -35,7 +35,7 @@ class Change < ActiveRecord::Base
 
     if taxon
       taxon.approve!
-      update_attributes! approver: user, approved_at: Time.now
+      update! approver: user, approved_at: Time.now
       # TODO change all `Time.now` etc to `Time.zone.now`.
     else
       # This case is for approving a delete
@@ -44,7 +44,7 @@ class Change < ActiveRecord::Base
       taxon_state.save!
     end
 
-    Feed::Activity.with_tracking { create_activity :approve_change }
+    Feed.with_tracking { create_activity :approve_change }
   end
 
   # TODO probably rename local `versions` now that we're in the model
@@ -53,8 +53,8 @@ class Change < ActiveRecord::Base
   # same item set. Find all versions, and undo the change.
   # Sort to undo changes most recent to oldest.
   def undo
-    Feed::Activity.without_tracking do
-      clear_change
+    Feed.without_tracking do
+      UndoTracker.clear_change
       change_id_set = find_future_changes
       versions = SortedSet[]
       items = SortedSet[]
@@ -75,24 +75,22 @@ class Change < ActiveRecord::Base
     create_activity :undo_change
   end
 
-  # TOTO maybe move back some of this to the controller.
+  # TODO return as ActiveRecord instead of hash.
   def undo_items
     changes = []
     change_id_set = find_future_changes
     change_id_set.each do |current_change_id|
       # Could be already undone.
-      #current_change = Change.find current_change_id
       current_change = Change.find_by id: current_change_id
       next unless current_change
 
       # Could get cute and report exactly what was changed about any given taxon
       # For now, just report a change to the taxon in question.
       current_taxon = current_change.most_recent_valid_taxon
-      current_user = current_change.changed_by
-      changes.append name: current_taxon.name.to_s,
-                     change_type: current_change.change_type,
-                     change_timestamp: current_change.created_at.strftime("%B %d, %Y"),
-                     user_name: current_user.name
+      changes << { taxon: current_taxon,
+                   change_type: current_change.change_type,
+                   date: current_change.created_at.strftime("%B %d, %Y"),
+                   user: current_change.changed_by }
 
       # This would be a good place to warn from if we find that we can't undo
       # something about a taxa.

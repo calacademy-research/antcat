@@ -22,43 +22,53 @@ end
     parent :tooltips
   end
 
-crumb :tasks do
-  link "Open Tasks", tasks_path
+crumb :issues do
+  link "Issues", issues_path
   parent :editors_panel
 end
 
-  crumb :task do |task|
-    link "Task ##{task.id}", task_path(task)
-    parent :tasks
+  crumb :issue do |issue|
+    link "##{issue.id}: #{issue.title}", issue_path(issue)
+    parent :issues
   end
 
-    crumb :edit_task do |task|
+    crumb :edit_issue do |issue|
       link "Edit"
-      parent :task, task
+      parent :issue, issue
     end
 
-  crumb :new_task do |task|
+  crumb :new_issue do |issue|
     link "New"
-    parent :tasks
+    parent :issues
   end
 
-crumb :feed do
-  link "Feed"
+crumb :activity_feed do
+  link "Activity Feed"
   parent :editors_panel
 end
+
+  crumb :activity_item do |activity_id|
+    link "Activity Item ##{activity_id}"
+    parent :activity_feed
+  end
 
 crumb :comments do
   link "Comments"
   parent :editors_panel
 end
 
+  crumb :edit_comment do |comment|
+    link "Edit Comment ##{comment.id}"
+    parent :comments
+  end
+
 crumb :edit_user do
   link "Edit User"
   parent :editors_panel
 end
 
-crumb :invite_people do
-  link "Invite People"
+crumb :invite_users do
+  link "Invite Users"
   parent :editors_panel
 end
 
@@ -107,7 +117,22 @@ end
       parent :database_script, script
     end
 
+crumb :notifications do
+  link "My Notifications"
+  parent :editors_panel
+end
+
+crumb :markdown_formatting_help do
+  link "Markdown Formatting Help"
+  parent :editors_panel
+end
+
 crumb :lazy_links do
   link "Lazy Links"
+  parent :editors_panel
+end
+
+crumb :beta_and_such do
+  link "Beta and such (testing, debugging)"
   parent :editors_panel
 end

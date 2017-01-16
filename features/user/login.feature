@@ -15,8 +15,8 @@ Feature: Logging in
     When I go to the login page
     Then I should not see "Logout"
 
-    When I fill in the email field with "email@example.com"
-    And I fill in the password field with "secret"
+    When I fill in "user_email" with "email@example.com"
+    And I fill in "user_password" with "secret"
     And I press "Login"
     Then I should be on the main page
     And I should see "Logout"
@@ -27,8 +27,8 @@ Feature: Logging in
 
     When I go to the main page
     And I follow "Login"
-    And I fill in the email field with "email@example.com"
-    And I fill in the password field with "asd;fljl;jsdfljsdfj"
+    And I fill in "user_email" with "email@example.com"
+    And I fill in "user_password" with "asd;fljl;jsdfljsdfj"
     And I press "Login"
     Then I should be on the login page
 
@@ -37,7 +37,7 @@ Feature: Logging in
 
     When I go to the references page
     And I follow the first "Login"
-    And I fill in the email field with "email@example.com"
-    And I fill in the password field with "secret"
+    And I fill in "user_email" with "email@example.com"
+    And I fill in "user_password" with "secret"
     And I press "Login"
     Then I should be on the references page

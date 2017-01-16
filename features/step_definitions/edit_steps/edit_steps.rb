@@ -1,5 +1,16 @@
+# TODO replace with 'I press "Save"'.
 When(/^I save my changes$/) do
   step 'I press "Save"'
+end
+
+# Without JavaScript, `I press "Save"` raises `Capybara::Ambiguous`.
+When(/^I save the taxon form$/) do
+  find("#save-taxon-form").click
+end
+
+Then(/^I (should|should not) see an Edit button$/) do |should_selector|
+  should_selector = should_selector.tr(" ", "_").to_sym
+  page.send should_selector, have_css("a.btn-normal", text: "Edit")
 end
 
 # section
@@ -58,53 +69,6 @@ Then(/^I should (not )?see the gender menu$/) do |should_not|
   visible = should_not ? :false : :true
   selector = should_not ? :should_not : :should
   page.send selector, have_css('#taxon_name_attributes_gender', visible: visible)
-end
-
-# biogeographic region
-Then(/^I should (not )?see the biogeographic region$/) do |should_not|
-  selector = should_not ? :should_not : :should
-  visible = should_not ? :false : :true
-  page.send selector, have_css('#taxon_biogeographic_region', visible: visible)
-end
-
-# verbatim type locality
-When(/I set the verbatim type locality to "([^"]*)"/) do |locality|
-  step %{I fill in "taxon_verbatim_type_locality" with "San Pedro, CA"}
-end
-
-Then(/^I should (not )?see the verbatim type locality$/) do |should_not|
-  selector = should_not ? :should_not : :should
-  visible = should_not ? :false : :true
-
-  page.send selector, have_css('#taxon_verbatim_type_locality', visible: visible)
-end
-
-Then(/^the verbatim type locality should be "([^"]*)"/) do |locality|
-  step %{the "taxon_verbatim_type_locality" field should contain "#{locality}"}
-end
-
-# type specimen repository
-When(/I set the type specimen repository to "([^"]*)"/) do |repository|
-  step %{I fill in "taxon_type_specimen_repository" with "#{repository}"}
-end
-
-Then(/^I should (not )?see the type specimen repository$/) do |should_not|
-  selector = should_not ? :should_not : :should
-  visible = should_not ? :false : :true
-  page.send selector, have_css('#taxon_type_specimen_repository', visible: visible)
-end
-
-Then(/^the type specimen repository should be "([^"]*)"/) do |repository|
-  step %{the "taxon_type_specimen_repository" field should contain "#{repository}"}
-end
-
-# type specimen URL
-When(/I set the type specimen URL to "([^"]*)"/) do |url|
-  step %{I fill in "taxon_type_specimen_url" with "#{url}"}
-end
-
-Then(/^the type specimen URL should be "([^"]*)"/) do |url|
-  step %{the "taxon_type_specimen_url" field should contain "#{url}"}
 end
 
 ### parent field

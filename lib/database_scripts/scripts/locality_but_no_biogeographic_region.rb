@@ -17,3 +17,6 @@ class DatabaseScripts::Scripts::LocalityButNoBiogeographicRegion
     end
   end
 end
+
+__END__
+topic_areas: [catalog]

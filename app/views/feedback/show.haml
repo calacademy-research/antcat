@@ -1,23 +1,30 @@
 -@title = "Feedback ##{@feedback.id}"
 -breadcrumb :user_feedback_details, @feedback
 
+-content_for :head do
+  =javascript_include_tag "controllers/feedback/show"
+
 .buttons_right
+  =link_to "Hide/show formatted for email", "#", class: "btn-white", data: { show_hide_toggler_for: "for_email" }
   -if @feedback.closed?
-    =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-destructive")
+    =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-saves-warning")
   -else
-    =link_to("Close", close_feedback_path(@feedback), method: :put, class: "btn-destructive")
+    =link_to("Close", close_feedback_path(@feedback), method: :put, class: "btn-saves")
   -if user_is_superadmin?
     =link_to "Delete", feedback_path(@feedback), method: :delete, data: { confirm: "Delete? Note that this is for deleting spam and ridiculous suggestions. Archiving closed items instead of deleting them is good for tracking submissions and submitters." }, class: "btn-delete"
 
+-# Empty paragraph to avoid overlapping of ".buttons_right".
 %p
-  Status:
-  =@feedback.open? ? "open" : "closed"
 
-%p
-  Sent to:
-  =@feedback.email_recipients
+=render "feedback", feedback: @feedback
 
-.callout
-  =render file: "feedback_mailer/feedback_email", locals: { feedback: @feedback }
+%div{data: { show_hide_toggable_id: "for_email" }}
+  %h6 Formatted for email replies
+  =preserve do
+    %textarea#formatted_for_email
+      =format_feedback_for_email @feedback
+
+-if @feedback.open?
+  =render "guidelines_for_editors"
 
 =render partial: "comments/comments_area", locals: { commentable: @feedback, new_comment: @new_comment }

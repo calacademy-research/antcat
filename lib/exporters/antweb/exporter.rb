@@ -1,3 +1,5 @@
+# Export via `rake antweb:export`.
+
 include ActionView::Helpers::TagHelper # For `#content_tag`.
 include ActionView::Context # For `#content_tag`.
 include Exporters::Antweb::MonkeyPatchTaxon
@@ -172,25 +174,23 @@ class Exporters::Antweb::Exporter
 
     # TODO rename.
     def author_last_names_string taxon
-      reference = taxon.send :authorship_reference
+      reference = taxon.authorship_reference
       return unless reference
 
       reference.authors_for_keey
     end
 
     def authorship_html_string taxon
-      reference = taxon.send :authorship_reference
+      reference = taxon.authorship_reference
       return unless reference
 
       formatted = reference.decorate.formatted
-      keey = reference.keey
-
-      content_tag(:span, title: formatted) { keey }
+      content_tag :span, reference.keey, title: formatted
     end
 
     # TODO rename.
     def year taxon
-      reference = taxon.send :authorship_reference
+      reference = taxon.authorship_reference
       return unless reference
 
       reference.year_or_no_year
@@ -212,7 +212,7 @@ class Exporters::Antweb::Exporter
           content << taxon.statistics(include_invalid: false)
           content << taxon.genus_species_header_notes_taxt
           content << taxon.headline
-          content << taxon.history
+          content << export_history_items(taxon)
           content << taxon.child_lists
           content << taxon.references
         end
@@ -221,13 +221,16 @@ class Exporters::Antweb::Exporter
       end
     end
 
+    def export_history_items taxon
+      Exporters::Antweb::ExportHistoryItems.new(taxon).history
+    end
+
     def self.antcat_taxon_link taxon, label = "AntCat"
       url = "http://www.antcat.org/catalog/#{taxon.id}"
       %Q[<a class="link_to_external_site" href="#{url}">#{label}</a>].html_safe
     end
 
     def self.antcat_taxon_link_with_name taxon
-      label = taxon.name.to_html_with_fossil(taxon.fossil?).html_safe
-      antcat_taxon_link taxon, label
+      antcat_taxon_link taxon, taxon.name_with_fossil
     end
 end

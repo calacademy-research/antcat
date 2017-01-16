@@ -2,6 +2,8 @@
 # be confused with "species group" as used in taxonomy.
 
 class SpeciesGroupTaxon < Taxon
+  include Formatters::ItalicsHelper
+
   attr_accessible :genus, :subfamily, :subfamily_id, :type_name_id
 
   belongs_to :subfamily

@@ -1,40 +1,32 @@
 %ul#taxon-browser-tabs.tabs{"data-tabs" => ""}
-  -panels.each_with_index do |panel, index|
-    %li.tabs-title{class: ("is-active" if is_last_panel? panel, panels)}
-      =link_to panel_header_title(panel[:selected]), "#panel-#{index}"
+  -@taxon_browser.tabs.each do |tab|
+    %li.tabs-title{class: ("is-active" if tab.open?)}
+      =link_to tab.title, "##{tab.id}"
 
   %li.tab-toggler
+    =shared_spinner_icon
     %span.label.secondary
-      =link_to "toggle legend", "#", id: "toggle_legend"
-    %span.label.secondary=toggle_valid_only_link
+      =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon_key" }
+    %span.label.secondary=toggle_invalid_or_valid_only_link
 
 .tabs-content{"data-tabs-content" => "taxon-browser-tabs"}
-  -panels.each_with_index do |panel, index|
-    -selected = panel[:selected]
-    -# TOD rename to selected_in_panel
+  -@taxon_browser.tabs.each do |tab|
+    .tabs-panel{id: tab.id, class: ("is-active" if tab.open?)}
+      -if tab.too_many_taxa_to_load?
+        %p.remove-after-loading-full-tab
+          Showing #{@taxon_browser.max_taxa_to_load} of #{tab.taxa_count} taxa
+          =load_tab_button @taxon, tab
 
-    -# TODO create helper method
-    -css_classes = []
-    -css_classes << "is-active" if is_last_panel? panel, panels
-    -if selected.is_a? Taxon
-      -css_classes << "#{selected.rank.pluralize}-test-hook"
-
-    .tabs-panel{id: "panel-#{index}", class: css_classes}
       %ul.snaked.no-bullet.mr-scrollbary
-        =render "rank_special_cases", selected: selected
+        =links_to_extra_tabs tab.tab_taxon
 
-        -children = sorted_children_for_panel selected, panel[:children]
-        -children.each do |child_taxon|
-          %li{class: ("selected" if child_taxon.in? self_and_parents)}
-            =taxon_browser_link child_taxon
+        .section-that-can-be-capped
+          =render "taxon_browser_tab_taxa", tab: tab, cap: true
 
-        -# It's possible that `children` is empty at this point. Most likely
+        -# It's possible that `taxa` is empty at this point. Most likely
         -# that means there are invalid children that can be seen by toggling
         -# "show invalid", or that the taxon is an invalid subfamily/tribe/genus.
-        -# See also the note in `CatalogController#setup_panels`.
-        -if notify_about_no_valid_children? children, selected
+        -if tab.notify_about_no_valid_taxa?
           %li No valid child taxa
-
-          -# Notify users that they can toggle "show invalid".
-          -unless already_showing_invalid_taxa?
-            %li=link_to "Show invalid?", catalog_options_path(valid_only: false)
+          -unless @taxon_browser.show_invalid? # Link unless already showing invalid.
+            %li=toggle_invalid_or_valid_only_link "Show invalid?"

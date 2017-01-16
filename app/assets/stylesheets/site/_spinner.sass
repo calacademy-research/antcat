@@ -1,3 +1,5 @@
+@import "colors"
+
 .spinner
   display: inline-block
   opacity: 0
@@ -13,7 +15,6 @@
     .spinner
       opacity: 1
       width: auto
-
   &.disabled .spinner
     width: 16px
 
@@ -21,3 +22,8 @@
   margin-left: 3px
   color: #fff
   display: none
+
+// To make white spinners visible in the pickers. `.throbber` is from
+// the previous spinner; the old class is still used in JavaScripts.
+td.throbber
+  background-color: $color_picker_background

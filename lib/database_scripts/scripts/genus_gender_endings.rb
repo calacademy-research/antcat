@@ -42,7 +42,7 @@ class DatabaseScripts::Scripts::GenusGenderEndings
       string << "\n#### #{gender.to_s.humanize}\n"
       group.each do |status, taxa|
         string << "\n###### #{status.to_s.humanize}\n" <<
-          taxa.map { |taxon| "%t#{taxon.id}"}.join(", ") << "\n"
+          taxa.map { |taxon| "%taxon#{taxon.id}"}.join(", ") << "\n"
       end
     end
     string
@@ -56,7 +56,7 @@ class DatabaseScripts::Scripts::GenusGenderEndings
   def formatted_not_matching_any_endings
     string = "\n### Not matching any ending\n"
     string << not_matching_any_endings.map do |taxon|
-      "%t#{taxon.id}"
+      "%taxon#{taxon.id}"
     end.join(", ")
   end
 
@@ -88,3 +88,4 @@ end
 __END__
 description: Version 0.1 of this script. Read-only.
 tags: [slow]
+topic_areas: [catalog]

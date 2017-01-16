@@ -1,7 +1,44 @@
+# TODO rename
+#   `exporter_spec.rb` --> `exporter_export_taxon_spec.rb`
+#   this file          --> `exporter_spec.rb`
+
+# Specs here test stuff except `#export_taxon`, which is tested in another file
+# because reasons and because both specs are pretty long.
+
 require 'spec_helper'
 
 describe Exporters::Antweb::Exporter do
   let(:exporter) { Exporters::Antweb::Exporter.new }
+
+  describe "#header" do
+    it "should be the same as the code" do
+      expected = "antcat id\t" +
+                 "subfamily\t" +
+                 "tribe\t" +
+                 "genus\t" +
+                 "subgenus\t" +
+                 "species\t" +
+                 "subspecies\t" +
+                 "author date\t" +
+                 "author date html\t" +
+                 "authors\t" +
+                 "year\t" +
+                 "status\t" +
+                 "available\t" +
+                 "current valid name\t" +
+                 "original combination\t" +
+                 "was original combination\t" +
+                 "fossil\t" +
+                 "taxonomic history html\t" +
+                 "reference id\t" +
+                 "bioregion\t" +
+                 "country\t" +
+                 "current valid rank\t" +
+                 "hol id\t" +
+                 "current valid parent"
+      expect(exporter.send :header).to eq expected
+    end
+  end
 
   describe "#author_last_names_string" do
     it "delegates" do
@@ -103,10 +140,8 @@ describe Exporters::Antweb::Exporter do
         authorship = Citation.create! reference: reference, pages: '12'
         protonym = Protonym.create! name: shared_name, authorship: authorship
 
-        # Genus.
+        # Genus and species.
         @genus = create_genus name: shared_name, protonym: protonym, hol_id: 9999
-
-        # Species.
         @species = create_species 'Atta major', genus: @genus, hol_id: 1234
       end
 
@@ -138,23 +173,23 @@ describe Exporters::Antweb::Exporter do
 
             # statistics
             %{<div class="statistics">} +
-              %{<p class="taxon_statistics">1 species</p>} +
+              %{<p>1 species</p>} +
             %{</div>} +
 
             # headline
             %{<div class="headline">} +
               # protonym
-              %{<b><span class="protonym_name"><i>Atta</i></span></b> } +
+              %{<b><span><i>Atta</i></span></b> } +
 
               # authorship
-              %{<span class="authorship">} +
+              %{<span>} +
                 %{<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{should_see_this_reference_id}">Bolton, 2010a</a>} +
                 %{: 12} +
               %{</span>} +
               %{. } +
 
               # type
-              %{<span class="type">Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span>} +
+              %{<span>Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span>} +
               %{ } +
               # links
               %{<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>} +
@@ -167,8 +202,8 @@ describe Exporters::Antweb::Exporter do
 
             # taxonomic history
             %{<p><b>Taxonomic history</b></p>} +
-            %{<div class="history"><div class="history_item" data-id="#{history_item.id}">} +
-              %{<table><tr><td style="font-size: 13px" class="history_item_body">} +
+            %{<div class="history"><div class="history_item">} +
+              %{<table><tr><td class="history_item_body" style="font-size: 13px">} +
                 %{Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.} +
               %{</td></tr></table>} +
             %{</div></div>} +
@@ -185,7 +220,7 @@ describe Exporters::Antweb::Exporter do
                   %{<a title="#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}." href="http://antcat.org/references/#{a_reference.id}">} +
                     %{#{ref_author}, #{ref_year}} +
                   %{</a> } +
-                  %{<a class="document_link" href="http://dx.doi.org/10.10.1038/nphys1170">} +
+                  %{<a href="http://dx.doi.org/10.10.1038/nphys1170">} +
                     %{10.10.1038/nphys1170} +
                   %{</a>} +
                   %{: 766 (diagnosis);} +
@@ -196,6 +231,14 @@ describe Exporters::Antweb::Exporter do
           %{</div>}
         )
       end
+    end
+
+    it "handles italics in missing references (regression)" do
+      # TODO
+      # Confirm that `ReferenceDecorator#antweb_version_of_inline_citation`
+      # doesn't return "Brady, Schultz, &lt;i&gt;et al.&lt;/i&gt; 2006",
+      # which happens with missing references unless we call "html_safe"
+      # on this line: `link = helpers.link_to reference.keey.html_safe,`.
     end
   end
 
@@ -232,6 +275,7 @@ describe Exporters::Antweb::Exporter do
 
     describe ".antcat_taxon_link" do
       let(:link) { exporter.class.antcat_taxon_link_with_name taxon }
+
       it "includes 'antcat.org' in the url" do
         expect(link).to eq <<-HTML.squish
           <a class="link_to_external_site"

@@ -1,5 +1,7 @@
-AntCat::Application.routes.draw do
+# TODO *maybe* split into smaller files.
+# https://blog.lelonek.me/keep-your-rails-routes-clean-and-organized-83e78f2c11f2
 
+AntCat::Application.routes.draw do
   ActiveAdmin.routes self
 
   root to: 'catalog#index'
@@ -12,7 +14,7 @@ AntCat::Application.routes.draw do
     member do
       put :approve
       put :undo
-      get :undo_items
+      get :confirm_before_undo
     end
   end
 
@@ -27,17 +29,20 @@ AntCat::Application.routes.draw do
 
   namespace :catalog do
     get :autocomplete
-    get :options
+    get :show_invalid
+    get :show_valid_only
     get "search", to: "search#index"
     get "search/quick_search", to: "search#quick_search", as: "quick_search"
   end
   get 'catalog/:id' => 'catalog#show', as: :catalog
   get 'catalog/:id/wikipedia' => 'catalog#wikipedia_tools'
+  get 'catalog/:id/tab/:tab_id' => 'catalog#tab', as: :catalog_tab
 
   get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
   resources :journals do
     collection do
       get :autocomplete
+      get :linkable_autocomplete
     end
   end
 
@@ -50,6 +55,7 @@ AntCat::Application.routes.draw do
       get :search
       get :search_help
       get :autocomplete
+      get :linkable_autocomplete
       get :latest_additions
       get :latest_changes
       get :endnote_export
@@ -64,13 +70,23 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :taxa, except: [:index, :show] do
+  resources :taxa, only: [:new, :create, :edit, :update] do
     member do
-      get :delete_impact_list
-      get :update_parent # TODO change to put
-      put :elevate_to_species
-      delete :destroy_unreferenced
-      get :show_children
+      controller :taxa_grab_bag do
+        put :elevate_to_species
+        get :show_children
+        get :confirm_before_delete
+        delete :destroy
+        delete :destroy_unreferenced
+        post :reorder_history_items
+        get :update_parent # TODO change to put
+      end
+    end
+    collection do
+      controller :duplicates do
+        get :find_duplicates
+        get :find_name_duplicates_only
+      end
     end
     resources :taxon_history_items, only: [:update, :create, :destroy]
     resources :reference_sections, only: [:update, :create, :destroy]
@@ -94,12 +110,12 @@ AntCat::Application.routes.draw do
 
   resource :reference_field, only: [:show]
   resource :reference_popup, only: [:show]
-  resource :duplicates, only: [:show, :create]
 
-  devise_for :users, controllers: { invitations: 'users/invitations' }
+  devise_for :users
   resources :users, only: [:index, :show] do
     collection do
       get :emails
+      get :mentionables
     end
   end
 
@@ -131,20 +147,23 @@ AntCat::Application.routes.draw do
   resources :antweb_data, only: [:index]
 
   resources :feedback, only: [:index, :show, :create, :destroy] do
+    collection do
+      get :autocomplete
+    end
     member do
       put :close
       put :reopen
     end
   end
 
-  resources :comments, only: [:index, :create]
+  resources :comments, only: [:index, :create, :edit, :update]
 
-  # TODO nest more Editor's Panel-ish pages under this (tasks, site notices, etc).
+  # TODO nest more Editor's Panel-ish pages under this (issues, site notices, etc).
   get "panel", to: "editors_panels#index", as: "editors_panel"
+  get "panel/invite_users", to: "editors_panels#invite_users", as: "invite_users"
+  get :notifications, to: "notifications#index"
 
-  resource :feed, only: [:show], controller: "feed" do
-    resources :activities, only: [:destroy]
-  end
+  resources :activities, only: [:index, :show, :destroy]
 
   resources :site_notices do
     collection do
@@ -153,7 +172,7 @@ AntCat::Application.routes.draw do
     end
   end
 
-  # Shallow routes for the show action for the feed
+  # Shallow routes for the show action for the activity feed.
   resources :taxon_history_items, only: [:show]
   resources :reference_sections, only: [:show]
   resources :synonyms, only: [:show]
@@ -166,19 +185,32 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :tasks do
+  resources :issues do
+    collection do
+      get :autocomplete
+    end
     member do
       put :close
       put :reopen
     end
   end
 
-  post :preview_markdown, to: "markdown#preview"
+  namespace :markdown do
+    post :preview, action: :preview
+    get :formatting_help
+    get :symbols_explanations
+  end
 
   resources :database_scripts, only: [:index, :show] do
     member do
       get :source
+      get :regenerate
     end
+  end
+
+  namespace :beta_and_such do
+    get :all_versions
+    get :show_version
   end
 
   unless Rails.env.production?

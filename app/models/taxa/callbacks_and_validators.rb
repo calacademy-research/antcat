@@ -1,3 +1,6 @@
+# TODO validate status, can currently be set to anything.
+# TODO add `before_destroy :check_not_referenced`, but allow suppressing it.
+
 module Taxa::CallbacksAndValidators
   extend ActiveSupport::Concern
 
@@ -13,7 +16,8 @@ module Taxa::CallbacksAndValidators
 
     before_create :build_default_taxon_state
     before_save { CleanNewlines.clean_newlines self, :headline_notes_taxt, :type_taxt }
-    before_save :set_name_caches, :delete_synonyms
+    before_save :set_name_caches
+    before_save { delete_synonyms if stopped_being_a_synonym? }
 
     # Additional callbacks for when `#save_initiator` is true (must be set manually).
     before_save { remove_auto_generated if save_initiator }
@@ -24,7 +28,7 @@ module Taxa::CallbacksAndValidators
   # Recursively save children, presumably to trigger callbacks and create
   # PaperTrail versions. Formicidae is excluded, probably for performance reasons?
   def save_children
-    return if is_a? Family
+    return if is_a? ::Family
 
     children.each &:save
     children.each &:save_children
@@ -41,8 +45,12 @@ module Taxa::CallbacksAndValidators
     end
 
     def delete_synonyms
-      return unless changes['status'].try(:first) == 'synonym'
-      synonyms_as_junior.destroy_all if synonyms_as_junior.present?
+      synonyms_as_junior.destroy_all
+    end
+
+    # When `changes` includes: `{ status: ["synonym", "<not synonym>"] }`
+    def stopped_being_a_synonym?
+      changes[:status].try(:first) == 'synonym'
     end
 
     def add_protocol_to_type_speciment_url
@@ -75,5 +83,6 @@ module Taxa::CallbacksAndValidators
 
     def set_taxon_state_to_waiting
       taxon_state.review_state = :waiting
+      taxon_state.save
     end
 end

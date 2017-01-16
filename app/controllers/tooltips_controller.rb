@@ -4,8 +4,7 @@ class TooltipsController < ApplicationController
   skip_before_action :authenticate_editor, only: [:enabled_selectors]
 
   def index
-    tooltips = Tooltip.all
-    @grouped_tooltips = tooltips.group_by(&:scope)
+    @grouped_tooltips = Tooltip.order(:key).group_by(&:scope)
   end
 
   def show
@@ -38,28 +37,21 @@ class TooltipsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @tooltip.update_attributes tooltip_params
-        if params[:referral] && params[:referral].size > 0
-          redirect_to params[:referral]
-          return
-        end
-
-        format.html { redirect_to(@tooltip, notice: 'Tooltip was successfully updated.') }
-        format.json { respond_with_bip(@tooltip) }
-      else
-        format.html { render action: :show }
-        format.json { respond_with_bip(@tooltip) }
+    if @tooltip.update tooltip_params
+      if params[:referral] && params[:referral].size > 0
+        redirect_to params[:referral]
+        return
       end
+
+      redirect_to @tooltip, notice: 'Tooltip was successfully updated.'
+    else
+      render action: :show
     end
   end
 
   def destroy
     @tooltip.destroy
-    respond_to do |format|
-      format.html { redirect_to tooltips_url, notice: 'Tooltip was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to tooltips_path, notice: 'Tooltip was successfully destroyed.'
   end
 
   def enabled_selectors

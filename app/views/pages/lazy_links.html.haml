@@ -4,7 +4,7 @@
 -breadcrumb :lazy_links
 
 .row
-  .medium-4.columns
+  .medium-3.columns
     %h5 Valid taxa
     %ul
       %li=link_to "Family", catalog_path(Family.first)
@@ -15,7 +15,7 @@
       %li=link_to "Species", catalog_path(Species.valid.first)
       %li=link_to "Subspecies", catalog_path(Subspecies.valid.first)
 
-  .medium-4.columns
+  .medium-3.columns
     %h5 References
     %ul
       %li=link_to "ArticleReference", reference_path(ArticleReference.first)
@@ -26,7 +26,7 @@
       %li=link_to "^-- parent (ArticleReference)", reference_path(142835)
       %li=link_to "UnknownReference", reference_path(UnknownReference.first)
 
-  .medium-4.columns
+  .medium-3.columns
     %h5 Test pages
     %ul
       %li=link_to "New Relic", "/newrelic"
@@ -36,3 +36,9 @@
       %li=link_to "reference_field", widget_tests_reference_field_test_path
       %li=link_to "taxt_editor", widget_tests_taxt_editor_test_path
       %li=link_to "tooltips", widget_tests_tooltips_test_path
+
+  .medium-3.columns
+    %h5 Misc.
+    %ul
+      %li=link_to "New Relic", "/newrelic"
+      %li=link_to "Routes", "/rails/info/routes"

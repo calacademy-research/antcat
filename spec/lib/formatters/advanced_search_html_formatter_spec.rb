@@ -15,7 +15,7 @@ describe Formatters::AdvancedSearchHtmlFormatter do
         author_names: [latreille], citation_year: '1809', title: "*Atta*",
         journal: science, series_volume_issue: '(1)', pagination: '3'
       taxon = create_genus 'Atta', incertae_sedis_in: 'genus', nomen_nudum: true
-      taxon.protonym.authorship.update_attributes reference: reference
+      taxon.protonym.authorship.update reference: reference
 
       actual = formatter.format_status_reference(taxon)
       expect(actual).to eq "<i>incertae sedis</i> in genus, <i>nomen nudum</i>"

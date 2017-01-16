@@ -1,28 +1,22 @@
-# More a helper than a proper model.
-# TODO figure out how to organize this, and improve performance.
-# See the git log for `.all_pending_actions_count` code that was
-# removed for performance reasons.
+class Notification < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
 
-class Notification
-  def self.open_tasks
-    Task.open
-  end
+  # "mentioned_in_thing" means something other than a comment. For example
+  # in the description of an issue or in the message of a site notice.
+  REASONS = %w( was_replied_to
+                mentioned_in_comment
+                mentioned_in_thing
+                active_in_discussion
+                creator_of_commentable )
 
-  def self.unreviewed_references
-    Reference.unreviewed
-  end
+  belongs_to :user
+  belongs_to :notifier, class_name: "User"
+  belongs_to :attached, polymorphic: true # The comment, or commentable, or anything.
 
-  def self.unreviewed_catalog_changes
-    Change.waiting
-  end
+  validates :user, presence: true
+  validates :notifier, presence: true
+  validates :reason, presence: true, inclusion: { in: REASONS }
+  validates :attached, presence: true, on: :create
 
-  def self.pending_user_feedbacks
-    Feedback.pending
-  end
-
-  # TODO ask user?
-  def self.unread_site_notices user = nil
-    return SiteNotice.none unless user
-    SiteNotice.unread_by user
-  end
+  scope :unseen, -> { where(seen: false) }
 end

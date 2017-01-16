@@ -3,9 +3,8 @@
 
 -content_for :head do
   =stylesheet_link_tag "catalog_only"
-  =javascript_include_tag "catalog"
-  -if user_is_superadmin?
-    =javascript_include_tag "superadmin_delete_button"
+  =javascript_include_tag "controllers/catalog/show/catalog_splitter"
+  =javascript_include_tag "controllers/catalog/show/taxon_browser_tab"
 
 #taxon_description
   .title.show-for-large
@@ -14,12 +13,14 @@
     .clearfix
   -if user_can_edit?
     =render "editor_buttons", taxon: @taxon
-  =render "taxon_description", taxon: @taxon
+
+  -if @taxon.original_combination?
+    =render "original_combination", taxon: @taxon
+  -else
+    =render "taxon_description", taxon: @taxon
 
 #splitter
 
 #taxon_browser.callout
   =render "taxon_key"
-  =render "taxon_browser", panels: @panels, self_and_parents: @self_and_parents
-
-#delete_message.delete-modal{type: 'hidden'}
+  =render "taxon_browser"

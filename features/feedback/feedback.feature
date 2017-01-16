@@ -18,15 +18,15 @@ Feature: Feedback
 
   Scenario: Remember entered values when toggling show/hide
     When I click on the Feedback link
-      And I fill in "feedback_name" with "Archibald"
-      And I fill in "feedback_email" with "archie@antcat.org"
+      And I fill in "feedback_name" with "Captain Flint"
+      And I fill in "feedback_email" with "flint@antcat.org"
       And I fill in "feedback_comment" with "Great site!!!"
       And I fill in "feedback_page" with "catalog/123"
       And I close the feedback form
     And I click on the Feedback link
     Then I should see the feedback form
-      And the name field within the feedback form should contain "Archibald"
-      And the email field within the feedback form should contain "archie@antcat.org"
+      And the name field within the feedback form should contain "Captain Flint"
+      And the email field within the feedback form should contain "flint@antcat.org"
       And the comment field within the feedback form should contain "Great site!!!"
       And the page field within the feedback form should contain "catalog/123"
 
@@ -65,7 +65,7 @@ Feature: Feedback
     Then I should see "Message sent"
 
     When I go to the feedback index
-    Then I should see "Archibald submitted:"
+    Then I should see "Archibald submitted"
 
   Scenario: Page field defaults to the current URL
     Given there is a genus "Calyptites"
@@ -109,31 +109,3 @@ Feature: Feedback
     And I press "Send Feedback"
     Then I should see "you're not a bot are you?"
     And I should not see "Message sent"
-
-  Scenario: Forwarding emails to editors who have requested it
-    Given the editors Archibald and Batiatus (but not Flint) have enabled feedback email forwarding
-    And I am logged in
-
-    When I click on the Feedback link
-    And I fill in "feedback_comment" with "Great site!!!"
-    And I press "Send Feedback"
-    Then I should see "Message sent"
-
-    When I go to the feedback index
-    And follow the link of the first feedback
-    Then I should see "<archibald@antcat.org>"
-    And I should see "<batiatus@antcat.org>"
-    And I should not see "flint@antcat.org"
-    And I should not see "sblum@calacademy.org"
-
-  Scenario: Forward emails to a hardcoded email if no users have enabled forwarding
-    Given I am logged in
-
-    When I click on the Feedback link
-    And I fill in "feedback_comment" with "Great site!!!"
-    And I press "Send Feedback"
-    Then I should see "Message sent"
-
-    When I go to the feedback index
-    And follow the link of the first feedback
-    Then I should see "sblum@calacademy.org"

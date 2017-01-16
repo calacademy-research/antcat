@@ -1,23 +1,6 @@
 module ApplicationHelper
   include LinkHelper
 
-  def make_title title
-    string = ''.html_safe
-    string << "#{title} - " if title
-    string << "AntCat"
-    string << (Rails.env.production? ? '' : " (#{Rails.env})")
-    string
-  end
-
-  def make_link_menu *items
-    content_tag :span do |content|
-      items.flatten.reduce(''.html_safe) do |string, item|
-        string << ' | '.html_safe unless string.empty?
-        string << item
-      end
-    end
-  end
-
   def pluralize_with_delimiters count, singular, plural = nil
     word = if count == 1
              singular
@@ -80,26 +63,14 @@ module ApplicationHelper
     end
   end
 
-  # dev-specific CSS. Disable by suffixing the url with ?prod=pizza,
-  # or toggle on/off from the Editor's Panel.
-  def dev_css
-    return unless Rails.env.development?
-
-    unless params[:prod] || session[:disable_dev_css]
-      stylesheet_link_tag "dev_env"
-    end
-  end
-
   # Moved from `ReferenceDecorator#format_timestamp`.
   # TODO something.
   def a_timestamp_formatter timestamp
     timestamp.strftime '%Y-%m-%d'
   end
 
-  # Hmm cannot remember why private..
-  private
-    def antcat_icon *css_classes
-      content_tag :span, nil,
-        class: ["antcat_icon"].concat(Array.wrap css_classes)
-    end
+  def antcat_icon *css_classes
+    content_tag :span, nil,
+      class: ["antcat_icon"].concat(Array.wrap css_classes)
+  end
 end

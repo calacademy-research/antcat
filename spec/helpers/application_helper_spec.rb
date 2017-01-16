@@ -1,22 +1,6 @@
-# This spec used to contain tests for user authorization. The helper methods
-# are now creating using `helper_method` in the ApplicationController, and
-# I do not know how to test that from here.
-
 require 'spec_helper'
 
 describe ApplicationHelper do
-  describe '#make_link_menu' do
-    it "puts bars between the items and is html safe" do
-      result = helper.make_link_menu ['a', 'b']
-      expect(result).to eq '<span>a | b</span>'
-    end
-
-    it "is always html safe" do
-      expect(helper.make_link_menu('a'.html_safe, 'b'.html_safe)).to be_html_safe
-      expect(helper.make_link_menu(['a'.html_safe, 'b'])).to be_html_safe
-    end
-  end
-
   describe "#count_and_noun" do
     it "formats a count with a noun" do
       expect(helper.count_and_noun(['1'], 'reference')).to eq '1 reference'
@@ -79,25 +63,25 @@ describe ApplicationHelper do
 
   describe "#antcat_icon" do
     it "formats" do
-      expect(helper.send :antcat_icon).to eq '<span class="antcat_icon"></span>'
+      expect(helper.antcat_icon).to eq '<span class="antcat_icon"></span>'
     end
 
     describe "arguments" do
       it "handles a single string" do
-        expect(icon_classes "task").to eq "antcat_icon task"
+        expect(icon_classes "issue").to eq "antcat_icon issue"
       end
 
       it "handles two strings" do
-        expect(icon_classes "task open").to eq "antcat_icon task open"
+        expect(icon_classes "issue open").to eq "antcat_icon issue open"
       end
 
       it "handles arrays" do
-        expect(icon_classes ["task open"]).to eq "antcat_icon task open"
+        expect(icon_classes ["issue open"]).to eq "antcat_icon issue open"
       end
     end
 
     def icon_classes *css_classes
-      extract_css_classes helper.send(:antcat_icon, *css_classes)
+      extract_css_classes helper.antcat_icon(*css_classes)
     end
 
     def extract_css_classes string

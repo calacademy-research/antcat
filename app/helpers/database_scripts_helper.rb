@@ -1,7 +1,13 @@
 module DatabaseScriptsHelper
   def format_database_script_tags tags
     tags.map do |tag|
-      css_class = tag == "slow" ? "label" : "white-label"
+      css_class = case tag
+                  when "slow"      then "warning-label"
+                  when "very-slow" then "warning-label"
+                  when "new!"      then "label"
+                  else                  "white-label"
+                  end
+
       content_tag :span, class: css_class do
         raw tag.html_safe
       end

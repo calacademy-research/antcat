@@ -1,17 +1,36 @@
 =enable_tooltips
 
--content_for :head do
-  =javascript_include_tag 'tooltips/generate_selector_test_string'
-
-:coffee
-  $ ->
-    $("#toggle_advanced_options").click (event) ->
-      event.preventDefault()
-      $("#advanced_options").slideToggle("slow")
+.buttons_right
+  =link_to "Hide/show advanced", "#", class: "btn-white", data: { show_hide_toggler_for: "advanced_options" }
 
 =form_for @tooltip do |f|
   =hidden_field_tag 'referral', @referral
   =render 'shared/errors_for', resource: @tooltip
+
+  -# Advanced options, hidden by default. Put first or the user may
+  -# not see it after toggling on smaller screens.
+  .row{data: { show_hide_toggable_id: "advanced_options" }}
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend Advanced options
+        %p
+          =f.label :selector do
+            Selector
+            =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
+          .clear
+          =f.text_area :selector, cols: 40, rows: 5
+
+        %p
+          =f.check_box :selector_enabled
+          =f.label :selector_enabled do
+            Selector enabled
+            =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
+        %p
+          =f.check_box :key_enabled
+          =f.label :key_enabled do
+            Key enabled
+            =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
+
   .row
     .medium-6.columns
       =f.label :key do
@@ -30,37 +49,9 @@
         Text
         =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
       .clear
-      =f.text_area :text, cols: 40, rows: 10
+      =f.text_area :text, cols: 40, rows: 5
 
-  .row
-    .medium-6.columns
-      %fieldset.fieldset#advanced_options{style: "display: none"}
-        %legend Advanced options
-        %p
-          =f.label :selector do
-            Selector
-            =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
-          .clear
-          =f.text_area :selector, cols: 40, rows: 10
-
-        %p
-          =f.check_box :selector_enabled
-          =f.label :selector_enabled do
-            Selector enabled
-            =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
-        %p
-          =f.check_box :key_enabled
-          =f.label :key_enabled do
-            Key enabled
-            =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-
-        %p
-          -# For letting editors test the selector, hooked into by jQuery.
-          =button_tag "Test Selector", type: "button", id: "test_selector_button", class: "btn-non-destructive"
-          %p#test_selector_notice
-          %pre#test_selector_snippet
   .row
     .medium-6.columns
       .actions
-        =link_to "Hide/show advanced", "#", id: "toggle_advanced_options", class: "btn-non-destructive"
-        =f.submit class: "btn-save"
+        =f.submit class: "btn-saves"

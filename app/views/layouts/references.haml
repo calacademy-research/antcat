@@ -1,16 +1,7 @@
--# TODO create helper or partial?
--@subnav = []
--@subnav << link_to('All References', references_path)
--@subnav << link_to('Latest Additions', latest_additions_references_path)
--if user_can_edit?
-  -@subnav << link_to('Latest Changes', latest_changes_references_path)
-  -@subnav << link_to('Export to EndNote', endnote_export_references_path(q: params[:q])) if params[:action] == "search"
--@subnav << link_to('Journals', journals_path)
--@subnav << link_to('Authors', authors_path)
--if user_can_edit?
-  -@subnav << link_to('Merge Authors', merge_authors_path)
-
 -content_for :breadcrumbs_right do
   =render 'references/search_form', params: params
+
+-content_for :subnavigation do
+  =subnavigation_menu references_subnavigation_links
 
 =render file: 'layouts/application'

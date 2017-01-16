@@ -3,14 +3,14 @@
 require_dependency 'taxon_workflow'
 
 class Taxon < ApplicationRecord
-  include UndoTracker
   include Taxa::CallbacksAndValidators
   include Taxa::Delete
   include Taxa::PredicateMethods
   include Taxa::References
+  include Taxa::ReorderHistoryItems
   include Taxa::Statistics
   include Taxa::Synonyms
-  include Feed::Trackable
+  include Trackable
 
   class TaxonExists < StandardError; end
 
@@ -32,6 +32,7 @@ class Taxon < ApplicationRecord
     :type_name_id, :type_specimen_code, :type_specimen_repository, :type_specimen_url,
     :type_taxt, :unresolved_homonym, :verbatim_type_locality
 
+  # TODO remove column `:collision_merge_id` (not used, all nil).
   # TODO maybe explain more of these. Here or elsewhere.
   # `origin`: if it's generated, where did it come from? string (e.g.: 'hol')
   # `display`: if false, won't show in the taxon browser. Used for misspellings and such.
@@ -89,8 +90,13 @@ class Taxon < ApplicationRecord
   scope :exclude_ranks, -> (*ranks) { where.not(type: ranks) }
 
   accepts_nested_attributes_for :name, :protonym, :type_name
-  has_paper_trail meta: { change_id: :get_current_change_id }
-  tracked on: :create, parameters: activity_parameters
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  tracked on: :create, parameters: proc {
+    parent_params = { rank: parent.rank,
+                      name: parent.name_html_cache,
+                      id:   parent.id } if parent
+    { rank: rank, name: name_html_cache, parent: parent_params }
+  }
 
   def save_from_form params, previous_combination = nil
     Taxa::SaveTaxon.new(self).save_from_form(params, previous_combination)
@@ -124,6 +130,16 @@ class Taxon < ApplicationRecord
     type.downcase
   end
 
+  ### Methods placed under observation for refactoring ###
+  def taxon_label
+    name.epithet_with_fossil_html fossil?
+  end
+
+  def name_with_fossil
+    name.to_html_with_fossil fossil?
+  end
+  ### End observatory ###
+
   # TODO rename. Candidate name: `author_citation`.
   def authorship_string
     return unless authorship_reference
@@ -135,31 +151,7 @@ class Taxon < ApplicationRecord
     string
   end
 
-  def self_and_parents
-    parents = []
-    current_taxon = self
-
-    while current_taxon
-      parents << current_taxon
-      current_taxon = current_taxon.parent
-    end
-    parents.reverse
+  def authorship_reference
+    protonym.try(:authorship).try(:reference)
   end
-
-  private
-    def authorship_reference
-      protonym.try(:authorship).try(:reference)
-    end
-
-    def activity_parameters
-      ->(taxon) do
-        hash = { rank: taxon.rank, name: taxon.name_html_cache }
-
-        parent = taxon.parent
-        hash[:parent] = { rank: parent.rank,
-                          name: parent.name_html_cache,
-                          id: parent.id } if parent
-        hash
-      end
-    end
 end

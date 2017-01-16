@@ -1,0 +1,24 @@
+-breadcrumb :beta_and_such
+
+.callout
+  Total versions: #{@version_count} (#{Time.zone.now}). This page is restricted to superadmins.
+
+.center-text
+  -first_version_date = @versions.first.created_at
+  %h5=time_ago_in_words first_version_date
+  %h6=first_version_date
+
+%table
+  -@versions.each do |version|
+    %tr
+      %td
+        =link_to version.id, beta_and_such_show_version_path(id: version.id), class: "btn-normal btn-tiny"
+        =inline_expandable version.inspect do
+          %pre=version.to_yaml
+
+.center-text
+  -last_version_date = @versions.last.created_at
+  %h5=time_ago_in_words last_version_date
+  %h6=last_version_date
+
+=will_paginate @versions

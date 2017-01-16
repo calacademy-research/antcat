@@ -19,5 +19,5 @@ class DatabaseScripts::Scripts::BadSubfamilyNames
 end
 
 __END__
-description: From %github71. Issue has already been fixed, but I had to test `#sql` with something.
+description: From %github71.
 tags: [regression-test]

@@ -8,7 +8,7 @@ class FeedbackController < ApplicationController
   invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
 
   def index
-    @feedbacks = Feedback.order(id: :desc).paginate(page: params[:page], per_page: 10)
+    @feedbacks = Feedback.by_status_and_date.paginate(page: params[:page], per_page: 10)
   end
 
   def show
@@ -20,7 +20,6 @@ class FeedbackController < ApplicationController
     @feedback.ip = request.remote_ip
     render_unprocessable and return if maybe_rate_throttle
 
-    # We're including the current name and email, or the index may lie in the future.
     if current_user
       @feedback.user = current_user
       @feedback.name = current_user.name
@@ -29,7 +28,6 @@ class FeedbackController < ApplicationController
 
     respond_to do |format|
       if @feedback.save
-        send_feedback_email
         format.json do
           json = { feedback_success_callout: feedback_success_callout }
           render json: json, status: :created
@@ -53,6 +51,30 @@ class FeedbackController < ApplicationController
   def reopen
     @feedback.reopen
     redirect_to @feedback, notice: "Successfully re-opened feedback item."
+  end
+
+  def autocomplete
+    q = params[:q] || ''
+
+    # See if we have an exact ID match.
+    search_results = if q =~ /^\d+ ?$/
+                       id_matches_q = Feedback.find_by id: q
+                       [id_matches_q] if id_matches_q
+                     end
+
+    search_results ||= Feedback.where("id LIKE ?", "%#{q}%").order(id: :desc)
+
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |feedback|
+          # Show less data on purpose for privacy reasons.
+          { id: feedback.id,
+            date: (feedback.created_at.strftime '%Y-%m-%d %H:%M'),
+            status: (feedback.open? ? "open" : "closed") }
+        end
+        render json: results
+      end
+    end
   end
 
   private
@@ -91,11 +113,6 @@ class FeedbackController < ApplicationController
     def feedback_success_callout
       render_to_string partial: "feedback_success_callout",
         locals: { feedback_id: @feedback.id }
-    end
-
-    # TODO move to a callback.
-    def send_feedback_email
-      FeedbackMailer.feedback_email(@feedback).deliver_now
     end
 
     def feedback_params

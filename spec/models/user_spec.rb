@@ -4,16 +4,6 @@ describe User do
   it { should validate_presence_of :name }
 
   describe "scopes" do
-    describe ".order_by_name" do
-      before do
-        %w(Anderson Zanderson Banderson).each { |name| create :user, name: name }
-      end
-
-      it "knows the alphabet" do
-        expect(User.order_by_name.pluck :name).to eq %w( Anderson Banderson Zanderson )
-      end
-    end
-
     describe "editors and non-editors" do
       let!(:user) { create :user }
       let!(:editor) { create :editor }
@@ -31,14 +21,6 @@ describe User do
       end
     end
 
-    describe ".feedback_emails_recipients" do
-      let!(:user) { create :user, receive_feedback_emails: true }
-
-      it "returns per the database" do
-        expect(User.feedback_emails_recipients).to eq [user]
-      end
-    end
-
     describe ".as_angle_bracketed_emails" do
       before do
         create :user, name: "Archibald",
@@ -53,14 +35,6 @@ describe User do
           "Archibald" <archibald@antcat.org>,
           "Batiatus" <batiatus@antcat.org>,
           "Flint" <flint@antcat.org>
-        STR
-      end
-
-      it "handles scopes" do
-        actual = User.feedback_emails_recipients.as_angle_bracketed_emails
-        expect(actual).to eq <<-STR.squish
-          "Archibald" <archibald@antcat.org>,
-          "Batiatus" <batiatus@antcat.org>
         STR
       end
     end
@@ -88,6 +62,52 @@ describe User do
 
     it "builds a string suitable for emails" do
       expect(user.angle_bracketed_email).to eq '"A User" <user@example.com>'
+    end
+  end
+
+  describe "#notify_because" do
+    let(:user) { create :user }
+    let(:notifier) { create :user }
+    let(:issue) { create :issue }
+
+    context "user and notifier are the same" do
+      it "doesn't create a notification" do
+        expect do
+          user.notify_because :mentioned_in_thing, attached: issue, notifier: user
+        end.to_not change { Notification.count }
+      end
+    end
+
+    context "user has already been notified for that attached/notifier combination" do
+      it "doesn't create a notification" do
+        user.notify_because :mentioned_in_thing, attached: issue, notifier: notifier
+
+        expect do
+          user.notify_because :mentioned_in_thing, attached: issue, notifier: notifier
+        end.to_not change { Notification.count }
+      end
+    end
+
+    it "*test the above shaky examples that may fail for other reasons*" do
+      expect do
+        user.notify_because :mentioned_in_thing, attached: issue, notifier: notifier
+      end.to change { Notification.count }.by 1
+    end
+  end
+
+  describe "#already_notified_for_attached_by_user?" do
+    let(:user) { create :user }
+    let(:notifier) { create :user }
+    let(:issue) { create :issue }
+
+    it "can tell" do
+      notified = user.send :already_notified_for_attached_by_user?, issue, notifier
+      expect(notified).to be_falsey
+
+      user.notify_because :mentioned_in_thing, attached: issue, notifier: notifier
+
+      notified_now_then = user.send :already_notified_for_attached_by_user?, issue, notifier
+      expect(notified_now_then).to be true
     end
   end
 end

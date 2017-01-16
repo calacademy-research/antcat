@@ -1,6 +1,8 @@
 -@title = "Synonym Relationship ##{@synonym.id}"
 -breadcrumb :synonym_relationship, @synonym
 
+=render "shared/not_part_of_the_catalog"
+
 %p
   Senior synonym:
   =taxon_link_or_deleted_string @synonym.senior_synonym_id

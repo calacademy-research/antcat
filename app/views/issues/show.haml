@@ -1,0 +1,36 @@
+-@title = "Issue ##{@issue.id}: #{@issue.title}"
+-breadcrumb :issue, @issue
+
+.left
+  %h5
+    -if @issue.archived?
+      Closed issue:
+    -else
+      Open issue:
+    =@issue.title
+  Added by
+  =@issue.adder.decorate.user_page_link
+  =time_ago_in_words @issue.created_at
+
+-if user_can_edit?
+  .buttons_right
+    -if @issue.archived?
+      =link_to "Re-open", reopen_issue_path(@issue), method: :put, class: "btn-saves-warning"
+    -else
+      =link_to "Close", close_issue_path(@issue), method: :put, class: "btn-saves"
+    =link_to "Edit", edit_issue_path(@issue), class: "btn-normal"
+.clear
+
+-if @issue.archived?
+  %p
+    Marked as
+    =@issue.status
+    by
+    =@issue.closer.decorate.user_page_link
+
+.row
+  .medium-12.columns
+    .callout
+      =markdown @issue.description
+
+=render partial: "comments/comments_area", locals: { commentable: @issue, new_comment: @new_comment }

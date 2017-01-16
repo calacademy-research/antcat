@@ -1,9 +1,4 @@
--@subnav = []
--@subnav << link_to('All Changes', changes_path)
--@subnav << link_to('Unreviewed Changes', unreviewed_changes_path)
-
--content_for :head do
-  -if user_can_edit?
-    =javascript_include_tag 'changes'
+-content_for :subnavigation do
+  =subnavigation_menu changes_subnavigation_links
 
 =render file: 'layouts/application'

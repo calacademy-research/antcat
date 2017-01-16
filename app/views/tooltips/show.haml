@@ -1,6 +1,9 @@
+-# Show and edit are the same page.
+
 -@title = "Tooltip ##{@tooltip.id}"
 -breadcrumb :tooltip, @tooltip
 
-.right=link_to 'Destroy', @tooltip, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-delete"
+.buttons_right
+  =link_to 'Destroy', @tooltip, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-delete"
 
 =render 'form'

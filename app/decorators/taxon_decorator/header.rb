@@ -1,118 +1,63 @@
 class TaxonDecorator::Header
-  include ERB::Util
-  include ActionView::Helpers::UrlHelper # For `#link_to`.
-  include ActionView::Helpers::TagHelper
-  include ActionView::Context
-  include ApplicationHelper
-  include CatalogHelper
-
-  include RefactorHelper
+  include Formatters::ItalicsHelper
 
   def initialize taxon
     @taxon = taxon
   end
 
-  def header
-    return original_combination_header if @taxon.original_combination?
-    normal_header
+  # This links the different parts of the binomial name. Only applicable to
+  # species and below, since higher ranks consists of a single word.
+  def link_each_epithet
+    return @taxon.decorate.link_to_taxon unless @taxon.kind_of? SpeciesGroupTaxon
+    return nonconforming_name_header_link(@taxon) if @taxon.name.nonconforming_name?
+
+    string = genus_link_or_blank_string @taxon
+
+    if @taxon.is_a? Species
+      return string << header_link(@taxon, @taxon.name.epithet_html.html_safe)
+    end
+
+    species = @taxon.species
+    if species
+      string << header_link(species, species.name.epithet_html.html_safe)
+      string << ' '.html_safe
+      epithets_without_species = @taxon.name.epithets.split(' ')[1..-1].join ' '
+      string << header_link(@taxon, italicize(epithets_without_species))
+    else
+      string << header_link(@taxon, italicize(taxon.name.epithets))
+    end
+
+    string
   end
 
   private
-    def normal_header
-      content_tag :div, class: 'header' do
-        content = ''.html_safe
-        content << content_tag(:span, header_name, class: css_classes_for_rank(@taxon))
-        content << content_tag(:span, header_authorship, class: "authorship")
-        content << content_tag(:span, status, class: "status")
-        content << content_tag(:span, gender, class: "gender")
-        content << content_tag(:span, review_state, class: "review_state")
-        content
-      end
+    # This name is a radical misspelling, or an obsolete name formulation.
+    # Display literally, but link genus if there is one.
+    def nonconforming_name_header_link taxon
+      string = genus_link_or_blank_string taxon
+
+      epithets = taxon.name.epithets
+
+      # Extra check since `Name#epithets` may be nil even when there is an `#epithet`.
+      # I believe there's a TODO somewhere saying that `#epithets` shuld be set in a callback.
+      #
+      # See http://localhost:3000/catalog/478122 for an example.
+      #   It used to say: "Pheidole Forel, 1886 see Pheidole guilelmimuelleri"
+      #   Instead of:     "Pheidole guilelmi Forel, 1886 see Pheidole guilelmimuelleri"
+      epithets = taxon.name.epithet if epithets.blank?
+
+      string << header_link(taxon, italicize(epithets))
     end
 
-    def original_combination_header
-      content_tag :div, class: 'header' do
-        content = ''.html_safe
-        content << content_tag(:span, header_name, class: css_classes_for_rank(@taxon))
-        if @taxon.current_valid_taxon
-          content << content_tag(:span, " see ", class: 'see')
-          content << content_tag(:span, header_name_for_taxon(@taxon.current_valid_taxon))
-        end
-        content
-      end
-    end
+    def genus_link_or_blank_string taxon
+      return "".html_safe unless taxon.genus
 
-    def header_name
-      header_name_for_taxon @taxon
-    end
-
-    def header_name_for_taxon taxon
-      return non_species_group_header_link(taxon) unless taxon.kind_of? SpeciesGroupTaxon
-
-      string = ''.html_safe
-
-      genus = taxon.genus
-      if genus
-        string << header_link(genus, genus.name.to_html_with_fossil(genus.fossil?))
-      else
-        # TODO fix this
-        # As of March 2016 there are 9 subspecies without a genus,
-        # `Subspecies.where(genus: nil).count`,
-        # and question marks are better than unrescued error + 404.
-        # Similar to the issue in Exporters::Antweb::MonkeyPatchTaxon::Subspecies
-        #
-        # Update November 2016: the issue has been fixed in the database;
-        # make sure it cannot happen again and remove this.
-        string << "???"
-      end
-
-      string << ' '.html_safe
-      if taxon.name.nonconforming_name
-        # This name is a radical misspelling, or an obsolete name formulation.
-        # Display literally.
-        string << header_link(taxon, italicize(taxon.name.epithets))
-      else
-        if taxon.is_a? Species
-          string << header_link(taxon, taxon.name.epithet_html.html_safe)
-        else
-          species = taxon.species
-          if species
-            string << header_link(species, species.name.epithet_html.html_safe)
-            string << ' '.html_safe
-            epithets_without_species = taxon.name.epithets.split(' ')[1..-1].join ' '
-            string << header_link(taxon, italicize(epithets_without_species))
-          else
-            string << header_link(taxon, italicize(taxon.name.epithets))
-          end
-        end
-      end
-
-      string
+      # Link name of the genus, but add dagger per to taxon's fossil status.
+      label = taxon.genus.name.to_html_with_fossil @taxon.fossil?
+      taxon.genus.decorate.link_to_taxon_with_label(label.html_safe) << " "
     end
 
     def header_link taxon, label
-      link_to label, "/catalog/#{taxon.id}"
-    end
-
-    def non_species_group_header_link taxon
-      string = ''.html_safe
-      string << header_link(taxon, taxon.name.to_html_with_fossil(taxon.fossil?))
-    end
-
-    def header_authorship
-      @taxon.authorship_string
-    end
-
-    def status
-      @taxon.decorate.taxon_status
-    end
-
-    def gender
-      (@taxon.name.gender || '').html_safe
-    end
-
-    def review_state
-      return unless @taxon.waiting?
-      "This taxon has been changed; changes awaiting approval"
+      taxon.decorate.link_to_taxon_with_label label
     end
 end

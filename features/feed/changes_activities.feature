@@ -1,6 +1,6 @@
 @feed
 Feature: Feed (changes)
-  @javascript @papertrail
+  @papertrail
   Scenario: Deleted subfamily and undid the change
     Given I log in as a catalog editor named "Archibald"
     Given activity tracking is disabled
@@ -9,11 +9,11 @@ Feature: Feed (changes)
     And I log in as a superadmin named "Archibald"
 
     When I go to the catalog page for "Ancatinae"
-      And I press "Delete"
-      And I press "Delete?"
+      And I follow "Delete..."
+      And I follow "Confirm and delete"
       And I go to the changes page
-      And I click "[data-undo-id]"
-      And I press "Undo!"
+      And I follow "Undo..."
+      And I follow "Undo!"
     And I go to the activity feed
     Then I should see "Archibald undid the change"
     And I should see 2 item in the feed
@@ -23,7 +23,7 @@ Feature: Feed (changes)
     And there are two unreviewed catalog changes for the feed
 
     When I go to the unreviewed changes page
-    And I press "Approve all"
+    And I follow "Approve all"
     And I go to the activity feed
     Then I should see "Archibald approved all unreviewed catalog changes"
     # Should be the below but something is not working in the steps.

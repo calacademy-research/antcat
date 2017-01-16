@@ -1,14 +1,14 @@
 # TODO avoid `require`.
 # TODO consider moving callbacks and validators to a concern.
+# TODO exclude caches from PaperTrail.
 
 require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_search'
 require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord
-  include UndoTracker
   include ReferenceComparable
-  include Feed::Trackable
+  include Trackable
 
   # Virtual attributes used in `RefrencesController`.
   attr_accessor :journal_name, :publisher_string
@@ -40,8 +40,8 @@ class Reference < ApplicationRecord
   scope :with_principal_author_last_name, ->(last_name) { where(principal_author_last_name_cache: last_name) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
-  tracked parameters: ->(reference) do { name: reference.keey } end
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  tracked on: :mixin_create_activity_only, parameters: proc { { name: keey } }
 
   def self.requires_title
     true
@@ -118,8 +118,8 @@ class Reference < ApplicationRecord
 
   def self.approve_all
     count = Reference.unreviewed.count
-    Feed::Activity.without_tracking { Reference.unreviewed.find_each &:approve }
-    Feed::Activity.create_activity :approve_all_references, count: count
+    Feed.without_tracking { Reference.unreviewed.find_each &:approve }
+    Activity.create_without_trackable :approve_all_references, count: count
   end
 
   # TODO merge into Workflow
@@ -128,7 +128,7 @@ class Reference < ApplicationRecord
   def approve
     self.review_state = "reviewed"
     save!
-    Feed::Activity.with_tracking { create_activity :finish_reviewing }
+    Feed.with_tracking { create_activity :finish_reviewing }
   end
 
   def new_from_copy
@@ -191,12 +191,9 @@ class Reference < ApplicationRecord
   def authors_for_keey
     names = author_names.map &:last_name
     case names.size
-    when 0
-      '[no authors]'
-    when 1
-      "#{names.first}"
-    when 2
-      "#{names.first} & #{names.second}"
+    when 0 then '[no authors]'
+    when 1 then "#{names.first}"
+    when 2 then "#{names.first} & #{names.second}"
     else
       string = names[0..-2].join ', '
       string << " & " << names[-1]
@@ -280,7 +277,7 @@ class Reference < ApplicationRecord
           fields.each do |field|
             next unless record[field]
             if record[field] =~ /{ref #{id}}/
-              references << table_ref(klass.table_name, record.id, field)
+              references << table_ref(klass.table_name, field, record.id)
               return true if return_early
             end
           end
@@ -288,62 +285,23 @@ class Reference < ApplicationRecord
       end
 
       Citation.where(reference: self).find_each do |record|
-        references << table_ref(Citation.table_name, record.id, :reference_id)
+        references << table_ref(Citation.table_name, :reference_id, record.id)
         return true if return_early
       end
 
       nestees.find_each do |record|
-        references << table_ref('references', record.id, :nesting_reference_id)
+        references << table_ref('references', :nesting_reference_id, record.id)
         return true if return_early
       end
       return false if return_early
       references
     end
 
-    # Note: different order as compared to other `table_ref`s.
-    def table_ref table, id, field
-      { table: table, id: id, field: field }
+    def table_ref table, field, id
+      { table: table, field: field, id: id }
     end
 
     def has_any_references?
       reference_references return_true_or_false: true
     end
 end
-
-=begin
-Notes
-
-Investigate these:
-Reference#author_names_string
-Reference#author_names_string_cache
-Reference#principal_author_last_name
-Reference#principal_author_last_name_cache
-Reference#reference_author_names
-Reference#author_names_suffix
-Reference#author_names
-
-Taxon#authorship_string
-
----------------
-                                    # Example from `r = Reference.first`
-
-# OK / a different thing.
-r.authors                           # Array of `Author`s
-r.author_names                      # AuthorName CollectionProxy
-r.reference_author_names            # ReferenceAuthorName CollectionProxy
-r.author_names_suffix               # nil; probably non-nil for things like ", Jr."
-
-# Similar
-r.keey                              # "Abdul-Rassoul, Dawah & Othman, 1978"
-r.author_names_string_cache         # "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y."
-r.author_names_string               # delegates to `r.author_names_string_cache`
-r.decorate...... more
-
-# Possibly only used for sorting.
-r.principal_author_last_name_cache  # The real (db) attribute of `r.principal_author_last_name`
-r.principal_author_last_name        # "Abdul-Rassoul"; possibly only used for sorting.
-
-# Other similar metods
-Probably.
-
-=end

@@ -1,4 +1,4 @@
-@javascript @papertrail
+@papertrail
 Feature: Workflow
   As an editor of AntCat
   I want to change a taxon's parent
@@ -6,7 +6,7 @@ Feature: Workflow
   so mistakes can be repaired
 
   Background:
-    Given these references exist
+    Given this reference exists
       | authors | citation   | title | year |
       | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And there is a subfamily "Formicinae"
@@ -23,27 +23,25 @@ Feature: Workflow
   # undo first change to species b
   # see what happens!
 
+  @javascript
   Scenario: Changing a taxon and seeing it on the Changes page, undoing it
-    When I go to the catalog page for "Formicinae"
-    And I press "Edit"
+    When I go to the edit page for "Formicinae"
     And I fill in "taxon_headline_notes_taxt" with "asdfgh"
     And I save my changes
     And I go to the catalog page for "Formicinae"
     Then I should see "This taxon has been changed; changes awaiting approval"
-    # Should you really see "Formicinae" in the *changes* at this step?
-    #* I should see the name "Formicinae" in the changes
+    And I should see "asdfgh"
 
     When I go to the changes page
-    Then I should see "Formicinae"
-    And I should see "Mark Wilden changed Formicinae"
-    And I should see the notes "asdfgh" in the changes
+    Then I should see "Mark Wilden changed Formicinae"
+    And I should see "asdfgh"
 
-    When I follow "Undo"
+    When I follow "Undo..."
     Then I should see "This undo will roll back the following changes"
     And I should see "Formicinae"
     And I should see "changed by Mark Wilden"
 
-    When I press "Undo!"
+    When I follow "Undo!"
     Then I should not see "Formicinae"
     And I should not see "asdfgh"
 
@@ -58,6 +56,7 @@ Feature: Workflow
   #  this where we undo the most recent and then there is one,
   # then the next most recent and there are none, and we're back to baseline.
 
+  @javascript
   Scenario: Changing a species's genus twice by using the helper link, undo twice
     Given there is an original species "Atta major" with genus "Atta"
     And there is a genus "Becton"
@@ -98,10 +97,10 @@ Feature: Workflow
     Then I should see "an obsolete combination of Chatsworth major"
 
     When I go to the changes page
-    And I click "[data-undo-id='2']"
+    And I follow the first "Undo..."
     Then I should see "This undo will roll back the following changes"
 
-    When I press "Undo!"
+    When I follow "Undo!"
     Then I should see the genus "Becton" in the changes
     And I should see the name "major" in the changes
     And I should not see "Chatsworth"
@@ -110,10 +109,10 @@ Feature: Workflow
     Then I should see "Becton major" in the header
 
     When I go to the changes page
-    Then I click "[data-undo-id='1']"
+    And I follow the first "Undo..."
     Then I should see "This undo will roll back the following changes"
 
-    When I press "Undo!"
+    When I follow "Undo!"
     Then I should not see "Becton"
     And I should not see "major"
     And I should not see "Chatsworth"
@@ -121,6 +120,7 @@ Feature: Workflow
     When I go to the catalog page for "Atta major"
     Then I should see "Atta major" in the header
 
+  @javascript
   Scenario: Changing a species's genus twice by using the helper link, undo oldest, restored to original condition.
     Given there is an original species "Atta major" with genus "Atta"
     And there is a genus "Becton"
@@ -151,10 +151,10 @@ Feature: Workflow
 
     When I save my changes
     And I go to the changes page
-    And I click "[data-undo-id='1']"
+    And I follow the second "Undo..."
     Then I should see "This undo will roll back the following changes"
 
-    When I press "Undo!"
+    When I follow "Undo!"
     Then I should not see "Becton"
     And I should not see "major"
     And I should not see "Chatsworth"
@@ -182,8 +182,8 @@ Feature: Workflow
     Then I should see "Antcatia"
     And I should see "Tactania"
 
-    When I press "Delete"
-    And I press "Delete?"
+    When I follow "Delete..."
+    And I follow "Confirm and delete"
     And I go to the catalog page for "Formicidae"
     Then I should not see "Ancatinae"
 
@@ -192,8 +192,8 @@ Feature: Workflow
     And I should not see "Tactania"
 
     When I go to the changes page
-    And I click "[data-undo-id='1']"
-    And I press "Undo!"
+    And I follow the first "Undo..."
+    And I follow "Undo!"
     And I go to the catalog page for "Formicidae"
     Then I should see "Ancatinae"
 

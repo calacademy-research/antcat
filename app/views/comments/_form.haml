@@ -2,8 +2,9 @@
   =f.hidden_field :commentable_id, value: @new_comment.commentable_id
   =f.hidden_field :commentable_type, value: @new_comment.commentable_type
   .row
-    .small-6.columns.end
-      =f.text_area :body, placeholder: "Add comment here"
+    .small-12.columns.end
+      =f.text_area :body, rows: 4, placeholder: "Add comment here", data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Write" }
+
   .row
-    .small-6.columns.end
-      =button_tag "Post Comment", class: "btn-normal"
+    .small-12.columns.end
+      =button_tag "Post Comment", class: "btn-saves"

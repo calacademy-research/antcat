@@ -12,12 +12,6 @@ Given(/^there is a genus "([^"]*)" with protonym name "(.*?)"$/) do |name, proto
   genus.protonym.name = Name.find_by_name protonym_name if protonym_name
 end
 
-Given(/^there is a genus "([^"]*)" without protonym authorship$/) do |name|
-  protonym = create :protonym
-  genus = create_genus name, protonym: protonym
-  genus.protonym.update_attribute :authorship, nil
-end
-
 Given(/^there is a genus "([^"]*)" with type name "(.*?)"$/) do |name, type_name|
   genus = create_genus name
   genus.type_name = Name.find_by_name type_name
@@ -92,5 +86,5 @@ end
 
 Given(/^there is a genus "([^"]*)" with "([^"]*)" name$/) do |name, gender|
   genus = create_genus name
-  genus.name.update_attributes! gender: gender
+  genus.name.update! gender: gender
 end

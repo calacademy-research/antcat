@@ -74,12 +74,6 @@ describe Reference do
           author_names_suffix: ' (eds.)'
         expect(reference.reload.author_names_string).to eq 'Fisher, B.L.; Ward, P.S. (eds.)'
       end
-
-      it "should be possible to read from and assign to, aliased to author_names_string_cache" do
-        reference = build_stubbed :reference
-        reference.author_names_string = 'foo'
-        expect(reference.author_names_string).to eq 'foo'
-      end
     end
 
     describe "updating, when things change" do
@@ -145,7 +139,7 @@ describe Reference do
     context "when an author_name's name is changed" do
       it "updates its author_names_string" do
         reference = create :reference, author_names: [ward_ps]
-        ward_ps.update_attributes name: 'Bolton, B.'
+        ward_ps.update name: 'Bolton, B.'
         expect(reference.reload.principal_author_last_name).to eq 'Bolton'
       end
     end
@@ -249,6 +243,15 @@ describe Reference do
 
         results = Reference.with_principal_author_last_name 'Ward'
         expect(results).to eq [possible_reference]
+      end
+    end
+
+    describe ".unreviewed_references" do
+      it "returns unreviewed references" do
+        unreviewed = create :article_reference, review_state: "reviewing"
+        create :article_reference, review_state: "reviewed"
+
+        expect(Reference.unreviewed).to eq [unreviewed]
       end
     end
   end

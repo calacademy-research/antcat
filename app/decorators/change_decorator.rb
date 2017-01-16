@@ -38,36 +38,6 @@ class ChangeDecorator < Draper::Decorator
     format_time_ago change.approved_at
   end
 
-  def undo_button _taxon
-    # TODO sort this out
-    # This is the snippet that was moved here from ChangesHelper
-    #   # This extra check (for change_type deleted) covers the case when we've deleted children
-    #   # in a change that only shows the parent being deleted.
-    #   unless current_user.nil?
-    #     if  (!change[:change_type] == 'delete' && taxon.can_be_edited_by?(current_user)) or current_user.can_edit
-    #       if change.versions.size > 0
-    #         button 'Undo', 'undo_button', 'data-undo-id' => change.id, class: 'undo_button_' + change.id.to_s
-    #       end
-    #     end
-    #   end
-    #
-    # But it looks like the extra check is always ignored? Move stuff around and
-    # after a while it will look like this:
-    #   return unless helpers.user_can_edit? || change.versions.present?
-    #
-    #   if change.change_type == 'delete' || helpers.user_can_edit?
-    #     button 'Undo', 'undo_button', 'data-undo-id' => change.id,
-    #       class: 'undo_button_' + change.id.to_s
-    #   end
-    #
-    # `taxon.can_be_edited_by?` [now removed, at least temporarily], effectively
-    # did the same thing as `helpers.user_can_edit?`
-
-    return unless helpers.user_can_edit? || change.versions.present?
-
-    helpers.link_to "Undo", "#", class: "btn-undo", data: { 'undo-id' => change.id }
-  end
-
   def approve_button taxon, changed_by: nil
     return unless helpers.user_can_edit?
     return if taxon.approved?
@@ -79,7 +49,7 @@ class ChangeDecorator < Draper::Decorator
     # does not allow for this to happen, just an additional check (?).
     if taxon.taxon_state.nil? || taxon.can_be_approved_by?(change, helpers.current_user, changed_by)
       helpers.link_to 'Approve', helpers.approve_change_path(change),
-        method: :put, class: "btn-normal",
+        method: :put, class: "btn-saves",
         data: { confirm: "Are you sure you want to approve this change?" }
     end
   end

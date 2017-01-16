@@ -18,15 +18,15 @@ Feature: Using the catalog
 
   Scenario: Going to the root
     When I go to the catalog
-    Then I should see "Formicidae" in the contents
+    Then I should see "Formicidae" in the taxon description
     And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
     And I should see "Subfamily of Formicidae: Dolichoderinae."
 
   Scenario: Seeing the family when it's been explicitly requested
     When I go to the catalog page for "Formicidae"
-    Then I should see "Formicidae" in the contents
-    And I should see "valid" in the contents
+    Then I should see "Formicidae" in the taxon description
+    And I should see "valid" in the taxon description
     And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
     And I should see "Subfamily of Formicidae: Dolichoderinae."
@@ -49,8 +49,8 @@ Feature: Using the catalog
 #
 #  Scenario: Selecting a genus without a subfamily
 #    When I go to the catalog
-#    * I follow "(no subfamily)"
-#    * I follow "Atta" in the index
+#    And I follow "(no subfamily)"
+#    And I follow "Atta" in the index
 #    Then "(no subfamily)" should be selected
 #    And "Atta" should be selected
 #    And I should see "Atta history"
@@ -68,7 +68,7 @@ Feature: Using the catalog
     And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderini" in the index
     Then "Dolichoderinae" should be selected
-    And I should see "Dolichoderini" in the contents
+    And I should see "Dolichoderini" in the taxon description
     And "Dolichoderini" should be selected
     And I should see "Dolichoderini history"
     And I should see "Dolichoderus" in the index
@@ -126,3 +126,11 @@ Feature: Using the catalog
     And I follow "Dolichoderinae" in the index
     Then I should not see "Lasius" in the genera index
     And I should see "Brownerus" in the genera index
+
+  Scenario: Displaying items containing broken taxt links
+    Given there is a genus "Atta"
+    And Atta has a history section item with two linked references, of which one does not exists
+
+    When I go to the catalog page for "Atta"
+    Then I should see "Batiatus, 2000"
+    And I should see "CANNOT FIND REFERENCE WITH ID 99999"

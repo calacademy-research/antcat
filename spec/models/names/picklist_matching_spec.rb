@@ -10,7 +10,7 @@ describe Names::PicklistMatching do
 
     it "can find one prefix match" do
       name = find_or_create_name 'Atta'
-      name.update_attributes name_html:  '<i>Atta</i>'
+      name.update name_html: '<i>Atta</i>'
 
       expect(Name.picklist_matching('att')).to eq [
         id: name.id, name: name.name,
@@ -20,7 +20,7 @@ describe Names::PicklistMatching do
 
     it "can find one fuzzy match" do
       name = find_or_create_name 'Gesomyrmex'
-      name.update_attributes name_html:  '<i>Gesomyrmex</i>'
+      name.update name_html: '<i>Gesomyrmex</i>'
 
       expect(Name.picklist_matching('gyx')).to eq [
         id: name.id, name: name.name,
@@ -30,7 +30,7 @@ describe Names::PicklistMatching do
 
     it "returns the taxon_id, if there is one" do
       bothroponera = find_or_create_name 'Bothroponera'
-      bothroponera.update_attributes name_html: '<i>Bothroponera</i>'
+      bothroponera.update name_html: '<i>Bothroponera</i>'
       brachyponera = create_genus 'Brachyponera'
 
       expect(Name.picklist_matching('bera')).to eq [
@@ -48,13 +48,13 @@ describe Names::PicklistMatching do
 
     it "puts prefix matches at the beginning" do
       acropyga = find_or_create_name 'Acropyga dubitata'
-      acropyga.update_attributes name_html: '<i>Acropyga dubitata</i>'
+      acropyga.update name_html: '<i>Acropyga dubitata</i>'
 
       atta = find_or_create_name 'Atta'
       atta.update_attribute :name_html, "<i>Atta</i>"
 
       acanthognathus = find_or_create_name 'Acanthognathus laevigatus'
-      acanthognathus.update_attributes name_html: '<i>Acanthognathus laevigatus</i>'
+      acanthognathus.update name_html: '<i>Acanthognathus laevigatus</i>'
 
       expect(Name.picklist_matching('atta')).to eq [
         {

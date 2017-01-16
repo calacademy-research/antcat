@@ -28,7 +28,7 @@
             -commentable_type = comment.commentable_type
             -if commentable
               =commentable_type.underscore.humanize.downcase
-              -link_title = if commentable_type.in? ["SiteNotice", "Task"]
+              -link_title = if commentable_type.in? ["SiteNotice", "Task", "Issue"]
                 -commentable.title
               -else
                 -"##{commentable.id}"
@@ -38,7 +38,7 @@
 
             -# '"comment body"'
             =surround '"' do
-              =truncate comment.body, length: 200, omission: "... (continued)"
+              =truncated_comment_for_tables comment
 
           %td.no-wrap
             =time_ago_in_words comment.created_at

@@ -22,23 +22,23 @@
           %td.parent_not_found Parent not found in the database
     %tr
       %th Status
-      %td.status-test-hook=format_status taxon.status
+      %td=Status[taxon.status].to_s
 
     -if taxon.incertae_sedis_in.present?
       %tr
         %th Incertae sedis in
-        %td.incertae_sedis-test-hook=taxon.incertae_sedis_in
+        %td=taxon.incertae_sedis_in
 
     -attributes = format_attributes taxon
     -if attributes.present?
       %tr
         %th Attributes
-        %td.attributes-test-hook=attributes
+        %td=attributes
 
     -if taxon.headline_notes_taxt.present?
       %tr
         %th Notes
-        %td.notes-test-hook=format_taxt taxon.headline_notes_taxt
+        %td=TaxtPresenter[taxon.headline_notes_taxt].to_html
 
   -protonym = taxon.protonym
   -if protonym
@@ -47,35 +47,33 @@
 
       %tr
         %th Name
-        %td.protonym_name-test-hook=format_taxon_name protonym.name
+        %td=format_taxon_name protonym.name
 
       -attributes = format_protonym_attributes taxon
       -if attributes.present?
         %tr
           %th Attributes
-          %td.protonym_attributes-test-hook=attributes
+          %td=attributes
 
       -authorship = protonym.authorship
       %tr
         %th Authorship
-        %td.authorship_reference-test-hook
-          =authorship.reference.decorate.formatted
+        %td=authorship.reference.decorate.formatted
       %tr
         %th Page
-        %td.page-test-hook=authorship.pages
+        %td=authorship.pages
       %tr
         %th Forms
-        %td.forms-test-hook=authorship.forms
+        %td=authorship.forms
       %tr
         %th Locality
-        %td.locality-test-hook=protonym.locality
+        %td=protonym.locality
 
       -authorship_notes = authorship.notes_taxt
       -if authorship_notes.present?
         %tr
           %th Notes
-          %td.authorship_notes-test-hook
-            =format_taxt authorship_notes
+          %td=TaxtPresenter[authorship_notes].to_html
 
   -if taxon.type_name.present?
     %table
@@ -83,19 +81,17 @@
 
       %tr
         %th Name
-        %td.type_name-test-hook
-          =format_taxon_name taxon.type_name
+        %td=format_taxon_name taxon.type_name
 
-      -attributes = format_type_attributes taxon
-      -if attributes.present?
+      -if taxon.type_fossil?
         %tr
           %th Attributes
-          %td.type_attributes-test-hook=attributes
+          %td Fossil
 
       -if taxon.type_taxt.present?
         %tr
           %th Notes
-          %td.type_notes-test-hook=format_taxt taxon.type_taxt
+          %td=TaxtPresenter[taxon.type_taxt].to_html
 
   =render 'history_items', taxon: taxon
   =render 'reference_sections', taxon: taxon

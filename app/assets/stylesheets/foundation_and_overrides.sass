@@ -83,18 +83,31 @@
 button, .ui-widget button button
   @include normal-sized-button
 
-.btn-cancel, .btn-white, .btn-delete, .btn-destructive, .btn-normal, .btn-edit, .btn-login, .btn-new, .btn-non-destructive, .btn-normal, .btn-save, .btn-search, .btn-undo,  .btn-dangerous
+// Button colors
+//  ---------------------------------------------------------------------------
+// | Color | What for                         | Class
+// | ------|----------------------------------|--------------------------------
+// | Blue  | Save, publish, etc (hits the db) | .btn-saves
+// | Red   | Save, and watch out!             | .btn-saves-warning, .btn-delete
+// | White | Cancel, help -- harmless stuff   | .btn-cancel, .btn-white
+// | Green | Everything else, "ok whatever"   | .btn-normal
+//  ---------------------------------------------------------------------------
+
+.btn-normal, .btn-saves, .btn-saves-warning, .btn-delete, .btn-cancel, .btn-white
   @include normal-sized-button
 
-.btn-delete, .btn-destructive, .btn-undo, .btn-dangerous
+.btn-saves
+  @include button-style($color_pretty, auto, auto)
+
+.btn-saves-warning, .btn-delete
   @include button-style($alert-color, auto, auto)
 
 .btn-cancel, .btn-white
   border: 1px solid #000
   @include button-style(#fff, auto, #000)
 
-// TODO make smarter
-a.btn-cancel, a.btn-white, a.btn-delete, a.btn-destructive, a.btn-normal, a.btn-edit, a.btn-login, a.btn-new, a.btn-non-destructive, a.btn-normal, a.btn-save, a.btn-search, a.btn-undo .btn-dangerous
+// Make button styles work for links too.
+a.btn-normal, a.btn-saves, a.btn-saves-warning, a.btn-delete, a.btn-cancel, a.btn-white
   padding: 0.55rem 0.75rem
   color: #fff !important
 
@@ -104,15 +117,15 @@ a.btn-cancel, a.btn-white
 .btn-tiny
   padding: 0.1rem 0.3rem !important
   font-size: rem-calc(12) !important
+  // Remove border added by ".button" (which is required by ".disabled").
+  border: 0
+
+// Restore borders on white buttons (removed above).
+.btn-tiny.btn-cancel
+  border: 1px #000 solid
 
 button.close-button
   background-color: transparent
-
-// Advanced search form hack
-// The left margin disappears in prod, and I cannot reproduce in dev,
-// even after precompiling the assets. See #135.
-a.btn-download
-  margin-left: 0.3rem
 
 .tabs-title
   a
@@ -123,3 +136,10 @@ a.btn-download
   background-color: #fff
   border: 1px solid #000
   color: #000 !important
+
+.no-border
+  border: 0
+
+.warning-label
+  @extend .label
+  background-color: $color_danger

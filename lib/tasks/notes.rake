@@ -1,25 +1,31 @@
-# Dev only. Includes more types of annotation in addition the customary "TODO".
-# Based on http://crypt.codemancers.com/posts/
-# 2013-07-12-redefine-rake-routes-to-add-your-own-custom-tag-in-Rails/
-
-task(:notes).clear
-
-# Clear all subtasks to avoid listing each annotation twice.
-namespace :notes do
-  annotations = [:optimize, :fixme, :todo, :hack, :wip]
-  annotations.each { |annotation| task(annotation).clear }
+# Add additional extensions.
+# So in Sass files, look for lines matching: `<optional whitespace> // TODO x`.
+SourceAnnotationExtractor::Annotation.class_eval do
+  register_extensions("sass")   { |tag| %r(//\s*(#{tag}):?\s*(.*?)$) }
+  register_extensions("haml")   { |tag| %r(-#\s*(#{tag}):?\s*(.*?)$) }
+  register_extensions("coffee") { |tag| %r(#\s*(#{tag}):?\s*(.*?)$) }
+  register_extensions("erb")    { |tag| %r(#\s*(#{tag}):?\s*(.*?)$) }
 end
 
+# Include more tags in addition "TODO|OPTIMIZE|FIXME".
 desc "Enumerate all annotations (use notes:optimize, :fixme, :todo, :hack or :wip)"
 task :notes do
-  SourceAnnotationExtractor.enumerate "OPTIMIZE|FIXME|TODO|HACK|WIP", tag: true
+  # Clear `rake notes` to avoid listing each annotation twice.
+  task(:notes).clear
+
+  tags = "OPTIMIZE|FIXME|TODO|HACK|WIP"
+  SourceAnnotationExtractor.enumerate tags, dirs: annotation_dirs, tag: true
 end
 
 namespace :notes do
   task :wip do
-    SourceAnnotationExtractor.enumerate "WIP", tag: true
+    SourceAnnotationExtractor.enumerate "WIP", dirs: annotation_dirs, tag: true
   end
   task :hack do
-    SourceAnnotationExtractor.enumerate "WIP", tag: true
+    SourceAnnotationExtractor.enumerate "WIP", dirs: annotation_dirs, tag: true
   end
+end
+
+def annotation_dirs
+  SourceAnnotationExtractor::Annotation.directories + %w(features script spec)
 end

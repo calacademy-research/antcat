@@ -46,37 +46,40 @@ class Exporters::Endnote::Formatter::Base
 end
 
 class Exporters::Endnote::Formatter::Article < Exporters::Endnote::Formatter::Base
-  def kind
-    'Journal Article'
-  end
+  private
+    def kind
+      'Journal Article'
+    end
 
-  def add_contents
-    add 'J', @reference.journal.name
-    add 'N', @reference.series_volume_issue
-    add 'P', @reference.pagination
-  end
+    def add_contents
+      add 'J', @reference.journal.name
+      add 'N', @reference.series_volume_issue
+      add 'P', @reference.pagination
+    end
 end
 
 class Exporters::Endnote::Formatter::Book < Exporters::Endnote::Formatter::Base
-  def kind
-    'Book'
-  end
+  private
+    def kind
+      'Book'
+    end
 
-  def add_contents
-    add 'C', @reference.publisher.place.name
-    add 'I', @reference.publisher.name
-    add 'P', @reference.pagination
-  end
+    def add_contents
+      add 'C', @reference.publisher.place.name
+      add 'I', @reference.publisher.name
+      add 'P', @reference.pagination
+    end
 end
 
 class Exporters::Endnote::Formatter::Unknown < Exporters::Endnote::Formatter::Base
-  def kind
-    'Generic'
-  end
+  private
+    def kind
+      'Generic'
+    end
 
-  def add_contents
-    add '1', @reference.citation
-  end
+    def add_contents
+      add '1', @reference.citation
+    end
 end
 
 class Exporters::Endnote::Formatter::Nested < Exporters::Endnote::Formatter::Base

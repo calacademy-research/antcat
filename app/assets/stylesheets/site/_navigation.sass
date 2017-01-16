@@ -8,24 +8,19 @@
       margin-left: 0 !important
     .menu > li > a
       color: #fff !important
+    // Restore mouse pointer for links in labels.
+    li.unseen-notifications > a > span
+      cursor: pointer
 
   #desktop-only
     #desktop-logo
       padding-top: 3rem
-
     #desktop-menu
       padding-top: 4rem
-
       #desktop-upper-menu
         position: absolute
         right: 0
         top: 1rem
-        .notification.label
-          margin-top: -5px
-          margin-left: 5px
-          a
-            color: #fff !important
-
       #desktop-lower-menu
         .expandable-catalog-search
           width: 130px
@@ -34,8 +29,6 @@
           background-color: #fff !important
           &:focus
             width: 250px
-        .centered-text
-          text-align: center
         .without-top-padding
           padding-top: 0 !important
 
@@ -48,13 +41,18 @@
       > span
         padding-right: 1rem
 
+    li.unseen-notifications
+      list-style: none
+      float: right
+      a
+        color: #fff !important
+
   #breadcrumbs
     padding: 0.4rem 1rem
     color: #fff
     background: $color_green
     a
       color: #fff
-
     // Firefox tweak
     button
       vertical-align: top

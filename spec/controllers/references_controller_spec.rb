@@ -29,45 +29,6 @@ describe ReferencesController do
     end
   end
 
-  describe "#latest_additions" do
-    it "sorts by created_at" do
-      expect(Reference).to receive(:list_references).with hash_including order: :created_at
-      get :latest_additions
-    end
-
-    it "renders its own template" do
-      response = get :latest_additions
-      expect(response).to render_template "latest_additions"
-    end
-  end
-
-  describe "#latest_changes" do
-    context "logged in" do
-      before do
-        editor = create :editor
-        sign_in editor #TODO create/find helper method #sign_in_editor
-      end
-
-      it "renders its own template" do
-        response = get :latest_changes
-        expect(response).to render_template "latest_changes"
-      end
-
-      it "sorts by updated_at" do
-        expect(Reference).to receive(:list_references).with hash_including order: :updated_at
-        get :latest_changes
-      end
-    end
-
-    context "logged out" do
-      it "redirects to the sign in page" do
-        expect(Reference).to_not receive :list_references
-        get :latest_changes
-        expect(response).to redirect_to new_user_session_path
-      end
-    end
-  end
-
   describe "#download" do
     describe "reference without a document" do
       it "raises an error" do

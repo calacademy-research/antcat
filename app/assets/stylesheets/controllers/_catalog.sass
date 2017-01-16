@@ -1,9 +1,15 @@
+@import "colors"
+
 #catalog-controller
   #taxon_browser
     overflow: scroll
     overflow-x: hidden
     height: auto
 
+    .shared-spinner
+      color: $color_green !important
+      display: none
+      margin-right: 1rem
     .tabs-content
       min-height: 115px
     .snaked
@@ -25,6 +31,21 @@
         margin-top: 0.5rem
     .tabs-panel
       padding-bottom: 0
+
+    // Equally space out elements.
+    #taxon_key
+      display: none
+      width: 100%
+      text-align: justify
+      div
+        display: inline-block
+        margin-top: 0
+        margin-bottom: -1em
+      &:after
+        content: ""
+        width: 100%
+        display: inline-block
+      margin-bottom: -1rem
 
   #splitter
     background-color: #eee
@@ -50,22 +71,13 @@
       font-size: 15px
 
     .header
+      font-size: 15px
       .name
-        color: black !important
         font-size: 18px
         font-weight: bold
-      .authorship
-        font-size: 15px
-        margin-left: 6px
-      .status, .gender
-        font-size: 15px
-        margin-left: 6px
       .review_state
-        margin-left: 8px
         font-style: italic
         color: red
-      .see
-        margin-left: 6px
 
     .statistics
       font-style: italic
@@ -75,9 +87,6 @@
 
     .headline
       margin-bottom: 4px
-      .epithet
-        font-weight: bold
-        font-style: italic
       .name
         font-weight: bold
 
@@ -85,9 +94,8 @@
       font-size: 15px
       padding-left: 0
       line-height: 1.2
-      .history_item
-        table
-          border-spacing: 0
+      li:hover .show-on-hover
+        display: inline
 
     .child_lists
       font-size: 15px
@@ -108,21 +116,3 @@
     .change_history
       font-size: 13px
       font-style: italic
-
-  // equally space out elements
-  #taxon_key
-    display: none
-    width: 100%
-    text-align: justify
-
-    div
-      display: inline-block
-      margin-top: 0
-      margin-bottom: -1em
-
-    &:after
-      content: ""
-      width: 100%
-      display: inline-block
-
-    margin-bottom: -1rem

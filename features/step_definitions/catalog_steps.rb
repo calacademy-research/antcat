@@ -22,11 +22,11 @@ When(/^I click the reference key expansion$/) do
 end
 
 Then(/^I should see the catalog entry for "([^"]*)"$/) do |taxon|
-  expect(page).to have_css '.header .taxon', text: taxon
+  step %{the name in the header should be "#{taxon}"}
 end
 
 Then(/^the name in the header should be "([^"]*)"/) do |name|
-  expect(page).to have_css '.header .taxon', text: name
+  expect(page).to have_css '.header .name', text: name
 end
 
 When(/I fill in the catalog search box with "(.*?)"/) do |search_term|
@@ -40,6 +40,17 @@ When(/I press "Go" by the catalog search box/) do
   end
 end
 
-Then("I should not see any search results") do
-  expect(page).to_not have_css "#search_results"
+Given(/^the maximum number of taxa to load in each tab is (\d+)$/) do |number|
+  allow_any_instance_of(Catalog::TaxonBrowser::Browser)
+    .to receive(:max_taxa_to_load)
+    .and_return number.to_i
+end
+
+Given(/^Atta has a history section item with two linked references, of which one does not exists$/) do
+  reference = create :article_reference, citation_year: 2000,
+    author_names: [create(:author_name, name: "Batiatus, Q.")]
+  taxt = "{ref #{reference.id}}; {ref 99999}"
+
+  taxon = Taxon.find_by name_cache: "Atta"
+  taxon.reference_sections << ReferenceSection.create!(references_taxt: taxt)
 end

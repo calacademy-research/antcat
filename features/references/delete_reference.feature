@@ -6,13 +6,11 @@ Feature: Delete reference
 
   Background:
     Given I am logged in
-    And this reference exists
-      | authors    | citation   | year | title |
-      | Fisher, B. | Psyche 2:1 | year | title |
+    And there is a reference
 
   Scenario: Delete a reference
     When I go to the page for that reference
-    And I press "Delete"
+    And I follow "Delete"
     Then I should see "Reference was successfully destroyed"
 
   Scenario: Try to delete a reference when there are references to it
@@ -20,6 +18,6 @@ Feature: Delete reference
 
     When I go to the page for that reference
     And I will confirm on the next step
-    And I press "Delete"
+    And I follow "Delete"
     Then I should see "This reference can't be deleted, as there are other references to it."
     And I should be on the page for that reference

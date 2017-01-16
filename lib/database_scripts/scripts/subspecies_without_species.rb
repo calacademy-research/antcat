@@ -8,3 +8,4 @@ end
 
 __END__
 description: Auto-generated subspecies are not included.
+topic_areas: [catalog]

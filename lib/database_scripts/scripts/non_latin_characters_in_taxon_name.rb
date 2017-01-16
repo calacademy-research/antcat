@@ -10,4 +10,4 @@ end
 
 __END__
 description: See also %github168.
-tags: [slow-ish]
+topic_areas: [catalog]

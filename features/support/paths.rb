@@ -32,8 +32,6 @@ module NavigationHelpers
       "/taxa/#{Taxon.find_by_name($1).id}/edit"
     when /^the new taxon page$/
       "/taxa/new"
-    when /^the create taxon page$/
-      '/taxa'
 
     when /^the "Convert to subspecies" page for "([^"]*)"$/
       taxon = Taxon.find_by_name $1
@@ -45,10 +43,14 @@ module NavigationHelpers
     # References, authors, etc
     when /^the references page$/
       references_path
-    when /^the new references page$/
+    when /^the latest reference additions page$/
       latest_additions_references_path
     when /^the page for that reference$/
       reference_path(@reference || Reference.first)
+    when /^the page of the most recent reference$/
+      reference_path(Reference.last)
+    when /^the edit page for the most recent reference$/
+      edit_reference_path(Reference.last)
 
     when /^the merge authors page$/
       merge_authors_path
@@ -57,15 +59,12 @@ module NavigationHelpers
     when /^the author edit page for "(.*)"$/
       "/authors/#{Author.find_by_names($1).first.id}/edit"
 
-    when /^the journals index page$/
-      journals_path
-
     # Editor's Panel
-    when /^the Editor's Panel page$/
-      "/panel"
-
     when /^the comments page$/
       "/comments"
+
+    when /^my notifications page$/
+      "/notifications"
 
     when /^the database scripts page$/
       "/database_scripts"
@@ -77,28 +76,30 @@ module NavigationHelpers
       "/tooltips"
 
     when /^the activity feed$/
-      "/feed"
+      "/activities"
 
-    when /^the open tasks page$/
-      "/tasks"
-    when /^the task (entry|page) for "([^"]*)"$/
-      task = Task.find_by(title: $2)
-      "/tasks/#{task.id}"
+    when /^the open issues page$/
+      "/issues"
+    when /^the issue page for "([^"]*)"$/
+      issue = Issue.find_by(title: $1)
+      "/issues/#{issue.id}"
+    when /^the most recent issue$/
+      "/issues/#{Issue.last.id}"
+    when /^the new issue page$/
+      "/issues/new"
 
     when /^the feedback index$/
       "/feedback"
+    when /^the most recent feedback item$/
+      "/feedback/#{Feedback.last.id}"
 
     # User
     when /^the user page for "([^"]*)"$/
       user = User.find_by name: $1
       "/users/#{user.id}"
-    when /^the edit user page$/
-      '/users/edit'
-    when /^the forgot password page$/
-      '/users/password/new'
-    when /^the login (page|form)$/
+    when /^the login page$/
       '/users/sign_in'
-    when /^the sign ?up (page|form)$/
+    when /^the sign up page$/
       '/users/sign_up'
 
     when /^the users page$/

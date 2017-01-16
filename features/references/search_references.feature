@@ -110,26 +110,10 @@ Feature: Searching references
     Then I should not see "Dolerichoderinae"
 
   @search
-  Scenario: Searching by cite code that looks like a year
-    Given these references exist
-      | authors    | year | citation_year | title  | citation    | cite_code |
-      | Fisher, B. | 1895 | 1895a         | title5 | Ants 11:1-2 | 96-1984   |
-      | Fisher, B. | 1895 | 1895a         | title6 | Ants 11:2-3 | 97-9321   |
-
-    When I go to the references page
-    Then I should see "Ants 11:1-2"
-    And I should see "Ants 11:2-3"
-
-    When I fill in the references search box with "96-1984"
-    And I press "Go" by the references search box
-    Then I should see "Ants 11:1-2"
-    And I should not see "Ants 11:2-3"
-
-  @search
   Scenario: Seeing just "other" references (not article, book, etc.)
-    Given these references exists
-      | authors    | year | citation_year | title | citation      |
-      | Fisher, B. | 1895 | 1895a         | Known | Psyche 11:1-2 |
+    Given this reference exists
+      | authors    | year | title | citation      |
+      | Fisher, B. | 1895 | Known | Psyche 11:1-2 |
     And this unknown reference exists
       | authors    | year | title   | citation       |
       | Bolton, B. | 2001 | Unknown | Science 11:1-2 |
@@ -156,30 +140,30 @@ Feature: Searching references
   @javascript @search
   Scenario: Search using autocomplete keywords
     Given these references exists
-      | authors    | year | citation_year | title                  | citation      |
-      | Fisher, B. | 1995 | 1995          | Anthill                | Ants 1:1-2    |
-      | Bolton, B. | 1895 | 1895a         | Fisher's Favorite Ants | Psyche 11:1-2 |
+      | authors    | year | title         | citation      |
+      | Fisher, B. | 1995 | Anthill       | Ants 1:1-2    |
+      | Bolton, B. | 1895 | Fisher's Ants | Psyche 11:1-2 |
 
     When I go to the references page
     And I fill in the references search box with "author:fish"
     Then I should see the following autocomplete suggestions:
       | Anthill |
     And I should not see the following autocomplete suggestions:
-      | Fisher's Favorite Ants |
+      | Fisher's Ants |
 
   @javascript @search
   Scenario: Search using autocomplete keywords (that are not well formatted)
     Given these references exists
-      | authors    | year | citation_year | title                  | citation      |
-      | Fisher, B. | 1995 | 1995          | Anthill                | Ants 1:1-2    |
-      | Bolton, B. | 1895 | 1895a         | Fisher's Favorite Ants | Psyche 11:1-2 |
+      | authors    | year | title         | citation      |
+      | Fisher, B. | 1995 | Anthill       | Ants 1:1-2    |
+      | Bolton, B. | 1895 | Fisher's Ants | Psyche 11:1-2 |
 
     When I go to the references page
     And I fill in the references search box with "Author: fish"
     Then I should see the following autocomplete suggestions:
       | Anthill |
     And I should not see the following autocomplete suggestions:
-      | Fisher's Favorite Ants |
+      | Fisher's Ants |
 
   @javascript @search
   Scenario: Expanding autocomplete suggestions

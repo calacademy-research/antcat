@@ -41,6 +41,8 @@ class Taxa::HandlePreviousCombination
       end
     end
 
+    # TODO see https://github.com/calacademy-research/antcat/issues/157
+    #
     # TODO rename. Working name: `set_current_valid_taxon_to_the_current_taxon_and_update_stuff`
     # Or, move it to `SpeciesGroupTaxon` (only species and subspecies can be combinations).
     # And then somewhere: `Species#make_combination_of!(taxon)`. Would have private methods

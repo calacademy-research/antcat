@@ -17,5 +17,12 @@
     .reply-form
       display: none
 
-  .comment:target
+    &:hover .show-on-hover
+      display: inline
+
+  // Trickery to highlight comments. It works for mysterious reasons, but
+  // something like this: the anchor tag in the URL ("#comment-123") finds
+  // the comment because it's wrapped in a div with the id "comment-123;
+  // that makes the div the `:target`.
+  .highlight-comment-anchor:target
     background-color: $color_pale_green

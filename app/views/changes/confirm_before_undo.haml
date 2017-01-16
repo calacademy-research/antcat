@@ -1,0 +1,20 @@
+-@title = "Confirm before undo"
+-breadcrumb :confirm_before_undo_change, @change
+
+%h5 This undo will roll back the following changes:
+%table
+  %thead
+    %tr
+      %th Change
+      %th Date
+  %tbody
+    -@undo_items.each do |undo_item|
+      %tr
+        %td
+          =undo_item[:taxon].decorate.link_to_taxon
+          =format_change_type_verb undo_item[:change_type]
+          by
+          =undo_item[:user].decorate.user_page_link
+        %td=undo_item[:date]
+
+=link_to "Undo!", undo_change_path(@change), method: :put, class: "btn-saves-warning"

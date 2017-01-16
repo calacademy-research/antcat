@@ -3,6 +3,9 @@
 @import "font-awesome"
 @import "colors"
 
+td.icon
+  width: 1rem
+
 .antcat_icon
   font-family: FontAwesome
   text-align: center
@@ -10,16 +13,16 @@
 
   @extend .fa-fw //spacer
 
-table.feed
+table.activities
   td.icon > .antcat_icon
     // create/add = green plus
     &.create
-      @extend .fa-plus-circle
+      @extend .fa-plus
       color: $color_green
 
     // delete = red minus
     &.destroy
-      @extend .fa-minus-circle
+      @extend .fa-minus
       color: $color_danger
 
     // "approving actions" = green check
@@ -38,20 +41,35 @@ table.feed
     &.destroy.synonym
       color: $color_danger !important
 
+    &.create.comment
+      @extend .fa-comment-o
+      font-weight: bold
+
   .antcat_icon
     &.synonym_arrow
       @extend .fa-long-arrow-right
       color: #000
+
+table.notifications
+  td.icon > .antcat_icon
+    &.seen
+      @extend .fa-check
+      color: $color_green
 
 .antcat_icon
   &.read
     @extend .fa-check
     color: $color_green
 
-  &.open.task
-    @extend .fa-plus-circle
-    color: $color_green
-
-  &.closed.task, &.completed.task, &.unread
+  &.closed.issue, &.unread
     @extend .fa-check
     color: darkgrey
+
+table.tablesorter thead
+  th
+    cursor: pointer
+
+  // TODO extra curricular: show if sorting asc/desc.
+  th:before
+    margin-right: 0.4rem
+    @extend .fa-sort:before

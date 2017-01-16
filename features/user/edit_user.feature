@@ -10,16 +10,14 @@ Feature: Editing a user
     When I go to the main page
     And I follow the first "Brian Fisher"
     And I follow "Change my password/name/email"
-    Then I should be on the edit user page
-
-    When I fill in "user_password" with "new password"
+    And I fill in "user_password" with "new password"
     And I fill in "user_password_confirmation" with "new password"
     And I fill in "user_current_password" with "secret"
     And I press "Save"
     Then I should be on the main page
     And I should see "Your account has been updated"
 
-  #Scenario: Logging in with changed password
+    # Logging in with changed password.
     When I follow the first "Logout"
     Then I should not see "Brian Fisher"
 
@@ -30,7 +28,7 @@ Feature: Editing a user
     Then I should be on the main page
     And I should see "Brian Fisher"
 
-  Scenario: Changing my user name
+  Scenario: Changing my name
     Given I am logged in
 
     When I go to the main page

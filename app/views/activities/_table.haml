@@ -1,0 +1,27 @@
+-show_delete_button ||= false
+-include_head ||= false
+
+-if activities.empty?
+  No activities.
+-else
+  %table.activities
+    -if include_head
+      %thead
+        %tr
+          %th
+          %th What
+          %th When
+    -activities.each do |activity|
+      %tbody
+        %tr.highlight-activity-anchor{id: "activity-#{activity.id}"}
+          %td.icon=activity_icon activity
+          %td.grow
+            =link_activity_user activity
+            =format_activity activity
+            %span.right.show-on-hover
+              =highlight_activity_link activity
+              -if user_is_superadmin? && show_delete_button
+                =link_to "Delete activity item", activity_path(activity, page: (params[:page] || @page)), method: :delete, data: { confirm: "Delete? Note that this is for deleting feed items that should't had been created in the first place (ie debugging). If someone edits a taxon and then reverts the change, the feed should still display both actions." }, class: "btn-delete btn-tiny"
+          %td.no-wrap
+            =time_ago_in_words activity.created_at
+            ago

@@ -1,0 +1,23 @@
+-@title = "Confirm before delete taxon (superadmin)"
+-breadcrumb :confirm_before_delete_taxon, @taxon
+
+%p
+  Only superadmins can perform this action, as it can be used to delete taxa with references to them. This is what makes it different from the delete button in the 'edit taxon' form, which can be used by any editor for unreferenced taxa. "References" in this case means synonyms, other taxa pointing to it, and taxt items referring to the taxon. Checking that a taxon is unreferenced is only done for the <em>principal taxon</em>, that is, children may still have references to them (which would break).
+
+%h5 Confirming would delete following taxa
+%table
+  %thead
+    %tr
+      %th Taxon
+      %th Authorship
+      %th Status
+      %th Created
+  -@delete_impact_list.each do |taxon|
+    %tbody
+      %tr
+        %td=taxon.decorate.link_to_taxon
+        %td=taxon.authorship_string
+        %td=taxon.status
+        %td=taxon.created_at.to_formatted_s :long
+
+=link_to "Confirm and delete", taxa_path(@taxon), class: "btn-delete", method: :delete, data: { confirm: "I've read the warning message and want to proceeed with deleting all these taxa." }

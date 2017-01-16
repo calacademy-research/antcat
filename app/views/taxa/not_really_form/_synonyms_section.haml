@@ -1,0 +1,15 @@
+.synonyms_section
+
+  .section_header.ui-widget-header.ui-corner-top
+    .left=title
+    .buttons.right
+      %button.submit.add.btn-tiny Add
+    .clear
+
+  .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+    =render 'taxa/not_really_form/synonym_form', taxon: taxon, junior_or_senior: junior_or_senior
+    -synonyms.each do |synonym|
+      .synonym_row
+        =synonym[:name].html_safe
+        %button.submit.btn-tiny.delete.btn-delete{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym[:id]} Delete
+        %button.submit.btn-saves.btn-tiny.reverse_synonymy{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym[:id]} Reverse synonymy

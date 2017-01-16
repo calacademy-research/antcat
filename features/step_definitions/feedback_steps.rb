@@ -42,19 +42,14 @@ Given(/^a visitor has submitted a feedback with the comment "([^"]*)"$/) do |com
   create :feedback, comment: comment
 end
 
+Given(/^a visitor has submitted a feedback$/) do
+  step %{a visitor has submitted a feedback with the comment "Cool."}
+end
+
 Given(/^there is a closed feedback item with the comment "([^"]*)"$/) do |comment|
   create :feedback, comment: comment, open: false
 end
 
-Given(/^the editors Archibald and Batiatus \(but not Flint\) have enabled feedback email forwarding$/) do
-  create :editor, name: "Archibald",
-    email: "archibald@antcat.org", receive_feedback_emails: true
-  create :editor, name: "Batiatus",
-    email: "batiatus@antcat.org", receive_feedback_emails: true
-
-  create :editor, name: "Flint", email: "flint@antcat.org"
-end
-
-When(/^follow the link of the first feedback$/) do
-  first("table.feedbacks a", text: "Details").click
+Given(/^there is a (?:closed )?feedback item$/) do
+  step %{there is a closed feedback item with the comment "Cool."}
 end

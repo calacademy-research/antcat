@@ -1,7 +1,4 @@
 class Subspecies < SpeciesGroupTaxon
-  include Formatters::RefactorFormatter
-  include UndoTracker
-
   class NoSpeciesForSubspeciesError < StandardError; end
 
   attr_accessible :subfamily, :genus, :name, :protonym, :species, :type, :type_name_id
@@ -10,19 +7,12 @@ class Subspecies < SpeciesGroupTaxon
 
   before_validation :set_genus
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
-
   def update_parent new_parent
     # TODO Joe - somewhere, we need to check and pop up for the homonym case if there are multiple possibles.
     super
     self.genus = new_parent.genus if new_parent.genus
     self.subgenus = new_parent.subgenus if new_parent.subgenus
     self.species = new_parent
-  end
-
-  def set_genus
-    return if genus
-    self.genus = species.genus if species
   end
 
   def statistics valid_only: false; end
@@ -38,6 +28,7 @@ class Subspecies < SpeciesGroupTaxon
     species || genus
   end
 
+  # TODO remove?
   def children
     Subspecies.none
   end
@@ -53,17 +44,17 @@ class Subspecies < SpeciesGroupTaxon
     new_name = SpeciesName.find_by_name new_name_string
     unless new_name
       new_name = SpeciesName.new
-      new_name.update_attributes name: new_name_string,
-                                 name_html: italicize(new_name_string),
-                                 epithet: name.epithet,
-                                 epithet_html: name.epithet_html,
-                                 epithets: nil
+      new_name.update name: new_name_string,
+                      name_html: italicize(new_name_string),
+                      epithet: name.epithet,
+                      epithet_html: name.epithet_html,
+                      epithets: nil
       new_name.save
     end
 
     create_elevate_to_species_activity new_name
 
-    # writes directly to db, bypasses save. "update_attributes" operates in memory and
+    # writes directly to db, bypasses save. "update" operates in memory and
     # lets you use the "save" path
     update_columns name_id: new_name.id,
                    species_id: nil,
@@ -73,6 +64,11 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   private
+    def set_genus
+      return if genus
+      self.genus = species.genus if species
+    end
+
     def create_elevate_to_species_activity new_name
       create_activity :elevate_subspecies_to_species,
         name_was: name_html_cache,

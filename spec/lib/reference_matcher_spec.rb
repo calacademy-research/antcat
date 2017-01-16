@@ -1,30 +1,51 @@
 require 'spec_helper'
 
 describe ReferenceMatcher do
-  before do
-    @matcher = ReferenceMatcher.new
-    @match = create :reference, author_names: [create(:author_name, name: 'Ward')]
-    @target = ComparableReference.new principal_author_last_name_cache: 'Ward'
+  let(:matcher) { ReferenceMatcher.new }
+
+  describe "#match" do
+    let!(:match) { create_match 'Ward' }
+    let(:target) { build_target 'Ward' }
+
+    context "an obvious mismatch" do
+      before { expect(target).to receive(:<=>).and_return 0.00 }
+
+      it "doesn't match" do
+        expect(matcher.match(target)).to be_empty
+      end
+    end
+
+    context "an obvious match" do
+      before { expect(target).to receive(:<=>).and_return 0.10 }
+
+      it "matches" do
+        expect(matcher.match(target)).to eq [
+          { similarity: 0.10, target: target, match: match }
+        ]
+      end
+    end
   end
 
-  it "doesn't match an obvious mismatch" do
-    expect(@target).to receive(:<=>).and_return 0.00
-    results = @matcher.match @target
-    expect(results).to be_empty
-  end
+  context "an author last name with an apostrophe in it (regression)" do
+    let!(:match) { create_match "Arnol'di, G." }
+    let(:target) { build_target "Arnol'di" }
+    before { expect(target).to receive(:<=>).and_return 0.10 }
 
-  it "matches an obvious match" do
-    expect(@target).to receive(:<=>).and_return 0.10
-    results = @matcher.match @target
-    expect(results).to eq [{similarity: 0.10, target: @target, match: @match}]
+    it "handles it" do
+      expect(matcher.match(target)).to eq [
+        { similarity: 0.10, target: target, match: match }
+      ]
+    end
   end
+end
 
-  it "handles an author last name with an apostrophe in it (regression)" do
-    @match.update_attributes author_names: [create(:author_name, name: "Arnol'di, G.")]
-    @target.principal_author_last_name_cache = "Arnol'di"
-    expect(@target).to receive(:<=>).and_return 0.10
+def create_match author_name_name
+  author_name = create :author_name, name: author_name_name
+  create :reference, author_names: [author_name]
+end
 
-    results = @matcher.match @target
-    expect(results).to eq [{similarity: 0.10, target: @target, match: @match}]
-  end
+def build_target principal_author_last_name_cache
+  target = Reference.new
+  target.principal_author_last_name_cache = principal_author_last_name_cache
+  target
 end

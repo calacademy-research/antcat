@@ -3,7 +3,7 @@
 -breadcrumb :catalog_search
 
 -content_for :head do
-  =javascript_include_tag 'advanced_searches'
+  =javascript_include_tag 'controllers/catalog/search/authors_autocompletion'
 
 -advanced_css = "is-active" unless @is_quick_search
 -quick_css = "is-active" if @is_quick_search

@@ -11,7 +11,7 @@ describe Reference do
     describe "References in reference fields" do
       it "has a reference if it's a protonym's authorship's reference" do
         eciton = create_genus 'Eciton'
-        eciton.protonym.authorship.update_attributes! reference_id: reference.id
+        eciton.protonym.authorship.update! reference_id: reference.id
         expect(reference.send :reference_references).to match_array [
           { table: 'citations', field: :reference_id, id: eciton.protonym.authorship.id },
         ]

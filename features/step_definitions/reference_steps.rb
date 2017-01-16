@@ -1,5 +1,17 @@
-Given(/^there are no references$/) do
-  Reference.delete_all
+Given(/^there is a reference$/) do
+  @reference = create :article_reference
+end
+
+Given(/^there is an article reference$/) do
+  @reference = create :article_reference
+end
+
+Given(/^there is a book reference$/) do
+  @reference = create :book_reference
+end
+
+Given(/^there is an unknown reference$/) do
+  @reference = create :unknown_reference
 end
 
 Given(/^(?:this|these) references? exists?$/) do |table|
@@ -36,6 +48,7 @@ Given(/(?:these|this) book references? exists?/) do |table|
 end
 
 # HACK because I could not get it to work in any other way.
+# Special cases because we want specific IDs.
 Given(/^there is a Giovanni reference$/) do
   reference = create :article_reference,
     author_names: [],
@@ -44,6 +57,16 @@ Given(/^there is a Giovanni reference$/) do
 
   reference.update_column :id, 7777
   reference.author_names << create(:author_name, name: 'Giovanni, S.')
+end
+
+Given(/^there is a reference by Giovanni's brother$/) do
+  reference = create :article_reference,
+    author_names: [],
+    citation_year: '1800',
+    title: "Giovanni's Brother's Favorite Ants"
+
+  reference.update_column :id, 7778
+  reference.author_names << create(:author_name, name: 'Giovanni, J.')
 end
 
 Given(/(?:these|this) unknown references? exists?/) do |table|
@@ -75,13 +98,7 @@ def create_reference type, hash
 
   reference = create type, hash.merge(author_names: author_names, author_names_suffix: author_names_suffix)
   @reference ||= reference
-  set_timestamps reference, hash
   reference
-end
-
-def set_timestamps reference, hash
-  reference.update_column :updated_at, hash[:updated_at] if hash[:updated_at]
-  reference.update_column :created_at, hash[:created_at] if hash[:created_at]
 end
 
 Given(/the following entry nests it/) do |table|
@@ -96,7 +113,7 @@ end
 
 Given(/that the entry has a URL that's on our site( that is public)?/) do |is_public|
   @reference.update_attribute :document, ReferenceDocument.create!
-  @reference.document.update_attributes file_file_name: '123.pdf',
+  @reference.document.update file_file_name: '123.pdf',
     url: "localhost/documents/#{@reference.document.id}/123.pdf",
     public: is_public ? true : nil
 end
@@ -104,19 +121,6 @@ end
 Given(/that the entry has a URL that's not on our site/) do
   @reference.update_attribute :document, ReferenceDocument.create!
   @reference.document.update_attribute :url, 'google.com/foo'
-end
-
-Then(/I should see these entries (with a header )?in this order:/) do |with_header, entries|
-  offset = with_header ? 1 : 0
-  entries.hashes.each_with_index do |e, i|
-    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['entry']
-    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['date']
-    expect(page).to have_css "table.references tr:nth-of-type(#{i + offset}) td", text: e['review_state']
-  end
-end
-
-When(/^I follow first reference link$/) do
-  first('.reference').all('a').last.click
 end
 
 When(/I fill in "reference_nesting_reference_id" with the ID for "(.*?)"$/) do |title|
@@ -182,34 +186,11 @@ Given(/^there is a missing reference(?: with citation "(.+)")?( in a protonym)?$
   end
 end
 
-When(/^I click the replacement field$/) do
-  step %{I click "#replacement_id_field .display_button"}
-end
-
 Then(/^I should not see the missing reference$/) do
   step 'I should not see "Adventures among Ants"'
 end
 
 # New references list
-When(/^I click "(.*?)" on the Ward reference$/) do |button|
-  within find("tr", text: 'Ward') do
-    first(".btn-normal", text: button).click
-  end
-end
-
-Then(/^the review status on the Ward reference should change to "(.*?)"$/) do |status|
-  within find("tr", text: 'Ward') do
-    step %{I should see "#{status}"}
-  end
-end
-
-Then(/^it should (not )?show "(.*?)" as the default$/) do |should_selector, keey|
-  author = keey.split(' ').first
-  within find("tr", text: author) do
-    step %{I should #{should_selector}see "Default"}
-  end
-end
-
 def find_reference_by_keey keey
   parts = keey.split ' '
   last_name = parts[0]

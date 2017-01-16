@@ -10,21 +10,21 @@ Feature: Editing a taxon with authorization constraints
 
     When I go to the main page
     And I follow the first "Editor's Panel"
-    Then I should see "Admin Dashboard"
+    Then I should see "Admin dashboard"
 
   Scenario: Regular users should not have access to Active Admin pages
     Given I am logged in
 
     When I go to the main page
     And I follow the first "Editor's Panel"
-    Then I should not see "Admin Dashboard"
+    Then I should not see "Admin dashboard"
 
   Scenario: Admins to be able to go to the Active Admin pages
     Given I log in as a superadmin
 
     When I go to the main page
     And I follow the first "Editor's Panel"
-    And I follow "Admin Dashboard"
+    And I follow "Admin dashboard"
     Then I should see "Dashboard"
 
   Scenario: When admins logout, it should redirect to AntCat root
@@ -32,7 +32,7 @@ Feature: Editing a taxon with authorization constraints
 
     When I go to the main page
     And I follow the first "Editor's Panel"
-    And I follow "Admin Dashboard"
+    And I follow "Admin dashboard"
     Then I should see "Dashboard"
 
     When I follow the first "Logout"

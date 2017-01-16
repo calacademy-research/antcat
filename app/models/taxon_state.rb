@@ -1,7 +1,7 @@
 # TODO default `taxon_states.deleted` to "false" in db.
 
 class TaxonState < ActiveRecord::Base
-  include UndoTracker
+  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :taxon
 

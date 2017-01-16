@@ -24,7 +24,7 @@ class WidgetTestsController < ApplicationController
   end
 
   def toggle_dev_css
-    session[:disable_dev_css] = !session[:disable_dev_css]
+    session[:no_dev_css] = !session[:no_dev_css]
     redirect_to :back
   end
 end

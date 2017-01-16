@@ -3,21 +3,20 @@
 # genus A, moving to genus B, and then back to A, while retaining the same
 # species epithet.
 
-class DuplicatesController < TaxaController
+class DuplicatesController < ApplicationController
   before_action :authenticate_editor
 
   # Takes requires parent_id (target parent) and previous_combination_id
   # returns all matching taxa that could conflict with this naming.
-  # TODO probably rename action; "show" implies an object/view.
-  def show
-    return find_name_duplicates_only if params[:match_name_only] == "true"
-
+  def find_duplicates
     # This check shouldn't be valid; there's nothing wrong with
     # a conflict in a subspecies parent, for example.
     # if @rank_to_create != "species"
     #   render nothing: true, status: :no_content
     #   return
     # end
+    # TODO `params[:current_taxon_id]` is probably the same as `@taxon`
+    # in `TaxaController`, which means we can use `set_taxon`.
     current_taxon = Taxon.find(params[:current_taxon_id])
     new_parent = Taxon.find_by(name_id: params[:new_parent_name_id])
 
@@ -47,9 +46,8 @@ class DuplicatesController < TaxaController
     render json: json, status: :ok
   end
 
-  private
-    def find_name_duplicates_only
-      name_conflict_taxa = Taxon.where name_id: params[:new_parent_name_id]
-      render json: name_conflict_taxa, status: :ok
-    end
+  def find_name_duplicates_only
+    name_conflict_taxa = Taxon.where name_id: params[:new_parent_name_id]
+    render json: name_conflict_taxa, status: :ok
+  end
 end

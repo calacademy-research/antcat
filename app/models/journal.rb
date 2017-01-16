@@ -1,7 +1,6 @@
 class Journal < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-  include UndoTracker
-  include Feed::Trackable
+  include Trackable
 
   has_many :references
 
@@ -9,12 +8,10 @@ class Journal < ActiveRecord::Base
 
   before_destroy :check_not_used
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
-  tracked on: :all, parameters: ->(journal) do
-    hash = { name: journal.name }
-    hash[:name_was] = journal.name_was if journal.name_changed?
-    hash
-  end
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  tracked on: :all, parameters: proc {
+    { name: name, name_was: (name_was if name_changed?) }
+  }
 
   def self.search term = ''
     search_expression = term.split('').join('%') + '%'

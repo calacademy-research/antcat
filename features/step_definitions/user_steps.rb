@@ -1,4 +1,4 @@
-# TODO probably remove all those `Feed::Activity.without_tracking` (the feed
+# TODO probably remove all those `Feed.without_tracking` (the feed
 # is disabled by default in tests) and create new steps in `feed_steps.rb`.
 
 Given(/(?:this|these) users? exists/) do |table|
@@ -17,7 +17,7 @@ def login_programmatically user
   step 'I go to the main page'
 end
 
-# TODO not used
+# TODO not used (December 2016).
 def login_through_web_page
   step 'I go to the main page'
   click_link "Login"
@@ -29,7 +29,12 @@ end
 # TODO change to "I log in as an editor" because we want to
 # open registration to non-editors in the future.
 When(/^I log in$/) do
-  user = Feed::Activity.without_tracking { create :editor }
+  user = Feed.without_tracking { create :editor }
+  login_programmatically user
+end
+
+When(/^I log in as "([^"]+)"$/) do |name|
+  user = User.find_by name: name
   login_programmatically user
 end
 
@@ -38,8 +43,13 @@ Given('I am logged in') do
 end
 
 When(/^I log in as a user \(not editor\)$/) do
-  user = Feed::Activity.without_tracking { create :user }
+  user = Feed.without_tracking { create :user }
   login_programmatically user
+end
+
+Given(/^there is a user(?: named "([^"]+)")?$/) do |name|
+  name = "Quintus Batiatus" if name.blank?
+  create :editor, name: name
 end
 
 # "catalog editor" and "editor" are the same. There used to be -- at least
@@ -50,7 +60,8 @@ end
 # TODO investigate adding/reinstating a "bibliography editor" user role.
 When(/^I log in as a catalog editor(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
-  user = Feed::Activity.without_tracking do
+  user = User.find_by name: name
+  user ||= Feed.without_tracking do
     create :editor, name: name
   end
   login_programmatically user
@@ -58,7 +69,7 @@ end
 
 When(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
-  user = Feed::Activity.without_tracking do
+  user = Feed.without_tracking do
     create :user, can_edit: true, is_superadmin: true, name: name
   end
   login_programmatically user
@@ -73,21 +84,9 @@ When(/^I log out$/) do
   step 'I follow the first "Logout"'
 end
 
-When(/^I fill in the email field with "([^"]+)"$/) do |string|
-  step %{I fill in "user_email" with "#{string}"}
-end
-
 When(/^I fill in the email field with my email address$/) do
   user = User.find_by(name: 'Brian Fisher') # TODO something. Harcoded.
   step %{I fill in "user_email" with "#{user.email}"}
-end
-
-When(/^I fill in the password field with "([^"]+)"$/) do |string|
-  step %{I fill in "user_password" with "#{string}"}
-end
-
-When(/^I press the first "([^"]+)" to log in$/) do |string|
-  step %{I press the first "#{string}"}
 end
 
 Then(/^there should be a mailto link to the email of "([^"]+)"$/) do |name|

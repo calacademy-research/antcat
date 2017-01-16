@@ -3,14 +3,10 @@
 
 =enable_tooltips
 
--content_for :head do
-  =javascript_include_tag 'best_in_place'
-  =javascript_include_tag 'tooltips/edit_in_place'
-
 .buttons_right
-  =link_to 'New Tooltip', new_tooltip_path, class: "btn-new"
+  =link_to 'New Tooltip', new_tooltip_path, class: "btn-normal"
   =toggle_tooltip_helper_tooltips_button
-  =link_to 'Help', "https://github.com/calacademy-research/antcat/wiki/Editing-tooltips", class: "btn-non-destructive"
+  =link_to 'Help', "https://github.com/calacademy-research/antcat/wiki/Editing-tooltips", class: "btn-white"
 
 %table#tooltips
   %thead

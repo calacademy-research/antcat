@@ -1,9 +1,9 @@
+# TODO move relevant examples (most) to `antcat_markdown_utils_spec.rb`.
+
 require "spec_helper"
 
 describe AntcatMarkdown do
-  let(:dummy_parser) { AntcatMarkdown.new no_even_a_stub: nil }
-
-  describe "render" do
+  describe ".render" do
     it "formats some basic markdown" do
       lasius_name = create :species_name, name: "Lasius"
       create :species, name: lasius_name
@@ -30,7 +30,7 @@ describe AntcatMarkdown do
       lasius_name = create :species_name, name: "Lasius"
       lasius = create :species, name: lasius_name
 
-      markdown = "%t#{lasius.id}"
+      markdown = "%taxon#{lasius.id}"
 
       expect(AntcatMarkdown.render(markdown)).to eq <<-HTML
 <p><a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>
@@ -41,7 +41,7 @@ describe AntcatMarkdown do
       context "existing reference" do
         it "links the reference" do
           reference = create :article_reference
-          markdown = "%r#{reference.id}"
+          markdown = "%reference#{reference.id}"
 
           expected = "<p>#{reference.decorate.inline_citation}</p>\n"
           expect(AntcatMarkdown.render(markdown)).to eq expected
@@ -50,7 +50,7 @@ describe AntcatMarkdown do
 
       context "missing (non-existing) reference" do
         it "renders an error message" do
-          markdown = "%r9999999"
+          markdown = "%reference9999999"
 
           expected = %Q[<p><span class="broken-markdown-link"> could not find reference with id 9999999 </span></p>\n]
           expect(AntcatMarkdown.render(markdown)).to eq expected
@@ -62,16 +62,16 @@ describe AntcatMarkdown do
       context "existing journal" do
         it "links the journal" do
           journal = create :journal, name: "Zootaxa"
-          markdown = "%j#{journal.id}"
+          markdown = "%journal#{journal.id}"
 
-          expected = %Q[<p><a href="/journals/#{journal.id}">#{journal.name}</a></p>\n]
+          expected = %Q[<p><a href="/journals/#{journal.id}"><i>#{journal.name}</i></a></p>\n]
           expect(AntcatMarkdown.render(markdown)).to eq expected
         end
       end
 
       context "missing journal" do
         it "renders an error message" do
-          markdown = "%j9999999"
+          markdown = "%journal9999999"
 
           expected = %Q[<p><span class="broken-markdown-link"> could not find journal with id 9999999 </span></p>\n]
           expect(AntcatMarkdown.render(markdown)).to eq expected
@@ -79,22 +79,11 @@ describe AntcatMarkdown do
       end
     end
 
-    it "formats lists of taxon ids" do
-      lasius_name = create :species_name, name: "Lasius"
-      lasius = create :species, name: lasius_name
+    it "formats issue ids" do
+      issue = create :issue
+      markdown = "%issue#{issue.id}"
 
-      markdown = "%tl[#{lasius.id}, #{lasius.id}]"
-
-      expected = %Q[<p><a href="/catalog/#{lasius.id}"><i>Lasius</i></a>, ] +
-        %Q[<a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>\n]
-      expect(AntcatMarkdown.render(markdown)).to eq expected
-    end
-
-    it "formats task ids" do
-      task = create :task
-      markdown = "%task#{task.id}"
-
-      expected = %Q[<p><a href="/tasks/#{task.id}">task ##{task.id}</a></p>\n]
+      expected = %Q[<p><a href="/issues/#{issue.id}">issue ##{issue.id} (Check synonyms)</a></p>\n]
       expect(AntcatMarkdown.render(markdown)).to eq expected
     end
 
@@ -107,35 +96,25 @@ describe AntcatMarkdown do
     end
 
     it "formats GitHub links" do
-      markdown = "%github#{5}"
+      markdown = "%github5"
 
       expected = %Q[<p><a href="https://github.com/calacademy-research/antcat/issues/5">GitHub #5</a></p>\n]
       expect(AntcatMarkdown.render(markdown)).to eq expected
+    end
+
+    it "formats user links" do
+      user = create :user
+      markdown = "@user#{user.id}"
+
+      results = AntcatMarkdown.render markdown
+      expect(results).to include user.name
+      expect(results).to include "users/#{user.id}"
     end
   end
 
   describe ".strip" do
     it "strips markdown" do
       expect(AntcatMarkdown.strip "**bold**").to eq "bold\n"
-    end
-  end
-
-  describe "#try_linking_taxon_id" do
-    context "existing taxon" do
-      it "links existing taxa" do
-        taxon = create :species
-        returned = dummy_parser.send :try_linking_taxon_id, taxon.id.to_s
-
-        expected = %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
-        expect(returned).to eq expected
-      end
-    end
-
-    context "missing taxon" do
-      it "renders an error message" do
-        returned = dummy_parser.send :try_linking_taxon_id, "9999"
-        expect(returned).to eq '<span class="broken-markdown-link"> could not find taxon with id 9999 </span>'
-      end
     end
   end
 end

@@ -8,7 +8,7 @@
       %th Status
       %th Submitter/message
       %th Comments
-      %th Link
+      %th
   -@feedbacks.each do |feedback|
     %tr{class: ("closed" if feedback.closed?)}
       %td=link_to "##{feedback.id}", feedback_path(feedback)
@@ -16,12 +16,8 @@
         %td Open
       -else
         %td.gray Closed
-      %td
-        =format_submitter_name feedback
-        submitted:
-        .callout
-          =simple_format strip_tags(feedback.comment)
-      %td.center-text=link_comments_section feedback
+      %td=render "feedback", feedback: feedback
+      %td.center-text.no-wrap=link_comments_section feedback
       %td=link_to "Details", feedback_path(feedback), class: "btn-normal"
 
 =will_paginate @feedbacks

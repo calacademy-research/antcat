@@ -1,0 +1,15 @@
+%h5
+  .left Difference between revisions
+  .right=link_to "Hide/show formatted", "#", class: "btn-white", data: { show_hide_toggler_for: "formatted" }
+  .clear
+
+.row.center-text
+  .medium-6.columns
+    =render "compare_revisions/revision_info_date", revision: diff_with
+  .medium-6.columns
+    =render "compare_revisions/revision_info_date", revision: (selected || most_recent)
+
+.callout.margin-bottom
+  .row
+    .medium-6.columns=html_split_diff.left.html_safe
+    .medium-6.columns=html_split_diff.right.html_safe

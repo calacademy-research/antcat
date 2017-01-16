@@ -2,27 +2,6 @@ require File.expand_path '../boot', __FILE__
 
 require 'rails/all'
 
-#
-# This block is a duplicate of the paper_trail.rb initializer.
-# There is an intermittent (!) loading order issue where we're seeing
-# change_id being flagged as not writable. Putting this block here
-# seems to have fixed it; remove this block if/when we move beyond 4.0 beta 2 and see
-# if deleting and undoing a delete still causes the problem. Do at least three tests.
-#
-# Note: This should probably be require 'config/initializers/paper_trail.rb',
-# but because this is intermittent I'm not changing anything until I know this is the fix.
-#
-require 'protected_attributes'
-
-module PaperTrail
-  class Version < ::ActiveRecord::Base
-    attr_accessible :change_id
-  end
-end
-#
-#  End of stupid
-#
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require *Rails.groups
@@ -41,15 +20,15 @@ module AntCat
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.action_mailer.delivery_method = :sendmail
-    config.action_mailer.sendmail_settings = {arguments: '-i'}
+    config.action_mailer.sendmail_settings = { arguments: '-i' }
     config.active_record.observers = [
-        :author_name_observer,
-        :journal_observer,
-        :place_observer,
-        :publisher_observer,
-        :reference_author_name_observer,
-        :reference_document_observer,
-        :reference_observer,
+      :author_name_observer,
+      :journal_observer,
+      :place_observer,
+      :publisher_observer,
+      :reference_author_name_observer,
+      :reference_document_observer,
+      :reference_observer,
     ]
 
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
@@ -62,23 +41,6 @@ module AntCat
     # suppress deprecation warning
     config.active_record.raise_in_transactional_callbacks = true
     config.assets.enabled = true
-
-    # Add additional extensions/regexes for `rake notes`.
-    # I believe we have to do this manually because most files use
-    # extensions such as `.haml` as compared to `.html.haml`.
-    if Rails.env.development?
-      # So in Sass files, look for lines matching:
-      # `<optional whitespace> // TODO change font`
-      config.annotations.register_extensions('sass') do |tag|
-        %r{//\s*(#{tag}):?\s*(.*?)$}
-      end
-      config.annotations.register_extensions('haml') do |tag|
-        %r{-#\s*(#{tag}):?\s*(.*?)$}
-      end
-      config.annotations.register_extensions('coffee') do |tag|
-        %r(#\s*(#{tag}):?\s*(.*?)$)
-      end
-    end
   end
 end
 

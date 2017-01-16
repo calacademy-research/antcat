@@ -1,0 +1,5 @@
+Files in this subdir are included manually per view.
+
+Assets are organized by controller, or rather, by which controller is responsible for rendering the views that includes the JavaScripts.
+
+Files are named as to make the *most* sense, which means some are named after the controller action, some after the view or what the script does.

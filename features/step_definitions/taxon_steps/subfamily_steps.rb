@@ -16,14 +16,10 @@ Given(/there is a subfamily "([^"]*)"$/) do |taxon_name|
 end
 
 Given(/^subfamily "(.*?)" exists$/) do |taxon_name|
-  name = create :subfamily_name, name: taxon_name
-  @subfamily = create :subfamily, name: name
-  @subfamily.history_items.create! taxt: "#{name} history"
+  step %{there is a subfamily "#{taxon_name}"}
 end
 
-Given(/^the unavailable subfamily "(.*?)" exists$/) do |name|
-  @subfamily = create :subfamily,
-    status: 'unavailable',
-    name: create(:subfamily_name, name: name)
-  @subfamily
+Given(/^there is an invalid subfamily Invalidinae$/) do
+  name = create :subfamily_name, name: "Invalidinae"
+  create :subfamily, name: name, status: "synonym"
 end

@@ -1,15 +1,17 @@
 class ReferenceSectionsController < ApplicationController
   before_action :authenticate_editor
-  before_action :set_reference_section, only: [:show, :update, :destroy]
+  before_action :set_reference_section, only: [:update, :destroy]
 
   def show
+    @comparer = ReferenceSection.revision_comparer_for params[:id],
+      params[:selected_id], params[:diff_with_id]
   end
 
   def update
     title_taxt, subtitle_taxt, references_taxt = taxts_from_params
-    @item.update_attributes title_taxt: title_taxt,
-                            subtitle_taxt: subtitle_taxt,
-                            references_taxt: references_taxt
+    @item.update title_taxt: title_taxt,
+                 subtitle_taxt: subtitle_taxt,
+                 references_taxt: references_taxt
     render_json @item
   end
 

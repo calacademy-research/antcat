@@ -1,0 +1,14 @@
+@import "colors"
+
+// Used by `FeedHelper#inline_expandable`.
+.expandable
+  margin-left: 0.5rem
+  &:hover
+    cursor: pointer
+  .hide-when-expaned
+    font-style: italic
+    a.gray
+      color: darkgray
+  .show-when-expanded
+    display: none
+    background: $color_pale_green

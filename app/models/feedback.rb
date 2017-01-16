@@ -1,13 +1,15 @@
+# TODO remove `feedbacks.email_recipients`.
+
 class Feedback < ActiveRecord::Base
-  include Feed::Trackable
+  include ActiveModel::ForbiddenAttributesProtection
+  include Trackable
 
   belongs_to :user
 
   validates :comment, presence: true, length: { maximum: 10_000 }
 
-  before_save :add_emails_recipients
-
-  scope :pending, -> { where(open: true) }
+  scope :pending_count, -> { where(open: true).count }
+  scope :by_status_and_date, -> { order(open: :desc, created_at: :desc) }
   scope :recently_created, ->(time_ago = 5.minutes.ago) {
     where('created_at >= ?', time_ago)
   }
@@ -35,11 +37,4 @@ class Feedback < ActiveRecord::Base
     save!
     create_activity :reopen_feedback
   end
-
-  private
-    # Default to Stan's email in case no other editors want to receive these.
-    def add_emails_recipients
-      self.email_recipients = User.feedback_emails_recipients
-        .as_angle_bracketed_emails.presence || "sblum@calacademy.org"
-    end
 end

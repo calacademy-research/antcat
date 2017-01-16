@@ -23,6 +23,10 @@ class Subfamily < Taxon
     tribes
   end
 
+  def childrens_rank_in_words
+    "tribes"
+  end
+
   def statistics valid_only: false
     get_statistics [:tribes, :genera, :species, :subspecies], valid_only: valid_only
   end

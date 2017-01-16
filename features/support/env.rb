@@ -1,3 +1,6 @@
+# TODO as of version 2.1, Capybara defaults to finding only visible elements,
+# 1) confirm that's the case. 2) remove "visible" from a lot of places.
+
 ENV["RAILS_ENV"] ||= "test"
 require_relative '../../config/environment'
 
@@ -11,7 +14,7 @@ require 'capybara-screenshot/cucumber'
 require 'webmock/cucumber'
 require 'sunspot_test/cucumber'
 
-if ENV['HEADLESS'] == 'true'
+if ENV['HEADLESS']
   require 'headless'
 
   headless = Headless.new
@@ -30,15 +33,29 @@ RSpec.configure do |config|
   end
 end
 
-Capybara.javascript_driver = :webkit
-if ENV['DRIVER'] == 'selenium'
-  print "Enabling selenium driver..."
-  Capybara.javascript_driver = :selenium
+# "webkit" is our default driver. It's headless.
+# "selenium" really means Firefox. It's usually broken, and not headless.
+# "chrome" is from the gem 'chromedriver-helper'. Not headless.
+def set_driver
+  driver = ENV['DRIVER'] || "webkit"
+  puts "Using driver: #{driver}.".blue
+  case driver
+  when "selenium"
+    Capybara.javascript_driver = :selenium
+  when "chrome"
+    Capybara.register_driver :selenium do |app|
+      Capybara::Selenium::Driver.new app, browser: :chrome
+    end
+  when "webkit"
+    Capybara.javascript_driver = :webkit
+  end
+
+  Capybara::Webkit.configure do |config|
+    config.block_unknown_urls
+  end
 end
 
-Capybara::Webkit.configure do |config|
-  config.block_unknown_urls
-end
+set_driver
 
 Capybara.default_max_wait_time = 5
 Capybara.default_selector = :css
@@ -60,7 +77,4 @@ Warden.test_mode!
 Warden::Manager.serialize_into_session { |user| user.email }
 Warden::Manager.serialize_from_session { |email| User.find_by(email: email) }
 
-Feed::Activity.enabled = false
-
-# TODO as of version 2.1, Capybara defaults to finding only visible elements,
-# 1) confirm that's the case. 2) remove "visible" from a lot of places.
+Feed.enabled = false

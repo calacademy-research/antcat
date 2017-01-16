@@ -1,0 +1,16 @@
+-content_for :head do
+  =javascript_include_tag "markdown_and_friends"
+
+=form_for @issue do |f|
+  =render "shared/errors_for", resource: @issue
+  .row
+    .medium-6.columns.end
+      =f.label :title
+      =f.text_field :title, { maxlength: 70 }
+
+  .row
+    .medium-12.columns
+      =f.text_area :description, rows: 7,
+        data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Description" }
+
+  =button_tag "Save", class: "btn-saves"

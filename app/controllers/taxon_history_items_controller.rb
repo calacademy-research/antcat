@@ -1,11 +1,10 @@
 class TaxonHistoryItemsController < ApplicationController
-  include UndoTracker
-
   before_filter :authenticate_editor
-  before_action :set_taxon_history_item, only: [:show, :update, :destroy]
+  before_action :set_taxon_history_item, only: [:update, :destroy]
 
   def show
-    render 'history_items/show'
+    @comparer = TaxonHistoryItem.revision_comparer_for params[:id],
+      params[:selected_id], params[:diff_with_id]
   end
 
   def update
@@ -15,7 +14,7 @@ class TaxonHistoryItemsController < ApplicationController
 
   def create
     taxon = Taxon.find params[:taxa_id]
-    setup_change taxon, :create
+    UndoTracker.setup_change taxon, :create
     item = TaxonHistoryItem.create_taxt_from_editable taxon, params[:taxt]
     render_json item
   end

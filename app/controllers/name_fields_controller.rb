@@ -62,7 +62,7 @@ class NameFieldsController < NamePickersController
 
   private
     def add_name name_string, data
-      name = Name.parse name_string
+      name = Names::Parser.create_name_from_string! name_string
       data[:success] = true
       data[:id] = name.id
     end

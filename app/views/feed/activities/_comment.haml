@@ -9,7 +9,7 @@ on the
 -if trackable && trackable.commentable
   =trackable.commentable_type.underscore.humanize.downcase
 
-  -if trackable.commentable_type.in? ["SiteNotice", "Task"]
+  -if trackable.commentable_type.in? ["SiteNotice", "Task", "Issue"]
     -link_title = trackable.commentable.title
   -else
     -link_title = "##{trackable.commentable_id}"

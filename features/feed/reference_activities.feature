@@ -12,7 +12,7 @@ Feature: Feed (references)
       And I fill in "reference_citation_year" with "1981"
       And I follow "Other"
       And I fill in "reference_citation" with "Required"
-      And I press the "Save" button
+      And I press "Save"
     And I go to the activity feed
     Then I should see "Archibald added the reference Ward & Bolton, 1981" and no other feed items
 
@@ -20,18 +20,16 @@ Feature: Feed (references)
   Scenario: Edited reference
     Given there is a reference for the feed with state "reviewed"
 
-    When I go to the references page
-      And I follow first reference link
-      And I follow "Edit"
+    When I go to the edit page for the most recent reference
       And I fill in "reference_title" with "A reference title"
-      And I press the "Save" button
+      And I press "Save"
     And I go to the activity feed
     Then I should see "Archibald edited the reference Giovanni, 1809" and no other feed items
 
   Scenario: Started reviewing reference
     Given there is a reference for the feed with state "none"
 
-    When I go to the new references page
+    When I go to the latest reference additions page
       And I follow "Start reviewing"
     And I go to the activity feed
     Then I should see "Archibald started reviewing the reference Giovanni, 1809" and no other feed items
@@ -39,7 +37,7 @@ Feature: Feed (references)
   Scenario: Finished reviewing reference
     Given there is a reference for the feed with state "reviewing"
 
-    When I go to the new references page
+    When I go to the latest reference additions page
       And I follow "Finish reviewing"
     And I go to the activity feed
     Then I should see "Archibald finished reviewing the reference Giovanni, 1809" and no other feed items
@@ -47,7 +45,7 @@ Feature: Feed (references)
   Scenario: Restarted reviewing reference
     Given there is a reference for the feed with state "reviewed"
 
-    When I go to the new references page
+    When I go to the latest reference additions page
       And I follow "Restart reviewing"
     And I go to the activity feed
     Then I should see "Archibald restarted reviewing the reference Giovanni, 1809" and no other feed items
@@ -58,7 +56,7 @@ Feature: Feed (references)
     When I create a bunch of references for the feed
       And I go to the references page
       And I follow "Latest Changes"
-      And I press "Approve all"
+      And I follow "Approve all"
     And I go to the activity feed
     Then I should see "Archibald approved all unreviewed references (2 in total)."
     And I should see 3 items in the feed

@@ -87,23 +87,6 @@ describe Reference do
           end
         end
 
-        describe 'Cite code', search: true do
-          it "finds cite codes that's doesn't look like a current year" do
-            matching_reference = reference_factory author_name: 'Hölldobler', cite_code: 'abcdef'
-            reference_factory author_name: 'Hölldobler', cite_code: 'fedcba' # unmatching_reference
-            Sunspot.commit
-
-            expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
-          end
-
-          it "finds cite codes that looks like a year, but not a current year" do
-            matching_reference = reference_factory author_name: 'Hölldobler', cite_code: '1600'
-            Sunspot.commit
-
-            expect(Reference.do_search(q: '1600')).to eq [matching_reference]
-          end
-        end
-
         describe 'Journal name', search: true do
           it 'searches journal names' do
             matching_reference = reference_factory author_name: 'Hölldobler',
@@ -200,6 +183,17 @@ describe Reference do
         Sunspot.commit
 
         expect(Reference.fulltext_search(q: 'bolton', reference_type: :nested)).to eq [nested]
+      end
+    end
+
+    describe "replacing some characters to make search work", search: true do
+      it "handles this reference with asterixes and a hyphen" do
+        title = '*Camponotus piceus* (Leach, 1825), decouverte Viroin-Hermeton'
+        reference = create :article_reference, title: title
+        Sunspot.commit
+
+        results = Reference.fulltext_search title: title
+        expect(results).to eq [reference]
       end
     end
   end
@@ -321,45 +315,6 @@ describe Reference do
     end
 
     describe "Sorting" do
-      it "can sort by updated_at" do
-        Reference.record_timestamps = false
-        updated_yesterday = reference_factory author_name: 'Fisher',
-          citation_year: '1910b', fix_type: :article_reference
-        updated_yesterday.update_attribute :updated_at, Time.now.yesterday
-
-        updated_last_week = reference_factory author_name: 'Wheeler',
-          citation_year: '1874', fix_type: :article_reference
-        updated_last_week.update_attribute :updated_at, 1.week.ago
-
-        updated_today = reference_factory author_name: 'Fisher',
-          citation_year: '1910a', fix_type: :article_reference
-        updated_today.update_attribute :updated_at, Time.now
-        Reference.record_timestamps = true
-
-        expect(Reference.list_references(order: :updated_at))
-          .to eq [updated_today, updated_yesterday, updated_last_week]
-      end
-
-      it "can sort by created_at" do
-        Reference.record_timestamps = false
-        created_yesterday = reference_factory author_name: 'Fisher',
-          citation_year: '1910b', fix_type: :article_reference
-        created_yesterday.update_attribute :created_at, Time.now.yesterday
-
-        created_last_week = reference_factory author_name: 'Wheeler',
-          citation_year: '1874', fix_type: :article_reference
-        created_last_week.update_attribute :created_at, 1.week.ago
-
-        created_today = reference_factory author_name: 'Fisher',
-          citation_year: '1910a', fix_type: :article_reference
-        created_today.update_attribute :created_at, Time.now
-
-        Reference.record_timestamps = true
-
-        expect(Reference.list_references(order: :created_at))
-          .to eq [created_today, created_yesterday, created_last_week]
-      end
-
       describe "Default sort order" do
         it "sorts by author_name plus year plus letter" do
           fisher1910b = reference_factory author_name: 'Fisher',

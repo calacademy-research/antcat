@@ -5,7 +5,6 @@ gem 'rails', '~> 4.2'
 
 gem 'citrus', '2.4.1'
 gem 'coffee-rails'
-gem 'diff-lcs'
 gem 'haml-rails'
 gem 'mysql2'
 gem 'quiet_assets'
@@ -22,17 +21,17 @@ gem 'yui-compressor'
 gem 'activeadmin', '~> 1.0.0.pre2'
 gem 'acts_as_commentable_with_threading'
 gem 'acts_as_list'
-gem 'best_in_place', github: 'bernat/best_in_place'
 gem 'colorize'
 gem 'devise'
-gem 'devise_invitable'
+gem 'diffy', require: false
 gem 'draper'
 gem 'font-awesome-rails'
 gem 'foundation-rails'
-gem 'fuzzy-string-match'
+gem 'fuzzy-string-match', require: false
 gem 'gretel'
 gem 'high_voltage'
 gem 'invisible_captcha'
+gem 'jquery-atwho-rails'
 gem 'jquery-rails', '> 4.0'
 gem 'jquery-ui-rails', '> 5.0'
 gem 'paper_trail', git: "https://github.com/airblade/paper_trail.git", tag: 'v4.0.0.beta2'
@@ -52,10 +51,10 @@ gem 'rails-observers' # observers deprecated in rails 4
 
 # Production
 # TODO create :production group?
-gem 'aws-sdk', '< 2.0'
 # Version locked because of bug when fetching s3 hosted PDF:
 #   uninitialized constant Paperclip::Storage::S3::AWS
 #   test with: http://antcat.org/documents/6308/ward_2014_annu_rev_ecol_evol_syst_phylogeny_and_evolution_of_ants.pdf
+gem 'aws-sdk', '< 2.0'
 gem 'ey_config'
 
 group :development, :test do
@@ -76,6 +75,7 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'selenium-webdriver', '>= 2.48' # works with firefox as of v34
+  gem 'chromedriver-helper'
   gem 'shoulda-matchers'
   gem 'webmock'
 end

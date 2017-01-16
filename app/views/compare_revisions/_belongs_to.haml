@@ -1,0 +1,19 @@
+-# Show which item the item we're browsing belongs to.
+-# Currently only for items with a `taxon_id`.
+
+-if most_recent.respond_to? :taxon_id
+  %p
+    This item
+    -if most_recent.persisted?
+      belongs to
+    -else
+      has been deleted; it belonged to
+
+    -if most_recent.taxon
+      =most_recent.taxon.decorate.link_to_taxon + "."
+    -else
+      the now deleted taxon ##{most_recent.taxon_id}.
+
+    -if most_recent.persisted?
+      Edit it at the taxon's
+      =link_to "edit page.", edit_taxa_path(most_recent.taxon || 0)

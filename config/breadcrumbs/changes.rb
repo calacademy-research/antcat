@@ -7,6 +7,11 @@ end
     parent :changes
   end
 
+    crumb :confirm_before_undo_change do |change|
+      link "Confirm before undo"
+      parent :change, change
+    end
+
 crumb :all_changes do
   link "All Changes", changes_path
   parent :changes

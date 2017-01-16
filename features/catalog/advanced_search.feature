@@ -7,9 +7,6 @@ Feature: Searching the catalog
     Given I go to the catalog
     And I follow the first "Advanced Search"
 
-  Scenario: Searching when not logged in
-    Then I should be on the advanced search page
-
   Scenario: Searching when no results
     When I fill in "year" with "2010"
     And I press "Go" in the search section

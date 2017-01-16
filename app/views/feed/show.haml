@@ -1,9 +1,0 @@
--# Should really be `index.haml` instead of `show.haml`, but using the singular
--# `resource :feed` in `routes.rb` made that tricky.
-
--@title = "Feed"
--breadcrumb :feed
-
-=render "activities_table", activities: @activities, show_delete_button: true, include_head: true
-
-=will_paginate @activities

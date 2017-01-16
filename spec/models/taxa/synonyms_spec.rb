@@ -39,13 +39,11 @@ describe Taxon do
       atta = create_genus 'Atta'
       attaboi = create_genus 'Attaboi'
 
-      atta.extend TaxonSynonymsMonkeyPatch
-      atta.become_junior_synonym_of attaboi
+      become_junior_synonym_of atta, attaboi
       atta.reload; attaboi.reload
       expect(atta).to be_synonym_of attaboi
 
-      attaboi.extend TaxonSynonymsMonkeyPatch
-      attaboi.become_junior_synonym_of atta
+      become_junior_synonym_of attaboi, atta
       atta.reload; attaboi.reload
       expect(attaboi.status).to eq 'synonym'
       expect(attaboi).to be_synonym_of atta
@@ -61,8 +59,7 @@ describe Taxon do
       Synonym.create! junior_synonym: attaboi, senior_synonym: atta
       expect(Synonym.count).to eq 2
 
-      atta.extend TaxonSynonymsMonkeyPatch
-      atta.become_junior_synonym_of attaboi
+      become_junior_synonym_of atta, attaboi
       expect(Synonym.count).to eq 1
       expect(atta).to be_synonym_of attaboi
       expect(attaboi).not_to be_synonym_of atta
@@ -73,14 +70,13 @@ describe Taxon do
     it "removes all synonymies for the taxon" do
       atta = create_genus 'Atta'
       attaboi = create_genus 'Attaboi'
-      attaboi.extend TaxonSynonymsMonkeyPatch
-      attaboi.become_junior_synonym_of atta
+      become_junior_synonym_of attaboi, atta
       expect(atta.junior_synonyms.all.include?(attaboi)).to be_truthy
       expect(atta).not_to be_synonym
       expect(attaboi).to be_synonym
       expect(attaboi.senior_synonyms.all.include?(atta)).to be_truthy
 
-      attaboi.become_not_junior_synonym_of atta
+      become_not_junior_synonym_of attaboi, atta
 
       expect(atta.junior_synonyms.all.include?(attaboi)).to be_falsey
       expect(atta).not_to be_synonym
@@ -93,8 +89,7 @@ describe Taxon do
     it "deletes synonyms when the status changes from 'synonym'" do
       atta = create_genus
       eciton = create_genus
-      atta.extend TaxonSynonymsMonkeyPatch
-      atta.become_junior_synonym_of eciton
+      become_junior_synonym_of atta, eciton
       expect(atta).to be_synonym
       expect(atta.senior_synonyms.size).to eq 1
       expect(eciton.junior_synonyms.size).to eq 1
@@ -111,8 +106,7 @@ describe Taxon do
     before do
       @atta = create_genus 'Atta'
       @eciton = create_genus 'Eciton'
-      @eciton.extend TaxonSynonymsMonkeyPatch
-      @eciton.become_junior_synonym_of @atta
+      become_junior_synonym_of @eciton, @atta
     end
 
     describe "#junior_synonyms_with_names" do
@@ -135,4 +129,21 @@ describe Taxon do
       end
     end
   end
+end
+
+# Used to live in `Taxon` as instance methods, then in a monkey patch. See git.
+# Tests calling these may be deprecated, since they're mostly expecting
+# on what these methods does. Kept here because I haven't figured out if they are
+# WIP and are supposed to be implemented in the future.
+def become_junior_synonym_of junior, senior
+  Synonym.where(junior_synonym: senior, senior_synonym: junior).destroy_all
+  Synonym.where(senior_synonym: senior, junior_synonym: junior).destroy_all
+  Synonym.create! junior_synonym: junior, senior_synonym: senior
+  senior.update! status: 'valid'
+  junior.update! status: 'synonym'
+end
+
+def become_not_junior_synonym_of junior, senior
+  Synonym.where(junior_synonym: junior, senior_synonym: senior).destroy_all
+  junior.update! status: 'valid' if junior.senior_synonyms.empty?
 end

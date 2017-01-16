@@ -1,0 +1,12 @@
+-# Another hack for the title/breadcrumb.
+-if params[:id]
+  -@title = "Activity Item ##{params[:id]}"
+  -breadcrumb :activity_item, params[:id]
+-else
+  -@title = "Activity Feed"
+  -breadcrumb :activity_feed
+
+=render "table", activities: @activities, show_delete_button: true, include_head: true
+
+-# HACK so that the id param isn't included in pagination links.
+=will_paginate @activities, params: { id: nil }

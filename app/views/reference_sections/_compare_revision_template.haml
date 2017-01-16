@@ -1,0 +1,6 @@
+-[:title_taxt, :subtitle_taxt, :references_taxt].each do |field|
+  -if item[field].present?
+    %h6=field.to_s
+    %p
+      =TaxtPresenter[item[field]].to_html
+      =inline_expandable("show raw") { item[field] }

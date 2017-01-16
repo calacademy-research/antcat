@@ -1,5 +1,7 @@
 @import "colors"
 
+// For stuff that may or may not be used in
+// both the form and the not really form.
 #taxa-controller
   .taxon_form
     .taxt_edit_box
@@ -13,6 +15,19 @@
       .section_header
         padding-left: 6px
 
+    td.caption
+      width: 72px
+
+    td.top_aligned
+      vertical-align: top
+      padding-top: 3px
+
+    .display_button
+      white-space: normal
+
+// For the taxon form that is not the "not really" form.
+#taxa-controller
+  .taxon_form
     .fields_section
       .section
         margin-bottom: 12px
@@ -57,6 +72,24 @@
       .biogeographic_region
         padding-right: 4px
 
+    .buttons_section
+      vertical-align: middle
+      margin-bottom: 12px
+      position: relative
+      .left_buttons
+        margin-left: 8px
+      .right_buttons
+        position: absolute
+        right: 10px
+        top: 0px
+      .show
+        margin-left: 7px
+      form
+        display: inline-block
+
+// For the not really form.
+#taxa-controller
+  .taxon_form
     .history_items_section
       font-size: 90%
       .template
@@ -108,15 +141,11 @@
           .display
             padding: 6px
             padding-left: 10px
-            max-height: 80px
             overflow: auto
             &.ui-selecting
               background: $color_current_being_edited_background
             .title_taxt, .subtitle_taxt
               font-weight: bold
-
-    .reference_section + .reference_section
-      margin-top: 6px
 
     .children_section
       .section_contents
@@ -146,28 +175,3 @@
           font-size: 12px
           margin-top: 4px
           color: $color_picker_help
-
-    .buttons_section
-      vertical-align: middle
-      margin-bottom: 12px
-      position: relative
-      .left_buttons
-        margin-left: 8px
-      .right_buttons
-        position: absolute
-        right: 10px
-        top: 0px
-      .show
-        margin-left: 7px
-      form
-        display: inline-block
-
-    td.caption
-      width: 72px
-
-    td.top_aligned
-      vertical-align: top
-      padding-top: 3px
-
-    .display_button
-      white-space: normal

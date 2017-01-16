@@ -1,8 +1,4 @@
 class SpeciesGroupName < Name
-  include UndoTracker
-
-  has_paper_trail meta: { change_id: :get_current_change_id }
-
   def genus_epithet
     words[0]
   end
@@ -27,7 +23,7 @@ class SpeciesGroupName < Name
     else                            raise "we should never get here"
     end
 
-    Name.parse name_parts.join(' ')
+    Names::Parser.create_name_from_string! name_parts.join(' ')
   end
 
   private

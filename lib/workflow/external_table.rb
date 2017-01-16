@@ -29,19 +29,14 @@ module Workflow
         def current_review_state
           loaded_taxon_state = taxon_state
           unless loaded_taxon_state
-            loaded_taxon_state = TaxonState.find_by(taxon: id)
+            loaded_taxon_state = TaxonState.find_by(taxon_id: id)
           end
           loaded_taxon_state
         end
     end
 
-    module ClassMethods
-      # class methods of your adapter go here
-    end
-
     def self.included klass
       klass.send :include, InstanceMethods
-      klass.extend ClassMethods
     end
   end
 end

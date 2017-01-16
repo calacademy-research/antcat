@@ -1,7 +1,14 @@
+-# Renders form for posting new comment + all current comments.
+-# Uses full partial paths because this can be rendered from other controllers.
+
+-content_for :head do
+  =javascript_include_tag "markdown_and_friends"
+
+-# Anchor link so we can scroll down to the comments section via links.
 %a{name: "comments"}
 
-%h6.margin-top=pluralize(commentable.comment_threads.count, "comment")
-=render partial: "comments/form"
+%h6.margin-top=comments_count_in_words commentable
+=render "comments/form"
 
 .comments-container.margin-bottom
-  =render partial: "comments/comments", locals: { comments: commentable.root_comments }
+  =render "comments/comments", comments: commentable.root_comments

@@ -1,19 +1,21 @@
 # This controller handles editing by logged in editors.
 # `CatalogController` is responsible for showing taxon pages to users.
+#
+# Everything except the actions `:new, :create, :edit, :update` has been moved
+# to a grab bag controller (`TaxaGrabBagController`) because this class was,
+# and still is, hard to work with.
 
 # TODO extract more code from here into `Taxa::SaveTaxon`, and rename
 # that class to make it more obvious that it's a form object.
 
 class TaxaController < ApplicationController
   before_action :authenticate_editor
-  before_action :authenticate_superadmin, only: [:destroy]
   before_action :redirect_by_parent_name_id, only: :new
   before_action :set_previous_combination, only: [:new, :create, :edit, :update]
-  before_action :set_taxon, except: [:new, :create, :show]
+  before_action :set_taxon, only: [:edit, :update]
 
   def new
     @taxon = get_taxon_for_create
-    @default_name_string = default_name_string
     set_authorship_reference
   end
 
@@ -56,77 +58,13 @@ class TaxaController < ApplicationController
       @taxon.create_activity :update
       redirect_to catalog_path(@taxon)
     else
-      Feed::Activity.create_activity :custom,
+      Activity.create_without_trackable :custom,
         parameters: { text: "updated an unknown taxon" }
       redirect_to root_path
     end
 
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :edit
-  end
-
-  def destroy
-    @taxon.delete_taxon_and_children
-
-    flash[:notice] = "Taxon was successfully deleted."
-
-    respond_to do |format|
-      format.html { redirect_to root_url }
-      format.json { head :no_content }
-    end
-  end
-
-  # "Light version" of `#destroy` (which is for superadmins only). A button to this
-  # method is shown when there are no non-taxt references to the current taxon.
-  def destroy_unreferenced
-    references = @taxon.references
-    if references.empty?
-      @taxon.destroy
-    else
-      redirect_to edit_taxa_path(@taxon), notice: <<-MSG.squish
-        Other taxa refer to this taxon, so it can't be deleted.
-        Please talk to Stan (sblum@calacademy.org) to determine a solution.
-        The items referring to this taxon are: #{references}.
-      MSG
-      return
-    end
-    redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
-  end
-
-  # TODO move logic to model?
-  def update_parent
-    new_parent = Taxon.find params[:new_parent_id]
-    case new_parent
-    when Species   then @taxon.species = new_parent
-    when Genus     then @taxon.genus = new_parent
-    when Subgenus  then @taxon.subgenus = new_parent
-    when Subfamily then @taxon.subfamily = new_parent
-    when Family    then @taxon.family = new_parent
-    end
-
-    @taxon.save!
-    redirect_to edit_taxa_path(@taxon)
-  end
-
-  def elevate_to_species
-    unless @taxon.kind_of? Subspecies
-      redirect_to edit_taxa_path(@taxon), notice: "Not a subspecies"
-      return
-    end
-    @taxon.elevate_to_species
-    redirect_to catalog_path(@taxon), notice: "Subspecies was successfully elevated to a species."
-  end
-
-  # Return all the taxa that would be deleted if we delete this
-  # particular ID, inclusive. Same as children, really.
-  def delete_impact_list
-    taxon_array = @taxon.delete_impact_list
-    render json: taxon_array, status: :ok
-  end
-
-  # Show children on another page for performance reasons.
-  # Example of a very slow page: http://localhost:3000/taxa/429244/edit
-  def show_children
   end
 
   private
@@ -205,13 +143,7 @@ class TaxaController < ApplicationController
       @taxon.protonym.authorship.reference ||= DefaultReference.get session
     end
 
-    # TODO move to view/helper?
-    def default_name_string
-      return unless @taxon.kind_of? SpeciesGroupTaxon
-      parent = Taxon.find(params[:parent_id])
-      parent.name.name
-    end
-
+    # TODO something.
     def redirect_by_parent_name_id
       return unless params[:parent_name_id]
 

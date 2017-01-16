@@ -1,22 +1,30 @@
--taxon = taxon.decorate
-=taxon.header
+.header
+  %span.name=taxon.decorate.link_each_epithet
+  =taxon.authorship_string
+  =taxon.decorate.taxon_status
+  =taxon.name.gender
+  -if taxon.waiting?
+    %span.review_state This taxon has been changed; changes awaiting approval
 
--unless taxon.original_combination?
-  =render "statistics", taxon: taxon
-  =taxon.genus_species_header_notes_taxt
-  =taxon.headline
+=render "statistics", taxon: taxon
 
-  -if taxon.history_items.present?
-    .history
-      -taxon.history_items.each do |history_item|
+=taxon.decorate.genus_species_header_notes_taxt
+=taxon.decorate.headline
+
+-if taxon.history_items.present?
+  %ul.history
+    -taxon.history_items.each do |history_item|
+      %li
         =add_period_if_necessary TaxtPresenter[history_item.taxt].to_html
+        -if current_user
+          %small.show-on-hover=link_to "##{history_item.id}", taxon_history_item_path(history_item), class: "gray"
 
-  =taxon.child_lists
+=taxon.decorate.child_lists
 
-  -# Special case because the root view pulls in too much data.
-  -if action_name == "index"
-    %br
-    =link_to "Formicidae family references", catalog_path(429011)
-  -else
-    =taxon.references
-    =taxon.change_history
+-# Special case because the root view pulls in too much data.
+-if action_name == "index"
+  %br
+  =link_to "Formicidae family references", catalog_path(429011)
+-else
+  =taxon.decorate.references
+  =taxon_change_history taxon

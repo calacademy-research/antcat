@@ -2,12 +2,15 @@ class TaxonDecorator < ApplicationDecorator
   delegate_all
 
   def link_to_taxon
-    label = taxon.name.to_html_with_fossil(taxon.fossil?)
+    link_to_taxon_with_label taxon.name_with_fossil
+  end
+
+  def link_to_taxon_with_label label
     helpers.link_to label, helpers.catalog_path(taxon)
   end
 
-  def header
-    TaxonDecorator::Header.new(taxon).header
+  def link_each_epithet
+    TaxonDecorator::Header.new(taxon).link_each_epithet
   end
 
   # Currently accepts very confusing arguments.
@@ -33,10 +36,6 @@ class TaxonDecorator < ApplicationDecorator
     TaxonDecorator::ChildList.new(taxon).child_lists
   end
 
-  def history
-    TaxonDecorator::History.new(taxon).history
-  end
-
   def genus_species_header_notes_taxt
     return unless taxon.genus_species_header_notes_taxt.present?
     helpers.content_tag :div,
@@ -46,41 +45,11 @@ class TaxonDecorator < ApplicationDecorator
 
   def references
     return unless taxon.reference_sections.present?
+
     helpers.content_tag :div, class: 'reference_sections' do
       taxon.reference_sections.reduce(''.html_safe) do |content, section|
         content << reference_section(section)
       end
-    end
-  end
-
-  def change_history
-    return if taxon.old?
-    change = taxon.last_change
-    return unless change
-
-    helpers.content_tag :span, class: 'change_history' do
-      content = if change.change_type == 'create'
-                  "Added by"
-                else
-                  "Changed by"
-                end.html_safe
-      content << " #{change.decorate.format_changed_by} ".html_safe
-      content << change.decorate.format_created_at.html_safe
-
-      if taxon.approved?
-        # I don't fully understand this case;
-        # it appears that somehow, we're able to generate "changes" without affiliated
-        # taxon_states. not clear to me how this happens or whether this should be allowed.
-        # Workaround: If the taxon_state is showing "approved", go get the most recent change
-        # that has a noted approval.
-        approved_change = Change.where(<<-SQL.squish, change.user_changed_taxon_id).last
-          user_changed_taxon_id = ? AND approved_at IS NOT NULL
-        SQL
-        content << "; approved by #{approved_change.decorate.format_approver_name} ".html_safe
-        content << approved_change.decorate.format_approved_at.html_safe
-      end
-
-      content
     end
   end
 
@@ -116,42 +85,6 @@ class TaxonDecorator < ApplicationDecorator
 
     labels << 'ichnotaxon' if taxon.ichnotaxon?
     labels.join(', ').html_safe
-  end
-
-  def name_description
-    string =
-      case taxon
-      when Subfamily
-        "subfamily"
-      when Tribe
-        parent = taxon.subfamily
-        "tribe of " << (parent ? parent.name.to_html : '(no subfamily)')
-      when Genus
-        parent = taxon.tribe ? taxon.tribe : taxon.subfamily
-        "genus of " << (parent ? parent.name.to_html : '(no subfamily)')
-      when Species
-        parent = taxon.parent
-        "species of " << parent.name.to_html
-      when Subgenus
-        parent = taxon.parent
-        "subgenus of " << parent.name.to_html
-      when Subspecies
-        parent = taxon.species
-        "subspecies of " << (parent ? parent.name.to_html : '(no species)')
-      else
-        ''
-      end
-
-    # TODO: Joe test this case
-    if taxon[:unresolved_homonym] == true && taxon.new_record?
-      string = " secondary junior homonym of #{string}"
-    elsif !taxon[:collision_merge_id].nil? && taxon.new_record?
-      target_taxon = Taxon.find_by(id: taxon[:collision_merge_id])
-      string = " merge back into original #{target_taxon.name_html_cache}"
-    end
-
-    string = "new #{string}" if taxon.new_record?
-    string.html_safe
   end
 
   private

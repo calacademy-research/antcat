@@ -1,13 +1,11 @@
 class Author < ActiveRecord::Base
-  include UndoTracker
-
   has_many :names, -> { order(:name) }, class_name: 'AuthorName'
 
   scope :sorted_by_name, -> do
     select('authors.id').joins(:names).group('authors.id').order('name')
   end
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
   def self.find_by_names names
     Author.joins(:names).where('name IN (?)', names).group('authors.id').to_a
@@ -29,17 +27,16 @@ class Author < ActiveRecord::Base
     create_merge_authors_activity the_one_author, new_names_string
   end
 
-  # TODO add `private_class_method :xxx`
   private
     def self.create_merge_authors_activity author, names_string
-      Feed::Activity.create_activity_for_trackable author,
-        :merge_authors, names: names_string
+      Activity.create_for_trackable author, :merge_authors, names: names_string
     end
+    private_class_method :create_merge_authors_activity
 
-    # TODO move to `FeedHelper`.
     def self.get_author_names_for_feed_message authors
       authors[1..-1].map do |author|
         author.names.map(&:name)
       end.flatten.join(", ")
     end
+    private_class_method :get_author_names_for_feed_message
 end

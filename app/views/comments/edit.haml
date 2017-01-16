@@ -1,0 +1,25 @@
+-@title = "Edit Comment ##{@comment.id}"
+-breadcrumb :edit_comment, @comment
+
+-content_for :head do
+  =javascript_include_tag "markdown_and_friends"
+
+.row.collapse
+  .medium-8.columns
+    -# Form based on `comments/_form.haml`.
+    =form_for @comment do |f|
+      .row
+        .small-12.columns.end
+          =f.text_area :body, rows: 4, placeholder: "Add comment here", data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Write" }
+
+      .row
+        .small-12.columns.end
+          =button_tag "Save edited comment", class: "btn-saves"
+
+  .medium-4.columns
+    .callout
+      %h6 Help
+      %p
+        Editing comments does not re-trigger user notifications, and no new
+        activity feed item is created. Edited comments are indicated with and
+        asterix like this "User commented about 2 hours ago*:".

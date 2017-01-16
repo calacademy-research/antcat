@@ -20,22 +20,7 @@ end
 
 # Click/press
 When(/^(?:|I )press "([^"]*)"$/) do |button|
-  # TODO treat buttons and "button link" the same
-  if button == "Edit"
-    first('.btn-edit').click
-  elsif button == "Review change"
-    first('.btn-normal').click
-  elsif button == "Approve"
-    first('.btn-normal').click
-  elsif button == "Approve all"
-    first('.btn-destructive').click
-  elsif button == "Delete"
-    first('.btn-delete').click
-  elsif button == "Cancel"
-    first('.btn-cancel').click
-  else
-    click_button button
-  end
+  click_button button
 end
 
 When(/^(?:|I )press the first "([^"]*)"$/) do |button|
@@ -46,12 +31,12 @@ When(/^(?:|I )follow the first "([^"]*)"$/) do |link|
   first(:link, link).click
 end
 
-When(/^(?:|I )follow "([^"]*)"$/) do |link|
-  click_link link
+When(/^(?:|I )follow the second "([^"]*)"$/) do |link|
+  all(:link, link)[1].click
 end
 
-When(/^I press the "([^"]+)" button/) do |button|
-  click_button button
+When(/^(?:|I )follow "([^"]*)"$/) do |link|
+  click_link link
 end
 
 When(/^I click "([^"]*)"$/) do |selector|
@@ -105,17 +90,6 @@ Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |fiel
     field = find_field field
     field_value = (field.tag_name == 'textarea') ? field.text : field.value
     expect(field_value).to match /#{value}/
-  end
-end
-
-Then(/^I (should|should not) see an? "([^"]*)" button$/) do |should_selector, button|
-  # TODO treat buttons and "button link" the same
-  should_selector = should_selector.tr(" ", "_").to_sym
-
-  if button == "Edit"
-    page.send should_selector, have_css("a.btn-edit")
-  else
-    page.send should_selector, have_css("input[value='#{button}']")
   end
 end
 
@@ -185,4 +159,10 @@ end
 
 Then(/I should see "([^"]*)" italicized/) do |italicized_text|
   expect(page).to have_css 'i', text: italicized_text
+end
+
+# HACK to prevent the driver from navigating away
+# from the page before completing the request.
+And(/^I wait for the "success" message$/) do
+  step 'I should see "uccess"' # "[Ss]uccess(fully)?"
 end

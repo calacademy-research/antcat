@@ -33,7 +33,7 @@ class DatabaseScripts::Scripts::RedundantCurlyBracesInTaxtItems
 end
 
 __END__
-description: |
+description: >
     Previously some 3000 taxt items contained redundant trailing
     braces such as '{ref 124002}}: 55.'
 tags: [regression-test]

@@ -4,8 +4,8 @@
 .buttons_right
   -if user_has_unread_site_notices? current_user
     =link_to "Mark all as read", mark_all_as_read_site_notices_path, method: :post, class: "btn-normal"
-  -if user_is_superadmin?
-    =link_to "New", new_site_notice_path, class: "btn-new"
+  -if user_can_edit?
+    =link_to "New", new_site_notice_path, class: "btn-normal"
 
 -if @site_notices.empty?
   No site notices.
@@ -27,7 +27,7 @@
           -read_status = site_notice.unread?(current_user) ? "unread" : "read"
           =antcat_icon read_status
           =read_status
-        %td.center-text=link_comments_section site_notice
+        %td.no-wrap=link_comments_section site_notice
         %td.no-wrap
           =time_ago_in_words site_notice.created_at
           ago

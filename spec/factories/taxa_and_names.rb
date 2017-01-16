@@ -202,27 +202,6 @@ def create_subspecies_name name
   create :subspecies_name, name: name, epithet: epithet, epithets: epithets
 end
 
-def create_synonym senior, attributes = {}
-  junior = create_genus attributes.merge status: 'synonym'
-  synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
-  junior
-end
-
-def create_taxon_version_and_change review_state, user = @user, approver = nil, genus_name = 'default_genus'
-  name = create :name, name: genus_name
-  taxon = create :genus, name: name
-  taxon.taxon_state.review_state = review_state
-
-  change = create :change, user_changed_taxon_id: taxon.id, change_type: "create"
-  create :version, item_id: taxon.id, whodunnit: user.id, change_id: change.id
-
-  if approver
-    change.update_attributes! approver: approver, approved_at: Time.now
-  end
-
-  taxon
-end
-
 # Mimics `TaxaController#build_new_taxon` to avoid interference from the factories.
 def build_new_taxon rank
   taxon_class = "#{rank}".titlecase.constantize

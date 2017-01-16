@@ -27,6 +27,21 @@
     %td=link_to "nylanderia", search_references_path(q: "nylanderia")
     %td Case insensitive.
   %tr
+    %td title
+    %td=link_to "title:leach", search_references_path(q: "title:leach")
+    %td
+      Compare:
+      =link_to "title:leach", search_references_path(q: "title:leach")
+      \/
+      =link_to "author:leach", search_references_path(q: "author:leach")
+      \/
+      =succeed "." do
+        =link_to "leach", search_references_path(q: "leach")
+  %tr
+    %td title, more than one word
+    %td=link_to 'title:"solenopsis invicta"', search_references_path(q: 'title:"solenopsis invicta"')
+    %td Wrap query in single or double quotes, and put in after the colon.
+  %tr
     %td publication year
     %td=link_to "year:2009", search_references_path(q: "year:2009")
     %td

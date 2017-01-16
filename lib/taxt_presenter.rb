@@ -42,17 +42,19 @@ class TaxtPresenter
       @taxt.html_safe
     end
 
-    # TODO investigate using a `each
     # References, "{ref 123}".
     def parse_refs!
       @taxt.gsub!(/{ref (\d+)}/) do
         reference = Reference.find_by id: $1
-        return $1 unless reference
 
-        case @format
-        when :to_html   then reference.decorate.inline_citation
-        when :to_text   then reference.keey
-        when :to_antweb then reference.decorate.antweb_version_of_inline_citation
+        if reference
+          case @format
+          when :to_html   then reference.decorate.inline_citation
+          when :to_text   then reference.keey
+          when :to_antweb then reference.decorate.antweb_version_of_inline_citation
+          end
+        else
+          warn_about_non_existing_id "REFERENCE", $1
         end
       end
     end
@@ -61,9 +63,12 @@ class TaxtPresenter
     def parse_nams!
       @taxt.gsub!(/{nam (\d+)}/) do
         name = Name.find_by id: $1
-        return $1 unless name
 
-        name.to_html
+        if name
+          name.to_html
+        else
+          warn_about_non_existing_id "NAME", $1
+        end
       end
     end
 
@@ -71,17 +76,28 @@ class TaxtPresenter
     def parse_taxs!
       @taxt.gsub!(/{tax (\d+)}/) do
         taxon = Taxon.find_by id: $1
-        return $1 unless taxon
 
-        case @format
-        when :to_html   then taxon.decorate.link_to_taxon
-        when :to_text   then taxon.name.to_html
-        when :to_antweb then Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
+        if taxon
+          case @format
+          when :to_html   then taxon.decorate.link_to_taxon
+          when :to_text   then taxon.name.to_html
+          when :to_antweb then Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
+          end
+        else
+          warn_about_non_existing_id "TAXON", $1
         end
       end
     end
 
     def maybe_enable_antweb_quirk
       @format = :to_antweb if $use_ant_web_formatter
+    end
+
+    def warn_about_non_existing_id klass, id
+      <<-HTML.squish
+        <span class="bold-warning">
+          CANNOT FIND #{klass} WITH ID #{id}
+        </span>
+      HTML
     end
 end

@@ -1,10 +1,7 @@
-# Re "@reference.create_activity": we must create the feed
-# activities here in the controller, otherwise every save
-# generates tons of feed items.
-
 class ReferencesController < ApplicationController
   before_action :authenticate_editor, except: [:index, :download, :autocomplete,
-    :search_help, :show, :search, :endnote_export, :wikipedia_export, :latest_additions]
+    :search_help, :show, :search, :endnote_export, :wikipedia_export, :latest_additions,
+    :latest_changes]
   before_action :authenticate_superadmin, only: [:approve_all]
   before_action :set_reference, only: [:show, :edit, :update, :destroy,
     :start_reviewing, :finish_reviewing, :restart_reviewing, :wikipedia_export]
@@ -31,6 +28,8 @@ class ReferencesController < ApplicationController
   def edit
   end
 
+  # We manually create activities for the feed in `#create, #update and #destroy`,
+  # or we may end up with tons of activities instead of one.
   def create
     @reference = new_reference
 
@@ -149,14 +148,17 @@ class ReferencesController < ApplicationController
     id = params[:id]
     searching = params[:q].present?
 
-    references =  if id
-                    # `where` and not `find` because we need to return an array.
-                    Reference.where(id: id)
-                  elsif searching
-                    Reference.do_search params.merge endnote_export: true
-                  else
-                    Reference.list_all_references_for_endnote
-                  end
+    references =
+      if id
+        # `where` and not `find` because we need to return an array.
+        Reference.where(id: id)
+      elsif searching
+        Reference.do_search params.merge endnote_export: true
+      else
+        # I believe it's not possible to get here from the GUI, but the route
+        # is not disabled. http://localhost:3000/references/endnote_export
+        Reference.list_all_references_for_endnote
+      end
 
     render plain: Exporters::Endnote::Formatter.format(references)
 
@@ -164,7 +166,8 @@ class ReferencesController < ApplicationController
       render plain: <<-MSG.squish
         Looks like something went wrong.
         Exporting missing references is not supported.
-        If you tried to export a list of references, try to filter the query with "type:nomissing".
+        If you tried to export a list of references,
+        try to filter the query with "type:nomissing".
       MSG
   end
 
@@ -172,16 +175,42 @@ class ReferencesController < ApplicationController
     render plain: Wikipedia::ReferenceExporter.export(@reference)
   end
 
+  # For at.js. Not as advanced as `#autocomplete`.
+  def linkable_autocomplete
+    search_query = params[:q] || ''
+
+    # TODO create concern? There's similar logic in other controllers.
+    # See if we have an exact ID match.
+    search_results =  if search_query =~ /^\d{6} ?$/
+                        id_matches_q = Reference.find_by id: search_query
+                        [id_matches_q] if id_matches_q
+                      end
+    search_results ||= Reference.fulltext_search_light search_query
+
+    respond_to do |format|
+      format.json do
+        results = search_results.map do |reference|
+          { id: reference.id,
+            author: reference.author_names_string,
+            year: reference.citation_year,
+            title: reference.decorate.format_title }
+        end
+
+        render json: results
+      end
+    end
+  end
+
   def autocomplete
     search_query = params[:q] || ''
 
     search_options = {}
-    keyword_params = Reference.send(:extract_keyword_params, search_query)
+    keyword_params = Reference.extract_keyword_params search_query
 
     search_options[:reference_type] = :nomissing
     search_options[:items_per_page] = 5
     search_options.merge! keyword_params
-    search_results = Reference.send(:fulltext_search, search_options)
+    search_results = Reference.fulltext_search search_options
 
     respond_to do |format|
       format.json do
@@ -339,6 +368,7 @@ class ReferencesController < ApplicationController
       replaced = []
       replaced << keyword_params[:keywords] || ''
       replaced << "author:'#{reference.author_names_string}'" if keyword_params[:author]
+      replaced << "title:'#{reference.title}'" if keyword_params[:title]
       replaced << "year:#{keyword_params[:year]}" if keyword_params[:year]
 
       start_year = keyword_params[:start_year]

@@ -5,7 +5,7 @@
   =javascript_include_tag 'widgets/panel'
   =javascript_include_tag 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
   =javascript_include_tag 'widgets/name_field'
-  =javascript_include_tag 'taxa/convert_to_subspecies'
+  =javascript_include_tag 'controllers/convert_to_subspecies/new'
 
 =form_tag "/taxa/#{@taxon.id}/convert_to_subspecies", class: "convert_to_subspecies_form" do
   =render 'shared/errors_for', resource: @taxon
@@ -21,5 +21,5 @@
           =hidden_field_tag "new_species_id", @new_species.try(:id)
           =render "name_fields/panel", name_string: @new_species.try(:name).try(:name), default_name_string: @default_name_string
 
-      =button_tag type: "submit", class: "btn-destructive has-spinner" do
+      =button_tag type: "submit", class: "btn-saves has-spinner" do
         =spinner_icon + "Convert"

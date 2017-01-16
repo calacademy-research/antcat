@@ -1,0 +1,29 @@
+-most_recent     = comparer.most_recent
+-diff_with       = comparer.diff_with
+-selected        = comparer.selected
+-revisions       = comparer.revisions.reverse
+-html_split_diff = comparer.html_split_diff
+
+-content_for :head do
+  =stylesheet_link_tag "diffy"
+  =javascript_include_tag "compare_revisions"
+
+=render "shared/not_part_of_the_catalog"
+
+-content_for :application do
+  .row#compare-revisions
+    .medium-3.medium-push-9.columns
+      .callout
+        =render "compare_revisions/belongs_to", most_recent: most_recent
+        =render "compare_revisions/help"
+
+    .medium-9.medium-pull-3.columns
+      =render "compare_revisions/formatted", most_recent: most_recent, selected: selected, diff_with: diff_with, collapse_formatted: html_split_diff.present?
+
+      -if diff_with
+        =render "compare_revisions/difference_between_revisions", html_split_diff: html_split_diff, most_recent: most_recent, selected: selected, diff_with: diff_with
+
+    .medium-9.columns.medium-pull-3.margin-bottom.margin-top
+      =render "compare_revisions/revision_history_table", revisions: revisions, most_recent: most_recent
+
+=render file: "layouts/application"

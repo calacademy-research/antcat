@@ -56,6 +56,7 @@ module DevMonkeyPatches::Object
     Subfamily        => :sf,
     Tribe            => :tr,
     Genus            => :g,
+    Subgenus         => :sg,
     Species          => :s,
     Subspecies       => :ss,
 

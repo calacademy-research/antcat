@@ -1,18 +1,4 @@
--@title = "Reference Section ##{@item.id}"
--breadcrumb :reference_section, @item
+-@title = "Reference Section ##{@comparer.most_recent.id}"
+-breadcrumb :reference_section, @comparer.most_recent
 
--# "Belongs to" duplicated from "history_items/show".
-%p
-  Belongs to
-  =@item.taxon.decorate.link_to_taxon + "."
-  Edit this item at the taxon's
-  =link_to "edit page.", edit_taxa_path(@item.taxon)
-
-%h5 Title taxt
-%p=TaxtPresenter[@item.title_taxt].to_text.presence || "None"
-
-%h5 Subtitle taxt
-%p=TaxtPresenter[@item.subtitle_taxt].to_text.presence || "None"
-
-%h5 References taxt
-%p=TaxtPresenter[@item.references_taxt].to_html.presence || "None"
+=render file: "compare_revisions/show", locals: { comparer: @comparer }

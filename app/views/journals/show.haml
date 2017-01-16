@@ -3,7 +3,7 @@
 
 -if user_can_edit?
   .buttons_right
-    =link_to "Edit journal name", edit_journal_path(@journal), class: "btn-edit"
+    =link_to "Edit journal name", edit_journal_path(@journal), class: "btn-normal"
     -unless @references.present?
       =link_to "Delete", journal_path(@journal), class: "btn-delete", method: :delete, data: { confirm: "Are you sure?" }
 
@@ -20,3 +20,5 @@
   -if @references.empty?
     %tr
       %td None
+
+=will_paginate @references

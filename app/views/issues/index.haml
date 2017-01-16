@@ -1,0 +1,34 @@
+-@title = "Issues"
+-breadcrumb :issues
+
+%p.left
+  -if @open_issues_count.zero?
+    There are currently no open issues.
+  -else
+    Showing
+    =pluralize(@open_issues_count, "open issue") + "."
+
+-if user_can_edit?
+  .buttons_right=link_to "New", new_issue_path, class: "btn-normal"
+
+%table.issues
+  %thead
+    %tr
+      %th
+      %th Status
+      %th Title
+      %th Comments
+      %th Added
+  %tbody
+    -@issues.each do |issue|
+      %tr.issue{class: issue.status}
+        %td.icon=antcat_icon "issue", issue.status
+        %td=issue.status.capitalize
+        %td.grow=link_to issue.title, issue
+        %td.no-wrap=link_comments_section issue
+        %td.no-wrap
+          =time_ago_in_words issue.created_at
+          ago by
+          =issue.adder.decorate.user_page_link
+
+=will_paginate @issues

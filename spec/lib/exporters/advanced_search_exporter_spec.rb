@@ -16,7 +16,7 @@ describe Exporters::AdvancedSearchExporter do
     Subfamily.destroy_all
     5.times do
       taxon = create_subfamily
-      taxon.protonym.authorship.update_attributes! reference: @reference
+      taxon.protonym.authorship.update! reference: @reference
     end
     exporter = Exporters::AdvancedSearchExporter.new
     expect(exporter.export(Subfamily.all).size).to eq 15

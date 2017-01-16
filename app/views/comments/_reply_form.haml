@@ -1,12 +1,13 @@
-.reply-form
+.reply-form{data: { reply_form_for_comment: comment.id } }
   =form_for @new_comment do |f|
     =f.hidden_field :commentable_id, value: @new_comment.commentable_id
     =f.hidden_field :commentable_type, value: @new_comment.commentable_type
     =f.hidden_field :comment_id, value: comment.id
     .row
-      .small-6.columns.end
-        =f.text_area :body, placeholder: "Add reply here"
+      .small-12.columns.end
+        -# Not `data-previewable` because we do that on demand.
+        =f.text_area :body, rows: 3, placeholder: "Add reply here", data: { has_mentionables: true, has_linkables: true, previewable_title: "Write" }
     .row
-      .small-6.columns.end
-        =button_tag "Post Reply", class: "btn-normal"
+      .small-12.columns.end
+        =button_tag "Post Reply", class: "btn-saves"
         %a.btn-cancel Cancel

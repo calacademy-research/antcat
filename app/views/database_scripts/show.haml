@@ -1,18 +1,37 @@
 -@title = @script.title
 -breadcrumb :database_script, @script
 
-.callout
-  %h4.left=@script.title
-  .right=format_database_script_tags @script.tags
-  .clear
-  %p.left=markdown @script.description
-  %p.right
-    Show source:
-    =link_to "current (antcat.org)", source_database_script_path(@script)
-    ,
-    =database_script_github_link @script
-  .clear
+-content_for :head do
+  =javascript_include_tag "sortable_tables"
 
-.callout=@script.timed_render
+.row.collapse
+  .medium-8.columns
+    %h5
+      -if @script.topic_areas.present?
+        =succeed ":" do
+          =@script.topic_areas.join(", ").capitalize
+      =@script.title
+      =format_database_script_tags @script.tags
+    %p=markdown @script.description
 
-%small.right Script runtime: #{@script.timed_render_duration} seconds
+  .medium-4.columns
+    .callout
+      Show source:
+      =succeed "," do
+        =link_to "current (antcat.org)", source_database_script_path(@script)
+      =database_script_github_link @script
+      %br
+      Results generated
+      =time_ago_in_words @cached_at
+      ago
+      =link_to "Regenerate", regenerate_database_script_path(@script), class: "btn-normal btn-tiny"
+.row.column
+  .callout
+    =@cached_render
+
+%small.right
+  -duration = @script.timed_render_duration
+  -if duration
+    Script runtime: #{duration} seconds
+  -else
+    Script runtime: [used cache]

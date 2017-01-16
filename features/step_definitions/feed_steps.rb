@@ -3,7 +3,7 @@ Given(/^activity tracking is (enabled|disabled)$/) do |state|
               when "enabled" then true
               when "disabled" then false
               else raise end
-  Feed::Activity.enabled = new_state
+  Feed.enabled = new_state
 end
 
 Then(/^I should see "([^"]*)" and no other feed items$/) do |text|
@@ -20,7 +20,7 @@ Then(/^I should see at least (\d+) items? in the feed$/) do |expected_count|
 end
 
 def feed_items_count
-  all("table.feed > tbody tr").size
+  all("table.activities > tbody tr").size
 end
 
 # Journal
@@ -30,7 +30,7 @@ When(/^I add a journal for the feed$/) do
 end
 
 When(/^I edit a journal for the feed$/) do
-  journal = Feed::Activity.without_tracking do
+  journal = Feed.without_tracking do
     create :journal, name: "Archibald Bulletin"
   end
 
@@ -40,7 +40,7 @@ When(/^I edit a journal for the feed$/) do
 end
 
 When(/^I delete a journal for the feed$/) do
-  journal = Feed::Activity.without_tracking do
+  journal = Feed.without_tracking do
     create :journal, name: "Archibald Bulletin"
   end
 
@@ -50,7 +50,7 @@ end
 
 # TaxonHistoryItem
 When(/^I add a taxon history item for the feed$/) do
-  taxon = Feed::Activity.without_tracking { create_subfamily }
+  taxon = Feed.without_tracking { create_subfamily }
 
   cheat_and_set_user_for_feed
   TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}",
@@ -58,7 +58,7 @@ When(/^I add a taxon history item for the feed$/) do
 end
 
 When(/^I edit a taxon history item for the feed$/) do
-  item = Feed::Activity.without_tracking do
+  item = Feed.without_tracking do
     TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}",
       taxon: create_subfamily
   end
@@ -69,7 +69,7 @@ When(/^I edit a taxon history item for the feed$/) do
 end
 
 When(/^I delete a taxon history item for the feed$/) do
-  item = Feed::Activity.without_tracking do
+  item = Feed.without_tracking do
     TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}",
       taxon: create_subfamily
   end
@@ -80,7 +80,7 @@ end
 
 # Reference
 Given(/^there is a reference for the feed with state "(.*?)"$/) do |state|
-  Feed::Activity.without_tracking do
+  Feed.without_tracking do
     create :article_reference,
       author_names: [create(:author_name, name: 'Giovanni, S.')],
       citation_year: '1809',
@@ -90,7 +90,7 @@ Given(/^there is a reference for the feed with state "(.*?)"$/) do |state|
 end
 
 When(/^I create a bunch of references for the feed$/) do
-  Feed::Activity.without_tracking do
+  Feed.without_tracking do
     create :article_reference, review_state: "reviewing"
     create :article_reference, review_state: "reviewing"
     create :article_reference, review_state: "reviewed"
@@ -99,27 +99,27 @@ end
 
 # Tooltip
 Given(/^there is a tooltip for the feed$/) do
-  Feed::Activity.without_tracking do
+  Feed.without_tracking do
     Tooltip.create key: "authors", scope: "taxa", text: "Text"
   end
 end
 
-# Task
-Given(/^there is an open task for the feed$/) do
-  Feed::Activity.without_tracking do
-    create :open_task, title: "Valid?"
+# Issue
+Given(/^there is an open issue for the feed$/) do
+  Feed.without_tracking do
+    create :open_issue, title: "Valid?"
   end
 end
 
-Given(/^there is a closed task for the feed$/) do
-  Feed::Activity.without_tracking do
-    create :closed_task, title: "Valid?"
+Given(/^there is a closed issue for the feed$/) do
+  Feed.without_tracking do
+    create :closed_issue, title: "Valid?"
   end
 end
 
 # Taxon
 When(/^I add a taxon for the feed$/) do
-  Feed::Activity.without_tracking do
+  Feed.without_tracking do
     subfamily_name = create :subfamily_name, name: "Antcatinae"
 
     cheat_and_set_user_for_feed
@@ -129,7 +129,7 @@ end
 
 # Change
 Given(/^there are two unreviewed catalog changes for the feed$/) do
-  Feed::Activity.without_tracking do
+  Feed.without_tracking do
     step %{there is a genus "Cactusia" that's waiting for approval}
     step %{there is a genus "Camelia" that's waiting for approval}
   end
@@ -137,7 +137,7 @@ end
 
 # ReferenceSection
 When(/^I add a reference section for the feed$/) do
-  taxon = Feed::Activity.without_tracking { create_subfamily }
+  taxon = Feed.without_tracking { create_subfamily }
 
   cheat_and_set_user_for_feed
   ReferenceSection.create title_taxt: "PALAEONTOLOGY",
@@ -145,7 +145,7 @@ When(/^I add a reference section for the feed$/) do
 end
 
 When(/^I edit a reference section for the feed$/) do
-  section = Feed::Activity.without_tracking do
+  section = Feed.without_tracking do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
     references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
   end
@@ -156,13 +156,34 @@ When(/^I edit a reference section for the feed$/) do
 end
 
 When(/^I delete a reference section for the feed$/) do
-  section = Feed::Activity.without_tracking do
+  section = Feed.without_tracking do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
     references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
   end
 
   cheat_and_set_user_for_feed
   section.destroy
+end
+
+When(/^I click on Show more$/) do
+  find("a", text: "Show more").click
+end
+
+Given(/^the activities are paginated with (\d+) per page$/) do |per_page|
+  Activity.per_page = per_page.to_i
+end
+
+Given(/^there are (\d+) activity items$/) do |number|
+  number.to_i.times { create :activity }
+end
+
+Then(/^the query string should (not )?contain "([^"]*)"$/) do |should_not, contain|
+  match = page.current_url[contain]
+  if should_not
+    expect(match).to be nil
+  else
+    expect(match).to be_truthy
+  end
 end
 
 # General note about RequestStore

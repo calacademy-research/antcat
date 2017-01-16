@@ -1,0 +1,14 @@
+-# ".button" is required to make ".disabled" work.
+
+.history_items_section.section
+  .section_header.ui-widget-header.ui-corner-top
+    .left History
+    .right.history_items_section_buttons
+      %button#add-history-item.submit.btn-normal.btn-tiny.button Add
+      %a#start-reordering-history-items.btn-normal.btn-tiny.button Reorder
+    .clear
+  .history_items.ui-dialog-content.ui-widget-content.ui-corner-bottom{data: {taxon_id: taxon.id}}
+    -taxon.history_items.each do |history_item|
+      =render 'history_items/panel', item: history_item
+  .history_item_template
+    =render 'history_items/panel', item: TaxonHistoryItem.new(taxon_id: taxon.id)

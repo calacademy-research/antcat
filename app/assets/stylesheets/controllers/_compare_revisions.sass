@@ -1,0 +1,26 @@
+$color_revision_red: #fcdcd6
+$color_revision_green: #dafebf
+
+@mixin make-red
+  background-color: $color_revision_red !important
+
+@mixin make-green
+  background-color: $color_revision_green !important
+
+// There is no `CompareRevisionsController`, because
+// comparing is handled in the items' controllers.
+#compare-revisions
+  .callout.make-red
+    @include make-red
+
+  .callout.make-green
+    @include make-green
+
+  table.revisions tbody tr
+    background-color: #fff !important // Remove Foundation background.
+
+    &.make-red
+      @include make-red
+
+    &.make-green
+      @include make-green

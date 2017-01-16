@@ -6,7 +6,7 @@
 -content_for :head do
   =javascript_include_tag 'widgets/panel'
   =javascript_include_tag 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
-  =javascript_include_tag 'references/authors', 'references/author_names_section'
+  =javascript_include_tag 'controllers/authors/edit', 'controllers/authors/author_names_section'
 
 =form_for @author do |_form|
   =render 'author_names_section', author: @author

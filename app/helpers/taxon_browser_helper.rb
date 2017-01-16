@@ -1,115 +1,74 @@
 module TaxonBrowserHelper
-  # TODO move the "selected" CSS class logic to here.
   def taxon_browser_link taxon
-    classes = css_classes_for_rank(taxon)
-    classes << css_classes_for_status(taxon)
-    link_to taxon_label(taxon), catalog_path(taxon), class: classes
+    classes = css_classes_for_status(taxon) << taxon.rank
+    link_to taxon.taxon_label, catalog_path(taxon), class: classes
   end
 
-  # If `selected` is a taxon: <name> <immediate child rank in plural>.
-  # So, family --> "Formicidae subfamilies"
-  # But no taxon --> we have a non-standard panel.
-  def panel_header_title selected
-    if show_only_genus_name? selected
-      taxon_breadcrumb_label selected
-    elsif selected.is_a? Taxon
-      child_ranks = { family:    "subfamilies",
-                      subfamily: "tribes",
-                      tribe:     "genera",
-                      genus:     "species",
-                      subgenus:  "species",
-                      species:   "subspecies" }
-      child_rank = child_ranks[selected.rank.to_sym]
-      "#{taxon_breadcrumb_label selected} #{child_rank}"
+  def toggle_invalid_or_valid_only_link label = nil
+    showin_invalid = @taxon_browser.show_invalid?
+
+    if showin_invalid
+      link_to (label.presence || "show valid only"), catalog_show_valid_only_path
     else
-      selected[:title_for_panel]
-    end.html_safe
+      link_to (label.presence || "show invalid"), catalog_show_invalid_path
+    end
   end
 
-  # Only for Formicidae/subfamilies.
-  def all_genera_link selected
-    extra_panel_link selected, "All genera", "all_genera_in_#{selected.rank}"
+  def load_tab_button taxon, tab
+    link_to "Load all?", catalog_tab_path(taxon, tab),
+      class: "btn-normal btn-tiny load-tab", data: { tab_id: tab.id }
   end
 
-  # Only shown on genus pages. The TB defaults to showing all valid species
-  # in the selected genus. "ALL TAXA" also includes subspecies (and possible more?).
-  def all_taxa_link selected
-    extra_panel_link selected, "All taxa", "all_taxa_in_#{selected.rank}"
-  end
+  # TODO try to move part of this to `Catalog::TaxonBrowser`.
+  # Some taxon tabs should have links to extra tabs.
+  def links_to_extra_tabs selected
+    links = []
 
-  # Only shown if the taxon is a genus with subgenera
-  # For example Lasius, http://localhost:3000/catalog/429161)
-  def subgenera_link selected
-    return unless selected.displayable_subgenera.exists?
-    extra_panel_link selected, "Subgenera", "subgenera_in_#{selected.rank}"
-  end
-
-  # Only for Formicidae/subfamilies.
-  def incertae_sedis_link selected
-    return unless selected.genera_incertae_sedis_in.exists?
-    extra_panel_link selected, "Incertae sedis", "incertae_sedis_in_#{selected.rank}"
-  end
-
-  def toggle_valid_only_link
-    showing = session[:show_valid_only]
-    label = showing ? "show invalid" : "show valid only"
-    link_to label, catalog_options_path(valid_only: showing)
-  end
-
-  def is_last_panel? panel, panels
-    panels.last == panel
-  end
-
-  # Collections containing taxa of a single rank can be sorted by `#.name_cache`,
-  # but mixed collections (such as the "ALL TAXA" link) must be sorted by `names.epithet`.
-  def sorted_children_for_panel selected, children
-    if params[:display] == "all_taxa_in_genus" && selected.try(:key?, :title_for_panel)
-      children.order_by_joined_epithet
-    else
-      children.order_by_name_cache
-    end.includes(:name)
-  end
-
-  def notify_about_no_valid_children? children, taxon
-    children.empty? && !is_a_subfamily_with_valid_genera_incertae_sedis?(taxon)
-  end
-
-  def already_showing_invalid_taxa?
-    !session[:show_valid_only]
-  end
-
-  private
-    # Exception for subfamilies *only* containing genera that are
-    # incertae sedis in that subfamily (that is Martialinae, #430173).
-    def is_a_subfamily_with_valid_genera_incertae_sedis? taxon
-      return unless taxon.is_a? Subfamily
-      taxon.genera_incertae_sedis_in.valid.exists?
+    case selected
+    when Family, Subfamily
+      links << extra_tab_link(selected, "All genera", "all_genera_in_#{selected.rank}")
+      links << incertae_sedis_link(selected)
+    when Genus
+      links << extra_tab_link(selected, "All taxa", "all_taxa_in_#{selected.rank}")
+      links << subgenera_link(selected)
     end
 
-    # Rename non_standard_panel_link
-    def extra_panel_link selected, label, param
-      css_class = if params[:display] == param
-                    "upcase selected"
-                  else
-                    "upcase white-label"
-                  end
+    links.reject(&:blank?).join.html_safe
+  end
+
+ private
+    # Only for Formicidae/subfamilies.
+    def incertae_sedis_link selected
+      return unless selected.genera_incertae_sedis_in.exists?
+      extra_tab_link selected, "Incertae sedis", "incertae_sedis_in_#{selected.rank}"
+    end
+
+    # Only shown if the taxon is a genus with displayable subgenera
+    # For example Lasius, http://localhost:3000/catalog/429161)
+    def subgenera_link selected
+      return unless selected.displayable_subgenera.exists?
+      extra_tab_link selected, "Subgenera", :subgenera_in_genus
+    end
+
+    def extra_tab_link selected, label, param
+      css = if @taxon_browser.display == param.to_sym
+              "upcase selected"
+            else
+              "upcase white-label"
+            end
+
       content_tag :li do
-        content_tag :span, class: css_class do
+        content_tag :span, class: css do
           link_to label, catalog_path(selected, display: param)
         end
       end
     end
 
-    # For the "All taxa" and "Subgenera" special cases, because
-    # this would be confusing/false:
-    #   "Formicidae ... Lasius species > Lasius subgenera"
-    #   "Formicidae ... Lasius species > All Lasius taxa"
-    def show_only_genus_name? selected
-      selected.is_a?(Genus) &&
-      params[:display].in?([
-        "all_taxa_in_genus",
-        "subgenera_in_genus",
-        "subgenera_in_parent_genus"
-      ])
+    def css_classes_for_status taxon
+      css_classes = []
+      css_classes << taxon.status.downcase.gsub(/ /, '_')
+      css_classes << 'nomen_nudum' if taxon.nomen_nudum?
+      css_classes << 'collective_group_name' if taxon.collective_group_name?
+      css_classes
     end
 end

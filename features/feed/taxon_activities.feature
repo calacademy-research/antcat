@@ -1,9 +1,9 @@
-@feed @javascript
+@feed
 Feature: Feed (taxa)
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @search
+  @javascript @search
   Scenario: Added taxon
     Given activity tracking is disabled
       And there is a subfamily "Formicinae"
@@ -34,20 +34,17 @@ Feature: Feed (taxa)
     Given I add a taxon for the feed
 
     When I go to the edit page for "Antcatinae"
-      And I click the name field
-        And I set the name to "Tactaninae"
-        And I press "OK"
-      And I save my changes
+    And I save the taxon form
     And I go to the activity feed
-    Then I should see "Archibald edited the subfamily Tactaninae" and no other feed items
+    Then I should see "Archibald edited the subfamily Antcatinae" and no other feed items
 
   Scenario: Deleted taxon
     Given I add a taxon for the feed
     And I log in as a superadmin named "Archibald"
 
     When I go to the catalog page for "Antcatinae"
-      And I press "Delete"
-      And I press "Delete?"
+      And I follow "Delete..."
+      And I follow "Confirm and delete"
     And I go to the activity feed
     Then I should see "Archibald deleted the subfamily Antcatinae" and no other feed items
 
@@ -56,13 +53,13 @@ Feature: Feed (taxa)
       And there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
     And activity tracking is enabled
 
-    When I go to the catalog entry for "Solenopsis speccus subbus"
-      And I press "Edit"
+    When I go to the edit page for "Solenopsis speccus subbus"
       And I will confirm on the next step
       And I follow "Elevate to species"
     And I go to the activity feed
     Then I should see "Archibald elevated the subspecies Solenopsis speccus subbus to the rank of species (now Solenopsis subbus)" and no other feed items
 
+  @javascript
   Scenario: Converted species to subspecies
     Given activity tracking is disabled
       And there is a species "Camponotus dallatorei" with genus "Camponotus"

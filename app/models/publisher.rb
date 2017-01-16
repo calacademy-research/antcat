@@ -1,5 +1,5 @@
 class Publisher < ActiveRecord::Base
-  include UndoTracker
+  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :place
 
@@ -7,7 +7,7 @@ class Publisher < ActiveRecord::Base
 
   validates_presence_of :name
 
-  has_paper_trail meta: { change_id: :get_current_change_id }
+  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
   def self.create_with_place(name:, place:)
     return unless name.present?
@@ -20,6 +20,7 @@ class Publisher < ActiveRecord::Base
     create_with_place parts[:publisher] if parts
   end
 
+  # TODO rename (hard to see where it's called from).
   def to_s
     string = place.present? ? "#{place.name}: " : ''
     string << name

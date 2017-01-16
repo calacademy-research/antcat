@@ -1,8 +1,6 @@
 class Tooltip < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
-  include Feed::Trackable
-
-  default_scope { order(:key) } # TODO probably remove, default scope are possibly evil.
+  include Trackable
 
   validates :key, presence: true, uniqueness: true,
     format: { with: /\A[a-zA-Z0-9._:\-]+\z/,
@@ -14,9 +12,7 @@ class Tooltip < ActiveRecord::Base
   end
 
   has_paper_trail
-  tracked on: :all, parameters: ->(tooltip) do
-    { scope_and_key: "#{tooltip.scope}.#{tooltip.key}" }
-  end
+  tracked on: :all, parameters: proc { { scope_and_key: "#{scope}.#{key}" } }
 
   def key_disabled?
     !key_enabled?

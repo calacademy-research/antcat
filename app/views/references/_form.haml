@@ -1,7 +1,7 @@
 =enable_tooltips
 
 -content_for :head do
-  =javascript_include_tag 'references/edit_form_autocompletion', 'references/references'
+  =javascript_include_tag 'controllers/references/authors_autocompletion', 'controllers/references/form'
 
 -reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
 -reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
@@ -144,7 +144,7 @@
 
   .row
     .medium-12.columns
-      %button.submit.btn-save.has-spinner
+      %button.submit.btn-saves.has-spinner
         -save_text = possible_duplicate ? 'Save Anyway' : 'Save'
         =spinner_icon + save_text
 
