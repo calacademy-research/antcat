@@ -444,5 +444,8 @@ DEPENDENCIES
   xml-simple
   yui-compressor
 
+RUBY VERSION
+   ruby 2.1.10p492
+
 BUNDLED WITH
-   1.10.5
+   1.15.0
