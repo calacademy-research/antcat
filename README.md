@@ -1,4 +1,4 @@
-#AntCat
+# AntCat
 *California Academy of Sciences*
 
 Ant taxonomy database -- http://antcat.org/
@@ -16,11 +16,11 @@ Ant taxonomy database -- http://antcat.org/
                                                    /    |   /  `-.
                                                  -'     \__/
                                                  
-##Installation
+## Installation
 See [INSTALL.md](INSTALL.md)
 
-##Contributing
+## Contributing
 Contributions welcome! Please see [the wiki page](https://github.com/calacademy-research/antcat/wiki/Contributing).
 
-##Commit history notes
+## Commit history notes
 See [Removed code](https://github.com/calacademy-research/antcat/wiki/Removed-code-(for-developers,-mainly)).
