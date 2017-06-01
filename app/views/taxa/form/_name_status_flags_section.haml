@@ -34,6 +34,9 @@
           Hong
           =tooltip_icon "hong", scope: :taxa
 
+        =form.check_box :display
+        =form.label :display, 'Display'
+
     %tr.headline_notes_taxt_row
       %td.caption.top_aligned=form.label :headline_notes_taxt, 'Notes'
       %td#headline_notes_taxt_editor.taxt_editor
