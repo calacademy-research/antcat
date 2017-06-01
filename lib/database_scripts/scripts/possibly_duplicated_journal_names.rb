@@ -202,5 +202,5 @@ description: >
   Additional false positives (see the script's source)
   can be added to the exclusion list on request.
 
-tags: [new!, slow]
+tags: [slow]
 topic_areas: [references]

@@ -39,5 +39,5 @@ description: >
   [Taxa with the same name cache value](/database_scripts/taxa_with_the_same_name_cache_value)
   for some notes.
 
-tags: [new!, slow]
+tags: [slow]
 topic_areas: [catalog]

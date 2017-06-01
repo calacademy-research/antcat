@@ -49,5 +49,4 @@ description: >
   `as genus`, see source) after the `junior synonym` entry are removed
   from the list; the rest are shown in this table.
 
-tags: [new!]
 topic_areas: [catalog]

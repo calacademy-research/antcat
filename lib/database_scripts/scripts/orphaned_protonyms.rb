@@ -32,5 +32,4 @@ description: >
 
   It is probably safe to remove these (use `rake antcat:db:destroy_protonym_orphans`).
 
-tags: [new!]
 topic_areas: [catalog]
