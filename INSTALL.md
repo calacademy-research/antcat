@@ -1,4 +1,4 @@
-##Installation (Linux, work in progress)
+## Installation (Linux, work in progress)
 
 ```bash
 git clone https://github.com/calacademy/antcat.git
@@ -8,14 +8,14 @@ cp config/server.yml.example config/server.yml
 cp config/secrets.yml.example config/secrets.yml
 ```
 
-###Install dependencies
-##Basic deps
+### Install dependencies
+## Basic deps
 ```bash
 sudo apt-get install git
 sudo apt-get install ruby
 ```
 
-####Vagrant / Librarian-Chef (semi-automatic)
+#### Vagrant / Librarian-Chef (semi-automatic)
 Copy the link to the latest Vagrant package from http://www.vagrantup.com/downloads.html
 ```bash
 sudo apt-get install dpkg-dev virtualbox-dkms # VirtualBox
@@ -57,28 +57,28 @@ MYSQL_PASSWORD=secret123 vagrant up # downloads the 'precise64' box on the first
 # MYSQL_PASSWORD defaults to 'lasius' if not set
 ```
 
-####Manual installation
+#### Manual installation
 First install RVM, Apache Solr, MySQL, curl, NodeJs (use Google).
 
 ```bash
 bundle install # install gems
 ```
-###Database
+### Database
 ```bash
 bundle exec rake db:create && rake db:schema:load
 bundle exec rake db:test:prepare
 ```
-####Seeds
+#### Seeds
 ```bash
 bundle exec rake db:seed # contains tooltips
 ```
 
-####Sample data
+#### Sample data
 ```bash
 bundle exec rake antcat:db:import_sample_data # imports sample data
 ```
 
-##Run site
+## Run site
 ```bash
 bundle exec rake sunspot:solr:start RAILS_ENV=development # start Solr
 bundle exec rails server # start the app
@@ -86,7 +86,7 @@ bundle exec rails server # start the app
 
 Visit http://localhost:3000/
 
-###Vagrant
+### Vagrant
 ```bash
 vagrant up # boot Vagrant box if not already running
 vagrant ssh
@@ -96,7 +96,7 @@ bundle exec rails server -b 0.0.0.0 # start the app
 
 Visit http://192.168.50.50:3000/
 
-##Run tests
+## Run tests
 ```bash
 bundle exec cucumber # feature/browser tests
 bundle exec rspec    # unit tests
