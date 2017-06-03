@@ -98,6 +98,8 @@ AntCat::Application.routes.draw do
     resource :convert_to_subspecies, only: [:new, :create]
   end
 
+  get 'type_specimen_repositories/autocompletion_data'
+
   resource :default_reference, only: [:update]
 
   get 'name_pickers/search'
