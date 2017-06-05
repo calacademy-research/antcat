@@ -1,5 +1,6 @@
 class FeedbackController < ApplicationController
   include ActionView::Helpers::DateHelper
+  include HasWhereFilters
 
   before_action :authenticate_superadmin, only: [:destroy]
   before_action :authenticate_editor, except: [:create]
@@ -7,8 +8,18 @@ class FeedbackController < ApplicationController
 
   invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
 
+  has_filters(
+    open: {
+      tag: :select_tag,
+      options: -> { [["Open", 1], ["Closed", 0]] },
+      prompt: "Status"
+    }
+  )
+
+  # TODO probably remove `by_status_and_date` now that we have filters.
   def index
-    @feedbacks = Feedback.by_status_and_date.paginate(page: params[:page], per_page: 10)
+    @feedbacks = Feedback.by_status_and_date.filter(filter_params)
+    @feedbacks = @feedbacks.paginate(page: params[:page], per_page: 10)
   end
 
   def show
