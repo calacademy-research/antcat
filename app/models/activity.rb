@@ -1,5 +1,6 @@
 class Activity < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
+  include FilterableWhere
 
   self.per_page = 30
 
