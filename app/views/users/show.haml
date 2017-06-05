@@ -25,5 +25,5 @@
   .large-12.columns
     %h5
       #{@user.name}'s most
-      =link_to "recent comments", comments_path
+      =link_to "recent comments", comments_path(user_id: @user.id)
     =render "comments/comments_table", comments: @recent_user_comments
