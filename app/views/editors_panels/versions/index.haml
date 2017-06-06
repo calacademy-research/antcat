@@ -13,7 +13,8 @@
   -@versions.each do |version|
     %tr
       %td
-        =link_to version.id, version_path(id: version.id), class: "btn-normal btn-tiny"
+        =link_to version.id, version_path(version), class: "btn-normal btn-tiny"
+        =try_to_link_revision_history version.item_type, version.item_id
         =inline_expandable version.inspect do
           %pre=version.to_yaml
 

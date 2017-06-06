@@ -43,6 +43,21 @@ module CompareRevisionsHelper
     params[:selected_id].present? && params[:diff_with_id].blank?
   end
 
+  def try_to_link_revision_history type, id
+    url = case type
+          when "Reference"
+            reference_history_index_path id
+          when "TaxonHistoryItem"
+            taxon_history_item_path id
+          when "ReferenceSection"
+            reference_section_path id
+          end
+
+    return unless url
+
+    link_to "History", url, class: "btn-normal btn-tiny"
+  end
+
   private
     def revision_in_any_param? revision
       revision_in_param?(revision, :selected_id) ||

@@ -17,18 +17,14 @@ Feature: Compare revisions
     And I add a history item "initial content"
     And I wait for a bit
     And I go to the activity feed
-    Then I should not see "versions can be compared"
-
-    When I follow the first linked history item
+    And I follow the first linked history item
     Then I should see "This item does not have any previous revisions"
 
     # Edited.
     When I go to the edit page for "Atta"
     And I update the history item to say "second revision content"
     And I go to the activity feed
-    Then I should see "versions can be compared"
-
-    When I follow the first linked history item
+    And I follow the first linked history item
     Then I should see "Current version"
     And I should see "second revision content"
     And I should not see "initial content"
@@ -45,9 +41,7 @@ Feature: Compare revisions
     Then I should be on the edit page for "Atta"
 
     When I go to the activity feed
-    Then I should see "versions can be compared"
-
-    When I follow the first linked history item
+    And I follow the first linked history item
     Then I should see "Version before item was deleted"
     And I should see "second revision content"
 
