@@ -17,6 +17,11 @@ end
     parent :reference, reference
   end
 
+  crumb :reference_history do |reference|
+    link "History"
+    parent :reference, reference
+  end
+
 crumb :references_search_results do
   link "Search Results"
   parent :references

@@ -61,6 +61,11 @@ AntCat::Application.routes.draw do
       get :endnote_export
       put :approve_all
     end
+
+    scope module: :references do
+      resources :history, only: [:index]
+    end
+
     member do
       post :start_reviewing
       post :finish_reviewing

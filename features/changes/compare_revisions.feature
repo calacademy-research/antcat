@@ -82,3 +82,17 @@ Feature: Compare revisions
     Then I should see "initial version" in the left side of the diff
     And I should see "last version" in the right side of the diff
     And I should not see "second version"
+
+  @javascript
+  Scenario: Comparing reference revisions
+    When I go to the references page
+    And I follow "New"
+    And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
+    And I fill in "reference_title" with "Between Pacific Tides"
+    And I fill in "reference_journal_name" with "Ants"
+    And I fill in "reference_series_volume_issue" with "2"
+    And I fill in "article_pagination" with "1"
+    And I fill in "reference_citation_year" with "1992"
+    And I press "Save"
+    And I follow "History"
+    Then I should see "Current version"

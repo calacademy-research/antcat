@@ -9,6 +9,7 @@
       -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
         %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
   -if user_can_edit?
+    =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
     =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
     -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
       =link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"

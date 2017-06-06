@@ -1,3 +1,7 @@
 =activity_action_to_verb activity.action
 the reference
 =link_trackable_if_exists activity, activity.parameters[:name], path: reference_path(activity.trackable_id)
+
+-# TODO add inline link here and for other "versions can be compared"s.
+=inline_expandable("versions can be compared") do
+  Click on the linked reference and follow "History" to compare versions of this item.
