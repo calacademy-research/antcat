@@ -4,6 +4,7 @@ module DatabaseScripts::Renderers::Markdown
   end
 
   def markdown_taxon_link taxon
+    return "" unless taxon
     "%taxon#{taxon.id}"
   end
 
