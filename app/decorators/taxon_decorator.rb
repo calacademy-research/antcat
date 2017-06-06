@@ -43,16 +43,6 @@ class TaxonDecorator < ApplicationDecorator
       class: 'genus_species_header_notes_taxt'
   end
 
-  def references
-    return unless taxon.reference_sections.present?
-
-    helpers.content_tag :div, class: 'reference_sections' do
-      taxon.reference_sections.reduce(''.html_safe) do |content, section|
-        content << reference_section(section)
-      end
-    end
-  end
-
   def taxon_status
     # Note: Cleverness is used here to make these queries (e.g.: obsolete_combination?)
     # appear as tags. That's how CSS does its coloring.
@@ -88,17 +78,6 @@ class TaxonDecorator < ApplicationDecorator
   end
 
   private
-    def reference_section section
-      helpers.content_tag :div, class: 'section' do
-        [:title_taxt, :subtitle_taxt, :references_taxt].reduce(''.html_safe) do |content, field|
-          if section[field].present?
-            content << helpers.content_tag(:div, TaxtPresenter[section[field]].to_html, class: field)
-          end
-          content
-        end
-      end
-    end
-
     def format_senior_synonym
       current_valid_taxon = taxon.current_valid_taxon_including_synonyms
       return '' unless current_valid_taxon
