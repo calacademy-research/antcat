@@ -1,0 +1,8 @@
+-if taxon.reference_sections.present?
+  .reference_sections
+    -taxon.reference_sections.each do |section|
+      .section
+        -[:title_taxt, :subtitle_taxt, :references_taxt].each do |field|
+          -if section[field].present?
+            %div{class: field}
+              =TaxtPresenter[section[field]].to_html

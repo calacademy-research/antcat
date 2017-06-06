@@ -26,5 +26,5 @@
   %br
   =link_to "Formicidae family references", catalog_path(429011)
 -else
-  =taxon.decorate.references
+  =render "reference_sections", taxon: taxon
   =taxon_change_history taxon
