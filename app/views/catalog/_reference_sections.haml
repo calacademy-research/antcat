@@ -6,3 +6,5 @@
           -if section[field].present?
             %div{class: field}
               =TaxtPresenter[section[field]].to_html
+        -if current_user
+          %small.show-on-hover=link_to "History", reference_section_path(section), class: "btn-normal btn-tiny"
