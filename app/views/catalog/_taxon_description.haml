@@ -17,7 +17,7 @@
       %li
         =add_period_if_necessary TaxtPresenter[history_item.taxt].to_html
         -if current_user
-          %small.show-on-hover=link_to "##{history_item.id}", taxon_history_item_path(history_item), class: "gray"
+          %small.show-on-hover=link_to "History", taxon_history_item_path(history_item), class: "btn-normal btn-tiny"
 
 =taxon.decorate.child_lists
 
@@ -26,5 +26,5 @@
   %br
   =link_to "Formicidae family references", catalog_path(429011)
 -else
-  =taxon.decorate.references
+  =render "reference_sections", taxon: taxon
   =taxon_change_history taxon

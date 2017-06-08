@@ -1,4 +1,6 @@
 # Export via `rake antweb:export`.
+# This class will grow for some more time while decoupling the export
+# code from the rest of the code.
 
 include ActionView::Helpers::TagHelper # For `#content_tag`.
 include ActionView::Context # For `#content_tag`.
@@ -214,7 +216,7 @@ class Exporters::Antweb::Exporter
           content << taxon.headline
           content << export_history_items(taxon)
           content << taxon.child_lists
-          content << taxon.references
+          content << export_reference_sections(taxon)
         end
       ensure
         $use_ant_web_formatter = false
@@ -223,6 +225,10 @@ class Exporters::Antweb::Exporter
 
     def export_history_items taxon
       Exporters::Antweb::ExportHistoryItems.new(taxon).history
+    end
+
+    def export_reference_sections taxon
+      Exporters::Antweb::ExportReferenceSections.new(taxon).reference_sections
     end
 
     def self.antcat_taxon_link taxon, label = "AntCat"
