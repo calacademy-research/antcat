@@ -17,7 +17,7 @@ class DatabaseScripts::Scripts::MissingReferencesInProtonymAuthorships
 
         [ protonym.name.protonym_with_fossil_html(protonym.fossil),
           markdown_taxon_link(taxon),
-          taxon.status,
+          taxon.try(:status),
           citation_search_link(reference.citation),
           reference_link(reference) ]
       end
