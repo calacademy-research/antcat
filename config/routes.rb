@@ -159,8 +159,15 @@ AntCat::Application.routes.draw do
   resources :comments, only: [:index, :create, :edit, :update]
 
   # TODO nest more Editor's Panel-ish pages under this (issues, site notices, etc).
-  get "panel", to: "editors_panels#index", as: "editors_panel"
-  get "panel/invite_users", to: "editors_panels#invite_users", as: "invite_users"
+  scope path: :panel, controller: :editors_panels do
+    get '/', to: :index, as: "editors_panel"
+    get :invite_user, as: "invite_users"
+
+    scope module: :editors_panels do
+      resources :versions, only: [:index, :show]
+    end
+  end
+
   get :notifications, to: "notifications#index"
 
   resources :activities, only: [:index, :show, :destroy]
