@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161216051833) do
+ActiveRecord::Schema.define(version: 20170618231227) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -65,6 +65,40 @@ ActiveRecord::Schema.define(version: 20161216051833) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "bolton_matches", force: :cascade do |t|
+    t.integer  "bolton_reference_id", limit: 4
+    t.integer  "reference_id",        limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "similarity",          limit: 24
+  end
+
+  add_index "bolton_matches", ["bolton_reference_id"], name: "bolton_matches_bolton_reference_id_idx", using: :btree
+  add_index "bolton_matches", ["reference_id"], name: "bolton_matches_reference_id_idx", using: :btree
+
+  create_table "bolton_references", force: :cascade do |t|
+    t.string   "authors",             limit: 255
+    t.string   "note",                limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "title",               limit: 255
+    t.string   "journal",             limit: 255
+    t.string   "series_volume_issue", limit: 255
+    t.string   "pagination",          limit: 255
+    t.string   "reference_type",      limit: 255
+    t.integer  "year",                limit: 4
+    t.string   "citation_year",       limit: 255
+    t.string   "publisher",           limit: 255
+    t.string   "place",               limit: 255
+    t.text     "original",            limit: 65535
+    t.integer  "match_id",            limit: 4
+    t.string   "match_status",        limit: 255
+    t.string   "key_cache",           limit: 255
+    t.string   "import_result",       limit: 255
+  end
+
+  add_index "bolton_references", ["match_id"], name: "index_bolton_references_on_match_id", using: :btree
 
   create_table "changes", force: :cascade do |t|
     t.datetime "created_at",                        null: false
@@ -124,14 +158,29 @@ ActiveRecord::Schema.define(version: 20161216051833) do
 
   add_index "feedbacks", ["user_id"], name: "index_feedbacks_on_user_id", using: :btree
 
+  create_table "forward_refs", force: :cascade do |t|
+    t.integer  "fixee_id",        limit: 4
+    t.string   "fixee_attribute", limit: 255
+    t.integer  "genus_id",        limit: 4
+    t.string   "epithet",         limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "fixee_type",      limit: 255
+    t.string   "type",            limit: 255
+    t.integer  "name_id",         limit: 4
+  end
+
+  add_index "forward_refs", ["fixee_id", "fixee_type"], name: "index_forward_refs_on_fixee_id_and_fixee_type", using: :btree
+  add_index "forward_refs", ["name_id"], name: "index_forward_refs_on_name_id", using: :btree
+
   create_table "issues", force: :cascade do |t|
     t.integer  "closer_id",   limit: 4
     t.integer  "adder_id",    limit: 4
-    t.string   "status",      limit: 255,   default: "open"
     t.string   "title",       limit: 255
     t.text     "description", limit: 65535
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.boolean  "open",                      default: true, null: false
   end
 
   add_index "issues", ["adder_id"], name: "index_issues_on_adder_id", using: :btree
@@ -411,6 +460,17 @@ ActiveRecord::Schema.define(version: 20161216051833) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "scope",            limit: 255
+  end
+
+  create_table "updates", force: :cascade do |t|
+    t.string   "class_name", limit: 255
+    t.integer  "record_id",  limit: 4
+    t.string   "field_name", limit: 255
+    t.text     "before",     limit: 65535
+    t.text     "after",      limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name",       limit: 255
   end
 
   create_table "users", force: :cascade do |t|

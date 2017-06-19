@@ -54,9 +54,8 @@ module ActivitiesHelper
       approve_change: "approved",
       undo_change: "undid",
 
-      complete_task: "completed",
-      close_task: "closed",
-      reopen_task: "re-opened",
+      close_issue: "closed",
+      reopen_issue: "re-opened",
 
       close_feedback: "closed",
       reopen_feedback: "re-opened",

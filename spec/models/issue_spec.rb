@@ -4,23 +4,22 @@ describe Issue do
   it { should be_versioned }
   it { should validate_presence_of :title }
   it { should validate_presence_of :description }
-  it { should validate_inclusion_of(:status).in_array %w(open closed completed) }
   it { should validate_length_of(:title).is_at_most 70 }
 
   describe "scopes" do
     describe ".by_status_and_date" do
       let!(:expected_order) do
         travel_to Time.new(2010)
-        fourth = create :closed_issue
+        fourth = create :issue, :closed
 
         travel_to Time.new(2015)
-        second = create :open_issue
+        second = create :issue, :open
 
         travel_to Time.new(2017)
-        first = create :open_issue
+        first = create :issue, :open
 
         travel_to Time.new(2016)
-        third = create :closed_issue
+        third = create :issue, :closed
 
         [first, second, third, fourth]
       end
@@ -31,37 +30,30 @@ describe Issue do
     end
   end
 
-  describe "predicate methods" do
-    let(:open) { build_stubbed :issue }
-    let(:completed) { build_stubbed :completed_issue }
-    let(:closed) { build_stubbed :closed_issue }
+  describe "closing and re-opening" do
+    describe "#close!" do
+      let(:issue) { create :issue, :open }
+      let(:user) { create :user }
 
-    it "#open?" do
-      expect(open.open?).to be true
-      expect(completed.open?).to be false
-      expect(closed.open?).to be false
+      it "sets open to false" do
+        expect { issue.close! user }.to change { issue.open? }.from(true).to(false)
+      end
+
+      it "sets the closer to the supplied user" do
+        expect { issue.close! user }.to change { issue.closer }.from(nil).to(user)
+      end
     end
 
-    it "#archived?" do
-      expect(open.archived?).to be false
-      expect(completed.archived?).to be true
-      expect(closed.archived?).to be true
-    end
-  end
+    describe "#reopen!" do
+      let(:issue) { create :issue, :closed }
 
-  describe "#set_status" do
-    let(:user) { create :user }
+      it "sets open to true" do
+        expect { issue.reopen! }.to change { issue.open? }.from(false).to(true)
+      end
 
-    it "open to closed" do
-      open = create :issue
-      open.set_status :closed, user
-      expect(open.status).to eq "closed"
-    end
-
-    it "closed to open" do
-      closed = create :closed_issue
-      closed.set_status :open, user
-      expect(closed.status).to eq "open"
+      it "sets the closer to nil" do
+        expect { issue.reopen! }.to change { issue.closer }.to(nil)
+      end
     end
   end
 end

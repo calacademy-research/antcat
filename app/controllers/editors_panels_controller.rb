@@ -14,7 +14,7 @@ class EditorsPanelsController < ApplicationController
     # Unreviewed/pending/open/etc.
     def unreviewed_changes_counts
       {
-        open_issues:                Issue.open_count,
+        open_issues:                Issue.open.count,
         unreviewed_references:      Reference.unreviewed.count,
         unreviewed_catalog_changes: Change.waiting.count,
         pending_user_feedbacks:     Feedback.pending_count,

@@ -2,30 +2,24 @@
 -breadcrumb :issue, @issue
 
 .left
-  %h5
-    -if @issue.archived?
-      Closed issue:
-    -else
-      Open issue:
-    =@issue.title
+  %h5 #{@issue.decorate.format_status} issue: #{@issue.title}
   Added by
   =@issue.adder.decorate.user_page_link
   =time_ago_in_words @issue.created_at
+  ago
 
 -if user_can_edit?
   .buttons_right
-    -if @issue.archived?
-      =link_to "Re-open", reopen_issue_path(@issue), method: :put, class: "btn-saves-warning"
-    -else
+    -if @issue.open?
       =link_to "Close", close_issue_path(@issue), method: :put, class: "btn-saves"
+    -else
+      =link_to "Re-open", reopen_issue_path(@issue), method: :put, class: "btn-saves-warning"
     =link_to "Edit", edit_issue_path(@issue), class: "btn-normal"
 .clear
 
--if @issue.archived?
+-if @issue.closed?
   %p
-    Marked as
-    =@issue.status
-    by
+    Closed by
     =@issue.closer.decorate.user_page_link
 
 .row
