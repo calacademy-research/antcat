@@ -51,6 +51,8 @@ module CompareRevisionsHelper
             taxon_history_item_path id
           when "ReferenceSection"
             reference_section_path id
+          when "Taxon"
+            taxon_history_path id
           end
 
     return unless url
