@@ -10,6 +10,8 @@ class Citation < ActiveRecord::Base
 
   belongs_to :reference
 
+  has_one :protonym, foreign_key: :authorship_id # See note above.
+
   validates :reference, presence: true
 
   before_save { CleanNewlines.clean_newlines self, :notes_taxt }
