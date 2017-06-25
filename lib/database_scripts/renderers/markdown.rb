@@ -1,11 +1,12 @@
+
 module DatabaseScripts::Renderers::Markdown
   def markdown text
     AntcatMarkdown.render text
   end
 
-  def markdown_taxon_link taxon
-    return "" unless taxon
-    "%taxon#{taxon.id}"
+  def markdown_taxon_link taxon_or_id
+    return "" unless taxon_or_id
+    "%taxon#{taxon_or_id.try(:id) || taxon_or_id}"
   end
 
   def markdown_reference_link reference
