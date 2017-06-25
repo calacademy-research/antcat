@@ -7,6 +7,8 @@
 # joined = Protonym.joins(authorship: :reference)
 # joined.where("references.year IS NOT NULL").count      # 24496
 # joined.where("references.year IS NULL").count          # 16
+#
+# See `ProtonymsWithReferencesMissingYear` for a database script for finding these.
 
 class Protonym < ActiveRecord::Base
   attr_accessible :fossil, :sic, :locality, :id, :name_id, :name, :authorship, :taxon
