@@ -1,0 +1,6 @@
+-@title = "PaperTrail Version ##{@version.id}"
+-breadcrumb :version, @version
+
+%pre.wrapped=@version.inspect
+%hr
+%pre=@version.to_yaml

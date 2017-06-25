@@ -1,4 +1,5 @@
--breadcrumb :beta_and_such
+-@title = "PaperTrail Versions"
+-breadcrumb :versions
 
 .callout
   Total versions: #{@version_count} (#{Time.zone.now}). This page is restricted to superadmins.
@@ -12,7 +13,7 @@
   -@versions.each do |version|
     %tr
       %td
-        =link_to version.id, beta_and_such_show_version_path(id: version.id), class: "btn-normal btn-tiny"
+        =link_to version.id, version_path(id: version.id), class: "btn-normal btn-tiny"
         =inline_expandable version.inspect do
           %pre=version.to_yaml
 

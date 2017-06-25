@@ -117,6 +117,16 @@ end
       parent :database_script, script
     end
 
+crumb :versions do
+  link "PaperTrail Versions", versions_path
+  parent :editors_panel
+end
+
+  crumb :version do |version|
+    link "##{version.id}", version_path(version)
+    parent :versions
+  end
+
 crumb :notifications do
   link "My Notifications"
   parent :editors_panel
