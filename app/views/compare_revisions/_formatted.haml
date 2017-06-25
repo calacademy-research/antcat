@@ -13,7 +13,8 @@
       %small=most_recent.updated_at
 
   .callout{class: (looking_at_an_old_revision? ? "make-red" : "make-green")}
-    =render_revision_with_rescue selected || most_recent
+    =preserve do
+      =render_revision_with_rescue selected || most_recent
 
   -if diff_with
     %h5.margin-top
@@ -21,4 +22,5 @@
       =l diff_with.updated_at, format: :time_and_pretty
       (older)
     .callout.make-red.margin-bottom
-      =render_revision_with_rescue diff_with
+      =preserve do
+        =render_revision_with_rescue diff_with
