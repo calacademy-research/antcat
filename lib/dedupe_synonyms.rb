@@ -1,6 +1,7 @@
 # I believe this is a database maintenance script that must be called manually.
 # Possibly not used any longer.
 # TODO? make callable from rake task
+# See also `DatabaseScripts::Scripts::DuplicatedSynonyms`.
 
 module DedupeSynonyms
   def self.dedupe
