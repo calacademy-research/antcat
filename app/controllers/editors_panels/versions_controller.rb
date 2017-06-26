@@ -2,7 +2,7 @@ module EditorsPanels
   class VersionsController < ApplicationController
     include HasWhereFilters
 
-    before_action :authenticate_superadmin
+    before_action :authenticate_editor
 
     has_filters(
       whodunnit: {
@@ -23,7 +23,8 @@ module EditorsPanels
     )
 
     def index
-      @versions = PaperTrail::Version.filter(filter_params)
+      @versions = PaperTrail::Version.without_user_versions
+      @versions = @versions.filter(filter_params)
       @versions = @versions.search_objects(search_params) if params[:q].present?
       @versions = @versions.paginate(page: params[:page], per_page: 50)
 
@@ -31,7 +32,7 @@ module EditorsPanels
     end
 
     def show
-      @version = PaperTrail::Version.find params[:id]
+      @version = PaperTrail::Version.without_user_versions.find params[:id]
     end
 
     private

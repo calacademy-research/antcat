@@ -9,7 +9,7 @@
     =text_field_tag :q, params[:q], placeholder: "Search query"
 
 .callout
-  Total versions: #{@version_count} (#{Time.zone.now}). This page is restricted to superadmins.
+  Total versions: #{@version_count} (#{Time.zone.now}).
 
 -if @versions.first
   .center-text
