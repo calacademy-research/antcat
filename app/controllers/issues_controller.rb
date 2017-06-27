@@ -4,7 +4,7 @@ class IssuesController < ApplicationController
 
   def index
     @issues = Issue.by_status_and_date.paginate(page: params[:page])
-    @open_issues_count = Issue.open_count
+    @open_issues_count = Issue.open.count
   end
 
   def show
@@ -44,7 +44,8 @@ class IssuesController < ApplicationController
   end
 
   def close
-    @issue.set_status "closed", current_user
+    @issue.close! current_user
+
     redirect_to @issue, notice: <<-MSG
       Successfully closed issue.
       <strong>#{view_context.link_to 'Back to the index', issues_path}</strong>.
@@ -52,7 +53,8 @@ class IssuesController < ApplicationController
   end
 
   def reopen
-    @issue.set_status "open", current_user
+    @issue.reopen!
+
     redirect_to @issue, notice: "Successfully re-opened issue."
   end
 
@@ -70,7 +72,7 @@ class IssuesController < ApplicationController
     respond_to do |format|
       format.json do
         results = search_results.map do |issue|
-          { id: issue.id, title: issue.title, status: issue.status }
+          { id: issue.id, title: issue.title, status: issue.decorate.format_status }
         end
         render json: results
       end

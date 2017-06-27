@@ -21,19 +21,17 @@ FactoryGirl.define do
     comment "Great catalog!"
   end
 
-  factory :issue, aliases: [:open_issue] do
+  factory :issue do
     association :adder, factory: :user
-    status "open"
+    open true
     title "Check synonyms"
     description "Joffre's brother told me these were synonyms."
 
-    factory :completed_issue do
-      status "completed"
-      association :closer, factory: :user
+    trait :open do
     end
 
-    factory :closed_issue do
-      status "closed"
+    trait :closed do
+      open false
       association :closer, factory: :user
     end
   end
