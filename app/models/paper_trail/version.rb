@@ -12,6 +12,18 @@ module PaperTrail
 
     attr_accessible :change_id
 
+    scope :search_objects, ->(search_params) do
+      search_type = search_params[:search_type].presence || "LIKE"
+      raise unless search_type.in? ["LIKE", "REGEXP"]
+
+      q = search_params[:q]
+      q = "%#{q}%" if search_type == "LIKE"
+
+      where(<<-SQL.squish, q: q)
+        object #{search_type} :q OR object_changes #{search_type} :q
+      SQL
+    end
+
     def user
       User.find(whodunnit) if whodunnit
     end

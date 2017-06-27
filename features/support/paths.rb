@@ -78,6 +78,9 @@ module NavigationHelpers
     when /^the activity feed$/
       "/activities"
 
+    when /^the versions page$/
+      "/beta_and_such/all_versions"
+
     when /^the open issues page$/
       "/issues"
     when /^the issue page for "([^"]*)"$/

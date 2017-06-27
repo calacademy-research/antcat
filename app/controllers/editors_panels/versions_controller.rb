@@ -11,7 +11,7 @@ module EditorsPanels
       },
       item_type: {
         tag: :select_tag,
-        options: -> { PaperTrail::Version.uniq.pluck(:item_type) }
+        options: -> { PaperTrail::Version.uniq.pluck(:item_type) - ["User"] }
       },
       item_id: {
         tag: :number_field_tag
@@ -24,6 +24,7 @@ module EditorsPanels
 
     def index
       @versions = PaperTrail::Version.filter(filter_params)
+      @versions = @versions.search_objects(search_params) if params[:q].present?
       @versions = @versions.paginate(page: params[:page], per_page: 50)
 
       @version_count = PaperTrail::Version.count
@@ -32,5 +33,10 @@ module EditorsPanels
     def show
       @version = PaperTrail::Version.find params[:id]
     end
+
+    private
+      def search_params
+        params.slice :search_type, :q
+      end
   end
 end
