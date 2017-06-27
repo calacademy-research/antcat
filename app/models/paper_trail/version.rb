@@ -8,6 +8,7 @@
 module PaperTrail
   class Version < ActiveRecord::Base
     include PaperTrail::VersionConcern
+    include FilterableWhere
 
     attr_accessible :change_id
 
