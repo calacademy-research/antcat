@@ -12,6 +12,8 @@ module PaperTrail
 
     attr_accessible :change_id
 
+    scope :without_user_versions, -> { where.not(item_type: "User") }
+
     scope :search_objects, ->(search_params) do
       search_type = search_params[:search_type].presence || "LIKE"
       raise unless search_type.in? ["LIKE", "REGEXP"]
