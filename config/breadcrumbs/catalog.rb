@@ -16,6 +16,11 @@ end
     end
   end
 
+  crumb :taxon_history do |taxon|
+    link "History"
+    parent taxon
+  end
+
   crumb :wikipedia_tools do |taxon|
     link "Wikipedia tools"
     parent taxon

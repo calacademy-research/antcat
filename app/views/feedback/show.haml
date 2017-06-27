@@ -5,6 +5,8 @@
   =javascript_include_tag "controllers/feedback/show"
 
 .buttons_right
+  -if @feedback.open?
+    =link_to "Hide/show 'What you can do...'", "#", class: "btn-white", data: { show_hide_toggler_for: "guidelines_for_editors" }
   =link_to "Hide/show formatted for email", "#", class: "btn-white", data: { show_hide_toggler_for: "for_email" }
   -if @feedback.closed?
     =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-saves-warning")
@@ -25,6 +27,7 @@
       =format_feedback_for_email @feedback
 
 -if @feedback.open?
-  =render "guidelines_for_editors"
+  %div{data: { show_hide_toggable_id: "guidelines_for_editors" }}
+    =render "guidelines_for_editors"
 
 =render partial: "comments/comments_area", locals: { commentable: @feedback, new_comment: @new_comment }

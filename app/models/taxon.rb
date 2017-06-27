@@ -10,6 +10,7 @@ class Taxon < ApplicationRecord
   include Taxa::ReorderHistoryItems
   include Taxa::Statistics
   include Taxa::Synonyms
+  include RevisionsCanBeCompared
   include Trackable
 
   class TaxonExists < StandardError; end

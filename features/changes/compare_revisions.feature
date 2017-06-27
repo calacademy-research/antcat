@@ -90,3 +90,13 @@ Feature: Compare revisions
     And I press "Save"
     And I follow "History"
     Then I should see "Current version"
+
+  Scenario: Comparing revisions (taxa)
+    Given there is a genus "Atta"
+    And I go to the edit page for "Atta"
+    And I select "(none)" from "taxon_incertae_sedis_in"
+    And I save the taxon form
+
+    When I go to the catalog page for "Atta"
+    And I follow "History"
+    Then I should see "Compare selected revisions"
