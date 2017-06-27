@@ -79,7 +79,7 @@ module NavigationHelpers
       "/activities"
 
     when /^the versions page$/
-      "/beta_and_such/all_versions"
+      "/panel/versions"
 
     when /^the open issues page$/
       "/issues"

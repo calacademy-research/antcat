@@ -106,7 +106,7 @@ class TaxtPresenter
     def seach_history_link id
       case @format
       when :to_html
-        " " + link_to("Search history?", beta_and_such_all_versions_path(item_id: id),
+        " " + link_to("Search history?", versions_path(item_id: id),
           class: "btn-normal btn-tiny")
       when :to_text
         "" # Probably do not show when `:to_text`...

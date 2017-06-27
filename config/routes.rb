@@ -224,8 +224,7 @@ AntCat::Application.routes.draw do
   end
 
   namespace :beta_and_such do
-    get :all_versions
-    get :show_version
+    # Empty for now.
   end
 
   unless Rails.env.production?
