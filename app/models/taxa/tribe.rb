@@ -30,11 +30,16 @@ class Tribe < Taxon
   end
 
   def statistics valid_only: false
-    get_statistics [:genera], valid_only: valid_only
+    get_statistics [:genera, :species], valid_only: valid_only
   end
 
   def siblings
     subfamily.tribes
+  end
+
+  # TODO don't know how to do this as a `has_many`.
+  def species
+    Species.where(genus_id: genera.pluck(:id))
   end
 
   private
