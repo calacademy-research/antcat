@@ -6,8 +6,7 @@ include AntCat::RakeUtils
 
 namespace :antcat do
   namespace :db do
-
-    # TODO allow editors to see the output of this in Active Admin.
+    # See also `DatabaseScripts::Scripts::BrokenTaxtTags`.
     desc "Finds all tags, eg {ref 133005}, that are referred to but doesn't exist"
     task broken_tags: :environment do
       tags = {
