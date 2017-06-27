@@ -8,6 +8,7 @@ require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord
   include ReferenceComparable
+  include RevisionsCanBeCompared
   include Trackable
 
   # Virtual attributes used in `RefrencesController`.

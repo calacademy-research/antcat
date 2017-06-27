@@ -6,7 +6,7 @@ class Taxon < ApplicationRecord
   include Taxa::CallbacksAndValidators
   include Taxa::Delete
   include Taxa::PredicateMethods
-  include Taxa::References
+  include Taxa::TaxaReferences
   include Taxa::ReorderHistoryItems
   include Taxa::Statistics
   include Taxa::Synonyms

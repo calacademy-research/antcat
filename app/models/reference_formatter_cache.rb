@@ -20,7 +20,14 @@ class ReferenceFormatterCache
   # TODO possibly reinstate `#get` unless it's only required in specs.
 
   def set reference, value, field
+    # Avoid touching the database for non-persisted references (or displaying
+    # reified PaperTrail versions will not work, since this method is called
+    # in `ReferenceDecorator`.)
+    return value unless reference.persisted?
+
+    # Skip if cache is already up to date.
     return value if reference.send(field) == value
+
     reference.update_column field, value
     value
   end
