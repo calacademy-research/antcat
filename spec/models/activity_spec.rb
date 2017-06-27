@@ -1,6 +1,8 @@
 require "spec_helper"
 
 describe Activity, feed: true do
+  it { should be_versioned }
+
   describe ".create_for_trackable" do
     context "feed is globally enabled" do
       it "creates activities" do

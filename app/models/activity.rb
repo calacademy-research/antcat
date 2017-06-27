@@ -11,6 +11,7 @@ class Activity < ActiveRecord::Base
   scope :most_recent, ->(number = 5) { ids_desc.limit(number).include_associations }
   scope :include_associations, -> { includes(:trackable, :user) }
 
+  has_paper_trail
   serialize :parameters, Hash
 
   def self.create_for_trackable trackable, action, parameters = {}
