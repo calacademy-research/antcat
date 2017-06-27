@@ -1,15 +1,26 @@
 -@title = "PaperTrail Versions"
 -breadcrumb :versions
 
+=render_filters do
+  .small-6.medium-4.large-2.columns
+    =select_tag :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP (slow)", "REGEXP"]], params[:search_type]), prompt: "Search type"
+
+  .small-6.medium-4.large-2.columns
+    =text_field_tag :q, params[:q], placeholder: "Search query"
+
 .callout
   Total versions: #{@version_count} (#{Time.zone.now}). This page is restricted to superadmins.
 
-.center-text
-  -first_version_date = @versions.first.created_at
-  %h5=time_ago_in_words first_version_date
-  %h6=first_version_date
+-if @versions.first
+  .center-text
+    -first_version_date = @versions.first.created_at
+    %h5=time_ago_in_words first_version_date
+    %h6=first_version_date
 
-%table
+-if @versions.count.zero?
+  .alert.callout Found no versions.
+
+%table.versions-test-hook
   -@versions.each do |version|
     %tr
       %td
@@ -18,9 +29,10 @@
         =inline_expandable version.inspect do
           %pre=version.to_yaml
 
-.center-text
-  -last_version_date = @versions.last.created_at
-  %h5=time_ago_in_words last_version_date
-  %h6=last_version_date
+-if @versions.last
+  .center-text
+    -last_version_date = @versions.last.created_at
+    %h5=time_ago_in_words last_version_date
+    %h6=last_version_date
 
 =will_paginate @versions

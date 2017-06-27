@@ -2,6 +2,7 @@
 
 class Feedback < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
+  include FilterableWhere
   include Trackable
 
   belongs_to :user

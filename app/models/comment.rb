@@ -1,5 +1,6 @@
 class Comment < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
+  include FilterableWhere
   include Trackable
 
   attr_accessor :set_parent_to

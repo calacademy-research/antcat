@@ -3,6 +3,8 @@
 
 class TaxtPresenter
   include ApplicationHelper # For `#add_period_if_necessary`.
+  include Rails.application.routes.url_helpers
+  include ActionView::Helpers::UrlHelper
 
   def initialize taxt_from_db
     @taxt = taxt_from_db.try :dup
@@ -96,8 +98,20 @@ class TaxtPresenter
     def warn_about_non_existing_id klass, id
       <<-HTML.squish
         <span class="bold-warning">
-          CANNOT FIND #{klass} WITH ID #{id}
+          CANNOT FIND #{klass} WITH ID #{id}#{seach_history_link(id)}
         </span>
       HTML
+    end
+
+    def seach_history_link id
+      case @format
+      when :to_html
+        " " + link_to("Search history?", beta_and_such_all_versions_path(item_id: id),
+          class: "btn-normal btn-tiny")
+      when :to_text
+        "" # Probably do not show when `:to_text`...
+      when :to_antweb
+        "" # Don't show when exporting to AntWeb.
+      end
     end
 end

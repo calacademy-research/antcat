@@ -18,12 +18,12 @@
   .large-12.columns
     %h5
       #{@user.name}'s most
-      =link_to "recent activity", activities_path
+      =link_to "recent activity", activities_path(user_id: @user.id)
     =render "activities/table", activities: @recent_user_activities
 
 .row.margin-top
   .large-12.columns
     %h5
       #{@user.name}'s most
-      =link_to "recent comments", comments_path
+      =link_to "recent comments", comments_path(user_id: @user.id)
     =render "comments/comments_table", comments: @recent_user_comments
