@@ -24,7 +24,7 @@ class TaxonDecorator::Header
       epithets_without_species = @taxon.name.epithets.split(' ')[1..-1].join ' '
       string << header_link(@taxon, italicize(epithets_without_species))
     else
-      string << header_link(@taxon, italicize(taxon.name.epithets))
+      string << header_link(@taxon, italicize(@taxon.name.epithets))
     end
 
     string
