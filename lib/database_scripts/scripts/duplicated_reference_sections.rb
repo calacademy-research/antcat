@@ -6,10 +6,10 @@ class DatabaseScripts::Scripts::DuplicatedReferenceSections
   def results
     duplicated_ids = []
 
-    ReferenceSection.all.each do |reference_section|
+    ReferenceSection.find_each do |reference_section|
       ids = ReferenceSection.where('references_taxt = ? AND position > ?',
         reference_section.references_taxt, reference_section.position).pluck(:id)
-      duplicated_ids << ids
+      duplicated_ids << ids unless ids.blank?
     end
 
     ReferenceSection.find(duplicated_ids)
