@@ -13,6 +13,9 @@ class Taxon < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
+  TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
+    :species_id, :homonym_replaced_by_id, :current_valid_taxon_id]
+
   class TaxonExists < StandardError; end
 
   self.table_name = :taxa

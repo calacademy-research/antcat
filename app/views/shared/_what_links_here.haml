@@ -1,0 +1,24 @@
+-content_for :head do
+  =javascript_include_tag "sortable_tables"
+
+%table.tablesorter.hover.margin-top
+  %thead
+    %tr
+      %th Id
+      %th Table
+      %th Field
+      %th Related taxon
+  %tbody
+    -if table_refs.empty?
+      %tr
+        %td Found no associated items.
+    -else
+      -table_refs.each do |table_ref|
+        -decorated = TableRefDecorator.new table_ref[:table], table_ref[:field], table_ref[:id]
+        %tr
+          %td=decorated.item_link
+          %td
+            %code=table_ref[:table]
+          %td
+            %code=table_ref[:field]
+          %td.grow=decorated.related_links

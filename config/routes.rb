@@ -38,6 +38,7 @@ AntCat::Application.routes.draw do
   get 'catalog/:id/wikipedia' => 'catalog#wikipedia_tools'
   get 'catalog/:id/tab/:tab_id' => 'catalog#tab', as: :catalog_tab
   get 'catalog/:id/history' => 'catalog/history#show', as: :taxon_history
+  get 'catalog/:id/what_links_here' => 'catalog/what_links_here#index', as: :taxon_what_links_here
 
   get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
   resources :journals do
@@ -65,6 +66,7 @@ AntCat::Application.routes.draw do
 
     scope module: :references do
       resources :history, only: [:index]
+      resources :what_links_here, only: :index
     end
 
     member do
