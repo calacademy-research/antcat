@@ -310,13 +310,13 @@ describe Reference do
     end
   end
 
-  describe "#reference_references" do
+  describe "#what_links_here" do
     subject { create :article_reference }
 
     it "calls `References::WhatLinksHere`" do
       expect(References::WhatLinksHere).to receive(:new)
         .with(subject, return_true_or_false: false).and_call_original
-      subject.reference_references
+      subject.what_links_here
     end
   end
 

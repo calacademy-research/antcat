@@ -19,7 +19,7 @@ describe References::WhatLinksHere do
         references_taxt: "{ref #{reference.id}}"
       nested_reference = create :nested_reference, nesting_reference: reference
 
-      results = reference.send :reference_references
+      results = reference.what_links_here
       expect(results).to match_array [
         {table: 'taxa',               id: taxon.id,             field: :type_taxt},
         {table: 'taxa',               id: taxon.id,             field: :headline_notes_taxt},
@@ -35,14 +35,14 @@ describe References::WhatLinksHere do
     end
 
     it "has no references, if alone" do
-      expect(reference.send(:reference_references).size).to eq 0
+      expect(reference.what_links_here.size).to eq 0
     end
 
     describe "References in reference fields" do
       it "has a reference if it's a protonym's authorship's reference" do
         eciton = create_genus 'Eciton'
         eciton.protonym.authorship.update! reference_id: reference.id
-        expect(reference.send :reference_references).to match_array [
+        expect(reference.what_links_here).to match_array [
           { table: 'citations', field: :reference_id, id: eciton.protonym.authorship.id }
         ]
       end
@@ -52,7 +52,7 @@ describe References::WhatLinksHere do
       it "returns references in taxt" do
         eciton = create_genus 'Eciton'
         eciton.update_attribute :type_taxt, "{ref #{reference.id}}"
-        expect(reference.send :reference_references).to match_array [
+        expect(reference.what_links_here).to match_array [
           { table: 'taxa', field: :type_taxt, id: eciton.id }
         ]
       end

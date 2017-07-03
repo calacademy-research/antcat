@@ -22,7 +22,7 @@ class TaxaGrabBagController < ApplicationController
   # "Light version" of `#destroy` (which is for superadmins only). A button to this
   # method is shown when there are no non-taxt references to the current taxon.
   def destroy_unreferenced
-    references = @taxon.references
+    references = @taxon.what_links_here
     if references.empty?
       @taxon.destroy
     else

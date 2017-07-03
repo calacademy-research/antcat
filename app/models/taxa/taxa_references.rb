@@ -1,7 +1,7 @@
 module Taxa::TaxaReferences
   extend ActiveSupport::Concern
 
-  def references
+  def what_links_here
     Taxa::WhatLinksHere.new(self).call
   end
 

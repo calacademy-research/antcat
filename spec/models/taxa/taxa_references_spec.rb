@@ -3,10 +3,10 @@ require 'spec_helper'
 describe Taxon do
   subject { create_genus 'Atta' }
 
-  describe "#references" do
+  describe "#what_links_here" do
     it "calls `Taxa::WhatLinksHere`" do
       expect(Taxa::WhatLinksHere).to receive(:new).with(subject).and_call_original
-      subject.references
+      subject.what_links_here
     end
   end
 

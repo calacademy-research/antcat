@@ -11,7 +11,7 @@ module Taxa
     private
       attr_reader :taxon
 
-      delegate :id, :synonyms_as_senior, :synonyms_as_junior, :protonym, to: :taxon
+      delegate :id, :synonyms_as_senior, :synonyms_as_junior, to: :taxon
 
       def any_references_in_taxa?
         Taxon::TAXA_FIELDS_REFERENCING_TAXA.each do |field|

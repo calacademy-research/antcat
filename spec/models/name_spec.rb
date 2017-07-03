@@ -91,12 +91,12 @@ describe Name do
     end
   end
 
-  describe "#references" do
+  describe "#what_links_here" do
     subject { Name.create! name: 'Atta' }
 
     it "calls `Names::WhatLinksHere`" do
       expect(Names::WhatLinksHere).to receive(:new).with(subject).and_call_original
-      subject.references
+      subject.what_links_here
     end
   end
 

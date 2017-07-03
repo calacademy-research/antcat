@@ -209,7 +209,7 @@ class Reference < ApplicationRecord
 
   ### end quarantine ###
 
-  def reference_references return_true_or_false: false
+  def what_links_here return_true_or_false: false
     References::WhatLinksHere.new(self, return_true_or_false: return_true_or_false).call
   end
 
@@ -271,6 +271,6 @@ class Reference < ApplicationRecord
     end
 
     def has_any_references?
-      reference_references return_true_or_false: true
+      what_links_here return_true_or_false: true
     end
 end

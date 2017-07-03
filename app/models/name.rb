@@ -31,7 +31,7 @@ class Name < ApplicationRecord
       Progress.puts duplicate.name
       Progress.tally_and_show_progress 1
       results[duplicate.name] ||= {}
-      results[duplicate.name][duplicate.id] = duplicate.references
+      results[duplicate.name][duplicate.id] = duplicate.what_links_here
     end
     Progress.show_results
 
@@ -89,7 +89,7 @@ class Name < ApplicationRecord
     '&dagger;'.html_safe
   end
 
-  def references
+  def what_links_here
     Names::WhatLinksHere.new(self).call
   end
 
@@ -105,7 +105,7 @@ class Name < ApplicationRecord
 
     def change name_string
       existing_names = Name.where.not(id: id).where(name: name_string)
-      raise Taxon::TaxonExists if existing_names.any? { |name| not name.references.empty? }
+      raise Taxon::TaxonExists if existing_names.any? { |name| not name.what_links_here.empty? }
       update! name: name_string, name_html: italicize(name_string)
     end
 end
