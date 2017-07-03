@@ -21,6 +21,11 @@ end
     parent taxon
   end
 
+  crumb :taxon_what_links_here do |taxon|
+    link "What Links Here"
+    parent taxon
+  end
+
   crumb :wikipedia_tools do |taxon|
     link "Wikipedia tools"
     parent taxon

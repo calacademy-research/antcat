@@ -22,6 +22,11 @@ end
     parent :reference, reference
   end
 
+  crumb :reference_what_links_here do |reference|
+    link "What Links Here"
+    parent :reference, reference
+  end
+
 crumb :references_search_results do
   link "Search Results"
   parent :references
