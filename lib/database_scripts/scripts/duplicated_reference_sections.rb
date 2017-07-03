@@ -39,5 +39,5 @@ __END__
 description: >
   Based on [this script](https://github.com/calacademy-research/antcat/blob/0b1930a3e161e756e3c785bd32d6e54867cc480c/lib/dedupe_reference_sections.rb),
   which destroys all reference sections listed here.
-tags: [new!]
+tags: [regression-test]
 topic_areas: [catalog]

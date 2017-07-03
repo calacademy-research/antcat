@@ -7,5 +7,5 @@ class DatabaseScripts::Scripts::SubspeciesWithoutGenus
 end
 
 __END__
-tags: [new!, regression-test]
+tags: [regression-test]
 topic_areas: [catalog]
