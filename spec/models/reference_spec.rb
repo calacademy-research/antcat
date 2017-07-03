@@ -310,44 +310,21 @@ describe Reference do
     end
   end
 
-  # References to a reference
   describe "#reference_references" do
-    let(:reference) { create :article_reference }
+    subject { create :article_reference }
 
-    it "recognizes various uses of this reference in taxt" do
-      citation = create :citation, reference: reference, notes_taxt: "{ref #{reference.id}}"
-      protonym = create :protonym, authorship: citation
-      taxon = create :genus,
-        protonym: protonym,
-        type_taxt: "{ref #{reference.id}}",
-        headline_notes_taxt: "{ref #{reference.id}}",
-        genus_species_header_notes_taxt: "{ref #{reference.id}}"
-      history_item = taxon.history_items.create! taxt: "{ref #{reference.id}}"
-      reference_section = create :reference_section,
-        title_taxt: "{ref #{reference.id}}",
-        subtitle_taxt: "{ref #{reference.id}}",
-        references_taxt: "{ref #{reference.id}}"
-      nested_reference = create :nested_reference, nesting_reference: reference
-
-      results = reference.send :reference_references
-      expect(results).to match_array [
-        {table: 'taxa',               id: taxon.id,             field: :type_taxt},
-        {table: 'taxa',               id: taxon.id,             field: :headline_notes_taxt},
-        {table: 'taxa',               id: taxon.id,             field: :genus_species_header_notes_taxt},
-        {table: 'citations',          id: citation.id,          field: :notes_taxt},
-        {table: 'citations',          id: citation.id,          field: :reference_id},
-        {table: 'reference_sections', id: reference_section.id, field: :title_taxt},
-        {table: 'reference_sections', id: reference_section.id, field: :subtitle_taxt},
-        {table: 'reference_sections', id: reference_section.id, field: :references_taxt},
-        {table: 'references',         id: nested_reference.id,  field: :nesting_reference_id},
-        {table: 'taxon_history_items',id: history_item.id,      field: :taxt},
-      ]
+    it "calls `References::WhatLinksHere`" do
+      expect(References::WhatLinksHere).to receive(:new)
+        .with(subject, return_true_or_false: false).and_call_original
+      subject.reference_references
     end
+  end
 
-    describe "#has_any_references?" do
-      it "returns false if there are no references to this reference" do
-        expect(reference.send(:has_any_references?)).to be_falsey
-      end
+  describe "#has_any_references?" do
+    subject { create :article_reference }
+
+    it "returns false if there are no references to this reference" do
+      expect(subject.send(:has_any_references?)).to be_falsey
     end
   end
 
