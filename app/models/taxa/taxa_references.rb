@@ -2,13 +2,10 @@ module Taxa::TaxaReferences
   extend ActiveSupport::Concern
 
   def references
-    what_links_here.taxon_references(omit_taxt: false)
+    Taxa::WhatLinksHere.new(self).call
   end
 
-  delegate :nontaxt_references, :any_nontaxt_references?, to: :what_links_here
-
-  private
-    def what_links_here
-      @_what_links_here ||= Taxa::WhatLinksHere.new(self)
-    end
+  def any_nontaxt_references?
+    Taxa::AnyNonTaxtReferences.new(self).call
+  end
 end

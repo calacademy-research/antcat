@@ -5,46 +5,27 @@
 
 module Taxa
   class WhatLinksHere
-    TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
-      :species_id, :homonym_replaced_by_id, :current_valid_taxon_id]
-
-    def initialize taxon
+    def initialize taxon, omit_taxt: false
       @taxon = taxon
+      @omit_taxt = omit_taxt
     end
 
-    def taxon_references omit_taxt: false
+    def call
       references = []
       references.concat references_in_taxa
       references.concat references_in_taxt unless omit_taxt
       references.concat references_in_synonyms
     end
 
-    # TODO not used (December 2016).
-    def nontaxt_references
-      taxon_references omit_taxt: true
-    end
-
-    def any_nontaxt_references?
-      return true if any_references_in_taxa?
-      references_in_synonyms.present? # Less important, not optimized.
-    end
-
     private
-      attr_reader :taxon
+      attr_reader :taxon, :omit_taxt
 
       delegate :id, :synonyms_as_senior, :synonyms_as_junior, :protonym,
         :protonym_id, to: :taxon
 
-      def any_references_in_taxa?
-        TAXA_FIELDS_REFERENCING_TAXA.each do |field|
-          return true if Taxon.where(field => id).exists?
-        end
-        false
-      end
-
       def references_in_taxa
         references = []
-        TAXA_FIELDS_REFERENCING_TAXA.each do |field|
+        Taxon::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
           Taxon.where(field => id).each do |taxon|
             references << table_ref('taxa', field, taxon.id)
           end
