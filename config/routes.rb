@@ -78,6 +78,12 @@ AntCat::Application.routes.draw do
     end
   end
 
+  scope module: :types do
+    controller :type_specimen_repositories, path: "/types/type_specimen_repositories" do
+      get :autocomplete
+    end
+  end
+
   resources :taxa, only: [:new, :create, :edit, :update] do
     member do
       controller :taxa_grab_bag do
@@ -105,8 +111,6 @@ AntCat::Application.routes.draw do
     end
     resource :convert_to_subspecies, only: [:new, :create]
   end
-
-  get 'type_specimen_repositories/autocompletion_data'
 
   resource :default_reference, only: [:update]
 
