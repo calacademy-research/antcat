@@ -84,6 +84,12 @@ AntCat::Application.routes.draw do
     end
   end
 
+  scope module: :protonyms do
+    controller :localities, path: "/protonyms/localities" do
+      get :autocomplete
+    end
+  end
+
   resources :taxa, only: [:new, :create, :edit, :update] do
     member do
       controller :taxa_grab_bag do
