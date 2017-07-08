@@ -3,12 +3,12 @@
 
 %table
   %thead
-    %th Author Names
+    %th Author (and author names)
     -if user_can_edit?
       %th
   -@authors.each do |author|
     %tr
-      %td=author.names.map(&:name).join('; ')
+      %td=link_to author.names.map(&:name).join('; '), author
       -if user_can_edit?
         %td=link_to 'Edit', edit_author_path(author), class: "btn-normal"
 

@@ -37,8 +37,17 @@
 -# TODO link journal from the formatted reference. Updating all tests would
 -# take way too long time, so linking it here instead for the moment.
 -if @reference.is_a? ArticleReference
+  %hr
   -journal = @reference.journal
   %p
     Published in
     %em
       =link_to "#{journal.name}.", journal_path(journal)
+
+%hr
+
+-# TODO same as above (link from the formatted reference).
+%h5 Authors
+%ul
+  -@reference.author_names.each do |author_name|
+    %li=link_to author_name.name, author_name.author

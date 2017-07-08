@@ -1,5 +1,6 @@
 class Author < ActiveRecord::Base
   has_many :names, -> { order(:name) }, class_name: 'AuthorName'
+  has_many :references, through: :names
 
   scope :sorted_by_name, -> do
     select('authors.id').joins(:names).group('authors.id').order('name')
