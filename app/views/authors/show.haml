@@ -1,0 +1,15 @@
+-@title = "Author ##{@author.id}"
+-breadcrumb :author, @author
+
+.buttons_right
+  =link_to "Edit", edit_author_path(@author), class: "btn-normal"
+
+%h5 Names belonging to author ##{@author.id}
+%ul
+  -@author.names.each do |name|
+    %li=name.name
+
+%hr
+
+%h5 References by author
+=render "shared/reference_table", references: @author.references

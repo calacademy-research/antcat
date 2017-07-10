@@ -18,7 +18,7 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :authors, only: [:index, :edit, :update] do
+  resources :authors, only: [:index, :show, :edit, :update] do
     collection do
       get :autocomplete
     end

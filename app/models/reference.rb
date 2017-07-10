@@ -28,6 +28,7 @@ class Reference < ApplicationRecord
            through: :reference_author_names,
            after_add: :refresh_author_names_caches,
            after_remove: :refresh_author_names_caches
+  has_many :authors, through: :author_names
   has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id"
 
   validates :title, presence: true, if: -> { self.class.requires_title }

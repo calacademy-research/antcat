@@ -78,6 +78,16 @@ Feature: View bibliography
     Then I should not see the missing reference
     And I should see "Ward, P.S. 2010. Ant Facts. Ants 1:1 "
 
+  Scenario: Going to the author's page
+    Given this book reference exist
+      | authors    | year | title     | citation                |
+      | Bolton, B. | 2010 | Cool Ants | New York: Wiley, 23 pp. |
+
+    When I go to the page of the most recent reference
+    And I follow "Bolton, B."
+    Then I should see "References by author"
+    And I should see "Cool Ants"
+
   Scenario: Not logged in
     Given this reference exists
       | authors | citation   | title | year | public_notes | editor_notes | taxonomic_notes |

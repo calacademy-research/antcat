@@ -6,9 +6,6 @@
 .buttons_right
   =link_to "New", new_reference_path, class: "btn-normal" if user_can_edit?
 
-%table.references
-  -@references.each do |reference|
-    %tr
-      %td=render 'reference', reference: reference
+=render "shared/reference_table", references: @references
 
 =will_paginate @references
