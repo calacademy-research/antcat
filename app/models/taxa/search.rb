@@ -1,23 +1,7 @@
 class Taxa::Search
-  def self.quick_search name, search_type: nil, valid_only: false
-    return Taxon.none if name.blank?
-
-    search_type ||= "beginning_with"
-    valid_only = false if valid_only.blank?
-    name = name.dup.strip
-    column = name.split(' ').size > 1 ? 'name' : 'epithet'
-
-    query = Taxon.joins(:name).order_by_name_cache
-    query = query.valid if valid_only
-    query = case search_type
-            when 'matching'
-              query.where("names.#{column} = ?", name)
-            when 'beginning_with'
-              query.where("names.#{column} LIKE ?", name + '%')
-            when 'containing'
-              query.where("names.#{column} LIKE ?", '%' + name + '%')
-            end
-    query.includes(:name, protonym: { authorship: :reference })
+  # TODO refactor more.
+  def self.quick_search taxon_name, search_type: nil, valid_only: false
+    Taxa::QuickSearch.new(taxon_name, search_type: search_type, valid_only: valid_only).call
   end
 
   def self.advanced_search params
