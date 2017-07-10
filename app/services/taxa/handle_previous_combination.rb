@@ -1,7 +1,6 @@
 # Note: some of the comments here may be incorrect, as I'm still trying to
 # understand what's going on.
 
-# TODO see if we can convert this to a callback?
 class Taxa::HandlePreviousCombination
   def initialize taxon
     @taxon = taxon # The new combination.
