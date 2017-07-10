@@ -1,5 +1,6 @@
 -content_for :breadcrumbs_right do
-  =render 'references/search_form', params: params
+  .right
+    =render 'references/search_form', params: params
 
 -content_for :subnavigation do
   =subnavigation_menu references_subnavigation_links

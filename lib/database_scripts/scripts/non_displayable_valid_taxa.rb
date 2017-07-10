@@ -16,5 +16,5 @@ end
 __END__
 
 description: This page should be empty, since we should show all valid taxa.
-tags: [new!, regression-test]
+tags: [regression-test]
 topic_areas: [catalog]

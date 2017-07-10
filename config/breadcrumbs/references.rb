@@ -17,6 +17,16 @@ end
     parent :reference, reference
   end
 
+  crumb :reference_history do |reference|
+    link "History"
+    parent :reference, reference
+  end
+
+  crumb :reference_what_links_here do |reference|
+    link "What Links Here"
+    parent :reference, reference
+  end
+
 crumb :references_search_results do
   link "Search Results"
   parent :references
@@ -67,10 +77,15 @@ crumb :authors do
   parent :references
 end
 
-  crumb :show_and_edit_author do |author|
-    link "Show/Edit Author ##{author.id}"
+  crumb :author do |author|
+    link "Author ##{author.id}", author
     parent :authors
   end
+
+    crumb :edit_author do |author|
+      link "Edit"
+      parent :author, author
+    end
 
   crumb :merge_authors do
     link "Merge Authors"

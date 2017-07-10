@@ -11,7 +11,7 @@
 
 $ ->
   hideToggleables()
-  makeShowHideToggler $('*[data-show-hide-toggler-for]')
+  $('*[data-show-hide-toggler-for]').each -> makeShowHideToggler $(this)
 
 # For the element (the toggler) that toggles
 # the other element (the toggleable).

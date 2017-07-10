@@ -3,6 +3,8 @@ require 'spec_helper'
 describe User do
   it { should validate_presence_of :name }
 
+  it { should be_versioned }
+
   describe "scopes" do
     describe "editors and non-editors" do
       let!(:user) { create :user }

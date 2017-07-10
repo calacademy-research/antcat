@@ -1,0 +1,4 @@
+-@title = "Revision History - Taxon ##{@comparer.most_recent.id}"
+-breadcrumb :taxon_history, @comparer.most_recent
+
+=render file: "compare_revisions/show", locals: { comparer: @comparer, hide_formatted: true }

@@ -32,6 +32,7 @@ module AntCat
     ]
 
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
+    config.autoload_paths += Dir["#{config.root}/lib/tasks/**"]
     config.autoload_paths += Dir["#{config.root}/app/models/**/"]
     config.autoload_paths += Dir["#{config.root}/app/decorators/**/"]
     config.autoload_paths += Dir["#{config.root}/lib/database_scripts/**/"]

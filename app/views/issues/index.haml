@@ -21,9 +21,9 @@
       %th Added
   %tbody
     -@issues.each do |issue|
-      %tr.issue{class: issue.status}
-        %td.icon=antcat_icon "issue", issue.status
-        %td=issue.status.capitalize
+      %tr.issue{class: issue.decorate.format_status_css}
+        %td.icon=antcat_icon "issue", issue.decorate.format_status_css
+        %td=issue.decorate.format_status
         %td.grow=link_to issue.title, issue
         %td.no-wrap=link_comments_section issue
         %td.no-wrap

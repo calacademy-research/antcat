@@ -45,9 +45,14 @@ describe TaxtPresenter do
       end
 
       context "when the ref points to a reference that doesn't exist" do
+        let(:results) { TaxtPresenter["{ref 999}"].to_html }
+
         it "adds a warning" do
-          results = TaxtPresenter["{ref 999}"].to_html
           expect(results).to match "CANNOT FIND REFERENCE WITH ID 999"
+        end
+
+        it "includes a 'Search history?' link" do
+          expect(results).to match "Search history?"
         end
       end
 
@@ -64,9 +69,14 @@ describe TaxtPresenter do
       end
 
       context "when the name can't be found" do
+        let(:results) { TaxtPresenter["{nam 999}"].to_html }
+
         it "adds a warning" do
-          results = TaxtPresenter["{nam 999}"].to_html
           expect(results).to match "CANNOT FIND NAME WITH ID 999"
+        end
+
+        it "includes a 'Search history?' link" do
+          expect(results).to match "Search history?"
         end
       end
     end
@@ -87,9 +97,14 @@ describe TaxtPresenter do
       end
 
       context "when the taxon can't be found" do
+        let(:results) { TaxtPresenter["{tax 999}"].to_html }
+
         it "adds a warning" do
-          results = TaxtPresenter["{tax 999}"].to_html
           expect(results).to match "CANNOT FIND TAXON WITH ID 999"
+        end
+
+        it "includes a 'Search history?' link" do
+          expect(results).to match "Search history?"
         end
       end
     end
@@ -115,6 +130,50 @@ describe TaxtPresenter do
         expect(TaxtPresenter[taxt].to_html).to match "antcat.org"
         expect(TaxtPresenter[taxt].to_text).to match "antcat.org"
         expect(TaxtPresenter[taxt].to_antweb).to match "antcat.org"
+      end
+
+      describe 'broken taxt tags' do
+        describe "ref tags (references)" do
+          let(:results) { TaxtPresenter["{ref 999}"].to_html }
+
+          context "when the ref points to a reference that doesn't exist" do
+            it "adds a warning" do
+              expect(results).to match "CANNOT FIND REFERENCE WITH ID 999"
+            end
+
+            it "doesn't include a 'Search history?' link" do
+              expect(results).to_not match "Search history?"
+            end
+          end
+        end
+
+        describe "nam tags (names)" do
+          context "when the name can't be found" do
+            let(:results) { TaxtPresenter["{nam 999}"].to_html }
+
+            it "adds a warning" do
+              expect(results).to match "CANNOT FIND NAME WITH ID 999"
+            end
+
+            it "doesn't include a 'Search history?' link" do
+              expect(results).to_not match "Search history?"
+            end
+          end
+        end
+
+        describe "tax tags (taxa)" do
+          let(:results) { TaxtPresenter["{tax 999}"].to_html }
+
+          context "when the taxon can't be found" do
+            it "adds a warning" do
+              expect(results).to match "CANNOT FIND TAXON WITH ID 999"
+            end
+
+            it "doesn't include a 'Search history?' link" do
+              expect(results).to_not match "Search history?"
+            end
+          end
+        end
       end
     end
   end

@@ -9,6 +9,8 @@
       -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
         %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
   -if user_can_edit?
+    =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
+    =link_to "What Links Here", reference_what_links_here_index_path(@reference), class: "btn-normal"
     =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
     -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
       =link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
@@ -35,10 +37,17 @@
 -# TODO link journal from the formatted reference. Updating all tests would
 -# take way too long time, so linking it here instead for the moment.
 -if @reference.is_a? ArticleReference
+  %hr
   -journal = @reference.journal
   %p
     Published in
     %em
       =link_to "#{journal.name}.", journal_path(journal)
 
--# TODO Feature: Items using this reference
+%hr
+
+-# TODO same as above (link from the formatted reference).
+%h5 Authors
+%ul
+  -@reference.author_names.each do |author_name|
+    %li=link_to author_name.name, author_name.author

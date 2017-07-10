@@ -1,9 +1,26 @@
 class CommentsController < ApplicationController
+  include HasWhereFilters
+
   before_action :authenticate_editor
   before_action :set_comment, only: [:edit, :update]
 
+  has_filters(
+    user_id: {
+      tag: :select_tag,
+      options: -> { User.order(:name).pluck(:name, :id) }
+    },
+    commentable_type: {
+      tag: :select_tag,
+      options: -> { Comment.uniq.pluck(:commentable_type) }
+    },
+    commentable_id: {
+      tag: :number_field_tag
+    }
+  )
+
   def index
-    @comments = Comment.order_by_date.paginate(page: params[:page])
+    @comments = Comment.filter(filter_params)
+    @comments = @comments.order_by_date.paginate(page: params[:page])
   end
 
   def create

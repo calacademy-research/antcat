@@ -12,3 +12,8 @@ end
 Then(/^the search box should contain "(.*?)"$/) do |text|
   expect(page.evaluate_script("$('input#q').val()")).to eq text
 end
+
+When(/^I start filling in "([^"]*)" with "(.*?)"$/) do |field, value|
+  wait_for_jquery
+  find(field).set value
+end

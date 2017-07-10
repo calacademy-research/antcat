@@ -1,9 +1,31 @@
 class ActivitiesController < ApplicationController
+  include HasWhereFilters
+
   before_action :authenticate_superadmin, only: [:destroy]
   before_action :set_activity, only: [:destroy]
 
+  has_filters(
+    user_id: {
+      tag: :select_tag,
+      options: -> { User.order(:name).pluck(:name, :id) }
+    },
+    trackable_type: {
+      tag: :select_tag,
+      options: -> { Activity.uniq.pluck(:trackable_type).compact }
+    },
+    trackable_id: {
+      tag: :number_field_tag
+    },
+    activity_action: {
+      tag: :select_tag,
+      options: -> { activity_actions_options_for_select },
+      prompt: "Action"
+    }
+  )
+
   def index
-    @activities = Activity.ids_desc.include_associations.paginate(page: page)
+    @activities = Activity.filter(hacked_filter_params)
+    @activities = @activities.ids_desc.include_associations.paginate(page: page)
   end
 
   def destroy
@@ -28,5 +50,18 @@ class ActivitiesController < ApplicationController
 
     def set_activity
       @activity = Activity.find(params[:id])
+    end
+
+    # HACK because `params[:action]` (to filter on `activitie.actions`) gets
+    # overridden by Rails (controller action param).
+    def hacked_filter_params
+      filter_params.tap do |hsh|
+        hsh[:action] = hsh.delete(:activity_action)
+      end
+    end
+
+    def self.activity_actions_options_for_select
+      Activity.uniq.pluck(:action, :action).map(&:humanize)
+        .zip(Activity.uniq.pluck(:action, :action))
     end
 end

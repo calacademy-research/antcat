@@ -8,6 +8,7 @@ require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord
   include ReferenceComparable
+  include RevisionsCanBeCompared
   include Trackable
 
   # Virtual attributes used in `RefrencesController`.
@@ -27,6 +28,7 @@ class Reference < ApplicationRecord
            through: :reference_author_names,
            after_add: :refresh_author_names_caches,
            after_remove: :refresh_author_names_caches
+  has_many :authors, through: :author_names
   has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id"
 
   validates :title, presence: true, if: -> { self.class.requires_title }
@@ -208,6 +210,10 @@ class Reference < ApplicationRecord
 
   ### end quarantine ###
 
+  def what_links_here return_true_or_false: false
+    References::WhatLinksHere.new(self, return_true_or_false: return_true_or_false).call
+  end
+
   private
     def check_not_referenced
       return unless has_any_references?
@@ -265,43 +271,7 @@ class Reference < ApplicationRecord
       [string, last_name]
     end
 
-    # Expensive method.
-    # TODO consider moving all "references to this item" such as this and
-    #  `Taxa::References` to a new class.
-    def reference_references return_true_or_false: false
-      return_early = return_true_or_false
-
-      references = []
-      Taxt::TAXT_FIELDS.each do |klass, fields|
-        klass.send(:all).find_each do |record|
-          fields.each do |field|
-            next unless record[field]
-            if record[field] =~ /{ref #{id}}/
-              references << table_ref(klass.table_name, field, record.id)
-              return true if return_early
-            end
-          end
-        end
-      end
-
-      Citation.where(reference: self).find_each do |record|
-        references << table_ref(Citation.table_name, :reference_id, record.id)
-        return true if return_early
-      end
-
-      nestees.find_each do |record|
-        references << table_ref('references', :nesting_reference_id, record.id)
-        return true if return_early
-      end
-      return false if return_early
-      references
-    end
-
-    def table_ref table, field, id
-      { table: table, field: field, id: id }
-    end
-
     def has_any_references?
-      reference_references return_true_or_false: true
+      what_links_here return_true_or_false: true
     end
 end

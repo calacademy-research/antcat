@@ -18,7 +18,7 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :authors, only: [:index, :edit, :update] do
+  resources :authors, only: [:index, :show, :edit, :update] do
     collection do
       get :autocomplete
     end
@@ -37,6 +37,8 @@ AntCat::Application.routes.draw do
   get 'catalog/:id' => 'catalog#show', as: :catalog
   get 'catalog/:id/wikipedia' => 'catalog#wikipedia_tools'
   get 'catalog/:id/tab/:tab_id' => 'catalog#tab', as: :catalog_tab
+  get 'catalog/:id/history' => 'catalog/history#show', as: :taxon_history
+  get 'catalog/:id/what_links_here' => 'catalog/what_links_here#index', as: :taxon_what_links_here
 
   get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
   resources :journals do
@@ -61,12 +63,30 @@ AntCat::Application.routes.draw do
       get :endnote_export
       put :approve_all
     end
+
+    scope module: :references do
+      resources :history, only: [:index]
+      resources :what_links_here, only: :index
+    end
+
     member do
       post :start_reviewing
       post :finish_reviewing
       post :restart_reviewing
       get :endnote_export
       get :wikipedia_export
+    end
+  end
+
+  scope module: :types do
+    controller :type_specimen_repositories, path: "/types/type_specimen_repositories" do
+      get :autocomplete
+    end
+  end
+
+  scope module: :protonyms do
+    controller :localities, path: "/protonyms/localities" do
+      get :autocomplete
     end
   end
 
@@ -216,8 +236,7 @@ AntCat::Application.routes.draw do
   end
 
   namespace :beta_and_such do
-    get :all_versions
-    get :show_version
+    # Empty for now.
   end
 
   unless Rails.env.production?

@@ -6,6 +6,8 @@
   -@title = "Activity Feed"
   -breadcrumb :activity_feed
 
+=render_filters
+
 =render "table", activities: @activities, show_delete_button: true, include_head: true
 
 -# HACK so that the id param isn't included in pagination links.

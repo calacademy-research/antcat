@@ -107,13 +107,13 @@ end
 # Issue
 Given(/^there is an open issue for the feed$/) do
   Feed.without_tracking do
-    create :open_issue, title: "Valid?"
+    create :issue, :open, title: "Valid?"
   end
 end
 
 Given(/^there is a closed issue for the feed$/) do
   Feed.without_tracking do
-    create :closed_issue, title: "Valid?"
+    create :issue, :closed, title: "Valid?"
   end
 end
 

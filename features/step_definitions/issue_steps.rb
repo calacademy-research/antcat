@@ -1,9 +1,9 @@
 Given(/^there is an open issue "([^"]*)"$/) do |title|
-  create :issue, title: title
+  create :issue, :open, title: title
 end
 
-Given(/^there is an? closed issue "([^"]*)"$/) do |title|
-  create :closed_issue, title: title
+Given(/^there is a closed issue "([^"]*)"$/) do |title|
+  create :issue, :closed, title: title
 end
 
 Then(/^I should see the (open|closed) issue "([^"]*)"$/) do |status, title|
