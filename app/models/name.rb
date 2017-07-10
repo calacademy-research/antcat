@@ -15,29 +15,6 @@ class Name < ApplicationRecord
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
-  def self.duplicates
-    name_strings = Name.find_by_sql(<<-SQL).map(&:name)
-      SELECT * FROM names GROUP BY name HAVING COUNT(*) > 1
-    SQL
-    Name.where(name: name_strings).order(:name)
-  end
-
-  def self.duplicates_with_references options = {}
-    results = {}
-    dupes = duplicates
-
-    Progress.new_init show_progress: options[:show_progress], total_count: dupes.size, show_errors: true
-    dupes.each do |duplicate|
-      Progress.puts duplicate.name
-      Progress.tally_and_show_progress 1
-      results[duplicate.name] ||= {}
-      results[duplicate.name][duplicate.id] = duplicate.what_links_here
-    end
-    Progress.show_results
-
-    results
-  end
-
   # TODO rename to avoid confusing this with [Rails'] dynamic finder methods.
   def self.find_by_name string
     Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false)
