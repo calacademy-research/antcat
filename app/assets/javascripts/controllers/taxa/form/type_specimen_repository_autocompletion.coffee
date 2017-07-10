@@ -3,7 +3,7 @@ $ ->
     datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
     prefetch:
-      url: '/type_specimen_repositories/autocompletion_data.json'
+      url: '/types/type_specimen_repositories/autocomplete.json'
 
   repositories.clearPrefetchCache()
   repositories.initialize()
