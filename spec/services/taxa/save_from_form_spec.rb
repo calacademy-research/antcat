@@ -3,7 +3,7 @@ require 'spec_helper'
 # HACK: extra madness because RSpec had problems finding our classes.
 Taxa::Family = Family
 
-describe Taxa::SaveTaxon do
+describe Taxa::SaveFromForm do
   describe "Saving a new record, based on params from a form with nested attributes" do
     it "saves a new genus" do
       taxon = build_new_taxon_and_set_parent :genus, create_subfamily

@@ -1,6 +1,6 @@
 # This class is responsible for saving taxa from `TaxaController` (from the edit form).
 
-class Taxa::SaveTaxon
+class Taxa::SaveFromForm
   def initialize taxon
     @taxon = taxon
   end

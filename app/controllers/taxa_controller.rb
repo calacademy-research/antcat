@@ -5,7 +5,7 @@
 # to a grab bag controller (`TaxaGrabBagController`) because this class was,
 # and still is, hard to work with.
 
-# TODO extract more code from here into `Taxa::SaveTaxon`, and rename
+# TODO extract more code from here into `Taxa::SaveFromForm`, and rename
 # that class to make it more obvious that it's a form object.
 
 class TaxaController < ApplicationController

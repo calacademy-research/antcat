@@ -103,7 +103,7 @@ class Taxon < ApplicationRecord
   }
 
   def save_from_form params, previous_combination = nil
-    Taxa::SaveTaxon.new(self).save_from_form(params, previous_combination)
+    Taxa::SaveFromForm.new(self).save_from_form(params, previous_combination)
   end
 
   # Avoid this method. Issues:
