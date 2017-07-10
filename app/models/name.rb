@@ -45,7 +45,7 @@ class Name < ApplicationRecord
   end
 
   def self.make_epithet_set epithet
-    EpithetSearchSet.new(epithet).epithets
+    Names::EpithetSearchSet.new(epithet).epithets
   end
 
   def self.picklist_matching letters_in_name, options = {}
