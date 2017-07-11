@@ -96,6 +96,10 @@ module NavigationHelpers
     when /^the most recent feedback item$/
       "/feedback/#{Feedback.last.id}"
 
+    # Reference sections
+    when /^the reference sections page$/
+      "/reference_sections"
+
     # User
     when /^the user page for "([^"]*)"$/
       user = User.find_by name: $1

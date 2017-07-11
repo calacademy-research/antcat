@@ -36,6 +36,11 @@ crumb :convert_to_species do |taxon|
   parent :edit_taxon, taxon
 end
 
+crumb :reference_sections do
+  link "Reference Sections"
+  parent :catalog
+end
+
 # Crumbs for the shallow routes for the feed
 crumb :taxon_history_item do |item|
   link "History Item ##{item.id}"

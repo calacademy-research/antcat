@@ -1,0 +1,25 @@
+-@title = "Reference Sections"
+-breadcrumb :reference_sections
+
+=form_tag request.path, method: :get do
+  .row
+    =render "shared/primitive_search_inputs"
+    =render "shared/filter_buttons"
+
+%table
+  %thead
+    %tr
+      %th ID
+      %th Taxon
+      %th Title taxt
+      %th Subtitle taxt
+      %th References taxt
+  -@reference_sections.each do |item|
+    %tr
+      %td=link_to "##{item.id}", item
+      %td=item.taxon ? item.taxon.decorate.link_to_taxon : "???"
+      %td=TaxtPresenter[item.title_taxt].to_html
+      %td=TaxtPresenter[item.subtitle_taxt].to_html
+      %td=TaxtPresenter[item.references_taxt].to_html
+
+=will_paginate @reference_sections

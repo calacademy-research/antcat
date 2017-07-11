@@ -201,7 +201,7 @@ AntCat::Application.routes.draw do
 
   # Shallow routes for the show action for the activity feed.
   resources :taxon_history_items, only: [:show]
-  resources :reference_sections, only: [:show]
+  resources :reference_sections, only: [:index, :show]
   resources :synonyms, only: [:show]
 
   resources :tooltips do
