@@ -2,14 +2,17 @@ module Names
   class EpithetSearchSet
     CONSONANTS = 'bcdfghjklmnprstvxyz' # Note: no 'q' or 'w', but includes 'y'.
 
-    attr_reader :epithets
-
     def initialize epithet
       @epithet = epithet
-      @epithets = ([epithet] + frequent_misspellings + declensions + orthographic + deemed_identical).uniq
+    end
+
+    def call
+      ([epithet] + frequent_misspellings + declensions + orthographic + deemed_identical).uniq
     end
 
     private
+      attr_reader :epithet
+
       def frequent_misspellings
         epithets = []
         epithets << 'alfari' if @epithet == 'alfaroi'

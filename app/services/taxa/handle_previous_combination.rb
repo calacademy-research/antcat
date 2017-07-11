@@ -2,14 +2,15 @@
 # understand what's going on.
 
 class Taxa::HandlePreviousCombination
-  def initialize taxon
+  def initialize taxon, previous_combination
     @taxon = taxon # The new combination.
+    @previous_combination = previous_combination
   end
 
   # The taxon that was just saved is a new combination. Update the
   # previous combination's status, associated it with the new
   # combination, and transfer all taxon history and synonyms.
-  def handle_it! previous_combination
+  def call
     # Find all taxa that list `previous_combination.id` as
     # `current_valid_taxon_id`, and update them.
     Taxon.where(current_valid_taxon: previous_combination).each do |taxon_to_update|
@@ -23,6 +24,8 @@ class Taxa::HandlePreviousCombination
   end
 
   private
+    attr_reader :taxon, :previous_combination
+
     # TODO find proper name.
     def status_string_for_crazy taxon_to_update
       if Status[taxon_to_update] == Status['original combination']
@@ -33,7 +36,7 @@ class Taxa::HandlePreviousCombination
     end
 
     def status_string_for_previous_combination previous_combination
-      if previous_combination.id == @taxon.protonym.id
+      if previous_combination.id == taxon.protonym.id
         Status['original combination'].to_s
       else
         Status['obsolete combination'].to_s
@@ -52,18 +55,18 @@ class Taxa::HandlePreviousCombination
     # Some comments may make it sound like PC and Friends are updated at the same time,
     # but that's just me lying while trying to wrap my head around it.
     def update_elements taxon_to_update, status_string
-      taxon_to_update.current_valid_taxon = @taxon
+      taxon_to_update.current_valid_taxon = taxon
 
       # The new status will be either 'original combination' or 'obsolete combination'.
       taxon_to_update.status = status_string
 
       # Transfer the original/obsolete combination's history items to `@taxon`.
-      taxon_to_update.history_items.update_all taxon_id: @taxon.id
+      taxon_to_update.history_items.update_all taxon_id: taxon.id
 
       # Update the PC and Friends' junior synonyms (if there are any) to point to `@taxon`.
       # This makes sense, because taxa that are/were junior synonyms of PC and its
       # Friends are now junior synonyms of `@taxon`, so update.
-      taxon_to_update.junior_synonyms_objects.update_all senior_synonym_id: @taxon.id
+      taxon_to_update.junior_synonyms_objects.update_all senior_synonym_id: taxon.id
 
       # THIS IS THE TRICKY PART!!!
       # Take all synonym relationships where PC or one of its Friends is listed as
@@ -87,7 +90,7 @@ class Taxa::HandlePreviousCombination
       #
       # I'm sure there's something I'm not seeing here, perhaps this can never happen,
       # and if it does due to incorrect data, this is less incorrect that not doing anything.
-      taxon_to_update.senior_synonyms_objects.update_all junior_synonym_id: @taxon.id
+      taxon_to_update.senior_synonyms_objects.update_all junior_synonym_id: taxon.id
 
       taxon_to_update.save
     end
