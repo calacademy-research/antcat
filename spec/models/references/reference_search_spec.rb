@@ -304,6 +304,16 @@ describe Reference do
     end
   end
 
+  describe "#author_search" do
+    let(:author_names_query) { "Bolton, B;" }
+
+    it "calls `References::AuthorSearch`" do
+      expect(References::AuthorSearch).to receive(:new)
+        .with(author_names_query, nil).and_call_original
+      described_class.author_search author_names_query
+    end
+  end
+
   describe "#extract_keyword_params" do
     let(:keyword_string) { "Atta" }
 

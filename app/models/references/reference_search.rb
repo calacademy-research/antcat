@@ -33,17 +33,7 @@ class Reference < ApplicationRecord
   end
 
   def self.author_search author_names_query, page = nil
-    author_names = Parsers::AuthorParser.parse(author_names_query)[:names]
-    authors = Author.find_by_names author_names
-
-    query = select('`references`.*')
-      .joins(:author_names)
-      .joins('JOIN authors ON authors.id = author_names.author_id')
-      .where('authors.id IN (?)', authors)
-      .group('references.id')
-      .having("COUNT(`references`.id) = #{authors.size}")
-      .order(:author_names_string_cache, :citation_year)
-    query.paginate page: (page || 1)
+    References::AuthorSearch.new(author_names_query, page).call
   end
 
   def self.extract_keyword_params keyword_string
