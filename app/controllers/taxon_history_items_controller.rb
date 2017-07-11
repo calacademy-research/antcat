@@ -31,7 +31,7 @@ class TaxonHistoryItemsController < ApplicationController
 
     def render_json item
       json = {
-        content: render_to_string(partial: 'history_items/panel', locals: { item: item }),
+        content: render_to_string(partial: 'taxon_history_items/panel', locals: { item: item }),
         id: item.id,
         success: item.errors.empty?
       }
