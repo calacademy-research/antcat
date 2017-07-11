@@ -1,0 +1,21 @@
+-@title = "Taxon History Items"
+-breadcrumb :taxon_history_items
+
+=form_tag request.path, method: :get do
+  .row
+    =render "shared/primitive_search_inputs"
+    =render "shared/filter_buttons"
+
+%table
+  %thead
+    %tr
+      %th ID
+      %th Taxon
+      %th Taxt
+  -@taxon_history_items.each do |item|
+    %tr
+      %td=link_to "##{item.id}", item
+      %td=item.taxon ? item.taxon.decorate.link_to_taxon : "???"
+      %td=TaxtPresenter[item.taxt].to_html
+
+=will_paginate @taxon_history_items

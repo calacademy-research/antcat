@@ -96,9 +96,11 @@ module NavigationHelpers
     when /^the most recent feedback item$/
       "/feedback/#{Feedback.last.id}"
 
-    # Reference sections
+    # Reference sections and taxon history items
     when /^the reference sections page$/
       "/reference_sections"
+    when /^the taxon history items page$/
+      "/taxon_history_items"
 
     # User
     when /^the user page for "([^"]*)"$/
