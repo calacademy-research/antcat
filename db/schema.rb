@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170618231227) do
+ActiveRecord::Schema.define(version: 20170712192817) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -403,7 +403,7 @@ ActiveRecord::Schema.define(version: 20170618231227) do
     t.boolean  "ichnotaxon"
     t.boolean  "nomen_nudum"
     t.integer  "family_id",                       limit: 4
-    t.string   "verbatim_type_locality",          limit: 255
+    t.text     "verbatim_type_locality",          limit: 65535
     t.string   "biogeographic_region",            limit: 255
     t.text     "type_specimen_repository",        limit: 65535
     t.text     "type_specimen_code",              limit: 65535
