@@ -2,6 +2,8 @@ class FeedbackController < ApplicationController
   include ActionView::Helpers::DateHelper
   include HasWhereFilters
 
+  BANNED_IPS = ["46.161.9.20", "46.161.9.51", "46.161.9.22"]
+
   before_action :authenticate_superadmin, only: [:destroy]
   before_action :authenticate_editor, except: [:create]
   before_action :set_feedback, only: [:show, :destroy, :close, :reopen]
@@ -29,6 +31,7 @@ class FeedbackController < ApplicationController
   def create
     @feedback = Feedback.new feedback_params
     @feedback.ip = request.remote_ip
+    render_unprocessable and return if ip_banned?
     render_unprocessable and return if maybe_rate_throttle
 
     if current_user
@@ -97,6 +100,10 @@ class FeedbackController < ApplicationController
       @feedback = Feedback.new feedback_params
       @feedback.errors.add :hmm, "you're not a bot are you? Feedback not sent. Email us?"
       render_unprocessable
+    end
+
+    def ip_banned?
+      request.remote_ip.in? BANNED_IPS
     end
 
     # TODO be more generous. Throttling is only for combating spam.
