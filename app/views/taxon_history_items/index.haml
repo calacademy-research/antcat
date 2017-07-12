@@ -6,12 +6,18 @@
     =render "shared/primitive_search_inputs"
     =render "shared/filter_buttons"
 
+.callout
+  =render "shared/note_on_taxt_references"
+
 %table
   %thead
     %tr
       %th ID
       %th Taxon
       %th Taxt
+  -if @taxon_history_items.empty?
+    %tr
+      %td{colspan: 3} Found no results.
   -@taxon_history_items.each do |item|
     %tr
       %td=link_to "##{item.id}", item

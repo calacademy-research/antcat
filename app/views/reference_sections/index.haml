@@ -6,6 +6,9 @@
     =render "shared/primitive_search_inputs"
     =render "shared/filter_buttons"
 
+.callout
+  =render "shared/note_on_taxt_references"
+
 %table
   %thead
     %tr
@@ -14,6 +17,9 @@
       %th Title taxt
       %th Subtitle taxt
       %th References taxt
+  -if @reference_sections.empty?
+    %tr
+      %td{colspan: 5} Found no results.
   -@reference_sections.each do |item|
     %tr
       %td=link_to "##{item.id}", item
