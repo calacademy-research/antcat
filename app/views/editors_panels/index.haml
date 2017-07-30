@@ -33,6 +33,12 @@
           =link_to "email users", emails_users_path
       %li=link_to 'Invite people to AntCat', invite_users_path
       %li=link_to "Markdown formatting help", markdown_formatting_help_path
+      %li
+        =link_to "History item search", taxon_history_items_path
+        =new_label
+      %li
+        =link_to "Reference section search", reference_sections_path
+        =new_label
 
   .large-3.medium-4.columns
     -if current_user

@@ -2,6 +2,12 @@ class ReferenceSectionsController < ApplicationController
   before_action :authenticate_editor
   before_action :set_reference_section, only: [:update, :destroy]
 
+  def index
+    @reference_sections = ReferenceSection.all
+    @reference_sections = @reference_sections.search_objects(search_params) if params[:q].present?
+    @reference_sections = @reference_sections.paginate(page: params[:page], per_page: 100)
+  end
+
   def show
     @comparer = ReferenceSection.revision_comparer_for params[:id],
       params[:selected_id], params[:diff_with_id]
@@ -34,6 +40,10 @@ class ReferenceSectionsController < ApplicationController
   private
     def set_reference_section
       @item = ReferenceSection.find params[:id]
+    end
+
+    def search_params
+      params.slice :search_type, :q
     end
 
     def taxts_from_params

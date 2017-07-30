@@ -9,6 +9,6 @@
     .clear
   .history_items.ui-dialog-content.ui-widget-content.ui-corner-bottom{data: {taxon_id: taxon.id}}
     -taxon.history_items.each do |history_item|
-      =render 'history_items/panel', item: history_item
+      =render 'taxon_history_items/panel', item: history_item
   .history_item_template
-    =render 'history_items/panel', item: TaxonHistoryItem.new(taxon_id: taxon.id)
+    =render 'taxon_history_items/panel', item: TaxonHistoryItem.new(taxon_id: taxon.id)

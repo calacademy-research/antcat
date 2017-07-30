@@ -2,6 +2,12 @@ class TaxonHistoryItemsController < ApplicationController
   before_filter :authenticate_editor
   before_action :set_taxon_history_item, only: [:update, :destroy]
 
+  def index
+    @taxon_history_items = TaxonHistoryItem.all
+    @taxon_history_items = @taxon_history_items.search_objects(search_params) if params[:q].present?
+    @taxon_history_items = @taxon_history_items.paginate(page: params[:page], per_page: 100)
+  end
+
   def show
     @comparer = TaxonHistoryItem.revision_comparer_for params[:id],
       params[:selected_id], params[:diff_with_id]
@@ -29,9 +35,13 @@ class TaxonHistoryItemsController < ApplicationController
       @item = TaxonHistoryItem.find params[:id]
     end
 
+    def search_params
+      params.slice :search_type, :q
+    end
+
     def render_json item
       json = {
-        content: render_to_string(partial: 'history_items/panel', locals: { item: item }),
+        content: render_to_string(partial: 'taxon_history_items/panel', locals: { item: item }),
         id: item.id,
         success: item.errors.empty?
       }
