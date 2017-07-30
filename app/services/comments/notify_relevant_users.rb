@@ -1,7 +1,5 @@
 module Comments
   class NotifyRelevantUsers
-    delegate :commenter, :commentable, :body, :parent, :is_a_reply?, to: :@comment
-
     def initialize comment
       @comment = comment
       @do_not_notify = [commenter] # Never notify thyself!
@@ -12,7 +10,7 @@ module Comments
     # If a user was notified because they were replied to, we're not sending
     # another three notification in case they are also the creator of the
     # commentable, active in the same discussion, and mentioned in the comment.
-    def notify_all
+    def call
       notify_replied_to_user
       notify_mentioned_users
       notify_users_in_the_same_discussion
@@ -20,6 +18,9 @@ module Comments
     end
 
     private
+      attr_accessor :comment, :do_not_notify
+      delegate :commenter, :commentable, :body, :parent, :is_a_reply?, to: :comment
+
       def notify_replied_to_user
         return unless is_a_reply?
 
@@ -66,16 +67,16 @@ module Comments
       def notify user, reason
         return if do_not_notify? user
 
-        user.notify_because reason, attached: @comment, notifier: commenter
+        user.notify_because reason, attached: comment, notifier: commenter
         no_more_notifications_for user
       end
 
       def do_not_notify? user
-        user.in? @do_not_notify
+        user.in? do_not_notify
       end
 
       def no_more_notifications_for user
-        @do_not_notify << user
+        do_not_notify << user
       end
   end
 end

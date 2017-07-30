@@ -15,18 +15,20 @@ class Names::PicklistMatching
   end
 
   private
+    attr_reader :letters_in_name, :options
+
     def prefix_matches
-      search_term = @letters_in_name + '%'
+      search_term = letters_in_name + '%'
       picklist_query("name", search_term).order('taxon_id DESC').order(:name)
     end
 
     def epithet_matches
-      search_term = @letters_in_name.split('').join('%') + '%'
+      search_term = letters_in_name.split('').join('%') + '%'
       picklist_query("epithet", search_term).order(:epithet)
     end
 
     def first_then_any_letter_matches
-      search_term = @letters_in_name.split('').join('%') + '%'
+      search_term = letters_in_name.split('').join('%') + '%'
       picklist_query("name", search_term).order(:name)
     end
 
@@ -37,19 +39,19 @@ class Names::PicklistMatching
     end
 
     def join_type
-      @options[:taxa_only] ||
-      @options[:species_only] ||
-      @options[:genera_only] ||
-      @options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+      options[:taxa_only] ||
+      options[:species_only] ||
+      options[:genera_only] ||
+      options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
     end
 
     def rank_filter
       case
-      when @options[:species_only]
+      when options[:species_only]
         'AND taxa.type = "Species"'
-      when @options[:genera_only]
+      when options[:genera_only]
         'AND taxa.type = "Genus"'
-      when @options[:subfamilies_or_tribes_only]
+      when options[:subfamilies_or_tribes_only]
         'AND (taxa.type = "Subfamily" OR taxa.type = "Tribe")'
       else
         ''

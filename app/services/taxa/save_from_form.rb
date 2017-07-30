@@ -1,13 +1,15 @@
 # This class is responsible for saving taxa from `TaxaController` (from the edit form).
 
-class Taxa::SaveTaxon
-  def initialize taxon
+class Taxa::SaveFromForm
+  # `previous_combination` will be a pointer to a species or subspecies if non-nil.
+  def initialize taxon, params, previous_combination = nil
     @taxon = taxon
+    @params = params
+    @previous_combination = previous_combination
   end
 
-  # `previous_combination` will be a pointer to a species or subspecies if non-nil.
-  def save_from_form params, previous_combination = nil
-    @taxon.save_initiator = true
+  def call
+    taxon.save_initiator = true
 
     Taxon.transaction do
       # There is no `UndoTracker#get_current_change_id` at this point, so if
@@ -23,9 +25,9 @@ class Taxa::SaveTaxon
 
       # Different setup because non-persisted objects have no IDs,
       # so we must update the change after saving `@taxon`.
-      if @taxon.new_record?
-        change = UndoTracker.setup_change @taxon, :create
-        @taxon.save!
+      if taxon.new_record?
+        change = UndoTracker.setup_change taxon, :create
+        taxon.save!
 
         # PaperTrail is dumb. When a new object is created, it has no "object".
         # So, if you undo the first change, and try to reify the previous one,
@@ -39,36 +41,38 @@ class Taxa::SaveTaxon
         #   version of the object as it currently stands. The versions method
         #   gives you previous versions; to get the current one just call a
         #   finder on your Widget model as usual."
-        @taxon.touch_with_version
+        taxon.touch_with_version
 
-        change.update user_changed_taxon_id: @taxon.id
+        change.update user_changed_taxon_id: taxon.id
       else
-        UndoTracker.setup_change @taxon, :update
-        @taxon.save!
+        UndoTracker.setup_change taxon, :update
+        taxon.save!
       end
 
       if previous_combination
-        Taxa::HandlePreviousCombination.new(@taxon).handle_it! previous_combination
+        Taxa::HandlePreviousCombination.new(taxon, previous_combination).call
       end
     end
   end
 
   private
+    attr_reader :taxon, :params, :previous_combination
+
     def update_name name_attributes
       attributes = name_attributes
 
       attributes[:name_id] = attributes.delete :id
       gender = attributes.delete :gender
-      @taxon.name.gender = gender.blank? ? nil : gender
-      @taxon.attributes = attributes
+      taxon.name.gender = gender.blank? ? nil : gender
+      taxon.attributes = attributes
     end
 
     def update_parent parent_name_attributes
       return unless parent_name_attributes
 
-      @taxon.update_parent Taxon.find_by(name_id: parent_name_attributes[:id])
+      taxon.update_parent Taxon.find_by(name_id: parent_name_attributes[:id])
     rescue Taxon::TaxonExists
-      @taxon.errors[:base] = "This name is in use by another taxon"
+      taxon.errors[:base] = "This name is in use by another taxon"
       raise
     end
 
@@ -76,14 +80,14 @@ class Taxa::SaveTaxon
       replacement_id = current_valid_taxon_name_attributes[:id]
       replacement = replacement_id.present? ? Taxon.find_by(name_id: replacement_id) : nil
 
-      @taxon.current_valid_taxon = replacement
+      taxon.current_valid_taxon = replacement
     end
 
     def update_homonym_replaced_by homonym_replaced_by_name_attributes
       replacement_id = homonym_replaced_by_name_attributes[:id]
       replacement = replacement_id.present? ? Taxon.find_by(name_id: replacement_id) : nil
 
-      @taxon.homonym_replaced_by = replacement
+      taxon.homonym_replaced_by = replacement
     end
 
     def update_protonym protonym_attributes
@@ -91,35 +95,35 @@ class Taxa::SaveTaxon
 
       attributes[:name_id] = attributes.delete(:name_attributes)[:id]
       update_protonym_authorship attributes.delete :authorship_attributes
-      @taxon.protonym.attributes = attributes
+      taxon.protonym.attributes = attributes
     end
 
     def update_protonym_authorship authorship_attributes
-      return unless @taxon.protonym.authorship
+      return unless taxon.protonym.authorship
 
       attributes = authorship_attributes
       attributes[:reference_id] = attributes.delete(:reference_attributes)[:id]
-      return if attributes[:reference_id].blank? and @taxon.protonym.authorship.reference.blank?
+      return if attributes[:reference_id].blank? and taxon.protonym.authorship.reference.blank?
 
       if attributes[:notes_taxt]
-        @taxon.protonym.authorship.notes_taxt = TaxtConverter[attributes.delete :notes_taxt].from_editor_format
+        taxon.protonym.authorship.notes_taxt = TaxtConverter[attributes.delete :notes_taxt].from_editor_format
       end
-      @taxon.protonym.authorship.attributes = attributes
+      taxon.protonym.authorship.attributes = attributes
     end
 
     def update_type_name type_name_attributes
       attributes = type_name_attributes
 
       # ugly way to handle optional, but possibly pre-built, subobject
-      if @taxon.type_name && @taxon.type_name.new_record? && (!attributes or attributes[:id] == '')
-        @taxon.type_name = nil
+      if taxon.type_name && taxon.type_name.new_record? && (!attributes or attributes[:id] == '')
+        taxon.type_name = nil
         return
       end
 
       # Why do we hit this case?
       if attributes
         attributes[:type_name_id] = attributes.delete :id
-        @taxon.attributes = attributes
+        taxon.attributes = attributes
       end
     end
 
@@ -129,10 +133,10 @@ class Taxa::SaveTaxon
       # Why is this a special case but not the other attributes?
       attributes[:incertae_sedis_in] = nil unless attributes[:incertae_sedis_in].present?
 
-      @taxon.attributes = attributes
-      @taxon.headline_notes_taxt = TaxtConverter[attributes.delete :headline_notes_taxt].from_editor_format
+      taxon.attributes = attributes
+      taxon.headline_notes_taxt = TaxtConverter[attributes.delete :headline_notes_taxt].from_editor_format
       if attributes[:type_taxt]
-        @taxon.type_taxt = TaxtConverter[attributes.delete :type_taxt].from_editor_format
+        taxon.type_taxt = TaxtConverter[attributes.delete :type_taxt].from_editor_format
       end
     end
 end

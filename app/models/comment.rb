@@ -37,6 +37,6 @@ class Comment < ActiveRecord::Base
     end
 
     def notify_relevant_users
-      Comments::NotifyRelevantUsers.new(self).notify_all
+      Comments::NotifyRelevantUsers.new(self).call
     end
 end

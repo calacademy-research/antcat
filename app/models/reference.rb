@@ -134,33 +134,7 @@ class Reference < ApplicationRecord
   end
 
   def new_from_copy
-    new_reference = self.class.new # Build correct type.
-
-    # Type-specific fields.
-    to_copy = case self
-              when ArticleReference then [:series_volume_issue]
-              when NestedReference  then [:pages_in, :nesting_reference_id]
-              when UnknownReference then [:citation]
-              else                       []
-              end
-
-    # Basic fields and notes.
-    to_copy.concat [ :author_names_string,
-                     :citation_year,
-                     :title,
-                     :pagination,
-                     :public_notes,
-                     :editor_notes,
-                     :taxonomic_notes ]
-
-    # The two virtual attributes.
-    if is_a? BookReference
-      new_reference.publisher_string = "#{publisher.place.name}: #{publisher.name}"
-    end
-    new_reference.journal_name = journal.name if is_a? ArticleReference
-
-    copy_attributes_to new_reference, *to_copy
-    new_reference
+    References::NewFromCopy.new(self).call
   end
 
   ### Methods currently in quarantine ###

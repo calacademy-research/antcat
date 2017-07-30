@@ -303,6 +303,26 @@ describe Reference do
       end
     end
   end
+
+  describe "#author_search" do
+    let(:author_names_query) { "Bolton, B;" }
+
+    it "calls `References::AuthorSearch`" do
+      expect(References::AuthorSearch).to receive(:new)
+        .with(author_names_query, nil).and_call_original
+      described_class.author_search author_names_query
+    end
+  end
+
+  describe "#extract_keyword_params" do
+    let(:keyword_string) { "Atta" }
+
+    it "calls `References::ExtractKeywordParams`" do
+      expect(References::ExtractKeywordParams).to receive(:new)
+        .with(keyword_string).and_call_original
+      described_class.extract_keyword_params keyword_string
+    end
+  end
 end
 
 describe Reference do
@@ -341,106 +361,6 @@ describe Reference do
           create :article_reference, author_names: author_names
         end
       end
-    end
-  end
-
-  describe "#extract_keyword_params" do
-    it "doesn't modify the orginal search term" do
-      q = "Bolton 2003"
-      _ = Reference.extract_keyword_params q
-      expect(q).to eq q
-    end
-
-    it "doesn't change the keywords unless keyword params are present" do
-      q = "Bolton 2003"
-      keyword_params = Reference.extract_keyword_params q
-      expect(keyword_params[:keywords]).to eq q
-    end
-
-    it "modifies the keywords string after extraction" do
-      keyword_params = Reference.extract_keyword_params "Bolton year:2003"
-      expect(keyword_params[:keywords]).to eq "Bolton"
-    end
-
-    describe "year keywords" do
-      it "extracts the year" do
-        keyword_params = Reference.extract_keyword_params "Bolton year:2003"
-        expect(keyword_params[:year]).to eq "2003"
-      end
-
-      it "extracts ranges of years" do
-        keyword_params = Reference.extract_keyword_params "Bolton year:2003-2015"
-        expect(keyword_params[:start_year]).to eq "2003"
-        expect(keyword_params[:end_year]).to eq "2015"
-      end
-    end
-
-    it "extracts reference types" do
-      keyword_params = Reference.extract_keyword_params "Bolton type:nested year:2003"
-      expect(keyword_params[:reference_type]).to eq :nested
-    end
-
-    it "extracts authors" do
-      keyword_params = Reference.extract_keyword_params "Ants Book author:Bolton"
-      expect(keyword_params[:author]).to eq "Bolton"
-    end
-
-    describe "author queries containing spaces" do
-      it "handles double quotes" do
-        keyword_params = Reference.extract_keyword_params 'Ants Book author:"Barry Bolton"'
-        expect(keyword_params[:author]).to eq "Barry Bolton"
-      end
-
-      it "handles single quotes" do
-        keyword_params = Reference.extract_keyword_params "Ants Book author:'Barry Bolton'"
-        expect(keyword_params[:author]).to eq "Barry Bolton"
-      end
-    end
-
-    describe "author queries not wrapped in quotes" do
-      it "handles hyphens" do
-        keyword_params = Reference.extract_keyword_params 'author:Barry-Bolton'
-        expect(keyword_params[:author]).to eq "Barry-Bolton"
-      end
-
-      it "handles diacritics" do
-        keyword_params = Reference.extract_keyword_params "author:Hölldobler"
-        expect(keyword_params[:author]).to eq "Hölldobler"
-      end
-
-      it "doesn't break if more search term are added after the author keyword" do
-        q = "author:Hölldobler random string"
-        keyword_params = Reference.extract_keyword_params q
-        expect(keyword_params[:author]).to eq "Hölldobler"
-        expect(keyword_params[:keywords]).to eq "random string"
-      end
-    end
-
-    it "handles multiple keyword params" do
-      q = 'Ants Book author:"Barry Bolton" year:2003 type:missing'
-      keyword_params = Reference.extract_keyword_params q
-      expect(keyword_params[:author]).to eq "Barry Bolton"
-      expect(keyword_params[:year]).to eq "2003"
-      expect(keyword_params[:reference_type]).to eq :missing
-      expect(keyword_params[:keywords]).to eq "Ants Book"
-    end
-
-    it "handles keyword params without a serach term" do
-      keyword_params = Reference.extract_keyword_params 'year:2003'
-      expect(keyword_params[:year]).to eq "2003"
-      expect(keyword_params[:keywords]).to eq ""
-    end
-
-    it "ignores a single space after the colon after a keyword" do
-      keyword_params = Reference.extract_keyword_params 'author: Wilson'
-      expect(keyword_params[:author]).to eq "Wilson"
-      expect(keyword_params[:keywords]).to eq ""
-    end
-
-    it "ignores capitalization of the keyword" do
-      keyword_params = Reference.extract_keyword_params 'Author:Wilson'
-      expect(keyword_params[:author]).to eq "Wilson"
-      expect(keyword_params[:keywords]).to eq ""
     end
   end
 end

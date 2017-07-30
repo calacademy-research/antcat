@@ -5,7 +5,7 @@
 # to a grab bag controller (`TaxaGrabBagController`) because this class was,
 # and still is, hard to work with.
 
-# TODO extract more code from here into `Taxa::SaveTaxon`, and rename
+# TODO extract more code from here into `Taxa::SaveFromForm`, and rename
 # that class to make it more obvious that it's a form object.
 
 class TaxaController < ApplicationController
@@ -135,7 +135,7 @@ class TaxaController < ApplicationController
         new_child.parent = @taxon
 
         new_child.inherit_attributes_for_new_combination t, @taxon
-        new_child.save_from_form Taxa::Utility.attributes_for_new_usage(new_child, t), t
+        new_child.save_from_form Taxa::AttributesForNewUsage.new(new_child, t).call, t
       end
     end
 

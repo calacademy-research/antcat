@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EpithetSearchSet do
+describe Names::EpithetSearchSet do
   describe "masculine-feminine-neuter" do
     describe "first declension" do
       it "converts between these" do
@@ -66,5 +66,5 @@ describe EpithetSearchSet do
 end
 
 def epithet_search string
-  EpithetSearchSet.new(string).epithets
+  described_class.new(string).call
 end
