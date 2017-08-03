@@ -17,18 +17,20 @@ module Wikipedia
     end
 
     private
+      attr_reader :reference
+
       def url
-        @reference.url if @reference.downloadable?
+        reference.url if reference.downloadable?
       end
 
       def pages
         # Replace hyphens with en dashes, enwp.org/WP:ENDASH
-        @reference.pagination.gsub "-", "\u2013" if @reference.pagination
+        reference.pagination.gsub "-", "\u2013" if reference.pagination
       end
 
       def author_params
         authors = ''
-        @reference.author_names.each.with_index(1) do |name, index|
+        reference.author_names.each.with_index(1) do |name, index|
           authors <<
             "|first#{index}=#{name.first_name_and_initials} " <<
             "|last#{index}=#{name.last_name} "
@@ -37,7 +39,7 @@ module Wikipedia
       end
 
       def reference_name
-        names = @reference.author_names.map &:last_name
+        names = reference.author_names.map &:last_name
         ref_names =
           case names.size
           when 1 then "#{names.first}"
@@ -45,7 +47,7 @@ module Wikipedia
           else        "#{names.first}_et_al"
           end
 
-        ref_names.tr(' ', '_') << "_#{@reference.year}"
+        ref_names.tr(' ', '_') << "_#{reference.year}"
       end
   end
 
@@ -57,22 +59,22 @@ module Wikipedia
       <<-TEMPLATE.squish
         <ref name="#{reference_name}">{{cite journal
         #{author_params}
-        |year=#{@reference.year}
+        |year=#{reference.year}
         |title=#{title}
         |url=#{url if url}
-        |journal=#{@reference.journal.name}
+        |journal=#{reference.journal.name}
         |publisher=
-        |volume=#{@reference.volume}
-        |issue=#{@reference.issue unless @reference.issue.blank?}
+        |volume=#{reference.volume}
+        |issue=#{reference.issue unless reference.issue.blank?}
         |pages=#{pages}
-        |doi=#{@reference.doi unless @reference.doi.blank?}
+        |doi=#{reference.doi unless reference.doi.blank?}
         }}</ref>
       TEMPLATE
     end
 
     private
       def title
-        title = @reference.title
+        title = reference.title
         return unless title
 
         convert_to_wikipedia_italics title
@@ -92,13 +94,13 @@ module Wikipedia
   # |location= |publisher= |page= |isbn=}}
   class BookReference < ReferenceExporter
     def format
-      location = @reference.publisher.place.name
-      publisher = @reference.publisher.name
+      location = reference.publisher.place.name
+      publisher = reference.publisher.name
 
       <<-TEMPLATE.squish
         <ref name="#{reference_name}">{{cite book
         #{author_params}
-        |year=#{@reference.year}
+        |year=#{reference.year}
         |title=#{title}
         |url=#{url if url}
         |location=#{location}
@@ -110,7 +112,7 @@ module Wikipedia
 
     private
       def title
-        title = @reference.title
+        title = reference.title
         return unless title
 
         # The whole book title is italicized on WP.

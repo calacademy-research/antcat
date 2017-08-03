@@ -6,8 +6,8 @@ module Wikipedia
       @taxon = taxon
     end
 
-    def children
-      case @taxon
+    def call
+      case taxon
       when Family, Tribe then genera
       when Subfamily     then genera << divider << tribes
       when Genus         then species
@@ -15,19 +15,21 @@ module Wikipedia
       end
     end
 
-    def tribes
-      generate :tribes
-    end
-
-    def genera
-      generate :genera
-    end
-
-    def species
-      generate :species
-    end
-
     private
+      attr_reader :taxon, :children_rank, :children
+
+      def tribes
+        generate :tribes
+      end
+
+      def genera
+        generate :genera
+      end
+
+      def species
+        generate :species
+      end
+
       def generate rank
         set_children rank
 
@@ -35,7 +37,7 @@ module Wikipedia
         output << "\n"
         output << list_header
 
-        @children.each { |child| output << format_child(child) }
+        children.each { |child| output << format_child(child) }
 
         output << list_footer
         output
@@ -52,17 +54,17 @@ module Wikipedia
 
       # For https://en.wikipedia.org/wiki/Template:Taxobox
       def taxobox_extras
-        diversity_ref = Wikipedia::CiteTemplate.with_ref_tag @taxon
-        children_count = @children.count
+        diversity_ref = Wikipedia::CiteTemplate.with_ref_tag taxon
+        children_count = children.count
 
-        string =  "|diversity_link = ##{@children_rank.to_s.capitalize}\n"
-        string << "|diversity = #{children_count} #{@children_rank}\n"
+        string =  "|diversity_link = ##{children_rank.to_s.capitalize}\n"
+        string << "|diversity = #{children_count} #{children_rank}\n"
         string << "|diversity_ref = #{diversity_ref}\n"
       end
 
       # "==Species== ..."
       def list_header
-        "==#{@children_rank.to_s.capitalize}==\n{{div col||25em}}\n"
+        "==#{children_rank.to_s.capitalize}==\n{{div col||25em}}\n"
       end
 
       def list_footer
@@ -97,7 +99,7 @@ module Wikipedia
 
       def wikilink_child? child
         # Don't link species in fossil genera per WP:PALEO.
-        return if @taxon.fossil? && child.is_a?(Species)
+        return if taxon.fossil? && child.is_a?(Species)
 
         # Don't link subspecies (we should not have article on these).
         return if child.is_a? Subspecies
