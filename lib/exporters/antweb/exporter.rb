@@ -212,7 +212,7 @@ class Exporters::Antweb::Exporter
         return content_tag :div, class: 'antcat_taxon' do
           content = ''.html_safe
           content << taxon.statistics(include_invalid: false)
-          content << taxon.genus_species_header_notes_taxt
+          content << genus_species_header_notes_taxt(taxon)
           content << taxon.headline
           content << export_history_items(taxon)
           content << taxon.child_lists
@@ -229,6 +229,13 @@ class Exporters::Antweb::Exporter
 
     def export_reference_sections taxon
       Exporters::Antweb::ExportReferenceSections.new(taxon).reference_sections
+    end
+
+    def genus_species_header_notes_taxt taxon
+      return unless taxon.genus_species_header_notes_taxt.present?
+      content_tag :div,
+        TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html,
+        class: 'genus_species_header_notes_taxt'
     end
 
     def self.antcat_taxon_link taxon, label = "AntCat"
