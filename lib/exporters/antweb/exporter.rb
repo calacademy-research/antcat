@@ -205,21 +205,15 @@ class Exporters::Antweb::Exporter
     end
 
     def export_history taxon
-      $use_ant_web_formatter = true # TODO remove
-
-      begin
-        taxon = taxon.decorate
-        return content_tag :div, class: 'antcat_taxon' do
-          content = ''.html_safe
-          content << taxon.statistics(include_invalid: false)
-          content << genus_species_header_notes_taxt(taxon)
-          content << taxon.headline(use_ant_web_formatter: true)
-          content << export_history_items(taxon)
-          content << taxon.child_lists(use_ant_web_formatter: true)
-          content << export_reference_sections(taxon)
-        end
-      ensure
-        $use_ant_web_formatter = false
+      taxon = taxon.decorate
+      content_tag :div, class: 'antcat_taxon' do
+        content = ''.html_safe
+        content << taxon.statistics(include_invalid: false)
+        content << genus_species_header_notes_taxt(taxon)
+        content << taxon.headline(use_ant_web_formatter: true)
+        content << export_history_items(taxon)
+        content << taxon.child_lists(use_ant_web_formatter: true)
+        content << export_reference_sections(taxon)
       end
     end
 
@@ -234,7 +228,7 @@ class Exporters::Antweb::Exporter
     def genus_species_header_notes_taxt taxon
       return unless taxon.genus_species_header_notes_taxt.present?
       content_tag :div,
-        TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html,
+        TaxtPresenter[taxon.genus_species_header_notes_taxt].to_antweb,
         class: 'genus_species_header_notes_taxt'
     end
 

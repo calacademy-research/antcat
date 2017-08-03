@@ -33,7 +33,7 @@ class Exporters::Antweb::ExportHistoryItems
 
     def history_item_body item
       content_tag :td, class: 'history_item_body', style: 'font-size: 13px' do
-        add_period_if_necessary TaxtPresenter[item.taxt].to_html
+        add_period_if_necessary TaxtPresenter[item.taxt].to_antweb
       end
     end
 end

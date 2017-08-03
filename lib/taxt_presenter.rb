@@ -25,7 +25,6 @@ class TaxtPresenter
     add_period_if_necessary parsed
   end
 
-  # Not used, because we're still relying on `$use_ant_web_formatter`.
   def to_antweb
     parse :to_antweb
   end
@@ -35,7 +34,6 @@ class TaxtPresenter
       return '' unless @taxt.present?
 
       @format = format
-      maybe_enable_antweb_quirk
 
       parse_refs!
       parse_nams!
@@ -89,10 +87,6 @@ class TaxtPresenter
           warn_about_non_existing_id "TAXON", $1
         end
       end
-    end
-
-    def maybe_enable_antweb_quirk
-      @format = :to_antweb if $use_ant_web_formatter
     end
 
     def warn_about_non_existing_id klass, id

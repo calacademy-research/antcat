@@ -20,7 +20,7 @@ class Exporters::Antweb::ExportReferenceSections
       content_tag :div, class: 'section' do
         [:title_taxt, :subtitle_taxt, :references_taxt].reduce(''.html_safe) do |content, field|
           if section[field].present?
-            content << content_tag(:div, TaxtPresenter[section[field]].to_html, class: field)
+            content << content_tag(:div, TaxtPresenter[section[field]].to_antweb, class: field)
           end
           content
         end

@@ -117,61 +117,45 @@ describe TaxtPresenter do
       expect(TaxtPresenter[taxt].to_antweb).to match "antcat.org"
     end
 
-    describe "the `$use_ant_web_formatter` quirk" do
-      before { $use_ant_web_formatter = true }
-      after { $use_ant_web_formatter = nil }
+    describe 'broken taxt tags' do
+      describe "ref tags (references)" do
+        let(:results) { TaxtPresenter["{ref 999}"].to_antweb }
 
-      it "***confirm test setup***" do
-        $use_ant_web_formatter = nil
-        expect(TaxtPresenter[taxt].to_html).to_not match "antcat.org"
-      end
+        context "when the ref points to a reference that doesn't exist" do
+          it "adds a warning" do
+            expect(results).to match "CANNOT FIND REFERENCE WITH ID 999"
+          end
 
-      it "makes all formatters behave like #to_antweb" do
-        expect(TaxtPresenter[taxt].to_html).to match "antcat.org"
-        expect(TaxtPresenter[taxt].to_text).to match "antcat.org"
-        expect(TaxtPresenter[taxt].to_antweb).to match "antcat.org"
-      end
-
-      describe 'broken taxt tags' do
-        describe "ref tags (references)" do
-          let(:results) { TaxtPresenter["{ref 999}"].to_html }
-
-          context "when the ref points to a reference that doesn't exist" do
-            it "adds a warning" do
-              expect(results).to match "CANNOT FIND REFERENCE WITH ID 999"
-            end
-
-            it "doesn't include a 'Search history?' link" do
-              expect(results).to_not match "Search history?"
-            end
+          it "doesn't include a 'Search history?' link" do
+            expect(results).to_not match "Search history?"
           end
         end
+      end
 
-        describe "nam tags (names)" do
-          context "when the name can't be found" do
-            let(:results) { TaxtPresenter["{nam 999}"].to_html }
+      describe "nam tags (names)" do
+        context "when the name can't be found" do
+          let(:results) { TaxtPresenter["{nam 999}"].to_antweb }
 
-            it "adds a warning" do
-              expect(results).to match "CANNOT FIND NAME WITH ID 999"
-            end
+          it "adds a warning" do
+            expect(results).to match "CANNOT FIND NAME WITH ID 999"
+          end
 
-            it "doesn't include a 'Search history?' link" do
-              expect(results).to_not match "Search history?"
-            end
+          it "doesn't include a 'Search history?' link" do
+            expect(results).to_not match "Search history?"
           end
         end
+      end
 
-        describe "tax tags (taxa)" do
-          let(:results) { TaxtPresenter["{tax 999}"].to_html }
+      describe "tax tags (taxa)" do
+        let(:results) { TaxtPresenter["{tax 999}"].to_antweb }
 
-          context "when the taxon can't be found" do
-            it "adds a warning" do
-              expect(results).to match "CANNOT FIND TAXON WITH ID 999"
-            end
+        context "when the taxon can't be found" do
+          it "adds a warning" do
+            expect(results).to match "CANNOT FIND TAXON WITH ID 999"
+          end
 
-            it "doesn't include a 'Search history?' link" do
-              expect(results).to_not match "Search history?"
-            end
+          it "doesn't include a 'Search history?' link" do
+            expect(results).to_not match "Search history?"
           end
         end
       end

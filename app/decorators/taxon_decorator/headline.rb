@@ -78,7 +78,11 @@ class TaxonDecorator::Headline
     end
 
     def headline_type_taxt taxt
-      add_period_if_necessary TaxtPresenter[taxt].to_html
+      if antweb?
+        add_period_if_necessary TaxtPresenter[taxt].to_antweb
+      else
+        add_period_if_necessary TaxtPresenter[taxt].to_html
+      end
     end
 
     def headline_biogeographic_region
@@ -122,7 +126,15 @@ class TaxonDecorator::Headline
       string = link_to_reference authorship.reference
       string << ": #{authorship.pages}" if authorship.pages.present?
       string << " (#{authorship.forms})" if authorship.forms.present?
-      string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html if authorship.notes_taxt.present?
+
+      if authorship.notes_taxt.present?
+        if antweb?
+          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_antweb
+        else
+          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html
+        end
+      end
+
       content_tag :span, string
     end
 
@@ -134,7 +146,11 @@ class TaxonDecorator::Headline
 
     def headline_notes
       return unless @taxon.headline_notes_taxt.present?
-      TaxtPresenter[@taxon.headline_notes_taxt].to_html
+      if antweb?
+        TaxtPresenter[@taxon.headline_notes_taxt].to_antweb
+      else
+        TaxtPresenter[@taxon.headline_notes_taxt].to_html
+      end
     end
 
     # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
