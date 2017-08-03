@@ -152,4 +152,12 @@ class TaxonDecorator::Headline
         reference.decorate.inline_citation
       end
     end
+
+    def link_to_other_site
+      if antweb?
+        Exporters::Antweb::Exporter.antcat_taxon_link @taxon
+      else
+        link_to_antweb @taxon
+      end
+    end
 end
