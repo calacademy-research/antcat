@@ -133,10 +133,6 @@ class Reference < ApplicationRecord
     Feed.with_tracking { create_activity :finish_reviewing }
   end
 
-  def new_from_copy
-    References::NewFromCopy.new(self).call
-  end
-
   ### Methods currently in quarantine ###
   # Moved here from `ReferenceDecorator`, to be refactored/DRYed where possible.
 

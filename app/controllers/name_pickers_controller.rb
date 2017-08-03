@@ -7,7 +7,9 @@ class NamePickersController < ApplicationController
     options[:subfamilies_or_tribes_only] = true if params[:subfamilies_or_tribes_only].present?
 
     respond_to do |format|
-      format.json { render json: Name.picklist_matching(params[:term], options) }
+      format.json do
+        render json: Names::PicklistMatching.new(params[:term], options).call
+      end
     end
   end
 end
