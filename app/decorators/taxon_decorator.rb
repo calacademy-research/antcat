@@ -36,13 +36,6 @@ class TaxonDecorator < ApplicationDecorator
     TaxonDecorator::ChildList.new(taxon, use_ant_web_formatter: use_ant_web_formatter).child_lists
   end
 
-  def genus_species_header_notes_taxt
-    return unless taxon.genus_species_header_notes_taxt.present?
-    helpers.content_tag :div,
-      TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html,
-      class: 'genus_species_header_notes_taxt'
-  end
-
   def taxon_status
     # Note: Cleverness is used here to make these queries (e.g.: obsolete_combination?)
     # appear as tags. That's how CSS does its coloring.

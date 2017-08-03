@@ -1,6 +1,8 @@
 # Export via `rake antweb:export`.
 # This class will grow for some more time while decoupling the export
 # code from the rest of the code.
+#
+# TODO remove most CSS throughout `Exporters::Antweb`.
 
 include ActionView::Helpers::TagHelper # For `#content_tag`.
 include ActionView::Context # For `#content_tag`.

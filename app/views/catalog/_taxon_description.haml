@@ -8,7 +8,10 @@
 
 =render "statistics", taxon: taxon
 
-=taxon.decorate.genus_species_header_notes_taxt
+-if taxon.genus_species_header_notes_taxt.present?
+  .genus_species_header_notes_taxt
+    =TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html
+
 =taxon.decorate.headline
 
 -if taxon.history_items.present?
