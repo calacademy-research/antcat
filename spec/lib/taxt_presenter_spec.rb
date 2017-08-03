@@ -4,7 +4,7 @@ describe TaxtPresenter do
   describe "#to_text" do
     it "renders text without links or HTML (except <i> tags)" do
       taxt = "{tax #{create(:family).id}}"
-      expect(TaxtPresenter[taxt].to_text).to eq "Formicidae."
+      expect(TaxtPresenter[taxt].to_text).to eq "Formicidae"
     end
 
     context "names that should be italicized" do
@@ -12,7 +12,7 @@ describe TaxtPresenter do
 
       it "includes HTML <i> tags" do
         taxt = "{tax #{genus.id}}"
-        expect(TaxtPresenter[taxt].to_text).to eq "<i>Atta</i>."
+        expect(TaxtPresenter[taxt].to_text).to eq "<i>Atta</i>"
       end
     end
   end

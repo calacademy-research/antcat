@@ -20,9 +20,7 @@ class TaxtPresenter
   # Parses "example {tax 429361}"
   # into   "example Melophorini"
   def to_text
-    parsed = parse :to_text
-    # TODO see if we can push `add_period_if_necessary` to the consumer.
-    add_period_if_necessary parsed
+    parse :to_text
   end
 
   def to_antweb
