@@ -7,8 +7,9 @@ class TaxonDecorator::Headline
 
   include RefactorHelper
 
-  def initialize taxon
+  def initialize taxon, use_ant_web_formatter: false
     @taxon = taxon
+    @use_ant_web_formatter = use_ant_web_formatter
   end
 
   def headline
@@ -136,5 +137,19 @@ class TaxonDecorator::Headline
     def headline_notes
       return unless @taxon.headline_notes_taxt.present?
       TaxtPresenter[@taxon.headline_notes_taxt].to_html
+    end
+
+    # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
+    def antweb?
+      @use_ant_web_formatter
+    end
+
+    # TODO rename.
+    def link_to_reference reference
+      if antweb?
+        reference.decorate.antweb_version_of_inline_citation
+      else
+        reference.decorate.inline_citation
+      end
     end
 end

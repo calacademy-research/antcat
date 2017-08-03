@@ -213,7 +213,7 @@ class Exporters::Antweb::Exporter
           content = ''.html_safe
           content << taxon.statistics(include_invalid: false)
           content << genus_species_header_notes_taxt(taxon)
-          content << taxon.headline
+          content << taxon.headline(use_ant_web_formatter: true)
           content << export_history_items(taxon)
           content << taxon.child_lists
           content << export_reference_sections(taxon)

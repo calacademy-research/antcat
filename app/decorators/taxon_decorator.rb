@@ -28,8 +28,8 @@ class TaxonDecorator < ApplicationDecorator
     helpers.content_tag :div, content, class: 'statistics'
   end
 
-  def headline
-    TaxonDecorator::Headline.new(taxon).headline
+  def headline use_ant_web_formatter: false
+    TaxonDecorator::Headline.new(taxon, use_ant_web_formatter: use_ant_web_formatter).headline
   end
 
   def child_lists

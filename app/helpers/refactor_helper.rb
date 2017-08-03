@@ -12,9 +12,6 @@
 #
 #   #link_to_other_site
 #      headline.rb
-#
-#   #link_to_reference
-#      headline.rb
 
 module RefactorHelper
   def link_to_taxon taxon
@@ -30,15 +27,6 @@ module RefactorHelper
       Exporters::Antweb::Exporter.antcat_taxon_link @taxon
     else
       link_to_antweb @taxon
-    end
-  end
-
-  # TODO rename
-  def link_to_reference reference
-    if $use_ant_web_formatter
-      reference.decorate.antweb_version_of_inline_citation
-    else
-      reference.decorate.inline_citation
     end
   end
 end
