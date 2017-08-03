@@ -5,8 +5,6 @@ class TaxonDecorator::Headline
   include ApplicationHelper
   include CatalogHelper
 
-  include RefactorHelper
-
   def initialize taxon, use_ant_web_formatter: false
     @taxon = taxon
     @use_ant_web_formatter = use_ant_web_formatter
@@ -158,6 +156,14 @@ class TaxonDecorator::Headline
         Exporters::Antweb::Exporter.antcat_taxon_link @taxon
       else
         link_to_antweb @taxon
+      end
+    end
+
+    def link_to_taxon taxon
+      if antweb?
+        Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
+      else
+        taxon.decorate.link_to_taxon
       end
     end
 end

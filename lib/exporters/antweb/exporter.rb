@@ -215,7 +215,7 @@ class Exporters::Antweb::Exporter
           content << genus_species_header_notes_taxt(taxon)
           content << taxon.headline(use_ant_web_formatter: true)
           content << export_history_items(taxon)
-          content << taxon.child_lists
+          content << taxon.child_lists(use_ant_web_formatter: true)
           content << export_reference_sections(taxon)
         end
       ensure

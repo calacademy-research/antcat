@@ -32,8 +32,8 @@ class TaxonDecorator < ApplicationDecorator
     TaxonDecorator::Headline.new(taxon, use_ant_web_formatter: use_ant_web_formatter).headline
   end
 
-  def child_lists
-    TaxonDecorator::ChildList.new(taxon).child_lists
+  def child_lists use_ant_web_formatter: false
+    TaxonDecorator::ChildList.new(taxon, use_ant_web_formatter: use_ant_web_formatter).child_lists
   end
 
   def genus_species_header_notes_taxt
