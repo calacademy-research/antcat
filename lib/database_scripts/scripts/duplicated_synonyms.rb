@@ -1,5 +1,3 @@
-# From `DedupeSynonyms`.
-
 class DatabaseScripts::Scripts::DuplicatedSynonyms
   include DatabaseScripts::DatabaseScript
 

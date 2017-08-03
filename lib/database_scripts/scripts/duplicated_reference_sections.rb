@@ -1,5 +1,3 @@
-# From `DedupeReferenceSections`.
-
 class DatabaseScripts::Scripts::DuplicatedReferenceSections
   include DatabaseScripts::DatabaseScript
 

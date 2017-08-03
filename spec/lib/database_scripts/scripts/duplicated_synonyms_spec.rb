@@ -1,8 +1,8 @@
-require 'spec_helper'
+require "spec_helper"
 
-describe DedupeSynonyms do
-  describe ".dedupe" do
-    it "deletes one of duplicate synonyms" do
+describe DatabaseScripts::Scripts::DuplicatedSynonyms do
+  describe "#results" do
+    before do
       senior = create_genus
       junior = create_genus
       Synonym.create! senior_synonym: senior, junior_synonym: junior
@@ -10,10 +10,11 @@ describe DedupeSynonyms do
       another_senior = create_genus
       another_junior = create_genus
       Synonym.create! senior_synonym: another_senior, junior_synonym: another_junior
-      expect(Synonym.count).to eq 3
+    end
 
-      DedupeSynonyms.dedupe
-      expect(Synonym.count).to eq 2
+    it "returns one of the duplicate synonyms" do
+      expect(Synonym.count).to eq 3
+      expect(described_class.new.results.count).to eq 1
     end
   end
 end
