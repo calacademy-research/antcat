@@ -180,7 +180,7 @@ AntCat::Application.routes.draw do
 
   # TODO nest more Editor's Panel-ish pages under this (issues, site notices, etc).
   scope path: :panel, controller: :editors_panels do
-    get '/', to: :index, as: "editors_panel"
+    root action: :index, as: "editors_panel"
     get :invite_user, as: "invite_users"
 
     scope module: :editors_panels do

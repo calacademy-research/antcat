@@ -25,7 +25,7 @@ describe DevMonkeyPatches do
     end
 
     it "can be suppressed with `NO_DEV_MONKEY_PATCHES=true`" do
-      ENV.stub(:[]).with("NO_DEV_MONKEY_PATCHES").and_return "yes"
+      expect(ENV).to receive(:[]).with("NO_DEV_MONKEY_PATCHES").and_return "yes"
       expect(DevMonkeyPatches.enable).to be nil
     end
   end
