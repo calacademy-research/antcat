@@ -49,6 +49,12 @@ class Reference < ApplicationRecord
     true
   end
 
+  def self.approve_all
+    count = Reference.unreviewed.count
+    Feed.without_tracking { Reference.unreviewed.find_each &:approve }
+    Activity.create_without_trackable :approve_all_references, count: count
+  end
+
   def invalidate_caches
     ReferenceFormatterCache.invalidate self
   end
@@ -116,12 +122,6 @@ class Reference < ApplicationRecord
     duplicate = Reference.find duplicates.first[:match].id
     errors.add :base, "This may be a duplicate of #{duplicate.decorate.formatted} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
     true
-  end
-
-  def self.approve_all
-    count = Reference.unreviewed.count
-    Feed.without_tracking { Reference.unreviewed.find_each &:approve }
-    Activity.create_without_trackable :approve_all_references, count: count
   end
 
   # TODO merge into Workflow

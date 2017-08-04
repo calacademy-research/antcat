@@ -13,14 +13,6 @@ class AuthorName < ActiveRecord::Base
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
-  def last_name
-    name_parts[:last]
-  end
-
-  def first_name_and_initials
-    name_parts[:first_and_initials]
-  end
-
   # TODO rename.
   def self.import data
     data.map do |name|
@@ -39,6 +31,14 @@ class AuthorName < ActiveRecord::Base
     { author_names: import(author_data[:names]), author_names_suffix: author_data[:suffix] }
   rescue Citrus::ParseError
     { author_names: [], author_names_suffix: nil }
+  end
+
+  def last_name
+    name_parts[:last]
+  end
+
+  def first_name_and_initials
+    name_parts[:first_and_initials]
   end
 
   private

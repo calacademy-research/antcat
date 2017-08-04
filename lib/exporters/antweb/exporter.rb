@@ -7,6 +7,15 @@ include ActionView::Context # For `#content_tag`.
 include Exporters::Antweb::MonkeyPatchTaxon
 
 class Exporters::Antweb::Exporter
+  def self.antcat_taxon_link taxon, label = "AntCat"
+    url = "http://www.antcat.org/catalog/#{taxon.id}"
+    %Q[<a class="link_to_external_site" href="#{url}">#{label}</a>].html_safe
+  end
+
+  def self.antcat_taxon_link_with_name taxon
+    antcat_taxon_link taxon, taxon.name_with_fossil
+  end
+
   def initialize show_progress = false
     Progress.init show_progress, Taxon.count
   end
@@ -229,14 +238,5 @@ class Exporters::Antweb::Exporter
 
     def export_reference_sections taxon
       Exporters::Antweb::ExportReferenceSections.new(taxon).reference_sections
-    end
-
-    def self.antcat_taxon_link taxon, label = "AntCat"
-      url = "http://www.antcat.org/catalog/#{taxon.id}"
-      %Q[<a class="link_to_external_site" href="#{url}">#{label}</a>].html_safe
-    end
-
-    def self.antcat_taxon_link_with_name taxon
-      antcat_taxon_link taxon, taxon.name_with_fossil
     end
 end

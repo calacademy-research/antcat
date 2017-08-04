@@ -102,10 +102,6 @@ class Taxon < ApplicationRecord
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
 
-  def save_from_form params, previous_combination = nil
-    Taxa::SaveFromForm.new(self, params, previous_combination).call
-  end
-
   # Avoid this method. Issues:
   # It conflicts with dynamic finder methods with the same names (they should be avoided too).
   # It searches in `taxa.name_cache`, not `names.name`.
@@ -118,6 +114,10 @@ class Taxon < ApplicationRecord
   # Other methods clashing with dynamic finders: `Author.find_by_names`, `Name.find_by_name`.
   def self.find_by_name name
     find_by(name_cache: name)
+  end
+
+  def save_from_form params, previous_combination = nil
+    Taxa::SaveFromForm.new(self, params, previous_combination).call
   end
 
   # TODO see if we can push this down to the subclasses.

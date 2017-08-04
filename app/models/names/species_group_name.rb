@@ -1,16 +1,4 @@
 class SpeciesGroupName < Name
-  def genus_epithet
-    words[0]
-  end
-
-  def species_epithet
-    words[1]
-  end
-
-  def dagger_html
-    italicize super
-  end
-
   # TODO see if we can DRY this or the `#change_parent`s in `SpeciesName and `SubspeciesName`.
   def self.name_for_new_comb old_comb, new_comb_parent
     raise "uncombinable ranks" unless valid_rank_combination? old_comb, new_comb_parent
@@ -24,6 +12,18 @@ class SpeciesGroupName < Name
     end
 
     Names::Parser.create_name_from_string! name_parts.join(' ')
+  end
+
+  def genus_epithet
+    words[0]
+  end
+
+  def species_epithet
+    words[1]
+  end
+
+  def dagger_html
+    italicize super
   end
 
   private
