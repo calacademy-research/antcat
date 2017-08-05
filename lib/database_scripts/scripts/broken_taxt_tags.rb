@@ -217,5 +217,5 @@ __END__
 description: >
   Taxt tags (eg `{ref 133005}`) that are referred to but doesn't exist.
   See %github177.
-tags: [new!, very-slow]
+tags: [very-slow]
 topic_areas: [catalog, references]

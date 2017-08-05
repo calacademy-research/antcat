@@ -8,5 +8,4 @@ end
 
 __END__
 description: Valid taxa that have a `current_valid_taxon_id`.
-tags: [new!]
 topic_areas: [catalog]

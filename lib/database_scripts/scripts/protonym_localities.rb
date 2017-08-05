@@ -13,5 +13,4 @@ end
 __END__
 description: >
   This script is just lists of all unique protonym `locality`s. See %github207.
-tags: [new!]
 topic_areas: [types]
