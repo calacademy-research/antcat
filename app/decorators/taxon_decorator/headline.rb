@@ -3,7 +3,6 @@ class TaxonDecorator::Headline
   include ActionView::Helpers
   include ActionView::Context
   include ApplicationHelper
-  include CatalogHelper
 
   def initialize taxon, use_ant_web_formatter: false
     @taxon = taxon

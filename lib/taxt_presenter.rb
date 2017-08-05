@@ -2,7 +2,6 @@
 # such as "hey {ref 123}") to something that can be read.
 
 class TaxtPresenter
-  include ApplicationHelper # For `#add_period_if_necessary`.
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper
 

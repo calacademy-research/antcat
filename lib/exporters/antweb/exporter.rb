@@ -26,6 +26,7 @@ class Exporters::Antweb::Exporter
         Taxon.where(id: chunk)
           .order("field(taxa.id, #{chunk.join(',')})")
           .joins(protonym: [{authorship: :reference}])
+          .includes(protonym: [{authorship: :reference}])
           .each do |taxon|
           begin
             if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')

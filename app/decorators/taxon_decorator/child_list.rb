@@ -1,8 +1,6 @@
 class TaxonDecorator::ChildList
   include ActionView::Helpers
   include ActionView::Context
-  include ApplicationHelper
-  include CatalogHelper
 
   def initialize taxon, use_ant_web_formatter: false
     @taxon = taxon
