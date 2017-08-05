@@ -218,4 +218,4 @@ description: >
   Taxt tags (eg `{ref 133005}`) that are referred to but doesn't exist.
   See %github177.
 tags: [very-slow]
-topic_areas: [catalog, references]
+topic_areas: [taxt]

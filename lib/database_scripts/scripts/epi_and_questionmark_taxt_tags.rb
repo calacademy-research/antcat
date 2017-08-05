@@ -61,4 +61,4 @@ description: >
    in either `headline_notes_taxt`, `type_taxt` or `genus_species_header_notes_taxt` of that taxon.
   If it says `Citation`, the taxt is stored in the `notes_taxt` column of that citation;
   since it's not possible no link citations, the taxon which's protonym references that citation.
-topic_areas: [catalog]
+topic_areas: [taxt]
