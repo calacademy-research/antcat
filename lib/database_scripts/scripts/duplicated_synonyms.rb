@@ -31,11 +31,6 @@ class DatabaseScripts::Scripts::DuplicatedSynonyms
       end
     end
   end
-
-  private
-    def synonym_link synonym
-      "<a href='/synonyms/#{synonym.id}'>#{synonym.id}</a>"
-    end
 end
 
 __END__

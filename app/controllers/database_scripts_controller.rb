@@ -1,4 +1,6 @@
 class DatabaseScriptsController < ApplicationController
+  EXPIRES_IN = Rails.env.development? ? 1.second : 24.hours
+
   before_action :authenticate_editor, except: [:index]
   before_action :set_script, only: [:show, :source, :regenerate]
 
@@ -27,7 +29,7 @@ class DatabaseScriptsController < ApplicationController
     end
 
     def cached_render script
-      Rails.cache.fetch(script, expires_in: 24.hours) do
+      Rails.cache.fetch(script, expires_in: EXPIRES_IN) do
         script.timed_render
       end
     end

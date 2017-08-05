@@ -1,4 +1,3 @@
-
 module DatabaseScripts::Renderers::Markdown
   def markdown text
     AntcatMarkdown.render text
@@ -11,5 +10,9 @@ module DatabaseScripts::Renderers::Markdown
 
   def markdown_reference_link reference
     "%reference#{reference.id}"
+  end
+
+  def synonym_link synonym
+    "<a href='/synonyms/#{synonym.id}'>#{synonym.id}</a>"
   end
 end
