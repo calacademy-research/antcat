@@ -26,7 +26,7 @@ module EditorsPanels
       @versions = PaperTrail::Version.without_user_versions
       @versions = @versions.filter(filter_params)
       @versions = @versions.search_objects(search_params) if params[:q].present?
-      @versions = @versions.paginate(page: params[:page], per_page: 50)
+      @versions = @versions.order(:id).paginate(page: params[:page], per_page: 50)
 
       @version_count = PaperTrail::Version.count
     end
