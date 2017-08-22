@@ -13,16 +13,6 @@ class Journal < ActiveRecord::Base
     { name: name, name_was: (name_was if name_changed?) }
   }
 
-  def self.search term = ''
-    search_expression = term.split('').join('%') + '%'
-    select('journals.name, COUNT(*)')
-      .joins('LEFT OUTER JOIN `references` ON references.journal_id = journals.id')
-      .where('journals.name LIKE ?', search_expression)
-      .group('journals.id')
-      .order('COUNT(*) DESC')
-      .map(&:name)
-  end
-
   private
     def check_not_used
       if references.present?

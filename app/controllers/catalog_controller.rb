@@ -47,26 +47,11 @@ class CatalogController < ApplicationController
   end
 
   def autocomplete
-    q = params[:q] || ''
-
-    # See if we have an exact ID match.
-    search_results = if q =~ /^\d{6} ?$/
-                       id_matches_q = Taxon.find_by id: q
-                       [id_matches_q] if id_matches_q
-                     end
-
-    search_results ||= Taxon.where("name_cache LIKE ?", "%#{q}%")
-      .includes(:name, protonym: { authorship: :reference }).take(10)
+    search_query = params[:q] || ''
 
     respond_to do |format|
       format.json do
-        results = search_results.map do |taxon|
-          { id: taxon.id,
-            name: taxon.name_cache,
-            name_html: taxon.name_html_cache,
-            authorship_string: taxon.authorship_string }
-        end
-        render json: results
+        render json: Autocomplete::Taxa.new(search_query).call
       end
     end
   end

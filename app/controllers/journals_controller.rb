@@ -51,32 +51,21 @@ class JournalsController < ApplicationController
   end
 
   def autocomplete
-    q = params[:term] || '' # TODO standardize all "q/qq/query/term".
+    search_query = params[:term] || '' # TODO standardize all "q/qq/query/term".
 
     respond_to do |format|
-      format.json { render json: Journal.search(q) }
+      format.json { render json: Autocomplete::Journals.new(search_query).call }
     end
   end
 
   # For at.js. We need the IDs, which isn't included in `#autocomplete`.
   # TODO see if we can merge this with `#autocomplete`.
   def linkable_autocomplete
-    q = params[:q] || ''
-
-    # See if we have an exact ID match.
-    search_results = if q =~ /^\d+ ?$/
-                       id_matches_q = Journal.find_by id: q
-                       [id_matches_q] if id_matches_q
-                     end
-
-    search_results ||= Journal.where("name LIKE ?", "%#{q}%")
+    search_query = params[:q] || ''
 
     respond_to do |format|
       format.json do
-        results = search_results.map do |journal|
-          { id: journal.id, name: journal.name }
-        end
-        render json: results
+        render json: Autocomplete::LinkableJournals.new(search_query).call
       end
     end
   end

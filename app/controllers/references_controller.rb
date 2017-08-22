@@ -179,24 +179,9 @@ class ReferencesController < ApplicationController
   def linkable_autocomplete
     search_query = params[:q] || ''
 
-    # TODO create concern? There's similar logic in other controllers.
-    # See if we have an exact ID match.
-    search_results =  if search_query =~ /^\d{6} ?$/
-                        id_matches_q = Reference.find_by id: search_query
-                        [id_matches_q] if id_matches_q
-                      end
-    search_results ||= Reference.fulltext_search_light search_query
-
     respond_to do |format|
       format.json do
-        results = search_results.map do |reference|
-          { id: reference.id,
-            author: reference.author_names_string,
-            year: reference.citation_year,
-            title: reference.decorate.format_title }
-        end
-
-        render json: results
+        render json: Autocomplete::LinkableReferences.new(search_query).call
       end
     end
   end
@@ -204,31 +189,9 @@ class ReferencesController < ApplicationController
   def autocomplete
     search_query = params[:q] || ''
 
-    search_options = {}
-    keyword_params = Reference.extract_keyword_params search_query
-
-    search_options[:reference_type] = :nomissing
-    search_options[:items_per_page] = 5
-    search_options.merge! keyword_params
-    search_results = Reference.fulltext_search search_options
-
     respond_to do |format|
       format.json do
-        results = search_results.map do |reference|
-          search_query = if keyword_params.size == 1 # size 1 = no keyword params were matched
-                           reference.title
-                         else
-                           format_autosuggest_keywords reference, keyword_params
-                         end
-          {
-            search_query: search_query,
-            title: reference.title,
-            author: reference.author_names_string,
-            year: reference.citation_year
-          }
-        end
-
-        render json: results
+        render json: Autocomplete::References.new(search_query).call
       end
     end
   end
@@ -275,21 +238,6 @@ class ReferencesController < ApplicationController
       reference = @reference.becomes type
       reference.type = type
       reference
-    end
-
-    def format_autosuggest_keywords reference, keyword_params
-      replaced = []
-      replaced << keyword_params[:keywords] || ''
-      replaced << "author:'#{reference.author_names_string}'" if keyword_params[:author]
-      replaced << "title:'#{reference.title}'" if keyword_params[:title]
-      replaced << "year:#{keyword_params[:year]}" if keyword_params[:year]
-
-      start_year = keyword_params[:start_year]
-      end_year   = keyword_params[:end_year]
-      if start_year && end_year
-        replaced << "year:#{start_year}-#{end_year}"
-      end
-      replaced.join(" ").strip
     end
 
     def set_reference

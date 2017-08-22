@@ -66,6 +66,7 @@ describe ReferencesController do
     end
   end
 
+  # TODO move specs to services' specs.
   describe "autocompleting", search: true do
     let(:controller) { ReferencesController.new }
 
@@ -85,16 +86,6 @@ describe ReferencesController do
       get :autocomplete, q: "willy", format: :json
       json = JSON.parse response.body
       expect(json.size).to eq 0
-    end
-
-    describe "#format_autosuggest_keywords" do
-      let!(:reference) { reference_factory author_name: 'E.O. Wilson' }
-
-      it "replaces the typed author with the suggested author" do
-        keyword_params = { author: "wil" }
-        search_query = controller.send :format_autosuggest_keywords, reference, keyword_params
-        expect(search_query).to eq "author:'E.O. Wilson'"
-      end
     end
 
     describe "author queries not wrapped in quotes" do
