@@ -21,14 +21,6 @@ class Name < ApplicationRecord
       .where(name: string).order('taxa.id DESC').order(:name).first
   end
 
-  def self.make_epithet_set epithet
-    Names::EpithetSearchSet.new(epithet).call
-  end
-
-  def self.picklist_matching letters_in_name, options = {}
-    Names::PicklistMatching.new(letters_in_name, options).call
-  end
-
   def rank
     self.class.name.gsub(/Name$/, "").underscore
   end

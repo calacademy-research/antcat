@@ -43,17 +43,19 @@ describe Taxa::WhatLinksHere do
     end
 
     describe "Reference in its authorship taxt" do
+      before { atta.protonym.authorship.update_attribute :notes_taxt, "{tax #{atta.id}}" }
+
       it "doesn't consider this an external reference" do
-        atta.protonym.authorship.update_attribute :notes_taxt, "{tax #{atta.id}}"
         expect(subject.call).to be_empty
       end
     end
 
     describe "references as synonym" do
-      it "works" do
-        eciton = create_genus 'Eciton'
-        Synonym.create! junior_synonym: eciton, senior_synonym: atta
+      let(:eciton) { create_genus 'Eciton' }
 
+      before { Synonym.create! junior_synonym: eciton, senior_synonym: atta }
+
+      specify do
         subject = described_class.new(atta)
         expect(subject.call).to match_array [
           { table: 'synonyms', field: :senior_synonym_id, id: eciton.id }

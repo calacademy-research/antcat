@@ -41,17 +41,16 @@ describe ActivitiesHelper do
         activity = create :activity, trackable: genus
         trackable_id = activity.trackable_id
 
-        actual = helper.link_trackable_if_exists activity,
-          "label", path: catalog_path(genus)
+        actual = helper.link_trackable_if_exists activity, "label", path: catalog_path(genus)
         expect(actual).to eq %Q[<a href="/catalog/#{trackable_id}">label</a>]
       end
     end
 
     context "without a valid trackable" do
+      let(:activity) { create :activity, trackable: nil }
+
       it "handles nil trackables" do
-        activity_without_trackable = create :activity, trackable: nil
-        expect(helper.link_trackable_if_exists activity_without_trackable, "label")
-          .to eq "label"
+        expect(helper.link_trackable_if_exists activity, "label").to eq "label"
       end
     end
   end
@@ -74,17 +73,20 @@ describe ActivitiesHelper do
 
   describe "#partial_for_activity" do
     context "no `trackable_type`" do
+      let(:activity) { create :activity, trackable: nil, action: "approved_all" }
+
       it "returns the action" do
-        activity = create :activity, trackable: nil, action: "approved_all"
         expect(helper.send :partial_for_activity, activity)
           .to eq "feed/activities/actions/approved_all"
       end
     end
 
     context "there's a partial matching `action`" do
+      let(:activity) do
+        create :activity, trackable: create_species, action: "elevate_subspecies_to_species"
+      end
+
       it "returns the action" do
-        activity = create :activity, trackable: create_species,
-          action: "elevate_subspecies_to_species"
         expect(helper.send :partial_for_activity, activity)
           .to eq "feed/activities/actions/elevate_subspecies_to_species"
       end
@@ -98,8 +100,9 @@ describe ActivitiesHelper do
     end
 
     context "there's no partial matching `trackable_type`" do
+      let(:activity) { create :activity, trackable: create(:citation) }
+
       it "returns the default template" do
-        activity = create :activity, trackable: create(:citation)
         expect(helper.send :partial_for_activity, activity)
           .to eq "feed/activities/default"
       end

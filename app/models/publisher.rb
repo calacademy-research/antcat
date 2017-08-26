@@ -20,16 +20,16 @@ class Publisher < ActiveRecord::Base
     create_with_place parts[:publisher] if parts
   end
 
-  # TODO rename (hard to see where it's called from).
-  def to_s
-    string = place.present? ? "#{place.name}: " : ''
-    string << name
-  end
-
   def self.search term
     search_expression = '%' + term.split('').join('%') + '%'
     joins('LEFT OUTER JOIN places ON place_id = places.id')
       .where("CONCAT(COALESCE(places.name, ''), ':', publishers.name) LIKE ?", search_expression)
       .map(&:to_s)
+  end
+
+  # TODO rename (hard to see where it's called from).
+  def to_s
+    string = place.present? ? "#{place.name}: " : ''
+    string << name
   end
 end

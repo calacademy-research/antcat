@@ -5,16 +5,15 @@ describe Wikipedia::TaxonList do
   let(:extant_species) { create_species "Atta cephalotes" }
   let(:fossil_species) { create_species "Atta mexicana", fossil: true }
 
-  describe "#children" do
-    it "outputs a wiki-formatted list" do
-      # We cannot trust the factories, so set parent here.
-      extant_species.genus = atta
-      fossil_species.genus = atta
-      extant_species.save!
-      fossil_species.save!
+  before do
+    # We cannot trust the factories, so set parent here.
+    extant_species.update! genus: atta
+    fossil_species.update! genus: atta
+  end
 
-      # Act and test.
-      results = Wikipedia::TaxonList.new(atta).children
+  describe "#call" do
+    it "outputs a wiki-formatted list" do
+      results = described_class.new(atta).call
 
       expect(results).to include "diversity_link = #Species"
       expect(results).to include "==Species=="

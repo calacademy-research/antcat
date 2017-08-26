@@ -1,13 +1,15 @@
 require 'spec_helper'
 
 describe SubspeciesName do
+  subject do
+    described_class.new name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
+  end
+
   describe "#name_parts" do
     it "knows its species epithet" do
-      name = SubspeciesName.new name: 'Atta major minor',
-        epithet: 'minor', epithets: 'major minor'
-      expect(name.genus_epithet).to eq 'Atta'
-      expect(name.species_epithet).to eq 'major'
-      expect(name.subspecies_epithets).to eq 'minor'
+      expect(subject.genus_epithet).to eq 'Atta'
+      expect(subject.species_epithet).to eq 'major'
+      expect(subject.subspecies_epithets).to eq 'minor'
     end
   end
 
@@ -15,7 +17,7 @@ describe SubspeciesName do
   # Changing the species of a subspecies name
   describe "#change_parent" do
     it "replaces the species part of the name and fix all the other parts, too" do
-      subspecies_name = SubspeciesName.new name: 'Atta major minor',
+      subspecies_name = described_class.new name: 'Atta major minor',
         epithet: 'minor', epithets: 'major minor'
       species_name = SpeciesName.new name: 'Eciton niger', epithet: 'niger'
 
@@ -27,7 +29,7 @@ describe SubspeciesName do
     end
 
     it "handles more than one subspecies epithet" do
-      subspecies_name = SubspeciesName.new name: 'Atta major minor medii',
+      subspecies_name = described_class.new name: 'Atta major minor medii',
         epithet: 'medii', epithets: 'major minor medii'
       species_name = SpeciesName.new name: 'Eciton niger', epithet: 'niger'
 
@@ -41,11 +43,11 @@ describe SubspeciesName do
     context "name already exists" do
       context "name is used by a different taxon" do
         it "raises" do
-          existing_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor',
+          existing_subspecies_name = described_class.create! name: 'Eciton niger minor',
             epithet: 'minor', epithets: 'niger minor'
           create_subspecies 'Eciton niger minor', name: existing_subspecies_name
 
-          subspecies_name = SubspeciesName.create! name: 'Atta major minor',
+          subspecies_name = described_class.create! name: 'Atta major minor',
             epithet: 'minor', epithets: 'major minor'
           species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
           protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
@@ -56,9 +58,9 @@ describe SubspeciesName do
 
       context "name is an orphan" do
         it "doesn't raise" do
-          orphan_subspecies_name = SubspeciesName.create! name: 'Eciton niger minor',
+          orphan_subspecies_name = described_class.create! name: 'Eciton niger minor',
             epithet: 'minor', epithets: 'niger minor'
-          subspecies_name = SubspeciesName.create! name: 'Atta major minor',
+          subspecies_name = described_class.create! name: 'Atta major minor',
             epithet: 'minor', epithets: 'major minor'
           species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
           protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
@@ -70,10 +72,13 @@ describe SubspeciesName do
   end
 
   describe "#subspecies_epithets" do
-    it "is the subspecies epithets minus the species epithet" do
-      name = SubspeciesName.new name: 'Acus major minor medium',
+    subject do
+      described_class.new name: 'Acus major minor medium',
         epithet: 'medium', epithets: 'major minor medium'
-      expect(name.subspecies_epithets).to eq 'minor medium'
+    end
+
+    it "is the subspecies epithets minus the species epithet" do
+      expect(subject.subspecies_epithets).to eq 'minor medium'
     end
   end
 end

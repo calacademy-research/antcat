@@ -1,14 +1,14 @@
 require "spec_helper"
 
-describe AntcatMarkdown do
-  let(:dummy) { AntcatMarkdownUtils.new nil }
+describe AntcatMarkdownUtils do
+  let(:dummy) { described_class.new nil }
 
   describe ".users_mentioned_in" do
     let!(:batiatus) { create :user, name: "Batiatus"}
     let!(:joffre) { create :user, name: "Joffre"}
 
     it "returns existing mentioned users without duplicates" do
-      expect(AntcatMarkdownUtils.users_mentioned_in <<-STRING).to eq [batiatus, joffre]
+      expect(described_class.users_mentioned_in <<-STRING).to eq [batiatus, joffre]
         Hello @user#{batiatus.id}, @user#{joffre.id} and @user#{joffre.id}.
         Please call @user9999
       STRING

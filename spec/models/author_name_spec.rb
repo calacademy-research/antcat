@@ -19,19 +19,19 @@ describe AuthorName do
 
   describe "#import" do
     it "creates and returns the authors" do
-      results = AuthorName.import ['Fisher, B.L.', 'Wheeler, W.M.']
+      results = described_class.import ['Fisher, B.L.', 'Wheeler, W.M.']
       expect(results.map(&:name)).to match_array ['Fisher, B.L.', 'Wheeler, W.M.']
     end
 
     it "reuses existing authors" do
-      AuthorName.import ['Fisher, B.L.', 'Wheeler, W.M.']
-      AuthorName.import ['Fisher, B.L.', 'Wheeler, W.M.']
-      expect(AuthorName.count).to eq 2
+      described_class.import ['Fisher, B.L.', 'Wheeler, W.M.']
+      described_class.import ['Fisher, B.L.', 'Wheeler, W.M.']
+      expect(described_class.count).to eq 2
     end
 
     it "is case sensitive" do
-      AuthorName.import ['Mackay, W. M.', 'MacKay, W. M.']
-      expect(AuthorName.count).to eq 2
+      described_class.import ['Mackay, W. M.', 'MacKay, W. M.']
+      expect(described_class.count).to eq 2
     end
   end
 
@@ -46,35 +46,35 @@ describe AuthorName do
 
   describe "#import_author_names_string" do
     it "finds or creates authors with names in the string" do
-      AuthorName.create! name: 'Bolton, B.', author: author
-      author_data = AuthorName.import_author_names_string 'Ward, P.S.; Bolton, B.'
+      described_class.create! name: 'Bolton, B.', author: author
+      author_data = described_class.import_author_names_string 'Ward, P.S.; Bolton, B.'
       expect(author_data[:author_names].first.name).to eq 'Ward, P.S.'
       expect(author_data[:author_names].second.name).to eq 'Bolton, B.'
       expect(author_data[:author_names_suffix]).to be_nil
-      expect(AuthorName.count).to eq 2
+      expect(described_class.count).to eq 2
     end
 
     it "returns the authors suffix" do
-      author_data = AuthorName.import_author_names_string 'Ward, P.S.; Bolton, B. (eds.)'
+      author_data = described_class.import_author_names_string 'Ward, P.S.; Bolton, B. (eds.)'
       expect(author_data[:author_names].first.name).to eq 'Ward, P.S.'
       expect(author_data[:author_names].second.name).to eq 'Bolton, B.'
       expect(author_data[:author_names_suffix]).to eq ' (eds.)'
     end
 
     it "handles 'the Andres'" do
-      author_data = AuthorName.import_author_names_string 'Andre, Edm.; Andre, Ern.'
+      author_data = described_class.import_author_names_string 'Andre, Edm.; Andre, Ern.'
       expect(author_data[:author_names].first.name).to eq 'Andre, Edm.'
       expect(author_data[:author_names].second.name).to eq 'Andre, Ern.'
     end
 
     it "handles invalid input" do
-      author_data = AuthorName.import_author_names_string ' ; '
+      author_data = described_class.import_author_names_string ' ; '
       expect(author_data[:author_names]).to eq []
       expect(author_data[:author_names_suffix]).to be_nil
     end
 
    it "handles a semicolon followed by a space at the end" do
-     author_data = AuthorName.import_author_names_string 'Ward, P. S.; '
+     author_data = described_class.import_author_names_string 'Ward, P. S.; '
      expect(author_data[:author_names].size).to eq 1
      expect(author_data[:author_names].first.name).to eq 'Ward, P. S.'
      expect(author_data[:author_names_suffix]).to be_nil
@@ -83,60 +83,56 @@ describe AuthorName do
 
   describe "#search" do
     it "matches by prefix" do
-      AuthorName.create! name: 'Bolton', author: author
-      AuthorName.create! name: 'Fisher', author: author
+      described_class.create! name: 'Bolton', author: author
+      described_class.create! name: 'Fisher', author: author
 
-      results = AuthorName.search 'Bol'
-      expect(results.count).to eq 1
-      expect(results.first).to eq 'Bolton'
+      expect(described_class.search 'Bol').to eq ['Bolton']
     end
 
     it "matches substrings" do
-      AuthorName.create! name: 'Bolton', author: author
-      AuthorName.create! name: 'Fisher', author: author
+      described_class.create! name: 'Bolton', author: author
+      described_class.create! name: 'Fisher', author: author
 
-      results = AuthorName.search 'ol'
-      expect(results.count).to eq 1
-      expect(results.first).to eq 'Bolton'
+      expect(described_class.search 'ol').to eq ['Bolton']
     end
 
     it "returns authors in order of most recently used" do
       ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
-        AuthorName.create! name: name, author: author
+        described_class.create! name: name, author: author
       end
-      reference = create :reference, author_names: [AuthorName.find_by(name: 'Most Recent')]
+      reference = create :reference, author_names: [described_class.find_by(name: 'Most Recent')]
       ReferenceAuthorName.create! created_at: Time.now - 5,
-        author_name: AuthorName.find_by(name: 'Recent'),
+        author_name: described_class.find_by(name: 'Recent'),
         reference: reference
       ReferenceAuthorName.create! created_at: Time.now - 10,
-        author_name: AuthorName.find_by(name: 'Old'),
+        author_name: described_class.find_by(name: 'Old'),
         reference: reference
 
-      expect(AuthorName.search).to eq ['Most Recent', 'Recent', 'Old', 'Never Used']
+      expect(described_class.search).to eq ['Most Recent', 'Recent', 'Old', 'Never Used']
     end
   end
 
   describe "#last_name and #first_name_and_initials" do
     it "simply returns the name if there's only one word" do
-      author_name = AuthorName.new name: 'Bolton'
+      author_name = described_class.new name: 'Bolton'
       expect(author_name.last_name).to eq 'Bolton'
       expect(author_name.first_name_and_initials).to be_nil
     end
 
     it "separates the words if there are multiple" do
-      author_name = AuthorName.new name: 'Bolton, B.L.'
+      author_name = described_class.new name: 'Bolton, B.L.'
       expect(author_name.last_name).to eq 'Bolton'
       expect(author_name.first_name_and_initials).to eq 'B.L.'
     end
 
     it "uses all words if there is no comma" do
-      author_name = AuthorName.new name: 'Royal Academy'
+      author_name = described_class.new name: 'Royal Academy'
       expect(author_name.last_name).to eq 'Royal Academy'
       expect(author_name.first_name_and_initials).to be_nil
     end
 
     it "uses all words before the comma if there are multiple" do
-      author_name = AuthorName.new name: 'Baroni Urbani, C.'
+      author_name = described_class.new name: 'Baroni Urbani, C.'
       expect(author_name.last_name).to eq 'Baroni Urbani'
       expect(author_name.first_name_and_initials).to eq 'C.'
     end

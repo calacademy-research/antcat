@@ -49,6 +49,12 @@ class Reference < ApplicationRecord
     true
   end
 
+  def self.approve_all
+    count = Reference.unreviewed.count
+    Feed.without_tracking { Reference.unreviewed.find_each &:approve }
+    Activity.create_without_trackable :approve_all_references, count: count
+  end
+
   def invalidate_caches
     ReferenceFormatterCache.invalidate self
   end
@@ -118,12 +124,6 @@ class Reference < ApplicationRecord
     true
   end
 
-  def self.approve_all
-    count = Reference.unreviewed.count
-    Feed.without_tracking { Reference.unreviewed.find_each &:approve }
-    Activity.create_without_trackable :approve_all_references, count: count
-  end
-
   # TODO merge into Workflow
   # Only for .approve_all, which approves all unreviewed
   # references of any state (which Workflow doesn't allow).
@@ -131,10 +131,6 @@ class Reference < ApplicationRecord
     self.review_state = "reviewed"
     save!
     Feed.with_tracking { create_activity :finish_reviewing }
-  end
-
-  def new_from_copy
-    References::NewFromCopy.new(self).call
   end
 
   ### Methods currently in quarantine ###

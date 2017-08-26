@@ -4,13 +4,15 @@ describe Family do
   let(:family) { create :family }
 
   describe "#statistics" do
-    it "returns the statistics for each status of each rank" do
+    before do
       subfamily = create :subfamily
       tribe = create :tribe, subfamily: subfamily
       create :genus, subfamily: subfamily, tribe: tribe
       create :genus, subfamily: subfamily, status: 'homonym', tribe: tribe
       2.times { create :subfamily, fossil: true }
+    end
 
+    it "returns the statistics for each status of each rank" do
       expect(family.statistics).to eq(
         extant: {
           subfamilies: { 'valid' => 1 },
@@ -25,17 +27,19 @@ describe Family do
   end
 
   describe "#genera" do
-    it "includes genera without subfamilies" do
-      genus_without_subfamily = create_genus subfamily: nil
-      genus_with_subfamily = create_genus subfamily: create_subfamily
+    let!(:genus_without_subfamily) { create_genus subfamily: nil }
 
+    before { create_genus subfamily: create_subfamily } # genus_with_subfamily
+
+    it "includes genera without subfamilies" do
       expect(family.genera).to eq [genus_without_subfamily]
     end
   end
 
   describe "#subfamilies" do
+    let!(:subfamily) { create_subfamily }
+
     it "includes all subfamilies" do
-      subfamily = create_subfamily
       expect(family.subfamilies).to eq [subfamily]
     end
   end

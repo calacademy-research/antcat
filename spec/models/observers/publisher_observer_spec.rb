@@ -5,7 +5,7 @@ describe PublisherObserver do
 
   context "when a publisher is changed" do
     it "is notified" do
-      expect_any_instance_of(PublisherObserver).to receive :before_update
+      expect_any_instance_of(described_class).to receive :before_update
       publisher.name = 'Istanbul'
       publisher.save!
     end
@@ -18,7 +18,7 @@ describe PublisherObserver do
       references.each { |reference| ReferenceFormatterCache.populate reference }
       references.each { |reference| expect(reference.formatted_cache).not_to be_nil }
 
-      PublisherObserver.instance.before_update publisher
+      described_class.instance.before_update publisher
 
       expect(references[0].reload.formatted_cache).to be_nil
       expect(references[1].reload.formatted_cache).to be_nil

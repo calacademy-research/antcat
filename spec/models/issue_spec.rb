@@ -25,7 +25,7 @@ describe Issue do
       end
 
       it "orders open issue first, then by creation date" do
-        expect(Issue.by_status_and_date).to eq expected_order
+        expect(described_class.by_status_and_date).to eq expected_order
       end
     end
   end

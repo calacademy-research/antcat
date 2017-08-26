@@ -6,7 +6,7 @@ module Catalog
     def index
       return if user_not_searching_yet? # Just render the form.
 
-      @taxa = advanced_search_taxa
+      @taxa = Taxa::AdvancedSearch.new(advanced_search_params).call
       @is_author_search = is_author_search?
 
       respond_to do |format|
@@ -24,9 +24,11 @@ module Catalog
     # The "quick search" shares the same view as the "Advanced Search".
     # The forms could be merged, but having two is pretty nice too.
     def quick_search
-      taxa = Taxa::Search.quick_search params[:qq],
+      taxa = taxa = Taxa::QuickSearch.new(
+        params[:qq],
         search_type: params[:search_type],
         valid_only: params[:valid_only]
+      ).call
 
       if single_match_we_should_redirect_to? taxa
         return redirect_to catalog_path(taxa.first, qq: params[:qq])
@@ -54,20 +56,10 @@ module Catalog
         params[:rank].blank?
       end
 
-      def advanced_search_taxa
-        Taxa::Search.advanced_search(
-          author_name:              params[:author_name],
-          rank:                     params[:rank],
-          year:                     params[:year],
-          name:                     params[:name],
-          locality:                 params[:locality],
-          valid_only:               params[:valid_only],
-          verbatim_type_locality:   params[:verbatim_type_locality],
-          type_specimen_repository: params[:type_specimen_repository],
-          type_specimen_code:       params[:type_specimen_code],
-          biogeographic_region:     params[:biogeographic_region],
-          genus:                    params[:genus],
-          forms:                    params[:forms])
+      def advanced_search_params
+        params.slice :author_name, :rank, :year, :name, :locality, :valid_only,
+          :verbatim_type_locality, :type_specimen_repository, :type_specimen_code,
+          :biogeographic_region, :genus, :forms
       end
 
       def is_author_search?

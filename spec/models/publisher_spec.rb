@@ -9,44 +9,50 @@ describe Publisher do
     describe ".create_with_place" do
       context "valid" do
         it "creates and returns the publisher" do
-          publisher = Publisher.create_with_place name: 'Wiley', place: 'Chicago'
+          publisher = described_class.create_with_place name: 'Wiley', place: 'Chicago'
           expect(publisher.name).to eq 'Wiley'
           expect(publisher.place.name).to eq 'Chicago'
         end
 
         it "reuses existing publishers" do
-          2.times { Publisher.create_with_place name: 'Wiley', place: 'Chicago' }
-          expect(Publisher.count).to eq 1
+          2.times { described_class.create_with_place name: 'Wiley', place: 'Chicago' }
+          expect(described_class.count).to eq 1
         end
       end
 
       context "invalid" do
-        it "raises if name is supplied but no place" do
-          expect { Publisher.create_with_place(name: 'Wiley') }
-            .to raise_error ArgumentError
+        context "when name is supplied but no place" do
+          it "raises" do
+            expect { described_class.create_with_place(name: 'Wiley') }
+              .to raise_error ArgumentError
+          end
         end
 
-        it "raises if place is invalid" do
-          expect { Publisher.create_with_place(name: "A Name", place: "") }
-            .to raise_error ActiveRecord::RecordInvalid
+        context "when place is invalid" do
+          it "raises" do
+            expect { described_class.create_with_place(name: "A Name", place: "") }
+              .to raise_error ActiveRecord::RecordInvalid
+          end
         end
 
-        it "silently returns without raising if place is blank" do
-          expect(Publisher.create_with_place name: "", place: "A Place").to be nil
-          expect { Publisher.create_with_place name: "", place: "A Place" }
-            .to_not raise_error ActiveRecord::RecordInvalid
+        context "when place is blank" do
+          it "silently returns without raising" do
+            expect(described_class.create_with_place name: "", place: "A Place").to be nil
+            expect { described_class.create_with_place name: "", place: "A Place" }
+              .to_not raise_error ActiveRecord::RecordInvalid
+          end
         end
       end
     end
 
     describe ".create_with_place_form_string" do
       it "handles blank strings" do
-        expect(Publisher).not_to receive :create_with_place
-        Publisher.create_with_place_form_string ''
+        expect(described_class).not_to receive :create_with_place
+        described_class.create_with_place_form_string ''
       end
 
       it "parses" do
-        expected = Publisher.create_with_place_form_string 'New York: Houghton Mifflin'
+        expected = described_class.create_with_place_form_string 'New York: Houghton Mifflin'
         expect(expected.to_s).to eq 'New York: Houghton Mifflin'
       end
     end
@@ -54,26 +60,26 @@ describe Publisher do
 
   describe ".search" do
     it "fuzzy matches name/place combinations" do
-      Publisher.create! name: 'Wiley', place: Place.create!(name: 'Chicago')
-      Publisher.create! name: 'Wiley', place: Place.create!(name: 'Toronto')
-      expect(Publisher.search('chw')).to eq ['Chicago: Wiley']
+      described_class.create! name: 'Wiley', place: Place.create!(name: 'Chicago')
+      described_class.create! name: 'Wiley', place: Place.create!(name: 'Toronto')
+      expect(described_class.search('chw')).to eq ['Chicago: Wiley']
     end
 
     it "can find a match even if there's no place" do
-      Publisher.create! name: 'Wiley'
-      expect(Publisher.search('w')).to eq ['Wiley']
+      described_class.create! name: 'Wiley'
+      expect(described_class.search('w')).to eq ['Wiley']
     end
   end
 
   # TODO used only in specs?
   describe "#to_s" do
     it "format name and place" do
-      publisher = Publisher.create! name: "Wiley", place: Place.create!(name: 'New York')
+      publisher = described_class.create! name: "Wiley", place: Place.create!(name: 'New York')
       expect(publisher.to_s).to eq 'New York: Wiley'
     end
 
     it "formats correctly even if there is no place" do
-      publisher = Publisher.create! name: "Wiley"
+      publisher = described_class.create! name: "Wiley"
       expect(publisher.to_s).to eq 'Wiley'
     end
   end

@@ -3,48 +3,55 @@ require 'spec_helper'
 describe Species do
   it "can have subspecies, which are its children" do
     species = create_species 'Atta chilensis'
-    create_subspecies 'Atta chilensis robusta', species: species
-    create_subspecies 'Atta chilensis saltensis', species: species
-    species = Species.find_by_name 'Atta chilensis'
+    robusta = create_subspecies 'Atta chilensis robusta', species: species
+    saltensis = create_subspecies 'Atta chilensis saltensis', species: species
 
-    subspecies_epithets = species.subspecies.map(&:name).map(&:epithet)
-    expect(subspecies_epithets).to match_array ['robusta', 'saltensis']
+    expect(species.subspecies).to eq [robusta, saltensis]
     expect(species.children).to eq species.subspecies
   end
 
   describe "#statistics" do
-    it "handles 0 children" do
-      expect(create_species.statistics).to eq({})
+    let(:species) { create_species }
+
+    context "when 0 children" do
+      specify { expect(species.statistics).to eq({}) }
     end
 
-    it "handles 1 valid subspecies" do
-      species = create_species
-      create_subspecies species: species
+    context "when 1 valid subspecies" do
+      before { create_subspecies species: species }
 
-      expect(species.statistics).to eq extant: {
-        subspecies: { 'valid' => 1 }
-      }
+      specify do
+        expect(species.statistics).to eq extant: {
+          subspecies: { 'valid' => 1 }
+        }
+      end
     end
 
-    it "differentiates between extant and fossil subspecies" do
-      species = create_species
-      create_subspecies species: species
-      create_subspecies species: species, fossil: true
+    context "when there are extant and fossil subspecies" do
+      before do
+        create_subspecies species: species
+        create_subspecies species: species, fossil: true
+      end
 
-      expect(species.statistics).to eq(
-        extant: { subspecies: { 'valid' => 1 } },
-        fossil: { subspecies: { 'valid' => 1 } }
-      )
+      specify do
+        expect(species.statistics).to eq(
+          extant: { subspecies: { 'valid' => 1 } },
+          fossil: { subspecies: { 'valid' => 1 } }
+        )
+      end
     end
 
-    it "handles 1 valid subspecies and 2 synonyms" do
-      species = create_species
-      create_subspecies species: species
-      2.times { create_subspecies species: species, status: 'synonym' }
+    context "when 1 valid subspecies and 2 synonyms" do
+      before do
+        create_subspecies species: species
+        2.times { create_subspecies species: species, status: 'synonym' }
+      end
 
-      expect(species.statistics).to eq extant: {
-        subspecies: { 'valid' => 1, 'synonym' => 2 }
-      }
+      specify do
+        expect(species.statistics).to eq extant: {
+          subspecies: { 'valid' => 1, 'synonym' => 2 }
+        }
+      end
     end
   end
 
@@ -78,35 +85,35 @@ describe Species do
     end
 
     context "when the new subspecies exists" do
-      it "handles it" do
-        taxon = create_species 'Camponotus dallatorrei', genus: genus
-        new_species = create_species 'Camponotus alii', genus: genus
-        existing_subspecies = create_subspecies 'Atta alii dallatorrei', genus: genus
+      let(:taxon) { create_species 'Camponotus dallatorrei', genus: genus }
+      let(:new_species) { create_species 'Camponotus alii', genus: genus }
 
+      before { create_subspecies 'Atta alii dallatorrei', genus: genus }
+
+      it "handles it" do
         expect { taxon.become_subspecies_of new_species }.to raise_error Taxon::TaxonExists
       end
     end
 
     context "when the new subspecies name exists, but just as the protonym of the new subspecies" do
-      it "handles it" do
-        protonym = create :protonym, name: create(:subspecies_name, name: 'Atta major minor')
-        taxon = create_species 'Atta minor', genus: genus, protonym: protonym
-        new_species = create_species 'Atta major', genus: genus
+      let(:protonym) { create :protonym, name: create(:subspecies_name, name: 'Atta major minor') }
+      let(:taxon) { create_species 'Atta minor', genus: genus, protonym: protonym }
+      let(:new_species) { create_species 'Atta major', genus: genus }
 
+      it "handles it" do
         taxon.become_subspecies_of new_species
-        taxon = Subspecies.find taxon.id
-        expect(taxon.name.name).to eq 'Atta major minor'
+        new_taxon = Subspecies.find taxon.id
+        expect(new_taxon.name.name).to eq 'Atta major minor'
       end
     end
   end
 
   describe "#siblings" do
-    it "returns itself and its genus's species" do
-      create_species
-      genus = create_genus
-      species = create_species genus: genus
-      another_species = create_species genus: genus
+    let(:genus) { create_genus }
+    let(:species) { create_species genus: genus }
+    let(:another_species) { create_species genus: genus }
 
+    it "returns itself and its genus's species" do
       expect(species.siblings).to match_array [species, another_species]
     end
   end

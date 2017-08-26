@@ -8,7 +8,7 @@
 require 'spec_helper'
 
 describe Exporters::Antweb::Exporter do
-  let(:exporter) { Exporters::Antweb::Exporter.new }
+  subject(:exporter) { described_class.new }
 
   describe "#header" do
     it "should be the same as the code" do

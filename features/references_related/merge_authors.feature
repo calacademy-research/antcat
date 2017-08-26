@@ -1,4 +1,3 @@
-@javascript
 Feature: Merging authors
   As an editor of AntCat
   I want to merge together author names
@@ -40,6 +39,7 @@ Feature: Merging authors
     Then I should see "Bolton, B." in the first author panel
     And I should see "This author is open in another panel" in the second author panel
 
+  @javascript
   Scenario: Closing a panel
     Given I search for "Bolton, B." in the author panel
 

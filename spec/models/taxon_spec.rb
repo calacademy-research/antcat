@@ -12,13 +12,13 @@ describe Taxon do
 
   describe ".find_by_name" do
     it "returns nil if nothing matches" do
-      expect(Taxon.find_by_name('sdfsdf')).to eq nil
+      expect(described_class.find_by_name('sdfsdf')).to eq nil
     end
 
     it "returns one of the items if there are more than one (bad!)" do
       name = create :genus_name, name: 'Monomorium'
       2.times { create :genus, name: name }
-      expect(Taxon.find_by_name('Monomorium').name.name).to eq 'Monomorium'
+      expect(described_class.find_by_name('Monomorium').name.name).to eq 'Monomorium'
     end
   end
 
@@ -172,20 +172,20 @@ describe Taxon do
 
   describe "Cascading delete" do
     it "doesn't delete the protonym when the taxon is deleted" do
-      expect(Taxon.count).to be_zero
+      expect(described_class.count).to be_zero
       expect(Protonym.count).to be_zero
 
       genus = create :genus, tribe: nil, subfamily: nil
-      expect(Taxon.count).to eq 1
+      expect(described_class.count).to eq 1
       expect(Protonym.count).to eq 1
 
       genus.destroy
-      expect(Taxon.count).to be_zero
+      expect(described_class.count).to be_zero
       expect(Protonym.count).to eq 1
     end
 
     it "deletes history and reference sections when the taxon is deleted" do
-      expect(Taxon.count).to be_zero
+      expect(described_class.count).to be_zero
       expect(ReferenceSection.count).to be_zero
 
       genus = create :genus, tribe: nil, subfamily: nil
@@ -296,12 +296,12 @@ describe Taxon do
       end
     end
 
-    describe "scope.self_join_on" do
+    describe ".self_join_on" do
       let!(:atta) { create_genus "Atta", fossil: true }
       let!(:atta_major) { create_species "Atta major", genus: atta }
 
       it "handles self-referential condition" do
-        extant_with_fossil_parent = Taxon.self_join_on(:genus)
+        extant_with_fossil_parent = described_class.self_join_on(:genus)
           .where(fossil: false, taxa_self_join_alias: { fossil: true })
         expect(extant_with_fossil_parent.count).to eq 1
         expect(extant_with_fossil_parent.first).to eq atta_major
@@ -312,7 +312,7 @@ describe Taxon do
       end
     end
 
-    describe "ranks and exclude ranks" do
+    describe ".ranks and .exclude_ranks" do
       before do
         create :subfamily
         create :genus
@@ -326,30 +326,30 @@ describe Taxon do
 
       describe ".ranks" do
         it "only returns taxa of the specified types" do
-          actual = unique_ranks Taxon.ranks(Species, Genus)
+          actual = unique_ranks described_class.ranks(Species, Genus)
           expect(actual.sort).to eq ["Genus", "Species"]
         end
 
         it "handles symbols" do
-          actual = unique_ranks Taxon.ranks(:species, :Genus)
+          actual = unique_ranks described_class.ranks(:species, :Genus)
           expect(actual).to eq ["Genus", "Species"]
         end
 
         it "handles strings" do
-          actual = unique_ranks Taxon.ranks("Species", "genus")
+          actual = unique_ranks described_class.ranks("Species", "genus")
           expect(actual).to eq ["Genus", "Species"]
         end
 
         it "handles single items" do
-          actual = unique_ranks Taxon.ranks("Species")
+          actual = unique_ranks described_class.ranks("Species")
           expect(actual).to eq ["Species"]
         end
       end
 
       describe ".exclude_ranks" do
         it "excludes taxa of the specified types" do
-          actual = unique_ranks Taxon.exclude_ranks(Species, Genus)
-          expected = unique_ranks(Taxon) - ["Species", "Genus"]
+          actual = unique_ranks described_class.exclude_ranks(Species, Genus)
+          expected = unique_ranks(described_class) - ["Species", "Genus"]
           expect(actual).to eq expected
         end
       end
@@ -360,7 +360,7 @@ describe Taxon do
       let!(:atta) { create :subfamily, name: create(:name, name: 'Atta') }
 
       it "orders by name" do
-        expect(Taxon.order_by_name_cache).to eq [atta, zymacros]
+        expect(described_class.order_by_name_cache).to eq [atta, zymacros]
       end
     end
   end

@@ -8,7 +8,7 @@ describe Reference do
     describe "Search parameters" do
       describe "Authors", search: true do
         it "returns an empty array if nothing is found for the author names" do
-          expect(Reference.do_search(q: "author:Balou")).to be_empty
+          expect(described_class.do_search(q: "author:Balou")).to be_empty
         end
 
         it "finds the reference for a given author_name if it exists" do
@@ -17,7 +17,7 @@ describe Reference do
           create :book_reference, author_names: [create(:author_name, name: 'Fisher')]
           Sunspot.commit
 
-          results = Reference.do_search q: "author:'#{bolton.name}'"
+          results = described_class.do_search q: "author:'#{bolton.name}'"
           expect(results).to eq [reference]
         end
 
@@ -30,7 +30,7 @@ describe Reference do
           bolton_barry_reference = create :book_reference, author_names: [bolton_barry], title: '1', pagination: '1'
           bolton_b_reference = create :book_reference, author_names: [bolton_b], title: '2', pagination: '2'
 
-          expect(Reference.perform_search(authors: [bolton]).map(&:id)).to match(
+          expect(described_class.perform_search(authors: [bolton]).map(&:id)).to match(
             [bolton_b_reference, bolton_barry_reference].map(&:id)
           )
         end
@@ -43,7 +43,7 @@ describe Reference do
           bolton_fisher_reference = create :reference, author_names: [bolton, fisher]
           Sunspot.commit
 
-          expect(Reference.do_search(q: 'author:"Bolton Fisher"')).to eq [bolton_fisher_reference]
+          expect(described_class.do_search(q: 'author:"Bolton Fisher"')).to eq [bolton_fisher_reference]
         end
       end
 
@@ -54,7 +54,7 @@ describe Reference do
             reference_factory author_name: 'Hölldobler', public_notes: 'fedcba' # unmatching_reference
             Sunspot.commit
 
-            expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
+            expect(described_class.do_search(q: 'abcdef')).to eq [matching_reference]
           end
 
           it 'searches in editor notes' do
@@ -62,7 +62,7 @@ describe Reference do
             reference_factory author_name: 'Hölldobler', editor_notes: 'fedcba' # unmatching_reference
             Sunspot.commit
 
-            expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
+            expect(described_class.do_search(q: 'abcdef')).to eq [matching_reference]
           end
 
           it 'searches in taxonomic notes' do
@@ -70,7 +70,7 @@ describe Reference do
             reference_factory author_name: 'Hölldobler', taxonomic_notes: 'fedcba' # unmatching_reference
             Sunspot.commit
 
-            expect(Reference.do_search(q: 'abcdef')).to eq [matching_reference]
+            expect(described_class.do_search(q: 'abcdef')).to eq [matching_reference]
           end
         end
 
@@ -79,11 +79,11 @@ describe Reference do
           before { Sunspot.commit }
 
           it 'handles diacritics in the search term' do
-            expect(Reference.do_search(q: 'Hölldobler')).to eq [reference]
+            expect(described_class.do_search(q: 'Hölldobler')).to eq [reference]
           end
 
           it 'substitutes diacritics with English letters' do
-            expect(Reference.do_search(q: 'holldobler')).to eq [reference]
+            expect(described_class.do_search(q: 'holldobler')).to eq [reference]
           end
         end
 
@@ -94,7 +94,7 @@ describe Reference do
             reference_factory author_name: 'Hölldobler' # unmatching_reference
             Sunspot.commit
 
-            expect(Reference.do_search(q: 'journal')).to eq [matching_reference]
+            expect(described_class.do_search(q: 'journal')).to eq [matching_reference]
           end
         end
 
@@ -105,7 +105,7 @@ describe Reference do
             reference_factory author_name: 'Hölldobler' # unmatching_reference
             Sunspot.commit
 
-            expect(Reference.do_search(q: 'Publisher')).to eq [matching_reference]
+            expect(described_class.do_search(q: 'Publisher')).to eq [matching_reference]
           end
         end
 
@@ -115,7 +115,7 @@ describe Reference do
             unmatching_reference = reference_factory author_name: 'Hölldobler'
             Sunspot.commit
 
-            expect(Reference.do_search(q: 'Citation')).to eq [matching_reference]
+            expect(described_class.do_search(q: 'Citation')).to eq [matching_reference]
           end
         end
 
@@ -130,12 +130,12 @@ describe Reference do
           end
 
           it "returns an empty array if nothing is found for year" do
-            results = Reference.fulltext_search keywords: '', start_year: 1992, end_year: 1993
+            results = described_class.fulltext_search keywords: '', start_year: 1992, end_year: 1993
             expect(results).to be_empty
           end
 
           it "finds entries in between the start year and the end year (inclusive)" do
-            results = Reference.fulltext_search keywords: '', start_year: 1995, end_year: 1996
+            results = described_class.fulltext_search keywords: '', start_year: 1995, end_year: 1996
             expect(results.map(&:year)).to match_array [1995, 1996]
           end
 
@@ -143,7 +143,7 @@ describe Reference do
             reference_factory author_name: 'Bolton', citation_year: '2004.'
             Sunspot.commit
 
-            results = Reference.fulltext_search keywords: '', year: 2004
+            results = described_class.fulltext_search keywords: '', year: 2004
             expect(results.map(&:year)).to match_array [2004]
           end
         end
@@ -155,7 +155,7 @@ describe Reference do
             formica2004 = create :book_reference, title: 'Formica', citation_year: '2003'
             Sunspot.commit
 
-            expect(Reference.fulltext_search(keywords: 'atta', year: 2004)).to eq [atta2004]
+            expect(described_class.fulltext_search(keywords: 'atta', year: 2004)).to eq [atta2004]
           end
         end
       end
@@ -167,14 +167,14 @@ describe Reference do
         create :article_reference # known
         Sunspot.commit
 
-        expect(Reference.fulltext_search(q: "bolton", reference_type: :unknown)).to eq [unknown]
+        expect(described_class.fulltext_search(q: "bolton", reference_type: :unknown)).to eq [unknown]
       end
 
       it "applies the :nomissing :reference_type that's passed" do
         expect(MissingReference.count).to be > 0
         reference = create :article_reference
         Sunspot.commit
-        expect(Reference.fulltext_search(q: 'bolton', reference_type: :nomissing)).to eq [reference]
+        expect(described_class.fulltext_search(q: 'bolton', reference_type: :nomissing)).to eq [reference]
       end
 
       it "applies the :nested :reference_type that's passed" do
@@ -182,7 +182,7 @@ describe Reference do
         create :unknown_reference # unnested
         Sunspot.commit
 
-        expect(Reference.fulltext_search(q: 'bolton', reference_type: :nested)).to eq [nested]
+        expect(described_class.fulltext_search(q: 'bolton', reference_type: :nested)).to eq [nested]
       end
     end
 
@@ -192,7 +192,7 @@ describe Reference do
         reference = create :article_reference, title: title
         Sunspot.commit
 
-        results = Reference.fulltext_search title: title
+        results = described_class.fulltext_search title: title
         expect(results).to eq [reference]
       end
     end
@@ -203,7 +203,7 @@ describe Reference do
       create :reference
       Sunspot.commit
 
-      expect(Reference.solr_search { keywords 'foo' }.results).to be_empty
+      expect(described_class.solr_search { keywords 'foo' }.results).to be_empty
     end
 
     it "finds the reference for a given author_name if it exists" do
@@ -211,7 +211,7 @@ describe Reference do
       reference_factory author_name: 'Fisher'
       Sunspot.commit
 
-      expect(Reference.solr_search { keywords 'Ward' }.results).to eq [reference]
+      expect(described_class.solr_search { keywords 'Ward' }.results).to eq [reference]
     end
 
     it "returns an empty array if nothing is found for a given year and author_name" do
@@ -221,7 +221,7 @@ describe Reference do
       reference_factory author_name: 'Fisher', citation_year: '1996'
       Sunspot.commit
 
-      expect(Reference.solr_search {
+      expect(described_class.solr_search {
         with(:year).between(2012..2013)
         keywords 'Fisher'
       }.results).to be_empty
@@ -234,7 +234,7 @@ describe Reference do
       reference = reference_factory author_name: 'Fisher', citation_year: '1996'
       Sunspot.commit
 
-      expect(Reference.solr_search {
+      expect(described_class.solr_search {
         with(:year).between(1996..1996)
         keywords 'Fisher'
       }.results).to eq [reference]
@@ -245,7 +245,7 @@ describe Reference do
       reference_factory author_name: 'Bolton', citation_year: '2010'
       Sunspot.commit
 
-      expect(Reference.solr_search {
+      expect(described_class.solr_search {
         keywords '2010b'
       }.results).to eq [with_letter]
     end
@@ -254,51 +254,51 @@ describe Reference do
   describe ".do_search" do
     describe "Searching for text and/or years" do
       it "extracts the starting and ending years" do
-        expect(Reference).to receive(:fulltext_search)
+        expect(described_class).to receive(:fulltext_search)
           .with hash_including(keywords: '', start_year: "1992", end_year: "1993")
-        Reference.do_search q: 'year:1992-1993'
+        described_class.do_search q: 'year:1992-1993'
       end
 
       it "extracts the starting year" do
-        expect(Reference).to receive(:fulltext_search)
+        expect(described_class).to receive(:fulltext_search)
           .with hash_including(keywords: '', year: "1992")
-        Reference.do_search q: 'year:1992'
+        described_class.do_search q: 'year:1992'
       end
 
       it "converts the query string", pending: true do
         pending "downcasing/transliteration removed valid search results"
         # TODO config solr
-        expect(Reference).to receive(:fulltext_search)
+        expect(described_class).to receive(:fulltext_search)
           .with hash_including(keywords: 'andre')
-        Reference.do_search q: 'André'
+        described_class.do_search q: 'André'
       end
 
       it "can distinguish between years and citation years" do
-        expect(Reference).to receive(:fulltext_search)
+        expect(described_class).to receive(:fulltext_search)
           .with hash_including(keywords: '1970a', year: "1970")
-        Reference.do_search q: '1970a year:1970'
+        described_class.do_search q: '1970a year:1970'
       end
     end
 
     describe "Pagination on or off for different search types" do
       it "doesn't paginate EndNote format", pending: true do
         pending "not implemented like this any longer"
-        expect(Reference).to receive(:fulltext_search).with hash_excluding(page: 1)
-        Reference.do_search q: 'bolton', format: :endnote_export
+        expect(described_class).to receive(:fulltext_search).with hash_excluding(page: 1)
+        described_class.do_search q: 'bolton', format: :endnote_export
       end
 
       it "paginates other formats" do
-        expect(Reference).to receive(:fulltext_search).with hash_including(page: 1)
-        Reference.do_search q: 'bolton'
+        expect(described_class).to receive(:fulltext_search).with hash_including(page: 1)
+        described_class.do_search q: 'bolton'
       end
     end
 
     describe "Filtering unknown reference types" do
       context "when type:unknown is passed as the search term" do
         it "returns only references of type unknown" do
-          expect(Reference).to receive(:fulltext_search)
+          expect(described_class).to receive(:fulltext_search)
             .with hash_including(keywords: 'Monroe', reference_type: :unknown)
-          Reference.do_search q: 'Monroe type:unknown'
+          described_class.do_search q: 'Monroe type:unknown'
         end
       end
     end
@@ -331,7 +331,7 @@ describe Reference do
 
     it "returns all references" do
       reference = create :article_reference
-      expect(Reference.list_references).to eq [reference]
+      expect(described_class.list_references).to eq [reference]
     end
 
     describe "Sorting" do
@@ -344,8 +344,7 @@ describe Reference do
           fisher1910a = reference_factory author_name: 'Fisher',
             citation_year: '1910a', fix_type: :article_reference
 
-          expect(Reference.list_references)
-            .to eq [fisher1910a, fisher1910b, wheeler1874]
+          expect(described_class.list_references).to eq [fisher1910a, fisher1910b, wheeler1874]
         end
 
         it "sorts by multiple author_names using their order in each reference" do
@@ -353,7 +352,7 @@ describe Reference do
           m = reference_from_author_string 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.'
           v = reference_from_author_string "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A."
 
-          expect(Reference.list_references).to eq [a, m, v]
+          expect(described_class.list_references).to eq [a, m, v]
         end
 
         def reference_from_author_string string

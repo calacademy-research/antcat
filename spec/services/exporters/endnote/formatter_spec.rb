@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Exporters::Endnote::Formatter do
-  let(:formatter) { Exporters::Endnote::Formatter }
+  subject(:formatter) { described_class }
 
   it "formats a book reference correctly" do
     reference = create :book_reference,
@@ -29,7 +29,7 @@ describe Exporters::Endnote::Formatter do
       citation_year: '1933',
       publisher: create(:publisher, name: 'Springer Verlag', place: create(:place, name: 'Dresden')),
       pagination: 'ix + 33pp.'
-    expect(Exporters::Endnote::Formatter.format([reference])).to eq %{%0 Book
+    expect(formatter.format([reference])).to eq %{%0 Book
 %A Bolton, B.
 %A Fisher, B.L.
 %D 1933
@@ -69,8 +69,8 @@ describe Exporters::Endnote::Formatter do
       series_volume_issue: '1(2)',
       pagination: '3-4'
     reference.create_document url: 'http://antcat.org/article.pdf'
-    string = formatter.format [reference]
-    expect(string).to eq %{%0 Journal Article
+    results = formatter.format [reference]
+    expect(results).to eq %{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title

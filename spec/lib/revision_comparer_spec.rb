@@ -8,7 +8,7 @@ describe RevisionComparer, versioning: true do
   describe "#most_recent" do
     context "item exists" do
       it "returns the item (pretty much same as Model#find)" do
-        most_recent = RevisionComparer.new(model, item.id).most_recent
+        most_recent = described_class.new(model, item.id).most_recent
         expect(most_recent).to eq item
       end
     end
@@ -19,7 +19,7 @@ describe RevisionComparer, versioning: true do
       it "returns the item (similar to Model#find, but searches in versions too)" do
         expect { model.find(item_id) }.to raise_error ActiveRecord::RecordNotFound
 
-        most_recent = RevisionComparer.new(model, item_id).most_recent
+        most_recent = described_class.new(model, item_id).most_recent
         expect(most_recent.taxt).to eq "initial content"
       end
     end
@@ -37,7 +37,7 @@ describe RevisionComparer, versioning: true do
     end
 
     describe "#diff_with" do
-      let(:comparer) { RevisionComparer.new model, item.id, nil, @diff_with_id }
+      subject(:comparer) { described_class.new model, item.id, nil, @diff_with_id }
 
       it "returns reified objects from the versions" do
         expect(comparer.diff_with.taxt).to eq "initial content"
@@ -51,7 +51,7 @@ describe RevisionComparer, versioning: true do
     end
 
     describe "#selected" do
-      let(:comparer) { RevisionComparer.new model, item.id, @selected_id }
+      subject(:comparer) { described_class.new model, item.id, @selected_id }
 
       it "returns reified objects from the versions" do
         expect(comparer.selected.taxt).to eq "second version"
@@ -63,7 +63,7 @@ describe RevisionComparer, versioning: true do
     end
 
     context "using #selected and #diff_with at the same time" do
-      let(:comparer) { RevisionComparer.new model, item.id, @selected_id, @diff_with_id }
+      subject(:comparer) { described_class.new model, item.id, @selected_id, @diff_with_id }
 
       it "handles #most_recent, #selected and #diff_with" do
         expect(comparer.diff_with.taxt).to eq "initial content"
@@ -89,7 +89,7 @@ describe RevisionComparer, versioning: true do
       end
 
       it "returns a diff for side-by-side comparison" do
-        comparer = RevisionComparer.new model, item_id, nil, @diff_with_id
+        comparer = described_class.new model, item_id, nil, @diff_with_id
         diff = comparer.html_split_diff
 
         expect(diff.left).to match "<strong>initial</strong> content"

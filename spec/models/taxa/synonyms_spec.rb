@@ -103,29 +103,28 @@ describe Taxon do
   end
 
   describe "with_names" do
-    before do
-      @atta = create_genus 'Atta'
-      @eciton = create_genus 'Eciton'
-      become_junior_synonym_of @eciton, @atta
-    end
+    let(:atta) { create_genus 'Atta' }
+    let(:eciton) { create_genus 'Eciton' }
+
+    before { become_junior_synonym_of eciton, atta }
 
     describe "#junior_synonyms_with_names" do
       it "works" do
-        results = @atta.junior_synonyms_with_names
+        results = atta.junior_synonyms_with_names
         expect(results.size).to eq 1
         record = results.first
-        expect(record['id']).to eq Synonym.find_by(junior_synonym_id: @eciton.id).id
-        expect(record['name']).to eq @eciton.name.to_html
+        expect(record['id']).to eq Synonym.find_by(junior_synonym_id: eciton.id).id
+        expect(record['name']).to eq eciton.name.to_html
       end
     end
 
     describe "#senior_synonyms_with_names" do
       it "works" do
-        results = @eciton.senior_synonyms_with_names
+        results = eciton.senior_synonyms_with_names
         expect(results.size).to eq 1
         record = results.first
-        expect(record['id']).to eq Synonym.find_by(senior_synonym_id: @atta.id).id
-        expect(record['name']).to eq @atta.name.to_html
+        expect(record['id']).to eq Synonym.find_by(senior_synonym_id: atta.id).id
+        expect(record['name']).to eq atta.name.to_html
       end
     end
   end

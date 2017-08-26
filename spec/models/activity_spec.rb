@@ -6,9 +6,8 @@ describe Activity, feed: true do
   describe ".create_for_trackable" do
     context "feed is globally enabled" do
       it "creates activities" do
-        expect do
-          Activity.create_for_trackable nil, nil
-        end.to change { Activity.count }.by 1
+        expect { described_class.create_for_trackable nil, nil }
+          .to change { described_class.count }.by 1
       end
     end
 
@@ -16,8 +15,8 @@ describe Activity, feed: true do
       before { Feed.enabled = false }
 
       it "doesn't create activities" do
-        Activity.create_for_trackable nil, nil
-        expect(Activity.count).to eq 0
+        expect { described_class.create_for_trackable nil, nil }
+          .to_not change { described_class.count }
       end
     end
   end

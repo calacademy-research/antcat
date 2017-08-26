@@ -23,18 +23,18 @@ describe LinkHelper do
   end
 
   describe "#link_to_hol" do
+    let(:taxon) { create_subfamily 'Dolichoderinae' }
+
     context "without a #hol_id" do
       it "doesn't link" do
-        expect(helper.link_to_hol(create_subfamily 'Dolichoderinae')).to be nil
+        expect(helper.link_to_hol(taxon)).to be nil
       end
     end
 
     context "with a #hol_id" do
-      it "links" do
-        taxon = create_subfamily 'Dolichoderinae'
-        taxon.hol_id = 1234
-        taxon.save!
+      before { taxon.hol_id = 1234 }
 
+      it "links" do
         expect(helper.link_to_hol(taxon)).to eq(
           '<a class="link_to_external_site" href="http://hol.osu.edu/index.html?id=1234">HOL</a>'
         )
@@ -96,8 +96,9 @@ describe LinkHelper do
 
   describe "#taxon_link_or_deleted_string" do
     context "valid taxon" do
+      let(:genus) { create_genus "Atta" }
+
       it "links" do
-        genus = create_genus "Atta"
         expect(helper.taxon_link_or_deleted_string genus.id).to match /a href.*?Atta/
       end
     end

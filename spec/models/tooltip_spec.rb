@@ -17,7 +17,7 @@ describe Tooltip do
       let!(:disabled) { create :tooltip, key_enabled: false }
 
       it "only returns enabled keys" do
-        expect(Tooltip.enabled_keys).to eq [enabled]
+        expect(described_class.enabled_keys).to eq [enabled]
       end
     end
 
@@ -32,12 +32,12 @@ describe Tooltip do
       end
 
       it "only returns enabled selectors" do
-        expect(Tooltip.enabled_selectors).to eq [selector_enabled]
+        expect(described_class.enabled_selectors).to eq [selector_enabled]
       end
 
       it "handles nil" do
         create :tooltip, selector_enabled: true
-        expect(Tooltip.enabled_selectors).to eq [selector_enabled]
+        expect(described_class.enabled_selectors).to eq [selector_enabled]
       end
     end
   end

@@ -6,14 +6,14 @@ describe Tribe do
 
   it "can have a subfamily" do
     expect(tribe).to eq tribe # trigger FactoryGirl
-    expect(Tribe.find_by_name('Attini').subfamily).to eq subfamily
+    expect(described_class.find_by_name('Attini').subfamily).to eq subfamily
   end
 
   it "can have genera, which are its children" do
-    create :genus, name: create(:name, name: 'Acromyrmex'), tribe: tribe
-    create :genus, name: create(:name, name: 'Atta'), tribe: tribe
+    atta = create :genus, name: create(:name, name: 'Acromyrmex'), tribe: tribe
+    acromyrmex = create :genus, name: create(:name, name: 'Atta'), tribe: tribe
 
-    expect(tribe.genera.map(&:name).map(&:to_s)).to match_array ['Atta', 'Acromyrmex']
+    expect(tribe.genera).to eq [atta, acromyrmex]
     expect(tribe.children).to eq tribe.genera
   end
 

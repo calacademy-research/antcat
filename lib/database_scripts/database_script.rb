@@ -70,6 +70,7 @@ module DatabaseScripts::DatabaseScript
     def self.namespaced_constantize basename
       "DatabaseScripts::Scripts::#{basename.camelize}".constantize
     end
+    private_class_method :namespaced_constantize
 
     # The script's description and tags are stored in `DATA`.
     # TODO replace with methods.

@@ -7,7 +7,7 @@ describe ReferenceAuthorNameObserver do
     it "is notified" do
       author_name = create :author_name
       reference_author_name = create :reference_author_name, reference: reference, author_name: author_name
-      expect_any_instance_of(ReferenceAuthorNameObserver).to receive :before_save
+      expect_any_instance_of(described_class).to receive :before_save
       reference_author_name.position = 4
       reference_author_name.save!
     end

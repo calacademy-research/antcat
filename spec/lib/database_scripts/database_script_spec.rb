@@ -4,10 +4,8 @@ describe DatabaseScripts::DatabaseScript do
   let(:script) { DatabaseTestScript.new }
 
   describe ".new_from_filename_without_extension" do
-    let(:me) { DatabaseScripts::DatabaseScript }
-
     it "initializes" do
-      result = me.new_from_filename_without_extension "SubspeciesWithoutSpecies"
+      result = described_class.new_from_filename_without_extension "SubspeciesWithoutSpecies"
       expect(result).to be_a DatabaseScripts::Scripts::SubspeciesWithoutSpecies
     end
   end

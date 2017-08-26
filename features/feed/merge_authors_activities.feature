@@ -3,7 +3,6 @@ Feature: Feed (merge authors)
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @javascript
   Scenario: Merging
     Given activity tracking is disabled
       And the following names exist for an author

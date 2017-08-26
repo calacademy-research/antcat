@@ -61,7 +61,7 @@ describe Name do
   end
 
   describe "#what_links_here" do
-    subject { Name.create! name: 'Atta' }
+    subject { described_class.create! name: 'Atta' }
 
     it "calls `Names::WhatLinksHere`" do
       expect(Names::WhatLinksHere).to receive(:new).with(subject).and_call_original
@@ -97,12 +97,12 @@ describe Name do
   end
 
   describe ".find_by_name" do
-    it "prioritizes names already associated with taxa" do
-      atta_name = create :name, name: 'Atta'
-      taxon = create_genus 'Atta'
+    let(:atta_name) { create :name, name: 'Atta' }
+    let(:taxon) { create_genus 'Atta' }
 
+    it "prioritizes names already associated with taxa" do
       expect(taxon.name).not_to eq atta_name
-      expect(Name.find_by_name('Atta')).to eq taxon.name
+      expect(described_class.find_by_name('Atta')).to eq taxon.name
     end
   end
 end

@@ -10,33 +10,33 @@ describe SiteNoticesHelper do
       let!(:site_notice) { create :site_notice }
 
       context "session variable is blank" do
-        it { expect(dismissed? nil).to be_falsey }
+        specify { expect(dismissed? nil).to be_falsey }
       end
 
       context "session variable is present" do
         let!(:last_site_notice_id) { SiteNotice.last.try :id }
 
         context "session variable lower than the last notice" do
-          it { expect(dismissed? last_site_notice_id - 1).to be_falsey }
+          specify { expect(dismissed? last_site_notice_id - 1).to be_falsey }
         end
 
         context "session variable same as the last notice" do
-          it { expect(dismissed? last_site_notice_id).to be true }
+          specify { expect(dismissed? last_site_notice_id).to be true }
         end
 
         context "session variable higher than the last notice (this cannot happen)" do
-          it { expect(dismissed? last_site_notice_id + 1).to be true }
+          specify { expect(dismissed? last_site_notice_id + 1).to be true }
         end
       end
     end
 
     context "there are no site notices in the whole database" do
       context "session variable is blank" do
-        it { expect(dismissed? nil).to be_falsey }
+        specify { expect(dismissed? nil).to be_falsey }
       end
 
       context "session variable present" do
-        it { expect(dismissed? 999).to be_falsey }
+        specify { expect(dismissed? 999).to be_falsey }
       end
     end
   end

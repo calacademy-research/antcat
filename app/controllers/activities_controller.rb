@@ -35,6 +35,12 @@ class ActivitiesController < ApplicationController
   end
 
   private
+    def self.activity_actions_options_for_select
+      Activity.uniq.pluck(:action, :action).map(&:humanize)
+        .zip(Activity.uniq.pluck(:action, :action))
+    end
+    private_class_method :activity_actions_options_for_select
+
     # HACK to make this work at the same time:
     # * Highlight single activity item in context.
     # * Not showing `params[:page]` in single-activity-links.
@@ -58,10 +64,5 @@ class ActivitiesController < ApplicationController
       filter_params.tap do |hsh|
         hsh[:action] = hsh.delete(:activity_action)
       end
-    end
-
-    def self.activity_actions_options_for_select
-      Activity.uniq.pluck(:action, :action).map(&:humanize)
-        .zip(Activity.uniq.pluck(:action, :action))
     end
 end
