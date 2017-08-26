@@ -12,12 +12,12 @@ describe Feedback do
       end
 
       it "defaults to 5 minutes" do
-        expect(Feedback.recently_created.count).to eq 1
+        expect(described_class.recently_created.count).to eq 1
       end
 
       it "accepts any value" do
-        expect(Feedback.recently_created(10.minutes.ago).count).to eq 2
-        expect(Feedback.recently_created(7.days.ago).count).to eq 3
+        expect(described_class.recently_created(10.minutes.ago).count).to eq 2
+        expect(described_class.recently_created(7.days.ago).count).to eq 3
       end
     end
   end

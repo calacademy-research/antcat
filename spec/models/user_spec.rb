@@ -6,19 +6,19 @@ describe User do
   it { should be_versioned }
 
   describe "scopes" do
-    describe "editors and non-editors" do
+    describe ".editors and .non_editors" do
       let!(:user) { create :user }
       let!(:editor) { create :editor }
 
       describe ".editors" do
         it "returns editors" do
-          expect(User.editors).to eq [editor]
+          expect(described_class.editors).to eq [editor]
         end
       end
 
       describe ".non_editors" do
         it "returns non-editors" do
-          expect(User.editors).to eq [editor]
+          expect(described_class.editors).to eq [editor]
         end
       end
     end
@@ -33,7 +33,7 @@ describe User do
       end
 
       it "returns all user's #angle_bracketed_email" do
-        expect(User.as_angle_bracketed_emails).to eq <<-STR.squish
+        expect(described_class.as_angle_bracketed_emails).to eq <<-STR.squish
           "Archibald" <archibald@antcat.org>,
           "Batiatus" <batiatus@antcat.org>,
           "Flint" <flint@antcat.org>
@@ -44,18 +44,18 @@ describe User do
 
   describe "authorization" do
     it "knows if it can edit the catalog" do
-      expect(User.new.can_edit).to be_falsey
-      expect(User.new(can_edit: true).can_edit).to be_truthy
+      expect(described_class.new.can_edit).to be_falsey
+      expect(described_class.new(can_edit: true).can_edit).to be_truthy
     end
 
     it "knows if it can review changes" do
-      expect(User.new.can_review_changes?).to be_falsey
-      expect(User.new(can_edit: true).can_review_changes?).to be_truthy
+      expect(described_class.new.can_review_changes?).to be_falsey
+      expect(described_class.new(can_edit: true).can_review_changes?).to be_truthy
     end
 
     it "knows if it can approve changes" do
-      expect(User.new.can_approve_changes?).to be_falsey
-      expect(User.new(can_edit: true).can_approve_changes?).to be_truthy
+      expect(described_class.new.can_approve_changes?).to be_falsey
+      expect(described_class.new(can_edit: true).can_approve_changes?).to be_truthy
     end
   end
 

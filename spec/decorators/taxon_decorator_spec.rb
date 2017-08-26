@@ -127,44 +127,38 @@ describe TaxonDecorator do
     end
 
     describe "#collective_group_name_child_list" do
+      let!(:genus) { create_genus 'Atta', subfamily: subfamily, status: 'collective group name' }
+
       it "formats a list of collective group names" do
-        genus = create_genus 'Atta', subfamily: subfamily, status: 'collective group name'
         expect(decorator_helper.new(subfamily).send(:collective_group_name_child_list))
           .to eq %{<div><span class="caption">Collective group name in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
       end
     end
 
     describe "#child_list_query" do
-      let!(:subfamily) { create :subfamily, name: create(:name, name: 'Dolichoderinae') }
+      let!(:subfamily) { create :subfamily }
+      let!(:atta) { create :genus, subfamily: subfamily }
+      let!(:eciton) { create :genus, subfamily: subfamily, fossil: true }
+      let!(:aneuretus) do
+        create :genus, subfamily: subfamily, fossil: true, incertae_sedis_in: 'subfamily'
+      end
+
+      before { create :genus, subfamily: subfamily, status: 'synonym' }
 
       it "finds all genera for the taxon if there are no conditions" do
-        create :genus, name: create(:name, name: 'Atta'),
-          subfamily: subfamily
-        create :genus, name: create(:name, name: 'Eciton'),
-          subfamily: subfamily, fossil: true
-        create :genus, name: create(:name, name: 'Aneuretus'),
-          subfamily: subfamily, fossil: true, incertae_sedis_in: 'subfamily'
-
         results = decorator_helper.new(subfamily).send :child_list_query, :genera
-        expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Atta', 'Eciton']
+        expect(results).to match_array [aneuretus, atta, eciton]
 
         results = decorator_helper.new(subfamily).send :child_list_query, :genera, fossil: true
-        expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
+        expect(results).to match_array [aneuretus, eciton]
 
         results = decorator_helper.new(subfamily).send :child_list_query, :genera, incertae_sedis_in: 'subfamily'
-        expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus']
+        expect(results).to match_array [aneuretus]
       end
 
       it "doesn't include invalid taxa" do
-        create :genus, name: create(:name, name: 'Atta'),
-          subfamily: subfamily, status: 'synonym'
-        create :genus, name: create(:name, name: 'Eciton'),
-          subfamily: subfamily, fossil: true
-        create :genus, name: create(:name, name: 'Aneuretus'),
-          subfamily: subfamily, fossil: true, incertae_sedis_in: 'subfamily'
-
         results = decorator_helper.new(subfamily).send :child_list_query, :genera
-        expect(results.map(&:name).map(&:to_s).sort).to eq ['Aneuretus', 'Eciton']
+        expect(results).to match_array [aneuretus, atta, eciton]
       end
     end
   end
@@ -259,19 +253,21 @@ describe TaxonDecorator do
   end
 
   describe "#link_to_taxon" do
+    let(:genus) { create_genus 'Atta' }
+
     it "creates the link" do
-      genus = create_genus 'Atta'
       expect(genus.decorate.link_to_taxon).to eq %{<a href="/catalog/#{genus.id}"><i>Atta</i></a>}
     end
   end
 
   describe "#format_senior_synonym" do
     context "when the senior synonym is itself invalid" do
+      let(:invalid_senior) { create_genus 'Atta', status: 'synonym' }
+      let(:junior) { create_genus 'Eciton', status: 'synonym' }
+
+      before { Synonym.create! junior_synonym: junior, senior_synonym: invalid_senior }
+
       it "returns an empty string" do
-        invalid_senior = create_genus 'Atta', status: 'synonym'
-        junior = create_genus 'Eciton', status: 'synonym'
-        Synonym.create! junior_synonym: junior,
-          senior_synonym: invalid_senior
         expect(junior.decorate.send(:format_senior_synonym)).to eq ''
       end
     end

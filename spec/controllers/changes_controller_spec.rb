@@ -2,12 +2,10 @@ require 'spec_helper'
 
 describe ChangesController do
   describe "check that we can find and report the entire undo set" do
-    before do
-      @adder = create :editor
-      sign_in @adder
-      @taxon = create_taxon_version_and_change :waiting, @adder, nil, 'Genus1'
-      @taxon.save
-    end
+    let!(:adder) { create :editor }
+    let!(:taxon) { create_taxon_version_and_change :waiting, adder, nil, 'Genus1' }
+
+    before { sign_in adder }
 
     it "returns a single taxon when no others would be deleted" do
       get :confirm_before_undo, id: Change.first.id
@@ -20,10 +18,10 @@ describe ChangesController do
     end
 
     it "returns multiple items when undoing an older change would hit newer changes" do
-      change = create :change, user_changed_taxon_id: @taxon.id, change_type: "update"
-      create :version, item_id: @taxon.id, whodunnit: @adder.id, change_id: change.id
-      @taxon.status = 'homonym'
-      @taxon.save
+      change = create :change, user_changed_taxon_id: taxon.id, change_type: "update"
+      create :version, item_id: taxon.id, whodunnit: adder.id, change_id: change.id
+      taxon.status = 'homonym'
+      taxon.save
 
       get :confirm_before_undo, id: Change.first.id
 

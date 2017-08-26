@@ -5,7 +5,7 @@ describe JournalObserver do
 
   context "when a journal is changed" do
     it "is notified" do
-      expect_any_instance_of(JournalObserver).to receive :before_update
+      expect_any_instance_of(described_class).to receive :before_update
       journal.name = 'Nature'
       journal.save!
     end
@@ -18,7 +18,7 @@ describe JournalObserver do
       references.each { |reference| ReferenceFormatterCache.populate reference }
       references.each { |reference| expect(reference.formatted_cache).not_to be_nil }
 
-      JournalObserver.instance.before_update journal
+      described_class.instance.before_update journal
 
       expect(references[0].reload.formatted_cache).to be_nil
       expect(references[1].reload.formatted_cache).to be_nil

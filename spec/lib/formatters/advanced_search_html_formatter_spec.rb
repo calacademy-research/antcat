@@ -5,7 +5,7 @@ class FormattersAdvancedSearchHtmlFormatterTestClass
 end
 
 describe Formatters::AdvancedSearchHtmlFormatter do
-  let(:formatter) { FormattersAdvancedSearchHtmlFormatterTestClass.new }
+  subject(:formatter) { FormattersAdvancedSearchHtmlFormatterTestClass.new }
 
   describe "#format" do
     it "formats a taxon" do

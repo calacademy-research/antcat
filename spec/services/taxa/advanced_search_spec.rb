@@ -12,29 +12,30 @@ describe Taxa::AdvancedSearch do
 
     describe "Rank first described in given year" do
       describe "shared setup..." do
+        let!(:reference1977) { reference_factory author_name: 'Bolton', citation_year: '1977' }
+        let!(:atta) { create_genus }
+        let!(:betta) { create_genus }
+
         before do
-          @reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
+          atta.protonym.authorship.update! reference: reference1977
+          betta.protonym.authorship.update! reference: reference1977
           reference1988 = reference_factory author_name: 'Fisher', citation_year: '1988'
-          @atta = create_genus
-          @atta.protonym.authorship.update! reference: @reference1977
-          @betta = create_genus
-          @betta.protonym.authorship.update! reference: @reference1977
           gamma = create_genus
           gamma.protonym.authorship.update! reference: reference1988
         end
 
         it "returns the one match" do
           results = described_class.new(rank: 'Genus', year: "1977", valid_only: true).call
-          expect(results.map(&:id)).to match_array [@atta.id, @betta.id]
+          expect(results.map(&:id)).to match_array [atta.id, betta.id]
         end
 
         it "honors the validity flag" do
           delta = create_genus
-          delta.protonym.authorship.update! reference: @reference1977
+          delta.protonym.authorship.update! reference: reference1977
           delta.update! status: 'synonym'
 
           results = described_class.new(rank: 'Genus', year: "1977", valid_only: true).call
-          expect(results.map(&:id)).to match_array [@atta.id, @betta.id]
+          expect(results.map(&:id)).to match_array [atta.id, betta.id]
         end
       end
 
@@ -49,36 +50,36 @@ describe Taxa::AdvancedSearch do
       end
 
       describe "Finding certain ranks" do
+        let!(:subfamily) { create_subfamily }
+        let!(:tribe) { create_tribe subfamily: subfamily }
+        let!(:genus) { create_genus tribe: tribe }
+        let!(:subgenus) { create_subgenus genus: genus }
+        let!(:species) { create_species genus: genus }
+        let!(:subspecies) { create_subspecies 'Atta major minor', species: species, genus: genus }
+
         before do
-          taxa = []
-          taxa << @subfamily = create_subfamily
-          taxa << @tribe = create_tribe(subfamily: @subfamily)
-          taxa << @genus = create_genus(tribe: @tribe)
-          taxa << @subgenus = create_subgenus(genus: @genus)
-          taxa << @species = create_species(genus: @genus)
-          taxa << @subspecies = create_subspecies('Atta major minor', species: @species, genus: @genus)
           reference = reference_factory author_name: 'Bolton', citation_year: '1977'
-          taxa.each do |taxon|
+          [subfamily, tribe, genus, subgenus, species, subspecies].each do |taxon|
             taxon.protonym.authorship.update! reference: reference
           end
         end
 
         it "returns just the requested rank, if asked" do
-          expect(described_class.new(rank: 'Subfamily', year: "1977").call.map(&:id)).to match_array [@subfamily.id]
-          expect(described_class.new(rank: 'Tribe', year: "1977").call.map(&:id)).to match_array [@tribe.id]
-          expect(described_class.new(rank: 'Genus', year: "1977").call.map(&:id)).to match_array [@genus.id]
-          expect(described_class.new(rank: 'Subgenus', year: "1977").call.map(&:id)).to match_array [@subgenus.id]
-          expect(described_class.new(rank: 'Species', year: "1977").call.map(&:id)).to match_array [@species.id]
-          expect(described_class.new(rank: 'Subspecies', year: "1977").call.map(&:id)).to match_array [@subspecies.id]
+          expect(described_class.new(rank: 'Subfamily', year: "1977").call.map(&:id)).to match_array [subfamily.id]
+          expect(described_class.new(rank: 'Tribe', year: "1977").call.map(&:id)).to match_array [tribe.id]
+          expect(described_class.new(rank: 'Genus', year: "1977").call.map(&:id)).to match_array [genus.id]
+          expect(described_class.new(rank: 'Subgenus', year: "1977").call.map(&:id)).to match_array [subgenus.id]
+          expect(described_class.new(rank: 'Species', year: "1977").call.map(&:id)).to match_array [species.id]
+          expect(described_class.new(rank: 'Subspecies', year: "1977").call.map(&:id)).to match_array [subspecies.id]
         end
 
         it "returns just the requested rank, even without any other parameters" do
-          expect(described_class.new(rank: 'Subfamily').call.map(&:id)).to match_array [@subfamily.id]
-          expect(described_class.new(rank: 'Tribe').call.map(&:id)).to match_array [@tribe.id]
-          expect(described_class.new(rank: 'Genus').call.map(&:id)).to match_array [@genus.id]
-          expect(described_class.new(rank: 'Subgenus').call.map(&:id)).to match_array [@subgenus.id]
-          expect(described_class.new(rank: 'Species').call.map(&:id)).to match_array [@species.id]
-          expect(described_class.new(rank: 'Subspecies').call.map(&:id)).to match_array [@subspecies.id]
+          expect(described_class.new(rank: 'Subfamily').call.map(&:id)).to match_array [subfamily.id]
+          expect(described_class.new(rank: 'Tribe').call.map(&:id)).to match_array [tribe.id]
+          expect(described_class.new(rank: 'Genus').call.map(&:id)).to match_array [genus.id]
+          expect(described_class.new(rank: 'Subgenus').call.map(&:id)).to match_array [subgenus.id]
+          expect(described_class.new(rank: 'Species').call.map(&:id)).to match_array [species.id]
+          expect(described_class.new(rank: 'Subspecies').call.map(&:id)).to match_array [subspecies.id]
         end
       end
     end
@@ -88,10 +89,6 @@ describe Taxa::AdvancedSearch do
         reference = reference_factory author_name: 'Bolton', citation_year: '1977'
         atta = create_genus
         atta.protonym.authorship.update! reference: reference
-
-
-
-
 
         results = described_class.new(rank: 'All', author_name: 'Bolton').call
         expect(results.map(&:id)).to eq [atta.id]
@@ -140,31 +137,32 @@ describe Taxa::AdvancedSearch do
       end
 
       describe "shared setup..." do
-        before do
-          barry_bolton = create :author
-          barry = create :author_name, name: 'Barry', author: barry_bolton
+        let!(:barry_atta) { create_genus 'Barry_Atta' }
+        let!(:bolton_atta) { create_genus 'Bolton_Atta' }
+        let!(:barry_bolton) { create :author }
+        let!(:bolton_reference) do
           bolton = create :author_name, name: 'Bolton', author: barry_bolton
+          create :article_reference, author_names: [bolton], citation_year: '1977'
+        end
 
+        before do
+          barry = create :author_name, name: 'Barry', author: barry_bolton
           barry_reference = create :article_reference, author_names: [barry], citation_year: '1977'
-          @barry_atta = create_genus 'Barry_Atta'
-          @barry_atta.protonym.authorship.update! reference: barry_reference
-
-          @bolton_reference = create :article_reference, author_names: [bolton], citation_year: '1977'
-          @bolton_atta = create_genus 'Bolton_Atta'
-          @bolton_atta.protonym.authorship.update! reference: @bolton_reference
+          barry_atta.protonym.authorship.update! reference: barry_reference
+          bolton_atta.protonym.authorship.update! reference: bolton_reference
         end
 
         it "finds the taxa for the author's references that are part of citations in the protonym, even under different names" do
           results = described_class.new(rank: 'All', author_name: 'Bolton').call
-          expect(results.map(&:name_cache)).to match_array [@barry_atta.name_cache, @bolton_atta.name_cache]
+          expect(results.map(&:name_cache)).to match_array [barry_atta.name_cache, bolton_atta.name_cache]
         end
 
         it "handles year + author name" do
-          @bolton_reference.citation_year = 1987
-          @bolton_reference.save!
+          bolton_reference.citation_year = 1987
+          bolton_reference.save!
 
           results = described_class.new(rank: 'All', author_name: 'Bolton', year: "1987").call
-          expect(results.map(&:name_cache)).to match_array [@bolton_atta.name_cache]
+          expect(results.map(&:name_cache)).to match_array [bolton_atta.name_cache]
         end
       end
     end

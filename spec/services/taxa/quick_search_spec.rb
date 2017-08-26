@@ -48,12 +48,12 @@ describe Taxa::QuickSearch do
     end
 
     it "sorts results by name" do
-      %w(Lepti Lepta Lepte).each do |name|
-        create :subfamily, name: create(:name, name: name)
-      end
+      lepti = create :subfamily, name: create(:name, name: "Lepti")
+      lepta = create :subfamily, name: create(:name, name: "Lepta")
+      lepte = create :subfamily, name: create(:name, name: "Lepte")
 
       results = described_class.new('Lept', search_type: 'beginning_with').call
-      expect(results.map(&:name).map(&:to_s)).to eq ['Lepta', 'Lepte', 'Lepti']
+      expect(results).to eq [lepta, lepte, lepti]
     end
 
     describe "Finding full species name" do

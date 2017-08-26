@@ -8,7 +8,7 @@ describe NestedReference do
 
   describe "Validation" do
     it "is valid with these attributes" do
-      reference = NestedReference.new title: 'asdf',
+      reference = described_class.new title: 'asdf',
         author_names: [create(:author_name)],
         citation_year: '2010',
         nesting_reference: create(:reference),

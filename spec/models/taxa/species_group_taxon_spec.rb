@@ -6,7 +6,7 @@ describe SpeciesGroupTaxon do
   it "can have a subfamily" do
     genus = create_genus 'Afropone'
     create :species_group_taxon, name: create(:name, name: 'championi'), genus: genus
-    expect(SpeciesGroupTaxon.find_by_name('championi').subfamily).to eq genus.subfamily
+    expect(described_class.find_by_name('championi').subfamily).to eq genus.subfamily
   end
 
   it "doesn't have to have a subfamily" do
@@ -16,7 +16,7 @@ describe SpeciesGroupTaxon do
   it "can have a subgenus" do
     subgenus = create_subgenus
     taxon = create :species_group_taxon, subgenus: subgenus
-    expect(SpeciesGroupTaxon.find(taxon.id).subgenus).to eq subgenus
+    expect(described_class.find(taxon.id).subgenus).to eq subgenus
   end
 
   it "doesn't have to have a subgenus" do

@@ -68,7 +68,7 @@ describe Reference do
       end
 
       it "includes the author_names' suffix" do
-        reference = Reference.create! title: 'Ants',
+        reference = described_class.create! title: 'Ants',
           citation_year: '2010',
           author_names: [fisher_bl, ward_ps],
           author_names_suffix: ' (eds.)'
@@ -126,7 +126,7 @@ describe Reference do
   describe "#principal_author_last_name" do
     context "when there are no authors" do
       it "doesn't freak out" do
-        reference = Reference.create! title: 'title', citation_year: '1993'
+        reference = described_class.create! title: 'title', citation_year: '1993'
         expect(reference.principal_author_last_name).to be_nil
       end
     end
@@ -205,14 +205,14 @@ describe Reference do
     end
 
     it "doesn't truncate long fields" do
-      Reference.create! author_names: [an_author_name],
+      described_class.create! author_names: [an_author_name],
         editor_notes: 'e' * 1000,
         citation: 'c' * 2000,
         public_notes: 'n' * 1500,
         taxonomic_notes: 't' * 1700,
         title: 't' * 1900,
         citation_year: '2010'
-      reference = Reference.first
+      reference = described_class.first
 
       expect(reference.citation.size).to eq 2000
       expect(reference.editor_notes.size).to eq 1000
@@ -229,7 +229,7 @@ describe Reference do
         ward_reference = create :article_reference, author_names: [ward_ps, bolton_b]
         fisher_reference = create :article_reference, author_names: [fisher_bl, bolton_b]
 
-        results = Reference.sorted_by_principal_author_last_name
+        results = described_class.sorted_by_principal_author_last_name
         expect(results.map(&:id)).to eq [bolton_reference.id, fisher_reference.id, ward_reference.id]
       end
     end
@@ -241,7 +241,7 @@ describe Reference do
         # another possible reference
         create :article_reference, author_names: [create(:author_name, name: 'Warden, J.')]
 
-        results = Reference.with_principal_author_last_name 'Ward'
+        results = described_class.with_principal_author_last_name 'Ward'
         expect(results).to eq [possible_reference]
       end
     end
@@ -251,7 +251,7 @@ describe Reference do
         unreviewed = create :article_reference, review_state: "reviewing"
         create :article_reference, review_state: "reviewed"
 
-        expect(Reference.unreviewed).to eq [unreviewed]
+        expect(described_class.unreviewed).to eq [unreviewed]
       end
     end
   end

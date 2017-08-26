@@ -4,7 +4,7 @@ describe MergeAuthorsHelper do
   describe "#author_names_sentence" do
     it "handles a single item" do
       result = helper.author_names_sentence ['a']
-      expect(result).to eq %{<span>a</span>}
+      expect(result).to eq "<span>a</span>"
       expect(result).to be_html_safe
     end
 

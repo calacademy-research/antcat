@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Change, versioning: true do
   it "has a version" do
     genus = create_genus
-    change = Change.new
+    change = described_class.new
     change.save!
     change.reload
     create :version, item: genus, change_id: change.id
@@ -35,7 +35,7 @@ describe Change, versioning: true do
       end
 
       it "returns unreviewed changes" do
-        expect(Change.waiting).to eq [@unreviewed_change]
+        expect(described_class.waiting).to eq [@unreviewed_change]
       end
     end
   end

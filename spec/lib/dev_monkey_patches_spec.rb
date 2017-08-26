@@ -7,13 +7,13 @@ require "spec_helper"
 
 describe DevMonkeyPatches do
   before { allow($stdout).to receive :puts } # Suppress standard output.
-  before { allow(DevMonkeyPatches).to receive(:enable!).and_return :stubbed }
+  before { allow(described_class).to receive(:enable!).and_return :stubbed }
 
   context "when in production" do
     before { allow(Rails.env).to receive(:production?).and_return true }
 
     it "it cannot be extended" do
-      expect { DevMonkeyPatches.enable }.to raise_error /cannot/
+      expect { described_class.enable }.to raise_error /cannot/
     end
   end
 
@@ -21,18 +21,18 @@ describe DevMonkeyPatches do
     before { allow(Rails.env).to receive(:test?).and_return false }
 
     it "can be enabled" do
-      expect(DevMonkeyPatches.enable).to be :stubbed
+      expect(described_class.enable).to be :stubbed
     end
 
     it "can be suppressed with `NO_DEV_MONKEY_PATCHES=true`" do
       expect(ENV).to receive(:[]).with("NO_DEV_MONKEY_PATCHES").and_return "yes"
-      expect(DevMonkeyPatches.enable).to be nil
+      expect(described_class.enable).to be nil
     end
   end
 
   context "when in test" do
     it "it's not enabled by default" do
-      expect { DevMonkeyPatches.enable }.to raise_error /in test/
+      expect { described_class.enable }.to raise_error /in test/
     end
   end
 

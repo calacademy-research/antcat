@@ -4,14 +4,16 @@ describe Author do
   it { should be_versioned }
   it { should have_many :names }
 
-  describe "scopes.sorted_by_name" do
-    it "sorts by first author name" do
-      ward = create :author_name, name: 'Ward'
-      fisher_b_l = create :author_name, name: 'Fisher, B. L.'
-      fisher = create :author_name, name: 'Fisher', author: fisher_b_l.author
-      bolton = create :author_name, name: 'Bolton'
+  describe "scopes" do
+    describe ".sorted_by_name" do
+      it "sorts by first author name" do
+        ward = create :author_name, name: 'Ward'
+        fisher_b_l = create :author_name, name: 'Fisher, B. L.'
+        fisher = create :author_name, name: 'Fisher', author: fisher_b_l.author
+        bolton = create :author_name, name: 'Bolton'
 
-      expect(Author.sorted_by_name).to eq [bolton.author, fisher.author, ward.author]
+        expect(described_class.sorted_by_name).to eq [bolton.author, fisher.author, ward.author]
+      end
     end
   end
 
@@ -20,12 +22,12 @@ describe Author do
       bolton = create :author_name, name: 'Bolton'
       fisher = create :author_name, name: 'Fisher'
 
-      results = Author.find_by_names ['Bolton', 'Fisher']
+      results = described_class.find_by_names ['Bolton', 'Fisher']
       expect(results).to match_array [bolton.author, fisher.author]
     end
 
     it "handles empty lists" do
-      expect(Author.find_by_names([])).to eq []
+      expect(described_class.find_by_names([])).to eq []
     end
   end
 
@@ -33,15 +35,15 @@ describe Author do
     it "makes all the names of the passed in authors belong to the same author" do
       first_bolton_author = create(:author_name, name: 'Bolton, B').author
       second_bolton_author = create(:author_name, name: 'Bolton,B.').author
-      expect(Author.count).to eq 2
+      expect(described_class.count).to eq 2
       expect(AuthorName.count).to eq 2
 
       all_names = (first_bolton_author.names + second_bolton_author.names).uniq.sort
 
-      Author.merge [first_bolton_author, second_bolton_author]
+      described_class.merge [first_bolton_author, second_bolton_author]
       expect(all_names.all? { |name| name.author == first_bolton_author }).to be_truthy
 
-      expect(Author.count).to eq 1
+      expect(described_class.count).to eq 1
       expect(AuthorName.count).to eq 2
     end
   end

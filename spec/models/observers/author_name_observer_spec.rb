@@ -5,7 +5,7 @@ describe AuthorNameObserver do
 
   context "when an author name is changed" do
     it "is notified" do
-      expect_any_instance_of(AuthorNameObserver).to receive :after_update
+      expect_any_instance_of(described_class).to receive :after_update
       bolton.name = 'Fisher'
       bolton.save!
     end
@@ -25,7 +25,7 @@ describe AuthorNameObserver do
       ReferenceFormatterCache.populate bolton_reference2
       expect(bolton_reference2.reload.formatted_cache).not_to be_nil
 
-      AuthorNameObserver.instance.after_update bolton
+      described_class.instance.after_update bolton
 
       expect(bolton_reference1.reload.formatted_cache).to be_nil
       expect(bolton_reference2.reload.formatted_cache).to be_nil

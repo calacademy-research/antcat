@@ -5,7 +5,7 @@ class FormattersAdvancedSearchTextFormatterTestClass
 end
 
 describe Formatters::AdvancedSearchTextFormatter do
-  let(:formatter) { FormattersAdvancedSearchTextFormatterTestClass.new }
+  subject(:formatter) { FormattersAdvancedSearchTextFormatterTestClass.new }
 
   describe "#format" do
     it "formats in text style, rather than HTML" do
@@ -18,8 +18,8 @@ describe Formatters::AdvancedSearchTextFormatter do
       taxon = create_genus 'Atta', incertae_sedis_in: 'genus', nomen_nudum: true
       taxon.protonym.authorship.update reference: reference
 
-      string = formatter.format taxon
-      expect(string).to eq "Atta incertae sedis in genus, nomen nudum\n" \
+      results = formatter.format taxon
+      expect(results).to eq "Atta incertae sedis in genus, nomen nudum\n" \
         "Latreille, P. A. 1809. Atta. Science (1):3. DOI: 123   #{reference.id}\n\n"
     end
   end

@@ -5,7 +5,7 @@ describe PlaceObserver do
 
   context "when a place is changed" do
     it "is notified" do
-      expect_any_instance_of(PlaceObserver).to receive :before_update
+      expect_any_instance_of(described_class).to receive :before_update
       place.name = 'Istanbul'
       place.save!
     end
@@ -19,7 +19,7 @@ describe PlaceObserver do
       references.each { |reference| ReferenceFormatterCache.populate reference }
       references.each { |reference| expect(reference.formatted_cache).not_to be_nil }
 
-      PlaceObserver.instance.before_update place
+      described_class.instance.before_update place
 
       expect(references[0].reload.formatted_cache).to be_nil
       expect(references[1].reload.formatted_cache).to be_nil

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ReferenceDecorator do
-  let(:nil_decorator) { ReferenceDecorator.new nil }
+  let(:nil_decorator) { described_class.new nil }
   let(:journal) { create :journal, name: "Neue Denkschriften" }
   let(:author_name) { create :author_name, name: "Forel, A." }
 
@@ -101,9 +101,9 @@ describe ReferenceDecorator do
         journal: journal,
         series_volume_issue: "26",
         pagination: "1-452"
-      string = reference.decorate.formatted
-      expect(string).to be_html_safe
-      expect(string).to eq 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
+      results = reference.decorate.formatted
+      expect(results).to be_html_safe
+      expect(results).to eq 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
 
     it "separates the publisher and the pagination with a comma" do
@@ -301,49 +301,46 @@ describe ReferenceDecorator do
   end
 
   context "when there are no authors" do
-    it "doesn't have a space at the beginning" do
-      reference = create :unknown_reference,
+    let(:reference) do
+      create :unknown_reference,
         citation_year: '2010d',
         author_names: [],
         citation: 'Ants',
         title: 'Tapinoma'
+    end
+
+    it "doesn't have a space at the beginning" do
       expect(reference.decorate.formatted).to eq "2010d. Tapinoma. Ants."
     end
   end
 
   describe "formatting the date" do
     it "uses ISO 8601 format for calendar dates" do
-      make '20101213'
-      check ' [2010-12-13]'
+      make_and_check_date '20101213', ' [2010-12-13]'
     end
 
     it "handles years without months and days" do
-      make '201012'
-      check ' [2010-12]'
+      make_and_check_date '201012', ' [2010-12]'
     end
 
     it "handles years with months but without days" do
-      make '2010'
-      check ' [2010]'
+      make_and_check_date '2010', ' [2010]'
     end
 
     it "handles nil dates" do
-      make nil
-      check ''
+      make_and_check_date nil, ''
     end
 
     it "handles missing dates" do
-      make ''
-      check ''
+      make_and_check_date '', ''
     end
 
     it "handles dates with other symbols/characters" do
-      make '201012>'
-      check ' [2010-12&gt;]'
+      make_and_check_date '201012>', ' [2010-12&gt;]'
     end
 
-    def make date
-      @reference = create :article_reference,
+    def make_and_check_date date, expected
+      reference = create :article_reference,
         author_names: [author_name],
         citation_year: "1874",
         title: "Les fourmis de la Suisse.",
@@ -351,19 +348,17 @@ describe ReferenceDecorator do
         series_volume_issue: "26",
         pagination: "1-452.",
         date: date
-    end
 
-    def check expected
-      expect(@reference.decorate.formatted)
+      expect(reference.decorate.formatted)
         .to eq "Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.#{expected}"
     end
   end
 
   describe "#format_italics" do
     it "replaces asterisks and bars with italics" do
-      string = nil_decorator.send :format_italics, "|Hymenoptera| *Formicidae*".html_safe
-      expect(string).to eq "<i>Hymenoptera</i> <i>Formicidae</i>"
-      expect(string).to be_html_safe
+      results = nil_decorator.send :format_italics, "|Hymenoptera| *Formicidae*".html_safe
+      expect(results).to eq "<i>Hymenoptera</i> <i>Formicidae</i>"
+      expect(results).to be_html_safe
     end
 
     context "string isn't html_safe" do
@@ -439,21 +434,22 @@ end
 describe "ReferenceDecorator" do
   describe "#inline_citation" do
     let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
-    before do
-      science = create :journal, name: 'Science'
-      @reference = create :article_reference,
+    let!(:reference) do
+      create :article_reference,
         author_names: [latreille],
         citation_year: '1809',
         title: "*Atta*",
-        journal: science,
+        journal: create(:journal, name: 'Science'),
         series_volume_issue: '(1)',
         pagination: '3'
-      allow(@reference).to receive(:url).and_return 'example.com'
     end
 
+    before { allow(reference).to receive(:url).and_return 'example.com' }
+
     it "creates a link to the reference" do
-      allow(@reference).to receive(:downloadable?).and_return true
-      expect(@reference.decorate.inline_citation).to eq(
+      allow(reference).to receive(:downloadable?).and_return true
+
+      expect(reference.decorate.inline_citation).to eq(
         %{<span class="reference_keey_and_expansion">} +
           %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." class="reference_keey" href="#">Latreille, 1809</a>} +
           %{<span class="reference_keey_expansion">} +
@@ -462,7 +458,7 @@ describe "ReferenceDecorator" do
             %{<a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
             %{<a href="example.com">PDF</a>} +
             %{ } +
-            %{<a href="/references/#{@reference.id}">#{@reference.id}</a>} +
+            %{<a href="/references/#{reference.id}">#{reference.id}</a>} +
           %{</span>} +
         %{</span>}
       )
@@ -471,10 +467,11 @@ describe "ReferenceDecorator" do
     context "when expansion is not desired" do
       context "PDF is not available to the user" do
         it "doesn't include the PDF link" do
-          allow(@reference).to receive(:downloadable?).and_return false
-          expect(@reference.decorate.antweb_version_of_inline_citation).to eq(
+          allow(reference).to receive(:downloadable?).and_return false
+
+          expect(reference.decorate.antweb_version_of_inline_citation).to eq(
             %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
-            %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
+            %{href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>} +
             %{ <a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>}
           )
         end
@@ -482,10 +479,11 @@ describe "ReferenceDecorator" do
 
       context "PDF is available to the user" do
         it "includes the PDF link" do
-          allow(@reference).to receive(:downloadable?).and_return true
-          expect(@reference.decorate.antweb_version_of_inline_citation).to eq(
+          allow(reference).to receive(:downloadable?).and_return true
+
+          expect(reference.decorate.antweb_version_of_inline_citation).to eq(
             %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
-            %{href="http://antcat.org/references/#{@reference.id}">Latreille, 1809</a>} +
+            %{href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>} +
             %{ <a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>} +
             %{ <a href="example.com">PDF</a>}
           )

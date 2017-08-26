@@ -8,17 +8,15 @@ describe Genus do
 
   it "can have a tribe" do
     expect(genus_with_tribe.tribe).to eq tribe # trigger FactoryGirl
-    expect(Genus.find_by_name('Atta').tribe).to eq tribe
+    expect(described_class.find_by_name('Atta').tribe).to eq tribe
   end
 
   it "can have species, which are its children" do
-    %w(robusta saltensis).each do |name|
-      create :species, name: create(:name, name: name), genus: genus
-    end
+    robusta = create :species, name: create(:name, name: "robusta"), genus: genus
+    saltensis = create :species, name: create(:name, name: "saltensis"), genus: genus
 
-    atta = Genus.find_by_name 'Atta'
-    expect(atta.species.map(&:name).map(&:to_s)).to match_array ['robusta', 'saltensis']
-    expect(atta.children).to eq atta.species
+    expect(genus.species).to eq [robusta, saltensis]
+    expect(genus.children).to eq genus.species
   end
 
   it "can have subspecies" do
@@ -29,78 +27,95 @@ describe Genus do
   it "should use the species's' genus, if nec." do
     species = create :species, genus: genus
     create :subspecies, species: species, genus: nil
+
     expect(genus.subspecies.count).to eq 1
   end
 
   it "can have subgenera" do
-    %w(robusta saltensis).each do |name|
-      create :subgenus, name: create(:name, name: name), genus: genus
-    end
+    robusta = create :subgenus, name: create(:name, name: "robusta"), genus: genus
+    saltensis = create :subgenus, name: create(:name, name: "saltensis"), genus: genus
 
-    atta = Genus.find_by_name 'Atta'
-    subgenera_names = atta.subgenera.map(&:name).map(&:to_s)
-    expect(subgenera_names).to match_array ['robusta', 'saltensis']
+    expect(genus.subgenera).to eq [robusta, saltensis]
   end
 
   describe "#statistics" do
-    it "handles 0 children" do
-      expect(genus.statistics).to eq({})
+    context "when 0 children" do
+      specify { expect(genus.statistics).to eq({}) }
     end
 
-    it "handles 1 valid species" do
-      create :species, genus: genus
-      expect(genus.statistics).to eq extant: { species: { 'valid' => 1 } }
+    context "when 1 valid species" do
+      before { create :species, genus: genus }
+
+      specify do
+        expect(genus.statistics).to eq extant: { species: { 'valid' => 1 } }
+      end
     end
 
-    it "ignores original combinations" do
-      create :species, genus: genus
-      create :species, status: 'original combination', genus: genus
+    context "when there are original combinations" do
+      before do
+        create :species, genus: genus
+        create :species, status: 'original combination', genus: genus
+      end
 
-      expect(genus.statistics).to eq extant: { species: { 'valid' => 1 } }
+      it "ignores the original combinations" do
+        expect(genus.statistics).to eq extant: { species: { 'valid' => 1 } }
+      end
     end
 
-    it "handles 1 valid species and 2 synonyms" do
-      create :species, genus: genus
-      2.times { create :species, genus: genus, status: 'synonym' }
+    context "when 1 valid species and 2 synonyms" do
+      before do
+        create :species, genus: genus
+        2.times { create :species, genus: genus, status: 'synonym' }
+      end
 
-      expect(genus.statistics).to eq extant: {
-        species: { 'valid' => 1, 'synonym' => 2 }
-      }
-    end
-
-    it "handles 1 valid species with 2 valid subspecies" do
-      species = create :species, genus: genus
-      2.times { create :subspecies, species: species, genus: genus }
-
-      expect(genus.statistics).to eq extant: {
-        species: { 'valid' => 1 }, subspecies: { 'valid' => 2 }
-      }
-    end
-
-    it "can differentiate extinct species and subspecies" do
-      species = create :species, genus: genus
-      fossil_species = create :species, genus: genus, fossil: true
-      create :subspecies, genus: genus, species: species, fossil: true
-      create :subspecies, genus: genus, species: species
-      create :subspecies, genus: genus, species: fossil_species, fossil: true
-
-      expect(genus.statistics).to eq(
-        extant: {
-          species: { 'valid' => 1 },
-          subspecies: {'valid' => 1 }
-        },
-        fossil: {
-          species: { 'valid' => 1 },
-          subspecies: { 'valid' => 2 }
+      specify do
+        expect(genus.statistics).to eq extant: {
+          species: { 'valid' => 1, 'synonym' => 2 }
         }
-      )
+      end
+    end
+
+    context "when 1 valid species with 2 valid subspecies" do
+      before do
+        species = create :species, genus: genus
+        2.times { create :subspecies, species: species, genus: genus }
+      end
+
+      specify do
+        expect(genus.statistics).to eq extant: {
+          species: { 'valid' => 1 }, subspecies: { 'valid' => 2 }
+        }
+      end
+    end
+
+    context "when there are extinct species and subspecies" do
+      before do
+        species = create :species, genus: genus
+        fossil_species = create :species, genus: genus, fossil: true
+        create :subspecies, genus: genus, species: species, fossil: true
+        create :subspecies, genus: genus, species: species
+        create :subspecies, genus: genus, species: fossil_species, fossil: true
+      end
+
+      it "can differentiate extinct species and subspecies" do
+        expect(genus.statistics).to eq(
+          extant: {
+            species: { 'valid' => 1 },
+            subspecies: {'valid' => 1 }
+          },
+          fossil: {
+            species: { 'valid' => 1 },
+            subspecies: { 'valid' => 2 }
+          }
+        )
+      end
     end
   end
 
   describe "#without_subfamily" do
     it "returns genera with no subfamily" do
       cariridris = create :genus, subfamily: nil
-      expect(Genus.without_subfamily.all).to eq [cariridris]
+      expect(described_class.without_subfamily.all).to eq [cariridris]
     end
   end
 
@@ -109,58 +124,62 @@ describe Genus do
       create :genus, tribe: tribe, subfamily: tribe.subfamily
       atta = create :genus, subfamily: tribe.subfamily, tribe: nil
 
-      expect(Genus.without_tribe.all).to eq [atta]
+      expect(described_class.without_tribe.all).to eq [atta]
     end
   end
 
   describe "#siblings" do
-    it "returns itself when there are no others" do
-      expect(genus_with_tribe.siblings).to eq [genus_with_tribe]
+    context "when there are no others" do
+      it "returns itself" do
+        expect(genus_with_tribe.siblings).to eq [genus_with_tribe]
+      end
     end
 
-    it "returns itself and its tribe's other genera" do
-      genus = create :genus, tribe: tribe, subfamily: tribe.subfamily
-      another_genus = create :genus, tribe: tribe, subfamily: tribe.subfamily
+    context "when there are other genera in the same tribe" do
+      let(:genus) { create :genus, tribe: tribe, subfamily: tribe.subfamily }
+      let(:another_genus) { create :genus, tribe: tribe, subfamily: tribe.subfamily }
 
-      expect(genus.siblings).to match_array [genus, another_genus]
+      it "returns itself and its tribe's other genera" do
+        expect(genus.siblings).to match_array [genus, another_genus]
+      end
     end
 
     context "when there's no subfamily" do
-      it "returns all the genera with no subfamilies" do
-        genus = create :genus, subfamily: nil, tribe: nil
-        another_genus = create :genus, subfamily: nil, tribe: nil
+      let(:genus) { create :genus, subfamily: nil, tribe: nil }
+      let(:another_genus) { create :genus, subfamily: nil, tribe: nil }
 
+      it "returns all the genera with no subfamilies" do
         expect(genus.siblings).to match_array [genus, another_genus]
       end
     end
 
     context "when there's no tribe" do
-      it "returns the other genera in its subfamily without tribes" do
-        create :genus, tribe: tribe, subfamily: subfamily
-        genus = create :genus, subfamily: subfamily, tribe: nil
-        another_genus = create :genus, subfamily: subfamily, tribe: nil
+      let(:genus) { create :genus, subfamily: subfamily, tribe: nil }
+      let(:another_genus) { create :genus, subfamily: subfamily, tribe: nil }
 
+      before { create :genus, tribe: tribe, subfamily: subfamily }
+
+      it "returns the other genera in its subfamily without tribes" do
         expect(genus.siblings).to match_array [genus, another_genus]
       end
     end
   end
 
   describe "#descendants" do
-    it "returns an empty array if there are none" do
-      expect(genus.descendants).to eq []
+    context "when there are no descendants" do
+      it "returns an empty array" do
+        expect(genus.descendants).to eq []
+      end
     end
 
-    it "returns all the species" do
-      species = create_species genus: genus
-      expect(genus.descendants).to eq [species]
-    end
+    context "when there are descendants" do
+      let(:species) { create_species genus: genus }
+      let(:subgenus) { create_subgenus genus: genus }
+      let(:subspecies) { create_subspecies genus: genus, species: species }
 
-    it "returns all the species, subspecies and subgenera of the genus" do
-      species = create_species genus: genus
-      subgenus = create_subgenus genus: genus
-      subspecies = create_subspecies genus: genus, species: species
-
-      expect(genus.descendants).to match_array [species, subgenus, subspecies]
+      it "returns all the species, subspecies and subgenera of the genus" do
+        expect(genus.descendants).to match_array [species, subgenus, subspecies]
+      end
     end
   end
 

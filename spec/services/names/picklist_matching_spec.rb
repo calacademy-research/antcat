@@ -34,15 +34,19 @@ describe Names::PicklistMatching do
       brachyponera = create_genus 'Brachyponera'
 
       expect(described_class.new('bera').call).to eq [
-        { id: bothroponera.id,
+        {
+          id: bothroponera.id,
           name: bothroponera.name,
           label: '<b><i>Bothroponera</i></b>',
-          value: bothroponera.name },
-        { id: brachyponera.name.id,
+          value: bothroponera.name
+        },
+        {
+          id: brachyponera.name.id,
           name: brachyponera.name.name,
           label: '<b><i>Brachyponera</i></b>',
           taxon_id: brachyponera.id,
-          value: brachyponera.name.name },
+          value: brachyponera.name.name
+        },
       ]
     end
 

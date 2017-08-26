@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ReferenceMatcher do
-  let(:matcher) { ReferenceMatcher.new }
+  subject(:matcher) { described_class.new }
 
   describe "#match" do
     let!(:match) { create_match 'Ward' }
@@ -29,6 +29,7 @@ describe ReferenceMatcher do
   context "an author last name with an apostrophe in it (regression)" do
     let!(:match) { create_match "Arnol'di, G." }
     let(:target) { build_target "Arnol'di" }
+
     before { expect(target).to receive(:<=>).and_return 0.10 }
 
     it "handles it" do

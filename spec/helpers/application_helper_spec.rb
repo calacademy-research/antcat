@@ -30,23 +30,23 @@ describe ApplicationHelper do
   describe "italicization" do
     describe "#italicize" do
       it "adds <i> tags" do
-        string = helper.italicize 'Atta'
-        expect(string).to eq '<i>Atta</i>'
-        expect(string).to be_html_safe
+        results = helper.italicize 'Atta'
+        expect(results).to eq '<i>Atta</i>'
+        expect(results).to be_html_safe
       end
     end
 
     describe "#unitalicize" do
       it "removes <i> tags" do
-        string = helper.unitalicize('Attini <i>Atta major</i> r.'.html_safe)
-        expect(string).to eq 'Attini Atta major r.'
-        expect(string).to be_html_safe
+        results = helper.unitalicize('Attini <i>Atta major</i> r.'.html_safe)
+        expect(results).to eq 'Attini Atta major r.'
+        expect(results).to be_html_safe
       end
 
       it "handles multiple <i> tags" do
-        string = helper.unitalicize('Attini <i>Atta</i> <i>major</i> r.'.html_safe)
-        expect(string).to eq 'Attini Atta major r.'
-        expect(string).to be_html_safe
+        results = helper.unitalicize('Attini <i>Atta</i> <i>major</i> r.'.html_safe)
+        expect(results).to eq 'Attini Atta major r.'
+        expect(results).to be_html_safe
       end
 
       it "raises if called on unsafe strings" do
