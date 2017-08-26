@@ -21,3 +21,4 @@ end
 __END__
 description: From %github71.
 tags: [regression-test]
+topic_areas: [catalog]

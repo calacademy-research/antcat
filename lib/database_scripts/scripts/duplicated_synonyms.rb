@@ -31,15 +31,10 @@ class DatabaseScripts::Scripts::DuplicatedSynonyms
       end
     end
   end
-
-  private
-    def synonym_link synonym
-      "<a href='/synonyms/#{synonym.id}'>#{synonym.id}</a>"
-    end
 end
 
 __END__
 description: >
   Based on [this script](https://github.com/calacademy-research/antcat/blob/0b1930a3e161e756e3c785bd32d6e54867cc480c/lib/dedupe_synonyms.rb),
   which destroys all synonyms listed here.
-topic_areas: [catalog]
+topic_areas: [synonyms]

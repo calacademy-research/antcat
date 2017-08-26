@@ -19,4 +19,4 @@ class DatabaseScripts::Scripts::LocalityButNoBiogeographicRegion
 end
 
 __END__
-topic_areas: [catalog]
+topic_areas: [types]

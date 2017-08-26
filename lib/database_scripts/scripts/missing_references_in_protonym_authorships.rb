@@ -41,4 +41,4 @@ description: >
   Click on the citation in the citation column to search
   for a replacement using AntCat's reference search form.
 
-topic_areas: [catalog, references]
+topic_areas: [references]

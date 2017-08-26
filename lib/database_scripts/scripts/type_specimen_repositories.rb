@@ -18,5 +18,4 @@ end
 __END__
 description: >
   This script is just lists of all taxa with a `type_specimen_repository`. See %github207.
-tags: [new!]
 topic_areas: [types]

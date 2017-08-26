@@ -21,5 +21,4 @@ class DatabaseScripts::Scripts::JournalsByReferenceCount
 end
 
 __END__
-tags: [new!]
 topic_areas: [references]
