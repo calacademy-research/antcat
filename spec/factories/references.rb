@@ -1,31 +1,4 @@
 FactoryGirl.define do
-  factory :author
-
-  factory :author_name do
-    sequence(:name) { |n| "Fisher#{n}, B.L." }
-    author
-  end
-
-  factory :reference_author_name do
-    association :reference
-    association :author_name
-  end
-
-  factory :journal do
-    sequence(:name) { |n| "Ants#{n}" }
-  end
-
-  factory :publisher do
-    name 'Wiley'
-    place
-  end
-
-  factory :place do
-    name 'New York'
-  end
-
-  factory :reference_document
-
   factory :reference do
     sequence(:title) { |n| "Ants are my life#{n}" }
     sequence(:citation_year) { |n| "201#{n}d" }
