@@ -2,13 +2,6 @@ FactoryGirl.define do
   factory :change do
     change_type "create"
   end
-
-  factory :version, class: PaperTrail::Version do
-    item_type 'Taxon'
-    event 'create'
-    change_id 0
-    association :whodunnit, factory: :user
-  end
 end
 
 def setup_version taxon, whodunnit = nil

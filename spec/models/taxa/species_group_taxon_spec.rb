@@ -36,6 +36,8 @@ describe SpeciesGroupTaxon do
   end
 
   describe "#inherit_attributes_for_new_combination" do
+    include RefactorTaxonFactoriesHelpers
+
     let(:new_comb_parent) { build_stubbed :genus }
     let(:new_comb) { build_new_taxon :species }
     let(:old_comb) do
