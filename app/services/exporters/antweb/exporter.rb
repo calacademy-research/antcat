@@ -1,6 +1,8 @@
 # Export via `rake antweb:export`.
 # This class will grow for some more time while decoupling the export
 # code from the rest of the code.
+#
+# TODO remove most CSS throughout `Exporters::Antweb`.
 
 include ActionView::Helpers::TagHelper # For `#content_tag`.
 include ActionView::Context # For `#content_tag`.
@@ -33,6 +35,7 @@ class Exporters::Antweb::Exporter
         Taxon.where(id: chunk)
           .order("field(taxa.id, #{chunk.join(',')})")
           .joins(protonym: [{authorship: :reference}])
+          .includes(protonym: [{authorship: :reference}])
           .each do |taxon|
           begin
             if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
@@ -214,21 +217,15 @@ class Exporters::Antweb::Exporter
     end
 
     def export_history taxon
-      $use_ant_web_formatter = true # TODO remove
-
-      begin
-        taxon = taxon.decorate
-        return content_tag :div, class: 'antcat_taxon' do
-          content = ''.html_safe
-          content << taxon.statistics(include_invalid: false)
-          content << taxon.genus_species_header_notes_taxt
-          content << taxon.headline
-          content << export_history_items(taxon)
-          content << taxon.child_lists
-          content << export_reference_sections(taxon)
-        end
-      ensure
-        $use_ant_web_formatter = false
+      taxon = taxon.decorate
+      content_tag :div, class: 'antcat_taxon' do
+        content = ''.html_safe
+        content << taxon.statistics(include_invalid: false)
+        content << genus_species_header_notes_taxt(taxon)
+        content << taxon.headline(use_ant_web_formatter: true)
+        content << export_history_items(taxon)
+        content << taxon.child_lists(use_ant_web_formatter: true)
+        content << export_reference_sections(taxon)
       end
     end
 
@@ -238,5 +235,12 @@ class Exporters::Antweb::Exporter
 
     def export_reference_sections taxon
       Exporters::Antweb::ExportReferenceSections.new(taxon).reference_sections
+    end
+
+    def genus_species_header_notes_taxt taxon
+      return unless taxon.genus_species_header_notes_taxt.present?
+      content_tag :div,
+        TaxtPresenter[taxon.genus_species_header_notes_taxt].to_antweb,
+        class: 'genus_species_header_notes_taxt'
     end
 end

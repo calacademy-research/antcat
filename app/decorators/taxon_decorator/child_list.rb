@@ -1,12 +1,10 @@
 class TaxonDecorator::ChildList
   include ActionView::Helpers
   include ActionView::Context
-  include ApplicationHelper
-  include RefactorHelper
-  include CatalogHelper
 
-  def initialize taxon
+  def initialize taxon, use_ant_web_formatter: false
     @taxon = taxon
+    @use_ant_web_formatter = use_ant_web_formatter
   end
 
   def child_lists
@@ -104,5 +102,18 @@ class TaxonDecorator::ChildList
 
     def child_list_items children
       children.map { |child| link_to_taxon(child) }.join(', ').html_safe
+    end
+
+    # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
+    def antweb?
+      @use_ant_web_formatter
+    end
+
+    def link_to_taxon taxon
+      if antweb?
+        Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
+      else
+        taxon.decorate.link_to_taxon
+      end
     end
 end

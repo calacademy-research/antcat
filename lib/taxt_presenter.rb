@@ -2,7 +2,6 @@
 # such as "hey {ref 123}") to something that can be read.
 
 class TaxtPresenter
-  include ApplicationHelper # For `#add_period_if_necessary`.
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper
 
@@ -20,12 +19,9 @@ class TaxtPresenter
   # Parses "example {tax 429361}"
   # into   "example Melophorini"
   def to_text
-    parsed = parse :to_text
-    # TODO see if we can push `add_period_if_necessary` to the consumer.
-    add_period_if_necessary parsed
+    parse :to_text
   end
 
-  # Not used, because we're still relying on `$use_ant_web_formatter`.
   def to_antweb
     parse :to_antweb
   end
@@ -35,7 +31,6 @@ class TaxtPresenter
       return '' unless @taxt.present?
 
       @format = format
-      maybe_enable_antweb_quirk
 
       parse_refs!
       parse_nams!
@@ -89,10 +84,6 @@ class TaxtPresenter
           warn_about_non_existing_id "TAXON", $1
         end
       end
-    end
-
-    def maybe_enable_antweb_quirk
-      @format = :to_antweb if $use_ant_web_formatter
     end
 
     def warn_about_non_existing_id klass, id

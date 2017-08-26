@@ -28,19 +28,12 @@ class TaxonDecorator < ApplicationDecorator
     helpers.content_tag :div, content, class: 'statistics'
   end
 
-  def headline
-    TaxonDecorator::Headline.new(taxon).headline
+  def headline use_ant_web_formatter: false
+    TaxonDecorator::Headline.new(taxon, use_ant_web_formatter: use_ant_web_formatter).headline
   end
 
-  def child_lists
-    TaxonDecorator::ChildList.new(taxon).child_lists
-  end
-
-  def genus_species_header_notes_taxt
-    return unless taxon.genus_species_header_notes_taxt.present?
-    helpers.content_tag :div,
-      TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html,
-      class: 'genus_species_header_notes_taxt'
+  def child_lists use_ant_web_formatter: false
+    TaxonDecorator::ChildList.new(taxon, use_ant_web_formatter: use_ant_web_formatter).child_lists
   end
 
   def taxon_status

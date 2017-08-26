@@ -3,12 +3,10 @@ class TaxonDecorator::Headline
   include ActionView::Helpers
   include ActionView::Context
   include ApplicationHelper
-  include CatalogHelper
 
-  include RefactorHelper
-
-  def initialize taxon
+  def initialize taxon, use_ant_web_formatter: false
     @taxon = taxon
+    @use_ant_web_formatter = use_ant_web_formatter
   end
 
   def headline
@@ -79,7 +77,11 @@ class TaxonDecorator::Headline
     end
 
     def headline_type_taxt taxt
-      add_period_if_necessary TaxtPresenter[taxt].to_html
+      if antweb?
+        add_period_if_necessary TaxtPresenter[taxt].to_antweb
+      else
+        add_period_if_necessary TaxtPresenter[taxt].to_html
+      end
     end
 
     def headline_biogeographic_region
@@ -123,7 +125,15 @@ class TaxonDecorator::Headline
       string = link_to_reference authorship.reference
       string << ": #{authorship.pages}" if authorship.pages.present?
       string << " (#{authorship.forms})" if authorship.forms.present?
-      string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html if authorship.notes_taxt.present?
+
+      if authorship.notes_taxt.present?
+        if antweb?
+          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_antweb
+        else
+          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html
+        end
+      end
+
       content_tag :span, string
     end
 
@@ -135,6 +145,40 @@ class TaxonDecorator::Headline
 
     def headline_notes
       return unless @taxon.headline_notes_taxt.present?
-      TaxtPresenter[@taxon.headline_notes_taxt].to_html
+      if antweb?
+        TaxtPresenter[@taxon.headline_notes_taxt].to_antweb
+      else
+        TaxtPresenter[@taxon.headline_notes_taxt].to_html
+      end
+    end
+
+    # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
+    def antweb?
+      @use_ant_web_formatter
+    end
+
+    # TODO rename.
+    def link_to_reference reference
+      if antweb?
+        reference.decorate.antweb_version_of_inline_citation
+      else
+        reference.decorate.inline_citation
+      end
+    end
+
+    def link_to_other_site
+      if antweb?
+        Exporters::Antweb::Exporter.antcat_taxon_link @taxon
+      else
+        link_to_antweb @taxon
+      end
+    end
+
+    def link_to_taxon taxon
+      if antweb?
+        Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
+      else
+        taxon.decorate.link_to_taxon
+      end
     end
 end
