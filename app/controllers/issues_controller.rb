@@ -59,22 +59,11 @@ class IssuesController < ApplicationController
   end
 
   def autocomplete
-    q = params[:q] || ''
-
-    # See if we have an exact ID match.
-    search_results = if q =~ /^\d+ ?$/
-                       id_matches_q = Issue.find_by id: q
-                       [id_matches_q] if id_matches_q
-                     end
-
-    search_results ||= Issue.where("title LIKE ?", "%#{q}%")
+    search_query = params[:q] || ''
 
     respond_to do |format|
       format.json do
-        results = search_results.map do |issue|
-          { id: issue.id, title: issue.title, status: issue.decorate.format_status }
-        end
-        render json: results
+        render json: Autocomplete::Issues.new(search_query).call
       end
     end
   end

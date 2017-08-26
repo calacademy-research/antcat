@@ -42,6 +42,7 @@ describe CatalogController do
     end
   end
 
+  # TODO move to service's spec.
   describe "#autocomplete" do
     it "works" do
       create_genus 'Atta'

@@ -81,37 +81,6 @@ describe AuthorName do
    end
   end
 
-  describe "#search" do
-    it "matches by prefix" do
-      described_class.create! name: 'Bolton', author: author
-      described_class.create! name: 'Fisher', author: author
-
-      expect(described_class.search 'Bol').to eq ['Bolton']
-    end
-
-    it "matches substrings" do
-      described_class.create! name: 'Bolton', author: author
-      described_class.create! name: 'Fisher', author: author
-
-      expect(described_class.search 'ol').to eq ['Bolton']
-    end
-
-    it "returns authors in order of most recently used" do
-      ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
-        described_class.create! name: name, author: author
-      end
-      reference = create :reference, author_names: [described_class.find_by(name: 'Most Recent')]
-      ReferenceAuthorName.create! created_at: Time.now - 5,
-        author_name: described_class.find_by(name: 'Recent'),
-        reference: reference
-      ReferenceAuthorName.create! created_at: Time.now - 10,
-        author_name: described_class.find_by(name: 'Old'),
-        reference: reference
-
-      expect(described_class.search).to eq ['Most Recent', 'Recent', 'Old', 'Never Used']
-    end
-  end
-
   describe "#last_name and #first_name_and_initials" do
     it "simply returns the name if there's only one word" do
       author_name = described_class.new name: 'Bolton'

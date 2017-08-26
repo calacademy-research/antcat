@@ -179,24 +179,9 @@ class ReferencesController < ApplicationController
   def linkable_autocomplete
     search_query = params[:q] || ''
 
-    # TODO create concern? There's similar logic in other controllers.
-    # See if we have an exact ID match.
-    search_results =  if search_query =~ /^\d{6} ?$/
-                        id_matches_q = Reference.find_by id: search_query
-                        [id_matches_q] if id_matches_q
-                      end
-    search_results ||= Reference.fulltext_search_light search_query
-
     respond_to do |format|
       format.json do
-        results = search_results.map do |reference|
-          { id: reference.id,
-            author: reference.author_names_string,
-            year: reference.citation_year,
-            title: reference.decorate.format_title }
-        end
-
-        render json: results
+        render json: Autocomplete::LinkableReferences.new(search_query).call
       end
     end
   end
@@ -204,31 +189,9 @@ class ReferencesController < ApplicationController
   def autocomplete
     search_query = params[:q] || ''
 
-    search_options = {}
-    keyword_params = Reference.extract_keyword_params search_query
-
-    search_options[:reference_type] = :nomissing
-    search_options[:items_per_page] = 5
-    search_options.merge! keyword_params
-    search_results = Reference.fulltext_search search_options
-
     respond_to do |format|
       format.json do
-        results = search_results.map do |reference|
-          search_query = if keyword_params.size == 1 # size 1 = no keyword params were matched
-                           reference.title
-                         else
-                           format_autosuggest_keywords reference, keyword_params
-                         end
-          {
-            search_query: search_query,
-            title: reference.title,
-            author: reference.author_names_string,
-            year: reference.citation_year
-          }
-        end
-
-        render json: results
+        render json: Autocomplete::References.new(search_query).call
       end
     end
   end
@@ -255,95 +218,8 @@ class ReferencesController < ApplicationController
       DefaultReference.set session, reference
     end
 
-    # TODO probably extract to another infamous class.
     def save
-      Reference.transaction do
-        clear_document_params_if_necessary
-        set_pagination
-        clear_nesting_reference_id unless @reference.kind_of? NestedReference
-        parse_author_names_string
-        set_journal if @reference.kind_of? ArticleReference
-        set_publisher if @reference.kind_of? BookReference
-
-        # Set attributes to make sure they're persisted in the form.
-        @reference.attributes = params[:reference]
-
-        # Raise if there are errors -- #save! clears the errors
-        # before validating, so we need to manually raise here.
-        raise ActiveRecord::Rollback if @reference.errors.present?
-
-        # TODO maybe move to a callback, but maybe not.
-        unless params[:possible_duplicate].present?
-          if @reference.check_for_duplicate
-            @possible_duplicate = true
-            raise ActiveRecord::Rollback
-          end
-        end
-
-        @reference.save!
-        set_document_host
-        make_default_reference @reference if params[:make_default]
-        return true
-      end
-    rescue ActiveRecord::RecordInvalid
-      return false
-    end
-
-    def set_pagination
-      params[:reference][:pagination] =
-        case @reference
-        when ArticleReference then params[:article_pagination]
-        when BookReference    then params[:book_pagination]
-        else                       nil
-        end
-    end
-
-    def set_document_host
-      @reference.document_host = request.host
-    end
-
-    def parse_author_names_string
-      author_names_and_suffix = @reference.parse_author_names_and_suffix params[:reference].delete(:author_names_string)
-      @reference.author_names.clear
-      params[:reference][:author_names] = author_names_and_suffix[:author_names]
-      params[:reference][:author_names_suffix] = author_names_and_suffix[:author_names_suffix]
-    end
-
-    def set_journal
-      journal_name = params[:reference][:journal_name]
-
-      # Set journal_name for the form.
-      @reference.journal_name = journal_name
-
-      # Set nil or valid publisher in the params.
-      journal = Journal.find_or_create_by(name: journal_name)
-      params[:reference][:journal] = journal.valid? ? journal : nil
-    end
-
-    def set_publisher
-      publisher_string = params[:reference][:publisher_string]
-
-      # Set publisher_string for the form.
-      @reference.publisher_string = publisher_string
-
-      # Add error or set valid publisher in the params.
-      publisher = Publisher.create_with_place_form_string publisher_string
-      if publisher.nil? && publisher_string.present?
-        @reference.errors.add :publisher_string,
-          "couldn't be parsed. In general, use the format 'Place: Publisher'."
-      else
-        params[:reference][:publisher] = publisher
-      end
-    end
-
-    def clear_nesting_reference_id
-      params[:reference][:nesting_reference_id] = nil
-    end
-
-    def clear_document_params_if_necessary
-      return unless params[:reference][:document_attributes]
-      return unless params[:reference][:document_attributes][:url].present?
-      params[:reference][:document_attributes][:id] = nil
+      References::SaveFromForm.new(@reference, params, request.host).call
     end
 
     def new_reference
@@ -362,21 +238,6 @@ class ReferencesController < ApplicationController
       reference = @reference.becomes type
       reference.type = type
       reference
-    end
-
-    def format_autosuggest_keywords reference, keyword_params
-      replaced = []
-      replaced << keyword_params[:keywords] || ''
-      replaced << "author:'#{reference.author_names_string}'" if keyword_params[:author]
-      replaced << "title:'#{reference.title}'" if keyword_params[:title]
-      replaced << "year:#{keyword_params[:year]}" if keyword_params[:year]
-
-      start_year = keyword_params[:start_year]
-      end_year   = keyword_params[:end_year]
-      if start_year && end_year
-        replaced << "year:#{start_year}-#{end_year}"
-      end
-      replaced.join(" ").strip
     end
 
     def set_reference

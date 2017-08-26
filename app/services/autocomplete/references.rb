@@ -1,0 +1,49 @@
+module Autocomplete
+  class References
+    def initialize search_query
+      @search_query = search_query
+    end
+
+    def call
+      search_options = {}
+      keyword_params = Reference.extract_keyword_params search_query
+
+      search_options[:reference_type] = :nomissing
+      search_options[:items_per_page] = 5
+      search_options.merge! keyword_params
+      search_results = Reference.fulltext_search search_options
+
+      search_results.map do |reference|
+        search_query = if keyword_params.size == 1 # size 1 = no keyword params were matched
+                         reference.title
+                       else
+                         format_autosuggest_keywords reference, keyword_params
+                       end
+        {
+          search_query: search_query,
+          title: reference.title,
+          author: reference.author_names_string,
+          year: reference.citation_year
+        }
+      end
+    end
+
+    private
+      attr_reader :search_query
+
+      def format_autosuggest_keywords reference, keyword_params
+        replaced = []
+        replaced << keyword_params[:keywords] || ''
+        replaced << "author:'#{reference.author_names_string}'" if keyword_params[:author]
+        replaced << "title:'#{reference.title}'" if keyword_params[:title]
+        replaced << "year:#{keyword_params[:year]}" if keyword_params[:year]
+
+        start_year = keyword_params[:start_year]
+        end_year   = keyword_params[:end_year]
+        if start_year && end_year
+          replaced << "year:#{start_year}-#{end_year}"
+        end
+        replaced.join(" ").strip
+      end
+  end
+end

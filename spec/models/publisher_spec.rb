@@ -58,19 +58,6 @@ describe Publisher do
     end
   end
 
-  describe ".search" do
-    it "fuzzy matches name/place combinations" do
-      described_class.create! name: 'Wiley', place: Place.create!(name: 'Chicago')
-      described_class.create! name: 'Wiley', place: Place.create!(name: 'Toronto')
-      expect(described_class.search('chw')).to eq ['Chicago: Wiley']
-    end
-
-    it "can find a match even if there's no place" do
-      described_class.create! name: 'Wiley'
-      expect(described_class.search('w')).to eq ['Wiley']
-    end
-  end
-
   # TODO used only in specs?
   describe "#to_s" do
     it "format name and place" do
