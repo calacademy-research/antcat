@@ -31,6 +31,6 @@ describe SiteNoticesController do
     let!(:last_site_notice_id) { SiteNotice.last.id }
     before { post :dismiss }
 
-    it { should set_session[:last_dismissed_site_notice_id].to last_site_notice_id }
+    it { is_expected.to set_session[:last_dismissed_site_notice_id].to last_site_notice_id }
   end
 end

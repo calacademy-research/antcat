@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ReferenceDocument do
-  it { should be_versioned }
+  it { is_expected.to be_versioned }
 
   it "makes sure it has a protocol" do
     stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"

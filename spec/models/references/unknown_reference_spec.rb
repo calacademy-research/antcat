@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe UnknownReference do
-  it { should validate_presence_of :year }
-  it { should validate_presence_of :citation }
+  it { is_expected.to validate_presence_of :year }
+  it { is_expected.to validate_presence_of :citation }
 
   describe "entering a newline in the citation" do
     it "strips the newline" do

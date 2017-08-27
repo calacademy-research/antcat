@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe ArticleReference do
-  it { should validate_presence_of :year }
-  it { should validate_presence_of :series_volume_issue }
-  it { should validate_presence_of :journal }
+  it { is_expected.to validate_presence_of :year }
+  it { is_expected.to validate_presence_of :series_volume_issue }
+  it { is_expected.to validate_presence_of :journal }
 
   let(:reference) { build_stubbed :article_reference }
 

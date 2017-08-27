@@ -8,12 +8,13 @@ describe CatalogController do
         get :index
       end
 
-      it { should render_template('show') }
+      it { expect(response).to render_template :show }
     end
 
     context "without a family existing in the database" do
       before { get :index }
-      it { should render_template('family_not_found') }
+
+      specify { expect(response).to render_template :family_not_found }
     end
   end
 
@@ -29,16 +30,19 @@ describe CatalogController do
 
   describe "#show_valid_only and #show_invalid" do
     let!(:taxon) { create :family }
+
     before { @request.env["HTTP_REFERER"] = "http://antcat.org" }
 
     describe "GET show_invalid" do
       before { get :show_invalid }
-      it { should set_session[:show_invalid].to true }
+
+      it { is_expected.to set_session[:show_invalid].to true }
     end
 
     describe "GET show_valid_only" do
       before { get :show_valid_only }
-      it { should set_session[:show_invalid].to false }
+
+      it { is_expected.to set_session[:show_invalid].to false }
     end
   end
 

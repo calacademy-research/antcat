@@ -1,9 +1,9 @@
 require "spec_helper"
 
 describe Comment do
-  it { should be_versioned }
-  it { should validate_presence_of :body }
-  it { should validate_presence_of :user }
+  it { is_expected.to be_versioned }
+  it { is_expected.to validate_presence_of :body }
+  it { is_expected.to validate_presence_of :user }
 
   describe "#is_a_reply?" do
     context "it is a reply" do

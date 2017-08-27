@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Publisher do
-  it { should be_versioned }
-  it { should validate_presence_of :name }
-  it { should belong_to :place }
+  it { is_expected.to be_versioned }
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to belong_to :place }
 
   describe "factory methods" do
     describe ".create_with_place" do

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Author do
-  it { should be_versioned }
-  it { should have_many :names }
+  it { is_expected.to be_versioned }
+  it { is_expected.to have_many :names }
 
   describe "scopes" do
     describe ".sorted_by_name" do

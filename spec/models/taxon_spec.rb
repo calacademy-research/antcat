@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe Taxon do
-  it { should validate_presence_of :name }
-  it { should belong_to :protonym }
-  it { should allow_value(nil).for :type_name }
-  it { should allow_value(nil).for :status } # should probably not...
-  it { should allow_value(nil).for :biogeographic_region }
-  it { should have_many :history_items }
-  it { should have_many :reference_sections }
-  it { should belong_to :type_name }
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to belong_to :protonym }
+  it { is_expected.to allow_value(nil).for :type_name }
+  it { is_expected.to allow_value(nil).for :status } # should probably not...
+  it { is_expected.to allow_value(nil).for :biogeographic_region }
+  it { is_expected.to have_many :history_items }
+  it { is_expected.to have_many :reference_sections }
+  it { is_expected.to belong_to :type_name }
 
   describe ".find_by_name" do
     it "returns nil if nothing matches" do

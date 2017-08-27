@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe Tooltip do
-  it { should be_versioned }
+  it { is_expected.to be_versioned }
 
   describe "#key" do
-    it { should validate_uniqueness_of :key }
-    it { should validate_presence_of :key }
-    it { should allow_value('name-space._key1:').for :key }
-    it { should_not allow_value('^namespace').for :key }
-    it { should_not allow_value('nämespace').for :key }
+    it { is_expected.to validate_uniqueness_of :key }
+    it { is_expected.to validate_presence_of :key }
+    it { is_expected.to allow_value('name-space._key1:').for :key }
+    it { is_expected.to_not allow_value('^namespace').for :key }
+    it { is_expected.to_not allow_value('nämespace').for :key }
   end
 
   describe "scopes" do

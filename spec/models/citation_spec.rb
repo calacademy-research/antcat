@@ -1,6 +1,6 @@
 require 'spec_helper'
 
 describe Citation do
-  it { should be_versioned }
-  it { should validate_presence_of :reference }
+  it { is_expected.to be_versioned }
+  it { is_expected.to validate_presence_of :reference }
 end

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Reference do
-  it { should be_versioned }
-  it { should have_many :author_names }
-  it { should validate_presence_of :title }
+  it { is_expected.to be_versioned }
+  it { is_expected.to have_many :author_names }
+  it { is_expected.to validate_presence_of :title }
 
   let(:an_author_name) { create :author_name }
   let(:fisher) { create :author_name, name: 'Fisher' }

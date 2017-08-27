@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Subspecies do
-  it { should validate_presence_of :genus }
+  it { is_expected.to validate_presence_of :genus }
 
   let(:genus) { create_genus 'Atta' }
 

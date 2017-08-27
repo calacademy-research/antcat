@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Feedback do
-  it { should validate_presence_of :comment }
+  it { is_expected.to validate_presence_of :comment }
 
   describe "scopes" do
     describe ".recently_created" do
