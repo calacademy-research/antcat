@@ -4,6 +4,7 @@ RSpec.configure do |config|
   config.mock_with :rspec
   config.use_transactional_fixtures = true
   config.fail_fast = false
+  # TODO maybe add `config.render_views = true`.
 
   config.before :suite do
     DatabaseCleaner.strategy = :transaction
