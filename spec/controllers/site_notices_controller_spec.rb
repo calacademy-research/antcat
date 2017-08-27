@@ -8,7 +8,7 @@ describe SiteNoticesController do
     @request.env["HTTP_REFERER"] = "http://antcat.org"
   end
 
-  describe "GET #show" do
+  describe "GET show" do
     before do
       sleep 1
       @another_site_notice = create :site_notice
@@ -20,14 +20,14 @@ describe SiteNoticesController do
     end
   end
 
-  describe "POST #mark_all_as_read" do
+  describe "POST mark_all_as_read" do
     it "calls SiteNotice" do
       expect(SiteNotice).to receive :mark_as_read!
       post :mark_all_as_read
     end
   end
 
-  describe "POST #dismiss" do
+  describe "POST dismiss" do
     let!(:last_site_notice_id) { SiteNotice.last.id }
     before { post :dismiss }
 

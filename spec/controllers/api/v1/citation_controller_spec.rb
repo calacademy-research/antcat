@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe Api::V1::CitationsController do
-  describe "getting data" do
-    before do
-      create_genus
-      @species = create_species 'Atta minor'
-      create_species_name 'Eciton minor'
-    end
+  before do
+    create_genus
+    @species = create_species 'Atta minor'
+    create_species_name 'Eciton minor'
+  end
 
+  describe "GET index" do
     it "gets all citations greater than a given number" do
       # Get index starting at four
       get :index, starts_at: @species.id

@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Api::V1::TaxonHistoryItemsController do
-  describe "getting data" do
-    before do
-      6.times { TaxonHistoryItem.create! taxt: "{ref 999" }
-    end
+  before do
+    6.times { TaxonHistoryItem.create! taxt: "{ref 999" }
+  end
 
+  describe "GET index" do
     it "gets all taxon history items greater than a given number" do
       # Get index starting at four
       get :index, starts_at: 4

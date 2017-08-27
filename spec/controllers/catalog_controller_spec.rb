@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CatalogController do
-  describe 'GET #index' do
+  describe 'GET index' do
     context "family exists" do
       before do
         create :family
@@ -17,7 +17,7 @@ describe CatalogController do
     end
   end
 
-  describe 'GET #show' do
+  describe 'GET show' do
     context "RecordNotFound" do
       before { create :family }
 
@@ -31,19 +31,19 @@ describe CatalogController do
     let!(:taxon) { create :family }
     before { @request.env["HTTP_REFERER"] = "http://antcat.org" }
 
-    describe "#show_invalid" do
+    describe "GET show_invalid" do
       before { get :show_invalid }
       it { should set_session[:show_invalid].to true }
     end
 
-    describe "#show_valid_only" do
+    describe "GET show_valid_only" do
       before { get :show_valid_only }
       it { should set_session[:show_invalid].to false }
     end
   end
 
   # TODO move to service's spec.
-  describe "#autocomplete" do
+  describe "GET autocomplete" do
     it "works" do
       create_genus 'Atta'
       create_genus 'Ratta'

@@ -1,20 +1,20 @@
 require 'spec_helper'
 
 describe ReferencesController do
-  describe "Search" do
-    describe "searching for nothing" do
-      it "renders the index" do
-        expect(Reference).to receive :list_references
-        get :index
-      end
-
-      it "returns everything" do
-        reference = create :article_reference
-        get :index
-        expect(Reference.list_references).to eq [reference]
-      end
+  describe "GET index" do
+    it "renders the index template" do
+      get :index
+      expect(response).to render_template :index
     end
 
+    it "assigns @references" do
+      reference = create :article_reference
+      get :index
+      expect(assigns(:references)).to eq [reference]
+    end
+  end
+
+  describe "GET search" do
     describe "search terms matching ids" do
       it "redirects to #show" do
         reference = reference_factory author_name: 'E.O. Wilson', id: 99999
@@ -29,7 +29,7 @@ describe ReferencesController do
     end
   end
 
-  describe "#download" do
+  describe "GET download" do
     describe "reference without a document" do
       it "raises an error" do
         expect { get :download, id: 99999, file_name: "not_even_stubbed.pdf" }
@@ -67,7 +67,7 @@ describe ReferencesController do
   end
 
   # TODO move specs to services' specs.
-  describe "autocompleting", search: true do
+  describe "GET autocomplete", search: true do
     let(:controller) { ReferencesController.new }
 
     it "autocompletes" do

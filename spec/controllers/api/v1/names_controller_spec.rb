@@ -1,15 +1,7 @@
 require 'spec_helper'
 
 describe Api::V1::NamesController do
-  describe "getting data" do
-    it "fetches a name" do
-      taxon = create_genus
-
-      get :show, id: taxon.name_id
-      expect(response.status).to eq 200
-      expect(response.body.to_s).to include "Atta"
-    end
-
+  describe "GET index" do
     it "gets all author names keys" do
       create_genus
       create_species 'Atta minor'
@@ -28,6 +20,16 @@ describe Api::V1::NamesController do
 
       names = JSON.parse response.body
       expect(names.count).to eq 22
+    end
+  end
+
+  describe "GET show" do
+    it "fetches a name" do
+      taxon = create_genus
+
+      get :show, id: taxon.name_id
+      expect(response.status).to eq 200
+      expect(response.body.to_s).to include "Atta"
     end
   end
 end
