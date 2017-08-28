@@ -14,7 +14,7 @@ class TaxonDecorator < ApplicationDecorator
   end
 
   # Currently accepts very confusing arguments.
-  # `include_invalid` tells `TaxonDecorator::Statistics.new.statistics` to remove
+  # `include_invalid` tells `TaxonDecorator::Statistics` to remove
   # invalid taxa from the already generated hash of counts. This is the older method.
   # `valid_only` was written for performance reasons; it makes `Taxon#statistics`
   # ignore invalid taxa to begin with.
@@ -22,7 +22,7 @@ class TaxonDecorator < ApplicationDecorator
     statistics = taxon.statistics valid_only: valid_only
     return '' unless statistics
 
-    content = TaxonDecorator::Statistics.new.statistics statistics, include_invalid: include_invalid
+    content = TaxonDecorator::Statistics.new(statistics, include_invalid: include_invalid).call
     return '' if content.blank?
 
     helpers.content_tag :div, content, class: 'statistics'
