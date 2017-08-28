@@ -28,12 +28,12 @@ class TaxonDecorator < ApplicationDecorator
     helpers.content_tag :div, content, class: 'statistics'
   end
 
-  def headline use_ant_web_formatter: false
-    TaxonDecorator::Headline.new(taxon, use_ant_web_formatter: use_ant_web_formatter).headline
+  def headline for_antweb: false
+    TaxonDecorator::Headline.new(taxon, for_antweb: for_antweb).call
   end
 
-  def child_lists use_ant_web_formatter: false
-    TaxonDecorator::ChildList.new(taxon, use_ant_web_formatter: use_ant_web_formatter).child_lists
+  def child_lists for_antweb: false
+    TaxonDecorator::ChildList.new(taxon, for_antweb: for_antweb).call
   end
 
   def taxon_status

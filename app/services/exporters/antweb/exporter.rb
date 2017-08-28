@@ -222,9 +222,9 @@ class Exporters::Antweb::Exporter
         content = ''.html_safe
         content << taxon.statistics(include_invalid: false)
         content << genus_species_header_notes_taxt(taxon)
-        content << taxon.headline(use_ant_web_formatter: true)
+        content << taxon.headline(for_antweb: true)
         content << export_history_items(taxon)
-        content << taxon.child_lists(use_ant_web_formatter: true)
+        content << taxon.child_lists(for_antweb: true)
         content << export_reference_sections(taxon)
       end
     end

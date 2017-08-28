@@ -12,12 +12,16 @@ describe TaxonDecorator::TaxonStatus do
       expect(taxon.decorate.taxon_status).to eq 'homonym'
     end
 
+    it "is html_safe" do
+      expect(create_genus.decorate.taxon_status).to be_html_safe
+    end
+
     it "shows one synonym" do
       senior_synonym = create_genus 'Atta'
       taxon = create_synonym senior_synonym
-      result = taxon.decorate.taxon_status
-      expect(result).to eq %{junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
-      expect(result).to be_html_safe
+
+      expect(taxon.decorate.taxon_status)
+        .to eq %{junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
     end
 
     describe "Using current valid taxon" do
@@ -70,11 +74,12 @@ describe TaxonDecorator::TaxonStatus do
       end
     end
 
-    it "shows where it is incertae sedis" do
-      taxon = create_genus incertae_sedis_in: 'family'
-      result = taxon.decorate.taxon_status
-      expect(result).to eq '<i>incertae sedis</i> in family, valid'
-      expect(result).to be_html_safe
+    context "when incertae sedis" do
+      let(:taxon) { create_genus incertae_sedis_in: 'family' }
+
+      specify do
+        expect(taxon.decorate.taxon_status).to eq '<i>incertae sedis</i> in family, valid'
+      end
     end
   end
 

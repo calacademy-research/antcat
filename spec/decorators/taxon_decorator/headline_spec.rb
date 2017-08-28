@@ -2,22 +2,31 @@ require "spec_helper"
 
 describe TaxonDecorator::Headline do
   describe "#protonym_name" do
-    it "formats a family name in the protonym" do
-      protonym = create :protonym, name: create(:subfamily_name, name: 'Dolichoderinae')
-      expect(described_class.new(nil).send(:protonym_name, protonym))
-        .to eq '<b><span>Dolichoderinae</span></b>'
+    context "when a family name" do
+      let(:protonym) { create :protonym, name: create(:subfamily_name, name: 'Dolichoderinae') }
+
+      specify do
+        expect(described_class.new(nil).send(:protonym_name, protonym))
+          .to eq '<b><span>Dolichoderinae</span></b>'
+      end
     end
 
-    it "formats a genus name in the protonym" do
-      protonym = create :protonym, name: create(:genus_name, name: 'Atari')
-      expect(described_class.new(nil).send(:protonym_name, protonym))
-        .to eq '<b><span><i>Atari</i></span></b>'
+    context "when a genus name" do
+      let(:protonym) { create :protonym, name: create(:genus_name, name: 'Atari') }
+
+      specify do
+        expect(described_class.new(nil).send(:protonym_name, protonym))
+          .to eq '<b><span><i>Atari</i></span></b>'
+      end
     end
 
-    it "formats a fossil" do
-      protonym = create :protonym, name: create(:genus_name, name: 'Atari'), fossil: true
-      expect(described_class.new(nil).send(:protonym_name, protonym))
-        .to eq '<b><span><i>&dagger;</i><i>Atari</i></span></b>'
+    context "when a fossil" do
+      let(:protonym) { create :protonym, name: create(:genus_name, name: 'Atari'), fossil: true }
+
+      specify do
+        expect(described_class.new(nil).send(:protonym_name, protonym))
+          .to eq '<b><span><i>&dagger;</i><i>Atari</i></span></b>'
+      end
     end
   end
 
@@ -50,25 +59,38 @@ describe TaxonDecorator::Headline do
   end
 
   describe "#link_to_other_site" do
-    it "links to species" do
-      subfamily = create_subfamily 'Dolichoderinae'
-      genus = create_genus 'Atta', subfamily: subfamily
-      species = create_species 'Atta major', genus: genus, subfamily: subfamily
-      expect(described_class.new(species).send(:link_to_other_site)).to eq %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>}
+    context "when species" do
+      let(:species) do
+        subfamily = create_subfamily 'Dolichoderinae'
+        genus = create_genus 'Atta', subfamily: subfamily
+        create_species 'Atta major', genus: genus, subfamily: subfamily
+      end
+
+      specify do
+        expect(described_class.new(species).send(:link_to_other_site)).to eq %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>}
+      end
     end
 
-    it "links to subspecies" do
-      subfamily = create_subfamily 'Dolichoderinae'
-      genus = create_genus 'Atta', subfamily: subfamily
-      species = create_species 'Atta major', genus: genus, subfamily: subfamily
-      species = create_subspecies 'Atta major nigrans', species: species, genus: genus, subfamily: subfamily
-      expect(described_class.new(species).send(:link_to_other_site))
-        .to eq %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=nigrans&project=worldants">AntWeb</a>}
+    context "when subspecies" do
+      let(:subspecies) do
+        subfamily = create_subfamily 'Dolichoderinae'
+        genus = create_genus 'Atta', subfamily: subfamily
+        species = create_species 'Atta major', genus: genus, subfamily: subfamily
+        create_subspecies 'Atta major nigrans', species: species, genus: genus, subfamily: subfamily
+      end
+
+      specify do
+        expect(described_class.new(subspecies).send(:link_to_other_site))
+          .to eq %{<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=nigrans&project=worldants">AntWeb</a>}
+      end
     end
 
-    it "links to invalid taxa" do
-      subfamily = create_subfamily 'Dolichoderinae', status: 'synonym'
-      expect(described_class.new(subfamily).send(:link_to_other_site)).not_to be_nil
+    context "when invalid taxa" do
+      let(:subfamily) { create_subfamily 'Dolichoderinae', status: 'synonym' }
+
+        specify do
+          expect(described_class.new(subfamily).send(:link_to_other_site)).not_to be_nil
+        end
     end
   end
 end

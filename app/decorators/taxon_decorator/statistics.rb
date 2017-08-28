@@ -92,7 +92,7 @@ class TaxonDecorator::Statistics
         end
 
       if status == 'valid'
-        # we must first singularize because rank may already be pluralized
+        # We must first singularize because rank may already be pluralized.
         count_and_status << " #{rank.to_s.singularize.pluralize(count)}"
       end
       count_and_status
