@@ -1,7 +1,7 @@
 require "spec_helper"
 
-describe TaxonDecorator::Header do
-  describe "#link_each_epithet" do
+describe TaxonDecorator::LinkEachEpithet do
+  describe "#call" do
     context "subspecies with > 3 epithets" do
       let!(:formica) { create_genus 'Formica' }
       let!(:rufa) { create_species 'rufa', genus: formica }
@@ -13,7 +13,7 @@ describe TaxonDecorator::Header do
       end
 
       specify do
-        expect(described_class.new(major).send(:link_each_epithet)).to eq(
+        expect(described_class.new(major).call).to eq(
           %{<a href="/catalog/#{formica.id}"><i>Formica</i></a> } +
           %{<a href="/catalog/#{rufa.id}"><i>rufa</i></a> } +
           %{<a href="/catalog/#{major.id}"><i>pratensis major</i></a>}

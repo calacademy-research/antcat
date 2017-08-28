@@ -1,4 +1,4 @@
-class TaxonDecorator::Header
+class TaxonDecorator::LinkEachEpithet
   include Formatters::ItalicsHelper
 
   def initialize taxon
@@ -7,7 +7,7 @@ class TaxonDecorator::Header
 
   # This links the different parts of the binomial name. Only applicable to
   # species and below, since higher ranks consists of a single word.
-  def link_each_epithet
+  def call
     return @taxon.decorate.link_to_taxon unless @taxon.kind_of? SpeciesGroupTaxon
     return nonconforming_name_header_link(@taxon) if @taxon.name.nonconforming_name?
 

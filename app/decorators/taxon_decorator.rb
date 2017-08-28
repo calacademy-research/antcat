@@ -10,7 +10,7 @@ class TaxonDecorator < ApplicationDecorator
   end
 
   def link_each_epithet
-    TaxonDecorator::Header.new(taxon).link_each_epithet
+    TaxonDecorator::LinkEachEpithet.new(taxon).call
   end
 
   # Currently accepts very confusing arguments.
