@@ -4,7 +4,7 @@ FactoryGirl.define do
     user
     association :commentable, factory: :issue
 
-    factory :reply do
+    trait :reply do
       association :parent, factory: :comment
       body "OK, makes sense"
     end

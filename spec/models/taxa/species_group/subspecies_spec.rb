@@ -35,11 +35,12 @@ describe Subspecies do
   end
 
   describe "#update_parent" do
-    it "sets all the parent fields" do
-      subspecies = create_subspecies 'Atta beta kappa'
-      species = create_species
+    let!(:subspecies) { create_subspecies 'Atta beta kappa' }
+    let!(:species) { create_species }
 
+    it "sets all the parent fields" do
       subspecies.update_parent species
+
       expect(subspecies.species).to eq species
       expect(subspecies.genus).to eq species.genus
       expect(subspecies.subgenus).to eq species.subgenus

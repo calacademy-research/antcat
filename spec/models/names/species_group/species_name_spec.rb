@@ -14,25 +14,31 @@ describe SpeciesName do
 
     context "name already exists" do
       context "name is used by a different taxon" do
-        it "raises" do
+        let!(:species_name) { described_class.create! name: 'Atta major', epithet: 'major' }
+        let!(:genus_name) { GenusName.create! name: 'Eciton', epithet: 'Eciton' }
+
+        before do
           existing_species_name = described_class.create! name: 'Eciton major', epithet: 'major'
           create_species 'Eciton major', name: existing_species_name
 
-          species_name = described_class.create! name: 'Atta major', epithet: 'major'
-          genus_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
-          protonym_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
+          GenusName.create! name: 'Eciton', epithet: 'Eciton' # protonym_name
+        end
 
+        it "raises" do
           expect { species_name.change_parent genus_name }.to raise_error
         end
       end
 
       context "name is an orphan" do
-        it "doesn't raise" do
-          orphan_species_name = described_class.create! name: 'Eciton minor', epithet: 'minor'
-          species_name = described_class.create! name: 'Atta minor', epithet: 'minor'
-          genus_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
-          protonym_name = GenusName.create! name: 'Eciton', epithet: 'Eciton'
+        let!(:species_name) { described_class.create! name: 'Atta minor', epithet: 'minor' }
+        let!(:genus_name) { GenusName.create! name: 'Eciton', epithet: 'Eciton' }
 
+        before do
+          described_class.create! name: 'Eciton minor', epithet: 'minor' # orphan_species_name
+          GenusName.create! name: 'Eciton', epithet: 'Eciton' # protonym_name
+        end
+
+        it "doesn't raise" do
           expect { species_name.change_parent genus_name }.not_to raise_error
         end
       end

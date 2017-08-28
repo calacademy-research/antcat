@@ -5,8 +5,9 @@ describe UnknownReference do
   it { is_expected.to validate_presence_of :citation }
 
   describe "entering a newline in the citation" do
+    let!(:reference) { create :unknown_reference }
+
     it "strips the newline" do
-      reference = create :unknown_reference
       reference.title = "A\nB"
       reference.citation = "A\nB"
       reference.save!

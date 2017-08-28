@@ -21,36 +21,53 @@ describe TaxonDecorator do
     end
 
     describe "Using current valid taxon" do
-      it "handles a null current valid taxon" do
-        senior_synonym = create_genus 'Atta'
-        senior_synonym.update_attribute :created_at, Time.now - 100
-        other_senior_synonym = create_genus 'Eciton'
-        taxon = create_synonym senior_synonym
-        Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
-        result = taxon.decorate.taxon_status
-        expect(result).to eq %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+      context "when a null current valid taxon" do
+        let!(:senior_synonym) { create_genus 'Atta' }
+        let!(:other_senior_synonym) { create_genus 'Eciton' }
+        let!(:taxon) { create_synonym senior_synonym }
+
+        before do
+          senior_synonym.update_attribute :created_at, Time.now - 100
+          Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
+        end
+
+        specify do
+          expect(taxon.decorate.taxon_status)
+            .to eq %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+        end
       end
 
-      it "handles a null current valid taxon with no synonyms" do
-        taxon = create_genus status: 'synonym'
-        result = taxon.decorate.taxon_status
-        expect(result).to eq %{junior synonym}
+      context "when a null current valid taxon with no synonyms" do
+        let!(:taxon) { create_genus status: 'synonym' }
+
+        specify do
+          expect(taxon.decorate.taxon_status).to eq "junior synonym"
+        end
       end
 
-      it "handles a current valid taxon that's one of two 'senior synonyms'" do
-        senior_synonym = create_genus 'Atta'
-        senior_synonym.update_attribute :created_at, Time.now - 100
-        other_senior_synonym = create_genus 'Eciton'
-        taxon = create_synonym senior_synonym, current_valid_taxon: other_senior_synonym
-        Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
-        result = taxon.decorate.taxon_status
-        expect(result).to eq %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+      context "when a current valid taxon that's one of two 'senior synonyms'" do
+        let!(:senior_synonym) { create_genus 'Atta' }
+        let!(:other_senior_synonym) { create_genus 'Eciton' }
+        let!(:taxon) { create_synonym senior_synonym, current_valid_taxon: other_senior_synonym }
+
+        before do
+          senior_synonym.update_attribute :created_at, Time.now - 100
+          Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: taxon
+        end
+
+        it specify do
+          expect(taxon.decorate.taxon_status)
+            .to eq %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+        end
       end
     end
 
-    it "doesn't freak out if the senior synonym hasn't been set yet" do
-      taxon = create_genus status: 'synonym'
-      expect(taxon.decorate.taxon_status).to eq 'junior synonym'
+    context "if the senior synonym hasn't been set yet" do
+      let!(:taxon) { create_genus status: 'synonym' }
+
+      it "doesn't freak out if the senior synonym hasn't been set yet" do
+        expect(taxon.decorate.taxon_status).to eq 'junior synonym'
+      end
     end
 
     it "shows where it is incertae sedis" do

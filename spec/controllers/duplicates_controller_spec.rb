@@ -28,7 +28,7 @@ describe DuplicatesController do
         previous_combination_id: species_b.id,
         rank_to_create: 'species'
 
-      expect(response.status).to eq 200
+      expect(response).to have_http_status :ok
       taxa = JSON.parse response.body
       expect(taxa.size).to eq 1
       expect(taxa[0]['species']['name_cache']).to eq @species_epithet
@@ -49,7 +49,7 @@ describe DuplicatesController do
         previous_combination_id: species_b.id,
         rank_to_create: 'species'
 
-      expect(response.status).to eq 200
+      expect(response).to have_http_status :ok
       taxa = JSON.parse response.body
       expect(taxa.size).to eq 1
       expect(taxa[0]['species']['name_cache']).to eq @species_epithet
@@ -70,7 +70,7 @@ describe DuplicatesController do
         previous_combination_id: species_b.id,
         rank_to_create: 'species'
 
-      expect(response.status).to eq 204
+      expect(response).to have_http_status 204
     end
   end
 end

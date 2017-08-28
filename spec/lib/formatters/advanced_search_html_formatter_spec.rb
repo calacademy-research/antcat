@@ -17,11 +17,11 @@ describe Formatters::AdvancedSearchHtmlFormatter do
       taxon = create_genus 'Atta', incertae_sedis_in: 'genus', nomen_nudum: true
       taxon.protonym.authorship.update reference: reference
 
-      actual = formatter.format_status_reference(taxon)
-      expect(actual).to eq "<i>incertae sedis</i> in genus, <i>nomen nudum</i>"
+      results = formatter.format_status_reference(taxon)
+      expect(results).to eq "<i>incertae sedis</i> in genus, <i>nomen nudum</i>"
 
-      actual = formatter.format_type_localities(taxon)
-      expect(actual).to eq ""
+      results = formatter.format_type_localities(taxon)
+      expect(results).to eq ""
     end
   end
 end

@@ -29,9 +29,10 @@ describe CatalogController do
   end
 
   describe "#show_valid_only and #show_invalid" do
-    let!(:taxon) { create :family }
-
-    before { @request.env["HTTP_REFERER"] = "http://antcat.org" }
+    before do
+      create :family
+      @request.env["HTTP_REFERER"] = "http://antcat.org"
+    end
 
     describe "GET show_invalid" do
       before { get :show_invalid }
@@ -46,18 +47,20 @@ describe CatalogController do
     end
   end
 
-  # TODO move to service's spec.
   describe "GET autocomplete" do
-    it "works" do
-      create_genus 'Atta'
-      create_genus 'Ratta'
-      create_genus 'Nylanderia'
+    let!(:atta) { create_genus "Atta" }
+    let!(:ratta) { create_genus "Ratta" }
 
+    before do
+      create_genus "Nylanderia"
       get :autocomplete, q: "att", format: :json
-      json = JSON.parse response.body
+    end
 
-      results = json.map { |taxon| taxon["name"] }.sort
-      expect(results).to eq ["Atta", "Ratta"]
+    it "returns matches" do
+      # TODO create helper for `JSON.parse response.body` and use here and in other places.
+      json = JSON.parse response.body
+      results = json.map { |taxon| taxon["id"] }
+      expect(results).to eq [atta.id, ratta.id]
     end
   end
 end

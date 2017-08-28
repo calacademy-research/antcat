@@ -14,34 +14,38 @@ describe TaxtConverter do
         expect(results).to eq "{Fisher, 1922 #{jumbled_id}}"
       end
 
-      it "handles missing references" do
-        reference = create :missing_reference, citation: 'Fisher, 2011'
-        jumbled_id = TaxtIdTranslator.send :jumble_id, reference.id, 1
+      context "handles missing references" do
+        let!(:reference) { create :missing_reference, citation: 'Fisher, 2011' }
+        let!(:jumbled_id) { TaxtIdTranslator.send :jumble_id, reference.id, 1 }
 
-        results = described_class["{ref #{reference.id}}"].to_editor_format
-        expect(results).to eq "{Fisher, 2011 #{jumbled_id}}"
+        specify do
+          results = described_class["{ref #{reference.id}}"].to_editor_format
+          expect(results).to eq "{Fisher, 2011 #{jumbled_id}}"
+        end
       end
 
-      it "handles references we don't even know are missing" do
-        expect(described_class["{ref 123}"].to_editor_format).to eq "{Rt}"
+      context "handles references we don't even know are missing" do
+        specify do
+          expect(described_class["{ref 123}"].to_editor_format).to eq "{Rt}"
+        end
       end
     end
 
     context "taxa" do
-      it "uses the taxon's name followed by its id" do
-        genus = create_genus 'Atta'
-        jumbled_id = TaxtIdTranslator.send :jumble_id, genus.id, 2
+      let!(:genus) { create_genus 'Atta' }
+      let!(:jumbled_id) { TaxtIdTranslator.send :jumble_id, genus.id, 2 }
 
+      it "uses the taxon's name followed by its id" do
         results = described_class["{tax #{genus.id}}"].to_editor_format
         expect(results).to eq "{Atta #{jumbled_id}}"
       end
     end
 
     context "names" do
-      it "uses the name followed by its id" do
-        genus = create_genus 'Atta'
-        jumbled_id = TaxtIdTranslator.send :jumble_id, genus.name.id, 3
+      let!(:genus) { create_genus 'Atta' }
+      let!(:jumbled_id) { TaxtIdTranslator.send :jumble_id, genus.name.id, 3 }
 
+      it "uses the name followed by its id" do
         results = described_class["{nam #{genus.name.id}}"].to_editor_format
         expect(results).to eq "{Atta #{jumbled_id}}"
       end
@@ -71,10 +75,10 @@ describe TaxtConverter do
     end
 
     context "taxa" do
-      it "uses the taxon's name followed by its id" do
-        genus = create_genus 'Atta'
-        jumbled_id = TaxtIdTranslator.send :jumble_id, genus.id, 2
+      let!(:genus) { create_genus 'Atta' }
+      let!(:jumbled_id) { TaxtIdTranslator.send :jumble_id, genus.id, 2 }
 
+      it "uses the taxon's name followed by its id" do
         results = described_class["{Atta #{jumbled_id}}"].from_editor_format
         expect(results).to eq "{tax #{genus.id}}"
       end

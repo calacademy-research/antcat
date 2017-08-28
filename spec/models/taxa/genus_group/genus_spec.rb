@@ -200,8 +200,9 @@ describe Genus do
   end
 
   describe "#parent=" do
+    let!(:genus) { create_genus 'Aneuretus', protonym: create(:protonym) }
+
     it "assigns to both tribe and subfamily when parent is a tribe" do
-      genus = create_genus 'Aneuretus', protonym: create(:protonym)
       genus.parent = tribe
 
       expect(genus.tribe).to eq tribe

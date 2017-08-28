@@ -89,8 +89,9 @@ describe TaxtPresenter do
       end
 
       context "when the taxon is a fossil" do
+        let!(:genus) { create_genus name: create(:genus_name, name_html: '<i>Atta</i>'), fossil: true }
+
         it "includes the fossil symbol" do
-          genus = create_genus name: create(:genus_name, name_html: '<i>Atta</i>'), fossil: true
           expect(described_class["{tax #{genus.id}}"].to_html)
             .to eq %{<a href="/catalog/#{genus.id}"><i>&dagger;</i><i>Atta</i></a>}
         end

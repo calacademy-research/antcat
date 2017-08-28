@@ -8,9 +8,7 @@ describe Api::V1::TaxaController do
       species = create_species 'Atta minor'
       create_species_name 'Eciton minor'
 
-      # Get index
       get :index, starts_at: species.id
-      expect(response.status).to eq 200
 
       taxa = JSON.parse response.body
       expect(taxa[0]['species']['id']).to eq species.id
@@ -23,41 +21,52 @@ describe Api::V1::TaxaController do
       create_species_name 'Eciton minor'
 
       get :index, nil
-      expect(response.status).to eq 200
-      expect(response.body.to_s).to include "Atta"
 
+      expect(response.body.to_s).to include "Atta"
       taxa = JSON.parse response.body
       expect(taxa.count).to eq 7
+    end
+
+    it 'returns HTTP 200' do
+      get :index
+      expect(response).to have_http_status 200
     end
   end
 
   describe "GET show" do
-    it "should get a single taxon entry" do
-      species = create_species 'Atta minor maxus'
+    let!(:species) { create_species 'Atta minor maxus' }
 
-      get :show, id: species.id
-      expect(response.status).to eq 200
+    before { get :show, id: species.id }
+
+    it "returns a single taxon entry" do
       parsed_species = JSON.parse response.body
-
       expect(response.body.to_s).to include "Atta"
       expect(parsed_species['species']['name_cache']).to eq "Atta minor maxus"
+    end
+
+    it 'returns HTTP 200' do
+      expect(response).to have_http_status 200
     end
   end
 
   describe "GET search" do
-    it "should search for a taxa" do
-      create_species 'Atta minor maxus'
+    before { create_species 'Atta minor maxus' }
 
-      get :search, {'string' => 'maxus'}, nil
-      expect(response.status).to eq 200
+    it "searches for taxa" do
+      get :search, { 'string' => 'maxus' }, nil
       expect(response.body.to_s).to include "maxus"
     end
 
-    it "reports when there are no search matches" do
-      create_species 'Atta minor maxus'
+    it 'returns HTTP 200' do
+      get :search, { 'string' => 'maxus' }, nil
+      expect(response).to have_http_status 200
+    end
 
-      get :search, {'string' => 'maxuus'}, nil
-      expect(response.status).to eq 404
+    context "when there are no search matches" do
+      it 'returns HTTP 404' do
+        get :search, { 'string' => 'maxuus' }, nil
+        expect(response).to have_http_status 404
+      end
     end
   end
 end

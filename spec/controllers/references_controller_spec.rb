@@ -16,15 +16,20 @@ describe ReferencesController do
 
   describe "GET search" do
     describe "search terms matching ids" do
-      it "redirects to #show" do
-        reference = reference_factory author_name: 'E.O. Wilson', id: 99999
-        get :search, q: reference.id
-        expect(response).to redirect_to reference_path(reference)
+      context "reference exists" do
+        let!(:reference) { reference_factory author_name: 'E.O. Wilson', id: 99999 }
+
+        it "redirects to #show" do
+          get :search, q: reference.id
+          expect(response).to redirect_to reference_path(reference)
+        end
       end
 
-      it "does not redirect unless the reference exists" do
-        get :search, q: "11111"
-        expect(response).to render_template "search"
+      context "reference does not exists" do
+        it "does not redirect unless the reference exists" do
+          get :search, q: "11111"
+          expect(response).to render_template :search
+        end
       end
     end
   end
@@ -66,47 +71,61 @@ describe ReferencesController do
     end
   end
 
-  # TODO move specs to services' specs.
   describe "GET autocomplete", search: true do
-    let(:controller) { ReferencesController.new }
+    context "when there are matches" do
+      before do
+        reference_factory author_name: 'E.O. Wilson'
+        reference_factory author_name: 'Bolton'
+        Sunspot.commit
+      end
 
-    it "autocompletes" do
-      reference_factory author_name: 'E.O. Wilson'
-      reference_factory author_name: 'Bolton'
-      Sunspot.commit
+      it "autocompletes" do
+        get :autocomplete, q: "wilson", format: :json
 
-      get :autocomplete, q: "wilson", format: :json
-      json = JSON.parse response.body
-
-      expect(json.first["author"]).to eq 'E.O. Wilson'
-      expect(json.size).to eq 1
+        json = JSON.parse response.body
+        expect(json.size).to eq 1
+        expect(json.first["author"]).to eq 'E.O. Wilson'
+      end
     end
 
-    it "only autocompletes if there's matches", search: true do
-      get :autocomplete, q: "willy", format: :json
-      json = JSON.parse response.body
-      expect(json.size).to eq 0
+    context "when there are no matches" do
+      it "returns an empty response", search: true do
+        get :autocomplete, q: "willy", format: :json
+
+        json = JSON.parse response.body
+        expect(json.size).to eq 0
+      end
     end
 
     describe "author queries not wrapped in quotes" do
-      it "handles queries containing non-English characters" do
-        reference_factory author_name: 'Bert Hölldobler'
-        Sunspot.commit
+      context "queries containing non-English characters" do
+        before do
+          reference_factory author_name: 'Bert Hölldobler'
+          Sunspot.commit
+        end
 
-        get :autocomplete, q: "author:höll", format: :json
-        json = JSON.parse response.body
+        it "autocompletes" do
+          get :autocomplete, q: "author:höll", format: :json
 
-        expect(json.first["author"]).to eq 'Bert Hölldobler'
+          json = JSON.parse response.body
+          expect(json.size).to eq 1
+          expect(json.first["author"]).to eq 'Bert Hölldobler'
+        end
       end
 
-      it "handles hyphens" do
-        reference_factory author_name: 'M.S. Abdul-Rassoul'
-        Sunspot.commit
+      context "queries containing hyphens" do
+        before do
+          reference_factory author_name: 'M.S. Abdul-Rassoul'
+          Sunspot.commit
+        end
 
-        get :autocomplete, q: "author:abdul-ras", format: :json
-        json = JSON.parse response.body
+        it "autocompletes" do
+          get :autocomplete, q: "author:abdul-ras", format: :json
 
-        expect(json.first["author"]).to eq 'M.S. Abdul-Rassoul'
+          json = JSON.parse response.body
+          expect(json.size).to eq 1
+          expect(json.first["author"]).to eq 'M.S. Abdul-Rassoul'
+        end
       end
     end
   end

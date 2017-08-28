@@ -6,10 +6,14 @@ describe ReferenceDecorator do
   let(:author_name) { create :author_name, name: "Forel, A." }
 
   describe "#format_reference_document_link" do
-    it "creates a link" do
-      reference = build_stubbed :reference
+    let!(:reference) { build_stubbed :reference }
+
+    before do
       allow(reference).to receive(:downloadable?).and_return true
       allow(reference).to receive(:url).and_return 'example.com'
+    end
+
+    it "creates a link" do
       expect(reference.decorate.format_reference_document_link)
         .to eq '<a href="example.com">PDF</a>'
     end

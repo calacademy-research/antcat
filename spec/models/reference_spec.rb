@@ -11,7 +11,7 @@ describe Reference do
   let(:ward_ps) { create :author_name, name: 'Ward, P.S.' }
   let(:bolton_b) { create :author_name, name: 'Bolton, B.' }
 
-  describe "Relationships" do
+  describe "relationships" do
     describe "Nested references" do
       let!(:nesting_reference) { create :reference }
       let!(:nestee) { create :nested_reference, nesting_reference: nesting_reference }
@@ -27,6 +27,45 @@ describe Reference do
     end
   end
 
+  describe "scopes" do
+    describe ".sorted_by_principal_author_last_name" do
+      let!(:bolton_reference) { create :article_reference, author_names: [bolton_b, ward_ps] }
+      let!(:ward_reference) { create :article_reference, author_names: [ward_ps, bolton_b] }
+      let!(:fisher_reference) { create :article_reference, author_names: [fisher_bl, bolton_b] }
+
+      it "orders by author_name" do
+        results = described_class.sorted_by_principal_author_last_name
+        expect(results).to eq [bolton_reference, fisher_reference, ward_reference]
+      end
+    end
+
+    describe '.with_principal_author_last_name' do
+      let!(:possible_reference) { create :article_reference, author_names: [ward_ps, fisher_bl] }
+
+      before do
+        create :book_reference, author_names: [bolton_b] # not possible reference
+
+        # another possible reference
+        create :article_reference, author_names: [create(:author_name, name: 'Warden, J.')]
+      end
+
+      it 'returns references with a matching principal author last name' do
+        results = described_class.with_principal_author_last_name 'Ward'
+        expect(results).to eq [possible_reference]
+      end
+    end
+
+    describe ".unreviewed_references" do
+      let!(:unreviewed) { create :article_reference, review_state: "reviewing" }
+
+      before { create :article_reference, review_state: "reviewed" }
+
+      it "returns unreviewed references" do
+        expect(described_class.unreviewed).to eq [unreviewed]
+      end
+    end
+  end
+
   describe "#parse_author_names_and_suffix" do
     let(:reference) { build_stubbed :reference }
 
@@ -36,9 +75,8 @@ describe Reference do
     end
 
     it "adds an error and raise and exception if invalid" do
-      expect {
-        reference.parse_author_names_and_suffix('...asdf sdf dsfdsf')
-      }.to raise_error ActiveRecord::RecordInvalid
+      expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }
+        .to raise_error ActiveRecord::RecordInvalid
 
       error_message = "couldn't be parsed. Please post a message on " \
         "http://groups.google.com/group/antcat/, and we'll fix it!"
@@ -125,8 +163,9 @@ describe Reference do
 
   describe "#principal_author_last_name" do
     context "when there are no authors" do
+      let!(:reference) { described_class.create! title: 'title', citation_year: '1993' }
+
       it "doesn't freak out" do
-        reference = described_class.create! title: 'title', citation_year: '1993'
         expect(reference.principal_author_last_name).to be_nil
       end
     end
@@ -137,8 +176,9 @@ describe Reference do
     end
 
     context "when an author_name's name is changed" do
+      let!(:reference) { create :reference, author_names: [ward_ps] }
+
       it "updates its author_names_string" do
-        reference = create :reference, author_names: [ward_ps]
         ward_ps.update name: 'Bolton, B.'
         expect(reference.reload.principal_author_last_name).to eq 'Bolton'
       end
@@ -219,40 +259,6 @@ describe Reference do
       expect(reference.public_notes.size).to eq 1500
       expect(reference.taxonomic_notes.size).to eq 1700
       expect(reference.title.size).to eq 1900
-    end
-  end
-
-  describe "scopes" do
-    describe ".sorted_by_principal_author_last_name" do
-      it "orders by author_name" do
-        bolton_reference = create :article_reference, author_names: [bolton_b, ward_ps]
-        ward_reference = create :article_reference, author_names: [ward_ps, bolton_b]
-        fisher_reference = create :article_reference, author_names: [fisher_bl, bolton_b]
-
-        results = described_class.sorted_by_principal_author_last_name
-        expect(results.map(&:id)).to eq [bolton_reference.id, fisher_reference.id, ward_reference.id]
-      end
-    end
-
-    describe '.with_principal_author_last_name' do
-      it 'returns references with a matching principal author last name' do
-        create :book_reference, author_names: [bolton_b] # not possible reference
-        possible_reference = create :article_reference, author_names: [ward_ps, fisher_bl]
-        # another possible reference
-        create :article_reference, author_names: [create(:author_name, name: 'Warden, J.')]
-
-        results = described_class.with_principal_author_last_name 'Ward'
-        expect(results).to eq [possible_reference]
-      end
-    end
-
-    describe ".unreviewed_references" do
-      it "returns unreviewed references" do
-        unreviewed = create :article_reference, review_state: "reviewing"
-        create :article_reference, review_state: "reviewed"
-
-        expect(described_class.unreviewed).to eq [unreviewed]
-      end
     end
   end
 

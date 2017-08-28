@@ -41,8 +41,8 @@ describe ActivitiesHelper do
         activity = create :activity, trackable: genus
         trackable_id = activity.trackable_id
 
-        actual = helper.link_trackable_if_exists activity, "label", path: catalog_path(genus)
-        expect(actual).to eq %Q[<a href="/catalog/#{trackable_id}">label</a>]
+        results = helper.link_trackable_if_exists activity, "label", path: catalog_path(genus)
+        expect(results).to eq %Q[<a href="/catalog/#{trackable_id}">label</a>]
       end
     end
 
