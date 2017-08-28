@@ -5,20 +5,26 @@ module Autocomplete
     end
 
     def call
-      # See if we have an exact ID match.
-      search_results = if search_query =~ /^\d+ ?$/
-                         id_matches_q = Journal.find_by id: search_query
-                         [id_matches_q] if id_matches_q
-                       end
-
-      search_results ||= Journal.where("name LIKE ?", "%#{search_query}%")
-
       search_results.map do |journal|
-        { id: journal.id, name: journal.name }
+        {
+          id: journal.id,
+          name: journal.name
+        }
       end
     end
 
     private
       attr_reader :search_query
+
+      def search_results
+        exact_id_match || Journal.where("name LIKE ?", "%#{search_query}%")
+      end
+
+      def exact_id_match
+        return unless search_query =~ /^\d+ ?$/
+
+        match = Journal.find_by id: search_query
+        [match] if match
+      end
   end
 end
