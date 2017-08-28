@@ -4,8 +4,8 @@ class Exporters::Endnote::Formatter
       klass =
         case reference
         when ArticleReference then Exporters::Endnote::Formatter::Article
-        when BookReference then Exporters::Endnote::Formatter::Book
-        when NestedReference then Exporters::Endnote::Formatter::Nested
+        when BookReference    then Exporters::Endnote::Formatter::Book
+        when NestedReference  then Exporters::Endnote::Formatter::Nested
         when UnknownReference then Exporters::Endnote::Formatter::Unknown
         else raise "Don't know what kind of reference this is: #{reference.inspect}"
         end
