@@ -26,27 +26,6 @@ ActiveRecord::Schema.define(version: 20170828205547) do
   add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
   add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
 
-  create_table "antwiki_valid_taxa", id: false, force: :cascade do |t|
-    t.string   "name",                  limit: 255
-    t.string   "subfamilia",            limit: 255
-    t.string   "tribus",                limit: 255
-    t.string   "genus",                 limit: 255
-    t.string   "species",               limit: 255
-    t.string   "binomial",              limit: 255
-    t.string   "binomial_authority",    limit: 255
-    t.string   "subspecies",            limit: 255
-    t.string   "trinomial",             limit: 255
-    t.string   "trinomial_authority",   limit: 255
-    t.string   "author",                limit: 255
-    t.string   "year",                  limit: 255
-    t.string   "changed_comb",          limit: 255
-    t.string   "type_locality_country", limit: 255
-    t.string   "source",                limit: 255
-    t.string   "images",                limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "author_names", force: :cascade do |t|
     t.string   "name",           limit: 255
     t.datetime "created_at"
