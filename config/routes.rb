@@ -61,18 +61,28 @@ AntCat::Application.routes.draw do
       get :latest_additions
       get :latest_changes
       get :endnote_export
-      put :approve_all
     end
 
     scope module: :references do
       resources :history, only: [:index]
       resources :what_links_here, only: :index
+
+      member do
+        scope :reviews, controller: :reviews, as: :reviewing do
+          post :start
+          post :finish
+          post :restart
+        end
+      end
+
+      collection do
+        scope :reviews, controller: :reviews, as: :reviewing do
+          put :approve_all
+        end
+      end
     end
 
     member do
-      post :start_reviewing
-      post :finish_reviewing
-      post :restart_reviewing
       get :endnote_export
       get :wikipedia_export
     end
