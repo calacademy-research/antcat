@@ -1,6 +1,7 @@
 # Use `rails generate database_script <name_of_script>` to generate new scripts.
 
 class DatabaseScript
+  include Draper::Decoratable
   include DatabaseScripts::EndData
   include DatabaseScripts::Rendering
 
