@@ -77,7 +77,7 @@ describe ActivitiesHelper do
 
       it "returns the action" do
         expect(helper.send :partial_for_activity, activity)
-          .to eq "feed/activities/actions/approved_all"
+          .to eq "activities/templates/actions/approved_all"
       end
     end
 
@@ -88,14 +88,14 @@ describe ActivitiesHelper do
 
       it "returns the action" do
         expect(helper.send :partial_for_activity, activity)
-          .to eq "feed/activities/actions/elevate_subspecies_to_species"
+          .to eq "activities/templates/actions/elevate_subspecies_to_species"
       end
     end
 
     context "there's a partial matching `trackable_type`" do
       it "returns that spaced and downcased" do
         expect(helper.send :partial_for_activity, activity)
-          .to eq "feed/activities/journal"
+          .to eq "activities/templates/journal"
       end
     end
 
@@ -104,7 +104,7 @@ describe ActivitiesHelper do
 
       it "returns the default template" do
         expect(helper.send :partial_for_activity, activity)
-          .to eq "feed/activities/default"
+          .to eq "activities/templates/default"
       end
     end
   end

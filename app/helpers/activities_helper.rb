@@ -96,14 +96,14 @@ module ActivitiesHelper
     #
     # 3) Catch `ActionView::MissingTemplate` in `#format_activity` --> `_default.haml`
     def partial_for_activity activity
-      activities_path = "feed/activities/"
-      return "#{activities_path}actions/#{activity.action}" unless activity.trackable_type
+      templates_path = "activities/templates/"
+      return "#{templates_path}actions/#{activity.action}" unless activity.trackable_type
 
       action_partial_name = activity.action
-      action_partial_path = "#{activities_path}/actions/_#{action_partial_name}"
+      action_partial_path = "#{templates_path}/actions/_#{action_partial_name}"
 
       type_partial_name = activity.trackable_type.underscore
-      type_partial_path = "#{activities_path}_#{type_partial_name}"
+      type_partial_path = "#{templates_path}_#{type_partial_name}"
 
       partial = if partial_exists? action_partial_path
                   "actions/#{action_partial_name}"
@@ -112,7 +112,7 @@ module ActivitiesHelper
                 else
                   "default"
                 end
-      "#{activities_path}#{partial}"
+      "#{templates_path}#{partial}"
     end
 
     def partial_exists? path
