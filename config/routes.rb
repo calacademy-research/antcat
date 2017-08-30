@@ -40,7 +40,8 @@ AntCat::Application.routes.draw do
   get 'catalog/:id/history' => 'catalog/history#show', as: :taxon_history
   get 'catalog/:id/what_links_here' => 'catalog/what_links_here#index', as: :taxon_what_links_here
 
-  get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
+  get '/documents/:id/:file_name', to: 'references/downloads#show', file_name: /.+/
+
   resources :journals do
     collection do
       get :autocomplete

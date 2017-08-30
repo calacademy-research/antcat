@@ -1,5 +1,5 @@
 class ReferencesController < ApplicationController
-  before_action :authenticate_editor, except: [:index, :download, :autocomplete,
+  before_action :authenticate_editor, except: [:index, :autocomplete,
     :search_help, :show, :search, :latest_additions, :latest_changes]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
   before_action :redirect_if_search_matches_id, only: [:search]
@@ -66,15 +66,6 @@ class ReferencesController < ApplicationController
         flash[:warning] = @reference.errors.full_messages.to_sentence
       end
       redirect_to reference_path(@reference)
-    end
-  end
-
-  def download
-    document = ReferenceDocument.find params[:id]
-    if document.downloadable?
-      redirect_to document.actual_url
-    else
-      head :unauthorized
     end
   end
 
