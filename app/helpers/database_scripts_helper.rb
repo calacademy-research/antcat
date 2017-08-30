@@ -1,4 +1,5 @@
 module DatabaseScriptsHelper
+  # TODO extract to a decorator.
   def format_database_script_tags tags
     tags.map do |tag|
       css_class = case tag
@@ -14,6 +15,7 @@ module DatabaseScriptsHelper
     end.join(" ").html_safe
   end
 
+  # TODO extract to a decorator.
   def database_script_github_link script
     master_url = "https://github.com/calacademy-research/antcat/blob/master"
     scripts_path = DatabaseScript::SCRIPTS_DIR

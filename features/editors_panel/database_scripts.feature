@@ -11,10 +11,6 @@ Feature: Database scripts
     When I follow "Subspecies without species"
     Then I should see "Lasius specius subspecius"
 
-  Scenario: Results when there are no issues
-    When I follow "Bad subfamily names"
-    Then I should see "Found no database issues"
-
   Scenario: Show tags, and description with markdown
     Then I should see "regression-test"
 
