@@ -57,12 +57,10 @@ AntCat::Application.routes.draw do
     collection do
       get :autocomplete
       get :linkable_autocomplete
-      get :latest_additions
-      get :latest_changes
     end
 
     scope module: :references do
-      resources :history, only: [:index]
+      resources :history, only: :index
       resources :what_links_here, only: :index
 
       member do
@@ -81,6 +79,9 @@ AntCat::Application.routes.draw do
         scope :exports, controller: :exports, as: :export do
           get :endnote
         end
+
+        resources :latest_additions, only: :index, as: :references_latest_additions
+        resources :latest_changes, only: :index, as: :references_latest_changes
 
         scope :reviews, controller: :reviews, as: :reviewing do
           put :approve_all

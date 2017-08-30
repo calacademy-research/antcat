@@ -8,24 +8,24 @@ module References
     def start
       @reference.start_reviewing!
       make_default_reference @reference
-      redirect_to latest_additions_references_path
+      redirect_to references_latest_additions_path
     end
 
     def finish
       @reference.finish_reviewing!
-      redirect_to latest_additions_references_path
+      redirect_to references_latest_additions_path
     end
 
     def restart
       @reference.restart_reviewing!
       make_default_reference @reference
-      redirect_to latest_additions_references_path
+      redirect_to references_latest_additions_path
     end
 
     # TODO handle error, if any.
     def approve_all
       Reference.approve_all
-      redirect_to latest_changes_references_path, notice: "Approved all references."
+      redirect_to references_latest_changes_path, notice: "Approved all references."
     end
 
     private

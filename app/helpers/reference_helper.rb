@@ -10,8 +10,8 @@ module ReferenceHelper
   def references_subnavigation_links
     links = []
     links << link_to('All References', references_path)
-    links << link_to('Latest Additions', latest_additions_references_path)
-    links << link_to('Latest Changes', latest_changes_references_path)
+    links << link_to('Latest Additions', references_latest_additions_path)
+    links << link_to('Latest Changes', references_latest_changes_path)
 
     if user_can_edit?
       # TODO probably allow anyone to export search results.

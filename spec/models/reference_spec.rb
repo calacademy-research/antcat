@@ -64,6 +64,33 @@ describe Reference do
         expect(described_class.unreviewed).to eq [unreviewed]
       end
     end
+
+    describe ".order_by_author_names_and_year" do
+      it "sorts by author_name plus year plus letter" do
+        fisher1910b = reference_factory author_name: 'Fisher',
+          citation_year: '1910b', fix_type: :article_reference
+        wheeler1874 = reference_factory author_name: 'Wheeler',
+          citation_year: '1874', fix_type: :article_reference
+        fisher1910a = reference_factory author_name: 'Fisher',
+          citation_year: '1910a', fix_type: :article_reference
+
+        expect(described_class.order_by_author_names_and_year)
+          .to eq [fisher1910a, fisher1910b, wheeler1874]
+      end
+
+      it "sorts by multiple author_names using their order in each reference" do
+        a = reference_from_author_string 'Abdalla, F. C.; Cruz-Landim, C. da.'
+        m = reference_from_author_string 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.'
+        v = reference_from_author_string "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A."
+
+        expect(described_class.order_by_author_names_and_year).to eq [a, m, v]
+      end
+
+      def reference_from_author_string string
+        author_names = AuthorName.import_author_names_string(string)[:author_names]
+        create :article_reference, author_names: author_names
+      end
+    end
   end
 
   describe "#parse_author_names_and_suffix" do

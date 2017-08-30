@@ -1,10 +1,10 @@
 class ReferencesController < ApplicationController
-  before_action :authenticate_editor, except: [:index, :autocomplete,
-    :show, :latest_additions, :latest_changes]
+  before_action :authenticate_editor, except: [:index, :autocomplete, :show]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index
-    @references = Reference.list_references params
+    @references = Reference.no_missing.order_by_author_names_and_year
+      .includes_document.paginate(page: params[:page])
   end
 
   def show
@@ -66,16 +66,6 @@ class ReferencesController < ApplicationController
       end
       redirect_to reference_path(@reference)
     end
-  end
-
-  def latest_additions
-    options = { order: :created_at, page: params[:page] }
-    @references = Reference.list_references options
-  end
-
-  def latest_changes
-    options = { order: :updated_at, page: params[:page] }
-    @references = Reference.list_references options
   end
 
   # For at.js. Not as advanced as `#autocomplete`.
