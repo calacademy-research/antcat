@@ -1,12 +1,12 @@
 require "spec_helper"
 
-describe DatabaseScripts::DatabaseScript do
+describe DatabaseScript do
   let(:script) { DatabaseTestScript.new }
 
   describe ".new_from_filename_without_extension" do
     it "initializes" do
       results = described_class.new_from_filename_without_extension "SubspeciesWithoutSpecies"
-      expect(results).to be_a DatabaseScripts::Scripts::SubspeciesWithoutSpecies
+      expect(results).to be_a DatabaseScripts::SubspeciesWithoutSpecies
     end
   end
 
@@ -34,7 +34,7 @@ describe DatabaseScripts::DatabaseScript do
   end
 
   describe "testsing with a real script" do
-    let(:script) { DatabaseScripts::Scripts::BadSubfamilyNames.new }
+    let(:script) { DatabaseScripts::BadSubfamilyNames.new }
 
     describe "#to_param" do
       it "is the filename without extension" do

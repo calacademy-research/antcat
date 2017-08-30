@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe DatabaseScripts::DatabaseScript do
+describe DatabaseScripts::Rendering do
   let(:script) { DatabaseTestScript.new }
 
   describe "#render" do

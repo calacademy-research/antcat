@@ -5,7 +5,7 @@ class DatabaseScriptsController < ApplicationController
   before_action :set_script, only: [:show, :source, :regenerate]
 
   def index
-    @scripts = DatabaseScripts::DatabaseScript::all_scripts
+    @scripts = DatabaseScript.all
   end
 
   def show
@@ -23,8 +23,8 @@ class DatabaseScriptsController < ApplicationController
 
   private
     def set_script
-      @script = DatabaseScripts::DatabaseScript::new_from_filename_without_extension params[:id]
-    rescue DatabaseScripts::DatabaseScript::ScriptNotFound
+      @script = DatabaseScript::new_from_filename_without_extension params[:id]
+    rescue DatabaseScript::ScriptNotFound
       raise ActionController::RoutingError.new("Not Found")
     end
 

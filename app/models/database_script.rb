@@ -1,22 +1,22 @@
-# Abstract base class (mixin).
 # Use `rails generate database_script <name_of_script>` to generate new scripts.
 
-module DatabaseScripts::DatabaseScript
-  include Rendering
-  attr_reader :filename_without_extension
+class DatabaseScript
+  include DatabaseScripts::Rendering
 
-  SCRIPTS_PATH = "lib/database_scripts/scripts"
+  SCRIPTS_DIR = "app/database_scripts/database_scripts"
   ScriptNotFound = Class.new StandardError
 
+  attr_reader :filename_without_extension
+
   def self.new_from_filename_without_extension basename
-    script_class = "DatabaseScripts::Scripts::#{basename.camelize}".safe_constantize
+    script_class = "DatabaseScripts::#{basename.camelize}".safe_constantize
     raise ScriptNotFound unless script_class
 
     script_class.new
   end
 
-  def self.all_scripts
-    Dir.glob("#{SCRIPTS_PATH}/*").sort.map do |path|
+  def self.all
+    Dir.glob("#{SCRIPTS_DIR}/*").sort.map do |path|
       basename = File.basename path, ".rb"
       new_from_filename_without_extension basename
     end
@@ -24,10 +24,6 @@ module DatabaseScripts::DatabaseScript
 
   def initialize
     @filename_without_extension = self.class.name.demodulize.underscore
-  end
-
-  def title
-    filename_without_extension.humanize
   end
 
   def description
@@ -40,6 +36,10 @@ module DatabaseScripts::DatabaseScript
 
   def topic_areas
     end_data[:topic_areas] || []
+  end
+
+  def title
+    filename_without_extension.humanize
   end
 
   # Filename is generated from the script's class name, so presumably safe.
@@ -67,19 +67,10 @@ module DatabaseScripts::DatabaseScript
     end
 
   private
-    def self.namespaced_constantize basename
-      "DatabaseScripts::Scripts::#{basename.camelize}".constantize
-    end
-    private_class_method :namespaced_constantize
-
     # The script's description and tags are stored in `DATA`.
     # TODO replace with methods.
     def end_data
-      @end_data ||= HashWithIndifferentAccess.new YAML::load(read_end_data)
-    end
-
-    def read_end_data
-      DATA
+      @_end_data ||= HashWithIndifferentAccess.new YAML::load(read_end_data)
     end
 
     # For reading the script's `DATA` (everything under `__END__` in the source);
@@ -99,6 +90,6 @@ module DatabaseScripts::DatabaseScript
     end
 
     def script_path
-      "#{SCRIPTS_PATH}/#{filename_without_extension}.rb"
+      "#{SCRIPTS_DIR}/#{filename_without_extension}.rb"
     end
 end

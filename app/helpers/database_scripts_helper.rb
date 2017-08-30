@@ -16,7 +16,7 @@ module DatabaseScriptsHelper
 
   def database_script_github_link script
     master_url = "https://github.com/calacademy-research/antcat/blob/master"
-    scripts_path = DatabaseScripts::DatabaseScript::SCRIPTS_PATH
+    scripts_path = DatabaseScript::SCRIPTS_DIR
     url = "#{master_url}/#{scripts_path}/#{script.filename_without_extension}.rb"
     link_to "GitHub (dev)", url
   end
