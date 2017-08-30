@@ -60,7 +60,6 @@ AntCat::Application.routes.draw do
       get :linkable_autocomplete
       get :latest_additions
       get :latest_changes
-      get :endnote_export
     end
 
     scope module: :references do
@@ -73,18 +72,20 @@ AntCat::Application.routes.draw do
           post :finish
           post :restart
         end
+
+        scope :exports, controller: :exports, as: :export do
+          get :wikipedia
+        end
       end
 
       collection do
         scope :reviews, controller: :reviews, as: :reviewing do
           put :approve_all
         end
+        scope :exports, controller: :exports, as: :export do
+          get :endnote
+        end
       end
-    end
-
-    member do
-      get :endnote_export
-      get :wikipedia_export
     end
   end
 

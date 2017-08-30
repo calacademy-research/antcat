@@ -1,9 +1,7 @@
 class ReferencesController < ApplicationController
   before_action :authenticate_editor, except: [:index, :download, :autocomplete,
-    :search_help, :show, :search, :endnote_export, :wikipedia_export, :latest_additions,
-    :latest_changes]
-  before_action :set_reference, only: [:show, :edit, :update, :destroy,
-    :wikipedia_export]
+    :search_help, :show, :search, :latest_additions, :latest_changes]
+  before_action :set_reference, only: [:show, :edit, :update, :destroy]
   before_action :redirect_if_search_matches_id, only: [:search]
 
   def index
@@ -116,37 +114,6 @@ class ReferencesController < ApplicationController
   def latest_changes
     options = { order: :updated_at, page: params[:page] }
     @references = Reference.list_references options
-  end
-
-  def endnote_export
-    id = params[:id]
-    searching = params[:q].present?
-
-    references =
-      if id
-        # `where` and not `find` because we need to return an array.
-        Reference.where(id: id)
-      elsif searching
-        Reference.do_search params.merge endnote_export: true
-      else
-        # I believe it's not possible to get here from the GUI, but the route
-        # is not disabled. http://localhost:3000/references/endnote_export
-        Reference.list_all_references_for_endnote
-      end
-
-    render plain: Exporters::Endnote::Formatter.format(references)
-
-    rescue
-      render plain: <<-MSG.squish
-        Looks like something went wrong.
-        Exporting missing references is not supported.
-        If you tried to export a list of references,
-        try to filter the query with "type:nomissing".
-      MSG
-  end
-
-  def wikipedia_export
-    render plain: Wikipedia::ReferenceExporter.export(@reference)
   end
 
   # For at.js. Not as advanced as `#autocomplete`.
