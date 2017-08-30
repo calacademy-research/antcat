@@ -11,8 +11,8 @@ module DatabaseScripts
       SQL
     end
 
-    def no_database_issues_on_on
-      '[{"COUNT(*)":0}]'
+    def render
+      results.to_json
     end
   end
 end

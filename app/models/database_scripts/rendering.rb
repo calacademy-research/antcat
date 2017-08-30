@@ -16,8 +16,6 @@ module DatabaseScripts
     # Tries to be smart whenever not overridden in the scripts.
     def render
       case cached_results
-      when ActiveRecord::Result # SQL results from `#sql`
-        as_json_from_sql
       when ActiveRecord::Relation
         case cached_results.table.name # `#base_class` or `#klass` doesn't work for some reason.
           when "taxa" then as_taxon_table
@@ -42,20 +40,6 @@ module DatabaseScripts
         list << "* #{markdown_reference_link(reference)}\n"
       end
       markdown list
-    end
-
-    def as_json_from_sql
-      output = cached_results.to_json
-
-      if defined? no_database_issues_on_on
-        return no_database_issues if output == no_database_issues_on_on
-      end
-
-      output
-    end
-
-    def no_database_issues
-      "Found no database issues"
     end
   end
 end

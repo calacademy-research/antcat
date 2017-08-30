@@ -7,18 +7,8 @@ module DatabaseScripts
       double_braces_count
     end
 
-    def no_database_issues_on_on
-      0
-    end
-
-    # When this method isn't implemented, the code tries to figure out
-    # how to render `results` based on its class.
     def render
-      if cached_results == no_database_issues_on_on
-        no_database_issues
-      else
-        "Found #{cached_results} redundant curly brances."
-      end
+      "Found #{cached_results} redundant curly brance(s)."
     end
 
     private
