@@ -30,8 +30,5 @@
     =@cached_render
 
 %small.right
-  -duration = @script.timed_render_duration
-  -if duration
-    Script runtime: #{duration} seconds
-  -else
-    Script runtime: [used cache]
+  Script runtime:
+  =@used_cached ? "[used cache]" : "#{@render_duration} seconds"

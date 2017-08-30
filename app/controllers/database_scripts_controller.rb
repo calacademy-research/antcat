@@ -9,7 +9,12 @@ class DatabaseScriptsController < ApplicationController
   end
 
   def show
+    @used_cached = used_cached? @script
+
+    start = Time.now
     @cached_render = cached_render @script
+    @render_duration = Time.now - start
+
     @cached_at = cached_at @script
   end
 
@@ -28,9 +33,13 @@ class DatabaseScriptsController < ApplicationController
       raise ActionController::RoutingError.new("Not Found")
     end
 
+    def used_cached? script
+      Rails.cache.exist? script.cache_key
+    end
+
     def cached_render script
       Rails.cache.fetch(script, expires_in: EXPIRES_IN) do
-        script.timed_render
+        script.render
       end
     end
 

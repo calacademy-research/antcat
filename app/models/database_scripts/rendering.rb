@@ -3,15 +3,6 @@ module DatabaseScripts
     include DatabaseScripts::Renderers::AsTable
     include DatabaseScripts::Renderers::Markdown
 
-    attr_reader :timed_render_duration
-
-    def timed_render
-      start = Time.now
-      output = render
-      @timed_render_duration = Time.now - start
-      output
-    end
-
     # Tries to be smart whenever not overridden in the scripts.
     def render
       case cached_results
