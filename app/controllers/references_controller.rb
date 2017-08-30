@@ -1,8 +1,7 @@
 class ReferencesController < ApplicationController
   before_action :authenticate_editor, except: [:index, :autocomplete,
-    :search_help, :show, :search, :latest_additions, :latest_changes]
+    :show, :latest_additions, :latest_changes]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
-  before_action :redirect_if_search_matches_id, only: [:search]
 
   def index
     @references = Reference.list_references params
@@ -69,34 +68,6 @@ class ReferencesController < ApplicationController
     end
   end
 
-  def search
-    user_is_searching = params[:q].present? || params[:author_q].present?
-    return redirect_to action: :index unless user_is_searching
-
-    unparsable_author_names_error_message = <<-MSG
-      Could not parse author names. Start by typing a name, wait for a while
-      and then click on one of the suggestions. It is possible to manually
-      type the query (for example "Wilson, E. O.; Billen, J.;"),
-      but the names must exactly match the names in the database
-      ("Wilson" or "Wilson, E." will not work), and the query has to be
-      formatted like in the first example. Still not working? Email us!
-    MSG
-
-    @references = if params[:search_type] == "author"
-                    begin
-                      Reference.author_search params[:author_q], params[:page]
-                    rescue Citrus::ParseError
-                      flash.now.alert = unparsable_author_names_error_message
-                      Reference.none.paginate page: 9999
-                    end
-                  else
-                    Reference.do_search params
-                  end
-  end
-
-  def search_help
-  end
-
   def latest_additions
     options = { order: :created_at, page: params[:page] }
     @references = Reference.list_references options
@@ -129,16 +100,6 @@ class ReferencesController < ApplicationController
   end
 
   private
-    def redirect_if_search_matches_id
-      params[:q] ||= ''
-      params[:q].strip!
-
-      if params[:q].match(/^\d{5,}$/)
-        id = params[:q]
-        return redirect_to reference_path(id) if Reference.exists? id
-      end
-    end
-
     def build_nested_reference reference_id, citation_year
       @reference = @reference.becomes NestedReference
       @reference.citation_year = citation_year

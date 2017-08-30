@@ -6,11 +6,11 @@
 
 %p
   Not quite what you're looking for? Try the
-  =link_to "help pages.", search_help_references_path
+  =link_to "help pages.", help_references_search_index_path
 
 %table
   -@references.each do |reference|
     %tr
-      %td=render 'reference', reference: reference
+      %td=render 'references/reference', reference: reference
 
 =will_paginate @references

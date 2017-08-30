@@ -55,8 +55,6 @@ AntCat::Application.routes.draw do
 
   resources :references do
     collection do
-      get :search
-      get :search_help
       get :autocomplete
       get :linkable_autocomplete
       get :latest_additions
@@ -80,11 +78,16 @@ AntCat::Application.routes.draw do
       end
 
       collection do
+        scope :exports, controller: :exports, as: :export do
+          get :endnote
+        end
+
         scope :reviews, controller: :reviews, as: :reviewing do
           put :approve_all
         end
-        scope :exports, controller: :exports, as: :export do
-          get :endnote
+
+        resources :search, only: :index, as: :references_search do
+          get :help, on: :collection
         end
       end
     end
