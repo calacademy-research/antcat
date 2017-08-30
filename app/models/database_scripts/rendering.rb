@@ -1,7 +1,6 @@
 module DatabaseScripts
   module Rendering
     include DatabaseScripts::Renderers::AsTable
-    include DatabaseScripts::Renderers::Plaintext
     include DatabaseScripts::Renderers::Markdown
 
     attr_reader :timed_render_duration
