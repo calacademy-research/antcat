@@ -11,15 +11,11 @@ describe User do
       let!(:editor) { create :editor }
 
       describe ".editors" do
-        it "returns editors" do
-          expect(described_class.editors).to eq [editor]
-        end
+        specify { expect(described_class.editors).to eq [editor] }
       end
 
       describe ".non_editors" do
-        it "returns non-editors" do
-          expect(described_class.editors).to eq [editor]
-        end
+        specify { expect(described_class.editors).to eq [editor] }
       end
     end
 

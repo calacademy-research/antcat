@@ -1,17 +1,19 @@
 require "spec_helper"
 
 describe MarkdownHelper do
+  let(:string) { "should be delegated" }
+
   describe "#markdown" do
     it "formats markdown (delegates)" do
-      markdown = "should be delegated"
-      expect(AntcatMarkdown).to receive(:render).with markdown
-      helper.markdown markdown
+      expect(AntcatMarkdown).to receive(:render).with string
+      helper.markdown string
     end
+  end
 
+  describe "#strip_markdown" do
     it "strips markdown (delegates)" do
-      markdown = "should be delegated"
-      expect(AntcatMarkdown).to receive(:strip).with markdown
-      helper.strip_markdown markdown
+      expect(AntcatMarkdown).to receive(:strip).with string
+      helper.strip_markdown string
     end
   end
 end

@@ -20,15 +20,15 @@ describe AntcatMarkdownUtils do
       let!(:taxon) { create :species }
 
       it "links existing taxa" do
-        results = dummy.send :try_linking_taxon_id, taxon.id.to_s
-        expect(results).to eq %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
+        expect(dummy.send :try_linking_taxon_id, taxon.id.to_s)
+          .to eq %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
       end
     end
 
     context "missing taxon" do
       it "renders an error message" do
-        results = dummy.send :try_linking_taxon_id, "9999"
-        expect(results).to eq '<span class="broken-markdown-link"> could not find taxon with id 9999 </span>'
+        expect(dummy.send :try_linking_taxon_id, "9999")
+          .to eq '<span class="broken-markdown-link"> could not find taxon with id 9999 </span>'
       end
     end
   end

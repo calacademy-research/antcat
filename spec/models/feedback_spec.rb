@@ -23,13 +23,14 @@ describe Feedback do
   end
 
   describe "#from_the_same_ip" do
+    let!(:feedback) { create :feedback }
+
     before do
       create :feedback
       create :feedback, ip: "255.255.255.255"
     end
 
-    it "finds feedbacks from the same IP" do
-      feedback = create :feedback
+    it "returns feedbacks from the same IP" do
       expect(feedback.from_the_same_ip.count).to eq 2
     end
   end
@@ -40,17 +41,13 @@ describe Feedback do
 
     describe "predicate methods" do
       describe "#open?" do
-        it "knows" do
-          expect(open.open?).to be true
-          expect(closed.open?).to be false
-        end
+        specify { expect(open.open?).to be true }
+        specify { expect(closed.open?).to be false }
       end
 
       describe "#closed?" do
-        it "knows" do
-          expect(open.closed?).to be false
-          expect(closed.closed?).to be true
-        end
+        specify { expect(open.closed?).to be false }
+        specify { expect(closed.closed?).to be true }
       end
     end
 

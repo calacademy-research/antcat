@@ -6,8 +6,8 @@ describe BreadcrumbsHelper do
       let(:taxon) { create_family }
 
       it "handles Formicidae" do
-        expected = %Q[<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>]
-        expect(helper.taxon_breadcrumb_link(taxon)).to eq expected
+        expect(helper.taxon_breadcrumb_link(taxon))
+          .to eq %Q[<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>]
       end
     end
 
@@ -17,8 +17,8 @@ describe BreadcrumbsHelper do
       specify do
         ranks.each do |rank|
           taxon = send "create_#{rank}"
-          expected = %Q[<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>]
-          expect(helper.taxon_breadcrumb_link(taxon)).to eq expected
+          expect(helper.taxon_breadcrumb_link(taxon))
+            .to eq %Q[<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>]
         end
       end
     end
@@ -31,8 +31,8 @@ describe BreadcrumbsHelper do
       specify do
         ranks.each do |rank|
           taxon = send "create_#{rank}"
-          expected = %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
-          expect(helper.taxon_breadcrumb_link(taxon)).to eq expected
+          expect(helper.taxon_breadcrumb_link(taxon))
+            .to eq %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
         end
       end
     end
@@ -43,8 +43,8 @@ describe BreadcrumbsHelper do
       let(:taxon) { create_genus fossil: true }
 
       specify do
-        expected = %Q[<a href="/catalog/#{taxon.id}">&dagger;<i>#{taxon.name_cache}</i></a>]
-        expect(helper.taxon_breadcrumb_link(taxon)).to eq expected
+        expect(helper.taxon_breadcrumb_link(taxon))
+          .to eq %Q[<a href="/catalog/#{taxon.id}">&dagger;<i>#{taxon.name_cache}</i></a>]
       end
     end
   end

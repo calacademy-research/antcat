@@ -52,8 +52,8 @@ describe Publisher do
       end
 
       it "parses" do
-        expected = described_class.create_with_place_form_string 'New York: Houghton Mifflin'
-        expect(expected.to_s).to eq 'New York: Houghton Mifflin'
+        results = described_class.create_with_place_form_string 'New York: Houghton Mifflin'
+        expect(results.to_s).to eq 'New York: Houghton Mifflin'
       end
     end
   end

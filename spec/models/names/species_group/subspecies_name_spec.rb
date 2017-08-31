@@ -52,7 +52,8 @@ describe SubspeciesName do
           species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
           protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
 
-          expect { subspecies_name.change_parent species_name }.to raise_error
+          expect { subspecies_name.change_parent species_name }
+            .to raise_error Taxon::TaxonExists
         end
       end
 

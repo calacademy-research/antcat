@@ -44,8 +44,9 @@ describe Taxon do
 
   #TODO remove?
   describe "Rank" do
+    let!(:taxon) { build_stubbed :subfamily }
+
     it "returns a lowercase version" do
-      taxon = build_stubbed :subfamily
       expect(taxon.name.rank).to eq 'subfamily'
     end
   end
@@ -78,11 +79,11 @@ describe Taxon do
   describe "#protonym" do
     # Changed this because synonyms, homonyms will use the same protonym
     context "when the taxon it's attached to is destroyed, even if another taxon is using it" do
-      it "doesn't destroy the protonym" do
-        protonym = create :protonym
-        atta = create_genus protonym: protonym
-        eciton = create_genus protonym: protonym
+      let!(:protonym) { create :protonym }
+      let!(:atta) { create_genus protonym: protonym }
+      let!(:eciton) { create_genus protonym: protonym }
 
+      it "doesn't destroy the protonym" do
         expect { atta.destroy }.not_to change { Protonym.count }
       end
     end
