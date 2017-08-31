@@ -1,5 +1,7 @@
 module Catalog
   class SearchController < ApplicationController
+    DEFAULT_PER_PAGE = 30
+
     before_action :antweb_legacy_route, only: [:index]
 
     # This is the "Advanced Search" page.
@@ -11,7 +13,8 @@ module Catalog
 
       respond_to do |format|
         format.html do
-          @taxa = @taxa.paginate(page: params[:page])
+          @taxa = @taxa.paginate page: params[:page],
+            per_page: (params[:per_page] || DEFAULT_PER_PAGE)
         end
 
         format.text do
@@ -34,7 +37,8 @@ module Catalog
         return redirect_to catalog_path(taxa.first, qq: params[:qq])
       end
 
-      @taxa = taxa.paginate(page: params[:page])
+      @taxa = taxa.paginate page: params[:page],
+        per_page: (params[:per_page] || DEFAULT_PER_PAGE)
 
       @is_quick_search = true
       render "index"
