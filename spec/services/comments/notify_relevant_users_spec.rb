@@ -13,7 +13,7 @@ describe Comments::NotifyRelevantUsers do
 
     context "is a reply" do
       let(:subject) do
-        reply = build_stubbed :reply, user: build_stubbed(:user)
+        reply = build_stubbed :comment, :reply, user: build_stubbed(:user)
         described_class.new reply
       end
 

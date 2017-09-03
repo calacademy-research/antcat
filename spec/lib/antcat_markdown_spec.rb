@@ -39,19 +39,19 @@ describe AntcatMarkdown do
 
     describe "reference ids" do
       context "existing reference" do
-        it "links the reference" do
-          reference = create :article_reference
-          markdown = "%reference#{reference.id}"
+        let(:reference) { create :article_reference }
+        let(:markdown) { "%reference#{reference.id}" }
 
+        it "links the reference" do
           expected = "<p>#{reference.decorate.inline_citation}</p>\n"
           expect(described_class.render(markdown)).to eq expected
         end
       end
 
       context "missing (non-existing) reference" do
-        it "renders an error message" do
-          markdown = "%reference9999999"
+        let(:markdown) { "%reference9999999" }
 
+        it "renders an error message" do
           expected = %Q[<p><span class="broken-markdown-link"> could not find reference with id 9999999 </span></p>\n]
           expect(described_class.render(markdown)).to eq expected
         end
@@ -60,19 +60,19 @@ describe AntcatMarkdown do
 
     describe "journal ids" do
       context "existing journal" do
-        it "links the journal" do
-          journal = create :journal, name: "Zootaxa"
-          markdown = "%journal#{journal.id}"
+        let(:journal) { create :journal, name: "Zootaxa" }
+        let(:markdown) { "%journal#{journal.id}" }
 
+        it "links the journal" do
           expected = %Q[<p><a href="/journals/#{journal.id}"><i>#{journal.name}</i></a></p>\n]
           expect(described_class.render(markdown)).to eq expected
         end
       end
 
       context "missing journal" do
-        it "renders an error message" do
-          markdown = "%journal9999999"
+        let(:markdown) { "%journal9999999" }
 
+        it "renders an error message" do
           expected = %Q[<p><span class="broken-markdown-link"> could not find journal with id 9999999 </span></p>\n]
           expect(described_class.render(markdown)).to eq expected
         end

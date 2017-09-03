@@ -5,8 +5,8 @@ describe DatabaseScripts::DatabaseScript do
 
   describe ".new_from_filename_without_extension" do
     it "initializes" do
-      result = described_class.new_from_filename_without_extension "SubspeciesWithoutSpecies"
-      expect(result).to be_a DatabaseScripts::Scripts::SubspeciesWithoutSpecies
+      results = described_class.new_from_filename_without_extension "SubspeciesWithoutSpecies"
+      expect(results).to be_a DatabaseScripts::Scripts::SubspeciesWithoutSpecies
     end
   end
 

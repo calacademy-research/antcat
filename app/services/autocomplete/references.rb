@@ -5,14 +5,6 @@ module Autocomplete
     end
 
     def call
-      search_options = {}
-      keyword_params = Reference.extract_keyword_params search_query
-
-      search_options[:reference_type] = :nomissing
-      search_options[:items_per_page] = 5
-      search_options.merge! keyword_params
-      search_results = Reference.fulltext_search search_options
-
       search_results.map do |reference|
         search_query = if keyword_params.size == 1 # size 1 = no keyword params were matched
                          reference.title
@@ -30,6 +22,18 @@ module Autocomplete
 
     private
       attr_reader :search_query
+
+      def search_results
+        Reference.fulltext_search search_options
+      end
+
+      def search_options
+        { reference_type: :nomissing, items_per_page: 5 }.merge keyword_params
+      end
+
+      def keyword_params
+        @_keyword_params ||= Reference.extract_keyword_params search_query
+      end
 
       def format_autosuggest_keywords reference, keyword_params
         replaced = []

@@ -5,16 +5,9 @@ module Autocomplete
     end
 
     def call
-      # TODO create concern? There's similar logic in other controllers.
-      # See if we have an exact ID match.
-      search_results =  if search_query =~ /^\d{6} ?$/
-                          id_matches_q = Reference.find_by id: search_query
-                          [id_matches_q] if id_matches_q
-                        end
-      search_results ||= Reference.fulltext_search_light search_query
-
       search_results.map do |reference|
-        { id: reference.id,
+        {
+          id: reference.id,
           author: reference.author_names_string,
           year: reference.citation_year,
           title: reference.decorate.format_title
@@ -24,5 +17,16 @@ module Autocomplete
 
     private
       attr_reader :search_query
+
+      def search_results
+        exact_id_match || Reference.fulltext_search_light(search_query)
+      end
+
+      def exact_id_match
+        return unless search_query =~ /^\d{6} ?$/
+
+        match = Reference.find_by id: search_query
+        [match] if match
+      end
   end
 end

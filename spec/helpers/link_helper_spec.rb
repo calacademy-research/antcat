@@ -10,13 +10,15 @@ describe LinkHelper do
 
   describe "#link_to_antwiki" do
     it "can link subfamilies" do
-      expect(helper.link_to_antwiki(create_subfamily 'Dolichoderinae')).to eq(
+      taxon = create_subfamily 'Dolichoderinae'
+      expect(helper.link_to_antwiki(taxon)).to eq(
         '<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Dolichoderinae">AntWiki</a>'
       )
     end
 
     it "can link to species" do
-      expect(helper.link_to_antwiki(create_species 'Atta major')).to eq(
+      taxon = create_species 'Atta major'
+      expect(helper.link_to_antwiki(taxon)).to eq(
         '<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta_major">AntWiki</a>'
       )
     end

@@ -2,6 +2,7 @@
 # It fixes warnings about comparing /.../n regexp
 # to UTF-8 strings
 
+# TODO see if we still need this.
 module Rack
   module Utils
     def escape s

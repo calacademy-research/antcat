@@ -54,30 +54,30 @@ describe Taxon do
 
   describe "#recombination?" do
     context "name is same as protonym" do
-      it "it is not a recombination" do
-        species = create_species 'Atta major'
-        protonym_name = create_species_name 'Atta major'
+      let!(:species) { create_species 'Atta major' }
+      let!(:protonym_name) { create_species_name 'Atta major' }
 
+      it "it is not a recombination" do
         expect(species.protonym).to receive(:name).and_return protonym_name
         expect(species).not_to be_recombination
       end
     end
 
     context "genus part of name is different than genus part of protonym" do
-      it "it is a recombination" do
-        species = create_species 'Atta minor'
-        protonym_name = create_species_name 'Eciton minor'
+      let!(:species) { create_species 'Atta minor' }
+      let!(:protonym_name) { create_species_name 'Eciton minor' }
 
+      it "it is a recombination" do
         expect(species.protonym).to receive(:name).and_return protonym_name
         expect(species).to be_recombination
       end
     end
 
     context "genus part of name is same as genus part of protonym" do
-      it "it is not a recombination" do
-        species = create_species 'Atta minor maxus'
-        protonym_name = create_subspecies_name 'Atta minor minus'
+      let!(:species) { create_species 'Atta minor maxus' }
+      let!(:protonym_name) { create_subspecies_name 'Atta minor minus' }
 
+      it "it is not a recombination" do
         expect(species.protonym).to receive(:name).and_return protonym_name
         expect(species).not_to be_recombination
       end

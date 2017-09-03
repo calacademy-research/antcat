@@ -6,61 +6,16 @@ describe ReferenceDecorator do
   let(:author_name) { create :author_name, name: "Forel, A." }
 
   describe "#format_reference_document_link" do
-    it "creates a link" do
-      reference = build_stubbed :reference
+    let!(:reference) { build_stubbed :reference }
+
+    before do
       allow(reference).to receive(:downloadable?).and_return true
       allow(reference).to receive(:url).and_return 'example.com'
+    end
+
+    it "creates a link" do
       expect(reference.decorate.format_reference_document_link)
         .to eq '<a href="example.com">PDF</a>'
-    end
-  end
-
-  describe "#keey" do
-    # TODO test this and all other methods not already tested.
-  end
-
-  # TODO moved here from `citation_spec.rb`.
-  xdescribe "#year or Reference#year or wherever this method will be defined" do
-    it "shows the year" do
-      reference = reference_factory author_name: 'Bolton', citation_year: '2001'
-      citation = build_stubbed :citation, reference: reference
-
-      expect(citation.year).to eq '2001'
-    end
-
-    it "handles nil years" do
-      reference = reference_factory author_name: 'Bolton', citation_year: nil
-      citation = build_stubbed :citation, reference: reference
-
-      expect(citation.year).to eq "[no year]"
-    end
-  end
-
-  # TODO moved here from `citation_spec.rb`.
-  # TODO move to wherever `#authorship_string` is tested.
-  xdescribe "#keey_without_letters_in_year" do
-    it "shows the author and year" do
-      reference = reference_factory author_name: 'Bolton', citation_year: '2001'
-      citation = build_stubbed :citation, reference: reference
-
-      expect(citation.authorship_string).to eq 'Bolton, 2001'
-    end
-
-    it "handles multiple authors" do
-      reference = build_stubbed :article_reference,
-        author_names: [ create(:author_name, name: 'Bolton, B.'),
-                        create(:author_name, name: 'Fisher, R.')],
-        citation_year: '2001', year: '2001'
-      citation = build_stubbed :citation, reference: reference
-
-      expect(citation.authorship_string).to eq 'Bolton & Fisher, 2001'
-    end
-
-    it "doesn't include the year ordinal" do
-      reference = reference_factory author_name: 'Bolton', citation_year: '1885g'
-      citation = build_stubbed :citation, reference: reference
-
-      expect(citation.authorship_string).to eq 'Bolton, 1885'
     end
   end
 
@@ -363,56 +318,62 @@ describe ReferenceDecorator do
 
     context "string isn't html_safe" do
       it "raises" do
-        expect { nil_decorator.send :format_italics, 'roman' }.to raise_error
+        expect { nil_decorator.send :format_italics, 'roman' }
+          .to raise_error "Can't call format_italics on an unsafe string"
       end
     end
   end
 
   describe "#inline_citation" do
     context "a MissingReference" do
+      let(:reference) { create :missing_reference, citation: 'foo' }
+
       it "just outputs the citation" do
-        reference = create :missing_reference, citation: 'foo'
         expect(reference.decorate.inline_citation).to eq 'foo'
       end
     end
   end
 
-  # Returns the display string for a review status.
   describe "#format_review_state" do
     let(:reference) { build_stubbed :article_reference }
 
-    it "handles 'reviewed'" do
-      reference.review_state = 'reviewed'
-      expect(reference).to have_formatted_review_state 'Reviewed'
+    context "when review_state is 'reviewed'" do
+      before { reference.review_state = 'reviewed' }
+
+      specify { expect(reference).to have_formatted_review_state 'Reviewed' }
     end
 
-    it "handles 'reviewing'" do
-      reference.review_state = 'reviewing'
-      expect(reference).to have_formatted_review_state 'Being reviewed'
+    context "when review_state is 'reviewing'" do
+      before { reference.review_state = 'reviewing' }
+
+      specify {expect(reference).to have_formatted_review_state 'Being reviewed' }
     end
 
-    it "handles 'none'" do
-      reference.review_state = 'none'
-      expect(reference).to have_formatted_review_state ''
+    context "when review_state is 'none'" do
+      before { reference.review_state = 'none' }
+
+      specify {expect(reference).to have_formatted_review_state '' }
     end
 
-    it "handles empty states" do
-      reference.review_state = ''
-      expect(reference).to have_formatted_review_state ''
+    context "when review_state is empty string" do
+      before { reference.review_state = '' }
+
+      specify {expect(reference).to have_formatted_review_state '' }
     end
 
-    it "handles nil" do
-      reference.review_state = nil
-      expect(reference).to have_formatted_review_state ''
+    context "when review_state is nil" do
+      before { reference.review_state = nil }
+
+      specify {expect(reference).to have_formatted_review_state '' }
     end
   end
 
   describe "a regression where a string should've been duped" do
     let(:reference) do
-      journal = create :journal, name: 'Ants'
       create :article_reference,
         author_names: [author_name], citation_year: '1874', title: 'Format',
-        journal: journal, series_volume_issue: '1:1', pagination: '2'
+        journal: create(:journal, name: 'Ants'),
+        series_volume_issue: '1:1',pagination: '2'
     end
 
     it "really should have been duped" do

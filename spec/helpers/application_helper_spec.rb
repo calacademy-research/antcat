@@ -8,7 +8,6 @@ describe ApplicationHelper do
     end
   end
 
-  # Pluralizing, with commas
   describe "#pluralize_with_delimiters" do
     it "handles single items" do
       expect(helper.pluralize_with_delimiters(1, 'bear')).to eq '1 bear'
@@ -67,16 +66,16 @@ describe ApplicationHelper do
     end
 
     describe "arguments" do
-      it "handles a single string" do
-        expect(icon_classes "issue").to eq "antcat_icon issue"
+      context "when a string" do
+        specify { expect(icon_classes "issue").to eq "antcat_icon issue" }
       end
 
-      it "handles two strings" do
-        expect(icon_classes "issue open").to eq "antcat_icon issue open"
+      context "when two strings" do
+        specify { expect(icon_classes "issue open").to eq "antcat_icon issue open" }
       end
 
-      it "handles arrays" do
-        expect(icon_classes ["issue open"]).to eq "antcat_icon issue open"
+      context "when array" do
+        specify { expect(icon_classes ["issue open"]).to eq "antcat_icon issue open" }
       end
     end
 

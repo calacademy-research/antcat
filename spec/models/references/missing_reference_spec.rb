@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe MissingReference do
-  it { should allow_value(nil).for :year }
+  it { is_expected.to allow_value(nil).for :year }
 
   describe "#keey" do
     let(:reference) { build_stubbed :missing_reference, citation: "citation" }

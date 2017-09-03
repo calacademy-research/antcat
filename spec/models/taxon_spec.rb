@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe Taxon do
-  it { should validate_presence_of :name }
-  it { should belong_to :protonym }
-  it { should allow_value(nil).for :type_name }
-  it { should allow_value(nil).for :status } # should probably not...
-  it { should allow_value(nil).for :biogeographic_region }
-  it { should have_many :history_items }
-  it { should have_many :reference_sections }
-  it { should belong_to :type_name }
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to belong_to :protonym }
+  it { is_expected.to allow_value(nil).for :type_name }
+  it { is_expected.to allow_value(nil).for :status } # should probably not...
+  it { is_expected.to allow_value(nil).for :biogeographic_region }
+  it { is_expected.to have_many :history_items }
+  it { is_expected.to have_many :reference_sections }
+  it { is_expected.to belong_to :type_name }
 
   describe ".find_by_name" do
     it "returns nil if nothing matches" do
@@ -44,8 +44,9 @@ describe Taxon do
 
   #TODO remove?
   describe "Rank" do
+    let!(:taxon) { build_stubbed :subfamily }
+
     it "returns a lowercase version" do
-      taxon = build_stubbed :subfamily
       expect(taxon.name.rank).to eq 'subfamily'
     end
   end
@@ -78,11 +79,11 @@ describe Taxon do
   describe "#protonym" do
     # Changed this because synonyms, homonyms will use the same protonym
     context "when the taxon it's attached to is destroyed, even if another taxon is using it" do
-      it "doesn't destroy the protonym" do
-        protonym = create :protonym
-        atta = create_genus protonym: protonym
-        eciton = create_genus protonym: protonym
+      let!(:protonym) { create :protonym }
+      let!(:atta) { create_genus protonym: protonym }
+      let!(:eciton) { create_genus protonym: protonym }
 
+      it "doesn't destroy the protonym" do
         expect { atta.destroy }.not_to change { Protonym.count }
       end
     end
@@ -231,9 +232,10 @@ describe Taxon do
       expect(subspecies.species).to eq old_parent
     end
 
-    context "new parent is same as old aprent" do
+    context "new parent is same as old parent" do
+      before { subspecies.update_parent old_parent }
+
       it "does nothing if the parent doesn't actually change" do
-        subspecies.update_parent old_parent
         expect(subspecies.species).to eq old_parent
         expect(subspecies.name.name).to eq 'Atta major medius minor'
       end
@@ -288,10 +290,10 @@ describe Taxon do
     end
 
     describe ".extant" do
-      it "only includes extant taxa" do
-        extant_genus = create :genus, subfamily: subfamily
-        create :genus, subfamily: subfamily, fossil: true
+      let!(:extant_genus) { create :genus, subfamily: subfamily }
+      before { create :genus, subfamily: subfamily, fossil: true }
 
+      it "only includes extant taxa" do
         expect(subfamily.genera.extant).to eq [extant_genus]
       end
     end
@@ -326,31 +328,30 @@ describe Taxon do
 
       describe ".ranks" do
         it "only returns taxa of the specified types" do
-          actual = unique_ranks described_class.ranks(Species, Genus)
-          expect(actual.sort).to eq ["Genus", "Species"]
+          results = unique_ranks described_class.ranks(Species, Genus)
+          expect(results.sort).to eq ["Genus", "Species"]
         end
 
         it "handles symbols" do
-          actual = unique_ranks described_class.ranks(:species, :Genus)
-          expect(actual).to eq ["Genus", "Species"]
+          expect(unique_ranks described_class.ranks(:species, :Genus))
+            .to eq ["Genus", "Species"]
         end
 
         it "handles strings" do
-          actual = unique_ranks described_class.ranks("Species", "genus")
-          expect(actual).to eq ["Genus", "Species"]
+          expect(unique_ranks described_class.ranks("Species", "genus"))
+            .to eq ["Genus", "Species"]
         end
 
         it "handles single items" do
-          actual = unique_ranks described_class.ranks("Species")
-          expect(actual).to eq ["Species"]
+          expect(unique_ranks described_class.ranks("Species")).to eq ["Species"]
         end
       end
 
       describe ".exclude_ranks" do
         it "excludes taxa of the specified types" do
-          actual = unique_ranks described_class.exclude_ranks(Species, Genus)
+          results = unique_ranks described_class.exclude_ranks(Species, Genus)
           expected = unique_ranks(described_class) - ["Species", "Genus"]
-          expect(actual).to eq expected
+          expect(results).to eq expected
         end
       end
     end

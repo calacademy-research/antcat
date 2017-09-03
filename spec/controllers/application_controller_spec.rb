@@ -22,6 +22,7 @@ describe ApplicationController do
 
     context "signed in as an editor" do
       let!(:editor) { create :editor }
+
       before do
         sign_in editor
         get :index
@@ -41,6 +42,7 @@ describe ApplicationController do
 
     context "signed in as a superadmin" do
       let!(:superadmin) { create :user, is_superadmin: true }
+
       before do
         sign_in superadmin
         get :index
@@ -69,9 +71,9 @@ describe ApplicationController do
   end
 
   describe "#set_user_for_feed" do
-    let(:user) { create :user }
-
     context "signed in" do
+      let(:user) { create :user }
+
       before { sign_in user }
 
       it "sets the current user" do

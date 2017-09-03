@@ -1,23 +1,24 @@
 require 'spec_helper'
 
 describe CatalogController do
-  describe 'GET #index' do
+  describe 'GET index' do
     context "family exists" do
       before do
         create :family
         get :index
       end
 
-      it { should render_template('show') }
+      it { expect(response).to render_template :show }
     end
 
     context "without a family existing in the database" do
       before { get :index }
-      it { should render_template('family_not_found') }
+
+      specify { expect(response).to render_template :family_not_found }
     end
   end
 
-  describe 'GET #show' do
+  describe 'GET show' do
     context "RecordNotFound" do
       before { create :family }
 
@@ -28,32 +29,38 @@ describe CatalogController do
   end
 
   describe "#show_valid_only and #show_invalid" do
-    let!(:taxon) { create :family }
-    before { @request.env["HTTP_REFERER"] = "http://antcat.org" }
-
-    describe "#show_invalid" do
-      before { get :show_invalid }
-      it { should set_session[:show_invalid].to true }
+    before do
+      create :family
+      @request.env["HTTP_REFERER"] = "http://antcat.org"
     end
 
-    describe "#show_valid_only" do
+    describe "GET show_invalid" do
+      before { get :show_invalid }
+
+      it { is_expected.to set_session[:show_invalid].to true }
+    end
+
+    describe "GET show_valid_only" do
       before { get :show_valid_only }
-      it { should set_session[:show_invalid].to false }
+
+      it { is_expected.to set_session[:show_invalid].to false }
     end
   end
 
-  # TODO move to service's spec.
-  describe "#autocomplete" do
-    it "works" do
-      create_genus 'Atta'
-      create_genus 'Ratta'
-      create_genus 'Nylanderia'
+  describe "GET autocomplete" do
+    let!(:atta) { create_genus "Atta" }
+    let!(:ratta) { create_genus "Ratta" }
 
+    before do
+      create_genus "Nylanderia"
       get :autocomplete, q: "att", format: :json
-      json = JSON.parse response.body
+    end
 
-      results = json.map { |taxon| taxon["name"] }.sort
-      expect(results).to eq ["Atta", "Ratta"]
+    it "returns matches" do
+      # TODO create helper for `JSON.parse response.body` and use here and in other places.
+      json = JSON.parse response.body
+      results = json.map { |taxon| taxon["id"] }
+      expect(results).to eq [atta.id, ratta.id]
     end
   end
 end

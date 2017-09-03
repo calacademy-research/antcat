@@ -1,27 +1,24 @@
 require 'spec_helper'
 
 describe TaxonDecorator::Statistics do
-  let(:decorator_helper) { TaxonDecorator::Statistics.new }
-
-  describe '#statistics' do
+  describe '#call' do
     it "handles nil and {}" do
-      expect(decorator_helper.statistics(nil)).to eq ''
-      expect(decorator_helper.statistics({})).to eq ''
+      expect(described_class.new(nil).call).to eq ''
+      expect(described_class.new({}).call).to eq ''
     end
 
     it "uses commas in numbers" do
       statistics = {
         extant: { genera: { 'valid' => 2_000 } }
       }
-      expect(decorator_helper.statistics(statistics))
-        .to eq '<p>2,000 valid genera</p>'
+      expect(described_class.new(statistics).call).to eq '<p>2,000 valid genera</p>'
     end
 
     it "uses commas in numbers when not showing invalid" do
       statistics = {
         extant: { genera: { 'valid' => 2_000 } }
       }
-      expect(decorator_helper.statistics(statistics, include_invalid: false))
+      expect(described_class.new(statistics, include_invalid: false).call)
         .to eq '<p>2,000 genera</p>'
     end
 
@@ -40,13 +37,13 @@ describe TaxonDecorator::Statistics do
       end
 
       it "handles both extant and fossil statistics" do
-        expect(decorator_helper.statistics(statistics))
+        expect(described_class.new(statistics).call)
           .to eq '<p>Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>' +
             '<p>Fossil: 2 valid subfamilies</p>'
       end
 
       it "can exclude fossil statistics" do
-        expect(decorator_helper.statistics(statistics, include_fossil: false)).to eq(
+        expect(described_class.new(statistics, include_fossil: false).call).to eq(
           '<p>1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>'
         )
       end
@@ -56,8 +53,7 @@ describe TaxonDecorator::Statistics do
       statistics = {
         fossil: { subfamilies: { 'valid' => 2 } }
       }
-      expect(decorator_helper.statistics(statistics))
-        .to eq '<p>Fossil: 2 valid subfamilies</p>'
+      expect(described_class.new(statistics).call).to eq '<p>Fossil: 2 valid subfamilies</p>'
     end
 
     it "formats the family's statistics correctly" do
@@ -68,7 +64,7 @@ describe TaxonDecorator::Statistics do
           species: { 'valid' => 1 }
         }
       }
-      expect(decorator_helper.statistics(statistics))
+      expect(described_class.new(statistics).call)
         .to eq '<p>1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>'
     end
 
@@ -76,8 +72,7 @@ describe TaxonDecorator::Statistics do
       statistics = {
         extant: { tribes: { 'valid' => 1 } }
       }
-      expect(decorator_helper.statistics(statistics))
-        .to eq '<p>1 valid tribe</p>'
+      expect(described_class.new(statistics).call).to eq '<p>1 valid tribe</p>'
     end
 
     it "formats a subfamily's statistics correctly" do
@@ -87,7 +82,7 @@ describe TaxonDecorator::Statistics do
           species: { 'valid' => 1 }
         }
       }
-      expect(decorator_helper.statistics(statistics))
+      expect(described_class.new(statistics).call)
         .to eq '<p>2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>'
     end
 
@@ -95,7 +90,7 @@ describe TaxonDecorator::Statistics do
       statistics = {
         extant: { genera: { 'valid' => 1 } }
       }
-      expect(decorator_helper.statistics(statistics))
+      expect(described_class.new(statistics).call)
         .to eq '<p>1 valid genus</p>'
     end
 
@@ -103,16 +98,14 @@ describe TaxonDecorator::Statistics do
       statistics = {
         extant: { species: { 'valid' => 1 } }
       }
-      expect(decorator_helper.statistics(statistics))
-        .to eq '<p>1 valid species</p>'
+      expect(described_class.new(statistics).call).to eq '<p>1 valid species</p>'
     end
 
     it "formats a species's statistics correctly" do
       statistics = {
         extant: { subspecies: { 'valid' => 1 } }
       }
-      expect(decorator_helper.statistics(statistics))
-        .to eq '<p>1 valid subspecies</p>'
+      expect(described_class.new(statistics).call).to eq '<p>1 valid subspecies</p>'
     end
 
     it "handles when there are no valid rank members" do
@@ -122,8 +115,7 @@ describe TaxonDecorator::Statistics do
       statistics = {
         extant: { subspecies: { 'synonym' => 1 } }
       }
-      expect(decorator_helper.statistics(statistics))
-        .to eq '<p>(1 synonym)</p>'
+      expect(described_class.new(statistics).call).to eq '<p>(1 synonym)</p>'
     end
 
     it "doesn't pluralize certain statuses" do
@@ -138,7 +130,7 @@ describe TaxonDecorator::Statistics do
           }
         }
       }
-      expect(decorator_helper.statistics(statistics))
+      expect(described_class.new(statistics).call)
         .to eq '<p>2 valid species (2 synonyms, 2 homonyms, 2 unavailable, 2 excluded from Formicidae)</p>'
     end
 
@@ -150,7 +142,7 @@ describe TaxonDecorator::Statistics do
           subspecies: { 'valid' => 3}
         }
       }
-      expect(decorator_helper.statistics(statistics, include_invalid: false))
+      expect(described_class.new(statistics, include_invalid: false).call)
         .to eq '<p>1 genus, 2 species, 3 subspecies</p>'
     end
 
@@ -158,7 +150,7 @@ describe TaxonDecorator::Statistics do
       statistics = {
         extant: { species: { 'valid' => 2 } }
       }
-      expect(decorator_helper.statistics(statistics, include_fossil: false, include_invalid: false))
+      expect(described_class.new(statistics, include_fossil: false, include_invalid: false).call)
         .to eq '<p>2 species</p>'
     end
   end

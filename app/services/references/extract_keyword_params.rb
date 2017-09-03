@@ -9,30 +9,6 @@ module References
 
     def call
       keywords_params = {}
-      # Array of arrays used to compile regexes: [["keyword", "regex_as_string"]].
-
-      # By default, the keyword becomes the key used in `keywords_params`. The regex may
-      # contain named groups, which are used when we do not want to use the default key name;
-      # this may be necessary in some cases (year must be split in two if the input is a range),
-      # or simply if we want to use a different key (`reference_type` is better as key than
-      # the ambiguous `type`, but 'type:' is better in the search box).
-
-      # Order matters, because matches are removed from the keyword_string;
-      # this makes it easier to match variations of the same keyword without
-      # adding too much logic. On the wishlist: a gem to take care of this so that
-      # we do not have to re-invent the wheel.
-      regexes = [
-        ["year",   '(?<start_year>\d{4})-(?<end_year>\d{4})'],             # year:2003-2015
-        ["year",   '(\d{4})'],                                             # year:2003
-        ["type",   '(?<reference_type>nested|unknown|nomissing|missing)'], # type:nested
-        ["title",  '"(.*?)"'],                                             # title:"Iceland"
-        ["title",  '\'(.*?)\''],                                           # title:'Iceland'
-        ["title",  '([^ ]+)'], # **                                        # title:Iceland
-        ["author", '"(.*?)"'],                                             # author:"Barry Bolton"
-        ["author", '\'(.*?)\''],                                           # author:'Barry Bolton'
-        ["author", '([^ ]+)'] # **                                         # author:Bolton
-      ]
-      # ** = stops matching at space or end of string
 
       regexes.each do |keyword, regex|
         match = keyword_string.match /#{keyword}: ?#{regex}/i
@@ -66,5 +42,33 @@ module References
 
     private
       attr_reader :keyword_string
+
+      # Array of arrays used to compile regexes: [["keyword", "regex_as_string"]].
+      #
+      # By default, the keyword becomes the key used in `keywords_params`. The regex may
+      # contain named groups, which are used when we do not want to use the default key name;
+      # this may be necessary in some cases (year must be split in two if the input is a range),
+      # or simply if we want to use a different key (`reference_type` is better as key than
+      # the ambiguous `type`, but 'type:' is better in the search box).
+      #
+      # Order matters, because matches are removed from the keyword_string;
+      # this makes it easier to match variations of the same keyword without
+      # adding too much logic. On the wishlist: a gem to take care of this so that
+      # we do not have to re-invent the wheel.
+      def regexes
+      [
+        ["year",   '(?<start_year>\d{4})-(?<end_year>\d{4})'],             # year:2003-2015
+        ["year",   '(\d{4})'],                                             # year:2003
+        ["type",   '(?<reference_type>nested|unknown|nomissing|missing)'], # type:nested
+        ["title",  '"(.*?)"'],                                             # title:"Iceland"
+        ["title",  '\'(.*?)\''],                                           # title:'Iceland'
+        ["title",  '([^ ]+)'], # **                                        # title:Iceland
+        ["author", '"(.*?)"'],                                             # author:"Barry Bolton"
+        ["author", '\'(.*?)\''],                                           # author:'Barry Bolton'
+        ["author", '([^ ]+)'] # **                                         # author:Bolton
+      ]
+
+      # ** = stops matching at space or end of string
+      end
   end
 end
