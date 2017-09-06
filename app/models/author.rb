@@ -28,6 +28,10 @@ class Author < ActiveRecord::Base
     create_merge_authors_activity the_one_author, new_names_string
   end
 
+  def described_taxa
+    Authors::DescribedTaxa.new(self).call
+  end
+
   private
     def self.create_merge_authors_activity author, names_string
       Activity.create_for_trackable author, :merge_authors, names: names_string
