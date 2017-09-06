@@ -78,7 +78,7 @@ crumb :authors do
 end
 
   crumb :author do |author|
-    link "Author ##{author.id}", author
+    link author.first_author_name_name, author
     parent :authors
   end
 
