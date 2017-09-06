@@ -7,6 +7,7 @@
 //= require foundation.responsiveMenu
 //= require foundation.responsiveToggle
 //= require foundation.reveal
+//= require foundation.sticky
 //= require foundation.tabs
 //= require foundation.util.box
 //= require foundation.util.keyboard

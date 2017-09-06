@@ -4,12 +4,76 @@
 .buttons_right
   =link_to "Edit", edit_author_path(@author), class: "btn-normal"
 
-%h5 Names belonging to author ##{@author.id}
-%ul
-  -@author.names.each do |name|
-    %li=name.name
+.clearfix
 
-%hr
+%div.float-right.right{data: { sticky_container: true }}
+  .sticky{data: { sticky: true, stick_to: "bottom"}}
+    #quick-links.callout.secondary.float-right
+      %h6.center-text Quick links for author
+      %ul.menu
+        %li
+          %a{href: "#references"} References
+        %li
+          %a{href: "#taxa"} Taxa
+        %li
+          %a{href: "#statistics"} Statistics
+        %li
+          %a{href: "#names"} Names
 
-%h5 References by author
-=render "shared/reference_table", references: @author.references
+#references.callout.margin-bottom
+  %h5 References by author
+  -if @references.empty?
+    %p Found no references by this author.
+  -else
+    =render "shared/reference_table", references: @references
+    =will_paginate @references, param_name: "references_page", params: { anchor: "references" }
+
+#taxa.callout.margin-bottom
+  %h5 Taxa described by author
+  -if @taxa.empty?
+    %p Found no taxa described by this author.
+  -else
+    %table
+      %thead
+        %th Taxon
+        %th Authorship
+        %th Rank
+        %th Status
+      -@taxa.each do |taxon|
+        %tr
+          %td=taxon.decorate.link_to_taxon
+          %td=taxon.protonym.authorship.reference.decorate.inline_citation
+          %td=taxon.rank.capitalize
+          %td=taxon.status.capitalize
+    =will_paginate @taxa, param_name: "taxa_page", params: { anchor: "taxa" }
+
+.row
+  .small-6.columns.end
+    #statistics.callout.margin-bottom
+      %h5 Statistics
+      %table.table{style: "text-align: left"}
+        %tbody
+          %tr
+            %th Published between
+            %td=or_dash @author.decorate.published_between
+          %tr
+            %th Taxon descriptions between
+            %td=or_dash @author.decorate.taxon_descriptions_between
+          %tr
+            %th No. of references
+            %td=or_dash @author.references.count
+          %tr
+            %th No. of described taxa
+            %td=or_dash @author.described_taxa.count
+          %tr
+            %th No. of described taxa (valid)
+            %td
+              =or_dash @author.described_taxa.valid.count
+
+.row
+  .small-6.columns.end
+    #names.callout
+      %h5 Names belonging to author
+      %ul
+        -@author.names.each do |name|
+          %li=name.name
