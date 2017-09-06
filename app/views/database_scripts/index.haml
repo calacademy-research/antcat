@@ -13,6 +13,6 @@
   %tbody
     -@scripts.each do |script|
       %tr
-        %td.shrink=script.topic_areas.join(", ").capitalize
+        %td.shrink=script.decorate.format_topic_areas
         %td=link_to script.title, database_script_path(script)
-        %td=format_database_script_tags script.tags
+        %td=script.decorate.format_tags

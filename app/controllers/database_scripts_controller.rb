@@ -5,11 +5,16 @@ class DatabaseScriptsController < ApplicationController
   before_action :set_script, only: [:show, :source, :regenerate]
 
   def index
-    @scripts = DatabaseScripts::DatabaseScript::all_scripts
+    @scripts = DatabaseScript.all
   end
 
   def show
+    @used_cached = used_cached? @script
+
+    start = Time.now
     @cached_render = cached_render @script
+    @render_duration = Time.now - start
+
     @cached_at = cached_at @script
   end
 
@@ -23,14 +28,18 @@ class DatabaseScriptsController < ApplicationController
 
   private
     def set_script
-      @script = DatabaseScripts::DatabaseScript::new_from_filename_without_extension params[:id]
-    rescue DatabaseScripts::DatabaseScript::ScriptNotFound
+      @script = DatabaseScript::new_from_filename_without_extension params[:id]
+    rescue DatabaseScript::ScriptNotFound
       raise ActionController::RoutingError.new("Not Found")
+    end
+
+    def used_cached? script
+      Rails.cache.exist? script.cache_key
     end
 
     def cached_render script
       Rails.cache.fetch(script, expires_in: EXPIRES_IN) do
-        script.timed_render
+        script.render
       end
     end
 

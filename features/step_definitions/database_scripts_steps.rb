@@ -11,7 +11,7 @@ end
 When(/^I open all database scripts and browse their sources$/) do
   @browsed_scripts_count = 0
 
-  script_names = DatabaseScripts::DatabaseScript.all_scripts.map &:to_param
+  script_names = DatabaseScript.all.map &:to_param
   script_names.each do |script_name|
     step %{I open the database script "#{script_name}" and browse its source}
   end
