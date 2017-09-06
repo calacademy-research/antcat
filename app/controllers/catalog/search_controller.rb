@@ -18,7 +18,7 @@ module Catalog
         end
 
         format.text do
-          text = Exporters::AdvancedSearchExporter.new.export @taxa
+          text = Exporters::AdvancedSearchExporter.new(@taxa).call
           send_data text, filename: download_filename, type: 'text/plain'
         end
       end

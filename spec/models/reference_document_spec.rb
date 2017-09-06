@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ReferenceDocument do
-  it { should be_versioned }
+  it { is_expected.to be_versioned }
 
   it "makes sure it has a protocol" do
     stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
@@ -53,9 +53,11 @@ describe ReferenceDocument do
   end
 
   describe "#actual_url" do
+    let!(:document) { create :reference_document }
+
+    before { document.update_attribute :url, 'foo' }
+
     it "simply be the url, if the document's not on Amazon" do
-      document = create :reference_document
-      document.update_attribute :url, 'foo'
       expect(document.reload.actual_url).to eq 'foo'
     end
   end
@@ -95,22 +97,31 @@ describe ReferenceDocument do
   end
 
   describe "#host=" do
-    it "does nothing if there is no file" do
-      document = described_class.new
-      document.host = 'localhost'
-      expect(document.url).to be_nil
+    context "when there is no file" do
+      let!(:document) { described_class.new }
+
+      it "does nothing" do
+        document.host = 'localhost'
+        expect(document.url).to be_nil
+      end
     end
 
-    it "does nothing if the file isn't hosted by us" do
-      document = described_class.new url: 'foo'
-      document.host = 'localhost'
-      expect(document.url).to eq 'foo'
+    context "when the file isn't hosted by us" do
+      let(:document) { described_class.new url: 'foo' }
+
+      it "does nothing" do
+        document.host = 'localhost'
+        expect(document.url).to eq 'foo'
+      end
     end
 
-    it "inserts the host in the url if the file is hosted by us" do
-      document = described_class.create! file_file_name: 'foo'
-      document.host = 'localhost'
-      expect(document.url).to eq "http://localhost/documents/#{document.id}/foo"
+    context "when the file is hosted by us" do
+      let(:document) { described_class.create! file_file_name: 'foo' }
+
+      it "inserts the host in the url" do
+        document.host = 'localhost'
+        expect(document.url).to eq "http://localhost/documents/#{document.id}/foo"
+      end
     end
   end
 end

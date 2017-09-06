@@ -4,12 +4,12 @@ class TaxonDecorator::Headline
   include ActionView::Context
   include ApplicationHelper
 
-  def initialize taxon, use_ant_web_formatter: false
+  def initialize taxon, for_antweb: false
     @taxon = taxon
-    @use_ant_web_formatter = use_ant_web_formatter
+    @for_antweb = for_antweb
   end
 
-  def headline
+  def call
     content_tag :div, class: 'headline' do
       notes = headline_notes
       hol_link = link_to_hol(@taxon)
@@ -77,7 +77,7 @@ class TaxonDecorator::Headline
     end
 
     def headline_type_taxt taxt
-      if antweb?
+      if for_antweb?
         add_period_if_necessary TaxtPresenter[taxt].to_antweb
       else
         add_period_if_necessary TaxtPresenter[taxt].to_html
@@ -127,7 +127,7 @@ class TaxonDecorator::Headline
       string << " (#{authorship.forms})" if authorship.forms.present?
 
       if authorship.notes_taxt.present?
-        if antweb?
+        if for_antweb?
           string << ' ' << TaxtPresenter[authorship.notes_taxt].to_antweb
         else
           string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html
@@ -145,7 +145,7 @@ class TaxonDecorator::Headline
 
     def headline_notes
       return unless @taxon.headline_notes_taxt.present?
-      if antweb?
+      if for_antweb?
         TaxtPresenter[@taxon.headline_notes_taxt].to_antweb
       else
         TaxtPresenter[@taxon.headline_notes_taxt].to_html
@@ -153,13 +153,13 @@ class TaxonDecorator::Headline
     end
 
     # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
-    def antweb?
-      @use_ant_web_formatter
+    def for_antweb?
+      @for_antweb
     end
 
     # TODO rename.
     def link_to_reference reference
-      if antweb?
+      if for_antweb?
         reference.decorate.antweb_version_of_inline_citation
       else
         reference.decorate.inline_citation
@@ -167,7 +167,7 @@ class TaxonDecorator::Headline
     end
 
     def link_to_other_site
-      if antweb?
+      if for_antweb?
         Exporters::Antweb::Exporter.antcat_taxon_link @taxon
       else
         link_to_antweb @taxon
@@ -175,7 +175,7 @@ class TaxonDecorator::Headline
     end
 
     def link_to_taxon taxon
-      if antweb?
+      if for_antweb?
         Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
       else
         taxon.decorate.link_to_taxon

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe User do
-  it { should validate_presence_of :name }
+  it { is_expected.to validate_presence_of :name }
 
-  it { should be_versioned }
+  it { is_expected.to be_versioned }
 
   describe "scopes" do
     describe ".editors and .non_editors" do
@@ -11,15 +11,11 @@ describe User do
       let!(:editor) { create :editor }
 
       describe ".editors" do
-        it "returns editors" do
-          expect(described_class.editors).to eq [editor]
-        end
+        specify { expect(described_class.editors).to eq [editor] }
       end
 
       describe ".non_editors" do
-        it "returns non-editors" do
-          expect(described_class.editors).to eq [editor]
-        end
+        specify { expect(described_class.editors).to eq [editor] }
       end
     end
 

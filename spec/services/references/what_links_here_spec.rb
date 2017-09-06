@@ -21,16 +21,16 @@ describe References::WhatLinksHere do
 
       results = reference.what_links_here
       expect(results).to match_array [
-        {table: 'taxa',               id: taxon.id,             field: :type_taxt},
-        {table: 'taxa',               id: taxon.id,             field: :headline_notes_taxt},
-        {table: 'taxa',               id: taxon.id,             field: :genus_species_header_notes_taxt},
-        {table: 'citations',          id: citation.id,          field: :notes_taxt},
-        {table: 'citations',          id: citation.id,          field: :reference_id},
-        {table: 'reference_sections', id: reference_section.id, field: :title_taxt},
-        {table: 'reference_sections', id: reference_section.id, field: :subtitle_taxt},
-        {table: 'reference_sections', id: reference_section.id, field: :references_taxt},
-        {table: 'references',         id: nested_reference.id,  field: :nesting_reference_id},
-        {table: 'taxon_history_items',id: history_item.id,      field: :taxt}
+        { table: 'taxa',                id: taxon.id,             field: :type_taxt },
+        { table: 'taxa',                id: taxon.id,             field: :headline_notes_taxt },
+        { table: 'taxa',                id: taxon.id,             field: :genus_species_header_notes_taxt },
+        { table: 'citations',           id: citation.id,          field: :notes_taxt },
+        { table: 'citations',           id: citation.id,          field: :reference_id },
+        { table: 'reference_sections',  id: reference_section.id, field: :title_taxt },
+        { table: 'reference_sections',  id: reference_section.id, field: :subtitle_taxt },
+        { table: 'reference_sections',  id: reference_section.id, field: :references_taxt },
+        { table: 'references',          id: nested_reference.id,  field: :nesting_reference_id },
+        { table: 'taxon_history_items', id: history_item.id,      field: :taxt }
       ]
     end
 
@@ -38,20 +38,24 @@ describe References::WhatLinksHere do
       expect(reference.what_links_here.size).to eq 0
     end
 
-    describe "References in reference fields" do
+    describe "references in reference fields" do
+      let!(:eciton) { create_genus 'Eciton' }
+
+      before { eciton.protonym.authorship.update! reference_id: reference.id }
+
       it "has a reference if it's a protonym's authorship's reference" do
-        eciton = create_genus 'Eciton'
-        eciton.protonym.authorship.update! reference_id: reference.id
         expect(reference.what_links_here).to match_array [
           { table: 'citations', field: :reference_id, id: eciton.protonym.authorship.id }
         ]
       end
     end
 
-    describe "References in taxt" do
+    describe "references in taxt" do
+      let!(:eciton) { create_genus 'Eciton' }
+
+      before { eciton.update_attribute :type_taxt, "{ref #{reference.id}}" }
+
       it "returns references in taxt" do
-        eciton = create_genus 'Eciton'
-        eciton.update_attribute :type_taxt, "{ref #{reference.id}}"
         expect(reference.what_links_here).to match_array [
           { table: 'taxa', field: :type_taxt, id: eciton.id }
         ]

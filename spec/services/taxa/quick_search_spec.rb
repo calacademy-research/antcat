@@ -10,9 +10,8 @@ describe Taxa::QuickSearch do
 
     before { create :genus, name: create(:genus_name, name: 'Monomorium') }
 
-    it "returns [] if nothing matches" do
-      results = described_class.new('sdfsdf').call
-      expect(results).to eq []
+    it "returns an empty array if nothing matches" do
+      expect(described_class.new('sdfsdf').call).to eq []
     end
 
     it "returns exact matches" do

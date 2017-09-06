@@ -41,38 +41,50 @@ describe Exporters::Antweb::Exporter do
   end
 
   describe "#author_last_names_string" do
-    it "delegates" do
-      genus = build_stubbed :genus
-      expect_any_instance_of(Reference)
-        .to receive(:authors_for_keey).and_return 'Bolton'
+    context "when there is a protonym" do
+      let(:genus) { build_stubbed :genus }
 
-      expect(exporter.send :author_last_names_string, genus).to eq 'Bolton'
+      it "delegates" do
+        expect_any_instance_of(Reference)
+          .to receive(:authors_for_keey).and_return 'Bolton'
+
+        expect(exporter.send :author_last_names_string, genus).to eq 'Bolton'
+      end
     end
 
     context "there is no protonym" do
+      let(:genus) { build_stubbed :genus, protonym: nil }
+
       it "handles it" do
-        genus = build_stubbed :genus, protonym: nil
         expect(exporter.send :author_last_names_string, genus).to be_nil
       end
     end
   end
 
   describe "#original_combination" do
-    it "is nil if there was no recombining" do
-      genus = build_stubbed :genus
-      expect(exporter.send :original_combination, genus).to be_nil
+    context "when there was no recombining" do
+      let!(:genus) { build_stubbed :genus }
+
+      it "is nil" do
+        expect(exporter.send :original_combination, genus).to be_nil
+      end
     end
 
-    it "is the protonym, otherwise" do
-      original_combination = create_species 'Atta major'
-      recombination = create_species 'Eciton major'
-      original_combination.status = 'original combination'
-      original_combination.current_valid_taxon = recombination
-      recombination.protonym.name = original_combination.name
-      original_combination.save!
-      recombination.save!
+    context "when there has been some recombining" do
+      let!(:original_combination) { create_species 'Atta major' }
+      let!(:recombination) { create_species 'Eciton major' }
 
-      expect(exporter.send :original_combination, recombination).to eq original_combination
+      before do
+        original_combination.status = 'original combination'
+        original_combination.current_valid_taxon = recombination
+        recombination.protonym.name = original_combination.name
+        original_combination.save!
+        recombination.save!
+      end
+
+      it "is the protonym" do
+        expect(exporter.send :original_combination, recombination).to eq original_combination
+      end
     end
   end
 
@@ -93,27 +105,35 @@ describe Exporters::Antweb::Exporter do
     end
 
     context "something is missing" do
-      it "handles missing protonyms" do
-        taxon = build_stubbed :genus, protonym: nil
-        expect(taxon.protonym).to be nil
-        expect(exporter.send :authorship_html_string, taxon).to be nil
+      context "when missing protonyms" do
+        let!(:taxon) { build_stubbed :genus, protonym: nil }
+
+        specify do
+          expect(taxon.protonym).to be nil
+          expect(exporter.send :authorship_html_string, taxon).to be nil
+        end
       end
 
-      it "handles missing protonym authorships" do
-        protonym = build_stubbed :protonym, authorship: nil
-        taxon = build_stubbed :genus, protonym: protonym
+      context "when missing protonym authorships" do
+        let!(:protonym) { build_stubbed :protonym, authorship: nil }
+        let!(:taxon) { build_stubbed :genus, protonym: protonym }
 
-        expect(taxon.protonym).to_not be nil
-        expect(exporter.send :authorship_html_string, taxon).to be nil
+        specify do
+          expect(taxon.protonym).to_not be nil
+          expect(exporter.send :authorship_html_string, taxon).to be nil
+        end
       end
 
-      it "handles missing authorship references" do
-        authorship = build_stubbed :citation, reference: nil
-        protonym = build_stubbed :protonym, authorship: authorship
-        taxon = build_stubbed :genus, protonym: protonym
+      context "when missing authorship references" do
+        let!(:protonym) do
+          build_stubbed :protonym, authorship: build_stubbed(:citation, reference: nil)
+        end
+        let!(:taxon) { build_stubbed :genus, protonym: protonym }
 
-        expect(taxon.protonym.authorship).to_not be nil
-        expect(exporter.send :authorship_html_string, taxon).to be nil
+        specify do
+          expect(taxon.protonym.authorship).to_not be nil
+          expect(exporter.send :authorship_html_string, taxon).to be nil
+        end
       end
     end
   end

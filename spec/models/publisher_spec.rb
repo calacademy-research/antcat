@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Publisher do
-  it { should be_versioned }
-  it { should validate_presence_of :name }
-  it { should belong_to :place }
+  it { is_expected.to be_versioned }
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to belong_to :place }
 
   describe "factory methods" do
     describe ".create_with_place" do
@@ -52,8 +52,8 @@ describe Publisher do
       end
 
       it "parses" do
-        expected = described_class.create_with_place_form_string 'New York: Houghton Mifflin'
-        expect(expected.to_s).to eq 'New York: Houghton Mifflin'
+        results = described_class.create_with_place_form_string 'New York: Houghton Mifflin'
+        expect(results.to_s).to eq 'New York: Houghton Mifflin'
       end
     end
   end

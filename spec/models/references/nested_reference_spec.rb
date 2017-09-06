@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe NestedReference do
-  it { should validate_presence_of :year }
-  it { should validate_presence_of :pages_in }
-  it { should validate_presence_of :nesting_reference }
-  it { should allow_value(nil).for :title }
+  it { is_expected.to validate_presence_of :year }
+  it { is_expected.to validate_presence_of :pages_in }
+  it { is_expected.to validate_presence_of :nesting_reference }
+  it { is_expected.to allow_value(nil).for :title }
 
   describe "Validation" do
     it "is valid with these attributes" do

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Protonym do
-  it { should be_versioned }
-  it { should validate_presence_of :authorship }
+  it { is_expected.to be_versioned }
+  it { is_expected.to validate_presence_of :authorship }
 
   describe "#destroy" do
     describe "Cascading delete" do

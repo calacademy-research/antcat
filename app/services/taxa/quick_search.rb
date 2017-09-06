@@ -2,32 +2,33 @@
 
 module Taxa
   class QuickSearch
-    def initialize taxon_name, search_type: nil, valid_only: false
-      @taxon_name = taxon_name.dup.strip
+    def initialize search_query, search_type: nil, valid_only: false
+      @search_query = search_query.dup.strip
       @search_type = search_type || "beginning_with"
       @valid_only = valid_only
     end
 
     def call
-      return Taxon.none if taxon_name.blank?
-
-      #valid_only = false if valid_only.blank?
-      column = taxon_name.split(' ').size > 1 ? 'name' : 'epithet'
+      return Taxon.none if search_query.blank?
 
       query = Taxon.joins(:name).order_by_name_cache
       query = query.valid if valid_only.present?
       query = case search_type
               when 'matching'
-                query.where("names.#{column} = ?", taxon_name)
+                query.where("names.#{column} = ?", search_query)
               when 'beginning_with'
-                query.where("names.#{column} LIKE ?", taxon_name + '%')
+                query.where("names.#{column} LIKE ?", search_query + '%')
               when 'containing'
-                query.where("names.#{column} LIKE ?", '%' + taxon_name + '%')
+                query.where("names.#{column} LIKE ?", '%' + search_query + '%')
               end
       query.includes(:name, protonym: { authorship: :reference })
     end
 
     private
-      attr_reader :taxon_name, :search_type, :valid_only
+      attr_reader :search_query, :search_type, :valid_only
+
+      def column
+        @_column ||= search_query.split(' ').size > 1 ? 'name' : 'epithet'
+      end
   end
 end
