@@ -8,6 +8,9 @@ class AuthorsController < ApplicationController
   end
 
   def show
+    @references = @author.references.paginate(page: params[:references_page])
+    @taxa = @author.described_taxa.order("references.year, references.id")
+      .paginate(page: params[:taxa_page])
   end
 
   def edit
