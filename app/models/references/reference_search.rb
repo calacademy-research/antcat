@@ -40,27 +40,6 @@ class Reference < ApplicationRecord
     References::ExtractKeywordParams.new(keyword_string).call
   end
 
-  #TODO split logic into scopes/controller
-  def self.list_references options = {}
-    reference_type = options[:reference_type] || :nomissing
-
-    query = if options[:order]
-              order(options[:order] => :desc)
-            else
-              order(:author_names_string_cache, :citation_year)
-            end
-
-    query = case reference_type
-            when :unknown   then query.where(type: "UnknownReference")
-            when :nested    then query.where(type: "NestedReference")
-            when :missing   then query.where(type: "MissingReference")
-            when :nomissing then query.where.not(type: "MissingReference")
-            end
-
-    page = options[:page] || 1
-    query.includes(:document).paginate(page: page)
-  end
-
   def self.list_all_references_for_endnote
     joins(:author_names)
       .includes(:journal, :author_names, :document, [{publisher: :place}])

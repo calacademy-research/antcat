@@ -16,8 +16,8 @@
 
   -@references.each do |reference|
     %tr
-      %td=render 'reference', reference: reference
+      %td=render 'references/reference', reference: reference
 
-      =render 'references/latest_additions_controls', reference: reference
+      =render 'controls', reference: reference
 
 =will_paginate @references

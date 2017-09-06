@@ -5,7 +5,7 @@
   .btn-normal.dropdown.button{"data-toggle" => "export-dropdown", type: "button"} Export
   #export-dropdown.dropdown-pane{"data-dropdown" => "", "data-hover" => "true", "data-hover-pane" => "true"}
     %ul.no-bullet
-      %li=link_to "EndNote", endnote_export_reference_path(@reference)
+      %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
       -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
         %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
   -if user_can_edit?

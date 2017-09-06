@@ -10,7 +10,7 @@
 
   -@references.each do |reference|
     %tr
-      %td=render 'reference', reference: reference
+      %td=render 'references/reference', reference: reference
       %td.no-wrap-align-top=reference.decorate.updated_at
 
 =will_paginate @references
