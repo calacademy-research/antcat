@@ -12,8 +12,10 @@ class AuthorDecorator < Draper::Decorator
   def taxon_descriptions_between
     return unless described_taxa.exists?
 
-    first_year = description_year described_taxa.first
-    most_recent_year = description_year described_taxa.last
+    taxa = described_taxa.order("references.year, references.id")
+
+    first_year = description_year taxa.first
+    most_recent_year = description_year taxa.last
 
     return first_year if first_year == most_recent_year
     "#{first_year}&ndash;#{most_recent_year}".html_safe
