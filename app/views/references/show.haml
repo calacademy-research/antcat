@@ -104,3 +104,21 @@
           %tr
             %th Taxonomic notes
             %td=or_dash @reference.taxonomic_notes
+
+-if @reference.described_taxa.exists?
+  .row
+    .small-12.columns.no-right-padding
+      %h5 Taxa described in this reference
+      %small Note: taxa described in nestees of this reference are not included here.
+      %table
+        %thead
+          %th Taxon
+          %th Authorship
+          %th Rank
+          %th Status
+        -@reference.described_taxa.each do |taxon|
+          %tr
+            %td=taxon.decorate.link_to_taxon
+            %td=taxon.protonym.authorship.reference.decorate.inline_citation
+            %td=taxon.rank.capitalize
+            %td=taxon.status.capitalize
