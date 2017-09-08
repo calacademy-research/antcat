@@ -7,11 +7,8 @@
     -unless @references.present?
       =link_to "Delete", journal_path(@journal), class: "btn-delete", method: :delete, data: { confirm: "Are you sure?" }
 
-%h5
-  %em=@journal.name
-
+%h5 References using this journal
 %table
-  %caption References using this journal
   -@references.each do |reference|
     %tr
       %td
