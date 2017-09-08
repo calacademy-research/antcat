@@ -71,7 +71,7 @@ Feature: Edit reference successfully
     When I go to the edit page for the most recent reference
     And I fill in "reference_document_attributes_url" with a URL to a document that exists
     And I press "Save"
-    Then I should see a "PDF" link
+    Then I should see a PDF link
 
   #Scenario: Setting a document's publicness
     #Given there is a reference

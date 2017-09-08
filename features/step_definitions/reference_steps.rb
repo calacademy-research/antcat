@@ -128,21 +128,8 @@ When(/I fill in "reference_nesting_reference_id" with the ID for "(.*?)"$/) do |
   step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""
 end
 
-Then(/I should (not )?see a "PDF" link/) do |should_not|
-  begin
-    trace = ['Inside the I should(not) see a PDF step']
-    page_has_no_selector = page.has_no_selector? 'a', text: 'PDF'
-    trace << 'after page.has_no_selector'
-    unless page_has_no_selector and should_not
-      trace << 'inside unless'
-      find_link("PDF").send(should_not ? :should_not : :should, be_visible)
-      trace << 'after find_link'
-    end
-    trace << 'end'
-
-  rescue Exception
-    raise
-  end
+Then(/^I should see a PDF link$/) do
+  find "a", text: "PDF", match: :first
 end
 
 When(/I fill in "reference_nesting_reference_id" with its own ID$/) do
