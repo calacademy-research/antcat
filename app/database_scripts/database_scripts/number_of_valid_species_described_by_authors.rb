@@ -1,5 +1,5 @@
 module DatabaseScripts
-  class NumberOfSpeciesDescribedByAuthor < DatabaseScript
+  class NumberOfValidSpeciesDescribedByAuthors < DatabaseScript
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
 
