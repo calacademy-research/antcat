@@ -66,8 +66,13 @@ class ReferenceDecorator < ApplicationDecorator
     content.reject(&:blank?).join(' ').html_safe
   end
 
+  # TODO rename.
   def link_to_reference
     helpers.link_to reference.id, helpers.reference_path(reference)
+  end
+
+  def linked_keey
+    helpers.link_to reference.keey, helpers.reference_path(reference)
   end
 
   def format_title

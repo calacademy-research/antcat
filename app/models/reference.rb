@@ -30,6 +30,9 @@ class Reference < ApplicationRecord
            after_remove: :refresh_author_names_caches
   has_many :authors, through: :author_names
   has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id"
+  has_many :citations
+  has_many :protonyms, through: :citations
+  has_many :described_taxa, through: :protonyms, source: :taxon
 
   validates :title, presence: true, if: -> { self.class.requires_title }
 
