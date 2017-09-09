@@ -8,11 +8,11 @@ class Exporters::Antweb::ExportHistoryItems
     @taxon = taxon
   end
 
-  def history
-    return unless @taxon.history_items.present?
+  def call
+    return unless taxon.history_items.present?
 
     history_content = content_tag :div, class: 'history' do
-      @taxon.history_items.reduce(''.html_safe) do |content, item|
+      taxon.history_items.reduce(''.html_safe) do |content, item|
         content << history_item(item)
       end
     end
@@ -21,6 +21,8 @@ class Exporters::Antweb::ExportHistoryItems
   end
 
   private
+    attr_reader :taxon
+
     def history_item item
       content_tag :div, class: "history_item" do
         content_tag :table do

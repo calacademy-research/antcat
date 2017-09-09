@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SpeciesGroupTaxon do
-  it { should validate_presence_of :genus }
+  it { is_expected.to validate_presence_of :genus }
 
   it "can have a subfamily" do
     genus = create_genus 'Afropone'

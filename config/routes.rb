@@ -40,7 +40,8 @@ AntCat::Application.routes.draw do
   get 'catalog/:id/history' => 'catalog/history#show', as: :taxon_history
   get 'catalog/:id/what_links_here' => 'catalog/what_links_here#index', as: :taxon_what_links_here
 
-  get '/documents/:id/:file_name', to: 'references#download', file_name: /.+/
+  get '/documents/:id/:file_name', to: 'references/downloads#show', file_name: /.+/
+
   resources :journals do
     collection do
       get :autocomplete
@@ -54,27 +55,42 @@ AntCat::Application.routes.draw do
 
   resources :references do
     collection do
-      get :search
-      get :search_help
       get :autocomplete
       get :linkable_autocomplete
-      get :latest_additions
-      get :latest_changes
-      get :endnote_export
-      put :approve_all
     end
 
     scope module: :references do
-      resources :history, only: [:index]
+      resources :history, only: :index
       resources :what_links_here, only: :index
-    end
 
-    member do
-      post :start_reviewing
-      post :finish_reviewing
-      post :restart_reviewing
-      get :endnote_export
-      get :wikipedia_export
+      member do
+        scope :reviews, controller: :reviews, as: :reviewing do
+          post :start
+          post :finish
+          post :restart
+        end
+
+        scope :exports, controller: :exports, as: :export do
+          get :wikipedia
+        end
+      end
+
+      collection do
+        scope :exports, controller: :exports, as: :export do
+          get :endnote
+        end
+
+        resources :latest_additions, only: :index, as: :references_latest_additions
+        resources :latest_changes, only: :index, as: :references_latest_changes
+
+        scope :reviews, controller: :reviews, as: :reviewing do
+          put :approve_all
+        end
+
+        resources :search, only: :index, as: :references_search do
+          get :help, on: :collection
+        end
+      end
     end
   end
 

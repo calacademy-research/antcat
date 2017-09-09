@@ -8,12 +8,17 @@ class Exporters::TaxonList::Exporter
   private
     def get_rows
       Taxon.find_by_sql <<-SQL.squish
-        SELECT name, year, COUNT(*) count FROM taxa join protonyms ON protonym_id = protonyms.id
-        join citations ON authorship_id = citations.id join `references`
-        ON reference_id = `references`.id join reference_author_names ran ON
-        ran.reference_id = references.id and position = 1 join author_names an
-        ON ran.author_name_id = an.id WHERE taxa.type = 'Species' AND status = 'valid'
-        OR status = 'synonym' OR status = 'homonym' GROUP BY name, year ORDER BY name, year
+        SELECT name, year, COUNT(*) count FROM taxa
+        JOIN protonyms ON protonym_id = protonyms.id
+        JOIN citations ON authorship_id = citations.id
+        JOIN `references` ON reference_id = `references`.id
+        JOIN reference_author_names ran ON ran.reference_id = references.id AND position = 1
+        JOIN author_names an ON ran.author_name_id = an.id
+        WHERE taxa.type = 'Species'
+          AND status = 'valid'
+          OR status = 'synonym'
+          OR status = 'homonym'
+        GROUP BY name, year ORDER BY name, year
       SQL
     end
 

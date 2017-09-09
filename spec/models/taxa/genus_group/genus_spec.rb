@@ -113,8 +113,9 @@ describe Genus do
   end
 
   describe "#without_subfamily" do
+    let!(:cariridris) { create :genus, subfamily: nil }
+
     it "returns genera with no subfamily" do
-      cariridris = create :genus, subfamily: nil
       expect(described_class.without_subfamily.all).to eq [cariridris]
     end
   end
@@ -184,24 +185,33 @@ describe Genus do
   end
 
   describe "#parent" do
-    it "is nil, if there's no subfamily" do
-      genus = create_genus subfamily: nil, tribe: nil
-      expect(genus.parent).to be_nil
+    context "when there's no subfamily" do
+      let!(:genus) { create_genus subfamily: nil, tribe: nil }
+
+      it "is nil" do
+        expect(genus.parent).to be_nil
+      end
     end
 
-    it "refers to the subfamily, if there is one" do
-      genus = create_genus subfamily: subfamily, tribe: nil
-      expect(genus.parent).to eq genus.subfamily
+    context "when there is one" do
+      let!(:genus) { create_genus subfamily: subfamily, tribe: nil }
+
+      it "refers to the subfamily" do
+        expect(genus.parent).to eq genus.subfamily
+      end
     end
 
-    it "refers to the tribe, if there is one" do
-      expect(genus_with_tribe.parent).to eq tribe
+    context "when there is one" do
+      it "refers to the tribe" do
+        expect(genus_with_tribe.parent).to eq tribe
+      end
     end
   end
 
   describe "#parent=" do
+    let!(:genus) { create_genus 'Aneuretus', protonym: create(:protonym) }
+
     it "assigns to both tribe and subfamily when parent is a tribe" do
-      genus = create_genus 'Aneuretus', protonym: create(:protonym)
       genus.parent = tribe
 
       expect(genus.tribe).to eq tribe

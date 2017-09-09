@@ -1,6 +1,15 @@
 module ApplicationHelper
   include LinkHelper
 
+  def or_dash thing
+    return dash if thing.blank? || thing.try(:zero?)
+    thing
+  end
+
+  def dash
+    "&ndash;".html_safe
+  end
+
   def pluralize_with_delimiters count, singular, plural = nil
     word = if count == 1
              singular

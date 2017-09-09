@@ -1,6 +1,4 @@
-class DatabaseTestScript
-  include DatabaseScripts::DatabaseScript
-
+class DatabaseTestScript < DatabaseScript
   def results
     Reference.all
   end

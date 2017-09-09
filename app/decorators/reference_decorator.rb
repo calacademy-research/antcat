@@ -1,9 +1,9 @@
-# TODO investigate using views.
 # TODO use less decorators in general.
 # TODO consider renaming the db fields once the code is more stable.
 
 class ReferenceDecorator < ApplicationDecorator
-  include ERB::Util # for the `h` method
+  include ERB::Util # For the `h` method.
+
   delegate_all
 
   def public_notes
@@ -66,8 +66,13 @@ class ReferenceDecorator < ApplicationDecorator
     content.reject(&:blank?).join(' ').html_safe
   end
 
+  # TODO rename.
   def link_to_reference
     helpers.link_to reference.id, helpers.reference_path(reference)
+  end
+
+  def linked_keey
+    helpers.link_to reference.keey, helpers.reference_path(reference)
   end
 
   def format_title

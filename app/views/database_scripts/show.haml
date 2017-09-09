@@ -9,9 +9,9 @@
     %h5
       -if @script.topic_areas.present?
         =succeed ":" do
-          =@script.topic_areas.join(", ").capitalize
+          =@script.decorate.format_topic_areas
       =@script.title
-      =format_database_script_tags @script.tags
+      =@script.decorate.format_tags
     %p=markdown @script.description
 
   .medium-4.columns
@@ -19,7 +19,7 @@
       Show source:
       =succeed "," do
         =link_to "current (antcat.org)", source_database_script_path(@script)
-      =database_script_github_link @script
+      =link_to "GitHub (dev)", @script.decorate.github_url
       %br
       Results generated
       =time_ago_in_words @cached_at
@@ -30,8 +30,5 @@
     =@cached_render
 
 %small.right
-  -duration = @script.timed_render_duration
-  -if duration
-    Script runtime: #{duration} seconds
-  -else
-    Script runtime: [used cache]
+  Script runtime:
+  =@used_cached ? "[used cache]" : "#{@render_duration} seconds"

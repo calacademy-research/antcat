@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe AuthorName do
-  it { should be_versioned }
-  it { should validate_presence_of :author }
-  it { should validate_presence_of :name }
-  it { should have_many :references }
+  it { is_expected.to be_versioned }
+  it { is_expected.to validate_presence_of :author }
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to have_many :references }
 
   let(:author) { Author.create! }
 

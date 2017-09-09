@@ -11,10 +11,6 @@ Feature: Database scripts
     When I follow "Subspecies without species"
     Then I should see "Lasius specius subspecius"
 
-  Scenario: Results when there are no issues
-    When I follow "Bad subfamily names"
-    Then I should see "Found no database issues"
-
   Scenario: Show tags, and description with markdown
     Then I should see "regression-test"
 
@@ -26,7 +22,7 @@ Feature: Database scripts
     Then I should see "Script runtime: 0."
 
     When I follow "current (antcat.org)"
-    Then I should see "class DatabaseScripts::Scripts::SubspeciesWithoutSpecies"
+    Then I should see "class SubspeciesWithoutSpecies < DatabaseScript"
 
   Scenario: Clicking on all scripts just to see if the page renders
     When I open all database scripts and browse their sources

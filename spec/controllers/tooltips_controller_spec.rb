@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe TooltipsController do
-  describe '#index' do
+  describe "GET index" do
     context "signed in" do
       let!(:no_namespace)         { create :tooltip, key: "no_namespace" }
       let!(:references_authors)   { create :tooltip, key: "authors", scope: "references" }
@@ -28,8 +28,8 @@ describe TooltipsController do
         end
 
         it "groups keys with namespaces" do
-          expect(@grouped["references"]).to eq [
-            references_authors, references_new_title, references_title]
+          expect(@grouped["references"])
+            .to eq [references_authors, references_new_title, references_title]
           expect(@grouped["taxa"]).to eq [taxa_type_species]
         end
 

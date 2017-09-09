@@ -4,11 +4,17 @@
 %table
   %thead
     %th Author (and author names)
+    %th Published between
+    %th No. of references
+    %th No. of described taxa (valid)
     -if user_can_edit?
       %th
   -@authors.each do |author|
     %tr
       %td=link_to author.names.map(&:name).join('; '), author
+      %td=or_dash author.decorate.published_between
+      %td=or_dash author.references.count
+      %td=or_dash author.described_taxa.valid.count
       -if user_can_edit?
         %td=link_to 'Edit', edit_author_path(author), class: "btn-normal"
 

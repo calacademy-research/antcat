@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Reference do
-  it { should have_one :document }
+  it { is_expected.to have_one :document }
 
   describe "#downloadable?" do
     context "with a document" do

@@ -6,11 +6,17 @@ class TaxonDecorator::Statistics
   # TODO: Push include_invalid/include_fossil to the taxa models.
   # This method is cheap, but Taxon#statistics is very slow and it always
   # fetches all statistics and then this method removes invalid/fossil taxa.
-  def statistics statistics, include_invalid: true, include_fossil: true
-    return '' unless statistics.present?
+  def initialize statistics, include_invalid: true, include_fossil: true
+    @statistics = statistics
+    @include_invalid = include_invalid
+    @include_fossil = include_fossil
+  end
+
+  def call
+    return '' unless @statistics.present?
 
     strings = [:extant, :fossil].reduce({}) do |strings, extant_or_fossil|
-      extant_or_fossil_statistics = statistics[extant_or_fossil]
+      extant_or_fossil_statistics = @statistics[extant_or_fossil]
       if extant_or_fossil_statistics
         string = [:subfamilies, :tribes, :genera, :species, :subspecies].reduce([]) do |rank_strings, rank|
           string = rank_statistics(extant_or_fossil_statistics, rank, include_invalid)
@@ -40,6 +46,8 @@ class TaxonDecorator::Statistics
   end
 
   private
+    attr_reader :include_invalid, :include_fossil
+
     def rank_statistics statistics, rank, include_invalid
       statistics = statistics[rank]
       return unless statistics
@@ -84,7 +92,7 @@ class TaxonDecorator::Statistics
         end
 
       if status == 'valid'
-        # we must first singularize because rank may already be pluralized
+        # We must first singularize because rank may already be pluralized.
         count_and_status << " #{rank.to_s.singularize.pluralize(count)}"
       end
       count_and_status

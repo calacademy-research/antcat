@@ -24,10 +24,13 @@ module Names
       attr_reader :options
 
       def duplicates
-        name_strings = Name.find_by_sql(<<-SQL).map(&:name)
+        Name.where(name: name_strings).order(:name)
+      end
+
+      def name_strings
+        Name.find_by_sql(<<-SQL).map(&:name)
           SELECT * FROM names GROUP BY name HAVING COUNT(*) > 1
         SQL
-        Name.where(name: name_strings).order(:name)
       end
   end
 end

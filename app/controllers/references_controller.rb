@@ -1,14 +1,10 @@
 class ReferencesController < ApplicationController
-  before_action :authenticate_editor, except: [:index, :download, :autocomplete,
-    :search_help, :show, :search, :endnote_export, :wikipedia_export, :latest_additions,
-    :latest_changes]
-  before_action :authenticate_superadmin, only: [:approve_all]
-  before_action :set_reference, only: [:show, :edit, :update, :destroy,
-    :start_reviewing, :finish_reviewing, :restart_reviewing, :wikipedia_export]
-  before_action :redirect_if_search_matches_id, only: [:search]
+  before_action :authenticate_editor, except: [:index, :autocomplete, :show]
+  before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index
-    @references = Reference.list_references params
+    @references = Reference.no_missing.order_by_author_names_and_year
+      .includes_document.paginate(page: params[:page])
   end
 
   def show
@@ -72,109 +68,6 @@ class ReferencesController < ApplicationController
     end
   end
 
-  def download
-    document = ReferenceDocument.find params[:id]
-    if document.downloadable?
-      redirect_to document.actual_url
-    else
-      head :unauthorized
-    end
-  end
-
-  # TODO handle error, if any. Also in `#finish_reviewing` and `#restart_reviewing`.
-  # TODO allow JSON requests.
-  def start_reviewing
-    @reference.start_reviewing!
-    make_default_reference @reference
-    redirect_to latest_additions_references_path
-  end
-
-  def finish_reviewing
-    @reference.finish_reviewing!
-    redirect_to latest_additions_references_path
-  end
-
-  def restart_reviewing
-    @reference.restart_reviewing!
-    make_default_reference @reference
-    redirect_to latest_additions_references_path
-  end
-
-  # TODO handle error, if any.
-  def approve_all
-    Reference.approve_all
-    redirect_to latest_changes_references_path, notice: "Approved all references."
-  end
-
-  def search
-    user_is_searching = params[:q].present? || params[:author_q].present?
-    return redirect_to action: :index unless user_is_searching
-
-    unparsable_author_names_error_message = <<-MSG
-      Could not parse author names. Start by typing a name, wait for a while
-      and then click on one of the suggestions. It is possible to manually
-      type the query (for example "Wilson, E. O.; Billen, J.;"),
-      but the names must exactly match the names in the database
-      ("Wilson" or "Wilson, E." will not work), and the query has to be
-      formatted like in the first example. Still not working? Email us!
-    MSG
-
-    @references = if params[:search_type] == "author"
-                    begin
-                      Reference.author_search params[:author_q], params[:page]
-                    rescue Citrus::ParseError
-                      flash.now.alert = unparsable_author_names_error_message
-                      Reference.none.paginate page: 9999
-                    end
-                  else
-                    Reference.do_search params
-                  end
-  end
-
-  def search_help
-  end
-
-  def latest_additions
-    options = { order: :created_at, page: params[:page] }
-    @references = Reference.list_references options
-  end
-
-  def latest_changes
-    options = { order: :updated_at, page: params[:page] }
-    @references = Reference.list_references options
-  end
-
-  def endnote_export
-    id = params[:id]
-    searching = params[:q].present?
-
-    references =
-      if id
-        # `where` and not `find` because we need to return an array.
-        Reference.where(id: id)
-      elsif searching
-        Reference.do_search params.merge endnote_export: true
-      else
-        # I believe it's not possible to get here from the GUI, but the route
-        # is not disabled. http://localhost:3000/references/endnote_export
-        Reference.list_all_references_for_endnote
-      end
-
-    render plain: Exporters::Endnote::Formatter.format(references)
-
-    rescue
-      render plain: <<-MSG.squish
-        Looks like something went wrong.
-        Exporting missing references is not supported.
-        If you tried to export a list of references,
-        try to filter the query with "type:nomissing".
-      MSG
-  end
-
-  def wikipedia_export
-    render plain: Wikipedia::ReferenceExporter.export(@reference)
-  end
-
   # For at.js. Not as advanced as `#autocomplete`.
   def linkable_autocomplete
     search_query = params[:q] || ''
@@ -197,16 +90,6 @@ class ReferencesController < ApplicationController
   end
 
   private
-    def redirect_if_search_matches_id
-      params[:q] ||= ''
-      params[:q].strip!
-
-      if params[:q].match(/^\d{5,}$/)
-        id = params[:q]
-        return redirect_to reference_path(id) if Reference.exists? id
-      end
-    end
-
     def build_nested_reference reference_id, citation_year
       @reference = @reference.becomes NestedReference
       @reference.citation_year = citation_year

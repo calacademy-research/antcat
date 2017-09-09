@@ -2,38 +2,50 @@ require 'spec_helper'
 
 describe BreadcrumbsHelper do
   describe "#taxon_breadcrumb_link" do
-    it "handles Formicidae" do
-      taxon = create_family
-      expected = %Q[<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>]
-      expect(helper.taxon_breadcrumb_link(taxon)).to eq expected
+    context "when Formicidae" do
+      let(:taxon) { create_family }
+
+      it "handles Formicidae" do
+        expect(helper.taxon_breadcrumb_link(taxon))
+          .to eq %Q[<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>]
+      end
     end
 
-    it "handles 'non-italic' ranks" do
-      ranks = [:subfamily, :tribe]
-      ranks.each do |rank|
-        taxon = send "create_#{rank}"
-        expected = %Q[<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>]
-        expect(helper.taxon_breadcrumb_link(taxon)).to eq expected
+    context "when 'non-italic' ranks" do
+      let(:ranks) { [:subfamily, :tribe] }
+
+      specify do
+        ranks.each do |rank|
+          taxon = send "create_#{rank}"
+          expect(helper.taxon_breadcrumb_link(taxon))
+            .to eq %Q[<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>]
+        end
       end
     end
 
     # TODO? it "handles subtribes"; factory broken
 
-    it "handles 'italic' ranks" do
-      ranks = [:genus, :species, :subspecies]
-      ranks.each do |rank|
-        taxon = send "create_#{rank}"
-        expected = %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
-        expect(helper.taxon_breadcrumb_link(taxon)).to eq expected
+    context "when 'italic' ranks" do
+      let(:ranks) { [:genus, :species, :subspecies] }
+
+      specify do
+        ranks.each do |rank|
+          taxon = send "create_#{rank}"
+          expect(helper.taxon_breadcrumb_link(taxon))
+            .to eq %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
+        end
       end
     end
 
     # TODO? it "handles subgenera"; factory broken
 
-    it "handles fossil taxa" do
-      taxon = create_genus fossil: true
-      expected = %Q[<a href="/catalog/#{taxon.id}">&dagger;<i>#{taxon.name_cache}</i></a>]
-      expect(helper.taxon_breadcrumb_link(taxon)).to eq expected
+    context "when fossil taxa" do
+      let(:taxon) { create_genus fossil: true }
+
+      specify do
+        expect(helper.taxon_breadcrumb_link(taxon))
+          .to eq %Q[<a href="/catalog/#{taxon.id}">&dagger;<i>#{taxon.name_cache}</i></a>]
+      end
     end
   end
 end

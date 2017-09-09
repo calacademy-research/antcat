@@ -2,12 +2,12 @@ class TaxonDecorator::ChildList
   include ActionView::Helpers
   include ActionView::Context
 
-  def initialize taxon, use_ant_web_formatter: false
+  def initialize taxon, for_antweb: false
     @taxon = taxon
-    @use_ant_web_formatter = use_ant_web_formatter
+    @for_antweb = for_antweb
   end
 
-  def child_lists
+  def call
     content = ''.html_safe
     [:subfamilies, :tribes, :genera].each do |rank|
       content << child_lists_for_rank(rank)
@@ -105,12 +105,12 @@ class TaxonDecorator::ChildList
     end
 
     # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
-    def antweb?
-      @use_ant_web_formatter
+    def for_antweb?
+      @for_antweb
     end
 
     def link_to_taxon taxon
-      if antweb?
+      if for_antweb?
         Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
       else
         taxon.decorate.link_to_taxon

@@ -30,6 +30,9 @@ class Reference < ApplicationRecord
            after_remove: :refresh_author_names_caches
   has_many :authors, through: :author_names
   has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id"
+  has_many :citations
+  has_many :protonyms, through: :citations
+  has_many :described_taxa, through: :protonyms, source: :taxon
 
   validates :title, presence: true, if: -> { self.class.requires_title }
 
@@ -38,9 +41,14 @@ class Reference < ApplicationRecord
   before_save :set_author_names_caches
   before_destroy :check_not_referenced, :check_not_nested
 
+  scope :includes_document, -> { includes(:document) }
+  scope :latest_additions, -> { order(created_at: :desc) }
+  scope :latest_changes, -> { order(updated_at: :desc) }
+  scope :no_missing, -> { where.not(type: "MissingReference") }
+  scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
   scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
-  scope :with_principal_author_last_name, ->(last_name) { where(principal_author_last_name_cache: last_name) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
+  scope :with_principal_author_last_name, ->(last_name) { where(principal_author_last_name_cache: last_name) }
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked on: :mixin_create_activity_only, parameters: proc { { name: keey } }

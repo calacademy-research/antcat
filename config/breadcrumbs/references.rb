@@ -43,12 +43,12 @@ crumb :all_references do
 end
 
 crumb :references_latest_additions do
-  link "Latest Additions", latest_additions_references_path
+  link "Latest Additions", references_latest_additions_path
   parent :references
 end
 
 crumb :references_latest_changes do
-  link "Latest Changes", latest_changes_references_path
+  link "Latest Changes", references_latest_changes_path
   parent :references
 end
 
@@ -78,7 +78,7 @@ crumb :authors do
 end
 
   crumb :author do |author|
-    link "Author ##{author.id}", author
+    link author.first_author_name_name, author
     parent :authors
   end
 

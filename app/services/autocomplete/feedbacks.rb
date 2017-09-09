@@ -5,17 +5,10 @@ module Autocomplete
     end
 
     def call
-      # See if we have an exact ID match.
-      search_results = if search_query =~ /^\d+ ?$/
-                         id_matches_q = Feedback.find_by id: search_query
-                         [id_matches_q] if id_matches_q
-                       end
-
-      search_results ||= Feedback.where("id LIKE ?", "%#{search_query}%").order(id: :desc)
-
       search_results.map do |feedback|
-        # Show less data on purpose for privacy reasons.
-        { id: feedback.id,
+        # Show little data on purpose for privacy reasons.
+        {
+          id: feedback.id,
           date: (feedback.created_at.strftime '%Y-%m-%d %H:%M'),
           status: (feedback.open? ? "open" : "closed")
         }
@@ -24,5 +17,16 @@ module Autocomplete
 
     private
       attr_reader :search_query
+
+      def search_results
+        exact_id_match || Feedback.where("id LIKE ?", "%#{search_query}%").order(id: :desc)
+      end
+
+      def exact_id_match
+        return unless search_query =~ /^\d+ ?$/
+
+        match = Feedback.find_by id: search_query
+        [match] if match
+      end
   end
 end

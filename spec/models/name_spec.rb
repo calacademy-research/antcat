@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Name do
-  it { should be_versioned }
-  it { should validate_presence_of :name }
+  it { is_expected.to be_versioned }
+  it { is_expected.to validate_presence_of :name }
 
   describe "#epithet_with_fossil_html" do
     it "formats the fossil symbol" do

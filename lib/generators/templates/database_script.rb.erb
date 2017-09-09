@@ -1,17 +1,17 @@
-class DatabaseScripts::Scripts::<%= class_name %>
-  include DatabaseScripts::DatabaseScript
+module DatabaseScripts
+  class <%= class_name %> < DatabaseScript
+    def results
+      # Subspecies.where(species: nil, auto_generated: false)
+    end
 
-  def results
-    # Subspecies.where(species: nil, auto_generated: false)
-  end
-
-  # When this method isn't implemented, the code tries to figure out
-  # how to render `#results` based on its class.
-  def render
-    # as_table do
-    #   header :subspecies, :status
-    #   rows { |taxon| [ markdown_taxon_link(taxon), taxon.status ] }
-    # end
+    # When this method isn't implemented, the code tries to figure out
+    # how to render `#results` based on its class.
+    def render
+      # as_table do
+      #   header :subspecies, :status
+      #   rows { |taxon| [ markdown_taxon_link(taxon), taxon.status ] }
+      # end
+    end
   end
 end
 

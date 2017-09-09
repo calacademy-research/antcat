@@ -1,0 +1,16 @@
+-@title = 'Latest Changes'
+-breadcrumb :references_latest_changes
+
+.buttons_right=approve_all_references_button
+
+%table.references
+  %thead
+    %th Reference
+    %th Changed
+
+  -@references.each do |reference|
+    %tr
+      %td=render 'references/reference', reference: reference
+      %td.no-wrap-align-top=reference.decorate.updated_at
+
+=will_paginate @references

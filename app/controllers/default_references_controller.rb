@@ -4,7 +4,7 @@ class DefaultReferencesController < ApplicationController
     if request.xhr?
       render nothing: true
     else
-      redirect_to latest_additions_references_path
+      redirect_to references_latest_additions_path
     end
   end
 end

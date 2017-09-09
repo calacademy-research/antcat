@@ -28,6 +28,17 @@ class Author < ActiveRecord::Base
     create_merge_authors_activity the_one_author, new_names_string
   end
 
+  # NOTE that "first" doesn't mean "primary", or "most correct", it
+  # simply refers to the name with the oldest ID.
+  # TODO maybe we want a way to reorder these.
+  def first_author_name_name
+    names.first.name
+  end
+
+  def described_taxa
+    Authors::DescribedTaxa.new(self).call
+  end
+
   private
     def self.create_merge_authors_activity author, names_string
       Activity.create_for_trackable author, :merge_authors, names: names_string
