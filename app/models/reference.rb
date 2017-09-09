@@ -15,8 +15,8 @@ class Reference < ApplicationRecord
   attr_accessor :journal_name, :publisher_string
 
   attr_accessible :author_names, :author_names_suffix, :citation, :citation_year,
-    :cite_code, :date, :document_attributes, :doi, :editor_notes, :journal_name,
-    :nesting_reference_id, :pages_in, :pagination, :possess, :public_notes,
+    :date, :document_attributes, :doi, :editor_notes, :journal_name,
+    :nesting_reference_id, :pages_in, :pagination, :public_notes,
     :publisher_string, :review_state, :series_volume_issue, :taxonomic_notes,
     :title
 

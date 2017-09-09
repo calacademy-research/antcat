@@ -1090,11 +1090,7 @@ definitions:
         description: reference id, primary key
       year:
         type: integer
-      possess:
-        type: string
       date:
-        type: string
-      cite_code:
         type: string
       citation_year:
         type: string

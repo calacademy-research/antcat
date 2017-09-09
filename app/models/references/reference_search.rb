@@ -11,7 +11,6 @@ class Reference < ApplicationRecord
     text    :publisher_name do publisher.name if publisher end
     text    :year_as_string do year.to_s if year end # quick fix to make the year searchable as a keyword
     text    :citation
-    text    :cite_code
     text    :editor_notes
     text    :public_notes
     text    :taxonomic_notes
