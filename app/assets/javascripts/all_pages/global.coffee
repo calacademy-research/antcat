@@ -27,7 +27,7 @@ AntCat.make_reference_keeys_expandable = (element) ->
       .toggle()
     false
 
-# Used by `FeedHelper#inline_expandable`.
+# Used by `ApplicationHelper#inline_expandable`.
 # TODO should be merge with `AntCat.make_reference_keeys_expandable`, but
 # that requires a migration for invalidating reference caches.
 enableInlineExpansions = ->

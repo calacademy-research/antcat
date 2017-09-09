@@ -1,38 +1,39 @@
 require "spec_helper"
 
-describe ActivitiesHelper do
+describe ActivityDecorator do
   let(:activity) { create :activity }
 
-  describe "#format_activity" do
-    # TODO
-  end
-
-  describe "#link_activity_user" do
+  describe "#link_user" do
     context "with a valid user" do
       it "links the user" do
-        expect(helper.link_activity_user activity).to include activity.user.name
+        expect(activity.decorate.link_user).to include activity.user.name
       end
     end
 
     context "without a valid user" do
+      let(:activity) { create :activity, user: nil }
+
       it "handles nil / 'system' activities" do
-        system_activity = create :activity, user: nil
-        expect(helper.link_activity_user system_activity).to include "[system]"
+        expect(activity.decorate.link_user).to include "[system]"
       end
     end
+  end
+
+  describe "#did_something" do
+    # TODO
   end
 
   describe "#link_trackable_if_exists" do
     context "with a valid trackable" do
       it "links the trackable" do
         trackable_id = activity.trackable_id
-        expect(helper.link_trackable_if_exists activity, "label")
+        expect(activity.decorate.link_trackable_if_exists "label")
           .to eq %Q[<a href="/journals/#{trackable_id}">label</a>]
       end
 
       it "defaults labels to the id" do
         trackable_id = activity.trackable_id
-        expect(helper.link_trackable_if_exists activity)
+        expect(activity.decorate.link_trackable_if_exists)
           .to eq %Q[<a href="/journals/#{trackable_id}">##{trackable_id}</a>]
       end
 
@@ -40,8 +41,9 @@ describe ActivitiesHelper do
         genus = create_genus
         activity = create :activity, trackable: genus
         trackable_id = activity.trackable_id
+        path = "/catalog/#{trackable_id}"
 
-        results = helper.link_trackable_if_exists activity, "label", path: catalog_path(genus)
+        results = activity.decorate.link_trackable_if_exists "label", path: path
         expect(results).to eq %Q[<a href="/catalog/#{trackable_id}">label</a>]
       end
     end
@@ -50,33 +52,37 @@ describe ActivitiesHelper do
       let(:activity) { create :activity, trackable: nil }
 
       it "handles nil trackables" do
-        expect(helper.link_trackable_if_exists activity, "label").to eq "label"
+        expect(activity.decorate.link_trackable_if_exists "label").to eq "label"
       end
     end
   end
 
-  describe "#activity_action_to_verb" do
+  describe "#trackabe_type_to_human" do
+    let(:activity) { create :activity, trackable_type: "BookReference" }
+
+    it "converts camelcase to spaced downcased" do
+      expect(activity.decorate.trackabe_type_to_human).to eq "book reference"
+    end
+  end
+
+  describe "#action_to_verb" do
     it "past participle-ifies defined actions" do
-      expect(helper.activity_action_to_verb "create").to eq "added"
+      decorated = build(:activity, action: "create").decorate
+      expect(decorated.action_to_verb).to eq "added"
     end
 
     it "uglifies missing actions" do
-      expect(helper.activity_action_to_verb "bake_a_cake").to eq "BAKE_A_CAKE"
+      decorated = build(:activity, action: "bake_a_cake").decorate
+      expect(decorated.action_to_verb).to eq "BAKE_A_CAKE"
     end
   end
 
-  describe "#trackabe_type_to_human" do
-    it "converts camelcase to spaced downcased" do
-      expect(helper.trackabe_type_to_human "BookReference").to eq "book reference"
-    end
-  end
-
-  describe "#partial_for_activity" do
+  describe "#template_partial" do
     context "no `trackable_type`" do
       let(:activity) { create :activity, trackable: nil, action: "approved_all" }
 
       it "returns the action" do
-        expect(helper.send :partial_for_activity, activity)
+        expect(activity.decorate.send :template_partial)
           .to eq "activities/templates/actions/approved_all"
       end
     end
@@ -87,14 +93,14 @@ describe ActivitiesHelper do
       end
 
       it "returns the action" do
-        expect(helper.send :partial_for_activity, activity)
+        expect(activity.decorate.send :template_partial)
           .to eq "activities/templates/actions/elevate_subspecies_to_species"
       end
     end
 
     context "there's a partial matching `trackable_type`" do
       it "returns that spaced and downcased" do
-        expect(helper.send :partial_for_activity, activity)
+        expect(activity.decorate.send :template_partial)
           .to eq "activities/templates/journal"
       end
     end
@@ -103,7 +109,7 @@ describe ActivitiesHelper do
       let(:activity) { create :activity, trackable: create(:citation) }
 
       it "returns the default template" do
-        expect(helper.send :partial_for_activity, activity)
+        expect(activity.decorate.send :template_partial)
           .to eq "activities/templates/default"
       end
     end

@@ -44,17 +44,7 @@ module CompareRevisionsHelper
   end
 
   def try_to_link_revision_history type, id
-    url = case type
-          when "Reference"
-            reference_history_index_path id
-          when "TaxonHistoryItem"
-            taxon_history_item_path id
-          when "ReferenceSection"
-            reference_section_path id
-          when "Taxon"
-            taxon_history_path id
-          end
-
+    url = RevisionHistoryPath.new(type, id).call
     return unless url
 
     link_to "History", url, class: "btn-normal btn-tiny"
