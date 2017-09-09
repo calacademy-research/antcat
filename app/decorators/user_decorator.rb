@@ -1,5 +1,3 @@
-# TODO probably convert to a helper.
-
 class UserDecorator < Draper::Decorator
   delegate_all
 
