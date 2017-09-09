@@ -17,4 +17,4 @@
           =undo_item[:user].decorate.user_page_link
         %td=undo_item[:date]
 
-=link_to "Undo!", undo_change_path(@change), method: :put, class: "btn-saves-warning"
+=link_to "Undo!", change_undos_path(@change), method: :post, class: "btn-saves-warning"

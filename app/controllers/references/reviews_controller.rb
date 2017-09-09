@@ -8,18 +8,18 @@ module References
     def start
       @reference.start_reviewing!
       make_default_reference @reference
-      redirect_to references_latest_additions_path
+      redirect_to :back
     end
 
     def finish
       @reference.finish_reviewing!
-      redirect_to references_latest_additions_path
+      redirect_to :back
     end
 
     def restart
       @reference.restart_reviewing!
       make_default_reference @reference
-      redirect_to references_latest_additions_path
+      redirect_to :back
     end
 
     # TODO handle error, if any.
