@@ -20,6 +20,7 @@ class RevisionHistoryPath
       when "TaxonHistoryItem" then taxon_history_item_path id
       when "ReferenceSection" then reference_section_path id
       when "Taxon"            then taxon_history_path id
+      when "Tooltip"          then tooltip_history_index_path id
       end
     end
 end

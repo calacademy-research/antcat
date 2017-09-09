@@ -226,6 +226,10 @@ AntCat::Application.routes.draw do
       get :render_missing_tooltips
       get :toggle_tooltip_helper
     end
+
+    scope module: :tooltips do
+      resources :history, only: :index
+    end
   end
 
   resources :issues do

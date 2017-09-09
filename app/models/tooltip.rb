@@ -1,5 +1,6 @@
 class Tooltip < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
+  include RevisionsCanBeCompared
   include Trackable
 
   validates :key, presence: true, uniqueness: true,
