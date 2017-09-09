@@ -6,19 +6,6 @@ module ActivitiesHelper
     link_to "(link)", url
   end
 
-  def inline_expandable label = "Show more", &block
-    show_more = content_tag :a, class: "hide-when-expanded gray" do
-                  content_tag :small, label
-                end
-    hidden =  content_tag :span, class: "show-when-expanded" do
-                yield
-              end
-
-    content_tag :span, class: "expandable" do
-      show_more + hidden
-    end
-  end
-
   def format_activity activity
     partial = partial_for_activity activity
     render partial: partial, locals: { activity: activity }
