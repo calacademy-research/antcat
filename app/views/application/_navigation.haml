@@ -9,6 +9,7 @@
         %ul.dropdown.menu{"data-dropdown-menu" => ""}
           -if Rails.env.development?
             %li.dev-only=link_to_current_page_on_live_site
+            %li.dev-only=link_to "dev CSS", widget_tests_toggle_dev_css_path, class: "btn-tiny"
           -if user_signed_in?
             =render "unseen_notifications_badge"
             %li=link_to "Editor's Panel", editors_panel_path
