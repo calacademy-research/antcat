@@ -2,4 +2,4 @@ converted the species
 =activity.parameters[:name_was].html_safe
 to a subspecies (now
 =succeed ")" do
-  =link_trackable_if_exists activity, activity.parameters[:name].html_safe, path: catalog_path(activity.trackable_id)
+  =activity.link_trackable_if_exists activity.parameters[:name].html_safe, path: catalog_path(activity.trackable_id)

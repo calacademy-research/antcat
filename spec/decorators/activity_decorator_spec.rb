@@ -23,6 +23,48 @@ describe ActivityDecorator do
     # TODO
   end
 
+  describe "#link_trackable_if_exists" do
+    context "with a valid trackable" do
+      it "links the trackable" do
+        trackable_id = activity.trackable_id
+        expect(activity.decorate.link_trackable_if_exists "label")
+          .to eq %Q[<a href="/journals/#{trackable_id}">label</a>]
+      end
+
+      it "defaults labels to the id" do
+        trackable_id = activity.trackable_id
+        expect(activity.decorate.link_trackable_if_exists)
+          .to eq %Q[<a href="/journals/#{trackable_id}">##{trackable_id}</a>]
+      end
+
+      it "allows custom paths" do
+        genus = create_genus
+        activity = create :activity, trackable: genus
+        trackable_id = activity.trackable_id
+        path = "/catalog/#{trackable_id}"
+
+        results = activity.decorate.link_trackable_if_exists "label", path: path
+        expect(results).to eq %Q[<a href="/catalog/#{trackable_id}">label</a>]
+      end
+    end
+
+    context "without a valid trackable" do
+      let(:activity) { create :activity, trackable: nil }
+
+      it "handles nil trackables" do
+        expect(activity.decorate.link_trackable_if_exists "label").to eq "label"
+      end
+    end
+  end
+
+  describe "#trackabe_type_to_human" do
+    let(:activity) { create :activity, trackable_type: "BookReference" }
+
+    it "converts camelcase to spaced downcased" do
+      expect(activity.decorate.trackabe_type_to_human).to eq "book reference"
+    end
+  end
+
   describe "#action_to_verb" do
     it "past participle-ifies defined actions" do
       decorated = build(:activity, action: "create").decorate

@@ -37,6 +37,20 @@ class ActivityDecorator < Draper::Decorator
     helpers.antcat_icon css_classes
   end
 
+  def link_trackable_if_exists label = nil, path: nil
+    label = "##{activity.trackable_id}" unless label
+
+    if activity.trackable
+      helpers.link_to label, path ? path : activity.trackable
+    else
+      label
+    end
+  end
+
+  def trackabe_type_to_human
+    activity.trackable_type.titleize.downcase
+  end
+
   # TODO move non-general actions to the templates.
   def action_to_verb
     { create: "added",
