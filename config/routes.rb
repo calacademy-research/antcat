@@ -11,10 +11,13 @@ AntCat::Application.routes.draw do
       get :unreviewed
       put :approve_all
     end
+
     member do
       put :approve
-      put :undo
-      get :confirm_before_undo
+    end
+
+    scope module: :changes do
+      resource :undos, only: [:show, :create]
     end
   end
 

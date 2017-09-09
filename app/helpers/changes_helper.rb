@@ -23,7 +23,7 @@ module ChangesHelper
 
   def confirm_before_undo_button change
     return unless user_can_edit?
-    link_to 'Undo...', confirm_before_undo_change_path(change), class: "btn-saves-warning"
+    link_to 'Undo...', change_undos_path(change), class: "btn-saves-warning"
   end
 
   def approve_all_changes_button
