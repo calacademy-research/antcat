@@ -6,29 +6,6 @@ describe ReferenceFormatterCache do
     expect(described_class.instance).to eq described_class.instance
   end
 
-  describe "#invalidate" do
-    let(:reference) { create :article_reference }
-
-    it "does nothing if there's nothing in the cache" do
-      expect(reference.formatted_cache).to be_nil
-      expect(reference.inline_citation_cache).to be_nil
-
-      described_class.invalidate reference
-      expect(reference.formatted_cache).to be_nil
-      expect(reference.inline_citation_cache).to be_nil
-    end
-
-    it "sets the cache to nil" do
-      described_class.populate reference
-      expect(reference.formatted_cache).not_to be_nil
-      expect(reference.inline_citation_cache).not_to be_nil
-
-      described_class.invalidate reference
-      expect(reference.formatted_cache).to be_nil
-      expect(reference.inline_citation_cache).to be_nil
-    end
-  end
-
   describe "#set" do
     let!(:reference) { create :article_reference }
 
