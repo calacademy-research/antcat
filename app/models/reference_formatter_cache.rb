@@ -33,13 +33,4 @@ class ReferenceFormatterCache
     References::Cache::Regenerate.new(reference).call
   end
   alias_method :populate, :regenerate
-
-  # `#invalidate_all` and `#regenerate_all` are used in migrations and Rake tasks.
-  def invalidate_all
-    References::Cache::InvalidateAll.new.call
-  end
-
-  def regenerate_all
-    References::Cache::RegenerateAll.new.call
-  end
 end

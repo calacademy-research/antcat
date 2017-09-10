@@ -4,6 +4,7 @@
 
 class RegenerateReferenceCaches < ActiveRecord::Migration
   def up
-    ReferenceFormatterCache.instance.regenerate_all
+    # Ignore in future migrations.
+    # ReferenceFormatterCache.instance.regenerate_all
   end
 end
