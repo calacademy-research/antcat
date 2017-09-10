@@ -1,16 +1,14 @@
 -@title = 'Search Results'
 -breadcrumb :references_search_results
 
+.callout.primary
+  %p
+    Not quite what you're looking for? Try the
+    =link_to "help pages.", help_references_search_index_path
+
 -if @references.empty?
-  .alert.callout No results found
-
-%p
-  Not quite what you're looking for? Try the
-  =link_to "help pages.", help_references_search_index_path
-
-%table
-  -@references.each do |reference|
-    %tr
-      %td=render 'references/reference', reference: reference
+  .callout.alert No results found.
+-else
+  =render "shared/reference_table", references: @references
 
 =will_paginate @references
