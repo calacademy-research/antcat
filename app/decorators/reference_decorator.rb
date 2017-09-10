@@ -68,6 +68,11 @@ class ReferenceDecorator < ApplicationDecorator
 
   # TODO rename.
   def link_to_reference
+    # TODO replace with (requires invalidating all references):
+    # ```
+    # helpers.link_to "Show", helpers.reference_path(reference),
+    #   class: "btn-normal btn-tiny"
+    # ```
     helpers.link_to reference.id, helpers.reference_path(reference)
   end
 
