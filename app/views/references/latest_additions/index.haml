@@ -7,17 +7,17 @@
 
 %table.references
   %thead
-    %th Reference
+    %th
     %th Created
     -if user_can_edit?
       %th Review status
-      %th Review
-      %th Set as default
+      %th
+      %th
     %th
   -@references.each do |reference|
     %tr
       %td=render 'references/reference', reference: reference
-      %td.no-wrap-align-top=a_timestamp_formatter reference.created_at
+      %td=time_tag reference.created_at
       -if user_can_edit?
         =render 'controls', reference: reference
       %td=link_to "Show", reference_path(reference), class: "btn-normal"

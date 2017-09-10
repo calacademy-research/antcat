@@ -54,12 +54,6 @@ describe ApplicationHelper do
     end
   end
 
-  describe "#a_timestamp_formatter" do
-    it "uses a short format" do
-      expect(helper.send :a_timestamp_formatter, Time.parse('2001-1-2')).to eq '2001-01-02'
-    end
-  end
-
   describe "#antcat_icon" do
     it "formats" do
       expect(helper.antcat_icon).to eq '<span class="antcat_icon"></span>'

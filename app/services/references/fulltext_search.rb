@@ -19,13 +19,8 @@ module References
         end_year        = options[:end_year]
         author          = options[:author]
         title           = options[:title]
-        search_keywords = options[:keywords] || ""
 
-        # TODO very ugly to make some queries work. Fix in Solr.
-        substrings_to_remove = ['<i>', '</i>', '\*'] # Titles may contain these.
-        substrings_to_remove.each { |substring| search_keywords.gsub! /#{substring}/, '' }
         # Hyphens, asterixes and colons makes Solr go bananas.
-        search_keywords.gsub! /-|:/, ' '
         title.gsub!(/-|:|\*/, ' ') if title
         author.gsub!(/-|:/, ' ') if author
 
@@ -70,6 +65,21 @@ module References
           order_by :author_names_string
           order_by :citation_year
         end.results
+      end
+
+      def search_keywords
+        @_search_keywords ||= begin
+          keywords = options[:keywords] || ""
+
+          # TODO very ugly to make some queries work. Fix in Solr.
+          substrings_to_remove = ['<i>', '</i>', '\*'] # Titles may contain these.
+          substrings_to_remove.each { |substring| keywords.gsub! /#{substring}/, '' }
+
+          # Hyphens, asterixes and colons makes Solr go bananas.
+          keywords.gsub! /-|:/, ' '
+
+          keywords
+        end
       end
   end
 end

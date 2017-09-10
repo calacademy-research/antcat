@@ -85,12 +85,6 @@ module ApplicationHelper
     end
   end
 
-  # Moved from `ReferenceDecorator#format_timestamp`.
-  # TODO something.
-  def a_timestamp_formatter timestamp
-    timestamp.strftime '%Y-%m-%d'
-  end
-
   def antcat_icon *css_classes
     content_tag :span, nil,
       class: ["antcat_icon"].concat(Array.wrap css_classes)
