@@ -45,17 +45,6 @@ class Reference < ApplicationRecord
       .where.not(type: 'MissingReference').all
   end
 
-  # Fulltext search, but not all fields. Used by at.js.
-  def self.fulltext_search_light search_keywords
-    Reference.solr_search do
-      keywords search_keywords do
-        fields(:title, :author_names_string, :citation_year)
-      end
-
-      paginate page: 1, per_page: 10
-    end.results
-  end
-
   def self.fulltext_search options = {}
     page            = options[:page] || 1
     items_per_page  = options[:items_per_page] || 30
