@@ -1,8 +1,9 @@
 -@title = 'Latest Additions'
 -breadcrumb :references_latest_additions
 
-.buttons_right
-  =link_to "New", new_reference_path, class: "btn-normal" if user_can_edit?
+-if user_can_edit?
+  .buttons_right
+    =link_to "New", new_reference_path, class: "btn-normal"
 
 %table.references
   %thead
