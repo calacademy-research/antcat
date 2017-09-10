@@ -17,7 +17,7 @@ module References
           Progress.new_init show_progress: true, total_count: Reference.count
           Reference.find_each do |reference|
             Progress.tally_and_show_progress 100
-            regenerate reference
+            References::Cache::Regenerate.new(reference).call
           end
           Progress.show_results
         end

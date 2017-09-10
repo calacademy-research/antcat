@@ -6,17 +6,6 @@ describe ReferenceFormatterCache do
     expect(described_class.instance).to eq described_class.instance
   end
 
-  describe "#set" do
-    let!(:reference) { create :article_reference }
-
-    it "gets and sets the right values" do
-      described_class.set reference, 'Cache', :formatted_cache
-      reference.reload
-
-      expect(reference.formatted_cache).to eq 'Cache'
-    end
-  end
-
   describe "#regenerate" do
     let!(:reference) { create :article_reference }
 

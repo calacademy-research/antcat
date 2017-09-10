@@ -6,14 +6,16 @@ module References
       end
 
       def call
-        set reference, generate_formatted, :formatted_cache
-        set reference, generate_inline_citation, :inline_citation_cache
+        set generate_formatted, :formatted_cache
+        set generate_inline_citation, :inline_citation_cache
       end
 
       private
         attr_reader :reference
 
-        delegate :set, to: ReferenceFormatterCache
+        def set value, field
+          References::Cache::Set.new(reference, value, field).call
+        end
 
         def generate_formatted
           reference.decorate.send(:generate_formatted)
