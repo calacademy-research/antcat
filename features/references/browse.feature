@@ -27,21 +27,21 @@ Feature: View bibliography
     And that the entry has a URL that's on our site
 
     When I go to the references page
-    Then I should see a "PDF" link
+    Then I should see a PDF link
 
   Scenario: Viewing an entry with a URL to a document on our site, the user isn't logged in, but it's public
     Given there is a reference
     And that the entry has a URL that's on our site that is public
 
     When I go to the references page
-    Then I should see a "PDF" link
+    Then I should see a PDF link
 
   Scenario: Viewing an entry with a URL to a document that's not on our site, and the user isn't logged in
     Given there is a reference
     And that the entry has a URL that's not on our site
 
     When I go to the references page
-    Then I should see a "PDF" link
+    Then I should see a PDF link
 
   Scenario: Viewing an entry with a URL to a document on our site, but the user is logged in
     Given there is a reference
@@ -49,7 +49,7 @@ Feature: View bibliography
     And I am logged in
 
     When I go to the references page
-    Then I should see a "PDF" link
+    Then I should see a PDF link
 
   Scenario: Viewing an entry with a URL to a document that's not on our site, and the user is logged in
     Given there is a reference
@@ -57,7 +57,7 @@ Feature: View bibliography
     And I am logged in
 
     When I go to the references page
-    Then I should see a "PDF" link
+    Then I should see a PDF link
 
   Scenario: Viewing a nested reference
     Given there is a book reference
