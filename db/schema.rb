@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170828205547) do
+ActiveRecord::Schema.define(version: 20170909165610) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -291,10 +291,8 @@ ActiveRecord::Schema.define(version: 20170828205547) do
 
   create_table "references", force: :cascade do |t|
     t.integer  "year",                             limit: 4
-    t.string   "possess",                          limit: 255
     t.string   "date",                             limit: 255
     t.datetime "created_at"
-    t.string   "cite_code",                        limit: 255
     t.datetime "updated_at"
     t.string   "citation_year",                    limit: 255
     t.string   "type",                             limit: 255
