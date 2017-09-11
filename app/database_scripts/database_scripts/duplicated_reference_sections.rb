@@ -13,9 +13,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :reference_section, :taxon, :status
-        rows do |reference_section|
+      as_table do |t|
+        t.header :reference_section, :taxon, :status
+
+        t.rows do |reference_section|
           taxon = reference_section.taxon
           [
             link_reference_section(reference_section),

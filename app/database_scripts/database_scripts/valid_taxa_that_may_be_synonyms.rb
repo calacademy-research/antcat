@@ -23,7 +23,7 @@ module DatabaseScripts
     end
 
     def render
-      as_taxon_table
+      as_taxon_table # Call explicitly because `#results` is an array.
     end
 
     private

@@ -8,7 +8,7 @@ module DatabaseScripts
     end
 
     def render
-      "Found #{cached_results} redundant curly brance(s)."
+      "Found #{results} redundant curly brance(s)."
     end
 
     private

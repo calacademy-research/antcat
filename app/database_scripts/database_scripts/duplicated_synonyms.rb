@@ -20,9 +20,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :synonym, :taxon, :status
-        rows do |synonym|
+      as_table do |t|
+        t.header :synonym, :taxon, :status
+
+        t.rows do |synonym|
           taxon = synonym.junior_synonym
           [ synonym_link(synonym), markdown_taxon_link(taxon), taxon.status ]
         end

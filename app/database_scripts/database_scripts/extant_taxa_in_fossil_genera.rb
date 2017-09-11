@@ -7,10 +7,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :species_or_subspecies, :status, :genus, :genus_status
+      as_table do |t|
+        t.header :species_or_subspecies, :status, :genus, :genus_status
 
-        rows do |taxon|
+        t.rows do |taxon|
           [ markdown_taxon_link(taxon),
             taxon.status,
             markdown_taxon_link(taxon.genus),

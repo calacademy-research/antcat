@@ -10,10 +10,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :protonym, :taxon, :taxon_status, :citation, :reference
+      as_table do |t|
+        t.header :protonym, :taxon, :taxon_status, :citation, :reference
 
-        rows do |protonym|
+        t.rows do |protonym|
           taxon = protonym.taxon
           reference = protonym.authorship.reference
 

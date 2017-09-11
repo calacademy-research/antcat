@@ -19,11 +19,11 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :item_type, :item_id
+      as_table do |t|
+        t.header :item_type, :item_id
 
         results.each do |model, ids|
-          rows(ids) do |id|
+          t.rows(ids) do |id|
             [ model, attempt_to_link_item(model.name, id) ]
           end
         end

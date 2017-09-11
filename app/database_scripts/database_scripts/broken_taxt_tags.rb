@@ -143,11 +143,16 @@ module DatabaseScripts
         taxa_with_broken_ids_thing
       end
 
-      def affected_taxa_table taxa_with_broken_ids
-        as_table do
-          header :item_id, :item_type, :taxon, :tag, :broken_ids
+      # HACK to fix `as_table` issue...
+      def cached_results
+        nil
+      end
 
-          rows(taxa_with_broken_ids) do |item|
+      def affected_taxa_table taxa_with_broken_ids
+        as_table do |t|
+          t.header :item_id, :item_type, :taxon, :tag, :broken_ids
+
+          t.rows(taxa_with_broken_ids) do |item|
             item_id                    = item[:item_id]
             item_type                  = item[:item_type]
             taxon                      = item[:taxon]
