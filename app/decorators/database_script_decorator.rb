@@ -1,14 +1,21 @@
+# TODO use constants for the tags.
+
 class DatabaseScriptDecorator < Draper::Decorator
   GITHUB_MASTER_URL = "https://github.com/calacademy-research/antcat/blob/master"
 
-  delegate_all
+  delegate :tags, :topic_areas, :filename_without_extension
 
-  def format_tags
+  # Decorate class because we want to be able to call this without a script.
+  def self.format_tags tags
     tags.map do |tag|
       helpers.content_tag :span, class: tag_css_class(tag) do
         helpers.raw tag.html_safe
       end
     end.join(" ").html_safe
+  end
+
+  def format_tags
+    self.class.format_tags tags
   end
 
   def format_topic_areas
@@ -21,7 +28,7 @@ class DatabaseScriptDecorator < Draper::Decorator
   end
 
   private
-    def tag_css_class tag
+    def self.tag_css_class tag
       case tag
       when "slow"      then "warning-label"
       when "very-slow" then "warning-label"
@@ -29,4 +36,5 @@ class DatabaseScriptDecorator < Draper::Decorator
       else                  "white-label"
       end
     end
+    private_class_method :tag_css_class
 end
