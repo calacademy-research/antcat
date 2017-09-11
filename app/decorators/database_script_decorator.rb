@@ -1,5 +1,3 @@
-# TODO use constants for the tags.
-
 class DatabaseScriptDecorator < Draper::Decorator
   GITHUB_MASTER_URL = "https://github.com/calacademy-research/antcat/blob/master"
 
@@ -30,10 +28,10 @@ class DatabaseScriptDecorator < Draper::Decorator
   private
     def self.tag_css_class tag
       case tag
-      when "slow"      then "warning-label"
-      when "very-slow" then "warning-label"
-      when "new!"      then "label"
-      else                  "white-label"
+      when DatabaseScript::SLOW_TAG      then "warning-label"
+      when DatabaseScript::VERY_SLOW_TAG then "warning-label"
+      when DatabaseScript::NEW_TAG       then "label"
+      else                                    "white-label"
       end
     end
     private_class_method :tag_css_class

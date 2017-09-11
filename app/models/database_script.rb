@@ -6,6 +6,12 @@ class DatabaseScript
   include DatabaseScripts::Rendering
 
   SCRIPTS_DIR = "app/database_scripts/database_scripts"
+  TAGS = [
+    SLOW_TAG = "very-slow",
+    VERY_SLOW_TAG = "very-slow",
+    NEW_TAG = "new!"
+  ]
+
   ScriptNotFound = Class.new StandardError
 
   def self.new_from_filename_without_extension basename
