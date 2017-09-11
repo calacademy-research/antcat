@@ -17,6 +17,11 @@ end
       parent :tooltip, tooltip
     end
 
+    crumb :tooltip_history do |tooltip|
+      link "History"
+      parent :tooltip, tooltip
+    end
+
   crumb :new_tooltip do
     link "New"
     parent :tooltips

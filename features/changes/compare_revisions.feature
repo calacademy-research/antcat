@@ -100,3 +100,18 @@ Feature: Compare revisions
     When I go to the catalog page for "Atta"
     And I follow "History"
     Then I should see "Compare selected revisions"
+
+  Scenario: Comparing revisions (tooltips)
+    Given this tooltip exists
+      | key      | text      |
+      | whatever | Typo oops |
+
+    When I go to the tooltips editing page
+    And I follow "whatever"
+    And I fill in "tooltip[text]" with "A title"
+    And I press "Update Tooltip"
+
+    When I go to the tooltips editing page
+    And I follow "whatever"
+    And I follow "History"
+    Then I should see "Compare selected revisions"
