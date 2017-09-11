@@ -1,3 +1,6 @@
+# TODO cleanup spec.
+# TODO move relevant specs to `spec/services/references/fulltext_search_spec.rb`.
+
 require 'spec_helper'
 
 describe Reference do

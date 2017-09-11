@@ -13,4 +13,4 @@ Feature: Upload a file
     And I fill in "reference_document_attributes_url" with ""
     And I press "Save"
     And I wait for a bit
-    Then I should not see a "PDF" link
+    Then I should not see "PDF"

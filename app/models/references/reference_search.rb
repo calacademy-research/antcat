@@ -11,7 +11,6 @@ class Reference < ApplicationRecord
     text    :publisher_name do publisher.name if publisher end
     text    :year_as_string do year.to_s if year end # quick fix to make the year searchable as a keyword
     text    :citation
-    text    :cite_code
     text    :editor_notes
     text    :public_notes
     text    :taxonomic_notes
@@ -46,75 +45,7 @@ class Reference < ApplicationRecord
       .where.not(type: 'MissingReference').all
   end
 
-  # Fulltext search, but not all fields. Used by at.js.
-  def self.fulltext_search_light search_keywords
-    Reference.solr_search do
-      keywords search_keywords do
-        fields(:title, :author_names_string, :citation_year)
-      end
-
-      paginate page: 1, per_page: 10
-    end.results
-  end
-
   def self.fulltext_search options = {}
-    page            = options[:page] || 1
-    items_per_page  = options[:items_per_page] || 30
-    year            = options[:year]
-    start_year      = options[:start_year]
-    end_year        = options[:end_year]
-    author          = options[:author]
-    title           = options[:title]
-    search_keywords = options[:keywords] || ""
-
-    # TODO very ugly to make some queries work. Fix in Solr.
-    substrings_to_remove = ['<i>', '</i>', '\*'] # Titles may contain these.
-    substrings_to_remove.each { |substring| search_keywords.gsub! /#{substring}/, '' }
-    # Hyphens, asterixes and colons makes Solr go bananas.
-    search_keywords.gsub! /-|:/, ' '
-    title.gsub!(/-|:|\*/, ' ') if title
-    author.gsub!(/-|:/, ' ') if author
-
-    # Calling `.solr_search` because `.search` is a Ransack method (bundled by ActiveAdmin).
-    Reference.solr_search(include: [:document]) do
-      keywords search_keywords
-
-      if title
-        keywords title do
-          fields(:title)
-        end
-      end
-
-      if author
-        keywords author do
-          fields(:author_names_string)
-        end
-      end
-
-      if year
-        with(:year).equal_to year
-      end
-
-      if start_year && end_year
-        with(:year).between(start_year..end_year)
-      end
-
-      case options[:reference_type]
-      when :unknown   then with    :type, 'UnknownReference'
-      when :nested    then with    :type, 'NestedReference'
-      when :missing   then with    :type, 'MissingReference'
-      when :nomissing then without :type, 'MissingReference'
-      else                 without :type, 'MissingReference'
-      end
-
-      if options[:endnote_export]
-        paginate page: 1, per_page: 9999999 #hehhehe
-      elsif page
-        paginate page: page, per_page: items_per_page
-      end
-
-      order_by :author_names_string
-      order_by :citation_year
-    end.results
+    References::FulltextSearch.new(options).call
   end
 end

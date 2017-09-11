@@ -1,48 +1,58 @@
-# TODO rename anything feed --> activity.
-
-module ActivitiesHelper
-  def highlight_activity_link activity
-    url = activities_path id: activity.id, anchor: "activity-#{activity.id}"
-    link_to "(link)", url
-  end
-
-  def inline_expandable label = "Show more", &block
-    show_more = content_tag :a, class: "hide-when-expanded gray" do
-                  content_tag :small, label
-                end
-    hidden =  content_tag :span, class: "show-when-expanded" do
-                yield
-              end
-
-    content_tag :span, class: "expandable" do
-      show_more + hidden
-    end
-  end
-
-  def format_activity activity
-    partial = partial_for_activity activity
-    render partial: partial, locals: { activity: activity }
-  end
+class ActivityDecorator < Draper::Decorator
+  delegate :user, :trackable_id, :trackable, :trackable_type,
+    :parameters, :action
 
   # Activities are by default associated with the performing user, but
   # in the console and other situations we may not have a current user.
-  def link_activity_user activity
-    return "[system]" unless activity.user
-    activity.user.decorate.user_page_link
+  def link_user
+    return "[system]" unless user
+    user.decorate.user_page_link
   end
 
-  def link_trackable_if_exists activity, label = nil, path: nil
+  def did_something
+    partial = template_partial
+    helpers.render partial: partial, locals: { activity: self }
+  end
+
+  def when
+    sometime = helpers.time_ago_in_words activity.created_at
+    "#{sometime} ago"
+  end
+
+  def anchor_path
+    helpers.activities_path id: activity.id, anchor: "activity-#{activity.id}"
+  end
+
+  def revision_history_link
+    url = RevisionHistoryPath.new(activity.trackable_type, activity.trackable_id).call
+    return unless url
+
+    helpers.link_to "History", url, class: "btn-normal btn-tiny"
+  end
+
+  def icon
+    css_classes = []
+    css_classes << activity.trackable_type.underscore.downcase if activity.trackable_type
+    css_classes << activity.action if activity.action
+    helpers.antcat_icon css_classes
+  end
+
+  def link_trackable_if_exists label = nil, path: nil
     label = "##{activity.trackable_id}" unless label
 
     if activity.trackable
-      link_to label, path ? path : activity.trackable
+      helpers.link_to label, path ? path : activity.trackable
     else
       label
     end
   end
 
-  # TODO move non-general actions to the templates
-  def activity_action_to_verb action
+  def trackabe_type_to_human
+    activity.trackable_type.titleize.downcase
+  end
+
+  # TODO move non-general actions to the templates.
+  def action_to_verb
     { create: "added",
       update: "edited",
       destroy: "deleted",
@@ -59,21 +69,10 @@ module ActivitiesHelper
 
       close_feedback: "closed",
       reopen_feedback: "re-opened",
-    }[action.to_sym] || action.upcase
+    }[activity.action.to_sym] || activity.action.upcase
 
     # Default to the action name for missing actions (and upcase
     # upcase to make sure that they are readable but ugly).
-  end
-
-  def trackabe_type_to_human type
-    type.titleize.downcase
-  end
-
-  def activity_icon activity
-    css_classes = []
-    css_classes << activity.trackable_type.underscore.downcase if activity.trackable_type
-    css_classes << activity.action if activity.action
-    antcat_icon css_classes
   end
 
   private
@@ -94,8 +93,8 @@ module ActivitiesHelper
     #
     # 2) Else, just render --> "_<trackable_type>.haml"
     #
-    # 3) Catch `ActionView::MissingTemplate` in `#format_activity` --> `_default.haml`
-    def partial_for_activity activity
+    # 3) Catch `ActionView::MissingTemplate` in `#did_something` --> `_default.haml`
+    def template_partial
       templates_path = "activities/templates/"
       return "#{templates_path}actions/#{activity.action}" unless activity.trackable_type
 
@@ -116,6 +115,6 @@ module ActivitiesHelper
     end
 
     def partial_exists? path
-      lookup_context.template_exists? path
+      File.file? "./app/views/#{path}.haml"
     end
 end

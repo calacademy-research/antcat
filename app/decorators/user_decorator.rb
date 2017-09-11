@@ -1,18 +1,12 @@
-# TODO probably convert to a helper.
-
 class UserDecorator < Draper::Decorator
-  delegate_all
-
-  def name_linking_to_email
-    helpers.link_to user.name, "mailto:#{user.email}"
-  end
+  delegate :name, :email
 
   def user_page_link
-    helpers.link_to user.name, helpers.user_path(user)
+    helpers.link_to name, user
   end
 
   # Like `#user_page_link` but with an "@".
   def ping_user_link
-    helpers.link_to "@<strong>#{user.name}</strong>".html_safe, helpers.user_path(user)
+    helpers.link_to "@<strong>#{name}</strong>".html_safe, user
   end
 end

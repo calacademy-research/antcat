@@ -4,7 +4,7 @@
   %span.highlight-comment-anchor{id: "comment-#{comment.id}"}
     =comment.user.decorate.user_page_link
     commented
-    =link_comment comment, time_ago_in_words(comment.created_at)
+    =comment.decorate.link_comment time_ago_in_words(comment.created_at)
     -if comment.edited?
       ago*:
     -else

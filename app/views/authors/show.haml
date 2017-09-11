@@ -67,8 +67,7 @@
             %td=or_dash @author.described_taxa.count
           %tr
             %th No. of described taxa (valid)
-            %td
-              =or_dash @author.described_taxa.valid.count
+            %td=or_dash @author.described_taxa.valid.count
 
 .row
   .small-6.columns.end

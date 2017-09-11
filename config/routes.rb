@@ -11,10 +11,13 @@ AntCat::Application.routes.draw do
       get :unreviewed
       put :approve_all
     end
+
     member do
       put :approve
-      put :undo
-      get :confirm_before_undo
+    end
+
+    scope module: :changes do
+      resource :undos, only: [:show, :create]
     end
   end
 
@@ -225,6 +228,10 @@ AntCat::Application.routes.draw do
       get :enabled_selectors
       get :render_missing_tooltips
       get :toggle_tooltip_helper
+    end
+
+    scope module: :tooltips do
+      resources :history, only: :index
     end
   end
 

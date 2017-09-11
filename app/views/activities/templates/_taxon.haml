@@ -1,8 +1,8 @@
-=activity_action_to_verb activity.action
+=activity.action_to_verb
 the
 =activity.parameters[:rank]
 
-=link_trackable_if_exists activity, activity.parameters[:name].html_safe, path: catalog_path(activity.trackable_id)
+=activity.link_trackable_if_exists activity.parameters[:name].html_safe, path: catalog_path(activity.trackable_id)
 
 -parent = activity.parameters[:parent]
 -if activity.action == "create" && parent

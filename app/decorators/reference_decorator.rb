@@ -53,21 +53,17 @@ class ReferenceDecorator < ApplicationDecorator
     reference.set_cache generate_inline_citation, :inline_citation_cache
   end
 
-  # Note: Only used for the AntWeb export.
-  # TODO move to `Exporters::Antweb::Exporter`.
-  def antweb_version_of_inline_citation
-    # Hardcoded, or we must set `host` + use `reference_url(reference)`.
-    url = "http://antcat.org/references/#{reference.id}"
-    link = helpers.link_to reference.keey.html_safe,
-      url, title: make_to_link_title(formatted)
-
-    content = [link]
-    content << format_reference_document_link
-    content.reject(&:blank?).join(' ').html_safe
+   def antweb_version_of_inline_citation
+    Exporters::Antweb::InlineCitation.new(reference).call
   end
 
   # TODO rename.
   def link_to_reference
+    # TODO replace with (requires invalidating all references):
+    # ```
+    # helpers.link_to "Show", helpers.reference_path(reference),
+    #   class: "btn-normal btn-tiny"
+    # ```
     helpers.link_to reference.id, helpers.reference_path(reference)
   end
 
@@ -93,7 +89,7 @@ class ReferenceDecorator < ApplicationDecorator
     def generate_inline_citation
       helpers.content_tag :span, class: "reference_keey_and_expansion" do
         link = helpers.link_to reference.keey, '#',
-          title: make_to_link_title(formatted), class: "reference_keey"
+          title: helpers.unitalicize(formatted), class: "reference_keey"
 
         content = link
         content << helpers.content_tag(:span, class: "reference_keey_expansion") do
@@ -168,9 +164,5 @@ class ReferenceDecorator < ApplicationDecorator
     def pdf_link
       return unless reference.downloadable?
       helpers.link_to 'PDF', reference.url
-    end
-
-    def make_to_link_title string
-      helpers.unitalicize string
     end
 end

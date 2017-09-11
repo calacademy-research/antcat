@@ -1,5 +1,8 @@
 module DatabaseScripts
   class MissingReferencesInProtonymAuthorships < DatabaseScript
+    include Rails.application.routes.url_helpers
+    include ActionView::Helpers::UrlHelper
+
     def results
       Protonym.joins(authorship: :reference)
         .where("references.type = 'MissingReference'")
@@ -29,9 +32,9 @@ module DatabaseScripts
         "<a href='#{search_path}#{URI.encode(citation, /\W/)}'>#{citation}</a>"
       end
 
-      # HACK because `#link_to_reference` is a no-op for missing references.
+      # NOTE duplicated because `#link_to_reference` is a no-op for missing references.
       def reference_link reference
-        ReferenceDecorator.new(reference).link_to_reference
+        link_to reference.id, reference_path(reference)
       end
   end
 end

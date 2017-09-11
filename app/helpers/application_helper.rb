@@ -72,10 +72,17 @@ module ApplicationHelper
     end
   end
 
-  # Moved from `ReferenceDecorator#format_timestamp`.
-  # TODO something.
-  def a_timestamp_formatter timestamp
-    timestamp.strftime '%Y-%m-%d'
+  def inline_expandable label = "Show more", &block
+    show_more = content_tag :a, class: "hide-when-expanded gray" do
+                  content_tag :small, label
+                end
+    hidden =  content_tag :span, class: "show-when-expanded" do
+                yield
+              end
+
+    content_tag :span, class: "expandable" do
+      show_more + hidden
+    end
   end
 
   def antcat_icon *css_classes
