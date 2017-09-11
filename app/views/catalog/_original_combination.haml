@@ -2,10 +2,11 @@
   %span.name=taxon.decorate.link_each_epithet
   -# NOTE we're not using `ReferenceDecorator#inline_citation` because it
   -# does not include the extra parentheses used for recombinations.
+  -# We may be safe to add the parentheses manually, but let's
+  -# let's check with someone first.
   =link_to taxon.authorship_string, reference_path(taxon.authorship_reference)
 
   -if taxon.current_valid_taxon
     see
     =taxon.current_valid_taxon.decorate.link_each_epithet
     =link_to taxon.current_valid_taxon.authorship_string, reference_path(taxon.current_valid_taxon.authorship_reference)
-    =taxon.current_valid_taxon.authorship_reference.decorate.inline_citation
