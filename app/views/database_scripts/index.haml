@@ -4,6 +4,18 @@
 -content_for :head do
   =javascript_include_tag "sortable_tables"
 
+.row
+  .small-6.columns.end
+    .callout.secondary
+      %p
+        Scripts are cached for
+        =distance_of_time_in_words DatabaseScriptsController::DEFAULT_EXPIRES_IN
+        excepts those tagged with
+        =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
+        which are cached until they are manually regenerated. Please be careful when regenerating scripts tagged with
+        =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
+        as it can make the site unresponsive.
+
 %table.tablesorter
   %thead
     %tr
