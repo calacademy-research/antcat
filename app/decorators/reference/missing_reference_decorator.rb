@@ -7,6 +7,7 @@ class MissingReferenceDecorator < ReferenceDecorator
 
   def format_reference_document_link; end
 
+  # TODO see if we want to show *something* here.
   def link_to_reference; end
 
   private

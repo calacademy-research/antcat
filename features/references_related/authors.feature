@@ -1,5 +1,5 @@
 Feature: Working with authors and their names
-  Scenario: Seeing all the authors with their names (not logged in)
+  Scenario: Seeing all the authors with their names
     Given the following names exist for an author
       | Bolton, B. |
       | Bolton,B.  |
@@ -9,7 +9,6 @@ Feature: Working with authors and their names
     When I go to the authors page
     Then I should see "Bolton, B.; Bolton,B."
     And I should see "Fisher, B."
-    And I should not see "Edit"
 
   Scenario: Attempting to access edit page without being logged in
     Given the following names exist for an author

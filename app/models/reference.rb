@@ -64,11 +64,11 @@ class Reference < ApplicationRecord
   end
 
   def invalidate_caches
-    ReferenceFormatterCache.invalidate self
+    References::Cache::Invalidate.new(self).call
   end
 
   def set_cache value, field
-    ReferenceFormatterCache.set self, value, field
+    References::Cache::Set.new(self, value, field).call
   end
 
   # TODO something. "_cache" vs not.

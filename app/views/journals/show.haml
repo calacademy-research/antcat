@@ -8,14 +8,11 @@
       =link_to "Delete", journal_path(@journal), class: "btn-delete", method: :delete, data: { confirm: "Are you sure?" }
 
 %h5 References using this journal
-%table
-  -@references.each do |reference|
+-if @references.empty?
+  %table
     %tr
-      %td
-        =reference.decorate.formatted
-        =reference.decorate.link_to_reference
-  -if @references.empty?
-    %tr
-      %td None
+      %td None.
+-else
+  =render "shared/reference_table", references: @references
 
 =will_paginate @references

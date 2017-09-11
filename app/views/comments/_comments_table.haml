@@ -19,7 +19,7 @@
             -# "commented on" (comment linked if commented object still exists)
             -commentable = comment.commentable
             -if commentable
-              =link_comment comment, "commented"
+              =comment.decorate.link_comment "commented"
             -else
               commented
             on the
@@ -38,7 +38,7 @@
 
             -# '"comment body"'
             =surround '"' do
-              =truncated_comment_for_tables comment
+              =comment.decorate.truncated_for_tables
 
           %td.no-wrap
             =time_ago_in_words comment.created_at
