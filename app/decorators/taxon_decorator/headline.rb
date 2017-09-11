@@ -9,6 +9,7 @@ class TaxonDecorator::Headline
     @for_antweb = for_antweb
   end
 
+  # TODO extract `#headline_protonym` and `#headline_type´ into services.
   def call
     content_tag :div, class: 'headline' do
       notes = headline_notes
