@@ -20,11 +20,12 @@
       =succeed "," do
         =link_to "current (antcat.org)", source_database_script_path(@script)
       =link_to "GitHub (dev)", @script.decorate.github_url
+
       %br
       Results generated
-      =time_ago_in_words @cached_at
-      ago
+      =@script.decorate.cached_when
       =link_to "Regenerate", regenerate_database_script_path(@script), class: "btn-normal btn-tiny"
+
 .row.column
   .callout
     =@cached_render

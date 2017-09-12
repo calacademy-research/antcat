@@ -11,7 +11,6 @@ class DatabaseScriptsController < ApplicationController
   def show
     @used_cached = used_cached?
     @cached_render, @render_duration = cached_render
-    @cached_at = cached_at
   end
 
   def source
@@ -49,11 +48,5 @@ class DatabaseScriptsController < ApplicationController
       else
         DEFAULT_EXPIRES_IN
       end
-    end
-
-    # TODO improve.
-    def cached_at
-      entry = Rails.cache.send :read_entry, @script.cache_key, {}
-      Time.at entry.instance_variable_get(:@created_at)
     end
 end
