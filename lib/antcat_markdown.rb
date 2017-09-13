@@ -23,8 +23,8 @@ class AntcatMarkdown < Redcarpet::Render::HTML
   end
 
   # Without this "AntcatMarkdown" is "Markdown".
-  def preprocess full_document
-    AntcatMarkdownUtils.parse_antcat_hooks full_document
+  def preprocess content
+    Markdowns::ParseAntcatHooks.new(content).call
   end
 
   def table header, body

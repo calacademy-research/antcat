@@ -1,9 +1,9 @@
 require "spec_helper"
 
-describe AntcatMarkdownUtils do
-  let(:dummy) { described_class.new nil }
-
+describe Markdowns::ParseAntcatHooks do
   describe "#try_linking_taxon_id" do
+    let(:dummy) { described_class.new nil }
+
     context "existing taxon" do
       let!(:taxon) { create :species }
 

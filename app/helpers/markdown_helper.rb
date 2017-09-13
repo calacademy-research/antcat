@@ -3,7 +3,7 @@ module MarkdownHelper
     AntcatMarkdown.render text
   end
 
-  def antcat_markdown_only text
-    AntcatMarkdownUtils.parse_antcat_hooks text
+  def antcat_markdown_only content
+    Markdowns::ParseAntcatHooks.new(content).call
   end
 end
