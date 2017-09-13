@@ -27,5 +27,5 @@ __END__
 description: >
   `Synonym` records where `.senior_synonym_id` or
   `junior_synonym_id` refers to a non-existent taxon.
-tags: [new!]
+
 topic_areas: [synonyms]

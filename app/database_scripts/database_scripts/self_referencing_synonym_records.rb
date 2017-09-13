@@ -26,5 +26,5 @@ __END__
 description: >
   Self-referencing `Synonym` records, that is, where `.senior_synonym_id` and
   `junior_synonym_id` refer to the same taxon.
-tags: [new!]
+
 topic_areas: [synonyms]
