@@ -12,7 +12,7 @@ module DatabaseScripts::Renderers::AsTable
     end
 
     def render
-      AntcatMarkdown.render @rendered
+      Markdowns::Render.new(@rendered).call
     end
 
     def header *items
