@@ -1,6 +1,6 @@
 module MarkdownHelper
-  def markdown text
-    AntcatMarkdown.render text
+  def markdown content
+    Markdowns::Render.new(content).call
   end
 
   def antcat_markdown_only content
