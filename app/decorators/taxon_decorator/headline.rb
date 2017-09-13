@@ -26,12 +26,7 @@ class TaxonDecorator::Headline
 
   private
     def headline_protonym
-      protonym = @taxon.protonym
-      return ''.html_safe unless protonym
-      string = protonym_name protonym
-      string << ' ' << headline_authorship(protonym.authorship)
-      string << locality(protonym.locality)
-      add_period_if_necessary(string || '')
+      TaxonDecorator::HeadlineProtonym.new(@taxon, for_antweb: @for_antweb).call
     end
 
     def headline_type
@@ -114,36 +109,6 @@ class TaxonDecorator::Headline
       string.html_safe
     end
 
-    def protonym_name protonym
-      content = content_tag :span do
-        protonym.name.protonym_with_fossil_html protonym.fossil
-      end
-      content_tag :b, content
-    end
-
-    def headline_authorship authorship
-      return '' unless authorship.try :reference
-      string = link_to_reference authorship.reference
-      string << ": #{authorship.pages}" if authorship.pages.present?
-      string << " (#{authorship.forms})" if authorship.forms.present?
-
-      if authorship.notes_taxt.present?
-        if for_antweb?
-          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_antweb
-        else
-          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html
-        end
-      end
-
-      content_tag :span, string
-    end
-
-    def locality locality
-      return '' unless locality.present?
-      locality = locality.upcase.gsub(/\(.+?\)/) { |text| text.titlecase }
-      add_period_if_necessary ' ' + locality
-    end
-
     def headline_notes
       return unless @taxon.headline_notes_taxt.present?
       if for_antweb?
@@ -156,15 +121,6 @@ class TaxonDecorator::Headline
     # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
     def for_antweb?
       @for_antweb
-    end
-
-    # TODO rename.
-    def link_to_reference reference
-      if for_antweb?
-        reference.decorate.antweb_version_of_inline_citation
-      else
-        reference.decorate.inline_citation
-      end
     end
 
     def link_to_other_site
