@@ -1,4 +1,3 @@
-# TODO use less decorators in general.
 # TODO consider renaming the db fields once the code is more stable.
 
 class ReferenceDecorator < ApplicationDecorator

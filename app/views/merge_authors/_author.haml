@@ -2,7 +2,7 @@
   -references = author_name.references
   %div
     %span.name=author_name.name
-    %span.reference-count=count_and_noun references, 'reference'
+    %span.reference-count #{references.count} reference(s)
   -if references.present?
     .callout.references
       -references.each do |reference|
