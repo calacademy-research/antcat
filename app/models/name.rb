@@ -57,7 +57,7 @@ class Name < ApplicationRecord
   end
 
   def what_links_here
-    Names::WhatLinksHere.new(self).call
+    Names::WhatLinksHere[self]
   end
 
   private

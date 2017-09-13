@@ -1,5 +1,7 @@
 module Names
   class DuplicatesWithReferences
+    include Service
+
     def initialize options = {}
       @options = options
     end

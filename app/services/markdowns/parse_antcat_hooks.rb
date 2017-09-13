@@ -2,6 +2,7 @@ module Markdowns
   class ParseAntcatHooks
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
+    include Service
 
     def initialize content
       @content = content

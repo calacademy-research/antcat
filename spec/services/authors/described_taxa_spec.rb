@@ -20,7 +20,7 @@ describe Authors::DescribedTaxa do
 
   describe "#call" do
     it "returns taxa described by the author" do
-      expect(described_class.new(author).call).to eq [species, genus]
+      expect(described_class[author]).to eq [species, genus]
     end
   end
 end

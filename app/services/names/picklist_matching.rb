@@ -1,6 +1,8 @@
 # TODO refactor more.
 
 class Names::PicklistMatching
+  include Service
+
   def initialize letters_in_name, options = {}
     @letters_in_name = letters_in_name
     @options = options

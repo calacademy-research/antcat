@@ -1,6 +1,7 @@
 class TaxonDecorator::HeadlineProtonym
   include ActionView::Helpers
   include ActionView::Context
+  include Service
   include ApplicationHelper
 
   def initialize taxon, for_antweb: false

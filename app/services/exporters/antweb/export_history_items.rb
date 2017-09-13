@@ -3,6 +3,7 @@ class Exporters::Antweb::ExportHistoryItems
   include ActionView::Helpers::TagHelper
   include ActionView::Context
   include ApplicationHelper
+  include Service
 
   def initialize taxon
     @taxon = taxon

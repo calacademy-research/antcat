@@ -1,5 +1,6 @@
 class Exporters::Antweb::ExportReferenceSections
   include ActionView::Helpers::TagHelper
+  include Service
 
   def initialize taxon
     @taxon = taxon

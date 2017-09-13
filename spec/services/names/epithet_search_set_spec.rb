@@ -66,5 +66,5 @@ describe Names::EpithetSearchSet do
 end
 
 def epithet_search string
-  described_class.new(string).call
+  described_class[string]
 end

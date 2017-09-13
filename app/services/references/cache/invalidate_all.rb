@@ -1,6 +1,8 @@
 module References
   module Cache
     class InvalidateAll
+      include Service
+
       def call
         puts "Invalidating all reference caches...".yellow
 

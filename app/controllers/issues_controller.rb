@@ -63,7 +63,7 @@ class IssuesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::Issues.new(search_query).call
+        render json: Autocomplete::Issues[search_query]
       end
     end
   end

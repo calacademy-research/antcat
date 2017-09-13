@@ -1,6 +1,7 @@
 class TaxonDecorator::Headline
   include ActionView::Helpers
   include ActionView::Context
+  include Service
   include ApplicationHelper
 
   def initialize taxon, for_antweb: false
@@ -24,11 +25,11 @@ class TaxonDecorator::Headline
 
   private
     def headline_protonym
-      TaxonDecorator::HeadlineProtonym.new(@taxon, for_antweb: @for_antweb).call
+      TaxonDecorator::HeadlineProtonym[@taxon, for_antweb: @for_antweb]
     end
 
     def headline_type
-      TaxonDecorator::HeadlineType.new(@taxon, for_antweb: @for_antweb).call
+      TaxonDecorator::HeadlineType[@taxon, for_antweb: @for_antweb]
     end
 
     def headline_notes

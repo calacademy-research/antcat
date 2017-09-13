@@ -1,6 +1,8 @@
 module References
   module Cache
     class Invalidate
+      include Service
+
       def initialize reference
         @reference = reference
       end

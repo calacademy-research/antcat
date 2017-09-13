@@ -8,7 +8,7 @@ describe Autocomplete::AuthorNames do
       AuthorName.create! name: 'Bolton', author: author
       AuthorName.create! name: 'Fisher', author: author
 
-      results = described_class.new('Bol').call
+      results = described_class['bol']
       expect(results.count).to eq 1
       expect(results.first).to eq 'Bolton'
     end
@@ -17,7 +17,7 @@ describe Autocomplete::AuthorNames do
       AuthorName.create! name: 'Bolton', author: author
       AuthorName.create! name: 'Fisher', author: author
 
-      results = described_class.new('ol').call
+      results = described_class['ol']
       expect(results.count).to eq 1
       expect(results.first).to eq 'Bolton'
     end

@@ -13,7 +13,7 @@ describe Markdowns::Render do
 *italics* **bold**
       MARKDOWN
 
-      expect(described_class.new(markdown).call).to eq <<-HTML
+      expect(described_class[markdown]).to eq <<-HTML
 <h3>Header</h3>
 
 <ul>
@@ -30,7 +30,7 @@ describe Markdowns::Render do
 
       markdown = "%taxon#{lasius.id}"
 
-      expect(described_class.new(markdown).call).to eq <<-HTML
+      expect(described_class[markdown]).to eq <<-HTML
 <p><a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>
       HTML
     end
@@ -42,7 +42,7 @@ describe Markdowns::Render do
 
         it "links the reference" do
           expected = "<p>#{reference.decorate.inline_citation}</p>\n"
-          expect(described_class.new(markdown).call).to eq expected
+          expect(described_class[markdown]).to eq expected
         end
       end
 
@@ -51,7 +51,7 @@ describe Markdowns::Render do
 
         it "renders an error message" do
           expected = %Q[<p><span class="broken-markdown-link"> could not find reference with id 9999999 </span></p>\n]
-          expect(described_class.new(markdown).call).to eq expected
+          expect(described_class[markdown]).to eq expected
         end
       end
     end
@@ -63,7 +63,7 @@ describe Markdowns::Render do
 
         it "links the journal" do
           expected = %Q[<p><a href="/journals/#{journal.id}"><i>#{journal.name}</i></a></p>\n]
-          expect(described_class.new(markdown).call).to eq expected
+          expect(described_class[markdown]).to eq expected
         end
       end
 
@@ -72,7 +72,7 @@ describe Markdowns::Render do
 
         it "renders an error message" do
           expected = %Q[<p><span class="broken-markdown-link"> could not find journal with id 9999999 </span></p>\n]
-          expect(described_class.new(markdown).call).to eq expected
+          expect(described_class[markdown]).to eq expected
         end
       end
     end
@@ -82,7 +82,7 @@ describe Markdowns::Render do
       markdown = "%issue#{issue.id}"
 
       expected = %Q[<p><a href="/issues/#{issue.id}">issue ##{issue.id} (Check synonyms)</a></p>\n]
-      expect(described_class.new(markdown).call).to eq expected
+      expect(described_class[markdown]).to eq expected
     end
 
     it "formats feedback ids" do
@@ -90,21 +90,21 @@ describe Markdowns::Render do
       markdown = "%feedback#{feedback.id}"
 
       expected = %Q[<p><a href="/feedback/#{feedback.id}">feedback ##{feedback.id}</a></p>\n]
-      expect(described_class.new(markdown).call).to eq expected
+      expect(described_class[markdown]).to eq expected
     end
 
     it "formats GitHub links" do
       markdown = "%github5"
 
       expected = %Q[<p><a href="https://github.com/calacademy-research/antcat/issues/5">GitHub #5</a></p>\n]
-      expect(described_class.new(markdown).call).to eq expected
+      expect(described_class[markdown]).to eq expected
     end
 
     it "formats user links" do
       user = create :user
       markdown = "@user#{user.id}"
 
-      results = described_class.new(markdown).call
+      results = described_class[markdown]
       expect(results).to include user.name
       expect(results).to include "users/#{user.id}"
     end

@@ -1,5 +1,7 @@
 module Names
   class WhatLinksHere
+    include Service
+
     def initialize name
       @name = name
     end

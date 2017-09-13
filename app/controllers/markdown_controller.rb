@@ -1,7 +1,7 @@
 class MarkdownController < ApplicationController
   def preview
     text = params[:text].presence || "no content"
-    render json: Markdowns::Render.new(text).call
+    render json: Markdowns::Render[text]
   end
 
   def formatting_help

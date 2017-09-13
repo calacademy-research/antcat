@@ -54,7 +54,7 @@ class JournalsController < ApplicationController
     search_query = params[:term] || '' # TODO standardize all "q/qq/query/term".
 
     respond_to do |format|
-      format.json { render json: Autocomplete::Journals.new(search_query).call }
+      format.json { render json: Autocomplete::Journals[search_query] }
     end
   end
 
@@ -65,7 +65,7 @@ class JournalsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::LinkableJournals.new(search_query).call
+        render json: Autocomplete::LinkableJournals[search_query]
       end
     end
   end

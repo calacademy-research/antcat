@@ -1,5 +1,7 @@
 module Authors
   class DescribedTaxa
+    include Service
+
     def initialize author
       @author = author
     end
