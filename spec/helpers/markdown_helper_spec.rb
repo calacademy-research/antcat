@@ -5,15 +5,8 @@ describe MarkdownHelper do
 
   describe "#markdown" do
     it "formats markdown (delegates)" do
-      expect(AntcatMarkdown).to receive(:render).with string
+      expect(Markdowns::Render).to receive(:new).with(string).and_call_original
       helper.markdown string
-    end
-  end
-
-  describe "#strip_markdown" do
-    it "strips markdown (delegates)" do
-      expect(AntcatMarkdown).to receive(:strip).with string
-      helper.strip_markdown string
     end
   end
 end
