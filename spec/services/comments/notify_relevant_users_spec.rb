@@ -102,7 +102,8 @@ describe Comments::NotifyRelevantUsers do
     let(:subject) { described_class.new comment }
 
     it "delegates" do
-      expect(AntcatMarkdownUtils).to receive(:users_mentioned_in).with comment.body
+      expect(Markdowns::MentionedUsers).to receive(:new)
+        .with(comment.body).and_call_original
       subject.send :users_mentioned_in_comment
     end
   end

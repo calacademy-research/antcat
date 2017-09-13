@@ -48,7 +48,7 @@ module Comments
       end
 
       def users_mentioned_in_comment
-        AntcatMarkdownUtils.users_mentioned_in body
+        Markdowns::MentionedUsers.new(body).call
       end
 
       # TODO improve and move somewhere.

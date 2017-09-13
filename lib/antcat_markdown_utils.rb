@@ -4,12 +4,6 @@ class AntcatMarkdownUtils
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper
 
-  # Helper called from outside this cĺass.
-  def self.users_mentioned_in string
-    user_ids = string.scan(/@user(\d+)/).flatten.uniq
-    User.where id: user_ids
-  end
-
   def self.parse_antcat_hooks full_document
     new(full_document).parse
   end
