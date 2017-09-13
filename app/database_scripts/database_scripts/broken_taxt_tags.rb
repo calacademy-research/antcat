@@ -96,7 +96,7 @@ module DatabaseScripts
       def matched_ids
         @_matched_ids ||= begin
           ids = taxt_tags.keys_plus_empty_arrays
-          models_with_taxts.each_field do |field, model|
+          Taxt.models_with_taxts.each_field do |field, model|
             log.puts "    #{model} --> #{field}..."
             taxt_tags.each_key do |tag|
               ids[tag] += find_all_tagged_ids model, field, tag
@@ -116,7 +116,7 @@ module DatabaseScripts
         taxon_id_field.default = "id"
 
         taxa_with_broken_ids_thing = []
-        models_with_taxts.each_field do |field, model|
+        Taxt.models_with_taxts.each_field do |field, model|
           taxt_tags.each_key do |tag|
             model.where("#{field} LIKE '%{#{tag} %'").find_each do |matched_obj|
               matched_ids = extract_tagged_ids matched_obj.send(field), tag

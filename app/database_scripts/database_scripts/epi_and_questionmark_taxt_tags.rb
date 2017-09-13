@@ -1,15 +1,12 @@
-require 'antcat_rake_utils'
-include AntCat::RakeUtils
-
 module DatabaseScripts
   class EpiAndQuestionmarkTaxtTags < DatabaseScript
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
 
     def results
-      models_and_ids = models_with_taxts.map { |tag, _| [tag, []] }.to_h
+      models_and_ids = Taxt.models_with_taxts.map { |tag, _| [tag, []] }.to_h
 
-      models_with_taxts.each_field do |field, model|
+      Taxt.models_with_taxts.each_field do |field, model|
         ["epi", "?"].each do |tag|
           models_and_ids[model] += model.where("#{field} LIKE '%{#{tag} %'").pluck(:id)
         end
