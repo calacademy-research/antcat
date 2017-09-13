@@ -7,7 +7,7 @@ class DatabaseScript
 
   SCRIPTS_DIR = "app/database_scripts/database_scripts"
   TAGS = [
-    SLOW_TAG = "very-slow",
+    SLOW_TAG = "slow",
     VERY_SLOW_TAG = "very-slow",
     NEW_TAG = "new!",
     CSV_TAG = "csv"
