@@ -26,6 +26,11 @@
       =@script.decorate.cached_when
       =link_to "Regenerate", regenerate_database_script_path(@script), class: "btn-normal btn-tiny"
 
+      -if @script.respond_to? :to_csv
+        %br
+        Export as:
+        =link_to "csv", database_script_path(@script, format: :csv), class: "btn-normal btn-tiny"
+
 .row.column
   .callout
     =@cached_render

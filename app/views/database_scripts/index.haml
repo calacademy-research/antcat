@@ -5,7 +5,7 @@
   =javascript_include_tag "sortable_tables"
 
 .row
-  .small-6.columns.end
+  .small-9.columns.end
     .callout.secondary
       %p
         Scripts are cached for
@@ -15,6 +15,14 @@
         which are cached until they are manually regenerated. Please be careful when regenerating scripts tagged with
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
         as it can make the site unresponsive.
+
+      %p
+        Scripts tagged with
+        =DatabaseScript.decorate_class.format_tags [DatabaseScript::CSV_TAG]
+        can be exported as CSV
+        =surround "(", ")." do
+          =link_to "Comma-Separated Values", "https://en.wikipedia.org/wiki/Comma-separated_values"
+        CSV exports are currently not cached.
 
 %table.tablesorter
   %thead

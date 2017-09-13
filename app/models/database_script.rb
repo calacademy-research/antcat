@@ -9,7 +9,8 @@ class DatabaseScript
   TAGS = [
     SLOW_TAG = "very-slow",
     VERY_SLOW_TAG = "very-slow",
-    NEW_TAG = "new!"
+    NEW_TAG = "new!",
+    CSV_TAG = "csv"
   ]
 
   ScriptNotFound = Class.new StandardError

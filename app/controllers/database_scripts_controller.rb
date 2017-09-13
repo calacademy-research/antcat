@@ -1,3 +1,5 @@
+# TODO implement pagination for lists inside scripts.
+
 class DatabaseScriptsController < ApplicationController
   DEFAULT_EXPIRES_IN = Rails.env.development? ? 2.seconds : 24.hours
 
@@ -9,8 +11,16 @@ class DatabaseScriptsController < ApplicationController
   end
 
   def show
-    @used_cached = used_cached?
-    @cached_render, @render_duration = cached_render
+    respond_to do |format|
+      format.html do
+        @used_cached = used_cached?
+        @cached_render, @render_duration = cached_render
+      end
+
+      format.csv do
+        send_data @script.to_csv, filename: csv_filename
+      end
+    end
   end
 
   def source
@@ -48,5 +58,9 @@ class DatabaseScriptsController < ApplicationController
       else
         DEFAULT_EXPIRES_IN
       end
+    end
+
+    def csv_filename
+      "antcat_org__#{@script.filename_without_extension}__#{Date.today}.csv"
     end
 end

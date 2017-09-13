@@ -28,10 +28,8 @@ module DatabaseScripts::Renderers::AsTable
       @rendered << string
     end
 
-    # Gets the results from `#results` unless specified. This is the most common
-    # use-case (single results list); see ´scripts/valid_taxa_with_non_valid_parents.rb`
-    # for an example with multiple rows and explicit `results`s.
-    def rows results = nil, &block
+    # Gets the results from `#results` unless specified.
+    def rows results = nil, find_each: false, &block
       results ||= @cached_results
 
       if results.blank?
@@ -39,7 +37,9 @@ module DatabaseScripts::Renderers::AsTable
         return
       end
 
-      results.each do |object|
+      method_name = if find_each then :find_each else :each end
+
+      results.send(method_name) do |object|
         row object, *block.call(object)
       end
     end
