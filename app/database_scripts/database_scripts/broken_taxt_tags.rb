@@ -2,9 +2,6 @@
 # https://github.com/calacademy-research/antcat/blob/
 # 0b1930a3e161e756e3c785bd32d6e54867cc480c/lib/tasks/database_maintenance.rake
 
-require 'antcat_rake_utils'
-include AntCat::RakeUtils
-
 module DatabaseScripts
   class BrokenTaxtTags < DatabaseScript
     include Rails.application.routes.url_helpers
@@ -210,6 +207,41 @@ module DatabaseScripts
         end
 
         @_taxt_tags
+      end
+
+      # Moved from `RakeUtils`.
+      def reject_existing model, ids
+        filter_by_existence model, ids, reject_existing: true
+      end
+
+      # Moved from `RakeUtils`.
+      def extract_tagged_ids string, tag
+        regex = /(?<={#{Regexp.quote(tag.to_s)} )\d*?(?=})/
+        string.scan(regex).map &:to_i
+      end
+
+      # Moved from `RakeUtils`.
+      def find_all_tagged_ids model, column, tag
+        ids = []
+        tag = tag.to_s
+        model.where("#{column} LIKE '%{#{tag} %'").find_each do |matched_obj|
+          matched_ids = extract_tagged_ids matched_obj.send(column), tag
+          ids += matched_ids if matched_ids
+        end
+        ids
+      end
+
+      # Moved from `RakeUtils`.
+      def filter_by_existence model, ids, options = {}
+        return to_enum(:filter_by_existence, model, ids, options).to_a unless block_given?
+        # Reject non-existing by default.
+        reject_existing = options.fetch(:reject_existing) { false }
+
+        if reject_existing
+          Array(ids).each { |item| yield item unless model.exists? item }
+        else
+          Array(ids).each { |item| yield item if model.exists? item }
+        end
       end
   end
 end
