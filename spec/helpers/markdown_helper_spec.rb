@@ -9,11 +9,4 @@ describe MarkdownHelper do
       helper.markdown string
     end
   end
-
-  describe "#strip_markdown" do
-    it "strips markdown (delegates)" do
-      expect(AntcatMarkdown).to receive(:strip).with string
-      helper.strip_markdown string
-    end
-  end
 end

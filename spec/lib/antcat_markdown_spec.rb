@@ -111,10 +111,4 @@ describe AntcatMarkdown do
       expect(results).to include "users/#{user.id}"
     end
   end
-
-  describe ".strip" do
-    it "strips markdown" do
-      expect(described_class.strip "**bold**").to eq "bold\n"
-    end
-  end
 end

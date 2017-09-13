@@ -1,5 +1,3 @@
-require "redcarpet/render_strip"
-
 # This is more "just Markdown", but the namesapce `Markdown` is used by Red Carpet.
 class AntcatMarkdown < Redcarpet::Render::HTML
   def self.render text
@@ -22,12 +20,6 @@ class AntcatMarkdown < Redcarpet::Render::HTML
     }
     markdowner = Redcarpet::Markdown.new renderer, extensions
     markdowner.render(text).html_safe
-  end
-
-  def self.strip text
-    rendered = Redcarpet::Render::StripDown
-    markdowner = Redcarpet::Markdown.new rendered
-    markdowner.render text
   end
 
   # Without this "AntcatMarkdown" is "Markdown".
