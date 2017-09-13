@@ -34,11 +34,6 @@ module AntCat
       models
     end
 
-    def reject_non_existing model, ids
-      # simpler code without yielding: model.where(id: ids).collect &:id
-      filter_by_existence model, ids
-    end
-
     def reject_existing model, ids
       filter_by_existence model, ids, reject_existing: true
     end
@@ -56,17 +51,6 @@ module AntCat
         ids += matched_ids if matched_ids
       end
       ids
-    end
-
-    def antcat_prompt message = "Type something..", options = {}
-      print "\n#{message}"
-      answer = STDIN.gets.chomp
-      answer = options.fetch(:default) { "y" } unless answer.present?
-
-      abort "Quitting." if ["q", "Q"].include? answer
-      return if ["n", "N"].include? answer
-      yield answer if block_given?
-      ActiveSupport::StringInquirer.new answer
     end
 
     private
