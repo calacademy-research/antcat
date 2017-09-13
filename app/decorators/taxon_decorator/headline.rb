@@ -1,5 +1,4 @@
 class TaxonDecorator::Headline
-  include ERB::Util
   include ActionView::Helpers
   include ActionView::Context
   include ApplicationHelper
@@ -9,7 +8,6 @@ class TaxonDecorator::Headline
     @for_antweb = for_antweb
   end
 
-  # TODO extract `#headline_protonym` and `#headline_type´ into services.
   def call
     content_tag :div, class: 'headline' do
       notes = headline_notes
@@ -26,122 +24,11 @@ class TaxonDecorator::Headline
 
   private
     def headline_protonym
-      protonym = @taxon.protonym
-      return ''.html_safe unless protonym
-      string = protonym_name protonym
-      string << ' ' << headline_authorship(protonym.authorship)
-      string << locality(protonym.locality)
-      add_period_if_necessary(string || '')
+      TaxonDecorator::HeadlineProtonym.new(@taxon, for_antweb: @for_antweb).call
     end
 
     def headline_type
-      string = ''.html_safe
-      string << headline_type_name_and_taxt
-      string << headline_biogeographic_region
-      string << ' ' unless string.empty?
-      string << headline_verbatim_type_locality
-      string << ' ' unless string.empty?
-      string << headline_type_specimen
-      string.rstrip.html_safe
-    end
-
-    def headline_type_name_and_taxt
-      taxt = @taxon.type_taxt
-      if not @taxon.type_name and taxt
-        string = headline_type_taxt taxt
-      else
-        return ''.html_safe unless @taxon.type_name
-        rank = @taxon.type_name.rank
-        rank = 'genus' if rank == 'subgenus'
-        string = "Type-#{rank}: ".html_safe
-        string << headline_type_name + headline_type_taxt(taxt)
-        string
-      end
-      content_tag :span do
-        add_period_if_necessary string
-      end
-    end
-
-    def headline_type_name
-      type = Taxon.find_by_name @taxon.type_name.to_s
-      return headline_type_name_link(type) if type
-      headline_type_name_no_link @taxon.type_name, @taxon.type_fossil
-    end
-
-    def headline_type_name_link type
-      link_to_taxon type
-    end
-
-    def headline_type_name_no_link type_name, fossil
-      name = type_name.to_html_with_fossil fossil
-      content_tag :span, name
-    end
-
-    def headline_type_taxt taxt
-      if for_antweb?
-        add_period_if_necessary TaxtPresenter[taxt].to_antweb
-      else
-        add_period_if_necessary TaxtPresenter[taxt].to_html
-      end
-    end
-
-    def headline_biogeographic_region
-      return '' if @taxon.biogeographic_region.blank?
-      add_period_if_necessary @taxon.biogeographic_region
-    end
-
-    def headline_verbatim_type_locality
-      return '' if @taxon.verbatim_type_locality.blank?
-      string =  '"'
-      string << add_period_if_necessary(@taxon.verbatim_type_locality)
-      string << '"'
-    end
-
-    def headline_type_specimen
-      string = ''.html_safe
-      if @taxon.type_specimen_repository.present?
-        string << add_period_if_necessary(@taxon.type_specimen_repository)
-      end
-      if @taxon.type_specimen_code.present?
-        string << ' ' unless string.empty?
-        string << add_period_if_necessary(@taxon.type_specimen_code)
-      end
-      if @taxon.type_specimen_url.present?
-        string << ' ' unless string.empty?
-        s = @taxon.type_specimen_url
-        string << link_to(s, s)
-      end
-      string.html_safe
-    end
-
-    def protonym_name protonym
-      content = content_tag :span do
-        protonym.name.protonym_with_fossil_html protonym.fossil
-      end
-      content_tag :b, content
-    end
-
-    def headline_authorship authorship
-      return '' unless authorship.try :reference
-      string = link_to_reference authorship.reference
-      string << ": #{authorship.pages}" if authorship.pages.present?
-      string << " (#{authorship.forms})" if authorship.forms.present?
-
-      if authorship.notes_taxt.present?
-        if for_antweb?
-          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_antweb
-        else
-          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html
-        end
-      end
-
-      content_tag :span, string
-    end
-
-    def locality locality
-      return '' unless locality.present?
-      locality = locality.upcase.gsub(/\(.+?\)/) { |text| text.titlecase }
-      add_period_if_necessary ' ' + locality
+      TaxonDecorator::HeadlineType.new(@taxon, for_antweb: @for_antweb).call
     end
 
     def headline_notes
@@ -158,28 +45,11 @@ class TaxonDecorator::Headline
       @for_antweb
     end
 
-    # TODO rename.
-    def link_to_reference reference
-      if for_antweb?
-        reference.decorate.antweb_version_of_inline_citation
-      else
-        reference.decorate.inline_citation
-      end
-    end
-
     def link_to_other_site
       if for_antweb?
         Exporters::Antweb::Exporter.antcat_taxon_link @taxon
       else
         link_to_antweb @taxon
-      end
-    end
-
-    def link_to_taxon taxon
-      if for_antweb?
-        Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
-      else
-        taxon.decorate.link_to_taxon
       end
     end
 end
