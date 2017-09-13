@@ -25,13 +25,13 @@ module DatabaseScripts
         broken_ids[tag] = reject_existing taxt_tags[tag], ids
       end
 
-      if broken_ids.all? &:empty?
-        log.puts "Found no broken tags."
-        return "waddap"
-      end
-
       broken_ids_statistics = broken_ids.map { |tag, ids| "#{ids.size} #{tag}(s)" }.to_sentence
       log.puts "\nFound #{broken_ids_statistics}."
+
+      if broken_ids.all? &:empty?
+        log.puts "Found no broken tags."
+        return output.string
+      end
 
       log.puts "\n----------"
 
