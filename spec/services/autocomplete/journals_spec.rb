@@ -22,7 +22,7 @@ describe Autocomplete::Journals do
       4.times { create :article_reference, journal: Journal.find_by(name: 'Most Used') }
       0.times { create :article_reference, journal: Journal.find_by(name: 'Never Used') }
 
-      expect(described_class.new.call).to eq ['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used']
+      expect(described_class[]).to eq ['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used']
     end
   end
 end

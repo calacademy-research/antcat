@@ -298,15 +298,13 @@ describe Taxa::AdvancedSearch do
         protonym = create :protonym, authorship: citation
         eciton = create_species protonym: protonym
 
-        results = described_class[rank: 'All', forms: 'w.']
-        expect(results.map(&:id)).to eq [atta.id]
+        expect(described_class[rank: 'All', forms: 'w.'].map(&:id)).to eq [atta.id]
       end
 
       it "returns nothing if nothing has those forms" do
         atta = create_species
 
-        results = described_class[rank: 'All', forms: 'w.']
-        expect(results.map(&:id)).to eq []
+        expect(described_class[rank: 'All', forms: 'w.'].map(&:id)).to eq []
       end
     end
   end
