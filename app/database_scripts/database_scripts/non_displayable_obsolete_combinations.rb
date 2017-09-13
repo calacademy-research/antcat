@@ -5,9 +5,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :taxon, :status, :display
-        rows { |taxon| [ markdown_taxon_link(taxon), taxon.status, taxon.display ] }
+      as_table do |t|
+        t.header :taxon, :status, :display
+
+        t.rows { |taxon| [ markdown_taxon_link(taxon), taxon.status, taxon.display ] }
       end
     end
   end

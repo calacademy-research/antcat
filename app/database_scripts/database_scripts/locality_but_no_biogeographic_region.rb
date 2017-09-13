@@ -7,10 +7,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :taxon, :verbatim_type_locality
+      as_table do |t|
+        t.header :taxon, :verbatim_type_locality
 
-        rows do |taxon|
+        t.rows do |taxon|
           [ markdown_taxon_link(taxon), taxon.verbatim_type_locality ]
         end
       end

@@ -16,10 +16,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :genus, :genus_status, :subfamily, :subfamily_status
+      as_table do |t|
+        t.header :genus, :genus_status, :subfamily, :subfamily_status
 
-        rows(genus_results) do |genus|
+        t.rows(genus_results) do |genus|
           [ markdown_taxon_link(genus),
             genus.status,
             markdown_taxon_link(genus.subfamily),
@@ -27,10 +27,10 @@ module DatabaseScripts
         end
       end <<
 
-        as_table do
-          header :species, :species_status, :genus, :genus_status
+        as_table do |t|
+          t.header :species, :species_status, :genus, :genus_status
 
-          rows(species_results) do |species|
+          t.rows(species_results) do |species|
             [ markdown_taxon_link(species),
               species.status,
               markdown_taxon_link(species.genus),
@@ -38,10 +38,10 @@ module DatabaseScripts
           end
         end <<
 
-        as_table do
-          header :subspecies, :subspecies_status, :species, :species_status
+        as_table do |t|
+          t.header :subspecies, :subspecies_status, :species, :species_status
 
-          rows(subspecies_results) do |subspecies|
+          t.rows(subspecies_results) do |subspecies|
             [ markdown_taxon_link(subspecies),
               subspecies.status,
               markdown_taxon_link(subspecies.species),

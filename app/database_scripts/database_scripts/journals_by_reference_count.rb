@@ -9,10 +9,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :journal, :reference_count
+      as_table do |t|
+        t.header :journal, :reference_count
 
-        rows do |journal_id, reference_count|
+        t.rows do |journal_id, reference_count|
           [ "%journal#{journal_id}", reference_count ]
         end
       end

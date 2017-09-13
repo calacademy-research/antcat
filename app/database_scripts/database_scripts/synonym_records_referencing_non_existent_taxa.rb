@@ -8,9 +8,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :synonym_id, :junior_synonym, :senior_synonym
-        rows do |synonym|
+      as_table do |t|
+        t.header :synonym_id, :junior_synonym, :senior_synonym
+
+        t.rows do |synonym|
           [
             synonym_link(synonym),
             markdown_taxon_link(synonym.junior_synonym),

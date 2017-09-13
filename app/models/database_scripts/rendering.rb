@@ -18,9 +18,9 @@ module DatabaseScripts
     end
 
     def as_taxon_table
-      as_table do
-        header :taxon, :status
-        rows { |taxon| [ markdown_taxon_link(taxon), taxon.status ] }
+      as_table do |t|
+        t.header :taxon, :status
+        t.rows { |taxon| [ markdown_taxon_link(taxon), taxon.status ] }
       end
     end
 

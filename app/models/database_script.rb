@@ -6,6 +6,13 @@ class DatabaseScript
   include DatabaseScripts::Rendering
 
   SCRIPTS_DIR = "app/database_scripts/database_scripts"
+  TAGS = [
+    SLOW_TAG = "very-slow",
+    VERY_SLOW_TAG = "very-slow",
+    NEW_TAG = "new!",
+    CSV_TAG = "csv"
+  ]
+
   ScriptNotFound = Class.new StandardError
 
   def self.new_from_filename_without_extension basename
@@ -58,8 +65,11 @@ class DatabaseScript
 
   protected
     def cached_results
-      return @results if defined? @results
-      @results = results
+      return @_results if defined? @_results
+
+      @_results = if respond_to? :results
+                    results
+                  end
     end
 
   private

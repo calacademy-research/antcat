@@ -5,10 +5,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :taxon, :status, :homonym_replaced_by, :homonym_replaced_by_status
+      as_table do |t|
+        t.header :taxon, :status, :homonym_replaced_by, :homonym_replaced_by_status
 
-        rows do |taxon|
+        t.rows do |taxon|
           [ markdown_taxon_link(taxon),
             taxon.status,
             markdown_taxon_link(taxon.homonym_replaced_by),

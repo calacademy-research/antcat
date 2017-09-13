@@ -18,10 +18,10 @@ module DatabaseScripts
       end
 
       def render
-        as_table do
-          header :journal_1, :journal_2
+        as_table do |t|
+          t.header :journal_1, :journal_2
 
-          rows do |first, second|
+          t.rows do |first, second|
             [ journal_name_to_markdown(first), journal_name_to_markdown(second) ]
           end
         end

@@ -5,10 +5,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :taxon, :status, :reference
+      as_table do |t|
+        t.header :taxon, :status, :reference
 
-        rows do |protonym|
+        t.rows do |protonym|
           [ markdown_taxon_link(protonym.taxon),
             protonym.taxon.status,
             markdown_reference_link(protonym.authorship.reference) ]

@@ -5,10 +5,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :protonym, :id, :created_at, :updated_at
+      as_table do |t|
+        t.header :protonym, :id, :created_at, :updated_at
 
-        rows do |protonym|
+        t.rows do |protonym|
           [ protonym_name_with_search_link(protonym),
             protonym.id,
             protonym.created_at,

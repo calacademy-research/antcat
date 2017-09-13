@@ -6,12 +6,12 @@ module DatabaseScripts
 
     # When this method isn't implemented, the code tries to figure out
     # how to render `#results` based on its class.
-    def render
-      # as_table do
-      #   header :subspecies, :status
-      #   rows { |taxon| [ markdown_taxon_link(taxon), taxon.status ] }
-      # end
-    end
+    # def render
+    #   as_table do
+    #     header :subspecies, :status
+    #     rows { |taxon| [ markdown_taxon_link(taxon), taxon.status ] }
+    #   end
+    # end
   end
 end
 
@@ -20,6 +20,5 @@ __END__
 description: >
   Optional script description; parsed as **markdown**.
 tags: [new!, example-tag]
-# Tags are optional, and some have special meanings.
-# See `DatabaseScriptsHelper#format_database_script_tags`.
+# Tags are optional (some have special meanings, see `DatabaseScript`).
 topic_areas: [catalog, references... see the script index page]
