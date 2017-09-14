@@ -6,6 +6,8 @@
 
 module Wikipedia
   class ReferenceExporter
+    include Service
+
     def initialize reference
       @reference = reference
     end

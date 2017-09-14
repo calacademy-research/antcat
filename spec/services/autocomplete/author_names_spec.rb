@@ -8,14 +8,14 @@ describe Autocomplete::AuthorNames do
       bolton = AuthorName.create! name: 'Bolton', author: author
       AuthorName.create! name: 'Fisher', author: author
 
-      expect(results).to eq [bolton.name]
+      expect(described_class['bol']).to eq [bolton.name]
     end
 
     it "matches substrings" do
       bolton = AuthorName.create! name: 'Bolton', author: author
       AuthorName.create! name: 'Fisher', author: author
 
-      expect(results).to eq [bolton.name]
+      expect(described_class['ol']).to eq [bolton.name]
     end
 
     it "returns authors in order of most recently used" do

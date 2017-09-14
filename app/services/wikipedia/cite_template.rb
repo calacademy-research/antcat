@@ -3,6 +3,8 @@
 
 module Wikipedia
   class CiteTemplate
+    include Service
+
     def initialize taxon, with_ref_tag: false
       @taxon = taxon
       @with_ref_tag = with_ref_tag
