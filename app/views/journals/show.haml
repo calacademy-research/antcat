@@ -4,7 +4,7 @@
 -if user_can_edit?
   .buttons_right
     =link_to "Edit journal name", edit_journal_path(@journal), class: "btn-normal"
-    -unless @references.present?
+    -unless @references.exists?
       =link_to "Delete", journal_path(@journal), class: "btn-delete", method: :delete, data: { confirm: "Are you sure?" }
 
 %h5 References using this journal

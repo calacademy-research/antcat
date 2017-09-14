@@ -9,7 +9,7 @@ module Authors
     end
 
     private
-      attr_reader :author, :valid_only
+      attr_reader :author
 
       delegate :id, to: :author
 

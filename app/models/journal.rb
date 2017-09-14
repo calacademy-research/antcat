@@ -6,7 +6,7 @@ class Journal < ActiveRecord::Base
 
   validates :name, presence: true, allow_blank: false
 
-  before_destroy :check_not_used
+  before_destroy :ensure_not_used
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked on: :all, parameters: proc {
@@ -14,10 +14,10 @@ class Journal < ActiveRecord::Base
   }
 
   private
-    def check_not_used
-      if references.present?
-        errors.add :base, "cannot delete journal (not unused)"
-        return false
+    def ensure_not_used
+      if references.exists?
+        errors.add :base, "Cannot delete journal (not unused)."
+        false
       end
     end
 end
