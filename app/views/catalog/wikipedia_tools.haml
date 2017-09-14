@@ -24,7 +24,7 @@
       =preserve do
         %pre.wrapped
           authority = #{@taxon.authorship_string}
-          =Wikipedia::ReferenceExporter.export @taxon.authorship_reference
+          =Wikipedia::ReferenceExporter.new(@taxon.authorship_reference).call
 
     -if @taxon.class.in? [Family, Subfamily, Tribe, Genus]
       %h5 List of children
