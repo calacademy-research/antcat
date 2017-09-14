@@ -1,5 +1,7 @@
 module References
   class AuthorSearch
+    include Service
+
     def initialize search_query, page = nil
       @search_query = search_query
       @page = page

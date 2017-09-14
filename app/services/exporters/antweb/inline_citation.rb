@@ -1,6 +1,7 @@
 class Exporters::Antweb::InlineCitation
   include ActionView::Helpers::UrlHelper
   include ApplicationHelper
+  include Service
 
   def initialize reference
     @reference = reference

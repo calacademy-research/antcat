@@ -1,5 +1,7 @@
 module References
   class NewFromCopy
+    include Service
+
     def initialize original
       @original = original
     end

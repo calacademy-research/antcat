@@ -3,6 +3,8 @@
 
 module References
   class ExtractKeywordParams
+    include Service
+
     def initialize keyword_string
       @keyword_string = keyword_string
     end

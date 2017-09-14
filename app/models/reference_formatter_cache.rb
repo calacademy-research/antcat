@@ -9,7 +9,7 @@ class ReferenceFormatterCache
 
   # Used in tests. Can also be manually invoked in prod/dev.
   def regenerate reference
-    References::Cache::Regenerate.new(reference).call
+    References::Cache::Regenerate[reference]
   end
   alias_method :populate, :regenerate
 end

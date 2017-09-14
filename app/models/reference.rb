@@ -64,11 +64,11 @@ class Reference < ApplicationRecord
   end
 
   def invalidate_caches
-    References::Cache::Invalidate.new(self).call
+    References::Cache::Invalidate[self]
   end
 
   def set_cache value, field
-    References::Cache::Set.new(self, value, field).call
+    References::Cache::Set[self, value, field]
   end
 
   # TODO something. "_cache" vs not.
@@ -189,7 +189,7 @@ class Reference < ApplicationRecord
   ### end quarantine ###
 
   def what_links_here return_true_or_false: false
-    References::WhatLinksHere.new(self, return_true_or_false: return_true_or_false).call
+    References::WhatLinksHere[self, return_true_or_false: return_true_or_false]
   end
 
   private

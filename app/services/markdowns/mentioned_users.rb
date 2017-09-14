@@ -1,5 +1,7 @@
 module Markdowns
   class MentionedUsers
+    include Service
+
     def initialize content
       @content = content
     end

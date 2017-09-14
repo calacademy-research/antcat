@@ -1,5 +1,7 @@
 module Markdowns
   class Render < Redcarpet::Render::HTML
+    include Service
+
     def initialize content
       @content = content
     end
@@ -39,7 +41,7 @@ module Markdowns
 
       class AntcatMarkdown < Redcarpet::Render::HTML
         def preprocess content
-          Markdowns::ParseAntcatHooks.new(content).call
+          Markdowns::ParseAntcatHooks[content]
         end
 
         def table header, body

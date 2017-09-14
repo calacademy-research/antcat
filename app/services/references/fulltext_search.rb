@@ -1,5 +1,7 @@
 module References
   class FulltextSearch
+    include Service
+
     def initialize options = {}
       @options = options
     end

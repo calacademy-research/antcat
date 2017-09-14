@@ -5,12 +5,12 @@ describe Autocomplete::Journals do
     it "fuzzy matches journal names" do
       create :journal, name: 'American Bibliographic Proceedings'
       create :journal, name: 'Playboy'
-      expect(described_class.new('ABP').call).to eq ['American Bibliographic Proceedings']
+      expect(described_class['ABP']).to eq ['American Bibliographic Proceedings']
     end
 
     it "requires matching the first letter" do
       create :journal, name: 'ABC'
-      expect(described_class.new('BC').call).to eq []
+      expect(described_class['BC']).to eq []
     end
 
     it "returns results in order of most used" do
@@ -22,7 +22,7 @@ describe Autocomplete::Journals do
       4.times { create :article_reference, journal: Journal.find_by(name: 'Most Used') }
       0.times { create :article_reference, journal: Journal.find_by(name: 'Never Used') }
 
-      expect(described_class.new.call).to eq ['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used']
+      expect(described_class[]).to eq ['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used']
     end
   end
 end

@@ -17,7 +17,7 @@ class ReferencesController < ApplicationController
       build_nested_reference params[:nesting_reference_id], params[:citation_year]
     elsif params[:reference_to_copy]
       reference_to_copy = Reference.find params[:reference_to_copy]
-      @reference = References::NewFromCopy.new(reference_to_copy).call
+      @reference = References::NewFromCopy[reference_to_copy]
     end
   end
 
@@ -74,7 +74,7 @@ class ReferencesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::LinkableReferences.new(search_query).call
+        render json: Autocomplete::LinkableReferences[search_query]
       end
     end
   end
@@ -84,7 +84,7 @@ class ReferencesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::References.new(search_query).call
+        render json: Autocomplete::References[search_query]
       end
     end
   end
@@ -102,7 +102,7 @@ class ReferencesController < ApplicationController
     end
 
     def save
-      References::SaveFromForm.new(@reference, params, request.host).call
+      References::SaveFromForm[@reference, params, request.host]
     end
 
     def new_reference

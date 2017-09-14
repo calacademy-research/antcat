@@ -2,6 +2,8 @@
 # understand what's going on.
 
 class Taxa::HandlePreviousCombination
+  include Service
+
   def initialize taxon, previous_combination
     @taxon = taxon # The new combination.
     @previous_combination = previous_combination

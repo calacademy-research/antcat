@@ -8,7 +8,7 @@ describe References::Cache::Invalidate do
       expect(reference.formatted_cache).to be_nil
       expect(reference.inline_citation_cache).to be_nil
 
-      described_class.new(reference).call
+      described_class[reference]
       expect(reference.formatted_cache).to be_nil
       expect(reference.inline_citation_cache).to be_nil
     end
@@ -18,7 +18,7 @@ describe References::Cache::Invalidate do
       expect(reference.formatted_cache).not_to be_nil
       expect(reference.inline_citation_cache).not_to be_nil
 
-      described_class.new(reference).call
+      described_class[reference]
       expect(reference.formatted_cache).to be_nil
       expect(reference.inline_citation_cache).to be_nil
     end

@@ -1,4 +1,6 @@
 class TaxonDecorator::TaxonStatus
+  include Service
+
   def initialize taxon
     @taxon = taxon
   end

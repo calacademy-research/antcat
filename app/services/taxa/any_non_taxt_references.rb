@@ -1,5 +1,7 @@
 module Taxa
   class AnyNonTaxtReferences
+    include Service
+
     def initialize taxon
       @taxon = taxon
     end

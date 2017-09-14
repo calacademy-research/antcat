@@ -3,6 +3,8 @@
 
 module Taxa
   class AdvancedSearch
+    include Service
+
     def initialize params
       @params = params
     end

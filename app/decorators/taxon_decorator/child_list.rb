@@ -1,6 +1,7 @@
 class TaxonDecorator::ChildList
   include ActionView::Helpers
   include ActionView::Context
+  include Service
 
   def initialize taxon, for_antweb: false
     @taxon = taxon

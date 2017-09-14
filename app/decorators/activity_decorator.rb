@@ -24,7 +24,7 @@ class ActivityDecorator < Draper::Decorator
   end
 
   def revision_history_link
-    url = RevisionHistoryPath.new(activity.trackable_type, activity.trackable_id).call
+    url = RevisionHistoryPath[activity.trackable_type, activity.trackable_id]
     return unless url
 
     helpers.link_to "History", url, class: "btn-normal btn-tiny"

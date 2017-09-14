@@ -2,6 +2,8 @@
 
 module Wikipedia
   class TaxonList
+    include Service
+
     def initialize taxon
       @taxon = taxon
     end

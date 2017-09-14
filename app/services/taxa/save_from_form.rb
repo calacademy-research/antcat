@@ -1,6 +1,8 @@
 # This class is responsible for saving taxa from `TaxaController` (from the edit form).
 
 class Taxa::SaveFromForm
+  include Service
+
   # `previous_combination` will be a pointer to a species or subspecies if non-nil.
   def initialize taxon, params, previous_combination = nil
     @taxon = taxon
@@ -50,7 +52,7 @@ class Taxa::SaveFromForm
       end
 
       if previous_combination
-        Taxa::HandlePreviousCombination.new(taxon, previous_combination).call
+        Taxa::HandlePreviousCombination[taxon, previous_combination]
       end
     end
   end

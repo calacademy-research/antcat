@@ -2,6 +2,8 @@
 
 module References
   class SaveFromForm
+    include Service
+
     def initialize reference, params, request_host
       @reference = reference
       @params = params

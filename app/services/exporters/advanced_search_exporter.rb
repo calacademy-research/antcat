@@ -1,4 +1,5 @@
 class Exporters::AdvancedSearchExporter
+  include Service
   include Formatters::AdvancedSearchTextFormatter
 
   def initialize taxa

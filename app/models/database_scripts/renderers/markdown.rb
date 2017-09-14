@@ -1,6 +1,6 @@
 module DatabaseScripts::Renderers::Markdown
   def markdown content
-    Markdowns::Render.new(content).call
+    Markdowns::Render[content]
   end
 
   def markdown_taxon_link taxon_or_id

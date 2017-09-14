@@ -6,13 +6,13 @@ describe TaxonDecorator::HeadlineType do
   describe "#call" do
     it "shows the type taxon" do
       genus = create_genus 'Atta', type_name: species_name
-      expect(described_class.new(genus).call)
+      expect(described_class[genus])
         .to eq %{<span>Type-species: <span><i>Atta major</i></span>.</span>}
     end
 
     it "shows the type taxon with extra Taxt" do
       genus = create_genus 'Atta', type_name: species_name, type_taxt: ', by monotypy'
-      expect(described_class.new(genus).call)
+      expect(described_class[genus])
         .to eq %{<span>Type-species: <span><i>Atta major</i></span>, by monotypy.</span>}
     end
   end

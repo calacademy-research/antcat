@@ -8,7 +8,7 @@ class NamePickersController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Names::PicklistMatching.new(params[:term], options).call
+        render json: Names::PicklistMatching[params[:term], options]
       end
     end
   end
