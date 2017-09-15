@@ -21,10 +21,8 @@ describe User do
 
     describe ".as_angle_bracketed_emails" do
       before do
-        create :user, name: "Archibald",
-          email: "archibald@antcat.org", receive_feedback_emails: true
-        create :user, name: "Batiatus",
-          email: "batiatus@antcat.org", receive_feedback_emails: true
+        create :user, name: "Archibald", email: "archibald@antcat.org"
+        create :user, name: "Batiatus", email: "batiatus@antcat.org"
         create :user, name: "Flint", email: "flint@antcat.org"
       end
 

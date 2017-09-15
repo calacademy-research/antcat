@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
   permit_params :name, :email, :can_edit, :is_superadmin,
-    :password, :password_confirmation, :receive_feedback_emails
+    :password, :password_confirmation
 
   index do
     selectable_column
@@ -11,7 +11,6 @@ ActiveAdmin.register User do
     column :is_superadmin
     column :current_sign_in_at
     column :sign_in_count
-    column :receive_feedback_emails
     column :created_at
     actions
   end
@@ -22,7 +21,6 @@ ActiveAdmin.register User do
   filter :is_superadmin
   filter :current_sign_in_at
   filter :sign_in_count
-  filter :receive_feedback_emails
   filter :created_at
 
   form do |f|
@@ -31,7 +29,6 @@ ActiveAdmin.register User do
       f.input :email
       f.input :can_edit
       f.input :is_superadmin
-      f.input :receive_feedback_emails
       f.input :password
       f.input :password_confirmation
     end
