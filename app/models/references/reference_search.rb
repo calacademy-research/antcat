@@ -21,10 +21,6 @@ class Reference < ApplicationRecord
     # TODO: Test searching for doi, see if that works?
   end
 
-  def self.author_search author_names_query, page = nil
-    References::Search::AuthorSearch[author_names_query, page]
-  end
-
   def self.extract_keyword_params keyword_string
     References::Search::ExtractKeywords[keyword_string]
   end
