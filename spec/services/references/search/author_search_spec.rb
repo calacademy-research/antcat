@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe References::AuthorSearch do
+describe References::Search::AuthorSearch do
   describe "#call" do
     # TODO
   end

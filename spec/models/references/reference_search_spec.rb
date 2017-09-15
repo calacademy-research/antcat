@@ -297,8 +297,8 @@ describe Reference do
   describe "#author_search" do
     let(:author_names_query) { "Bolton, B;" }
 
-    it "calls `References::AuthorSearch`" do
-      expect(References::AuthorSearch).to receive(:new)
+    it "calls `References::Search::AuthorSearch`" do
+      expect(References::Search::AuthorSearch).to receive(:new)
         .with(author_names_query, nil).and_call_original
       described_class.author_search author_names_query
     end
@@ -307,8 +307,8 @@ describe Reference do
   describe "#extract_keyword_params" do
     let(:keyword_string) { "Atta" }
 
-    it "calls `References::ExtractKeywordParams`" do
-      expect(References::ExtractKeywordParams).to receive(:new)
+    it "calls `References::Search::ExtractKeywords`" do
+      expect(References::Search::ExtractKeywords).to receive(:new)
         .with(keyword_string).and_call_original
       described_class.extract_keyword_params keyword_string
     end

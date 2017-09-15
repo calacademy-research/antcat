@@ -26,11 +26,11 @@ class Reference < ApplicationRecord
   end
 
   def self.author_search author_names_query, page = nil
-    References::AuthorSearch[author_names_query, page]
+    References::Search::AuthorSearch[author_names_query, page]
   end
 
   def self.extract_keyword_params keyword_string
-    References::ExtractKeywordParams[keyword_string]
+    References::Search::ExtractKeywords[keyword_string]
   end
 
   def self.list_all_references_for_endnote
@@ -40,6 +40,6 @@ class Reference < ApplicationRecord
   end
 
   def self.fulltext_search options = {}
-    References::FulltextSearch[options]
+    References::Search::Fulltext[options]
   end
 end
