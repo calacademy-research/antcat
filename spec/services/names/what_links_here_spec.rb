@@ -34,24 +34,33 @@ describe Names::WhatLinksHere do
       name = Name.create! name: 'Atta'
 
       # Create an instance for each type of taxt.
-      Taxt::TAXT_FIELDS.each do |klass, fields|
+      taxt_fields.each do |klass, fields|
         fields.each { |field| create klass, field => "{nam #{name.id}}" }
       end
 
       # Count the total referencing items.
       refs = described_class.new(name).send(:references_in_taxt)
       expect(refs.size).to eq(
-        Taxt::TAXT_FIELDS.map { |klass, fields| fields.size }.sum
+        taxt_fields.map { |klass, fields| fields.size }.sum
       )
 
       # Count the total referencing items of each type.
-      Taxt::TAXT_FIELDS.each do |klass, fields|
+      taxt_fields.each do |klass, fields|
         fields.each do |field|
           expect(refs.select { |i| i[:table] == klass.table_name }.size).to eq(
-            Taxt::TAXT_FIELDS.detect { |k, f| k == klass }[1].size
+            taxt_fields.detect { |k, f| k == klass }[1].size
           )
         end
       end
     end
+  end
+
+  def taxt_fields
+    [
+      [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+      [Citation, [:notes_taxt]],
+      [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
+      [TaxonHistoryItem, [:taxt]]
+    ]
   end
 end
