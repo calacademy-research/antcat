@@ -14,9 +14,8 @@ module References
           options = params.merge(endnote_export: true)
           References::Search::FulltextWithExtractedKeywords[options]
         else
-          # I believe it's not possible to get here from the GUI, but the route
-          # is not disabled.
-          Reference.list_all_references_for_endnote
+          # It's not possible to get here from the GUI (but the route is not disabled).
+          all_references_for_endnote
         end
 
       render plain: Exporters::Endnote::Formatter.format(references)
@@ -38,5 +37,11 @@ module References
       def set_reference
         @reference = Reference.find params[:id]
       end
+
+    def all_references_for_endnote
+      Reference.joins(:author_names)
+        .includes(:journal, :author_names, :document, [{publisher: :place}])
+        .where.not(type: 'MissingReference').all
+    end
   end
 end
