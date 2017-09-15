@@ -283,19 +283,6 @@ describe Reference do
       end
     end
 
-    describe "Pagination on or off for different search types" do
-      it "doesn't paginate EndNote format", pending: true do
-        pending "not implemented like this any longer"
-        expect(described_class).to receive(:fulltext_search).with hash_excluding(page: 1)
-        described_class.do_search q: 'bolton', format: :endnote_export
-      end
-
-      it "paginates other formats" do
-        expect(described_class).to receive(:fulltext_search).with hash_including(page: 1)
-        described_class.do_search q: 'bolton'
-      end
-    end
-
     describe "Filtering unknown reference types" do
       context "when type:unknown is passed as the search term" do
         it "returns only references of type unknown" do

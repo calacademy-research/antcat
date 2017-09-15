@@ -22,7 +22,6 @@ class Reference < ApplicationRecord
   end
 
   def self.do_search options = {}
-    options[:page] ||= 1
     search_query = if options[:q].present? then options[:q].dup else "" end
 
     keyword_params = extract_keyword_params search_query
