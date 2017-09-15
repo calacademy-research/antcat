@@ -3,9 +3,6 @@
 require 'spec_helper'
 
 describe Reference do
-  # Throw in a MissingReference to make sure it's not returned.
-  before { create :missing_reference }
-
   describe ".perform_search" do
     describe "Search parameters" do
       describe "Authors", search: true do
@@ -23,59 +20,6 @@ describe Reference do
           )
         end
       end
-    end
-  end
-
-  describe ".solr_search", search: true do
-    it "returns an empty array if nothing is found for author_name" do
-      create :reference
-      Sunspot.commit
-
-      expect(described_class.solr_search { keywords 'foo' }.results).to be_empty
-    end
-
-    it "finds the reference for a given author_name if it exists" do
-      reference = reference_factory author_name: 'Ward'
-      reference_factory author_name: 'Fisher'
-      Sunspot.commit
-
-      expect(described_class.solr_search { keywords 'Ward' }.results).to eq [reference]
-    end
-
-    it "returns an empty array if nothing is found for a given year and author_name" do
-      reference_factory author_name: 'Bolton', citation_year: '2010'
-      reference_factory author_name: 'Bolton', citation_year: '1995'
-      reference_factory author_name: 'Fisher', citation_year: '2011'
-      reference_factory author_name: 'Fisher', citation_year: '1996'
-      Sunspot.commit
-
-      expect(described_class.solr_search {
-        with(:year).between(2012..2013)
-        keywords 'Fisher'
-      }.results).to be_empty
-    end
-
-    it "returns the one reference for a given year and author_name" do
-      reference_factory author_name: 'Bolton', citation_year: '2010'
-      reference_factory author_name: 'Bolton', citation_year: '1995'
-      reference_factory author_name: 'Fisher', citation_year: '2011'
-      reference = reference_factory author_name: 'Fisher', citation_year: '1996'
-      Sunspot.commit
-
-      expect(described_class.solr_search {
-        with(:year).between(1996..1996)
-        keywords 'Fisher'
-      }.results).to eq [reference]
-    end
-
-    it "searches citation years" do
-      with_letter = reference_factory author_name: 'Bolton', citation_year: '2010b'
-      reference_factory author_name: 'Bolton', citation_year: '2010'
-      Sunspot.commit
-
-      expect(described_class.solr_search {
-        keywords '2010b'
-      }.results).to eq [with_letter]
     end
   end
 end
