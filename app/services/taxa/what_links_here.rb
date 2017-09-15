@@ -28,8 +28,8 @@ module Taxa
       def references_in_taxa
         references = []
         Taxon::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
-          Taxon.where(field => id).each do |taxon|
-            references << table_ref('taxa', field, taxon.id)
+          Taxon.where(field => id).pluck(:id).each do |taxon_id|
+            references << table_ref('taxa', field, taxon_id)
           end
         end
         references
@@ -37,11 +37,11 @@ module Taxa
 
       def references_in_synonyms
         references = []
-        synonyms_as_senior.each do |synonym|
-          references << table_ref('synonyms', :senior_synonym_id, synonym.junior_synonym_id)
+        synonyms_as_senior.pluck(:junior_synonym_id).each do |junior_synonym_id|
+          references << table_ref('synonyms', :senior_synonym_id, junior_synonym_id)
         end
-        synonyms_as_junior.each do |synonym|
-          references << table_ref('synonyms', :junior_synonym_id, synonym.senior_synonym_id)
+        synonyms_as_junior.pluck(:senior_synonym_id).each do |senior_synonym_id|
+          references << table_ref('synonyms', :junior_synonym_id, senior_synonym_id)
         end
         references
       end

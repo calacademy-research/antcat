@@ -24,13 +24,13 @@ module References
         end
       end
 
-      Citation.where(reference: reference).find_each do |record|
-        references << table_ref(Citation.table_name, :reference_id, record.id)
+      Citation.where(reference: reference).pluck(:id).each do |citation_id|
+        references << table_ref(Citation.table_name, :reference_id, citation_id)
         return true if return_early
       end
 
-      nestees.find_each do |record|
-        references << table_ref('references', :nesting_reference_id, record.id)
+      nestees.pluck(:id).each do |reference_id|
+        references << table_ref('references', :nesting_reference_id, reference_id)
         return true if return_early
       end
       return false if return_early
