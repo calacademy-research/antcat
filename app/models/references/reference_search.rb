@@ -26,8 +26,4 @@ class Reference < ApplicationRecord
       .includes(:journal, :author_names, :document, [{publisher: :place}])
       .where.not(type: 'MissingReference').all
   end
-
-  def self.fulltext_search options = {}
-    References::Search::Fulltext[options]
-  end
 end

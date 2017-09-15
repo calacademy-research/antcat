@@ -110,28 +110,32 @@ describe References::Search::FulltextWithExtractedKeywords do
     # TODO may be duplicated and/or not needed.
     describe "Searching for text and/or years" do
       it "extracts the starting and ending years" do
-        expect(Reference).to receive(:fulltext_search)
-          .with hash_including(keywords: '', start_year: "1992", end_year: "1993")
+        expect(References::Search::Fulltext).to receive(:new)
+          .with(hash_including(keywords: '', start_year: "1992", end_year: "1993"))
+          .and_call_original
         described_class[q: 'year:1992-1993']
       end
 
       it "extracts the starting year" do
-        expect(Reference).to receive(:fulltext_search)
-          .with hash_including(keywords: '', year: "1992")
+        expect(References::Search::Fulltext).to receive(:new)
+          .with(hash_including(keywords: '', year: "1992"))
+          .and_call_original
         described_class[q: 'year:1992']
       end
 
       it "converts the query string", pending: true do
         pending "downcasing/transliteration removed valid search results"
         # TODO config solr
-        expect(Reference).to receive(:fulltext_search)
-          .with hash_including(keywords: 'andre')
+        expect(References::Search::Fulltext).to receive(:new)
+          .with(hash_including(keywords: 'andre'))
+          .and_call_original
         described_class[q: 'André']
       end
 
       it "can distinguish between years and citation years" do
-        expect(Reference).to receive(:fulltext_search)
-          .with hash_including(keywords: '1970a', year: "1970")
+        expect(References::Search::Fulltext).to receive(:new)
+          .with(hash_including(keywords: '1970a', year: "1970"))
+          .and_call_original
         described_class[q: '1970a year:1970']
       end
     end
@@ -140,8 +144,9 @@ describe References::Search::FulltextWithExtractedKeywords do
     describe "Filtering unknown reference types" do
       context "when type:unknown is passed as the search term" do
         it "returns only references of type unknown" do
-          expect(Reference).to receive(:fulltext_search)
-            .with hash_including(keywords: 'Monroe', reference_type: :unknown)
+          expect(References::Search::Fulltext).to receive(:new)
+            .with(hash_including(keywords: 'Monroe', reference_type: :unknown))
+            .and_call_original
           described_class[q: 'Monroe type:unknown']
         end
       end

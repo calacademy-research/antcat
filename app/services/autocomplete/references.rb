@@ -26,7 +26,7 @@ module Autocomplete
       attr_reader :search_query
 
       def search_results
-        Reference.fulltext_search search_options
+        ::References::Search::Fulltext[search_options]
       end
 
       def search_options

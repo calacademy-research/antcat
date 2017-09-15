@@ -8,7 +8,7 @@ module References
       end
 
       def call
-        Reference.fulltext_search options.merge(keyword_params)
+        References::Search::Fulltext[keyword_params]
       end
 
       private
