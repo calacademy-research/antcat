@@ -19,13 +19,6 @@ module ApplicationHelper
     "#{number_with_delimiter(count)} #{word}"
   end
 
-  # TODO move to MergeAuthorsHelper, or nuke and replace with `pluralize_with_delimiters`
-  def count_and_noun collection, noun
-    quantity = collection.present? ? collection.count.to_s : 'no'
-    noun << 's' unless collection.count == 1
-    "#{quantity} #{noun}"
-  end
-
   def add_period_if_necessary string
     return "".html_safe unless string.present?
     return string + '.' unless string[-1..-1] =~ /[.!?]/

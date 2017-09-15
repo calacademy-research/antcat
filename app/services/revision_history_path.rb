@@ -1,6 +1,7 @@
 class RevisionHistoryPath
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper
+  include Service
 
   def initialize type, id
     @type = type

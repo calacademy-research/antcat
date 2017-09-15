@@ -3,6 +3,8 @@
 
 module References
   class WhatLinksHere
+    include Service
+
     def initialize reference, return_true_or_false: false
       @reference = reference
       @return_early = return_true_or_false

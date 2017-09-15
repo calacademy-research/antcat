@@ -1,6 +1,8 @@
 module References
   module Cache
     class Regenerate
+      include Service
+
       def initialize reference
         @reference = reference
       end
@@ -14,7 +16,7 @@ module References
         attr_reader :reference
 
         def set value, field
-          References::Cache::Set.new(reference, value, field).call
+          References::Cache::Set[reference, value, field]
         end
 
         def generate_formatted

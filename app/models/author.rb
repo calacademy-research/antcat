@@ -36,7 +36,7 @@ class Author < ActiveRecord::Base
   end
 
   def described_taxa
-    Authors::DescribedTaxa.new(self).call
+    Authors::DescribedTaxa[self]
   end
 
   private

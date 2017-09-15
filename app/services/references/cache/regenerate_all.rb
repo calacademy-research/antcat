@@ -1,6 +1,8 @@
 module References
   module Cache
     class RegenerateAll
+      include Service
+
       def call
         puts <<-MESSAGE.squish.yellow
           Regenerating all reference caches, this will take MANY minutes, depending
@@ -17,7 +19,7 @@ module References
           Progress.new_init show_progress: true, total_count: Reference.count
           Reference.find_each do |reference|
             Progress.tally_and_show_progress 100
-            References::Cache::Regenerate.new(reference).call
+            References::Cache::Regenerate[reference]
           end
           Progress.show_results
         end

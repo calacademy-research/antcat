@@ -230,11 +230,11 @@ class Exporters::Antweb::Exporter
     end
 
     def export_history_items taxon
-      Exporters::Antweb::ExportHistoryItems.new(taxon).call
+      Exporters::Antweb::ExportHistoryItems[taxon]
     end
 
     def export_reference_sections taxon
-      Exporters::Antweb::ExportReferenceSections.new(taxon).call
+      Exporters::Antweb::ExportReferenceSections[taxon]
     end
 
     def genus_species_header_notes_taxt taxon

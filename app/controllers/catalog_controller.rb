@@ -51,7 +51,7 @@ class CatalogController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::Taxa.new(search_query).call
+        render json: Autocomplete::Taxa[search_query]
       end
     end
   end

@@ -10,7 +10,7 @@ class TaxonDecorator < ApplicationDecorator
   end
 
   def link_each_epithet
-    TaxonDecorator::LinkEachEpithet.new(taxon).call
+    TaxonDecorator::LinkEachEpithet[taxon]
   end
 
   # Currently accepts very confusing arguments.
@@ -22,21 +22,21 @@ class TaxonDecorator < ApplicationDecorator
     statistics = taxon.statistics valid_only: valid_only
     return '' unless statistics
 
-    content = TaxonDecorator::Statistics.new(statistics, include_invalid: include_invalid).call
+    content = TaxonDecorator::Statistics[statistics, include_invalid: include_invalid]
     return '' if content.blank?
 
     helpers.content_tag :div, content, class: 'statistics'
   end
 
   def headline for_antweb: false
-    TaxonDecorator::Headline.new(taxon, for_antweb: for_antweb).call
+    TaxonDecorator::Headline[taxon, for_antweb: for_antweb]
   end
 
   def child_lists for_antweb: false
-    TaxonDecorator::ChildList.new(taxon, for_antweb: for_antweb).call
+    TaxonDecorator::ChildList[taxon, for_antweb: for_antweb]
   end
 
   def taxon_status
-    TaxonDecorator::TaxonStatus.new(taxon).call
+    TaxonDecorator::TaxonStatus[taxon]
   end
 end

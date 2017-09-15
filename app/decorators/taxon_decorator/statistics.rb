@@ -1,6 +1,7 @@
 class TaxonDecorator::Statistics
   include ActionView::Helpers
   include ActionView::Context
+  include Service
   include ApplicationHelper # For #pluralize_with_delimiters and #count_and_status.
 
   # TODO: Push include_invalid/include_fossil to the taxa models.

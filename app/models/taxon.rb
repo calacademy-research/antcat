@@ -117,7 +117,7 @@ class Taxon < ApplicationRecord
   end
 
   def save_from_form params, previous_combination = nil
-    Taxa::SaveFromForm.new(self, params, previous_combination).call
+    Taxa::SaveFromForm[self, params, previous_combination]
   end
 
   # TODO see if we can push this down to the subclasses.

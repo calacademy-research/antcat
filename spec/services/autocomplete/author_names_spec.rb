@@ -5,21 +5,17 @@ describe Autocomplete::AuthorNames do
 
   describe "#call" do
     it "matches by prefix" do
-      AuthorName.create! name: 'Bolton', author: author
+      bolton = AuthorName.create! name: 'Bolton', author: author
       AuthorName.create! name: 'Fisher', author: author
 
-      results = described_class.new('Bol').call
-      expect(results.count).to eq 1
-      expect(results.first).to eq 'Bolton'
+      expect(described_class['bol']).to eq [bolton.name]
     end
 
     it "matches substrings" do
-      AuthorName.create! name: 'Bolton', author: author
+      bolton = AuthorName.create! name: 'Bolton', author: author
       AuthorName.create! name: 'Fisher', author: author
 
-      results = described_class.new('ol').call
-      expect(results.count).to eq 1
-      expect(results.first).to eq 'Bolton'
+      expect(described_class['ol']).to eq [bolton.name]
     end
 
     it "returns authors in order of most recently used" do
@@ -34,7 +30,7 @@ describe Autocomplete::AuthorNames do
         author_name: AuthorName.find_by(name: 'Old'),
         reference: reference
 
-      expect(described_class.new.call).to eq ['Most Recent', 'Recent', 'Old', 'Never Used']
+      expect(described_class[]).to eq ['Most Recent', 'Recent', 'Old', 'Never Used']
     end
   end
 end

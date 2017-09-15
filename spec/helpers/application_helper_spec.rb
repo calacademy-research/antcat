@@ -1,13 +1,6 @@
 require 'spec_helper'
 
 describe ApplicationHelper do
-  describe "#count_and_noun" do
-    it "formats a count with a noun" do
-      expect(helper.count_and_noun(['1'], 'reference')).to eq '1 reference'
-      expect(helper.count_and_noun([], 'reference')).to eq 'no references'
-    end
-  end
-
   describe "#pluralize_with_delimiters" do
     it "handles single items" do
       expect(helper.pluralize_with_delimiters(1, 'bear')).to eq '1 bear'

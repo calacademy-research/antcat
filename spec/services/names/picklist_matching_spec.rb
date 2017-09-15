@@ -5,14 +5,14 @@ require 'spec_helper'
 describe Names::PicklistMatching do
   describe "#call" do
     it "returns empty values if no match" do
-      expect(described_class.new('ata').call).to eq []
+      expect(described_class['ata']).to eq []
     end
 
     it "can find one prefix match" do
       name = find_or_create_name 'Atta'
       name.update name_html: '<i>Atta</i>'
 
-      expect(described_class.new('att').call).to eq [
+      expect(described_class['att']).to eq [
         id: name.id, name: name.name,
         label: '<b><i>Atta</i></b>', value: name.name
       ]
@@ -22,7 +22,7 @@ describe Names::PicklistMatching do
       name = find_or_create_name 'Gesomyrmex'
       name.update name_html: '<i>Gesomyrmex</i>'
 
-      expect(described_class.new('gyx').call).to eq [
+      expect(described_class['gyx']).to eq [
         id: name.id, name: name.name,
         label: '<b><i>Gesomyrmex</i></b>', value: name.name
       ]
@@ -33,7 +33,7 @@ describe Names::PicklistMatching do
       bothroponera.update name_html: '<i>Bothroponera</i>'
       brachyponera = create_genus 'Brachyponera'
 
-      expect(described_class.new('bera').call).to eq [
+      expect(described_class['bera']).to eq [
         {
           id: bothroponera.id,
           name: bothroponera.name,
@@ -60,7 +60,7 @@ describe Names::PicklistMatching do
       acanthognathus = find_or_create_name 'Acanthognathus laevigatus'
       acanthognathus.update name_html: '<i>Acanthognathus laevigatus</i>'
 
-      expect(described_class.new('atta').call).to eq [
+      expect(described_class['atta']).to eq [
         {
           id: atta.id,
           name: 'Atta',
@@ -85,7 +85,7 @@ describe Names::PicklistMatching do
       find_or_create_name 'Acropyga dubitata'
       find_or_create_name 'Acropyga indubitata'
 
-      results = described_class.new('dubitata').call
+      results = described_class['dubitata']
       expect(results.size).to eq 1
       expect(results.first[:name]).to eq 'Acropyga dubitata'
     end
@@ -94,7 +94,7 @@ describe Names::PicklistMatching do
       create_genus 'Atta'
       find_or_create_name 'Attanuda'
 
-      results = described_class.new('atta', taxa_only: true).call
+      results = described_class['atta', taxa_only: true]
       expect(results.size).to eq 1
       expect(results.first[:name]).to eq 'Atta'
     end
@@ -103,7 +103,7 @@ describe Names::PicklistMatching do
       create_genus 'Atta'
       create_species 'Atta major'
 
-      results = described_class.new('atta', species_only: true).call
+      results = described_class['atta', species_only: true]
       expect(results.size).to eq 1
       expect(results.first[:name]).to eq 'Atta major'
     end
@@ -112,7 +112,7 @@ describe Names::PicklistMatching do
       create_genus 'Atta'
       create_species 'Atta major'
 
-      results = described_class.new('atta', genera_only: true).call
+      results = described_class['atta', genera_only: true]
       expect(results.size).to eq 1
       expect(results.first[:name]).to eq 'Atta'
     end
@@ -123,7 +123,7 @@ describe Names::PicklistMatching do
       create_genus 'Atta', tribe: tribe, subfamily: subfamily
       create_species 'Atta major'
 
-      results = described_class.new('att', subfamilies_or_tribes_only: true).call
+      results = described_class['att', subfamilies_or_tribes_only: true]
       expect(results.size).to eq 2
       expect(results.map { |e| e[:name] }).to match_array ['Attinae', 'Attini']
     end
@@ -132,7 +132,7 @@ describe Names::PicklistMatching do
       atta_name = create :name, name: 'Atta'
       taxon = create_genus 'Atta'
 
-      results = described_class.new('Atta').call
+      results = described_class['atta']
       expect(taxon.name_id).not_to eq atta_name.id
       expect(results.first[:id]).to eq taxon.name_id
     end

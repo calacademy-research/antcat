@@ -27,14 +27,14 @@ namespace :antcat do
       namespace :invalidate do
         desc 'Invalidates all reference caches'
         task all: :environment do
-          References::Cache::InvalidateAll.new.call
+          References::Cache::InvalidateAll[]
         end
       end
 
       namespace :regenerate do
         desc 'Regenerate all reference caches'
         task all: :environment do
-          References::Cache::RegenerateAll.new.call
+          References::Cache::RegenerateAll[]
         end
       end
     end

@@ -1,5 +1,7 @@
 module Comments
   class NotifyRelevantUsers
+    include Service
+
     def initialize comment
       @comment = comment
       @do_not_notify = [commenter] # Never notify thyself!
@@ -48,7 +50,7 @@ module Comments
       end
 
       def users_mentioned_in_comment
-        Markdowns::MentionedUsers.new(body).call
+        Markdowns::MentionedUsers[body]
       end
 
       # TODO improve and move somewhere.

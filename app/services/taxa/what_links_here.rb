@@ -5,6 +5,8 @@
 
 module Taxa
   class WhatLinksHere
+    include Service
+
     def initialize taxon, omit_taxt: false
       @taxon = taxon
       @omit_taxt = omit_taxt

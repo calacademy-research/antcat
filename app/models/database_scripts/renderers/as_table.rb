@@ -12,7 +12,7 @@ module DatabaseScripts::Renderers::AsTable
     end
 
     def render
-      Markdowns::Render.new(@rendered).call
+      Markdowns::Render[@rendered]
     end
 
     def header *items

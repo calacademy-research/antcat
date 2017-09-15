@@ -1,6 +1,8 @@
 module References
   module Cache
     class Set
+      include Service
+
       def initialize reference, value, field
         @reference = reference
         @value = value

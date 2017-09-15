@@ -6,14 +6,16 @@
 
 module Wikipedia
   class ReferenceExporter
-    def self.export reference
-      formatter = "Wikipedia::#{reference.type}".safe_constantize
-      return "<<<cannot export references of type #{reference.type}>>>" unless formatter
-      formatter.new(reference).format
-    end
+    include Service
 
     def initialize reference
       @reference = reference
+    end
+
+    def call
+      formatter = "Wikipedia::#{reference.type}".safe_constantize
+      return "<<<cannot export references of type #{reference.type}>>>" unless formatter
+      formatter.new(reference).format
     end
 
     private

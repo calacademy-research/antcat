@@ -30,7 +30,7 @@ module References
     end
 
     def wikipedia
-      render plain: Wikipedia::ReferenceExporter.export(@reference)
+      render plain: Wikipedia::ReferenceExporter[@reference]
     end
 
     private

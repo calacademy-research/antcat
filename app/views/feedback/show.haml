@@ -24,7 +24,7 @@
   %h6 Formatted for email replies
   =preserve do
     %textarea#formatted_for_email
-      =format_feedback_for_email @feedback
+      =@feedback.decorate.format_feedback_for_email
 
 -if @feedback.open?
   %div{data: { show_hide_toggable_id: "guidelines_for_editors" }}

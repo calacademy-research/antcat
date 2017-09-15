@@ -5,8 +5,15 @@
   .buttons_right=link_to "New Journal", new_journal_path, class: "btn-normal"
 
 %table
+  %thead
+    %tr
+      %th Journal
+      %th Publications between
+      %th No. of references
   -@journals.each do |journal|
     %tr
       %td=link_to journal.name, journal
+      %td=or_dash journal.decorate.publications_between
+      %td=or_dash journal.references.count
 
 =will_paginate @journals

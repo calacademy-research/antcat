@@ -11,7 +11,7 @@ class SpeciesGroupName < Name
     else                            raise "we should never get here"
     end
 
-    Names::CreateNameFromString.new(name_parts.join(' ')).call
+    Names::CreateNameFromString[name_parts.join(' ')]
   end
 
   def genus_epithet

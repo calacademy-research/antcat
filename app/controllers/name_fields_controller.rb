@@ -62,7 +62,7 @@ class NameFieldsController < NamePickersController
 
   private
     def add_name name_string, data
-      name = Names::CreateNameFromString.new(name_string).call
+      name = Names::CreateNameFromString[name_string]
       data[:success] = true
       data[:id] = name.id
     end
