@@ -22,12 +22,7 @@ class Reference < ApplicationRecord
   end
 
   def self.do_search options = {}
-    search_query = if options[:q].present? then options[:q].dup else "" end
-
-    keyword_params = extract_keyword_params search_query
-    options.merge! keyword_params
-
-    fulltext_search options
+     References::Search::FulltextWithExtractedKeywords[options]
   end
 
   def self.author_search author_names_query, page = nil
