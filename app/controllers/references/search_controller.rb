@@ -23,7 +23,7 @@ module References
                         Reference.none.paginate page: 9999
                       end
                     else
-                      Reference.do_search params
+                      References::Search::FulltextWithExtractedKeywords[params]
                     end
     end
 

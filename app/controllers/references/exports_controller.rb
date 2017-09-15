@@ -11,7 +11,8 @@ module References
           # `where` and not `find` because we need to return an array.
           Reference.where(id: id)
         elsif searching
-          Reference.do_search params.merge endnote_export: true
+          options = params.merge(endnote_export: true)
+          References::Search::FulltextWithExtractedKeywords[options]
         else
           # I believe it's not possible to get here from the GUI, but the route
           # is not disabled.

@@ -21,10 +21,6 @@ class Reference < ApplicationRecord
     # TODO: Test searching for doi, see if that works?
   end
 
-  def self.do_search options = {}
-     References::Search::FulltextWithExtractedKeywords[options]
-  end
-
   def self.author_search author_names_query, page = nil
     References::Search::AuthorSearch[author_names_query, page]
   end
