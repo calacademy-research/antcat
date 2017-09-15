@@ -41,15 +41,9 @@ module Names
 
       def references_in_taxt
         references = []
-        Taxt::TAXT_FIELDS.each do |klass, fields|
-          table = klass.arel_table
-          fields.each do |field|
-            klass.where(table[field].matches("%{nam #{id}}%")).each do |record|
-              next unless record[field]
-              if record[field] =~ /{nam #{id}}/
-                references << table_ref(klass.table_name, field, record.id)
-              end
-            end
+        Taxt.models_with_taxts.each_field do |field, model|
+          model.where("#{field} LIKE '%{nam #{name.id}}%'").pluck(:id).each do |id|
+            references << table_ref(model.table_name, field.to_sym, id)
           end
         end
         references

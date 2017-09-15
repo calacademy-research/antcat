@@ -48,24 +48,23 @@ module Taxa
 
       def references_in_taxt
         references = []
-        Taxt::TAXT_FIELDS.each do |klass, fields|
-          klass.send(:all).each do |record|
-            # don't include the taxt in this or child records
-            next if klass == Taxon && record.id == id
-            next if klass == Protonym && record.id == protonym_id
-            if klass == Citation
-              authorship_id = protonym.try(:authorship).try(:id)
-              next if authorship_id == record.id
-            end
-            fields.each do |field|
-              next unless record[field]
-              if record[field] =~ /{tax #{id}}/
-                references << table_ref(klass.table_name, field, record.id)
-              end
-            end
+        Taxt.models_with_taxts.each_field do |field, model|
+          model.where("#{field} LIKE '%{tax #{taxon.id}}%'").pluck(:id).each do |matched_id|
+            next if exclude_taxt_match? model, matched_id
+            references << table_ref(model.table_name, field.to_sym, matched_id)
           end
         end
         references
+      end
+
+      def exclude_taxt_match? model, matched_id
+        return true if model == Taxon && matched_id == id
+        return true  if model == Protonym && matched_id == protonym_id
+        if model == Citation
+          authorship_id = protonym.try(:authorship).try(:id)
+          return true if authorship_id == matched_id
+        end
+        false
       end
 
       def table_ref table, field, id

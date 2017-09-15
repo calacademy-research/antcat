@@ -12,15 +12,9 @@ module References
     end
 
     def call
-      Taxt::TAXT_FIELDS.each do |klass, fields|
-        klass.send(:all).find_each do |record|
-          fields.each do |field|
-            next unless record[field]
-            if record[field] =~ /{ref #{id}}/
-              references << table_ref(klass.table_name, field, record.id)
-              return true if return_early
-            end
-          end
+      Taxt.models_with_taxts.each_field do |field, model|
+        model.where("#{field} LIKE '%{ref #{reference.id}}%'").pluck(:id).each do |id|
+          references << table_ref(model.table_name, field.to_sym, id)
         end
       end
 
