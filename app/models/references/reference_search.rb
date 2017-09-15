@@ -21,10 +21,6 @@ class Reference < ApplicationRecord
     # TODO: Test searching for doi, see if that works?
   end
 
-  def self.extract_keyword_params keyword_string
-    References::Search::ExtractKeywords[keyword_string]
-  end
-
   def self.list_all_references_for_endnote
     joins(:author_names)
       .includes(:journal, :author_names, :document, [{publisher: :place}])

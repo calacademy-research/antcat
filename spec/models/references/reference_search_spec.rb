@@ -78,14 +78,4 @@ describe Reference do
       }.results).to eq [with_letter]
     end
   end
-
-  describe "#extract_keyword_params" do
-    let(:keyword_string) { "Atta" }
-
-    it "calls `References::Search::ExtractKeywords`" do
-      expect(References::Search::ExtractKeywords).to receive(:new)
-        .with(keyword_string).and_call_original
-      described_class.extract_keyword_params keyword_string
-    end
-  end
 end
