@@ -66,6 +66,27 @@ describe TaxonDecorator::TaxonStatus do
       end
     end
 
+    context "when unresolved homonym" do
+      let(:taxon) { create_genus 'Atta' }
+
+      before { taxon.update! unresolved_homonym: true }
+
+      context "when there is no senior synonym" do
+        specify { expect(taxon.decorate.taxon_status).to eq 'unresolved junior homonym' }
+      end
+
+      context "when there is a current valid taxon" do
+        let!(:senior_synonym) { create_genus 'Eciton' }
+
+        before { taxon.update! current_valid_taxon: senior_synonym }
+
+        specify do
+          expect(taxon.decorate.taxon_status)
+            .to eq %{unresolved junior homonym, junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Eciton</i></a>}
+        end
+      end
+    end
+
     context "if the senior synonym hasn't been set yet" do
       let!(:taxon) { create_genus status: 'synonym' }
 
