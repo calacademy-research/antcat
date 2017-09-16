@@ -53,6 +53,26 @@ class Reference < ApplicationRecord
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked on: :mixin_create_activity_only, parameters: proc { { name: keey } }
 
+  searchable do
+    string  :type
+    integer :year
+    text    :author_names_string
+    text    :citation_year
+    text    :title
+    text    :journal_name do journal.name if journal end
+    text    :publisher_name do publisher.name if publisher end
+    text    :year_as_string do year.to_s if year end # quick fix to make the year searchable as a keyword
+    text    :citation
+    text    :editor_notes
+    text    :public_notes
+    text    :taxonomic_notes
+    string  :citation_year
+    string  :author_names_string
+    # Tried adding DOI here, we get "NoMethodError: undefined method `doi' for #<MissingReference ...>"
+    # Missing references shouldn't have a DOI, I would think.
+    # TODO: Test searching for doi, see if that works?
+  end
+
   def self.requires_title
     true
   end

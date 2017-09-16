@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe References::ExtractKeywordParams do
+describe References::Search::ExtractKeywords do
   describe "#call" do
     it "doesn't modify the orginal search term" do
       q = "Bolton 2003"

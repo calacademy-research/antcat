@@ -5,9 +5,10 @@ class ReferencePickersController < ApplicationController
   def show
     reference = Reference.find params[:id] if params[:id].present?
 
+    # TODO there's no happy path for `references` here?
     if params[:q].present?
       params[:q].strip!
-      references = Reference.do_search params
+      references = References::Search::FulltextWithExtractedKeywords[params]
     end
 
     render partial: "reference_#{picker_type}s/show",
