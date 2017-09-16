@@ -7,20 +7,20 @@ module Taxa
   class WhatLinksHere
     include Service
 
-    def initialize taxon, omit_taxt: false
+    def initialize taxon, predicate: false
       @taxon = taxon
-      @omit_taxt = omit_taxt
+      @predicate = predicate
     end
 
     def call
       references = []
       references.concat references_in_taxa
-      references.concat references_in_taxt unless omit_taxt
+      references.concat references_in_taxt
       references.concat references_in_synonyms
     end
 
     private
-      attr_reader :taxon, :omit_taxt
+      attr_reader :taxon, :predicate
 
       delegate :id, :synonyms_as_senior, :synonyms_as_junior, :protonym,
         :protonym_id, to: :taxon

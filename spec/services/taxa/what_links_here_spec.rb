@@ -67,27 +67,5 @@ describe Taxa::WhatLinksHere do
         ]
       end
     end
-
-    describe "omitting taxt references" do
-      let!(:atta) { create_genus 'Atta' }
-      let!(:eciton) { create_genus 'Eciton' }
-      subject { described_class.new(atta, omit_taxt: true) }
-
-      before { eciton.update_attribute :type_taxt, "{tax #{atta.id}}" }
-
-      context "taxon has non-taxt references" do
-        before { eciton.update_attribute :homonym_replaced_by, atta}
-
-        it "returns only non-taxt references" do
-          expect(subject.call).to match_array [
-            { table: 'taxa', field: :homonym_replaced_by_id, id: eciton.id }
-          ]
-        end
-      end
-
-      context "taxon has no non-taxt references" do
-        it { expect(subject.call).to be_empty }
-      end
-    end
   end
 end
