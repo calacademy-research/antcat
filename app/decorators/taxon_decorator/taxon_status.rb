@@ -1,4 +1,6 @@
 class TaxonDecorator::TaxonStatus
+  include Service
+
   def initialize taxon
     @taxon = taxon
   end
@@ -14,7 +16,11 @@ class TaxonDecorator::TaxonStatus
               elsif taxon.unidentifiable?
                 "unidentifiable"
               elsif taxon.unresolved_homonym?
-                "unresolved junior homonym"
+                if taxon.current_valid_taxon_including_synonyms
+                  "unresolved junior homonym, junior synonym#{format_senior_synonym}"
+                else
+                  "unresolved junior homonym"
+                end
               elsif taxon.nomen_nudum?
                 "<i>nomen nudum</i>"
               elsif taxon.synonym?

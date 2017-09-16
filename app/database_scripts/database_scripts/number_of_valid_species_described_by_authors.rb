@@ -19,10 +19,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :name, :species_descriptions_between, :species_count
+      as_table do |t|
+        t.header :name, :species_descriptions_between, :species_count
 
-        rows do |row|
+        t.rows do |row|
           years = "#{row['min_year']}&ndash;#{row['max_year']}"
           author_link = link_to row['name'], author_path(row['author_id'])
 
@@ -38,5 +38,4 @@ description: >
   Only valid taxa at the rank of species are included in this list.
   This also affects the year range and count.
 
-tags: [new!]
 topic_areas: [catalog]

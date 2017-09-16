@@ -135,7 +135,7 @@ class TaxaController < ApplicationController
         new_child.parent = @taxon
 
         new_child.inherit_attributes_for_new_combination t, @taxon
-        new_child.save_from_form Taxa::AttributesForNewUsage.new(new_child, t).call, t
+        new_child.save_from_form Taxa::AttributesForNewUsage[new_child, t], t
       end
     end
 

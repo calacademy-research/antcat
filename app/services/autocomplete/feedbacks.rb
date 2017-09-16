@@ -1,5 +1,7 @@
 module Autocomplete
   class Feedbacks
+    include Service
+
     def initialize search_query
       @search_query = search_query
     end

@@ -8,7 +8,7 @@ module Catalog
     def index
       return if user_not_searching_yet? # Just render the form.
 
-      @taxa = Taxa::AdvancedSearch.new(advanced_search_params).call
+      @taxa = Taxa::AdvancedSearch[advanced_search_params]
       @is_author_search = is_author_search?
 
       respond_to do |format|
@@ -18,7 +18,7 @@ module Catalog
         end
 
         format.text do
-          text = Exporters::AdvancedSearchExporter.new(@taxa).call
+          text = Exporters::AdvancedSearchExporter[@taxa]
           send_data text, filename: download_filename, type: 'text/plain'
         end
       end
@@ -27,11 +27,11 @@ module Catalog
     # The "quick search" shares the same view as the "Advanced Search".
     # The forms could be merged, but having two is pretty nice too.
     def quick_search
-      taxa = taxa = Taxa::QuickSearch.new(
+      taxa = taxa = Taxa::QuickSearch[
         params[:qq],
         search_type: params[:search_type],
         valid_only: params[:valid_only]
-      ).call
+      ]
 
       if single_match_we_should_redirect_to? taxa
         return redirect_to catalog_path(taxa.first, qq: params[:qq])

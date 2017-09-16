@@ -12,7 +12,7 @@ module SendsNotifications
   end
 
   def notify_mentioned_users_in string
-    AntcatMarkdownUtils.users_mentioned_in(string).each do |user|
+    Markdowns::MentionedUsers[string].each do |user|
       user.notify_because :mentioned_in_thing, attached: self, notifier: User.current
     end
   end

@@ -1,5 +1,5 @@
 class IssueDecorator < Draper::Decorator
-  delegate_all
+  delegate :open?
 
   def format_status
     if open? then "Open" else "Closed" end

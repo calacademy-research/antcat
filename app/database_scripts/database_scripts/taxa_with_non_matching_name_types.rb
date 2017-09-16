@@ -36,10 +36,10 @@ module DatabaseScripts
 
     private
       def format_table_for rank, rank_results
-        as_table do
-          header rank, :status, :name_type
+        as_table do |t|
+          t.header rank, :status, :name_type
 
-          rows(rank_results) do |taxon|
+          t.rows(rank_results) do |taxon|
             [ markdown_taxon_link(taxon), taxon.status, taxon.name.type ]
           end
         end

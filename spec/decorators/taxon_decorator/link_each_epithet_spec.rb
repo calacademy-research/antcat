@@ -13,7 +13,7 @@ describe TaxonDecorator::LinkEachEpithet do
       end
 
       specify do
-        expect(described_class.new(major).call).to eq(
+        expect(described_class[major]).to eq(
           %{<a href="/catalog/#{formica.id}"><i>Formica</i></a> } +
           %{<a href="/catalog/#{rufa.id}"><i>rufa</i></a> } +
           %{<a href="/catalog/#{major.id}"><i>pratensis major</i></a>}

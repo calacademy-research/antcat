@@ -1,42 +1,54 @@
 module DatabaseScripts::Renderers::AsTable
   def as_table &block
-    @rendered = ""
-    block.call
-    markdown @rendered
+    renderer = Renderer.new cached_results
+    yield renderer
+    renderer.render
   end
 
-  def header *items
-    # Say `items` are the array [:taxon, :status], then this part looks
-    # like this: "| Taxon | Status |".
-    string = "|"
-    items.each { |item| string << " #{item.to_s.humanize} |" }
-    string << "\n"
-
-    # Part of the markdown table syntax. Looks like: "| --- | --- |".
-    string << "|" << (" --- |" * items.size) << "\n"
-
-    @rendered << string
-  end
-
-  # Gets the results from `#results` unless specified. This is the most common
-  # use-case (single results list); see ´scripts/valid_taxa_with_non_valid_parents.rb`
-  # for an example with multiple rows and explicit `results`s.
-  def rows results = nil, &block
-    results ||= cached_results
-
-    if results.blank?
-      @rendered << "| Found no database issues |" << "\n"
-      return
+  class Renderer
+    def initialize cached_results
+      @cached_results = cached_results
+      @rendered = ""
     end
 
-    results.each do |object|
-      row object, *block.call(object)
+    def render
+      Markdowns::Render[@rendered]
     end
-  end
 
-  def row result, *fields
-    string = "|"
-    fields.each { |item| string << " #{item} |" }
-    @rendered << string << "\n"
+    def header *items
+      # Say `items` are the array [:taxon, :status], then this part looks
+      # like this: "| Taxon | Status |".
+      string = "|"
+      items.each { |item| string << " #{item.to_s.humanize} |" }
+      string << "\n"
+
+      # Part of the markdown table syntax. Looks like: "| --- | --- |".
+      string << "|" << (" --- |" * items.size) << "\n"
+
+      @rendered << string
+    end
+
+    # Gets the results from `#results` unless specified.
+    def rows results = nil, find_each: false, &block
+      results ||= @cached_results
+
+      if results.blank?
+        @rendered << "| Found no database issues |" << "\n"
+        return
+      end
+
+      method_name = if find_each then :find_each else :each end
+
+      results.send(method_name) do |object|
+        row object, *block.call(object)
+      end
+    end
+
+    private
+      def row result, *fields
+        string = "|"
+        fields.each { |item| string << " #{item} |" }
+        @rendered << string << "\n"
+      end
   end
 end

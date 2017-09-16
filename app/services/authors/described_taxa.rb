@@ -1,5 +1,7 @@
 module Authors
   class DescribedTaxa
+    include Service
+
     def initialize author
       @author = author
     end
@@ -9,7 +11,7 @@ module Authors
     end
 
     private
-      attr_reader :author, :valid_only
+      attr_reader :author
 
       delegate :id, to: :author
 

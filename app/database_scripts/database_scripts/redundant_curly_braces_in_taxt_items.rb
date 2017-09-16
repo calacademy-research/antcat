@@ -1,6 +1,3 @@
-require 'antcat_rake_utils'
-include AntCat::RakeUtils
-
 module DatabaseScripts
   class RedundantCurlyBracesInTaxtItems < DatabaseScript
     def results
@@ -8,13 +5,13 @@ module DatabaseScripts
     end
 
     def render
-      "Found #{cached_results} redundant curly brance(s)."
+      "Found #{results} redundant curly brance(s)."
     end
 
     private
       def double_braces_count
         count = 0
-        models_with_taxts.each_field do |field, model|
+        Taxt.models_with_taxts.each_field do |field, model|
           count += model.where("#{field} LIKE '%}}%'").count
         end
         count

@@ -2,9 +2,6 @@
 # https://github.com/calacademy-research/antcat/blob/
 # 0b1930a3e161e756e3c785bd32d6e54867cc480c/lib/tasks/database_maintenance.rake
 
-require 'antcat_rake_utils'
-include AntCat::RakeUtils
-
 module DatabaseScripts
   class BrokenTaxtTags < DatabaseScript
     include Rails.application.routes.url_helpers
@@ -28,13 +25,13 @@ module DatabaseScripts
         broken_ids[tag] = reject_existing taxt_tags[tag], ids
       end
 
-      if broken_ids.all? &:empty?
-        log.puts "Found no broken tags."
-        return "waddap"
-      end
-
       broken_ids_statistics = broken_ids.map { |tag, ids| "#{ids.size} #{tag}(s)" }.to_sentence
       log.puts "\nFound #{broken_ids_statistics}."
+
+      if broken_ids.all? &:empty?
+        log.puts "Found no broken tags."
+        return output.string
+      end
 
       log.puts "\n----------"
 
@@ -96,7 +93,7 @@ module DatabaseScripts
       def matched_ids
         @_matched_ids ||= begin
           ids = taxt_tags.keys_plus_empty_arrays
-          models_with_taxts.each_field do |field, model|
+          Taxt.models_with_taxts.each_field do |field, model|
             log.puts "    #{model} --> #{field}..."
             taxt_tags.each_key do |tag|
               ids[tag] += find_all_tagged_ids model, field, tag
@@ -116,7 +113,7 @@ module DatabaseScripts
         taxon_id_field.default = "id"
 
         taxa_with_broken_ids_thing = []
-        models_with_taxts.each_field do |field, model|
+        Taxt.models_with_taxts.each_field do |field, model|
           taxt_tags.each_key do |tag|
             model.where("#{field} LIKE '%{#{tag} %'").find_each do |matched_obj|
               matched_ids = extract_tagged_ids matched_obj.send(field), tag
@@ -143,11 +140,16 @@ module DatabaseScripts
         taxa_with_broken_ids_thing
       end
 
-      def affected_taxa_table taxa_with_broken_ids
-        as_table do
-          header :item_id, :item_type, :taxon, :tag, :broken_ids
+      # HACK to fix `as_table` issue...
+      def cached_results
+        nil
+      end
 
-          rows(taxa_with_broken_ids) do |item|
+      def affected_taxa_table taxa_with_broken_ids
+        as_table do |t|
+          t.header :item_id, :item_type, :taxon, :tag, :broken_ids
+
+          t.rows(taxa_with_broken_ids) do |item|
             item_id                    = item[:item_id]
             item_type                  = item[:item_type]
             taxon                      = item[:taxon]
@@ -210,6 +212,41 @@ module DatabaseScripts
         end
 
         @_taxt_tags
+      end
+
+      # Moved from `RakeUtils`.
+      def reject_existing model, ids
+        filter_by_existence model, ids, reject_existing: true
+      end
+
+      # Moved from `RakeUtils`.
+      def extract_tagged_ids string, tag
+        regex = /(?<={#{Regexp.quote(tag.to_s)} )\d*?(?=})/
+        string.scan(regex).map &:to_i
+      end
+
+      # Moved from `RakeUtils`.
+      def find_all_tagged_ids model, column, tag
+        ids = []
+        tag = tag.to_s
+        model.where("#{column} LIKE '%{#{tag} %'").find_each do |matched_obj|
+          matched_ids = extract_tagged_ids matched_obj.send(column), tag
+          ids += matched_ids if matched_ids
+        end
+        ids
+      end
+
+      # Moved from `RakeUtils`.
+      def filter_by_existence model, ids, options = {}
+        return to_enum(:filter_by_existence, model, ids, options).to_a unless block_given?
+        # Reject non-existing by default.
+        reject_existing = options.fetch(:reject_existing) { false }
+
+        if reject_existing
+          Array(ids).each { |item| yield item unless model.exists? item }
+        else
+          Array(ids).each { |item| yield item if model.exists? item }
+        end
       end
   end
 end

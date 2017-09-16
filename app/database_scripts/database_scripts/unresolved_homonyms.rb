@@ -13,5 +13,4 @@ __END__
 description: >
   These are more "taxonomical issues in science", rather than
   database issues on AntCat's side.
-tags: [new!]
 topic_areas: [catalog]

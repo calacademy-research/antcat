@@ -1,4 +1,3 @@
-# TODO use less decorators in general.
 # TODO consider renaming the db fields once the code is more stable.
 
 class ReferenceDecorator < ApplicationDecorator
@@ -54,7 +53,7 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
    def antweb_version_of_inline_citation
-    Exporters::Antweb::InlineCitation.new(reference).call
+    Exporters::Antweb::InlineCitation[reference]
   end
 
   # TODO rename.

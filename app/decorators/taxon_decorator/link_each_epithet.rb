@@ -1,4 +1,5 @@
 class TaxonDecorator::LinkEachEpithet
+  include Service
   include Formatters::ItalicsHelper
 
   def initialize taxon

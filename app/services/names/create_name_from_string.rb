@@ -3,6 +3,7 @@
 # TODO Probably `remove_column :names, :protonym_html`.
 
 class Names::CreateNameFromString
+  include Service
   include Formatters::ItalicsHelper
 
   def initialize string

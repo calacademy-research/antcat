@@ -1,9 +1,7 @@
 class MarkdownController < ApplicationController
   def preview
     text = params[:text].presence || "no content"
-
-    markdown = AntcatMarkdown.render text
-    render json: markdown
+    render json: Markdowns::Render[text]
   end
 
   def formatting_help

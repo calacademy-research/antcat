@@ -13,7 +13,7 @@ describe Wikipedia::TaxonList do
 
   describe "#call" do
     it "outputs a wiki-formatted list" do
-      results = described_class.new(atta).call
+      results = described_class[atta]
 
       expect(results).to include "diversity_link = #Species"
       expect(results).to include "==Species=="

@@ -1,6 +1,6 @@
 module DatabaseScripts::Renderers::Markdown
-  def markdown text
-    AntcatMarkdown.render text
+  def markdown content
+    Markdowns::Render[content]
   end
 
   def markdown_taxon_link taxon_or_id

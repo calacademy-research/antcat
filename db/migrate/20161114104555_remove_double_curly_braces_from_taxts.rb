@@ -6,9 +6,6 @@
 #
 # Code copy-pasted from `lib/tasks/database_maintenance.rake`
 
-require 'antcat_rake_utils'
-include AntCat::RakeUtils
-
 class RemoveDoubleCurlyBracesFromTaxts < ActiveRecord::Migration
   def up
     puts "double_braces_count before: #{double_braces_count}".red
@@ -25,7 +22,7 @@ class RemoveDoubleCurlyBracesFromTaxts < ActiveRecord::Migration
 end
 
 def remove_double_braces
-  models_with_taxts.each_field do |field, model|
+  Taxt.models_with_taxts.each_field do |field, model|
     model.where("#{field} LIKE '%}}%'").find_each do |matched_obj|
       cleaned_string = matched_obj.send(field).gsub(/\}\}/, "}")
       matched_obj.update_columns field => cleaned_string
@@ -35,7 +32,7 @@ end
 
 def double_braces_count
   count = 0
-  models_with_taxts.each_field do |field, model|
+  Taxt.models_with_taxts.each_field do |field, model|
     count += model.where("#{field} LIKE '%}}%'").count
   end
   count

@@ -42,7 +42,7 @@ class RemoveProtonymHtml < ActiveRecord::Migration
     new_name_record = Name.find_by_name(stripped)
     #new_name_record = linker.find_or_create_name stripped
     if(new_name_record.nil?)
-      new_name_record = Names::CreateNameFromString.new(stripped, true).call
+      new_name_record = Names::CreateNameFromString[stripped, true]
       if new_name_record.nil?
         puts "  Unrecoverable error attempting to create name #{name.name}"
         next

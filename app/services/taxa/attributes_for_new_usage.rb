@@ -1,5 +1,7 @@
 module Taxa
   class AttributesForNewUsage
+    include Service
+
     def initialize new_comb, old_comb
       @new_comb = new_comb
       @old_comb = old_comb

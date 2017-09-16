@@ -1,5 +1,7 @@
 module Autocomplete
   class References
+    include Service
+
     def initialize search_query
       @search_query = search_query
     end
@@ -24,7 +26,7 @@ module Autocomplete
       attr_reader :search_query
 
       def search_results
-        Reference.fulltext_search search_options
+        ::References::Search::Fulltext[search_options]
       end
 
       def search_options
@@ -32,7 +34,7 @@ module Autocomplete
       end
 
       def keyword_params
-        @_keyword_params ||= Reference.extract_keyword_params search_query
+        @_keyword_params ||= ::References::Search::ExtractKeywords[search_query]
       end
 
       def format_autosuggest_keywords reference, keyword_params

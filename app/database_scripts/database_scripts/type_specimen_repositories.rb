@@ -5,9 +5,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :subspecies, :status, :type_specimen_repository
-        rows do |taxon|
+      as_table do |t|
+        t.header :subspecies, :status, :type_specimen_repository
+
+        t.rows do |taxon|
           [ markdown_taxon_link(taxon), taxon.status, taxon.type_specimen_repository ]
         end
       end

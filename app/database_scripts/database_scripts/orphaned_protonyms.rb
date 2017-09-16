@@ -5,10 +5,10 @@ module DatabaseScripts
     end
 
     def render
-      as_table do
-        header :protonym, :id, :created_at, :updated_at
+      as_table do |t|
+        t.header :protonym, :id, :created_at, :updated_at
 
-        rows do |protonym|
+        t.rows do |protonym|
           [ protonym_name_with_search_link(protonym),
             protonym.id,
             protonym.created_at,
@@ -30,6 +30,12 @@ __END__
 description: >
   Click on the protonym name to search for taxa with this name.
 
-  It is probably safe to remove these (use `rake antcat:db:destroy_protonym_orphans`).
+
+  It is probably safe to remove these (use:
+  ```
+  orphans = Protonym.where("id NOT IN (SELECT protonym_id FROM taxa)");
+  orphans.each &:destroy
+  ```
+  )
 
 topic_areas: [catalog]

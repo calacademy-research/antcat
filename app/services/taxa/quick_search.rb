@@ -2,6 +2,8 @@
 
 module Taxa
   class QuickSearch
+    include Service
+
     def initialize search_query, search_type: nil, valid_only: false
       @search_query = search_query.dup.strip
       @search_type = search_type || "beginning_with"

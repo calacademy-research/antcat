@@ -7,5 +7,4 @@ module DatabaseScripts
 end
 
 __END__
-tags: [new!]
 topic_areas: [catalog]

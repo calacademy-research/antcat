@@ -44,7 +44,7 @@ module CompareRevisionsHelper
   end
 
   def try_to_link_revision_history type, id
-    url = RevisionHistoryPath.new(type, id).call
+    url = RevisionHistoryPath[type, id]
     return unless url
 
     link_to "History", url, class: "btn-normal btn-tiny"

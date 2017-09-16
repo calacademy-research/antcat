@@ -3,7 +3,6 @@
 # TODO exclude caches from PaperTrail.
 
 require_dependency 'references/reference_has_document'
-require_dependency 'references/reference_search'
 require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord
@@ -53,6 +52,26 @@ class Reference < ApplicationRecord
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked on: :mixin_create_activity_only, parameters: proc { { name: keey } }
 
+  searchable do
+    string  :type
+    integer :year
+    text    :author_names_string
+    text    :citation_year
+    text    :title
+    text    :journal_name do journal.name if journal end
+    text    :publisher_name do publisher.name if publisher end
+    text    :year_as_string do year.to_s if year end # quick fix to make the year searchable as a keyword
+    text    :citation
+    text    :editor_notes
+    text    :public_notes
+    text    :taxonomic_notes
+    string  :citation_year
+    string  :author_names_string
+    # Tried adding DOI here, we get "NoMethodError: undefined method `doi' for #<MissingReference ...>"
+    # Missing references shouldn't have a DOI, I would think.
+    # TODO: Test searching for doi, see if that works?
+  end
+
   def self.requires_title
     true
   end
@@ -64,11 +83,11 @@ class Reference < ApplicationRecord
   end
 
   def invalidate_caches
-    References::Cache::Invalidate.new(self).call
+    References::Cache::Invalidate[self]
   end
 
   def set_cache value, field
-    References::Cache::Set.new(self, value, field).call
+    References::Cache::Set[self, value, field]
   end
 
   # TODO something. "_cache" vs not.
@@ -189,7 +208,7 @@ class Reference < ApplicationRecord
   ### end quarantine ###
 
   def what_links_here return_true_or_false: false
-    References::WhatLinksHere.new(self, return_true_or_false: return_true_or_false).call
+    References::WhatLinksHere[self, return_true_or_false: return_true_or_false]
   end
 
   private

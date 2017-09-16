@@ -4,8 +4,7 @@ module References
     layout "references"
 
     def index
-      user_is_searching = params[:q].present? || params[:author_q].present?
-      return redirect_to action: :index unless user_is_searching
+      return redirect_to references_path unless user_is_searching?
 
       unparsable_author_names_error_message = <<-MSG
         Could not parse author names. Start by typing a name, wait for a while
@@ -18,13 +17,13 @@ module References
 
       @references = if params[:search_type] == "author"
                       begin
-                        Reference.author_search params[:author_q], params[:page]
+                        References::Search::AuthorSearch[params[:author_q], params[:page]]
                       rescue Citrus::ParseError
                         flash.now.alert = unparsable_author_names_error_message
                         Reference.none.paginate page: 9999
                       end
                     else
-                      Reference.do_search params
+                      References::Search::FulltextWithExtractedKeywords[params]
                     end
     end
 
@@ -32,6 +31,10 @@ module References
     end
 
     private
+      def user_is_searching?
+        params[:q].present? || params[:author_q].present?
+      end
+
       def redirect_if_search_matches_id
         params[:q] ||= ''
         params[:q].strip!

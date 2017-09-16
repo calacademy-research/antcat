@@ -14,7 +14,7 @@ describe Wikipedia::ReferenceExporter do
     end
 
     it "formats" do
-      expect(described_class.export @reference).to eq <<-TEMPLATE.squish
+      expect(described_class[@reference]).to eq <<-TEMPLATE.squish
         <ref name="Batiatus_2000">{{cite journal
         |first1=Q. L. |last1=Batiatus |year=2000 |title=''Formica'' and Apples
         |url= |journal=Zootaxa |publisher= |volume=#{@reference.volume} |issue=
@@ -33,7 +33,7 @@ describe Wikipedia::ReferenceExporter do
     end
 
     it "formats" do
-      expect(described_class.export @reference).to eq <<-TEMPLATE.squish
+      expect(described_class[@reference]).to eq <<-TEMPLATE.squish
         <ref name="Batiatus_&_Glaber_2000">{{cite book
         |first1=Q. L. |last1=Batiatus |first2=G. C. |last2=Glaber
         |year=2000 |title=Formica and Apples |url=

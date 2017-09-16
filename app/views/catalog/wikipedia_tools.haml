@@ -13,7 +13,7 @@
     .callout
       =preserve do
         %pre
-          =Wikipedia::CiteTemplate.with_ref_tag @taxon
+          =Wikipedia::CiteTemplate[@taxon, with_ref_tag: true]
 
     %p
       Journal and book references can be exported from the reference's details
@@ -24,11 +24,11 @@
       =preserve do
         %pre.wrapped
           authority = #{@taxon.authorship_string}
-          =Wikipedia::ReferenceExporter.export @taxon.authorship_reference
+          =Wikipedia::ReferenceExporter[@taxon.authorship_reference]
 
     -if @taxon.class.in? [Family, Subfamily, Tribe, Genus]
       %h5 List of children
       .callout
         =preserve do
           %pre
-            =Wikipedia::TaxonList.new(@taxon).call
+            =Wikipedia::TaxonList[@taxon]

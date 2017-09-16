@@ -9,7 +9,7 @@ describe Names::DuplicatesWithReferences do
     let!(:second_atta) { create_genus name: second_atta_name }
 
     it "returns the references to the duplicate names" do
-      expect(described_class.new.call).to eq(
+      expect(described_class[]).to eq(
         'Atta' => {
           first_atta_name.id => [
             { table: 'taxa', field: :name_id, id: first_atta.id },
