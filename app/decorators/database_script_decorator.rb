@@ -14,7 +14,7 @@ class DatabaseScriptDecorator < Draper::Decorator
 
   def cached_when
     if cached_at
-      helpers.time_ago_in_words cached_at
+      "#{helpers.time_ago_in_words cached_at} ago"
     else
       helpers.dash
     end
