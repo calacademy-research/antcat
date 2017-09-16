@@ -14,32 +14,47 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :name_cache, :taxa, :count
+        t.header :taxon_that_will_be_deleted, :status, :because, :any_what_links_here?
 
-        t.rows do |taxon|
-          ids = taxon.grouped_ids.split(",")
-          statuses = taxon.grouped_statuses.split(",")
-          taxa = ids.zip statuses
-
-          [ taxon.name_cache, taxa_links_with_status(taxa), ids.count ]
+        t.rows(all_taxa) do |taxon|
+          [
+            "%taxon#{taxon.id} (##{taxon.id})",
+            taxon.status,
+            because(taxon),
+            what_link_here_thing(taxon)
+          ]
         end
       end
     end
 
     private
-      def taxa_links_with_status taxa
+      def all_taxa
+        all_ids = results.map do |group| group.grouped_ids.split(",") end.flatten
+        Taxon.where(id: all_ids, status: "unavailable uncategorized")
+      end
+
+      def because taxon
+        taxa = Taxon.where(name_cache: taxon.name_cache).where.not(id: taxon.id)
+
         list = "<ul class='no-bullet'>"
-        list << taxa.map do |id, status|
-          "<li>%taxon#{id} (##{id}, #{status})</li>"
+        list << taxa.map do |t|
+          "<li>%taxon#{t.id} (##{t.id}, #{t.status})</li>"
         end.join
         list << "</ul>"
+        list
+      end
+
+      def what_link_here_thing taxon
+        return "" unless Taxa::WhatLinksHere[taxon, predicate: true]
+
+        "<a href='/catalog/#{taxon.id}/what_links_here'>yes, show</a>".html_safe
       end
   end
 end
 
 __END__
 description: >
-  See %github235.
+  List of taxa that will be deleted by script. See %github235.
 
 
   Related scripts:
@@ -47,5 +62,5 @@ description: >
   and
   [Taxa with the same name cache value](/database_scripts/taxa_with_the_same_name_cache_value).
 
-tags: [new!, slow]
+tags: [new!, very-slow]
 topic_areas: [catalog]
