@@ -13,10 +13,14 @@ module Taxa
     end
 
     def call
-      references = []
-      references.concat references_in_taxa
-      references.concat references_in_taxt
-      references.concat references_in_synonyms
+      if predicate
+        any_references?
+      else
+        references = []
+        references.concat references_in_taxa
+        references.concat references_in_taxt
+        references.concat references_in_synonyms
+      end
     end
 
     private
@@ -24,6 +28,25 @@ module Taxa
 
       delegate :id, :synonyms_as_senior, :synonyms_as_junior, :protonym,
         :protonym_id, to: :taxon
+
+      def any_references?
+        Taxon::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
+          return true if Taxon.where(field => id).exists?
+        end
+
+        return true if synonyms_as_senior.exists? || synonyms_as_junior.exists?
+
+        Taxt.models_with_taxts.each_field do |field, model|
+          next if !model.where("#{field} LIKE '%{tax #{taxon.id}}%'").exists? # No refs, next.
+
+          model.where("#{field} LIKE '%{tax #{taxon.id}}%'").pluck(:id).each do |matched_id|
+            next if exclude_taxt_match? model, matched_id
+            return true
+          end
+        end
+
+        false
+      end
 
       def references_in_taxa
         references = []

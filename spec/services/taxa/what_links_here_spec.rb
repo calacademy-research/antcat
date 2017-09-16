@@ -6,6 +6,7 @@ describe Taxa::WhatLinksHere do
 
     context "when there are no references" do
       specify { expect(described_class[atta]).to be_empty }
+      specify { expect(described_class[atta, predicate: true]).to be false }
     end
 
     describe "references in taxon fields" do
@@ -17,6 +18,8 @@ describe Taxa::WhatLinksHere do
             { table: 'taxa', field: :genus_id, id: species.id }
           ]
         end
+
+        specify { expect(described_class[atta, predicate: true]).to be true }
       end
 
       context "when there are references in a subfamily" do
@@ -26,6 +29,8 @@ describe Taxa::WhatLinksHere do
             { table: 'taxa', field: :subfamily_id, id: atta.tribe.id }
           ]
         end
+
+        specify { expect(described_class[atta.subfamily, predicate: true]).to be true }
       end
     end
 
@@ -40,6 +45,8 @@ describe Taxa::WhatLinksHere do
             { table: 'taxa', field: :type_taxt, id: eciton.id }
           ]
         end
+
+        specify { expect(described_class[atta, predicate: true]).to be true }
       end
 
       describe "when references in its own taxt" do
@@ -48,6 +55,8 @@ describe Taxa::WhatLinksHere do
         it "doesn't consider this an external reference" do
           expect(described_class[atta]).to be_empty
         end
+
+        specify { expect(described_class[atta, predicate: true]).to be false }
       end
     end
 
@@ -57,6 +66,8 @@ describe Taxa::WhatLinksHere do
       it "doesn't consider this an external reference" do
         expect(described_class[atta]).to be_empty
       end
+
+      specify { expect(described_class[atta, predicate: true]).to be false }
     end
 
     describe "references as synonym" do
@@ -74,6 +85,9 @@ describe Taxa::WhatLinksHere do
             { table: 'synonyms', field: :junior_synonym_id, id: atta.id }
           ]
         end
+
+        specify { expect(described_class[atta, predicate: true]).to be true }
+        specify { expect(described_class[eciton, predicate: true]).to be true }
       end
     end
   end
