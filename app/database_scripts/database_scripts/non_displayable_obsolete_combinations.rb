@@ -19,5 +19,4 @@ description: >
   Obsolete combinations where `display` is false.
   If everything checks out, I'll change all of these so that `display`
   is set to true. See %github21.
-tags: [new!]
 topic_areas: [catalog]

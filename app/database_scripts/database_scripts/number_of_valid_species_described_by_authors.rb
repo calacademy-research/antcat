@@ -38,5 +38,4 @@ description: >
   Only valid taxa at the rank of species are included in this list.
   This also affects the year range and count.
 
-tags: [new!]
 topic_areas: [catalog]
