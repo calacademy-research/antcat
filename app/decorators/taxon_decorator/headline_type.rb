@@ -16,25 +16,25 @@ class TaxonDecorator::HeadlineType
   private
     def headline_type
       string = ''.html_safe
-      string << headline_type_name_and_taxt
-      string << headline_biogeographic_region
+      string << type_name_and_taxt
+      string << biogeographic_region
       string << ' ' unless string.empty?
-      string << headline_verbatim_type_locality
+      string << verbatim_type_locality
       string << ' ' unless string.empty?
-      string << headline_type_specimen
+      string << type_specimen
       string.rstrip.html_safe
     end
 
-    def headline_type_name_and_taxt
+    def type_name_and_taxt
       taxt = @taxon.type_taxt
       if not @taxon.type_name and taxt
-        string = headline_type_taxt taxt
+        string = type_taxt taxt
       else
         return ''.html_safe unless @taxon.type_name
         rank = @taxon.type_name.rank
         rank = 'genus' if rank == 'subgenus'
         string = "Type-#{rank}: ".html_safe
-        string << headline_type_name + headline_type_taxt(taxt)
+        string << type_name + type_taxt(taxt)
         string
       end
       content_tag :span do
@@ -42,7 +42,7 @@ class TaxonDecorator::HeadlineType
       end
     end
 
-    def headline_type_name
+    def type_name
       type = Taxon.find_by_name @taxon.type_name.to_s
       return link_to_taxon(type) if type
 
@@ -51,7 +51,7 @@ class TaxonDecorator::HeadlineType
       end
     end
 
-    def headline_type_taxt taxt
+    def type_taxt taxt
       if for_antweb?
         add_period_if_necessary TaxtPresenter[taxt].to_antweb
       else
@@ -59,19 +59,19 @@ class TaxonDecorator::HeadlineType
       end
     end
 
-    def headline_biogeographic_region
+    def biogeographic_region
       return '' if @taxon.biogeographic_region.blank?
       add_period_if_necessary @taxon.biogeographic_region
     end
 
-    def headline_verbatim_type_locality
+    def verbatim_type_locality
       return '' if @taxon.verbatim_type_locality.blank?
       string =  '"'
       string << add_period_if_necessary(@taxon.verbatim_type_locality)
       string << '"'
     end
 
-    def headline_type_specimen
+    def type_specimen
       string = ''.html_safe
       if @taxon.type_specimen_repository.present?
         string << add_period_if_necessary(@taxon.type_specimen_repository)
