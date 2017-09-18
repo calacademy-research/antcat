@@ -44,17 +44,11 @@ class TaxonDecorator::HeadlineType
 
     def headline_type_name
       type = Taxon.find_by_name @taxon.type_name.to_s
-      return headline_type_name_link(type) if type
-      headline_type_name_no_link @taxon.type_name, @taxon.type_fossil
-    end
+      return link_to_taxon(type) if type
 
-    def headline_type_name_link type
-      link_to_taxon type
-    end
-
-    def headline_type_name_no_link type_name, fossil
-      name = type_name.to_html_with_fossil fossil
-      content_tag :span, name
+      content_tag :span do
+        @taxon.type_name.to_html_with_fossil @taxon.type_fossil
+      end
     end
 
     def headline_type_taxt taxt
