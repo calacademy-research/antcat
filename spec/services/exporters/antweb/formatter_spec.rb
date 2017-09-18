@@ -255,26 +255,10 @@ describe Exporters::Antweb::Exporter do
 
     it "handles italics in missing references (regression)" do
       # TODO
-      # Confirm that `ReferenceDecorator#antweb_version_of_inline_citation`
+      # Confirm that `Exporters::Antweb::InlineCitation`
       # doesn't return "Brady, Schultz, &lt;i&gt;et al.&lt;/i&gt; 2006",
       # which happens with missing references unless we call "html_safe"
       # on this line: `link = helpers.link_to reference.keey.html_safe,`.
-    end
-  end
-
-  describe "caching" do
-    let(:reference) { create :article_reference }
-
-    # Slightly stupid test case but just to be sure...
-    it "doesn't use `references.inline_citation_cache`" do
-      # Trigger inline_citation_cache, AntCat variant.
-      ReferenceFormatterCache.populate reference
-      expect(reference.inline_citation_cache).to_not include "antcat.org"
-
-      # Make sure we're getting the AntWeb version. This actually hits
-      # `references.formatted_cache` as opposed to `references.inline_citation`.
-      antweb_version = reference.decorate.antweb_version_of_inline_citation
-      expect(antweb_version).to include "antcat.org"
     end
   end
 

@@ -48,7 +48,7 @@ class TaxtPresenter
           case @format
           when :to_html   then reference.decorate.inline_citation
           when :to_text   then reference.keey
-          when :to_antweb then reference.decorate.antweb_version_of_inline_citation
+          when :to_antweb then Exporters::Antweb::InlineCitation[reference]
           end
         else
           warn_about_non_existing_id "REFERENCE", $1

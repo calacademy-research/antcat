@@ -61,7 +61,7 @@ class TaxonDecorator::HeadlineProtonym
     # TODO rename.
     def link_to_reference reference
       if for_antweb?
-        reference.decorate.antweb_version_of_inline_citation
+        Exporters::Antweb::InlineCitation[reference]
       else
         reference.decorate.inline_citation
       end
