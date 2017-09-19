@@ -2,7 +2,7 @@ class TaxonDecorator::Statistics
   include ActionView::Helpers
   include ActionView::Context
   include Service
-  include ApplicationHelper # For #pluralize_with_delimiters and #count_and_status.
+  include ApplicationHelper # For `#pluralize_with_delimiters` and `#number_with_delimiter`.
 
   # TODO: Push include_invalid/include_fossil to the taxa models.
   # This method is cheap, but Taxon#statistics is very slow and it always
@@ -53,11 +53,15 @@ class TaxonDecorator::Statistics
       statistics = statistics[rank]
       return unless statistics
 
-      strings = []
-      strings << valid_statistics(statistics, rank, include_invalid)
-      strings << invalid_statistics(statistics) if include_invalid
+      valid_string = valid_statistics statistics, rank, include_invalid
+      return valid_string unless include_invalid
 
-      strings.compact.join ' '
+      invalid_string = invalid_statistics statistics
+      if invalid_string && valid_string.blank?
+        valid_string = "0 valid #{rank}"
+      end
+
+      [valid_string, invalid_string].compact.join ' '
     end
 
     def valid_statistics statistics, rank, include_invalid
