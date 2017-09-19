@@ -11,7 +11,7 @@ module Taxa::ReorderHistoryItems
     end
 
     create_activity :reorder_taxon_history_items,
-      previous_ids: previous_ids, reordered_ids: history_items.pluck(:id)
+      parameters: { previous_ids: previous_ids, reordered_ids: history_items.pluck(:id) }
 
     true
   end

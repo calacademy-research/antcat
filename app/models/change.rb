@@ -25,7 +25,7 @@ class Change < ActiveRecord::Base
       end
     end
 
-    Activity.create_without_trackable :approve_all_changes, count: count
+    Activity.create_without_trackable :approve_all_changes, parameters: { count: count }
   end
 
   def approve user = nil
