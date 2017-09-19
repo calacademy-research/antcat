@@ -71,7 +71,6 @@ class Subspecies < SpeciesGroupTaxon
 
     def create_elevate_to_species_activity new_name
       create_activity :elevate_subspecies_to_species,
-        name_was: name_html_cache,
-        name: new_name.name_html
+        parameters: { name_was: name_html_cache, name: new_name.name_html }
     end
 end

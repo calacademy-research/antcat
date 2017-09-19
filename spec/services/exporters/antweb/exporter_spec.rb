@@ -32,7 +32,7 @@ describe Exporters::Antweb::Exporter do
     it "can export a subfamily" do
       create_genus subfamily: ponerinae, tribe: nil
 
-      allow(ponerinae).to receive(:authorship_string).and_return 'Bolton, 2011'
+      allow(ponerinae).to receive(:author_citation).and_return 'Bolton, 2011'
       allow_ALNS_for ponerinae, 'Bolton'
       allow_year_for ponerinae, 2001
 
@@ -47,7 +47,7 @@ describe Exporters::Antweb::Exporter do
       create_genus subfamily: ponerinae, tribe: nil
       fossil = create_genus 'Atta', subfamily: ponerinae, tribe: nil, fossil: true
 
-      allow(fossil).to receive(:authorship_string).and_return 'Fisher, 2013'
+      allow(fossil).to receive(:author_citation).and_return 'Fisher, 2013'
       allow_ALNS_for fossil, 'Fisher'
       allow_year_for fossil, 2001
 
@@ -62,7 +62,7 @@ describe Exporters::Antweb::Exporter do
       dacetini = create_tribe 'Dacetini', subfamily: ponerinae
       acanthognathus = create_genus 'Acanothognathus', subfamily: ponerinae, tribe: dacetini
 
-      allow(acanthognathus).to receive(:authorship_string).and_return 'Bolton, 2011'
+      allow(acanthognathus).to receive(:author_citation).and_return 'Bolton, 2011'
       allow_ALNS_for acanthognathus, 'Bolton'
       allow_year_for acanthognathus, 2001
 
@@ -76,7 +76,7 @@ describe Exporters::Antweb::Exporter do
     it "can export a genus without a tribe" do
       acanthognathus = create_genus 'Acanothognathus', subfamily: ponerinae, tribe: nil
 
-      allow(acanthognathus).to receive(:authorship_string).and_return 'Bolton, 2011'
+      allow(acanthognathus).to receive(:author_citation).and_return 'Bolton, 2011'
       allow_ALNS_for acanthognathus, 'Bolton'
       allow_year_for acanthognathus, 2001
 
@@ -90,7 +90,7 @@ describe Exporters::Antweb::Exporter do
     it "can export a genus without a subfamily as being in 'incertae_sedis'" do
       acanthognathus = create_genus 'Acanothognathus', tribe: nil, subfamily: nil
 
-      allow(acanthognathus).to receive(:authorship_string).and_return 'Fisher, 2013'
+      allow(acanthognathus).to receive(:author_citation).and_return 'Fisher, 2013'
       allow_ALNS_for acanthognathus, 'Fisher'
       allow_year_for acanthognathus, 2001
 
@@ -106,7 +106,7 @@ describe Exporters::Antweb::Exporter do
         atta = create_genus 'Atta', tribe: attini
         species = create_species 'Atta robustus', genus: atta
 
-        allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
+        allow(species).to receive(:author_citation).and_return 'Bolton, 2011'
         allow_ALNS_for species, 'Bolton'
         allow_year_for species, 2001
 
@@ -121,7 +121,7 @@ describe Exporters::Antweb::Exporter do
         atta = create_genus 'Atta', subfamily: ponerinae, tribe: nil
         species = create_species 'Atta robustus', genus: atta
 
-        allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
+        allow(species).to receive(:author_citation).and_return 'Bolton, 2011'
         allow_ALNS_for species, 'Bolton'
         allow_year_for species, 2001
 
@@ -136,7 +136,7 @@ describe Exporters::Antweb::Exporter do
         atta = create_genus 'Atta', subfamily: nil, tribe: nil
         species = create_species 'Atta robustus', genus: atta
 
-        allow(species).to receive(:authorship_string).and_return 'Bolton, 2011'
+        allow(species).to receive(:author_citation).and_return 'Bolton, 2011'
         allow_ALNS_for species, 'Bolton'
         allow_year_for species, 2001
 
@@ -154,7 +154,7 @@ describe Exporters::Antweb::Exporter do
         species = create_species 'Atta robustus', subfamily: ponerinae, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', subfamily: ponerinae, genus: atta, species: species
 
-        allow(subspecies).to receive(:authorship_string).and_return 'Bolton, 2011'
+        allow(subspecies).to receive(:author_citation).and_return 'Bolton, 2011'
         allow_ALNS_for subspecies, 'Bolton'
         allow_year_for subspecies, 2001
 
@@ -170,7 +170,7 @@ describe Exporters::Antweb::Exporter do
         species = create_species 'Atta robustus', subfamily: ponerinae, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', genus: atta, species: species
 
-        allow(subspecies).to receive(:authorship_string).and_return 'Bolton, 2011'
+        allow(subspecies).to receive(:author_citation).and_return 'Bolton, 2011'
         allow_ALNS_for subspecies, 'Bolton'
         allow_year_for subspecies, 2001
 
@@ -186,7 +186,7 @@ describe Exporters::Antweb::Exporter do
         species = create_species 'Atta robustus', subfamily: nil, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', subfamily: nil, genus: atta, species: species
 
-        allow(subspecies).to receive(:authorship_string).and_return 'Bolton, 2011'
+        allow(subspecies).to receive(:author_citation).and_return 'Bolton, 2011'
         allow_ALNS_for subspecies, 'Bolton'
         allow_year_for subspecies, 2001
 

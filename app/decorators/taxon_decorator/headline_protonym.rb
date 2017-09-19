@@ -18,7 +18,7 @@ class TaxonDecorator::HeadlineProtonym
       protonym = @taxon.protonym
       return ''.html_safe unless protonym
       string = protonym_name protonym
-      string << ' ' << headline_authorship(protonym.authorship)
+      string << ' ' << authorship(protonym.authorship)
       string << locality(protonym.locality)
       add_period_if_necessary(string || '')
     end
@@ -30,7 +30,7 @@ class TaxonDecorator::HeadlineProtonym
       content_tag :b, content
     end
 
-    def headline_authorship authorship
+    def authorship authorship
       return '' unless authorship.try :reference
       string = link_to_reference authorship.reference
       string << ": #{authorship.pages}" if authorship.pages.present?
@@ -61,7 +61,7 @@ class TaxonDecorator::HeadlineProtonym
     # TODO rename.
     def link_to_reference reference
       if for_antweb?
-        reference.decorate.antweb_version_of_inline_citation
+        Exporters::Antweb::InlineCitation[reference]
       else
         reference.decorate.inline_citation
       end

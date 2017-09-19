@@ -42,7 +42,7 @@ class DuplicatesController < ApplicationController
                               end
     end
 
-    json = options.to_json methods: [:authorship_string, :duplicate_type]
+    json = options.to_json methods: [:author_citation, :duplicate_type]
     render json: json, status: :ok
   end
 

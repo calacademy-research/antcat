@@ -12,7 +12,7 @@ module Autocomplete
           id: taxon.id,
           name: taxon.name_cache,
           name_html: taxon.name_html_cache,
-          authorship_string: taxon.authorship_string
+          author_citation: taxon.author_citation
         }
       end
     end

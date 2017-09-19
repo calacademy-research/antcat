@@ -21,7 +21,7 @@ $ ->
     templates:
       empty: '<div class="empty-message">No results</div>'
       suggestion: (taxon) ->
-        "<p>#{taxon.name_html}<br><small>#{taxon.authorship_string}</small></p>"
+        "<p>#{taxon.name_html}<br><small>#{taxon.author_citation}</small></p>"
 
   $('input.typeahead-taxa-js-hook').typeahead(options, dataSet)
     .on 'typeahead:selected', (e) ->

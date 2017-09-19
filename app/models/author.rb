@@ -41,7 +41,7 @@ class Author < ActiveRecord::Base
 
   private
     def self.create_merge_authors_activity author, names_string
-      Activity.create_for_trackable author, :merge_authors, names: names_string
+      Activity.create_for_trackable author, :merge_authors, parameters: { names: names_string }
     end
     private_class_method :create_merge_authors_activity
 

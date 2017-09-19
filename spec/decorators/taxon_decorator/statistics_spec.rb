@@ -108,14 +108,15 @@ describe TaxonDecorator::Statistics do
       expect(described_class[statistics]).to eq '<p>1 valid subspecies</p>'
     end
 
-    it "handles when there are no valid rank members" do
-      species = create :species
-      create :subspecies, species: species, status: 'synonym'
-
-      statistics = {
-        extant: { subspecies: { 'synonym' => 1 } }
-      }
-      expect(described_class[statistics]).to eq '<p>(1 synonym)</p>'
+    context "when there is no valid rank statistics" do
+      context "when there is invalid rank statistics" do
+        it "appends '0 valid' before the invalid rank statistics" do
+          statistics = {
+            extant: { subspecies: { 'synonym' => 1 } }
+          }
+          expect(described_class[statistics]).to eq '<p>0 valid subspecies (1 synonym)</p>'
+        end
+      end
     end
 
     it "doesn't pluralize certain statuses" do

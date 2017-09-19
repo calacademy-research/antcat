@@ -1,0 +1,9 @@
+-# Create these activities in the console using:
+-# ```
+-# Activity.create! trackable: nil, action: :execute_script,
+-#   user: User.find(999), edit_summary: "See %github999"
+-# ```
+executed a script
+-if activity.edit_summary.present?
+  =surround "(", ")" do
+    =antcat_markdown_only(activity.edit_summary).html_safe

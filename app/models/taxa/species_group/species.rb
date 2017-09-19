@@ -62,7 +62,6 @@ class Species < SpeciesGroupTaxon
   private
     def create_convert_species_to_subspecies_activity new_name
       create_activity :convert_species_to_subspecies,
-        name_was: name_html_cache,
-        name: new_name.name_html
+        parameters: { name_was: name_html_cache, name: new_name.name_html }
     end
 end
