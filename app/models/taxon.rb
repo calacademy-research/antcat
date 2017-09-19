@@ -144,8 +144,7 @@ class Taxon < ApplicationRecord
   end
   ### End observatory ###
 
-  # TODO rename. Candidate name: `author_citation`.
-  def authorship_string
+  def author_citation
     return unless authorship_reference
 
     string = authorship_reference.keey_without_letters_in_year

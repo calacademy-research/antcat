@@ -1,6 +1,6 @@
 .header
   %span.name=taxon.decorate.link_each_epithet
-  =taxon.authorship_string
+  =taxon.author_citation
   =taxon.decorate.taxon_status
   =taxon.name.gender
   -if taxon.waiting?
@@ -9,8 +9,7 @@
 =render "statistics", taxon: taxon
 
 -if taxon.genus_species_header_notes_taxt.present?
-  .genus_species_header_notes_taxt
-    =TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html
+  =TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html
 
 =taxon.decorate.headline
 

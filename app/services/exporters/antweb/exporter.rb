@@ -85,7 +85,7 @@ class Exporters::Antweb::Exporter
         available?:             !taxon.invalid?,
         fossil?:                taxon.fossil,
         history:                export_history(taxon),
-        author_date:            taxon.authorship_string,
+        author_date:            taxon.author_citation,
         author_date_html:       authorship_html_string(taxon),
         original_combination?:  taxon.original_combination?,
         original_combination:   original_combination(taxon).try(:name).try(:name),

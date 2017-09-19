@@ -52,10 +52,6 @@ class ReferenceDecorator < ApplicationDecorator
     reference.set_cache generate_inline_citation, :inline_citation_cache
   end
 
-   def antweb_version_of_inline_citation
-    Exporters::Antweb::InlineCitation[reference]
-  end
-
   # TODO rename.
   def link_to_reference
     # TODO replace with (requires invalidating all references):

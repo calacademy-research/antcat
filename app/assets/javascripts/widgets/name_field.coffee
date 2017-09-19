@@ -243,7 +243,7 @@ class AntCat.NameField extends AntCat.Panel
       '">' +
       item.name_html_cache +
       ": " +
-      item.authorship_string
+      item.author_citation
 
     if this.taxon_name_string().split(/\s+/).slice(0, 2).join(" ").indexOf(item.name_cache) == -1
       message = message + " This does not match the name of the current species. Use with caution."
@@ -292,7 +292,7 @@ class AntCat.NameField extends AntCat.Panel
       '">' +
       item.name_html_cache +
       ": " +
-      item.authorship_string
+      item.author_citation
 
     if item['duplicate_type'] == 'secondary_junior_homonym'
       message = message + " This would become a secondary junior homonym; name conflict with distinct authorship"
@@ -315,7 +315,7 @@ class AntCat.NameField extends AntCat.Panel
         ' of ' +
         item.name_html_cache +
         ": " +
-        item.authorship_string +
+        item.author_citation +
         '</label>'
     message
 

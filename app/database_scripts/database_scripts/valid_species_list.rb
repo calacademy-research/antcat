@@ -34,7 +34,7 @@ module DatabaseScripts
             taxon.try(:genus).try(:name_html_cache),
             link_taxon(taxon),
             author_year(taxon),
-            taxon.authorship_string,
+            taxon.author_citation,
             taxon.fossil?,
             taxon.status,
             taxon.id
@@ -53,7 +53,7 @@ module DatabaseScripts
             taxon.try(:genus).try(:name_cache),
             taxon.name_cache,
             author_year(taxon),
-            taxon.authorship_string,
+            taxon.author_citation,
             taxon.fossil?,
             taxon.status,
             taxon.id
