@@ -186,6 +186,12 @@ Then(/^the query string should (not )?contain "([^"]*)"$/) do |should_not, conta
   end
 end
 
+# Execute a script
+When(/^I execute a script with the content "(.*?)"$/) do |content|
+  cheat_and_set_user_for_feed
+  Activity.create_without_trackable :execute_script, edit_summary: content
+end
+
 # General note about RequestStore
 # The gem is all good, but it makes testing harder.
 #

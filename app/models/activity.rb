@@ -1,6 +1,16 @@
+# TODO validate `action` to `Activity.uniq.pluck(:action)`. Something like:
+# ```
+# ACTIONS = [:destroy, :update, :create, :approve_change ... ]
+# validates :action, presence: true, inclusion: { in: ACTIONS }
+# ```
+#
+# TODO move `user` to controllers.
+
 class Activity < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
   include FilterableWhere
+
+  EDIT_SUMMARY_MAX_LENGTH = 255
 
   self.per_page = 30
 
@@ -14,15 +24,16 @@ class Activity < ActiveRecord::Base
   has_paper_trail
   serialize :parameters, Hash
 
-  def self.create_for_trackable trackable, action, parameters = {}
+  def self.create_for_trackable trackable, action, edit_summary: nil, parameters: {}
     return unless Feed.enabled?
 
     create! trackable: trackable, action: action,
-      user: User.current, parameters: parameters
+      user: User.current, edit_summary: edit_summary,
+      parameters: parameters
   end
 
-  def self.create_without_trackable action, parameters = {}
-    create_for_trackable nil, action, parameters
+  def self.create_without_trackable action, edit_summary: nil, parameters: {}
+    create_for_trackable nil, action, edit_summary: edit_summary, parameters: parameters
   end
 
   def pagination_page
