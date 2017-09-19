@@ -27,7 +27,7 @@ setupLinkables = =>
       limit: 10
       delay: 300
       insertTpl: '%taxon${id}'
-      displayTpl: '<li><small>#${id}</small> ${name_html} <small>${authorship_string}</small></li>'
+      displayTpl: '<li><small>#${id}</small> ${name_html} <small>${author_citation}</small></li>'
       callbacks: reuseCallbacks "/catalog/autocomplete.json"
 
     .atwho

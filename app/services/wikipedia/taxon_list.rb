@@ -110,7 +110,7 @@ module Wikipedia
       end
 
       def author_citation child
-        "<small>#{child.authorship_string}</small>"
+        "<small>#{child.author_citation}</small>"
       end
   end
 end

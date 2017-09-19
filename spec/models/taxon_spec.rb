@@ -128,13 +128,13 @@ describe Taxon do
     end
   end
 
-  describe "#authorship_string" do
+  describe "#author_citation" do
     it "delegates to the protonym" do
       genus = build_stubbed :genus
       expect_any_instance_of(Reference)
         .to receive(:keey_without_letters_in_year).and_return 'Bolton 2005'
 
-      expect(genus.authorship_string).to eq 'Bolton 2005'
+      expect(genus.author_citation).to eq 'Bolton 2005'
     end
 
     context "when a recombination in a different genus" do
@@ -145,7 +145,7 @@ describe Taxon do
         expect_any_instance_of(Reference)
           .to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
 
-        expect(species.authorship_string).to eq '(Bolton, 2005)'
+        expect(species.author_citation).to eq '(Bolton, 2005)'
       end
     end
 
@@ -157,7 +157,7 @@ describe Taxon do
         .to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
 
       expect(species.protonym).to receive(:name).and_return protonym_name
-      expect(species.authorship_string).to eq 'Bolton, 2005'
+      expect(species.author_citation).to eq 'Bolton, 2005'
     end
 
     context "when there isn't a protonym authorship" do
@@ -166,7 +166,7 @@ describe Taxon do
         protonym_name = create_subspecies_name 'Eciton minor maxus'
 
         expect(species.protonym).to receive(:authorship).and_return nil
-        expect(species.authorship_string).to be_nil
+        expect(species.author_citation).to be_nil
       end
     end
   end

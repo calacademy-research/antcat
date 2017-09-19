@@ -23,7 +23,7 @@
     .callout
       =preserve do
         %pre.wrapped
-          authority = #{@taxon.authorship_string}
+          authority = #{@taxon.author_citation}
           =Wikipedia::ReferenceExporter[@taxon.authorship_reference]
 
     -if @taxon.class.in? [Family, Subfamily, Tribe, Genus]
