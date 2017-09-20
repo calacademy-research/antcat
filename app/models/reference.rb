@@ -205,15 +205,14 @@ class Reference < ApplicationRecord
 
   ### end quarantine ###
 
-  def what_links_here return_true_or_false: false
-    References::WhatLinksHere[self, return_true_or_false: return_true_or_false]
+  def what_links_here predicate: false
+    References::WhatLinksHere[self, predicate: predicate]
   end
 
   private
     def check_not_referenced
       return unless has_any_references?
 
-      # TODO list which items
       errors.add :base, "This reference can't be deleted, as there are other references to it."
       false
     end
@@ -267,6 +266,6 @@ class Reference < ApplicationRecord
     end
 
     def has_any_references?
-      what_links_here return_true_or_false: true
+      what_links_here predicate: true
     end
 end

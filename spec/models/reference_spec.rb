@@ -404,7 +404,7 @@ describe Reference do
 
     it "calls `References::WhatLinksHere`" do
       expect(References::WhatLinksHere).to receive(:new)
-        .with(subject, return_true_or_false: false).and_call_original
+        .with(subject, predicate: false).and_call_original
       subject.what_links_here
     end
   end
