@@ -12,7 +12,8 @@ module DatabaseScripts
     end
 
     def render
-      results.to_json
+      return "Found no database issues." if cached_results.to_json == '[{"COUNT(*)":0}]'
+      cached_results.to_json
     end
   end
 end
