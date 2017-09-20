@@ -310,9 +310,9 @@ describe ReferenceDecorator do
   end
 
   describe "#format_italics" do
-    it "replaces asterisks and bars with italics" do
-      results = nil_decorator.send :format_italics, "|Hymenoptera| *Formicidae*".html_safe
-      expect(results).to eq "<i>Hymenoptera</i> <i>Formicidae</i>"
+    it "replaces asterisks with italics" do
+      results = nil_decorator.send :format_italics, "*Lasius* queen".html_safe
+      expect(results).to eq "<i>Lasius</i> queen"
       expect(results).to be_html_safe
     end
 

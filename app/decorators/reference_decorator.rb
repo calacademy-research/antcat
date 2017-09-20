@@ -126,7 +126,6 @@ class ReferenceDecorator < ApplicationDecorator
       return unless string
       raise "Can't call format_italics on an unsafe string" unless string.html_safe?
       string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
-      string = string.gsub /\|(.*?)\|/, '<i>\1</i>'
       string.html_safe
     end
 
