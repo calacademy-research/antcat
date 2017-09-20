@@ -30,4 +30,6 @@ description: >
       `joined = Protonym.joins(authorship: :reference)`
       `joined.where("references.year IS NOT NULL").count      # 24635`
       `joined.where("references.year IS NULL").count          # 16`
+
+tags: [regression-test]
 topic_areas: [references]
