@@ -79,11 +79,11 @@ describe ActivityDecorator do
 
   describe "#template_partial" do
     context "no `trackable_type`" do
-      let(:activity) { create :activity, trackable: nil, action: "approved_all" }
+      let(:activity) { create :activity, trackable: nil, action: "approve_all_changes" }
 
       it "returns the action" do
         expect(activity.decorate.send :template_partial)
-          .to eq "activities/templates/actions/approved_all"
+          .to eq "activities/templates/actions/approve_all_changes"
       end
     end
 
