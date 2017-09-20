@@ -15,7 +15,7 @@ class Activity < ActiveRecord::Base
 
   EDIT_SUMMARY_MAX_LENGTH = 255
 
-  self.per_page = 30
+  self.per_page = 30 # For `will_paginate`.
 
   belongs_to :trackable, polymorphic: true
   belongs_to :user

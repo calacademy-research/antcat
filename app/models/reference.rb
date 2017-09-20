@@ -1,5 +1,4 @@
 # TODO avoid `require`.
-# TODO consider moving callbacks and validators to a concern.
 # TODO exclude caches from PaperTrail.
 
 require_dependency 'references/reference_has_document'
@@ -127,7 +126,6 @@ class Reference < ApplicationRecord
     update_attribute :principal_author_last_name_cache, principal_author_last_name
   end
 
-  # TODO move to a callback.
   # Called by controller to parse an input string for author names and suffix
   # Returns hash of parse result, or adds to the reference's errors and raises
   def parse_author_names_and_suffix author_names_string

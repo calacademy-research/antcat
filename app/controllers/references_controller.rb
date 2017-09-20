@@ -24,8 +24,6 @@ class ReferencesController < ApplicationController
   def edit
   end
 
-  # We manually create activities for the feed in `#create, #update and #destroy`,
-  # or we may end up with tons of activities instead of one.
   def create
     @reference = new_reference
 

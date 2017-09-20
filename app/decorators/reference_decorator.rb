@@ -32,7 +32,6 @@ class ReferenceDecorator < ApplicationDecorator
     end
   end
 
-  # A.k.a. "FORMAT AS TEXT" + cached or recached
   # Formats the reference as plaintext (with the exception of <i> tags).
   # DB column: `references.formatted_cache`.
   def formatted
@@ -42,7 +41,6 @@ class ReferenceDecorator < ApplicationDecorator
     reference.set_cache generate_formatted, :formatted_cache
   end
 
-  # A.k.a. "FORMAT WITH HTML" + cached or recached
   # Formats the reference with HTML, CSS, etc.
   # DB column: `references.inline_citation_cache`.
   def inline_citation
@@ -130,7 +128,7 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     # TODO rename?
-    # TODO? store denormalized value in the database
+    # TODO store denormalized value in the database?
     def format_date input
       return input if input.size < 4
 
