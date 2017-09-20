@@ -57,6 +57,7 @@ class Reference < ApplicationRecord
     integer :year
     text    :author_names_string
     text    :citation_year
+    text    :doi, as: :doi
     text    :title
     text    :journal_name do journal.name if journal end
     text    :publisher_name do publisher.name if publisher end
@@ -67,9 +68,6 @@ class Reference < ApplicationRecord
     text    :taxonomic_notes
     string  :citation_year
     string  :author_names_string
-    # Tried adding DOI here, we get "NoMethodError: undefined method `doi' for #<MissingReference ...>"
-    # Missing references shouldn't have a DOI, I would think.
-    # TODO: Test searching for doi, see if that works?
   end
 
   def self.requires_title
