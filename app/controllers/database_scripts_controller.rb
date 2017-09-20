@@ -7,7 +7,9 @@ class DatabaseScriptsController < ApplicationController
   before_action :set_script, only: [:show, :source, :regenerate]
 
   def index
-    @scripts = DatabaseScript.all
+    @regression_tests, @other_scripts = DatabaseScript.all.partition do |script|
+      DatabaseScript::REGRESSION_TEST_TAG.in? script.tags
+    end
   end
 
   def show
