@@ -15,7 +15,7 @@ Feature: Compare revisions
     # Added item.
     When I go to the edit page for "Atta"
     And I add a history item "initial content"
-    And I wait for a bit
+    And I wait
     And I go to the activity feed
     And I follow the first linked history item
     Then I should see "This item does not have any previous revisions"

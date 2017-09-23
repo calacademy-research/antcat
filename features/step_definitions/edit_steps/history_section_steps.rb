@@ -64,6 +64,6 @@ When(/^I update the history item to say "([^"]*)"$/) do |text|
     And I click the history item
     And I edit the history item to "#{text}"
     And I save the history item
-    And I wait for a bit
+    And I wait
   }
 end

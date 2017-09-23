@@ -71,7 +71,7 @@ Feature: Feed (taxa)
       And I click the new species field
       And I set the new species field to "Camponotus alii"
       And I press "OK"
-      And I wait for a bit
+      And I wait
       And I press "Convert"
     Then I should be on the catalog page for "Camponotus alii dallatorei"
 

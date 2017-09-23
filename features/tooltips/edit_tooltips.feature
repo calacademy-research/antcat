@@ -57,7 +57,7 @@ Feature: Editing tooltips
       And I follow "Hide/show advanced"
       And I check "tooltip[key_enabled]"
     And I press "Create Tooltip"
-    And I wait for a bit
+    And I wait
     And I go to the tooltips test page
     And I hover the tooltip next to the text "Hardcoded"
     Then I should see the tooltip text "Text used in the tooltip"
@@ -71,9 +71,9 @@ Feature: Editing tooltips
     When I go to the tooltips test page
     Then I should not see the tooltip text "Typo oops"
 
-    And I wait for a bit
-    And I wait for a bit
-    And I wait for a bit
+    And I wait
+    And I wait
+    And I wait
 
     When I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "Typo oops"
@@ -83,7 +83,7 @@ Feature: Editing tooltips
     And I fill in "tooltip[text]" with "A title"
     And I press "Update Tooltip"
     And I go to the tooltips test page
-    And I wait for a bit
+    And I wait
     Then I should not see the tooltip text "Typo oops"
     And I should not see the tooltip text "A title"
 
@@ -107,7 +107,7 @@ Feature: Editing tooltips
       And I follow "Hide/show advanced"
       And I uncheck "tooltip[key_enabled]"
     And I press "Update Tooltip"
-    And I wait for a bit
+    And I wait
     And I go to the tooltips test page
     Then I should not see any tooltips next to the text "Hardcoded"
 
@@ -118,20 +118,20 @@ Feature: Editing tooltips
       | whatever | A title | li.title | true             | widget_tests  |
 
     When I go to the tooltips test page
-    And I wait for a bit
+    And I wait
 
-    And I wait for a bit
-    And I wait for a bit
+    And I wait
+    And I wait
     When I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "A title"
 
     When I go to the tooltips editing page
-    And I wait for a bit
+    And I wait
     And I follow "whatever"
     And I follow "Hide/show advanced"
     And I uncheck "tooltip[selector_enabled]"
     And I press "Update Tooltip"
-    And I wait for a bit
+    And I wait
     And I go to the tooltips test page
     Then I should not see any tooltips next to the element containing "Hook"
 
@@ -148,7 +148,7 @@ Feature: Editing tooltips
     And I fill in "tooltip[scope]" with "tooltips2"
     And I fill in "tooltip[text]" with "Text used in the tooltip"
     And I press "Create Tooltip"
-    And I wait for a bit
+    And I wait
     And I go to the tooltips editing page
     And I hover the tooltip next to the text "Tooltip text"
     Then I should not see the tooltip text "Text used in the tooltip"
