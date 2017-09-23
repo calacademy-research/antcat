@@ -1,6 +1,7 @@
 class AuthorsController < ApplicationController
   before_action :authenticate_editor, except: [:index, :show, :autocomplete]
   before_action :set_author, only: [:show, :edit]
+
   layout "references"
 
   def index

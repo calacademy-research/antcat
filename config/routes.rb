@@ -137,7 +137,7 @@ AntCat::Application.routes.draw do
     resource :convert_to_subspecies, only: [:new, :create]
   end
 
-  resource :default_reference, only: [:update]
+  resource :default_reference, only: :update
 
   get 'name_pickers/search'
 
@@ -147,8 +147,8 @@ AntCat::Application.routes.draw do
   get 'name_fields/find'
   get 'name_fields/:type/:id' => 'name_fields#show'
 
-  resource :reference_field, only: [:show]
-  resource :reference_popup, only: [:show]
+  resource :reference_field, only: :show
+  resource :reference_popup, only: :show
 
   devise_for :users
   resources :users, only: [:index, :show] do
@@ -183,7 +183,7 @@ AntCat::Application.routes.draw do
     # end
   end
 
-  resources :antweb_data, only: [:index]
+  resources :antweb_data, only: :index
 
   resources :feedback, only: [:index, :show, :create, :destroy] do
     collection do
@@ -221,7 +221,7 @@ AntCat::Application.routes.draw do
   # Shallow routes for the show action for the activity feed.
   resources :taxon_history_items, only: [:index, :show]
   resources :reference_sections, only: [:index, :show]
-  resources :synonyms, only: [:show]
+  resources :synonyms, only: :show
 
   resources :tooltips do
     collection do

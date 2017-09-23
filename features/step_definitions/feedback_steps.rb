@@ -29,8 +29,8 @@ Then(/^the (name|email|comment|page) field within the feedback form should conta
   expect(find("#feedback_#{field}").value).to include value
 end
 
-Given(/^I have already posted 3 feedbacks in the last 5 minutes$/) do
-  3.times { create :feedback }
+Given(/^I have already posted 5 feedbacks in the last 5 minutes$/) do
+  5.times { create :feedback }
 end
 
 Then(/^I pretend to be a bot by filling in the invisible work email field$/) do

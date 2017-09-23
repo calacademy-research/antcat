@@ -1,8 +1,8 @@
 class ActivitiesController < ApplicationController
   include HasWhereFilters
 
-  before_action :authenticate_superadmin, only: [:destroy]
-  before_action :set_activity, only: [:destroy]
+  before_action :authenticate_superadmin, only: :destroy
+  before_action :set_activity, only: :destroy
 
   has_filters(
     user_id: {

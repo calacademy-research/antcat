@@ -1,6 +1,6 @@
 class ChangesController < ApplicationController
   before_action :authenticate_editor, except: [:index, :show, :unreviewed]
-  before_action :authenticate_superadmin, only: [:approve_all]
+  before_action :authenticate_superadmin, only: :approve_all
   before_action :set_change, only: [:show, :approve]
 
   def index

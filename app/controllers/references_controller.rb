@@ -1,5 +1,5 @@
 class ReferencesController < ApplicationController
-  before_action :authenticate_editor, except: [:index, :autocomplete, :show]
+  before_action :authenticate_editor, except: [:index, :show, :autocomplete]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index

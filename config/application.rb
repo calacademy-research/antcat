@@ -36,12 +36,13 @@ module AntCat
     config.autoload_paths += Dir["#{config.root}/app/models/**/"]
     config.autoload_paths += Dir["#{config.root}/app/decorators/**/"]
     config.autoload_paths += Dir["#{config.root}/app/services/**/"]
-    config.autoload_paths += Dir["#{config.root}/lib/database_scripts/**/"]
-    config.autoload_paths += Dir["#{config.root}/lib/database_scripts/scripts/**/"]
 
     config.action_dispatch.cookies_serializer = :hybrid
-    # suppress deprecation warning
+
+    # Suppress deprecation warning.
+    # TODO remove after upgrading to Rails 5.
     config.active_record.raise_in_transactional_callbacks = true
+
     config.assets.enabled = true
   end
 end
