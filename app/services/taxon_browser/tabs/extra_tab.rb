@@ -1,8 +1,8 @@
 # `ExtraTab`s are used for things where calling `#children` would
 # not work or make sense. Everything here is a special case.
 
-module Catalog::TaxonBrowser::Tabs
-  class ExtraTab < Catalog::TaxonBrowser::Tab
+module TaxonBrowser::Tabs
+  class ExtraTab < TaxonBrowser::Tab
     def self.create taxon, display, taxon_browser
       return unless display.present?
 
