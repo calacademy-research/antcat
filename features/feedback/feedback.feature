@@ -90,7 +90,7 @@ Feature: Feedback
 
     When I click on the Feedback link
     And I press "Send Feedback"
-    Then I should see "you have already posted 3 feedbacks"
+    Then I should see "you have already posted 5 feedbacks"
     And I should not see "Message sent"
 
   Scenario: Registered users are not throttled

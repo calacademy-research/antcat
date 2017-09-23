@@ -1,5 +1,5 @@
 class ReferenceSectionsController < ApplicationController
-  before_action :authenticate_editor
+  before_action :authenticate_editor, except: :show
   before_action :set_reference_section, only: [:update, :destroy]
 
   def index

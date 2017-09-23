@@ -1,5 +1,5 @@
 class TaxonHistoryItemsController < ApplicationController
-  before_filter :authenticate_editor
+  before_action :authenticate_editor, except: :show
   before_action :set_taxon_history_item, only: [:update, :destroy]
 
   def index

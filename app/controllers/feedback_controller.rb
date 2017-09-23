@@ -92,12 +92,11 @@ class FeedbackController < ApplicationController
       request.remote_ip.in? BANNED_IPS
     end
 
-    # TODO be more generous. Throttling is only for combating spam.
     def maybe_rate_throttle
       return if current_user # Logged-in users are never throttled.
 
       timespan = 5.minutes.ago
-      max_feedbacks_in_timespan = 3
+      max_feedbacks_in_timespan = 5
 
       if @feedback.from_the_same_ip.recently_created(timespan)
           .count >= max_feedbacks_in_timespan
