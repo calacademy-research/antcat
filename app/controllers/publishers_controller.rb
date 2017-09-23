@@ -1,5 +1,5 @@
 class PublishersController < ApplicationController
   def autocomplete
-    render json: Autocomplete::Publishers[params[:term]]
+    render json: Autocomplete::AutocompletePublishers[params[:term]]
   end
 end

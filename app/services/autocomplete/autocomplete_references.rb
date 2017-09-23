@@ -1,5 +1,5 @@
 module Autocomplete
-  class References
+  class AutocompleteReferences
     include Service
 
     def initialize search_query

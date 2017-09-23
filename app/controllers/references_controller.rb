@@ -72,7 +72,7 @@ class ReferencesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::LinkableReferences[search_query]
+        render json: Autocomplete::AutocompleteLinkableReferences[search_query]
       end
     end
   end
@@ -82,7 +82,7 @@ class ReferencesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::References[search_query]
+        render json: Autocomplete::AutocompleteReferences[search_query]
       end
     end
   end

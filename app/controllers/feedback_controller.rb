@@ -72,7 +72,7 @@ class FeedbackController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::Feedbacks[search_query]
+        render json: Autocomplete::AutocompleteFeedbacks[search_query]
       end
     end
   end

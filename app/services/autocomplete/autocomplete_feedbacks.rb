@@ -1,5 +1,5 @@
 module Autocomplete
-  class Feedbacks
+  class AutocompleteFeedbacks
     include Service
 
     def initialize search_query

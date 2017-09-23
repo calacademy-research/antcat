@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Autocomplete::References do
+describe Autocomplete::AutocompleteReferences do
   describe "#format_autosuggest_keywords" do
     let!(:reference) { reference_factory author_name: 'E.O. Wilson' }
 

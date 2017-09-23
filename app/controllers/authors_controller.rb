@@ -19,7 +19,7 @@ class AuthorsController < ApplicationController
   def autocomplete
     respond_to do |format|
       format.json do
-        render json: Autocomplete::AuthorNames[params[:term]]
+        render json: Autocomplete::AutocompleteAuthorNames[params[:term]]
       end
     end
   end
