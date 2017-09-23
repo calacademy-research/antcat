@@ -15,6 +15,8 @@ class TaxonHistoryItemsController < ApplicationController
 
   def update
     @item.update_taxt_from_editable params[:taxt]
+    @item.create_activity(:update) if @item.errors.empty?
+
     render_json @item
   end
 
@@ -22,11 +24,15 @@ class TaxonHistoryItemsController < ApplicationController
     taxon = Taxon.find params[:taxa_id]
     UndoTracker.setup_change taxon, :create
     item = TaxonHistoryItem.create_taxt_from_editable taxon, params[:taxt]
+    item.create_activity(:create) if item.errors.empty?
+
     render_json item
   end
 
   def destroy
     @item.destroy
+    @item.create_activity :destroy
+
     render json: { success: true }
   end
 

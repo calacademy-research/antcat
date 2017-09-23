@@ -12,7 +12,7 @@ class TaxonHistoryItem < ActiveRecord::Base
   acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   has_primitive_search where: ->(search_type) { "taxt #{search_type} :q" }
-  tracked on: :all, parameters: proc { { taxon_id: taxon_id } }
+  tracked on: :mixin_create_activity_only, parameters: proc { { taxon_id: taxon_id } }
 
   def self.create_taxt_from_editable taxon, editable_taxt
     TaxonHistoryItem.create taxon: taxon, taxt: TaxtConverter[editable_taxt].from_editor_format

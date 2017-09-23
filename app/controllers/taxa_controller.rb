@@ -22,6 +22,8 @@ class TaxaController < ApplicationController
     @taxon = get_taxon_for_create
     save_taxon
 
+    @taxon.create_activity :create
+
     flash[:notice] = "Taxon was successfully added."
 
     show_add_another_species_link = @taxon.id && @taxon.is_a?(Species) && @taxon.genus
