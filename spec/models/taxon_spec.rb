@@ -10,6 +10,99 @@ describe Taxon do
   it { is_expected.to have_many :reference_sections }
   it { is_expected.to belong_to :type_name }
 
+  describe "scopes" do
+    let(:subfamily) { create :subfamily }
+
+    describe ".valid" do
+      it "only includes valid taxa" do
+        replacement = create :genus, subfamily: subfamily
+        homonym = create :genus,
+          homonym_replaced_by: replacement,
+          status: 'homonym',
+          subfamily: subfamily
+        create_synonym replacement, subfamily: subfamily
+
+        expect(subfamily.genera.valid).to eq [replacement]
+      end
+    end
+
+    describe ".extant" do
+      let!(:extant_genus) { create :genus, subfamily: subfamily }
+      before { create :genus, subfamily: subfamily, fossil: true }
+
+      it "only includes extant taxa" do
+        expect(subfamily.genera.extant).to eq [extant_genus]
+      end
+    end
+
+    describe ".self_join_on" do
+      let!(:atta) { create_genus "Atta", fossil: true }
+      let!(:atta_major) { create_species "Atta major", genus: atta }
+
+      it "handles self-referential condition" do
+        extant_with_fossil_parent = described_class.self_join_on(:genus)
+          .where(fossil: false, taxa_self_join_alias: { fossil: true })
+        expect(extant_with_fossil_parent.count).to eq 1
+        expect(extant_with_fossil_parent.first).to eq atta_major
+
+        # Make sure test case isn't playing tricks with us.
+        atta.update_columns fossil: false
+        expect(extant_with_fossil_parent.count).to eq 0
+      end
+    end
+
+    describe ".ranks and .exclude_ranks" do
+      before do
+        create :subfamily
+        create :genus
+        create :species
+        create :subspecies
+      end
+
+      def unique_ranks query
+        query.uniq.pluck(:type).sort
+      end
+
+      describe ".ranks" do
+        it "only returns taxa of the specified types" do
+          results = unique_ranks described_class.ranks(Species, Genus)
+          expect(results.sort).to eq ["Genus", "Species"]
+        end
+
+        it "handles symbols" do
+          expect(unique_ranks described_class.ranks(:species, :Genus))
+            .to eq ["Genus", "Species"]
+        end
+
+        it "handles strings" do
+          expect(unique_ranks described_class.ranks("Species", "genus"))
+            .to eq ["Genus", "Species"]
+        end
+
+        it "handles single items" do
+          expect(unique_ranks described_class.ranks("Species")).to eq ["Species"]
+        end
+      end
+
+      describe ".exclude_ranks" do
+        it "excludes taxa of the specified types" do
+          results = unique_ranks described_class.exclude_ranks(Species, Genus)
+          expected = unique_ranks(described_class) - ["Species", "Genus"]
+          expect(results).to eq expected
+        end
+      end
+    end
+
+    describe ".order_by_name_cache" do
+      let!(:zymacros) { create :subfamily, name: create(:name, name: 'Zymacros') }
+      let!(:atta) { create :subfamily, name: create(:name, name: 'Atta') }
+
+      it "orders by name" do
+        expect(described_class.order_by_name_cache).to eq [atta, zymacros]
+      end
+    end
+  end
+
   describe ".find_by_name" do
     it "returns nil if nothing matches" do
       expect(described_class.find_by_name('sdfsdf')).to eq nil
@@ -138,10 +231,10 @@ describe Taxon do
     end
 
     context "when a recombination in a different genus" do
-      it "surrounds it in parentheses" do
-        species = create_species 'Atta minor'
-        protonym_name = create_species_name 'Eciton minor'
+      let(:species) { create_species 'Atta minor' }
+      let(:protonym_name) { create_species_name 'Eciton minor' }
 
+      it "surrounds it in parentheses" do
         expect_any_instance_of(Reference)
           .to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
 
@@ -149,22 +242,24 @@ describe Taxon do
       end
     end
 
-    it "doesn't surround in parentheses, if the name simply differs" do
-      species = create_species 'Atta minor maxus'
-      protonym_name = create_subspecies_name 'Atta minor minus'
+    context "when the name simply differs" do
+      let(:species) { create_species 'Atta minor maxus' }
+      let(:protonym_name) { create_subspecies_name 'Atta minor minus' }
 
-      expect_any_instance_of(Reference)
-        .to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
+      it "doesn't surround in parentheses" do
+        expect_any_instance_of(Reference)
+          .to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
 
-      expect(species.protonym).to receive(:name).and_return protonym_name
-      expect(species.author_citation).to eq 'Bolton, 2005'
+        expect(species.protonym).to receive(:name).and_return protonym_name
+        expect(species.author_citation).to eq 'Bolton, 2005'
+      end
     end
 
     context "when there isn't a protonym authorship" do
-      it "handles it" do
-        species = create_species 'Atta minor maxus'
-        protonym_name = create_subspecies_name 'Eciton minor maxus'
+      let(:species) { create_species 'Atta minor maxus' }
+      let(:protonym_name) { create_subspecies_name 'Eciton minor maxus' }
 
+      it "handles it" do
         expect(species.protonym).to receive(:authorship).and_return nil
         expect(species.author_citation).to be_nil
       end
@@ -211,9 +306,10 @@ describe Taxon do
     end
 
     describe "#parent" do
-      context "when the taxon is a Family" do
+      context "when the taxon is a `Family`" do
+        let(:family) { create :family }
+
         it "returns nil" do
-          family = create :family
           expect(family.parent).to be_nil
         end
       end
@@ -269,99 +365,6 @@ describe Taxon do
       it "changes the cached name, etc., of a subspecies" do
         expect(subspecies.name_cache).to eq 'Eciton nigrus medius minor'
         expect(subspecies.name_html_cache).to eq '<i>Eciton nigrus medius minor</i>'
-      end
-    end
-  end
-
-  describe "scopes" do
-    let(:subfamily) { create :subfamily }
-
-    describe ".valid" do
-      it "only includes valid taxa" do
-        replacement = create :genus, subfamily: subfamily
-        homonym = create :genus,
-          homonym_replaced_by: replacement,
-          status: 'homonym',
-          subfamily: subfamily
-        create_synonym replacement, subfamily: subfamily
-
-        expect(subfamily.genera.valid).to eq [replacement]
-      end
-    end
-
-    describe ".extant" do
-      let!(:extant_genus) { create :genus, subfamily: subfamily }
-      before { create :genus, subfamily: subfamily, fossil: true }
-
-      it "only includes extant taxa" do
-        expect(subfamily.genera.extant).to eq [extant_genus]
-      end
-    end
-
-    describe ".self_join_on" do
-      let!(:atta) { create_genus "Atta", fossil: true }
-      let!(:atta_major) { create_species "Atta major", genus: atta }
-
-      it "handles self-referential condition" do
-        extant_with_fossil_parent = described_class.self_join_on(:genus)
-          .where(fossil: false, taxa_self_join_alias: { fossil: true })
-        expect(extant_with_fossil_parent.count).to eq 1
-        expect(extant_with_fossil_parent.first).to eq atta_major
-
-        # Make sure test case isn't playing tricks with us.
-        atta.update_columns fossil: false
-        expect(extant_with_fossil_parent.count).to eq 0
-      end
-    end
-
-    describe ".ranks and .exclude_ranks" do
-      before do
-        create :subfamily
-        create :genus
-        create :species
-        create :subspecies
-      end
-
-      def unique_ranks query
-        query.uniq.pluck(:type).sort
-      end
-
-      describe ".ranks" do
-        it "only returns taxa of the specified types" do
-          results = unique_ranks described_class.ranks(Species, Genus)
-          expect(results.sort).to eq ["Genus", "Species"]
-        end
-
-        it "handles symbols" do
-          expect(unique_ranks described_class.ranks(:species, :Genus))
-            .to eq ["Genus", "Species"]
-        end
-
-        it "handles strings" do
-          expect(unique_ranks described_class.ranks("Species", "genus"))
-            .to eq ["Genus", "Species"]
-        end
-
-        it "handles single items" do
-          expect(unique_ranks described_class.ranks("Species")).to eq ["Species"]
-        end
-      end
-
-      describe ".exclude_ranks" do
-        it "excludes taxa of the specified types" do
-          results = unique_ranks described_class.exclude_ranks(Species, Genus)
-          expected = unique_ranks(described_class) - ["Species", "Genus"]
-          expect(results).to eq expected
-        end
-      end
-    end
-
-    describe ".order_by_name_cache" do
-      let!(:zymacros) { create :subfamily, name: create(:name, name: 'Zymacros') }
-      let!(:atta) { create :subfamily, name: create(:name, name: 'Atta') }
-
-      it "orders by name" do
-        expect(described_class.order_by_name_cache).to eq [atta, zymacros]
       end
     end
   end

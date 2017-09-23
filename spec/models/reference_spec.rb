@@ -5,14 +5,12 @@ describe Reference do
   it { is_expected.to have_many :author_names }
   it { is_expected.to validate_presence_of :title }
 
-  let(:an_author_name) { create :author_name }
   let(:fisher) { create :author_name, name: 'Fisher' }
   let(:fisher_bl) { create :author_name, name: 'Fisher, B.L.' }
   let(:ward_ps) { create :author_name, name: 'Ward, P.S.' }
-  let(:bolton_b) { create :author_name, name: 'Bolton, B.' }
 
   describe "relationships" do
-    describe "Nested references" do
+    describe "nested references" do
       let!(:nesting_reference) { create :reference }
       let!(:nestee) { create :nested_reference, nesting_reference: nesting_reference }
 
@@ -28,6 +26,8 @@ describe Reference do
   end
 
   describe "scopes" do
+    let(:bolton_b) { create :author_name, name: 'Bolton, B.' }
+
     describe ".sorted_by_principal_author_last_name" do
       let!(:bolton_reference) { create :article_reference, author_names: [bolton_b, ward_ps] }
       let!(:ward_reference) { create :article_reference, author_names: [ward_ps, bolton_b] }
@@ -43,9 +43,9 @@ describe Reference do
       let!(:possible_reference) { create :article_reference, author_names: [ward_ps, fisher_bl] }
 
       before do
-        create :book_reference, author_names: [bolton_b] # not possible reference
+        create :book_reference, author_names: [bolton_b] # Not possible reference.
 
-        # another possible reference
+        # Another possible reference.
         create :article_reference, author_names: [create(:author_name, name: 'Warden, J.')]
       end
 
@@ -94,7 +94,7 @@ describe Reference do
   end
 
   describe ".solr_search", search: true do
-    # Throw in a MissingReference to make sure it's not returned.
+    # Throw in a `MissingReference` to make sure it's not returned.
     before { create :missing_reference }
 
     it "returns an empty array if nothing is found for author_name" do
@@ -143,9 +143,7 @@ describe Reference do
       reference_factory author_name: 'Bolton', citation_year: '2010'
       Sunspot.commit
 
-      expect(described_class.solr_search {
-        keywords '2010b'
-      }.results).to eq [with_letter]
+      expect(described_class.solr_search { keywords '2010b' }.results).to eq [with_letter]
     end
   end
 
@@ -201,34 +199,37 @@ describe Reference do
       let(:reference) { create :reference, author_names: [fisher_bl] }
 
       context "when an author_name is added" do
-        it "updates its author_names_string" do
-          reference.author_names << ward_ps
+        before { reference.author_names << ward_ps }
+
+        it "updates its `author_names_string`" do
           expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
         end
       end
 
       context "when an author_name is removed" do
-        it "updates its author_names_string" do
-          reference.author_names << ward_ps
-          expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
-          reference.author_names.delete ward_ps
-          expect(reference.author_names_string).to eq 'Fisher, B.L.'
+        before { reference.author_names << ward_ps }
+
+        it "updates its `author_names_string`" do
+          expect { reference.author_names.delete ward_ps }
+            .to change { reference.reload.author_names_string }
+            .from('Fisher, B.L.; Ward, P.S.').to('Fisher, B.L.')
         end
       end
 
       context "when an author_name's name is changed" do
-        it "updates its author_names_string" do
-          reference.author_names = [ward_ps]
-          expect(reference.author_names_string).to eq 'Ward, P.S.'
-          ward_ps.update_attribute :name, 'Fisher'
-          expect(reference.reload.author_names_string).to eq 'Fisher'
+        before { reference.author_names = [ward_ps] }
+
+        it "updates its `author_names_string`" do
+          expect { ward_ps.update name: 'Fisher' }
+            .to change { reference.reload.author_names_string }
+            .from('Ward, P.S.').to('Fisher')
         end
       end
 
-      context "when the author_names_suffix changes" do
-        it "updates its author_names_string" do
-          reference.author_names_suffix = ' (eds.)'
-          reference.save
+      context "when `author_names_suffix` changes" do
+        before { reference.update author_names_suffix: ' (eds.)' }
+
+        it "updates its `author_names_string`" do
           expect(reference.reload.author_names_string).to eq 'Fisher, B.L. (eds.)'
         end
       end
@@ -261,39 +262,42 @@ describe Reference do
     context "when an author_name's name is changed" do
       let!(:reference) { create :reference, author_names: [ward_ps] }
 
-      it "updates its author_names_string" do
-        ward_ps.update name: 'Bolton, B.'
-        expect(reference.reload.principal_author_last_name).to eq 'Bolton'
+      it "updates its `author_names_string`" do
+        expect { ward_ps.update name: 'Bolton, B.' }
+          .to change { reference.reload.principal_author_last_name }.from('Ward').to('Bolton')
       end
     end
 
-    it "should be possible to read from, aliased to principal_author_last_name_cache" do
+    it "should be possible to read from, aliased to `principal_author_last_name_cache`" do
       reference = create :reference
       reference.principal_author_last_name_cache = 'foo'
       expect(reference.principal_author_last_name).to eq 'foo'
     end
   end
 
-  describe "changing the citation year" do
-    it "changes the year" do
-      reference = create :reference, citation_year: '1910a'
-      expect(reference.year).to eq 1910
-      reference.citation_year = '2010b'
-      reference.save!
-      expect(reference.year).to eq 2010
+  describe "changing `citation_year`" do
+    context 'when `citation_year` contains a letter' do
+      let(:reference) { create :reference, citation_year: '1910a' }
+
+      it "sets `year` to the stated year, if present" do
+        expect { reference.update! citation_year: '2010b' }
+          .to change { reference.reload.year }.from(1910).to(2010)
+      end
     end
 
-    it "sets the year to the stated year, if present" do
-      reference = create :reference, citation_year: '1910a ["1958"]'
-      expect(reference.year).to eq 1958
-      reference.citation_year = '2010b'
-      reference.save!
-      expect(reference.year).to eq 2010
+    context 'when `citation_year` contains a bracketed year' do
+      let(:reference) { create :reference, citation_year: '1910a ["1958"]' }
+
+      it "sets `year` to the stated year, if present" do
+        expect { reference.update! citation_year: '2010b ["2009"]' }
+          .to change { reference.reload.year }.from(1958).to(2009)
+      end
     end
 
-    it "handles nil years" do
-      reference = reference_factory author_name: 'Bolton', citation_year: nil
-      expect(reference.short_citation_year).to eq "[no year]"
+    context 'when `citation_year` is nil' do
+      let(:reference) { reference_factory author_name: 'Bolton', citation_year: nil }
+
+      specify { expect(reference.short_citation_year).to eq "[no year]" }
     end
   end
 
@@ -328,14 +332,13 @@ describe Reference do
     end
 
     it "doesn't truncate long fields" do
-      described_class.create! author_names: [an_author_name],
+      reference = described_class.create! author_names: [create(:author_name)],
         editor_notes: 'e' * 1000,
         citation: 'c' * 2000,
         public_notes: 'n' * 1500,
         taxonomic_notes: 't' * 1700,
         title: 't' * 1900,
         citation_year: '2010'
-      reference = described_class.first
 
       expect(reference.citation.size).to eq 2000
       expect(reference.editor_notes.size).to eq 1000
