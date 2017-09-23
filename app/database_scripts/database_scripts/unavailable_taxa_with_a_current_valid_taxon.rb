@@ -7,4 +7,5 @@ module DatabaseScripts
 end
 
 __END__
+tags: [regression-test]
 topic_areas: [catalog]
