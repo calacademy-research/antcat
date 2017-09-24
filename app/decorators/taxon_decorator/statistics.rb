@@ -17,15 +17,17 @@ class TaxonDecorator::Statistics
     return '' unless @statistics.present?
 
     strings = [:extant, :fossil].reduce({}) do |strings, extant_or_fossil|
-      extant_or_fossil_statistics = @statistics[extant_or_fossil]
-      if extant_or_fossil_statistics
+      extant_or_fossil_stats = @statistics[extant_or_fossil]
+
+      if extant_or_fossil_stats
         string = [:subfamilies, :tribes, :genera, :species, :subspecies].reduce([]) do |rank_strings, rank|
-          string = rank_statistics(extant_or_fossil_statistics, rank)
+          string = rank_statistics(extant_or_fossil_stats, rank)
           rank_strings << string if string.present?
           rank_strings
         end.join ', '
         strings[extant_or_fossil] = string
       end
+
       strings
     end
 
@@ -49,14 +51,14 @@ class TaxonDecorator::Statistics
   private
     attr_reader :include_invalid, :include_fossil
 
-    def rank_statistics statistics, rank
-      statistics = statistics[rank]
-      return unless statistics
+    def rank_statistics extant_or_fossil_stats, rank
+      rank_stats = extant_or_fossil_stats[rank]
+      return unless rank_stats
 
-      valid_string = valid_statistics statistics, rank
+      valid_string = valid_statistics rank_stats, rank
       return valid_string unless include_invalid
 
-      invalid_string = invalid_statistics statistics
+      invalid_string = invalid_statistics rank_stats
       if invalid_string && valid_string.blank?
         valid_string = "0 valid #{rank}"
       end
@@ -64,21 +66,21 @@ class TaxonDecorator::Statistics
       [valid_string, invalid_string].compact.join ' '
     end
 
-    def valid_statistics statistics, rank
-      return unless statistics['valid']
+    def valid_statistics rank_stats, rank
+      return unless rank_stats['valid']
 
-      string = rank_status_count(rank, 'valid', statistics['valid'], include_invalid)
-      statistics.delete 'valid'
+      string = rank_status_count(rank, 'valid', rank_stats['valid'], include_invalid)
+      rank_stats.delete 'valid'
       string
     end
 
-    def invalid_statistics statistics
-      sorted_keys = statistics.keys.sort_by do |key|
+    def invalid_statistics rank_stats
+      sorted_keys = rank_stats.keys.sort_by do |key|
         Status.ordered_statuses.index key
       end
 
       status_strings = sorted_keys.map do |status|
-        rank_status_count(:genera, status, statistics[status])
+        rank_status_count(:genera, status, rank_stats[status])
       end
 
       if status_strings.present?
