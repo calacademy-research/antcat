@@ -3,7 +3,6 @@ class NestedReferenceDecorator < ReferenceDecorator
 
   private
     def format_citation
-      citation = "#{h reference.pages_in} #{reference.nesting_reference.decorate.formatted}"
-      format_italics citation.html_safe
+      "#{h reference.pages_in} #{reference.nesting_reference.decorate.formatted}".html_safe
     end
 end

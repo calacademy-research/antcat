@@ -250,7 +250,7 @@ describe ReferenceDecorator do
           citation_year: '2010',
           citation: 'Ants <i>et al.</i>',
           title: 'Tapinoma'
-        expect(reference.decorate.formatted).to eq "2010. Tapinoma. Ants <i>et al.</i>"
+        expect(reference.decorate.formatted).to eq "2010. Tapinoma. Ants <i>et al.</i>."
       end
     end
   end
