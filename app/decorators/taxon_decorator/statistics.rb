@@ -21,10 +21,8 @@ class TaxonDecorator::Statistics
 
       if extant_or_fossil_stats
         string = [:subfamilies, :tribes, :genera, :species, :subspecies].reduce([]) do |rank_strings, rank|
-          string = rank_statistics(extant_or_fossil_stats, rank)
-          rank_strings << string if string.present?
-          rank_strings
-        end.join ', '
+          rank_strings << rank_statistics(extant_or_fossil_stats[rank], rank)
+        end.compact.join(', ')
         strings[extant_or_fossil] = string
       end
 
@@ -51,11 +49,10 @@ class TaxonDecorator::Statistics
   private
     attr_reader :include_invalid, :include_fossil
 
-    def rank_statistics extant_or_fossil_stats, rank
-      rank_stats = extant_or_fossil_stats[rank]
+    def rank_statistics rank_stats, rank
       return unless rank_stats
 
-      valid_string = valid_statistics rank_stats, rank
+      valid_string = valid_statistics rank_stats.delete('valid'), rank
       return valid_string unless include_invalid
 
       invalid_string = invalid_statistics rank_stats
@@ -66,12 +63,9 @@ class TaxonDecorator::Statistics
       [valid_string, invalid_string].compact.join ' '
     end
 
-    def valid_statistics rank_stats, rank
-      return unless rank_stats['valid']
-
-      string = rank_status_count(rank, 'valid', rank_stats['valid'], include_invalid)
-      rank_stats.delete 'valid'
-      string
+    def valid_statistics valid_rank_stats, rank
+      return unless valid_rank_stats
+      rank_status_count(rank, 'valid', valid_rank_stats, include_invalid)
     end
 
     def invalid_statistics rank_stats
