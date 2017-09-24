@@ -6,7 +6,8 @@
   -if taxon.waiting?
     %span.review_state This taxon has been changed; changes awaiting approval
 
-=render "statistics", taxon: taxon
+.small-margin-bottom
+  =render "statistics", taxon: taxon
 
 -if taxon.genus_species_header_notes_taxt.present?
   =TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html
@@ -14,14 +15,15 @@
 =taxon.decorate.headline
 
 -if taxon.history_items.present?
-  %ul.history
+  %ul.history.small-margin-bottom
     -taxon.history_items.each do |history_item|
       %li
         =add_period_if_necessary TaxtPresenter[history_item.taxt].to_html
         -if current_user
           %small.show-on-hover=link_to "History", taxon_history_item_path(history_item), class: "btn-normal btn-tiny"
 
-=taxon.decorate.child_lists
+.small-margin-bottom
+  =taxon.decorate.child_lists
 
 -# Special case because the root view pulls in too much data.
 -if action_name == "index"

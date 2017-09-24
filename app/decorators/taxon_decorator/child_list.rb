@@ -1,3 +1,5 @@
+# TODO make this just fetch the taxa, and render the HTML somewhere else.
+
 class TaxonDecorator::ChildList
   include ActionView::Helpers
   include ActionView::Context
