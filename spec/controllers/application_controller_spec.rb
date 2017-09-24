@@ -9,7 +9,7 @@ describe ApplicationController do
   end
 
   describe "Authorization" do
-    context "not signed in" do
+    context "when not signed in" do
       before { get :index }
 
       it "defaults user right to nil" do
@@ -20,7 +20,7 @@ describe ApplicationController do
       end
     end
 
-    context "signed in as an editor" do
+    context "when signed in as an editor" do
       let!(:editor) { create :editor }
 
       before do
@@ -40,7 +40,7 @@ describe ApplicationController do
       end
     end
 
-    context "signed in as a superadmin" do
+    context "when signed in as a superadmin" do
       let!(:superadmin) { create :user, is_superadmin: true }
 
       before do
@@ -71,7 +71,7 @@ describe ApplicationController do
   end
 
   describe "#set_user_for_feed" do
-    context "signed in" do
+    context "when signed in" do
       let(:user) { create :user }
 
       before { sign_in user }
@@ -82,7 +82,7 @@ describe ApplicationController do
       end
     end
 
-    context "not signed in" do
+    context "when not signed in" do
       it "returns nil without blowing up" do
         get :index
         expect(User.current).to eq nil

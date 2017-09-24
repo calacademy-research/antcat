@@ -328,7 +328,7 @@ describe Taxon do
       expect(subspecies.species).to eq old_parent
     end
 
-    context "new parent is same as old parent" do
+    context "when new parent is same as old parent" do
       before { subspecies.update_parent old_parent }
 
       it "does nothing if the parent doesn't actually change" do
@@ -337,7 +337,7 @@ describe Taxon do
       end
     end
 
-    context "new parent is not same as old aprent" do
+    context "when new parent is not same as old aprent" do
       before { subspecies.update_parent new_parent }
 
       it "changes the species of a subspecies" do

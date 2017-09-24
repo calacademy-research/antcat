@@ -40,8 +40,8 @@ describe SubspeciesName do
       expect(subspecies_name.epithets).to eq 'niger minor medii'
     end
 
-    context "name already exists" do
-      context "name is used by a different taxon" do
+    context "when name already exists" do
+      context "when name is used by a different taxon" do
         it "raises" do
           existing_subspecies_name = described_class.create! name: 'Eciton niger minor',
             epithet: 'minor', epithets: 'niger minor'
@@ -57,7 +57,7 @@ describe SubspeciesName do
         end
       end
 
-      context "name is an orphan" do
+      context "when name is an orphan" do
         it "doesn't raise" do
           orphan_subspecies_name = described_class.create! name: 'Eciton niger minor',
             epithet: 'minor', epithets: 'niger minor'

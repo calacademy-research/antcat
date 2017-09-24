@@ -28,7 +28,7 @@ describe Exporters::Antweb::InlineCitation do
         end
       end
 
-      context "PDF is available to the user" do
+      context "when PDF is available to the user" do
         it "includes the PDF link" do
           allow(reference).to receive(:downloadable?).and_return true
 

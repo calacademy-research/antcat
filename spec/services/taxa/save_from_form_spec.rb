@@ -196,7 +196,7 @@ describe Taxa::SaveFromForm do
       let!(:tribe) { Taxon.find genus.tribe.id }
       let!(:subfamily) { Taxon.find species.subfamily.id }
 
-      context "taxon is the `save_initiator`" do
+      context "when taxon is the `save_initiator`" do
         it "saves the children" do
           # Save these:
           expect_any_instance_of(Genus).to receive(:save!).and_call_original

@@ -66,7 +66,7 @@ describe User do
     let(:notifier) { create :user }
     let(:issue) { create :issue }
 
-    context "user and notifier are the same" do
+    context "when user and notifier are the same" do
       it "doesn't create a notification" do
         expect do
           user.notify_because :mentioned_in_thing, attached: issue, notifier: user
@@ -74,7 +74,7 @@ describe User do
       end
     end
 
-    context "user has already been notified for that attached/notifier combination" do
+    context "when user has already been notified for that attached/notifier combination" do
       it "doesn't create a notification" do
         user.notify_because :mentioned_in_thing, attached: issue, notifier: notifier
 
