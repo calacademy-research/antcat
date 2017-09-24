@@ -122,6 +122,7 @@ class Reference < ApplicationRecord
   # There's also ` author_names_string=` which sets `author_names_string_cache`.
   def refresh_author_names_caches(*)
     string, principal_author_last_name = make_author_names_caches
+    # TODO only update once.
     update_attribute :author_names_string_cache, string
     update_attribute :principal_author_last_name_cache, principal_author_last_name
   end
