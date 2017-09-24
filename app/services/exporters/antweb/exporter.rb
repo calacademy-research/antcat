@@ -22,11 +22,6 @@ class Exporters::Antweb::Exporter
     Progress.init show_progress, Taxon.count
   end
 
-  def export_one id
-    taxa = Taxon.find id
-    puts export_taxon taxa
-  end
-
   def export directory
     File.open("#{directory}/antcat.antweb.txt", 'w') do |file|
       file.puts header
