@@ -1,6 +1,7 @@
 module References
   class SearchController < ApplicationController
     before_action :redirect_if_search_matches_id, only: :index
+
     layout "references"
 
     def index

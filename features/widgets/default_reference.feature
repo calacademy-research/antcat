@@ -19,8 +19,8 @@ Feature: Using the default reference
     Given the default reference is "Ward 2010"
 
     When I go to the reference popup widget test page
-    And I wait for a bit
-    And I wait for a bit
+    And I wait
+    And I wait
     And I press "Ward, 2010"
     Then the current reference should be "Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
 
@@ -28,7 +28,7 @@ Feature: Using the default reference
     Given there is no default reference
 
     When I go to the reference popup widget test page
-    And I wait for a bit
+    And I wait
     Then I should not see the default reference button
 
   Scenario: Seeing the default reference button on the taxt editor
@@ -54,6 +54,6 @@ Feature: Using the default reference
     When I go to the reference field test page
     And I click the reference field
     And I press "Ward, 2010"
-    And I wait for a bit
+    And I wait
     And I press "Cancel"
     Then the authorship field should contain "(none)"

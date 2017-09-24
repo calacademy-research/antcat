@@ -27,7 +27,7 @@ Feature: Feed (synonyms)
     When I go to the edit page for "Eciton minor"
       And I will confirm on the next step
       And I click "Delete" beside the first junior synonym
-      And I wait for a bit
+      And I wait
     And I go to the activity feed
     Then I should see "Archibald deleted the synonym relationship Atta major (junior)" and no other feed items
     And I should see "Eciton minor (senior)"

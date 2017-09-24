@@ -1,5 +1,5 @@
 module Autocomplete
-  class Taxa
+  class AutocompleteTaxa
     include Service
 
     def initialize search_query
@@ -19,7 +19,6 @@ module Autocomplete
 
     private
       attr_reader :search_query
-
 
       def search_results
         exact_id_match || Taxon.where("name_cache LIKE ?", "%#{search_query}%")

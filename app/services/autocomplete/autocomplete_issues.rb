@@ -1,5 +1,5 @@
 module Autocomplete
-  class Issues
+  class AutocompleteIssues
     include Service
 
     def initialize search_query

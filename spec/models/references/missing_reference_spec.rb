@@ -10,7 +10,7 @@ describe MissingReference do
       expect(reference.keey).to be_html_safe
     end
 
-    context "no citation_year" do
+    context "when no citation_year" do
       before { reference.citation_year = nil }
 
       it "handles it" do
@@ -18,14 +18,14 @@ describe MissingReference do
       end
     end
 
-    context "there is a citation_year" do
+    context "when there is a citation_year" do
       before { reference.citation_year = 2000 }
 
       it "includes the year" do
         expect(reference.keey).to eq "citation, 2000"
       end
 
-      context "citation contains a year" do
+      context "when citation contains a year" do
         before { reference.citation = "citation 1999a" }
 
         it "uses the citation only" do

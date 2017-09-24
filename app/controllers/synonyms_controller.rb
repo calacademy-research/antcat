@@ -1,5 +1,5 @@
 class SynonymsController < ApplicationController
-  before_action :authenticate_editor, except: [:show]
+  before_action :authenticate_editor, except: :show
   before_action :set_synonym, only: [:show, :destroy, :reverse_synonymy]
 
   def show

@@ -1,6 +1,7 @@
 class JournalsController < ApplicationController
   before_action :authenticate_editor, except: [:index, :show, :autocomplete]
   before_action :set_journal, only: [:show, :edit, :update, :destroy]
+
   layout "references"
 
   def index
@@ -54,7 +55,7 @@ class JournalsController < ApplicationController
     search_query = params[:term] || '' # TODO standardize all "q/qq/query/term".
 
     respond_to do |format|
-      format.json { render json: Autocomplete::Journals[search_query] }
+      format.json { render json: Autocomplete::AutocompleteJournals[search_query] }
     end
   end
 
@@ -65,7 +66,7 @@ class JournalsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::LinkableJournals[search_query]
+        render json: Autocomplete::AutocompleteLinkableJournals[search_query]
       end
     end
   end

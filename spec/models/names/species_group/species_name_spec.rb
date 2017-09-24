@@ -12,8 +12,8 @@ describe SpeciesName do
       expect(species_name.epithet).to eq 'major'
     end
 
-    context "name already exists" do
-      context "name is used by a different taxon" do
+    context "when name already exists" do
+      context "when name is used by a different taxon" do
         let!(:species_name) { described_class.create! name: 'Atta major', epithet: 'major' }
         let!(:genus_name) { GenusName.create! name: 'Eciton', epithet: 'Eciton' }
 
@@ -29,7 +29,7 @@ describe SpeciesName do
         end
       end
 
-      context "name is an orphan" do
+      context "when name is an orphan" do
         let!(:species_name) { described_class.create! name: 'Atta minor', epithet: 'minor' }
         let!(:genus_name) { GenusName.create! name: 'Eciton', epithet: 'Eciton' }
 

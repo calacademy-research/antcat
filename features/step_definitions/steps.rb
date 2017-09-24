@@ -127,7 +127,7 @@ And('I will confirm on the next step') do
   end
 end
 
-When(/I wait for a bit(?: more)?/) do
+When(/^I wait$/) do
   sleep 1
 end
 

@@ -31,7 +31,7 @@ Feature: Name popup
     Then I should see "Do you want to add the name Atta wildensis? You can attach it to a taxon later, if desired."
 
     When I press "Add this name"
-    And I wait for a bit
+    And I wait
     Then in the results section I should see the id for the name "Atta wildensis"
     And in the results section I should see the editable taxt for the name "Atta wildensis"
 

@@ -17,7 +17,7 @@ Feature: Editing references sections
     When I click the reference section
     And I fill in the references field with "(none)"
     And I save the reference section
-    And I wait for a bit
+    And I wait
     Then I should not see "Original reference"
     And the reference section should be "(none)"
 
@@ -41,7 +41,7 @@ Feature: Editing references sections
 
     When I fill in the references field with "New reference"
     And I save the reference section
-    And I wait for a bit
+    And I wait
     Then the reference section should be "New reference"
 
   Scenario: Adding a reference section, but cancelling

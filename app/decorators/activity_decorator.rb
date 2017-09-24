@@ -34,6 +34,7 @@ class ActivityDecorator < Draper::Decorator
     css_classes = []
     css_classes << activity.trackable_type.underscore.downcase if activity.trackable_type
     css_classes << activity.action if activity.action
+    css_classes << :automated_edit if activity.automated_edit?
     helpers.antcat_icon css_classes
   end
 

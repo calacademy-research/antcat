@@ -1,6 +1,6 @@
 # This class is responsibe for preparing all tabs for `_taxon_browser.haml`.
 
-module Catalog::TaxonBrowser
+module TaxonBrowser
   class Browser
     attr_reader :tabs, :display
 

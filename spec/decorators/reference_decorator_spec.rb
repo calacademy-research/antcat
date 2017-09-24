@@ -310,13 +310,13 @@ describe ReferenceDecorator do
   end
 
   describe "#format_italics" do
-    it "replaces asterisks and bars with italics" do
-      results = nil_decorator.send :format_italics, "|Hymenoptera| *Formicidae*".html_safe
-      expect(results).to eq "<i>Hymenoptera</i> <i>Formicidae</i>"
+    it "replaces asterisks with italics" do
+      results = nil_decorator.send :format_italics, "*Lasius* queen".html_safe
+      expect(results).to eq "<i>Lasius</i> queen"
       expect(results).to be_html_safe
     end
 
-    context "string isn't html_safe" do
+    context "when string isn't html_safe" do
       it "raises" do
         expect { nil_decorator.send :format_italics, 'roman' }
           .to raise_error "Can't call format_italics on an unsafe string"
@@ -325,7 +325,7 @@ describe ReferenceDecorator do
   end
 
   describe "#inline_citation" do
-    context "a MissingReference" do
+    context "a `MissingReference`" do
       let(:reference) { create :missing_reference, citation: 'foo' }
 
       it "just outputs the citation" do

@@ -177,7 +177,7 @@ Feature: Changing parent genus, species, tribe or subfamily
 
     When I press "Yes, create new combination"
     And I save my changes
-    And I wait for a bit
+    And I wait
 
     # Change parent from B -> C
 
@@ -241,7 +241,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     When I go to the catalog page for "Eciton major"
     And I follow "Edit"
     And I follow "Add subspecies"
-    And I wait for a bit
+    And I wait
     Then I should be on the new taxon page
     And I should not see the parent name field
 
@@ -266,7 +266,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I click the parent name field
     And I set the parent name to "Ecitoni"
     And I press "OK"
-    And I wait for a bit
+    And I wait
     And I save my changes
     And I follow " tribes"
     Then I should be on the catalog page for "Atta"

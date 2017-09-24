@@ -1,5 +1,5 @@
 class ReferencesController < ApplicationController
-  before_action :authenticate_editor, except: [:index, :autocomplete, :show]
+  before_action :authenticate_editor, except: [:index, :show, :autocomplete]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -24,8 +24,6 @@ class ReferencesController < ApplicationController
   def edit
   end
 
-  # We manually create activities for the feed in `#create, #update and #destroy`,
-  # or we may end up with tons of activities instead of one.
   def create
     @reference = new_reference
 
@@ -74,7 +72,7 @@ class ReferencesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::LinkableReferences[search_query]
+        render json: Autocomplete::AutocompleteLinkableReferences[search_query]
       end
     end
   end
@@ -84,7 +82,7 @@ class ReferencesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::References[search_query]
+        render json: Autocomplete::AutocompleteReferences[search_query]
       end
     end
   end

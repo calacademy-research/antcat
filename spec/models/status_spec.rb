@@ -8,14 +8,14 @@ describe Status do
     end
   end
 
-  # Select box options
   describe ".options_for_select" do
-    it "includes the option 'valid'" do
-      expect(described_class.options_for_select.map(&:first).include?('valid')).to be_truthy
-    end
-
-    it "doesn't include the option 'nonsense'" do
-      expect(described_class.options_for_select.map(&:first).include?('nonsense')).to be_falsey
+    specify do
+      expect(described_class.options_for_select.map(&:first)).to eq [
+        "valid", "synonym", "homonym", "unidentifiable", "unavailable",
+        "excluded from Formicidae", "original combination", "collective group name",
+        "obsolete combination", "unavailable misspelling", "nonconforming synonym",
+        "unavailable uncategorized"
+      ]
     end
   end
 end

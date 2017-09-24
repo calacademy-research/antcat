@@ -1,6 +1,7 @@
 class AuthorsController < ApplicationController
   before_action :authenticate_editor, except: [:index, :show, :autocomplete]
   before_action :set_author, only: [:show, :edit]
+
   layout "references"
 
   def index
@@ -19,7 +20,7 @@ class AuthorsController < ApplicationController
   def autocomplete
     respond_to do |format|
       format.json do
-        render json: Autocomplete::AuthorNames[params[:term]]
+        render json: Autocomplete::AutocompleteAuthorNames[params[:term]]
       end
     end
   end

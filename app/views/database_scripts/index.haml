@@ -24,17 +24,22 @@
           =link_to "Comma-Separated Values", "https://en.wikipedia.org/wiki/Comma-separated_values"
         CSV exports are currently not cached.
 
-%table.tablesorter
-  %thead
-    %tr
-      %th Topic area
-      %th Script
-      %th Tags
-      %th Cached
-  %tbody
-    -@scripts.each do |script|
+      %p
+        =DatabaseScript.decorate_class.format_tags [DatabaseScript::REGRESSION_TEST_TAG]
+        indicates that the script is related to something we used to have an issue with, and we just want to make sure no new similar issues appear. Most of these should be empty.
+
+-[@other_scripts, @regression_tests].each do |scripts|
+  %table.tablesorter.margin-bottom
+    %thead
       %tr
-        %td.shrink=script.decorate.format_topic_areas
-        %td=link_to script.title, database_script_path(script)
-        %td=script.decorate.format_tags
-        %td=script.decorate.cached_when
+        %th Topic area
+        %th Script
+        %th Tags
+        %th Cached
+    %tbody
+      -scripts.each do |script|
+        %tr
+          %td.shrink=script.decorate.format_topic_areas
+          %td=link_to script.title, database_script_path(script)
+          %td=script.decorate.format_tags
+          %td=script.decorate.cached_when

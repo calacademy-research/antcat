@@ -3,9 +3,9 @@
 
 class SiteNoticesController < ApplicationController
   before_action :authenticate_editor
-  before_action :authenticate_superadmin, only: [:destroy]
+  before_action :authenticate_superadmin, only: :destroy
   before_action :set_site_notice, only: [:show, :edit, :update, :destroy]
-  before_action :mark_as_read, only: [:show]
+  before_action :mark_as_read, only: :show
 
   def index
     @site_notices = SiteNotice.order_by_date.paginate(page: params[:page], per_page: 10)

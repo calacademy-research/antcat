@@ -19,7 +19,7 @@ module TaxonBrowserHelper
       class: "btn-normal btn-tiny load-tab", data: { tab_id: tab.id }
   end
 
-  # TODO try to move part of this to `Catalog::TaxonBrowser`.
+  # TODO try to move part of this to `TaxonBrowser`.
   # Some taxon tabs should have links to extra tabs.
   def links_to_extra_tabs selected
     links = []

@@ -8,8 +8,8 @@ describe TaxonHistoryItem do
   describe "#update_taxt_from_editable" do
     let(:item) { create :taxon_history_item }
 
-    context "on blank input" do
-      it "is invalid and has errors without blowing up" do
+    context "when input is blank" do
+      it "is invalid and has errors" do
         item.update_taxt_from_editable ''
         expect(item.errors).not_to be_empty
         expect(item.taxt).to eq ''
@@ -32,10 +32,11 @@ describe TaxonHistoryItem do
       expect(item.reload.taxt).to eq "{ref #{reference.id}}, also {ref #{other_reference.id}}"
     end
 
-    it "has errors if a reference isn't found" do
-      expect(item.errors).to be_empty
-      item.update_taxt_from_editable '{123}'
-      expect(item.errors).not_to be_empty
+    context "when a reference isn't found" do
+      it "adds an error" do
+        expect { item.update_taxt_from_editable '{123}' }
+          .to change { item.reload.errors.empty? }.from(true).to(false)
+      end
     end
   end
 end

@@ -1,5 +1,4 @@
 # TODO avoid `require`.
-# TODO consider moving callbacks and validators to a concern.
 # TODO exclude caches from PaperTrail.
 
 require_dependency 'references/reference_has_document'
@@ -57,6 +56,7 @@ class Reference < ApplicationRecord
     integer :year
     text    :author_names_string
     text    :citation_year
+    text    :doi, as: :doi
     text    :title
     text    :journal_name do journal.name if journal end
     text    :publisher_name do publisher.name if publisher end
@@ -67,9 +67,6 @@ class Reference < ApplicationRecord
     text    :taxonomic_notes
     string  :citation_year
     string  :author_names_string
-    # Tried adding DOI here, we get "NoMethodError: undefined method `doi' for #<MissingReference ...>"
-    # Missing references shouldn't have a DOI, I would think.
-    # TODO: Test searching for doi, see if that works?
   end
 
   def self.requires_title
@@ -125,11 +122,11 @@ class Reference < ApplicationRecord
   # There's also ` author_names_string=` which sets `author_names_string_cache`.
   def refresh_author_names_caches(*)
     string, principal_author_last_name = make_author_names_caches
+    # TODO only update once.
     update_attribute :author_names_string_cache, string
     update_attribute :principal_author_last_name_cache, principal_author_last_name
   end
 
-  # TODO move to a callback.
   # Called by controller to parse an input string for author names and suffix
   # Returns hash of parse result, or adds to the reference's errors and raises
   def parse_author_names_and_suffix author_names_string
@@ -207,15 +204,14 @@ class Reference < ApplicationRecord
 
   ### end quarantine ###
 
-  def what_links_here return_true_or_false: false
-    References::WhatLinksHere[self, return_true_or_false: return_true_or_false]
+  def what_links_here predicate: false
+    References::WhatLinksHere[self, predicate: predicate]
   end
 
   private
     def check_not_referenced
       return unless has_any_references?
 
-      # TODO list which items
       errors.add :base, "This reference can't be deleted, as there are other references to it."
       false
     end
@@ -269,6 +265,6 @@ class Reference < ApplicationRecord
     end
 
     def has_any_references?
-      what_links_here return_true_or_false: true
+      what_links_here predicate: true
     end
 end

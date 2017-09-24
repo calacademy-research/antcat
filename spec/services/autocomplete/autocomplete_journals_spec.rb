@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Autocomplete::Journals do
+describe Autocomplete::AutocompleteJournals do
   describe "#call" do
     it "fuzzy matches journal names" do
       create :journal, name: 'American Bibliographic Proceedings'

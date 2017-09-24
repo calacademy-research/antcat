@@ -53,8 +53,9 @@ When(/^I add a taxon history item for the feed$/) do
   taxon = Feed.without_tracking { create_subfamily }
 
   cheat_and_set_user_for_feed
-  TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}",
+  item = TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}",
     taxon: taxon
+  item.create_activity :create
 end
 
 When(/^I edit a taxon history item for the feed$/) do
@@ -66,6 +67,7 @@ When(/^I edit a taxon history item for the feed$/) do
   cheat_and_set_user_for_feed
   item.taxt = "as a genus: {ref 123}"
   item.save!
+  item.create_activity :update
 end
 
 When(/^I delete a taxon history item for the feed$/) do
@@ -76,6 +78,7 @@ When(/^I delete a taxon history item for the feed$/) do
 
   cheat_and_set_user_for_feed
   item.destroy
+  item.create_activity :destroy
 end
 
 # Reference

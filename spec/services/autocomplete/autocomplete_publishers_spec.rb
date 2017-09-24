@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Autocomplete::Publishers do
+describe Autocomplete::AutocompletePublishers do
   describe "#call" do
     it "fuzzy matches name/place combinations" do
       Publisher.create! name: 'Wiley', place: Place.create!(name: 'Chicago')

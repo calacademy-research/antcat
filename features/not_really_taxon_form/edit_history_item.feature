@@ -18,7 +18,7 @@ Feature: Editing a history item
     And I edit the history item to "(none)"
     And I save the history item
     Then I should not see "Taxonomic history"
-    And I wait for a bit
+    And I wait
     And the history should be "(none)"
 
     When I click the history item
@@ -32,7 +32,7 @@ Feature: Editing a history item
     And I edit the history item to "(none)"
     And I save the history item
     And I save my changes
-    And I wait for a bit
+    And I wait
     Then I should be on the catalog page for "Formicidae"
 
   # This doesn't work because of inserting a {
@@ -89,7 +89,7 @@ Feature: Editing a history item
     Then I should not see the "Delete" button for the history item
     And I edit the history item to "Abc"
     And I save the history item
-    And I wait for a bit
+    And I wait
     Then the history should be "Abc"
 
   Scenario: Adding a history item with blank taxt
