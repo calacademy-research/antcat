@@ -9,6 +9,8 @@ include ActionView::Context # For `#content_tag`.
 include Exporters::Antweb::MonkeyPatchTaxon
 
 class Exporters::Antweb::Exporter
+  include Service
+
   def self.antcat_taxon_link taxon, label = "AntCat"
     url = "http://www.antcat.org/catalog/#{taxon.id}"
     %Q[<a class="link_to_external_site" href="#{url}">#{label}</a>].html_safe
@@ -18,12 +20,13 @@ class Exporters::Antweb::Exporter
     antcat_taxon_link taxon, taxon.name_with_fossil
   end
 
-  def initialize show_progress = false
+  def initialize directory = 'data/output', show_progress: false
+    @directory = directory
     Progress.init show_progress, Taxon.count
   end
 
-  def export directory
-    File.open("#{directory}/antcat.antweb.txt", 'w') do |file|
+  def call
+    File.open("#{@directory}/antcat.antweb.txt", 'w') do |file|
       file.puts header
 
       taxa_ids.each_slice(1000) do |chunk|
