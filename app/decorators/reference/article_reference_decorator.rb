@@ -1,8 +1,8 @@
 class ArticleReferenceDecorator < ReferenceDecorator
-  delegate_all
+  delegate :journal, :series_volume_issue, :pagination
 
   private
     def format_citation
-      "#{h reference.journal.name} #{h reference.series_volume_issue}:#{h reference.pagination}".html_safe
+      "#{h journal.name} #{h series_volume_issue}:#{h pagination}".html_safe
     end
 end

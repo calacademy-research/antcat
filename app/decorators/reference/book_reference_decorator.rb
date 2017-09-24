@@ -1,8 +1,8 @@
 class BookReferenceDecorator < ReferenceDecorator
-  delegate_all
+  delegate :publisher, :pagination
 
   private
     def format_citation
-      "#{h reference.publisher}, #{h reference.pagination}".html_safe
+      "#{h publisher}, #{h pagination}".html_safe
     end
 end

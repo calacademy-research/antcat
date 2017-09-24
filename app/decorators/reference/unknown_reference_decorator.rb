@@ -1,8 +1,8 @@
 class UnknownReferenceDecorator < ReferenceDecorator
-  delegate_all
+  delegate :citation
 
   private
     def format_citation
-      make_html_safe reference.citation
+      make_html_safe citation
     end
 end

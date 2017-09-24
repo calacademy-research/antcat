@@ -1,8 +1,8 @@
 class NestedReferenceDecorator < ReferenceDecorator
-  delegate_all
+  delegate :pages_in, :nesting_reference
 
   private
     def format_citation
-      "#{h reference.pages_in} #{reference.nesting_reference.decorate.formatted}".html_safe
+      "#{h pages_in} #{nesting_reference.decorate.formatted}".html_safe
     end
 end

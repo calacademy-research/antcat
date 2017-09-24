@@ -1,8 +1,8 @@
 class MissingReferenceDecorator < ReferenceDecorator
-  delegate_all
+  delegate :citation
 
   def inline_citation
-    make_html_safe reference.citation
+    make_html_safe citation
   end
 
   def format_reference_document_link; end
@@ -12,6 +12,6 @@ class MissingReferenceDecorator < ReferenceDecorator
 
   private
     def format_citation
-      make_html_safe reference.citation
+      make_html_safe citation
     end
 end
