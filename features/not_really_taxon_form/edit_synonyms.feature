@@ -44,7 +44,7 @@ Feature: Editing the synonyms section
     And I press "Add" in the junior synonyms section
     And I fill in the junior synonym name with "Atta minor"
     And I save the synonym
-    And I wait for a bit
+    And I wait
     And I press "Add" in the junior synonyms section
     And I fill in the junior synonym name with "Atta inbetween"
     And I save the synonym

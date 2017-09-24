@@ -10,7 +10,7 @@ describe ComparableReference do
     end
   end
 
-  context "type mismatch" do
+  context "when type mismatch" do
     let(:lhs) do
       described_class.new type: 'ArticleReference',
         principal_author_last_name_cache: 'Fisher, B. L.', title: 'Ants', year: '1975'
@@ -83,7 +83,7 @@ describe ComparableReference do
       expect(lhs <=> rhs).to eq 0.50
     end
 
-    context "year is within 1" do
+    context "when year is within 1" do
       before do
         lhs.year = '1979'
         rhs.year = '1980'
@@ -182,7 +182,7 @@ describe ComparableReference do
     end
   end
 
-  context 'matching series/volume/issue + pagination with different titles' do
+  describe 'matching series/volume/issue + pagination with different titles' do
     let(:lhs) { described_class.new principal_author_last_name_cache: 'Fisher', title: 'Myrmicinae', type: 'ArticleReference' }
     let(:rhs) { described_class.new principal_author_last_name_cache: 'Fisher', title: 'Formica', type: 'ArticleReference' }
 
@@ -253,7 +253,7 @@ describe ComparableReference do
     end
   end
 
-  context 'matching everything except the pagination' do
+  describe 'matching everything except the pagination' do
     let(:lhs) do
       described_class.new principal_author_last_name_cache: 'Fisher',
         title: 'Myrmicinae', type: 'ArticleReference',

@@ -1,9 +1,3 @@
-# TODO validate `action` to `Activity.uniq.pluck(:action)`. Something like:
-# ```
-# ACTIONS = [:destroy, :update, :create, :approve_change ... ]
-# validates :action, presence: true, inclusion: { in: ACTIONS }
-# ```
-#
 # TODO move `user` to controllers.
 #
 # NOTE "automated edits" are currently simply activities with `automated_edits`
@@ -14,11 +8,37 @@ class Activity < ActiveRecord::Base
   include FilterableWhere
 
   EDIT_SUMMARY_MAX_LENGTH = 255
+  ACTIONS = %w(
+    create
+    update
+    destroy
 
-  self.per_page = 30
+    approve_all_changes
+    approve_all_references
+    approve_change
+    close_feedback
+    close_issue
+    convert_species_to_subspecies
+    custom
+    elevate_subspecies_to_species
+    execute_script
+    finish_reviewing
+    merge_authors
+    reopen_feedback
+    reopen_issue
+    reorder_taxon_history_items
+    replace_missing_reference
+    restart_reviewing
+    start_reviewing
+    undo_change
+  )
+
+  self.per_page = 30 # For `will_paginate`.
 
   belongs_to :trackable, polymorphic: true
   belongs_to :user
+
+  validates :action, inclusion: { in: ACTIONS, allow_nil: true } # TODO do not allow nil.
 
   scope :ids_desc, -> { order(id: :desc) }
   scope :most_recent, ->(number = 5) { ids_desc.limit(number).include_associations }

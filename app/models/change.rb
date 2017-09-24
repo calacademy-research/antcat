@@ -71,8 +71,6 @@ class Change < ActiveRecord::Base
         undo_versions versions
       end
     end
-
-    create_activity :undo_change
   end
 
   # TODO return as ActiveRecord instead of hash.

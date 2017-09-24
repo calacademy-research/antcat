@@ -5,8 +5,7 @@
 # to a grab bag controller (`TaxaGrabBagController`) because this class was,
 # and still is, hard to work with.
 
-# TODO extract more code from here into `Taxa::SaveFromForm`, and rename
-# that class to make it more obvious that it's a form object.
+# TODO extract more code from here into `Taxa::SaveFromForm`.
 
 class TaxaController < ApplicationController
   before_action :authenticate_editor
@@ -22,6 +21,8 @@ class TaxaController < ApplicationController
   def create
     @taxon = get_taxon_for_create
     save_taxon
+
+    @taxon.create_activity :create
 
     flash[:notice] = "Taxon was successfully added."
 
@@ -158,7 +159,6 @@ class TaxaController < ApplicationController
       end
     end
 
-    # TODO move to model?
     # This builds a `Name` without subclassing, not eg a `SpeciesName`,
     # but it seems to work OK.
     def build_new_taxon rank

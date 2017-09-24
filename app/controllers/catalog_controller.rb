@@ -51,7 +51,7 @@ class CatalogController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::Taxa[search_query]
+        render json: Autocomplete::AutocompleteTaxa[search_query]
       end
     end
   end
@@ -62,7 +62,7 @@ class CatalogController < ApplicationController
     end
 
     def setup_taxon_browser
-      @taxon_browser = Catalog::TaxonBrowser::Browser.new @taxon,
+      @taxon_browser = TaxonBrowser::Browser.new @taxon,
         session[:show_invalid], params[:display].try(:to_sym)
     end
 end

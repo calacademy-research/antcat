@@ -1,5 +1,5 @@
 module Autocomplete
-  class AuthorNames
+  class AutocompleteAuthorNames
     include Service
 
     def initialize search_query = ''

@@ -1,5 +1,5 @@
 module Autocomplete
-  class Journals
+  class AutocompleteJournals
     include Service
 
     def initialize search_query = ''

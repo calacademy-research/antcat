@@ -1,5 +1,5 @@
 module Autocomplete
-  class Publishers
+  class AutocompletePublishers
     include Service
 
     def initialize search_query

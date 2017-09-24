@@ -53,7 +53,7 @@ describe Taxon do
   end
 
   describe "#recombination?" do
-    context "name is same as protonym" do
+    context "when name is same as protonym" do
       let!(:species) { create_species 'Atta major' }
       let!(:protonym_name) { create_species_name 'Atta major' }
 
@@ -63,7 +63,7 @@ describe Taxon do
       end
     end
 
-    context "genus part of name is different than genus part of protonym" do
+    context "when genus part of name is different than genus part of protonym" do
       let!(:species) { create_species 'Atta minor' }
       let!(:protonym_name) { create_species_name 'Eciton minor' }
 
@@ -73,7 +73,7 @@ describe Taxon do
       end
     end
 
-    context "genus part of name is same as genus part of protonym" do
+    context "when genus part of name is same as genus part of protonym" do
       let!(:species) { create_species 'Atta minor maxus' }
       let!(:protonym_name) { create_subspecies_name 'Atta minor minus' }
 

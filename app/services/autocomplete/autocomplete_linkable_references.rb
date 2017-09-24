@@ -1,5 +1,5 @@
 module Autocomplete
-  class LinkableReferences
+  class AutocompleteLinkableReferences
     include Service
 
     def initialize search_query

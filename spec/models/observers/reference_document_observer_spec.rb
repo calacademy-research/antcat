@@ -22,7 +22,7 @@ describe ReferenceDocumentObserver do
       expect(reference.formatted_cache).to be_nil
     end
 
-    context "reference document has no associated reference" do
+    context "when reference document has no associated reference" do
       let(:reference_document) { create :reference_document }
 
       it "doesn't croak/bork" do

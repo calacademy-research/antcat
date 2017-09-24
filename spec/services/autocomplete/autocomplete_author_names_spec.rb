@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Autocomplete::AuthorNames do
+describe Autocomplete::AutocompleteAuthorNames do
   let(:author) { Author.create! }
 
   describe "#call" do

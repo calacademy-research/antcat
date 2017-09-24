@@ -1,3 +1,5 @@
+# TODO move.
+
 class ReferenceFormatterCache
   include Singleton
 

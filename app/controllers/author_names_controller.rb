@@ -16,14 +16,11 @@ class AuthorNamesController < ApplicationController
     if @author_name.save
       render_json @author_name
     else
-      # Not 100% true; can also fail for other reasons.
+      # TODO Not 100% true; can also fail for other reasons.
       error = { error: "Name already exists" }
       render json: error, status: :conflict
     end
   end
-
-  # From URL: : "/authors/11282/author_names/194557"
-  # Params are "author_id"(11282) and "id" (194557) (The latter links to author_names)
 
   # TODO move to model and use `destroy`.
   def destroy

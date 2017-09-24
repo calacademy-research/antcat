@@ -78,16 +78,16 @@ describe ActivityDecorator do
   end
 
   describe "#template_partial" do
-    context "no `trackable_type`" do
-      let(:activity) { create :activity, trackable: nil, action: "approved_all" }
+    context "when  there's no `trackable_type`" do
+      let(:activity) { create :activity, trackable: nil, action: "approve_all_changes" }
 
       it "returns the action" do
         expect(activity.decorate.send :template_partial)
-          .to eq "activities/templates/actions/approved_all"
+          .to eq "activities/templates/actions/approve_all_changes"
       end
     end
 
-    context "there's a partial matching `action`" do
+    context "when there's a partial matching `action`" do
       let(:activity) do
         create :activity, trackable: create_species, action: "elevate_subspecies_to_species"
       end
@@ -98,14 +98,14 @@ describe ActivityDecorator do
       end
     end
 
-    context "there's a partial matching `trackable_type`" do
+    context "when there's a partial matching `trackable_type`" do
       it "returns that spaced and downcased" do
         expect(activity.decorate.send :template_partial)
           .to eq "activities/templates/journal"
       end
     end
 
-    context "there's no partial matching `trackable_type`" do
+    context "when there's no partial matching `trackable_type`" do
       let(:activity) { create :activity, trackable: create(:citation) }
 
       it "returns the default template" do

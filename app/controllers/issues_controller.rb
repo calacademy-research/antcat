@@ -63,7 +63,7 @@ class IssuesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: Autocomplete::Issues[search_query]
+        render json: Autocomplete::AutocompleteIssues[search_query]
       end
     end
   end

@@ -10,6 +10,7 @@ module Changes
     # TODO handle error, if any.
     def create
       @change.undo
+      @change.create_activity :undo_change
       redirect_to changes_path, notice: "Undid the change ##{@change.id}."
     end
 

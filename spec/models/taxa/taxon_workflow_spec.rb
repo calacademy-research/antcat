@@ -18,7 +18,7 @@ describe Taxon do
     let(:user) { create :user }
     let(:approver) { create :editor }
 
-    context "An old record" do
+    context "when an old record" do
       let!(:taxon) { create_taxon_version_and_change nil, user }
 
       it "cannot be reviewed" do
@@ -39,7 +39,7 @@ describe Taxon do
       end
     end
 
-    context "A waiting record" do
+    context "when a waiting record" do
       let(:taxon) { create :genus }
       let(:change) do
         create :change, user_changed_taxon_id: taxon.id,
@@ -63,7 +63,7 @@ describe Taxon do
       end
     end
 
-    context "An approved record" do
+    context "when an approved record" do
       let(:taxon) { create_taxon_version_and_change :approved, editor, approver }
 
       it "has an approver and an approved_at" do

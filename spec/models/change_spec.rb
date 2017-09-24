@@ -1,19 +1,21 @@
 require 'spec_helper'
 
 describe Change, versioning: true do
-  it "has a version" do
-    genus = create_genus
-    change = described_class.new
-    change.save!
-    change.reload
-    create :version, item: genus, change_id: change.id
-    genus_version = genus.last_version
+  describe 'relationships' do
+    it "has a version" do
+      genus = create_genus
+      change = described_class.new
+      change.save!
+      change.reload
+      create :version, item: genus, change_id: change.id
+      genus_version = genus.last_version
 
-    expect(change.versions.first).to eq genus_version
-  end
+      expect(change.versions.first).to eq genus_version
+    end
 
-  it "has a user (the editor)" do
-    # TODO
+    it "has a user (the editor)" do
+      # TODO
+    end
   end
 
   describe "scopes" do

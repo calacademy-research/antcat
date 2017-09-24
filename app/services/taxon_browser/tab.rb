@@ -6,7 +6,7 @@
 # * `@tab_taxon` is the "owner" or "parent" of the taxa in the tab.
 # * `@taxon` -- there's no such thing here!
 
-module Catalog::TaxonBrowser
+module TaxonBrowser
   class Tab
     attr_accessor :tab_taxon
 

@@ -5,9 +5,9 @@ module References
   class WhatLinksHere
     include Service
 
-    def initialize reference, return_true_or_false: false
+    def initialize reference, predicate: false
       @reference = reference
-      @return_early = return_true_or_false
+      @predicate = predicate
       @references = []
     end
 
@@ -20,21 +20,21 @@ module References
 
       Citation.where(reference: reference).pluck(:id).each do |citation_id|
         references << table_ref(Citation.table_name, :reference_id, citation_id)
-        return true if return_early
+        return true if predicate
       end
 
       nestees.pluck(:id).each do |reference_id|
         references << table_ref('references', :nesting_reference_id, reference_id)
-        return true if return_early
+        return true if predicate
       end
-      return false if return_early
+      return false if predicate
 
       references
     end
 
     private
       attr :references
-      attr_reader :reference, :return_early
+      attr_reader :reference, :predicate
 
       delegate :nestees, :id, to: :reference
 

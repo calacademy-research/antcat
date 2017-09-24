@@ -6,14 +6,14 @@ describe RevisionComparer, versioning: true do
   let(:model) { TaxonHistoryItem }
 
   describe "#most_recent" do
-    context "item exists" do
+    context "when item exists" do
       it "returns the item (pretty much same as Model#find)" do
         most_recent = described_class.new(model, item.id).most_recent
         expect(most_recent).to eq item
       end
     end
 
-    context "item has been deleted" do
+    context "when item has been deleted" do
       before { item.destroy }
 
       it "returns the item (similar to Model#find, but searches in versions too)" do
@@ -62,7 +62,7 @@ describe RevisionComparer, versioning: true do
       end
     end
 
-    context "using #selected and #diff_with at the same time" do
+    describe "using #selected and #diff_with at the same time" do
       subject(:comparer) { described_class.new model, item.id, @selected_id, @diff_with_id }
 
       it "handles #most_recent, #selected and #diff_with" do
@@ -80,7 +80,7 @@ describe RevisionComparer, versioning: true do
   end
 
   describe "#html_split_diff" do
-    context "item has been deleted" do
+    context "when item has been deleted" do
       before do
         item.taxt = "second revision content"
         item.save!

@@ -1,5 +1,5 @@
 module Autocomplete
-  class LinkableJournals
+  class AutocompleteLinkableJournals
     include Service
 
     def initialize search_query

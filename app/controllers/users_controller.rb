@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :authenticate_editor, except: [:index]
-  before_action :set_user, only: [:show]
+  before_action :authenticate_editor, except: :index
+  before_action :set_user, only: :show
 
   def index
     @users = User.order_by_name

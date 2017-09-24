@@ -16,7 +16,7 @@ describe Taxa::ReorderHistoryItems do
       expect(item_ids_to_s taxon).to eq expected
     end
 
-    context "valid and different" do
+    context "when valid and different" do
       it "updates the positions" do
         reordered_ids = [second.id, third.id, first.id].map(&:to_s)
         expect(item_ids_to_s taxon).to_not eq reordered_ids
@@ -26,7 +26,7 @@ describe Taxa::ReorderHistoryItems do
       end
     end
 
-    context "valid but not different" do
+    context "when valid but not different" do
       it "doesn't update the positions" do
         reordered_ids = [first.id, second.id, third.id].map(&:to_s)
         taxon.reorder_history_items reordered_ids
@@ -36,7 +36,7 @@ describe Taxa::ReorderHistoryItems do
       end
     end
 
-    context "reordered ids are invalid" do
+    context "when reordered ids are invalid" do
       it "doesn't update the positions" do
         reordered_ids = [second.id, third.id, 9999999].map(&:to_s)
         taxon.reorder_history_items reordered_ids

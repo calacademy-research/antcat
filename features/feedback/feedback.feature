@@ -86,16 +86,16 @@ Feature: Feedback
     And I should see "Thanks for helping us make AntCat better!"
 
   Scenario: Unregistered users may be throttled
-    Given I have already posted 3 feedbacks in the last 5 minutes
+    Given I have already posted 5 feedbacks in the last 5 minutes
 
     When I click on the Feedback link
     And I press "Send Feedback"
-    Then I should see "you have already posted 3 feedbacks"
+    Then I should see "you have already posted 5 feedbacks"
     And I should not see "Message sent"
 
   Scenario: Registered users are not throttled
     Given I am logged in
-    And I have already posted 3 feedbacks in the last 5 minutes
+    And I have already posted 5 feedbacks in the last 5 minutes
 
     When I click on the Feedback link
     And I fill in "feedback_comment" with "Great site!!!"

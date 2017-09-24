@@ -7,7 +7,7 @@ describe ReferenceMatcher do
     let!(:match) { create_match 'Ward' }
     let(:target) { build_target 'Ward' }
 
-    context "an obvious mismatch" do
+    context "when an obvious mismatch" do
       before { expect(target).to receive(:<=>).and_return 0.00 }
 
       it "doesn't match" do
@@ -15,7 +15,7 @@ describe ReferenceMatcher do
       end
     end
 
-    context "an obvious match" do
+    context "when an obvious match" do
       before { expect(target).to receive(:<=>).and_return 0.10 }
 
       it "matches" do
@@ -26,7 +26,7 @@ describe ReferenceMatcher do
     end
   end
 
-  context "an author last name with an apostrophe in it (regression)" do
+  context "with an author last name with an apostrophe in it (regression)" do
     let!(:match) { create_match "Arnol'di, G." }
     let(:target) { build_target "Arnol'di" }
 

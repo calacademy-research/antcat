@@ -1,7 +1,7 @@
 # TODO try to not make this depend on JavaScript.
 
 class MergeAuthorsController < ApplicationController
-  before_action :authenticate_editor, except: [:index]
+  before_action :authenticate_editor, except: :index
 
   def index
     create_panels
@@ -21,7 +21,7 @@ class MergeAuthorsController < ApplicationController
     def create_panels
       params[:terms] ||= []
 
-      # if closing a panel, remove its term
+      # If closing a panel, remove its term.
       params[:terms].delete params[:term] unless params[:commit]
 
       @panels = []

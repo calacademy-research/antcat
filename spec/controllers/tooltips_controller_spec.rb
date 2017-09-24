@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TooltipsController do
   describe "GET index" do
-    context "signed in" do
+    context "when signed in" do
       let!(:no_namespace)         { create :tooltip, key: "no_namespace" }
       let!(:references_authors)   { create :tooltip, key: "authors", scope: "references" }
       let!(:references_title)     { create :tooltip, key: "title", scope: "references" }
