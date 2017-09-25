@@ -28,8 +28,8 @@ describe TaxtPresenter do
       it "doesn't escape already escaped input" do
         reference = create :missing_reference, citation: 'Latreille, 1809 <script>'
         expected = 'Latreille, 1809 &lt;script&gt;'
-        expect(reference.decorate.inline_citation).to eq expected
-        expect(described_class["{ref #{reference.id}}"].to_html).to eq expected
+        expect(reference.decorate.inline_citation).to include expected
+        expect(described_class["{ref #{reference.id}}"].to_html).to include expected
       end
     end
 
@@ -54,11 +54,6 @@ describe TaxtPresenter do
         it "includes a 'Search history?' link" do
           expect(results).to match "Search history?"
         end
-      end
-
-      it "handles missing references" do
-        reference = create :missing_reference, citation: 'Latreille, 1809'
-        expect(described_class["{ref #{reference.id}}"].to_html).to eq 'Latreille, 1809'
       end
     end
 

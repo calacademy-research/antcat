@@ -324,16 +324,6 @@ describe ReferenceDecorator do
     end
   end
 
-  describe "#inline_citation" do
-    context "a `MissingReference`" do
-      let(:reference) { create :missing_reference, citation: 'foo' }
-
-      it "just outputs the citation" do
-        expect(reference.decorate.inline_citation).to eq 'foo'
-      end
-    end
-  end
-
   describe "#format_review_state" do
     let(:reference) { build_stubbed :article_reference }
 
@@ -391,8 +381,7 @@ describe ReferenceDecorator do
   end
 end
 
-# From ex `references/reference_key_spec.rb`
-describe "ReferenceDecorator" do
+describe ReferenceDecorator do
   describe "#inline_citation" do
     let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
     let!(:reference) do
@@ -427,14 +416,10 @@ describe "ReferenceDecorator" do
   end
 end
 
-# From ex `references/missing_reference_key_spec.rb`
-describe "MissingReferenceDecorator formerly MissingReferenceKey" do
+describe MissingReferenceDecorator do
   let(:reference) { build_stubbed :missing_reference, citation: "citation" }
 
-  describe "Unapplicable methods" do
-    it "just returns nil from them" do
-      expect(reference.decorate.format_reference_document_link).to be_nil
-      expect(reference.decorate.link_to_reference).to be_nil
-    end
+  describe "#format_reference_document_link" do
+    specify { expect(reference.decorate.format_reference_document_link).to be_nil }
   end
 end
