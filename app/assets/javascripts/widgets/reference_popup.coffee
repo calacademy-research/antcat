@@ -11,6 +11,7 @@ class AntCat.ReferencePopup extends AntCat.ReferencePicker
       @load ''
     else
       @initialize()
+      @textbox.val(@options.initial_value) if @options.initial_value
 
   load: (url = '') =>
     if url.indexOf('/reference_popup') is -1
