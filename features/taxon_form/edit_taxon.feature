@@ -17,16 +17,6 @@ Feature: Editing a taxon
     And I save the taxon form
     Then I should see "Atta major" in the header
 
-  Scenario: Edit an imported species and flip its state from auto gen
-    Given an imported species exists with a name of "major" and a genus of "Atta"
-
-    When I go to the catalog page for "Atta major"
-    Then I should see "Atta major" in the header
-
-    When I go to the edit page for "Atta major"
-    And I save the taxon form
-    Then the name "major" genus "Atta" should not be auto generated
-
   Scenario: Cancelling
     Given there is a genus "Calyptites"
 

@@ -72,25 +72,6 @@ Feature: Edit reference unsuccessfully
     And I press "Save"
     Then I should see "Nesting reference can't point to itself"
 
-  #Scenario: Edit a nested reference to remove its nestedness, delete the nestee, go back to the first one and set it as nested
-    #Given there is a reference
-    #And the following entry nests it
-      #| authors    | title            | year | pages_in |
-      #| Bolton, B. | Ants are my life | 2001 | In:      |
-    #When I go to the references page
-    #And I edit "Bolton"
-    #And I follow "Article" in the first reference
-    #And I fill in "reference_journal_name" with "Ant Journal" in the first reference
-    #And I fill in "reference_series_volume_issue" with "1" in the first reference
-    #And I fill in "article_pagination" with "2" in the first reference
-    #And I press "Save"
-    #And I will confirm on the next step
-    #And I delete "Ward"
-    #And I edit "Bolton"
-    #And I follow "Nested" in the first reference
-    #And I press "Save"
-    #Then I should see "nesting_reference can't be blank"
-
   @javascript
   Scenario: Cancelling edit after an error
     Given this reference exists

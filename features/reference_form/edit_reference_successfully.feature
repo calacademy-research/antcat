@@ -15,19 +15,9 @@ Feature: Edit reference successfully
     When I go to the edit page for the most recent reference
     And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "Ant Title"
-    And I press "Save"
-    Then I should see "Ward, B.L.; Bolton, B. 2010. Ant Title"
-
-  @javascript
-  Scenario: Change a reference's year
-    Given this reference exists
-      | authors   | title | citation   | year |
-      | Aho, B.L. | Ants  | Psyche 6:4 | 2010 |
-
-    When I go to the edit page for the most recent reference
     And I fill in "reference_citation_year" with "1910a"
     And I press "Save"
-    Then I should see "Aho, B.L. 1910a"
+    Then I should see "Ward, B.L.; Bolton, B. 1910a. Ant Title"
 
   @javascript
   Scenario: Change a reference's type
@@ -86,28 +76,6 @@ Feature: Edit reference successfully
     #And I log out
     #And I go to the references page
     #Then I should see a "PDF" link
-
-  @javascript
-  Scenario: Adding the authors' role
-    Given there is a reference
-
-    When I go to the edit page for the most recent reference
-    And I fill in "reference_author_names_string" with "Ward, P.S. (ed.)"
-    And I press "Save"
-    Then I should see "Ward, P.S. (ed.)"
-
-  @javascript
-  Scenario: Removing the authors' role
-    Given this reference exists
-      | authors          | citation   | year | title |
-      | Ward, P.S. (ed.) | Psyche 1:1 | 2010 | Ants  |
-
-    When I go to the references page
-    Then I should see "Ward, P.S. (ed.)"
-    When I go to the edit page for the most recent reference
-    When I fill in "reference_author_names_string" with "Ward, P.S."
-    And I press "Save"
-    Then I should see "Ward, P.S."
 
   @javascript
   Scenario: Edit a nested reference

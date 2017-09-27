@@ -7,21 +7,6 @@ describe TaxonDecorator::Statistics do
       expect(described_class[{}]).to eq ''
     end
 
-    it "uses commas in numbers" do
-      statistics = {
-        extant: { genera: { 'valid' => 2_000 } }
-      }
-      expect(described_class[statistics]).to eq '<p>2,000 valid genera</p>'
-    end
-
-    it "uses commas in numbers when not showing invalid" do
-      statistics = {
-        extant: { genera: { 'valid' => 2_000 } }
-      }
-      expect(described_class[statistics, include_invalid: false])
-        .to eq '<p>2,000 genera</p>'
-    end
-
     describe "extant and fossil statistics" do
       let(:statistics) do
         {
@@ -145,14 +130,6 @@ describe TaxonDecorator::Statistics do
       }
       expect(described_class[statistics, include_invalid: false])
         .to eq '<p>1 genus, 2 species, 3 subspecies</p>'
-    end
-
-    it "doesn't leave a trailing comma" do
-      statistics = {
-        extant: { species: { 'valid' => 2 } }
-      }
-      expect(described_class[statistics, include_fossil: false, include_invalid: false])
-        .to eq '<p>2 species</p>'
     end
   end
 end

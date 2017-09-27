@@ -426,18 +426,6 @@ describe Reference do
     end
   end
 
-  describe "#key" do
-    let(:reference) { BookReference.new }
-
-    it "raises because it's impossible to search for it" do
-      expect { reference.key }.to raise_error
-    end
-
-    it "says that the raised error isn't a joke, heheh" do
-      expect { reference.key }.to raise_error "use 'keey' (not a joke)"
-    end
-  end
-
   describe "#keey" do
     let(:bolton) { build_stubbed :author_name, name: 'Bolton, B.' }
     let(:fisher) { build_stubbed :author_name, name: 'Fisher, B.' }

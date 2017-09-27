@@ -95,15 +95,6 @@ describe Taxon do
         end
       end
     end
-
-    describe ".order_by_name_cache" do
-      let!(:zymacros) { create :subfamily, name: create(:name, name: 'Zymacros') }
-      let!(:atta) { create :subfamily, name: create(:name, name: 'Atta') }
-
-      it "orders by name" do
-        expect(described_class.order_by_name_cache).to eq [atta, zymacros]
-      end
-    end
   end
 
   describe ".find_by_name" do

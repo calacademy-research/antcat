@@ -46,13 +46,6 @@ Feature: Searching the catalog
     Then I should see "1 result"
     And I should see the species described in 2010
 
-  Scenario: Finding an original combination
-    Given there is an original combination of "Atta major" described by "Bolton" which was moved to "Betta major"
-
-    When I fill in "author_name" with "Bolton"
-    And I press "Go" in the search section
-    Then I should see "see Betta major"
-
   Scenario: Finding a genus
     Given there is a species "Atta major" with genus "Atta"
     And there is a species "Ophthalmopone major" with genus "Ophthalmopone"
@@ -60,14 +53,6 @@ Feature: Searching the catalog
     When I fill in "genus" with "Atta"
     And I press "Go" in the search section
     Then I should see "Atta major"
-
-  Scenario: Finding a junior synonym
-    Given there is a species "Atta major" described by "Bolton" which is a junior synonym of "Betta minor"
-
-    When I fill in "author_name" with "Bolton"
-    And I press "Go" in the search section
-    Then I should see "synonym of"
-    And I should see "Betta minor"
 
   Scenario: Manually entering an unknown name instead of using picklist
     Given there is a species described in 2010 by "Bolton, B."
