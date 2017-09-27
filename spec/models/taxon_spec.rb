@@ -5,7 +5,10 @@ describe Taxon do
   it { is_expected.to belong_to :protonym }
   it { is_expected.to allow_value(nil).for :type_name }
   it { is_expected.to allow_value(nil).for :status } # should probably not...
-  it { is_expected.to allow_value(nil).for :biogeographic_region }
+  it do
+    is_expected.to validate_inclusion_of(:biogeographic_region)
+      .in_array(BiogeographicRegion::REGIONS).allow_nil
+  end
   it { is_expected.to have_many :history_items }
   it { is_expected.to have_many :reference_sections }
   it { is_expected.to belong_to :type_name }
@@ -104,39 +107,36 @@ describe Taxon do
   end
 
   describe ".find_by_name" do
-    it "returns nil if nothing matches" do
-      expect(described_class.find_by_name('sdfsdf')).to eq nil
+    context 'when nothing matches' do
+      it "returns nil" do
+        expect(described_class.find_by_name('sdfsdf')).to eq nil
+      end
     end
 
-    it "returns one of the items if there are more than one (bad!)" do
-      name = create :genus_name, name: 'Monomorium'
-      2.times { create :genus, name: name }
-      expect(described_class.find_by_name('Monomorium').name.name).to eq 'Monomorium'
+    context 'when there are more than one matche' do
+      let!(:name) { create :genus_name, name: 'Monomorium' }
+      before { 2.times { create :genus, name: name } }
+
+      it "returns one of the items (hmm)" do
+        expect(described_class.find_by_name('Monomorium').name).to eq name
+      end
     end
   end
 
   describe "#biogeographic_region" do
-    let(:taxon) { build_stubbed :species }
+    context 'when saving taxon' do
+      let(:taxon) { create :species }
 
-    it "allows only allowed regions" do
-      taxon.biogeographic_region = "Australasia"
-      expect(taxon.valid?).to be true
+      it "nilifies blank strings" do
+        taxon.biogeographic_region = ""
+        taxon.save
 
-      taxon.biogeographic_region = "Ancient Egypt"
-      expect(taxon.valid?).to be false
-    end
-
-    it "nilifies blank strings on save" do
-      taxon = create :species
-      taxon.biogeographic_region = ""
-      taxon.save
-
-      expect(taxon.biogeographic_region).to be nil
+        expect(taxon.biogeographic_region).to be nil
+      end
     end
   end
 
-  #TODO remove?
-  describe "Rank" do
+  describe "#rank" do
     let!(:taxon) { build_stubbed :subfamily }
 
     it "returns a lowercase version" do
@@ -144,28 +144,33 @@ describe Taxon do
     end
   end
 
-  describe "#homonym_replaced_by" do
+  describe "#homonym_replaced_by, #homonym_replaced and #homonym_replaced_by?" do
     it "can be a homonym of something else" do
-      neivamyrmex = build_stubbed :taxon
-      acamatus = build_stubbed :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
+      taxon = build_stubbed :taxon
+      another_taxon = build_stubbed :taxon, status: 'homonym', homonym_replaced_by: taxon
 
-      expect(acamatus).to be_homonym
-      expect(acamatus.homonym_replaced_by).to eq neivamyrmex
+      expect(another_taxon).to be_homonym
+      expect(another_taxon.homonym_replaced_by).to eq taxon
     end
 
-    it "should not think it's a homonym replaced by something when it's not" do
-      genus = build_stubbed :genus
-      another_genus = build_stubbed :genus
+    context "when it' not a homonym replaced by something" do
+      let(:genus) { build_stubbed :genus }
+      let(:another_genus) { build_stubbed :genus }
 
-      expect(genus).not_to be_homonym_replaced_by another_genus
-      expect(genus.homonym_replaced).to be_nil
+      it "should not think it is" do
+        expect(genus).not_to be_homonym_replaced_by another_genus
+        expect(genus.homonym_replaced).to be_nil
+      end
     end
 
-    it "should think it's a homonym replaced by something when it is" do
-      replacement = create :genus
-      homonym = create :genus, homonym_replaced_by: replacement, status: 'homonym'
-      expect(homonym).to be_homonym_replaced_by replacement
-      expect(replacement.homonym_replaced).to eq homonym
+    context 'when it is a homonym replaced by something' do
+      let(:replacement) { create :genus }
+      let(:homonym) { create :genus, homonym_replaced_by: replacement, status: 'homonym' }
+
+      it "should think it is" do
+        expect(homonym).to be_homonym_replaced_by replacement
+        expect(replacement.homonym_replaced).to eq homonym
+      end
     end
   end
 
@@ -173,11 +178,12 @@ describe Taxon do
     # Changed this because synonyms, homonyms will use the same protonym
     context "when the taxon it's attached to is destroyed, even if another taxon is using it" do
       let!(:protonym) { create :protonym }
-      let!(:atta) { create_genus protonym: protonym }
-      let!(:eciton) { create_genus protonym: protonym }
+      let!(:genus) { create_genus protonym: protonym }
+
+      before { create_genus protonym: protonym }
 
       it "doesn't destroy the protonym" do
-        expect { atta.destroy }.not_to change { Protonym.count }
+        expect { genus.destroy }.not_to change { Protonym.count }
       end
     end
   end
@@ -185,11 +191,13 @@ describe Taxon do
   describe "#history_items" do
     let(:taxon) { create :family }
 
-    it "cascades to delete history items when it's deleted" do
-      history_item = taxon.history_items.create! taxt: 'taxt'
-      expect(TaxonHistoryItem.find_by(id: history_item.id)).not_to be_nil
-      taxon.destroy
-      expect(TaxonHistoryItem.find_by(id: history_item.id)).to be_nil
+    context 'when deleting a taxon' do
+      let!(:history_item) { taxon.history_items.create! taxt: 'taxt' }
+
+      it "cascades to delete history items" do
+        expect { taxon.destroy }
+          .to change { TaxonHistoryItem.exists? history_item.id }.from(true).to(false)
+      end
     end
 
     it "shows the items in the order in which they were added to the taxon" do
@@ -204,10 +212,13 @@ describe Taxon do
   describe "#reference_sections" do
     let(:taxon) { create :family }
 
-    it "cascades to delete the reference sections when it's deleted" do
-      reference_section = taxon.reference_sections.create! references_taxt: 'foo'
-      taxon.destroy
-      expect(ReferenceSection.find_by(id: reference_section.id)).to be_nil
+    context 'when deleting a taxon' do
+      let!(:reference_section) { taxon.reference_sections.create! references_taxt: 'foo' }
+
+      it "cascades to delete the reference sections" do
+        expect { taxon.destroy }
+          .to change { ReferenceSection.exists? reference_section.id }.from(true).to(false)
+      end
     end
 
     it "shows the items in the order in which they were added to the taxon" do
@@ -266,30 +277,20 @@ describe Taxon do
     end
   end
 
-  describe "Cascading delete" do
-    it "doesn't delete the protonym when the taxon is deleted" do
-      expect(described_class.count).to be_zero
-      expect(Protonym.count).to be_zero
+  describe "#protonym" do
+    context 'when taxon is deleted' do
+      it "doesn't delete the protonym" do
+        expect(described_class.count).to be_zero
+        expect(Protonym.count).to be_zero
 
-      genus = create :genus, tribe: nil, subfamily: nil
-      expect(described_class.count).to eq 1
-      expect(Protonym.count).to eq 1
+        genus = create :genus, tribe: nil, subfamily: nil
+        expect(described_class.count).to eq 1
+        expect(Protonym.count).to eq 1
 
-      genus.destroy
-      expect(described_class.count).to be_zero
-      expect(Protonym.count).to eq 1
-    end
-
-    it "deletes history and reference sections when the taxon is deleted" do
-      expect(described_class.count).to be_zero
-      expect(ReferenceSection.count).to be_zero
-
-      genus = create :genus, tribe: nil, subfamily: nil
-      genus.reference_sections.create! title_taxt: 'title', references_taxt: 'references'
-      expect(ReferenceSection.count).to eq 1
-
-      genus.destroy
-      expect(ReferenceSection.count).to be_zero
+        genus.destroy
+        expect(described_class.count).to be_zero
+        expect(Protonym.count).to eq 1
+      end
     end
   end
 
@@ -337,7 +338,7 @@ describe Taxon do
       end
     end
 
-    context "when new parent is not same as old aprent" do
+    context "when new parent is not same as old parent" do
       before { subspecies.update_parent new_parent }
 
       it "changes the species of a subspecies" do
@@ -399,18 +400,25 @@ describe Taxon do
     end
   end
 
+  # TODO move to `taxa/synonyms_spec.rb`.
   describe "#current_valid_taxon_including_synonyms" do
-    it "returns the field contents if there are no synonyms" do
-      current_valid_taxon = create_genus
-      taxon = create_genus current_valid_taxon: current_valid_taxon
-      expect(taxon.current_valid_taxon_including_synonyms).to eq current_valid_taxon
+    context 'when there are no synonyms' do
+      let!(:current_valid_taxon) { create_genus }
+      let!(:taxon) { create_genus current_valid_taxon: current_valid_taxon }
+
+      it "returns the field contents" do
+        expect(taxon.current_valid_taxon_including_synonyms).to eq current_valid_taxon
+      end
     end
 
-    it "returns the senior synonym if it exists" do
-      senior = create_genus
-      current_valid_taxon = create_genus
-      taxon = create_synonym senior, current_valid_taxon: current_valid_taxon
-      expect(taxon.current_valid_taxon_including_synonyms).to eq senior
+    context 'when a senior synonym exists' do
+      let!(:senior) { create_genus }
+      let!(:current_valid_taxon) { create_genus }
+      let!(:taxon) { create_synonym senior, current_valid_taxon: current_valid_taxon }
+
+      it "returns the senior synonym" do
+        expect(taxon.current_valid_taxon_including_synonyms).to eq senior
+      end
     end
 
     # Fails a lot. This test case is the arch enemy of AntCat's RSpec testing team.
@@ -457,23 +465,31 @@ describe Taxon do
       #   live and dummy ammunition.
     end
 
-    it "handles when no senior synonyms are valid" do
-      invalid_senior = create_genus status: 'homonym'
-      another_invalid_senior = create_genus status: 'homonym'
-      taxon = create_synonym invalid_senior
-      Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: taxon
-      expect(taxon.current_valid_taxon_including_synonyms).to be_nil
+    context 'when no senior synonyms are valid' do
+      let!(:invalid_senior) { create_genus status: 'homonym' }
+      let!(:another_invalid_senior) { create_genus status: 'homonym' }
+      let!(:taxon) { create_synonym invalid_senior }
+
+      before { Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: taxon }
+
+      it "returns nil" do
+        expect(taxon.current_valid_taxon_including_synonyms).to be_nil
+      end
     end
 
-    it "handles when there's a synonym of a synonym" do
-      senior_synonym_of_senior_synonym = create_genus
-      senior_synonym = create_genus status: 'synonym'
-      Synonym.create! junior_synonym: senior_synonym, senior_synonym: senior_synonym_of_senior_synonym
+    context "when there's a synonym of a synonym" do
+      let!(:senior_synonym_of_senior_synonym) { create_genus }
+      let!(:senior_synonym) { create_genus status: 'synonym' }
+      let!(:taxon) { create_genus status: 'synonym' }
 
-      taxon = create_genus status: 'synonym'
-      Synonym.create! junior_synonym: taxon, senior_synonym: senior_synonym
+      before do
+        Synonym.create! junior_synonym: senior_synonym, senior_synonym: senior_synonym_of_senior_synonym
+        Synonym.create! junior_synonym: taxon, senior_synonym: senior_synonym
+      end
 
-      expect(taxon.current_valid_taxon_including_synonyms).to eq senior_synonym_of_senior_synonym
+      it "returns the senior synonym of the senior synonym" do
+        expect(taxon.current_valid_taxon_including_synonyms).to eq senior_synonym_of_senior_synonym
+      end
     end
   end
 end

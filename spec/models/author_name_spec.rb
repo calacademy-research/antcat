@@ -18,15 +18,20 @@ describe AuthorName do
   end
 
   describe "#import" do
-    it "creates and returns the authors" do
-      results = described_class.import ['Fisher, B.L.', 'Wheeler, W.M.']
-      expect(results.map(&:name)).to match_array ['Fisher, B.L.', 'Wheeler, W.M.']
+    context 'when authors does not exists' do
+      it "creates and returns the authors" do
+        results = described_class.import ['Fisher, B.L.', 'Wheeler, W.M.']
+        expect(results.map(&:name)).to match_array ['Fisher, B.L.', 'Wheeler, W.M.']
+      end
     end
 
-    it "reuses existing authors" do
-      described_class.import ['Fisher, B.L.', 'Wheeler, W.M.']
-      described_class.import ['Fisher, B.L.', 'Wheeler, W.M.']
-      expect(described_class.count).to eq 2
+    context 'when authors already exists' do
+      before { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }
+
+      it "reuses existing authors" do
+        expect { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }
+          .to_not change { described_class.count }.from(2)
+      end
     end
 
     it "is case sensitive" do
@@ -82,28 +87,40 @@ describe AuthorName do
   end
 
   describe "#last_name and #first_name_and_initials" do
-    it "simply returns the name if there's only one word" do
-      author_name = described_class.new name: 'Bolton'
-      expect(author_name.last_name).to eq 'Bolton'
-      expect(author_name.first_name_and_initials).to be_nil
+    context "when there's only one word" do
+      let(:author_name) { described_class.new name: 'Bolton' }
+
+      it "simply returns the name" do
+        expect(author_name.last_name).to eq 'Bolton'
+        expect(author_name.first_name_and_initials).to be_nil
+      end
     end
 
-    it "separates the words if there are multiple" do
-      author_name = described_class.new name: 'Bolton, B.L.'
-      expect(author_name.last_name).to eq 'Bolton'
-      expect(author_name.first_name_and_initials).to eq 'B.L.'
+    context 'when there are multiple words' do
+      let(:author_name) { described_class.new name: 'Bolton, B.L.' }
+
+      it "separates the words" do
+        expect(author_name.last_name).to eq 'Bolton'
+        expect(author_name.first_name_and_initials).to eq 'B.L.'
+      end
     end
 
-    it "uses all words if there is no comma" do
-      author_name = described_class.new name: 'Royal Academy'
-      expect(author_name.last_name).to eq 'Royal Academy'
-      expect(author_name.first_name_and_initials).to be_nil
+    context 'when there is no comma' do
+      let(:author_name) { described_class.new name: 'Royal Academy' }
+
+      it "uses all words" do
+        expect(author_name.last_name).to eq 'Royal Academy'
+        expect(author_name.first_name_and_initials).to be_nil
+      end
     end
 
-    it "uses all words before the comma if there are multiple" do
-      author_name = described_class.new name: 'Baroni Urbani, C.'
-      expect(author_name.last_name).to eq 'Baroni Urbani'
-      expect(author_name.first_name_and_initials).to eq 'C.'
+    context 'when there are multiple commas' do
+      let(:author_name) { described_class.new name: 'Baroni Urbani, C.' }
+
+      it "uses all words before the comma" do
+        expect(author_name.last_name).to eq 'Baroni Urbani'
+        expect(author_name.first_name_and_initials).to eq 'C.'
+      end
     end
   end
 end

@@ -23,40 +23,51 @@ describe Name do
   end
 
   describe "#set_taxon_caches" do
-    before do
-      @atta = find_or_create_name 'Atta'
-      @atta.update_attribute :name_html, '<i>Atta</i>'
+    let!(:atta_name) { find_or_create_name 'Atta' }
+
+    before { atta_name.update_attribute :name_html, '<i>Atta</i>' }
+
+    context 'when name is assigned to a taxon' do
+      let!(:taxon) { create_genus 'Eciton' }
+
+      it "sets the taxons's `name_cache` and `name_html_cache`" do
+        expect(taxon.name_cache).to eq 'Eciton'
+        expect(taxon.name_html_cache).to eq '<i>Eciton</i>'
+
+        taxon.name = atta_name
+        taxon.save!
+        expect(taxon.name_cache).to eq 'Atta'
+        expect(taxon.name_html_cache).to eq '<i>Atta</i>'
+      end
     end
 
-    it "sets the name_cache and name_html_cache in the taxon when assigned" do
-      taxon = create_genus 'Eciton'
-      expect(taxon.name_cache).to eq 'Eciton'
-      expect(taxon.name_html_cache).to eq '<i>Eciton</i>'
+    context 'when the contents of the name change' do
+      let!(:taxon) { create_genus name: atta_name }
 
-      taxon.name = @atta
-      taxon.save!
-      expect(taxon.name_cache).to eq 'Atta'
-      expect(taxon.name_html_cache).to eq '<i>Atta</i>'
+      it "changes the cache" do
+        expect(taxon.name_cache).to eq 'Atta'
+        expect(taxon.name_html_cache).to eq '<i>Atta</i>'
+        atta_name.update name: 'Betta', name_html: '<i>Betta</i>'
+        taxon.reload
+        expect(taxon.name_cache).to eq 'Betta'
+        expect(taxon.name_html_cache).to eq '<i>Betta</i>'
+      end
     end
 
-    it "changes the cache when the contents of the name change" do
-      taxon = create_genus name: @atta
-      expect(taxon.name_cache).to eq 'Atta'
-      expect(taxon.name_html_cache).to eq '<i>Atta</i>'
-      @atta.update name: 'Betta', name_html: '<i>Betta</i>'
-      taxon.reload
-      expect(taxon.name_cache).to eq 'Betta'
-      expect(taxon.name_html_cache).to eq '<i>Betta</i>'
-    end
+    context 'when a different name is assigned' do
+      let!(:betta_name) { find_or_create_name 'Betta' }
+      let!(:taxon) { create_genus name: atta_name }
 
-    it "changes the cache when a different name is assigned" do
-      betta = find_or_create_name 'Betta'
-      betta.update_attribute :name_html, '<i>Betta</i>'
+      before do
+        betta_name.update_attribute :name_html, '<i>Betta</i>'
+        taxon.update_attribute :name, betta_name
+      end
 
-      taxon = create_genus name: @atta
-      taxon.update_attribute :name, betta
-      expect(taxon.name_cache).to eq 'Betta'
-      expect(taxon.name_html_cache).to eq '<i>Betta</i>'
+      it "changes the cache" do
+        taxon.update_attribute :name, betta_name
+        expect(taxon.name_cache).to eq 'Betta'
+        expect(taxon.name_html_cache).to eq '<i>Betta</i>'
+      end
     end
   end
 
