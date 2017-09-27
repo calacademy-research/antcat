@@ -13,4 +13,10 @@ describe MissingReferenceDecorator do
       end
     end
   end
+
+  describe "#format_reference_document_link" do
+    let(:reference) { build_stubbed :missing_reference, citation: "citation" }
+
+    specify { expect(reference.decorate.format_reference_document_link).to be_nil }
+  end
 end

@@ -30,4 +30,37 @@ describe ArticleReferenceDecorator do
       end
     end
   end
+
+  describe "#inline_citation" do
+    let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
+    let!(:reference) do
+      create :article_reference,
+        author_names: [latreille],
+        citation_year: '1809',
+        title: "*Atta*",
+        journal: create(:journal, name: 'Science'),
+        series_volume_issue: '(1)',
+        pagination: '3'
+    end
+
+    before { allow(reference).to receive(:url).and_return 'example.com' }
+
+    it "creates a link to the reference" do
+      allow(reference).to receive(:downloadable?).and_return true
+
+      expect(reference.decorate.inline_citation).to eq(
+        %{<span class="reference_keey_and_expansion">} +
+          %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." class="reference_keey" href="#">Latreille, 1809</a>} +
+          %{<span class="reference_keey_expansion">} +
+            %{<span class="reference_keey_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
+            %{ } +
+            %{<a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
+            %{<a href="example.com">PDF</a>} +
+            %{ } +
+            %{<a href="/references/#{reference.id}">#{reference.id}</a>} +
+          %{</span>} +
+        %{</span>}
+      )
+    end
+  end
 end

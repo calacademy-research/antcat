@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe ReferenceDecorator do
   let(:nil_decorator) { described_class.new nil }
-  let(:journal) { create :journal, name: "Neue Denkschriften" }
   let(:author_name) { create :author_name, name: "Forel, A." }
 
   describe "#format_reference_document_link" do
@@ -114,7 +113,7 @@ describe ReferenceDecorator do
         author_names: [author_name],
         citation_year: "1874",
         title: "Les fourmis de la Suisse.",
-        journal: journal,
+        journal: create(:journal, name: "Neue Denkschriften"),
         series_volume_issue: "26",
         pagination: "1-452.",
         date: date
@@ -193,48 +192,5 @@ describe ReferenceDecorator do
       ReferenceFormatterCache.populate reference
       expect(reference.decorate.formatted).to be_html_safe
     end
-  end
-end
-
-describe ReferenceDecorator do
-  describe "#inline_citation" do
-    let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
-    let!(:reference) do
-      create :article_reference,
-        author_names: [latreille],
-        citation_year: '1809',
-        title: "*Atta*",
-        journal: create(:journal, name: 'Science'),
-        series_volume_issue: '(1)',
-        pagination: '3'
-    end
-
-    before { allow(reference).to receive(:url).and_return 'example.com' }
-
-    it "creates a link to the reference" do
-      allow(reference).to receive(:downloadable?).and_return true
-
-      expect(reference.decorate.inline_citation).to eq(
-        %{<span class="reference_keey_and_expansion">} +
-          %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." class="reference_keey" href="#">Latreille, 1809</a>} +
-          %{<span class="reference_keey_expansion">} +
-            %{<span class="reference_keey_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
-            %{ } +
-            %{<a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
-            %{<a href="example.com">PDF</a>} +
-            %{ } +
-            %{<a href="/references/#{reference.id}">#{reference.id}</a>} +
-          %{</span>} +
-        %{</span>}
-      )
-    end
-  end
-end
-
-describe MissingReferenceDecorator do
-  let(:reference) { build_stubbed :missing_reference, citation: "citation" }
-
-  describe "#format_reference_document_link" do
-    specify { expect(reference.decorate.format_reference_document_link).to be_nil }
   end
 end
