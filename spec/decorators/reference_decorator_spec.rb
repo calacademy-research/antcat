@@ -83,43 +83,25 @@ describe ReferenceDecorator do
     end
   end
 
-  describe "formatting the date" do
+  describe "#format_date" do
+    def check_format_date date, expected
+      expect(nil_decorator.send(:format_date, date)).to eq expected
+    end
+
     it "uses ISO 8601 format for calendar dates" do
-      make_and_check_date '20101213', ' [2010-12-13]'
+      check_format_date '20101213', '2010-12-13'
     end
 
     it "handles years without months and days" do
-      make_and_check_date '201012', ' [2010-12]'
+      check_format_date '201012', '2010-12'
     end
 
     it "handles years with months but without days" do
-      make_and_check_date '2010', ' [2010]'
-    end
-
-    it "handles nil dates" do
-      make_and_check_date nil, ''
+      check_format_date '2010', '2010'
     end
 
     it "handles missing dates" do
-      make_and_check_date '', ''
-    end
-
-    it "handles dates with other symbols/characters" do
-      make_and_check_date '201012>', ' [2010-12&gt;]'
-    end
-
-    def make_and_check_date date, expected
-      reference = create :article_reference,
-        author_names: [author_name],
-        citation_year: "1874",
-        title: "Les fourmis de la Suisse.",
-        journal: create(:journal, name: "Neue Denkschriften"),
-        series_volume_issue: "26",
-        pagination: "1-452.",
-        date: date
-
-      expect(reference.decorate.formatted)
-        .to eq "Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.#{expected}"
+      check_format_date '', ''
     end
   end
 
@@ -177,20 +159,11 @@ describe ReferenceDecorator do
       create :article_reference,
         author_names: [author_name], citation_year: '1874', title: 'Format',
         journal: create(:journal, name: 'Ants'),
-        series_volume_issue: '1:1',pagination: '2'
+        series_volume_issue: '1:1', pagination: '2'
     end
 
     it "really should have been duped" do
       expect(reference.decorate.formatted).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
-    end
-  end
-
-  describe "Using ReferenceFormatterCache" do
-    let(:reference) { create :article_reference }
-
-    it "returns an html_safe string from the cache" do
-      ReferenceFormatterCache.populate reference
-      expect(reference.decorate.formatted).to be_html_safe
     end
   end
 end
