@@ -32,25 +32,6 @@ describe UnknownReferenceDecorator do
         expect(reference.decorate.formatted).to eq "2010d. <i>Tapinoma</i>. <i>Ants</i>."
       end
 
-      it "italicizes the title even with two italicized words" do
-        reference = create :unknown_reference,
-          citation_year: '2010d',
-          author_names: [],
-          citation: 'Ants',
-          title: 'Note on a new northern cutting ant, *Atta* *septentrionalis*.'
-        expect(reference.decorate.formatted)
-          .to eq "2010d. Note on a new northern cutting ant, <i>Atta</i> <i>septentrionalis</i>. Ants."
-      end
-
-      it "allows existing italics in title and citation" do
-        reference = create :unknown_reference,
-          citation_year: '2010d',
-          author_names: [],
-          citation: '*Ants*',
-          title: '<i>Tapinoma</i>'
-        expect(reference.decorate.formatted).to eq "2010d. <i>Tapinoma</i>. <i>Ants</i>."
-      end
-
       it "escapes other HTML in title and citation" do
         reference = create :unknown_reference,
           citation_year: '2010d',
@@ -81,20 +62,6 @@ describe UnknownReferenceDecorator do
           author_names: author_names,
           citation: '>'
         expect(reference.decorate.formatted).to eq 'Ward, P. S. 2010d. Ants are my life. &gt;.'
-      end
-    end
-
-    context "when there are no authors" do
-      let(:reference) do
-        create :unknown_reference,
-          citation_year: '2010d',
-          author_names: [],
-          citation: 'Ants',
-          title: 'Tapinoma'
-      end
-
-      it "doesn't have a space at the beginning" do
-        expect(reference.decorate.formatted).to eq "2010d. Tapinoma. Ants."
       end
     end
   end
