@@ -195,8 +195,6 @@ describe Taxon do
       3.times { |number| taxon.history_items.create! taxt: "#{number}" }
 
       expect(taxon.history_items.map(&:taxt)).to eq ['0','1','2']
-      taxon.history_items.first.move_to_bottom
-      expect(taxon.history_items(true).map(&:taxt)).to eq ['1','2','0']
     end
   end
 
@@ -218,8 +216,6 @@ describe Taxon do
       end
 
       expect(taxon.reference_sections.map(&:references_taxt)).to eq ['0','1','2']
-      taxon.reference_sections.first.move_to_bottom
-      expect(taxon.reference_sections(true).map(&:references_taxt)).to eq ['1','2','0']
     end
   end
 

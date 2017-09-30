@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
     can_edit?
   end
 
+  # TODO merge with `#can_approve_changes?`.
   def can_review_changes?
     can_edit?
   end

@@ -15,18 +15,6 @@ describe BookReferenceDecorator do
         .to eq 'Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.'
     end
 
-    it "formats a citation_string correctly if the publisher doesn't have a place" do
-      publisher = Publisher.create! name: "Wiley"
-      reference = create :book_reference,
-        author_names: [author_name],
-        citation_year: "1874",
-        title: "Les fourmis de la Suisse.",
-        publisher: publisher,
-        pagination: "22 pp."
-      expect(reference.decorate.formatted)
-        .to eq 'Forel, A. 1874. Les fourmis de la Suisse. Wiley, 22 pp.'
-    end
-
     context "with unsafe characters" do
       let!(:author_names) { [create(:author_name, name: 'Ward, P. S.')] }
 
