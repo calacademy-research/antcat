@@ -16,7 +16,6 @@ describe ApplicationController do
         expect(controller.user_can_edit?).to be nil
         expect(controller.user_is_superadmin?).to be nil
         expect(controller.user_can_review_changes?).to be nil
-        expect(controller.user_can_approve_changes?).to be nil
       end
     end
 
@@ -36,7 +35,6 @@ describe ApplicationController do
         expect(controller.user_can_edit?).to be true
         expect(controller.user_is_superadmin?).to be_falsey
         expect(controller.user_can_review_changes?).to be true
-        expect(controller.user_can_approve_changes?).to be true
       end
     end
 
@@ -56,7 +54,6 @@ describe ApplicationController do
         expect(controller.user_can_edit?).to be_falsey
         expect(controller.user_is_superadmin?).to be true
         expect(controller.user_can_review_changes?).to be_falsey
-        expect(controller.user_can_approve_changes?).to be_falsey
       end
     end
 

@@ -13,11 +13,10 @@ class ApplicationController < ActionController::Base
 
   # This makes it possible to call eg `user_is_superadmin?` in any controller.
   delegate :can_edit?, :is_superadmin?, :can_review_changes?,
-    :can_approve_changes?, to: :current_user, prefix: 'user', allow_nil: true
+    to: :current_user, prefix: 'user', allow_nil: true
 
   # This makes the above delegations available in views.
-  helper_method :user_can_edit?, :user_is_superadmin?,
-    :user_can_review_changes?, :user_can_approve_changes?
+  helper_method :user_can_edit?, :user_is_superadmin?, :user_can_review_changes?
 
   def user_for_paper_trail
     current_user.try :id

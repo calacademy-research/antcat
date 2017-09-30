@@ -30,11 +30,6 @@ class User < ActiveRecord::Base
     RequestStore.store[:current_user] = user
   end
 
-  def can_approve_changes?
-    can_edit?
-  end
-
-  # TODO merge with `#can_approve_changes?`.
   def can_review_changes?
     can_edit?
   end
