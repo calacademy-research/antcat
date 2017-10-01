@@ -202,21 +202,33 @@ describe Exporters::Antweb::Exporter do
   describe "Current valid name" do
     let(:taxon) { create_genus }
 
-    it "exports the current valid name of the taxon" do
-      old = create_genus
-      taxon.update! current_valid_taxon_id: old.id
-      expect(export_taxon(taxon)[13]).to end_with old.name.name
+    context 'when taxon is valid' do
+      it "returns nil" do
+        expect(export_taxon(taxon)[13]).to be_nil
+      end
     end
 
-    it "looks at synonyms if there isn't a current_valid_taxon" do
-      senior_synonym = create_species 'Eciton major', genus: taxon
-      junior_synonym = create_species 'Atta major', genus: taxon, status: 'synonym'
-      create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
-      expect(export_taxon(junior_synonym)[13]).to end_with 'Eciton major'
+    context "when taxon has a `current_valid_taxon`" do
+      let!(:old) { create_genus }
+
+      before { taxon.update! current_valid_taxon_id: old.id }
+
+      it "exports the current valid name of the taxon" do
+        expect(export_taxon(taxon)[13]).to end_with old.name.name
+      end
     end
 
-    it "returns nil if the taxon itself is valid" do
-      expect(export_taxon(taxon)[13]).to be_nil
+    context "when there isn't a current_valid_taxon" do
+      let!(:junior_synonym) { create_species 'Atta major', genus: taxon, status: 'synonym' }
+
+      before do
+        senior_synonym = create_species 'Eciton major', genus: taxon
+        create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
+      end
+
+      it "looks at synonyms" do
+        expect(export_taxon(junior_synonym)[13]).to end_with 'Eciton major'
+      end
     end
   end
 
@@ -302,12 +314,14 @@ describe Exporters::Antweb::Exporter do
     end
   end
 
-  describe "Sending other fields to AntWeb" do
+  describe "Bioregion" do
     it "sends the biogeographic region" do
       taxon = create_genus biogeographic_region: 'Neotropic'
       expect(export_taxon(taxon)[19]).to eq 'Neotropic'
     end
+  end
 
+  describe "Country" do
     it "sends the locality" do
       taxon = create_genus protonym: create(:protonym, locality: 'Canada')
       expect(export_taxon(taxon)[20]).to eq 'Canada'

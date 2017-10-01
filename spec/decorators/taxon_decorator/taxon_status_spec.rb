@@ -27,14 +27,14 @@ describe TaxonDecorator::TaxonStatus do
 
     describe "Using current valid taxon" do
       context "when a null current valid taxon" do
-        let!(:senior_synonym) { create_genus 'Atta' }
         let!(:other_senior_synonym) { create_genus 'Eciton' }
         let!(:junior_synonym) { create :genus, :synonym }
 
-        before { create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym }
-
         before do
+          senior_synonym = create_genus 'Atta'
           senior_synonym.update_attribute :created_at, Time.now - 100
+          create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
+
           create :synonym, senior_synonym: other_senior_synonym, junior_synonym: junior_synonym
         end
 
@@ -53,14 +53,14 @@ describe TaxonDecorator::TaxonStatus do
       end
 
       context "when a current valid taxon that's one of two 'senior synonyms'" do
-        let!(:senior_synonym) { create_genus 'Atta' }
         let!(:other_senior_synonym) { create_genus 'Eciton' }
         let!(:junior_synonym) { create :genus, status: 'synonym', current_valid_taxon: other_senior_synonym }
 
-        before { create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym }
-
         before do
+          senior_synonym = create_genus 'Atta'
           senior_synonym.update_attribute :created_at, Time.now - 100
+          create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
+
           create :synonym, senior_synonym: other_senior_synonym, junior_synonym: junior_synonym
         end
 

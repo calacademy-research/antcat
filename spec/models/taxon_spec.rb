@@ -17,21 +17,22 @@ describe Taxon do
     let(:subfamily) { create :subfamily }
 
     describe ".valid" do
-      it "only includes valid taxa" do
-        replacement = create :genus, subfamily: subfamily
-        homonym = create :genus,
-          homonym_replaced_by: replacement,
-          status: 'homonym',
-          subfamily: subfamily
-        junior_synonym = create :genus, :synonym, subfamily: subfamily
-        create :synonym, junior_synonym: junior_synonym, senior_synonym: replacement
+      let!(:valid_taxon) { create :genus, subfamily: subfamily }
 
-        expect(subfamily.genera.valid).to eq [replacement]
+      before do
+        create :genus, homonym_replaced_by: valid_taxon, status: 'homonym', subfamily: subfamily
+        junior_synonym = create :genus, :synonym, subfamily: subfamily
+        create :synonym, junior_synonym: junior_synonym, senior_synonym: valid_taxon
+      end
+
+      it "only includes valid taxa" do
+        expect(subfamily.genera.valid).to eq [valid_taxon]
       end
     end
 
     describe ".extant" do
       let!(:extant_genus) { create :genus, subfamily: subfamily }
+
       before { create :genus, subfamily: subfamily, fossil: true }
 
       it "only includes extant taxa" do
