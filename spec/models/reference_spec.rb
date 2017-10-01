@@ -161,10 +161,7 @@ describe Reference do
       it "adds an error and raise an exception" do
         expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }
           .to raise_error ActiveRecord::RecordInvalid
-
-        error_message = "couldn't be parsed. Please post a message on " \
-          "http://groups.google.com/group/antcat/, and we'll fix it!"
-        expect(reference.errors.messages).to eq author_names_string: [error_message]
+        expect(reference.errors.messages).to eq author_names_string: ["couldn't be parsed."]
         expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
       end
     end
