@@ -1,10 +1,15 @@
 -if taxon.reference_sections.present?
   .reference_sections
     -taxon.reference_sections.each do |section|
-      .section
-        -[:title_taxt, :subtitle_taxt, :references_taxt].each do |field|
-          -if section[field].present?
-            %div{class: field}
-              =TaxtPresenter[section[field]].to_html
+      .section.small-margin-bottom
+        -if section.title_taxt.present?
+          %h6=TaxtPresenter[section.title_taxt].to_html
+
+        -if section.subtitle_taxt.present?
+          %h7=TaxtPresenter[section.subtitle_taxt].to_html
+
+        -if section.references_taxt.present?
+          %p=TaxtPresenter[section.references_taxt].to_html
+
         -if current_user
           %small.show-on-hover=link_to "History", reference_section_path(section), class: "btn-normal btn-tiny"
