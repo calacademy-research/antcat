@@ -242,7 +242,7 @@ describe Taxon do
 
     context "when the name simply differs" do
       let(:species) { create_species 'Atta minor maxus' }
-      let(:protonym_name) { create_subspecies_name 'Atta minor minus' }
+      let(:protonym_name) { create :subspecies_name, name: 'Atta minor minus' }
 
       it "doesn't surround in parentheses" do
         expect_any_instance_of(Reference)
@@ -255,7 +255,7 @@ describe Taxon do
 
     context "when there isn't a protonym authorship" do
       let(:species) { create_species 'Atta minor maxus' }
-      let(:protonym_name) { create_subspecies_name 'Eciton minor maxus' }
+      let(:protonym_name) { create :subspecies_name, name: 'Eciton minor maxus' }
 
       it "handles it" do
         expect(species.protonym).to receive(:authorship).and_return nil
@@ -308,7 +308,7 @@ describe Taxon do
     let(:old_parent) { create_species 'Atta major', genus: create_genus('Atta') }
     let(:new_parent) { create_species 'Eciton nigrus', genus: create_genus('Eciton') }
     let(:subspecies) do
-      create_subspecies name: create_subspecies_name('Atta major medius minor'),
+      create_subspecies name: create(:subspecies_name, name: 'Atta major medius minor'),
         species: old_parent
     end
 

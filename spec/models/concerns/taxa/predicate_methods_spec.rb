@@ -75,7 +75,7 @@ describe Taxon do
 
     context "when genus part of name is same as genus part of protonym" do
       let!(:species) { create_species 'Atta minor maxus' }
-      let!(:protonym_name) { create_subspecies_name 'Atta minor minus' }
+      let!(:protonym_name) { create :subspecies_name, name: 'Atta minor minus' }
 
       it "it is not a recombination" do
         expect(species.protonym).to receive(:name).and_return protonym_name
