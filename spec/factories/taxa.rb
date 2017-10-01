@@ -14,7 +14,6 @@
 # See also `RefactorTaxonFactoriesHelpers`.
 
 require_relative '../support/helpers/get_name_parts_helpers'
-include GetNamePartsHelpers
 
 FactoryGirl.define do
   factory :taxon do
@@ -106,7 +105,7 @@ def _create_taxon name_or_attributes, rank, attributes = {}
 
   attributes =
     if name_or_attributes.kind_of? String
-      name, epithet, epithets = get_name_parts name_or_attributes
+      name, epithet, epithets = GetNamePartsHelpers.get_name_parts name_or_attributes
       name_object = create name_factory, name: name, epithet: epithet, epithets: epithets
       attributes.reverse_merge name: name_object, name_cache: name
     else
