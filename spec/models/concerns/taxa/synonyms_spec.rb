@@ -139,7 +139,7 @@ describe Taxon do
   end
 
   it "can be a synonym" do
-    taxon = build :taxon
+    taxon = build :family
     expect(taxon).not_to be_synonym
     taxon.update_attribute :status, 'synonym'
     expect(taxon).to be_synonym

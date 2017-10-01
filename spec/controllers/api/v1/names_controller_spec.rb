@@ -14,7 +14,7 @@ describe Api::V1::NamesController do
 
       expect(response.body.to_s).to include "Atta"
       names = JSON.parse response.body
-      expect(names.count).to eq 22
+      expect(names.count).to eq 21
     end
 
     it "gets all author names keys (starts_at)" do

@@ -18,8 +18,6 @@ include GetNamePartsHelpers
 
 FactoryGirl.define do
   factory :taxon do
-    association :name, factory: :genus_name
-    association :type_name, factory: :species_name
     protonym
     status 'valid'
 
