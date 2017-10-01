@@ -14,10 +14,12 @@ describe Taxon do
     context 'when a senior synonym exists' do
       let!(:senior) { create_genus }
       let!(:current_valid_taxon) { create_genus }
-      let!(:taxon) { create_synonym senior, current_valid_taxon: current_valid_taxon }
+      let!(:junior_synonym) { create :genus, :synonym, current_valid_taxon: current_valid_taxon }
+
+      before { create_synonym junior_synonym, senior }
 
       it "returns the senior synonym" do
-        expect(taxon.current_valid_taxon_including_synonyms).to eq senior
+        expect(junior_synonym.current_valid_taxon_including_synonyms).to eq senior
       end
     end
 
@@ -68,12 +70,15 @@ describe Taxon do
     context 'when no senior synonyms are valid' do
       let!(:invalid_senior) { create_genus status: 'homonym' }
       let!(:another_invalid_senior) { create_genus status: 'homonym' }
-      let!(:taxon) { create_synonym invalid_senior }
+      let!(:junior_synonym) { create :genus, :synonym }
 
-      before { Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: taxon }
+      before do
+        create_synonym junior_synonym, invalid_senior
+        Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: junior_synonym
+      end
 
       it "returns nil" do
-        expect(taxon.current_valid_taxon_including_synonyms).to be_nil
+        expect(junior_synonym.current_valid_taxon_including_synonyms).to be_nil
       end
     end
 
@@ -155,7 +160,8 @@ describe Taxon do
 
     it "should think it's a synonym of something when it is" do
       senior = create :genus
-      junior = create_synonym senior
+      junior = create :genus, :synonym
+      create_synonym junior, senior
       expect(junior).to be_junior_synonym_of senior
     end
   end

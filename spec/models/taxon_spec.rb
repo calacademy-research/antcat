@@ -23,7 +23,8 @@ describe Taxon do
           homonym_replaced_by: replacement,
           status: 'homonym',
           subfamily: subfamily
-        create_synonym replacement, subfamily: subfamily
+        junior_synonym = create :genus, :synonym, subfamily: subfamily
+        create_synonym junior_synonym, replacement
 
         expect(subfamily.genera.valid).to eq [replacement]
       end

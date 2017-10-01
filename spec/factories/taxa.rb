@@ -20,6 +20,10 @@ FactoryGirl.define do
     protonym
     status 'valid'
 
+    trait :synonym do
+      status 'synonym'
+    end
+
     factory :family, class: Family do
       association :name, factory: :family_name
       association :type_name, factory: :genus_name
