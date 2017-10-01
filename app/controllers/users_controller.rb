@@ -11,12 +11,6 @@ class UsersController < ApplicationController
     @recent_user_comments = @user.comments.most_recent 5
   end
 
-  def emails
-    @editor_emails = User.editors.order_by_name.as_angle_bracketed_emails
-    @non_editor_emails = User.non_editors.order_by_name.as_angle_bracketed_emails
-    @all = "#{@editor_emails}, #{@non_editor_emails}"
-  end
-
   def mentionables
     respond_to do |format|
       format.json do

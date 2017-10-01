@@ -5,19 +5,6 @@ describe User do
   it { is_expected.to be_versioned }
 
   describe "scopes" do
-    describe ".editors and .non_editors" do
-      let!(:user) { create :user }
-      let!(:editor) { create :editor }
-
-      describe ".editors" do
-        specify { expect(described_class.editors).to eq [editor] }
-      end
-
-      describe ".non_editors" do
-        specify { expect(described_class.non_editors).to eq [user] }
-      end
-    end
-
     describe ".as_angle_bracketed_emails" do
       before do
         create :user, name: "Archibald", email: "archibald@antcat.org"

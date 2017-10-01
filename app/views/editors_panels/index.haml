@@ -27,10 +27,7 @@
     %ul.no-bullet
       %li=link_to 'Activity feed', activities_path
       %li=link_to 'Help pages (wiki hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
-      %li
-        =link_to "List of users", users_path
-        =surround "(", ")" do
-          =link_to "email users", emails_users_path
+      %li=link_to "List of users", users_path
       %li=link_to 'Invite people to AntCat', invite_users_path
       %li=link_to "Markdown formatting help", markdown_formatting_help_path
       %li=link_to "History item search", taxon_history_items_path
