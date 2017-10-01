@@ -11,11 +11,6 @@
           =f.text_field :title, { maxlength: 70 }
 
       .row
-        .medium-8.columns.end
-          =f.label :blurb
-          =f.text_field :blurb, { maxlength: 255, placeholder: "Optional short description used in the 'Unread site notices' box." }
-
-      .row
         .medium-12.columns
           =f.text_area :message, rows: 10,
             data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Message" }

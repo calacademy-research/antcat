@@ -69,7 +69,7 @@ class SiteNoticesController < ApplicationController
     end
 
     def site_notice_params
-      params.require(:site_notice).permit :blurb, :title, :message
+      params.require(:site_notice).permit :title, :message
     end
 
     def mark_as_read

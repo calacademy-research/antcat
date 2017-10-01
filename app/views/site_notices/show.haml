@@ -14,12 +14,6 @@
       =link_to "Delete", site_notice_path(@site_notice), method: :delete, data: { confirm: "Delete? This removes the site notice from the archive." }, class: "btn-delete"
 .clear
 
--if @site_notice.blurb.present?
-  .row
-    .medium-12.columns
-      .callout
-        %p=@site_notice.blurb
-
 .row
   .medium-12.columns
     .callout

@@ -18,9 +18,6 @@
             ago
             %br
             =link_comments_section site_notice
-          %br
-          -if site_notice.blurb.present?
-            %p=site_notice.blurb
           %hr
         %button.close-button{"aria-label" => "Dismiss alert", "data-close" => "", type: "button"}
           %span{"aria-hidden" => "true"} &times;
