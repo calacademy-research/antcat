@@ -74,7 +74,7 @@ class ReferenceDecorator < ApplicationDecorator
       string << ' ' unless string.empty?
       string << make_html_safe(reference.citation_year) << '. '
       string << format_title << ' '
-      string << format_citation
+      string << format_italics(helpers.add_period_if_necessary(format_citation))
       string << " [#{format_date(reference.date)}]" if reference.date?
       string
     end

@@ -64,9 +64,6 @@ module References
             elsif page
               paginate page: page, per_page: items_per_page
             end
-
-            order_by :author_names_string
-            order_by :citation_year
           end.results
         end
 

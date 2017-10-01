@@ -39,15 +39,6 @@ Feature: Using the default reference
     And I press "Ward, 2010"
     Then the taxt editor should contain the editable taxt for "Ward 2010 "
 
-  #Scenario: Saving a reference makes it the default
-  #  # TODO? I can't write a scenario that uses session
-
-  #Scenario: Adding a reference makes it the default
-  #  # TODO? I can't write a scenario that uses session
-
-  #Scenario: Selecting a reference makes it the default
-  #  # TODO? I can't write a scenario that uses session
-
   Scenario: Cancelling after choosing the default reference
     Given the default reference is "Ward 2010"
 

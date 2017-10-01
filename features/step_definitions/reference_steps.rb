@@ -146,20 +146,6 @@ When(/I fill in "([^"]*)" with a URL to a document that doesn't exist/) do |fiel
   step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
-def very_long_author_names_string
-  (0...26).reduce([]) do |a, n|
-    a << "AuthorWithVeryVeryVeryLongName#{(?A.ord + n).chr}, A."
-  end.join('; ')
-end
-
-When(/I fill in "reference_author_names_string" with a very long author names string/) do
-  step %{I fill in "reference_author_names_string" with "#{very_long_author_names_string}"}
-end
-
-Then(/I should see a very long author names string/) do
-  step %{I should see "#{very_long_author_names_string}"}
-end
-
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
   reference = create :unknown_reference, title: 'Dolerichoderinae'
   reference.update_column :id, 50000

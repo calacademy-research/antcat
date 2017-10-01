@@ -62,5 +62,5 @@ description: >
   and
   [Taxa with the same name cache value](/database_scripts/taxa_with_the_same_name_cache_value).
 
-tags: [new!, regression-test]
+tags: [regression-test]
 topic_areas: [catalog]

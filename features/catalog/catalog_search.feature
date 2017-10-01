@@ -41,25 +41,6 @@ Feature: Searching the catalog
     And I follow "Dolichoderini" in the search results
     Then I should see "Dolichoderini history"
 
-  Scenario: Finding a genus without a subfamily or a tribe
-    Given a genus exists with a name of "Monomorium" and no subfamily and a taxonomic history of "Monomorium history"
-
-    When I fill in the catalog search box with "Monomorium"
-    And I press "Go" by the catalog search box
-    Then I should see "Monomorium history"
-
-  Scenario: Finding a genus without a tribe but with a subfamily
-    Given a genus exists with a name of "Monomorium" and a subfamily of "Dolichoderinae" and a taxonomic history of "Monomorium history"
-
-    When I fill in the catalog search box with "Monomorium"
-    And I press "Go" by the catalog search box
-    Then I should see "Monomorium history"
-
-  Scenario: Searching with spaces at beginning and/or end of query string
-    When I fill in the catalog search box with " abruptus "
-    And I press "Go" by the catalog search box
-    Then I should see "abruptus history"
-
   Scenario: Searching for full species name, not just epithet
     When I fill in the catalog search box with "Dolichoderus major "
     And I press "Go" by the catalog search box

@@ -38,23 +38,6 @@ Feature: Using the catalog
     And I should not see "Dolichoderinae history"
     And I should not see "Atta" in the index
 
-    # Not working, and I'm not sure that we want this functionality anyhow.
-#  Scenario: Showing the "no subfamily" subfamily
-#    Given a genus exists with a name of "Cariridris" and no subfamily
-#    When I go to the catalog
-#    And I follow "(no subfamily)"
-#    Then I should see "Cariridris"
-#    And "(no subfamily)" should be selected
-#    And I should not see "Tribes"
-#
-#  Scenario: Selecting a genus without a subfamily
-#    When I go to the catalog
-#    And I follow "(no subfamily)"
-#    And I follow "Atta" in the index
-#    Then "(no subfamily)" should be selected
-#    And "Atta" should be selected
-#    And I should see "Atta history"
-
   Scenario: Selecting a subfamily
     When I go to the catalog
     And I follow "Dolichoderinae" in the index

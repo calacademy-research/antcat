@@ -19,13 +19,6 @@ Feature: Search references for authors
     And I should see "Antz"
     And I should not see "Formis"
 
-  Scenario: Searching for one author only (keyword search)
-    When I fill in the references search box with "author:'Bolton, B.'"
-    And I press "Go" by the references search box
-    Then I should see "Anthill"
-    And I should see "Antz"
-    And I should not see "Formis"
-
   Scenario: Searching for multiple authors (via the search type select)
     When I select author search from the search type selector
     And I fill in the references authors search box with "Bolton, B.; Fisher, B."

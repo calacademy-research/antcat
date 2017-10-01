@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe User do
   it { is_expected.to validate_presence_of :name }
-
   it { is_expected.to be_versioned }
 
   describe "scopes" do
@@ -15,7 +14,7 @@ describe User do
       end
 
       describe ".non_editors" do
-        specify { expect(described_class.editors).to eq [editor] }
+        specify { expect(described_class.non_editors).to eq [user] }
       end
     end
 
@@ -39,17 +38,12 @@ describe User do
   describe "authorization" do
     it "knows if it can edit the catalog" do
       expect(described_class.new.can_edit).to be_falsey
-      expect(described_class.new(can_edit: true).can_edit).to be_truthy
+      expect(described_class.new(can_edit: true).can_edit).to be true
     end
 
     it "knows if it can review changes" do
       expect(described_class.new.can_review_changes?).to be_falsey
-      expect(described_class.new(can_edit: true).can_review_changes?).to be_truthy
-    end
-
-    it "knows if it can approve changes" do
-      expect(described_class.new.can_approve_changes?).to be_falsey
-      expect(described_class.new(can_edit: true).can_approve_changes?).to be_truthy
+      expect(described_class.new(can_edit: true).can_review_changes?).to be true
     end
   end
 
@@ -97,13 +91,9 @@ describe User do
     let(:issue) { create :issue }
 
     it "can tell" do
-      notified = user.send :already_notified_for_attached_by_user?, issue, notifier
-      expect(notified).to be_falsey
-
-      user.notify_because :mentioned_in_thing, attached: issue, notifier: notifier
-
-      notified_now_then = user.send :already_notified_for_attached_by_user?, issue, notifier
-      expect(notified_now_then).to be true
+      expect { user.notify_because :mentioned_in_thing, attached: issue, notifier: notifier }
+        .to change { user.send :already_notified_for_attached_by_user?, issue, notifier }
+        .from(false).to(true)
     end
   end
 end

@@ -1,5 +1,7 @@
 @import "colors"
 
+// TODO remove `font-size: xxpx`.
+
 #catalog-controller
   #taxon_browser
     overflow: scroll
@@ -62,7 +64,7 @@
     overflow-x: hidden
     padding: 0 1rem 1rem 1rem
 
-    h4
+    h6
       font-weight: bold
 
     .link_to_external_site
@@ -81,9 +83,11 @@
 
     .statistics
       font-style: italic
-      margin-bottom: 6px
       font-size: 14px
       line-height: 1.1
+
+      p
+        margin-bottom: 0
 
     .headline
       margin-bottom: 4px
@@ -92,10 +96,13 @@
 
     .history
       font-size: 15px
-      padding-left: 0
       line-height: 1.2
       li:hover .show-on-hover
         display: inline
+
+    ul.junior-synonyms
+      font-size: 15px
+      line-height: 1.2
 
     .child_lists
       font-size: 15px
@@ -104,14 +111,7 @@
 
     .reference_sections
       font-size: 15px
-      .section
-        .title_taxt
-          padding-top: 6px
-          font-weight: bold
-        .subtitle_taxt
-          padding-top: 6px
-        .title_taxt + .subtitle_taxt
-          padding-top: 0
+      line-height: 1.2
       .section:hover .show-on-hover
         display: inline
 

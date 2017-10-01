@@ -17,7 +17,7 @@ def login_programmatically user
   step 'I go to the main page'
 end
 
-# TODO not used (December 2016).
+# TODO not used (since at least December 2016).
 def login_through_web_page
   step 'I go to the main page'
   click_link "Login"

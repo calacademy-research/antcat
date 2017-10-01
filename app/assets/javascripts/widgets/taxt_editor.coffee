@@ -121,11 +121,20 @@ class AntCat.TaxtEditor
 
   open_name_popup: (id, type) =>
     name_popup = @element.find '.antcat_name_popup'; AntCat.check 'TaxtEditor.open_name_popup', 'name_popup', name_popup
-    new AntCat.NamePopup name_popup.parent(), id: id, type: type, initial_value: @selection(), on_success: @handle_name_popup_result, on_close: @after_popup_closes
+    new AntCat.NamePopup name_popup.parent(),
+      id: id,
+      type: type,
+      initial_value: @selection(),
+      on_success: @handle_name_popup_result,
+      on_close: @after_popup_closes
 
   open_reference_popup: (id) =>
     reference_popup = @element.find '.antcat_reference_popup'
-    new AntCat.ReferencePopup reference_popup.parent(), id: id, on_ok: @handle_popup_result, on_close: @after_popup_closes
+    new AntCat.ReferencePopup reference_popup.parent(),
+      id: id,
+      initial_value: @selection(),
+      on_ok: @handle_popup_result,
+      on_close: @after_popup_closes
 
   open_popup_for_existing_tag: =>
     @before_popup_opens()
