@@ -221,7 +221,7 @@ describe Taxa::SaveFromForm do
 
       let!(:genus) { create_genus }
       let!(:another_genus) { create_genus }
-      let!(:synonym) { Synonym.create! senior_synonym: genus, junior_synonym: another_genus }
+      let!(:synonym) { create :synonym, senior_synonym: genus, junior_synonym: another_genus }
       let!(:actors) { [genus, genus.name, synonym] }
 
       before { mark_as_auto_generated actors }

@@ -35,7 +35,7 @@ describe TaxonDecorator::TaxonStatus do
 
         before do
           senior_synonym.update_attribute :created_at, Time.now - 100
-          Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: junior_synonym
+          create :synonym, senior_synonym: other_senior_synonym, junior_synonym: junior_synonym
         end
 
         specify do
@@ -61,7 +61,7 @@ describe TaxonDecorator::TaxonStatus do
 
         before do
           senior_synonym.update_attribute :created_at, Time.now - 100
-          Synonym.create! senior_synonym: other_senior_synonym, junior_synonym: junior_synonym
+          create :synonym, senior_synonym: other_senior_synonym, junior_synonym: junior_synonym
         end
 
         it specify do
@@ -115,7 +115,7 @@ describe TaxonDecorator::TaxonStatus do
       let(:junior) { create_genus 'Eciton', status: 'synonym' }
       subject { described_class.new(junior) }
 
-      before { Synonym.create! junior_synonym: junior, senior_synonym: invalid_senior }
+      before { create :synonym, junior_synonym: junior, senior_synonym: invalid_senior }
 
       it "returns an empty string" do
         expect(subject.send(:format_senior_synonym)).to eq ''

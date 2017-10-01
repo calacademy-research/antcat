@@ -211,7 +211,7 @@ describe Exporters::Antweb::Exporter do
     it "looks at synonyms if there isn't a current_valid_taxon" do
       senior_synonym = create_species 'Eciton major', genus: taxon
       junior_synonym = create_species 'Atta major', genus: taxon, status: 'synonym'
-      Synonym.create! junior_synonym: junior_synonym, senior_synonym: senior_synonym
+      create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
       expect(export_taxon(junior_synonym)[13]).to end_with 'Eciton major'
     end
 
@@ -367,7 +367,7 @@ describe Exporters::Antweb::Exporter do
       senior = create_genus 'Eciton', subfamily: subfamily
       junior = create_genus 'Atta', subfamily: subfamily, current_valid_taxon: senior
       taxon = create_species genus: junior
-      Synonym.create! senior_synonym: senior, junior_synonym: junior
+      create :synonym, senior_synonym: senior, junior_synonym: junior
 
       expect(export_taxon(taxon)[23]).to eq 'Eciton'
     end

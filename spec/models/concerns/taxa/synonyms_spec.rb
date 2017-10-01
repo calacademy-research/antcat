@@ -41,8 +41,8 @@ describe Taxon do
         valid_senior = create_genus status: 'valid'
         invalid_senior = create_genus status: 'homonym'
         taxon = create_genus status: 'synonym'
-        Synonym.create! senior_synonym: valid_senior, junior_synonym: taxon
-        Synonym.create! senior_synonym: invalid_senior, junior_synonym: taxon
+        create :synonym, senior_synonym: valid_senior, junior_synonym: taxon
+        create :synonym, senior_synonym: invalid_senior, junior_synonym: taxon
         expect(taxon.current_valid_taxon_including_synonyms).to eq valid_senior
       else
         "Survived. Phew. Life is precious."
@@ -74,7 +74,7 @@ describe Taxon do
 
       before do
         create :synonym, junior_synonym: junior_synonym, senior_synonym: invalid_senior
-        Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: junior_synonym
+        create :synonym, senior_synonym: another_invalid_senior, junior_synonym: junior_synonym
       end
 
       it "returns nil" do
@@ -88,8 +88,8 @@ describe Taxon do
       let!(:taxon) { create_genus status: 'synonym' }
 
       before do
-        Synonym.create! junior_synonym: senior_synonym, senior_synonym: senior_synonym_of_senior_synonym
-        Synonym.create! junior_synonym: taxon, senior_synonym: senior_synonym
+        create :synonym, junior_synonym: senior_synonym, senior_synonym: senior_synonym_of_senior_synonym
+        create :synonym, junior_synonym: taxon, senior_synonym: senior_synonym
       end
 
       it "returns the senior synonym of the senior synonym" do
@@ -110,8 +110,8 @@ describe Taxon do
       let(:another_junior_synonym) { create_species }
 
       before do
-        Synonym.create! senior_synonym: taxon, junior_synonym: junior_synonym
-        Synonym.create! senior_synonym: taxon, junior_synonym: another_junior_synonym
+        create :synonym, senior_synonym: taxon, junior_synonym: junior_synonym
+        create :synonym, senior_synonym: taxon, junior_synonym: another_junior_synonym
       end
 
       specify do
@@ -126,10 +126,10 @@ describe Taxon do
       let(:another_deeply_nested_junior_synonym) { create_species }
 
       before do
-        Synonym.create! senior_synonym: taxon, junior_synonym: junior_synonym
-        Synonym.create! senior_synonym: junior_synonym, junior_synonym: nested_junior_synonym
-        Synonym.create! senior_synonym: nested_junior_synonym, junior_synonym: deeply_nested_junior_synonym
-        Synonym.create! senior_synonym: nested_junior_synonym, junior_synonym: another_deeply_nested_junior_synonym
+        create :synonym, senior_synonym: taxon, junior_synonym: junior_synonym
+        create :synonym, senior_synonym: junior_synonym, junior_synonym: nested_junior_synonym
+        create :synonym, senior_synonym: nested_junior_synonym, junior_synonym: deeply_nested_junior_synonym
+        create :synonym, senior_synonym: nested_junior_synonym, junior_synonym: another_deeply_nested_junior_synonym
       end
 
       specify do
@@ -169,7 +169,7 @@ describe Taxon do
   it "should have junior and senior synonyms" do
     senior = create_genus 'Atta'
     junior = create_genus 'Eciton'
-    Synonym.create! junior_synonym: junior, senior_synonym: senior
+    create :synonym, junior_synonym: junior, senior_synonym: senior
 
     expect(senior.junior_synonyms.count).to eq 1
     expect(senior.senior_synonyms.count).to eq 0
@@ -198,8 +198,8 @@ describe Taxon do
       atta = create_genus 'Atta', status: 'synonym'
       attaboi = create_genus 'Attaboi', status: 'synonym'
 
-      Synonym.create! junior_synonym: atta, senior_synonym: attaboi
-      Synonym.create! junior_synonym: attaboi, senior_synonym: atta
+      create :synonym, junior_synonym: atta, senior_synonym: attaboi
+      create :synonym, junior_synonym: attaboi, senior_synonym: atta
       expect(Synonym.count).to eq 2
 
       become_junior_synonym_of atta, attaboi
@@ -279,7 +279,7 @@ describe Taxon do
   def become_junior_synonym_of junior, senior
     Synonym.where(junior_synonym: senior, senior_synonym: junior).destroy_all
     Synonym.where(senior_synonym: senior, junior_synonym: junior).destroy_all
-    Synonym.create! junior_synonym: junior, senior_synonym: senior
+    create :synonym, junior_synonym: junior, senior_synonym: senior
     senior.update! status: 'valid'
     junior.update! status: 'synonym'
   end
