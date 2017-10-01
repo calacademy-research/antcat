@@ -18,7 +18,7 @@ before_script:
 script:
   - RAILS_ENV=test bundle exec rake db:create
   - DRIVER=webkit bundle exec cucumber
-  - bundle exec rspec spec --tag ~pending
+  - bundle exec rspec spec --tag ~pending --order rand
 
 addons:
   apt:
