@@ -7,20 +7,24 @@ describe Publisher do
 
   describe "factory methods" do
     describe ".create_with_place" do
-      context "valid" do
-        it "creates and returns the publisher" do
-          publisher = described_class.create_with_place name: 'Wiley', place: 'Chicago'
-          expect(publisher.name).to eq 'Wiley'
-          expect(publisher.place.name).to eq 'Chicago'
+      context "when valid" do
+        context 'when publisher does not exists' do
+          it "creates and returns the publisher" do
+            publisher = described_class.create_with_place name: 'Wiley', place: 'Chicago'
+            expect(publisher.name).to eq 'Wiley'
+            expect(publisher.place.name).to eq 'Chicago'
+          end
         end
 
-        it "reuses existing publishers" do
-          2.times { described_class.create_with_place name: 'Wiley', place: 'Chicago' }
-          expect(described_class.count).to eq 1
+        context 'when publisher does not exists' do
+          it "reuses existing publisher" do
+            2.times { described_class.create_with_place name: 'Wiley', place: 'Chicago' }
+            expect(described_class.count).to eq 1
+          end
         end
       end
 
-      context "invalid" do
+      context "when invalid" do
         context "when name is supplied but no place" do
           it "raises" do
             expect { described_class.create_with_place(name: 'Wiley') }
@@ -58,7 +62,6 @@ describe Publisher do
     end
   end
 
-  # TODO used only in specs?
   describe "#to_s" do
     it "format name and place" do
       publisher = described_class.create! name: "Wiley", place: Place.create!(name: 'New York')

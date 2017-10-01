@@ -36,20 +36,20 @@ module Taxa::Synonyms
 
   protected
 
-  # TODO this executes a lot of queries, but let's first clear up some things,
-  # see https://github.com/calacademy-research/antcat/issues/279
-  def junior_synonym_ids_recursive
-    return [] unless junior_synonyms.exists?
+    # TODO this executes a lot of queries, but let's first clear up some things,
+    # see https://github.com/calacademy-research/antcat/issues/279
+    def junior_synonym_ids_recursive
+      return [] unless junior_synonyms.exists?
 
-    all_juniors = junior_synonyms.pluck(:id)
+      all_juniors = junior_synonyms.pluck(:id)
 
-    junior_synonyms.each do |junior_synonym|
-      ids = junior_synonym.junior_synonym_ids_recursive
-      all_juniors.push(*ids) unless ids.empty?
+      junior_synonyms.each do |junior_synonym|
+        ids = junior_synonym.junior_synonym_ids_recursive
+        all_juniors.push(*ids) unless ids.empty?
+      end
+
+      all_juniors
     end
-
-    all_juniors
-  end
 
   private
     def synonyms_with_names junior_or_senior

@@ -36,22 +36,9 @@ describe Feedback do
   end
 
   describe "open/closed" do
-    let(:open) { create :feedback }
-    let(:closed) { create :feedback, open: false }
-
-    describe "predicate methods" do
-      describe "#open?" do
-        specify { expect(open.open?).to be true }
-        specify { expect(closed.open?).to be false }
-      end
-
-      describe "#closed?" do
-        specify { expect(open.closed?).to be false }
-        specify { expect(closed.closed?).to be true }
-      end
-    end
-
     describe "#close" do
+      let(:open) { create :feedback }
+
       it "closes the feedback item" do
         open.close
         expect(open.closed?).to be true
@@ -59,6 +46,8 @@ describe Feedback do
     end
 
     describe "#reopen" do
+      let(:closed) { create :feedback, open: false }
+
       it "reopens the feedback item" do
         closed.reopen
         expect(closed.closed?).to be false

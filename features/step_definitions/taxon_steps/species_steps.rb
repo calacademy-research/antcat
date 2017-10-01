@@ -12,20 +12,6 @@ Given(/a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a t
   @species.history_items.create! taxt: history
 end
 
-Given(/an imported species exists with a name of "(.*?)" and a genus of "(.*?)"/) do |taxon_name, parent_name|
-  genus = Genus.find_by_name parent_name
-  genus ||= create :genus, name: create(:genus_name, name: parent_name)
-  name = create :species_name,
-    name: "#{parent_name} #{taxon_name}",
-    auto_generated: true,
-    origin: 'hol'
-  @species = create :species,
-    name: name,
-    genus: genus,
-    auto_generated: true,
-    origin: 'hol'
-end
-
 Given(/^species "(.*?)" exists in that subgenus$/) do |name|
   @species = create :species,
     subfamily: @subfamily,

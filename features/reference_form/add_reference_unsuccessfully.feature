@@ -71,11 +71,6 @@ Feature: Add reference unsuccessfully
     And I press "Save"
     Then I should see "Nesting reference does not exist"
 
-  Scenario: Empty author string (with separator)
-    When I fill in "reference_author_names_string" with " ; "
-    And I press "Save"
-    Then I should see "Author names string couldn't be parsed."
-
   Scenario: Unparseable author string (and maintain already filled in fields)
     When I fill in "reference_author_names_string" with "...asdf sdf dsfdsf"
     And I press "Save"

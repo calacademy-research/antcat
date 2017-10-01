@@ -61,23 +61,3 @@ Feature: Add reference
     And I fill in "reference_citation" with "In Muller, Brown 1928. Ants. p. 23."
     And I press "Save"
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. In Muller, Brown 1928. Ants. p. 23."
-
-  Scenario: Adding a reference with authors' role
-    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B. (eds.)"
-    And I fill in "reference_title" with "A reference title"
-    And I fill in "reference_citation_year" with "1981"
-    And I fill in "reference_journal_name" with "Ant Journal"
-    And I fill in "reference_series_volume_issue" with "1"
-    And I fill in "article_pagination" with "2"
-    And I press "Save"
-    Then I should see "Ward, B.L.; Bolton, B. (eds.) 1981. A reference title. Ant Journal 1:2"
-
-  Scenario: Very long author string
-    When I fill in "reference_author_names_string" with a very long author names string
-    And I fill in "reference_title" with "A reference title"
-    And I fill in "reference_journal_name" with "Ants"
-    And I fill in "reference_series_volume_issue" with "2"
-    And I fill in "article_pagination" with "1"
-    And I fill in "reference_citation_year" with "1981"
-    And I press "Save"
-    Then I should see a very long author names string

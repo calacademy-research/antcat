@@ -21,7 +21,7 @@ class Taxon < ApplicationRecord
   # Allow optional `changed_by` for performance reasons.
   def can_be_approved_by? change, user, changed_by = nil
     return unless user && change
-    return unless waiting? && user.can_approve_changes?
+    return unless waiting? && user.can_review_changes?
 
     changed_by ||= change.changed_by
     user != changed_by

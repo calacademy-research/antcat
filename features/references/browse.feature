@@ -3,17 +3,7 @@ Feature: View bibliography
   I want to see what the literature is for ant taxonomy
   So that I can obtain it and read it
 
-  Scenario: View one entry
-    Given this reference exists
-      | authors    | year | title     | citation | public_notes | editor_notes   |
-      | Ward, P.S. | 2010 | Ant Facts | Ants 1:1 | Public notes | Editor's notes |
-
-    When I go to the references page
-    Then I should see "Ward, P.S. 2010. Ant Facts. Ants 1:1"
-    And I should see "Public notes"
-    And I should not see "Editor's notes"
-
-  Scenario: View one entry with italics
+  Scenario: View one entry (with italics)
     Given this reference exists
       | title                    | authors | citation | year |
       | The ant *Azteca trigona* | authors | Ants 2:2 | year |

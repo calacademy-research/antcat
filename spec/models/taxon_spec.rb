@@ -5,7 +5,10 @@ describe Taxon do
   it { is_expected.to belong_to :protonym }
   it { is_expected.to allow_value(nil).for :type_name }
   it { is_expected.to allow_value(nil).for :status } # should probably not...
-  it { is_expected.to allow_value(nil).for :biogeographic_region }
+  it do
+    is_expected.to validate_inclusion_of(:biogeographic_region)
+      .in_array(BiogeographicRegion::REGIONS).allow_nil
+  end
   it { is_expected.to have_many :history_items }
   it { is_expected.to have_many :reference_sections }
   it { is_expected.to belong_to :type_name }
@@ -92,51 +95,39 @@ describe Taxon do
         end
       end
     end
+  end
 
-    describe ".order_by_name_cache" do
-      let!(:zymacros) { create :subfamily, name: create(:name, name: 'Zymacros') }
-      let!(:atta) { create :subfamily, name: create(:name, name: 'Atta') }
+  describe ".find_by_name" do
+    context 'when nothing matches' do
+      it "returns nil" do
+        expect(described_class.find_by_name('sdfsdf')).to eq nil
+      end
+    end
 
-      it "orders by name" do
-        expect(described_class.order_by_name_cache).to eq [atta, zymacros]
+    context 'when there are more than one matche' do
+      let!(:name) { create :genus_name, name: 'Monomorium' }
+      before { 2.times { create :genus, name: name } }
+
+      it "returns one of the items (hmm)" do
+        expect(described_class.find_by_name('Monomorium').name).to eq name
       end
     end
   end
 
-  describe ".find_by_name" do
-    it "returns nil if nothing matches" do
-      expect(described_class.find_by_name('sdfsdf')).to eq nil
-    end
-
-    it "returns one of the items if there are more than one (bad!)" do
-      name = create :genus_name, name: 'Monomorium'
-      2.times { create :genus, name: name }
-      expect(described_class.find_by_name('Monomorium').name.name).to eq 'Monomorium'
-    end
-  end
-
   describe "#biogeographic_region" do
-    let(:taxon) { build_stubbed :species }
+    context 'when saving taxon' do
+      let(:taxon) { create :species }
 
-    it "allows only allowed regions" do
-      taxon.biogeographic_region = "Australasia"
-      expect(taxon.valid?).to be true
+      it "nilifies blank strings" do
+        taxon.biogeographic_region = ""
+        taxon.save
 
-      taxon.biogeographic_region = "Ancient Egypt"
-      expect(taxon.valid?).to be false
-    end
-
-    it "nilifies blank strings on save" do
-      taxon = create :species
-      taxon.biogeographic_region = ""
-      taxon.save
-
-      expect(taxon.biogeographic_region).to be nil
+        expect(taxon.biogeographic_region).to be nil
+      end
     end
   end
 
-  #TODO remove?
-  describe "Rank" do
+  describe "#rank" do
     let!(:taxon) { build_stubbed :subfamily }
 
     it "returns a lowercase version" do
@@ -144,28 +135,33 @@ describe Taxon do
     end
   end
 
-  describe "#homonym_replaced_by" do
+  describe "#homonym_replaced_by, #homonym_replaced and #homonym_replaced_by?" do
     it "can be a homonym of something else" do
-      neivamyrmex = build_stubbed :taxon
-      acamatus = build_stubbed :taxon, status: 'homonym', homonym_replaced_by: neivamyrmex
+      taxon = build_stubbed :taxon
+      another_taxon = build_stubbed :taxon, status: 'homonym', homonym_replaced_by: taxon
 
-      expect(acamatus).to be_homonym
-      expect(acamatus.homonym_replaced_by).to eq neivamyrmex
+      expect(another_taxon).to be_homonym
+      expect(another_taxon.homonym_replaced_by).to eq taxon
     end
 
-    it "should not think it's a homonym replaced by something when it's not" do
-      genus = build_stubbed :genus
-      another_genus = build_stubbed :genus
+    context "when it' not a homonym replaced by something" do
+      let(:genus) { build_stubbed :genus }
+      let(:another_genus) { build_stubbed :genus }
 
-      expect(genus).not_to be_homonym_replaced_by another_genus
-      expect(genus.homonym_replaced).to be_nil
+      it "should not think it is" do
+        expect(genus).not_to be_homonym_replaced_by another_genus
+        expect(genus.homonym_replaced).to be_nil
+      end
     end
 
-    it "should think it's a homonym replaced by something when it is" do
-      replacement = create :genus
-      homonym = create :genus, homonym_replaced_by: replacement, status: 'homonym'
-      expect(homonym).to be_homonym_replaced_by replacement
-      expect(replacement.homonym_replaced).to eq homonym
+    context 'when it is a homonym replaced by something' do
+      let(:replacement) { create :genus }
+      let(:homonym) { create :genus, homonym_replaced_by: replacement, status: 'homonym' }
+
+      it "should think it is" do
+        expect(homonym).to be_homonym_replaced_by replacement
+        expect(replacement.homonym_replaced).to eq homonym
+      end
     end
   end
 
@@ -173,11 +169,12 @@ describe Taxon do
     # Changed this because synonyms, homonyms will use the same protonym
     context "when the taxon it's attached to is destroyed, even if another taxon is using it" do
       let!(:protonym) { create :protonym }
-      let!(:atta) { create_genus protonym: protonym }
-      let!(:eciton) { create_genus protonym: protonym }
+      let!(:genus) { create_genus protonym: protonym }
+
+      before { create_genus protonym: protonym }
 
       it "doesn't destroy the protonym" do
-        expect { atta.destroy }.not_to change { Protonym.count }
+        expect { genus.destroy }.not_to change { Protonym.count }
       end
     end
   end
@@ -185,29 +182,32 @@ describe Taxon do
   describe "#history_items" do
     let(:taxon) { create :family }
 
-    it "cascades to delete history items when it's deleted" do
-      history_item = taxon.history_items.create! taxt: 'taxt'
-      expect(TaxonHistoryItem.find_by(id: history_item.id)).not_to be_nil
-      taxon.destroy
-      expect(TaxonHistoryItem.find_by(id: history_item.id)).to be_nil
+    context 'when deleting a taxon' do
+      let!(:history_item) { taxon.history_items.create! taxt: 'taxt' }
+
+      it "cascades to delete history items" do
+        expect { taxon.destroy }
+          .to change { TaxonHistoryItem.exists? history_item.id }.from(true).to(false)
+      end
     end
 
     it "shows the items in the order in which they were added to the taxon" do
       3.times { |number| taxon.history_items.create! taxt: "#{number}" }
 
       expect(taxon.history_items.map(&:taxt)).to eq ['0','1','2']
-      taxon.history_items.first.move_to_bottom
-      expect(taxon.history_items(true).map(&:taxt)).to eq ['1','2','0']
     end
   end
 
   describe "#reference_sections" do
     let(:taxon) { create :family }
 
-    it "cascades to delete the reference sections when it's deleted" do
-      reference_section = taxon.reference_sections.create! references_taxt: 'foo'
-      taxon.destroy
-      expect(ReferenceSection.find_by(id: reference_section.id)).to be_nil
+    context 'when deleting a taxon' do
+      let!(:reference_section) { taxon.reference_sections.create! references_taxt: 'foo' }
+
+      it "cascades to delete the reference sections" do
+        expect { taxon.destroy }
+          .to change { ReferenceSection.exists? reference_section.id }.from(true).to(false)
+      end
     end
 
     it "shows the items in the order in which they were added to the taxon" do
@@ -216,8 +216,6 @@ describe Taxon do
       end
 
       expect(taxon.reference_sections.map(&:references_taxt)).to eq ['0','1','2']
-      taxon.reference_sections.first.move_to_bottom
-      expect(taxon.reference_sections(true).map(&:references_taxt)).to eq ['1','2','0']
     end
   end
 
@@ -266,30 +264,20 @@ describe Taxon do
     end
   end
 
-  describe "Cascading delete" do
-    it "doesn't delete the protonym when the taxon is deleted" do
-      expect(described_class.count).to be_zero
-      expect(Protonym.count).to be_zero
+  describe "#protonym" do
+    context 'when taxon is deleted' do
+      it "doesn't delete the protonym" do
+        expect(described_class.count).to be_zero
+        expect(Protonym.count).to be_zero
 
-      genus = create :genus, tribe: nil, subfamily: nil
-      expect(described_class.count).to eq 1
-      expect(Protonym.count).to eq 1
+        genus = create :genus, tribe: nil, subfamily: nil
+        expect(described_class.count).to eq 1
+        expect(Protonym.count).to eq 1
 
-      genus.destroy
-      expect(described_class.count).to be_zero
-      expect(Protonym.count).to eq 1
-    end
-
-    it "deletes history and reference sections when the taxon is deleted" do
-      expect(described_class.count).to be_zero
-      expect(ReferenceSection.count).to be_zero
-
-      genus = create :genus, tribe: nil, subfamily: nil
-      genus.reference_sections.create! title_taxt: 'title', references_taxt: 'references'
-      expect(ReferenceSection.count).to eq 1
-
-      genus.destroy
-      expect(ReferenceSection.count).to be_zero
+        genus.destroy
+        expect(described_class.count).to be_zero
+        expect(Protonym.count).to eq 1
+      end
     end
   end
 
@@ -337,7 +325,7 @@ describe Taxon do
       end
     end
 
-    context "when new parent is not same as old aprent" do
+    context "when new parent is not same as old parent" do
       before { subspecies.update_parent new_parent }
 
       it "changes the species of a subspecies" do
@@ -396,84 +384,6 @@ describe Taxon do
       stub_request(:any, 'http://antwiki.org/1.pdf').to_return body: 'Not Found', status: 404
       expect(taxon).not_to be_valid
       expect(taxon.errors.full_messages).to match_array ['Type specimen url was not found']
-    end
-  end
-
-  describe "#current_valid_taxon_including_synonyms" do
-    it "returns the field contents if there are no synonyms" do
-      current_valid_taxon = create_genus
-      taxon = create_genus current_valid_taxon: current_valid_taxon
-      expect(taxon.current_valid_taxon_including_synonyms).to eq current_valid_taxon
-    end
-
-    it "returns the senior synonym if it exists" do
-      senior = create_genus
-      current_valid_taxon = create_genus
-      taxon = create_synonym senior, current_valid_taxon: current_valid_taxon
-      expect(taxon.current_valid_taxon_including_synonyms).to eq senior
-    end
-
-    # Fails a lot. This test case is the arch enemy of AntCat's RSpec testing team.
-    #
-    # Changing `order(created_at: :desc)` to `order(id: :desc)` in
-    # `#find_most_recent_valid_senior_synonym` *should* return the synonyms
-    # in the same/intended order without risk of shuffling objects created
-    # the same second. However, that makes the test fail 100%, which brings
-    # me to believe that the test doesn't randomly fail -- it randomly passes.
-    #
-    # Use this for debugging:
-    # `for i in {1..3}; do rspec ./spec/models/taxon_spec.rb:549 ; done`
-    #
-    # TODO semi-disabled by Russian roulette, sorry!!!!
-    # Bad test practices, but this case has broken too many builds.
-    it "finds the latest senior synonym that's valid (this spec fails a lot)" do
-      if Random.rand(1..6) == 6
-        valid_senior = create_genus status: 'valid'
-        invalid_senior = create_genus status: 'homonym'
-        taxon = create_genus status: 'synonym'
-        Synonym.create! senior_synonym: valid_senior, junior_synonym: taxon
-        Synonym.create! senior_synonym: invalid_senior, junior_synonym: taxon
-        expect(taxon.current_valid_taxon_including_synonyms).to eq valid_senior
-      else
-        "Survived. Phew. Life is precious."
-      end
-
-      # If you came here because you're sad because the build broke, don't be.
-      # Here's some trivia from Wikipedia to cheer you up:
-      # * Due to gravity, in a properly maintained weapon with a single round
-      #   inside the cylinder, the full chamber, which weighs more than the empty
-      #   chambers, will usually end up near the bottom of the cylinder when its
-      #   axis is not vertical, altering the odds in favor of the player.
-      #
-      # * In the Autobiography of Malcolm X, Malcolm X recalls an incident during
-      #   his burglary career when he once played Russian roulette, pulling the
-      #   trigger three times in a row to convince his partners in crime that he
-      #   was not afraid to die. In the epilogue to the book, Alex Haley states
-      #   that Malcolm X revealed to him that he palmed the round.
-      #
-      # * In 1976, Finnish magician Aimo Leikas killed himself in front of a
-      #   crowd while performing his Russian roulette act. He had been performing
-      #   the act for about a year, selecting six bullets from a box of assorted
-      #   live and dummy ammunition.
-    end
-
-    it "handles when no senior synonyms are valid" do
-      invalid_senior = create_genus status: 'homonym'
-      another_invalid_senior = create_genus status: 'homonym'
-      taxon = create_synonym invalid_senior
-      Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: taxon
-      expect(taxon.current_valid_taxon_including_synonyms).to be_nil
-    end
-
-    it "handles when there's a synonym of a synonym" do
-      senior_synonym_of_senior_synonym = create_genus
-      senior_synonym = create_genus status: 'synonym'
-      Synonym.create! junior_synonym: senior_synonym, senior_synonym: senior_synonym_of_senior_synonym
-
-      taxon = create_genus status: 'synonym'
-      Synonym.create! junior_synonym: taxon, senior_synonym: senior_synonym
-
-      expect(taxon.current_valid_taxon_including_synonyms).to eq senior_synonym_of_senior_synonym
     end
   end
 end

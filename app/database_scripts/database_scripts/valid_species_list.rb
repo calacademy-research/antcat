@@ -90,5 +90,5 @@ description: >
 
   `# TODO make catalog search results exportable as CSV, making this script redundant.`
 
-tags: [new!, very-slow, csv]
+tags: [very-slow, csv]
 topic_areas: [catalog]

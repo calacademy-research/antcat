@@ -150,27 +150,30 @@ describe Reference do
   describe "#parse_author_names_and_suffix" do
     let(:reference) { build_stubbed :reference }
 
-    it "returns nothing if empty" do
-      expect(reference.parse_author_names_and_suffix(''))
-        .to eq author_names: [], author_names_suffix: nil
+    context 'when input in empty' do
+      it "returns nothing" do
+        expect(reference.parse_author_names_and_suffix(''))
+          .to eq author_names: [], author_names_suffix: nil
+      end
     end
 
-    it "adds an error and raise and exception if invalid" do
-      expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }
-        .to raise_error ActiveRecord::RecordInvalid
-
-      error_message = "couldn't be parsed. Please post a message on " \
-        "http://groups.google.com/group/antcat/, and we'll fix it!"
-      expect(reference.errors.messages).to eq author_names_string: [error_message]
-      expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
+    context 'when input is invalid' do
+      it "adds an error and raise an exception" do
+        expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }
+          .to raise_error ActiveRecord::RecordInvalid
+        expect(reference.errors.messages).to eq author_names_string: ["couldn't be parsed."]
+        expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
+      end
     end
 
-    it "returns the author names and the suffix" do
-      results = reference.parse_author_names_and_suffix 'Fisher, B.; Bolton, B. (eds.)'
-      fisher = AuthorName.find_by(name: 'Fisher, B.')
-      bolton = AuthorName.find_by(name: 'Bolton, B.')
+    context 'when input is present and valid' do
+      it "returns the author names and the suffix" do
+        results = reference.parse_author_names_and_suffix 'Fisher, B.; Bolton, B. (eds.)'
+        fisher = AuthorName.find_by(name: 'Fisher, B.')
+        bolton = AuthorName.find_by(name: 'Bolton, B.')
 
-      expect(results).to eq author_names: [fisher, bolton], author_names_suffix: ' (eds.)'
+        expect(results).to eq author_names: [fisher, bolton], author_names_suffix: ' (eds.)'
+      end
     end
   end
 
@@ -417,18 +420,6 @@ describe Reference do
 
     it "returns false if there are no references to this reference" do
       expect(subject.send(:has_any_references?)).to be_falsey
-    end
-  end
-
-  describe "#key" do
-    let(:reference) { BookReference.new }
-
-    it "raises because it's impossible to search for it" do
-      expect { reference.key }.to raise_error
-    end
-
-    it "says that the raised error isn't a joke, heheh" do
-      expect { reference.key }.to raise_error "use 'keey' (not a joke)"
     end
   end
 
