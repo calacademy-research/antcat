@@ -19,7 +19,7 @@ describe TaxonDecorator::TaxonStatus do
     it "shows one synonym" do
       senior_synonym = create_genus 'Atta'
       junior_synonym = create_genus 'Atta', status: 'synonym'
-      create_synonym junior_synonym, senior_synonym
+      create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
       expect(junior_synonym.decorate.taxon_status)
         .to eq %{junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
@@ -31,7 +31,7 @@ describe TaxonDecorator::TaxonStatus do
         let!(:other_senior_synonym) { create_genus 'Eciton' }
         let!(:junior_synonym) { create :genus, :synonym }
 
-        before { create_synonym junior_synonym, senior_synonym }
+        before { create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym }
 
         before do
           senior_synonym.update_attribute :created_at, Time.now - 100
@@ -57,7 +57,7 @@ describe TaxonDecorator::TaxonStatus do
         let!(:other_senior_synonym) { create_genus 'Eciton' }
         let!(:junior_synonym) { create :genus, status: 'synonym', current_valid_taxon: other_senior_synonym }
 
-        before { create_synonym junior_synonym, senior_synonym }
+        before { create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym }
 
         before do
           senior_synonym.update_attribute :created_at, Time.now - 100

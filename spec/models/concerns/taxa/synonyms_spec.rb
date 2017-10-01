@@ -16,7 +16,7 @@ describe Taxon do
       let!(:current_valid_taxon) { create_genus }
       let!(:junior_synonym) { create :genus, :synonym, current_valid_taxon: current_valid_taxon }
 
-      before { create_synonym junior_synonym, senior }
+      before { create :synonym, junior_synonym: junior_synonym, senior_synonym: senior }
 
       it "returns the senior synonym" do
         expect(junior_synonym.current_valid_taxon_including_synonyms).to eq senior
@@ -73,7 +73,7 @@ describe Taxon do
       let!(:junior_synonym) { create :genus, :synonym }
 
       before do
-        create_synonym junior_synonym, invalid_senior
+        create :synonym, junior_synonym: junior_synonym, senior_synonym: invalid_senior
         Synonym.create! senior_synonym: another_invalid_senior, junior_synonym: junior_synonym
       end
 
@@ -161,7 +161,7 @@ describe Taxon do
     it "should think it's a synonym of something when it is" do
       senior = create :genus
       junior = create :genus, :synonym
-      create_synonym junior, senior
+      create :synonym, junior_synonym: junior, senior_synonym: senior
       expect(junior).to be_junior_synonym_of senior
     end
   end
