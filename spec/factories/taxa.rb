@@ -76,10 +76,6 @@ FactoryGirl.define do
   end
 end
 
-def create_family
-  _create_taxon 'Formicidae', :family
-end
-
 def create_subfamily name_or_attributes = 'Dolichoderinae', attributes = {}
   _create_taxon name_or_attributes, :subfamily, attributes
 end
