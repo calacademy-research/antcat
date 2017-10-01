@@ -5,17 +5,17 @@ class ArticleReference < Reference
 
   validates_presence_of :year, :journal, :series_volume_issue, :pagination
 
-  # TODO not used (December 2016).
+  # TODO not used (since at least December 2016).
   def start_page
     page_parts[:start]
   end
 
-  # TODO not used (December 2016).
+  # TODO not used (since at least December 2016).
   def end_page
     page_parts[:end]
   end
 
-  # TODO not used (December 2016).
+  # TODO not used (since at least December 2016).
   def series
     series_volume_issue_parts[:series]
   end

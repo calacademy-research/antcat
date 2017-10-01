@@ -1,5 +1,5 @@
 # Interface-ish for comparing references. Currently not used.
-# TODO not used (December 2016).
+# TODO not used (since at least December 2016).
 
 class ComparableReference
   include ReferenceComparable
