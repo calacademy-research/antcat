@@ -9,7 +9,6 @@ module Taxa::PredicateMethods
   def junior_synonym_of? taxon
     senior_synonyms.include? taxon
   end
-  alias synonym_of? junior_synonym_of?
 
   # TODO not used (December 2016).
   def senior_synonym_of? taxon
