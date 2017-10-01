@@ -230,7 +230,7 @@ describe Taxon do
 
     context "when a recombination in a different genus" do
       let(:species) { create_species 'Atta minor' }
-      let(:protonym_name) { create_species_name 'Eciton minor' }
+      let(:protonym_name) { create :species_name, name: 'Eciton minor' }
 
       it "surrounds it in parentheses" do
         expect_any_instance_of(Reference)

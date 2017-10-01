@@ -68,11 +68,6 @@ def find_or_create_name name
   create :name, name: name, epithet: epithet, epithets: epithets
 end
 
-def create_species_name name
-  name, epithet, epithets = get_name_parts name
-  create :species_name, name: name, epithet: epithet, epithets: epithets
-end
-
 def create_subspecies_name name
   name, epithet, epithets = get_name_parts name
   create :subspecies_name, name: name, epithet: epithet, epithets: epithets

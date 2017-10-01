@@ -5,7 +5,7 @@ describe Api::V1::ProtonymsController do
     before do
       create_genus
       create_species 'Atta minor'
-      create_species_name 'Eciton minor'
+      create :species_name, name: 'Eciton minor'
       get :index
     end
 

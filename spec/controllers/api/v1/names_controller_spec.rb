@@ -7,7 +7,7 @@ describe Api::V1::NamesController do
       create_species 'Atta minor'
     end
 
-    let!(:protonym_name) { create_species_name 'Eciton minor' }
+    let!(:protonym_name) { create :species_name, name: 'Eciton minor' }
 
     it "gets all author names keys" do
       get :index
