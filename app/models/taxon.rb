@@ -3,7 +3,7 @@
 require_dependency 'taxon_workflow'
 
 class Taxon < ApplicationRecord
-  include Taxa::CallbacksAndValidators
+  include Taxa::CallbacksAndValidations
   include Taxa::Delete
   include Taxa::PredicateMethods
   include Taxa::ReorderHistoryItems
