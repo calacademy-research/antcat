@@ -12,6 +12,8 @@ class TableRefDecorator
   end
 
   def item_link
+    return "id_missing" unless id
+
     case table
     when "citations"           then id
     when "reference_sections"  then link_to(id, reference_section_path(id))
@@ -23,6 +25,8 @@ class TableRefDecorator
   end
 
   def related_links
+    return "id_missing" unless id
+
     case table
     when "citations"           then related_citation_link
     when "reference_sections"  then ReferenceSection.find(id).taxon.decorate.link_to_taxon

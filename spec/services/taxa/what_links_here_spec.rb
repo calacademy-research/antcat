@@ -74,7 +74,7 @@ describe Taxa::WhatLinksHere do
       let(:eciton) { create_genus 'Eciton' }
 
       context "when there are references" do
-        before { Synonym.create! junior_synonym: eciton, senior_synonym: atta }
+        before { create :synonym, junior_synonym: eciton, senior_synonym: atta }
 
         specify do
           expect(described_class[atta]).to match_array [

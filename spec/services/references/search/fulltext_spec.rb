@@ -1,11 +1,11 @@
 require "spec_helper"
 
-describe References::Search::Fulltext do
+describe References::Search::Fulltext, search: true do
   # Throw in a MissingReference to make sure it's not returned.
   before { create :missing_reference }
 
   describe "#call" do
-    describe 'searching with `start_year`, `end_year` and `year`', search: true do
+    describe 'searching with `start_year`, `end_year` and `year`' do
       before do
         reference_factory author_name: 'Bolton', citation_year: '1994'
         reference_factory author_name: 'Bolton', citation_year: '1995'
@@ -34,7 +34,7 @@ describe References::Search::Fulltext do
       end
     end
 
-    describe "Year and fulltext", search: true do
+    describe "Year and fulltext" do
       it "works" do
         atta2004 = create :book_reference, title: 'Atta', citation_year: '2004'
         atta2003 = create :book_reference, title: 'Atta', citation_year: '2003'
@@ -46,7 +46,7 @@ describe References::Search::Fulltext do
     end
   end
 
-  describe 'searching with `reference_type`', search: true do
+  describe 'searching with `reference_type`' do
     it "applies the :unknown :reference_type that's passed" do
       unknown = create :unknown_reference
       create :article_reference # known
@@ -72,7 +72,7 @@ describe References::Search::Fulltext do
     end
   end
 
-  describe "replacing some characters to make search work", search: true do
+  describe "replacing some characters to make search work" do
     it "handles this reference with asterixes and a hyphen" do
       title = '*Camponotus piceus* (Leach, 1825), decouverte Viroin-Hermeton'
       reference = create :article_reference, title: title

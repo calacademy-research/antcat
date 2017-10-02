@@ -3,7 +3,7 @@ require 'spec_helper'
 describe BreadcrumbsHelper do
   describe "#taxon_breadcrumb_link" do
     context "when Formicidae" do
-      let(:taxon) { create_family }
+      let(:taxon) { create :family }
 
       it "handles Formicidae" do
         expect(helper.taxon_breadcrumb_link(taxon))

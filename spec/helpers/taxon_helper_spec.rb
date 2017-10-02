@@ -19,30 +19,30 @@ describe TaxonHelper do
 
   describe "#taxon_name_description" do
     it "handles subfamilies" do
-      subfamily = create_subfamily build_stubbed: true
+      subfamily = build_stubbed :subfamily
       expect(helper.taxon_name_description subfamily).to eq 'subfamily'
     end
 
     it "handles genera" do
-      subfamily = create_subfamily build_stubbed: true
+      subfamily = build_stubbed :subfamily
       genus = create_genus subfamily: subfamily, tribe: nil
       expect(helper.taxon_name_description genus).to eq "genus of #{subfamily.name}"
     end
 
     it "handles genera without a subfamily" do
-      genus = create_genus subfamily: nil, tribe: nil, build_stubbed: true
+      genus = create_genus subfamily: nil, tribe: nil
       expect(helper.taxon_name_description genus).to eq "genus of (no subfamily)"
     end
 
     it "handles genera with a tribe" do
       subfamily = create_subfamily
       tribe = create_tribe subfamily: subfamily
-      genus = create_genus tribe: tribe, build_stubbed: true
+      genus = create_genus tribe: tribe
       expect(helper.taxon_name_description genus).to eq "genus of #{tribe.name}"
     end
 
     it "handles new genera" do
-      subfamily = create_subfamily build_stubbed: true
+      subfamily = build_stubbed :subfamily
       genus = build :genus, subfamily: subfamily, tribe: nil
       expect(helper.taxon_name_description genus).to eq "new genus of #{subfamily.name}"
     end
@@ -67,8 +67,8 @@ describe TaxonHelper do
     end
 
     it "is html_safe" do
-      subfamily = create_subfamily build_stubbed: true
-      genus = create_genus subfamily: subfamily, build_stubbed: true
+      subfamily = build_stubbed :subfamily
+      genus = create_genus subfamily: subfamily
       expect(helper.taxon_name_description genus).to be_html_safe
     end
   end

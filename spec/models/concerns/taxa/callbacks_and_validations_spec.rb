@@ -74,7 +74,7 @@ describe "callbacks" do
         # Setup.
         taxon = minimal_family
         another_taxon = minimal_family
-        synonym = Synonym.create! senior_synonym: taxon, junior_synonym: another_taxon
+        synonym = create :synonym, senior_synonym: taxon, junior_synonym: another_taxon
 
         actors = [taxon, taxon.name, synonym]
 
@@ -183,7 +183,8 @@ describe "callbacks" do
   describe "#delete_synonyms" do
     let(:senior) { create_genus 'Atta' }
     let(:junior) { create_genus 'Eciton', status: "synonym" }
-    before { Synonym.create! junior_synonym: junior, senior_synonym: senior }
+
+    before { create :synonym, junior_synonym: junior, senior_synonym: senior }
 
     it "*confirm test setup*" do
       expect(junior.status).to eq "synonym"

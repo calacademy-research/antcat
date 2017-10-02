@@ -6,7 +6,7 @@ describe Api::V1::TaxaController do
       create_genus
       create_species 'Not interesting'
       species = create_species 'Atta minor'
-      create_species_name 'Eciton minor'
+      create :species_name, name: 'Eciton minor'
 
       get :index, starts_at: species.id
 
@@ -18,7 +18,7 @@ describe Api::V1::TaxaController do
     it "gets all taxa" do
       create_genus
       create_species 'Atta minor'
-      create_species_name 'Eciton minor'
+      create :species_name, name: 'Eciton minor'
 
       get :index, nil
 

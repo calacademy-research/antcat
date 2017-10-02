@@ -53,7 +53,7 @@ describe ReferencesController do
     end
 
     context "when there are no matches" do
-      it "returns an empty response", search: true do
+      it "returns an empty response" do
         get :autocomplete, q: "willy", format: :json
 
         json = JSON.parse response.body
