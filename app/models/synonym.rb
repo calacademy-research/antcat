@@ -1,12 +1,13 @@
 class Synonym < ApplicationRecord
   include Trackable
 
-  attr_accessible :senior_synonym, :junior_synonym,:senior_synonym_id, :junior_synonym_id
+  attr_accessible :senior_synonym, :junior_synonym, :senior_synonym_id, :junior_synonym_id
 
   belongs_to :junior_synonym, class_name: 'Taxon'
-  belongs_to :senior_synonym, class_name: 'Taxon' # in the process of fixing up, an incomplete Synonym can be created
+  belongs_to :senior_synonym, class_name: 'Taxon'
 
   validates :junior_synonym, presence: true
+  validates :senior_synonym, presence: true
 
   scope :auto_generated, -> { where(auto_generated: true) }
 
