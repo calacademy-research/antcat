@@ -6,7 +6,6 @@ class Taxon < ApplicationRecord
   include Taxa::CallbacksAndValidators
   include Taxa::Delete
   include Taxa::PredicateMethods
-  include Taxa::TaxaReferences
   include Taxa::ReorderHistoryItems
   include Taxa::Statistics
   include Taxa::Synonyms
@@ -154,5 +153,13 @@ class Taxon < ApplicationRecord
 
   def authorship_reference
     protonym.try(:authorship).try(:reference)
+  end
+
+  def what_links_here
+    Taxa::WhatLinksHere[self]
+  end
+
+  def any_nontaxt_references?
+    Taxa::AnyNonTaxtReferences[self]
   end
 end

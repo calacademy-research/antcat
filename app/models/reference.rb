@@ -111,11 +111,8 @@ class Reference < ApplicationRecord
   # `#year` + `#citation_year`.
   # TODO what is this used for?
   def short_citation_year
-    if citation_year.present?
-      citation_year.gsub %r{ .*$}, ''
-    else
-      "[no year]"
-    end
+    return "[no year]" unless citation_year.present?
+    citation_year.gsub %r{ .*$}, ''
   end
 
   # TODO does this duplicate `set_author_names_caches`?
@@ -152,10 +149,6 @@ class Reference < ApplicationRecord
     self.review_state = "reviewed"
     save!
     Feed.with_tracking { create_activity :finish_reviewing }
-  end
-
-  def key
-    raise "use 'keey' (not a joke)"
   end
 
   # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978".
