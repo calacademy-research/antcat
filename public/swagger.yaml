@@ -9,8 +9,6 @@ info:
     email: JRussack@calacademy.org
 
 host: antcat.org
-# Uncomment for development testing
-#host: localhost:3000
 basePath: /v1
 schemes: [http]
 consumes: [application/json]

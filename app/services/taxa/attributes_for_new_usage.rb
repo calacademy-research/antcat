@@ -8,10 +8,6 @@ module Taxa
     end
 
     def call
-      name_id = new_comb.name ? new_comb.name.id : old_comb.name.id
-      homonym_replaced_by_name_id = old_comb.homonym_replaced_by ? old_comb.homonym_replaced_by.name_id : nil
-      current_valid_taxon_name_id = old_comb.current_valid_taxon ? old_comb.current_valid_taxon.name_id : nil
-
       {
         name_attributes: { id: name_id },
         status: 'valid',
@@ -48,5 +44,17 @@ module Taxa
 
    private
      attr_reader :new_comb, :old_comb
+
+     def name_id
+       new_comb.name ? new_comb.name.id : old_comb.name.id
+     end
+
+     def homonym_replaced_by_name_id
+       old_comb.homonym_replaced_by ? old_comb.homonym_replaced_by.name_id : nil
+     end
+
+     def current_valid_taxon_name_id
+       old_comb.current_valid_taxon ? old_comb.current_valid_taxon.name_id : nil
+     end
   end
 end
