@@ -4,9 +4,6 @@ Feature: Searching the catalog
     And tribe "Dolichoderini" exists in that subfamily
     And genus "Dolichoderus" exists in that tribe
     And species "Dolichoderus major" exists in that genus
-    And subgenus "Dolichoderus (Subdolichoderus)" exists in that genus
-    And species "Dolichoderus (Subdolichoderus) abruptus" exists in that subgenus
-    And subspecies "Dolichoderus (Subdolichoderus) abruptus minor" exists in that species
     And I go to the catalog
 
   Scenario: Searching when no results
@@ -19,21 +16,21 @@ Feature: Searching the catalog
     And I press "Go" by the catalog search box
     Then I should be on the catalog page for "Dolichoderini"
 
-  Scenario: Searching when more than one result
+  Scenario: Searching when results
     When I fill in the catalog search box with "doli"
     And I press "Go" by the catalog search box
     Then I should see "Dolichoderinae" in the search results
-    And I should see "Dolichoderini" in the search results`
-    And I should see "Dolichoderus" in the search results`
+    And I should see "Dolichoderini" in the search results
+    And I should see "Dolichoderus" in the search results
 
   Scenario: Searching for a 'containing' match
-    When I fill in the catalog search box with "rup"
+    When I fill in the catalog search box with "jor"
     And I press "Go" by the catalog search box
     Then I should see "No results"
 
     When I select "Containing" from "search_type"
     And I press "Go" in "#quick_search"
-    Then I should see "Dolichoderus (Subdolichoderus) abruptus"
+    Then I should see "Dolichoderus major"
 
   Scenario: Following a search result
     When I fill in the catalog search box with "doli"
@@ -46,12 +43,9 @@ Feature: Searching the catalog
     And I press "Go" by the catalog search box
     Then I should see "Dolichoderus major history"
 
-  Scenario: Searching for subspecies
-    When I fill in the catalog search box with "minor"
-    And I press "Go" by the catalog search box
-    Then I should see "minor history"
-
   Scenario: Searching for subgenus
+    Given subgenus "Dolichoderus (Subdolichoderus)" exists in that genus
+
     When I fill in the catalog search box with "Subdol"
     And I press "Go" by the catalog search box
     Then I should see "Dolichoderus (Subdolichoderus) history"
