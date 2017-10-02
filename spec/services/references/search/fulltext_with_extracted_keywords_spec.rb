@@ -7,18 +7,24 @@ describe References::Search::FulltextWithExtractedKeywords do
   describe "#call" do
     describe "Search parameters", search: true do
       describe "Authors" do
-        it "returns an empty array if nothing is found for the author names" do
-          expect(described_class[q: "author:Balou"]).to be_empty
+        context 'when nothing is found for the author names' do
+          it "returns an empty array" do
+            expect(described_class[q: "author:Balou"]).to be_empty
+          end
         end
 
-        it "finds the reference for a given author_name if it exists" do
-          bolton = create :author_name, name: "Bolton Barry"
-          reference = create :book_reference, author_names: [bolton]
-          create :book_reference, author_names: [create(:author_name, name: 'Fisher')]
-          Sunspot.commit
+        context 'when a given author_name exists' do
+          let!(:bolton) { create :author_name, name: "Bolton Barry" }
+          let!(:reference) { create :book_reference, author_names: [bolton] }
 
-          results = described_class[q: "author:'#{bolton.name}'"]
-          expect(results).to eq [reference]
+          before do
+            create :book_reference, author_names: [create(:author_name, name: 'Fisher')]
+            Sunspot.commit
+          end
+
+          it "finds the reference for " do
+            expect(described_class[q: "author:'#{bolton.name}'"]).to eq [reference]
+          end
         end
 
         it "finds the reference with both author names, but not just one" do
@@ -26,42 +32,43 @@ describe References::Search::FulltextWithExtractedKeywords do
           fisher = create :author_name, name: 'Fisher'
           create :reference, author_names: [bolton]
           create :reference, author_names: [fisher]
-          bolton_fisher_reference = create :reference, author_names: [bolton, fisher]
+          reference = create :reference, author_names: [bolton, fisher]
           Sunspot.commit
 
-          expect(described_class[q: 'author:"Bolton Fisher"']).to eq [bolton_fisher_reference]
+          expect(described_class[q: 'author:"Bolton Fisher"']).to eq [reference]
         end
       end
 
       describe 'Fulltext' do
         describe 'Notes' do
           it 'searches in public notes' do
-            matching_reference = reference_factory author_name: 'Hölldobler', public_notes: 'abcdef'
-            reference_factory author_name: 'Hölldobler', public_notes: 'fedcba' # unmatching_reference
+            reference = reference_factory author_name: 'Hölldobler', public_notes: 'abcdef'
+            reference_factory author_name: 'Hölldobler', public_notes: 'fedcba' # Not matching.
             Sunspot.commit
 
-            expect(described_class[q: 'abcdef']).to eq [matching_reference]
+            expect(described_class[q: 'abcdef']).to eq [reference]
           end
 
           it 'searches in editor notes' do
-            matching_reference = reference_factory author_name: 'Hölldobler', editor_notes: 'abcdef'
-            reference_factory author_name: 'Hölldobler', editor_notes: 'fedcba' # unmatching_reference
+            reference = reference_factory author_name: 'Hölldobler', editor_notes: 'abcdef'
+            reference_factory author_name: 'Hölldobler', editor_notes: 'fedcba' # Not matching.
             Sunspot.commit
 
-            expect(described_class[q: 'abcdef']).to eq [matching_reference]
+            expect(described_class[q: 'abcdef']).to eq [reference]
           end
 
           it 'searches in taxonomic notes' do
-            matching_reference = reference_factory author_name: 'Hölldobler', taxonomic_notes: 'abcdef'
-            reference_factory author_name: 'Hölldobler', taxonomic_notes: 'fedcba' # unmatching_reference
+            reference = reference_factory author_name: 'Hölldobler', taxonomic_notes: 'abcdef'
+            reference_factory author_name: 'Hölldobler', taxonomic_notes: 'fedcba' # Not matching.
             Sunspot.commit
 
-            expect(described_class[q: 'abcdef']).to eq [matching_reference]
+            expect(described_class[q: 'abcdef']).to eq [reference]
           end
         end
 
         describe 'Author names' do
           let!(:reference) { reference_factory author_name: 'Hölldobler' }
+
           before { Sunspot.commit }
 
           it 'handles diacritics in the search term' do
@@ -74,34 +81,41 @@ describe References::Search::FulltextWithExtractedKeywords do
         end
 
         describe 'Journal name' do
-          it 'searches journal names' do
-            matching_reference = reference_factory author_name: 'Hölldobler',
-              journal: create(:journal, name: 'Journal')
-            reference_factory author_name: 'Hölldobler' # unmatching_reference
-            Sunspot.commit
+          let!(:reference) { create :article_reference, journal: create(:journal, name: 'Abc') }
 
-            expect(described_class[q: 'journal']).to eq [matching_reference]
+          before do
+            create :article_reference # Not matching.
+            Sunspot.commit
+          end
+
+          it 'searches journal names' do
+            expect(described_class[q: 'Abc']).to eq [reference]
           end
         end
 
         describe 'Publisher name' do
-          it 'searches publisher names' do
-            matching_reference = reference_factory author_name: 'Hölldobler',
-              publisher: create(:publisher, name: 'Publisher')
-            reference_factory author_name: 'Hölldobler' # unmatching_reference
-            Sunspot.commit
+          let!(:reference) { create :book_reference, publisher: create(:publisher, name: 'Abc') }
 
-            expect(described_class[q: 'Publisher']).to eq [matching_reference]
+          before do
+            create :article_reference # Not matching.
+            Sunspot.commit
+          end
+
+          it 'searches publisher names' do
+            expect(described_class[q: 'Abc']).to eq [reference]
           end
         end
 
         describe 'Citation (for Unknown references)' do
-          it 'searches in citations' do
-            matching_reference = reference_factory author_name: 'Hölldobler', citation: 'Citation'
-            unmatching_reference = reference_factory author_name: 'Hölldobler'
-            Sunspot.commit
+          let!(:reference) { create :unknown_reference, citation: 'Abc' }
 
-            expect(described_class[q: 'Citation']).to eq [matching_reference]
+          before do
+            create :article_reference # Not matching.
+            Sunspot.commit
+          end
+
+          it 'searches in citations' do
+            expect(described_class[q: 'Abc']).to eq [reference]
           end
         end
       end
