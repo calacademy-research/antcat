@@ -30,19 +30,20 @@ describe Names::WhatLinksHere do
   end
 
   describe "#references_in_taxt" do
-    it "returns instances that reference this name" do
-      name = Name.create! name: 'Atta'
+    let(:name) { Name.create! name: 'Atta' }
 
+    before do
       # Create an instance for each type of taxt.
-      taxt_fields.each do |klass, fields|
+      contrete_taxt_fields.each do |klass, fields|
         fields.each { |field| create klass, field => "{nam #{name.id}}" }
       end
+    end
+
+    it "returns instances that reference this name" do
+      refs = described_class.new(name).send(:references_in_taxt)
 
       # Count the total referencing items.
-      refs = described_class.new(name).send(:references_in_taxt)
-      expect(refs.size).to eq(
-        taxt_fields.map { |klass, fields| fields.size }.sum
-      )
+      expect(refs.size).to eq(taxt_fields.map { |klass, fields| fields.size }.sum)
 
       # Count the total referencing items of each type.
       taxt_fields.each do |klass, fields|
@@ -62,5 +63,10 @@ describe Names::WhatLinksHere do
       [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
       [TaxonHistoryItem, [:taxt]]
     ]
+  end
+
+  # To replace the "non-concrete" `Taxon` with `Family`.
+  def contrete_taxt_fields
+    taxt_fields.tap do |array| array[0][0] = Family end
   end
 end

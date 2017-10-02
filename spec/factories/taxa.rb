@@ -14,14 +14,15 @@
 # See also `RefactorTaxonFactoriesHelpers`.
 
 require_relative '../support/helpers/get_name_parts_helpers'
-include GetNamePartsHelpers
 
 FactoryGirl.define do
   factory :taxon do
-    association :name, factory: :genus_name
-    association :type_name, factory: :species_name
     protonym
     status 'valid'
+
+    trait :synonym do
+      status 'synonym'
+    end
 
     factory :family, class: Family do
       association :name, factory: :family_name
@@ -78,10 +79,6 @@ FactoryGirl.define do
   end
 end
 
-def create_family
-  _create_taxon 'Formicidae', :family
-end
-
 def create_subfamily name_or_attributes = 'Dolichoderinae', attributes = {}
   _create_taxon name_or_attributes, :subfamily, attributes
 end
@@ -112,15 +109,12 @@ def _create_taxon name_or_attributes, rank, attributes = {}
 
   attributes =
     if name_or_attributes.kind_of? String
-      name, epithet, epithets = get_name_parts name_or_attributes
+      name, epithet, epithets = GetNamePartsHelpers.get_name_parts name_or_attributes
       name_object = create name_factory, name: name, epithet: epithet, epithets: epithets
       attributes.reverse_merge name: name_object, name_cache: name
     else
       name_or_attributes
     end
 
-  build_stubbed = attributes.delete :build_stubbed
-  build = attributes.delete :build
-  build_stubbed ||= build
-  FactoryGirl.send(build_stubbed ? :build_stubbed : :create, taxon_factory, attributes)
+  FactoryGirl.create taxon_factory, attributes
 end

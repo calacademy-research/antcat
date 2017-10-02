@@ -1,5 +1,4 @@
 require_relative '../support/helpers/get_name_parts_helpers'
-include GetNamePartsHelpers
 
 FactoryGirl.define do
   factory :name do
@@ -64,16 +63,6 @@ FactoryGirl.define do
 end
 
 def find_or_create_name name
-  name, epithet, epithets = get_name_parts name
+  name, epithet, epithets = GetNamePartsHelpers.get_name_parts name
   create :name, name: name, epithet: epithet, epithets: epithets
-end
-
-def create_species_name name
-  name, epithet, epithets = get_name_parts name
-  create :species_name, name: name, epithet: epithet, epithets: epithets
-end
-
-def create_subspecies_name name
-  name, epithet, epithets = get_name_parts name
-  create :subspecies_name, name: name, epithet: epithet, epithets: epithets
 end

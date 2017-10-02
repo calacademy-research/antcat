@@ -5,11 +5,11 @@ describe DatabaseScripts::DuplicatedSynonyms do
     before do
       senior = create_genus
       junior = create_genus
-      Synonym.create! senior_synonym: senior, junior_synonym: junior
-      Synonym.create! senior_synonym: senior, junior_synonym: junior
+      create :synonym, senior_synonym: senior, junior_synonym: junior
+      create :synonym, senior_synonym: senior, junior_synonym: junior
       another_senior = create_genus
       another_junior = create_genus
-      Synonym.create! senior_synonym: another_senior, junior_synonym: another_junior
+      create :synonym, senior_synonym: another_senior, junior_synonym: another_junior
     end
 
     it "returns one of the duplicate synonyms" do

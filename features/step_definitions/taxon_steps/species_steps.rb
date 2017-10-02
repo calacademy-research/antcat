@@ -64,7 +64,7 @@ Given(/^there is a species "([^"]*)"(?: described by "([^"]*)")? which is a juni
   genus = create_genus 'Solenopsis'
   senior = create_species senior, genus: genus
   junior = create_species junior, status: 'synonym', genus: genus
-  Synonym.create! senior_synonym: senior, junior_synonym: junior
+  create :synonym, senior_synonym: senior, junior_synonym: junior
   make_author_of_taxon junior, author_name if author_name
 end
 

@@ -17,20 +17,22 @@ describe Taxon do
     let(:subfamily) { create :subfamily }
 
     describe ".valid" do
-      it "only includes valid taxa" do
-        replacement = create :genus, subfamily: subfamily
-        homonym = create :genus,
-          homonym_replaced_by: replacement,
-          status: 'homonym',
-          subfamily: subfamily
-        create_synonym replacement, subfamily: subfamily
+      let!(:valid_taxon) { create :genus, subfamily: subfamily }
 
-        expect(subfamily.genera.valid).to eq [replacement]
+      before do
+        create :genus, homonym_replaced_by: valid_taxon, status: 'homonym', subfamily: subfamily
+        junior_synonym = create :genus, :synonym, subfamily: subfamily
+        create :synonym, junior_synonym: junior_synonym, senior_synonym: valid_taxon
+      end
+
+      it "only includes valid taxa" do
+        expect(subfamily.genera.valid).to eq [valid_taxon]
       end
     end
 
     describe ".extant" do
       let!(:extant_genus) { create :genus, subfamily: subfamily }
+
       before { create :genus, subfamily: subfamily, fossil: true }
 
       it "only includes extant taxa" do
@@ -230,7 +232,7 @@ describe Taxon do
 
     context "when a recombination in a different genus" do
       let(:species) { create_species 'Atta minor' }
-      let(:protonym_name) { create_species_name 'Eciton minor' }
+      let(:protonym_name) { create :species_name, name: 'Eciton minor' }
 
       it "surrounds it in parentheses" do
         expect_any_instance_of(Reference)
@@ -242,7 +244,7 @@ describe Taxon do
 
     context "when the name simply differs" do
       let(:species) { create_species 'Atta minor maxus' }
-      let(:protonym_name) { create_subspecies_name 'Atta minor minus' }
+      let(:protonym_name) { create :subspecies_name, name: 'Atta minor minus' }
 
       it "doesn't surround in parentheses" do
         expect_any_instance_of(Reference)
@@ -255,7 +257,7 @@ describe Taxon do
 
     context "when there isn't a protonym authorship" do
       let(:species) { create_species 'Atta minor maxus' }
-      let(:protonym_name) { create_subspecies_name 'Eciton minor maxus' }
+      let(:protonym_name) { create :subspecies_name, name: 'Eciton minor maxus' }
 
       it "handles it" do
         expect(species.protonym).to receive(:authorship).and_return nil
@@ -308,7 +310,7 @@ describe Taxon do
     let(:old_parent) { create_species 'Atta major', genus: create_genus('Atta') }
     let(:new_parent) { create_species 'Eciton nigrus', genus: create_genus('Eciton') }
     let(:subspecies) do
-      create_subspecies name: create_subspecies_name('Atta major medius minor'),
+      create_subspecies name: create(:subspecies_name, name: 'Atta major medius minor'),
         species: old_parent
     end
 
