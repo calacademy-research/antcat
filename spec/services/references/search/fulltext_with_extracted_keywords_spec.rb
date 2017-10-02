@@ -5,8 +5,8 @@ describe References::Search::FulltextWithExtractedKeywords do
   before { create :missing_reference }
 
   describe "#call" do
-    describe "Search parameters" do
-      describe "Authors", search: true do
+    describe "Search parameters", search: true do
+      describe "Authors" do
         it "returns an empty array if nothing is found for the author names" do
           expect(described_class[q: "author:Balou"]).to be_empty
         end
@@ -33,7 +33,7 @@ describe References::Search::FulltextWithExtractedKeywords do
         end
       end
 
-      describe 'Fulltext', search: true do
+      describe 'Fulltext' do
         describe 'Notes' do
           it 'searches in public notes' do
             matching_reference = reference_factory author_name: 'Hölldobler', public_notes: 'abcdef'
@@ -60,7 +60,7 @@ describe References::Search::FulltextWithExtractedKeywords do
           end
         end
 
-        describe 'Author names', search: true do
+        describe 'Author names' do
           let!(:reference) { reference_factory author_name: 'Hölldobler' }
           before { Sunspot.commit }
 
@@ -73,7 +73,7 @@ describe References::Search::FulltextWithExtractedKeywords do
           end
         end
 
-        describe 'Journal name', search: true do
+        describe 'Journal name' do
           it 'searches journal names' do
             matching_reference = reference_factory author_name: 'Hölldobler',
               journal: create(:journal, name: 'Journal')
@@ -84,7 +84,7 @@ describe References::Search::FulltextWithExtractedKeywords do
           end
         end
 
-        describe 'Publisher name', search: true do
+        describe 'Publisher name' do
           it 'searches publisher names' do
             matching_reference = reference_factory author_name: 'Hölldobler',
               publisher: create(:publisher, name: 'Publisher')
@@ -95,7 +95,7 @@ describe References::Search::FulltextWithExtractedKeywords do
           end
         end
 
-        describe 'Citation (for Unknown references)', search: true do
+        describe 'Citation (for Unknown references)' do
           it 'searches in citations' do
             matching_reference = reference_factory author_name: 'Hölldobler', citation: 'Citation'
             unmatching_reference = reference_factory author_name: 'Hölldobler'
