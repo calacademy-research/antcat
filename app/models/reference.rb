@@ -23,9 +23,9 @@ class Reference < ApplicationRecord
 
   has_many :reference_author_names, -> { order(:position) }
   has_many :author_names, -> { order('reference_author_names.position') },
-           through: :reference_author_names,
-           after_add: :refresh_author_names_caches,
-           after_remove: :refresh_author_names_caches
+    through: :reference_author_names,
+    after_add: :refresh_author_names_caches,
+    after_remove: :refresh_author_names_caches
   has_many :authors, through: :author_names
   has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id"
   has_many :citations
@@ -60,7 +60,8 @@ class Reference < ApplicationRecord
     text    :title
     text    :journal_name do journal.name if journal end
     text    :publisher_name do publisher.name if publisher end
-    text    :year_as_string do year.to_s if year end # quick fix to make the year searchable as a keyword
+    # HACK quick fix to make the year searchable as a keyword.
+    text    :year_as_string do year.to_s if year end
     text    :citation
     text    :editor_notes
     text    :public_notes
@@ -105,9 +106,9 @@ class Reference < ApplicationRecord
     principal_author_last_name_cache
   end
 
-  # TODO we should probably have #year [int] and something
-  # like #non_standard_year [string] instead of this +
-  # #year + #citation_year.
+  # TODO we should probably have `#year` [int] and something
+  # like `#non_standard_year` [string] instead of this +
+  # `#year` + `#citation_year`.
   # TODO what is this used for?
   def short_citation_year
     if citation_year.present?
@@ -117,9 +118,8 @@ class Reference < ApplicationRecord
     end
   end
 
-  # update (including observed updates)
   # TODO does this duplicate `set_author_names_caches`?
-  # There's also ` author_names_string=` which sets `author_names_string_cache`.
+  # There's also `#author_names_string=` which sets `#author_names_string_cache`.
   def refresh_author_names_caches(*)
     string, principal_author_last_name = make_author_names_caches
     # TODO only update once.
@@ -127,8 +127,6 @@ class Reference < ApplicationRecord
     update_attribute :principal_author_last_name_cache, principal_author_last_name
   end
 
-  # Called by controller to parse an input string for author names and suffix
-  # Returns hash of parse result, or adds to the reference's errors and raises
   def parse_author_names_and_suffix author_names_string
     author_names_and_suffix = AuthorName.import_author_names_string author_names_string.dup
     if author_names_and_suffix[:author_names].empty? && author_names_string.present?
@@ -148,26 +146,21 @@ class Reference < ApplicationRecord
     true
   end
 
-  # TODO merge into Workflow
-  # Only for .approve_all, which approves all unreviewed
-  # references of any state (which Workflow doesn't allow).
+  # TODO merge into Workflow. Only used for `.approve_all`,
+  # which approves all unreviewed references of any state (which Workflow doesn't allow).
   def approve
     self.review_state = "reviewed"
     save!
     Feed.with_tracking { create_activity :finish_reviewing }
   end
 
-  ### Methods currently in quarantine ###
-  # Moved here from `ReferenceDecorator`, to be refactored/DRYed where possible.
-
   def key
     raise "use 'keey' (not a joke)"
   end
 
-  # "THE KEEY" -- Stupid Name Because Useful(tm).
+  # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978".
   #
-  # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978"
-  #
+  # Stupid name because useful.
   # "key" is impossible to grep for, and a word with too many meanings.
   # Variations of "last author names" or "ref_key" are doomed to fail.
   # So, "keey". Obviously, do not show this spelling to users or use
@@ -178,8 +171,8 @@ class Reference < ApplicationRecord
     authors_for_keey << ', ' << short_citation_year
   end
 
-  # normal keey: "Bolton, 1885g"
-  # this:        "Bolton, 1885"
+  # Normal keey: "Bolton, 1885g".
+  # This:        "Bolton, 1885".
   def keey_without_letters_in_year
     authors_for_keey << ', ' << year_or_no_year
   end
@@ -201,8 +194,6 @@ class Reference < ApplicationRecord
     return "[no year]" if year.blank?
     year.to_s
   end
-
-  ### end quarantine ###
 
   def what_links_here predicate: false
     References::WhatLinksHere[self, predicate: predicate]

@@ -52,7 +52,7 @@ class Taxon < ApplicationRecord
   has_many :taxa, class_name: "Taxon", foreign_key: :genus_id # Only `genus_id`?
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
-  # Synonyms
+  # Synonyms.
   has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
   has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
   has_many :junior_synonyms, through: :synonyms_as_senior
@@ -134,7 +134,6 @@ class Taxon < ApplicationRecord
     type.downcase
   end
 
-  ### Methods placed under observation for refactoring ###
   def taxon_label
     name.epithet_with_fossil_html fossil?
   end
@@ -142,7 +141,6 @@ class Taxon < ApplicationRecord
   def name_with_fossil
     name.to_html_with_fossil fossil?
   end
-  ### End observatory ###
 
   def author_citation
     return unless authorship_reference
