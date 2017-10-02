@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171001164413) do
+ActiveRecord::Schema.define(version: 20171002221830) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -212,7 +212,6 @@ ActiveRecord::Schema.define(version: 20171001164413) do
 
   create_table "places", force: :cascade do |t|
     t.string   "name",       limit: 255
-    t.boolean  "verified"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
