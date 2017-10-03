@@ -32,6 +32,14 @@ class TaxonDecorator < ApplicationDecorator
     TaxonDecorator::Headline[taxon, for_antweb: for_antweb]
   end
 
+  def headline_protonym
+    TaxonDecorator::HeadlineProtonym[taxon]
+  end
+
+  def headline_type
+    TaxonDecorator::HeadlineType[taxon]
+  end
+
   def child_lists for_antweb: false
     TaxonDecorator::ChildList[taxon, for_antweb: for_antweb]
   end
