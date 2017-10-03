@@ -28,10 +28,6 @@ class TaxonDecorator < ApplicationDecorator
     helpers.content_tag :div, content, class: 'statistics'
   end
 
-  def headline for_antweb: false
-    TaxonDecorator::Headline[taxon, for_antweb: for_antweb]
-  end
-
   def headline_protonym
     TaxonDecorator::HeadlineProtonym[taxon]
   end
