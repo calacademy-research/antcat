@@ -5,7 +5,6 @@ describe Reference do
   it { is_expected.to have_many :author_names }
   it { is_expected.to validate_presence_of :title }
 
-  let(:fisher) { create :author_name, name: 'Fisher' }
   let(:fisher_bl) { create :author_name, name: 'Fisher, B.L.' }
   let(:ward_ps) { create :author_name, name: 'Ward, P.S.' }
 
@@ -34,8 +33,8 @@ describe Reference do
       let!(:fisher_reference) { create :article_reference, author_names: [fisher_bl, bolton_b] }
 
       it "orders by author_name" do
-        results = described_class.sorted_by_principal_author_last_name
-        expect(results).to eq [bolton_reference, fisher_reference, ward_reference]
+        expect(described_class.sorted_by_principal_author_last_name)
+          .to eq [bolton_reference, fisher_reference, ward_reference]
       end
     end
 
@@ -50,8 +49,7 @@ describe Reference do
       end
 
       it 'returns references with a matching principal author last name' do
-        results = described_class.with_principal_author_last_name 'Ward'
-        expect(results).to eq [possible_reference]
+        expect(described_class.with_principal_author_last_name 'Ward').to eq [possible_reference]
       end
     end
 
@@ -240,6 +238,7 @@ describe Reference do
 
     it "maintains the order in which they were added to the reference" do
       reference = create :reference, author_names: [ward_ps]
+      fisher = create :author_name, name: 'Fisher'
       wilden = create :author_name, name: 'Wilden'
       reference.author_names << wilden
       reference.author_names << fisher
@@ -326,39 +325,19 @@ describe Reference do
         reference.save!
         expect(reference.title).to eq "A B"
       end
-
-      it "removes newlines at the beginning and end" do
-        reference.title = "\r\nA\r\nB\n\n"
-        reference.save!
-        expect(reference.title).to eq "A B"
-      end
-    end
-
-    it "doesn't truncate long fields" do
-      reference = described_class.create! author_names: [create(:author_name)],
-        editor_notes: 'e' * 1000,
-        citation: 'c' * 2000,
-        public_notes: 'n' * 1500,
-        taxonomic_notes: 't' * 1700,
-        title: 't' * 1900,
-        citation_year: '2010'
-
-      expect(reference.citation.size).to eq 2000
-      expect(reference.editor_notes.size).to eq 1000
-      expect(reference.public_notes.size).to eq 1500
-      expect(reference.taxonomic_notes.size).to eq 1700
-      expect(reference.title.size).to eq 1900
     end
   end
 
   describe "shared setup" do
     let(:reference_params) do
-        { author_names: [fisher_bl],
+        {
+          author_names: [fisher_bl],
           citation_year: '1981',
           title: 'Dolichoderinae',
           journal: create(:journal),
           series_volume_issue: '1(2)',
-          pagination: '22-54' }
+          pagination: '22-54'
+        }
     end
     let!(:original) { ArticleReference.create! reference_params }
 
@@ -426,48 +405,53 @@ describe Reference do
   describe "#keey" do
     let(:bolton) { build_stubbed :author_name, name: 'Bolton, B.' }
     let(:fisher) { build_stubbed :author_name, name: 'Fisher, B.' }
-    let(:ward) { build_stubbed :author_name, name: 'Ward, P.S.' }
 
-    it "handles citation years with extra" do
-      reference = build_stubbed :article_reference,
-        author_names: [bolton],
-        citation_year: '1970a ("1971")'
-      expect(reference.keey).to eq 'Bolton, 1970a'
+    context "when citation years with extra" do
+      let(:reference) do
+        build_stubbed :article_reference, author_names: [bolton], citation_year: '1970a ("1971")'
+      end
+
+      specify { expect(reference.keey).to eq 'Bolton, 1970a' }
     end
 
-    it "handles no authors" do
-      reference = build_stubbed :article_reference,
-        author_names: [],
-        citation_year: '1970a'
-      expect(reference.keey).to eq '[no authors], 1970a'
+    context 'when no authors' do
+      let(:reference) do
+        build_stubbed :article_reference, author_names: [], citation_year: '1970a'
+      end
+
+      specify { expect(reference.keey).to eq '[no authors], 1970a' }
     end
 
-    it "handles one author" do
-      reference = build_stubbed :article_reference,
-        author_names: [bolton],
-        citation_year: '1970a'
-      expect(reference.keey).to eq 'Bolton, 1970a'
+    context 'when one author' do
+      let(:reference) do
+        build_stubbed :article_reference, author_names: [bolton], citation_year: '1970a'
+      end
+
+      specify { expect(reference.keey).to eq 'Bolton, 1970a' }
     end
 
-    it "handles two authors" do
-      reference = build_stubbed :article_reference,
-        author_names: [bolton, fisher],
-        citation_year: '1970a'
-      expect(reference.keey).to eq 'Bolton & Fisher, 1970a'
+    context 'when two authors' do
+      let(:reference) do
+        build_stubbed :article_reference, author_names: [bolton, fisher], citation_year: '1970a'
+      end
+
+      specify { expect(reference.keey).to eq 'Bolton & Fisher, 1970a' }
     end
 
-    it "handles three authors" do
-      reference = build_stubbed :article_reference,
-        author_names: [bolton, fisher, ward],
-        citation_year: '1970a'
-      expect(reference.keey).to eq 'Bolton, Fisher & Ward, 1970a'
+    context 'when three authors' do
+      let(:ward) { build_stubbed :author_name, name: 'Ward, P.S.' }
+      let(:reference) do
+        build_stubbed :article_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
+      end
+
+      specify { expect(reference.keey).to eq 'Bolton, Fisher & Ward, 1970a' }
     end
   end
 
   describe "#keey_without_letters_in_year" do
-    it "shows the author and year" do
-      reference = reference_factory author_name: 'Bolton', citation_year: '2001'
-      expect(reference.keey_without_letters_in_year).to eq 'Bolton, 2001'
+    it "doesn't include the year ordinal" do
+      reference = reference_factory author_name: 'Bolton', citation_year: '1885g'
+      expect(reference.keey_without_letters_in_year).to eq 'Bolton, 1885'
     end
 
     it "handles multiple authors" do
@@ -476,11 +460,6 @@ describe Reference do
                         create(:author_name, name: 'Fisher, R.')],
         citation_year: '2001', year: '2001'
       expect(reference.keey_without_letters_in_year).to eq 'Bolton & Fisher, 2001'
-    end
-
-    it "doesn't include the year ordinal" do
-      reference = reference_factory author_name: 'Bolton', citation_year: '1885g'
-      expect(reference.keey_without_letters_in_year).to eq 'Bolton, 1885'
     end
   end
 end
