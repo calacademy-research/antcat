@@ -42,12 +42,7 @@ class ChangeDecorator < Draper::Decorator
     return unless helpers.user_can_edit?
     return if taxon.approved?
 
-    # TODO clarify this; does the nil check mean that editors are allowed
-    # to approve their own changes if the taxon has no taxon_state?
-    #
-    # Editors can approve taxa with no associated taxon_state. The GUI probably
-    # does not allow for this to happen, just an additional check (?).
-    if taxon.taxon_state.nil? || taxon.can_be_approved_by?(change, helpers.current_user, changed_by)
+    if taxon.can_be_approved_by?(change, helpers.current_user, changed_by)
       helpers.link_to 'Approve', helpers.approve_change_path(change),
         method: :put, class: "btn-saves",
         data: { confirm: "Are you sure you want to approve this change?" }
