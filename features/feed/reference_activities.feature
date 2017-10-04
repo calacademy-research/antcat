@@ -4,7 +4,7 @@ Feature: Feed (references)
     Given I log in as a catalog editor named "Archibald"
 
   @javascript
-  Scenario: Added reference
+  Scenario: Added reference (with edit summary)
     When I go to the references page
       And I follow "New"
       And I fill in "reference_author_names_string" with "Ward, B.L.; Bolton, B."
@@ -12,19 +12,23 @@ Feature: Feed (references)
       And I fill in "reference_citation_year" with "1981"
       And I follow "Other"
       And I fill in "reference_citation" with "Required"
+      And I fill in "edit_summary" with "for Lasius niger"
       And I press "Save"
     And I go to the activity feed
     Then I should see "Archibald added the reference Ward & Bolton, 1981" and no other feed items
+    And I should see the edit summary "for Lasius niger"
 
   @javascript
-  Scenario: Edited reference
+  Scenario: Edited reference (with edit summary)
     Given there is a reference for the feed with state "reviewed"
 
     When I go to the edit page for the most recent reference
       And I fill in "reference_title" with "A reference title"
+      And I fill in "edit_summary" with "fix typo"
       And I press "Save"
     And I go to the activity feed
     Then I should see "Archibald edited the reference Giovanni, 1809" and no other feed items
+    And I should see the edit summary "fix typo"
 
   Scenario: Started reviewing reference
     Given there is a reference for the feed with state "none"

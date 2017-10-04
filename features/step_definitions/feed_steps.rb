@@ -23,6 +23,12 @@ def feed_items_count
   all("table.activities > tbody tr").size
 end
 
+Then(/^I should see the edit summary "([^"]*)"$/) do |content|
+  within "table.activities" do
+    step %Q[I should see "#{content}"]
+  end
+end
+
 # Journal
 When(/^I add a journal for the feed$/) do
   cheat_and_set_user_for_feed
