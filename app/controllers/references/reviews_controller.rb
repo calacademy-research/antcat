@@ -8,7 +8,7 @@ module References
     # TODO allow JSON requests.
     def start
       @reference.start_reviewing!
-      make_default_reference @reference
+      make_default_reference!
       redirect_to :back
     end
 
@@ -19,7 +19,7 @@ module References
 
     def restart
       @reference.restart_reviewing!
-      make_default_reference @reference
+      make_default_reference!
       redirect_to :back
     end
 
@@ -34,8 +34,8 @@ module References
         @reference = Reference.find params[:id]
       end
 
-      def make_default_reference reference
-        DefaultReference.set session, reference
+      def make_default_reference!
+        DefaultReference.set session, @reference
       end
   end
 end

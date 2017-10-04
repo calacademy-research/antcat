@@ -29,7 +29,7 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :create
-      make_default_reference(@reference) if params[:make_default]
+      make_default_reference! if params[:make_default]
 
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully created.
@@ -47,7 +47,7 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :update
-      make_default_reference(@reference) if params[:make_default]
+      make_default_reference! if params[:make_default]
 
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully updated.
@@ -99,8 +99,8 @@ class ReferencesController < ApplicationController
       @reference.nesting_reference_id = reference_id
     end
 
-    def make_default_reference reference
-      DefaultReference.set session, reference
+    def make_default_reference!
+      DefaultReference.set session, @reference
     end
 
     def save
