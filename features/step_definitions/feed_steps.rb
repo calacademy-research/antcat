@@ -61,32 +61,26 @@ When(/^I add a taxon history item for the feed$/) do
   taxon = Feed.without_tracking { create_subfamily }
 
   cheat_and_set_user_for_feed
-  item = TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}",
-    taxon: taxon
-  item.create_activity :create
+  taxon_history_item = TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: taxon
+  taxon_history_item.create_activity :create
 end
 
 When(/^I edit a taxon history item for the feed$/) do
-  item = Feed.without_tracking do
-    TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}",
-      taxon: create_subfamily
+  taxon_history_item = Feed.without_tracking do
+    TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: create_subfamily
   end
 
   cheat_and_set_user_for_feed
-  item.taxt = "as a genus: {ref 123}"
-  item.save!
-  item.create_activity :update
+  taxon_history_item.create_activity :update
 end
 
 When(/^I delete a taxon history item for the feed$/) do
-  item = Feed.without_tracking do
-    TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}",
-      taxon: create_subfamily
+  taxon_history_item = Feed.without_tracking do
+    TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: create_subfamily
   end
 
   cheat_and_set_user_for_feed
-  item.destroy
-  item.create_activity :destroy
+  taxon_history_item.create_activity :destroy
 end
 
 # Reference
@@ -131,10 +125,8 @@ end
 # Taxon
 When(/^I add a taxon for the feed$/) do
   Feed.without_tracking do
-    subfamily_name = create :subfamily_name, name: "Antcatinae"
-
     cheat_and_set_user_for_feed
-    create :subfamily, name: subfamily_name
+    create :subfamily, name: create(:subfamily_name, name: "Antcatinae")
   end
 end
 
@@ -148,35 +140,33 @@ end
 
 # ReferenceSection
 When(/^I add a reference section for the feed$/) do
-  taxon = Feed.without_tracking { create_subfamily }
+  reference_section = Feed.without_tracking do
+    ReferenceSection.create title_taxt: "PALAEONTOLOGY",
+    references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
+  end
 
   cheat_and_set_user_for_feed
-  section = ReferenceSection.create title_taxt: "PALAEONTOLOGY",
-    references_taxt: "The Ants (amber checklist)", taxon: taxon
-  section.create_activity :create
+  reference_section.create_activity :create
 end
 
 When(/^I edit a reference section for the feed$/) do
-  section = Feed.without_tracking do
+  reference_section = Feed.without_tracking do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
-    references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
+      references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
   end
 
   cheat_and_set_user_for_feed
-  section.references_taxt = "The Ants (amber fossil checklist)"
-  section.save!
-  section.create_activity :update
+  reference_section.create_activity :update
 end
 
 When(/^I delete a reference section for the feed$/) do
-  section = Feed.without_tracking do
+  reference_section = Feed.without_tracking do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
-    references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
+      references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
   end
 
   cheat_and_set_user_for_feed
-  section.destroy
-  section.create_activity :destroy
+  reference_section.create_activity :destroy
 end
 
 When(/^I click on Show more$/) do
