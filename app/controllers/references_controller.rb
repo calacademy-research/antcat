@@ -29,6 +29,8 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :create
+      make_default_reference(@reference) if params[:make_default]
+
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully created.
         <strong>#{view_context.link_to 'Back to the index', references_path}</strong>
@@ -45,6 +47,8 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :update
+      make_default_reference(@reference) if params[:make_default]
+
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully updated.
         <strong>#{view_context.link_to 'Back to the index', references_path}</strong>.

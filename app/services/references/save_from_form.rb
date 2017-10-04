@@ -42,7 +42,7 @@ module References
 
           @reference.save!
           set_document_host
-          make_default_reference @reference if params[:make_default]
+
           return true
         end
       rescue ActiveRecord::RecordInvalid
