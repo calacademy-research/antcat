@@ -15,6 +15,10 @@
         %td.caption.top_aligned=label_tag :references_taxt, 'References'
         %td.taxt_editor=render 'taxt_editors/show', name: 'references_taxt',value: TaxtConverter[item.references_taxt].to_editor_format
 
+    .row
+      .medium-3.columns.end
+        =text_field_tag :reference_section_edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
     .buttons
       %button.submit.btn-saves Save
       %button.cancel.btn-cancel Cancel

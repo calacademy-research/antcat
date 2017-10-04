@@ -20,7 +20,7 @@ class ReferenceSectionsController < ApplicationController
                  references_taxt: references_taxt
 
     if @item.errors.empty?
-      @item.create_activity :update
+      @item.create_activity :update, edit_summary: params[:reference_section_edit_summary]
     end
 
     render_json @item
@@ -36,7 +36,7 @@ class ReferenceSectionsController < ApplicationController
                                    references_taxt: references_taxt
 
     if item.errors.empty?
-      item.create_activity :create
+      item.create_activity :create, edit_summary: params[:reference_section_edit_summary]
     end
 
     render_json item
