@@ -1,7 +1,7 @@
 # TODO more Rails.
 
 class AuthorNamesController < ApplicationController
-  before_filter :authenticate_editor
+  before_action :authenticate_editor
   before_action :set_author_name, only: [:update, :destroy]
   before_action :set_author, only: [:create, :destroy]
 
