@@ -3,29 +3,8 @@ require 'spec_helper'
 describe SpeciesGroupTaxon do
   it { is_expected.to validate_presence_of :genus }
 
-  it "can have a subfamily" do
-    genus = create_genus 'Afropone'
-    create :species_group_taxon, name: create(:name, name: 'championi'), genus: genus
-    expect(described_class.find_by_name('championi').subfamily).to eq genus.subfamily
-  end
-
-  it "doesn't have to have a subfamily" do
-    expect(build_stubbed(:species_group_taxon, subfamily: nil)).to be_valid
-  end
-
-  it "can have a subgenus" do
-    subgenus = create_subgenus
-    taxon = create :species_group_taxon, subgenus: subgenus
-    expect(described_class.find(taxon.id).subgenus).to eq subgenus
-  end
-
-  it "doesn't have to have a subgenus" do
-    taxon = create :species_group_taxon
-    expect(taxon).to be_valid
-
-    taxon.subgenus = nil
-    expect(taxon).to be_valid
-  end
+  it { is_expected.to belong_to :subfamily }
+  it { is_expected.to belong_to :subgenus }
 
   it "has its subfamily set from its genus" do
     genus = create_genus

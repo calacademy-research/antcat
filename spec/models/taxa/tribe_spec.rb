@@ -1,13 +1,10 @@
 require 'spec_helper'
 
 describe Tribe do
+  it { is_expected.to belong_to :subfamily }
+
   let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae')}
   let(:tribe) { create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily }
-
-  it "can have a subfamily" do
-    expect(tribe).to eq tribe # trigger FactoryGirl
-    expect(described_class.find_by_name('Attini').subfamily).to eq subfamily
-  end
 
   it "can have genera, which are its children" do
     atta = create :genus, name: create(:name, name: 'Acromyrmex'), tribe: tribe
