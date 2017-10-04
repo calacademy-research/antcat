@@ -1,3 +1,5 @@
+# TODO we cheat a lot here (setting user, creating activities).
+
 Given(/^activity tracking is (enabled|disabled)$/) do |state|
   new_state = case state
               when "enabled" then true
@@ -149,8 +151,9 @@ When(/^I add a reference section for the feed$/) do
   taxon = Feed.without_tracking { create_subfamily }
 
   cheat_and_set_user_for_feed
-  ReferenceSection.create title_taxt: "PALAEONTOLOGY",
+  section = ReferenceSection.create title_taxt: "PALAEONTOLOGY",
     references_taxt: "The Ants (amber checklist)", taxon: taxon
+  section.create_activity :create
 end
 
 When(/^I edit a reference section for the feed$/) do
@@ -162,6 +165,7 @@ When(/^I edit a reference section for the feed$/) do
   cheat_and_set_user_for_feed
   section.references_taxt = "The Ants (amber fossil checklist)"
   section.save!
+  section.create_activity :update
 end
 
 When(/^I delete a reference section for the feed$/) do
@@ -172,6 +176,7 @@ When(/^I delete a reference section for the feed$/) do
 
   cheat_and_set_user_for_feed
   section.destroy
+  section.create_activity :destroy
 end
 
 When(/^I click on Show more$/) do

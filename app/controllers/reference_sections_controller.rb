@@ -18,6 +18,11 @@ class ReferenceSectionsController < ApplicationController
     @item.update title_taxt: title_taxt,
                  subtitle_taxt: subtitle_taxt,
                  references_taxt: references_taxt
+
+    if @item.errors.empty?
+      @item.create_activity :update
+    end
+
     render_json @item
   end
 
@@ -29,11 +34,18 @@ class ReferenceSectionsController < ApplicationController
                                    title_taxt: title_taxt,
                                    subtitle_taxt: subtitle_taxt,
                                    references_taxt: references_taxt
+
+    if item.errors.empty?
+      item.create_activity :create
+    end
+
     render_json item
   end
 
   def destroy
     @item.destroy
+    @item.create_activity :destroy
+
     render json: { success: true }
   end
 
