@@ -22,7 +22,7 @@ class TaxaController < ApplicationController
     @taxon = get_taxon_for_create
     save_taxon
 
-    @taxon.create_activity :create
+    @taxon.create_activity :create, edit_summary: params[:edit_summary]
 
     flash[:notice] = "Taxon was successfully added."
 
@@ -56,11 +56,12 @@ class TaxaController < ApplicationController
     # Same issue as in `#create`, but tests pass without this check.
     flash[:notice] = "Taxon was successfully updated."
     if @taxon.id
-      @taxon.create_activity :update
+      @taxon.create_activity :update, edit_summary: params[:edit_summary]
       redirect_to catalog_path(@taxon)
     else
       Activity.create_without_trackable :custom,
-        parameters: { text: "updated an unknown taxon" }
+        parameters: { text: "updated an unknown taxon" },
+        edit_summary: params[:edit_summary]
       redirect_to root_path
     end
 
