@@ -22,7 +22,7 @@ module Formatters::AdvancedSearchTextFormatter
 
     string = ''.html_safe
     string << reference.decorate.formatted
-    string << " DOI: " << reference.doi if reference.doi.present?
+    string << " DOI: " << reference.doi if reference.doi?
     string << "   #{reference.id}"
     string
   end

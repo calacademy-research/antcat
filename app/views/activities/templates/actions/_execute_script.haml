@@ -4,6 +4,6 @@
 -#   user: User.find(999), edit_summary: "See %github999"
 -# ```
 executed a script
--if activity.edit_summary.present?
+-if activity.edit_summary?
   =surround "(", ")" do
     =antcat_markdown_only(activity.edit_summary).html_safe
