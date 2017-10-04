@@ -17,4 +17,10 @@
           =undo_item[:user].decorate.user_page_link
         %td=undo_item[:date]
 
-=link_to "Undo!", change_undos_path(@change), method: :post, class: "btn-saves-warning"
+.row
+  =form_tag change_undos_path(@change) do
+    .medium-3.columns
+      =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
+    .medium-3.columns.end
+      =button_tag "Undo!", type: :submit, class: "btn-saves-warning"
