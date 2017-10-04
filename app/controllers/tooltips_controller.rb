@@ -45,7 +45,7 @@ class TooltipsController < ApplicationController
 
       redirect_to @tooltip, notice: 'Tooltip was successfully updated.'
     else
-      render action: :show
+      render :show
     end
   end
 
