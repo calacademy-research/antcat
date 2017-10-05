@@ -57,6 +57,10 @@ gem 'rails-observers' # observers deprecated in rails 4
 gem 'aws-sdk', '< 2.0'
 gem 'ey_config'
 
+group :development do
+  gem 'brakeman'
+end
+
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'headless'

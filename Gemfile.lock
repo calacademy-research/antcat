@@ -84,6 +84,7 @@ GEM
     bourbon (3.2.4)
       sass (~> 3.2)
       thor
+    brakeman (4.0.1)
     builder (3.2.2)
     capybara (2.5.0)
       mime-types (>= 1.16)
@@ -385,6 +386,7 @@ DEPENDENCIES
   acts_as_commentable_with_threading
   acts_as_list
   aws-sdk (< 2.0)
+  brakeman
   capybara (>= 2.2.0)
   capybara-screenshot
   capybara-webkit
@@ -448,4 +450,4 @@ RUBY VERSION
    ruby 2.1.10p492
 
 BUNDLED WITH
-   1.15.0
+   1.15.4
