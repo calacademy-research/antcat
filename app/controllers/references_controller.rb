@@ -117,9 +117,13 @@ class ReferencesController < ApplicationController
     end
 
     def set_reference_type
-      selected_tab = params[:selected_tab]
-      selected_tab = 'Unknown' if selected_tab == 'Other'
-      type = "#{selected_tab}Reference".constantize
+      type = case params[:selected_tab]
+             when 'Article' then ArticleReference
+             when 'Book'    then BookReference
+             when 'Missing' then MissingReference
+             when 'Nested'  then NestedReference
+             when 'Other'   then UnknownReference
+             end
       reference = @reference.becomes type
       reference.type = type
       reference
