@@ -1,7 +1,10 @@
 Then(/^I should (not )?see the following autocomplete suggestions:$/) do |should_not, table|
-  selector = should_not ? :should_not : :should
   table.raw.each do |suggestion|
-    page.send selector, have_css(".tt-suggestion", text: suggestion.first)
+    if should_not
+      expect(page).to have_no_css ".tt-suggestion", text: suggestion.first
+    else
+      expect(page).to have_css ".tt-suggestion", text: suggestion.first
+    end
   end
 end
 

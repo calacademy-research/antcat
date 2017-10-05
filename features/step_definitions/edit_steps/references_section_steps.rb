@@ -46,7 +46,9 @@ When(/^I click the "Add" reference section button$/) do
 end
 
 Then(/^I should (not )?see the "Delete" button for the reference/) do |should_not|
-  selector = should_not ? :should_not : :should
-  visible = should_not ? :false : :true
-  page.send selector, have_css('button.delete', visible: visible)
+  if should_not
+    expect(page).to have_no_css 'button.delete', visible: false
+  else
+    expect(page).to have_css 'button.delete', visible: true
+  end
 end

@@ -9,8 +9,11 @@ When(/^I save the taxon form$/) do
 end
 
 Then(/^I (should|should not) see an Edit button$/) do |should_selector|
-  should_selector = should_selector.tr(" ", "_").to_sym
-  page.send should_selector, have_css("a.btn-normal", text: "Edit")
+  if should_selector == "should not"
+    expect(page).to have_no_css "a.btn-normal", text: "Edit"
+  else
+    expect(page).to have_css "a.btn-normal", text: "Edit"
+  end
 end
 
 # section
@@ -66,9 +69,11 @@ When(/I set the name gender to "([^"]*)"/) do |gender|
 end
 
 Then(/^I should (not )?see the gender menu$/) do |should_not|
-  visible = should_not ? :false : :true
-  selector = should_not ? :should_not : :should
-  page.send selector, have_css('#taxon_name_attributes_gender', visible: visible)
+  if should_not
+    expect(page).to have_no_css '#taxon_name_attributes_gender', visible: false
+  else
+    expect(page).to have_css '#taxon_name_attributes_gender', visible: true
+  end
 end
 
 ### parent field
@@ -109,9 +114,11 @@ end
 
 ### homonym replaced by field
 Then(/^I should (not )?see the homonym replaced by field$/) do |should_not|
-  visible = should_not ? :false : :true
-  selector = should_not ? :should_not : :should
-  find("#homonym_replaced_by_row", visible: visible).send(selector, be_visible)
+  if should_not
+    expect(find("#homonym_replaced_by_row", visible: false)).to_not be_visible
+  else
+    expect(find("#homonym_replaced_by_row", visible: true)).to be_visible
+  end
 end
 
 Then(/the homonym replaced by name should be "([^"]*)"$/) do |name|

@@ -30,8 +30,11 @@ When(/^I hover the tooltip next to the text "([^"]*)"$/) do |text|
 end
 
 Then(/^I should (not )?see the tooltip text "([^"]*)"$/) do |should_not, text|
-  selector = should_not ? :should_not : :should
-  page.send selector, have_css('.ui-tooltip', visible: true, text: text)
+  if should_not
+    expect(page).to have_no_css '.ui-tooltip', visible: true, text: text
+  else
+    expect(page).to have_css '.ui-tooltip', visible: true, text: text
+  end
 end
 
 Then(/^I should not see any tooltips next to the element containing "([^"]*)"$/) do |text|

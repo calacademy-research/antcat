@@ -11,9 +11,11 @@ end
 
 # Reference popup
 Then(/I should (not )?see the reference popup/) do |should_not|
-  visible = should_not ? :false : :true
-  selector = should_not ? :should_not : :should
-  find('.antcat_reference_popup', visible: visible).send(selector, be_visible)
+  if should_not
+    expect(find('.antcat_reference_popup', visible: false)).to_not be_visible
+  else
+    expect(find('.antcat_reference_popup', visible: true)).to be_visible
+  end
 end
 
 # Name field
@@ -40,15 +42,19 @@ end
 
 # Name popup
 Then(/^I should (not )?see the name popup edit interface$/) do |should_not|
-  selector = should_not ? :should_not : :should
-  visible = should_not ? :false : :true
-  find('#popup .controls', visible: visible).send(selector, be_visible)
+  if should_not
+    expect(find('#popup .controls', visible: false)).to_not be_visible
+  else
+    expect(find('#popup .controls', visible: true)).to be_visible
+  end
 end
 
 Then(/^I should (not )?see the name popup$/) do |should_not|
-  selector = should_not ? :should_not : :should
-  visible = should_not ? :false : :true
-  find('.antcat_name_popup', visible: visible).send(selector, be_visible)
+  if should_not
+    expect(find('.antcat_name_popup', visible: false)).to_not be_visible
+  else
+    expect(find('.antcat_name_popup', visible: true)).to be_visible
+  end
 end
 
 # Results section

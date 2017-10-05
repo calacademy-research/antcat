@@ -25,11 +25,9 @@ if ENV['HEADLESS']
   end
 end
 
-# TODO some day: change to `c.syntax = [:expect]`.
-# Very not important, but the should syntax is deprecated.
 RSpec.configure do |config|
   config.expect_with :rspec do |config|
-    config.syntax = [:should, :expect]
+    config.syntax = [:expect]
   end
 end
 

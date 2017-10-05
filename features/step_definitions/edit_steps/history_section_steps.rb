@@ -33,9 +33,11 @@ When(/^I edit the history item to "([^"]*)"$/) do |history|
 end
 
 Then(/^I should (not )?see the "Delete" button for the history item$/) do |should_not|
-  selector = should_not ? :should_not : :should
-  visible = should_not ? :false : :true
-  page.send selector, have_css('button.delete', visible: visible)
+  if should_not
+    expect(page).to have_no_css 'button.delete', visible: false
+  else
+    expect(page).to have_css 'button.delete', visible: true
+  end
 end
 
 When(/^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?/) do |taxon_name, tag_taxon_name|
