@@ -7,4 +7,4 @@
   =link_to "History", tooltip_history_index_path(@tooltip), class: "btn-normal"
   =link_to 'Destroy', @tooltip, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-delete"
 
-=render 'form'
+=render 'form', tooltip: @tooltip, referral: @referral

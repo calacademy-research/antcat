@@ -3,8 +3,8 @@
 
 .row.collapse
   .medium-8.columns
-    =form_for @site_notice do |f|
-      =render "shared/errors_for", resource: @site_notice
+    =form_for site_notice do |f|
+      =render "shared/errors_for", resource: site_notice
       .row
         .medium-8.columns.end
           =f.label :title
