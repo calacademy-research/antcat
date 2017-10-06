@@ -15,7 +15,10 @@ class TaxonHistoryItemsController < ApplicationController
 
   def update
     @item.update_taxt_from_editable params[:taxt]
-    @item.create_activity(:update) if @item.errors.empty?
+
+    if @item.errors.empty?
+      @item.create_activity :update, edit_summary: params[:taxon_history_item_edit_summary]
+    end
 
     render_json @item
   end
@@ -24,7 +27,10 @@ class TaxonHistoryItemsController < ApplicationController
     taxon = Taxon.find params[:taxa_id]
     UndoTracker.setup_change taxon, :create
     item = TaxonHistoryItem.create_taxt_from_editable taxon, params[:taxt]
-    item.create_activity(:create) if item.errors.empty?
+
+    if item.errors.empty?
+      item.create_activity :create, edit_summary: params[:taxon_history_item_edit_summary]
+    end
 
     render_json item
   end

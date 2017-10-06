@@ -7,6 +7,10 @@
     .taxt_editor
       =render 'taxt_editors/show', name: 'taxt', value: TaxtConverter[item.taxt].to_editor_format
 
+    .row
+      .medium-3.columns.end
+        =text_field_tag :taxon_history_item_edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
     .buttons
       %button.submit.btn-saves Save
       %button.cancel.btn-cancel Cancel

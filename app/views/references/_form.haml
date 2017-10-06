@@ -143,7 +143,10 @@
           =document_form.text_field :url
 
   .row
-    .medium-12.columns
+    .medium-3.columns
+      =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
+    .medium-3.columns.end
       %button.submit.btn-saves.has-spinner
         -save_text = ignore_possible_duplicate.present? ? 'Save Anyway' : 'Save'
         =spinner_icon + save_text

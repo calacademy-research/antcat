@@ -28,7 +28,7 @@ class ReferencesController < ApplicationController
     @reference = new_reference
 
     if save
-      @reference.create_activity :create
+      @reference.create_activity :create, edit_summary: params[:edit_summary]
       make_default_reference! if params[:make_default]
 
       redirect_to reference_path(@reference), notice: <<-MSG
@@ -46,7 +46,7 @@ class ReferencesController < ApplicationController
     @reference = set_reference_type
 
     if save
-      @reference.create_activity :update
+      @reference.create_activity :update, edit_summary: params[:edit_summary]
       make_default_reference! if params[:make_default]
 
       redirect_to reference_path(@reference), notice: <<-MSG
@@ -60,7 +60,7 @@ class ReferencesController < ApplicationController
 
   def destroy
     if @reference.destroy
-      @reference.create_activity :destroy
+      @reference.create_activity :destroy, edit_summary: params[:edit_summary]
       redirect_to references_path, notice: 'Reference was successfully destroyed.'
     else
       if @reference.errors.present?

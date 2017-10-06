@@ -4,7 +4,7 @@ Feature: Feed (taxa)
     Given I log in as a catalog editor named "Archibald"
 
   @javascript @search
-  Scenario: Added taxon
+  Scenario: Added taxon (with edit summary)
     Given activity tracking is disabled
       And there is a subfamily "Formicinae"
       And there is a genus "Eciton"
@@ -26,17 +26,22 @@ Feature: Feed (taxa)
           And I set the type name to "Atta major"
           And I press "OK"
           And I press "Add this name"
+        And I fill in "edit_summary" with "fix typo"
         And I save my changes
     And I go to the activity feed
     Then I should see "Archibald added the genus Atta to the subfamily Formicinae" and no other feed items
+    And I should see the edit summary "fix typo"
 
-  Scenario: Edited taxon
+  Scenario: Edited taxon (with edit summary)
     Given I add a taxon for the feed
 
     When I go to the edit page for "Antcatinae"
+    And I fill in "edit_summary" with "fix typo"
     And I save the taxon form
+    And I wait
     And I go to the activity feed
     Then I should see "Archibald edited the subfamily Antcatinae" and no other feed items
+    And I should see the edit summary "fix typo"
 
   Scenario: Deleted taxon
     Given I add a taxon for the feed

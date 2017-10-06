@@ -16,5 +16,5 @@ class ReferenceSection < ActiveRecord::Base
         OR references_taxt #{search_type} :q
         OR subtitle_taxt #{search_type} :q
     SQL
-  tracked on: :all, parameters: proc { { taxon_id: taxon_id } }
+  tracked on: :mixin_create_activity_only, parameters: proc { { taxon_id: taxon_id } }
 end
