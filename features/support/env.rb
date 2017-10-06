@@ -1,6 +1,3 @@
-# TODO as of version 2.1, Capybara defaults to finding only visible elements,
-# 1) confirm that's the case. 2) remove "visible" from a lot of places.
-
 ENV["RAILS_ENV"] ||= "test"
 require_relative '../../config/environment'
 
@@ -25,11 +22,9 @@ if ENV['HEADLESS']
   end
 end
 
-# TODO some day: change to `c.syntax = [:expect]`.
-# Very not important, but the should syntax is deprecated.
 RSpec.configure do |config|
   config.expect_with :rspec do |config|
-    config.syntax = [:should, :expect]
+    config.syntax = [:expect]
   end
 end
 

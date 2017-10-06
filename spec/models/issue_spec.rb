@@ -8,18 +8,13 @@ describe Issue do
 
   describe "scopes" do
     describe ".by_status_and_date" do
+      include ActiveSupport::Testing::TimeHelpers
+
       let!(:expected_order) do
-        travel_to Time.new(2010)
-        fourth = create :issue, :closed
-
-        travel_to Time.new(2015)
-        second = create :issue, :open
-
-        travel_to Time.new(2017)
-        first = create :issue, :open
-
-        travel_to Time.new(2016)
-        third = create :issue, :closed
+        fourth = travel_to(Time.new(2010)) { create :issue, :closed }
+        second = travel_to(Time.new(2015)) { create :issue, :open }
+        first = travel_to(Time.new(2017)) { create :issue, :open }
+        third = travel_to(Time.new(2016)) { create :issue, :closed }
 
         [first, second, third, fourth]
       end

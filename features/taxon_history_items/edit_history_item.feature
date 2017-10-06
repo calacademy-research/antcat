@@ -35,18 +35,6 @@ Feature: Editing a history item
     And I wait
     Then I should be on the catalog page for "Formicidae"
 
-  # This doesn't work because of inserting a {
-  #Scenario: Editing a history item to include a reference
-    #Given there is a reference for "Bolton, 2005"
-
-    #When I go to the edit page for "Formicidae"
-    #Then I should not see "Bolton, 2005"
-
-    #When I click the history item
-    #And I edit the history item to include that reference
-    #And I save my changes
-    #Then the history should be "Bolton, 2005."
-
   # This test isn't accurate, as it reports the wrong contents
   # of the history item field
   Scenario: Editing a history item, but cancelling

@@ -42,6 +42,7 @@ class TaxonDecorator::HeadlineType
       end
     end
 
+    # TODO does not work 100%, because names are not unique.
     def type_name
       type = Taxon.find_by_name @taxon.type_name.to_s
       return link_to_taxon(type) if type

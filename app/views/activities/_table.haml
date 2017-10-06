@@ -1,5 +1,6 @@
 -show_delete_button ||= false
 -include_head ||= false
+-page ||= nil
 
 -if activities.empty?
   No activities.
@@ -23,6 +24,6 @@
             %span.right.show-on-hover
               =link_to "(link)", decorated.anchor_path
               -if user_is_superadmin? && show_delete_button
-                =link_to "Delete activity item", activity_path(activity, page: (params[:page] || @page)), method: :delete, data: { confirm: "Delete? Note that this is for deleting feed items that should't had been created in the first place (ie debugging). If someone edits a taxon and then reverts the change, the feed should still display both actions." }, class: "btn-delete btn-tiny"
+                =link_to "Delete activity item", activity_path(activity, page: (params[:page] || page)), method: :delete, data: { confirm: "Delete? Note that this is for deleting feed items that should't had been created in the first place (ie debugging). If someone edits a taxon and then reverts the change, the feed should still display both actions." }, class: "btn-delete btn-tiny"
           %td.no-wrap=decorated.revision_history_link
           %td.no-wrap=decorated.when

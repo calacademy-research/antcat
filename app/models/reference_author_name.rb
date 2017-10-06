@@ -1,4 +1,6 @@
 class ReferenceAuthorName < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+
   belongs_to :reference
   belongs_to :author_name
 

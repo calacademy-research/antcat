@@ -21,7 +21,7 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :authors, only: [:index, :show, :edit, :update] do
+  resources :authors, only: [:index, :show, :edit] do
     collection do
       get :autocomplete
     end
@@ -159,27 +159,23 @@ AntCat::Application.routes.draw do
 
   scope module: 'api' do
     namespace :v1 do
-      resources :taxa
+      resources :taxa, only: [:index, :show]
       get '/taxa/search/:string', to: 'taxa#search'
-      resources :protonyms
-      resources :authors
-      resources :author_names
-      resources :names
-      resources :citations
-      resources :taxon_history_items
-      resources :journals
-      resources :places
-      resources :publishers
-      resources :references
-      resources :reference_author_names
-      resources :reference_documents
-      resources :reference_sections
-      resources :synonyms
+      resources :protonyms, only: [:index, :show]
+      resources :authors, only: [:index, :show]
+      resources :author_names, only: [:index, :show]
+      resources :names, only: [:index, :show]
+      resources :citations, only: [:index, :show]
+      resources :taxon_history_items, only: [:index, :show]
+      resources :journals, only: [:index, :show]
+      resources :places, only: [:index, :show]
+      resources :publishers, only: [:index, :show]
+      resources :references, only: [:index, :show]
+      resources :reference_author_names, only: [:index, :show]
+      resources :reference_documents, only: [:index, :show]
+      resources :reference_sections, only: [:index, :show]
+      resources :synonyms, only: [:index, :show]
     end
-    # For the next version...
-    # namespace :v2 do
-    #   resources :taxa
-    # end
   end
 
   resources :antweb_data, only: :index
@@ -208,7 +204,7 @@ AntCat::Application.routes.draw do
 
   get :notifications, to: "notifications#index"
 
-  resources :activities, only: [:index, :show, :destroy]
+  resources :activities, only: [:index, :destroy]
 
   resources :site_notices do
     collection do
@@ -234,7 +230,7 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :issues do
+  resources :issues, except: :destroy do
     collection do
       get :autocomplete
     end

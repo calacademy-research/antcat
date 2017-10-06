@@ -1,5 +1,8 @@
 @javascript
 Feature: Name popup
+  Background:
+    Given I am logged in
+
   Scenario: Blank name
     When I go to the name popup test page
     And I press "OK"

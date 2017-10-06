@@ -5,11 +5,14 @@ describe Wikipedia::CiteTemplate do
 
   describe "#call" do
     context "when without with_ref_tag" do
-      it "outputs a Template:AntCat" do
-        travel_to Time.new(2016, 11, 2, 20)
+      include ActiveSupport::Testing::TimeHelpers
 
+      it "outputs a Template:AntCat" do
         expected = "{{AntCat|#{species.id}|''Atta texana''|2016|accessdate=2 November 2016}}"
-        expect(described_class[species]).to eq expected
+
+        travel_to(Time.zone.parse('2016 November 2')) do
+          expect(described_class[species]).to eq expected
+        end
       end
 
       it "handles fossils" do

@@ -1,7 +1,7 @@
 # TODO validate status, can currently be set to anything.
 # TODO add `before_destroy :check_not_referenced`, but allow suppressing it.
 
-module Taxa::CallbacksAndValidators
+module Taxa::CallbacksAndValidations
   extend ActiveSupport::Concern
 
   included do

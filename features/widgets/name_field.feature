@@ -1,5 +1,8 @@
 @javascript
 Feature: Name field
+  Background:
+    Given I am logged in
+
   Scenario: Find typed taxon
     Given there is a genus "Atta"
 

@@ -6,6 +6,8 @@ describe NestedReference do
   it { is_expected.to validate_presence_of :nesting_reference }
   it { is_expected.to allow_value(nil).for :title }
 
+  it { is_expected.to belong_to :nesting_reference }
+
   describe "Validation" do
     it "is valid with these attributes" do
       reference = described_class.new title: 'asdf',

@@ -9,7 +9,7 @@
 
 =form_for reference.becomes(Reference) do |f|
   =hidden_field_tag :selected_tab, selected_tab
-  =hidden_field_tag :possible_duplicate, possible_duplicate
+  =hidden_field_tag :ignore_possible_duplicate, ignore_possible_duplicate
   =render 'shared/errors_for', resource: reference
 
   .row
@@ -145,7 +145,7 @@
   .row
     .medium-12.columns
       %button.submit.btn-saves.has-spinner
-        -save_text = possible_duplicate ? 'Save Anyway' : 'Save'
+        -save_text = ignore_possible_duplicate.present? ? 'Save Anyway' : 'Save'
         =spinner_icon + save_text
 
       -cancel_link = reference.new_record? ? references_path : reference_path(reference)

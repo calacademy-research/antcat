@@ -1,6 +1,6 @@
 class ActivityDecorator < Draper::Decorator
   delegate :user, :trackable_id, :trackable, :trackable_type,
-    :parameters, :action, :edit_summary
+    :parameters, :action, :edit_summary, :edit_summary?
 
   # Activities are by default associated with the performing user, but
   # in the console and other situations we may not have a current user.

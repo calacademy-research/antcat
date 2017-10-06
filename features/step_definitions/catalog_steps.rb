@@ -7,10 +7,11 @@ Then(/^I should ?(not)? see the reference key "([^"]+)"$/) do |should_not, text|
 end
 
 Then(/^I should (not )?see the reference key expansion$/) do |should_not|
-  selector = should_not ? :should_not : :should
-  visible = should_not ? :false : :true
-
-  find(".reference_keey_expansion", visible: visible).send(selector, be_visible)
+  if should_not
+    expect(page).to have_no_css ".reference_keey_expansion"
+  else
+    expect(page).to have_css ".reference_keey_expansion"
+  end
 end
 
 When(/^I click the reference key$/) do

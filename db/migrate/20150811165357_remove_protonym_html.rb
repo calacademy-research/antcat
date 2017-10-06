@@ -33,7 +33,7 @@ class RemoveProtonymHtml < ActiveRecord::Migration
     # Strip html tags
     # look it up in "names". If it doesn't exist, make it. if it does exist
     # return it.
-    if name.protonym_html.nil?
+    unless name.protonym_html?
       puts "  protonym html is nil; skipping."
       next
     end

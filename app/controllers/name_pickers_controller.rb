@@ -1,4 +1,6 @@
 class NamePickersController < ApplicationController
+  before_action :authenticate_editor
+
   def search
     options = {}
     options[:taxa_only] = true if params[:taxa_only].present?

@@ -3,16 +3,16 @@
   =reference.formatted
   =reference.format_reference_document_link
 
-  -if reference.public_notes.present?
+  -if reference.public_notes?
     %p.notes
       %span.note Notes:
       =reference.public_notes
   -if user_can_edit?
-    -if reference.editor_notes.present?
+    -if reference.editor_notes?
       %p.editor.notes
         %span.note Editor notes:
         =reference.editor_notes
-    -if reference.taxonomic_notes.present?
+    -if reference.taxonomic_notes?
       %p.notes
         %span.note Taxonomic notes:
         =reference.taxonomic_notes

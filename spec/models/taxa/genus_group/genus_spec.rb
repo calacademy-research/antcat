@@ -1,15 +1,15 @@
 require 'spec_helper'
 
 describe Genus do
+  it { is_expected.to belong_to :tribe }
+  it { is_expected.to have_many :species }
+  it { is_expected.to have_many :subgenera }
+  it { is_expected.to have_many :subspecies }
+
   let(:genus) { create :genus, name: create(:genus_name, name: 'Atta') }
   let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae')}
   let(:tribe) { create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily }
   let(:genus_with_tribe) { create :genus, name: create(:genus_name, name: 'Atta'), tribe: tribe }
-
-  it "can have a tribe" do
-    expect(genus_with_tribe.tribe).to eq tribe # trigger FactoryGirl
-    expect(described_class.find_by_name('Atta').tribe).to eq tribe
-  end
 
   it "can have species, which are its children" do
     robusta = create :species, name: create(:name, name: "robusta"), genus: genus
@@ -19,23 +19,11 @@ describe Genus do
     expect(genus.children).to eq genus.species
   end
 
-  it "can have subspecies" do
-    create :subspecies, genus: genus
-    expect(genus.subspecies.count).to eq 1
-  end
-
   it "should use the species's' genus, if nec." do
     species = create :species, genus: genus
     create :subspecies, species: species, genus: nil
 
     expect(genus.subspecies.count).to eq 1
-  end
-
-  it "can have subgenera" do
-    robusta = create :subgenus, name: create(:name, name: "robusta"), genus: genus
-    saltensis = create :subgenus, name: create(:name, name: "saltensis"), genus: genus
-
-    expect(genus.subgenera).to eq [robusta, saltensis]
   end
 
   describe "#statistics" do

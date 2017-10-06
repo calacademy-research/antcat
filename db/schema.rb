@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171001164413) do
+ActiveRecord::Schema.define(version: 20171002225713) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -167,11 +167,10 @@ ActiveRecord::Schema.define(version: 20171001164413) do
   add_index "issues", ["closer_id"], name: "index_issues_on_closer_id", using: :btree
 
   create_table "journals", force: :cascade do |t|
-    t.string   "name",           limit: 255
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "auto_generated",             default: false
-    t.string   "origin",         limit: 255
+    t.string   "origin",     limit: 255
   end
 
   add_index "journals", ["name"], name: "journals_name_idx", using: :btree
@@ -212,7 +211,6 @@ ActiveRecord::Schema.define(version: 20171001164413) do
 
   create_table "places", force: :cascade do |t|
     t.string   "name",       limit: 255
-    t.boolean  "verified"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

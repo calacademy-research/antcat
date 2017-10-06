@@ -3,13 +3,13 @@ When(/^I resize the browser window to (mobile|tablet|desktop)$/) do |device|
 end
 
 Then(/^I should see the desktop layout$/) do
-  expect(page).to have_css "#desktop-only", visible: true
-  expect(page).to have_no_css "#mobile-only", visible: true
+  expect(page).to have_css "#desktop-only"
+  expect(page).to have_no_css "#mobile-only"
 end
 
 Then(/^I should see the mobile layout$/) do
-  expect(page).to have_css "#mobile-only", visible: true
-  expect(page).to have_no_css "#desktop-only", visible: true
+  expect(page).to have_css "#mobile-only"
+  expect(page).to have_no_css "#desktop-only"
 end
 
 def resize_window_to_device device
