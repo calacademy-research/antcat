@@ -1,0 +1,27 @@
+#!/bin/bash
+
+function restart_production() {
+  pushd /data/antcat/current
+
+  script_path=$(dirname "$0")
+  eval "$script_path/kill_solr"
+
+  RAILS_ENV=production bundle exec rake sunspot:solr:start
+  RAILS_ENV=production bundle exec rake sunspot:solr:reindex
+
+  popd
+}
+
+function restart_development() {
+  script_path=$(dirname "$0")
+  eval "$script_path/kill_solr"
+
+  RAILS_ENV=development bundle exec rake sunspot:solr:start
+  RAILS_ENV=development bundle exec rake sunspot:solr:reindex
+}
+
+if [ "$1" = "prod" ]; then
+  restart_production
+else
+  restart_development
+fi
