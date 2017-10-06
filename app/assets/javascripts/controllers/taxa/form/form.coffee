@@ -54,10 +54,7 @@ class AntCat.TaxonForm extends AntCat.Form
 
   initialize_homonym_replaced_by_section: =>
     @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by_row'
-    @status_selector = $ '#taxon_status'
-    @status_selector.change => @hide_or_show_homonym_replaced_by()
     new AntCat.HomonymReplacedBySection $('#homonym_replaced_by_name_field'), parent_form: @
-    @hide_or_show_homonym_replaced_by()
 
   initialize_current_valid_taxon_section: =>
     @current_valid_taxon_name_row = $ 'tr#current_valid_taxon_row'
@@ -69,12 +66,6 @@ class AntCat.TaxonForm extends AntCat.Form
 
   taxon_rank: =>
     $('#taxon_rank').val()
-
-  hide_or_show_homonym_replaced_by: =>
-    if @status_selector.val() == 'homonym'
-      @homonym_replaced_by_name_row.show()
-    else
-      @homonym_replaced_by_name_row.hide()
 
   ###### client functions
   on_form_open: =>

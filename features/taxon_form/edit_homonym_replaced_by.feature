@@ -20,15 +20,6 @@ Feature: Editing a taxon's homonym replaced by
     And I save my changes
     Then I should see "Eciton" in the header
 
-  Scenario: Homonym replaced by field visibility
-    Given there is a genus "Eciton"
-
-    When I go to the edit page for "Atta"
-    Then I should not see the homonym replaced by field
-
-    When I set the status to "homonym"
-    Then I should see the homonym replaced by field
-
   Scenario: Setting the homonym replaced by name doesn't affect status
     Given there is a genus "Eciton"
 
