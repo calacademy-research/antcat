@@ -14,7 +14,6 @@
     %thead
       %tr
         %th Title
-        %th Short description
         %th Read?
         %th Comments
         %th When
@@ -22,7 +21,6 @@
     -@site_notices.each do |site_notice|
       %tr
         %td.no-wrap=link_to site_notice.title, site_notice_path(site_notice)
-        %td=site_notice.blurb.presence || "(none)"
         %td.no-wrap
           -read_status = site_notice.unread?(current_user) ? "unread" : "read"
           =antcat_icon read_status
