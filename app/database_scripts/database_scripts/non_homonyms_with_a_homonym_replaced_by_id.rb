@@ -1,7 +1,7 @@
 module DatabaseScripts
-  class ValidTaxaWithAHomonymReplacedById < DatabaseScript
+  class NonHomonymsWithAHomonymReplacedById < DatabaseScript
     def results
-      Taxon.valid.where.not(homonym_replaced_by: nil)
+      Taxon.where.not(status: 'homonym').where.not(homonym_replaced_by: nil)
     end
 
     def render
@@ -9,10 +9,12 @@ module DatabaseScripts
         t.header :taxon, :status, :homonym_replaced_by, :homonym_replaced_by_status
 
         t.rows do |taxon|
-          [ markdown_taxon_link(taxon),
+          [
+            markdown_taxon_link(taxon),
             taxon.status,
             markdown_taxon_link(taxon.homonym_replaced_by),
-            taxon.homonym_replaced_by.status ]
+            taxon.homonym_replaced_by.try(:status)
+          ]
         end
       end
     end
