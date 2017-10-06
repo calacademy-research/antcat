@@ -1,7 +1,8 @@
 @javascript
 Feature: Reference field
   Background:
-    Given these references exist
+    Given I am logged in
+    And these references exist
       | authors                | year | citation_year | title              | citation   |
       | Fisher, B.             | 1995 | 1995b         | Fisher's book      | Ants 1:1-2 |
       | Bolton, B.             | 2010 | 2010 ("2011") | Bolton's book      | Ants 2:1-2 |

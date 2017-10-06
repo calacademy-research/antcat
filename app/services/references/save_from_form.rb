@@ -33,17 +33,16 @@ module References
           # before validating, so we need to manually raise here.
           raise ActiveRecord::Rollback if @reference.errors.present?
 
-          # TODO maybe move to a callback, but maybe not.
-          unless params[:possible_duplicate].present?
+          unless params[:ignore_possible_duplicate].present?
             if @reference.check_for_duplicate
-              params[:possible_duplicate] = "yes"
+              params[:ignore_possible_duplicate] = "yes"
               raise ActiveRecord::Rollback
             end
           end
 
           @reference.save!
           set_document_host
-          make_default_reference @reference if params[:make_default]
+
           return true
         end
       rescue ActiveRecord::RecordInvalid

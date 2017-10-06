@@ -4,8 +4,8 @@ class TaxonDecorator::Statistics
   include Service
   include ApplicationHelper # For `#pluralize_with_delimiters` and `#number_with_delimiter`.
 
-  # TODO: Push include_invalid/include_fossil to the taxa models.
-  # This method is cheap, but Taxon#statistics is very slow and it always
+  # TODO: Push `include_invalid`/`include_fossil` to the taxa models.
+  # This method is cheap, but `Taxon#statistics` is very slow and it always
   # fetches all statistics and then this method removes invalid/fossil taxa.
   def initialize statistics, include_invalid: true, include_fossil: true
     @statistics = statistics

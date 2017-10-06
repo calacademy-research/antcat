@@ -1,7 +1,8 @@
 @javascript
 Feature: Reference popup
   Background:
-    Given these references exist
+    Given I am logged in
+    And these references exist
       | authors                | year | citation_year | title              | citation   |
       | Fisher, B.             | 1995 | 1995b         | Fisher's book      | Ants 1:1-2 |
       | Bolton, B.             | 2010 | 2010 ("2011") | Bolton's book      | Ants 2:1-2 |
@@ -16,20 +17,16 @@ Feature: Reference popup
   Scenario: Selecting a reference from search results
     When I go to the reference popup widget test page
     And in the reference picker, I search for the author "Fisher, B."
-    And I click the first search result
+    Then I should see "Fisher's book"
+    And I should see "Fisher Bolton book"
+    And I should not see "Bert's book"
+    And I should not see "Bolton's book"
+
+    When I click the first search result
     Then the current reference should be "Fisher, B. 1995b. Fisher's book. Ants 1:1-2"
 
     When I press "OK"
     Then the widget results should be the taxt for Fisher 1995
-
-  @search
-  Scenario: Searching
-    When I go to the reference popup widget test page
-    And in the reference picker, I search for the author "bolton"
-    Then I should see "Bolton's book"
-    And I should see "Fisher Bolton book"
-    And I should not see "Bert's book"
-    And I should not see "Fisher's book"
 
   @search
   Scenario: Cancelling when there's already a reference (regression)

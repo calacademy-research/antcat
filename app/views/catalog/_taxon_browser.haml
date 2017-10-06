@@ -1,5 +1,5 @@
 %ul#taxon-browser-tabs.tabs{"data-tabs" => ""}
-  -@taxon_browser.tabs.each do |tab|
+  -taxon_browser.tabs.each do |tab|
     %li.tabs-title{class: ("is-active" if tab.open?)}
       =link_to tab.title, "##{tab.id}"
 
@@ -10,12 +10,12 @@
     %span.label.secondary=toggle_invalid_or_valid_only_link
 
 .tabs-content{"data-tabs-content" => "taxon-browser-tabs"}
-  -@taxon_browser.tabs.each do |tab|
+  -taxon_browser.tabs.each do |tab|
     .tabs-panel{id: tab.id, class: ("is-active" if tab.open?)}
       -if tab.too_many_taxa_to_load?
         %p.remove-after-loading-full-tab
-          Showing #{@taxon_browser.max_taxa_to_load} of #{tab.taxa_count} taxa
-          =load_tab_button @taxon, tab
+          Showing #{taxon_browser.max_taxa_to_load} of #{tab.taxa_count} taxa
+          =load_tab_button taxon, tab
 
       %ul.snaked.no-bullet.mr-scrollbary
         =links_to_extra_tabs tab.tab_taxon
@@ -28,5 +28,5 @@
         -# "show invalid", or that the taxon is an invalid subfamily/tribe/genus.
         -if tab.notify_about_no_valid_taxa?
           %li No valid child taxa
-          -unless @taxon_browser.show_invalid? # Link unless already showing invalid.
+          -unless taxon_browser.show_invalid? # Link unless already showing invalid.
             %li=toggle_invalid_or_valid_only_link "Show invalid?"

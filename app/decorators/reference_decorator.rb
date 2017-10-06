@@ -149,7 +149,7 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     def doi_link
-      return unless reference.doi.present?
+      return unless reference.doi?
       helpers.link_to reference.doi, ("http://dx.doi.org/" + doi)
     end
 

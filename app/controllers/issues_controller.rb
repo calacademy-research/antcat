@@ -39,7 +39,7 @@ class IssuesController < ApplicationController
     if @issue.update issue_params
       redirect_to @issue, notice: "Successfully updated issue."
     else
-      render action: "edit"
+      render :edit
     end
   end
 

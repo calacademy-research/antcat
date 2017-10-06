@@ -34,7 +34,7 @@ gem 'invisible_captcha'
 gem 'jquery-atwho-rails'
 gem 'jquery-rails', '> 4.0'
 gem 'jquery-ui-rails', '> 5.0'
-gem 'paper_trail', git: "https://github.com/airblade/paper_trail.git", tag: 'v4.0.0.beta2'
+gem 'paper_trail', '< 5.0'
 gem 'paperclip'
 gem 'redcarpet'
 gem 'rouge'
@@ -56,6 +56,10 @@ gem 'rails-observers' # observers deprecated in rails 4
 #   test with: http://antcat.org/documents/6308/ward_2014_annu_rev_ecol_evol_syst_phylogeny_and_evolution_of_ants.pdf
 gem 'aws-sdk', '< 2.0'
 gem 'ey_config'
+
+group :development do
+  gem 'brakeman'
+end
 
 group :development, :test do
   gem 'factory_girl_rails'

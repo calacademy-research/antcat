@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe Subfamily do
+  it { is_expected.to have_many :collective_group_names }
+  it { is_expected.to have_many :genera }
+  it { is_expected.to have_many :species }
+  it { is_expected.to have_many :subspecies }
+
   let(:subfamily) { create :subfamily, name: create(:subfamily_name, name: 'Dolichoderinae') }
 
   it "can have tribes, which are its children" do
@@ -9,34 +14,6 @@ describe Subfamily do
 
     expect(subfamily.tribes).to eq [attini, dacetini]
     expect(subfamily.tribes).to eq subfamily.children
-  end
-
-  it "can have collective group names" do
-    collective_group_name = create_genus status: 'collective group name', subfamily: subfamily
-    create_genus subfamily: subfamily
-    expect(subfamily.reload.collective_group_names).to eq [collective_group_name]
-  end
-
-  it "can have genera" do
-    dacetini = create :tribe, name: create(:name, name: 'Dacetini'), subfamily: subfamily
-    atta = create_genus 'Atta', subfamily: subfamily, tribe: create_tribe('Attini', subfamily: subfamily)
-    acanthognathus = create_genus 'Acanthognathus', subfamily: subfamily, tribe: dacetini
-
-    expect(subfamily.genera).to eq [atta, acanthognathus]
-  end
-
-  describe "shared setup" do
-    let!(:genus) { create :genus, subfamily: subfamily }
-    let!(:species) { create :species, genus: genus }
-
-    it "can have species" do
-      expect(subfamily.species.size).to eq 1
-    end
-
-    it "can have subspecies" do
-      create :subspecies, genus: genus, species: species
-      expect(subfamily.subspecies.size).to eq 1
-    end
   end
 
   describe "#statistics" do

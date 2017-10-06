@@ -8,7 +8,7 @@
 
 =render_filters
 
-=render "table", activities: @activities, show_delete_button: true, include_head: true
+=render "table", activities: @activities, show_delete_button: true, include_head: true, page: @page
 
 -# HACK so that the id param isn't included in pagination links.
 =will_paginate @activities, params: { id: nil }

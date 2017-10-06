@@ -1,4 +1,5 @@
 # TODO column for `devise :invitable` can be removed from the db.
+# TODO default `user.can_edit` to false.
 
 class User < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
@@ -12,8 +13,6 @@ class User < ActiveRecord::Base
   validates :name, presence: true
 
   scope :order_by_name, -> { order(:name) }
-  scope :editors, -> { where(can_edit: true) }
-  scope :non_editors, -> { where(can_edit: [false, nil]) } # TODO only allow true/false?
   scope :as_angle_bracketed_emails, -> { all.map(&:angle_bracketed_email).join(", ") }
 
   acts_as_reader

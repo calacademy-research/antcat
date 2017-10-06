@@ -51,7 +51,7 @@ Given(/^there is species "([^"]*)" and another species "([^"]*)" shared between 
 end
 
 Given(/^there is a species "([^"]*)" with genus "([^"]*)"$/) do |species_name, genus_name|
-  genus = create_genus genus_name
+  genus = Genus.find_by(name_cache: genus_name) || create_genus(genus_name)
   create_species species_name, genus: genus
 end
 

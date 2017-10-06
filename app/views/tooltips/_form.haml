@@ -3,9 +3,9 @@
 .buttons_right
   =link_to "Hide/show advanced", "#", class: "btn-white", data: { show_hide_toggler_for: "advanced_options" }
 
-=form_for @tooltip do |f|
-  =hidden_field_tag 'referral', @referral
-  =render 'shared/errors_for', resource: @tooltip
+=form_for tooltip do |f|
+  =hidden_field_tag 'referral', referral
+  =render 'shared/errors_for', resource: tooltip
 
   -# Advanced options, hidden by default. Put first or the user may
   -# not see it after toggling on smaller screens.

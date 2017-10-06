@@ -228,4 +228,34 @@ describe "callbacks" do
       end
     end
   end
+
+  describe "#type_specimen_url" do
+    it "makes sure it has a protocol" do
+      stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
+      taxon = create :species
+      taxon.type_specimen_url = 'antcat.org/1.pdf'
+      taxon.save!
+      expect(taxon.reload.type_specimen_url).to eq 'http://antcat.org/1.pdf'
+      taxon.save!
+      expect(taxon.reload.type_specimen_url).to eq 'http://antcat.org/1.pdf'
+    end
+
+    it "validates the URL" do
+      taxon = create :species
+      taxon.type_specimen_url = '*'
+      expect(taxon).not_to be_valid
+
+      expected_error = 'Type specimen url is not in a valid format'
+      expect(taxon.errors.full_messages).to match_array [expected_error]
+    end
+
+    it "validates that the URL exists" do
+      stub_request(:any, 'http://antwiki.org/1.pdf').to_return body: 'Hello World!'
+      taxon = create :species, type_specimen_url: 'http://antwiki.org/1.pdf'
+      expect(taxon).to be_valid
+      stub_request(:any, 'http://antwiki.org/1.pdf').to_return body: 'Not Found', status: 404
+      expect(taxon).not_to be_valid
+      expect(taxon.errors.full_messages).to match_array ['Type specimen url was not found']
+    end
+  end
 end

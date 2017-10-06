@@ -28,7 +28,9 @@ class ReferencesController < ApplicationController
     @reference = new_reference
 
     if save
-      @reference.create_activity :create
+      @reference.create_activity :create, edit_summary: params[:edit_summary]
+      make_default_reference! if params[:make_default]
+
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully created.
         <strong>#{view_context.link_to 'Back to the index', references_path}</strong>
@@ -44,7 +46,9 @@ class ReferencesController < ApplicationController
     @reference = set_reference_type
 
     if save
-      @reference.create_activity :update
+      @reference.create_activity :update, edit_summary: params[:edit_summary]
+      make_default_reference! if params[:make_default]
+
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully updated.
         <strong>#{view_context.link_to 'Back to the index', references_path}</strong>.
@@ -56,7 +60,7 @@ class ReferencesController < ApplicationController
 
   def destroy
     if @reference.destroy
-      @reference.create_activity :destroy
+      @reference.create_activity :destroy, edit_summary: params[:edit_summary]
       redirect_to references_path, notice: 'Reference was successfully destroyed.'
     else
       if @reference.errors.present?
@@ -95,8 +99,8 @@ class ReferencesController < ApplicationController
       @reference.nesting_reference_id = reference_id
     end
 
-    def make_default_reference reference
-      DefaultReference.set session, reference
+    def make_default_reference!
+      DefaultReference.set session, @reference
     end
 
     def save
@@ -113,9 +117,13 @@ class ReferencesController < ApplicationController
     end
 
     def set_reference_type
-      selected_tab = params[:selected_tab]
-      selected_tab = 'Unknown' if selected_tab == 'Other'
-      type = "#{selected_tab}Reference".constantize
+      type = case params[:selected_tab]
+             when 'Article' then ArticleReference
+             when 'Book'    then BookReference
+             when 'Missing' then MissingReference
+             when 'Nested'  then NestedReference
+             when 'Other'   then UnknownReference
+             end
       reference = @reference.becomes type
       reference.type = type
       reference

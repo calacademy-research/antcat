@@ -24,10 +24,11 @@ class TaxonDecorator::HeadlineProtonym
     end
 
     def protonym_name protonym
-      content = content_tag :span do
-        protonym.name.protonym_with_fossil_html protonym.fossil
+      content_tag :b do
+        content_tag :span do
+          protonym.name.protonym_with_fossil_html protonym.fossil
+        end
       end
-      content_tag :b, content
     end
 
     def authorship authorship

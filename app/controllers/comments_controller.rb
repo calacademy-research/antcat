@@ -58,7 +58,7 @@ class CommentsController < ApplicationController
         <a href="#comment-#{@comment.id}">Comment</a> was successfully updated.
       MSG
     else
-      render action: :edit
+      render :edit
     end
   end
 

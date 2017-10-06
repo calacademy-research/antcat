@@ -189,7 +189,7 @@ describe Taxa::SaveFromForm do
   end
 
   # Mainly tested in `callbacks_and_validations_spec.rb`.
-  describe "stuff from Taxa::CallbacksAndValidators" do
+  describe "stuff from Taxa::CallbacksAndValidations" do
     describe "Taxon#save_children" do
       let!(:species) { create :species }
       let!(:genus) { Taxon.find species.genus.id }

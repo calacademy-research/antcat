@@ -1,4 +1,3 @@
-# TODO rename to TestsController?
 class WidgetTestsController < ApplicationController
   def name_popup_test
   end

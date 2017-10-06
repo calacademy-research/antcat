@@ -1,3 +1,5 @@
+#!/bin/bash
+
 SOLR_PID=$(ps aux | grep -v grep | grep 'solr.solr.home' | awk '{print $2}')
 
 digits='^[0-9]+$'

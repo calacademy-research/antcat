@@ -69,7 +69,7 @@ module Wikipedia
         |volume=#{reference.volume}
         |issue=#{reference.issue unless reference.issue.blank?}
         |pages=#{pages}
-        |doi=#{reference.doi unless reference.doi.blank?}
+        |doi=#{reference.doi if reference.doi?}
         }}</ref>
       TEMPLATE
     end

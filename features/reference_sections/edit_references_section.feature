@@ -8,7 +8,8 @@ Feature: Editing references sections
   Background:
     Given I am logged in
 
-  Scenario: Editing a reference section
+  @feed
+  Scenario: Editing a reference section (with edit summary)
     Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
 
     When I go to the edit page for "Dolichoderinae"
@@ -16,10 +17,14 @@ Feature: Editing references sections
 
     When I click the reference section
     And I fill in the references field with "(none)"
+    And I fill in "reference_section_edit_summary" with "fix typo"
     And I save the reference section
     And I wait
     Then I should not see "Original reference"
     And the reference section should be "(none)"
+
+    When I go to the activity feed
+    And I should see the edit summary "fix typo"
 
   Scenario: Editing a reference section, but cancelling
     Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
@@ -30,7 +35,8 @@ Feature: Editing references sections
     And I cancel the reference section's changes
     Then the reference section should be "Original reference"
 
-  Scenario: Adding a reference section
+  @feed
+  Scenario: Adding a reference section (with edit summary)
     Given there is a genus "Atta"
 
     When I go to the edit page for "Atta"
@@ -40,9 +46,13 @@ Feature: Editing references sections
     Then I should not see the "Delete" button for the reference section
 
     When I fill in the references field with "New reference"
+    And I fill in "reference_section_edit_summary" with "added new stuff"
     And I save the reference section
     And I wait
     Then the reference section should be "New reference"
+
+    When I go to the activity feed
+    And I should see the edit summary "added new stuff"
 
   Scenario: Adding a reference section, but cancelling
     Given there is a genus "Atta"

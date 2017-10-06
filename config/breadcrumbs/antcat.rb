@@ -17,11 +17,6 @@ end
     parent :users
   end
 
-  crumb :user_emails do
-    link "User Emails"
-    parent :users
-  end
-
 crumb :sign_up do
   link "Sign Up"
   parent :antcat

@@ -41,7 +41,7 @@ Feature: Workflow
     And I should see "Formicinae"
     And I should see "changed by Mark Wilden"
 
-    When I follow "Undo!"
+    When I press "Undo!"
     Then I should not see "Formicinae"
     And I should not see "asdfgh"
 
@@ -100,7 +100,7 @@ Feature: Workflow
     And I follow the first "Undo..."
     Then I should see "This undo will roll back the following changes"
 
-    When I follow "Undo!"
+    When I press "Undo!"
     Then I should see the genus "Becton" in the changes
     And I should see the name "major" in the changes
     And I should not see "Chatsworth"
@@ -112,7 +112,7 @@ Feature: Workflow
     And I follow the first "Undo..."
     Then I should see "This undo will roll back the following changes"
 
-    When I follow "Undo!"
+    When I press "Undo!"
     Then I should not see "Becton"
     And I should not see "major"
     And I should not see "Chatsworth"
@@ -154,7 +154,7 @@ Feature: Workflow
     And I follow the second "Undo..."
     Then I should see "This undo will roll back the following changes"
 
-    When I follow "Undo!"
+    When I press "Undo!"
     Then I should not see "Becton"
     And I should not see "major"
     And I should not see "Chatsworth"
@@ -193,7 +193,7 @@ Feature: Workflow
 
     When I go to the changes page
     And I follow the first "Undo..."
-    And I follow "Undo!"
+    And I press "Undo!"
     And I go to the catalog page for "Formicidae"
     Then I should see "Ancatinae"
 

@@ -1,8 +1,8 @@
 -content_for :head do
   =javascript_include_tag "markdown_and_friends"
 
-=form_for @issue do |f|
-  =render "shared/errors_for", resource: @issue
+=form_for issue do |f|
+  =render "shared/errors_for", resource: issue
   .row
     .medium-6.columns.end
       =f.label :title

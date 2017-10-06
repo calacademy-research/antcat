@@ -8,6 +8,7 @@ Feature: Editing a history item
   Background:
     And I am logged in
 
+  @feed
   Scenario: Editing a history item
     Given the Formicidae family exists
 
@@ -16,6 +17,7 @@ Feature: Editing a history item
 
     When I click the history item
     And I edit the history item to "(none)"
+    And I fill in "taxon_history_item_edit_summary" with "fix typo"
     And I save the history item
     Then I should not see "Taxonomic history"
     And I wait
@@ -23,6 +25,9 @@ Feature: Editing a history item
 
     When I click the history item
     Then the history item field should be "(none)"
+
+    When I go to the activity feed
+    And I should see the edit summary "fix typo"
 
   Scenario: Saving the fields after editing history (regression)
     Given the Formicidae family exists
@@ -34,18 +39,6 @@ Feature: Editing a history item
     And I save my changes
     And I wait
     Then I should be on the catalog page for "Formicidae"
-
-  # This doesn't work because of inserting a {
-  #Scenario: Editing a history item to include a reference
-    #Given there is a reference for "Bolton, 2005"
-
-    #When I go to the edit page for "Formicidae"
-    #Then I should not see "Bolton, 2005"
-
-    #When I click the history item
-    #And I edit the history item to include that reference
-    #And I save my changes
-    #Then the history should be "Bolton, 2005."
 
   # This test isn't accurate, as it reports the wrong contents
   # of the history item field
@@ -79,7 +72,8 @@ Feature: Editing a history item
     #And I press that history item's "Insert Name" button
     #Then I should see the name popup
 
-  Scenario: Adding a history item
+  @feed
+  Scenario: Adding a history item (with edit summary)
     Given there is a genus "Atta"
 
     When I go to the edit page for "Atta"
@@ -88,9 +82,13 @@ Feature: Editing a history item
     When I click the "Add History" button
     Then I should not see the "Delete" button for the history item
     And I edit the history item to "Abc"
+    And I fill in "taxon_history_item_edit_summary" with "added new stuff"
     And I save the history item
     And I wait
     Then the history should be "Abc"
+
+    When I go to the activity feed
+    And I should see the edit summary "added new stuff"
 
   Scenario: Adding a history item with blank taxt
     Given there is a genus "Atta"

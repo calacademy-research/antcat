@@ -43,7 +43,7 @@ class SiteNoticesController < ApplicationController
     if @site_notice.update site_notice_params
       redirect_to @site_notice, notice: "Successfully updated site notice."
     else
-      render action: "edit"
+      render :edit
     end
   end
 
@@ -69,7 +69,7 @@ class SiteNoticesController < ApplicationController
     end
 
     def site_notice_params
-      params.require(:site_notice).permit :blurb, :title, :message
+      params.require(:site_notice).permit :title, :message
     end
 
     def mark_as_read

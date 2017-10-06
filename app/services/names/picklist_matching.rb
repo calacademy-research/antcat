@@ -35,7 +35,7 @@ class Names::PicklistMatching
     def picklist_query name_field, search_term
       Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id')
         .joins("#{join_type} taxa ON taxa.name_id = names.id")
-        .where("#{name_field} LIKE '#{search_term}' #{rank_filter}")
+        .where("#{name_field} LIKE ? #{rank_filter}", search_term)
     end
 
     def join_type
