@@ -8,9 +8,9 @@ end
 
 Then(/^I should (not )?see the reference key expansion$/) do |should_not|
   if should_not
-    expect(find(".reference_keey_expansion", visible: false)).to_not be_visible
+    expect(page).to have_no_css ".reference_keey_expansion"
   else
-    expect(find(".reference_keey_expansion", visible: true)).to be_visible
+    expect(page).to have_css ".reference_keey_expansion"
   end
 end
 

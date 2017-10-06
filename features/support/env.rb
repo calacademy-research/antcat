@@ -1,6 +1,3 @@
-# TODO as of version 2.1, Capybara defaults to finding only visible elements,
-# 1) confirm that's the case. 2) remove "visible" from a lot of places.
-
 ENV["RAILS_ENV"] ||= "test"
 require_relative '../../config/environment'
 

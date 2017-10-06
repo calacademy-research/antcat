@@ -31,9 +31,9 @@ end
 
 Then(/^I should (not )?see the tooltip text "([^"]*)"$/) do |should_not, text|
   if should_not
-    expect(page).to have_no_css '.ui-tooltip', visible: true, text: text
+    expect(page).to have_no_css '.ui-tooltip', text: text
   else
-    expect(page).to have_css '.ui-tooltip', visible: true, text: text
+    expect(page).to have_css '.ui-tooltip', text: text
   end
 end
 

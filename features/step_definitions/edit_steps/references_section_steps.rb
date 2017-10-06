@@ -47,8 +47,8 @@ end
 
 Then(/^I should (not )?see the "Delete" button for the reference/) do |should_not|
   if should_not
-    expect(page).to have_no_css 'button.delete', visible: false
+    expect(page).to have_no_css 'button.delete'
   else
-    expect(page).to have_css 'button.delete', visible: true
+    expect(page).to have_css 'button.delete'
   end
 end

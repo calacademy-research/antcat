@@ -40,8 +40,7 @@ When(/^I set the name to "([^"]*)"$/) do |name|
 end
 
 Then(/^I should still see the name field$/) do
-  element = find '#name_field .edit'
-  expect(element).to be_visible
+  find '#name_field .edit'
 end
 
 Then(/^the name field should contain "([^"]*)"$/) do |name|
@@ -70,9 +69,9 @@ end
 
 Then(/^I should (not )?see the gender menu$/) do |should_not|
   if should_not
-    expect(page).to have_no_css '#taxon_name_attributes_gender', visible: false
+    expect(page).to have_no_css '#taxon_name_attributes_gender'
   else
-    expect(page).to have_css '#taxon_name_attributes_gender', visible: true
+    expect(page).to have_css '#taxon_name_attributes_gender'
   end
 end
 
@@ -115,9 +114,9 @@ end
 ### homonym replaced by field
 Then(/^I should (not )?see the homonym replaced by field$/) do |should_not|
   if should_not
-    expect(find("#homonym_replaced_by_row", visible: false)).to_not be_visible
+    expect(page).to have_no_css "#homonym_replaced_by_row"
   else
-    expect(find("#homonym_replaced_by_row", visible: true)).to be_visible
+    expect(page).to have_css "#homonym_replaced_by_row"
   end
 end
 
