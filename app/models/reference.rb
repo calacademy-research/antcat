@@ -34,8 +34,7 @@ class Reference < ApplicationRecord
 
   validates :title, presence: true, if: -> { self.class.requires_title }
 
-  before_validation :set_year_from_citation_year, :strip_text_fields
-  before_save { CleanNewlines.clean_newlines self, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
+  before_validation :set_year_from_citation_year
   before_save :set_author_names_caches
   before_destroy :check_not_referenced, :check_not_nested
 
@@ -49,6 +48,9 @@ class Reference < ApplicationRecord
   scope :with_principal_author_last_name, ->(last_name) { where(principal_author_last_name_cache: last_name) }
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
+    :citation, :date, :citation_year, :series_volume_issue, :pagination,
+    :pages_in, :doi, :reason_missing, :review_state], replace_newlines: true
   tracked on: :mixin_create_activity_only, parameters: proc { { name: keey } }
 
   searchable do
@@ -197,19 +199,6 @@ class Reference < ApplicationRecord
 
       errors.add :base, "This reference can't be deleted because it's nested in #{nestees.first.id}"
       false
-    end
-
-    # TODO duplicates `CleanNewlines`?
-    def strip_text_fields
-      fields = [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation]
-      fields.each do |field|
-        value = self[field]
-        next unless value.present?
-        value.gsub! /(\n|\r|\n\r|\r\n)/, ' '
-        value.strip!
-        value.squeeze! ' '
-        self[field] = value
-      end
     end
 
     def set_year_from_citation_year

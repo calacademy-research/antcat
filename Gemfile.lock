@@ -331,6 +331,8 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    strip_attributes (1.8.0)
+      activemodel (>= 3.0, < 6.0)
     sunspot (2.2.0)
       pr_geohash (~> 1.0)
       rsolr (~> 1.0.7)
@@ -428,6 +430,7 @@ DEPENDENCIES
   selenium-webdriver (>= 2.48)
   shoulda-matchers
   sprockets-rails
+  strip_attributes
   sunspot_rails
   sunspot_solr
   sunspot_test

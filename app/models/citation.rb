@@ -14,7 +14,6 @@ class Citation < ActiveRecord::Base
 
   validates :reference, presence: true
 
-  before_save { CleanNewlines.clean_newlines self, :notes_taxt }
-
+  strip_attributes only: [:notes_taxt, :pages, :forms], replace_newlines: true
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 end

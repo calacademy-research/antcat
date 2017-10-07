@@ -12,6 +12,7 @@ class Name < ApplicationRecord
   after_save :set_taxon_caches
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  strip_attributes only: [:gender], replace_newlines: true
 
   # TODO rename to avoid confusing this with [Rails'] dynamic finder methods.
   def self.find_by_name string
