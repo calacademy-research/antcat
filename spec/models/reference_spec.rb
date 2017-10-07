@@ -377,14 +377,6 @@ describe Reference do
     end
   end
 
-  describe "#has_any_references?" do
-    subject { create :article_reference }
-
-    it "returns false if there are no references to this reference" do
-      expect(subject.send(:has_any_references?)).to be_falsey
-    end
-  end
-
   describe "#keey" do
     let(:bolton) { build_stubbed :author_name, name: 'Bolton, B.' }
     let(:fisher) { build_stubbed :author_name, name: 'Fisher, B.' }

@@ -188,7 +188,7 @@ class Reference < ApplicationRecord
 
   private
     def check_not_referenced
-      return unless has_any_references?
+      return unless what_links_here(predicate: true)
 
       errors.add :base, "This reference can't be deleted, as there are other references to it."
       false
@@ -202,17 +202,13 @@ class Reference < ApplicationRecord
     end
 
     def set_year_from_citation_year
-      self.year = year_from_citation_year citation_year
-    end
-
-    def year_from_citation_year citation_year
-      return if citation_year.blank? # Sets `self.year` to nil.
-
-      if match = citation_year.match(/\["(\d{4})"\]/)
-        match[1]
-      else
-        citation_year.to_i
-      end
+      self.year = if citation_year.blank?
+                    nil
+                  elsif match = citation_year.match(/\["(\d{4})"\]/)
+                    match[1]
+                  else
+                    citation_year.to_i
+                  end
     end
 
     # TODO does this duplicate `refresh_author_names_caches`?
@@ -227,9 +223,5 @@ class Reference < ApplicationRecord
       last_name = first_author_name && first_author_name.last_name
 
       [string, last_name]
-    end
-
-    def has_any_references?
-      what_links_here predicate: true
     end
 end
