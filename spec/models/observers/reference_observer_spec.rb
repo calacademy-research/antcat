@@ -10,8 +10,8 @@ describe ReferenceObserver do
       before do
         reference.reload
         nestee.reload
-        ReferenceFormatterCache.populate reference
-        ReferenceFormatterCache.populate nestee
+        References::Cache::Regenerate[reference]
+        References::Cache::Regenerate[nestee]
       end
 
       it "invalidates the cache for itself and its nestees" do
@@ -34,10 +34,10 @@ describe ReferenceObserver do
       end
 
       before do
-        ReferenceFormatterCache.populate nesting_reference
+        References::Cache::Regenerate[nesting_reference]
         nesting_reference.reload
 
-        ReferenceFormatterCache.populate nested_reference
+        References::Cache::Regenerate[nested_reference]
         nested_reference.reload
       end
 
@@ -62,7 +62,7 @@ describe ReferenceObserver do
 
     before do
       reference.reload
-      ReferenceFormatterCache.populate reference
+      References::Cache::Regenerate[reference]
     end
 
     it "invalidates the cache for the document's reference" do
