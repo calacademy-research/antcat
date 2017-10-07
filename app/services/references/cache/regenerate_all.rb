@@ -16,12 +16,12 @@ module References
 
       private
         def regenerate_all_references
-          Progress.new_init show_progress: true, total_count: Reference.count
+          progress = Progress.create total: Reference.count
+
           Reference.find_each do |reference|
-            Progress.tally_and_show_progress 100
+            progress.increment
             References::Cache::Regenerate[reference]
           end
-          Progress.show_results
         end
     end
   end
