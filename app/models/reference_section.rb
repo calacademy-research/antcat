@@ -1,9 +1,8 @@
 class ReferenceSection < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
   include Trackable
   include PrimitiveSearch
   include RevisionsCanBeCompared
-
-  attr_accessible :taxon_id, :title_taxt, :subtitle_taxt, :references_taxt,:position, :taxon
 
   belongs_to :taxon
 

@@ -1,7 +1,7 @@
 # TODO `remove_column :author_names, :verified`, or rename to `auto_generated`.
 
 class AuthorName < ActiveRecord::Base
-  attr_accessible :name, :author, :author_id
+  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :author
 

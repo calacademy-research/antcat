@@ -1,9 +1,8 @@
 class TaxonHistoryItem < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
   include Trackable
   include PrimitiveSearch
   include RevisionsCanBeCompared
-
-  attr_accessible :taxon_id, :taxt, :position, :taxon
 
   belongs_to :taxon
 
