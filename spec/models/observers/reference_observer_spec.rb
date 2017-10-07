@@ -24,6 +24,37 @@ describe ReferenceObserver do
         expect(nestee.reload.formatted_cache).to be_nil
       end
     end
+
+    describe "Handling a network" do
+      let!(:nesting_reference) { create :article_reference }
+      let!(:nested_reference) { create :nested_reference, nesting_reference: nesting_reference }
+      let!(:reference_author_name) do
+        create :reference_author_name, reference: nesting_reference,
+          author_name: create(:author_name)
+      end
+
+      before do
+        ReferenceFormatterCache.populate nesting_reference
+        nesting_reference.reload
+
+        ReferenceFormatterCache.populate nested_reference
+        nested_reference.reload
+      end
+
+      it "invalidates each member of the network" do
+        expect(nesting_reference.formatted_cache).not_to be_nil
+        expect(nested_reference.formatted_cache).not_to be_nil
+
+        reference_author_name.position = 4
+        reference_author_name.save!
+
+        nesting_reference.reload
+        nested_reference.reload
+
+        expect(nesting_reference.formatted_cache).to be_nil
+        expect(nested_reference.formatted_cache).to be_nil
+      end
+    end
   end
 
   context "when a reference document is changed" do
