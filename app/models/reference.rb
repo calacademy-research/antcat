@@ -98,14 +98,6 @@ class Reference < ApplicationRecord
     self.author_names_string_cache = string
   end
 
-  # Possibly only used for sorting. The principal author is decided
-  # by generated all author name and picking the first, and that order
-  # is presumably decided by `reference_author_names.position`.
-  # Not sure if it would make sense to use this in any other way.
-  def principal_author_last_name
-    principal_author_last_name_cache
-  end
-
   # TODO we should probably have `#year` [int] and something
   # like `#non_standard_year` [string] instead of this +
   # `#year` + `#citation_year`.
