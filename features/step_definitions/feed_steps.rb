@@ -25,6 +25,10 @@ def feed_items_count
   all("table.activities > tbody tr").size
 end
 
+When(/^I hover the first activity item$/) do
+  find("table.activities > tbody > tr:first-of-type").hover
+end
+
 Then(/^I should see the edit summary "([^"]*)"$/) do |content|
   within "table.activities" do
     step %Q[I should see "#{content}"]

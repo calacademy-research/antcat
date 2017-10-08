@@ -34,8 +34,7 @@ class Reference < ApplicationRecord
 
   validates :title, presence: true, if: -> { self.class.requires_title }
 
-  before_validation :set_year_from_citation_year, :strip_text_fields
-  before_save { CleanNewlines.clean_newlines self, :editor_notes, :public_notes, :taxonomic_notes, :title, :citation }
+  before_validation :set_year_from_citation_year
   before_save :set_author_names_caches
   before_destroy :check_not_referenced, :check_not_nested
 
@@ -49,6 +48,9 @@ class Reference < ApplicationRecord
   scope :with_principal_author_last_name, ->(last_name) { where(principal_author_last_name_cache: last_name) }
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
+    :citation, :date, :citation_year, :series_volume_issue, :pagination,
+    :pages_in, :doi, :reason_missing, :review_state], replace_newlines: true
   tracked on: :mixin_create_activity_only, parameters: proc { { name: keey } }
 
   searchable do
@@ -96,14 +98,6 @@ class Reference < ApplicationRecord
 
   def author_names_string=(string)
     self.author_names_string_cache = string
-  end
-
-  # Possibly only used for sorting. The principal author is decided
-  # by generated all author name and picking the first, and that order
-  # is presumably decided by `reference_author_names.position`.
-  # Not sure if it would make sense to use this in any other way.
-  def principal_author_last_name
-    principal_author_last_name_cache
   end
 
   # TODO we should probably have `#year` [int] and something
@@ -194,7 +188,7 @@ class Reference < ApplicationRecord
 
   private
     def check_not_referenced
-      return unless has_any_references?
+      return unless what_links_here(predicate: true)
 
       errors.add :base, "This reference can't be deleted, as there are other references to it."
       false
@@ -207,31 +201,14 @@ class Reference < ApplicationRecord
       false
     end
 
-    # TODO duplicates `CleanNewlines`?
-    def strip_text_fields
-      fields = [:title, :public_notes, :editor_notes, :taxonomic_notes, :citation]
-      fields.each do |field|
-        value = self[field]
-        next unless value.present?
-        value.gsub! /(\n|\r|\n\r|\r\n)/, ' '
-        value.strip!
-        value.squeeze! ' '
-        self[field] = value
-      end
-    end
-
     def set_year_from_citation_year
-      self.year = year_from_citation_year citation_year
-    end
-
-    def year_from_citation_year citation_year
-      return if citation_year.blank? # Sets `self.year` to nil.
-
-      if match = citation_year.match(/\["(\d{4})"\]/)
-        match[1]
-      else
-        citation_year.to_i
-      end
+      self.year = if citation_year.blank?
+                    nil
+                  elsif match = citation_year.match(/\["(\d{4})"\]/)
+                    match[1]
+                  else
+                    citation_year.to_i
+                  end
     end
 
     # TODO does this duplicate `refresh_author_names_caches`?
@@ -246,9 +223,5 @@ class Reference < ApplicationRecord
       last_name = first_author_name && first_author_name.last_name
 
       [string, last_name]
-    end
-
-    def has_any_references?
-      what_links_here predicate: true
     end
 end

@@ -22,7 +22,7 @@ class Exporters::Antweb::Exporter
 
   def initialize directory = 'data/output', show_progress: false
     @directory = directory
-    Progress.init show_progress, Taxon.count
+    @progress = Progress.create total: taxa_ids.count unless Rails.env.test?
   end
 
   def call
@@ -56,7 +56,6 @@ class Exporters::Antweb::Exporter
           end
         end
       end
-      Progress.show_results
     end
   end
 
@@ -68,7 +67,7 @@ class Exporters::Antweb::Exporter
 
     def export_taxon taxon
       puts "Processing: #{taxon.id}" if ENV['DEBUG']
-      Progress.tally_and_show_progress 100
+      @progress.increment unless Rails.env.test?
 
       reference = taxon.protonym.authorship.reference
       reference_id = reference.kind_of?(MissingReference) ? nil : reference.id

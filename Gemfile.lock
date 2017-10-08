@@ -304,6 +304,7 @@ GEM
       rspec-mocks (~> 3.3.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
+    ruby-progressbar (1.8.1)
     ruby_parser (3.8.1)
       sexp_processor (~> 4.1)
     rubyzip (1.1.7)
@@ -331,6 +332,8 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    strip_attributes (1.8.0)
+      activemodel (>= 3.0, < 6.0)
     sunspot (2.2.0)
       pr_geohash (~> 1.0)
       rsolr (~> 1.0.7)
@@ -424,10 +427,12 @@ DEPENDENCIES
   rouge
   rspec-core
   rspec-rails
+  ruby-progressbar
   sass-rails
   selenium-webdriver (>= 2.48)
   shoulda-matchers
   sprockets-rails
+  strip_attributes
   sunspot_rails
   sunspot_solr
   sunspot_test

@@ -12,7 +12,7 @@ describe TaxonHistoryItem do
       it "is invalid and has errors" do
         item.update_taxt_from_editable ''
         expect(item.errors).not_to be_empty
-        expect(item.taxt).to eq ''
+        expect(item.taxt).to be nil
         expect(item).not_to be_valid
       end
     end

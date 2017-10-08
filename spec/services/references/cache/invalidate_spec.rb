@@ -14,7 +14,7 @@ describe References::Cache::Invalidate do
     end
 
     it "sets the cache to nil" do
-      ReferenceFormatterCache.populate reference
+      References::Cache::Regenerate[reference]
       expect(reference.formatted_cache).not_to be_nil
       expect(reference.inline_citation_cache).not_to be_nil
 

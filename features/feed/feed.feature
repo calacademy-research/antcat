@@ -10,6 +10,7 @@ Feature: Feed
     When I go to the activity feed
     Then I should see "No activities"
 
+  @javascript
   Scenario: Deleting activities
     Given I log in as a superadmin
     And I add a journal for the feed
@@ -17,7 +18,8 @@ Feature: Feed
     When I go to the activity feed
     Then I should see 1 item in the feed
 
-    When I follow "Delete"
+    When I hover the first activity item
+    And I follow "Delete"
     Then I should see "No activities"
 
   Scenario: Only superadmins should be able to delete feed items
@@ -27,6 +29,7 @@ Feature: Feed
     Then I should see 1 item in the feed
     And I should not see "Delete"
 
+  @javascript
   Scenario: Pagination with quirks
     Given I log in as a superadmin
     And the activities are paginated with 2 per page
@@ -41,13 +44,15 @@ Feature: Feed
 
     # Deleting an activity items = return to the same page.
     When I follow "2"
-    And I follow the first "Delete"
+    And I hover the first activity item
+    And I follow "Delete"
     Then I should see "was successfully deleted"
     And the query string should contain "page=2"
 
     # Following an activity item link = the ID param doesn't stick around.
     And the query string should not contain "id="
-    When I follow the first "link"
+    And I hover the first activity item
+    And I follow "Link"
     Then the query string should contain "id="
 
     # Restore for future tests.

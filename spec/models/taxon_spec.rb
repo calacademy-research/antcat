@@ -116,19 +116,6 @@ describe Taxon do
     end
   end
 
-  describe "#biogeographic_region" do
-    context 'when saving taxon' do
-      let(:taxon) { create :species }
-
-      it "nilifies blank strings" do
-        taxon.biogeographic_region = ""
-        taxon.save
-
-        expect(taxon.biogeographic_region).to be nil
-      end
-    end
-  end
-
   describe "#rank" do
     let!(:taxon) { build_stubbed :subfamily }
 
