@@ -28,6 +28,7 @@ class RevisionComparer
 
     left = diff_format diff_with
     right = diff_format selected || most_recent
+
     Diffy::SplitDiff.new left, right, format: :html
   end
 
@@ -57,6 +58,13 @@ class RevisionComparer
     end
 
     def diff_format item
-      JSON.pretty_generate JSON.parse(item.to_json)
+      json = to_json item
+      JSON.pretty_generate JSON.parse(json)
+    end
+
+    # HACK to make the diff less cluttered.
+    def to_json item
+      item.to_json except: [:formatted_cache, :inline_citation_cache,
+        :principal_author_last_name_cache]
     end
 end

@@ -1,9 +1,8 @@
 class TaxonHistoryItem < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
   include Trackable
   include PrimitiveSearch
   include RevisionsCanBeCompared
-
-  attr_accessible :taxon_id, :taxt, :position, :taxon
 
   belongs_to :taxon
 
@@ -12,6 +11,7 @@ class TaxonHistoryItem < ActiveRecord::Base
   acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   has_primitive_search where: ->(search_type) { "taxt #{search_type} :q" }
+  strip_attributes only: [:taxt], replace_newlines: true
   tracked on: :mixin_create_activity_only, parameters: proc { { taxon_id: taxon_id } }
 
   def self.create_taxt_from_editable taxon, editable_taxt

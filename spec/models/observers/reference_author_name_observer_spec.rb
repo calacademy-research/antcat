@@ -15,7 +15,7 @@ describe ReferenceAuthorNameObserver do
     it "invalidates the cache for the reference involved" do
       # Setup.
       reference.reference_author_names.create! position: 1, author_name: create(:author_name)
-      ReferenceFormatterCache.populate reference
+      References::Cache::Regenerate[reference]
       reference.reload
       expect(reference.formatted_cache).to_not be_nil
 
@@ -28,7 +28,7 @@ describe ReferenceAuthorNameObserver do
     context "when a reference_author_name is added" do
       it "invalidates the cache for the reference involved" do
         # Setup.
-        ReferenceFormatterCache.populate reference
+        References::Cache::Regenerate[reference]
         reference.reload
         expect(reference.formatted_cache).to_not be_nil
 
@@ -43,7 +43,7 @@ describe ReferenceAuthorNameObserver do
       it "invalidates the cache for the reference involved " do
         # Setup.
         reference.reference_author_names.create! position: 1, author_name: create(:author_name)
-        ReferenceFormatterCache.populate reference
+        References::Cache::Regenerate[reference]
         reference.reload
         expect(reference.formatted_cache).to_not be_nil
 

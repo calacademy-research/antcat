@@ -1,7 +1,6 @@
 class Synonym < ApplicationRecord
+  include ActiveModel::ForbiddenAttributesProtection
   include Trackable
-
-  attr_accessible :senior_synonym, :junior_synonym, :senior_synonym_id, :junior_synonym_id
 
   belongs_to :junior_synonym, class_name: 'Taxon'
   belongs_to :senior_synonym, class_name: 'Taxon'

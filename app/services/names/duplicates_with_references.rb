@@ -9,15 +9,14 @@ module Names
     def call
       results = {}
       dupes = duplicates
+      progress = Progress.create total: dupes.count
 
-      Progress.new_init show_progress: options[:show_progress], total_count: dupes.size, show_errors: true
       dupes.each do |duplicate|
-        Progress.puts duplicate.name
-        Progress.tally_and_show_progress 1
+        puts duplicate.name
+        progress.increment
         results[duplicate.name] ||= {}
         results[duplicate.name][duplicate.id] = duplicate.what_links_here
       end
-      Progress.show_results
 
       results
     end

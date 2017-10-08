@@ -233,33 +233,30 @@ describe Reference do
     end
   end
 
-  describe "#principal_author_last_name" do
+  describe "#principal_author_last_name_cache" do
     context "when there are no authors" do
       let!(:reference) { described_class.create! title: 'title', citation_year: '1993' }
 
-      it "doesn't freak out" do
-        expect(reference.principal_author_last_name).to be_nil
+      it "is nil" do
+        expect(reference.principal_author_last_name_cache).to be_nil
       end
     end
 
-    it "caches the last name of the principal author" do
-      reference = create :reference, author_names: [ward_ps, fisher_bl]
-      expect(reference.principal_author_last_name).to eq 'Ward'
+    context 'when there are authors' do
+      let!(:reference) { create :reference, author_names: [ward_ps, fisher_bl] }
+
+      it "is the last name of the principal author" do
+        expect(reference.principal_author_last_name_cache).to eq 'Ward'
+      end
     end
 
     context "when an author_name's name is changed" do
       let!(:reference) { create :reference, author_names: [ward_ps] }
 
-      it "updates its `author_names_string`" do
+      it "updates its `principal_author_last_name_cache`" do
         expect { ward_ps.update name: 'Bolton, B.' }
-          .to change { reference.reload.principal_author_last_name }.from('Ward').to('Bolton')
+          .to change { reference.reload.principal_author_last_name_cache }.from('Ward').to('Bolton')
       end
-    end
-
-    it "should be possible to read from, aliased to `principal_author_last_name_cache`" do
-      reference = create :reference
-      reference.principal_author_last_name_cache = 'foo'
-      expect(reference.principal_author_last_name).to eq 'foo'
     end
   end
 
@@ -377,14 +374,6 @@ describe Reference do
       expect(References::WhatLinksHere).to receive(:new)
         .with(subject, predicate: false).and_call_original
       subject.what_links_here
-    end
-  end
-
-  describe "#has_any_references?" do
-    subject { create :article_reference }
-
-    it "returns false if there are no references to this reference" do
-      expect(subject.send(:has_any_references?)).to be_falsey
     end
   end
 

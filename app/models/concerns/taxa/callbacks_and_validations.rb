@@ -12,10 +12,8 @@ module Taxa::CallbacksAndValidations
     validate :check_url
 
     before_validation :add_protocol_to_type_speciment_url
-    before_validation :nilify_biogeographic_region_if_blank
 
     before_create :build_default_taxon_state
-    before_save { CleanNewlines.clean_newlines self, :headline_notes_taxt, :type_taxt }
     before_save :set_name_caches
     before_save { delete_synonyms if stopped_being_a_synonym? }
 
@@ -23,6 +21,10 @@ module Taxa::CallbacksAndValidations
     before_save { remove_auto_generated if save_initiator }
     before_save { set_taxon_state_to_waiting if save_initiator }
     before_save { save_children if save_initiator }
+
+    strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt,
+      :genus_species_header_notes_taxt, :verbatim_type_locality, :biogeographic_region,
+      :type_specimen_repository, :type_specimen_code, :type_specimen_url], replace_newlines: true
   end
 
   # Recursively save children, presumably to trigger callbacks and create
@@ -35,10 +37,6 @@ module Taxa::CallbacksAndValidations
   end
 
   private
-    def nilify_biogeographic_region_if_blank
-      self.biogeographic_region = nil if biogeographic_region.blank?
-    end
-
     def set_name_caches
       self.name_cache = name.name
       self.name_html_cache = name.name_html

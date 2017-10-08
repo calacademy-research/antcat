@@ -13,7 +13,7 @@ describe ReferenceDocumentObserver do
       # Setup.
       reference = create :article_reference
       reference_document = create :reference_document, reference: reference
-      ReferenceFormatterCache.populate reference
+      References::Cache::Regenerate[reference]
       reference.reload
       expect(reference.formatted_cache).to_not be_nil
 
