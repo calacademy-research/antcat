@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-describe ReferenceMatcher do
-  subject(:matcher) { described_class.new }
+describe References::MatchReferences do
   let(:reference_similarity) { double }
 
   before do
@@ -17,7 +16,7 @@ describe ReferenceMatcher do
       before { expect(reference_similarity).to receive(:call).and_return(0.00) }
 
       it "doesn't match" do
-        expect(matcher.match(target)).to be_empty
+        expect(described_class[target]).to be_empty
       end
     end
 
@@ -25,7 +24,7 @@ describe ReferenceMatcher do
       before { expect(reference_similarity).to receive(:call).and_return(0.10) }
 
       it "matches" do
-        expect(matcher.match(target)).to eq [
+        expect(described_class[target]).to eq [
           { similarity: 0.10, target: target, match: match }
         ]
       end
@@ -38,21 +37,21 @@ describe ReferenceMatcher do
       before { expect(reference_similarity).to receive(:call).and_return(0.10) }
 
       it "handles it" do
-        expect(matcher.match(target)).to eq [
+        expect(described_class[target]).to eq [
           { similarity: 0.10, target: target, match: match }
         ]
       end
     end
   end
-end
 
-def create_match author_name_name
-  author_name = create :author_name, name: author_name_name
-  create :reference, author_names: [author_name]
-end
+  def create_match author_name_name
+    author_name = create :author_name, name: author_name_name
+    create :reference, author_names: [author_name]
+  end
 
-def build_target principal_author_last_name_cache
-  target = Reference.new
-  target.principal_author_last_name_cache = principal_author_last_name_cache
-  target
+  def build_target principal_author_last_name_cache
+    target = Reference.new
+    target.principal_author_last_name_cache = principal_author_last_name_cache
+    target
+  end
 end

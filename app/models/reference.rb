@@ -128,7 +128,7 @@ class Reference < ApplicationRecord
   end
 
   def check_for_duplicate
-    duplicates = ReferenceMatcher.new(min_similarity: 0.5).match self
+    duplicates = References::MatchReferences[self, min_similarity: 0.5]
     return unless duplicates.present?
 
     duplicate = Reference.find duplicates.first[:match].id

@@ -324,7 +324,7 @@ describe Reference do
     end
     let!(:original) { ArticleReference.create! reference_params }
 
-    describe 'implementing ReferenceMatcher' do
+    describe 'implementing MatchReferences' do
       it 'maps all fields correctly' do
         expect(original.principal_author_last_name_cache).to eq 'Fisher'
         expect(original.year).to eq 1981
