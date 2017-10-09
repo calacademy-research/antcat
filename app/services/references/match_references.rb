@@ -15,30 +15,31 @@ module References
       attr_reader :target, :min_similarity
 
       def match
-        candidates_for(target).reduce([]) do |matches, candidate|
-          if possible_match? target, candidate
-            similarity = References::ReferenceSimilarity[target, candidate]
+        candidates.reduce([]) do |matches, candidate|
+          if possible_match? candidate
+            similarity = reference_similarity candidate
             matches << { target: target, match: candidate, similarity: similarity } if similarity >= min_similarity
           end
           matches
         end
       end
 
-      def possible_match? target, candidate
+      def candidates
+        return [] unless target.principal_author_last_name_cache
+        read_references
+      end
+
+      def read_references
+        target_author = target.principal_author_last_name_cache
+        ::Reference.with_principal_author_last_name target
+      end
+
+      def possible_match? candidate
         target.id != candidate.id
       end
 
-      # TODO see if we can avoid using instance variables.
-      def candidates_for target
-        if target.principal_author_last_name_cache != @target_author
-          @target_author = target.principal_author_last_name_cache
-          @candidates = read_references @target_author
-        end
-        @candidates || []
-      end
-
-      def read_references target
-        ::Reference.with_principal_author_last_name target
+      def reference_similarity candidate
+        References::ReferenceSimilarity[target, candidate]
       end
   end
 end

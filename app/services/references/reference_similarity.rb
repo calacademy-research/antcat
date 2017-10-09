@@ -30,29 +30,29 @@ module References
         return 0.00 unless type == rhs.type
         return 0.00 unless normalize_author(principal_author_last_name_cache) == normalize_author(rhs.principal_author_last_name_cache)
 
-        result = match_title(rhs) || match_article(rhs) || match_book(rhs)
-        year_matches = year_matches? rhs
-        pagination_matches = pagination_matches? rhs
+        result = match_title || match_article || match_book
+        year_matches = year_matches?
+        pagination_matches = pagination_matches?
 
         case
-        when !result && !year_matches then 0.00
-        when !result && year_matches then 0.10
-        when result && !year_matches then result - 0.50
+        when !result && !year_matches      then 0.00
+        when !result && year_matches       then 0.10
+        when result && !year_matches       then result - 0.50
         when result && !pagination_matches then result - 0.01
-        else result
+        else                                    result
         end
       end
 
-      def year_matches? rhs
+      def year_matches?
         return unless rhs.year && year
         (rhs.year.to_i - year.to_i).abs <= 1
       end
 
-      def pagination_matches? rhs
+      def pagination_matches?
         rhs.pagination == pagination
       end
 
-      def match_title rhs
+      def match_title
         other_title = rhs.title.dup
         title = lhs.title.dup
         return 1.00 if normalize_title!(other_title) == normalize_title!(title)
@@ -66,20 +66,20 @@ module References
         return 1.00 if remove_punctuation!(other_title) == remove_punctuation!(title)
       end
 
-      # TODO use `#is_a?`
-      def match_article rhs
-        return unless rhs.type == 'ArticleReference' && type == 'ArticleReference' &&
-          rhs.series_volume_issue.present? && series_volume_issue.present? &&
-          rhs.pagination.present? && pagination.present? && rhs.pagination == pagination
+      # NOTE using `#type` to make the service more general.
+      def match_article
+        return unless rhs.type == 'ArticleReference' && type == 'ArticleReference'
+        return unless rhs.series_volume_issue.present? && series_volume_issue.present?
+        return unless rhs.pagination.present? && pagination.present? && rhs.pagination == pagination
 
         return 0.90 if normalize_series_volume_issue(rhs.series_volume_issue) ==
           normalize_series_volume_issue(series_volume_issue)
       end
 
-      # TODO use `#is_a?`
-      def match_book rhs
-        return unless rhs.type == 'BookReference' && type == 'BookReference' &&
-          rhs.pagination.present? && pagination.present?
+      # NOTE using `#type` to make the service more general.
+      def match_book
+        return unless rhs.type == 'BookReference' && type == 'BookReference'
+        return unless rhs.pagination.present? && pagination.present?
         return 0.80 if rhs.pagination == pagination
       end
 
@@ -94,22 +94,14 @@ module References
       def replace_punctuation_with_space! string
         string.gsub! /[[:punct:]]/, ' '
         string.squish!
-        string
-      end
-
-      def remove_space_before_or_after_parenthesis! string
-        string.gsub! /\s?([\(\)])\s?/, '\1'
-        string
       end
 
       def remove_year_in_parentheses! string
         string.gsub! /\(\d{4}\)$/, ''
-        string
       end
 
       def remove_No! string
         string.gsub! /\(No. (\d+)\)$/, '(\1)'
-        string
       end
 
       def normalize_title! string
