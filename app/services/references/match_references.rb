@@ -26,12 +26,9 @@ module References
 
       def candidates
         return [] unless target.principal_author_last_name_cache
-        read_references
-      end
 
-      def read_references
         target_author = target.principal_author_last_name_cache
-        ::Reference.with_principal_author_last_name target
+        Reference.where(principal_author_last_name_cache: target_author)
       end
 
       def possible_match? candidate

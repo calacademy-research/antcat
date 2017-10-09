@@ -24,21 +24,6 @@ describe Reference do
       end
     end
 
-    describe '.with_principal_author_last_name' do
-      let!(:possible_reference) { create :article_reference, author_names: [ward_ps, fisher_bl] }
-
-      before do
-        create :book_reference, author_names: [bolton_b] # Not possible reference.
-
-        # Another possible reference.
-        create :article_reference, author_names: [create(:author_name, name: 'Warden, J.')]
-      end
-
-      it 'returns references with a matching principal author last name' do
-        expect(described_class.with_principal_author_last_name 'Ward').to eq [possible_reference]
-      end
-    end
-
     describe ".unreviewed_references" do
       let!(:unreviewed) { create :article_reference, review_state: "reviewing" }
 
