@@ -12,7 +12,7 @@ describe TaxonBrowserHelper do
 
   # Not tested: "nomen_nudum"/"collective_group_name"
   describe "#css_classes_for_status" do
-    let(:taxon) { create :genus, name: create(:name, name: 'Atta') }
+    let(:taxon) { build :genus }
 
     it "returns the correct classes" do
       expect(helper.send(:css_classes_for_status, taxon)).to match_array ["valid"]
