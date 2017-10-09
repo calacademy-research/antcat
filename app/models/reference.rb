@@ -5,7 +5,6 @@ require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord
-  include ReferenceComparable
   include RevisionsCanBeCompared
   include Trackable
 

@@ -2,13 +2,19 @@ require 'spec_helper'
 
 describe ReferenceMatcher do
   subject(:matcher) { described_class.new }
+  let(:reference_similarity) { double }
+
+  before do
+    expect(References::ReferenceSimilarity).to receive(:new).with(target, match).
+      and_return(reference_similarity)
+  end
 
   describe "#match" do
     let!(:match) { create_match 'Ward' }
     let(:target) { build_target 'Ward' }
 
     context "when an obvious mismatch" do
-      before { expect(target).to receive(:<=>).and_return 0.00 }
+      before { expect(reference_similarity).to receive(:call).and_return(0.00) }
 
       it "doesn't match" do
         expect(matcher.match(target)).to be_empty
@@ -16,7 +22,7 @@ describe ReferenceMatcher do
     end
 
     context "when an obvious match" do
-      before { expect(target).to receive(:<=>).and_return 0.10 }
+      before { expect(reference_similarity).to receive(:call).and_return(0.10) }
 
       it "matches" do
         expect(matcher.match(target)).to eq [
@@ -24,18 +30,18 @@ describe ReferenceMatcher do
         ]
       end
     end
-  end
 
-  context "with an author last name with an apostrophe in it (regression)" do
-    let!(:match) { create_match "Arnol'di, G." }
-    let(:target) { build_target "Arnol'di" }
+    context "with an author last name with an apostrophe in it (regression)" do
+      let!(:match) { create_match "Arnol'di, G." }
+      let(:target) { build_target "Arnol'di" }
 
-    before { expect(target).to receive(:<=>).and_return 0.10 }
+      before { expect(reference_similarity).to receive(:call).and_return(0.10) }
 
-    it "handles it" do
-      expect(matcher.match(target)).to eq [
-        { similarity: 0.10, target: target, match: match }
-      ]
+      it "handles it" do
+        expect(matcher.match(target)).to eq [
+          { similarity: 0.10, target: target, match: match }
+        ]
+      end
     end
   end
 end

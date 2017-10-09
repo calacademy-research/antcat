@@ -313,18 +313,18 @@ describe Reference do
 
   describe "shared setup" do
     let(:reference_params) do
-        {
-          author_names: [fisher_bl],
-          citation_year: '1981',
-          title: 'Dolichoderinae',
-          journal: create(:journal),
-          series_volume_issue: '1(2)',
-          pagination: '22-54'
-        }
+      {
+        author_names: [fisher_bl],
+        citation_year: '1981',
+        title: 'Dolichoderinae',
+        journal: create(:journal),
+        series_volume_issue: '1(2)',
+        pagination: '22-54'
+      }
     end
     let!(:original) { ArticleReference.create! reference_params }
 
-    describe 'implementing ReferenceComparable' do
+    describe 'implementing ReferenceMatcher' do
       it 'maps all fields correctly' do
         expect(original.principal_author_last_name_cache).to eq 'Fisher'
         expect(original.year).to eq 1981
