@@ -2,7 +2,7 @@
   .section_header.ui-widget-header.ui-corner-top
     Protonym
   =form.fields_for :protonym do |protonym_form|
-    %table.ui-dialog-content.ui-widget-content.ui-corner-bottom
+    %table.ui-dialog-content.ui-widget-content.ui-corner-bottom.unstriped
       %tr
         =protonym_form.fields_for :name do |name_form|
           -if name_form.object.new_record?

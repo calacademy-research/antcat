@@ -130,6 +130,13 @@ button.close-button
 table th
   text-align: left
 
+// Prevent Foundation from making backgrounds gray.
+// TODO it should be possible to use Foundation's `.unstriped` class,
+// but it doesn't work for some reason.
+table.unstriped
+  tr
+    background-color: #fff !important
+
 .tabs-title
   a
     padding: 0.7rem 1rem
