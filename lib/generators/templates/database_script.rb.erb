@@ -7,9 +7,9 @@ module DatabaseScripts
     # When this method isn't implemented, the code tries to figure out
     # how to render `#results` based on its class.
     # def render
-    #   as_table do
-    #     header :subspecies, :status
-    #     rows { |taxon| [ markdown_taxon_link(taxon), taxon.status ] }
+    #   as_table do |t|
+    #     t.header :subspecies, :status
+    #     t.rows { |taxon| [ markdown_taxon_link(taxon), taxon.status ] }
     #   end
     # end
   end
