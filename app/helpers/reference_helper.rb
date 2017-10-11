@@ -23,10 +23,6 @@ module ReferenceHelper
     links << link_to('Journals', journals_path)
     links << link_to('Authors', authors_path)
 
-    if user_can_edit?
-      links << link_to('Merge Authors', merge_authors_path)
-    end
-
     links
   end
 
