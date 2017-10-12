@@ -9,12 +9,15 @@
     =render 'taxa/form/parent_section', taxon: taxon, form: form
     =render 'taxa/form/current_valid_taxon_section', taxon: taxon, form: form
 
-    %tr.flags_row
-      %td
-      %td
+    %tr
+      %td.caption.no-wrap
         =form.label :incertae_sedis_in
+      %td
         =form.select :incertae_sedis_in, [['(none)', nil], 'family', 'subfamily', 'tribe', 'genus']
 
+    %tr
+      %td
+      %td
         =form.check_box :fossil
         =form.label :fossil do
           Fossil
