@@ -41,6 +41,6 @@
         =form.label :display, 'Display'
 
     %tr.headline_notes_taxt_row
-      %td.caption.top_aligned=form.label :headline_notes_taxt, 'Notes'
+      %td.caption=form.label :headline_notes_taxt, 'Notes'
       %td#headline_notes_taxt_editor.taxt_editor
         =render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: TaxtConverter[taxon.headline_notes_taxt].to_editor_format

@@ -5,7 +5,7 @@
   %tr
     -if name_form.object.new_record?
       =hidden_field_tag 'taxon[name_attributes][id]'
-    %td.caption.top_aligned
+    %td.caption
       =name_form.label :name do
         Name
         =tooltip_icon "name", scope: :taxa

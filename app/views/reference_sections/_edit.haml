@@ -6,13 +6,13 @@
 
     %table
       %tr
-        %td.caption.top_aligned=label_tag :title_taxt, 'Title'
+        %td.caption=label_tag :title_taxt, 'Title'
         %td.taxt_editor=render 'taxt_editors/show', name: 'title_taxt', value: TaxtConverter[item.title_taxt].to_editor_format, rows: 1
       %tr
-        %td.caption.top_aligned=label_tag :subtitle_taxt, 'Subtitle'
+        %td.caption=label_tag :subtitle_taxt, 'Subtitle'
         %td.taxt_editor=render 'taxt_editors/show', name: 'subtitle_taxt', value: TaxtConverter[item.subtitle_taxt].to_editor_format, rows: 1
       %tr
-        %td.caption.top_aligned=label_tag :references_taxt, 'References'
+        %td.caption=label_tag :references_taxt, 'References'
         %td.taxt_editor=render 'taxt_editors/show', name: 'references_taxt',value: TaxtConverter[item.references_taxt].to_editor_format
 
     .row
