@@ -9,12 +9,12 @@ When(/^I click the history item$/) do
 end
 
 Then(/^the history should be "(.*)"$/) do |history|
-  element = first('.history_items .history_item_body').find 'div.display'
+  element = first('.history_items').find 'div.display'
   expect(element.text).to match /#{history}\.?/
 end
 
 Then(/^the history item field should be "(.*)"$/) do |history|
-  element = first('.history_items .history_item_body').find 'div.edit textarea'
+  element = first('.history_items').find 'div.edit textarea'
   expect(element.text).to match /#{history}\.?/
 end
 
