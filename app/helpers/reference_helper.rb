@@ -7,6 +7,31 @@ module ReferenceHelper
       data: { confirm: "Mark all citations as reviewed? This operation cannot be undone!" }
   end
 
+  def review_reference_button reference
+    if reference.can_finish_reviewing?
+      link_to 'Finish reviewing', finish_reviewing_reference_path(reference),
+        method: :post, class: "btn-saves",
+        data: { confirm: "Have you finished reviewing this reference?" }
+    elsif reference.can_start_reviewing?
+      link_to 'Start reviewing', start_reviewing_reference_path(reference),
+        method: :post, class: "btn-saves",
+        data: { confirm: 'Are you ready to start reviewing this reference?' }
+    elsif reference.can_restart_reviewing?
+      link_to 'Restart reviewing', restart_reviewing_reference_path(reference),
+        method: :post, class: "btn-saves-warning",
+        data: { confirm: 'Do you want to start reviewing this reference again?' }
+    end
+  end
+
+  def set_as_default_reference reference
+    if reference == DefaultReference.get(session)
+      'Default'
+    else
+      link_to 'Make default', default_reference_path(id: reference.id),
+        method: :put, class: "btn-saves"
+    end
+  end
+
   def references_subnavigation_links
     links = []
     links << link_to('All References', references_path)
