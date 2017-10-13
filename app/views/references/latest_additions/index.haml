@@ -19,7 +19,9 @@
       %td=render 'references/reference', reference: reference
       %td=time_tag reference.created_at
       -if user_can_edit?
-        =render 'controls', reference: reference
+        %td=reference.decorate.format_review_state
+        %td=review_reference_button reference
+        %td=set_as_default_reference reference
       %td=link_to "Show", reference_path(reference), class: "btn-normal"
 
 =will_paginate @references
