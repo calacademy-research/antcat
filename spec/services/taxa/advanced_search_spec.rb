@@ -6,7 +6,7 @@ describe Taxa::AdvancedSearch do
   describe "#call" do
     context "when no meaningful search parameters are given" do
       it "returns an empty array" do
-        expect(described_class[year: '']).to eq []
+        expect(described_class[year: '']).to be_empty
       end
     end
 
@@ -26,7 +26,7 @@ describe Taxa::AdvancedSearch do
 
         it "returns the one match" do
           results = described_class[rank: 'Genus', year: "1977", valid_only: true]
-          expect(results.map(&:id)).to match_array [atta.id, betta.id]
+          expect(results).to match_array [atta, betta]
         end
 
         it "honors the validity flag" do
@@ -35,7 +35,7 @@ describe Taxa::AdvancedSearch do
           delta.update! status: 'synonym'
 
           results = described_class[rank: 'Genus', year: "1977", valid_only: true]
-          expect(results.map(&:id)).to match_array [atta.id, betta.id]
+          expect(results).to match_array [atta, betta]
         end
       end
 
@@ -46,7 +46,7 @@ describe Taxa::AdvancedSearch do
         atta.update! status: 'synonym'
 
         results = described_class[rank: 'Genus', year: "1977", valid_only: false]
-        expect(results.map(&:id)).to match_array [atta.id]
+        expect(results).to match_array [atta]
       end
 
       describe "Finding certain ranks" do
@@ -65,75 +65,65 @@ describe Taxa::AdvancedSearch do
         end
 
         it "returns just the requested rank, if asked" do
-          expect(described_class[rank: 'Subfamily', year: "1977"].map(&:id)).to match_array [subfamily.id]
-          expect(described_class[rank: 'Tribe', year: "1977"].map(&:id)).to match_array [tribe.id]
-          expect(described_class[rank: 'Genus', year: "1977"].map(&:id)).to match_array [genus.id]
-          expect(described_class[rank: 'Subgenus', year: "1977"].map(&:id)).to match_array [subgenus.id]
-          expect(described_class[rank: 'Species', year: "1977"].map(&:id)).to match_array [species.id]
-          expect(described_class[rank: 'Subspecies', year: "1977"].map(&:id)).to match_array [subspecies.id]
+          expect(described_class[rank: 'Subfamily', year: "1977"]).to match_array [subfamily]
+          expect(described_class[rank: 'Tribe', year: "1977"]).to match_array [tribe]
+          expect(described_class[rank: 'Genus', year: "1977"]).to match_array [genus]
+          expect(described_class[rank: 'Subgenus', year: "1977"]).to match_array [subgenus]
+          expect(described_class[rank: 'Species', year: "1977"]).to match_array [species]
+          expect(described_class[rank: 'Subspecies', year: "1977"]).to match_array [subspecies]
         end
 
         it "returns just the requested rank, even without any other parameters" do
-          expect(described_class[rank: 'Subfamily'].map(&:id)).to match_array [subfamily.id]
-          expect(described_class[rank: 'Tribe'].map(&:id)).to match_array [tribe.id]
-          expect(described_class[rank: 'Genus'].map(&:id)).to match_array [genus.id]
-          expect(described_class[rank: 'Subgenus'].map(&:id)).to match_array [subgenus.id]
-          expect(described_class[rank: 'Species'].map(&:id)).to match_array [species.id]
-          expect(described_class[rank: 'Subspecies'].map(&:id)).to match_array [subspecies.id]
+          expect(described_class[rank: 'Subfamily']).to match_array [subfamily]
+          expect(described_class[rank: 'Tribe']).to match_array [tribe]
+          expect(described_class[rank: 'Genus']).to match_array [genus]
+          expect(described_class[rank: 'Subgenus']).to match_array [subgenus]
+          expect(described_class[rank: 'Species']).to match_array [species]
+          expect(described_class[rank: 'Subspecies']).to match_array [subspecies]
         end
       end
     end
 
     describe "Finding by author name" do
       it "finds the taxa for the author's references that are part of citations in the protonym" do
-        reference = reference_factory author_name: 'Bolton', citation_year: '1977'
+        reference = reference_factory author_name: 'Bolton'
         atta = create_genus
         atta.protonym.authorship.update! reference: reference
 
-        results = described_class[rank: 'All', author_name: 'Bolton']
-        expect(results.map(&:id)).to eq [atta.id]
+        expect(described_class[rank: 'All', author_name: 'Bolton']).to eq [atta]
       end
 
       it "finds the taxa for the author's references, even if he's not the principal author" do
         reference = create :article_reference,
           author_names: [ create(:author_name, name: 'Bolton'),
-                          create(:author_name, name: 'Fisher') ],
-          citation_year: '1977'
+                          create(:author_name, name: 'Fisher') ]
         atta = create_genus
         atta.protonym.authorship.update! reference: reference
 
-        results = described_class[rank: 'All', author_name: 'Fisher']
-        expect(results.map(&:id)).to eq [atta.id]
+        expect(described_class[rank: 'All', author_name: 'Fisher']).to eq [atta]
       end
 
       it "doesn't crash if the author isn't found" do
         reference = create :article_reference,
-          author_names: [create(:author_name, name: 'Bolton')],
-          citation_year: '1977'
+          author_names: [create(:author_name, name: 'Bolton')]
         atta = create_genus
         atta.protonym.authorship.update! reference: reference
 
         results = described_class[rank: 'All', author_name: 'Fisher']
-        expect(results).to be_empty
+        expect(described_class[rank: 'All', author_name: 'Fisher']).to be_empty
       end
 
       it "finds the taxa for the author's references, even if he's nested inside the reference" do
         nested_in = create :article_reference,
-          author_names: [create(:author_name, name: 'Bolton')],
-          year: "2010"
-        reference = NestedReference.new title: 'Ants',
+          author_names: [create(:author_name, name: 'Bolton')]
+        reference = create :nested_reference, title: 'Ants',
           author_names: [create(:author_name, name: 'Fisher')],
-          year: "2011",
-          nesting_reference: nested_in,
-          pages_in: 'Pp 2 in:'
+          nesting_reference: nested_in
         atta = create_genus
         atta.protonym.authorship.update! reference: reference
 
-        fisher_results = described_class[rank: 'All', author_name: 'Fisher']
-        expect(fisher_results.map(&:id)).to eq [atta.id]
-
-        bolton_results = described_class[rank: 'All', author_name: 'Bolton']
-        expect(bolton_results.map(&:id)).to be_empty
+        expect(described_class[rank: 'All', author_name: 'Fisher']).to eq [atta]
+        expect(described_class[rank: 'All', author_name: 'Bolton']).to be_empty
       end
 
       describe "shared setup..." do
@@ -154,7 +144,7 @@ describe Taxa::AdvancedSearch do
 
         it "finds the taxa for the author's references that are part of citations in the protonym, even under different names" do
           results = described_class[rank: 'All', author_name: 'Bolton']
-          expect(results.map(&:name_cache)).to match_array [barry_atta.name_cache, bolton_atta.name_cache]
+          expect(results).to match_array [barry_atta, bolton_atta]
         end
 
         it "handles year + author name" do
@@ -162,7 +152,7 @@ describe Taxa::AdvancedSearch do
           bolton_reference.save!
 
           results = described_class[rank: 'All', author_name: 'Bolton', year: "1987"]
-          expect(results.map(&:name_cache)).to match_array [bolton_atta.name_cache]
+          expect(results).to match_array [bolton_atta]
         end
       end
     end
@@ -174,13 +164,11 @@ describe Taxa::AdvancedSearch do
       let!(:eciton) { create_genus protonym: china }
 
       it "only returns taxa with that locality" do
-        results = described_class[rank: 'All', locality: 'Indonesia']
-        expect(results.map(&:id)).to eq [atta.id]
+        expect(described_class[rank: 'All', locality: 'Indonesia']).to eq [atta]
       end
 
       it "returns taxa with search term at the beginning" do
-        results = described_class[rank: 'All', locality: 'Indonesia']
-        expect(results.map(&:id)).to eq [atta.id]
+        expect(described_class[rank: 'All', locality: 'Indonesia']).to eq [atta]
       end
     end
 
@@ -190,19 +178,19 @@ describe Taxa::AdvancedSearch do
 
       it "only returns taxa with that verbatim_type_locality" do
         results = described_class[rank: 'All', verbatim_type_locality: 'San Pedro']
-        expect(results.map(&:id)).to eq [eciton.id]
+        expect(results).to eq [eciton]
       end
 
       context "when no taxa has that verbatim_type_locality" do
         it "returns nothing" do
           results = described_class[rank: 'All', verbatim_type_locality: 'The Bronx']
-          expect(results.map(&:id)).to eq []
+          expect(results).to be_empty
         end
       end
 
       it "matches substrings" do
         results = described_class[rank: 'All', verbatim_type_locality: 'Pedro']
-        expect(results.map(&:id)).to eq [eciton.id]
+        expect(results).to eq [eciton]
       end
     end
 
@@ -212,14 +200,14 @@ describe Taxa::AdvancedSearch do
         eciton = create_species type_specimen_repository: 'DDI'
 
         results = described_class[rank: 'All', type_specimen_repository: 'DDI']
-        expect(results.map(&:id)).to eq [eciton.id]
+        expect(results).to eq [eciton]
       end
 
       it "returns nothing if nothing has that type_specimen_repository" do
         create_species
 
         results = described_class[rank: 'All', type_specimen_repository: 'ISC']
-        expect(results.map(&:id)).to eq []
+        expect(results).to be_empty
       end
 
       it "matches substrings" do
@@ -227,7 +215,7 @@ describe Taxa::AdvancedSearch do
         eciton = create_species type_specimen_repository: 'ABCD'
 
         results = described_class[rank: 'All', type_specimen_repository: 'BC']
-        expect(results.map(&:id)).to eq [eciton.id]
+        expect(results).to eq [eciton]
       end
     end
 
@@ -237,14 +225,14 @@ describe Taxa::AdvancedSearch do
         eciton = create_species type_specimen_code: 'DDI'
 
         results = described_class[rank: 'All', type_specimen_code: 'DDI']
-        expect(results.map(&:id)).to eq [eciton.id]
+        expect(results).to eq [eciton]
       end
 
       it "returns nothing if nothing has that type_specimen_code" do
         create_species
 
         results = described_class[rank: 'All', type_specimen_code: 'ISC']
-        expect(results.map(&:id)).to eq []
+        expect(results).to be_empty
       end
 
       it "matches substrings" do
@@ -252,7 +240,7 @@ describe Taxa::AdvancedSearch do
         eciton = create_species type_specimen_code: 'ABCD'
 
         results = described_class[rank: 'All', type_specimen_code: 'BC']
-        expect(results.map(&:id)).to eq [eciton.id]
+        expect(results).to eq [eciton]
       end
     end
 
@@ -262,14 +250,14 @@ describe Taxa::AdvancedSearch do
         eciton = create_species biogeographic_region: 'Indomalaya'
 
         results = described_class[rank: 'All', biogeographic_region: 'Indomalaya']
-        expect(results.map(&:id)).to eq [eciton.id]
+        expect(results).to eq [eciton]
       end
 
       it "not only returns anything if nothing has that biogeographic_region" do
         create_species
 
         results = described_class[rank: 'All', biogeographic_region: 'San Pedro']
-        expect(results.map(&:id)).to eq []
+        expect(results).to be_empty
       end
 
       it "only returns taxa with no biogeographic_region if that's what's specified" do
@@ -277,14 +265,14 @@ describe Taxa::AdvancedSearch do
         eciton = create_species
 
         results = described_class[rank: 'Species', biogeographic_region: 'None']
-        expect(results.map(&:id)).to eq [eciton.id]
+        expect(results).to eq [eciton]
       end
 
       it "doesn't match substrings" do
         atta = create_species biogeographic_region: 'Australasia'
 
         results = described_class[rank: 'All', biogeographic_region: 'Aust']
-        expect(results.map(&:id)).not_to eq [atta.id]
+        expect(results).not_to eq [atta]
       end
     end
 
@@ -298,13 +286,12 @@ describe Taxa::AdvancedSearch do
         protonym = create :protonym, authorship: citation
         eciton = create_species protonym: protonym
 
-        expect(described_class[rank: 'All', forms: 'w.'].map(&:id)).to eq [atta.id]
+        expect(described_class[rank: 'All', forms: 'w.']).to eq [atta]
       end
 
       it "returns nothing if nothing has those forms" do
         atta = create_species
-
-        expect(described_class[rank: 'All', forms: 'w.'].map(&:id)).to eq []
+        expect(described_class[rank: 'All', forms: 'w.']).to be_empty
       end
     end
   end
