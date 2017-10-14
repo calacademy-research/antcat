@@ -25,9 +25,6 @@ class Status
 
   def self.find identifier
     identifier = identifier.status if identifier.kind_of? Taxon
-    identifier = identifier.first.status if identifier.kind_of? Enumerable
-    identifier = identifier.first.status if identifier.kind_of? ActiveRecord::Relation
-
     statuses.find { |status| status.includes? identifier } or raise "Couldn't find status for '#{identifier}'"
   end
   class << self; alias_method :[], :find end
