@@ -8,11 +8,9 @@ module Names
 
     def call
       results = {}
-      dupes = duplicates
-      progress = Progress.create total: dupes.count
+      progress = Progress.create total: duplicates.count
 
-      dupes.each do |duplicate|
-        puts duplicate.name
+      duplicates.each do |duplicate|
         progress.increment
         results[duplicate.name] ||= {}
         results[duplicate.name][duplicate.id] = duplicate.what_links_here
