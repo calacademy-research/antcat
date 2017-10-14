@@ -1,9 +1,6 @@
 require "spec_helper"
 
 describe References::Search::FulltextWithExtractedKeywords do
-  # Throw in a MissingReference to make sure it's not returned.
-  before { create :missing_reference }
-
   describe "#call" do
     describe "Search parameters", search: true do
       describe "Authors" do

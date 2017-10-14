@@ -78,9 +78,6 @@ describe Reference do
   end
 
   describe ".solr_search", search: true do
-    # Throw in a `MissingReference` to make sure it's not returned.
-    before { create :missing_reference }
-
     it "returns an empty array if nothing is found for author_name" do
       create :reference
       Sunspot.commit
