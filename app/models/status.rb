@@ -15,8 +15,8 @@ class Status
       ['original combination',      'original combinations'],
       ['collective group name',     'collective group names'],
       ['obsolete combination',      'obsolete combinations'],
-      ['unavailable misspelling',   'unavailable misspelling'],
-      ['nonconforming synonym',     'nonconforming synonym'],
+      ['unavailable misspelling',   'unavailable misspellings'],
+      ['nonconforming synonym',     'nonconforming synonyms'],
       ['unavailable uncategorized', 'unavailable uncategorized']
     ].map do |label, plural_label|
       Status.new label: label, plural_label: plural_label
