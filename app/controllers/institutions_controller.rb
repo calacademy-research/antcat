@@ -21,6 +21,7 @@ class InstitutionsController < ApplicationController
     @institution = Institution.new institution_params
 
     if @institution.save
+      @institution.create_activity :create, edit_summary: params[:edit_summary]
       flash[:notice] = 'Successfully created institution.'
       redirect_to @institution
     else
@@ -30,6 +31,7 @@ class InstitutionsController < ApplicationController
 
   def update
     if @institution.update institution_params
+      @institution.create_activity :update, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: "Successfully updated institution."
     else
       render :edit
@@ -38,6 +40,7 @@ class InstitutionsController < ApplicationController
 
   def destroy
     @institution.destroy
+    @institution.create_activity :destroy
     redirect_to institutions_path, notice: 'Institution was successfully deleted.'
   end
 
