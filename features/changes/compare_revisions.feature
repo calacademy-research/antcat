@@ -77,6 +77,18 @@ Feature: Compare revisions
     And I should see "last version" in the right side of the diff
     And I should not see "second version"
 
+  Scenario: Comparing institution revisions
+    When I go to the institutions page
+    And I follow "New"
+    And I fill in "institution_abbreviation" with "CASC"
+    And I fill in "institution_name" with "California Academy of Sciences"
+    And I press "Save"
+    And I go to the activity feed
+    Then I should see "Archibald added the institution CASC" and no other feed items
+
+    When I follow "History"
+    Then I should see "Current version"
+
   @javascript
   Scenario: Comparing reference revisions
     When I go to the references page

@@ -1,18 +1,12 @@
--@title = "Institution #{@institution.abbreviation}: #{@institution.name}"
--breadcrumb :institution, @institution
+-@title = "Institution #{@comparer.most_recent.abbreviation}: #{@comparer.most_recent.name}"
+-breadcrumb :institution, @comparer.most_recent
 
--if user_can_edit?
-  .buttons_right
-    =link_to 'Edit', edit_institution_path(@institution), class: 'btn-normal'
-    -if user_is_superadmin?
-      =link_to 'Delete', @institution, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-delete'
-.row
-  .small-12.columns.no-right-padding
-    %table.table
-      %tbody
-        %tr
-          %th Abbreviation
-          %td=@institution.abbreviation
-        %tr
-          %th Name
-          %td=@institution.name
+-content_for :application do
+  -if user_can_edit?
+    .buttons_right
+      =link_to 'Edit', edit_institution_path(@institution), class: 'btn-normal'
+      -if user_is_superadmin?
+        =link_to 'Delete', @institution, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-delete'
+    .clearfix
+
+=render file: "compare_revisions/show", locals: { comparer: @comparer }

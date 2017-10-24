@@ -1,5 +1,6 @@
 class Institution < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
+  include RevisionsCanBeCompared
   include Trackable
 
   validates :name, presence: true

@@ -8,6 +8,8 @@ class InstitutionsController < ApplicationController
   end
 
   def show
+    @comparer = Institution.revision_comparer_for params[:id],
+      params[:selected_id], params[:diff_with_id]
   end
 
   def new
