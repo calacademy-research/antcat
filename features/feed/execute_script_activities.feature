@@ -6,4 +6,5 @@ Feature: Feed (executed script)
   Scenario: Executed a script
     When I execute a script with the content "See %github999"
     And I go to the activity feed
-    Then I should see "Archibald executed a script (See GitHub #999)"
+    Then I should see "Archibald executed a script"
+    And I should see "See GitHub #999"
