@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171002225713) do
+ActiveRecord::Schema.define(version: 20171022020001) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -152,6 +152,15 @@ ActiveRecord::Schema.define(version: 20171002225713) do
 
   add_index "forward_refs", ["fixee_id", "fixee_type"], name: "index_forward_refs_on_fixee_id_and_fixee_type", using: :btree
   add_index "forward_refs", ["name_id"], name: "index_forward_refs_on_name_id", using: :btree
+
+  create_table "institutions", force: :cascade do |t|
+    t.string   "abbreviation", limit: 255, null: false
+    t.string   "name",         limit: 255, null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "institutions", ["abbreviation"], name: "index_institutions_on_abbreviation", unique: true, using: :btree
 
   create_table "issues", force: :cascade do |t|
     t.integer  "closer_id",   limit: 4

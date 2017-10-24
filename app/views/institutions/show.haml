@@ -1,0 +1,18 @@
+-@title = "Institution #{@institution.abbreviation}: #{@institution.name}"
+-breadcrumb :institution, @institution
+
+-if user_can_edit?
+  .buttons_right
+    =link_to 'Edit', edit_institution_path(@institution), class: 'btn-normal'
+    -if user_is_superadmin?
+      =link_to 'Delete', @institution, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-delete'
+.row
+  .small-12.columns.no-right-padding
+    %table.table
+      %tbody
+        %tr
+          %th Abbreviation
+          %td=@institution.abbreviation
+        %tr
+          %th Name
+          %td=@institution.name

@@ -1,0 +1,13 @@
+=form_for institution do |f|
+  =render "shared/errors_for", resource: institution
+
+  .row
+    .medium-2.columns
+      =f.label :abbreviation
+      =f.text_field :abbreviation
+    .medium-4.columns.end
+      =f.label :name
+      =f.text_field :name
+
+  .actions
+    =button_tag 'Save', class: 'btn-saves'
