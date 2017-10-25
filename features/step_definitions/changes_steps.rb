@@ -22,12 +22,3 @@ end
 When(/^I add the genus "([^"]+)"?$/) do |name|
   step %{there is a genus "#{name}" that's waiting for approval}
 end
-
-Then(/^I should see the name "(.*?)" in the changes$/) do |value|
-  expect(page).to have_css '.name-test-hook', text: value
-end
-
-Then(/^I should see the genus "(.*?)" in the changes$/) do |value|
-  expect(page).to have_css '.parent_rank-test-hook', text: 'Genus'
-  expect(page).to have_css '.parent-test-hook', text: value
-end

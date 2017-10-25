@@ -40,7 +40,7 @@ class ChangeDecorator < Draper::Decorator
 
   def approve_button taxon, changed_by: nil
     return unless helpers.user_can_edit?
-    return if taxon.approved?
+    return helpers.dash if taxon.approved?
 
     if taxon.can_be_approved_by?(change, helpers.current_user, changed_by)
       helpers.link_to 'Approve', helpers.approve_change_path(change),
