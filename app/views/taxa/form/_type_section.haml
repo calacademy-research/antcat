@@ -10,34 +10,6 @@
             =tooltip_icon "type.biogeographic_region", scope: :taxa
         %td=form.select :biogeographic_region, biogeographic_region_options_for_select(taxon.biogeographic_region)
 
-      %tr
-        %td.caption
-          =form.label :verbatim_type_locality do
-            Verbatim type locality
-            =tooltip_icon "type.verbatim_type_locality", scope: :taxa
-        %td.verbatim_type_locality=form.text_area :verbatim_type_locality, rows: 3
-
-      %tr
-        %td.caption
-          =form.label :type_specimen_repository do
-            Type specimen repository
-            =tooltip_icon "type.type_specimen_repository", scope: :taxa
-        %td.type_specimen_repository=form.text_field :type_specimen_repository
-
-      %tr
-        %td.caption
-          =form.label :type_specimen_code do
-            Type specimen code
-            =tooltip_icon "type.type_specimen_code", scope: :taxa
-        %td.type_specimen_code=form.text_area :type_specimen_code, rows: 2
-
-      %tr
-        %td.caption
-          =form.label :type_specimen_url do
-            Type specimen URL
-            =tooltip_icon "type.type_specimen_URL", scope: :taxa
-        %td.type_specimen_url=form.text_field :type_specimen_url
-
     -else
       %tr
         =form.fields_for :type_name do |type_name_form|

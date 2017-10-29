@@ -10,8 +10,6 @@ module Taxa::CallbacksAndValidations
     validates :biogeographic_region,
       inclusion: { in: BiogeographicRegion::REGIONS, allow_nil: true }
 
-    before_validation :add_protocol_to_type_speciment_url
-
     before_create :build_default_taxon_state
     before_save :set_name_caches
     before_save { delete_synonyms if stopped_being_a_synonym? }
@@ -22,8 +20,9 @@ module Taxa::CallbacksAndValidations
     before_save { save_children if save_initiator }
 
     strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt,
-      :genus_species_header_notes_taxt, :verbatim_type_locality, :biogeographic_region,
-      :type_specimen_repository, :type_specimen_code, :type_specimen_url], replace_newlines: true
+      :genus_species_header_notes_taxt, :biogeographic_region], replace_newlines: true
+
+    strip_attributes only: [:published_type_information, :additional_type_information, :type_notes]
   end
 
   # Recursively save children, presumably to trigger callbacks and create
@@ -48,11 +47,6 @@ module Taxa::CallbacksAndValidations
     # When `changes` includes: `{ status: ["synonym", "<not synonym>"] }`
     def stopped_being_a_synonym?
       changes[:status].try(:first) == 'synonym'
-    end
-
-    def add_protocol_to_type_speciment_url
-      return if type_specimen_url.blank? || type_specimen_url =~ %r{^https?://}
-      self.type_specimen_url = "http://#{type_specimen_url}"
     end
 
     def remove_auto_generated

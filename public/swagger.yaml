@@ -778,15 +778,7 @@ definitions:
             type: string
           nomen_nudum:
             type: string
-          verbatim_type_locality:
-            type: string
           biogeographic_region:
-            type: string
-          type_specimen_repository:
-            type: string
-          type_specimen_code:
-            type: string
-          type_specimen_url:
             type: string
           collision_merge_id:
             type: integer

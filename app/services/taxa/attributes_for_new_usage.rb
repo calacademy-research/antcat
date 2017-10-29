@@ -21,10 +21,6 @@ module Taxa
         hong: old_comb.hong,
         headline_notes_taxt: old_comb.headline_notes_taxt || "",
         biogeographic_region: old_comb.biogeographic_region,
-        verbatim_type_locality: old_comb.verbatim_type_locality,
-        type_specimen_repository: old_comb.type_specimen_repository,
-        type_specimen_code: old_comb.type_specimen_code,
-        type_specimen_url: old_comb.type_specimen_url,
         protonym_attributes: {
           name_attributes: { id: old_comb.protonym.name_id },
           fossil: old_comb.protonym.fossil,

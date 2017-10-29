@@ -18,10 +18,6 @@ class TaxonDecorator::HeadlineType
       string = ''.html_safe
       string << type_name_and_taxt
       string << biogeographic_region
-      string << ' ' unless string.empty?
-      string << verbatim_type_locality
-      string << ' ' unless string.empty?
-      string << type_specimen
       string.rstrip.html_safe
     end
 
@@ -63,30 +59,6 @@ class TaxonDecorator::HeadlineType
     def biogeographic_region
       return '' if @taxon.biogeographic_region.blank?
       add_period_if_necessary @taxon.biogeographic_region
-    end
-
-    def verbatim_type_locality
-      return '' if @taxon.verbatim_type_locality.blank?
-      string =  '"'
-      string << add_period_if_necessary(@taxon.verbatim_type_locality)
-      string << '"'
-    end
-
-    def type_specimen
-      string = ''.html_safe
-      if @taxon.type_specimen_repository.present?
-        string << add_period_if_necessary(@taxon.type_specimen_repository)
-      end
-      if @taxon.type_specimen_code.present?
-        string << ' ' unless string.empty?
-        string << add_period_if_necessary(@taxon.type_specimen_code)
-      end
-      if @taxon.type_specimen_url.present?
-        string << ' ' unless string.empty?
-        s = @taxon.type_specimen_url
-        string << link_to(s, s)
-      end
-      string.html_safe
     end
 
     # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
