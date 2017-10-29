@@ -5,7 +5,6 @@ require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord
-  include ReferenceComparable
   include RevisionsCanBeCompared
   include Trackable
 
@@ -45,7 +44,6 @@ class Reference < ApplicationRecord
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
   scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
-  scope :with_principal_author_last_name, ->(last_name) { where(principal_author_last_name_cache: last_name) }
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
@@ -129,7 +127,7 @@ class Reference < ApplicationRecord
   end
 
   def check_for_duplicate
-    duplicates = ReferenceMatcher.new(min_similarity: 0.5).match self
+    duplicates = References::MatchReferences[self, min_similarity: 0.5]
     return unless duplicates.present?
 
     duplicate = Reference.find duplicates.first[:match].id
