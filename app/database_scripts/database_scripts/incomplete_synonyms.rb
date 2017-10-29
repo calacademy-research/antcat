@@ -26,5 +26,5 @@ end
 __END__
 description: >
   `Synonym`s where `junior_synonym_id` or `senior_synonym_id` is blank.
-tags: [new!, regression-test]
+tags: [regression-test]
 topic_areas: [synonyms]

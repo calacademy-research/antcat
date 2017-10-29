@@ -1,11 +1,11 @@
 -max_number ||= nil
 
 -unless taxon.is_a?(Family) || taxon.is_a?(Subspecies)
-  .children_section.section
+  .section
     .section_header.ui-widget-header.ui-corner-top
       .left Children
       .clear
-    .section_contents.ui-dialog-content.ui-widget-content.ui-corner-bottom
+    .ui-dialog-content.ui-widget-content.ui-corner-bottom
       -if max_number && taxon.children.count > max_number
         Too many children to show here.
         =link_to "Show child list", show_children_taxa_path(taxon), class: "btn-normal btn-tiny"

@@ -11,7 +11,7 @@ Feature: Delete reference
   Scenario: Delete a reference
     When I go to the page for that reference
     And I follow "Delete"
-    Then I should see "Reference was successfully destroyed"
+    Then I should see "Reference was successfully deleted"
 
   Scenario: Try to delete a reference when there are references to it
     Given there is a taxon with that reference as its protonym's reference

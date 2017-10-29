@@ -8,5 +8,5 @@ end
 
 __END__
 description: See %github279.
-tags: [new!]
+tags: [regression-test]
 topic_areas: [synonyms]

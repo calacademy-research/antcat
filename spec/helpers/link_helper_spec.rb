@@ -1,40 +1,28 @@
 require 'spec_helper'
 
 describe LinkHelper do
-  describe "#link_to_external_site" do
-    it "makes a link with the right class" do
-      expect(helper.link_to_external_site('Atta', 'www.antcat.org/1'))
-        .to eq '<a class="link_to_external_site" href="www.antcat.org/1">Atta</a>'
-    end
-  end
-
   describe "#link_to_antwiki" do
-    it "can link subfamilies" do
-      taxon = create_subfamily 'Dolichoderinae'
-      expect(helper.link_to_antwiki(taxon)).to eq(
-        '<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Dolichoderinae">AntWiki</a>'
-      )
-    end
+    let(:taxon) { create :species }
 
     it "can link to species" do
-      taxon = create_species 'Atta major'
+      name = taxon.name_cache.tr(' ', '_')
       expect(helper.link_to_antwiki(taxon)).to eq(
-        '<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta_major">AntWiki</a>'
+        %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/#{name}">AntWiki</a>}
       )
     end
   end
 
   describe "#link_to_hol" do
-    let(:taxon) { create_subfamily 'Dolichoderinae' }
+    context "without a `#hol_id`" do
+      let(:taxon) { build_stubbed :subfamily }
 
-    context "without a #hol_id" do
       it "doesn't link" do
         expect(helper.link_to_hol(taxon)).to be nil
       end
     end
 
-    context "with a #hol_id" do
-      before { taxon.hol_id = 1234 }
+    context "with a `#hol_id`" do
+      let(:taxon) { build_stubbed :subfamily, hol_id: 1234 }
 
       it "links" do
         expect(helper.link_to_hol(taxon)).to eq(
@@ -93,26 +81,6 @@ describe LinkHelper do
       subspecies = create_subspecies 'Atta major minor rufous', species: species, genus: genus
       expect(helper.link_to_antweb(subspecies))
         .to eq '<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor rufous&project=worldants">AntWeb</a>'
-    end
-  end
-
-  describe "#taxon_link_or_deleted_string" do
-    context "valid taxon" do
-      let(:genus) { create_genus "Atta" }
-
-      it "links" do
-        expect(helper.taxon_link_or_deleted_string genus.id).to match /a href.*?Atta/
-      end
-    end
-
-    context "without a valid taxon" do
-      it "returns the id and more" do
-        expect(helper.taxon_link_or_deleted_string 99999).to eq "#99999 [deleted]"
-      end
-
-      it "allows custom deleted_label" do
-        expect(helper.taxon_link_or_deleted_string 99999, "deleted").to eq "deleted"
-      end
     end
   end
 end

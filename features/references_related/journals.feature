@@ -22,7 +22,7 @@ Feature: Editing journals
 
   Scenario: Deleting an unused journal
     When I follow "Delete"
-    Then I should see "Journal was successfully destroyed"
+    Then I should see "Journal was successfully deleted"
 
     When I go to the references page
     And I follow "Journals"

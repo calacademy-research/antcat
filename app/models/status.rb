@@ -15,8 +15,8 @@ class Status
       ['original combination',      'original combinations'],
       ['collective group name',     'collective group names'],
       ['obsolete combination',      'obsolete combinations'],
-      ['unavailable misspelling',   'unavailable misspelling'],
-      ['nonconforming synonym',     'nonconforming synonym'],
+      ['unavailable misspelling',   'unavailable misspellings'],
+      ['nonconforming synonym',     'nonconforming synonyms'],
       ['unavailable uncategorized', 'unavailable uncategorized']
     ].map do |label, plural_label|
       Status.new label: label, plural_label: plural_label
@@ -25,9 +25,6 @@ class Status
 
   def self.find identifier
     identifier = identifier.status if identifier.kind_of? Taxon
-    identifier = identifier.first.status if identifier.kind_of? Enumerable
-    identifier = identifier.first.status if identifier.kind_of? ActiveRecord::Relation
-
     statuses.find { |status| status.includes? identifier } or raise "Couldn't find status for '#{identifier}'"
   end
   class << self; alias_method :[], :find end

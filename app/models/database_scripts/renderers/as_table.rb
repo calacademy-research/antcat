@@ -8,24 +8,25 @@ module DatabaseScripts::Renderers::AsTable
   class Renderer
     def initialize cached_results
       @cached_results = cached_results
-      @rendered = ""
+      @header_content = ""
+      @body_content = ""
     end
 
     def render
-      Markdowns::Render[@rendered]
+      <<-HTML.html_safe
+        <table class="tablesorter hover margin-top">
+          <thead>#{header_content}</thead>
+          <tbody>#{Markdowns::ParseAntcatHooks[body_content]}</tbody>
+        </table>
+      HTML
     end
 
     def header *items
-      # Say `items` are the array [:taxon, :status], then this part looks
-      # like this: "| Taxon | Status |".
-      string = "|"
-      items.each { |item| string << " #{item.to_s.humanize} |" }
-      string << "\n"
+      string = "<tr>\n"
+      items.each { |item| string << "<th>#{item.to_s.humanize}</th>\n" }
+      string << "</tr>\n"
 
-      # Part of the markdown table syntax. Looks like: "| --- | --- |".
-      string << "|" << (" --- |" * items.size) << "\n"
-
-      @rendered << string
+      header_content << string
     end
 
     # Gets the results from `#results` unless specified.
@@ -33,7 +34,7 @@ module DatabaseScripts::Renderers::AsTable
       results ||= @cached_results
 
       if results.blank?
-        @rendered << "| Found no database issues |" << "\n"
+        body_content << "<td>Found no database issues</td>" << "\n"
         return
       end
 
@@ -45,10 +46,12 @@ module DatabaseScripts::Renderers::AsTable
     end
 
     private
+      attr :header_content, :body_content
+
       def row result, *fields
-        string = "|"
-        fields.each { |item| string << " #{item} |" }
-        @rendered << string << "\n"
+        string = "<tr>"
+        fields.each { |item| string << "<td>#{item}</td>" }
+        body_content << string << "</tr>\n"
       end
   end
 end

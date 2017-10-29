@@ -1,51 +1,50 @@
 .type_section.section
   .section_header.ui-widget-header.ui-corner-top
     Type
-  %table.ui-dialog-content.ui-widget-content.ui-corner-bottom
-
+  %table.ui-dialog-content.ui-widget-content.ui-corner-bottom.unstriped
     -if taxon.kind_of? SpeciesGroupTaxon
       %tr
-        %td.caption.top_aligned
+        %td.caption
           =form.label :biogeographic_region do
             Biogeographic region
             =tooltip_icon "type.biogeographic_region", scope: :taxa
-        %td.biogeographic_region.top_aligned
+        %td.biogeographic_region
           =form.select :biogeographic_region, biogeographic_region_options_for_select(taxon.biogeographic_region)
 
       %tr
-        %td.caption.top_aligned
+        %td.caption
           =form.label :verbatim_type_locality do
             Verbatim type locality
             =tooltip_icon "type.verbatim_type_locality", scope: :taxa
-        %td.verbatim_type_locality.top_aligned=form.text_area :verbatim_type_locality, rows: 3
+        %td.verbatim_type_locality=form.text_area :verbatim_type_locality, rows: 3
 
       %tr
-        %td.caption.top_aligned
+        %td.caption
           =form.label :type_specimen_repository do
             Type specimen repository
             =tooltip_icon "type.type_specimen_repository", scope: :taxa
-        %td.type_specimen_repository.top_aligned=form.text_field :type_specimen_repository
+        %td.type_specimen_repository=form.text_field :type_specimen_repository
 
       %tr
-        %td.caption.top_aligned
+        %td.caption
           =form.label :type_specimen_code do
             Type specimen code
             =tooltip_icon "type.type_specimen_code", scope: :taxa
-        %td.type_specimen_code.top_aligned=form.text_area :type_specimen_code, rows: 2
+        %td.type_specimen_code=form.text_area :type_specimen_code, rows: 2
 
       %tr
-        %td.caption.top_aligned
+        %td.caption
           =form.label :type_specimen_url do
             Type specimen URL
             =tooltip_icon "type.type_specimen_URL", scope: :taxa
-        %td.type_specimen_url.top_aligned=form.text_field :type_specimen_url
+        %td.type_specimen_url=form.text_field :type_specimen_url
 
     -else
       %tr
         =form.fields_for :type_name do |type_name_form|
           -if taxon.type_name.new_record?
             =hidden_field_tag 'taxon[type_name_attributes][id]'
-          %td.caption.top_aligned=type_name_form.label :name
+          %td.caption=type_name_form.label :name
           %td
             #type_name_field
               =render 'name_fields/panel', name_string: taxon.type_name.try(:name)
@@ -54,6 +53,6 @@
         %td=form.check_box :type_fossil
 
       %tr
-        %td.caption.top_aligned=form.label :type_taxt, 'Notes'
+        %td.caption=form.label :type_taxt, 'Notes'
         %td#type_taxt_editor.taxt_editor
           =render 'taxt_editors/show', name: 'taxon[type_taxt]', value: TaxtConverter[taxon.type_taxt].to_editor_format

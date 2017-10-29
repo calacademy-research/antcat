@@ -24,21 +24,6 @@ describe Reference do
       end
     end
 
-    describe '.with_principal_author_last_name' do
-      let!(:possible_reference) { create :article_reference, author_names: [ward_ps, fisher_bl] }
-
-      before do
-        create :book_reference, author_names: [bolton_b] # Not possible reference.
-
-        # Another possible reference.
-        create :article_reference, author_names: [create(:author_name, name: 'Warden, J.')]
-      end
-
-      it 'returns references with a matching principal author last name' do
-        expect(described_class.with_principal_author_last_name 'Ward').to eq [possible_reference]
-      end
-    end
-
     describe ".unreviewed_references" do
       let!(:unreviewed) { create :article_reference, review_state: "reviewing" }
 
@@ -78,9 +63,6 @@ describe Reference do
   end
 
   describe ".solr_search", search: true do
-    # Throw in a `MissingReference` to make sure it's not returned.
-    before { create :missing_reference }
-
     it "returns an empty array if nothing is found for author_name" do
       create :reference
       Sunspot.commit
@@ -313,18 +295,18 @@ describe Reference do
 
   describe "shared setup" do
     let(:reference_params) do
-        {
-          author_names: [fisher_bl],
-          citation_year: '1981',
-          title: 'Dolichoderinae',
-          journal: create(:journal),
-          series_volume_issue: '1(2)',
-          pagination: '22-54'
-        }
+      {
+        author_names: [fisher_bl],
+        citation_year: '1981',
+        title: 'Dolichoderinae',
+        journal: create(:journal),
+        series_volume_issue: '1(2)',
+        pagination: '22-54'
+      }
     end
     let!(:original) { ArticleReference.create! reference_params }
 
-    describe 'implementing ReferenceComparable' do
+    describe 'implementing MatchReferences' do
       it 'maps all fields correctly' do
         expect(original.principal_author_last_name_cache).to eq 'Fisher'
         expect(original.year).to eq 1981

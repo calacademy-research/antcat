@@ -51,7 +51,7 @@ class TooltipsController < ApplicationController
 
   def destroy
     @tooltip.destroy
-    redirect_to tooltips_path, notice: 'Tooltip was successfully destroyed.'
+    redirect_to tooltips_path, notice: 'Tooltip was successfully deleted.'
   end
 
   def enabled_selectors

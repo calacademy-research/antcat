@@ -60,8 +60,14 @@ module NavigationHelpers
       "/authors/#{Author.find_by_names($1).first.id}/edit"
 
     # Editor's Panel
+    when /^the Editor's Panel$/
+      "/panel"
+
     when /^the comments page$/
       "/comments"
+
+    when /^the institutions page$/
+      "/institutions"
 
     when /^my notifications page$/
       "/notifications"

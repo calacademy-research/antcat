@@ -1,8 +1,4 @@
 module LinkHelper
-  def link_to_external_site label, url
-    link_to label, url, class: 'link_to_external_site'
-  end
-
   def link_to_antwiki taxon
     page_title = taxon.name.to_s.tr(" ", '_')
     link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
@@ -41,4 +37,9 @@ module LinkHelper
     url << params.map { |key, value| value.to_query(key) }.compact * '&'
     link_to_external_site 'AntWeb', url.html_safe
   end
+
+  private
+    def link_to_external_site label, url
+      link_to label, url, class: 'link_to_external_site'
+    end
 end

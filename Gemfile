@@ -22,6 +22,7 @@ gem 'activeadmin', '~> 1.0.0.pre2'
 gem 'acts_as_commentable_with_threading'
 gem 'acts_as_list'
 gem 'colorize'
+gem 'data_migrate'
 gem 'devise'
 gem 'diffy', require: false
 gem 'draper'

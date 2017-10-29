@@ -61,7 +61,7 @@ class ReferencesController < ApplicationController
   def destroy
     if @reference.destroy
       @reference.create_activity :destroy, edit_summary: params[:edit_summary]
-      redirect_to references_path, notice: 'Reference was successfully destroyed.'
+      redirect_to references_path, notice: 'Reference was successfully deleted.'
     else
       if @reference.errors.present?
         flash[:warning] = @reference.errors.full_messages.to_sentence

@@ -3,13 +3,11 @@
 
 %table
   %thead
-    %th ID
-    %th Editor
     %th Name
+    %th Editor
     %th Email
   -@users.each do |user|
     %tr
-      %td=user.id
-      %td=user.can_edit? ? 'Yes' : ''
       %td=user.decorate.user_page_link
+      %td=user.can_edit? ? 'Yes' : dash
       %td=user.email

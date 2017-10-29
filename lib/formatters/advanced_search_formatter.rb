@@ -14,7 +14,7 @@ module Formatters::AdvancedSearchFormatter
     elsif taxon.nomen_nudum?
       labels << italicize('nomen nudum')
     elsif taxon.invalid?
-      label = Status[taxon].to_s.dup
+      label = Status[taxon].to_s
       label << senior_synonym_list(taxon)
       labels << label
     end

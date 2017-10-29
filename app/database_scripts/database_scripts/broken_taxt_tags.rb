@@ -40,7 +40,7 @@ module DatabaseScripts
 
       log.puts "\n----------"
 
-      log.puts "\nSearching destroyed...\n\n"
+      log.puts "\nSearching deleted...\n\n"
       broken_ids.each_id do |id, tag|
         PaperTrail::Version.where(event: 'destroy', item_type: taxt_tags[tag].to_s, item_id: id).each do |version|
           log.puts "Found #{tag} ##{id} (version id #{version.id}, #{version.event})"
