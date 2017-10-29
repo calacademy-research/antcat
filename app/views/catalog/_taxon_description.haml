@@ -20,6 +20,7 @@
   =link_to_antweb taxon
   =link_to_antwiki taxon
   =link_to_hol taxon
+  =render "type_fields", taxon: taxon
 
 -if taxon.history_items.present?
   %ul.history.small-margin-bottom

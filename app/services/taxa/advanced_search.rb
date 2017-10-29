@@ -46,6 +46,13 @@ module Taxa
       search_term = "%#{params[:locality]}%"
       query = query.where('protonyms.locality LIKE ?', search_term) if params[:locality]
 
+      search_term = "%#{params[:type_information]}%"
+      query = query.where(<<-SQL, search_term: search_term) if params[:type_information]
+        published_type_information LIKE :search_term
+          OR additional_type_information LIKE :search_term
+          OR type_notes LIKE :search_term
+      SQL
+
       search_term = "%#{params[:name]}%"
       query = query.where('taxa.name_cache LIKE ?', search_term) if params[:name]
 

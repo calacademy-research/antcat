@@ -198,6 +198,20 @@ describe Taxa::AdvancedSearch do
       end
     end
 
+    describe "Searching type fields", :focus do
+      let!(:one) { create :species, published_type_information: 'one' }
+      let!(:two) { create :species, additional_type_information: 'one two' }
+      let!(:three) { create :species, type_notes: 'one two three' }
+
+      before { create :species, published_type_information: 'unrelated' }
+
+      it "returns taxa with type fields matching the query" do
+        expect(described_class[type_information: 'one']).to match_array [one, two, three]
+        expect(described_class[type_information: 'two']).to match_array [two, three]
+        expect(described_class[type_information: 'three']).to match_array [three]
+      end
+    end
+
     describe "Searching for forms" do
       it "only returns taxa with those forms" do
         citation = create :citation, forms: 'w.q.'

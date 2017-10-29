@@ -14,6 +14,7 @@ class Exporters::Antweb::ExportHeadline
       hol_link = link_to_hol(@taxon)
       string = headline_protonym
       string << ' ' << headline_type
+      string << ' ' << type_fields if type_fields.present?
       string << ' ' << notes if notes
       string << ' ' << link_to_antcat if link_to_antcat
       string << ' ' << link_to_antwiki(@taxon) if link_to_antwiki(@taxon)
@@ -29,6 +30,10 @@ class Exporters::Antweb::ExportHeadline
 
     def headline_type
       TaxonDecorator::HeadlineType[@taxon, for_antweb: true]
+    end
+
+    def type_fields
+      @_type_fields ||= Exporters::Antweb::TypeFields[@taxon]
     end
 
     def headline_notes

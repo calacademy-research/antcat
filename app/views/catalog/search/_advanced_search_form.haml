@@ -17,13 +17,16 @@
       =text_field_tag :genus, params[:genus]
 
   .row
-    .medium-4.columns
+    .medium-3.columns
       Biogeographic region
       =select_tag :biogeographic_region, search_biogeographic_region_options_for_select(params[:biogeographic_region])
-    .medium-4.columns
+    .medium-3.columns
       Locality contains
       =text_field_tag :locality, params[:locality]
-    .medium-4.columns.end
+    .medium-3.columns
+      Type information contains
+      =text_field_tag :type_information, params[:type_information]
+    .medium-3.columns.end
       Forms contains
       =text_field_tag :forms, params[:forms]
 

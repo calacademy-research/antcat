@@ -197,7 +197,10 @@ class TaxaController < ApplicationController
         { type_name_attributes: [:id] },
         :type_fossil,
         :type_taxt,
-        :biogeographic_region
+        :biogeographic_region,
+        :published_type_information,
+        :additional_type_information,
+        :type_notes
       )
     end
 

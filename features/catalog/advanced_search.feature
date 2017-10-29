@@ -101,6 +101,13 @@ Feature: Searching the catalog
     Then I should see "1 result"
     And I should see "Africa" within the search results
 
+  Scenario: Searching in type fields
+    Given there is a species with published type information "Madagascar: Prov. Toliara"
+
+    When I fill in "type_information" with "Toliara"
+    And I press "Go" in the search section
+    Then I should see "1 result"
+
   Scenario: Searching for a form
     Given there is a species with forms "w.q."
     And there is a species with forms "q."
