@@ -46,6 +46,8 @@
 // make the pickers stand out
 .display_button
   @extend .primary, .hollow, .button
+  padding: 0.4rem 0.6rem !important
+  margin-bottom: 0.4rem
 
 #taxon_browser
   .selected
@@ -129,6 +131,13 @@ button.close-button
 
 table th
   text-align: left
+
+// Prevent Foundation from making backgrounds gray.
+// TODO it should be possible to use Foundation's `.unstriped` class,
+// but it doesn't work for some reason.
+table.unstriped
+  tr
+    background-color: #fff !important
 
 .tabs-title
   a

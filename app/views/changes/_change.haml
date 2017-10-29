@@ -2,8 +2,8 @@
 
 =render 'header', taxon: taxon, change: change
 
-.change{class: ("approved" if taxon.taxon_state && taxon.approved?)}
-  %table
+.change.margin-bottom{class: ("approved" if taxon.taxon_state && taxon.approved?)}
+  %table.unstriped
     %tr
       %th Name
       %td.name-test-hook=format_taxon_name taxon.name
@@ -42,7 +42,7 @@
 
   -protonym = taxon.protonym
   -if protonym
-    %table
+    %table.unstriped
       %caption Protonym
 
       %tr
@@ -76,7 +76,7 @@
           %td=TaxtPresenter[authorship_notes].to_html
 
   -if taxon.type_name.present?
-    %table
+    %table.unstriped
       %caption Type
 
       %tr

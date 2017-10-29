@@ -2,12 +2,12 @@
   .section_header.ui-widget-header.ui-corner-top
     Protonym
   =form.fields_for :protonym do |protonym_form|
-    %table.ui-dialog-content.ui-widget-content.ui-corner-bottom
+    %table.ui-dialog-content.ui-widget-content.ui-corner-bottom.unstriped
       %tr
         =protonym_form.fields_for :name do |name_form|
           -if name_form.object.new_record?
             =hidden_field_tag 'taxon[protonym_attributes][name_attributes][id]'
-          %td.caption.top_aligned
+          %td.caption
             =name_form.label :name do
               Name
               =tooltip_icon "protonym", scope: :taxa
@@ -25,7 +25,7 @@
 
       %tr
         =protonym_form.fields_for :authorship do |authorship_form|
-          %td.caption.top_aligned
+          %td.caption
             =authorship_form.label :reference do
               Authorship
               =tooltip_icon "authorship", scope: :taxa
@@ -58,6 +58,6 @@
               %td.locality=protonym_form.text_field :locality
 
           %tr
-            %td.caption.top_aligned=form.label :notes_taxt, 'Notes'
+            %td.caption=form.label :notes_taxt, 'Notes'
             %td#notes_taxt_editor.taxt_editor
               =render 'taxt_editors/show', name: 'taxon[protonym_attributes][authorship_attributes][notes_taxt]', value: TaxtConverter[taxon.protonym.authorship.notes_taxt].to_editor_format

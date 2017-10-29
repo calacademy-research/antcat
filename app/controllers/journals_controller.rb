@@ -42,7 +42,7 @@ class JournalsController < ApplicationController
 
   def destroy
     if @journal.destroy
-      redirect_to references_path, notice: "Journal was successfully destroyed."
+      redirect_to references_path, notice: "Journal was successfully deleted."
     else
       if @journal.errors.present?
         flash[:warning] = @journal.errors.full_messages.to_sentence

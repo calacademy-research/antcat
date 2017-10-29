@@ -27,5 +27,4 @@ description: >
   If the senior synonyms count is different from the number of senior synonyms listed
   in synonyms section on the edit page, that may have to do with
   [Synonym records referencing non existent taxa](/database_scripts/synonym_records_referencing_non_existent_taxa).
-tags: [new!]
 topic_areas: [synonyms]

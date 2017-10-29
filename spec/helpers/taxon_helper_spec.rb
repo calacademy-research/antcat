@@ -3,16 +3,20 @@ require 'spec_helper'
 describe TaxonHelper do
   describe "#taxon_link_or_deleted_string" do
     context "when taxon exists" do
+      let(:taxon) { create :subfamily }
+
       it "returns a link" do
-        results = helper.taxon_link_or_deleted_string create_genus.id
-        expect(results).to include '<a href="/catalog'
+        expect(helper.taxon_link_or_deleted_string taxon.id).to include '<a href="/catalog'
       end
     end
 
     context "when taxon doesn't exist" do
-      it "returns a string" do
-        results = helper.taxon_link_or_deleted_string 999123
-        expect(results).to eq "#999123 [deleted]"
+      it "returns the id and more" do
+        expect(helper.taxon_link_or_deleted_string 99999).to eq "#99999 [deleted]"
+      end
+
+      it "allows custom deleted_label" do
+        expect(helper.taxon_link_or_deleted_string 99999, "deleted").to eq "deleted"
       end
     end
   end

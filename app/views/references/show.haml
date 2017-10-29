@@ -106,7 +106,7 @@
             %td=or_dash @reference.taxonomic_notes
 
 -if @reference.described_taxa.exists?
-  .row
+  .row.margin-bottom
     .small-12.columns.no-right-padding
       %h5 Taxa described in this reference
       %small Note: taxa described in nestees of this reference are not included here.
@@ -122,3 +122,22 @@
             %td=taxon.protonym.authorship.reference.decorate.inline_citation
             %td=taxon.rank.capitalize
             %td=taxon.status.capitalize
+
+-if user_can_edit?
+  .row.margin-bottom
+    .small-12.columns.no-right-padding
+      %h5 Review
+      %table
+        %thead
+          %th Created
+          %th Changed
+          %th Review status
+          %th
+          %th
+        %tbody
+          %tr
+            %td=time_tag @reference.created_at
+            %td=time_tag @reference.updated_at
+            %td=@reference.decorate.format_review_state
+            %td=review_reference_button @reference
+            %td=set_as_default_reference @reference

@@ -69,5 +69,4 @@ description: >
   and `homonym_replaced_by_id`, because (as of writing), these are the only
   fields in the `taxa` table referring to non-existing `taxa` records.
 
-tags: [new!]
 topic_areas: [catalog]

@@ -29,6 +29,6 @@ Feature: Feed (tooltips)
 
     When I go to the tooltips editing page
       And I follow "authors"
-      And I follow "Destroy"
+      And I follow "Delete"
     And I go to the activity feed
     Then I should see "Archibald deleted the tooltip taxa.authors" and no other feed items

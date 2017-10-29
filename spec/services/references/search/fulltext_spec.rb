@@ -1,9 +1,6 @@
 require "spec_helper"
 
 describe References::Search::Fulltext, search: true do
-  # Throw in a MissingReference to make sure it's not returned.
-  before { create :missing_reference }
-
   describe "#call" do
     describe 'searching with `start_year`, `end_year` and `year`' do
       before do
@@ -49,14 +46,14 @@ describe References::Search::Fulltext, search: true do
   describe 'searching with `reference_type`' do
     it "applies the :unknown :reference_type that's passed" do
       unknown = create :unknown_reference
-      create :article_reference # known
+      create :article_reference
       Sunspot.commit
 
       expect(described_class[q: "bolton", reference_type: :unknown]).to eq [unknown]
     end
 
     it "applies the :nomissing :reference_type that's passed" do
-      expect(MissingReference.count).to be > 0
+      missing = create :missing_reference
       reference = create :article_reference
       Sunspot.commit
 
@@ -65,7 +62,7 @@ describe References::Search::Fulltext, search: true do
 
     it "applies the :nested :reference_type that's passed" do
       nested = create :nested_reference
-      create :unknown_reference # unnested
+      create :unknown_reference
       Sunspot.commit
 
       expect(described_class[q: 'bolton', reference_type: :nested]).to eq [nested]

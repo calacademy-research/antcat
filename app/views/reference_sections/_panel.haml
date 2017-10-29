@@ -1,7 +1,4 @@
 .reference_section.ui-widget-content.ui-corner-all.antcat_panel{'data-id' => item.id}
-  %table
-    %tr
-      %td.reference_section_body
-        =render 'reference_sections/display', item: item
-        -if user_can_edit?
-          =render 'reference_sections/edit', item: item
+  =render 'reference_sections/display', item: item
+  -if user_can_edit?
+    =render 'reference_sections/edit', item: item

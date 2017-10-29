@@ -1,5 +1,5 @@
 .name_status_flags_section.section
-  %table
+  %table.unstriped
     =render 'taxa/form/name_section', taxon: taxon, form: form, default_name_string: default_name_string
     %tr.status_row
       %td.caption=form.label :status
@@ -9,12 +9,15 @@
     =render 'taxa/form/parent_section', taxon: taxon, form: form
     =render 'taxa/form/current_valid_taxon_section', taxon: taxon, form: form
 
-    %tr.flags_row
-      %td
-      %td
+    %tr
+      %td.caption.no-wrap
         =form.label :incertae_sedis_in
+      %td
         =form.select :incertae_sedis_in, [['(none)', nil], 'family', 'subfamily', 'tribe', 'genus']
 
+    %tr
+      %td
+      %td
         =form.check_box :fossil
         =form.label :fossil do
           Fossil
@@ -38,6 +41,6 @@
         =form.label :display, 'Display'
 
     %tr.headline_notes_taxt_row
-      %td.caption.top_aligned=form.label :headline_notes_taxt, 'Notes'
+      %td.caption=form.label :headline_notes_taxt, 'Notes'
       %td#headline_notes_taxt_editor.taxt_editor
         =render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: TaxtConverter[taxon.headline_notes_taxt].to_editor_format
