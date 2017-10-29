@@ -45,6 +45,8 @@ AntCat::Application.routes.draw do
 
   get '/documents/:id/:file_name', to: 'references/downloads#show', file_name: /.+/
 
+  resources :institutions
+
   resources :journals do
     collection do
       get :autocomplete

@@ -1,0 +1,15 @@
+=form_for institution do |f|
+  =render "shared/errors_for", resource: institution
+
+  .row
+    .medium-2.columns
+      =f.label :abbreviation
+      =f.text_field :abbreviation
+    .medium-4.columns.end
+      =f.label :name
+      =f.text_field :name
+  .row
+    .medium-3.columns.end
+      =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+  .actions
+    =button_tag 'Save', class: 'btn-saves'
