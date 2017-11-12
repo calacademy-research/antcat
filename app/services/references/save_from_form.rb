@@ -6,6 +6,7 @@ module References
 
     def initialize reference, params, request_host
       @reference = reference
+      @original_params = params
       @params = params
       @request_host = request_host
     end
@@ -15,7 +16,7 @@ module References
     end
 
     private
-      attr_reader :params, :request_host
+      attr_reader :params, :original_params, :request_host
 
       def save
         Reference.transaction do
@@ -33,9 +34,9 @@ module References
           # before validating, so we need to manually raise here.
           raise ActiveRecord::Rollback if @reference.errors.present?
 
-          unless params[:ignore_possible_duplicate].present?
+          unless original_params[:ignore_possible_duplicate].present?
             if @reference.check_for_duplicate
-              params[:ignore_possible_duplicate] = "yes"
+              original_params[:ignore_possible_duplicate] = "yes"
               raise ActiveRecord::Rollback
             end
           end
@@ -52,8 +53,8 @@ module References
     def set_pagination
       params[:reference][:pagination] =
         case @reference
-        when ArticleReference then params[:article_pagination]
-        when BookReference    then params[:book_pagination]
+        when ArticleReference then original_params[:article_pagination]
+        when BookReference    then original_params[:book_pagination]
         else                       nil
         end
     end
