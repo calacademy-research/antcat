@@ -11,8 +11,6 @@
 # See `ProtonymsWithReferencesMissingYear` for a database script for finding these.
 
 class Protonym < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
-
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
   belongs_to :name
 

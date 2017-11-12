@@ -3,7 +3,6 @@
 require_dependency 'taxon_workflow'
 
 class Taxon < ApplicationRecord
-  include ActiveModel::ForbiddenAttributesProtection
   include Taxa::CallbacksAndValidations
   include Taxa::Delete
   include Taxa::PredicateMethods

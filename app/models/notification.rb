@@ -1,6 +1,4 @@
 class Notification < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
-
   # "mentioned_in_thing" means something other than a comment. For example
   # in the description of an issue or in the message of a site notice.
   REASONS = %w( was_replied_to

@@ -1,5 +1,4 @@
 class SiteNotice < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
   include Trackable
   include SendsNotifications
 

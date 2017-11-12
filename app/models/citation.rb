@@ -4,8 +4,6 @@
 # `protonyms.authorship_id` in any case.
 
 class Citation < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
-
   belongs_to :reference
 
   has_one :protonym, foreign_key: :authorship_id # See note above.

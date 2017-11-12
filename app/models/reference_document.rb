@@ -1,6 +1,4 @@
 class ReferenceDocument < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
-
   belongs_to :reference
 
   validate :check_url

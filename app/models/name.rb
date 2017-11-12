@@ -2,7 +2,6 @@
 # `ReferenceAuthorName` is used for ??????.
 
 class Name < ApplicationRecord
-  include ActiveModel::ForbiddenAttributesProtection
   include Formatters::ItalicsHelper
 
   validates :name, presence: true
