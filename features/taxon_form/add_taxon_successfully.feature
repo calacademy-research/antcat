@@ -68,6 +68,41 @@ Feature: Adding a taxon successfully
 
     Then I should be on the catalog page for "Eciton"
 
+  @search @javascript
+  Scenario: Adding a subgenus
+    Given there is a genus "Camponotus"
+
+    When I go to the catalog page for "Camponotus"
+      And I follow "Add subgenus"
+    Then I should be on the new taxon page
+
+    When I click the name field
+      And I set the name to "Camponotus (Mayria)"
+      And I press "OK"
+    And I click the protonym name field
+    Then the protonym name field should contain "Camponotus (Mayria)"
+
+    When I set the protonym name to "Mayria"
+      And I press "OK"
+      And I press "Add this name"
+    And I click the authorship field
+      And in the reference picker, I search for the author "Fisher"
+      And I click the first search result
+    And I press "OK"
+    When I click the type name field
+    Then the type name field should contain "Mayria "
+
+    When I set the type name to "Mayria madagascarensis"
+      And I press "OK"
+      And I press "Add this name"
+    And I save my changes
+    Then I should be on the catalog page for "Camponotus (Mayria)"
+    And I should see "Mayria" in the protonym
+
+    When I go to the catalog page for "Camponotus"
+    And I follow "Subgenera"
+    Then I should see "Mayria" in the index
+
   Scenario: Hide "Add species" link on subfamily catalog pages
     Given there is a subfamily "Formicinae"
 
