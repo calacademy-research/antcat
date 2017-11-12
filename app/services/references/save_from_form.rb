@@ -8,6 +8,7 @@ module References
       @reference = reference
       @original_params = params
       @params = params
+      @params = params[:reference]
       @request_host = request_host
     end
 
@@ -28,7 +29,7 @@ module References
           set_publisher if @reference.kind_of? BookReference
 
           # Set attributes to make sure they're persisted in the form.
-          @reference.attributes = params[:reference]
+          @reference.attributes = params
 
           # Raise if there are errors -- #save! clears the errors
           # before validating, so we need to manually raise here.
@@ -51,7 +52,7 @@ module References
       end
 
     def set_pagination
-      params[:reference][:pagination] =
+      params[:pagination] =
         case @reference
         when ArticleReference then original_params[:article_pagination]
         when BookReference    then original_params[:book_pagination]
@@ -64,25 +65,25 @@ module References
     end
 
     def parse_author_names_string
-      author_names_and_suffix = @reference.parse_author_names_and_suffix params[:reference].delete(:author_names_string)
+      author_names_and_suffix = @reference.parse_author_names_and_suffix params.delete(:author_names_string)
       @reference.author_names.clear
-      params[:reference][:author_names] = author_names_and_suffix[:author_names]
-      params[:reference][:author_names_suffix] = author_names_and_suffix[:author_names_suffix]
+      params[:author_names] = author_names_and_suffix[:author_names]
+      params[:author_names_suffix] = author_names_and_suffix[:author_names_suffix]
     end
 
     def set_journal
-      journal_name = params[:reference][:journal_name]
+      journal_name = params[:journal_name]
 
       # Set journal_name for the form.
       @reference.journal_name = journal_name
 
       # Set nil or valid publisher in the params.
       journal = Journal.find_or_create_by(name: journal_name)
-      params[:reference][:journal] = journal.valid? ? journal : nil
+      params[:journal] = journal.valid? ? journal : nil
     end
 
     def set_publisher
-      publisher_string = params[:reference][:publisher_string]
+      publisher_string = params[:publisher_string]
 
       # Set publisher_string for the form.
       @reference.publisher_string = publisher_string
@@ -93,18 +94,18 @@ module References
         @reference.errors.add :publisher_string,
           "couldn't be parsed. In general, use the format 'Place: Publisher'."
       else
-        params[:reference][:publisher] = publisher
+        params[:publisher] = publisher
       end
     end
 
     def clear_nesting_reference_id
-      params[:reference][:nesting_reference_id] = nil
+      params[:nesting_reference_id] = nil
     end
 
     def clear_document_params_if_necessary
-      return unless params[:reference][:document_attributes]
-      return unless params[:reference][:document_attributes][:url].present?
-      params[:reference][:document_attributes][:id] = nil
+      return unless params[:document_attributes]
+      return unless params[:document_attributes][:url].present?
+      params[:document_attributes][:id] = nil
     end
   end
 end
