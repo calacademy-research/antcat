@@ -1,5 +1,5 @@
 class ReferenceDocument < ActiveRecord::Base
-  attr_accessible :url, :file_file_name, :public, :file
+  include ActiveModel::ForbiddenAttributesProtection
 
   belongs_to :reference
 

@@ -5,17 +5,12 @@ require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord
+  include ActiveModel::ForbiddenAttributesProtection
   include RevisionsCanBeCompared
   include Trackable
 
   # Virtual attributes used in `RefrencesController`.
   attr_accessor :journal_name, :publisher_string
-
-  attr_accessible :author_names, :author_names_suffix, :citation, :citation_year,
-    :date, :document_attributes, :doi, :editor_notes, :journal_name,
-    :nesting_reference_id, :pages_in, :pagination, :public_notes,
-    :publisher_string, :review_state, :series_volume_issue, :taxonomic_notes,
-    :title
 
   belongs_to :journal
   belongs_to :publisher
