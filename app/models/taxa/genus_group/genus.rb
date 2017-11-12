@@ -1,7 +1,4 @@
 class Genus < GenusGroupTaxon
-  attr_accessible :current_valid_taxon, :current_valid_taxon_id,
-    :homonym_replaced_by, :name, :protonym, :subfamily, :tribe, :type_name
-
   belongs_to :tribe
 
   has_many :species

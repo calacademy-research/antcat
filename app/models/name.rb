@@ -2,10 +2,8 @@
 # `ReferenceAuthorName` is used for ??????.
 
 class Name < ApplicationRecord
+  include ActiveModel::ForbiddenAttributesProtection
   include Formatters::ItalicsHelper
-
-  attr_accessible :epithet, :epithet, :epithet_html, :epithet_html, :epithets,
-    :gender, :name, :name_html, :nonconforming_name, :type
 
   validates :name, presence: true
 

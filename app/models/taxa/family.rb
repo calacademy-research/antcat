@@ -1,6 +1,4 @@
 class Family < Taxon
-  attr_accessible :name, :protonym, :type_name
-
   def parent
   end
 

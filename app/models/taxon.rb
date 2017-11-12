@@ -3,6 +3,7 @@
 require_dependency 'taxon_workflow'
 
 class Taxon < ApplicationRecord
+  include ActiveModel::ForbiddenAttributesProtection
   include Taxa::CallbacksAndValidations
   include Taxa::Delete
   include Taxa::PredicateMethods
@@ -27,13 +28,6 @@ class Taxon < ApplicationRecord
   # Set to true enable additional callbacks for this taxon only. Used in relation
   # to `TaxaController`, but can be used in the console/anywhere as well.
   attr_accessor :save_initiator
-
-  # `attr_accessible` (Rails method): to protect from mass-assignment. You can ignore these.
-  attr_accessible :auto_generated, :biogeographic_region, :collision_merge_id,
-    :display, :fossil, :headline_notes_taxt, :hong, :ichnotaxon, :id, :incertae_sedis_in,
-    :name, :name_id, :nomen_nudum, :origin, :protonym, :status, :type_fossil, :type_name,
-    :type_name_id, :type_specimen_code, :type_specimen_repository, :type_specimen_url,
-    :type_taxt, :unresolved_homonym, :verbatim_type_locality
 
   # TODO remove column `:collision_merge_id` (not used, all nil).
   # TODO maybe explain more of these. Here or elsewhere.

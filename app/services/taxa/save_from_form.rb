@@ -4,9 +4,9 @@ class Taxa::SaveFromForm
   include Service
 
   # `previous_combination` will be a pointer to a species or subspecies if non-nil.
-  def initialize taxon, params, previous_combination = nil
+  def initialize taxon, taxon_params, previous_combination = nil
     @taxon = taxon
-    @params = params
+    @params = taxon_params
     @previous_combination = previous_combination
   end
 

@@ -6,8 +6,6 @@
 class Citation < ActiveRecord::Base
   include ActiveModel::ForbiddenAttributesProtection
 
-  attr_accessible :pages, :forms, :id, :reference_id, :reference, :notes_taxt
-
   belongs_to :reference
 
   has_one :protonym, foreign_key: :authorship_id # See note above.
