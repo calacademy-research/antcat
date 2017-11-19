@@ -119,19 +119,6 @@ Rails.application.configure do
     Run server: `rails s -e production`
 
   #############################################################################
-  # Profile with New Relic
-  #############################################################################
-
-    Uncomment gem in `Gemfile`.
-
-    Production only:
-      New Relic is free to use in development (as defined by `RAILS_ENV`), but
-      requires an account in production. So, make sure `license_key` and
-      `app_name` are set in `config/newrelic.yml`.
-
-    Visit `http://localhost:3000/newrelic`.
-
-  #############################################################################
   # Profile using Rack MiniProfiler
   #############################################################################
 

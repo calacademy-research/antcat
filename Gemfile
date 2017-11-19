@@ -40,6 +40,7 @@ gem 'invisible_captcha'
 gem 'jquery-atwho-rails'
 gem 'jquery-rails', '> 4.0'
 gem 'jquery-ui-rails', '> 5.0'
+gem 'newrelic_rpm'
 gem 'paper_trail', '< 5.0'
 gem 'paperclip'
 gem 'rails-observers'
@@ -85,9 +86,6 @@ end
 # Profiling gems kept uncommented here because lazy.
 # See notes in `config/environments/production.rb`.
 # gem 'bullet'
-#
-# gem 'newrelic_rpm'
-#
 # gem 'rack-mini-profiler', require: false
 # gem 'flamegraph' # for rmp, optional
 # gem 'stackprof' # for rmp, optional
