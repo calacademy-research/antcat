@@ -4,7 +4,6 @@
 # set to true and `user` set to a user named "AntCatBot" (`User.find 62`).
 
 class Activity < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
   include FilterableWhere
 
   EDIT_SUMMARY_MAX_LENGTH = 255

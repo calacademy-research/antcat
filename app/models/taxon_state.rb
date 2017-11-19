@@ -1,8 +1,6 @@
 # TODO default `taxon_states.deleted` to "false" in db.
 
 class TaxonState < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
-
   belongs_to :taxon
 
   # TODO investigate the difference between `TaxonState.waiting` and

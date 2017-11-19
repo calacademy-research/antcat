@@ -2,7 +2,6 @@
 # TODO default `user.can_edit` to false.
 
 class User < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
   include Trackable
 
   has_many :activities

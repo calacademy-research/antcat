@@ -32,7 +32,7 @@ Feature: Changes
     Then I should see "This taxon has been changed; changes awaiting approval"
 
     When I follow "Review change"
-    Then I should see the name "Atta" in the changes
+    Then I should see "Atta"
 
     When I follow "Atta"
     Then I should be on the catalog page for "Atta"
@@ -103,7 +103,7 @@ Feature: Changes
     Then I should see "Added by Mark Wilden"
 
     When I go to the changes page
-    Then I should not see "Approve"
+    Then I should not see "Approve[^?]"
 
   @papertrail
   Scenario: Editing a taxon - modified, not added

@@ -4,9 +4,6 @@
 class Name < ApplicationRecord
   include Formatters::ItalicsHelper
 
-  attr_accessible :epithet, :epithet, :epithet_html, :epithet_html, :epithets,
-    :gender, :name, :name_html, :nonconforming_name, :type
-
   validates :name, presence: true
 
   after_save :set_taxon_caches

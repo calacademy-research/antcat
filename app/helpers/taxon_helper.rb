@@ -43,6 +43,13 @@ module TaxonHelper
     link_to "Add tribe", url, class: "btn-normal"
   end
 
+  def add_subgenus_button taxon
+    return unless user_can_edit? && taxon.is_a?(Genus)
+
+    url = new_taxa_path rank_to_create: 'subgenus', parent_id: taxon.id
+    link_to "Add subgenus", url, class: "btn-normal"
+  end
+
   def convert_to_subspecies_button taxon
     return unless taxon.is_a? Species
 
@@ -87,7 +94,7 @@ module TaxonHelper
   end
 
   def default_name_string taxon
-    return unless taxon.kind_of? SpeciesGroupTaxon
+    return unless taxon.kind_of?(SpeciesGroupTaxon) || taxon.is_a?(Subgenus)
     parent = Taxon.find params[:parent_id]
     parent.name.name
   end
@@ -107,7 +114,7 @@ module TaxonHelper
         parent = taxon.parent
         "species of " << parent.name.to_html
       when Subgenus
-        parent = taxon.parent
+        parent = taxon.genus
         "subgenus of " << parent.name.to_html
       when Subspecies
         parent = taxon.species

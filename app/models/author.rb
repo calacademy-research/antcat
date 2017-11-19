@@ -1,6 +1,4 @@
 class Author < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
-
   has_many :names, -> { order(:name) }, class_name: 'AuthorName'
   has_many :references, through: :names
 

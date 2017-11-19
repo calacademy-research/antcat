@@ -1,6 +1,4 @@
 class NestedReference < Reference
-  attr_accessible :nesting_reference, :year
-
   belongs_to :nesting_reference, class_name: 'Reference'
 
   validates_presence_of :year, :nesting_reference, :pages_in

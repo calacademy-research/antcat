@@ -43,6 +43,8 @@ module AntCat
     # TODO remove after upgrading to Rails 5.
     config.active_record.raise_in_transactional_callbacks = true
 
+    config.action_controller.action_on_unpermitted_parameters = :raise
+
     config.assets.enabled = true
   end
 end

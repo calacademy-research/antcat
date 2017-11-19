@@ -15,6 +15,7 @@ class Names::CreateNameFromString
     when :subspecies                   then create_subspecies_name!
     when :subspecies_with_two_epithets then create_subspecies_name_with_two_epithets!
     when :species                      then create_species_name!
+    when :subgenus                     then create_subgenus_name!
     when :genus                        then create_genus_name!
     when :tribe                        then create_tribe_name!
     when :subfamily                    then create_subfamily_name!
@@ -32,7 +33,7 @@ class Names::CreateNameFromString
     def name_type
       case words.size
       when 1    then genus_or_tribe_or_subfamily
-      when 2    then :species
+      when 2    then subgenus_or_species
       when 3    then :subspecies
       when 4, 5 then :subspecies_with_two_epithets
       end
@@ -45,6 +46,14 @@ class Names::CreateNameFromString
       when /ini$/  then :tribe
       else              :genus
       end
+    end
+
+    def subgenus_or_species
+      if contains_parenthesis? then :subgenus else :species end
+    end
+
+    def contains_parenthesis?
+      words.second =~ /\(.*?\)/
     end
 
     def create_subspecies_name!
@@ -68,6 +77,15 @@ class Names::CreateNameFromString
                           name_html:    italicize(string),
                           epithet:      words.second,
                           epithet_html: italicize(words.second)
+    end
+
+    def create_subgenus_name!
+      epithet = words.second.tr '()', ''
+      SubgenusName.create! name:         string,
+                           name_html:    italicize(string),
+                           epithet:      epithet,
+                           epithet_html: italicize(epithet)
+                           # protonym_html: italicize(string) # Is this used?
     end
 
     # NOTE `GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }`

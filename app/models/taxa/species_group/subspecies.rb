@@ -1,8 +1,6 @@
 class Subspecies < SpeciesGroupTaxon
   class NoSpeciesForSubspeciesError < StandardError; end
 
-  attr_accessible :subfamily, :genus, :name, :protonym, :species, :type, :type_name_id
-
   belongs_to :species
 
   before_validation :set_genus

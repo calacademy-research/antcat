@@ -34,7 +34,6 @@ Feature: Workflow
 
     When I go to the changes page
     Then I should see "Mark Wilden changed Formicinae"
-    And I should see "asdfgh"
 
     When I follow "Undo..."
     Then I should see "This undo will roll back the following changes"
@@ -43,7 +42,6 @@ Feature: Workflow
 
     When I press "Undo!"
     Then I should not see "Formicinae"
-    And I should not see "asdfgh"
 
     When I go to the catalog page for "Formicinae"
     Then I should not see "asdfgh"
@@ -72,8 +70,8 @@ Feature: Workflow
     When I press "Yes, create new combination"
     And I save my changes
     And I go to the changes page
-    Then I should see the genus "Becton" in the changes
-    And I should see the name "major" in the changes
+    Then I should see "Becton"
+    And I should see "major"
 
     # Change parent from B -> C
     When I go to the edit page for "Becton major"
@@ -101,8 +99,8 @@ Feature: Workflow
     Then I should see "This undo will roll back the following changes"
 
     When I press "Undo!"
-    Then I should see the genus "Becton" in the changes
-    And I should see the name "major" in the changes
+    Then I should see "Becton"
+    And I should see "major"
     And I should not see "Chatsworth"
 
     When I go to the catalog page for "Becton major"
@@ -136,8 +134,8 @@ Feature: Workflow
     When I press "Yes, create new combination"
     And I save my changes
     And I go to the changes page
-    Then I should see the genus "Becton" in the changes
-    And I should see the name "major" in the changes
+    Then I should see "Becton"
+    And I should see "major"
 
     # Change parent from B -> C
     When I go to the edit page for "Becton major"

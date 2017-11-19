@@ -1,5 +1,4 @@
 class Change < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
   include Trackable
 
   belongs_to :approver, class_name: 'User'

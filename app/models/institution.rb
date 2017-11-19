@@ -1,5 +1,4 @@
 class Institution < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
   include RevisionsCanBeCompared
   include Trackable
 

@@ -1,7 +1,4 @@
 class Species < SpeciesGroupTaxon
-  attr_accessible :name, :protonym, :genus, :current_valid_taxon,
-    :homonym_replaced_by, :type
-
   has_many :subspecies
 
   def parent

@@ -1,5 +1,4 @@
 class Journal < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
   include Trackable
 
   has_many :references
