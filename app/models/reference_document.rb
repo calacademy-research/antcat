@@ -1,6 +1,4 @@
 class ReferenceDocument < ActiveRecord::Base
-  attr_accessible :url, :file_file_name, :public, :file
-
   belongs_to :reference
 
   validate :check_url

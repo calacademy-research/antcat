@@ -104,7 +104,7 @@ class ReferencesController < ApplicationController
     end
 
     def save
-      References::SaveFromForm[@reference, params, request.host]
+      References::SaveFromForm[@reference, reference_params, params, request.host]
     end
 
     def new_reference
@@ -127,6 +127,26 @@ class ReferencesController < ApplicationController
       reference = @reference.becomes type
       reference.type = type
       reference
+    end
+
+    def reference_params
+      params.require(:reference).permit(
+        :citation_year,
+        :doi,
+        :date,
+        :title,
+        :series_volume_issue,
+        :journal_name,
+        :publisher_string,
+        :public_notes,
+        :editor_notes,
+        :taxonomic_notes,
+        :pages_in,
+        :nesting_reference_id,
+        :citation,
+        :author_names_string,
+        { document_attributes: [:id, :url, :public] }
+      )
     end
 
     def set_reference

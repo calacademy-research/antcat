@@ -4,8 +4,6 @@
 class SpeciesGroupTaxon < Taxon
   include Formatters::ItalicsHelper
 
-  attr_accessible :genus, :subfamily, :subfamily_id, :type_name_id
-
   belongs_to :subfamily
   belongs_to :genus
   belongs_to :subgenus

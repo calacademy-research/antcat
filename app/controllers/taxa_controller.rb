@@ -114,11 +114,11 @@ class TaxaController < ApplicationController
       if collision_resolution.blank? || collision_resolution == 'homonym'
         # We get here when 1) there's no `collision_resolution` (the normal case),
         # or 2) the the editor has confirmed that we are creating a homonym.
-        @taxon.save_from_form params[:taxon], @previous_combination
+        @taxon.save_from_form taxon_params, @previous_combination
       else
         # TODO I believe this is where we lose track of `@taxon.id` (see nil check in `#create`)
         original_combination = Taxon.find(collision_resolution)
-        original_combination.save_from_form params[:taxon], @previous_combination
+        original_combination.save_from_form taxon_params, @previous_combination
       end
 
       if @previous_combination.is_a?(Species) && @previous_combination.children.any?
@@ -158,6 +158,51 @@ class TaxaController < ApplicationController
         }
         redirect_to new_taxa_path(hash)
       end
+    end
+
+    def taxon_params
+      params.require(:taxon).permit(
+        :status,
+        { name_attributes: [:id, :gender] },
+        { homonym_replaced_by_name_attributes: [:id] },
+        { current_valid_taxon_name_attributes: [:id] },
+        :incertae_sedis_in,
+        :fossil,
+        :nomen_nudum,
+        :unresolved_homonym,
+        :ichnotaxon,
+        :hong,
+        :display,
+        :headline_notes_taxt,
+        {
+          protonym_attributes: [
+            :fossil,
+            :sic,
+            :locality,
+            :name_id,
+            :id,
+            { name_attributes: [:id] },
+            {
+              authorship_attributes: [
+                :pages,
+                :forms,
+                :notes_taxt,
+                :id,
+                { reference_attributes: [:id] }
+              ]
+            },
+          ]
+        },
+        { parent_name_attributes: [:id] },
+        { type_name_attributes: [:id] },
+        :type_fossil,
+        :type_taxt,
+        :biogeographic_region,
+        :verbatim_type_locality,
+        :type_specimen_repository,
+        :type_specimen_code,
+        :type_specimen_url
+      )
     end
 
     # This builds a `Name` without subclassing, not eg a `SpeciesName`,

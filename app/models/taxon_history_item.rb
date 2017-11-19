@@ -1,5 +1,4 @@
 class TaxonHistoryItem < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
   include Trackable
   include PrimitiveSearch
   include RevisionsCanBeCompared
