@@ -1,0 +1,10 @@
+%table
+  %thead
+    %tr
+      %th Change
+      %th When
+      %th Approved?
+      -if user_can_edit?
+        %th Undo?
+  %tbody
+    =yield

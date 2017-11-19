@@ -7,5 +7,7 @@
   .buttons_right=approve_all_changes_button
   .clear
 
-  =render @changes
+  =render layout: 'table_header' do
+    =render @changes
+
   =will_paginate @changes

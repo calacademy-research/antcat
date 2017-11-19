@@ -1,5 +1,7 @@
 -@title = 'All Changes'
 -breadcrumb :all_changes
 
-=render @changes
+=render layout: 'table_header' do
+  =render @changes
+
 =will_paginate @changes

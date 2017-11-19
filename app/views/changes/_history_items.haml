@@ -1,6 +1,0 @@
--unless taxon.history_items.empty?
-  %table.unstriped
-    %caption History
-    -taxon.history_items.each do |history_item|
-      %tr
-        %td=add_period_if_necessary TaxtPresenter[history_item.taxt].to_text
