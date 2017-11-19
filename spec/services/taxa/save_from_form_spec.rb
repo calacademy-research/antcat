@@ -21,6 +21,16 @@ describe Taxa::SaveFromForm do
       expect(taxon.type_name.name).to eq 'Betta major'
     end
 
+    it "saves a new subgenus" do
+      taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+      params = subgenus_params
+
+      taxon.save_from_form params
+      taxon.reload
+      expect(taxon.name.name).to eq 'Atta (Attacus)'
+      expect(taxon.protonym.name.name).to eq 'Attacus'
+    end
+
     it "sets the new taxon's state" do
       taxon = build_new_taxon_and_set_parent :genus, create_subfamily
       params = genus_params
@@ -287,6 +297,14 @@ def genus_params
   params[:name_attributes][:id] = create(:genus_name, name: 'Atta').id
   params[:protonym_attributes][:name_attributes][:id] = create(:genus_name, name: 'Betta').id
   params[:type_name_attributes] = { id: create(:species_name, name: 'Betta major').id }
+  params.deep_dup
+end
+
+def subgenus_params
+  params = taxon_params
+  params[:name_attributes][:id] = create(:subgenus_name, name: 'Atta (Attacus)').id
+  params[:protonym_attributes][:name_attributes][:id] = create(:genus_name, name: 'Attacus').id
+  params[:type_name_attributes] = { id: create(:species_name, name: 'Atta major').id }
   params.deep_dup
 end
 

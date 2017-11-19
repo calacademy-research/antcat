@@ -133,6 +133,10 @@ class Taxon < ApplicationRecord
     type.downcase
   end
 
+  def name_class
+    "#{type}Name".constantize
+  end
+
   def taxon_label
     name.epithet_with_fossil_html fossil?
   end
