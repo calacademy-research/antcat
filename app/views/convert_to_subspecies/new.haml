@@ -1,25 +1,20 @@
--@title = @taxon.name.epithet
+-@title = @taxon.name_cache
 -breadcrumb :convert_to_species, @taxon
 
 -content_for :head do
-  =javascript_include_tag 'widgets/panel'
-  =javascript_include_tag 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
-  =javascript_include_tag 'widgets/name_field'
-  =javascript_include_tag 'controllers/convert_to_subspecies/new'
+  =javascript_include_tag "taxon_select"
 
-=form_tag "/taxa/#{@taxon.id}/convert_to_subspecies", class: "convert_to_subspecies_form" do
+=form_tag "/taxa/#{@taxon.id}/convert_to_subspecies" do
   =render 'shared/errors_for', resource: @taxon
   .row
     .medium-6.columns
       %fieldset.fieldset
         %legend Convert species
-        =@taxon.name.try :name
+        =@taxon.name_with_fossil
 
       %fieldset.fieldset
         %legend to be a subspecies of
-        #new_species_id_field
-          =hidden_field_tag "new_species_id", @new_species.try(:id)
-          =render "name_fields/panel", name_string: @new_species.try(:name).try(:name), default_name_string: @default_name_string
+        =taxon_select_tag :new_species_id, params[:new_species_id], rank: 'Species'
 
       =button_tag type: "submit", class: "btn-saves has-spinner" do
         =spinner_icon + "Convert"

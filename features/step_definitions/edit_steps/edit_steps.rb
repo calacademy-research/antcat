@@ -1,3 +1,16 @@
+def select2(value, from:)
+  element_id = from
+
+  if value == '' # HACK because lazy.
+    first("##{element_id}").set ''
+    return
+  end
+
+  first("#select2-#{element_id}-container").click
+  first('.select2-search__field').set(value)
+  find(".select2-results__option", text: /#{value}/).click
+end
+
 # TODO replace with 'I press "Save"'.
 When(/^I save my changes$/) do
   step 'I press "Save"'
@@ -53,12 +66,6 @@ end
 # TODO probably include this in other steps so that it's always run.
 Then(/^the name button should contain "([^"]*)"$/) do |name|
   element = find '#name_field .display_button'
-  expect(element.text).to eq name
-end
-
-# Same as above for the convert to subspecies page.
-Then(/^the target name button should contain "([^"]*)"$/) do |name|
-  element = find '#new_species_id_field .display_button'
   expect(element.text).to eq name
 end
 
@@ -173,17 +180,14 @@ Then(/^the type name field should contain "([^"]*)"$/) do |name|
 end
 
 # convert species to subspecies
-When(/I click the new species field/) do
-  find('#new_species_id_field .display_button').click
-end
-
 Then(/^the new species field should contain "([^"]*)"$/) do |name|
-  element = find '#name_string'
-  expect(element.value).to eq name
+  taxon = Taxon.find_by(name_cache: name)
+  element = find '#new_species_id'
+  expect(element.value).to eq taxon.id.to_s
 end
 
 When(/^I set the new species field to "([^"]*)"$/) do |name|
-  step %{I fill in "name_string" with "#{name}"}
+  select2 name, from: 'new_species_id'
 end
 
 # auto_generated
