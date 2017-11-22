@@ -164,8 +164,8 @@ class TaxaController < ApplicationController
       params.require(:taxon).permit(
         :status,
         { name_attributes: [:id, :gender] },
-        { homonym_replaced_by_name_attributes: [:id] },
-        { current_valid_taxon_name_attributes: [:id] },
+        :homonym_replaced_by_id,
+        :current_valid_taxon_id,
         :incertae_sedis_in,
         :fossil,
         :nomen_nudum,

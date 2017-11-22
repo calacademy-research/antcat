@@ -97,16 +97,13 @@ end
 
 #### current valid taxon field
 Then(/the current valid taxon name should be "([^"]*)"$/) do |name|
-  element = find '#current_valid_taxon_name_field div.display'
-  expect(element.text).to eq name
-end
-
-When(/I click the current valid taxon name field/) do
-  find('#current_valid_taxon_name_field .display_button').click
+  taxon = Taxon.find_by(name_cache: name)
+  element = find '#taxon_current_valid_taxon_id'
+  expect(element.value).to eq taxon.id.to_s
 end
 
 When(/^I set the current valid taxon name to "([^"]*)"$/) do |name|
-  step %{I fill in "name_string" with "#{name}"}
+  select2 name, from: 'taxon_current_valid_taxon_id'
 end
 
 # status
@@ -118,26 +115,17 @@ When(/I set the status to "([^"]*)"/) do |status|
   step %{I select "#{status}" from "taxon_status"}
 end
 
-### homonym replaced by field
-Then(/^I should (not )?see the homonym replaced by field$/) do |should_not|
-  if should_not
-    expect(page).to have_no_css "#homonym_replaced_by_row"
-  else
-    expect(page).to have_css "#homonym_replaced_by_row"
-  end
-end
-
-Then(/the homonym replaced by name should be "([^"]*)"$/) do |name|
-  element = find '#homonym_replaced_by_name_field div.display'
-  expect(element.text).to eq name
-end
-
-When(/I click the homonym replaced by name field/) do
-  find('#homonym_replaced_by_name_field .display_button').click
+Then(/^the homonym replaced by name should be "([^"]*)"$/) do |name|
+  expected_value = if name == '(none)'
+                     ''
+                   else
+                     Taxon.find_by(name_cache: name).id.to_s
+                   end
+  expect(find('#taxon_homonym_replaced_by_id').value).to eq expected_value
 end
 
 When(/^I set the homonym replaced by name to "([^"]*)"$/) do |name|
-  step %{I fill in "name_string" with "#{name}"}
+  select2 name, from: 'taxon_homonym_replaced_by_id'
 end
 
 ### authorship

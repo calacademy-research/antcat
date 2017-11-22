@@ -19,8 +19,6 @@ class Taxa::SaveFromForm
       # the versions' `change_id`s will be nil.
       update_name                params.delete :name_attributes
       update_parent              params.delete :parent_name_attributes
-      update_current_valid_taxon params.delete :current_valid_taxon_name_attributes
-      update_homonym_replaced_by params.delete :homonym_replaced_by_name_attributes
       update_protonym            params.delete :protonym_attributes
       update_type_name           params.delete :type_name_attributes
       update_name_status_flags   params
@@ -76,20 +74,6 @@ class Taxa::SaveFromForm
     rescue Taxon::TaxonExists
       taxon.errors[:base] = "This name is in use by another taxon"
       raise
-    end
-
-    def update_current_valid_taxon current_valid_taxon_name_attributes
-      replacement_id = current_valid_taxon_name_attributes[:id]
-      replacement = replacement_id.present? ? Taxon.find_by(name_id: replacement_id) : nil
-
-      taxon.current_valid_taxon = replacement
-    end
-
-    def update_homonym_replaced_by homonym_replaced_by_name_attributes
-      replacement_id = homonym_replaced_by_name_attributes[:id]
-      replacement = replacement_id.present? ? Taxon.find_by(name_id: replacement_id) : nil
-
-      taxon.homonym_replaced_by = replacement
     end
 
     def update_protonym protonym_attributes

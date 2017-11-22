@@ -5,9 +5,15 @@
       %td.caption=form.label :status
       %td=form.select :status, Status.options_for_select
 
-    =render 'taxa/form/homonym_replaced_by_section', taxon: taxon, form: form
+    %tr
+      %td.caption.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
+      %td=form.taxon_select :homonym_replaced_by
+
     =render 'taxa/form/parent_section', taxon: taxon, form: form
-    =render 'taxa/form/current_valid_taxon_section', taxon: taxon, form: form
+
+    %tr
+      %td.caption=form.label :current_valid_taxon, 'Current valid name'
+      %td=form.taxon_select :current_valid_taxon
 
     %tr
       %td.caption.no-wrap

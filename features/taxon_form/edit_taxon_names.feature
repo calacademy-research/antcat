@@ -86,9 +86,7 @@ Feature: Editing a taxon's name, protonym name, or type name
     Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
 
     When I go to the edit page for "Atta major"
-    And I click the current valid taxon name field
     And I set the current valid taxon name to "Eciton minor"
-    And I press "OK"
     And I save my changes
     And I follow "Edit"
     Then the current valid taxon name should be "Eciton minor"
