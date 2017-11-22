@@ -21,6 +21,7 @@
 //= require jquery-ui/tabs
 //= require jquery-ui/tooltip
 
+//= require select2
 //= require twitter/typeahead
 
 // app/assets/javascripts
