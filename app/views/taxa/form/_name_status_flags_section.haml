@@ -1,7 +1,7 @@
-.name_status_flags_section.section
+.section
   %table.unstriped
     =render 'taxa/form/name_section', taxon: taxon, form: form, default_name_string: default_name_string
-    %tr.status_row
+    %tr
       %td.caption=form.label :status
       %td=form.select :status, Status.options_for_select
 
@@ -40,7 +40,7 @@
         =form.check_box :display
         =form.label :display, 'Display'
 
-    %tr.headline_notes_taxt_row
+    %tr
       %td.caption=form.label :headline_notes_taxt, 'Notes'
       %td#headline_notes_taxt_editor.taxt_editor
         =render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: TaxtConverter[taxon.headline_notes_taxt].to_editor_format

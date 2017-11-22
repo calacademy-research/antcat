@@ -8,8 +8,7 @@
           =form.label :biogeographic_region do
             Biogeographic region
             =tooltip_icon "type.biogeographic_region", scope: :taxa
-        %td.biogeographic_region
-          =form.select :biogeographic_region, biogeographic_region_options_for_select(taxon.biogeographic_region)
+        %td=form.select :biogeographic_region, biogeographic_region_options_for_select(taxon.biogeographic_region)
 
       %tr
         %td.caption
