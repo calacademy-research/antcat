@@ -62,8 +62,7 @@ class Taxa::SaveFromForm
       attributes = name_attributes
 
       attributes[:name_id] = attributes.delete :id
-      gender = attributes.delete :gender
-      taxon.name.gender = gender.blank? ? nil : gender
+      taxon.name.gender = attributes.delete :gender
       taxon.attributes = attributes
     end
 
@@ -115,9 +114,6 @@ class Taxa::SaveFromForm
 
     def update_name_status_flags params_after_initial_deletions
       attributes = params_after_initial_deletions
-
-      # Why is this a special case but not the other attributes?
-      attributes[:incertae_sedis_in] = nil unless attributes[:incertae_sedis_in].present?
 
       taxon.attributes = attributes
       taxon.headline_notes_taxt = TaxtConverter[attributes.delete :headline_notes_taxt].from_editor_format
