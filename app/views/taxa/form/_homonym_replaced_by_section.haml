@@ -1,8 +1,0 @@
-%tr#homonym_replaced_by_row
-  -form.object.homonym_replaced_by_name ||= form.object.homonym_replaced_by.try(:name)
-  -form.object.homonym_replaced_by_name ||= Name.new
-  =form.fields_for :homonym_replaced_by_name do |homonym_replaced_by_name_form|
-    =hidden_field_tag 'taxon[homonym_replaced_by_name_attributes][id]', form.object.homonym_replaced_by_name.id
-    %td.no-wrap=homonym_replaced_by_name_form.label :name, 'Replaced by'
-    %td#homonym_replaced_by_name_field
-      =render 'name_fields/panel', name_string: taxon.homonym_replaced_by_name.name

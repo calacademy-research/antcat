@@ -1,13 +1,19 @@
-.name_status_flags_section.section
+.section
   %table.unstriped
     =render 'taxa/form/name_section', taxon: taxon, form: form, default_name_string: default_name_string
-    %tr.status_row
+    %tr
       %td.caption=form.label :status
       %td=form.select :status, Status.options_for_select
 
-    =render 'taxa/form/homonym_replaced_by_section', taxon: taxon, form: form
+    %tr
+      %td.caption.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
+      %td=form.taxon_select :homonym_replaced_by
+
     =render 'taxa/form/parent_section', taxon: taxon, form: form
-    =render 'taxa/form/current_valid_taxon_section', taxon: taxon, form: form
+
+    %tr
+      %td.caption=form.label :current_valid_taxon, 'Current valid name'
+      %td=form.taxon_select :current_valid_taxon
 
     %tr
       %td.caption.no-wrap
@@ -40,7 +46,7 @@
         =form.check_box :display
         =form.label :display, 'Display'
 
-    %tr.headline_notes_taxt_row
+    %tr
       %td.caption=form.label :headline_notes_taxt, 'Notes'
       %td#headline_notes_taxt_editor.taxt_editor
         =render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: TaxtConverter[taxon.headline_notes_taxt].to_editor_format

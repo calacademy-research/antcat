@@ -115,7 +115,7 @@ describe Taxa::SaveFromForm do
       params = species_params
       replacement_homonym = create_genus
 
-      params[:homonym_replaced_by_name_attributes][:id] = replacement_homonym.name.id
+      params[:homonym_replaced_by_id] = replacement_homonym.id
       taxon.save_from_form params
       taxon.reload
       expect(taxon.homonym_replaced_by).to eq replacement_homonym
@@ -126,7 +126,7 @@ describe Taxa::SaveFromForm do
       params = species_params
       current_valid_taxon = create_genus
 
-      params[:current_valid_taxon_name_attributes][:id] = current_valid_taxon.name.id
+      params[:current_valid_taxon_id] = current_valid_taxon.id
       taxon.save_from_form params
       taxon.reload
       expect(taxon.current_valid_taxon).to eq current_valid_taxon
@@ -271,12 +271,12 @@ def taxon_params
     incertae_sedis_in:   '',
     fossil:              '0',
     nomen_nudum:         '0',
-    current_valid_taxon_name_attributes: { id: '' },
+    current_valid_taxon_id: '',
     unresolved_homonym:  '0',
     ichnotaxon:          '0',
     hong:                '0',
     headline_notes_taxt: '',
-    homonym_replaced_by_name_attributes: { id: '' },
+    homonym_replaced_by_id: '',
     protonym_attributes: {
       name_attributes:  { id: '' },
       fossil:           '0',

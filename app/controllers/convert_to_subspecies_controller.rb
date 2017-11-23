@@ -28,7 +28,7 @@ class ConvertToSubspeciesController < ApplicationController
       render :new and return
     end
 
-    @new_species = Taxon.find_by(name_id: params[:new_species_id])
+    @new_species = Taxon.find(params[:new_species_id])
 
     unless @new_species.kind_of? Species
       @taxon.errors.add :base, "The new parent must be of rank species."

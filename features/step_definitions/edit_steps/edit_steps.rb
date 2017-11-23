@@ -1,3 +1,16 @@
+def select2(value, from:)
+  element_id = from
+
+  if value == '' # HACK because lazy.
+    first("##{element_id}").set ''
+    return
+  end
+
+  first("#select2-#{element_id}-container").click
+  first('.select2-search__field').set(value)
+  find(".select2-results__option", text: /#{value}/).click
+end
+
 # TODO replace with 'I press "Save"'.
 When(/^I save my changes$/) do
   step 'I press "Save"'
@@ -56,12 +69,6 @@ Then(/^the name button should contain "([^"]*)"$/) do |name|
   expect(element.text).to eq name
 end
 
-# Same as above for the convert to subspecies page.
-Then(/^the target name button should contain "([^"]*)"$/) do |name|
-  element = find '#new_species_id_field .display_button'
-  expect(element.text).to eq name
-end
-
 # gender
 When(/I set the name gender to "([^"]*)"/) do |gender|
   step %{I select "#{gender}" from "taxon_name_attributes_gender"}
@@ -90,16 +97,13 @@ end
 
 #### current valid taxon field
 Then(/the current valid taxon name should be "([^"]*)"$/) do |name|
-  element = find '#current_valid_taxon_name_field div.display'
-  expect(element.text).to eq name
-end
-
-When(/I click the current valid taxon name field/) do
-  find('#current_valid_taxon_name_field .display_button').click
+  taxon = Taxon.find_by(name_cache: name)
+  element = find '#taxon_current_valid_taxon_id'
+  expect(element.value).to eq taxon.id.to_s
 end
 
 When(/^I set the current valid taxon name to "([^"]*)"$/) do |name|
-  step %{I fill in "name_string" with "#{name}"}
+  select2 name, from: 'taxon_current_valid_taxon_id'
 end
 
 # status
@@ -111,26 +115,17 @@ When(/I set the status to "([^"]*)"/) do |status|
   step %{I select "#{status}" from "taxon_status"}
 end
 
-### homonym replaced by field
-Then(/^I should (not )?see the homonym replaced by field$/) do |should_not|
-  if should_not
-    expect(page).to have_no_css "#homonym_replaced_by_row"
-  else
-    expect(page).to have_css "#homonym_replaced_by_row"
-  end
-end
-
-Then(/the homonym replaced by name should be "([^"]*)"$/) do |name|
-  element = find '#homonym_replaced_by_name_field div.display'
-  expect(element.text).to eq name
-end
-
-When(/I click the homonym replaced by name field/) do
-  find('#homonym_replaced_by_name_field .display_button').click
+Then(/^the homonym replaced by name should be "([^"]*)"$/) do |name|
+  expected_value = if name == '(none)'
+                     ''
+                   else
+                     Taxon.find_by(name_cache: name).id.to_s
+                   end
+  expect(find('#taxon_homonym_replaced_by_id').value).to eq expected_value
 end
 
 When(/^I set the homonym replaced by name to "([^"]*)"$/) do |name|
-  step %{I fill in "name_string" with "#{name}"}
+  select2 name, from: 'taxon_homonym_replaced_by_id'
 end
 
 ### authorship
@@ -173,17 +168,14 @@ Then(/^the type name field should contain "([^"]*)"$/) do |name|
 end
 
 # convert species to subspecies
-When(/I click the new species field/) do
-  find('#new_species_id_field .display_button').click
-end
-
 Then(/^the new species field should contain "([^"]*)"$/) do |name|
-  element = find '#name_string'
-  expect(element.value).to eq name
+  taxon = Taxon.find_by(name_cache: name)
+  element = find '#new_species_id'
+  expect(element.value).to eq taxon.id.to_s
 end
 
 When(/^I set the new species field to "([^"]*)"$/) do |name|
-  step %{I fill in "name_string" with "#{name}"}
+  select2 name, from: 'new_species_id'
 end
 
 # auto_generated

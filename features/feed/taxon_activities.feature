@@ -73,9 +73,7 @@ Feature: Feed (taxa)
 
     When I go to the edit page for "Camponotus dallatorei"
       And I follow "Convert to subspecies"
-      And I click the new species field
       And I set the new species field to "Camponotus alii"
-      And I press "OK"
       And I wait
       And I press "Convert"
     Then I should be on the catalog page for "Camponotus alii dallatorei"
