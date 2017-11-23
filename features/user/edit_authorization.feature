@@ -20,11 +20,10 @@ Feature: Editing a taxon with authorization constraints
     When I go to the catalog page for "Calyptites"
     Then I should see an Edit button
     And I should see "Review change"
-    And I should not see "Delete"
 
   Scenario: Seeing the delete button as superadmin
     Given there is a genus "Calyptites"
     And I log in as a superadmin
 
     When I go to the catalog page for "Calyptites"
-    Then I should see "Delete"
+    Then I should see "Delete..."

@@ -10,7 +10,7 @@ Feature: Feed (taxa)
       And there is a genus "Eciton"
     And activity tracking is enabled
 
-    When I go to the edit page for "Formicinae"
+    When I go to the catalog page for "Formicinae"
       And I follow "Add genus"
         And I click the name field
           And I set the name to "Atta"
@@ -35,7 +35,8 @@ Feature: Feed (taxa)
   Scenario: Edited taxon (with edit summary)
     Given I add a taxon for the feed
 
-    When I go to the edit page for "Antcatinae"
+    When I go to the catalog page for "Antcatinae"
+    And I follow "Edit"
     And I fill in "edit_summary" with "fix typo"
     And I save the taxon form
     And I wait
@@ -58,7 +59,7 @@ Feature: Feed (taxa)
       And there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
     And activity tracking is enabled
 
-    When I go to the edit page for "Solenopsis speccus subbus"
+    When I go to the catalog page for "Solenopsis speccus subbus"
       And I will confirm on the next step
       And I follow "Elevate to species"
     And I go to the activity feed
@@ -71,7 +72,7 @@ Feature: Feed (taxa)
       And there is a species "Camponotus alii" with genus "Camponotus"
     And activity tracking is enabled
 
-    When I go to the edit page for "Camponotus dallatorei"
+    When I go to the catalog page for "Camponotus dallatorei"
       And I follow "Convert to subspecies"
       And I set the new species field to "Camponotus alii"
       And I wait

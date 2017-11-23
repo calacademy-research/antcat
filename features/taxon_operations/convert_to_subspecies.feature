@@ -11,7 +11,7 @@ Feature: Converting a species to a subspecies
     Given there is a species "Camponotus dallatorei" with genus "Camponotus"
     And there is a species "Camponotus alii" with genus "Camponotus"
 
-    When I go to the edit page for "Camponotus dallatorei"
+    When I go to the catalog page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
     Then I should be on the new "Convert to subspecies" page for "Camponotus dallatorei"
 
@@ -30,7 +30,7 @@ Feature: Converting a species to a subspecies
     And there is a species "Camponotus dallatorei" with genus "Camponotus"
     And there is a species "Camponotus alii" with genus "Camponotus"
 
-    When I go to the edit page for "Camponotus dallatorei"
+    When I go to the catalog page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
     And I set the new species field to "Camponotus alii"
     Then the new species field should contain "Camponotus alii"
@@ -43,7 +43,7 @@ Feature: Converting a species to a subspecies
     Given there is a species "Camponotus alii"
     And there is a subspecies "Camponotus alii major" which is a subspecies of "Camponotus alii"
 
-    When I go to the edit page for "Camponotus alii"
+    When I go to the catalog page for "Camponotus alii"
     And I follow "Convert to subspecies"
     And I set the new species field to "Camponotus alii"
     Then the new species field should contain "Camponotus alii"
@@ -55,7 +55,7 @@ Feature: Converting a species to a subspecies
     Given there is a species "Camponotus dallatorei" with genus "Camponotus"
     And there is a species "Camponotus alii" with genus "Camponotus"
 
-    When I go to the edit page for "Camponotus dallatorei"
+    When I go to the catalog page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
     And I press "Convert"
     Then I should see "Please select a species"
@@ -63,5 +63,5 @@ Feature: Converting a species to a subspecies
   Scenario: Only show button if showing a species
     Given there is a subspecies "Camponotus dallatorei alii"
 
-    When I go to the edit page for "Camponotus dallatorei alii"
+    When I go to the catalog page for "Camponotus dallatorei alii"
     Then I should not see "Convert to subspecies"

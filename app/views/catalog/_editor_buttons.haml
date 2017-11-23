@@ -1,12 +1,15 @@
 .buttons_right
-  -if taxon.original_combination?
-    =link_to_edit_taxon taxon
-  -else
+  =link_to_edit_taxon taxon
+
+  -unless taxon.original_combination?
     =add_child_button taxon
     =add_tribe_button taxon
     =add_subgenus_button taxon
-    =link_to_edit_taxon taxon
-    =confirm_before_superadmin_delete_button taxon
+    =convert_to_subspecies_button taxon
+    =elevate_to_species_button taxon
+
+  =delete_unreferenced_taxon_button taxon
+  =confirm_before_superadmin_delete_button taxon
 
   =link_to "History", taxon_history_path(taxon), class: "btn-normal"
   =link_to "What Links Here", taxon_what_links_here_path(taxon), class: "btn-normal"

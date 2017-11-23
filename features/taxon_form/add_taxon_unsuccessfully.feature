@@ -4,14 +4,14 @@ Feature: Adding a taxon unsuccessfully
     And there is a subfamily "Formicinae"
 
   Scenario: Adding a genus without setting authorship reference
-    When I go to the edit page for "Formicinae"
+    When I go to the catalog page for "Formicinae"
     And I follow "Add genus"
     And I save my changes
     Then I should see "Protonym authorship reference can't be blank"
 
   @javascript
   Scenario: Having an error, but leave fields as user entered them
-    When I go to the edit page for "Formicinae"
+    When I go to the catalog page for "Formicinae"
     And I follow "Add genus"
     And I click the name field
       And I set the name to "Atta"
@@ -23,7 +23,7 @@ Feature: Adding a taxon unsuccessfully
     And the name button should contain "Atta"
 
   Scenario: Cancelling
-    When I go to the edit page for "Formicinae"
+    When I go to the catalog page for "Formicinae"
     And I follow "Add genus"
     And I follow "Cancel"
-    Then I should be on the edit page for "Formicinae"
+    Then I should be on the catalog page for "Formicinae"

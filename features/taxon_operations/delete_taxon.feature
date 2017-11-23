@@ -10,7 +10,7 @@ Feature: Deleting a taxon
   Scenario: Deleting a taxon that was just added
     Given a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
 
-    When I go to the edit page for "Atta"
+    When I go to the catalog page for "Atta"
     And I will confirm on the next step
     And I follow "Delete"
     Then I should be on the catalog page for "Dolichoderinae"
@@ -20,7 +20,7 @@ Feature: Deleting a taxon
     Given a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
     And I add a history item to "Dolichoderinae"
 
-    When I go to the edit page for "Atta"
+    When I go to the catalog page for "Atta"
     And I will confirm on the next step
     And I follow "Delete"
     Then I should be on the catalog page for "Dolichoderinae"
@@ -31,7 +31,7 @@ Feature: Deleting a taxon
     And there is a genus "Eciton"
     And I add a history item to "Eciton" that includes a tag for "Atta"
 
-    When I go to the edit page for "Atta"
+    When I go to the catalog page for "Atta"
     And I will confirm on the next step
     And I follow "Delete"
     Then I should see "Other taxa refer to this taxon, so it can't be deleted. "

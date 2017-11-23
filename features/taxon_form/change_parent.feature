@@ -239,9 +239,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     Given there is a species "Eciton major" with genus "Eciton"
 
     When I go to the catalog page for "Eciton major"
-    And I follow "Edit"
     And I follow "Add subspecies"
-    And I wait
     Then I should be on the new taxon page
     And I should not see the parent name field
 
