@@ -1,8 +1,0 @@
-%tr#current_valid_taxon_row
-  -form.object.current_valid_taxon_name ||= form.object.current_valid_taxon.try(:name)
-  -form.object.current_valid_taxon_name ||= Name.new
-  =form.fields_for :current_valid_taxon_name do |current_valid_taxon_name_form|
-    =hidden_field_tag 'taxon[current_valid_taxon_name_attributes][id]', form.object.current_valid_taxon_name.id
-    %td.caption=current_valid_taxon_name_form.label :name, 'Current valid name'
-    %td#current_valid_taxon_name_field
-      =render 'name_fields/panel', name_string: taxon.current_valid_taxon_name.name

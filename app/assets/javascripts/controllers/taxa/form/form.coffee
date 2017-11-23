@@ -22,8 +22,6 @@ class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
     @initialize_fields_section()
     @initialize_parent_section()
-    @initialize_current_valid_taxon_section()
-    @initialize_homonym_replaced_by_section()
     @initialize_events()
     @original_submit = null
     super
@@ -48,17 +46,6 @@ class AntCat.TaxonForm extends AntCat.Form
     else if @taxon_rank() == 'subspecies'
       options = {species_only: true}
     new AntCat.ParentSection options
-
-  initialize_current_valid_name_section: =>
-    new AntCat.CurrentValidNameSection()
-
-  initialize_homonym_replaced_by_section: =>
-    @homonym_replaced_by_name_row = $ 'tr#homonym_replaced_by_row'
-    new AntCat.HomonymReplacedBySection $('#homonym_replaced_by_name_field'), parent_form: @
-
-  initialize_current_valid_taxon_section: =>
-    @current_valid_taxon_name_row = $ 'tr#current_valid_taxon_row'
-    new AntCat.CurrentValidTaxonSection $('#current_valid_taxon_name_field'), parent_form: @
 
   initialize_events: =>
     @element.bind 'keydown', (event) ->
