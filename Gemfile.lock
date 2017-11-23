@@ -221,6 +221,7 @@ GEM
     multi_json (1.11.2)
     multi_test (0.1.2)
     mysql2 (0.4.3)
+    newrelic_rpm (4.6.0.338)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     orm_adapter (0.5.0)
@@ -413,6 +414,7 @@ DEPENDENCIES
   jquery-ui-rails (> 5.0)
   launchy
   mysql2
+  newrelic_rpm
   paper_trail (< 5.0)
   paperclip
   pry
