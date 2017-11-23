@@ -57,20 +57,20 @@ describe Publisher do
 
       it "parses" do
         results = described_class.create_with_place_form_string 'New York: Houghton Mifflin'
-        expect(results.to_s).to eq 'New York: Houghton Mifflin'
+        expect(results.display_name).to eq 'New York: Houghton Mifflin'
       end
     end
   end
 
-  describe "#to_s" do
+  describe "#display_name" do
     it "format name and place" do
       publisher = described_class.create! name: "Wiley", place: Place.create!(name: 'New York')
-      expect(publisher.to_s).to eq 'New York: Wiley'
+      expect(publisher.display_name).to eq 'New York: Wiley'
     end
 
     it "formats correctly even if there is no place" do
       publisher = described_class.create! name: "Wiley"
-      expect(publisher.to_s).to eq 'Wiley'
+      expect(publisher.display_name).to eq 'Wiley'
     end
   end
 end
