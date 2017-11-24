@@ -251,7 +251,6 @@ AntCat::Application.routes.draw do
   resources :database_scripts, only: [:index, :show] do
     member do
       get :source
-      get :regenerate
     end
   end
 

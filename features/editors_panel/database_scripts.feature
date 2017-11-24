@@ -1,7 +1,6 @@
 Feature: Database scripts
   Background:
     Given I am logged in
-    And all database script caches are cleared
     And I go to the database scripts page
 
   Scenario: Results when there are issues
@@ -41,15 +40,3 @@ Feature: Database scripts
 
     When I follow "Batiatus 2000"
     Then I should see "The missing reference!"
-
-  Scenario: Caching
-    When I follow "Orphaned protonyms"
-    Then I should see "Script runtime"
-    And I should not see "[used cache]"
-
-    When I reload the page
-    Then I should see "Script runtime: [used cache]"
-
-    When I follow "Regenerate"
-    Then I should see "Script runtime"
-    And I should not see "[used cache]"

@@ -8,25 +8,18 @@
   .small-9.columns.end
     .callout.secondary
       %p
-        Scripts are cached for
-        =distance_of_time_in_words DatabaseScriptsController::DEFAULT_EXPIRES_IN
-        excepts those tagged with
-        =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
-        which are cached until they are manually regenerated. Please be careful when regenerating scripts tagged with
-        =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
-        as it can make the site unresponsive.
-
-      %p
         Scripts tagged with
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::CSV_TAG]
         can be exported as CSV
         =surround "(", ")." do
           =link_to "Comma-Separated Values", "https://en.wikipedia.org/wiki/Comma-separated_values"
-        CSV exports are currently not cached.
-
       %p
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::REGRESSION_TEST_TAG]
         indicates that the script is related to something we used to have an issue with, and we just want to make sure no new similar issues appear. Most of these should be empty.
+      %p
+        Please be careful when generating scripts tagged with
+        =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
+        as it can make the site unresponsive.
 
 -[@other_scripts, @regression_tests].each do |scripts|
   %table.tablesorter.margin-bottom
@@ -35,11 +28,9 @@
         %th Topic area
         %th Script
         %th Tags
-        %th Cached
     %tbody
       -scripts.each do |script|
         %tr
           %td.shrink=script.decorate.format_topic_areas
           %td=link_to script.title, database_script_path(script)
           %td=script.decorate.format_tags
-          %td=script.decorate.cached_when
