@@ -1,3 +1,10 @@
+def already_opened_select2(value, from:)
+  element_id = from
+
+  find('.select2-search__field').set value
+  find(".select2-results__option", text: /#{value}/).click
+end
+
 When(/^I save the senior synonym$/) do
   step %{I press the senior synonym item "Save" button}
 end
@@ -27,13 +34,9 @@ When(/^I click "(.*?)" beside the first senior synonym$/) do |button|
 end
 
 When(/^I fill in the junior synonym name with "([^"]*)"$/) do |name|
-  within '.junior_synonyms_section .edit' do
-    step %{I fill in "name" with "#{name}"}
-  end
+  already_opened_select2 name, from: 'synonym_taxon_id'
 end
 
 When(/^I fill in the senior synonym name with "([^"]*)"$/) do |name|
-  within '.senior_synonyms_section .edit' do
-    step %{I fill in "name" with "#{name}"}
-  end
+  already_opened_select2 name, from: 'synonym_taxon_id'
 end

@@ -2,7 +2,7 @@
   .section_header.ui-widget-header.ui-corner-top
     .left=title
     .buttons.right
-      %button.submit.add.btn-tiny Add
+      %button.add.btn-tiny Add
     .clear
 
   .ui-dialog-content.ui-widget-content.ui-corner-bottom
@@ -10,5 +10,5 @@
     -synonyms.each do |synonym|
       .synonym_row
         =synonym[:name].html_safe
-        %button.submit.btn-tiny.delete.btn-delete{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym[:id]} Delete
-        %button.submit.btn-saves.btn-tiny.reverse_synonymy{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym[:id]} Reverse synonymy
+        %button.btn-tiny.delete.btn-delete{data: { taxon_id: taxon.id, synonym_id: synonym.id} } Delete
+        %button.btn-saves.btn-tiny.reverse_synonymy{data: { taxon_id: taxon.id, synonym_id: synonym.id} } Reverse synonymy

@@ -1,18 +1,18 @@
 class AntCat.SynonymsSection
   constructor: (@element, @options = {}) ->
-    AntCat.check 'SynonymsSection', '@element', @element
     @parent_form = @options.parent_form
-    AntCat.check_nil 'SynonymsSection', '@parent_form', @parent_form
     @initialize()
 
   initialize: =>
     @setup_add_buttons()
     @setup_delete_buttons()
     @setup_reverse_synonymy_buttons()
+    @taxonSelectify()
+
+  taxonSelectify: -> $('#synonym_taxon_id').taxonSelectify()
 
   setup_add_buttons: =>
     $add_button = @element.find 'button.add'
-    AntCat.check 'SynonymsSection.setup_add_buttons', '$add_button', $add_button
     $add_button.click => @add(); false
 
   setup_delete_buttons: =>
@@ -22,8 +22,7 @@ class AntCat.SynonymsSection
     @element.find('.synonym_row').hover(
       (event) =>
         $(event.target).closest('.synonym_row')
-          .select()
-          .find('.delete').show().end()
+          .select().find('.delete').show().end()
       (event) =>
         AntCat.deselect()
         $delete_buttons.hide()
@@ -36,15 +35,15 @@ class AntCat.SynonymsSection
     @element.find('.synonym_row').hover(
       (event) =>
         $(event.target).closest('.synonym_row')
-          .select()
-          .find('.reverse_synonymy').show().end()
+          .select().find('.reverse_synonymy').show().end()
       (event) =>
         AntCat.deselect()
         $reverse_synonymy_buttons.hide()
     )
 
   add: =>
-    form = new AntCat.SynonymsSectionForm @element.find('.nested_form'), on_open: @on_form_open, on_close: @on_form_close, on_success: @handle_success
+    form = new AntCat.SynonymsSectionForm @element.find('.synonym-form'),
+      on_open: @on_form_open, on_close: @on_form_close, on_success: @handle_success
     form.open()
 
   handle_success: (data) =>
@@ -80,39 +79,24 @@ class AntCat.SynonymsSection
     result
 
   on_form_open: =>
-    @options.parent_form.disable_buttons() if @options.parent_form
+    @taxonSelectify()
+    @element.find('#synonym_taxon_id').select2('open')
 
   on_form_close: =>
-    @options.parent_form.enable_buttons() if @options.parent_form
+    @element.find('#synonym_taxon_id').select2('destroy')
+    @element.find('#synonym_taxon_id').val('')
 
 class AntCat.SynonymsSectionForm extends AntCat.NestedForm
   constructor: ->
     super
-    @textbox = @element.find('input[type=text]')
-    AntCat.check 'SynonymsSectionForm', '@textbox', @textbox
+    @select = @element.find('#synonym_taxon_id')
     @error_message = @element.find('#error_message')
-    @setup_autocomplete()
 
   submit: =>
-    return false if @textbox.val().length == 0
+    return false if @select.val().length == 0
     @error_message.text ''
     super
 
   handle_application_error: (data) =>
     super
     @error_message.text data.error_message
-
-  setup_autocomplete: =>
-    return if AntCat.testing
-    @textbox.autocomplete(
-        autoFocus: true,
-        source: "/name_pickers/search?taxa_only=true",
-        minLength: 3)
-      .data('uiAutocomplete')._renderItem = @render_item
-
-  # this is required to display HTML in the list
-  render_item: (ul, item) =>
-    $("<li>")
-      .data('item.autocomplete', item)
-      .append('<a>' + item.label + '</a>')
-      .appendTo ul
