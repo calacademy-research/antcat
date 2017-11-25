@@ -4,8 +4,7 @@
 # on the same page as the form, and depends on the form when it shouldn't.
 
 $ ->
-  new AntCat.NotReallyTaxonForm $('.taxon_form'),
-    button_container: '> .fields_section .buttons_section'
+  new AntCat.NotReallyTaxonForm $('.not-really-taxon-form')
 
 class AntCat.NotReallyTaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
@@ -31,10 +30,6 @@ class AntCat.NotReallyTaxonForm extends AntCat.Form
   initialize_events: =>
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
-
-  taxon_id: =>
-    match = @form().attr('action').match /\d+/
-    match and match[0]
 
   ###### client functions
   replace_junior_and_senior_synonyms_section: (content) =>

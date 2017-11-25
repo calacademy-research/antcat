@@ -45,9 +45,8 @@
       -unless @taxon.new_record?
         =render 'taxa/form/buttons_taxon_operations', taxon: @taxon
 
-  -# These should be moved to outside of the form, but that will require a lot
-  -# of effort because the JavaScripts are tightly coupled to `AntCat.TaxonForm`.
-  -unless @taxon.new_record?
+-unless @taxon.new_record?
+  .not-really-taxon-form.ui-widget
     =render 'not_really_form', taxon: @taxon
 
 #duplicate_message.ui-icon.ui-icon-alert.duplicate-modal
