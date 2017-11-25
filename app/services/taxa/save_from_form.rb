@@ -17,22 +17,22 @@ class Taxa::SaveFromForm
       # There is no `UndoTracker#get_current_change_id` at this point, so if
       # anything in the "update_*" methods triggers a save for any reason,
       # the versions' `change_id`s will be nil.
-      update_name                params.delete :name_attributes
-      update_parent              params.delete :parent_name_attributes
-      update_protonym            params.delete :protonym_attributes
-      update_type_name           params.delete :type_name_attributes
-      update_name_status_flags   params
+      update_name                 params.delete :name_attributes
+      update_parent               params.delete :parent_name_attributes
+      update_protonym             params.delete :protonym_attributes
+      update_type_name            params.delete :type_name_attributes
+      update_remaining_attributes params
 
       # Different setup because non-persisted objects have no IDs,
-      # so we must update the change after saving `@taxon`.
+      # so we must update the change after saving `taxon`.
       if taxon.new_record?
         change = UndoTracker.setup_change taxon, :create
         taxon.save!
 
-        # PaperTrail is dumb. When a new object is created, it has no "object".
+        # PaperTrail does not create versions for new records.
         # So, if you undo the first change, and try to reify the previous one,
-        # you end up with no object! touch_with_version gives us one, but
-        # Just for the taxa, not the protonym or other changable objects.
+        # you end up with no object! `touch_with_version` gives us one, but
+        # just for the taxa, not the protonym or other changable objects.
         #
         # TODO move to an `after_create` callback, or we may want to not do
         # `touch_with_version` at all since it's not the PaperTrail way:
@@ -99,20 +99,18 @@ class Taxa::SaveFromForm
     def update_type_name type_name_attributes
       attributes = type_name_attributes
 
-      # ugly way to handle optional, but possibly pre-built, subobject
       if taxon.type_name && taxon.type_name.new_record? && (!attributes or attributes[:id] == '')
         taxon.type_name = nil
         return
       end
 
-      # Why do we hit this case?
       if attributes
         attributes[:type_name_id] = attributes.delete :id
         taxon.attributes = attributes
       end
     end
 
-    def update_name_status_flags params_after_initial_deletions
+    def update_remaining_attributes params_after_initial_deletions
       attributes = params_after_initial_deletions
 
       taxon.attributes = attributes
