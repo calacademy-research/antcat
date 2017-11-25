@@ -12,7 +12,7 @@ Feature: Changes
     And there is a subfamily "Formicinae"
     And there is a genus "Eciton"
 
-    When I go to the edit page for "Formicinae"
+    When I go to the catalog page for "Formicinae"
     And I follow "Add genus"
     And I click the name field
     And I set the name to "Atta"
