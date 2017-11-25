@@ -8,12 +8,12 @@ $.fn.taxonSelectify = ->
     theme: 'bootstrap'
     templateResult: (item) ->
       return if item.loading
-      "<small>##{item.id}</small> #{item.name_with_fossil} <small>(#{item.author_citation})</small>"
+      "<small>##{item.id}</small> #{item.name_with_fossil} <small>#{item.author_citation}</small>"
     templateSelection: (item) ->
       return '(none)' unless item.id
       nameWithFossil = $(selectElement).data 'name-with-fossil'
       authorCitation = $(selectElement).data 'author-citation'
-      "<small>##{item.id}</small> #{item.name_with_fossil || nameWithFossil} <small>(#{item.author_citation || authorCitation})</small>"
+      "<small>##{item.id}</small> #{item.name_with_fossil || nameWithFossil} <small>#{item.author_citation || authorCitation}</small>"
     escapeMarkup: (m) -> m
     minimumInputLength: 1
     placeholder: '???'

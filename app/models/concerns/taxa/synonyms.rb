@@ -62,7 +62,7 @@ module Taxa::Synonyms
       end
 
       self.class.find_by_sql <<-SQL.squish
-        SELECT synonyms.id, taxa.name_html_cache AS name
+        SELECT synonyms.id, taxa.name_html_cache AS name, taxa.id AS synonym_taxon_id
         FROM synonyms JOIN taxa ON synonyms.#{join_column} = taxa.id
         JOIN names ON taxa.name_id = names.id
         WHERE #{where_column} = #{id}
