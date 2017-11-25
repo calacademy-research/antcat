@@ -24,11 +24,6 @@ class Name < ApplicationRecord
   # TODO maybe raise?
   def change_parent _; end
 
-  # Only used in specs.
-  def quadrinomial?
-    name.split(' ').size == 4
-  end
-
   # TODO remove? Too magical.
   def to_s
     name

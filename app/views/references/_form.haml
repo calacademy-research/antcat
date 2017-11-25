@@ -153,6 +153,3 @@
 
       -cancel_link = reference.new_record? ? references_path : reference_path(reference)
       =link_to "Cancel", cancel_link, class: "btn-cancel"
-
-      =check_box_tag :make_default, true, !!params[:make_default]
-      =label_tag :make_default, 'Make default after save?'

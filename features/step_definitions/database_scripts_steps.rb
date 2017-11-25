@@ -1,8 +1,3 @@
-# This clears the cache in all envs. That's ok.
-Given(/^all database script caches are cleared$/) do
-  Rails.cache.delete_matched(/^db_scripts\//)
-end
-
 Given(/^there is a Lasius subspecies without a species$/) do
   subspecies = create_subspecies "Lasius specius subspecius", species: nil
   expect(subspecies.species).to be nil

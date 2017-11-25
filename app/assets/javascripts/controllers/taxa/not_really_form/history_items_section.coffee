@@ -42,6 +42,7 @@ class AntCat.HistoryItemPanel extends AntCat.Panel
 
     $(AntCat.BUTTONS.ADD_HISTORY_ITEM).disableButton()
     $(AntCat.BUTTONS.REORDER_HISTORY_ITEMS).disableButton()
+    $(AntCat.BUTTONS.SAVE_TAXON_FORM).disable()
     super
 
   @add_history_item: (form) =>
@@ -66,6 +67,7 @@ class AntCat.HistoryItemForm extends AntCat.NestedForm
   enableOtherButtonsAgain: ->
     $(AntCat.BUTTONS.ADD_HISTORY_ITEM).enableButton()
     $(AntCat.BUTTONS.REORDER_HISTORY_ITEMS).enableButton()
+    $(AntCat.BUTTONS.SAVE_TAXON_FORM).undisable()
 
   delete: =>
     return false unless confirm 'Do you want to delete this history item?'

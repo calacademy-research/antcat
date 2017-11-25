@@ -50,16 +50,6 @@ class ReferenceDecorator < ApplicationDecorator
     reference.set_cache generate_inline_citation, :inline_citation_cache
   end
 
-  # TODO rename.
-  def link_to_reference
-    # TODO replace with (requires invalidating all references):
-    # ```
-    # helpers.link_to "Show", helpers.reference_path(reference),
-    #   class: "btn-normal btn-tiny"
-    # ```
-    helpers.link_to reference.id, helpers.reference_path(reference)
-  end
-
   def linked_keey
     helpers.link_to reference.keey, helpers.reference_path(reference)
   end
@@ -89,7 +79,7 @@ class ReferenceDecorator < ApplicationDecorator
           inner_content = []
           inner_content << inline_citation_reference_keey_expansion_text
           inner_content << format_reference_document_link
-          inner_content << link_to_reference
+          inner_content << small_reference_link_button
           inner_content.reject(&:blank?).join(' ').html_safe
         end
       end
@@ -98,6 +88,12 @@ class ReferenceDecorator < ApplicationDecorator
     def inline_citation_reference_keey_expansion_text
       helpers.content_tag :span, formatted,
         class: "reference_keey_expansion_text", title: reference.keey
+    end
+
+    def small_reference_link_button
+      # TODO replace `reference.id` with "Show" (requires invalidating all references).
+      helpers.link_to reference.id, helpers.reference_path(reference),
+        class: "btn-normal btn-tiny"
     end
 
     # TODO try to move somewhere more general, even if it's only used here.
