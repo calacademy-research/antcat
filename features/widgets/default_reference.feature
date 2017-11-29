@@ -11,7 +11,6 @@ Feature: Using the default reference
     And the default reference is "Ward 2010"
 
     When I go to the catalog page for "Atta"
-    And I follow "Edit"
     And I follow "Add species"
     Then the authorship field should contain "Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
 

@@ -57,7 +57,7 @@ describe ArticleReferenceDecorator do
             %{<a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
             %{<a href="example.com">PDF</a>} +
             %{ } +
-            %{<a href="/references/#{reference.id}">#{reference.id}</a>} +
+            %{<a class="btn-normal btn-tiny" href="/references/#{reference.id}">#{reference.id}</a>} +
           %{</span>} +
         %{</span>}
       )

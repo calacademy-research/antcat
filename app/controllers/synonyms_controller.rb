@@ -7,7 +7,7 @@ class SynonymsController < ApplicationController
 
   def create
     taxon = Taxon.find params[:taxa_id]
-    synonym_taxon = Taxon.find_by_name params[:name]
+    synonym_taxon = Taxon.find(params[:synonym_taxon_id])
     is_junior = params[:junior]
 
     title = ''

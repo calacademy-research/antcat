@@ -1,4 +1,4 @@
--@title = "#{@reference.keey} - References"
+-@title = "#{unitalicize @reference.keey.html_safe} - References"
 -breadcrumb :reference_what_links_here, @reference
 
 =render "shared/what_links_here", table_refs: @table_refs

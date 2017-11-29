@@ -2,13 +2,16 @@
   .section_header.ui-widget-header.ui-corner-top
     .left=title
     .buttons.right
-      %button.submit.add.btn-tiny Add
+      %button.add.btn-tiny Add
     .clear
 
   .ui-dialog-content.ui-widget-content.ui-corner-bottom
     =render 'taxa/not_really_form/synonym_form', taxon: taxon, junior_or_senior: junior_or_senior
     -synonyms.each do |synonym|
+      -synonym_taxon = Taxon.find(synonym.synonym_taxon_id)
       .synonym_row
-        =synonym[:name].html_safe
-        %button.submit.btn-tiny.delete.btn-delete{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym[:id]} Delete
-        %button.submit.btn-saves.btn-tiny.reverse_synonymy{'data-taxon-id' => taxon.id, 'data-synonym-id' => synonym[:id]} Reverse synonymy
+        %small="##{synonym_taxon.id}"
+        =synonym_taxon.name_with_fossil
+        %small=synonym_taxon.author_citation
+        %button.btn-tiny.delete.btn-delete{data: { taxon_id: taxon.id, synonym_id: synonym.id} } Delete
+        %button.btn-saves.btn-tiny.reverse_synonymy{data: { taxon_id: taxon.id, synonym_id: synonym.id} } Reverse synonymy

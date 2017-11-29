@@ -80,33 +80,6 @@ describe Name do
     end
   end
 
-  describe "#quadrinomial?" do
-    it "just considers quadrinomials quadrinomials - nothing else" do
-      name = SubfamilyName.new name: 'Acidinae', epithet: 'Acidinae', epithets: nil
-      expect(name).not_to be_quadrinomial
-
-      name = TribeName.new name: 'Acidini', epithet: 'Acidini', epithets: nil
-      expect(name).not_to be_quadrinomial
-
-      name = GenusName.new name: 'Acus', epithet: 'Acus', epithets: nil
-      expect(name).not_to be_quadrinomial
-
-      name = SubgenusName.new name: 'Acus (Rex)', epithet: 'Rex', epithets: nil
-      expect(name).not_to be_quadrinomial
-
-      name = SpeciesName.new name: 'Acus major', epithet: 'major', epithets: 'major'
-      expect(name).not_to be_quadrinomial
-
-      name = SubspeciesName.new name: 'Acus major minor',
-        epithet: 'major minor', epithets: 'major minor'
-      expect(name).not_to be_quadrinomial
-
-      name = SubspeciesName.new name: 'Acus major minor medium',
-        epithet: 'medium', epithets: 'major minor medium'
-      expect(name).to be_quadrinomial
-    end
-  end
-
   describe ".find_by_name" do
     let(:atta_name) { create :name, name: 'Atta' }
     let(:taxon) { create_genus 'Atta' }

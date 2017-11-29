@@ -3,22 +3,6 @@ Feature: Editing tooltips
   I want to add and edit tooltips
   So that other editors can understand how to edit the catalog
 
-      # TEST: Click on (I), create a tooltip, save it, end up on origin page with new tooltip visible
-    # Test, go to tooltip creation directly, create a tooltip, save it, remain on tooltip page.
-    # TEST: click tooltip, go to edit screen. When done editing, warp to source page
-    # Test: go directly to edit, edit, see 'Tooltip was successfully updated.'
-    # test: click new (i) icon for existing tooltip, get same edit behaviour as clicking "?".
-    # Test: Click "?" icon when not superadmin, nothing happens.
-    # Test: Ensure that the window comes up with selector and key enabled
-    # Test: superadmins and admins should be able to edit tooltips. nobody else.
-    # Test: Create a tooltip with a page identifier, ensure it shows up
-    # Test: Create a tooltip with the same selector as above, diffierett page origin, ensure it does not show up
-    # Test: Ensure page renders when there are no tooltips
-    # Test: ensure no (i) icons, click http://localhost:3000/tooltips, Show tooltips helper, see (i) icons.
-    # Test: see (i) icons, click "Hide tooltips helper", see no (i) icons.
-    # Test: Make sure edit links are disabled if no edit privs? Does that even make sense? right now you only see
-    #       tooltips for edit-able pages.
-
   Background:
     Given I am logged in
 
@@ -62,18 +46,15 @@ Feature: Editing tooltips
     And I hover the tooltip next to the text "Hardcoded"
     Then I should see the tooltip text "Text used in the tooltip"
 
-  @javascript @no_travis
+  @javascript
   Scenario: Editing a selector-based tooltip
     Given this tooltip exists
       | key      | text      | selector | selector_enabled | scope        |
       | whatever | Typo oops | li.title | true             | widget_tests |
 
     When I go to the tooltips test page
+    And I refresh the page (JavaScript)
     Then I should not see the tooltip text "Typo oops"
-
-    And I wait
-    And I wait
-    And I wait
 
     When I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "Typo oops"
@@ -83,7 +64,7 @@ Feature: Editing tooltips
     And I fill in "tooltip[text]" with "A title"
     And I press "Update Tooltip"
     And I go to the tooltips test page
-    And I wait
+    And I refresh the page (JavaScript)
     Then I should not see the tooltip text "Typo oops"
     And I should not see the tooltip text "A title"
 
@@ -105,38 +86,37 @@ Feature: Editing tooltips
     When I go to the tooltips editing page
       And I follow "hardcoded"
       And I follow "Hide/show advanced"
+      And I wait
       And I uncheck "tooltip[key_enabled]"
     And I press "Update Tooltip"
     And I wait
     And I go to the tooltips test page
     Then I should not see any tooltips next to the text "Hardcoded"
 
-  @javascript @no_travis
+  @javascript
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
       | key      | text    | selector | selector_enabled | scope         |
       | whatever | A title | li.title | true             | widget_tests  |
 
     When I go to the tooltips test page
-    And I wait
-
-    And I wait
-    And I wait
-    When I hover the tooltip next to the element containing "Hook"
+    And I refresh the page (JavaScript)
+    And I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "A title"
 
     When I go to the tooltips editing page
-    And I wait
     And I follow "whatever"
     And I follow "Hide/show advanced"
+    And I wait
     And I uncheck "tooltip[selector_enabled]"
     And I press "Update Tooltip"
     And I wait
     And I go to the tooltips test page
+    And I refresh the page (JavaScript)
     Then I should not see any tooltips next to the element containing "Hook"
 
   @javascript
-  Scenario: Page based exclusion works.
+  Scenario: Page based exclusion works
     When I go to the tooltips editing page
     And I hover the tooltip next to the text "Tooltip text"
     Then I should see the tooltip text "Could not find tooltip with key 'text'"
@@ -154,7 +134,7 @@ Feature: Editing tooltips
     Then I should not see the tooltip text "Text used in the tooltip"
 
   @javascript
-  Scenario: toggle i helpers
+  Scenario: Toggle i helpers
     When I go to the tooltips editing page
     And I follow "Show tooltips helper"
     Then I should see "Hide tooltips helper"

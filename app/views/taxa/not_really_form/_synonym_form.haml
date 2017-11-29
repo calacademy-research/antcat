@@ -1,11 +1,8 @@
 -url = "/taxa/#{taxon.id}/synonyms?#{junior_or_senior}=1"
-.nested_form.edit.ui-corner-all{'data-action' => url, 'data-method' => 'post'}
+.synonym-form.ui-corner-all{data: { action: url, method: 'post' }}
+  %p#error_message
 
-  %ul.error_messages
-    %li#error_message
-
-  =text_field_tag :name
+  =taxon_select_tag :synonym_taxon_id, nil
   %span.buttons
     %button.submit.btn-saves Save
     %button.cancel.btn-cancel Cancel
-  .help Type the taxon name, or type characters in the name then choose a name from the drop-down list

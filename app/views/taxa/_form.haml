@@ -11,9 +11,10 @@
   =javascript_include_tag 'controllers/taxa/not_really_form/_bundle'
   =javascript_include_tag 'taxon_select'
 
+-# For name collision-related code in `AntCat.NameField` (`#parent_name_field`).
 -# These used to be `hidden_field_tag`s, but they have been been put
 -# in prison outside of the form to avoid sending non-relevant POST params.
-.used-in-javascripts{style: "display: none"}
+%div{style: "display: none"}
   =text_field_tag 'current_taxon_id', @taxon.id
   =text_field_tag 'taxon_name_string', @taxon.name_cache
   =text_field_tag 'species_id', @taxon.rank.to_s == "subspecies" ?  @taxon.species_id : true
@@ -24,8 +25,7 @@
 -method = @taxon.new_record? ? 'post' : 'put'
 =form_for @taxon, as: :taxon, url: url, method: method, html: {class: 'taxon_form ui-widget'} do |form|
 
-  -# These fields are used to pass pre-caulculated data to JavaScript,
-  -# and they're magically appended to the POST params.
+  -# Also for name collision-related code in `AntCat.NameField` (see above).
   =hidden_field_tag 'rank_to_create', params[:rank_to_create]
   =hidden_field_tag 'parent_id', params[:parent_id]
   =hidden_field_tag 'taxon_rank', @taxon.rank
@@ -42,12 +42,9 @@
     .buttons_section
       -# TODO `@possible_homonym` is not declared anywhere.
       =render 'taxa/form/buttons_save_section', taxon: @taxon, possible_homonym: @possible_homonym
-      -unless @taxon.new_record?
-        =render 'taxa/form/buttons_taxon_operations', taxon: @taxon
 
-  -# These should be moved to outside of the form, but that will require a lot
-  -# of effort because the JavaScripts are tightly coupled to `AntCat.TaxonForm`.
-  -unless @taxon.new_record?
+-unless @taxon.new_record?
+  .not-really-taxon-form.ui-widget
     =render 'not_really_form', taxon: @taxon
 
 #duplicate_message.ui-icon.ui-icon-alert.duplicate-modal

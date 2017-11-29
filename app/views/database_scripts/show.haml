@@ -21,11 +21,6 @@
         =link_to "current (antcat.org)", source_database_script_path(@script)
       =link_to "GitHub (dev)", @script.decorate.github_url
 
-      %br
-      Results generated
-      =@script.decorate.cached_when
-      =link_to "Regenerate", regenerate_database_script_path(@script), class: "btn-normal btn-tiny"
-
       -if @script.respond_to? :to_csv
         %br
         Export as:
@@ -33,8 +28,7 @@
 
 .row.column
   .callout
-    =@cached_render
+    =@rendered
 
 %small.right
-  Script runtime:
-  =@used_cached ? "[used cache]" : "#{@render_duration} seconds"
+  Script runtime: #{@render_duration} seconds

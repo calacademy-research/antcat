@@ -1,7 +1,7 @@
 class DatabaseScriptDecorator < Draper::Decorator
   GITHUB_MASTER_URL = "https://github.com/calacademy-research/antcat/blob/master"
 
-  delegate :tags, :topic_areas, :filename_without_extension, :cache_key
+  delegate :tags, :topic_areas, :filename_without_extension
 
   # Decorate class because we want to be able to call this without a script.
   def self.format_tags tags
@@ -10,14 +10,6 @@ class DatabaseScriptDecorator < Draper::Decorator
         helpers.raw tag.html_safe
       end
     end.join(" ").html_safe
-  end
-
-  def cached_when
-    if cached_at
-      "#{helpers.time_ago_in_words cached_at} ago"
-    else
-      helpers.dash
-    end
   end
 
   def format_tags
@@ -44,10 +36,4 @@ class DatabaseScriptDecorator < Draper::Decorator
       end
     end
     private_class_method :tag_css_class
-
-    def cached_at
-      entry = Rails.cache.send :read_entry, cache_key, {}
-      at = entry.instance_variable_get(:@created_at)
-      Time.at(at) if at
-    end
 end

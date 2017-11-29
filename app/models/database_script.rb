@@ -60,10 +60,6 @@ class DatabaseScript
     filename_without_extension
   end
 
-  def cache_key
-    "db_scripts/#{filename_without_extension}"
-  end
-
   protected
     def cached_results
       return @_results if defined? @_results

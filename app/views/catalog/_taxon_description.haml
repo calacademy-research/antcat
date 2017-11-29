@@ -5,6 +5,7 @@
   =taxon.name.gender
   -if taxon.waiting?
     %span.review_state This taxon has been changed; changes awaiting approval
+    =link_to_review_change taxon
 
 .small-margin-bottom
   =render "statistics", taxon: taxon

@@ -29,8 +29,6 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :create, edit_summary: params[:edit_summary]
-      make_default_reference! if params[:make_default]
-
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully created.
         <strong>#{view_context.link_to 'Back to the index', references_path}</strong>
@@ -47,8 +45,6 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :update, edit_summary: params[:edit_summary]
-      make_default_reference! if params[:make_default]
-
       redirect_to reference_path(@reference), notice: <<-MSG
         Reference was successfully updated.
         <strong>#{view_context.link_to 'Back to the index', references_path}</strong>.
@@ -97,10 +93,6 @@ class ReferencesController < ApplicationController
       @reference.citation_year = citation_year
       @reference.pages_in = "Pp. XX-XX in:"
       @reference.nesting_reference_id = reference_id
-    end
-
-    def make_default_reference!
-      DefaultReference.set session, @reference
     end
 
     def save

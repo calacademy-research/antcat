@@ -3,6 +3,6 @@ class BookReferenceDecorator < ReferenceDecorator
 
   private
     def format_citation
-      "#{h publisher}, #{h pagination}".html_safe
+      "#{h publisher.display_name}, #{h pagination}".html_safe
     end
 end
