@@ -40,18 +40,6 @@ Given(/^there is a species located in "([^"]+)"$/) do |locality|
   create :species, protonym: protonym
 end
 
-Given(/^there is a species with verbatim type locality "([^"]+)"$/) do |locality|
-  create :species, verbatim_type_locality: locality
-end
-
-Given(/^there is a species with type specimen repository "([^"]+)"$/) do |repository|
-  create :species, type_specimen_repository: repository
-end
-
-Given(/^there is a species with type specimen code "([^"]+)"$/) do |code|
-  create :species, type_specimen_code: code
-end
-
 Given(/^there is a species with biogeographic region "([^"]+)"$/) do |biogeographic_region|
   create :species, biogeographic_region: biogeographic_region
 end

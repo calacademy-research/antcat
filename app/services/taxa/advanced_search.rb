@@ -46,14 +46,12 @@ module Taxa
       search_term = "%#{params[:locality]}%"
       query = query.where('protonyms.locality LIKE ?', search_term) if params[:locality]
 
-      search_term = "%#{params[:verbatim_type_locality]}%"
-      query = query.where('verbatim_type_locality LIKE ?', search_term) if params[:verbatim_type_locality]
-
-      search_term = "%#{params[:type_specimen_repository]}%"
-      query = query.where('type_specimen_repository LIKE ?', search_term) if params[:type_specimen_repository]
-
-      search_term = "%#{params[:type_specimen_code]}%"
-      query = query.where('type_specimen_code LIKE ?', search_term) if params[:type_specimen_code]
+      search_term = "%#{params[:type_information]}%"
+      query = query.where(<<-SQL, search_term: search_term) if params[:type_information]
+        published_type_information LIKE :search_term
+          OR additional_type_information LIKE :search_term
+          OR type_notes LIKE :search_term
+      SQL
 
       search_term = "%#{params[:name]}%"
       query = query.where('taxa.name_cache LIKE ?', search_term) if params[:name]

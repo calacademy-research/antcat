@@ -21,15 +21,12 @@ describe SpeciesGroupTaxon do
     let(:new_comb) { build_new_taxon :species }
     let(:old_comb) do
       stub_request(:any, "http://antcat.org/1.pdf").to_return body: "not 404"
-      create :species, verbatim_type_locality: "Bolivia",
-        biogeographic_region: "Neotropic", type_specimen_repository: "I keep it in a box",
-        type_specimen_code: "999", type_specimen_url: "http://antcat.org/1.pdf"
+      create :species, biogeographic_region: "Neotropic"
     end
 
     it "copies relevant fields from `old_comb`" do
       # We want to copy these.
-      attributes = [:protonym, :verbatim_type_locality, :biogeographic_region,
-        :type_specimen_repository, :type_specimen_code, :type_specimen_url]
+      attributes = [:protonym, :biogeographic_region]
 
       # Confirm factory.
       attributes.each { |attribute| expect(old_comb.send attribute).to be_present }
