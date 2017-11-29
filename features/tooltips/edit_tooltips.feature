@@ -62,18 +62,15 @@ Feature: Editing tooltips
     And I hover the tooltip next to the text "Hardcoded"
     Then I should see the tooltip text "Text used in the tooltip"
 
-  @javascript @no_travis
+  @javascript
   Scenario: Editing a selector-based tooltip
     Given this tooltip exists
       | key      | text      | selector | selector_enabled | scope        |
       | whatever | Typo oops | li.title | true             | widget_tests |
 
     When I go to the tooltips test page
+    And I refresh the page (JavaScript)
     Then I should not see the tooltip text "Typo oops"
-
-    And I wait
-    And I wait
-    And I wait
 
     When I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "Typo oops"
@@ -83,7 +80,7 @@ Feature: Editing tooltips
     And I fill in "tooltip[text]" with "A title"
     And I press "Update Tooltip"
     And I go to the tooltips test page
-    And I wait
+    And I refresh the page (JavaScript)
     Then I should not see the tooltip text "Typo oops"
     And I should not see the tooltip text "A title"
 
@@ -105,34 +102,33 @@ Feature: Editing tooltips
     When I go to the tooltips editing page
       And I follow "hardcoded"
       And I follow "Hide/show advanced"
+      And I wait
       And I uncheck "tooltip[key_enabled]"
     And I press "Update Tooltip"
     And I wait
     And I go to the tooltips test page
     Then I should not see any tooltips next to the text "Hardcoded"
 
-  @javascript @no_travis
+  @javascript
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
       | key      | text    | selector | selector_enabled | scope         |
       | whatever | A title | li.title | true             | widget_tests  |
 
     When I go to the tooltips test page
-    And I wait
-
-    And I wait
-    And I wait
-    When I hover the tooltip next to the element containing "Hook"
+    And I refresh the page (JavaScript)
+    And I hover the tooltip next to the element containing "Hook"
     Then I should see the tooltip text "A title"
 
     When I go to the tooltips editing page
-    And I wait
     And I follow "whatever"
     And I follow "Hide/show advanced"
+    And I wait
     And I uncheck "tooltip[selector_enabled]"
     And I press "Update Tooltip"
     And I wait
     And I go to the tooltips test page
+    And I refresh the page (JavaScript)
     Then I should not see any tooltips next to the element containing "Hook"
 
   @javascript

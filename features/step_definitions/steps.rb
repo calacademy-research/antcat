@@ -166,3 +166,7 @@ end
 And(/^I wait for the "success" message$/) do
   step 'I should see "uccess"' # "[Ss]uccess(fully)?"
 end
+
+When(/^I refresh the page \(JavaScript\)$/) do
+  page.evaluate_script 'window.location.reload()'
+end
