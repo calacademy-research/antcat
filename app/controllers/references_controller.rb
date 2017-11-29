@@ -137,7 +137,7 @@ class ReferencesController < ApplicationController
         :nesting_reference_id,
         :citation,
         :author_names_string,
-        { document_attributes: [:id, :url, :public] }
+        { document_attributes: [:id, :file, :url, :public] }
       )
     end
 
