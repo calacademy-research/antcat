@@ -11,6 +11,7 @@ module Types
 
       formatted = Types::ExpandInstitutionAbbreviations[content]
       formatted = Types::LinkSpecimenIdentifiers[formatted]
+      formatted = TaxtPresenter[formatted].to_html
       formatted.html_safe
     end
 

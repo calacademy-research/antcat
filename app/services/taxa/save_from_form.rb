@@ -91,6 +91,11 @@ class Taxa::SaveFromForm
 
       taxon.attributes = attributes
       taxon.headline_notes_taxt = TaxtConverter[attributes.delete :headline_notes_taxt].from_editor_format
+
+      taxon.published_type_information = TaxtConverter[attributes.delete :published_type_information].from_editor_format
+      taxon.additional_type_information = TaxtConverter[attributes.delete :additional_type_information].from_editor_format
+      taxon.type_notes = TaxtConverter[attributes.delete :type_notes].from_editor_format
+
       if attributes[:type_taxt]
         taxon.type_taxt = TaxtConverter[attributes.delete :type_taxt].from_editor_format
       end
