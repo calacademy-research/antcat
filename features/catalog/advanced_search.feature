@@ -70,33 +70,6 @@ Feature: Searching the catalog
     Then I should see "1 result"
     And I should see "Africa" within the search results
 
-  Scenario: Searching for verbatim type locality
-    Given there is a species with verbatim type locality "Africa"
-    And there is a species with verbatim type locality "Zimbabwe"
-
-    When I fill in "verbatim_type_locality" with "Africa"
-    And I press "Go" in the search section
-    Then I should see "1 result"
-    And I should see "Africa" within the search results
-
-  Scenario: Searching for type specimen repository
-    Given there is a species with type specimen repository "CZN"
-    And there is a species with type specimen repository "IAD"
-
-    When I fill in "type_specimen_repository" with "CZN"
-    And I press "Go" in the search section
-    Then I should see "1 result"
-    And I should see "CZN" within the search results
-
-  Scenario: Searching for type specimen code
-    Given there is a species with type specimen code "1234"
-    And there is a species with type specimen code "4321"
-
-    When I fill in "type_specimen_code" with "1234"
-    And I press "Go" in the search section
-    Then I should see "1 result"
-    And I should see "1234" within the search results
-
   Scenario: Searching for biogeographic_region
     Given there is a species with biogeographic region "Malagasy"
     And there is a species with biogeographic region "Afrotropic"
@@ -127,6 +100,13 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     Then I should see "1 result"
     And I should see "Africa" within the search results
+
+  Scenario: Searching in type fields
+    Given there is a species with published type information "Madagascar: Prov. Toliara"
+
+    When I fill in "type_information" with "Toliara"
+    And I press "Go" in the search section
+    Then I should see "1 result"
 
   Scenario: Searching for a form
     Given there is a species with forms "w.q."

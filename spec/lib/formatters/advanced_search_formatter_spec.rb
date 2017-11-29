@@ -8,7 +8,7 @@ describe Formatters::AdvancedSearchFormatter do
   subject(:formatter) { FormattersAdvancedSearchFormatterTestClass.new }
 
   describe "#format_type_localities" do
-    let(:taxon) { create_genus verbatim_type_locality: 'Verbatim type locality' }
+    let(:taxon) { create :genus }
 
     it "doesn't crash (regression)" do
       formatter.format_type_localities taxon

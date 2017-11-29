@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171022020001) do
+ActiveRecord::Schema.define(version: 20171022020010) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -123,6 +123,12 @@ ActiveRecord::Schema.define(version: 20171022020001) do
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "data_migrations", id: false, force: :cascade do |t|
+    t.string "version", limit: 255, null: false
+  end
+
+  add_index "data_migrations", ["version"], name: "unique_data_migrations", unique: true, using: :btree
 
   create_table "feedbacks", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -397,6 +403,9 @@ ActiveRecord::Schema.define(version: 20171022020001) do
     t.string   "origin",                          limit: 255
     t.boolean  "display",                                       default: true
     t.integer  "hol_id",                          limit: 4
+    t.text     "published_type_information",      limit: 65535
+    t.text     "additional_type_information",     limit: 65535
+    t.text     "type_notes",                      limit: 65535
   end
 
   add_index "taxa", ["current_valid_taxon_id"], name: "index_taxa_on_current_valid_taxon_id", using: :btree

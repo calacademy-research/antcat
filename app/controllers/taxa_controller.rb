@@ -198,10 +198,9 @@ class TaxaController < ApplicationController
         :type_fossil,
         :type_taxt,
         :biogeographic_region,
-        :verbatim_type_locality,
-        :type_specimen_repository,
-        :type_specimen_code,
-        :type_specimen_url
+        :published_type_information,
+        :additional_type_information,
+        :type_notes
       )
     end
 

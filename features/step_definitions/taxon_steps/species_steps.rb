@@ -68,6 +68,10 @@ Given(/^there is a species "([^"]*)"(?: described by "([^"]*)")? which is a juni
   make_author_of_taxon junior, author_name if author_name
 end
 
+Given(/^there is a species with published type information "([^"]+)"$/) do |published_type_information|
+  create :species, published_type_information: published_type_information
+end
+
 def make_author_of_taxon taxon, author_name
   author = create :author
   author_name = create :author_name, name: author_name, author: author

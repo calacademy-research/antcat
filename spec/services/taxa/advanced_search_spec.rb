@@ -171,67 +171,6 @@ describe Taxa::AdvancedSearch do
       end
     end
 
-    describe "Searching for verbatim type locality" do
-      let!(:eciton) { create_species verbatim_type_locality: 'San Pedro' }
-      let!(:indonesian_ant) { create_species verbatim_type_locality: 'Indonesia' }
-
-      it "only returns taxa with that verbatim_type_locality" do
-        expect(described_class[verbatim_type_locality: 'San Pedro']).to eq [eciton]
-      end
-
-      context "when no taxa has that verbatim_type_locality" do
-        it "returns nothing" do
-          expect(described_class[verbatim_type_locality: 'The Bronx']).to be_empty
-        end
-      end
-
-      it "matches substrings" do
-        expect(described_class[verbatim_type_locality: 'Pedro']).to eq [eciton]
-      end
-    end
-
-    describe "Searching for type specimen repository" do
-      it "only returns taxa with that type specimen repository" do
-        create_species type_specimen_repository: 'IDD'
-        eciton = create_species type_specimen_repository: 'DDI'
-
-        expect(described_class[type_specimen_repository: 'DDI']).to eq [eciton]
-      end
-
-      it "returns nothing if nothing has that type_specimen_repository" do
-        create_species
-        expect(described_class[type_specimen_repository: 'ISC']).to be_empty
-      end
-
-      it "matches substrings" do
-        create_species type_specimen_repository: 'III'
-        eciton = create_species type_specimen_repository: 'ABCD'
-
-        expect(described_class[type_specimen_repository: 'BC']).to eq [eciton]
-      end
-    end
-
-    describe "Searching for type specimen code" do
-      it "only returns taxa with that type specimen code" do
-        create_species type_specimen_code: 'IDD'
-        eciton = create_species type_specimen_code: 'DDI'
-
-        expect(described_class[type_specimen_code: 'DDI']).to eq [eciton]
-      end
-
-      it "returns nothing if nothing has that type_specimen_code" do
-        create_species
-        expect( described_class[type_specimen_code: 'ISC']).to be_empty
-      end
-
-      it "matches substrings" do
-        create_species type_specimen_code: 'III'
-        eciton = create_species type_specimen_code: 'ABCD'
-
-        expect(described_class[type_specimen_code: 'BC']).to eq [eciton]
-      end
-    end
-
     describe "Searching for biogeographic region" do
       it "only returns taxa with that biogeographic_region" do
         create_species biogeographic_region: 'Australasia'
@@ -256,6 +195,20 @@ describe Taxa::AdvancedSearch do
       it "doesn't match substrings" do
         atta = create_species biogeographic_region: 'Australasia'
         expect(described_class[biogeographic_region: 'Aust']).not_to eq [atta]
+      end
+    end
+
+    describe "Searching type fields", :focus do
+      let!(:one) { create :species, published_type_information: 'one' }
+      let!(:two) { create :species, additional_type_information: 'one two' }
+      let!(:three) { create :species, type_notes: 'one two three' }
+
+      before { create :species, published_type_information: 'unrelated' }
+
+      it "returns taxa with type fields matching the query" do
+        expect(described_class[type_information: 'one']).to match_array [one, two, three]
+        expect(described_class[type_information: 'two']).to match_array [two, three]
+        expect(described_class[type_information: 'three']).to match_array [three]
       end
     end
 

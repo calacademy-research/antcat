@@ -99,12 +99,6 @@ AntCat::Application.routes.draw do
     end
   end
 
-  scope module: :types do
-    controller :type_specimen_repositories, path: "/types/type_specimen_repositories" do
-      get :autocomplete
-    end
-  end
-
   scope module: :protonyms do
     controller :localities, path: "/protonyms/localities" do
       get :autocomplete

@@ -25,12 +25,7 @@ class SpeciesGroupTaxon < Taxon
     # TODO method does two different things; extract to new method.
     self.name = SpeciesGroupName.name_for_new_comb old_comb, new_comb_parent
 
-    copy_attributes_from old_comb, :protonym,
-                                   :verbatim_type_locality,
-                                   :biogeographic_region,
-                                   :type_specimen_repository,
-                                   :type_specimen_code,
-                                   :type_specimen_url
+    copy_attributes_from old_comb, :protonym, :biogeographic_region
   end
 
   private
