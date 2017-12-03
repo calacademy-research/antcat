@@ -8,13 +8,14 @@ module Autocomplete
 
     def call
       search_results.map do |reference|
-        search_query = if keyword_params.size == 1 # size 1 = no keyword params were matched
+        search_query = if keyword_params.size == 1 # size 1 == no keyword params were matched.
                          reference.title
                        else
                          format_autosuggest_keywords reference, keyword_params
                        end
         {
           search_query: search_query,
+          id: reference.id,
           title: reference.title,
           author: reference.author_names_string,
           year: reference.citation_year
@@ -27,7 +28,14 @@ module Autocomplete
       attr_reader :search_query
 
       def search_results
-        ::References::Search::Fulltext[search_options]
+        exact_id_match || ::References::Search::Fulltext[search_options]
+      end
+
+      def exact_id_match
+        return unless search_query =~ /^\d{6} ?$/
+
+        match = Reference.find_by id: search_query
+        [match] if match
       end
 
       def search_options

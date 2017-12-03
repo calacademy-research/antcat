@@ -282,7 +282,7 @@ def taxon_params
       sic:              '0',
       locality:         '',
       authorship_attributes: {
-        reference_attributes: { id: reference.id },
+        reference_id: reference.id,
         pages: '',
         forms: '',
         notes_taxt: ''

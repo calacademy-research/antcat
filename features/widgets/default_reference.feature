@@ -12,7 +12,7 @@ Feature: Using the default reference
 
     When I go to the catalog page for "Atta"
     And I follow "Add species"
-    Then the authorship field should contain "Ward, P.S. 2010. Annals of Ants. Psyche 1:1."
+    Then the authorship should contain the reference "Ward 2010"
 
   Scenario: Using the default reference in the reference popup
     Given the default reference is "Ward 2010"

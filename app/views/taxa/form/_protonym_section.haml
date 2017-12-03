@@ -28,11 +28,7 @@
             =authorship_form.label :reference do
               Authorship
               =tooltip_icon "authorship", scope: :taxa
-          %td
-            #authorship_field
-              =render 'reference_fields/show', references: nil, reference: authorship_form.object.reference
-            =hidden_field_tag 'taxon[protonym_attributes][authorship_attributes][reference_attributes][id]', authorship_form.object.reference.try(:id),
-                id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
+          %td=authorship_form.reference_select :reference
 
         %tr
           %td.caption
