@@ -30,6 +30,7 @@ class Author < ActiveRecord::Base
   # simply refers to the name with the oldest ID.
   # TODO maybe we want a way to reorder these.
   def first_author_name_name
+    return '[no author name]' unless names.exists? # TODO validate author has at least one author name.
     names.first.name
   end
 

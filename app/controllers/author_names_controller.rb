@@ -24,11 +24,7 @@ class AuthorNamesController < ApplicationController
 
   # TODO move to model and use `destroy`.
   def destroy
-    @author_name.delete
-    # Remove the author if there are no more author names that reference it
-    unless AuthorName.find_by(author_id: @author)
-      @author.delete
-    end
+    @author_name.destroy
     render json: nil
   end
 
