@@ -22,8 +22,8 @@
           =protonym_form.check_box :sic
           =protonym_form.label :sic
 
-      %tr
-        =protonym_form.fields_for :authorship do |authorship_form|
+      =protonym_form.fields_for :authorship do |authorship_form|
+        %tr
           %td.caption
             =authorship_form.label :reference do
               Authorship
@@ -34,28 +34,28 @@
             =hidden_field_tag 'taxon[protonym_attributes][authorship_attributes][reference_attributes][id]', authorship_form.object.reference.try(:id),
                 id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
 
+        %tr
+          %td.caption
+            =authorship_form.label :pages do
+              Pages
+              =tooltip_icon "pages", scope: :taxa
+          %td=authorship_form.text_field :pages
+
+        -unless taxon.is_a? Tribe
           %tr
             %td.caption
-              =authorship_form.label :pages do
-                Pages
-                =tooltip_icon "pages", scope: :taxa
-            %td=authorship_form.text_field :pages
-
-          -unless taxon.is_a? Tribe
-            %tr
-              %td.caption
-                =authorship_form.label :forms do
-                  Forms
-                  =tooltip_icon "forms", scope: :taxa
-              %td=authorship_form.text_field :forms
-
-            %tr
-              %td.caption
-                =protonym_form.label :locality do
-                  Locality
-                  =tooltip_icon "locality", scope: :taxa
-              %td=protonym_form.text_field :locality
+              =authorship_form.label :forms do
+                Forms
+                =tooltip_icon "forms", scope: :taxa
+            %td=authorship_form.text_field :forms
 
           %tr
-            %td.caption=form.label :notes_taxt, 'Notes'
-            %td=render 'shared/taxt_editor/template', name: 'taxon[protonym_attributes][authorship_attributes][notes_taxt]', content: taxon.protonym.authorship.notes_taxt, id: :taxon_protonym_attributes_authorship_attributes_notes_taxt
+            %td.caption
+              =protonym_form.label :locality do
+                Locality
+                =tooltip_icon "locality", scope: :taxa
+            %td=protonym_form.text_field :locality
+
+        %tr
+          %td.caption=form.label :notes_taxt, 'Notes'
+          %td=render 'shared/taxt_editor/template', name: 'taxon[protonym_attributes][authorship_attributes][notes_taxt]', content: taxon.protonym.authorship.notes_taxt, id: :taxon_protonym_attributes_authorship_attributes_notes_taxt
