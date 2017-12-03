@@ -9,7 +9,7 @@ $ ->
 $.fn.undisable = -> @.removeClass('ui-state-disabled').removeAttr('disabled')
 $.fn.disable = -> @.addClass('ui-state-disabled').attr('disabled', 'true')
 
-# Like above, but without user jQuery UI classes.
+# Like above, but without jQuery UI classes.
 $.fn.enableButton = -> @removeClass "disabled"
 $.fn.disableButton = -> @addClass "disabled"
 

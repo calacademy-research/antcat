@@ -1,31 +1,42 @@
-# TODO more Rails.
-
 class AuthorNamesController < ApplicationController
   before_action :authenticate_editor
-  before_action :set_author_name, only: [:update, :destroy]
-  before_action :set_author, only: [:create, :destroy]
+  before_action :authenticate_superadmin, only: [:destroy]
+  before_action :set_author_name, only: [:update, :edit, :destroy]
+  before_action :set_author, only: [:new, :create, :index]
 
-  def create
-    author_name = AuthorName.create author: @author, name: params[:author_name]
-    author_name.touch_with_version if author_name.errors.empty?
-    render_json author_name
+  def new
+    @author_name = AuthorName.new author: @author
   end
 
-  def update
-    @author_name.name = params[:author_name]
+  def create
+    @author_name = AuthorName.new author: @author
+    @author_name.attributes = author_name_params
+
     if @author_name.save
-      render_json @author_name
+      @author_name.touch_with_version
+      redirect_to author_path(@author_name.author), notice: 'Author name was successfully created.'
     else
-      # TODO Not 100% true; can also fail for other reasons.
-      error = { error: "Name already exists" }
-      render json: error, status: :conflict
+      render :new
     end
   end
 
-  # TODO move to model and use `destroy`.
+  def edit
+  end
+
+  def update
+    if @author_name.update author_name_params
+      redirect_to author_path(@author_name.author), notice: 'Author name was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
   def destroy
-    @author_name.destroy
-    render json: nil
+    if @author_name.destroy
+      redirect_to author_path(@author_name.author), notice: 'Author name was successfully deleted.'
+    else
+      redirect_to author_path(@author_name.author), warning: 'Could not delete author name.'
+    end
   end
 
   private
@@ -37,12 +48,7 @@ class AuthorNamesController < ApplicationController
       @author = Author.find params[:author_id]
     end
 
-    def render_json author_name
-      json = {
-        content: render_to_string(partial: 'author_names/panel', locals: { author_name: author_name }),
-        id: author_name.id,
-        success: author_name.errors.empty?
-      }
-      render json: json
+    def author_name_params
+      params.require(:author_name).permit(:name)
     end
 end

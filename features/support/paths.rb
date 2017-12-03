@@ -56,8 +56,8 @@ module NavigationHelpers
       merge_authors_path
     when /^the authors page$/
       authors_path
-    when /^the author edit page for "(.*)"$/
-      "/authors/#{Author.find_by_names($1).first.id}/edit"
+    when /^the author page for "(.*)"$/
+      "/authors/#{Author.find_by_names($1).first.id}"
 
     # Editor's Panel
     when /^the Editor's Panel$/
