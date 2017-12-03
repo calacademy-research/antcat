@@ -7,7 +7,7 @@
   -site_notices = SiteNotice.unread_by current_user
   .row
     .small-12.columns
-      .callout.small-12.medium-6{class: "secondary", "data-closable" => ""}
+      .callout.small-12.medium-6{class: "secondary", data: { closable: true }}
         %h5 Unread site notices
         %hr
         -site_notices.each do |site_notice|
@@ -19,11 +19,11 @@
             %br
             =link_comments_section site_notice
           %hr
-        %button.close-button{"aria-label" => "Dismiss alert", "data-close" => "", type: "button"}
+        %button.close-button{"aria-label" => "Dismiss alert", data: { close: true }, type: "button"}
           %span{"aria-hidden" => "true"} &times;
 
         .left=link_to "See all", site_notices_path
         .right
-          %button#dismiss_site_notices.btn-white{"data-close" => ""} Dismiss
-          %button#mark_all_site_notices_as_read.btn-normal{"data-close" => ""} Mark all as read
+          %button#dismiss_site_notices.btn-white{data: { close: true }} Dismiss
+          %button#mark_all_site_notices_as_read.btn-normal{data: { close: true }} Mark all as read
         .clear
