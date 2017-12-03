@@ -34,7 +34,7 @@
 
   =render 'shared/errors_for', resource: @taxon
 
-  .fields_section.section.ui-widget-content.ui-corner-all
+  .section.ui-widget-content.ui-corner-all
     =render 'taxa/form/name_status_flags_section', taxon: @taxon, form: form, default_name_string: @default_name_string
     =render 'taxa/form/protonym_section',          taxon: @taxon, form: form
     =render 'taxa/form/type_section',              taxon: @taxon, form: form

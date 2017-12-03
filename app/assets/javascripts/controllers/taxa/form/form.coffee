@@ -1,6 +1,5 @@
 $ ->
-  new AntCat.TaxonForm $('.taxon_form'),
-    button_container: '> .fields_section .buttons_section'
+  new AntCat.TaxonForm $('.taxon_form'), button_container: '.buttons_section'
 
 class AntCat.ProtonymField extends AntCat.NameField
   constructor: ($parent_element, @name_field, @options = {}) ->
