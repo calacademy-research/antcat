@@ -12,7 +12,7 @@ setupReferenceAutocompletionSwitcher = ->
   setSearchBoxesVisibility()
 
   # Enable autocompletion for the authors names search box.
-  setupAuthorAutocomplete $(AUTHOR_SEARCH_BOX)
+  window.setupAuthorAutocomplete $(AUTHOR_SEARCH_BOX)
 
   # Set change handler so that the correct search box is shown after selecting.
   $("#search_type").change -> setSearchBoxesVisibility()

@@ -17,6 +17,6 @@ setupReferenceTypeTabs = ->
     $('#selected_tab').val(selectedTab)
 
 setupAutocompletion = ->
-  setupAuthorAutocomplete $('#reference_author_names_string')
-  setupReferenceEditJournalAutocomplete $('#reference_journal_name')
-  setupReferenceEditPublisherAutocomplete $('#reference_publisher_string')
+  window.setupAuthorAutocomplete $('#reference_author_names_string')
+  window.setupReferenceEditJournalAutocomplete $('#reference_journal_name')
+  window.setupReferenceEditPublisherAutocomplete $('#reference_publisher_string')
