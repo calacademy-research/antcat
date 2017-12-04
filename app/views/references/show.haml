@@ -65,7 +65,7 @@
         -if @reference.is_a? BookReference
           %tr
             %th Publisher
-            %td=@reference.publisher
+            %td=@reference.publisher.display_name
 
         -if @reference.is_a? NestedReference
           %tr
