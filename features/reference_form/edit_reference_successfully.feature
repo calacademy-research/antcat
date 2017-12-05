@@ -6,7 +6,6 @@ Feature: Edit reference successfully
   Background:
     Given I am logged in
 
-  @javascript
   Scenario: Edit a reference
     Given this reference exists
       | authors | citation   | title | year |
@@ -54,7 +53,6 @@ Feature: Edit reference successfully
     And I press "Save"
     Then I should see "Fisher, B. 2010. Ants. New Jersey."
 
-  @javascript
   Scenario: Specifying the document URL
     Given there is a reference
 

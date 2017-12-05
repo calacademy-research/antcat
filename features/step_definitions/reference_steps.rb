@@ -219,8 +219,8 @@ end
 
 # HACK to avoid testing with JavaScript enabled.
 Then(/^the "(.*?)" tab should be selected$/) do |tab_name|
-  selected_tab_value = find("input#selected_tab").value.to_i
-  selected_tab_name = %w(Article Book Nested Other)[selected_tab_value]
+  selected_tab_index = find("input#selected_tab_index").value.to_i
+  selected_tab_name = %w(Article Book Nested Other)[selected_tab_index]
 
   expect(selected_tab_name).to eq tab_name
 end

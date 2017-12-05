@@ -89,7 +89,6 @@ Feature: Compare revisions
     When I follow "History"
     Then I should see "Current version"
 
-  @javascript
   Scenario: Comparing reference revisions
     When I go to the references page
     And I follow "New"

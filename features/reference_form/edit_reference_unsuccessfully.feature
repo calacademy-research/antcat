@@ -18,7 +18,6 @@ Feature: Edit reference unsuccessfully
     And I should see "Publisher can't be blank"
     And I should see "Pagination can't be blank"
 
-  @javascript
   Scenario: Clearing an article reference's fields
     Given there is an article reference
 
@@ -51,7 +50,6 @@ Feature: Edit reference unsuccessfully
     And I should see "Year can't be blank"
     And I should see "Citation can't be blank"
 
-  @javascript
   Scenario: Specifying the document URL when it doesn't exist
     Given there is a reference
 
@@ -72,7 +70,6 @@ Feature: Edit reference unsuccessfully
     And I press "Save"
     Then I should see "Nesting reference can't point to itself"
 
-  @javascript
   Scenario: Cancelling edit after an error
     Given this reference exists
       | authors   | year | title                    | citation      |

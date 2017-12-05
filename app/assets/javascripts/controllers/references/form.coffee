@@ -1,5 +1,3 @@
-# TODO clear irrelevant attributes before save?
-
 $ ->
   setupReferenceTypeTabs()
   setupAutocompletion()
@@ -8,13 +6,19 @@ setupReferenceTypeTabs = ->
   $('.tabs').tabs() # Tabify.
 
   # Activates the relevant tab for this reference.
-  selected_tab = $('#selected_tab').val()
-  $('.tabs').tabs("option", "active", selected_tab)
+  selected_tab_index = $('#selected_tab_index').val()
+  $('.tabs').tabs("option", "active", selected_tab_index)
 
   # Include reference type in the form before submitting
   $('form.edit_reference, form.new_reference').submit ->
-    selectedTab = $.trim($('.ui-tabs-active').text())
-    $('#selected_tab').val(selectedTab)
+    selectedTabText = $.trim($('.ui-tabs-active').text())
+    selectedTab = switch selectedTabText
+                    when 'Article' then 'ArticleReference'
+                    when 'Book'    then 'BookReference'
+                    when 'Nested'  then 'NestedReference'
+                    when 'Other'   then 'UnknownReference'
+
+    $('#reference_type').val(selectedTab)
 
 setupAutocompletion = ->
   window.setupAuthorAutocomplete $('#reference_author_names_string')

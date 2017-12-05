@@ -11,7 +11,7 @@ class ReferencesController < ApplicationController
   end
 
   def new
-    @reference = Reference.new
+    @reference = ArticleReference.new
 
     if params[:nesting_reference_id]
       build_nested_reference params[:nesting_reference_id], params[:citation_year]
@@ -100,25 +100,21 @@ class ReferencesController < ApplicationController
     end
 
     def new_reference
-      case params[:selected_tab]
-      when 'Article' then ArticleReference.new
-      when 'Book'    then BookReference.new
-      when 'Nested'  then NestedReference.new
-      else                UnknownReference.new
-      end
+      reference_type_from_params.new
     end
 
     def set_reference_type
-      type = case params[:selected_tab]
-             when 'Article' then ArticleReference
-             when 'Book'    then BookReference
-             when 'Missing' then MissingReference
-             when 'Nested'  then NestedReference
-             when 'Other'   then UnknownReference
-             end
-      reference = @reference.becomes type
-      reference.type = type
+      reference = @reference.becomes reference_type_from_params
+      reference.type = reference_type_from_params
       reference
+    end
+
+    def reference_type_from_params
+      reference_type = params[:reference_type]
+      raise "#{reference_type} is not supported" unless reference_type.in?(
+        ['ArticleReference', 'BookReference', 'MissingReference', 'NestedReference', 'UnknownReference']
+      )
+      reference_type.constantize
     end
 
     def reference_params

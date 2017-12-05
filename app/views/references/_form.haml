@@ -5,10 +5,11 @@
 
 -reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.display_name) : ''
 -reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
--selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
+-selected_tab_index = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
 =form_for reference.becomes(Reference) do |f|
-  =hidden_field_tag :selected_tab, selected_tab
+  =hidden_field_tag :selected_tab_index, selected_tab_index
+  =hidden_field_tag :reference_type, reference.class.name
   =hidden_field_tag :ignore_possible_duplicate, ignore_possible_duplicate
   =render 'shared/errors_for', resource: reference
 
