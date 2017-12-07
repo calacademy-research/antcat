@@ -217,10 +217,7 @@ Given(/^there is a taxon with that reference as its protonym's reference$/) do
   taxon.protonym.authorship.save!
 end
 
-# HACK to avoid testing with JavaScript enabled.
 Then(/^the "(.*?)" tab should be selected$/) do |tab_name|
-  selected_tab_index = find("input#selected_tab_index").value.to_i
-  selected_tab_name = %w(Article Book Nested Other)[selected_tab_index]
-
-  expect(selected_tab_name).to eq tab_name
+  tab_name = 'Unknown' if tab_name == 'Other'
+  find("#tabs-#{tab_name.downcase}.is-active")
 end

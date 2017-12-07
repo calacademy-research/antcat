@@ -18,7 +18,6 @@ Feature: Feed (references)
     Then I should see "Archibald added the reference Ward & Bolton, 1981" and no other feed items
     And I should see the edit summary "for Lasius niger"
 
-  @javascript
   Scenario: Edited reference (with edit summary)
     Given there is a reference for the feed with state "reviewed"
 
