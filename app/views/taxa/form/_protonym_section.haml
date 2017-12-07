@@ -1,8 +1,7 @@
-.protonym_section.section
-  .section_header.ui-widget-header.ui-corner-top
-    Protonym
+.protonym_section.callout
+  %h5.callout-header Protonym
   =form.fields_for :protonym do |protonym_form|
-    %table.ui-dialog-content.ui-widget-content.ui-corner-bottom.unstriped
+    %table.unstriped.no-border
       %tr
         =protonym_form.fields_for :name do |name_form|
           -if name_form.object.new_record?

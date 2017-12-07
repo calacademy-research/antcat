@@ -1,9 +1,7 @@
-.junior_and_senior_synonyms_section.section
-  .section_header.ui-widget-header.ui-corner-top
-    .left
-      Synonyms
-    .clear
-  .ui-dialog-content.ui-widget-content.ui-corner-bottom
+.callout
+  .junior_and_senior_synonyms_section
+    %h5.callout-header Synonyms
+
     .container.left
       .junior_synonyms_section
         =render 'taxa/not_really_form/synonyms_section', taxon: taxon, title: 'Junior synonyms', synonyms: taxon.junior_synonyms_with_names, junior_or_senior: 'junior'
