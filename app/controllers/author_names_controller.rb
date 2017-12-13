@@ -13,7 +13,7 @@ class AuthorNamesController < ApplicationController
     @author_name.attributes = author_name_params
 
     if @author_name.save
-      @author_name.touch_with_version
+      @author_name.paper_trail.touch_with_version
       redirect_to author_path(@author_name.author), notice: 'Author name was successfully created.'
     else
       render :new
