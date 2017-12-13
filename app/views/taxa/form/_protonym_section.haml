@@ -39,7 +39,7 @@
               =authorship_form.label :pages do
                 Pages
                 =tooltip_icon "pages", scope: :taxa
-            %td.pages=authorship_form.text_field :pages
+            %td=authorship_form.text_field :pages
 
           -unless taxon.is_a? Tribe
             %tr
@@ -47,14 +47,14 @@
                 =authorship_form.label :forms do
                   Forms
                   =tooltip_icon "forms", scope: :taxa
-              %td.forms=authorship_form.text_field :forms
+              %td=authorship_form.text_field :forms
 
             %tr
               %td.caption
                 =protonym_form.label :locality do
                   Locality
                   =tooltip_icon "locality", scope: :taxa
-              %td.locality=protonym_form.text_field :locality
+              %td=protonym_form.text_field :locality
 
           %tr
             %td.caption=form.label :notes_taxt, 'Notes'
