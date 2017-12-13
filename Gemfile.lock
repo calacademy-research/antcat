@@ -108,7 +108,7 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     colorize (0.7.7)
-    concurrent-ruby (1.0.1)
+    concurrent-ruby (1.0.5)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     cucumber (2.1.0)
@@ -226,8 +226,8 @@ GEM
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     orm_adapter (0.5.0)
-    paper_trail (5.2.3)
-      activerecord (>= 3.0, < 6.0)
+    paper_trail (6.0.2)
+      activerecord (>= 4.0, < 5.2)
       request_store (~> 1.1)
     paperclip (4.3.1)
       activemodel (>= 3.2.0)
@@ -417,7 +417,7 @@ DEPENDENCIES
   launchy
   mysql2
   newrelic_rpm
-  paper_trail (< 6.0)
+  paper_trail (< 7.0)
   paperclip
   pry
   quiet_assets
