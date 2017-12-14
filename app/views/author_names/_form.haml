@@ -1,0 +1,7 @@
+=form_for author_name, url: url do |f|
+  =render "shared/errors_for", resource: author_name
+  .row
+    .medium-6.columns.end
+      =f.label :name
+      =f.text_field :name
+      =f.button 'Save', type: :submit, class: "btn-saves"

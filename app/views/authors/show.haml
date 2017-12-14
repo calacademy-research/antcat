@@ -1,12 +1,9 @@
 -@title = @author.first_author_name_name
 -breadcrumb :author, @author
 
-.buttons_right
-  =link_to "Edit", edit_author_path(@author), class: "btn-normal"
-
 .clearfix
 
-%div.float-right.right{data: { sticky_container: true }}
+.float-right.right{data: { sticky_container: true }}
   .sticky{data: { sticky: true, stick_to: "bottom"}}
     #quick-links.callout.secondary.float-right
       %h6.center-text Quick links for author
@@ -71,8 +68,22 @@
 
 .row
   .small-6.columns.end
-    #names.callout
-      %h5 Names belonging to author
-      %ul
-        -@author.names.each do |name|
-          %li=name.name
+    %h5
+      Names belonging to author
+      -if user_can_edit?
+        =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-normal'
+    #names.callout.margin-bottom
+      %table
+        %thead
+          %tr
+            %th Author name
+            %th
+        %tbody
+          -@author.names.each do |author_name|
+            %tr
+              %td=author_name.name
+              %td
+                -if user_can_edit?
+                  =link_to 'Edit', edit_author_name_path(author_name), class: "btn-normal"
+                -if user_is_superadmin?
+                  =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?"  }, class: "btn-delete"

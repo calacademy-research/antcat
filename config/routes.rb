@@ -21,11 +21,11 @@ AntCat::Application.routes.draw do
     end
   end
 
-  resources :authors, only: [:index, :show, :edit] do
+  resources :authors, only: [:index, :show] do
     collection do
       get :autocomplete
     end
-    resources :author_names, only: [:update, :create, :destroy]
+    resources :author_names, except: :show, shallow: true
   end
   resources :merge_authors, only: [:index, :merge]
   post '/merge_authors/merge', to: 'merge_authors#merge'

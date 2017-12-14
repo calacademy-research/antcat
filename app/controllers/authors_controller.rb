@@ -1,6 +1,6 @@
 class AuthorsController < ApplicationController
   before_action :authenticate_editor, except: [:index, :show, :autocomplete]
-  before_action :set_author, only: [:show, :edit]
+  before_action :set_author, only: [:show]
 
   layout "references"
 
@@ -12,9 +12,6 @@ class AuthorsController < ApplicationController
     @references = @author.references.paginate(page: params[:references_page])
     @taxa = @author.described_taxa.order("references.year, references.id")
       .paginate(page: params[:taxa_page])
-  end
-
-  def edit
   end
 
   def autocomplete
