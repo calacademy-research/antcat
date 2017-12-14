@@ -8,13 +8,13 @@
 -advanced_css = "is-active" unless @is_quick_search
 -quick_css = "is-active" if @is_quick_search
 
-%ul#search-tabs.tabs{"data-tabs" => ""}
+%ul#search-tabs.tabs{data: { tabs: true }}
   %li.tabs-title{class: advanced_css}
     =link_to "Advanced", "#advanced_search"
   %li.tabs-title{class: quick_css}
     =link_to "Quick", "#quick_search"
 
-.tabs-content{"data-tabs-content" => "search-tabs"}
+.tabs-content{data: { tabs_content: "search-tabs" }}
   #advanced_search.tabs-panel{class: advanced_css}
     =render "advanced_search_form"
 

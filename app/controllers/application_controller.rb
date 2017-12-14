@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   before_action :save_location, :set_user_for_feed
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_paper_trail_whodunnit
 
   # CORS protection defeat - we're read only, so this is okay.
   # This kind of thing can't stand when we have a write level API

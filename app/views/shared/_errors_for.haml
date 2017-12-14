@@ -1,7 +1,7 @@
 -if resource.errors.present?
-  .callout.alert.small-12.medium-6{"data-closable" => ""}
+  .callout.alert.small-12.medium-6{data: { closable: true }}
     %ul.error_messages
       -resource.errors.full_messages.each do |error|
         %li=sanitize error
-    %button.close-button{"aria-label" => "Dismiss alert", "data-close" => "", type: "button"}
+    %button.close-button{"aria-label" => "Dismiss alert", data: { close: true }, type: "button"}
       %span{"aria-hidden" => "true"} &times;

@@ -1,15 +1,14 @@
 %input{type: :hidden, name: :possible_homonym, id: :possible_homonym, value: possible_homonym ? 'true' : nil}
 
-.left_buttons
-  .row
-    .medium-3.columns
-      =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+.row
+  .medium-3.columns
+    =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
 
-    .medium-3.columns.end
-      -save_button_text = possible_homonym ? 'Save homonym' : 'Save'
-      =button_tag type: 'submit', id: "save-taxon-form", class: 'btn-saves has-spinner' do
-        =spinner_icon + save_button_text
+  .medium-3.columns.end
+    -save_button_text = possible_homonym ? 'Save homonym' : 'Save'
+    =button_tag type: 'submit', id: "save-taxon-form", class: 'btn-saves has-spinner' do
+      =spinner_icon + save_button_text
 
-      -cancel_link = taxon.new_record? ? catalog_path(params[:parent_id]) : catalog_path(taxon)
-      =link_to 'Cancel', cancel_link, class: 'btn-cancel'
-      =tooltip_icon :cancel, scope: :taxa
+    -cancel_link = taxon.new_record? ? catalog_path(params[:parent_id]) : catalog_path(taxon)
+    =link_to 'Cancel', cancel_link, class: 'btn-cancel'
+    =tooltip_icon :cancel, scope: :taxa

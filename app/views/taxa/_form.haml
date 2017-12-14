@@ -23,7 +23,7 @@
 
 -url = @taxon.new_record? ?  '/taxa': "/taxa/#{@taxon.id}"
 -method = @taxon.new_record? ? 'post' : 'put'
-=form_for @taxon, as: :taxon, url: url, method: method, html: {class: 'taxon_form ui-widget'} do |form|
+=form_for @taxon, as: :taxon, url: url, method: method, html: { class: 'taxon_form' } do |form|
 
   -# Also for name collision-related code in `AntCat.NameField` (see above).
   =hidden_field_tag 'rank_to_create', params[:rank_to_create]
@@ -34,7 +34,7 @@
 
   =render 'shared/errors_for', resource: @taxon
 
-  .fields_section.section.ui-widget-content.ui-corner-all
+  .callout
     =render 'taxa/form/name_status_flags_section', taxon: @taxon, form: form, default_name_string: @default_name_string
     =render 'taxa/form/protonym_section',          taxon: @taxon, form: form
     =render 'taxa/form/type_section',              taxon: @taxon, form: form
@@ -44,7 +44,7 @@
       =render 'taxa/form/buttons_save_section', taxon: @taxon, possible_homonym: @possible_homonym
 
 -unless @taxon.new_record?
-  .not-really-taxon-form.ui-widget
+  .not-really-taxon-form
     =render 'not_really_form', taxon: @taxon
 
 #duplicate_message.ui-icon.ui-icon-alert.duplicate-modal

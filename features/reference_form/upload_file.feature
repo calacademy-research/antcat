@@ -3,7 +3,10 @@ Feature: Upload a file
   I want to upload the document for a reference
   So that people can easily read it
 
+  # TODO: Test never passed for the right reason. Documents hosted on AntCat's
+  # servers are cleared, but not files stored on S3.
   Scenario: Clearing the URL after uploading the file
+    Given PENDING
     Given I am logged in
     And there is a reference
     And that the entry has a URL that's on our site

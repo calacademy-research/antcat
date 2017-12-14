@@ -1,12 +1,11 @@
 Feature: Edit reference successfully
-  As Phil Ward
+  As an editor
   I want to change previously entered references
   So that I can fix mistakes
 
   Background:
     Given I am logged in
 
-  @javascript
   Scenario: Edit a reference
     Given this reference exists
       | authors | citation   | title | year |
@@ -32,29 +31,22 @@ Feature: Edit reference successfully
     And I press "Save"
     Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
 
-  @javascript
   Scenario: See the correct tab initially (book reference)
     Given this book reference exists
       | authors    | title | citation                | year |
       | Fisher, B. | Ants  | New York: Wiley, 22 pp. | 2010 |
 
     When I go to the edit page for the most recent reference
-    And I fill in "reference_publisher_string" with "New York: Harcourt"
-    And I press "Save"
-    Then I should see "Fisher, B. 2010. Ants. New York: Harcourt, 22 pp."
+    Then the "Book" tab should be selected
 
-  @javascript
   Scenario: See the correct tab initially (unknown reference)
     Given this unknown reference exists
       | authors    | title | citation | year |
       | Fisher, B. | Ants  | New York | 2010 |
 
     When I go to the edit page for the most recent reference
-    And I fill in "reference_citation" with "New Jersey"
-    And I press "Save"
-    Then I should see "Fisher, B. 2010. Ants. New Jersey."
+    Then the "Other" tab should be selected
 
-  @javascript
   Scenario: Specifying the document URL
     Given there is a reference
 
@@ -63,21 +55,6 @@ Feature: Edit reference successfully
     And I press "Save"
     Then I should see a PDF link
 
-  #Scenario: Setting a document's publicness
-    #Given there is a reference
-    #And that the entry has a URL that's on our site
-    #When I go to the references page
-    #Then I should see a "PDF" link
-    #When I log in
-    #And I go to the references page
-    #And I follow "edit" in the first reference
-    #And I check "reference_document_attributes_public" in the first reference
-    #And I press "Save"
-    #And I log out
-    #And I go to the references page
-    #Then I should see a "PDF" link
-
-  @javascript
   Scenario: Edit a nested reference
     Given this reference exists
       | authors    | citation   | year | title |

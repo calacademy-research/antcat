@@ -1,17 +1,16 @@
 -max_number ||= nil
 
 -unless taxon.is_a?(Family) || taxon.is_a?(Subspecies)
-  .section
-    .section_header.ui-widget-header.ui-corner-top
-      .left Children
-      .clear
-    .ui-dialog-content.ui-widget-content.ui-corner-bottom
+  .callout
+    %h5.callout-header Children
+    %ul#children-list.no-bullet
       -if max_number && taxon.children.count > max_number
-        Too many children to show here.
-        =link_to "Show child list", show_children_taxa_path(taxon), class: "btn-normal btn-tiny"
-        (open in a new tab or make sure you have saved first)
+        %li
+          Too many children to show here.
+          =link_to "Show child list", show_children_taxa_path(taxon), class: "btn-normal btn-tiny"
+          (open in a new tab or make sure you have saved first)
       -else
         -sort_by_status_and_name(taxon.children.includes(:name)).each do |child|
-          =child.decorate.link_to_taxon
-          =raw "(" + child.decorate.taxon_status + ")"
-          %br
+          %li
+            =child.decorate.link_to_taxon
+            =raw "(" + child.decorate.taxon_status + ")"

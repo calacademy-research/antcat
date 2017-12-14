@@ -9,8 +9,8 @@
     http://antcat.org
   MSG
 
-#feedback_modal.reveal{"data-reveal" => ""}
-  %button.close-button{"aria-label" => "Close modal", "data-close" => "", type: "button"}
+#feedback_modal.reveal{data: { reveal: true }}
+  %button.close-button{"aria-label" => "Close modal", data: { close: true }, type: "button"}
     %span{"aria-hidden" => "true"} &times;
 
   %h6#new_article

@@ -1,12 +1,10 @@
 -unless taxon.kind_of? SpeciesGroupTaxon
-  .references_section.section
-    .section_header.ui-widget-header.ui-corner-top
-      .left
-        References
+  .references_section.callout
+    %h5.callout-header
+      References
       .right.references_section_buttons
         %button.submit.btn-tiny Add
-      .clear
-    .reference_sections.ui-dialog-content.ui-widget-content.ui-corner-bottom
+    .reference_sections
       -taxon.reference_sections.each do |reference_section|
         =render 'reference_sections/panel', item: reference_section
     .reference_section_template
