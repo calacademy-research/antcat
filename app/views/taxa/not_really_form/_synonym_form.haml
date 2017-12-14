@@ -1,5 +1,5 @@
 -url = "/taxa/#{taxon.id}/synonyms?#{junior_or_senior}=1"
-.synonym-form.ui-corner-all{data: { action: url, method: 'post' }}
+.synonym-form{data: { action: url, method: 'post' }}
   %p#error_message
 
   =taxon_select_tag :synonym_taxon_id, nil

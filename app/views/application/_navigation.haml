@@ -6,7 +6,7 @@
 
     #desktop-menu
       #desktop-upper-menu.top-bar-right
-        %ul.dropdown.menu{"data-dropdown-menu" => ""}
+        %ul.menu
           -if Rails.env.development?
             %li.dev-only=link_to_current_page_on_live_site
             %li.dev-only=link_to "dev CSS", widget_tests_toggle_dev_css_path, class: "btn-tiny"
@@ -24,7 +24,7 @@
           -else
             %li=link_to 'Login', new_user_session_path
           %li
-            %a{"data-open" => "feedback_modal"} Feedback
+            %a{data: { open: "feedback_modal" }} Feedback
 
       #desktop-lower-menu.top-bar-right
         %ul.menu
@@ -42,14 +42,14 @@
   .top-bar
     .row
       .small-5.columns
-        #mobile-logo.top-bar-title{"data-hide-for" => "large", "data-responsive-toggle" => "mobile-menu"}
+        #mobile-logo.top-bar-title{data: { hide_for: "large", responsive_toggle: "mobile-menu" }}
           %span.float-left
-            %span.menu-icon{"data-toggle" => ""}
-          =image_tag 'antcat_logo_small.png', data: { toggle: "" }
+            %span.menu-icon{data: { toggle: true }}
+          =image_tag 'antcat_logo_small.png', data: { toggle: true }
       =render "unseen_notifications_badge"
 
   #mobile-menu
-    %ul.vertical.dropdown.menu{"data-dropdown-menu" => ""}
+    %ul.vertical.menu
       %li=link_to "Catalog", root_path
       -if user_signed_in?
         %li=link_to "Editor's Panel", editors_panel_path
@@ -65,7 +65,7 @@
       -else
         %li=link_to 'Login', new_user_session_path
       %li
-        %a{"data-open" => "feedback_modal"} Feedback
+        %a{data: { open: "feedback_modal" }} Feedback
       %li=link_to 'Advanced Search', catalog_search_path
 
       %li.has-form

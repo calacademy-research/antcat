@@ -3,12 +3,11 @@
 -content_for :head do
   =javascript_include_tag 'controllers/references/authors_autocompletion', 'controllers/references/form'
 
--reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.to_s) : ''
+-reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.display_name) : ''
 -reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
--selected_tab = [ArticleReference, BookReference, NestedReference, UnknownReference].index(reference.class) || 0
 
 =form_for reference.becomes(Reference) do |f|
-  =hidden_field_tag :selected_tab, selected_tab
+  =hidden_field_tag :reference_type, reference.class.name
   =hidden_field_tag :ignore_possible_duplicate, ignore_possible_duplicate
   =render 'shared/errors_for', resource: reference
 
@@ -42,18 +41,18 @@
 
   .row
     .medium-12.columns
-      .tabs
-        %ul
-          %li
-            %a{href: "#tabs-article"}Article
-          %li
-            %a{href: "#tabs-book"}Book
-          %li
-            %a{href: "#tabs-nested"}Nested
-          %li
-            %a{href: "#tabs-unknown"}Other
+      %ul#reference-tabs.tabs{data: { tabs: true }}
+        %li.tabs-title{class: reference_tab_active?(reference, ArticleReference)}
+          =link_to "Article", "#tabs-article"
+        %li.tabs-title{class: reference_tab_active?(reference, BookReference)}
+          =link_to "Book", "#tabs-book"
+        %li.tabs-title{class: reference_tab_active?(reference, NestedReference)}
+          =link_to "Nested", "#tabs-nested"
+        %li.tabs-title{class: reference_tab_active?(reference, UnknownReference)}
+          =link_to "Other", "#tabs-unknown"
 
-        #tabs-article
+      .tabs-content{data: { tabs_content: "reference-tabs" }}
+        #tabs-article.tabs-panel{class: reference_tab_active?(reference, ArticleReference)}
           .row
             .medium-3.columns
               =label_tag :reference_journal_name do
@@ -73,7 +72,7 @@
                 =tooltip_icon "references.journal_pagination", scope: :references
               =text_field_tag :article_pagination, reference.pagination
 
-        #tabs-book
+        #tabs-book.tabs-panel{class: reference_tab_active?(reference, BookReference)}
           .row
             .medium-3.columns
               =label_tag :reference_publisher_string do
@@ -87,7 +86,7 @@
                 =tooltip_icon "references.book_pagination", scope: :references
               =text_field_tag :book_pagination, reference.pagination
 
-        #tabs-nested
+        #tabs-nested.tabs-panel{class: reference_tab_active?(reference, NestedReference)}
           .row
             .medium-3.columns
               =label_tag :reference_pages_in do
@@ -101,7 +100,7 @@
                 =tooltip_icon "nesting_reference_id", scope: :references
               =f.text_field :nesting_reference_id
 
-        #tabs-unknown
+        #tabs-unknown.tabs-panel{class: reference_tab_active?(reference, UnknownReference)}
           =label_tag :reference_citation, 'Citation'
           =f.text_area :citation, rows: 2
 

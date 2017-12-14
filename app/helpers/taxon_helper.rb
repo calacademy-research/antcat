@@ -100,8 +100,11 @@ module TaxonHelper
         approved_change = Change.where(<<-SQL.squish, change.user_changed_taxon_id).last
           user_changed_taxon_id = ? AND approved_at IS NOT NULL
         SQL
-        content << "; approved by #{approved_change.decorate.format_approver_name} ".html_safe
-        content << approved_change.decorate.format_approved_at.html_safe
+
+        if approved_change
+          content << "; approved by #{approved_change.decorate.format_approver_name} ".html_safe
+          content << approved_change.decorate.format_approved_at.html_safe
+        end
       end
 
       content

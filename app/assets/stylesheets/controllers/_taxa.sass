@@ -13,16 +13,7 @@
 #taxa-controller
   .taxon_form, .not-really-taxon-form
     .taxt_edit_box
-      font-size: 14px
-
-    &.ui-widget
-      font-size: 14px
-
-    .section
-      margin-bottom: 24px
-      .section_header
-        padding-left: 6px
-
+      font-size: 90%
     td.caption
       width: 120px
       vertical-align: top
@@ -34,11 +25,6 @@
 // For the taxon form that is not the "not really" form.
 #taxa-controller
   .taxon_form
-    .fields_section
-      .section
-        margin-bottom: 12px
-        margin-right: 6px
-
     .protonym_section
       #protonym_name_field
         display: inline-block
@@ -47,15 +33,6 @@
       .locality
         @extend %fix-typeahead-display
 
-    .buttons_section
-      vertical-align: middle
-      margin-bottom: 12px
-      position: relative
-      .left_buttons
-        margin-left: 8px
-      form
-        display: inline-block
-
 // For the not really form.
 #taxa-controller
   .not-really-taxon-form
@@ -63,9 +40,6 @@
       font-size: 90%
       .history_item_template
         display: none
-      .section_header
-        .right
-          margin-right: 4px
       .history_item
         table
           border-spacing: 0
@@ -91,9 +65,6 @@
         font-size: 90%
         .template
           display: none
-        .section_header
-          .right
-            margin-right: 4px
         .reference_section
           margin-top: 0
           table
@@ -123,6 +94,7 @@
       .junior_synonyms_section
         margin-right: 6px
       .synonym_row
+        font-size: 90%
         small
           color: darkgrey
         &.ui-selecting, &.confirming
@@ -137,3 +109,9 @@
         display: none
       .select2-container
         width: 100% !important
+
+// Placed outside of `#taxa-controller` because it's also used on its on page.
+#children-list
+  font-size: 90%
+  columns: 2
+  padding-left: 6px

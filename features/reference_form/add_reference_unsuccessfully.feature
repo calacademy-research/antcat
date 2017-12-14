@@ -9,7 +9,6 @@ Feature: Add reference unsuccessfully
     And I follow "Cancel"
     Then I should be on the references page
 
-  @javascript
   Scenario: Leaving other fields blank when adding an article reference
     When I fill in "reference_author_names_string" with "Fisher, B.L."
     And I press "Save"
@@ -20,7 +19,6 @@ Feature: Add reference unsuccessfully
     And I should see "Series volume issue can't be blank"
     And I should see "Pagination can't be blank"
 
-  @javascript
   Scenario: Leaving a required field blank should not affect other fields (article)
     When I fill in "reference_title" with "A reference title"
     And I fill in "reference_journal_name" with "Ant Journal"

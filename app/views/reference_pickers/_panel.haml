@@ -5,7 +5,7 @@
 -else
   -taxt = css_id = reference_id = nil
 
-.reference{id: css_id, 'data-id' => reference_id, 'data-taxt' => taxt}
+.reference{id: css_id, data: { id: reference_id, taxt: taxt }}
   %table.reference_table
     %tr
       %td.reference_item

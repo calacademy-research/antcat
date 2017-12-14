@@ -1,10 +1,10 @@
-.edit.ui-widget-content
+.edit
   -url = "/taxa/#{item.taxon.id}/reference_sections/#{item.id}"
   -method = item.persisted? ? 'put' : 'post'
-  .nested_form{'data-action' => url, 'data-method' => method}
+  .nested_form{data: { action: url, method: method }}
     =render 'shared/errors_for', resource: item
 
-    %table
+    %table.unstriped.no-border
       %tr
         %td.caption=label_tag :title_taxt, 'Title'
         %td.taxt_editor=render 'taxt_editors/show', name: 'title_taxt', value: TaxtConverter[item.title_taxt].to_editor_format, rows: 1

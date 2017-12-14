@@ -1,4 +1,4 @@
-.reference_section.ui-widget-content.ui-corner-all.antcat_panel{'data-id' => item.id}
+.reference_section.border-thing.antcat_panel{data: { id: item.id }}
   =render 'reference_sections/display', item: item
   -if user_can_edit?
     =render 'reference_sections/edit', item: item

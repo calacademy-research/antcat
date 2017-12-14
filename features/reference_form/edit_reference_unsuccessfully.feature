@@ -2,7 +2,6 @@ Feature: Edit reference unsuccessfully
   Background:
     Given I am logged in
 
-  @javascript
   Scenario: Clearing a book reference's fields
     Given there is a book reference
 
@@ -18,7 +17,6 @@ Feature: Edit reference unsuccessfully
     And I should see "Publisher can't be blank"
     And I should see "Pagination can't be blank"
 
-  @javascript
   Scenario: Clearing an article reference's fields
     Given there is an article reference
 
@@ -36,7 +34,6 @@ Feature: Edit reference unsuccessfully
     And I should see "Series volume issue can't be blank"
     And I should see "Pagination can't be blank"
 
-  @javascript
   Scenario: Clearing an unknown reference's fields
     Given there is an unknown reference
 
@@ -51,7 +48,6 @@ Feature: Edit reference unsuccessfully
     And I should see "Year can't be blank"
     And I should see "Citation can't be blank"
 
-  @javascript
   Scenario: Specifying the document URL when it doesn't exist
     Given there is a reference
 
@@ -60,7 +56,6 @@ Feature: Edit reference unsuccessfully
     And I press "Save"
     Then I should see "Document url was not found"
 
-  @javascript
   Scenario: Edit a nested reference and changing its nestee to itself
     Given there is a reference
     And the following entry nests it
@@ -72,7 +67,6 @@ Feature: Edit reference unsuccessfully
     And I press "Save"
     Then I should see "Nesting reference can't point to itself"
 
-  @javascript
   Scenario: Cancelling edit after an error
     Given this reference exists
       | authors   | year | title                    | citation      |

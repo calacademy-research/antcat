@@ -5,7 +5,7 @@
   %table
     %tr
       %td
-        .nested_form{'data-action' => '/name_popups/find?popup=true', 'data-method' => 'get'}
+        .nested_form{data: { action: '/name_popups/find?popup=true', method: 'get' }}
           =hidden_field_tag 'id', id
           =hidden_field_tag 'name', ''
           =hidden_field_tag 'taxt', ''
