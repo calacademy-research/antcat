@@ -120,7 +120,7 @@ class Taxa::SaveFromForm
         #   version of the object as it currently stands. The versions method
         #   gives you previous versions; to get the current one just call a
         #   finder on your Widget model as usual."
-        taxon.touch_with_version
+        taxon.paper_trail.touch_with_version
 
         change.update user_changed_taxon_id: taxon.id
       else
