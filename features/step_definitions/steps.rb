@@ -60,6 +60,12 @@ When(/^(?:|I )fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, with: value
 end
 
+When(/^I fill in "([^"]*)" with "([^"]*)" within "([^"]*)"$/) do |field, value, within_element|
+  within(within_element) do
+    fill_in field, with: value
+  end
+end
+
 When(/^(?:|I )select "([^"]*)" from "([^"]*)"$/) do |value, field|
   select value, from: field
 end
@@ -133,6 +139,12 @@ end
 
 Given(/^RESET SESSION$/) do
   Capybara.reset_sessions!
+end
+
+Then(/^I should see an alert "(.*)"$/) do |message|
+  accept_alert(message) do
+    # No-op.
+  end
 end
 
 Then(/^the page title should have "([^"]*)" in it$/) do |title|
