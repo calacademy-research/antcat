@@ -6,8 +6,7 @@
 # server-side as HTML and return to the client).
 #
 # Code for inline autocompletion of users/taxa/references etc is
-# independent of anything here, with the exception of setting up the
-# "Enabled features" symbols in the textarea's upper right corner.
+# independent of anything here.
 
 $ ->
   $("textarea[data-previewable]").each -> $(this).makePreviewable()
@@ -21,7 +20,6 @@ class MakePreviewable
   TEXTAREA = "textarea"
   PREVIEW  = "preview"
   HELP     = "formatting-help"
-  SYMBOLS  = "symbols-explanation"
 
   constructor: (@textarea) ->
     return if @isAlreadyPreviewable()
@@ -30,7 +28,6 @@ class MakePreviewable
 
     @wrapInPreviewArea()
     @setupPreviewLink()
-    @setSymbolsLabel()
     @makeHelpTabsLoadableOnDemand()
 
   isAlreadyPreviewable: -> @textarea.parent().hasClass "tabs-panel"
@@ -47,7 +44,6 @@ class MakePreviewable
   # Helpers for finding links to the tabs.
   previewLink: -> $("a[href='#{@tabId PREVIEW}']")
   helpLink: ->    $("a[href='#{@tabId HELP}']")
-  symbolsLink: -> $("a[href='#{@tabId SYMBOLS}']")
 
   wrapInPreviewArea: ->
     # Create new preview area (tabs) and insert after textarea, and tabify.
@@ -76,9 +72,6 @@ class MakePreviewable
           <a href="#{@tabId HELP}">Formatting Help</a>
         </li>
         <li class="tabs-title right">
-          <a href="#{@tabId SYMBOLS}"></a>
-        </li>
-        <li class="tabs-title right">
           <a>
             <span class="shared-spinner"><i class="fa fa-refresh fa-spin"></i></span>
           </a>
@@ -88,7 +81,6 @@ class MakePreviewable
         <div class="tabs-panel is-active" id="#{@unprefixedTabId TEXTAREA}"></div>
         <div class="tabs-panel" id="#{@unprefixedTabId PREVIEW}"></div>
         <div class="tabs-panel" id="#{@unprefixedTabId HELP}"></div>
-        <div class="tabs-panel" id="#{@unprefixedTabId SYMBOLS}"></div>
       </div>
     </div>
     """
@@ -119,23 +111,8 @@ class MakePreviewable
           @hideSpinner() # Only hide on success.
         error: -> tab.text "Error rendering preview"
 
-  # Show symbols of enabled features in the upper right corner.
-  # Will most often look like this: `Enabled: md %trjif @`.
-  # Clicking on the label shows explanations for them.
-  #
-  # It always includes at least "md", because markdown is always enabled if we
-  # get here. It can tell if autocompletions for "linkables" and user
-  # "mentionables" are enabled by looking at the textarea's data attributes.
-  setSymbolsLabel: ->
-    label = "md"
-    label += " %trjif" if @textarea.data "has-linkables"
-    label += " @"      if @textarea.data "has-mentionables"
-
-    @symbolsLink().html "Enabled: <code>#{label}</code>"
-
-  # Load markdown formatting help and symbols explanation pages via AJAX
-  # on demand. Mostly because it's so much easier to format it in HAML
-  # rather than JavaScript.
+  # Load markdown formatting help page via AJAX on demand.
+  # Mostly because it's so much easier to format it in HAML rather than JavaScript.
   makeHelpTabsLoadableOnDemand: ->
     setupFormattingHelp = =>
       tab = @tab HELP
@@ -148,17 +125,7 @@ class MakePreviewable
             @hideSpinner()
             AntCat.make_reference_keeys_expandable tab
 
-    setupSymbolsExplanations = =>
-      tab = @tab SYMBOLS
-      url = "/markdown/symbols_explanations.json"
-
-      @symbolsLink().click =>
-        if tab.is ":empty"
-          @showSpinner()
-          tab.load url, => @hideSpinner()
-
     setupFormattingHelp()
-    setupSymbolsExplanations()
 
   spinner: -> @textarea.closest(".preview-area").find ".shared-spinner"
   showSpinner: -> @spinner().show()

@@ -1,6 +1,6 @@
 class MarkdownController < ApplicationController
   def preview
-    text = params[:text].presence || "no content"
+    text = params[:text].presence || ''
     render json: Markdowns::Render[text]
   end
 
@@ -8,12 +8,6 @@ class MarkdownController < ApplicationController
     respond_to do |format|
       format.json { render partial: "formatting_help" }
       format.html { render "formatting_help" }
-    end
-  end
-
-  def symbols_explanations
-    respond_to do |format|
-      format.json { render partial: "symbols_explanations" }
     end
   end
 end
