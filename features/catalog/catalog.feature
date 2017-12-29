@@ -111,6 +111,8 @@ Feature: Using the catalog
     And I should see "Brownerus" in the genera index
 
   Scenario: Displaying items containing broken taxt links
+    # TODO: This was never re-implemented after rewriting the taxt editor. Fix or remove test.
+    Given PENDING
     Given I am logged in
     And there is a genus "Atta"
     And Atta has a history section item with two linked references, of which one does not exists

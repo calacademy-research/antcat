@@ -13,7 +13,8 @@ class TaxtPresenter
   # Parses "example {tax 429361}"
   # into   "example <a href=\"/catalog/429361\">Melophorini</a>"
   def to_html
-    parse :to_html
+    return '' unless @taxt
+    Markdowns::ParseAntcatHooks[@taxt].html_safe
   end
 
   # Parses "example {tax 429361}"
@@ -46,7 +47,6 @@ class TaxtPresenter
 
         if reference
           case @format
-          when :to_html   then reference.decorate.inline_citation
           when :to_text   then reference.keey
           when :to_antweb then Exporters::Antweb::InlineCitation[reference]
           end
@@ -76,7 +76,6 @@ class TaxtPresenter
 
         if taxon
           case @format
-          when :to_html   then taxon.decorate.link_to_taxon
           when :to_text   then taxon.name.to_html
           when :to_antweb then Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
           end
