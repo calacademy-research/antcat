@@ -9,23 +9,23 @@ Feature: Markdown autocompletion
     And there is a reference by Giovanni's brother
     And I am on a page with a textarea with markdown preview and autocompletion
 
-    When I fill in "issue_description" with "%rgio"
+    When I fill in "issue_description" with "{rgio"
     Then I should see "Giovanni's Favorite Ants"
     And I should see "Giovanni's Brother's Favorite Ants"
 
     When I clear the markdown textarea
     Then I should not see "Favorite Ants"
 
-    When I fill in "issue_description" with "%rbro"
+    When I fill in "issue_description" with "{rbro"
     And I click the suggestion containing "Giovanni's Brother's Favorite Ants"
-    Then the markdown textarea should contain "%reference7778"
+    Then the markdown textarea should contain "{ref 7778}"
 
   Scenario: Taxa markdown autocompletion
     Given there is a genus "Eciton"
     And there is a genus "Atta"
     And I am on a page with a textarea with markdown preview and autocompletion
 
-    When I fill in "issue_description" with "%tec"
+    When I fill in "issue_description" with "{tec"
     Then I should see "Eciton"
 
     When I click the suggestion containing "Eciton"

@@ -1,3 +1,7 @@
+# The reason for supporting both "%taxon429349" and "{tax 429349}" is because the
+# "%"-style is the original implementation, while the curly braces format is the
+# original "taxt" format as used in taxt items.
+
 module Markdowns
   class ParseAntcatHooks
     include Rails.application.routes.url_helpers
@@ -23,23 +27,24 @@ module Markdowns
     private
       attr_reader :content
 
-      # Matches: %taxon429349
+      # Matches: %taxon429349 and {tax 429349}
       # Renders: link to the taxon (Formica).
       def parse_taxon_ids!
-        content.gsub!(/%taxon(\d+)/) do
-          try_linking_taxon_id $1
+        content.gsub!(/(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/) do
+          try_linking_taxon_id $~[:id]
         end
       end
 
-      # Matches: %reference130628
+      # Matches: %reference130628 and {ref 130628}
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_reference_ids!
-        content.gsub!(/%reference?(\d+)/) do
-          if Reference.exists? $1
-            reference = Reference.find($1)
+        content.gsub!(/(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/) do
+          id = $~[:id]
+          if Reference.exists? id
+            reference = Reference.find(id)
             reference.decorate.inline_citation
           else
-            broken_markdown_link "reference", $1
+            broken_markdown_link "reference", id
           end
         end
       end

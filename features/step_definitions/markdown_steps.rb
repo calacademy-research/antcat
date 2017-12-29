@@ -37,7 +37,7 @@ end
 
 Then(/^the markdown textarea should contain a markdown link to Eciton$/) do
   eciton = Taxon.find_by name_cache: "Eciton"
-  expect(markdown_textarea.value).to include "%taxon#{eciton.id}"
+  expect(markdown_textarea.value).to include "{tax #{eciton.id}}"
 end
 
 When(/^I clear the markdown textarea$/) do
