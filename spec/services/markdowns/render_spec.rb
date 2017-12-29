@@ -62,6 +62,27 @@ describe Markdowns::Render do
       end
     end
 
+    describe "name ids" do
+      context "existing name" do
+        let(:name) { create :genus_name }
+        let(:taxt_markdown) { "{nam #{name.id}}" }
+
+        it "render the HTML version of the name" do
+          expected = "<p><i>#{name}</i></p>\n"
+          expect(described_class[taxt_markdown]).to eq expected
+        end
+      end
+
+      context "missing (non-existing) name" do
+        let(:taxt_markdown) { '{nam 9999999}' }
+
+        it "renders an error message" do
+          expected = %Q[<p><span class="broken-markdown-link"> could not find name with id 9999999 </span></p>\n]
+          expect(described_class[taxt_markdown]).to eq expected
+        end
+      end
+    end
+
     describe "journal ids" do
       context "existing journal" do
         let(:journal) { create :journal, name: "Zootaxa" }

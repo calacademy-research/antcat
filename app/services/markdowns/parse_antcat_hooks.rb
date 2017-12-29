@@ -15,6 +15,7 @@ module Markdowns
     def call
       parse_taxon_ids!
       parse_reference_ids!
+      parse_name_ids!
       parse_journal_ids!
       parse_issue_ids!
       parse_feedback_ids!
@@ -45,6 +46,19 @@ module Markdowns
             reference.decorate.inline_citation
           else
             broken_markdown_link "reference", id
+          end
+        end
+      end
+
+      # Matches: {nam 134043}
+      # Renders: HTML version of name (Formicidae).
+      def parse_name_ids!
+        content.gsub!(/(\{nam (?<id>\d+)\})/) do
+          id = $~[:id]
+          if Name.exists? id
+            Name.find(id).to_html
+          else
+            broken_markdown_link "name", id
           end
         end
       end
