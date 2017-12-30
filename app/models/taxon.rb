@@ -130,6 +130,19 @@ class Taxon < ApplicationRecord
     "#{type}Name".constantize
   end
 
+  def taxon_and_ancestors
+    taxon_and_ancestors = []
+    current_taxon = self
+
+    while current_taxon
+      taxon_and_ancestors << current_taxon
+      current_taxon = current_taxon.parent
+    end
+
+    # Reversed to put Formicidae in the first tab and itself in last.
+    taxon_and_ancestors.reverse
+  end
+
   def taxon_label
     name.epithet_with_fossil_html fossil?
   end

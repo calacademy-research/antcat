@@ -66,20 +66,8 @@ module TaxonBrowser
         end
       end
 
-      # Can be moved to `Taxon` if we find other uses for it.
       def taxon_and_ancestors
-        return @_taxon_and_ancestors if defined? @_taxon_and_ancestors
-
-        @_taxon_and_ancestors = []
-        current_taxon = @taxon
-
-        while current_taxon
-          @_taxon_and_ancestors << current_taxon
-          current_taxon = current_taxon.parent
-        end
-
-        # Reversed to put Formicidae in the first tab and itself in last.
-        @_taxon_and_ancestors.reverse
+        @_taxon_and_ancestors ||= @taxon.taxon_and_ancestors
       end
   end
 end
