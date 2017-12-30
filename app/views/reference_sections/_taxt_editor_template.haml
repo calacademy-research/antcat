@@ -6,12 +6,9 @@
     =markdown item.references_taxt, no_wrappring_p: true
 
   .taxt-editor-editor{style: 'display: none' }
-    =text_area_tag :title_taxt, item.title_taxt, rows: 1,
-      data: { has_linkables: true, previewable: true, previewable_title: "Title" }
-    =text_area_tag :subtitle_taxt, item.subtitle_taxt, rows: 1,
-      data: { has_linkables: true, previewable: true, previewable_title: "Subtitle" }
-    =text_area_tag :references_taxt, item.references_taxt, rows: 5,
-      data: { has_linkables: true, previewable: true, previewable_title: "References" }
+    =text_area_tag :title_taxt, item.title_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Title", use_extras: true }
+    =text_area_tag :subtitle_taxt, item.subtitle_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Subtitle", use_extras: true }
+    =text_area_tag :references_taxt, item.references_taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: "References", use_extras: true }
 
     .row
       .medium-3.columns.end

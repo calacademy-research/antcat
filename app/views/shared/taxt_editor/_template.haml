@@ -4,6 +4,6 @@
     .fake-input.taxt-editor-content=TaxtPresenter[content].to_html
 
   .taxt-editor-editor{style: (Rails.env.test? ? '' : 'display: none') }
-    =text_area_tag name, content, id: id, rows: 5, data: { has_linkables: true, previewable: true }
+    =text_area_tag name, content, id: id, rows: 5, data: { has_linkables: true, previewable: true, use_extras: true }
 
     %a.taxt-editor-ok-button.btn-saves OK

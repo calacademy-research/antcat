@@ -4,6 +4,8 @@
 -@title = "New Reference Section"
 -breadcrumb :new_reference_section, @item
 
+=render 'shared/taxt_editor/taxon_and_ancestors', taxon: @item.taxon
+
 =form_for @item, url: "/taxa/#{@item.taxon_id}/reference_sections" do |f|
   =render "shared/errors_for", resource: @item
   .row

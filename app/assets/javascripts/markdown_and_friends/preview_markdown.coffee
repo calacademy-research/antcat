@@ -4,9 +4,6 @@
 #
 # "Previewable" means markdown in the textarea can be previewed (rendered
 # server-side as HTML and return to the client).
-#
-# Code for inline autocompletion of users/taxa/references etc is
-# independent of anything here.
 
 $ ->
   $("textarea[data-previewable]").each -> $(this).makePreviewable()
@@ -14,9 +11,8 @@ $ ->
 
 $.fn.makePreviewable = -> new MakePreviewable this
 
-# All methods in this class except the constructor are "private",
-# but prefixing all with underscores was just too ugly.
 class MakePreviewable
+  # Tabs.
   TEXTAREA = "textarea"
   PREVIEW  = "preview"
   HELP     = "formatting-help"
@@ -28,6 +24,9 @@ class MakePreviewable
 
     @wrapInPreviewArea()
     @setupPreviewLink()
+    if @textarea.data('use-extras')
+      new ExtrasArea(@textarea, @tab(TEXTAREA))
+
     @makeHelpTabsLoadableOnDemand()
 
   isAlreadyPreviewable: -> @textarea.parent().hasClass "tabs-panel"
@@ -53,7 +52,7 @@ class MakePreviewable
     new Foundation.Tabs previewArea.find $(".tabs")
 
     # Move textarea inside the first tab of the preview area.
-    @textarea.detach().appendTo @tab(TEXTAREA)
+    @textarea.detach().prependTo @tab(TEXTAREA)
 
   # We need this ridiculous amount of unique IDs because Foundation
   # Tabs requires it. https://foundation.zurb.com/sites/docs/tabs.html
@@ -130,6 +129,56 @@ class MakePreviewable
   spinner: -> @textarea.closest(".preview-area").find ".shared-spinner"
   showSpinner: -> @spinner().show()
   hideSpinner: -> @spinner().hide()
+
+class ExtrasArea
+  DEFAULT_REFERENCE_BUTTON_ID = "default-reference-button"
+  DEFAULT_REFERENCE_BUTTON = "##{DEFAULT_REFERENCE_BUTTON_ID}"
+
+  constructor: (@textarea, @textareaTab) ->
+    @createExtrasArea().appendTo @textareaTab
+    @setupDefaultReferenceButton()
+    @setupInsertTaxaButtons()
+
+  createExtrasArea: ->
+    $ """
+    <div>
+      <a id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">Default reference</a>
+      <span id="extras-area"></span>
+    </div>
+    """
+
+  setupDefaultReferenceButton: ->
+    reference = AntCat.defaultReference()
+    button = @textareaTab.find(DEFAULT_REFERENCE_BUTTON)
+
+    unless reference?.id
+      button.addClass('ui-state-disabled')
+      return
+
+    button.html reference.keey
+    button.click =>
+      event.preventDefault()
+      @textarea.insertAtCaret "{ref #{reference.id}}: "
+
+  setupInsertTaxaButtons: ->
+    insertTaxonButton = (id, name) ->
+      """<a class="insert-taxon btn-normal btn-tiny" data-id="#{id}">#{name}</a> """
+
+    taxa = $('#taxon-and-ancestors').data('taxa')
+    taxa.forEach (taxon) =>
+      @textareaTab.find('#extras-area').prepend insertTaxonButton(taxon.id, taxon.name)
+
+    @textareaTab.find('.insert-taxon').click (event) =>
+      event.preventDefault()
+      id = $(event.target).data('id')
+      @textarea.insertAtCaret "{tax #{id}} "
+
+AntCat.defaultReference = ->
+  reference = $('#default-reference')
+  id = reference.data('id')
+  keey = reference.data('keey')
+
+  { id: id, keey: keey }
 
 # Global to make it callable by at.js.
 # This may be very *not* performant...

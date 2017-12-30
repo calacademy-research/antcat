@@ -4,8 +4,7 @@
     =TaxtPresenter[item.taxt].to_html
 
   .taxt-editor-editor{style: 'display: none' }
-    =text_area_tag :taxt, item.taxt, rows: 5,
-      data: { has_linkables: true, previewable: true, previewable_title: 'History item' }
+    =text_area_tag :taxt, item.taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: 'History item', use_extras: true }
 
     .row
       .medium-3.columns.end
