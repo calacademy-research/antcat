@@ -23,7 +23,7 @@ class TaxonDecorator::TaxonStatus
 
     def main_status
       if homonym? && homonym_replaced_by
-        "homonym replaced by #{homonym_replaced_by.decorate.link_to_taxon}"
+        "homonym replaced by #{homonym_replaced_by.decorate.link_to_taxon_with_author_citation}"
       elsif unidentifiable?
         "unidentifiable"
       elsif unresolved_homonym?
@@ -55,7 +55,7 @@ class TaxonDecorator::TaxonStatus
       current_valid_taxon = current_valid_taxon_including_synonyms
       return '' unless current_valid_taxon
 
-      ' of current valid taxon ' << current_valid_taxon.decorate.link_to_taxon
+      ' of current valid taxon ' << current_valid_taxon.decorate.link_to_taxon_with_author_citation
     end
 
     # TODO handle nil differently or we may end up with eg "a misspelling of ".
@@ -63,6 +63,6 @@ class TaxonDecorator::TaxonStatus
       current_valid_taxon = current_valid_taxon_including_synonyms
       return '' unless current_valid_taxon
 
-      current_valid_taxon.decorate.link_to_taxon
+      current_valid_taxon.decorate.link_to_taxon_with_author_citation
     end
 end

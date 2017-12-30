@@ -22,7 +22,7 @@ describe TaxonDecorator::TaxonStatus do
       create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
       expect(junior_synonym.decorate.taxon_status)
-        .to eq %{junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
+        .to include %{junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
     end
 
     describe "Using current valid taxon" do
@@ -40,7 +40,7 @@ describe TaxonDecorator::TaxonStatus do
 
         specify do
           expect(junior_synonym.decorate.taxon_status)
-            .to eq %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+            .to include %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
         end
       end
 
@@ -48,7 +48,7 @@ describe TaxonDecorator::TaxonStatus do
         let!(:taxon) { create_genus status: 'synonym' }
 
         specify do
-          expect(taxon.decorate.taxon_status).to eq "junior synonym"
+          expect(taxon.decorate.taxon_status).to include "junior synonym"
         end
       end
 
@@ -66,7 +66,7 @@ describe TaxonDecorator::TaxonStatus do
 
         it specify do
           expect(junior_synonym.decorate.taxon_status)
-            .to eq %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+            .to include %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
         end
       end
     end
@@ -87,7 +87,7 @@ describe TaxonDecorator::TaxonStatus do
 
         specify do
           expect(taxon.decorate.taxon_status)
-            .to eq %{unresolved junior homonym, junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Eciton</i></a>}
+            .to include %{unresolved junior homonym, junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Eciton</i></a>}
         end
       end
     end
