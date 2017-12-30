@@ -3,9 +3,8 @@
     %h5.callout-header
       References
       .right.references_section_buttons
-        %button.submit.btn-tiny Add
+        =link_to 'Add', new_taxa_reference_section_path(taxon), class: 'btn-normal btn-tiny', id: 'add-reference-section-button'
+
     .reference_sections
-      -taxon.reference_sections.each do |reference_section|
-        =render 'reference_sections/panel', item: reference_section
-    .reference_section_template
-      =render 'reference_sections/panel', item: ReferenceSection.new(taxon_id: taxon.id)
+      -taxon.reference_sections.each do |item|
+        =render 'reference_sections/taxt_editor_template', item: item

@@ -9,6 +9,10 @@ When(/^I save the senior synonym$/) do
   step %{I press the senior synonym item "Save" button}
 end
 
+When(/^I save the synonym$/) do
+  step %{I press the synonym item "Save" button}
+end
+
 When(/^I press the senior synonym item "([^"]*)" button$/) do |button|
   within '.senior_synonyms_section' do
     step %{I press "#{button}"}

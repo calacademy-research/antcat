@@ -47,5 +47,4 @@
 
   %tr
     %td.caption=form.label :headline_notes_taxt, 'Notes'
-    %td#headline_notes_taxt_editor.taxt_editor
-      =render 'taxt_editors/show', name: 'taxon[headline_notes_taxt]', value: TaxtConverter[taxon.headline_notes_taxt].to_editor_format
+    %td=render 'shared/taxt_editor/template', name: 'taxon[headline_notes_taxt]', content: taxon.headline_notes_taxt, id: :taxon_headline_notes_taxt

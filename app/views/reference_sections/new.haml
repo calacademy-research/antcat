@@ -1,0 +1,24 @@
+-content_for :head do
+  =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
+
+-@title = "New Reference Section"
+-breadcrumb :new_reference_section, @item
+
+=form_for @item, url: "/taxa/#{@item.taxon_id}/reference_sections" do |f|
+  =render "shared/errors_for", resource: @item
+  .row
+    .medium-6.columns
+      =text_area_tag :title_taxt, @item.title_taxt, rows: 1, name: 'reference_section[title_taxt]',
+        data: { has_linkables: true, previewable: true, previewable_title: "Title" }
+      =text_area_tag :subtitle_taxt, @item.subtitle_taxt, rows: 1, name: 'reference_section[subtitle_taxt]',
+        data: { has_linkables: true, previewable: true, previewable_title: "Subtitle" }
+      =text_area_tag :references_taxt, @item.references_taxt, rows: 5, name: 'reference_section[references_taxt]',
+        data: { has_linkables: true, previewable: true, previewable_title: "References" }
+
+  .row
+    .medium-3.columns
+      =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
+  .row
+    .medium-3.columns.end
+      =f.button 'Save', type: :submit, class: "btn-saves"

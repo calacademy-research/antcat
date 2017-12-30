@@ -77,8 +77,8 @@ describe Taxa::SaveFromForm do
       params[:hong] = '1'
       params[:unresolved_homonym] = '1'
       params[:ichnotaxon] = '1'
-      params[:headline_notes_taxt] = TaxtConverter["{ref #{headline_reference.id}}"].to_editor_format
-      params[:type_taxt] = TaxtConverter["{ref #{taxt_reference.id}}"].to_editor_format
+      params[:headline_notes_taxt] = "{ref #{headline_reference.id}}"
+      params[:type_taxt] = "{ref #{taxt_reference.id}}"
 
       taxon.save_from_form params
 
@@ -101,8 +101,7 @@ describe Taxa::SaveFromForm do
         create(:species_name, name: 'Atta major').id
       params[:protonym_attributes][:name_attributes][:id] =
         create(:species_name, name: 'Betta major').id
-      params[:protonym_attributes][:authorship_attributes][:notes_taxt] =
-        TaxtConverter["{ref #{reference.id}}"].to_editor_format
+      params[:protonym_attributes][:authorship_attributes][:notes_taxt] = "{ref #{reference.id}}"
 
       taxon.save_from_form params
 

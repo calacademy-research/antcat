@@ -33,6 +33,11 @@
       .locality
         @extend %fix-typeahead-display
 
+.fake-input
+  border: 1px solid #cacaca
+  padding: 0.5rem
+  min-height: 2.4375rem
+
 // For the not really form.
 #taxa-controller
   .not-really-taxon-form
@@ -40,7 +45,11 @@
       font-size: 90%
       .history_item_template
         display: none
+      .history_items
+        padding: 6px
       .history_item
+        border-bottom: 1px solid #dfd9c3
+        padding: 6px
         table
           border-spacing: 0
           margin-bottom: 0
@@ -59,6 +68,8 @@
             background: $color_current_being_edited_background
 
     .references_section
+      .title_taxt, .subtitle_taxt
+        font-weight: bold
       .reference_section_template
         display: none
       .reference_sections

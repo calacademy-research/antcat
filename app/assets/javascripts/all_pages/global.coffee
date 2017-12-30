@@ -4,6 +4,9 @@ $ ->
 
   enableInlineExpansions()
 
+  # To make ".disabled" link be unclickable.
+  $('body').on 'click', 'a.disabled', (event) -> event.preventDefault()
+
 # Something seems to override this method when
 # it's named "enable" - it doesn't get called.
 $.fn.undisable = -> @.removeClass('ui-state-disabled').removeAttr('disabled')

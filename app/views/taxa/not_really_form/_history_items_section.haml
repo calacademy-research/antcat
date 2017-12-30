@@ -1,13 +1,11 @@
--# ".button" is required to make ".disabled" work.
-
 .history_items_section.callout
   %h5.callout-header
     History
     .right.history_items_section_buttons
-      %button#add-history-item.submit.btn-normal.btn-tiny.button Add
+      =link_to 'Add', new_taxa_taxon_history_item_path(taxon), class: 'submit btn-normal btn-tiny', id: 'taxt-editor-add-history-item-button'
       %a#start-reordering-history-items.btn-normal.btn-tiny.button Reorder
   .history_items{data: {taxon_id: taxon.id}}
-    -taxon.history_items.each do |history_item|
-      =render 'taxon_history_items/panel', item: history_item
-  .history_item_template
-    =render 'taxon_history_items/panel', item: TaxonHistoryItem.new(taxon_id: taxon.id)
+    -taxon.history_items.each do |item|
+      -# `#taxon_history_item_123` is used for reordering items.
+      .history_item{id: "taxon_history_item_#{item.id}"}
+        =render 'taxon_history_items/taxt_editor_template', item: item

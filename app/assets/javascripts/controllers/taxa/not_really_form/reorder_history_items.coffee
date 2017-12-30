@@ -20,6 +20,7 @@ setupReorderButton = ->
 startReordering = ->
   $(AntCat.BUTTONS.REORDER_HISTORY_ITEMS).disableButton()
   $(AntCat.BUTTONS.ADD_HISTORY_ITEM).disableButton()
+  $(AntCat.BUTTONS.ADD_HISTORY_ITEM).disable()
   $(AntCat.BUTTONS.SAVE_TAXON_FORM).disable()
 
   do makeSortable = ->
@@ -55,6 +56,7 @@ disableReordering = ->
 
   $(AntCat.BUTTONS.REORDER_HISTORY_ITEMS).enableButton()
   $(AntCat.BUTTONS.ADD_HISTORY_ITEM).enableButton()
+  $(AntCat.BUTTONS.ADD_HISTORY_ITEM).undisable()
   $(AntCat.BUTTONS.SAVE_TAXON_FORM).undisable()
 
 saveNewOrder = ->

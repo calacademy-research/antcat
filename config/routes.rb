@@ -120,8 +120,8 @@ AntCat::Application.routes.draw do
         get :find_name_duplicates_only
       end
     end
-    resources :taxon_history_items, only: [:update, :create, :destroy]
-    resources :reference_sections, only: [:update, :create, :destroy]
+    resources :taxon_history_items, only: [:new, :create]
+    resources :reference_sections, only: [:new, :create]
     resources :synonyms, only: [:create, :destroy] do
       member do
         put :reverse_synonymy
@@ -206,9 +206,8 @@ AntCat::Application.routes.draw do
     end
   end
 
-  # Shallow routes for the show action for the activity feed.
-  resources :taxon_history_items, only: [:index, :show]
-  resources :reference_sections, only: [:index, :show]
+  resources :taxon_history_items, only: [:index, :show, :update, :destroy]
+  resources :reference_sections, only: [:index, :show, :update, :destroy]
   resources :synonyms, only: :show
 
   resources :tooltips do

@@ -56,6 +56,11 @@ end
     parent :taxon_history_items, item.taxon
   end
 
+  crumb :new_taxon_history_item do |item|
+    link "New"
+    parent :taxon_history_items, item.taxon
+  end
+
 crumb :reference_sections do |taxon|
   link "Reference Sections"
   parent :taxon_being_edited, taxon
@@ -63,6 +68,11 @@ end
 
   crumb :reference_section do |reference_section|
     link "##{reference_section.id}"
+    parent :reference_sections, reference_section.taxon
+  end
+
+  crumb :new_reference_section do |reference_section|
+    link "New"
     parent :reference_sections, reference_section.taxon
   end
 

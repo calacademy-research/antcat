@@ -3,18 +3,16 @@
   %table.unstriped.no-border
     -if taxon.kind_of? SpeciesGroupTaxon
       -# TODO: Rename columns in database to match view.
+      -# Was renamed in 6b43268edb1f86c19b0ecb6a611e901a34e2c2b9.
       %tr
         %td.caption=form.label :primary_type_information
-        %td#published_type_information_taxt_editor.taxt_editor
-          =render 'taxt_editors/show', name: 'taxon[published_type_information]', value: TaxtConverter[taxon.published_type_information].to_editor_format
+        %td=render 'shared/taxt_editor/template', name: 'taxon[published_type_information]', content: taxon.published_type_information, id: :taxon_published_type_information
       %tr
         %td.caption=form.label :secondary_type_information
-        %td#additional_type_information_taxt_editor.taxt_editor
-          =render 'taxt_editors/show', name: 'taxon[additional_type_information]', value: TaxtConverter[taxon.additional_type_information].to_editor_format
+        %td=render 'shared/taxt_editor/template', name: 'taxon[additional_type_information]', content: taxon.additional_type_information, id: :taxon_additional_type_information
       %tr
         %td.caption=form.label :type_notes
-        %td#type_notes_taxt_editor.taxt_editor
-          =render 'taxt_editors/show', name: 'taxon[type_notes]', value: TaxtConverter[taxon.type_notes].to_editor_format
+        %td=render 'shared/taxt_editor/template', name: 'taxon[type_notes]', content: taxon.type_notes, id: :taxon_type_notes
 
       %tr
         %td.caption
@@ -38,5 +36,4 @@
 
       %tr
         %td.caption=form.label :type_taxt, 'Notes'
-        %td#type_taxt_editor.taxt_editor
-          =render 'taxt_editors/show', name: 'taxon[type_taxt]', value: TaxtConverter[taxon.type_taxt].to_editor_format
+        %td=render 'shared/taxt_editor/template', name: 'taxon[type_taxt]', content: taxon.type_taxt, id: :taxon_type_taxt

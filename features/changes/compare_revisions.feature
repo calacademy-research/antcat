@@ -35,9 +35,9 @@ Feature: Compare revisions
 
     # Deleted.
     When I go to the edit page for "Atta"
-    And I click the history item
+    And I click on the edit taxon history item button
     And I will confirm on the next step
-    And I delete the history item
+    And I delete the taxon history item
     Then I should be on the edit page for "Atta"
 
     When I go to the activity feed
