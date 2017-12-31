@@ -4,7 +4,7 @@ cache: bundler
 dist: precise
 
 rvm:
-  - 2.1.10
+  - 2.3.3
 
 bundler_args: --without development doc --deployment --jobs=3 --retry=3
 
