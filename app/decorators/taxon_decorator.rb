@@ -9,6 +9,10 @@ class TaxonDecorator < ApplicationDecorator
     helpers.link_to label, helpers.catalog_path(taxon)
   end
 
+  def link_to_taxon_with_author_citation
+    link_to_taxon_with_label(taxon.name_with_fossil) << ' ' << taxon.author_citation
+  end
+
   def link_each_epithet
     TaxonDecorator::LinkEachEpithet[taxon]
   end
