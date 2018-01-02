@@ -2,6 +2,7 @@ class ChangeDecorator < Draper::Decorator
   delegate_all
 
   # Accepts optional `user` for performance reasons.
+  # TODO: Do not accept optional `user`.
   def format_adder_name user = nil
     user_verb = case change.change_type
                 when "create" then "added"

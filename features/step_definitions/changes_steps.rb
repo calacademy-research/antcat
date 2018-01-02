@@ -7,7 +7,8 @@ Given(/^there is a genus "([^"]*)" that's waiting for approval$/) do |name|
   genus = create_genus name
   genus.taxon_state.update_columns review_state: :waiting
 
-  change = create :change, user_changed_taxon_id: genus.id
+  # TODO: Do not use `User.first` or `User.first.id`.
+  change = create :change, user_changed_taxon_id: genus.id, user: User.first
   whodunnit = User.first.id
   create :version, item_id: genus.id, whodunnit: whodunnit, change_id: change.id
 
