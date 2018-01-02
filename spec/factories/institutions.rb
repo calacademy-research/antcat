@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :institution do
     sequence(:abbreviation) { |n| "AS#{n}" }
     sequence(:name) { |n| "Academy of Science #{n}" }

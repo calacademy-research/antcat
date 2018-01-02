@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :reference_author_name do
     association :reference
     association :author_name

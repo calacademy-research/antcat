@@ -18,7 +18,7 @@ module RefactorTaxonFactoriesHelpers
     taxon
   end
 
-  # New set of light factories because FactoryGirl does too much and some factories are bugged.
+  # New set of light factories because FactoryBot does too much and some factories are bugged.
   # TODO refactor and merge.
   def build_minimal_family
     name = FamilyName.new name: "Formicidae"

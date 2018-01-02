@@ -35,7 +35,7 @@ describe Names::WhatLinksHere do
     before do
       # Create an instance for each type of taxt.
       contrete_taxt_fields.each do |klass, fields|
-        fields.each { |field| create klass, field => "{nam #{name.id}}" }
+        fields.each { |field| create klass.name.underscore.to_sym, field => "{nam #{name.id}}" }
       end
     end
 

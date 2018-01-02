@@ -15,7 +15,7 @@
 
 require_relative '../support/helpers/get_name_parts_helpers'
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :taxon do
     protonym
     status 'valid'
@@ -116,5 +116,5 @@ def _create_taxon name_or_attributes, rank, attributes = {}
       name_or_attributes
     end
 
-  FactoryGirl.create taxon_factory, attributes
+  FactoryBot.create taxon_factory, attributes
 end

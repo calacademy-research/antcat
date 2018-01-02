@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :reference do
     sequence(:title) { |n| "Ants are my life#{n}" }
     sequence(:citation_year) { |n| "201#{n}d" }

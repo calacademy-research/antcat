@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :change do
     change_type "create"
   end
