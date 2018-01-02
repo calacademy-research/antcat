@@ -1,4 +1,4 @@
-class Publisher < ActiveRecord::Base
+class Publisher < ApplicationRecord
   belongs_to :place
 
   has_many :references

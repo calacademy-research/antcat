@@ -1,4 +1,4 @@
-class Author < ActiveRecord::Base
+class Author < ApplicationRecord
   has_many :names, -> { order(:name) }, class_name: 'AuthorName'
   has_many :references, through: :names
 

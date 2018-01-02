@@ -1,4 +1,4 @@
-class Tooltip < ActiveRecord::Base
+class Tooltip < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 

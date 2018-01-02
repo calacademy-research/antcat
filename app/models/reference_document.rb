@@ -1,4 +1,4 @@
-class ReferenceDocument < ActiveRecord::Base
+class ReferenceDocument < ApplicationRecord
   belongs_to :reference
 
   validate :check_url

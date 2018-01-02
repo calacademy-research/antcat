@@ -3,7 +3,7 @@
 # say in taxt items, but that never happened. We may want to rename
 # `protonyms.authorship_id` in any case.
 
-class Citation < ActiveRecord::Base
+class Citation < ApplicationRecord
   belongs_to :reference
 
   has_one :protonym, foreign_key: :authorship_id # See note above.

@@ -1,4 +1,4 @@
-class ReferenceAuthorName < ActiveRecord::Base
+class ReferenceAuthorName < ApplicationRecord
   belongs_to :reference
   belongs_to :author_name
 

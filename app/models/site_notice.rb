@@ -1,4 +1,4 @@
-class SiteNotice < ActiveRecord::Base
+class SiteNotice < ApplicationRecord
   include Trackable
   include SendsNotifications
 

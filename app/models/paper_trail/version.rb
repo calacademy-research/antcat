@@ -6,7 +6,7 @@
 # "Someone deleted <taxon>" this time.
 
 module PaperTrail
-  class Version < ActiveRecord::Base
+  class Version < ApplicationRecord
     include PaperTrail::VersionConcern
     include FilterableWhere
     include PrimitiveSearch

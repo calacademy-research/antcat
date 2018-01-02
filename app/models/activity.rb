@@ -3,7 +3,7 @@
 # NOTE "automated edits" are currently simply activities with `automated_edits`
 # set to true and `user` set to a user named "AntCatBot" (`User.find 62`).
 
-class Activity < ActiveRecord::Base
+class Activity < ApplicationRecord
   include FilterableWhere
 
   EDIT_SUMMARY_MAX_LENGTH = 255
