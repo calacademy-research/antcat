@@ -1,9 +1,8 @@
 class UndoTracker
-  # TODO associate the change with the current_user instead of getting that
-  # from the versions. `User.current` *may* be useful for this.
-  # TODO maybe rename -- this *creates* the change.
+  # TODO: Maybe rename -- this *creates* the change.
+  # TODO: Pass `user` from controllers.
   def self.setup_change taxon, change_type
-    change = Change.create! change_type: change_type, user_changed_taxon_id: taxon.id
+    change = Change.create! change_type: change_type, user_changed_taxon_id: taxon.id, user: User.current
     RequestStore.store[:current_change_id] = change.id
     change
   end
