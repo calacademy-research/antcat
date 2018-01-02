@@ -224,7 +224,7 @@ describe Genus do
     end
 
     it "clears both subfamily and tribe when the new parent is nil" do
-      expect(genus_with_tribe.tribe).to eq tribe # trigger FactoryGirl
+      expect(genus_with_tribe.tribe).to eq tribe # Trigger FactoryBot.
       genus_with_tribe.update_parent nil
 
       expect(genus_with_tribe.tribe).to eq nil

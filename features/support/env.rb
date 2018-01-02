@@ -1,7 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative '../../config/environment'
 
-require 'factory_girl'
+require 'factory_bot'
 
 require 'cucumber/rails'
 require 'cucumber/formatter/progress'

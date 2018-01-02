@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :issue do
     association :adder, factory: :user
     open true

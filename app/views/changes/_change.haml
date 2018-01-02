@@ -10,6 +10,8 @@
     -else
       =format_taxon_name taxon.name
   %td=link_to change.format_created_at, change
+  -# TODO: N+1 query.
+  %td=link_to change.versions.count, versions_path(change_id: change.id)
   %td
     -if change.approver
       =change.format_approver_name

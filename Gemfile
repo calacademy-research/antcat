@@ -61,7 +61,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'headless'
   gem 'launchy'
   gem 'pry'
@@ -72,7 +72,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'capybara', '>= 2.2.0'
+  gem 'capybara'
   gem 'capybara-screenshot'
   gem 'capybara-webkit'
   gem 'chromedriver-helper'

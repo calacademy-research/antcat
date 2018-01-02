@@ -10,7 +10,7 @@ namespace :antcat do
   namespace :db do
     desc "Import sample data"
     task import_sample_data: [:environment] do
-      require 'factory_girl'
+      require 'factory_bot'
       require 'sunspot_test'
 
       ENV["RAILS_ENV"] ||= 'development'

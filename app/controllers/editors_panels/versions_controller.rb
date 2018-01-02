@@ -19,6 +19,9 @@ module EditorsPanels
       event: {
         tag: :select_tag,
         options: -> { PaperTrail::Version.uniq.pluck(:event) }
+      },
+      change_id: {
+        tag: :number_field_tag
       }
     )
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171022020010) do
+ActiveRecord::Schema.define(version: 20171231030837) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "trackable_id",   limit: 4
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 20171022020010) do
     t.datetime "approved_at"
     t.string   "change_type",           limit: 255
     t.integer  "user_changed_taxon_id", limit: 4
+    t.integer  "user_id",               limit: 4
   end
 
   add_index "changes", ["approver_id"], name: "index_changes_on_approver_id", using: :btree
