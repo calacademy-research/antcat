@@ -80,5 +80,5 @@ end
 
 World HtmlSelectorsHelpers
 
-# To avoid typing `FactoryGirl.create` all the time (use `create`).
-World FactoryGirl::Syntax::Methods
+# To avoid typing `FactoryBot.create` all the time (use `create`).
+World FactoryBot::Syntax::Methods

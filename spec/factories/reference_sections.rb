@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :reference_section do
     association :taxon, factory: :family
     sequence(:position) { |n| n }

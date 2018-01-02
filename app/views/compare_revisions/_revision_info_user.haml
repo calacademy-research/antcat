@@ -1,6 +1,9 @@
 -# User link for the revision history table.
 
--originator = revision.try(:paper_trail).try(:originator)
+-if revision.is_a? PaperTrail::Version
+  -originator = revision.try(:paper_trail_originator)
+-else
+  -originator = revision.try(:paper_trail).try(:originator)
 -if originator
   =User.find(originator).decorate.user_page_link
 -else

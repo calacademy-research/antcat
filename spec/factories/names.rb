@@ -1,6 +1,6 @@
 require_relative '../support/helpers/get_name_parts_helpers'
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :name do
     sequence(:name) { |n| raise }
     name_html { name }
@@ -36,7 +36,7 @@ FactoryGirl.define do
     # from
     # $rails console test --sandbox
     # SunspotTest.stub
-    # FactoryGirl.create :subgenus
+    # FactoryBot.create :subgenus
     # Subgenus.first.name.name_html # "<i>Atta</i> <i>(Atta (Subgenus2))</i>"
     factory :subgenus_name, class: SubgenusName do
       sequence(:name) { |n| "Atta (Subgenus#{n})" }

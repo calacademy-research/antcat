@@ -22,7 +22,7 @@ Given(/^(?:this|these) references? exists?$/) do |table|
 
     # Not sure why this is required, but we have to do it to avoid having to
     # add empty doi fields in the Cucumber data tables. Perhaps because
-    # Cucumber's "doi" hash key conflicts with FactoryGirl's :doi symbol?
+    # Cucumber's "doi" hash key conflicts with FactoryBot's :doi symbol?
     doi = hash.delete "doi"
 
     hash.merge! journal: journal,
