@@ -6,8 +6,10 @@
 # server-side as HTML and return to the client).
 
 $ ->
-  $("textarea[data-previewable]").each -> $(this).makePreviewable()
+  AntCat.makeAllPreviewable()
   makeLoadingSpinnersAvailableForAtJs()
+
+AntCat.makeAllPreviewable = -> $("textarea[data-previewable]").each -> $(this).makePreviewable()
 
 $.fn.makePreviewable = -> new MakePreviewable this
 
@@ -28,6 +30,8 @@ class MakePreviewable
       new ExtrasArea(@textarea, @tab(TEXTAREA))
 
     @makeHelpTabsLoadableOnDemand()
+
+    AntCat.setupLinkables()
 
   isAlreadyPreviewable: -> @textarea.parent().hasClass "tabs-panel"
 
@@ -132,24 +136,65 @@ class MakePreviewable
 
 class ExtrasArea
   DEFAULT_REFERENCE_BUTTON_ID = "default-reference-button"
-  DEFAULT_REFERENCE_BUTTON = "##{DEFAULT_REFERENCE_BUTTON_ID}"
+  INSERT_REFERENCE_BUTTON_ID  = "insert-reference-button"
+  INSERT_TAXON_BUTTON_ID      = "insert-taxon-button"
 
   constructor: (@textarea, @textareaTab) ->
     @createExtrasArea().appendTo @textareaTab
     @setupDefaultReferenceButton()
     @setupInsertTaxaButtons()
+    @setupInsertReferenceButton()
+    @setupInsertTaxonButton()
 
   createExtrasArea: ->
     $ """
     <div>
       <a id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">Default reference</a>
+      <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">+Reference</a>
+      <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-normal btn-tiny">+Taxon</a>
       <span id="extras-area"></span>
     </div>
     """
 
+  setupInsertReferenceButton: ->
+    button = @textareaTab.find("##{INSERT_REFERENCE_BUTTON_ID}")
+
+    button.click =>
+      event.preventDefault()
+
+      originalValue = @textarea.val()
+
+      selectedValue = AntCat.getInputSelection(@textarea.get(0))
+      @textarea.insertAtCaret "{r#{selectedValue}"
+      afterValue = @textarea.val()
+
+      @restoreIfUnchanged originalValue, afterValue
+      @textarea.trigger('click.atwhoInner')
+
+  setupInsertTaxonButton: ->
+    button = @textareaTab.find("##{INSERT_TAXON_BUTTON_ID}")
+
+    button.click =>
+      event.preventDefault()
+
+      originalValue = @textarea.val()
+
+      selectedValue = AntCat.getInputSelection(@textarea.get(0))
+      @textarea.insertAtCaret "{t#{selectedValue}"
+      afterValue = @textarea.val()
+
+      @restoreIfUnchanged originalValue, afterValue
+      @textarea.trigger('click.atwhoInner')
+
+  restoreIfUnchanged: (originalValue, afterValue) ->
+    @textarea.off 'hidden.atwho'
+    @textarea.on 'hidden.atwho', =>
+      if @textarea.val() == afterValue
+        @textarea.val originalValue
+
   setupDefaultReferenceButton: ->
     reference = AntCat.defaultReference()
-    button = @textareaTab.find(DEFAULT_REFERENCE_BUTTON)
+    button = @textareaTab.find("##{DEFAULT_REFERENCE_BUTTON_ID}")
 
     unless reference?.id
       button.addClass('ui-state-disabled')

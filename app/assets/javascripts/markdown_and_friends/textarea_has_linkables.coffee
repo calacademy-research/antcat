@@ -1,7 +1,7 @@
 # This adds some autocompletions to textareas with `data-has-linkables`.
 
 $ ->
-  setupLinkables()
+  AntCat.setupLinkables()
 
 reuseCallbacks = (url) ->
   matcher: AntCat.allowSpacesWhileAutocompleting
@@ -20,7 +20,7 @@ reuseCallbacks = (url) ->
   # for our remote data, and I do not know how to disable it.
   sorter: (query, items, searchKey) -> items
 
-setupLinkables = =>
+AntCat.setupLinkables = =>
   $('[data-has-linkables]')
     .atwho
       at: '{t'

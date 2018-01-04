@@ -78,12 +78,12 @@ setupSaveHistoryItemButtons = ->
       dataType: 'json'
       data: data
       success: (response) ->
-        console.log "ok response: #{response}"
         if response.error
           alert "Error: #{response.error}"
         else
           taxtEditor.html response.content
           AntCat.make_reference_keeys_expandable taxtEditor
+          AntCat.makeAllPreviewable()
           window.setupTaxtEditors()
       error: ->
         alert 'error :('
@@ -112,6 +112,7 @@ setupSaveReferenceSectionButtons = ->
         else
           taxtEditor.html response.content
           AntCat.make_reference_keeys_expandable taxtEditor
+          AntCat.makeAllPreviewable()
           window.setupTaxtEditors()
       error: ->
         alert 'error :('

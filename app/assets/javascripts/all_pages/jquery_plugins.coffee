@@ -9,7 +9,7 @@ $ ->
           selection = document.selection.createRange()
           selection.text = valueToInsert
           @focus()
-        else if @selectionStart || @selectionStart == '0' # Firefox and Webkit-based.
+        else if @selectionStart || @selectionStart == '0' || @selectionStart == 0 # Firefox and Webkit-based.
           startPos = @selectionStart
           endPos = @selectionEnd
           scrollTop = @scrollTop
