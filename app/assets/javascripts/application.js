@@ -15,11 +15,11 @@
 //= require foundation.util.triggers
 
 //= require jquery-ui/core
-//= require jquery-ui/autocomplete
-//= require jquery-ui/dialog
-//= require jquery-ui/sortable
-//= require jquery-ui/tabs
-//= require jquery-ui/tooltip
+//= require jquery-ui/widgets/autocomplete
+//= require jquery-ui/widgets/dialog
+//= require jquery-ui/widgets/sortable
+//= require jquery-ui/widgets/tabs
+//= require jquery-ui/widgets/tooltip
 
 //= require select2
 //= require twitter/typeahead
