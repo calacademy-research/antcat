@@ -52,7 +52,7 @@ set_driver
 
 Capybara.default_max_wait_time = 5
 Capybara.default_selector = :css
-Capybara.save_and_open_page_path = './tmp/capybara'
+Capybara.save_path = './tmp/capybara'
 Capybara::Screenshot.prune_strategy = :keep_last_run
 
 ActionController::Base.allow_rescue = false

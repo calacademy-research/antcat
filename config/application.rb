@@ -35,10 +35,6 @@ module AntCat
 
     config.action_dispatch.cookies_serializer = :hybrid
 
-    # Suppress deprecation warning.
-    # TODO remove after upgrading to Rails 5.
-    config.active_record.raise_in_transactional_callbacks = true
-
     config.assets.enabled = true
   end
 end

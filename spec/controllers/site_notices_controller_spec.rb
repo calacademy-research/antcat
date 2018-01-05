@@ -19,7 +19,7 @@ describe SiteNoticesController do
     end
 
     it "marks as read" do
-      expect { get :show, id: @another_site_notice.id }
+      expect { get :show, params: { id: @another_site_notice.id } }
         .to change { SiteNotice.unread_by(editor).count }.by -1
     end
   end

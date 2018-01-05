@@ -65,7 +65,7 @@ describe Taxon do
       end
 
       def unique_ranks query
-        query.uniq.pluck(:type).sort
+        query.distinct.pluck(:type).sort
       end
 
       describe ".ranks" do
