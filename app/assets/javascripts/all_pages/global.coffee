@@ -51,3 +51,38 @@ AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
     match[2] || match[1]
   else
     null
+
+# Toggle "show more" / "Show less".
+$ ->
+  SHOW_CHARS = 500
+  MORE_TEXT = 'Show more'
+  LESS_TEXT = 'Show less'
+
+  $('.more').each ->
+    content = $(this).html()
+    if content.length > SHOW_CHARS
+      beforeTruncation = content.substr(0, SHOW_CHARS)
+      truncated = content.substr(SHOW_CHARS, content.length - SHOW_CHARS)
+
+      html = """
+        #{beforeTruncation}
+        <span>... &nbsp;</span>
+        <span class="more-content">
+          <span>#{truncated}</span>
+          &nbsp;&nbsp;
+          <a href="" class="btn-normal btn-tiny more-link">#{MORE_TEXT}</a>
+        </span>
+      """
+      $(this).html html
+
+  $('.more-link').click (event) ->
+    event.preventDefault()
+
+    if $(this).hasClass('less')
+      $(this).removeClass 'less'
+      $(this).html MORE_TEXT
+    else
+      $(this).addClass 'less'
+      $(this).html LESS_TEXT
+    $(this).parent().prev().toggle()
+    $(this).prev().toggle()
