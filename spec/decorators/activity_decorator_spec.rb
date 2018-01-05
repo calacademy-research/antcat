@@ -14,7 +14,7 @@ describe ActivityDecorator do
       let(:activity) { create :activity, user: nil }
 
       it "handles nil / 'system' activities" do
-        expect(activity.decorate.link_user).to include "[system]"
+        expect(activity.decorate.link_user).to eq ""
       end
     end
   end
