@@ -50,7 +50,7 @@ describe Exporters::Antweb::InlineCitation do
 
       it "escapes them" do
         expect(described_class[reference]).to eq(
-          %{<a title="Latreille, P. A. 1809. &quot;Atta&quot;. New York." href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>}
+          %{<a title="Latreille, P. A. 1809. \"Atta\". New York." href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>}
         )
       end
     end

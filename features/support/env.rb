@@ -44,11 +44,9 @@ def set_driver
   when "webkit"
     Capybara.javascript_driver = :webkit
   end
-
-  Capybara::Webkit.configure do |config|
-    config.block_unknown_urls
-  end
 end
+
+# TODO: Block unknown URLs.
 
 set_driver
 

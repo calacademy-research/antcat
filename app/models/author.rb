@@ -2,7 +2,7 @@ class Author < ActiveRecord::Base
   has_many :names, -> { order(:name) }, class_name: 'AuthorName'
   has_many :references, through: :names
 
-  scope :sorted_by_name, -> { joins(:names).group('authors.id').order('name') }
+  scope :sorted_by_name, -> { joins(:names).group('authors.id').order('MAX(name)') }
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 

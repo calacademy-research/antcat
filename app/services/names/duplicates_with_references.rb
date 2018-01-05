@@ -28,7 +28,7 @@ module Names
 
       def name_strings
         Name.find_by_sql(<<-SQL).map(&:name)
-          SELECT * FROM names GROUP BY name HAVING COUNT(*) > 1
+          SELECT name FROM names GROUP BY name HAVING COUNT(*) > 1
         SQL
       end
   end
