@@ -19,12 +19,12 @@ class Exporters::Antweb::TypeFields
 
     def published_type_information
       return unless taxon.published_type_information.present?
-      add_period_if_necessary detax(taxon.published_type_information)
+      add_period_if_necessary "Primary type information: #{detax(taxon.published_type_information)}"
     end
 
     def additional_type_information
       return unless taxon.additional_type_information.present?
-      add_period_if_necessary "Additional type information: #{detax(taxon.additional_type_information)}"
+      add_period_if_necessary "Secondary type information: #{detax(taxon.additional_type_information)}"
     end
 
     def type_notes
