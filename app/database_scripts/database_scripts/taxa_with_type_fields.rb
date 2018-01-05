@@ -75,5 +75,5 @@ description: >
   See [Edit institutions](/institutions) for all
   a list of all institutions.
 
-tags: [new!, slow]
+tags: [slow]
 topic_areas: [types]
