@@ -4,7 +4,7 @@ module DatabaseScripts
   class TaxaWithTheSameNameObject < DatabaseScript
     def results
       Taxon.find_by_sql(<<-SQL)
-        SELECT name_cache,
+        SELECT MAX(name_cache) AS name_cache,
           GROUP_CONCAT(DISTINCT id SEPARATOR ',') AS grouped_ids
         FROM taxa
         GROUP BY name_id
