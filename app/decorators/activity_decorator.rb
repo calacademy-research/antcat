@@ -5,7 +5,7 @@ class ActivityDecorator < Draper::Decorator
   # Activities are by default associated with the performing user, but
   # in the console and other situations we may not have a current user.
   def link_user
-    return "[system]" unless user
+    return '' unless user
     user.decorate.user_page_link
   end
 

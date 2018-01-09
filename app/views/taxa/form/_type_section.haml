@@ -2,12 +2,13 @@
   %h5.callout-header Type
   %table.unstriped.no-border
     -if taxon.kind_of? SpeciesGroupTaxon
+      -# TODO: Rename columns in database to match view.
       %tr
-        %td.caption=form.label :original_published_type_information
+        %td.caption=form.label :primary_type_information
         %td#published_type_information_taxt_editor.taxt_editor
           =render 'taxt_editors/show', name: 'taxon[published_type_information]', value: TaxtConverter[taxon.published_type_information].to_editor_format
       %tr
-        %td.caption=form.label :additional_type_information
+        %td.caption=form.label :secondary_type_information
         %td#additional_type_information_taxt_editor.taxt_editor
           =render 'taxt_editors/show', name: 'taxon[additional_type_information]', value: TaxtConverter[taxon.additional_type_information].to_editor_format
       %tr

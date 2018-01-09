@@ -32,9 +32,7 @@
       %li=link_to "Markdown formatting help", markdown_formatting_help_path
       %li=link_to "History item search", taxon_history_items_path
       %li=link_to "Reference section search", reference_sections_path
-      %li
-        =link_to "Edit institutions", institutions_path
-        =new_label
+      %li=link_to "Edit institutions", institutions_path
 
   .large-3.medium-4.columns
     -if current_user
