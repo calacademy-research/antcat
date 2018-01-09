@@ -19,7 +19,7 @@ describe References::WhatLinksHere do
         references_taxt: "{ref #{reference.id}}"
       nested_reference = create :nested_reference, nesting_reference: reference
 
-      results = reference.what_links_here
+      results = reference.reload.what_links_here
       expect(results).to match_array [
         { table: 'taxa',                id: taxon.id,             field: :type_taxt },
         { table: 'taxa',                id: taxon.id,             field: :headline_notes_taxt },

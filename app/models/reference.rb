@@ -189,7 +189,7 @@ class Reference < ApplicationRecord
     def check_not_nested
       return unless nestees.exists?
 
-      errors.add :base, "This reference can't be deleted because it's nested in #{nestees.first.id}"
+      errors.add :base, "This reference can't be deleted because it's nested in #{nestees.reload.first.id}"
       false
     end
 
