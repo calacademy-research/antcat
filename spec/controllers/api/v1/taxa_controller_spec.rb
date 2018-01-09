@@ -8,7 +8,7 @@ describe Api::V1::TaxaController do
       species = create_species 'Atta minor'
       create :species_name, name: 'Eciton minor'
 
-      get :index, starts_at: species.id
+      get :index, params: { starts_at: species.id }
 
       taxa = JSON.parse response.body
       expect(taxa[0]['species']['id']).to eq species.id
@@ -20,7 +20,7 @@ describe Api::V1::TaxaController do
       create_species 'Atta minor'
       create :species_name, name: 'Eciton minor'
 
-      get :index, nil
+      get :index
 
       expect(response.body.to_s).to include "Atta"
       taxa = JSON.parse response.body
@@ -36,7 +36,7 @@ describe Api::V1::TaxaController do
   describe "GET show" do
     let!(:species) { create_species 'Atta minor maxus' }
 
-    before { get :show, id: species.id }
+    before { get :show, params: { id: species.id } }
 
     it "returns a single taxon entry" do
       parsed_species = JSON.parse response.body
@@ -53,18 +53,18 @@ describe Api::V1::TaxaController do
     before { create_species 'Atta minor maxus' }
 
     it "searches for taxa" do
-      get :search, { 'string' => 'maxus' }, nil
+      get :search, params: { 'string' => 'maxus' }
       expect(response.body.to_s).to include "maxus"
     end
 
     it 'returns HTTP 200' do
-      get :search, { 'string' => 'maxus' }, nil
+      get :search, params: { 'string' => 'maxus' }
       expect(response).to have_http_status 200
     end
 
     context "when there are no search matches" do
       it 'returns HTTP 404' do
-        get :search, { 'string' => 'maxuus' }, nil
+        get :search, params: { 'string' => 'maxuus' }
         expect(response).to have_http_status 404
       end
     end

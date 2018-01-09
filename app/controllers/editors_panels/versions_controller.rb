@@ -11,14 +11,14 @@ module EditorsPanels
       },
       item_type: {
         tag: :select_tag,
-        options: -> { PaperTrail::Version.uniq.pluck(:item_type) - ["User"] }
+        options: -> { PaperTrail::Version.distinct.pluck(:item_type) - ["User"] }
       },
       item_id: {
         tag: :number_field_tag
       },
       event: {
         tag: :select_tag,
-        options: -> { PaperTrail::Version.uniq.pluck(:event) }
+        options: -> { PaperTrail::Version.distinct.pluck(:event) }
       },
       change_id: {
         tag: :number_field_tag

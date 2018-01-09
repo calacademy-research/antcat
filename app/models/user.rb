@@ -1,7 +1,7 @@
 # TODO column for `devise :invitable` can be removed from the db.
 # TODO default `user.can_edit` to false.
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include Trackable
 
   has_many :activities

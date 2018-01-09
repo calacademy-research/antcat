@@ -1,7 +1,7 @@
 module DatabaseScripts
   class ProtonymLocalities < DatabaseScript
     def results
-      Protonym.uniq.pluck(:locality).reject(&:blank?).sort
+      Protonym.distinct.pluck(:locality).reject(&:blank?).sort
     end
 
     def render

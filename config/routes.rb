@@ -1,6 +1,3 @@
-# TODO *maybe* split into smaller files.
-# https://blog.lelonek.me/keep-your-rails-routes-clean-and-organized-83e78f2c11f2
-
 AntCat::Application.routes.draw do
   ActiveAdmin.routes self
 

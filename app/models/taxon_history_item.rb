@@ -1,4 +1,4 @@
-class TaxonHistoryItem < ActiveRecord::Base
+class TaxonHistoryItem < ApplicationRecord
   include Trackable
   include PrimitiveSearch
   include RevisionsCanBeCompared

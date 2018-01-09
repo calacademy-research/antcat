@@ -11,7 +11,7 @@ class ActivitiesController < ApplicationController
     },
     trackable_type: {
       tag: :select_tag,
-      options: -> { Activity.uniq.pluck(:trackable_type).compact }
+      options: -> { Activity.distinct.pluck(:trackable_type).compact }
     },
     trackable_id: {
       tag: :number_field_tag
@@ -36,8 +36,8 @@ class ActivitiesController < ApplicationController
 
   private
     def self.activity_actions_options_for_select
-      Activity.uniq.pluck(:action, :action).map(&:humanize)
-        .zip(Activity.uniq.pluck(:action, :action))
+      Activity.distinct.pluck(:action, :action).map(&:humanize)
+        .zip(Activity.distinct.pluck(:action, :action))
     end
     private_class_method :activity_actions_options_for_select
 

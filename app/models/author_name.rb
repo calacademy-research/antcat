@@ -1,6 +1,6 @@
 # TODO `remove_column :author_names, :verified`, or rename to `auto_generated`.
 
-class AuthorName < ActiveRecord::Base
+class AuthorName < ApplicationRecord
   belongs_to :author
 
   has_many :reference_author_names

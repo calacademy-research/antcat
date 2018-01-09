@@ -10,7 +10,7 @@ describe Changes::UndosController do
 
       context "when no others would be deleted" do
         it "returns a single taxon" do
-          get :show, change_id: Change.first.id
+          get :show, params: { change_id: Change.first.id }
 
           undo_items = assigns :undo_items
           expect(undo_items.size).to eq 1
@@ -29,7 +29,7 @@ describe Changes::UndosController do
         end
 
         it "returns multiple items" do
-          get :show, change_id: Change.first.id
+          get :show, params: { change_id: Change.first.id }
 
           undo_items = assigns :undo_items
 

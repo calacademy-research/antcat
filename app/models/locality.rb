@@ -1,5 +1,5 @@
-class Locality < ActiveRecord::Base
+class Locality < ApplicationRecord
   def self.unique_sorted
-    Protonym.uniq.pluck(:locality).compact.sort
+    Protonym.distinct.pluck(:locality).compact.sort
   end
 end
