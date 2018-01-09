@@ -24,7 +24,7 @@ module Api::V1
       if results.size > 0
         render json: results
       else
-        head status: :not_found
+        head :not_found
       end
     end
   end

@@ -8,7 +8,7 @@ class DefaultReferencesController < ApplicationController
     DefaultReference.set session, @reference
 
     if request.xhr?
-      head
+      head :ok
     else
       redirect_to :back, notice: <<-MSG.squish
           #{@reference.keey} was successfully set as the default reference.
