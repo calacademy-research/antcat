@@ -26,7 +26,7 @@ class DuplicatesController < ApplicationController
               else
                 new_parent.find_epithet_in_genus(current_taxon.name.epithet)
               end
-    render nothing: true, status: :no_content and return unless options
+    head :no_content and return unless options
 
     # This code to pass these some other way, and remove these two columns from the taxa db entry
     options.each do |option|
