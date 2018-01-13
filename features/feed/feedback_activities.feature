@@ -5,7 +5,7 @@ Feature: Feed (feedback)
     And I log in as a catalog editor named "Archibald"
 
     When I go to the activity feed
-    Then I should see "[system] an unregistered user added the feedback item #"
+    Then I should see "An unregistered user added the feedback item #"
 
   Scenario: Added feedback (registered user)
     Given I log in as a catalog editor named "Archibald"

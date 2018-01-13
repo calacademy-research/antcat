@@ -5,7 +5,7 @@ module DatabaseScripts
 
     def results
       ActiveRecord::Base.connection.exec_query <<-SQL.squish
-        SELECT a.id author_id, name, MIN(YEAR) min_year, MAX(year) max_year, COUNT(*) count FROM taxa
+        SELECT a.id author_id, MAX(name) name, MIN(YEAR) min_year, MAX(year) max_year, COUNT(*) count FROM taxa
           JOIN protonyms ON taxa.protonym_id = protonyms.id
           JOIN citations ON protonyms.authorship_id = citations.id
           JOIN `references` ON citations.reference_id = `references`.id

@@ -24,9 +24,9 @@ describe DuplicatesController do
         status: Status['valid'].to_s
       sign_in @user
 
-      get :show, parent_id: @genus_a.id,
+      get :show, params: { parent_id: @genus_a.id,
         previous_combination_id: species_b.id,
-        rank_to_create: 'species'
+        rank_to_create: 'species' }
 
       expect(response).to have_http_status :ok
       taxa = JSON.parse response.body
@@ -45,9 +45,9 @@ describe DuplicatesController do
         protonym_id: @species_a.id
       sign_in @user
 
-      get :show, parent_id: @genus_a.id,
+      get :show, params: { parent_id: @genus_a.id,
         previous_combination_id: species_b.id,
-        rank_to_create: 'species'
+        rank_to_create: 'species' }
 
       expect(response).to have_http_status :ok
       taxa = JSON.parse response.body
@@ -66,9 +66,9 @@ describe DuplicatesController do
         protonym_id: @species_a.id
       sign_in @user
 
-      get :show, parent_id: @genus_a.id,
+      get :show, params: { parent_id: @genus_a.id,
         previous_combination_id: species_b.id,
-        rank_to_create: 'species'
+        rank_to_create: 'species' }
 
       expect(response).to have_http_status 204
     end

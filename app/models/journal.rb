@@ -1,4 +1,4 @@
-class Journal < ActiveRecord::Base
+class Journal < ApplicationRecord
   include Trackable
 
   has_many :references

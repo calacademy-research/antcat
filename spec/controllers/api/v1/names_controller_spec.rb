@@ -18,7 +18,7 @@ describe Api::V1::NamesController do
     end
 
     it "gets all author names keys (starts_at)" do
-      get :index, starts_at: protonym_name.id
+      get :index, params: { starts_at: protonym_name.id }
 
       names = JSON.parse response.body
       expect(names[0]['species_name']['id']).to eq protonym_name.id
@@ -34,7 +34,7 @@ describe Api::V1::NamesController do
   describe "GET show" do
     let!(:taxon) { create_genus }
 
-    before { get :show, id: taxon.name_id }
+    before { get :show, params: { id: taxon.name_id } }
 
     it "fetches a name" do
       expect(response.body.to_s).to include "Atta"

@@ -1,4 +1,4 @@
-class Institution < ActiveRecord::Base
+class Institution < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 

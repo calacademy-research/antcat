@@ -4,7 +4,7 @@ describe References::DownloadsController do
   describe "GET show" do
     describe "reference without a document" do
       it "raises an error" do
-        expect { get :show, id: 99999, file_name: "not_even_stubbed.pdf" }
+        expect { get :show, params: { id: 99999, file_name: "not_even_stubbed.pdf" } }
           .to raise_error ActiveRecord::RecordNotFound
       end
     end
@@ -20,7 +20,7 @@ describe References::DownloadsController do
         end
 
         it "redirects to the file" do
-          response = get :show, id: reference_document.id, file_name: "not_even_stubbed.pdf"
+          response = get :show, params: { id: reference_document.id, file_name: "not_even_stubbed.pdf" }
           expect(response).to redirect_to reference_document.actual_url
         end
       end
@@ -31,7 +31,7 @@ describe References::DownloadsController do
         end
 
         it "redirects to the file" do
-          response = get :show, id: reference_document.id, file_name: "not_even_stubbed.pdf"
+          response = get :show, params: { id: reference_document.id, file_name: "not_even_stubbed.pdf" }
           expect(response.response_code).to eq 401
         end
       end

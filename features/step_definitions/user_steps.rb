@@ -82,6 +82,7 @@ end
 
 When(/^I log out$/) do
   step 'I follow the first "Logout"'
+  step %(I should see "You're logged out")
 end
 
 When(/^I fill in the email field with my email address$/) do

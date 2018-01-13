@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Wikipedia::ReferenceExporter do
   let(:batiatus) do
-    build_stubbed :author_name, name: "Batiatus, Q. L.", author: build_stubbed(:author)
+    create :author_name, name: "Batiatus, Q. L.", author: build_stubbed(:author)
   end
 
   describe "ArticleReference" do
@@ -25,11 +25,10 @@ describe Wikipedia::ReferenceExporter do
 
   describe "BookReference" do
     before do
-      glaber = build_stubbed :author_name,
-        name: "Glaber, G. C.", author: build_stubbed(:author)
-      @reference = build_stubbed :book_reference,
+      glaber = create :author_name, name: "Glaber, G. C.", author: build_stubbed(:author)
+      @reference = create :book_reference,
         author_names: [batiatus, glaber], title: "*Formica* and Apples",
-        pagination: "7-14", year: "2000"
+        pagination: "7-14", citation_year: "2000"
     end
 
     it "formats" do

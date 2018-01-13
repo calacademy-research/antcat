@@ -21,7 +21,7 @@ describe Api::V1::AuthorsController do
   end
 
   describe "GET show" do
-    before { get :show, id: author.id }
+    before { get :show, params: { id: author.id } }
 
     it "fetches an author primary key" do
       expect(response.body.to_s).to include author.id.to_s

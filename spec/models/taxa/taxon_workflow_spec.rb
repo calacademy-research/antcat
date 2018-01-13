@@ -104,7 +104,7 @@ describe Taxon do
 
         last_version = genus.last_version
         genus.reload
-        expect(last_version).to eq genus.versions(true).last
+        expect(last_version).to eq genus.versions.reload.last
       end
     end
   end

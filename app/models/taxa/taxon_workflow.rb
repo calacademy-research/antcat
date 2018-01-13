@@ -27,13 +27,12 @@ class Taxon < ApplicationRecord
     user != changed_by
   end
 
-  # Returns the ID of the most recent change that touches this taxon.
+  # Returns the most recent change that touches this taxon.
   def last_change
     Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
   end
 
   def last_version
-    # it seems to be necessary to reload the association and get its last element
-    versions(true).last
+    versions.reload.last
   end
 end

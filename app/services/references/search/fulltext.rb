@@ -24,8 +24,8 @@ module References
           title           = options[:title]
 
           # Hyphens, asterixes and colons makes Solr go bananas.
-          title.gsub!(/-|:|\*/, ' ') if title
-          author.gsub!(/-|:/, ' ') if author
+          title = title.gsub(/-|:|\*/, ' ') if title
+          author = author.gsub(/-|:/, ' ') if author
 
           # Calling `.solr_search` because `.search` is a Ransack method (bundled by ActiveAdmin).
           Reference.solr_search(include: [:document]) do

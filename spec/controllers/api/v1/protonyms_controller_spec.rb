@@ -22,7 +22,7 @@ describe Api::V1::ProtonymsController do
   describe "GET show" do
     let!(:taxon) { create_genus }
 
-    before { get :show, id: taxon.protonym_id }
+    before { get :show, params: { id: taxon.protonym_id } }
 
     it "fetches a protonym" do
       expect(response.body.to_s).to include taxon.protonym.id.to_s

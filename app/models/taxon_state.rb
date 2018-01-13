@@ -1,6 +1,6 @@
 # TODO default `taxon_states.deleted` to "false" in db.
 
-class TaxonState < ActiveRecord::Base
+class TaxonState < ApplicationRecord
   belongs_to :taxon
 
   # TODO investigate the difference between `TaxonState.waiting` and

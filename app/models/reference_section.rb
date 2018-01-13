@@ -1,4 +1,4 @@
-class ReferenceSection < ActiveRecord::Base
+class ReferenceSection < ApplicationRecord
   include Trackable
   include PrimitiveSearch
   include RevisionsCanBeCompared

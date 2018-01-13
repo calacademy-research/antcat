@@ -8,4 +8,4 @@ Feature: Feed (users)
       And I fill in "user_password_confirmation" with "secret123"
       And I press "Sign Up"
     And I go to the activity feed
-    Then I should see "[system] Quintus Batiatus registered an account, welcome to antcat.org!" and no other feed items
+    Then I should see "Quintus Batiatus registered an account, welcome to antcat.org!" and no other feed items

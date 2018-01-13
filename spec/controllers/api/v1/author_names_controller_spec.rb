@@ -23,7 +23,7 @@ describe Api::V1::AuthorNamesController do
   describe "GET show" do
     let!(:author_name) { create :author_name, name: 'Bolton' }
 
-    before { get :show, id: author_name.id }
+    before { get :show, params: { id: author_name.id } }
 
     it "fetches an author name" do
       expect(response.body.to_s).to include "Bolton"

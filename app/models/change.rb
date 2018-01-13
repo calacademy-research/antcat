@@ -1,4 +1,4 @@
-class Change < ActiveRecord::Base
+class Change < ApplicationRecord
   include Trackable
 
   belongs_to :approver, class_name: 'User'

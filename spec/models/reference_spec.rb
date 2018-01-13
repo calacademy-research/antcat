@@ -360,12 +360,12 @@ describe Reference do
   end
 
   describe "#keey" do
-    let(:bolton) { build_stubbed :author_name, name: 'Bolton, B.' }
-    let(:fisher) { build_stubbed :author_name, name: 'Fisher, B.' }
+    let(:bolton) { create :author_name, name: 'Bolton, B.' }
+    let(:fisher) { create :author_name, name: 'Fisher, B.' }
 
     context "when citation years with extra" do
       let(:reference) do
-        build_stubbed :article_reference, author_names: [bolton], citation_year: '1970a ("1971")'
+        create :article_reference, author_names: [bolton], citation_year: '1970a ("1971")'
       end
 
       specify { expect(reference.keey).to eq 'Bolton, 1970a' }
@@ -373,7 +373,7 @@ describe Reference do
 
     context 'when no authors' do
       let(:reference) do
-        build_stubbed :article_reference, author_names: [], citation_year: '1970a'
+        create :article_reference, author_names: [], citation_year: '1970a'
       end
 
       specify { expect(reference.keey).to eq '[no authors], 1970a' }
@@ -381,7 +381,7 @@ describe Reference do
 
     context 'when one author' do
       let(:reference) do
-        build_stubbed :article_reference, author_names: [bolton], citation_year: '1970a'
+        create :article_reference, author_names: [bolton], citation_year: '1970a'
       end
 
       specify { expect(reference.keey).to eq 'Bolton, 1970a' }
@@ -389,16 +389,16 @@ describe Reference do
 
     context 'when two authors' do
       let(:reference) do
-        build_stubbed :article_reference, author_names: [bolton, fisher], citation_year: '1970a'
+        create :article_reference, author_names: [bolton, fisher], citation_year: '1970a'
       end
 
       specify { expect(reference.keey).to eq 'Bolton & Fisher, 1970a' }
     end
 
     context 'when three authors' do
-      let(:ward) { build_stubbed :author_name, name: 'Ward, P.S.' }
+      let(:ward) { create :author_name, name: 'Ward, P.S.' }
       let(:reference) do
-        build_stubbed :article_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
+        create :article_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
       end
 
       specify { expect(reference.keey).to eq 'Bolton, Fisher & Ward, 1970a' }
@@ -412,7 +412,7 @@ describe Reference do
     end
 
     it "handles multiple authors" do
-      reference = build_stubbed :article_reference,
+      reference = create :article_reference,
         author_names: [ create(:author_name, name: 'Bolton, B.'),
                         create(:author_name, name: 'Fisher, R.')],
         citation_year: '2001', year: '2001'
