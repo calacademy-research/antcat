@@ -31,3 +31,6 @@
 //= require all_pages/global
 //= require all_pages/show_hide_toggler
 //= require all_pages/spinner
+
+// vendor/assets/javascripts
+//= require jquery.truncate

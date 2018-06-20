@@ -1,15 +1,15 @@
 #type-fields
   -if taxon.published_type_information.present?
-    %span.more
+    %span.truncate
       %strong Primary type information:
       =add_period_if_necessary ::Types::FormatTypeField[taxon.published_type_information]
 
   -if taxon.additional_type_information.present?
-    %span.more
+    %span.truncate
       %strong Secondary type information:
       =add_period_if_necessary ::Types::FormatTypeField[taxon.additional_type_information]
 
   -if taxon.type_notes.present?
-    %span.more
+    %span.truncate
       %strong Type notes:
       =add_period_if_necessary ::Types::FormatTypeField[taxon.type_notes]
