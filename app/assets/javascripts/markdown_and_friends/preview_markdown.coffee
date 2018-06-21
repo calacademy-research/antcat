@@ -147,12 +147,18 @@ class ExtrasArea
     @setupInsertTaxonButton()
 
   createExtrasArea: ->
+    helpText = """
+      Note: all "quick taxon buttons" get their values from
+      the current taxon itself and all its parents.
+    """
+
     $ """
     <div>
       <a id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">Default reference</a>
       <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">+Reference</a>
       <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-normal btn-tiny">+Taxon</a>
       <span id="extras-area"></span>
+      <span title='#{helpText}' class="tooltip">???</span>
     </div>
     """
 
