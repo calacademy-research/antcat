@@ -3,6 +3,7 @@ Feature: Feed (synonyms)
   Background:
     Given I log in as a catalog editor named "Archibald"
 
+  @no_travis
   Scenario: Added synonym
     Given activity tracking is disabled
       And there is a species "Atta major"
