@@ -35,7 +35,7 @@ class CommentsController < ApplicationController
       MSG
     else
       # TODO add proper error messages.
-      redirect_to :back, notice: "Something went wrong. Email us?"
+      redirect_back fallback_location: root_path, notice: "Something went wrong. Email us?"
     end
   end
 
