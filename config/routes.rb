@@ -97,7 +97,7 @@ AntCat::Application.routes.draw do
   end
 
   scope module: :protonyms do
-    controller :localities, path: "/protonyms/localities" do
+    scope controller: :localities, path: "/protonyms/localities" do
       get :autocomplete
     end
   end
