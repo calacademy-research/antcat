@@ -27,6 +27,11 @@ When(/^(?:|I )press the first "([^"]*)"$/) do |button|
   first(:button, button).click
 end
 
+# TODO. Remove hack.
+When(/^(?:|I )press all "([^"]*)"$/) do |button|
+  all(:button, button).each(&:click)
+end
+
 When(/^(?:|I )follow the first "([^"]*)"$/) do |link|
   first(:link, link).click
 end
@@ -83,7 +88,7 @@ When(/^(?:|I )choose "([^"]*)"$/) do |field|
 end
 
 # "I should see/contain/selected ..."
-Then(/^(?:|I )should see "([^"]*)"$/) do |text|
+Then(/^(?:|I )should (?:|still )see "([^"]*)"$/) do |text|
   expect(page).to have_content text
 end
 

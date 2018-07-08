@@ -88,3 +88,23 @@ Feature: Editing a history item
 
     When I refresh the page (JavaScript)
     Then the history should be empty
+
+  Scenario: Seeing the markdown preview (and cancelling)
+    Given there is a Giovanni reference
+    And there is a genus "Eciton" with taxonomic history "Eciton history, {ref 7777}"
+
+    When I go to the edit page for "Eciton"
+    Then I should see "Eciton history, Giovanni, 1809"
+    And the history item field should not be visible
+
+    When I click on the edit taxon history item button
+    Then I should still see "Eciton history, Giovanni, 1809"
+    And the history item field should be visible
+
+    When I fill in "taxt" with "Lasius history, {ref 7777}"
+    And I press all "Rerender preview"
+    Then I should see "Lasius history, Giovanni, 1809"
+
+    When I click on the cancel taxon history item button
+    Then I should see "Eciton history, Giovanni, 1809"
+    And the history item field should not be visible

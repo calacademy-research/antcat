@@ -11,11 +11,3 @@ Feature: Markdown
     And I fill in "issue_description" with "See: %reference7777"
     And I press "Save"
     Then I should see "See: Giovanni, 1809"
-
-  @javascript
-  Scenario: See formatting help
-    Given I am on a page with a textarea with markdown preview and autocompletion
-    And I should not see "AntCat-specific markdown"
-
-    When I follow "Formatting Help"
-    Then I should see "AntCat-specific markdown"

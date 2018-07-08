@@ -40,6 +40,17 @@ setupEditButtons = ->
 
     taxtEditor = $(this).parent().parent()
     taxtEditor.find(TAXT_EDITOR_EDITOR).show()
+
+    textareas = taxtEditor.find('textarea')
+
+    # Render preview. It was not done when the element was created because
+    # it's an expensive-ish AJAX call we wanted to delay since the element
+    # was hidden anyways.
+    textareas.each -> $(this).renderUnrenderedPreviewableHack()
+
+    # Resize textareas according to content.
+    textareas.each (index, element) -> $(element).height $(element)[0].scrollHeight
+
     taxtEditor.find(TAXT_PRESENTER).hide()
 
 setupOkButtons = ->

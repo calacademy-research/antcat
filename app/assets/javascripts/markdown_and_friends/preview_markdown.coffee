@@ -9,126 +9,89 @@ $ ->
   AntCat.makeAllPreviewable()
   makeLoadingSpinnersAvailableForAtJs()
 
-AntCat.makeAllPreviewable = -> $("textarea[data-previewable]").each -> $(this).makePreviewable()
+AntCat.makeAllPreviewable = ->
+  $("textarea[data-previewable]").each -> $(this).makePreviewable()
 
 $.fn.makePreviewable = -> new MakePreviewable this
 
+# Super dirty.
+$.fn.renderUnrenderedPreviewableHack = -> new MakePreviewable this, true
+
 class MakePreviewable
-  # Tabs.
-  TEXTAREA = "textarea"
-  PREVIEW  = "preview"
-  HELP     = "formatting-help"
+  constructor: (@textarea, justRender = false) ->
+    if @isAlreadyPreviewable() and justRender
+      return if @textarea.val() == ""
+      return @renderPreview()
 
-  constructor: (@textarea) ->
     return if @isAlreadyPreviewable()
-
-    @uuid = @getUUID()
 
     @wrapInPreviewArea()
     @setupPreviewLink()
+
     if @textarea.data('use-extras')
-      new ExtrasArea(@textarea, @tab(TEXTAREA))
+      new ExtrasArea(@textarea, @textarea.parent().parent().parent())
 
-    @makeHelpTabsLoadableOnDemand()
+    @renderPreview() if @textarea.is(":visible") and @textarea.val() != ""
 
-    AntCat.setupLinkables()
+    # Resize textareas according to content (works only for visible text areas).
+    @textarea.height @textarea[0].scrollHeight
 
-  isAlreadyPreviewable: -> @textarea.parent().hasClass "tabs-panel"
-
-  getUUID: ->
-    window.currentUUID ||= 1
-    currentUUID++
-
-  # Very internal helpers.
-  tab: (name) -> $(@tabId name)                     # jQuery element
-  tabId: (name) -> "##{@unprefixedTabId name}"      # "#preview-tab-123"
-  unprefixedTabId: (name) -> "#{name}-tab-#{@uuid}" # "preview-tab-123"
-
-  # Helpers for finding links to the tabs.
-  previewLink: -> $("a[href='#{@tabId PREVIEW}']")
-  helpLink: ->    $("a[href='#{@tabId HELP}']")
+  isAlreadyPreviewable: -> @textarea.parent().hasClass "is-already-previewable"
 
   wrapInPreviewArea: ->
     # Create new preview area (tabs) and insert after textarea, and tabify.
     title = @textarea.data("previewable-title") || "Text"
     previewArea = @createPreviewArea title
     previewArea.insertAfter @textarea
-    new Foundation.Tabs previewArea.find $(".tabs")
 
     # Move textarea inside the first tab of the preview area.
-    @textarea.detach().prependTo @tab(TEXTAREA)
+    @textarea.detach().prependTo previewArea.find(".preview-editable")
 
-  # We need this ridiculous amount of unique IDs because Foundation
-  # Tabs requires it. https://foundation.zurb.com/sites/docs/tabs.html
-  # TODO probably do not use Foundation.
   createPreviewArea: (title) ->
     $ """
     <div class="preview-area">
-      <ul class="tabs" data-tabs>
-        <li class="tabs-title is-active">
-          <a href="#{@tabId TEXTAREA}">#{title}</a>
-        </li>
-        <li class="tabs-title">
-          <a href="#{@tabId PREVIEW}" class="preview-link">Preview</a>
-        </li>
-        <li class="tabs-title">
-          <a href="#{@tabId HELP}">Formatting Help</a>
-        </li>
-        <li class="tabs-title right">
-          <a>
-            <span class="shared-spinner"><i class="fa fa-refresh fa-spin"></i></span>
-          </a>
-        </li>
-      </ul>
-      <div class="tabs-content">
-        <div class="tabs-panel is-active" id="#{@unprefixedTabId TEXTAREA}"></div>
-        <div class="tabs-panel" id="#{@unprefixedTabId PREVIEW}"></div>
-        <div class="tabs-panel" id="#{@unprefixedTabId HELP}"></div>
+      <div class="row">
+        <div class="medium-6 columns">#{title}</div>
+        <div class="medium-6 columns">
+          Preview
+          <button class="btn-white btn-tiny preview-link">Rerender preview</button>
+          <a><span class="shared-spinner"><i class="fa fa-refresh fa-spin"></i></span></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="medium-6 columns preview-editable is-already-previewable"></div>
+        <div class="medium-6 columns preview-previewable"></div>
       </div>
     </div>
     """
 
   setupPreviewLink: ->
-    tab = @tab PREVIEW
-
-    @previewLink().click (event) =>
+    @textarea.parent().parent().parent().find(".preview-link").click (event) =>
       event.preventDefault()
+      @renderPreview()
 
-      toParse = @textarea.val()
-      if toParse is ""
-        tab.html "No content. Try this: <code>{ta 429161}</code>."
-        return
+  renderPreview: ->
+    tab = @textarea.parent().parent().find(".preview-previewable")
 
-      tab.html "Loading preview... dot dot dot..."
-      @showSpinner()
+    toParse = @textarea.val()
+    if toParse is ""
+      tab.html "No content. Try this: <code>{ta las}</code>."
+      return
 
-      $.ajax
-        url: "/markdown/preview"
-        type: "post"
-        data: text: toParse
-        dataType: "html"
-        success: (html) =>
-          tab.html html
-          # Re-trigger to make references expandable.
-          AntCat.make_reference_keeys_expandable tab
-          @hideSpinner() # Only hide on success.
-        error: -> tab.text "Error rendering preview"
+    tab.html "Loading preview... dot dot dot..."
+    @showSpinner()
 
-  # Load markdown formatting help page via AJAX on demand.
-  # Mostly because it's so much easier to format it in HAML rather than JavaScript.
-  makeHelpTabsLoadableOnDemand: ->
-    setupFormattingHelp = =>
-      tab = @tab HELP
-      url = "/markdown/formatting_help.json"
-
-      @helpLink().click =>
-        if tab.is ":empty"
-          @showSpinner()
-          tab.load url, =>
-            @hideSpinner()
-            AntCat.make_reference_keeys_expandable tab
-
-    setupFormattingHelp()
+    $.ajax
+      url: "/markdown/preview"
+      type: "post"
+      data: text: toParse
+      dataType: "html"
+      success: (html) =>
+        tab.html html
+        # Re-trigger to make references expandable.
+        AntCat.make_reference_keeys_expandable tab
+        @hideSpinner() # Only hide on success.
+      error: -> tab.text "Error rendering preview"
 
   spinner: -> @textarea.closest(".preview-area").find ".shared-spinner"
   showSpinner: -> @spinner().show()

@@ -28,6 +28,14 @@ Then(/^the history item field should be "(.*)"$/) do |history|
   expect(element.text).to match /#{history}/
 end
 
+Then(/^the history item field should not be visible$/) do
+  expect(page).to_not have_css '.history_items textarea'
+end
+
+Then(/^the history item field should be visible$/) do
+  expect(page).to have_css '.history_items textarea'
+end
+
 Then(/^the history should be empty$/) do
   expect(page).to_not have_css '.history_items .history_item'
 end

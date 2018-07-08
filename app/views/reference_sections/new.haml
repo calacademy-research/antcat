@@ -9,16 +9,16 @@
 =form_for @item, url: "/taxa/#{@item.taxon_id}/reference_sections" do |f|
   =render "shared/errors_for", resource: @item
   .row
-    .medium-6.columns
+    .medium-12.columns
       =text_area_tag :title_taxt, @item.title_taxt, rows: 1, name: 'reference_section[title_taxt]',
-        data: { has_linkables: true, previewable: true, previewable_title: "Title" }
+        data: { has_linkables: true, previewable: true, previewable_title: "Title", use_extras: true }
       =text_area_tag :subtitle_taxt, @item.subtitle_taxt, rows: 1, name: 'reference_section[subtitle_taxt]',
-        data: { has_linkables: true, previewable: true, previewable_title: "Subtitle" }
+        data: { has_linkables: true, previewable: true, previewable_title: "Subtitle", use_extras: true }
       =text_area_tag :references_taxt, @item.references_taxt, rows: 5, name: 'reference_section[references_taxt]',
-        data: { has_linkables: true, previewable: true, previewable_title: "References" }
+        data: { has_linkables: true, previewable: true, previewable_title: "References", use_extras: true }
 
   .row
-    .medium-3.columns
+    .medium-3.columns.end
       =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
 
   .row
