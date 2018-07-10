@@ -46,8 +46,7 @@ describe TaxtPresenter do
         end
       end
 
-      # TODO: Fix or remove.
-      xcontext "when the ref points to a reference that doesn't exist" do
+      context "when the ref points to a reference that doesn't exist" do
         let(:results) { described_class["{ref 999}"].to_html }
 
         it "adds a warning" do
@@ -66,8 +65,7 @@ describe TaxtPresenter do
         expect(described_class["{nam #{name.id}}"].to_html).to eq '<i>Atta major minor</i>'
       end
 
-      # TODO: Fix or remove.
-      xcontext "when the name can't be found" do
+      context "when the name can't be found" do
         let(:results) { described_class["{nam 999}"].to_html }
 
         it "adds a warning" do
@@ -96,8 +94,7 @@ describe TaxtPresenter do
         end
       end
 
-      # TODO: Fix or remove.
-      xcontext "when the taxon can't be found" do
+      context "when the taxon can't be found" do
         let(:results) { described_class["{tax 999}"].to_html }
 
         it "adds a warning" do
@@ -118,8 +115,7 @@ describe TaxtPresenter do
       expect(described_class[taxt].to_antweb).to match "antcat.org"
     end
 
-    # TODO: Fix or remove.
-    xdescribe 'broken taxt tags' do
+    describe 'broken taxt tags' do
       describe "ref tags (references)" do
         let(:results) { described_class["{ref 999}"].to_antweb }
 
