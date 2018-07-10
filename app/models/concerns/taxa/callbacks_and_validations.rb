@@ -7,6 +7,7 @@ module Taxa::CallbacksAndValidations
   included do
     validates :name, presence: true
     validates :protonym, presence: true
+    validates :status, inclusion: { in: Status::STATUSES }
     validates :biogeographic_region,
       inclusion: { in: BiogeographicRegion::REGIONS, allow_nil: true }
 

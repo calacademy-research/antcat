@@ -1,23 +1,37 @@
-# TODO use this for validating `Taxon#status`.
 # Possibly also override `Taxon#status=" so we can set it like this
 # `taxon.status = :homonym` instead of `taxon.status = Status['homonym'].to_s`.
 
 class Status
+  STATUSES = [
+    VALID                     = "valid",
+    SYNONYM                   = "synonym",
+    HOMONYM                   = "homonym",
+    UNIDENTIFIABLE            = "unidentifiable",
+    UNAVAILABLE               = "unavailable",
+    EXCLUDED_FROM_FORMICIDAE  = "excluded from Formicidae",
+    ORIGINAL_COMBINATION      = "original combination",
+    COLLECTIVE_GROUP_NAME     = "collective group name",
+    OBSOLETE_COMBINATION      = "obsolete combination",
+    UNAVAILABLE_MISSPELLING   = "unavailable misspelling",
+    NONCONFORMING_SYNONYM     = "nonconforming synonym",
+    UNAVAILABLE_UNCATEGORIZED = "unavailable uncategorized"
+  ]
+
   # TODO joe - see if we can not display "unavailable uncategorized"
   def self.statuses
     @_statuses ||= [
-      ['valid',                     'valid'],
-      ['synonym',                   'synonyms'],
-      ['homonym',                   'homonyms'],
-      ['unidentifiable',            'unidentifiable'],
-      ['unavailable',               'unavailable'],
-      ['excluded from Formicidae',  'excluded from Formicidae'],
-      ['original combination',      'original combinations'],
-      ['collective group name',     'collective group names'],
-      ['obsolete combination',      'obsolete combinations'],
-      ['unavailable misspelling',   'unavailable misspellings'],
-      ['nonconforming synonym',     'nonconforming synonyms'],
-      ['unavailable uncategorized', 'unavailable uncategorized']
+      [VALID,                     'valid'],
+      [SYNONYM,                   'synonyms'],
+      [HOMONYM,                   'homonyms'],
+      [UNIDENTIFIABLE,            'unidentifiable'],
+      [UNAVAILABLE,               'unavailable'],
+      [EXCLUDED_FROM_FORMICIDAE,  'excluded from Formicidae'],
+      [ORIGINAL_COMBINATION,      'original combinations'],
+      [COLLECTIVE_GROUP_NAME,     'collective group names'],
+      [OBSOLETE_COMBINATION,      'obsolete combinations'],
+      [UNAVAILABLE_MISSPELLING,   'unavailable misspellings'],
+      [NONCONFORMING_SYNONYM,     'nonconforming synonyms'],
+      [UNAVAILABLE_UNCATEGORIZED, 'unavailable uncategorized']
     ].map do |label, plural_label|
       Status.new label: label, plural_label: plural_label
     end
