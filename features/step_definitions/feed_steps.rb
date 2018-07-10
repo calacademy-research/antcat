@@ -8,6 +8,15 @@ Given(/^activity tracking is (enabled|disabled)$/) do |state|
   Feed.enabled = new_state
 end
 
+# TODO use more of this new {string} syntax.
+Given("there is an activity with the edit summary {string}") do |edit_summary|
+  create :activity, edit_summary: edit_summary
+end
+
+Given("there is an automated activity with the edit summary {string}") do |edit_summary|
+  create :activity, edit_summary: edit_summary, automated_edit: true
+end
+
 Then(/^I should see "([^"]*)" and no other feed items$/) do |text|
   step %Q[I should see "#{text}"]
   step "I should see 1 item in the feed"

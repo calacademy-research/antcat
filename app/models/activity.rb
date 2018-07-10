@@ -42,6 +42,7 @@ class Activity < ApplicationRecord
   scope :ids_desc, -> { order(id: :desc) }
   scope :most_recent, ->(number = 5) { ids_desc.limit(number).include_associations }
   scope :include_associations, -> { includes(:trackable, :user) }
+  scope :non_automated_edits, -> { where(automated_edit: false) }
 
   has_paper_trail
   serialize :parameters, Hash
