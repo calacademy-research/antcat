@@ -24,6 +24,12 @@ end
 __END__
 description: >
   Original combinations, obsolete combination and unavailable misspellings with synonyms.
+
+
+  See also [Pass through names with taxts](/database_scripts/pass_through_names_with_taxts).
+
+
   See %github375.
+
 tags: [new!]
 topic_areas: [synonyms]
