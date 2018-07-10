@@ -230,5 +230,19 @@ describe Taxa::AdvancedSearch do
         expect(described_class[forms: 'w.']).to be_empty
       end
     end
+
+    describe "Searching by status" do
+      let!(:valid) { create :family, :valid }
+      let!(:synonym) { create :family, :synonym }
+
+      specify do
+        expect(described_class[status: 'valid']).to match_array [valid]
+        expect(described_class[status: 'homonym']).to be_empty
+
+        # The dummy is incluced or we end end up defaulting to `Taxon.none`.
+        expect(described_class[status: "", dummy: "x"]).to match_array [valid, synonym]
+        expect(described_class[status: ""]).to be_empty
+      end
+    end
   end
 end

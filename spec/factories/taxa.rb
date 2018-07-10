@@ -18,7 +18,11 @@ require_relative '../support/helpers/get_name_parts_helpers'
 FactoryBot.define do
   factory :taxon do
     protonym
-    status 'valid'
+    valid
+
+    trait :valid do
+      status 'valid'
+    end
 
     trait :synonym do
       status 'synonym'
