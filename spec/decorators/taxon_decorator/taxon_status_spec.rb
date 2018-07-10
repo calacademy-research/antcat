@@ -21,12 +21,22 @@ describe TaxonDecorator::TaxonStatus do
       end
 
       context "when taxon has a `homonym_replaced_by`" do
-        # TODO
+        let!(:homonym_replaced_by) { create :family }
+        let!(:taxon) do
+          create :family, status: "homonym", homonym_replaced_by: homonym_replaced_by
+        end
+
+        specify do
+          expect(taxon.decorate.taxon_status).
+            to include %{homonym replaced by <a href="/catalog/#{homonym_replaced_by.id}">Formicidae</a>}
+        end
       end
     end
 
     context "when taxon is unidentifiable" do
-      # TODO
+      let!(:taxon) { create :family, status: "unidentifiable" }
+
+      specify { expect(taxon.decorate.taxon_status).to eq "unidentifiable" }
     end
 
     # NOTE `unresolved_homonym`s usually have a status that is not `homonym`.
@@ -52,7 +62,9 @@ describe TaxonDecorator::TaxonStatus do
     end
 
     context "when taxon is a nomen nudum" do
-      # TODO
+      let!(:taxon) { create :family, nomen_nudum: true }
+
+      specify { expect(taxon.decorate.taxon_status).to eq "<i>nomen nudum</i>" }
     end
 
     context "when taxon is a synonym" do
@@ -121,15 +133,17 @@ describe TaxonDecorator::TaxonStatus do
     end
 
     context 'when taxon is "unavailable uncategorized"' do
-      # TODO
+      # TODO what to do?
     end
 
     context "when taxon is a nonconfirming synonym" do
-      # TODO
+      # TODO remove?
     end
 
     context "when taxon is `invalid?`" do
-      # TODO
+       let!(:taxon) { create :family, status: "excluded from Formicidae" }
+
+      specify { expect(taxon.decorate.taxon_status).to eq "excluded from Formicidae" }
     end
 
     context "when taxon is incertae sedis" do
