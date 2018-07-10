@@ -6,10 +6,15 @@
   =javascript_include_tag 'widgets/reference_picker'
   =javascript_include_tag 'widgets/reference_field'
   =javascript_include_tag 'widgets/name_field'
+  -# NOTE: 'widgets/taxt_editor' is not used, but there is still some unknown
+  -# dependency on it since tests fails without it.
+  -# TODO: Remove along with the code and all references to it.
   =javascript_include_tag 'widgets/reference_popup', 'widgets/name_popup', 'widgets/taxt_editor'
   =javascript_include_tag 'controllers/taxa/form/_bundle'
   =javascript_include_tag 'controllers/taxa/not_really_form/_bundle'
-  =javascript_include_tag 'taxon_select'
+  =javascript_include_tag 'taxon_select', 'markdown_and_friends', 'taxt_editor'
+
+=render 'shared/taxt_editor/taxon_and_ancestors', taxon: @taxon
 
 -# For name collision-related code in `AntCat.NameField` (`#parent_name_field`).
 -# These used to be `hidden_field_tag`s, but they have been been put

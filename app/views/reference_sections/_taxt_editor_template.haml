@@ -1,0 +1,19 @@
+.taxt-editor{data: { url: "/reference_sections/#{item.id}" }}
+  .taxt-presenter
+    %h6.title_taxt=markdown item.title_taxt, no_wrappring_p: true
+    %h6.subtitle_taxt=TaxtPresenter[item.subtitle_taxt].to_html
+    %a.taxt-editor-edit-button.btn-normal.btn-tiny Edit
+    =markdown item.references_taxt, no_wrappring_p: true
+
+  .taxt-editor-editor{style: 'display: none' }
+    =text_area_tag :title_taxt, item.title_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Title", use_extras: true }
+    =text_area_tag :subtitle_taxt, item.subtitle_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Subtitle", use_extras: true }
+    =text_area_tag :references_taxt, item.references_taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: "References", use_extras: true }
+
+    .row
+      .medium-3.columns.end
+        =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
+    %a.taxt-editor-reference-section-save-button.btn-saves Save
+    %a.taxt-editor-cancel-button.btn-cancel Cancel
+    %a.taxt-editor-delete-button.btn-delete Delete

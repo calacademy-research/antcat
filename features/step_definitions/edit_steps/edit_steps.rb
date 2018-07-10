@@ -29,19 +29,6 @@ Then(/^I (should|should not) see an Edit button$/) do |should_selector|
   end
 end
 
-# section
-When(/^I save the (\w+)(?: item)?$/) do |section|
-  step %{I press the #{section} item "Save" button}
-end
-
-When(/^I cancel the (\w+) item's changes$/) do |section|
-  step %{I press the #{section} item "Cancel" button}
-end
-
-When(/^I delete the (\w+) item$/) do |section|
-  step %{I press the #{section} item "Delete" button}
-end
-
 # fields section
 ### name field
 When(/^I click the name field$/) do

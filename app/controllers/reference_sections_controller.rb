@@ -13,33 +13,28 @@ class ReferenceSectionsController < ApplicationController
       params[:selected_id], params[:diff_with_id]
   end
 
-  def update
-    title_taxt, subtitle_taxt, references_taxt = taxts_from_params
-    @item.update title_taxt: title_taxt,
-                 subtitle_taxt: subtitle_taxt,
-                 references_taxt: references_taxt
+  def new
+    @item = ReferenceSection.new taxon_id: params[:taxa_id]
+  end
 
-    if @item.errors.empty?
-      @item.create_activity :update, edit_summary: params[:reference_section_edit_summary]
+  def update
+    if @item.update reference_section_params
+      @item.create_activity :update, edit_summary: params[:edit_summary]
     end
 
     render_json @item
   end
 
   def create
-    taxon = Taxon.find params[:taxa_id]
-    title_taxt, subtitle_taxt, references_taxt = taxts_from_params
+    @item = ReferenceSection.new reference_section_params
+    @item.taxon_id = params[:taxa_id]
 
-    item = ReferenceSection.create taxon: taxon,
-                                   title_taxt: title_taxt,
-                                   subtitle_taxt: subtitle_taxt,
-                                   references_taxt: references_taxt
-
-    if item.errors.empty?
-      item.create_activity :create, edit_summary: params[:reference_section_edit_summary]
+    if @item.save
+      @item.create_activity :create, edit_summary: params[:edit_summary]
+      redirect_to edit_taxa_path(@item.taxon), notice: "Successfully added reference section."
+    else
+      render :new
     end
-
-    render_json item
   end
 
   def destroy
@@ -58,19 +53,14 @@ class ReferenceSectionsController < ApplicationController
       params.slice :search_type, :q
     end
 
-    def taxts_from_params
-      title_taxt = TaxtConverter[params[:title_taxt]].from_editor_format
-      subtitle_taxt = TaxtConverter[params[:subtitle_taxt]].from_editor_format
-      references_taxt = TaxtConverter[params[:references_taxt]].from_editor_format
-
-      [title_taxt, subtitle_taxt, references_taxt]
+    def reference_section_params
+      params.require(:reference_section).permit(:title_taxt, :subtitle_taxt, :references_taxt)
     end
 
     def render_json item
       json = {
-        content: render_to_string(partial: 'reference_sections/panel', locals: { item: item }),
-        id: item.id,
-        success: item.errors.empty?
+        content: render_to_string(partial: 'reference_sections/taxt_editor_template', locals: { item: item }),
+        error: item.errors.full_messages.to_sentence
       }
       render json: json
     end

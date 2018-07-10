@@ -1,3 +1,5 @@
+# TODO: Move most specs here to `parse_antcat_hooks_spec.rb`.
+
 require "spec_helper"
 
 describe Markdowns::Render do
@@ -39,19 +41,44 @@ describe Markdowns::Render do
       context "existing reference" do
         let(:reference) { create :article_reference }
         let(:markdown) { "%reference#{reference.id}" }
+        let(:taxt_markdown) { "{ref #{reference.id}}" }
 
         it "links the reference" do
           expected = "<p>#{reference.decorate.inline_citation}</p>\n"
           expect(described_class[markdown]).to eq expected
+          expect(described_class[taxt_markdown]).to eq expected
         end
       end
 
       context "missing (non-existing) reference" do
         let(:markdown) { "%reference9999999" }
+        let(:taxt_markdown) { '{ref 9999999}' }
 
         it "renders an error message" do
           expected = %Q[<p><span class="broken-markdown-link"> could not find reference with id 9999999 </span></p>\n]
           expect(described_class[markdown]).to eq expected
+          expect(described_class[taxt_markdown]).to eq expected
+        end
+      end
+    end
+
+    describe "name ids" do
+      context "existing name" do
+        let(:name) { create :genus_name }
+        let(:taxt_markdown) { "{nam #{name.id}}" }
+
+        it "render the HTML version of the name" do
+          expected = "<p><i>#{name}</i></p>\n"
+          expect(described_class[taxt_markdown]).to eq expected
+        end
+      end
+
+      context "missing (non-existing) name" do
+        let(:taxt_markdown) { '{nam 9999999}' }
+
+        it "renders an error message" do
+          expected = %Q[<p><span class="broken-markdown-link"> could not find name with id 9999999 </span></p>\n]
+          expect(described_class[taxt_markdown]).to eq expected
         end
       end
     end

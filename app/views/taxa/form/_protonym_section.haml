@@ -58,5 +58,4 @@
 
           %tr
             %td.caption=form.label :notes_taxt, 'Notes'
-            %td#notes_taxt_editor.taxt_editor
-              =render 'taxt_editors/show', name: 'taxon[protonym_attributes][authorship_attributes][notes_taxt]', value: TaxtConverter[taxon.protonym.authorship.notes_taxt].to_editor_format
+            %td=render 'shared/taxt_editor/template', name: 'taxon[protonym_attributes][authorship_attributes][notes_taxt]', content: taxon.protonym.authorship.notes_taxt, id: :taxon_protonym_attributes_authorship_attributes_notes_taxt

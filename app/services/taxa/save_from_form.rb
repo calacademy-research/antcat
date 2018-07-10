@@ -21,7 +21,8 @@ class Taxa::SaveFromForm
       update_parent               params.delete :parent_name_attributes
       update_protonym             params.delete :protonym_attributes
       update_type_name            params.delete :type_name_attributes
-      update_remaining_attributes params
+
+      taxon.attributes = params
 
       save_and_create_change!
 
@@ -66,9 +67,6 @@ class Taxa::SaveFromForm
       attributes[:reference_id] = attributes.delete(:reference_attributes)[:id]
       return if attributes[:reference_id].blank? and taxon.protonym.authorship.reference.blank?
 
-      if attributes[:notes_taxt]
-        taxon.protonym.authorship.notes_taxt = TaxtConverter[attributes.delete :notes_taxt].from_editor_format
-      end
       taxon.protonym.authorship.attributes = attributes
     end
 
@@ -83,21 +81,6 @@ class Taxa::SaveFromForm
       if attributes
         attributes[:type_name_id] = attributes.delete :id
         taxon.attributes = attributes
-      end
-    end
-
-    def update_remaining_attributes params_after_initial_deletions
-      attributes = params_after_initial_deletions
-
-      taxon.attributes = attributes
-      taxon.headline_notes_taxt = TaxtConverter[attributes.delete :headline_notes_taxt].from_editor_format
-
-      taxon.published_type_information = TaxtConverter[attributes.delete :published_type_information].from_editor_format
-      taxon.additional_type_information = TaxtConverter[attributes.delete :additional_type_information].from_editor_format
-      taxon.type_notes = TaxtConverter[attributes.delete :type_notes].from_editor_format
-
-      if attributes[:type_taxt]
-        taxon.type_taxt = TaxtConverter[attributes.delete :type_taxt].from_editor_format
       end
     end
 

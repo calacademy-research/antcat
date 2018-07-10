@@ -33,7 +33,7 @@ describe Names::WhatLinksHere do
     let(:name) { Name.create! name: 'Atta' }
 
     before do
-      # Create an instance for each type of taxt.
+      # Create a record for each type of taxt.
       contrete_taxt_fields.each do |klass, fields|
         fields.each { |field| create klass.name.underscore.to_sym, field => "{nam #{name.id}}" }
       end

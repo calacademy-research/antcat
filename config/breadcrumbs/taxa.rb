@@ -36,26 +36,45 @@ crumb :convert_to_species do |taxon|
   parent :edit_taxon, taxon
 end
 
-crumb :taxon_history_items do
-  link "Taxon History Items"
+crumb :search_taxon_history_items do
+  link "Search History Items"
   parent :catalog
 end
 
-crumb :reference_sections do
+crumb :search_reference_sections do
+  link "Search Reference Sections"
+  parent :catalog
+end
+
+crumb :taxon_history_items do |taxon|
+  link "History Items"
+  parent :taxon_being_edited, taxon
+end
+
+  crumb :taxon_history_item do |item|
+    link "##{item.id}"
+    parent :taxon_history_items, item.taxon
+  end
+
+  crumb :new_taxon_history_item do |item|
+    link "New"
+    parent :taxon_history_items, item.taxon
+  end
+
+crumb :reference_sections do |taxon|
   link "Reference Sections"
-  parent :catalog
+  parent :taxon_being_edited, taxon
 end
 
-# Crumbs for the shallow routes for the feed
-crumb :taxon_history_item do |item|
-  link "History Item ##{item.id}"
-  parent :taxon_being_edited, item.taxon
-end
+  crumb :reference_section do |reference_section|
+    link "##{reference_section.id}"
+    parent :reference_sections, reference_section.taxon
+  end
 
-crumb :reference_section do |item|
-  link "Reference Section ##{item.id}"
-  parent :taxon_being_edited, item.taxon
-end
+  crumb :new_reference_section do |reference_section|
+    link "New"
+    parent :reference_sections, reference_section.taxon
+  end
 
 crumb :synonym_relationship do |synonym|
   link "Synonym Relationship ##{synonym.id}"

@@ -37,6 +37,8 @@ describe TaxtPresenter do
       expect(described_class[nil].to_html).to eq ''
     end
 
+    specify { expect(described_class['string'].to_html).to be_html_safe }
+
     describe "ref tags (references)" do
       context "when the ref tag is malformed" do
         it "doesn't freak" do

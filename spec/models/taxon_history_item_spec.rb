@@ -3,9 +3,10 @@ require 'spec_helper'
 describe TaxonHistoryItem do
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :taxt }
+  it { is_expected.to validate_presence_of :taxon_id }
   it { is_expected.to belong_to :taxon }
 
-  describe "#update_taxt_from_editable" do
+  xdescribe "#update_taxt_from_editable" do
     let(:item) { create :taxon_history_item }
 
     context "when input is blank" do

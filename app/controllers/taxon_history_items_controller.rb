@@ -13,26 +13,28 @@ class TaxonHistoryItemsController < ApplicationController
       params[:selected_id], params[:diff_with_id]
   end
 
-  def update
-    @item.update_taxt_from_editable params[:taxt]
+  def new
+    @item = TaxonHistoryItem.new taxon_id: params[:taxa_id]
+  end
 
-    if @item.errors.empty?
-      @item.create_activity :update, edit_summary: params[:taxon_history_item_edit_summary]
+  def update
+    if @item.update taxon_history_item_params
+      @item.create_activity :update, edit_summary: params[:edit_summary]
     end
 
     render_json @item
   end
 
   def create
-    taxon = Taxon.find params[:taxa_id]
-    UndoTracker.setup_change taxon, :create
-    item = TaxonHistoryItem.create_taxt_from_editable taxon, params[:taxt]
+    @item = TaxonHistoryItem.new taxon_history_item_params
+    @item.taxon_id = params[:taxa_id]
 
-    if item.errors.empty?
-      item.create_activity :create, edit_summary: params[:taxon_history_item_edit_summary]
+    if @item.save
+      @item.create_activity :create, edit_summary: params[:edit_summary]
+      redirect_to edit_taxa_path(@item.taxon), notice: "Successfully added history item."
+    else
+      render :new
     end
-
-    render_json item
   end
 
   def destroy
@@ -51,11 +53,14 @@ class TaxonHistoryItemsController < ApplicationController
       params.slice :search_type, :q
     end
 
+    def taxon_history_item_params
+      params.require(:taxon_history_item).permit(:taxt)
+    end
+
     def render_json item
       json = {
-        content: render_to_string(partial: 'taxon_history_items/panel', locals: { item: item }),
-        id: item.id,
-        success: item.errors.empty?
+        content: render_to_string(partial: 'taxon_history_items/taxt_editor_template', locals: { item: item }),
+        error: item.errors.full_messages.to_sentence
       }
       render json: json
     end

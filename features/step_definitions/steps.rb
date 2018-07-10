@@ -27,6 +27,11 @@ When(/^(?:|I )press the first "([^"]*)"$/) do |button|
   first(:button, button).click
 end
 
+# TODO. Remove hack.
+When(/^(?:|I )press all "([^"]*)"$/) do |button|
+  all(:button, button).each(&:click)
+end
+
 When(/^(?:|I )follow the first "([^"]*)"$/) do |link|
   first(:link, link).click
 end
@@ -60,6 +65,12 @@ When(/^(?:|I )fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, with: value
 end
 
+When(/^I fill in "([^"]*)" with "([^"]*)" within "([^"]*)"$/) do |field, value, within_element|
+  within(within_element) do
+    fill_in field, with: value
+  end
+end
+
 When(/^(?:|I )select "([^"]*)" from "([^"]*)"$/) do |value, field|
   select value, from: field
 end
@@ -77,7 +88,7 @@ When(/^(?:|I )choose "([^"]*)"$/) do |field|
 end
 
 # "I should see/contain/selected ..."
-Then(/^(?:|I )should see "([^"]*)"$/) do |text|
+Then(/^(?:|I )should (?:|still )see "([^"]*)"$/) do |text|
   expect(page).to have_content text
 end
 
@@ -133,6 +144,12 @@ end
 
 Given(/^RESET SESSION$/) do
   Capybara.reset_sessions!
+end
+
+Then(/^I should see an alert "(.*)"$/) do |message|
+  accept_alert(message) do
+    # No-op.
+  end
 end
 
 Then(/^the page title should have "([^"]*)" in it$/) do |title|

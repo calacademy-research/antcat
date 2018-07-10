@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Api::V1::TaxonHistoryItemsController do
-  before { 6.times { TaxonHistoryItem.create! taxt: "{ref 999" } }
+  before { 6.times { create :taxon_history_item } }
 
   describe "GET index" do
     # TODO depends on being run before any other specs.
