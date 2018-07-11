@@ -21,5 +21,5 @@ end
 
 Given(/^there is an invalid subfamily Invalidinae$/) do
   name = create :subfamily_name, name: "Invalidinae"
-  create :subfamily, name: name, status: Status::SYNONYM
+  create :subfamily, :synonym, name: name
 end

@@ -58,7 +58,7 @@ describe TaxonDecorator::ChildList do
       create :genus, subfamily: subfamily, fossil: true, incertae_sedis_in: 'subfamily'
     end
 
-    before { create :genus, subfamily: subfamily, status: 'synonym' }
+    before { create :genus, :synonym, subfamily: subfamily }
 
     it "finds all genera for the taxon if there are no conditions" do
       results = described_class.new(subfamily).send :child_list_query, :genera

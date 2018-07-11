@@ -83,7 +83,7 @@ describe Taxa::SaveFromForm do
       taxon.save_from_form params
 
       taxon.reload
-      expect(taxon).to be_incertae_sedis_in 'genus'
+      expect(taxon.incertae_sedis_in).to eq 'genus'
       expect(taxon).to be_nomen_nudum
       expect(taxon).to be_hong
       expect(taxon).to be_unresolved_homonym
