@@ -25,6 +25,9 @@ class ActivitiesController < ApplicationController
 
   def index
     @activities = Activity.filter(hacked_filter_params)
+    unless params[:show_automated_edits]
+      @activities = @activities.non_automated_edits
+    end
     @activities = @activities.ids_desc.include_associations.paginate(page: page)
   end
 
