@@ -10,7 +10,7 @@ class DefaultReferencesController < ApplicationController
     if request.xhr?
       head :ok
     else
-      redirect_to :back, notice: <<-MSG.squish
+      redirect_back fallback_location: references_path, notice: <<-MSG.squish
           #{@reference.keey} was successfully set as the default reference.
         MSG
     end

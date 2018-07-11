@@ -4,7 +4,7 @@ describe Taxon do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to belong_to :protonym }
   it { is_expected.to allow_value(nil).for :type_name }
-  it { is_expected.to allow_value(nil).for :status } # should probably not...
+  it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
   it do
     is_expected.to validate_inclusion_of(:biogeographic_region)
       .in_array(BiogeographicRegion::REGIONS).allow_nil
@@ -20,7 +20,7 @@ describe Taxon do
       let!(:valid_taxon) { create :genus, subfamily: subfamily }
 
       before do
-        create :genus, homonym_replaced_by: valid_taxon, status: 'homonym', subfamily: subfamily
+        create :genus, :homonym, homonym_replaced_by: valid_taxon, subfamily: subfamily
         junior_synonym = create :genus, :synonym, subfamily: subfamily
         create :synonym, junior_synonym: junior_synonym, senior_synonym: valid_taxon
       end
@@ -121,36 +121,6 @@ describe Taxon do
 
     it "returns a lowercase version" do
       expect(taxon.name.rank).to eq 'subfamily'
-    end
-  end
-
-  describe "#homonym_replaced_by, #homonym_replaced and #homonym_replaced_by?" do
-    it "can be a homonym of something else" do
-      taxon = build_stubbed :taxon
-      another_taxon = build_stubbed :taxon, status: 'homonym', homonym_replaced_by: taxon
-
-      expect(another_taxon).to be_homonym
-      expect(another_taxon.homonym_replaced_by).to eq taxon
-    end
-
-    context "when it' not a homonym replaced by something" do
-      let(:genus) { build_stubbed :genus }
-      let(:another_genus) { build_stubbed :genus }
-
-      it "should not think it is" do
-        expect(genus).not_to be_homonym_replaced_by another_genus
-        expect(genus.homonym_replaced).to be_nil
-      end
-    end
-
-    context 'when it is a homonym replaced by something' do
-      let(:replacement) { create :genus }
-      let(:homonym) { create :genus, homonym_replaced_by: replacement, status: 'homonym' }
-
-      it "should think it is" do
-        expect(homonym).to be_homonym_replaced_by replacement
-        expect(replacement.homonym_replaced).to eq homonym
-      end
     end
   end
 

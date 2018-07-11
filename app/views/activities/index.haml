@@ -6,7 +6,9 @@
   -@title = "Activity Feed"
   -breadcrumb :activity_feed
 
-=render_filters
+=render_filters do
+  =check_box_tag :show_automated_edits, false, !!params[:show_automated_edits]
+  Show automated edits?
 
 =render "table", activities: @activities, show_delete_button: true, include_head: true, page: @page
 

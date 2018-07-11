@@ -17,7 +17,7 @@ class ChangesController < ApplicationController
   # TODO handle error, if any.
   def approve
     @change.approve current_user
-    redirect_to :back, notice: "Approved change."
+    redirect_back fallback_location: changes_path, notice: "Approved change."
   end
 
   # TODO handle error, if any.

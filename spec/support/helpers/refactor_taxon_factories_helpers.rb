@@ -23,7 +23,7 @@ module RefactorTaxonFactoriesHelpers
   def build_minimal_family
     name = FamilyName.new name: "Formicidae"
     protonym = Protonym.first || minimal_protonym
-    Family.new name: name, protonym: protonym
+    Family.new name: name, protonym: protonym, status: Status::VALID
   end
 
   def minimal_family
@@ -33,7 +33,7 @@ module RefactorTaxonFactoriesHelpers
   def minimal_subfamily
     name = SubfamilyName.new name: "Minimalinae"
     protonym = Protonym.first || minimal_protonym
-    Subfamily.new(name: name, protonym: protonym).tap &:save
+    Subfamily.new(name: name, protonym: protonym, status: Status::VALID).tap &:save
   end
 
   def minimal_protonym

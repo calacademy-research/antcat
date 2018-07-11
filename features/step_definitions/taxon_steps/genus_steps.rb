@@ -23,7 +23,7 @@ Given(/^there is a genus "([^"]*)" that is incertae sedis in the subfamily$/) do
 end
 
 Given(/^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and a taxonomic history of "(.*?)")?(?: and a status of "(.*?)")?$/) do |taxon_name, parent_name, history, status|
-  status ||= 'valid'
+  status ||= Status::VALID
   subfamily = Subfamily.find_by_name parent_name
   subfamily ||= create :subfamily, name: create(:name, name: parent_name)
 
@@ -35,17 +35,6 @@ Given(/^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and 
 
   history = 'none' unless history.present?
   taxon.history_items.create! taxt: history
-end
-
-Given(/^a non-displayable genus exists with a name of "(.*?)" and a subfamily of "(.*?)"$/) do |taxon_name, subfamily_name|
-  subfamily = Subfamily.find_by_name subfamily_name
-  subfamily ||= create :subfamily, name: create(:name, name: subfamily_name)
-  create :genus,
-    name: create(:name, name: taxon_name),
-    subfamily: subfamily,
-    tribe: nil,
-    status: 'valid',
-    display: false
 end
 
 Given(/a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/) do |taxon_name, history|

@@ -31,7 +31,6 @@ class Taxon < ApplicationRecord
   # TODO remove column `:collision_merge_id` (not used, all nil).
   # TODO maybe explain more of these. Here or elsewhere.
   # `origin`: if it's generated, where did it come from? string (e.g.: 'hol')
-  # `display`: if false, won't show in the taxon browser. Used for misspellings and such.
 
   belongs_to :name
   belongs_to :protonym, -> { includes :authorship }
@@ -58,8 +57,10 @@ class Taxon < ApplicationRecord
   # `dolichoderus.synonyms_as_junior`      = 0 synonym objects
   # `dolichoderus.junior_synonyms_objects` = 7 synonym objects
 
-  scope :displayable, -> { where(display: true) }
-  scope :valid, -> { where(status: 'valid') }
+  scope :displayable, -> do
+    where.not(status: ["unavailable misspelling", "unavailable uncategorized"])
+  end
+  scope :valid, -> { where(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
   scope :order_by_joined_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name_cache, -> { order(:name_cache) }

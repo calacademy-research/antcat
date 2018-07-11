@@ -43,7 +43,7 @@ class RevisionComparer
 
     # To make deleted object comparable.
     def reify_and_set_most_recent_and_revisions klass, id
-      versions = PaperTrail::Version.with_item_keys(klass, id)
+      versions = PaperTrail::Version.with_item_keys(klass.name, id)
 
       # Since we can only get here by following links leading to now deleted
       # taxa, the last version will be the most recent destroy event.

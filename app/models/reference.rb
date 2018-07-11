@@ -183,14 +183,14 @@ class Reference < ApplicationRecord
       return unless what_links_here(predicate: true)
 
       errors.add :base, "This reference can't be deleted, as there are other references to it."
-      false
+      throw :abort
     end
 
     def check_not_nested
       return unless nestees.exists?
 
       errors.add :base, "This reference can't be deleted because it's nested in #{nestees.reload.first.id}"
-      false
+      throw :abort
     end
 
     def set_year_from_citation_year

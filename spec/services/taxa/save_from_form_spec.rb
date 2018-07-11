@@ -83,7 +83,7 @@ describe Taxa::SaveFromForm do
       taxon.save_from_form params
 
       taxon.reload
-      expect(taxon).to be_incertae_sedis_in 'genus'
+      expect(taxon.incertae_sedis_in).to eq 'genus'
       expect(taxon).to be_nomen_nudum
       expect(taxon).to be_hong
       expect(taxon).to be_unresolved_homonym
@@ -266,7 +266,7 @@ def taxon_params
   reference = create :article_reference
   HashWithIndifferentAccess.new(
     name_attributes:     { id: '' },
-    status:              'valid',
+    status:              Status::VALID,
     incertae_sedis_in:   '',
     fossil:              '0',
     nomen_nudum:         '0',

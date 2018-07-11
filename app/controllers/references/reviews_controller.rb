@@ -9,18 +9,18 @@ module References
     def start
       @reference.start_reviewing!
       make_default_reference!
-      redirect_to :back
+      redirect_back fallback_location: changes_path
     end
 
     def finish
       @reference.finish_reviewing!
-      redirect_to :back
+      redirect_back fallback_location: changes_path
     end
 
     def restart
       @reference.restart_reviewing!
       make_default_reference!
-      redirect_to :back
+      redirect_back fallback_location: changes_path
     end
 
     # TODO handle error, if any.

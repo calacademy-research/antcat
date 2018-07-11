@@ -33,7 +33,7 @@ Given(/^there is an original species "([^"]*)" with genus "([^"]*)"$/) do |speci
   genus = create_genus genus_name
   create_species species_name,
     genus: genus,
-    status: Status['original combination'].to_s
+    status: Status::ORIGINAL_COMBINATION
 end
 
 Given(/^there is species "([^"]*)" and another species "([^"]*)" shared between protonym genus "([^"]*)" and later genus "([^"]*)"$/) do
@@ -41,12 +41,12 @@ Given(/^there is species "([^"]*)" and another species "([^"]*)" shared between 
   proto_genus = create_genus protonym_genus_name
   proto_species = create_species protonym_species_name,
     genus: proto_genus,
-    status: Status['original combination'].to_s
+    status: Status::ORIGINAL_COMBINATION
   later_genus = create_genus valid_genus_name
 
   create_species valid_species_name,
     genus: later_genus,
-    status: Status['valid'].to_s,
+    status: Status::VALID,
     protonym_id: proto_species.id
 end
 
@@ -63,7 +63,7 @@ end
 Given(/^there is a species "([^"]*)"(?: described by "([^"]*)")? which is a junior synonym of "([^"]*)"$/) do |junior, author_name, senior|
   genus = create_genus 'Solenopsis'
   senior = create_species senior, genus: genus
-  junior = create_species junior, status: 'synonym', genus: genus
+  junior = create_species junior, status: Status::SYNONYM, genus: genus
   create :synonym, senior_synonym: senior, junior_synonym: junior
   make_author_of_taxon junior, author_name if author_name
 end

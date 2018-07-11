@@ -10,7 +10,7 @@ module Taxa
     def call
       {
         name_attributes: { id: name_id },
-        status: 'valid',
+        status: Status::VALID,
         homonym_replaced_by_id: old_comb.homonym_replaced_by_id,
         current_valid_taxon_id: old_comb.current_valid_taxon_id,
         incertae_sedis_in: old_comb.incertae_sedis_in,

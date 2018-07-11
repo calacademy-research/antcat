@@ -7,7 +7,7 @@ Given(/^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/) d
   end
 
   taxon = create_species
-  taxon.update! status: 'synonym' if invalid
+  taxon.update! status: Status::SYNONYM if invalid
   taxon.protonym.authorship.update! reference: reference
 end
 
@@ -18,7 +18,7 @@ Given(/^there is an original combination of "([^"]+)" described by "([^"]+)" whi
   reference.author_names = [author_name]
 
   betta_major = create_species 'Betta major'
-  atta_major = create_species 'Atta major', status: 'original combination', current_valid_taxon: atta_major
+  atta_major = create_species 'Atta major', status: Status::ORIGINAL_COMBINATION, current_valid_taxon: atta_major
   atta_major.protonym.authorship.update! reference: reference
   atta_major.update current_valid_taxon: betta_major
   betta_major.protonym.authorship.update! reference: reference

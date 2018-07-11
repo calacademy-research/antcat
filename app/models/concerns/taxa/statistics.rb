@@ -32,7 +32,7 @@ module Taxa::Statistics
 
   private
     def delete_original_combinations count
-      count.delete [true, 'original combination']
-      count.delete [false, 'original combination']
+      count.delete [true, Status::ORIGINAL_COMBINATION]
+      count.delete [false, Status::ORIGINAL_COMBINATION]
     end
 end

@@ -61,12 +61,9 @@ describe Wikipedia::ReferenceExporter do
 end
 
 def set_exporter_with_stubbed_reference *last_names
-  allow_message_expectations_on_nil
-  @reference.stub(:author_names) do
-    last_names.map do |last_name|
-      OpenStruct.new last_name: last_name
-    end
-  end
-  @reference.stub(:year) { "2016" }
+  allow_message_expectations_on_nil # TODO remove.
+  expect(@reference).to receive(:author_names).
+    and_return(last_names.map { |last_name| OpenStruct.new last_name: last_name })
+  expect(@reference).to receive(:year).and_return "2016"
   @exporter = described_class.new @reference
 end

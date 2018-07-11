@@ -32,7 +32,7 @@ describe Taxa::AdvancedSearch do
         it "honors the validity flag" do
           delta = create_genus
           delta.protonym.authorship.update! reference: reference1977
-          delta.update! status: 'synonym'
+          delta.update! status: Status::SYNONYM
 
           results = described_class[rank: 'Genus', year: "1977", valid_only: true]
           expect(results).to match_array [atta, betta]
@@ -43,7 +43,7 @@ describe Taxa::AdvancedSearch do
         reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
         atta = create_genus
         atta.protonym.authorship.update! reference: reference1977
-        atta.update! status: 'synonym'
+        atta.update! status: Status::SYNONYM
 
         results = described_class[rank: 'Genus', year: "1977", valid_only: false]
         expect(results).to match_array [atta]
@@ -228,6 +228,20 @@ describe Taxa::AdvancedSearch do
       it "returns nothing if nothing has those forms" do
         atta = create_species
         expect(described_class[forms: 'w.']).to be_empty
+      end
+    end
+
+    describe "Searching by status" do
+      let!(:valid) { create :family, :valid }
+      let!(:synonym) { create :family, :synonym }
+
+      specify do
+        expect(described_class[status: 'valid']).to match_array [valid]
+        expect(described_class[status: 'homonym']).to be_empty
+
+        # The dummy is incluced or we end end up defaulting to `Taxon.none`.
+        expect(described_class[status: "", dummy: "x"]).to match_array [valid, synonym]
+        expect(described_class[status: ""]).to be_empty
       end
     end
   end

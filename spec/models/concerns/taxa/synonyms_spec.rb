@@ -38,9 +38,9 @@ describe Taxon do
     # Bad test practices, but this case has broken too many builds.
     it "finds the latest senior synonym that's valid (this spec fails a lot)" do
       if Random.rand(1..6) == 6
-        valid_senior = create_genus status: 'valid'
-        invalid_senior = create_genus status: 'homonym'
-        taxon = create_genus status: 'synonym'
+        valid_senior = create_genus status: Status::VALID
+        invalid_senior = create_genus status: Status::HOMONYM
+        taxon = create_genus status: Status::SYNONYM
         create :synonym, senior_synonym: valid_senior, junior_synonym: taxon
         create :synonym, senior_synonym: invalid_senior, junior_synonym: taxon
         expect(taxon.current_valid_taxon_including_synonyms).to eq valid_senior
@@ -68,8 +68,8 @@ describe Taxon do
     end
 
     context 'when no senior synonyms are valid' do
-      let!(:invalid_senior) { create_genus status: 'homonym' }
-      let!(:another_invalid_senior) { create_genus status: 'homonym' }
+      let!(:invalid_senior) { create_genus status: Status::HOMONYM }
+      let!(:another_invalid_senior) { create_genus status: Status::HOMONYM }
       let!(:junior_synonym) { create :genus, :synonym }
 
       before do
@@ -84,8 +84,8 @@ describe Taxon do
 
     context "when there's a synonym of a synonym" do
       let!(:senior_synonym_of_senior_synonym) { create_genus }
-      let!(:senior_synonym) { create_genus status: 'synonym' }
-      let!(:taxon) { create_genus status: 'synonym' }
+      let!(:senior_synonym) { create_genus status: Status::SYNONYM }
+      let!(:taxon) { create_genus status: Status::SYNONYM }
 
       before do
         create :synonym, junior_synonym: senior_synonym, senior_synonym: senior_synonym_of_senior_synonym
@@ -146,24 +146,9 @@ describe Taxon do
   it "can be a synonym" do
     taxon = build :family
     expect(taxon).not_to be_synonym
-    taxon.update_attribute :status, 'synonym'
+    taxon.update_attribute :status, Status::SYNONYM
     expect(taxon).to be_synonym
     expect(taxon).to be_invalid
-  end
-
-  describe "#junior_synonym_of?" do
-    it "should not think it's a synonym of something when it's not" do
-      genus = create :genus
-      another_genus = create :genus
-      expect(genus).not_to be_junior_synonym_of another_genus
-    end
-
-    it "should think it's a synonym of something when it is" do
-      senior = create :genus
-      junior = create :genus, :synonym
-      create :synonym, junior_synonym: junior, senior_synonym: senior
-      expect(junior).to be_junior_synonym_of senior
-    end
   end
 
   it "should have junior and senior synonyms" do
@@ -184,19 +169,19 @@ describe Taxon do
 
       become_junior_synonym_of atta, attaboi
       atta.reload; attaboi.reload
-      expect(atta).to be_junior_synonym_of attaboi
+      expect(atta.senior_synonyms).to include attaboi
 
       become_junior_synonym_of attaboi, atta
       atta.reload; attaboi.reload
-      expect(attaboi.status).to eq 'synonym'
-      expect(attaboi).to be_junior_synonym_of atta
-      expect(atta.status).to eq 'valid'
-      expect(atta).not_to be_junior_synonym_of attaboi
+      expect(attaboi.status).to eq Status::SYNONYM
+      expect(attaboi.senior_synonyms).to include atta
+      expect(atta.status).to eq Status::VALID
+      expect(atta.senior_synonyms).not_to include attaboi
     end
 
     it "doesn't create duplicate synonym in case of synonym cycle" do
-      atta = create_genus 'Atta', status: 'synonym'
-      attaboi = create_genus 'Attaboi', status: 'synonym'
+      atta = create_genus 'Atta', status: Status::SYNONYM
+      attaboi = create_genus 'Attaboi', status: Status::SYNONYM
 
       create :synonym, junior_synonym: atta, senior_synonym: attaboi
       create :synonym, junior_synonym: attaboi, senior_synonym: atta
@@ -204,8 +189,8 @@ describe Taxon do
 
       become_junior_synonym_of atta, attaboi
       expect(Synonym.count).to eq 1
-      expect(atta).to be_junior_synonym_of attaboi
-      expect(attaboi).not_to be_junior_synonym_of atta
+      expect(atta.senior_synonyms).to include attaboi
+      expect(attaboi.senior_synonyms).not_to include atta
     end
   end
 
@@ -237,7 +222,7 @@ describe Taxon do
       expect(atta.senior_synonyms.size).to eq 1
       expect(eciton.junior_synonyms.size).to eq 1
 
-      atta.update_attribute :status, 'valid'
+      atta.update_attribute :status, Status::VALID
 
       expect(atta).not_to be_synonym
       expect(atta.senior_synonyms.size).to eq 0
@@ -280,12 +265,12 @@ describe Taxon do
     Synonym.where(junior_synonym: senior, senior_synonym: junior).destroy_all
     Synonym.where(senior_synonym: senior, junior_synonym: junior).destroy_all
     create :synonym, junior_synonym: junior, senior_synonym: senior
-    senior.update! status: 'valid'
-    junior.update! status: 'synonym'
+    senior.update! status: Status::VALID
+    junior.update! status: Status::SYNONYM
   end
 
   def become_not_junior_synonym_of junior, senior
     Synonym.where(junior_synonym: junior, senior_synonym: senior).destroy_all
-    junior.update! status: 'valid' if junior.senior_synonyms.empty?
+    junior.update! status: Status::VALID if junior.senior_synonyms.empty?
   end
 end

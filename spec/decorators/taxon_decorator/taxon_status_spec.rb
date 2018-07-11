@@ -54,7 +54,7 @@ describe TaxonDecorator::TaxonStatus do
 
       context "when a current valid taxon that's one of two 'senior synonyms'" do
         let!(:other_senior_synonym) { create_genus 'Eciton' }
-        let!(:junior_synonym) { create :genus, status: 'synonym', current_valid_taxon: other_senior_synonym }
+        let!(:junior_synonym) { create :genus, :synonym, current_valid_taxon: other_senior_synonym }
 
         before do
           senior_synonym = create_genus 'Atta'

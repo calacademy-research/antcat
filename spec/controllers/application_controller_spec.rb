@@ -4,7 +4,7 @@ describe ApplicationController do
   controller do
     def index
       @current_user = current_user
-      render text: "not ActionView::MissingTemplate: anonymous/index"
+      render plain: "not ActionView::MissingTemplate: anonymous/index"
     end
   end
 
