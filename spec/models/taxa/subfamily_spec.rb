@@ -32,7 +32,7 @@ describe Subfamily do
     context "when 1 valid genus and 2 synonyms" do
       before do
         create :genus, subfamily: subfamily
-        2.times { create :genus, subfamily: subfamily, status: Status::SYNONYM }
+        2.times { create :genus, :synonym, subfamily: subfamily }
       end
 
       specify do

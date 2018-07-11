@@ -21,11 +21,19 @@ FactoryBot.define do
     valid
 
     trait :valid do
-      status 'valid'
+      status Status::VALID
     end
 
     trait :synonym do
-      status 'synonym'
+      status Status::SYNONYM
+    end
+
+    trait :homonym do
+      status Status::HOMONYM
+    end
+
+    trait :original_combination do
+      status Status::ORIGINAL_COMBINATION
     end
 
     factory :family, class: Family do

@@ -8,7 +8,7 @@ describe Family do
       subfamily = create :subfamily
       tribe = create :tribe, subfamily: subfamily
       create :genus, subfamily: subfamily, tribe: tribe
-      create :genus, subfamily: subfamily, status: 'homonym', tribe: tribe
+      create :genus, :homonym, subfamily: subfamily, tribe: tribe
       2.times { create :subfamily, fossil: true }
     end
 
