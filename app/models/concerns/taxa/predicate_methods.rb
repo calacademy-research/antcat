@@ -5,16 +5,6 @@ module Taxa::PredicateMethods
     status == Status::SYNONYM
   end
 
-  # TODO not used (since at least December 2016).
-  def junior_synonym_of? taxon
-    senior_synonyms.include? taxon
-  end
-
-  # TODO not used (since at least December 2016).
-  def senior_synonym_of? taxon
-    junior_synonyms.include? taxon
-  end
-
   def homonym?
     status == Status::HOMONYM
   end

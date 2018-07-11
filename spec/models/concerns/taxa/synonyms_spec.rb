@@ -151,21 +151,6 @@ describe Taxon do
     expect(taxon).to be_invalid
   end
 
-  describe "#junior_synonym_of?" do
-    it "should not think it's a synonym of something when it's not" do
-      genus = create :genus
-      another_genus = create :genus
-      expect(genus).not_to be_junior_synonym_of another_genus
-    end
-
-    it "should think it's a synonym of something when it is" do
-      senior = create :genus
-      junior = create :genus, :synonym
-      create :synonym, junior_synonym: junior, senior_synonym: senior
-      expect(junior).to be_junior_synonym_of senior
-    end
-  end
-
   it "should have junior and senior synonyms" do
     senior = create_genus 'Atta'
     junior = create_genus 'Eciton'
@@ -184,14 +169,14 @@ describe Taxon do
 
       become_junior_synonym_of atta, attaboi
       atta.reload; attaboi.reload
-      expect(atta).to be_junior_synonym_of attaboi
+      expect(atta.senior_synonyms).to include attaboi
 
       become_junior_synonym_of attaboi, atta
       atta.reload; attaboi.reload
       expect(attaboi.status).to eq Status::SYNONYM
-      expect(attaboi).to be_junior_synonym_of atta
+      expect(attaboi.senior_synonyms).to include atta
       expect(atta.status).to eq Status::VALID
-      expect(atta).not_to be_junior_synonym_of attaboi
+      expect(atta.senior_synonyms).not_to include attaboi
     end
 
     it "doesn't create duplicate synonym in case of synonym cycle" do
@@ -204,8 +189,8 @@ describe Taxon do
 
       become_junior_synonym_of atta, attaboi
       expect(Synonym.count).to eq 1
-      expect(atta).to be_junior_synonym_of attaboi
-      expect(attaboi).not_to be_junior_synonym_of atta
+      expect(atta.senior_synonyms).to include attaboi
+      expect(attaboi.senior_synonyms).not_to include atta
     end
   end
 
