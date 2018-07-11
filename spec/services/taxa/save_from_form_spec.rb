@@ -266,7 +266,7 @@ def taxon_params
   reference = create :article_reference
   HashWithIndifferentAccess.new(
     name_attributes:     { id: '' },
-    status:              'valid',
+    status:              Status::VALID,
     incertae_sedis_in:   '',
     fossil:              '0',
     nomen_nudum:         '0',

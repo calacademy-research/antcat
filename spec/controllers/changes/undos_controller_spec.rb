@@ -24,7 +24,7 @@ describe Changes::UndosController do
         before do
           change = create :change, user_changed_taxon_id: taxon.id, change_type: "update"
           create :version, item_id: taxon.id, whodunnit: adder.id, change_id: change.id
-          taxon.status = 'homonym'
+          taxon.status = Status::HOMONYM
           taxon.save
         end
 

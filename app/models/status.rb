@@ -1,6 +1,3 @@
-# Possibly also override `Taxon#status=" so we can set it like this
-# `taxon.status = :homonym` instead of `taxon.status = Status['homonym'].to_s`.
-
 class Status
   STATUSES = [
     VALID                     = "valid",
@@ -17,7 +14,7 @@ class Status
     UNAVAILABLE_UNCATEGORIZED = "unavailable uncategorized"
   ]
 
-  # TODO joe - see if we can not display "unavailable uncategorized"
+  # Order matters, see `spec/decorators/taxon_decorator/statistics_spec.rb`.
   def self.statuses
     @_statuses ||= [
       [VALID,                     'valid'],

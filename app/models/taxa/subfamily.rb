@@ -5,7 +5,7 @@ class Subfamily < Taxon
   has_many :genera
   has_many :species
   has_many :subspecies
-  has_many :collective_group_names, -> { where(status: 'collective group name') },
+  has_many :collective_group_names, -> { where(status: Status::COLLECTIVE_GROUP_NAME) },
             class_name: 'Genus'
 
   def parent

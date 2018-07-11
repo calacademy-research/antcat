@@ -182,12 +182,12 @@ describe "callbacks" do
 
   describe "#delete_synonyms" do
     let(:senior) { create_genus 'Atta' }
-    let(:junior) { create_genus 'Eciton', status: "synonym" }
+    let(:junior) { create_genus 'Eciton', status: Status::SYNONYM }
 
     before { create :synonym, junior_synonym: junior, senior_synonym: senior }
 
     it "*confirm test setup*" do
-      expect(junior.status).to eq "synonym"
+      expect(junior.status).to eq Status::SYNONYM
       expect(senior.junior_synonyms.count).to eq 1
       expect(junior.senior_synonyms.count).to eq 1
     end
@@ -206,7 +206,7 @@ describe "callbacks" do
 
         context "when status was changed from 'synonym'" do
           it "destroys all synonyms where it's the junior" do
-            junior.status = "valid"
+            junior.status = Status::VALID
 
             expect { junior.save! }.to change { Synonym.count }.by -1
             expect(senior.junior_synonyms.count).to eq 0
@@ -218,7 +218,7 @@ describe "callbacks" do
       context "when taxon doesn't have the status 'synonym'" do
         context "when status was changed" do
           it "doesn't destroy any synonyms" do
-            senior.status = "homonym"
+            senior.status = Status::HOMONYM
 
             expect { senior.save! }.to_not change { Synonym.count }
             expect(senior.junior_synonyms.count).to eq 1

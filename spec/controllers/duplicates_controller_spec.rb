@@ -11,7 +11,7 @@ describe DuplicatesController do
     @genus_a = create_genus "GA"
     @species_a = create_species @species_epithet,
       genus: @genus_a,
-      status: Status['original combination'].to_s
+      status: Status::ORIGINAL_COMBINATION
   end
 
   describe "find a duplicate case" do
@@ -21,7 +21,7 @@ describe DuplicatesController do
       genus_b = create_genus "GB"
       species_b = create_species @species_epithet,
         genus: genus_b,
-        status: Status['valid'].to_s
+        status: Status::VALID
       sign_in @user
 
       get :show, params: { parent_id: @genus_a.id,
@@ -41,7 +41,7 @@ describe DuplicatesController do
       genus_b = create_genus "GB"
       species_b = create_species @species_epithet,
         genus: genus_b,
-        status: Status['valid'].to_s,
+        status: Status::VALID,
         protonym_id: @species_a.id
       sign_in @user
 
@@ -62,7 +62,7 @@ describe DuplicatesController do
       genus_b = create_genus "GB"
       species_b = create_species @species_epithet + "boo",
         genus: genus_b,
-        status: Status['valid'].to_s,
+        status: Status::VALID,
         protonym_id: @species_a.id
       sign_in @user
 

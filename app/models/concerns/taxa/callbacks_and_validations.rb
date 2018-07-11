@@ -47,7 +47,7 @@ module Taxa::CallbacksAndValidations
 
     # When `changes` includes: `{ status: ["synonym", "<not synonym>"] }`
     def stopped_being_a_synonym?
-      changes[:status].try(:first) == 'synonym'
+      changes[:status].try(:first) == Status::SYNONYM
     end
 
     def remove_auto_generated

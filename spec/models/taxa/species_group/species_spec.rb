@@ -44,7 +44,7 @@ describe Species do
     context "when 1 valid subspecies and 2 synonyms" do
       before do
         create_subspecies species: species
-        2.times { create_subspecies species: species, status: 'synonym' }
+        2.times { create_subspecies species: species, status: Status::SYNONYM }
       end
 
       specify do

@@ -45,7 +45,7 @@ class TaxonDecorator::TaxonStatus
       elsif nonconfirming_synonym?
         "a non standard form of #{format_valid_combination}"
       elsif invalid?
-        Status[taxon].to_s
+        taxon.status
       else
         "valid"
       end

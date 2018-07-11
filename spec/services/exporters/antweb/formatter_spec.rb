@@ -75,7 +75,7 @@ describe Exporters::Antweb::Exporter do
       let!(:recombination) { create_species 'Eciton major' }
 
       before do
-        original_combination.status = 'original combination'
+        original_combination.status = Status::ORIGINAL_COMBINATION
         original_combination.current_valid_taxon = recombination
         recombination.protonym.name = original_combination.name
         original_combination.save!

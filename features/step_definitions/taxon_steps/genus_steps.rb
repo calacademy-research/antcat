@@ -23,7 +23,7 @@ Given(/^there is a genus "([^"]*)" that is incertae sedis in the subfamily$/) do
 end
 
 Given(/^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and a taxonomic history of "(.*?)")?(?: and a status of "(.*?)")?$/) do |taxon_name, parent_name, history, status|
-  status ||= 'valid'
+  status ||= Status::VALID
   subfamily = Subfamily.find_by_name parent_name
   subfamily ||= create :subfamily, name: create(:name, name: parent_name)
 

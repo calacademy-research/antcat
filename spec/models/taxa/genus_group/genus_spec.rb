@@ -42,7 +42,7 @@ describe Genus do
     context "when there are original combinations" do
       before do
         create :species, genus: genus
-        create :species, status: 'original combination', genus: genus
+        create :species, status: Status::ORIGINAL_COMBINATION, genus: genus
       end
 
       it "ignores the original combinations" do
@@ -53,7 +53,7 @@ describe Genus do
     context "when 1 valid species and 2 synonyms" do
       before do
         create :species, genus: genus
-        2.times { create :species, genus: genus, status: 'synonym' }
+        2.times { create :species, genus: genus, status: Status::SYNONYM }
       end
 
       specify do

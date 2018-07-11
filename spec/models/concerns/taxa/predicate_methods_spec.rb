@@ -3,21 +3,21 @@ describe Taxon do
 
   context "when status 'valid'" do
     it "is not invalid" do
-      taxon.status = "valid"
+      taxon.status = Status::VALID
       expect(taxon).not_to be_invalid
     end
   end
 
   it "can be unidentifiable" do
     expect(taxon).not_to be_unidentifiable
-    taxon.status = 'unidentifiable'
+    taxon.status = Status::UNIDENTIFIABLE
     expect(taxon).to be_unidentifiable
     expect(taxon).to be_invalid
   end
 
   it "can be a collective group name" do
     expect(taxon).not_to be_collective_group_name
-    taxon.status = 'collective group name'
+    taxon.status = Status::COLLECTIVE_GROUP_NAME
     expect(taxon).to be_collective_group_name
     expect(taxon).to be_invalid
   end
@@ -32,7 +32,7 @@ describe Taxon do
   it "can be unavailable" do
     expect(taxon).not_to be_unavailable
     expect(taxon).to be_available
-    taxon.status = 'unavailable'
+    taxon.status = Status::UNAVAILABLE
     expect(taxon).to be_unavailable
     expect(taxon).not_to be_available
     expect(taxon).to be_invalid
@@ -40,7 +40,7 @@ describe Taxon do
 
   it "can be excluded from Formicidae" do
     expect(taxon).not_to be_excluded_from_formicidae
-    taxon.status = 'excluded from Formicidae'
+    taxon.status = Status::EXCLUDED_FROM_FORMICIDAE
     expect(taxon).to be_excluded_from_formicidae
     expect(taxon).to be_invalid
   end
