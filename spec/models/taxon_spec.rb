@@ -124,36 +124,6 @@ describe Taxon do
     end
   end
 
-  describe "#homonym_replaced_by, #homonym_replaced and #homonym_replaced_by?" do
-    it "can be a homonym of something else" do
-      taxon = build_stubbed :taxon
-      another_taxon = build_stubbed :taxon, :homonym, homonym_replaced_by: taxon
-
-      expect(another_taxon).to be_homonym
-      expect(another_taxon.homonym_replaced_by).to eq taxon
-    end
-
-    context "when it' not a homonym replaced by something" do
-      let(:genus) { build_stubbed :genus }
-      let(:another_genus) { build_stubbed :genus }
-
-      it "should not think it is" do
-        expect(genus).not_to be_homonym_replaced_by another_genus
-        expect(genus.homonym_replaced).to be_nil
-      end
-    end
-
-    context 'when it is a homonym replaced by something' do
-      let(:replacement) { create :genus }
-      let(:homonym) { create :genus, :homonym, homonym_replaced_by: replacement }
-
-      it "should think it is" do
-        expect(homonym).to be_homonym_replaced_by replacement
-        expect(replacement.homonym_replaced).to eq homonym
-      end
-    end
-  end
-
   describe "#protonym" do
     # Changed this because synonyms, homonyms will use the same protonym
     context "when the taxon it's attached to is destroyed, even if another taxon is using it" do

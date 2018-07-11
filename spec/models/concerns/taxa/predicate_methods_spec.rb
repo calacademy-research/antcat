@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Taxon do
   let(:taxon) { build_stubbed :taxon }
 
@@ -27,22 +29,6 @@ describe Taxon do
     taxon.ichnotaxon = true
     expect(taxon).to be_ichnotaxon
     expect(taxon).not_to be_invalid
-  end
-
-  it "can be unavailable" do
-    expect(taxon).not_to be_unavailable
-    expect(taxon).to be_available
-    taxon.status = Status::UNAVAILABLE
-    expect(taxon).to be_unavailable
-    expect(taxon).not_to be_available
-    expect(taxon).to be_invalid
-  end
-
-  it "can be excluded from Formicidae" do
-    expect(taxon).not_to be_excluded_from_formicidae
-    taxon.status = Status::EXCLUDED_FROM_FORMICIDAE
-    expect(taxon).to be_excluded_from_formicidae
-    expect(taxon).to be_invalid
   end
 
   it "can be a fossil" do
@@ -81,19 +67,6 @@ describe Taxon do
         expect(species.protonym).to receive(:name).and_return protonym_name
         expect(species).not_to be_recombination
       end
-    end
-  end
-
-  describe "#incertae_sedis_in" do
-    let(:myanmyrma) { build_stubbed :taxon, incertae_sedis_in: 'family' }
-
-    it "can have an incertae_sedis_in" do
-      expect(myanmyrma.incertae_sedis_in).to eq 'family'
-      expect(myanmyrma).not_to be_invalid
-    end
-
-    it "can say whether it is incertae sedis in a particular rank" do
-      expect(myanmyrma).to be_incertae_sedis_in 'family'
     end
   end
 end
