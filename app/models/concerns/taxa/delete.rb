@@ -19,7 +19,7 @@ module Taxa::Delete
   end
 
   def delete_impact_list
-    get_taxon_children_recur(self).concat([self])
+   Taxa::DeleteImpactList[self]
   end
 
   def delete_taxon_and_children
@@ -34,16 +34,6 @@ module Taxa::Delete
   end
 
   private
-    # TODO see Subfamily#children for a known bug.
-    def get_taxon_children_recur taxon
-      ret_val = []
-      taxon.children.each do |child|
-        ret_val.concat [child]
-        ret_val.concat get_taxon_children_recur child
-      end
-      ret_val
-    end
-
     def delete_taxon_children taxon
       taxon.children.each do |child|
         child.delete_with_state!
