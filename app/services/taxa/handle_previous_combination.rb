@@ -30,18 +30,18 @@ class Taxa::HandlePreviousCombination
 
     # TODO find proper name.
     def status_string_for_crazy taxon_to_update
-      if Status[taxon_to_update] == Status['original combination']
-        Status['original combination'].to_s
+      if taxon_to_update.status == Status::ORIGINAL_COMBINATION
+        Status::ORIGINAL_COMBINATION
       else
-        Status['obsolete combination'].to_s
+        Status::OBSOLETE_COMBINATION
       end
     end
 
     def status_string_for_previous_combination previous_combination
       if previous_combination.id == taxon.protonym.id
-        Status['original combination'].to_s
+        Status::ORIGINAL_COMBINATION
       else
-        Status['obsolete combination'].to_s
+        Status::OBSOLETE_COMBINATION
       end
     end
 
