@@ -91,7 +91,7 @@ class TaxaController < ApplicationController
       if collision_resolution
         if collision_resolution == 'homonym' || collision_resolution == ""
           taxon.unresolved_homonym = true
-          taxon.status = Status['homonym'].to_s
+          taxon.status = Status::HOMONYM
         else
           taxon.collision_merge_id = collision_resolution
           # TODO `original_combination` is never used.

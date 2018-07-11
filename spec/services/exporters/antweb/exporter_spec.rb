@@ -219,7 +219,7 @@ describe Exporters::Antweb::Exporter do
     end
 
     context "when there isn't a current_valid_taxon" do
-      let!(:junior_synonym) { create_species 'Atta major', genus: taxon, status: 'synonym' }
+      let!(:junior_synonym) { create_species 'Atta major', genus: taxon, status: Status::SYNONYM }
 
       before do
         senior_synonym = create_species 'Eciton major', genus: taxon
@@ -234,7 +234,7 @@ describe Exporters::Antweb::Exporter do
 
   describe "Sending all taxa - not just valid" do
     it "can export a junior synonym" do
-      taxon = create_genus status: 'original combination'
+      taxon = create_genus status: Status::ORIGINAL_COMBINATION
       expect(export_taxon(taxon)[11]).to eq 'original combination'
     end
 
@@ -251,7 +251,7 @@ describe Exporters::Antweb::Exporter do
 
   describe "Sending 'was original combination' so that AntWeb knows when to use parentheses around authorship" do
     it "sends TRUE or FALSE" do
-      taxon = create_genus status: 'original combination'
+      taxon = create_genus status: Status::ORIGINAL_COMBINATION
       expect(export_taxon(taxon)[14]).to eq 'TRUE'
     end
 
@@ -286,7 +286,7 @@ describe Exporters::Antweb::Exporter do
     let(:recombination) { create_species 'Eciton major' }
 
     before do
-      original_combination.status = 'original combination'
+      original_combination.status = Status::ORIGINAL_COMBINATION
       original_combination.current_valid_taxon = recombination
       recombination.protonym.name = original_combination.name
       original_combination.save!

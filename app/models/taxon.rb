@@ -60,7 +60,7 @@ class Taxon < ApplicationRecord
   scope :displayable, -> do
     where.not(status: ["unavailable misspelling", "unavailable uncategorized"])
   end
-  scope :valid, -> { where(status: 'valid') }
+  scope :valid, -> { where(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
   scope :order_by_joined_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name_cache, -> { order(:name_cache) }

@@ -30,7 +30,7 @@ describe Tribe do
     it "includes the number of species" do
       genus = create :genus, tribe: tribe
       create :species, genus: genus
-      create :species, genus: genus, status: 'synonym'
+      create :species, genus: genus, status: Status::SYNONYM
 
       expect(tribe.statistics).to eq extant: {
         genera: {"valid" => 1},

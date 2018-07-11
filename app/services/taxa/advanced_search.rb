@@ -20,7 +20,7 @@ module Taxa
 
       query = query.where(status: params[:status]) if params[:status]
       query = query.where(type: params[:rank]) if params[:rank]
-      query = query.where(status: 'valid') if params[:valid_only]
+      query = query.valid if params[:valid_only]
 
       if params[:author_name].present?
         author_name = AuthorName.find_by(name: params[:author_name])

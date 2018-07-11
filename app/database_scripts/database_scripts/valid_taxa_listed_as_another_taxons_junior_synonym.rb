@@ -1,7 +1,7 @@
 module DatabaseScripts
   class ValidTaxaListedAsAnotherTaxonsJuniorSynonym < DatabaseScript
     def results
-      Taxon.where(id: Synonym.pluck(:junior_synonym_id)).where(status: "valid")
+      Taxon.where(id: Synonym.pluck(:junior_synonym_id)).valid
     end
   end
 end

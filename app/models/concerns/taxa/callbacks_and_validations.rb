@@ -7,6 +7,7 @@ module Taxa::CallbacksAndValidations
   included do
     validates :name, presence: true
     validates :protonym, presence: true
+    validates :status, inclusion: { in: Status::STATUSES }
     validates :biogeographic_region,
       inclusion: { in: BiogeographicRegion::REGIONS, allow_nil: true }
 
@@ -46,7 +47,7 @@ module Taxa::CallbacksAndValidations
 
     # When `changes` includes: `{ status: ["synonym", "<not synonym>"] }`
     def stopped_being_a_synonym?
-      changes[:status].try(:first) == 'synonym'
+      changes[:status].try(:first) == Status::SYNONYM
     end
 
     def remove_auto_generated
