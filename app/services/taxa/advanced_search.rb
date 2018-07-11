@@ -18,6 +18,7 @@ module Taxa
 
       query = Taxon.joins(protonym: [{ authorship: :reference }]).order_by_name_cache
 
+      query = query.where(status: params[:status]) if params[:status]
       query = query.where(type: params[:rank]) if params[:rank]
       query = query.where(status: 'valid') if params[:valid_only]
 
