@@ -101,15 +101,6 @@ Feature: Using the catalog
     And "Dolichoderinae" should be selected in the families index
     And I should see "Dolichoderinae history"
 
-  Scenario: Not showing non-displayable taxa
-    Given PENDING: there is code for this, just not activated
-    Given a non-displayable genus exists with a name of "Lasius" and a subfamily of "Dolichoderinae"
-
-    When I go to the catalog
-    And I follow "Dolichoderinae" in the index
-    Then I should not see "Lasius" in the genera index
-    And I should see "Brownerus" in the genera index
-
   Scenario: Displaying items containing broken taxt links
     Given I am logged in
     And there is a genus "Atta"

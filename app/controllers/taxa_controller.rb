@@ -172,7 +172,6 @@ class TaxaController < ApplicationController
         :unresolved_homonym,
         :ichnotaxon,
         :hong,
-        :display,
         :headline_notes_taxt,
         {
           protonym_attributes: [

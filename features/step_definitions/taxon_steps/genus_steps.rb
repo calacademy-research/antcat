@@ -37,17 +37,6 @@ Given(/^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and 
   taxon.history_items.create! taxt: history
 end
 
-Given(/^a non-displayable genus exists with a name of "(.*?)" and a subfamily of "(.*?)"$/) do |taxon_name, subfamily_name|
-  subfamily = Subfamily.find_by_name subfamily_name
-  subfamily ||= create :subfamily, name: create(:name, name: subfamily_name)
-  create :genus,
-    name: create(:name, name: taxon_name),
-    subfamily: subfamily,
-    tribe: nil,
-    status: 'valid',
-    display: false
-end
-
 Given(/a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/) do |taxon_name, history|
   another_genus = create :genus_name, name: taxon_name
 
