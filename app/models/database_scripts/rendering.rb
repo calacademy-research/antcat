@@ -12,6 +12,9 @@ module DatabaseScripts
           when "references" then as_reference_list
           else "Error: cannot implicitly render ActiveRecord::Relation."
         end
+      when Array
+        return as_taxon_table if cached_results.first.is_a?(Taxon)
+        "Error: cannot implicitly render results."
       else
         "Error: cannot implicitly render results."
       end
