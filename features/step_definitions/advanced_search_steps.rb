@@ -24,7 +24,7 @@ Given("there is an original combination of {string} described by {string} which 
   betta_major.protonym.authorship.update! reference: reference
 end
 
-Given(/^there is a subfamily described in (\d+)/) do |year|
+Given("there is a subfamily described in {int}") do |year|
   taxon = create :subfamily
   reference = create :article_reference, citation_year: year
   taxon.protonym.authorship.update! reference: reference
@@ -50,7 +50,7 @@ Given("there is a species with forms {string}") do |forms|
   create :species, protonym: protonym
 end
 
-Then(/^I should see the species described in (\d+)$/) do |year|
+Then("I should see the species described in {int}") do |year|
   step %{I should see "#{year}"}
 end
 

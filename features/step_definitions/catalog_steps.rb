@@ -41,7 +41,7 @@ When(/I press "Go" by the catalog search box/) do
   end
 end
 
-Given(/^the maximum number of taxa to load in each tab is (\d+)$/) do |number|
+Given("the maximum number of taxa to load in each tab is {int}") do |number|
   allow_any_instance_of(TaxonBrowser::Browser)
     .to receive(:max_taxa_to_load)
     .and_return number.to_i

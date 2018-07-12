@@ -185,11 +185,11 @@ When(/^I click on Show more$/) do
   find("a", text: "Show more").click
 end
 
-Given(/^the activities are paginated with (\d+) per page$/) do |per_page|
+Given("the activities are paginated with {int} per page") do |per_page|
   Activity.per_page = per_page.to_i
 end
 
-Given(/^there are (\d+) activity items$/) do |number|
+Given("there are {int} activity items") do |number|
   number.to_i.times { create :activity }
 end
 
