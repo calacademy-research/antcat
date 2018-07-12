@@ -5,7 +5,7 @@ Given("I have an(other) unseen notification") do
     notifier: create(:user)
 end
 
-Then("I should (only )see {string} notification(s)( in total)") do |expected_count|
+Then(/^I should (?:only see|see) (\d+) notifications?(?: in total)?$/) do |expected_count|
   all "table.notifications > tbody tr", count: expected_count.to_i
 end
 

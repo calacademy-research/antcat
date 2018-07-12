@@ -71,7 +71,7 @@ When("I fill in {string} with {string} within {string}") do |field, value, withi
   end
 end
 
-When(/^I select "([^"]*)" from "([^"]*)"$/) do |value, field|
+When("I select {string} from {string}") do |value, field|
   select value, from: field
 end
 
@@ -88,11 +88,11 @@ When("I choose {string}") do |field|
 end
 
 # "I should see/contain/selected ..."
-Then("I should (still )see {string}") do |text|
+Then(/^(?:|I )should (?:|still )see "([^"]*)"$/) do |text|
   expect(page).to have_content text
 end
 
-Then("I should not see {string}") do |text|
+Then(/^(?:|I )should not see "([^"]*)"$/) do |text|
   expect(page).to have_no_content text
 end
 
@@ -184,6 +184,6 @@ And('I wait for the "success" message') do
   step 'I should see "uccess"' # "[Ss]uccess(fully)?"
 end
 
-When("I refresh the page (JavaScript)") do
+When(/^I refresh the page \(JavaScript\)$/) do
   page.evaluate_script 'window.location.reload()'
 end

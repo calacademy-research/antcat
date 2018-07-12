@@ -1,7 +1,7 @@
 # TODO probably remove all those `Feed.without_tracking` (the feed
 # is disabled by default in tests) and create new steps in `feed_steps.rb`.
 
-Given(/(?:this|these) users? exists/) do |table|
+Given("this/these user(s) exists") do |table|
   table.hashes.each { |hash| User.create! hash }
 end
 
@@ -42,7 +42,7 @@ Given('I am logged in') do
   step 'I log in'
 end
 
-When("I log in as a user \(not editor\)") do
+When(/^I log in as a user \(not editor\)$/) do
   user = Feed.without_tracking { create :user }
   login_programmatically user
 end

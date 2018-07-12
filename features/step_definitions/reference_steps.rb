@@ -14,7 +14,7 @@ Given("there is an unknown reference") do
   @reference = create :unknown_reference
 end
 
-Given(/^(?:this|these) references? exists?$/) do |table|
+Given("this/these reference(s) exist(s)") do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
@@ -34,7 +34,7 @@ Given(/^(?:this|these) references? exists?$/) do |table|
   end
 end
 
-Given(/(?:these|this) book references? exists?/) do |table|
+Given("these/this book reference(s) exist(s)") do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
     matches = citation.match /([^:]+): (\w+), (.*)/
@@ -69,7 +69,7 @@ Given("there is a reference by Giovanni's brother") do
   reference.author_names << create(:author_name, name: 'Giovanni, J.')
 end
 
-Given(/(?:these|this) unknown references? exists?/) do |table|
+Given("these/this unknown reference(s) exist(s)") do |table|
   table.hashes.each { |hash| create_reference :unknown_reference, hash }
 end
 
@@ -111,7 +111,7 @@ Given("the following entry nests it") do |table|
     nesting_reference: nestee_reference
 end
 
-Given("that the entry has a URL that's on our site( that is public)") do |is_public|
+Given(/^that the entry has a URL that's on our site( that is public)?$/) do |is_public|
   @reference.update_attribute :document, ReferenceDocument.create!
   @reference.document.update file_file_name: '123.pdf',
     url: "localhost/documents/#{@reference.document.id}/123.pdf",
@@ -141,7 +141,7 @@ When("I fill in {string} with a URL to a document that exists") do |field|
   step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
-When("I fill in {string} with a URL to a document that doesn't exist") do |field|
+When("I fill in {string} with a URL to a document that doesn't exist in the first reference") do |field|
   stub_request(:any, "google.com/foo").to_return status: 404
   step "I fill in \"#{field}\" with \"google\.com/foo\""
 end

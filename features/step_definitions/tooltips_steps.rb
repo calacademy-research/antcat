@@ -14,7 +14,7 @@
 #    <p>Text</p><tooltip/>
 # here <tooltip/> is next to the element containing "Text"
 
-Given(/^(?:these|this) tooltips? (?:also)? ?exists?$/) do |table|
+Given("these/this tooltip(s) (also )exist(s)") do |table|
   table.hashes.each do |hash|
     create :tooltip, hash
   end
