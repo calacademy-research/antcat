@@ -9,7 +9,6 @@
 
 class TaxaController < ApplicationController
   before_action :authenticate_editor
-  before_action :redirect_by_parent_name_id, only: :new
   before_action :set_previous_combination, only: [:new, :create, :edit, :update]
   before_action :set_taxon, only: [:edit, :update]
 
@@ -100,7 +99,7 @@ class TaxaController < ApplicationController
         end
       end
 
-      # TODO move to Taxa::HandlePreviousCombination?
+      # TODO move to `Taxa::HandlePreviousCombination`?
       if @previous_combination
         taxon.inherit_attributes_for_new_combination @previous_combination, parent
       end
@@ -121,7 +120,7 @@ class TaxaController < ApplicationController
         original_combination.save_from_form taxon_params, @previous_combination
       end
 
-      if @previous_combination.is_a?(Species) && @previous_combination.children.any?
+      if @previous_combination.is_a?(Species) && @previous_combination.children.exists?
         create_new_usages_for_subspecies
       end
     end
@@ -143,21 +142,6 @@ class TaxaController < ApplicationController
 
     def set_authorship_reference
       @taxon.protonym.authorship.reference ||= DefaultReference.get session
-    end
-
-    # TODO something.
-    def redirect_by_parent_name_id
-      return unless params[:parent_name_id]
-
-      if parent = Taxon.find_by(name_id: params[:parent_name_id])
-        hash = {
-          parent_id: parent.id,
-          rank_to_create: params[:rank_to_create],
-          previous_combination_id: params[:previous_combination_id],
-          collision_resolution: params[:collision_resolution]
-        }
-        redirect_to new_taxa_path(hash)
-      end
     end
 
     def taxon_params

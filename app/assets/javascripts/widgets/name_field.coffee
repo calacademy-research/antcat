@@ -174,7 +174,7 @@ class AntCat.NameField extends AntCat.Panel
   create_combination_message_buttons: (name_id, dialog_box) =>
     button_hash = {}
     button_hash["Yes, create new combination"] = (a) =>
-      window.location.href = '/taxa/new?parent_name_id=' + name_id +
+      window.location.href = '/taxa/redirect_by_parent_name_id?parent_name_id=' + name_id +
         '&rank_to_create=' + @taxon_rank +
         '&previous_combination_id=' + @current_taxon_id()
 
@@ -375,7 +375,7 @@ class AntCat.NameField extends AntCat.Panel
           collision_resolution = data_object['species'].id
         else if data_object['subspecies'] != undefined
           collision_resolution = data_object['subspecies'].id
-      window.location.href = '/taxa/new?parent_name_id=' + new_parent_name_id +
+      window.location.href = '/taxa/redirect_by_parent_name_id?parent_name_id=' + new_parent_name_id +
         '&rank_to_create=' + @taxon_rank +
         '&previous_combination_id=' + @current_taxon_id() +
         '&collision_resolution=' + collision_resolution
