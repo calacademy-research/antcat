@@ -5,7 +5,7 @@ Given(/^I am on a page with a textarea with markdown preview and autocompletion$
   step %{I follow "New"}
 end
 
-When(/^I fill in "(.*?)" with "(.*?)" followed by the user id of "(.*?)"$/) do |textarea, text, name|
+When("I fill in {string} with {string} followed by the user id of {string}") do |textarea, text, name|
   user = User.find_by name: name
   step %{I fill in "#{textarea}" with "#{text}#{user.id}"}
 end
@@ -22,11 +22,11 @@ end
 
 # HACK because the below selects the wrong suggestion (which is hidden).
 #   `first(".atwho-view-ul li.cur", visible: true).click`
-When(/^I click the suggestion containing "(.*?)"$/) do |text|
+When("I click the suggestion containing {string}") do |text|
   find(".atwho-view-ul li", text: text).click
 end
 
-Then(/^the markdown textarea should contain "(.*?)"$/) do |text|
+Then("the markdown textarea should contain {string}") do |text|
   expect(markdown_textarea.value).to include text
 end
 

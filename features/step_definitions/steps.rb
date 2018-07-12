@@ -44,7 +44,7 @@ When(/^(?:|I )follow "([^"]*)"$/) do |link|
   click_link link
 end
 
-When(/^I click "([^"]*)"$/) do |selector|
+When("I click {string}") do |selector|
   find(selector).click
 end
 
@@ -65,7 +65,7 @@ When(/^(?:|I )fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, with: value
 end
 
-When(/^I fill in "([^"]*)" with "([^"]*)" within "([^"]*)"$/) do |field, value, within_element|
+When("I fill in {string} with {string} within {string}") do |field, value, within_element|
   within(within_element) do
     fill_in field, with: value
   end
@@ -104,7 +104,7 @@ Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |fiel
   end
 end
 
-Then(/^I should see a link "([^"]*)"$/) do |link|
+Then("I should see a link {string}") do |link|
   expect(page).to have_css 'a', text: link
 end
 
@@ -114,7 +114,7 @@ Then(/I should (not )?see "(.*?)" (?:with)?in (.*)$/) do |do_not, contents, loca
   end
 end
 
-Then(/^I should see "([^"]*)" selected in "([^"]*)"$/) do |value, select|
+Then("I should see {string} selected in {string}") do |value, select|
   expect(page).to have_select select, selected: value
 end
 
@@ -124,7 +124,7 @@ Then(/^"([^"]+)" should be selected(?: in (.*))?$/) do |word, location|
   end
 end
 
-Then(/^"([^"]*)" should be checked$/) do |checkbox_id|
+Then("{string} should be checked") do |checkbox_id|
   checkbox = find "##{checkbox_id}"
   expect(checkbox).to be_checked
 end
@@ -152,11 +152,11 @@ Then(/^I should see an alert "(.*)"$/) do |message|
   end
 end
 
-Then(/^the page title should have "([^"]*)" in it$/) do |title|
+Then("the page title should have {string} in it") do |title|
   expect(page.title).to have_content title
 end
 
-Given(/that URL "([^"]*)" exists/) do |link|
+Given("that URL {string} exists") do |link|
   stub_request :any, link
 end
 
@@ -168,13 +168,13 @@ Then("I should not see any error messages") do
   expect(page).to_not have_css '.error_messages li'
 end
 
-When(/^I follow "([^"]*)" inside the breadcrumb$/) do |link|
+When("I follow {string} inside the breadcrumb") do |link|
   within "#breadcrumbs" do
     step %{I follow "#{link}"}
   end
 end
 
-Then(/I should see "([^"]*)" italicized/) do |italicized_text|
+Then("I should see {string} italicized") do |italicized_text|
   expect(page).to have_css 'i', text: italicized_text
 end
 

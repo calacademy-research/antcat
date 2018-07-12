@@ -33,7 +33,7 @@ When(/^I log in$/) do
   login_programmatically user
 end
 
-When(/^I log in as "([^"]+)"$/) do |name|
+When("I log in as {string}") do |name|
   user = User.find_by name: name
   login_programmatically user
 end
@@ -90,14 +90,14 @@ When(/^I fill in the email field with my email address$/) do
   step %{I fill in "user_email" with "#{user.email}"}
 end
 
-Then(/^there should be a mailto link to the email of "([^"]+)"$/) do |name|
+Then("there should be a mailto link to the email of {string}") do |name|
   email = User.find_by(name: name).email
   within first('#content') do
     find :css, "a[href='mailto:#{email}']"
   end
 end
 
-Then(/^I should see a link to the user page for "([^"]*)"$/) do |name|
+Then("I should see a link to the user page for {string}") do |name|
   user = User.find_by name: name
 
   within first('#content') do

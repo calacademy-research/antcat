@@ -123,7 +123,7 @@ Given(/that the entry has a URL that's not on our site/) do
   @reference.document.update_attribute :url, 'google.com/foo'
 end
 
-When(/I fill in "reference_nesting_reference_id" with the ID for "(.*?)"$/) do |title|
+When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |title|
   reference = Reference.find_by(title: title)
   step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""
 end
@@ -136,12 +136,12 @@ When(/I fill in "reference_nesting_reference_id" with its own ID$/) do
   step "I fill in \"reference_nesting_reference_id\" with \"#{@reference.id}\""
 end
 
-When(/I fill in "([^"]*)" with a URL to a document that exists/) do |field|
+When("I fill in {string} with a URL to a document that exists") do |field|
   stub_request :any, "google.com/foo"
   step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
 
-When(/I fill in "([^"]*)" with a URL to a document that doesn't exist/) do |field|
+When("I fill in {string} with a URL to a document that doesn't exist") do |field|
   stub_request(:any, "google.com/foo").to_return status: 404
   step "I fill in \"#{field}\" with \"google\.com/foo\""
 end
@@ -171,7 +171,7 @@ def find_reference_by_keey keey
   Reference.find_by(principal_author_last_name_cache: last_name, year: year.to_i)
 end
 
-Given(/^the default reference is "([^"]*)"$/) do |keey|
+Given("the default reference is {string}") do |keey|
   reference = find_reference_by_keey keey
   DefaultReference.stub(:get).and_return reference
 end
@@ -180,13 +180,13 @@ Given(/^there is no default reference$/) do
   DefaultReference.stub(:get).and_return nil
 end
 
-When(/I fill in the references search box with "(.*?)"/) do |search_term|
+When("I fill in the references search box with {string}") do |search_term|
   within "#breadcrumbs" do
     step %{I fill in "q" with "#{search_term}"}
   end
 end
 
-When(/I fill in the references authors search box with "(.*?)"/) do |search_term|
+When("I fill in the references authors search box with {string}") do |search_term|
   within "#breadcrumbs" do
     step %{I fill in "author_q" with "#{search_term}"}
   end
@@ -217,7 +217,7 @@ Given(/^there is a taxon with that reference as its protonym's reference$/) do
   taxon.protonym.authorship.save!
 end
 
-Then(/^the "(.*?)" tab should be selected$/) do |tab_name|
+Then("the {string} tab should be selected") do |tab_name|
   tab_name = 'Unknown' if tab_name == 'Other'
   find("#tabs-#{tab_name.downcase}.is-active")
 end

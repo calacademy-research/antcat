@@ -13,7 +13,7 @@ Then(/^I should see (\d+) unread notifications?/) do |expected_count|
   all "table.notifications .antcat_icon.unseen", count: expected_count.to_i
 end
 
-Given(/^there is an open issue "([^"]*)" created by "([^"]*)"$/) do |title, name|
+Given("there is an open issue {string} created by {string}") do |title, name|
   create :issue, title: title, adder: User.find_by(name: name)
 end
 

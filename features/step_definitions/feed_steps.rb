@@ -8,7 +8,6 @@ Given(/^activity tracking is (enabled|disabled)$/) do |state|
   Feed.enabled = new_state
 end
 
-# TODO use more of this new {string} syntax.
 Given("there is an activity with the edit summary {string}") do |edit_summary|
   create :activity, edit_summary: edit_summary
 end
@@ -17,7 +16,7 @@ Given("there is an automated activity with the edit summary {string}") do |edit_
   create :activity, edit_summary: edit_summary, automated_edit: true
 end
 
-Then(/^I should see "([^"]*)" and no other feed items$/) do |text|
+Then("I should see {string} and no other feed items") do |text|
   step %Q[I should see "#{text}"]
   step "I should see 1 item in the feed"
 end
@@ -38,7 +37,7 @@ When(/^I hover the first activity item$/) do
   find("table.activities > tbody > tr:first-of-type").hover
 end
 
-Then(/^I should see the edit summary "([^"]*)"$/) do |content|
+Then("I should see the edit summary {string}") do |content|
   within "table.activities" do
     step %Q[I should see "#{content}"]
   end
@@ -97,7 +96,7 @@ When(/^I delete a taxon history item for the feed$/) do
 end
 
 # Reference
-Given(/^there is a reference for the feed with state "(.*?)"$/) do |state|
+Given("there is a reference for the feed with state {string}") do |state|
   Feed.without_tracking do
     create :article_reference,
       author_names: [create(:author_name, name: 'Giovanni, S.')],
@@ -204,7 +203,7 @@ Then(/^the query string should (not )?contain "([^"]*)"$/) do |should_not, conta
 end
 
 # Execute a script
-When(/^I execute a script with the content "(.*?)"$/) do |content|
+When("I execute a script with the content {string}") do |content|
   cheat_and_set_user_for_feed
   Activity.create_without_trackable :execute_script, edit_summary: content
 end

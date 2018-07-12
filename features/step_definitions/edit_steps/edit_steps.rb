@@ -35,7 +35,7 @@ When(/^I click the name field$/) do
   step %{I click "#name_field .display_button"}
 end
 
-When(/^I set the name to "([^"]*)"$/) do |name|
+When("I set the name to {string}") do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
 
@@ -43,7 +43,7 @@ Then(/^I should still see the name field$/) do
   find '#name_field .edit'
 end
 
-Then(/^the name field should contain "([^"]*)"$/) do |name|
+Then("the name field should contain {string}") do |name|
   element = find '#name_string'
   expect(element.value).to eq name
 end
@@ -51,13 +51,13 @@ end
 # Try adding this (waiting finder) if the JS driver clicks on "OK" and
 # then navigates to a different page before the JS has had time to execute.
 # TODO probably include this in other steps so that it's always run.
-Then(/^the name button should contain "([^"]*)"$/) do |name|
+Then("the name button should contain {string}") do |name|
   element = find '#name_field .display_button'
   expect(element.text).to eq name
 end
 
 # gender
-When(/I set the name gender to "([^"]*)"/) do |gender|
+When("I set the name gender to {string}") do |gender|
   step %{I select "#{gender}" from "taxon_name_attributes_gender"}
 end
 
@@ -74,7 +74,7 @@ When(/I click the parent name field/) do
   find('#parent_name_field .display_button').click
 end
 
-When(/^I set the parent name to "([^"]*)"$/) do |name|
+When("I set the parent name to {string}") do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
 
@@ -83,26 +83,26 @@ Then(/^I should not see the parent name field/) do
 end
 
 #### current valid taxon field
-Then(/the current valid taxon name should be "([^"]*)"$/) do |name|
+Then("the current valid taxon name should be {string}") do |name|
   taxon = Taxon.find_by(name_cache: name)
   element = find '#taxon_current_valid_taxon_id'
   expect(element.value).to eq taxon.id.to_s
 end
 
-When(/^I set the current valid taxon name to "([^"]*)"$/) do |name|
+When("I set the current valid taxon name to {string}") do |name|
   select2 name, from: 'taxon_current_valid_taxon_id'
 end
 
 # status
-Then(/the status should be "([^"]*)"/) do |status|
+Then("the status should be {string}") do |status|
   expect(page).to have_css "select#taxon_status option[selected=selected][value=#{status}]"
 end
 
-When(/I set the status to "([^"]*)"/) do |status|
+When("I set the status to {string}") do |status|
   step %{I select "#{status}" from "taxon_status"}
 end
 
-Then(/^the homonym replaced by name should be "([^"]*)"$/) do |name|
+Then("the homonym replaced by name should be {string}") do |name|
   expected_value = if name == '(none)'
                      ''
                    else
@@ -111,7 +111,7 @@ Then(/^the homonym replaced by name should be "([^"]*)"$/) do |name|
   expect(find('#taxon_homonym_replaced_by_id').value).to eq expected_value
 end
 
-When(/^I set the homonym replaced by name to "([^"]*)"$/) do |name|
+When("I set the homonym replaced by name to {string}") do |name|
   select2 name, from: 'taxon_homonym_replaced_by_id'
 end
 
@@ -120,7 +120,7 @@ When(/^I click the authorship field$/) do
   step %{I click "#authorship_field .display_button"}
 end
 
-When(/^I fill in the authorship notes with "([^"]*)"$/) do |notes|
+When("I fill in the authorship notes with {string}") do |notes|
   step %{I fill in "taxon_protonym_attributes_authorship_attributes_notes_taxt" with "#{notes}"}
 end
 
@@ -129,12 +129,12 @@ When(/I click the protonym name field/) do
   find('#protonym_name_field .display_button').click
 end
 
-Then(/^the protonym name field should contain "([^"]*)"$/) do |name|
+Then("the protonym name field should contain {string}") do |name|
   element = find '#name_string'
   expect(element.value).to eq name
 end
 
-When(/^I set the protonym name to "([^"]*)"$/) do |name|
+When("I set the protonym name to {string}") do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
 
@@ -143,30 +143,30 @@ When(/I click the type name field/) do
   find('#type_name_field .display_button').click
 end
 
-When(/^I set the type name to "([^"]*)"$/) do |name|
+When("I set the type name to {string}") do |name|
   within '#type_name_field' do
     step %{I fill in "name_string" with "#{name}"}
   end
 end
 
-Then(/^the type name field should contain "([^"]*)"$/) do |name|
+Then("the type name field should contain {string}") do |name|
   element = find '#name_string'
   expect(element.value).to eq name
 end
 
 # convert species to subspecies
-Then(/^the new species field should contain "([^"]*)"$/) do |name|
+Then("the new species field should contain {string}") do |name|
   taxon = Taxon.find_by(name_cache: name)
   element = find '#new_species_id'
   expect(element.value).to eq taxon.id.to_s
 end
 
-When(/^I set the new species field to "([^"]*)"$/) do |name|
+When("I set the new species field to {string}") do |name|
   select2 name, from: 'new_species_id'
 end
 
 # auto_generated
-Then(/^the name "(.*?)" genus "(.*?)" should not be auto generated$/) do |species, genus|
+Then("the name {string} genus {string} should not be auto generated") do |species, genus|
   taxon = Taxon.find_by name_cache: "#{genus} #{species}"
   expect(taxon.auto_generated).to be_falsey
   expect(taxon.name.auto_generated).to be_falsey

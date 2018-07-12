@@ -9,14 +9,14 @@ When(/I fill in "([^"]+)" in (the (?:(?:first|last|another) )?author panel) with
   end
 end
 
-When(/^I search for "([^"]*)" in the author panel$/) do |term|
+When("I search for {string} in the author panel") do |term|
   steps %{
     And I fill in "Choose author" in the author panel with "#{term}"
     And I press "Go" in the author panel
   }
 end
 
-When(/^I search for "([^"]*)" in another author panel$/) do |term|
+When("I search for {string} in another author panel") do |term|
   steps %{
     And I fill in "Choose another author" in the last author panel with "#{term}"
     And I press "Go" in the last author panel

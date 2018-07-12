@@ -1,8 +1,8 @@
-Given(/^there is an open issue "([^"]*)"$/) do |title|
+Given("there is an open issue {string}") do |title|
   create :issue, :open, title: title
 end
 
-Given(/^there is a closed issue "([^"]*)"$/) do |title|
+Given("there is a closed issue {string}") do |title|
   create :issue, :closed, title: title
 end
 

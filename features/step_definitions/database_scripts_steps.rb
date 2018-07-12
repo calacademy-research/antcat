@@ -12,7 +12,7 @@ When(/^I open all database scripts and browse their sources$/) do
   end
 end
 
-When(/^I open the database script "([^"]*)" and browse its source$/) do |script_name|
+When("I open the database script {string} and browse its source") do |script_name|
   visit "/database_scripts/#{script_name}"
 
   step %{I should see "Show source"}

@@ -13,7 +13,7 @@ When(/^I save the synonym$/) do
   step %{I press the synonym item "Save" button}
 end
 
-When(/^I press the senior synonym item "([^"]*)" button$/) do |button|
+When("I press the senior synonym item {string} button") do |button|
   within '.senior_synonyms_section' do
     step %{I press "#{button}"}
   end
@@ -25,22 +25,22 @@ When(/^I press the (?:junior )?synonym item "([^"]*)" button$/) do |button|
   end
 end
 
-When(/^I click "(.*?)" beside the first junior synonym$/) do |button|
+When("I click {string} beside the first junior synonym") do |button|
   within '.junior_synonyms_section .synonym_row' do
     step %{I press "#{button}"}
   end
 end
 
-When(/^I click "(.*?)" beside the first senior synonym$/) do |button|
+When("I click {string} beside the first senior synonym") do |button|
   within '.senior_synonyms_section .synonym_row' do
     step %{I press "#{button}"}
   end
 end
 
-When(/^I fill in the junior synonym name with "([^"]*)"$/) do |name|
+When("I fill in the junior synonym name with {string}") do |name|
   already_opened_select2 name, from: 'synonym_taxon_id'
 end
 
-When(/^I fill in the senior synonym name with "([^"]*)"$/) do |name|
+When("I fill in the senior synonym name with {string}") do |name|
   already_opened_select2 name, from: 'synonym_taxon_id'
 end
