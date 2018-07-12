@@ -12,12 +12,12 @@ def select2(value, from:)
 end
 
 # TODO replace with 'I press "Save"'.
-When(/^I save my changes$/) do
+When("I save my changes") do
   step 'I press "Save"'
 end
 
 # Without JavaScript, `I press "Save"` raises `Capybara::Ambiguous`.
-When(/^I save the taxon form$/) do
+When("I save the taxon form") do
   find("#save-taxon-form").click
 end
 
@@ -31,7 +31,7 @@ end
 
 # fields section
 ### name field
-When(/^I click the name field$/) do
+When("I click the name field") do
   step %{I click "#name_field .display_button"}
 end
 
@@ -39,7 +39,7 @@ When("I set the name to {string}") do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
 
-Then(/^I should still see the name field$/) do
+Then("I should still see the name field") do
   find '#name_field .edit'
 end
 
@@ -70,7 +70,7 @@ Then(/^I should (not )?see the gender menu$/) do |should_not|
 end
 
 ### parent field
-When(/I click the parent name field/) do
+When("I click the parent name field") do
   find('#parent_name_field .display_button').click
 end
 
@@ -78,7 +78,7 @@ When("I set the parent name to {string}") do |name|
   step %{I fill in "name_string" with "#{name}"}
 end
 
-Then(/^I should not see the parent name field/) do
+Then("I should not see the parent name field") do
   expect(page).to_not have_css "#parent_row"
 end
 
@@ -116,7 +116,7 @@ When("I set the homonym replaced by name to {string}") do |name|
 end
 
 ### authorship
-When(/^I click the authorship field$/) do
+When("I click the authorship field") do
   step %{I click "#authorship_field .display_button"}
 end
 
@@ -125,7 +125,7 @@ When("I fill in the authorship notes with {string}") do |notes|
 end
 
 ### protonym name field
-When(/I click the protonym name field/) do
+When("I click the protonym name field") do
   find('#protonym_name_field .display_button').click
 end
 
@@ -139,7 +139,7 @@ When("I set the protonym name to {string}") do |name|
 end
 
 # type name field
-When(/I click the type name field/) do
+When("I click the type name field") do
   find('#type_name_field .display_button').click
 end
 

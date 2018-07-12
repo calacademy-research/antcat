@@ -1,9 +1,9 @@
-Given(/^there is a Lasius subspecies without a species$/) do
+Given("there is a Lasius subspecies without a species") do
   subspecies = create_subspecies "Lasius specius subspecius", species: nil
   expect(subspecies.species).to be nil
 end
 
-When(/^I open all database scripts and browse their sources$/) do
+When("I open all database scripts and browse their sources") do
   @browsed_scripts_count = 0
 
   script_names = DatabaseScript.all.map &:to_param
@@ -23,11 +23,11 @@ When("I open the database script {string} and browse its source") do |script_nam
 end
 
 # Confirm that the scenario didn't pass for the wrong reasons.
-Then(/^I should have browsed at least 5 database scripts$/) do
+Then("I should have browsed at least 5 database scripts") do
   expect(@browsed_scripts_count).to be >= 5
 end
 
-Given(/^the genus Atta has a protonym with a missing reference$/) do
+Given("the genus Atta has a protonym with a missing reference") do
   reference = create :missing_reference, citation: "Batiatus 2000"
   taxon = create_genus "Atta"
   taxon.protonym.authorship.reference = reference

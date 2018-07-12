@@ -138,11 +138,11 @@ And('I will confirm on the next step') do
   end
 end
 
-When(/^I wait$/) do
+When("I wait") do
   sleep 1
 end
 
-Given(/^RESET SESSION$/) do
+Given("RESET SESSION") do
   Capybara.reset_sessions!
 end
 
@@ -160,7 +160,7 @@ Given("that URL {string} exists") do |link|
   stub_request :any, link
 end
 
-When(/^I reload the page$/) do
+When("I reload the page") do
   visit current_path
 end
 
@@ -184,6 +184,6 @@ And(/^I wait for the "success" message$/) do
   step 'I should see "uccess"' # "[Ss]uccess(fully)?"
 end
 
-When(/^I refresh the page \(JavaScript\)$/) do
+When("I refresh the page (JavaScript)") do
   page.evaluate_script 'window.location.reload()'
 end

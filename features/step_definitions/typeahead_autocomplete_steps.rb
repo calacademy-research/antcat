@@ -8,7 +8,7 @@ Then(/^I should (not )?see the following autocomplete suggestions:$/) do |should
   end
 end
 
-When(/^I click the first autocomplete suggestion$/) do
+When("I click the first autocomplete suggestion") do
   first('.tt-suggestion').click
 end
 

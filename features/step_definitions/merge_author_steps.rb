@@ -23,17 +23,17 @@ When("I search for {string} in another author panel") do |term|
   }
 end
 
-When(/^I close the first author panel$/) do
+When("I close the first author panel") do
   step %{I follow "close" in the first author panel}
 end
 
-When(/^I merge the authors$/) do
+When("I merge the authors") do
   steps %{
     And I will confirm on the next step
     And I press "Merge these authors"
   }
 end
 
-Then(/^I should not be able to merge the authors$/) do
+Then("I should not be able to merge the authors") do
   step %{I should not see "Click this button"}
 end

@@ -1,5 +1,5 @@
 # Family
-Given(/^the Formicidae family exists$/) do
+Given("the Formicidae family exists") do
   reference = create :article_reference,
     author_names: [create(:author_name, name: 'Latreille, I.')],
     citation_year: '1809',

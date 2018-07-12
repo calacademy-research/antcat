@@ -62,7 +62,7 @@ When("I select {string} from the biogeographic region selector") do |value|
   step %{I select "#{value}" from "biogeographic_region"}
 end
 
-When(/^I check valid only in the advanced search form$/) do
+When("I check valid only in the advanced search form") do
   find(:css, "#advanced_search input[type='checkbox']").set true
 end
 

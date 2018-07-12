@@ -19,7 +19,7 @@ Given("subfamily {string} exists") do |taxon_name|
   step %{there is a subfamily "#{taxon_name}"}
 end
 
-Given(/^there is an invalid subfamily Invalidinae$/) do
+Given("there is an invalid subfamily Invalidinae") do
   name = create :subfamily_name, name: "Invalidinae"
   create :subfamily, :synonym, name: name
 end

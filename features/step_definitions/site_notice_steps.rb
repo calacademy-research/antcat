@@ -4,11 +4,11 @@ Given(/^there is (?:a|a new) site notice I haven't read yet$/) do
   expect(SiteNotice.unread_by(@user)).to be_present
 end
 
-Then(/^I should see an unread site notice$/) do
+Then("I should see an unread site notice") do
   should_see_unread
 end
 
-Then(/^I should not see any unread site notices$/) do
+Then("I should not see any unread site notices") do
   should_not_see_unread
 end
 

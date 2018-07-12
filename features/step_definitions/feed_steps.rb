@@ -33,7 +33,7 @@ def feed_items_count
   all("table.activities > tbody tr").size
 end
 
-When(/^I hover the first activity item$/) do
+When("I hover the first activity item") do
   find("table.activities > tbody > tr:first-of-type").hover
 end
 
@@ -44,12 +44,12 @@ Then("I should see the edit summary {string}") do |content|
 end
 
 # Journal
-When(/^I add a journal for the feed$/) do
+When("I add a journal for the feed") do
   cheat_and_set_user_for_feed
   create :journal, name: "Archibald Bulletin"
 end
 
-When(/^I edit a journal for the feed$/) do
+When("I edit a journal for the feed") do
   journal = Feed.without_tracking do
     create :journal, name: "Archibald Bulletin"
   end
@@ -59,7 +59,7 @@ When(/^I edit a journal for the feed$/) do
   journal.save!
 end
 
-When(/^I delete a journal for the feed$/) do
+When("I delete a journal for the feed") do
   journal = Feed.without_tracking do
     create :journal, name: "Archibald Bulletin"
   end
@@ -69,7 +69,7 @@ When(/^I delete a journal for the feed$/) do
 end
 
 # TaxonHistoryItem
-When(/^I add a taxon history item for the feed$/) do
+When("I add a taxon history item for the feed") do
   taxon = Feed.without_tracking { create_subfamily }
 
   cheat_and_set_user_for_feed
@@ -77,7 +77,7 @@ When(/^I add a taxon history item for the feed$/) do
   taxon_history_item.create_activity :create
 end
 
-When(/^I edit a taxon history item for the feed$/) do
+When("I edit a taxon history item for the feed") do
   taxon_history_item = Feed.without_tracking do
     TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: create_subfamily
   end
@@ -86,7 +86,7 @@ When(/^I edit a taxon history item for the feed$/) do
   taxon_history_item.create_activity :update
 end
 
-When(/^I delete a taxon history item for the feed$/) do
+When("I delete a taxon history item for the feed") do
   taxon_history_item = Feed.without_tracking do
     TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: create_subfamily
   end
@@ -106,7 +106,7 @@ Given("there is a reference for the feed with state {string}") do |state|
   end
 end
 
-When(/^I create a bunch of references for the feed$/) do
+When("I create a bunch of references for the feed") do
   Feed.without_tracking do
     create :article_reference, review_state: "reviewing"
     create :article_reference, review_state: "reviewing"
@@ -115,27 +115,27 @@ When(/^I create a bunch of references for the feed$/) do
 end
 
 # Tooltip
-Given(/^there is a tooltip for the feed$/) do
+Given("there is a tooltip for the feed") do
   Feed.without_tracking do
     Tooltip.create key: "authors", scope: "taxa", text: "Text"
   end
 end
 
 # Issue
-Given(/^there is an open issue for the feed$/) do
+Given("there is an open issue for the feed") do
   Feed.without_tracking do
     create :issue, :open, title: "Valid?"
   end
 end
 
-Given(/^there is a closed issue for the feed$/) do
+Given("there is a closed issue for the feed") do
   Feed.without_tracking do
     create :issue, :closed, title: "Valid?"
   end
 end
 
 # Taxon
-When(/^I add a taxon for the feed$/) do
+When("I add a taxon for the feed") do
   Feed.without_tracking do
     cheat_and_set_user_for_feed
     create :subfamily, name: create(:subfamily_name, name: "Antcatinae")
@@ -143,7 +143,7 @@ When(/^I add a taxon for the feed$/) do
 end
 
 # Change
-Given(/^there are two unreviewed catalog changes for the feed$/) do
+Given("there are two unreviewed catalog changes for the feed") do
   Feed.without_tracking do
     step %{there is a genus "Cactusia" that's waiting for approval}
     step %{there is a genus "Camelia" that's waiting for approval}
@@ -151,7 +151,7 @@ Given(/^there are two unreviewed catalog changes for the feed$/) do
 end
 
 # ReferenceSection
-When(/^I add a reference section for the feed$/) do
+When("I add a reference section for the feed") do
   reference_section = Feed.without_tracking do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
     references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
@@ -161,7 +161,7 @@ When(/^I add a reference section for the feed$/) do
   reference_section.create_activity :create
 end
 
-When(/^I edit a reference section for the feed$/) do
+When("I edit a reference section for the feed") do
   reference_section = Feed.without_tracking do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
       references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
@@ -171,7 +171,7 @@ When(/^I edit a reference section for the feed$/) do
   reference_section.create_activity :update
 end
 
-When(/^I delete a reference section for the feed$/) do
+When("I delete a reference section for the feed") do
   reference_section = Feed.without_tracking do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
       references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
@@ -181,7 +181,7 @@ When(/^I delete a reference section for the feed$/) do
   reference_section.create_activity :destroy
 end
 
-When(/^I click on Show more$/) do
+When("I click on Show more") do
   find("a", text: "Show more").click
 end
 

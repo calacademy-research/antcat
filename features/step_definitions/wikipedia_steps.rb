@@ -1,4 +1,4 @@
-Given(/^there is genus Atta with two species I want to format for Wikipedia$/) do
+Given("there is genus Atta with two species I want to format for Wikipedia") do
   atta = create_genus "Atta"
   extant_species = create_species "Atta cephalotes"
   fossil_species = create_species "Atta mexicana", fossil: true
@@ -10,7 +10,7 @@ Given(/^there is genus Atta with two species I want to format for Wikipedia$/) d
   fossil_species.save!
 end
 
-When(/^I append "\/wikipedia" to the URL of that genus' catalog page$/) do
+When('I append "/wikipedia" to the URL of that genus\' catalog page') do
   atta = Taxon.find_by name_cache: "Atta"
   visit "catalog/#{atta.id}/wikipedia"
 end

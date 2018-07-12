@@ -1,16 +1,16 @@
-Given(/^there is a reference$/) do
+Given("there is a reference") do
   @reference = create :article_reference
 end
 
-Given(/^there is an article reference$/) do
+Given("there is an article reference") do
   @reference = create :article_reference
 end
 
-Given(/^there is a book reference$/) do
+Given("there is a book reference") do
   @reference = create :book_reference
 end
 
-Given(/^there is an unknown reference$/) do
+Given("there is an unknown reference") do
   @reference = create :unknown_reference
 end
 
@@ -49,7 +49,7 @@ end
 
 # HACK because I could not get it to work in any other way.
 # Special cases because we want specific IDs.
-Given(/^there is a Giovanni reference$/) do
+Given("there is a Giovanni reference") do
   reference = create :article_reference,
     author_names: [],
     citation_year: '1809',
@@ -59,7 +59,7 @@ Given(/^there is a Giovanni reference$/) do
   reference.author_names << create(:author_name, name: 'Giovanni, S.')
 end
 
-Given(/^there is a reference by Giovanni's brother$/) do
+Given("there is a reference by Giovanni's brother") do
   reference = create :article_reference,
     author_names: [],
     citation_year: '1800',
@@ -101,7 +101,7 @@ def create_reference type, hash
   reference
 end
 
-Given(/the following entry nests it/) do |table|
+Given("the following entry nests it") do |table|
   data = table.hashes.first
   nestee_reference = @reference
   @reference = NestedReference.create! title: data[:title],
@@ -118,7 +118,7 @@ Given(/that the entry has a URL that's on our site( that is public)?/) do |is_pu
     public: is_public ? true : nil
 end
 
-Given(/that the entry has a URL that's not on our site/) do
+Given("that the entry has a URL that's not on our site") do
   @reference.update_attribute :document, ReferenceDocument.create!
   @reference.document.update_attribute :url, 'google.com/foo'
 end
@@ -128,11 +128,11 @@ When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |
   step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""
 end
 
-Then(/^I should see a PDF link$/) do
+Then("I should see a PDF link") do
   find "a", text: "PDF", match: :first
 end
 
-When(/I fill in "reference_nesting_reference_id" with its own ID$/) do
+When('I fill in "reference_nesting_reference_id" with its own ID') do
   step "I fill in \"reference_nesting_reference_id\" with \"#{@reference.id}\""
 end
 
@@ -159,7 +159,7 @@ Given(/^there is a missing reference(?: with citation "(.+)")?( in a protonym)?$
   end
 end
 
-Then(/^I should not see the missing reference$/) do
+Then("I should not see the missing reference") do
   step 'I should not see "Adventures among Ants"'
 end
 
@@ -176,7 +176,7 @@ Given("the default reference is {string}") do |keey|
   DefaultReference.stub(:get).and_return reference
 end
 
-Given(/^there is no default reference$/) do
+Given("there is no default reference") do
   DefaultReference.stub(:get).and_return nil
 end
 
@@ -192,26 +192,26 @@ When("I fill in the references authors search box with {string}") do |search_ter
   end
 end
 
-When(/I select author search from the search type selector/) do
+When("I select author search from the search type selector") do
   select "author", from: "search_type"
 end
 
-When(/I press "Go" by the references search box/) do
+When('I press "Go" by the references search box') do
   within "#breadcrumbs" do
     step 'I press "Go"'
   end
 end
 
-When(/I hover the export button/) do
+When("I hover the export button") do
   find(".btn-normal", text: "Export").hover
 end
 
-Then(/^nesting_reference_id should contain a valid reference id$/) do
+Then("nesting_reference_id should contain a valid reference id") do
   id = find("#reference_nesting_reference_id").value
   expect(Reference.exists? id).to be true
 end
 
-Given(/^there is a taxon with that reference as its protonym's reference$/) do
+Given("there is a taxon with that reference as its protonym's reference") do
   taxon = create_genus
   taxon.protonym.authorship.reference = @reference
   taxon.protonym.authorship.save!

@@ -1,4 +1,4 @@
-When(/^the changes are approved$/) do
+When("the changes are approved") do
   TaxonState.update_all review_state: :approved
   Change.update_all approver_id: User.first.id, approved_at: Time.now
 end
