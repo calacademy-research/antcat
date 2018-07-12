@@ -19,7 +19,7 @@ When("I press the senior synonym item {string} button") do |button|
   end
 end
 
-When(/^I press the (?:junior )?synonym item "([^"]*)" button$/) do |button|
+When("I press the (junior )synonym item {string} button") do |button|
   within '.junior_synonyms_section' do
     step %{I press "#{button}"}
   end

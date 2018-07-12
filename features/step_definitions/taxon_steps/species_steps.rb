@@ -29,7 +29,7 @@ Given("species {string} exists in that genus") do |name|
   @species.history_items.create! taxt: "#{name} history"
 end
 
-Given(/^there is an original species "([^"]*)" with genus "([^"]*)"$/) do |species_name, genus_name|
+Given("there is an original species {string} with genus {string}") do |species_name, genus_name|
   genus = create_genus genus_name
   create_species species_name,
     genus: genus,

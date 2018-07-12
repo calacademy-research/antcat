@@ -111,7 +111,7 @@ Given("the following entry nests it") do |table|
     nesting_reference: nestee_reference
 end
 
-Given(/that the entry has a URL that's on our site( that is public)?/) do |is_public|
+Given("that the entry has a URL that's on our site( that is public)") do |is_public|
   @reference.update_attribute :document, ReferenceDocument.create!
   @reference.document.update file_file_name: '123.pdf',
     url: "localhost/documents/#{@reference.document.id}/123.pdf",
@@ -151,12 +151,8 @@ Given "there is a reference with ID 50000 for Dolerichoderinae" do
   reference.update_column :id, 50000
 end
 
-Given(/^there is a missing reference(?: with citation "(.+)")?( in a protonym)?$/) do |citation, in_protonym|
-  citation ||= 'Adventures among Ants'
-  missing_reference = create :missing_reference, citation: citation
-  if in_protonym
-    create :protonym, authorship: create(:citation, reference: missing_reference)
-  end
+Given("there is a missing reference") do
+  create :missing_reference
 end
 
 Then("I should not see the missing reference") do

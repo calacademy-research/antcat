@@ -21,11 +21,11 @@ Then("I should see {string} and no other feed items") do |text|
   step "I should see 1 item in the feed"
 end
 
-Then(/^I should see (\d+) items? in the feed$/) do |expected_count|
+Then("I should see {int} item(s) in the feed") do |expected_count|
   expect(feed_items_count).to eq expected_count.to_i
 end
 
-Then(/^I should see at least (\d+) items? in the feed$/) do |expected_count|
+Then("I should see at least {int} item(s) in the feed") do |expected_count|
   expect(feed_items_count).to be >= expected_count.to_i
 end
 

@@ -9,38 +9,38 @@ end
 World WithinHelpers
 
 # Go to / be on
-When(/^(?:|I )go to (.+)$/) do |page_name|
+When(/^I go to (.+)$/) do |page_name|
   visit path_to(page_name)
 end
 
-Then(/^(?:|I )should be on (.+)$/) do |page_name|
+Then(/^I should be on (.+)$/) do |page_name|
   current_path = URI.parse(current_url).path
   expect(current_path).to eq path_to(page_name)
 end
 
 # Click/press
-When(/^(?:|I )press "([^"]*)"$/) do |button|
+When("I press {string}") do |button|
   click_button button
 end
 
-When(/^(?:|I )press the first "([^"]*)"$/) do |button|
+When("I press the first {string}") do |button|
   first(:button, button).click
 end
 
 # TODO. Remove hack.
-When(/^(?:|I )press all "([^"]*)"$/) do |button|
+When("I press all {string}") do |button|
   all(:button, button).each(&:click)
 end
 
-When(/^(?:|I )follow the first "([^"]*)"$/) do |link|
+When("I follow the first {string}") do |link|
   first(:link, link).click
 end
 
-When(/^(?:|I )follow the second "([^"]*)"$/) do |link|
+When("I follow the second {string}") do |link|
   all(:link, link)[1].click
 end
 
-When(/^(?:|I )follow "([^"]*)"$/) do |link|
+When("I follow {string}") do |link|
   click_link link
 end
 
@@ -54,14 +54,14 @@ When(/I follow "(.*?)" (?:with)?in (.*)$/) do |link, location|
   end
 end
 
-When(/I press "(.*?)" (?:with)?in (.*)$/) do |button, location|
+When(/^I press "(.*?)" (?:with)?in (.*)$/) do |button, location|
   with_scope location do
     step %{I press "#{button}"}
   end
 end
 
 # Interact with form elements
-When(/^(?:|I )fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
+When(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, with: value
 end
 
@@ -71,28 +71,28 @@ When("I fill in {string} with {string} within {string}") do |field, value, withi
   end
 end
 
-When(/^(?:|I )select "([^"]*)" from "([^"]*)"$/) do |value, field|
+When(/^I select "([^"]*)" from "([^"]*)"$/) do |value, field|
   select value, from: field
 end
 
-When(/^(?:|I )check "([^"]*)"$/) do |field|
+When("I check {string}") do |field|
   check field
 end
 
-When(/^(?:|I )uncheck "([^"]*)"$/) do |field|
+When("I uncheck {string}") do |field|
   uncheck field
 end
 
-When(/^(?:|I )choose "([^"]*)"$/) do |field|
+When("I choose {string}") do |field|
   choose field
 end
 
 # "I should see/contain/selected ..."
-Then(/^(?:|I )should (?:|still )see "([^"]*)"$/) do |text|
+Then("I should (still )see {string}") do |text|
   expect(page).to have_content text
 end
 
-Then(/^(?:|I )should not see "([^"]*)"$/) do |text|
+Then("I should not see {string}") do |text|
   expect(page).to have_no_content text
 end
 
@@ -146,7 +146,7 @@ Given("RESET SESSION") do
   Capybara.reset_sessions!
 end
 
-Then(/^I should see an alert "(.*)"$/) do |message|
+Then("I should see an alert {string}") do |message|
   accept_alert(message) do
     # No-op.
   end
@@ -180,7 +180,7 @@ end
 
 # HACK to prevent the driver from navigating away
 # from the page before completing the request.
-And(/^I wait for the "success" message$/) do
+And('I wait for the "success" message') do
   step 'I should see "uccess"' # "[Ss]uccess(fully)?"
 end
 

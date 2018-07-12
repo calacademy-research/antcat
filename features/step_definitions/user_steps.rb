@@ -42,12 +42,12 @@ Given('I am logged in') do
   step 'I log in'
 end
 
-When(/^I log in as a user \(not editor\)$/) do
+When("I log in as a user \(not editor\)") do
   user = Feed.without_tracking { create :user }
   login_programmatically user
 end
 
-Given(/^there is a user(?: named "([^"]+)")?$/) do |name|
+Given("there is a user named {string}") do |name|
   name = "Quintus Batiatus" if name.blank?
   create :editor, name: name
 end

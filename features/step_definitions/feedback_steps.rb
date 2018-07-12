@@ -50,6 +50,6 @@ Given("there is a closed feedback item with the comment {string}") do |comment|
   create :feedback, comment: comment, open: false
 end
 
-Given(/^there is a (?:closed )?feedback item$/) do
+Given("there is a (closed )feedback item") do
   step %{there is a closed feedback item with the comment "Cool."}
 end
