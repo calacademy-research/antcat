@@ -90,15 +90,6 @@ describe Names::PicklistMatching do
       expect(results.first[:name]).to eq 'Acropyga dubitata'
     end
 
-    it "only returns names attached to taxa, if that option is sent" do
-      create_genus 'Atta'
-      find_or_create_name 'Attanuda'
-
-      results = described_class['atta', taxa_only: true]
-      expect(results.size).to eq 1
-      expect(results.first[:name]).to eq 'Atta'
-    end
-
     it "only returns names attached to species, if that option is sent" do
       create_genus 'Atta'
       create_species 'Atta major'

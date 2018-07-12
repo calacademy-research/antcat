@@ -23,7 +23,6 @@ class AntCat.NameField extends AntCat.Panel
     $('#is_superadmin').val()
 
   create_form: ($element, form_options) =>
-    form_options.taxa_only = @options.taxa_only
     form_options.subfamilies_or_tribes_only = @options.subfamilies_or_tribes_only
     form_options.genera_only = @options.genera_only
     form_options.species_only = @options.species_only
@@ -476,7 +475,6 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
   setup_autocomplete: ($textbox) =>
     return if AntCat.testing
     url = '/name_pickers/search'
-    url += '?taxa_only=1' if @options.taxa_only
     url += '?species_only=1' if @options.species_only
     url += '?genera_only=1' if @options.genera_only
     url += '?subfamilies_or_tribes_only=1' if @options.subfamilies_or_tribes_only
