@@ -1,4 +1,4 @@
-Given(/^there is a tribe "([^"]*)"$/) do |name|
+Given("there is a tribe {string}") do |name|
   create_tribe name
 end
 
@@ -13,7 +13,7 @@ Given(/a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: 
   taxon.history_items.create! taxt: history
 end
 
-Given(/^tribe "(.*?)" exists in that subfamily$/) do |name|
+Given("tribe {string} exists in that subfamily") do |name|
   @tribe = create :tribe,
     subfamily: @subfamily,
     name: create(:tribe_name, name: name)

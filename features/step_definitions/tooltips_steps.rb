@@ -14,18 +14,18 @@
 #    <p>Text</p><tooltip/>
 # here <tooltip/> is next to the element containing "Text"
 
-Given(/^(?:these|this) tooltips? (?:also)? ?exists?$/) do |table|
+Given("these/this tooltip(s) (also )exist(s)") do |table|
   table.hashes.each do |hash|
     create :tooltip, hash
   end
 end
 
-When(/^I hover the tooltip next to the element containing "([^"]*)"$/) do |text|
+When("I hover the tooltip next to the element containing {string}") do |text|
   look_next_to_this = first '*', text: /^#{text}$/
   look_next_to_this.find('img[class~=tooltip]').hover
 end
 
-When(/^I hover the tooltip next to the text "([^"]*)"$/) do |text|
+When("I hover the tooltip next to the text {string}") do |text|
   find('*', text: /^#{text}$/).first('img.help_icon').hover
 end
 
@@ -37,12 +37,12 @@ Then(/^I should (not )?see the tooltip text "([^"]*)"$/) do |should_not, text|
   end
 end
 
-Then(/^I should not see any tooltips next to the element containing "([^"]*)"$/) do |text|
+Then("I should not see any tooltips next to the element containing {string}") do |text|
   look_next_to_this = first '*', text: /^#{text}$/
   expect(look_next_to_this).to have_no_selector '.tooltip'
 end
 
-Then(/^I should not see any tooltips next to the text "([^"]*)"$/) do |text|
+Then("I should not see any tooltips next to the text {string}") do |text|
   tooltip = find('*', text: /^#{text}$/).first 'img.help_icon'
   expect(tooltip).to be nil
 end

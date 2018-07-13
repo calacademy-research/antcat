@@ -32,12 +32,6 @@ Feature: Using the catalog
     And I should see "Subfamily of Formicidae: Dolichoderinae."
     And the page title should have "Formicidae" in it
 
-  Scenario: Seeing the subfamilies
-    When I go to the catalog
-    Then I should see "Dolichoderinae" in the index
-    And I should not see "Dolichoderinae history"
-    And I should not see "Atta" in the index
-
   Scenario: Selecting a subfamily
     When I go to the catalog
     And I follow "Dolichoderinae" in the index

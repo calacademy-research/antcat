@@ -1,5 +1,5 @@
 # Family
-Given(/^the Formicidae family exists$/) do
+Given("the Formicidae family exists") do
   reference = create :article_reference,
     author_names: [create(:author_name, name: 'Latreille, I.')],
     citation_year: '1809',
@@ -17,7 +17,7 @@ Given(/^the Formicidae family exists$/) do
 end
 
 # Subgenus
-Given(/^subgenus "(.*?)" exists in that genus$/) do |name|
+Given("subgenus {string} exists in that genus") do |name|
   epithet = name.match(/\((.*?)\)/)[1]
   name = create :subgenus_name, name: name, epithet: epithet
 
@@ -30,7 +30,7 @@ Given(/^subgenus "(.*?)" exists in that genus$/) do |name|
 end
 
 # Misc
-Then(/^the taxon mouseover should contain "(.*?)"$/) do |text|
+Then("the taxon mouseover should contain {string}") do |text|
   element = find '.reference_keey'
   expect(element['title']).to have_content text
 end

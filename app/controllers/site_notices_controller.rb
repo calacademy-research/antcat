@@ -54,8 +54,8 @@ class SiteNoticesController < ApplicationController
 
   def mark_all_as_read
     SiteNotice.mark_as_read! :all, for: current_user
-    flash[:notice] = "All site notices successfully marked as read."
-    redirect_back fallback_location: root_path
+    redirect_back fallback_location: root_path,
+      notice: "All site notices successfully marked as read."
   end
 
   def dismiss

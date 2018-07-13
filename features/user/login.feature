@@ -8,7 +8,6 @@ Feature: Logging in
       | email             | name    | password | password_confirmation |
       | email@example.com | Quintus | secret   | secret                |
 
-  @javascript
   Scenario: Logging in successfully from the login page
     Given I am not logged in
 
@@ -21,12 +20,11 @@ Feature: Logging in
     Then I should be on the main page
     And I should see "Logout"
 
-  @javascript
   Scenario: Logging in unsuccessfully
     Given I am not logged in
 
     When I go to the main page
-    And I follow "Login"
+    And I follow the first "Login"
     And I fill in "user_email" with "email@example.com"
     And I fill in "user_password" with "asd;fljl;jsdfljsdfj"
     And I press "Login"

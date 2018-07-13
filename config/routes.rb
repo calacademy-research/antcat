@@ -111,13 +111,16 @@ AntCat::Application.routes.draw do
         delete :destroy
         delete :destroy_unreferenced
         post :reorder_history_items
-        get :update_parent # TODO change to put
+        get :update_parent # TODO change to put.
       end
     end
     collection do
       controller :duplicates do
         get :find_duplicates
         get :find_name_duplicates_only
+      end
+      scope module: :taxa, controller: :redirect_by_parent_name_id do
+        get :redirect_by_parent_name_id, action: :index
       end
     end
     resources :taxon_history_items, only: [:new, :create]

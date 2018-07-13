@@ -23,7 +23,6 @@ class AntCat.NameField extends AntCat.Panel
     $('#is_superadmin').val()
 
   create_form: ($element, form_options) =>
-    form_options.taxa_only = @options.taxa_only
     form_options.subfamilies_or_tribes_only = @options.subfamilies_or_tribes_only
     form_options.genera_only = @options.genera_only
     form_options.species_only = @options.species_only
@@ -175,7 +174,7 @@ class AntCat.NameField extends AntCat.Panel
   create_combination_message_buttons: (name_id, dialog_box) =>
     button_hash = {}
     button_hash["Yes, create new combination"] = (a) =>
-      window.location.href = '/taxa/new?parent_name_id=' + name_id +
+      window.location.href = '/taxa/redirect_by_parent_name_id?parent_name_id=' + name_id +
         '&rank_to_create=' + @taxon_rank +
         '&previous_combination_id=' + @current_taxon_id()
 
@@ -376,7 +375,7 @@ class AntCat.NameField extends AntCat.Panel
           collision_resolution = data_object['species'].id
         else if data_object['subspecies'] != undefined
           collision_resolution = data_object['subspecies'].id
-      window.location.href = '/taxa/new?parent_name_id=' + new_parent_name_id +
+      window.location.href = '/taxa/redirect_by_parent_name_id?parent_name_id=' + new_parent_name_id +
         '&rank_to_create=' + @taxon_rank +
         '&previous_combination_id=' + @current_taxon_id() +
         '&collision_resolution=' + collision_resolution
@@ -476,7 +475,6 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
   setup_autocomplete: ($textbox) =>
     return if AntCat.testing
     url = '/name_pickers/search'
-    url += '?taxa_only=1' if @options.taxa_only
     url += '?species_only=1' if @options.species_only
     url += '?genera_only=1' if @options.genera_only
     url += '?subfamilies_or_tribes_only=1' if @options.subfamilies_or_tribes_only

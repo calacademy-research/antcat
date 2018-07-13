@@ -1,42 +1,42 @@
-When(/^I click the add taxon history item button$/) do
+When("I click the add taxon history item button") do
   find('#taxt-editor-add-history-item-button').click
 end
 
-When(/^I click on the cancel taxon history item button$/) do
+When("I click on the cancel taxon history item button") do
   find('.history_items .history_item a.taxt-editor-cancel-button').click
 end
 
-When(/^I click on the edit taxon history item button$/) do
+When("I click on the edit taxon history item button") do
   find('.history_items .history_item a.taxt-editor-edit-button').click
 end
 
-When(/^I save the taxon history item$/) do
+When("I save the taxon history item") do
   find('.history_items .history_item a.taxt-editor-history-item-save-button').click
 end
 
-When(/^I delete the taxon history item$/) do
+When("I delete the taxon history item") do
   find('.history_items .history_item a.taxt-editor-delete-button').click
 end
 
-Then(/^the history should be "(.*)"$/) do |history|
+Then("the history should be {string}") do |history|
   element = first('.history_items').find('.taxt-presenter')
   expect(element.text).to match /#{history}/
 end
 
-Then(/^the history item field should be "(.*)"$/) do |history|
+Then("the history item field should be {string}") do |history|
   element = first('.history_items').find('textarea')
   expect(element.text).to match /#{history}/
 end
 
-Then(/^the history item field should not be visible$/) do
+Then("the history item field should not be visible") do
   expect(page).to_not have_css '.history_items textarea'
 end
 
-Then(/^the history item field should be visible$/) do
+Then("the history item field should be visible") do
   expect(page).to have_css '.history_items textarea'
 end
 
-Then(/^the history should be empty$/) do
+Then("the history should be empty") do
   expect(page).to_not have_css '.history_items .history_item'
 end
 
@@ -51,13 +51,13 @@ When(/^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)
   taxon.history_items.create! taxt: taxt
 end
 
-When(/^I add a history item "(.*?)"/) do |text|
+When("I add a history item {string}") do |text|
   step %{I click the add taxon history item button}
   step %{I fill in "taxt" with "#{text}"}
   step %{I press "Save"}
 end
 
-When(/^I update the history item to say "([^"]*)"$/) do |text|
+When("I update the history item to say {string}") do |text|
   steps %{
     And I click on the edit taxon history item button
     And I fill in "taxt" with "#{text}"

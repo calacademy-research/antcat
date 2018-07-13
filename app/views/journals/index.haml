@@ -1,8 +1,13 @@
 -@title = 'Journals'
 -breadcrumb :journals
 
--if user_can_edit?
-  .buttons_right=link_to "New Journal", new_journal_path, class: "btn-normal"
+.buttons_right
+  -if params[:order] == "reference_count"
+    =link_to "Order by name", journals_path, class: "btn-normal"
+  -else
+    =link_to "Order by reference count", journals_path(order: "reference_count"), class: "btn-normal"
+  -if user_can_edit?
+    =link_to "New Journal", new_journal_path, class: "btn-normal"
 
 %table
   %thead
@@ -13,7 +18,8 @@
   -@journals.each do |journal|
     %tr
       %td=link_to journal.name, journal
+      -# TODO fix N+1 query.
       %td=or_dash journal.decorate.publications_between
-      %td=or_dash journal.references.count
+      %td=or_dash journal.reference_count
 
 =will_paginate @journals
