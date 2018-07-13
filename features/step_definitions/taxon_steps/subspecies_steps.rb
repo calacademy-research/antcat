@@ -1,16 +1,16 @@
-Given(/^there is a subspecies "([^"]*)"$/) do |name|
+Given("there is a subspecies {string}") do |name|
   create_subspecies name
 end
 
-Given(/^there is a subspecies "([^"]*)" which is a subspecies of "([^"]*)"$/) do |subspecies_name, species_name|
+Given("there is a subspecies {string} which is a subspecies of {string}") do |subspecies_name, species_name|
   create_subspecies subspecies_name, species: Species.find_by_name(species_name)
 end
 
-Given(/^there is a subspecies "([^"]*)" without a species/) do |subspecies_name|
+Given("there is a subspecies {string} without a species") do |subspecies_name|
   create_subspecies subspecies_name, species: nil
 end
 
-Given(/a subspecies exists for that species with a name of "(.*?)" and an epithet of "(.*?)" and a taxonomic history of "(.*?)"/) do |name, epithet, history|
+Given("a subspecies exists for that species with a name of {string} and an epithet of {string} and a taxonomic history of {string}") do |name, epithet, history|
   subspecies_name = create :subspecies_name,
     name: name,
     epithet: epithet,
@@ -23,7 +23,7 @@ Given(/a subspecies exists for that species with a name of "(.*?)" and an epithe
   subspecies.history_items.create! taxt: history
 end
 
-Given(/^subspecies "(.*?)" exists in that species$/) do |name|
+Given("subspecies {string} exists in that species") do |name|
   subspecies = create :subspecies,
     subfamily: @subfamily,
     genus: @genus,
@@ -32,7 +32,7 @@ Given(/^subspecies "(.*?)" exists in that species$/) do |name|
   subspecies.history_items.create! taxt: "#{name} history"
 end
 
-Given(/^there is a subspecies "([^"]*)" which is a subspecies of "([^"]*)" in the genus "([^"]*)"/) do |subspecies, species, genus|
+Given("there is a subspecies {string} which is a subspecies of {string} in the genus {string}") do |subspecies, species, genus|
   genus = create_genus genus
   species = create_species species, genus: genus
   create_subspecies subspecies, species: species, genus: genus

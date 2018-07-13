@@ -1,4 +1,4 @@
-Given(/^I have (?:an|another) unseen notification$/) do
+Given("I have an(other) unseen notification") do
   Notification.create! reason: :mentioned_in_thing,
     attached: create(:issue),
     user: User.find_by(name: "Archibald"),
@@ -9,11 +9,11 @@ Then(/^I should (?:only see|see) (\d+) notifications?(?: in total)?$/) do |expec
   all "table.notifications > tbody tr", count: expected_count.to_i
 end
 
-Then(/^I should see (\d+) unread notifications?/) do |expected_count|
+Then("I should see {int} unread notification(s)") do |expected_count|
   all "table.notifications .antcat_icon.unseen", count: expected_count.to_i
 end
 
-Given(/^there is an open issue "([^"]*)" created by "([^"]*)"$/) do |title, name|
+Given("there is an open issue {string} created by {string}") do |title, name|
   create :issue, title: title, adder: User.find_by(name: name)
 end
 

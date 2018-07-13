@@ -1,7 +1,7 @@
 # TODO probably remove all those `Feed.without_tracking` (the feed
 # is disabled by default in tests) and create new steps in `feed_steps.rb`.
 
-Given(/(?:this|these) users? exists/) do |table|
+Given("this/these user(s) exists") do |table|
   table.hashes.each { |hash| User.create! hash }
 end
 
@@ -17,29 +17,16 @@ def login_programmatically user
   step 'I go to the main page'
 end
 
-# TODO not used (since at least December 2016).
-def login_through_web_page
-  step 'I go to the main page'
-  click_link "Login"
-  step %{I fill in "user_email" with "#{user.email}"}
-  step %{I fill in "user_password" with "#{user.password}"}
-  step %{I press "Go" within "#login"}
-end
-
-# TODO change to "I log in as an editor" because we want to
-# open registration to non-editors in the future.
-When(/^I log in$/) do
-  user = Feed.without_tracking { create :editor }
-  login_programmatically user
-end
-
-When(/^I log in as "([^"]+)"$/) do |name|
+When("I log in as {string}") do |name|
   user = User.find_by name: name
   login_programmatically user
 end
 
+# TODO change to "I am loged in as an editor" because we want to
+# open registration to non-editors in the future.
 Given('I am logged in') do
-  step 'I log in'
+  user = Feed.without_tracking { create :editor }
+  login_programmatically user
 end
 
 When(/^I log in as a user \(not editor\)$/) do
@@ -47,7 +34,7 @@ When(/^I log in as a user \(not editor\)$/) do
   login_programmatically user
 end
 
-Given(/^there is a user(?: named "([^"]+)")?$/) do |name|
+Given("there is a user named {string}") do |name|
   name = "Quintus Batiatus" if name.blank?
   create :editor, name: name
 end
@@ -75,29 +62,29 @@ When(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
   login_programmatically user
 end
 
-When(/^I log out and log in again$/) do
+When("I log out and log in again") do
   step 'I log out'
   login_programmatically @user
 end
 
-When(/^I log out$/) do
+When("I log out") do
   step 'I follow the first "Logout"'
   step %(I should see "You're logged out")
 end
 
-When(/^I fill in the email field with my email address$/) do
+When("I fill in the email field with my email address") do
   user = User.find_by(name: 'Brian Fisher') # TODO something. Harcoded.
   step %{I fill in "user_email" with "#{user.email}"}
 end
 
-Then(/^there should be a mailto link to the email of "([^"]+)"$/) do |name|
+Then("there should be a mailto link to the email of {string}") do |name|
   email = User.find_by(name: name).email
   within first('#content') do
     find :css, "a[href='mailto:#{email}']"
   end
 end
 
-Then(/^I should see a link to the user page for "([^"]*)"$/) do |name|
+Then("I should see a link to the user page for {string}") do |name|
   user = User.find_by name: name
 
   within first('#content') do

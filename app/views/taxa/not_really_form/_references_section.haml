@@ -3,7 +3,7 @@
     %h5.callout-header
       References
       .right.references_section_buttons
-        =link_to 'Add', new_taxa_reference_section_path(taxon), class: 'btn-normal btn-tiny', id: 'add-reference-section-button'
+        =link_to 'Add', new_taxa_reference_section_path(taxon), class: 'btn-normal btn-tiny tooltip', id: 'add-reference-section-button', title: "Note: New items are added on a different page. Please save your changes first if you would like to keep them."
 
     .reference_sections
       -taxon.reference_sections.each do |item|

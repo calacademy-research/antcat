@@ -5,12 +5,16 @@ class JournalsController < ApplicationController
   layout "references"
 
   def index
-    @journals = Journal.order(:name).paginate(page: params[:page], per_page: 100)
+    order = params[:order] == "reference_count" ? "reference_count DESC" : :name
+
+    @journals = Journal.includes_reference_count.order(order).
+      paginate(page: params[:page], per_page: 100)
   end
 
   def show
     @references = @journal.references
       .sorted_by_principal_author_last_name
+      .includes_document
       .paginate(page: params[:page])
   end
 
@@ -24,8 +28,7 @@ class JournalsController < ApplicationController
   def create
     @journal = Journal.new journal_params
     if @journal.save
-      flash[:notice] = "Successfully created journal."
-      redirect_to @journal
+      redirect_to @journal, notice: "Successfully created journal."
     else
       render :new
     end
@@ -33,8 +36,7 @@ class JournalsController < ApplicationController
 
   def update
     if @journal.update journal_params
-      flash[:notice] = "Successfully updated journal."
-      redirect_to @journal
+      redirect_to @journal, notice: "Successfully updated journal."
     else
       render :edit
     end
@@ -44,10 +46,7 @@ class JournalsController < ApplicationController
     if @journal.destroy
       redirect_to references_path, notice: "Journal was successfully deleted."
     else
-      if @journal.errors.present?
-        flash[:warning] = @journal.errors.full_messages.to_sentence
-      end
-      redirect_to @journal
+      redirect_to @journal, alert: @journal.errors.full_messages.to_sentence
     end
   end
 

@@ -1,23 +1,23 @@
-Given(/^there is a genus "([^"]*)"$/) do |name|
+Given("there is a genus {string}") do |name|
   create_genus name
 end
 
-Given(/^there is a genus "([^"]*)" with taxonomic history "(.*?)"$/) do |name, history|
+Given("there is a genus {string} with taxonomic history {string}") do |name, history|
   genus = create_genus name
   genus.history_items.create! taxt: history
 end
 
-Given(/^there is a genus "([^"]*)" with protonym name "(.*?)"$/) do |name, protonym_name|
+Given("there is a genus {string} with protonym name {string}") do |name, protonym_name|
   genus = create_genus name
   genus.protonym.name = Name.find_by_name protonym_name if protonym_name
 end
 
-Given(/^there is a genus "([^"]*)" with type name "(.*?)"$/) do |name, type_name|
+Given("there is a genus {string} with type name {string}") do |name, type_name|
   genus = create_genus name
   genus.type_name = Name.find_by_name type_name
 end
 
-Given(/^there is a genus "([^"]*)" that is incertae sedis in the subfamily$/) do |name|
+Given("there is a genus {string} that is incertae sedis in the subfamily") do |name|
   genus = create_genus name
   genus.update_attribute :incertae_sedis_in, 'subfamily'
 end
@@ -57,7 +57,7 @@ Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"(?:
   taxon.history_items.create! taxt: history
 end
 
-Given(/^genus "(.*?)" exists in that tribe$/) do |name|
+Given("genus {string} exists in that tribe") do |name|
   @genus = create :genus,
     subfamily: @subfamily,
     tribe: @tribe,
@@ -65,7 +65,7 @@ Given(/^genus "(.*?)" exists in that tribe$/) do |name|
   @genus.history_items.create! taxt: "#{name} history"
 end
 
-Given(/^genus "(.*?)" exists in that subfamily/) do |name|
+Given("genus {string} exists in that subfamily") do |name|
   @genus = create :genus,
     subfamily: @subfamily,
     tribe: nil,
@@ -73,7 +73,7 @@ Given(/^genus "(.*?)" exists in that subfamily/) do |name|
   @genus.history_items.create! taxt: "#{name} history"
 end
 
-Given(/^there is a genus "([^"]*)" with "([^"]*)" name$/) do |name, gender|
+Given("there is a genus {string} with {string} name") do |name, gender|
   genus = create_genus name
   genus.name.update! gender: gender
 end

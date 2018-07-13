@@ -1,4 +1,4 @@
-Given(/^there is genus Atta with two species I want to format for Wikipedia$/) do
+Given("there is genus Atta with two species I want to format for Wikipedia") do
   atta = create_genus "Atta"
   extant_species = create_species "Atta cephalotes"
   fossil_species = create_species "Atta mexicana", fossil: true

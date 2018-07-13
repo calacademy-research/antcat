@@ -39,7 +39,6 @@ class Names::PicklistMatching
     end
 
     def join_type
-      options[:taxa_only] ||
       options[:species_only] ||
       options[:genera_only] ||
       options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'

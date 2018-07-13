@@ -7,6 +7,11 @@ class Journal < ApplicationRecord
 
   before_destroy :ensure_not_used
 
+  scope :includes_reference_count, -> do
+    left_joins(:references).group(:id).
+      select("journals.*, COUNT(references.id) AS reference_count")
+  end
+
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked on: :all, parameters: proc {
     { name: name, name_was: (name_was if name_changed?) }

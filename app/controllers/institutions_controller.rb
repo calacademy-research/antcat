@@ -24,8 +24,7 @@ class InstitutionsController < ApplicationController
 
     if @institution.save
       @institution.create_activity :create, edit_summary: params[:edit_summary]
-      flash[:notice] = 'Successfully created institution.'
-      redirect_to @institution
+      redirect_to @institution, notice: 'Successfully created institution.'
     else
       render :new
     end

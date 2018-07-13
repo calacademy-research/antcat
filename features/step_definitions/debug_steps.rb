@@ -1,21 +1,21 @@
-And(/^SHOT$/) do
+And("SHOT") do
   screenshot_and_save_page
 end
 
-And(/^PRY$/) do
+And("PRY") do
   binding.pry
 end
 
-And(/^PAUSE$/) do
+And("PAUSE") do
   print "Paused. Hit enter to continue."
   STDIN.getc
 end
 
-And(/^WAIT$/) do
+And("WAIT") do
   sleep 1
 end
 
-And(/^WAIT_FOR_JQUERY$/) do
+And("WAIT_FOR_JQUERY") do
   wait_for_jquery
 end
 

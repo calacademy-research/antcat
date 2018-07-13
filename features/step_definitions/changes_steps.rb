@@ -1,9 +1,9 @@
-When(/^the changes are approved$/) do
+When("the changes are approved") do
   TaxonState.update_all review_state: :approved
   Change.update_all approver_id: User.first.id, approved_at: Time.now
 end
 
-Given(/^there is a genus "([^"]*)" that's waiting for approval$/) do |name|
+Given("there is a genus {string} that's waiting for approval") do |name|
   genus = create_genus name
   genus.taxon_state.update_columns review_state: :waiting
 
@@ -20,6 +20,6 @@ Given(/^there is a genus "([^"]*)" that's waiting for approval$/) do |name|
   # end
 end
 
-When(/^I add the genus "([^"]+)"?$/) do |name|
+When("I add the genus {string}") do |name|
   step %{there is a genus "#{name}" that's waiting for approval}
 end

@@ -67,7 +67,7 @@ Feature: Compare revisions
 
     When I go to the activity feed
     And I follow the first linked history item
-    And press "Compare selected revisions"
+    And I press "Compare selected revisions"
     Then I should see "second version" in the left side of the diff
     And I should see "last version" in the right side of the diff
     And I should not see "initial version"

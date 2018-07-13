@@ -1,3 +1,5 @@
+# TODO move most of these to unit tests.
+
 Feature: Searching the catalog
   As a user of AntCat
   I want to search the catalog in index view
