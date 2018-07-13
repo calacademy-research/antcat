@@ -17,29 +17,16 @@ def login_programmatically user
   step 'I go to the main page'
 end
 
-# TODO not used (since at least December 2016).
-def login_through_web_page
-  step 'I go to the main page'
-  click_link "Login"
-  step %{I fill in "user_email" with "#{user.email}"}
-  step %{I fill in "user_password" with "#{user.password}"}
-  step %{I press "Go" within "#login"}
-end
-
-# TODO change to "I log in as an editor" because we want to
-# open registration to non-editors in the future.
-When("I log in") do
-  user = Feed.without_tracking { create :editor }
-  login_programmatically user
-end
-
 When("I log in as {string}") do |name|
   user = User.find_by name: name
   login_programmatically user
 end
 
+# TODO change to "I am loged in as an editor" because we want to
+# open registration to non-editors in the future.
 Given('I am logged in') do
-  step 'I log in'
+  user = Feed.without_tracking { create :editor }
+  login_programmatically user
 end
 
 When(/^I log in as a user \(not editor\)$/) do
