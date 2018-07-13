@@ -14,7 +14,7 @@ class Journal < ApplicationRecord
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked on: :all, parameters: proc {
-    { name: name, name_was: (name_was if name_changed?) }
+    { name: name, name_was: (name_before_last_save if saved_change_to_name?) }
   }
 
   private

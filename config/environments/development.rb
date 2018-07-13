@@ -18,7 +18,7 @@ Rails.application.configure do
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      'Cache-Control' => 'public, max-age=172800'
+      'Cache-Control' => "public, max-age=#{2.days.seconds.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -31,6 +31,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
   config.log_level = :info
@@ -54,14 +55,14 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = false
 
   config.action_mailer.smtp_settings = {
-      address:              Rails.application.secrets.email_address,
-      port:                 Rails.application.secrets.email_port,
-      domain:               Rails.application.secrets.email_domain,
-      user_name:            Rails.application.secrets.email_user_name,
-      password:             Rails.application.secrets.email_password,
-      authentication:       Rails.application.secrets.email_authentication,
-      enable_starttls_auto: Rails.application.secrets.email_enable_starttls_auto }
-
+    address:              Rails.application.secrets.email_address,
+    port:                 Rails.application.secrets.email_port,
+    domain:               Rails.application.secrets.email_domain,
+    user_name:            Rails.application.secrets.email_user_name,
+    password:             Rails.application.secrets.email_password,
+    authentication:       Rails.application.secrets.email_authentication,
+    enable_starttls_auto: Rails.application.secrets.email_enable_starttls_auto
+  }
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.

@@ -1,4 +1,4 @@
-AntCat::Application.routes.draw do
+Rails.application.routes.draw do
   ActiveAdmin.routes self
 
   root to: 'catalog#index'
