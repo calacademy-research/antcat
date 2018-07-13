@@ -5,7 +5,10 @@ class JournalsController < ApplicationController
   layout "references"
 
   def index
-    @journals = Journal.order(:name).paginate(page: params[:page], per_page: 100)
+    order = params[:order] == "reference_count" ? "reference_count DESC" : :name
+
+    @journals = Journal.includes_reference_count.order(order).
+      paginate(page: params[:page], per_page: 100)
   end
 
   def show
