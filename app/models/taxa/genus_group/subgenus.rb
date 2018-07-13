@@ -25,6 +25,5 @@ class Subgenus < GenusGroupTaxon
       return if name.is_a? name_class
       error_message = "`Taxon` (#{self.class}) and `Name` (#{name.class}) types must match"
       errors.add :base, error_message unless errors.added? :base, error_message
-      false
     end
 end
