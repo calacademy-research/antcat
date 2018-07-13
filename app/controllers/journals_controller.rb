@@ -28,8 +28,7 @@ class JournalsController < ApplicationController
   def create
     @journal = Journal.new journal_params
     if @journal.save
-      flash[:notice] = "Successfully created journal."
-      redirect_to @journal
+      redirect_to @journal, notice: "Successfully created journal."
     else
       render :new
     end
@@ -37,8 +36,7 @@ class JournalsController < ApplicationController
 
   def update
     if @journal.update journal_params
-      flash[:notice] = "Successfully updated journal."
-      redirect_to @journal
+      redirect_to @journal, notice: "Successfully updated journal."
     else
       render :edit
     end
@@ -48,10 +46,7 @@ class JournalsController < ApplicationController
     if @journal.destroy
       redirect_to references_path, notice: "Journal was successfully deleted."
     else
-      if @journal.errors.present?
-        flash[:warning] = @journal.errors.full_messages.to_sentence
-      end
-      redirect_to @journal
+      redirect_to @journal, alert: @journal.errors.full_messages.to_sentence
     end
   end
 
