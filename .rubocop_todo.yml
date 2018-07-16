@@ -302,22 +302,6 @@ Performance/StringReplacement:
     - 'app/services/names/epithet_search_set.rb'
     - 'app/services/wikipedia/reference_exporter.rb'
 
-# Offense count: 1
-Performance/UnfreezeString:
-  Exclude:
-    - 'spec/services/exporters/endnote/formatter_spec.rb'
-
-# Offense count: 2
-Security/Open:
-  Exclude:
-    - 'spec/factories/issues.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Security/YAMLLoad:
-  Exclude:
-    - 'app/models/database_scripts/end_data.rb'
-
 # Offense count: 9
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -433,13 +417,6 @@ Style/EmptyElse:
     - 'app/helpers/filters_helper.rb'
     - 'app/services/exporters/antweb/exporter.rb'
     - 'app/services/references/save_from_form.rb'
-
-# Offense count: 634
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: when_needed, always, never
-Style/FrozenStringLiteralComment:
-  Enabled: false
 
 # Offense count: 14
 # Configuration parameters: MinBodyLength.

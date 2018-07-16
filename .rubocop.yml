@@ -63,6 +63,9 @@ Style/DoubleNegation:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 Style/MethodDefParentheses:
   Enabled: false
 
