@@ -103,4 +103,12 @@ $ ->
     hideText: """<span class="btn-normal btn-tiny">Show less</span>"""
     hideClass: "anything-except-hide" # Becuase `.hide` conflics with jQuery.
 
+    # HACK to make keys inside truncated elements to work after showing/hiding.
+    animate: true
+    animateOptions:
+      complete: -> AntCat.make_reference_keeys_expandable $(".truncate")
+
   $(".truncate").truncate(options)
+
+  # HACK to make keys inside truncated elements to work on page load.
+  AntCat.make_reference_keeys_expandable $(".truncate")
