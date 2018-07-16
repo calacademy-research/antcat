@@ -20,6 +20,9 @@ Layout/AlignHash:
 Layout/AlignParameters:
   Enabled: false
 
+Layout/BlockAlignment:
+  Enabled: false
+
 Layout/DotPosition:
   EnforcedStyle: trailing
 

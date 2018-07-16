@@ -8,7 +8,8 @@ module TaxonBrowser::Tabs
 
       name_html = taxon.name_with_fossil
 
-      title, taxa = case display
+      title, taxa =
+        case display
         when :incertae_sedis_in_family, :incertae_sedis_in_subfamily
           ["Genera <i>incertae sedis</i> in #{name_html}", taxon.genera_incertae_sedis_in]
 
