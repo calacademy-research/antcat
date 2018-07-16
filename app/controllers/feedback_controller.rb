@@ -78,6 +78,7 @@ class FeedbackController < ApplicationController
   end
 
   private
+
     def set_feedback
       @feedback = Feedback.find params[:id]
     end

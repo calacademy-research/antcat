@@ -20,6 +20,7 @@ module Types
     end
 
     private
+
       attr :content
 
       def expand_institution_abbreviations!

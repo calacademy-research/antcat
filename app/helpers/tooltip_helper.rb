@@ -49,6 +49,7 @@ module TooltipHelper
   end
 
   private
+
     # Only returns true if we have a tooltip *and* its key is disabled, because we
     # want to notify editors about missing tooltips and encourage them to create them.
     def key_disabled? tooltip

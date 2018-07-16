@@ -61,6 +61,7 @@ class DatabaseScript
   end
 
   protected
+
     def cached_results
       return @_results if defined? @_results
 
@@ -70,6 +71,7 @@ class DatabaseScript
     end
 
   private
+
     def script_path
       "#{SCRIPTS_DIR}/#{filename_without_extension}.rb"
     end

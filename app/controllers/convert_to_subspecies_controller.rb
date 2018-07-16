@@ -61,6 +61,7 @@ class ConvertToSubspeciesController < ApplicationController
   end
 
   private
+
     def set_taxon
       @taxon = Taxon.find(params[:taxa_id])
     end

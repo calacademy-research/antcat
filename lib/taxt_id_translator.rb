@@ -25,7 +25,9 @@ class TaxtIdTranslator
   end
 
   # These can be called from outside this file, but please avoid.
+
   private
+
     # ex `to_editable_tag`
     def self.to_editor_tag id, text, type
       jumbled_id = jumble_id id, type

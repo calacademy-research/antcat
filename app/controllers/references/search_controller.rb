@@ -32,6 +32,7 @@ module References
     end
 
     private
+
       def user_is_searching?
         params[:q].present? || params[:author_q].present?
       end

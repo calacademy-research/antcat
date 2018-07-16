@@ -16,6 +16,7 @@ module References
     end
 
     private
+
       attr_reader :params, :original_params, :request_host
 
       def save

@@ -46,6 +46,7 @@ class InstitutionsController < ApplicationController
   end
 
   private
+
     def institution_params
       params.require(:institution).permit(:name, :abbreviation)
     end

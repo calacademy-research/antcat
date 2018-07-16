@@ -26,6 +26,7 @@ class DatabaseScriptDecorator < Draper::Decorator
   end
 
   private
+
     def self.tag_css_class tag
       case tag
       when DatabaseScript::SLOW_TAG      then "warning-label"

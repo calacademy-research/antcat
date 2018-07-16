@@ -4,6 +4,7 @@ class Progress
   end
 
   private
+
     def self.default_options
       { format: "%a %e %P% Processed: %c from %C", throttle_rate: 0.5 }
     end

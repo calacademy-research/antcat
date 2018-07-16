@@ -35,6 +35,7 @@ module DatabaseScripts
     end
 
     private
+
       def format_table_for rank, rank_results
         as_table do |t|
           t.header rank, :status, :name_type

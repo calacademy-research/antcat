@@ -20,6 +20,7 @@ module References
     end
 
     private
+
       attr_reader :original
 
       delegate :journal, :publisher, to: :original

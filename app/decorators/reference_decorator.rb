@@ -59,6 +59,7 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   private
+
     def generate_formatted
       string = make_html_safe(reference.author_names_string.dup)
       string << ' ' unless string.empty?

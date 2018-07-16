@@ -26,6 +26,7 @@ module DatabaseScripts
     end
 
     private
+
       def taxa_links_with_status taxa
         list = "<ul class='no-bullet'>"
         list << taxa.map do |id, status|

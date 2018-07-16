@@ -27,6 +27,7 @@ module Taxa
     end
 
     private
+
       attr_reader :search_query, :search_type, :valid_only
 
       def column

@@ -52,6 +52,7 @@ module Taxa::Synonyms
     end
 
   private
+
     def synonyms_with_names junior_or_senior
       if junior_or_senior == :junior
         join_column = 'junior_synonym_id'

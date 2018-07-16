@@ -16,6 +16,7 @@ module Workflow
       end
 
       private
+
         def write_initial_state
           # TODO only required in specs (not features), may be a race condition.
           build_default_taxon_state unless taxon_state

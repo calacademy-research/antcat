@@ -46,6 +46,7 @@ module DatabaseScripts::Renderers::AsTable
     end
 
     private
+
       attr :header_content, :body_content
 
       def row result, *fields

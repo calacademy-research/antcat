@@ -13,6 +13,7 @@ module Autocomplete
     end
 
     private
+
       attr_reader :search_query
 
       def search_expression

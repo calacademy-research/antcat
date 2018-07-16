@@ -34,6 +34,7 @@ class Exporters::Endnote::Formatter::Base
   end
 
   private
+
     def add tag, value
       @string << "%#{tag} #{value.to_s.gsub(/[|*]/, '')}" if value.present?
     end
@@ -47,6 +48,7 @@ end
 
 class Exporters::Endnote::Formatter::Article < Exporters::Endnote::Formatter::Base
   private
+
     def kind
       'Journal Article'
     end
@@ -60,6 +62,7 @@ end
 
 class Exporters::Endnote::Formatter::Book < Exporters::Endnote::Formatter::Base
   private
+
     def kind
       'Book'
     end
@@ -73,6 +76,7 @@ end
 
 class Exporters::Endnote::Formatter::Unknown < Exporters::Endnote::Formatter::Base
   private
+
     def kind
       'Generic'
     end

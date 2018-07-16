@@ -11,6 +11,7 @@ module Names
     end
 
     private
+
       attr_reader :name
 
       delegate :id, to: :name

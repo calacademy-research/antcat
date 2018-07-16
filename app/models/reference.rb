@@ -179,6 +179,7 @@ class Reference < ApplicationRecord
   end
 
   private
+
     def check_not_referenced
       return unless what_links_here(predicate: true)
 

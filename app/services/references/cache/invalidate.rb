@@ -16,6 +16,7 @@ module References
       end
 
       private
+
         attr_reader :reference
     end
   end

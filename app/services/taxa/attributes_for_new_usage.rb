@@ -42,6 +42,7 @@ module Taxa
     end
 
    private
+
      attr_reader :new_comb, :old_comb
 
      def name_id

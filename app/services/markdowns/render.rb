@@ -11,6 +11,7 @@ module Markdowns
     end
 
     private
+
       attr_reader :content
 
       def markdowner

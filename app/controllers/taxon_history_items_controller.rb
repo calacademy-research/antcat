@@ -45,6 +45,7 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   private
+
     def set_taxon_history_item
       @item = TaxonHistoryItem.find params[:id]
     end

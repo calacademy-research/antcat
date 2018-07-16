@@ -32,6 +32,7 @@ class TaxonDecorator::LinkEachEpithet
   end
 
   private
+
     # This name is a radical misspelling, or an obsolete name formulation.
     # Display literally, but link genus if there is one.
     def nonconforming_name_header_link taxon

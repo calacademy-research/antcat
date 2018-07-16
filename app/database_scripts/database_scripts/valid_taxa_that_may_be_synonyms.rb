@@ -27,6 +27,7 @@ module DatabaseScripts
     end
 
     private
+
       def probably_valid? taxon
         items = taxon.history_items
         last_valid_indication(items) >= last_junior_synonym_indication(items)

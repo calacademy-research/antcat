@@ -45,6 +45,7 @@ module Catalog
     end
 
     private
+
       # AntWeb's "View in AntCat" links are hardcoded to use the now
       # deprecated param "st" (starts_with). Links look like this:
       # http://www.antcat.org/catalog/search?st=m&qq=Agroecomyrmecinae&commit=Go

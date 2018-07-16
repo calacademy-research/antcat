@@ -77,11 +77,6 @@ Layout/EmptyLines:
     - 'app/services/markdowns/render.rb'
     - 'bin/setup'
 
-# Offense count: 189
-# Cop supports --auto-correct.
-Layout/EmptyLinesAroundAccessModifier:
-  Enabled: false
-
 # Offense count: 3
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

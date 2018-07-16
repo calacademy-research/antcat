@@ -22,6 +22,7 @@ class Exporters::Antweb::ExportHistoryItems
   end
 
   private
+
     attr_reader :taxon
 
     def history_item item

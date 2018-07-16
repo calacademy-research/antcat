@@ -35,6 +35,7 @@ class ReferenceDocument < ApplicationRecord
   end
 
   private
+
     def transliterate_file_name
       extension = File.extname(file_file_name).gsub(/^\.+/, '')
       filename = file_file_name.gsub(/\.#{extension}$/, '')

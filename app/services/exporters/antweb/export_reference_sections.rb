@@ -17,6 +17,7 @@ class Exporters::Antweb::ExportReferenceSections
   end
 
   private
+
     attr_reader :taxon
 
     def reference_section section

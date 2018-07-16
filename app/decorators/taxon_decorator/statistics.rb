@@ -47,6 +47,7 @@ class TaxonDecorator::Statistics
   end
 
   private
+
     attr_reader :include_invalid, :include_fossil
 
     def rank_statistics rank_stats, rank

@@ -62,6 +62,7 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   private
+
     def set_genus
       return if genus
       self.genus = species.genus if species

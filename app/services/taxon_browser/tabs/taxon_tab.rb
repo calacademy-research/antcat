@@ -21,6 +21,7 @@ module TaxonBrowser::Tabs
     end
 
     private
+
       # Exception for subfamilies *only* containing genera that are
       # incertae sedis in that subfamily (that is Martialinae, #430173).
       def is_a_subfamily_with_valid_genera_incertae_sedis?

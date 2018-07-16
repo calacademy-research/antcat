@@ -28,6 +28,7 @@ module DatabaseScripts
     end
 
     private
+
       def all_taxa
         all_ids = results.map do |group| group.grouped_ids.split(",") end.flatten
         Taxon.where(id: all_ids, status: "unavailable uncategorized")

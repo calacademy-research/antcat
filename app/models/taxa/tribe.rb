@@ -41,6 +41,7 @@ class Tribe < Taxon
   end
 
   private
+
     def update_descendants_subfamilies
       genera.each do |genus|
         genus.subfamily = subfamily

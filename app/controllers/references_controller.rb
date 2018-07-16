@@ -86,6 +86,7 @@ class ReferencesController < ApplicationController
   end
 
   private
+
     def build_nested_reference reference_id, citation_year
       @reference = @reference.becomes NestedReference
       @reference.citation_year = citation_year

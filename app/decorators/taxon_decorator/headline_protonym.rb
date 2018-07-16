@@ -14,6 +14,7 @@ class TaxonDecorator::HeadlineProtonym
   end
 
   private
+
     def headline_protonym
       protonym = @taxon.protonym
       return ''.html_safe unless protonym

@@ -1,6 +1,7 @@
 module DatabaseScripts
   module EndData
     private
+
       # The script's description and tags are stored in `DATA`.
       def end_data
         @_end_data ||= HashWithIndifferentAccess.new YAML::load(read_end_data)

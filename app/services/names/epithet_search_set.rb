@@ -13,6 +13,7 @@ module Names
     end
 
     private
+
       attr_reader :epithet
 
       def frequent_misspellings

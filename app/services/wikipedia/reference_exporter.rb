@@ -19,6 +19,7 @@ module Wikipedia
     end
 
     private
+
       attr_reader :reference
 
       def url
@@ -75,6 +76,7 @@ module Wikipedia
     end
 
     private
+
       def title
         title = reference.title
         return unless title
@@ -113,6 +115,7 @@ module Wikipedia
     end
 
     private
+
       def title
         title = reference.title
         return unless title

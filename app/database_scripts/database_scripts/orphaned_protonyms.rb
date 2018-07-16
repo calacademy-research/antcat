@@ -18,6 +18,7 @@ module DatabaseScripts
     end
 
     private
+
       def protonym_name_with_search_link protonym
         search_path = "/catalog/search/quick_search?&search_type=containing&qq="
         label = protonym.name.protonym_with_fossil_html protonym.fossil

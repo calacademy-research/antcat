@@ -15,6 +15,7 @@ class Names::PicklistMatching
   end
 
   private
+
     attr_reader :letters_in_name, :options
 
     def prefix_matches

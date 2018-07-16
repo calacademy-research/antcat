@@ -53,6 +53,7 @@ class User < ApplicationRecord
   end
 
   private
+
     # To avoid sending repeated notifications eg when a comment that
     # already mentions a user is edited and saved again.
     def already_notified_for_attached_by_user? attached, mentioner

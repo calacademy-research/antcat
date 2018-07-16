@@ -9,6 +9,7 @@ module TaxonSelectHelper
   end
 
   private
+
     def data_attributes taxon, rank
       for_taxon = if taxon
                     {

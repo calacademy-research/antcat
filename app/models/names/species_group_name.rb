@@ -27,6 +27,7 @@ class SpeciesGroupName < Name
   end
 
   private
+
     def self.valid_rank_combination? old_comb, new_comb_parent
       old_comb.is_a?(Species) && new_comb_parent.is_a?(Genus) ||
         old_comb.is_a?(Subspecies) && new_comb_parent.is_a?(Species)

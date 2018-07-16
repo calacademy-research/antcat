@@ -78,6 +78,7 @@ class SynonymsController < ApplicationController
   end
 
   private
+
     def set_synonym
       @synonym = Synonym.find params[:id]
     end

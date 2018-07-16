@@ -69,6 +69,7 @@ class TaxaController < ApplicationController
   end
 
   private
+
     def set_previous_combination
       return unless params[:previous_combination_id].present?
       @previous_combination = Taxon.find(params[:previous_combination_id])

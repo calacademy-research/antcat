@@ -16,6 +16,7 @@ module Types
     end
 
     private
+
       attr :content
   end
 end

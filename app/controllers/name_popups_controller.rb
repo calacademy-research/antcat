@@ -24,6 +24,7 @@ class NamePopupsController < NamePickersController
   end
 
   private
+
     def find_name name_string, data
       name = Name.find_by_name name_string
       if name

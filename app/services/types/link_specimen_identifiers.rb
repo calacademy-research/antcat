@@ -37,6 +37,7 @@ module Types
     end
 
     private
+
       attr :content
 
       def link_specimen_identifiers!

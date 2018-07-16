@@ -7,6 +7,7 @@ class NotificationsController < ApplicationController
   end
 
   private
+
     def mark_unseen_as_seen
       current_user.mark_unseen_notifications_as_seen
     end

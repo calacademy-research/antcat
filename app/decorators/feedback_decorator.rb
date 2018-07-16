@@ -38,6 +38,7 @@ Page: #{page}
   end
 
   private
+
     def format_unregistered_submitter
       name = feedback.name.presence || "[no name]"
       email = feedback.email.presence || "[no email]; IP #{ip}"

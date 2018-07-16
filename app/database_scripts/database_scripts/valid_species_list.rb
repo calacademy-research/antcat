@@ -63,6 +63,7 @@ module DatabaseScripts
     end
 
     private
+
       # HACK to fix `as_table` issue...
       def cached_render
         nil

@@ -34,6 +34,7 @@ module References
     end
 
     private
+
       def set_reference
         @reference = Reference.find params[:id]
       end

@@ -11,6 +11,7 @@ module Taxa
     end
 
     private
+
       attr_reader :taxon
 
       delegate :id, :synonyms_as_senior, :synonyms_as_junior, to: :taxon

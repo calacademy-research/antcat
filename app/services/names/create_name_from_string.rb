@@ -24,6 +24,7 @@ class Names::CreateNameFromString
   end
 
   private
+
     attr_reader :string
 
     def words

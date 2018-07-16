@@ -27,6 +27,7 @@ module DatabaseScripts
     end
 
     private
+
       def citation_search_link citation
         search_path = "/references/search?search_type=all&q="
         "<a href='#{search_path}#{URI.encode(citation, /\W/)}'>#{citation}</a>"

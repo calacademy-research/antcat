@@ -37,6 +37,7 @@ module TaxonBrowserHelper
   end
 
  private
+
     # Only for Formicidae/subfamilies.
     def incertae_sedis_link selected
       return unless selected.genera_incertae_sedis_in.exists?

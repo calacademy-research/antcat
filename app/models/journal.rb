@@ -18,6 +18,7 @@ class Journal < ApplicationRecord
   }
 
   private
+
     def ensure_not_used
       if references.exists?
         errors.add :base, "Cannot delete journal (not unused)."

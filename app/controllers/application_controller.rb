@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :email, :name, :password, :password_confirmation, :remember_me])
       devise_parameter_sanitizer.permit(:sign_in, keys: [:login, :username, :email, :password, :remember_me])
@@ -35,6 +36,7 @@ class ApplicationController < ActionController::Base
     end
 
   private
+
     # Save location so that we can redirect back to the previous page
     # after signing in/out.
     def save_location

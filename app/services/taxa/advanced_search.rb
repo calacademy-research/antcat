@@ -78,6 +78,7 @@ module Taxa
     end
 
     private
+
       attr_reader :params
   end
 end

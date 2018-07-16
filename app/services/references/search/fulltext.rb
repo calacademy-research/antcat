@@ -12,6 +12,7 @@ module References
       end
 
       private
+
         attr_reader :options
 
         def fulltext_search

@@ -24,6 +24,7 @@ module Taxa
     end
 
     private
+
       attr_reader :taxon, :predicate
 
       delegate :id, :synonyms_as_senior, :synonyms_as_junior, :protonym,

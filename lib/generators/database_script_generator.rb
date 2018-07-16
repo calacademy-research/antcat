@@ -9,6 +9,7 @@ class DatabaseScriptGenerator < Rails::Generators::NamedBase
   end
 
   private
+
     def target_file
       scripts_path = DatabaseScript::SCRIPTS_DIR
       File.join scripts_path, class_path, "#{file_name}.rb"

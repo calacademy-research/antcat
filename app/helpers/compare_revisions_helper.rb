@@ -51,6 +51,7 @@ module CompareRevisionsHelper
   end
 
   private
+
     def revision_in_any_param? revision
       revision_in_param?(revision, :selected_id) ||
         revision_in_param?(revision, :diff_with_id)

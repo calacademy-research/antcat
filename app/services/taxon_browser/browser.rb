@@ -33,6 +33,7 @@ module TaxonBrowser
     end
 
     private
+
       def default_or_display display
         case @taxon
         when Subfamily then :all_genera_in_subfamily if display.blank?

@@ -23,6 +23,7 @@ module References
       end
 
       private
+
         attr_reader :reference, :value, :field
     end
   end

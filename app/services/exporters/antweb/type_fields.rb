@@ -11,6 +11,7 @@ class Exporters::Antweb::TypeFields
   end
 
   private
+
     attr_reader :taxon
 
     def formatted_type_fields

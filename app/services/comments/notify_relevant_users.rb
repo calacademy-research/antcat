@@ -20,6 +20,7 @@ module Comments
     end
 
     private
+
       attr_accessor :comment, :do_not_notify
       delegate :commenter, :commentable, :body, :parent, :is_a_reply?, to: :comment
 

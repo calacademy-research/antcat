@@ -4,6 +4,7 @@ class MissingReferenceDecorator < ReferenceDecorator
   def format_reference_document_link; end
 
   private
+
     def format_citation
       make_html_safe citation
     end

@@ -20,6 +20,7 @@ module References
       end
 
       private
+
         attr_reader :search_query, :page
 
         def authors

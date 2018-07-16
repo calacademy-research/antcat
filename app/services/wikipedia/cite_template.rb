@@ -19,6 +19,7 @@ module Wikipedia
     end
 
     private
+
       attr_reader :taxon, :with_ref_tag
 
       def cite_template

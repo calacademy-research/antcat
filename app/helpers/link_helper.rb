@@ -39,6 +39,7 @@ module LinkHelper
   end
 
   private
+
     def link_to_external_site label, url
       link_to label, url, class: 'link_to_external_site'
     end

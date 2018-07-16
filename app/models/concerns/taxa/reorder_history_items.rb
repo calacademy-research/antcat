@@ -17,6 +17,7 @@ module Taxa::ReorderHistoryItems
   end
 
   private
+
     def reordered_ids_valid? reordered_ids_strings
       current_ids = history_items.pluck :id
       reordered_ids = reordered_ids_strings.map(&:to_i)

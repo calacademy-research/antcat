@@ -26,6 +26,7 @@ class DatabaseScriptsController < ApplicationController
   end
 
   private
+
     def set_script
       @script = DatabaseScript::new_from_filename_without_extension params[:id]
     rescue DatabaseScript::ScriptNotFound

@@ -38,6 +38,7 @@ class TableRefDecorator
   end
 
   private
+
     attr_reader :table, :field, :id
 
     def related_citation_link

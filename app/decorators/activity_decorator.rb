@@ -81,6 +81,7 @@ class ActivityDecorator < Draper::Decorator
   end
 
   private
+
     # Returns the partial's full path like this:
     # 1) The activity has no `#trackable_type`? --> `actions/_<action>`
     #    This happens when there's no trackable tied to the activity,

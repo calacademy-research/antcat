@@ -16,6 +16,7 @@ module DatabaseScripts
     end
 
     private
+
       def table
         Synonym.arel_table
       end

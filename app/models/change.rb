@@ -109,6 +109,7 @@ class Change < ApplicationRecord
   end
 
   private
+
     # Backwards compatibility for changes created before `changes.user_id` was added.
     def whodunnit_via_change_id
       version = versions.where.not(whodunnit: nil).first

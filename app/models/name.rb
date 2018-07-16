@@ -54,6 +54,7 @@ class Name < ApplicationRecord
   end
 
   private
+
     def words
       @_words ||= name.split ' '
     end

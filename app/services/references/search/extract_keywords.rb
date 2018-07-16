@@ -44,6 +44,7 @@ module References
       end
 
       private
+
         attr_reader :keyword_string
 
         # Array of arrays used to compile regexes: [["keyword", "regex_as_string"]].

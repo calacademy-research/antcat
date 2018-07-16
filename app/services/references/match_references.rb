@@ -12,6 +12,7 @@ module References
     end
 
     private
+
       attr_reader :target, :min_similarity
 
       def match

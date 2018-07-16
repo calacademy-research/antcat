@@ -66,6 +66,7 @@ module DatabaseScripts
     end
 
     private
+
       # "-lepis" was included twice, removed from the masculine list.
       # Removed overlapping endings: "-lasius" (masculine), "-um" (neuter).
       def endings

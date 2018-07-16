@@ -6,6 +6,7 @@ class AntcatVersionLink
   end
 
   private
+
     def latest_tag
       `git describe HEAD --tags` # Something like "v2.4.2-46-g08aa818".
     end

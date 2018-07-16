@@ -28,6 +28,7 @@ module DatabaseScripts
     end
 
     private
+
       def attempt_to_link_item item_type, item_id
         case item_type
         when "TaxonHistoryItem"

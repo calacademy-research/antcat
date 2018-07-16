@@ -38,6 +38,7 @@ class ActivitiesController < ApplicationController
   end
 
   private
+
     def self.activity_actions_options_for_select
       Activity.distinct.pluck(:action, :action).map(&:humanize)
         .zip(Activity.distinct.pluck(:action, :action))

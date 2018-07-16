@@ -24,6 +24,7 @@ class Exporters::Antweb::ExportHeadline
   end
 
   private
+
     def headline_protonym
       TaxonDecorator::HeadlineProtonym[@taxon, for_antweb: true]
     end

@@ -11,6 +11,7 @@ class EditorsPanelsController < ApplicationController
   end
 
   private
+
     # Unreviewed/pending/open/etc.
     def unreviewed_changes_counts
       {

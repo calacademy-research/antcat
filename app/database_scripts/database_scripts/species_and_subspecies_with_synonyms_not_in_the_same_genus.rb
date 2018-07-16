@@ -37,6 +37,7 @@ module DatabaseScripts
     end
 
     private
+
       def markdown_taxa_links taxon, taxa
         taxa.where.not(genus_id: taxon.genus_id).map do |taxon|
           markdown_taxon_link(taxon)

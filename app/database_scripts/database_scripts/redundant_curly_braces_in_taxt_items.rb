@@ -9,6 +9,7 @@ module DatabaseScripts
     end
 
     private
+
       def double_braces_count
         count = 0
         Taxt.models_with_taxts.each_field do |field, model|

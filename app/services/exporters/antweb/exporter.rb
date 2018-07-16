@@ -60,6 +60,7 @@ class Exporters::Antweb::Exporter
   end
 
   private
+
     def taxa_ids
       Taxon.joins(protonym: [{ authorship: :reference }])
         .order(:status).pluck(:id).reverse

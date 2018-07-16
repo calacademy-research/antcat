@@ -14,6 +14,7 @@ class TaxonDecorator::HeadlineType
   end
 
   private
+
     def headline_type
       string = ''.html_safe
       string << type_name_and_taxt

@@ -23,6 +23,7 @@ class TaxonDecorator::ChildList
   end
 
   private
+
     def child_lists_for_rank children_selector
       return ''.html_safe unless @taxon.respond_to?(children_selector) && @taxon.send(children_selector).present?
 

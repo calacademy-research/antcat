@@ -39,6 +39,7 @@ module EditorsPanels
     end
 
     private
+
       def search_params
         params.slice :search_type, :q
       end

@@ -34,6 +34,7 @@ module Taxa::Delete
   end
 
   private
+
     def delete_taxon_children taxon
       taxon.children.each do |child|
         child.delete_with_state!

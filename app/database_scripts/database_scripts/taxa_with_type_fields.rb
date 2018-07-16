@@ -28,6 +28,7 @@ module DatabaseScripts
     end
 
     private
+
       def taxa_with_type_specimen_repositories_or_codes
         ids = Taxon.where.not(verbatim_type_locality: [nil, '']).pluck(:id) +
           Taxon.where.not(type_specimen_code: [nil, '']).pluck(:id) +
