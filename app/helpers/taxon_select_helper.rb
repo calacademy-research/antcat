@@ -15,7 +15,7 @@ module TaxonSelectHelper
                     {
                       name_html: taxon.name.name_html,
                       name_with_fossil: taxon.name_with_fossil,
-                      author_citation: taxon.author_citation,
+                      author_citation: taxon.author_citation
                     }
                   end
 

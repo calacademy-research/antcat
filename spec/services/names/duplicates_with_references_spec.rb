@@ -12,7 +12,7 @@ describe Names::DuplicatesWithReferences do
       expect(described_class[]).to eq(
         'Atta' => {
           first_atta_name.id => [
-            { table: 'taxa', field: :name_id, id: first_atta.id },
+            { table: 'taxa', field: :name_id, id: first_atta.id }
           ],
           second_atta_name.id => [
             { table: 'taxa', field: :name_id, id: second_atta.id }

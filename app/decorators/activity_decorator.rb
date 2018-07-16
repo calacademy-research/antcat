@@ -73,7 +73,7 @@ class ActivityDecorator < Draper::Decorator
       reopen_issue: "re-opened",
 
       close_feedback: "closed",
-      reopen_feedback: "re-opened",
+      reopen_feedback: "re-opened"
     }[activity.action.to_sym] || activity.action.upcase
 
     # Default to the action name for missing actions (and upcase

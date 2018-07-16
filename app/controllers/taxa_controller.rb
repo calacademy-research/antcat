@@ -174,7 +174,7 @@ class TaxaController < ApplicationController
                 :id,
                 { reference_attributes: [:id] }
               ]
-            },
+            }
           ]
         },
         { parent_name_attributes: [:id] },

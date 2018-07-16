@@ -11,7 +11,7 @@ module DatabaseScripts
                           /incertae sedis/i,
                           /status as species/i,
                           /raised/i,
-                          /conserved over /i,
+                          /conserved over /i
                         ]
 
     def results

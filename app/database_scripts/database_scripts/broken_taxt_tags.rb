@@ -162,7 +162,7 @@ module DatabaseScripts
               "`#{item_type}##{field}`",
               attemp_to_link_taxon(taxon, item_type, item_id),
               tag,
-              attempt_to_link_broken_ids(tag, broken_matched_ids),
+              attempt_to_link_broken_ids(tag, broken_matched_ids)
             ]
           end
         end

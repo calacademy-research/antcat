@@ -46,7 +46,7 @@ describe Names::PicklistMatching do
           label: '<b><i>Brachyponera</i></b>',
           taxon_id: brachyponera.id,
           value: brachyponera.name.name
-        },
+        }
       ]
     end
 

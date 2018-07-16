@@ -94,7 +94,7 @@ class Exporters::Antweb::Exporter
         locality:               taxon.protonym.locality,
         rank:                   taxon.class.to_s,
         hol_id:                 taxon.hol_id,
-        parent:                 parent_name,
+        parent:                 parent_name
       }
 
       attributes[:current_valid_name] =
@@ -175,7 +175,7 @@ class Exporters::Antweb::Exporter
         values[:locality],
         values[:rank],
         values[:hol_id],
-        values[:parent],
+        values[:parent]
       ]
     end
 

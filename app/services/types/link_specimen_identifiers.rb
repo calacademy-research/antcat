@@ -17,7 +17,7 @@ module Types
       "ANTWEB",
       "JZC",
       "MCZTYPE",
-      "MCZ-ENT",
+      "MCZ-ENT"
     ]
 
     STOP_REGEX = %r{

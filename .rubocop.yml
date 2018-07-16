@@ -3,9 +3,10 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   Exclude:
     - 'Cheffile'
+    - 'Vagrantfile'
     - 'config.ru'
     - 'db/schema.rb'
-    - 'bin/setup'
+    - 'bin/**/*'
     - 'db/data/**/*'
     - 'db/migrate/**/*'
     - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'
