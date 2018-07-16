@@ -150,7 +150,7 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "bails on a class it doesn't know about " do
-    expect { formatter.format([String.new]) }.
+    expect { formatter.format(['']) }.
       to raise_error(/Don't know what kind of reference this is/)
   end
 

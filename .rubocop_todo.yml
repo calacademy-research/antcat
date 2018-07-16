@@ -434,19 +434,6 @@ Style/EmptyElse:
     - 'app/services/exporters/antweb/exporter.rb'
     - 'app/services/references/save_from_form.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/EmptyLiteral:
-  Exclude:
-    - 'spec/services/exporters/endnote/formatter_spec.rb'
-
-# Offense count: 20
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: compact, expanded
-Style/EmptyMethod:
-  Enabled: false
-
 # Offense count: 634
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

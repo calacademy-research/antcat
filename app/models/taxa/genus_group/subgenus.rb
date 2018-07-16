@@ -18,7 +18,8 @@ class Subgenus < GenusGroupTaxon
     self.genus = parent_taxon
   end
 
-  def statistics valid_only: false; end
+  def statistics valid_only: false
+  end
 
   private
 

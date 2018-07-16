@@ -1,7 +1,8 @@
 class MissingReferenceDecorator < ReferenceDecorator
   delegate :citation
 
-  def format_reference_document_link; end
+  def format_reference_document_link
+  end
 
   private
 

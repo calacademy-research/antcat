@@ -13,7 +13,8 @@ class Subspecies < SpeciesGroupTaxon
     self.species = new_parent
   end
 
-  def statistics valid_only: false; end
+  def statistics valid_only: false
+  end
 
   def parent= parent_taxon
     if parent_taxon.is_a? Subgenus
