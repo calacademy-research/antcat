@@ -48,7 +48,7 @@ AntCat.deselect = -> $('.ui-selecting').removeClass('ui-selecting')
 
 # For at.js. Super comlicated way of saying "allow spaces and some other characters".
 AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
-  regexp = new RegExp(flag + '([A-Za-z0-9_,: \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
+  regexp = new RegExp(flag + '([A-Za-z0-9_.,: \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
   match = regexp.exec(subtext)
   if match
     match[2] || match[1]
@@ -103,4 +103,12 @@ $ ->
     hideText: """<span class="btn-normal btn-tiny">Show less</span>"""
     hideClass: "anything-except-hide" # Becuase `.hide` conflics with jQuery.
 
+    # HACK to make keys inside truncated elements to work after showing/hiding.
+    animate: true
+    animateOptions:
+      complete: -> AntCat.make_reference_keeys_expandable $(".truncate")
+
   $(".truncate").truncate(options)
+
+  # HACK to make keys inside truncated elements to work on page load.
+  AntCat.make_reference_keeys_expandable $(".truncate")

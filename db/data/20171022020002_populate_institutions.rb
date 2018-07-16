@@ -1,4 +1,4 @@
-class PopulateInstitutions < ActiveRecord::Migration
+class PopulateInstitutions < ActiveRecord::Migration[4.2]
   INSTITUTIONS = [
     ['ACEG', "Katsuyuki Eguchi, Japan"],
     ['AFRC', "Afribugs Collection Wolmer, Pretoria North, South Africa"],

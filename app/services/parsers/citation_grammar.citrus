@@ -9,5 +9,4 @@ grammar Parsers::CitationGrammar
   rule page_number
     ': ' /\d+/
   end
-
 end
