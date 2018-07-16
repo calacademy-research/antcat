@@ -26,6 +26,7 @@ AntCat.setupLinkables = =>
       at: '{t'
       limit: 10
       delay: 300
+      maxLen: 50
       insertTpl: '{tax ${id}}:'
       displayTpl: '<li><small>#${id}</small> ${name_html} <small>${author_citation}</small></li>'
       callbacks: reuseCallbacks "/catalog/autocomplete.json"
@@ -34,6 +35,7 @@ AntCat.setupLinkables = =>
       at: '{r'
       limit: 10
       delay: 300
+      maxLen: 50
       insertTpl: '{ref ${id}}:'
       displayTpl: '<li><small>#${id}</small> ${author} (${year}) <small>${title}</small></li>'
       callbacks: reuseCallbacks "/references/linkable_autocomplete.json"
