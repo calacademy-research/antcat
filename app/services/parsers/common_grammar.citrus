@@ -42,5 +42,4 @@ grammar Parsers::CommonGrammar
   rule et_al
     italic 'et al.' close_tag
   end
-
 end

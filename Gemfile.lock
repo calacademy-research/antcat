@@ -99,7 +99,7 @@ GEM
     chromedriver-helper (1.1.0)
       archive-zip (~> 0.7.0)
       nokogiri (~> 1.6)
-    citrus (2.4.1)
+    citrus (3.0.2)
     climate_control (0.2.0)
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
@@ -460,7 +460,7 @@ DEPENDENCIES
   capybara-screenshot
   capybara-webkit
   chromedriver-helper
-  citrus (= 2.4.1)
+  citrus
   coffee-rails
   colorize
   cucumber-rails

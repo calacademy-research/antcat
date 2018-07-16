@@ -4,7 +4,7 @@ grammar Parsers::AuthorGrammar
   rule author_names
     (author (s author_separator s author)* suffix? s) {
       value = { names: captures[:author].map(&:to_s) }
-      value[:suffix] = suffix.to_s if suffix
+      value[:suffix] = capture(:suffix).to_s if capture(:suffix)
       value
     }
   end
