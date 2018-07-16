@@ -59,11 +59,11 @@ module TaxonBrowser
           # Never show the [children of] subspecies tab (has no children).
           taxon.is_a?(Subspecies) ||
 
-          # Don't show [subspecies in] species tab unless the species has subspecies.
-          (taxon.is_a?(Species) && !taxon.children.exists?) ||
+            # Don't show [subspecies in] species tab unless the species has subspecies.
+            (taxon.is_a?(Species) && !taxon.children.exists?) ||
 
-          # Hide [species in] subgenus tab because there are none as of 2016.
-          taxon.is_a?(Subgenus)
+            # Hide [species in] subgenus tab because there are none as of 2016.
+            taxon.is_a?(Subgenus)
         end
       end
 

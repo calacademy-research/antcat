@@ -13,29 +13,29 @@ describe Exporters::Antweb::Exporter do
   describe "#header" do
     it "should be the same as the code" do
       expected = "antcat id\t" +
-                 "subfamily\t" +
-                 "tribe\t" +
-                 "genus\t" +
-                 "subgenus\t" +
-                 "species\t" +
-                 "subspecies\t" +
-                 "author date\t" +
-                 "author date html\t" +
-                 "authors\t" +
-                 "year\t" +
-                 "status\t" +
-                 "available\t" +
-                 "current valid name\t" +
-                 "original combination\t" +
-                 "was original combination\t" +
-                 "fossil\t" +
-                 "taxonomic history html\t" +
-                 "reference id\t" +
-                 "bioregion\t" +
-                 "country\t" +
-                 "current valid rank\t" +
-                 "hol id\t" +
-                 "current valid parent"
+        "subfamily\t" +
+        "tribe\t" +
+        "genus\t" +
+        "subgenus\t" +
+        "species\t" +
+        "subspecies\t" +
+        "author date\t" +
+        "author date html\t" +
+        "authors\t" +
+        "year\t" +
+        "status\t" +
+        "available\t" +
+        "current valid name\t" +
+        "original combination\t" +
+        "was original combination\t" +
+        "fossil\t" +
+        "taxonomic history html\t" +
+        "reference id\t" +
+        "bioregion\t" +
+        "country\t" +
+        "current valid rank\t" +
+        "hol id\t" +
+        "current valid parent"
       expect(exporter.send :header).to eq expected
     end
   end

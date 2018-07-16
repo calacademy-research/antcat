@@ -29,7 +29,7 @@ class TaxonDecorator::ChildList
 
       if @taxon.is_a?(Subfamily) && children_selector == :genera
         child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: false) +
-        child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: true)
+          child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: true)
       else
         child_list_fossil_pairs children_selector
       end
@@ -51,7 +51,7 @@ class TaxonDecorator::ChildList
       specify_extinct_or_extant = extinct.present?
 
       child_list(extant, specify_extinct_or_extant, extant_conditions) +
-      child_list(extinct, specify_extinct_or_extant, extinct_conditions)
+        child_list(extinct, specify_extinct_or_extant, extinct_conditions)
     end
 
     def child_list_query children_selector, conditions = {}

@@ -17,7 +17,7 @@ namespace :antcat do
       SunspotTest.stub
 
       puts "Warning: this command may corrupt the '#{ENV["RAILS_ENV"]}' " +
-           "database. Enter 'y' to continue:"
+        "database. Enter 'y' to continue:"
       abort 'Aborting.' unless STDIN.gets.chomp == "y"
 
       puts "Creating taxa..."

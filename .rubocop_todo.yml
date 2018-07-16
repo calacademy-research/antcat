@@ -75,26 +75,6 @@ Layout/IndentationConsistency:
     - 'config/breadcrumbs/references.rb'
     - 'config/breadcrumbs/taxa.rb'
 
-# Offense count: 43
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: aligned, indented
-Layout/MultilineOperationIndentation:
-  Exclude:
-    - 'app/database_scripts/database_scripts/genus_gender_endings.rb'
-    - 'app/database_scripts/database_scripts/taxa_with_type_fields.rb'
-    - 'app/decorators/taxon_decorator/child_list.rb'
-    - 'app/helpers/compare_revisions_helper.rb'
-    - 'app/helpers/error_messages_helper.rb'
-    - 'app/models/names/species_group_name.rb'
-    - 'app/services/exporters/antweb/exporter.rb'
-    - 'app/services/names/epithet_search_set.rb'
-    - 'app/services/names/picklist_matching.rb'
-    - 'app/services/references/reference_similarity.rb'
-    - 'app/services/taxon_browser/browser.rb'
-    - 'lib/dev_monkey_patches.rb'
-    - 'spec/decorators/taxon_decorator/statistics_spec.rb'
-
 # Offense count: 11
 Lint/AmbiguousBlockAssociation:
   Exclude:

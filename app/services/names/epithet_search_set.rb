@@ -26,9 +26,9 @@ module Names
       ####################
       def declensions
         first_declension_nominative_singular +
-        first_declension_genitive_singular +
-        first_and_second_declension_adjectives_in_er_nominative_singular +
-        third_declension_nominative_singular
+          first_declension_genitive_singular +
+          first_and_second_declension_adjectives_in_er_nominative_singular +
+          third_declension_nominative_singular
       end
 
       def first_declension_nominative_singular

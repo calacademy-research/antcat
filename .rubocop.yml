@@ -36,6 +36,9 @@ Layout/IndentationConsistency:
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
 Style/AsciiComments:
   Enabled: false
 

@@ -41,8 +41,8 @@ class Names::PicklistMatching
 
     def join_type
       options[:species_only] ||
-      options[:genera_only] ||
-      options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+        options[:genera_only] ||
+        options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
     end
 
     def rank_filter

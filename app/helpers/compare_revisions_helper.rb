@@ -4,7 +4,7 @@ module CompareRevisionsHelper
     render "compare_revision_template", item: item
   rescue => error
     "Failed to render revision. Thrown error: #{error.message}".html_safe <<
-    "<br><br><pre>#{diff_format item}</pre>".html_safe
+      "<br><br><pre>#{diff_format item}</pre>".html_safe
   end
 
   # TODO DRY w.r.t `RevisionComparer#diff_format`.
