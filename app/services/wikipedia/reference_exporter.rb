@@ -64,7 +64,7 @@ module Wikipedia
         #{author_params}
         |year=#{reference.year}
         |title=#{title}
-        |url=#{url if url}
+        |url=#{url}
         |journal=#{reference.journal.name}
         |publisher=
         |volume=#{reference.volume}
@@ -106,7 +106,7 @@ module Wikipedia
         #{author_params}
         |year=#{reference.year}
         |title=#{title}
-        |url=#{url if url}
+        |url=#{url}
         |location=#{location}
         |publisher=#{publisher}
         |pages=#{pages}

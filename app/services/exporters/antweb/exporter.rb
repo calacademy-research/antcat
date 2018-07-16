@@ -73,7 +73,7 @@ class Exporters::Antweb::Exporter
       reference = taxon.protonym.authorship.reference
       reference_id = reference.is_a?(MissingReference) ? nil : reference.id
 
-      parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon ? taxon.parent.current_valid_taxon : taxon.parent)
+      parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
       parent_name = parent_taxon.try(:name).try(:name)
       parent_name ||= 'Formicidae'
 

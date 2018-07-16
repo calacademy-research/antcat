@@ -595,18 +595,6 @@ Style/Proc:
   Exclude:
     - 'app/models/concerns/trackable.rb'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: compact, exploded
-Style/RaiseArgs:
-  Exclude:
-    - 'app/controllers/database_scripts_controller.rb'
-    - 'app/models/reference.rb'
-    - 'app/models/taxa/species_group/species.rb'
-    - 'config/initializers/draper.rb'
-    - 'lib/taxt_converter.rb'
-
 # Offense count: 6
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, AllowInnerSlashes.
@@ -685,15 +673,6 @@ Style/TrivialAccessors:
   Exclude:
     - 'app/services/taxon_browser/tabs/extra_tab.rb'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-Style/UnneededCondition:
-  Exclude:
-    - 'app/decorators/activity_decorator.rb'
-    - 'app/helpers/taxon_helper.rb'
-    - 'app/services/exporters/antweb/exporter.rb'
-    - 'app/services/wikipedia/reference_exporter.rb'
-
 # Offense count: 10
 # Cop supports --auto-correct.
 Style/UnneededInterpolation:
@@ -706,13 +685,6 @@ Style/UnneededInterpolation:
     - 'spec/models/taxon_spec.rb'
     - 'spec/services/exporters/antweb/formatter_spec.rb'
     - 'spec/support/helpers/refactor_taxon_factories_helpers.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/ZeroLengthPredicate:
-  Exclude:
-    - 'app/controllers/api/v1/taxa_controller.rb'
-    - 'app/controllers/tooltips_controller.rb'
 
 # Offense count: 1217
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.

@@ -55,7 +55,7 @@ class TaxtConverter
       id, type_number = TaxtIdTranslator.unjumble_id_and_type $3
       case type_number
       when TaxtIdTranslator::REFERENCE_TAG_TYPE
-        raise ReferenceNotFound.new(string) unless Reference.find_by(id: id)
+        raise ReferenceNotFound, string unless Reference.find_by(id: id)
         "{ref #{id}}"
       when TaxtIdTranslator::TAXON_TAG_TYPE
         raise unless Taxon.find_by(id: id)

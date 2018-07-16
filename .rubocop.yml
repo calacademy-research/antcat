@@ -74,3 +74,6 @@ Style/StringLiterals:
 
 Style/WordArray:
   Enabled: false
+
+Style/ZeroLengthPredicate:
+  Enabled: false

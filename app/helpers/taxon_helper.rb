@@ -50,7 +50,7 @@ module TaxonHelper
         parent = taxon.subfamily
         "tribe of " << (parent ? parent.name.to_html : '(no subfamily)')
       when Genus
-        parent = taxon.tribe ? taxon.tribe : taxon.subfamily
+        parent = taxon.tribe || taxon.subfamily
         "genus of " << (parent ? parent.name.to_html : '(no subfamily)')
       when Species
         parent = taxon.parent

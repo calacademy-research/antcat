@@ -115,7 +115,7 @@ class Reference < ApplicationRecord
     if author_names_and_suffix[:author_names].empty? && author_names_string.present?
       errors.add :author_names_string, "couldn't be parsed."
       self.author_names_string = author_names_string
-      raise ActiveRecord::RecordInvalid.new self
+      raise ActiveRecord::RecordInvalid, self
     end
     author_names_and_suffix
   end
