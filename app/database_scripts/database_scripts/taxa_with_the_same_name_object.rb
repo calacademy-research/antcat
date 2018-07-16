@@ -19,7 +19,7 @@ module DatabaseScripts
 
         t.rows do |taxon|
           ids = taxon.grouped_ids.split(",")
-          [ taxon.name_cache, link_taxa_ids(ids), ids.count ]
+          [taxon.name_cache, link_taxa_ids(ids), ids.count]
         end
       end
     end

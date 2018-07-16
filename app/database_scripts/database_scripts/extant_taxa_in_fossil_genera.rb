@@ -11,10 +11,12 @@ module DatabaseScripts
         t.header :species_or_subspecies, :status, :genus, :genus_status
 
         t.rows do |taxon|
-          [ markdown_taxon_link(taxon),
+          [
+            markdown_taxon_link(taxon),
             taxon.status,
             markdown_taxon_link(taxon.genus),
-            taxon.genus.status ]
+            taxon.genus.status
+          ]
         end
       end
     end

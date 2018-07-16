@@ -95,8 +95,7 @@ describe Taxa::AdvancedSearch do
 
       it "finds the taxa for the author's references, even if he's not the principal author" do
         reference = create :article_reference,
-          author_names: [ create(:author_name, name: 'Bolton'),
-                          create(:author_name, name: 'Fisher') ]
+          author_names: [create(:author_name, name: 'Bolton'), create(:author_name, name: 'Fisher')]
         atta = create_genus
         atta.protonym.authorship.update! reference: reference
 

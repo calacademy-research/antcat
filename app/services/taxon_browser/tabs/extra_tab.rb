@@ -10,14 +10,13 @@ module TaxonBrowser::Tabs
 
       title, taxa = case display
         when :incertae_sedis_in_family, :incertae_sedis_in_subfamily
-          [ "Genera <i>incertae sedis</i> in #{name_html}",
-            taxon.genera_incertae_sedis_in ]
+          ["Genera <i>incertae sedis</i> in #{name_html}", taxon.genera_incertae_sedis_in]
 
         when :all_genera_in_family, :all_genera_in_subfamily
-          [ "All #{name_html} genera", taxon.all_displayable_genera ]
+          ["All #{name_html} genera", taxon.all_displayable_genera]
 
         when :all_taxa_in_genus
-          [ "All #{name_html} taxa", taxon.displayable_child_taxa ]
+          ["All #{name_html} taxa", taxon.displayable_child_taxa]
 
         # Special case because:
         #   1) A genus' children are its species.
@@ -25,12 +24,11 @@ module TaxonBrowser::Tabs
         #
         # The catalog page in this case will be that of a genus.
         when :subgenera_in_genus
-          [ "#{name_html} subgenera", taxon.displayable_subgenera ]
+          ["#{name_html} subgenera", taxon.displayable_subgenera]
 
         # Like above, but for subgenus catalog pages.
         when :subgenera_in_parent_genus
-          [ "#{taxon.genus.name_with_fossil} subgenera",
-            taxon.genus.displayable_subgenera ]
+          ["#{taxon.genus.name_with_fossil} subgenera", taxon.genus.displayable_subgenera]
 
         else
           raise "It should not be possible to get here via the GUI."

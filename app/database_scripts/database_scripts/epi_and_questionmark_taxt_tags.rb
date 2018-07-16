@@ -21,7 +21,7 @@ module DatabaseScripts
 
         results.each do |model, ids|
           t.rows(ids) do |id|
-            [ model, attempt_to_link_item(model.name, id) ]
+            [model, attempt_to_link_item(model.name, id)]
           end
         end
       end

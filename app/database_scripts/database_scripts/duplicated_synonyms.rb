@@ -25,7 +25,7 @@ module DatabaseScripts
 
         t.rows do |synonym|
           taxon = synonym.junior_synonym
-          [ synonym_link(synonym), markdown_taxon_link(taxon), taxon.status ]
+          [synonym_link(synonym), markdown_taxon_link(taxon), taxon.status]
         end
       end
     end

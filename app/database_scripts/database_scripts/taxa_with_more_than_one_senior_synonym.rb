@@ -8,7 +8,7 @@ module DatabaseScripts
       as_table do |t|
         t.header :taxon, :status, :senior_synonyms_count
         t.rows do |taxon|
-          [ markdown_taxon_link(taxon), taxon.status, taxon.senior_synonyms.count ]
+          [markdown_taxon_link(taxon), taxon.status, taxon.senior_synonyms.count]
         end
       end
     end

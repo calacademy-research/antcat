@@ -26,7 +26,7 @@ module DatabaseScripts
           years = "#{row['min_year']}&ndash;#{row['max_year']}"
           author_link = link_to row['name'], author_path(row['author_id'])
 
-          [ author_link, years, row['count'] ]
+          [author_link, years, row['count']]
         end
       end
     end

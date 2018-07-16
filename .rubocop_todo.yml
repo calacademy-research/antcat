@@ -143,21 +143,6 @@ Layout/MultilineOperationIndentation:
     - 'lib/dev_monkey_patches.rb'
     - 'spec/decorators/taxon_decorator/statistics_spec.rb'
 
-# Offense count: 63
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBrackets.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBrackets: space, no_space
-Layout/SpaceInsideArrayLiteralBrackets:
-  Enabled: false
-
-# Offense count: 30
-# Cop supports --auto-correct.
-Layout/SpaceInsidePercentLiteralDelimiters:
-  Exclude:
-    - 'config/initializers/assets.rb'
-    - 'lib/tasks/import_sample_data.rake'
-
 # Offense count: 11
 Lint/AmbiguousBlockAssociation:
   Exclude:

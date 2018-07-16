@@ -9,7 +9,7 @@ class Names::PicklistMatching
   end
 
   def call
-    [ prefix_matches, epithet_matches, first_then_any_letter_matches ].
+    [prefix_matches, epithet_matches, first_then_any_letter_matches].
       map { |matches| format matches }.
       flatten.uniq { |item| item[:name] }[0, 100]
   end

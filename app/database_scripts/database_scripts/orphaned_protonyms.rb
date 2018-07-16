@@ -9,10 +9,12 @@ module DatabaseScripts
         t.header :protonym, :id, :created_at, :updated_at
 
         t.rows do |protonym|
-          [ protonym_name_with_search_link(protonym),
+          [
+            protonym_name_with_search_link(protonym),
             protonym.id,
             protonym.created_at,
-            protonym.updated_at ]
+            protonym.updated_at
+          ]
         end
       end
     end

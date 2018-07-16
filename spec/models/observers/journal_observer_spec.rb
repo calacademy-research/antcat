@@ -11,9 +11,11 @@ describe JournalObserver do
     end
 
     it "invalidates the cache for the references that use the journal" do
-      references = [ create(:book_reference, journal: journal),
+      references = [
                      create(:book_reference, journal: journal),
-                     create(:book_reference) ]
+                     create(:book_reference, journal: journal),
+                     create(:book_reference)
+                   ]
 
       references.each { |reference| References::Cache::Regenerate[reference] }
       references.each { |reference| expect(reference.formatted_cache).not_to be_nil }

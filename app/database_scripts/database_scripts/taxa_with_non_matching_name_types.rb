@@ -41,7 +41,7 @@ module DatabaseScripts
           t.header rank, :status, :name_type
 
           t.rows(rank_results) do |taxon|
-            [ markdown_taxon_link(taxon), taxon.status, taxon.name.type ]
+            [markdown_taxon_link(taxon), taxon.status, taxon.name.type]
           end
         end
       end

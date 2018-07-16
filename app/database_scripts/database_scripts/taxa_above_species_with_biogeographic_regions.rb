@@ -9,7 +9,7 @@ module DatabaseScripts
       as_table do |t|
         t.header :subspecies, :biogeographic_region
 
-        t.rows { |taxon| [ markdown_taxon_link(taxon), taxon.biogeographic_region ] }
+        t.rows { |taxon| [markdown_taxon_link(taxon), taxon.biogeographic_region] }
       end
     end
   end

@@ -20,7 +20,7 @@ module DatabaseScripts
           statuses = taxon.grouped_statuses.split(",")
           taxa = ids.zip statuses
 
-          [ taxon.name_cache, taxa_links_with_status(taxa), ids.count ]
+          [taxon.name_cache, taxa_links_with_status(taxa), ids.count]
         end
       end
     end

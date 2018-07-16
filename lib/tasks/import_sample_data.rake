@@ -28,14 +28,14 @@ namespace :antcat do
 
       # a bunch of species
       pseudoantcatia = create_genus 'Pseudoantcatia', tribe: antcatini
-      %w[ africana maximus indicus celebensis columbi ].each do |species|
+      %w[africana maximus indicus celebensis columbi].each do |species|
         create_species "Pseudoantcatia #{species}", genus: pseudoantcatia
       end
 
       # a bunch of subspecies
       antcatia = create_genus 'Antcatia', tribe: antcatini
       antcatia_tigris = create_species 'Antcatia tigris', genus: antcatia
-      %w[ corbetti jacksoni sumatrae ].each do |subspecies|
+      %w[corbetti jacksoni sumatrae].each do |subspecies|
         create_subspecies "Antcatia tigris #{subspecies}",
           subfamily: antcatinae,
           genus: antcatia,
@@ -44,7 +44,7 @@ namespace :antcat do
 
       # fossil genus
       tactania = create_genus 'Tactania', tribe: antcatini, fossil: true
-      %w[ sisneopmos sisneuhsnihs silatneiro snorfinalpbus ].each do |species|
+      %w[sisneopmos sisneuhsnihs silatneiro snorfinalpbus].each do |species|
         create_species "Tactania #{species}", genus: tactania, fossil: true
       end
 
@@ -53,7 +53,7 @@ namespace :antcat do
       paraantcatini = create_tribe 'Paraantcatini', subfamily: paraantcatinae
 
       paraantcatia = create_genus 'Paraantcatia', tribe: paraantcatini, fossil: true
-      %w[ subplanifrons orientalis shinshuensis sompoensis ].each do |species|
+      %w[subplanifrons orientalis shinshuensis sompoensis].each do |species|
         create_species "Paraantcatia #{species}", genus: paraantcatia, fossil: true
       end
 
