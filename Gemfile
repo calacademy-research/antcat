@@ -1,9 +1,9 @@
 source 'http://rubygems.org'
 ruby '2.3.3'
 
-gem 'rails', '< 5.1'
+gem 'rails', '< 5.2'
 
-gem 'citrus', '2.4.1'
+gem 'citrus'
 gem 'coffee-rails'
 gem 'haml-rails'
 gem 'mysql2'

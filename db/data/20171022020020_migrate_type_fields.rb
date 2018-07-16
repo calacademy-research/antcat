@@ -1,4 +1,4 @@
-class MigrateTypeFields < ActiveRecord::Migration
+class MigrateTypeFields < ActiveRecord::Migration[4.2]
   def self.up
     set_user_for_papertrail! unless Rails.env.test?
 
