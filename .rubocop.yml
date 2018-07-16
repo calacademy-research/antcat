@@ -1,0 +1,57 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/data/**/*'
+    - 'db/migrate/**/*'
+    - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'
+
+Layout/AlignArray:
+  Enabled: false
+
+Layout/AlignHash:
+  Enabled: false
+
+Layout/AlignParameters:
+  Enabled: false
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Layout/EmptyLinesAroundArguments:
+  Enabled: false
+
+Layout/IndentationConsistency:
+  Enabled: true
+  EnforcedStyle: rails
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/CommentAnnotation:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/MethodDefParentheses:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+Style/OneLineConditional:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false

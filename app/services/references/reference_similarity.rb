@@ -86,7 +86,7 @@ module References
       def normalize_series_volume_issue string
         string = string.dup
         remove_year_in_parentheses! string
-        remove_No! string
+        remove_no! string
         replace_punctuation_with_space! string
         string
       end
@@ -100,7 +100,7 @@ module References
         string.gsub! /\(\d{4}\)$/, ''
       end
 
-      def remove_No! string
+      def remove_no! string
         string.gsub! /\(No. (\d+)\)$/, '(\1)'
       end
 
