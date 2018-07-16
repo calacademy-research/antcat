@@ -12,7 +12,7 @@ class DeferredGarbageCollection
       GC.enable
       GC.start
       GC.disable
-      @@last_gc_run = Time.now
+      @@last_gc_run = Time.now # rubocop:disable Style/ClassVars
     end
   end
 end

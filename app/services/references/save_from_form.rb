@@ -48,7 +48,7 @@ module References
           return true
         end
       rescue ActiveRecord::RecordInvalid
-        return false
+        false
       end
 
       def set_pagination

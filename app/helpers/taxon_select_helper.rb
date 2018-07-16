@@ -30,7 +30,7 @@ module TaxonSelectHelper
         taxon = object.send taxon_attribute_name
         taxon_id = taxon.try(:id)
 
-        self.select "#{taxon_attribute_name}_id".to_sym,
+        select "#{taxon_attribute_name}_id".to_sym,
           options_for_select([taxon_id].compact, taxon_id),
           { include_blank: '(none)' },
           class: 'select2-autocomplete', data: data_attributes(taxon, rank)

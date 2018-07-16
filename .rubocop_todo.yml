@@ -607,22 +607,6 @@ Style/RaiseArgs:
     - 'config/initializers/draper.rb'
     - 'lib/taxt_converter.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Exclude:
-    - 'app/services/references/save_from_form.rb'
-    - 'spec/support/helpers/get_name_parts_helpers.rb'
-
-# Offense count: 4
-# Cop supports --auto-correct.
-Style/RedundantSelf:
-  Exclude:
-    - 'app/helpers/taxon_select_helper.rb'
-    - 'app/models/concerns/filterable_where.rb'
-    - 'lib/dev_monkey_patches.rb'
-
 # Offense count: 6
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, AllowInnerSlashes.
@@ -678,17 +662,6 @@ Style/SpecialGlobalVars:
   Exclude:
     - 'app/services/markdowns/parse_antcat_hooks.rb'
 
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiteralsInInterpolation:
-  Exclude:
-    - 'app/helpers/layouts_helper.rb'
-    - 'lib/dev_monkey_patches/ant_cat.rb'
-    - 'lib/dev_monkey_patches/rails.rb'
-    - 'lib/tasks/import_sample_data.rake'
-
 # Offense count: 94
 # Cop supports --auto-correct.
 # Configuration parameters: MinSize.
@@ -741,7 +714,7 @@ Style/ZeroLengthPredicate:
     - 'app/controllers/api/v1/taxa_controller.rb'
     - 'app/controllers/tooltips_controller.rb'
 
-# Offense count: 1220
+# Offense count: 1217
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:

@@ -1,7 +1,7 @@
 module LayoutsHelper
   # For namespacing stylesheet assets.
   def current_controller_css_id
-    "#{params[:controller].tr("/", "_")}-controller"
+    "#{params[:controller].tr('/', '_')}-controller"
   end
 
   # The <title> tag which is shown on all pages.

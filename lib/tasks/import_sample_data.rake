@@ -16,7 +16,7 @@ namespace :antcat do
       ENV["RAILS_ENV"] ||= 'development'
       SunspotTest.stub
 
-      puts "Warning: this command may corrupt the '#{ENV["RAILS_ENV"]}' " +
+      puts "Warning: this command may corrupt the '#{ENV['RAILS_ENV']}' " +
         "database. Enter 'y' to continue:"
       abort 'Aborting.' unless STDIN.gets.chomp == "y"
 
