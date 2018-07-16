@@ -16,17 +16,14 @@ class TaxonDecorator::Statistics
   def call
     return '' unless @statistics.present?
 
-    strings = [:extant, :fossil].reduce({}) do |strings, extant_or_fossil|
+    strings = [:extant, :fossil].each_with_object({}) do |extant_or_fossil, strings|
       extant_or_fossil_stats = @statistics[extant_or_fossil]
 
-      if extant_or_fossil_stats
-        string = [:subfamilies, :tribes, :genera, :species, :subspecies].reduce([]) do |rank_strings, rank|
-          rank_strings << rank_statistics(extant_or_fossil_stats[rank], rank)
-        end.compact.join(', ')
-        strings[extant_or_fossil] = string
-      end
-
-      strings
+      next unless extant_or_fossil_stats
+      string = [:subfamilies, :tribes, :genera, :species, :subspecies].reduce([]) do |rank_strings, rank|
+        rank_strings << rank_statistics(extant_or_fossil_stats[rank], rank)
+      end.compact.join(', ')
+      strings[extant_or_fossil] = string
     end
 
     strings = if strings[:extant] && strings[:fossil] && include_fossil

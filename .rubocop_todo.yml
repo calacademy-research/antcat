@@ -522,14 +522,6 @@ Style/ConditionalAssignment:
     - 'app/decorators/taxon_decorator/child_list.rb'
     - 'app/decorators/taxon_decorator/headline_protonym.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/EachWithObject:
-  Exclude:
-    - 'app/decorators/taxon_decorator/statistics.rb'
-    - 'app/services/exporters/antweb/export_reference_sections.rb'
-    - 'app/services/references/match_references.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Style/EmptyCaseCondition:
@@ -560,12 +552,6 @@ Style/EmptyLiteral:
 # SupportedStyles: compact, expanded
 Style/EmptyMethod:
   Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/ExpandPathArguments:
-  Exclude:
-    - 'lib/generators/database_script_generator.rb'
 
 # Offense count: 634
 # Cop supports --auto-correct.
@@ -627,11 +613,6 @@ Style/MixinUsage:
   Exclude:
     - 'app/services/exporters/antweb/exporter.rb'
     - 'features/support/env.rb'
-
-# Offense count: 1
-Style/MultilineBlockChain:
-  Exclude:
-    - 'app/services/exporters/endnote/formatter.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -821,17 +802,6 @@ Style/StringLiteralsInInterpolation:
 Style/SymbolArray:
   EnforcedStyle: brackets
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoredMethods.
-# IgnoredMethods: respond_to, define_method
-Style/SymbolProc:
-  Exclude:
-    - 'app/database_scripts/database_scripts/genus_gender_endings.rb'
-    - 'app/decorators/taxon_decorator/headline_protonym.rb'
-    - 'app/services/exporters/endnote/formatter.rb'
-    - 'features/support/env.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, AllowSafeAssignment.
@@ -877,7 +847,7 @@ Style/ZeroLengthPredicate:
     - 'app/controllers/api/v1/taxa_controller.rb'
     - 'app/controllers/tooltips_controller.rb'
 
-# Offense count: 1221
+# Offense count: 1222
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:

@@ -78,7 +78,7 @@ module DatabaseScripts
       def sort_results output
         output.each_value do |gender|
           gender.each_value do |by_status|
-            by_status.sort_by! { |taxon| taxon.name_cache }
+            by_status.sort_by!(&:name_cache)
           end
         end
         output

@@ -10,7 +10,7 @@ class Exporters::Endnote::Formatter
         else raise "Don't know what kind of reference this is: #{reference.inspect}"
         end
       klass.new(reference).format
-    end.select { |string| string.present? }.join("\n") + "\n"
+    end.select(&:present?).join("\n") + "\n"
   end
 end
 

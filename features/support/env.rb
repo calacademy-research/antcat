@@ -67,7 +67,7 @@ Capybara.app = Rack::ShowExceptions.new AntCat::Application
 # Warden is what Devise uses for authorization.
 include Warden::Test::Helpers
 Warden.test_mode!
-Warden::Manager.serialize_into_session { |user| user.email }
+Warden::Manager.serialize_into_session(&:email)
 Warden::Manager.serialize_from_session { |email| User.find_by(email: email) }
 
 Feed.enabled = false
