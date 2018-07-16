@@ -37,7 +37,6 @@ class RevisionComparer
     def set_most_recent_and_revisions klass, id
       @most_recent = klass.find id
       @revisions = @most_recent.versions.not_creates
-
     rescue ActiveRecord::RecordNotFound
       reify_and_set_most_recent_and_revisions klass, id
     end

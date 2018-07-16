@@ -41,7 +41,6 @@ class TaxaController < ApplicationController
     else
       redirect_to root_path
     end
-
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :new
   end
@@ -63,7 +62,6 @@ class TaxaController < ApplicationController
         edit_summary: params[:edit_summary]
       redirect_to root_path
     end
-
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :edit
   end

@@ -19,7 +19,6 @@ module References
         end
 
       render plain: Exporters::Endnote::Formatter.format(references)
-
       rescue
         render plain: <<-MSG.squish
           Looks like something went wrong.
