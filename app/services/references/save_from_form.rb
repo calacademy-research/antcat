@@ -23,10 +23,10 @@ module References
         Reference.transaction do
           clear_document_params_if_necessary
           set_pagination
-          clear_nesting_reference_id unless @reference.kind_of? ::NestedReference
+          clear_nesting_reference_id unless @reference.is_a? ::NestedReference
           parse_author_names_string
-          set_journal if @reference.kind_of? ::ArticleReference
-          set_publisher if @reference.kind_of? ::BookReference
+          set_journal if @reference.is_a? ::ArticleReference
+          set_publisher if @reference.is_a? ::BookReference
 
           # Set attributes to make sure they're persisted in the form.
           @reference.attributes = params

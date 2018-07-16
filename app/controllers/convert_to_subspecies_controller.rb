@@ -9,7 +9,7 @@ class ConvertToSubspeciesController < ApplicationController
   # TODO move validation to model
   def create
     # Probably? At least according to the UI and the code breaks otherwise
-    unless @taxon.kind_of? Species
+    unless @taxon.is_a? Species
       @taxon.errors.add :base,
         "Taxon to be converted to a subspecies must be of rank species."
       render :new and return
@@ -30,7 +30,7 @@ class ConvertToSubspeciesController < ApplicationController
 
     @new_species = Taxon.find(params[:new_species_id])
 
-    unless @new_species.kind_of? Species
+    unless @new_species.is_a? Species
       @taxon.errors.add :base, "The new parent must be of rank species."
       render :new and return
     end

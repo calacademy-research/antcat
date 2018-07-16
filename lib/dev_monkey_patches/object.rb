@@ -13,7 +13,7 @@ module DevMonkeyPatches::Object
 
   # Find taxon by name or id.
   def dev_dev_taxon name_or_id
-    return Taxon.find(name_or_id) if name_or_id.kind_of? Numeric
+    return Taxon.find(name_or_id) if name_or_id.is_a? Numeric
 
     matches = Taxon.where(name_cache: name_or_id)
     case matches.size

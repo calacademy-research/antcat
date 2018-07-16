@@ -71,7 +71,7 @@ class Exporters::Antweb::Exporter
       @progress.increment unless Rails.env.test?
 
       reference = taxon.protonym.authorship.reference
-      reference_id = reference.kind_of?(MissingReference) ? nil : reference.id
+      reference_id = reference.is_a?(MissingReference) ? nil : reference.id
 
       parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon ? taxon.parent.current_valid_taxon : taxon.parent)
       parent_name = parent_taxon.try(:name).try(:name)

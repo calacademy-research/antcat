@@ -48,6 +48,9 @@ Performance/RedundantMerge:
 Style/AsciiComments:
   Enabled: false
 
+Style/ClassCheck:
+  EnforcedStyle: is_a?
+
 Style/CommentAnnotation:
   Enabled: false
 

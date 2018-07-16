@@ -406,28 +406,6 @@ Style/BracesAroundHashParameters:
 Style/ClassAndModuleChildren:
   Enabled: false
 
-# Offense count: 14
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: is_a?, kind_of?
-Style/ClassCheck:
-  Exclude:
-    - 'app/controllers/convert_to_subspecies_controller.rb'
-    - 'app/controllers/taxa_grab_bag_controller.rb'
-    - 'app/decorators/taxon_decorator/link_each_epithet.rb'
-    - 'app/helpers/taxon_helper.rb'
-    - 'app/models/status.rb'
-    - 'app/models/taxa/tribe.rb'
-    - 'app/services/exporters/antweb/exporter.rb'
-    - 'app/services/references/save_from_form.rb'
-    - 'lib/dev_monkey_patches/object.rb'
-    - 'spec/factories/taxa.rb'
-
-# Offense count: 2
-Style/ClassVars:
-  Exclude:
-    - 'spec/support/deferred_garbage_collection.rb'
-
 # Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.

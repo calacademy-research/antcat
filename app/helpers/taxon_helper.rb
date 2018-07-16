@@ -36,7 +36,7 @@ module TaxonHelper
   end
 
   def default_name_string taxon
-    return unless taxon.kind_of?(SpeciesGroupTaxon) || taxon.is_a?(Subgenus)
+    return unless taxon.is_a?(SpeciesGroupTaxon) || taxon.is_a?(Subgenus)
     parent = Taxon.find params[:parent_id]
     parent.name.name
   end

@@ -9,7 +9,7 @@ class TaxonDecorator::LinkEachEpithet
   # This links the different parts of the binomial name. Only applicable to
   # species and below, since higher ranks consists of a single word.
   def call
-    return @taxon.decorate.link_to_taxon unless @taxon.kind_of? SpeciesGroupTaxon
+    return @taxon.decorate.link_to_taxon unless @taxon.is_a? SpeciesGroupTaxon
     return nonconforming_name_header_link(@taxon) if @taxon.name.nonconforming_name?
 
     string = genus_link_or_blank_string @taxon
