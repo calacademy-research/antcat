@@ -64,7 +64,7 @@ class Status
   end
 
   def includes? identifier
-    @hash.values.include? identifier
+    @hash.value?(identifier)
   end
 
   def option_for_select

@@ -41,7 +41,7 @@ module References
         params[:q] ||= ''
         params[:q].strip!
 
-        if params[:q].match(/^\d{5,}$/)
+        if params[:q] =~ /^\d{5,}$/
           id = params[:q]
           return redirect_to reference_path(id) if Reference.exists? id
         end

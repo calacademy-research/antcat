@@ -283,7 +283,7 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Max: 53
 
-# Offense count: 116
+# Offense count: 118
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
   Max: 111
@@ -363,30 +363,12 @@ Naming/VariableNumber:
   Exclude:
     - 'spec/models/change_spec.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Performance/InefficientHashSearch:
-  Exclude:
-    - 'app/models/status.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Performance/RangeInclude:
-  Exclude:
-    - 'app/models/reference_document.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Performance/RedundantBlockCall:
   Exclude:
     - 'app/models/database_scripts/renderers/as_csv.rb'
     - 'app/models/database_scripts/renderers/as_table.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Performance/RedundantMatch:
-  Exclude:
-    - 'app/controllers/references/search_controller.rb'
 
 # Offense count: 5
 # Cop supports --auto-correct.
@@ -895,7 +877,7 @@ Style/ZeroLengthPredicate:
     - 'app/controllers/api/v1/taxa_controller.rb'
     - 'app/controllers/tooltips_controller.rb'
 
-# Offense count: 1217
+# Offense count: 1221
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:

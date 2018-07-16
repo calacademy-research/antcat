@@ -13,10 +13,10 @@ describe PlaceObserver do
     it "invalidates the cache for the references that use the place" do
       publisher = create :publisher, place: place
       references = [
-                     create(:book_reference, publisher: publisher),
-                     create(:book_reference, publisher: publisher),
-                     create(:book_reference)
-                   ]
+        create(:book_reference, publisher: publisher),
+        create(:book_reference, publisher: publisher),
+        create(:book_reference)
+      ]
 
       references.each { |reference| References::Cache::Regenerate[reference] }
       references.each { |reference| expect(reference.formatted_cache).not_to be_nil }

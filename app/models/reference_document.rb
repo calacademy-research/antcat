@@ -62,7 +62,7 @@ class ReferenceDocument < ApplicationRecord
       # a URL with spaces is valid, but URI.parse rejects it
       uri = URI.parse url.gsub(/ /, '%20')
       response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
-      errors.add :url, 'was not found' unless (200..399).include? response_code
+      errors.add :url, 'was not found' unless (200..399).cover? response_code
     rescue SocketError, URI::InvalidURIError, ArgumentError
       errors.add :url, 'is not in a valid format'
     end
