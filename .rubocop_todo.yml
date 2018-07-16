@@ -121,9 +121,6 @@ Layout/ExtraSpacing:
   Exclude:
     - 'app/database_scripts/database_scripts/extant_taxa_in_fossil_genera.rb'
     - 'app/decorators/feedback_decorator.rb'
-    - 'app/services/references/reference_similarity.rb'
-    - 'spec/models/taxa/tribe_spec.rb'
-    - 'spec/services/taxa/what_links_here_spec.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -261,15 +258,6 @@ Layout/SpaceAroundOperators:
     - 'app/decorators/feedback_decorator.rb'
     - 'spec/services/references/reference_similarity_spec.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces.
-# SupportedStyles: space, no_space
-# SupportedStylesForEmptyBraces: space, no_space
-Layout/SpaceBeforeBlockBraces:
-  Exclude:
-    - 'app/admin/dashboard.rb'
-
 # Offense count: 3
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -303,21 +291,6 @@ Layout/SpaceInsideBlockBraces:
     - 'spec/models/taxa/tribe_spec.rb'
     - 'spec/services/markdowns/mentioned_users_spec.rb'
     - 'spec/services/taxa/any_non_taxt_references_spec.rb'
-
-# Offense count: 14
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBraces: space, no_space
-Layout/SpaceInsideHashLiteralBraces:
-  Exclude:
-    - 'app/controllers/references/exports_controller.rb'
-    - 'app/services/exporters/antweb/exporter.rb'
-    - 'spec/decorators/taxon_decorator/statistics_spec.rb'
-    - 'spec/models/taxa/family_spec.rb'
-    - 'spec/models/taxa/genus_group/genus_spec.rb'
-    - 'spec/models/taxa/tribe_spec.rb'
-    - 'spec/services/names/picklist_matching_spec.rb'
 
 # Offense count: 30
 # Cop supports --auto-correct.

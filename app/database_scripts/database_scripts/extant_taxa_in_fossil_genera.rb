@@ -14,7 +14,7 @@ module DatabaseScripts
           [ markdown_taxon_link(taxon),
             taxon.status,
             markdown_taxon_link(taxon.genus),
-            taxon.genus.status  ]
+            taxon.genus.status ]
         end
       end
     end

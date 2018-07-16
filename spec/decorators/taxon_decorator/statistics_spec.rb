@@ -125,7 +125,7 @@ describe TaxonDecorator::Statistics do
         extant: {
           genera: { 'valid' => 1, 'homonym' => 2 },
           species: { 'valid' => 2 },
-          subspecies: { 'valid' => 3}
+          subspecies: { 'valid' => 3 }
         }
       }
       expect(described_class[statistics, include_invalid: false])

@@ -20,7 +20,7 @@ describe Family do
           genera: { 'valid' => 1, 'homonym' => 1 }
         },
         fossil: {
-          subfamilies: {'valid' => 2 }
+          subfamilies: { 'valid' => 2 }
         }
       )
     end

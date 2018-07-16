@@ -71,7 +71,7 @@ describe Names::PicklistMatching do
           id: acanthognathus.id,
           name: 'Acanthognathus laevigatus',
           label: '<b><i>Acanthognathus laevigatus</i></b>',
-          value: acanthognathus.name},
+          value: acanthognathus.name },
         {
           id: acropyga.id,
           name: 'Acropyga dubitata',

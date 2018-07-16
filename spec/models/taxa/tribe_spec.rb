@@ -33,14 +33,14 @@ describe Tribe do
       create :species, :synonym, genus: genus
 
       expect(tribe.statistics).to eq extant: {
-        genera: {"valid" => 1},
-        species: {"synonym" => 1, "valid" => 1}
+        genera: { "valid" => 1 },
+        species: { "synonym" => 1, "valid" => 1 }
       }
     end
   end
 
   describe "#update_parent" do
-    let(:new_subfamily) {  create :subfamily }
+    let(:new_subfamily) { create :subfamily }
 
     it "assigns the subfamily when parent is a tribe" do
       tribe.update_parent new_subfamily

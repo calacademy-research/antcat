@@ -89,7 +89,7 @@ describe Genus do
         expect(genus.statistics).to eq(
           extant: {
             species: { 'valid' => 1 },
-            subspecies: {'valid' => 1 }
+            subspecies: { 'valid' => 1 }
           },
           fossil: {
             species: { 'valid' => 1 },

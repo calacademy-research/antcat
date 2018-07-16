@@ -38,7 +38,7 @@ describe Taxa::WhatLinksHere do
       context "when there are references in taxts" do
         let!(:eciton) { create_genus 'Eciton' }
 
-        before { eciton.update_attribute :type_taxt, "{tax #{atta.id}}"  }
+        before { eciton.update_attribute :type_taxt, "{tax #{atta.id}}" }
 
         specify do
           expect(described_class[atta]).to match_array [
