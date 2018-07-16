@@ -36,7 +36,7 @@ module TaxonBrowserHelper
     links.reject(&:blank?).join.html_safe
   end
 
- private
+  private
 
     # Only for Formicidae/subfamilies.
     def incertae_sedis_link selected

@@ -4,6 +4,7 @@ AllCops:
   Exclude:
     - 'Cheffile'
     - 'db/schema.rb'
+    - 'bin/setup'
     - 'db/data/**/*'
     - 'db/migrate/**/*'
     - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'

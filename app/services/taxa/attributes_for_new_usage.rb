@@ -41,12 +41,12 @@ module Taxa
       }
     end
 
-   private
+    private
 
-     attr_reader :new_comb, :old_comb
+      attr_reader :new_comb, :old_comb
 
-     def name_id
-       new_comb.name ? new_comb.name.id : old_comb.name.id
-     end
+      def name_id
+        new_comb.name ? new_comb.name.id : old_comb.name.id
+      end
   end
 end
