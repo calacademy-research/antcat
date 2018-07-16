@@ -45,30 +45,6 @@ Layout/ElseAlignment:
   Exclude:
     - 'app/decorators/feedback_decorator.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAdjacentOneLineDefs, NumberOfEmptyLines.
-Layout/EmptyLineBetweenDefs:
-  Exclude:
-    - 'app/database_scripts/database_scripts/incomplete_synonyms.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Layout/EmptyLines:
-  Exclude:
-    - 'app/database_scripts/database_scripts/incomplete_synonyms.rb'
-    - 'app/services/markdowns/render.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, no_empty_lines
-Layout/EmptyLinesAroundBlockBody:
-  Exclude:
-    - 'app/admin/dashboard.rb'
-    - 'app/admin/user.rb'
-    - 'config.ru'
-
 # Offense count: 4
 # Cop supports --auto-correct.
 Layout/EmptyLinesAroundExceptionHandlingKeywords:
@@ -211,24 +187,6 @@ Layout/RescueEnsureAlignment:
 # SupportedStylesForEmptyBrackets: space, no_space
 Layout/SpaceInsideArrayLiteralBrackets:
   Enabled: false
-
-# Offense count: 16
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.
-# SupportedStyles: space, no_space
-# SupportedStylesForEmptyBraces: space, no_space
-Layout/SpaceInsideBlockBraces:
-  Exclude:
-    - 'app/database_scripts/database_scripts/genus_gender_endings.rb'
-    - 'app/database_scripts/database_scripts/taxa_with_the_same_name_cache_value.rb'
-    - 'app/database_scripts/database_scripts/taxa_with_the_same_name_object.rb'
-    - 'spec/controllers/catalog_controller_spec.rb'
-    - 'spec/decorators/reference_decorator_spec.rb'
-    - 'spec/decorators/taxon_decorator/taxon_status_spec.rb'
-    - 'spec/models/taxa/genus_group/genus_spec.rb'
-    - 'spec/models/taxa/tribe_spec.rb'
-    - 'spec/services/markdowns/mentioned_users_spec.rb'
-    - 'spec/services/taxa/any_non_taxt_references_spec.rb'
 
 # Offense count: 30
 # Cop supports --auto-correct.
@@ -623,14 +581,6 @@ Style/ClassCheck:
 Style/ClassVars:
   Exclude:
     - 'spec/support/deferred_garbage_collection.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/ColonMethodCall:
-  Exclude:
-    - 'app/controllers/database_scripts_controller.rb'
-    - 'app/models/database_scripts/end_data.rb'
-    - 'app/services/types/expand_institution_abbreviations.rb'
 
 # Offense count: 4
 # Cop supports --auto-correct.

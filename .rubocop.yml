@@ -3,6 +3,7 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   Exclude:
     - 'Cheffile'
+    - 'config.ru'
     - 'db/schema.rb'
     - 'bin/setup'
     - 'db/data/**/*'

@@ -26,7 +26,7 @@ module Types
       def expand_institution_abbreviations!
         content.gsub!(/\b(#{institutions_regex})#{STOP_REGEX}/) do |abbr|
           name = Institution.find_by(abbreviation: abbr).name
-          "<abbr title='#{CGI::escapeHTML(name)}'>#{abbr}</abbr>"
+          "<abbr title='#{CGI.escapeHTML(name)}'>#{abbr}</abbr>"
         end
 
         content

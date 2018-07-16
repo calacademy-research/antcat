@@ -7,7 +7,7 @@ describe Genus do
   it { is_expected.to have_many :subspecies }
 
   let(:genus) { create :genus, name: create(:genus_name, name: 'Atta') }
-  let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae')}
+  let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae') }
   let(:tribe) { create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily }
   let(:genus_with_tribe) { create :genus, name: create(:genus_name, name: 'Atta'), tribe: tribe }
 
@@ -252,7 +252,7 @@ describe Genus do
   end
 
   describe "#find_epithet_in_genus" do
-    let!(:species) { create_species 'Atta serratula'}
+    let!(:species) { create_species 'Atta serratula' }
 
     it "returns nil if nothing matches" do
       expect(genus.find_epithet_in_genus 'sdfsdf').to eq nil

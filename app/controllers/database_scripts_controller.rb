@@ -28,7 +28,7 @@ class DatabaseScriptsController < ApplicationController
   private
 
     def set_script
-      @script = DatabaseScript::new_from_filename_without_extension params[:id]
+      @script = DatabaseScript.new_from_filename_without_extension params[:id]
     rescue DatabaseScript::ScriptNotFound
       raise ActionController::RoutingError.new("Not Found")
     end

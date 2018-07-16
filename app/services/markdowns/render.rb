@@ -36,7 +36,6 @@ module Markdowns
           underline: false
         }
 
-
         AntcatMarkdown.new options
       end
 

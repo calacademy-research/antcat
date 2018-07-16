@@ -2,8 +2,8 @@ require "spec_helper"
 
 describe Markdowns::MentionedUsers do
   describe "#call" do
-    let!(:batiatus) { create :user, name: "Batiatus"}
-    let!(:joffre) { create :user, name: "Joffre"}
+    let!(:batiatus) { create :user, name: "Batiatus" }
+    let!(:joffre) { create :user, name: "Joffre" }
 
     it "returns existing mentioned users without duplicates" do
       expect(described_class[<<-STRING]).to eq [batiatus, joffre]

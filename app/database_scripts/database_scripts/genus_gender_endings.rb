@@ -41,7 +41,7 @@ module DatabaseScripts
         string << "\n#### #{gender.to_s.humanize}\n"
         group.each do |status, taxa|
           string << "\n###### #{status.to_s.humanize}\n" <<
-            taxa.map { |taxon| "%taxon#{taxon.id}"}.join(", ") << "\n"
+            taxa.map { |taxon| "%taxon#{taxon.id}" }.join(", ") << "\n"
         end
       end
       string
@@ -78,7 +78,7 @@ module DatabaseScripts
       def sort_results output
         output.each_value do |gender|
           gender.each_value do |by_status|
-            by_status.sort_by! {|taxon| taxon.name_cache }
+            by_status.sort_by! { |taxon| taxon.name_cache }
           end
         end
         output
