@@ -48,7 +48,7 @@ AntCat.deselect = -> $('.ui-selecting').removeClass('ui-selecting')
 
 # For at.js. Super comlicated way of saying "allow spaces and some other characters".
 AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
-  regexp = new RegExp(flag + '([A-Za-z0-9_,: \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
+  regexp = new RegExp(flag + '([A-Za-z0-9_.,: \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
   match = regexp.exec(subtext)
   if match
     match[2] || match[1]
