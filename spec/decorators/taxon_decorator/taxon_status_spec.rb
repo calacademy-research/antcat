@@ -141,7 +141,7 @@ describe TaxonDecorator::TaxonStatus do
     end
 
     context "when taxon is `invalid?`" do
-       let!(:taxon) { create :family, status: "excluded from Formicidae" }
+      let!(:taxon) { create :family, status: "excluded from Formicidae" }
 
       specify { expect(taxon.decorate.taxon_status).to eq "excluded from Formicidae" }
     end

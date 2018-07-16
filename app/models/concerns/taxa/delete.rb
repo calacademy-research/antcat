@@ -19,7 +19,7 @@ module Taxa::Delete
   end
 
   def delete_impact_list
-   Taxa::DeleteImpactList[self]
+    Taxa::DeleteImpactList[self]
   end
 
   def delete_taxon_and_children

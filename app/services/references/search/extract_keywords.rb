@@ -60,17 +60,17 @@ module References
         # adding too much logic. On the wishlist: a gem to take care of this so that
         # we do not have to re-invent the wheel.
         def regexes
-        [
-          ["year",   '(?<start_year>\d{4})-(?<end_year>\d{4})'],             # year:2003-2015
-          ["year",   '(\d{4})'],                                             # year:2003
-          ["type",   '(?<reference_type>nested|unknown|nomissing|missing)'], # type:nested
-          ["title",  '"(.*?)"'],                                             # title:"Iceland"
-          ["title",  '\'(.*?)\''],                                           # title:'Iceland'
-          ["title",  '([^ ]+)'], # **                                        # title:Iceland
-          ["author", '"(.*?)"'],                                             # author:"Barry Bolton"
-          ["author", '\'(.*?)\''],                                           # author:'Barry Bolton'
-          ["author", '([^ ]+)'] # **                                         # author:Bolton
-        ]
+          [
+            ["year",   '(?<start_year>\d{4})-(?<end_year>\d{4})'],             # year:2003-2015
+            ["year",   '(\d{4})'],                                             # year:2003
+            ["type",   '(?<reference_type>nested|unknown|nomissing|missing)'], # type:nested
+            ["title",  '"(.*?)"'],                                             # title:"Iceland"
+            ["title",  '\'(.*?)\''],                                           # title:'Iceland'
+            ["title",  '([^ ]+)'], # **                                        # title:Iceland
+            ["author", '"(.*?)"'],                                             # author:"Barry Bolton"
+            ["author", '\'(.*?)\''],                                           # author:'Barry Bolton'
+            ["author", '([^ ]+)'] # **                                         # author:Bolton
+          ]
 
         # ** = stops matching at space or end of string
         end

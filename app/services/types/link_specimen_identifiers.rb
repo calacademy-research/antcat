@@ -29,7 +29,7 @@ module Types
     }x
 
     def initialize content
-     @content = content
+      @content = content
     end
 
     def call

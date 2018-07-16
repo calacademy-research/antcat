@@ -13,15 +13,15 @@ class FeedbackDecorator < Draper::Decorator
 
   def format_feedback_for_email
     from = if user
-              user.angle_bracketed_email
+             user.angle_bracketed_email
            else
-              format_unregistered_submitter
+             format_unregistered_submitter
             end
 
     page = if feedback.page
-            "http://antcat.org/#{feedback.page}"
+             "http://antcat.org/#{feedback.page}"
            else
-            "(none)"
+             "(none)"
           end
 
     <<-MESSAGE
