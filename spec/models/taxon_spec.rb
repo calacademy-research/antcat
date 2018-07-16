@@ -153,7 +153,7 @@ describe Taxon do
     it "shows the items in the order in which they were added to the taxon" do
       3.times { |number| taxon.history_items.create! taxt: "#{number}" }
 
-      expect(taxon.history_items.map(&:taxt)).to eq ['0','1','2']
+      expect(taxon.history_items.map(&:taxt)).to eq ['0', '1', '2']
     end
   end
 
@@ -174,7 +174,7 @@ describe Taxon do
         taxon.reference_sections.create! references_taxt: "#{number}"
       end
 
-      expect(taxon.reference_sections.map(&:references_taxt)).to eq ['0','1','2']
+      expect(taxon.reference_sections.map(&:references_taxt)).to eq ['0', '1', '2']
     end
   end
 

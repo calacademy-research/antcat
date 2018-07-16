@@ -184,13 +184,6 @@ Layout/IndentationWidth:
     - 'app/services/types/link_specimen_identifiers.rb'
     - 'spec/decorators/taxon_decorator/taxon_status_spec.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Layout/LeadingCommentSpace:
-  Exclude:
-    - 'Cheffile'
-    - 'config/application.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Layout/MultilineBlockLayout:
@@ -243,29 +236,6 @@ Layout/RescueEnsureAlignment:
     - 'app/controllers/references/exports_controller.rb'
     - 'app/decorators/application_decorator.rb'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-Layout/SpaceAfterComma:
-  Exclude:
-    - 'app/services/exporters/antweb/monkey_patch_taxon.rb'
-    - 'spec/models/taxon_spec.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment.
-Layout/SpaceAroundOperators:
-  Exclude:
-    - 'app/decorators/feedback_decorator.rb'
-    - 'spec/services/references/reference_similarity_spec.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: require_no_space, require_space
-Layout/SpaceInLambdaLiteral:
-  Exclude:
-    - 'app/models/taxon.rb'
-
 # Offense count: 67
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBrackets.
@@ -299,16 +269,6 @@ Layout/SpaceInsidePercentLiteralDelimiters:
     - 'config/initializers/assets.rb'
     - 'lib/tasks/import_sample_data.rake'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: final_newline, final_blank_line
-Layout/TrailingBlankLines:
-  Exclude:
-    - 'app/controllers/references/history_controller.rb'
-    - 'app/decorators/activity_decorator.rb'
-    - 'app/services/antcat_version_link.rb'
-
 # Offense count: 11
 Lint/AmbiguousBlockAssociation:
   Exclude:
@@ -336,11 +296,6 @@ Lint/AssignmentInCondition:
     - 'app/models/database_scripts/end_data.rb'
     - 'app/models/reference.rb'
     - 'lib/taxt_converter.rb'
-
-# Offense count: 1
-Lint/Debugger:
-  Exclude:
-    - 'features/step_definitions/debug_steps.rb'
 
 # Offense count: 1
 Lint/EmptyWhen:

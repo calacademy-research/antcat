@@ -12,7 +12,7 @@ class FeedbackDecorator < Draper::Decorator
   end
 
   def format_feedback_for_email
-    from =  if user
+    from = if user
               user.angle_bracketed_email
             else
               format_unregistered_submitter
