@@ -13,7 +13,7 @@ end
       parent :institution, institution
     end
 
-  crumb :new_institution do |institution|
+  crumb :new_institution do |_institution|
     link "New"
     parent :institutions
   end

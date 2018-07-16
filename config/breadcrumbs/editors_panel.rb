@@ -42,7 +42,7 @@ end
       parent :issue, issue
     end
 
-  crumb :new_issue do |issue|
+  crumb :new_issue do |_issue|
     link "New"
     parent :issues
   end
@@ -102,7 +102,7 @@ end
       parent :site_notice, site_notice
     end
 
-  crumb :new_site_notice do |site_notice|
+  crumb :new_site_notice do |_site_notice|
     link "New"
     parent :site_notices
   end

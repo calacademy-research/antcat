@@ -1,5 +1,5 @@
 module DatabaseScripts::Renderers::AsTable
-  def as_table &block
+  def as_table
     renderer = Renderer.new cached_results
     yield renderer
     renderer.render
@@ -49,7 +49,7 @@ module DatabaseScripts::Renderers::AsTable
 
       attr :header_content, :body_content
 
-      def row result, *fields
+      def row _result, *fields
         string = "<tr>"
         fields.each { |item| string << "<td>#{item}</td>" }
         body_content << string << "</tr>\n"

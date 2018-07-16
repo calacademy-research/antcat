@@ -351,34 +351,6 @@ Lint/StringConversionInInterpolation:
   Exclude:
     - 'app/database_scripts/database_scripts/broken_taxt_tags.rb'
 
-# Offense count: 18
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
-Lint/UnusedBlockArgument:
-  Exclude:
-    - 'app/database_scripts/database_scripts/duplicated_synonyms.rb'
-    - 'app/helpers/layouts_helper.rb'
-    - 'app/services/names/epithet_search_set.rb'
-    - 'config/breadcrumbs/catalog.rb'
-    - 'config/breadcrumbs/editors_panel.rb'
-    - 'config/breadcrumbs/institutions.rb'
-    - 'config/initializers/hash.rb'
-    - 'features/step_definitions/advanced_search_steps.rb'
-    - 'features/support/hooks.rb'
-    - 'lib/taxt_converter.rb'
-    - 'spec/factories/names.rb'
-    - 'spec/services/names/what_links_here_spec.rb'
-
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'app/helpers/application_helper.rb'
-    - 'app/models/database_scripts/renderers/as_csv.rb'
-    - 'app/models/database_scripts/renderers/as_table.rb'
-    - 'app/services/exporters/antweb/exporter.rb'
-
 # Offense count: 2
 Lint/UriEscapeUnescape:
   Exclude:

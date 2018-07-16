@@ -14,7 +14,7 @@ module LayoutsHelper
   end
 
   def subnavigation_menu *items
-    content_tag :span do |content|
+    content_tag :span do |_content|
       items.flatten.reduce(''.html_safe) do |string, item|
         string << ' | '.html_safe unless string.empty?
         string << item

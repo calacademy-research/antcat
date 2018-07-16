@@ -2,7 +2,7 @@ require_relative '../support/helpers/get_name_parts_helpers'
 
 FactoryBot.define do
   factory :name do
-    sequence(:name) { |n| raise }
+    sequence(:name) { |_n| raise }
     name_html { name }
     epithet { name }
     epithet_html { name_html }

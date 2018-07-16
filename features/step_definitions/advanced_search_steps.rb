@@ -11,7 +11,7 @@ Given(/^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/) d
   taxon.protonym.authorship.update! reference: reference
 end
 
-Given("there is an original combination of {string} described by {string} which was moved to {string}") do |original_combination, author, current_valid_taxon|
+Given("there is an original combination of {string} described by {string} which was moved to {string}") do |_original_combination, author, _current_valid_taxon|
   reference = create :article_reference
   bolton = create :author
   author_name = create :author_name, name: author, author: bolton

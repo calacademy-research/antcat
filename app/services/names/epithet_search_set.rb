@@ -68,7 +68,7 @@ module Names
             $1 + 'ae' + $2
           end
         end
-        epithets << epithet.gsub(/(#{consonants})ae(#{consonants})/) do |string|
+        epithets << epithet.gsub(/(#{consonants})ae(#{consonants})/) do |_string|
           $1 + 'e' + $2
         end
         epithets

@@ -65,7 +65,7 @@ module ApplicationHelper
     end
   end
 
-  def inline_expandable label = "Show more", &block
+  def inline_expandable label = "Show more"
     show_more = content_tag :a, class: "hide-when-expanded gray" do
                   content_tag :small, label
                 end

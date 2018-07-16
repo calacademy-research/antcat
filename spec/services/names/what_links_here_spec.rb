@@ -43,13 +43,13 @@ describe Names::WhatLinksHere do
       refs = described_class.new(name).send(:references_in_taxt)
 
       # Count the total referencing items.
-      expect(refs.size).to eq(taxt_fields.map { |klass, fields| fields.size }.sum)
+      expect(refs.size).to eq(taxt_fields.map { |_klass, fields| fields.size }.sum)
 
       # Count the total referencing items of each type.
       taxt_fields.each do |klass, fields|
-        fields.each do |field|
+        fields.each do |_field|
           expect(refs.select { |i| i[:table] == klass.table_name }.size).to eq(
-            taxt_fields.detect { |k, f| k == klass }[1].size
+            taxt_fields.detect { |k, _f| k == klass }[1].size
           )
         end
       end
