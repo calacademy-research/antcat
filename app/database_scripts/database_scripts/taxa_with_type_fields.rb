@@ -33,9 +33,9 @@ module DatabaseScripts
         ids = Taxon.where.not(verbatim_type_locality: [nil, '']).pluck(:id) +
           Taxon.where.not(type_specimen_code: [nil, '']).pluck(:id) +
           Taxon.where.not(type_specimen_repository: [nil, '']).pluck(:id)
-          Taxon.where.not(published_type_information: [nil, '']).pluck(:id)
-          Taxon.where.not(additional_type_information: [nil, '']).pluck(:id)
-          Taxon.where.not(type_notes: [nil, '']).pluck(:id)
+        Taxon.where.not(published_type_information: [nil, '']).pluck(:id)
+        Taxon.where.not(additional_type_information: [nil, '']).pluck(:id)
+        Taxon.where.not(type_notes: [nil, '']).pluck(:id)
         Taxon.where(id: ids.uniq)
       end
 

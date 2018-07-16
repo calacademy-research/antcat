@@ -179,7 +179,8 @@ describe Exporters::Antweb::Exporter do
         a_tribe = create :tribe
         a_reference_section = genus.reference_sections.create(
           title_taxt: "Subfamily and tribe {tax #{a_tribe.id}}",
-          references_taxt: "{ref #{a_reference.id}}: 766 (diagnosis);")
+          references_taxt: "{ref #{a_reference.id}}: 766 (diagnosis);"
+        )
         ref_author = a_reference.principal_author_last_name_cache
         ref_year = a_reference.citation_year
         ref_title = a_reference.title

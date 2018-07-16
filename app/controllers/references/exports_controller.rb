@@ -38,10 +38,10 @@ module References
         @reference = Reference.find params[:id]
       end
 
-    def all_references_for_endnote
-      Reference.joins(:author_names).
-        includes(:journal, :author_names, :document, [{ publisher: :place }]).
-        where.not(type: 'MissingReference').all
-    end
+      def all_references_for_endnote
+        Reference.joins(:author_names).
+          includes(:journal, :author_names, :document, [{ publisher: :place }]).
+          where.not(type: 'MissingReference').all
+      end
   end
 end

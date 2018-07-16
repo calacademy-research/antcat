@@ -86,12 +86,13 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address:              Rails.application.secrets.email_address,
-      port:                 Rails.application.secrets.email_port,
-      domain:               Rails.application.secrets.email_domain,
-      user_name:            Rails.application.secrets.email_user_name,
-      password:             Rails.application.secrets.email_password,
-      authentication:       Rails.application.secrets.email_authentication,
-      enable_starttls_auto: Rails.application.secrets.email_enable_starttls_auto }
+    port:                 Rails.application.secrets.email_port,
+    domain:               Rails.application.secrets.email_domain,
+    user_name:            Rails.application.secrets.email_user_name,
+    password:             Rails.application.secrets.email_password,
+    authentication:       Rails.application.secrets.email_authentication,
+    enable_starttls_auto: Rails.application.secrets.email_enable_starttls_auto
+  }
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false

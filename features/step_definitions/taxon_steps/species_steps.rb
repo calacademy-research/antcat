@@ -36,8 +36,7 @@ Given("there is an original species {string} with genus {string}") do |species_n
     status: Status::ORIGINAL_COMBINATION
 end
 
-Given("there is species {string} and another species {string} shared between protonym genus {string} and later genus {string}") do
-|protonym_species_name, valid_species_name, protonym_genus_name, valid_genus_name|
+Given("there is species {string} and another species {string} shared between protonym genus {string} and later genus {string}") do |protonym_species_name, valid_species_name, protonym_genus_name, valid_genus_name|
   proto_genus = create_genus protonym_genus_name
   proto_species = create_species protonym_species_name,
     genus: proto_genus,

@@ -23,7 +23,7 @@ Layout/CommentIndentation:
     - 'app/services/names/create_name_from_string.rb'
     - 'app/services/references/search/extract_keywords.rb'
 
-# Offense count: 8
+# Offense count: 7
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyleAlignWith, AutoCorrect, Severity.
 # SupportedStylesAlignWith: keyword, variable, start_of_line
@@ -34,7 +34,6 @@ Layout/EndAlignment:
     - 'app/models/database_scripts/end_data.rb'
     - 'app/services/taxa/any_non_taxt_references.rb'
     - 'app/services/taxa/what_links_here.rb'
-    - 'app/services/taxon_browser/tabs/extra_tab.rb'
     - 'features/step_definitions/feed_steps.rb'
 
 # Offense count: 2
@@ -68,10 +67,6 @@ Layout/IndentHeredoc:
 # SupportedStyles: normal, rails
 Layout/IndentationConsistency:
   Exclude:
-    - 'app/controllers/references/exports_controller.rb'
-    - 'app/database_scripts/database_scripts/taxa_with_type_fields.rb'
-    - 'app/helpers/taxon_select_helper.rb'
-    - 'app/services/references/save_from_form.rb'
     - 'config/breadcrumbs/antcat.rb'
     - 'config/breadcrumbs/catalog.rb'
     - 'config/breadcrumbs/changes.rb'
@@ -79,33 +74,6 @@ Layout/IndentationConsistency:
     - 'config/breadcrumbs/institutions.rb'
     - 'config/breadcrumbs/references.rb'
     - 'config/breadcrumbs/taxa.rb'
-    - 'spec/models/author_name_spec.rb'
-    - 'spec/models/database_scripts/renderers/as_csv_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Layout/MultilineBlockLayout:
-  Exclude:
-    - 'features/step_definitions/taxon_steps/species_steps.rb'
-
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: symmetrical, new_line, same_line
-Layout/MultilineHashBraceLayout:
-  Exclude:
-    - 'app/decorators/activity_decorator.rb'
-    - 'app/models/taxa/family.rb'
-    - 'config/environments/production.rb'
-    - 'spec/services/names/picklist_matching_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: symmetrical, new_line, same_line
-Layout/MultilineMethodCallBraceLayout:
-  Exclude:
-    - 'spec/services/exporters/antweb/formatter_spec.rb'
 
 # Offense count: 43
 # Cop supports --auto-correct.
@@ -252,7 +220,7 @@ Lint/Void:
 Metrics/AbcSize:
   Max: 92
 
-# Offense count: 229
+# Offense count: 230
 # Configuration parameters: CountComments, ExcludedMethods.
 # ExcludedMethods: refine
 Metrics/BlockLength:
@@ -831,8 +799,8 @@ Style/ZeroLengthPredicate:
     - 'app/controllers/api/v1/taxa_controller.rb'
     - 'app/controllers/tooltips_controller.rb'
 
-# Offense count: 1222
+# Offense count: 1220
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:
-  Max: 190
+  Max: 213

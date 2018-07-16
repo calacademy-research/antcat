@@ -58,7 +58,8 @@ class ActivityDecorator < Draper::Decorator
 
   # TODO move non-general actions to the templates.
   def action_to_verb
-    { create: "added",
+    {
+      create: "added",
       update: "edited",
       destroy: "deleted",
 
