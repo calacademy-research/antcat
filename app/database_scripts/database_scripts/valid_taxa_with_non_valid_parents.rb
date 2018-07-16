@@ -1,18 +1,18 @@
 module DatabaseScripts
   class ValidTaxaWithNonValidParents < DatabaseScript
     def genus_results
-      Genus.valid.self_join_on(:subfamily)
-        .where.not(taxa_self_join_alias: { status: Status::VALID })
+      Genus.valid.self_join_on(:subfamily).
+        where.not(taxa_self_join_alias: { status: Status::VALID })
     end
 
     def species_results
-      Species.valid.self_join_on(:genus)
-        .where.not(taxa_self_join_alias: { status: Status::VALID })
+      Species.valid.self_join_on(:genus).
+        where.not(taxa_self_join_alias: { status: Status::VALID })
     end
 
     def subspecies_results
-      Subspecies.valid.self_join_on(:species)
-        .where.not(taxa_self_join_alias: { status: Status::VALID })
+      Subspecies.valid.self_join_on(:species).
+        where.not(taxa_self_join_alias: { status: Status::VALID })
     end
 
     def render

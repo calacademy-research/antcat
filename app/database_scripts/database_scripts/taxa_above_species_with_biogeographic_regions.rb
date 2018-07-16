@@ -1,8 +1,8 @@
 module DatabaseScripts
   class TaxaAboveSpeciesWithBiogeographicRegions < DatabaseScript
     def results
-      Taxon.exclude_ranks(Species, Subspecies)
-        .where.not(biogeographic_region: ["", nil])
+      Taxon.exclude_ranks(Species, Subspecies).
+        where.not(biogeographic_region: ["", nil])
     end
 
     def render

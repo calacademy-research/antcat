@@ -4,8 +4,8 @@ describe References::DownloadsController do
   describe "GET show" do
     describe "reference without a document" do
       it "raises an error" do
-        expect { get :show, params: { id: 99999, file_name: "not_even_stubbed.pdf" } }
-          .to raise_error ActiveRecord::RecordNotFound
+        expect { get :show, params: { id: 99999, file_name: "not_even_stubbed.pdf" } }.
+          to raise_error ActiveRecord::RecordNotFound
       end
     end
 
@@ -14,8 +14,8 @@ describe References::DownloadsController do
 
       context "with full access" do
         before do
-          allow_any_instance_of(ReferenceDocument).to receive(:actual_url)
-            .and_return "http://localhost/file.pdf"
+          allow_any_instance_of(ReferenceDocument).to receive(:actual_url).
+            and_return "http://localhost/file.pdf"
           allow_any_instance_of(ReferenceDocument).to receive(:downloadable?).and_return true
         end
 

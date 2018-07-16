@@ -25,8 +25,8 @@ describe Exporters::Antweb::Exporter do
     let(:attini) { create_tribe 'Attini', subfamily: ponerinae }
 
     before do
-      allow_any_instance_of(described_class).to receive(:authorship_html_string)
-        .and_return '<span title="Bolton. Ants>Bolton, 1970</span>'
+      allow_any_instance_of(described_class).to receive(:authorship_html_string).
+        and_return '<span title="Bolton. Ants>Bolton, 1970</span>'
     end
 
     it "can export a subfamily" do
@@ -276,8 +276,8 @@ describe Exporters::Antweb::Exporter do
     end
 
     specify do
-      expect(export_taxon(taxon)[8])
-        .to eq '<span title="Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.">Forel, 1874</span>'
+      expect(export_taxon(taxon)[8]).
+        to eq '<span title="Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.">Forel, 1874</span>'
     end
   end
 

@@ -13,8 +13,8 @@ class Name < ApplicationRecord
 
   # TODO rename to avoid confusing this with [Rails'] dynamic finder methods.
   def self.find_by_name string
-    Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false)
-      .where(name: string).order('taxa.id DESC').order(:name).first
+    Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false).
+      where(name: string).order('taxa.id DESC').order(:name).first
   end
 
   def rank

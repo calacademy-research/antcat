@@ -18,8 +18,8 @@ describe Taxa::QuickSearch do
     end
 
     it "can search by prefix" do
-      expect(described_class['Monomor', search_type: 'beginning_with'])
-        .to eq [monomorium]
+      expect(described_class['Monomor', search_type: 'beginning_with']).
+        to eq [monomorium]
     end
 
     it "matches substrings" do
@@ -27,8 +27,8 @@ describe Taxa::QuickSearch do
     end
 
     it "returns multiple matches" do
-      expect(described_class['Mono', search_type: 'containing'])
-        .to match_array [rufa.genus, monomorium]
+      expect(described_class['Mono', search_type: 'containing']).
+        to match_array [rufa.genus, monomorium]
     end
 
     it "only returns subfamilies, tribes, genera, subgenera, species, and subspecies" do
@@ -47,8 +47,8 @@ describe Taxa::QuickSearch do
       lepta = create :subfamily, name: create(:name, name: "Lepta")
       lepte = create :subfamily, name: create(:name, name: "Lepte")
 
-      expect(described_class['Lept', search_type: 'beginning_with'])
-        .to eq [lepta, lepte, lepti]
+      expect(described_class['Lept', search_type: 'beginning_with']).
+        to eq [lepta, lepte, lepti]
     end
 
     describe "Finding full species name" do
@@ -57,13 +57,13 @@ describe Taxa::QuickSearch do
       end
 
       it "searches for whole names, even when using beginning with, even with trailing space" do
-        expect(described_class['Monoceros rufa ', search_type: 'beginning_with'])
-          .to eq [rufa]
+        expect(described_class['Monoceros rufa ', search_type: 'beginning_with']).
+          to eq [rufa]
       end
 
       it "searches for partial species names" do
-        expect(described_class['Monoceros ruf', search_type: 'beginning_with'])
-          .to eq [rufa]
+        expect(described_class['Monoceros ruf', search_type: 'beginning_with']).
+          to eq [rufa]
       end
     end
   end

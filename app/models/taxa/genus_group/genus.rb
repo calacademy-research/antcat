@@ -52,8 +52,8 @@ class Genus < GenusGroupTaxon
 
   def find_epithet_in_genus target_epithet_string
     Names::EpithetSearchSet[target_epithet_string].each do |epithet|
-      results = Taxon.joins(:name).where(genus: self)
-        .where("names.epithet = ?", epithet)
+      results = Taxon.joins(:name).where(genus: self).
+        where("names.epithet = ?", epithet)
       return results unless results.empty?
     end
     nil
@@ -64,8 +64,8 @@ class Genus < GenusGroupTaxon
   # results = with_names.where(['genus_id = ? AND epithet = ? and type="SubspeciesName"', genus.id, epithet])
   def find_subspecies_in_genus target_subspecies_string
     Names::EpithetSearchSet[target_subspecies_string].each do |epithet|
-      results = Taxon.joins(:name).where(genus: self)
-        .where("names.epithet = ?", epithet)
+      results = Taxon.joins(:name).where(genus: self).
+        where("names.epithet = ?", epithet)
       return results unless results.empty?
     end
     nil

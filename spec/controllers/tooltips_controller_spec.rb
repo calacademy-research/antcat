@@ -28,8 +28,8 @@ describe TooltipsController do
         end
 
         it "groups keys with namespaces" do
-          expect(@grouped["references"])
-            .to eq [references_authors, references_new_title, references_title]
+          expect(@grouped["references"]).
+            to eq [references_authors, references_new_title, references_title]
           expect(@grouped["taxa"]).to eq [taxa_type_species]
         end
 

@@ -17,12 +17,12 @@ describe Names::EpithetSearchSet do
 
     describe "first and second declension adjectives in -er" do
       it "handles (at least) coniger" do
-        expect(described_class['coniger'])
-          .to eq ['coniger', 'conigera', 'conigerum', 'conigaer']
-        expect(described_class['conigera'])
-          .to eq ['conigera', 'conigerus', 'conigerum', 'coniger', 'conigaera']
-        expect(described_class['conigerum'])
-          .to eq ['conigerum', 'conigerus', 'conigera', 'coniger', 'conigaerum']
+        expect(described_class['coniger']).
+          to eq ['coniger', 'conigera', 'conigerum', 'conigaer']
+        expect(described_class['conigera']).
+          to eq ['conigera', 'conigerus', 'conigerum', 'coniger', 'conigaera']
+        expect(described_class['conigerum']).
+          to eq ['conigerum', 'conigerus', 'conigera', 'coniger', 'conigaerum']
       end
     end
 

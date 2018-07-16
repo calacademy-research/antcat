@@ -45,8 +45,8 @@ describe Exporters::Antweb::Exporter do
       let(:genus) { build_stubbed :genus }
 
       it "delegates" do
-        expect_any_instance_of(Reference)
-          .to receive(:authors_for_keey).and_return 'Bolton'
+        expect_any_instance_of(Reference).
+          to receive(:authors_for_keey).and_return 'Bolton'
 
         expect(exporter.send :author_last_names_string, genus).to eq 'Bolton'
       end

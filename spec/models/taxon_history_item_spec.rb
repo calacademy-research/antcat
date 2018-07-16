@@ -35,8 +35,8 @@ describe TaxonHistoryItem do
 
     context "when a reference isn't found" do
       it "adds an error" do
-        expect { item.update_taxt_from_editable '{123}' }
-          .to change { item.reload.errors.empty? }.from(true).to(false)
+        expect { item.update_taxt_from_editable '{123}' }.
+          to change { item.reload.errors.empty? }.from(true).to(false)
       end
     end
   end

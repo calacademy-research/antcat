@@ -78,9 +78,9 @@ describe User do
     let(:issue) { create :issue }
 
     it "can tell" do
-      expect { user.notify_because :mentioned_in_thing, attached: issue, notifier: notifier }
-        .to change { user.send :already_notified_for_attached_by_user?, issue, notifier }
-        .from(false).to(true)
+      expect { user.notify_because :mentioned_in_thing, attached: issue, notifier: notifier }.
+        to change { user.send :already_notified_for_attached_by_user?, issue, notifier }.
+        from(false).to(true)
     end
   end
 end

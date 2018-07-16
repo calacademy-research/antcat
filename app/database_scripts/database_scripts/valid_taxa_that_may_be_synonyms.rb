@@ -15,9 +15,9 @@ module DatabaseScripts
                         ]
 
     def results
-      taxa = Taxon.joins(:history_items).valid.where(unresolved_homonym: false)
-        .where("taxon_history_items.taxt REGEXP ?", "junior synonym")
-        .order(:name_cache).distinct
+      taxa = Taxon.joins(:history_items).valid.where(unresolved_homonym: false).
+        where("taxon_history_items.taxt REGEXP ?", "junior synonym").
+        order(:name_cache).distinct
 
       taxa.to_a.reject { |taxon| probably_valid? taxon }
     end

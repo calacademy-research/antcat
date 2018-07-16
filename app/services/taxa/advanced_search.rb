@@ -25,10 +25,10 @@ module Taxa
       if params[:author_name].present?
         author_name = AuthorName.find_by(name: params[:author_name])
         return Taxon.none unless author_name.present?
-        query = query
-          .where('reference_author_names.author_name_id' => author_name.author.names)
-          .joins('JOIN reference_author_names ON reference_author_names.reference_id = `references`.id')
-          .joins('JOIN author_names ON author_names.id = reference_author_names.author_name_id')
+        query = query.
+          where('reference_author_names.author_name_id' => author_name.author.names).
+          joins('JOIN reference_author_names ON reference_author_names.reference_id = `references`.id').
+          joins('JOIN author_names ON author_names.id = reference_author_names.author_name_id')
       end
 
       if params[:year]

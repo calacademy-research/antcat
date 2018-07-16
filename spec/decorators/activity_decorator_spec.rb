@@ -27,14 +27,14 @@ describe ActivityDecorator do
     context "with a valid trackable" do
       it "links the trackable" do
         trackable_id = activity.trackable_id
-        expect(activity.decorate.link_trackable_if_exists "label")
-          .to eq %Q[<a href="/journals/#{trackable_id}">label</a>]
+        expect(activity.decorate.link_trackable_if_exists "label").
+          to eq %Q[<a href="/journals/#{trackable_id}">label</a>]
       end
 
       it "defaults labels to the id" do
         trackable_id = activity.trackable_id
-        expect(activity.decorate.link_trackable_if_exists)
-          .to eq %Q[<a href="/journals/#{trackable_id}">##{trackable_id}</a>]
+        expect(activity.decorate.link_trackable_if_exists).
+          to eq %Q[<a href="/journals/#{trackable_id}">##{trackable_id}</a>]
       end
 
       it "allows custom paths" do
@@ -82,8 +82,8 @@ describe ActivityDecorator do
       let(:activity) { create :activity, trackable: nil, action: "approve_all_changes" }
 
       it "returns the action" do
-        expect(activity.decorate.send :template_partial)
-          .to eq "activities/templates/actions/approve_all_changes"
+        expect(activity.decorate.send :template_partial).
+          to eq "activities/templates/actions/approve_all_changes"
       end
     end
 
@@ -93,15 +93,15 @@ describe ActivityDecorator do
       end
 
       it "returns the action" do
-        expect(activity.decorate.send :template_partial)
-          .to eq "activities/templates/actions/elevate_subspecies_to_species"
+        expect(activity.decorate.send :template_partial).
+          to eq "activities/templates/actions/elevate_subspecies_to_species"
       end
     end
 
     context "when there's a partial matching `trackable_type`" do
       it "returns that spaced and downcased" do
-        expect(activity.decorate.send :template_partial)
-          .to eq "activities/templates/journal"
+        expect(activity.decorate.send :template_partial).
+          to eq "activities/templates/journal"
       end
     end
 
@@ -109,8 +109,8 @@ describe ActivityDecorator do
       let(:activity) { create :activity, trackable: create(:citation) }
 
       it "returns the default template" do
-        expect(activity.decorate.send :template_partial)
-          .to eq "activities/templates/default"
+        expect(activity.decorate.send :template_partial).
+          to eq "activities/templates/default"
       end
     end
   end

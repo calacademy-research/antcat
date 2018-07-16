@@ -25,8 +25,8 @@ describe ArticleReferenceDecorator do
         reference = create :article_reference,
           title: 'Ants are my life', author_names: author_names,
           journal: create(:journal, name: '<script>'), citation_year: '2010d', series_volume_issue: '<', pagination: '>'
-        expect(reference.decorate.formatted)
-          .to eq 'Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt;.'
+        expect(reference.decorate.formatted).
+          to eq 'Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt;.'
       end
     end
   end

@@ -7,12 +7,12 @@ module Autocomplete
     end
 
     def call
-      Journal.select('journals.name, COUNT(*)')
-        .joins('LEFT OUTER JOIN `references` ON references.journal_id = journals.id')
-        .where('journals.name LIKE ?', search_expression)
-        .group('journals.id')
-        .order('COUNT(*) DESC')
-        .map(&:name)
+      Journal.select('journals.name, COUNT(*)').
+        joins('LEFT OUTER JOIN `references` ON references.journal_id = journals.id').
+        where('journals.name LIKE ?', search_expression).
+        group('journals.id').
+        order('COUNT(*) DESC').
+        map(&:name)
     end
 
     private

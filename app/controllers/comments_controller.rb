@@ -69,8 +69,8 @@ class CommentsController < ApplicationController
     end
 
     def commentable
-      comment_params[:commentable_type].constantize
-        .find comment_params[:commentable_id]
+      comment_params[:commentable_type].constantize.
+        find comment_params[:commentable_id]
     end
 
     def comment_params

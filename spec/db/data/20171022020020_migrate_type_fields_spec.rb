@@ -17,9 +17,9 @@ describe MigrateTypeFields do
         expect(taxon.type_specimen_code).to eq '  two  '
         expect(taxon.type_specimen_repository).to eq '  three  '
 
-        expect { described_class.up }
-          .to change { taxon.reload.published_type_information }
-          .to('one; two; three')
+        expect { described_class.up }.
+          to change { taxon.reload.published_type_information }.
+          to('one; two; three')
       end
     end
 
@@ -31,9 +31,9 @@ describe MigrateTypeFields do
           let!(:taxon) { create :genus, type_specimen_repository: 'Lol (CASC) and (AMK)' }
 
           it 'does not modify the field' do
-            expect { described_class.up }
-              .to change { taxon.reload.published_type_information }
-              .to(taxon.type_specimen_repository)
+            expect { described_class.up }.
+              to change { taxon.reload.published_type_information }.
+              to(taxon.type_specimen_repository)
           end
         end
       end
@@ -43,9 +43,9 @@ describe MigrateTypeFields do
 
         context 'when abbreviation does not exists' do
           it 'does not modify the field' do
-            expect { described_class.up }
-              .to change { taxon.reload.published_type_information }
-              .to(taxon.type_specimen_repository)
+            expect { described_class.up }.
+              to change { taxon.reload.published_type_information }.
+              to(taxon.type_specimen_repository)
           end
         end
 
@@ -53,8 +53,8 @@ describe MigrateTypeFields do
           let!(:casc) { create :institution, :casc }
 
           it 'replaces it with the abbreviation only' do
-            expect { described_class.up }
-              .to change { taxon.reload.published_type_information }.to('CASC')
+            expect { described_class.up }.
+              to change { taxon.reload.published_type_information }.to('CASC')
           end
         end
       end

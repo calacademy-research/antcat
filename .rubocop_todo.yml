@@ -39,13 +39,6 @@ Layout/CommentIndentation:
     - 'app/services/names/create_name_from_string.rb'
     - 'app/services/references/search/extract_keywords.rb'
 
-# Offense count: 220
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: leading, trailing
-Layout/DotPosition:
-  Enabled: false
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Layout/ElseAlignment:

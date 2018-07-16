@@ -47,8 +47,8 @@ describe SpeciesGroupName do
       let(:old_comb) { species }
 
       it "raises " do
-        expect { described_class.name_for_new_comb old_comb, new_comb_parent }
-          .to raise_error /uncombinable/
+        expect { described_class.name_for_new_comb old_comb, new_comb_parent }.
+          to raise_error /uncombinable/
       end
     end
   end

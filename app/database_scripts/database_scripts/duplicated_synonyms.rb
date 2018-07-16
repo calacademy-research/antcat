@@ -6,10 +6,10 @@ module DatabaseScripts
       synonyms = Synonym.all.to_a
       synonyms.each do |synonym, _i|
         next unless synonym
-        Synonym.where("junior_synonym_id = ?", synonym.junior_synonym_id)
-          .where("senior_synonym_id = ?", synonym.senior_synonym_id)
-          .where("id != ?", synonym.id)
-          .each do |duplicate|
+        Synonym.where("junior_synonym_id = ?", synonym.junior_synonym_id).
+          where("senior_synonym_id = ?", synonym.senior_synonym_id).
+          where("id != ?", synonym.id).
+          each do |duplicate|
             index = synonyms.index(duplicate)
             duplicates << duplicate
             synonyms[index] = nil

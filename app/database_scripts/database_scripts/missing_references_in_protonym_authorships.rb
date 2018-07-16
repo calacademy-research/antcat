@@ -4,9 +4,9 @@ module DatabaseScripts
     include ActionView::Helpers::UrlHelper
 
     def results
-      Protonym.joins(authorship: :reference)
-        .where("references.type = 'MissingReference'")
-        .joins(:name).order("names.name")
+      Protonym.joins(authorship: :reference).
+        where("references.type = 'MissingReference'").
+        joins(:name).order("names.name")
     end
 
     def render

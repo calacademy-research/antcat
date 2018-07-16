@@ -35,8 +35,8 @@ describe Reference do
       reference = create :reference, year: 2001
       stub_request(:any, "http://antwiki.org/1.pdf").to_return body: "Not Found", status: 404
 
-      expect { reference.document = ReferenceDocument.create url: 'http://antwiki.org/1.pdf' }
-        .to raise_error ActiveRecord::RecordNotSaved
+      expect { reference.document = ReferenceDocument.create url: 'http://antwiki.org/1.pdf' }.
+        to raise_error ActiveRecord::RecordNotSaved
     end
   end
 

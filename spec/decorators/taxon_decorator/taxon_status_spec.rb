@@ -55,8 +55,8 @@ describe TaxonDecorator::TaxonStatus do
         before { taxon.update! current_valid_taxon: senior_synonym }
 
         specify do
-          expect(taxon.decorate.taxon_status)
-            .to include %{unresolved junior homonym, junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Eciton</i></a>}
+          expect(taxon.decorate.taxon_status).
+            to include %{unresolved junior homonym, junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Eciton</i></a>}
         end
       end
     end
@@ -84,8 +84,8 @@ describe TaxonDecorator::TaxonStatus do
           junior_synonym = create_genus 'Atta', status: Status::SYNONYM
           create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
-          expect(junior_synonym.decorate.taxon_status)
-            .to include %{junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
+          expect(junior_synonym.decorate.taxon_status).
+            to include %{junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
         end
       end
 
@@ -103,8 +103,8 @@ describe TaxonDecorator::TaxonStatus do
           end
 
           specify do
-            expect(junior_synonym.decorate.taxon_status)
-              .to include %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+            expect(junior_synonym.decorate.taxon_status).
+              to include %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
           end
         end
 
@@ -121,8 +121,8 @@ describe TaxonDecorator::TaxonStatus do
           end
 
           it specify do
-            expect(junior_synonym.decorate.taxon_status)
-              .to include %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+            expect(junior_synonym.decorate.taxon_status).
+              to include %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
           end
         end
       end

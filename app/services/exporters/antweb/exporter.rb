@@ -30,11 +30,11 @@ class Exporters::Antweb::Exporter
       file.puts header
 
       taxa_ids.each_slice(1000) do |chunk|
-        Taxon.where(id: chunk)
-          .order("field(taxa.id, #{chunk.join(',')})")
-          .joins(protonym: [{ authorship: :reference }])
-          .includes(protonym: [{ authorship: :reference }])
-          .each do |taxon|
+        Taxon.where(id: chunk).
+          order("field(taxa.id, #{chunk.join(',')})").
+          joins(protonym: [{ authorship: :reference }]).
+          includes(protonym: [{ authorship: :reference }]).
+          each do |taxon|
           begin
             if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
               row = export_taxon taxon
@@ -62,8 +62,8 @@ class Exporters::Antweb::Exporter
   private
 
     def taxa_ids
-      Taxon.joins(protonym: [{ authorship: :reference }])
-        .order(:status).pluck(:id).reverse
+      Taxon.joins(protonym: [{ authorship: :reference }]).
+        order(:status).pluck(:id).reverse
     end
 
     def export_taxon taxon

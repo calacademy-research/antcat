@@ -29,8 +29,8 @@ describe AuthorName do
       before { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }
 
       it "reuses existing authors" do
-        expect { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }
-          .to_not change { described_class.count }.from(2)
+        expect { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }.
+          to_not change { described_class.count }.from(2)
       end
     end
 

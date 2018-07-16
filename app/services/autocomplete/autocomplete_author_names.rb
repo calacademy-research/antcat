@@ -7,10 +7,10 @@ module Autocomplete
     end
 
     def call
-      AuthorName.where('name LIKE ?', "%#{search_query}%")
-        .includes(:reference_author_names)
-        .order('reference_author_names.created_at DESC', 'name')
-        .map(&:name)
+      AuthorName.where('name LIKE ?', "%#{search_query}%").
+        includes(:reference_author_names).
+        order('reference_author_names.created_at DESC', 'name').
+        map(&:name)
     end
 
     private

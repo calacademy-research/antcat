@@ -1,13 +1,13 @@
 module DatabaseScripts
   class SpeciesAndSubspeciesWithSynonymsNotInTheSameGenus < DatabaseScript
     def senior_synonyms
-      Taxon.where(type: ['Species', 'Subspecies']).joins(:junior_synonyms)
-        .where('junior_synonyms_taxa.genus_id != taxa.genus_id').distinct
+      Taxon.where(type: ['Species', 'Subspecies']).joins(:junior_synonyms).
+        where('junior_synonyms_taxa.genus_id != taxa.genus_id').distinct
     end
 
     def junior_synonyms
-      Taxon.where(type: ['Species', 'Subspecies']).joins(:senior_synonyms)
-        .where('senior_synonyms_taxa.genus_id != taxa.genus_id').distinct
+      Taxon.where(type: ['Species', 'Subspecies']).joins(:senior_synonyms).
+        where('senior_synonyms_taxa.genus_id != taxa.genus_id').distinct
     end
 
     def render

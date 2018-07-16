@@ -6,8 +6,8 @@ describe Taxon do
   it { is_expected.to allow_value(nil).for :type_name }
   it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
   it do
-    is_expected.to validate_inclusion_of(:biogeographic_region)
-      .in_array(BiogeographicRegion::REGIONS).allow_nil
+    is_expected.to validate_inclusion_of(:biogeographic_region).
+      in_array(BiogeographicRegion::REGIONS).allow_nil
   end
   it { is_expected.to have_many :history_items }
   it { is_expected.to have_many :reference_sections }
@@ -45,8 +45,8 @@ describe Taxon do
       let!(:atta_major) { create_species "Atta major", genus: atta }
 
       it "handles self-referential condition" do
-        extant_with_fossil_parent = described_class.self_join_on(:genus)
-          .where(fossil: false, taxa_self_join_alias: { fossil: true })
+        extant_with_fossil_parent = described_class.self_join_on(:genus).
+          where(fossil: false, taxa_self_join_alias: { fossil: true })
         expect(extant_with_fossil_parent.count).to eq 1
         expect(extant_with_fossil_parent.first).to eq atta_major
 
@@ -75,13 +75,13 @@ describe Taxon do
         end
 
         it "handles symbols" do
-          expect(unique_ranks described_class.ranks(:species, :Genus))
-            .to eq ["Genus", "Species"]
+          expect(unique_ranks described_class.ranks(:species, :Genus)).
+            to eq ["Genus", "Species"]
         end
 
         it "handles strings" do
-          expect(unique_ranks described_class.ranks("Species", "genus"))
-            .to eq ["Genus", "Species"]
+          expect(unique_ranks described_class.ranks("Species", "genus")).
+            to eq ["Genus", "Species"]
         end
 
         it "handles single items" do
@@ -145,8 +145,8 @@ describe Taxon do
       let!(:history_item) { taxon.history_items.create! taxt: 'taxt' }
 
       it "cascades to delete history items" do
-        expect { taxon.destroy }
-          .to change { TaxonHistoryItem.exists? history_item.id }.from(true).to(false)
+        expect { taxon.destroy }.
+          to change { TaxonHistoryItem.exists? history_item.id }.from(true).to(false)
       end
     end
 
@@ -164,8 +164,8 @@ describe Taxon do
       let!(:reference_section) { taxon.reference_sections.create! references_taxt: 'foo' }
 
       it "cascades to delete the reference sections" do
-        expect { taxon.destroy }
-          .to change { ReferenceSection.exists? reference_section.id }.from(true).to(false)
+        expect { taxon.destroy }.
+          to change { ReferenceSection.exists? reference_section.id }.from(true).to(false)
       end
     end
 
@@ -181,8 +181,8 @@ describe Taxon do
   describe "#author_citation" do
     it "delegates to the protonym" do
       genus = build_stubbed :genus
-      expect_any_instance_of(Reference)
-        .to receive(:keey_without_letters_in_year).and_return 'Bolton 2005'
+      expect_any_instance_of(Reference).
+        to receive(:keey_without_letters_in_year).and_return 'Bolton 2005'
 
       expect(genus.author_citation).to eq 'Bolton 2005'
     end
@@ -192,8 +192,8 @@ describe Taxon do
       let(:protonym_name) { create :species_name, name: 'Eciton minor' }
 
       it "surrounds it in parentheses" do
-        expect_any_instance_of(Reference)
-          .to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
+        expect_any_instance_of(Reference).
+          to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
 
         expect(species.author_citation).to eq '(Bolton, 2005)'
       end
@@ -204,8 +204,8 @@ describe Taxon do
       let(:protonym_name) { create :subspecies_name, name: 'Atta minor minus' }
 
       it "doesn't surround in parentheses" do
-        expect_any_instance_of(Reference)
-          .to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
+        expect_any_instance_of(Reference).
+          to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
 
         expect(species.protonym).to receive(:name).and_return protonym_name
         expect(species.author_citation).to eq 'Bolton, 2005'
