@@ -39,6 +39,12 @@ Layout/MultilineMethodCallIndentation:
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
+Performance/RedundantBlockCall:
+  Enabled: false
+
+Performance/RedundantMerge:
+  Enabled: false
+
 Style/AsciiComments:
   Enabled: false
 

@@ -225,7 +225,7 @@ describe Taxa::AdvancedSearch do
       end
 
       it "returns nothing if nothing has those forms" do
-        atta = create_species
+        create_species
         expect(described_class[forms: 'w.']).to be_empty
       end
     end

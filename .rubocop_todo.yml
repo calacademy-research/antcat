@@ -61,7 +61,7 @@ Layout/IndentHeredoc:
     - 'spec/models/database_scripts/renderers/as_csv_spec.rb'
     - 'spec/services/markdowns/render_spec.rb'
 
-# Offense count: 61
+# Offense count: 46
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: normal, rails
@@ -176,7 +176,7 @@ Lint/UselessAccessModifier:
     - 'lib/progress.rb'
     - 'lib/taxt_id_translator.rb'
 
-# Offense count: 16
+# Offense count: 10
 Lint/UselessAssignment:
   Exclude:
     - 'app/controllers/catalog/search_controller.rb'
@@ -184,7 +184,6 @@ Lint/UselessAssignment:
     - 'app/models/change.rb'
     - 'features/step_definitions/edit_steps/synonym_section_steps.rb'
     - 'spec/lib/taxt_converter_spec.rb'
-    - 'spec/models/author_spec.rb'
     - 'spec/models/names/species_group/subspecies_name_spec.rb'
     - 'spec/services/exporters/antweb/formatter_spec.rb'
     - 'spec/services/references/search/fulltext_spec.rb'
@@ -294,21 +293,6 @@ Naming/UncommunicativeMethodParamName:
 Naming/VariableNumber:
   Exclude:
     - 'spec/models/change_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Performance/RedundantBlockCall:
-  Exclude:
-    - 'app/models/database_scripts/renderers/as_csv.rb'
-    - 'app/models/database_scripts/renderers/as_table.rb'
-
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: MaxKeyValuePairs.
-Performance/RedundantMerge:
-  Exclude:
-    - 'app/services/exporters/antweb/monkey_patch_taxon.rb'
-    - 'features/step_definitions/reference_steps.rb'
 
 # Offense count: 4
 # Cop supports --auto-correct.

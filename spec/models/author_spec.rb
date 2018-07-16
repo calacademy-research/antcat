@@ -10,7 +10,7 @@ describe Author do
       let!(:bolton) { create :author_name, name: 'Bolton' }
       let!(:fisher) do
         fisher_b_l = create :author_name, name: 'Fisher, B. L.'
-        fisher = create :author_name, name: 'Fisher', author: fisher_b_l.author
+        create :author_name, name: 'Fisher', author: fisher_b_l.author
       end
 
       it "sorts by first author name" do
