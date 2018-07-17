@@ -20,7 +20,7 @@ class Exporters::Antweb::Exporter
     antcat_taxon_link taxon, taxon.name_with_fossil
   end
 
-  def initialize directory = 'data/output', show_progress: false
+  def initialize directory = 'data/output', _show_progress: false
     @directory = directory
     @progress = Progress.create total: taxa_ids.count unless Rails.env.test?
   end

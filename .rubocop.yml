@@ -45,6 +45,9 @@ Performance/RedundantBlockCall:
 Performance/RedundantMerge:
   Enabled: false
 
+Style/Alias:
+  Enabled: false
+
 Style/AsciiComments:
   Enabled: false
 

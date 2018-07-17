@@ -116,13 +116,6 @@ Lint/ShadowingOuterLocalVariable:
     - 'features/support/env.rb'
     - 'lib/tasks/duplicate_names.rake'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'app/services/exporters/antweb/exporter.rb'
-
 # Offense count: 2
 Lint/UriEscapeUnescape:
   Exclude:
@@ -240,20 +233,6 @@ Naming/UncommunicativeMethodParamName:
 Naming/VariableNumber:
   Exclude:
     - 'spec/models/change_spec.rb'
-
-# Offense count: 9
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: prefer_alias, prefer_alias_method
-Style/Alias:
-  Exclude:
-    - 'app/models/comment.rb'
-    - 'app/models/status.rb'
-    - 'lib/dev_monkey_patches/ant_cat.rb'
-    - 'lib/dev_monkey_patches/object.rb'
-    - 'lib/dev_monkey_patches/rails.rb'
-    - 'lib/taxt_converter.rb'
-    - 'lib/taxt_presenter.rb'
 
 # Offense count: 21
 # Cop supports --auto-correct.
