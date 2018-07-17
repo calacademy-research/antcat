@@ -372,11 +372,6 @@ Style/IfInsideElse:
   Exclude:
     - 'app/controllers/name_fields_controller.rb'
 
-# Offense count: 31
-# Cop supports --auto-correct.
-Style/IfUnlessModifier:
-  Enabled: false
-
 # Offense count: 6
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -487,31 +482,6 @@ Style/RescueStandardError:
   Exclude:
     - 'app/controllers/references/exports_controller.rb'
     - 'app/helpers/compare_revisions_helper.rb'
-
-# Offense count: 16
-# Cop supports --auto-correct.
-# Configuration parameters: ConvertCodeThatCanStartToReturnNil, Whitelist.
-# Whitelist: present?, blank?, presence, try, try!
-Style/SafeNavigation:
-  Exclude:
-    - 'app/helpers/tooltip_helper.rb'
-    - 'app/models/change.rb'
-    - 'app/models/reference.rb'
-    - 'app/models/references/nested_reference.rb'
-    - 'app/models/taxa/genus_group/genus.rb'
-    - 'app/models/taxa/species_group_taxon.rb'
-    - 'app/services/exporters/antweb/exporter.rb'
-    - 'app/services/taxa/save_from_form.rb'
-    - 'app/services/wikipedia/reference_exporter.rb'
-    - 'config/setup_load_paths.rb'
-    - 'spec/factories/taxa.rb'
-
-# Offense count: 94
-# Cop supports --auto-correct.
-# Configuration parameters: MinSize.
-# SupportedStyles: percent, brackets
-Style/SymbolArray:
-  EnforcedStyle: brackets
 
 # Offense count: 1
 # Cop supports --auto-correct.
