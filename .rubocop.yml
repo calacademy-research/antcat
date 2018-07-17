@@ -111,6 +111,9 @@ Style/StringLiterals:
 Style/SymbolArray:
   Enabled: false
 
+Style/TrivialAccessors:
+  Enabled: false
+
 Style/UnneededInterpolation:
   Enabled: false
 

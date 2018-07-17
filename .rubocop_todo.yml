@@ -341,13 +341,6 @@ Style/MultipleComparison:
 Style/NestedParenthesizedCalls:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/Not:
-  Exclude:
-    - 'app/decorators/taxon_decorator/headline_type.rb'
-    - 'app/models/name.rb'
-
 # Offense count: 5
 # Cop supports --auto-correct.
 # Configuration parameters: AutoCorrect, EnforcedStyle.
@@ -410,14 +403,6 @@ Style/RescueStandardError:
   Exclude:
     - 'app/controllers/references/exports_controller.rb'
     - 'app/helpers/compare_revisions_helper.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: ExactNameMatch, AllowPredicates, AllowDSLWriters, IgnoreClassMethods, Whitelist.
-# Whitelist: to_ary, to_a, to_c, to_enum, to_h, to_hash, to_i, to_int, to_io, to_open, to_path, to_proc, to_r, to_regexp, to_str, to_s, to_sym
-Style/TrivialAccessors:
-  Exclude:
-    - 'app/services/taxon_browser/tabs/extra_tab.rb'
 
 # Offense count: 1217
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
