@@ -83,8 +83,8 @@ module Names
 
       def v_and_w
         epithets = []
-        epithets << epithet.gsub(/v/, 'w')
-        epithets << epithet.gsub(/w/, 'v')
+        epithets << epithet.tr('v', 'w')
+        epithets << epithet.tr('w', 'v')
         epithets
       end
 

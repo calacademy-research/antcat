@@ -241,14 +241,6 @@ Naming/VariableNumber:
   Exclude:
     - 'spec/models/change_spec.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-Performance/StringReplacement:
-  Exclude:
-    - 'app/helpers/taxon_browser_helper.rb'
-    - 'app/services/names/epithet_search_set.rb'
-    - 'app/services/wikipedia/reference_exporter.rb'
-
 # Offense count: 9
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

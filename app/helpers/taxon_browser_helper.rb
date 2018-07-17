@@ -67,7 +67,7 @@ module TaxonBrowserHelper
 
     def css_classes_for_status taxon
       css_classes = []
-      css_classes << taxon.status.downcase.gsub(/ /, '_')
+      css_classes << taxon.status.downcase.tr(' ', '_')
       css_classes << 'nomen_nudum' if taxon.nomen_nudum?
       css_classes << 'collective_group_name' if taxon.collective_group_name?
       css_classes

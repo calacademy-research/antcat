@@ -28,7 +28,7 @@ module Wikipedia
 
       def pages
         # Replace hyphens with en dashes, enwp.org/WP:ENDASH
-        reference.pagination.gsub "-", "\u2013" if reference.pagination
+        reference.pagination.tr "-", "\u2013" if reference.pagination
       end
 
       def author_params
