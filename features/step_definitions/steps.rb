@@ -99,7 +99,7 @@ end
 Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |field, parent, value|
   with_scope(parent) do
     field = find_field field
-    field_value = (field.tag_name == 'textarea') ? field.text : field.value
+    field_value = field.tag_name == 'textarea' ? field.text : field.value
     expect(field_value).to match /#{value}/
   end
 end

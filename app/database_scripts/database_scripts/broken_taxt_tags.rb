@@ -61,7 +61,7 @@ module DatabaseScripts
       log.puts "\nSearching for matching ids in other models (Reference, Name, Taxon)...\n\n"
       [Reference, Name, Taxon].each do |model|
         model.where(id: broken_ids.each_id).each do |item|
-          log.puts "#{model.to_s}: #{item.id}"
+          log.puts "#{model}: #{item.id}"
         end
       end
 

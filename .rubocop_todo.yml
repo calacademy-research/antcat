@@ -128,12 +128,6 @@ Lint/ShadowingOuterLocalVariable:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Lint/StringConversionInInterpolation:
-  Exclude:
-    - 'app/database_scripts/database_scripts/broken_taxt_tags.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
 # Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
 Lint/UnusedMethodArgument:
   Exclude:
@@ -561,32 +555,11 @@ Style/SymbolArray:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, AllowSafeAssignment.
-# SupportedStyles: require_parentheses, require_no_parentheses, require_parentheses_when_complex
-Style/TernaryParentheses:
-  Exclude:
-    - 'features/step_definitions/steps.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
 # Configuration parameters: ExactNameMatch, AllowPredicates, AllowDSLWriters, IgnoreClassMethods, Whitelist.
 # Whitelist: to_ary, to_a, to_c, to_enum, to_h, to_hash, to_i, to_int, to_io, to_open, to_path, to_proc, to_r, to_regexp, to_str, to_s, to_sym
 Style/TrivialAccessors:
   Exclude:
     - 'app/services/taxon_browser/tabs/extra_tab.rb'
-
-# Offense count: 10
-# Cop supports --auto-correct.
-Style/UnneededInterpolation:
-  Exclude:
-    - 'app/controllers/taxa_controller.rb'
-    - 'app/helpers/notifications_helper.rb'
-    - 'app/models/reference.rb'
-    - 'app/services/wikipedia/reference_exporter.rb'
-    - 'lib/dev_monkey_patches/object.rb'
-    - 'spec/models/taxon_spec.rb'
-    - 'spec/services/exporters/antweb/formatter_spec.rb'
-    - 'spec/support/helpers/refactor_taxon_factories_helpers.rb'
 
 # Offense count: 1217
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.

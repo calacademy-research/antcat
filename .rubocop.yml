@@ -90,6 +90,9 @@ Style/OneLineConditional:
 Style/StringLiterals:
   Enabled: false
 
+Style/UnneededInterpolation:
+  Enabled: false
+
 Style/WordArray:
   Enabled: false
 
