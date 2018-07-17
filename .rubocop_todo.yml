@@ -14,14 +14,6 @@ Layout/CommentIndentation:
 
 # Offense count: 2
 # Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Layout/IndentArray:
-  Exclude:
-    - 'app/database_scripts/database_scripts/valid_taxa_that_may_be_synonyms.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
 # Configuration parameters: IndentationWidth.
 # SupportedStyles: special_inside_parentheses, consistent, align_braces
 Layout/IndentHash:
@@ -36,20 +28,6 @@ Layout/IndentHeredoc:
     - 'app/decorators/feedback_decorator.rb'
     - 'spec/models/database_scripts/renderers/as_csv_spec.rb'
     - 'spec/services/markdowns/render_spec.rb'
-
-# Offense count: 46
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: normal, rails
-Layout/IndentationConsistency:
-  Exclude:
-    - 'config/breadcrumbs/antcat.rb'
-    - 'config/breadcrumbs/catalog.rb'
-    - 'config/breadcrumbs/changes.rb'
-    - 'config/breadcrumbs/editors_panel.rb'
-    - 'config/breadcrumbs/institutions.rb'
-    - 'config/breadcrumbs/references.rb'
-    - 'config/breadcrumbs/taxa.rb'
 
 # Offense count: 11
 Lint/AmbiguousBlockAssociation:

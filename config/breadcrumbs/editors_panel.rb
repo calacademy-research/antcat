@@ -1,3 +1,4 @@
+# rubocop:disable Layout/IndentationConsistency
 crumb :editors_panel do
   link "Editor's Panel", editors_panel_path
 end
@@ -151,3 +152,4 @@ crumb :beta_and_such do
   link "Beta and such (testing, debugging)"
   parent :editors_panel
 end
+# rubocop:enable Layout/IndentationConsistency

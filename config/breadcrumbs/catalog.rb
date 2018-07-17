@@ -1,3 +1,4 @@
+# rubocop:disable Layout/IndentationConsistency
 crumb :catalog do
   link "Catalog", root_path
 end
@@ -40,3 +41,4 @@ crumb :taxon_color_key do
   link "Taxon Color Key"
   parent :catalog
 end
+# rubocop:enable Layout/IndentationConsistency

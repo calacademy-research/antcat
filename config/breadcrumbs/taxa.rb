@@ -1,3 +1,4 @@
+# rubocop:disable Layout/IndentationConsistency
 crumb :edit_catalog do
   link "Edit Catalog"
 end
@@ -80,3 +81,4 @@ crumb :synonym_relationship do |synonym|
   link "Synonym Relationship ##{synonym.id}"
   parent :edit_catalog
 end
+# rubocop:enable Layout/IndentationConsistency

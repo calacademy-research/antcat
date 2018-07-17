@@ -1,18 +1,20 @@
 module DatabaseScripts
   class ValidTaxaThatMayBeSynonyms < DatabaseScript
-    VALID_INDICATORS = Regexp.union [
-                          /as (subfamily|tribe|genus|subgenus)/i,
-                          /subspecies of/i,
-                          /in genus/i,
-                          /in \{tax /i,
-                          /revived/i,
-                          /its junior synonym/i,
-                          /senior synonym/i,
-                          /incertae sedis/i,
-                          /status as species/i,
-                          /raised/i,
-                          /conserved over /i
-                        ]
+    VALID_INDICATORS = Regexp.union(
+      [
+        /as (subfamily|tribe|genus|subgenus)/i,
+        /subspecies of/i,
+        /in genus/i,
+        /in \{tax /i,
+        /revived/i,
+        /its junior synonym/i,
+        /senior synonym/i,
+        /incertae sedis/i,
+        /status as species/i,
+        /raised/i,
+        /conserved over /i
+      ]
+    )
 
     def results
       taxa = Taxon.joins(:history_items).valid.where(unresolved_homonym: false).
