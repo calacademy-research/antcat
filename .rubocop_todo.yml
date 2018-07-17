@@ -146,19 +146,6 @@ Lint/UselessAccessModifier:
     - 'lib/progress.rb'
     - 'lib/taxt_id_translator.rb'
 
-# Offense count: 10
-Lint/UselessAssignment:
-  Exclude:
-    - 'app/controllers/catalog/search_controller.rb'
-    - 'app/controllers/name_popups_controller.rb'
-    - 'app/models/change.rb'
-    - 'features/step_definitions/edit_steps/synonym_section_steps.rb'
-    - 'spec/lib/taxt_converter_spec.rb'
-    - 'spec/models/names/species_group/subspecies_name_spec.rb'
-    - 'spec/services/exporters/antweb/formatter_spec.rb'
-    - 'spec/services/references/search/fulltext_spec.rb'
-    - 'spec/services/taxa/advanced_search_spec.rb'
-
 # Offense count: 1
 # Configuration parameters: CheckForMethodsWithNoSideEffects.
 Lint/Void:

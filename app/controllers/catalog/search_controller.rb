@@ -27,7 +27,7 @@ module Catalog
     # The "quick search" shares the same view as the "Advanced Search".
     # The forms could be merged, but having two is pretty nice too.
     def quick_search
-      taxa = taxa = Taxa::QuickSearch[
+      taxa = Taxa::QuickSearch[
         params[:qq],
         search_type: params[:search_type],
         valid_only: params[:valid_only]

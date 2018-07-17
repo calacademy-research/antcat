@@ -53,7 +53,7 @@ describe References::Search::Fulltext, search: true do
     end
 
     it "applies the :nomissing :reference_type that's passed" do
-      missing = create :missing_reference
+      create :missing_reference
       reference = create :article_reference
       Sunspot.commit
 

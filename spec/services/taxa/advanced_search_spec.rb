@@ -219,7 +219,7 @@ describe Taxa::AdvancedSearch do
 
         citation = create :citation, forms: 'q.'
         protonym = create :protonym, authorship: citation
-        eciton = create_species protonym: protonym
+        create_species protonym: protonym # eciton
 
         expect(described_class[forms: 'w.']).to eq [atta]
       end

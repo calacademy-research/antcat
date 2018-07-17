@@ -59,8 +59,8 @@ describe SubspeciesName do
 
       context "when name is an orphan" do
         it "doesn't raise" do
-          orphan_subspecies_name = described_class.create! name: 'Eciton niger minor',
-            epithet: 'minor', epithets: 'niger minor'
+          described_class.create! name: 'Eciton niger minor',
+            epithet: 'minor', epithets: 'niger minor' # orphan_subspecies_name
           subspecies_name = described_class.create! name: 'Atta major minor',
             epithet: 'minor', epithets: 'major minor'
           species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'

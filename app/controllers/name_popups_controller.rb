@@ -6,7 +6,6 @@ class NamePopupsController < NamePickersController
       name = taxon.name
       id = taxon.id
     else
-      taxon = nil
       name = Name.find params[:id]
       id = name.id
     end

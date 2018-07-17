@@ -57,7 +57,6 @@ class Change < ApplicationRecord
       UndoTracker.clear_change
       change_id_set = find_future_changes
       versions = SortedSet[]
-      items = SortedSet[]
 
       Taxon.transaction do
         change_id_set.each do |undo_this_change_id|

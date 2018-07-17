@@ -1,5 +1,6 @@
-def already_opened_select2(value, from:)
-  element_id = from
+def already_opened_select2(value, from:) # rubocop:disable Lint/UnusedMethodArgument
+  # TODO figure out why this isn't used or remove.
+  # element_id = from
 
   find('.select2-search__field').set value
   find(".select2-results__option", text: /#{value}/).click
