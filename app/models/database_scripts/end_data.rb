@@ -22,5 +22,5 @@ module DatabaseScripts
         data.rewind
         data
       end
-    end
+  end
 end

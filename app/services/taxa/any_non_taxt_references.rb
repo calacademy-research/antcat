@@ -26,5 +26,5 @@ module Taxa
       def any_references_in_synonyms?
         synonyms_as_senior.exists? || synonyms_as_junior.exists?
       end
-    end
+  end
 end

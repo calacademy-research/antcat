@@ -122,7 +122,8 @@ module DatabaseScripts
               unless broken_matched_ids.empty?
                 taxon = case matched_obj
                         when Citation then "Unknown"
-                        else matched_obj.send(taxon_id_field[model]).to_i end
+                        else matched_obj.send(taxon_id_field[model]).to_i
+                        end
 
                 taxa_with_broken_ids_thing << {
                   item_id:            matched_obj.id,

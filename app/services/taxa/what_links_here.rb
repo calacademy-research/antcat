@@ -94,5 +94,5 @@ module Taxa
       def table_ref table, field, id
         { table: table, field: field, id: id }
       end
-    end
+  end
 end

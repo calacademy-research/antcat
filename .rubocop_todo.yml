@@ -23,19 +23,6 @@ Layout/CommentIndentation:
     - 'app/services/names/create_name_from_string.rb'
     - 'app/services/references/search/extract_keywords.rb'
 
-# Offense count: 7
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleAlignWith, AutoCorrect, Severity.
-# SupportedStylesAlignWith: keyword, variable, start_of_line
-Layout/EndAlignment:
-  Exclude:
-    - 'app/database_scripts/database_scripts/broken_taxt_tags.rb'
-    - 'app/decorators/feedback_decorator.rb'
-    - 'app/models/database_scripts/end_data.rb'
-    - 'app/services/taxa/any_non_taxt_references.rb'
-    - 'app/services/taxa/what_links_here.rb'
-    - 'features/step_definitions/feed_steps.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, IndentationWidth.

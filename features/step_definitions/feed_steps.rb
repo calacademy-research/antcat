@@ -2,9 +2,10 @@
 
 Given(/^activity tracking is (enabled|disabled)$/) do |state|
   new_state = case state
-              when "enabled" then true
+              when "enabled"  then true
               when "disabled" then false
-              else raise end
+              else raise
+              end
   Feed.enabled = new_state
 end
 
