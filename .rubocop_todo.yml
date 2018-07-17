@@ -6,22 +6,11 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 6
-# Cop supports --auto-correct.
-Layout/ClosingHeredocIndentation:
-  Exclude:
-    - 'app/controllers/default_references_controller.rb'
-    - 'app/models/paper_trail/version.rb'
-    - 'app/models/reference_section.rb'
-    - 'app/models/taxon.rb'
-    - 'spec/models/database_scripts/renderers/as_csv_spec.rb'
-
-# Offense count: 5
+# Offense count: 4
 # Cop supports --auto-correct.
 Layout/CommentIndentation:
   Exclude:
     - 'app/services/names/create_name_from_string.rb'
-    - 'app/services/references/search/extract_keywords.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -182,7 +171,7 @@ Lint/Void:
   Exclude:
     - 'app/services/exporters/antweb/monkey_patch_taxon.rb'
 
-# Offense count: 89
+# Offense count: 88
 Metrics/AbcSize:
   Max: 92
 

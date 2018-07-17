@@ -72,7 +72,7 @@ module References
             ["author", '([^ ]+)'] # **                                         # author:Bolton
           ]
 
-        # ** = stops matching at space or end of string
+          # ** = stops matching at space or end of string
         end
     end
   end

@@ -81,7 +81,7 @@ class Taxon < ApplicationRecord
     joins(<<-SQL.squish)
       LEFT OUTER JOIN `taxa` `taxa_self_join_alias`
         ON `taxa`.`#{model}_id` = `taxa_self_join_alias`.`id`
-      SQL
+    SQL
   }
   scope :ranks, ->(*ranks) { where(type: ranks) }
   scope :exclude_ranks, ->(*ranks) { where.not(type: ranks) }
