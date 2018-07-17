@@ -29,9 +29,7 @@ module Workflow
 
         def current_review_state
           loaded_taxon_state = taxon_state
-          unless loaded_taxon_state
-            loaded_taxon_state = TaxonState.find_by(taxon_id: id)
-          end
+          loaded_taxon_state ||= TaxonState.find_by(taxon_id: id)
           loaded_taxon_state
         end
     end

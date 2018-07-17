@@ -302,25 +302,6 @@ Style/MultipleComparison:
   Exclude:
     - 'app/controllers/taxa_controller.rb'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle.
-# SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'app/controllers/api/v1/taxa_controller.rb'
-    - 'app/controllers/tooltips_controller.rb'
-    - 'features/support/wait_for_jquery.rb'
-    - 'lib/taxt_id_translator.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/OrAssignment:
-  Exclude:
-    - 'app/decorators/activity_decorator.rb'
-    - 'lib/workflow/external_table.rb'
-
 # Offense count: 213
 # Cop supports --auto-correct.
 # Configuration parameters: PreferredDelimiters.
@@ -355,15 +336,6 @@ Style/RegexpLiteral:
     - 'app/services/markdowns/render_without_wrapping_p.rb'
     - 'features/step_definitions/wikipedia_steps.rb'
     - 'lib/tasks/notes.rake'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: implicit, explicit
-Style/RescueStandardError:
-  Exclude:
-    - 'app/controllers/references/exports_controller.rb'
-    - 'app/helpers/compare_revisions_helper.rb'
 
 # Offense count: 1217
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.

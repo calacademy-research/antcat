@@ -43,7 +43,7 @@ class ActivityDecorator < Draper::Decorator
   end
 
   def link_trackable_if_exists label = nil, path: nil
-    label = "##{activity.trackable_id}" unless label
+    label ||= "##{activity.trackable_id}"
 
     if activity.trackable
       helpers.link_to label, path || activity.trackable
