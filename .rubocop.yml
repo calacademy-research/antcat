@@ -48,6 +48,12 @@ Performance/RedundantMerge:
 Style/AsciiComments:
   Enabled: false
 
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
 Style/ClassCheck:
   EnforcedStyle: is_a?
 
@@ -66,10 +72,16 @@ Style/EmptyMethod:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/LineEndConcatenation:
+  Enabled: false
+
 Style/MethodDefParentheses:
   Enabled: false
 
 Style/MutableConstant:
+  Enabled: false
+
+Style/NumericLiterals:
   Enabled: false
 
 Style/OneLineConditional:

@@ -351,21 +351,6 @@ Style/BlockDelimiters:
     - 'spec/models/reference_spec.rb'
     - 'spec/services/names/what_links_here_spec.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: braces, no_braces, context_dependent
-Style/BracesAroundHashParameters:
-  Exclude:
-    - 'app/controllers/references_controller.rb'
-
-# Offense count: 71
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle.
-# SupportedStyles: nested, compact
-Style/ClassAndModuleChildren:
-  Enabled: false
-
 # Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.
@@ -433,15 +418,6 @@ Style/Lambda:
     - 'app/models/taxon.rb'
     - 'app/models/tooltip.rb'
 
-# Offense count: 26
-# Cop supports --auto-correct.
-Style/LineEndConcatenation:
-  Exclude:
-    - 'app/services/wikipedia/reference_exporter.rb'
-    - 'lib/tasks/import_sample_data.rake'
-    - 'spec/decorators/taxon_decorator/statistics_spec.rb'
-    - 'spec/services/exporters/antweb/formatter_spec.rb'
-
 # Offense count: 4
 Style/MixinUsage:
   Exclude:
@@ -464,14 +440,6 @@ Style/MultipleComparison:
   Exclude:
     - 'app/controllers/taxa_controller.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: both, prefix, postfix
-Style/NegatedIf:
-  Exclude:
-    - 'app/services/taxa/what_links_here.rb'
-
 # Offense count: 74
 # Cop supports --auto-correct.
 # Configuration parameters: Whitelist.
@@ -485,12 +453,6 @@ Style/Not:
   Exclude:
     - 'app/decorators/taxon_decorator/headline_type.rb'
     - 'app/models/name.rb'
-
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: Strict.
-Style/NumericLiterals:
-  MinDigits: 8
 
 # Offense count: 5
 # Cop supports --auto-correct.
