@@ -36,7 +36,7 @@ describe Exporters::Antweb::Exporter do
         "current valid rank\t" +
         "hol id\t" +
         "current valid parent"
-      expect(exporter.send :header).to eq expected
+      expect(exporter.send(:header)).to eq expected
     end
   end
 
@@ -48,7 +48,7 @@ describe Exporters::Antweb::Exporter do
         expect_any_instance_of(Reference).
           to receive(:authors_for_keey).and_return 'Bolton'
 
-        expect(exporter.send :author_last_names_string, genus).to eq 'Bolton'
+        expect(exporter.send(:author_last_names_string, genus)).to eq 'Bolton'
       end
     end
 
@@ -56,7 +56,7 @@ describe Exporters::Antweb::Exporter do
       let(:genus) { build_stubbed :genus, protonym: nil }
 
       it "handles it" do
-        expect(exporter.send :author_last_names_string, genus).to be_nil
+        expect(exporter.send(:author_last_names_string, genus)).to be_nil
       end
     end
   end
@@ -66,7 +66,7 @@ describe Exporters::Antweb::Exporter do
       let!(:genus) { build_stubbed :genus }
 
       it "is nil" do
-        expect(exporter.send :original_combination, genus).to be_nil
+        expect(exporter.send(:original_combination, genus)).to be_nil
       end
     end
 
@@ -83,7 +83,7 @@ describe Exporters::Antweb::Exporter do
       end
 
       it "is the protonym" do
-        expect(exporter.send :original_combination, recombination).to eq original_combination
+        expect(exporter.send(:original_combination, recombination)).to eq original_combination
       end
     end
   end
@@ -101,7 +101,7 @@ describe Exporters::Antweb::Exporter do
     it "formats references into HTML, with rollover" do
       taxon.protonym.authorship.reference = reference
       expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2.">Forel, 1874</span>'
-      expect(exporter.send :authorship_html_string, taxon).to eq expected
+      expect(exporter.send(:authorship_html_string, taxon)).to eq expected
     end
 
     context "something is missing" do
@@ -110,7 +110,7 @@ describe Exporters::Antweb::Exporter do
 
         specify do
           expect(taxon.protonym).to be nil
-          expect(exporter.send :authorship_html_string, taxon).to be nil
+          expect(exporter.send(:authorship_html_string, taxon)).to be nil
         end
       end
 
@@ -120,7 +120,7 @@ describe Exporters::Antweb::Exporter do
 
         specify do
           expect(taxon.protonym).to_not be nil
-          expect(exporter.send :authorship_html_string, taxon).to be nil
+          expect(exporter.send(:authorship_html_string, taxon)).to be nil
         end
       end
 
@@ -132,7 +132,7 @@ describe Exporters::Antweb::Exporter do
 
         specify do
           expect(taxon.protonym.authorship).to_not be nil
-          expect(exporter.send :authorship_html_string, taxon).to be nil
+          expect(exporter.send(:authorship_html_string, taxon)).to be nil
         end
       end
     end

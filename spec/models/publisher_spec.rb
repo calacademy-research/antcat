@@ -41,7 +41,7 @@ describe Publisher do
 
         context "when place is blank" do
           it "silently returns without raising" do
-            expect(described_class.create_with_place name: "", place: "A Place").to be nil
+            expect(described_class.create_with_place(name: "", place: "A Place")).to be nil
             expect { described_class.create_with_place name: "", place: "A Place" }.
               to_not raise_error ActiveRecord::RecordInvalid
           end

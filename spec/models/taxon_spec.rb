@@ -75,17 +75,17 @@ describe Taxon do
         end
 
         it "handles symbols" do
-          expect(unique_ranks described_class.ranks(:species, :Genus)).
+          expect(unique_ranks(described_class.ranks(:species, :Genus))).
             to eq ["Genus", "Species"]
         end
 
         it "handles strings" do
-          expect(unique_ranks described_class.ranks("Species", "genus")).
+          expect(unique_ranks(described_class.ranks("Species", "genus"))).
             to eq ["Genus", "Species"]
         end
 
         it "handles single items" do
-          expect(unique_ranks described_class.ranks("Species")).to eq ["Species"]
+          expect(unique_ranks(described_class.ranks("Species"))).to eq ["Species"]
         end
       end
 

@@ -24,23 +24,23 @@ describe ReferenceDecorator do
     end
 
     it "doesn't touch a string without HTML" do
-      expect(make_html_safe 'string').to eq 'string'
+      expect(make_html_safe('string')).to eq 'string'
     end
 
     it "leaves italics alone" do
-      expect(make_html_safe '<i>string</i>').to eq '<i>string</i>'
+      expect(make_html_safe('<i>string</i>')).to eq '<i>string</i>'
     end
 
     it "leaves quotes alone" do
-      expect(make_html_safe '"string"').to eq '"string"'
+      expect(make_html_safe('"string"')).to eq '"string"'
     end
 
     it "returns an html_safe string" do
-      expect(make_html_safe '"string"').to be_html_safe
+      expect(make_html_safe('"string"')).to be_html_safe
     end
 
     it "escapes other HTML" do
-      expect(make_html_safe '<script>danger</script>').
+      expect(make_html_safe('<script>danger</script>')).
         to eq '&lt;script&gt;danger&lt;/script&gt;'
     end
   end

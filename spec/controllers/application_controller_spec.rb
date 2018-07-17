@@ -28,7 +28,7 @@ describe ApplicationController do
       end
 
       it "assigns the current_user" do
-        expect(assigns :current_user).to eq editor
+        expect(assigns(:current_user)).to eq editor
       end
 
       it "knows what editors are allow to do" do
@@ -47,7 +47,7 @@ describe ApplicationController do
       end
 
       it "assigns the current_user" do
-        expect(assigns :current_user).to eq superadmin
+        expect(assigns(:current_user)).to eq superadmin
       end
 
       it "knows what superadmins are allow to do" do

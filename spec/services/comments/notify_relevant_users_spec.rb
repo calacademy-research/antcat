@@ -114,13 +114,13 @@ describe Comments::NotifyRelevantUsers do
 
     context "when user is same as commenter" do
       it "is true (do not notify)" do
-        expect(subject.send :do_not_notify?, comment.user).to be true
+        expect(subject.send(:do_not_notify?, comment.user)).to be true
       end
     end
 
     context "when #no_more_notifications_for has not been called for user" do
       it "is false (do notify)" do
-        expect(subject.send :do_not_notify?, build_stubbed(:user)).to be false
+        expect(subject.send(:do_not_notify?, build_stubbed(:user))).to be false
       end
     end
 

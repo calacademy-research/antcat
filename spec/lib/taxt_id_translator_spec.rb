@@ -34,13 +34,13 @@ describe TaxtIdTranslator do
 
   describe ".jumble_id..." do
     it "jumbles the id..." do
-      expect(described_class.send :jumble_id, "123", 1).to eq "Rt"
+      expect(described_class.send(:jumble_id, "123", 1)).to eq "Rt"
     end
   end
 
   describe ".unjumble_id_and_type..." do
     it "we can also unjumble the jumbled to get the id and type number..." do
-      expect(described_class.send :unjumble_id_and_type, "Rt").to eq [123, 1]
+      expect(described_class.send(:unjumble_id_and_type, "Rt")).to eq [123, 1]
     end
   end
 end

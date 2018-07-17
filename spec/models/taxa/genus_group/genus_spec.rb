@@ -255,16 +255,16 @@ describe Genus do
     let!(:species) { create_species 'Atta serratula' }
 
     it "returns nil if nothing matches" do
-      expect(genus.find_epithet_in_genus 'sdfsdf').to eq nil
+      expect(genus.find_epithet_in_genus('sdfsdf')).to eq nil
     end
 
     it "returns the one item" do
-      expect(species.genus.find_epithet_in_genus 'serratula').to eq [species]
+      expect(species.genus.find_epithet_in_genus('serratula')).to eq [species]
     end
 
     context "mandatory spelling changes" do
       it "finds -a when asked to find -us" do
-        expect(species.genus.find_epithet_in_genus 'serratulus').to eq [species]
+        expect(species.genus.find_epithet_in_genus('serratulus')).to eq [species]
       end
     end
   end
