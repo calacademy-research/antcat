@@ -208,7 +208,8 @@ module DatabaseScripts
           # epi: # TODO? /{epi (\w+)}/
           # ?:   # TODO? Not sure what this is, but it looks like this "{? #{string}}"
         }
-        def @_taxt_tags.keys_plus_empty_arrays
+
+        def @_taxt_tags.keys_plus_empty_arrays # rubocop:disable Lint/NestedMethodDefinition
           map { |tag, _| [tag, []] }.to_h
         end
 

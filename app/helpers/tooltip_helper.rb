@@ -36,7 +36,7 @@ module TooltipHelper
       # If someone asked for a tooltip with a key that we cannot find, then let's be nice
       # and link `new_tooltip_path` and pre-polulate it (via `new_populated_tooltip_link`)
       # with the key that was explicitly asked for.
-      link_to (tooltip || new_populated_tooltip_link(key_param)) do
+      link_to tooltip || new_populated_tooltip_link(key_param) do
         tooltip_icon
       end
     end

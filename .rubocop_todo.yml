@@ -101,16 +101,6 @@ Lint/Loop:
     - 'app/models/database_scripts/end_data.rb'
     - 'lib/taxt_id_translator.rb'
 
-# Offense count: 1
-Lint/NestedMethodDefinition:
-  Exclude:
-    - 'app/database_scripts/database_scripts/broken_taxt_tags.rb'
-
-# Offense count: 1
-Lint/ParenthesesAsGroupedExpression:
-  Exclude:
-    - 'app/helpers/tooltip_helper.rb'
-
 # Offense count: 3
 Lint/RescueException:
   Exclude:
@@ -489,15 +479,6 @@ Style/RegexpLiteral:
     - 'features/step_definitions/wikipedia_steps.rb'
     - 'lib/tasks/notes.rake'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-Style/RescueModifier:
-  Exclude:
-    - 'app/models/default_reference.rb'
-    - 'app/services/markdowns/render_without_wrapping_p.rb'
-    - 'app/services/parsers/publisher_parser.rb'
-    - 'config/breadcrumbs/catalog.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -524,14 +505,6 @@ Style/SafeNavigation:
     - 'app/services/wikipedia/reference_exporter.rb'
     - 'config/setup_load_paths.rb'
     - 'spec/factories/taxa.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: use_perl_names, use_english_names
-Style/SpecialGlobalVars:
-  Exclude:
-    - 'app/services/markdowns/parse_antcat_hooks.rb'
 
 # Offense count: 94
 # Cop supports --auto-correct.
