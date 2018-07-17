@@ -63,6 +63,7 @@ end
 group :development, :test do
   gem 'factory_bot_rails'
   gem 'guard-rspec'
+  gem 'guard-rubocop'
   gem 'headless'
   gem 'launchy'
   gem 'pry'
