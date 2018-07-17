@@ -4,7 +4,7 @@
 # TODO remove monkey patch without adding it to the models.
 
 # To make sure all classes are already loaded
-[Family, Subfamily, Tribe, Genus, Subgenus, Species, Subspecies]
+[Family, Subfamily, Tribe, Genus, Subgenus, Species, Subspecies] # rubocop:disable Lint/Void
 
 module Exporters::Antweb::MonkeyPatchTaxon
   class ::Family

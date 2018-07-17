@@ -45,6 +45,9 @@ Performance/RedundantBlockCall:
 Performance/RedundantMerge:
   Enabled: false
 
+Naming/VariableNumber:
+  Enabled: false
+
 Style/Alias:
   Enabled: false
 

@@ -5,8 +5,8 @@
 # TODO see if we still need this.
 module Rack
   module Utils
-    def escape s
-      URI.encode_www_form_component(s)
+    def escape string
+      URI.encode_www_form_component(string)
     end
   end
 end

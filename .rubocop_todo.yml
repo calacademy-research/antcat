@@ -107,12 +107,6 @@ Lint/UselessAccessModifier:
     - 'lib/progress.rb'
     - 'lib/taxt_id_translator.rb'
 
-# Offense count: 1
-# Configuration parameters: CheckForMethodsWithNoSideEffects.
-Lint/Void:
-  Exclude:
-    - 'app/services/exporters/antweb/monkey_patch_taxon.rb'
-
 # Offense count: 88
 Metrics/AbcSize:
   Max: 92
@@ -196,21 +190,6 @@ Naming/PredicateName:
     - 'app/models/comment.rb'
     - 'app/models/concerns/primitive_search.rb'
     - 'app/services/taxon_browser/tabs/taxon_tab.rb'
-
-# Offense count: 2
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: io, id, to, by, on, in, at
-Naming/UncommunicativeMethodParamName:
-  Exclude:
-    - 'app/models/name.rb'
-    - 'config/initializers/rack_util_escape_patch.rb'
-
-# Offense count: 3
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: snake_case, normalcase, non_integer
-Naming/VariableNumber:
-  Exclude:
-    - 'spec/models/change_spec.rb'
 
 # Offense count: 21
 # Cop supports --auto-correct.

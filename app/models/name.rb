@@ -22,7 +22,7 @@ class Name < ApplicationRecord
   end
 
   # TODO maybe raise?
-  def change_parent _
+  def change_parent _name
   end
 
   # TODO remove? Too magical.
