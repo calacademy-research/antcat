@@ -236,20 +236,6 @@ Style/BarePercentLiterals:
     - 'spec/services/markdowns/parse_antcat_hooks_spec.rb'
     - 'spec/services/markdowns/render_spec.rb'
 
-# Offense count: 7
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ProceduralMethods, FunctionalMethods, IgnoredMethods.
-# SupportedStyles: line_count_based, semantic, braces_for_chaining
-# ProceduralMethods: benchmark, bm, bmbm, create, each_with_object, measure, new, realtime, tap, with_object
-# FunctionalMethods: let, let!, subject, watch
-# IgnoredMethods: lambda, proc, it
-Style/BlockDelimiters:
-  Exclude:
-    - 'app/database_scripts/database_scripts/unavailable_uncategorized_taxa_with_same_names_at_other_taxa.rb'
-    - 'app/models/reference.rb'
-    - 'spec/models/reference_spec.rb'
-    - 'spec/services/names/what_links_here_spec.rb'
-
 # Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.
@@ -259,24 +245,6 @@ Style/ConditionalAssignment:
     - 'app/database_scripts/database_scripts/broken_taxt_tags.rb'
     - 'app/decorators/taxon_decorator/child_list.rb'
     - 'app/decorators/taxon_decorator/headline_protonym.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/EmptyCaseCondition:
-  Exclude:
-    - 'app/services/names/picklist_matching.rb'
-    - 'app/services/references/reference_similarity.rb'
-
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty, nil, both
-Style/EmptyElse:
-  Exclude:
-    - 'app/decorators/taxon_decorator/statistics.rb'
-    - 'app/helpers/filters_helper.rb'
-    - 'app/services/exporters/antweb/exporter.rb'
-    - 'app/services/references/save_from_form.rb'
 
 # Offense count: 14
 # Configuration parameters: MinBodyLength.

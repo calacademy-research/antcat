@@ -77,8 +77,6 @@ class TaxonDecorator::Statistics
 
       if status_strings.present?
         "(#{status_strings.join(', ')})"
-      else
-        nil
       end
     end
 

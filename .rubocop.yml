@@ -72,6 +72,9 @@ Style/Documentation:
 Style/DoubleNegation:
   Enabled: false
 
+Style/EmptyCaseCondition:
+  Enabled: false
+
 Style/EmptyMethod:
   EnforcedStyle: expanded
 

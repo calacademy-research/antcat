@@ -85,10 +85,10 @@ describe Reference do
       reference_factory author_name: 'Fisher', citation_year: '1996'
       Sunspot.commit
 
-      expect(described_class.solr_search {
+      expect(described_class.solr_search do
         with(:year).between(2012..2013)
         keywords 'Fisher'
-      }.results).to be_empty
+      end.results).to be_empty
     end
 
     it "returns the one reference for a given year and author_name" do
@@ -98,10 +98,10 @@ describe Reference do
       reference = reference_factory author_name: 'Fisher', citation_year: '1996'
       Sunspot.commit
 
-      expect(described_class.solr_search {
+      expect(described_class.solr_search do
         with(:year).between(1996..1996)
         keywords 'Fisher'
-      }.results).to eq [reference]
+      end.results).to eq [reference]
     end
 
     it "searches citation years" do

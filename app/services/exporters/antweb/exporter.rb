@@ -100,8 +100,6 @@ class Exporters::Antweb::Exporter
       attributes[:current_valid_name] =
         if taxon.current_valid_taxon_including_synonyms
           taxon.current_valid_taxon_including_synonyms.name.to_s
-        else
-          nil
         end
 
       begin

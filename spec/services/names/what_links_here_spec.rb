@@ -67,6 +67,6 @@ describe Names::WhatLinksHere do
 
   # To replace the "non-concrete" `Taxon` with `Family`.
   def contrete_taxt_fields
-    taxt_fields.tap do |array| array[0][0] = Family end
+    taxt_fields.tap { |array| array[0][0] = Family }
   end
 end

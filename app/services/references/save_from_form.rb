@@ -56,7 +56,6 @@ module References
           case @reference
           when ArticleReference then original_params[:article_pagination]
           when BookReference    then original_params[:book_pagination]
-          else                       nil
           end
       end
 
