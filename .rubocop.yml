@@ -33,6 +33,9 @@ Layout/IndentationConsistency:
   Enabled: true
   EnforcedStyle: rails
 
+Layout/IndentHash:
+  Enabled: false
+
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
