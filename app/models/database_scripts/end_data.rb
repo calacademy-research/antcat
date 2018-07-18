@@ -10,6 +10,7 @@ module DatabaseScripts
       # For reading the script's `DATA` (everything under `__END__` in the source);
       # just calling `DATA` doesn't always work in subclasses, mixins, etc.
       def read_end_data
+        # rubocop:disable Lint/Loop
         data = StringIO.new
         File.open(script_path) do |f|
           begin
@@ -21,6 +22,7 @@ module DatabaseScripts
         end
         data.rewind
         data
+        # rubocop:enable Lint/Loop
       end
   end
 end

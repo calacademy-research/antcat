@@ -12,6 +12,7 @@ AllCops:
     - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'
     - 'lib/taxt_id_translator.rb'
     - 'app/controllers/name_fields_controller.rb'
+    - 'lib/taxt_id_translator.rb'
 
 Layout/AlignArray:
   Enabled: false
@@ -51,6 +52,9 @@ Lint/AmbiguousBlockAssociation:
 Lint/AmbiguousOperator:
   Enabled: false
 
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
 Performance/RedundantBlockCall:
   Enabled: false
 
@@ -67,6 +71,9 @@ Naming/VariableNumber:
   Enabled: false
 
 Style/Alias:
+  Enabled: false
+
+Style/AndOr:
   Enabled: false
 
 Style/AsciiComments:

@@ -6,10 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 43
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-
 # Offense count: 7
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:
@@ -19,28 +15,3 @@ Lint/AssignmentInCondition:
     - 'app/models/database_scripts/end_data.rb'
     - 'app/models/reference.rb'
     - 'lib/taxt_converter.rb'
-
-# Offense count: 3
-Lint/Loop:
-  Exclude:
-    - 'app/models/database_scripts/end_data.rb'
-    - 'lib/taxt_id_translator.rb'
-
-# Offense count: 21
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, conditionals
-Style/AndOr:
-  Exclude:
-    - 'app/controllers/convert_to_subspecies_controller.rb'
-    - 'app/controllers/duplicates_controller.rb'
-    - 'app/controllers/feedback_controller.rb'
-    - 'app/controllers/name_fields_controller.rb'
-    - 'app/controllers/synonyms_controller.rb'
-    - 'app/decorators/taxon_decorator/headline_type.rb'
-    - 'app/models/reference_document.rb'
-    - 'app/models/status.rb'
-    - 'app/services/exporters/antweb/exporter.rb'
-    - 'app/services/parsers/article_citation_parser.rb'
-    - 'app/services/references/reference_similarity.rb'
-    - 'app/services/taxa/save_from_form.rb'
