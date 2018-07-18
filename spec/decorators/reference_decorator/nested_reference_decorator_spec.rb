@@ -33,8 +33,8 @@ describe NestedReferenceDecorator do
           author_names: author_names,
           pages_in: '>',
           nesting_reference: nested_reference
-        expect(reference.decorate.formatted)
-          .to eq 'Ward, P. S. 2010d. Ants are my life. &gt; Ward, P. S. 2010d. Ants are my life. New York.'
+        expect(reference.decorate.formatted).
+          to eq 'Ward, P. S. 2010d. Ants are my life. &gt; Ward, P. S. 2010d. Ants are my life. New York.'
       end
     end
   end

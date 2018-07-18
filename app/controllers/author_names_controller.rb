@@ -40,6 +40,7 @@ class AuthorNamesController < ApplicationController
   end
 
   private
+
     def set_author_name
       @author_name = AuthorName.find params[:id]
     end

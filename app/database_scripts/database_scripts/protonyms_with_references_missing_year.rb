@@ -9,9 +9,11 @@ module DatabaseScripts
         t.header :taxon, :status, :reference
 
         t.rows do |protonym|
-          [ markdown_taxon_link(protonym.taxon),
+          [
+            markdown_taxon_link(protonym.taxon),
             protonym.taxon.status,
-            markdown_reference_link(protonym.authorship.reference) ]
+            markdown_reference_link(protonym.authorship.reference)
+          ]
         end
       end
     end

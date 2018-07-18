@@ -9,6 +9,7 @@ class MissingReference < Reference
   end
 
   private
+
     # Leave out the `#short_citation_year` if the citation contains a year.
     # HACK to make the best of what's in the database.
     def keey_that_makes_the_most_sense

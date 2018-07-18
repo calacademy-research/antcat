@@ -13,6 +13,7 @@ module SiteNoticesHelper
   end
 
   private
+
     def most_recent_site_notice_already_dismissed? last_dismissed_id
       return unless last_dismissed_id
 

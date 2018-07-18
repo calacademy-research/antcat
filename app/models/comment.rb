@@ -31,6 +31,7 @@ class Comment < ApplicationRecord
   end
 
   private
+
     def set_parent
       move_to_child_of Comment.find(set_parent_to)
     end

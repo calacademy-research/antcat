@@ -1,9 +1,9 @@
 module DatabaseScripts
   class ExtantTaxaInFossilGenera < DatabaseScript
     def results
-      Taxon.extant.ranks(Species, Subspecies)
-        .self_join_on(:genus)
-        .where(taxa_self_join_alias: { fossil: true })
+      Taxon.extant.ranks(Species, Subspecies).
+        self_join_on(:genus).
+        where(taxa_self_join_alias: { fossil: true })
     end
 
     def render
@@ -11,10 +11,12 @@ module DatabaseScripts
         t.header :species_or_subspecies, :status, :genus, :genus_status
 
         t.rows do |taxon|
-          [ markdown_taxon_link(taxon),
+          [
+            markdown_taxon_link(taxon),
             taxon.status,
             markdown_taxon_link(taxon.genus),
-            taxon.genus.status  ]
+            taxon.genus.status
+          ]
         end
       end
     end

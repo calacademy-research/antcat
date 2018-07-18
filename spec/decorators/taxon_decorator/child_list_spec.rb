@@ -8,8 +8,8 @@ describe TaxonDecorator::ChildList do
       let!(:attini) { create_tribe 'Attini', subfamily: subfamily }
 
       specify do
-        expect(described_class.new(subfamily).send(:child_list, subfamily.tribes, true))
-          .to eq %{<div><span class="caption">Tribe (extant) of <span>Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>}
+        expect(described_class.new(subfamily).send(:child_list, subfamily.tribes, true)).
+          to eq %{<div><span class="caption">Tribe (extant) of <span>Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>}
       end
     end
 
@@ -17,8 +17,8 @@ describe TaxonDecorator::ChildList do
       let!(:atta) { create_genus 'Atta', subfamily: subfamily }
 
       specify do
-        expect(described_class.new(subfamily).send(:child_list, Genus.all, true))
-          .to eq %{<div><span class="caption">Genus (extant) of <span>Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
+        expect(described_class.new(subfamily).send(:child_list, Genus.all, true)).
+          to eq %{<div><span class="caption">Genus (extant) of <span>Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
       end
     end
 
@@ -26,8 +26,8 @@ describe TaxonDecorator::ChildList do
       let!(:atta) { create_genus 'Atta', subfamily: subfamily }
 
       specify do
-        expect(described_class.new(subfamily).send(:child_list, Genus.all, false))
-          .to eq %{<div><span class="caption">Genus of <span>Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
+        expect(described_class.new(subfamily).send(:child_list, Genus.all, false)).
+          to eq %(<div><span class="caption">Genus of <span>Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>)
       end
     end
 
@@ -35,8 +35,8 @@ describe TaxonDecorator::ChildList do
       let!(:genus) { create_genus 'Atta', subfamily: subfamily, incertae_sedis_in: 'subfamily' }
 
       specify do
-        expect(described_class.new(subfamily).send(:child_list, [genus], false, incertae_sedis_in: 'subfamily'))
-          .to eq %{<div><span class="caption">Genus <i>incertae sedis</i> in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
+        expect(described_class.new(subfamily).send(:child_list, [genus], false, incertae_sedis_in: 'subfamily')).
+          to eq %(<div><span class="caption">Genus <i>incertae sedis</i> in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>)
       end
     end
   end
@@ -45,8 +45,8 @@ describe TaxonDecorator::ChildList do
     let!(:genus) { create_genus 'Atta', subfamily: subfamily, status: 'collective group name' }
 
     it "formats a list of collective group names" do
-      expect(described_class.new(subfamily).send(:collective_group_name_child_list))
-        .to eq %{<div><span class="caption">Collective group name in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
+      expect(described_class.new(subfamily).send(:collective_group_name_child_list)).
+        to eq %(<div><span class="caption">Collective group name in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>)
     end
   end
 

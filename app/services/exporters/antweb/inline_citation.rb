@@ -12,6 +12,7 @@ class Exporters::Antweb::InlineCitation
   end
 
   private
+
     attr_reader :reference
 
     def reference_link

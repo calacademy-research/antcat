@@ -1,7 +1,7 @@
 # For `rails generate database_script <name_of_script>`.
 
 class DatabaseScriptGenerator < Rails::Generators::NamedBase
-  source_root File.expand_path("../templates", __FILE__)
+  source_root File.expand_path('templates', __dir__)
 
   desc "Create example database script"
   def create_script_file
@@ -9,6 +9,7 @@ class DatabaseScriptGenerator < Rails::Generators::NamedBase
   end
 
   private
+
     def target_file
       scripts_path = DatabaseScript::SCRIPTS_DIR
       File.join scripts_path, class_path, "#{file_name}.rb"

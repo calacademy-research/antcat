@@ -17,7 +17,7 @@ module Types
       "ANTWEB",
       "JZC",
       "MCZTYPE",
-      "MCZ-ENT",
+      "MCZ-ENT"
     ]
 
     STOP_REGEX = %r{
@@ -29,7 +29,7 @@ module Types
     }x
 
     def initialize content
-     @content = content
+      @content = content
     end
 
     def call
@@ -37,6 +37,7 @@ module Types
     end
 
     private
+
       attr :content
 
       def link_specimen_identifiers!

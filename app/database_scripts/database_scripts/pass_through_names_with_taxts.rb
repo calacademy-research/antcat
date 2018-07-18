@@ -5,6 +5,7 @@ module DatabaseScripts
     end
 
     private
+
       def pass_through_names
         Taxon.where(
           status: ["obsolete combination", "original combination", "unavailable misspelling"]

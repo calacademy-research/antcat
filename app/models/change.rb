@@ -57,7 +57,6 @@ class Change < ApplicationRecord
       UndoTracker.clear_change
       change_id_set = find_future_changes
       versions = SortedSet[]
-      items = SortedSet[]
 
       Taxon.transaction do
         change_id_set.each do |undo_this_change_id|
@@ -109,6 +108,7 @@ class Change < ApplicationRecord
   end
 
   private
+
     # Backwards compatibility for changes created before `changes.user_id` was added.
     def whodunnit_via_change_id
       version = versions.where.not(whodunnit: nil).first

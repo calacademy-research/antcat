@@ -22,6 +22,7 @@ module References
     end
 
     private
+
       attr_reader :lhs, :rhs
       delegate :type, :principal_author_last_name_cache, :title, :year, :pagination,
         :series_volume_issue, to: :lhs
@@ -73,7 +74,7 @@ module References
         return unless rhs.pagination.present? && pagination.present? && rhs.pagination == pagination
 
         return 0.90 if normalize_series_volume_issue(rhs.series_volume_issue) ==
-          normalize_series_volume_issue(series_volume_issue)
+            normalize_series_volume_issue(series_volume_issue)
       end
 
       # NOTE using `#type` to make the service more general.
@@ -86,7 +87,7 @@ module References
       def normalize_series_volume_issue string
         string = string.dup
         remove_year_in_parentheses! string
-        remove_No! string
+        remove_no! string
         replace_punctuation_with_space! string
         string
       end
@@ -100,7 +101,7 @@ module References
         string.gsub! /\(\d{4}\)$/, ''
       end
 
-      def remove_No! string
+      def remove_no! string
         string.gsub! /\(No. (\d+)\)$/, '(\1)'
       end
 
@@ -139,7 +140,7 @@ module References
 
       def replace_roman_numerals! string
         roman_numerals = [
-          ['i',  1], ['ii',  2], ['iii',  3], ['iv', 4], ['v',  5],
+          ['i',  1], ['ii',  2], ['iii',  3], ['iv', 4], ['v', 5],
           ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
         ]
 

@@ -13,7 +13,7 @@ After  { PaperTrail.enabled = false }
 Before("@papertrail") { PaperTrail.enabled = true }
 After("@papertrail")  { PaperTrail.enabled = false }
 
-Around "@feed" do |scenario, block|
+Around "@feed" do |_scenario, block|
   Feed.with_tracking { block.call }
 end
 

@@ -18,9 +18,11 @@ class Subgenus < GenusGroupTaxon
     self.genus = parent_taxon
   end
 
-  def statistics valid_only: false; end
+  def statistics valid_only: false
+  end
 
   private
+
     def ensure_correct_name_type
       return if name.is_a? name_class
       error_message = "`Taxon` (#{self.class}) and `Name` (#{name.class}) types must match"

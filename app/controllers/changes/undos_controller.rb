@@ -15,6 +15,7 @@ module Changes
     end
 
     private
+
       def set_change
         @change = Change.find params[:change_id]
       end

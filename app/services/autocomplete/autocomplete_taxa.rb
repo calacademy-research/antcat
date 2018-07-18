@@ -20,6 +20,7 @@ module Autocomplete
     end
 
     private
+
       attr_reader :search_query, :rank
 
       def search_results

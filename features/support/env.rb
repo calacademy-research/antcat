@@ -23,8 +23,8 @@ if ENV['HEADLESS']
 end
 
 RSpec.configure do |config|
-  config.expect_with :rspec do |config|
-    config.syntax = [:expect]
+  config.expect_with :rspec do |expect_with_config|
+    expect_with_config.syntax = [:expect]
   end
 end
 
@@ -65,9 +65,9 @@ WebMock.stub_request :put, 'https://antcat.s3.amazonaws.com/1/21105.pdf'
 Capybara.app = Rack::ShowExceptions.new AntCat::Application
 
 # Warden is what Devise uses for authorization.
-include Warden::Test::Helpers
+include Warden::Test::Helpers # rubocop:disable Style/MixinUsage
 Warden.test_mode!
-Warden::Manager.serialize_into_session { |user| user.email }
+Warden::Manager.serialize_into_session(&:email)
 Warden::Manager.serialize_from_session { |email| User.find_by(email: email) }
 
 Feed.enabled = false

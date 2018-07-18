@@ -6,7 +6,6 @@ module DatabaseScripts
       SQL
     end
 
-
     def render
       as_table do |t|
         t.header :synonym_id, :junior_synonym, :senior_synonym

@@ -61,6 +61,7 @@ class NameFieldsController < NamePickersController
   # a combination of duplicatescontroller and name_field.coffee
 
   private
+
     def add_name name_string, data
       name = Names::CreateNameFromString[name_string]
       data[:success] = true

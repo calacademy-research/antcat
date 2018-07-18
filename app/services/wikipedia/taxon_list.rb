@@ -18,6 +18,7 @@ module Wikipedia
     end
 
     private
+
       attr_reader :taxon, :children_rank, :children
 
       def tribes

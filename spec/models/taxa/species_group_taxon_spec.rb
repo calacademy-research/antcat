@@ -29,13 +29,13 @@ describe SpeciesGroupTaxon do
       attributes = [:protonym, :biogeographic_region]
 
       # Confirm factory.
-      attributes.each { |attribute| expect(old_comb.send attribute).to be_present }
+      attributes.each { |attribute| expect(old_comb.send(attribute)).to be_present }
 
       # Act and test
       new_comb.inherit_attributes_for_new_combination old_comb, new_comb_parent
 
       attributes.each do |attribute|
-        expect(old_comb.send attribute).to eq new_comb.send(attribute)
+        expect(old_comb.send(attribute)).to eq new_comb.send(attribute)
       end
     end
 

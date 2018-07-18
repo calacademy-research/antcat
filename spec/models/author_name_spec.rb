@@ -29,8 +29,8 @@ describe AuthorName do
       before { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }
 
       it "reuses existing authors" do
-        expect { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }
-          .to_not change { described_class.count }.from(2)
+        expect { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }.
+          to_not change { described_class.count }.from(2)
       end
     end
 
@@ -78,12 +78,12 @@ describe AuthorName do
       expect(author_data[:author_names_suffix]).to be_nil
     end
 
-   it "handles a semicolon followed by a space at the end" do
-     author_data = described_class.import_author_names_string 'Ward, P. S.; '
-     expect(author_data[:author_names].size).to eq 1
-     expect(author_data[:author_names].first.name).to eq 'Ward, P. S.'
-     expect(author_data[:author_names_suffix]).to be_nil
-   end
+    it "handles a semicolon followed by a space at the end" do
+      author_data = described_class.import_author_names_string 'Ward, P. S.; '
+      expect(author_data[:author_names].size).to eq 1
+      expect(author_data[:author_names].first.name).to eq 'Ward, P. S.'
+      expect(author_data[:author_names_suffix]).to be_nil
+    end
   end
 
   describe "#last_name and #first_name_and_initials" do

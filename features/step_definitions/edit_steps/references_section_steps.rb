@@ -19,7 +19,7 @@ When("I delete the reference section") do
 end
 
 When("I fill in the references field with {string}") do |references|
-  step %{I fill in "references_taxt" with "#{references}"}
+  step %(I fill in "references_taxt" with "#{references}")
 end
 
 Then("the reference section should be empty") do
@@ -32,7 +32,7 @@ Then("the reference section should be {string}") do |reference|
 end
 
 When("I add a reference section {string}") do |text|
-  step %{I click the add reference section button}
-  step %{I fill in the references field with "#{text}"}
-  step %{I save the reference section}
+  step %(I click the add reference section button)
+  step %(I fill in the references field with "#{text}")
+  step %(I save the reference section)
 end

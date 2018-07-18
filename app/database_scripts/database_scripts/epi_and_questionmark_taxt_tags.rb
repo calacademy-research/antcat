@@ -21,13 +21,14 @@ module DatabaseScripts
 
         results.each do |model, ids|
           t.rows(ids) do |id|
-            [ model, attempt_to_link_item(model.name, id) ]
+            [model, attempt_to_link_item(model.name, id)]
           end
         end
       end
     end
 
     private
+
       def attempt_to_link_item item_type, item_id
         case item_type
         when "TaxonHistoryItem"

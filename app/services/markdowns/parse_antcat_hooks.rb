@@ -27,6 +27,7 @@ module Markdowns
     end
 
     private
+
       attr_reader :content, :include_search_history_links
 
       # Matches: %taxon429349 and {tax 429349}

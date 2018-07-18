@@ -28,8 +28,9 @@ module DatabaseScripts
     end
 
     private
+
       def all_taxa
-        all_ids = results.map do |group| group.grouped_ids.split(",") end.flatten
+        all_ids = results.map { |group| group.grouped_ids.split(",") }.flatten
         Taxon.where(id: all_ids, status: "unavailable uncategorized")
       end
 

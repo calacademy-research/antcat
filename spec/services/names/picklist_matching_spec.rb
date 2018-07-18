@@ -46,7 +46,7 @@ describe Names::PicklistMatching do
           label: '<b><i>Brachyponera</i></b>',
           taxon_id: brachyponera.id,
           value: brachyponera.name.name
-        },
+        }
       ]
     end
 
@@ -71,7 +71,8 @@ describe Names::PicklistMatching do
           id: acanthognathus.id,
           name: 'Acanthognathus laevigatus',
           label: '<b><i>Acanthognathus laevigatus</i></b>',
-          value: acanthognathus.name},
+          value: acanthognathus.name
+        },
         {
           id: acropyga.id,
           name: 'Acropyga dubitata',

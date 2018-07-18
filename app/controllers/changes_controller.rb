@@ -27,6 +27,7 @@ class ChangesController < ApplicationController
   end
 
   private
+
     def set_change
       @change = Change.find params[:id]
     end

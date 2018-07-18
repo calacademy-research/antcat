@@ -5,7 +5,8 @@ module LinkHelper
   end
 
   def link_to_hol taxon
-    return unless hol_id = taxon.hol_id
+    hol_id = taxon.hol_id
+    return unless hol_id
     link_to_external_site 'HOL', "http://hol.osu.edu/index.html?id=#{hol_id}"
   end
 
@@ -39,6 +40,7 @@ module LinkHelper
   end
 
   private
+
     def link_to_external_site label, url
       link_to label, url, class: 'link_to_external_site'
     end

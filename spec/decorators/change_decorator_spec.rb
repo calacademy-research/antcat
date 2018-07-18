@@ -30,8 +30,8 @@ describe ChangeDecorator do
     let(:time) { Time.now - 1.hour }
 
     it "formats time" do
-      expect(nil_decorator.send(:format_time_ago, time))
-        .to match %r{<span>about 1 hour ago</span>}
+      expect(nil_decorator.send(:format_time_ago, time)).
+        to match %r{<span>about 1 hour ago</span>}
     end
   end
 end

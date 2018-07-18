@@ -12,15 +12,15 @@ module References
     end
 
     private
+
       attr_reader :target, :min_similarity
 
       def match
-        candidates.reduce([]) do |matches, candidate|
+        candidates.each_with_object([]) do |candidate, matches|
           if possible_match? candidate
             similarity = reference_similarity candidate
             matches << { target: target, match: candidate, similarity: similarity } if similarity >= min_similarity
           end
-          matches
         end
       end
 

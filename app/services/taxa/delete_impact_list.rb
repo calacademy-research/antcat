@@ -11,6 +11,7 @@ module Taxa
     end
 
     private
+
       attr_reader :taxon
 
       # TODO see `Subfamily#children` for a known bug.

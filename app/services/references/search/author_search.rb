@@ -9,17 +9,18 @@ module References
       end
 
       def call
-        Reference.select('`references`.*')
-          .joins(:author_names)
-          .joins('JOIN authors ON authors.id = author_names.author_id')
-          .where('authors.id IN (?)', authors)
-          .group('references.id')
-          .having("COUNT(`references`.id) = #{authors.size}")
-          .order(:author_names_string_cache, :citation_year)
-          .paginate page: (page || 1)
+        Reference.select('`references`.*').
+          joins(:author_names).
+          joins('JOIN authors ON authors.id = author_names.author_id').
+          where('authors.id IN (?)', authors).
+          group('references.id').
+          having("COUNT(`references`.id) = #{authors.size}").
+          order(:author_names_string_cache, :citation_year).
+          paginate page: (page || 1)
       end
 
       private
+
         attr_reader :search_query, :page
 
         def authors

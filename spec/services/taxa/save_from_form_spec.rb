@@ -285,8 +285,8 @@ def taxon_params
         reference_attributes: { id: reference.id },
         pages: '',
         forms: '',
-        notes_taxt: '',
-      },
+        notes_taxt: ''
+      }
     }
   ).deep_dup
 end

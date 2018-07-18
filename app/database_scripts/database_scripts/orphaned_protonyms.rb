@@ -9,19 +9,24 @@ module DatabaseScripts
         t.header :protonym, :id, :created_at, :updated_at
 
         t.rows do |protonym|
-          [ protonym_name_with_search_link(protonym),
+          [
+            protonym_name_with_search_link(protonym),
             protonym.id,
             protonym.created_at,
-            protonym.updated_at ]
+            protonym.updated_at
+          ]
         end
       end
     end
 
     private
+
       def protonym_name_with_search_link protonym
+        # rubocop:disable Lint/UriEscapeUnescape
         search_path = "/catalog/search/quick_search?&search_type=containing&qq="
         label = protonym.name.protonym_with_fossil_html protonym.fossil
         "<a href='#{search_path}#{URI.encode(protonym.name.name, /\W/)}'>#{label}</a>"
+        # rubocop:enable Lint/UriEscapeUnescape
       end
   end
 end

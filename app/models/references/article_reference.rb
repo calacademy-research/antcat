@@ -27,6 +27,7 @@ class ArticleReference < Reference
   end
 
   private
+
     def series_volume_issue_parts
       @series_volume_issue_parts ||= Parsers::ArticleCitationParser.get_series_volume_issue_parts series_volume_issue
     end

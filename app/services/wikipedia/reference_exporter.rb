@@ -19,6 +19,7 @@ module Wikipedia
     end
 
     private
+
       attr_reader :reference
 
       def url
@@ -27,7 +28,7 @@ module Wikipedia
 
       def pages
         # Replace hyphens with en dashes, enwp.org/WP:ENDASH
-        reference.pagination.gsub "-", "\u2013" if reference.pagination
+        reference.pagination.tr "-", "\u2013" if reference.pagination
       end
 
       def author_params
@@ -63,7 +64,7 @@ module Wikipedia
         #{author_params}
         |year=#{reference.year}
         |title=#{title}
-        |url=#{url if url}
+        |url=#{url}
         |journal=#{reference.journal.name}
         |publisher=
         |volume=#{reference.volume}
@@ -75,6 +76,7 @@ module Wikipedia
     end
 
     private
+
       def title
         title = reference.title
         return unless title
@@ -85,9 +87,9 @@ module Wikipedia
       # Asterix to double quotes (two single quotes mean "start italics" on WP);
       # also convert "pipes" to italics per ReferenceDecorator#format_italics.
       def convert_to_wikipedia_italics string
-        string
-          .gsub(/\*(.*?)\*/, %q[''\1''])
-          .gsub(/\|(.*?)\|/, %q[''\1''])
+        string.
+          gsub(/\*(.*?)\*/, %q(''\1'')).
+          gsub(/\|(.*?)\|/, %q(''\1''))
       end
   end
 
@@ -104,7 +106,7 @@ module Wikipedia
         #{author_params}
         |year=#{reference.year}
         |title=#{title}
-        |url=#{url if url}
+        |url=#{url}
         |location=#{location}
         |publisher=#{publisher}
         |pages=#{pages}
@@ -113,6 +115,7 @@ module Wikipedia
     end
 
     private
+
       def title
         title = reference.title
         return unless title
@@ -122,9 +125,9 @@ module Wikipedia
       end
 
       def remove_italics string
-        string
-          .gsub(/\*(.*?)\*/, '\1')
-          .gsub(/\|(.*?)\|/, '\1') # See Wikipedia::ArticleReference#title.
+        string.
+          gsub(/\*(.*?)\*/, '\1').
+          gsub(/\|(.*?)\|/, '\1') # See Wikipedia::ArticleReference#title.
       end
   end
 end

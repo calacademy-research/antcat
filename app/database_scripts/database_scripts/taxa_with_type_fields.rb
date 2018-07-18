@@ -28,13 +28,15 @@ module DatabaseScripts
     end
 
     private
+
+      # TODO `Taxon.where.not` is not used.
       def taxa_with_type_specimen_repositories_or_codes
         ids = Taxon.where.not(verbatim_type_locality: [nil, '']).pluck(:id) +
           Taxon.where.not(type_specimen_code: [nil, '']).pluck(:id) +
           Taxon.where.not(type_specimen_repository: [nil, '']).pluck(:id)
-          Taxon.where.not(published_type_information: [nil, '']).pluck(:id)
-          Taxon.where.not(additional_type_information: [nil, '']).pluck(:id)
-          Taxon.where.not(type_notes: [nil, '']).pluck(:id)
+        Taxon.where.not(published_type_information: [nil, '']).pluck(:id)
+        Taxon.where.not(additional_type_information: [nil, '']).pluck(:id)
+        Taxon.where.not(type_notes: [nil, '']).pluck(:id)
         Taxon.where(id: ids.uniq)
       end
 
@@ -47,7 +49,7 @@ module DatabaseScripts
       end
 
       def institutions_regex
-        @_institutions_regex = begin
+        @institutions_regex ||= begin
           abbreviation = Institution.pluck(:abbreviation)
           /\((#{abbreviation.join('|')})\)/
         end

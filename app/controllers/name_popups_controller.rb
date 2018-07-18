@@ -6,7 +6,6 @@ class NamePopupsController < NamePickersController
       name = taxon.name
       id = taxon.id
     else
-      taxon = nil
       name = Name.find params[:id]
       id = name.id
     end
@@ -24,6 +23,7 @@ class NamePopupsController < NamePickersController
   end
 
   private
+
     def find_name name_string, data
       name = Name.find_by_name name_string
       if name

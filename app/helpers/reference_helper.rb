@@ -56,6 +56,7 @@ module ReferenceHelper
   end
 
   private
+
     def show_export_search_results_to_endnote?
       params[:action] == "search"
     end

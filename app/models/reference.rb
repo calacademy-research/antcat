@@ -115,7 +115,7 @@ class Reference < ApplicationRecord
     if author_names_and_suffix[:author_names].empty? && author_names_string.present?
       errors.add :author_names_string, "couldn't be parsed."
       self.author_names_string = author_names_string
-      raise ActiveRecord::RecordInvalid.new self
+      raise ActiveRecord::RecordInvalid, self
     end
     author_names_and_suffix
   end
@@ -179,6 +179,7 @@ class Reference < ApplicationRecord
   end
 
   private
+
     def check_not_referenced
       return unless what_links_here(predicate: true)
 
@@ -194,6 +195,7 @@ class Reference < ApplicationRecord
     end
 
     def set_year_from_citation_year
+      # rubocop:disable Lint/AssignmentInCondition
       self.year = if citation_year.blank?
                     nil
                   elsif match = citation_year.match(/\["(\d{4})"\]/)
@@ -201,6 +203,7 @@ class Reference < ApplicationRecord
                   else
                     citation_year.to_i
                   end
+      # rubocop:enable Lint/AssignmentInCondition
     end
 
     # TODO does this duplicate `refresh_author_names_caches`?

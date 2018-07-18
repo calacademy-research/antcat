@@ -45,6 +45,7 @@ class ReferenceSectionsController < ApplicationController
   end
 
   private
+
     def set_reference_section
       @item = ReferenceSection.find params[:id]
     end

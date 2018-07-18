@@ -85,9 +85,9 @@ describe References::ReferenceSimilarity do
 
     it "matches with much less confidence if the author and title are the same but the year is not within 1" do
       lhs.title = 'Ants'
-      lhs.year ='1975'
+      lhs.year = '1975'
       rhs.title = 'Ants'
-      rhs.year ='1971'
+      rhs.year = '1971'
 
       expect(described_class[lhs, rhs]).to eq 0.50
     end

@@ -33,7 +33,7 @@ class Species < SpeciesGroupTaxon
   def become_subspecies_of species
     new_name_string = "#{species.genus.name} #{species.name.epithet} #{name.epithet}"
     if Subspecies.find_by_name new_name_string
-      raise TaxonExists.new "The subspecies '#{new_name_string}' already exists."
+      raise TaxonExists, "The subspecies '#{new_name_string}' already exists."
     end
 
     new_name = SubspeciesName.find_by_name new_name_string
@@ -57,6 +57,7 @@ class Species < SpeciesGroupTaxon
   end
 
   private
+
     def create_convert_species_to_subspecies_activity new_name
       create_activity :convert_species_to_subspecies,
         parameters: { name_was: name_html_cache, name: new_name.name_html }

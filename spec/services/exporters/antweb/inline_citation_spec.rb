@@ -22,8 +22,8 @@ describe Exporters::Antweb::InlineCitation do
 
           expect(described_class[reference]).to eq(
             %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
-            %{href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>} +
-            %{ <a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>}
+            %(href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>) +
+            %( <a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>)
           )
         end
       end
@@ -34,9 +34,9 @@ describe Exporters::Antweb::InlineCitation do
 
           expect(described_class[reference]).to eq(
             %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
-            %{href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>} +
-            %{ <a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>} +
-            %{ <a href="example.com">PDF</a>}
+            %(href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>) +
+            %( <a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>) +
+            %( <a href="example.com">PDF</a>)
           )
         end
       end
@@ -50,7 +50,7 @@ describe Exporters::Antweb::InlineCitation do
 
       it "escapes them" do
         expect(described_class[reference]).to eq(
-          %{<a title="Latreille, P. A. 1809. &quot;Atta&quot;. New York." href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>}
+          %(<a title="Latreille, P. A. 1809. &quot;Atta&quot;. New York." href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>)
         )
       end
     end

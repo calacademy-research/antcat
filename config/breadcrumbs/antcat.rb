@@ -1,3 +1,4 @@
+# rubocop:disable Layout/IndentationConsistency
 crumb :antcat do
   link "AntCat"
 end
@@ -36,3 +37,4 @@ crumb :change_password do
   link "Change Password"
   parent :antcat
 end
+# rubocop:enable Layout/IndentationConsistency

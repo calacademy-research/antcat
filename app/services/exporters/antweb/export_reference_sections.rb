@@ -17,15 +17,15 @@ class Exporters::Antweb::ExportReferenceSections
   end
 
   private
+
     attr_reader :taxon
 
     def reference_section section
       content_tag :div, class: 'section' do
-        [:title_taxt, :subtitle_taxt, :references_taxt].reduce(''.html_safe) do |content, field|
+        [:title_taxt, :subtitle_taxt, :references_taxt].each_with_object(''.html_safe) do |field, content|
           if section[field].present?
             content << content_tag(:div, TaxtPresenter[section[field]].to_antweb, class: field)
           end
-          content
         end
       end
     end

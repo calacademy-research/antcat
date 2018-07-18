@@ -18,6 +18,7 @@ class MergeAuthorsController < ApplicationController
   end
 
   private
+
     def create_panels
       params[:terms] ||= []
 

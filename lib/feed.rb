@@ -14,6 +14,7 @@ class Feed
   end
 
   private
+
     def self.with_or_without_tracking value
       before = enabled
       self.enabled = value

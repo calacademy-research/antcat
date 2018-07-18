@@ -19,8 +19,8 @@ describe Reference do
       let!(:fisher_reference) { create :article_reference, author_names: [fisher_bl, bolton_b] }
 
       it "orders by author_name" do
-        expect(described_class.sorted_by_principal_author_last_name)
-          .to eq [bolton_reference, fisher_reference, ward_reference]
+        expect(described_class.sorted_by_principal_author_last_name).
+          to eq [bolton_reference, fisher_reference, ward_reference]
       end
     end
 
@@ -43,8 +43,8 @@ describe Reference do
         fisher1910a = reference_factory author_name: 'Fisher',
           citation_year: '1910a', fix_type: :article_reference
 
-        expect(described_class.order_by_author_names_and_year)
-          .to eq [fisher1910a, fisher1910b, wheeler1874]
+        expect(described_class.order_by_author_names_and_year).
+          to eq [fisher1910a, fisher1910b, wheeler1874]
       end
 
       it "sorts by multiple author_names using their order in each reference" do
@@ -85,10 +85,10 @@ describe Reference do
       reference_factory author_name: 'Fisher', citation_year: '1996'
       Sunspot.commit
 
-      expect(described_class.solr_search {
+      expect(described_class.solr_search do
         with(:year).between(2012..2013)
         keywords 'Fisher'
-      }.results).to be_empty
+      end.results).to be_empty
     end
 
     it "returns the one reference for a given year and author_name" do
@@ -98,10 +98,10 @@ describe Reference do
       reference = reference_factory author_name: 'Fisher', citation_year: '1996'
       Sunspot.commit
 
-      expect(described_class.solr_search {
+      expect(described_class.solr_search do
         with(:year).between(1996..1996)
         keywords 'Fisher'
-      }.results).to eq [reference]
+      end.results).to eq [reference]
     end
 
     it "searches citation years" do
@@ -118,15 +118,15 @@ describe Reference do
 
     context 'when input in empty' do
       it "returns nothing" do
-        expect(reference.parse_author_names_and_suffix(''))
-          .to eq author_names: [], author_names_suffix: nil
+        expect(reference.parse_author_names_and_suffix('')).
+          to eq author_names: [], author_names_suffix: nil
       end
     end
 
     context 'when input is invalid' do
       it "adds an error and raise an exception" do
-        expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }
-          .to raise_error ActiveRecord::RecordInvalid
+        expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }.
+          to raise_error ActiveRecord::RecordInvalid
         expect(reference.errors.messages).to eq author_names_string: ["couldn't be parsed."]
         expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
       end
@@ -179,9 +179,9 @@ describe Reference do
         before { reference.author_names << ward_ps }
 
         it "updates its `author_names_string`" do
-          expect { reference.author_names.delete ward_ps }
-            .to change { reference.reload.author_names_string }
-            .from('Fisher, B.L.; Ward, P.S.').to('Fisher, B.L.')
+          expect { reference.author_names.delete ward_ps }.
+            to change { reference.reload.author_names_string }.
+            from('Fisher, B.L.; Ward, P.S.').to('Fisher, B.L.')
         end
       end
 
@@ -189,9 +189,9 @@ describe Reference do
         before { reference.author_names = [ward_ps] }
 
         it "updates its `author_names_string`" do
-          expect { ward_ps.update name: 'Fisher' }
-            .to change { reference.reload.author_names_string }
-            .from('Ward, P.S.').to('Fisher')
+          expect { ward_ps.update name: 'Fisher' }.
+            to change { reference.reload.author_names_string }.
+            from('Ward, P.S.').to('Fisher')
         end
       end
 
@@ -236,8 +236,8 @@ describe Reference do
       let!(:reference) { create :reference, author_names: [ward_ps] }
 
       it "updates its `principal_author_last_name_cache`" do
-        expect { ward_ps.update name: 'Bolton, B.' }
-          .to change { reference.reload.principal_author_last_name_cache }.from('Ward').to('Bolton')
+        expect { ward_ps.update name: 'Bolton, B.' }.
+          to change { reference.reload.principal_author_last_name_cache }.from('Ward').to('Bolton')
       end
     end
   end
@@ -247,8 +247,8 @@ describe Reference do
       let(:reference) { create :reference, citation_year: '1910a' }
 
       it "sets `year` to the stated year, if present" do
-        expect { reference.update! citation_year: '2010b' }
-          .to change { reference.reload.year }.from(1910).to(2010)
+        expect { reference.update! citation_year: '2010b' }.
+          to change { reference.reload.year }.from(1910).to(2010)
       end
     end
 
@@ -256,8 +256,8 @@ describe Reference do
       let(:reference) { create :reference, citation_year: '1910a ["1958"]' }
 
       it "sets `year` to the stated year, if present" do
-        expect { reference.update! citation_year: '2010b ["2009"]' }
-          .to change { reference.reload.year }.from(1958).to(2009)
+        expect { reference.update! citation_year: '2010b ["2009"]' }.
+          to change { reference.reload.year }.from(1958).to(2009)
       end
     end
 
@@ -353,8 +353,8 @@ describe Reference do
     subject { create :article_reference }
 
     it "calls `References::WhatLinksHere`" do
-      expect(References::WhatLinksHere).to receive(:new)
-        .with(subject, predicate: false).and_call_original
+      expect(References::WhatLinksHere).to receive(:new).
+        with(subject, predicate: false).and_call_original
       subject.what_links_here
     end
   end
@@ -413,7 +413,7 @@ describe Reference do
 
     it "handles multiple authors" do
       reference = create :article_reference,
-        author_names: [ create(:author_name, name: 'Bolton, B.'),
+        author_names: [create(:author_name, name: 'Bolton, B.'),
                         create(:author_name, name: 'Fisher, R.')],
         citation_year: '2001', year: '2001'
       expect(reference.keey_without_letters_in_year).to eq 'Bolton & Fisher, 2001'

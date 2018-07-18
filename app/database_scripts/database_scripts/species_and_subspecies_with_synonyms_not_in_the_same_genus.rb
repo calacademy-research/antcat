@@ -1,13 +1,13 @@
 module DatabaseScripts
   class SpeciesAndSubspeciesWithSynonymsNotInTheSameGenus < DatabaseScript
     def senior_synonyms
-      Taxon.where(type: ['Species', 'Subspecies']).joins(:junior_synonyms)
-        .where('junior_synonyms_taxa.genus_id != taxa.genus_id').distinct
+      Taxon.where(type: ['Species', 'Subspecies']).joins(:junior_synonyms).
+        where('junior_synonyms_taxa.genus_id != taxa.genus_id').distinct
     end
 
     def junior_synonyms
-      Taxon.where(type: ['Species', 'Subspecies']).joins(:senior_synonyms)
-        .where('senior_synonyms_taxa.genus_id != taxa.genus_id').distinct
+      Taxon.where(type: ['Species', 'Subspecies']).joins(:senior_synonyms).
+        where('senior_synonyms_taxa.genus_id != taxa.genus_id').distinct
     end
 
     def render
@@ -37,10 +37,13 @@ module DatabaseScripts
     end
 
     private
+
       def markdown_taxa_links taxon, taxa
+        # rubocop:disable Lint/ShadowingOuterLocalVariable
         taxa.where.not(genus_id: taxon.genus_id).map do |taxon|
           markdown_taxon_link(taxon)
         end.join(', ')
+        # rubocop:enable Lint/ShadowingOuterLocalVariable
       end
   end
 end

@@ -13,7 +13,7 @@ module DevMonkeyPatches::Object
 
   # Find taxon by name or id.
   def dev_dev_taxon name_or_id
-    return Taxon.find(name_or_id) if name_or_id.kind_of? Numeric
+    return Taxon.find(name_or_id) if name_or_id.is_a? Numeric
 
     matches = Taxon.where(name_cache: name_or_id)
     case matches.size
@@ -35,7 +35,7 @@ module DevMonkeyPatches::Object
   # Prefix: p
   # "ddpr" = "dd puts red"
   # Puts to standard out with color.
-  %w(green red blue yellow).each do |color|
+  %w[green red blue yellow].each do |color|
     method = "ddp#{color.to_s.first}".to_sym
     define_method method do |string|
       $stdout.puts "#{string}".send color

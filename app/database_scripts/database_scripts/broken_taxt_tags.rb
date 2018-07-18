@@ -2,6 +2,7 @@
 # https://github.com/calacademy-research/antcat/blob/
 # 0b1930a3e161e756e3c785bd32d6e54867cc480c/lib/tasks/database_maintenance.rake
 
+# rubocop:disable Naming/MemoizedInstanceVariableName
 module DatabaseScripts
   class BrokenTaxtTags < DatabaseScript
     include Rails.application.routes.url_helpers
@@ -61,7 +62,7 @@ module DatabaseScripts
       log.puts "\nSearching for matching ids in other models (Reference, Name, Taxon)...\n\n"
       [Reference, Name, Taxon].each do |model|
         model.where(id: broken_ids.each_id).each do |item|
-          log.puts "#{model.to_s}: #{item.id}"
+          log.puts "#{model}: #{item.id}"
         end
       end
 
@@ -122,7 +123,8 @@ module DatabaseScripts
               unless broken_matched_ids.empty?
                 taxon = case matched_obj
                         when Citation then "Unknown"
-                        else matched_obj.send(taxon_id_field[model]).to_i end
+                        else matched_obj.send(taxon_id_field[model]).to_i
+                        end
 
                 taxa_with_broken_ids_thing << {
                   item_id:            matched_obj.id,
@@ -162,7 +164,7 @@ module DatabaseScripts
               "`#{item_type}##{field}`",
               attemp_to_link_taxon(taxon, item_type, item_id),
               tag,
-              attempt_to_link_broken_ids(tag, broken_matched_ids),
+              attempt_to_link_broken_ids(tag, broken_matched_ids)
             ]
           end
         end
@@ -186,14 +188,14 @@ module DatabaseScripts
 
       def attempt_to_link_broken_ids tag, broken_matched_ids
         broken_matched_ids.each_with_object("") do |id, string|
-          case tag
-          when :ref
-            string << link_to("#{id} ", reference_history_index_path(id))
-          when :tax
-            string << link_to("#{id} ", taxon_history_path(id))
-          else
-            string << "#{id} "
-          end
+          string << case tag
+                    when :ref
+                      link_to("#{id} ", reference_history_index_path(id))
+                    when :tax
+                      link_to("#{id} ", taxon_history_path(id))
+                    else
+                      "#{id} "
+                    end
         end
       end
 
@@ -207,7 +209,8 @@ module DatabaseScripts
           # epi: # TODO? /{epi (\w+)}/
           # ?:   # TODO? Not sure what this is, but it looks like this "{? #{string}}"
         }
-        def @_taxt_tags.keys_plus_empty_arrays
+
+        def @_taxt_tags.keys_plus_empty_arrays # rubocop:disable Lint/NestedMethodDefinition
           map { |tag, _| [tag, []] }.to_h
         end
 
@@ -250,6 +253,7 @@ module DatabaseScripts
       end
   end
 end
+# rubocop:enable Naming/MemoizedInstanceVariableName
 
 __END__
 description: >

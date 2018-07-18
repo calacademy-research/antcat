@@ -16,7 +16,7 @@ Given("there is a subfamily {string}") do |taxon_name|
 end
 
 Given("subfamily {string} exists") do |taxon_name|
-  step %{there is a subfamily "#{taxon_name}"}
+  step %(there is a subfamily "#{taxon_name}")
 end
 
 Given("there is an invalid subfamily Invalidinae") do

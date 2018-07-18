@@ -22,9 +22,9 @@ describe TaxonDecorator::Statistics do
       end
 
       it "handles both extant and fossil statistics" do
-        expect(described_class[statistics])
-          .to eq '<p>Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>' +
-            '<p>Fossil: 2 valid subfamilies</p>'
+        expect(described_class[statistics]).
+          to eq '<p>Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>' +
+          '<p>Fossil: 2 valid subfamilies</p>'
       end
 
       it "can exclude fossil statistics" do
@@ -49,8 +49,8 @@ describe TaxonDecorator::Statistics do
           species: { 'valid' => 1 }
         }
       }
-      expect(described_class[statistics])
-        .to eq '<p>1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>'
+      expect(described_class[statistics]).
+        to eq '<p>1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>'
     end
 
     it "handles tribes" do
@@ -67,16 +67,16 @@ describe TaxonDecorator::Statistics do
           species: { 'valid' => 1 }
         }
       }
-      expect(described_class[statistics])
-        .to eq '<p>2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>'
+      expect(described_class[statistics]).
+        to eq '<p>2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>'
     end
 
     it "uses the singular for genus" do
       statistics = {
         extant: { genera: { 'valid' => 1 } }
       }
-      expect(described_class[statistics])
-        .to eq '<p>1 valid genus</p>'
+      expect(described_class[statistics]).
+        to eq '<p>1 valid genus</p>'
     end
 
     it "formats a genus's statistics correctly" do
@@ -116,8 +116,8 @@ describe TaxonDecorator::Statistics do
           }
         }
       }
-      expect(described_class[statistics])
-        .to eq '<p>2 valid species (2 synonyms, 2 homonyms, 2 unavailable, 2 excluded from Formicidae)</p>'
+      expect(described_class[statistics]).
+        to eq '<p>2 valid species (2 synonyms, 2 homonyms, 2 unavailable, 2 excluded from Formicidae)</p>'
     end
 
     it "leaves out invalid status if desired" do
@@ -125,11 +125,11 @@ describe TaxonDecorator::Statistics do
         extant: {
           genera: { 'valid' => 1, 'homonym' => 2 },
           species: { 'valid' => 2 },
-          subspecies: { 'valid' => 3}
+          subspecies: { 'valid' => 3 }
         }
       }
-      expect(described_class[statistics, include_invalid: false])
-        .to eq '<p>1 genus, 2 species, 3 subspecies</p>'
+      expect(described_class[statistics, include_invalid: false]).
+        to eq '<p>1 genus, 2 species, 3 subspecies</p>'
     end
   end
 end

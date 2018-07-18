@@ -11,7 +11,7 @@ class ReferenceSection < ApplicationRecord
       title_taxt #{search_type} :q
         OR references_taxt #{search_type} :q
         OR subtitle_taxt #{search_type} :q
-    SQL
+  SQL
   strip_attributes only: [:title_taxt, :subtitle_taxt,
     :references_taxt, :taxt], replace_newlines: true
   tracked on: :mixin_create_activity_only, parameters: proc { { taxon_id: taxon_id } }

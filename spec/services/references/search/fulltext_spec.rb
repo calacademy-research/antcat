@@ -34,8 +34,8 @@ describe References::Search::Fulltext, search: true do
     describe "Year and fulltext" do
       it "works" do
         atta2004 = create :book_reference, title: 'Atta', citation_year: '2004'
-        atta2003 = create :book_reference, title: 'Atta', citation_year: '2003'
-        formica2004 = create :book_reference, title: 'Formica', citation_year: '2003'
+        create :book_reference, title: 'Atta', citation_year: '2003' # atta2003
+        create :book_reference, title: 'Formica', citation_year: '2003' # formica2004
         Sunspot.commit
 
         expect(described_class[keywords: 'atta', year: 2004]).to eq [atta2004]
@@ -53,7 +53,7 @@ describe References::Search::Fulltext, search: true do
     end
 
     it "applies the :nomissing :reference_type that's passed" do
-      missing = create :missing_reference
+      create :missing_reference
       reference = create :article_reference
       Sunspot.commit
 

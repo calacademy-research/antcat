@@ -13,6 +13,7 @@ module References
       end
 
       private
+
         attr_reader :reference
 
         def set value, field

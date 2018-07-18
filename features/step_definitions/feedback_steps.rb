@@ -43,7 +43,7 @@ Given("a visitor has submitted a feedback with the comment {string}") do |commen
 end
 
 Given("a visitor has submitted a feedback") do
-  step %{a visitor has submitted a feedback with the comment "Cool."}
+  step %(a visitor has submitted a feedback with the comment "Cool.")
 end
 
 Given("there is a closed feedback item with the comment {string}") do |comment|
@@ -51,5 +51,5 @@ Given("there is a closed feedback item with the comment {string}") do |comment|
 end
 
 Given("there is a (closed )feedback item") do
-  step %{there is a closed feedback item with the comment "Cool."}
+  step %(there is a closed feedback item with the comment "Cool.")
 end

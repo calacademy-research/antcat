@@ -8,16 +8,17 @@ module DatabaseScripts
       as_table do |t|
         t.header :taxon, :status, :senior_synonyms_count
         t.rows do |taxon|
-          [ markdown_taxon_link(taxon), taxon.status, taxon.senior_synonyms.count ]
+          [markdown_taxon_link(taxon), taxon.status, taxon.senior_synonyms.count]
         end
       end
     end
 
     private
+
       def synonym_records_with_more_than_one_senior
-        Synonym.group(:junior_synonym_id)
-          .having('COUNT(synonyms.senior_synonym_id) > 1')
-          .pluck(:junior_synonym_id)
+        Synonym.group(:junior_synonym_id).
+          having('COUNT(synonyms.senior_synonym_id) > 1').
+          pluck(:junior_synonym_id)
       end
   end
 end

@@ -14,6 +14,7 @@ class TaxonDecorator::HeadlineType
   end
 
   private
+
     def headline_type
       string = ''.html_safe
       string << type_name_and_taxt
@@ -23,7 +24,7 @@ class TaxonDecorator::HeadlineType
 
     def type_name_and_taxt
       taxt = @taxon.type_taxt
-      if not @taxon.type_name and taxt
+      if !@taxon.type_name and taxt
         string = type_taxt taxt
       else
         return ''.html_safe unless @taxon.type_name

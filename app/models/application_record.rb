@@ -12,6 +12,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   private
+
     def copy_attributes_from from_object, *attributes_to_copy
       attributes_to_copy.each do |attribute|
         send "#{attribute}=".to_sym, from_object.send(attribute)

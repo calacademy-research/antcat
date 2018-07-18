@@ -21,8 +21,17 @@ guard :rspec, cmd: "bundle exec rspec" do
   end
 end
 
+guard :rubocop, all_on_start: false do
+  watch(/.+\.rb$/)
+end
+
 # Disable running of all tests for plugins that does not support `run_all: false`.
 ObjectSpace.each_object(::Guard::RSpec) do |object|
+  def object.run_all
+  end
+end
+
+ObjectSpace.each_object(::Guard::RuboCop) do |object|
   def object.run_all
   end
 end

@@ -3,7 +3,7 @@ module DevMonkeyPatches::Rails
     ActiveRecord::Relation.include ActiveRecord_Relation
   end
 
-  module ActiveRecord_Relation
+  module ActiveRecord_Relation # rubocop:disable Naming/ClassAndModuleCamelCase
     def v
       valid
     end
@@ -13,7 +13,7 @@ module DevMonkeyPatches::Rails
     end
 
     def dev_dev_puts_each
-      $stdout.puts "Total: #{count} of types #{distinct.pluck(:type).join(", ")}.".yellow
+      $stdout.puts "Total: #{count} of types #{distinct.pluck(:type).join(', ')}.".yellow
       each do |taxon|
         $stdout.print "#{taxon.id.to_s.bold} "
         $stdout.print "(#{taxon.status[0..4]}) "

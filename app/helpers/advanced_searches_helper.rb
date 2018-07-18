@@ -34,6 +34,7 @@ module AdvancedSearchesHelper
   end
 
   private
+
     def per_page_options
       PER_PAGE_OPTIONS.map { |number| ["Show #{number} results per page", number] }
     end

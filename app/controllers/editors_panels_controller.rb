@@ -11,6 +11,7 @@ class EditorsPanelsController < ApplicationController
   end
 
   private
+
     # Unreviewed/pending/open/etc.
     def unreviewed_changes_counts
       {
@@ -18,7 +19,7 @@ class EditorsPanelsController < ApplicationController
         unreviewed_references:      Reference.unreviewed.count,
         unreviewed_catalog_changes: Change.waiting.count,
         pending_user_feedbacks:     Feedback.pending_count,
-        unread_site_notices:        unread_site_notices_count,
+        unread_site_notices:        unread_site_notices_count
       }
     end
 

@@ -9,7 +9,7 @@ describe Taxa::AnyNonTaxtReferences do
     before { eciton.update_attribute :type_taxt, "{tax #{atta.id}}" }
 
     context "when taxon has non-taxt references" do
-      before { eciton.update_attribute :homonym_replaced_by, atta}
+      before { eciton.update_attribute :homonym_replaced_by, atta }
 
       it { expect(subject.call).to be true }
     end

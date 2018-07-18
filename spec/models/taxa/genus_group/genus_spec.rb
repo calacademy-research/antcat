@@ -7,7 +7,7 @@ describe Genus do
   it { is_expected.to have_many :subspecies }
 
   let(:genus) { create :genus, name: create(:genus_name, name: 'Atta') }
-  let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae')}
+  let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae') }
   let(:tribe) { create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily }
   let(:genus_with_tribe) { create :genus, name: create(:genus_name, name: 'Atta'), tribe: tribe }
 
@@ -89,7 +89,7 @@ describe Genus do
         expect(genus.statistics).to eq(
           extant: {
             species: { 'valid' => 1 },
-            subspecies: {'valid' => 1 }
+            subspecies: { 'valid' => 1 }
           },
           fossil: {
             species: { 'valid' => 1 },
@@ -252,19 +252,19 @@ describe Genus do
   end
 
   describe "#find_epithet_in_genus" do
-    let!(:species) { create_species 'Atta serratula'}
+    let!(:species) { create_species 'Atta serratula' }
 
     it "returns nil if nothing matches" do
-      expect(genus.find_epithet_in_genus 'sdfsdf').to eq nil
+      expect(genus.find_epithet_in_genus('sdfsdf')).to eq nil
     end
 
     it "returns the one item" do
-      expect(species.genus.find_epithet_in_genus 'serratula').to eq [species]
+      expect(species.genus.find_epithet_in_genus('serratula')).to eq [species]
     end
 
     context "mandatory spelling changes" do
       it "finds -a when asked to find -us" do
-        expect(species.genus.find_epithet_in_genus 'serratulus').to eq [species]
+        expect(species.genus.find_epithet_in_genus('serratulus')).to eq [species]
       end
     end
   end

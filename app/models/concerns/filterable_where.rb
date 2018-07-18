@@ -3,7 +3,7 @@ module FilterableWhere
 
   module ClassMethods
     def filter(filter_params)
-      results = self.all
+      results = all
       filter_params.each do |key, value|
         results = results.where(key => value) if value.present?
       end

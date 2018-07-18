@@ -11,8 +11,8 @@ describe BookReferenceDecorator do
         citation_year: "1874",
         title: "Les fourmis de la Suisse.",
         publisher: publisher, pagination: "22 pp."
-      expect(reference.decorate.formatted)
-        .to eq 'Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.'
+      expect(reference.decorate.formatted).
+        to eq 'Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.'
     end
 
     context "with unsafe characters" do
@@ -25,8 +25,8 @@ describe BookReferenceDecorator do
           author_names: author_names,
           publisher: create(:publisher, name: '<', place: create(:place, name: '>')),
           pagination: '>'
-        expect(reference.decorate.formatted)
-          .to eq 'Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt;.'
+        expect(reference.decorate.formatted).
+          to eq 'Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt;.'
       end
     end
   end

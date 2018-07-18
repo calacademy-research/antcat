@@ -4,23 +4,25 @@
 #
 # TODO remove most CSS throughout `Exporters::Antweb`.
 
+# rubocop:disable Style/MixinUsage
 include ActionView::Helpers::TagHelper # For `#content_tag`.
 include ActionView::Context # For `#content_tag`.
 include Exporters::Antweb::MonkeyPatchTaxon
+# rubocop:enable Style/MixinUsage
 
 class Exporters::Antweb::Exporter
   include Service
 
   def self.antcat_taxon_link taxon, label = "AntCat"
     url = "http://www.antcat.org/catalog/#{taxon.id}"
-    %Q[<a class="link_to_external_site" href="#{url}">#{label}</a>].html_safe
+    %(<a class="link_to_external_site" href="#{url}">#{label}</a>).html_safe
   end
 
   def self.antcat_taxon_link_with_name taxon
     antcat_taxon_link taxon, taxon.name_with_fossil
   end
 
-  def initialize directory = 'data/output', show_progress: false
+  def initialize directory = 'data/output', _show_progress: false
     @directory = directory
     @progress = Progress.create total: taxa_ids.count unless Rails.env.test?
   end
@@ -30,11 +32,11 @@ class Exporters::Antweb::Exporter
       file.puts header
 
       taxa_ids.each_slice(1000) do |chunk|
-        Taxon.where(id: chunk)
-          .order("field(taxa.id, #{chunk.join(',')})")
-          .joins(protonym: [{authorship: :reference}])
-          .includes(protonym: [{authorship: :reference}])
-          .each do |taxon|
+        Taxon.where(id: chunk).
+          order("field(taxa.id, #{chunk.join(',')})").
+          joins(protonym: [{ authorship: :reference }]).
+          includes(protonym: [{ authorship: :reference }]).
+          each do |taxon|
           begin
             if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
               row = export_taxon taxon
@@ -49,7 +51,7 @@ class Exporters::Antweb::Exporter
               end
               file.puts row.join("\t") if row
             end
-          rescue Exception => e
+          rescue Exception => e # rubocop:disable Lint/RescueException
             puts "Fatal error exporting taxon id: #{taxon.id}"
             puts e.message
             puts e.backtrace.inspect
@@ -60,9 +62,10 @@ class Exporters::Antweb::Exporter
   end
 
   private
+
     def taxa_ids
-      Taxon.joins(protonym: [{ authorship: :reference }])
-        .order(:status).pluck(:id).reverse
+      Taxon.joins(protonym: [{ authorship: :reference }]).
+        order(:status).pluck(:id).reverse
     end
 
     def export_taxon taxon
@@ -70,9 +73,9 @@ class Exporters::Antweb::Exporter
       @progress.increment unless Rails.env.test?
 
       reference = taxon.protonym.authorship.reference
-      reference_id = reference.kind_of?(MissingReference) ? nil : reference.id
+      reference_id = reference.is_a?(MissingReference) ? nil : reference.id
 
-      parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon ? taxon.parent.current_valid_taxon : taxon.parent)
+      parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
       parent_name = parent_taxon.try(:name).try(:name)
       parent_name ||= 'Formicidae'
 
@@ -93,19 +96,17 @@ class Exporters::Antweb::Exporter
         locality:               taxon.protonym.locality,
         rank:                   taxon.class.to_s,
         hol_id:                 taxon.hol_id,
-        parent:                 parent_name,
+        parent:                 parent_name
       }
 
       attributes[:current_valid_name] =
         if taxon.current_valid_taxon_including_synonyms
           taxon.current_valid_taxon_including_synonyms.name.to_s
-        else
-          nil
         end
 
       begin
         convert_to_antweb_array taxon.add_antweb_attributes(attributes)
-      rescue Exception => exception
+      rescue Exception => exception # rubocop:disable Lint/RescueException
         STDERR.puts "========================#{taxon.id}================================"
         STDERR.puts "An error of type #{exception} happened, message is #{exception.message}"
         STDERR.puts exception.backtrace
@@ -123,30 +124,30 @@ class Exporters::Antweb::Exporter
     end
 
     def header
-      "antcat id\t"                + #  [0]
-      "subfamily\t"                + #  [1]
-      "tribe\t"                    + #  [2]
-      "genus\t"                    + #  [3]
-      "subgenus\t"                 + #  [4]
-      "species\t"                  + #  [5]
-      "subspecies\t"               + #  [6]
-      "author date\t"              + #  [7]
-      "author date html\t"         + #  [8]
-      "authors\t"                  + #  [9]
-      "year\t"                     + # [10]
-      "status\t"                   + # [11]
-      "available\t"                + # [12]
-      "current valid name\t"       + # [13]
-      "original combination\t"     + # [14]
-      "was original combination\t" + # [15]
-      "fossil\t"                   + # [16]
-      "taxonomic history html\t"   + # [17]
-      "reference id\t"             + # [18]
-      "bioregion\t"                + # [19]
-      "country\t"                  + # [20]
-      "current valid rank\t"       + # [21]
-      "hol id\t"                   + # [22]
-      "current valid parent"         # [23]
+      "antcat id\t"                  + #  [0]
+        "subfamily\t"                + #  [1]
+        "tribe\t"                    + #  [2]
+        "genus\t"                    + #  [3]
+        "subgenus\t"                 + #  [4]
+        "species\t"                  + #  [5]
+        "subspecies\t"               + #  [6]
+        "author date\t"              + #  [7]
+        "author date html\t"         + #  [8]
+        "authors\t"                  + #  [9]
+        "year\t"                     + # [10]
+        "status\t"                   + # [11]
+        "available\t"                + # [12]
+        "current valid name\t"       + # [13]
+        "original combination\t"     + # [14]
+        "was original combination\t" + # [15]
+        "fossil\t"                   + # [16]
+        "taxonomic history html\t"   + # [17]
+        "reference id\t"             + # [18]
+        "bioregion\t"                + # [19]
+        "country\t"                  + # [20]
+        "current valid rank\t"       + # [21]
+        "hol id\t"                   + # [22]
+        "current valid parent"         # [23]
     end
 
     def convert_to_antweb_array values
@@ -174,7 +175,7 @@ class Exporters::Antweb::Exporter
         values[:locality],
         values[:rank],
         values[:hol_id],
-        values[:parent],
+        values[:parent]
       ]
     end
 

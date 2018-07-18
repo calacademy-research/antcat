@@ -27,10 +27,11 @@ module Taxa
     end
 
     private
+
       attr_reader :search_query, :search_type, :valid_only
 
       def column
-        @_column ||= search_query.split(' ').size > 1 ? 'name' : 'epithet'
+        @column ||= search_query.split(' ').size > 1 ? 'name' : 'epithet'
       end
   end
 end

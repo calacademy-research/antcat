@@ -41,7 +41,6 @@ class TaxaController < ApplicationController
     else
       redirect_to root_path
     end
-
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :new
   end
@@ -63,12 +62,12 @@ class TaxaController < ApplicationController
         edit_summary: params[:edit_summary]
       redirect_to root_path
     end
-
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :edit
   end
 
   private
+
     def set_previous_combination
       return unless params[:previous_combination_id].present?
       @previous_combination = Taxon.find(params[:previous_combination_id])
@@ -88,7 +87,7 @@ class TaxaController < ApplicationController
       # to resolve the problem.
       collision_resolution = params[:collision_resolution]
       if collision_resolution
-        if collision_resolution == 'homonym' || collision_resolution == ""
+        if collision_resolution == 'homonym' || collision_resolution.blank?
           taxon.unresolved_homonym = true
           taxon.status = Status::HOMONYM
         else
@@ -173,7 +172,7 @@ class TaxaController < ApplicationController
                 :id,
                 { reference_attributes: [:id] }
               ]
-            },
+            }
           ]
         },
         { parent_name_attributes: [:id] },

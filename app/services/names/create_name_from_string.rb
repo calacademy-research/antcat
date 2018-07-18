@@ -2,6 +2,7 @@
 # TODO HTML should be generated in callbacks in the subclasses, not manually.
 # TODO Probably `remove_column :names, :protonym_html`.
 
+# rubocop:disable Layout/CommentIndentation
 class Names::CreateNameFromString
   include Service
   include Formatters::ItalicsHelper
@@ -24,10 +25,11 @@ class Names::CreateNameFromString
   end
 
   private
+
     attr_reader :string
 
     def words
-      @_words ||= string.split
+      @words ||= string.split
     end
 
     def name_type
@@ -115,3 +117,4 @@ class Names::CreateNameFromString
                             # protonym_html: string # Is this used?
     end
 end
+# rubocop:enable Layout/CommentIndentation

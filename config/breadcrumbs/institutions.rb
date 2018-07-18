@@ -1,3 +1,4 @@
+# rubocop:disable Layout/IndentationConsistency
 crumb :institutions do
   link "Institutions", institutions_path
   parent :editors_panel
@@ -13,7 +14,8 @@ end
       parent :institution, institution
     end
 
-  crumb :new_institution do |institution|
+  crumb :new_institution do |_institution|
     link "New"
     parent :institutions
   end
+# rubocop:enable Layout/IndentationConsistency

@@ -65,13 +65,13 @@ module ApplicationHelper
     end
   end
 
-  def inline_expandable label = "Show more", &block
+  def inline_expandable label = "Show more"
     show_more = content_tag :a, class: "hide-when-expanded gray" do
                   content_tag :small, label
                 end
-    hidden =  content_tag :span, class: "show-when-expanded" do
-                yield
-              end
+    hidden = content_tag :span, class: "show-when-expanded" do
+               yield
+             end
 
     content_tag :span, class: "expandable" do
       show_more + hidden
@@ -80,6 +80,6 @@ module ApplicationHelper
 
   def antcat_icon *css_classes
     content_tag :span, nil,
-      class: ["antcat_icon"].concat(Array.wrap css_classes)
+      class: ["antcat_icon"].concat(Array.wrap(css_classes))
   end
 end

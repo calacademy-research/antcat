@@ -6,8 +6,8 @@ describe TaxonDecorator::HeadlineProtonym do
       let(:protonym) { create :protonym, name: create(:subfamily_name, name: 'Dolichoderinae') }
 
       specify do
-        expect(described_class.new(nil).send(:protonym_name, protonym))
-          .to eq '<b><span>Dolichoderinae</span></b>'
+        expect(described_class.new(nil).send(:protonym_name, protonym)).
+          to eq '<b><span>Dolichoderinae</span></b>'
       end
     end
 
@@ -15,8 +15,8 @@ describe TaxonDecorator::HeadlineProtonym do
       let(:protonym) { create :protonym, name: create(:genus_name, name: 'Atari') }
 
       specify do
-        expect(described_class.new(nil).send(:protonym_name, protonym))
-          .to eq '<b><span><i>Atari</i></span></b>'
+        expect(described_class.new(nil).send(:protonym_name, protonym)).
+          to eq '<b><span><i>Atari</i></span></b>'
       end
     end
 
@@ -24,8 +24,8 @@ describe TaxonDecorator::HeadlineProtonym do
       let(:protonym) { create :protonym, name: create(:genus_name, name: 'Atari'), fossil: true }
 
       specify do
-        expect(described_class.new(nil).send(:protonym_name, protonym))
-          .to eq '<b><span><i>&dagger;</i><i>Atari</i></span></b>'
+        expect(described_class.new(nil).send(:protonym_name, protonym)).
+          to eq '<b><span><i>&dagger;</i><i>Atari</i></span></b>'
       end
     end
   end

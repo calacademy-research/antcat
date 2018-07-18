@@ -35,6 +35,7 @@ module Taxa::CallbacksAndValidations
   end
 
   private
+
     def set_name_caches
       self.name_cache = name.name
       self.name_html_cache = name.name_html

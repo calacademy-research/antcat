@@ -27,7 +27,7 @@ module Catalog
     # The "quick search" shares the same view as the "Advanced Search".
     # The forms could be merged, but having two is pretty nice too.
     def quick_search
-      taxa = taxa = Taxa::QuickSearch[
+      taxa = Taxa::QuickSearch[
         params[:qq],
         search_type: params[:search_type],
         valid_only: params[:valid_only]
@@ -45,6 +45,7 @@ module Catalog
     end
 
     private
+
       # AntWeb's "View in AntCat" links are hardcoded to use the now
       # deprecated param "st" (starts_with). Links look like this:
       # http://www.antcat.org/catalog/search?st=m&qq=Agroecomyrmecinae&commit=Go

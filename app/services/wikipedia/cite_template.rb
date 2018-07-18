@@ -12,13 +12,14 @@ module Wikipedia
 
     def call
       if with_ref_tag
-        %{<ref name="AntCat">#{cite_template}</ref>}
+        %(<ref name="AntCat">#{cite_template}</ref>)
       else
         cite_template
       end
     end
 
     private
+
       attr_reader :taxon, :with_ref_tag
 
       def cite_template

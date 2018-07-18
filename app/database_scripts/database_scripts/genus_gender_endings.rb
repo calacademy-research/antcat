@@ -41,7 +41,7 @@ module DatabaseScripts
         string << "\n#### #{gender.to_s.humanize}\n"
         group.each do |status, taxa|
           string << "\n###### #{status.to_s.humanize}\n" <<
-            taxa.map { |taxon| "%taxon#{taxon.id}"}.join(", ") << "\n"
+            taxa.map { |taxon| "%taxon#{taxon.id}" }.join(", ") << "\n"
         end
       end
       string
@@ -66,18 +66,19 @@ module DatabaseScripts
     end
 
     private
+
       # "-lepis" was included twice, removed from the masculine list.
       # Removed overlapping endings: "-lasius" (masculine), "-um" (neuter).
       def endings
-        { feminine: %w(idris myrma ponera pone formica myrmica gaster ella ia ula),
-          masculine: %w(myrmex oides ius),
-          neuter: %w(omma noma ium) }
+        { feminine: %w[idris myrma ponera pone formica myrmica gaster ella ia ula],
+          masculine: %w[myrmex oides ius],
+          neuter: %w[omma noma ium] }
       end
 
       def sort_results output
         output.each_value do |gender|
           gender.each_value do |by_status|
-            by_status.sort_by! {|taxon| taxon.name_cache }
+            by_status.sort_by!(&:name_cache)
           end
         end
         output

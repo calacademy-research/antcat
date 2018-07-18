@@ -15,6 +15,7 @@ module References
       end
 
       private
+
         def regenerate_all_references
           progress = Progress.create total: Reference.count
 

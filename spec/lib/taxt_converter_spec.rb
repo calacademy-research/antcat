@@ -4,7 +4,6 @@ describe TaxtConverter do
   describe "#to_editor_format" do
     context "references" do
       it "uses the inline citation format followed by the id, with type number" do
-        decorated = double 'keey'
         reference = double 'reference', id: 36
         expect(reference).to receive(:keey).and_return 'Fisher, 1922'
         expect(Reference).to receive(:find_by).and_return reference

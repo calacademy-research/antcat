@@ -12,10 +12,10 @@ class JournalsController < ApplicationController
   end
 
   def show
-    @references = @journal.references
-      .sorted_by_principal_author_last_name
-      .includes_document
-      .paginate(page: params[:page])
+    @references = @journal.references.
+      sorted_by_principal_author_last_name.
+      includes_document.
+      paginate(page: params[:page])
   end
 
   def new
@@ -71,6 +71,7 @@ class JournalsController < ApplicationController
   end
 
   private
+
     def set_journal
       @journal = Journal.find(params[:id])
     end

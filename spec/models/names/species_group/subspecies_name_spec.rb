@@ -50,21 +50,21 @@ describe SubspeciesName do
           subspecies_name = described_class.create! name: 'Atta major minor',
             epithet: 'minor', epithets: 'major minor'
           species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
-          protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
+          SpeciesName.create! name: 'Eciton niger', epithet: 'niger' # protonym_name
 
-          expect { subspecies_name.change_parent species_name }
-            .to raise_error Taxon::TaxonExists
+          expect { subspecies_name.change_parent species_name }.
+            to raise_error Taxon::TaxonExists
         end
       end
 
       context "when name is an orphan" do
         it "doesn't raise" do
-          orphan_subspecies_name = described_class.create! name: 'Eciton niger minor',
-            epithet: 'minor', epithets: 'niger minor'
+          described_class.create! name: 'Eciton niger minor',
+            epithet: 'minor', epithets: 'niger minor' # orphan_subspecies_name
           subspecies_name = described_class.create! name: 'Atta major minor',
             epithet: 'minor', epithets: 'major minor'
           species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
-          protonym_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
+          SpeciesName.create! name: 'Eciton niger', epithet: 'niger' # protonym_name
 
           expect { subspecies_name.change_parent species_name }.not_to raise_error
         end

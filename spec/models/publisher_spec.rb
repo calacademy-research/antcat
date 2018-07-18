@@ -27,23 +27,23 @@ describe Publisher do
       context "when invalid" do
         context "when name is supplied but no place" do
           it "raises" do
-            expect { described_class.create_with_place(name: 'Wiley') }
-              .to raise_error ArgumentError
+            expect { described_class.create_with_place(name: 'Wiley') }.
+              to raise_error ArgumentError
           end
         end
 
         context "when place is invalid" do
           it "raises" do
-            expect { described_class.create_with_place(name: "A Name", place: "") }
-              .to raise_error ActiveRecord::RecordInvalid
+            expect { described_class.create_with_place(name: "A Name", place: "") }.
+              to raise_error ActiveRecord::RecordInvalid
           end
         end
 
         context "when place is blank" do
           it "silently returns without raising" do
-            expect(described_class.create_with_place name: "", place: "A Place").to be nil
-            expect { described_class.create_with_place name: "", place: "A Place" }
-              .to_not raise_error ActiveRecord::RecordInvalid
+            expect(described_class.create_with_place(name: "", place: "A Place")).to be nil
+            expect { described_class.create_with_place name: "", place: "A Place" }.
+              to_not raise_error ActiveRecord::RecordInvalid
           end
         end
       end

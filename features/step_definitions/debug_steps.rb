@@ -3,7 +3,7 @@ And("SHOT") do
 end
 
 And("PRY") do
-  binding.pry
+  binding.pry # rubocop:disable Lint/Debugger
 end
 
 And("PAUSE") do

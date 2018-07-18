@@ -12,32 +12,33 @@ class FeedbackDecorator < Draper::Decorator
   end
 
   def format_feedback_for_email
-    from =  if user
-              user.angle_bracketed_email
-            else
-              format_unregistered_submitter
-            end
+    from = if user
+             user.angle_bracketed_email
+           else
+             format_unregistered_submitter
+           end
 
     page = if feedback.page
-            "http://antcat.org/#{feedback.page}"
-          else
-            "(none)"
-          end
+             "http://antcat.org/#{feedback.page}"
+           else
+             "(none)"
+           end
 
-    <<-MESSAGE
--------- Original Message --------
-From: #{from}
-Sent: #{created_at}
-To: AntCat
-Subject: AntCat Feedback (ID #{id})
+    <<~MESSAGE
+      -------- Original Message --------
+      From: #{from}
+      Sent: #{created_at}
+      To: AntCat
+      Subject: AntCat Feedback (ID #{id})
 
-Page: #{page}
+      Page: #{page}
 
-#{helpers.strip_tags(comment)}
+      #{helpers.strip_tags(comment)}
     MESSAGE
   end
 
   private
+
     def format_unregistered_submitter
       name = feedback.name.presence || "[no name]"
       email = feedback.email.presence || "[no email]; IP #{ip}"

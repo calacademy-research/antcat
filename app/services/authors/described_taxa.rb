@@ -11,6 +11,7 @@ module Authors
     end
 
     private
+
       attr_reader :author
 
       delegate :id, to: :author

@@ -33,7 +33,8 @@ class Family < Taxon
   def statistics valid_only: false
     statistics = {}
 
-    { subfamilies: Subfamily,
+    {
+      subfamilies: Subfamily,
       tribes: Tribe,
       genera: Genus,
       species: Species,

@@ -120,7 +120,7 @@ def _create_taxon name_or_attributes, rank, attributes = {}
   name_factory = "#{rank}_name".to_sym
 
   attributes =
-    if name_or_attributes.kind_of? String
+    if name_or_attributes.is_a? String
       name, epithet, epithets = GetNamePartsHelpers.get_name_parts name_or_attributes
       name_object = create name_factory, name: name, epithet: epithet, epithets: epithets
       attributes.reverse_merge name: name_object, name_cache: name

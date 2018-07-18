@@ -20,6 +20,7 @@ module Names
     end
 
     private
+
       attr_reader :options
 
       def duplicates

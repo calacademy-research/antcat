@@ -12,6 +12,7 @@ class FilterDecorator
   end
 
   private
+
     attr_reader :column, :values, :params
 
     def args

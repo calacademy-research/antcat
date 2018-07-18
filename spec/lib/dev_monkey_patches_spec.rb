@@ -38,7 +38,7 @@ describe DevMonkeyPatches do
 
   context "when in this spec" do
     it "didn't define anything on `Object`" do
-      expect(respond_to? :dev_dev_mixed_in?).to be false
+      expect(respond_to?(:dev_dev_mixed_in?)).to be false
     end
   end
 end

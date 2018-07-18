@@ -78,6 +78,7 @@ class FeedbackController < ApplicationController
   end
 
   private
+
     def set_feedback
       @feedback = Feedback.find params[:id]
     end
@@ -98,8 +99,8 @@ class FeedbackController < ApplicationController
       timespan = 5.minutes.ago
       max_feedbacks_in_timespan = 5
 
-      if @feedback.from_the_same_ip.recently_created(timespan)
-          .count >= max_feedbacks_in_timespan
+      if @feedback.from_the_same_ip.recently_created(timespan).
+          count >= max_feedbacks_in_timespan
 
         @feedback.errors.add :rate_limited, <<-ERROR_MSG
           you have already posted #{max_feedbacks_in_timespan} feedbacks in the last
