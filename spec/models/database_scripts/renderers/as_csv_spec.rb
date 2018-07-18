@@ -21,9 +21,9 @@ describe DatabaseScripts::Renderers::AsCSV do
             end
           end
 
-        expect(rendered).to eq <<-CSV
-reference,reference_type
-#{reference.id},#{reference.type}
+        expect(rendered).to eq <<~CSV
+          reference,reference_type
+          #{reference.id},#{reference.type}
         CSV
       end
     end
@@ -41,9 +41,9 @@ reference,reference_type
             end
           end
 
-        expect(rendered).to eq <<-CSV
-taxon,status
-#{species.id},#{species.status}
+        expect(rendered).to eq <<~CSV
+          taxon,status
+          #{species.id},#{species.status}
         CSV
       end
     end

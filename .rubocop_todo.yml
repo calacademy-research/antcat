@@ -6,16 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: auto_detection, squiggly, active_support, powerpack, unindent
-Layout/IndentHeredoc:
-  Exclude:
-    - 'app/decorators/feedback_decorator.rb'
-    - 'spec/models/database_scripts/renderers/as_csv_spec.rb'
-    - 'spec/services/markdowns/render_spec.rb'
-
 # Offense count: 43
 Lint/AmbiguousRegexpLiteral:
   Enabled: false

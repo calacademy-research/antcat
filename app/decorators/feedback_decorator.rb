@@ -24,16 +24,16 @@ class FeedbackDecorator < Draper::Decorator
              "(none)"
            end
 
-    <<-MESSAGE
--------- Original Message --------
-From: #{from}
-Sent: #{created_at}
-To: AntCat
-Subject: AntCat Feedback (ID #{id})
+    <<~MESSAGE
+      -------- Original Message --------
+      From: #{from}
+      Sent: #{created_at}
+      To: AntCat
+      Subject: AntCat Feedback (ID #{id})
 
-Page: #{page}
+      Page: #{page}
 
-#{helpers.strip_tags(comment)}
+      #{helpers.strip_tags(comment)}
     MESSAGE
   end
 

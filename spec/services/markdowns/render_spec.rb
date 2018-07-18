@@ -8,21 +8,21 @@ describe Markdowns::Render do
       lasius_name = create :species_name, name: "Lasius"
       create :species, name: lasius_name
 
-      markdown = <<-MARKDOWN
-###Header
-* A list item
+      markdown = <<~MARKDOWN
+        ###Header
+        * A list item
 
-*italics* **bold**
+        *italics* **bold**
       MARKDOWN
 
-      expect(described_class[markdown]).to eq <<-HTML
-<h3>Header</h3>
+      expect(described_class[markdown]).to eq <<~HTML
+        <h3>Header</h3>
 
-<ul>
-<li>A list item</li>
-</ul>
+        <ul>
+        <li>A list item</li>
+        </ul>
 
-<p><em>italics</em> <strong>bold</strong></p>
+        <p><em>italics</em> <strong>bold</strong></p>
       HTML
     end
 
@@ -32,8 +32,8 @@ describe Markdowns::Render do
 
       markdown = "%taxon#{lasius.id}"
 
-      expect(described_class[markdown]).to eq <<-HTML
-<p><a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>
+      expect(described_class[markdown]).to eq <<~HTML
+        <p><a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>
       HTML
     end
 
