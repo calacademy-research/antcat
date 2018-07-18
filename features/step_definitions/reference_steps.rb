@@ -82,9 +82,9 @@ def create_reference type, hash
       authors = hash.delete 'authors'
       parsed_author_names = Parsers::AuthorParser.parse(authors)[:names]
       author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
-      parsed_author_names.reduce([]) do |author_names, author_name|
+      parsed_author_names.reduce([]) do |memo, author_name|
         author_name = AuthorName.find_by(name: author_name) || create(:author_name, name: author_name)
-        author_names << author_name
+        memo << author_name
       end
     end
 

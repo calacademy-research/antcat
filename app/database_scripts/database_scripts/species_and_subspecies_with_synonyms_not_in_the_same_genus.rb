@@ -39,9 +39,11 @@ module DatabaseScripts
     private
 
       def markdown_taxa_links taxon, taxa
+        # rubocop:disable Lint/ShadowingOuterLocalVariable
         taxa.where.not(genus_id: taxon.genus_id).map do |taxon|
           markdown_taxon_link(taxon)
         end.join(', ')
+        # rubocop:enable Lint/ShadowingOuterLocalVariable
       end
   end
 end

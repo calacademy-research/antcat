@@ -23,8 +23,8 @@ if ENV['HEADLESS']
 end
 
 RSpec.configure do |config|
-  config.expect_with :rspec do |config|
-    config.syntax = [:expect]
+  config.expect_with :rspec do |expect_with_config|
+    expect_with_config.syntax = [:expect]
   end
 end
 

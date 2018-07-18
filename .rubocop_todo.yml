@@ -26,15 +26,6 @@ Lint/Loop:
     - 'app/models/database_scripts/end_data.rb'
     - 'lib/taxt_id_translator.rb'
 
-# Offense count: 6
-Lint/ShadowingOuterLocalVariable:
-  Exclude:
-    - 'app/database_scripts/database_scripts/species_and_subspecies_with_synonyms_not_in_the_same_genus.rb'
-    - 'app/decorators/taxon_decorator/statistics.rb'
-    - 'features/step_definitions/reference_steps.rb'
-    - 'features/support/env.rb'
-    - 'lib/tasks/duplicate_names.rake'
-
 # Offense count: 2
 Lint/UriEscapeUnescape:
   Exclude:
