@@ -43,6 +43,13 @@ Layout/MultilineMethodCallIndentation:
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*'
+
+Lint/AmbiguousOperator:
+  Enabled: false
+
 Performance/RedundantBlockCall:
   Enabled: false
 

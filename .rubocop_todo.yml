@@ -16,20 +16,6 @@ Layout/IndentHeredoc:
     - 'spec/models/database_scripts/renderers/as_csv_spec.rb'
     - 'spec/services/markdowns/render_spec.rb'
 
-# Offense count: 11
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - 'spec/models/activity_spec.rb'
-    - 'spec/models/concerns/taxa/callbacks_and_validations_spec.rb'
-    - 'spec/models/journal_spec.rb'
-    - 'spec/models/taxon_spec.rb'
-    - 'spec/models/user_spec.rb'
-    - 'spec/services/comments/notify_relevant_users_spec.rb'
-
-# Offense count: 33
-Lint/AmbiguousOperator:
-  Enabled: false
-
 # Offense count: 43
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
@@ -53,12 +39,6 @@ Lint/EmptyWhen:
 Lint/HandleExceptions:
   Exclude:
     - 'features/step_definitions/steps.rb'
-
-# Offense count: 6
-Lint/IneffectiveAccessModifier:
-  Exclude:
-    - 'lib/progress.rb'
-    - 'lib/taxt_id_translator.rb'
 
 # Offense count: 3
 Lint/Loop:
