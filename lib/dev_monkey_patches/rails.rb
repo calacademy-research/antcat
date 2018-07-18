@@ -3,7 +3,7 @@ module DevMonkeyPatches::Rails
     ActiveRecord::Relation.include ActiveRecord_Relation
   end
 
-  module ActiveRecord_Relation
+  module ActiveRecord_Relation # rubocop:disable Naming/ClassAndModuleCamelCase
     def v
       valid
     end

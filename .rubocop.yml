@@ -10,6 +10,7 @@ AllCops:
     - 'db/data/**/*'
     - 'db/migrate/**/*'
     - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'
+    - 'lib/taxt_id_translator.rb'
 
 Layout/AlignArray:
   Enabled: false

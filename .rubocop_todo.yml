@@ -87,13 +87,6 @@ Lint/UriEscapeUnescape:
     - 'app/database_scripts/database_scripts/missing_references_in_protonym_authorships.rb'
     - 'app/database_scripts/database_scripts/orphaned_protonyms.rb'
 
-# Offense count: 2
-# Configuration parameters: ContextCreatingMethods, MethodCreatingMethods.
-Lint/UselessAccessModifier:
-  Exclude:
-    - 'lib/progress.rb'
-    - 'lib/taxt_id_translator.rb'
-
 # Offense count: 7
 Naming/AccessorMethodName:
   Exclude:
@@ -104,11 +97,6 @@ Naming/AccessorMethodName:
     - 'app/services/wikipedia/taxon_list.rb'
     - 'lib/undo_tracker.rb'
     - 'spec/services/wikipedia/reference_exporter_spec.rb'
-
-# Offense count: 1
-Naming/ClassAndModuleCamelCase:
-  Exclude:
-    - 'lib/dev_monkey_patches/rails.rb'
 
 # Offense count: 5
 # Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist, MethodDefinitionMacros.
