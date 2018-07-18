@@ -93,6 +93,9 @@ Style/FrozenStringLiteralComment:
 Style/IfUnlessModifier:
   Enabled: false
 
+Style/Lambda:
+  Enabled: false
+
 Style/LineEndConcatenation:
   Enabled: false
 
@@ -109,6 +112,12 @@ Style/NumericPredicate:
   Enabled: false
 
 Style/OneLineConditional:
+  Enabled: false
+
+Style/PerlBackrefs:
+  Enabled: false
+
+Style/RegexpLiteral:
   Enabled: false
 
 Style/RescueModifier:

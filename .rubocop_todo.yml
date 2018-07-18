@@ -185,18 +185,6 @@ Style/IfInsideElse:
   Exclude:
     - 'app/controllers/name_fields_controller.rb'
 
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: line_count_dependent, lambda, literal
-Style/Lambda:
-  Exclude:
-    - 'app/models/concerns/primitive_search.rb'
-    - 'app/models/feedback.rb'
-    - 'app/models/journal.rb'
-    - 'app/models/taxon.rb'
-    - 'app/models/tooltip.rb'
-
 # Offense count: 4
 Style/MixinUsage:
   Exclude:
@@ -219,31 +207,8 @@ Style/MultipleComparison:
   Exclude:
     - 'app/controllers/taxa_controller.rb'
 
-# Offense count: 42
-# Cop supports --auto-correct.
-Style/PerlBackrefs:
-  Exclude:
-    - 'app/services/markdowns/parse_antcat_hooks.rb'
-    - 'app/services/names/epithet_search_set.rb'
-    - 'app/services/references/search/extract_keywords.rb'
-    - 'features/support/paths.rb'
-    - 'features/support/selectors.rb'
-    - 'lib/taxt_converter.rb'
-    - 'lib/taxt_presenter.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/Proc:
   Exclude:
     - 'app/models/concerns/trackable.rb'
-
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, AllowInnerSlashes.
-# SupportedStyles: slashes, percent_r, mixed
-Style/RegexpLiteral:
-  Exclude:
-    - 'app/models/reference.rb'
-    - 'app/services/markdowns/render_without_wrapping_p.rb'
-    - 'features/step_definitions/wikipedia_steps.rb'
-    - 'lib/tasks/notes.rake'
