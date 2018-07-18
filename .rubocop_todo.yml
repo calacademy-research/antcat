@@ -110,26 +110,6 @@ Naming/ClassAndModuleCamelCase:
   Exclude:
     - 'lib/dev_monkey_patches/rails.rb'
 
-# Offense count: 15
-# Configuration parameters: EnforcedStyleForLeadingUnderscores.
-# SupportedStylesForLeadingUnderscores: disallowed, required, optional
-Naming/MemoizedInstanceVariableName:
-  Exclude:
-    - 'app/database_scripts/database_scripts/broken_taxt_tags.rb'
-    - 'app/models/concerns/taxa/synonyms.rb'
-    - 'app/models/database_script.rb'
-    - 'app/models/database_scripts/end_data.rb'
-    - 'app/models/name.rb'
-    - 'app/models/status.rb'
-    - 'app/services/antcat_version_link.rb'
-    - 'app/services/autocomplete/autocomplete_references.rb'
-    - 'app/services/exporters/antweb/export_headline.rb'
-    - 'app/services/names/create_name_from_string.rb'
-    - 'app/services/references/search/fulltext.rb'
-    - 'app/services/taxa/quick_search.rb'
-    - 'app/services/taxon_browser/browser.rb'
-    - 'app/services/types/expand_institution_abbreviations.rb'
-
 # Offense count: 5
 # Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist, MethodDefinitionMacros.
 # NamePrefix: is_, has_, have_

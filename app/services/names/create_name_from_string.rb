@@ -29,7 +29,7 @@ class Names::CreateNameFromString
     attr_reader :string
 
     def words
-      @_words ||= string.split
+      @words ||= string.split
     end
 
     def name_type

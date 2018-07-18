@@ -2,6 +2,7 @@
 # https://github.com/calacademy-research/antcat/blob/
 # 0b1930a3e161e756e3c785bd32d6e54867cc480c/lib/tasks/database_maintenance.rake
 
+# rubocop:disable Naming/MemoizedInstanceVariableName
 module DatabaseScripts
   class BrokenTaxtTags < DatabaseScript
     include Rails.application.routes.url_helpers
@@ -252,6 +253,7 @@ module DatabaseScripts
       end
   end
 end
+# rubocop:enable Naming/MemoizedInstanceVariableName
 
 __END__
 description: >

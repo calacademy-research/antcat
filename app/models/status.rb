@@ -16,7 +16,7 @@ class Status
 
   # Order matters, see `spec/decorators/taxon_decorator/statistics_spec.rb`.
   def self.statuses
-    @_statuses ||= [
+    @statuses ||= [
       [VALID,                     'valid'],
       [SYNONYM,                   'synonyms'],
       [HOMONYM,                   'homonyms'],

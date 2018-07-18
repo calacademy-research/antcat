@@ -31,7 +31,7 @@ module Taxa::Synonyms
   end
 
   def junior_synonyms_recursive
-    @_junior_synonyms_recursive ||= Taxon.where(id: junior_synonym_ids_recursive)
+    @junior_synonyms_recursive ||= Taxon.where(id: junior_synonym_ids_recursive)
   end
 
   protected

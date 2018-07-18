@@ -69,7 +69,7 @@ module References
         end
 
         def search_keywords
-          @_search_keywords ||= begin
+          @search_keywords ||= begin
             keywords = options[:keywords] || ""
 
             # TODO very ugly to make some queries work. Fix in Solr.

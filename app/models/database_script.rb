@@ -47,7 +47,7 @@ class DatabaseScript
   end
 
   def filename_without_extension
-    @_filename_without_extension ||= self.class.name.demodulize.underscore
+    @filename_without_extension ||= self.class.name.demodulize.underscore
   end
 
   # Filename is generated from the script's class name, so presumably safe.

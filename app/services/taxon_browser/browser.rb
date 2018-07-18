@@ -68,7 +68,7 @@ module TaxonBrowser
       end
 
       def taxon_and_ancestors
-        @_taxon_and_ancestors ||= @taxon.taxon_and_ancestors
+        @taxon_and_ancestors ||= @taxon.taxon_and_ancestors
       end
   end
 end
