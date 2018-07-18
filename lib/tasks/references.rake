@@ -12,7 +12,7 @@ namespace :antcat do
         next unless reference.document.send(:hosted_by_us?)
         begin
           reference.document.actual_url
-        rescue Exception => e
+        rescue Exception => e # rubocop:disable Lint/RescueException
           puts e.inspect
           puts "#{reference.id} #{reference.document.id} #{reference.document.url}"
           error_count += 1

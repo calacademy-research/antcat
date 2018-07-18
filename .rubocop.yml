@@ -57,6 +57,12 @@ Performance/RedundantBlockCall:
 Performance/RedundantMerge:
   Enabled: false
 
+Naming/AccessorMethodName:
+  Enabled: false
+
+Naming/PredicateName:
+  Enabled: false
+
 Naming/VariableNumber:
   Enabled: false
 

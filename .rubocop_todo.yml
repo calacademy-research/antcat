@@ -35,22 +35,11 @@ Lint/EmptyWhen:
   Exclude:
     - 'app/models/concerns/trackable.rb'
 
-# Offense count: 1
-Lint/HandleExceptions:
-  Exclude:
-    - 'features/step_definitions/steps.rb'
-
 # Offense count: 3
 Lint/Loop:
   Exclude:
     - 'app/models/database_scripts/end_data.rb'
     - 'lib/taxt_id_translator.rb'
-
-# Offense count: 3
-Lint/RescueException:
-  Exclude:
-    - 'app/services/exporters/antweb/exporter.rb'
-    - 'lib/tasks/references.rake'
 
 # Offense count: 6
 Lint/ShadowingOuterLocalVariable:
@@ -66,32 +55,6 @@ Lint/UriEscapeUnescape:
   Exclude:
     - 'app/database_scripts/database_scripts/missing_references_in_protonym_authorships.rb'
     - 'app/database_scripts/database_scripts/orphaned_protonyms.rb'
-
-# Offense count: 7
-Naming/AccessorMethodName:
-  Exclude:
-    - 'app/controllers/taxa_controller.rb'
-    - 'app/decorators/application_decorator.rb'
-    - 'app/helpers/reference_helper.rb'
-    - 'app/models/reference.rb'
-    - 'app/services/wikipedia/taxon_list.rb'
-    - 'lib/undo_tracker.rb'
-    - 'spec/services/wikipedia/reference_exporter_spec.rb'
-
-# Offense count: 5
-# Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist, MethodDefinitionMacros.
-# NamePrefix: is_, has_, have_
-# NamePrefixBlacklist: is_, has_, have_
-# NameWhitelist: is_a?
-# MethodDefinitionMacros: define_method, define_singleton_method
-Naming/PredicateName:
-  Exclude:
-    - 'spec/**/*'
-    - 'app/controllers/catalog/search_controller.rb'
-    - 'app/controllers/concerns/has_where_filters.rb'
-    - 'app/models/comment.rb'
-    - 'app/models/concerns/primitive_search.rb'
-    - 'app/services/taxon_browser/tabs/taxon_tab.rb'
 
 # Offense count: 21
 # Cop supports --auto-correct.

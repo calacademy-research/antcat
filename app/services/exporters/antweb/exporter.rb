@@ -49,7 +49,7 @@ class Exporters::Antweb::Exporter
               end
               file.puts row.join("\t") if row
             end
-          rescue Exception => e
+          rescue Exception => e # rubocop:disable Lint/RescueException
             puts "Fatal error exporting taxon id: #{taxon.id}"
             puts e.message
             puts e.backtrace.inspect
@@ -104,7 +104,7 @@ class Exporters::Antweb::Exporter
 
       begin
         convert_to_antweb_array taxon.add_antweb_attributes(attributes)
-      rescue Exception => exception
+      rescue Exception => exception # rubocop:disable Lint/RescueException
         STDERR.puts "========================#{taxon.id}================================"
         STDERR.puts "An error of type #{exception} happened, message is #{exception.message}"
         STDERR.puts exception.backtrace
