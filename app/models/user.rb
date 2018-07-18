@@ -33,7 +33,7 @@ class User < ApplicationRecord
   end
 
   def angle_bracketed_email
-    %Q("#{name}" <#{email}>)
+    %("#{name}" <#{email}>)
   end
 
   def notify_because(reason, attached:, notifier:)

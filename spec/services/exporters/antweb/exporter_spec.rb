@@ -409,7 +409,7 @@ describe Exporters::Antweb::Exporter do
       pagination = reference.pagination
       volume = reference.series_volume_issue
 
-      expected = %Q(<span title="#{author}, B.L. #{year}. #{title}. #{journal_name} #{volume}:#{pagination}.">#{author}, #{year}</span>)
+      expected = %(<span title="#{author}, B.L. #{year}. #{title}. #{journal_name} #{volume}:#{pagination}.">#{author}, #{year}</span>)
       expect(export_taxon(ponerinae)[8]).to eq expected
     end
   end

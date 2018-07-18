@@ -18,7 +18,7 @@ Given("there is an automated activity with the edit summary {string}") do |edit_
 end
 
 Then("I should see {string} and no other feed items") do |text|
-  step %Q(I should see "#{text}")
+  step %(I should see "#{text}")
   step "I should see 1 item in the feed"
 end
 
@@ -40,7 +40,7 @@ end
 
 Then("I should see the edit summary {string}") do |content|
   within "table.activities" do
-    step %Q(I should see "#{content}")
+    step %(I should see "#{content}")
   end
 end
 

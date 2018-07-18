@@ -142,22 +142,6 @@ Style/Attr:
     - 'app/services/types/format_type_field.rb'
     - 'app/services/types/link_specimen_identifiers.rb'
 
-# Offense count: 21
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: percent_q, bare_percent
-Style/BarePercentLiterals:
-  Exclude:
-    - 'app/models/user.rb'
-    - 'app/services/exporters/antweb/exporter.rb'
-    - 'features/step_definitions/feed_steps.rb'
-    - 'spec/decorators/activity_decorator_spec.rb'
-    - 'spec/decorators/taxon_decorator/headline_type_spec.rb'
-    - 'spec/helpers/breadcrumbs_helper_spec.rb'
-    - 'spec/services/exporters/antweb/exporter_spec.rb'
-    - 'spec/services/markdowns/parse_antcat_hooks_spec.rb'
-    - 'spec/services/markdowns/render_spec.rb'
-
 # Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.

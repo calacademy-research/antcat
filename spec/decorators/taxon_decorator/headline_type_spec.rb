@@ -23,7 +23,7 @@ describe TaxonDecorator::HeadlineType do
 
     it "shows the type taxon as a link, if the taxon for the name exists" do
       expect(described_class.new(genus).send(:type_name)).
-        to eq %Q(<a href="/catalog/#{type.id}"><i>Atta major</i></a>)
+        to eq %(<a href="/catalog/#{type.id}"><i>Atta major</i></a>)
     end
   end
 end
