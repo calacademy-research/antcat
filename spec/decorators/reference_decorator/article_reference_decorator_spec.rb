@@ -49,17 +49,17 @@ describe ArticleReferenceDecorator do
       allow(reference).to receive(:downloadable?).and_return true
 
       expect(reference.decorate.inline_citation).to eq(
-        %{<span class="reference_keey_and_expansion">} +
+        %(<span class="reference_keey_and_expansion">) +
           %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." class="reference_keey" href="#">Latreille, 1809</a>} +
-          %{<span class="reference_keey_expansion">} +
+          %(<span class="reference_keey_expansion">) +
             %{<span class="reference_keey_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
-            %{ } +
-            %{<a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> } +
-            %{<a href="example.com">PDF</a>} +
-            %{ } +
-            %{<a class="btn-normal btn-tiny" href="/references/#{reference.id}">#{reference.id}</a>} +
-          %{</span>} +
-        %{</span>}
+            %( ) +
+            %(<a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> ) +
+            %(<a href="example.com">PDF</a>) +
+            %( ) +
+            %(<a class="btn-normal btn-tiny" href="/references/#{reference.id}">#{reference.id}</a>) +
+          %(</span>) +
+        %(</span>)
       )
     end
   end

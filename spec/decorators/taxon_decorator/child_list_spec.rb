@@ -27,7 +27,7 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, Genus.all, false)).
-          to eq %{<div><span class="caption">Genus of <span>Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
+          to eq %(<div><span class="caption">Genus of <span>Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>)
       end
     end
 
@@ -36,7 +36,7 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, [genus], false, incertae_sedis_in: 'subfamily')).
-          to eq %{<div><span class="caption">Genus <i>incertae sedis</i> in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
+          to eq %(<div><span class="caption">Genus <i>incertae sedis</i> in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>)
       end
     end
   end
@@ -46,7 +46,7 @@ describe TaxonDecorator::ChildList do
 
     it "formats a list of collective group names" do
       expect(described_class.new(subfamily).send(:collective_group_name_child_list)).
-        to eq %{<div><span class="caption">Collective group name in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
+        to eq %(<div><span class="caption">Collective group name in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>)
     end
   end
 

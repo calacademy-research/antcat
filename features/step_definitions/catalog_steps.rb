@@ -23,7 +23,7 @@ When("I click the reference key expansion") do
 end
 
 Then("I should see the catalog entry for {string}") do |taxon|
-  step %{the name in the header should be "#{taxon}"}
+  step %(the name in the header should be "#{taxon}")
 end
 
 Then("the name in the header should be {string}") do |name|

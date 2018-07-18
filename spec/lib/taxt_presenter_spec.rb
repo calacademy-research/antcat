@@ -82,7 +82,7 @@ describe TaxtPresenter do
       it "uses the HTML version of the taxon's name" do
         genus = create_genus name: create(:genus_name, name_html: '<i>Atta</i>')
         expect(described_class["{tax #{genus.id}}"].to_html).
-          to eq %{<a href="/catalog/#{genus.id}"><i>Atta</i></a>}
+          to eq %(<a href="/catalog/#{genus.id}"><i>Atta</i></a>)
       end
 
       context "when the taxon is a fossil" do
@@ -90,7 +90,7 @@ describe TaxtPresenter do
 
         it "includes the fossil symbol" do
           expect(described_class["{tax #{genus.id}}"].to_html).
-            to eq %{<a href="/catalog/#{genus.id}"><i>&dagger;</i><i>Atta</i></a>}
+            to eq %(<a href="/catalog/#{genus.id}"><i>&dagger;</i><i>Atta</i></a>)
         end
       end
 

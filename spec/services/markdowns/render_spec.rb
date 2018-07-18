@@ -55,7 +55,7 @@ describe Markdowns::Render do
         let(:taxt_markdown) { '{ref 9999999}' }
 
         it "renders an error message" do
-          expected = %Q[<p><span class="broken-markdown-link"> could not find reference with id 9999999 </span></p>\n]
+          expected = %Q(<p><span class="broken-markdown-link"> could not find reference with id 9999999 </span></p>\n)
           expect(described_class[markdown]).to eq expected
           expect(described_class[taxt_markdown]).to eq expected
         end
@@ -77,7 +77,7 @@ describe Markdowns::Render do
         let(:taxt_markdown) { '{nam 9999999}' }
 
         it "renders an error message" do
-          expected = %Q[<p><span class="broken-markdown-link"> could not find name with id 9999999 </span></p>\n]
+          expected = %Q(<p><span class="broken-markdown-link"> could not find name with id 9999999 </span></p>\n)
           expect(described_class[taxt_markdown]).to eq expected
         end
       end
@@ -89,7 +89,7 @@ describe Markdowns::Render do
         let(:markdown) { "%journal#{journal.id}" }
 
         it "links the journal" do
-          expected = %Q[<p><a href="/journals/#{journal.id}"><i>#{journal.name}</i></a></p>\n]
+          expected = %Q(<p><a href="/journals/#{journal.id}"><i>#{journal.name}</i></a></p>\n)
           expect(described_class[markdown]).to eq expected
         end
       end
@@ -98,7 +98,7 @@ describe Markdowns::Render do
         let(:markdown) { "%journal9999999" }
 
         it "renders an error message" do
-          expected = %Q[<p><span class="broken-markdown-link"> could not find journal with id 9999999 </span></p>\n]
+          expected = %Q(<p><span class="broken-markdown-link"> could not find journal with id 9999999 </span></p>\n)
           expect(described_class[markdown]).to eq expected
         end
       end
@@ -116,14 +116,14 @@ describe Markdowns::Render do
       feedback = create :feedback
       markdown = "%feedback#{feedback.id}"
 
-      expected = %Q[<p><a href="/feedback/#{feedback.id}">feedback ##{feedback.id}</a></p>\n]
+      expected = %Q(<p><a href="/feedback/#{feedback.id}">feedback ##{feedback.id}</a></p>\n)
       expect(described_class[markdown]).to eq expected
     end
 
     it "formats GitHub links" do
       markdown = "%github5"
 
-      expected = %Q[<p><a href="https://github.com/calacademy-research/antcat/issues/5">GitHub #5</a></p>\n]
+      expected = %Q(<p><a href="https://github.com/calacademy-research/antcat/issues/5">GitHub #5</a></p>\n)
       expect(described_class[markdown]).to eq expected
     end
 

@@ -50,13 +50,13 @@ end
 
 When(/I follow "(.*?)" (?:with)?in (.*)$/) do |link, location|
   with_scope location do
-    step %{I follow "#{link}"}
+    step %(I follow "#{link}")
   end
 end
 
 When(/^I press "(.*?)" (?:with)?in (.*)$/) do |button, location|
   with_scope location do
-    step %{I press "#{button}"}
+    step %(I press "#{button}")
   end
 end
 
@@ -110,7 +110,7 @@ end
 
 Then(/I should (not )?see "(.*?)" (?:with)?in (.*)$/) do |do_not, contents, location|
   with_scope location do
-    step %{I should #{do_not}see "#{contents}"}
+    step %(I should #{do_not}see "#{contents}")
   end
 end
 
@@ -170,7 +170,7 @@ end
 
 When("I follow {string} inside the breadcrumb") do |link|
   within "#breadcrumbs" do
-    step %{I follow "#{link}"}
+    step %(I follow "#{link}")
   end
 end
 

@@ -252,12 +252,6 @@ Style/MultipleComparison:
   Exclude:
     - 'app/controllers/taxa_controller.rb'
 
-# Offense count: 213
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredDelimiters.
-Style/PercentLiteralDelimiters:
-  Enabled: false
-
 # Offense count: 42
 # Cop supports --auto-correct.
 Style/PerlBackrefs:

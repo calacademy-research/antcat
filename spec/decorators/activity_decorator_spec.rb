@@ -28,13 +28,13 @@ describe ActivityDecorator do
       it "links the trackable" do
         trackable_id = activity.trackable_id
         expect(activity.decorate.link_trackable_if_exists("label")).
-          to eq %Q[<a href="/journals/#{trackable_id}">label</a>]
+          to eq %Q(<a href="/journals/#{trackable_id}">label</a>)
       end
 
       it "defaults labels to the id" do
         trackable_id = activity.trackable_id
         expect(activity.decorate.link_trackable_if_exists).
-          to eq %Q[<a href="/journals/#{trackable_id}">##{trackable_id}</a>]
+          to eq %Q(<a href="/journals/#{trackable_id}">##{trackable_id}</a>)
       end
 
       it "allows custom paths" do
@@ -44,7 +44,7 @@ describe ActivityDecorator do
         path = "/catalog/#{trackable_id}"
 
         results = activity.decorate.link_trackable_if_exists "label", path: path
-        expect(results).to eq %Q[<a href="/catalog/#{trackable_id}">label</a>]
+        expect(results).to eq %Q(<a href="/catalog/#{trackable_id}">label</a>)
       end
     end
 

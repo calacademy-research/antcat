@@ -6,7 +6,7 @@ describe TaxonBrowserHelper do
 
     it "formats" do
       expect(helper.taxon_browser_link(taxon)).
-        to eq %[<a class="valid genus" href="/catalog/#{taxon.id}"><i>#{taxon.name}</i></a>]
+        to eq %(<a class="valid genus" href="/catalog/#{taxon.id}"><i>#{taxon.name}</i></a>)
     end
   end
 

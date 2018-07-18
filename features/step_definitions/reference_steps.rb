@@ -178,13 +178,13 @@ end
 
 When("I fill in the references search box with {string}") do |search_term|
   within "#breadcrumbs" do
-    step %{I fill in "q" with "#{search_term}"}
+    step %(I fill in "q" with "#{search_term}")
   end
 end
 
 When("I fill in the references authors search box with {string}") do |search_term|
   within "#breadcrumbs" do
-    step %{I fill in "author_q" with "#{search_term}"}
+    step %(I fill in "author_q" with "#{search_term}")
   end
 end
 

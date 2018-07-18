@@ -21,5 +21,5 @@ Given("there is a genus {string} that's waiting for approval") do |name|
 end
 
 When("I add the genus {string}") do |name|
-  step %{there is a genus "#{name}" that's waiting for approval}
+  step %(there is a genus "#{name}" that's waiting for approval)
 end

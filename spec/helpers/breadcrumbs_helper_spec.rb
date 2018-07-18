@@ -7,7 +7,7 @@ describe BreadcrumbsHelper do
 
       it "handles Formicidae" do
         expect(helper.taxon_breadcrumb_link(taxon)).
-          to eq %Q[<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>]
+          to eq %Q(<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>)
       end
     end
 
@@ -18,7 +18,7 @@ describe BreadcrumbsHelper do
         ranks.each do |rank|
           taxon = send "create_#{rank}"
           expect(helper.taxon_breadcrumb_link(taxon)).
-            to eq %Q[<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>]
+            to eq %Q(<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>)
         end
       end
     end
@@ -32,7 +32,7 @@ describe BreadcrumbsHelper do
         ranks.each do |rank|
           taxon = send "create_#{rank}"
           expect(helper.taxon_breadcrumb_link(taxon)).
-            to eq %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
+            to eq %Q(<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>)
         end
       end
     end
@@ -44,7 +44,7 @@ describe BreadcrumbsHelper do
 
       specify do
         expect(helper.taxon_breadcrumb_link(taxon)).
-          to eq %Q[<a href="/catalog/#{taxon.id}">&dagger;<i>#{taxon.name_cache}</i></a>]
+          to eq %Q(<a href="/catalog/#{taxon.id}">&dagger;<i>#{taxon.name_cache}</i></a>)
       end
     end
   end

@@ -7,13 +7,13 @@ describe TaxonDecorator::HeadlineType do
     it "shows the type taxon" do
       genus = create_genus 'Atta', type_name: species_name
       expect(described_class[genus]).
-        to eq %{<span>Type-species: <span><i>Atta major</i></span>.</span>}
+        to eq %(<span>Type-species: <span><i>Atta major</i></span>.</span>)
     end
 
     it "shows the type taxon with extra Taxt" do
       genus = create_genus 'Atta', type_name: species_name, type_taxt: ', by monotypy'
       expect(described_class[genus]).
-        to eq %{<span>Type-species: <span><i>Atta major</i></span>, by monotypy.</span>}
+        to eq %(<span>Type-species: <span><i>Atta major</i></span>, by monotypy.</span>)
     end
   end
 
@@ -23,7 +23,7 @@ describe TaxonDecorator::HeadlineType do
 
     it "shows the type taxon as a link, if the taxon for the name exists" do
       expect(described_class.new(genus).send(:type_name)).
-        to eq %Q{<a href="/catalog/#{type.id}"><i>Atta major</i></a>}
+        to eq %Q(<a href="/catalog/#{type.id}"><i>Atta major</i></a>)
     end
   end
 end

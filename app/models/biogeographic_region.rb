@@ -1,5 +1,5 @@
 module BiogeographicRegion
-  REGIONS = %w( Nearctic Neotropic Palearctic Afrotropic
+  REGIONS = %w[ Nearctic Neotropic Palearctic Afrotropic
                 Malagasy Indomalaya Australasia Oceania
-                Antarctic)
+                Antarctic]
 end

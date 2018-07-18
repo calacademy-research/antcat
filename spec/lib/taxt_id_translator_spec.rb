@@ -9,13 +9,13 @@ describe TaxtIdTranslator do
       end
 
       it "converts base_10_to_base_x 11 to base 11" do
-        expect(base_10_to_base_x(11, %{abcdefghijk})).to eq 'ba'
-        expect(base_x_to_base_10('ba', %{abcdefghijk})).to eq 11
+        expect(base_10_to_base_x(11, %(abcdefghijk))).to eq 'ba'
+        expect(base_x_to_base_10('ba', %(abcdefghijk))).to eq 11
       end
 
       it "converts base_10_to_base_x to base 12" do
-        expect(base_10_to_base_x(23, %{abcdefghijkl})).to eq 'bl'
-        expect(base_x_to_base_10('bl', %{abcdefghijkl})).to eq 23
+        expect(base_10_to_base_x(23, %(abcdefghijkl))).to eq 'bl'
+        expect(base_x_to_base_10('bl', %(abcdefghijkl))).to eq 23
       end
     end
 

@@ -12,7 +12,7 @@ module Wikipedia
 
     def call
       if with_ref_tag
-        %{<ref name="AntCat">#{cite_template}</ref>}
+        %(<ref name="AntCat">#{cite_template}</ref>)
       else
         cite_template
       end

@@ -35,7 +35,7 @@ module DevMonkeyPatches::Object
   # Prefix: p
   # "ddpr" = "dd puts red"
   # Puts to standard out with color.
-  %w(green red blue yellow).each do |color|
+  %w[green red blue yellow].each do |color|
     method = "ddp#{color.to_s.first}".to_sym
     define_method method do |string|
       $stdout.puts "#{string}".send color

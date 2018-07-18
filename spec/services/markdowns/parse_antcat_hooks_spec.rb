@@ -9,7 +9,7 @@ describe Markdowns::ParseAntcatHooks do
 
       it "links existing taxa" do
         expect(dummy.send(:try_linking_taxon_id, taxon.id.to_s)).
-          to eq %Q[<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>]
+          to eq %Q(<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>)
       end
     end
 

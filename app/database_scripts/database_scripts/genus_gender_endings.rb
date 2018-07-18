@@ -70,9 +70,9 @@ module DatabaseScripts
       # "-lepis" was included twice, removed from the masculine list.
       # Removed overlapping endings: "-lasius" (masculine), "-um" (neuter).
       def endings
-        { feminine: %w(idris myrma ponera pone formica myrmica gaster ella ia ula),
-          masculine: %w(myrmex oides ius),
-          neuter: %w(omma noma ium) }
+        { feminine: %w[idris myrma ponera pone formica myrmica gaster ella ia ula],
+          masculine: %w[myrmex oides ius],
+          neuter: %w[omma noma ium] }
       end
 
       def sort_results output

@@ -7,7 +7,7 @@ describe LinkHelper do
     it "can link to species" do
       name = taxon.name_cache.tr(' ', '_')
       expect(helper.link_to_antwiki(taxon)).to eq(
-        %{<a class="link_to_external_site" href="http://www.antwiki.org/wiki/#{name}">AntWiki</a>}
+        %(<a class="link_to_external_site" href="http://www.antwiki.org/wiki/#{name}">AntWiki</a>)
       )
     end
   end

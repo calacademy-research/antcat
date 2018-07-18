@@ -52,18 +52,18 @@ When(/^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)
 end
 
 When("I add a history item {string}") do |text|
-  step %{I click the add taxon history item button}
-  step %{I fill in "taxt" with "#{text}"}
-  step %{I press "Save"}
+  step %(I click the add taxon history item button)
+  step %(I fill in "taxt" with "#{text}")
+  step %(I press "Save")
 end
 
 When("I update the history item to say {string}") do |text|
-  steps %{
+  steps %(
     And I click on the edit taxon history item button
     And I fill in "taxt" with "#{text}"
     And I save the taxon history item
     And I wait
-  }
+  )
 end
 
 def encode_taxon taxon

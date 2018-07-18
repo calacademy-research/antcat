@@ -51,15 +51,15 @@ Given("there is a species with forms {string}") do |forms|
 end
 
 Then("I should see the species described in {int}") do |year|
-  step %{I should see "#{year}"}
+  step %(I should see "#{year}")
 end
 
 When("I select {string} from the rank selector") do |value|
-  step %{I select "#{value}" from "rank"}
+  step %(I select "#{value}" from "rank")
 end
 
 When("I select {string} from the biogeographic region selector") do |value|
-  step %{I select "#{value}" from "biogeographic_region"}
+  step %(I select "#{value}" from "biogeographic_region")
 end
 
 When("I check valid only in the advanced search form") do
