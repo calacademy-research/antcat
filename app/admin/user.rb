@@ -44,5 +44,4 @@ ActiveAdmin.register User do
       super
     end
   end
-
 end

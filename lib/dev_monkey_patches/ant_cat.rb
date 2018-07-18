@@ -26,7 +26,7 @@ module DevMonkeyPatches::AntCat
 
     def dev_dev_link localhost: false
       host = localhost ? "localhost:3000" : "antcat.org"
-      link = "http://#{host}/catalog/#{id}?#{name_cache.tr(" ", "_")}"
+      link = "http://#{host}/catalog/#{id}?#{name_cache.tr(' ', '_')}"
       def link.open
         `xdg-open "#{self}"`
       end

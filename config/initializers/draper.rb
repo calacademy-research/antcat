@@ -20,7 +20,7 @@ module Draper
           Object.const_set(decorator_name, klass)
         else
           raise unless error.missing_name?(decorator_name)
-          raise Draper::UninferrableDecoratorError.new(self)
+          raise Draper::UninferrableDecoratorError, self
         end
       end
     end

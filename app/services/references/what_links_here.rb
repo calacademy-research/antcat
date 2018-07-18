@@ -33,6 +33,7 @@ module References
     end
 
     private
+
       attr :references
       attr_reader :reference, :predicate
 

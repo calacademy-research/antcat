@@ -1,9 +1,11 @@
+# TODO use Solr.
+
 module Autocomplete
   class AutocompleteTaxa
     include Service
 
     def initialize search_query, rank: nil
-      @search_query = search_query
+      @search_query = search_query&.strip
       @rank = rank
     end
 
@@ -20,12 +22,22 @@ module Autocomplete
     end
 
     private
+
       attr_reader :search_query, :rank
 
       def search_results
-        taxa = Taxon.where("name_cache LIKE ?", "%#{search_query}%")
+        taxa = Taxon.where("name_cache LIKE ? OR name_cache LIKE ?", crazy_search_query, not_as_crazy_search_query)
         taxa = taxa.where(type: rank) if rank.present?
         taxa.includes(:name, protonym: { authorship: :reference }).take(10)
+      end
+
+      # TODO not tested.
+      def crazy_search_query
+        search_query.split('').join('%') + '%'
+      end
+
+      def not_as_crazy_search_query
+        "%#{search_query}%"
       end
 
       def exact_id_match

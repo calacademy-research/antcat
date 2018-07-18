@@ -8,16 +8,16 @@ When("I open all database scripts and browse their sources") do
 
   script_names = DatabaseScript.all.map &:to_param
   script_names.each do |script_name|
-    step %{I open the database script "#{script_name}" and browse its source}
+    step %(I open the database script "#{script_name}" and browse its source)
   end
 end
 
 When("I open the database script {string} and browse its source") do |script_name|
   visit "/database_scripts/#{script_name}"
 
-  step %{I should see "Show source"}
+  step %(I should see "Show source")
   step %{I follow "current (antcat.org)"}
-  step %{I should see "Back to script"}
+  step %(I should see "Back to script")
 
   @browsed_scripts_count += 1
 end

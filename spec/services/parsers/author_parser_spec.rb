@@ -44,8 +44,8 @@ describe Parsers::AuthorParser do
     end
 
     it "parses multiple authors with a role" do
-      expect(parser.parse("Breed, M. D.; Page, R. E. (eds.)"))
-        .to eq names: ['Breed, M. D.', 'Page, R. E.'], suffix: ' (eds.)'
+      expect(parser.parse("Breed, M. D.; Page, R. E. (eds.)")).
+        to eq names: ['Breed, M. D.', 'Page, R. E.'], suffix: ' (eds.)'
     end
 
     it "handles names with hyphens" do
@@ -65,18 +65,18 @@ describe Parsers::AuthorParser do
     end
 
     it "handles 'et al.' without a comma before it" do
-      expect(parser.parse("Sanetra, M; Ward, P. et al."))
-        .to eq names: ['Sanetra, M', 'Ward, P.'], suffix: ' et al.'
+      expect(parser.parse("Sanetra, M; Ward, P. et al.")).
+        to eq names: ['Sanetra, M', 'Ward, P.'], suffix: ' et al.'
     end
 
     it "handles 'et al.' with a comma before it" do
-      expect(parser.parse("Sanetra, M; Ward, P., et al."))
-        .to eq names: ['Sanetra, M', 'Ward, P.'], suffix: ', et al.'
+      expect(parser.parse("Sanetra, M; Ward, P., et al.")).
+        to eq names: ['Sanetra, M', 'Ward, P.'], suffix: ', et al.'
     end
 
     it "handles 'et al. (eds.)'" do
-      expect(parser.parse("Sanetra, M; Ward, P., et al. (eds.)"))
-        .to eq names: ['Sanetra, M', 'Ward, P.'], suffix: ', et al. (eds.)'
+      expect(parser.parse("Sanetra, M; Ward, P., et al. (eds.)")).
+        to eq names: ['Sanetra, M', 'Ward, P.'], suffix: ', et al. (eds.)'
     end
 
     it "strips the space after the suffix" do
@@ -86,8 +86,8 @@ describe Parsers::AuthorParser do
     end
 
     it "handles generation numbers" do
-      expect(parser.parse("Coody, C. J.; Watkins, J. F., II")[:names])
-        .to eq ["Coody, C. J.", "Watkins, J. F., II"]
+      expect(parser.parse("Coody, C. J.; Watkins, J. F., II")[:names]).
+        to eq ["Coody, C. J.", "Watkins, J. F., II"]
     end
 
     it "handles St." do
@@ -99,13 +99,13 @@ describe Parsers::AuthorParser do
     end
 
     it "handles hyphenated first names" do
-      expect(parser.parse("Kim, J-H.; Park, S.-J.; Kim, B.-J.")[:names])
-        .to eq ["Kim, J-H.", "Park, S.-J.", "Kim, B.-J."]
+      expect(parser.parse("Kim, J-H.; Park, S.-J.; Kim, B.-J.")[:names]).
+        to eq ["Kim, J-H.", "Park, S.-J.", "Kim, B.-J."]
     end
 
     it "handles 'da' at the end of a name" do
-      expect(parser.parse("Silva, R. R. da; Lopes, B. C.")[:names])
-        .to eq ['Silva, R. R. da', 'Lopes, B. C.']
+      expect(parser.parse("Silva, R. R. da; Lopes, B. C.")[:names]).
+        to eq ['Silva, R. R. da', 'Lopes, B. C.']
     end
 
     it "handles 'dos' in the middle of a name" do
@@ -117,8 +117,8 @@ describe Parsers::AuthorParser do
     end
 
     it "handles authors separated by commas" do
-      expect(parser.parse("Breed, M. D., Page, R. E., Ward, P.S.")[:names])
-        .to eq ['Breed, M. D.', 'Page, R. E.', 'Ward, P.S.']
+      expect(parser.parse("Breed, M. D., Page, R. E., Ward, P.S.")[:names]).
+        to eq ['Breed, M. D.', 'Page, R. E.', 'Ward, P.S.']
     end
 
     it "handles 'Jr.'" do
@@ -176,8 +176,8 @@ describe Parsers::AuthorParser do
     end
 
     it "separates the words if there are multiple" do
-      expect(parser.get_name_parts('Bolton, B.L.'))
-       .to eq last: 'Bolton', first_and_initials: 'B.L.'
+      expect(parser.get_name_parts('Bolton, B.L.')).
+       to eq last: 'Bolton', first_and_initials: 'B.L.'
     end
 
     it "uses all words if there is no comma" do
@@ -185,8 +185,8 @@ describe Parsers::AuthorParser do
     end
 
     it "uses all words before the comma if there are multiple" do
-      expect(parser.get_name_parts('Baroni Urbani, C.'))
-        .to eq last: 'Baroni Urbani', first_and_initials: 'C.'
+      expect(parser.get_name_parts('Baroni Urbani, C.')).
+        to eq last: 'Baroni Urbani', first_and_initials: 'C.'
     end
   end
 end

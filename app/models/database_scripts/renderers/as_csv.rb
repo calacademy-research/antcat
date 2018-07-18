@@ -1,7 +1,7 @@
 require 'csv'
 
 module DatabaseScripts::Renderers::AsCSV
-  def as_csv &block
+  def as_csv
     renderer = Renderer.new cached_results
     yield renderer
     renderer.render

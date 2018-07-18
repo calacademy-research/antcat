@@ -18,6 +18,7 @@ module Taxa
     end
 
     private
+
       def parent
         @parent ||= Taxon.find_by(name_id: params[:parent_name_id])
       end

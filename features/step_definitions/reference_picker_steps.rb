@@ -21,11 +21,11 @@ end
 
 Then(/^the widget results should be the ID for "([^"]*)"$/) do |keey|
   reference = find_reference_by_keey keey
-  step %{the widget results should be "#{reference.id}"}
+  step %(the widget results should be "#{reference.id}")
 end
 
 Then(/^the widget results should be the taxt for Fisher 1995$/) do
-  step %{the widget results should be "{Fisher, 1995b l}"}
+  step %(the widget results should be "{Fisher, 1995b l}")
 end
 
 Then(/^I should not see the default reference button$/) do
@@ -34,7 +34,7 @@ end
 
 When(/I fill in the reference picker search box with "(.*?)"/) do |search_term|
   within ".antcat_reference_picker" do
-    step %{I fill in "q" with "#{search_term}"}
+    step %(I fill in "q" with "#{search_term}")
   end
 end
 

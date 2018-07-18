@@ -21,6 +21,7 @@ module TaxonBrowser::Tabs
     end
 
     private
+
       # Exception for subfamilies *only* containing genera that are
       # incertae sedis in that subfamily (that is Martialinae, #430173).
       def is_a_subfamily_with_valid_genera_incertae_sedis?
@@ -32,9 +33,7 @@ module TaxonBrowser::Tabs
       # "Lasius species > Lasius subgenera" to "Lasius > Lasius subgenera".
       def show_only_genus_name?
         return unless @tab_taxon.is_a? Genus
-        display.in? [ :all_taxa_in_genus,
-                      :subgenera_in_genus,
-                      :subgenera_in_parent_genus ]
+        display.in? [:all_taxa_in_genus, :subgenera_in_genus, :subgenera_in_parent_genus]
       end
   end
 end

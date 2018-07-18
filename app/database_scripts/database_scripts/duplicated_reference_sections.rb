@@ -28,6 +28,7 @@ module DatabaseScripts
     end
 
     private
+
       def link_reference_section reference_section
         "<a href='/reference_sections/#{reference_section.id}'>#{reference_section.id}</a>"
       end

@@ -33,6 +33,7 @@ class Taxa::SaveFromForm
   end
 
   private
+
     attr_reader :taxon, :params, :previous_combination
 
     def update_name name_attributes

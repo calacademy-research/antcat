@@ -23,7 +23,7 @@ describe CatalogController do
       before { create :family }
 
       it "raises on taxon not found (=404 in prod)" do
-        expect { get :show, params: { id: 99999 }}.to raise_error ActiveRecord::RecordNotFound
+        expect { get :show, params: { id: 99999 } }.to raise_error ActiveRecord::RecordNotFound
       end
     end
   end

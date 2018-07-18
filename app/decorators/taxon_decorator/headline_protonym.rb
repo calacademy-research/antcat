@@ -14,6 +14,7 @@ class TaxonDecorator::HeadlineProtonym
   end
 
   private
+
     def headline_protonym
       protonym = @taxon.protonym
       return ''.html_safe unless protonym
@@ -38,11 +39,11 @@ class TaxonDecorator::HeadlineProtonym
       string << " (#{authorship.forms})" if authorship.forms.present?
 
       if authorship.notes_taxt.present?
-        if for_antweb?
-          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_antweb
-        else
-          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html
-        end
+        string << ' ' << if for_antweb?
+                           TaxtPresenter[authorship.notes_taxt].to_antweb
+                         else
+                           TaxtPresenter[authorship.notes_taxt].to_html
+                         end
       end
 
       content_tag :span, string
@@ -50,7 +51,7 @@ class TaxonDecorator::HeadlineProtonym
 
     def locality locality
       return '' unless locality.present?
-      locality = locality.upcase.gsub(/\(.+?\)/) { |text| text.titlecase }
+      locality = locality.upcase.gsub(/\(.+?\)/, &:titlecase)
       add_period_if_necessary ' ' + locality
     end
 

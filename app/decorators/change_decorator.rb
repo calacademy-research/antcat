@@ -51,6 +51,7 @@ class ChangeDecorator < Draper::Decorator
   end
 
   private
+
     def format_username user
       return "Someone" unless user # Sometimes we get here with a nil user.
       user.decorate.user_page_link

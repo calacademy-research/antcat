@@ -54,15 +54,15 @@ describe ApplicationHelper do
 
     describe "arguments" do
       context "when a string" do
-        specify { expect(icon_classes "issue").to eq "antcat_icon issue" }
+        specify { expect(icon_classes("issue")).to eq "antcat_icon issue" }
       end
 
       context "when two strings" do
-        specify { expect(icon_classes "issue open").to eq "antcat_icon issue open" }
+        specify { expect(icon_classes("issue open")).to eq "antcat_icon issue open" }
       end
 
       context "when array" do
-        specify { expect(icon_classes ["issue open"]).to eq "antcat_icon issue open" }
+        specify { expect(icon_classes(["issue open"])).to eq "antcat_icon issue open" }
       end
     end
 

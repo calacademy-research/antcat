@@ -1,39 +1,40 @@
-def already_opened_select2(value, from:)
-  element_id = from
+def already_opened_select2(value, from:) # rubocop:disable Lint/UnusedMethodArgument
+  # TODO figure out why this isn't used or remove.
+  # element_id = from
 
   find('.select2-search__field').set value
   find(".select2-results__option", text: /#{value}/).click
 end
 
 When("I save the senior synonym") do
-  step %{I press the senior synonym item "Save" button}
+  step %(I press the senior synonym item "Save" button)
 end
 
 When("I save the synonym") do
-  step %{I press the synonym item "Save" button}
+  step %(I press the synonym item "Save" button)
 end
 
 When("I press the senior synonym item {string} button") do |button|
   within '.senior_synonyms_section' do
-    step %{I press "#{button}"}
+    step %(I press "#{button}")
   end
 end
 
 When("I press the (junior )synonym item {string} button") do |button|
   within '.junior_synonyms_section' do
-    step %{I press "#{button}"}
+    step %(I press "#{button}")
   end
 end
 
 When("I click {string} beside the first junior synonym") do |button|
   within '.junior_synonyms_section .synonym_row' do
-    step %{I press "#{button}"}
+    step %(I press "#{button}")
   end
 end
 
 When("I click {string} beside the first senior synonym") do |button|
   within '.senior_synonyms_section .synonym_row' do
-    step %{I press "#{button}"}
+    step %(I press "#{button}")
   end
 end
 

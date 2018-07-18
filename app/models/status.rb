@@ -16,7 +16,7 @@ class Status
 
   # Order matters, see `spec/decorators/taxon_decorator/statistics_spec.rb`.
   def self.statuses
-    @_statuses ||= [
+    @statuses ||= [
       [VALID,                     'valid'],
       [SYNONYM,                   'synonyms'],
       [HOMONYM,                   'homonyms'],
@@ -35,7 +35,7 @@ class Status
   end
 
   def self.find identifier
-    identifier = identifier.status if identifier.kind_of? Taxon
+    identifier = identifier.status if identifier.is_a? Taxon
     statuses.find { |status| status.includes? identifier } or raise "Couldn't find status for '#{identifier}'"
   end
   class << self; alias_method :[], :find end
@@ -53,7 +53,7 @@ class Status
   end
 
   def to_s *options
-    numeric_argument = options.find { |option| option.kind_of? Numeric }
+    numeric_argument = options.find { |option| option.is_a? Numeric }
     options << :plural if numeric_argument && numeric_argument > 1
 
     if options.include?(:plural)
@@ -64,7 +64,7 @@ class Status
   end
 
   def includes? identifier
-    @hash.values.include? identifier
+    @hash.value?(identifier)
   end
 
   def option_for_select

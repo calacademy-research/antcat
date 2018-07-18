@@ -8,8 +8,8 @@ describe Feed, feed: true do
 
     it "can be disabled and enabled" do
       described_class.enabled = false
-      expect { described_class.enabled = true }
-        .to change { described_class.enabled? }.from(false).to(true)
+      expect { described_class.enabled = true }.
+        to change { described_class.enabled? }.from(false).to(true)
     end
   end
 end

@@ -28,6 +28,7 @@ class TaxtPresenter
   end
 
   private
+
     def parse format
       return '' unless @taxt.present?
 

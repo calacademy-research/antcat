@@ -19,15 +19,16 @@ module DatabaseScripts
 
         t.rows do |taxon|
           ids = taxon.grouped_ids.split(",")
-          [ taxon.name_cache, link_taxa_ids(ids), ids.count ]
+          [taxon.name_cache, link_taxa_ids(ids), ids.count]
         end
       end
     end
 
     private
+
       def link_taxa_ids ids
         list = "<ul class='no-bullet'>"
-        list << ids.map {|id| "<li>%taxon#{id} (##{id})</li>" }.join
+        list << ids.map { |id| "<li>%taxon#{id} (##{id})</li>" }.join
         list << "</ul>"
       end
   end

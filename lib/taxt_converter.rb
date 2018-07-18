@@ -16,7 +16,7 @@ class TaxtConverter
     return "" unless @taxt
     taxt = @taxt.dup
 
-    taxt.gsub! /{ref (\d+)}/ do |match|
+    taxt.gsub! /{ref (\d+)}/ do |_match|
       if reference = Reference.find_by(id: $1)
         TaxtIdTranslator.to_editor_ref_tag reference
       else
@@ -25,7 +25,7 @@ class TaxtConverter
       end
     end
 
-    taxt.gsub! /{tax (\d+)}/ do |match|
+    taxt.gsub! /{tax (\d+)}/ do |_match|
       if taxon = Taxon.find_by(id: $1)
         TaxtIdTranslator.to_editor_tax_tag taxon
       else
@@ -34,7 +34,7 @@ class TaxtConverter
       end
     end
 
-    taxt.gsub! /{nam (\d+)}/ do |match|
+    taxt.gsub! /{nam (\d+)}/ do |_match|
       if name = Name.find_by(id: $1)
         TaxtIdTranslator.to_editor_nam_tag name
       else
@@ -55,7 +55,7 @@ class TaxtConverter
       id, type_number = TaxtIdTranslator.unjumble_id_and_type $3
       case type_number
       when TaxtIdTranslator::REFERENCE_TAG_TYPE
-        raise ReferenceNotFound.new(string) unless Reference.find_by(id: id)
+        raise ReferenceNotFound, string unless Reference.find_by(id: id)
         "{ref #{id}}"
       when TaxtIdTranslator::TAXON_TAG_TYPE
         raise unless Taxon.find_by(id: id)

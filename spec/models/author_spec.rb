@@ -10,7 +10,7 @@ describe Author do
       let!(:bolton) { create :author_name, name: 'Bolton' }
       let!(:fisher) do
         fisher_b_l = create :author_name, name: 'Fisher, B. L.'
-        fisher = create :author_name, name: 'Fisher', author: fisher_b_l.author
+        create :author_name, name: 'Fisher', author: fisher_b_l.author
       end
 
       it "sorts by first author name" do
@@ -24,8 +24,8 @@ describe Author do
     let!(:fisher) { create :author_name, name: 'Fisher' }
 
     it "converts a list of author names to author objects" do
-      expect(described_class.find_by_names ['Bolton', 'Fisher'])
-        .to match_array [bolton.author, fisher.author]
+      expect(described_class.find_by_names(['Bolton', 'Fisher'])).
+        to match_array [bolton.author, fisher.author]
     end
 
     it "handles empty lists" do

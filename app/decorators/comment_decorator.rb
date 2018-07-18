@@ -12,6 +12,7 @@ class CommentDecorator < Draper::Decorator
   end
 
   private
+
     def commentable_anchor_link
       helpers.polymorphic_path comment.commentable, anchor: "comment-#{comment.id}"
     end

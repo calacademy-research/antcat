@@ -82,9 +82,9 @@ def create_reference type, hash
       authors = hash.delete 'authors'
       parsed_author_names = Parsers::AuthorParser.parse(authors)[:names]
       author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
-      parsed_author_names.reduce([]) do |author_names, author_name|
+      parsed_author_names.reduce([]) do |memo, author_name|
         author_name = AuthorName.find_by(name: author_name) || create(:author_name, name: author_name)
-        author_names << author_name
+        memo << author_name
       end
     end
 
@@ -178,13 +178,13 @@ end
 
 When("I fill in the references search box with {string}") do |search_term|
   within "#breadcrumbs" do
-    step %{I fill in "q" with "#{search_term}"}
+    step %(I fill in "q" with "#{search_term}")
   end
 end
 
 When("I fill in the references authors search box with {string}") do |search_term|
   within "#breadcrumbs" do
-    step %{I fill in "author_q" with "#{search_term}"}
+    step %(I fill in "author_q" with "#{search_term}")
   end
 end
 
@@ -204,7 +204,7 @@ end
 
 Then("nesting_reference_id should contain a valid reference id") do
   id = find("#reference_nesting_reference_id").value
-  expect(Reference.exists? id).to be true
+  expect(Reference.exists?(id)).to be true
 end
 
 Given("there is a taxon with that reference as its protonym's reference") do

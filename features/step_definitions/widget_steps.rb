@@ -1,12 +1,12 @@
 # Search
 When(/^in the reference picker, I search for the authors? "([^"]*)"$/) do |authors|
-  step %{I fill in the reference picker search box with "author:'#{authors}'"}
-  step %{I press "Go" by the reference picker search box}
+  step %(I fill in the reference picker search box with "author:'#{authors}'")
+  step %(I press "Go" by the reference picker search box)
 end
 
 # Reference field
 When(/^I click the reference field$/) do
-  step %{I click ".display_button"}
+  step %(I click ".display_button")
 end
 
 # Reference popup
@@ -20,11 +20,11 @@ end
 
 # Name field
 When(/I click the allow_blank name field/) do
-  step %{I click "#test_allow_blank_name_field .display_button"}
+  step %(I click "#test_allow_blank_name_field .display_button")
 end
 
 When(/I click the new_or_homonym field/) do
-  step %{I click "#test_new_or_homonym_name_field .display_button"}
+  step %(I click "#test_new_or_homonym_name_field .display_button")
 end
 
 When(/the default_name_string field should contain "([^"]*)"/) do |name|
@@ -33,11 +33,11 @@ When(/the default_name_string field should contain "([^"]*)"/) do |name|
 end
 
 When(/I click the default_name_string field/) do
-  step %{I click "#test_default_name_string_name_field .display_button"}
+  step %(I click "#test_default_name_string_name_field .display_button")
 end
 
 When(/I click the test name field/) do
-  step %{I click "#test_name_field .display_button"}
+  step %(I click "#test_name_field .display_button")
 end
 
 # Name popup
@@ -60,25 +60,25 @@ end
 # Results section
 Then(/in the results section I should see the editable taxt for the name "([^"]*)"/) do |text|
   within "#results" do
-    step %{I should see "#{TaxtIdTranslator.to_editor_nam_tag(Name.find_by_name(text))}"}
+    step %(I should see "#{TaxtIdTranslator.to_editor_nam_tag(Name.find_by_name(text))}")
   end
 end
 
 Then(/in the results section I should see the id for "([^"]*)"/) do |text|
   within "#results" do
-    step %{I should see "#{Name.find_by_name(text).id}"}
+    step %(I should see "#{Name.find_by_name(text).id}")
   end
 end
 
 Then(/in the results section I should see the id for the name "([^"]*)"/) do |text|
   within "#results" do
-    step %{I should see "#{Name.find_by_name(text).id}"}
+    step %(I should see "#{Name.find_by_name(text).id}")
   end
 end
 
 Then(/in the results section I should see the editable taxt for "([^"]*)"/) do |text|
   within "#results" do
-    step %{I should see "#{TaxtIdTranslator.to_editor_tax_tag(Taxon.find_by_name(text))}"}
+    step %(I should see "#{TaxtIdTranslator.to_editor_tax_tag(Taxon.find_by_name(text))}")
   end
 end
 

@@ -13,6 +13,7 @@ class RevisionHistoryPath
   end
 
   private
+
     attr_reader :type, :id
 
     def url

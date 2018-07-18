@@ -45,17 +45,17 @@ describe Wikipedia::ReferenceExporter do
   describe "#reference_name" do
     it "handles single authors" do
       set_exporter_with_stubbed_reference "Batiatus"
-      expect(@exporter.send :reference_name).to eq "Batiatus_2016"
+      expect(@exporter.send(:reference_name)).to eq "Batiatus_2016"
     end
 
     it "handles two authors" do
       set_exporter_with_stubbed_reference "Batiatus", "Glaber"
-      expect(@exporter.send :reference_name).to eq "Batiatus_&_Glaber_2016"
+      expect(@exporter.send(:reference_name)).to eq "Batiatus_&_Glaber_2016"
     end
 
     it "handles three authors" do
       set_exporter_with_stubbed_reference "Batiatus", "Glaber", "Varro"
-      expect(@exporter.send :reference_name).to eq "Batiatus_et_al_2016"
+      expect(@exporter.send(:reference_name)).to eq "Batiatus_et_al_2016"
     end
   end
 end

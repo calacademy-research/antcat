@@ -37,7 +37,7 @@ class TaxaGrabBagController < ApplicationController
   end
 
   def elevate_to_species
-    unless @taxon.kind_of? Subspecies
+    unless @taxon.is_a? Subspecies
       redirect_to edit_taxa_path(@taxon), notice: "Not a subspecies"
       return
     end
@@ -74,6 +74,7 @@ class TaxaGrabBagController < ApplicationController
   end
 
   private
+
     def set_taxon
       @taxon = Taxon.find params[:id]
     end

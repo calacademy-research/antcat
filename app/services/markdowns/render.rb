@@ -11,6 +11,7 @@ module Markdowns
     end
 
     private
+
       attr_reader :content
 
       def markdowner
@@ -34,7 +35,6 @@ module Markdowns
           fenced_code_blocks: true,
           underline: false
         }
-
 
         AntcatMarkdown.new options
       end

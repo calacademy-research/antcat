@@ -6,7 +6,7 @@ class SpeciesGroupName < Name
     name_parts = [new_comb_parent.name.genus_epithet]
     case new_comb_parent
     when Species then name_parts << new_comb_parent.name.species_epithet <<
-                                    old_comb.name.epithet
+      old_comb.name.epithet
     when Genus   then name_parts << old_comb.name.species_epithet
     else                            raise "we should never get here"
     end
@@ -27,6 +27,7 @@ class SpeciesGroupName < Name
   end
 
   private
+
     def self.valid_rank_combination? old_comb, new_comb_parent
       old_comb.is_a?(Species) && new_comb_parent.is_a?(Genus) ||
         old_comb.is_a?(Subspecies) && new_comb_parent.is_a?(Species)

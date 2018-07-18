@@ -29,7 +29,7 @@ class SynonymsController < ApplicationController
       end
 
       if Synonym.find_by(senior_synonym_id: senior.id, junior_synonym_id: junior.id) or
-         Synonym.find_by(senior_synonym_id: junior.id, junior_synonym_id: senior.id)
+          Synonym.find_by(senior_synonym_id: junior.id, junior_synonym_id: senior.id)
         error_message = 'This taxon is already a synonym'
       else
         synonym = Synonym.create! senior_synonym_id: senior.id, junior_synonym_id: junior.id
@@ -78,6 +78,7 @@ class SynonymsController < ApplicationController
   end
 
   private
+
     def set_synonym
       @synonym = Synonym.find params[:id]
     end

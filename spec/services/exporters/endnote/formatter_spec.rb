@@ -10,7 +10,7 @@ describe Exporters::Endnote::Formatter do
       citation_year: '1933',
       publisher: create(:publisher, name: 'Springer Verlag', place: create(:place, name: 'Dresden')),
       pagination: 'ix + 33pp.'
-    expect(formatter.format([reference])).to eq %{%0 Book
+    expect(formatter.format([reference])).to eq %(%0 Book
 %A Bolton, B.
 %D 1933
 %T Ants Are My Life
@@ -19,7 +19,7 @@ describe Exporters::Endnote::Formatter do
 %P ix + 33pp.
 %~ AntCat
 
-}
+)
   end
 
   it "formats multiple authors correctly" do
@@ -29,7 +29,7 @@ describe Exporters::Endnote::Formatter do
       citation_year: '1933',
       publisher: create(:publisher, name: 'Springer Verlag', place: create(:place, name: 'Dresden')),
       pagination: 'ix + 33pp.'
-    expect(formatter.format([reference])).to eq %{%0 Book
+    expect(formatter.format([reference])).to eq %(%0 Book
 %A Bolton, B.
 %A Fisher, B.L.
 %D 1933
@@ -39,7 +39,7 @@ describe Exporters::Endnote::Formatter do
 %P ix + 33pp.
 %~ AntCat
 
-}
+)
   end
 
   it "doesn't emit %A if there is no author" do
@@ -49,7 +49,7 @@ describe Exporters::Endnote::Formatter do
       citation_year: '1933',
       publisher: create(:publisher, name: 'Springer Verlag', place: create(:place, name: 'Dresden')),
       pagination: 'ix + 33pp.'
-    expect(formatter.format([reference])).to eq %{%0 Book
+    expect(formatter.format([reference])).to eq %(%0 Book
 %D 1933
 %T Ants Are My Life
 %C Dresden
@@ -57,7 +57,7 @@ describe Exporters::Endnote::Formatter do
 %P ix + 33pp.
 %~ AntCat
 
-}
+)
   end
 
   it "formats a article reference correctly" do
@@ -150,8 +150,8 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "bails on a class it doesn't know about " do
-    expect { formatter.format([String.new]) }
-      .to raise_error(/Don't know what kind of reference this is/)
+    expect { formatter.format(['']) }.
+      to raise_error(/Don't know what kind of reference this is/)
   end
 
   it "formats an unknown reference correctly" do
@@ -160,14 +160,14 @@ describe Exporters::Endnote::Formatter do
       citation_year: '1933',
       title: 'Another title',
       citation: 'Dresden'
-    expect(formatter.format([reference])).to eq %{%0 Generic
+    expect(formatter.format([reference])).to eq %(%0 Generic
 %A MacKay, W.
 %D 1933
 %T Another title
 %1 Dresden
 %~ AntCat
 
-}
+)
   end
 
   it "doesn't output nested references" do

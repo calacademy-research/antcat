@@ -22,6 +22,7 @@ class AuthorDecorator < Draper::Decorator
   end
 
   private
+
     def description_year taxon
       taxon.protonym.authorship.reference.year
     end

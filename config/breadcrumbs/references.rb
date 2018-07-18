@@ -1,3 +1,4 @@
+# rubocop:disable Layout/IndentationConsistency
 crumb :references do
   link "References", references_path
 end
@@ -96,3 +97,4 @@ end
     link "Merge Authors"
     parent :authors
   end
+# rubocop:enable Layout/IndentationConsistency

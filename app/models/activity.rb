@@ -7,7 +7,7 @@ class Activity < ApplicationRecord
   include FilterableWhere
 
   EDIT_SUMMARY_MAX_LENGTH = 255
-  ACTIONS = %w(
+  ACTIONS = %w[
     create
     update
     destroy
@@ -30,7 +30,7 @@ class Activity < ApplicationRecord
     restart_reviewing
     start_reviewing
     undo_change
-  )
+  ]
 
   self.per_page = 30 # For `will_paginate`.
 

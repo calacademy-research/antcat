@@ -9,32 +9,33 @@ module TaxonSelectHelper
   end
 
   private
+
     def data_attributes taxon, rank
       for_taxon = if taxon
                     {
                       name_html: taxon.name.name_html,
                       name_with_fossil: taxon.name_with_fossil,
-                      author_citation: taxon.author_citation,
+                      author_citation: taxon.author_citation
                     }
                   end
 
       { taxon_select: true, rank: rank }.merge(for_taxon || {})
     end
 
-  module FormBuilderAdditions
-    include ActionView::Helpers::FormOptionsHelper
-    include TaxonSelectHelper
+    module FormBuilderAdditions
+      include ActionView::Helpers::FormOptionsHelper
+      include TaxonSelectHelper
 
-    def taxon_select taxon_attribute_name, rank: nil
-      taxon = object.send taxon_attribute_name
-      taxon_id = taxon.try(:id)
+      def taxon_select taxon_attribute_name, rank: nil
+        taxon = object.send taxon_attribute_name
+        taxon_id = taxon.try(:id)
 
-      self.select "#{taxon_attribute_name}_id".to_sym,
-        options_for_select([taxon_id].compact, taxon_id),
-        { include_blank: '(none)' },
-        class: 'select2-autocomplete', data: data_attributes(taxon, rank)
+        select "#{taxon_attribute_name}_id".to_sym,
+          options_for_select([taxon_id].compact, taxon_id),
+          { include_blank: '(none)' },
+          class: 'select2-autocomplete', data: data_attributes(taxon, rank)
+      end
     end
-  end
 end
 
 ActionView::Helpers::FormBuilder.send(:include, TaxonSelectHelper::FormBuilderAdditions)

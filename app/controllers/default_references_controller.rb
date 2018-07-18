@@ -12,11 +12,12 @@ class DefaultReferencesController < ApplicationController
     else
       redirect_back fallback_location: references_path, notice: <<-MSG.squish
           #{@reference.keey} was successfully set as the default reference.
-        MSG
+      MSG
     end
   end
 
   private
+
     def set_reference
       @reference = Reference.find(params[:id])
     end

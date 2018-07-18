@@ -3,9 +3,8 @@ module Taxa::Synonyms
 
   def current_valid_taxon_including_synonyms
     if synonym?
-      if senior = find_most_recent_valid_senior_synonym
-        return senior
-      end
+      senior = find_most_recent_valid_senior_synonym
+      return senior if senior
     end
     current_valid_taxon
   end
@@ -31,7 +30,7 @@ module Taxa::Synonyms
   end
 
   def junior_synonyms_recursive
-    @_junior_synonyms_recursive ||= Taxon.where(id: junior_synonym_ids_recursive)
+    @junior_synonyms_recursive ||= Taxon.where(id: junior_synonym_ids_recursive)
   end
 
   protected
@@ -52,6 +51,7 @@ module Taxa::Synonyms
     end
 
   private
+
     def synonyms_with_names junior_or_senior
       if junior_or_senior == :junior
         join_column = 'junior_synonym_id'

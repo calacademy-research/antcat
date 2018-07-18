@@ -77,21 +77,23 @@ class Taxon < ApplicationRecord
   # Then use this:
   #   `Species.self_join_on(:genus)
   #      .where(fossil: false, taxa_self_join_alias: { fossil: true })`
-  scope :self_join_on, -> (model) {
+  scope :self_join_on, ->(model) {
     joins(<<-SQL.squish)
       LEFT OUTER JOIN `taxa` `taxa_self_join_alias`
         ON `taxa`.`#{model}_id` = `taxa_self_join_alias`.`id`
-      SQL
+    SQL
   }
-  scope :ranks, -> (*ranks) { where(type: ranks) }
-  scope :exclude_ranks, -> (*ranks) { where.not(type: ranks) }
+  scope :ranks, ->(*ranks) { where(type: ranks) }
+  scope :exclude_ranks, ->(*ranks) { where.not(type: ranks) }
 
   accepts_nested_attributes_for :name, :protonym, :type_name
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked on: :mixin_create_activity_only, parameters: proc {
-    parent_params = { rank: parent.rank,
-                      name: parent.name_html_cache,
-                      id:   parent.id } if parent
+    if parent
+      parent_params = { rank: parent.rank,
+                        name: parent.name_html_cache,
+                        id:   parent.id }
+    end
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
 

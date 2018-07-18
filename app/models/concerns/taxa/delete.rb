@@ -19,7 +19,7 @@ module Taxa::Delete
   end
 
   def delete_impact_list
-   Taxa::DeleteImpactList[self]
+    Taxa::DeleteImpactList[self]
   end
 
   def delete_taxon_and_children
@@ -34,6 +34,7 @@ module Taxa::Delete
   end
 
   private
+
     def delete_taxon_children taxon
       taxon.children.each do |child|
         child.delete_with_state!

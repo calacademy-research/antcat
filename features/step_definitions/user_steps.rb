@@ -74,7 +74,7 @@ end
 
 When("I fill in the email field with my email address") do
   user = User.find_by(name: 'Brian Fisher') # TODO something. Harcoded.
-  step %{I fill in "user_email" with "#{user.email}"}
+  step %(I fill in "user_email" with "#{user.email}")
 end
 
 Then("there should be a mailto link to the email of {string}") do |name|

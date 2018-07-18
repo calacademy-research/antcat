@@ -3,8 +3,8 @@ module References
     layout "references"
 
     def index
-      @references = Reference.latest_changes
-        .includes_document.paginate(page: params[:page])
+      @references = Reference.latest_changes.
+        includes_document.paginate(page: params[:page])
     end
   end
 end

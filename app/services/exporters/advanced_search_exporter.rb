@@ -15,5 +15,6 @@ class Exporters::AdvancedSearchExporter
   end
 
   private
+
     attr_reader :taxa
 end

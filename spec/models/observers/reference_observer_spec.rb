@@ -66,8 +66,8 @@ describe ReferenceObserver do
     end
 
     it "invalidates the cache for the document's reference" do
-      expect { described_class.instance.before_update reference }
-        .to change { reference.reload.formatted_cache.nil? }.from(false).to(true)
+      expect { described_class.instance.before_update reference }.
+        to change { reference.reload.formatted_cache.nil? }.from(false).to(true)
     end
   end
 end

@@ -28,7 +28,7 @@ describe TaxonDecorator::TaxonStatus do
 
         specify do
           expect(taxon.decorate.taxon_status).
-            to include %{homonym replaced by <a href="/catalog/#{homonym_replaced_by.id}">Formicidae</a>}
+            to include %(homonym replaced by <a href="/catalog/#{homonym_replaced_by.id}">Formicidae</a>)
         end
       end
     end
@@ -55,8 +55,8 @@ describe TaxonDecorator::TaxonStatus do
         before { taxon.update! current_valid_taxon: senior_synonym }
 
         specify do
-          expect(taxon.decorate.taxon_status)
-            .to include %{unresolved junior homonym, junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Eciton</i></a>}
+          expect(taxon.decorate.taxon_status).
+            to include %(unresolved junior homonym, junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Eciton</i></a>)
         end
       end
     end
@@ -84,8 +84,8 @@ describe TaxonDecorator::TaxonStatus do
           junior_synonym = create_genus 'Atta', status: Status::SYNONYM
           create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
-          expect(junior_synonym.decorate.taxon_status)
-            .to include %{junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>}
+          expect(junior_synonym.decorate.taxon_status).
+            to include %(junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>)
         end
       end
 
@@ -103,8 +103,8 @@ describe TaxonDecorator::TaxonStatus do
           end
 
           specify do
-            expect(junior_synonym.decorate.taxon_status)
-              .to include %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+            expect(junior_synonym.decorate.taxon_status).
+              to include %(junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>)
           end
         end
 
@@ -121,8 +121,8 @@ describe TaxonDecorator::TaxonStatus do
           end
 
           it specify do
-            expect(junior_synonym.decorate.taxon_status)
-              .to include %{junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>}
+            expect(junior_synonym.decorate.taxon_status).
+              to include %(junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>)
           end
         end
       end
@@ -141,7 +141,7 @@ describe TaxonDecorator::TaxonStatus do
     end
 
     context "when taxon is `invalid?`" do
-       let!(:taxon) { create :family, status: "excluded from Formicidae" }
+      let!(:taxon) { create :family, status: "excluded from Formicidae" }
 
       specify { expect(taxon.decorate.taxon_status).to eq "excluded from Formicidae" }
     end
@@ -157,7 +157,7 @@ describe TaxonDecorator::TaxonStatus do
 
   describe "#format_senior_synonym" do
     context "when the senior synonym is itself invalid" do
-      let(:invalid_senior) { create_genus 'Atta', status: Status::SYNONYM}
+      let(:invalid_senior) { create_genus 'Atta', status: Status::SYNONYM }
       let(:junior) { create_genus 'Eciton', status: Status::SYNONYM }
       subject { described_class.new(junior) }
 

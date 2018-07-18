@@ -13,8 +13,8 @@ describe ReferenceDecorator do
     end
 
     it "creates a link" do
-      expect(reference.decorate.format_reference_document_link)
-        .to eq '<a href="example.com">PDF</a>'
+      expect(reference.decorate.format_reference_document_link).
+        to eq '<a href="example.com">PDF</a>'
     end
   end
 
@@ -24,24 +24,24 @@ describe ReferenceDecorator do
     end
 
     it "doesn't touch a string without HTML" do
-      expect(make_html_safe 'string').to eq 'string'
+      expect(make_html_safe('string')).to eq 'string'
     end
 
     it "leaves italics alone" do
-      expect(make_html_safe '<i>string</i>').to eq '<i>string</i>'
+      expect(make_html_safe('<i>string</i>')).to eq '<i>string</i>'
     end
 
     it "leaves quotes alone" do
-      expect(make_html_safe '"string"').to eq '"string"'
+      expect(make_html_safe('"string"')).to eq '"string"'
     end
 
     it "returns an html_safe string" do
-      expect(make_html_safe '"string"').to be_html_safe
+      expect(make_html_safe('"string"')).to be_html_safe
     end
 
     it "escapes other HTML" do
-      expect(make_html_safe '<script>danger</script>')
-        .to eq '&lt;script&gt;danger&lt;/script&gt;'
+      expect(make_html_safe('<script>danger</script>')).
+        to eq '&lt;script&gt;danger&lt;/script&gt;'
     end
   end
 
@@ -55,14 +55,14 @@ describe ReferenceDecorator do
 
       it "escapes everything, buts let italics through" do
         reference.author_names = [create(:author_name, name: '<script>')]
-        expect(reference.decorate.formatted)
-          .to eq '&lt;script&gt; 1874. Les fourmis de la Suisse. 32 pp.'
+        expect(reference.decorate.formatted).
+          to eq '&lt;script&gt; 1874. Les fourmis de la Suisse. 32 pp.'
       end
 
       it "escapes the citation year" do
         reference.update_attribute :citation_year, '<script>'
-        expect(reference.decorate.formatted)
-          .to eq 'Ward, P. S. &lt;script&gt;. Les fourmis de la Suisse. 32 pp.'
+        expect(reference.decorate.formatted).
+          to eq 'Ward, P. S. &lt;script&gt;. Les fourmis de la Suisse. 32 pp.'
       end
 
       it "escapes the title" do
@@ -77,8 +77,8 @@ describe ReferenceDecorator do
 
       it "escapes the date" do
         reference.update_attribute :date, '1933>'
-        expect(reference.decorate.formatted)
-          .to eq 'Ward, P. S. 1874. Les fourmis de la Suisse. 32 pp. [1933&gt;]'
+        expect(reference.decorate.formatted).
+          to eq 'Ward, P. S. 1874. Les fourmis de la Suisse. 32 pp. [1933&gt;]'
       end
     end
   end
@@ -114,8 +114,8 @@ describe ReferenceDecorator do
 
     context "when string isn't html_safe" do
       it "raises" do
-        expect { nil_decorator.send :format_italics, 'roman' }
-          .to raise_error "Can't call format_italics on an unsafe string"
+        expect { nil_decorator.send :format_italics, 'roman' }.
+          to raise_error "Can't call format_italics on an unsafe string"
       end
     end
   end
@@ -132,25 +132,25 @@ describe ReferenceDecorator do
     context "when review_state is 'reviewing'" do
       before { reference.review_state = 'reviewing' }
 
-      specify {expect(reference).to have_formatted_review_state 'Being reviewed' }
+      specify { expect(reference).to have_formatted_review_state 'Being reviewed' }
     end
 
     context "when review_state is 'none'" do
       before { reference.review_state = 'none' }
 
-      specify {expect(reference).to have_formatted_review_state '' }
+      specify { expect(reference).to have_formatted_review_state '' }
     end
 
     context "when review_state is empty string" do
       before { reference.review_state = '' }
 
-      specify {expect(reference).to have_formatted_review_state '' }
+      specify { expect(reference).to have_formatted_review_state '' }
     end
 
     context "when review_state is nil" do
       before { reference.review_state = nil }
 
-      specify {expect(reference).to have_formatted_review_state '' }
+      specify { expect(reference).to have_formatted_review_state '' }
     end
   end
 

@@ -23,6 +23,7 @@ module Autocomplete
     end
 
     private
+
       attr_reader :search_query
 
       def search_results
@@ -34,7 +35,7 @@ module Autocomplete
       end
 
       def keyword_params
-        @_keyword_params ||= ::References::Search::ExtractKeywords[search_query]
+        @keyword_params ||= ::References::Search::ExtractKeywords[search_query]
       end
 
       def format_autosuggest_keywords reference, keyword_params

@@ -1,11 +1,11 @@
 namespace :antcat do
   desc "Show duplicate names and their references"
   task show_duplicate_names_with_references: :environment do
-    duplicates = Names::DuplicatesWithReferences[show_progress: true]
-    duplicates.each do |name, duplicates|
+    names_with_duplicates = Names::DuplicatesWithReferences[show_progress: true]
+    names_with_duplicates.each do |name, name_with_duplicates|
       puts
       puts name
-      duplicates.each do |id, duplicates|
+      name_with_duplicates.each do |id, duplicates|
         print id
         duplicates.each do |duplicate|
           print " #{duplicate[:table]} #{duplicate[:field]} #{duplicate[:id]}"

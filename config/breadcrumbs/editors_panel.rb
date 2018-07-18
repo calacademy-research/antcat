@@ -1,3 +1,4 @@
+# rubocop:disable Layout/IndentationConsistency
 crumb :editors_panel do
   link "Editor's Panel", editors_panel_path
 end
@@ -42,7 +43,7 @@ end
       parent :issue, issue
     end
 
-  crumb :new_issue do |issue|
+  crumb :new_issue do |_issue|
     link "New"
     parent :issues
   end
@@ -102,7 +103,7 @@ end
       parent :site_notice, site_notice
     end
 
-  crumb :new_site_notice do |site_notice|
+  crumb :new_site_notice do |_site_notice|
     link "New"
     parent :site_notices
   end
@@ -151,3 +152,4 @@ crumb :beta_and_such do
   link "Beta and such (testing, debugging)"
   parent :editors_panel
 end
+# rubocop:enable Layout/IndentationConsistency

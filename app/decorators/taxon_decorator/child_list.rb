@@ -23,12 +23,13 @@ class TaxonDecorator::ChildList
   end
 
   private
+
     def child_lists_for_rank children_selector
       return ''.html_safe unless @taxon.respond_to?(children_selector) && @taxon.send(children_selector).present?
 
       if @taxon.is_a?(Subfamily) && children_selector == :genera
         child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: false) +
-        child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: true)
+          child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: true)
       else
         child_list_fossil_pairs children_selector
       end
@@ -50,7 +51,7 @@ class TaxonDecorator::ChildList
       specify_extinct_or_extant = extinct.present?
 
       child_list(extant, specify_extinct_or_extant, extant_conditions) +
-      child_list(extinct, specify_extinct_or_extant, extinct_conditions)
+        child_list(extinct, specify_extinct_or_extant, extinct_conditions)
     end
 
     def child_list_query children_selector, conditions = {}
@@ -82,23 +83,23 @@ class TaxonDecorator::ChildList
       label = ''.html_safe
       label << 'Hong (2002) ' if conditions[:hong]
 
-      if conditions[:collective_group_names]
-        label << Status['collective group name'].to_s(children.size).humanize
-      else
-        label << children.first.rank.pluralize(children.size).titleize
-      end
+      label << if conditions[:collective_group_names]
+                 Status['collective group name'].to_s(children.size).humanize
+               else
+                 children.first.rank.pluralize(children.size).titleize
+               end
 
       if specify_extinct_or_extant
         label << if conditions[:fossil] then ' (extinct)' else ' (extant)' end
       end
 
-      if conditions[:incertae_sedis_in]
-        label << ' <i>incertae sedis</i> in '.html_safe
-      elsif conditions[:collective_group_names]
-        label << ' in '
-      else
-        label << ' of '
-      end
+      label << if conditions[:incertae_sedis_in]
+                 ' <i>incertae sedis</i> in '.html_safe
+               elsif conditions[:collective_group_names]
+                 ' in '
+               else
+                 ' of '
+               end
 
       label << content_tag(:span, @taxon.taxon_label)
     end

@@ -13,7 +13,7 @@ class Tribe < Taxon
 
   def update_parent new_parent
     set_name_caches
-    if new_parent.kind_of? Subfamily
+    if new_parent.is_a? Subfamily
       self.subfamily = new_parent
       update_descendants_subfamilies
     end
@@ -41,6 +41,7 @@ class Tribe < Taxon
   end
 
   private
+
     def update_descendants_subfamilies
       genera.each do |genus|
         genus.subfamily = subfamily

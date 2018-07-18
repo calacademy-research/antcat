@@ -14,6 +14,7 @@ module Taxa::Statistics
   end
 
   protected
+
     # TODO this is really slow; figure out how to add database indexes for this.
     def get_statistics ranks, valid_only: false
       statistics = {}
@@ -31,6 +32,7 @@ module Taxa::Statistics
     end
 
   private
+
     def delete_original_combinations count
       count.delete [true, Status::ORIGINAL_COMBINATION]
       count.delete [false, Status::ORIGINAL_COMBINATION]

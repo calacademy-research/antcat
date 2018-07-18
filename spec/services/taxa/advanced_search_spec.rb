@@ -95,8 +95,7 @@ describe Taxa::AdvancedSearch do
 
       it "finds the taxa for the author's references, even if he's not the principal author" do
         reference = create :article_reference,
-          author_names: [ create(:author_name, name: 'Bolton'),
-                          create(:author_name, name: 'Fisher') ]
+          author_names: [create(:author_name, name: 'Bolton'), create(:author_name, name: 'Fisher')]
         atta = create_genus
         atta.protonym.authorship.update! reference: reference
 
@@ -220,13 +219,13 @@ describe Taxa::AdvancedSearch do
 
         citation = create :citation, forms: 'q.'
         protonym = create :protonym, authorship: citation
-        eciton = create_species protonym: protonym
+        create_species protonym: protonym # eciton
 
         expect(described_class[forms: 'w.']).to eq [atta]
       end
 
       it "returns nothing if nothing has those forms" do
-        atta = create_species
+        create_species
         expect(described_class[forms: 'w.']).to be_empty
       end
     end

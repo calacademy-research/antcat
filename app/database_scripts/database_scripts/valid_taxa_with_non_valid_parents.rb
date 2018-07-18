@@ -1,18 +1,18 @@
 module DatabaseScripts
   class ValidTaxaWithNonValidParents < DatabaseScript
     def genus_results
-      Genus.valid.self_join_on(:subfamily)
-        .where.not(taxa_self_join_alias: { status: Status::VALID })
+      Genus.valid.self_join_on(:subfamily).
+        where.not(taxa_self_join_alias: { status: Status::VALID })
     end
 
     def species_results
-      Species.valid.self_join_on(:genus)
-        .where.not(taxa_self_join_alias: { status: Status::VALID })
+      Species.valid.self_join_on(:genus).
+        where.not(taxa_self_join_alias: { status: Status::VALID })
     end
 
     def subspecies_results
-      Subspecies.valid.self_join_on(:species)
-        .where.not(taxa_self_join_alias: { status: Status::VALID })
+      Subspecies.valid.self_join_on(:species).
+        where.not(taxa_self_join_alias: { status: Status::VALID })
     end
 
     def render
@@ -20,10 +20,12 @@ module DatabaseScripts
         t.header :genus, :genus_status, :subfamily, :subfamily_status
 
         t.rows(genus_results) do |genus|
-          [ markdown_taxon_link(genus),
+          [
+            markdown_taxon_link(genus),
             genus.status,
             markdown_taxon_link(genus.subfamily),
-            genus.subfamily.status ]
+            genus.subfamily.status
+          ]
         end
       end <<
 
@@ -31,10 +33,12 @@ module DatabaseScripts
           t.header :species, :species_status, :genus, :genus_status
 
           t.rows(species_results) do |species|
-            [ markdown_taxon_link(species),
+            [
+              markdown_taxon_link(species),
               species.status,
               markdown_taxon_link(species.genus),
-              species.genus.status ]
+              species.genus.status
+            ]
           end
         end <<
 
@@ -42,10 +46,12 @@ module DatabaseScripts
           t.header :subspecies, :subspecies_status, :species, :species_status
 
           t.rows(subspecies_results) do |subspecies|
-            [ markdown_taxon_link(subspecies),
+            [
+              markdown_taxon_link(subspecies),
               subspecies.status,
               markdown_taxon_link(subspecies.species),
-              subspecies.species.status ]
+              subspecies.species.status
+            ]
           end
         end
     end

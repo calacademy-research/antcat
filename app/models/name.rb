@@ -13,8 +13,8 @@ class Name < ApplicationRecord
 
   # TODO rename to avoid confusing this with [Rails'] dynamic finder methods.
   def self.find_by_name string
-    Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false)
-      .where(name: string).order('taxa.id DESC').order(:name).first
+    Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false).
+      where(name: string).order('taxa.id DESC').order(:name).first
   end
 
   def rank
@@ -22,7 +22,8 @@ class Name < ApplicationRecord
   end
 
   # TODO maybe raise?
-  def change_parent _; end
+  def change_parent _name
+  end
 
   # TODO remove? Too magical.
   def to_s
@@ -54,8 +55,9 @@ class Name < ApplicationRecord
   end
 
   private
+
     def words
-      @_words ||= name.split ' '
+      @words ||= name.split ' '
     end
 
     def set_taxon_caches
@@ -65,7 +67,7 @@ class Name < ApplicationRecord
 
     def change name_string
       existing_names = Name.where.not(id: id).where(name: name_string)
-      raise Taxon::TaxonExists if existing_names.any? { |name| not name.what_links_here.empty? }
+      raise Taxon::TaxonExists if existing_names.any? { |name| !name.what_links_here.empty? }
       update! name: name_string, name_html: italicize(name_string)
     end
 end

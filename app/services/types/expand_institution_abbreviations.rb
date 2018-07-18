@@ -20,19 +20,20 @@ module Types
     end
 
     private
+
       attr :content
 
       def expand_institution_abbreviations!
         content.gsub!(/\b(#{institutions_regex})#{STOP_REGEX}/) do |abbr|
           name = Institution.find_by(abbreviation: abbr).name
-          "<abbr title='#{CGI::escapeHTML(name)}'>#{abbr}</abbr>"
+          "<abbr title='#{CGI.escapeHTML(name)}'>#{abbr}</abbr>"
         end
 
         content
       end
 
       def institutions_regex
-        @_institutions_regex ||= Institution.pluck(:abbreviation).join('|')
+        @institutions_regex ||= Institution.pluck(:abbreviation).join('|')
       end
   end
 end

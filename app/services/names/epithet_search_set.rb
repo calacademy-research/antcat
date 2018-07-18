@@ -13,6 +13,7 @@ module Names
     end
 
     private
+
       attr_reader :epithet
 
       def frequent_misspellings
@@ -25,9 +26,9 @@ module Names
       ####################
       def declensions
         first_declension_nominative_singular +
-        first_declension_genitive_singular +
-        first_and_second_declension_adjectives_in_er_nominative_singular +
-        third_declension_nominative_singular
+          first_declension_genitive_singular +
+          first_and_second_declension_adjectives_in_er_nominative_singular +
+          third_declension_nominative_singular
       end
 
       def first_declension_nominative_singular
@@ -67,7 +68,7 @@ module Names
             $1 + 'ae' + $2
           end
         end
-        epithets << epithet.gsub(/(#{consonants})ae(#{consonants})/) do |string|
+        epithets << epithet.gsub(/(#{consonants})ae(#{consonants})/) do |_string|
           $1 + 'e' + $2
         end
         epithets
@@ -82,8 +83,8 @@ module Names
 
       def v_and_w
         epithets = []
-        epithets << epithet.gsub(/v/, 'w')
-        epithets << epithet.gsub(/w/, 'v')
+        epithets << epithet.tr('v', 'w')
+        epithets << epithet.tr('w', 'v')
         epithets
       end
 

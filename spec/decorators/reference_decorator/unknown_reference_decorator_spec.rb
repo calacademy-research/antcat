@@ -38,8 +38,8 @@ describe UnknownReferenceDecorator do
           author_names: [],
           citation: '*Ants*',
           title: '<span>Tapinoma</span>'
-        expect(reference.decorate.formatted)
-          .to eq "2010d. &lt;span&gt;Tapinoma&lt;/span&gt;. <i>Ants</i>."
+        expect(reference.decorate.formatted).
+          to eq "2010d. &lt;span&gt;Tapinoma&lt;/span&gt;. <i>Ants</i>."
       end
 
       it "doesn't escape et al. in citation" do

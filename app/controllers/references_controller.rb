@@ -3,8 +3,8 @@ class ReferencesController < ApplicationController
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index
-    @references = Reference.no_missing.order_by_author_names_and_year
-      .includes_document.paginate(page: params[:page])
+    @references = Reference.no_missing.order_by_author_names_and_year.
+      includes_document.paginate(page: params[:page])
   end
 
   def show
@@ -86,6 +86,7 @@ class ReferencesController < ApplicationController
   end
 
   private
+
     def build_nested_reference reference_id, citation_year
       @reference = @reference.becomes NestedReference
       @reference.citation_year = citation_year

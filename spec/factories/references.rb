@@ -6,7 +6,7 @@ FactoryBot.define do
   end
 
   factory :article_reference do
-    author_names { [create(:author_name) ] }
+    author_names { [create(:author_name)] }
     sequence(:title) { |n| "Ants are my life#{n}" }
     sequence(:citation_year) { |n| "201#{n}d" }
     journal

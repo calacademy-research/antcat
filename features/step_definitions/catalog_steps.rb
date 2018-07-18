@@ -23,7 +23,7 @@ When("I click the reference key expansion") do
 end
 
 Then("I should see the catalog entry for {string}") do |taxon|
-  step %{the name in the header should be "#{taxon}"}
+  step %(the name in the header should be "#{taxon}")
 end
 
 Then("the name in the header should be {string}") do |name|
@@ -42,9 +42,9 @@ When('I press "Go" by the catalog search box') do
 end
 
 Given("the maximum number of taxa to load in each tab is {int}") do |number|
-  allow_any_instance_of(TaxonBrowser::Browser)
-    .to receive(:max_taxa_to_load)
-    .and_return number.to_i
+  allow_any_instance_of(TaxonBrowser::Browser).
+    to receive(:max_taxa_to_load).
+    and_return number.to_i
 end
 
 Given("Atta has a history section item with two linked references, of which one does not exists") do

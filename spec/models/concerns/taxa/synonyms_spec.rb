@@ -168,11 +168,13 @@ describe Taxon do
       attaboi = create_genus 'Attaboi'
 
       become_junior_synonym_of atta, attaboi
-      atta.reload; attaboi.reload
+      atta.reload
+      attaboi.reload
       expect(atta.senior_synonyms).to include attaboi
 
       become_junior_synonym_of attaboi, atta
-      atta.reload; attaboi.reload
+      atta.reload
+      attaboi.reload
       expect(attaboi.status).to eq Status::SYNONYM
       expect(attaboi.senior_synonyms).to include atta
       expect(atta.status).to eq Status::VALID

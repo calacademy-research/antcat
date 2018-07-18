@@ -16,6 +16,7 @@ module Workflow
       end
 
       private
+
         def write_initial_state
           # TODO only required in specs (not features), may be a race condition.
           build_default_taxon_state unless taxon_state
@@ -28,9 +29,7 @@ module Workflow
 
         def current_review_state
           loaded_taxon_state = taxon_state
-          unless loaded_taxon_state
-            loaded_taxon_state = TaxonState.find_by(taxon_id: id)
-          end
+          loaded_taxon_state ||= TaxonState.find_by(taxon_id: id)
           loaded_taxon_state
         end
     end

@@ -70,6 +70,7 @@ class TooltipsController < ApplicationController
   end
 
   private
+
     def get_page_from_url url
       return unless url
 

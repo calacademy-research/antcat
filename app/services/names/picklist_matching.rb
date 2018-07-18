@@ -9,12 +9,13 @@ class Names::PicklistMatching
   end
 
   def call
-    [ prefix_matches, epithet_matches, first_then_any_letter_matches ]
-      .map { |matches| format matches }
-      .flatten.uniq { |item| item[:name] }[0, 100]
+    [prefix_matches, epithet_matches, first_then_any_letter_matches].
+      map { |matches| format matches }.
+      flatten.uniq { |item| item[:name] }[0, 100]
   end
 
   private
+
     attr_reader :letters_in_name, :options
 
     def prefix_matches
@@ -33,15 +34,17 @@ class Names::PicklistMatching
     end
 
     def picklist_query name_field, search_term
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id')
-        .joins("#{join_type} taxa ON taxa.name_id = names.id")
-        .where("#{name_field} LIKE ? #{rank_filter}", search_term)
+      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
+        joins("#{join_type} taxa ON taxa.name_id = names.id").
+        where("#{name_field} LIKE ? #{rank_filter}", search_term)
     end
 
     def join_type
-      options[:species_only] ||
-      options[:genera_only] ||
-      options[:subfamilies_or_tribes_only] ? 'JOIN' : 'LEFT OUTER JOIN'
+      if options[:species_only] || options[:genera_only] || options[:subfamilies_or_tribes_only]
+        'JOIN'
+      else
+        'LEFT OUTER JOIN'
+      end
     end
 
     def rank_filter

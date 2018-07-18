@@ -11,14 +11,15 @@ module Names
     end
 
     private
+
       attr_reader :name
 
       delegate :id, to: :name
 
       def references_in_fields
-        references_to_taxon_name
-          .concat(references_to_taxon_type_name)
-          .concat(references_to_protonym_name)
+        references_to_taxon_name.
+          concat(references_to_taxon_type_name).
+          concat(references_to_protonym_name)
       end
 
       def references_to_taxon_name

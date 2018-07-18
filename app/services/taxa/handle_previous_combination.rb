@@ -26,6 +26,7 @@ class Taxa::HandlePreviousCombination
   end
 
   private
+
     attr_reader :taxon, :previous_combination
 
     # TODO find proper name.

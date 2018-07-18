@@ -64,6 +64,7 @@ class SiteNoticesController < ApplicationController
   end
 
   private
+
     def set_site_notice
       @site_notice = SiteNotice.find(params[:id])
     end

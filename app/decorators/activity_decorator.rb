@@ -43,10 +43,10 @@ class ActivityDecorator < Draper::Decorator
   end
 
   def link_trackable_if_exists label = nil, path: nil
-    label = "##{activity.trackable_id}" unless label
+    label ||= "##{activity.trackable_id}"
 
     if activity.trackable
-      helpers.link_to label, path ? path : activity.trackable
+      helpers.link_to label, path || activity.trackable
     else
       label
     end
@@ -58,7 +58,8 @@ class ActivityDecorator < Draper::Decorator
 
   # TODO move non-general actions to the templates.
   def action_to_verb
-    { create: "added",
+    {
+      create: "added",
       update: "edited",
       destroy: "deleted",
 
@@ -73,7 +74,7 @@ class ActivityDecorator < Draper::Decorator
       reopen_issue: "re-opened",
 
       close_feedback: "closed",
-      reopen_feedback: "re-opened",
+      reopen_feedback: "re-opened"
     }[activity.action.to_sym] || activity.action.upcase
 
     # Default to the action name for missing actions (and upcase
@@ -81,6 +82,7 @@ class ActivityDecorator < Draper::Decorator
   end
 
   private
+
     # Returns the partial's full path like this:
     # 1) The activity has no `#trackable_type`? --> `actions/_<action>`
     #    This happens when there's no trackable tied to the activity,

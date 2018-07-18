@@ -20,6 +20,7 @@ module HasWhereFilters
   end
 
   private
+
     def filter_params
       params.slice *filters.keys
     end

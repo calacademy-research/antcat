@@ -18,9 +18,9 @@ describe TooltipsController do
         end
 
         it "creates keys for each namespace" do
-          expect(@grouped.key? nil).to be true
-          expect(@grouped.key? "references").to be true
-          expect(@grouped.key? "taxa").to be true
+          expect(@grouped.key?(nil)).to be true
+          expect(@grouped.key?("references")).to be true
+          expect(@grouped.key?("taxa")).to be true
         end
 
         it "groups keys without namespaces in the 'nil' bucket" do
@@ -28,8 +28,8 @@ describe TooltipsController do
         end
 
         it "groups keys with namespaces" do
-          expect(@grouped["references"])
-            .to eq [references_authors, references_new_title, references_title]
+          expect(@grouped["references"]).
+            to eq [references_authors, references_new_title, references_title]
           expect(@grouped["taxa"]).to eq [taxa_type_species]
         end
 

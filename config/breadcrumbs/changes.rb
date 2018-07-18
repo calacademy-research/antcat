@@ -1,3 +1,4 @@
+# rubocop:disable Layout/IndentationConsistency
 crumb :changes do
   link "Changes", changes_path
 end
@@ -21,3 +22,4 @@ crumb :unreviewed_changes do
   link "Unreviewed Changes", unreviewed_changes_path
   parent :changes
 end
+# rubocop:enable Layout/IndentationConsistency

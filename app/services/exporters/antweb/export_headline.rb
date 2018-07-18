@@ -24,6 +24,7 @@ class Exporters::Antweb::ExportHeadline
   end
 
   private
+
     def headline_protonym
       TaxonDecorator::HeadlineProtonym[@taxon, for_antweb: true]
     end
@@ -33,7 +34,7 @@ class Exporters::Antweb::ExportHeadline
     end
 
     def type_fields
-      @_type_fields ||= Exporters::Antweb::TypeFields[@taxon]
+      @type_fields ||= Exporters::Antweb::TypeFields[@taxon]
     end
 
     def headline_notes

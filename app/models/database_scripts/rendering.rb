@@ -8,9 +8,9 @@ module DatabaseScripts
       case cached_results
       when ActiveRecord::Relation
         case cached_results.table.name # `#base_class` or `#klass` doesn't work for some reason.
-          when "taxa" then as_taxon_table
-          when "references" then as_reference_list
-          else "Error: cannot implicitly render ActiveRecord::Relation."
+        when "taxa" then as_taxon_table
+        when "references" then as_reference_list
+        else "Error: cannot implicitly render ActiveRecord::Relation."
         end
       when Array
         return as_taxon_table if cached_results.first.is_a?(Taxon)
@@ -23,7 +23,7 @@ module DatabaseScripts
     def as_taxon_table
       as_table do |t|
         t.header :taxon, :status
-        t.rows { |taxon| [ markdown_taxon_link(taxon), taxon.status ] }
+        t.rows { |taxon| [markdown_taxon_link(taxon), taxon.status] }
       end
     end
 

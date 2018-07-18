@@ -32,11 +32,11 @@ end
 # fields section
 ### name field
 When("I click the name field") do
-  step %{I click "#name_field .display_button"}
+  step %(I click "#name_field .display_button")
 end
 
 When("I set the name to {string}") do |name|
-  step %{I fill in "name_string" with "#{name}"}
+  step %(I fill in "name_string" with "#{name}")
 end
 
 Then("I should still see the name field") do
@@ -58,7 +58,7 @@ end
 
 # gender
 When("I set the name gender to {string}") do |gender|
-  step %{I select "#{gender}" from "taxon_name_attributes_gender"}
+  step %(I select "#{gender}" from "taxon_name_attributes_gender")
 end
 
 Then(/^I should (not )?see the gender menu$/) do |should_not|
@@ -75,7 +75,7 @@ When("I click the parent name field") do
 end
 
 When("I set the parent name to {string}") do |name|
-  step %{I fill in "name_string" with "#{name}"}
+  step %(I fill in "name_string" with "#{name}")
 end
 
 Then("I should not see the parent name field") do
@@ -99,7 +99,7 @@ Then("the status should be {string}") do |status|
 end
 
 When("I set the status to {string}") do |status|
-  step %{I select "#{status}" from "taxon_status"}
+  step %(I select "#{status}" from "taxon_status")
 end
 
 Then("the homonym replaced by name should be {string}") do |name|
@@ -117,11 +117,11 @@ end
 
 ### authorship
 When("I click the authorship field") do
-  step %{I click "#authorship_field .display_button"}
+  step %(I click "#authorship_field .display_button")
 end
 
 When("I fill in the authorship notes with {string}") do |notes|
-  step %{I fill in "taxon_protonym_attributes_authorship_attributes_notes_taxt" with "#{notes}"}
+  step %(I fill in "taxon_protonym_attributes_authorship_attributes_notes_taxt" with "#{notes}")
 end
 
 ### protonym name field
@@ -135,7 +135,7 @@ Then("the protonym name field should contain {string}") do |name|
 end
 
 When("I set the protonym name to {string}") do |name|
-  step %{I fill in "name_string" with "#{name}"}
+  step %(I fill in "name_string" with "#{name}")
 end
 
 # type name field
@@ -145,7 +145,7 @@ end
 
 When("I set the type name to {string}") do |name|
   within '#type_name_field' do
-    step %{I fill in "name_string" with "#{name}"}
+    step %(I fill in "name_string" with "#{name}")
   end
 end
 

@@ -33,6 +33,7 @@ module TaxonBrowser
     end
 
     private
+
       def default_or_display display
         case @taxon
         when Subfamily then :all_genera_in_subfamily if display.blank?
@@ -58,16 +59,16 @@ module TaxonBrowser
           # Never show the [children of] subspecies tab (has no children).
           taxon.is_a?(Subspecies) ||
 
-          # Don't show [subspecies in] species tab unless the species has subspecies.
-          (taxon.is_a?(Species) && !taxon.children.exists?) ||
+            # Don't show [subspecies in] species tab unless the species has subspecies.
+            (taxon.is_a?(Species) && !taxon.children.exists?) ||
 
-          # Hide [species in] subgenus tab because there are none as of 2016.
-          taxon.is_a?(Subgenus)
+            # Hide [species in] subgenus tab because there are none as of 2016.
+            taxon.is_a?(Subgenus)
         end
       end
 
       def taxon_and_ancestors
-        @_taxon_and_ancestors ||= @taxon.taxon_and_ancestors
+        @taxon_and_ancestors ||= @taxon.taxon_and_ancestors
       end
   end
 end

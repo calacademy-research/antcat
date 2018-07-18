@@ -4,9 +4,9 @@ module DatabaseScripts
     include ActionView::Helpers::UrlHelper
 
     def results
-      Protonym.joins(authorship: :reference)
-        .where("references.type = 'MissingReference'")
-        .joins(:name).order("names.name")
+      Protonym.joins(authorship: :reference).
+        where("references.type = 'MissingReference'").
+        joins(:name).order("names.name")
     end
 
     def render
@@ -17,19 +17,24 @@ module DatabaseScripts
           taxon = protonym.taxon
           reference = protonym.authorship.reference
 
-          [ protonym.name.protonym_with_fossil_html(protonym.fossil),
+          [
+            protonym.name.protonym_with_fossil_html(protonym.fossil),
             markdown_taxon_link(taxon),
             taxon.try(:status),
             citation_search_link(reference.citation),
-            reference_link(reference) ]
+            reference_link(reference)
+          ]
         end
       end
     end
 
     private
+
       def citation_search_link citation
+        # rubocop:disable Lint/UriEscapeUnescape
         search_path = "/references/search?search_type=all&q="
         "<a href='#{search_path}#{URI.encode(citation, /\W/)}'>#{citation}</a>"
+        # rubocop:enable Lint/UriEscapeUnescape
       end
 
       # NOTE duplicated because `#link_to_reference` is a no-op for missing references.

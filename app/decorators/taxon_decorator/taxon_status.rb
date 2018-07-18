@@ -14,6 +14,7 @@ class TaxonDecorator::TaxonStatus
   end
 
   private
+
     attr_reader :taxon
 
     delegate :incertae_sedis_in, :homonym?, :homonym_replaced_by, :unidentifiable?,

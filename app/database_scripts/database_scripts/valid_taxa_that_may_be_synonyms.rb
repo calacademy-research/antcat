@@ -1,23 +1,25 @@
 module DatabaseScripts
   class ValidTaxaThatMayBeSynonyms < DatabaseScript
-    VALID_INDICATORS = Regexp.union [
-                          /as (subfamily|tribe|genus|subgenus)/i,
-                          /subspecies of/i,
-                          /in genus/i,
-                          /in \{tax /i,
-                          /revived/i,
-                          /its junior synonym/i,
-                          /senior synonym/i,
-                          /incertae sedis/i,
-                          /status as species/i,
-                          /raised/i,
-                          /conserved over /i,
-                        ]
+    VALID_INDICATORS = Regexp.union(
+      [
+        /as (subfamily|tribe|genus|subgenus)/i,
+        /subspecies of/i,
+        /in genus/i,
+        /in \{tax /i,
+        /revived/i,
+        /its junior synonym/i,
+        /senior synonym/i,
+        /incertae sedis/i,
+        /status as species/i,
+        /raised/i,
+        /conserved over /i
+      ]
+    )
 
     def results
-      taxa = Taxon.joins(:history_items).valid.where(unresolved_homonym: false)
-        .where("taxon_history_items.taxt REGEXP ?", "junior synonym")
-        .order(:name_cache).distinct
+      taxa = Taxon.joins(:history_items).valid.where(unresolved_homonym: false).
+        where("taxon_history_items.taxt REGEXP ?", "junior synonym").
+        order(:name_cache).distinct
 
       taxa.to_a.reject { |taxon| probably_valid? taxon }
     end
@@ -27,6 +29,7 @@ module DatabaseScripts
     end
 
     private
+
       def probably_valid? taxon
         items = taxon.history_items
         last_valid_indication(items) >= last_junior_synonym_indication(items)

@@ -16,7 +16,7 @@ module Api::V1
       search_results = Taxon.where("name_cache LIKE ?", "%#{q}%").take(10)
       results = search_results.map do |taxon|
         {
-            id: taxon.id,
+          id: taxon.id,
             name: taxon.name_cache
         }
       end

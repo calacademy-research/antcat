@@ -50,13 +50,13 @@ end
 
 When(/I follow "(.*?)" (?:with)?in (.*)$/) do |link, location|
   with_scope location do
-    step %{I follow "#{link}"}
+    step %(I follow "#{link}")
   end
 end
 
 When(/^I press "(.*?)" (?:with)?in (.*)$/) do |button, location|
   with_scope location do
-    step %{I press "#{button}"}
+    step %(I press "#{button}")
   end
 end
 
@@ -99,7 +99,7 @@ end
 Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |field, parent, value|
   with_scope(parent) do
     field = find_field field
-    field_value = (field.tag_name == 'textarea') ? field.text : field.value
+    field_value = field.tag_name == 'textarea' ? field.text : field.value
     expect(field_value).to match /#{value}/
   end
 end
@@ -110,7 +110,7 @@ end
 
 Then(/I should (not )?see "(.*?)" (?:with)?in (.*)$/) do |do_not, contents, location|
   with_scope location do
-    step %{I should #{do_not}see "#{contents}"}
+    step %(I should #{do_not}see "#{contents}")
   end
 end
 
@@ -134,7 +134,7 @@ And('I will confirm on the next step') do
   begin
     evaluate_script "window.alert = function(msg) { return true; }"
     evaluate_script "window.confirm = function(msg) { return true; }"
-  rescue Capybara::NotSupportedByDriverError
+  rescue Capybara::NotSupportedByDriverError # rubocop:disable Lint/HandleExceptions
   end
 end
 
@@ -170,7 +170,7 @@ end
 
 When("I follow {string} inside the breadcrumb") do |link|
   within "#breadcrumbs" do
-    step %{I follow "#{link}"}
+    step %(I follow "#{link}")
   end
 end
 
