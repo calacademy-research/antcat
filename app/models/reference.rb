@@ -195,6 +195,7 @@ class Reference < ApplicationRecord
     end
 
     def set_year_from_citation_year
+      # rubocop:disable Lint/AssignmentInCondition
       self.year = if citation_year.blank?
                     nil
                   elsif match = citation_year.match(/\["(\d{4})"\]/)
@@ -202,6 +203,7 @@ class Reference < ApplicationRecord
                   else
                     citation_year.to_i
                   end
+      # rubocop:enable Lint/AssignmentInCondition
     end
 
     # TODO does this duplicate `refresh_author_names_caches`?

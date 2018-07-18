@@ -3,9 +3,8 @@ module Taxa::Synonyms
 
   def current_valid_taxon_including_synonyms
     if synonym?
-      if senior = find_most_recent_valid_senior_synonym
-        return senior
-      end
+      senior = find_most_recent_valid_senior_synonym
+      return senior if senior
     end
     current_valid_taxon
   end
