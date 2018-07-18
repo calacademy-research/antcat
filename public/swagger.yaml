@@ -906,9 +906,6 @@ definitions:
       epithets:
         type: string
         description: all epithets, plain text
-      protonym_html:
-        type: string
-        description: Populated only for valid protonyms.
       gender:
         type: string
         description: gender
