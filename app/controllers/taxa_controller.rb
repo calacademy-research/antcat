@@ -87,7 +87,7 @@ class TaxaController < ApplicationController
       # to resolve the problem.
       collision_resolution = params[:collision_resolution]
       if collision_resolution
-        if collision_resolution == 'homonym' || collision_resolution == ""
+        if collision_resolution == 'homonym' || collision_resolution.blank?
           taxon.unresolved_homonym = true
           taxon.status = Status::HOMONYM
         else

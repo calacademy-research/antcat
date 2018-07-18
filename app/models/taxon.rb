@@ -89,9 +89,11 @@ class Taxon < ApplicationRecord
   accepts_nested_attributes_for :name, :protonym, :type_name
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked on: :mixin_create_activity_only, parameters: proc {
-    parent_params = { rank: parent.rank,
-                      name: parent.name_html_cache,
-                      id:   parent.id } if parent
+    if parent
+      parent_params = { rank: parent.rank,
+                        name: parent.name_html_cache,
+                        id:   parent.id }
+    end
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
 

@@ -132,35 +132,8 @@ Style/ConditionalAssignment:
     - 'app/decorators/taxon_decorator/child_list.rb'
     - 'app/decorators/taxon_decorator/headline_protonym.rb'
 
-# Offense count: 1
-Style/IfInsideElse:
-  Exclude:
-    - 'app/controllers/name_fields_controller.rb'
-
 # Offense count: 4
 Style/MixinUsage:
   Exclude:
     - 'app/services/exporters/antweb/exporter.rb'
     - 'features/support/env.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/MultilineIfModifier:
-  Exclude:
-    - 'app/models/taxon.rb'
-
-# Offense count: 1
-Style/MultilineTernaryOperator:
-  Exclude:
-    - 'app/services/names/picklist_matching.rb'
-
-# Offense count: 1
-Style/MultipleComparison:
-  Exclude:
-    - 'app/controllers/taxa_controller.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Proc:
-  Exclude:
-    - 'app/models/concerns/trackable.rb'

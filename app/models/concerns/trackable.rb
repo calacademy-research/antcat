@@ -15,7 +15,7 @@ module Trackable
   end
 
   module ClassMethods
-    def tracked on:, parameters: Proc.new {}
+    def tracked on:, parameters: proc {}
       self.activity_parameters = parameters
 
       case on
