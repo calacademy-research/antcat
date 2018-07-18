@@ -107,39 +107,6 @@ Lint/UselessAccessModifier:
     - 'lib/progress.rb'
     - 'lib/taxt_id_translator.rb'
 
-# Offense count: 88
-Metrics/AbcSize:
-  Max: 92
-
-# Offense count: 230
-# Configuration parameters: CountComments, ExcludedMethods.
-# ExcludedMethods: refine
-Metrics/BlockLength:
-  Max: 337
-
-# Offense count: 10
-# Configuration parameters: CountComments.
-Metrics/ClassLength:
-  Max: 203
-
-# Offense count: 28
-Metrics/CyclomaticComplexity:
-  Max: 53
-
-# Offense count: 118
-# Configuration parameters: CountComments.
-Metrics/MethodLength:
-  Max: 111
-
-# Offense count: 1
-# Configuration parameters: CountComments.
-Metrics/ModuleLength:
-  Max: 113
-
-# Offense count: 20
-Metrics/PerceivedComplexity:
-  Max: 21
-
 # Offense count: 7
 Naming/AccessorMethodName:
   Exclude:
@@ -246,23 +213,6 @@ Style/ConditionalAssignment:
     - 'app/decorators/taxon_decorator/child_list.rb'
     - 'app/decorators/taxon_decorator/headline_protonym.rb'
 
-# Offense count: 14
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/controllers/catalog/search_controller.rb'
-    - 'app/controllers/references/search_controller.rb'
-    - 'app/controllers/taxa_controller.rb'
-    - 'app/decorators/change_decorator.rb'
-    - 'app/helpers/error_messages_helper.rb'
-    - 'app/helpers/taxon_buttons_helper.rb'
-    - 'app/helpers/tooltip_helper.rb'
-    - 'app/models/journal.rb'
-    - 'app/models/taxa/tribe.rb'
-    - 'app/services/taxa/save_from_form.rb'
-    - 'spec/support/deferred_garbage_collection.rb'
-
 # Offense count: 1
 Style/IfInsideElse:
   Exclude:
@@ -336,9 +286,3 @@ Style/RegexpLiteral:
     - 'app/services/markdowns/render_without_wrapping_p.rb'
     - 'features/step_definitions/wikipedia_steps.rb'
     - 'lib/tasks/notes.rake'
-
-# Offense count: 1217
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 213

@@ -54,6 +54,9 @@ Style/Alias:
 Style/AsciiComments:
   Enabled: false
 
+Style/BlockDelimiters:
+  Enabled: false
+
 Style/BracesAroundHashParameters:
   Enabled: false
 
@@ -77,6 +80,9 @@ Style/EmptyCaseCondition:
 
 Style/EmptyMethod:
   EnforcedStyle: expanded
+
+Style/GuardClause:
+  Enabled: false
 
 Style/FrozenStringLiteralComment:
   Enabled: false
@@ -131,3 +137,29 @@ Style/WordArray:
 
 Style/ZeroLengthPredicate:
   Enabled: false
+
+Metrics/AbcSize:
+  Max: 92
+
+Metrics/BlockLength:
+  Max: 337
+
+Metrics/ClassLength:
+  Max: 203
+
+Metrics/CyclomaticComplexity:
+  Max: 53
+
+Metrics/MethodLength:
+  Max: 111
+
+Metrics/ModuleLength:
+  Max: 113
+
+Metrics/PerceivedComplexity:
+  Max: 21
+
+# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
+# URISchemes: http, https
+Metrics/LineLength:
+  Max: 213
