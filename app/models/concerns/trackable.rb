@@ -23,7 +23,7 @@ module Trackable
         include TrackableActions::Create,
                 TrackableActions::Update,
                 TrackableActions::Destroy
-      when :mixin_create_activity_only
+      when :mixin_create_activity_only # rubocop:disable Lint/EmptyWhen
         # Was mixed-in when module was included,
         # but this makes the code easier to understand.
       else

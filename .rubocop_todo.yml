@@ -30,11 +30,6 @@ Lint/AssignmentInCondition:
     - 'app/models/reference.rb'
     - 'lib/taxt_converter.rb'
 
-# Offense count: 1
-Lint/EmptyWhen:
-  Exclude:
-    - 'app/models/concerns/trackable.rb'
-
 # Offense count: 3
 Lint/Loop:
   Exclude:
@@ -74,26 +69,6 @@ Style/AndOr:
     - 'app/services/parsers/article_citation_parser.rb'
     - 'app/services/references/reference_similarity.rb'
     - 'app/services/taxa/save_from_form.rb'
-
-# Offense count: 5
-# Cop supports --auto-correct.
-Style/Attr:
-  Exclude:
-    - 'app/models/database_scripts/renderers/as_table.rb'
-    - 'app/services/references/what_links_here.rb'
-    - 'app/services/types/expand_institution_abbreviations.rb'
-    - 'app/services/types/format_type_field.rb'
-    - 'app/services/types/link_specimen_identifiers.rb'
-
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.
-# SupportedStyles: assign_to_condition, assign_inside_condition
-Style/ConditionalAssignment:
-  Exclude:
-    - 'app/database_scripts/database_scripts/broken_taxt_tags.rb'
-    - 'app/decorators/taxon_decorator/child_list.rb'
-    - 'app/decorators/taxon_decorator/headline_protonym.rb'
 
 # Offense count: 4
 Style/MixinUsage:

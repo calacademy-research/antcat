@@ -72,6 +72,9 @@ Style/Alias:
 Style/AsciiComments:
   Enabled: false
 
+Style/Attr:
+  Enabled: false
+
 Style/BlockDelimiters:
   Enabled: false
 

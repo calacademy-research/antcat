@@ -188,14 +188,14 @@ module DatabaseScripts
 
       def attempt_to_link_broken_ids tag, broken_matched_ids
         broken_matched_ids.each_with_object("") do |id, string|
-          case tag
-          when :ref
-            string << link_to("#{id} ", reference_history_index_path(id))
-          when :tax
-            string << link_to("#{id} ", taxon_history_path(id))
-          else
-            string << "#{id} "
-          end
+          string << case tag
+                    when :ref
+                      link_to("#{id} ", reference_history_index_path(id))
+                    when :tax
+                      link_to("#{id} ", taxon_history_path(id))
+                    else
+                      "#{id} "
+                    end
         end
       end
 

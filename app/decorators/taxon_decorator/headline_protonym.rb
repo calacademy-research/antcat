@@ -39,11 +39,11 @@ class TaxonDecorator::HeadlineProtonym
       string << " (#{authorship.forms})" if authorship.forms.present?
 
       if authorship.notes_taxt.present?
-        if for_antweb?
-          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_antweb
-        else
-          string << ' ' << TaxtPresenter[authorship.notes_taxt].to_html
-        end
+        string << ' ' << if for_antweb?
+                           TaxtPresenter[authorship.notes_taxt].to_antweb
+                         else
+                           TaxtPresenter[authorship.notes_taxt].to_html
+                         end
       end
 
       content_tag :span, string

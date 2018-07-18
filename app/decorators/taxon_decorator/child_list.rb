@@ -83,23 +83,23 @@ class TaxonDecorator::ChildList
       label = ''.html_safe
       label << 'Hong (2002) ' if conditions[:hong]
 
-      if conditions[:collective_group_names]
-        label << Status['collective group name'].to_s(children.size).humanize
-      else
-        label << children.first.rank.pluralize(children.size).titleize
-      end
+      label << if conditions[:collective_group_names]
+                 Status['collective group name'].to_s(children.size).humanize
+               else
+                 children.first.rank.pluralize(children.size).titleize
+               end
 
       if specify_extinct_or_extant
         label << if conditions[:fossil] then ' (extinct)' else ' (extant)' end
       end
 
-      if conditions[:incertae_sedis_in]
-        label << ' <i>incertae sedis</i> in '.html_safe
-      elsif conditions[:collective_group_names]
-        label << ' in '
-      else
-        label << ' of '
-      end
+      label << if conditions[:incertae_sedis_in]
+                 ' <i>incertae sedis</i> in '.html_safe
+               elsif conditions[:collective_group_names]
+                 ' in '
+               else
+                 ' of '
+               end
 
       label << content_tag(:span, @taxon.taxon_label)
     end
