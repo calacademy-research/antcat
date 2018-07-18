@@ -31,8 +31,10 @@ module DatabaseScripts
     private
 
       def citation_search_link citation
+        # rubocop:disable Lint/UriEscapeUnescape
         search_path = "/references/search?search_type=all&q="
         "<a href='#{search_path}#{URI.encode(citation, /\W/)}'>#{citation}</a>"
+        # rubocop:enable Lint/UriEscapeUnescape
       end
 
       # NOTE duplicated because `#link_to_reference` is a no-op for missing references.

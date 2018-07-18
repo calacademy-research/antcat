@@ -65,7 +65,7 @@ WebMock.stub_request :put, 'https://antcat.s3.amazonaws.com/1/21105.pdf'
 Capybara.app = Rack::ShowExceptions.new AntCat::Application
 
 # Warden is what Devise uses for authorization.
-include Warden::Test::Helpers
+include Warden::Test::Helpers # rubocop:disable Style/MixinUsage
 Warden.test_mode!
 Warden::Manager.serialize_into_session(&:email)
 Warden::Manager.serialize_from_session { |email| User.find_by(email: email) }

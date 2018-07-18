@@ -4,9 +4,11 @@
 #
 # TODO remove most CSS throughout `Exporters::Antweb`.
 
+# rubocop:disable Style/MixinUsage
 include ActionView::Helpers::TagHelper # For `#content_tag`.
 include ActionView::Context # For `#content_tag`.
 include Exporters::Antweb::MonkeyPatchTaxon
+# rubocop:enable Style/MixinUsage
 
 class Exporters::Antweb::Exporter
   include Service

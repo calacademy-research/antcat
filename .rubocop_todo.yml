@@ -26,12 +26,6 @@ Lint/Loop:
     - 'app/models/database_scripts/end_data.rb'
     - 'lib/taxt_id_translator.rb'
 
-# Offense count: 2
-Lint/UriEscapeUnescape:
-  Exclude:
-    - 'app/database_scripts/database_scripts/missing_references_in_protonym_authorships.rb'
-    - 'app/database_scripts/database_scripts/orphaned_protonyms.rb'
-
 # Offense count: 21
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
@@ -50,9 +44,3 @@ Style/AndOr:
     - 'app/services/parsers/article_citation_parser.rb'
     - 'app/services/references/reference_similarity.rb'
     - 'app/services/taxa/save_from_form.rb'
-
-# Offense count: 4
-Style/MixinUsage:
-  Exclude:
-    - 'app/services/exporters/antweb/exporter.rb'
-    - 'features/support/env.rb'

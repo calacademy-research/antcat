@@ -22,9 +22,11 @@ module DatabaseScripts
     private
 
       def protonym_name_with_search_link protonym
+        # rubocop:disable Lint/UriEscapeUnescape
         search_path = "/catalog/search/quick_search?&search_type=containing&qq="
         label = protonym.name.protonym_with_fossil_html protonym.fossil
         "<a href='#{search_path}#{URI.encode(protonym.name.name, /\W/)}'>#{label}</a>"
+        # rubocop:enable Lint/UriEscapeUnescape
       end
   end
 end
