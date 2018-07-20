@@ -7,8 +7,8 @@ describe Feedback do
     describe ".recently_created" do
       before do
         create :feedback
-        create :feedback, created_at: (Time.now - 8.minutes)
-        create :feedback, created_at: (Time.now - 3.days)
+        create :feedback, created_at: 8.minutes.ago
+        create :feedback, created_at: 3.days.ago
       end
 
       it "defaults to 5 minutes" do

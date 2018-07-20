@@ -51,26 +51,6 @@ Rails/OutputSafety:
 Rails/SkipsModelValidations:
   Enabled: false
 
-# Offense count: 26
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: strict, flexible
-Rails/TimeZone:
-  Exclude:
-    - 'app/controllers/database_scripts_controller.rb'
-    - 'app/controllers/feedback_controller.rb'
-    - 'app/models/change.rb'
-    - 'features/step_definitions/changes_steps.rb'
-    - 'features/support/show_slow_scenarios.rb'
-    - 'spec/decorators/change_decorator_spec.rb'
-    - 'spec/decorators/taxon_decorator/taxon_status_spec.rb'
-    - 'spec/factories/changes.rb'
-    - 'spec/helpers/taxon_helper_spec.rb'
-    - 'spec/models/feedback_spec.rb'
-    - 'spec/models/issue_spec.rb'
-    - 'spec/models/taxa/taxon_workflow_spec.rb'
-    - 'spec/services/autocomplete/autocomplete_author_names_spec.rb'
-    - 'spec/support/deferred_garbage_collection.rb'
-
 # Offense count: 7
 # Cop supports --auto-correct.
 # Configuration parameters: Include.

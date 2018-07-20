@@ -1,3 +1,4 @@
+# rubocop:disable Rails/TimeZone
 class DeferredGarbageCollection
   DEFERRED_GC_THRESHOLD = (ENV['DEFER_GC'] || 10.0).to_f
 
@@ -16,3 +17,4 @@ class DeferredGarbageCollection
     end
   end
 end
+# rubocop:enable Rails/TimeZone

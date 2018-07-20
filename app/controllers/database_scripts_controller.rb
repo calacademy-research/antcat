@@ -34,9 +34,9 @@ class DatabaseScriptsController < ApplicationController
     end
 
     def timed_render
-      start = Time.now
+      start = Time.current
       rendered = @script.render
-      render_duration = Time.now - start
+      render_duration = Time.current - start
 
       [rendered, render_duration]
     end
