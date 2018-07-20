@@ -45,12 +45,6 @@ Rails/InverseOf:
 Rails/OutputSafety:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Rails/Presence:
-  Exclude:
-    - 'app/services/wikipedia/reference_exporter.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: NotNilAndNotEmpty, NotBlank, UnlessBlank.

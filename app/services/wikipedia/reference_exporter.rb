@@ -68,7 +68,7 @@ module Wikipedia
         |journal=#{reference.journal.name}
         |publisher=
         |volume=#{reference.volume}
-        |issue=#{reference.issue unless reference.issue.blank?}
+        |issue=#{reference.issue.presence}
         |pages=#{pages}
         |doi=#{reference.doi if reference.doi?}
         }}</ref>
