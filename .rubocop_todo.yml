@@ -41,13 +41,6 @@ Rails/InverseOf:
     - 'app/models/taxon.rb'
     - 'app/models/user.rb'
 
-# Offense count: 1
-# Configuration parameters: Include.
-# Include: app/controllers/**/*.rb
-Rails/LexicallyScopedActionFilter:
-  Exclude:
-    - 'app/controllers/author_names_controller.rb'
-
 # Offense count: 9
 # Configuration parameters: Include.
 # Include: app/**/*.rb, config/**/*.rb, db/**/*.rb, lib/**/*.rb
