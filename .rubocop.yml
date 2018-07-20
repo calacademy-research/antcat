@@ -49,6 +49,9 @@ Layout/AlignParameters:
 Layout/BlockAlignment:
   Enabled: false
 
+Layout/ClassStructure:
+  Enabled: true
+
 Layout/DotPosition:
   EnforcedStyle: trailing
 
