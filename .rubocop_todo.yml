@@ -41,16 +41,6 @@ Rails/InverseOf:
     - 'app/models/taxon.rb'
     - 'app/models/user.rb'
 
-# Offense count: 9
-# Configuration parameters: Include.
-# Include: app/**/*.rb, config/**/*.rb, db/**/*.rb, lib/**/*.rb
-Rails/Output:
-  Exclude:
-    - 'app/models/change.rb'
-    - 'app/services/exporters/antweb/exporter.rb'
-    - 'app/services/references/cache/invalidate_all.rb'
-    - 'app/services/references/cache/regenerate_all.rb'
-
 # Offense count: 106
 Rails/OutputSafety:
   Enabled: false

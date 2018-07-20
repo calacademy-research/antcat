@@ -4,6 +4,7 @@
 #
 # TODO remove most CSS throughout `Exporters::Antweb`.
 
+# rubocop:disable Rails/Output
 # rubocop:disable Style/MixinUsage
 include ActionView::Helpers::TagHelper # For `#content_tag`.
 include ActionView::Context # For `#content_tag`.
@@ -246,3 +247,4 @@ class Exporters::Antweb::Exporter
         class: 'genus_species_header_notes_taxt'
     end
 end
+# rubocop:enable Rails/Output

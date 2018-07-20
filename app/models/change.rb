@@ -156,14 +156,9 @@ class Change < ApplicationRecord
       unless item
         raise "failed to reify version: #{version.id} referencing change: #{version.change_id}"
       end
-      begin
-        # because we validate on things like the genus being present, and if we're doing an entire change set,
-        # it might not be!
-        item.save! validate: false if item
-      rescue ActiveRecord::RecordInvalid => error
-        puts "=========Reify failure: #{error} version item_type =  #{version.item_type}"
-        raise error
-      end
+
+      # NOTE may raise `ActiveRecord::RecordInvalid`.
+      item.save! validate: false if item
     end
 
     # Starting at a given version (which can reference any of a set of objects), it iterates forwards and
