@@ -7,7 +7,7 @@ module Types
     end
 
     def call
-      return unless content.present?
+      return if content.blank?
 
       formatted = Types::ExpandInstitutionAbbreviations[content]
       formatted = Types::LinkSpecimenIdentifiers[formatted]

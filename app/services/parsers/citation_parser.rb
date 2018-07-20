@@ -4,7 +4,7 @@ Citrus.load "#{__dir__}/citation_grammar", force: true unless defined? Parsers::
 
 module Parsers::CitationParser
   def self.parse string
-    return unless string.present?
+    return if string.blank?
 
     match = Parsers::CitationGrammar.parse(string, consume: false)
     return unless match

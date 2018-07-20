@@ -23,7 +23,7 @@ class ConvertToSubspeciesController < ApplicationController
       render :new and return
     end
 
-    unless params[:new_species_id].present?
+    if params[:new_species_id].blank?
       @taxon.errors.add :base, 'Please select a species.'
       render :new and return
     end

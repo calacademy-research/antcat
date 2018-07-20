@@ -8,7 +8,7 @@ Given(/a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a t
   @species = create :species,
     name: create(:species_name, name: "#{parent_name} #{taxon_name}"),
     genus: genus
-  history = 'none' unless history.present?
+  history = 'none' if history.blank?
   @species.history_items.create! taxt: history
 end
 

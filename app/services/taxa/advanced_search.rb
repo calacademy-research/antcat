@@ -24,7 +24,7 @@ module Taxa
 
       if params[:author_name].present?
         author_name = AuthorName.find_by(name: params[:author_name])
-        return Taxon.none unless author_name.present?
+        return Taxon.none if author_name.blank?
         query = query.
           where('reference_author_names.author_name_id' => author_name.author.names).
           joins('JOIN reference_author_names ON reference_author_names.reference_id = `references`.id').

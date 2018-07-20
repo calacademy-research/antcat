@@ -4,7 +4,7 @@
 module TaxonBrowser::Tabs
   class ExtraTab < TaxonBrowser::Tab
     def self.create taxon, display, taxon_browser
-      return unless display.present?
+      return if display.blank?
 
       name_html = taxon.name_with_fossil
 

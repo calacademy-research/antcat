@@ -240,7 +240,7 @@ class Exporters::Antweb::Exporter
     end
 
     def genus_species_header_notes_taxt taxon
-      return unless taxon.genus_species_header_notes_taxt.present?
+      return if taxon.genus_species_header_notes_taxt.blank?
       content_tag :div,
         TaxtPresenter[taxon.genus_species_header_notes_taxt].to_antweb,
         class: 'genus_species_header_notes_taxt'

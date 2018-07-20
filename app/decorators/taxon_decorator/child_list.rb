@@ -17,7 +17,7 @@ class TaxonDecorator::ChildList
     end
     content << collective_group_name_child_list
 
-    return unless content.present?
+    return if content.blank?
 
     content_tag :div, content, class: 'child_lists'
   end
@@ -67,7 +67,7 @@ class TaxonDecorator::ChildList
     end
 
     def child_list children, specify_extinct_or_extant, conditions = {}
-      return ''.html_safe unless children.present?
+      return ''.html_safe if children.blank?
 
       label = child_list_label children, specify_extinct_or_extant, conditions
       content_tag :div do

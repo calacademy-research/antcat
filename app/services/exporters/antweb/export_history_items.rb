@@ -10,7 +10,7 @@ class Exporters::Antweb::ExportHistoryItems
   end
 
   def call
-    return unless taxon.history_items.present?
+    return if taxon.history_items.blank?
 
     history_content = content_tag :div, class: 'history' do
       taxon.history_items.reduce(''.html_safe) do |content, item|

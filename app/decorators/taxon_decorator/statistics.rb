@@ -14,7 +14,7 @@ class TaxonDecorator::Statistics
   end
 
   def call
-    return '' unless @statistics.present?
+    return '' if @statistics.blank?
 
     strings = [:extant, :fossil].each_with_object({}) do |extant_or_fossil, memo|
       extant_or_fossil_stats = @statistics[extant_or_fossil]

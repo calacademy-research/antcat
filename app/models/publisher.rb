@@ -8,7 +8,7 @@ class Publisher < ApplicationRecord
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
   def self.create_with_place(name:, place:)
-    return unless name.present?
+    return if name.blank?
     place_record = Place.find_or_create_by!(name: place)
     find_or_create_by!(name: name, place: place_record)
   end
@@ -19,7 +19,7 @@ class Publisher < ApplicationRecord
   end
 
   def display_name
-    return name unless place.present?
+    return name if place.blank?
     "#{place.name}: #{name}"
   end
 end

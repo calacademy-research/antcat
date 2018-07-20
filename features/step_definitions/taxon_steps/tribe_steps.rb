@@ -9,7 +9,7 @@ Given(/a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?(?: 
     name: create(:name, name: taxon_name),
     subfamily: subfamily
 
-  history = 'none' unless history.present?
+  history = 'none' if history.blank?
   taxon.history_items.create! taxt: history
 end
 
