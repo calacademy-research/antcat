@@ -39,7 +39,7 @@ class Exporters::Antweb::Exporter
           includes(protonym: [{ authorship: :reference }]).
           each do |taxon|
           begin
-            if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
+            if !taxon.name.nonconforming_name && !taxon.name_cache.index('?')
               row = export_taxon taxon
               if row
                 row[20].delete!('\"') if row[20]

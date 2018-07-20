@@ -97,7 +97,7 @@ Style/Alias:
   Enabled: false
 
 Style/AndOr:
-  Enabled: false
+  EnforcedStyle: conditionals
 
 Style/AsciiComments:
   Enabled: false

@@ -28,7 +28,7 @@ class SynonymsController < ApplicationController
         junior_or_senior = 'senior'
       end
 
-      if Synonym.find_by(senior_synonym_id: senior.id, junior_synonym_id: junior.id) or
+      if Synonym.find_by(senior_synonym_id: senior.id, junior_synonym_id: junior.id) ||
           Synonym.find_by(senior_synonym_id: junior.id, junior_synonym_id: senior.id)
         error_message = 'This taxon is already a synonym'
       else
