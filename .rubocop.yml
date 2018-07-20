@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 AllCops:
   Exclude:
     - 'Cheffile'
@@ -17,6 +15,27 @@ AllCops:
 
 Rails:
   Enabled: true
+
+Rails/DynamicFindBy:
+  Whitelist: find_by_sql find_by_name find_by_names
+
+Rails/FilePath:
+  Enabled: false
+
+# TODO we want to enable this when the database is ready for it.
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+# TODO investigate if this would be useful.
+Rails/InverseOf:
+  Enabled: false
+
+Rails/OutputSafety:
+  Enabled: false
+
+# TODO investigate.
+Rails/SkipsModelValidations:
+  Enabled: false
 
 Layout/AlignArray:
   Enabled: false
