@@ -28,14 +28,6 @@ Rails/FilePath:
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: Include.
-# Include: spec/**/*, test/**/*
-Rails/HttpPositionalArguments:
-  Exclude:
-    - 'spec/controllers/api/v1/taxon_history_items_controller_spec.rb'
-
 # Offense count: 18
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb
