@@ -1,7 +1,7 @@
 class ArticleReference < Reference
   belongs_to :journal
 
-  validates_presence_of :year, :journal, :series_volume_issue, :pagination
+  validates :year, :journal, :series_volume_issue, :pagination, presence: true
 
   # TODO not used (since at least December 2016).
   def start_page
