@@ -42,6 +42,6 @@ class DatabaseScriptsController < ApplicationController
     end
 
     def csv_filename
-      "antcat_org__#{@script.filename_without_extension}__#{Date.today}.csv"
+      "antcat_org__#{@script.filename_without_extension}__#{Time.zone.today}.csv"
     end
 end
