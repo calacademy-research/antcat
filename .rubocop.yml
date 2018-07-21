@@ -211,13 +211,13 @@ Metrics/ClassLength:
   Max: 203
 
 Metrics/CyclomaticComplexity:
-  Max: 53
+  Enabled: false
 
 Metrics/MethodLength:
-  Max: 111
+  Enabled: false
 
 Metrics/ModuleLength:
-  Max: 113
+  Enabled: false
 
 Metrics/PerceivedComplexity:
   Max: 21

@@ -1,6 +1,6 @@
 class ReferenceSectionsController < ApplicationController
   before_action :authenticate_editor, except: :show
-  before_action :set_reference_section, only: [:update, :destroy]
+  before_action :set_reference_section, only: [:edit, :update, :destroy]
 
   def index
     @reference_sections = ReferenceSection.all
@@ -17,12 +17,26 @@ class ReferenceSectionsController < ApplicationController
     @item = ReferenceSection.new taxon_id: params[:taxa_id]
   end
 
+  def edit
+  end
+
   def update
-    if @item.update reference_section_params
+    updated = @item.update reference_section_params
+
+    if updated
       @item.create_activity :update, edit_summary: params[:edit_summary]
     end
 
-    render_json @item
+    respond_to do |format|
+      format.json { render_json @item }
+      format.html do
+        if updated
+          redirect_to catalog_path(@item.taxon), notice: "Successfully updated reference section."
+        else
+          render :edit
+        end
+      end
+    end
   end
 
   def create

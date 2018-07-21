@@ -77,6 +77,11 @@ end
     parent :reference_sections, reference_section.taxon
   end
 
+  crumb :edit_reference_section do |reference_section|
+    link "Edit"
+    parent :reference_section, reference_section
+  end
+
 crumb :synonym_relationship do |synonym|
   link "Synonym Relationship ##{synonym.id}"
   parent :edit_catalog

@@ -105,6 +105,8 @@ module NavigationHelpers
     # Reference sections and taxon history items
     when /^the reference sections page$/
       "/reference_sections"
+    when /^the page of the most recent reference section$/
+      reference_section_path(ReferenceSection.last)
     when /^the taxon history items page$/
       "/taxon_history_items"
 
