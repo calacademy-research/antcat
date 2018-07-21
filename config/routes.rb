@@ -209,7 +209,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :taxon_history_items, only: [:index, :show, :update, :destroy]
+  resources :taxon_history_items, only: [:index, :show, :edit, :update, :destroy]
   resources :reference_sections, only: [:index, :show, :edit, :update, :destroy]
   resources :synonyms, only: :show
 

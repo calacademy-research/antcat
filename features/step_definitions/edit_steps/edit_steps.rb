@@ -11,6 +11,10 @@ def select2(value, from:)
   find(".select2-results__option", text: /#{value}/).click
 end
 
+When("I press the edit taxon link") do
+  find("#edit-taxon-test-hook").click
+end
+
 # TODO replace with 'I press "Save"'.
 When("I save my changes") do
   step 'I press "Save"'

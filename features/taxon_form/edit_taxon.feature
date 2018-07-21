@@ -87,7 +87,7 @@ Feature: Editing a taxon
     Then I should be on the catalog page for "Atta major"
     And I should see "Malagasy"
 
-    When I follow "Edit"
+    When I press the edit taxon link
     Then I should see "Malagasy" selected in "taxon_biogeographic_region"
 
   Scenario: Don't see biogeographic region field for genus-group name
@@ -107,7 +107,7 @@ Feature: Editing a taxon
     And I save the taxon form
     Then I should see "Malagasy"
 
-    When I follow "Edit"
+    When I press the edit taxon link
     And I select "" from "taxon_biogeographic_region"
     And I save the taxon form
     Then I should not see "Malagasy"
