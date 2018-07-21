@@ -97,7 +97,7 @@ class Reference < ApplicationRecord
   # `#year` + `#citation_year`.
   # TODO what is this used for?
   def short_citation_year
-    return "[no year]" unless citation_year.present?
+    return "[no year]" if citation_year.blank?
     citation_year.gsub %r{ .*$}, ''
   end
 
@@ -122,7 +122,7 @@ class Reference < ApplicationRecord
 
   def check_for_duplicate
     duplicates = References::MatchReferences[self, min_similarity: 0.5]
-    return unless duplicates.present?
+    return if duplicates.blank?
 
     duplicate = Reference.find duplicates.first[:match].id
     errors.add :base, "This may be a duplicate of #{duplicate.decorate.formatted} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe

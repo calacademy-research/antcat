@@ -96,7 +96,7 @@ describe TaxonDecorator::TaxonStatus do
 
           before do
             senior_synonym = create_genus 'Atta'
-            senior_synonym.update_attribute :created_at, Time.now - 100
+            senior_synonym.update_attribute :created_at, 100.seconds.ago
             create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
             create :synonym, senior_synonym: other_senior_synonym, junior_synonym: junior_synonym
@@ -114,7 +114,7 @@ describe TaxonDecorator::TaxonStatus do
 
           before do
             senior_synonym = create_genus 'Atta'
-            senior_synonym.update_attribute :created_at, Time.now - 100
+            senior_synonym.update_attribute :created_at, 100.seconds.ago
             create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
             create :synonym, senior_synonym: other_senior_synonym, junior_synonym: junior_synonym

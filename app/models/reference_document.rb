@@ -54,7 +54,7 @@ class ReferenceDocument < ApplicationRecord
 
     def check_url
       return if Rails.env.development? # HACK
-      return if file_file_name.present? or url.blank?
+      return if file_file_name.present? || url.blank?
       # this is to avoid authentication problems when a URL to one of "our" files is copied
       # to another reference (e.g., nested)
       return if url =~ /antcat/

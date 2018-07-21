@@ -30,7 +30,7 @@ describe Taxon do
         another_taxon.taxon_state.review_state = :old
 
         change = create :change, user_changed_taxon_id: another_taxon.id,
-          change_type: "create", approver: user, approved_at: Time.now
+          change_type: "create", approver: user, approved_at: Time.current
         create :version, item: another_taxon, whodunnit: user.id, change_id: change.id
 
         expect(taxon.can_be_approved_by?(change, nil)).to be_falsey
@@ -43,7 +43,7 @@ describe Taxon do
       let(:taxon) { create :genus }
       let(:change) do
         create :change, user_changed_taxon_id: taxon.id,
-          change_type: "create", approver: approver, approved_at: Time.now
+          change_type: "create", approver: approver, approved_at: Time.current
       end
 
       before do
@@ -68,7 +68,7 @@ describe Taxon do
 
       it "has an approver and an approved_at" do
         expect(taxon.approver).to eq approver
-        expect(taxon.approved_at).to be_within(7.hours).of Time.now
+        expect(taxon.approved_at).to be_within(7.hours).of Time.current
       end
 
       it "cannot be reviewed" do

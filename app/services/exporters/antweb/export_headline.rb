@@ -38,7 +38,7 @@ class Exporters::Antweb::ExportHeadline
     end
 
     def headline_notes
-      return unless @taxon.headline_notes_taxt.present?
+      return if @taxon.headline_notes_taxt.blank?
       TaxtPresenter[@taxon.headline_notes_taxt].to_antweb
     end
 

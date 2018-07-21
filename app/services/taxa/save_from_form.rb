@@ -66,7 +66,7 @@ class Taxa::SaveFromForm
 
       attributes = authorship_attributes
       attributes[:reference_id] = attributes.delete(:reference_attributes)[:id]
-      return if attributes[:reference_id].blank? and taxon.protonym.authorship.reference.blank?
+      return if attributes[:reference_id].blank? && taxon.protonym.authorship.reference.blank?
 
       taxon.protonym.authorship.attributes = attributes
     end
@@ -74,7 +74,7 @@ class Taxa::SaveFromForm
     def update_type_name type_name_attributes
       attributes = type_name_attributes
 
-      if taxon.type_name && taxon.type_name.new_record? && (!attributes or attributes[:id] == '')
+      if taxon.type_name && taxon.type_name.new_record? && (!attributes || (attributes[:id] == ''))
         taxon.type_name = nil
         return
       end

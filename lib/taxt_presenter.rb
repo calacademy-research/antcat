@@ -30,7 +30,7 @@ class TaxtPresenter
   private
 
     def parse format
-      return '' unless @taxt.present?
+      return '' if @taxt.blank?
 
       @format = format
 

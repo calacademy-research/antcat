@@ -6,7 +6,7 @@ module DatabaseScripts
       ReferenceSection.find_each do |reference_section|
         ids = ReferenceSection.where('references_taxt = ? AND position > ?',
           reference_section.references_taxt, reference_section.position).pluck(:id)
-        duplicated_ids << ids unless ids.blank?
+        duplicated_ids << ids if ids.present?
       end
 
       ReferenceSection.find(duplicated_ids)

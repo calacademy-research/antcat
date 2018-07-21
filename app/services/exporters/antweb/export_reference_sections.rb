@@ -7,7 +7,7 @@ class Exporters::Antweb::ExportReferenceSections
   end
 
   def call
-    return unless taxon.reference_sections.present?
+    return if taxon.reference_sections.blank?
 
     content_tag :div, class: 'reference_sections' do
       taxon.reference_sections.reduce(''.html_safe) do |content, section|

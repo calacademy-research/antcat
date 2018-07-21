@@ -23,10 +23,10 @@ describe Autocomplete::AutocompleteAuthorNames do
         AuthorName.create! name: name, author: author
       end
       reference = create :reference, author_names: [AuthorName.find_by(name: 'Most Recent')]
-      ReferenceAuthorName.create! created_at: Time.now - 5,
+      ReferenceAuthorName.create! created_at: 5.seconds.ago,
         author_name: AuthorName.find_by(name: 'Recent'),
         reference: reference
-      ReferenceAuthorName.create! created_at: Time.now - 10,
+      ReferenceAuthorName.create! created_at: 10.seconds.ago,
         author_name: AuthorName.find_by(name: 'Old'),
         reference: reference
 

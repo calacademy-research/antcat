@@ -19,7 +19,7 @@ Given("a subspecies exists for that species with a name of {string} and an epith
     name: subspecies_name,
     species: @species,
     genus: @species.genus
-  history = 'none' unless history.present?
+  history = 'none' if history.blank?
   subspecies.history_items.create! taxt: history
 end
 
