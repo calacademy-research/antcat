@@ -175,3 +175,9 @@ Then("the name {string} genus {string} should not be auto generated") do |specie
   expect(taxon.auto_generated).to be_falsey
   expect(taxon.name.auto_generated).to be_falsey
 end
+
+# Misc
+Then("the taxon mouseover should contain {string}") do |text|
+  element = find '.reference_keey'
+  expect(element['title']).to have_content text
+end
