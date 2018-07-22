@@ -19,7 +19,7 @@ class Change < ApplicationRecord
     Feed.without_tracking do
       TaxonState.waiting.each do |taxon_state|
         # TODO maybe something like `TaxonState#approve_related_changes`?
-        Change.where(user_changed_taxon_id: taxon_state.taxon_id).each do |change|
+        Change.where(user_changed_taxon_id: taxon_state.taxon_id).find_each do |change|
           change.approve user
         end
       end
@@ -35,8 +35,7 @@ class Change < ApplicationRecord
 
     if taxon
       taxon.approve!
-      update! approver: user, approved_at: Time.now
-      # TODO change all `Time.now` etc to `Time.zone.now`.
+      update! approver: user, approved_at: Time.current
     else
       # This case is for approving a delete
       # TODO? approving deletions doesn't set `approver` or `approved_at`.
@@ -156,14 +155,9 @@ class Change < ApplicationRecord
       unless item
         raise "failed to reify version: #{version.id} referencing change: #{version.change_id}"
       end
-      begin
-        # because we validate on things like the genus being present, and if we're doing an entire change set,
-        # it might not be!
-        item.save! validate: false if item
-      rescue ActiveRecord::RecordInvalid => error
-        puts "=========Reify failure: #{error} version item_type =  #{version.item_type}"
-        raise error
-      end
+
+      # NOTE may raise `ActiveRecord::RecordInvalid`.
+      item.save! validate: false if item
     end
 
     # Starting at a given version (which can reference any of a set of objects), it iterates forwards and

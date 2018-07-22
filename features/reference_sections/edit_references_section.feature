@@ -1,4 +1,3 @@
-@javascript
 Feature: Editing references sections
   As an editor of AntCat
   I want to change previously entered taxonomic reference sections
@@ -8,7 +7,7 @@ Feature: Editing references sections
   Background:
     Given I am logged in
 
-  @feed
+  @javascript @feed
   Scenario: Editing a reference section (with edit summary)
     Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
 
@@ -25,6 +24,19 @@ Feature: Editing references sections
     When I go to the activity feed
     Then I should see the edit summary "fix typo"
 
+  Scenario: Editing a reference section (without JavaScript)
+    Given there is a reference section with the references_taxt "California checklist"
+
+    When I go to the page of the most recent reference section
+    Then I should see "California checklist"
+
+    When I follow "Edit"
+    And I fill in the references field with "reference section content"
+    And I press "Save"
+    Then I should see "Successfully updated reference section."
+    And I should see "reference section content"
+
+  @javascript
   Scenario: Editing a reference section, but cancelling
     Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
 
@@ -34,7 +46,7 @@ Feature: Editing references sections
     And I click on the cancel reference section button
     Then the reference section should be "Original reference"
 
-  @feed
+  @javascript @feed
   Scenario: Adding a reference section (with edit summary)
     Given there is a genus "Atta"
 
@@ -51,6 +63,7 @@ Feature: Editing references sections
     When I go to the activity feed
     And I should see the edit summary "added new stuff"
 
+  @javascript
   Scenario: Deleting a reference section
     Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
 

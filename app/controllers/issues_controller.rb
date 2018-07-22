@@ -23,13 +23,7 @@ class IssuesController < ApplicationController
     @issue.adder = current_user
 
     if @issue.save
-      flash[:notice] = <<-MSG.html_safe
-        Successfully created issue.
-        <strong>#{view_context.link_to 'Back to the index', issues_path}</strong>
-        or
-        <strong>#{view_context.link_to 'create another?', new_issue_path}</strong>
-      MSG
-      redirect_to @issue
+      redirect_to @issue, notice: "Successfully created issue."
     else
       render :new
     end

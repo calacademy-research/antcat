@@ -28,6 +28,7 @@
       %li
         =add_period_if_necessary TaxtPresenter[history_item.taxt].to_html
         -if current_user
+          %small.show-on-hover=link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-tiny"
           %small.show-on-hover=link_to "History", taxon_history_item_path(history_item), class: "btn-normal btn-tiny"
 
 -if taxon.junior_synonyms_recursive.exists?

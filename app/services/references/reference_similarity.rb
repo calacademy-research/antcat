@@ -60,7 +60,7 @@ module References
 
         remove_bracketed_phrases! other_title
         remove_bracketed_phrases! title
-        return unless other_title.present? and title.present?
+        return unless other_title.present? && title.present?
         return 0.95 if other_title == title
 
         return 0.94 if replace_roman_numerals!(other_title) == replace_roman_numerals!(title)

@@ -104,7 +104,7 @@ class FeedbackController < ApplicationController
 
         @feedback.errors.add :rate_limited, <<-ERROR_MSG
           you have already posted #{max_feedbacks_in_timespan} feedbacks in the last
-          #{time_ago_in_words Time.at(timespan)}. Thanks for that! Please wait for
+          #{time_ago_in_words Time.zone.at(timespan)}. Thanks for that! Please wait for
           a few minutes while we are trying to figure out if you are a bot...
         ERROR_MSG
       end

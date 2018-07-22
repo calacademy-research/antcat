@@ -6,7 +6,7 @@ module Formatters::AdvancedSearchHtmlFormatter
   end
 
   def format_forms taxon
-    return unless taxon.protonym.authorship.forms.present?
+    return if taxon.protonym.authorship.forms.blank?
     string = 'Forms: '
     string << add_period_if_necessary(taxon.protonym.authorship.forms)
   end

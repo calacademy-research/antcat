@@ -35,7 +35,7 @@ module References
           # before validating, so we need to manually raise here.
           raise ActiveRecord::Rollback if @reference.errors.present?
 
-          unless original_params[:ignore_possible_duplicate].present?
+          if original_params[:ignore_possible_duplicate].blank?
             if @reference.check_for_duplicate
               original_params[:ignore_possible_duplicate] = "yes"
               raise ActiveRecord::Rollback
@@ -103,7 +103,7 @@ module References
 
       def clear_document_params_if_necessary
         return unless params[:document_attributes]
-        return unless params[:document_attributes][:url].present?
+        return if params[:document_attributes][:url].blank?
         params[:document_attributes][:id] = nil
       end
   end

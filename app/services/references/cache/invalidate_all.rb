@@ -1,3 +1,4 @@
+# rubocop:disable Rails/Output
 module References
   module Cache
     class InvalidateAll
@@ -13,3 +14,4 @@ module References
     end
   end
 end
+# rubocop:enable Rails/Output

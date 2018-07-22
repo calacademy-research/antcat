@@ -15,7 +15,7 @@ module Types
     end
 
     def call
-      return content unless institutions_regex.present?
+      return content if institutions_regex.blank?
       expand_institution_abbreviations!
     end
 

@@ -1,8 +1,8 @@
 module Markdowns
   class RenderWithoutWrappingP
-    P_HTML_ELEMENT_REGEX = /\A<p>(.*)<\/p>\Z/m
-
     include Service
+
+    P_HTML_ELEMENT_REGEX = /\A<p>(.*)<\/p>\Z/m
 
     def initialize content
       @content = content

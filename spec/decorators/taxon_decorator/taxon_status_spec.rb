@@ -23,7 +23,7 @@ describe TaxonDecorator::TaxonStatus do
       context "when taxon has a `homonym_replaced_by`" do
         let!(:homonym_replaced_by) { create :family }
         let!(:taxon) do
-          create :family, status: "homonym", homonym_replaced_by: homonym_replaced_by
+          create :family, :homonym, homonym_replaced_by: homonym_replaced_by
         end
 
         specify do
@@ -34,7 +34,7 @@ describe TaxonDecorator::TaxonStatus do
     end
 
     context "when taxon is unidentifiable" do
-      let!(:taxon) { create :family, status: "unidentifiable" }
+      let!(:taxon) { create :family, :unidentifiable }
 
       specify { expect(taxon.decorate.taxon_status).to eq "unidentifiable" }
     end
@@ -96,7 +96,7 @@ describe TaxonDecorator::TaxonStatus do
 
           before do
             senior_synonym = create_genus 'Atta'
-            senior_synonym.update_attribute :created_at, Time.now - 100
+            senior_synonym.update_attribute :created_at, 100.seconds.ago
             create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
             create :synonym, senior_synonym: other_senior_synonym, junior_synonym: junior_synonym
@@ -114,7 +114,7 @@ describe TaxonDecorator::TaxonStatus do
 
           before do
             senior_synonym = create_genus 'Atta'
-            senior_synonym.update_attribute :created_at, Time.now - 100
+            senior_synonym.update_attribute :created_at, 100.seconds.ago
             create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
             create :synonym, senior_synonym: other_senior_synonym, junior_synonym: junior_synonym
@@ -141,7 +141,7 @@ describe TaxonDecorator::TaxonStatus do
     end
 
     context "when taxon is `invalid?`" do
-      let!(:taxon) { create :family, status: "excluded from Formicidae" }
+      let!(:taxon) { create :family, :excluded_from_formicidae }
 
       specify { expect(taxon.decorate.taxon_status).to eq "excluded from Formicidae" }
     end

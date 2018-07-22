@@ -41,7 +41,7 @@ module DatabaseScripts
       end
 
       def replace_with_abbreviation? repo
-        return false unless repo.present?
+        return false if repo.blank?
         return false unless repo.count('(') == 1
         return false unless repo.count(')') == 1
 

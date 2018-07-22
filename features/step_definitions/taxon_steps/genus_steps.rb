@@ -33,7 +33,7 @@ Given(/^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and 
     tribe: nil,
     status: status
 
-  history = 'none' unless history.present?
+  history = 'none' if history.blank?
   taxon.history_items.create! taxt: history
 end
 
@@ -41,7 +41,7 @@ Given(/a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic
   another_genus = create :genus_name, name: taxon_name
 
   genus = create :genus, name: another_genus, subfamily: nil, tribe: nil
-  history = 'none' unless history.present?
+  history = 'none' if history.blank?
   genus.history_items.create! taxt: history
 end
 
@@ -53,7 +53,7 @@ Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"(?:
     tribe: tribe,
     fossil: fossil.present?
 
-  history = 'none' unless history.present?
+  history = 'none' if history.blank?
   taxon.history_items.create! taxt: history
 end
 

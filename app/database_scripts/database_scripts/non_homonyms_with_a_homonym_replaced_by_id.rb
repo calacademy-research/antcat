@@ -1,7 +1,7 @@
 module DatabaseScripts
   class NonHomonymsWithAHomonymReplacedById < DatabaseScript
     def results
-      Taxon.where.not(status: 'homonym').where.not(homonym_replaced_by: nil)
+      Taxon.where.not(status: Status::HOMONYM).where.not(homonym_replaced_by: nil)
     end
 
     def render

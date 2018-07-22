@@ -29,7 +29,7 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :create, edit_summary: params[:edit_summary]
-      redirect_to reference_path(@reference), notice: <<-MSG
+      redirect_to reference_path(@reference), notice: <<~MSG
         Reference was successfully created.
         <strong>#{view_context.link_to 'Back to the index', references_path}</strong>
         or
@@ -45,10 +45,7 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :update, edit_summary: params[:edit_summary]
-      redirect_to reference_path(@reference), notice: <<-MSG
-        Reference was successfully updated.
-        <strong>#{view_context.link_to 'Back to the index', references_path}</strong>.
-      MSG
+      redirect_to reference_path(@reference), notice: "Reference was successfully updated."
     else
       render :edit
     end

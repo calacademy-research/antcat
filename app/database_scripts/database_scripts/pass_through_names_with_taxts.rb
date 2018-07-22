@@ -6,18 +6,12 @@ module DatabaseScripts
 
     private
 
-      def pass_through_names
-        Taxon.where(
-          status: ["obsolete combination", "original combination", "unavailable misspelling"]
-        )
-      end
-
       def with_history_items
-        pass_through_names.joins(:history_items).distinct
+        Taxon.pass_through_names.joins(:history_items).distinct
       end
 
       def with_reference_sections
-        pass_through_names.joins(:reference_sections).distinct
+        Taxon.pass_through_names.joins(:reference_sections).distinct
       end
   end
 end

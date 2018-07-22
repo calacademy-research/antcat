@@ -20,7 +20,7 @@ module ApplicationHelper
   end
 
   def add_period_if_necessary string
-    return "".html_safe unless string.present?
+    return "".html_safe if string.blank?
     return string + '.' unless string[-1..-1] =~ /[.!?]/
     string
   end

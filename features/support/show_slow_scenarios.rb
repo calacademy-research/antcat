@@ -6,10 +6,10 @@ if ENV["SHOW_SHOW_SCENARIOS"]
   scenarios = {}
 
   Around do |scenario, block|
-    start = Time.now
+    start = Time.current
     block.call
     scenarios[scenario.location.to_s] = {
-      duration: (Time.now - start),
+      duration: (Time.current - start),
       name: scenario.name
     }
   end

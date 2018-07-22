@@ -62,6 +62,11 @@ end
     parent :taxon_history_items, item.taxon
   end
 
+  crumb :edit_taxon_history_item do |item|
+    link "Edit"
+    parent :taxon_history_item, item
+  end
+
 crumb :reference_sections do |taxon|
   link "Reference Sections"
   parent :taxon_being_edited, taxon
@@ -75,6 +80,11 @@ end
   crumb :new_reference_section do |reference_section|
     link "New"
     parent :reference_sections, reference_section.taxon
+  end
+
+  crumb :edit_reference_section do |reference_section|
+    link "Edit"
+    parent :reference_section, reference_section
   end
 
 crumb :synonym_relationship do |synonym|

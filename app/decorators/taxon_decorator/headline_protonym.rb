@@ -50,7 +50,7 @@ class TaxonDecorator::HeadlineProtonym
     end
 
     def locality locality
-      return '' unless locality.present?
+      return '' if locality.blank?
       locality = locality.upcase.gsub(/\(.+?\)/, &:titlecase)
       add_period_if_necessary ' ' + locality
     end

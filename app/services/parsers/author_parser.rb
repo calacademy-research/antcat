@@ -3,7 +3,7 @@ Citrus.load "#{__dir__}/author_grammar", force: true unless defined? Parsers::Au
 
 module Parsers::AuthorParser
   def self.parse! string
-    return { names: [] } unless string.present?
+    return { names: [] } if string.blank?
 
     match = Parsers::AuthorGrammar.parse(string, consume: false)
     result = match.value
@@ -19,7 +19,7 @@ module Parsers::AuthorParser
 
   def self.get_name_parts string
     parts = {}
-    return parts unless string.present?
+    return parts if string.blank?
     matches = string.match /(.*?), (.*)/
     if matches
       parts[:last] = matches[1]

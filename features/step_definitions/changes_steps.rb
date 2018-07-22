@@ -1,6 +1,6 @@
 When("the changes are approved") do
   TaxonState.update_all review_state: :approved
-  Change.update_all approver_id: User.first.id, approved_at: Time.now
+  Change.update_all approver_id: User.first.id, approved_at: Time.current
 end
 
 Given("there is a genus {string} that's waiting for approval") do |name|

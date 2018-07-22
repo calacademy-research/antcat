@@ -30,12 +30,12 @@ describe Change, versioning: true do
         genus_2 = create_genus
         genus_2.taxon_state.update review_state: 'approved'
         approved_earlier_change = setup_version genus_2, user
-        approved_earlier_change.update approved_at: (Date.today - 7)
+        approved_earlier_change.update approved_at: 7.days.ago
 
         genus_2 = create_genus
         genus_2.taxon_state.update review_state: 'approved'
         approved_later_change = setup_version genus_2, user
-        approved_later_change.update approved_at: (Date.today + 7)
+        approved_later_change.update approved_at: 7.days.from_now
       end
 
       it "returns unreviewed changes" do

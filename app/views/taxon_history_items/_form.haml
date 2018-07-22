@@ -1,0 +1,20 @@
+=enable_tooltips
+
+-content_for :head do
+  =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
+
+=render 'shared/taxt_editor/taxon_and_ancestors', taxon: item.taxon
+
+=form_for item, url: url do |f|
+  =render "shared/errors_for", resource: item
+  .row
+    .medium-12.columns
+      =text_area_tag :taxt, item.taxt, rows: 5, name: 'taxon_history_item[taxt]',
+        data: { has_linkables: true, previewable: true, previewable_title: "History item", use_extras: true }
+  .row
+    .medium-3.columns.end
+      =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
+  .row
+    .medium-3.columns.end
+      =f.button 'Save', type: :submit, class: "btn-saves"

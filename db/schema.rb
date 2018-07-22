@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180708214429) do
+ActiveRecord::Schema.define(version: 20171231030837) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "trackable_id"
@@ -381,16 +381,12 @@ ActiveRecord::Schema.define(version: 20180708214429) do
     t.text "published_type_information"
     t.text "additional_type_information"
     t.text "type_notes"
-    t.integer "misspelling_of_id"
-    t.integer "current_combination_id"
-    t.index ["current_combination_id"], name: "index_taxa_on_current_combination_id"
     t.index ["current_valid_taxon_id"], name: "index_taxa_on_current_valid_taxon_id"
     t.index ["family_id"], name: "index_taxa_on_family_id"
     t.index ["genus_id"], name: "taxa_genus_id_idx"
     t.index ["homonym_replaced_by_id"], name: "index_taxa_on_homonym_replaced_by_id"
     t.index ["homonym_replaced_by_id"], name: "taxa_homonym_resolved_to_id_index"
     t.index ["id", "type"], name: "taxa_id_and_type_idx"
-    t.index ["misspelling_of_id"], name: "index_taxa_on_misspelling_of_id"
     t.index ["name_cache"], name: "index_taxa_on_name_cache"
     t.index ["name_id"], name: "taxa_name_id_idx"
     t.index ["protonym_id"], name: "index_taxa_on_protonym_id"

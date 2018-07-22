@@ -1,7 +1,7 @@
 module DatabaseScripts
   class SynonymsWithoutACurrentValidTaxon < DatabaseScript
     def results
-      Taxon.where(status: 'synonym').where(current_valid_taxon: nil)
+      Taxon.where(status: Status::SYNONYM).where(current_valid_taxon: nil)
     end
   end
 end

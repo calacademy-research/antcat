@@ -4,6 +4,7 @@
 #
 # TODO remove most CSS throughout `Exporters::Antweb`.
 
+# rubocop:disable Rails/Output
 # rubocop:disable Style/MixinUsage
 include ActionView::Helpers::TagHelper # For `#content_tag`.
 include ActionView::Context # For `#content_tag`.
@@ -38,7 +39,7 @@ class Exporters::Antweb::Exporter
           includes(protonym: [{ authorship: :reference }]).
           each do |taxon|
           begin
-            if !taxon.name.nonconforming_name and !taxon.name_cache.index('?')
+            if !taxon.name.nonconforming_name && !taxon.name_cache.index('?')
               row = export_taxon taxon
               if row
                 row[20].delete!('\"') if row[20]
@@ -240,9 +241,10 @@ class Exporters::Antweb::Exporter
     end
 
     def genus_species_header_notes_taxt taxon
-      return unless taxon.genus_species_header_notes_taxt.present?
+      return if taxon.genus_species_header_notes_taxt.blank?
       content_tag :div,
         TaxtPresenter[taxon.genus_species_header_notes_taxt].to_antweb,
         class: 'genus_species_header_notes_taxt'
     end
 end
+# rubocop:enable Rails/Output

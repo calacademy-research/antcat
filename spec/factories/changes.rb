@@ -25,7 +25,7 @@ def create_taxon_version_and_change review_state, user = @user, approver = nil, 
   create :version, item_id: taxon.id, whodunnit: user.id, change_id: change.id
 
   if approver
-    change.update! approver: approver, approved_at: Time.now
+    change.update! approver: approver, approved_at: Time.current
   end
 
   taxon

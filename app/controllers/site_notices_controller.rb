@@ -27,13 +27,7 @@ class SiteNoticesController < ApplicationController
     @site_notice.user = current_user
 
     if @site_notice.save
-      flash[:notice] = <<-MSG.html_safe
-        Successfully created site notice.
-        <strong>#{view_context.link_to 'Back to the index', site_notices_path}</strong>
-        or
-        <strong>#{view_context.link_to 'create another?', new_site_notice_path}</strong>
-      MSG
-      redirect_to @site_notice
+      redirect_to @site_notice, notice: "Successfully created site notice."
     else
       render :new
     end

@@ -1,4 +1,3 @@
-@javascript
 Feature: Editing a history item
   As an editor of AntCat
   I want to change previously entered taxonomic history items
@@ -8,18 +7,18 @@ Feature: Editing a history item
   Background:
     And I am logged in
 
-  @feed
+  @javascript @feed
   Scenario: Editing a history item
     Given the Formicidae family exists
 
     When I go to the edit page for "Formicidae"
-    Then the history should be "Taxonomic history"
+    Then the history should be "Formicidae as family"
 
     When I click on the edit taxon history item button
     And I fill in "taxt" with "(none)"
     And I fill in "edit_summary" with "fix typo" within ".history_items"
     And I save the taxon history item
-    Then I should not see "Taxonomic history"
+    Then I should not see "Formicidae as family"
     And the history should be "(none)"
 
     When I click on the edit taxon history item button
@@ -28,6 +27,19 @@ Feature: Editing a history item
     When I go to the activity feed
     Then I should see the edit summary "fix typo"
 
+  Scenario: Editing a history item (without JavaScript)
+    Given the Formicidae family exists
+
+    When I go to the page of the most recent history item
+    And I follow "Edit"
+    Then I should see "Formicidae as family"
+
+    When I fill in "taxt" with "history item content"
+    And I press "Save"
+    Then I should see "Successfully updated history item."
+    And I should see "history item content"
+
+  @javascript
   Scenario: Editing a history item, but cancelling
     Given the Formicidae family exists
 
@@ -35,11 +47,12 @@ Feature: Editing a history item
     And I click on the edit taxon history item button
     And I fill in "taxt" with "(none)"
     And I click on the cancel taxon history item button
-    Then the history should be "Taxonomic history"
+    Then the history should be "Formicidae as family"
 
     When I click on the edit taxon history item button
-    Then the history item field should be "Taxonomic history"
+    Then the history item field should be "Formicidae as family"
 
+  @javascript
   Scenario: Editing an item so it's blank
     Given the Formicidae family exists
 
@@ -65,6 +78,7 @@ Feature: Editing a history item
     When I go to the activity feed
     Then I should see the edit summary "added new stuff"
 
+  @javascript
   Scenario: Adding a history item with blank taxt
     Given there is a genus "Atta"
 
@@ -75,6 +89,7 @@ Feature: Editing a history item
     And I press "Save"
     Then I should see "Taxt can't be blank"
 
+  @javascript
   Scenario: Deleting a history item
     Given there is a genus "Eciton" with taxonomic history "Eciton history"
 
@@ -89,6 +104,7 @@ Feature: Editing a history item
     When I refresh the page (JavaScript)
     Then the history should be empty
 
+  @javascript
   Scenario: Seeing the markdown preview (and cancelling)
     Given there is a Giovanni reference
     And there is a genus "Eciton" with taxonomic history "Eciton history, {ref 7777}"

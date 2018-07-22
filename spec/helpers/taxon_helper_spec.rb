@@ -99,7 +99,7 @@ describe TaxonHelper do
       taxon = create_taxon_version_and_change :waiting, adder
       taxon.taxon_state.review_state = :waiting
       change = Change.find taxon.last_change.id
-      change.update! approver: approver, approved_at: Time.now
+      change.update! approver: approver, approved_at: Time.current
       taxon.approve!
 
       change_history = helper.taxon_change_history taxon

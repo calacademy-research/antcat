@@ -4,7 +4,7 @@
 module TaxonButtonsHelper
   def link_to_edit_taxon taxon
     if user_can_edit?
-      link_to "Edit", edit_taxa_path(taxon), class: "btn-normal"
+      link_to "Edit", edit_taxa_path(taxon), id: "edit-taxon-test-hook", class: "btn-normal"
     end
   end
 
@@ -27,7 +27,7 @@ module TaxonButtonsHelper
                     species:   "subspecies" }
 
     rank_to_add = child_ranks[taxon.rank.to_sym]
-    return unless rank_to_add.present?
+    return if rank_to_add.blank?
 
     url = new_taxa_path rank_to_create: rank_to_add, parent_id: taxon.id
     link_to "Add #{rank_to_add}", url, class: "btn-normal"

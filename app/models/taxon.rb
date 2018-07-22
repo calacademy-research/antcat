@@ -58,10 +58,17 @@ class Taxon < ApplicationRecord
   # `dolichoderus.junior_synonyms_objects` = 7 synonym objects
 
   scope :displayable, -> do
-    where.not(status: ["unavailable misspelling", "unavailable uncategorized"])
+    where.not(status: [Status::UNAVAILABLE_MISSPELLING, Status::UNAVAILABLE_UNCATEGORIZED])
   end
   scope :valid, -> { where(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
+  scope :pass_through_names, -> do
+    where(
+      status: [
+        Status::OBSOLETE_COMBINATION, Status::ORIGINAL_COMBINATION, Status::UNAVAILABLE_MISSPELLING
+      ]
+    )
+  end
   scope :order_by_joined_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name_cache, -> { order(:name_cache) }
   # For making conditional queries on self-referential `Taxon` associations.
