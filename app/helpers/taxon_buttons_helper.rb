@@ -4,7 +4,7 @@
 module TaxonButtonsHelper
   def link_to_edit_taxon taxon
     if user_can_edit?
-      link_to "Edit", edit_taxa_path(taxon), class: "btn-normal"
+      link_to "Edit", edit_taxa_path(taxon), id: "edit-taxon-test-hook", class: "btn-normal"
     end
   end
 

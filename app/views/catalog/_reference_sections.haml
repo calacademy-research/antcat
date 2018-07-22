@@ -12,4 +12,5 @@
           %p=TaxtPresenter[section.references_taxt].to_html
 
         -if current_user
+          %small.show-on-hover=link_to "Edit", edit_reference_section_path(section), class: "btn-normal btn-tiny"
           %small.show-on-hover=link_to "History", reference_section_path(section), class: "btn-normal btn-tiny"

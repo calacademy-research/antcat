@@ -16,7 +16,8 @@ module References
         attr_reader :options
 
         def keyword_params
-          References::Search::ExtractKeywords[search_query]
+          References::Search::ExtractKeywords[search_query].
+            merge(page: options[:page])
         end
 
         def search_query

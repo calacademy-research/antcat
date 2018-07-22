@@ -1,8 +1,6 @@
 # NOTE This is only covered indirectly in feature tests. No specs.
 # TODO HTML should be generated in callbacks in the subclasses, not manually.
-# TODO Probably `remove_column :names, :protonym_html`.
 
-# rubocop:disable Layout/CommentIndentation
 class Names::CreateNameFromString
   include Service
   include Formatters::ItalicsHelper
@@ -87,17 +85,13 @@ class Names::CreateNameFromString
                            name_html:    italicize(string),
                            epithet:      epithet,
                            epithet_html: italicize(epithet)
-                           # protonym_html: italicize(string) # Is this used?
     end
 
-    # NOTE `GenusName.find_each {|t| puts "#{t.name_html == t.protonym_html} #{t.name_html} #{t.protonym_html}" }`
-    # => all true except Aretidris because protonym_html is nil
     def create_genus_name!
       GenusName.create! name:         string,
                         name_html:    italicize(string),
                         epithet:      string,
                         epithet_html: italicize(string)
-                        # protonym_html: italicize(string) # Is this used?
     end
 
     def create_tribe_name!
@@ -105,16 +99,12 @@ class Names::CreateNameFromString
                         name_html:    string,
                         epithet:      string,
                         epithet_html: string
-                        # protonym_html: string # Is this used?
     end
 
-    # NOTE `SubfamilyName.all.map {|t| t.name == t.protonym_html }.uniq # => true`
     def create_subfamily_name!
       SubfamilyName.create! name:         string,
                             name_html:    string,
                             epithet:      string,
                             epithet_html: string
-                            # protonym_html: string # Is this used?
     end
 end
-# rubocop:enable Layout/CommentIndentation

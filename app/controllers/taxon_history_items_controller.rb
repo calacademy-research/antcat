@@ -1,6 +1,6 @@
 class TaxonHistoryItemsController < ApplicationController
   before_action :authenticate_editor, except: :show
-  before_action :set_taxon_history_item, only: [:update, :destroy]
+  before_action :set_taxon_history_item, only: [:edit, :update, :destroy]
 
   def index
     @taxon_history_items = TaxonHistoryItem.all
@@ -17,12 +17,26 @@ class TaxonHistoryItemsController < ApplicationController
     @item = TaxonHistoryItem.new taxon_id: params[:taxa_id]
   end
 
+  def edit
+  end
+
   def update
-    if @item.update taxon_history_item_params
+    updated = @item.update taxon_history_item_params
+
+    if updated
       @item.create_activity :update, edit_summary: params[:edit_summary]
     end
 
-    render_json @item
+    respond_to do |format|
+      format.json { render_json @item }
+      format.html do
+        if updated
+          redirect_to catalog_path(@item.taxon), notice: "Successfully updated history item."
+        else
+          render :edit
+        end
+      end
+    end
   end
 
   def create

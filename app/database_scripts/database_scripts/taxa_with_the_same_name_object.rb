@@ -28,7 +28,7 @@ module DatabaseScripts
 
       def link_taxa_ids ids
         list = "<ul class='no-bullet'>"
-        list << ids.map { |id| "<li>%taxon#{id} (##{id})</li>" }.join
+        list << ids.map { |id| "<li>%taxon#{id} (##{id}) - #{Taxon.find(id).status}</li>" }.join
         list << "</ul>"
       end
   end

@@ -42,7 +42,7 @@ describe TaxonDecorator::ChildList do
   end
 
   describe "#collective_group_name_child_list" do
-    let!(:genus) { create_genus 'Atta', subfamily: subfamily, status: 'collective group name' }
+    let!(:genus) { create_genus 'Atta', subfamily: subfamily, status: Status::COLLECTIVE_GROUP_NAME }
 
     it "formats a list of collective group names" do
       expect(described_class.new(subfamily).send(:collective_group_name_child_list)).
