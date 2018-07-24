@@ -1,7 +1,7 @@
 module MarkdownHelper
-  def markdown content, no_wrappring_p: false
+  def markdown content, no_wrapping_p: false
     return '' unless content
-    return Markdowns::RenderWithoutWrappingP[content.dup] if no_wrappring_p
+    return Markdowns::RenderWithoutWrappingP[content.dup] if no_wrapping_p
     Markdowns::Render[content.dup]
   end
 
