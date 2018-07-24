@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Exporters::Antweb::Exporter do
-  subject(:exporter) { described_class.new }
+  subject(:exporter) { described_class.new('dummy_file.txt') }
 
   before { allow(exporter).to receive(:export_history).and_return 'history' }
 

@@ -23,13 +23,13 @@ class Exporters::Antweb::Exporter
     antcat_taxon_link taxon, taxon.name_with_fossil
   end
 
-  def initialize directory = 'data/output', _show_progress: false
-    @directory = directory
+  def initialize file
+    @file = file
     @progress = Progress.create total: taxa_ids.count unless Rails.env.test?
   end
 
   def call
-    File.open("#{@directory}/antcat.antweb.txt", 'w') do |file|
+    File.open(@file, 'w') do |file|
       file.puts header
 
       taxa_ids.each_slice(1000) do |chunk|
