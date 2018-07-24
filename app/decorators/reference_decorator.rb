@@ -43,11 +43,11 @@ class ReferenceDecorator < ApplicationDecorator
 
   # Formats the reference with HTML, CSS, etc.
   # DB column: `references.inline_citation_cache`.
-  def inline_citation
+  def expandable_reference
     cached = reference.inline_citation_cache
     return cached.html_safe if cached
 
-    reference.set_cache generate_inline_citation, :inline_citation_cache
+    reference.set_cache generate_expandable_reference, :inline_citation_cache
   end
 
   def linked_keey
@@ -70,7 +70,7 @@ class ReferenceDecorator < ApplicationDecorator
       string
     end
 
-    def generate_inline_citation
+    def generate_expandable_reference
       helpers.content_tag :span, class: "expandable-reference" do
         link = helpers.link_to reference.keey, '#',
           title: helpers.unitalicize(formatted), class: "expandable-reference-key"

@@ -39,7 +39,7 @@
       -@taxa.each do |taxon|
         %tr
           %td=taxon.decorate.link_to_taxon
-          %td=taxon.protonym.authorship.reference.decorate.inline_citation
+          %td=taxon.protonym.authorship.reference.decorate.expandable_reference
           %td=taxon.rank.capitalize
           %td=taxon.status.capitalize
     =will_paginate @taxa, param_name: "taxa_page", params: { anchor: "taxa" }

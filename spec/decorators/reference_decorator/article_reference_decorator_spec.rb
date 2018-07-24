@@ -31,7 +31,7 @@ describe ArticleReferenceDecorator do
     end
   end
 
-  describe "#inline_citation" do
+  describe "#expandable_reference" do
     let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
     let!(:reference) do
       create :article_reference,
@@ -48,7 +48,7 @@ describe ArticleReferenceDecorator do
     it "creates a link to the reference" do
       allow(reference).to receive(:downloadable?).and_return true
 
-      expect(reference.decorate.inline_citation).to eq(
+      expect(reference.decorate.expandable_reference).to eq(
         %(<span class="expandable-reference">) +
           %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." class="expandable-reference-key" href="#">Latreille, 1809</a>} +
           %(<span class="expandable-reference-content">) +

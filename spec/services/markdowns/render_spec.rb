@@ -44,7 +44,7 @@ describe Markdowns::Render do
         let(:taxt_markdown) { "{ref #{reference.id}}" }
 
         it "links the reference" do
-          expected = "<p>#{reference.decorate.inline_citation}</p>\n"
+          expected = "<p>#{reference.decorate.expandable_reference}</p>\n"
           expect(described_class[markdown]).to eq expected
           expect(described_class[taxt_markdown]).to eq expected
         end

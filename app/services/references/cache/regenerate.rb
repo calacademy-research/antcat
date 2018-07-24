@@ -9,7 +9,7 @@ module References
 
       def call
         set generate_formatted, :formatted_cache
-        set generate_inline_citation, :inline_citation_cache
+        set generate_expandable_reference, :inline_citation_cache
       end
 
       private
@@ -24,8 +24,8 @@ module References
           reference.decorate.send(:generate_formatted)
         end
 
-        def generate_inline_citation
-          reference.decorate.send(:generate_inline_citation)
+        def generate_expandable_reference
+          reference.decorate.send(:generate_expandable_reference)
         end
     end
   end

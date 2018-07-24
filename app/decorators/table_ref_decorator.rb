@@ -30,7 +30,7 @@ class TableRefDecorator
     case table
     when "citations"           then related_citation_link
     when "reference_sections"  then ReferenceSection.find(id).taxon.decorate.link_to_taxon
-    when "references"          then Reference.find(id).decorate.inline_citation
+    when "references"          then Reference.find(id).decorate.expandable_reference
     when "synonyms", "taxa"    then Taxon.find(id).decorate.link_to_taxon
     when "taxon_history_items" then TaxonHistoryItem.find(id).taxon.decorate.link_to_taxon
     else                            "#{table} ???"
@@ -45,6 +45,6 @@ class TableRefDecorator
       citation = Citation.find(id)
       taxon = citation.protonym.taxon
       reference = citation.reference
-      taxon.decorate.link_to_taxon << " (" << reference.decorate.inline_citation << ")"
+      taxon.decorate.link_to_taxon << " (" << reference.decorate.expandable_reference << ")"
     end
 end

@@ -28,7 +28,7 @@ describe TaxtPresenter do
       it "doesn't escape already escaped input" do
         reference = create :missing_reference, citation: 'Latreille, 1809 <script>'
         expected = 'Latreille, 1809 &lt;script&gt;'
-        expect(reference.decorate.inline_citation).to include expected
+        expect(reference.decorate.expandable_reference).to include expected
         expect(described_class["{ref #{reference.id}}"].to_html).to include expected
       end
     end
