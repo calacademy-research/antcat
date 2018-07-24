@@ -17,12 +17,12 @@ describe ReferenceAuthorNameObserver do
       reference.reference_author_names.create! position: 1, author_name: create(:author_name)
       References::Cache::Regenerate[reference]
       reference.reload
-      expect(reference.formatted_cache).to_not be_nil
+      expect(reference.plain_text_cache).to_not be_nil
 
       # Act and test.
       reference.reference_author_names.first.update_attribute :position, 1000
       reference.reload
-      expect(reference.formatted_cache).to be_nil
+      expect(reference.plain_text_cache).to be_nil
     end
 
     context "when a reference_author_name is added" do
@@ -30,12 +30,12 @@ describe ReferenceAuthorNameObserver do
         # Setup.
         References::Cache::Regenerate[reference]
         reference.reload
-        expect(reference.formatted_cache).to_not be_nil
+        expect(reference.plain_text_cache).to_not be_nil
 
         # Act and test.
         reference.reference_author_names.create! position: 1, author_name: create(:author_name)
         reference.reload
-        expect(reference.formatted_cache).to be_nil
+        expect(reference.plain_text_cache).to be_nil
       end
     end
 
@@ -45,12 +45,12 @@ describe ReferenceAuthorNameObserver do
         reference.reference_author_names.create! position: 1, author_name: create(:author_name)
         References::Cache::Regenerate[reference]
         reference.reload
-        expect(reference.formatted_cache).to_not be_nil
+        expect(reference.plain_text_cache).to_not be_nil
 
         # Act and test.
         reference.reference_author_names.first.destroy
         reference.reload
-        expect(reference.formatted_cache).to be_nil
+        expect(reference.plain_text_cache).to be_nil
       end
     end
   end

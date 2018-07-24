@@ -15,13 +15,13 @@ describe ReferenceObserver do
       end
 
       it "invalidates the cache for itself and its nestees" do
-        expect(reference.formatted_cache).to_not be_nil
-        expect(nestee.formatted_cache).to_not be_nil
+        expect(reference.plain_text_cache).to_not be_nil
+        expect(nestee.plain_text_cache).to_not be_nil
 
         reference.update! title: "New Title"
 
-        expect(reference.reload.formatted_cache).to be_nil
-        expect(nestee.reload.formatted_cache).to be_nil
+        expect(reference.reload.plain_text_cache).to be_nil
+        expect(nestee.reload.plain_text_cache).to be_nil
       end
     end
 
@@ -42,8 +42,8 @@ describe ReferenceObserver do
       end
 
       it "invalidates each member of the network" do
-        expect(nesting_reference.formatted_cache).not_to be_nil
-        expect(nested_reference.formatted_cache).not_to be_nil
+        expect(nesting_reference.plain_text_cache).not_to be_nil
+        expect(nested_reference.plain_text_cache).not_to be_nil
 
         reference_author_name.position = 4
         reference_author_name.save!
@@ -51,8 +51,8 @@ describe ReferenceObserver do
         nesting_reference.reload
         nested_reference.reload
 
-        expect(nesting_reference.formatted_cache).to be_nil
-        expect(nested_reference.formatted_cache).to be_nil
+        expect(nesting_reference.plain_text_cache).to be_nil
+        expect(nested_reference.plain_text_cache).to be_nil
       end
     end
   end
@@ -67,7 +67,7 @@ describe ReferenceObserver do
 
     it "invalidates the cache for the document's reference" do
       expect { described_class.instance.before_update reference }.
-        to change { reference.reload.formatted_cache.nil? }.from(false).to(true)
+        to change { reference.reload.plain_text_cache.nil? }.from(false).to(true)
     end
   end
 end

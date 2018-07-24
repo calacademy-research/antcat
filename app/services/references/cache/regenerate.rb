@@ -8,8 +8,8 @@ module References
       end
 
       def call
-        set generate_plain_text, :formatted_cache
-        set generate_expandable_reference, :inline_citation_cache
+        set generate_plain_text, :plain_text_cache
+        set generate_expandable_reference, :expandable_reference_cache
       end
 
       private

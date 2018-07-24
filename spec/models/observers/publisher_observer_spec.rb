@@ -18,13 +18,13 @@ describe PublisherObserver do
       ]
 
       references.each { |reference| References::Cache::Regenerate[reference] }
-      references.each { |reference| expect(reference.formatted_cache).not_to be_nil }
+      references.each { |reference| expect(reference.plain_text_cache).not_to be_nil }
 
       described_class.instance.before_update publisher
 
-      expect(references[0].reload.formatted_cache).to be_nil
-      expect(references[1].reload.formatted_cache).to be_nil
-      expect(references[2].reload.formatted_cache).not_to be_nil
+      expect(references[0].reload.plain_text_cache).to be_nil
+      expect(references[1].reload.plain_text_cache).to be_nil
+      expect(references[2].reload.plain_text_cache).not_to be_nil
     end
   end
 end

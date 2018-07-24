@@ -65,6 +65,6 @@ class RevisionComparer
     # HACK to make the diff less cluttered.
     def to_json item
       item.to_json except: [:formatted_cache, :inline_citation_cache,
-        :principal_author_last_name_cache]
+        :principal_author_last_name_cache, :plain_text_cache, :expandable_reference_cache]
     end
 end

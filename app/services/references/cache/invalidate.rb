@@ -10,8 +10,8 @@ module References
       def call
         return if reference.new_record?
 
-        reference.update_column :formatted_cache, nil
-        reference.update_column :inline_citation_cache, nil
+        reference.update_column :plain_text_cache, nil
+        reference.update_column :expandable_reference_cache, nil
         reference.nestees.each &:invalidate_caches
       end
 
