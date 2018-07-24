@@ -1,25 +1,25 @@
 Then(/^I should ?(not)? see the reference key "([^"]+)"$/) do |should_not, text|
   if should_not == "not"
-    expect(page).to have_no_css ".reference_keey", text: text
+    expect(page).to have_no_css ".expandable-reference-key", text: text
   else
-    expect(page).to have_css ".reference_keey", text: text
+    expect(page).to have_css ".expandable-reference-key", text: text
   end
 end
 
 Then(/^I should (not )?see the reference key expansion$/) do |should_not|
   if should_not
-    expect(page).to have_no_css ".reference_keey_expansion"
+    expect(page).to have_no_css ".expandable-reference-content"
   else
-    expect(page).to have_css ".reference_keey_expansion"
+    expect(page).to have_css ".expandable-reference-content"
   end
 end
 
 When("I click the reference key") do
-  find(".reference_keey").click
+  find(".expandable-reference-key").click
 end
 
 When("I click the reference key expansion") do
-  find(".reference_keey_expansion").click
+  find(".expandable-reference-content").click
 end
 
 Then("I should see the catalog entry for {string}") do |taxon|

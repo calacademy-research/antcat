@@ -178,6 +178,6 @@ end
 
 # Misc
 Then("the taxon mouseover should contain {string}") do |text|
-  element = find '.reference_keey'
+  element = find '.expandable-reference-key'
   expect(element['title']).to have_content text
 end

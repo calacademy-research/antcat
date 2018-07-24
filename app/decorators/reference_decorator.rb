@@ -71,14 +71,14 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     def generate_inline_citation
-      helpers.content_tag :span, class: "reference_keey_and_expansion" do
+      helpers.content_tag :span, class: "expandable-reference" do
         link = helpers.link_to reference.keey, '#',
-          title: helpers.unitalicize(formatted), class: "reference_keey"
+          title: helpers.unitalicize(formatted), class: "expandable-reference-key"
 
         content = link
-        content << helpers.content_tag(:span, class: "reference_keey_expansion") do
+        content << helpers.content_tag(:span, class: "expandable-reference-content") do
           inner_content = []
-          inner_content << inline_citation_reference_keey_expansion_text
+          inner_content << expandable_reference_text
           inner_content << format_reference_document_link
           inner_content << small_reference_link_button
           inner_content.reject(&:blank?).join(' ').html_safe
@@ -86,9 +86,8 @@ class ReferenceDecorator < ApplicationDecorator
       end
     end
 
-    def inline_citation_reference_keey_expansion_text
-      helpers.content_tag :span, formatted,
-        class: "reference_keey_expansion_text", title: reference.keey
+    def expandable_reference_text
+      helpers.content_tag :span, formatted, class: "expandable-reference-text", title: reference.keey
     end
 
     def small_reference_link_button
