@@ -34,11 +34,11 @@ class ReferenceDecorator < ApplicationDecorator
 
   # Formats the reference as plaintext (with the exception of <i> tags).
   # DB column: `references.formatted_cache`.
-  def formatted
+  def plain_text
     cached = reference.formatted_cache
     return cached.html_safe if cached
 
-    reference.set_cache generate_formatted, :formatted_cache
+    reference.set_cache generate_plain_text, :formatted_cache
   end
 
   # Formats the reference with HTML, CSS, etc.
@@ -60,7 +60,7 @@ class ReferenceDecorator < ApplicationDecorator
 
   private
 
-    def generate_formatted
+    def generate_plain_text
       string = make_html_safe(reference.author_names_string.dup)
       string << ' ' unless string.empty?
       string << make_html_safe(reference.citation_year) << '. '
@@ -73,7 +73,7 @@ class ReferenceDecorator < ApplicationDecorator
     def generate_expandable_reference
       helpers.content_tag :span, class: "expandable-reference" do
         link = helpers.link_to reference.keey, '#',
-          title: helpers.unitalicize(formatted), class: "expandable-reference-key"
+          title: helpers.unitalicize(plain_text), class: "expandable-reference-key"
 
         content = link
         content << helpers.content_tag(:span, class: "expandable-reference-content") do
@@ -87,7 +87,7 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     def expandable_reference_text
-      helpers.content_tag :span, formatted, class: "expandable-reference-text", title: reference.keey
+      helpers.content_tag :span, plain_text, class: "expandable-reference-text", title: reference.keey
     end
 
     def small_reference_link_button

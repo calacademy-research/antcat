@@ -131,8 +131,8 @@ class Exporters::Antweb::ExportTaxon
       reference = taxon.authorship_reference
       return unless reference
 
-      formatted = reference.decorate.formatted
-      content_tag :span, reference.keey, title: formatted
+      plain_text = reference.decorate.plain_text
+      content_tag :span, reference.keey, title: plain_text
     end
 
     # TODO rename.

@@ -9,7 +9,7 @@ describe References::Cache::Regenerate do
       expect(reference.inline_citation_cache).to be_nil
 
       decorated = reference.decorate
-      generated_formatted_cache = decorated.send :generate_formatted
+      generated_formatted_cache = decorated.send :generate_plain_text
       generated_inline_citation_cache = decorated.send :generate_expandable_reference
 
       described_class[reference]

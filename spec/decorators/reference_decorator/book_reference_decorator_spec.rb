@@ -3,7 +3,7 @@ require 'spec_helper'
 describe BookReferenceDecorator do
   let(:author_name) { create :author_name, name: "Forel, A." }
 
-  describe "#formatted" do
+  describe "#plain_text" do
     it "separates the publisher and the pagination with a comma" do
       publisher = create :publisher
       reference = create :book_reference,
@@ -11,7 +11,7 @@ describe BookReferenceDecorator do
         citation_year: "1874",
         title: "Les fourmis de la Suisse.",
         publisher: publisher, pagination: "22 pp."
-      expect(reference.decorate.formatted).
+      expect(reference.decorate.plain_text).
         to eq 'Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.'
     end
 
@@ -25,7 +25,7 @@ describe BookReferenceDecorator do
           author_names: author_names,
           publisher: create(:publisher, name: '<', place: create(:place, name: '>')),
           pagination: '>'
-        expect(reference.decorate.formatted).
+        expect(reference.decorate.plain_text).
           to eq 'Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt;.'
       end
     end

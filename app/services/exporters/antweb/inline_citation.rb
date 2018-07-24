@@ -16,7 +16,7 @@ class Exporters::Antweb::InlineCitation
     attr_reader :reference
 
     def reference_link
-      link_to reference.keey.html_safe, reference_url, title: unitalicize(formatted)
+      link_to reference.keey.html_safe, reference_url, title: unitalicize(plain_text)
     end
 
     def document_links
@@ -28,7 +28,7 @@ class Exporters::Antweb::InlineCitation
       "http://antcat.org/references/#{reference.id}"
     end
 
-    def formatted
-      reference.decorate.formatted
+    def plain_text
+      reference.decorate.plain_text
     end
 end

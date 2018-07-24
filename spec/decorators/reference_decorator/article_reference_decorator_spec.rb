@@ -4,7 +4,7 @@ describe ArticleReferenceDecorator do
   let(:journal) { create :journal, name: "Neue Denkschriften" }
   let(:author_name) { create :author_name, name: "Forel, A." }
 
-  describe "#formatted" do
+  describe "#plain_text" do
     it "formats the reference" do
       reference = create :article_reference,
         author_names: [author_name],
@@ -13,7 +13,7 @@ describe ArticleReferenceDecorator do
         journal: journal,
         series_volume_issue: "26",
         pagination: "1-452"
-      results = reference.decorate.formatted
+      results = reference.decorate.plain_text
       expect(results).to be_html_safe
       expect(results).to eq 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
@@ -25,7 +25,7 @@ describe ArticleReferenceDecorator do
         reference = create :article_reference,
           title: 'Ants are my life', author_names: author_names,
           journal: create(:journal, name: '<script>'), citation_year: '2010d', series_volume_issue: '<', pagination: '>'
-        expect(reference.decorate.formatted).
+        expect(reference.decorate.plain_text).
           to eq 'Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt;.'
       end
     end

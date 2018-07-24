@@ -45,7 +45,7 @@ describe ReferenceDecorator do
     end
   end
 
-  describe "#formatted" do
+  describe "#plain_text" do
     context "with unsafe characters" do
       let!(:author_names) { [create(:author_name, name: 'Ward, P. S.')] }
       let(:reference) do
@@ -55,29 +55,29 @@ describe ReferenceDecorator do
 
       it "escapes everything, buts let italics through" do
         reference.author_names = [create(:author_name, name: '<script>')]
-        expect(reference.decorate.formatted).
+        expect(reference.decorate.plain_text).
           to eq '&lt;script&gt; 1874. Les fourmis de la Suisse. 32 pp.'
       end
 
       it "escapes the citation year" do
         reference.update_attribute :citation_year, '<script>'
-        expect(reference.decorate.formatted).
+        expect(reference.decorate.plain_text).
           to eq 'Ward, P. S. &lt;script&gt;. Les fourmis de la Suisse. 32 pp.'
       end
 
       it "escapes the title" do
         reference.update_attribute :title, '<script>'
-        expect(reference.decorate.formatted).to eq 'Ward, P. S. 1874. &lt;script&gt;. 32 pp.'
+        expect(reference.decorate.plain_text).to eq 'Ward, P. S. 1874. &lt;script&gt;. 32 pp.'
       end
 
       it "escapes the title but leave the italics alone" do
         reference.update_attribute :title, '*foo*<script>'
-        expect(reference.decorate.formatted).to eq 'Ward, P. S. 1874. <i>foo</i>&lt;script&gt;. 32 pp.'
+        expect(reference.decorate.plain_text).to eq 'Ward, P. S. 1874. <i>foo</i>&lt;script&gt;. 32 pp.'
       end
 
       it "escapes the date" do
         reference.update_attribute :date, '1933>'
-        expect(reference.decorate.formatted).
+        expect(reference.decorate.plain_text).
           to eq 'Ward, P. S. 1874. Les fourmis de la Suisse. 32 pp. [1933&gt;]'
       end
     end
@@ -163,7 +163,7 @@ describe ReferenceDecorator do
     end
 
     it "really should have been duped" do
-      expect(reference.decorate.formatted).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
+      expect(reference.decorate.plain_text).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
     end
   end
 end

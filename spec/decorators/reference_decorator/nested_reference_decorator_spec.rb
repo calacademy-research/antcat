@@ -3,7 +3,7 @@ require 'spec_helper'
 describe NestedReferenceDecorator do
   let(:author_name) { create :author_name, name: "Forel, A." }
 
-  describe "#formatted" do
+  describe "#plain_text" do
     it "formats nested references" do
       reference = create :book_reference,
         author_names: [create(:author_name, name: 'Mayr, E.')],
@@ -14,7 +14,7 @@ describe NestedReferenceDecorator do
       nested_reference = create :nested_reference, nesting_reference: reference,
         author_names: [author_name], title: 'Les fourmis de la Suisse',
         citation_year: '1874', pages_in: 'Pp. 32-45 in'
-      expect(nested_reference.decorate.formatted).to eq(
+      expect(nested_reference.decorate.plain_text).to eq(
         'Forel, A. 1874. Les fourmis de la Suisse. Pp. 32-45 in Mayr, E. 2010. Ants I have known. New York: Wiley, 32 pp.'
       )
     end
@@ -33,7 +33,7 @@ describe NestedReferenceDecorator do
           author_names: author_names,
           pages_in: '>',
           nesting_reference: nested_reference
-        expect(reference.decorate.formatted).
+        expect(reference.decorate.plain_text).
           to eq 'Ward, P. S. 2010d. Ants are my life. &gt; Ward, P. S. 2010d. Ants are my life. New York.'
       end
     end
