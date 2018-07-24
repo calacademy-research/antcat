@@ -65,7 +65,7 @@ Feature: View bibliography
 
     When I go to the references page
     Then I should not see the missing reference
-    And I should see "Ward, P.S. 2010. Ant Facts. Ants 1:1 "
+    And I should see "Ward, P.S. 2010. Ant Facts. Ants 1:1"
 
   Scenario: Going to the author's page
     Given this book reference exist
