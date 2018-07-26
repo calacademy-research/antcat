@@ -52,6 +52,9 @@
         %tr
           %th Type
           %td=@reference.type.underscore.humanize
+        %tr
+          %th Bolton key
+          %td=or_dash @reference.bolton_key
 
         -if @reference.is_a? ArticleReference
           %tr

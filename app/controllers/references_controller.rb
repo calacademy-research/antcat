@@ -116,6 +116,7 @@ class ReferencesController < ApplicationController
     def reference_params
       params.require(:reference).permit(
         :citation_year,
+        :bolton_key,
         :doi,
         :date,
         :title,

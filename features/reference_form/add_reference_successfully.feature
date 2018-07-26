@@ -12,11 +12,13 @@ Feature: Add reference
     When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "A reference title"
     And I fill in "reference_citation_year" with "1981"
+    And I fill in "reference_bolton_key" with "Ward, B.L. & Bolton, B., 1981a"
     And I fill in "reference_journal_name" with "Ant Journal"
     And I fill in "reference_series_volume_issue" with "1"
     And I fill in "article_pagination" with "2"
     And I press "Save"
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
+    And I should see "Ward, B.L. & Bolton, B., 1981a"
 
   @javascript
   Scenario: Adding a book
