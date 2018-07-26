@@ -25,11 +25,6 @@ class Name < ApplicationRecord
   def change_parent _name
   end
 
-  # TODO remove? Too magical.
-  def to_s
-    name
-  end
-
   def to_html
     name_html
   end

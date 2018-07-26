@@ -15,28 +15,28 @@ module Exporters::Antweb::MonkeyPatchTaxon
 
   class ::Subfamily
     def add_antweb_attributes attributes
-      attributes.merge subfamily: name.to_s
+      attributes.merge subfamily: name.name
     end
   end
 
   class ::Tribe
     def add_antweb_attributes attributes
-      attributes.merge subfamily: subfamily.name.to_s, tribe: name.to_s
+      attributes.merge subfamily: subfamily.name.name, tribe: name.name
     end
   end
 
   class ::Genus
     def add_antweb_attributes attributes
-      subfamily_name = subfamily && subfamily.name.to_s || 'incertae_sedis'
-      tribe_name = tribe && tribe.name.to_s
-      attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: name.to_s
+      subfamily_name = subfamily && subfamily.name.name || 'incertae_sedis'
+      tribe_name = tribe && tribe.name.name
+      attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: name.name
     end
   end
 
   class ::Subgenus
     def add_antweb_attributes attributes
-      subfamily_name = subfamily && subfamily.name.to_s || 'incertae_sedis'
-      genus_name = genus && genus.name.to_s
+      subfamily_name = subfamily && subfamily.name.name || 'incertae_sedis'
+      genus_name = genus && genus.name.name
       attributes.merge subfamily: subfamily_name, genus: genus_name, subgenus: name.epithet.gsub(/[\(\)]/, '')
     end
   end
@@ -44,8 +44,8 @@ module Exporters::Antweb::MonkeyPatchTaxon
   class ::Species
     def add_antweb_attributes attributes
       return unless genus
-      subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
-      tribe_name = genus.tribe && genus.tribe.name.to_s
+      subfamily_name = genus.subfamily && genus.subfamily.name.name || 'incertae_sedis'
+      tribe_name = genus.tribe && genus.tribe.name.name
       # Sometimes we get names that conform to subspecies format when we parse an invalid.
       # The name will tell us that it's a subspecies name.
       # We should handle that with grace.
@@ -58,7 +58,7 @@ module Exporters::Antweb::MonkeyPatchTaxon
         attributes.merge! species: name.epithet
       end
 
-      attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: genus.name.to_s
+      attributes.merge subfamily: subfamily_name, tribe: tribe_name, genus: genus.name.name
     end
   end
 
@@ -66,17 +66,17 @@ module Exporters::Antweb::MonkeyPatchTaxon
     def add_antweb_attributes attributes
       # TODO calling methods on nil genera here is the reason for
       # "undefined method `subfamily' for nil:NilClass".
-      subfamily_name = genus.subfamily && genus.subfamily.name.to_s || 'incertae_sedis'
-      tribe_name = genus.tribe && genus.tribe.name.to_s
+      subfamily_name = genus.subfamily && genus.subfamily.name.name || 'incertae_sedis'
+      tribe_name = genus.tribe && genus.tribe.name.name
 
       case name
       when SubspeciesName
-        attributes.merge! genus: genus.name.to_s,
+        attributes.merge! genus: genus.name.name,
           species: name.epithets.split(' ').first, subspecies: name.epithet
       when SpeciesName
-        attributes.merge! genus: name.to_s.split(' ').first, species: name.epithet
+        attributes.merge! genus: name.name.split(' ').first, species: name.epithet
       else
-        attributes.merge! genus: genus.name.to_s, species: name.epithet
+        attributes.merge! genus: genus.name.name, species: name.epithet
       end
 
       attributes.merge subfamily: subfamily_name, tribe: tribe_name

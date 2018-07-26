@@ -30,7 +30,7 @@ describe TaxonHelper do
     it "handles genera" do
       subfamily = build_stubbed :subfamily
       genus = create_genus subfamily: subfamily, tribe: nil
-      expect(helper.taxon_name_description(genus)).to eq "genus of #{subfamily.name}"
+      expect(helper.taxon_name_description(genus)).to eq "genus of #{subfamily.name.name}"
     end
 
     it "handles genera without a subfamily" do
@@ -42,26 +42,26 @@ describe TaxonHelper do
       subfamily = create_subfamily
       tribe = create_tribe subfamily: subfamily
       genus = create_genus tribe: tribe
-      expect(helper.taxon_name_description(genus)).to eq "genus of #{tribe.name}"
+      expect(helper.taxon_name_description(genus)).to eq "genus of #{tribe.name.name}"
     end
 
     it "handles new genera" do
       subfamily = build_stubbed :subfamily
       genus = build :genus, subfamily: subfamily, tribe: nil
-      expect(helper.taxon_name_description(genus)).to eq "new genus of #{subfamily.name}"
+      expect(helper.taxon_name_description(genus)).to eq "new genus of #{subfamily.name.name}"
     end
 
     it "handles new species" do
       genus = create_genus 'Atta'
       species = build :species, genus: genus
-      expect(helper.taxon_name_description(species)).to eq "new species of <i>#{genus.name}</i>"
+      expect(helper.taxon_name_description(species)).to eq "new species of <i>#{genus.name.name}</i>"
     end
 
     it "handles subspecies" do
       genus = create_genus 'Atta'
       species = build :species, genus: genus
       subspecies = build :subspecies, species: species, genus: genus
-      expect(helper.taxon_name_description(subspecies)).to eq "new subspecies of <i>#{species.name}</i>"
+      expect(helper.taxon_name_description(subspecies)).to eq "new subspecies of <i>#{species.name.name}</i>"
     end
 
     it "handles subspecies without a species" do

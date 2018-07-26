@@ -70,7 +70,7 @@ class Exporters::Antweb::ExportTaxon
 
       attributes[:current_valid_name] =
         if taxon.current_valid_taxon_including_synonyms
-          taxon.current_valid_taxon_including_synonyms.name.to_s
+          taxon.current_valid_taxon_including_synonyms.name.name
         end
 
       convert_to_antweb_array taxon.add_antweb_attributes(attributes)

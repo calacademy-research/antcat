@@ -31,7 +31,7 @@ class Species < SpeciesGroupTaxon
   end
 
   def become_subspecies_of species
-    new_name_string = "#{species.genus.name} #{species.name.epithet} #{name.epithet}"
+    new_name_string = "#{species.genus.name.name} #{species.name.epithet} #{name.epithet}"
     if Subspecies.find_by_name new_name_string
       raise TaxonExists, "The subspecies '#{new_name_string}' already exists."
     end
