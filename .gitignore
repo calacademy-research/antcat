@@ -20,7 +20,6 @@ server.yml
 # Generated AntCat output
 data/output/bolton.txt
 data/output/antcat.antweb.txt
-data/output
 data/backups
 
 # Allow developer to keep their own versions of these

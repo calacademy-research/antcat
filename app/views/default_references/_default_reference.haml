@@ -3,7 +3,7 @@
 
 -if default_reference
   =hidden_field_tag 'default_reference_id', default_reference.id
-  =hidden_field_tag 'default_reference_string', default_reference.decorate.formatted
+  =hidden_field_tag 'default_reference_string', default_reference.decorate.plain_text
   =hidden_field_tag 'default_reference_keey', default_reference.keey
   =hidden_field_tag 'default_reference_taxt', TaxtIdTranslator.to_editor_ref_tag(default_reference)
   %button.default_reference.btn-normal=default_reference.keey

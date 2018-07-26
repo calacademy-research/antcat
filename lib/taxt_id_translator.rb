@@ -16,7 +16,7 @@ class TaxtIdTranslator
 
   # ex `to_editable_taxon`
   def self.to_editor_tax_tag taxon
-    to_editor_tag taxon.id, taxon.name, TAXON_TAG_TYPE
+    to_editor_tag taxon.id, taxon.name.name, TAXON_TAG_TYPE
   end
 
   # ex `to_editable_name`

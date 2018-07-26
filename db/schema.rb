@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171231030837) do
+ActiveRecord::Schema.define(version: 20180724205435) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "trackable_id"
@@ -305,8 +305,8 @@ ActiveRecord::Schema.define(version: 20171231030837) do
     t.string "principal_author_last_name_cache"
     t.string "reason_missing"
     t.string "review_state"
-    t.text "formatted_cache"
-    t.text "inline_citation_cache"
+    t.text "plain_text_cache"
+    t.text "expandable_reference_cache"
     t.boolean "auto_generated", default: false
     t.string "origin"
     t.string "doi"

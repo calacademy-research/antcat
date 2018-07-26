@@ -1117,9 +1117,9 @@ definitions:
         type: string
       review_state:
         type: string
-      formatted_cache:
+      plain_text_cache:
         type: string
-      inline_citation_cache:
+      expandable_reference_cache:
         type: string
       doi:
         type: string

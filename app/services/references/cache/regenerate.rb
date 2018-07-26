@@ -8,8 +8,8 @@ module References
       end
 
       def call
-        set generate_formatted, :formatted_cache
-        set generate_inline_citation, :inline_citation_cache
+        set generate_plain_text, :plain_text_cache
+        set generate_expandable_reference, :expandable_reference_cache
       end
 
       private
@@ -20,12 +20,12 @@ module References
           References::Cache::Set[reference, value, field]
         end
 
-        def generate_formatted
-          reference.decorate.send(:generate_formatted)
+        def generate_plain_text
+          reference.decorate.send(:generate_plain_text)
         end
 
-        def generate_inline_citation
-          reference.decorate.send(:generate_inline_citation)
+        def generate_expandable_reference
+          reference.decorate.send(:generate_expandable_reference)
         end
     end
   end

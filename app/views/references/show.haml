@@ -29,7 +29,7 @@
   .small-12.columns.no-right-padding
     %h5 Formatted
     .callout
-      =@reference.formatted
+      =@reference.plain_text
       =@reference.format_reference_document_link
 
 .row.margin-bottom
@@ -119,7 +119,7 @@
         -@reference.described_taxa.each do |taxon|
           %tr
             %td=taxon.decorate.link_to_taxon
-            %td=taxon.protonym.authorship.reference.decorate.inline_citation
+            %td=taxon.protonym.authorship.reference.decorate.expandable_reference
             %td=taxon.rank.capitalize
             %td=taxon.status.capitalize
 

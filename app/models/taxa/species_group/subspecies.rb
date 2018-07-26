@@ -39,7 +39,7 @@ class Subspecies < SpeciesGroupTaxon
     # Removed commented out code + comments that looked very WIP
     # See 37064da56f47a530a388b268289a73cb24b93d75
 
-    new_name_string = "#{species.genus.name} #{name.epithet}"
+    new_name_string = "#{species.genus.name.name} #{name.epithet}"
     new_name = SpeciesName.find_by_name new_name_string
     unless new_name
       new_name = SpeciesName.new

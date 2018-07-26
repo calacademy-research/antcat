@@ -65,7 +65,7 @@ class TaxonDecorator::HeadlineProtonym
       if for_antweb?
         Exporters::Antweb::InlineCitation[reference]
       else
-        reference.decorate.inline_citation
+        reference.decorate.expandable_reference
       end
     end
 end

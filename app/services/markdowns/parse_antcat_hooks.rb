@@ -45,7 +45,7 @@ module Markdowns
           id = $~[:id]
           if Reference.exists? id
             reference = Reference.find(id)
-            reference.decorate.inline_citation
+            reference.decorate.expandable_reference
           else
             broken_markdown_link "reference", id
           end

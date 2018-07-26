@@ -1,5 +1,3 @@
-# TODO consider renaming the db fields once the code is more stable.
-
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # For the `h` method.
 
@@ -33,21 +31,19 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   # Formats the reference as plaintext (with the exception of <i> tags).
-  # DB column: `references.formatted_cache`.
-  def formatted
-    cached = reference.formatted_cache
+  def plain_text
+    cached = reference.plain_text_cache
     return cached.html_safe if cached
 
-    reference.set_cache generate_formatted, :formatted_cache
+    reference.set_cache generate_plain_text, :plain_text_cache
   end
 
   # Formats the reference with HTML, CSS, etc.
-  # DB column: `references.inline_citation_cache`.
-  def inline_citation
-    cached = reference.inline_citation_cache
+  def expandable_reference
+    cached = reference.expandable_reference_cache
     return cached.html_safe if cached
 
-    reference.set_cache generate_inline_citation, :inline_citation_cache
+    reference.set_cache generate_expandable_reference, :expandable_reference_cache
   end
 
   def linked_keey
@@ -60,7 +56,7 @@ class ReferenceDecorator < ApplicationDecorator
 
   private
 
-    def generate_formatted
+    def generate_plain_text
       string = make_html_safe(reference.author_names_string.dup)
       string << ' ' unless string.empty?
       string << make_html_safe(reference.citation_year) << '. '
@@ -70,15 +66,15 @@ class ReferenceDecorator < ApplicationDecorator
       string
     end
 
-    def generate_inline_citation
-      helpers.content_tag :span, class: "reference_keey_and_expansion" do
+    def generate_expandable_reference
+      helpers.content_tag :span, class: "expandable-reference" do
         link = helpers.link_to reference.keey, '#',
-          title: helpers.unitalicize(formatted), class: "reference_keey"
+          title: helpers.unitalicize(plain_text), class: "expandable-reference-key"
 
         content = link
-        content << helpers.content_tag(:span, class: "reference_keey_expansion") do
+        content << helpers.content_tag(:span, class: "expandable-reference-content") do
           inner_content = []
-          inner_content << inline_citation_reference_keey_expansion_text
+          inner_content << expandable_reference_text
           inner_content << format_reference_document_link
           inner_content << small_reference_link_button
           inner_content.reject(&:blank?).join(' ').html_safe
@@ -86,9 +82,8 @@ class ReferenceDecorator < ApplicationDecorator
       end
     end
 
-    def inline_citation_reference_keey_expansion_text
-      helpers.content_tag :span, formatted,
-        class: "reference_keey_expansion_text", title: reference.keey
+    def expandable_reference_text
+      helpers.content_tag :span, plain_text, class: "expandable-reference-text", title: reference.keey
     end
 
     def small_reference_link_button

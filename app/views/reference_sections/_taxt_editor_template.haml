@@ -1,9 +1,9 @@
 .taxt-editor{data: { url: "/reference_sections/#{item.id}" }}
   .taxt-presenter
-    %h6.title_taxt=markdown item.title_taxt, no_wrappring_p: true
+    %h6.title_taxt=markdown item.title_taxt, no_wrapping_p: true
     %h6.subtitle_taxt=TaxtPresenter[item.subtitle_taxt].to_html
     %a.taxt-editor-edit-button.btn-normal.btn-tiny Edit
-    =markdown item.references_taxt, no_wrappring_p: true
+    =markdown item.references_taxt, no_wrapping_p: true
 
   .taxt-editor-editor{style: 'display: none' }
     =text_area_tag :title_taxt, item.title_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Title", use_extras: true }

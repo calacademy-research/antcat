@@ -41,7 +41,7 @@ class TaxonDecorator::HeadlineType
 
     # TODO does not work 100%, because names are not unique.
     def type_name
-      type = Taxon.find_by_name @taxon.type_name.to_s
+      type = Taxon.find_by_name @taxon.type_name.name
       return link_to_taxon(type) if type
 
       content_tag :span do

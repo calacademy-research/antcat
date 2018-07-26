@@ -1,6 +1,6 @@
 module LinkHelper
   def link_to_antwiki taxon
-    page_title = taxon.name.to_s.tr(" ", '_')
+    page_title = taxon.name.name.tr(" ", '_')
     link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
   end
 
@@ -17,17 +17,17 @@ module LinkHelper
     params = { rank: taxon.class.to_s.downcase }
     params.merge! case taxon
                   when Species
-                    {      genus: taxon.genus.name.to_s.downcase,
-                         species: taxon.name.epithet.to_s.downcase }
+                    {      genus: taxon.genus.name.name.downcase,
+                         species: taxon.name.epithet.downcase }
                   when Subspecies
                     return unless taxon.species
-                    {      genus: taxon.genus.name.to_s.downcase,
+                    {      genus: taxon.genus.name.name.downcase,
                          species: taxon.species.name.epithet,
-                      subspecies: taxon.name.subspecies_epithets.to_s.downcase }
+                      subspecies: taxon.name.subspecies_epithets.downcase }
                   when Genus
-                    {      genus: taxon.name.to_s.downcase }
+                    {      genus: taxon.name.name.downcase }
                   when Subfamily
-                    {  subfamily: taxon.name.to_s.downcase }
+                    {  subfamily: taxon.name.name.downcase }
                   else
                     raise "Don't know how to link #{taxon} to AntWeb"
                   end

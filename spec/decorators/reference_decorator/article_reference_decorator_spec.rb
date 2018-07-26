@@ -4,7 +4,7 @@ describe ArticleReferenceDecorator do
   let(:journal) { create :journal, name: "Neue Denkschriften" }
   let(:author_name) { create :author_name, name: "Forel, A." }
 
-  describe "#formatted" do
+  describe "#plain_text" do
     it "formats the reference" do
       reference = create :article_reference,
         author_names: [author_name],
@@ -13,7 +13,7 @@ describe ArticleReferenceDecorator do
         journal: journal,
         series_volume_issue: "26",
         pagination: "1-452"
-      results = reference.decorate.formatted
+      results = reference.decorate.plain_text
       expect(results).to be_html_safe
       expect(results).to eq 'Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.'
     end
@@ -25,13 +25,13 @@ describe ArticleReferenceDecorator do
         reference = create :article_reference,
           title: 'Ants are my life', author_names: author_names,
           journal: create(:journal, name: '<script>'), citation_year: '2010d', series_volume_issue: '<', pagination: '>'
-        expect(reference.decorate.formatted).
+        expect(reference.decorate.plain_text).
           to eq 'Ward, P. S. 2010d. Ants are my life. &lt;script&gt; &lt;:&gt;.'
       end
     end
   end
 
-  describe "#inline_citation" do
+  describe "#expandable_reference" do
     let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
     let!(:reference) do
       create :article_reference,
@@ -48,11 +48,11 @@ describe ArticleReferenceDecorator do
     it "creates a link to the reference" do
       allow(reference).to receive(:downloadable?).and_return true
 
-      expect(reference.decorate.inline_citation).to eq(
-        %(<span class="reference_keey_and_expansion">) +
-          %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." class="reference_keey" href="#">Latreille, 1809</a>} +
-          %(<span class="reference_keey_expansion">) +
-            %{<span class="reference_keey_expansion_text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
+      expect(reference.decorate.expandable_reference).to eq(
+        %(<span class="expandable-reference">) +
+          %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." class="expandable-reference-key" href="#">Latreille, 1809</a>} +
+          %(<span class="expandable-reference-content">) +
+            %{<span class="expandable-reference-text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
             %( ) +
             %(<a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> ) +
             %(<a href="example.com">PDF</a>) +
