@@ -31,9 +31,8 @@ class ReferencesController < ApplicationController
       @reference.create_activity :create, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: <<~MSG
         Reference was successfully created.
-        <strong>#{view_context.link_to 'Back to the index', references_path}</strong>
-        or
-        <strong>#{view_context.link_to 'add another?', new_reference_path}</strong>
+        <strong>#{view_context.link_to 'Add another?', new_reference_path}</strong>
+        <strong>#{view_context.set_as_default_reference_button @reference}</strong>
       MSG
     else
       render :new
@@ -45,7 +44,10 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :update, edit_summary: params[:edit_summary]
-      redirect_to reference_path(@reference), notice: "Reference was successfully updated."
+      redirect_to reference_path(@reference), notice: <<~MSG
+        Reference was successfully updated.
+        <strong>#{view_context.set_as_default_reference_button @reference}</strong>
+      MSG
     else
       render :edit
     end
@@ -116,6 +118,7 @@ class ReferencesController < ApplicationController
     def reference_params
       params.require(:reference).permit(
         :citation_year,
+        :bolton_key,
         :doi,
         :date,
         :title,

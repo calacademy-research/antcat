@@ -37,7 +37,7 @@ AntCat.setupLinkables = =>
       delay: 300
       maxLen: 50
       insertTpl: '{ref ${id}}:'
-      displayTpl: '<li><small>#${id}</small> ${author} (${year}) <small>${title}</small></li>'
+      displayTpl: '<li><small>#${id}</small> ${author} (${year}) ${bolton_key} <small>${title}</small> ${full_pagination}</li>'
       callbacks: reuseCallbacks "/references/linkable_autocomplete.json"
 
     .atwho

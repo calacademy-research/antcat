@@ -17,10 +17,14 @@
         Authors
         =tooltip_icon :authors, scope: :references
       =f.text_field :author_names_string
-    .medium-2.columns
+    .medium-1.columns
       =label_tag :reference_citation_year, 'Year'
       =f.text_field :citation_year
-
+    .medium-1.columns
+      =label_tag :reference_bolton_key do
+        Bolton key
+        =tooltip_icon "references.bolton_key", scope: :references
+      =f.text_field :bolton_key
     .medium-2.columns
       =label_tag :reference_doi do
         DOI

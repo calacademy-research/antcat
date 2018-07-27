@@ -42,7 +42,7 @@ class Reference < ApplicationRecord
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
-    :pages_in, :doi, :reason_missing, :review_state], replace_newlines: true
+    :pages_in, :doi, :reason_missing, :review_state, :bolton_key], replace_newlines: true
   tracked on: :mixin_create_activity_only, parameters: proc { { name: keey } }
 
   searchable do

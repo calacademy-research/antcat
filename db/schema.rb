@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180724205435) do
+ActiveRecord::Schema.define(version: 20180726194833) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "trackable_id"
@@ -310,6 +310,7 @@ ActiveRecord::Schema.define(version: 20180724205435) do
     t.boolean "auto_generated", default: false
     t.string "origin"
     t.string "doi"
+    t.string "bolton_key"
     t.index ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: { author_names_string_cache: 255 }
     t.index ["created_at"], name: "references_created_at_idx"
     t.index ["id", "type"], name: "index_references_on_id_and_type"

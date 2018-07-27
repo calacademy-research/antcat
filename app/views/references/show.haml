@@ -52,6 +52,9 @@
         %tr
           %th Type
           %td=@reference.type.underscore.humanize
+        %tr
+          %th Bolton key
+          %td=or_dash @reference.bolton_key
 
         -if @reference.is_a? ArticleReference
           %tr
@@ -140,4 +143,4 @@
             %td=time_tag @reference.updated_at
             %td=@reference.decorate.format_review_state
             %td=review_reference_button @reference
-            %td=set_as_default_reference @reference
+            %td=set_as_default_reference_button @reference
