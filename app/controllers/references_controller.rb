@@ -31,9 +31,7 @@ class ReferencesController < ApplicationController
       @reference.create_activity :create, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: <<~MSG
         Reference was successfully created.
-        <strong>#{view_context.link_to 'Back to the index', references_path}</strong>
-        or
-        <strong>#{view_context.link_to 'add another?', new_reference_path}</strong>
+        <strong>#{view_context.link_to 'Add another?', new_reference_path}</strong>
       MSG
     else
       render :new
