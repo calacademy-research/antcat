@@ -23,7 +23,7 @@ module ReferenceHelper
     end
   end
 
-  def set_as_default_reference reference
+  def set_as_default_reference_button reference
     if reference == DefaultReference.get(session)
       'Default'
     else

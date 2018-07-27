@@ -21,7 +21,7 @@
       -if user_can_edit?
         %td=reference.decorate.format_review_state
         %td=review_reference_button reference
-        %td=set_as_default_reference reference
+        %td=set_as_default_reference_button reference
       %td=link_to "Show", reference_path(reference), class: "btn-normal"
 
 =will_paginate @references
