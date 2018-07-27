@@ -12,7 +12,9 @@ module Autocomplete
           id: reference.id,
           author: reference.author_names_string,
           year: reference.citation_year,
-          title: reference.decorate.format_title
+          title: reference.decorate.format_title,
+          full_pagination: full_pagination(reference),
+          bolton_key: bolton_key(reference)
         }
       end
     end
@@ -41,6 +43,21 @@ module Autocomplete
 
           paginate page: 1, per_page: 10
         end.results
+      end
+
+      def full_pagination reference
+        if reference.is_a? NestedReference
+          "[pagination: #{reference.pages_in} (#{reference.nesting_reference.pagination})]"
+        elsif reference.pagination
+          "[pagination: #{reference.pagination}]"
+        else
+          ""
+        end
+      end
+
+      def bolton_key reference
+        return "" unless reference.bolton_key
+        "[Bolton key: #{reference.bolton_key}]"
       end
   end
 end
