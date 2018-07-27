@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Exporters::Antweb::ExportTaxon do # rubocop:disable Metrics/BlockLength
+describe Exporters::Antweb::ExportTaxon do
   subject(:exporter) { described_class.new }
 
   def export_taxon taxon

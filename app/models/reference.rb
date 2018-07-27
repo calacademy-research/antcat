@@ -162,10 +162,8 @@ class Reference < ApplicationRecord
     when 0 then '[no authors]'
     when 1 then "#{names.first}"
     when 2 then "#{names.first} & #{names.second}"
-    else
-      string = names[0..-2].join ', '
-      string << " & " << names[-1]
-    end
+    else        "#{names.first} <i>et al.</i>"
+    end.html_safe
   end
 
   # TODO find proper name.

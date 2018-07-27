@@ -206,6 +206,7 @@ Metrics/AbcSize:
 
 Metrics/BlockLength:
   Max: 337
+  Enabled: false
 
 Metrics/ClassLength:
   Max: 203

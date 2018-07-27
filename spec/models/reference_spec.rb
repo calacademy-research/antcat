@@ -401,7 +401,8 @@ describe Reference do
         create :article_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
       end
 
-      specify { expect(reference.keey).to eq 'Bolton, Fisher & Ward, 1970a' }
+      specify { expect(reference.keey).to eq 'Bolton <i>et al.</i>, 1970a' }
+      specify { expect(reference.keey).to be_html_safe }
     end
   end
 
