@@ -47,7 +47,7 @@ module Autocomplete
           order_by :score, :desc
           order_by :author_names_string, :desc
           order_by :citation_year, :asc
-          paginate page: 1, per_page: 10
+          paginate page: 1, per_page: 15
         end.results
       end
 
