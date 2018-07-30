@@ -39,7 +39,7 @@ module Autocomplete
       def fulltext_search_light search_keywords
         Reference.solr_search do
           keywords search_keywords do
-            fields :title, :author_names_string, :citation_year
+            fields :title, :author_names_string, :citation_year, :bolton_key
             boost_fields author_names_string: 5.0
             boost_fields citation_year: 2.0
           end
