@@ -28,7 +28,7 @@ module DatabaseScripts
 
         # Disabled for performance reasons, but it should be:
         # `t.rows(find_each: true) do |taxon|`
-        t.rows(results.limit(1)) do |taxon|
+        t.rows(cached_results.limit(1)) do |taxon|
           [
             taxon.try(:subfamily).try(:name_cache),
             taxon.try(:genus).try(:name_html_cache),

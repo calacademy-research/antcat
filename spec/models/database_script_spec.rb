@@ -1,8 +1,6 @@
 require "spec_helper"
 
 describe DatabaseScript do
-  let(:script) { DatabaseTestScript.new }
-
   describe ".new_from_filename_without_extension" do
     it "initializes" do
       results = described_class.new_from_filename_without_extension "SubspeciesWithoutSpecies"
@@ -11,25 +9,36 @@ describe DatabaseScript do
   end
 
   describe "#cached_results" do
-    it "doesn't call `#result` more than once" do
-      expect(script).to receive(:results).once.and_return :stubbed
+    let(:database_script) { DatabaseTestScript.new }
 
-      script.send :cached_results
-      script.send :cached_results
+    it "doesn't call `#result` more than once" do
+      expect(database_script).to receive(:results).once.and_return :stubbed
+
+      database_script.send :cached_results
+      database_script.send :cached_results
     end
 
     it "handles nil" do
-      expect(script).to receive(:results).once.and_return nil
+      expect(database_script).to receive(:results).once.and_return nil
 
-      script.send :cached_results
-      script.send :cached_results
+      database_script.send :cached_results
+      database_script.send :cached_results
     end
 
     it "handles false" do
-      expect(script).to receive(:results).once.and_return false
+      expect(database_script).to receive(:results).once.and_return false
 
-      script.send :cached_results
-      script.send :cached_results
+      database_script.send :cached_results
+      database_script.send :cached_results
+    end
+
+    DatabaseScript.all.each do |database_script|
+      it "#{database_script.filename_without_extension} calls `#results` only once" do
+        if database_script.respond_to? :results
+          expect(database_script).to receive(:results).at_most(:once).and_call_original
+        end
+        database_script.render
+      end
     end
   end
 
