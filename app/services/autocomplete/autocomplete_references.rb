@@ -39,7 +39,7 @@ module Autocomplete
       end
 
       def search_options
-        { reference_type: :nomissing, items_per_page: 5 }.merge keyword_params
+        { reference_type: :nomissing, items_per_page: 15 }.merge keyword_params
       end
 
       def keyword_params
