@@ -24,11 +24,7 @@ class ActivitiesController < ApplicationController
   )
 
   def index
-    @activities = Activity.filter(hacked_filter_params)
-    unless params[:show_automated_edits]
-      @activities = @activities.non_automated_edits
-    end
-    @activities = @activities.ids_desc.include_associations.paginate(page: page)
+    @activities = activities.ids_desc.include_associations.paginate(page: page)
   end
 
   def destroy
@@ -44,6 +40,15 @@ class ActivitiesController < ApplicationController
         zip(Activity.distinct.pluck(:action, :action))
     end
     private_class_method :activity_actions_options_for_select
+
+    def activities
+      return Activity.all if params[:id]
+      activities = Activity.filter(hacked_filter_params)
+      unless params[:show_automated_edits]
+        activities = activities.non_automated_edits
+      end
+      activities
+    end
 
     # HACK to make this work at the same time:
     # * Highlight single activity item in context.
