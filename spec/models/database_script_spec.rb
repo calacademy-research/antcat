@@ -43,17 +43,17 @@ describe DatabaseScript do
   end
 
   describe "testsing with a real script" do
-    let(:script) { DatabaseScripts::BadSubfamilyNames.new }
+    let(:script) { DatabaseScripts::ValidTaxaListedAsAnotherTaxonsJuniorSynonym.new }
 
     describe "#to_param" do
       it "is the filename without extension" do
-        expect(script.to_param).to eq "bad_subfamily_names"
+        expect(script.to_param).to eq "valid_taxa_listed_as_another_taxons_junior_synonym"
       end
     end
 
     describe "#description" do
       it "can have a description" do
-        expect(script.description).to match "From %github71."
+        expect(script.description).to match "See %github279."
       end
 
       it "doesn't require a description" do
