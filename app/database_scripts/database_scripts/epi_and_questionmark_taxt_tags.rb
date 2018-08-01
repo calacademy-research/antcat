@@ -12,7 +12,7 @@ module DatabaseScripts
         end
       end
 
-      models_and_ids
+      models_and_ids.reject { |_model, ids| ids.empty? }
     end
 
     def render
