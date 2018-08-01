@@ -11,7 +11,10 @@
 # See `ProtonymsWithReferencesMissingYear` for a database script for finding these.
 
 class Protonym < ApplicationRecord
-  belongs_to :authorship, class_name: 'Citation', dependent: :destroy
+  # TODO we cannot do `dependent: :destroy` because there are protonyms that share the
+  # same `authorship_id`. We may not want to allow sharing `authorship_id`.
+  # See `Protonym.group(:authorship_id).having("COUNT(*) > 1").count.count`
+  belongs_to :authorship, class_name: 'Citation'
   belongs_to :name
 
   has_one :taxon
