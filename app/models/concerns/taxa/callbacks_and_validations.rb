@@ -9,6 +9,7 @@ module Taxa::CallbacksAndValidations
     validates :status, inclusion: { in: Status::STATUSES }
     validates :biogeographic_region,
       inclusion: { in: BiogeographicRegion::REGIONS, allow_nil: true }
+    validate :current_valid_taxon_validation
 
     before_create :build_default_taxon_state
     before_save :set_name_caches
@@ -66,5 +67,12 @@ module Taxa::CallbacksAndValidations
     def set_taxon_state_to_waiting
       taxon_state.review_state = :waiting
       taxon_state.save
+    end
+
+    # NOTE: it's called "Current valid name" in the form.
+    def current_valid_taxon_validation
+      if valid_taxon? && current_valid_taxon
+        errors.add :current_valid_name, "can't be set for valid taxa"
+      end
     end
 end

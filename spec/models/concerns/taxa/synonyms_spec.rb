@@ -4,7 +4,7 @@ describe Taxon do
   describe "#current_valid_taxon_including_synonyms" do
     context 'when there are no synonyms' do
       let!(:current_valid_taxon) { create_genus }
-      let!(:taxon) { create_genus current_valid_taxon: current_valid_taxon }
+      let!(:taxon) { create_genus current_valid_taxon: current_valid_taxon, status: Status::UNAVAILABLE }
 
       it "returns the field contents" do
         expect(taxon.current_valid_taxon_including_synonyms).to eq current_valid_taxon

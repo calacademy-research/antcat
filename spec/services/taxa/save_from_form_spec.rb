@@ -126,6 +126,7 @@ describe Taxa::SaveFromForm do
       current_valid_taxon = create_genus
 
       params[:current_valid_taxon_id] = current_valid_taxon.id
+      params[:status] = Status::UNAVAILABLE
       taxon.save_from_form params
       taxon.reload
       expect(taxon.current_valid_taxon).to eq current_valid_taxon

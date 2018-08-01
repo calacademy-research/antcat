@@ -9,6 +9,11 @@ module Taxa::PredicateMethods
     status == Status::HOMONYM
   end
 
+  # Because `#valid?` clashes with ActiveModel.
+  def valid_taxon?
+    status == Status::VALID
+  end
+
   def invalid?
     status != Status::VALID
   end
