@@ -1,7 +1,15 @@
 # TODO default `taxon_states.deleted` to "false" in db.
 
 class TaxonState < ApplicationRecord
+  STATES = [
+    APPROVED = "approved",
+    WAITING = "waiting",
+    OLD = "old"
+  ]
+
   belongs_to :taxon
+
+  validates :review_state, inclusion: { in: STATES }
 
   # TODO investigate the difference between `TaxonState.waiting` and
   # `Change.waiting`. I believe the difference has to do with `Change`
