@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe References::Search::FulltextWithExtractedKeywords do
   describe "#call" do
-    describe "Search parameters", search: true do
+    describe "Search parameters", :search do
       describe "Authors" do
         context 'when nothing is found for the author names' do
           it "returns an empty array" do
@@ -134,7 +134,7 @@ describe References::Search::FulltextWithExtractedKeywords do
         described_class[q: 'year:1992']
       end
 
-      it "converts the query string", pending: true do
+      it "converts the query string", :pending do
         pending "downcasing/transliteration removed valid search results"
         # TODO config solr
         expect(References::Search::Fulltext).to receive(:new).

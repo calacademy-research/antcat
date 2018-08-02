@@ -77,7 +77,7 @@ describe TaxonHelper do
     end
   end
 
-  describe "#taxon_change_history", versioning: true do
+  describe "#taxon_change_history", :versioning do
     it "shows nothing for old taxa" do
       taxon = create_genus
       expect(helper.taxon_change_history(taxon)).to be_nil

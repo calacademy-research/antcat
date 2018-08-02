@@ -13,7 +13,7 @@ describe Taxon do
     expect(taxon).not_to be_waiting
   end
 
-  describe "Authorization", versioning: true do
+  describe "Authorization", :versioning do
     let(:editor) { create :editor }
     let(:user) { create :user }
     let(:approver) { create :editor }
@@ -83,7 +83,7 @@ describe Taxon do
     end
   end
 
-  describe "Last change and version", versioning: true do
+  describe "Last change and version", :versioning do
     describe "#last_change" do
       let(:taxon) { create_genus }
       let(:user) { create :user }

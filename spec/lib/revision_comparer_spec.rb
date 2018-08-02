@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe RevisionComparer, versioning: true do
+describe RevisionComparer, :versioning do
   let(:item) { create :taxon_history_item, taxt: "initial content" }
   let(:item_id) { item.id }
   let(:model) { TaxonHistoryItem }

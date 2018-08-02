@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Change, versioning: true do
+describe Change, :versioning do
   let(:user) { create :user }
 
   describe 'relationships' do

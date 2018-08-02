@@ -1,7 +1,6 @@
 ENV["RAILS_ENV"] ||= 'test'
 
-# Tag blocks with `search: true` to enable Sunspot. Commit with `Sunspot.commit`.
-require 'sunspot_test/rspec'
+require 'sunspot_test/rspec' # Tag blocks with `:search` to enable Sunspot. Commit with `Sunspot.commit`.
 require_relative '../config/environment'
 require 'rspec/rails'
 require 'paper_trail/frameworks/rspec'

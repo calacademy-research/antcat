@@ -365,7 +365,7 @@ describe Exporters::Antweb::ExportTaxon do
       expect(export_taxon(taxon)[23]).to eq 'Dolichoderinae'
     end
 
-    it "skips over subgenus and return the genus", pending: true do
+    it "skips over subgenus and return the genus", :pending do
       skip "the subgenus factory is broken"
 
       taxon = create_species genus: genus, subgenus: subgenus

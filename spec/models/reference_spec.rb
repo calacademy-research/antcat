@@ -62,7 +62,7 @@ describe Reference do
     end
   end
 
-  describe ".solr_search", search: true do
+  describe ".solr_search", :search do
     it "returns an empty array if nothing is found for author_name" do
       create :reference
       Sunspot.commit
