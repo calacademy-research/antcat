@@ -18,12 +18,14 @@ module Taxa::Statistics
     # TODO this is really slow; figure out how to add database indexes for this.
     def get_statistics ranks, valid_only: false
       statistics = {}
-      ranks.each do |rank|
-        count = if valid_only
-                  send(rank).valid
-                else
-                  send(rank)
-                end.group('fossil', 'status').count
+
+      ranks_with_taxa = ranks.map do |rank|
+        [rank, send(rank)]
+      end
+
+      ranks_with_taxa.each do |rank, taxa|
+        taxa = taxa.valid if valid_only
+        count = taxa.group(:fossil, :status).count
         delete_original_combinations count unless valid_only
 
         self.class.massage_count count, rank, statistics
