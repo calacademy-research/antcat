@@ -108,6 +108,7 @@ describe Taxon do
 
     context 'when there are more than one matche' do
       let!(:name) { create :genus_name, name: 'Monomorium' }
+
       before { 2.times { create :genus, name: name } }
 
       it "returns one of the items (hmm)" do
