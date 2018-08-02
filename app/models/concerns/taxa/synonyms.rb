@@ -2,23 +2,7 @@ module Taxa::Synonyms
   extend ActiveSupport::Concern
 
   def current_valid_taxon_including_synonyms
-    if synonym?
-      senior = find_most_recent_valid_senior_synonym
-      return senior if senior
-    end
-    current_valid_taxon
-  end
-
-  # Spec randomly fails, see notes in spec file.
-  # TODO change to `order(created_at: :id)`.
-  def find_most_recent_valid_senior_synonym
-    return unless senior_synonyms
-    senior_synonyms.order(created_at: :desc).each do |senior_synonym|
-      return senior_synonym unless senior_synonym.invalid?
-      return nil unless senior_synonym.synonym?
-      return senior_synonym.find_most_recent_valid_senior_synonym
-    end
-    nil
+    Taxa::CurrentValidTaxonIncludingSynonyms[self]
   end
 
   def junior_synonyms_with_names
