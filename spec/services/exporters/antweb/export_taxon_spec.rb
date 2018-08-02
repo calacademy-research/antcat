@@ -11,8 +11,6 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "#export_taxon" do
-    before { allow(exporter).to receive(:export_history).and_return 'history' }
-
     # "allow_author_last_names_string_for_and_return"
     def allow_alns_for taxon, value
       allow(exporter).to receive(:author_last_names_string).with(taxon).and_return value
@@ -26,6 +24,7 @@ describe Exporters::Antweb::ExportTaxon do
     let(:attini) { create_tribe 'Attini', subfamily: ponerinae }
 
     before do
+      allow(exporter).to receive(:export_history).and_return 'history'
       allow_any_instance_of(described_class).to receive(:authorship_html_string).
         and_return '<span title="Bolton. Ants>Bolton, 1970</span>'
     end

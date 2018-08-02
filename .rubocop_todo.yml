@@ -172,12 +172,6 @@ RSpec/PredicateMatcher:
     - 'spec/models/user_spec.rb'
     - 'spec/services/taxa/save_from_form_spec.rb'
 
-# Offense count: 4
-RSpec/ScatteredSetup:
-  Exclude:
-    - 'spec/lib/dev_monkey_patches_spec.rb'
-    - 'spec/services/exporters/antweb/export_taxon_spec.rb'
-
 # Offense count: 1
 # Configuration parameters: IgnoreSymbolicNames.
 RSpec/VerifiedDoubles:
