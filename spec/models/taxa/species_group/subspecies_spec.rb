@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Subspecies do
-  it { is_expected.to validate_presence_of :genus }
-
   let(:genus) { create_genus 'Atta' }
+
+  it { is_expected.to validate_presence_of :genus }
 
   describe "#statistics" do
     it "has no statistics" do

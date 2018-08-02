@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe Reference do
+  let(:ward_ps) { create :author_name, name: 'Ward, P.S.' }
+  let(:fisher_bl) { create :author_name, name: 'Fisher, B.L.' }
+
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :title }
 
   it { is_expected.to have_many :author_names }
   it { is_expected.to have_many :nestees }
-
-  let(:fisher_bl) { create :author_name, name: 'Fisher, B.L.' }
-  let(:ward_ps) { create :author_name, name: 'Ward, P.S.' }
 
   describe "scopes" do
     let(:bolton_b) { create :author_name, name: 'Bolton, B.' }

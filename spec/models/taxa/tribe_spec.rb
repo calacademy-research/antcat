@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Tribe do
-  it { is_expected.to belong_to :subfamily }
-
-  let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae') }
   let(:tribe) { create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily }
+  let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae') }
+
+  it { is_expected.to belong_to :subfamily }
 
   it "can have genera, which are its children" do
     atta = create :genus, name: create(:name, name: 'Acromyrmex'), tribe: tribe

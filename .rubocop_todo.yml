@@ -155,18 +155,6 @@ RSpec/LeadingSubject:
     - 'spec/services/autocomplete/autocomplete_references_spec.rb'
     - 'spec/services/taxa/any_non_taxt_references_spec.rb'
 
-# Offense count: 12
-# Cop supports --auto-correct.
-RSpec/LetBeforeExamples:
-  Exclude:
-    - 'spec/models/author_name_spec.rb'
-    - 'spec/models/reference_spec.rb'
-    - 'spec/models/references/article_reference_spec.rb'
-    - 'spec/models/taxa/genus_group/genus_spec.rb'
-    - 'spec/models/taxa/species_group/subspecies_spec.rb'
-    - 'spec/models/taxa/subfamily_spec.rb'
-    - 'spec/models/taxa/tribe_spec.rb'
-
 # Offense count: 15
 RSpec/LetSetup:
   Exclude:

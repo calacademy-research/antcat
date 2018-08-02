@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe ArticleReference do
+  let(:reference) { build_stubbed :article_reference }
+
   it { is_expected.to validate_presence_of :year }
   it { is_expected.to validate_presence_of :series_volume_issue }
   it { is_expected.to validate_presence_of :journal }
-
-  let(:reference) { build_stubbed :article_reference }
 
   describe "parsing fields from series_volume_issue" do
     it "can extract volume and issue" do
