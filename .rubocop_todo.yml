@@ -61,15 +61,6 @@ RSpec/DescribeClass:
     - 'spec/lib/inflections_spec.rb'
     - 'spec/models/concerns/taxa/callbacks_and_validations_spec.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: SkipBlocks, EnforcedStyle.
-# SupportedStyles: described_class, explicit
-RSpec/DescribedClass:
-  Exclude:
-    - 'spec/models/database_script_spec.rb'
-    - 'spec/models/taxa/species_group/subspecies_spec.rb'
-
 # Offense count: 6
 # Configuration parameters: CustomIncludeMethods.
 RSpec/EmptyExampleGroup:

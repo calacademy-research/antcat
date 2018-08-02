@@ -32,7 +32,7 @@ describe DatabaseScript do
       database_script.send :cached_results
     end
 
-    DatabaseScript.all.each do |database_script|
+    described_class.all.each do |database_script|
       it "#{database_script.filename_without_extension} calls `#results` only once" do
         if database_script.respond_to? :results
           expect(database_script).to receive(:results).at_most(:once).and_call_original
