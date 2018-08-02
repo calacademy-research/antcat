@@ -149,11 +149,6 @@ RSpec/LetSetup:
 RSpec/MessageSpies:
   EnforcedStyle: receive
 
-# Offense count: 1
-RSpec/MultipleDescribes:
-  Exclude:
-    - 'spec/models/concerns/taxa/callbacks_and_validations_spec.rb'
-
 # Offense count: 254
 # Configuration parameters: AggregateFailuresByDefault.
 RSpec/MultipleExpectations:

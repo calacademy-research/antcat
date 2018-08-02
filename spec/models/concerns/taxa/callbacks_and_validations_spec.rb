@@ -1,10 +1,5 @@
 require 'spec_helper'
 
-describe Taxon do
-  it { is_expected.to validate_presence_of :name }
-  it { is_expected.to validate_presence_of :protonym }
-end
-
 describe "callbacks" do
   include RefactorTaxonFactoriesHelpers
 
