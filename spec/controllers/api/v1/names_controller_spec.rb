@@ -27,7 +27,7 @@ describe Api::V1::NamesController do
 
     it 'returns HTTP 200' do
       get :index
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status :ok
     end
   end
 
@@ -41,7 +41,7 @@ describe Api::V1::NamesController do
     end
 
     it 'returns HTTP 200' do
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status :ok
     end
   end
 end

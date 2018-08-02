@@ -242,18 +242,3 @@ RSpec/SubjectStub:
 RSpec/VerifiedDoubles:
   Exclude:
     - 'spec/lib/taxt_converter_spec.rb'
-
-# Offense count: 15
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: numeric, symbolic
-Rails/HttpStatus:
-  Exclude:
-    - 'spec/controllers/api/v1/author_names_controller_spec.rb'
-    - 'spec/controllers/api/v1/authors_controller_spec.rb'
-    - 'spec/controllers/api/v1/citation_controller_spec.rb'
-    - 'spec/controllers/api/v1/names_controller_spec.rb'
-    - 'spec/controllers/api/v1/protonyms_controller_spec.rb'
-    - 'spec/controllers/api/v1/taxa_controller_spec.rb'
-    - 'spec/controllers/api/v1/taxon_history_items_controller_spec.rb'
-    - 'spec/controllers/duplicates_controller_spec.rb'

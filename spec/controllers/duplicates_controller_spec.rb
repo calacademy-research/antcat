@@ -70,7 +70,7 @@ describe DuplicatesController do
         previous_combination_id: species_b.id,
         rank_to_create: 'species' }
 
-      expect(response).to have_http_status 204
+      expect(response).to have_http_status :no_content
     end
   end
 end
