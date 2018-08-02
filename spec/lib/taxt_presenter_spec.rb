@@ -125,7 +125,7 @@ describe TaxtPresenter do
           end
 
           it "doesn't include a 'Search history?' link" do
-            expect(results).to_not match "Search history?"
+            expect(results).not_to match "Search history?"
           end
         end
       end
@@ -139,7 +139,7 @@ describe TaxtPresenter do
           end
 
           it "doesn't include a 'Search history?' link" do
-            expect(results).to_not match "Search history?"
+            expect(results).not_to match "Search history?"
           end
         end
       end
@@ -153,7 +153,7 @@ describe TaxtPresenter do
           end
 
           it "doesn't include a 'Search history?' link" do
-            expect(results).to_not match "Search history?"
+            expect(results).not_to match "Search history?"
           end
         end
       end

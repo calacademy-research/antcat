@@ -217,8 +217,8 @@ describe Taxa::SaveFromForm do
 
           # Should not be saved:
           [Family, Subfamily, Tribe].each do |klass|
-            expect_any_instance_of(klass).to_not receive(:save_children).and_call_original
-            expect_any_instance_of(klass).to_not receive(:save).and_call_original
+            expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
+            expect_any_instance_of(klass).not_to receive(:save).and_call_original
           end
 
           genus.save_from_form genus_params
@@ -240,9 +240,9 @@ describe Taxa::SaveFromForm do
         genus.save_from_form genus_params
         actors.each &:reload
 
-        expect(genus).to_not be_auto_generated
-        expect(synonym).to_not be_auto_generated
-        expect(genus.name).to_not be_auto_generated
+        expect(genus).not_to be_auto_generated
+        expect(synonym).not_to be_auto_generated
+        expect(genus.name).not_to be_auto_generated
       end
     end
 

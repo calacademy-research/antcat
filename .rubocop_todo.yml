@@ -201,27 +201,6 @@ RSpec/NamedSubject:
 RSpec/NestedGroups:
   Max: 5
 
-# Offense count: 38
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: not_to, to_not
-RSpec/NotToNot:
-  Exclude:
-    - 'spec/lib/taxt_presenter_spec.rb'
-    - 'spec/models/activity_spec.rb'
-    - 'spec/models/author_name_spec.rb'
-    - 'spec/models/concerns/taxa/callbacks_and_validations_spec.rb'
-    - 'spec/models/concerns/taxa/reorder_history_items_spec.rb'
-    - 'spec/models/observers/reference_author_name_observer_spec.rb'
-    - 'spec/models/observers/reference_document_observer_spec.rb'
-    - 'spec/models/observers/reference_observer_spec.rb'
-    - 'spec/models/publisher_spec.rb'
-    - 'spec/models/reference_spec.rb'
-    - 'spec/models/tooltip_spec.rb'
-    - 'spec/models/user_spec.rb'
-    - 'spec/services/exporters/antweb/export_taxon_spec.rb'
-    - 'spec/services/taxa/save_from_form_spec.rb'
-
 # Offense count: 22
 # Cop supports --auto-correct.
 # Configuration parameters: Strict, EnforcedStyle.

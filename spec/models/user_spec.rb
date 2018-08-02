@@ -51,7 +51,7 @@ describe User do
       it "doesn't create a notification" do
         expect do
           user.notify_because :mentioned_in_thing, attached: issue, notifier: user
-        end.to_not change { Notification.count }
+        end.not_to change { Notification.count }
       end
     end
 
@@ -61,7 +61,7 @@ describe User do
 
         expect do
           user.notify_because :mentioned_in_thing, attached: issue, notifier: notifier
-        end.to_not change { Notification.count }
+        end.not_to change { Notification.count }
       end
     end
 

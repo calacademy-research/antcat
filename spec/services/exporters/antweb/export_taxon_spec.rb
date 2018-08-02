@@ -524,7 +524,7 @@ describe Exporters::Antweb::ExportTaxon do
         let!(:taxon) { build_stubbed :genus, protonym: protonym }
 
         specify do
-          expect(taxon.protonym).to_not be nil
+          expect(taxon.protonym).not_to be nil
           expect(exporter.send(:authorship_html_string, taxon)).to be nil
         end
       end
@@ -536,7 +536,7 @@ describe Exporters::Antweb::ExportTaxon do
         let!(:taxon) { build_stubbed :genus, protonym: protonym }
 
         specify do
-          expect(taxon.protonym.authorship).to_not be nil
+          expect(taxon.protonym.authorship).not_to be nil
           expect(exporter.send(:authorship_html_string, taxon)).to be nil
         end
       end

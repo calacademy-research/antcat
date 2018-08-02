@@ -30,7 +30,7 @@ describe AuthorName do
 
       it "reuses existing authors" do
         expect { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }.
-          to_not change { described_class.count }.from(2)
+          not_to change { described_class.count }.from(2)
       end
     end
 

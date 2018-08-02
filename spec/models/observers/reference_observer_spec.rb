@@ -15,8 +15,8 @@ describe ReferenceObserver do
       end
 
       it "invalidates the cache for itself and its nestees" do
-        expect(reference.plain_text_cache).to_not be_nil
-        expect(nestee.plain_text_cache).to_not be_nil
+        expect(reference.plain_text_cache).not_to be_nil
+        expect(nestee.plain_text_cache).not_to be_nil
 
         reference.update! title: "New Title"
 

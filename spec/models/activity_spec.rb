@@ -17,7 +17,7 @@ describe Activity, :feed do
 
       it "doesn't create activities" do
         expect { described_class.create_for_trackable nil, nil }.
-          to_not change { described_class.count }
+          not_to change { described_class.count }
       end
     end
   end

@@ -319,7 +319,7 @@ describe Reference do
 
     describe "duplicate checking" do
       it "allows a duplicate record to be saved" do
-        expect { ArticleReference.create! reference_params }.to_not raise_error
+        expect { ArticleReference.create! reference_params }.not_to raise_error
       end
 
       it "checks possible duplication and add to errors, if any found" do
