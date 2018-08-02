@@ -187,7 +187,7 @@ describe Taxa::SaveFromForm do
         end
 
         it "changes the review state" do
-          genus.taxon_state.update_columns review_state: :old
+          genus.taxon_state.update_columns review_state: TaxonState::OLD
           genus.reload
 
           expect do
@@ -250,7 +250,7 @@ describe Taxa::SaveFromForm do
       let(:genus) { create_genus }
 
       before do
-        genus.taxon_state.update_columns review_state: :old
+        genus.taxon_state.update_columns review_state: TaxonState::OLD
         genus.reload
         expect(genus).to be_old
       end

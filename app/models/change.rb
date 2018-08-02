@@ -8,7 +8,7 @@ class Change < ApplicationRecord
 
   has_many :versions, class_name: 'PaperTrail::Version'
 
-  scope :waiting, -> { joins_taxon_states.where("taxon_states.review_state = 'waiting'") }
+  scope :waiting, -> { joins_taxon_states.merge(TaxonState.waiting) }
   scope :joins_taxon_states, -> { joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id') }
 
   tracked on: :mixin_create_activity_only
@@ -31,7 +31,7 @@ class Change < ApplicationRecord
   def approve user = nil
     taxon_id = user_changed_taxon_id
     taxon_state = TaxonState.find_by(taxon: taxon_id)
-    return if taxon_state.review_state == "approved"
+    return if taxon_state.review_state == TaxonState::APPROVED
 
     if taxon
       taxon.approve!
@@ -39,7 +39,7 @@ class Change < ApplicationRecord
     else
       # This case is for approving a delete
       # TODO? approving deletions doesn't set `approver` or `approved_at`.
-      taxon_state.review_state = "approved"
+      taxon_state.review_state = TaxonState::APPROVED
       taxon_state.save!
     end
 

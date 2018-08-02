@@ -46,7 +46,7 @@ module RefactorTaxonFactoriesHelpers
 
   def an_old_taxon
     taxon = minimal_family
-    taxon.taxon_state.update_columns review_state: :old
+    taxon.taxon_state.update_columns review_state: TaxonState::OLD
     taxon.reload
     taxon
   end
@@ -57,7 +57,7 @@ module RefactorTaxonFactoriesHelpers
     subfamily = minimal_subfamily
     subfamily.family = family
     subfamily.save
-    subfamily.taxon_state.update_columns review_state: :old
+    subfamily.taxon_state.update_columns review_state: TaxonState::OLD
     subfamily.reload
 
     # Confirm.

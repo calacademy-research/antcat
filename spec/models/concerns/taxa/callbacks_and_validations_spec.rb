@@ -23,13 +23,13 @@ describe Taxa::CallbacksAndValidations do
       let(:taxon) { an_old_taxon }
 
       it "tests tests and makes sure Workflow is in sync" do
-        expect(taxon.taxon_state.review_state).to eq "old"
+        expect(taxon.taxon_state.review_state).to eq TaxonState::OLD
         expect(taxon).not_to be_waiting
 
         taxon.save_initiator = true
         taxon.save
 
-        expect(taxon.taxon_state.review_state).to eq "waiting"
+        expect(taxon.taxon_state.review_state).to eq TaxonState::WAITING
         expect(taxon).to be_waiting
       end
 

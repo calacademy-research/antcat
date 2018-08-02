@@ -5,11 +5,11 @@ class Taxon < ApplicationRecord
   has_one :taxon_state
 
   workflow do
-    state :old
-    state :waiting do
-      event :approve, transitions_to: :approved
+    state TaxonState::OLD
+    state TaxonState::WAITING do
+      event :approve, transitions_to: TaxonState::APPROVED
     end
-    state :approved
+    state TaxonState::APPROVED
   end
 
   delegate :approver, :approved_at, to: :last_change

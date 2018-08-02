@@ -61,11 +61,11 @@ module Taxa::CallbacksAndValidations
     end
 
     def build_default_taxon_state
-      build_taxon_state review_state: :waiting unless taxon_state
+      build_taxon_state review_state: TaxonState::WAITING unless taxon_state
     end
 
     def set_taxon_state_to_waiting
-      taxon_state.review_state = :waiting
+      taxon_state.review_state = TaxonState::WAITING
       taxon_state.save
     end
 

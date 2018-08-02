@@ -4,7 +4,7 @@ describe Taxon do
   let(:adder) { create :editor }
 
   it "can transition from waiting to approved" do
-    taxon = create_taxon_version_and_change :waiting, adder
+    taxon = create_taxon_version_and_change TaxonState::WAITING, adder
     expect(taxon).to be_waiting
     expect(taxon.can_approve?).to be_truthy
 
@@ -27,7 +27,7 @@ describe Taxon do
 
       it "cannot be approved" do
         another_taxon = create :genus
-        another_taxon.taxon_state.review_state = :old
+        another_taxon.taxon_state.review_state = TaxonState::OLD
 
         change = create :change, user_changed_taxon_id: another_taxon.id,
           change_type: "create", approver: user, approved_at: Time.current
@@ -47,7 +47,7 @@ describe Taxon do
       end
 
       before do
-        taxon.taxon_state.review_state = :waiting
+        taxon.taxon_state.review_state = TaxonState::WAITING
         changer = create :editor
         create :version, item: taxon, whodunnit: changer.id, change_id: change.id
       end
@@ -64,7 +64,7 @@ describe Taxon do
     end
 
     context "when an approved record" do
-      let(:taxon) { create_taxon_version_and_change :approved, editor, approver }
+      let(:taxon) { create_taxon_version_and_change TaxonState::APPROVED, editor, approver }
 
       it "has an approver and an approved_at" do
         expect(taxon.approver).to eq approver
