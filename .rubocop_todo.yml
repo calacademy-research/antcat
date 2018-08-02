@@ -120,14 +120,6 @@ RSpec/FilePath:
     - 'spec/models/concerns/taxa/predicate_methods_spec.rb'
     - 'spec/models/concerns/taxa/synonyms_spec.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: implicit, each, example
-RSpec/HookArgument:
-  Exclude:
-    - 'spec/support/rspec.rb'
-
 # Offense count: 42
 # Configuration parameters: AssignmentOnly.
 RSpec/InstanceVariable:
