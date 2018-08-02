@@ -157,10 +157,10 @@ describe TaxonDecorator::TaxonStatus do
 
   describe "#format_senior_synonym" do
     context "when the senior synonym is itself invalid" do
+      subject { described_class.new(junior) }
+
       let(:invalid_senior) { create_genus 'Atta', status: Status::SYNONYM }
       let(:junior) { create_genus 'Eciton', status: Status::SYNONYM }
-
-      subject { described_class.new(junior) }
 
       before { create :synonym, junior_synonym: junior, senior_synonym: invalid_senior }
 

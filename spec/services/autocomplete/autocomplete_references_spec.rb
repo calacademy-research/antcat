@@ -2,9 +2,9 @@ require "spec_helper"
 
 describe Autocomplete::AutocompleteReferences do
   describe "#format_autosuggest_keywords" do
-    let!(:reference) { reference_factory author_name: 'E.O. Wilson' }
-
     subject { described_class.new('dummy') }
+
+    let!(:reference) { reference_factory author_name: 'E.O. Wilson' }
 
     it "replaces the typed author with the suggested author" do
       keyword_params = { author: "wil" }
