@@ -50,7 +50,7 @@ class ConvertToSubspeciesController < ApplicationController
     end
 
     begin
-      @taxon.become_subspecies_of @new_species
+      @taxon.convert_to_subspecies_of @new_species
     rescue Taxon::TaxonExists => e
       @taxon.errors.add :base, e.message
       render :new and return
