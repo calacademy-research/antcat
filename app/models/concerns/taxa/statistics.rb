@@ -19,8 +19,10 @@ module Taxa::Statistics
     def get_statistics ranks, valid_only: false
       statistics = {}
 
-      ranks_with_taxa = ranks.map do |rank|
-        [rank, send(rank)]
+      ranks_with_taxa =
+        case ranks
+        when Array then ranks.map { |rank| [rank, send(rank)] }
+        when Hash  then ranks.map { |rank, klass| [rank, klass] }
       end
 
       ranks_with_taxa.each do |rank, taxa|
