@@ -251,12 +251,12 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "Sending 'was original combination' so that AntWeb knows when to use parentheses around authorship" do
-    it "sends TRUE or FALSE" do
+    it "sends TRUE or FALSE (when TRUE)" do
       taxon = create_genus status: Status::ORIGINAL_COMBINATION
       expect(export_taxon(taxon)[14]).to eq 'TRUE'
     end
 
-    it "sends TRUE or FALSE" do
+    it "sends TRUE or FALSE (when FALSE)" do
       taxon = create_genus
       expect(export_taxon(taxon)[14]).to eq 'FALSE'
     end

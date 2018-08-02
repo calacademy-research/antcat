@@ -186,18 +186,6 @@ RSpec/PredicateMatcher:
     - 'spec/services/taxa/save_from_form_spec.rb'
 
 # Offense count: 4
-RSpec/RepeatedDescription:
-  Exclude:
-    - 'spec/services/exporters/antweb/export_taxon_spec.rb'
-    - 'spec/services/references/reference_similarity_spec.rb'
-
-# Offense count: 4
-RSpec/RepeatedExample:
-  Exclude:
-    - 'spec/models/reference_document_spec.rb'
-    - 'spec/services/taxa/advanced_search_spec.rb'
-
-# Offense count: 4
 RSpec/ScatteredSetup:
   Exclude:
     - 'spec/lib/dev_monkey_patches_spec.rb'

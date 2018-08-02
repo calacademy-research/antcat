@@ -228,13 +228,13 @@ describe References::ReferenceSimilarity do
           expect(described_class[lhs, rhs]).to eq 0.90
         end
 
-        it "matches when the series/volume/issue has spaces after the volume" do
+        it "matches when the series/volume/issue has spaces after the volume (issue first)" do
           lhs.series_volume_issue = '(21)4'
           rhs.series_volume_issue = '(21) 4'
           expect(described_class[lhs, rhs]).to eq 0.90
         end
 
-        it "matches when the series/volume/issue has spaces after the volume" do
+        it "matches when the series/volume/issue has spaces after the volume (issue last)" do
           lhs.series_volume_issue = '4(21)'
           rhs.series_volume_issue = '4 (21)'
           expect(described_class[lhs, rhs]).to eq 0.90

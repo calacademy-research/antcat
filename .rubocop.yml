@@ -16,6 +16,7 @@ AllCops:
     - 'app/controllers/name_fields_controller.rb'
     - 'lib/taxt_id_translator.rb'
     - 'lib/taxt_converter.rb'
+    - 'spec/lib/taxt_converter_spec.rb'
 
 Rails:
   Enabled: true
