@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Taxon do
+describe Taxon do # rubocop:disable RSpec/FilePath
   describe "#current_valid_taxon_including_synonyms" do
     context 'when there are no synonyms' do
       let!(:current_valid_taxon) { create_genus }

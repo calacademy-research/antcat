@@ -112,14 +112,6 @@ RSpec/ExpectInHook:
     - 'spec/services/references/match_references_spec.rb'
     - 'spec/services/taxa/save_from_form_spec.rb'
 
-# Offense count: 3
-# Configuration parameters: CustomTransform, IgnoreMethods.
-RSpec/FilePath:
-  Exclude:
-    - 'spec/controllers/api/v1/citation_controller_spec.rb'
-    - 'spec/models/concerns/taxa/predicate_methods_spec.rb'
-    - 'spec/models/concerns/taxa/synonyms_spec.rb'
-
 # Offense count: 42
 # Configuration parameters: AssignmentOnly.
 RSpec/InstanceVariable:

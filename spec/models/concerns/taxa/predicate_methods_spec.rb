@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Taxon do
+describe Taxon do # rubocop:disable RSpec/FilePath
   let(:taxon) { build_stubbed :taxon }
 
   context "when status 'valid'" do
