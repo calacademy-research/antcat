@@ -75,19 +75,6 @@ RSpec/EmptyExampleGroup:
 RSpec/ExampleLength:
   Enabled: false
 
-# Offense count: 12
-# Cop supports --auto-correct.
-# Configuration parameters: CustomTransform, IgnoredWords.
-RSpec/ExampleWording:
-  Exclude:
-    - 'spec/controllers/duplicates_controller_spec.rb'
-    - 'spec/lib/dev_monkey_patches_spec.rb'
-    - 'spec/models/concerns/taxa/predicate_methods_spec.rb'
-    - 'spec/models/concerns/taxa/synonyms_spec.rb'
-    - 'spec/models/references/nested_reference_spec.rb'
-    - 'spec/models/taxa/genus_group/genus_spec.rb'
-    - 'spec/services/exporters/antweb/export_taxon_spec.rb'
-
 # Offense count: 29
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

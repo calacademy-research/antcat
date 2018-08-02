@@ -417,7 +417,7 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "HEADER" do
-    it "should be the same as the code" do
+    it "is the same as the code" do
       expected = "antcat id\t" +
         "subfamily\t" +
         "tribe\t" +

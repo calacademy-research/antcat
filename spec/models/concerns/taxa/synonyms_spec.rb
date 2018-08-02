@@ -151,7 +151,7 @@ describe Taxon do # rubocop:disable RSpec/FilePath
     expect(taxon).to be_invalid
   end
 
-  it "should have junior and senior synonyms" do
+  it "can have junior and senior synonyms" do
     senior = create_genus 'Atta'
     junior = create_genus 'Eciton'
     create :synonym, junior_synonym: junior, senior_synonym: senior
@@ -163,7 +163,7 @@ describe Taxon do # rubocop:disable RSpec/FilePath
   end
 
   describe "Reversing synonymy" do
-    it "should make one the synonym of the other and set statuses" do
+    it "makes one the synonym of the other and set statuses" do
       atta = create_genus 'Atta'
       attaboi = create_genus 'Attaboi'
 

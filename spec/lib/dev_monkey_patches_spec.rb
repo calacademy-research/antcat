@@ -14,7 +14,7 @@ describe DevMonkeyPatches do
   context "when in production" do
     before { allow(Rails.env).to receive(:production?).and_return true }
 
-    it "it cannot be extended" do
+    it "cannot be extended" do
       expect { described_class.enable }.to raise_error /cannot/
     end
   end

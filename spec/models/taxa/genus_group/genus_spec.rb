@@ -19,7 +19,7 @@ describe Genus do
     expect(genus.children).to eq genus.species
   end
 
-  it "should use the species's' genus, if nec." do
+  it "uses the species's' genus, if nec." do
     species = create :species, genus: genus
     create :subspecies, species: species, genus: nil
 

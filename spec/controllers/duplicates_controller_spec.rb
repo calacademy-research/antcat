@@ -15,7 +15,7 @@ describe DuplicatesController do
   end
 
   describe "find a duplicate case" do
-    it "Should find a secondary_junior_homonym match for same name", :pending do
+    it "can find a `secondary_junior_homonym match` for same name", :pending do
       pending "Known to be broken - update to reflect current duplicates controller functinality"
 
       genus_b = create_genus "GB"
@@ -35,7 +35,7 @@ describe DuplicatesController do
       expect(taxa[0]['species']['duplicate_type']).to eq 'secondary_junior_homonym'
     end
 
-    it "Should find a return_to_original match for same protonym", :pending do
+    it "can find a `return_to_original match` for same protonym", :pending do
       pending "Known to be broken - update to reflect current duplicates controller functinality"
 
       genus_b = create_genus "GB"
@@ -56,7 +56,7 @@ describe DuplicatesController do
       expect(taxa[0]['species']['duplicate_type']).to eq 'return_to_original'
     end
 
-    it "Should find no matches for same protonym distinct epithet", :pending do
+    it "finds no matches for same protonym distinct epithet", :pending do
       pending "Known to be broken - update to reflect current duplicates controller functinality"
 
       genus_b = create_genus "GB"
