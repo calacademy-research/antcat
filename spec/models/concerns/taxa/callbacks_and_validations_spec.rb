@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "callbacks" do
+describe Taxa::CallbacksAndValidations do
   include RefactorTaxonFactoriesHelpers
 
   describe "#build_default_taxon_state and #set_taxon_state_to_waiting" do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "inflections" do
+describe "inflections" do # rubocop:disable RSpec/DescribeClass
   it "pluralizes" do
     expect("family".pluralize).to eq "families"
     expect("subfamily".pluralize).to eq "subfamilies"

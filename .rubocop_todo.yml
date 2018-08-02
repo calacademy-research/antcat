@@ -55,12 +55,6 @@ RSpec/ContextWording:
     - 'spec/services/markdowns/render_spec.rb'
     - 'spec/services/taxa/save_from_form_spec.rb'
 
-# Offense count: 2
-RSpec/DescribeClass:
-  Exclude:
-    - 'spec/lib/inflections_spec.rb'
-    - 'spec/models/concerns/taxa/callbacks_and_validations_spec.rb'
-
 # Offense count: 6
 # Configuration parameters: CustomIncludeMethods.
 RSpec/EmptyExampleGroup:
