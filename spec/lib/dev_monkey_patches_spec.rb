@@ -6,8 +6,10 @@ require "spec_helper"
 # it's very hard to remove them, and we do not want any of them in tests.
 
 describe DevMonkeyPatches do
-  before { allow($stdout).to receive :puts } # Suppress standard output.
-  before { allow(described_class).to receive(:enable!).and_return :stubbed }
+  before do
+    allow($stdout).to receive :puts # Suppress standard output.
+    allow(described_class).to receive(:enable!).and_return :stubbed
+  end
 
   context "when in production" do
     before { allow(Rails.env).to receive(:production?).and_return true }

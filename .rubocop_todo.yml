@@ -70,12 +70,6 @@ RSpec/EmptyExampleGroup:
     - 'spec/models/concerns/taxa/callbacks_and_validations_spec.rb'
     - 'spec/services/exporters/antweb/exporter_spec.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-RSpec/EmptyLineAfterHook:
-  Exclude:
-    - 'spec/lib/dev_monkey_patches_spec.rb'
-
 # Offense count: 172
 # Configuration parameters: Max.
 RSpec/ExampleLength:
