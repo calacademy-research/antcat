@@ -203,11 +203,6 @@ RSpec/ScatteredSetup:
     - 'spec/lib/dev_monkey_patches_spec.rb'
     - 'spec/services/exporters/antweb/export_taxon_spec.rb'
 
-# Offense count: 3
-RSpec/SubjectStub:
-  Exclude:
-    - 'spec/services/exporters/antweb/export_taxon_spec.rb'
-
 # Offense count: 1
 # Configuration parameters: IgnoreSymbolicNames.
 RSpec/VerifiedDoubles:

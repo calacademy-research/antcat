@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 
+# rubocop:disable RSpec/SubjectStub
 describe Exporters::Antweb::ExportTaxon do
   subject(:exporter) { described_class.new }
 
@@ -666,3 +667,4 @@ describe Exporters::Antweb::ExportTaxon do
     end
   end
 end
+# rubocop:enable RSpec/SubjectStub
