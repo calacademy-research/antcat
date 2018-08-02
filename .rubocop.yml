@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 require: rubocop-rspec
 
 AllCops:
@@ -99,6 +97,51 @@ Naming/PredicateName:
   Enabled: false
 
 Naming/VariableNumber:
+  Enabled: false
+
+FactoryBot/CreateList:
+  Enabled: false
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/EmptyExampleGroup:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/ExpectChange:
+  Enabled: false
+
+RSpec/ExpectInHook:
+  Enabled: false
+
+RSpec/InstanceVariable:
+  Enabled: false
+
+RSpec/IteratedExpectation:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Max: 9
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 5
+
+RSpec/PredicateMatcher:
   Enabled: false
 
 Style/Alias:
