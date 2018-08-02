@@ -97,15 +97,5 @@ describe Taxon do
         expect(taxon.last_change).to eq change
       end
     end
-
-    describe "#last_version" do
-      it "returns the most recent Version" do
-        genus = create_taxon_version_and_change :waiting, adder
-
-        last_version = genus.last_version
-        genus.reload
-        expect(last_version).to eq genus.versions.reload.last
-      end
-    end
   end
 end

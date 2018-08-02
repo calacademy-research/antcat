@@ -31,8 +31,4 @@ class Taxon < ApplicationRecord
   def last_change
     Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
   end
-
-  def last_version
-    versions.reload.last
-  end
 end

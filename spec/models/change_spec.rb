@@ -10,7 +10,7 @@ describe Change, :versioning do
       change.save!
       change.reload
       create :version, item: genus, change_id: change.id
-      genus_version = genus.last_version
+      genus_version = genus.versions.reload.last
 
       expect(change.versions.first).to eq genus_version
     end
