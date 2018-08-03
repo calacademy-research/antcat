@@ -6,7 +6,6 @@ class Taxon < ApplicationRecord
   include Taxa::CallbacksAndValidations
   include Taxa::Delete
   include Taxa::PredicateMethods
-  include Taxa::Statistics
   include Taxa::Synonyms
   include RevisionsCanBeCompared
   include Trackable
@@ -184,5 +183,9 @@ class Taxon < ApplicationRecord
 
   def any_nontaxt_references?
     Taxa::AnyNonTaxtReferences[self]
+  end
+
+  def get_statistics ranks, valid_only: false
+    Taxa::Statistics[self, ranks, valid_only: valid_only]
   end
 end
