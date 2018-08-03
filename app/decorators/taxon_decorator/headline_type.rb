@@ -17,7 +17,7 @@ class TaxonDecorator::HeadlineType
 
     attr_reader :taxon
 
-    delegate :type_taxt, :biogeographic_region, to: :taxon
+    delegate :type_taxt, :type_name, :type_fossil, :biogeographic_region, to: :taxon
 
     def headline_type
       string = ''.html_safe
@@ -27,14 +27,14 @@ class TaxonDecorator::HeadlineType
     end
 
     def type_name_and_taxt
-      if !taxon.type_name && type_taxt
+      if !type_name && type_taxt
         string = detax type_taxt
       else
-        return ''.html_safe unless taxon.type_name
-        rank = taxon.type_name.rank
+        return ''.html_safe unless type_name
+        rank = type_name.rank
         rank = 'genus' if rank == 'subgenus'
         string = "Type-#{rank}: ".html_safe
-        string << type_name + detax(type_taxt)
+        string << format_type_name + detax(type_taxt)
         string
       end
       content_tag :span do
@@ -43,12 +43,12 @@ class TaxonDecorator::HeadlineType
     end
 
     # TODO does not work 100%, because names are not unique.
-    def type_name
-      type = Taxon.find_by_name taxon.type_name.name
+    def format_type_name
+      type = Taxon.find_by_name type_name.name
       return link_to_taxon(type) if type
 
       content_tag :span do
-        taxon.type_name.to_html_with_fossil taxon.type_fossil
+        type_name.to_html_with_fossil type_fossil
       end
     end
 
