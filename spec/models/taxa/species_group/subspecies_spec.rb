@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Subspecies do
-  it { is_expected.to validate_presence_of :genus }
-
   let(:genus) { create_genus 'Atta' }
+
+  it { is_expected.to validate_presence_of :genus }
 
   describe "#statistics" do
     it "has no statistics" do
@@ -61,7 +61,7 @@ describe Subspecies do
   describe "#elevate_to_species" do
     it "turns the record into a Species" do
       taxon = create_subspecies 'Atta major colobopsis'
-      expect(taxon).to be_kind_of Subspecies
+      expect(taxon).to be_kind_of described_class
 
       taxon.elevate_to_species
       taxon = Species.find taxon.id

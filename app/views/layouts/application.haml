@@ -24,6 +24,8 @@
     =favicon_link_tag
     =yield :head
 
+    =link_to_current_page_on_localhost if current_user&.superadmin?
+
     %body{id: current_controller_css_id}
       #header
         =render "navigation"

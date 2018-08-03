@@ -4,7 +4,7 @@ describe Taxon do
   let(:adder) { create :editor }
 
   it "can transition from waiting to approved" do
-    taxon = create_taxon_version_and_change :waiting, adder
+    taxon = create_taxon_version_and_change TaxonState::WAITING, adder
     expect(taxon).to be_waiting
     expect(taxon.can_approve?).to be_truthy
 
@@ -13,7 +13,7 @@ describe Taxon do
     expect(taxon).not_to be_waiting
   end
 
-  describe "Authorization", versioning: true do
+  describe "Authorization", :versioning do
     let(:editor) { create :editor }
     let(:user) { create :user }
     let(:approver) { create :editor }
@@ -27,11 +27,11 @@ describe Taxon do
 
       it "cannot be approved" do
         another_taxon = create :genus
-        another_taxon.taxon_state.review_state = :old
+        another_taxon.taxon_state.review_state = TaxonState::OLD
 
-        change = create :change, user_changed_taxon_id: another_taxon.id,
+        change = create :change, taxon_id: another_taxon.id,
           change_type: "create", approver: user, approved_at: Time.current
-        create :version, item: another_taxon, whodunnit: user.id, change_id: change.id
+        create :version, item: another_taxon, whodunnit: user.id, change: change
 
         expect(taxon.can_be_approved_by?(change, nil)).to be_falsey
         expect(taxon.can_be_approved_by?(change, editor)).to be_falsey
@@ -42,14 +42,14 @@ describe Taxon do
     context "when a waiting record" do
       let(:taxon) { create :genus }
       let(:change) do
-        create :change, user_changed_taxon_id: taxon.id,
+        create :change, taxon_id: taxon.id,
           change_type: "create", approver: approver, approved_at: Time.current
       end
 
       before do
-        taxon.taxon_state.review_state = :waiting
+        taxon.taxon_state.review_state = TaxonState::WAITING
         changer = create :editor
-        create :version, item: taxon, whodunnit: changer.id, change_id: change.id
+        create :version, item: taxon, whodunnit: changer.id, change: change
       end
 
       it "can be reviewed by a catalog editor" do
@@ -64,7 +64,7 @@ describe Taxon do
     end
 
     context "when an approved record" do
-      let(:taxon) { create_taxon_version_and_change :approved, editor, approver }
+      let(:taxon) { create_taxon_version_and_change TaxonState::APPROVED, editor, approver }
 
       it "has an approver and an approved_at" do
         expect(taxon.approver).to eq approver
@@ -83,7 +83,7 @@ describe Taxon do
     end
   end
 
-  describe "Last change and version", versioning: true do
+  describe "Last change and version", :versioning do
     describe "#last_change" do
       let(:taxon) { create_genus }
       let(:user) { create :user }
@@ -95,16 +95,6 @@ describe Taxon do
       it "returns the Change, if any" do
         change = setup_version taxon, user
         expect(taxon.last_change).to eq change
-      end
-    end
-
-    describe "#last_version" do
-      it "returns the most recent Version" do
-        genus = create_taxon_version_and_change :waiting, adder
-
-        last_version = genus.last_version
-        genus.reload
-        expect(last_version).to eq genus.versions.reload.last
       end
     end
   end

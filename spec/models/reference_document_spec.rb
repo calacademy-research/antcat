@@ -75,10 +75,6 @@ describe ReferenceDocument do
       expect(described_class.new(url: 'foo', file_file_name: 'bar')).to be_downloadable
     end
 
-    it "is downloadable by a registered user if we are hosting on S3" do
-      expect(described_class.new(url: 'foo', file_file_name: 'bar')).to be_downloadable
-    end
-
     it "is downloadable by anyone if it's public" do
       document = described_class.new url: 'foo', file_file_name: 'bar', public: true
       expect(document).to be_downloadable

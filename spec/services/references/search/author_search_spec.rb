@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe References::Search::AuthorSearch do
   describe "#call" do
-    it "finds the references for all aliases of a given author_name", pending: true do
+    it "finds the references for all aliases of a given author_name", :pending do
       pending "broke when search method was refactored"
 
       bolton = create :author

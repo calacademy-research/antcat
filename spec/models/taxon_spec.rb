@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Taxon do
   it { is_expected.to validate_presence_of :name }
+  it { is_expected.to validate_presence_of :protonym }
   it { is_expected.to belong_to :protonym }
   it { is_expected.to allow_value(nil).for :type_name }
   it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
@@ -108,6 +109,7 @@ describe Taxon do
 
     context 'when there are more than one matche' do
       let!(:name) { create :genus_name, name: 'Monomorium' }
+
       before { 2.times { create :genus, name: name } }
 
       it "returns one of the items (hmm)" do

@@ -126,6 +126,7 @@ describe Taxa::SaveFromForm do
       current_valid_taxon = create_genus
 
       params[:current_valid_taxon_id] = current_valid_taxon.id
+      params[:status] = Status::UNAVAILABLE
       taxon.save_from_form params
       taxon.reload
       expect(taxon.current_valid_taxon).to eq current_valid_taxon
@@ -171,7 +172,7 @@ describe Taxa::SaveFromForm do
           expect do
             with_versioning { taxon.save_from_form genus_params }
           end.to change { Change.count }.from(0).to(1)
-          expect(Change.first.user_changed_taxon_id).to eq taxon.last_version.item_id
+          expect(Change.first.taxon_id).to eq taxon.versions.reload.last.item_id
         end
       end
 
@@ -186,7 +187,7 @@ describe Taxa::SaveFromForm do
         end
 
         it "changes the review state" do
-          genus.taxon_state.update_columns review_state: :old
+          genus.taxon_state.update_columns review_state: TaxonState::OLD
           genus.reload
 
           expect do
@@ -216,8 +217,8 @@ describe Taxa::SaveFromForm do
 
           # Should not be saved:
           [Family, Subfamily, Tribe].each do |klass|
-            expect_any_instance_of(klass).to_not receive(:save_children).and_call_original
-            expect_any_instance_of(klass).to_not receive(:save).and_call_original
+            expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
+            expect_any_instance_of(klass).not_to receive(:save).and_call_original
           end
 
           genus.save_from_form genus_params
@@ -239,9 +240,9 @@ describe Taxa::SaveFromForm do
         genus.save_from_form genus_params
         actors.each &:reload
 
-        expect(genus).to_not be_auto_generated
-        expect(synonym).to_not be_auto_generated
-        expect(genus.name).to_not be_auto_generated
+        expect(genus).not_to be_auto_generated
+        expect(synonym).not_to be_auto_generated
+        expect(genus.name).not_to be_auto_generated
       end
     end
 
@@ -249,7 +250,7 @@ describe Taxa::SaveFromForm do
       let(:genus) { create_genus }
 
       before do
-        genus.taxon_state.update_columns review_state: :old
+        genus.taxon_state.update_columns review_state: TaxonState::OLD
         genus.reload
         expect(genus).to be_old
       end

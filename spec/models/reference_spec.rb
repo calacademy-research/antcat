@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe Reference do
+  let(:ward_ps) { create :author_name, name: 'Ward, P.S.' }
+  let(:fisher_bl) { create :author_name, name: 'Fisher, B.L.' }
+
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :title }
 
   it { is_expected.to have_many :author_names }
   it { is_expected.to have_many :nestees }
-
-  let(:fisher_bl) { create :author_name, name: 'Fisher, B.L.' }
-  let(:ward_ps) { create :author_name, name: 'Ward, P.S.' }
 
   describe "scopes" do
     let(:bolton_b) { create :author_name, name: 'Bolton, B.' }
@@ -62,7 +62,7 @@ describe Reference do
     end
   end
 
-  describe ".solr_search", search: true do
+  describe ".solr_search", :search do
     it "returns an empty array if nothing is found for author_name" do
       create :reference
       Sunspot.commit
@@ -319,7 +319,7 @@ describe Reference do
 
     describe "duplicate checking" do
       it "allows a duplicate record to be saved" do
-        expect { ArticleReference.create! reference_params }.to_not raise_error
+        expect { ArticleReference.create! reference_params }.not_to raise_error
       end
 
       it "checks possible duplication and add to errors, if any found" do

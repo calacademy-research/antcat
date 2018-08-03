@@ -1,11 +1,9 @@
 class Journal < ApplicationRecord
   include Trackable
 
-  has_many :references
+  has_many :references, dependent: :restrict_with_error
 
   validates :name, presence: true, allow_blank: false
-
-  before_destroy :ensure_not_used
 
   scope :includes_reference_count, -> do
     left_joins(:references).group(:id).
@@ -16,13 +14,4 @@ class Journal < ApplicationRecord
   tracked on: :all, parameters: proc {
     { name: name, name_was: (name_before_last_save if saved_change_to_name?) }
   }
-
-  private
-
-    def ensure_not_used
-      if references.exists?
-        errors.add :base, "Cannot delete journal (not unused)."
-        throw :abort
-      end
-    end
 end

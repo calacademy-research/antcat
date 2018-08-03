@@ -79,6 +79,4 @@ module HtmlSelectorsHelpers
 end
 
 World HtmlSelectorsHelpers
-
-# To avoid typing `FactoryBot.create` all the time (use `create`).
-World FactoryBot::Syntax::Methods
+World FactoryBot::Syntax::Methods # To avoid typing `FactoryBot.create`.

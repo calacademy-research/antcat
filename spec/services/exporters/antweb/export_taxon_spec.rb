@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 
+# rubocop:disable RSpec/SubjectStub
 describe Exporters::Antweb::ExportTaxon do
   subject(:exporter) { described_class.new }
 
@@ -10,8 +11,6 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "#export_taxon" do
-    before { allow(exporter).to receive(:export_history).and_return 'history' }
-
     # "allow_author_last_names_string_for_and_return"
     def allow_alns_for taxon, value
       allow(exporter).to receive(:author_last_names_string).with(taxon).and_return value
@@ -25,6 +24,7 @@ describe Exporters::Antweb::ExportTaxon do
     let(:attini) { create_tribe 'Attini', subfamily: ponerinae }
 
     before do
+      allow(exporter).to receive(:export_history).and_return 'history'
       allow_any_instance_of(described_class).to receive(:authorship_html_string).
         and_return '<span title="Bolton. Ants>Bolton, 1970</span>'
     end
@@ -211,7 +211,7 @@ describe Exporters::Antweb::ExportTaxon do
     context "when taxon has a `current_valid_taxon`" do
       let!(:old) { create_genus }
 
-      before { taxon.update! current_valid_taxon_id: old.id }
+      before { taxon.update! current_valid_taxon: old, status: Status::UNAVAILABLE }
 
       it "exports the current valid name of the taxon" do
         expect(export_taxon(taxon)[13]).to end_with old.name.name
@@ -250,12 +250,12 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "Sending 'was original combination' so that AntWeb knows when to use parentheses around authorship" do
-    it "sends TRUE or FALSE" do
+    it "sends TRUE or FALSE (when TRUE)" do
       taxon = create_genus status: Status::ORIGINAL_COMBINATION
       expect(export_taxon(taxon)[14]).to eq 'TRUE'
     end
 
-    it "sends TRUE or FALSE" do
+    it "sends TRUE or FALSE (when FALSE)" do
       taxon = create_genus
       expect(export_taxon(taxon)[14]).to eq 'FALSE'
     end
@@ -365,7 +365,7 @@ describe Exporters::Antweb::ExportTaxon do
       expect(export_taxon(taxon)[23]).to eq 'Dolichoderinae'
     end
 
-    it "skips over subgenus and return the genus", pending: true do
+    it "skips over subgenus and return the genus", :pending do
       skip "the subgenus factory is broken"
 
       taxon = create_species genus: genus, subgenus: subgenus
@@ -379,7 +379,8 @@ describe Exporters::Antweb::ExportTaxon do
 
     it "handles a synonym" do
       senior = create_genus 'Eciton', subfamily: subfamily
-      junior = create_genus 'Atta', subfamily: subfamily, current_valid_taxon: senior
+      junior = create_genus 'Atta', subfamily: subfamily, current_valid_taxon: senior,
+        status: Status::UNAVAILABLE
       taxon = create_species genus: junior
       create :synonym, senior_synonym: senior, junior_synonym: junior
 
@@ -415,7 +416,7 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "HEADER" do
-    it "should be the same as the code" do
+    it "is the same as the code" do
       expected = "antcat id\t" +
         "subfamily\t" +
         "tribe\t" +
@@ -523,7 +524,7 @@ describe Exporters::Antweb::ExportTaxon do
         let!(:taxon) { build_stubbed :genus, protonym: protonym }
 
         specify do
-          expect(taxon.protonym).to_not be nil
+          expect(taxon.protonym).not_to be nil
           expect(exporter.send(:authorship_html_string, taxon)).to be nil
         end
       end
@@ -535,7 +536,7 @@ describe Exporters::Antweb::ExportTaxon do
         let!(:taxon) { build_stubbed :genus, protonym: protonym }
 
         specify do
-          expect(taxon.protonym.authorship).to_not be nil
+          expect(taxon.protonym.authorship).not_to be nil
           expect(exporter.send(:authorship_html_string, taxon)).to be nil
         end
       end
@@ -665,3 +666,4 @@ describe Exporters::Antweb::ExportTaxon do
     end
   end
 end
+# rubocop:enable RSpec/SubjectStub

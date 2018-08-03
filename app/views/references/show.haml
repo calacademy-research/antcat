@@ -16,6 +16,7 @@
       =link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
     -unless @reference.is_a? MissingReference
       =link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
+    =set_as_default_reference_button @reference
     =link_to "Delete", reference_path(@reference), class: "btn-delete",         method: :delete, data: { confirm: "Do you want to delete this reference? Note: it can take a minute or to to check that there are no references to this one." }
 
 .clearfix
@@ -27,7 +28,6 @@
 -# take way too long time, we're linking them here instead for now.
 .row.margin-bottom
   .small-12.columns.no-right-padding
-    %h5 Formatted
     .callout
       =@reference.plain_text
       =@reference.format_reference_document_link
@@ -136,11 +136,9 @@
           %th Changed
           %th Review status
           %th
-          %th
         %tbody
           %tr
             %td=time_tag @reference.created_at
             %td=time_tag @reference.updated_at
             %td=@reference.decorate.format_review_state
             %td=review_reference_button @reference
-            %td=set_as_default_reference_button @reference

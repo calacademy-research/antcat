@@ -1,11 +1,6 @@
 require 'spec_helper'
 
-describe Taxon do
-  it { is_expected.to validate_presence_of :name }
-  it { is_expected.to validate_presence_of :protonym }
-end
-
-describe "callbacks" do
+describe Taxa::CallbacksAndValidations do
   include RefactorTaxonFactoriesHelpers
 
   describe "#build_default_taxon_state and #set_taxon_state_to_waiting" do
@@ -28,13 +23,13 @@ describe "callbacks" do
       let(:taxon) { an_old_taxon }
 
       it "tests tests and makes sure Workflow is in sync" do
-        expect(taxon.taxon_state.review_state).to eq "old"
+        expect(taxon.taxon_state.review_state).to eq TaxonState::OLD
         expect(taxon).not_to be_waiting
 
         taxon.save_initiator = true
         taxon.save
 
-        expect(taxon.taxon_state.review_state).to eq "waiting"
+        expect(taxon.taxon_state.review_state).to eq TaxonState::WAITING
         expect(taxon).to be_waiting
       end
 
@@ -86,7 +81,7 @@ describe "callbacks" do
         taxon.save
         actors.each &:reload
 
-        actors.each { |object| expect(object).to_not be_auto_generated }
+        actors.each { |object| expect(object).not_to be_auto_generated }
       end
 
       it "doesn't cascade" do
@@ -102,8 +97,8 @@ describe "callbacks" do
         family.save
         actors.each &:reload
 
-        expect(family).to_not be_auto_generated
-        expect(family.name).to_not be_auto_generated
+        expect(family).not_to be_auto_generated
+        expect(family.name).not_to be_auto_generated
         expect(subfamily).to be_auto_generated
         expect(subfamily.name).to be_auto_generated
       end
@@ -121,12 +116,12 @@ describe "callbacks" do
       it "doesn't save the children" do
         # The `save_initiator` should be saved.
         expect(subfamily).to receive(:save).and_call_original
-        expect_any_instance_of(Subfamily).to_not receive(:save_children).and_call_original
+        expect_any_instance_of(Subfamily).not_to receive(:save_children).and_call_original
 
         # But not its children.
         [Tribe, Genus, Species].each do |klass|
-          expect_any_instance_of(klass).to_not receive(:save_children).and_call_original
-          expect_any_instance_of(klass).to_not receive(:save).and_call_original
+          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
+          expect_any_instance_of(klass).not_to receive(:save).and_call_original
         end
 
         subfamily.save
@@ -142,7 +137,7 @@ describe "callbacks" do
         end
 
         # But not the family.
-        expect_any_instance_of(Family).to_not receive(:save_children).and_call_original
+        expect_any_instance_of(Family).not_to receive(:save_children).and_call_original
 
         subfamily.save_initiator = true
         subfamily.save
@@ -152,11 +147,11 @@ describe "callbacks" do
         another_subfamily = minimal_subfamily
 
         expect(another_subfamily).to receive(:save).and_call_original
-        expect(subfamily).to_not receive(:save).and_call_original
+        expect(subfamily).not_to receive(:save).and_call_original
 
         [Tribe, Genus, Species].each do |klass|
-          expect_any_instance_of(klass).to_not receive(:save_children).and_call_original
-          expect_any_instance_of(klass).to_not receive(:save).and_call_original
+          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
+          expect_any_instance_of(klass).not_to receive(:save).and_call_original
         end
 
         another_subfamily.save_initiator = true
@@ -171,7 +166,7 @@ describe "callbacks" do
 
         # Confirm test isn't borked.
         subfamily.save_initiator = true
-        expect(subfamily.save_children).to_not be nil
+        expect(subfamily.save_children).not_to be nil
       end
     end
   end
@@ -198,7 +193,7 @@ describe "callbacks" do
           it "doesn't destroy any synonyms" do
             junior.fossil = true
 
-            expect { junior.save! }.to_not change { Synonym.count }
+            expect { junior.save! }.not_to change { Synonym.count }
             expect(senior.junior_synonyms.count).to eq 1
             expect(junior.senior_synonyms.count).to eq 1
           end
@@ -220,7 +215,7 @@ describe "callbacks" do
           it "doesn't destroy any synonyms" do
             senior.status = Status::HOMONYM
 
-            expect { senior.save! }.to_not change { Synonym.count }
+            expect { senior.save! }.not_to change { Synonym.count }
             expect(senior.junior_synonyms.count).to eq 1
             expect(junior.senior_synonyms.count).to eq 1
           end

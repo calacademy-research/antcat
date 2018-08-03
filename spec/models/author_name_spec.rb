@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe AuthorName do
+  let(:author) { Author.create! }
+
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :author }
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to have_many :references }
-
-  let(:author) { Author.create! }
 
   it "can't be a duplicate" do
     author_name = create :author_name, name: 'Bolton'
@@ -30,7 +30,7 @@ describe AuthorName do
 
       it "reuses existing authors" do
         expect { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }.
-          to_not change { described_class.count }.from(2)
+          not_to change { described_class.count }.from(2)
       end
     end
 

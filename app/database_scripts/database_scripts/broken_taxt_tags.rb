@@ -205,9 +205,7 @@ module DatabaseScripts
         @_taxt_tags = {
           ref: Reference,
           nam: Name,
-          tax: Taxon,
-          # epi: # TODO? /{epi (\w+)}/
-          # ?:   # TODO? Not sure what this is, but it looks like this "{? #{string}}"
+          tax: Taxon
         }
 
         def @_taxt_tags.keys_plus_empty_arrays # rubocop:disable Lint/NestedMethodDefinition

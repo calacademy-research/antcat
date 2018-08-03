@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Taxon do
+describe Taxon do # rubocop:disable RSpec/FilePath
   let(:taxon) { build_stubbed :taxon }
 
   context "when status 'valid'" do
@@ -43,7 +43,7 @@ describe Taxon do
       let!(:species) { create_species 'Atta major' }
       let!(:protonym_name) { create :species_name, name: 'Atta major' }
 
-      it "it is not a recombination" do
+      it "is not a recombination" do
         expect(species.protonym).to receive(:name).and_return protonym_name
         expect(species).not_to be_recombination
       end
@@ -53,7 +53,7 @@ describe Taxon do
       let!(:species) { create_species 'Atta minor' }
       let!(:protonym_name) { create :species_name, name: 'Eciton minor' }
 
-      it "it is a recombination" do
+      it "is a recombination" do
         expect(species.protonym).to receive(:name).and_return protonym_name
         expect(species).to be_recombination
       end
@@ -63,7 +63,7 @@ describe Taxon do
       let!(:species) { create_species 'Atta minor maxus' }
       let!(:protonym_name) { create :subspecies_name, name: 'Atta minor minus' }
 
-      it "it is not a recombination" do
+      it "is not a recombination" do
         expect(species.protonym).to receive(:name).and_return protonym_name
         expect(species).not_to be_recombination
       end

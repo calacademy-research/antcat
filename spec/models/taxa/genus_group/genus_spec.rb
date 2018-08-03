@@ -1,15 +1,15 @@
 require 'spec_helper'
 
 describe Genus do
+  let(:genus_with_tribe) { create :genus, name: create(:genus_name, name: 'Atta'), tribe: tribe }
+  let(:tribe) { create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily }
+  let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae') }
+  let(:genus) { create :genus, name: create(:genus_name, name: 'Atta') }
+
   it { is_expected.to belong_to :tribe }
   it { is_expected.to have_many :species }
   it { is_expected.to have_many :subgenera }
   it { is_expected.to have_many :subspecies }
-
-  let(:genus) { create :genus, name: create(:genus_name, name: 'Atta') }
-  let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae') }
-  let(:tribe) { create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily }
-  let(:genus_with_tribe) { create :genus, name: create(:genus_name, name: 'Atta'), tribe: tribe }
 
   it "can have species, which are its children" do
     robusta = create :species, name: create(:name, name: "robusta"), genus: genus
@@ -19,7 +19,7 @@ describe Genus do
     expect(genus.children).to eq genus.species
   end
 
-  it "should use the species's' genus, if nec." do
+  it "uses the species's' genus, if nec." do
     species = create :species, genus: genus
     create :subspecies, species: species, genus: nil
 

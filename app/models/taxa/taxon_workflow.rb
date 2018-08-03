@@ -5,11 +5,11 @@ class Taxon < ApplicationRecord
   has_one :taxon_state
 
   workflow do
-    state :old
-    state :waiting do
-      event :approve, transitions_to: :approved
+    state TaxonState::OLD
+    state TaxonState::WAITING do
+      event :approve, transitions_to: TaxonState::APPROVED
     end
-    state :approved
+    state TaxonState::APPROVED
   end
 
   delegate :approver, :approved_at, to: :last_change
@@ -30,9 +30,5 @@ class Taxon < ApplicationRecord
   # Returns the most recent change that touches this taxon.
   def last_change
     Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
-  end
-
-  def last_version
-    versions.reload.last
   end
 end

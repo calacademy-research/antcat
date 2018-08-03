@@ -74,7 +74,7 @@ describe LinkHelper do
       expect(helper.link_to_antweb(subspecies)).to be_nil
     end
 
-    it "handles quadrinomial subspecies", pending: true do
+    it "handles quadrinomial subspecies", :pending do
       pending "are there any valid quadrinomials?"
       genus = create_genus 'Atta'
       species = create_species 'Atta major', genus: genus

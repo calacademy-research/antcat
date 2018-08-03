@@ -52,7 +52,7 @@ describe TaxonDecorator::TaxonStatus do
       context "when there is a current valid taxon" do
         let!(:senior_synonym) { create_genus 'Eciton' }
 
-        before { taxon.update! current_valid_taxon: senior_synonym }
+        before { taxon.update! current_valid_taxon: senior_synonym, status: Status::UNAVAILABLE }
 
         specify do
           expect(taxon.decorate.taxon_status).
@@ -157,9 +157,10 @@ describe TaxonDecorator::TaxonStatus do
 
   describe "#format_senior_synonym" do
     context "when the senior synonym is itself invalid" do
+      subject { described_class.new(junior) }
+
       let(:invalid_senior) { create_genus 'Atta', status: Status::SYNONYM }
       let(:junior) { create_genus 'Eciton', status: Status::SYNONYM }
-      subject { described_class.new(junior) }
 
       before { create :synonym, junior_synonym: junior, senior_synonym: invalid_senior }
 

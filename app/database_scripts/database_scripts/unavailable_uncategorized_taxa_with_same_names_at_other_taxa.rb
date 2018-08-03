@@ -30,7 +30,7 @@ module DatabaseScripts
     private
 
       def all_taxa
-        all_ids = results.map { |group| group.grouped_ids.split(",") }.flatten
+        all_ids = cached_results.map { |group| group.grouped_ids.split(",") }.flatten
         Taxon.where(id: all_ids, status: "unavailable uncategorized")
       end
 

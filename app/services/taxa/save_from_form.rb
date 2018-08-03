@@ -106,7 +106,7 @@ class Taxa::SaveFromForm
         #   finder on your Widget model as usual."
         taxon.paper_trail.touch_with_version
 
-        change.update user_changed_taxon_id: taxon.id
+        change.update taxon_id: taxon.id
       else
         UndoTracker.setup_change taxon, :update
         taxon.save!

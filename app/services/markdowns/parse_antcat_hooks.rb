@@ -43,10 +43,10 @@ module Markdowns
       def parse_reference_ids!
         content.gsub!(/(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/) do
           id = $~[:id]
-          if Reference.exists? id
+          begin
             reference = Reference.find(id)
             reference.decorate.expandable_reference
-          else
+          rescue
             broken_markdown_link "reference", id
           end
         end
@@ -57,9 +57,9 @@ module Markdowns
       def parse_name_ids!
         content.gsub!(/(\{nam (?<id>\d+)\})/) do
           id = $~[:id]
-          if Name.exists? id
+          begin
             Name.find(id).to_html
-          else
+          rescue
             broken_markdown_link "name", id
           end
         end
@@ -69,10 +69,10 @@ module Markdowns
       # Renders: link to the journal, with the journal's name as the title.
       def parse_journal_ids!
         content.gsub!(/%journal(\d+)/) do
-          if Journal.exists? $1
+          begin
             journal = Journal.find($1)
             link_to "<i>#{journal.name}</i>".html_safe, journal_path(journal)
-          else
+          rescue
             broken_markdown_link "journal", $1
           end
         end
@@ -82,10 +82,10 @@ module Markdowns
       # Renders: a link to the issue.
       def parse_issue_ids!
         content.gsub!(/%issue(\d+)/) do
-          if Issue.exists? $1
+          begin
             issue = Issue.find($1)
             link_to "issue ##{$1} (#{issue.title})", issue_path($1)
-          else
+          rescue
             broken_markdown_link "issue", $1
           end
         end
@@ -113,10 +113,10 @@ module Markdowns
       # Renders: a link to the user's user page.
       def parse_user_ids!
         content.gsub!(/@user(\d+)/) do
-          if User.exists? $1
+          begin
             user = User.find($1)
             user.decorate.ping_user_link
-          else
+          rescue
             broken_markdown_link "user", $1
           end
         end
@@ -124,12 +124,10 @@ module Markdowns
 
       # Very internal only.
       def try_linking_taxon_id string
-        if Taxon.exists? string
-          taxon = Taxon.find(string)
-          taxon.decorate.link_to_taxon
-        else
-          broken_markdown_link "taxon", string
-        end
+        taxon = Taxon.find(string)
+        taxon.decorate.link_to_taxon
+      rescue
+        broken_markdown_link "taxon", string
       end
 
       def broken_markdown_link type, string

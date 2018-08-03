@@ -14,7 +14,7 @@ describe ReferencesController do
     end
   end
 
-  describe "GET autocomplete", search: true do
+  describe "GET autocomplete", :search do
     context "when there are matches" do
       before do
         reference_factory author_name: 'E.O. Wilson'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180726194833) do
+ActiveRecord::Schema.define(version: 20180803142308) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "trackable_id"
@@ -82,10 +82,10 @@ ActiveRecord::Schema.define(version: 20180726194833) do
     t.integer "approver_id"
     t.datetime "approved_at"
     t.string "change_type"
-    t.integer "user_changed_taxon_id"
+    t.integer "taxon_id"
     t.integer "user_id"
     t.index ["approver_id"], name: "index_changes_on_approver_id"
-    t.index ["user_changed_taxon_id"], name: "index_changes_on_user_changed_taxon_id"
+    t.index ["taxon_id"], name: "index_changes_on_taxon_id"
   end
 
   create_table "citations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|

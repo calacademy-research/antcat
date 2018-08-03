@@ -1,10 +1,10 @@
 require "spec_helper"
 
-describe Taxon do
+describe Taxon do # rubocop:disable RSpec/FilePath
   describe "#current_valid_taxon_including_synonyms" do
     context 'when there are no synonyms' do
       let!(:current_valid_taxon) { create_genus }
-      let!(:taxon) { create_genus current_valid_taxon: current_valid_taxon }
+      let!(:taxon) { create_genus current_valid_taxon: current_valid_taxon, status: Status::UNAVAILABLE }
 
       it "returns the field contents" do
         expect(taxon.current_valid_taxon_including_synonyms).to eq current_valid_taxon
@@ -151,7 +151,7 @@ describe Taxon do
     expect(taxon).to be_invalid
   end
 
-  it "should have junior and senior synonyms" do
+  it "can have junior and senior synonyms" do
     senior = create_genus 'Atta'
     junior = create_genus 'Eciton'
     create :synonym, junior_synonym: junior, senior_synonym: senior
@@ -163,7 +163,7 @@ describe Taxon do
   end
 
   describe "Reversing synonymy" do
-    it "should make one the synonym of the other and set statuses" do
+    it "makes one the synonym of the other and set statuses" do
       atta = create_genus 'Atta'
       attaboi = create_genus 'Attaboi'
 
@@ -243,7 +243,7 @@ describe Taxon do
         results = atta.junior_synonyms_with_names
         expect(results.size).to eq 1
         record = results.first
-        expect(record['id']).to eq Synonym.find_by(junior_synonym_id: eciton.id).id
+        expect(record['id']).to eq Synonym.find_by(junior_synonym: eciton).id
         expect(record['name']).to eq eciton.name.to_html
       end
     end
@@ -253,7 +253,7 @@ describe Taxon do
         results = eciton.senior_synonyms_with_names
         expect(results.size).to eq 1
         record = results.first
-        expect(record['id']).to eq Synonym.find_by(senior_synonym_id: atta.id).id
+        expect(record['id']).to eq Synonym.find_by(senior_synonym: atta).id
         expect(record['name']).to eq atta.name.to_html
       end
     end

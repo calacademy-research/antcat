@@ -18,7 +18,7 @@ describe Journal do
 
       it "cannot be destroyed" do
         expect { journal.destroy }.not_to change { described_class.count }
-        expect(journal.errors[:base]).to eq ["Cannot delete journal (not unused)."]
+        expect(journal.errors[:base]).to eq ["Cannot delete record because dependent references exist"]
       end
     end
   end

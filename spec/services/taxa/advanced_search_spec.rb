@@ -164,10 +164,6 @@ describe Taxa::AdvancedSearch do
       it "only returns taxa with that locality" do
         expect(described_class[locality: 'Indonesia']).to eq [atta]
       end
-
-      it "returns taxa with search term at the beginning" do
-        expect(described_class[locality: 'Indonesia']).to eq [atta]
-      end
     end
 
     describe "Searching for biogeographic region" do
@@ -197,7 +193,7 @@ describe Taxa::AdvancedSearch do
       end
     end
 
-    describe "Searching type fields", :focus do
+    describe "Searching type fields" do
       let!(:one) { create :species, published_type_information: 'one' }
       let!(:two) { create :species, additional_type_information: 'one two' }
       let!(:three) { create :species, type_notes: 'one two three' }
