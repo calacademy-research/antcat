@@ -31,9 +31,12 @@
       =text_field_tag :forms, params[:forms]
 
   .row
-    .medium-3.columns
+    .medium-2.columns
       Status
       =select_tag :status, search_status_options_for_select(params[:status])
+    .medium-1.columns
+      Fossil
+      =select_tag :fossil, any_yes_no_options_for_select(params[:fossil])
     .medium-9.columns{style: "padding-top: 2rem"}
       =check_box_tag :valid_only, true, !!params[:valid_only]
       =label_tag 'Valid only?'

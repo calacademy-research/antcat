@@ -22,11 +22,21 @@ module AdvancedSearchesHelper
       options_for_select(BiogeographicRegion::REGIONS, value)
   end
 
-  def search_status_options_for_select value = "All"
+  def search_status_options_for_select value = "Any"
     extra_options = [["Any", ""]]
 
     options_for_select(extra_options, value) <<
       options_for_select(Status.options_for_select, value)
+  end
+
+  def any_yes_no_options_for_select value = "Any"
+    options = [
+      ["Any", ""],
+      ["Yes", "true"],
+      ["No", "false"]
+    ]
+
+    options_for_select(options, value)
   end
 
   def per_page_select per_page

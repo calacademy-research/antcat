@@ -30,6 +30,8 @@ module Taxa
       def search_results
         query = Taxon.joins(protonym: [{ authorship: :reference }]).order_by_name_cache
 
+        query = filter_by_fossil!(query) if params[:fossil]
+
         query = query.where(status: params[:status]) if params[:status]
         query = query.where(type: params[:rank]) if params[:rank]
         query = query.valid if params[:valid_only]
@@ -87,6 +89,13 @@ module Taxa
         query = query.where('forms LIKE ?', search_term) if params[:forms]
 
         query.includes(:name, protonym: { authorship: :reference })
+      end
+
+      def filter_by_fossil!(query)
+        case params[:fossil]
+        when "true"  then query.fossil
+        when "false" then query.extant
+        end
       end
   end
 end

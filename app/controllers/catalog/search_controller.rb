@@ -63,7 +63,7 @@ module Catalog
 
       def advanced_search_params
         params.slice :author_name, :rank, :year, :name, :locality, :valid_only,
-          :biogeographic_region, :genus, :forms, :type_information, :status
+          :biogeographic_region, :genus, :forms, :type_information, :status, :fossil
       end
 
       def is_author_search?

@@ -239,5 +239,14 @@ describe Taxa::AdvancedSearch do
         expect(described_class[status: ""]).to be_empty
       end
     end
+
+    describe "Searching by fossil" do
+      let!(:extant) { create :family }
+      let!(:fossil) { create :family, :fossil }
+
+      specify { expect(described_class[fossil: "", dummy: "x"]).to match_array [extant, fossil] }
+      specify { expect(described_class[fossil: "true"]).to match_array [fossil] }
+      specify { expect(described_class[fossil: "false"]).to match_array [extant] }
+    end
   end
 end
