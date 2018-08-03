@@ -22,7 +22,7 @@ describe Changes::UndosController do
 
       context "when undoing an older change would hit newer changes" do
         before do
-          change = create :change, user_changed_taxon_id: taxon.id, change_type: "update"
+          change = create :change, taxon_id: taxon.id, change_type: "update"
           create :version, item: taxon, whodunnit: adder.id, change: change
           taxon.status = Status::HOMONYM
           taxon.save

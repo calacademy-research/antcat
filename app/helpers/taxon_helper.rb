@@ -97,8 +97,8 @@ module TaxonHelper
         # taxon_states. not clear to me how this happens or whether this should be allowed.
         # Workaround: If the taxon_state is showing "approved", go get the most recent change
         # that has a noted approval.
-        approved_change = Change.where(<<-SQL.squish, change.user_changed_taxon_id).last
-          user_changed_taxon_id = ? AND approved_at IS NOT NULL
+        approved_change = Change.where(<<-SQL.squish, change.taxon_id).last
+          taxon_id = ? AND approved_at IS NOT NULL
         SQL
 
         if approved_change

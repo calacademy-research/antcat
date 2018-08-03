@@ -3,13 +3,13 @@ class Change < ApplicationRecord
 
   belongs_to :approver, class_name: 'User'
   # TODO rename to `taxon_id`.
-  belongs_to :taxon, class_name: 'Taxon', foreign_key: 'user_changed_taxon_id'
+  belongs_to :taxon, class_name: 'Taxon'
   belongs_to :user # TODO: Validate presence of `:on_create`.
 
   has_many :versions, class_name: 'PaperTrail::Version'
 
   scope :waiting, -> { joins_taxon_states.merge(TaxonState.waiting) }
-  scope :joins_taxon_states, -> { joins('JOIN taxon_states ON taxon_states.taxon_id = changes.user_changed_taxon_id') }
+  scope :joins_taxon_states, -> { joins('JOIN taxon_states ON taxon_states.taxon_id = changes.taxon_id') }
 
   tracked on: :mixin_create_activity_only
 
@@ -19,7 +19,7 @@ class Change < ApplicationRecord
     Feed.without_tracking do
       TaxonState.waiting.each do |taxon_state|
         # TODO maybe something like `TaxonState#approve_related_changes`?
-        Change.where(user_changed_taxon_id: taxon_state.taxon_id).find_each do |change|
+        Change.where(taxon_id: taxon_state.taxon_id).find_each do |change|
           change.approve user
         end
       end
@@ -29,7 +29,6 @@ class Change < ApplicationRecord
   end
 
   def approve user = nil
-    taxon_id = user_changed_taxon_id
     taxon_state = TaxonState.find_by(taxon: taxon_id)
     return if taxon_state.review_state == TaxonState::APPROVED
 
@@ -126,7 +125,7 @@ class Change < ApplicationRecord
       version = PaperTrail::Version.find_by_sql(<<-SQL.squish).first
         SELECT * FROM versions WHERE item_type = 'Taxon'
         AND object IS NOT NULL
-        AND item_id = '#{user_changed_taxon_id}'
+        AND item_id = '#{taxon_id}'
         ORDER BY id DESC
       SQL
       version

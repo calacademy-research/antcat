@@ -172,7 +172,7 @@ describe Taxa::SaveFromForm do
           expect do
             with_versioning { taxon.save_from_form genus_params }
           end.to change { Change.count }.from(0).to(1)
-          expect(Change.first.user_changed_taxon_id).to eq taxon.versions.reload.last.item_id
+          expect(Change.first.taxon_id).to eq taxon.versions.reload.last.item_id
         end
       end
 
