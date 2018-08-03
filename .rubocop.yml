@@ -250,7 +250,7 @@ Style/ZeroLengthPredicate:
   Enabled: false
 
 Metrics/AbcSize:
-  Max: 92
+  Enabled: false
 
 Metrics/BlockLength:
   Max: 337

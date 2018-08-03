@@ -37,7 +37,19 @@
     .medium-1.columns
       Fossil
       =select_tag :fossil, any_yes_no_options_for_select(params[:fossil])
-    .medium-9.columns{style: "padding-top: 2rem"}
+    .medium-2.columns
+      Nomen nudum
+      =select_tag :nomen_nudum, any_yes_no_options_for_select(params[:nomen_nudum])
+    .medium-3.columns
+      Unresolved junior homonym
+      =select_tag :unresolved_junior_homonym, any_yes_no_options_for_select(params[:unresolved_junior_homonym])
+    .medium-1.columns
+      Ichnotaxon
+      =select_tag :ichnotaxon, any_yes_no_options_for_select(params[:ichnotaxon])
+    .medium-1.columns
+      Hong
+      =select_tag :hong, any_yes_no_options_for_select(params[:hong])
+    .medium-2.columns{style: "padding-top: 2rem"}
       =check_box_tag :valid_only, true, !!params[:valid_only]
       =label_tag 'Valid only?'
 
