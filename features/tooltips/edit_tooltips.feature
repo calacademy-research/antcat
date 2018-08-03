@@ -93,7 +93,7 @@ Feature: Editing tooltips
     And I go to the tooltips test page
     Then I should not see any tooltips next to the text "Hardcoded"
 
-  @javascript
+  @javascript @no_travis
   Scenario: Disabling a selector-based tooltip
     Given this tooltip exists
       | key      | text    | selector | selector_enabled | scope         |
