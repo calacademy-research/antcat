@@ -6,8 +6,6 @@ class Taxon < ApplicationRecord
   include Taxa::CallbacksAndValidations
   include Taxa::Delete
   include Taxa::PredicateMethods
-  include Taxa::ReorderHistoryItems
-  include Taxa::Statistics
   include Taxa::Synonyms
   include RevisionsCanBeCompared
   include Trackable
@@ -171,6 +169,10 @@ class Taxon < ApplicationRecord
     string
   end
 
+  def reorder_history_items reordered_ids
+    Taxa::ReorderHistoryItems[self, reordered_ids]
+  end
+
   def authorship_reference
     protonym.try(:authorship).try(:reference)
   end
@@ -181,5 +183,9 @@ class Taxon < ApplicationRecord
 
   def any_nontaxt_references?
     Taxa::AnyNonTaxtReferences[self]
+  end
+
+  def get_statistics ranks, valid_only: false
+    Taxa::Statistics[self, ranks, valid_only: valid_only]
   end
 end
