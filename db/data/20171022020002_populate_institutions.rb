@@ -170,6 +170,7 @@ class PopulateInstitutions < ActiveRecord::Migration[4.2]
   ]
 
   def self.up
+    raise "saftey check since this file is not in `data_schema.rb`"
     set_user_for_papertrail!
     create_institutions!
   end

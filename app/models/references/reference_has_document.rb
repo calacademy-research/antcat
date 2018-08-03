@@ -3,13 +3,7 @@ class Reference < ApplicationRecord
 
   accepts_nested_attributes_for :document, reject_if: :all_blank
 
-  def url
-    document.try :url
-  end
-
-  def downloadable?
-    document.try :downloadable?
-  end
+  delegate :url, :downloadable?, to: :document, allow_nil: true
 
   def document_host= host
     document.host = host if document

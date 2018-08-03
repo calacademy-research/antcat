@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe References::Search::Fulltext, search: true do
+describe References::Search::Fulltext, :search do
   describe "#call" do
     describe 'searching with `start_year`, `end_year` and `year`' do
       before do

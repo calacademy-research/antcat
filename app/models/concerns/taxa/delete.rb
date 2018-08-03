@@ -12,7 +12,7 @@ module Taxa::Delete
       taxon_state.paper_trail.touch_with_version if taxon_state.versions.empty?
 
       taxon_state.deleted = true
-      taxon_state.review_state = 'waiting'
+      taxon_state.review_state = TaxonState::WAITING
       taxon_state.save
       destroy!
     end

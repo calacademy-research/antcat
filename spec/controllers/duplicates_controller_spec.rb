@@ -15,7 +15,7 @@ describe DuplicatesController do
   end
 
   describe "find a duplicate case" do
-    it "Should find a secondary_junior_homonym match for same name", pending: true do
+    it "can find a `secondary_junior_homonym match` for same name", :pending do
       pending "Known to be broken - update to reflect current duplicates controller functinality"
 
       genus_b = create_genus "GB"
@@ -35,14 +35,14 @@ describe DuplicatesController do
       expect(taxa[0]['species']['duplicate_type']).to eq 'secondary_junior_homonym'
     end
 
-    it "Should find a return_to_original match for same protonym", pending: true do
+    it "can find a `return_to_original match` for same protonym", :pending do
       pending "Known to be broken - update to reflect current duplicates controller functinality"
 
       genus_b = create_genus "GB"
       species_b = create_species @species_epithet,
         genus: genus_b,
         status: Status::VALID,
-        protonym_id: @species_a.id
+        protonym: @species_a
       sign_in @user
 
       get :show, params: { parent_id: @genus_a.id,
@@ -56,21 +56,21 @@ describe DuplicatesController do
       expect(taxa[0]['species']['duplicate_type']).to eq 'return_to_original'
     end
 
-    it "Should find no matches for same protonym distinct epithet", pending: true do
+    it "finds no matches for same protonym distinct epithet", :pending do
       pending "Known to be broken - update to reflect current duplicates controller functinality"
 
       genus_b = create_genus "GB"
       species_b = create_species @species_epithet + "boo",
         genus: genus_b,
         status: Status::VALID,
-        protonym_id: @species_a.id
+        protonym: @species_a
       sign_in @user
 
       get :show, params: { parent_id: @genus_a.id,
         previous_combination_id: species_b.id,
         rank_to_create: 'species' }
 
-      expect(response).to have_http_status 204
+      expect(response).to have_http_status :no_content
     end
   end
 end

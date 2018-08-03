@@ -4,7 +4,7 @@ describe Changes::UndosController do
   describe "GET show" do
     describe "check that we can find and report the entire undo set" do
       let!(:adder) { create :editor }
-      let!(:taxon) { create_taxon_version_and_change :waiting, adder, nil, 'Genus1' }
+      let!(:taxon) { create_taxon_version_and_change TaxonState::WAITING, adder, nil, 'Genus1' }
 
       before { sign_in adder }
 
@@ -22,8 +22,8 @@ describe Changes::UndosController do
 
       context "when undoing an older change would hit newer changes" do
         before do
-          change = create :change, user_changed_taxon_id: taxon.id, change_type: "update"
-          create :version, item_id: taxon.id, whodunnit: adder.id, change_id: change.id
+          change = create :change, taxon_id: taxon.id, change_type: "update"
+          create :version, item: taxon, whodunnit: adder.id, change: change
           taxon.status = Status::HOMONYM
           taxon.save
         end

@@ -77,7 +77,7 @@ describe TaxonHelper do
     end
   end
 
-  describe "#taxon_change_history", versioning: true do
+  describe "#taxon_change_history", :versioning do
     it "shows nothing for old taxa" do
       taxon = create_genus
       expect(helper.taxon_change_history(taxon)).to be_nil
@@ -85,7 +85,7 @@ describe TaxonHelper do
 
     it "shows the adder for waiting taxa" do
       adder = create :editor
-      taxon = create_taxon_version_and_change :waiting, adder
+      taxon = create_taxon_version_and_change TaxonState::WAITING, adder
 
       change_history = helper.taxon_change_history taxon
       expect(change_history).to match /Added by/
@@ -96,8 +96,8 @@ describe TaxonHelper do
     it "shows the adder and the approver for approved taxa" do
       adder = create :editor
       approver = create :editor
-      taxon = create_taxon_version_and_change :waiting, adder
-      taxon.taxon_state.review_state = :waiting
+      taxon = create_taxon_version_and_change TaxonState::WAITING, adder
+      taxon.taxon_state.review_state = TaxonState::WAITING
       change = Change.find taxon.last_change.id
       change.update! approver: approver, approved_at: Time.current
       taxon.approve!

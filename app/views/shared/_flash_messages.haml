@@ -5,6 +5,6 @@
         -css_class = foundation_class_for(type)
 
         .callout.small-12.medium-6{class: css_class, data: { closable: true }}
-          =sanitize message, tags: %w[strong em a i], attributes: %w[href data-method class]
+          =sanitize message, tags: %w[strong em a i span], attributes: %w[href data-method class title]
           %button.close-button{"aria-label" => "Dismiss alert", data: { close: true }, type: "button"}
             %span{"aria-hidden" => "true"} &times;

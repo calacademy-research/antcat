@@ -164,10 +164,6 @@ describe Taxa::AdvancedSearch do
       it "only returns taxa with that locality" do
         expect(described_class[locality: 'Indonesia']).to eq [atta]
       end
-
-      it "returns taxa with search term at the beginning" do
-        expect(described_class[locality: 'Indonesia']).to eq [atta]
-      end
     end
 
     describe "Searching for biogeographic region" do
@@ -197,7 +193,7 @@ describe Taxa::AdvancedSearch do
       end
     end
 
-    describe "Searching type fields", :focus do
+    describe "Searching type fields" do
       let!(:one) { create :species, published_type_information: 'one' }
       let!(:two) { create :species, additional_type_information: 'one two' }
       let!(:three) { create :species, type_notes: 'one two three' }
@@ -242,6 +238,51 @@ describe Taxa::AdvancedSearch do
         expect(described_class[status: "", dummy: "x"]).to match_array [valid, synonym]
         expect(described_class[status: ""]).to be_empty
       end
+    end
+
+    describe "Searching by fossil" do
+      let!(:extant) { create :family }
+      let!(:fossil) { create :family, :fossil }
+
+      specify { expect(described_class[fossil: "", dummy: "x"]).to match_array [extant, fossil] }
+      specify { expect(described_class[fossil: "true"]).to match_array [fossil] }
+      specify { expect(described_class[fossil: "false"]).to match_array [extant] }
+    end
+
+    describe "Searching by nomen nudum" do
+      let!(:no_match) { create :family }
+      let!(:yes_match) { create :family, nomen_nudum: true }
+
+      specify { expect(described_class[nomen_nudum: "", dummy: "x"]).to match_array [no_match, yes_match] }
+      specify { expect(described_class[nomen_nudum: "true"]).to match_array [yes_match] }
+      specify { expect(described_class[nomen_nudum: "false"]).to match_array [no_match] }
+    end
+
+    describe "Searching by unresolved junior homonym" do
+      let!(:no_match) { create :family }
+      let!(:yes_match) { create :family, unresolved_homonym: true }
+
+      specify { expect(described_class[unresolved_junior_homonym: "", dummy: "x"]).to match_array [no_match, yes_match] }
+      specify { expect(described_class[unresolved_junior_homonym: "true"]).to match_array [yes_match] }
+      specify { expect(described_class[unresolved_junior_homonym: "false"]).to match_array [no_match] }
+    end
+
+    describe "Searching by ichnotaxon" do
+      let!(:no_match) { create :family }
+      let!(:yes_match) { create :family, ichnotaxon: true }
+
+      specify { expect(described_class[ichnotaxon: "", dummy: "x"]).to match_array [no_match, yes_match] }
+      specify { expect(described_class[ichnotaxon: "true"]).to match_array [yes_match] }
+      specify { expect(described_class[ichnotaxon: "false"]).to match_array [no_match] }
+    end
+
+    describe "Searching by Hong" do
+      let!(:no_match) { create :family }
+      let!(:yes_match) { create :family, hong: true }
+
+      specify { expect(described_class[hong: "", dummy: "x"]).to match_array [no_match, yes_match] }
+      specify { expect(described_class[hong: "true"]).to match_array [yes_match] }
+      specify { expect(described_class[hong: "false"]).to match_array [no_match] }
     end
   end
 end

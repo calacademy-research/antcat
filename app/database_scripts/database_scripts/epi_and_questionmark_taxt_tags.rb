@@ -12,14 +12,14 @@ module DatabaseScripts
         end
       end
 
-      models_and_ids
+      models_and_ids.reject { |_model, ids| ids.empty? }
     end
 
     def render
       as_table do |t|
         t.header :item_type, :item_id
 
-        results.each do |model, ids|
+        cached_results.each do |model, ids|
           t.rows(ids) do |id|
             [model, attempt_to_link_item(model.name, id)]
           end

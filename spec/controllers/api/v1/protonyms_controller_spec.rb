@@ -15,7 +15,7 @@ describe Api::V1::ProtonymsController do
     end
 
     it 'returns HTTP 200' do
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status :ok
     end
   end
 
@@ -29,7 +29,7 @@ describe Api::V1::ProtonymsController do
     end
 
     it 'returns HTTP 200' do
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status :ok
     end
   end
 end

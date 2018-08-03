@@ -28,6 +28,11 @@ class User < ApplicationRecord
     RequestStore.store[:current_user] = user
   end
 
+  # TODO rename db column.
+  def superadmin?
+    is_superadmin?
+  end
+
   def can_review_changes?
     can_edit?
   end

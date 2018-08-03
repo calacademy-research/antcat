@@ -57,3 +57,35 @@ Feature: Feed
 
     # Restore for future tests.
     Given the activities are paginated with 30 per page
+
+  @javascript
+  Scenario: Pagination with filtering quirks
+    Given I am logged in
+    And activity tracking is disabled
+    And the activities are paginated with 2 per page
+    And there is an automated activity with the edit summary "[1] fix URL by script"
+    And there is an automated activity with the edit summary "[2] fix URL by script"
+    And there is an activity with the edit summary "[3] updated pagination"
+    And there is an activity with the edit summary "[4] updated pagination"
+    And there is an activity with the edit summary "[5] updated pagination"
+    And there is an activity with the edit summary "[6] updated pagination"
+    And there is an automated activity with the edit summary "[7] fix URL by script"
+    And there is an automated activity with the edit summary "[8] fix URL by script"
+
+    When I go to the activity feed
+    Then I should see 2 item in the feed
+    And I should see "[6] updated pagination"
+    And I should see "[5] updated pagination"
+
+    When I follow "2"
+    Then I should see 2 item in the feed
+    And I should see "[4] updated pagination"
+    And I should see "[3] updated pagination"
+
+    When I hover the first activity item
+    And I follow "Link"
+    Then I should see 2 item in the feed
+    And I should see "[4] updated pagination"
+    And I should see "[3] updated pagination"
+
+    Given the activities are paginated with 30 per page

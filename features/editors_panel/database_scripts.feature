@@ -13,8 +13,8 @@ Feature: Database scripts
   Scenario: Show tags, and description with markdown
     Then I should see "regression-test"
 
-    When I follow "Bad subfamily names"
-    Then I should see "From GitHub #71."
+    When I follow "Valid taxa listed as another taxons junior synonym"
+    Then I should see "See GitHub #279."
 
   Scenario: Script runtime and source
     When I follow "Subspecies without species"

@@ -32,7 +32,7 @@ class ReferencesController < ApplicationController
       redirect_to reference_path(@reference), notice: <<~MSG
         Reference was successfully created.
         <strong>#{view_context.link_to 'Add another?', new_reference_path}</strong>
-        <strong>#{view_context.set_as_default_reference_button @reference}</strong>
+        <strong>#{view_context.set_as_default_reference_button @reference, tiny: true}</strong>
       MSG
     else
       render :new
@@ -46,7 +46,7 @@ class ReferencesController < ApplicationController
       @reference.create_activity :update, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: <<~MSG
         Reference was successfully updated.
-        <strong>#{view_context.set_as_default_reference_button @reference}</strong>
+        <strong>#{view_context.set_as_default_reference_button @reference, tiny: true}</strong>
       MSG
     else
       render :edit

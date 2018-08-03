@@ -29,7 +29,7 @@ describe Api::V1::TaxaController do
 
     it 'returns HTTP 200' do
       get :index
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status :ok
     end
   end
 
@@ -45,7 +45,7 @@ describe Api::V1::TaxaController do
     end
 
     it 'returns HTTP 200' do
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status :ok
     end
   end
 
@@ -59,13 +59,13 @@ describe Api::V1::TaxaController do
 
     it 'returns HTTP 200' do
       get :search, params: { 'string' => 'maxus' }
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status :ok
     end
 
     context "when there are no search matches" do
       it 'returns HTTP 404' do
         get :search, params: { 'string' => 'maxuus' }
-        expect(response).to have_http_status 404
+        expect(response).to have_http_status :not_found
       end
     end
   end

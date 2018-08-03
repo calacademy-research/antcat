@@ -35,13 +35,19 @@ module Autocomplete
       end
 
       # Fulltext search, but not all fields. Used by at.js.
+      # TODO we may want to use the same order/boost for `References::Search::Fulltext`.
       def fulltext_search_light search_keywords
         Reference.solr_search do
           keywords search_keywords do
-            fields(:title, :author_names_string, :citation_year)
+            fields :title, :author_names_string, :citation_year, :bolton_key
+            boost_fields author_names_string: 5.0
+            boost_fields citation_year: 2.0
           end
 
-          paginate page: 1, per_page: 10
+          order_by :score, :desc
+          order_by :author_names_string, :desc
+          order_by :citation_year, :asc
+          paginate page: 1, per_page: 15
         end.results
       end
 

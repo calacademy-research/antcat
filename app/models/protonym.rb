@@ -1,17 +1,8 @@
-# TODO fix this issue in the database.
-# All protonyms have authorships: # `Protonym.where(authorship: nil).count` # 0
-# New protonyms cannot be created without a reference,
-# but there are 16 of them in the db.
-#
-# Protonym.count                                         # 24512
-# joined = Protonym.joins(authorship: :reference)
-# joined.where("references.year IS NOT NULL").count      # 24496
-# joined.where("references.year IS NULL").count          # 16
-#
-# See `ProtonymsWithReferencesMissingYear` for a database script for finding these.
-
 class Protonym < ApplicationRecord
-  belongs_to :authorship, class_name: 'Citation', dependent: :destroy
+  # TODO we cannot do `dependent: :destroy` because there are protonyms that share the
+  # same `authorship_id`. We may not want to allow sharing `authorship_id`.
+  # See `Protonym.group(:authorship_id).having("COUNT(*) > 1").count.count`
+  belongs_to :authorship, class_name: 'Citation'
   belongs_to :name
 
   has_one :taxon

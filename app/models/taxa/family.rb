@@ -31,23 +31,13 @@ class Family < Taxon
   end
 
   def statistics valid_only: false
-    statistics = {}
-
-    {
+    ranks = {
       subfamilies: Subfamily,
       tribes: Tribe,
       genera: Genus,
       species: Species,
       subspecies: Subspecies
-    }.each do |rank, klass|
-      count = if valid_only
-                klass.valid
-              else
-                klass
-              end.group(:fossil, :status).count
-      self.class.massage_count count, rank, statistics
-    end
-
-    statistics
+    }
+    get_statistics ranks, valid_only: valid_only
   end
 end

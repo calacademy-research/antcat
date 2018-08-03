@@ -1,14 +1,14 @@
 When("the changes are approved") do
-  TaxonState.update_all review_state: :approved
+  TaxonState.update_all review_state: TaxonState::APPROVED
   Change.update_all approver_id: User.first.id, approved_at: Time.current
 end
 
 Given("there is a genus {string} that's waiting for approval") do |name|
   genus = create_genus name
-  genus.taxon_state.update_columns review_state: :waiting
+  genus.taxon_state.update_columns review_state: TaxonState::WAITING
 
   # TODO: Do not use `User.first` or `User.first.id`.
-  change = create :change, user_changed_taxon_id: genus.id, user: User.first
+  change = create :change, taxon_id: genus.id, user: User.first
   whodunnit = User.first.id
   create :version, item_id: genus.id, whodunnit: whodunnit, change_id: change.id
 

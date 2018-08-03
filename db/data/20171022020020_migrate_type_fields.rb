@@ -1,5 +1,6 @@
 class MigrateTypeFields < ActiveRecord::Migration[4.2]
   def self.up
+    raise "saftey check since this file is not in `data_schema.rb`" unless Rails.env.test?
     set_user_for_papertrail! unless Rails.env.test?
 
     taxa_to_migrate.find_each do |taxon|
