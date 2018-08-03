@@ -64,16 +64,20 @@ describe References::Search::FulltextWithExtractedKeywords do
         end
 
         describe 'Author names' do
-          let!(:reference) { reference_factory author_name: 'Hölldobler' }
-
           before { Sunspot.commit }
 
-          it 'handles diacritics in the search term' do
-            expect(described_class[q: 'Hölldobler']).to eq [reference]
+          context "when author contains German diacritics" do
+            let!(:reference) { reference_factory author_name: 'Hölldobler' }
+
+            specify { expect(described_class[q: 'Hölldobler']).to eq [reference] }
+            specify { expect(described_class[q: 'holldobler']).to eq [reference] }
           end
 
-          it 'substitutes diacritics with English letters' do
-            expect(described_class[q: 'holldobler']).to eq [reference]
+          context "when author contains Hungarian diacritics" do
+            let!(:reference) { reference_factory author_name: 'Csősz' }
+
+            specify { expect(described_class[q: 'Csősz']).to eq [reference] }
+            specify { expect(described_class[q: 'csosz']).to eq [reference] }
           end
         end
 
