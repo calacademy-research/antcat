@@ -46,7 +46,7 @@ Feature: Editing tooltips
     And I hover the tooltip next to the text "Hardcoded"
     Then I should see the tooltip text "Text used in the tooltip"
 
-  @javascript
+  @javascript @no_travis
   Scenario: Editing a selector-based tooltip
     Given this tooltip exists
       | key      | text      | selector | selector_enabled | scope        |
