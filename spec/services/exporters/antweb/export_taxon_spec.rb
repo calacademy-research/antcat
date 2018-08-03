@@ -211,7 +211,7 @@ describe Exporters::Antweb::ExportTaxon do
     context "when taxon has a `current_valid_taxon`" do
       let!(:old) { create_genus }
 
-      before { taxon.update! current_valid_taxon_id: old.id, status: Status::UNAVAILABLE }
+      before { taxon.update! current_valid_taxon: old, status: Status::UNAVAILABLE }
 
       it "exports the current valid name of the taxon" do
         expect(export_taxon(taxon)[13]).to end_with old.name.name

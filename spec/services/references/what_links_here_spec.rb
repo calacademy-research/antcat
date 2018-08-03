@@ -41,7 +41,7 @@ describe References::WhatLinksHere do
     describe "references in reference fields" do
       let!(:eciton) { create_genus 'Eciton' }
 
-      before { eciton.protonym.authorship.update! reference_id: reference.id }
+      before { eciton.protonym.authorship.update! reference: reference }
 
       it "has a reference if it's a protonym's authorship's reference" do
         expect(reference.what_links_here).to match_array [

@@ -9,7 +9,7 @@ describe Change, :versioning do
       change = described_class.new user: user
       change.save!
       change.reload
-      create :version, item: genus, change_id: change.id
+      create :version, item: genus, change: change
       genus_version = genus.versions.reload.last
 
       expect(change.versions.first).to eq genus_version

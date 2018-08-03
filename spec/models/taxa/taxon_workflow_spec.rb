@@ -31,7 +31,7 @@ describe Taxon do
 
         change = create :change, user_changed_taxon_id: another_taxon.id,
           change_type: "create", approver: user, approved_at: Time.current
-        create :version, item: another_taxon, whodunnit: user.id, change_id: change.id
+        create :version, item: another_taxon, whodunnit: user.id, change: change
 
         expect(taxon.can_be_approved_by?(change, nil)).to be_falsey
         expect(taxon.can_be_approved_by?(change, editor)).to be_falsey
@@ -49,7 +49,7 @@ describe Taxon do
       before do
         taxon.taxon_state.review_state = TaxonState::WAITING
         changer = create :editor
-        create :version, item: taxon, whodunnit: changer.id, change_id: change.id
+        create :version, item: taxon, whodunnit: changer.id, change: change
       end
 
       it "can be reviewed by a catalog editor" do

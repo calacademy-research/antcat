@@ -11,6 +11,8 @@ module PaperTrail
     include FilterableWhere
     include PrimitiveSearch
 
+    belongs_to :change
+
     scope :without_user_versions, -> { where.not(item_type: "User") }
 
     has_primitive_search where: ->(search_type) { <<-SQL.squish }

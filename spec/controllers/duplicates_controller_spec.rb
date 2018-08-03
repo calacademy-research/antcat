@@ -42,7 +42,7 @@ describe DuplicatesController do
       species_b = create_species @species_epithet,
         genus: genus_b,
         status: Status::VALID,
-        protonym_id: @species_a.id
+        protonym: @species_a
       sign_in @user
 
       get :show, params: { parent_id: @genus_a.id,
@@ -63,7 +63,7 @@ describe DuplicatesController do
       species_b = create_species @species_epithet + "boo",
         genus: genus_b,
         status: Status::VALID,
-        protonym_id: @species_a.id
+        protonym: @species_a
       sign_in @user
 
       get :show, params: { parent_id: @genus_a.id,
