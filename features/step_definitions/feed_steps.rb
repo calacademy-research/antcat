@@ -10,11 +10,11 @@ Given(/^activity tracking is (enabled|disabled)$/) do |state|
 end
 
 Given("there is an activity with the edit summary {string}") do |edit_summary|
-  create :activity, edit_summary: edit_summary
+  create :activity, :custom, edit_summary: edit_summary
 end
 
 Given("there is an automated activity with the edit summary {string}") do |edit_summary|
-  create :activity, edit_summary: edit_summary, automated_edit: true
+  create :activity, :custom, edit_summary: edit_summary, automated_edit: true
 end
 
 Then("I should see {string} and no other feed items") do |text|
