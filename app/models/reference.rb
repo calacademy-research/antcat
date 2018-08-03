@@ -60,6 +60,7 @@ class Reference < ApplicationRecord
     text    :editor_notes
     text    :public_notes
     text    :taxonomic_notes
+    text    :bolton_key
     string  :citation_year
     string  :author_names_string
   end

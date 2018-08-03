@@ -33,7 +33,7 @@ AntCat.setupLinkables = =>
 
     .atwho
       at: '{r'
-      limit: 10
+      limit: 15
       delay: 300
       maxLen: 50
       insertTpl: '{ref ${id}}:'
