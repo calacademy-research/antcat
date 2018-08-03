@@ -6,6 +6,7 @@ AllCops:
     - 'Vagrantfile'
     - 'config.ru'
     - 'db/schema.rb'
+    - 'db/data_schema.rb'
     - 'bin/**/*'
     - 'db/data/**/*'
     - 'db/migrate/**/*'
