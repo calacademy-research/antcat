@@ -15,8 +15,10 @@ class TaxonDecorator::HeadlineProtonym
 
   private
 
+    attr_reader :taxon
+
     def headline_protonym
-      protonym = @taxon.protonym
+      protonym = taxon.protonym
       return ''.html_safe unless protonym
       string = protonym_name protonym
       string << ' ' << authorship(protonym.authorship)

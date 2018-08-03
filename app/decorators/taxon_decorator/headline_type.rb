@@ -15,6 +15,8 @@ class TaxonDecorator::HeadlineType
 
   private
 
+    attr_reader :taxon
+
     def headline_type
       string = ''.html_safe
       string << type_name_and_taxt
@@ -23,12 +25,12 @@ class TaxonDecorator::HeadlineType
     end
 
     def type_name_and_taxt
-      taxt = @taxon.type_taxt
-      if !@taxon.type_name && taxt
+      taxt = taxon.type_taxt
+      if !taxon.type_name && taxt
         string = type_taxt taxt
       else
-        return ''.html_safe unless @taxon.type_name
-        rank = @taxon.type_name.rank
+        return ''.html_safe unless taxon.type_name
+        rank = taxon.type_name.rank
         rank = 'genus' if rank == 'subgenus'
         string = "Type-#{rank}: ".html_safe
         string << type_name + type_taxt(taxt)
@@ -41,11 +43,11 @@ class TaxonDecorator::HeadlineType
 
     # TODO does not work 100%, because names are not unique.
     def type_name
-      type = Taxon.find_by_name @taxon.type_name.name
+      type = Taxon.find_by_name taxon.type_name.name
       return link_to_taxon(type) if type
 
       content_tag :span do
-        @taxon.type_name.to_html_with_fossil @taxon.type_fossil
+        taxon.type_name.to_html_with_fossil taxon.type_fossil
       end
     end
 
@@ -58,8 +60,8 @@ class TaxonDecorator::HeadlineType
     end
 
     def biogeographic_region
-      return '' if @taxon.biogeographic_region.blank?
-      add_period_if_necessary @taxon.biogeographic_region
+      return '' if taxon.biogeographic_region.blank?
+      add_period_if_necessary taxon.biogeographic_region
     end
 
     # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
