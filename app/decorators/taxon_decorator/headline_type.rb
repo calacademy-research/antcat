@@ -53,11 +53,15 @@ class TaxonDecorator::HeadlineType
     end
 
     def detax taxt
-      if for_antweb?
-        add_period_if_necessary TaxtPresenter[taxt].to_antweb
-      else
-        add_period_if_necessary TaxtPresenter[taxt].to_html
-      end
+      detaxed = if for_antweb?
+                  add_period_if_necessary TaxtPresenter[taxt].to_antweb
+                else
+                  add_period_if_necessary TaxtPresenter[taxt].to_html
+                end
+      return "" if detaxed.blank?
+      return detaxed if detaxed.start_with?(",")
+
+      " ".html_safe << detaxed
     end
 
     # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
