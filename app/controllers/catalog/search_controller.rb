@@ -63,7 +63,8 @@ module Catalog
 
       def advanced_search_params
         params.slice :author_name, :rank, :year, :name, :locality, :valid_only,
-          :biogeographic_region, :genus, :forms, :type_information, :status
+          :biogeographic_region, :genus, :forms, :type_information, :status, :fossil,
+          :nomen_nudum, :unresolved_junior_homonym, :ichnotaxon, :hong
       end
 
       def is_author_search?

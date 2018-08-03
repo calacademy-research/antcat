@@ -60,6 +60,7 @@ class Taxon < ApplicationRecord
   end
   scope :valid, -> { where(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
+  scope :fossil, -> { where(fossil: true) }
   scope :pass_through_names, -> do
     where(
       status: [
