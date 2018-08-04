@@ -1,12 +1,12 @@
 class SynonymsController < ApplicationController
   before_action :authenticate_editor, except: :show
   before_action :set_synonym, only: [:show, :destroy, :reverse_synonymy]
+  before_action :set_taxon, only: [:create, :reverse_synonymy]
 
   def show
   end
 
   def create
-    taxon = Taxon.find params[:taxa_id]
     synonym_taxon = Taxon.find(params[:synonym_taxon_id])
     is_junior = params[:junior]
 
@@ -15,9 +15,9 @@ class SynonymsController < ApplicationController
     if synonym_taxon
       if is_junior
         junior = synonym_taxon
-        senior = taxon
+        senior = @taxon
       else
-        junior = taxon
+        junior = @taxon
         senior = synonym_taxon
       end
 
@@ -32,7 +32,7 @@ class SynonymsController < ApplicationController
       error_message = 'Taxon not found'
     end
 
-    render json: { content: content(taxon), success: error_message.blank?, error_message: error_message }
+    render json: { content: content(@taxon), success: error_message.blank?, error_message: error_message }
   end
 
   def destroy
@@ -41,8 +41,6 @@ class SynonymsController < ApplicationController
   end
 
   def reverse_synonymy
-    taxon = Taxon.find params[:taxa_id]
-
     new_junior = @synonym.senior_synonym
     new_senior = @synonym.junior_synonym
 
@@ -51,7 +49,7 @@ class SynonymsController < ApplicationController
     @synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
     @synonym.paper_trail.touch_with_version
 
-    render json: { content: content(taxon), success: true, error_message: '' }
+    render json: { content: content(@taxon), success: true, error_message: '' }
   end
 
   private
@@ -62,5 +60,9 @@ class SynonymsController < ApplicationController
 
     def set_synonym
       @synonym = Synonym.find params[:id]
+    end
+
+    def set_taxon
+      @taxon = Taxon.find params[:taxa_id]
     end
 end
