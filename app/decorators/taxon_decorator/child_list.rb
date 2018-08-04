@@ -24,10 +24,12 @@ class TaxonDecorator::ChildList
 
   private
 
-    def child_lists_for_rank children_selector
-      return ''.html_safe unless @taxon.respond_to?(children_selector) && @taxon.send(children_selector).present?
+    attr_reader :taxon
 
-      if @taxon.is_a?(Subfamily) && children_selector == :genera
+    def child_lists_for_rank children_selector
+      return ''.html_safe unless taxon.respond_to?(children_selector) && taxon.send(children_selector).present?
+
+      if taxon.is_a?(Subfamily) && children_selector == :genera
         child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: false) +
           child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: true)
       else
@@ -37,8 +39,8 @@ class TaxonDecorator::ChildList
 
     def collective_group_name_child_list
       children_selector = :collective_group_names
-      return '' unless @taxon.respond_to?(children_selector) && @taxon.send(children_selector).present?
-      child_list @taxon.send(children_selector), false, collective_group_names: true
+      return '' unless taxon.respond_to?(children_selector) && taxon.send(children_selector).present?
+      child_list taxon.send(children_selector), false, collective_group_names: true
     end
 
     def child_list_fossil_pairs children_selector, conditions = {}
@@ -57,7 +59,7 @@ class TaxonDecorator::ChildList
     def child_list_query children_selector, conditions = {}
       incertae_sedis_in = conditions[:incertae_sedis_in]
 
-      children = @taxon.send children_selector
+      children = taxon.send children_selector
 
       children = children.where(fossil: !!conditions[:fossil]) if conditions.key? :fossil
       children = children.where(incertae_sedis_in: incertae_sedis_in) if incertae_sedis_in
@@ -101,7 +103,7 @@ class TaxonDecorator::ChildList
                  ' of '
                end
 
-      label << content_tag(:span, @taxon.taxon_label)
+      label << content_tag(:span, taxon.taxon_label)
     end
 
     def child_list_items children

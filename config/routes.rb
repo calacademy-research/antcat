@@ -195,6 +195,7 @@ Rails.application.routes.draw do
 
     scope module: :editors_panels do
       resources :versions, only: [:index, :show]
+      resource :bolton_keys_to_ref_tags, only: [:show, :new, :create]
     end
   end
 
@@ -248,6 +249,11 @@ Rails.application.routes.draw do
 
   namespace :beta_and_such do
     # Empty for now.
+  end
+
+  # Lazy!!
+  if Rails.env.development?
+    get ':id' => 'beta_and_such#attempt_to_find_record_by_id', constraints: { id: /[0-9|]+/ }
   end
 
   unless Rails.env.production?

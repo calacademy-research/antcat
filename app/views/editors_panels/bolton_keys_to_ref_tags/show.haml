@@ -1,0 +1,24 @@
+-@title = "Bolton keys to ref tags"
+-breadcrumb :bolton_keys_to_ref_tags
+
+.row
+  .medium-4.columns
+    %h5 Content from Bolton
+    =form_tag bolton_keys_to_ref_tags_path do
+      =text_area_tag :bolton_content, params[:bolton_content]
+      =button_tag "Convert", class: "btn-normal"
+
+  .medium-4.columns
+    %h5 With Antcat ref tags
+    =text_area_tag :with_ref_tags, @with_ref_tags
+
+  .medium-4.columns
+    %h5 Rendered
+    -if @with_ref_tags.present?
+      =TaxtPresenter[@with_ref_tags].to_html
+    -else
+      %p No content :(
+      %p Paste content from Bolton into the first textarea and press "Convert". For example this:
+      %p
+        %code Status as species: Latreille, 1802c: 236; Latreille, 1809: 130; Lepeletier de Saint-Fargeau, 1835: 174
+      %p Use the reference edit form here on AntCat to add new Bolton&dash;AntCat reference matches.

@@ -10,12 +10,12 @@ class TaxaGrabBagController < ApplicationController
   # Return all the taxa that would be deleted if we delete this
   # particular ID, inclusive. Same as children, really.
   def confirm_before_delete
-    @delete_impact_list = @taxon.delete_impact_list
+    @delete_impact_list = Taxa::DeleteImpactList[@taxon]
     render "confirm_before_delete"
   end
 
   def destroy
-    @taxon.delete_taxon_and_children
+    Taxa::DeleteTaxonAndChildren[@taxon]
     redirect_to root_path, notice: "Taxon was successfully deleted."
   end
 
@@ -51,7 +51,7 @@ class TaxaGrabBagController < ApplicationController
   end
 
   def reorder_history_items
-    if @taxon.reorder_history_items params[:taxon_history_item]
+    if Taxa::ReorderHistoryItems[@taxon, params[:taxon_history_item]]
       render json: { success: true }
     else
       render json: @taxon.errors, status: :unprocessable_entity
