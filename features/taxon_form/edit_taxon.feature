@@ -33,11 +33,8 @@ Feature: Editing a taxon
     And there is a genus "Eciton"
 
     When I go to the edit page for "Eciton"
-    And I click the authorship field
-    And in the reference picker, I search for the author "Fisher"
-    And I click the first search result
-    And I press "OK"
-    Then the authorship field should contain "Fisher 2004. Ants. Psyche 3:3"
+    And I set the authorship to the first search results of "Fisher (2004)"
+    Then the authorship should contain the reference "Fisher 2004"
 
     When I fill in the authorship notes with "Authorship notes"
     And I fill in "taxon_type_taxt" with "Notes"

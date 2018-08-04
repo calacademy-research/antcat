@@ -37,7 +37,6 @@ class AntCat.TaxonForm extends AntCat.Form
     if $('#type_name_field').size() == 1
       new AntCat.TypeNameField $('#type_name_field'), protonym_field, value_id: 'taxon_type_name_attributes_id', parent_form: @, allow_blank: true
       new AntCat.TaxtEditor $('#type_taxt_editor'), parent_buttons: '.buttons_section'
-    new AntCat.ReferenceField $('#authorship_field'), parent_form: @, value_id: 'taxon_protonym_attributes_authorship_attributes_reference_attributes_id'
 
   initialize_parent_section: =>
     options = {}

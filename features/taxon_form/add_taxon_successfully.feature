@@ -27,11 +27,8 @@ Feature: Adding a taxon successfully
 
     When I set the protonym name to "Eciton"
       And I press "OK"
-    And I click the authorship field
-      And in the reference picker, I search for the author "Fisher"
-      And I click the first search result
-    And I press "OK"
-    When I click the type name field
+    And I set the authorship to the first search results of "Fisher (2004)"
+    And I click the type name field
     Then the type name field should contain "Eciton "
 
     When I set the type name to "Atta major"
@@ -56,10 +53,7 @@ Feature: Adding a taxon successfully
     And I click the protonym name field
       And I set the protonym name to "Eciton"
       And I press "OK"
-    And I click the authorship field
-      And in the reference picker, I search for the author "Fisher"
-      And I click the first search result
-      And I press "OK"
+    And I set the authorship to the first search results of "Fisher (2004)"
     And I click the type name field
       And I set the type name to "Eciton major"
       And I press "OK"
@@ -85,11 +79,8 @@ Feature: Adding a taxon successfully
     When I set the protonym name to "Mayria"
       And I press "OK"
       And I press "Add this name"
-    And I click the authorship field
-      And in the reference picker, I search for the author "Fisher"
-      And I click the first search result
-    And I press "OK"
-    When I click the type name field
+    And I set the authorship to the first search results of "Fisher (2004)"
+    And I click the type name field
     Then the type name field should contain "Mayria "
 
     When I set the type name to "Mayria madagascarensis"
@@ -126,10 +117,7 @@ Feature: Adding a taxon successfully
     And I click the protonym name field
       And I set the protonym name to "Eciton major"
       And I press "OK"
-    And I click the authorship field
-      And in the reference picker, I search for the author "Fisher"
-      And I click the first search result
-      And I press "OK"
+    And I set the authorship to the first search results of "Fisher (2004)"
     And I save my changes
     Then I should be on the catalog page for "Eciton major"
     And I should see "Eciton major" in the protonym
@@ -157,10 +145,7 @@ Feature: Adding a taxon successfully
     And I click the protonym name field
     And I set the protonym name to "Dolichoderus (Subdolichoderus) major"
     And I press "OK"
-    And I click the authorship field
-    And in the reference picker, I search for the author "Fisher"
-    And I click the first search result
-    And I press "OK"
+    And I set the authorship to the first search results of "Fisher (2004)"
     And I save my changes
     Then I should be on the catalog page for "Dolichoderus (Subdolichoderus) major"
     And I should see "Dolichoderus (Subdolichoderus) major" in the protonym
@@ -175,10 +160,7 @@ Feature: Adding a taxon successfully
     And I click the protonym name field
       And I set the protonym name to "Atta"
       And I press "OK"
-    And I click the authorship field
-      And in the reference picker, I search for the author "Fisher"
-      And I click the first search result
-      And I press "OK"
+    And I set the authorship to the first search results of "Fisher (2004)"
     And I click the type name field
       And I set the type name to "Atta major"
       And I press "OK"
@@ -188,16 +170,13 @@ Feature: Adding a taxon successfully
     And the changes are approved
     And I go to the catalog page for "Atta"
     And I follow "Add species"
-    When I click the name field
+    And I click the name field
       And I set the name to "Atta major"
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Atta major"
       And I press "OK"
-    And I click the authorship field
-      And in the reference picker, I search for the author "Fisher"
-      And I click the first search result
-      And I press "OK"
+    And I set the authorship to the first search results of "Fisher (2004)"
     And I save my changes
     And I wait
     Then I should be on the catalog page for "Atta major"
@@ -220,10 +199,7 @@ Feature: Adding a taxon successfully
     And I click the protonym name field
       And I set the protonym name to "Eciton major infra"
       And I press "OK"
-    And I click the authorship field
-      And in the reference picker, I search for the author "Fisher"
-      And I click the first search result
-      And I press "OK"
+    And I set the authorship to the first search results of "Fisher (2004)"
     And I save my changes
     Then I should be on the catalog page for "Eciton major infra"
     And I should see "infra" in the index
@@ -240,15 +216,12 @@ Feature: Adding a taxon successfully
     When I click the name field
       And I set the name to "Dorylinae"
       And I press "OK"
-    When I click the protonym name field
+    And I click the protonym name field
     Then the protonym name field should contain "Dorylinae"
 
     When I press "OK"
-    And I click the authorship field
-      And in the reference picker, I search for the author "Fisher"
-      And I click the first search result
-      And I press "OK"
-    When I click the type name field
+    And I set the authorship to the first search results of "Fisher (2004)"
+    And I click the type name field
     Then the type name field should contain "Dorylinae "
 
     When I set the type name to "Atta"
@@ -276,10 +249,7 @@ Feature: Adding a taxon successfully
     Then the protonym name field should contain "Dorylini"
 
     When I press "OK"
-    And I click the authorship field
-      And in the reference picker, I search for the author "Fisher"
-      And I click the first search result
-      And I press "OK"
+    And I set the authorship to the first search results of "Fisher (2004)"
     And I save my changes
     Then I should be on the catalog page for "Dorylini"
       And I should see "Dorylini" in the protonym

@@ -8,7 +8,7 @@ def select2(value, from:)
 
   first("#select2-#{element_id}-container").click
   first('.select2-search__field').set(value)
-  find(".select2-results__option", text: /#{value}/).click
+  find(".select2-results__option", text: /#{Regexp.escape(value)}/).click
 end
 
 When("I press the edit taxon link") do
@@ -120,8 +120,14 @@ When("I set the homonym replaced by name to {string}") do |name|
 end
 
 ### authorship
-When("I click the authorship field") do
-  step %(I click "#authorship_field .display_button")
+When(/^I set the authorship to the first search results of "([^"]*)"$/) do |name|
+  select2 name, from: 'taxon_protonym_attributes_authorship_attributes_reference_id'
+end
+
+Then(/^the authorship should contain the reference "([^"]*)"$/) do |keey|
+  reference_id = find_reference_by_keey(keey).id
+  selector = '#taxon_protonym_attributes_authorship_attributes_reference_id'
+  expect(find(selector).value).to eq reference_id.to_s
 end
 
 When("I fill in the authorship notes with {string}") do |notes|
