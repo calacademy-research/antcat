@@ -104,10 +104,6 @@ Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |fiel
   end
 end
 
-Then("I should see a link {string}") do |link|
-  expect(page).to have_css 'a', text: link
-end
-
 Then(/I should (not )?see "(.*?)" (?:with)?in (.*)$/) do |do_not, contents, location|
   with_scope location do
     step %(I should #{do_not}see "#{contents}")
@@ -154,10 +150,6 @@ end
 
 Then("the page title should have {string} in it") do |title|
   expect(page.title).to have_content title
-end
-
-Given("that URL {string} exists") do |link|
-  stub_request :any, link
 end
 
 When("I reload the page") do

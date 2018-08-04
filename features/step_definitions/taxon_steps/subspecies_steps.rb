@@ -23,15 +23,6 @@ Given("a subspecies exists for that species with a name of {string} and an epith
   subspecies.history_items.create! taxt: history
 end
 
-Given("subspecies {string} exists in that species") do |name|
-  subspecies = create :subspecies,
-    subfamily: @subfamily,
-    genus: @genus,
-    species: @species,
-    name: create(:subspecies_name, name: name)
-  subspecies.history_items.create! taxt: "#{name} history"
-end
-
 Given("there is a subspecies {string} which is a subspecies of {string} in the genus {string}") do |subspecies, species, genus|
   genus = create_genus genus
   species = create_species species, genus: genus
