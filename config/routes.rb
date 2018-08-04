@@ -250,6 +250,11 @@ Rails.application.routes.draw do
     # Empty for now.
   end
 
+  # Lazy!!
+  if Rails.env.development?
+    get ':id' => 'beta_and_such#attempt_to_find_record_by_id', constraints: { id: /[0-9|]+/ }
+  end
+
   unless Rails.env.production?
     namespace :widget_tests do
       get :name_popup_test
