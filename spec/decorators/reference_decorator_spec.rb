@@ -126,31 +126,31 @@ describe ReferenceDecorator do
     context "when review_state is 'reviewed'" do
       before { reference.review_state = 'reviewed' }
 
-      specify { expect(reference).to have_formatted_review_state 'Reviewed' }
+      specify { expect(reference.decorate.format_review_state).to eq 'Reviewed' }
     end
 
     context "when review_state is 'reviewing'" do
       before { reference.review_state = 'reviewing' }
 
-      specify { expect(reference).to have_formatted_review_state 'Being reviewed' }
+      specify { expect(reference.decorate.format_review_state).to eq 'Being reviewed' }
     end
 
     context "when review_state is 'none'" do
       before { reference.review_state = 'none' }
 
-      specify { expect(reference).to have_formatted_review_state '' }
+      specify { expect(reference.decorate.format_review_state).to eq '' }
     end
 
     context "when review_state is empty string" do
       before { reference.review_state = '' }
 
-      specify { expect(reference).to have_formatted_review_state '' }
+      specify { expect(reference.decorate.format_review_state).to eq '' }
     end
 
     context "when review_state is nil" do
       before { reference.review_state = nil }
 
-      specify { expect(reference).to have_formatted_review_state '' }
+      specify { expect(reference.decorate.format_review_state).to eq '' }
     end
   end
 
