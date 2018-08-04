@@ -47,7 +47,7 @@ class AntCat.SynonymsSection
     form.open()
 
   handle_success: (data) =>
-    @element.find('.synonyms_section').replaceWith data.content
+    @parent_form.replace_junior_and_senior_synonyms_section data.content
     @initialize()
 
   delete: (target) =>

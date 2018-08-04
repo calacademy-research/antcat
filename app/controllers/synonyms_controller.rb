@@ -10,22 +10,15 @@ class SynonymsController < ApplicationController
     synonym_taxon = Taxon.find(params[:synonym_taxon_id])
     is_junior = params[:junior]
 
-    title = ''
     error_message = ''
-    junior_or_senior = ''
-    synonyms = []
 
     if synonym_taxon
       if is_junior
         junior = synonym_taxon
         senior = taxon
-        title = 'Junior synonyms'
-        junior_or_senior = 'junior'
       else
         junior = taxon
         senior = synonym_taxon
-        title = 'Senior synonyms'
-        junior_or_senior = 'senior'
       end
 
       if Synonym.find_by(senior_synonym: senior, junior_synonym: junior) ||
@@ -34,25 +27,12 @@ class SynonymsController < ApplicationController
       else
         synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
         synonym.paper_trail.touch_with_version
-
-        synonyms = if is_junior
-                     taxon.junior_synonyms_with_names
-                   else
-                     taxon.senior_synonyms_with_names
-                   end
       end
     else
       error_message = 'Taxon not found'
     end
 
-    json = {
-      content: render_to_string(partial: 'taxa/not_really_form/synonyms_section', locals: {
-        taxon: taxon, title: title, synonyms: synonyms, junior_or_senior: junior_or_senior
-      }),
-      success: error_message.blank?,
-      error_message: error_message
-    }
-    render json: json
+    render json: { content: content(taxon), success: error_message.blank?, error_message: error_message }
   end
 
   def destroy
@@ -71,13 +51,14 @@ class SynonymsController < ApplicationController
     @synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
     @synonym.paper_trail.touch_with_version
 
-    content = render_to_string partial: 'taxa/not_really_form/junior_and_senior_synonyms_section',
-      locals: { taxon: taxon }
-    json = { content: content, success: true, error_message: '' }
-    render json: json
+    render json: { content: content(taxon), success: true, error_message: '' }
   end
 
   private
+
+    def content taxon
+      render_to_string partial: 'taxa/not_really_form/junior_and_senior_synonyms_section', locals: { taxon: taxon }
+    end
 
     def set_synonym
       @synonym = Synonym.find params[:id]
