@@ -22,21 +22,14 @@ class AntCat.TaxonForm extends AntCat.Form
     @initialize_fields_section()
     @initialize_parent_section()
     @initialize_events()
-    @original_submit = null
     super
 
   ###### initialization
   initialize_fields_section: =>
     name_field = new AntCat.NameField $('#name_field'), value_id: 'taxon_name_attributes_id', parent_form: @, new_or_homonym: true
-    new AntCat.TaxtEditor $('#headline_notes_taxt_editor'), parent_buttons: '.buttons_section'
-    new AntCat.TaxtEditor $('#notes_taxt_editor'), parent_buttons: '.buttons_section'
-    new AntCat.TaxtEditor $('#published_type_information_taxt_editor'), parent_buttons: '.buttons_section'
-    new AntCat.TaxtEditor $('#additional_type_information_taxt_editor'), parent_buttons: '.buttons_section'
-    new AntCat.TaxtEditor $('#type_notes_taxt_editor'), parent_buttons: '.buttons_section'
     protonym_field = new AntCat.ProtonymField $('#protonym_name_field'), name_field, value_id: 'taxon_protonym_attributes_name_attributes_id', parent_form: @
     if $('#type_name_field').size() == 1
       new AntCat.TypeNameField $('#type_name_field'), protonym_field, value_id: 'taxon_type_name_attributes_id', parent_form: @, allow_blank: true
-      new AntCat.TaxtEditor $('#type_taxt_editor'), parent_buttons: '.buttons_section'
 
   initialize_parent_section: =>
     options = {}

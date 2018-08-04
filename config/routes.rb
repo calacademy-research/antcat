@@ -136,15 +136,8 @@ Rails.application.routes.draw do
   resource :default_reference, only: :update
 
   get 'name_pickers/search'
-
-  get 'name_popups/find'
-  get 'name_popups/:type/:id' => 'name_popups#show'
-
   get 'name_fields/find'
   get 'name_fields/:type/:id' => 'name_fields#show'
-
-  resource :reference_field, only: :show
-  resource :reference_popup, only: :show
 
   devise_for :users
   resources :users, only: [:index, :show] do
@@ -258,11 +251,7 @@ Rails.application.routes.draw do
 
   unless Rails.env.production?
     namespace :widget_tests do
-      get :name_popup_test
       get :name_field_test
-      get :reference_popup_test
-      get :reference_field_test
-      get :taxt_editor_test
       get :tooltips_test
       get :toggle_dev_css
     end

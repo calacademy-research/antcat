@@ -127,20 +127,6 @@ module NavigationHelpers
       '/users/emails'
 
     # Widget test pages
-    when /^the reference field test page, opened to the first reference$/
-      "/widget_tests/reference_field_test?id=#{Reference.first.id}"
-    when /^the reference field test page/
-      '/widget_tests/reference_field_test'
-
-    when /^the reference popup widget test page, opened to the first reference$/
-      "/widget_tests/reference_popup_test?id=#{Reference.first.id}"
-    when /^the reference popup widget test page$/
-      '/widget_tests/reference_popup_test'
-
-    when /^the taxt editor test page$/
-      '/widget_tests/taxt_editor_test'
-    when /^the name popup test page$/
-      '/widget_tests/name_popup_test'
     when /^the name field test page for a name$/
       "/widget_tests/name_field_test?id=#{Name.first.id}"
     when /^the name field test page$/
