@@ -3,9 +3,6 @@ require 'spec_helper'
 describe SpeciesGroupTaxon do
   it { is_expected.to validate_presence_of :genus }
 
-  it { is_expected.to belong_to :subfamily }
-  it { is_expected.to belong_to :subgenus }
-
   it "has its subfamily set from its genus" do
     genus = create_genus
     expect(genus.subfamily).not_to be_nil

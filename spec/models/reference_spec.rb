@@ -7,9 +7,6 @@ describe Reference do
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :title }
 
-  it { is_expected.to have_many :author_names }
-  it { is_expected.to have_many :nestees }
-
   describe "scopes" do
     let(:bolton_b) { create :author_name, name: 'Bolton, B.' }
 

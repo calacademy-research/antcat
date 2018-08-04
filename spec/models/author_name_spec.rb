@@ -6,7 +6,6 @@ describe AuthorName do
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :author }
   it { is_expected.to validate_presence_of :name }
-  it { is_expected.to have_many :references }
 
   it "can't be a duplicate" do
     author_name = create :author_name, name: 'Bolton'

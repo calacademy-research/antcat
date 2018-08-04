@@ -6,11 +6,6 @@ describe Genus do
   let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae') }
   let(:genus) { create :genus, name: create(:genus_name, name: 'Atta') }
 
-  it { is_expected.to belong_to :tribe }
-  it { is_expected.to have_many :species }
-  it { is_expected.to have_many :subgenera }
-  it { is_expected.to have_many :subspecies }
-
   it "can have species, which are its children" do
     robusta = create :species, name: create(:name, name: "robusta"), genus: genus
     saltensis = create :species, name: create(:name, name: "saltensis"), genus: genus
