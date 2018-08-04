@@ -24,7 +24,6 @@ module Taxa
         current_valid_taxon
       end
 
-      # Spec randomly fails, see notes in spec file.
       # TODO change to `order(created_at: :id)`.
       def find_most_recent_valid_senior_synonym taxon
         return unless taxon.senior_synonyms

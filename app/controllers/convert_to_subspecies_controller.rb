@@ -6,9 +6,8 @@ class ConvertToSubspeciesController < ApplicationController
     @default_name_string = @taxon.genus.name.name + ' '
   end
 
-  # TODO move validation to model
+  # TODO move validations to service.
   def create
-    # Probably? At least according to the UI and the code breaks otherwise
     unless @taxon.is_a? Species
       @taxon.errors.add :base,
         "Taxon to be converted to a subspecies must be of rank species."
@@ -41,9 +40,6 @@ class ConvertToSubspeciesController < ApplicationController
       render :new and return
     end
 
-    # TODO allow converting species to subspecies of other genus?
-    # The current model code allows this, but it doesn't change the
-    # genus, leading to corrupt data.
     unless @new_species.genus == @taxon.genus
       @taxon.errors.add :base, "The new parent must be in the same genus."
       render :new and return

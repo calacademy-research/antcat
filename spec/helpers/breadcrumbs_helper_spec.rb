@@ -23,8 +23,6 @@ describe BreadcrumbsHelper do
       end
     end
 
-    # TODO? it "handles subtribes"; factory broken
-
     context "when 'italic' ranks" do
       let(:ranks) { [:genus, :species, :subspecies] }
 
@@ -36,8 +34,6 @@ describe BreadcrumbsHelper do
         end
       end
     end
-
-    # TODO? it "handles subgenera"; factory broken
 
     context "when fossil taxa" do
       let(:taxon) { create_genus fossil: true }

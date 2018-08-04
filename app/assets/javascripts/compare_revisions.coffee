@@ -5,8 +5,6 @@
 # revision; this is what makes some options "unavailable" this context.
 # Go to https://en.wikipedia.org/w/index.php?title=Example&action=history
 # to see how it is supposed to work and why it's useful.
-#
-# This is only tangentially tested in the test suite, but that's OK.
 
 $ ->
   setInitialState()

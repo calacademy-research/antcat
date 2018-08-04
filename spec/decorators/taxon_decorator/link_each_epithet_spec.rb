@@ -1,7 +1,3 @@
-# NOTE we cannot comletely trust these specs since factories may not setup all
-# fields correctly (`name`, `name_html`, `epithet`, `epithet_html` and `epithets`).
-# Even worse, some of these may be out of sync on production!!
-
 require "spec_helper"
 
 describe TaxonDecorator::LinkEachEpithet do

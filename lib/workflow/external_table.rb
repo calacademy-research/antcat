@@ -1,11 +1,7 @@
-# Monkeypatch into workflow gem to use taxon_state table.
-
 module Workflow
   module ExternalTable
     module InstanceMethods
       def load_workflow_state
-        # If this throws an error in testing, it's very likely that there's no associated
-        # taxon_state.
         current_review_state.review_state
       end
 
@@ -18,10 +14,9 @@ module Workflow
       private
 
         def write_initial_state
-          # TODO only required in specs (not features), may be a race condition.
+          # TODO only required in specs (not features).
           build_default_taxon_state unless taxon_state
 
-          # If we're restoring a deleted item, this
           taxon_state = current_review_state
           taxon_state.review_state = current_state.to_s
           taxon_state.save!

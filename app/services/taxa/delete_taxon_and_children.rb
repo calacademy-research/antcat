@@ -31,10 +31,6 @@ module Taxa
 
       def delete_with_state! taxon
         Taxon.transaction do
-          # Bit of a hack; this is a new table which may lack the depth of other tables.
-          # Creation doesn't add a record, so you can't "step back to" a valid version.
-          # doing touch_with_version (creeate a fallback point) in the migration makes an
-          # enourmous and unnecessary pile of these.
           taxon_state = taxon.taxon_state
           taxon_state.paper_trail.touch_with_version if taxon_state.versions.empty?
 

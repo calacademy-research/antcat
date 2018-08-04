@@ -1,11 +1,5 @@
 # This controller handles editing by logged in editors.
 # `CatalogController` is responsible for showing taxon pages to users.
-#
-# Everything except the actions `:new, :create, :edit, :update` has been moved
-# to a grab bag controller (`TaxaGrabBagController`) because this class was,
-# and still is, hard to work with.
-
-# TODO extract more code from here into `Taxa::SaveFromForm`.
 
 class TaxaController < ApplicationController
   before_action :authenticate_editor
