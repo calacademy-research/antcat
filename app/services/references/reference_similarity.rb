@@ -24,6 +24,7 @@ module References
     private
 
       attr_reader :lhs, :rhs
+
       delegate :type, :principal_author_last_name_cache, :title, :year, :pagination,
         :series_volume_issue, to: :lhs
 

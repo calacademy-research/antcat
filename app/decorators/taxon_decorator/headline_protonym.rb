@@ -15,8 +15,11 @@ class TaxonDecorator::HeadlineProtonym
 
   private
 
+    attr_reader :taxon
+
+    delegate :protonym, to: :taxon
+
     def headline_protonym
-      protonym = @taxon.protonym
       return ''.html_safe unless protonym
       string = protonym_name protonym
       string << ' ' << authorship(protonym.authorship)
@@ -51,8 +54,18 @@ class TaxonDecorator::HeadlineProtonym
 
     def locality locality
       return '' if locality.blank?
-      locality = locality.upcase.gsub(/\(.+?\)/, &:titlecase)
-      add_period_if_necessary ' ' + locality
+
+      first_parenthesis = locality.index("(")
+      capitalized =
+        if first_parenthesis
+          before = locality[0...first_parenthesis]
+          rest = locality[first_parenthesis..-1]
+          before.upcase + rest
+        else
+          locality.upcase
+        end
+
+      add_period_if_necessary ' ' + capitalized
     end
 
     # TODO refactor more. Formerly based on `$use_ant_web_formatter`.

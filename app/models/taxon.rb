@@ -4,7 +4,6 @@ require_dependency 'taxon_workflow'
 
 class Taxon < ApplicationRecord
   include Taxa::CallbacksAndValidations
-  include Taxa::Delete
   include Taxa::PredicateMethods
   include Taxa::Synonyms
   include RevisionsCanBeCompared
@@ -168,10 +167,6 @@ class Taxon < ApplicationRecord
       string = '(' + string + ')'
     end
     string
-  end
-
-  def reorder_history_items reordered_ids
-    Taxa::ReorderHistoryItems[self, reordered_ids]
   end
 
   def authorship_reference

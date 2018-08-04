@@ -65,7 +65,6 @@ class Taxa::SaveFromForm
       return unless taxon.protonym.authorship
 
       attributes = authorship_attributes
-      attributes[:reference_id] = attributes.delete(:reference_attributes)[:id]
       return if attributes[:reference_id].blank? && taxon.protonym.authorship.reference.blank?
 
       taxon.protonym.authorship.attributes = attributes

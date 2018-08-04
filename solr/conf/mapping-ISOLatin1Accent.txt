@@ -10,6 +10,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# File modified by jonkerz 2018: Added two Hungarian letters.
+
 # Syntax:
 #   "source" => "target"
 #     "source".length() > 0 (source cannot be empty.)
@@ -193,6 +195,12 @@
 
 # ö => o
 "\u00F6" => "o"
+
+# Ő => o
+"\u0150" => "o"
+
+# ő => o
+"\u0151" => "o"
 
 # ø => o
 "\u00F8" => "o"

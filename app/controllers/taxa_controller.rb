@@ -170,7 +170,7 @@ class TaxaController < ApplicationController
                 :forms,
                 :notes_taxt,
                 :id,
-                { reference_attributes: [:id] }
+                :reference_id
               ]
             }
           ]

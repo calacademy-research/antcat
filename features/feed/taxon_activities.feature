@@ -8,6 +8,9 @@ Feature: Feed (taxa)
     Given activity tracking is disabled
       And there is a subfamily "Formicinae"
       And there is a genus "Eciton"
+      And this reference exists
+        | authors | citation   | title | year |
+        | Fisher  | Psyche 3:3 | Ants  | 2004 |
     And activity tracking is enabled
 
     When I go to the catalog page for "Formicinae"
@@ -18,10 +21,7 @@ Feature: Feed (taxa)
         And I click the protonym name field
           And I set the protonym name to "Eciton"
           And I press "OK"
-        And I click the authorship field
-          And in the reference picker, I search for the author "Fisher"
-          And I click the first search result
-          And I press "OK"
+        And I set the authorship to the first search results of "Fisher (2004)"
         And I click the type name field
           And I set the type name to "Atta major"
           And I press "OK"

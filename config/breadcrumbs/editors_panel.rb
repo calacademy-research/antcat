@@ -133,6 +133,11 @@ end
     parent :versions
   end
 
+crumb :bolton_keys_to_ref_tags do
+  link "Bolton keys to ref tags", bolton_keys_to_ref_tags_path
+  parent :editors_panel
+end
+
 crumb :notifications do
   link "My Notifications"
   parent :editors_panel

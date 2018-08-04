@@ -17,12 +17,12 @@ describe TaxonDecorator::HeadlineType do
     end
   end
 
-  describe "#type_name" do
+  describe "#format_type_name" do
     let!(:type) { create_species 'Atta major' }
     let!(:genus) { create_genus 'Atta', type_name: create(:species_name, name: 'Atta major') }
 
     it "shows the type taxon as a link, if the taxon for the name exists" do
-      expect(described_class.new(genus).send(:type_name)).
+      expect(described_class.new(genus).send(:format_type_name)).
         to eq %(<a href="/catalog/#{type.id}"><i>Atta major</i></a>)
     end
   end
