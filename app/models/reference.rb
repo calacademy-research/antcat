@@ -61,6 +61,7 @@ class Reference < ApplicationRecord
     text    :public_notes
     text    :taxonomic_notes
     text    :bolton_key
+    text    :authors_for_keey do authors_for_keey end # To find "et al".
     string  :citation_year
     string  :author_names_string
   end
