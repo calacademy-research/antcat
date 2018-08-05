@@ -15,25 +15,25 @@ When("I save the synonym") do
 end
 
 When("I press the senior synonym item {string} button") do |button|
-  within '.senior_synonyms_section' do
+  within '#senior-synonyms-section-test-hook' do
     step %(I press "#{button}")
   end
 end
 
 When("I press the (junior )synonym item {string} button") do |button|
-  within '.junior_synonyms_section' do
+  within '#junior-synonyms-section-test-hook' do
     step %(I press "#{button}")
   end
 end
 
 When("I click {string} beside the first junior synonym") do |button|
-  within '.junior_synonyms_section .synonym_row' do
+  within '#junior-synonyms-section-test-hook' do
     step %(I press "#{button}")
   end
 end
 
 When("I click {string} beside the first senior synonym") do |button|
-  within '.senior_synonyms_section .synonym_row' do
+  within '#senior-synonyms-section-test-hook' do
     step %(I press "#{button}")
   end
 end

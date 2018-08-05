@@ -48,9 +48,9 @@ module HtmlSelectorsHelpers
 
     # Editing.
     when /^the junior synonyms section$/
-      '.junior_synonyms_section'
+      '#junior-synonyms-section-test-hook'
     when /^the senior synonyms section$/
-      '.senior_synonyms_section'
+      '#senior-synonyms-section-test-hook'
 
     # Test pages.
     when /the name field/

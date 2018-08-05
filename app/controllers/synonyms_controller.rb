@@ -32,7 +32,11 @@ class SynonymsController < ApplicationController
       error_message = 'Taxon not found'
     end
 
-    render json: { content: content(@taxon), success: error_message.blank?, error_message: error_message }
+    if error_message.blank?
+      render json: { content: content(@taxon) }
+    else
+      render json: { error_message: error_message }, status: :conflict
+    end
   end
 
   def destroy
@@ -49,13 +53,13 @@ class SynonymsController < ApplicationController
     @synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
     @synonym.paper_trail.touch_with_version
 
-    render json: { content: content(@taxon), success: true, error_message: '' }
+    render json: { content: content(@taxon) }
   end
 
   private
 
     def content taxon
-      render_to_string partial: 'taxa/not_really_form/junior_and_senior_synonyms_section', locals: { taxon: taxon }
+      render_to_string partial: 'taxa/not_really_form/synonyms_section', locals: { taxon: taxon }
     end
 
     def set_synonym

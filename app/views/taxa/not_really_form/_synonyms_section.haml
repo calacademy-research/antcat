@@ -1,18 +1,11 @@
-.synonyms_section
-  %h6.callout-header.no-margin-bottom
-    =title
-    .buttons.right
-      %button.add.btn-tiny Add
+.callout
+  #synonyms-section{data: { taxon_id: taxon.id }}
+    %h5.callout-header Current synonyms
+    %p#synonyms-error-message.bold-warning
+    %p The history includes historical synonyms that are not current. This section is used to indicate which ones are currently valid.
 
-  =render 'taxa/not_really_form/synonym_form', taxon: taxon, junior_or_senior: junior_or_senior
-  %table.unstriped
-    -synonyms.each do |synonym|
-      -synonym_taxon = Taxon.find(synonym.synonym_taxon_id)
-      %tr.synonym_row
-        %td
-          %small="##{synonym_taxon.id}"
-          =synonym_taxon.name_with_fossil
-          %small=synonym_taxon.author_citation
-        %td
-          %button.btn-tiny.delete.btn-delete{data: { taxon_id: taxon.id, synonym_id: synonym.id} } Delete
-          %button.btn-saves.btn-tiny.reverse_synonymy{data: { taxon_id: taxon.id, synonym_id: synonym.id} } Reverse synonymy
+    .container#junior-synonyms-section-test-hook.left
+      =render 'taxa/not_really_form/synonyms_subsection', taxon: taxon, title: 'Junior synonyms', synonyms: taxon.junior_synonyms_with_names, junior_or_senior: 'junior'
+    .container#senior-synonyms-section-test-hook.right
+      =render 'taxa/not_really_form/synonyms_subsection', taxon: taxon, title: 'Senior synonyms', synonyms: taxon.senior_synonyms_with_names, junior_or_senior: 'senior'
+  .clearfix

@@ -20,6 +20,7 @@
     =stylesheet_link_tag 'application'
     =stylesheet_link_tag 'jquery_overrides'
     =stylesheet_link_tag 'dev_css' if include_dev_css?
+    =stylesheet_link_tag 'test_css' if Rails.env.test?
 
     =favicon_link_tag
     =yield :head
