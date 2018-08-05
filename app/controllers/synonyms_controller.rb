@@ -20,8 +20,7 @@ class SynonymsController < ApplicationController
       senior = synonym_taxon
     end
 
-    if Synonym.find_by(senior_synonym: senior, junior_synonym: junior) ||
-        Synonym.find_by(senior_synonym: junior, junior_synonym: senior)
+    if already_a_synonym? junior, senior
       error_message = 'This taxon is already a synonym'
     else
       synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
@@ -53,6 +52,11 @@ class SynonymsController < ApplicationController
   end
 
   private
+
+    def already_a_synonym? junior, senior
+      Synonym.find_by(senior_synonym: senior, junior_synonym: junior) ||
+        Synonym.find_by(senior_synonym: junior, junior_synonym: senior)
+    end
 
     def content taxon
       render_to_string partial: 'taxa/not_really_form/synonyms_section', locals: { taxon: taxon }
