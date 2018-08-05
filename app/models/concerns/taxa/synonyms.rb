@@ -6,11 +6,11 @@ module Taxa::Synonyms
   end
 
   def junior_synonyms_with_own_id
-    synonyms_with_names :junior
+    junior_synonyms_objects.joins(:junior_synonym).select('synonyms.id, taxa.id AS taxon_id')
   end
 
   def senior_synonyms_with_own_id
-    synonyms_with_names :senior
+    senior_synonyms_objects.joins(:senior_synonym).select('synonyms.id, taxa.id AS taxon_id')
   end
 
   def junior_synonyms_recursive
@@ -32,25 +32,5 @@ module Taxa::Synonyms
       end
 
       all_juniors
-    end
-
-  private
-
-    def synonyms_with_names junior_or_senior
-      if junior_or_senior == :junior
-        join_column = 'junior_synonym_id'
-        where_column = 'senior_synonym_id'
-      else
-        join_column = 'senior_synonym_id'
-        where_column = 'junior_synonym_id'
-      end
-
-      self.class.find_by_sql <<-SQL.squish
-        SELECT synonyms.id, taxa.name_html_cache AS name, taxa.id AS taxon_id
-        FROM synonyms JOIN taxa ON synonyms.#{join_column} = taxa.id
-        JOIN names ON taxa.name_id = names.id
-        WHERE #{where_column} = #{id}
-        ORDER BY name
-      SQL
     end
 end
