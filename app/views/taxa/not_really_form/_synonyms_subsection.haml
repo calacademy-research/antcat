@@ -11,7 +11,7 @@
       %button.cancel-new-synonym-js.btn-cancel Cancel
 
     -synonyms.each do |synonym|
-      -synonym_taxon = Taxon.find(synonym.synonym_taxon_id)
+      -synonym_taxon = Taxon.find(synonym.taxon_id)
       %tr.synonym-row
         %td
           %small="##{synonym_taxon.id}"

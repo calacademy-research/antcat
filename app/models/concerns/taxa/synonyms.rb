@@ -5,11 +5,11 @@ module Taxa::Synonyms
     Taxa::CurrentValidTaxonIncludingSynonyms[self]
   end
 
-  def junior_synonyms_with_names
+  def junior_synonyms_with_own_id
     synonyms_with_names :junior
   end
 
-  def senior_synonyms_with_names
+  def senior_synonyms_with_own_id
     synonyms_with_names :senior
   end
 
@@ -46,7 +46,7 @@ module Taxa::Synonyms
       end
 
       self.class.find_by_sql <<-SQL.squish
-        SELECT synonyms.id, taxa.name_html_cache AS name, taxa.id AS synonym_taxon_id
+        SELECT synonyms.id, taxa.name_html_cache AS name, taxa.id AS taxon_id
         FROM synonyms JOIN taxa ON synonyms.#{join_column} = taxa.id
         JOIN names ON taxa.name_id = names.id
         WHERE #{where_column} = #{id}
