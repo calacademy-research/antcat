@@ -52,8 +52,15 @@ window.setupSynonymsSection = ->
         url: "/taxa/#{taxon_id}/synonyms?#{junior_or_senior}=1&synonym_taxon_id=#{synonym_taxon_id}"
         type: 'post'
         dataType: 'json'
-        success: (data) => _replaceSynonymsSection data.content
-        error: (xhr) => $("#synonyms-error-message").text JSON.parse(xhr.responseText).error_message
+        success: (data) => _replaceSynonymsSection(data.content)
+        error: (xhr) =>
+          try
+            errorMessage = JSON.parse(xhr.responseText).error_message
+          catch e
+            alert xhr.responseText
+          finally
+            $("#synonyms-error-message").text errorMessage
+
 
     $(".save-new-synonym-js").click (event) => saveSynonymy(event.target)
 

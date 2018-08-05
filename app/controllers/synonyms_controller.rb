@@ -12,24 +12,20 @@ class SynonymsController < ApplicationController
 
     error_message = ''
 
-    if synonym_taxon
-      if is_junior
-        junior = synonym_taxon
-        senior = @taxon
-      else
-        junior = @taxon
-        senior = synonym_taxon
-      end
-
-      if Synonym.find_by(senior_synonym: senior, junior_synonym: junior) ||
-          Synonym.find_by(senior_synonym: junior, junior_synonym: senior)
-        error_message = 'This taxon is already a synonym'
-      else
-        synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
-        synonym.paper_trail.touch_with_version
-      end
+    if is_junior
+      junior = synonym_taxon
+      senior = @taxon
     else
-      error_message = 'Taxon not found'
+      junior = @taxon
+      senior = synonym_taxon
+    end
+
+    if Synonym.find_by(senior_synonym: senior, junior_synonym: junior) ||
+        Synonym.find_by(senior_synonym: junior, junior_synonym: senior)
+      error_message = 'This taxon is already a synonym'
+    else
+      synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
+      synonym.paper_trail.touch_with_version
     end
 
     if error_message.blank?
