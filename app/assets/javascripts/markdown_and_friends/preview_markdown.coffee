@@ -89,7 +89,7 @@ class MakePreviewable
       success: (html) =>
         tab.html html
         # Re-trigger to make references expandable.
-        AntCat.make_reference_keeys_expandable tab
+        AntCat.makeReferenceKeeysExpandable tab
         @hideSpinner() # Only hide on success.
       error: -> tab.text "Error rendering preview"
 
