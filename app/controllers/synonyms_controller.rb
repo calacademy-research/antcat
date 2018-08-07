@@ -36,7 +36,7 @@ class SynonymsController < ApplicationController
 
   def destroy
     @synonym.destroy
-    render json: { success: true }
+    head :ok
   end
 
   def reverse_synonymy
@@ -45,8 +45,8 @@ class SynonymsController < ApplicationController
 
     Synonym.where(junior_synonym_id: new_junior, senior_synonym_id: new_senior).destroy_all
     Synonym.where(senior_synonym_id: new_junior, junior_synonym_id: new_senior).destroy_all
-    @synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
-    @synonym.paper_trail.touch_with_version
+    synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
+    synonym.paper_trail.touch_with_version
 
     render json: { content: content(@taxon) }
   end
