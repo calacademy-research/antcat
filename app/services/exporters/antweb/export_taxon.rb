@@ -1,5 +1,3 @@
-# TODO remove most CSS throughout `Exporters::Antweb`.
-
 # TODO do not include in the top namespace.
 # rubocop:disable Style/MixinUsage
 include Exporters::Antweb::MonkeyPatchTaxon
@@ -151,7 +149,8 @@ class Exporters::Antweb::ExportTaxon
 
     def export_history taxon
       taxon = taxon.decorate
-      content_tag :div, class: 'antcat_taxon' do
+
+      content_tag :div, class: 'antcat_taxon' do # NOTE `.antcat_taxon` is used on AntWeb.
         content = ''.html_safe
         content << taxon.statistics(include_invalid: false)
         content << genus_species_header_notes_taxt(taxon)
@@ -176,8 +175,6 @@ class Exporters::Antweb::ExportTaxon
 
     def genus_species_header_notes_taxt taxon
       return if taxon.genus_species_header_notes_taxt.blank?
-      content_tag :div,
-        TaxtPresenter[taxon.genus_species_header_notes_taxt].to_antweb,
-        class: 'genus_species_header_notes_taxt'
+      content_tag :div, TaxtPresenter[taxon.genus_species_header_notes_taxt].to_antweb
     end
 end
