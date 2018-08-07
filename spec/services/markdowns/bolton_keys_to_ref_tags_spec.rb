@@ -11,6 +11,20 @@ describe Markdowns::BoltonKeysToRefTags do
         specify { expect(described_class["Latreille, 1802c: 236"]).to eq "{ref #{latreille.id}}: 236" }
       end
 
+      context "with ampersand in the key" do
+        let!(:agosti) { reference_factory bolton_key: "Agosti Wood 1987b", author_name: "no" }
+
+        specify do
+          expect(described_class["Agosti & Wood, 1987b: 236"]).to eq "{ref #{agosti.id}}: 236"
+        end
+      end
+
+      context "with 'et al.' in the key" do
+        let!(:agosti) { reference_factory bolton_key: "Agosti et al. 1987b", author_name: "no" }
+
+        specify { expect(described_class["Agosti et al., 1987b: 236"]).to eq "{ref #{agosti.id}}: 236" }
+      end
+
       context "with prefixed group title" do
         let(:content) { "Status as species: Latreille, 1802c: 236;" }
 
