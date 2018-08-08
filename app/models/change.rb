@@ -18,7 +18,7 @@ class Change < ApplicationRecord
     Feed.without_tracking do
       TaxonState.waiting.each do |taxon_state|
         # TODO maybe something like `TaxonState#approve_related_changes`?
-        Change.where(taxon_id: taxon_state.taxon_id).find_each do |change|
+        Change.where(taxon: taxon_state.taxon).find_each do |change|
           change.approve user
         end
       end
@@ -28,7 +28,7 @@ class Change < ApplicationRecord
   end
 
   def approve user = nil
-    taxon_state = TaxonState.find_by(taxon: taxon_id)
+    taxon_state = TaxonState.find_by(taxon: taxon)
     return if taxon_state.review_state == TaxonState::APPROVED
 
     if taxon

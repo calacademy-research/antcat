@@ -29,7 +29,7 @@ describe Taxon do
         another_taxon = create :genus
         another_taxon.taxon_state.review_state = TaxonState::OLD
 
-        change = create :change, taxon_id: another_taxon.id,
+        change = create :change, taxon: another_taxon,
           change_type: "create", approver: user, approved_at: Time.current
         create :version, item: another_taxon, whodunnit: user.id, change: change
 
@@ -42,7 +42,7 @@ describe Taxon do
     context "when a waiting record" do
       let(:taxon) { create :genus }
       let(:change) do
-        create :change, taxon_id: taxon.id,
+        create :change, taxon: taxon,
           change_type: "create", approver: approver, approved_at: Time.current
       end
 

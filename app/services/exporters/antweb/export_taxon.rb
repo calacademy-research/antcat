@@ -144,7 +144,7 @@ class Exporters::Antweb::ExportTaxon
     # The original_combination accessor returns the taxon with 'original combination'
     # status whose 'current valid taxon' points to us.
     def original_combination taxon
-      taxon.class.where(status: Status::ORIGINAL_COMBINATION, current_valid_taxon_id: taxon.id).first
+      taxon.class.where(status: Status::ORIGINAL_COMBINATION, current_valid_taxon: taxon).first
     end
 
     def export_history taxon
