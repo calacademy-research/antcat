@@ -57,17 +57,7 @@ class Taxa::SaveFromForm
       attributes = protonym_attributes
 
       attributes[:name_id] = attributes.delete(:name_attributes)[:id]
-      update_protonym_authorship attributes.delete :authorship_attributes
       taxon.protonym.attributes = attributes
-    end
-
-    def update_protonym_authorship authorship_attributes
-      return unless taxon.protonym.authorship
-
-      attributes = authorship_attributes
-      return if attributes[:reference_id].blank? && taxon.protonym.authorship.reference.blank?
-
-      taxon.protonym.authorship.attributes = attributes
     end
 
     def update_type_name type_name_attributes
@@ -85,8 +75,6 @@ class Taxa::SaveFromForm
     end
 
     def save_and_create_change!
-      # Different setup because non-persisted objects have no IDs,
-      # so we must update the change after saving `taxon`.
       if taxon.new_record?
         change = UndoTracker.setup_change taxon, :create
         taxon.save!
