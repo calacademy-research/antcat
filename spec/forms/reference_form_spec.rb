@@ -4,7 +4,7 @@ require 'spec_helper'
 References::ArticleReference = ArticleReference
 References::BookReference = BookReference
 
-describe References::SaveFromForm do
+describe ReferenceForm do
   context "when reference exists" do
     let(:reference) { create :unknown_reference }
     let(:reference_params) do
@@ -18,7 +18,9 @@ describe References::SaveFromForm do
 
     specify do
       expect(reference.bolton_key).to be nil
-      described_class[reference, reference_params, original_params, request_host]
+
+      described_class.new(reference, reference_params, original_params, request_host).save
+
       reference.reload
       expect(reference.bolton_key).to eq reference_params[:bolton_key]
     end
