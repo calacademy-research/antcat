@@ -97,10 +97,6 @@ class Taxon < ApplicationRecord
     find_by(name_cache: name)
   end
 
-  def save_from_form params, previous_combination = nil
-    Taxa::SaveFromForm[self, params, previous_combination]
-  end
-
   # TODO see if we can push this down to the subclasses.
   def update_parent new_parent
     return if parent == new_parent
