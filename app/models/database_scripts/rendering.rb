@@ -14,6 +14,7 @@ module DatabaseScripts
         end
       when Array
         return as_taxon_table if cached_results.first.is_a?(Taxon)
+        return FOUND_NO_DATABASE_ISSUES if cached_results.blank?
         "Error: cannot implicitly render results."
       else
         "Error: cannot implicitly render results."
