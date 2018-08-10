@@ -52,7 +52,7 @@ describe ArticleReferenceDecorator do
         %(<span class="expandable-reference">) +
           %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." class="expandable-reference-key" href="#">Latreille, 1809</a>} +
           %(<span class="expandable-reference-content">) +
-            %{<span class="expandable-reference-text" title="Latreille, 1809">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
+            %{<span class="expandable-reference-text">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
             %( ) +
             %(<a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> ) +
             %(<a href="example.com">PDF</a>) +

@@ -83,7 +83,7 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     def expandable_reference_text
-      helpers.content_tag :span, plain_text, class: "expandable-reference-text", title: reference.keey
+      helpers.content_tag :span, plain_text, class: "expandable-reference-text"
     end
 
     def small_reference_link_button
