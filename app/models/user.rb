@@ -33,10 +33,6 @@ class User < ApplicationRecord
     is_superadmin?
   end
 
-  def can_review_changes?
-    can_edit?
-  end
-
   def angle_bracketed_email
     %("#{name}" <#{email}>)
   end

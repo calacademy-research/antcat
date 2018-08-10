@@ -9,7 +9,7 @@ module TaxonButtonsHelper
   end
 
   def link_to_review_change taxon
-    return unless user_can_review_changes?
+    return unless user_can_edit?
 
     if taxon.can_be_reviewed? && taxon.last_change
       link_to 'Review change', "/changes/#{taxon.last_change.id}", class: "btn-tiny btn-normal"

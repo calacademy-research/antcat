@@ -27,11 +27,6 @@ describe User do
       expect(described_class.new.can_edit).to be_falsey
       expect(described_class.new(can_edit: true).can_edit).to be true
     end
-
-    it "knows if it can review changes" do
-      expect(described_class.new.can_review_changes?).to be_falsey
-      expect(described_class.new(can_edit: true).can_review_changes?).to be true
-    end
   end
 
   describe "#angle_bracketed_email" do

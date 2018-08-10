@@ -15,7 +15,6 @@ describe ApplicationController do
       it "defaults user right to nil" do
         expect(controller.user_can_edit?).to be nil
         expect(controller.user_is_superadmin?).to be nil
-        expect(controller.user_can_review_changes?).to be nil
       end
     end
 
@@ -34,7 +33,6 @@ describe ApplicationController do
       it "knows what editors are allow to do" do
         expect(controller.user_can_edit?).to be true
         expect(controller.user_is_superadmin?).to be false
-        expect(controller.user_can_review_changes?).to be true
       end
     end
 
@@ -53,7 +51,6 @@ describe ApplicationController do
       it "knows what superadmins are allow to do" do
         expect(controller.user_can_edit?).to be false
         expect(controller.user_is_superadmin?).to be true
-        expect(controller.user_can_review_changes?).to be false
       end
     end
 
