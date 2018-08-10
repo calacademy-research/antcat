@@ -52,7 +52,9 @@ AntCat.deselect = -> $('.ui-selecting').removeClass('ui-selecting')
 
 # For at.js. Super comlicated way of saying "allow spaces and some other characters".
 AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
-  regexp = new RegExp(flag + '([A-Za-z0-9_.,:\\x00-\\xff \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
+  # "c0-1ff" contains the range of weird diacrited letters starting at "À" and ending at "ǿ".
+  # See http://qaz.wtf/u/show.cgi?show=c0-1ff&type=hex and https://unicode-table.com/en/#basic-latin
+  regexp = new RegExp(flag + '([A-Za-z0-9_.,:\\u00c0-\\u01ff \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
 
   match = regexp.exec(subtext)
   if match
