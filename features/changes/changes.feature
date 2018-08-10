@@ -4,7 +4,7 @@ Feature: Changes
   Background:
     Given I log in as a catalog editor named "Mark Wilden"
 
-  @javascript @search @papertrail
+  @javascript @search @papertrail @no_travis
   Scenario: Adding a taxon and seeing it on the Changes page
     Given this reference exist
       | authors | citation   | title | year |

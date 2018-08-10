@@ -1,8 +1,6 @@
-# This class is responsible for saving taxa from `TaxaController` (from the edit form).
+# TODO not really a form but we are getting there.
 
-class Taxa::SaveFromForm
-  include Service
-
+class TaxonForm
   # `previous_combination` will be a pointer to a species or subspecies if non-nil.
   def initialize taxon, taxon_params, previous_combination = nil
     @taxon = taxon
@@ -10,31 +8,35 @@ class Taxa::SaveFromForm
     @previous_combination = previous_combination
   end
 
-  def call
-    taxon.save_initiator = true
-
-    Taxon.transaction do
-      # There is no `UndoTracker#get_current_change_id` at this point, so if
-      # anything in the "update_*" methods triggers a save for any reason,
-      # the versions' `change_id`s will be nil.
-      update_name                 params.delete :name_attributes
-      update_parent               params.delete :parent_name_attributes
-      update_protonym             params.delete :protonym_attributes
-      update_type_name            params.delete :type_name_attributes
-
-      taxon.attributes = params
-
-      save_and_create_change!
-
-      if previous_combination
-        Taxa::HandlePreviousCombination[taxon, previous_combination]
-      end
-    end
+  def save
+    save_taxon
   end
 
   private
 
     attr_reader :taxon, :params, :previous_combination
+
+    def save_taxon
+      taxon.save_initiator = true
+
+      Taxon.transaction do
+        # There is no `UndoTracker#get_current_change_id` at this point, so if
+        # anything in the "update_*" methods triggers a save for any reason,
+        # the versions' `change_id`s will be nil.
+        update_name                 params.delete :name_attributes
+        update_parent               params.delete :parent_name_attributes
+        update_protonym             params.delete :protonym_attributes
+        update_type_name            params.delete :type_name_attributes
+
+        taxon.attributes = params
+
+        save_and_create_change!
+
+        if previous_combination
+          Taxa::HandlePreviousCombination[taxon, previous_combination]
+        end
+      end
+    end
 
     def update_name name_attributes
       attributes = name_attributes
@@ -57,17 +59,7 @@ class Taxa::SaveFromForm
       attributes = protonym_attributes
 
       attributes[:name_id] = attributes.delete(:name_attributes)[:id]
-      update_protonym_authorship attributes.delete :authorship_attributes
       taxon.protonym.attributes = attributes
-    end
-
-    def update_protonym_authorship authorship_attributes
-      return unless taxon.protonym.authorship
-
-      attributes = authorship_attributes
-      return if attributes[:reference_id].blank? && taxon.protonym.authorship.reference.blank?
-
-      taxon.protonym.authorship.attributes = attributes
     end
 
     def update_type_name type_name_attributes
@@ -85,8 +77,6 @@ class Taxa::SaveFromForm
     end
 
     def save_and_create_change!
-      # Different setup because non-persisted objects have no IDs,
-      # so we must update the change after saving `taxon`.
       if taxon.new_record?
         change = UndoTracker.setup_change taxon, :create
         taxon.save!
@@ -105,7 +95,7 @@ class Taxa::SaveFromForm
         #   finder on your Widget model as usual."
         taxon.paper_trail.touch_with_version
 
-        change.update taxon_id: taxon.id
+        change.update taxon: taxon
       else
         UndoTracker.setup_change taxon, :update
         taxon.save!

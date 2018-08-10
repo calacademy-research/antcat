@@ -175,13 +175,6 @@ When("I set the new species field to {string}") do |name|
   select2 name, from: 'new_species_id'
 end
 
-# auto_generated
-Then("the name {string} genus {string} should not be auto generated") do |species, genus|
-  taxon = Taxon.find_by name_cache: "#{genus} #{species}"
-  expect(taxon.auto_generated).to be_falsey
-  expect(taxon.name.auto_generated).to be_falsey
-end
-
 # Misc
 Then("the taxon mouseover should contain {string}") do |text|
   element = find '.expandable-reference-key'

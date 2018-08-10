@@ -601,7 +601,7 @@ describe Exporters::Antweb::ExportTaxon do
             %(</div>) +
 
             # headline
-            %(<div class="headline">) +
+            %(<div>) +
               # protonym
               %(<b><span><i>Atta</i></span></b> ) +
 
@@ -626,21 +626,21 @@ describe Exporters::Antweb::ExportTaxon do
 
             # taxonomic history
             %(<p><b>Taxonomic history</b></p>) +
-            %(<div class="history"><div class="history_item">) +
-              %(<table><tr><td class="history_item_body" style="font-size: 13px">) +
+            %(<div><div>) +
+              %(<table><tr><td>) +
                 %(Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.) +
               %(</td></tr></table>) +
             %(</div></div>) +
 
             # references
-            %(<div class="reference_sections">) +
-              %(<div class="section">) +
-                %(<div class="title_taxt">Subfamily and tribe ) +
+            %(<div>) +
+              %(<div>) +
+                %(<div>Subfamily and tribe ) +
                   %(<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{a_tribe.id}">) +
                     %(#{a_tribe.name_cache}) +
                   %(</a>) +
                 %(</div>) +
-                %(<div class="references_taxt">) +
+                %(<div>) +
                   %(<a title="#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}." href="http://antcat.org/references/#{a_reference.id}">) +
                     %(#{ref_author}, #{ref_year}) +
                   %(</a> ) +

@@ -12,15 +12,6 @@ Given(/a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a t
   @species.history_items.create! taxt: history
 end
 
-Given("species {string} exists in that subgenus") do |name|
-  @species = create :species,
-    subfamily: @subfamily,
-    genus: @genus,
-    subgenus: @subgenus,
-    name: create(:species_name, name: name)
-  @species.history_items.create! taxt: "#{name} history"
-end
-
 Given("species {string} exists in that genus") do |name|
   @species = create :species,
     subfamily: @subfamily,

@@ -12,8 +12,6 @@
 // both the form and the not really form.
 #taxa-controller
   .taxon_form, .not-really-taxon-form
-    .taxt_edit_box
-      font-size: 90%
     td.caption
       width: 120px
       vertical-align: top
@@ -41,29 +39,11 @@
   .not-really-taxon-form
     .history_items_section
       font-size: 90%
-      .history_item_template
-        display: none
       .history_items
         padding: 6px 0
       .history_item
         border-bottom: 1px solid #dfd9c3
         padding: 6px
-        table
-          border-spacing: 0
-          margin-bottom: 0
-        .edit
-          display: none
-          .taxt_editor
-            margin-bottom: 4px
-          .buttons
-            margin-bottom: 4px
-            .delete
-              margin-left: 16px
-        .display
-          padding: 6px
-          border-bottom: 1px solid #dfd9c3
-          &.ui-selecting
-            background: $color_current_being_edited_background
 
     .references_section
       .taxt-editor
@@ -71,54 +51,21 @@
         padding: 0.4rem
       .title_taxt, .subtitle_taxt
         font-weight: bold
-      .reference_section_template
-        display: none
       .reference_sections
         font-size: 90%
-        .template
-          display: none
-        .reference_section
-          margin-top: 0
-          table
-            border-spacing: 0
-            margin-bottom: 0
-          .edit
-            display: none
-            padding: 6px
-            .taxt_editor
-              margin-bottom: 4px
-            .buttons
-              margin-bottom: 4px
-              margin-top: 4px
-              .delete
-                margin-left: 16px
-          .display
-            padding: 6px
-            overflow: auto
-            &.ui-selecting
-              background: $color_current_being_edited_background
-            .title_taxt, .subtitle_taxt
-              font-weight: bold
 
-    .junior_and_senior_synonyms_section
+    #synonyms-section
       .container
+        padding: 0 1rem
         width: 50%
-      .junior_synonyms_section
-        margin-right: 6px
-      .synonym_row
+        .synonyms-controls-js
+          display: none
+      .synonym-row
+        &:hover .show-on-hover
+          display: inline
         font-size: 90%
         small
           color: darkgrey
-        &.ui-selecting, &.confirming
-          background: $color_current_being_edited_background
-        button.delete
-          margin-left: 10px
-          display: none
-        button.reverse_synonymy
-          margin-left: 0
-          display: none
-      .synonym-form
-        display: none
       .select2-container
         width: 100% !important
 

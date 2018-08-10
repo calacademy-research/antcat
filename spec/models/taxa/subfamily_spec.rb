@@ -3,11 +3,6 @@ require 'spec_helper'
 describe Subfamily do
   let(:subfamily) { create :subfamily, name: create(:subfamily_name, name: 'Dolichoderinae') }
 
-  it { is_expected.to have_many :collective_group_names }
-  it { is_expected.to have_many :genera }
-  it { is_expected.to have_many :species }
-  it { is_expected.to have_many :subspecies }
-
   it "can have tribes, which are its children" do
     attini = create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily
     dacetini = create :tribe, name: create(:name, name: 'Dacetini'), subfamily: subfamily

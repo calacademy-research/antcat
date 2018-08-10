@@ -4,6 +4,8 @@ $ ->
 
 $.fn.taxonSelectify = ->
   selectElement = this
+  return if $(selectElement).data('select2')
+
   $(selectElement).select2
     theme: 'bootstrap'
     templateResult: (item) ->

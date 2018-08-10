@@ -1,7 +1,7 @@
 .history_items_section.callout
   %h5.callout-header
     History
-    .right.history_items_section_buttons
+    .right
       =link_to 'Add', new_taxa_taxon_history_item_path(taxon), class: 'submit btn-normal btn-tiny tooltip', id: 'taxt-editor-add-history-item-button', title: "Note: New items are added on a different page. Please save your changes first if you would like to keep them."
       %a#start-reordering-history-items.btn-normal.btn-tiny.button Reorder
   .history_items{data: {taxon_id: taxon.id}}

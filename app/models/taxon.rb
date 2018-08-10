@@ -16,18 +16,12 @@ class Taxon < ApplicationRecord
 
   self.table_name = :taxa
 
-  # `attr_accessor` (Ruby built-in): convenient when we want to store temporary values.
-  # These are used in the edit taxa form / `TaxaController`
-  attr_accessor :parent_name, :current_valid_taxon_name, :homonym_replaced_by_name,
-    :duplicate_type
+  attr_accessor :parent_name, :duplicate_type
 
-  # Set to true enable additional callbacks for this taxon only. Used in relation
-  # to `TaxaController`, but can be used in the console/anywhere as well.
+  # Set to true enable additional callbacks for this taxon only (set taxon state, etc).
   attr_accessor :save_initiator
 
   # TODO remove column `:collision_merge_id` (not used, all nil).
-  # TODO maybe explain more of these. Here or elsewhere.
-  # `origin`: if it's generated, where did it come from? string (e.g.: 'hol')
 
   belongs_to :name
   belongs_to :protonym, -> { includes :authorship }
@@ -71,10 +65,6 @@ class Taxon < ApplicationRecord
   scope :order_by_name_cache, -> { order(:name_cache) }
   # For making conditional queries on self-referential `Taxon` associations.
   #
-  # `#includes` and `#joins` are really hard to use because `Taxon` is a STI
-  # model with self-referential associations; it's name is irregular in plural,
-  # and some of its associations have irregular plurals or singulars.
-  #
   # Example usage:
   # Say we want something like this (which doesn't work):
   #   `Species.joins(:genera).where(fossil: false, genus: { fossil: true })`
@@ -102,22 +92,9 @@ class Taxon < ApplicationRecord
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
 
-  # Avoid this method. Issues:
-  # It conflicts with dynamic finder methods with the same names (they should be avoided too).
-  # It searches in `taxa.name_cache`, not `names.name`.
-  # It silently returns the first match if there's more than 1.
-  #
-  # More stuff:
-  # `Taxon.where(name_cache: "Acamathus").count` returns two matches
-  # `Taxon.find_by_name("Acamathus")` returns a single item
-  # `Taxon.find_by_sql("SELECT * FROM taxa GROUP BY name_cache HAVING COUNT(*) > 1").count` = 857
-  # Other methods clashing with dynamic finders: `Author.find_by_names`, `Name.find_by_name`.
+  # TODO remove since `#name_cache` is not unique.
   def self.find_by_name name
     find_by(name_cache: name)
-  end
-
-  def save_from_form params, previous_combination = nil
-    Taxa::SaveFromForm[self, params, previous_combination]
   end
 
   # TODO see if we can push this down to the subclasses.

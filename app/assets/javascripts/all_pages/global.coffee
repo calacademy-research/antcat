@@ -1,6 +1,6 @@
 $ ->
   $(document).foundation()
-  AntCat.make_reference_keeys_expandable document
+  AntCat.makeReferenceKeeysExpandable document
 
   enableInlineExpansions()
 
@@ -23,7 +23,7 @@ $.fn.disableButton = -> @addClass "disabled"
 # same elements more than once, they alternate between working and not.
 # Reference keys already in the DOM should not be touched after making
 # references in the markdown preview expandable.
-AntCat.make_reference_keeys_expandable = (element) ->
+AntCat.makeReferenceKeeysExpandable = (element) ->
   $(element).find('.expandable-reference-key').on 'click', ->
     $(this).parent().find('.expandable-reference-content').toggle()
     $(this).toggle()
@@ -35,7 +35,7 @@ AntCat.make_reference_keeys_expandable = (element) ->
     false
 
 # Used by `ApplicationHelper#inline_expandable`.
-# TODO should be merge with `AntCat.make_reference_keeys_expandable`, but
+# TODO should be merge with `AntCat.makeReferenceKeeysExpandable`, but
 # that requires a migration for invalidating reference caches.
 enableInlineExpansions = ->
   $(".expandable").on "click", (event) ->
@@ -52,7 +52,9 @@ AntCat.deselect = -> $('.ui-selecting').removeClass('ui-selecting')
 
 # For at.js. Super comlicated way of saying "allow spaces and some other characters".
 AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
-  regexp = new RegExp(flag + '([A-Za-z0-9_.,:\\x00-\\xff \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
+  # "c0-1ff" contains the range of weird diacrited letters starting at "À" and ending at "ǿ".
+  # See http://qaz.wtf/u/show.cgi?show=c0-1ff&type=hex and https://unicode-table.com/en/#basic-latin
+  regexp = new RegExp(flag + '([A-Za-z0-9_.,:\\u00c0-\\u01ff \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
 
   match = regexp.exec(subtext)
   if match
@@ -111,9 +113,9 @@ $ ->
     # HACK to make keys inside truncated elements to work after showing/hiding.
     animate: true
     animateOptions:
-      complete: -> AntCat.make_reference_keeys_expandable $(".truncate")
+      complete: -> AntCat.makeReferenceKeeysExpandable $(".truncate")
 
   $(".truncate").truncate(options)
 
   # HACK to make keys inside truncated elements to work on page load.
-  AntCat.make_reference_keeys_expandable $(".truncate")
+  AntCat.makeReferenceKeeysExpandable $(".truncate")

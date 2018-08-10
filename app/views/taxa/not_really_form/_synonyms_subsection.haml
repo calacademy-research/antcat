@@ -1,0 +1,22 @@
+.synonyms-subsection-js
+  %h6.callout-header.no-margin-bottom
+    =title
+    .right
+      %button.synonyms-add-js.btn-tiny Add
+
+  %table.unstriped
+    %p.synonyms-controls-js
+      =taxon_select_tag :synonym_taxon_id, nil
+      %button.save-new-synonym-js.btn-saves{data: { junior_or_senior: junior_or_senior }} Save
+      %button.cancel-new-synonym-js.btn-cancel Cancel
+
+    -synonyms.each do |synonym|
+      -synonym_taxon = Taxon.find(synonym.taxon_id)
+      %tr.synonym-row
+        %td
+          %small="##{synonym_taxon.id}"
+          =synonym_taxon.name_with_fossil
+          %small=synonym_taxon.author_citation
+        %td.show-on-hover
+          %button.delete-synonym-js.btn-tiny.btn-delete{data: { synonym_id: synonym.id }} Delete
+          %button.reverse-synonym-js.btn-tiny.btn-saves{data: { synonym_id: synonym.id }} Reverse synonymy

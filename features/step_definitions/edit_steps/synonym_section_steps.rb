@@ -7,33 +7,25 @@ def already_opened_select2(value, from:) # rubocop:disable Lint/UnusedMethodArgu
 end
 
 When("I save the senior synonym") do
-  step %(I press the senior synonym item "Save" button)
-end
-
-When("I save the synonym") do
-  step %(I press the synonym item "Save" button)
-end
-
-When("I press the senior synonym item {string} button") do |button|
-  within '.senior_synonyms_section' do
-    step %(I press "#{button}")
+  within '#senior-synonyms-section-test-hook' do
+    step %(I press "Save")
   end
 end
 
-When("I press the (junior )synonym item {string} button") do |button|
-  within '.junior_synonyms_section' do
-    step %(I press "#{button}")
+When("I save the synonym") do
+  within '#junior-synonyms-section-test-hook' do
+    step %(I press "Save")
   end
 end
 
 When("I click {string} beside the first junior synonym") do |button|
-  within '.junior_synonyms_section .synonym_row' do
+  within '#junior-synonyms-section-test-hook' do
     step %(I press "#{button}")
   end
 end
 
 When("I click {string} beside the first senior synonym") do |button|
-  within '.senior_synonyms_section .synonym_row' do
+  within '#senior-synonyms-section-test-hook' do
     step %(I press "#{button}")
   end
 end

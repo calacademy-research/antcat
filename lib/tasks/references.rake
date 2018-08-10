@@ -1,6 +1,5 @@
 namespace :antcat do
   namespace :references do
-    # TODO move most code to somewhere else and call it from here.
     desc 'Check URLs'
     task check_urls: :environment do
       references_with_documents = Reference.joins(:document)

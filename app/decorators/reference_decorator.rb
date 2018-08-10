@@ -83,7 +83,7 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     def expandable_reference_text
-      helpers.content_tag :span, plain_text, class: "expandable-reference-text", title: reference.keey
+      helpers.content_tag :span, plain_text, class: "expandable-reference-text"
     end
 
     def small_reference_link_button
@@ -111,7 +111,6 @@ class ReferenceDecorator < ApplicationDecorator
       string.html_safe
     end
 
-    # TODO try to move somewhere more general, even if it's only used here.
     def format_italics string
       return unless string
       raise "Can't call format_italics on an unsafe string" unless string.html_safe?
@@ -119,7 +118,6 @@ class ReferenceDecorator < ApplicationDecorator
       string.html_safe
     end
 
-    # TODO rename?
     # TODO store denormalized value in the database?
     def format_date input
       return input if input.size < 4

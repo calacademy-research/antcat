@@ -1,16 +1,3 @@
-# TODOs:
-# * Factories creates too many objects and they seem to create new associations
-#   even when passed existing objects.
-#
-#   Creating a taxon of a lower rank creates all the taxa above it as specified
-#   by the factories. This also create objects for their dependencies, such
-#   as the protonym, which in turn creates a new citation --> another reference
-#   --> another author --> etc etc = many objects.
-#
-# * Investigate if using (tested) fixtures makes sense for the most-often created objects.
-#
-# * Investigate reusing more objects, such as always reusing the protonym and journal.
-#
 # See also `RefactorTaxonFactoriesHelpers`.
 
 require_relative '../support/helpers/get_name_parts_helpers'

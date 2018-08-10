@@ -1,11 +1,5 @@
 # This controller handles editing by logged in editors.
 # `CatalogController` is responsible for showing taxon pages to users.
-#
-# Everything except the actions `:new, :create, :edit, :update` has been moved
-# to a grab bag controller (`TaxaGrabBagController`) because this class was,
-# and still is, hard to work with.
-
-# TODO extract more code from here into `Taxa::SaveFromForm`.
 
 class TaxaController < ApplicationController
   before_action :authenticate_editor
@@ -112,11 +106,11 @@ class TaxaController < ApplicationController
       if collision_resolution.blank? || collision_resolution == 'homonym'
         # We get here when 1) there's no `collision_resolution` (the normal case),
         # or 2) the the editor has confirmed that we are creating a homonym.
-        @taxon.save_from_form taxon_params, @previous_combination
+        TaxonForm.new(@taxon, taxon_params, @previous_combination).save
       else
         # TODO I believe this is where we lose track of `@taxon.id` (see nil check in `#create`)
         original_combination = Taxon.find(collision_resolution)
-        original_combination.save_from_form taxon_params, @previous_combination
+        TaxonForm.new(original_combination, taxon_params, @previous_combination).save
       end
 
       if @previous_combination.is_a?(Species) && @previous_combination.children.exists?
@@ -135,7 +129,7 @@ class TaxaController < ApplicationController
         new_child.parent = @taxon
 
         new_child.inherit_attributes_for_new_combination t, @taxon
-        new_child.save_from_form Taxa::AttributesForNewUsage[new_child, t], t
+        TaxonForm.new(new_child, Taxa::AttributesForNewUsage[new_child, t], t).save
       end
     end
 

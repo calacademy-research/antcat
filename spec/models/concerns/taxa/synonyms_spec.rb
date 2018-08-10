@@ -135,29 +135,29 @@ describe Taxon do # rubocop:disable RSpec/FilePath
     end
   end
 
-  describe "with_names" do
+  describe "with_own_id" do
     let(:atta) { create_genus 'Atta' }
     let(:eciton) { create_genus 'Eciton' }
 
     before { become_junior_synonym_of eciton, atta }
 
-    describe "#junior_synonyms_with_names" do
+    describe "#junior_synonyms_with_own_id" do
       it "works" do
-        results = atta.junior_synonyms_with_names
+        results = atta.junior_synonyms_with_own_id
         expect(results.size).to eq 1
         record = results.first
-        expect(record['id']).to eq Synonym.find_by(junior_synonym: eciton).id
-        expect(record['name']).to eq eciton.name.to_html
+        expect(record.id).to eq Synonym.find_by(junior_synonym: eciton).id
+        expect(record.taxon_id).to eq eciton.id
       end
     end
 
-    describe "#senior_synonyms_with_names" do
+    describe "#senior_synonyms_with_own_id" do
       it "works" do
-        results = eciton.senior_synonyms_with_names
+        results = eciton.senior_synonyms_with_own_id
         expect(results.size).to eq 1
         record = results.first
-        expect(record['id']).to eq Synonym.find_by(senior_synonym: atta).id
-        expect(record['name']).to eq atta.name.to_html
+        expect(record.id).to eq Synonym.find_by(senior_synonym: atta).id
+        expect(record.taxon_id).to eq atta.id
       end
     end
   end

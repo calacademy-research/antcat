@@ -1,5 +1,3 @@
-# Not used in production or even in dev.
-#
 # Useful if you want to locally experiment with the code after cloning the git repo.
 # Import the sample data by running `bundle exec rake antcat:db:import_sample_data`.
 #

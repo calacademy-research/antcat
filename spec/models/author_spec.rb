@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Author do
   it { is_expected.to be_versioned }
-  it { is_expected.to have_many :names }
 
   describe "scopes" do
     describe ".sorted_by_name" do

@@ -40,10 +40,7 @@ class IssuesController < ApplicationController
   def close
     @issue.close! current_user
 
-    redirect_to @issue, notice: <<-MSG
-      Successfully closed issue.
-      <strong>#{view_context.link_to 'Back to the index', issues_path}</strong>.
-    MSG
+    redirect_to @issue, notice: "Successfully closed issue."
   end
 
   def reopen
