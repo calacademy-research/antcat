@@ -11,19 +11,6 @@ Given(/^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/) d
   taxon.protonym.authorship.update! reference: reference
 end
 
-Given("there is an original combination of {string} described by {string} which was moved to {string}") do |_original_combination, author, _current_valid_taxon|
-  reference = create :article_reference
-  bolton = create :author
-  author_name = create :author_name, name: author, author: bolton
-  reference.author_names = [author_name]
-
-  betta_major = create_species 'Betta major'
-  atta_major = create_species 'Atta major', status: Status::ORIGINAL_COMBINATION, current_valid_taxon: atta_major
-  atta_major.protonym.authorship.update! reference: reference
-  atta_major.update current_valid_taxon: betta_major
-  betta_major.protonym.authorship.update! reference: reference
-end
-
 Given("there is a subfamily described in {int}") do |year|
   taxon = create :subfamily
   reference = create :article_reference, citation_year: year

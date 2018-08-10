@@ -30,9 +30,3 @@ Then("the reference section should be {string}") do |reference|
   element = first('.references_section').find('.taxt-presenter')
   expect(element.text).to match /#{reference}/
 end
-
-When("I add a reference section {string}") do |text|
-  step %(I click the add reference section button)
-  step %(I fill in the references field with "#{text}")
-  step %(I save the reference section)
-end
