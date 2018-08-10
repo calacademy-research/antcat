@@ -94,7 +94,7 @@ class ReferencesController < ApplicationController
     end
 
     def save
-      References::SaveFromForm[@reference, reference_params, params, request.host]
+      ReferenceForm.new(@reference, reference_params, params, request.host).save
     end
 
     def new_reference

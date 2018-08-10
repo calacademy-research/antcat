@@ -100,25 +100,18 @@
             .title_taxt, .subtitle_taxt
               font-weight: bold
 
-    .junior_and_senior_synonyms_section
+    #synonyms-section
       .container
+        padding: 0 1rem
         width: 50%
-      .junior_synonyms_section
-        margin-right: 6px
-      .synonym_row
+        .synonyms-controls-js
+          display: none
+      .synonym-row
+        &:hover .show-on-hover
+          display: inline
         font-size: 90%
         small
           color: darkgrey
-        &.ui-selecting, &.confirming
-          background: $color_current_being_edited_background
-        button.delete
-          margin-left: 10px
-          display: none
-        button.reverse_synonymy
-          margin-left: 0
-          display: none
-      .synonym-form
-        display: none
       .select2-container
         width: 100% !important
 

@@ -9,7 +9,6 @@ $ ->
 class AntCat.NotReallyTaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
     @initialize_history_section()
-    @initialize_junior_and_senior_synonyms_section()
     @initialize_references_section()
 
     @initialize_events()
@@ -20,21 +19,12 @@ class AntCat.NotReallyTaxonForm extends AntCat.Form
   initialize_history_section: =>
     new AntCat.HistoryItemsSection @element.find('.history_items_section'), parent_form: @
 
-  initialize_junior_and_senior_synonyms_section: =>
-    new AntCat.SynonymsSection @element.find('.junior_synonyms_section'), parent_form: @
-    new AntCat.SynonymsSection @element.find('.senior_synonyms_section'), parent_form: @
-
   initialize_references_section: =>
     new AntCat.ReferencesSection @element.find('.references_section'), parent_form: @
 
   initialize_events: =>
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
-
-  ###### client functions
-  replace_junior_and_senior_synonyms_section: (content) =>
-    $('.junior_and_senior_synonyms_section').replaceWith content
-    @initialize_junior_and_senior_synonyms_section()
 
   add_history_item_panel: ($panel) =>
     @element.find('.history_items').append $panel

@@ -1,7 +1,3 @@
-# TODO perhaps this broke after setting `include_root_in_json` to true?
-# See `config/initializers/wrap_parameters.rb` and
-# http://api.rubyonrails.org/classes/ActiveModel/Serializers/JSON.html
-
 require 'spec_helper'
 
 describe DuplicatesController do

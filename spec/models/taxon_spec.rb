@@ -3,16 +3,11 @@ require 'spec_helper'
 describe Taxon do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :protonym }
-  it { is_expected.to belong_to :protonym }
-  it { is_expected.to allow_value(nil).for :type_name }
   it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
   it do
     is_expected.to validate_inclusion_of(:biogeographic_region).
       in_array(BiogeographicRegion::REGIONS).allow_nil
   end
-  it { is_expected.to have_many :history_items }
-  it { is_expected.to have_many :reference_sections }
-  it { is_expected.to belong_to :type_name }
 
   describe "scopes" do
     let(:subfamily) { create :subfamily }
@@ -127,7 +122,6 @@ describe Taxon do
   end
 
   describe "#protonym" do
-    # Changed this because synonyms, homonyms will use the same protonym
     context "when the taxon it's attached to is destroyed, even if another taxon is using it" do
       let!(:protonym) { create :protonym }
       let!(:genus) { create_genus protonym: protonym }

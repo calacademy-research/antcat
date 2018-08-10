@@ -36,7 +36,7 @@ module Markdowns
       end
 
       def normalize_bolton_key bolton_key
-        bolton_key.tr(",", "").strip
+        bolton_key.remove(",", "&").gsub("  ", " ").strip
       end
   end
 end

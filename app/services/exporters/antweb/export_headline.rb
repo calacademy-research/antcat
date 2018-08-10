@@ -9,7 +9,7 @@ class Exporters::Antweb::ExportHeadline
   end
 
   def call
-    content_tag :div, class: 'headline' do
+    content_tag :div do
       notes = headline_notes
       hol_link = link_to_hol(taxon)
       string = headline_protonym

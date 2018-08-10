@@ -23,19 +23,7 @@ describe Taxa::CurrentValidTaxonIncludingSynonyms do
       end
     end
 
-    # Fails a lot. This test case is the arch enemy of AntCat's RSpec testing team.
-    #
-    # Changing `order(created_at: :desc)` to `order(id: :desc)` in
-    # `#find_most_recent_valid_senior_synonym` *should* return the synonyms
-    # in the same/intended order without risk of shuffling objects created
-    # the same second. However, that makes the test fail 100%, which brings
-    # me to believe that the test doesn't randomly fail -- it randomly passes.
-    #
-    # Use this for debugging:
-    # `for i in {1..3}; do rspec ./spec/models/taxon_spec.rb:549 ; done`
-    #
-    # TODO semi-disabled by Russian roulette, sorry!!!!
-    # Bad test practices, but this case has broken too many builds.
+    # TODO semi-disabled by Russian roulette.
     it "finds the latest senior synonym that's valid (this spec fails a lot)" do
       if Random.rand(1..6) == 6
         valid_senior = create_genus status: Status::VALID
@@ -47,24 +35,6 @@ describe Taxa::CurrentValidTaxonIncludingSynonyms do
       else
         "Survived. Phew. Life is precious."
       end
-
-      # If you came here because you're sad because the build broke, don't be.
-      # Here's some trivia from Wikipedia to cheer you up:
-      # * Due to gravity, in a properly maintained weapon with a single round
-      #   inside the cylinder, the full chamber, which weighs more than the empty
-      #   chambers, will usually end up near the bottom of the cylinder when its
-      #   axis is not vertical, altering the odds in favor of the player.
-      #
-      # * In the Autobiography of Malcolm X, Malcolm X recalls an incident during
-      #   his burglary career when he once played Russian roulette, pulling the
-      #   trigger three times in a row to convince his partners in crime that he
-      #   was not afraid to die. In the epilogue to the book, Alex Haley states
-      #   that Malcolm X revealed to him that he palmed the round.
-      #
-      # * In 1976, Finnish magician Aimo Leikas killed himself in front of a
-      #   crowd while performing his Russian roulette act. He had been performing
-      #   the act for about a year, selecting six bullets from a box of assorted
-      #   live and dummy ammunition.
     end
 
     context 'when no senior synonyms are valid' do

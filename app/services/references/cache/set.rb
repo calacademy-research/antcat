@@ -10,9 +10,6 @@ module References
       end
 
       def call
-        # Avoid touching the database for non-persisted references (or displaying
-        # reified PaperTrail versions will not work, since this method is called
-        # in `ReferenceDecorator`.)
         return value unless reference.persisted?
 
         # Skip if cache is already up to date.

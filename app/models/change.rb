@@ -2,7 +2,6 @@ class Change < ApplicationRecord
   include Trackable
 
   belongs_to :approver, class_name: 'User'
-  # TODO rename to `taxon_id`.
   belongs_to :taxon, class_name: 'Taxon'
   belongs_to :user # TODO: Validate presence of `:on_create`.
 
@@ -19,7 +18,7 @@ class Change < ApplicationRecord
     Feed.without_tracking do
       TaxonState.waiting.each do |taxon_state|
         # TODO maybe something like `TaxonState#approve_related_changes`?
-        Change.where(taxon_id: taxon_state.taxon_id).find_each do |change|
+        Change.where(taxon: taxon_state.taxon).find_each do |change|
           change.approve user
         end
       end
@@ -29,7 +28,7 @@ class Change < ApplicationRecord
   end
 
   def approve user = nil
-    taxon_state = TaxonState.find_by(taxon: taxon_id)
+    taxon_state = TaxonState.find_by(taxon: taxon)
     return if taxon_state.review_state == TaxonState::APPROVED
 
     if taxon
@@ -45,11 +44,6 @@ class Change < ApplicationRecord
     Feed.with_tracking { create_activity :approve_change }
   end
 
-  # TODO probably rename local `versions` now that we're in the model
-  # that has a `versions` scope.
-  # Once you have the change id, find all future changes that touch this
-  # same item set. Find all versions, and undo the change.
-  # Sort to undo changes most recent to oldest.
   def undo
     Feed.without_tracking do
       UndoTracker.clear_change
@@ -79,8 +73,6 @@ class Change < ApplicationRecord
       current_change = Change.find_by id: current_change_id
       next unless current_change
 
-      # Could get cute and report exactly what was changed about any given taxon
-      # For now, just report a change to the taxon in question.
       current_taxon = current_change.most_recent_valid_taxon
       changes << { taxon: current_taxon,
                    change_type: current_change.change_type,
@@ -113,15 +105,10 @@ class Change < ApplicationRecord
       version.try :user
     end
 
-    # Deletes don't store any object info, so you can't show what it used to look like.
-    # used to pull an example of the way it once was.
     def most_recent_valid_taxon_version
-      # "Destroy" events don't have populated data fields.
       version = versions.where(item_type: "Taxon").where.not(object: nil, event: "destroy").first
       return version if version
 
-      # This change didn't happen to touch taxon. Go ahead and search for the most recent
-      # version of this taxon that has object information
       version = PaperTrail::Version.find_by_sql(<<-SQL.squish).first
         SELECT * FROM versions WHERE item_type = 'Taxon'
         AND object IS NOT NULL
@@ -131,8 +118,6 @@ class Change < ApplicationRecord
       version
     end
 
-    # Note that because of schema change, we can't do this for changes that don't
-    # have an extracted taxon_state.
     def undo_versions versions
       versions.reverse_each do |version|
         if version.event == 'create'
@@ -159,9 +144,6 @@ class Change < ApplicationRecord
       item.save! validate: false if item
     end
 
-    # Starting at a given version (which can reference any of a set of objects), it iterates forwards and
-    # returns all changes that created future versions of said object. Exclusive of
-    # the passed in object.
     def get_future_change_ids version
       new_version = version.next
       change_id = version.change_id
@@ -174,19 +156,7 @@ class Change < ApplicationRecord
       end
     end
 
-    # Look up all future changes of this change, return change IDs in an array,
-    # ordered most recent to oldest.
-    # inclusive of the change passed as argument.
     def find_future_changes
-      # This returns changes that touch future versions of
-      # all paper trail type items.
-
-      # For each change, get all the versions.
-      # for each version get the change record id.
-      #   Add that change record id plus its timestamp to a hash list if it isn't in there already
-      #   if there is a "future" version of this version, recurse above loop.
-      # sort and return the change record list.
-      # because we need to go through papertrail's version
       change_ids = SortedSet[id]
       versions.each { |version| change_ids.merge get_future_change_ids(version) }
       change_ids

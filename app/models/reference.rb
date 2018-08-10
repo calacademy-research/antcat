@@ -1,5 +1,4 @@
 # TODO avoid `require`.
-# TODO exclude caches from PaperTrail.
 
 require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_workflow'
@@ -8,7 +7,6 @@ class Reference < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  # Virtual attributes used in `RefrencesController`.
   attr_accessor :journal_name, :publisher_string
 
   belongs_to :journal
@@ -54,7 +52,6 @@ class Reference < ApplicationRecord
     text    :title
     text    :journal_name do journal.name if journal end
     text    :publisher_name do publisher.name if publisher end
-    # HACK quick fix to make the year searchable as a keyword.
     text    :year_as_string do year.to_s if year end
     text    :citation
     text    :editor_notes
@@ -140,14 +137,6 @@ class Reference < ApplicationRecord
   end
 
   # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978".
-  #
-  # Stupid name because useful.
-  # "key" is impossible to grep for, and a word with too many meanings.
-  # Variations of "last author names" or "ref_key" are doomed to fail.
-  # So, "keey". Obviously, do not show this spelling to users or use
-  # it in filesnames or the database.
-  #
-  # Note: `references.author_names_string_cache` may also be useful?
   def keey
     authors_for_keey << ', ' << short_citation_year
   end
@@ -168,7 +157,6 @@ class Reference < ApplicationRecord
     end.html_safe
   end
 
-  # TODO find proper name.
   def year_or_no_year
     return "[no year]" if year.blank?
     year.to_s

@@ -37,7 +37,7 @@ class Activity < ApplicationRecord
   belongs_to :trackable, polymorphic: true
   belongs_to :user
 
-  validates :action, inclusion: { in: ACTIONS, allow_nil: true } # TODO do not allow nil.
+  validates :action, inclusion: { in: ACTIONS }
 
   scope :ids_desc, -> { order(id: :desc) }
   scope :most_recent, ->(number = 5) { ids_desc.limit(number).include_associations }

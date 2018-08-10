@@ -1,6 +1,6 @@
 $ ->
   $(document).foundation()
-  AntCat.make_reference_keeys_expandable document
+  AntCat.makeReferenceKeeysExpandable document
 
   enableInlineExpansions()
 
@@ -23,7 +23,7 @@ $.fn.disableButton = -> @addClass "disabled"
 # same elements more than once, they alternate between working and not.
 # Reference keys already in the DOM should not be touched after making
 # references in the markdown preview expandable.
-AntCat.make_reference_keeys_expandable = (element) ->
+AntCat.makeReferenceKeeysExpandable = (element) ->
   $(element).find('.expandable-reference-key').on 'click', ->
     $(this).parent().find('.expandable-reference-content').toggle()
     $(this).toggle()
@@ -35,7 +35,7 @@ AntCat.make_reference_keeys_expandable = (element) ->
     false
 
 # Used by `ApplicationHelper#inline_expandable`.
-# TODO should be merge with `AntCat.make_reference_keeys_expandable`, but
+# TODO should be merge with `AntCat.makeReferenceKeeysExpandable`, but
 # that requires a migration for invalidating reference caches.
 enableInlineExpansions = ->
   $(".expandable").on "click", (event) ->
@@ -111,9 +111,9 @@ $ ->
     # HACK to make keys inside truncated elements to work after showing/hiding.
     animate: true
     animateOptions:
-      complete: -> AntCat.make_reference_keeys_expandable $(".truncate")
+      complete: -> AntCat.makeReferenceKeeysExpandable $(".truncate")
 
   $(".truncate").truncate(options)
 
   # HACK to make keys inside truncated elements to work on page load.
-  AntCat.make_reference_keeys_expandable $(".truncate")
+  AntCat.makeReferenceKeeysExpandable $(".truncate")

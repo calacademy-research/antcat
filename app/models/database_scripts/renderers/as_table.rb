@@ -1,4 +1,6 @@
 module DatabaseScripts::Renderers::AsTable
+  FOUND_NO_DATABASE_ISSUES = "Found no database issues"
+
   def as_table
     renderer = Renderer.new cached_results
     yield renderer
@@ -34,7 +36,7 @@ module DatabaseScripts::Renderers::AsTable
       results ||= @cached_results
 
       if results.blank?
-        body_content << "<td>Found no database issues</td>" << "\n"
+        body_content << "<td>#{FOUND_NO_DATABASE_ISSUES}</td>" << "\n"
         return
       end
 

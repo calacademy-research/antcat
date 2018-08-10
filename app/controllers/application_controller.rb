@@ -5,12 +5,10 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_paper_trail_whodunnit
 
-  # CORS protection defeat - we're read only, so this is okay.
-  # This kind of thing can't stand when we have a write level API
+  # CORS protection defeat - we're read only.
   skip_before_action :verify_authenticity_token
   before_action :cors_preflight_check
   after_action :cors_set_access_control_headers
-  # end CORS
 
   # This makes it possible to call eg `user_is_superadmin?` in any controller.
   delegate :can_edit?, :is_superadmin?, :can_review_changes?,
@@ -37,8 +35,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-    # Save location so that we can redirect back to the previous page
-    # after signing in/out.
+    # Save location so that we can redirect back to the previous page after signing in/out.
     def save_location
       unless request.xhr? || request.url =~ %r{/users/}
         session[:user_return_to] = request.url
@@ -67,7 +64,6 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    # Before actions.
     def authenticate_editor
       authenticate_user! && user_can_edit?
     end
