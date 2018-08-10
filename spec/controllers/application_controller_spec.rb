@@ -13,7 +13,7 @@ describe ApplicationController do
       before { get :index }
 
       it "defaults user right to nil" do
-        expect(controller.user_can_edit?).to be nil
+        expect(controller.can?(:edit, :catalog)).to be false
         expect(controller.user_is_superadmin?).to be nil
       end
     end
@@ -31,7 +31,7 @@ describe ApplicationController do
       end
 
       it "knows what editors are allow to do" do
-        expect(controller.user_can_edit?).to be true
+        expect(controller.can?(:edit, :catalog)).to be true
         expect(controller.user_is_superadmin?).to be false
       end
     end
@@ -49,18 +49,9 @@ describe ApplicationController do
       end
 
       it "knows what superadmins are allow to do" do
-        expect(controller.user_can_edit?).to be false
+        expect(controller.can?(:edit, :catalog)).to be false
         expect(controller.user_is_superadmin?).to be true
       end
-    end
-
-    it "delegates to User" do
-      current_user = create :editor
-      allow(controller).to receive(:current_user).and_return current_user
-
-      expect(current_user).to receive :can_edit?
-      expect(controller).to receive(:authenticate_user!).and_return true
-      controller.send :authenticate_editor
     end
   end
 

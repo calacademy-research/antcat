@@ -24,8 +24,8 @@ describe User do
 
   describe "authorization" do
     it "knows if it can edit the catalog" do
-      expect(described_class.new.can_edit?).to be false
-      expect(described_class.new(can_edit: true).can_edit?).to be true
+      expect(described_class.new.can?(:edit, :catalog)).to be false
+      expect(described_class.new(can_edit: true).can?(:edit, :catalog)).to be true
     end
   end
 

@@ -4,7 +4,7 @@ module ChangesHelper
   end
 
   def confirm_before_undo_button change
-    return unless user_can_edit?
+    return unless can? :edit, :catalog
     link_to 'Undo...', change_undos_path(change), class: "btn-saves-warning"
   end
 

@@ -15,6 +15,7 @@ class User < ApplicationRecord
   scope :as_angle_bracketed_emails, -> { all.map(&:angle_bracketed_email).join(", ") }
 
   acts_as_reader
+  delegate :can?, :cannot?, to: :ability
   devise :database_authenticatable, :recoverable, :registerable,
     :rememberable, :trackable, :validatable
   has_paper_trail
@@ -26,6 +27,10 @@ class User < ApplicationRecord
 
   def self.current=(user)
     RequestStore.store[:current_user] = user
+  end
+
+  def ability
+    @ability ||= Ability.new(self)
   end
 
   # TODO rename db column.

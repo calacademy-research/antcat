@@ -8,7 +8,7 @@
     %em et al.
   .clearfix
 
--if user_can_edit?
+-if can? :edit, :catalog
   .buttons_right
     =link_to "New", new_reference_path, class: "btn-normal"
 

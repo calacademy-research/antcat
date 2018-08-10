@@ -9,7 +9,7 @@
 
     :javascript
       window.AntCat = {}
-      AntCat.user_can_edit = #{!!user_can_edit?}
+      AntCat.user_can_edit = #{!!can?(:edit, :catalog)}
       AntCat.testing = #{Rails.env.test?}
 
     =javascript_include_tag 'all_pages/google_analytics' if Rails.env.production?

@@ -10,12 +10,12 @@ class ApplicationController < ActionController::Base
   before_action :cors_preflight_check
   after_action :cors_set_access_control_headers
 
-  # This makes it possible to call eg `user_is_superadmin?` in any controller.
-  delegate :can_edit?, :is_superadmin?,
-    to: :current_user, prefix: 'user', allow_nil: true
-
-  # This makes the above delegations available in views.
-  helper_method :user_can_edit?, :user_is_superadmin?
+  delegate :is_superadmin?, to: :current_user, prefix: 'user', allow_nil: true
+  helper_method :user_is_superadmin?
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_back fallback_location: root_path,
+        notice: "You need the '#{exception.message}' permission to do that :("
+  end
 
   def user_for_paper_trail
     current_user.try :id
@@ -65,10 +65,12 @@ class ApplicationController < ActionController::Base
     end
 
     def authenticate_editor
-      authenticate_user! && user_can_edit?
+      authenticate_user!
+      raise CanCan::AccessDenied, "edit catalog" unless can? :edit, :catalog
     end
 
     def authenticate_superadmin
-      authenticate_user! && user_is_superadmin?
+      authenticate_user!
+      raise CanCan::AccessDenied, "superadmin" unless user_is_superadmin?
     end
 end

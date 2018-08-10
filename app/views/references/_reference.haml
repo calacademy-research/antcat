@@ -13,7 +13,7 @@
     %p.notes
       %span.note Notes:
       =reference.public_notes
-  -if user_can_edit?
+  -if can? :edit, :catalog
     -if reference.editor_notes?
       %p.notes
         %span.note Editor notes:

@@ -16,9 +16,9 @@
     -if change.approver
       =change.format_approver_name
       =change.format_approved_at
-    -elsif user_can_edit?
+    -elsif can? :edit, :catalog
       =change.approve_button taxon, changed_by: changed_by
     -else
       =dash
-  -if user_can_edit?
+  -if can? :edit, :catalog
     %td=confirm_before_undo_button change
