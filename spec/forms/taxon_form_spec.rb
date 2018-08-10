@@ -42,7 +42,7 @@ describe TaxonForm do
 
         taxon.reload
         expect(taxon).to be_waiting
-        expect(taxon.can_approve?).to be_truthy
+        expect(taxon.can_approve?).to be true
       end
 
       it "saves a new species" do

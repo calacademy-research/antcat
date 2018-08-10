@@ -52,7 +52,7 @@ describe NestedReference do
     let(:reference) { create :nested_reference }
 
     it "is not be possible to delete a nestee" do
-      expect(reference.nesting_reference.destroy).to be_falsey
+      expect(reference.nesting_reference.destroy).to be false
     end
   end
 end

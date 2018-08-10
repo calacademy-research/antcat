@@ -104,17 +104,17 @@ describe Taxon do # rubocop:disable RSpec/FilePath
       atta = create_genus 'Atta'
       attaboi = create_genus 'Attaboi'
       become_junior_synonym_of attaboi, atta
-      expect(atta.junior_synonyms.all.include?(attaboi)).to be_truthy
+      expect(atta.junior_synonyms.all.include?(attaboi)).to be true
       expect(atta).not_to be_synonym
       expect(attaboi).to be_synonym
-      expect(attaboi.senior_synonyms.all.include?(atta)).to be_truthy
+      expect(attaboi.senior_synonyms.all.include?(atta)).to be true
 
       become_not_junior_synonym_of attaboi, atta
 
-      expect(atta.junior_synonyms.all.include?(attaboi)).to be_falsey
+      expect(atta.junior_synonyms.all.include?(attaboi)).to be false
       expect(atta).not_to be_synonym
       expect(attaboi).not_to be_synonym
-      expect(attaboi.senior_synonyms.all.include?(atta)).to be_falsey
+      expect(attaboi.senior_synonyms.all.include?(atta)).to be false
     end
   end
 
