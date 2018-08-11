@@ -140,7 +140,7 @@ Rails.application.routes.draw do
   get 'name_fields/:type/:id' => 'name_fields#show'
 
   devise_for :users, path_prefix: 'my', controllers: { registrations: "registrations" }
-  resources :users, only: [:index, :show] do
+  resources :users, only: [:index, :show, :new, :create, :edit, :update] do
     collection do
       get :mentionables
     end

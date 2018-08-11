@@ -1,0 +1,24 @@
+=form_for user do |f|
+  =render "shared/errors_for", resource: user
+  .row
+    .medium-6.columns.end
+      =f.label :name
+      =f.text_field :name
+      =f.label :email
+      =f.text_field :email
+      =f.label :password
+      =f.password_field :password
+
+  .row
+    .medium-6.columns.end
+      =f.check_box :can_edit
+      =f.label :editor
+
+  .row
+    .medium-6.columns.end
+      =f.check_box :is_superadmin
+      =f.label :superadmin
+
+  .row
+    .medium-6.columns.end
+      =button_tag "Save", class: "btn-saves"
