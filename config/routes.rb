@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  ActiveAdmin.routes self
-
   root to: 'catalog#index'
 
   resources :changes, only: [:show, :index] do

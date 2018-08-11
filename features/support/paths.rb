@@ -5,12 +5,6 @@ module NavigationHelpers
     when /^the main page$/
       root_path
 
-    # Admin
-    when /^the admin page$/
-      "/admin"
-    when /^the useradmin page$/
-      "/admin/users"
-
     # Changes
     when /^the changes page$/
       '/changes'

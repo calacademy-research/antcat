@@ -17,7 +17,6 @@ gem 'uglifier'
 gem 'xml-simple'
 gem 'yui-compressor'
 
-gem 'activeadmin'
 gem 'acts_as_commentable_with_threading'
 gem 'acts_as_list'
 gem 'aws-sdk', '< 2.0'
