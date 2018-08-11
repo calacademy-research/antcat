@@ -117,14 +117,12 @@ module NavigationHelpers
       user = User.find_by name: $1
       "/users/#{user.id}"
     when /^the login page$/
-      '/users/sign_in'
+      '/my/users/sign_in'
     when /^the sign up page$/
-      '/users/sign_up'
+      '/my/users/sign_up'
 
     when /^the users page$/
       '/users'
-    when /^the user emails list$/
-      '/users/emails'
 
     # Widget test pages
     when /^the name field test page for a name$/
