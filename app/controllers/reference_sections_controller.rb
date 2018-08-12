@@ -1,5 +1,5 @@
 class ReferenceSectionsController < ApplicationController
-  before_action :authenticate_editor, except: :show
+  before_action :ensure_can_edit_catalog, except: :show
   before_action :set_reference_section, only: [:edit, :update, :destroy]
 
   def index

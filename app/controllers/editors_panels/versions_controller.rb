@@ -2,7 +2,7 @@ module EditorsPanels
   class VersionsController < ApplicationController
     include HasWhereFilters
 
-    before_action :authenticate_editor
+    before_action :ensure_can_edit_catalog
 
     has_filters(
       whodunnit: {

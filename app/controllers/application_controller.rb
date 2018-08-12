@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def authenticate_editor
+    def ensure_can_edit_catalog
       authenticate_user!
       raise CanCan::AccessDenied, "edit catalog" unless can? :edit, :catalog
     end

@@ -3,7 +3,7 @@
 # to their home some day, or find a new place for them to live in.
 
 class TaxaGrabBagController < ApplicationController
-  before_action :authenticate_editor
+  before_action :ensure_can_edit_catalog
   before_action :authenticate_superadmin, only: [:destroy, :confirm_before_delete]
   before_action :set_taxon
 

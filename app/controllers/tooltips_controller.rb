@@ -1,7 +1,7 @@
 class TooltipsController < ApplicationController
-  before_action :authenticate_editor
+  before_action :ensure_can_edit_catalog
   before_action :set_tooltip, only: [:show, :edit, :update, :destroy]
-  skip_before_action :authenticate_editor, only: :enabled_selectors
+  skip_before_action :ensure_can_edit_catalog, only: :enabled_selectors
 
   def index
     @grouped_tooltips = Tooltip.order(:key).group_by(&:scope)
