@@ -12,8 +12,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :user_is_superadmin?
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_back fallback_location: root_path,
-        notice: "You need the '#{exception.message}' permission to do that :("
+    render plain: "You need the '#{exception.message}' permission to do that :(",
+     status: :forbidden
   end
 
   def user_for_paper_trail
