@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   before_action :cors_preflight_check
   after_action :cors_set_access_control_headers
 
-  delegate :is_superadmin?, to: :current_user, prefix: 'user', allow_nil: true
   helper_method :user_is_superadmin?
   rescue_from CanCan::AccessDenied do |exception|
     redirect_back fallback_location: root_path,
@@ -23,6 +22,10 @@ class ApplicationController < ActionController::Base
 
   def root_redirect_for_active_admin _exception
     redirect_to root_url
+  end
+
+  def user_is_superadmin?
+    current_user&.superadmin?
   end
 
   protected

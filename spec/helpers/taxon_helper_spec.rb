@@ -84,7 +84,7 @@ describe TaxonHelper do
     end
 
     it "shows the adder for waiting taxa" do
-      adder = create :editor
+      adder = create :user, :editor
       taxon = create_taxon_version_and_change TaxonState::WAITING, adder
 
       change_history = helper.taxon_change_history taxon
@@ -94,8 +94,8 @@ describe TaxonHelper do
     end
 
     it "shows the adder and the approver for approved taxa" do
-      adder = create :editor
-      approver = create :editor
+      adder = create :user, :editor
+      approver = create :user, :editor
       taxon = create_taxon_version_and_change TaxonState::WAITING, adder
       taxon.taxon_state.review_state = TaxonState::WAITING
       change = Change.find taxon.last_change.id

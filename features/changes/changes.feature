@@ -54,7 +54,7 @@ Feature: Changes
     Given I add the genus "Atta"
     And I add the genus "Batta"
 
-    When I log in as a superadmin named "Stan Blum"
+    When I log in as a superadmin
     And I go to the unreviewed changes page
     Then I should see "Approve all"
 

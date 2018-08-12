@@ -3,7 +3,7 @@ require "spec_helper"
 describe EditorsPanelsController do
   render_views
 
-  before { sign_in create :editor }
+  before { sign_in create(:user, :editor) }
 
   describe 'GET index' do
     before { get :index }

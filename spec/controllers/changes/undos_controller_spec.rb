@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Changes::UndosController do
   describe "GET show" do
     describe "check that we can find and report the entire undo set" do
-      let!(:adder) { create :editor }
+      let!(:adder) { create :user, :editor }
       let!(:taxon) { create_taxon_version_and_change TaxonState::WAITING, adder, nil, 'Genus1' }
 
       before { sign_in adder }

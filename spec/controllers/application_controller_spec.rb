@@ -19,7 +19,7 @@ describe ApplicationController do
     end
 
     context "when signed in as an editor" do
-      let!(:editor) { create :editor }
+      let!(:editor) { create :user, :editor }
 
       before do
         sign_in editor
@@ -37,7 +37,7 @@ describe ApplicationController do
     end
 
     context "when signed in as a superadmin" do
-      let!(:superadmin) { create :user, is_superadmin: true }
+      let!(:superadmin) { create :user, :superadmin }
 
       before do
         sign_in superadmin

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Taxon do
-  let(:adder) { create :editor }
+  let(:adder) { create :user, :editor }
 
   it "can transition from waiting to approved" do
     taxon = create_taxon_version_and_change TaxonState::WAITING, adder
@@ -14,9 +14,9 @@ describe Taxon do
   end
 
   describe "Authorization", :versioning do
-    let(:editor) { create :editor }
+    let(:editor) { create :user, :editor }
     let(:user) { create :user }
-    let(:approver) { create :editor }
+    let(:approver) { create :user, :editor }
 
     context "when an old record" do
       let!(:taxon) { create_taxon_version_and_change nil, user }
@@ -48,7 +48,7 @@ describe Taxon do
 
       before do
         taxon.taxon_state.review_state = TaxonState::WAITING
-        changer = create :editor
+        changer = create :user, :editor
         create :version, item: taxon, whodunnit: changer.id, change: change
       end
 

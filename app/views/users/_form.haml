@@ -11,13 +11,10 @@
 
   .row
     .medium-6.columns.end
-      =f.check_box :can_edit
-      =f.label :editor
-
-  .row
-    .medium-6.columns.end
-      =f.check_box :is_superadmin
-      =f.label :superadmin
+      -Role.all.each do |role|
+        %div
+          =check_box_tag "user[role_ids][]", role.id, user.roles.include?(role)
+          =role.name.humanize
 
   .row
     .medium-6.columns.end

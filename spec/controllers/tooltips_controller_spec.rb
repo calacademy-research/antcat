@@ -9,7 +9,7 @@ describe TooltipsController do
       let!(:references_new_title) { create :tooltip, key: "new.title", scope: "references" }
       let!(:taxa_type_species)    { create :tooltip, key: "type_species", scope: "taxa" }
 
-      before { sign_in create :editor }
+      before { sign_in create(:user, :editor) }
 
       describe "grouping" do
         before do

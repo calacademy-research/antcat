@@ -1,5 +1,4 @@
 # TODO column for `devise :invitable` can be removed from the db.
-# TODO default `user.can_edit` to false.
 
 class User < ApplicationRecord
   include Trackable
@@ -19,6 +18,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :recoverable, :registerable,
     :rememberable, :trackable, :validatable
   has_paper_trail
+  rolify
   tracked on: :create, parameters: proc { { user_id: id } }
 
   def self.current
@@ -35,7 +35,7 @@ class User < ApplicationRecord
 
   # TODO rename db column.
   def superadmin?
-    is_superadmin?
+    has_role? :superadmin
   end
 
   def angle_bracketed_email

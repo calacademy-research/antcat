@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe SiteNoticesController do
-  let!(:editor) { create :editor }
+  let!(:editor) { create :user, :editor }
 
   before do
     sign_in editor

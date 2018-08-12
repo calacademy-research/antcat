@@ -3,7 +3,7 @@ class Ability
 
   def initialize user
     if user
-      if user.can_edit?
+      if user.has_role? :editor
         can :edit, :catalog
       end
     end
