@@ -1,5 +1,5 @@
 class EditorsPanelsController < ApplicationController
-  before_action :ensure_can_edit_catalog
+  before_action :authenticate_user!
 
   def index
     @count = unreviewed_changes_counts

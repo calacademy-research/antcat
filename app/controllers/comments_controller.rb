@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   include HasWhereFilters
 
-  before_action :ensure_can_edit_catalog
+  before_action :authenticate_user!
   before_action :set_comment, only: [:edit, :update]
 
   has_filters(

@@ -1,5 +1,5 @@
 class TaxonHistoryItemsController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: :show
+  before_action :ensure_can_edit_catalog, except: [:show, :index]
   before_action :set_taxon_history_item, only: [:edit, :update, :destroy]
 
   def index

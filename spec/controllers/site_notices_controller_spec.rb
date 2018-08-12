@@ -9,10 +9,16 @@ describe SiteNoticesController do
   end
 
   describe "forbidden actions" do
+    context "when not signed in" do
+      before { sign_out editor }
+
+      specify { expect(post(:show, params: { id: 1 })).to redirect_to_signin_form }
+      specify { expect(post(:mark_all_as_read)).to redirect_to_signin_form }
+    end
+
     context "when signed in as a user" do
       before { sign_in create(:user) }
 
-      specify { expect(get(:index)).to have_http_status :forbidden }
       specify { expect(get(:new)).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create)).to have_http_status :forbidden }
