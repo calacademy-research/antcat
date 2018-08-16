@@ -75,7 +75,7 @@ class ReferencesController < ApplicationController
   end
 
   def autocomplete
-    search_query = params[:q] || params[:qq] || ''
+    search_query = params[:reference_q] || ''
 
     respond_to do |format|
       format.json do

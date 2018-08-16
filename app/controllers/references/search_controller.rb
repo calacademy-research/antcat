@@ -7,6 +7,8 @@ module References
     def index
       return redirect_to references_path unless user_is_searching?
 
+      params[:q] = params[:reference_q]
+
       unparsable_author_names_error_message = <<-MSG
         Could not parse author names. Start by typing a name, wait for a while
         and then click on one of the suggestions. It is possible to manually
@@ -34,15 +36,14 @@ module References
     private
 
       def user_is_searching?
-        params[:q].present? || params[:author_q].present?
+        params[:reference_q].present? || params[:author_q].present?
       end
 
       def redirect_if_search_matches_id
-        params[:q] ||= ''
-        params[:q].strip!
+        return if params[:reference_q].blank?
 
-        if params[:q] =~ /^\d{5,}$/
-          id = params[:q]
+        id = params[:reference_q].strip
+        if id =~ /^\d{5,}$/
           return redirect_to reference_path(id) if Reference.exists? id
         end
       end

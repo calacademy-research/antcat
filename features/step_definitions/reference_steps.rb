@@ -178,7 +178,7 @@ end
 
 When("I fill in the references search box with {string}") do |search_term|
   within "#breadcrumbs" do
-    step %(I fill in "q" with "#{search_term}")
+    step %(I fill in "reference_q" with "#{search_term}")
   end
 end
 
@@ -193,6 +193,12 @@ When("I select author search from the search type selector") do
 end
 
 When('I press "Go" by the references search box') do
+  within ".reference-search-form" do
+    step 'I press "Go"'
+  end
+end
+
+When('I press "Go" by the references search box in the breadcrumb') do
   within "#breadcrumbs" do
     step 'I press "Go"'
   end

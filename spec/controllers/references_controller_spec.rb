@@ -35,7 +35,7 @@ describe ReferencesController do
       end
 
       it "autocompletes" do
-        get :autocomplete, params: { q: "wilson", format: :json }
+        get :autocomplete, params: { reference_q: "wilson", format: :json }
 
         json = JSON.parse response.body
         expect(json.size).to eq 1
@@ -45,7 +45,7 @@ describe ReferencesController do
 
     context "when there are no matches" do
       it "returns an empty response" do
-        get :autocomplete, params: { q: "willy", format: :json }
+        get :autocomplete, params: { reference_q: "willy", format: :json }
 
         json = JSON.parse response.body
         expect(json.size).to eq 0
@@ -60,7 +60,7 @@ describe ReferencesController do
         end
 
         it "autocompletes" do
-          get :autocomplete, params: { q: "author:höll", format: :json }
+          get :autocomplete, params: { reference_q: "author:höll", format: :json }
 
           json = JSON.parse response.body
           expect(json.size).to eq 1
@@ -75,7 +75,7 @@ describe ReferencesController do
         end
 
         it "autocompletes" do
-          get :autocomplete, params: { q: "author:abdul-ras", format: :json }
+          get :autocomplete, params: { reference_q: "author:abdul-ras", format: :json }
 
           json = JSON.parse response.body
           expect(json.size).to eq 1
