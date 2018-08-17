@@ -125,7 +125,7 @@ end
 
 When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |title|
   reference = Reference.find_by(title: title)
-  step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""
+  step %(I fill in "reference_nesting_reference_id" with "#{reference.id}")
 end
 
 Then("I should see a PDF link") do
@@ -133,17 +133,17 @@ Then("I should see a PDF link") do
 end
 
 When('I fill in "reference_nesting_reference_id" with its own ID') do
-  step "I fill in \"reference_nesting_reference_id\" with \"#{@reference.id}\""
+  step %(I fill in "reference_nesting_reference_id" with "#{@reference.id}")
 end
 
 When("I fill in {string} with a URL to a document that exists") do |field|
   stub_request :any, "google.com/foo"
-  step "I fill in \"#{field}\" with \"google\.com/foo\""
+  step %(I fill in "#{field}" with "google\.com/foo")
 end
 
 When("I fill in {string} with a URL to a document that doesn't exist in the first reference") do |field|
   stub_request(:any, "google.com/foo").to_return status: 404
-  step "I fill in \"#{field}\" with \"google\.com/foo\""
+  step %(I fill in "#{field}" with "google\.com/foo")
 end
 
 Given "there is a reference with ID 50000 for Dolerichoderinae" do

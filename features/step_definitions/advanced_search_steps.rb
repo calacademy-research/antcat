@@ -55,5 +55,5 @@ end
 
 Then("I should get a download with the filename {string}") do |filename|
   content_disposition = page.response_headers['Content-Disposition']
-  expect(content_disposition).to include "filename=\"#{filename}\""
+  expect(content_disposition).to include %(filename="#{filename}")
 end

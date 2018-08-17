@@ -124,7 +124,10 @@ class Reference < ApplicationRecord
     return if duplicates.blank?
 
     duplicate = Reference.find duplicates.first[:match].id
-    errors.add :base, "This may be a duplicate of #{duplicate.decorate.plain_text} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
+    errors.add :base, <<~MSG.html_safe
+      This may be a duplicate of #{duplicate.decorate.plain_text} #{duplicate.id}.<br>
+      To save, click "Save Anyway"
+    MSG
     true
   end
 
