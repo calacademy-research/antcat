@@ -27,7 +27,7 @@ Feature: Workflow
   Scenario: Changing a taxon and seeing it on the Changes page, undoing it
     When I go to the edit page for "Formicinae"
     And I fill in "taxon_headline_notes_taxt" with "asdfgh"
-    And I save my changes
+    And I press "Save"
     And I go to the catalog page for "Formicinae"
     Then I should see "This taxon has been changed; changes awaiting approval"
     And I should see "asdfgh"
@@ -68,7 +68,7 @@ Feature: Workflow
     Then I should see "Would you like to create a new combination under this parent?"
 
     When I press "Yes, create new combination"
-    And I save my changes
+    And I press "Save"
     And I go to the changes page
     Then I should see "Becton"
     And I should see "major"
@@ -83,7 +83,7 @@ Feature: Workflow
     When I press "Yes, create new combination"
     Then the name button should contain "Chatsworth major"
 
-    When I save my changes
+    When I press "Save"
     # We are now on the catalog page after doing A -> B -> C
     Then I should be on the catalog page for "Chatsworth major"
     And the name in the header should be "Chatsworth major"
@@ -132,7 +132,7 @@ Feature: Workflow
     Then I should see "Would you like to create a new combination under this parent?"
 
     When I press "Yes, create new combination"
-    And I save my changes
+    And I press "Save"
     And I go to the changes page
     Then I should see "Becton"
     And I should see "major"
@@ -147,7 +147,7 @@ Feature: Workflow
     When I press "Yes, create new combination"
     Then the name button should contain "Chatsworth major"
 
-    When I save my changes
+    When I press "Save"
     And I go to the changes page
     And I follow the second "Undo..."
     Then I should see "This undo will roll back the following changes"

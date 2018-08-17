@@ -15,7 +15,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "Would you like to create a new combination under this parent?"
 
     When I press "Yes, create new combination"
-    And I save my changes
+    And I press "Save"
     Then I should be on the catalog page for "Eciton major"
     And the name in the header should be "Eciton major"
 
@@ -32,7 +32,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     When I press "Yes, create new combination"
     Then the name button should contain "Eciton major"
 
-    When I save my changes
+    When I press "Save"
     Then I should be on the catalog page for "Eciton major"
     And the name in the header should be "Eciton major"
 
@@ -56,7 +56,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     When I press "Yes, create new combination"
     Then I should see "new merge back into original Atta major"
 
-    When I save my changes
+    When I press "Save"
 
   # TODO not working. Cancel never seems to get hit. Likely a webdriver problem.
   #Scenario: I cancel out of the homonym conflict box
@@ -142,7 +142,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "Yes, create new combination"
     Then I should see "new secondary junior homonym of subspecies of Atta betus"
 
-    When I save my changes
+    When I press "Save"
     Then I should see "Atta betus subbus"
     And I should see "unresolved junior homonym"
     And I should see "This taxon has been changed; changes awaiting approval"
@@ -171,7 +171,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should see "Would you like to create a new combination under this parent?"
 
     When I press "Yes, create new combination"
-    And I save my changes
+    And I press "Save"
     And I wait
 
     # Change parent from B -> C
@@ -185,7 +185,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     When I press "Yes, create new combination"
     Then the name button should contain "Chatsworth major"
 
-    When I save my changes
+    When I press "Save"
 
     # We are now on the catalog page after doing A -> B -> C
 
@@ -207,7 +207,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I set the parent name to "Eciton"
     And I press "OK"
     Then I should see "This new combination looks a lot like existing combinations"
-    #When I save my changes
+    #When I press "Save"
     #And I should see "This name is in use by another taxon"
 
   Scenario: Changing a subspecies's species
@@ -220,7 +220,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I set the parent name to "Eciton nigra"
     And I press "OK"
     And I press "Yes, create new combination"
-    And I save my changes
+    And I press "Save"
     Then I should be on the catalog page for "Eciton nigra minor"
     And the name in the header should be "Eciton nigra minor"
 
@@ -247,7 +247,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I set the parent name to "Crematogaster menilekii"
     And I press "OK"
     And I press "Yes, update parent record only"
-    And I save my changes
+    And I press "Save"
     Then I should be on the catalog page for "Crematogaster menilekii proserpina"
 
   Scenario: Changing a genus's tribe
@@ -260,7 +260,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I set the parent name to "Ecitoni"
     And I press "OK"
     And I wait
-    And I save my changes
+    And I press "Save"
     And I follow " tribes"
     Then I should be on the catalog page for "Atta"
     And "Ecitoni" should be selected
@@ -275,7 +275,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I click the parent name field
     And I set the parent name to "Ecitoninae"
     And I press "OK"
-    And I save my changes
+    And I press "Save"
     And I follow "Formicidae subfamilies"
     Then I should be on the catalog page for "Atta"
     And "Ecitoninae" should be selected
@@ -289,7 +289,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I click the parent name field
     And I set the parent name to ""
     And I press "OK"
-    And I save my changes
+    And I press "Save"
     Then I should be on the catalog page for "Atta"
     And "Incertae sedis" should be selected in the subfamilies index
 
