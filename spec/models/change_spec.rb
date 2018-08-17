@@ -1,26 +1,13 @@
 require 'spec_helper'
 
-describe Change, :versioning do
-  let(:user) { create :user }
-
-  describe 'relationships' do
-    it "has a version" do
-      genus = create_genus
-      change = described_class.new user: user
-      change.save!
-      change.reload
-      create :version, item: genus, change: change
-      genus_version = genus.versions.reload.last
-
-      expect(change.versions.first).to eq genus_version
-    end
-
-    it "has a user (the editor)" do
-      # TODO
-    end
+describe Change do
+  describe "validations" do
+    it { is_expected.to validate_presence_of(:user).on(:create) }
   end
 
   describe "scopes" do
+    let(:user) { create :user }
+
     describe ".waiting" do
       before do
         genus_1 = create_genus

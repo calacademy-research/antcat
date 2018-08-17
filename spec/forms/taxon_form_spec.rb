@@ -3,6 +3,10 @@ require 'spec_helper'
 describe TaxonForm do
   include RefactorTaxonFactoriesHelpers
 
+  before do
+    fake_current_user
+  end
+
   describe "#save" do
     describe "Saving a new record, based on params from a form with nested attributes" do
       it "saves a new genus" do
