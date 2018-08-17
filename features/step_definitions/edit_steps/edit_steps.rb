@@ -1,16 +1,3 @@
-def select2(value, from:)
-  element_id = from
-
-  if value == '' # HACK because lazy.
-    first("##{element_id}").set ''
-    return
-  end
-
-  first("#select2-#{element_id}-container").click
-  first('.select2-search__field').set(value)
-  find(".select2-results__option", text: /#{Regexp.escape(value)}/).click
-end
-
 When("I press the edit taxon link") do
   find("#edit-taxon-test-hook").click
 end

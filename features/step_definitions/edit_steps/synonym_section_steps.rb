@@ -1,11 +1,3 @@
-def already_opened_select2(value, from:) # rubocop:disable Lint/UnusedMethodArgument
-  # TODO figure out why this isn't used or remove.
-  # element_id = from
-
-  find('.select2-search__field').set value
-  find(".select2-results__option", text: /#{value}/).click
-end
-
 When("I save the senior synonym") do
   within '#senior-synonyms-section-test-hook' do
     step %(I press "Save")
