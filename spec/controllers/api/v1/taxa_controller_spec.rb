@@ -10,9 +10,8 @@ describe Api::V1::TaxaController do
 
       get :index, params: { starts_at: species.id }
 
-      taxa = JSON.parse response.body
-      expect(taxa[0]['species']['id']).to eq species.id
-      expect(taxa.count).to eq 1
+      expect(json_response[0]['species']['id']).to eq species.id
+      expect(json_response.count).to eq 1
     end
 
     it "gets all taxa" do
@@ -23,8 +22,7 @@ describe Api::V1::TaxaController do
       get :index
 
       expect(response.body.to_s).to include "Atta"
-      taxa = JSON.parse response.body
-      expect(taxa.count).to eq 7
+      expect(json_response.count).to eq 7
     end
 
     it 'returns HTTP 200' do
@@ -39,9 +37,8 @@ describe Api::V1::TaxaController do
     before { get :show, params: { id: species.id } }
 
     it "returns a single taxon entry" do
-      parsed_species = JSON.parse response.body
       expect(response.body.to_s).to include "Atta"
-      expect(parsed_species['species']['name_cache']).to eq "Atta minor maxus"
+      expect(json_response['species']['name_cache']).to eq "Atta minor maxus"
     end
 
     it 'returns HTTP 200' do

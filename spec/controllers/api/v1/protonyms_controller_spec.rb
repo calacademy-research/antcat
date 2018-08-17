@@ -10,8 +10,7 @@ describe Api::V1::ProtonymsController do
     end
 
     it "gets all protonyms" do
-      author_names = JSON.parse response.body
-      expect(author_names.count).to eq 7 # hmm
+      expect(json_response.count).to eq 7 # hmm
     end
 
     it 'returns HTTP 200' do

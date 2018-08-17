@@ -11,8 +11,7 @@ describe Api::V1::AuthorNamesController do
     it "gets all author names keys" do
       expect(response.body.to_s).to include "Bolton"
       expect(response.body.to_s).to include "Fisher"
-      author_names = JSON.parse response.body
-      expect(author_names.count).to eq 2
+      expect(json_response.count).to eq 2
     end
 
     it 'returns HTTP 200' do

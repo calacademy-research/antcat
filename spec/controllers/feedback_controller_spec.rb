@@ -49,7 +49,6 @@ describe FeedbackController do
 
       it "includes a friendly error message in the response" do
         post :create, params: valid_params
-        json_response = JSON.parse(response.body)
         expect(json_response["comment"].first).to include "has already been submitted. If it is unlikely"
       end
     end

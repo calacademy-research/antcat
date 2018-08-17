@@ -13,16 +13,14 @@ describe Api::V1::NamesController do
       get :index
 
       expect(response.body.to_s).to include "Atta"
-      names = JSON.parse response.body
-      expect(names.count).to eq 21
+      expect(json_response.count).to eq 21
     end
 
     it "gets all author names keys (starts_at)" do
       get :index, params: { starts_at: protonym_name.id }
 
-      names = JSON.parse response.body
-      expect(names[0]['species_name']['id']).to eq protonym_name.id
-      expect(names.count).to eq 1
+      expect(json_response[0]['species_name']['id']).to eq protonym_name.id
+      expect(json_response.count).to eq 1
     end
 
     it 'returns HTTP 200' do

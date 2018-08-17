@@ -57,9 +57,7 @@ describe CatalogController do
     end
 
     it "returns matches" do
-      # TODO create helper for `JSON.parse response.body` and use here and in other places.
-      json = JSON.parse response.body
-      results = json.map { |taxon| taxon["id"] }
+      results = json_response.map { |taxon| taxon["id"] }
       expect(results).to eq [atta.id, ratta.id]
     end
   end
