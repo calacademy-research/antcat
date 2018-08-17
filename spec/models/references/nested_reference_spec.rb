@@ -4,7 +4,6 @@ describe NestedReference do
   it { is_expected.to validate_presence_of :year }
   it { is_expected.to validate_presence_of :pages_in }
   it { is_expected.to validate_presence_of :nesting_reference }
-  it { is_expected.to allow_value(nil).for :title }
 
   describe "Validation" do
     it "is valid with these attributes" do

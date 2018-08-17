@@ -5,10 +5,6 @@ class NestedReference < Reference
   validate :validate_nested_reference_exists
   validate :validate_nested_reference_doesnt_point_to_itself
 
-  def self.requires_title
-    false
-  end
-
   private
 
     def validate_nested_reference_exists
