@@ -3,7 +3,7 @@ require 'spec_helper'
 describe NestedReference do
   it { is_expected.to validate_presence_of :year }
   it { is_expected.to validate_presence_of :pages_in }
-  it { is_expected.to validate_presence_of :nesting_reference }
+  it { is_expected.to validate_presence_of(:nesting_reference).with_message("does not exist") }
 
   describe "Validation" do
     it "is valid with these attributes" do
@@ -14,13 +14,6 @@ describe NestedReference do
         pages_in: 'Pp 2 in:'
 
       expect(reference).to be_valid
-    end
-
-    it "refers to an existing reference" do
-      reference = create :nested_reference
-
-      reference.nesting_reference_id = 232434
-      expect(reference).not_to be_valid
     end
 
     it "cannot point to itself" do

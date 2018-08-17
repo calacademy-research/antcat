@@ -60,7 +60,7 @@ Feature: Add reference unsuccessfully
     And I press "Save"
     Then I should see "Year can't be blank"
     And I should see "Pages in can't be blank"
-    And I should see "Nesting reference can't be blank"
+    And I should see "Nesting reference does not exist"
 
   @javascript
   Scenario: Adding a nested reference with a nonexistent nestee
