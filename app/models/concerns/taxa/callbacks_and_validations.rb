@@ -69,10 +69,13 @@ module Taxa::CallbacksAndValidations
       taxon_state.save
     end
 
-    # NOTE: it's called "Current valid name" in the form.
     def current_valid_taxon_validation
       if valid_taxon? && current_valid_taxon
         errors.add :current_valid_name, "can't be set for valid taxa"
+      end
+
+      if unavailable? && current_valid_taxon
+        errors.add :current_valid_name, "can't be set for unavailable taxa"
       end
     end
 end

@@ -27,6 +27,10 @@ FactoryBot.define do
       status Status::UNIDENTIFIABLE
     end
 
+    trait :unavailable do
+      status Status::UNAVAILABLE
+    end
+
     trait :excluded_from_formicidae do
       status Status::EXCLUDED_FROM_FORMICIDAE
     end

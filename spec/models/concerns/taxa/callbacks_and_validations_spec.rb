@@ -223,4 +223,24 @@ describe Taxa::CallbacksAndValidations do
       end
     end
   end
+
+  describe "#current_valid_taxon_validation" do
+    context "when a valid taxon has a `#current_valid_taxon`" do
+      let(:taxon) { build :family, current_valid_taxon: create(:family) }
+
+      specify do
+        taxon.valid?
+        expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for valid taxa"])
+      end
+    end
+
+    context "when an  taxon has a `#current_valid_taxon`" do
+      let(:taxon) { build :family, :unavailable, current_valid_taxon: create(:family) }
+
+      specify do
+        taxon.valid?
+        expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for unavailable taxa"])
+      end
+    end
+  end
 end

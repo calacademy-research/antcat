@@ -211,7 +211,7 @@ describe Exporters::Antweb::ExportTaxon do
     context "when taxon has a `current_valid_taxon`" do
       let!(:old) { create_genus }
 
-      before { taxon.update! current_valid_taxon: old, status: Status::UNAVAILABLE }
+      before { taxon.update! current_valid_taxon: old, status: Status::SYNONYM }
 
       it "exports the current valid name of the taxon" do
         expect(export_taxon(taxon)[13]).to end_with old.name.name
@@ -380,7 +380,7 @@ describe Exporters::Antweb::ExportTaxon do
     it "handles a synonym" do
       senior = create_genus 'Eciton', subfamily: subfamily
       junior = create_genus 'Atta', subfamily: subfamily, current_valid_taxon: senior,
-        status: Status::UNAVAILABLE
+        status: Status::SYNONYM
       taxon = create_species genus: junior
       create :synonym, senior_synonym: senior, junior_synonym: junior
 

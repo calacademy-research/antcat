@@ -4,7 +4,7 @@ describe Taxa::CurrentValidTaxonIncludingSynonyms do
   describe "#call" do
     context 'when there are no synonyms' do
       let!(:current_valid_taxon) { create_genus }
-      let!(:taxon) { create_genus current_valid_taxon: current_valid_taxon, status: Status::UNAVAILABLE }
+      let!(:taxon) { create_genus current_valid_taxon: current_valid_taxon, status: Status::SYNONYM }
 
       it "returns the field contents" do
         expect(described_class[taxon]).to eq current_valid_taxon

@@ -130,7 +130,7 @@ describe TaxonForm do
         current_valid_taxon = create_genus
 
         params[:current_valid_taxon_id] = current_valid_taxon.id
-        params[:status] = Status::UNAVAILABLE
+        params[:status] = Status::SYNONYM
 
         described_class.new(taxon, params).save
 
