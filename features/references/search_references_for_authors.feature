@@ -1,9 +1,5 @@
 @search
 Feature: Search references for authors
-  As a user of AntCat
-  I want to be able to serach references by author names
-  So that I can quickly find a reference
-
   Background:
     Given these references exist
       | authors               | year | citation_year | title   | citation   |

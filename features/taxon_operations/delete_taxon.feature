@@ -1,9 +1,4 @@
 Feature: Deleting a taxon
-  As an editor of AntCat
-  I want to delete taxa
-  So that information is kept accurate
-  So people use AntCat
-
   Background:
     Given I am logged in
 

@@ -1,10 +1,5 @@
 @javascript
 Feature: Changing parent genus, species, tribe or subfamily
-  As an editor of AntCat
-  I want to change a taxon's parent
-  So that information is kept accurate
-  So people use AntCat
-
   Background:
     Given I am logged in
 

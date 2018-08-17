@@ -1,10 +1,5 @@
 @javascript
 Feature: Editing a taxon's homonym replaced by
-  As an editor of AntCat
-  I want to edit taxa
-  So that information is kept accurate
-  So people use AntCat
-
   Background:
     Given there is a genus "Atta"
     And I am logged in

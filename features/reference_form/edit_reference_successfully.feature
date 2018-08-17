@@ -1,8 +1,4 @@
 Feature: Edit reference successfully
-  As an editor
-  I want to change previously entered references
-  So that I can fix mistakes
-
   Background:
     Given I am logged in
 

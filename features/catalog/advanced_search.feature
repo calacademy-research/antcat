@@ -1,10 +1,6 @@
 # TODO move most of these to unit tests.
 
 Feature: Searching the catalog
-  As a user of AntCat
-  I want to search the catalog in index view
-  So that I can find taxa with their parents and siblings
-
   Background:
     Given I go to the catalog
     And I follow the first "Advanced Search"

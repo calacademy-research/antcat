@@ -1,8 +1,4 @@
 Feature: Editing journals
-  As an editor of AntCat
-  I want to change the titles of journals
-  So that they are correct
-
   Background:
     Given I am logged in
     And a journal exists with a name of "Psyche"

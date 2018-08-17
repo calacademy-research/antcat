@@ -1,9 +1,4 @@
 Feature: Searching references
-  As a user of AntCat
-  I want to search for references
-  So that I can use one in my paper
-    Or see if I have already added it
-
   Background:
     Given these references exist
       | authors        | year | citation_year | title                 | citation   |

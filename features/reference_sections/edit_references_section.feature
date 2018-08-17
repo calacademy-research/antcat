@@ -1,9 +1,4 @@
 Feature: Editing references sections
-  As an editor of AntCat
-  I want to change previously entered taxonomic reference sections
-  So that information is kept accurate and mistakes are fixed
-  So people use AntCat
-
   Background:
     Given I am logged in
 

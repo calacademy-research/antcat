@@ -1,8 +1,4 @@
 Feature: Add reference
-  As an editor
-  I want to add new references
-  So that the bibliography continues to be up-to-date
-
   Background:
     Given I am logged in
     And I go to the references page

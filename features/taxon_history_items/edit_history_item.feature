@@ -1,9 +1,4 @@
 Feature: Editing a history item
-  As an editor of AntCat
-  I want to change previously entered taxonomic history items
-  So that information is kept accurate and mistakes are fixed
-  So people use AntCat
-
   Background:
     And I am logged in
 

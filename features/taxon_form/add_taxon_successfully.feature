@@ -1,9 +1,4 @@
 Feature: Adding a taxon successfully
-  As an editor of AntCat
-  I want to add taxa
-  So that information is kept up-to-date
-  So people use AntCat
-
   Background:
     Given I am logged in
     And this reference exists
