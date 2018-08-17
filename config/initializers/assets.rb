@@ -9,7 +9,6 @@ Rails.application.config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif *.ico]
 
 Rails.application.config.assets.precompile += %w[*.js]
 
-Rails.application.config.assets.precompile += %w[active_admin.css]
 Rails.application.config.assets.precompile += %w[foundation_and_overrides.css]
 Rails.application.config.assets.precompile += %w[dev_css.css test_css.css]
 Rails.application.config.assets.precompile += %w[jquery_overrides.css]

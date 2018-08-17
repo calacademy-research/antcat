@@ -57,8 +57,11 @@ namespace :antcat do
 
       puts "Creating users..."
       User.create! email: 'user@example.com', name: 'Test User', password: 'secret123'
-      User.create! email: 'editor@example.com', name: 'Test Editor', password: 'secret123', can_edit: true
-      User.create! email: 'superadmin@example.com', name: 'Test Superadmin', password: 'secret123', can_edit: true, is_superadmin: true
+      editor = User.create! email: 'editor@example.com', name: 'Test Editor', password: 'secret123'
+      editor.add_role :editor
+      superadmin = User.create! email: 'superadmin@example.com', name: 'Test Superadmin', password: 'secret123'
+      superadmin.add_role :editor
+      superadmin.add_role :superadmin
 
       puts "Successfully imported sample data."
     end

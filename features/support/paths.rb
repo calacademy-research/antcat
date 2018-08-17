@@ -5,12 +5,6 @@ module NavigationHelpers
     when /^the main page$/
       root_path
 
-    # Admin
-    when /^the admin page$/
-      "/admin"
-    when /^the useradmin page$/
-      "/admin/users"
-
     # Changes
     when /^the changes page$/
       '/changes'
@@ -117,14 +111,12 @@ module NavigationHelpers
       user = User.find_by name: $1
       "/users/#{user.id}"
     when /^the login page$/
-      '/users/sign_in'
+      '/my/users/sign_in'
     when /^the sign up page$/
-      '/users/sign_up'
+      '/my/users/sign_up'
 
     when /^the users page$/
       '/users'
-    when /^the user emails list$/
-      '/users/emails'
 
     # Widget test pages
     when /^the name field test page for a name$/

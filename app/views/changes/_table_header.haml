@@ -5,7 +5,7 @@
       %th When
       %th PaperTrail::Versions
       %th Approved?
-      -if user_can_edit?
+      -if can? :edit, :catalog
         %th Undo?
   %tbody
     =yield

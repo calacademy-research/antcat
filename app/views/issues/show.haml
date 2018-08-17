@@ -8,7 +8,7 @@
   =time_ago_in_words @issue.created_at
   ago
 
--if user_can_edit?
+-if can? :edit, :catalog
   .buttons_right
     -if @issue.open?
       =link_to "Close", close_issue_path(@issue), method: :put, class: "btn-saves"

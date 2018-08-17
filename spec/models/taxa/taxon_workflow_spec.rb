@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe Taxon do
-  let(:adder) { create :editor }
+  let(:adder) { create :user, :editor }
 
   it "can transition from waiting to approved" do
     taxon = create_taxon_version_and_change TaxonState::WAITING, adder
     expect(taxon).to be_waiting
-    expect(taxon.can_approve?).to be_truthy
+    expect(taxon.can_approve?).to be true
 
     taxon.approve!
     expect(taxon).to be_approved
@@ -14,15 +14,15 @@ describe Taxon do
   end
 
   describe "Authorization", :versioning do
-    let(:editor) { create :editor }
+    let(:editor) { create :user, :editor }
     let(:user) { create :user }
-    let(:approver) { create :editor }
+    let(:approver) { create :user, :editor }
 
     context "when an old record" do
       let!(:taxon) { create_taxon_version_and_change nil, user }
 
       it "cannot be reviewed" do
-        expect(taxon.can_be_reviewed?).to be_falsey
+        expect(taxon.can_be_reviewed?).to be false
       end
 
       it "cannot be approved" do
@@ -33,9 +33,9 @@ describe Taxon do
           change_type: "create", approver: user, approved_at: Time.current
         create :version, item: another_taxon, whodunnit: user.id, change: change
 
-        expect(taxon.can_be_approved_by?(change, nil)).to be_falsey
-        expect(taxon.can_be_approved_by?(change, editor)).to be_falsey
-        expect(taxon.can_be_approved_by?(change, user)).to be_falsey
+        expect(taxon.can_be_approved_by?(change, nil)).to be false
+        expect(taxon.can_be_approved_by?(change, editor)).to be false
+        expect(taxon.can_be_approved_by?(change, user)).to be false
       end
     end
 
@@ -48,7 +48,7 @@ describe Taxon do
 
       before do
         taxon.taxon_state.review_state = TaxonState::WAITING
-        changer = create :editor
+        changer = create :user, :editor
         create :version, item: taxon, whodunnit: changer.id, change: change
       end
 
@@ -57,9 +57,9 @@ describe Taxon do
       end
 
       it "can be approved by an approver" do
-        expect(taxon.can_be_approved_by?(change, nil)).to be_falsey
-        expect(taxon.can_be_approved_by?(change, approver)).to be_truthy
-        expect(taxon.can_be_approved_by?(change, user)).to be_falsey
+        expect(taxon.can_be_approved_by?(change, nil)).to be false
+        expect(taxon.can_be_approved_by?(change, approver)).to be true
+        expect(taxon.can_be_approved_by?(change, user)).to be false
       end
     end
 
@@ -72,13 +72,13 @@ describe Taxon do
       end
 
       it "cannot be reviewed" do
-        expect(taxon.can_be_reviewed?).to be_falsey
+        expect(taxon.can_be_reviewed?).to be false
       end
 
       it "cannot be approved" do
-        expect(taxon.can_be_approved_by?(change, nil)).to be_falsey
-        expect(taxon.can_be_approved_by?(change, editor)).to be_falsey
-        expect(taxon.can_be_approved_by?(change, user)).to be_falsey
+        expect(taxon.can_be_approved_by?(change, nil)).to be false
+        expect(taxon.can_be_approved_by?(change, editor)).to be false
+        expect(taxon.can_be_approved_by?(change, user)).to be false
       end
     end
   end

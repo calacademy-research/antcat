@@ -18,6 +18,16 @@ end
     parent :users
   end
 
+    crumb :edit_user do |user|
+      link "Edit"
+      parent :user, user
+    end
+
+  crumb :new_user do
+    link "New"
+    parent :users
+  end
+
 crumb :sign_up do
   link "Sign Up"
   parent :antcat

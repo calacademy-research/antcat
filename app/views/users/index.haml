@@ -1,6 +1,10 @@
 -@title = 'Users'
 -breadcrumb :users
 
+-if user_is_superadmin?
+  .buttons_right
+    =link_to "New (for superadmins)", new_user_path, class: "btn-normal"
+
 %table
   %thead
     %th Name
@@ -9,5 +13,5 @@
   -@users.each do |user|
     %tr
       %td=user.decorate.user_page_link
-      %td=user.can_edit? ? 'Yes' : dash
+      %td=user.can?(:edit, :catalog) ? 'Yes' : dash
       %td=user.email

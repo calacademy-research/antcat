@@ -43,7 +43,7 @@ describe Author do
       all_names = (first_bolton_author.names + second_bolton_author.names).uniq.sort
 
       described_class.merge [first_bolton_author, second_bolton_author]
-      expect(all_names.all? { |name| name.author == first_bolton_author }).to be_truthy
+      expect(all_names.all? { |name| name.author == first_bolton_author }).to be true
 
       expect(described_class.count).to eq 1
       expect(AuthorName.count).to eq 2

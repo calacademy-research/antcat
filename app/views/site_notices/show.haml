@@ -7,7 +7,7 @@
   =@site_notice.user.decorate.user_page_link
   =time_ago_in_words(@site_notice.created_at)
 
--if user_can_edit?
+-if can? :edit, :catalog
   .buttons_right
     =link_to("Edit", edit_site_notice_path(@site_notice), class: "btn-normal")
     -if user_is_superadmin?
