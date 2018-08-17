@@ -10,6 +10,7 @@ module DatabaseScripts::Renderers::AsTable
   class Renderer
     def initialize cached_results
       @cached_results = cached_results
+      @caption_content = nil
       @header_content = ""
       @body_content = ""
     end
@@ -17,10 +18,15 @@ module DatabaseScripts::Renderers::AsTable
     def render
       <<-HTML.html_safe
         <table class="tablesorter hover margin-top">
+          #{"<caption>#{caption_content}</caption>" if caption_content}
           <thead>#{header_content}</thead>
           <tbody>#{Markdowns::ParseAntcatHooks[body_content]}</tbody>
         </table>
       HTML
+    end
+
+    def caption string
+      self.caption_content = string
     end
 
     def header *items
@@ -49,7 +55,7 @@ module DatabaseScripts::Renderers::AsTable
 
     private
 
-      attr :header_content, :body_content
+      attr_accessor :caption_content, :header_content, :body_content
 
       def row _result, *fields
         string = "<tr>"
