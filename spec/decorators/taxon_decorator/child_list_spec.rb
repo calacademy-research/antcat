@@ -39,6 +39,16 @@ describe TaxonDecorator::ChildList do
           to eq %(<div><span class="caption">Genus <i>incertae sedis</i> in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>)
       end
     end
+
+    context "when children are genera incertae sedis in Formicidae" do
+      let!(:family) { create :family }
+      let!(:genus) { create_genus 'Atta', subfamily: nil }
+
+      specify do
+        expect(described_class.new(family).send(:child_list, [genus], false)).
+          to eq %(<div><span class="caption">Genus <i>incertae sedis</i> in <span>Formicidae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>)
+      end
+    end
   end
 
   describe "#collective_group_name_child_list" do
