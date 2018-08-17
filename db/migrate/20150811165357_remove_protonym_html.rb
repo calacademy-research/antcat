@@ -71,9 +71,6 @@ class RemoveProtonymHtml < ActiveRecord::Migration
 
     end
     name.update_columns(protonym_html: nil)
-
-    # TODO: Final query to see if we have distinct protonym_names anyhwere after above query is run
-
   end
 
   def change
