@@ -10,10 +10,6 @@ Given("there is a book reference") do
   @reference = create :book_reference
 end
 
-Given("there is an unknown reference") do
-  @reference = create :unknown_reference
-end
-
 Given("this/these reference(s) exist(s)") do |table|
   table.hashes.each do |hash|
     citation = hash.delete 'citation'
@@ -118,32 +114,23 @@ Given(/^that the entry has a URL that's on our site( that is public)?$/) do |is_
     public: is_public ? true : nil
 end
 
-Given("that the entry has a URL that's not on our site") do
-  @reference.update_attribute :document, ReferenceDocument.create!
-  @reference.document.update_attribute :url, 'google.com/foo'
-end
-
 When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |title|
   reference = Reference.find_by(title: title)
-  step "I fill in \"reference_nesting_reference_id\" with \"#{reference.id}\""
+  step %(I fill in "reference_nesting_reference_id" with "#{reference.id}")
 end
 
 Then("I should see a PDF link") do
   find "a", text: "PDF", match: :first
 end
 
-When('I fill in "reference_nesting_reference_id" with its own ID') do
-  step "I fill in \"reference_nesting_reference_id\" with \"#{@reference.id}\""
-end
-
 When("I fill in {string} with a URL to a document that exists") do |field|
   stub_request :any, "google.com/foo"
-  step "I fill in \"#{field}\" with \"google\.com/foo\""
+  step %(I fill in "#{field}" with "google\.com/foo")
 end
 
 When("I fill in {string} with a URL to a document that doesn't exist in the first reference") do |field|
   stub_request(:any, "google.com/foo").to_return status: 404
-  step "I fill in \"#{field}\" with \"google\.com/foo\""
+  step %(I fill in "#{field}" with "google\.com/foo")
 end
 
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
@@ -194,12 +181,6 @@ end
 
 When('I press "Go" by the references search box') do
   within ".reference-search-form" do
-    step 'I press "Go"'
-  end
-end
-
-When('I press "Go" by the references search box in the breadcrumb') do
-  within "#breadcrumbs" do
     step 'I press "Go"'
   end
 end

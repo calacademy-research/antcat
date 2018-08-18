@@ -26,6 +26,10 @@ module Taxa::PredicateMethods
     status == Status::UNIDENTIFIABLE
   end
 
+  def unavailable?
+    status == Status::UNAVAILABLE
+  end
+
   def obsolete_combination?
     status == Status::OBSOLETE_COMBINATION
   end

@@ -4,11 +4,8 @@ describe MissingReferenceDecorator do
   describe "#plain_text" do
     describe "italicizing title and citation" do
       it "doesn't escape et al. in citation for a missing reference" do
-        reference = create :missing_reference,
-          author_names: [],
-          citation_year: '2010',
-          citation: 'Ants <i>et al.</i>',
-          title: 'Tapinoma'
+        reference = create :missing_reference, author_names: [], citation_year: '2010',
+          citation: 'Ants <i>et al.</i>', title: 'Tapinoma'
         expect(reference.decorate.plain_text).to eq "2010. Tapinoma. Ants <i>et al.</i>."
       end
     end

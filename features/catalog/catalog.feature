@@ -1,9 +1,4 @@
 Feature: Using the catalog
-  As a user of AntCat
-  I want to view the taxonomy of ants hierarchically
-  So that I can choose a taxon easily
-    And view its parents and siblings
-
   Background:
     Given the Formicidae family exists
     And there is a subfamily "Dolichoderinae" with taxonomic history "Dolichoderinae history"

@@ -6,7 +6,7 @@ describe LayoutsHelper do
       expect(helper.subnavigation_menu(['a', 'b'])).to eq '<span>a | b</span>'
     end
 
-    it "is is html_safe" do
+    it "is html_safe" do
       expect(helper.subnavigation_menu(['a', 'b'])).to be_html_safe
     end
   end

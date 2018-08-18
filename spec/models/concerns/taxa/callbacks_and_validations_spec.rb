@@ -176,8 +176,8 @@ describe Taxa::CallbacksAndValidations do
   end
 
   describe "#delete_synonyms" do
-    let(:senior) { create_genus 'Atta' }
-    let(:junior) { create_genus 'Eciton', status: Status::SYNONYM }
+    let(:senior) { create :family }
+    let(:junior) { create :family, :synonym }
 
     before { create :synonym, junior_synonym: junior, senior_synonym: senior }
 
@@ -220,6 +220,26 @@ describe Taxa::CallbacksAndValidations do
             expect(junior.senior_synonyms.count).to eq 1
           end
         end
+      end
+    end
+  end
+
+  describe "#current_valid_taxon_validation" do
+    context "when a valid taxon has a `#current_valid_taxon`" do
+      let(:taxon) { build :family, current_valid_taxon: create(:family) }
+
+      specify do
+        taxon.valid?
+        expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for valid taxa"])
+      end
+    end
+
+    context "when an  taxon has a `#current_valid_taxon`" do
+      let(:taxon) { build :family, :unavailable, current_valid_taxon: create(:family) }
+
+      specify do
+        taxon.valid?
+        expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for unavailable taxa"])
       end
     end
   end

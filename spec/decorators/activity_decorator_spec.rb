@@ -38,8 +38,8 @@ describe ActivityDecorator do
       end
 
       it "allows custom paths" do
-        genus = create_genus
-        activity = create :activity, trackable: genus
+        taxon = create :family
+        activity = create :activity, trackable: taxon
         trackable_id = activity.trackable_id
         path = "/catalog/#{trackable_id}"
 
@@ -89,7 +89,7 @@ describe ActivityDecorator do
 
     context "when there's a partial matching `action`" do
       let(:activity) do
-        create :activity, trackable: create_species, action: "elevate_subspecies_to_species"
+        create :activity, trackable: create(:species), action: "elevate_subspecies_to_species"
       end
 
       it "returns the action" do

@@ -9,7 +9,7 @@
   .clearfix
 
 -if can? :edit, :catalog
-  .buttons_right
+  .buttons-right
     =link_to "New", new_reference_path, class: "btn-normal"
 
 =render "shared/reference_table", references: @references

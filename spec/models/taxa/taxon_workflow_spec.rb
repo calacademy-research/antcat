@@ -29,7 +29,7 @@ describe Taxon do
         another_taxon = create :genus
         another_taxon.taxon_state.review_state = TaxonState::OLD
 
-        change = create :change, taxon: another_taxon,
+        change = create :change, taxon: another_taxon, user: adder,
           change_type: "create", approver: user, approved_at: Time.current
         create :version, item: another_taxon, whodunnit: user.id, change: change
 
@@ -40,15 +40,15 @@ describe Taxon do
     end
 
     context "when a waiting record" do
+      let(:changer) { create :user, :editor }
       let(:taxon) { create :genus }
       let(:change) do
-        create :change, taxon: taxon,
+        create :change, taxon: taxon, user: changer,
           change_type: "create", approver: approver, approved_at: Time.current
       end
 
       before do
         taxon.taxon_state.review_state = TaxonState::WAITING
-        changer = create :user, :editor
         create :version, item: taxon, whodunnit: changer.id, change: change
       end
 
@@ -85,7 +85,7 @@ describe Taxon do
 
   describe "Last change and version", :versioning do
     describe "#last_change" do
-      let(:taxon) { create_genus }
+      let(:taxon) { create :family }
       let(:user) { create :user }
 
       it "returns nil if no Changes have been created for it" do

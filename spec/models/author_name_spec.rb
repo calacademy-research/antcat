@@ -6,15 +6,7 @@ describe AuthorName do
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :author }
   it { is_expected.to validate_presence_of :name }
-
-  it "can't be a duplicate" do
-    author_name = create :author_name, name: 'Bolton'
-    author_name.author = create :author
-    author_name.save!
-
-    author_name = build :author_name, name: 'Bolton'
-    expect(author_name).not_to be_valid
-  end
+  it { is_expected.to validate_uniqueness_of :name }
 
   describe "#import" do
     context 'when authors does not exists' do
@@ -44,7 +36,7 @@ describe AuthorName do
       author_name = create :author_name, name: 'Ward'
       reference = create :reference, author_names: [author_name]
       author_name.update_attribute :name, 'Fisher'
-      expect(Reference.find(reference.id).author_names_string).to eq 'Fisher'
+      expect(reference.reload.author_names_string).to eq 'Fisher'
     end
   end
 

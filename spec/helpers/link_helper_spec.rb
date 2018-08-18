@@ -40,7 +40,7 @@ describe LinkHelper do
     end
 
     it "outputs nothing for tribes" do
-      tribe = create_tribe 'Attini'
+      tribe = create :tribe
       expect(helper.link_to_antweb(tribe)).to be_nil
     end
 
@@ -51,7 +51,7 @@ describe LinkHelper do
     end
 
     it "outputs nothing for subgenera" do
-      subgenus = create_subgenus 'Atta (Batta)', genus: create_genus('Atta')
+      subgenus = create :subgenus
       expect(helper.link_to_antweb(subgenus)).to be_nil
     end
 
@@ -70,17 +70,8 @@ describe LinkHelper do
     end
 
     it "just returns nil for subspecies without species" do
-      subspecies = create_subspecies 'Atta major minor', species: nil
+      subspecies = create :subspecies, species: nil
       expect(helper.link_to_antweb(subspecies)).to be_nil
-    end
-
-    it "handles quadrinomial subspecies", :pending do
-      pending "are there any valid quadrinomials?"
-      genus = create_genus 'Atta'
-      species = create_species 'Atta major', genus: genus
-      subspecies = create_subspecies 'Atta major minor rufous', species: species, genus: genus
-      expect(helper.link_to_antweb(subspecies)).
-        to eq '<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor rufous&project=worldants">AntWeb</a>'
     end
   end
 end

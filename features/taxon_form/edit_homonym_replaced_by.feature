@@ -1,10 +1,5 @@
 @javascript
 Feature: Editing a taxon's homonym replaced by
-  As an editor of AntCat
-  I want to edit taxa
-  So that information is kept accurate
-  So people use AntCat
-
   Background:
     Given there is a genus "Atta"
     And I am logged in
@@ -15,7 +10,7 @@ Feature: Editing a taxon's homonym replaced by
     When I go to the edit page for "Atta"
     And I set the status to "homonym"
     And I set the homonym replaced by name to "Eciton"
-    And I save my changes
+    And I press "Save"
     Then I should see "Eciton" in the header
 
   Scenario: Setting the homonym replaced by name doesn't affect status
@@ -27,7 +22,7 @@ Feature: Editing a taxon's homonym replaced by
     When I set the status to "homonym"
     And I set the homonym replaced by name to "Eciton"
     And I set the status to "valid"
-    And I save my changes
+    And I press "Save"
     And I go to the edit page for "Atta"
     Then the status should be "valid"
 
@@ -39,9 +34,9 @@ Feature: Editing a taxon's homonym replaced by
     Then the homonym replaced by name should be "(none)"
 
     And I set the homonym replaced by name to "Eciton"
-    And I save my changes
+    And I press "Save"
     And I go to the edit page for "Atta"
     And I set the homonym replaced by name to ""
-    And I save my changes
+    And I press "Save"
     And I go to the edit page for "Atta"
     Then the homonym replaced by name should be "(none)"

@@ -2,8 +2,8 @@ $ ->
   setupReorderButton()
 
 # These elements are from the view.
-SORTABLE =       ".history_items"
-SORTABLE_ITEM =  ".history_item"
+SORTABLE =       ".history-items"
+SORTABLE_ITEM =  ".history-item"
 
 # Internal only.
 # We're using a random class to check if the element already is

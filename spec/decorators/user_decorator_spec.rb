@@ -5,8 +5,7 @@ describe UserDecorator do
 
   describe "#user_page_link" do
     it "link the name to the user page" do
-      expect(user.decorate.user_page_link).
-        to eq %(<a href="/users/#{user.id}">First Last</a>)
+      expect(user.decorate.user_page_link).to eq %(<a href="/users/#{user.id}">First Last</a>)
     end
   end
 

@@ -1,9 +1,4 @@
 Feature: Delete reference
-  As Phil Ward
-  I want to delete a reference
-  So that I can add one to test, then delete it right away
-  Or so I can delete one that turns out to have been a duplicate
-
   Background:
     Given I am logged in
     And there is a reference

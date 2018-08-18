@@ -25,7 +25,7 @@ Feature: Changes
     And I set the type name to "Atta major"
     And I press "OK"
     And I press "Add this name"
-    And I save my changes
+    And I press "Save"
     Then I should see "This taxon has been changed; changes awaiting approval"
 
     When I follow "Review change"

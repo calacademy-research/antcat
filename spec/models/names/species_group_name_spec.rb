@@ -43,7 +43,7 @@ describe SpeciesGroupName do
     end
 
     context "when invalid rank combinations" do
-      let(:new_comb_parent) { create_subfamily } # uncombinable_parent
+      let(:new_comb_parent) { create(:subfamily) } # uncombinable_parent
       let(:old_comb) { species }
 
       it "raises " do

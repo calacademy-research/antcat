@@ -20,7 +20,7 @@ module References
         attr_reader :search_query
 
         def fulltext_search_light
-          Reference.solr_search do
+          Reference.search do
             keywords search_query_without_hyphens do
               fields :title, :author_names_string, :citation_year, :bolton_key, :authors_for_keey
               boost_fields author_names_string: 5.0

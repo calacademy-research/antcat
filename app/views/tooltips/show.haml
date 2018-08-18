@@ -3,7 +3,7 @@
 -@title = "Tooltip ##{@tooltip.id}"
 -breadcrumb :tooltip, @tooltip
 
-.buttons_right
+.buttons-right
   =link_to "History", tooltip_history_index_path(@tooltip), class: "btn-normal"
   =link_to 'Delete', @tooltip, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-delete"
 

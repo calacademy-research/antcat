@@ -27,7 +27,7 @@ Feature: Feed (taxa)
           And I press "OK"
           And I press "Add this name"
         And I fill in "edit_summary" with "fix typo"
-        And I save my changes
+        And I press "Save"
     And I go to the activity feed
     Then I should see "Archibald added the genus Atta to the subfamily Formicinae" and no other feed items
     And I should see the edit summary "fix typo"

@@ -37,18 +37,15 @@ describe ReferencesController do
       it "autocompletes" do
         get :autocomplete, params: { reference_q: "wilson", format: :json }
 
-        json = JSON.parse response.body
-        expect(json.size).to eq 1
-        expect(json.first["author"]).to eq 'E.O. Wilson'
+        expect(json_response.size).to eq 1
+        expect(json_response.first["author"]).to eq 'E.O. Wilson'
       end
     end
 
     context "when there are no matches" do
       it "returns an empty response" do
         get :autocomplete, params: { reference_q: "willy", format: :json }
-
-        json = JSON.parse response.body
-        expect(json.size).to eq 0
+        expect(json_response.size).to eq 0
       end
     end
 
@@ -62,9 +59,8 @@ describe ReferencesController do
         it "autocompletes" do
           get :autocomplete, params: { reference_q: "author:höll", format: :json }
 
-          json = JSON.parse response.body
-          expect(json.size).to eq 1
-          expect(json.first["author"]).to eq 'Bert Hölldobler'
+          expect(json_response.size).to eq 1
+          expect(json_response.first["author"]).to eq 'Bert Hölldobler'
         end
       end
 
@@ -77,9 +73,8 @@ describe ReferencesController do
         it "autocompletes" do
           get :autocomplete, params: { reference_q: "author:abdul-ras", format: :json }
 
-          json = JSON.parse response.body
-          expect(json.size).to eq 1
-          expect(json.first["author"]).to eq 'M.S. Abdul-Rassoul'
+          expect(json_response.size).to eq 1
+          expect(json_response.first["author"]).to eq 'M.S. Abdul-Rassoul'
         end
       end
     end

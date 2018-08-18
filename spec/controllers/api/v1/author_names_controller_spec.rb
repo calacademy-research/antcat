@@ -11,13 +11,10 @@ describe Api::V1::AuthorNamesController do
     it "gets all author names keys" do
       expect(response.body.to_s).to include "Bolton"
       expect(response.body.to_s).to include "Fisher"
-      author_names = JSON.parse response.body
-      expect(author_names.count).to eq 2
+      expect(json_response.count).to eq 2
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 
   describe "GET show" do
@@ -29,8 +26,6 @@ describe Api::V1::AuthorNamesController do
       expect(response.body.to_s).to include "Bolton"
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 end

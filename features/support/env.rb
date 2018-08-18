@@ -46,8 +46,6 @@ def set_driver
   end
 end
 
-# TODO: Block unknown URLs.
-
 set_driver
 
 Capybara.default_max_wait_time = 5

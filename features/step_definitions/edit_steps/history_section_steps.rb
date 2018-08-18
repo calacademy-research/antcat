@@ -3,41 +3,41 @@ When("I click the add taxon history item button") do
 end
 
 When("I click on the cancel taxon history item button") do
-  find('.history_items .history_item a.taxt-editor-cancel-button').click
+  find('.history-items .history-item a.taxt-editor-cancel-button').click
 end
 
 When("I click on the edit taxon history item button") do
-  find('.history_items .history_item a.taxt-editor-edit-button').click
+  find('.history-items .history-item a.taxt-editor-edit-button').click
 end
 
 When("I save the taxon history item") do
-  find('.history_items .history_item a.taxt-editor-history-item-save-button').click
+  find('.history-items .history-item a.taxt-editor-history-item-save-button').click
 end
 
 When("I delete the taxon history item") do
-  find('.history_items .history_item a.taxt-editor-delete-button').click
+  find('.history-items .history-item a.taxt-editor-delete-button').click
 end
 
 Then("the history should be {string}") do |history|
-  element = first('.history_items').find('.taxt-presenter')
+  element = first('.history-items').find('.taxt-presenter')
   expect(element.text).to match /#{history}/
 end
 
 Then("the history item field should be {string}") do |history|
-  element = first('.history_items').find('textarea')
+  element = first('.history-items').find('textarea')
   expect(element.text).to match /#{history}/
 end
 
 Then("the history item field should not be visible") do
-  expect(page).to_not have_css '.history_items textarea'
+  expect(page).to_not have_css '.history-items textarea'
 end
 
 Then("the history item field should be visible") do
-  expect(page).to have_css '.history_items textarea'
+  expect(page).to have_css '.history-items textarea'
 end
 
 Then("the history should be empty") do
-  expect(page).to_not have_css '.history_items .history_item'
+  expect(page).to_not have_css '.history-items .history-item'
 end
 
 When(/^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?/) do |taxon_name, tag_taxon_name|
