@@ -36,7 +36,7 @@ describe AuthorName do
       author_name = create :author_name, name: 'Ward'
       reference = create :reference, author_names: [author_name]
       author_name.update_attribute :name, 'Fisher'
-      expect(Reference.find(reference.id).author_names_string).to eq 'Fisher'
+      expect(reference.reload.author_names_string).to eq 'Fisher'
     end
   end
 

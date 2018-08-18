@@ -77,8 +77,8 @@ describe TaxonForm do
         taxon = build_new_taxon_and_set_parent :species, create(:genus)
 
         params = taxon_params
-        params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
-        params[:protonym_attributes][:name_attributes][:id] = create(:species_name, name: 'Betta major').id
+        params[:name_attributes][:id] = create(:species_name).id
+        params[:protonym_attributes][:name_attributes][:id] = create(:species_name).id
         params[:incertae_sedis_in] = 'genus'
         params[:nomen_nudum] = '1'
         params[:hong] = '1'
@@ -104,9 +104,8 @@ describe TaxonForm do
         taxon = build_new_taxon_and_set_parent :species, create(:genus)
         params = taxon_params
 
-        params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
-        params[:protonym_attributes][:name_attributes][:id] =
-          create(:species_name, name: 'Betta major').id
+        params[:name_attributes][:id] = create(:species_name).id
+        params[:protonym_attributes][:name_attributes][:id] = create(:species_name).id
         params[:protonym_attributes][:authorship_attributes][:notes_taxt] = "{ref #{reference.id}}"
 
         described_class.new(taxon, params).save

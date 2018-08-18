@@ -5,28 +5,17 @@ describe BookReferenceDecorator do
 
   describe "#plain_text" do
     it "separates the publisher and the pagination with a comma" do
-      publisher = create :publisher
-      reference = create :book_reference,
-        author_names: [author_name],
-        citation_year: "1874",
-        title: "Les fourmis de la Suisse.",
-        publisher: publisher, pagination: "22 pp."
+      reference = create :book_reference, author_names: [author_name],
+        citation_year: "1874", title: "Les fourmis de la Suisse.", pagination: "22 pp."
       expect(reference.decorate.plain_text).
         to eq 'Forel, A. 1874. Les fourmis de la Suisse. New York: Wiley, 22 pp.'
     end
 
     context "with unsafe characters" do
-      let!(:author_names) { [create(:author_name, name: 'Ward, P. S.')] }
-
-      it "escapes the citation in a book reference" do
-        reference = create :book_reference,
-          citation_year: '2010d',
-          title: 'Ants are my life',
-          author_names: author_names,
-          publisher: create(:publisher, name: '<', place: create(:place, name: '>')),
-          pagination: '>'
-        expect(reference.decorate.plain_text).
-          to eq 'Ward, P. S. 2010d. Ants are my life. &gt;: &lt;, &gt;.'
+      it "escapes them" do
+        publisher = create :publisher, name: '<', place: create(:place, name: '>')
+        reference = create :book_reference, publisher: publisher
+        expect(reference.decorate.plain_text).to include ' &gt;: &lt;'
       end
     end
   end

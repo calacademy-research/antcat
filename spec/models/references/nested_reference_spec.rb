@@ -21,13 +21,6 @@ describe NestedReference do
 
       expect(middle).not_to be_valid
     end
-
-    it "can have a nesting_reference" do
-      nesting_reference = create :reference
-      nestee = create :nested_reference, nesting_reference: nesting_reference
-
-      expect(nestee.nesting_reference).to eq nesting_reference
-    end
   end
 
   describe "#destroy" do
