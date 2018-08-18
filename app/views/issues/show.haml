@@ -9,7 +9,7 @@
   ago
 
 -if can? :edit, :catalog
-  .buttons_right
+  .buttons-right
     -if @issue.open?
       =link_to "Close", close_issue_path(@issue), method: :put, class: "btn-saves"
     -else

@@ -4,7 +4,7 @@
 -content_for :head do
   =javascript_include_tag "controllers/feedback/show"
 
-.buttons_right
+.buttons-right
   -if @feedback.open?
     =link_to "Hide/show 'What you can do...'", "#", class: "btn-white", data: { show_hide_toggler_for: "guidelines_for_editors" }
   =link_to "Hide/show formatted for email", "#", class: "btn-white", data: { show_hide_toggler_for: "for_email" }
@@ -15,7 +15,7 @@
   -if user_is_superadmin?
     =link_to "Delete", feedback_path(@feedback), method: :delete, data: { confirm: "Delete? Note that this is for deleting spam and ridiculous suggestions. Archiving closed items instead of deleting them is good for tracking submissions and submitters." }, class: "btn-delete"
 
--# Empty paragraph to avoid overlapping of ".buttons_right".
+-# Empty paragraph to avoid overlapping of ".buttons-right".
 %p
 
 =render "feedback", feedback: @feedback

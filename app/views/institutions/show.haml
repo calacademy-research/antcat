@@ -3,7 +3,7 @@
 
 -content_for :application do
   -if can? :edit, :catalog
-    .buttons_right
+    .buttons-right
       =link_to 'Edit', edit_institution_path(@institution), class: 'btn-normal'
       -if user_is_superadmin?
         =link_to 'Delete', @institution, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-delete'
