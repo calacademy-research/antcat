@@ -59,12 +59,12 @@ describe Reference do
     end
   end
 
-  describe ".solr_search", :search do
+  describe ".search", :search do
     it "returns an empty array if nothing is found for author_name" do
       create :reference
       Sunspot.commit
 
-      expect(described_class.solr_search { keywords 'foo' }.results).to be_empty
+      expect(described_class.search { keywords 'foo' }.results).to be_empty
     end
 
     it "finds the reference for a given author_name if it exists" do
@@ -72,7 +72,7 @@ describe Reference do
       reference_factory author_name: 'Fisher'
       Sunspot.commit
 
-      expect(described_class.solr_search { keywords 'Ward' }.results).to eq [reference]
+      expect(described_class.search { keywords 'Ward' }.results).to eq [reference]
     end
 
     it "returns an empty array if nothing is found for a given year and author_name" do
@@ -82,7 +82,7 @@ describe Reference do
       reference_factory author_name: 'Fisher', citation_year: '1996'
       Sunspot.commit
 
-      expect(described_class.solr_search do
+      expect(described_class.search do
         with(:year).between(2012..2013)
         keywords 'Fisher'
       end.results).to be_empty
@@ -95,7 +95,7 @@ describe Reference do
       reference = reference_factory author_name: 'Fisher', citation_year: '1996'
       Sunspot.commit
 
-      expect(described_class.solr_search do
+      expect(described_class.search do
         with(:year).between(1996..1996)
         keywords 'Fisher'
       end.results).to eq [reference]
@@ -106,7 +106,7 @@ describe Reference do
       reference_factory author_name: 'Bolton', citation_year: '2010'
       Sunspot.commit
 
-      expect(described_class.solr_search { keywords '2010b' }.results).to eq [with_letter]
+      expect(described_class.search { keywords '2010b' }.results).to eq [with_letter]
     end
   end
 
