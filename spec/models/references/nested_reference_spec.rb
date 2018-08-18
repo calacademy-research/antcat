@@ -5,17 +5,7 @@ describe NestedReference do
   it { is_expected.to validate_presence_of :pages_in }
   it { is_expected.to validate_presence_of(:nesting_reference).with_message("does not exist") }
 
-  describe "Validation" do
-    it "is valid with these attributes" do
-      reference = described_class.new title: 'asdf',
-        author_names: [create(:author_name)],
-        citation_year: '2010',
-        nesting_reference: create(:reference),
-        pages_in: 'Pp 2 in:'
-
-      expect(reference).to be_valid
-    end
-
+  describe "validations" do
     it "cannot point to itself" do
       reference = create :nested_reference
 

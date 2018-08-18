@@ -73,14 +73,5 @@ describe LinkHelper do
       subspecies = create_subspecies 'Atta major minor', species: nil
       expect(helper.link_to_antweb(subspecies)).to be_nil
     end
-
-    it "handles quadrinomial subspecies", :pending do
-      pending "are there any valid quadrinomials?"
-      genus = create_genus 'Atta'
-      species = create_species 'Atta major', genus: genus
-      subspecies = create_subspecies 'Atta major minor rufous', species: species, genus: genus
-      expect(helper.link_to_antweb(subspecies)).
-        to eq '<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor rufous&project=worldants">AntWeb</a>'
-    end
   end
 end
