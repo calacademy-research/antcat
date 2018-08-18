@@ -11,18 +11,6 @@ Feature: Searching the catalog
     And I press "Go" by the catalog search box
     Then I should see "No results found."
 
-  Scenario: Searching when only one result
-    When I fill in the catalog search box with "Dolichoderini"
-    And I press "Go" by the catalog search box
-    Then I should be on the catalog page for "Dolichoderini"
-
-  Scenario: Searching when results
-    When I fill in the catalog search box with "doli"
-    And I press "Go" by the catalog search box
-    Then I should see "Dolichoderinae" in the search results
-    And I should see "Dolichoderini" in the search results
-    And I should see "Dolichoderus" in the search results
-
   Scenario: Searching for a 'containing' match
     When I fill in the catalog search box with "jor"
     And I press "Go" by the catalog search box
@@ -35,7 +23,11 @@ Feature: Searching the catalog
   Scenario: Following a search result
     When I fill in the catalog search box with "doli"
     And I press "Go" by the catalog search box
-    And I follow "Dolichoderini" in the search results
+    Then I should see "Dolichoderinae" in the search results
+    And I should see "Dolichoderini" in the search results
+    And I should see "Dolichoderus" in the search results
+
+    When I follow "Dolichoderini" in the search results
     Then I should see "Dolichoderini history"
 
   Scenario: Searching for full species name, not just epithet

@@ -58,17 +58,6 @@ Feature: Editing a taxon's name, protonym name, or type name
     And I press "Save"
     Then I should see "Atta minor" in the headline
 
-  Scenario: Setting the type name after it was blank
-    Given there is a genus "Atta"
-    And there is a species "Atta major"
-
-    When I go to the edit page for "Atta"
-    And I click the type name field
-    And I set the type name to "Atta major"
-    And I press "OK"
-    And I press "Save"
-    Then I should see "Atta major" in the headline
-
   Scenario: Clearing the type name
     Given there is a genus "Atta" with type name "Atta major"
 

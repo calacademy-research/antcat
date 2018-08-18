@@ -12,17 +12,6 @@ Feature: Workflow
     And there is a subfamily "Formicinae"
     And I log in as a catalog editor named "Mark Wilden"
 
-  # Add these scenarios
-  # test notes:
-  # change something with children. Ensure they're hit. Undo it. Ensure they're moved back. verify with db to ensure this happened.
-  # add two changes. Roll back the earlier change, ensure that the warning dialog box comes up listing the impact on the later change
-
-  # modify species b
-  # a - b - a' case
-  # modify species b
-  # undo first change to species b
-  # see what happens!
-
   @javascript
   Scenario: Changing a taxon and seeing it on the Changes page, undoing it
     When I go to the edit page for "Formicinae"
@@ -45,14 +34,6 @@ Feature: Workflow
 
     When I go to the catalog page for "Formicinae"
     Then I should not see "asdfgh"
-
-  # This test is long. It may be worth doing all the data setup
-  # required to get these preconditions without going through the UI.
-  # Note: having this long test may be worthwhile; it caught a bug in
-  # the data model setup that wouldn't have been caught by setting
-  # up the data structures manually.
-  #  this where we undo the most recent and then there is one,
-  # then the next most recent and there are none, and we're back to baseline.
 
   @javascript
   Scenario: Changing a species's genus twice by using the helper link, undo twice
@@ -160,10 +141,7 @@ Feature: Workflow
     When I go to the catalog page for "Atta major"
     Then I should see "Atta major" in the header
 
-    # test this where we undo the oldest and then both are gone
-
-  # Add scenario - add a new species, delete it, undo the delete
-  # Same as above, with notes
+    # TODO: test this where we undo the oldest and then both are gone.
 
   # FIX: currently doesn't work with incertae sedis taxa, which
   # is why we need to nest the genera in a tribe in this test.

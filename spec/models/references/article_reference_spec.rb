@@ -6,6 +6,7 @@ describe ArticleReference do
   it { is_expected.to validate_presence_of :year }
   it { is_expected.to validate_presence_of :series_volume_issue }
   it { is_expected.to validate_presence_of :journal }
+  it { is_expected.to validate_presence_of :pagination }
 
   describe "parsing fields from series_volume_issue" do
     it "can extract volume and issue" do

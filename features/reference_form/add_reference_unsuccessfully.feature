@@ -9,16 +9,6 @@ Feature: Add reference unsuccessfully
     And I follow "Cancel"
     Then I should be on the references page
 
-  Scenario: Leaving other fields blank when adding an article reference
-    When I fill in "reference_author_names_string" with "Fisher, B.L."
-    And I press "Save"
-
-    Then I should see "Year can't be blank"
-    And I should see "Title can't be blank"
-    And I should see "Journal can't be blank"
-    And I should see "Series volume issue can't be blank"
-    And I should see "Pagination can't be blank"
-
   Scenario: Leaving a required field blank should not affect other fields (article)
     When I fill in "reference_title" with "A reference title"
     And I fill in "reference_journal_name" with "Ant Journal"
@@ -29,16 +19,6 @@ Feature: Add reference unsuccessfully
     When I follow "Article"
     Then the "reference_journal_name" field should contain "Ant Journal"
     And the "article_pagination" field should contain "2"
-
-  @javascript
-  Scenario: Leaving other fields blank when adding a book reference
-    When I follow "Book"
-    And I fill in "reference_author_names_string" with "Fisher, B.L."
-    And I press "Save"
-    Then I should see "Year can't be blank"
-    And I should see "Title can't be blank"
-    And I should see "Publisher can't be blank"
-    And I should see "Pagination can't be blank"
 
   @javascript
   Scenario: Leaving a required field blank should not affect other fields (book)
@@ -52,15 +32,6 @@ Feature: Add reference unsuccessfully
     When I follow "Book"
     Then the "reference_publisher_string" field should contain "Capua: House of Batiatus"
     And the "book_pagination" field should contain "2"
-
-  @javascript
-  Scenario: Leaving other fields blank when adding a nested reference
-    When I follow "Nested"
-    And I fill in "reference_author_names_string" with "Fisher, B.L."
-    And I press "Save"
-    Then I should see "Year can't be blank"
-    And I should see "Pages in can't be blank"
-    And I should see "Nesting reference does not exist"
 
   @javascript
   Scenario: Adding a nested reference with a nonexistent nestee
