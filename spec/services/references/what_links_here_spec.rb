@@ -39,25 +39,23 @@ describe References::WhatLinksHere do
     end
 
     describe "references in reference fields" do
-      let!(:eciton) { create_genus 'Eciton' }
+      let!(:taxon) { create :family }
 
-      before { eciton.protonym.authorship.update! reference: reference }
+      before { taxon.protonym.authorship.update! reference: reference }
 
       it "has a reference if it's a protonym's authorship's reference" do
         expect(reference.what_links_here).to match_array [
-          { table: 'citations', field: :reference_id, id: eciton.protonym.authorship.id }
+          { table: 'citations', field: :reference_id, id: taxon.protonym.authorship.id }
         ]
       end
     end
 
     describe "references in taxt" do
-      let!(:eciton) { create_genus 'Eciton' }
-
-      before { eciton.update_attribute :type_taxt, "{ref #{reference.id}}" }
+      let!(:taxon) { create :family, type_taxt: "{ref #{reference.id}}" }
 
       it "returns references in taxt" do
         expect(reference.what_links_here).to match_array [
-          { table: 'taxa', field: :type_taxt, id: eciton.id }
+          { table: 'taxa', field: :type_taxt, id: taxon.id }
         ]
       end
     end

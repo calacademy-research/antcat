@@ -4,7 +4,7 @@ describe SpeciesGroupTaxon do
   it { is_expected.to validate_presence_of :genus }
 
   it "has its subfamily set from its genus" do
-    genus = create_genus
+    genus = create :genus
     expect(genus.subfamily).not_to be_nil
 
     taxon = create :species_group_taxon, genus: genus, subfamily: nil
@@ -47,8 +47,8 @@ describe SpeciesGroupTaxon do
     end
 
     it "raises on invalid rank combinations" do
-      new_comb = create_subspecies
-      old_comb = create_species
+      new_comb = create :subspecies
+      old_comb = create :species
       irrelevant_parent = create :subfamily
 
       expect do

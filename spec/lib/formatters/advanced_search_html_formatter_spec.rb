@@ -11,7 +11,7 @@ describe Formatters::AdvancedSearchHtmlFormatter do
 
   describe "#format" do
     it "formats a taxon" do
-      taxon = create_genus incertae_sedis_in: 'genus', nomen_nudum: true
+      taxon = create :genus, incertae_sedis_in: 'genus', nomen_nudum: true
 
       results = formatter.format_status_reference(taxon)
       expect(results).to eq "<i>incertae sedis</i> in genus, <i>nomen nudum</i>"

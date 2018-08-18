@@ -61,7 +61,7 @@ describe TaxonForm do
       end
 
       it "saves a new subspecies" do
-        taxon = build_new_taxon_and_set_parent :subspecies, create_species
+        taxon = build_new_taxon_and_set_parent :subspecies, create(:species)
         params = subspecies_params
 
         described_class.new(taxon, params).save
@@ -265,7 +265,7 @@ describe TaxonForm do
       end
 
       context "#set_taxon_state_to_waiting" do
-        let(:genus) { create_genus }
+        let(:genus) { create :genus }
 
         before do
           genus.taxon_state.update_columns review_state: TaxonState::OLD

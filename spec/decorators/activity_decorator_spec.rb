@@ -89,7 +89,7 @@ describe ActivityDecorator do
 
     context "when there's a partial matching `action`" do
       let(:activity) do
-        create :activity, trackable: create_species, action: "elevate_subspecies_to_species"
+        create :activity, trackable: create(:species), action: "elevate_subspecies_to_species"
       end
 
       it "returns the action" do

@@ -3,7 +3,7 @@ require "spec_helper"
 describe TaxonDecorator::TaxonStatus do
   describe "#call" do
     it "is html_safe" do
-      expect(create_genus.decorate.taxon_status).to be_html_safe
+      expect(create(:family).decorate.taxon_status).to be_html_safe
     end
 
     context "when taxon is valid" do
@@ -70,7 +70,7 @@ describe TaxonDecorator::TaxonStatus do
     context "when taxon is a synonym" do
       context "when a taxon has no `Synonym`s" do
         context "when taxon does not have a `current_valid_taxon`" do
-          let!(:taxon) { create_genus status: Status::SYNONYM }
+          let!(:taxon) { create :family, :synonym }
 
           specify do
             expect(taxon.decorate.taxon_status).to include "junior synonym"
@@ -81,7 +81,7 @@ describe TaxonDecorator::TaxonStatus do
       context "when taxon has a single valid senior `Synonym`" do
         specify do
           senior_synonym = create_genus 'Atta'
-          junior_synonym = create_genus 'Atta', status: Status::SYNONYM
+          junior_synonym = create :genus, :synonym
           create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
           expect(junior_synonym.decorate.taxon_status).
@@ -160,7 +160,7 @@ describe TaxonDecorator::TaxonStatus do
       subject { described_class.new(junior) }
 
       let(:invalid_senior) { create :family, :synonym }
-      let(:junior) { create_genus 'Eciton', status: Status::SYNONYM }
+      let(:junior) { create :family, :synonym }
 
       before { create :synonym, junior_synonym: junior, senior_synonym: invalid_senior }
 

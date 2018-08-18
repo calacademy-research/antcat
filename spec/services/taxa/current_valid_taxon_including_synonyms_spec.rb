@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Taxa::CurrentValidTaxonIncludingSynonyms do
   describe "#call" do
     context 'when there are no synonyms' do
-      let!(:current_valid_taxon) { create_genus }
-      let!(:taxon) { create_genus current_valid_taxon: current_valid_taxon, status: Status::SYNONYM }
+      let!(:current_valid_taxon) { create :family }
+      let!(:taxon) { create :family, :synonym, current_valid_taxon: current_valid_taxon }
 
       it "returns the field contents" do
         expect(described_class[taxon]).to eq current_valid_taxon
@@ -12,9 +12,9 @@ describe Taxa::CurrentValidTaxonIncludingSynonyms do
     end
 
     context 'when a senior synonym exists' do
-      let!(:senior) { create_genus }
-      let!(:current_valid_taxon) { create_genus }
-      let!(:junior_synonym) { create :genus, :synonym, current_valid_taxon: current_valid_taxon }
+      let!(:senior) { create :family }
+      let!(:current_valid_taxon) { create :family }
+      let!(:junior_synonym) { create :family, :synonym, current_valid_taxon: current_valid_taxon }
 
       before { create :synonym, junior_synonym: junior_synonym, senior_synonym: senior }
 
@@ -26,9 +26,9 @@ describe Taxa::CurrentValidTaxonIncludingSynonyms do
     # TODO semi-disabled by Russian roulette.
     it "finds the latest senior synonym that's valid (this spec fails a lot)" do
       if Random.rand(1..6) == 6
-        valid_senior = create_genus status: Status::VALID
-        invalid_senior = create_genus status: Status::HOMONYM
-        taxon = create_genus status: Status::SYNONYM
+        valid_senior = create :family
+        invalid_senior = create :family, :homonym
+        taxon = create :family, :synonym
         create :synonym, senior_synonym: valid_senior, junior_synonym: taxon
         create :synonym, senior_synonym: invalid_senior, junior_synonym: taxon
         expect(described_class[taxon]).to eq valid_senior
@@ -38,8 +38,8 @@ describe Taxa::CurrentValidTaxonIncludingSynonyms do
     end
 
     context 'when no senior synonyms are valid' do
-      let!(:invalid_senior) { create_genus status: Status::HOMONYM }
-      let!(:another_invalid_senior) { create_genus status: Status::HOMONYM }
+      let!(:invalid_senior) { create :family, :homonym }
+      let!(:another_invalid_senior) { create :family, :homonym }
       let!(:junior_synonym) { create :genus, :synonym }
 
       before do
@@ -53,9 +53,9 @@ describe Taxa::CurrentValidTaxonIncludingSynonyms do
     end
 
     context "when there's a synonym of a synonym" do
-      let!(:senior_synonym_of_senior_synonym) { create_genus }
-      let!(:senior_synonym) { create_genus status: Status::SYNONYM }
-      let!(:taxon) { create_genus status: Status::SYNONYM }
+      let!(:senior_synonym_of_senior_synonym) { create :family }
+      let!(:senior_synonym) { create :family, :synonym }
+      let!(:taxon) { create :family, status: :synonym }
 
       before do
         create :synonym, junior_synonym: senior_synonym, senior_synonym: senior_synonym_of_senior_synonym

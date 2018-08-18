@@ -51,7 +51,7 @@ describe LinkHelper do
     end
 
     it "outputs nothing for subgenera" do
-      subgenus = create_subgenus
+      subgenus = create :subgenus
       expect(helper.link_to_antweb(subgenus)).to be_nil
     end
 
@@ -70,7 +70,7 @@ describe LinkHelper do
     end
 
     it "just returns nil for subspecies without species" do
-      subspecies = create_subspecies 'Atta major minor', species: nil
+      subspecies = create :subspecies, species: nil
       expect(helper.link_to_antweb(subspecies)).to be_nil
     end
   end

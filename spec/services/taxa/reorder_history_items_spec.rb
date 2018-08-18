@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Taxa::ReorderHistoryItems do
   describe "#call" do
-    let(:taxon) { create_genus }
+    let(:taxon) { create :family }
     let!(:first) { taxon.history_items.create! taxt: "A" }
     let!(:second) { taxon.history_items.create! taxt: "B" }
     let!(:third) { taxon.history_items.create! taxt: "C" }

@@ -1,11 +1,7 @@
 require 'spec_helper'
 
 describe Api::V1::CitationsController do
-  before do
-    create :genus
-  end
-
-  let!(:species) { create_species 'Atta minor' }
+  let!(:species) { create :species }
 
   describe "GET index" do
     # TODO depends on being run before any other specs.
@@ -21,7 +17,7 @@ describe Api::V1::CitationsController do
       get :index
 
       expect(response.body.to_s).to include "pages"
-      expect(json_response.count).to eq 7
+      expect(json_response.count).to eq 4 # TODO.
     end
 
     it 'returns HTTP 200' do

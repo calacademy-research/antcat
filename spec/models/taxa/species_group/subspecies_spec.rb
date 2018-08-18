@@ -12,31 +12,31 @@ describe Subspecies do
   end
 
   it "does not have to have a species (before being fixed up, e.g.)" do
-    subspecies = create_subspecies 'Atta major colobopsis', genus: genus, species: nil
+    subspecies = create :subspecies, genus: genus, species: nil
     expect(subspecies).to be_valid
   end
 
   it "has its subfamily assigned from its genus" do
-    subspecies = create_subspecies 'Atta major colobopsis', species: nil, genus: genus
+    subspecies = create :subspecies, species: nil, genus: genus
     expect(subspecies.subfamily).to eq genus.subfamily
   end
 
   it "has its genus assigned from its species, if there is one" do
-    species = create_species genus: genus
-    subspecies = create_subspecies 'Atta major colobopsis', genus: nil, species: species
+    species = create :species, genus: genus
+    subspecies = create :subspecies, genus: nil, species: species
     subspecies.save # Trigger callbacks. TODO fix factories.
 
     expect(subspecies.genus).to eq genus
   end
 
   it "does not have its genus assigned from its species, if there is not one" do
-    subspecies = create_subspecies 'Atta major colobopsis', genus: genus, species: nil
+    subspecies = create :subspecies, genus: genus, species: nil
     expect(subspecies.genus).to eq genus
   end
 
   describe "#update_parent" do
-    let!(:subspecies) { create_subspecies 'Atta beta kappa' }
-    let!(:species) { create_species }
+    let!(:subspecies) { create :subspecies }
+    let!(:species) { create :species }
 
     it "sets all the parent fields" do
       subspecies.update_parent species
@@ -50,7 +50,7 @@ describe Subspecies do
 
   describe "#parent" do
     context "without a species" do
-      let(:taxon) { create_subspecies genus: genus, species: nil }
+      let(:taxon) { create :subspecies, genus: genus, species: nil }
 
       it "returns the genus" do
         expect(taxon.parent).to eq genus

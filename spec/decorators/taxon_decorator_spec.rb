@@ -2,10 +2,11 @@ require 'spec_helper'
 
 describe TaxonDecorator do
   describe "#link_to_taxon" do
-    let(:genus) { create_genus 'Atta' }
+    let(:taxon) { create :family }
 
     it "creates the link" do
-      expect(genus.decorate.link_to_taxon).to eq %(<a href="/catalog/#{genus.id}"><i>Atta</i></a>)
+      expect(taxon.decorate.link_to_taxon).
+        to eq %(<a href="/catalog/#{taxon.id}">#{taxon.name.name}</a>)
     end
   end
 end

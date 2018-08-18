@@ -124,12 +124,12 @@ describe Taxon do
   describe "#protonym" do
     context "when the taxon it's attached to is destroyed, even if another taxon is using it" do
       let!(:protonym) { create :protonym }
-      let!(:genus) { create_genus protonym: protonym }
+      let!(:family) { create :family, protonym: protonym }
 
-      before { create_genus protonym: protonym }
+      before { create :family, protonym: protonym }
 
       it "doesn't destroy the protonym" do
-        expect { genus.destroy }.not_to change { Protonym.count }
+        expect { family.destroy }.not_to change { Protonym.count }
       end
     end
   end

@@ -2,23 +2,23 @@ require 'spec_helper'
 
 describe Species do
   it "can have subspecies, which are its children" do
-    species = create_species
-    robusta = create_subspecies species: species
-    saltensis = create_subspecies species: species
+    species = create :species
+    robusta = create :subspecies, species: species
+    saltensis = create :subspecies, species: species
 
     expect(species.subspecies).to eq [robusta, saltensis]
     expect(species.children).to eq species.subspecies
   end
 
   describe "#statistics" do
-    let(:species) { create_species }
+    let(:species) { create :species }
 
     context "when 0 children" do
       specify { expect(species.statistics).to eq({}) }
     end
 
     context "when 1 valid subspecies" do
-      before { create_subspecies species: species }
+      before { create :subspecies, species: species }
 
       specify do
         expect(species.statistics).to eq extant: {
@@ -29,8 +29,8 @@ describe Species do
 
     context "when there are extant and fossil subspecies" do
       before do
-        create_subspecies species: species
-        create_subspecies species: species, fossil: true
+        create :subspecies, species: species
+        create :subspecies, species: species, fossil: true
       end
 
       specify do
@@ -43,8 +43,8 @@ describe Species do
 
     context "when 1 valid subspecies and 2 synonyms" do
       before do
-        create_subspecies species: species
-        2.times { create_subspecies species: species, status: Status::SYNONYM }
+        create :subspecies, species: species
+        2.times { create :subspecies, species: species, status: Status::SYNONYM }
       end
 
       specify do
@@ -57,8 +57,8 @@ describe Species do
 
   describe "#siblings" do
     let(:genus) { create :genus }
-    let(:species) { create_species genus: genus }
-    let(:another_species) { create_species genus: genus }
+    let(:species) { create :species, genus: genus }
+    let(:another_species) { create :species, genus: genus }
 
     it "returns itself and its genus's species" do
       expect(species.siblings).to match_array [species, another_species]

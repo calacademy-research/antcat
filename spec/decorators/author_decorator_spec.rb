@@ -22,7 +22,7 @@ describe AuthorDecorator do
   end
 
   describe "#taxon_descriptions_between" do
-    before { create_species.protonym.authorship.update! reference: reference }
+    before { create(:species).protonym.authorship.update! reference: reference }
 
     context "when start and end year are the same" do
       specify do
@@ -33,10 +33,10 @@ describe AuthorDecorator do
     context "when start and end year are not the same" do
       before do
         second_reference = create :article_reference, author_names: [author_name], citation_year: 1990
-        create_genus.protonym.authorship.update! reference: second_reference
+        create(:family).protonym.authorship.update! reference: second_reference
 
         old_reference = create :article_reference, author_names: [author_name], citation_year: 1980
-        create_genus.protonym.authorship.update! reference: old_reference
+        create(:family).protonym.authorship.update! reference: old_reference
       end
 
       specify do

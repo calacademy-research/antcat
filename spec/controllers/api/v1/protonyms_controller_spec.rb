@@ -3,19 +3,19 @@ require 'spec_helper'
 describe Api::V1::ProtonymsController do
   describe "GET index" do
     before do
-      create :genus
+      create :family
       get :index
     end
 
     it "gets all protonyms" do
-      expect(json_response.count).to eq 3 # TODO.
+      expect(json_response.count).to eq 1 # TODO.
     end
 
     specify { expect(response).to have_http_status :ok }
   end
 
   describe "GET show" do
-    let!(:taxon) { create_genus }
+    let!(:taxon) { create :family }
 
     before { get :show, params: { id: taxon.protonym_id } }
 

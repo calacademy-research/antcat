@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Taxa::WhatLinksHere do
   describe "#call" do
-    let!(:atta) { create_genus 'Atta' }
+    let!(:atta) { create :genus }
 
     context "when there are no references" do
       specify { expect(described_class[atta]).to be_empty }
@@ -10,18 +10,6 @@ describe Taxa::WhatLinksHere do
     end
 
     describe "references in taxon fields" do
-      context "when there are references in a genus" do
-        let!(:species) { create_species genus: atta }
-
-        specify do
-          expect(described_class[atta]).to match_array [
-            { table: 'taxa', field: :genus_id, id: species.id }
-          ]
-        end
-
-        specify { expect(described_class[atta, predicate: true]).to be true }
-      end
-
       context "when there are references in a subfamily" do
         specify do
           expect(described_class[atta.subfamily]).to match_array [
@@ -36,13 +24,13 @@ describe Taxa::WhatLinksHere do
 
     describe "references in taxt" do
       context "when there are references in taxts" do
-        let!(:eciton) { create_genus 'Eciton' }
+        let!(:taxon) { create :family }
 
-        before { eciton.update_attribute :type_taxt, "{tax #{atta.id}}" }
+        before { taxon.update_attribute :type_taxt, "{tax #{atta.id}}" }
 
         specify do
           expect(described_class[atta]).to match_array [
-            { table: 'taxa', field: :type_taxt, id: eciton.id }
+            { table: 'taxa', field: :type_taxt, id: taxon.id }
           ]
         end
 
@@ -71,23 +59,23 @@ describe Taxa::WhatLinksHere do
     end
 
     describe "references as synonym" do
-      let(:eciton) { create_genus 'Eciton' }
+      let(:taxon) { create :family }
 
       context "when there are references" do
-        before { create :synonym, junior_synonym: eciton, senior_synonym: atta }
+        before { create :synonym, junior_synonym: taxon, senior_synonym: atta }
 
         specify do
           expect(described_class[atta]).to match_array [
-            { table: 'synonyms', field: :senior_synonym_id, id: eciton.id }
+            { table: 'synonyms', field: :senior_synonym_id, id: taxon.id }
           ]
 
-          expect(described_class[eciton]).to match_array [
+          expect(described_class[taxon]).to match_array [
             { table: 'synonyms', field: :junior_synonym_id, id: atta.id }
           ]
         end
 
         specify { expect(described_class[atta, predicate: true]).to be true }
-        specify { expect(described_class[eciton, predicate: true]).to be true }
+        specify { expect(described_class[taxon, predicate: true]).to be true }
       end
     end
   end

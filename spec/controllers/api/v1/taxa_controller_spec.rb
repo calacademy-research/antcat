@@ -4,8 +4,8 @@ describe Api::V1::TaxaController do
   describe "GET index" do
     it "gets all taxa greater than a given number" do
       create :genus
-      create_species 'Not interesting'
-      species = create_species 'Atta minor'
+      create :species
+      species = create :species
 
       get :index, params: { starts_at: species.id }
 
@@ -14,13 +14,12 @@ describe Api::V1::TaxaController do
     end
 
     it "gets all taxa" do
-      create :genus
-      create_species 'Atta minor'
+      genus = create :genus
 
       get :index
 
-      expect(response.body.to_s).to include "Atta"
-      expect(json_response.count).to eq 7
+      expect(response.body.to_s).to include genus.name.name
+      expect(json_response.count).to eq 3 # TODO.
     end
 
     it 'returns HTTP 200' do
@@ -30,13 +29,13 @@ describe Api::V1::TaxaController do
   end
 
   describe "GET show" do
-    let!(:species) { create_species 'Atta minor maxus' }
+    let!(:species) { create :species }
 
     before { get :show, params: { id: species.id } }
 
     it "returns a single taxon entry" do
       expect(response.body.to_s).to include "Atta"
-      expect(json_response['species']['name_cache']).to eq "Atta minor maxus"
+      expect(json_response['species']['name_cache']).to eq species.name.name
     end
 
     specify { expect(response).to have_http_status :ok }

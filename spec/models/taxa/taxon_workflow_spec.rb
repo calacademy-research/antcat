@@ -85,7 +85,7 @@ describe Taxon do
 
   describe "Last change and version", :versioning do
     describe "#last_change" do
-      let(:taxon) { create_genus }
+      let(:taxon) { create :family }
       let(:user) { create :user }
 
       it "returns nil if no Changes have been created for it" do

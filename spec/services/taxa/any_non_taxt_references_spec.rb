@@ -4,8 +4,8 @@ describe Taxa::AnyNonTaxtReferences do
   describe "#call" do
     subject { described_class.new(atta) }
 
-    let!(:atta) { create_genus 'Atta' }
-    let!(:eciton) { create_genus 'Eciton' }
+    let!(:atta) { create :family }
+    let!(:eciton) { create :family }
 
     before { eciton.update_attribute :type_taxt, "{tax #{atta.id}}" }
 
