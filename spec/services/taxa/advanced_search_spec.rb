@@ -50,7 +50,7 @@ describe Taxa::AdvancedSearch do
       end
 
       describe "Finding certain ranks" do
-        let!(:subfamily) { create_subfamily }
+        let!(:subfamily) { create(:subfamily) }
         let!(:tribe) { create_tribe subfamily: subfamily }
         let!(:genus) { create_genus tribe: tribe }
         let!(:subgenus) { create_subgenus genus: genus }

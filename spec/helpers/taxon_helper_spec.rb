@@ -39,7 +39,7 @@ describe TaxonHelper do
     end
 
     it "handles genera with a tribe" do
-      subfamily = create_subfamily
+      subfamily = create(:subfamily)
       tribe = create_tribe subfamily: subfamily
       genus = create_genus tribe: tribe
       expect(helper.taxon_name_description(genus)).to eq "genus of #{tribe.name.name}"

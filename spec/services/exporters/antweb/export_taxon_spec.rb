@@ -330,7 +330,7 @@ describe Exporters::Antweb::ExportTaxon do
 
   describe "Current valid rank" do
     it "sends the right value for each class" do
-      expect(export_taxon(create_subfamily)[21]).to eq 'Subfamily'
+      expect(export_taxon(create(:subfamily))[21]).to eq 'Subfamily'
       expect(export_taxon(create_genus)[21]).to eq 'Genus'
       expect(export_taxon(create_subgenus)[21]).to eq 'Subgenus'
       expect(export_taxon(create_species)[21]).to eq 'Species'
@@ -346,7 +346,7 @@ describe Exporters::Antweb::ExportTaxon do
     let(:species) { create_species 'Atta betta', genus: genus, subfamily: subfamily }
 
     it "sdoesn't punt on a subfamily's family" do
-      taxon = create_subfamily
+      taxon = create(:subfamily)
       expect(export_taxon(taxon)[23]).to eq 'Formicidae'
     end
 

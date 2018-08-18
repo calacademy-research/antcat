@@ -10,7 +10,7 @@ describe TaxonForm do
   describe "#save" do
     describe "Saving a new record, based on params from a form with nested attributes" do
       it "saves a new genus" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
         params = genus_params
 
         params[:type_fossil] = 0
@@ -25,7 +25,7 @@ describe TaxonForm do
       end
 
       it "saves a new subgenus" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
         params = subgenus_params
 
         described_class.new(taxon, params).save
@@ -36,7 +36,7 @@ describe TaxonForm do
       end
 
       it "sets the new taxon's state" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
         params = genus_params
 
         params[:type_fossil] = 0
@@ -50,7 +50,7 @@ describe TaxonForm do
       end
 
       it "saves a new species" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
         params = species_params
 
         described_class.new(taxon, params).save
@@ -143,7 +143,7 @@ describe TaxonForm do
       end
 
       it "allows name gender to be set when updating a taxon" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
 
         # Must do this, probably so that a new genus isn't created.
         @genus_params = genus_params.deep_dup
@@ -164,7 +164,7 @@ describe TaxonForm do
       end
 
       it "allows name gender to be unset when updating a taxon" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
         params = genus_params
 
         described_class.new(taxon, params).save

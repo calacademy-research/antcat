@@ -3,7 +3,7 @@ require "spec_helper"
 describe TaxonDecorator::LinkEachEpithet do
   describe "#call" do
     context 'when taxon is above species-rank' do
-      let(:taxon) { create_subfamily }
+      let(:taxon) { create(:subfamily) }
 
       it 'just links the genus' do
         expect(described_class[taxon]).to eq %(<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>)

@@ -49,7 +49,7 @@ describe SpeciesGroupTaxon do
     it "raises on invalid rank combinations" do
       new_comb = create_subspecies
       old_comb = create_species
-      irrelevant_parent = create_subfamily
+      irrelevant_parent = create :subfamily
 
       expect do
         new_comb.inherit_attributes_for_new_combination old_comb, irrelevant_parent
