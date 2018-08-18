@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Api::V1::NamesController do
   describe "GET index" do
     before do
-      create_genus
+      create :genus
       create_species 'Atta minor'
     end
 

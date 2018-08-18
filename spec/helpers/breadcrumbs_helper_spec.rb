@@ -36,7 +36,7 @@ describe BreadcrumbsHelper do
     end
 
     context "when fossil taxa" do
-      let(:taxon) { create_genus fossil: true }
+      let(:taxon) { create :genus, fossil: true }
 
       specify do
         expect(helper.taxon_breadcrumb_link(taxon)).

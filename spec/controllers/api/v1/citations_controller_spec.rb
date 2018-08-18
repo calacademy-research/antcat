@@ -2,8 +2,7 @@ require 'spec_helper'
 
 describe Api::V1::CitationsController do
   before do
-    create_genus
-    create :species_name, name: 'Eciton minor'
+    create :genus
   end
 
   let!(:species) { create_species 'Atta minor' }

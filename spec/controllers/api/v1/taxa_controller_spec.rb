@@ -3,10 +3,9 @@ require 'spec_helper'
 describe Api::V1::TaxaController do
   describe "GET index" do
     it "gets all taxa greater than a given number" do
-      create_genus
+      create :genus
       create_species 'Not interesting'
       species = create_species 'Atta minor'
-      create :species_name, name: 'Eciton minor'
 
       get :index, params: { starts_at: species.id }
 
@@ -15,9 +14,8 @@ describe Api::V1::TaxaController do
     end
 
     it "gets all taxa" do
-      create_genus
+      create :genus
       create_species 'Atta minor'
-      create :species_name, name: 'Eciton minor'
 
       get :index
 
@@ -50,18 +48,18 @@ describe Api::V1::TaxaController do
     before { create_species 'Atta minor maxus' }
 
     it "searches for taxa" do
-      get :search, params: { 'string' => 'maxus' }
+      get :search, params: { string: 'maxus' }
       expect(response.body.to_s).to include "maxus"
     end
 
     it 'returns HTTP 200' do
-      get :search, params: { 'string' => 'maxus' }
+      get :search, params: { string: 'maxus' }
       expect(response).to have_http_status :ok
     end
 
     context "when there are no search matches" do
       it 'returns HTTP 404' do
-        get :search, params: { 'string' => 'maxuus' }
+        get :search, params: { string: 'maxuus' }
         expect(response).to have_http_status :not_found
       end
     end

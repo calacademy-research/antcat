@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe DatabaseScripts::DuplicatedReferenceSections do
   describe "#results" do
-    let!(:taxon) { create_genus }
+    let!(:taxon) { create :family }
     let!(:duplicate_reference_section) do
       taxon.reference_sections.create references_taxt: 'Taxt', position: 2
     end

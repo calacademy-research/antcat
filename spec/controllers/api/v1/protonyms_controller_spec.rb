@@ -3,9 +3,8 @@ require 'spec_helper'
 describe Api::V1::ProtonymsController do
   describe "GET index" do
     before do
-      create_genus
+      create :genus
       create_species 'Atta minor'
-      create :species_name, name: 'Eciton minor'
       get :index
     end
 

@@ -176,8 +176,8 @@ describe Taxa::CallbacksAndValidations do
   end
 
   describe "#delete_synonyms" do
-    let(:senior) { create_genus 'Atta' }
-    let(:junior) { create_genus 'Eciton', status: Status::SYNONYM }
+    let(:senior) { create :family }
+    let(:junior) { create :family, :synonym }
 
     before { create :synonym, junior_synonym: junior, senior_synonym: senior }
 

@@ -52,34 +52,33 @@ describe TaxonHelper do
     end
 
     it "handles new species" do
-      genus = create_genus 'Atta'
+      genus = create :genus
       species = build :species, genus: genus
       expect(helper.taxon_name_description(species)).to eq "new species of <i>#{genus.name.name}</i>"
     end
 
     it "handles subspecies" do
-      genus = create_genus 'Atta'
+      genus = create :genus
       species = build :species, genus: genus
       subspecies = build :subspecies, species: species, genus: genus
       expect(helper.taxon_name_description(subspecies)).to eq "new subspecies of <i>#{species.name.name}</i>"
     end
 
     it "handles subspecies without a species" do
-      genus = create_genus 'Atta'
+      genus = create :genus
       subspecies = build :subspecies, genus: genus, species: nil
       expect(helper.taxon_name_description(subspecies)).to eq "new subspecies of (no species)"
     end
 
     it "is html_safe" do
-      subfamily = build_stubbed :subfamily
-      genus = create_genus subfamily: subfamily
-      expect(helper.taxon_name_description(genus)).to be_html_safe
+      taxon = create :family
+      expect(helper.taxon_name_description(taxon)).to be_html_safe
     end
   end
 
   describe "#taxon_change_history", :versioning do
     it "shows nothing for old taxa" do
-      taxon = create_genus
+      taxon = create :genus
       expect(helper.taxon_change_history(taxon)).to be_nil
     end
 

@@ -40,7 +40,7 @@ describe LinkHelper do
     end
 
     it "outputs nothing for tribes" do
-      tribe = create_tribe 'Attini'
+      tribe = create :tribe
       expect(helper.link_to_antweb(tribe)).to be_nil
     end
 

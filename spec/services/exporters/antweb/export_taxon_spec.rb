@@ -239,7 +239,7 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     it "can export a Tribe" do
-      taxon = create_tribe
+      taxon = create :tribe
       expect(export_taxon(taxon)).not_to be_nil
     end
 

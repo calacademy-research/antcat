@@ -38,8 +38,8 @@ describe ActivityDecorator do
       end
 
       it "allows custom paths" do
-        genus = create_genus
-        activity = create :activity, trackable: genus
+        taxon = create :family
+        activity = create :activity, trackable: taxon
         trackable_id = activity.trackable_id
         path = "/catalog/#{trackable_id}"
 

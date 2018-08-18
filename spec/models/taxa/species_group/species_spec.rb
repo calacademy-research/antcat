@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Species do
   it "can have subspecies, which are its children" do
-    species = create_species 'Atta chilensis'
-    robusta = create_subspecies 'Atta chilensis robusta', species: species
-    saltensis = create_subspecies 'Atta chilensis saltensis', species: species
+    species = create_species
+    robusta = create_subspecies species: species
+    saltensis = create_subspecies species: species
 
     expect(species.subspecies).to eq [robusta, saltensis]
     expect(species.children).to eq species.subspecies
@@ -56,7 +56,7 @@ describe Species do
   end
 
   describe "#siblings" do
-    let(:genus) { create_genus }
+    let(:genus) { create :genus }
     let(:species) { create_species genus: genus }
     let(:another_species) { create_species genus: genus }
 
