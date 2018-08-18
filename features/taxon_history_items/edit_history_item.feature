@@ -11,7 +11,7 @@ Feature: Editing a history item
 
     When I click on the edit taxon history item button
     And I fill in "taxt" with "(none)"
-    And I fill in "edit_summary" with "fix typo" within ".history_items"
+    And I fill in "edit_summary" with "fix typo" within ".history-items"
     And I save the taxon history item
     Then I should not see "Formicidae as family"
     And the history should be "(none)"
